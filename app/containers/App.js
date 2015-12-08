@@ -1,8 +1,7 @@
-import React, { Component, PropTypes} from 'react';
-import DevTools from './DevTools';
+import React, { Component, PropTypes } from 'react';
 import Header from '../components/Header';
 
-class DevelopmentApp extends Component {
+export default class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired
   };
@@ -12,29 +11,15 @@ class DevelopmentApp extends Component {
       <div>
         <Header />
         {this.props.children}
-        <DevTools />
+        {
+        (() => {
+          if (process.env.NODE_ENV !== 'production') {
+            const DevTools = require('./DevTools');
+            return <DevTools />;
+          }
+        })()
+      }
       </div>
     );
   }
-}
-
-class ProductionApp extends Component {
-  static propTypes = {
-    children: PropTypes.element.isRequired
-  };
-
-  render() {
-    return (
-      <div>
-        <Header />
-        {this.props.children}
-      </div>
-    );
-  }
-}
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = ProductionApp
-} else {
-  module.exports = DevelopmentApp
 }

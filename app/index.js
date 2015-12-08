@@ -8,6 +8,7 @@ import './styles/harmony.css';
 import './styles/app.css';
 
 const store = configureStore();
+console.log(store)
 
 render(
   <Provider store={store}>
