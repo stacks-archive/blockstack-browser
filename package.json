@@ -9,10 +9,10 @@
     "test-e2e:crdv": "chromedriver",
     "test-e2e": "NODE_ENV=test mocha --compilers js:babel/register --require ./test/setup.js --require co-mocha ./test/e2e.js",
     "lint": "eslint app test *.js",
-    "hot-server": "node server.js",
+    "server": "node server.js",
     "build": "NODE_ENV=production webpack --config webpack.config.production.js --progress --profile --colors",
     "start": "electron .",
-    "start-hot": "HOT=1 NODE_ENV=development electron .",
+    "debug": "HOT=1 NODE_ENV=development electron .",
     "package": "NODE_ENV=production node package.js",
     "package-all": "npm run package -- --all"
   },
@@ -89,6 +89,8 @@
     "webpack-target-electron-renderer": "^0.2.0"
   },
   "dependencies": {
+    "blockchain-profile": "^0.3.0",
+    "bootstrap": "^3.3.6",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
     "history": "^1.13.0",

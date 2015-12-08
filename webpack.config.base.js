@@ -2,6 +2,9 @@
 'use strict';
 
 const path = require('path');
+const fs = require('fs');
+
+var node_modules = fs.readdirSync('node_modules').filter(function(x) { return x !== '.bin' });
 
 module.exports = {
   module: {
@@ -23,7 +26,5 @@ module.exports = {
   plugins: [
 
   ],
-  externals: [
-    // put your node 3rd party libraries which can't be built with webpack here (mysql, mongodb, and so on..)
-  ]
+  externals: node_modules
 };
