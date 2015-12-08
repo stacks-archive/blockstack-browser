@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 import routes from './routes';
 import configureStore from './store/configureStore';
-import './harmony.css';
-import './app.css';
+import './styles/harmony.css';
+import './styles/app.css';
 
 const store = configureStore();
 

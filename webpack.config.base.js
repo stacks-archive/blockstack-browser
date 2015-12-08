@@ -4,7 +4,9 @@
 const path = require('path');
 const fs = require('fs');
 
-var node_modules = fs.readdirSync('node_modules').filter(function(x) { return x !== '.bin' });
+var node_modules = fs.readdirSync('node_modules').filter(function(x) {
+  return x !== '.bin'
+});
 
 module.exports = {
   module: {
