@@ -4,7 +4,7 @@
 [![Build Status][travis-image]][travis-url]
 [![Dependency Status][david_img]][david_site]
 
-![](./docs/erb-logo.png)
+![](./erb-logo.png)
 
 > Live editing development on desktop app
 
