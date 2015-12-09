@@ -1,11 +1,11 @@
 # Chord Desktop App
 
-+ [Installation](/#Installation)
-	+ [Toggling Chrome DevTools](/#Toggling-Chrome-DevTools)
-	+ [Toggling Redux DevTools](/#Toggling-Redux-DevTools)
-+ [Development](/#Development)
-+ [Packaging](/#Packaging)
-	+ [Packaging Options](/#Options)
++ [Installation](#installation)
+	+ [Toggling Chrome DevTools](/#toggling-chrome-devTools)
+	+ [Toggling Redux DevTools](/#toggling-redux-devTools)
++ [Development](#development)
++ [Packaging](#packaging)
+	+ [Packaging Options](/#options)
 
 ## Installation
 
