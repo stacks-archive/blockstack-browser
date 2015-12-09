@@ -17,7 +17,11 @@ crashReporter.start();
 
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== 'darwin') {
+    app.quit();
+  } else {
+    app.quit();
+  }
 });
 
 

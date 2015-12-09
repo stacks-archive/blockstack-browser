@@ -3,25 +3,25 @@ import { Link } from 'react-router';
 
 class AccountListItem extends Component {
   static propTypes = {
-    serviceName: PropTypes.string.isRequired,
+    service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired
+    proofUrl: PropTypes.string
   }
 
   render() {
     var fontAwesomeClass = 'fa '
     var serviceNames = ['twitter', 'facebook', 'github']
-    if (serviceNames.indexOf(this.props.serviceName) >= 0) {
-      fontAwesomeClass += 'fa-' + this.props.serviceName
+    if (serviceNames.indexOf(this.props.service) >= 0) {
+      fontAwesomeClass += 'fa-' + this.props.service
     }
 
-    var accountUrl = 'http://' + this.props.serviceName + '.com/' + this.props.identifier
+    var accountUrl = 'http://' + this.props.service + '.com/' + this.props.identifier
 
     return (
       <li>
         <Link to={accountUrl}>
           <i className={fontAwesomeClass} />
-          <span>{this.props.username}</span>
+          <span>{this.props.identifier}</span>
         </Link>
       </li>
     )

@@ -31,7 +31,9 @@ function getVerifiedAccounts(profile, verifications) {
         }
       })
       account.proofUrl = proofUrl
-      filteredAccounts.push(account)
+      if (account.identifier && account.service) {
+        filteredAccounts.push(account)
+      }
     })
   }
   return filteredAccounts
@@ -109,9 +111,8 @@ class Profile extends Component {
                     return (
                       <AccountListItem
                         key={account.service + '-' + account.identifier}
-                        serviceName={account.service}
-                        username={account.identifier}
-                        serviceDomain={account.service + '.com'}
+                        service={account.service}
+                        identifier={account.identifier}
                         proofUrl={account.proofUrl} />)
                   })}
                 </ul>

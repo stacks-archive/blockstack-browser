@@ -10,7 +10,7 @@
     "test-e2e": "NODE_ENV=test mocha --compilers js:babel/register --require ./test/setup.js --require co-mocha ./test/e2e.js",
     "lint": "eslint app test *.js",
     "server": "node server.js",
-    "build": "NODE_ENV=production webpack --config webpack.config.production.js --progress --profile --colors",
+    "build": "NODE_ENV=production webpack --config ./configs/webpack.config.production.js --progress --profile --colors",
     "start": "electron .",
     "debug": "HOT=1 NODE_ENV=development electron .",
     "package": "NODE_ENV=production node package.js",

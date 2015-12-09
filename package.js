@@ -3,7 +3,7 @@
 
 const os = require('os');
 const webpack = require('webpack');
-const cfg = require('./webpack.config.production.js');
+const cfg = require('./configs/webpack-production.js');
 const packager = require('electron-packager');
 const del = require('del');
 const exec = require('child_process').exec;

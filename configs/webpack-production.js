@@ -4,7 +4,7 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
-const baseConfig = require('./webpack.config.base');
+const baseConfig = require('./webpack-base');
 
 
 const config = Object.create(baseConfig);
@@ -13,7 +13,7 @@ config.devtool = 'source-map';
 
 config.entry = './app/index';
 
-config.output.publicPath = '/dist/';
+config.output.publicPath = '../dist/';
 
 config.module.loaders.push({
   test: /^((?!\.module).)*\.css$/,
