@@ -1,13 +1,13 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router } from 'react-router';
-import routes from './routes';
-import configureStore from './store/configureStore';
-import './styles/harmony.css';
-import './styles/app.css';
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router'
+import routes from './routes'
+import configureStore from './store/configureStore'
+import './styles/harmony.css'
+import './styles/app.css'
 
-const store = configureStore();
+const store = configureStore()
 
 render(
   <Provider store={store}>
@@ -16,7 +16,7 @@ render(
     </Router>
   </Provider>,
   document.getElementById('root')
-);
+)
 
 if (process.env.NODE_ENV !== 'production') {
   // Use require because imports can't be conditional.

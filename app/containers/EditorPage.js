@@ -1,10 +1,16 @@
-import React, { Component } from 'react';
-import Editor from '../components/Editor';
+import React, { Component } from 'react'
+import Editor from '../components/Editor'
+import Header from '../components/Header'
 
-export default class EditorPage extends Component {
+class EditorPage extends Component {
   render() {
     return (
-      <Editor />
-    );
+      <div>
+        <Header />
+        <Editor />
+      </div>
+    )
   }
 }
+
+export default EditorPage

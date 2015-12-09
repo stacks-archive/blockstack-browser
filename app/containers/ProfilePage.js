@@ -1,10 +1,16 @@
-import React, { Component } from 'react';
-import Profile from '../components/Profile';
+import React, { Component } from 'react'
+import Profile from '../components/Profile'
+import Header from '../components/Header'
 
-export default class ProfilePage extends Component {
+class ProfilePage extends Component {
   render() {
     return (
-      <Profile />
-    );
+      <div>
+        <Header />
+        <Profile />
+      </div>
+    )
   }
 }
+
+export default ProfilePage

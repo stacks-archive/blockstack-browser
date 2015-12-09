@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 
 class InputGroup extends Component {
   static propTypes = {
