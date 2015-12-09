@@ -1,5 +1,12 @@
 # Chord Desktop App
 
++ [Installation](/#Installation)
+	+ [Toggling Chrome DevTools](/#Toggling-Chrome-DevTools)
+	+ [Toggling Redux DevTools](/#Toggling-Redux-DevTools)
++ [Development](/#Development)
++ [Packaging](/#Packaging)
+	+ [Packaging Options](/#Options)
+
 ## Installation
 
 ```bash
@@ -17,13 +24,7 @@ npm run app
 
 *Note: your node version must be >= 4 and your npm version must be >= 2*
 
-#### Toggling Chrome Developer Tools
-
-- OS X: <kbd>Cmd</kbd> <kbd>Alt</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
-- Linux: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
-- Windows: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
-
-#### Toggle Chrome DevTools
+#### Toggling Chrome DevTools
 
 - OS X: <kbd>Cmd</kbd> <kbd>Alt</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
 - Linux: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
