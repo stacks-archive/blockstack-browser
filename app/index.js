@@ -3,11 +3,11 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import routes from './routes'
-import configureStore from './store/configureStore'
+import configureDataStore from './datastore/configure'
 import './styles/harmony.css'
 import './styles/app.css'
 
-const store = configureStore()
+const store = configureDataStore()
 
 render(
   <Provider store={store}>

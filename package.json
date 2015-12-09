@@ -12,7 +12,7 @@
     "server": "node server.js",
     "build": "NODE_ENV=production webpack --config ./configs/webpack.config.production.js --progress --profile --colors",
     "start": "electron .",
-    "debug": "HOT=1 NODE_ENV=development electron .",
+    "app": "HOT=1 NODE_ENV=development electron .",
     "package": "NODE_ENV=production node package.js",
     "package-all": "npm run package -- --all"
   },
