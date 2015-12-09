@@ -300,7 +300,6 @@ i.fa {
   box-shadow: none;
   background-color: rgba(240,240,240,1);
   color: rgba(34,34,34,1);
-  margin-left: -15px;
   font-weight: 300; 
 }
 
@@ -314,15 +313,18 @@ i.fa {
 .form-control::-moz-placeholder { color: rgba(180,180,180,1); }
 .form-control:-ms-input-placeholder { color: rgba(180,180,180,1); }
 
-.btn-primary {
+.btn {
   width: 100%;
+  border-radius: 0;
+  margin: 10px 0 25px 0px;
+  font-weight: 300;
+  padding: 8px;
+}
+
+.btn-primary {
   background-color: rgba(74,144,226,1);
   color: rgba(255,255,255,1);
   border:1px solid rgba(74,144,226,1);
-  border-radius: 0;
-  margin: 10px 0 25px -15px;
-  font-weight: 300;
-  padding: 8px;
 }
 
 .container {

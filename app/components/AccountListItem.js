@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 class AccountListItem extends Component {
-  openTab(e) {
-    console.log(e)
+  static propTypes = {
+    serviceName: PropTypes.string.isRequired,
+    identifier: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired
   }
 
   render() {
@@ -13,7 +15,7 @@ class AccountListItem extends Component {
       fontAwesomeClass += 'fa-' + this.props.serviceName
     }
 
-    var accountUrl = 'http://' + this.props.service + '.com/' + this.props.identifier
+    var accountUrl = 'http://' + this.props.serviceName + '.com/' + this.props.identifier
 
     return (
       <li>

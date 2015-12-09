@@ -1,23 +1,27 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { Person, flattenObject } from 'blockchain-profile'
+import InputGroup from './InputGroup'
 
 class SaveButton extends Component {
+  static propTypes = {
+    onSave: PropTypes.func.isRequired
+  }
+
   constructor() {
     super()
+
     this.state = {
       profileJustSaved: false
     }
-  }
 
-  triggerSave() {
-    this.props.onSave()
-    this.setState({profileJustSaved: true})
-
-    var _this = this
-    setTimeout(function() {
-      _this.setState({profileJustSaved: false})
-    }, 500)
+    this.triggerSave = (event) => {
+      this.setState({profileJustSaved: true})
+      var _this = this
+      setTimeout(function() {
+        _this.setState({profileJustSaved: false})
+      }, 500)
+    }
   }
 
   render() {
@@ -32,26 +36,6 @@ class SaveButton extends Component {
             Save
         </button>
       }
-      </div>
-    )
-  }
-}
-
-class InputGroup extends Component {
-  render() {
-    var value = this.props.data[this.props.name]
-    return (
-      <div className="form-group">
-        <label className="sr-only">{this.props.label}</label>
-        <input name={this.props.name}
-          className="form-control input-lg"
-          placeholder={
-              this.props.placeholder ?
-              this.props.placeholder :
-              this.props.label
-          }
-          value={value}
-          onChange={this.props.onChange} />
       </div>
     )
   }
@@ -82,7 +66,7 @@ class Editor extends Component {
   render() {
     var flatProfile = this.state.flatProfile
     return (
-      <div className="container container-337">
+      <div className="container-337">
           { flatProfile ? (
           <div>
               <h1>Edit Profile</h1>

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { Person, flattenObject } from 'blockchain-profile'
 import AccountListItem from './AccountListItem'
+import { Naval, Ryan } from './SampleProfiles'
 
 function getName(profile) {
     var name = ''
@@ -47,22 +48,26 @@ function getAvatarUrl(profile) {
 }
 
 class Profile extends Component {
+
   constructor() {
     super()
+
     this.state = {
-      profile: null
+      profile: Naval,
+      username: 'naval'
     }
   }
 
   componentDidMount() {
-    var _this = this
-    var username = 'ryan'
+    /*var _this = this
+    var username = 'naval'
     var url = 'https://api.onename.com/v1/users/' + username
 
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
+
         var legacyProfile = responseJson[username]['profile']
         var profile = Person.fromLegacyFormat(legacyProfile).profile
         _this.setState({
@@ -72,10 +77,11 @@ class Profile extends Component {
       .catch((error) => {
         console.warn(error)
       })
+    */
   }
 
   render() {
-    var username = 'ryan'
+    var username = this.state.username
     var profile = this.state.profile
     var accounts = []
     var verifications = []
