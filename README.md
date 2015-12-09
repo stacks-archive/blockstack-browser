@@ -5,7 +5,6 @@
 	+ [Toggling Redux DevTools](#toggling-redux-devtools)
 + [Development](#development)
 + [Packaging](#packaging)
-	+ [Packaging Options](#options)
 
 ## Installation
 
@@ -22,7 +21,7 @@ npm run server
 npm run app
 ```
 
-*Note: your node version must be >= 4 and your npm version must be >= 2*
+*Note: Ensure a node version >= 4 and an npm version >= 2.*
 
 #### Toggling Chrome DevTools
 
@@ -30,28 +29,24 @@ npm run app
 - Linux: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
 - Windows: <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> or <kbd>F12</kbd>
 
-- see [electron-debug](https://github.com/sindresorhus/electron-debug) for more detail information.
+*See [electron-debug](https://github.com/sindresorhus/electron-debug) for more information.*
 
 #### Toggling Redux DevTools
 
-<kbd>Ctrl+H</kbd>
+- All platforms: <kbd>Ctrl+H</kbd>
 
-- see [redux-devtools-dock-monitor](https://github.com/gaearon/redux-devtools-dock-monitor) for more detail information.
+*See [redux-devtools-dock-monitor](https://github.com/gaearon/redux-devtools-dock-monitor) for more information.*
 
 ## Packaging
+
+To package apps for your platform only:
 
 ```bash
 npm run package
 ```
 
-#### Options
+To package apps for all platforms:
 
-- --name, -n: Application name (default: ElectronReact)
-- --version, -v: Electron version (default: latest version)
-- --asar, -a: [asar](https://github.com/atom/asar) support (default: false)
-- --icon, -i: Application icon
-- --all: pack for all platforms
-
-Use `electron-packager` to pack your app with `--all` options for darwin (osx), linux and win32 (windows) platform. After build, you will find them in `release` folder. Otherwise, you will only find one for your os.
-
-`test`, `tools`, `release` folder and devDependencies in `package.json` will be ignored by default.
+```bash
+npm run package-all
+```
