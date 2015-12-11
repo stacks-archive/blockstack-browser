@@ -26,7 +26,7 @@ app.on('window-all-closed', () => {
 
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({ width: 337, height: 600 });
+  mainWindow = new BrowserWindow({ width: 1000, height: 800 });
 
   if (process.env.HOT) {
     mainWindow.loadURL(`file://${__dirname}/app/dev-app.html`);

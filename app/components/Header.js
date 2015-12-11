@@ -34,10 +34,18 @@ class Header extends Component {
                 </Link>
               </li>
             </ul>
+            <ul className="nav">
+              <li>
+                <Link to="/counter" className="navbar-toggle">
+                  <img src="images/ui-32px-outline-1_settings-gear-64.svg"
+                    className="nav-icon"/>
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 

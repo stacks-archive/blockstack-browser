@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Settings from '../components/Settings'
 import Header from '../components/Header'
 
-class EditorPage extends Component {
+class SettingsPage extends Component {
   render() {
     return (
       <div>
@@ -13,4 +13,4 @@ class EditorPage extends Component {
   }
 }
 
-export default EditorPage
+export default SettingsPage
