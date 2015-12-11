@@ -12,6 +12,8 @@
 npm install
 ```
 
+*Requirements: node >= 4, npm >= 2*
+
 ## Development
 
 Run this two commands __simultaneously__ in different console tabs.
@@ -20,8 +22,6 @@ Run this two commands __simultaneously__ in different console tabs.
 npm run server
 npm run app
 ```
-
-*Note: Ensure a node version >= 4 and an npm version >= 2.*
 
 #### Toggling Chrome DevTools
 
