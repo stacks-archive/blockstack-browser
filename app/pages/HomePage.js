@@ -10,7 +10,14 @@ export default class TasksPage extends Component {
     return (
       <div>
         <div>
-          <h3>To-Do List</h3>
+          <Link to={"/register"}>
+            Register
+          </Link>
+        </div>
+        <div>
+          <Link to={"/import"}>
+            Import
+          </Link>
         </div>
       </div>
     )

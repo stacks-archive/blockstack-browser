@@ -54,47 +54,11 @@ h1, h3 {
   margin-bottom: 25px;
 }
 
-/* Side Navbar */
-.side-nav {
-    position: fixed;
-    width: 240px;
-    left: -105%;
-    margin: 0;
-    height: 100%;
-    height: calc(100% + 60px);
-    height: -moz-calc(100%);
-    padding-bottom: 60px;
-    background-color: #fff;
-    z-index: 9999;
-    overflow-y: auto;
-    will-change: left;
-}
-.side-nav.fixed {
-  left: 0;
-  position: fixed;
-}
-ul.side-nav.fixed li {
-    line-height: 44px;
-}
-.side-nav li {
-    float: none;
-    padding: 0 15px;
-}
-ul li {
-    list-style-type: none;
-}
-ul.side-nav.fixed li a {
-    font-size: 13px;
-    line-height: 44px;
-    height: 44px;
-}
-.side-nav.fixed a {
-    display: block;
-    padding: 0 15px;
-    color: #444;
-}
-.right-panel {
-  padding-left: 240px;
+/* Navbar */
+
+.right-navbar a {
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 /* Header */
@@ -359,3 +323,4 @@ i.fa {
   padding-right: 0px;
   padding-left: 0px;
 }
+

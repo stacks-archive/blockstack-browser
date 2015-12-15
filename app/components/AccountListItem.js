@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-class AccountListItem extends Component {
+export default class AccountListItem extends Component {
   static propTypes = {
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
@@ -27,5 +27,3 @@ class AccountListItem extends Component {
     )
   }
 }
-
-export default AccountListItem

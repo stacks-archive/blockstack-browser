@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { Person, flattenObject } from 'blockchain-profile'
 import InputGroup from '../components/InputGroup'
-import SaveButton from '../components/SaveButton'
+import { SaveButton } from '../components/Buttons'
 
 export default class EditorPage extends Component {
   constructor() {

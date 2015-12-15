@@ -26,7 +26,7 @@ class ProfilePage extends Component {
 
   getProfile(id) {
     var username = id.replace('.id', '')
-    var url = 'https://api.onename.com/v1/users/' + username
+    var url = 'http://resolver.onename.com/v2/users/' + username
     var _this = this
     fetch(url)
       .then((response) => response.text())
@@ -93,12 +93,12 @@ class ProfilePage extends Component {
         </div>
         <div className="col-md-6">
           <div>
-            <Link to="/editor">
+            <Link to={this.props.location.pathname + "/edit"}>
               Edit
             </Link>
           </div>
           <div>
-            <Link to="/export">
+            <Link to={this.props.location.pathname + "/export"}>
               Export
             </Link>
           </div>

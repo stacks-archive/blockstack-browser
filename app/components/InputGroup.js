@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-class InputGroup extends Component {
+export default class InputGroup extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
@@ -27,5 +27,3 @@ class InputGroup extends Component {
     )
   }
 }
-
-export default InputGroup

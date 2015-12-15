@@ -15,8 +15,33 @@ export default class Sidebar extends Component {
           </Link>
         </li>
         <li>
+          <Link to="/profile/muneeb.id">
+            muneeb.id
+          </Link>
+        </li>
+        <li>
+          <Link to="/profile/guylepage3.id">
+            guylepage3.id
+          </Link>
+        </li>
+        <li>
+          <Link to="/profile/judecn.id">
+            judecn.id
+          </Link>
+        </li>
+        <li>
           <Link to="/profile/naval.id">
             naval.id
+          </Link>
+        </li>
+        <li>
+          <Link to="/profile/albertwenger.id">
+            albertwenger.id
+          </Link>
+        </li>
+        <li>
+          <Link to="/profile/fredwilson.id">
+            fredwilson.id
           </Link>
         </li>
         <li>

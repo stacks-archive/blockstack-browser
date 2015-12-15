@@ -7,27 +7,28 @@ import EditorPage   from './pages/EditorPage'
 import SettingsPage from './pages/SettingsPage'
 import CounterPage  from './pages/CounterPage'
 
-import RegisterPage from './pages/RegisterPage'
-import ExportPage   from './pages/ExportPage'
-import ImportPage   from './pages/ImportPage'
-import BackupPage   from './pages/BackupPage'
-import TasksPage    from './pages/TasksPage'
-import SearchPage   from './pages/SearchPage'
+import RegisterPage      from './pages/RegisterPage'
+import ExportPage        from './pages/ExportPage'
+import ImportPage        from './pages/ImportPage'
+import BackupPage        from './pages/BackupPage'
+import NotificationsPage from './pages/NotificationsPage'
+import SearchPage        from './pages/SearchPage'
+import HomePage          from './pages/HomePage'
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={TasksPage} />
+    <IndexRoute component={HomePage} />
 
-    <Route path="/profile/:id" component={ProfilePage} />
-    <Route path="/editor" component={EditorPage} />
-    <Route path="/settings" component={SettingsPage} />
-    <Route path="/counter" component={CounterPage} />
+    <Route path="/profile/:id"        component={ProfilePage} />
+    <Route path="/profile/:id/edit"   component={EditorPage} />
+    <Route path="/profile/:id/export" component={ExportPage} />
 
-    <Route path="/register" component={RegisterPage} />
-    <Route path="/export" component={ExportPage} />
-    <Route path="/import" component={ImportPage} />
-    <Route path="/backup" component={BackupPage} />
-    <Route path="/tasks" component={TasksPage} />
-    <Route path="/search" component={SearchPage} />
+    <Route path="/settings"      component={SettingsPage} />
+    <Route path="/counter"       component={CounterPage} />
+    <Route path="/register"      component={RegisterPage} />
+    <Route path="/import"        component={ImportPage} />
+    <Route path="/backup"        component={BackupPage} />
+    <Route path="/notifications" component={NotificationsPage} />
+    <Route path="/search"        component={SearchPage} />
   </Route>
 )

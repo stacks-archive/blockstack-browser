@@ -13,10 +13,10 @@ class App extends Component {
         <Navbar />
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xs-3 col-sm-2 col-md-1 sidebar col-without-padding">
+            <div className="col-xs-3 col-sm-3 col-md-2 sidebar col-without-padding">
               <Sidebar />
             </div>
-            <div className="col-xs-9 col-sm-10 col-md-11 col-without-padding">
+            <div className="col-xs-9 col-sm-9 col-md-10 col-without-padding">
               {this.props.children}
               {
                 (() => {
