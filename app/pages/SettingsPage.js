@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import InputGroup from './InputGroup'
+import InputGroup from '../components/InputGroup'
 
-class Settings extends Component {
+export default class SettingsPage extends Component {
   constructor() {
     super()
   }
@@ -10,15 +10,19 @@ class Settings extends Component {
   render() {
     var settings = {}
     return (
-      <div className="container-337">
+      <div>
         <div>
           <h3>Settings</h3>
+
+          <div>
+            <button className="btn btn-primary">Backup Wallet</button>
+          </div>
+
           <InputGroup name="resolverUrl" label="Resolver URL" data={settings} />
+
           <InputGroup name="registrarUrl" label="Registrar URL" data={settings} />
         </div>
       </div>
     )
   }
 }
-
-export default Settings

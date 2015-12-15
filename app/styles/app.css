@@ -2,27 +2,12 @@
  * Custom styles
  */
 
-/* Google Design Colors */
-/* $color-blue-500: rgba(33,150,243,1); /* 2196F3 */
-/* $color-blue-600: rgba(30,136,229,1); /* 1E88E5 */
-/* $color-blue-700: rgba(25,118,210,1); /* 1976D2 */
-/* $color-blue-800: rgba(21,101,192,1); /* 1565C0 */
-/* $color-blue-900: rgba(13,71,161,1); /* 0D47A1 */
-/* $color-blue-1000: rgba(14,60,132,1); /* 0E3C84 */
-/* $color-blue-1100: rgba(15,50,104,1); /* 0F3268 */
-/* $color-blue-1200: rgba(16,39,75,1); /* 10274b */
-/* $color-indigo-900: rgba(26,35,126,1); /* 1A237E */
-
-/* $color-input: rgba(249,249,249,1); /* F9F9F9 */
-
-/* $color-base-background: rgba(250,250,250,1); /* FAFAFA */
-/* $color-header-icons: rgba(155,155,155,1); /* 9B9B9B */
-/* $color-blue: rgba(74,144,226,1); /* 4A90E2 */
-
 html,
 body {
-  width: 337px;
-  height: 600px;
+}
+
+body {
+  padding-top: 50px;
 }
 
 body {
@@ -57,10 +42,6 @@ p {
   height: 45px;
 }
 
-.form-group {
-  margin-bottom: 1px;
-}
-
 hr {
   border: none;
   margin: 0;
@@ -71,6 +52,49 @@ h1, h3 {
   font-size: 14px;
   text-align: center;
   margin-bottom: 25px;
+}
+
+/* Side Navbar */
+.side-nav {
+    position: fixed;
+    width: 240px;
+    left: -105%;
+    margin: 0;
+    height: 100%;
+    height: calc(100% + 60px);
+    height: -moz-calc(100%);
+    padding-bottom: 60px;
+    background-color: #fff;
+    z-index: 9999;
+    overflow-y: auto;
+    will-change: left;
+}
+.side-nav.fixed {
+  left: 0;
+  position: fixed;
+}
+ul.side-nav.fixed li {
+    line-height: 44px;
+}
+.side-nav li {
+    float: none;
+    padding: 0 15px;
+}
+ul li {
+    list-style-type: none;
+}
+ul.side-nav.fixed li a {
+    font-size: 13px;
+    line-height: 44px;
+    height: 44px;
+}
+.side-nav.fixed a {
+    display: block;
+    padding: 0 15px;
+    color: #444;
+}
+.right-panel {
+  padding-left: 240px;
 }
 
 /* Header */
@@ -327,10 +351,11 @@ i.fa {
   border:1px solid rgba(74,144,226,1);
 }
 
-.container {
-  height: 1000px;
+.profile-dropdown-tab {
+  padding: 20px 0px 0px 20px;
 }
 
-.container-337 {
-  width: 337px;
+.col-without-padding {
+  padding-right: 0px;
+  padding-left: 0px;
 }

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { Person, flattenObject } from 'blockchain-profile'
-import InputGroup from './InputGroup'
-import SaveButton from './SaveButton'
+import InputGroup from '../components/InputGroup'
+import SaveButton from '../components/SaveButton'
 
-class Editor extends Component {
+export default class EditorPage extends Component {
   constructor() {
     super()
     this.state = {
@@ -29,7 +29,7 @@ class Editor extends Component {
   render() {
     var flatProfile = this.state.flatProfile
     return (
-      <div className="container-337">
+      <div>
           { flatProfile ? (
           <div>
               <h1>Edit Profile</h1>
@@ -73,5 +73,3 @@ class Editor extends Component {
     );
   }
 }
-
-export default Editor
