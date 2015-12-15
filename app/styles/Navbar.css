@@ -1,0 +1,67 @@
+
+.navbar-table {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 50px;
+  white-space: nowrap;
+  display: table;
+}
+
+.navbar-tab {
+  display: table-cell;
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+  height: 50px;
+  white-space: initial;
+  box-sizing: border-box;
+}
+
+.navbar-1-12-tab {
+  width: 8.33%;
+}
+
+.navbar-2-12-tab {
+  width: 16.67%;
+}
+
+.navbar-3-12-tab {
+  width: 25%;
+}
+
+.navbar-4-12-tab {
+  width: 33.33%;
+}
+
+.navbar-5-12-tab {
+  width: 41.67%;
+}
+
+.navbar-6-12-tab {
+  width: 50%;
+}
+
+.navbar-7-12-tab {
+  width: 58.33%;
+}
+
+.navbar-8-12-tab {
+  width: 66.67%;
+}
+
+.navbar-9-12-tab {
+  width: 75%;
+}
+
+.navbar-10-12-tab {
+  width: 83.33%;
+}
+
+.navbar-11-12-tab {
+  width: 91.67%;
+}
+
+.navbar-12-12-tab {
+  width: 100%;
+}
