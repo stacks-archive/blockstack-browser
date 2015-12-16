@@ -1,5 +1,5 @@
 /*
-scepter v1.0.4
+harmony v1.0.5
 Creators: Guy Lepage
 Copyright 
 Licensed under MIT
@@ -32,17 +32,31 @@ SYNTAX RULES
  * fonts - lato and source code on index
  * normalize.css v3.0.3 to reset any previous styles | MIT License | github.com/necolas/normalize.css
  * Flexgrid from Bootstrap v4.0.0-alpha - the most modern grid system | MIT License | https://github.com/twbs/bootstrap/blob/v4-dev/dist/css/bootstrap.css
- * Print style sheet from Bootstrap v4.0.0-alpha NOTE! Needs adjustment for scepter | MIT License | https://github.com/twbs/bootstrap/blob/v4-dev/dist/css/bootstrap.css
+ * Print style sheet from Bootstrap v4.0.0-alpha NOTE! Needs adjustment for harmony | MIT License | https://github.com/twbs/bootstrap/blob/v4-dev/dist/css/bootstrap.css
  */
 
+/* 
+ * Reference of Responsice Breakpoints
+ * Extra small devices (portrait phones, less than ???px)
+ * No media query since this is the default in Bootstrap
+ */
+/* Small devices (landscape phones, 34em and up)*/
+@media (min-width: 34em) { ... }
+/* Medium devices (tablets, 48em and up)*/
+@media (min-width: 48em) { ... }
+/* Large devices (desktops, 62em and up)*/
+@media (min-width: 62em) { ... }
+/* Extra large devices (large desktops, 75em and up)*/
+@media (min-width: 75em) { ... }
 
+
+/* 6 */
 @charset "UTF-8";
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-
 html {
   font-family: sans-serif;
-  -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -255,6 +269,7 @@ td,
 th {
   padding: 0;
 }
+/* 230 */
 
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 /* Issue with Bootstrap v4.0.0 */
@@ -265,7 +280,7 @@ th {
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
  * Print style sheet
- * Taken from Bootstrap v4.0.0-alpha and needs to be adjusted for scepter | MIT License | https://github.com/twbs/bootstrap/blob/v4-dev/dist/css/bootstrap.css 
+ * Taken from Bootstrap v4.0.0-alpha and needs to be adjusted for harmony | MIT License | https://github.com/twbs/bootstrap/blob/v4-dev/dist/css/bootstrap.css 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 @media print {
@@ -346,6 +361,7 @@ html {
   -webkit-box-sizing: inherit;
   -moz-box-sizing: inherit;
   box-sizing: inherit;
+  }
 }
 
 @-moz-viewport {
@@ -798,13 +814,56 @@ pre code {
   clear: both;
 }
 
+@media (min-width: 34em) {
+  .container {
+    max-width: 34rem;
+  }
+}
+
+@media (min-width: 48em) {
+  .container {
+    max-width: 45rem;
+  }
+}
+
+@media (min-width: 62em) {
+  .container {
+    max-width: 60rem;
+  }
+}
+
+@media (min-width: 75em) {
+  .container {
+    max-width: 72.25rem;
+  }
+}
+
+.container-fluid {
+  padding-right: .9375rem;
+  padding-left: .9375rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container-fluid:before,
+.container-fluid:after {
+  display: table;
+  content: " ";
+}
+
+.container-fluid:after {
+  clear: both;
+}
+/* 793 */
+
 /* <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-/* Pasted from Bootstrap v4.0.0 - GL 2015-11-29 21-41 
+/* Bootstrap v4.0.0 - GL 2015-11-29 21-41 
  End
  */
 
 /* Flexgrid */
 
+/* 808 */
 .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12 {
   position: relative;
   min-height: 1px;
@@ -1655,4 +1714,452 @@ pre code {
     margin-left: 100%;
   }
 }
+/* 1659 */
+/*****************************************/
+/* 3532 */
+.nav {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+.nav-link {
+  display: inline-block;
+}
+
+.nav-link:focus,
+.nav-link:hover {
+  text-decoration: none;
+}
+
+.nav-link.disabled {
+  color: #818a91;
+}
+
+.nav-link.disabled,
+.nav-link.disabled:focus,
+.nav-link.disabled:hover {
+  color: #818a91;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.nav-inline .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #ddd;
+}
+
+.nav-tabs:before,
+.nav-tabs:after {
+  display: table;
+  content: " ";
+}
+
+.nav-tabs:after {
+  clear: both;
+}
+
+.nav-tabs .nav-item {
+  float: left;
+  margin-bottom: -1px;
+}
+
+.nav-tabs .nav-item + .nav-item {
+  margin-left: .2rem;
+}
+
+.nav-tabs .nav-link {
+  display: block;
+  padding: .5em 1em;
+  border: 1px solid transparent;
+  border-radius: .25rem .25rem 0 0;
+}
+
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover {
+  border-color: #eceeef #eceeef #ddd;
+}
+
+.nav-tabs .nav-link.disabled,
+.nav-tabs .nav-link.disabled:focus,
+.nav-tabs .nav-link.disabled:hover {
+  color: #818a91;
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-link.active:focus,
+.nav-tabs .nav-link.active:hover,
+.nav-tabs .nav-item.open .nav-link,
+.nav-tabs .nav-item.open .nav-link:focus,
+.nav-tabs .nav-item.open .nav-link:hover {
+  color: #55595c;
+  background-color: #fff;
+  border-color: #ddd #ddd transparent;
+}
+
+.nav-pills .nav-item {
+  float: left;
+}
+
+.nav-pills .nav-item + .nav-item {
+  margin-left: .2rem;
+}
+
+.nav-pills .nav-link {
+  display: block;
+  padding: .5em 1em;
+  border-radius: .25rem;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .nav-link.active:focus,
+.nav-pills .nav-link.active:hover,
+.nav-pills .nav-item.open .nav-link,
+.nav-pills .nav-item.open .nav-link:focus,
+.nav-pills .nav-item.open .nav-link:hover {
+  color: #fff;
+  cursor: default;
+  background-color: #0275d8;
+}
+
+.nav-stacked .nav-item {
+  display: block;
+  float: none;
+}
+
+.nav-stacked .nav-item + .nav-item {
+  margin-top: .2rem;
+  margin-left: 0;
+}
+
+.tab-content > .tab-pane {
+  display: none;
+}
+
+.tab-content > .active {
+  display: block;
+}
+
+.nav-tabs .dropdown-menu {
+  margin-top: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.navbar {
+  position: relative;
+  padding: .5rem 1rem;
+}
+
+.navbar:before,
+.navbar:after {
+  display: table;
+  content: " ";
+}
+
+.navbar:after {
+  clear: both;
+}
+/* 3681 */
+/*****************************************/
+/*****************************************/
+/* 3687 */
+.navbar-static-top {
+  z-index: 1000;
+}
+@media (min-width: 34em) {
+  .navbar-static-top {
+    border-radius: 0;
+  }
+}
+
+.navbar-fixed-top,
+.navbar-fixed-bottom {
+  position: fixed;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  margin-bottom: 0;
+}
+
+@media (min-width: 34em) {
+  .navbar-fixed-top,
+  .navbar-fixed-bottom {
+    border-radius: 0;
+  }
+}
+
+.navbar-fixed-top {
+  top: 0;
+}
+
+.navbar-fixed-bottom {
+  bottom: 0;
+}
+
+.navbar-sticky-top {
+  position: -webkit-sticky;
+  position:         sticky;
+  top: 0;
+  z-index: 1030;
+  width: 100%;
+}
+
+@media (min-width: 34em) {
+  .navbar-sticky-top {
+    border-radius: 0;
+  }
+}
+
+.navbar-brand {
+  float: left;
+  padding: 0.9375rem;
+  margin-right: 0.9375rem;
+  line-height: 20px;
+  font-size: 1.125rem;
+}
+
+.navbar-brand:focus,
+.navbar-brand:hover {
+  text-decoration: none;
+}
+
+.navbar-brand > img {
+  display: block;
+}
+
+.navbar-divider {
+  float: left;
+  width: 1px;
+  padding-top: .425rem;
+  padding-bottom: .425rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+  overflow: hidden;
+}
+
+.navbar-divider:before {
+  content: '\00a0';
+}
+
+.navbar-toggler {
+  padding: .5rem .75rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background: none;
+  border: .0625rem solid transparent;
+  border-radius: .25rem;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:hover {
+  text-decoration: none;
+}
+
+@media (min-width: 34em) {
+  .navbar-toggleable-xs {
+    display: block !important;
+  }
+}
+
+@media (min-width: 48em) {
+  .navbar-toggleable-sm {
+    display: block !important;
+  }
+}
+
+.navbar-nav .nav-item {
+  float: left;
+}
+
+.navbar-nav .nav-link {
+  display: block;
+  padding-top: .425rem;
+  padding-bottom: .425rem;
+}
+
+.navbar-nav .nav-link + .nav-link {
+  margin-left: 1rem;
+}
+
+.navbar-nav .nav-item + .nav-item {
+  margin-left: 1rem;
+}
+
+.navbar-light .navbar-brand {
+  color: rgba(0, 0, 0, .8);
+}
+
+.navbar-light .navbar-brand:focus,
+.navbar-light .navbar-brand:hover {
+  color: rgba(0, 0, 0, .8);
+}
+
+.navbar-light .navbar-nav .nav-link {
+  color: rgba(0, 0, 0, .3);
+}
+
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover {
+  color: rgba(0, 0, 0, .6);
+}
+
+.navbar-light .navbar-nav .open > .nav-link,
+.navbar-light .navbar-nav .open > .nav-link:focus,
+.navbar-light .navbar-nav .open > .nav-link:hover,
+.navbar-light .navbar-nav .active > .nav-link,
+.navbar-light .navbar-nav .active > .nav-link:focus,
+.navbar-light .navbar-nav .active > .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.open,
+.navbar-light .navbar-nav .nav-link.open:focus,
+.navbar-light .navbar-nav .nav-link.open:hover,
+.navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .nav-link.active:focus,
+.navbar-light .navbar-nav .nav-link.active:hover {
+  color: rgba(0, 0, 0, .8);
+}
+
+.navbar-light .navbar-divider {
+  background-color: rgba(0, 0, 0, .075);
+}
+
+.navbar-dark .navbar-brand {
+  color: white;
+}
+
+.navbar-dark .navbar-brand:focus,
+.navbar-dark .navbar-brand:hover {
+  color: white;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, .5);
+}
+
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: rgba(255, 255, 255, .75);
+}
+
+.navbar-dark .navbar-nav .open > .nav-link,
+.navbar-dark .navbar-nav .open > .nav-link:focus,
+.navbar-dark .navbar-nav .open > .nav-link:hover,
+.navbar-dark .navbar-nav .active > .nav-link,
+.navbar-dark .navbar-nav .active > .nav-link:focus,
+.navbar-dark .navbar-nav .active > .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.open,
+.navbar-dark .navbar-nav .nav-link.open:focus,
+.navbar-dark .navbar-nav .nav-link.open:hover,
+.navbar-dark .navbar-nav .nav-link.active,
+.navbar-dark .navbar-nav .nav-link.active:focus,
+.navbar-dark .navbar-nav .nav-link.active:hover {
+  color: white;
+}
+
+.navbar-dark .navbar-divider {
+  background-color: rgba(255, 255, 255, .075);
+}
+/* 3883 */
+/*****************************************/
+/* 4179 */ /* bootstrap-3.3.6 */
+@media (min-width: 768px) {
+  .navbar-header {
+    float: left;
+  }
+}
+/* 4185 */ /* bootstrap-3.3.6 */
+/*****************************************/
+/* 4229 */ /* bootstrap-3.3.6 */
+.container > .navbar-header,
+.container-fluid > .navbar-header,
+.container > .navbar-collapse,
+.container-fluid > .navbar-collapse {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+@media (min-width: 768px) {
+  .container > .navbar-header,
+  .container-fluid > .navbar-header,
+  .container > .navbar-collapse,
+  .container-fluid > .navbar-collapse {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+/* 4246 */ /* bootstrap-3.3.6 */
+/*****************************************/
+/* 6463 */ /* bootstrap-3.3.6 */
+.clearfix:before,
+.clearfix:after,
+.dl-horizontal dd:before,
+.dl-horizontal dd:after,
+.container:before,
+.container:after,
+.container-fluid:before,
+.container-fluid:after,
+.row:before,
+.row:after,
+.form-horizontal .form-group:before,
+.form-horizontal .form-group:after,
+.btn-toolbar:before,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:before,
+.btn-group-vertical > .btn-group:after,
+.nav:before,
+.nav:after,
+.navbar:before,
+.navbar:after,
+.navbar-header:before,
+.navbar-header:after,
+.navbar-collapse:before,
+.navbar-collapse:after,
+.pager:before,
+.pager:after,
+.panel-body:before,
+.panel-body:after,
+.modal-header:before,
+.modal-header:after,
+.modal-footer:before,
+.modal-footer:after {
+  display: table;
+  content: " ";
+}
+.clearfix:after,
+.dl-horizontal dd:after,
+.container:after,
+.container-fluid:after,
+.row:after,
+.form-horizontal .form-group:after,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:after,
+.nav:after,
+.navbar:after,
+.navbar-header:after,
+.navbar-collapse:after,
+.pager:after,
+.panel-body:after,
+.modal-header:after,
+.modal-footer:after {
+  clear: both;
+}
+/* 6517 */ /* bootstrap-3.3.6 */
+/*****************************************/
+/* 4179 */ /* bootstrap-3.3.6 */
+@media (min-width: 768px) {
+  .navbar-header {
+    float: left;
+  }
+}
+/* 4185 */ /* bootstrap-3.3.6 */
+/*****************************************/
+
+
+
+
+
 
