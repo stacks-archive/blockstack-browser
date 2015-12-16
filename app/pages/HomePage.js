@@ -9,16 +9,6 @@ export default class TasksPage extends Component {
   render() {
     return (
       <div>
-        <div>
-          <Link to={"/register"}>
-            Register
-          </Link>
-        </div>
-        <div>
-          <Link to={"/import"}>
-            Import
-          </Link>
-        </div>
       </div>
     )
   }
