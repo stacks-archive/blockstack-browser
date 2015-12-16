@@ -14,6 +14,9 @@ export default class BackupPage extends Component {
 
           <p>
             The backup phrase below will allow you to restore your wallet.
+          </p>
+
+          <p>
             <b>Write down the words and keep them in a safe place.</b>
           </p>
 
