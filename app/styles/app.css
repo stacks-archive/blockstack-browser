@@ -2,13 +2,14 @@
  * Custom styles
  */
 
-html,
-body {
-}
+/* Google Design Colors */
+/* $color-grey-00: rgba(33,150,243,1); /* 2196F3 */
 
-body {
-  padding-top: 50px;
-}
+
+
+/* Colors
+ * rgba(21,21,21,1); /* 151515 */
+ */
 
 body {
   font-family: 'Lato', sans-serif;
