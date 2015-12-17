@@ -22,13 +22,12 @@ export default (
     <Route path="/profile/:id"        component={ProfilePage} />
     <Route path="/profile/:id/edit"   component={EditorPage} />
     <Route path="/profile/:id/export" component={ExportPage} />
-
     <Route path="/settings"      component={SettingsPage} />
-    <Route path="/counter"       component={CounterPage} />
     <Route path="/register"      component={RegisterPage} />
     <Route path="/import"        component={ImportPage} />
     <Route path="/backup"        component={BackupPage} />
     <Route path="/notifications" component={NotificationsPage} />
     <Route path="/search"        component={SearchPage} />
+    <Route path="/counter"       component={CounterPage} />
   </Route>
 )
