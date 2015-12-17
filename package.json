@@ -90,10 +90,10 @@
   },
   "dependencies": {
     "blockchain-profile": "^0.3.0",
-    "bootstrap": "^3.3.6",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
     "history": "^1.13.1",
+    "onename-bootstrap": "git+ssh://git@github.com/onenameio/onename-bootstrap.git",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-redux": "^4.0.0",
