@@ -53,6 +53,22 @@ hr {
   vertical-align: middle;
 }
 
+/* Highlight */
+
+.highlight {
+  padding: 1rem 1rem 1rem 1rem;
+  margin: 0rem 0rem 1rem 0rem;
+  background-color: #eeeeee;
+}
+
+.highlight pre {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    background-color: transparent;
+    border: 0;
+}
+
 /* Sidebar */
 
 .view-with-sidebar {
@@ -85,4 +101,17 @@ hr {
       left: 90px;
       width: 90px;
     }
+}
+
+/* Navbar */
+
+.nav-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.nav-search {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  width: 400px;
 }

@@ -25,18 +25,17 @@ export default class Navbar extends Component {
           </form>
         </div>
         <div className="nav-item nav-link pull-xs-right">
-          <Link to="/notifications">
-            <img src="images/design-32px-outline_bullet-list-67.svg"
-              className="nav-icon"/>
-          </Link>
-        </div>
-        <div className="nav-item nav-link pull-xs-right">
           <Link to="/settings">
             <img src="images/ui-32px-outline-1_settings-gear-64.svg"
               className="nav-icon"/>
           </Link>
         </div>
-
+        <div className="nav-item nav-link pull-xs-right">
+          <Link to="/notifications">
+            <img src="images/design-32px-outline_bullet-list-67.svg"
+              className="nav-icon"/>
+          </Link>
+        </div>
       </nav>
     )
   }

@@ -5,7 +5,6 @@ import { Router } from 'react-router'
 import routes from './routes'
 import configureDataStore from './store/configure'
 import './styles/app.css'
-import './styles/Navbar.css'
 import './styles/Profile.css'
 
 const store = configureDataStore()

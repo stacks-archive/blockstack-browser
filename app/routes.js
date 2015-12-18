@@ -9,6 +9,7 @@ import CounterPage  from './pages/CounterPage'
 
 import RegisterPage      from './pages/RegisterPage'
 import ExportPage        from './pages/ExportPage'
+import DepositPage       from './pages/DepositPage'
 import ImportPage        from './pages/ImportPage'
 import BackupPage        from './pages/BackupPage'
 import NotificationsPage from './pages/NotificationsPage'
@@ -17,13 +18,14 @@ import HomePage          from './pages/HomePage'
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={HomePage} />
+    <IndexRoute component={NotificationsPage} />
 
     <Route path="/profile/:id"        component={ProfilePage} />
     <Route path="/profile/:id/edit"   component={EditorPage} />
     <Route path="/profile/:id/export" component={ExportPage} />
     <Route path="/settings"      component={SettingsPage} />
     <Route path="/register"      component={RegisterPage} />
+    <Route path="/deposit"        component={DepositPage} />
     <Route path="/import"        component={ImportPage} />
     <Route path="/backup"        component={BackupPage} />
     <Route path="/notifications" component={NotificationsPage} />

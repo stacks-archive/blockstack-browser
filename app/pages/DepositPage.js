@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-export default class ImportPage extends Component {
+export default class DepositPage extends Component {
   constructor() {
     super()
   }
@@ -10,9 +10,13 @@ export default class ImportPage extends Component {
     return (
       <div>
         <div>
-          <h3>Import Identity</h3>
+          <h3>Deposit Bitcoins</h3>
 
-          <p>Send the identity to the following address:</p>
+          <p><i>
+            Note: every identity registration costs a certain amount of money and must be paid for by funds in your account.
+          </i></p>
+
+          <p>To top up your account, send bitcoins to the address below:</p>
 
           <div className="highlight">
             <pre>
