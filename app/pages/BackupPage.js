@@ -10,7 +10,7 @@ export default class BackupPage extends Component {
     return (
       <div>
         <div>
-          <h3>Backup Account</h3>
+          <h2>Backup Account</h2>
 
           <p>
             The backup phrase below will allow you to restore your wallet.

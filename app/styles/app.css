@@ -48,13 +48,41 @@ hr {
   /*border-top: 1px solid rgba(34,34,34,0.0);*/
 }
 
-h1, h3 {
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 25px;
+.col-without-padding, .col-no-pad {
+  padding: 0px 0px 0px 0px;
+  vertical-align: middle;
 }
 
-.col-without-padding {
-  padding-right: 0px;
-  padding-left: 0px;
+/* Sidebar */
+
+.view-with-sidebar {
+  padding-left: 180px;
+  transition: all 0.4s ease 0s;
+}
+
+.sidebar-section {
+  margin-left: -180px;
+  left: 180px;
+  width: 180px;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s;
+}
+
+.content-section {
+  width: 100%;
+}
+
+@media (max-width:767px) {
+    .view-with-sidebar {
+      padding-left: 90px;
+    }
+
+    .sidebar-section {
+      margin-left: -90px;
+      left: 90px;
+      width: 90px;
+    }
 }

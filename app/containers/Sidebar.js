@@ -45,6 +45,11 @@ export default class Sidebar extends Component {
           </Link>
         </li>
         <li>
+          <Link to="/register">
+            Register
+          </Link>
+        </li>
+        <li>
           <Link to="/import">
             Import
           </Link>

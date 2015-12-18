@@ -9,14 +9,9 @@ export default class TasksPage extends Component {
 
   render() {
     var tasks = [
-      { label: "Create an identity"       , url: '/'},
+      { label: "Create an identity"       , url: '/register'},
       { label: "Backup your account"      , url: '/backup'},
-      { label: "Set a password"           , url: '/settings'},
-      { label: "Upload a photo"           , url: '/'},
-      { label: "Fill out your name"       , url: '/'},
-      { label: "Fill out your bio"        , url: '/'},
-      { label: "Verify a twitter account" , url: '/'},
-      { label: "Verify a facebook account", url: '/'}
+      { label: "Set a password"           , url: '/settings'}
     ]
 
     return (
@@ -26,7 +21,6 @@ export default class TasksPage extends Component {
 
           <ul className="list-group">
             {tasks.map(function(task, index) {
-              console.log(task)
               return (
                 <Notification
                   key={index}

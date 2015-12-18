@@ -88,6 +88,14 @@
   float: none;
 }
 
+/* Navbar 2 */
+
+.nav-search {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  width: 400px;
+}
+
 /* */
 
 .nav-icon {
