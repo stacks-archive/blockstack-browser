@@ -43,7 +43,7 @@ export const BackButton = React.createClass({
   mixins: [ History ],
   render() {
     return (
-      <button onClick={() => this.history.goBack()}>
+      <button className="btn btn-sm button-secondary" onClick={() => this.history.goBack()}>
         {this.props.children}
       </button>
    )
@@ -54,7 +54,7 @@ export const ForwardButton = React.createClass({
   mixins: [ History ],
   render() {
     return (
-      <button onClick={() => this.history.goForward()}>
+      <button className="btn btn-sm button-secondary" onClick={() => this.history.goForward()}>
         {this.props.children}
       </button>
    )

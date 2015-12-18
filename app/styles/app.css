@@ -2,50 +2,8 @@
  * Custom styles
  */
 
-html,
-body {
-}
-
 body {
   padding-top: 66px;
-}
-
-body {
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
-  background-color: rgba(250,250,250,1);
-}
-
-.fill {
-  min-height: 100%;
-  height: 100%;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-p {
-  font-weight: 300;
-}
-
-.input-lg {
-  font-size: 13px;
-  height: 45px;
-}
-
-hr {
-  border: none;
-  margin: 0;
-  /*border-top: 1px solid rgba(34,34,34,0.0);*/
 }
 
 .col-without-padding, .col-no-pad {
@@ -111,7 +69,7 @@ hr {
 }
 
 .nav-search {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
   width: 400px;
 }
