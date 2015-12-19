@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import { Link } from 'react-router'
+import { Link, History } from 'react-router'
 
-class SaveButton extends Component {
+export class SaveButton extends Component {
   static propTypes = {
     onSave: PropTypes.func.isRequired
   }
@@ -39,4 +39,24 @@ class SaveButton extends Component {
   }
 }
 
-export default SaveButton
+export const BackButton = React.createClass({
+  mixins: [ History ],
+  render() {
+    return (
+      <button className="btn btn-sm button-secondary" onClick={() => this.history.goBack()}>
+        {this.props.children}
+      </button>
+   )
+ }
+})
+
+export const ForwardButton = React.createClass({
+  mixins: [ History ],
+  render() {
+    return (
+      <button className="btn btn-sm button-secondary" onClick={() => this.history.goForward()}>
+        {this.props.children}
+      </button>
+   )
+ }
+})
