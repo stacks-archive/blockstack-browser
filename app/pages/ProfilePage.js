@@ -1,68 +1,61 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Person, flattenObject } from 'blockchain-profile'
-import AccountListItem from '../components/AccountListItem'
-import { Naval, Ryan } from '../data/SampleProfiles'
-import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
 
-const propTypes = {
+import AccountListItem from '../components/AccountListItem'
+import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
+import * as ProfileActions from '../actions/identities'
+
+function mapStateToProps(state) {
+  return {
+    currentIdentity: state.identities.current
+  }
 }
 
-function getProfile(id, callback) {
-  var username = id.replace('.id', '')
-  var url = 'http://resolver.onename.com/v2/users/' + username
-  var _this = this
-  fetch(url)
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      var legacyProfile = responseJson[username]['profile'],
-          verifications = responseJson[username]['verifications'],
-          profile = Person.fromLegacyFormat(legacyProfile).profile
-      callback(profile, verifications)
-    })
-    .catch((error) => {
-      console.warn(error)
-    })
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ProfileActions, dispatch)
 }
 
 class ProfilePage extends Component {
+  static propTypes = {
+    updateCurrentIdentity: PropTypes.func.isRequired,
+    fetchCurrentIdentity: PropTypes.func.isRequired,
+    currentIdentity: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      id: this.props.routeParams.id,
-      profile: {},
-      verifications: []
+      currentIdentity: {
+        profile: {},
+        verifications: []
+      }
     }
   }
 
   componentDidReceiveProps(id) {
-    var _this = this
-    getProfile(id, (profile, verifications) => {
-      _this.setState({
-        id: id,
-        profile: profile,
-        verifications: verifications
-      })
-    })
+    this.props.fetchCurrentIdentity(id)
   }
 
   componentDidMount() {
-    this.componentDidReceiveProps(this.state.id)
+    this.componentDidReceiveProps(this.props.routeParams.id)
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.routeParams.id !== this.state.id) {
+    if (nextProps.routeParams.id !== this.props.routeParams.id) {
       this.componentDidReceiveProps(nextProps.routeParams.id)
     }
+    this.setState({
+      currentIdentity: nextProps.currentIdentity
+    })
   }
 
   render() {
-    var blockchainId = this.state.id,
-        profile = this.state.profile,
-        verifications = this.state.verifications
+    var blockchainId = this.props.id,
+        profile = this.state.currentIdentity.profile,
+        verifications = this.state.currentIdentity.verifications
 
     return (
       <div className="row">
@@ -90,7 +83,8 @@ class ProfilePage extends Component {
                             key={account.service + '-' + account.identifier}
                             service={account.service}
                             identifier={account.identifier}
-                            proofUrl={account.proofUrl} />)
+                            proofUrl={account.proofUrl} />
+                        )
                       })}
                     </ul>
                   </div>
@@ -117,6 +111,4 @@ class ProfilePage extends Component {
   }
 }
 
-ProfilePage.propTypes = propTypes
-
-export default ProfilePage
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
