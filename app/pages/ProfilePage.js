@@ -8,6 +8,24 @@ import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-uti
 const propTypes = {
 }
 
+function getProfile(id, callback) {
+  var username = id.replace('.id', '')
+  var url = 'http://resolver.onename.com/v2/users/' + username
+  var _this = this
+  fetch(url)
+    .then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      var legacyProfile = responseJson[username]['profile'],
+          verifications = responseJson[username]['verifications'],
+          profile = Person.fromLegacyFormat(legacyProfile).profile
+      callback(profile, verifications)
+    })
+    .catch((error) => {
+      console.warn(error)
+    })
+}
+
 class ProfilePage extends Component {
 
   constructor(props) {
@@ -20,40 +38,31 @@ class ProfilePage extends Component {
     }
   }
 
-  componentDidMount() {
-    this.getProfile(this.state.id)
+  componentDidReceiveProps(id) {
+    var _this = this
+    getProfile(id, (profile, verifications) => {
+      _this.setState({
+        id: id,
+        profile: profile,
+        verifications: verifications
+      })
+    })
   }
 
-  getProfile(id) {
-    var username = id.replace('.id', '')
-    var url = 'http://resolver.onename.com/v2/users/' + username
-    var _this = this
-    fetch(url)
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        var legacyProfile = responseJson[username]['profile'],
-            verifications = responseJson[username]['verifications'],
-            profile = Person.fromLegacyFormat(legacyProfile).profile
-        _this.setState({
-          id: id,
-          profile: profile,
-          verifications: verifications
-        })
-      })
-      .catch((error) => {
-        console.warn(error)
-      })
+  componentDidMount() {
+    this.componentDidReceiveProps(this.state.id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.routeParams.id !== this.state.id) {
+      this.componentDidReceiveProps(nextProps.routeParams.id)
+    }
   }
 
   render() {
     var blockchainId = this.state.id,
         profile = this.state.profile,
         verifications = this.state.verifications
-
-    if (this.props.routeParams.id !== this.state.id) {
-      this.getProfile(this.props.routeParams.id)
-    }
 
     return (
       <div className="row">
