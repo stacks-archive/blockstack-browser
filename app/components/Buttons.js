@@ -3,7 +3,7 @@ import { Link, History } from 'react-router'
 
 export class SaveButton extends Component {
   static propTypes = {
-    onSave: PropTypes.func.isRequired
+    onSave: PropTypes.func
   }
 
   constructor() {
@@ -19,6 +19,9 @@ export class SaveButton extends Component {
       setTimeout(function() {
         _this.setState({profileJustSaved: false})
       }, 500)
+      if (this.props.onSave) {
+        this.props.onSave()
+      }
     }
   }
 
@@ -43,7 +46,7 @@ export const BackButton = React.createClass({
   mixins: [ History ],
   render() {
     return (
-      <button onClick={() => this.history.goBack()}>
+      <button className="btn btn-sm button-secondary" onClick={() => this.history.goBack()}>
         {this.props.children}
       </button>
    )
@@ -54,7 +57,7 @@ export const ForwardButton = React.createClass({
   mixins: [ History ],
   render() {
     return (
-      <button onClick={() => this.history.goForward()}>
+      <button className="btn btn-sm button-secondary" onClick={() => this.history.goForward()}>
         {this.props.children}
       </button>
    )

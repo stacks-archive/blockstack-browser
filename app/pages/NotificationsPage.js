@@ -9,28 +9,25 @@ export default class TasksPage extends Component {
 
   render() {
     var tasks = [
-      { label: "Create an identity"       , url: '/'},
-      { label: "Backup your account"      , url: '/backup'},
-      { label: "Set a password"           , url: '/settings'},
-      { label: "Upload a photo"           , url: '/'},
-      { label: "Fill out your name"       , url: '/'},
-      { label: "Fill out your bio"        , url: '/'},
-      { label: "Verify a twitter account" , url: '/'},
-      { label: "Verify a facebook account", url: '/'}
+      { label: "Fund your account", url: '/deposit', body: 'To pay for identity registrations'},
+      { label: "Register your first identity", url: '/register',
+        body: 'So you can start building your profile, connecting with others, and logging into apps'},
+      { label: "Backup your account", url: '/backup', body: 'To recover your account in the event of a loss'},
+      { label: "Set a password", url: '/settings', body: 'To protect your account from being hacked'}
     ]
 
     return (
       <div>
         <div>
-          <h3>Notifications</h3>
+          <h3>Getting Started</h3>
 
           <ul className="list-group">
             {tasks.map(function(task, index) {
-              console.log(task)
               return (
                 <Notification
                   key={index}
                   label={task.label}
+                  body={task.body}
                   url={task.url} />
               )
             })}

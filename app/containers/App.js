@@ -11,21 +11,25 @@ class App extends Component {
     return (
       <div>
         <Navbar />
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-xs-3 col-sm-3 col-md-2 sidebar col-without-padding">
-              <Sidebar />
-            </div>
-            <div className="col-xs-9 col-sm-9 col-md-10 col-without-padding">
-              {this.props.children}
-              {
-                (() => {
-                  if (process.env.NODE_ENV !== 'production') {
-                    const DevTools = require('./DevTools')
-                    return <DevTools />
-                  }
-                })()
-              }
+        <div className="view-with-sidebar">
+          <div className="sidebar-section">
+            <Sidebar />
+          </div>
+          <div className="content-section">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  {this.props.children}
+                    {
+                      (() => {
+                        if (process.env.NODE_ENV !== 'production') {
+                          const DevTools = require('./DevTools')
+                          return <DevTools />
+                        }
+                      })()
+                    }
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -10,20 +10,27 @@ export default class BackupPage extends Component {
     return (
       <div>
         <div>
-          <h3>Backup Account</h3>
+          <h2>Backup Account</h2>
 
           <p>
-            The backup phrase below will allow you to restore your wallet.
+            <b>Write down the words below and keep them in a safe place</b>
+
+            &nbsp;(they will allow you to restore your account).
           </p>
+
+          <div className="highlight">
+            <pre>
+              <code>cat dog mouse car tree stove kitten power waffle muffin burger pickle</code>
+            </pre>
+          </div>
 
           <p>
-            <b>Write down the words and keep them in a safe place.</b>
+            Anyone with your phrase can access your account.
+            Once written down, delete any record of it from this app.
           </p>
-
-          <pre><code>cat dog mouse car tree stove kitten power waffle muffin burger pickle</code></pre>
 
           <div>
-            <button className="btn btn-primary">Delete Backup Phrase</button>
+            <button className="btn btn-primary">I saved the phrase - delete this copy</button>
           </div>
         </div>
       </div>

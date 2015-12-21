@@ -8,31 +8,34 @@ export default class Navbar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-default navbar-fixed-top">
-          <div className="navbar-table">
-            <div className="navbar-tab navbar-1-12-tab">
-              <BackButton >
-                &lt;
-              </BackButton>
-              <ForwardButton>
-                &gt;
-              </ForwardButton>
-            </div>
-            <div className="navbar-tab navbar-10-12-tab">
-                <input className="form-control" placeholder="search" />
-            </div>
-            <div className="navbar-tab navbar-1-12-tab right-navbar">
-              <Link to="/notifications">
-                <img src="images/design-32px-outline_bullet-list-67.svg"
-                  className="nav-icon"/>
-              </Link>
-
-              <Link to="/settings">
-                <img src="images/ui-32px-outline-1_settings-gear-64.svg"
-                  className="nav-icon"/>
-              </Link>
-            </div>
-          </div>
+      <nav className="navbar navbar-nav navbar-fixed-top navbar-light bg-faded">
+        <div className="nav-item nav-link">
+          <BackButton>
+            &lt;
+          </BackButton>
+        </div>
+        <div className="nav-item nav-link">
+          <ForwardButton>
+            &gt;
+          </ForwardButton>
+        </div>
+        <div className="nav-item nav-search">
+          <form className="form-inline">
+            <input className="form-control form-control-sm" type="text" placeholder="search" />
+          </form>
+        </div>
+        <div className="nav-item nav-link pull-xs-right">
+          <Link to="/settings">
+            <img src="images/ui-32px-outline-1_settings-gear-64.svg"
+              className="nav-icon"/>
+          </Link>
+        </div>
+        <div className="nav-item nav-link pull-xs-right">
+          <Link to="/notifications">
+            <img src="images/design-32px-outline_bullet-list-67.svg"
+              className="nav-icon"/>
+          </Link>
+        </div>
       </nav>
     )
   }

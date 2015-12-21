@@ -8,44 +8,49 @@ export default class Sidebar extends Component {
 
   render() {
     return (
-      <ul className="nav nav-sidebar">
-        <li>
-          <Link to="/profile/ryan.id">
+      <ul className="nav">
+        <li className="nav-item">
+          <Link to="/profile/ryan.id" className="nav-link">
             ryan.id
           </Link>
         </li>
-        <li>
-          <Link to="/profile/muneeb.id">
+        <li className="nav-item">
+          <Link to="/profile/muneeb.id" className="nav-link">
             muneeb.id
           </Link>
         </li>
-        <li>
-          <Link to="/profile/guylepage3.id">
+        <li className="nav-item">
+          <Link to="/profile/guylepage3.id" className="nav-link">
             guylepage3.id
           </Link>
         </li>
-        <li>
-          <Link to="/profile/judecn.id">
+        <li className="nav-item">
+          <Link to="/profile/judecn.id" className="nav-link">
             judecn.id
           </Link>
         </li>
-        <li>
-          <Link to="/profile/naval.id">
+        <li className="nav-item">
+          <Link to="/profile/naval.id" className="nav-link">
             naval.id
           </Link>
         </li>
-        <li>
-          <Link to="/profile/albertwenger.id">
+        <li className="nav-item">
+          <Link to="/profile/albertwenger.id" className="nav-link">
             albertwenger.id
           </Link>
         </li>
-        <li>
-          <Link to="/profile/fredwilson.id">
+        <li className="nav-item">
+          <Link to="/profile/fredwilson.id" className="nav-link">
             fredwilson.id
           </Link>
         </li>
-        <li>
-          <Link to="/import">
+        <li className="nav-item">
+          <Link to="/register" className="nav-link">
+            Register
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/import" className="nav-link">
             Import
           </Link>
         </li>
