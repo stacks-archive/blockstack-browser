@@ -3,7 +3,7 @@ import { Link, History } from 'react-router'
 
 export class SaveButton extends Component {
   static propTypes = {
-    onSave: PropTypes.func.isRequired
+    onSave: PropTypes.func
   }
 
   constructor() {
@@ -19,6 +19,9 @@ export class SaveButton extends Component {
       setTimeout(function() {
         _this.setState({profileJustSaved: false})
       }, 500)
+      if (this.props.onSave) {
+        this.props.onSave()
+      }
     }
   }
 

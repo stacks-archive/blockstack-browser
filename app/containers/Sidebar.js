@@ -1,65 +1,62 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-export default class Sidebar extends Component {
-  constructor() {
-    super()
+import * as IdentityActions from '../actions/identities'
+
+function mapStateToProps(state) {
+  return {
+    preorderedIdentities: state.identities.preordered,
+    registeredIdentities: state.identities.registered
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(IdentityActions, dispatch)
+}
+
+class Sidebar extends Component {
+  static propTypes = {
+    preorderedIdentities: PropTypes.array.isRequired,
+    registeredIdentities: PropTypes.array.isRequired
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {}
   }
 
   render() {
     return (
-      <ul className="nav">
-        <li className="nav-item">
-          <Link to="/profile/ryan.id" className="nav-link">
-            ryan.id
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/profile/muneeb.id" className="nav-link">
-            muneeb.id
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/profile/guylepage3.id" className="nav-link">
-            guylepage3.id
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/profile/judecn.id" className="nav-link">
-            judecn.id
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/profile/naval.id" className="nav-link">
-            naval.id
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/profile/albertwenger.id" className="nav-link">
-            albertwenger.id
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/profile/fredwilson.id" className="nav-link">
-            fredwilson.id
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/register" className="nav-link">
-            Register
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/import" className="nav-link">
-            Import
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/register" className="nav-link">
-            Register
-          </Link>
-        </li>
-      </ul>
+      <div>
+        <ul className="nav">
+          {this.props.preorderedIdentities.map(function(identity) {
+            return (
+              <li className="nav-item" key={identity.index}>
+                <Link to={"/profile/" + identity.id} className="nav-link">
+                  {identity.id}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+        <hr />
+        <ul className="nav">
+          <li className="nav-item">
+            <Link to="/register" className="nav-link">
+              Register
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/import" className="nav-link">
+              Import
+            </Link>
+          </li>
+        </ul>
+      </div>
     )
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)
