@@ -1,12 +1,20 @@
 import { Person, flattenObject } from 'blockchain-profile'
 
 export const UPDATE_CURRENT = 'UPDATE_CURRENT'
+export const CREATE_NEW = 'CREATE_NEW'
 
 export function updateCurrentIdentity(profile, verifications) {
   return {
     type: UPDATE_CURRENT,
     profile: profile,
     verifications: verifications
+  }
+}
+
+export function createNewIdentity(id) {
+  return {
+    type: CREATE_NEW,
+    id: id
   }
 }
 
