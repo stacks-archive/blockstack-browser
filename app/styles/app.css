@@ -27,6 +27,10 @@ body {
     border: 0;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 /* Sidebar */
 
 .view-with-sidebar {

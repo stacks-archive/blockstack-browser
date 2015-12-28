@@ -1,20 +1,56 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
+
 import { Person, flattenObject } from 'blockchain-profile'
+
 import InputGroup from '../components/InputGroup'
 import { SaveButton } from '../components/Buttons'
+import * as IdentityActions from '../actions/identities'
 
-export default class EditorPage extends Component {
-  constructor() {
-    super()
+function mapStateToProps(state) {
+  return {
+    currentIdentity: state.identities.current
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(IdentityActions, dispatch)
+}
+
+class EditorPage extends Component {
+  static propTypes = {
+    fetchCurrentIdentity: PropTypes.func.isRequired,
+    currentIdentity: PropTypes.object.isRequired
+  }
+
+  constructor(props) {
+    super(props)
+
     this.state = {
+      profile: {},
       flatProfile: {},
       profileJustSaved: false,
       verifications: []
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    this.props.fetchCurrentIdentity(this.props.routeParams.id)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentIdentity !== this.props.currentIdentity) {
+      var profile = nextProps.currentIdentity.profile,
+          flatProfile = flattenObject(profile)
+      flatProfile.givenName = profile.name.split(' ')[0]
+      flatProfile.familyName = profile.name.split(' ')[1]
+      this.setState({
+        profile: profile,
+        flatProfile: flatProfile
+      })
+    }
   }
 
   saveProfile() {
@@ -28,6 +64,9 @@ export default class EditorPage extends Component {
 
   render() {
     var flatProfile = this.state.flatProfile
+    var accounts = this.state.profile.account || []
+    var _this = this
+
     return (
       <div>
           { flatProfile ? (
@@ -52,18 +91,51 @@ export default class EditorPage extends Component {
 
               <hr />
               <h3>Accounts</h3>
-              <InputGroup name="account[0].identifier" label="Twitter Username"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <InputGroup name="account[0].proofUrl" label="Twitter Proof URL"
-                  data={flatProfile} onChange={this.onValueChange} />                
-              <InputGroup name="account[1].identifier" label="Facebook Username"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <InputGroup name="account[1].proofUrl" label="Facebook Proof URL"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <InputGroup name="account[2].identifier" label="GitHub Username"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <InputGroup name="account[2].proofUrl" label="GitHub Proof URL"
-                  data={flatProfile} onChange={this.onValueChange} />
+              {
+                accounts.map(function(account, index) {
+                  var identifierLabel = 'Identifier'
+                  if (account.service === 'bitcoin') {
+                    identifierLabel = 'Address'
+                  }
+                  if (['twitter', 'facebook', 'github'].indexOf(account.service) > -1) {
+                    identifierLabel = 'Username'
+                  }
+
+                  return (
+                    <div key={index}>
+                      { account.proofType === 'http' ?
+                        <div>
+                        <InputGroup
+                          name={"account[" + index + "].identifier"}
+                          label={account.service + " " + identifierLabel}
+                          data={flatProfile}
+                          onChange={_this.onValueChange} />
+                        <InputGroup
+                          name={"account[" + index + "].proofUrl"}
+                          label={account.service + " Proof URL"}
+                          data={flatProfile}
+                          onChange={_this.onValueChange} />
+                        </div>
+                      : null }
+                      { account.service.toLowerCase() === 'bitcoin' || account.proofType === 'signature' ?
+                        <div>
+                        <InputGroup
+                          name={"account[" + index + "].identifier"}
+                          label={account.service + " " + identifierLabel}
+                          data={flatProfile}
+                          onChange={_this.onValueChange} />
+                        <InputGroup
+                          name={"account[" + index + "].proofSignature"}
+                          label={account.service + " Signature"}
+                          data={flatProfile}
+                          onChange={_this.onValueChange} />
+                        </div>
+                      : null }
+                    </div>
+                  )
+                })
+              }
+
               <div className="form-group">
                   <SaveButton onSave={this.saveProfile} />
               </div>
@@ -73,3 +145,5 @@ export default class EditorPage extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditorPage)
