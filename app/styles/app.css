@@ -61,6 +61,19 @@ body {
     }
 }
 
+.sidebar-label {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.sidebar-list {
+  margin-bottom: 20px;
+}
+
+.sidebar-list .btn {
+  margin-bottom: 5px;
+}
+
 /* Navbar */
 
 .nav-icon {

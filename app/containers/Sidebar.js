@@ -30,7 +30,8 @@ class Sidebar extends Component {
   render() {
     return (
       <div>
-        <ul className="nav">
+        <div className="sidebar-label">Preordered</div>
+        <ul className="nav sidebar-list">
           {this.props.preorderedIdentities.map(function(identity) {
             return (
               <li className="nav-item" key={identity.index}>
@@ -41,15 +42,30 @@ class Sidebar extends Component {
             )
           })}
         </ul>
-        <hr />
-        <ul className="nav">
+        <div className="sidebar-label">Registered</div>
+        { this.props.registeredIdentities.length ?
+        <ul className="nav sidebar-list">
+          {this.props.registeredIdentities.map(function(identity) {
+            return (
+              <li className="nav-item" key={identity.index}>
+                <Link to={"/profile/" + identity.id} className="nav-link">
+                  {identity.id}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+        :
+        <ul className="nav sidebar-list">-</ul>
+        }
+        <ul className="nav sidebar-list">
           <li className="nav-item">
-            <Link to="/register" className="nav-link">
+            <Link to="/register" className="nav-link btn btn-sm btn-secondary">
               Register
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/import" className="nav-link">
+            <Link to="/import" className="nav-link btn btn-sm btn-secondary">
               Import
             </Link>
           </li>
