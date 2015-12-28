@@ -58,7 +58,7 @@ class ProfilePage extends Component {
     return ( 
       <div>
         { profile !== null ?
-        <div className="row">
+        <div>
           <div className="col-md-6">
             <div className="profile-dropdown-tab">
               <div className="profile-wrap">
@@ -75,7 +75,10 @@ class ProfilePage extends Component {
                   <h1 className="idcard-name">{getName(profile)}</h1>
                 </div>
               </div>
-              <div className="id-social">
+              
+            </div>
+          </div>
+          <div className="id-social pull-right">
                 <div>
                   <ul>
                     {getVerifiedAccounts(profile, verifications).map(function(account) {
@@ -90,8 +93,6 @@ class ProfilePage extends Component {
                   </ul>
                 </div>
               </div>
-            </div>
-          </div>
           <div className="col-md-6">
             <div>
               <Link to={this.props.location.pathname + "/edit"}>

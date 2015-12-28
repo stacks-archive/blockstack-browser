@@ -52,17 +52,11 @@ ul {
 
 .idcard-block > p {/*font-size:0.875rem;*/}
 .id-social {
-  top: 165px;
+  position: relative;
+  display: block;
   width: 317px;
-  margin-left: -20px;
-  height: 45px;
+  height: 300px;
   background-color: rgba(34,34,34,0.35);
-}
-.id-social > div > ul > li {
-  display: inline;
-}
-.id-social > div > ul > li a > span {
-  display: none;
 }
 .idcard-name {
   font-size: 1.25em;
