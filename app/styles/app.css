@@ -3,10 +3,10 @@
  */
 
 /* Google Design Colors */
-/* $color-grey-00: rgba(33,150,243,1); /* 2196F3 */
+/* $color-grey-00: rgba(33,150,243,1); */ /* 2196F3 */
 
 /* Colors */
-/* rgba(21,21,21,1); /* 151515 */
+/* $color-grey-00: rgba(21,21,21,1); */ /* 151515 */
 
 body {
   padding-top: 66px;
@@ -21,6 +21,7 @@ body {
   font-family: 'Lato', sans-serif;
   font-size: 14px;
   background-color: rgba(250,250,250,1);
+}
 
 /* Highlight */
 .highlight {
@@ -38,7 +39,6 @@ body {
 }
 
 /* Sidebar */
-
 .view-with-sidebar {
   padding-left: 180px;
   transition: all 0.4s ease 0s;
