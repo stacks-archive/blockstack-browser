@@ -89,7 +89,7 @@ class ProfilePage extends Component {
               </Link>
             </div>
           </div>
-          <div className="id-social pull-right">
+          <div className="container pull-right">
             <div>
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
