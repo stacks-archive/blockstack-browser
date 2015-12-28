@@ -73,21 +73,21 @@ class ProfilePage extends Component {
                     <h4>{blockchainId}</h4>
                   </div>
                   <h1 className="idcard-name">{getName(profile)}</h1>
-                  <div className="id-social">
-                    <div>
-                      <ul>
-                        {getVerifiedAccounts(profile, verifications).map(function(account) {
-                          return (
-                            <AccountListItem
-                              key={account.service + '-' + account.identifier}
-                              service={account.service}
-                              identifier={account.identifier}
-                              proofUrl={account.proofUrl} />
-                          )
-                        })}
-                      </ul>
-                    </div>
-                  </div>
+                </div>
+              </div>
+              <div className="id-social">
+                <div>
+                  <ul>
+                    {getVerifiedAccounts(profile, verifications).map(function(account) {
+                      return (
+                        <AccountListItem
+                          key={account.service + '-' + account.identifier}
+                          service={account.service}
+                          identifier={account.identifier}
+                          proofUrl={account.proofUrl} />
+                      )
+                    })}
+                  </ul>
                 </div>
               </div>
             </div>
