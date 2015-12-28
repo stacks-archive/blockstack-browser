@@ -75,24 +75,8 @@ class ProfilePage extends Component {
                   <h1 className="idcard-name">{getName(profile)}</h1>
                 </div>
               </div>
-              
             </div>
           </div>
-          <div className="id-social pull-right">
-                <div>
-                  <ul>
-                    {getVerifiedAccounts(profile, verifications).map(function(account) {
-                      return (
-                        <AccountListItem
-                          key={account.service + '-' + account.identifier}
-                          service={account.service}
-                          identifier={account.identifier}
-                          proofUrl={account.proofUrl} />
-                      )
-                    })}
-                  </ul>
-                </div>
-              </div>
           <div className="col-md-6">
             <div>
               <Link to={this.props.location.pathname + "/edit"}>
@@ -103,6 +87,21 @@ class ProfilePage extends Component {
               <Link to={this.props.location.pathname + "/export"}>
                 Export
               </Link>
+            </div>
+          </div>
+          <div className="id-social pull-right">
+            <div>
+              <ul>
+                {getVerifiedAccounts(profile, verifications).map(function(account) {
+                  return (
+                    <AccountListItem
+                      key={account.service + '-' + account.identifier}
+                      service={account.service}
+                      identifier={account.identifier}
+                      proofUrl={account.proofUrl} />
+                  )
+                })}
+              </ul>
             </div>
           </div>
         </div>
