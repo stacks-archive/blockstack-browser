@@ -58,7 +58,7 @@ class ProfilePage extends Component {
     return ( 
       <div>
         { profile !== null ?
-        <div className="row">
+        <div>
           <div className="col-md-6">
             <div className="profile-dropdown-tab">
               <div className="profile-wrap">
@@ -73,21 +73,6 @@ class ProfilePage extends Component {
                     <h4>{blockchainId}</h4>
                   </div>
                   <h1 className="idcard-name">{getName(profile)}</h1>
-                  <div className="id-social">
-                    <div>
-                      <ul>
-                        {getVerifiedAccounts(profile, verifications).map(function(account) {
-                          return (
-                            <AccountListItem
-                              key={account.service + '-' + account.identifier}
-                              service={account.service}
-                              identifier={account.identifier}
-                              proofUrl={account.proofUrl} />
-                          )
-                        })}
-                      </ul>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -102,6 +87,21 @@ class ProfilePage extends Component {
               <Link to={this.props.location.pathname + "/export"}>
                 Export
               </Link>
+            </div>
+          </div>
+          <div className="container pull-right">
+            <div>
+              <ul>
+                {getVerifiedAccounts(profile, verifications).map(function(account) {
+                  return (
+                    <AccountListItem
+                      key={account.service + '-' + account.identifier}
+                      service={account.service}
+                      identifier={account.identifier}
+                      proofUrl={account.proofUrl} />
+                  )
+                })}
+              </ul>
             </div>
           </div>
         </div>
