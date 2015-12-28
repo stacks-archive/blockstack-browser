@@ -17,7 +17,7 @@ export default class InputGroup extends Component {
     }
     return (
       <div className="form-group">
-        <label>{this.props.label}</label>
+        <label className="capitalize">{this.props.label}</label>
         <input name={this.props.name}
           className="form-control input-lg"
           placeholder={this.props.placeholder ? this.props.placeholder : this.props.label}
