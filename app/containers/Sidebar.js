@@ -28,24 +28,15 @@ class Sidebar extends Component {
   }
 
   render() {
+    var registeredIdentities = this.props.registeredIdentities || [],
+        preorderedIdentities = this.props.preorderedIdentities || []
+
     return (
       <div>
         <div className="sidebar-label">Preordered</div>
+        { preorderedIdentities.length ?
         <ul className="nav sidebar-list">
-          {this.props.preorderedIdentities.map(function(identity) {
-            return (
-              <li className="nav-item" key={identity.index}>
-                <Link to={"/profile/" + identity.id} className="nav-link">
-                  {identity.id}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-        <div className="sidebar-label">Registered</div>
-        { this.props.registeredIdentities.length ?
-        <ul className="nav sidebar-list">
-          {this.props.registeredIdentities.map(function(identity) {
+          { preorderedIdentities.map(function(identity) {
             return (
               <li className="nav-item" key={identity.index}>
                 <Link to={"/profile/" + identity.id} className="nav-link">
@@ -58,6 +49,24 @@ class Sidebar extends Component {
         :
         <ul className="nav sidebar-list">-</ul>
         }
+
+        <div className="sidebar-label">Registered</div>
+        { registeredIdentities.length ?
+        <ul className="nav sidebar-list">
+          { registeredIdentities.map(function(identity) {
+            return (
+              <li className="nav-item" key={identity.index}>
+                <Link to={"/profile/" + identity.id} className="nav-link">
+                  {identity.id}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+        :
+        <ul className="nav sidebar-list">-</ul>
+        }
+        
         <ul className="nav sidebar-list">
           <li className="nav-item">
             <Link to="/register" className="nav-link btn btn-sm btn-secondary">

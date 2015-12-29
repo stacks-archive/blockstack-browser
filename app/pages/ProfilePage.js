@@ -57,7 +57,7 @@ class ProfilePage extends Component {
         verifications = this.state.currentIdentity.verifications
     return ( 
       <div>
-        { profile !== null ?
+        { profile !== null && profile !== undefined ?
         <div>
           <div className="col-md-6">
             <div className="profile-dropdown-tab">
