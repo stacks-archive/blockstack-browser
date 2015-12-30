@@ -51,20 +51,7 @@ ul {
 }
 
 .idcard-block > p {/*font-size:0.875rem;*/}
-.id-social {
-  position: absolute;
-  top: 165px;
-  width: 317px;
-  margin-left: -20px;
-  height: 45px;
-  background-color: rgba(34,34,34,0.35);
-}
-.id-social > div > ul > li {
-  display: inline;
-}
-.id-social > div > ul > li a > span {
-  display: none;
-}
+
 .idcard-name {
   font-size: 1.25em;
   text-align: left;

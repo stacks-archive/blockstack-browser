@@ -7,7 +7,9 @@ import InputGroup from '../components/InputGroup'
 import * as IdentityActions from '../actions/identities'
 
 function mapStateToProps(state) {
-  return {}
+  return {
+    username: ''
+  }
 }
 
 function mapDispatchToProps(dispatch) {
@@ -16,6 +18,7 @@ function mapDispatchToProps(dispatch) {
 
 class RegisterPage extends Component {
   static propTypes = {
+    username: PropTypes.string.isRequired,
     createNewIdentity: PropTypes.func.isRequired
   }
 
@@ -23,7 +26,16 @@ class RegisterPage extends Component {
     super(props)
 
     this.state = {
-      id: ''
+      username: this.props.username,
+      type: 'person',
+      tlds: {
+        person: 'id',
+        organization: 'inc'
+      },
+      nameLabels: {
+        person: 'Username',
+        organization: 'Domain'
+      }
     }
 
     this.onChange = this.onChange.bind(this)
@@ -37,22 +49,53 @@ class RegisterPage extends Component {
   }
 
   registerIdentity(event) {
-    console.log(this.state.id)
-    this.props.createNewIdentity(this.state.id)
+    if (this.state.username === '') {
+      return
+    }
+    var blockchainId = this.state.username + '.' + this.state.tlds[this.state.type]
+    this.props.createNewIdentity(blockchainId)
   }
 
   render() {
+    var tld = this.state.tlds[this.state.type],
+        nameLabel = this.state.nameLabels[this.state.type]
+
     return (
       <div>
         <div>
           <h3>Register Identity</h3>
 
-          <InputGroup label="Username" placeholder="Username"
-            data={this.state} name="id" onChange={this.onChange} />
+          <form>
 
-          <div>
-            <button className="btn btn-primary" onClick={this.registerIdentity}>Register</button>
-          </div>
+            <fieldset className="form-group">
+              <select name="type" className="c-select"
+                defaultValue={this.state.type} onChange={this.onChange}>
+                <option value="person">Person</option>
+                <option value="organization">Organization</option>
+              </select>
+            </fieldset>
+
+            <fieldset className="form-group">
+              <label className="capitalize">{nameLabel}</label>
+              <div className="input-group">
+                <input
+                  name="username"
+                  className="form-control"
+                  placeholder={nameLabel}
+                  defaultValue={this.state.username}
+                  onChange={this.onChange} />
+                <span className="input-group-addon">.{tld}</span>
+              </div>
+            </fieldset>
+
+            <div>
+              <button className="btn btn-primary" onClick={this.registerIdentity}>
+                Register
+              </button>
+            </div>
+
+          </form>
+
         </div>
       </div>
     )

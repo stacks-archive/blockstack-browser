@@ -29,8 +29,8 @@ class EditorPage extends Component {
     super(props)
 
     this.state = {
-      profile: {},
-      flatProfile: {},
+      profile: null,
+      flatProfile: null,
       profileJustSaved: false,
       verifications: []
     }
@@ -63,13 +63,13 @@ class EditorPage extends Component {
   }
 
   render() {
-    var flatProfile = this.state.flatProfile
-    var accounts = this.state.profile.account || []
-    var _this = this
+    var flatProfile = this.state.flatProfile,
+        profile = this.state.profile,
+        _this = this
 
     return (
       <div>
-          { flatProfile ? (
+          { flatProfile && profile ? (
           <div>
               <h1>Edit Profile</h1>
 
@@ -90,9 +90,11 @@ class EditorPage extends Component {
               </div>
 
               <hr />
+
               <h3>Accounts</h3>
               {
-                accounts.map(function(account, index) {
+                profile.account ?
+                profile.account.map(function(account, index) {
                   var identifierLabel = 'Identifier'
                   if (account.service === 'bitcoin') {
                     identifierLabel = 'Address'
@@ -134,6 +136,7 @@ class EditorPage extends Component {
                     </div>
                   )
                 })
+                : null
               }
 
               <div className="form-group">

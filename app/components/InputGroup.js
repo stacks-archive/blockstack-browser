@@ -16,14 +16,14 @@ export default class InputGroup extends Component {
       value = this.props.data[this.props.name]
     }
     return (
-      <div className="form-group">
+      <fieldset className="form-group">
         <label className="capitalize">{this.props.label}</label>
         <input name={this.props.name}
-          className="form-control input-lg"
+          className="form-control"
           placeholder={this.props.placeholder ? this.props.placeholder : this.props.label}
           value={value}
           onChange={this.props.onChange} />
-      </div>
+      </fieldset>
     )
   }
 }
