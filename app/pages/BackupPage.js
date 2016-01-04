@@ -30,7 +30,7 @@ export default class BackupPage extends Component {
           </p>
 
           <div>
-            <button className="btn btn-primary">I saved the phrase - delete this copy</button>
+            <button className="btn btn-primary">Hide Backup Phrase</button>
           </div>
         </div>
       </div>

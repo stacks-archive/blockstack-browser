@@ -89,10 +89,12 @@
     "webpack-target-electron-renderer": "^0.2.0"
   },
   "dependencies": {
+    "bitcore-mnemonic": "^1.0.1",
     "blockchain-profile": "^0.3.0",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
     "history": "^1.13.1",
+    "keychain-manager": "^1.4.0",
     "onename-bootstrap": "git+ssh://git@github.com/onenameio/onename-bootstrap.git",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
@@ -101,7 +103,8 @@
     "redux": "^3.0.4",
     "redux-localstorage": "^0.4.0",
     "redux-promise": "^0.5.0",
-    "redux-thunk": "^1.0.0"
+    "redux-thunk": "^1.0.0",
+    "triplesec": "^3.0.25"
   },
   "devEngines": {
     "node": "4.x || 5.x",

@@ -14,7 +14,6 @@ import ImportPage        from './pages/ImportPage'
 import BackupPage        from './pages/BackupPage'
 import NotificationsPage from './pages/NotificationsPage'
 import SearchPage        from './pages/SearchPage'
-import HomePage          from './pages/HomePage'
 
 export default (
   <Route path="/" component={App}>

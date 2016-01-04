@@ -20,8 +20,8 @@ export default class ImportPage extends Component {
             </pre>
           </div>
 
-          <div>
-            <button className="btn btn-primary">Generate New Address</button>
+          <div className="invisible">
+            <button className="btn btn-secondary">New Address</button>
           </div>
         </div>
       </div>
