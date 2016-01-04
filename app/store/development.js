@@ -4,10 +4,24 @@ import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 import DevTools from '../containers/DevTools'
 
+const config = {
+  key: 'redux',
+  slicer: (paths) => {
+    return (state) => {
+      return state
+    }
+  }
+}
+
+const paths = [
+  'actionsById', 'committedState', 'computedStates', 'currentStateIndex',
+  'monitorState', 'nextActionId', 'skippedActionIds', 'stagedActionIds'
+]
+
 const finalCreateStore = compose(
   applyMiddleware(thunk),
   DevTools.instrument(),
-  persistState()
+  persistState(paths, config)
 )(createStore)
 
 export default function configureStore(initialState) {

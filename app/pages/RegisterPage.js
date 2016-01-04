@@ -65,8 +65,6 @@ class RegisterPage extends Component {
         <div>
           <h3>Register Identity</h3>
 
-          <form>
-
             <fieldset className="form-group">
               <select name="type" className="c-select"
                 defaultValue={this.state.type} onChange={this.onChange}>
@@ -93,8 +91,6 @@ class RegisterPage extends Component {
                 Register
               </button>
             </div>
-
-          </form>
 
         </div>
       </div>
