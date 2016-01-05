@@ -1,10 +1,22 @@
-import { CREATE_WALLET, CREATE_ACCOUNT, GENERATE_ADDRESS } from '../actions/keychain'
-import { PrivateKeychain } from 'keychain-manager'
-delete global._bitcore
+import {
+  CREATE_WALLET, NEW_IDENTITY_ADDRESS, NEW_BITCOIN_ADDRESS
+} from '../actions/keychain'
+import { getAccountPrivateKeychain } from '../utils/keychain-utils'
+import { PrivateKeychain } from 'keychain-manager'; delete global._bitcore
 
 const initialState = {
   encryptedMnemonic: null,
-  accounts: []
+  identityAccounts: [],
+  bitcoinAccounts: []
+}
+
+function createNewAccount(publicKeychain) {
+  const publicKeychainString = publicKeychain.toString()
+  console.log(publicKeychainString)
+  return {
+    accountKeychain: publicKeychainString,
+    addressIndex: 0
+  }
 }
 
 export default function Identities(state = initialState, action) {
@@ -12,26 +24,31 @@ export default function Identities(state = initialState, action) {
     case CREATE_WALLET:
       return Object.assign({}, state, {
         encryptedMnemonic: action.encryptedMnemonic,
-        accounts: [
-          { nextAddressIndex: 0 }
+        identityAccounts: [
+          createNewAccount(action.identityPublicKeychain)
+        ],
+        bitcoinAccounts: [
+          createNewAccount(action.bitcoinPublicKeychain)
         ]
       })
-    case CREATE_ACCOUNT:
-      const newAccount = { nextAddressIndex: 0 }
+    case NEW_IDENTITY_ADDRESS:
       return Object.assign({}, state, {
-        accounts: [
-          ...state.accounts,
-          newAccount
+        identityAccounts: [
+          ...state.identityAccounts.slice(0, action.accountIndex),
+          Object.assign({}, state.identityAccounts[action.accountIndex], {
+            addressIndex: state.identityAccounts[action.accountIndex].addressIndex + 1
+          }),
+          ...state.identityAccounts.slice(action.accountIndex + 1)
         ]
       })
-    case GENERATE_ADDRESS:
+    case NEW_BITCOIN_ADDRESS:
       return Object.assign({}, state, {
-        accounts: [
-          ...state.accounts.slice(0, action.accountIndex),
-          {
-            nextAddressIndex: state.accounts[action.accountIndex].nextAddressIndex + 1
-          },
-          ...state.accounts.slice(action.accountIndex + 1)
+        bitcoinAccounts: [
+          ...state.bitcoinAccounts.slice(0, action.accountIndex),
+          Object.assign({}, state.bitcoinAccounts[action.accountIndex], {
+            addressIndex: state.bitcoinAccounts[action.accountIndex].addressIndex + 1
+          }),
+          ...state.bitcoinAccounts.slice(action.accountIndex + 1)
         ]
       })
     default:

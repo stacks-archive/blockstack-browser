@@ -91,11 +91,11 @@
   "dependencies": {
     "bitcore-mnemonic": "^1.0.1",
     "blockchain-profile": "^0.3.0",
+    "bootstrap": "git+ssh://git@github.com/onenameio/onename-bootstrap.git",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
     "history": "^1.13.1",
     "keychain-manager": "^1.4.0",
-    "onename-bootstrap": "git+ssh://git@github.com/onenameio/onename-bootstrap.git",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-redux": "^4.0.0",

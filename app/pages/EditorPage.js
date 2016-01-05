@@ -145,7 +145,7 @@ class EditorPage extends Component {
           </div>
           ) : null }
       </div>
-    );
+    )
   }
 }
 

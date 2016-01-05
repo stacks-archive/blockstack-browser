@@ -30,7 +30,7 @@ class RegisterPage extends Component {
       type: 'person',
       tlds: {
         person: 'id',
-        organization: 'inc'
+        organization: 'corp'
       },
       nameLabels: {
         person: 'Username',
