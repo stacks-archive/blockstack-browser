@@ -20,8 +20,7 @@ const paths = [
 
 const finalCreateStore = compose(
   applyMiddleware(thunk),
-  DevTools.instrument(),
-  persistState(paths, config)
+  DevTools.instrument()
 )(createStore)
 
 export default function configureStore(initialState) {

@@ -12,6 +12,44 @@ function mapStateToProps(state) {
   }
 }
 
+class MainScreen extends Component {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+  }
+
+  render() {
+    return (
+      <div>
+        <Navbar />
+        <div className="view-with-sidebar">
+          <div className="sidebar-section">
+            <Sidebar />
+          </div>
+          <div className="content-section">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  {this.props.children}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+class WelcomeScreen extends Component {
+  render() {
+    return (
+      <div className="container">
+        <LandingPage />
+      </div>
+    )
+  }
+}
+
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
@@ -22,38 +60,19 @@ class App extends Component {
     return (
       <div>
       { this.props.encryptedMnemonic ?
-        <div>
-          <Navbar />
-          <div className="view-with-sidebar">
-            <div className="sidebar-section">
-              <Sidebar />
-            </div>
-            <div className="content-section">
-              <div className="container">
-                <div className="row">
-                  <div className="col-md-12">
-                    {this.props.children}
-                      {
-                        (() => {
-                          if (process.env.NODE_ENV !== 'production') {
-                            const DevTools = require('./DevTools')
-                            return <DevTools />
-                          }
-                        })()
-                      }
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        :
-        <div>
-          <div className="container">
-            <LandingPage />
-          </div>
-        </div>
-        }
+        <MainScreen children={this.props.children} />
+      :
+        <WelcomeScreen />
+      }
+      {
+        (() => {
+          if (false) {
+          //if (process.env.NODE_ENV !== 'production') {
+            const DevTools = require('./DevTools')
+            return <DevTools />
+          }
+        })()
+      }
       </div>
     )
   }

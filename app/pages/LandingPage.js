@@ -32,7 +32,6 @@ class LandingPage extends Component {
   }
 
   createAccount() {
-    console.log('creating account with password: ' + this.state.password)
     this.props.initializeWallet(this.state.password)
   }
 

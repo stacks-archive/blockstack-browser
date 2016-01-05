@@ -26,24 +26,6 @@ const initialState = {
       id: 'judecn.id',
       profile: {},
       verifications: []
-    },
-    {
-      index: 4,
-      id: 'naval.id',
-      profile: {},
-      verifications: []
-    },
-    {
-      index: 5,
-      id: 'albertwenger.id',
-      profile: {},
-      verifications: []
-    },
-    {
-      index: 6,
-      id: 'fredwilson.id',
-      profile: {},
-      verifications: []
     }
   ],
   registered: []
@@ -52,25 +34,22 @@ const initialState = {
 export default function Identities(state = initialState, action) {
   switch (action.type) {
     case UPDATE_CURRENT:
-      return {
+      return Object.assign({}, state, {
         current: {
           profile: action.profile,
           verifications: action.verifications
-        },
-        preordered: state.preordered,
-        registered: state.registered
-      }
+        }
+      })
     case CREATE_NEW:
-      const newIdentity = {
-        index: state.preordered.length,
-        id: action.id,
-        profile: {},
-        verifications: []
-      }
       return Object.assign({}, state, {
         preordered: [
           ...state.preordered,
-          newIdentity
+          {
+            index: state.preordered.length,
+            id: action.id,
+            profile: {},
+            verifications: []
+          }
         ]
       })
     default:

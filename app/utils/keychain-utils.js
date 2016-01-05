@@ -1,26 +1,50 @@
 import Mnemonic from 'bitcore-mnemonic'
 import triplesec from 'triplesec'
+import { PrivateKeychain } from 'keychain-manager'
 
-export function getPrivateKeychainFromMnemonic(words) {
-  var mnemonic = new Mnemonic(words)
-  var privateKeychain = mnemonic.toHDPrivateKey()
+const BIP44PurposeNumber = 44
+const BIP44BlockstoreCoinTypeNumber = 96
+const BIP44BitcoinCoinTypeNumber = 0
+
+export function derivePrivateKeychain(words) {
+  const mnemonic = new Mnemonic(words),
+        hdPrivateKey = mnemonic.toHDPrivateKey(),
+        privateKeychain = new PrivateKeychain(hdPrivateKey)
   return privateKeychain
 }
 
+export function getCoinTypeNumber(accountType) {
+  switch(accountType) {
+    case 'blockstore':
+      return BIP44BlockstoreCoinTypeNumber
+    case 'bitcoin':
+      return BIP44BitcoinCoinTypeNumber
+    default:
+      return BIP44BitcoinCoinTypeNumber
+  }
+}
+
+export function getAccountPrivateKeychain(masterPrivateKeychain, accountType, accountNumber=0) {
+  const bip44Keychain = masterPrivateKeychain.account(BIP44PurposeNumber),
+        branchKeychain = bip44Keychain.account(getCoinTypeNumber(accountType)),
+        accountKeychain = branchKeychain.account(accountNumber)
+  return accountKeychain
+}
+
 export function encrypt(plaintextBuffer, password, callback) {
-    triplesec.encrypt({
-        key: new Buffer(password),
-        data: plaintextBuffer
-    }, function(err, ciphertext) {
-        callback(err, ciphertext)
-    })
+  triplesec.encrypt({
+    key: new Buffer(password),
+    data: plaintextBuffer
+  }, function(err, ciphertext) {
+    callback(err, ciphertext)
+  })
 }
 
 export function decrypt(dataBuffer, password, callback) {
-    triplesec.decrypt({
-        key: new Buffer(password),
-        data: dataBuffer
-    }, function(err, plaintext) {
-        callback(err, plaintext)
-    })
+  triplesec.decrypt({
+    key: new Buffer(password),
+    data: dataBuffer
+  }, function(err, plaintext) {
+    callback(err, plaintext)
+  })
 }
