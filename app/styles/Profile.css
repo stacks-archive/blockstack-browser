@@ -104,3 +104,12 @@ i.fa {
   border-radius: 8px;
   margin:-473px 10px 10px 10px;
 }
+
+/* guy build */
+body {
+  background-color: rgba(255,255,255,1);
+}
+.navbar {
+  background-color: rgba(235,235,235,1);
+  height: 70px;
+}
