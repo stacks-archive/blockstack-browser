@@ -112,4 +112,5 @@ body {
 .navbar {
   background-color: rgba(235,235,235,1);
   height: 70px;
+  border-bottom: solid 1px rgba(225,225,225,1);
 }
