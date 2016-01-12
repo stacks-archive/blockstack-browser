@@ -5,7 +5,6 @@ import App          from './containers/App'
 import ProfilePage  from './pages/ProfilePage'
 import EditorPage   from './pages/EditorPage'
 import SettingsPage from './pages/SettingsPage'
-import CounterPage  from './pages/CounterPage'
 
 import RegisterPage      from './pages/RegisterPage'
 import ExportPage        from './pages/ExportPage'
@@ -30,6 +29,5 @@ export default (
     <Route path="backup"        component={BackupPage} />
     <Route path="notifications" component={NotificationsPage} />
     <Route path="search"        component={SearchPage} />
-    <Route path="counter"       component={CounterPage} />
   </Route>
 )
