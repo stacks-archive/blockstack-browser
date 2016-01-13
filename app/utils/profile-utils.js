@@ -34,7 +34,7 @@ export function getVerifiedAccounts(profile, verifications) {
 }
 
 export function getAvatarUrl(profile) {
-  let avatarContentUrl = 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-hi.png'
+  let avatarContentUrl = 'https://s3.amazonaws.com/65m/avatar-placeholder.png'
   if (profile.image) {
     profile.image.map(function(image) {
       if (profile.image[0].name === 'avatar') {
