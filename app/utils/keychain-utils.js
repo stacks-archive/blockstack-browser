@@ -44,7 +44,7 @@ export function decrypt(dataBuffer, password, callback) {
   triplesec.decrypt({
     key: new Buffer(password),
     data: dataBuffer
-  }, function(err, plaintext) {
-    callback(err, plaintext)
+  }, function(err, plaintextBuffer) {
+    callback(err, plaintextBuffer)
   })
 }

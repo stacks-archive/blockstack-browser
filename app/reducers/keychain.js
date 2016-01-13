@@ -12,14 +12,13 @@ const initialState = {
 
 function createNewAccount(publicKeychain) {
   const publicKeychainString = publicKeychain.toString()
-  console.log(publicKeychainString)
   return {
     accountKeychain: publicKeychainString,
     addressIndex: 0
   }
 }
 
-export default function Identities(state = initialState, action) {
+export default function Keychain(state = initialState, action) {
   switch (action.type) {
     case CREATE_WALLET:
       return Object.assign({}, state, {

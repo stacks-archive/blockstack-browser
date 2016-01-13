@@ -42,21 +42,14 @@ class DepositPage extends Component {
           <h3>Deposit Bitcoins</h3>
 
           <p><i>
-            Note: every identity registration costs a certain amount of money and must be paid for by funds in your account.
+            Note: All identity registrations require funds from your account.
+            To fund your account, send bitcoins to the address below.
           </i></p>
-
-          <p>To top up your account, send bitcoins to the address below:</p>
 
           <div className="highlight">
             <pre>
               <code>{currentAddress}</code>
             </pre>
-          </div>
-
-          <div>
-            <button className="btn btn-secondary" onClick={this.refreshAddress}>
-              New Address
-            </button>
           </div>
         </div>
       </div>
@@ -66,3 +59,10 @@ class DepositPage extends Component {
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepositPage)
 
+/*
+  <div>
+    <button className="btn btn-secondary" onClick={this.refreshAddress}>
+      New Address
+    </button>
+  </div>
+*/

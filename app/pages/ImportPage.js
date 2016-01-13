@@ -41,7 +41,12 @@ class ImportPage extends Component {
         <div>
           <h3>Import Identity</h3>
 
-          <p>Send the identity to the following address:</p>
+          <p><i>
+            To import an identity into this app,
+            go to the app that owns the identity and enter the proper transfer code.
+          </i></p>
+
+          <label>Transfer Code:</label>
 
           <div className="highlight">
             <pre>
@@ -49,11 +54,6 @@ class ImportPage extends Component {
             </pre>
           </div>
 
-          <div>
-            <button className="btn btn-secondary" onClick={this.refreshAddress}>
-              New Address
-            </button>
-          </div>
         </div>
       </div>
     )
@@ -61,3 +61,11 @@ class ImportPage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImportPage)
+
+/*
+  <div>
+    <button className="btn btn-secondary" onClick={this.refreshAddress}>
+      New Address
+    </button>
+  </div>
+*/
