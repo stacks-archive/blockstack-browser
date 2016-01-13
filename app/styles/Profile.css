@@ -118,5 +118,7 @@ body {
   .nav-page {
     background-color: transparent;
     border: none;
-    
   }
+input[type=text]{
+  border-radius:20px;
+}
