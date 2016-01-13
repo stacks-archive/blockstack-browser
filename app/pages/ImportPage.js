@@ -43,10 +43,9 @@ class ImportPage extends Component {
 
           <p><i>
             To import an identity into this app,
-            go to the app that owns the identity and enter the proper transfer code.
+            go to the app that owns the identity,
+            then find the export form and enter the transfer code below.
           </i></p>
-
-          <label>Transfer Code:</label>
 
           <div className="highlight">
             <pre>

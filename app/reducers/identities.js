@@ -8,22 +8,10 @@ const initialState = {
       id: 'ryan.id',
       profile: {},
       verifications: []
-    },
+    }, 
     {
       index: 1,
-      id: 'muneeb.id',
-      profile: {},
-      verifications: []
-    },
-    {
-      index: 2,
-      id: 'guylepage3.id',
-      profile: {},
-      verifications: []
-    },
-    {
-      index: 3,
-      id: 'judecn.id',
+      id: 'clone70.id',
       profile: {},
       verifications: []
     }
