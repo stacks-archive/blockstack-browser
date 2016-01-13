@@ -1,9 +1,59 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-export default class BackupPage extends Component {
-  constructor() {
-    super()
+import InputGroup from '../components/InputGroup'
+import * as KeychainActions from '../actions/keychain'
+import { decrypt } from '../utils/keychain-utils'
+
+function mapStateToProps(state) {
+  return {
+    encryptedMnemonic: state.keychain.encryptedMnemonic
+  }
+}
+
+class BackupPage extends Component {
+  static propTypes = {
+    encryptedMnemonic: PropTypes.string.isRequired
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      decryptedMnemonic: null,
+      password: '',
+      error: null
+    }
+
+    this.onChange = this.onChange.bind(this)
+    this.decryptBackupPhrase = this.decryptBackupPhrase.bind(this)
+  }
+
+  onChange(event) {
+    if (event.target.name === 'password') {
+      this.setState({
+        password: event.target.value
+      })
+    }
+  }
+
+  decryptBackupPhrase() {
+    const _this = this
+    const password = this.state.password
+    decrypt(new Buffer(this.props.encryptedMnemonic, 'hex'), password, function(err, plaintextBuffer) {
+      if (!err) {
+        _this.setState({
+          decryptedMnemonic: plaintextBuffer.toString(),
+          error: null
+        })
+      } else {
+        _this.setState({
+          error: 'Invalid password'
+        })
+      }
+    })
   }
 
   render() {
@@ -12,28 +62,52 @@ export default class BackupPage extends Component {
         <div>
           <h2>Backup Account</h2>
 
-          <p>
-            <b>Write down the words below and keep them in a safe place</b>
+          {
+            this.state.error ?
+            <div className="alert alert-danger">
+              {this.state.error}
+            </div>
+            : null
+          }
 
-            &nbsp;(they will allow you to restore your account).
-          </p>
+          {
+            this.state.decryptedMnemonic ?
+            <div>
+              <p>
+                <i>
+                  Write down the backup phrase below and keep it safe.
+                  Anyone who has it will be able to regain access to your account.
+                </i>
+              </p>
 
-          <div className="highlight">
-            <pre>
-              <code>cat dog mouse car tree stove kitten power waffle muffin burger pickle</code>
-            </pre>
-          </div>
+              <div className="highlight">
+                <pre>
+                  <code>{this.state.decryptedMnemonic}</code>
+                </pre>
+              </div>
+            </div>
+            :
+            <div>
+              <p>
+                <i>Enter your password to backup your account</i>
+              </p>
 
-          <p>
-            Anyone with your phrase can access your account.
-            Once written down, delete any record of it from this app.
-          </p>
+              <fieldset>
+                <InputGroup name="password" label="Password" data={{}} onChange={this.onChange} />
+              </fieldset>
 
-          <div>
-            <button className="btn btn-primary">Hide Backup Phrase</button>
-          </div>
+              <div>
+                <button className="btn btn-primary" onClick={this.decryptBackupPhrase}>
+                  Decrypt Backup Phrase
+                </button>
+              </div>
+            </div>
+          }
+
         </div>
       </div>
     )
   }
 }
+
+export default connect(mapStateToProps)(BackupPage)
