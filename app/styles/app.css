@@ -8,16 +8,13 @@
 /* Colors */
 /* $color-grey-00: rgba(21,21,21,1); */ /* 151515 */
 
-body {
-  padding-top: 66px;
-}
-
 .col-without-padding, .col-no-pad {
   padding: 0px 0px 0px 0px;
   vertical-align: middle;
 }
 
 body {
+  padding-top: 70px;
   font-family: 'Lato', sans-serif;
   font-size: 14px;
   background-color: rgba(250,250,250,1);
