@@ -1,11 +1,38 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
+
 import InputGroup from '../components/InputGroup'
 import { SaveButton } from '../components/Buttons'
+import * as SettingsActions from '../actions/settings'
 
-export default class SettingsPage extends Component {
-  constructor() {
-    super()
+function mapStateToProps(state) {
+  return {
+    api: state.settings.api
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(SettingsActions, dispatch)
+}
+
+class SettingsPage extends Component {
+  static propTypes = {
+    api: PropTypes.object.isRequired,
+    updateApi: PropTypes.func.isRequired
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      api: this.props.api
+    }
+  }
+
+  onChange(event) {
+    console.log(event.target)
   }
 
   render() {
@@ -33,12 +60,22 @@ export default class SettingsPage extends Component {
 
           <h5>Use Custom API Endpoints</h5>
 
-          <div className="form-group">
-            <InputGroup name="resolverUrl" label="Resolver URL" data={settings} />
-          </div>
-          <div className="form-group">
-            <InputGroup name="registrarUrl" label="Registrar URL" data={settings} />
-          </div>
+          <fieldset disabled>
+            <InputGroup name="nameLookupUrl" label="Name Lookup URL"
+              data={this.state.api} onChange={this.onChange} />
+          </fieldset>
+          <fieldset disabled>
+            <InputGroup name="searchUrl" label="Search URL"
+              data={this.state.api} onChange={this.onChange} />
+          </fieldset>
+          <fieldset disabled>
+            <InputGroup name="registerUrl" label="Register URL"
+              data={this.state.api} onChange={this.onChange} />
+          </fieldset>
+          <fieldset disabled>
+            <InputGroup name="addressLookupUrl" label="Address Names URL"
+              data={this.state.api} onChange={this.onChange} />
+          </fieldset>
           <div className="form-group">
             <SaveButton />
           </div>
@@ -48,3 +85,5 @@ export default class SettingsPage extends Component {
     )
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsPage)
