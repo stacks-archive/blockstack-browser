@@ -19,7 +19,7 @@ export default class Navbar extends Component {
             <img src="images/icon-next.svg"/>
           </ForwardButton>
         </div>
-        <div className="nav-item nav-search">
+        <div className="nav-item">
           <form className="form-inline">
             <input className="form-control form-control-sm" type="text" placeholder="search" />
           </form>
