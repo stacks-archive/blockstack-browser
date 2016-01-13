@@ -48,7 +48,6 @@ export const BackButton = React.createClass({
     return (
       <button className="btn btn-sm nav-page" onClick={() => this.history.goBack()}>
         {this.props.children}
-      <img src="images/nav-page.svg"/>
       </button>
    )
  }
@@ -60,7 +59,6 @@ export const ForwardButton = React.createClass({
     return (
       <button className="btn btn-sm nav-page" onClick={() => this.history.goForward()}>
         {this.props.children}
-      <img src="images/nav-page.svg"/>
       </button>
    )
  }
