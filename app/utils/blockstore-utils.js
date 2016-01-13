@@ -1,6 +1,5 @@
 
 export function getNameCost(nameWithTld) {
-    console.log(nameWithTld)
     if (!/^[a-z0-9_-]+.[a-z0-9_-]+$/.test(nameWithTld)) {
         return 0
     }
