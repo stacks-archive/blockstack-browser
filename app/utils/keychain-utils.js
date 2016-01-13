@@ -1,6 +1,6 @@
-import Mnemonic from 'bitcore-mnemonic'
+import Mnemonic from 'bitcore-mnemonic'; delete global._bitcore
 import triplesec from 'triplesec'
-import { PrivateKeychain } from 'keychain-manager'
+import { PrivateKeychain } from 'keychain-manager'; delete global._bitcore
 
 const BIP44PurposeNumber = 44
 const BIP44BlockstoreCoinTypeNumber = 96
