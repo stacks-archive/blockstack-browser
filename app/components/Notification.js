@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-export default class Notification extends Component {
+class Notification extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
@@ -19,3 +19,5 @@ export default class Notification extends Component {
     )
   }
 }
+
+export default Notification

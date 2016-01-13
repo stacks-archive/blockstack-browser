@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import Notification from '../components/Notification'
 
-export default class TasksPage extends Component {
+class TasksPage extends Component {
   constructor() {
     super()
   }
@@ -38,3 +38,5 @@ export default class TasksPage extends Component {
     )
   }
 }
+
+export default TasksPage

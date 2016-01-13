@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link, History } from 'react-router'
 import { BackButton, ForwardButton } from '../components/Buttons'
 
-export default class Navbar extends Component {
+class Navbar extends Component {
   static propTypes = {
   }
 
@@ -40,3 +40,5 @@ export default class Navbar extends Component {
     )
   }
 }
+
+export default Navbar
