@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 
 import InputGroup from '../components/InputGroup'
 import * as IdentityActions from '../actions/identities'
+import { getNameCost } from '../utils/blockstore-utils'
 
 function mapStateToProps(state) {
   return {
@@ -27,6 +28,7 @@ class RegisterPage extends Component {
 
     this.state = {
       username: this.props.username,
+      nameCost: 0,
       type: 'person',
       tlds: {
         person: 'id',
@@ -43,13 +45,19 @@ class RegisterPage extends Component {
   }
 
   onChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
+    if (event.target.name === 'username') {
+      const username = event.target.value.toLowerCase().replace(/\W+/g, '')
+      const tld = this.state.tlds[this.state.type]
+      const nameCost = getNameCost(username + '.' + tld) / 1000
+      this.setState({
+        username: username,
+        nameCost: nameCost
+      })
+    }
   }
 
   registerIdentity(event) {
-    if (this.state.username === '') {
+    if (this.state.username.length === 0) {
       return
     }
     var blockchainId = this.state.username + '.' + this.state.tlds[this.state.type]
@@ -80,11 +88,23 @@ class RegisterPage extends Component {
                   name="username"
                   className="form-control"
                   placeholder={nameLabel}
-                  defaultValue={this.state.username}
+                  value={this.state.username}
                   onChange={this.onChange} />
                 <span className="input-group-addon">.{tld}</span>
               </div>
             </fieldset>
+
+            <div>
+              <label>Registration Cost</label>
+
+              <div className="highlight">
+                <pre>
+                  <code>
+                    {this.state.nameCost} mBTC
+                  </code>
+                </pre>
+              </div>
+            </div>
 
             <div>
               <button className="btn btn-primary" onClick={this.registerIdentity}>
@@ -101,11 +121,5 @@ class RegisterPage extends Component {
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage)
 
 /*
-<div>
-  <label>Cost</label>
 
-  <pre><code>$2</code></pre>
-
-  <p><i>Note: this amount will be pulled from your local Bitcoin balance.</i></p>
-</div>
 */
