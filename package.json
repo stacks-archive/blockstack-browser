@@ -94,6 +94,7 @@
     "bootstrap": "git+ssh://git@github.com/onenameio/onename-bootstrap.git",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
+    "hasprop": "0.0.4",
     "history": "^1.13.1",
     "keychain-manager": "^1.4.0",
     "react": "^0.14.2",
