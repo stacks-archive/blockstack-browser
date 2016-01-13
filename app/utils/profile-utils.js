@@ -34,22 +34,14 @@ export function getVerifiedAccounts(profile, verifications) {
 }
 
 export function getAvatarUrl(profile) {
-  var avatarContentUrl
+  let avatarContentUrl = 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-hi.png'
   if (profile.image) {
-    if (profile.image.length > 0) {
-      avatarContentUrl = profile.image[0].contentUrl
-    }
+    profile.image.map(function(image) {
+      if (profile.image[0].name === 'avatar') {
+        avatarContentUrl = profile.image[0].contentUrl
+        return
+      }
+    })
   }
   return avatarContentUrl
-}
-
-export function httpGetAsync(theUrl, callback) {
-  var xmlHttp = new XMLHttpRequest()
-  xmlHttp.onreadystatechange = function() { 
-    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-      callback(xmlHttp.responseText)
-    }
-  }
-  xmlHttp.open("GET", theUrl, true)
-  xmlHttp.send(null)
 }
