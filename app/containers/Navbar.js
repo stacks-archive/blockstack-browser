@@ -11,12 +11,12 @@ export default class Navbar extends Component {
       <nav className="navbar navbar-nav navbar-fixed-top navbar-light bg-faded">
         <div className="nav-item nav-link">
           <BackButton>
-            <img src="images/icon-nav-previous.svg"/>
+            <img src="images/icon-previous.svg"/>
           </BackButton>
         </div>
         <div className="nav-item nav-link">
           <ForwardButton>
-            <img src="images/icon-nav-next.svg"/>
+            <img src="images/icon-next.svg"/>
           </ForwardButton>
         </div>
         <div className="nav-item nav-search">
