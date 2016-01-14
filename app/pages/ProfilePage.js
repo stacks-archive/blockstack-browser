@@ -1,113 +1,114 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Person, flattenObject } from 'blockchain-profile'
-import AccountListItem from '../components/AccountListItem'
-import { Naval, Ryan } from '../data/SampleProfiles'
-import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
 
-const propTypes = {
+import AccountListItem from '../components/AccountListItem'
+import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
+import * as ProfileActions from '../actions/identities'
+
+function mapStateToProps(state) {
+  return {
+    currentIdentity: state.identities.current
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ProfileActions, dispatch)
 }
 
 class ProfilePage extends Component {
+  static propTypes = {
+    fetchCurrentIdentity: PropTypes.func.isRequired,
+    currentIdentity: PropTypes.object.isRequired
+  }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      id: this.props.routeParams.id,
-      profile: {},
-      verifications: []
+      currentIdentity: {
+        profile: null,
+        verifications: []
+      }
     }
   }
 
-  componentDidMount() {
-    this.getProfile(this.state.id)
+  componentHasNewRouteParams(routeParams) {
+    this.props.fetchCurrentIdentity(routeParams.id)
   }
 
-  getProfile(id) {
-    var username = id.replace('.id', '')
-    var url = 'http://resolver.onename.com/v2/users/' + username
-    var _this = this
-    fetch(url)
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        var legacyProfile = responseJson[username]['profile'],
-            verifications = responseJson[username]['verifications'],
-            profile = Person.fromLegacyFormat(legacyProfile).profile
-        _this.setState({
-          id: id,
-          profile: profile,
-          verifications: verifications
-        })
-      })
-      .catch((error) => {
-        console.warn(error)
-      })
+  componentWillMount() {
+    this.componentHasNewRouteParams(this.props.routeParams)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.routeParams.id !== this.props.routeParams.id) {
+      this.componentHasNewRouteParams(nextProps.routeParams)
+    }
+    this.setState({
+      currentIdentity: nextProps.currentIdentity
+    })
   }
 
   render() {
-    var blockchainId = this.state.id,
-        profile = this.state.profile,
-        verifications = this.state.verifications
-
-    if (this.props.routeParams.id !== this.state.id) {
-      this.getProfile(this.props.routeParams.id)
-    }
-
-    return (
-      <div className="row">
-        <div className="col-md-6">
-          <div className="profile-dropdown-tab">
-            { profile ?
-            <div className="profile-wrap">
-              <div className="idcard-block">
-                <div className="id-flex">
-                  <img className="img-idcard" src={getAvatarUrl(profile)} />
-                  <div className="overlay"></div>
-                </div>
-              </div>
-              <div className="idcard-wrap">
-                <div className="idcard-blockchainid">
-                  <h4>{blockchainId}</h4>
-                </div>
-                <h1 className="idcard-name">{getName(profile)}</h1>
-                <div className="id-social">
-                  <div>
-                    <ul>
-                      {getVerifiedAccounts(profile, verifications).map(function(account) {
-                        return (
-                          <AccountListItem
-                            key={account.service + '-' + account.identifier}
-                            service={account.service}
-                            identifier={account.identifier}
-                            proofUrl={account.proofUrl} />)
-                      })}
-                    </ul>
+    var blockchainId = this.props.id,
+        profile = this.state.currentIdentity.profile,
+        verifications = this.state.currentIdentity.verifications
+    return ( 
+      <div>
+        { profile !== null && profile !== undefined ?
+        <div>
+          <div className="col-md-6">
+            <div className="profile-dropdown-tab">
+              <div className="profile-wrap">
+                <div className="idcard-block">
+                  <div className="id-flex">
+                    <img className="img-idcard" src={getAvatarUrl(profile)} />
+                    <div className="overlay"></div>
                   </div>
+                </div>
+                <div className="idcard-wrap">
+                  <div className="idcard-blockchainid">
+                    <h4>{blockchainId}</h4>
+                  </div>
+                  <h1 className="idcard-name">{getName(profile)}</h1>
                 </div>
               </div>
             </div>
-            : null }
+          </div>
+          <div className="col-md-6">
+            <div>
+              <Link to={this.props.location.pathname + "/edit"}>
+                Edit
+              </Link>
+            </div>
+            <div>
+              <Link to={this.props.location.pathname + "/export"}>
+                Export
+              </Link>
+            </div>
+          </div>
+          <div className="container pull-right">
+            <div>
+              <ul>
+                {getVerifiedAccounts(profile, verifications).map(function(account) {
+                  return (
+                    <AccountListItem
+                      key={account.service + '-' + account.identifier}
+                      service={account.service}
+                      identifier={account.identifier}
+                      proofUrl={account.proofUrl} />
+                  )
+                })}
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="col-md-6">
-          <div>
-            <Link to={this.props.location.pathname + "/edit"}>
-              Edit
-            </Link>
-          </div>
-          <div>
-            <Link to={this.props.location.pathname + "/export"}>
-              Export
-            </Link>
-          </div>
-        </div>
+          : <div></div> }
       </div>
     )
   }
 }
 
-ProfilePage.propTypes = propTypes
-
-export default ProfilePage
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)

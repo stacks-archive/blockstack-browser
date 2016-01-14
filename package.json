@@ -52,7 +52,7 @@
     "chai": "^3.3.0",
     "chromedriver": "^2.19.0",
     "co-mocha": "^1.1.2",
-    "css-loader": "^0.23.0",
+    "css-loader": "^0.23.1",
     "css-modules-require-hook": "^2.0.2",
     "del": "^2.0.1",
     "electron-packager": "^5.0.2",
@@ -89,11 +89,13 @@
     "webpack-target-electron-renderer": "^0.2.0"
   },
   "dependencies": {
+    "bitcore-mnemonic": "git+ssh://git@github.com/onenameio/bitcore-mnemonic.git",
     "blockchain-profile": "^0.3.0",
+    "bootstrap": "git+ssh://git@github.com/onenameio/onename-bootstrap.git",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
     "history": "^1.13.1",
-    "onename-bootstrap": "git+ssh://git@github.com/onenameio/onename-bootstrap.git",
+    "keychain-manager": "^1.4.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
     "react-redux": "^4.0.0",
@@ -101,7 +103,8 @@
     "redux": "^3.0.4",
     "redux-localstorage": "^0.4.0",
     "redux-promise": "^0.5.0",
-    "redux-thunk": "^1.0.0"
+    "redux-thunk": "^1.0.0",
+    "triplesec": "^3.0.25"
   },
   "devEngines": {
     "node": "4.x || 5.x",

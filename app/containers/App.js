@@ -1,10 +1,20 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
+import LandingPage from '../pages/LandingPage'
 
-class App extends Component {
+function mapStateToProps(state) {
+  return {
+    encryptedMnemonic: state.keychain.encryptedMnemonic
+  }
+}
+
+class MainScreen extends Component {
   static propTypes = {
-    children: PropTypes.element.isRequired
+    children: PropTypes.element.isRequired,
   }
 
   render() {
@@ -20,14 +30,6 @@ class App extends Component {
               <div className="row">
                 <div className="col-md-12">
                   {this.props.children}
-                    {
-                      (() => {
-                        if (process.env.NODE_ENV !== 'production') {
-                          const DevTools = require('./DevTools')
-                          return <DevTools />
-                        }
-                      })()
-                    }
                 </div>
               </div>
             </div>
@@ -38,4 +40,43 @@ class App extends Component {
   }
 }
 
-export default App
+class WelcomeScreen extends Component {
+  render() {
+    return (
+      <div className="container">
+        <LandingPage />
+      </div>
+    )
+  }
+}
+
+class App extends Component {
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+    encryptedMnemonic: PropTypes.string
+  }
+
+  render() {
+    return (
+      <div>
+      { this.props.encryptedMnemonic ?
+        <MainScreen children={this.props.children} />
+      :
+        <WelcomeScreen />
+      }
+      {
+        (() => {
+          if (false) {
+          //if (process.env.NODE_ENV !== 'production') {
+            const DevTools = require('./DevTools')
+            return <DevTools />
+          }
+        })()
+      }
+      </div>
+    )
+  }
+}
+
+
+export default connect(mapStateToProps)(App)
