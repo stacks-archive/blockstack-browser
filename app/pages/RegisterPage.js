@@ -12,7 +12,7 @@ import { isNameAvailable, hasNameBeenPreordered } from '../utils/name-utils'
 function mapStateToProps(state) {
   return {
     username: '',
-    preorderedIdentities: state.identities.preordered
+    localIdentities: state.identities.local
   }
 }
 
@@ -24,7 +24,7 @@ class RegisterPage extends Component {
   static propTypes = {
     username: PropTypes.string.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
-    preorderedIdentities: PropTypes.array.isRequired
+    localIdentities: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -78,7 +78,8 @@ class RegisterPage extends Component {
       return
     }
 
-    const nameHasBeenPreordered = hasNameBeenPreordered(fullyQualifiedId, this.props.preorderedIdentities)
+    const nameHasBeenPreordered = hasNameBeenPreordered(
+      fullyQualifiedId, this.props.localIdentities)
 
     if (nameHasBeenPreordered) {
       this.setState({

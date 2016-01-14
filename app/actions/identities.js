@@ -1,7 +1,7 @@
 import { Person, flattenObject } from 'blockchain-profile'
 
 export const UPDATE_CURRENT = 'UPDATE_CURRENT'
-export const ADD_PREORDER = 'ADD_PREORDER'
+export const CREATE_NEW = 'CREATE_NEW'
 export const UPDATE_PROFILE = 'UPDATE_PROFILE'
 
 export function updateCurrentIdentity(profile, verifications) {
@@ -14,7 +14,7 @@ export function updateCurrentIdentity(profile, verifications) {
 
 export function createNewIdentity(id) {
   return {
-    type: ADD_PREORDER,
+    type: CREATE_NEW,
     id: id
   }
 }

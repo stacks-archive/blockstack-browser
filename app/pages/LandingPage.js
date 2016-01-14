@@ -37,7 +37,7 @@ class LandingPage extends Component {
   createAccount() {
     if (this.state.password.length > 7) {
       this.setState({
-        alertMessage: 'Great password! Creating your wallet now...',
+        alertMessage: 'Creating your account...',
         alertStatus: 'success'
       })
       this.props.initializeWallet(this.state.password)

@@ -1,8 +1,8 @@
 import hasProp from 'hasprop'
 
-export function hasNameBeenPreordered(name, preorderedIdentities) {
+export function hasNameBeenPreordered(name, localIdentities) {
   let nameHasBeenPreordered = false
-  preorderedIdentities.map(function(identity) {
+  localIdentities.map(function(identity) {
     if (identity.id === name) {
       nameHasBeenPreordered = true
       return
