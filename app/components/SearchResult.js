@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-export default class SearchResult extends Component {
+class SearchResult extends Component {
   static propTypes = {
   }
 
@@ -13,3 +13,5 @@ export default class SearchResult extends Component {
     )
   }
 }
+
+export default SearchResult

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-export default class SearchPage extends Component {
+class SearchPage extends Component {
   constructor() {
     super()
   }
@@ -16,3 +16,5 @@ export default class SearchPage extends Component {
     )
   }
 }
+
+export default SearchPage

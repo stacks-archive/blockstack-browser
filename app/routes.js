@@ -18,9 +18,11 @@ export default (
   <Route path="/" component={App}>
     <IndexRoute component={NotificationsPage} />
 
-    <Route path="profile/:id"        component={ProfilePage} />
-    <Route path="profile/:id/edit"   component={EditorPage} />
-    <Route path="profile/:id/export" component={ExportPage} />
+    <Route path="profile/local/:index"        component={ProfilePage} />
+    <Route path="profile/local/:index/edit"   component={EditorPage} />
+    <Route path="profile/local/:index/export" component={ExportPage} />
+
+    <Route path="profile/:name"        component={ProfilePage} />
 
     <Route path="settings"      component={SettingsPage} />
     <Route path="register"      component={RegisterPage} />

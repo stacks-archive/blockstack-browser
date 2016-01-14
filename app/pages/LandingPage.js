@@ -47,7 +47,7 @@ class LandingPage extends Component {
         <div className="row">
           <div className="col-md-6 form-inline">
             <h3>Create Account</h3>
-            <InputGroup name="password" label="" placeholder="Password"
+            <InputGroup name="password" type="password" label="" placeholder="Password"
               data={{password: this.state.password}}
               onChange={this.onValueChange} />
             &nbsp;&nbsp;

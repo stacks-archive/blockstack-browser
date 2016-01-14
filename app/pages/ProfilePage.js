@@ -9,7 +9,9 @@ import * as ProfileActions from '../actions/identities'
 
 function mapStateToProps(state) {
   return {
-    currentIdentity: state.identities.current
+    currentIdentity: state.identities.current,
+    preorderedIdentities: state.identities.preordered,
+    registeredIdentities: state.identities.registered
   }
 }
 
@@ -20,7 +22,10 @@ function mapDispatchToProps(dispatch) {
 class ProfilePage extends Component {
   static propTypes = {
     fetchCurrentIdentity: PropTypes.func.isRequired,
-    currentIdentity: PropTypes.object.isRequired
+    updateCurrentIdentity: PropTypes.func.isRequired,
+    currentIdentity: PropTypes.object.isRequired,
+    preorderedIdentities: PropTypes.array.isRequired,
+    registeredIdentities: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -35,7 +40,14 @@ class ProfilePage extends Component {
   }
 
   componentHasNewRouteParams(routeParams) {
-    this.props.fetchCurrentIdentity(routeParams.id)
+    if (routeParams.index) {
+      const localIdentities = this.props.preorderedIdentities.concat(this.props.registeredIdentities)
+      const profile = localIdentities[routeParams.index].profile,
+            verifications = []
+      this.props.updateCurrentIdentity(profile, verifications)
+    } else if (routeParams.name) {
+      this.props.fetchCurrentIdentity(routeParams.name)
+    }
   }
 
   componentWillMount() {

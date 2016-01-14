@@ -89,11 +89,12 @@ class BackupPage extends Component {
             :
             <div>
               <p>
-                <i>Enter your password to backup your account</i>
+                <i>Enter your password to view your backup phrase and backup your account.</i>
               </p>
 
               <fieldset>
-                <InputGroup name="password" label="Password" data={{}} onChange={this.onChange} />
+                <InputGroup name="password" label="Password" type="password"
+                  data={{}} onChange={this.onChange} />
               </fieldset>
 
               <div>

@@ -1,7 +1,8 @@
 import { Person, flattenObject } from 'blockchain-profile'
 
 export const UPDATE_CURRENT = 'UPDATE_CURRENT'
-export const CREATE_NEW = 'CREATE_NEW'
+export const ADD_PREORDER = 'ADD_PREORDER'
+export const UPDATE_PROFILE = 'UPDATE_PROFILE'
 
 export function updateCurrentIdentity(profile, verifications) {
   return {
@@ -13,14 +14,22 @@ export function updateCurrentIdentity(profile, verifications) {
 
 export function createNewIdentity(id) {
   return {
-    type: CREATE_NEW,
+    type: ADD_PREORDER,
     id: id
   }
 }
 
-export function fetchCurrentIdentity(id) {
+export function updateProfile(index, profile) {
+  return {
+    type: UPDATE_PROFILE,
+    index: index,
+    profile: profile
+  }
+}
+
+export function fetchCurrentIdentity(name) {
   return dispatch => {
-    var username = id.replace('.id', '')
+    var username = name.replace('.id', '')
     var url = 'http://resolver.onename.com/v2/users/' + username
     var _this = this
     fetch(url)

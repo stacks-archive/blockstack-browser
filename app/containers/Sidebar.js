@@ -39,7 +39,7 @@ class Sidebar extends Component {
           { preorderedIdentities.map(function(identity) {
             return (
               <li className="nav-item" key={identity.index}>
-                <Link to={"/profile/" + identity.id} className="nav-link">
+                <Link to={"/profile/local/" + identity.index} className="nav-link">
                   {identity.id}
                 </Link>
               </li>
@@ -54,9 +54,10 @@ class Sidebar extends Component {
         { registeredIdentities.length ?
         <ul className="nav sidebar-list">
           { registeredIdentities.map(function(identity) {
+            const index = preorderedIdentities.length + identity.index
             return (
               <li className="nav-item" key={identity.index}>
-                <Link to={"/profile/" + identity.id} className="nav-link">
+                <Link to={"/profile/local/" + index} className="nav-link">
                   {identity.id}
                 </Link>
               </li>

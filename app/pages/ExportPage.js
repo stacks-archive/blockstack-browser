@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import InputGroup from '../components/InputGroup'
 
-export default class ExportPage extends Component {
+class ExportPage extends Component {
   constructor() {
     super()
   }
@@ -25,3 +25,5 @@ export default class ExportPage extends Component {
     )
   }
 }
+
+export default ExportPage

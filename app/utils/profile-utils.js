@@ -13,6 +13,29 @@ export function getName(profile) {
   return name
 }
 
+export function getNameParts(profile) {
+  let givenName = '',
+      familyName = ''
+
+  if (profile.givenName) {
+    givenName = profile.givenName
+  }
+
+  if (profile.familyName) {
+    familyName = profile.familyName
+  }
+
+  if (profile.name) {
+    let nameParts = profile.name.split(' ')
+    givenName = nameParts[0]
+    if (nameParts.length > 1) {
+      familyName = nameParts[1]
+    }
+  }
+
+  return givenName, familyName
+}
+
 export function getVerifiedAccounts(profile, verifications) {
   var filteredAccounts = []
   if (profile.account) {
@@ -34,7 +57,7 @@ export function getVerifiedAccounts(profile, verifications) {
 }
 
 export function getAvatarUrl(profile) {
-  let avatarContentUrl = 'http://www.clker.com/cliparts/A/Y/O/m/o/N/placeholder-hi.png'
+  let avatarContentUrl = 'https://s3.amazonaws.com/65m/avatar-placeholder.png'
   if (profile.image) {
     profile.image.map(function(image) {
       if (profile.image[0].name === 'avatar') {
