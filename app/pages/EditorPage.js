@@ -12,8 +12,7 @@ import { getNameParts } from '../utils/profile-utils'
 function mapStateToProps(state) {
   return {
     currentIdentity: state.identities.current,
-    localIdentities: state.identities.local,
-    registeredIdentities: state.identities.registered
+    localIdentities: state.identities.local
   }
 }
 
@@ -26,8 +25,7 @@ class EditorPage extends Component {
     fetchCurrentIdentity: PropTypes.func.isRequired,
     updateProfile: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
-    localIdentities: PropTypes.array.isRequired,
-    registeredIdentities: PropTypes.array.isRequired
+    localIdentities: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -47,8 +45,7 @@ class EditorPage extends Component {
   componentWillMount() {
     const routeParams = this.props.routeParams
     if (routeParams.index) {
-      const localIdentities = this.props.localIdentities.concat(this.props.registeredIdentities)
-      const profile = localIdentities[routeParams.index].profile,
+      const profile = this.props.localIdentities[routeParams.index].profile,
             verifications = []
       this.props.updateCurrentIdentity(profile, verifications)
     }

@@ -7,8 +7,7 @@ import * as IdentityActions from '../actions/identities'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.identities.local,
-    registeredIdentities: state.identities.registered
+    localIdentities: state.identities.local
   }
 }
 
@@ -18,8 +17,7 @@ function mapDispatchToProps(dispatch) {
 
 class Sidebar extends Component {
   static propTypes = {
-    localIdentities: PropTypes.array.isRequired,
-    registeredIdentities: PropTypes.array.isRequired
+    localIdentities: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -28,36 +26,17 @@ class Sidebar extends Component {
   }
 
   render() {
-    const localIdentities = this.props.localIdentities || [],
-          registeredIdentities = this.props.registeredIdentities || []
+    const localIdentities = this.props.localIdentities || []
 
     return (
       <div>
-        <div className="sidebar-label">Preordered</div>
+        <div className="sidebar-label">Identities</div>
         { localIdentities.length ?
         <ul className="nav sidebar-list">
           { localIdentities.map(function(identity) {
             return (
               <li className="nav-item" key={identity.index}>
                 <Link to={"/profile/local/" + identity.index} className="nav-link">
-                  {identity.id}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-        :
-        <ul className="nav sidebar-list">-</ul>
-        }
-
-        <div className="sidebar-label">Registered</div>
-        { registeredIdentities.length ?
-        <ul className="nav sidebar-list">
-          { registeredIdentities.map(function(identity) {
-            const index = localIdentities.length + identity.index
-            return (
-              <li className="nav-item" key={identity.index}>
-                <Link to={"/profile/local/" + index} className="nav-link">
                   {identity.id}
                 </Link>
               </li>
@@ -86,3 +65,23 @@ class Sidebar extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)
+
+/*
+<div className="sidebar-label">Registered</div>
+{ registeredIdentities.length ?
+<ul className="nav sidebar-list">
+  { registeredIdentities.map(function(identity) {
+    const index = localIdentities.length + identity.index
+    return (
+      <li className="nav-item" key={identity.index}>
+        <Link to={"/profile/local/" + index} className="nav-link">
+          {identity.id}
+        </Link>
+      </li>
+    )
+  })}
+</ul>
+:
+<ul className="nav sidebar-list">-</ul>
+}
+*/
