@@ -31,7 +31,7 @@ class Navbar extends Component {
               </Link>
             </div>
             <div className="nav-item nav-link">
-              <Link to="/notifications">
+              <Link to="/">
                 <img src="images/design-32px-outline_bullet-list-67.svg"
                   className="nav-icon"/>
               </Link>

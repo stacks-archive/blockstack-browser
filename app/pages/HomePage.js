@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import Notification from '../components/Notification'
 
-class TasksPage extends Component {
+import Alert from '../components/Alert'
+
+class HomePage extends Component {
   constructor() {
     super()
   }
@@ -19,16 +20,13 @@ class TasksPage extends Component {
     return (
       <div>
         <div>
-          <h3>Getting Started</h3>
+          <h3>Home</h3>
 
           <ul className="list-group">
             {tasks.map(function(task, index) {
               return (
-                <Notification
-                  key={index}
-                  label={task.label}
-                  body={task.body}
-                  url={task.url} />
+                <Alert message={task.label + " - " + task.body} status="info"
+                  key={index} url={task.url} />
               )
             })}
           </ul>
@@ -39,4 +37,4 @@ class TasksPage extends Component {
   }
 }
 
-export default TasksPage
+export default HomePage

@@ -28,8 +28,8 @@ class Sidebar extends Component {
   }
 
   render() {
-    var registeredIdentities = this.props.registeredIdentities || [],
-        localIdentities = this.props.localIdentities || []
+    const localIdentities = this.props.localIdentities || [],
+          registeredIdentities = this.props.registeredIdentities || []
 
     return (
       <div>
