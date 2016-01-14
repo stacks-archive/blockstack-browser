@@ -122,12 +122,6 @@ body {
 input[type=text]{
   border-radius: 20px;
 }
-.t-left {
-  float: left;
-}
-.t-right {
-  float: right;
-}
 .nav-search {
   overflow: hidden;
 }
