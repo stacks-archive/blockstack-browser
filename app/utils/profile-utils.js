@@ -16,23 +16,20 @@ export function getName(profile) {
 export function getNameParts(profile) {
   let givenName = '',
       familyName = ''
-
-  if (profile.givenName) {
-    givenName = profile.givenName
-  }
-
-  if (profile.familyName) {
-    familyName = profile.familyName
-  }
-
-  if (profile.name) {
+  if (profile.givenName || profile.familyName) {
+    if (profile.givenName) {
+      givenName = profile.givenName
+    }
+    if (profile.familyName) {
+      familyName = profile.familyName
+    }
+  } else if (profile.name) {
     let nameParts = profile.name.split(' ')
     givenName = nameParts[0]
     if (nameParts.length > 1) {
       familyName = nameParts[1]
     }
   }
-
   return givenName, familyName
 }
 
@@ -60,8 +57,8 @@ export function getAvatarUrl(profile) {
   let avatarContentUrl = 'https://s3.amazonaws.com/65m/avatar-placeholder.png'
   if (profile.image) {
     profile.image.map(function(image) {
-      if (profile.image[0].name === 'avatar') {
-        avatarContentUrl = profile.image[0].contentUrl
+      if (image.name === 'avatar') {
+        avatarContentUrl = image.contentUrl
         return
       }
     })
