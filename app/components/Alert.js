@@ -6,10 +6,33 @@ class Alert extends Component {
     status: PropTypes.string.isRequired
   }
 
+  constructor() {
+    super()
+
+    this.state = {
+      shown: true
+    }
+
+    this.hide = this.hide.bind(this)
+  }
+
+  hide() {
+    this.setState({
+      shown: false
+    })
+  }
+
   render() {
     return (
-      <div className={"alert alert-" + this.props.status}>
-        {this.props.message}
+      <div>
+        { this.state.shown ?
+        <div className={"alert alert-dismissible fade in" + " alert-" + this.props.status} role="alert">
+          <button className="close" data-dismiss="alert" aria-label="Close" onClick={this.hide}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {this.props.message}
+        </div>
+        : null }
       </div>
     )
   }
