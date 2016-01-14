@@ -20,15 +20,11 @@ export function isNameAvailable(nameLookupUrl, name, callback) {
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
       let isAvailable = false
-      console.log(responseJson)
       if (hasProp(responseJson, username + '.' + "error.type")) {
         const errorType = responseJson[username]["error"]["type"]
-        console.log(errorType)
         if (errorType === "username_not_registered") {
           isAvailable = true
         }
-      } else {
-        console.log('agh')
       }
       callback(isAvailable)
     })

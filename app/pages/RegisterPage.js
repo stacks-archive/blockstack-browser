@@ -86,7 +86,6 @@ class RegisterPage extends Component {
       })
     } else {
       isNameAvailable(this.state.nameLookupUrl, fullyQualifiedId, function(isAvailable) {
-        console.log(isAvailable)
         if (!isAvailable) {
           _this.setState({
             alertMessage: 'Name has already been registered',

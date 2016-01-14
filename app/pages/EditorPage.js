@@ -2,16 +2,18 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-
-import { Person, flattenObject } from 'blockchain-profile'
+import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
 import InputGroup from '../components/InputGroup'
 import { SaveButton } from '../components/Buttons'
 import * as IdentityActions from '../actions/identities'
+import { getNameParts } from '../utils/profile-utils'
 
 function mapStateToProps(state) {
   return {
-    currentIdentity: state.identities.current
+    currentIdentity: state.identities.current,
+    preorderedIdentities: state.identities.preordered,
+    registeredIdentities: state.identities.registered
   }
 }
 
@@ -22,7 +24,10 @@ function mapDispatchToProps(dispatch) {
 class EditorPage extends Component {
   static propTypes = {
     fetchCurrentIdentity: PropTypes.func.isRequired,
-    currentIdentity: PropTypes.object.isRequired
+    updateProfile: PropTypes.func.isRequired,
+    currentIdentity: PropTypes.object.isRequired,
+    preorderedIdentities: PropTypes.array.isRequired,
+    registeredIdentities: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -34,18 +39,27 @@ class EditorPage extends Component {
       profileJustSaved: false,
       verifications: []
     }
+
+    this.onValueChange = this.onValueChange.bind(this)
+    this.saveProfile = this.saveProfile.bind(this)
   }
 
   componentWillMount() {
-    this.props.fetchCurrentIdentity(this.props.routeParams.id)
+    const routeParams = this.props.routeParams
+    if (routeParams.index) {
+      const localIdentities = this.props.preorderedIdentities.concat(this.props.registeredIdentities)
+      const profile = localIdentities[routeParams.index].profile,
+            verifications = []
+      this.props.updateCurrentIdentity(profile, verifications)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.currentIdentity !== this.props.currentIdentity) {
       var profile = nextProps.currentIdentity.profile,
           flatProfile = flattenObject(profile)
-      flatProfile.givenName = profile.name.split(' ')[0]
-      flatProfile.familyName = profile.name.split(' ')[1]
+      console.log(profile)
+      flatProfile.givenName, flatProfile.familyName = getNameParts(profile)
       this.setState({
         profile: profile,
         flatProfile: flatProfile
@@ -54,12 +68,19 @@ class EditorPage extends Component {
   }
 
   saveProfile() {
+    this.props.updateProfile(this.props.routeParams.index, this.state.profile)
   }
 
   onValueChange(event) {
     var flatProfile = this.state.flatProfile
     flatProfile[event.target.name] = event.target.value
-    this.setState({flatProfile: flatProfile})
+    if (event.target.name === "image[0].contentUrl") {
+      flatProfile["image[0].name"] = "avatar"
+    }
+    this.setState({
+      flatProfile: flatProfile,
+      profile: unflattenObject(flatProfile)
+    })
   }
 
   render() {

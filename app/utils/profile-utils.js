@@ -13,6 +13,29 @@ export function getName(profile) {
   return name
 }
 
+export function getNameParts(profile) {
+  let givenName = '',
+      familyName = ''
+
+  if (profile.givenName) {
+    givenName = profile.givenName
+  }
+
+  if (profile.familyName) {
+    familyName = profile.familyName
+  }
+
+  if (profile.name) {
+    let nameParts = profile.name.split(' ')
+    givenName = nameParts[0]
+    if (nameParts.length > 1) {
+      familyName = nameParts[1]
+    }
+  }
+
+  return givenName, familyName
+}
+
 export function getVerifiedAccounts(profile, verifications) {
   var filteredAccounts = []
   if (profile.account) {
