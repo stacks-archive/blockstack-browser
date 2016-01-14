@@ -11,12 +11,12 @@ import ExportPage        from './pages/ExportPage'
 import DepositPage       from './pages/DepositPage'
 import ImportPage        from './pages/ImportPage'
 import BackupPage        from './pages/BackupPage'
-import NotificationsPage from './pages/NotificationsPage'
+import HomePage          from './pages/HomePage'
 import SearchPage        from './pages/SearchPage'
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={NotificationsPage} />
+    <IndexRoute component={HomePage} />
 
     <Route path="profile/local/:index"        component={ProfilePage} />
     <Route path="profile/local/:index/edit"   component={EditorPage} />
@@ -29,7 +29,7 @@ export default (
     <Route path="deposit"       component={DepositPage} />
     <Route path="import"        component={ImportPage} />
     <Route path="backup"        component={BackupPage} />
-    <Route path="notifications" component={NotificationsPage} />
+    <Route path="home"          component={HomePage} />
     <Route path="search"        component={SearchPage} />
   </Route>
 )

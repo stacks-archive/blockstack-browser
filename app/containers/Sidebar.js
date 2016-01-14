@@ -7,7 +7,7 @@ import * as IdentityActions from '../actions/identities'
 
 function mapStateToProps(state) {
   return {
-    preorderedIdentities: state.identities.preordered,
+    localIdentities: state.identities.local,
     registeredIdentities: state.identities.registered
   }
 }
@@ -18,7 +18,7 @@ function mapDispatchToProps(dispatch) {
 
 class Sidebar extends Component {
   static propTypes = {
-    preorderedIdentities: PropTypes.array.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     registeredIdentities: PropTypes.array.isRequired
   }
 
@@ -28,15 +28,15 @@ class Sidebar extends Component {
   }
 
   render() {
-    var registeredIdentities = this.props.registeredIdentities || [],
-        preorderedIdentities = this.props.preorderedIdentities || []
+    const localIdentities = this.props.localIdentities || [],
+          registeredIdentities = this.props.registeredIdentities || []
 
     return (
       <div>
         <div className="sidebar-label">Preordered</div>
-        { preorderedIdentities.length ?
+        { localIdentities.length ?
         <ul className="nav sidebar-list">
-          { preorderedIdentities.map(function(identity) {
+          { localIdentities.map(function(identity) {
             return (
               <li className="nav-item" key={identity.index}>
                 <Link to={"/profile/local/" + identity.index} className="nav-link">
@@ -54,7 +54,7 @@ class Sidebar extends Component {
         { registeredIdentities.length ?
         <ul className="nav sidebar-list">
           { registeredIdentities.map(function(identity) {
-            const index = preorderedIdentities.length + identity.index
+            const index = localIdentities.length + identity.index
             return (
               <li className="nav-item" key={identity.index}>
                 <Link to={"/profile/local/" + index} className="nav-link">

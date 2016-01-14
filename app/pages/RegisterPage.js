@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import * as IdentityActions from '../actions/identities'
 import { getNameCost } from '../utils/blockstore-utils'
@@ -11,7 +12,7 @@ import { isNameAvailable, hasNameBeenPreordered } from '../utils/name-utils'
 function mapStateToProps(state) {
   return {
     username: '',
-    preorderedIdentities: state.identities.preordered
+    localIdentities: state.identities.local
   }
 }
 
@@ -23,7 +24,7 @@ class RegisterPage extends Component {
   static propTypes = {
     username: PropTypes.string.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
-    preorderedIdentities: PropTypes.array.isRequired
+    localIdentities: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -77,7 +78,8 @@ class RegisterPage extends Component {
       return
     }
 
-    const nameHasBeenPreordered = hasNameBeenPreordered(fullyQualifiedId, this.props.preorderedIdentities)
+    const nameHasBeenPreordered = hasNameBeenPreordered(
+      fullyQualifiedId, this.props.localIdentities)
 
     if (nameHasBeenPreordered) {
       this.setState({
@@ -111,13 +113,10 @@ class RegisterPage extends Component {
         <div>
           <h3>Register Identity</h3>
 
-            {
-              this.state.alertMessage ?
-              <div className={"alert alert-" + this.state.alertStatus}>
-                {this.state.alertMessage}
-              </div>
-              : null
-            }
+            { this.state.alertMessage ?
+              <Alert message={this.state.alertMessage}
+                status={this.state.alertStatus} />
+            : null }
 
             <fieldset className="form-group">
               <label className="capitalize">{nameLabel}</label>

@@ -1,8 +1,8 @@
-import { UPDATE_CURRENT, ADD_PREORDER, UPDATE_PROFILE } from '../actions/identities'
+import { UPDATE_CURRENT, CREATE_NEW, UPDATE_PROFILE } from '../actions/identities'
 
 const initialState = {
   current: {},
-  preordered: [
+  local: [
     {
       index: 0,
       id: 'ryan.id',
@@ -22,12 +22,12 @@ export default function Identities(state = initialState, action) {
           verifications: action.verifications
         }
       })
-    case ADD_PREORDER:
+    case CREATE_NEW:
       return Object.assign({}, state, {
-        preordered: [
-          ...state.preordered,
+        local: [
+          ...state.local,
           {
-            index: state.preordered.length,
+            index: state.local.length,
             id: action.id,
             profile: {},
             verifications: []
@@ -36,12 +36,12 @@ export default function Identities(state = initialState, action) {
       })
     case UPDATE_PROFILE:
       return Object.assign({}, state, {
-        preordered: [
-          ...state.preordered.slice(0, action.index),
-          Object.assign({}, state.preordered[action.index], {
+        local: [
+          ...state.local.slice(0, action.index),
+          Object.assign({}, state.local[action.index], {
             profile: action.profile
           }),
-          ...state.preordered.slice(action.index + 1)
+          ...state.local.slice(action.index + 1)
         ]
       })
     default:

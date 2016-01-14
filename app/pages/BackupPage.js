@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import * as KeychainActions from '../actions/keychain'
 import { decrypt } from '../utils/keychain-utils'
@@ -24,7 +25,8 @@ class BackupPage extends Component {
     this.state = {
       decryptedMnemonic: null,
       password: '',
-      error: null
+      alertMessage: null,
+      alertStatus: null
     }
 
     this.onChange = this.onChange.bind(this)
@@ -42,15 +44,18 @@ class BackupPage extends Component {
   decryptBackupPhrase() {
     const _this = this
     const password = this.state.password
-    decrypt(new Buffer(this.props.encryptedMnemonic, 'hex'), password, function(err, plaintextBuffer) {
+    const dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
+    decrypt(dataBuffer, password, function(err, plaintextBuffer) {
       if (!err) {
         _this.setState({
           decryptedMnemonic: plaintextBuffer.toString(),
-          error: null
+          alertStatus: null,
+          alertMessage: null
         })
       } else {
         _this.setState({
-          error: 'Invalid password'
+          alertMessage: 'Invalid password',
+          alertStatus: 'danger'
         })
       }
     })
@@ -62,13 +67,10 @@ class BackupPage extends Component {
         <div>
           <h2>Backup Account</h2>
 
-          {
-            this.state.error ?
-            <div className="alert alert-danger">
-              {this.state.error}
-            </div>
-            : null
-          }
+          { this.state.alertMessage ?
+            <Alert message={this.state.alertMessage}
+              status={this.state.alertStatus} />
+          : null }
 
           {
             this.state.decryptedMnemonic ?
