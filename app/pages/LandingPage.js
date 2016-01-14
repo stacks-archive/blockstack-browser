@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import Alert from '../components/Alert'
 import * as KeychainActions from '../actions/keychain'
 import InputGroup from '../components/InputGroup'
 
@@ -25,14 +26,27 @@ class LandingPage extends Component {
     super(props)
 
     this.state = {
-      password: ''
+      password: '',
+      alertMessage: null,
+      alertStatus: null
     }
     this.createAccount = this.createAccount.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
   }
 
   createAccount() {
-    this.props.initializeWallet(this.state.password)
+    if (this.state.password.length > 7) {
+      this.setState({
+        alertMessage: 'Great password! Creating your wallet now...',
+        alertStatus: 'success'
+      })
+      this.props.initializeWallet(this.state.password)
+    } else {
+      this.setState({
+        alertMessage: 'Password must be at least 8 characters',
+        alertStatus: 'danger'
+      })
+    }
   }
 
   onValueChange(event) {
@@ -46,7 +60,13 @@ class LandingPage extends Component {
       <div>
         <div className="row">
           <div className="col-md-6 form-inline">
-            <h3>Create Account</h3>
+            <h2>Create Account</h2>
+
+            { this.state.alertMessage ?
+              <Alert message={this.state.alertMessage}
+                status={this.state.alertStatus} />
+            : null }
+
             <InputGroup name="password" type="password" label="" placeholder="Password"
               data={{password: this.state.password}}
               onChange={this.onValueChange} />

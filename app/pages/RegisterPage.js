@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import * as IdentityActions from '../actions/identities'
 import { getNameCost } from '../utils/blockstore-utils'
@@ -111,13 +112,10 @@ class RegisterPage extends Component {
         <div>
           <h3>Register Identity</h3>
 
-            {
-              this.state.alertMessage ?
-              <div className={"alert alert-" + this.state.alertStatus}>
-                {this.state.alertMessage}
-              </div>
-              : null
-            }
+            { this.state.alertMessage ?
+              <Alert message={this.state.alertMessage}
+                status={this.state.alertStatus} />
+            : null }
 
             <fieldset className="form-group">
               <label className="capitalize">{nameLabel}</label>
