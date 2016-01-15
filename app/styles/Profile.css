@@ -130,8 +130,9 @@ input[type=text]{
   border: none;
   text-align: center;
 }
-
-
+.nav-search > div > form {
+  margin-top: 4px;
+}
 
 
 
