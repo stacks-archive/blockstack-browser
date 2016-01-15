@@ -26,22 +26,25 @@ class Navbar extends Component {
           <div className="pull-xs-right">
             <div className="nav-item nav-link">
               <Link to="/identities">
-                IDs
+                <img src="images/icon-identity.svg"
+                  className="nav-icon"/>
               </Link>
             </div>
             <div className="nav-item nav-link">
               <Link to="/bookmarks">
-                Bookmarks
+                <img src="images/icon-bookmark-24px.svg"
+                  className="nav-icon"/>
               </Link>
             </div>
             <div className="nav-item nav-link">
               <Link to="/deposit">
-                Funds
+                <img src="images/icon-dollar-circle.svg"
+                  className="nav-icon"/>
               </Link>
             </div>
             <div className="nav-item nav-link">
               <Link to="/settings">
-                <img src="images/ui-32px-outline-1_settings-gear-64.svg"
+                <img src="images/icon-settings.svg"
                   className="nav-icon"/>
               </Link>
             </div>
