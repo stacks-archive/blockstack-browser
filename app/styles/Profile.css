@@ -125,7 +125,9 @@ input[type=text]{
 .nav-search {
   overflow: hidden;
 }
-
+.nav-search > div > form > input {
+  border: none;
+}
 
 
 
