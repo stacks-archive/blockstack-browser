@@ -29,16 +29,16 @@ export function updateProfile(index, profile) {
 
 export function fetchCurrentIdentity(name) {
   return dispatch => {
-    var username = name.replace('.id', '')
-    var url = 'http://resolver.onename.com/v2/users/' + username
-    var _this = this
+    const username = name.replace('.id', ''),
+          url = 'http://resolver.onename.com/v2/users/' + username,
+          _this = this
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        var legacyProfile = responseJson[username]['profile'],
-            verifications = responseJson[username]['verifications'],
-            profile = Person.fromLegacyFormat(legacyProfile).profile
+        const legacyProfile = responseJson[username]['profile'],
+              verifications = responseJson[username]['verifications'],
+              profile = Person.fromLegacyFormat(legacyProfile).profile
         dispatch(updateCurrentIdentity(profile, verifications))
       })
       .catch((error) => {

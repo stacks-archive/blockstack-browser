@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 
+import ListItem from '../components/ListItem'
 import * as IdentityActions from '../actions/identities'
 import { getNamesOwned, getIdentities } from '../utils/blockstore-utils'
 
@@ -18,7 +19,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(IdentityActions, dispatch)
 }
 
-class Sidebar extends Component {
+class IdentitiesPage extends Component {
   static propTypes = {
     localIdentities: PropTypes.array.isRequired,
     createNewIdentity: PropTypes.func.isRequired
@@ -29,9 +30,10 @@ class Sidebar extends Component {
     this.state = {
       localIdentities: this.props.localIdentities
     }
+    this.componentHasNewProps = this.componentHasNewProps.bind(this)
   }
 
-  componentDidMount() {
+  componentHasNewProps() {
     const accountKeychain = new PublicKeychain(this.props.identityAccount.accountKeychain),
           addressIndex = this.props.identityAccount.addressIndex,
           currentAddress = accountKeychain.child(addressIndex).address().toString(),
@@ -47,68 +49,46 @@ class Sidebar extends Component {
     })
   }
 
+  componentDidMount() {
+    this.componentHasNewProps()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.componentHasNewProps()
+  }
+
   render() {
     const localIdentities = this.state.localIdentities || []
 
     return (
       <div>
-        <div className="sidebar-label">Identities</div>
-        { localIdentities.length ?
-        <ul className="nav sidebar-list">
+        <h3>Identities</h3>
+
+        <div style={{paddingBottom: '15px'}}>
+          <ul className="list-group">
           { localIdentities.map(function(identity) {
             return (
-              <li className="nav-item" key={identity.index}>
-                <Link to={"/profile/local/" + identity.index} className="nav-link">
-                  {identity.id}
-                </Link>
-                { identity.registered ?
-                  <span></span>
-                  :
-                  <span>&nbsp;(pending)</span>
-                }
-              </li>
+              <ListItem
+                key={identity.index}
+                label={ identity.registered ? identity.id : identity.id + ' (pending)' }
+                url={"/profile/local/" + identity.index} />
             )
           })}
-        </ul>
-        :
-        <ul className="nav sidebar-list">-</ul>
-        }
-        
-        <ul className="nav sidebar-list">
-          <li className="nav-item">
-            <Link to="/register" className="nav-link btn btn-sm btn-secondary">
-              Register
-            </Link>
-          </li>
-          <li className="nav-item">
-            <Link to="/import" className="nav-link btn btn-sm btn-secondary">
-              Import
-            </Link>
-          </li>
-        </ul>
+          </ul>
+        </div>
+        <p>
+          <Link to="/register" className="btn btn-primary">
+            Register
+          </Link>
+        </p>
+        <p>
+          <Link to="/import" className="btn btn-secondary">
+            Import
+          </Link>
+        </p>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sidebar)
-
-/*
-<div className="sidebar-label">Registered</div>
-{ registeredIdentities.length ?
-<ul className="nav sidebar-list">
-  { registeredIdentities.map(function(identity) {
-    const index = localIdentities.length + identity.index
-    return (
-      <li className="nav-item" key={identity.index}>
-        <Link to={"/profile/local/" + index} className="nav-link">
-          {identity.id}
-        </Link>
-      </li>
-    )
-  })}
-</ul>
-:
-<ul className="nav sidebar-list">-</ul>
-}
-*/
+export default connect(mapStateToProps, mapDispatchToProps)(IdentitiesPage)

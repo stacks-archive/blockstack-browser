@@ -65,7 +65,7 @@ class BackupPage extends Component {
     return (
       <div>
         <div>
-          <h2>Backup Account</h2>
+          <h3>Backup Account</h3>
 
           { this.state.alertMessage ?
             <Alert message={this.state.alertMessage}
