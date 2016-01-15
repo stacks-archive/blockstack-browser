@@ -50,10 +50,10 @@ class Navbar extends Component {
             </div>
             
           </div>
-          <div className="nav-search ">
+          <div className="nav-search">
             <div className="nav-link">
               <form className="form-group">
-                <input className="form-control form-control-sm" type="text" placeholder="search" />
+                <input className="form-control form-control-sm" type="text" placeholder="Search the blockchain" />
               </form>
             </div>
           </div>

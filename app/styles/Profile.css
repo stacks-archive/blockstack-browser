@@ -126,9 +126,10 @@ input[type=text]{
   overflow: hidden;
 }
 .nav-search > div > form > input {
+  font-size: 11px;
   border: none;
+  text-align: center;
 }
-
 
 
 
