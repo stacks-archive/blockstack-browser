@@ -14,17 +14,15 @@ import BackupPage        from './pages/BackupPage'
 import HomePage          from './pages/HomePage'
 import SearchPage        from './pages/SearchPage'
 import IdentitiesPage    from './pages/IdentitiesPage'
+import BookmarksPage     from './pages/BookmarksPage'
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={IdentitiesPage} />
-
+    <IndexRoute component={BookmarksPage} />
     <Route path="profile/local/:index"        component={ProfilePage} />
     <Route path="profile/local/:index/edit"   component={EditorPage} />
     <Route path="profile/local/:index/export" component={ExportPage} />
-
-    <Route path="profile/:name"        component={ProfilePage} />
-
+    <Route path="profile/:name"               component={ProfilePage} />
     <Route path="settings"      component={SettingsPage} />
     <Route path="register"      component={RegisterPage} />
     <Route path="deposit"       component={DepositPage} />
@@ -33,5 +31,6 @@ export default (
     <Route path="home"          component={HomePage} />
     <Route path="search"        component={SearchPage} />
     <Route path="identities"    component={IdentitiesPage} />
+    <Route path="bookmarks"     component={BookmarksPage} />
   </Route>
 )

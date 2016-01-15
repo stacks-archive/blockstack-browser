@@ -36,10 +36,24 @@ class DepositPage extends Component {
           addressIndex = this.props.bitcoinAccount.addressIndex,
           currentAddress = accountKeychain.child(addressIndex).address().toString()
 
+    const balance = 0
+
     return (
       <div>
         <div>
-          <h3>Deposit Bitcoins</h3>
+          <h3>Balance:</h3>
+
+          <p><i>
+            Note: The balance is displayed in bits. Each bit is 1/1000th of a bitcoin.
+          </i></p>
+
+          <div className="highlight">
+            <pre>
+              <code>{balance} mBTC</code>
+            </pre>
+          </div>
+
+          <h3>Deposit:</h3>
 
           <p><i>
             Note: All identity registrations require funds from your account.
