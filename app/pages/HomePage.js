@@ -10,11 +10,12 @@ class HomePage extends Component {
 
   render() {
     var tasks = [
-      { label: "Fund your account", url: '/deposit', body: 'To pay for identity registrations'},
-      { label: "Register your first identity", url: '/register',
-        body: 'So you can start building your profile, connecting with others, and logging into apps'},
-      { label: "Backup your account", url: '/backup', body: 'To recover your account in the event of a loss'},
-      { label: "Set a password", url: '/settings', body: 'To protect your account from being hacked'}
+      { label: "Fund your account", url: "/deposit",
+        body: "to pay for identity registrations"},
+      { label: "Register your first identity", url: "/register",
+        body: "to start building your profile and connecting with others"},
+      { label: "Backup your account", url: "/backup",
+        body: "to recover it in the event of a loss"}
     ]
 
     return (

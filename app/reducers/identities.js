@@ -7,7 +7,8 @@ const initialState = {
       index: 0,
       id: 'ryan.id',
       profile: {},
-      verifications: []
+      verifications: [],
+      registered: false
     }
   ],
   registered: []
@@ -30,7 +31,8 @@ export default function Identities(state = initialState, action) {
             index: state.local.length,
             id: action.id,
             profile: {},
-            verifications: []
+            verifications: [],
+            registered: false
           }
         ]
       })
