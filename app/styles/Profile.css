@@ -135,15 +135,26 @@ input[type=text]{
 }
 div.nav-item.nav-link > a {
   display: block;
-  padding-top: 5px;
-
+  padding-top: 8px;
 }
-.nav-icon {
+div.nav-item.nav-link > a > img {
+  display: block;
+  margin: 0 auto;
   width: 16px;
-  height: 16px;  
+  height: 16px;
 }
-
-
+.icon-labels {
+  margin-top: 8px;
+  display: block;
+  font-size: 11px;
+  color: rgba(61,61,61,1);
+}
+.toolbar {
+  padding-left: 15px;
+}
+.back-forth {
+  padding-right: 15px;
+}
 
 
 
