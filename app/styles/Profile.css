@@ -133,7 +133,15 @@ input[type=text]{
 .nav-search > div > form {
   margin-top: 4px;
 }
+div.nav-item.nav-link > a {
+  display: block;
+  padding-top: 5px;
 
+}
+.nav-icon {
+  width: 16px;
+  height: 16px;  
+}
 
 
 
