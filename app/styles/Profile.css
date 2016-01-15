@@ -119,6 +119,9 @@ body {
     background-color: transparent;
     border: none;
   }
+button {
+  outline: none!important;
+}
 input[type=text]{
   border-radius: 20px;
 }
