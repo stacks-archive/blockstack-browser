@@ -40,17 +40,14 @@ export function getNameCost(nameWithTld) {
   return cost
 }
 
-export function getNamesOwned(address, callback) {
-  const appId = '73146f6a06443a3a66a7df9473353cde',
-        appSecret = '7009a810943a00fe7e8157f27bf91bea7e1b4d4e46db695ba2d11e4333ea6f29'
-  const url = 'https://api.onename.com/v1/addresses/' + address + '/names?app-id=' + appId + '&app-secret=' + appSecret
-
+export function getNamesOwned(address, addressLookupUrl, callback) {
+  const url = addressLookupUrl.replace('{address}', address)
+  console.log(url)
   fetch(url)
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
-      const namesOwned = responseJson["names"]
-      callback(namesOwned)
+      callback([])
     })
     .catch((error) => {
       console.warn(error)
@@ -58,12 +55,12 @@ export function getNamesOwned(address, callback) {
     })
 }
 
-export function getIdentities(address, localIdentities, callback) {
+export function getIdentities(address, addressLookupUrl, localIdentities, callback) {
   let remoteNamesDict = {},
       localNamesDict = {},
       newNames = []
 
-  getNamesOwned(address, function(namesOwned) {
+  getNamesOwned(address, addressLookupUrl, function(namesOwned) {
     namesOwned.map(function(name) {
       remoteNamesDict[name] = true
     })

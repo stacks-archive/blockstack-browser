@@ -22,7 +22,6 @@ function mapDispatchToProps(dispatch) {
 
 class EditorPage extends Component {
   static propTypes = {
-    fetchCurrentIdentity: PropTypes.func.isRequired,
     updateProfile: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
     localIdentities: PropTypes.array.isRequired

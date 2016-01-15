@@ -11,7 +11,8 @@ import { getNamesOwned, getIdentities } from '../utils/blockstore-utils'
 function mapStateToProps(state) {
   return {
     localIdentities: state.identities.local,
-    identityAccount: state.keychain.identityAccounts[0]
+    identityAccount: state.keychain.identityAccounts[0],
+    addressLookupUrl: state.settings.api.addressLookupUrl
   }
 }
 
@@ -22,7 +23,8 @@ function mapDispatchToProps(dispatch) {
 class IdentitiesPage extends Component {
   static propTypes = {
     localIdentities: PropTypes.array.isRequired,
-    createNewIdentity: PropTypes.func.isRequired
+    createNewIdentity: PropTypes.func.isRequired,
+    addressLookupUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -39,7 +41,7 @@ class IdentitiesPage extends Component {
           currentAddress = accountKeychain.child(addressIndex).address().toString(),
           _this = this
 
-    getIdentities(currentAddress, this.state.localIdentities, function(localIdentities, newNames) {
+    getIdentities(currentAddress, this.props.addressLookupUrl, this.state.localIdentities, function(localIdentities, newNames) {
       _this.setState({
         localIdentities: localIdentities
       })

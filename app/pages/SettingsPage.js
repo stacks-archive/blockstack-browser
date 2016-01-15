@@ -20,23 +20,57 @@ function mapDispatchToProps(dispatch) {
 class SettingsPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
-    updateApi: PropTypes.func.isRequired
+    updateApi: PropTypes.func.isRequired,
+    resetApi: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      api: this.props.api
+      api: this.props.api,
+      advancedSectionShown: false
     }
+
+    this.onValueChange = this.onValueChange.bind(this)
+    this.toggleAdvancedSection = this.toggleAdvancedSection.bind(this)
+    this.updateApi = this.updateApi.bind(this)
+    this.resetApi = this.resetApi.bind(this)
   }
 
-  onChange(event) {
-    console.log(event.target)
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      api: nextProps.api
+    })
+  }
+
+  onValueChange(event) {
+    let api = this.state.api
+    api[event.target.name] = event.target.value
+    this.setState({ api: api })
+  }
+
+  toggleAdvancedSection() {
+    this.setState({
+      advancedSectionShown: !this.state.advancedSectionShown
+    })
+  }
+
+  updateApi() {
+    const api = this.state.api
+    this.props.updateApi(
+      api.nameLookupUrl,
+      api.searchUrl,
+      api.registerUrl,
+      api.addressLookupUrl
+    )
+  }
+
+  resetApi() {
+    this.props.resetApi()
   }
 
   render() {
-    var settings = {}
     return (
       <div>
         <div>
@@ -58,27 +92,41 @@ class SettingsPage extends Component {
             </Link>
           </p>
 
-          <h5>Use Custom API Endpoints</h5>
+          <hr />
 
-          <fieldset disabled>
-            <InputGroup name="nameLookupUrl" label="Name Lookup URL"
-              data={this.state.api} onChange={this.onChange} />
-          </fieldset>
-          <fieldset disabled>
-            <InputGroup name="searchUrl" label="Search URL"
-              data={this.state.api} onChange={this.onChange} />
-          </fieldset>
-          <fieldset disabled>
-            <InputGroup name="registerUrl" label="Register URL"
-              data={this.state.api} onChange={this.onChange} />
-          </fieldset>
-          <fieldset disabled>
-            <InputGroup name="addressLookupUrl" label="Address Names URL"
-              data={this.state.api} onChange={this.onChange} />
-          </fieldset>
-          <div className="form-group">
-            <SaveButton />
-          </div>
+          <p>
+            <button onClick={this.toggleAdvancedSection} className="btn btn-secondary">
+            { this.state.advancedSectionShown ?
+              <span>Hide Advanced Section</span>
+            :
+              <span>Show Advanced Section</span>
+            }
+            </button>
+          </p>
+
+          { this.state.advancedSectionShown ?
+            <div>
+              <h5>Use Custom API</h5>
+
+              <InputGroup name="nameLookupUrl" label="Name Lookup URL"
+                data={this.state.api} onChange={this.onValueChange} />
+              <InputGroup name="searchUrl" label="Search URL"
+                data={this.state.api} onChange={this.onValueChange} />
+              <InputGroup name="registerUrl" label="Register URL"
+                data={this.state.api} onChange={this.onValueChange} />
+              <InputGroup name="addressLookupUrl" label="Address Names URL"
+                data={this.state.api} onChange={this.onValueChange} />
+              <div className="form-group">
+                <SaveButton onSave={this.updateApi} />
+              </div>
+
+              <p>
+                <button onClick={this.resetApi} className="btn btn-secondary">
+                  Reset API
+                </button>
+              </p>
+            </div>
+          : null }
 
         </div>
       </div>

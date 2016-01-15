@@ -27,11 +27,12 @@ export function updateProfile(index, profile) {
   }
 }
 
-export function fetchCurrentIdentity(name) {
+export function fetchCurrentIdentity(name, nameLookupUrl) {
   return dispatch => {
     const username = name.replace('.id', ''),
-          url = 'http://resolver.onename.com/v2/users/' + username,
+          url = nameLookupUrl.replace('{name}', username),
           _this = this
+    console.log(url)
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))

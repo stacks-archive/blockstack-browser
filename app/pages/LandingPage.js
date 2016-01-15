@@ -27,25 +27,31 @@ class LandingPage extends Component {
 
     this.state = {
       password: '',
-      alertMessage: null,
-      alertStatus: null
+      password2: '',
+      alerts: []
     }
+
+    this.updateAlert = this.updateAlert.bind(this)
     this.createAccount = this.createAccount.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
   }
 
+  updateAlert(alertStatus, alertMessage) {
+    this.setState({
+      alerts: [{ status: alertStatus, message: alertMessage }]
+    })
+  }
+
   createAccount() {
     if (this.state.password.length > 7) {
-      this.setState({
-        alertMessage: 'Creating your account...',
-        alertStatus: 'success'
-      })
-      this.props.initializeWallet(this.state.password)
+      if (this.state.password === this.state.password2) {
+        this.updateAlert('success', 'Creating your account...')
+        this.props.initializeWallet(this.state.password)
+      } else {
+        this.updateAlert('danger', 'Passwords must match')
+      }
     } else {
-      this.setState({
-        alertMessage: 'Password must be at least 8 characters',
-        alertStatus: 'danger'
-      })
+      this.updateAlert('danger', 'Password must be at least 8 characters')
     }
   }
 
@@ -59,19 +65,24 @@ class LandingPage extends Component {
     return (
       <div>
         <div className="row">
-          <div className="col-md-6 form-inline">
+          <div className="col-md-6">
             <h3>Create Account</h3>
 
-            { this.state.alertMessage ?
-              <Alert message={this.state.alertMessage}
-                status={this.state.alertStatus} />
-            : null }
+            { this.state.alerts.map(function(alert, index) {
+              return (
+                <Alert key={index} message={alert.message} status={alert.status} />
+              )
+            })}
 
-            <InputGroup name="password" type="password" label="" placeholder="Password"
-              data={this.state}
-              onChange={this.onValueChange} />
-            &nbsp;&nbsp;
-            <button className="btn btn-primary" onClick={this.createAccount}>Create</button>
+            <InputGroup name="password" type="password" label="Password"
+              placeholder="Password" data={this.state} onChange={this.onValueChange} />
+            <InputGroup name="password2" type="password" label="Password (again)"
+              placeholder="Password" data={this.state} onChange={this.onValueChange} />
+            <div>
+              <button className="btn btn-primary" onClick={this.createAccount}>
+                Create
+              </button>
+            </div>
           </div>
           <div className="col-md-6">
             <h3>Restore Account</h3>

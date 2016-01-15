@@ -10,7 +10,8 @@ import * as ProfileActions from '../actions/identities'
 function mapStateToProps(state) {
   return {
     currentIdentity: state.identities.current,
-    localIdentities: state.identities.local
+    localIdentities: state.identities.local,
+    nameLookupUrl: state.settings.api.nameLookupUrl
   }
 }
 
@@ -23,7 +24,8 @@ class ProfilePage extends Component {
     fetchCurrentIdentity: PropTypes.func.isRequired,
     updateCurrentIdentity: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
-    localIdentities: PropTypes.array.isRequired
+    localIdentities: PropTypes.array.isRequired,
+    nameLookupUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -43,7 +45,7 @@ class ProfilePage extends Component {
             verifications = []
       this.props.updateCurrentIdentity(profile, verifications)
     } else if (routeParams.name) {
-      this.props.fetchCurrentIdentity(routeParams.name)
+      this.props.fetchCurrentIdentity(routeParams.name, this.props.nameLookupUrl)
     }
   }
 
