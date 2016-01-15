@@ -135,13 +135,13 @@ input[type=text]{
 }
 div.nav-item.nav-link > a {
   display: block;
-  padding-top: 8px;
+  padding-top: 6px;
 }
 div.nav-item.nav-link > a > img {
   display: block;
   margin: 0 auto;
-  width: 16px;
-  height: 16px;
+  width: 21px;
+  height: 21px;
 }
 .icon-labels {
   margin-top: 8px;
