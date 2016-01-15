@@ -9,6 +9,54 @@ const initialState = {
   },
   bookmarks: [
     {
+      label: 'Jeff Garzik',
+      id: 'jgarzik.id'
+    },
+    {
+      label: 'Fred Wilson',
+      id: 'fredwilson.id'
+    },
+    {
+      label: 'Elizabeth Stark',
+      id: 'starkness.id'
+    },
+    {
+      label: 'Naval Ravikant',
+      id: 'naval.id'
+    },
+    {
+      label: 'Vitalik Buterin',
+      id: 'vitalik.id'
+    },
+    {
+      label: 'Albert Wenger',
+      id: 'albertwenger.id'
+    },
+    {
+      label: 'Jesse Powell',
+      id: 'jespow.id'
+    },
+    {
+      label: 'Sarah Hody',
+      id: 'sarah.id'
+    },
+    {
+      label: 'Jeff Huber',
+      id: 'jhuber.id'
+    },
+    {
+      label: 'Tiffany Hayden',
+      id: 'haydentiff.id'
+    },
+    {
+      label: 'Barry Silbert',
+      id: 'barrysilbert.id'
+    },
+    {
+      label: 'Peter Smith',
+      id: 'peter.id'
+    },
+    {
       label: 'Ryan Shea',
       id: 'ryan.id'
     },
@@ -23,14 +71,6 @@ const initialState = {
     {
       label: 'Guy Lepage',
       id: 'guylepage3.id'
-    },
-    {
-      label: 'Naval Ravikant',
-      id: 'naval.id'
-    },
-    {
-      label: 'Fred Wilson',
-      id: 'fredwilson.id'
     }
   ]
 }
