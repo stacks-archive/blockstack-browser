@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-class Notification extends Component {
+class ListItem extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
@@ -11,13 +11,17 @@ class Notification extends Component {
   render() {
     return (
       <Link className="list-group-item" to={this.props.url}>
-        <h5>{this.props.label}</h5>
         { this.props.body ?
-        <p>{this.props.body}</p>
-        : null }
+          <div>
+            <h5>{this.props.label}</h5>
+            <p>{this.props.body}</p>
+          </div>
+        :
+          <span>{this.props.label}</span>
+        }
       </Link>
     )
   }
 }
 
-export default Notification
+export default ListItem

@@ -13,10 +13,11 @@ import ImportPage        from './pages/ImportPage'
 import BackupPage        from './pages/BackupPage'
 import HomePage          from './pages/HomePage'
 import SearchPage        from './pages/SearchPage'
+import IdentitiesPage    from './pages/IdentitiesPage'
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={HomePage} />
+    <IndexRoute component={IdentitiesPage} />
 
     <Route path="profile/local/:index"        component={ProfilePage} />
     <Route path="profile/local/:index/edit"   component={EditorPage} />
@@ -31,5 +32,6 @@ export default (
     <Route path="backup"        component={BackupPage} />
     <Route path="home"          component={HomePage} />
     <Route path="search"        component={SearchPage} />
+    <Route path="identities"    component={IdentitiesPage} />
   </Route>
 )

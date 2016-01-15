@@ -40,7 +40,7 @@ class SettingsPage extends Component {
     return (
       <div>
         <div>
-          <h2>Settings</h2>
+          <h3>Settings</h3>
 
           <h5>Fund Account</h5>
 

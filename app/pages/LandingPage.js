@@ -60,7 +60,7 @@ class LandingPage extends Component {
       <div>
         <div className="row">
           <div className="col-md-6 form-inline">
-            <h2>Create Account</h2>
+            <h3>Create Account</h3>
 
             { this.state.alertMessage ?
               <Alert message={this.state.alertMessage}

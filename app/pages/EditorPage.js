@@ -88,7 +88,7 @@ class EditorPage extends Component {
       <div>
           { flatProfile && profile ? (
           <div>
-              <h1>Edit Profile</h1>
+              <h3>Edit Profile</h3>
 
               <hr />
               <h3>Basic Information</h3>

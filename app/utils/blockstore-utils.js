@@ -57,3 +57,36 @@ export function getNamesOwned(address, callback) {
       callback([])
     })
 }
+
+export function getIdentities(address, localIdentities, callback) {
+  let remoteNamesDict = {},
+      localNamesDict = {},
+      newNames = []
+
+  getNamesOwned(address, function(namesOwned) {
+    namesOwned.map(function(name) {
+      remoteNamesDict[name] = true
+    })
+
+    localIdentities.map(function(identity) {
+      localNamesDict[identity.id] = true
+      if (remoteNamesDict.hasOwnProperty(identity.id)) {
+        identity[registered] = true
+      }
+    })
+
+    namesOwned.map(function(name) {
+      if (!localNamesDict.hasOwnProperty(name)) {
+        localIdentities.push({
+          index: localIdentities.length,
+          id: name,
+          registered: true
+        })
+      }
+    })
+
+    callback(localIdentities, newNames)
+  })
+
+}
+

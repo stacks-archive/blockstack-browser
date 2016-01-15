@@ -21,24 +21,27 @@ class MainScreen extends Component {
     return (
       <div>
         <Navbar />
-        <div className="view-with-sidebar">
-          <div className="sidebar-section">
-            <Sidebar />
-          </div>
-          <div className="content-section">
-            <div className="container">
-              <div className="row">
-                <div className="col-md-12">
-                  {this.props.children}
-                </div>
+        <div className="content-section">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                {this.props.children}
               </div>
             </div>
           </div>
-        </div>
+        </div>          
       </div>
     )
   }
 }
+
+/*
+        <div className="view-with-sidebar">
+          <div className="sidebar-section">
+            <Sidebar />
+          </div>
+        </div>
+*/
 
 class WelcomeScreen extends Component {
   render() {
