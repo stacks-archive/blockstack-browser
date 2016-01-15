@@ -68,7 +68,7 @@ class LandingPage extends Component {
             : null }
 
             <InputGroup name="password" type="password" label="" placeholder="Password"
-              data={{password: this.state.password}}
+              data={this.state}
               onChange={this.onValueChange} />
             &nbsp;&nbsp;
             <button className="btn btn-primary" onClick={this.createAccount}>Create</button>
