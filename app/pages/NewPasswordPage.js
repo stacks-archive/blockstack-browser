@@ -98,21 +98,13 @@ class NewPasswordPage extends Component {
             )
           })}
 
-
-
           <div>
-            <fieldset>
-              <InputGroup name="currentPassword" label="Current Password" type="password"
-                data={this.state} onChange={this.onValueChange} />
-            </fieldset>
-            <fieldset>
-              <InputGroup name="newPassword" label="New Password" type="password"
-                data={this.state} onChange={this.onValueChange} />
-            </fieldset>
-            <fieldset>
-              <InputGroup name="newPassword2" label="New Password" type="password"
-                data={this.state} onChange={this.onValueChange} />
-            </fieldset>
+            <InputGroup name="currentPassword" label="Current Password" type="password"
+              data={this.state} onChange={this.onValueChange} />
+            <InputGroup name="newPassword" label="New Password" type="password"
+              data={this.state} onChange={this.onValueChange} />
+            <InputGroup name="newPassword2" label="New Password" type="password"
+              data={this.state} onChange={this.onValueChange} />
             <div>
               <button className="btn btn-primary" onClick={this.reencryptMnemonic}>
                 Update Password
