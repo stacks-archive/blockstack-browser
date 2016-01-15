@@ -42,9 +42,9 @@ class BackupPage extends Component {
   }
 
   decryptBackupPhrase() {
-    const _this = this
-    const password = this.state.password
-    const dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
+    const _this = this,
+          password = this.state.password,
+          dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
     decrypt(dataBuffer, password, function(err, plaintextBuffer) {
       if (!err) {
         _this.setState({
@@ -96,7 +96,7 @@ class BackupPage extends Component {
 
               <fieldset>
                 <InputGroup name="password" label="Password" type="password"
-                  data={{}} onChange={this.onChange} />
+                  data={this.state} onChange={this.onChange} />
               </fieldset>
 
               <div>

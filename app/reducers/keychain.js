@@ -1,5 +1,5 @@
 import {
-  CREATE_WALLET, NEW_IDENTITY_ADDRESS, NEW_BITCOIN_ADDRESS
+  CREATE_WALLET, NEW_IDENTITY_ADDRESS, NEW_BITCOIN_ADDRESS, UPDATE_MNEMONIC
 } from '../actions/keychain'
 import { getAccountPrivateKeychain } from '../utils/keychain-utils'
 import { PrivateKeychain } from 'keychain-manager'; delete global._bitcore
@@ -29,6 +29,10 @@ export default function Keychain(state = initialState, action) {
         bitcoinAccounts: [
           createNewAccount(action.bitcoinPublicKeychain)
         ]
+      })
+    case UPDATE_MNEMONIC:
+      return Object.assign({}, state, {
+        encryptedMnemonic: action.encryptedMnemonic
       })
     case NEW_IDENTITY_ADDRESS:
       return Object.assign({}, state, {

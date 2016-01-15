@@ -42,19 +42,19 @@ class SettingsPage extends Component {
         <div>
           <h3>Settings</h3>
 
-          <h5>Fund Account</h5>
-
-          <p>
-            <Link to="/deposit" className="btn btn-primary">
-              Deposit
-            </Link>
-          </p>
-
           <h5>Backup Account</h5>
 
           <p>
-            <Link to="/backup" className="btn btn-primary">
-              Backup
+            <Link to="/backup" className="btn btn-secondary">
+              Backup Account
+            </Link>
+          </p>
+
+          <h5>Update Password</h5>
+
+          <p>
+            <Link to="/newpassword" className="btn btn-secondary">
+              Update Password
             </Link>
           </p>
 

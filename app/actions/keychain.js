@@ -7,6 +7,7 @@ import {
 export const CREATE_WALLET = 'CREATE_WALLET'
 export const NEW_IDENTITY_ADDRESS = 'NEW_IDENTITY_ADDRESS'
 export const NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS'
+export const UPDATE_MNEMONIC = 'UPDATE_MNEMONIC'
 
 export function createWallet(encryptedMnemonic, identityPublicKeychain, bitcoinPublicKeychain) {
   return {
@@ -14,6 +15,13 @@ export function createWallet(encryptedMnemonic, identityPublicKeychain, bitcoinP
     encryptedMnemonic: encryptedMnemonic,
     identityPublicKeychain: identityPublicKeychain,
     bitcoinPublicKeychain: bitcoinPublicKeychain
+  }
+}
+
+export function updateMnemonic(encryptedMnemonic) {
+  return {
+    type: UPDATE_MNEMONIC,
+    encryptedMnemonic: encryptedMnemonic
   }
 }
 
@@ -28,8 +36,8 @@ export function initializeWallet(password) {
     const bitcoinPublicKeychain = getAccountPrivateKeychain(
       masterPrivateKeychain, 'bitcoin', 0).publicKeychain()
 
-    encrypt(new Buffer(mnemonic), password, function(err, ciphertext) {
-      const encryptedMnemonic = ciphertext.toString('hex')
+    encrypt(new Buffer(mnemonic), password, function(err, ciphertextBuffer) {
+      const encryptedMnemonic = ciphertextBuffer.toString('hex')
       dispatch(createWallet(encryptedMnemonic, identityPublicKeychain, bitcoinPublicKeychain))
     })
   }
