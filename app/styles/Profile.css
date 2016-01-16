@@ -142,6 +142,7 @@ input[type=text]{
 div.nav-item.nav-link > a {
   display: block;
   padding-top: 2px;
+  text-decoration: none;
 }
 div.nav-item.nav-link > a > img {
   display: block;
