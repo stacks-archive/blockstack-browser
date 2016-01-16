@@ -122,6 +122,11 @@ body {
 button {
   outline: none!important;
 }
+button.btn.btn-sm.nav-page {
+  margin-top: -4px;
+  padding-right: 8px; 
+  padding-left: 8px;
+}
 input[type=text]{
   border-radius: 20px;
 }
@@ -132,13 +137,11 @@ input[type=text]{
   font-size: 11px;
   border: none;
   text-align: center;
-}
-.nav-search > div > form {
-  margin-top: 4px;
+  height: 22px;
 }
 div.nav-item.nav-link > a {
   display: block;
-  padding-top: 6px;
+  padding-top: 2px;
 }
 div.nav-item.nav-link > a > img {
   display: block;
