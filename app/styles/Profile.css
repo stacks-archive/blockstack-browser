@@ -112,7 +112,6 @@ body {
 .navbar {
   background-color: rgba(235,235,235,1);
   height: 70px;
-  border-bottom: solid 1px rgba(225,225,225,1);
 }
   /****** custom element ***************************************/
   .nav-page {
@@ -141,8 +140,9 @@ input[type=text]{
 }
 div.nav-item.nav-link > a {
   display: block;
-  padding-top: 2px;
+  padding-top: 3px;
   text-decoration: none;
+  margin-right: 5px;
 }
 div.nav-item.nav-link > a > img {
   display: block;
@@ -151,16 +151,16 @@ div.nav-item.nav-link > a > img {
   height: 21px;
 }
 .icon-labels {
-  margin-top: 8px;
+  margin-top: 6px;
   display: block;
   font-size: 11px;
   color: rgba(61,61,61,1);
 }
 .toolbar {
-  padding-left: 15px;
+  padding-left: 25px;
 }
 .back-forth {
-  padding-right: 15px;
+  padding-right: 25px;
 }
 
 
