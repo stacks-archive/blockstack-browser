@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 
-import * as KeychainActions from '../actions/keychain'
+import { KeychainActions } from '../store/keychain'
 
 function mapStateToProps(state) {
   return {

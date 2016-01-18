@@ -2,9 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
-import LandingPage from '../pages/LandingPage'
+import Navbar from './components/Navbar'
+import LandingPage from './pages/LandingPage'
 
 function mapStateToProps(state) {
   return {
@@ -35,14 +34,6 @@ class MainScreen extends Component {
   }
 }
 
-/*
-        <div className="view-with-sidebar">
-          <div className="sidebar-section">
-            <Sidebar />
-          </div>
-        </div>
-*/
-
 class WelcomeScreen extends Component {
   render() {
     return (
@@ -71,7 +62,7 @@ class App extends Component {
         (() => {
           if (false) {
           //if (process.env.NODE_ENV !== 'production') {
-            const DevTools = require('./DevTools')
+            const DevTools = require('./components/DevTools')
             return <DevTools />
           }
         })()

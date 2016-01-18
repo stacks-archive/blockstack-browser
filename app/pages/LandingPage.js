@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
-import * as KeychainActions from '../actions/keychain'
+import { KeychainActions } from '../store/keychain'
 import InputGroup from '../components/InputGroup'
 
 function mapStateToProps(state) {

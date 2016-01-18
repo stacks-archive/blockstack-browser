@@ -6,7 +6,7 @@ import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
 import InputGroup from '../components/InputGroup'
 import { SaveButton } from '../components/Buttons'
-import * as IdentityActions from '../actions/identities'
+import { IdentityActions } from '../store/identities'
 import { getNameParts } from '../utils/profile-utils'
 
 function mapStateToProps(state) {

@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
-import * as KeychainActions from '../actions/keychain'
+import { KeychainActions } from '../store/keychain'
 import { decrypt } from '../utils/keychain-utils'
 
 function mapStateToProps(state) {
