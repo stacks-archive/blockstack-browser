@@ -28,9 +28,10 @@ app.on('window-all-closed', () => {
 app.on('ready', () => {
   var size = electron.screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
-    width: 1000,
-    height: 800,
-    frame: true
+    width: 1200,
+    height: 900,
+    frame: true,
+    titleBarStyle: 'hidden'
   });
 
   if (process.env.HOT) {
