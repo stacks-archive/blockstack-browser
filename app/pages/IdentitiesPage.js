@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 
 import ListItem from '../components/ListItem'
-import * as IdentityActions from '../actions/identities'
+import { IdentityActions } from '../store/identities'
 import { getNamesOwned, getIdentities } from '../utils/blockstore-utils'
 
 function mapStateToProps(state) {

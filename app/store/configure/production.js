@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import rootReducer from '../reducers'
+import RootReducer from '../reducers'
 import persistState from 'redux-localstorage'
 
 const finalCreateStore = compose(
@@ -9,5 +9,5 @@ const finalCreateStore = compose(
 )(createStore)
 
 export default function configureStore(initialState) {
-  return finalCreateStore(rootReducer, initialState)
+  return finalCreateStore(RootReducer, initialState)
 }

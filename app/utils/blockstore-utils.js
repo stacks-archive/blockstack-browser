@@ -42,7 +42,6 @@ export function getNameCost(nameWithTld) {
 
 export function getNamesOwned(address, addressLookupUrl, callback) {
   const url = addressLookupUrl.replace('{address}', address)
-  console.log(url)
   fetch(url)
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))

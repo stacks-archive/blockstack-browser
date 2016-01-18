@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 
 import InputGroup from '../components/InputGroup'
 import { SaveButton } from '../components/Buttons'
-import * as SettingsActions from '../actions/settings'
+import { SettingsActions } from '../store/settings'
 
 function mapStateToProps(state) {
   return {

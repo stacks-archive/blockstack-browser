@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import * as KeychainActions from '../actions/keychain'
+import { KeychainActions } from '../store/keychain'
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import { decrypt, encrypt } from '../utils/keychain-utils'

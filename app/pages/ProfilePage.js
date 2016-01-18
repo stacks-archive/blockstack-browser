@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 
 import AccountListItem from '../components/AccountListItem'
 import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
-import * as ProfileActions from '../actions/identities'
+import { IdentityActions } from '../store/identities'
 
 function mapStateToProps(state) {
   return {
@@ -16,7 +16,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ProfileActions, dispatch)
+  return bindActionCreators(IdentityActions, dispatch)
 }
 
 class ProfilePage extends Component {
