@@ -23,8 +23,8 @@
 /* idcard specifics */
 
 .id-flex img {
-  width: 317px;
-  height: 473px;
+  width: 260px;
+  height: 371px;
   object-fit: cover;
   margin: 0 10px;
   bottom: 0;
@@ -36,8 +36,8 @@
   display: table-cell;
   vertical-align: top;
   bottom: 0;
-  width: 317px;
-  height: 473px;
+  width: 260px;
+  height: 371px;
   margin:0 10px;
 }
 ul {
@@ -98,11 +98,11 @@ i.fa {
 .overlay {
   background-color: rgba(0,0,0,0.2);
   position: absolute;
-  width: 317px;
-  height: 473px;
+  width: 260px;
+  height: 371px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
-  margin:-473px 10px 10px 10px;
+  margin:-371px 10px 10px 10px;
 }
 
 /* guy build */
