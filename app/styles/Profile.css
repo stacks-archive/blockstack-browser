@@ -172,6 +172,11 @@ div.nav-item.nav-link > a > img {
   padding-right: 25px;
   padding-left: 15px;
 }
-
-
+.headspace {
+  margin-top: 25px;
+}
+.inverse {
+  color: #ffffff;
+  font-weight: 100;
+}
 
