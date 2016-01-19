@@ -1,4 +1,30 @@
-/* idcard */
+/*
+8px = 0.5rem
+9px = 0.5625rem
+10px = 0.625rem
+11px = 0.6875rem
+12px = 0.75rem
+13px = 0.8125rem  *****
+14px = 0.875rem 
+15px = 0.9375rem
+16px = 1rem (base)
+18px = 1.125rem
+20px = 1.25rem
+22px = 1.375rem
+24px = 1.5rem
+26px = 1.625rem
+28px = 1.75rem
+30px = 1.875rem
+32px = 2rem
+34px = 2.125rem
+36px = 2.25rem
+*/
+
+body {
+  background-color: #1C1C1C;
+  font-size: 0.8125rem;
+  font-weight: 200;
+}
 .idcard {
   position: relative;
   border-radius:.25rem;
@@ -6,14 +32,9 @@
 }
 .idcard-blockchainid {
   margin-bottom: 20px;
-}
-.idcard-blockchainid > h4 {
   display: block;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
 }
-
-/* idcard specifics */
-
 .id-flex img {
   width: 260px;
   height: 371px;
@@ -22,7 +43,6 @@
   -webkit-border-radius: 8px;
   border-radius: 8px;
 }
-
 .id-flex {
   display: table-cell;
   vertical-align: top;
@@ -30,24 +50,16 @@
   width: 260px;
   height: 371px;
 }
-ul {
-  padding: 0;
-}
-
 .idcard-block {
   display: table-cell;
   vertical-align: top;
   width: 100%;
 }
-
-.idcard-block > p {/*font-size:0.875rem;*/}
-
 .idcard-name {
+  margin-bottom: 15px;
   font-size: 1.25em;
-  text-align: left;
-  margin-bottom: 5px;
+  font-weight: 200;
 }
-
 .id-social > div > ul {
   list-style: none;
   height: 39px;
@@ -55,13 +67,12 @@ ul {
   margin-bottom: 5px;
   margin-left: 15px;
 }
-
 .id-social > div > ul > li a {
-  vertical-align:middle;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-  color:rgba(255,255,255,1);
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(255,255,255,1);
   line-height: 32px;
   height: 32px;
   padding-left: 10px;
@@ -75,14 +86,14 @@ i.fa {
   margin-right: 5px;
   margin-left: 5px;
 }
-.id-social > div > ul > li a > span {padding-left:5px; font-size:0.812rem;}
-
+.id-social > div > ul > li a > span {
+  padding-left: 5px;
+}
 .idcard-wrap {
-  padding: 10px 30px;
+  margin-top: 85px;
   color: rgba(255,255,255,1);
   font-weight: inherit;
 }
-
 .overlay {
   background-color: rgba(0,0,0,0.2);
   position: absolute;
@@ -90,12 +101,7 @@ i.fa {
   height: 371px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
-  margin:-371px 0 0 0;
-}
-
-/* guy build */
-body {
-  background-color: #1C1C1C;
+  margin: -371px 0 0 0;
 }
 .navbar {
   background-color: rgba(235,235,235,1);
@@ -162,7 +168,7 @@ div.nav-item.nav-link > a > img {
 }
 .inverse {
   color: #ffffff;
-  font-weight: 100;
+  font-weight: 200;
 }
 .bookmarks-temp > .list-group-item {
   background-color: transparent;

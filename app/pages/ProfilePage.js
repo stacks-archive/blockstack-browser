@@ -89,19 +89,24 @@ class ProfilePage extends Component {
           </div>
           <div className="col-md-5">
             <div className="idcard-wrap">
-              <div className="idcard-blockchainid">
-                <h4>{blockchainId} guylepage3</h4>
+              <div className="idcard-blockchainid inverse">
+                {blockchainId} guylepage3
+              </div>
+              <div className="idcard-blockchainid inverse">
+                Registered in block #387562,<br/>
+                transaction #339
               </div>
               <h1 className="idcard-name">{getName(profile)}</h1>
+              <div className="inverse">
+                {profile.description}
+              </div>
+              <div className="pill-nav pull-right">
+                <Link to={this.props.location.pathname + "/export"}>
+                  <img src="images/icon-export.svg"/>
+                </Link>
+              </div>
             </div>
-            <div className="inverse">
-              {profile.description}
-            </div>
-            <div className="pill-nav pull-right">
-              <Link to={this.props.location.pathname + "/export"}>
-                <img src="images/icon-export.svg"/>
-              </Link>
-            </div>
+            
           </div>
           <div className="container col-md-3 pull-right">
             <div>
