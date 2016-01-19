@@ -30,10 +30,12 @@ body {
   border-radius:.25rem;
   border: .0625rem solid rgba(229,229,229,1);
 }
-.idcard-blockchainid {
+.idcard-body {
   margin-bottom: 20px;
   display: block;
-  font-size: 0.75rem;
+}
+.dim {
+  color: #949494;
 }
 .id-flex img {
   width: 260px;
