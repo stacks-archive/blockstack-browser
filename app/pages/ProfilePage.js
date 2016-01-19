@@ -67,23 +67,17 @@ class ProfilePage extends Component {
         profile = this.state.currentIdentity.profile,
         verifications = this.state.currentIdentity.verifications
     return ( 
-      <div>
+      <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
         <div>
-          <div className="col-md-6">
-            <div className="profile-dropdown-tab">
+          <div className="col-md-4">
+            <div>
               <div className="profile-wrap">
                 <div className="idcard-block">
                   <div className="id-flex">
                     <img className="img-idcard" src={getAvatarUrl(profile)} />
                     <div className="overlay"></div>
                   </div>
-                </div>
-                <div className="idcard-wrap">
-                  <div className="idcard-blockchainid">
-                    <h4>{blockchainId}</h4>
-                  </div>
-                  <h1 className="idcard-name">{getName(profile)}</h1>
                 </div>
               </div>
             </div>
@@ -93,15 +87,35 @@ class ProfilePage extends Component {
               </Link>
             </div>
           </div>
-          <div className="col-md-6">
-            <div>
-              <Link to={this.props.location.pathname + "/export"}>
-                Export
-              </Link>
+          <div className="col-md-5">
+            <div className="idcard-wrap">
+              <div className="idcard-body inverse">
+                {blockchainId} guylepage3
+              </div>
+              <div className="idcard-body dim">
+                Registered in block <span className="inverse">#387562</span>,<br/>
+                transaction <span className="inverse">#339</span>
+              </div>
+              <h1 className="idcard-name">{getName(profile)}</h1>
+              <div className="idcard-body inverse">
+                {profile.description}
+              </div>
+              <div className="idcard-body dim">
+                154 Grand St,<br/>
+                New York, NY 10013, United States
+              </div>
+              <div className="idcard-body dim">
+                Born Oct 14, 1986
+              </div>
+              <div className="pill-nav pull-right">
+                <Link to={this.props.location.pathname + "/export"}>
+                  <img src="images/icon-export.svg"/>
+                </Link>
+              </div>
             </div>
           </div>
-          <div className="container pull-right">
-            <div>
+          <div className="container col-md-3 pull-right profile-right-col-fill">
+            <div className="profile-right-col">
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
                   return (
