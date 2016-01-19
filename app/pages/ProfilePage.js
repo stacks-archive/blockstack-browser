@@ -94,6 +94,9 @@ class ProfilePage extends Component {
               </div>
               <h1 className="idcard-name">{getName(profile)}</h1>
             </div>
+            <div className="inverse">
+              {profile.description}
+            </div>
             <div className="pill-nav pull-right">
               <Link to={this.props.location.pathname + "/export"}>
                 <img src="images/icon-export.svg"/>
