@@ -210,9 +210,10 @@ h4.headspace, h5.headspace {
   background-color: #4A90E2;
   color: #1C1C1C;
   border: 1px solid #4A90E2;
-
 }
-
+.btn-pro-edit:hover, .btn-pro-edit:active {
+  color: #1C1C1C;
+}
 
 
 
