@@ -20,6 +20,8 @@
 36px = 2.25rem
 */
 
+html,body{height:100%;}
+
 body {
   background-color: #1C1C1C;
   font-size: 0.8125rem;
@@ -226,4 +228,23 @@ div.pill-nav > a > img {
   width: 17px;
   height: 17px;
 }
+.profile-right-col-fill {
+  top: -105px;
+  position: relative;
+  height:85vh;
+  border-left: 1px solid #484848;
+}
+.profile-right-col {
+  padding-top: 105px;
+}
+.profile-spacer {
+  padding-top: 65px;
+}
+div.profile-right-col > ul {
+  list-style-type: none;
+}
+
+
+
+
 

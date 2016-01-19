@@ -67,7 +67,7 @@ class ProfilePage extends Component {
         profile = this.state.currentIdentity.profile,
         verifications = this.state.currentIdentity.verifications
     return ( 
-      <div>
+      <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
         <div>
           <div className="col-md-4">
@@ -113,10 +113,9 @@ class ProfilePage extends Component {
                 </Link>
               </div>
             </div>
-            
           </div>
-          <div className="container col-md-3 pull-right">
-            <div>
+          <div className="container col-md-3 pull-right profile-right-col-fill">
+            <div className="profile-right-col">
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
                   return (
