@@ -208,6 +208,8 @@ h4.headspace, h5.headspace {
   border: 1px solid #484848;
   border-radius: 20px;
   font-size: 16px;
+}
+div.pill-nav > a {
   padding-right: 15px;
 }
 div.pill-nav > a > img {
