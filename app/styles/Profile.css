@@ -179,4 +179,6 @@ div.nav-item.nav-link > a > img {
   color: #ffffff;
   font-weight: 100;
 }
-
+.list-group-item {
+  background-color: transparent;
+}
