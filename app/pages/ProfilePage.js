@@ -70,20 +70,14 @@ class ProfilePage extends Component {
       <div>
         { profile !== null && profile !== undefined ?
         <div>
-          <div className="col-md-6">
-            <div className="profile-dropdown-tab">
+          <div className="col-md-4">
+            <div>
               <div className="profile-wrap">
                 <div className="idcard-block">
                   <div className="id-flex">
                     <img className="img-idcard" src={getAvatarUrl(profile)} />
                     <div className="overlay"></div>
                   </div>
-                </div>
-                <div className="idcard-wrap">
-                  <div className="idcard-blockchainid">
-                    <h4>{blockchainId}</h4>
-                  </div>
-                  <h1 className="idcard-name">{getName(profile)}</h1>
                 </div>
               </div>
             </div>
@@ -93,14 +87,20 @@ class ProfilePage extends Component {
               </Link>
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-5">
+            <div className="idcard-wrap">
+              <div className="idcard-blockchainid">
+                <h4>{blockchainId} guylepage3</h4>
+              </div>
+              <h1 className="idcard-name">{getName(profile)}</h1>
+            </div>
             <div>
               <Link to={this.props.location.pathname + "/export"}>
                 Export
               </Link>
             </div>
           </div>
-          <div className="container pull-right">
+          <div className="container col-md-3 pull-right">
             <div>
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
