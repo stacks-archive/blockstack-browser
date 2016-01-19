@@ -115,7 +115,7 @@ class ProfilePage extends Component {
             </div>
           </div>
           <div className="container col-md-3 pull-right profile-right-col-fill">
-            <div className="profile-right-col">
+            <div className="profile-right-col inverse">
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
                   return (
