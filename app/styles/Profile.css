@@ -172,6 +172,10 @@ div.nav-item.nav-link > a > img {
   padding-right: 25px;
   padding-left: 15px;
 }
+.container-width {
+  padding-right: 35px;
+  padding-left: 35px;
+}
 .headspace {
   margin-top: 25px;
 }
