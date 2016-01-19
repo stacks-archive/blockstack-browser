@@ -31,7 +31,8 @@ class SearchItem extends Component {
       <Link to={"/profile/" + this.props.id} className="list-group-item">
         <div className="row">
           <div className="col-md-1">
-            <Image src={avatarUrl} id={this.props.id} fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
+            <Image src={avatarUrl} id={this.props.id}
+              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
               style={{ width: '25px', height: '25px' }} className="img-25" />
           </div>
           <div className="col-md-2">{name}</div>
@@ -52,7 +53,6 @@ class SearchItem extends Component {
       </Link>
     )
   }
-
 }
 
 class SearchBar extends Component {

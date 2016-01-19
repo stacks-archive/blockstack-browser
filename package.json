@@ -90,7 +90,7 @@
   },
   "dependencies": {
     "bitcore-mnemonic": "git+ssh://git@github.com/onenameio/bitcore-mnemonic.git",
-    "blockchain-profile": "^0.3.0",
+    "blockchain-profile": "^0.3.2",
     "bootstrap": "git+ssh://git@github.com/onenameio/onename-bootstrap.git",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
