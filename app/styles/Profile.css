@@ -111,7 +111,8 @@ body {
 }
 .navbar {
   background-color: rgba(235,235,235,1);
-  height: 70px;
+  height: 80px;
+  padding-top: 18px;
 }
   /****** custom element ***************************************/
   .nav-page {
