@@ -207,13 +207,15 @@ h4.headspace, h5.headspace {
   font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  background-color: #4A90E2;
+  background-color: #4a90e2;
   color: #1C1C1C;
-  border: 1px solid #4A90E2;
+  border: 1px solid #4a90e2;
 }
 .btn-pro-edit:hover, .btn-pro-edit:active, .btn-pro-edit:focus, .btn-pro-edit:active:focus {
   color: #1C1C1C;
   outline: none;
+  background-color: #2d7edd;
+  border: 1px solid #2d7edd;
 }
 
 
