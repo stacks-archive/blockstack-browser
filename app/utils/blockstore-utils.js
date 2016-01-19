@@ -86,3 +86,13 @@ export function getIdentities(address, addressLookupUrl, localIdentities, callba
 
 }
 
+export function searchIdentities(query, searchUrl, callback) {
+  const url = searchUrl.replace('{query}', query)
+  fetch(url)
+    .then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      const results = responseJson.results
+      callback(results)
+    })
+}

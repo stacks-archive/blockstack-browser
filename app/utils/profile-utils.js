@@ -33,6 +33,18 @@ export function getNameParts(profile) {
   return givenName, familyName
 }
 
+export function getSocialAccounts(profile) {
+  var accounts = []
+  if (profile.account) {
+    profile.account.map(function(account) {
+      if (account.service === 'twitter' || account.service === 'facebook') {
+        accounts.push(account)
+      }
+    })
+  }
+  return accounts
+}
+
 export function getVerifiedAccounts(profile, verifications) {
   var filteredAccounts = []
   if (profile.account) {

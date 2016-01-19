@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link, History } from 'react-router'
 import { BackButton, ForwardButton } from '../components/Buttons'
+import SearchBar from './SearchBar'
 
 class Navbar extends Component {
   static propTypes = {
@@ -53,7 +54,8 @@ class Navbar extends Component {
           <div className="nav-search">
             <div className="nav-link">
               <form className="form-group">
-                <input className="form-control form-control-sm" type="text" placeholder="Search the blockchain" />
+                <SearchBar placeholder="Search the blockchain"
+                  resultCount={12} />
               </form>
             </div>
           </div>
