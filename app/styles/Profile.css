@@ -198,8 +198,19 @@ h4.headspace, h5.headspace {
   background-color: #000000;
   color: #616161!important;
 }
-
-
+.btn-pro-edit {
+  margin-top: 15px;
+  margin-left: 10px;
+  width: 258px;
+  height: 50px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: #4A90E2;
+  color: #1C1C1C;
+  border: 1px solid #4A90E2;
+}
 
 
 
