@@ -87,13 +87,13 @@ class ProfilePage extends Component {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="col-md-6">
             <div>
               <Link to={this.props.location.pathname + "/edit"}>
                 Edit
               </Link>
             </div>
+          </div>
+          <div className="col-md-6">
             <div>
               <Link to={this.props.location.pathname + "/export"}>
                 Export
