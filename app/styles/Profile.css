@@ -181,4 +181,5 @@ div.nav-item.nav-link > a > img {
 }
 .list-group-item {
   background-color: transparent;
+  border: none;
 }
