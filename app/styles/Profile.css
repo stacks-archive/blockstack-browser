@@ -176,27 +176,30 @@ div.nav-item.nav-link > a > img {
   color: #616161;
   font-weight: 100;
 }
-.list-group-item {
+.bookmarks-temp > .list-group-item {
   background-color: transparent;
   border: none;
   border-radius: 0;
 }
-a.list-group-item {
+.bookmarks-temp > a.list-group-item {
   color: #fff!important;
 }
-.list-group-item:first-child {
+.bookmarks-temp > .list-group-item:first-child {
   border-radius: 0;
 }
-.list-group {
+.bookmarks-temp {
   margin-left: -18px;
   max-width: 275px;
 }
-h4, h5 {
+h4.headspace, h5.headspace {
   margin-bottom: 30px;
 }
-a.list-group-item:focus, a.list-group-item:hover, button.list-group-item:focus, button.list-group-item:hover {
+.bookmarks-temp > a.list-group-item:focus, .bookmarks-temp > a.list-group-item:hover {
   background-color: #000000;
   color:;
+}
+.headspace {
+  border-bottom: 1px solid #616161;
 }
 
 

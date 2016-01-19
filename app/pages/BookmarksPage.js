@@ -15,10 +15,10 @@ class BookmarksPage extends Component {
   render() {
     return (
       <div>
-        <h4 className="dark">Bookmarks</h4>
+        <h4 className="headspace dark">Bookmarks</h4>
 
         <div style={{paddingBottom: '15px'}}>
-          <ul className="list-group">
+          <ul className="list-group bookmarks-temp">
           { this.props.bookmarks.map(function(bookmark, index) {
             return (
               <ListItem
