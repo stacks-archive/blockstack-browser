@@ -111,8 +111,10 @@ body {
 }
 .navbar {
   background-color: rgba(235,235,235,1);
-  height: 80px;
-  padding-top: 18px;
+  height: 83px;
+  padding-top: 21px;
+  padding-right: 0;
+  padding-left: 0;
 }
   /****** custom element ***************************************/
   .nav-page {
@@ -121,6 +123,11 @@ body {
   }
 button {
   outline: none!important;
+}
+.nav.navbar-nav {
+  border-top: 1px solid #e1e1e1;
+  width: 100%;
+  padding-top: 4px;
 }
 button.btn.btn-sm.nav-page {
   margin-top: -4px;
@@ -141,7 +148,7 @@ input[type=text]{
 }
 div.nav-item.nav-link > a {
   display: block;
-  padding-top: 3px;
+  padding-top: 1px;
   text-decoration: none;
   margin-right: 5px;
 }
@@ -159,9 +166,11 @@ div.nav-item.nav-link > a > img {
 }
 .toolbar {
   padding-left: 25px;
+  padding-right: 15px;
 }
 .back-forth {
   padding-right: 25px;
+  padding-left: 15px;
 }
 
 
