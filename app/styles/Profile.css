@@ -192,17 +192,12 @@ div.nav-item.nav-link > a > img {
   max-width: 275px;
 }
 h4.headspace, h5.headspace {
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 .bookmarks-temp > a.list-group-item:focus, .bookmarks-temp > a.list-group-item:hover {
   background-color: #000000;
   color: #616161!important;
 }
-.headspace {
-  padding-bottom: 15px;
-  border-bottom: 1px solid #25272D;
-}
-
 
 
 
