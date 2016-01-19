@@ -21,7 +21,7 @@ class MainScreen extends Component {
       <div>
         <Navbar />
         <div className="content-section">
-          <div className="container-fluid container-width">
+          <div className="container">
             <div className="row">
               <div className="col-md-12">
                 {this.props.children}

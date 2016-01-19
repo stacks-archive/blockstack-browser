@@ -15,7 +15,7 @@ class BookmarksPage extends Component {
   render() {
     return (
       <div>
-        <h5 className="headspace inverse">Bookmarks</h5>
+        <h4 className="dark">Bookmarks</h4>
 
         <div style={{paddingBottom: '15px'}}>
           <ul className="list-group">

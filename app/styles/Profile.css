@@ -172,18 +172,36 @@ div.nav-item.nav-link > a > img {
   padding-right: 25px;
   padding-left: 15px;
 }
-.container-width {
-  padding-right: 35px;
-  padding-left: 35px;
-}
-.headspace {
-  margin-top: 25px;
-}
-.inverse {
-  color: #ffffff;
+.dark {
+  color: #616161;
   font-weight: 100;
 }
 .list-group-item {
   background-color: transparent;
   border: none;
+  border-radius: 0;
 }
+a.list-group-item {
+  color: #fff!important;
+}
+.list-group-item:first-child {
+  border-radius: 0;
+}
+.list-group {
+  margin-left: -18px;
+  max-width: 275px;
+}
+h4, h5 {
+  margin-bottom: 30px;
+}
+a.list-group-item:focus, a.list-group-item:hover, button.list-group-item:focus, button.list-group-item:hover {
+  background-color: #000000;
+  color:;
+}
+
+
+
+
+
+
+
