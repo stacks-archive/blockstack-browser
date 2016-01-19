@@ -94,7 +94,7 @@ class ProfilePage extends Component {
               </div>
               <h1 className="idcard-name">{getName(profile)}</h1>
             </div>
-            <div>
+            <div className="pill-nav">
               <Link to={this.props.location.pathname + "/export"}>
                 Export
               </Link>

@@ -204,6 +204,9 @@ h4.headspace, h5.headspace {
   background-color: #2d7edd;
   border: 1px solid #2d7edd;
 }
-
+.pill-nav {
+  border: 1px solid #484848;
+  border-radius: 20px;
+}
 
 
