@@ -96,7 +96,7 @@ class ProfilePage extends Component {
             </div>
             <div className="pill-nav">
               <Link to={this.props.location.pathname + "/export"}>
-                Export
+                <img src="images/icon-export.svg"/>
               </Link>
             </div>
           </div>

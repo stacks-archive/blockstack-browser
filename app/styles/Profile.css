@@ -208,5 +208,9 @@ h4.headspace, h5.headspace {
   border: 1px solid #484848;
   border-radius: 20px;
 }
-
+div.pill-nav > a > img {
+  margin-left: 10px;
+  width: 16px;
+  height: 16px;
+}
 
