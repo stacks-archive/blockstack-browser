@@ -201,8 +201,8 @@ h4.headspace, h5.headspace {
 .btn-pro-edit {
   margin-top: 15px;
   margin-left: 10px;
+  padding: 0.8125rem 1.25rem;
   width: 258px;
-  height: 50px;
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 1px;
@@ -210,6 +210,7 @@ h4.headspace, h5.headspace {
   background-color: #4A90E2;
   color: #1C1C1C;
   border: 1px solid #4A90E2;
+
 }
 
 
