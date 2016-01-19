@@ -107,7 +107,7 @@ i.fa {
 
 /* guy build */
 body {
-  background-color: rgba(15,15,15,1);
+  background-color: #1F2126;
 }
 .navbar {
   background-color: rgba(235,235,235,1);
@@ -172,8 +172,8 @@ div.nav-item.nav-link > a > img {
   padding-right: 25px;
   padding-left: 15px;
 }
-.dark {
-  color: #616161;
+.inverse {
+  color: #ffffff;
   font-weight: 100;
 }
 .bookmarks-temp > .list-group-item {
@@ -195,11 +195,12 @@ h4.headspace, h5.headspace {
   margin-bottom: 30px;
 }
 .bookmarks-temp > a.list-group-item:focus, .bookmarks-temp > a.list-group-item:hover {
-  background-color: #000000;
-  color:;
+  background-color: #18191D;
+  color: #616161!important;
 }
 .headspace {
-  border-bottom: 1px solid #616161;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #25272D;
 }
 
 
