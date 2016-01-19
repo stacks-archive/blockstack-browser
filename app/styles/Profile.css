@@ -23,8 +23,8 @@
 /* idcard specifics */
 
 .id-flex img {
-  width: 317px;
-  height: 473px;
+  width: 260px;
+  height: 371px;
   object-fit: cover;
   margin: 0 10px;
   bottom: 0;
@@ -36,8 +36,8 @@
   display: table-cell;
   vertical-align: top;
   bottom: 0;
-  width: 317px;
-  height: 473px;
+  width: 260px;
+  height: 371px;
   margin:0 10px;
 }
 ul {
@@ -98,20 +98,23 @@ i.fa {
 .overlay {
   background-color: rgba(0,0,0,0.2);
   position: absolute;
-  width: 317px;
-  height: 473px;
+  width: 260px;
+  height: 371px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
-  margin:-473px 10px 10px 10px;
+  margin:-371px 10px 10px 10px;
 }
 
 /* guy build */
 body {
-  background-color: rgba(15,15,15,1);
+  background-color: #1C1C1C;
 }
 .navbar {
   background-color: rgba(235,235,235,1);
-  height: 70px;
+  height: 83px;
+  padding-top: 21px;
+  padding-right: 0;
+  padding-left: 0;
 }
   /****** custom element ***************************************/
   .nav-page {
@@ -120,6 +123,11 @@ body {
   }
 button {
   outline: none!important;
+}
+.nav.navbar-nav {
+  border-top: 1px solid #e1e1e1;
+  width: 100%;
+  padding-top: 4px;
 }
 button.btn.btn-sm.nav-page {
   margin-top: -4px;
@@ -140,7 +148,7 @@ input[type=text]{
 }
 div.nav-item.nav-link > a {
   display: block;
-  padding-top: 3px;
+  padding-top: 1px;
   text-decoration: none;
   margin-right: 5px;
 }
@@ -158,9 +166,53 @@ div.nav-item.nav-link > a > img {
 }
 .toolbar {
   padding-left: 25px;
+  padding-right: 15px;
 }
 .back-forth {
   padding-right: 25px;
+  padding-left: 15px;
+}
+.inverse {
+  color: #ffffff;
+  font-weight: 100;
+}
+.bookmarks-temp > .list-group-item {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+}
+.bookmarks-temp > a.list-group-item {
+  color: #fff!important;
+}
+.bookmarks-temp > .list-group-item:first-child {
+  border-radius: 0;
+}
+.bookmarks-temp {
+  margin-left: -18px;
+  max-width: 275px;
+}
+h4.headspace, h5.headspace {
+  margin-bottom: 50px;
+}
+.bookmarks-temp > a.list-group-item:focus, .bookmarks-temp > a.list-group-item:hover {
+  background-color: #000000;
+  color: #616161!important;
+}
+.btn-pro-edit {
+  margin-top: 15px;
+  margin-left: 10px;
+  padding: 0.8125rem 1.25rem;
+  width: 258px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: #4A90E2;
+  color: #1C1C1C;
+  border: 1px solid #4A90E2;
+}
+.btn-pro-edit:hover, .btn-pro-edit:active {
+  color: #1C1C1C;
 }
 
 
