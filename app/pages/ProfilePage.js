@@ -56,7 +56,7 @@ class ProfilePage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.routeParams.id !== this.props.routeParams.id) {
+    if (nextProps.routeParams !== this.props.routeParams) {
       this.componentHasNewRouteParams(nextProps.routeParams)
     }
     this.setState({

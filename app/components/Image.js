@@ -5,7 +5,7 @@ class Image extends Component {
   static propTypes = {
     src: PropTypes.string.isRequired,
     fallbackSrc: PropTypes.string.isRequired,
-    style: PropTypes.string,
+    style: PropTypes.object,
     className: PropTypes.string,
     id: PropTypes.string
   }
@@ -21,7 +21,6 @@ class Image extends Component {
   }
 
   onError(event) {
-    console.log('error with image for id: ' + this.props.id)
     this.setState({
       src: 'https://s3.amazonaws.com/65m/avatar-placeholder.png'
     })
