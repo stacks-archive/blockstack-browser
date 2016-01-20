@@ -242,8 +242,14 @@ div.pill-nav > a > img {
 }
 div.profile-right-col > ul {
   list-style-type: none;
+  padding-left: 0;
 }
-
+div.profile-right-col > ul > li > a {
+  color: #949494;
+}
+div.profile-right-col > ul > li {
+  overflow: hidden;
+}
 
 
 
