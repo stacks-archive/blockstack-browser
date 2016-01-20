@@ -251,6 +251,12 @@ div.profile-right-col > ul > li {
   overflow: hidden;
 }
 
-
+div.profile-right-col > ul > li:first-child {
+  width: 140px;
+  color: #949494;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 
