@@ -45,7 +45,6 @@ class SearchBar extends Component {
 
   componentHasNewProps(props) {
     this.setState({
-      query: props.query,
       searchResults: props.results
     })
   }
@@ -65,8 +64,6 @@ class SearchBar extends Component {
 
   onQueryChange(event) {
     const query = event.target.value
-    
-    this.props.updateQuery(query)
 
     if (this.state.timeoutId) {
       clearTimeout(this.state.timeoutId)
@@ -77,6 +74,7 @@ class SearchBar extends Component {
     }, this.props.timeout)
 
     this.setState({
+      query: query,
       timeoutId: timeoutId
     })
   }
@@ -84,7 +82,6 @@ class SearchBar extends Component {
   render() {
     return (
       <div>
-
         <div>
           <input className="form-control form-control-sm" type="text"
             placeholder={this.props.placeholder} name="query"
@@ -101,7 +98,6 @@ class SearchBar extends Component {
             }
           })}
         </ul>
-
       </div>
     )
   }
