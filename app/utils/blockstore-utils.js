@@ -85,4 +85,3 @@ export function getIdentities(address, addressLookupUrl, localIdentities, callba
   })
 
 }
-

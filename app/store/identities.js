@@ -4,9 +4,10 @@ const UPDATE_CURRENT = 'UPDATE_CURRENT',
       CREATE_NEW = 'CREATE_NEW',
       UPDATE_PROFILE = 'UPDATE_PROFILE'
 
-function updateCurrentIdentity(profile, verifications) {
+function updateCurrentIdentity(id, profile, verifications) {
   return {
     type: UPDATE_CURRENT,
+    id: id,
     profile: profile,
     verifications: verifications
   }
@@ -27,9 +28,9 @@ function updateProfile(index, profile) {
   }
 }
 
-function fetchCurrentIdentity(name, nameLookupUrl) {
+function fetchCurrentIdentity(nameWithTld, nameLookupUrl) {
   return dispatch => {
-    const username = name.replace('.id', ''),
+    const username = nameWithTld.replace('.id', ''),
           url = nameLookupUrl.replace('{name}', username),
           _this = this
     fetch(url)
@@ -39,7 +40,7 @@ function fetchCurrentIdentity(name, nameLookupUrl) {
         const legacyProfile = responseJson[username]['profile'],
               verifications = responseJson[username]['verifications'],
               profile = Person.fromLegacyFormat(legacyProfile).profile
-        dispatch(updateCurrentIdentity(profile, verifications))
+        dispatch(updateCurrentIdentity(nameWithTld, profile, verifications))
       })
       .catch((error) => {
         console.warn(error)
@@ -73,6 +74,7 @@ export function IdentityReducer(state = initialState, action) {
     case UPDATE_CURRENT:
       return Object.assign({}, state, {
         current: {
+          id: action.id,
           profile: action.profile,
           verifications: action.verifications
         }
