@@ -264,3 +264,7 @@ div.profile-right-col > ul > li:first-child {
   padding-top: 50px;
 }
 
+/* Temorary copy color */
+body {
+  color: #ffffff;
+}
