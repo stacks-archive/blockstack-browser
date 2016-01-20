@@ -258,5 +258,9 @@ div.profile-right-col > ul > li:first-child {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
+.profile-foot {
+  display: block;
+  position: relative;
+  padding-top: 50px;
+}
 
