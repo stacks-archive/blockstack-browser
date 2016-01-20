@@ -36,11 +36,14 @@ class SearchBar extends Component {
     this.state = {
       query: '',
       searchResults: [],
-      timeoutId: null
+      timeoutId: null,
+      placeholder: this.props.placeholder
     }
 
     this.onQueryChange = this.onQueryChange.bind(this)
     this.submitQuery = this.submitQuery.bind(this)
+    this.onFocus = this.onFocus.bind(this)
+    this.onBlur = this.onBlur.bind(this)
   }
 
   componentHasNewProps(props) {
@@ -60,6 +63,18 @@ class SearchBar extends Component {
   submitQuery(query) {
     this.props.searchIdentities(
       query, this.props.api.searchUrl, this.props.api.nameLookupUrl)
+  }
+
+  onFocus(event) {
+    this.setState({
+      placeholder: ''
+    })
+  }
+
+  onBlur(event) {
+    this.setState({
+      placeholder: this.props.placeholder
+    })
   }
 
   onQueryChange(event) {
@@ -83,9 +98,13 @@ class SearchBar extends Component {
     return (
       <div>
         <div>
-          <input className="form-control form-control-sm" type="text"
-            placeholder={this.props.placeholder} name="query"
-            value={this.state.query} onChange={this.onQueryChange} />
+          <input type="text"
+            className="form-control form-control-sm"
+            placeholder={this.state.placeholder} 
+            name="query" value={this.state.query}
+            onChange={this.onQueryChange}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur} />
         </div>
         <ul className="list-group">
           {this.state.searchResults.map((result, index) => {
