@@ -10,7 +10,7 @@ class AccountListItem extends Component {
 
   render() {
     var fontAwesomeClass = 'fa '
-    var serviceNames = ['twitter', 'facebook', 'github']
+    var serviceNames = ['bitcoin', 'twitter', 'facebook', 'github']
     if (serviceNames.indexOf(this.props.service) >= 0) {
       fontAwesomeClass += 'fa-' + this.props.service
     }

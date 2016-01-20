@@ -2,64 +2,32 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
-import { getName, getSocialAccounts, getAvatarUrl } from '../utils/profile-utils.js'
-import { searchIdentities } from '../utils/blockstore-utils'
-import Image from './Image'
+import { SearchActions } from '../store/search'
+import SearchItem from './SearchItem'
 
 function mapStateToProps(state) {
   return {
-    api: state.settings.api
+    api: state.settings.api,
+    query: state.search.query,
+    results: state.search.results
   }
 }
 
-class SearchItem extends Component {
-  static propTypes = {
-    profile: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired
-  }
-
-  render() {
-    const profile = Person.fromLegacyFormat(this.props.profile).profile,
-          name = getName(profile),
-          avatarUrl = getAvatarUrl(profile),
-          accounts = getSocialAccounts(profile),
-          _this = this
-
-    return (
-      <Link to={"/profile/" + this.props.id} className="list-group-item">
-        <div className="row">
-          <div className="col-md-1">
-            <Image src={avatarUrl} id={this.props.id}
-              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
-              style={{ width: '25px', height: '25px' }} className="img-25" />
-          </div>
-          <div className="col-md-2">{name}</div>
-          <div className="col-md-2">{this.props.id}</div>
-          <div className="col-md-7">
-            {accounts.map(function(account, index) {
-              return (
-                <span key={index}>
-                  <span>{account.service} : {account.identifier}</span>
-                  { index !== accounts.length - 1 ?
-                  <span>&nbsp;/&nbsp;</span>
-                  : null }
-                </span>
-              )
-            })}
-          </div>
-        </div>
-      </Link>
-    )
-  }
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(SearchActions, dispatch)
 }
 
 class SearchBar extends Component {
   static propTypes = {
     placeholder: PropTypes.string.isRequired,
+    resultCount: PropTypes.number.isRequired,
+    timeout: PropTypes.number.isRequired,
     api: PropTypes.object.isRequired,
-    resultCount: PropTypes.number.isRequired
+    updateQuery: PropTypes.func.isRequired,
+    searchIdentities: PropTypes.func.isRequired,
+    query: PropTypes.string.isRequired,
+    results: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -67,58 +35,91 @@ class SearchBar extends Component {
 
     this.state = {
       query: '',
-      searchResults: []
+      searchResults: [],
+      timeoutId: null,
+      placeholder: this.props.placeholder
     }
 
     this.onQueryChange = this.onQueryChange.bind(this)
-    this.onSearchResultClick = this.onSearchResultClick.bind(this)
+    this.submitQuery = this.submitQuery.bind(this)
+    this.onFocus = this.onFocus.bind(this)
+    this.onBlur = this.onBlur.bind(this)
+  }
+
+  componentHasNewProps(props) {
+    this.setState({
+      searchResults: props.results
+    })
+  }
+
+  componentWillMount() {
+    this.componentHasNewProps(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.componentHasNewProps(nextProps)
+  }
+
+  submitQuery(query) {
+    this.props.searchIdentities(
+      query, this.props.api.searchUrl, this.props.api.nameLookupUrl)
+  }
+
+  onFocus(event) {
+    this.setState({
+      placeholder: ''
+    })
+  }
+
+  onBlur(event) {
+    this.setState({
+      placeholder: this.props.placeholder
+    })
   }
 
   onQueryChange(event) {
-    const query = event.target.value,
-          _this = this
-    this.setState({
-      query: query
-    })
-    searchIdentities(query, this.props.api.searchUrl, function(results) {
-      _this.setState({
-        searchResults: results.splice(0, _this.props.resultCount)
-      })
-    })
-  }
+    const query = event.target.value
 
-  onSearchResultClick() {
+    if (this.state.timeoutId) {
+      clearTimeout(this.state.timeoutId)
+    }
+
+    const timeoutId = setTimeout(() => {
+      this.submitQuery(query)
+    }, this.props.timeout)
+
     this.setState({
-      searchResults: []
+      query: query,
+      timeoutId: timeoutId
     })
   }
 
   render() {
-    const _this = this
     return (
       <div>
-
         <div>
-          <input className="form-control form-control-sm" type="text"
-            placeholder={this.props.placeholder} name="query"
-            value={this.state.query} onChange={this.onQueryChange} />
+          <input type="text"
+            className="form-control form-control-sm"
+            placeholder={this.state.placeholder} 
+            name="query" value={this.state.query}
+            onChange={this.onQueryChange}
+            onFocus={this.onFocus}
+            onBlur={this.onBlur} />
         </div>
         <ul className="list-group">
-          {this.state.searchResults.map(function(result, index) {
+          {this.state.searchResults.map((result, index) => {
             if (result.profile && result.username) {
               return (
-                <SearchItem key={index}
-                  profile={result.profile}
+                <SearchItem key={result.username + '.id'}
                   id={result.username + '.id'}
-                  onClick={_this.onSearchResultClick} />
+                  profile={result.profile} />
               )
             }
           })}
         </ul>
-
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps)(SearchBar)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)

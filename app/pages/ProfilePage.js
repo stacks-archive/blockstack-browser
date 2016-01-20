@@ -33,6 +33,7 @@ class ProfilePage extends Component {
 
     this.state = {
       currentIdentity: {
+        id: null,
         profile: null,
         verifications: []
       }
@@ -42,8 +43,9 @@ class ProfilePage extends Component {
   componentHasNewRouteParams(routeParams) {
     if (routeParams.index) {
       const profile = this.props.localIdentities[routeParams.index].profile,
+            name = this.props.localIdentities[routeParams.index].id,
             verifications = []
-      this.props.updateCurrentIdentity(profile, verifications)
+      this.props.updateCurrentIdentity(name, profile, verifications)
     } else if (routeParams.name) {
       this.props.fetchCurrentIdentity(routeParams.name, this.props.nameLookupUrl)
     }
@@ -54,7 +56,7 @@ class ProfilePage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.routeParams.id !== this.props.routeParams.id) {
+    if (nextProps.routeParams !== this.props.routeParams) {
       this.componentHasNewRouteParams(nextProps.routeParams)
     }
     this.setState({
@@ -63,14 +65,19 @@ class ProfilePage extends Component {
   }
 
   render() {
-    var blockchainId = this.props.id,
-        profile = this.state.currentIdentity.profile,
-        verifications = this.state.currentIdentity.verifications
+    const blockchainId = this.state.currentIdentity.id,
+          profile = this.state.currentIdentity.profile,
+          verifications = this.state.currentIdentity.verifications
+    const blockNumber = 387562,
+          transactionNumber = 339,
+          address = 'Address hidden',
+          birthDate = 'Birth date hidden'
+
     return ( 
       <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
         <div>
-          <div className="col-md-4">
+         <div className="col-md-4">
             <div>
               <div className="profile-wrap">
                 <div className="idcard-block">
@@ -82,7 +89,8 @@ class ProfilePage extends Component {
               </div>
             </div>
             <div>
-              <Link to={this.props.location.pathname + "/edit"} className="btn btn-primary btn-lg btn-pro-edit">
+              <Link to={this.props.location.pathname + "/edit"}
+                className="btn btn-primary btn-lg btn-pro-edit">
                 Edit
               </Link>
             </div>
@@ -90,32 +98,25 @@ class ProfilePage extends Component {
           <div className="col-md-5">
             <div className="idcard-wrap">
               <div className="idcard-body inverse">
-                {blockchainId} guylepage3
+                {blockchainId}
               </div>
               <div className="idcard-body dim">
-                Registered in block <span className="inverse">#387562</span>,<br/>
-                transaction <span className="inverse">#339</span>
+                Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
+                transaction <span className="inverse">#{transactionNumber}</span>
               </div>
-              <h1 className="idcard-name">{getName(profile)}</h1>
-              <div className="idcard-body inverse">
-                {profile.description}
+              <p className="col-md-9 profile-foot">
+                Connections
+              </p>
+              <div className="idcard-body dim">
+                {address}
               </div>
               <div className="idcard-body dim">
-                154 Grand St,<br/>
-                New York, NY 10013, United States
-              </div>
-              <div className="idcard-body dim">
-                Born Oct 14, 1986
-              </div>
-              <div className="pill-nav pull-right">
-                <Link to={this.props.location.pathname + "/export"}>
-                  <img src="images/icon-export.svg"/>
-                </Link>
+                {birthDate}
               </div>
             </div>
           </div>
           <div className="container col-md-3 pull-right profile-right-col-fill">
-            <div className="profile-right-col">
+            <div className="profile-right-col inverse">
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
                   return (
@@ -130,7 +131,9 @@ class ProfilePage extends Component {
             </div>
           </div>
         </div>
-          : <div></div> }
+        :
+        <div></div>
+        }
       </div>
     )
   }

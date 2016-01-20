@@ -232,7 +232,7 @@ div.pill-nav > a > img {
   top: -105px;
   position: relative;
   height:85vh;
-  border-left: 1px solid #484848;
+  border-left: 1px solid #282828;
 }
 .profile-right-col {
   padding-top: 105px;
@@ -242,9 +242,29 @@ div.pill-nav > a > img {
 }
 div.profile-right-col > ul {
   list-style-type: none;
+  padding-left: 0;
+}
+div.profile-right-col > ul > li > a {
+  color: #949494;
+}
+div.profile-right-col > ul > li {
+  overflow: hidden;
 }
 
+div.profile-right-col > ul > li:first-child {
+  width: 140px;
+  color: #949494;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-foot {
+  display: block;
+  position: relative;
+  padding-top: 50px;
+}
 
-
-
-
+/* Temorary copy color */
+body {
+  color: #ffffff;
+}
