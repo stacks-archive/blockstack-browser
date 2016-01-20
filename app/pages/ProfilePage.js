@@ -33,6 +33,7 @@ class ProfilePage extends Component {
 
     this.state = {
       currentIdentity: {
+        id: null,
         profile: null,
         verifications: []
       }
@@ -42,8 +43,9 @@ class ProfilePage extends Component {
   componentHasNewRouteParams(routeParams) {
     if (routeParams.index) {
       const profile = this.props.localIdentities[routeParams.index].profile,
+            name = this.props.localIdentities[routeParams.index].id,
             verifications = []
-      this.props.updateCurrentIdentity(profile, verifications)
+      this.props.updateCurrentIdentity(name, profile, verifications)
     } else if (routeParams.name) {
       this.props.fetchCurrentIdentity(routeParams.name, this.props.nameLookupUrl)
     }
@@ -63,9 +65,14 @@ class ProfilePage extends Component {
   }
 
   render() {
-    var blockchainId = this.props.id,
-        profile = this.state.currentIdentity.profile,
-        verifications = this.state.currentIdentity.verifications
+    const blockchainId = this.state.currentIdentity.id,
+          profile = this.state.currentIdentity.profile,
+          verifications = this.state.currentIdentity.verifications
+    const blockNumber = 387562,
+          transactionNumber = 339,
+          address = 'Address hidden',
+          birthDate = 'Birth date hidden'
+
     return ( 
       <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
@@ -90,22 +97,21 @@ class ProfilePage extends Component {
           <div className="col-md-5">
             <div className="idcard-wrap">
               <div className="idcard-body inverse">
-                {blockchainId} guylepage3
+                {blockchainId}
               </div>
               <div className="idcard-body dim">
-                Registered in block <span className="inverse">#387562</span>,<br/>
-                transaction <span className="inverse">#339</span>
+                Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
+                transaction <span className="inverse">#{transactionNumber}</span>
               </div>
               <h1 className="idcard-name">{getName(profile)}</h1>
               <div className="idcard-body inverse">
                 {profile.description}
               </div>
               <div className="idcard-body dim">
-                154 Grand St,<br/>
-                New York, NY 10013, United States
+                {address}
               </div>
               <div className="idcard-body dim">
-                Born Oct 14, 1986
+                {birthDate}
               </div>
               <div className="pill-nav pull-right">
                 <Link to={this.props.location.pathname + "/export"}>
