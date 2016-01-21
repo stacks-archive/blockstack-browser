@@ -64,11 +64,9 @@ class RegisterPage extends Component {
   }
 
   registerIdentity(event) {
-    const _this = this
-
-    const username = this.state.username
-    const tld = this.state.tlds[this.state.type]
-    const fullyQualifiedId = username + '.' + tld
+    const username = this.state.username,
+          tld = this.state.tlds[this.state.type],
+          fullyQualifiedId = username + '.' + tld
     
     if (username.length === 0) {
       this.setState({
@@ -87,18 +85,18 @@ class RegisterPage extends Component {
         alertStatus: 'danger'
       })
     } else {
-      isNameAvailable(this.state.nameLookupUrl, fullyQualifiedId, function(isAvailable) {
+      isNameAvailable(this.state.nameLookupUrl, fullyQualifiedId, (isAvailable) => {
         if (!isAvailable) {
-          _this.setState({
+          this.setState({
             alertMessage: 'Name has already been registered',
             alertStatus: 'danger'
           })
         } else {
-          _this.setState({
+          this.setState({
             alertMessage: 'Name preordered! Waiting for registration confirmation.',
             alertStatus: 'success'
           })
-          _this.props.createNewIdentity(fullyQualifiedId)
+          this.props.createNewIdentity(fullyQualifiedId)
         }
       })
     }

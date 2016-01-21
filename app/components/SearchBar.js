@@ -48,7 +48,7 @@ class SearchBar extends Component {
 
   componentHasNewProps(props) {
     this.setState({
-      searchResults: props.results
+      searchResults: props.results.slice(0, this.props.resultCount)
     })
   }
 

@@ -80,8 +80,7 @@ class EditorPage extends Component {
 
   render() {
     var flatProfile = this.state.flatProfile,
-        profile = this.state.profile,
-        _this = this
+        profile = this.state.profile
 
     return (
       <div>
@@ -110,7 +109,7 @@ class EditorPage extends Component {
               <h3>Accounts</h3>
               {
                 profile.account ?
-                profile.account.map(function(account, index) {
+                profile.account.map((account, index) => {
                   var identifierLabel = 'Identifier'
                   if (account.service === 'bitcoin') {
                     identifierLabel = 'Address'
@@ -127,12 +126,12 @@ class EditorPage extends Component {
                           name={"account[" + index + "].identifier"}
                           label={account.service + " " + identifierLabel}
                           data={flatProfile}
-                          onChange={_this.onValueChange} />
+                          onChange={this.onValueChange} />
                         <InputGroup
                           name={"account[" + index + "].proofUrl"}
                           label={account.service + " Proof URL"}
                           data={flatProfile}
-                          onChange={_this.onValueChange} />
+                          onChange={this.onValueChange} />
                         </div>
                       : null }
                       { account.service.toLowerCase() === 'bitcoin' || account.proofType === 'signature' ?
@@ -141,12 +140,12 @@ class EditorPage extends Component {
                           name={"account[" + index + "].identifier"}
                           label={account.service + " " + identifierLabel}
                           data={flatProfile}
-                          onChange={_this.onValueChange} />
+                          onChange={this.onValueChange} />
                         <InputGroup
                           name={"account[" + index + "].proofSignature"}
                           label={account.service + " Signature"}
                           data={flatProfile}
-                          onChange={_this.onValueChange} />
+                          onChange={this.onValueChange} />
                         </div>
                       : null }
                     </div>
