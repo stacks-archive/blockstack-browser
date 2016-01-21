@@ -99,6 +99,7 @@
     "keychain-manager": "^1.4.0",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
+    "react-mixin": "^2.0.2",
     "react-redux": "^4.0.0",
     "react-router": "^1.0.2",
     "redux": "^3.0.4",

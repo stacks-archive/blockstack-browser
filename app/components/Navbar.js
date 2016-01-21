@@ -54,8 +54,7 @@ class Navbar extends Component {
           <div className="nav-search">
             <div className="nav-link">
               <form className="form-group">
-                <SearchBar placeholder="Search the blockchain"
-                  resultCount={10} timeout={500} />
+                <SearchBar placeholder="Search the blockchain" timeout={500} />
               </form>
             </div>
           </div>

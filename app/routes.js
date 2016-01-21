@@ -30,7 +30,7 @@ export default (
     <Route path="import"         component={ImportPage} />
     <Route path="backup"         component={BackupPage} />
     <Route path="home"           component={HomePage} />
-    <Route path="search"         component={SearchPage} />
+    <Route path="search/:query"  component={SearchPage} />
     <Route path="identities"     component={IdentitiesPage} />
     <Route path="bookmarks"      component={BookmarksPage} />
     <Route path="newpassword"    component={NewPasswordPage} />
