@@ -31,8 +31,7 @@ function updateProfile(index, profile) {
 function fetchCurrentIdentity(nameWithTld, nameLookupUrl) {
   return dispatch => {
     const username = nameWithTld.replace('.id', ''),
-          url = nameLookupUrl.replace('{name}', username),
-          _this = this
+          url = nameLookupUrl.replace('{name}', username)
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))

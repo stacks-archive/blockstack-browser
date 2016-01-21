@@ -15,24 +15,24 @@
 
 body {
   padding-top: 123px;
-  font-family: 'Lato', sans-serif;
-  font-size: 14px;
   background-color: rgba(250,250,250,1);
+  font-size: 14px;
+  font-family: 'Lato', sans-serif;
 }
 
 /* Highlight */
 .highlight {
-  padding: 1rem 1rem 1rem 1rem;
   margin: 0rem 0rem 1rem 0rem;
+  padding: 1rem 1rem 1rem 1rem;
   background-color: #eeeeee;
 }
 
 .highlight pre {
-    padding: 0;
     margin-top: 0;
     margin-bottom: 0;
-    background-color: transparent;
+    padding: 0;
     border: 0;
+    background-color: transparent;
 }
 
 .capitalize {
@@ -46,13 +46,13 @@ body {
 }
 
 .sidebar-section {
-  margin-left: -180px;
-  left: 180px;
-  width: 180px;
   position: fixed;
-  height: 100%;
-  overflow-y: auto;
+  left: 180px;
   z-index: 1000;
+  overflow-y: auto;
+  margin-left: -180px;
+  width: 180px;
+  height: 100%;
   transition: all 0.4s ease 0s;
 }
 
@@ -64,17 +64,16 @@ body {
     .view-with-sidebar {
       padding-left: 90px;
     }
-
     .sidebar-section {
-      margin-left: -90px;
       left: 90px;
+      margin-left: -90px;
       width: 90px;
     }
 }
 
 .sidebar-label {
-  font-weight: bold;
   text-decoration: underline;
+  font-weight: bold;
 }
 
 .sidebar-list {

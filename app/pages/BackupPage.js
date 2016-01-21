@@ -42,18 +42,17 @@ class BackupPage extends Component {
   }
 
   decryptBackupPhrase() {
-    const _this = this,
-          password = this.state.password,
+    const password = this.state.password,
           dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
-    decrypt(dataBuffer, password, function(err, plaintextBuffer) {
+    decrypt(dataBuffer, password, (err, plaintextBuffer) => {
       if (!err) {
-        _this.setState({
+        this.setState({
           decryptedMnemonic: plaintextBuffer.toString(),
           alertStatus: null,
           alertMessage: null
         })
       } else {
-        _this.setState({
+        this.setState({
           alertMessage: 'Invalid password',
           alertStatus: 'danger'
         })

@@ -15,9 +15,8 @@ export class SaveButton extends Component {
 
     this.triggerSave = (event) => {
       this.setState({profileJustSaved: true})
-      var _this = this
-      setTimeout(function() {
-        _this.setState({profileJustSaved: false})
+      setTimeout(() => {
+        this.setState({profileJustSaved: false})
       }, 500)
       if (this.props.onSave) {
         this.props.onSave()

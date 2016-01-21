@@ -49,24 +49,23 @@ class NewPasswordPage extends Component {
   }
 
   reencryptMnemonic() {
-    const _this = this,
-          currentPassword = this.state.currentPassword,
+    const currentPassword = this.state.currentPassword,
           newPassword = this.state.newPassword,
           newPassword2 = this.state.newPassword2,
           dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
 
-    decrypt(dataBuffer, currentPassword, function(err, plaintextBuffer) {
+    decrypt(dataBuffer, currentPassword, (err, plaintextBuffer) => {
       if (!err) {
         if (newPassword.length < 8) {
-          _this.updateAlert('danger', 'New password must be at least 8 characters')
+          this.updateAlert('danger', 'New password must be at least 8 characters')
         } else {
           if (newPassword !== newPassword2) {
-            _this.updateAlert('danger', 'New passwords must match')
+            this.updateAlert('danger', 'New passwords must match')
           } else {
-            encrypt(plaintextBuffer, newPassword, function(err, ciphertextBuffer) {
-              _this.props.updateMnemonic(ciphertextBuffer.toString('hex'))
-              _this.updateAlert('success', 'Password updated!')
-              _this.setState({
+            encrypt(plaintextBuffer, newPassword, (err, ciphertextBuffer) => {
+              this.props.updateMnemonic(ciphertextBuffer.toString('hex'))
+              this.updateAlert('success', 'Password updated!')
+              this.setState({
                 currentPassword: '',
                 newPassword: '',
                 newPassword2: ''
@@ -75,7 +74,7 @@ class NewPasswordPage extends Component {
           }
         }
       } else {
-        _this.updateAlert('danger', 'Incorrect password')
+        this.updateAlert('danger', 'Incorrect password')
       }
     })
   }
