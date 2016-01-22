@@ -29,7 +29,7 @@ class SearchItem extends Component {
           <div className="col-md-1">
             <Image src={avatarUrl} id={blockchainId}
               fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
-              style={{ width: '25px', height: '25px' }} className="img-25" />
+              style={{ width: '40px', height: '40px' }} />
           </div>
           <div className="col-md-2">{name}</div>
           <div className="col-md-2">{blockchainId}</div>
