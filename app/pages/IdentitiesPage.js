@@ -66,7 +66,6 @@ class IdentitiesPage extends Component {
     return (
       <div>
         <h3>Identities</h3>
-
         <div style={{paddingBottom: '15px'}}>
           <ul className="list-group">
           { localIdentities.map(function(identity) {

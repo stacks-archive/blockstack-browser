@@ -90,13 +90,11 @@ class NewPasswordPage extends Component {
       <div>
         <div>
           <h3>Change Password</h3>
-
           { this.state.alerts.map(function(alert, index) {
             return (
               <Alert key={index} message={alert.message} status={alert.status} />
             )
           })}
-
           <div>
             <InputGroup name="currentPassword" label="Current Password" type="password"
               data={this.state} onChange={this.onValueChange} />
@@ -110,7 +108,6 @@ class NewPasswordPage extends Component {
               </button>
             </div>
           </div>
-
         </div>
       </div>
     )

@@ -52,7 +52,7 @@ class EditorPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.currentIdentity !== this.props.currentIdentity) {
-      var profile = nextProps.currentIdentity.profile,
+      let profile = nextProps.currentIdentity.profile,
           flatProfile = flattenObject(profile)
       flatProfile.givenName, flatProfile.familyName = getNameParts(profile)
       this.setState({
@@ -67,7 +67,7 @@ class EditorPage extends Component {
   }
 
   onValueChange(event) {
-    var flatProfile = this.state.flatProfile
+    let flatProfile = this.state.flatProfile
     flatProfile[event.target.name] = event.target.value
     if (event.target.name === "image[0].contentUrl") {
       flatProfile["image[0].name"] = "avatar"
@@ -79,8 +79,8 @@ class EditorPage extends Component {
   }
 
   render() {
-    var flatProfile = this.state.flatProfile,
-        profile = this.state.profile
+    const flatProfile = this.state.flatProfile,
+          profile = this.state.profile
 
     return (
       <div>
@@ -110,7 +110,7 @@ class EditorPage extends Component {
               {
                 profile.account ?
                 profile.account.map((account, index) => {
-                  var identifierLabel = 'Identifier'
+                  let identifierLabel = 'Identifier'
                   if (account.service === 'bitcoin') {
                     identifierLabel = 'Address'
                   }

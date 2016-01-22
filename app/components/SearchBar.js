@@ -51,7 +51,7 @@ class SearchBar extends Component {
   }
 
   submitQuery(query) {
-    const newPath = 'search/' + query.replace(' ', '%20')
+    const newPath = `search/{$query.replace(' ', '%20')}`
     this.history.pushState(null, newPath)
   }
 
