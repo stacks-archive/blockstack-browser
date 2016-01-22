@@ -43,7 +43,7 @@ class SearchBar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentId !== this.props.currentId) {
+    if (nextProps.currentId && nextProps.currentId !== this.props.currentId) {
       this.setState({
         query: nextProps.currentId
       })
