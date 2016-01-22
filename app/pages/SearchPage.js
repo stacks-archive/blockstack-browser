@@ -49,7 +49,6 @@ class SearchPage extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div>
         <ul className="list-group">

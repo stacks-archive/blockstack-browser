@@ -8,7 +8,8 @@ import { SearchActions } from '../store/search'
 
 function mapStateToProps(state) {
   return {
-    query: state.search.query
+    query: state.search.query,
+    currentId: state.identities.current.id
   }
 }
 
@@ -39,6 +40,14 @@ class SearchBar extends Component {
     this.submitQuery = this.submitQuery.bind(this)
     this.onFocus = this.onFocus.bind(this)
     this.onBlur = this.onBlur.bind(this)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currentId !== this.props.currentId) {
+      this.setState({
+        query: nextProps.currentId
+      })
+    }
   }
 
   submitQuery(query) {
@@ -78,15 +87,13 @@ class SearchBar extends Component {
   render() {
     return (
       <div>
-        <div>
-          <input type="text"
-            className="form-control form-control-sm"
-            placeholder={this.state.placeholder} 
-            name="query" value={this.state.query}
-            onChange={this.onQueryChange}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur} />
-        </div>
+        <input type="text"
+          className="form-control form-control-sm"
+          placeholder={this.state.placeholder} 
+          name="query" value={this.state.query}
+          onChange={this.onQueryChange}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur} />
       </div>
     )
   }
