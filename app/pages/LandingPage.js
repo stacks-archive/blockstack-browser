@@ -64,9 +64,15 @@ class LandingPage extends Component {
   render() {
     return (
       <div>
+        <div className="centered push-80">
+          <h1>Chord</h1>
+          <h4>The blockchain browser</h4>
+        </div>
         <div className="row">
+          <div className="col-md-3">
+          </div>
           <div className="col-md-6">
-            <h3>Create Account</h3>
+            <h5>Create Account</h5>
             { this.state.alerts.map(function(alert, index) {
               return (
                 <Alert key={index} message={alert.message} status={alert.status} />
@@ -81,12 +87,14 @@ class LandingPage extends Component {
                 Create
               </button>
             </div>
+            <hr />
+            <p>
+              Already have an account?
+              <br />
+              <Link to="/restore">Restore from backup</Link>
+            </p>
           </div>
-          <div className="col-md-6">
-            <h3>Restore Account</h3>
-            <div className="form-group">
-              <button className="btn btn-secondary">Restore</button>
-            </div>
+          <div className="col-md-3">
           </div>
         </div>
       </div>

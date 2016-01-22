@@ -22,7 +22,7 @@ class InputGroup extends Component {
     }
     return (
       <fieldset className="form-group">
-        <label className="capitalize">{this.props.label}</label>
+        <label>{this.props.label}</label>
         <input name={this.props.name}
           className="form-control"
           type={type}

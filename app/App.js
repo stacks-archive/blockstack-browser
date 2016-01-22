@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { History } from 'react-router'
+import reactMixin from 'react-mixin'
 
 import Navbar from './components/Navbar'
 import LandingPage from './pages/LandingPage'
@@ -20,15 +22,9 @@ class MainScreen extends Component {
     return (
       <div>
         <Navbar />
-        <div className="content-section">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                {this.props.children}
-              </div>
-            </div>
-          </div>
-        </div>          
+        <div className="container">
+          {this.props.children}
+        </div>
       </div>
     )
   }
@@ -38,25 +34,34 @@ class WelcomeScreen extends Component {
   render() {
     return (
       <div className="container">
-        <LandingPage />
+        {this.props.children}
       </div>
     )
   }
 }
 
+@reactMixin.decorate(History)
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     encryptedMnemonic: PropTypes.string
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.encryptedMnemonic !== this.props.encryptedMnemonic) {
+      this.history.pushState(null, 'bookmarks')
+    }
+  }
+
   render() {
+    const accountExists = this.props.encryptedMnemonic
+
     return (
       <div>
-      { this.props.encryptedMnemonic ?
+      { accountExists ?
         <MainScreen children={this.props.children} />
       :
-        <WelcomeScreen />
+        <WelcomeScreen children={this.props.children} />
       }
       {
         (() => {
