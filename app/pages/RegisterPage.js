@@ -89,9 +89,7 @@ class RegisterPage extends Component {
     if (nameHasBeenPreordered) {
       this.updateAlert('danger', 'Name has already been preordered')
     } else {
-      console.log(this.props.lookupUrl)
       isNameAvailable(this.props.lookupUrl, domainName, (isAvailable) => {
-        console.log(isAvailable)
         if (!isAvailable) {
           this.updateAlert('danger', 'Name has already been registered')
         } else {

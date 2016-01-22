@@ -12,9 +12,8 @@ export function hasNameBeenPreordered(domainName, localIdentities) {
 }
 
 export function isNameAvailable(lookupUrl, domainName, callback) {
-  const username = domainName.split('.')[0]
-  const url = lookupUrl.replace('{name}', username)
-  console.log(url)
+  const username = domainName.split('.')[0],
+        url = lookupUrl.replace('{name}', username)
   fetch(url)
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
