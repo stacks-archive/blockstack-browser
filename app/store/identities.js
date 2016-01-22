@@ -28,10 +28,10 @@ function updateProfile(index, profile) {
   }
 }
 
-function fetchCurrentIdentity(nameWithTld, nameLookupUrl) {
+function fetchCurrentIdentity(domainName, lookupUrl) {
   return dispatch => {
-    const username = nameWithTld.replace('.id', ''),
-          url = nameLookupUrl.replace('{name}', username)
+    const username = domainName.replace('.id', ''),
+          url = lookupUrl.replace('{name}', username)
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
@@ -39,7 +39,7 @@ function fetchCurrentIdentity(nameWithTld, nameLookupUrl) {
         const legacyProfile = responseJson[username]['profile'],
               verifications = responseJson[username]['verifications'],
               profile = Person.fromLegacyFormat(legacyProfile).profile
-        dispatch(updateCurrentIdentity(nameWithTld, profile, verifications))
+        dispatch(updateCurrentIdentity(domainName, profile, verifications))
       })
       .catch((error) => {
         console.warn(error)

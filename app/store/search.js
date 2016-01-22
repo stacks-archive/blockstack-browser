@@ -1,20 +1,11 @@
 const UPDATE_QUERY = 'UPDATE_QUERY'
 const UPDATE_RESULTS = 'UPDATE_RESULTS'
 
-function updateQuery(query) {
-  return {
-    type: UPDATE_QUERY,
-    query: query,
-    searchInProgress: true
-  }
-}
-
 function updateResults(query, results) {
   return {
     type: UPDATE_RESULTS,
     query: query,
-    results: results,
-    searchInProgress: false
+    results: results
   }
 }
 
@@ -40,7 +31,6 @@ function searchIdentities(query, searchUrl, lookupUrl) {
             username: username
           })
         }
-
         dispatch(updateResults(query, results))
       })
       .catch((error) => {
@@ -50,29 +40,21 @@ function searchIdentities(query, searchUrl, lookupUrl) {
 }
 
 export const SearchActions = {
-  updateQuery: updateQuery,
   updateResults: updateResults,
   searchIdentities: searchIdentities
 }
 
 const initialState = {
   query: '',
-  results: [],
-  searchInProgress: false
+  results: []
 }
 
 export function SearchReducer(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_QUERY:
-      return Object.assign({}, state, {
-        query: action.query,
-        searchInProgress: action.searchInProgress
-      })
     case UPDATE_RESULTS:
       return Object.assign({}, state, {
         query: action.query,
-        results: action.results,
-        searchInProgress: action.searchInProgress
+        results: action.results
       })
     default:
       return state

@@ -12,8 +12,8 @@ class InputGroup extends Component {
   }
 
   render() {
-    var value = ''
-    var type = "text" 
+    let value = '',
+        type = "text" 
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
     }

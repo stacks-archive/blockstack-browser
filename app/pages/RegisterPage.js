@@ -12,7 +12,8 @@ import { isNameAvailable, hasNameBeenPreordered } from '../utils/name-utils'
 function mapStateToProps(state) {
   return {
     username: '',
-    localIdentities: state.identities.local
+    localIdentities: state.identities.local,
+    lookupUrl: state.settings.api.nameLookupUrl
   }
 }
 
@@ -24,7 +25,8 @@ class RegisterPage extends Component {
   static propTypes = {
     username: PropTypes.string.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
-    localIdentities: PropTypes.array.isRequired
+    localIdentities: PropTypes.array.isRequired,
+    lookupUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -33,8 +35,7 @@ class RegisterPage extends Component {
     this.state = {
       username: this.props.username,
       nameCost: 0,
-      alertMessage: null,
-      alertStatus: null,
+      alerts: [],
       type: 'person',
       tlds: {
         person: 'id',
@@ -43,19 +44,19 @@ class RegisterPage extends Component {
       nameLabels: {
         person: 'Username',
         organization: 'Domain'
-      },
-      nameLookupUrl: 'https://api.onename.com/v1/users/'
+      }
     }
 
     this.onChange = this.onChange.bind(this)
     this.registerIdentity = this.registerIdentity.bind(this)
+    this.updateAlert = this.updateAlert.bind(this)
   }
 
   onChange(event) {
     if (event.target.name === 'username') {
       const username = event.target.value.toLowerCase().replace(/\W+/g, '')
       const tld = this.state.tlds[this.state.type]
-      const nameCost = getNameCost(username + '.' + tld) / 1000
+      const nameCost = getNameCost(`${username}.${tld}`) / 1000
       this.setState({
         username: username,
         nameCost: nameCost
@@ -63,59 +64,55 @@ class RegisterPage extends Component {
     }
   }
 
+  updateAlert(alertStatus, alertMessage) {
+    this.setState({
+      alerts: [{
+        status: alertStatus,
+        message: alertMessage
+      }]
+    })
+  }
+
   registerIdentity(event) {
     const username = this.state.username,
           tld = this.state.tlds[this.state.type],
-          fullyQualifiedId = username + '.' + tld
+          domainName = username + '.' + tld
     
     if (username.length === 0) {
-      this.setState({
-        alertMessage: 'Name must have at least one character',
-        alertStatus: 'danger'
-      })
+      this.updateAlert('danger', 'Name must have at least one character')
       return
     }
 
     const nameHasBeenPreordered = hasNameBeenPreordered(
-      fullyQualifiedId, this.props.localIdentities)
+      domainName, this.props.localIdentities)
 
     if (nameHasBeenPreordered) {
-      this.setState({
-        alertMessage: 'Name has already been preordered',
-        alertStatus: 'danger'
-      })
+      this.updateAlert('danger', 'Name has already been preordered')
     } else {
-      isNameAvailable(this.state.nameLookupUrl, fullyQualifiedId, (isAvailable) => {
+      isNameAvailable(this.props.lookupUrl, domainName, (isAvailable) => {
         if (!isAvailable) {
-          this.setState({
-            alertMessage: 'Name has already been registered',
-            alertStatus: 'danger'
-          })
+          this.updateAlert('danger', 'Name has already been registered')
         } else {
-          this.setState({
-            alertMessage: 'Name preordered! Waiting for registration confirmation.',
-            alertStatus: 'success'
-          })
-          this.props.createNewIdentity(fullyQualifiedId)
+          this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
+          this.props.createNewIdentity(domainName)
         }
       })
     }
   }
 
   render() {
-    var tld = this.state.tlds[this.state.type],
+    let tld = this.state.tlds[this.state.type],
         nameLabel = this.state.nameLabels[this.state.type]
 
     return (
       <div>
         <div>
           <h3>Register Identity</h3>
-
-            { this.state.alertMessage ?
-              <Alert message={this.state.alertMessage}
-                status={this.state.alertStatus} />
-            : null }
-
+            { this.state.alerts.map(function(alert, index) {
+              return (
+                <Alert key={index} message={alert.message} status={alert.status} />
+              )
+            })}
             <fieldset className="form-group">
               <label className="capitalize">{nameLabel}</label>
               <div className="input-group">
@@ -128,10 +125,8 @@ class RegisterPage extends Component {
                 <span className="input-group-addon">.{tld}</span>
               </div>
             </fieldset>
-
             <div>
               <label>Registration Cost</label>
-
               <div className="highlight">
                 <pre>
                   <code>
@@ -140,13 +135,11 @@ class RegisterPage extends Component {
                 </pre>
               </div>
             </div>
-
             <div>
               <button className="btn btn-primary" onClick={this.registerIdentity}>
                 Register
               </button>
             </div>
-
         </div>
       </div>
     )

@@ -9,18 +9,22 @@ class AccountListItem extends Component {
   }
 
   render() {
-    var fontAwesomeClass = 'fa '
-    var serviceNames = ['bitcoin', 'twitter', 'facebook', 'github']
-    if (serviceNames.indexOf(this.props.service) >= 0) {
-      fontAwesomeClass += 'fa-' + this.props.service
+    let socialMediaClasses = new Map([
+      ['bitcoin', 'fa-bitcoin'],
+      ['twitter', 'fa-twitter'],
+      ['facebook', 'fa-facebook'],
+      ['github', 'fa-github']
+    ])
+    let socialMediaClass = ''
+    if (socialMediaClasses.has(this.props.service)) {
+      socialMediaClass = socialMediaClasses.get(this.props.service)
     }
-
-    var accountUrl = 'http://' + this.props.service + '.com/' + this.props.identifier
+    let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
 
     return (
       <li>
         <Link to={accountUrl}>
-          <i className={fontAwesomeClass} />
+          <i className={`fa ${socialMediaClass}`} />
           <span>{this.props.identifier}</span>
         </Link>
       </li>

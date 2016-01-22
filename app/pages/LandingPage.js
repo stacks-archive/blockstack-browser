@@ -67,13 +67,11 @@ class LandingPage extends Component {
         <div className="row">
           <div className="col-md-6">
             <h3>Create Account</h3>
-
             { this.state.alerts.map(function(alert, index) {
               return (
                 <Alert key={index} message={alert.message} status={alert.status} />
               )
             })}
-
             <InputGroup name="password" type="password" label="Password"
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
             <InputGroup name="password2" type="password" label="Password (again)"

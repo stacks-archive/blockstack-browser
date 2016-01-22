@@ -1,5 +1,5 @@
 export function getName(profile) {
-  var name = ''
+  let name = ''
   if (profile.givenName || profile.familyName) {
     if (profile.givenName) {
       name = profile.givenName
@@ -34,7 +34,7 @@ export function getNameParts(profile) {
 }
 
 export function getSocialAccounts(profile) {
-  var accounts = []
+  let accounts = []
   if (profile.account) {
     profile.account.map(function(account) {
       if (account.service === 'twitter' || account.service === 'facebook') {
@@ -46,10 +46,10 @@ export function getSocialAccounts(profile) {
 }
 
 export function getVerifiedAccounts(profile, verifications) {
-  var filteredAccounts = []
+  let filteredAccounts = []
   if (profile.account) {
     profile.account.forEach(function(account) {
-      var proofUrl = ''
+      let proofUrl = ''
       verifications.forEach(function(verification) {
         if (verification.valid && verification.service === account.service
             && verification.identifier === account.identifier) {
