@@ -43,14 +43,9 @@ class SearchBar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentId && nextProps.currentId !== this.props.currentId) {
+    if (nextProps.currentId !== null && nextProps.currentId !== this.props.currentId) {
       this.setState({
         query: nextProps.currentId
-      })
-    }
-    if (nextProps.query !== this.state.query) {
-      this.setState({
-        query: nextProps.query
       })
     }
   }
@@ -82,8 +77,6 @@ class SearchBar extends Component {
     const timeoutId = setTimeout(() => {
       this.submitQuery(query)
     }, this.props.timeout)
-
-    console.log(`query: ${query}`)
 
     this.setState({
       query: query,

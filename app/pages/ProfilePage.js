@@ -59,8 +59,7 @@ class ProfilePage extends Component {
   }
 
   componentWillUnmount() {
-    this.props.updateCurrentIdentity(null, {}, [])
-    this.props.updateQuery('')
+    this.props.updateCurrentIdentity('', {}, [])
   }
 
   componentWillReceiveProps(nextProps) {
