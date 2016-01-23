@@ -48,10 +48,15 @@ class SearchBar extends Component {
         query: nextProps.currentId
       })
     }
+    if (nextProps.query !== this.state.query) {
+      this.setState({
+        query: nextProps.query
+      })
+    }
   }
 
   submitQuery(query) {
-    const newPath = `search/{$query.replace(' ', '%20')}`
+    const newPath = `search/${query.replace(' ', '%20')}`
     this.history.pushState(null, newPath)
   }
 
@@ -77,6 +82,8 @@ class SearchBar extends Component {
     const timeoutId = setTimeout(() => {
       this.submitQuery(query)
     }, this.props.timeout)
+
+    console.log(`query: ${query}`)
 
     this.setState({
       query: query,

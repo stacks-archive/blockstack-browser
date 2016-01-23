@@ -1,6 +1,13 @@
 const UPDATE_QUERY = 'UPDATE_QUERY'
 const UPDATE_RESULTS = 'UPDATE_RESULTS'
 
+function updateQuery(query) {
+  return {
+    type: UPDATE_QUERY,
+    query: query
+  }
+}
+
 function updateResults(query, results) {
   return {
     type: UPDATE_RESULTS,
@@ -40,6 +47,7 @@ function searchIdentities(query, searchUrl, lookupUrl) {
 }
 
 export const SearchActions = {
+  updateQuery: updateQuery,
   updateResults: updateResults,
   searchIdentities: searchIdentities
 }
@@ -51,6 +59,10 @@ const initialState = {
 
 export function SearchReducer(state = initialState, action) {
   switch (action.type) {
+    case UPDATE_QUERY:
+      return Object.assign({}, state, {
+        query: action.query
+      })
     case UPDATE_RESULTS:
       return Object.assign({}, state, {
         query: action.query,
