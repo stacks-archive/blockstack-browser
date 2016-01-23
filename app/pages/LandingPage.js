@@ -69,9 +69,7 @@ class LandingPage extends Component {
           <h4>The blockchain browser</h4>
         </div>
         <div className="row">
-          <div className="col-md-3">
-          </div>
-          <div className="col-md-6">
+          <div className="col-md-6 col-md-push-3">
             <h5>Create Account</h5>
             { this.state.alerts.map(function(alert, index) {
               return (
@@ -93,8 +91,6 @@ class LandingPage extends Component {
               <br />
               <Link to="/restore">Restore from backup</Link>
             </p>
-          </div>
-          <div className="col-md-3">
           </div>
         </div>
       </div>

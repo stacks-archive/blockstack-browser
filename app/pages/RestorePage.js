@@ -10,17 +10,19 @@ class RestorePage extends Component {
   render() {
     return (
       <div>
-        <h3>Restore Account</h3>
-        <InputGroup label="Backup phrase" placeholder="Backup phrase" />
-        <div>
-          <button className="btn btn-primary">Restore</button>
+        <div className="col-md-6 col-md-push-3">
+          <h3>Restore Account</h3>
+          <InputGroup label="Backup phrase" placeholder="Backup phrase" />
+          <div>
+            <button className="btn btn-primary">Restore</button>
+          </div>
+          <hr />
+          <p>
+            Don&#39;t have an account?
+            <br />
+            <Link to="/landing">Create an account</Link>
+          </p>
         </div>
-        <hr />
-        <p>
-          Don't have an account?
-          <br />
-          <Link to="/landing">Create an account</Link>
-        </p>
       </div>
     )
   }
