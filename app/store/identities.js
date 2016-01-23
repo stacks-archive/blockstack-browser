@@ -5,6 +5,7 @@ const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_PROFILE = 'UPDATE_PROFILE'
 
 function updateCurrentIdentity(id, profile, verifications) {
+  console.log('updating identity')
   return {
     type: UPDATE_CURRENT,
     id: id,
@@ -55,7 +56,11 @@ export const IdentityActions = {
 }
 
 const initialState = {
-  current: {},
+  current: {
+    id: null,
+    profile: null,
+    verifications: null
+  },
   local: [
     {
       index: 0,

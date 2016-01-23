@@ -43,7 +43,7 @@ class SearchBar extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currentId && nextProps.currentId !== this.props.currentId) {
+    if (nextProps.currentId !== null && nextProps.currentId !== this.props.currentId) {
       this.setState({
         query: nextProps.currentId
       })
@@ -51,7 +51,7 @@ class SearchBar extends Component {
   }
 
   submitQuery(query) {
-    const newPath = `search/{$query.replace(' ', '%20')}`
+    const newPath = `search/${query.replace(' ', '%20')}`
     this.history.pushState(null, newPath)
   }
 

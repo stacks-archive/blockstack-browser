@@ -25,12 +25,12 @@ class BackupPage extends Component {
     this.state = {
       decryptedMnemonic: null,
       password: '',
-      alertMessage: null,
-      alertStatus: null
+      alerts: []
     }
 
     this.onChange = this.onChange.bind(this)
     this.decryptBackupPhrase = this.decryptBackupPhrase.bind(this)
+    this.updateAlert = this.updateAlert.bind(this)
   }
 
   onChange(event) {
@@ -39,6 +39,12 @@ class BackupPage extends Component {
         password: event.target.value
       })
     }
+  }
+
+  updateAlert(alertStatus, alertMessage) {
+    this.setState({
+      alerts: [{ status: alertStatus, message: alertMessage }]
+    })
   }
 
   decryptBackupPhrase() {
@@ -52,10 +58,7 @@ class BackupPage extends Component {
           alertMessage: null
         })
       } else {
-        this.setState({
-          alertMessage: 'Invalid password',
-          alertStatus: 'danger'
-        })
+        this.updateAlert('danger', 'Invalid password')
       }
     })
   }
@@ -65,12 +68,11 @@ class BackupPage extends Component {
       <div>
         <div>
           <h3>Backup Account</h3>
-
-          { this.state.alertMessage ?
-            <Alert message={this.state.alertMessage}
-              status={this.state.alertStatus} />
-          : null }
-
+          { this.state.alerts.map(function(alert, index) {
+            return (
+              <Alert key={index} message={alert.message} status={alert.status} />
+            )
+          })}
           {
             this.state.decryptedMnemonic ?
             <div>
@@ -80,7 +82,6 @@ class BackupPage extends Component {
                   Anyone who has it will be able to regain access to your account.
                 </i>
               </p>
-
               <div className="highlight">
                 <pre>
                   <code>{this.state.decryptedMnemonic}</code>
@@ -92,12 +93,8 @@ class BackupPage extends Component {
               <p>
                 <i>Enter your password to view your backup phrase and backup your account.</i>
               </p>
-
-              <fieldset>
-                <InputGroup name="password" label="Password" type="password"
-                  data={this.state} onChange={this.onChange} />
-              </fieldset>
-
+              <InputGroup name="password" label="Password" type="password"
+                data={this.state} onChange={this.onChange} />
               <div>
                 <button className="btn btn-primary" onClick={this.decryptBackupPhrase}>
                   Decrypt Backup Phrase

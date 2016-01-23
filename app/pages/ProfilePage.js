@@ -6,6 +6,7 @@ import { Link } from 'react-router'
 import AccountListItem from '../components/AccountListItem'
 import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
 import { IdentityActions } from '../store/identities'
+import { SearchActions } from '../store/search'
 
 function mapStateToProps(state) {
   return {
@@ -16,13 +17,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(IdentityActions, dispatch)
+  let actions = Object.assign(IdentityActions, SearchActions)
+  return bindActionCreators(actions, dispatch)
 }
 
 class ProfilePage extends Component {
   static propTypes = {
     fetchCurrentIdentity: PropTypes.func.isRequired,
     updateCurrentIdentity: PropTypes.func.isRequired,
+    updateQuery: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
     localIdentities: PropTypes.array.isRequired,
     nameLookupUrl: PropTypes.string.isRequired
@@ -56,7 +59,7 @@ class ProfilePage extends Component {
   }
 
   componentWillUnmount() {
-    this.props.updateCurrentIdentity(null, {}, [])
+    this.props.updateCurrentIdentity('', {}, [])
   }
 
   componentWillReceiveProps(nextProps) {

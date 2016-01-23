@@ -84,3 +84,16 @@ body {
   margin-bottom: 5px;
 }
 
+.centered {
+  text-align: center;
+}
+
+.push-40 {
+  margin-bottom: 40px;
+}
+.push-60 {
+  margin-bottom: 60px;
+}
+.push-80 {
+  margin-bottom: 80px;
+}
