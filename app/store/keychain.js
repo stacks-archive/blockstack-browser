@@ -5,6 +5,7 @@ import {
 } from '../utils/keychain-utils'
 import { PrivateKeychain } from 'keychain-manager'; delete global._bitcore
 
+const BITS_OF_ENTROPY_FOR_MNEMONIC = 160
 const CREATE_WALLET = 'CREATE_WALLET',
       NEW_IDENTITY_ADDRESS = 'NEW_IDENTITY_ADDRESS',
       NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
@@ -26,9 +27,14 @@ function updateMnemonic(encryptedMnemonic) {
   }
 }
 
-function initializeWallet(password) {
+function initializeWallet(password, backupPhrase) {
   return dispatch => {
-    const mnemonic = new Mnemonic(160, Mnemonic.Words.ENGLISH).toString()
+    let mnemonic
+    if (backupPhrase && Mnemonic.isValid(backupPhrase)) {
+      mnemonic = backupPhrase
+    } else {
+      mnemonic = new Mnemonic(BITS_OF_ENTROPY_FOR_MNEMONIC, Mnemonic.Words.ENGLISH).toString()
+    }
 
     const masterPrivateKeychain = derivePrivateKeychain(mnemonic)
 
