@@ -106,9 +106,6 @@ class ProfilePage extends Component {
               </div>
               <div className="col-md-7">
                 <div className="idcard-wrap">
-                  <div className="idcard-body inverse">
-                    {blockchainId}
-                  </div>
                   <div className="idcard-body dim">
                     Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
                     transaction <span className="inverse">#{transactionNumber}</span>
