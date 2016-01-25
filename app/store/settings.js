@@ -40,22 +40,22 @@ const initialState = {
     addressLookupUrl: 'https://api.onename.com/v1/addresses/{address}/names?app-id=73146f6a06443a3a66a7df9473353cde&app-secret=7009a810943a00fe7e8157f27bf91bea7e1b4d4e46db695ba2d11e4333ea6f29'
   },
   bookmarks: [
-    { label: 'Naval Ravikant', id: 'naval.id' },
-    { label: 'Barry Silbert', id: 'barrysilbert.id' },
-    { label: 'Elizabeth Stark', id: 'starkness.id' },
-    { label: 'Jeff Garzik', id: 'jgarzik.id' },
-    { label: 'Fred Wilson', id: 'fredwilson.id' },
-    { label: 'Jesse Powell', id: 'jespow.id' },
-    { label: 'Vitalik Buterin', id: 'vitalik.id' },
-    { label: 'Sarah Hody', id: 'sarah.id' },
-    { label: 'Jeff Huber', id: 'jhuber.id' },
-    { label: 'Tiffany Hayden', id: 'haydentiff.id' },
-    { label: 'Albert Wenger', id: 'albertwenger.id' },
-    { label: 'Peter Smith', id: 'peter.id' },
-    { label: 'Ryan Shea', id: 'ryan.id' },
-    { label: 'Muneeb Ali', id: 'muneeb.id' },
-    { label: 'Jude Nelson', id: 'judecn.id' },
-    { label: 'Guy Lepage', id: 'guylepage3.id' }
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/starkness'}], name: 'Elizabeth Stark'}, id: 'starkness.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/jgarzik'}], name: 'Jeff Garzik'}, id: 'jgarzik.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/jespow'}], name: 'Jesse Powell'}, id: 'jespow.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/vitalik'}], name: 'Vitalik Buterin'}, id: 'vitalik.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/sarah'}], name: 'Sarah Hody'}, id: 'sarah.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/jhuber'}], name: 'Jeff Huber'}, id: 'jhuber.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/haydentiff'}], name: 'Tiffany Hayden'}, id: 'haydentiff.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/65m/avatar-placeholder.png'}], name: 'Naval Ravikant'}, id: 'naval.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/65m/avatar-placeholder.png'}], name: 'Barry Silbert'}, id: 'barrysilbert.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/65m/avatar-placeholder.png'}], name: 'Fred Wilson'}, id: 'fredwilson.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/65m/avatar-placeholder.png'}], name: 'Albert Wenger'}, id: 'albertwenger.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/peter'}], name: 'Peter Smith'}, id: 'peter.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/ryan'}], name: 'Ryan Shea'}, id: 'ryan.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/muneeb'}], name: 'Muneeb Ali'}, id: 'muneeb.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/judecn'}], name: 'Jude Nelson'}, id: 'judecn.id' },
+    { profile: {'@type': 'Person', image: [{'@type': 'ImageObject', name: 'avatar', 'contentUrl': 'https://s3.amazonaws.com/kd4/guylepage3'}], name: 'Guy Lepage'}, id: 'guylepage3.id' }
   ]
 }
 

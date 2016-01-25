@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import ListItem from '../components/ListItem'
+import BookmarkListItem from '../components/BookmarkListItem'
 
 function mapStateToProps(state) {
   return {
@@ -16,15 +16,14 @@ class BookmarksPage extends Component {
     return (
       <div>
         <h4 className="headspace inverse">Bookmarks</h4>
-
         <div style={{paddingBottom: '15px'}}>
           <ul className="list-group bookmarks-temp">
           { this.props.bookmarks.map(function(bookmark, index) {
             return (
-              <ListItem
+              <BookmarkListItem
                 key={index}
-                label={ bookmark.label }
-                url={"/profile/" + bookmark.id} />
+                profile={bookmark.profile}
+                id={bookmark.id} />
             )
           })}
           </ul>
