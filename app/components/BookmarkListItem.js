@@ -18,12 +18,9 @@ class BookmarkListItem extends Component {
 
   render() {
     let profile = this.props.profile
-    console.log(profile)
     if (!this.props.profile.hasOwnProperty('@type')) {
       profile = Person.fromLegacyFormat(this.props.profile).profile
     }
-    console.log(profile)
-
     const name = getName(profile),
           avatarUrl = getAvatarUrl(profile),
           blockchainId = this.props.id
