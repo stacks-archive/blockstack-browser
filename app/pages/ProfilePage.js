@@ -132,9 +132,9 @@ class ProfilePage extends Component {
             </div>
             <div className="container">
               <p className="profile-foot">Connections</p>
-              {connections.map((connection) => {
+              {connections.map((connection, index) => {
                 return (
-                  <div className="connections">
+                  <div key={index} className="connections">
                   </div>
                 )
               })}
