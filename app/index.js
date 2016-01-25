@@ -1,7 +1,9 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router } from 'react-router'
+import { Router, useRouterHistory } from 'react-router'
+import { createHashHistory } from 'history/lib'
+
 import routes from './routes'
 import configureDataStore from './store/configure/index'
 import './styles/app.css'
@@ -9,9 +11,11 @@ import './styles/Profile.css'
 
 const store = configureDataStore()
 
+const appHistory = useRouterHistory(createHashHistory)({ queryKey: false })
+
 render(
   <Provider store={store}>
-    <Router>
+    <Router history={appHistory}>
       {routes}
     </Router>
   </Provider>,

@@ -4,13 +4,11 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import { SearchActions } from '../store/search'
-import SearchItem from './SearchItem'
 
 function mapStateToProps(state) {
   return {
-    api: state.settings.api,
     query: state.search.query,
-    results: state.search.results
+    currentId: state.identities.current.id
   }
 }
 
@@ -21,13 +19,14 @@ function mapDispatchToProps(dispatch) {
 class SearchBar extends Component {
   static propTypes = {
     placeholder: PropTypes.string.isRequired,
-    resultCount: PropTypes.number.isRequired,
     timeout: PropTypes.number.isRequired,
-    api: PropTypes.object.isRequired,
-    updateQuery: PropTypes.func.isRequired,
     searchIdentities: PropTypes.func.isRequired,
-    query: PropTypes.string.isRequired,
-    results: PropTypes.array.isRequired
+    query: PropTypes.string.isRequired
+  }
+
+  static contextTypes = {
+    history: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -44,25 +43,41 @@ class SearchBar extends Component {
     this.submitQuery = this.submitQuery.bind(this)
     this.onFocus = this.onFocus.bind(this)
     this.onBlur = this.onBlur.bind(this)
+    this.locationHasChanged = this.locationHasChanged.bind(this)
   }
 
-  componentHasNewProps(props) {
+  locationHasChanged(location) {
+    let pathname = location.pathname,
+        query = 'local:/' + pathname
+    if (pathname.includes('/profile/')) {
+      query = pathname.replace('/profile/', '')
+    } else if (pathname.includes('/search/')) {
+      query = pathname.replace('/search/', '')
+    }
     this.setState({
-      searchResults: props.results
+      query: query
     })
   }
 
-  componentWillMount() {
-    this.componentHasNewProps(this.props)
+  componentDidMount() {
+    this.context.router.listen(this.locationHasChanged)
+  }
+
+  componentWillUnmount() {
+    this.context.router.unregisterTransitionHook(this.locationHasChanged)
   }
 
   componentWillReceiveProps(nextProps) {
-    this.componentHasNewProps(nextProps)
+    if (nextProps.currentId !== null && nextProps.currentId !== this.props.currentId) {
+      this.setState({
+        query: nextProps.currentId
+      })
+    }
   }
 
   submitQuery(query) {
-    this.props.searchIdentities(
-      query, this.props.api.searchUrl, this.props.api.nameLookupUrl)
+    const newPath = `search/${query.replace(' ', '%20')}`
+    this.context.history.pushState(null, newPath)
   }
 
   onFocus(event) {
@@ -97,26 +112,13 @@ class SearchBar extends Component {
   render() {
     return (
       <div>
-        <div>
-          <input type="text"
-            className="form-control form-control-sm"
-            placeholder={this.state.placeholder} 
-            name="query" value={this.state.query}
-            onChange={this.onQueryChange}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur} />
-        </div>
-        <ul className="list-group">
-          {this.state.searchResults.map((result, index) => {
-            if (result.profile && result.username) {
-              return (
-                <SearchItem key={result.username + '.id'}
-                  id={result.username + '.id'}
-                  profile={result.profile} />
-              )
-            }
-          })}
-        </ul>
+        <input type="text"
+          className="form-control form-control-sm"
+          placeholder={this.state.placeholder} 
+          name="query" value={this.state.query}
+          onChange={this.onQueryChange}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur} />
       </div>
     )
   }

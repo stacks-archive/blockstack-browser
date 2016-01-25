@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import { Link, History } from 'react-router'
-import { BackButton, ForwardButton } from '../components/Buttons'
+import { Link } from 'react-router'
+import BackButton from '../components/BackButton'
+import ForwardButton from '../components/ForwardButton'
 import SearchBar from './SearchBar'
 
 class Navbar extends Component {
@@ -53,10 +54,7 @@ class Navbar extends Component {
           </div>
           <div className="nav-search">
             <div className="nav-link">
-              <form className="form-group">
-                <SearchBar placeholder="Search the blockchain"
-                  resultCount={12} timeout={500} />
-              </form>
+              <SearchBar placeholder="Search the blockchain" timeout={500} />
             </div>
           </div>
         </div>

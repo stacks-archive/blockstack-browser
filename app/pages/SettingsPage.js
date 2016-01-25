@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import InputGroup from '../components/InputGroup'
-import { SaveButton } from '../components/Buttons'
+import SaveButton from '../components/SaveButton'
 import { SettingsActions } from '../store/settings'
 
 function mapStateToProps(state) {
@@ -75,25 +75,19 @@ class SettingsPage extends Component {
       <div>
         <div>
           <h3>Settings</h3>
-
           <h5>Backup Account</h5>
-
           <p>
             <Link to="/backup" className="btn btn-secondary">
               Backup Account
             </Link>
           </p>
-
           <h5>Update Password</h5>
-
           <p>
             <Link to="/newpassword" className="btn btn-secondary">
               Update Password
             </Link>
           </p>
-
           <hr />
-
           <p>
             <button onClick={this.toggleAdvancedSection} className="btn btn-secondary">
             { this.state.advancedSectionShown ?
@@ -103,11 +97,9 @@ class SettingsPage extends Component {
             }
             </button>
           </p>
-
           { this.state.advancedSectionShown ?
             <div>
               <h5>Use Custom API</h5>
-
               <InputGroup name="nameLookupUrl" label="Name Lookup URL"
                 data={this.state.api} onChange={this.onValueChange} />
               <InputGroup name="searchUrl" label="Search URL"
@@ -119,7 +111,6 @@ class SettingsPage extends Component {
               <div className="form-group">
                 <SaveButton onSave={this.updateApi} />
               </div>
-
               <p>
                 <button onClick={this.resetApi} className="btn btn-secondary">
                   Reset API
@@ -127,7 +118,6 @@ class SettingsPage extends Component {
               </p>
             </div>
           : null }
-
         </div>
       </div>
     )

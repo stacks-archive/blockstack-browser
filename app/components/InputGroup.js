@@ -12,8 +12,8 @@ class InputGroup extends Component {
   }
 
   render() {
-    var value = ''
-    var type = "text" 
+    let value = '',
+        type = "text" 
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
     }
@@ -22,7 +22,7 @@ class InputGroup extends Component {
     }
     return (
       <fieldset className="form-group">
-        <label className="capitalize">{this.props.label}</label>
+        <label>{this.props.label}</label>
         <input name={this.props.name}
           className="form-control"
           type={type}

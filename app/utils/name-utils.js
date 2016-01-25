@@ -1,9 +1,9 @@
 import hasProp from 'hasprop'
 
-export function hasNameBeenPreordered(name, localIdentities) {
+export function hasNameBeenPreordered(domainName, localIdentities) {
   let nameHasBeenPreordered = false
   localIdentities.map(function(identity) {
-    if (identity.id === name) {
+    if (identity.id === domainName) {
       nameHasBeenPreordered = true
       return
     }
@@ -11,16 +11,15 @@ export function hasNameBeenPreordered(name, localIdentities) {
   return nameHasBeenPreordered
 }
 
-export function isNameAvailable(nameLookupUrl, name, callback) {
-  const username = name.split('.')[0]
-  const url = nameLookupUrl + username
-
+export function isNameAvailable(lookupUrl, domainName, callback) {
+  const username = domainName.split('.')[0],
+        url = lookupUrl.replace('{name}', username)
   fetch(url)
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
       let isAvailable = false
-      if (hasProp(responseJson, username + '.' + "error.type")) {
+      if (hasProp(responseJson, username + '.error.type')) {
         const errorType = responseJson[username]["error"]["type"]
         if (errorType === "username_not_registered") {
           isAvailable = true

@@ -40,19 +40,16 @@ class ImportPage extends Component {
       <div>
         <div>
           <h3>Import Identity</h3>
-
           <p><i>
             To import an identity into this app,
             go to the app that owns the identity,
             then find the export form and enter the transfer code below.
           </i></p>
-
           <div className="highlight">
             <pre>
               <code>{currentAddress}</code>
             </pre>
           </div>
-
         </div>
       </div>
     )

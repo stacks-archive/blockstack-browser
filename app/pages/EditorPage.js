@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
 import InputGroup from '../components/InputGroup'
-import { SaveButton } from '../components/Buttons'
+import SaveButton from '../components/SaveButton'
 import { IdentityActions } from '../store/identities'
 import { getNameParts } from '../utils/profile-utils'
 
@@ -52,7 +52,7 @@ class EditorPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.currentIdentity !== this.props.currentIdentity) {
-      var profile = nextProps.currentIdentity.profile,
+      let profile = nextProps.currentIdentity.profile,
           flatProfile = flattenObject(profile)
       flatProfile.givenName, flatProfile.familyName = getNameParts(profile)
       this.setState({
@@ -67,7 +67,7 @@ class EditorPage extends Component {
   }
 
   onValueChange(event) {
-    var flatProfile = this.state.flatProfile
+    let flatProfile = this.state.flatProfile
     flatProfile[event.target.name] = event.target.value
     if (event.target.name === "image[0].contentUrl") {
       flatProfile["image[0].name"] = "avatar"
@@ -79,9 +79,8 @@ class EditorPage extends Component {
   }
 
   render() {
-    var flatProfile = this.state.flatProfile,
-        profile = this.state.profile,
-        _this = this
+    const flatProfile = this.state.flatProfile,
+          profile = this.state.profile
 
     return (
       <div>
@@ -110,8 +109,8 @@ class EditorPage extends Component {
               <h3>Accounts</h3>
               {
                 profile.account ?
-                profile.account.map(function(account, index) {
-                  var identifierLabel = 'Identifier'
+                profile.account.map((account, index) => {
+                  let identifierLabel = 'Identifier'
                   if (account.service === 'bitcoin') {
                     identifierLabel = 'Address'
                   }
@@ -127,12 +126,12 @@ class EditorPage extends Component {
                           name={"account[" + index + "].identifier"}
                           label={account.service + " " + identifierLabel}
                           data={flatProfile}
-                          onChange={_this.onValueChange} />
+                          onChange={this.onValueChange} />
                         <InputGroup
                           name={"account[" + index + "].proofUrl"}
                           label={account.service + " Proof URL"}
                           data={flatProfile}
-                          onChange={_this.onValueChange} />
+                          onChange={this.onValueChange} />
                         </div>
                       : null }
                       { account.service.toLowerCase() === 'bitcoin' || account.proofType === 'signature' ?
@@ -141,12 +140,12 @@ class EditorPage extends Component {
                           name={"account[" + index + "].identifier"}
                           label={account.service + " " + identifierLabel}
                           data={flatProfile}
-                          onChange={_this.onValueChange} />
+                          onChange={this.onValueChange} />
                         <InputGroup
                           name={"account[" + index + "].proofSignature"}
                           label={account.service + " Signature"}
                           data={flatProfile}
-                          onChange={_this.onValueChange} />
+                          onChange={this.onValueChange} />
                         </div>
                       : null }
                     </div>

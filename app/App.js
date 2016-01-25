@@ -20,15 +20,9 @@ class MainScreen extends Component {
     return (
       <div>
         <Navbar />
-        <div className="content-section">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                {this.props.children}
-              </div>
-            </div>
-          </div>
-        </div>          
+        <div className="container">
+          {this.props.children}
+        </div>
       </div>
     )
   }
@@ -38,7 +32,7 @@ class WelcomeScreen extends Component {
   render() {
     return (
       <div className="container">
-        <LandingPage />
+        {this.props.children}
       </div>
     )
   }
@@ -50,13 +44,25 @@ class App extends Component {
     encryptedMnemonic: PropTypes.string
   }
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.encryptedMnemonic !== this.props.encryptedMnemonic) {
+      this.context.router.push('/bookmarks')
+    }
+  }
+
   render() {
+    const accountExists = this.props.encryptedMnemonic
+
     return (
       <div>
-      { this.props.encryptedMnemonic ?
+      { accountExists ?
         <MainScreen children={this.props.children} />
       :
-        <WelcomeScreen />
+        <WelcomeScreen children={this.props.children} />
       }
       {
         (() => {

@@ -12,11 +12,8 @@ class ExportPage extends Component {
       <div>
         <div>
           <h3>Export Identity</h3>
-
           <p>Export your identity to another address.</p>
-
           <InputGroup label="Recipient address" placeholder="Recipient address" />
-
           <div>
             <button className="btn btn-primary">Send</button>
           </div>

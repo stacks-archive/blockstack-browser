@@ -39,14 +39,15 @@ class IdentitiesPage extends Component {
     const accountKeychain = new PublicKeychain(this.props.identityAccount.accountKeychain),
           addressIndex = this.props.identityAccount.addressIndex,
           currentAddress = accountKeychain.child(addressIndex).address().toString(),
-          _this = this
+          addressLookupUrl = this.props.addressLookupUrl,
+          localIdentities = this.state.localIdentities
 
-    getIdentities(currentAddress, this.props.addressLookupUrl, this.state.localIdentities, function(localIdentities, newNames) {
-      _this.setState({
+    getIdentities(currentAddress, addressLookupUrl, localIdentities, (localIdentities, newNames) => {
+      this.setState({
         localIdentities: localIdentities
       })
-      newNames.forEach(function(name) {
-        _this.props.createNewIdentity(name)
+      newNames.forEach((name) => {
+        this.props.createNewIdentity(name)
       })
     })
   }
@@ -65,7 +66,6 @@ class IdentitiesPage extends Component {
     return (
       <div>
         <h3>Identities</h3>
-
         <div style={{paddingBottom: '15px'}}>
           <ul className="list-group">
           { localIdentities.map(function(identity) {
