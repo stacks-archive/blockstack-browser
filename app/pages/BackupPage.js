@@ -52,10 +52,9 @@ class BackupPage extends Component {
           dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
     decrypt(dataBuffer, password, (err, plaintextBuffer) => {
       if (!err) {
+        this.updateAlert('success', 'Backup phrase decrypted')
         this.setState({
-          decryptedMnemonic: plaintextBuffer.toString(),
-          alertStatus: null,
-          alertMessage: null
+          decryptedMnemonic: plaintextBuffer.toString()
         })
       } else {
         this.updateAlert('danger', 'Invalid password')

@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Alert from '../components/Alert'
 import { KeychainActions } from '../store/keychain'
 import InputGroup from '../components/InputGroup'
+import { isPasswordValid } from '../utils/account-utils'
 
 function mapStateToProps(state) {
   return {
@@ -43,7 +44,7 @@ class LandingPage extends Component {
   }
 
   createAccount() {
-    if (this.state.password.length > 7) {
+    if (isPasswordValid(this.state.password)) {
       if (this.state.password === this.state.password2) {
         this.updateAlert('success', 'Creating your account...')
         this.props.initializeWallet(this.state.password)

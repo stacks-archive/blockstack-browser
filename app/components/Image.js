@@ -22,7 +22,7 @@ class Image extends Component {
 
   onError(event) {
     this.setState({
-      src: 'https://s3.amazonaws.com/65m/avatar-placeholder.png'
+      src: this.props.fallbackSrc
     })
   }
 
