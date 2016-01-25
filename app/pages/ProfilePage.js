@@ -130,31 +130,31 @@ class ProfilePage extends Component {
             </div>
             <div className="col-md-12">
               <p className="profile-foot">Connections</p>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
-              <div className="connections">
+              <div className="avatar">
               </div>
             </div>
           </div>

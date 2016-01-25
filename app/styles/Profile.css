@@ -23,9 +23,10 @@
 html,body{height:100%;}
 
 body {
-  background-color: #1C1C1C;
+  background-color: #141517;
   font-weight: 200;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
 }
 .idcard {
   position: relative;
@@ -34,7 +35,7 @@ body {
 }
 .idcard-body {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .dim {
   color: #949494;
@@ -60,8 +61,7 @@ body {
   vertical-align: top;
 }
 .idcard-name {
-  margin-bottom: 15px;
-  font-weight: 200;
+  font-weight: 300;
   font-size: 1.25em;
 }
 .id-social > div > ul {
@@ -94,7 +94,7 @@ i.fa {
   padding-left: 5px;
 }
 .idcard-wrap {
-  margin-top: 125px;
+  margin-top: 105px;
   color: rgba(255,255,255,1);
   font-weight: inherit;
 }
@@ -185,6 +185,14 @@ div.nav-item.nav-link > a > img {
 .bookmarks-temp > .list-group-item:first-child {
   border-radius: 0;
 }
+.bookmarks-temp > .list-group-item:before {
+  background-color: #23262a;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  margin-left: 15px;
+  border-radius: 3px;
+}
 .bookmarks-temp {
   margin-left: -18px;
   max-width: 275px;
@@ -193,8 +201,8 @@ h4.headspace, h5.headspace {
   margin-bottom: 50px;
 }
 .bookmarks-temp > a.list-group-item:focus, .bookmarks-temp > a.list-group-item:hover {
-  background-color: #000000;
-  color: #616161!important;
+  background-color: #0c0d0e;
+  color: #e6e6e6!important;
 }
 .btn-pro-edit {
   margin-top: 15px;
@@ -269,8 +277,8 @@ div.profile-right-col > ul > li:first-child {
 body {
   color: #ffffff;
 }
-.connections {
-  background-color: #282828;
+.avatar {
+  background-color: #23262a;
   width: 32px;
   height: 32px;
   display: inline-block;
