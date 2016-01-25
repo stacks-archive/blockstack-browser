@@ -21,11 +21,16 @@ class AccountListItem extends Component {
     }
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
 
+    let identifier = this.props.identifier
+    if (identifier.length >= 18) {
+      identifier = identifier.slice(0, 18) + '...'
+    }
+
     return (
       <li>
         <Link to={accountUrl}>
           <i className={`fa ${socialMediaClass}`} />
-          <span>{this.props.identifier}</span>
+          <span>{identifier}</span>
         </Link>
       </li>
     )

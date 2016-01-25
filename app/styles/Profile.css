@@ -198,7 +198,7 @@ h4.headspace, h5.headspace {
   margin-bottom: 50px;
 }
 .bookmarks-temp > a.list-group-item:focus, .bookmarks-temp > a.list-group-item:hover {
-  background-color: #0c0d0e;
+  background-color: #23262a;
   color: #e6e6e6!important;
 }
 .btn-pro-edit {
@@ -207,7 +207,7 @@ h4.headspace, h5.headspace {
   width: 258px;
   border: 1px solid #4a90e2;
   background-color: #4a90e2;
-  color: #1C1C1C;
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 700;
@@ -217,7 +217,7 @@ h4.headspace, h5.headspace {
   outline: none;
   border: 1px solid #2d7edd;
   background-color: #2d7edd;
-  color: #1C1C1C;
+  color: #ffffff;
 }
 .pill-nav {
   border: 1px solid #484848;
@@ -253,21 +253,12 @@ div.profile-right-col > ul > li > a {
   display: block;
   color: #949494;
   padding: 10px 5px;
+  text-decoration: none;
 }
 div.profile-right-col > ul > li > a:hover {
   text-decoration: none;
-  color: #ffffff;
-}
-div.profile-right-col > ul > li {
-  overflow: hidden;
-}
-
-div.profile-right-col > ul > li:first-child {
-  overflow: hidden;
-  width: 140px;
-  color: #949494;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  background-color: #23262a;
+  border-radius: 4px;
 }
 .profile-foot {
   position: relative;
