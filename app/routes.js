@@ -23,7 +23,7 @@ export default (
     <Route path="profile/local/:index"        component={ProfilePage} />
     <Route path="profile/local/:index/edit"   component={EditorPage} />
     <Route path="profile/local/:index/export" component={ExportPage} />
-    <Route path="profile/:name"               component={ProfilePage} />
+    <Route path="profile/blockchain/:name"    component={ProfilePage} />
     <Route path="settings"       component={SettingsPage} />
     <Route path="register"       component={RegisterPage} />
     <Route path="deposit"        component={DepositPage} />
