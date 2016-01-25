@@ -283,5 +283,10 @@ body {
   height: 32px;
   display: inline-block;
   margin-left: 15px;
-  border-radius: 3px;
+  border-radius: 4px;
+}
+div.col-md-4 > img {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
 }

@@ -30,8 +30,7 @@ class BookmarkListItem extends Component {
         <div className="row">
           <div className="col-md-4">
             <Image src={avatarUrl} id={blockchainId}
-              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
-              style={{ width: '40px', height: '40px' }} />
+              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
           <div className="col-md-4">{name}</div>
           <div className="col-md-4">{blockchainId}</div>
