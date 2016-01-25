@@ -285,7 +285,7 @@ body {
   margin-left: 15px;
   border-radius: 4px;
 }
-div.col-md-4 > img {
+div.col-md-3 > img {
   width: 32px;
   height: 32px;
   border-radius: 4px;

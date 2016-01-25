@@ -28,12 +28,12 @@ class BookmarkListItem extends Component {
     return (
       <Link to={`/profile/${blockchainId}`} className="list-group-item">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-3">
             <Image src={avatarUrl} id={blockchainId}
               fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
-          <div className="col-md-4">{name}</div>
-          <div className="col-md-4">{blockchainId}</div>
+          <div className="col-md-9">{name}</div>
+          <div hidden>{blockchainId}</div>
         </div>
       </Link>
     )
