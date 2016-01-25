@@ -176,14 +176,11 @@ div.nav-item.nav-link > a > img {
 }
 .bookmarks-temp > .list-group-item {
   border: none;
-  border-radius: 0;
+  border-radius: 4px;
   background-color: transparent;
 }
 .bookmarks-temp > a.list-group-item {
   color: #fff!important;
-}
-.bookmarks-temp > .list-group-item:first-child {
-  border-radius: 0;
 }
 .bookmarks-temp > .list-group-item:before {
   background-color: #23262a;
@@ -289,4 +286,12 @@ div.col-md-3 > img {
   width: 32px;
   height: 32px;
   border-radius: 4px;
+}
+.col-list-name {
+  display: table-cell;
+  vertical-align: middle;
+}
+.booklist-wrap {
+  display: table;
+  overflow: hidden;
 }
