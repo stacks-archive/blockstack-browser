@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
 import InputGroup from '../components/InputGroup'
-import { SaveButton } from '../components/Buttons'
+import SaveButton from '../components/SaveButton'
 import { IdentityActions } from '../store/identities'
 import { getNameParts } from '../utils/profile-utils'
 

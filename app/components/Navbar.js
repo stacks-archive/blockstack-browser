@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import { Link, History } from 'react-router'
-import { BackButton, ForwardButton } from '../components/Buttons'
+import { Link } from 'react-router'
+import BackButton from '../components/BackButton'
+import ForwardButton from '../components/ForwardButton'
 import SearchBar from './SearchBar'
 
 class Navbar extends Component {

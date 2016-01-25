@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link, History } from 'react-router'
-import reactMixin from 'react-mixin'
+import { Link } from 'react-router'
 
 import { SearchActions } from '../store/search'
 
@@ -17,13 +16,17 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(SearchActions, dispatch)
 }
 
-@reactMixin.decorate(History)
 class SearchBar extends Component {
   static propTypes = {
     placeholder: PropTypes.string.isRequired,
     timeout: PropTypes.number.isRequired,
     searchIdentities: PropTypes.func.isRequired,
     query: PropTypes.string.isRequired
+  }
+
+  static contextTypes = {
+    history: PropTypes.object.isRequired,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -40,6 +43,28 @@ class SearchBar extends Component {
     this.submitQuery = this.submitQuery.bind(this)
     this.onFocus = this.onFocus.bind(this)
     this.onBlur = this.onBlur.bind(this)
+    this.locationHasChanged = this.locationHasChanged.bind(this)
+  }
+
+  locationHasChanged(location) {
+    let pathname = location.pathname,
+        query = 'local:/' + pathname
+    if (pathname.includes('/profile/')) {
+      query = pathname.replace('/profile/', '')
+    } else if (pathname.includes('/search/')) {
+      query = pathname.replace('/search/', '')
+    }
+    this.setState({
+      query: query
+    })
+  }
+
+  componentDidMount() {
+    this.context.router.listen(this.locationHasChanged)
+  }
+
+  componentWillUnmount() {
+    this.context.router.unregisterTransitionHook(this.locationHasChanged)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -52,7 +77,7 @@ class SearchBar extends Component {
 
   submitQuery(query) {
     const newPath = `search/${query.replace(' ', '%20')}`
-    this.history.pushState(null, newPath)
+    this.context.history.pushState(null, newPath)
   }
 
   onFocus(event) {

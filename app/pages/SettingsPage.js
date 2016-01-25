@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import InputGroup from '../components/InputGroup'
-import { SaveButton } from '../components/Buttons'
+import SaveButton from '../components/SaveButton'
 import { SettingsActions } from '../store/settings'
 
 function mapStateToProps(state) {

@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { History } from 'react-router'
-import reactMixin from 'react-mixin'
 
 import Navbar from './components/Navbar'
 import LandingPage from './pages/LandingPage'
@@ -40,16 +38,19 @@ class WelcomeScreen extends Component {
   }
 }
 
-@reactMixin.decorate(History)
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     encryptedMnemonic: PropTypes.string
   }
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.encryptedMnemonic !== this.props.encryptedMnemonic) {
-      this.history.pushState(null, 'bookmarks')
+      this.context.router.push('/bookmarks')
     }
   }
 
