@@ -84,45 +84,81 @@ class ProfilePage extends Component {
       <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
         <div>
-         <div className="col-md-4">
-            <div>
-              <div className="profile-wrap">
-                <div className="idcard-block">
-                  <div className="id-flex">
-                    <img className="img-idcard" src={getAvatarUrl(profile)} />
-                    <div className="overlay"></div>
+          <div className="col-md-9">
+            <div className="col-md-12">
+              <div className="col-md-5">
+                <div>
+                  <div className="profile-wrap">
+                    <div className="idcard-block">
+                      <div className="id-flex">
+                        <img className="img-idcard" src={getAvatarUrl(profile)} />
+                        <div className="overlay"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <Link to={this.props.location.pathname + "/edit"}
+                    className="btn btn-primary btn-lg btn-pro-edit">
+                    Edit
+                  </Link>
+                </div>
+              </div>
+              <div className="col-md-7">
+                <div className="idcard-wrap">
+                  <div className="idcard-body dim">
+                    Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
+                    transaction <span className="inverse">#{transactionNumber}</span>
+                  </div>
+                  <h1 className="idcard-name">{getName(profile)}</h1>
+                  <div className="idcard-body inverse">
+                    {profile.description}
+                  </div>
+                  <div className="idcard-body dim">
+                    {address}
+                  </div>
+                  <div className="idcard-body dim">
+                    {birthDate}
+                  </div>
+                  <div className="pill-nav pull-right">
+                    <Link to={this.props.location.pathname + "/export"}>
+                      <img src="images/icon-export.svg"/>
+                    </Link>
                   </div>
                 </div>
               </div>
             </div>
-            <div>
-              <Link to={this.props.location.pathname + "/edit"}
-                className="btn btn-primary btn-lg btn-pro-edit">
-                Edit
-              </Link>
+            <div className="col-md-12">
+              <p className="profile-foot">Connections</p>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
             </div>
           </div>
-          <div className="col-md-5">
-            <div className="idcard-wrap">
-              <div className="idcard-body inverse">
-                {blockchainId}
-              </div>
-              <div className="idcard-body dim">
-                Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
-                transaction <span className="inverse">#{transactionNumber}</span>
-              </div>
-              <p className="col-md-9 profile-foot">
-                Connections
-              </p>
-              <div className="idcard-body dim">
-                {address}
-              </div>
-              <div className="idcard-body dim">
-                {birthDate}
-              </div>
-            </div>
-          </div>
-          <div className="container col-md-3 pull-right profile-right-col-fill">
+          <div className="col-md-3 pull-right profile-right-col-fill">
             <div className="profile-right-col inverse">
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
