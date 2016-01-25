@@ -84,7 +84,7 @@ class ProfilePage extends Component {
       <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
         <div>
-         <div className="col-md-4">
+          <div className="col-md-4">
             <div>
               <div className="profile-wrap">
                 <div className="idcard-block">
@@ -111,15 +111,38 @@ class ProfilePage extends Component {
                 Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
                 transaction <span className="inverse">#{transactionNumber}</span>
               </div>
-              <p className="col-md-9 profile-foot">
-                Connections
-              </p>
+              <h1 className="idcard-name">{getName(profile)}</h1>
+              <div className="idcard-body inverse">
+                {profile.description}
+              </div>
               <div className="idcard-body dim">
                 {address}
               </div>
               <div className="idcard-body dim">
                 {birthDate}
               </div>
+              <div className="pill-nav pull-right">
+                <Link to={this.props.location.pathname + "/export"}>
+                  <img src="images/icon-export.svg"/>
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p className="col-md-9 profile-foot">Connections</p>
+            <div className="connections">
+            </div>
+            <div className="connections">
+            </div>
+            <div className="connections">
+            </div>
+            <div className="connections">
+            </div>
+            <div className="connections">
+            </div>
+            <div className="connections">
+            </div>
+            <div className="connections">
             </div>
           </div>
           <div className="container col-md-3 pull-right profile-right-col-fill">
