@@ -86,7 +86,7 @@ i.fa {
   margin-top: 3px;
   margin-right: 5px;
   margin-left: 5px;
-  padding: 8px;
+  padding: 0 6px;
   text-align: right;
   font-size: 16px;
 }
@@ -250,7 +250,13 @@ div.profile-right-col > ul {
   list-style-type: none;
 }
 div.profile-right-col > ul > li > a {
+  display: block;
   color: #949494;
+  padding: 10px 5px;
+}
+div.profile-right-col > ul > li > a:hover {
+  text-decoration: none;
+  color: #ffffff;
 }
 div.profile-right-col > ul > li {
   overflow: hidden;
