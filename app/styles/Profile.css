@@ -268,3 +268,11 @@ div.profile-right-col > ul > li:first-child {
 body {
   color: #ffffff;
 }
+.connections {
+  background-color: #282828;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  margin-left: 15px;
+  border-radius: 3px;
+}

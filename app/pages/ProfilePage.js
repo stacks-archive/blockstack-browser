@@ -147,6 +147,18 @@ class ProfilePage extends Component {
               </div>
               <div className="connections">
               </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
+              <div className="connections">
+              </div>
             </div>
           </div>
           <div className="col-md-3 pull-right profile-right-col-fill">
