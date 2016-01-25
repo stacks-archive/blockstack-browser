@@ -48,18 +48,27 @@ class SearchBar extends Component {
   locationHasChanged(location) {
     let pathname = location.pathname,
         query = null
-    if (pathname.includes('/profile/')) {
-      query = pathname.replace('/profile/', '')
+    console.log(pathname)
+    if (/^\/profile\/blockchain\/[a-z0-9_-]+.[a-z0-9_-]+$/.test(pathname)) {
+      query = pathname.replace('/profile/blockchain/', '')
+    } else if (/^\/profile\/local\/[0-9]+/.test(pathname)) {
+      query = 'local:/' + pathname.replace('/local/', '/')
     } else if (pathname.includes('/search/')) {
       // do nothing
     } else {
       query = 'local:/' + pathname
     }
+    console.log(query)
     if (query) {
       this.setState({
         query: query
       })
     }
+    /*else if (/^\/profile\/local\/[0-9]+\/edit$/.test(pathname)) {
+      query = pathname.replace('/profile/local/', '')
+    } else if (/^\/profile\/local\/[0-9]+\/export$/.test(pathname)) {
+      query = pathname.replace('/profile/local/', '').replace('/export', '')
+    } */
   }
 
   componentDidMount() {
@@ -68,14 +77,6 @@ class SearchBar extends Component {
 
   componentWillUnmount() {
     this.context.router.unregisterTransitionHook(this.locationHasChanged)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.currentId !== null && nextProps.currentId !== this.props.currentId) {
-      this.setState({
-        query: nextProps.currentId
-      })
-    }
   }
 
   submitQuery(query) {

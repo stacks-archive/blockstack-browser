@@ -7,6 +7,7 @@ import AccountListItem from '../components/AccountListItem'
 import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
 import { IdentityActions } from '../store/identities'
 import { SearchActions } from '../store/search'
+import Image from '../components/Image'
 
 function mapStateToProps(state) {
   return {
@@ -79,13 +80,14 @@ class ProfilePage extends Component {
           transactionNumber = 339,
           address = 'Address hidden',
           birthDate = 'Birth date hidden'
+    const connections = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
 
     return ( 
       <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
         <div>
           <div className="col-md-9">
-            <div className="col-md-12">
+            <div className="container">
               <div className="col-md-5">
                 <div>
                   <div className="profile-wrap">
@@ -128,34 +130,14 @@ class ProfilePage extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-md-12">
+            <div className="container">
               <p className="profile-foot">Connections</p>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
-              <div className="avatar">
-              </div>
+              {connections.map((connection) => {
+                return (
+                  <div className="connections">
+                  </div>
+                )
+              })}
             </div>
           </div>
           <div className="col-md-3 pull-right profile-right-col-fill">
