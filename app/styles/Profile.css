@@ -286,6 +286,7 @@ div.col-md-3 > img {
   width: 32px;
   height: 32px;
   border-radius: 4px;
+      margin-right: 10px;
 }
 .col-list-name {
   display: table-cell;
