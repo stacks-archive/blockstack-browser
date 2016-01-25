@@ -24,108 +24,108 @@ html,body{height:100%;}
 
 body {
   background-color: #1C1C1C;
-  font-size: 0.8125rem;
   font-weight: 200;
+  font-size: 0.8125rem;
 }
 .idcard {
   position: relative;
-  border-radius:.25rem;
   border: .0625rem solid rgba(229,229,229,1);
+  border-radius:.25rem;
 }
 .idcard-body {
-  margin-bottom: 20px;
   display: block;
+  margin-bottom: 20px;
 }
 .dim {
   color: #949494;
 }
 .id-flex img {
+  bottom: 0;
   width: 260px;
   height: 371px;
-  object-fit: cover;
-  bottom: 0;
   -webkit-border-radius: 8px;
   border-radius: 8px;
+  object-fit: cover;
 }
 .id-flex {
-  display: table-cell;
-  vertical-align: top;
   bottom: 0;
+  display: table-cell;
   width: 260px;
   height: 371px;
+  vertical-align: top;
 }
 .idcard-block {
   display: table-cell;
-  vertical-align: top;
   width: 100%;
+  vertical-align: top;
 }
 .idcard-name {
   margin-bottom: 15px;
-  font-size: 1.25em;
   font-weight: 200;
+  font-size: 1.25em;
 }
 .id-social > div > ul {
-  list-style: none;
-  height: 39px;
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 15px;
+  height: 39px;
+  list-style: none;
 }
 .id-social > div > ul > li a {
-  vertical-align: middle;
   overflow: hidden;
+  padding-left: 10px;
+  height: 32px;
+  color: rgba(255,255,255,1);
+  vertical-align: middle;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: rgba(255,255,255,1);
   line-height: 32px;
-  height: 32px;
-  padding-left: 10px;
 }
 i.fa {
   display: inline-block;
-  font-size: 16px;
-  text-align: right;
-  padding: 8px;
   margin-top: 3px;
   margin-right: 5px;
   margin-left: 5px;
+  padding: 8px;
+  text-align: right;
+  font-size: 16px;
 }
 .id-social > div > ul > li a > span {
   padding-left: 5px;
 }
 .idcard-wrap {
-  margin-top: 85px;
+  margin-top: 125px;
   color: rgba(255,255,255,1);
   font-weight: inherit;
 }
 .overlay {
-  background-color: rgba(0,0,0,0.2);
   position: absolute;
+  margin: -371px 0 0 0;
   width: 260px;
   height: 371px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
-  margin: -371px 0 0 0;
+  background-color: rgba(0,0,0,0.2);
 }
 .navbar {
-  background-color: rgba(235,235,235,1);
-  height: 83px;
   padding-top: 21px;
   padding-right: 0;
   padding-left: 0;
+  height: 83px;
+  background-color: rgba(235,235,235,1);
 }
   /****** custom element ***************************************/
   .nav-page {
-    background-color: transparent;
     border: none;
+    background-color: transparent;
   }
 button {
   outline: none!important;
 }
 .nav.navbar-nav {
-  border-top: 1px solid #e1e1e1;
-  width: 100%;
   padding-top: 4px;
+  width: 100%;
+  border-top: 1px solid #e1e1e1;
 }
 button.btn.btn-sm.nav-page {
   margin-top: -4px;
@@ -139,16 +139,16 @@ input[type=text]{
   overflow: hidden;
 }
 .nav-search > div > form > input {
-  font-size: 11px;
+  height: 22px;
   border: none;
   text-align: center;
-  height: 22px;
+  font-size: 11px;
 }
 div.nav-item.nav-link > a {
   display: block;
+  margin-right: 5px;
   padding-top: 1px;
   text-decoration: none;
-  margin-right: 5px;
 }
 div.nav-item.nav-link > a > img {
   display: block;
@@ -157,14 +157,14 @@ div.nav-item.nav-link > a > img {
   height: 21px;
 }
 .icon-labels {
-  margin-top: 6px;
   display: block;
-  font-size: 11px;
+  margin-top: 6px;
   color: rgba(61,61,61,1);
+  font-size: 11px;
 }
 .toolbar {
-  padding-left: 25px;
   padding-right: 15px;
+  padding-left: 25px;
 }
 .back-forth {
   padding-right: 25px;
@@ -175,9 +175,9 @@ div.nav-item.nav-link > a > img {
   font-weight: 200;
 }
 .bookmarks-temp > .list-group-item {
-  background-color: transparent;
   border: none;
   border-radius: 0;
+  background-color: transparent;
 }
 .bookmarks-temp > a.list-group-item {
   color: #fff!important;
@@ -200,19 +200,19 @@ h4.headspace, h5.headspace {
   margin-top: 15px;
   padding: 0.8125rem 1.25rem;
   width: 258px;
-  font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  border: 1px solid #4a90e2;
   background-color: #4a90e2;
   color: #1C1C1C;
-  border: 1px solid #4a90e2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  font-size: 11px;
 }
 .btn-pro-edit:hover, .btn-pro-edit:active, .btn-pro-edit:focus, .btn-pro-edit:active:focus {
-  color: #1C1C1C;
   outline: none;
-  background-color: #2d7edd;
   border: 1px solid #2d7edd;
+  background-color: #2d7edd;
+  color: #1C1C1C;
 }
 .pill-nav {
   border: 1px solid #484848;
@@ -229,8 +229,8 @@ div.pill-nav > a > img {
   height: 17px;
 }
 .profile-right-col-fill {
-  top: -105px;
   position: relative;
+  top: -105px;
   height:85vh;
   border-left: 1px solid #282828;
 }
@@ -241,8 +241,8 @@ div.pill-nav > a > img {
   padding-top: 65px;
 }
 div.profile-right-col > ul {
-  list-style-type: none;
   padding-left: 0;
+  list-style-type: none;
 }
 div.profile-right-col > ul > li > a {
   color: #949494;
@@ -252,19 +252,28 @@ div.profile-right-col > ul > li {
 }
 
 div.profile-right-col > ul > li:first-child {
+  overflow: hidden;
   width: 140px;
   color: #949494;
-  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .profile-foot {
-  display: block;
   position: relative;
+  display: block;
   padding-top: 50px;
+  margin-left: 15px;
 }
 
 /* Temorary copy color */
 body {
   color: #ffffff;
+}
+.connections {
+  background-color: #282828;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  margin-left: 15px;
+  border-radius: 3px;
 }
