@@ -25,7 +25,6 @@ class SearchBar extends Component {
   }
 
   static contextTypes = {
-    history: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired
   }
 
@@ -48,15 +47,19 @@ class SearchBar extends Component {
 
   locationHasChanged(location) {
     let pathname = location.pathname,
-        query = 'local:/' + pathname
+        query = null
     if (pathname.includes('/profile/')) {
       query = pathname.replace('/profile/', '')
     } else if (pathname.includes('/search/')) {
-      query = pathname.replace('/search/', '')
+      // do nothing
+    } else {
+      query = 'local:/' + pathname
     }
-    this.setState({
-      query: query
-    })
+    if (query) {
+      this.setState({
+        query: query
+      })
+    }
   }
 
   componentDidMount() {
@@ -76,8 +79,8 @@ class SearchBar extends Component {
   }
 
   submitQuery(query) {
-    const newPath = `search/${query.replace(' ', '%20')}`
-    this.context.history.pushState(null, newPath)
+    const newPath = `/search/${query.replace(' ', '%20')}`
+    this.context.router.pushState(null, newPath)
   }
 
   onFocus(event) {
