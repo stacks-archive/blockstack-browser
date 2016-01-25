@@ -262,6 +262,7 @@ div.profile-right-col > ul > li:first-child {
   position: relative;
   display: block;
   padding-top: 50px;
+  margin-left: 15px;
 }
 
 /* Temorary copy color */
