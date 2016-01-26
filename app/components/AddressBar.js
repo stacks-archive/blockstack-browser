@@ -3,8 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { SearchActions } from '../store/search'
-
 function mapStateToProps(state) {
   return {
     query: state.search.query,
@@ -13,14 +11,13 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(SearchActions, dispatch)
+  return bindActionCreators({}, dispatch)
 }
 
-class SearchBar extends Component {
+class AddressBar extends Component {
   static propTypes = {
     placeholder: PropTypes.string.isRequired,
     timeout: PropTypes.number.isRequired,
-    searchIdentities: PropTypes.func.isRequired,
     query: PropTypes.string.isRequired
   }
 
@@ -33,9 +30,9 @@ class SearchBar extends Component {
 
     this.state = {
       query: '',
-      searchResults: [],
       timeoutId: null,
-      placeholder: this.props.placeholder
+      placeholder: this.props.placeholder,
+      routerUnlistener: null
     }
 
     this.onQueryChange = this.onQueryChange.bind(this)
@@ -62,19 +59,14 @@ class SearchBar extends Component {
         query: query
       })
     }
-    /*else if (/^\/profile\/local\/[0-9]+\/edit$/.test(pathname)) {
-      query = pathname.replace('/profile/local/', '')
-    } else if (/^\/profile\/local\/[0-9]+\/export$/.test(pathname)) {
-      query = pathname.replace('/profile/local/', '').replace('/export', '')
-    } */
   }
 
   componentDidMount() {
-    this.context.router.listen(this.locationHasChanged)
+    this.state.routerUnlistener = this.context.router.listen(this.locationHasChanged)
   }
 
   componentWillUnmount() {
-    //this.context.router.unregisterTransitionHook(this.locationHasChanged)
+    this.state.routerUnlistener()
   }
 
   submitQuery(query) {
@@ -131,4 +123,4 @@ class SearchBar extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)
+export default connect(mapStateToProps, mapDispatchToProps)(AddressBar)

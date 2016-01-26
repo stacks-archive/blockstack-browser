@@ -10,7 +10,7 @@ import { decrypt } from '../utils/keychain-utils'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic
+    encryptedMnemonic: state.keychain.encryptedMnemonic || ''
   }
 }
 
