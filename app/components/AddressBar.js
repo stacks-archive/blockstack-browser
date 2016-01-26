@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
+import { Link, match } from 'react-router'
 
 import { isABlockstoreName } from '../utils/name-utils'
+import routes from '../routes'
 
 function mapStateToProps(state) {
   return {
@@ -19,7 +20,6 @@ function mapDispatchToProps(dispatch) {
 class AddressBar extends Component {
   static propTypes = {
     placeholder: PropTypes.string.isRequired,
-    timeout: PropTypes.number.isRequired,
     query: PropTypes.string.isRequired
   }
 
@@ -32,7 +32,6 @@ class AddressBar extends Component {
 
     this.state = {
       query: '',
-      timeoutId: null,
       placeholder: this.props.placeholder,
       routerUnlistener: null
     }
@@ -41,18 +40,20 @@ class AddressBar extends Component {
     this.submitQuery = this.submitQuery.bind(this)
     this.onFocus = this.onFocus.bind(this)
     this.onBlur = this.onBlur.bind(this)
+    this.onKeyPress = this.onKeyPress.bind(this)
     this.locationHasChanged = this.locationHasChanged.bind(this)
   }
 
   locationHasChanged(location) {
     let pathname = location.pathname,
         query = null
+
     if (/^\/profile\/blockchain\/.*$/.test(pathname)) {
       const domainName = pathname.replace('/profile/blockchain/', '')
       if (isABlockstoreName(domainName)) {
         query = pathname.replace('/profile/blockchain/', '')
       }
-    } else if (/^\/profile\/local\/[0-9]+/.test(pathname)) {
+    } else if (/^\/profile\/local\/[0-9]+$/.test(pathname)) {
       query = 'local:/' + pathname.replace('/local/', '/')
     } else if (/^\/search\/.*$/.test(pathname)) {
       // do nothing
@@ -78,6 +79,8 @@ class AddressBar extends Component {
     let newPath
     if (isABlockstoreName(query)) {
       newPath = `/profile/blockchain/${query}`
+    } else if (/^local:\/\/.*$/.test(query)) {
+      newPath = query.replace('local://', '/')
     } else {
       newPath = `/search/${query.replace(' ', '%20')}`
     }
@@ -96,20 +99,16 @@ class AddressBar extends Component {
     })
   }
 
+  onKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.submitQuery(this.state.query)
+    }
+  }
+
   onQueryChange(event) {
     const query = event.target.value
-
-    if (this.state.timeoutId) {
-      clearTimeout(this.state.timeoutId)
-    }
-
-    const timeoutId = setTimeout(() => {
-      this.submitQuery(query)
-    }, this.props.timeout)
-
     this.setState({
-      query: query,
-      timeoutId: timeoutId
+      query: query
     })
   }
 
@@ -122,7 +121,8 @@ class AddressBar extends Component {
           name="query" value={this.state.query}
           onChange={this.onQueryChange}
           onFocus={this.onFocus}
-          onBlur={this.onBlur} />
+          onBlur={this.onBlur}
+          onKeyPress={this.onKeyPress} />
       </div>
     )
   }
