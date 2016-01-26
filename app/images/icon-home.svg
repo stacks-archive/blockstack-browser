@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.5 (25232) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-home</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.56 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="browser-light-cards" sketch:type="MSArtboardGroup" transform="translate(-1482.000000, -143.000000)" filter="url(#filter-1)" stroke="#AEAEAE" fill="#C7C7C7">
+            <g id="header" sketch:type="MSLayerGroup" transform="translate(335.000000, 105.000000)">
+                <g id="icons-grey-minified" transform="translate(1141.000000, 38.000000)" sketch:type="MSShapeGroup">
+                    <g id="Home-+-icon-home">
+                        <g id="icon-home" transform="translate(6.000000, 0.000000)">
+                            <path d="M1.00173144,9.44973545 C0.448490442,9.44973545 0.322284725,9.14602854 0.721173048,8.77013378 L9.30660473,0.679601669 C9.70489761,0.304268031 10.3500625,0.303706909 10.7489508,0.679601669 L19.3343825,8.77013378 C19.7326754,9.14546742 19.6116656,9.44973545 19.0538241,9.44973545 L18.0489537,9.44973545 C17.4957127,9.44973545 17.0472222,9.89755509 17.0472222,10.4537306 L17.0472222,19 L12.0333333,19 L12.033333,14.7057257 C12.033333,14.1562894 11.5887483,13.7108832 11.0418222,13.7108832 L9.0137329,13.7108832 C8.46613662,13.7108832 8.02222213,14.1618304 8.02222214,14.7057257 L8.02222222,19 L3.00833333,19 L3.00833333,10.4537306 C3.00833333,9.89923938 2.56444339,9.44973545 2.00660189,9.44973545 L1.00173144,9.44973545 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
