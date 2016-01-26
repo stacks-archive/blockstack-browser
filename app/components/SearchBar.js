@@ -80,8 +80,13 @@ class SearchBar extends Component {
   }
 
   submitQuery(query) {
-    const newPath = `/search/${query.replace(' ', '%20')}`
-    this.context.router.pushState(null, newPath)
+    let newPath
+    if (/[a-z0-9_-]+.[a-z0-9_-]+$/.test(query)) {
+      newPath = `/profile/blockchain/${query}`
+    } else {
+      newPath = `/search/${query.replace(' ', '%20')}`
+    }
+    this.context.router.push(newPath)
   }
 
   onFocus(event) {
