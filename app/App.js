@@ -48,19 +48,31 @@ class App extends Component {
     router: PropTypes.object.isRequired
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  componentHasNewProps(encryptedMnemonic) {
+    if (encryptedMnemonic === null) {
+      this.context.router.push('/landing')
+    } else {
+      this.context.router.push('/bookmarks')
+    }
+  }
+
+  componentWillMount() {
+    this.componentHasNewProps(this.props.encryptedMnemonic)
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.encryptedMnemonic !== this.props.encryptedMnemonic) {
-      if (nextProps.encryptedMnemonic === null) {
-        this.context.router.push('/landing')
-      } else {
-        this.context.router.push('/bookmarks')
-      }
+      this.componentHasNewProps(this.props.encryptedMnemonic)
     }
   }
 
   render() {
     const accountExists = this.props.encryptedMnemonic
-
     return (
       <div>
       { accountExists ?
@@ -70,10 +82,9 @@ class App extends Component {
       }
       {
         (() => {
-          if (false) {
-          //if (process.env.NODE_ENV !== 'production') {
-            const DevTools = require('./components/DevTools')
-            return <DevTools />
+          if (process.env.NODE_ENV !== 'production') {
+            //const DevTools = require('./components/DevTools')
+            //return <DevTools />
           }
         })()
       }
