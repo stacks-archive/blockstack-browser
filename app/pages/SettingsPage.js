@@ -87,6 +87,12 @@ class SettingsPage extends Component {
               Update Password
             </Link>
           </p>
+          <h5>Delete Account</h5>
+          <p>
+            <Link to="/account/delete" className="btn btn-secondary">
+              Delete Account
+            </Link>
+          </p>
           <hr />
           <p>
             <button onClick={this.toggleAdvancedSection} className="btn btn-secondary">
