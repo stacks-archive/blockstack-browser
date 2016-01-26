@@ -50,7 +50,11 @@ class App extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.encryptedMnemonic !== this.props.encryptedMnemonic) {
-      this.context.router.push('/bookmarks')
+      if (nextProps.encryptedMnemonic === null) {
+        this.context.router.push('/landing')
+      } else {
+        this.context.router.push('/bookmarks')
+      }
     }
   }
 

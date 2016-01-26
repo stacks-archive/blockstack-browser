@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import BackButton from '../components/BackButton'
 import ForwardButton from '../components/ForwardButton'
-import SearchBar from './SearchBar'
+import AddressBar from './AddressBar'
 
 class Navbar extends Component {
   static propTypes = {
@@ -54,7 +54,7 @@ class Navbar extends Component {
           </div>
           <div className="nav-search">
             <div className="nav-link">
-              <SearchBar placeholder="Search the blockchain" timeout={500} />
+              <AddressBar placeholder="Search the blockchain" timeout={500} />
             </div>
           </div>
         </div>
