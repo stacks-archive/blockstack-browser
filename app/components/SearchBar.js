@@ -48,7 +48,6 @@ class SearchBar extends Component {
   locationHasChanged(location) {
     let pathname = location.pathname,
         query = null
-    console.log(pathname)
     if (/^\/profile\/blockchain\/[a-z0-9_-]+.[a-z0-9_-]+$/.test(pathname)) {
       query = pathname.replace('/profile/blockchain/', '')
     } else if (/^\/profile\/local\/[0-9]+/.test(pathname)) {
@@ -58,7 +57,6 @@ class SearchBar extends Component {
     } else {
       query = 'local:/' + pathname
     }
-    console.log(query)
     if (query) {
       this.setState({
         query: query
@@ -76,7 +74,7 @@ class SearchBar extends Component {
   }
 
   componentWillUnmount() {
-    this.context.router.unregisterTransitionHook(this.locationHasChanged)
+    //this.context.router.unregisterTransitionHook(this.locationHasChanged)
   }
 
   submitQuery(query) {

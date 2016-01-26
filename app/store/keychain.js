@@ -27,6 +27,12 @@ function updateMnemonic(encryptedMnemonic) {
   }
 }
 
+function deleteMnemonic() {
+  return dispatch => {
+    dispatch(updateMnemonic(null))
+  }
+}
+
 function initializeWallet(password, backupPhrase) {
   return dispatch => {
     let mnemonic
@@ -69,7 +75,8 @@ export const KeychainActions = {
   updateMnemonic: updateMnemonic,
   initializeWallet: initializeWallet,
   newIdentityAddress: newIdentityAddress,
-  newBitcoinAddress: newBitcoinAddress
+  newBitcoinAddress: newBitcoinAddress,
+  deleteMnemonic: deleteMnemonic
 }
 
 const initialState = {

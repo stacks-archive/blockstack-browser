@@ -16,24 +16,31 @@ import BookmarksPage   from './pages/BookmarksPage'
 import NewPasswordPage from './pages/NewPasswordPage'
 import RestorePage     from './pages/RestorePage'
 import LandingPage     from './pages/LandingPage'
+import DeleteAccountPage from './pages/DeleteAccountPage'
 
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={LandingPage} />
+
     <Route path="profile/local/:index"        component={ProfilePage} />
     <Route path="profile/local/:index/edit"   component={EditorPage} />
     <Route path="profile/local/:index/export" component={ExportPage} />
     <Route path="profile/blockchain/:name"    component={ProfilePage} />
-    <Route path="settings"       component={SettingsPage} />
-    <Route path="register"       component={RegisterPage} />
-    <Route path="deposit"        component={DepositPage} />
-    <Route path="import"         component={ImportPage} />
-    <Route path="backup"         component={BackupPage} />
+
     <Route path="search/:query"  component={SearchPage} />
+
+    <Route path="register"       component={RegisterPage} />
+    <Route path="import"         component={ImportPage} />
     <Route path="identities"     component={IdentitiesPage} />
     <Route path="bookmarks"      component={BookmarksPage} />
+
+    <Route path="deposit"        component={DepositPage} />
+
+    <Route path="landing"        component={LandingPage} />
+    <Route path="settings"       component={SettingsPage} />
     <Route path="newpassword"    component={NewPasswordPage} />
     <Route path="restore"        component={RestorePage} />
-    <Route path="landing"        component={LandingPage} />
+    <Route path="backup"         component={BackupPage} />
+    <Route path="account/delete" component={DeleteAccountPage} />
   </Route>
 )
