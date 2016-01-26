@@ -26,7 +26,7 @@ class BookmarkListItem extends Component {
           blockchainId = this.props.id
 
     return (
-      <Link to={`/profile/${blockchainId}`} className="list-group-item">
+      <Link to={`/profile/blockchain/${blockchainId}`} className="list-group-item">
         <div className="row booklist-wrap">
           <div className="col-md-3">
             <Image src={avatarUrl} id={blockchainId}
