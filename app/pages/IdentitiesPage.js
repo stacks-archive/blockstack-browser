@@ -6,7 +6,7 @@ import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 
 import ListItem from '../components/ListItem'
 import { IdentityActions } from '../store/identities'
-import { getNamesOwned, getIdentities } from '../utils/blockstore-utils'
+import { getIdentities } from '../utils/api-utils'
 
 function mapStateToProps(state) {
   return {

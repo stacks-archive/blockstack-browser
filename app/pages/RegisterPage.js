@@ -6,8 +6,7 @@ import { Link } from 'react-router'
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import { IdentityActions } from '../store/identities'
-import { getNameCost } from '../utils/blockstore-utils'
-import { isNameAvailable, hasNameBeenPreordered } from '../utils/name-utils'
+import { getNameCost, isNameAvailable, hasNameBeenPreordered } from '../utils/name-utils'
 
 function mapStateToProps(state) {
   return {

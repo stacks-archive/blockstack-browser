@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import { isABlockstoreName } from '../utils/name-utils'
+
 function mapStateToProps(state) {
   return {
     query: state.search.query,
@@ -45,11 +47,14 @@ class AddressBar extends Component {
   locationHasChanged(location) {
     let pathname = location.pathname,
         query = null
-    if (/^\/profile\/blockchain\/[a-z0-9_-]+.[a-z0-9_-]+$/.test(pathname)) {
-      query = pathname.replace('/profile/blockchain/', '')
+    if (/^\/profile\/blockchain\/.*$/.test(pathname)) {
+      const domainName = pathname.replace('/profile/blockchain/', '')
+      if (isABlockstoreName(domainName)) {
+        query = pathname.replace('/profile/blockchain/', '')
+      }
     } else if (/^\/profile\/local\/[0-9]+/.test(pathname)) {
       query = 'local:/' + pathname.replace('/local/', '/')
-    } else if (pathname.includes('/search/')) {
+    } else if (/^\/search\/.*$/.test(pathname)) {
       // do nothing
     } else {
       query = 'local:/' + pathname
@@ -71,7 +76,7 @@ class AddressBar extends Component {
 
   submitQuery(query) {
     let newPath
-    if (/[a-z0-9_-]+.[a-z0-9_-]+$/.test(query)) {
+    if (isABlockstoreName(query)) {
       newPath = `/profile/blockchain/${query}`
     } else {
       newPath = `/search/${query.replace(' ', '%20')}`
