@@ -43,10 +43,12 @@ function initializeWallet(password, backupPhrase) {
     }
 
     const masterPrivateKeychain = derivePrivateKeychain(mnemonic)
+    
     const identityPublicKeychain = getAccountPrivateKeychain(
-      masterPrivateKeychain, 'blockstore', 0).publicKeychain()
+      masterPrivateKeychain, 'blockstore', 0).publicKeychain().toString()
+    
     const bitcoinPublicKeychain = getAccountPrivateKeychain(
-      masterPrivateKeychain, 'bitcoin', 0).publicKeychain()
+      masterPrivateKeychain, 'bitcoin', 0).publicKeychain().toString()
 
     encrypt(new Buffer(mnemonic), password, function(err, ciphertextBuffer) {
       const encryptedMnemonic = ciphertextBuffer.toString('hex')
@@ -84,24 +86,22 @@ const initialState = {
   bitcoinAccounts: []
 }
 
-function createNewAccount(publicKeychain) {
-  const publicKeychainString = publicKeychain.toString()
-  return {
-    accountKeychain: publicKeychainString,
-    addressIndex: 0
-  }
-}
-
 export function KeychainReducer(state = initialState, action) {
   switch (action.type) {
     case CREATE_WALLET:
       return Object.assign({}, state, {
         encryptedMnemonic: action.encryptedMnemonic,
         identityAccounts: [
-          createNewAccount(action.identityPublicKeychain)
+          {
+            accountKeychain: action.identityPublicKeychain,
+            addressIndex: 0
+          }
         ],
         bitcoinAccounts: [
-          createNewAccount(action.bitcoinPublicKeychain)
+          {
+            accountKeychain: action.bitcoinPublicKeychain,
+            addressIndex: 0
+          }
         ]
       })
     case UPDATE_MNEMONIC:
