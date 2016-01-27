@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link, match } from 'react-router'
+import { Link } from 'react-router'
 
 import { isABlockstoreName } from '../utils/name-utils'
 import routes from '../routes'
