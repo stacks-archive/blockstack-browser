@@ -58,7 +58,7 @@ class App extends Component {
     if (!accountExists) {
       this.context.router.push('/landing')
     } else {
-      this.context.router.push('/bookmarks')
+      this.context.router.push('/identities')
     }
   }
 

@@ -4,12 +4,14 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 
+import BookmarkListItem from '../components/BookmarkListItem'
 import ListItem from '../components/ListItem'
 import { IdentityActions } from '../store/identities'
 import { getIdentities } from '../utils/api-utils'
 
 function mapStateToProps(state) {
   return {
+    bookmarks: state.settings.bookmarks,
     localIdentities: state.identities.local,
     identityAccount: state.keychain.identityAccounts[0],
     addressLookupUrl: state.settings.api.addressLookupUrl
@@ -65,29 +67,48 @@ class IdentitiesPage extends Component {
 
     return (
       <div>
-        <h3>Identities</h3>
-        <div style={{paddingBottom: '15px'}}>
-          <ul className="list-group">
-          { localIdentities.map(function(identity) {
-            return (
-              <ListItem
-                key={identity.index}
-                label={ identity.registered ? identity.id : identity.id + ' (pending)' }
-                url={"/profile/local/" + identity.index} />
-            )
-          })}
-          </ul>
+        <div className="row">
+          <div className="col-md-6">
+            <h4 className="headspace inverse">My Identities</h4>
+            <div style={{paddingBottom: '15px'}}>
+              <ul className="list-group">
+              { localIdentities.map(function(identity) {
+                return (
+                  <ListItem
+                    key={identity.index}
+                    label={ identity.registered ? identity.id : identity.id + ' (pending)' }
+                    url={"/profile/local/" + identity.index} />
+                )
+              })}
+              </ul>
+            </div>
+            <p>
+              <Link to="/register" className="btn btn-primary">
+                Register
+              </Link>
+            </p>
+            <p>
+              <Link to="/import" className="btn btn-secondary">
+                Import
+              </Link>
+            </p>
+          </div>
+          <div className="col-md-6">
+            <h4 className="headspace inverse">Featured Identities</h4>
+            <div style={{paddingBottom: '15px'}}>
+              <ul className="list-group bookmarks-temp">
+              { this.props.bookmarks.map(function(bookmark, index) {
+                return (
+                  <BookmarkListItem
+                    key={index}
+                    profile={bookmark.profile}
+                    id={bookmark.id} />
+                )
+              })}
+              </ul>
+            </div>
+          </div>
         </div>
-        <p>
-          <Link to="/register" className="btn btn-primary">
-            Register
-          </Link>
-        </p>
-        <p>
-          <Link to="/import" className="btn btn-secondary">
-            Import
-          </Link>
-        </p>
       </div>
     )
   }

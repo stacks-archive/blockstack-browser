@@ -24,18 +24,11 @@ class Navbar extends Component {
               </ForwardButton>
             </div>
           </div>
-          
           <div className="pull-xs-right toolbar">
             <div className="nav-item nav-link">
               <Link to="/identities">
                 <img src="images/icon-identity.svg"/>
                 <span className="icon-labels">Identities</span>
-              </Link>
-            </div>
-            <div className="nav-item nav-link">
-              <Link to="/bookmarks">
-                <img src="images/icon-bookmark-24px.svg"/>
-                <span className="icon-labels">Bookmarks</span>
               </Link>
             </div>
             <div className="nav-item nav-link">

@@ -12,7 +12,6 @@ import ImportPage      from './pages/ImportPage'
 import BackupPage      from './pages/BackupPage'
 import SearchPage      from './pages/SearchPage'
 import IdentitiesPage  from './pages/IdentitiesPage'
-import BookmarksPage   from './pages/BookmarksPage'
 import NewPasswordPage from './pages/NewPasswordPage'
 import RestorePage     from './pages/RestorePage'
 import LandingPage     from './pages/LandingPage'
@@ -32,7 +31,6 @@ export default (
     <Route path="register"       component={RegisterPage} />
     <Route path="import"         component={ImportPage} />
     <Route path="identities"     component={IdentitiesPage} />
-    <Route path="bookmarks"      component={BookmarksPage} />
 
     <Route path="deposit"        component={DepositPage} />
 
