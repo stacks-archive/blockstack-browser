@@ -37,13 +37,12 @@ function initializeWallet(password, backupPhrase) {
   return dispatch => {
     let mnemonic
     if (backupPhrase && Mnemonic.isValid(backupPhrase)) {
-      mnemonic = backupPhrase
+      mnemonic = new Mnemonic(backupPhrase).toString()
     } else {
       mnemonic = new Mnemonic(BITS_OF_ENTROPY_FOR_MNEMONIC, Mnemonic.Words.ENGLISH).toString()
     }
 
     const masterPrivateKeychain = derivePrivateKeychain(mnemonic)
-
     const identityPublicKeychain = getAccountPrivateKeychain(
       masterPrivateKeychain, 'blockstore', 0).publicKeychain()
     const bitcoinPublicKeychain = getAccountPrivateKeychain(
