@@ -7,7 +7,7 @@ import LandingPage from './pages/LandingPage'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic
+    encryptedMnemonic: state.keychain.encryptedMnemonic || ''
   }
 }
 
@@ -41,7 +41,7 @@ class WelcomeScreen extends Component {
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    encryptedMnemonic: PropTypes.string
+    encryptedMnemonic: PropTypes.string.isRequired
   }
 
   static contextTypes = {
@@ -54,7 +54,8 @@ class App extends Component {
   }
 
   componentHasNewProps(encryptedMnemonic) {
-    if (encryptedMnemonic === null) {
+    const accountExists = (encryptedMnemonic.length > 0) ? true : false
+    if (!accountExists) {
       this.context.router.push('/landing')
     } else {
       this.context.router.push('/bookmarks')
@@ -67,12 +68,12 @@ class App extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.encryptedMnemonic !== this.props.encryptedMnemonic) {
-      this.componentHasNewProps(this.props.encryptedMnemonic)
+      this.componentHasNewProps(nextProps.encryptedMnemonic)
     }
   }
 
   render() {
-    const accountExists = this.props.encryptedMnemonic
+    const accountExists = this.props.encryptedMnemonic.length ? true : false
     return (
       <div>
       { accountExists ?
