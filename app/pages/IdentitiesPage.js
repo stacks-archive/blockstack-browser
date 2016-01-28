@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 
-import BookmarkListItem from '../components/BookmarkListItem'
-import ListItem from '../components/ListItem'
+import IdentityItem from '../components/IdentityItem'
 import { IdentityActions } from '../store/identities'
 import { getIdentities } from '../utils/api-utils'
 
@@ -71,24 +70,25 @@ class IdentitiesPage extends Component {
           <div className="col-md-6">
             <h4 className="headspace inverse">My Identities</h4>
             <div style={{paddingBottom: '15px'}}>
-              <ul className="list-group">
+              <ul className="list-group bookmarks-temp">
               { localIdentities.map(function(identity) {
                 return (
-                  <ListItem
+                  <IdentityItem
                     key={identity.index}
-                    label={ identity.registered ? identity.id : identity.id + ' (pending)' }
-                    url={"/profile/local/" + identity.index} />
+                    id={identity.id}
+                    url={`/profile/local/${identity.index}`}
+                    profile={identity.profile} />
                 )
               })}
               </ul>
             </div>
             <p>
-              <Link to="/register" className="btn btn-primary">
+              <Link to="/identities/register" className="btn btn-primary">
                 Register
               </Link>
             </p>
             <p>
-              <Link to="/import" className="btn btn-secondary">
+              <Link to="/identities/import" className="btn btn-secondary">
                 Import
               </Link>
             </p>
@@ -99,10 +99,11 @@ class IdentitiesPage extends Component {
               <ul className="list-group bookmarks-temp">
               { this.props.bookmarks.map(function(bookmark, index) {
                 return (
-                  <BookmarkListItem
+                  <IdentityItem
                     key={index}
-                    profile={bookmark.profile}
-                    id={bookmark.id} />
+                    id={bookmark.id}
+                    url={`/profile/blockchain/${bookmark.id}`}
+                    profile={bookmark.profile} />
                 )
               })}
               </ul>

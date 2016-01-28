@@ -18,7 +18,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(KeychainActions, dispatch)
 }
 
-class NewPasswordPage extends Component {
+class ChangePasswordPage extends Component {
   static propTypes = {
     encryptedMnemonic: PropTypes.string.isRequired,
     updateMnemonic: PropTypes.func.isRequired
@@ -114,4 +114,4 @@ class NewPasswordPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewPasswordPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ChangePasswordPage)

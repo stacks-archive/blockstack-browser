@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(KeychainActions, dispatch)
 }
 
-class DepositPage extends Component {
+class WalletPage extends Component {
   static propTypes = {
     accountKeychain: PropTypes.string.isRequired,
     addressIndex: PropTypes.number.isRequired,
@@ -67,7 +67,7 @@ class DepositPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepositPage)
+export default connect(mapStateToProps, mapDispatchToProps)(WalletPage)
 
 /*
   <div>

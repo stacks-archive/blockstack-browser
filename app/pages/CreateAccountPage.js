@@ -18,7 +18,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(KeychainActions, dispatch)
 }
 
-class LandingPage extends Component {
+class CreateAccountPage extends Component {
   static propTypes = {
     initializeWallet: PropTypes.func.isRequired
   }
@@ -90,7 +90,7 @@ class LandingPage extends Component {
             <p>
               Already have an account?
               <br />
-              <Link to="/restore">Restore from backup</Link>
+              <Link to="/account/restore">Restore from backup</Link>
             </p>
           </div>
         </div>
@@ -99,4 +99,4 @@ class LandingPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPage)
+export default connect(mapStateToProps, mapDispatchToProps)(CreateAccountPage)

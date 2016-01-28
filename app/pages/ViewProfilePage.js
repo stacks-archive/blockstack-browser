@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import AccountListItem from '../components/AccountListItem'
+import SocialAccountItem from '../components/SocialAccountItem'
 import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
 import { IdentityActions } from '../store/identities'
 import { SearchActions } from '../store/search'
@@ -22,7 +22,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch)
 }
 
-class ProfilePage extends Component {
+class ViewProfilePage extends Component {
   static propTypes = {
     fetchCurrentIdentity: PropTypes.func.isRequired,
     updateCurrentIdentity: PropTypes.func.isRequired,
@@ -145,7 +145,7 @@ class ProfilePage extends Component {
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
                   return (
-                    <AccountListItem
+                    <SocialAccountItem
                       key={account.service + '-' + account.identifier}
                       service={account.service}
                       identifier={account.identifier}
@@ -164,4 +164,4 @@ class ProfilePage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
+export default connect(mapStateToProps, mapDispatchToProps)(ViewProfilePage)

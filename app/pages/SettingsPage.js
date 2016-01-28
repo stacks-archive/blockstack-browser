@@ -77,13 +77,13 @@ class SettingsPage extends Component {
           <h3>Settings</h3>
           <h5>Backup Account</h5>
           <p>
-            <Link to="/backup" className="btn btn-secondary">
+            <Link to="/account/backup" className="btn btn-secondary">
               Backup Account
             </Link>
           </p>
           <h5>Update Password</h5>
           <p>
-            <Link to="/newpassword" className="btn btn-secondary">
+            <Link to="/password/update" className="btn btn-secondary">
               Update Password
             </Link>
           </p>

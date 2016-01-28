@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Navbar from './components/Navbar'
-import LandingPage from './pages/LandingPage'
 
 function mapStateToProps(state) {
   return {
@@ -56,7 +55,7 @@ class App extends Component {
   componentHasNewProps(encryptedMnemonic) {
     const accountExists = (encryptedMnemonic.length > 0) ? true : false
     if (!accountExists) {
-      this.context.router.push('/landing')
+      this.context.router.push('/account/create')
     } else {
       this.context.router.push('/identities')
     }

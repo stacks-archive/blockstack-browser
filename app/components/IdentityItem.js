@@ -8,6 +8,7 @@ import { getName, getAvatarUrl } from '../utils/profile-utils.js'
 class BookmarkListItem extends Component {
   static propTypes = {
     profile: PropTypes.object.isRequired,
+    url: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired
   }
 
@@ -26,7 +27,7 @@ class BookmarkListItem extends Component {
           blockchainId = this.props.id
 
     return (
-      <Link to={`/profile/blockchain/${blockchainId}`} className="list-group-item">
+      <Link to={this.props.url} className="list-group-item">
         <div className="row">
           <div className="col-md-4">
             <Image src={avatarUrl} id={blockchainId}
