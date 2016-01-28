@@ -76,11 +76,6 @@ class SettingsPage extends Component {
         <div>
           <h3>Settings</h3>
           <p>
-            <Link to="/wallet" className="btn btn-secondary">
-              Fund Account
-            </Link>
-          </p>
-          <p>
             <Link to="/account/backup" className="btn btn-secondary">
               Backup Account
             </Link>

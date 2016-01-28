@@ -32,6 +32,12 @@ class Navbar extends Component {
               </Link>
             </div>
             <div className="nav-item nav-link">
+              <Link to="/wallet">
+                <img src="images/icon-dollar-circle.svg"/>
+                <span className="icon-labels">Wallet</span>
+              </Link>
+            </div>
+            <div className="nav-item nav-link">
               <Link to="/settings">
                 <img src="images/icon-settings.svg"/>
                 <span className="icon-labels">Settings</span>
