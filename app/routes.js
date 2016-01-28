@@ -22,6 +22,8 @@ import DeleteAccountPage  from './pages/DeleteAccountPage'
 import BackupAccountPage  from './pages/BackupAccountPage'
 import ChangePasswordPage from './pages/ChangePasswordPage'
 
+import NotFoundPage from './pages/NotFoundPage'
+
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={CreateAccountPage} />
@@ -45,5 +47,7 @@ export default (
     <Route path="account/delete"   component={DeleteAccountPage} />
     <Route path="account/backup"   component={BackupAccountPage} />
     <Route path="password/update"  component={ChangePasswordPage} />
+
+    <Route path="*" component={NotFoundPage} />
   </Route>
 )
