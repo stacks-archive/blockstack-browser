@@ -89,7 +89,7 @@ class RestorePage extends Component {
           <p>
             Don&#39;t have an account?
             <br />
-            <Link to="/landing">Create an account</Link>
+            <Link to="/account/create">Create an account</Link>
           </p>
         </div>
       </div>

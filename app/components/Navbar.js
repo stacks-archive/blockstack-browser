@@ -24,7 +24,6 @@ class Navbar extends Component {
               </ForwardButton>
             </div>
           </div>
-          
           <div className="pull-xs-right toolbar">
             <div className="nav-item nav-link">
               <Link to="/identities">
@@ -33,15 +32,9 @@ class Navbar extends Component {
               </Link>
             </div>
             <div className="nav-item nav-link">
-              <Link to="/bookmarks">
-                <img src="images/icon-bookmark-24px.svg"/>
-                <span className="icon-labels">Bookmarks</span>
-              </Link>
-            </div>
-            <div className="nav-item nav-link">
-              <Link to="/deposit">
+              <Link to="/wallet">
                 <img src="images/icon-dollar-circle.svg"/>
-                <span className="icon-labels">Funds</span>
+                <span className="icon-labels">Wallet</span>
               </Link>
             </div>
             <div className="nav-item nav-link">

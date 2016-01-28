@@ -2,45 +2,48 @@ import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 
 import App             from './App'
-import ProfilePage     from './pages/ProfilePage'
-import EditorPage      from './pages/EditorPage'
-import SettingsPage    from './pages/SettingsPage'
-import RegisterPage    from './pages/RegisterPage'
-import ExportPage      from './pages/ExportPage'
-import DepositPage     from './pages/DepositPage'
-import ImportPage      from './pages/ImportPage'
-import BackupPage      from './pages/BackupPage'
-import SearchPage      from './pages/SearchPage'
+
+import ViewProfilePage     from './pages/ViewProfilePage'
+import EditProfilePage     from './pages/EditProfilePage'
+
 import IdentitiesPage  from './pages/IdentitiesPage'
-import BookmarksPage   from './pages/BookmarksPage'
-import NewPasswordPage from './pages/NewPasswordPage'
-import RestorePage     from './pages/RestorePage'
-import LandingPage     from './pages/LandingPage'
-import DeleteAccountPage from './pages/DeleteAccountPage'
+import RegisterPage    from './pages/RegisterPage'
+import ImportPage      from './pages/ImportPage'
+import ExportPage      from './pages/ExportPage'
+
+import SearchPage      from './pages/SearchPage'
+
+import WalletPage      from './pages/WalletPage'
+
+import SettingsPage       from './pages/SettingsPage'
+import CreateAccountPage  from './pages/CreateAccountPage'
+import RestoreAccountPage from './pages/RestoreAccountPage'
+import DeleteAccountPage  from './pages/DeleteAccountPage'
+import BackupAccountPage  from './pages/BackupAccountPage'
+import ChangePasswordPage from './pages/ChangePasswordPage'
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={LandingPage} />
+    <IndexRoute component={CreateAccountPage} />
 
-    <Route path="profile/local/:index"        component={ProfilePage} />
-    <Route path="profile/local/:index/edit"   component={EditorPage} />
+    <Route path="profile/blockchain/:name"    component={ViewProfilePage} />
+    <Route path="profile/local/:index"        component={ViewProfilePage} />
+    <Route path="profile/local/:index/edit"   component={EditProfilePage} />
     <Route path="profile/local/:index/export" component={ExportPage} />
-    <Route path="profile/blockchain/:name"    component={ProfilePage} />
 
     <Route path="search/:query"  component={SearchPage} />
 
-    <Route path="register"       component={RegisterPage} />
-    <Route path="import"         component={ImportPage} />
-    <Route path="identities"     component={IdentitiesPage} />
-    <Route path="bookmarks"      component={BookmarksPage} />
+    <Route path="identities"          component={IdentitiesPage} />
+    <Route path="identities/register" component={RegisterPage} />
+    <Route path="identities/import"   component={ImportPage} />
 
-    <Route path="deposit"        component={DepositPage} />
+    <Route path="wallet"        component={WalletPage} />
 
-    <Route path="landing"        component={LandingPage} />
-    <Route path="settings"       component={SettingsPage} />
-    <Route path="newpassword"    component={NewPasswordPage} />
-    <Route path="restore"        component={RestorePage} />
-    <Route path="backup"         component={BackupPage} />
-    <Route path="account/delete" component={DeleteAccountPage} />
+    <Route path="settings"         component={SettingsPage} />
+    <Route path="account/create"   component={CreateAccountPage} />
+    <Route path="account/restore"  component={RestoreAccountPage} />
+    <Route path="account/delete"   component={DeleteAccountPage} />
+    <Route path="account/backup"   component={BackupAccountPage} />
+    <Route path="password/update"  component={ChangePasswordPage} />
   </Route>
 )
