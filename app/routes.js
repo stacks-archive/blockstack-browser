@@ -6,7 +6,7 @@ import App             from './App'
 import ViewProfilePage     from './pages/ViewProfilePage'
 import EditProfilePage     from './pages/EditProfilePage'
 
-import IdentitiesPage  from './pages/IdentitiesPage'
+import DashboardPage   from './pages/DashboardPage'
 import RegisterPage    from './pages/RegisterPage'
 import ImportPage      from './pages/ImportPage'
 import ExportPage      from './pages/ExportPage'
@@ -37,7 +37,8 @@ export default (
 
     <Route path="search/:query"  component={SearchPage} />
 
-    <Route path="identities"          component={IdentitiesPage} />
+    <Route path="dashboard"          component={DashboardPage} />
+
     <Route path="identities/register" component={RegisterPage} />
     <Route path="identities/import"   component={ImportPage} />
 

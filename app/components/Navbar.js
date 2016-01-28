@@ -26,9 +26,9 @@ class Navbar extends Component {
           </div>
           <div className="pull-xs-right toolbar">
             <div className="nav-item nav-link">
-              <Link to="/identities">
+              <Link to="/dashboard">
                 <img src="images/icon-identity.svg"/>
-                <span className="icon-labels">Identities</span>
+                <span className="icon-labels">Dashboard</span>
               </Link>
             </div>
             <div className="nav-item nav-link">
