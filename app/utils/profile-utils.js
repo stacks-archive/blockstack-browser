@@ -47,10 +47,10 @@ export function getSocialAccounts(profile) {
 
 export function getVerifiedAccounts(profile, verifications) {
   let filteredAccounts = []
-  if (profile.account) {
-    profile.account.forEach(function(account) {
+  if (profile.account && verifications) {
+    profile.account.map(function(account) {
       let proofUrl = ''
-      verifications.forEach(function(verification) {
+      verifications.map(function(verification) {
         if (verification.valid && verification.service === account.service
             && verification.identifier === account.identifier) {
           proofUrl = verification.proof_url
@@ -76,4 +76,81 @@ export function getAvatarUrl(profile) {
     })
   }
   return avatarContentUrl
+}
+
+export function getOrganizations(profile) {
+  if (!profile) {
+    return null
+  }
+
+  let organizations = []
+
+  if (profile.hasOwnProperty('worksFor')) {
+    return profile.worksFor
+  }
+
+  return organizations
+}
+
+export function getConnections(profile) {
+  if (!profile) {
+    return null
+  }
+
+  let connections = []
+
+  if (profile.hasOwnProperty('knows')) {
+    connections = profile.knows
+  }
+
+  return connections
+}
+
+export function getAddress(profile) {
+  if (!profile) {
+    return null
+  }
+
+  let addressString = null
+
+  if (profile.hasOwnProperty('address')) {
+    let addressParts = []
+
+    if (profile.address.hasOwnProperty('streetAddress')) {
+      addressParts.push(profile.address.streetAddress)
+    }
+    if (profile.address.hasOwnProperty('addressLocality')) {
+      addressParts.push(profile.address.addressLocality)
+    }
+    if (profile.address.hasOwnProperty('postalCode')) {
+      addressParts.push(profile.address.postalCode)
+    }
+    if (profile.address.hasOwnProperty('addressCountry')) {
+      addressParts.push(profile.address.addressCountry)
+    }
+
+    if (addressParts.length) {
+      addressString = addressParts.join(', ')
+    }
+  }
+
+  return addressString
+}
+
+export function getBirthDate(profile) {
+  if (!profile) {
+    return null
+  }
+
+  let monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ]
+
+  let birthDateString = null
+  if (profile.hasOwnProperty('birthDate')) {
+    let date = new Date(profile.birthDate)
+    birthDateString = `${monthNames[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+  }
+  return birthDateString
 }

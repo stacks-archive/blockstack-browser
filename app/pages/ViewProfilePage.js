@@ -4,7 +4,10 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import SocialAccountItem from '../components/SocialAccountItem'
-import { getName, getVerifiedAccounts, getAvatarUrl } from '../utils/profile-utils.js'
+import {
+  getName, getVerifiedAccounts, getAvatarUrl,
+  getAddress, getBirthDate, getConnections
+} from '../utils/profile-utils.js'
 import { IdentityActions } from '../store/identities'
 import { SearchActions } from '../store/search'
 import Image from '../components/Image'
@@ -13,7 +16,8 @@ function mapStateToProps(state) {
   return {
     currentIdentity: state.identities.current,
     localIdentities: state.identities.local,
-    nameLookupUrl: state.settings.api.nameLookupUrl
+    nameLookupUrl: state.settings.api.nameLookupUrl,
+    bookmarks: state.settings.bookmarks
   }
 }
 
@@ -39,7 +43,9 @@ class ViewProfilePage extends Component {
       currentIdentity: {
         id: null,
         profile: null,
-        verifications: []
+        verifications: [],
+        blockNumber: null,
+        transactionNumber: null
       }
     }
   }
@@ -73,16 +79,22 @@ class ViewProfilePage extends Component {
   }
 
   render() {
-    const blockchainId = this.state.currentIdentity.id,
-          profile = this.state.currentIdentity.profile,
-          verifications = this.state.currentIdentity.verifications
-    const blockNumber = 387562,
-          transactionNumber = 339,
-          address = 'Address hidden',
-          birthDate = 'Birth date hidden'
-    const connections = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+    let identity = this.state.currentIdentity,
+      blockchainId = identity.id
 
-    return ( 
+    if (blockchainId === 'naval.id') {
+      identity = this.props.bookmarks[0]
+    }
+
+    let profile = identity.profile,
+        verifications = identity.verifications,
+        blockNumber = identity.blockNumber,
+        transactionIndex = identity.transactionIndex,
+        connections = getConnections(profile), 
+        address = getAddress(profile),
+        birthDate = getBirthDate(profile)
+
+    return (
       <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
         <div>
@@ -108,35 +120,42 @@ class ViewProfilePage extends Component {
               </div>
               <div className="col-md-7">
                 <div className="idcard-wrap">
+                  { (blockNumber && transactionIndex) ?
                   <div className="idcard-body dim">
                     Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
-                    transaction <span className="inverse">#{transactionNumber}</span>
+                    transaction <span className="inverse">#{transactionIndex}</span>
                   </div>
+                  : null }
                   <h1 className="idcard-name">{getName(profile)}</h1>
                   <div className="idcard-body inverse">
                     {profile.description}
                   </div>
+                  { address ?
                   <div className="idcard-body dim">
                     {address}
                   </div>
+                  : null }
+                  { birthDate ?
                   <div className="idcard-body dim">
                     {birthDate}
                   </div>
-                  <div className="pill-nav pull-right">
-                    <Link to={this.props.location.pathname + "/export"}>
-                      <img src="images/icon-export.svg"/>
-                    </Link>
-                  </div>
+                  : null }
                 </div>
               </div>
             </div>
             <div className="container">
               <p className="profile-foot">Connections</p>
               {connections.map((connection, index) => {
-                return (
-                  <div key={index} className="connections">
-                  </div>
-                )
+                if (connection.id) {
+                  return (
+                    <Link to={`/profile/blockchain/${connection.id}`}
+                      key={index} className="connections">
+                      <Image src={getAvatarUrl(connection)}
+                        fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
+                        style={{ width: '40px', height: '40px' }} />
+                    </Link>
+                  )
+                }
               })}
             </div>
           </div>

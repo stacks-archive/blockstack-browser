@@ -58,7 +58,9 @@ const initialState = {
   current: {
     id: null,
     profile: null,
-    verifications: null
+    verifications: null,
+    blockNumber: null,
+    transactionNumber: null
   },
   local: [
     {
@@ -66,7 +68,9 @@ const initialState = {
       id: 'ryan.id',
       profile: {},
       verifications: [],
-      registered: false
+      registered: false,
+      blockNumber: null,
+      transactionNumber: null
     }
   ],
   registered: []
