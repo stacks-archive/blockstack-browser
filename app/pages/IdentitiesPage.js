@@ -76,7 +76,7 @@ class IdentitiesPage extends Component {
               { localIdentities.map(function(identity) {
                 return (
                   <IdentityItem key={identity.index}
-                    label={identity.id}
+                    label={identity.registered ? identity.id : identity.id + ' (pending)'}
                     avatarUrl={getAvatarUrl(identity.profile)}
                     url={`/profile/local/${identity.index}`} />
                 )
