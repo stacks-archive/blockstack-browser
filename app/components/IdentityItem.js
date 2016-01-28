@@ -1,15 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import { Person } from 'blockchain-profile'
 
 import Image from './Image'
-import { getName, getAvatarUrl } from '../utils/profile-utils.js'
 
 class BookmarkListItem extends Component {
   static propTypes = {
-    profile: PropTypes.object.isRequired,
-    url: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired
+    label: PropTypes.string.isRequired,
+    avatarUrl: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -18,24 +16,14 @@ class BookmarkListItem extends Component {
   }
 
   render() {
-    let profile = this.props.profile
-    if (!this.props.profile.hasOwnProperty('@type')) {
-      profile = Person.fromLegacyFormat(this.props.profile).profile
-    }
-    const name = getName(profile),
-          avatarUrl = getAvatarUrl(profile),
-          blockchainId = this.props.id
-
     return (
       <Link to={this.props.url} className="list-group-item">
-        <div className="row">
-          <div className="col-md-4">
-            <Image src={avatarUrl} id={blockchainId}
-              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
-              style={{ width: '40px', height: '40px' }} />
+        <div className="row booklist-wrap">
+          <div className="col-md-3">
+            <Image src={this.props.avatarUrl}
+              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
-          <div className="col-md-4">{name}</div>
-          <div className="col-md-4">{blockchainId}</div>
+          <div className="col-list-name">{this.props.label}</div>
         </div>
       </Link>
     )

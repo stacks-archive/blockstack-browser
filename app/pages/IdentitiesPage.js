@@ -3,10 +3,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
+import { Person } from 'blockchain-profile'
 
 import IdentityItem from '../components/IdentityItem'
 import { IdentityActions } from '../store/identities'
 import { getIdentities } from '../utils/api-utils'
+import { getName, getAvatarUrl } from '../utils/profile-utils.js'
 
 function mapStateToProps(state) {
   return {
@@ -73,11 +75,10 @@ class IdentitiesPage extends Component {
               <ul className="list-group bookmarks-temp">
               { localIdentities.map(function(identity) {
                 return (
-                  <IdentityItem
-                    key={identity.index}
-                    id={identity.id}
-                    url={`/profile/local/${identity.index}`}
-                    profile={identity.profile} />
+                  <IdentityItem key={identity.index}
+                    label={identity.id}
+                    avatarUrl={getAvatarUrl(identity.profile)}
+                    url={`/profile/local/${identity.index}`} />
                 )
               })}
               </ul>
@@ -98,12 +99,15 @@ class IdentitiesPage extends Component {
             <div style={{paddingBottom: '15px'}}>
               <ul className="list-group bookmarks-temp">
               { this.props.bookmarks.map(function(bookmark, index) {
+                let profile = bookmark.profile
+                if (!bookmark.profile.hasOwnProperty('@type')) {
+                  profile = Person.fromLegacyFormat(bookmark.profile).profile
+                }
                 return (
-                  <IdentityItem
-                    key={index}
-                    id={bookmark.id}
-                    url={`/profile/blockchain/${bookmark.id}`}
-                    profile={bookmark.profile} />
+                  <IdentityItem key={index}
+                    label={getName(profile)} 
+                    avatarUrl={getAvatarUrl(profile)}
+                    url={`/profile/blockchain/${bookmark.id}`} />
                 )
               })}
               </ul>

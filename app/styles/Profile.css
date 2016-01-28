@@ -23,9 +23,10 @@
 html,body{height:100%;}
 
 body {
-  background-color: #1C1C1C;
+  background-color: #151515;
   font-weight: 200;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
+  line-height: 1.5rem;
 }
 .idcard {
   position: relative;
@@ -34,7 +35,7 @@ body {
 }
 .idcard-body {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .dim {
   color: #949494;
@@ -60,8 +61,7 @@ body {
   vertical-align: top;
 }
 .idcard-name {
-  margin-bottom: 15px;
-  font-weight: 200;
+  font-weight: 300;
   font-size: 1.25em;
 }
 .id-social > div > ul {
@@ -86,7 +86,7 @@ i.fa {
   margin-top: 3px;
   margin-right: 5px;
   margin-left: 5px;
-  padding: 8px;
+  padding: 0 6px;
   text-align: right;
   font-size: 16px;
 }
@@ -94,7 +94,7 @@ i.fa {
   padding-left: 5px;
 }
 .idcard-wrap {
-  margin-top: 125px;
+  margin-top: 105px;
   color: rgba(255,255,255,1);
   font-weight: inherit;
 }
@@ -176,14 +176,19 @@ div.nav-item.nav-link > a > img {
 }
 .bookmarks-temp > .list-group-item {
   border: none;
-  border-radius: 0;
+  border-radius: 4px;
   background-color: transparent;
 }
 .bookmarks-temp > a.list-group-item {
   color: #fff!important;
 }
-.bookmarks-temp > .list-group-item:first-child {
-  border-radius: 0;
+.bookmarks-temp > .list-group-item:before {
+  background-color: #23262a;
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  margin-left: 15px;
+  border-radius: 3px;
 }
 .bookmarks-temp {
   margin-left: -18px;
@@ -193,8 +198,8 @@ h4.headspace, h5.headspace {
   margin-bottom: 50px;
 }
 .bookmarks-temp > a.list-group-item:focus, .bookmarks-temp > a.list-group-item:hover {
-  background-color: #000000;
-  color: #616161!important;
+  background-color: #23262a;
+  color: #e6e6e6!important;
 }
 .btn-pro-edit {
   margin-top: 15px;
@@ -202,7 +207,7 @@ h4.headspace, h5.headspace {
   width: 258px;
   border: 1px solid #4a90e2;
   background-color: #4a90e2;
-  color: #1C1C1C;
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 700;
@@ -212,7 +217,7 @@ h4.headspace, h5.headspace {
   outline: none;
   border: 1px solid #2d7edd;
   background-color: #2d7edd;
-  color: #1C1C1C;
+  color: #ffffff;
 }
 .pill-nav {
   border: 1px solid #484848;
@@ -245,18 +250,15 @@ div.profile-right-col > ul {
   list-style-type: none;
 }
 div.profile-right-col > ul > li > a {
+  display: block;
   color: #949494;
+  padding: 10px 5px;
+  text-decoration: none;
 }
-div.profile-right-col > ul > li {
-  overflow: hidden;
-}
-
-div.profile-right-col > ul > li:first-child {
-  overflow: hidden;
-  width: 140px;
-  color: #949494;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+div.profile-right-col > ul > li > a:hover {
+  text-decoration: none;
+  background-color: #23262a;
+  border-radius: 4px;
 }
 .profile-foot {
   position: relative;
@@ -270,10 +272,24 @@ body {
   color: #ffffff;
 }
 .connections {
-  background-color: #282828;
+  background-color: #23262a;
   width: 32px;
   height: 32px;
   display: inline-block;
   margin-left: 15px;
-  border-radius: 3px;
+  border-radius: 4px;
+}
+div.col-md-3 > img {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+      margin-right: 10px;
+}
+.col-list-name {
+  display: table-cell;
+  vertical-align: middle;
+}
+.booklist-wrap {
+  display: table;
+  overflow: hidden;
 }
