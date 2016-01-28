@@ -144,7 +144,9 @@ class ViewProfilePage extends Component {
               </div>
             </div>
             <div className="container">
+              {connections.length ?
               <p className="profile-foot">Connections</p>
+              : null }
               {connections.map((connection, index) => {
                 if (connection.id) {
                   return (
