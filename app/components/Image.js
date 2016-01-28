@@ -6,8 +6,7 @@ class Image extends Component {
     src: PropTypes.string.isRequired,
     fallbackSrc: PropTypes.string.isRequired,
     style: PropTypes.object,
-    className: PropTypes.string,
-    id: PropTypes.string
+    className: PropTypes.string
   }
 
   constructor(props) {
