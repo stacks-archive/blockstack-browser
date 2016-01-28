@@ -17,7 +17,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(KeychainActions, dispatch)
 }
 
-class WalletPage extends Component {
+class DepositPage extends Component {
   static propTypes = {
     accountKeychain: PropTypes.string.isRequired,
     addressIndex: PropTypes.number.isRequired,
@@ -34,34 +34,35 @@ class WalletPage extends Component {
   }
 
   render() {
-    const balance = 0
+    const accountKeychain = new PublicKeychain(this.props.accountKeychain),
+          addressIndex = this.props.addressIndex,
+          currentAddress = accountKeychain.child(addressIndex).address().toString()
 
     return (
       <div>
-        <h2>Wallet</h2>
-        <hr />
-        <h5>Balance</h5>
+        <h2>Deposit</h2>
+        <p><i>
+          Note: All identity registrations require funds from your account.
+          To fund your account, send bitcoins to the address below.
+        </i></p>
+
+        <h5>Send Bitcoins to this address</h5>
         <div className="highlight">
           <pre>
-            <code>{balance} mBTC</code>
+            <code>{currentAddress}</code>
           </pre>
         </div>
-        <p>
-          <i>Note: The balance is displayed in bits. Each bit is 1/1000th of a bitcoin.</i>
-        </p>
-        <p>
-          <Link to="/wallet/deposit" className="btn btn-primary">
-            Deposit
-          </Link>
-        </p>
-        <p>
-          <Link to="/wallet/withdraw" className="btn btn-secondary">
-            Withdraw
-          </Link>
-        </p>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WalletPage)
+export default connect(mapStateToProps, mapDispatchToProps)(DepositPage)
+
+/*
+  <div>
+    <button className="btn btn-secondary" onClick={this.refreshAddress}>
+      New Address
+    </button>
+  </div>
+*/

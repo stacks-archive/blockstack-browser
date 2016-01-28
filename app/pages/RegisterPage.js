@@ -28,6 +28,10 @@ class RegisterPage extends Component {
     lookupUrl: PropTypes.string.isRequired
   }
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+
   constructor(props) {
     super(props)
 
@@ -53,9 +57,9 @@ class RegisterPage extends Component {
 
   onChange(event) {
     if (event.target.name === 'username') {
-      const username = event.target.value.toLowerCase().replace(/\W+/g, '')
-      const tld = this.state.tlds[this.state.type]
-      const nameCost = getNameCost(`${username}.${tld}`) / 1000
+      const username = event.target.value.toLowerCase().replace(/\W+/g, ''),
+            tld = this.state.tlds[this.state.type],
+            nameCost = getNameCost(`${username}.${tld}`) / 1000
       this.setState({
         username: username,
         nameCost: nameCost
@@ -94,6 +98,7 @@ class RegisterPage extends Component {
         } else {
           this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
           this.props.createNewIdentity(domainName)
+          this.context.router.push('/identities')
         }
       })
     }

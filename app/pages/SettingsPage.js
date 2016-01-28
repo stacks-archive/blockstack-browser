@@ -76,11 +76,6 @@ class SettingsPage extends Component {
         <div>
           <h3>Settings</h3>
           <p>
-            <Link to="/wallet" className="btn btn-secondary">
-              Fund Account
-            </Link>
-          </p>
-          <p>
             <Link to="/account/backup" className="btn btn-secondary">
               Backup Account
             </Link>
@@ -97,13 +92,16 @@ class SettingsPage extends Component {
           </p>
           <hr />
           <p>
-            <button onClick={this.toggleAdvancedSection} className="btn btn-secondary">
+            <Link to="" onClick={e => {
+              e.preventDefault()
+              this.toggleAdvancedSection()
+            }}>
             { this.state.advancedSectionShown ?
               <span>Hide Advanced Section</span>
             :
               <span>Show Advanced Section</span>
             }
-            </button>
+            </Link>
           </p>
           { this.state.advancedSectionShown ?
             <div>
