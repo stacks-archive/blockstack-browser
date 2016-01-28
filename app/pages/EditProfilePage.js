@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
 import InputGroup from '../components/InputGroup'
@@ -20,7 +19,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(IdentityActions, dispatch)
 }
 
-class EditorPage extends Component {
+class EditProfilePage extends Component {
   static propTypes = {
     updateProfile: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
@@ -164,4 +163,4 @@ class EditorPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditorPage)
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage)

@@ -14,7 +14,7 @@ function mapStateToProps(state) {
   }
 }
 
-class BackupPage extends Component {
+class BackupAccountPage extends Component {
   static propTypes = {
     encryptedMnemonic: PropTypes.string.isRequired
   }
@@ -108,4 +108,4 @@ class BackupPage extends Component {
   }
 }
 
-export default connect(mapStateToProps)(BackupPage)
+export default connect(mapStateToProps)(BackupAccountPage)
