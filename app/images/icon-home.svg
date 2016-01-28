@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.5 (25232) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-home</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.56 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="browser-light-cards" sketch:type="MSArtboardGroup" transform="translate(-1470.000000, -143.000000)" filter="url(#filter-1)" stroke="#AEAEAE" fill="#C7C7C7">
+            <g id="header" sketch:type="MSLayerGroup" transform="translate(335.000000, 105.000000)">
+                <g id="icons-grey-minified" transform="translate(1129.000000, 38.000000)" sketch:type="MSShapeGroup">
+                    <g id="Home-+-icon-home">
+                        <g id="icon-home" transform="translate(6.000000, 0.000000)">
+                            <path d="M0.999095345,9.4248681 C0.447310222,9.4248681 0.33276412,9.11128588 0.727331474,8.73946301 L9.27405782,0.685405099 C9.6757519,0.306866315 10.3341534,0.313582228 10.7287208,0.685405099 L19.2754471,8.73946301 C19.6771412,9.11800179 19.5600568,9.4248681 19.0036832,9.4248681 L18.0014571,9.4248681 C17.449672,9.4248681 17.0023618,9.87150929 17.0023618,10.4262212 L17.0023618,18.9500008 L12.0016671,18.9500008 L12.0016668,14.667027 C12.0016668,14.1190365 11.558252,13.6748025 10.9921577,13.6748025 L9.01062038,13.6748025 C8.45308393,13.6748025 8.00111134,14.124563 8.00111135,14.667027 L8.00111143,18.9500008 L3.00041679,18.9500008 L3.00041679,10.4262212 C3.00041679,9.87318915 2.55769496,9.4248681 2.00132144,9.4248681 L0.999095345,9.4248681 Z" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

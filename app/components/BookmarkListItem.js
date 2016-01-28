@@ -8,7 +8,6 @@ import { getName, getAvatarUrl } from '../utils/profile-utils.js'
 class BookmarkListItem extends Component {
   static propTypes = {
     profile: PropTypes.object.isRequired,
-    url: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired
   }
 
