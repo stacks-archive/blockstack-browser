@@ -57,7 +57,7 @@ class App extends Component {
     if (!accountExists) {
       this.context.router.push('/account/create')
     } else {
-      this.context.router.push('/identities')
+      this.context.router.push('/dashboard')
     }
   }
 

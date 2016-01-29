@@ -23,7 +23,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(IdentityActions, dispatch)
 }
 
-class IdentitiesPage extends Component {
+class DashboardPage extends Component {
   static propTypes = {
     localIdentities: PropTypes.array.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
@@ -68,15 +68,22 @@ class IdentitiesPage extends Component {
 
     return (
       <div>
+        <div className="row centered">
+          <h1>Search the blockchain</h1>
+          <p>
+            Try searching for <Link to="/search/fred">fred</Link> or <Link to="/search/naval">naval</Link> or <Link to="/search/elizabeth">elizabeth</Link>
+          </p>
+        </div>
+        <hr className="push-80" />
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-6 col-md-offset-3">
             <h4 className="headspace inverse">My Identities</h4>
             <div style={{paddingBottom: '15px'}}>
               <ul className="list-group bookmarks-temp">
               { localIdentities.map(function(identity) {
                 return (
                   <IdentityItem key={identity.index}
-                    label={identity.id}
+                    label={identity.registered ? identity.id : identity.id + ' (pending)'}
                     avatarUrl={getAvatarUrl(identity.profile)}
                     url={`/profile/local/${identity.index}`} />
                 )
@@ -87,36 +94,39 @@ class IdentitiesPage extends Component {
               <Link to="/identities/register" className="btn btn-primary">
                 Register
               </Link>
-            </p>
-            <p>
+              &nbsp;
               <Link to="/identities/import" className="btn btn-secondary">
                 Import
               </Link>
             </p>
           </div>
-          <div className="col-md-6">
-            <h4 className="headspace inverse">Featured Identities</h4>
-            <div style={{paddingBottom: '15px'}}>
-              <ul className="list-group bookmarks-temp">
-              { this.props.bookmarks.map(function(bookmark, index) {
-                let profile = bookmark.profile
-                if (!bookmark.profile.hasOwnProperty('@type')) {
-                  profile = Person.fromLegacyFormat(bookmark.profile).profile
-                }
-                return (
-                  <IdentityItem key={index}
-                    label={getName(profile)} 
-                    avatarUrl={getAvatarUrl(profile)}
-                    url={`/profile/blockchain/${bookmark.id}`} />
-                )
-              })}
-              </ul>
-            </div>
-          </div>
+          
         </div>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IdentitiesPage)
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
+
+/*
+<div className="col-md-6">
+  <h4 className="headspace inverse">Featured Identities</h4>
+  <div style={{paddingBottom: '15px'}}>
+    <ul className="list-group bookmarks-temp">
+    { this.props.bookmarks.map(function(bookmark, index) {
+      let profile = bookmark.profile
+      if (!bookmark.profile.hasOwnProperty('@type')) {
+        profile = Person.fromLegacyFormat(bookmark.profile).profile
+      }
+      return (
+        <IdentityItem key={index}
+          label={getName(profile)} 
+          avatarUrl={getAvatarUrl(profile)}
+          url={`/profile/blockchain/${bookmark.id}`} />
+      )
+    })}
+    </ul>
+  </div>
+</div>
+*/

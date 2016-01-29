@@ -6,14 +6,16 @@ import App             from './App'
 import ViewProfilePage     from './pages/ViewProfilePage'
 import EditProfilePage     from './pages/EditProfilePage'
 
-import IdentitiesPage  from './pages/IdentitiesPage'
+import DashboardPage   from './pages/DashboardPage'
 import RegisterPage    from './pages/RegisterPage'
 import ImportPage      from './pages/ImportPage'
 import ExportPage      from './pages/ExportPage'
 
 import SearchPage      from './pages/SearchPage'
 
-import WalletPage      from './pages/WalletPage'
+import WalletPage   from './pages/WalletPage'
+import DepositPage  from './pages/DepositPage'
+import WithdrawPage from './pages/WithdrawPage'
 
 import SettingsPage       from './pages/SettingsPage'
 import CreateAccountPage  from './pages/CreateAccountPage'
@@ -35,11 +37,14 @@ export default (
 
     <Route path="search/:query"  component={SearchPage} />
 
-    <Route path="identities"          component={IdentitiesPage} />
+    <Route path="dashboard"          component={DashboardPage} />
+
     <Route path="identities/register" component={RegisterPage} />
     <Route path="identities/import"   component={ImportPage} />
 
-    <Route path="wallet"        component={WalletPage} />
+    <Route path="wallet"          component={WalletPage} />
+    <Route path="wallet/deposit"  component={DepositPage} />
+    <Route path="wallet/withdraw" component={WithdrawPage} />
 
     <Route path="settings"         component={SettingsPage} />
     <Route path="account/create"   component={CreateAccountPage} />
