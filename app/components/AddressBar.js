@@ -57,10 +57,13 @@ class AddressBar extends Component {
       query = 'local:/' + pathname.replace('/local/', '/')
     } else if (/^\/search\/.*$/.test(pathname)) {
       // do nothing
+      query = pathname.replace('/search/', '').replace('%20', ' ')
+    } else if (pathname === '/') {
+      query = ''
     } else {
       query = 'local:/' + pathname
     }
-    if (query) {
+    if (query !== null) {
       this.setState({
         query: query
       })
