@@ -40,7 +40,7 @@ class PersonalInfoTab extends Component {
     
     return (
       <div>
-        <h4>Personal Info</h4>
+        <h4>Private Info</h4>
         <InputGroup name="birthDate" label="Birth Date"
           data={profile}
           onChange={this.onChange}

@@ -15,15 +15,17 @@ class SocialAccountsTab extends Component {
       profile: this.props.profile,
       newAccountType: null,
       accountServiceNames: {
-        twitter: 'Twitter',
-        facebook: 'Facebook',
-        github: 'GitHub',
-        instagram: 'Instagram',
-        linkedin: 'LinkedIn',
-        pinterest: 'Pinterest',
-        snapchat: 'Snapchat',
-        reddit: 'Reddit',
-        angellist: 'AngelList',
+        'twitter': 'Twitter',
+        'facebook': 'Facebook',
+        'instagram': 'Instagram',
+        'linkedin': 'LinkedIn',
+        'reddit': 'Reddit',
+        'youtube': 'YouTube',
+        'tumblr': 'Tumblr',
+        'pinterest': 'Pinterest',
+        'github': 'GitHub',
+        'google-plus':'Google+',
+        'angellist': 'AngelList',
         'stack-overflow': 'StackOverflow',
         'hacker-news': 'Hacker News'
       }
@@ -104,9 +106,11 @@ class SocialAccountsTab extends Component {
             <option value="github">GitHub</option>
             <option value="instagram">Instagram</option>
             <option value="linkedin">Linkedin</option>
-            <option value="pinterest">Pinterest</option>
-            <option value="snapchat">Snapchat</option>
+            <option value="tumblr">Tumblr</option>
             <option value="reddit">Reddit</option>
+            <option value="pinterest">Pinterest</option>
+            <option value="youtube">YouTube</option>
+            <option value="google-plus">Google+</option>
             <option value="angellist">AngelList</option>
             <option value="stack-overflow">StackOverflow</option>
             <option value="hacker-news">Hacker News</option>
@@ -134,10 +138,12 @@ class SocialAccountsTab extends Component {
                   name="identifier" label={accountServiceName + " Username"}
                   data={account}
                   onChange={(event) => { this.onChange(index, event) }} />
+                { ['twitter', 'facebook', 'github'].indexOf(account.service) > -1 ?
                 <InputGroup
                   name="proofUrl" label={accountServiceName + " Proof URL"}
                   data={account}
                   onChange={(event) => { this.onChange(index, event) }} />
+                : null }
                 <div className="form-group">
                   <button className="btn btn-secondary"
                     onClick={() => {this.deleteItem(index)}}>
