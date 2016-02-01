@@ -1,16 +1,23 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
 import InputGroup from '../components/InputGroup'
 import SaveButton from '../components/SaveButton'
+import ProfileEditingSidebar from '../components/ProfileEditingSidebar'
 import { IdentityActions } from '../store/identities'
 import { getNameParts } from '../utils/profile-utils'
 
+import BasicInfoTab from './BasicInfoTab'
+import PhotosTab from './PhotosTab'
+import SocialAccountsTab from './SocialAccountsTab'
+import PublicKeysTab from './PublicKeysTab'
+import PrivateInfoTab from './PrivateInfoTab'
+
 function mapStateToProps(state) {
   return {
-    currentIdentity: state.identities.current,
     localIdentities: state.identities.local
   }
 }
@@ -22,7 +29,6 @@ function mapDispatchToProps(dispatch) {
 class EditProfilePage extends Component {
   static propTypes = {
     updateProfile: PropTypes.func.isRequired,
-    currentIdentity: PropTypes.object.isRequired,
     localIdentities: PropTypes.array.isRequired
   }
 
@@ -30,134 +36,104 @@ class EditProfilePage extends Component {
     super(props)
 
     this.state = {
+      id: null,
       profile: null,
-      flatProfile: null,
       profileJustSaved: false,
-      verifications: []
+      verifications: [],
+      tabIndex: 0
     }
 
-    this.onValueChange = this.onValueChange.bind(this)
     this.saveProfile = this.saveProfile.bind(this)
+    this.changeTabs = this.changeTabs.bind(this)
   }
 
-  componentWillMount() {
-    const routeParams = this.props.routeParams
-    if (routeParams.index) {
-      const profile = this.props.localIdentities[routeParams.index].profile,
-            verifications = []
-      this.props.updateCurrentIdentity(profile, verifications)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.currentIdentity !== this.props.currentIdentity) {
-      let profile = nextProps.currentIdentity.profile,
-          flatProfile = flattenObject(profile)
-      flatProfile.givenName, flatProfile.familyName = getNameParts(profile)
+  componentHasNewLocalIdentities(props) {
+    const profileIndex = this.props.routeParams.index
+    if (profileIndex) {
       this.setState({
-        profile: profile,
-        flatProfile: flatProfile
+        id: props.localIdentities[profileIndex].id,
+        profile: props.localIdentities[profileIndex].profile
       })
     }
   }
 
-  saveProfile() {
-    this.props.updateProfile(this.props.routeParams.index, this.state.profile)
+  componentWillMount() {
+    this.componentHasNewLocalIdentities(this.props)
   }
 
-  onValueChange(event) {
-    let flatProfile = this.state.flatProfile
-    flatProfile[event.target.name] = event.target.value
-    if (event.target.name === "image[0].contentUrl") {
-      flatProfile["image[0].name"] = "avatar"
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.localIdentities !== this.props.localIdentities) {
+      this.componentHasNewLocalIdentities(nextProps)
     }
-    this.setState({
-      flatProfile: flatProfile,
-      profile: unflattenObject(flatProfile)
-    })
+  }
+
+  saveProfile(newProfile) {
+    this.props.updateProfile(this.props.routeParams.index, newProfile)
+  }
+
+  changeTabs(tabIndex) {
+    this.setState({tabIndex: tabIndex})
   }
 
   render() {
-    const flatProfile = this.state.flatProfile,
-          profile = this.state.profile
-
     return (
       <div>
-          { flatProfile && profile ? (
-          <div>
-              <h3>Edit Profile</h3>
-
-              <hr />
-              <h3>Basic Information</h3>
-              <InputGroup name="givenName" label="First Name"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <InputGroup name="familyName" label="Last Name"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <InputGroup name="description" label="Short Bio"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <InputGroup name="image[0].contentUrl" label="Profile Image URL"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <InputGroup name="website[0].url" label="Website"
-                  data={flatProfile} onChange={this.onValueChange} />
-              <div className="form-group">
-                  <SaveButton onSave={this.saveProfile} />
-              </div>
-
-              <hr />
-
-              <h3>Accounts</h3>
-              {
-                profile.account ?
-                profile.account.map((account, index) => {
-                  let identifierLabel = 'Identifier'
-                  if (account.service === 'bitcoin') {
-                    identifierLabel = 'Address'
+          <h2>Edit Profile</h2>
+          <Link to={this.props.location.pathname.replace('/edit', '')}
+            className="btn btn-primary">
+            View Profile
+          </Link>
+          <hr />
+          <div className="row">
+            <div className="col-md-3">
+              <ProfileEditingSidebar onClick={this.changeTabs} />
+            </div>
+            <div className="col-md-9">
+              { this.state.profile ? (
+              <div>
+                {(() => {
+                  switch (this.state.tabIndex) {
+                    case 0:
+                      return (
+                        <BasicInfoTab
+                          profile={this.state.profile}
+                          saveProfile={this.saveProfile} />
+                      )
+                    case 1:
+                      return (
+                        <PhotosTab
+                          profile={this.state.profile}
+                          saveProfile={this.saveProfile} />
+                      )
+                    case 2:
+                      return (
+                        <SocialAccountsTab
+                          profile={this.state.profile}
+                          saveProfile={this.saveProfile} />
+                      )
+                    case 3:
+                      return (
+                        <PrivateInfoTab
+                          profile={this.state.profile}
+                          saveProfile={this.saveProfile} />
+                      )
+                    case 4:
+                      return (
+                        <PublicKeysTab
+                          profile={this.state.profile}
+                          saveProfile={this.saveProfile}
+                          blockchainId={this.state.id} />
+                      )
+                    default:
+                      return (
+                        <div></div>
+                      )
                   }
-                  if (['twitter', 'facebook', 'github'].indexOf(account.service) > -1) {
-                    identifierLabel = 'Username'
-                  }
-
-                  return (
-                    <div key={index}>
-                      { account.proofType === 'http' ?
-                        <div>
-                        <InputGroup
-                          name={"account[" + index + "].identifier"}
-                          label={account.service + " " + identifierLabel}
-                          data={flatProfile}
-                          onChange={this.onValueChange} />
-                        <InputGroup
-                          name={"account[" + index + "].proofUrl"}
-                          label={account.service + " Proof URL"}
-                          data={flatProfile}
-                          onChange={this.onValueChange} />
-                        </div>
-                      : null }
-                      { account.service.toLowerCase() === 'bitcoin' || account.proofType === 'signature' ?
-                        <div>
-                        <InputGroup
-                          name={"account[" + index + "].identifier"}
-                          label={account.service + " " + identifierLabel}
-                          data={flatProfile}
-                          onChange={this.onValueChange} />
-                        <InputGroup
-                          name={"account[" + index + "].proofSignature"}
-                          label={account.service + " Signature"}
-                          data={flatProfile}
-                          onChange={this.onValueChange} />
-                        </div>
-                      : null }
-                    </div>
-                  )
-                })
-                : null
-              }
-
-              <div className="form-group">
-                  <SaveButton onSave={this.saveProfile} />
+                })()}
               </div>
+              ) : null }
+            </div>
           </div>
-          ) : null }
       </div>
     )
   }

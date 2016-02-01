@@ -71,13 +71,13 @@ class DashboardPage extends Component {
         <div className="row centered">
           <h1>Search the blockchain</h1>
           <p>
-            Try searching for <Link to="/search/fred">fred</Link> or <Link to="/search/naval">naval</Link> or <Link to="/search/elizabeth">elizabeth</Link>
+            Try searching for <Link to="/search/naval">naval</Link> or <Link to="/search/elizabeth">elizabeth</Link> or <Link to="/search/fred%20wilson">fred wilson</Link>
           </p>
         </div>
         <hr className="push-80" />
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
-            <h4 className="headspace inverse">My Identities</h4>
+            <h4 className="headspace inverse">My Profiles</h4>
             <div style={{paddingBottom: '15px'}}>
               <ul className="list-group bookmarks-temp">
               { localIdentities.map(function(identity) {

@@ -53,14 +53,17 @@ class AddressBar extends Component {
       if (isABlockstoreName(domainName)) {
         query = pathname.replace('/profile/blockchain/', '')
       }
-    } else if (/^\/profile\/local\/[0-9]+$/.test(pathname)) {
+    } else if (/^\/profile\/local\/[0-9]+.*$/.test(pathname)) {
       query = 'local:/' + pathname.replace('/local/', '/')
     } else if (/^\/search\/.*$/.test(pathname)) {
       // do nothing
+      query = pathname.replace('/search/', '').replace('%20', ' ')
+    } else if (pathname === '/') {
+      query = ''
     } else {
       query = 'local:/' + pathname
     }
-    if (query) {
+    if (query !== null) {
       this.setState({
         query: query
       })

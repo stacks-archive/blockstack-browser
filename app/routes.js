@@ -28,7 +28,7 @@ import NotFoundPage from './pages/NotFoundPage'
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={CreateAccountPage} />
+    <IndexRoute component={DashboardPage} />
 
     <Route path="profile/blockchain/:name"    component={ViewProfilePage} />
     <Route path="profile/local/:index"        component={ViewProfilePage} />
@@ -37,7 +37,7 @@ export default (
 
     <Route path="search/:query"  component={SearchPage} />
 
-    <Route path="dashboard"          component={DashboardPage} />
+    <Route path="home"          component={DashboardPage} />
 
     <Route path="identities/register" component={RegisterPage} />
     <Route path="identities/import"   component={ImportPage} />

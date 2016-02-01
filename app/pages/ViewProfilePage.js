@@ -94,6 +94,11 @@ class ViewProfilePage extends Component {
         address = getAddress(profile),
         birthDate = getBirthDate(profile)
 
+    let isLocal = false
+    if (this.props.routeParams.hasOwnProperty('index')) {
+      isLocal = true
+    }
+
     return (
       <div className="profile-spacer">
         { profile !== null && profile !== undefined ?
@@ -111,12 +116,20 @@ class ViewProfilePage extends Component {
                     </div>
                   </div>
                 </div>
+                { isLocal ?
                 <div>
                   <Link to={this.props.location.pathname + "/edit"}
                     className="btn btn-primary btn-lg btn-pro-edit">
                     Edit
                   </Link>
                 </div>
+                :
+                <div>
+                  <button className="btn btn-primary btn-lg btn-pro-edit">
+                    Connect
+                  </button>
+                </div>
+                }
               </div>
               <div className="col-md-7">
                 <div className="idcard-wrap">

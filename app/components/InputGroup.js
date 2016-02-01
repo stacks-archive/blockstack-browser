@@ -8,22 +8,28 @@ class InputGroup extends Component {
     name: PropTypes.string,
     data: PropTypes.object,
     onChange: PropTypes.func,
-    type: PropTypes.string
+    type: PropTypes.string,
+    disabled: PropTypes.bool
   }
 
   render() {
     let value = '',
-        type = "text" 
+        type = "text",
+        disabled = false
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
     }
     if (this.props.type) {
       type = this.props.type
     }
+    if (this.props.disabled) {
+      disabled = this.props.disabled
+    }
     return (
       <fieldset className="form-group">
         <label>{this.props.label}</label>
         <input name={this.props.name}
+          disabled={disabled}
           className="form-control"
           type={type}
           placeholder={this.props.placeholder ? this.props.placeholder : this.props.label}
