@@ -27,20 +27,14 @@ class Navbar extends Component {
           <div className="pull-xs-right toolbar">
             <div className="nav-item nav-link">
               <Link to="/">
-                <img src="images/icon-identity.svg"/>
+                <img src="images/icon-home.svg"/>
                 <span className="icon-labels">Home</span>
               </Link>
             </div>
             <div className="nav-item nav-link">
-              <Link to="/wallet">
-                <img src="images/icon-dollar-circle.svg"/>
-                <span className="icon-labels">Wallet</span>
-              </Link>
-            </div>
-            <div className="nav-item nav-link">
               <Link to="/settings">
-                <img src="images/icon-settings.svg"/>
-                <span className="icon-labels">Settings</span>
+                <img src="images/icon-cog.svg"/>
+                <span className="icon-labels">Accounts</span>
               </Link>
             </div>
             

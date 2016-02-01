@@ -23,8 +23,8 @@
 html,body{height:100%;}
 
 body {
-  background-color: #151515;
-  font-weight: 200;
+  background-color: #1B1E21;
+  font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.5rem;
 }
@@ -108,7 +108,7 @@ i.fa {
   background-color: rgba(0,0,0,0.2);
 }
 .navbar {
-  padding-top: 21px;
+  padding-top: 23px;
   padding-right: 0;
   padding-left: 0;
   height: 83px;
@@ -123,7 +123,7 @@ button {
   outline: none!important;
 }
 .nav.navbar-nav {
-  padding-top: 4px;
+  padding-top: 2px;
   width: 100%;
   border-top: 1px solid #e1e1e1;
 }
@@ -132,42 +132,40 @@ button.btn.btn-sm.nav-page {
   padding-right: 8px; 
   padding-left: 8px;
 }
-input[type=text]{
-  border-radius: 20px;
-}
 .nav-search {
   overflow: hidden;
 }
-.nav-search > div > form > input {
-  height: 22px;
+.nav-search > div.nav-link > div > input.form-control.form-control-sm {
   border: none;
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
+  border: 0!important;
+  color: #7B7B7B;
+  padding: 3px .75rem;
 }
 div.nav-item.nav-link > a {
   display: block;
   margin-right: 5px;
-  padding-top: 1px;
+  padding-top: 4px;
   text-decoration: none;
 }
 div.nav-item.nav-link > a > img {
   display: block;
   margin: 0 auto;
-  width: 21px;
-  height: 21px;
+  width: 20px;
+  height: 20px;
 }
 .icon-labels {
   display: block;
-  margin-top: 6px;
   color: rgba(61,61,61,1);
   font-size: 11px;
 }
 .toolbar {
-  padding-right: 15px;
-  padding-left: 25px;
+  padding-right: 5px;
+  padding-left: 35px;
 }
 .back-forth {
-  padding-right: 25px;
+  padding-right: 35px;
   padding-left: 15px;
 }
 .inverse {

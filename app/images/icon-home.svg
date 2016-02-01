@@ -5,11 +5,11 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="browser-light-cards" sketch:type="MSArtboardGroup" transform="translate(-1416.000000, -143.000000)" stroke-width="0.5" stroke="#484848" fill="#616161">
+        <g id="browser-light-cards" sketch:type="MSArtboardGroup" transform="translate(-1484.000000, -143.000000)" stroke-width="0.5" stroke="#484848" fill="#616161">
             <g id="browser-bar" sketch:type="MSLayerGroup" transform="translate(335.000000, 105.000000)">
-                <g id="icons-grey-minified" transform="translate(1063.000000, 38.000000)" sketch:type="MSShapeGroup">
-                    <g id="Dashboard-+-icon-dashboard">
-                        <g id="icon-home" transform="translate(18.000000, 0.000000)">
+                <g id="icons-grey-minified" transform="translate(1143.000000, 38.000000)" sketch:type="MSShapeGroup">
+                    <g id="Home-+-icon-home">
+                        <g id="icon-home" transform="translate(6.000000, 0.000000)">
                             <path d="M1.00552002,8.48238129 C0.450186648,8.48238129 0.320359266,8.18048885 0.721394359,7.80257107 L8.279856,0.679810223 C8.67827111,0.304361404 9.32160963,0.301892441 9.72264472,0.679810223 L17.2811064,7.80257107 C17.6795215,8.17801989 17.5565887,8.48238129 16.9969807,8.48238129 L16.3076456,8.48238129 C15.7523123,8.48238129 15.3021256,8.93121259 15.3021256,9.48254724 L15.3021256,17.0550007 L10.8015004,17.0550007 L10.8015002,13.3141828 C10.8015001,12.7581091 10.3600081,12.3073223 9.79856013,12.3073223 L8.20394015,12.3073223 C7.65003171,12.3073223 7.20100021,12.7454625 7.20100022,13.3141828 L7.20100029,17.0550007 L2.70037511,17.0550007 L2.70037511,9.48254724 C2.70037511,8.93017084 2.25446308,8.48238129 1.69485509,8.48238129 L1.00552002,8.48238129 Z" id="Shape"></path>
                         </g>
                     </g>
