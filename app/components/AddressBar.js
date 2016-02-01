@@ -53,7 +53,7 @@ class AddressBar extends Component {
       if (isABlockstoreName(domainName)) {
         query = pathname.replace('/profile/blockchain/', '')
       }
-    } else if (/^\/profile\/local\/[0-9]+$/.test(pathname)) {
+    } else if (/^\/profile\/local\/[0-9]+.*$/.test(pathname)) {
       query = 'local:/' + pathname.replace('/local/', '/')
     } else if (/^\/search\/.*$/.test(pathname)) {
       // do nothing
