@@ -13,7 +13,15 @@ class SocialAccountListItem extends Component {
       ['bitcoin', 'fa-bitcoin'],
       ['twitter', 'fa-twitter'],
       ['facebook', 'fa-facebook'],
-      ['github', 'fa-github']
+      ['github', 'fa-github'],
+      ['linkedin', 'fa-linkedin'],
+      ['instagram', 'fa-instagram'],
+      ['pinterest', 'fa-pinterest'],
+      ['reddit', 'fa-reddit'],
+      ['snapchat', 'fa-star-o'],
+      ['stack-overflow', 'fa-stack-overflow'],
+      ['angellist', 'fa-angellist'],
+      ['hacker-news', 'fa-hacker-news']
     ])
     let socialMediaClass = ''
     if (socialMediaClasses.has(this.props.service)) {
