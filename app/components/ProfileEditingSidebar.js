@@ -18,11 +18,11 @@ class ProfileEditingSidebar extends Component {
         <button onClick={() => {this.props.onClick(2)}} className="list-group-item">
           Social Accounts
         </button>
+        <button onClick={() => {this.props.onClick(4)}} className="list-group-item">
+          Public Keys
+        </button>
         <button onClick={() => {this.props.onClick(3)}} className="list-group-item">
           Private Info
-        </button>
-        <button onClick={() => {this.props.onClick(4)}} className="list-group-item">
-          Bitcoin and PGP Keys
         </button>
       </div>
     )
