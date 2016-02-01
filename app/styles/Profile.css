@@ -136,12 +136,12 @@ button.btn.btn-sm.nav-page {
   overflow: hidden;
 }
 .nav-search > div.nav-link > div > input.form-control.form-control-sm {
+  padding: 3px .75rem;
   border: none;
-  text-align: center;
-  font-size: 12px;
   border: 0!important;
   color: #7B7B7B;
-  padding: 3px .75rem;
+  text-align: center;
+  font-size: 12px;
 }
 div.nav-item.nav-link > a {
   display: block;
@@ -181,12 +181,12 @@ div.nav-item.nav-link > a > img {
   color: #fff!important;
 }
 .bookmarks-temp > .list-group-item:before {
-  background-color: #23262a;
-  width: 32px;
-  height: 32px;
   display: inline-block;
   margin-left: 15px;
+  width: 32px;
+  height: 32px;
   border-radius: 3px;
+  background-color: #23262a;
 }
 .bookmarks-temp {
   margin-left: -18px;
@@ -249,20 +249,20 @@ div.profile-right-col > ul {
 }
 div.profile-right-col > ul > li > a {
   display: block;
-  color: #949494;
   padding: 10px 5px;
+  color: #949494;
   text-decoration: none;
 }
 div.profile-right-col > ul > li > a:hover {
-  text-decoration: none;
-  background-color: #23262a;
   border-radius: 4px;
+  background-color: #23262a;
+  text-decoration: none;
 }
 .profile-foot {
   position: relative;
   display: block;
-  padding-top: 50px;
   margin-left: 15px;
+  padding-top: 50px;
 }
 
 /* Temorary copy color */
@@ -270,18 +270,18 @@ body {
   color: #ffffff;
 }
 .connections {
-  background-color: #23262a;
-  width: 32px;
-  height: 32px;
   display: inline-block;
   margin-left: 15px;
-  border-radius: 4px;
-}
-div.col-md-3 > img {
   width: 32px;
   height: 32px;
   border-radius: 4px;
+  background-color: #23262a;
+}
+div.col-md-3 > img {
       margin-right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
 }
 .col-list-name {
   display: table-cell;
