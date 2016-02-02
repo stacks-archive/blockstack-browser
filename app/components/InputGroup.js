@@ -26,11 +26,11 @@ class InputGroup extends Component {
       disabled = this.props.disabled
     }
     return (
-      <fieldset className="form-group">
-        <label>{this.props.label}</label>
+      <fieldset className="form-group row">
+        <label className="form-control-inline-label">{this.props.label}</label>
         <input name={this.props.name}
           disabled={disabled}
-          className="form-control"
+          className="form-inverse-control-width form-inverse-control"
           type={type}
           placeholder={this.props.placeholder ? this.props.placeholder : this.props.label}
           value={value}

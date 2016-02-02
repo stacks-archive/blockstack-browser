@@ -81,7 +81,7 @@ class CreateAccountPage extends Component {
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
             <InputGroup name="password2" type="password" label="Password (again)"
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
-            <div>
+            <div className="form-inverse-control-width pull-right">
               <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
                 Create
               </button>
