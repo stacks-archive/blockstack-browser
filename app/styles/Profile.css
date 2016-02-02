@@ -326,65 +326,65 @@ div.container.outer-wrap {
 /* Place Holder CSS */
 ::-webkit-input-placeholder {
   opacity: 0.5;
-  -webkit-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 :-moz-placeholder {
   opacity: 0.5;
-  -moz-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 ::-moz-placeholder {
   opacity: 0.5;
-  -moz-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 :-ms-input-placeholder {  
   opacity: 0.5;
-  -ms-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 
 /* Place Holder CSS for Focus */
 :hover::-webkit-input-placeholder {
   opacity: 0.75;
-  -webkit-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 :hover:-moz-placeholder {
   opacity: 0.75;
-  -moz-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -moz-transition: all .2s ease-in-out; 
+  transition: all .2s ease-in-out;
 }
 :hover::-moz-placeholder {
   opacity: 0.75;
-  -moz-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 :hover:-ms-input-placeholder {  
   opacity: 0.75;
-  -ms-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 
 /* Place Holder CSS for Focus */
 :focus::-webkit-input-placeholder {
   opacity: 0;
-  -webkit-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 :focus:-moz-placeholder {
   opacity: 0;
-  -moz-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 :focus::-moz-placeholder {
   opacity: 0;
-  -moz-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 :focus:-ms-input-placeholder {  
   opacity: 0;
-  -ms-transition: opacity 0.35s ease-in-out;
-  transition: opacity 0.35s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
