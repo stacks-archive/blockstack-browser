@@ -66,7 +66,7 @@ class CreateAccountPage extends Component {
     return (
       <div>
         <div className="centered push-80">
-          <h1>Chord</h1>
+          <h1><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="90px" /></h1>
           <h4>The blockchain browser</h4>
         </div>
         <div className="row">
