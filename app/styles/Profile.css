@@ -291,3 +291,9 @@ div.col-md-3 > img {
   display: table;
   overflow: hidden;
 }
+.outer-wrap {
+  width: 300px;
+}
+div.container.outer-wrap {
+  padding: 0;
+}

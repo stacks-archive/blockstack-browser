@@ -70,7 +70,7 @@ class CreateAccountPage extends Component {
           <h4>The blockchain browser</h4>
         </div>
         <div className="row">
-          <div className="col-md-6 col-md-push-3">
+          <div className="container outer-wrap">
             <h5>Create Account</h5>
             { this.state.alerts.map(function(alert, index) {
               return (
@@ -82,7 +82,7 @@ class CreateAccountPage extends Component {
             <InputGroup name="password2" type="password" label="Password (again)"
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
             <div>
-              <button className="btn btn-primary" onClick={this.createAccount}>
+              <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
                 Create
               </button>
             </div>
