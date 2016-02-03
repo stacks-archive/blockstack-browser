@@ -66,7 +66,7 @@ class CreateAccountPage extends Component {
     return (
       <div>
         <div className="centered push-80">
-          <h1><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="90px" /></h1>
+          <h1><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></h1>
           <h4>The blockchain browser</h4>
         </div>
         <div className="row">
@@ -81,10 +81,12 @@ class CreateAccountPage extends Component {
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
             <InputGroup name="password2" type="password" label="Password (again)"
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
-            <div className="form-inverse-control-width pull-right">
-              <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
-                Create
-              </button>
+            <div className="row">
+              <div className="form-inverse-control-width pull-right">
+                <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
+                  Create
+                </button>
+              </div>
             </div>
             <hr />
             <p>
