@@ -333,6 +333,7 @@ div.container.outer-wrap {
 /* Form inverse */
 .form-inverse-control {
   border-color: #2b2e33;
+  transition: all ease-in-out .15s;
 }
 .form-inverse-control-width {
   display: inline-block;
