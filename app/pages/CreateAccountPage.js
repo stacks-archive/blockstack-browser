@@ -64,14 +64,14 @@ class CreateAccountPage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="centered push-80">
-          <h1><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></h1>
-          <h4>The blockchain browser</h4>
-        </div>
+      <div className="container out-block">
         <div className="row">
-          <div className="container outer-wrap">
-            <h5>Create Account</h5>
+          <div className="centered">
+            <h1><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></h1>
+            <h4>The blockchain browser</h4>
+          </div>
+          <h5 className="text-xs-center">Create Account</h5>
+            <div className="out-form-group">
             { this.state.alerts.map(function(alert, index) {
               return (
                 <Alert key={index} message={alert.message} status={alert.status} />
@@ -81,20 +81,18 @@ class CreateAccountPage extends Component {
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
             <InputGroup name="password2" type="password" label="Password (again)"
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
-            <div className="row">
-              <div className="form-inverse-control-width pull-right">
+            <div className="form-group">
+              <div className="col-xs-offset-3 col-xs-8 pull-right">
                 <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
                   Create
                 </button>
               </div>
             </div>
-            <hr />
-            <p>
-              Already have an account?
-              <br />
-              <Link to="/account/restore">Restore from backup</Link>
-            </p>
           </div>
+          <p className="text-xs-center">Already have an account?
+            <br />
+            <Link to="/account/restore">Restore from backup</Link>
+          </p>
         </div>
       </div>
     )

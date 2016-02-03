@@ -317,24 +317,21 @@ div.col-md-3 > img {
   display: table;
   overflow: hidden;
 }
-.outer-wrap {
-  width: 435px;
-}
 div.container.outer-wrap {
   padding: 0;
 }
 
-
 /* Post rhythm */
 
-
-/* Form inverse */
-.form-inverse-control-width {
-  display: inline-block;
-  width: 300px;
+/* landing view */
+.out-block {
+  width: 490px;
+}
+.out-form-group {
+  width: 490px;
+  margin-left: -80px;
 }
 .form-control-inline-label {
-  display: inline-block;
   width: 150px;
   padding: .625rem;
   text-transform: uppercase;
@@ -342,16 +339,7 @@ div.container.outer-wrap {
   color: #515862;
   text-align: right;
   padding-right: 25px;
-  margin-bottom: 5px;
-}
-fieldset.form-group.row {
-  margin-bottom: 0;
-}
-div.form-inverse-control-width.pull-right {
-  display: block;
-  margin-top: 20px;
-  margin-bottom: 55px;
-  margin-right: .9375rem;
+  transform: all .15s ease-in-out;
 }
 
 
