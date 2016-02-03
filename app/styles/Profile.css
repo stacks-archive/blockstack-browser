@@ -329,9 +329,6 @@ div.container.outer-wrap {
 
 
 /* Form inverse */
-.form-inverse-control {
-  transition: all ease-in-out .15s;
-}
 .form-inverse-control-width {
   display: inline-block;
   width: 300px;
