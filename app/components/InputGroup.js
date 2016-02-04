@@ -28,7 +28,6 @@ class InputGroup extends Component {
     return (
       <div className="form-group">
         <fieldset>
-          <label className="col-xs-4 form-control-label form-control-inline-label">{this.props.label}</label>
           <div className="col-xs-8 pull-right">
             <input name={this.props.name}
               disabled={disabled}
@@ -38,6 +37,7 @@ class InputGroup extends Component {
               value={value}
               onChange={this.props.onChange} />
           </div>
+          <label className="col-xs-4 form-control-label form-control-inline-label pull-right">{this.props.label}</label>
         </fieldset>
       </div>
     )
