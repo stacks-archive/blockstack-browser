@@ -69,9 +69,14 @@ class CreateAccountPage extends Component {
           <div className="row">
             <div className="centered">
               <h1><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></h1>
-              <h4>The blockchain browser</h4>
+              <p className="lead-out">browse the blockchain</p>
+              <h1 className="text-xs-center">Create Account</h1>
+              <p className="lead-out">
+              Welcome to the first blockchain browser. <br/>
+              Create a blockchain id and start surfing the blockchain.<br/>
+              The future is here!
+              </p>
             </div>
-            <h5 className="text-xs-center">Create Account</h5>
               <div className="out-form-group">
               { this.state.alerts.map(function(alert, index) {
                 return (
