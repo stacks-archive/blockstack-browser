@@ -1,13 +1,18 @@
 /*
-8px = 0.5rem
-9px = 0.5625rem
-10px = 0.625rem
-11px = 0.6875rem
-12px = 0.75rem
-13px = 0.8125rem  *****
-14px = 0.875rem 
-15px = 0.9375rem
-16px = 1rem (base)
+3px = .1875rem
+4px = .25rem
+5px = .3125rem
+6px = .375rem
+7px = .4375rem
+8px = .5rem
+9px = .5625rem
+10px = .625rem
+11px = .6875rem
+12px = .75rem
+13px = .8125rem
+** 14px = .875rem  /* font base
+15px = .9375rem
+** 16px = 1rem     /* base
 18px = 1.125rem
 20px = 1.25rem
 22px = 1.375rem
@@ -333,15 +338,6 @@ div.container.outer-wrap {
 .out-form-group {
   width: 490px;
   margin-left: -80px;
-}
-.form-control-inline-label {
-  width: 150px;
-  padding: .625rem;
-  text-transform: uppercase;
-  font-size: 12px;
-  color: #515862;
-  text-align: right;
-  padding-right: 25px;
 }
 a, a:focus {
   outline:none;
