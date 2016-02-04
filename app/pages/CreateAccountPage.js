@@ -68,7 +68,7 @@ class CreateAccountPage extends Component {
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
-              <h1><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></h1>
+              <div><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></div>
               <p className="lead-out">browse the blockchain</p>
               <h1 className="text-xs-center">create an account</h1>
               <p className="lead-out">

@@ -343,7 +343,8 @@ div.container.outer-wrap {
   text-align: right;
   padding-right: 25px;
 }
-
-
+a, a:focus {
+  outline:none;
+}
 
 
