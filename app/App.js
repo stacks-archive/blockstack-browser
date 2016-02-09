@@ -12,16 +12,14 @@ function mapStateToProps(state) {
 
 class MainScreen extends Component {
   static propTypes = {
-    children: PropTypes.element.isRequired,
+    children: PropTypes.element.isRequired
   }
 
   render() {
     return (
       <div>
         <Navbar />
-        <div className="container">
-          {this.props.children}
-        </div>
+        {this.props.children}
       </div>
     )
   }
@@ -30,7 +28,7 @@ class MainScreen extends Component {
 class WelcomeScreen extends Component {
   render() {
     return (
-      <div className="container">
+      <div>
         {this.props.children}
       </div>
     )

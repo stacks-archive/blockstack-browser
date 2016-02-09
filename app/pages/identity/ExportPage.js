@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-import InputGroup from '../components/InputGroup'
+import { InputGroup } from '../../components/index'
 
 class ExportPage extends Component {
   constructor() {
@@ -10,7 +10,7 @@ class ExportPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div>
           <h3>Export Identity</h3>
           <p>Export your identity to another address.</p>

@@ -1,30 +1,30 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 
-import App             from './App'
+import App                from './App'
 
-import ViewProfilePage     from './pages/ViewProfilePage'
-import EditProfilePage     from './pages/EditProfilePage'
+import DashboardPage      from './pages/DashboardPage'
+import SearchPage         from './pages/SearchPage'
 
-import DashboardPage   from './pages/DashboardPage'
-import RegisterPage    from './pages/RegisterPage'
-import ImportPage      from './pages/ImportPage'
-import ExportPage      from './pages/ExportPage'
+import ViewProfilePage    from './pages/identity/ViewProfilePage'
+import RegisterPage       from './pages/identity/RegisterPage'
+import ImportPage         from './pages/identity/ImportPage'
+import ExportPage         from './pages/identity/ExportPage'
 
-import SearchPage      from './pages/SearchPage'
+import EditProfilePage    from './pages/editing/EditProfilePage'
 
-import WalletPage   from './pages/WalletPage'
-import DepositPage  from './pages/DepositPage'
-import WithdrawPage from './pages/WithdrawPage'
+import DepositPage        from './pages/wallet/DepositPage'
+import WithdrawPage       from './pages/wallet/WithdrawPage'
 
-import SettingsPage       from './pages/SettingsPage'
-import CreateAccountPage  from './pages/CreateAccountPage'
-import RestoreAccountPage from './pages/RestoreAccountPage'
-import DeleteAccountPage  from './pages/DeleteAccountPage'
-import BackupAccountPage  from './pages/BackupAccountPage'
-import ChangePasswordPage from './pages/ChangePasswordPage'
+import SettingsPage       from './pages/account/SettingsPage'
+import DeleteAccountPage  from './pages/account/DeleteAccountPage'
+import BackupAccountPage  from './pages/account/BackupAccountPage'
+import ChangePasswordPage from './pages/account/ChangePasswordPage'
 
-import NotFoundPage from './pages/NotFoundPage'
+import CreateAccountPage  from './pages/outside/CreateAccountPage'
+import RestoreAccountPage from './pages/outside/RestoreAccountPage'
+
+import NotFoundPage       from './pages/errors/NotFoundPage'
 
 export default (
   <Route path="/" component={App}>
@@ -42,16 +42,15 @@ export default (
     <Route path="identities/register" component={RegisterPage} />
     <Route path="identities/import"   component={ImportPage} />
 
-    <Route path="wallet"          component={WalletPage} />
-    <Route path="wallet/deposit"  component={DepositPage} />
-    <Route path="wallet/withdraw" component={WithdrawPage} />
-
-    <Route path="settings"         component={SettingsPage} />
-    <Route path="account/create"   component={CreateAccountPage} />
-    <Route path="account/restore"  component={RestoreAccountPage} />
+    <Route path="account/deposit"  component={DepositPage} />
+    <Route path="account/withdraw" component={WithdrawPage} />
     <Route path="account/delete"   component={DeleteAccountPage} />
     <Route path="account/backup"   component={BackupAccountPage} />
-    <Route path="password/update"  component={ChangePasswordPage} />
+    <Route path="account/password"  component={ChangePasswordPage} />
+    <Route path="account/settings" component={SettingsPage} />
+
+    <Route path="account/create"   component={CreateAccountPage} />
+    <Route path="account/restore"  component={RestoreAccountPage} />
 
     <Route path="*" component={NotFoundPage} />
   </Route>

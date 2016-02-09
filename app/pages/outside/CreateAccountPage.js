@@ -3,10 +3,9 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Alert from '../components/Alert'
-import { KeychainActions } from '../store/keychain'
-import InputGroup from '../components/InputGroup'
-import { isPasswordValid } from '../utils/account-utils'
+import { Alert, InputGroup } from '../../components/index'
+import { KeychainActions } from '../../store/keychain'
+import { isPasswordValid } from '../../utils/account-utils'
 
 function mapStateToProps(state) {
   return {

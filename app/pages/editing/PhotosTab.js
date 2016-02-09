@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-import InputGroup from '../components/InputGroup'
-import SaveButton from '../components/SaveButton'
+import { InputGroup, SaveButton } from '../../components/index'
 
 class PhotosTab extends Component {
   static propTypes = {

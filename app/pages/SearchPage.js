@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import { SearchActions } from '../store/search'
-import SearchItem from '../components/SearchItem'
+import { SearchItem } from '../components/index'
 
 function mapStateToProps(state) {
   return {
@@ -50,7 +50,7 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <ul className="list-group">
           {this.state.searchResults.map((result, index) => {
             if (result.profile && result.username) {
