@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'
 
-import { KeychainActions } from '../store/keychain'
+import { AccountSidebar } from '../../components/index'
+import { KeychainActions } from '../../store/keychain'
 
 function mapStateToProps(state) {
   return {
@@ -40,17 +41,30 @@ class DepositPage extends Component {
 
     return (
       <div>
-        <h2>Deposit</h2>
-        <p><i>
-          Note: All identity registrations require funds from your account.
-          To fund your account, send bitcoins to the address below.
-        </i></p>
+        <div className="page-header">
+          <div className="container">
+            <h1>Deposit</h1>
+          </div>
+        </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-3">
+              <AccountSidebar />
+            </div>
+            <div className="col-md-9">
+              <p><i>
+                Note: All identity registrations require funds from your account.
+                To fund your account, send bitcoins to the address below.
+              </i></p>
 
-        <h5>Send Bitcoins to this address</h5>
-        <div className="highlight">
-          <pre>
-            <code>{currentAddress}</code>
-          </pre>
+              <h5>Send Bitcoins to this address</h5>
+              <div className="highlight">
+                <pre>
+                  <code>{currentAddress}</code>
+                </pre>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )

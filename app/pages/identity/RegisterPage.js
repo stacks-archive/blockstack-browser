@@ -3,10 +3,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import Alert from '../components/Alert'
-import InputGroup from '../components/InputGroup'
-import { IdentityActions } from '../store/identities'
-import { getNameCost, isNameAvailable, hasNameBeenPreordered } from '../utils/name-utils'
+import { Alert, InputGroup } from '../../components/index'
+import { IdentityActions } from '../../store/identities'
+import { getNameCost, isNameAvailable, hasNameBeenPreordered } from '../../utils/name-utils'
 
 function mapStateToProps(state) {
   return {
@@ -109,7 +108,7 @@ class RegisterPage extends Component {
         nameLabel = this.state.nameLabels[this.state.type]
 
     return (
-      <div>
+      <div className="container">
         <div>
           <h3>Register Identity</h3>
             { this.state.alerts.map(function(alert, index) {

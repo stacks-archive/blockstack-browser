@@ -26,18 +26,27 @@ class InputGroup extends Component {
       disabled = this.props.disabled
     }
     return (
-      <fieldset className="form-group">
-        <label>{this.props.label}</label>
-        <input name={this.props.name}
-          disabled={disabled}
-          className="form-control"
-          type={type}
-          placeholder={this.props.placeholder ? this.props.placeholder : this.props.label}
-          value={value}
-          onChange={this.props.onChange} />
-      </fieldset>
+      <div className="form-group">
+        <fieldset>
+          <div className="col-xs-8 pull-right">
+            <input name={this.props.name}
+              disabled={disabled}
+              className="form-inverse-control"
+              type={type}
+              placeholder={this.props.placeholder ? this.props.placeholder : this.props.label}
+              value={value}
+              onChange={this.props.onChange} />
+          </div>
+          <label className="col-xs-4 form-control-label form-inverse-control-label">{this.props.label}</label>
+        </fieldset>
+      </div>
     )
   }
 }
 
 export default InputGroup
+
+
+
+
+

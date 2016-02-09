@@ -10,10 +10,22 @@ class SocialAccountListItem extends Component {
 
   render() {
     let socialMediaClasses = new Map([
-      ['bitcoin', 'fa-bitcoin'],
       ['twitter', 'fa-twitter'],
       ['facebook', 'fa-facebook'],
-      ['github', 'fa-github']
+      ['github', 'fa-github'],
+      ['linkedin', 'fa-linkedin'],
+      ['instagram', 'fa-instagram'],
+      ['pinterest', 'fa-pinterest'],
+      ['reddit', 'fa-reddit'],
+      ['youtube', 'fa-youtube'],
+      ['tumblr', 'fa-tumblr'],
+      ['google-plus', 'fa-google-plus'],
+      ['stack-overflow', 'fa-stack-overflow'],
+      ['angellist', 'fa-angellist'],
+      ['hacker-news', 'fa-hacker-news'],
+      ['bitcoin', 'fa-bitcoin'],
+      ['pgp', 'fa-key'],
+      ['website', 'fa-link']
     ])
     let socialMediaClass = ''
     if (socialMediaClasses.has(this.props.service)) {

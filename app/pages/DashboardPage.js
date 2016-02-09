@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 import { Person } from 'blockchain-profile'
 
-import IdentityItem from '../components/IdentityItem'
+import { IdentityItem } from '../components/index'
 import { IdentityActions } from '../store/identities'
 import { getIdentities } from '../utils/api-utils'
 import { getName, getAvatarUrl } from '../utils/profile-utils.js'
@@ -67,7 +67,7 @@ class DashboardPage extends Component {
     const localIdentities = this.state.localIdentities || []
 
     return (
-      <div>
+      <div className="container">
         <div className="row centered">
           <h1>Search the blockchain</h1>
           <p>

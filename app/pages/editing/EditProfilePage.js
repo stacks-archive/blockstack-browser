@@ -4,11 +4,9 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
-import InputGroup from '../components/InputGroup'
-import SaveButton from '../components/SaveButton'
-import ProfileEditingSidebar from '../components/ProfileEditingSidebar'
-import { IdentityActions } from '../store/identities'
-import { getNameParts } from '../utils/profile-utils'
+import { InputGroup, SaveButton, ProfileEditingSidebar } from '../../components/index'
+import { IdentityActions } from '../../store/identities'
+import { getNameParts } from '../../utils/profile-utils'
 
 import BasicInfoTab from './BasicInfoTab'
 import PhotosTab from './PhotosTab'
@@ -78,14 +76,19 @@ class EditProfilePage extends Component {
   render() {
     return (
       <div>
-          <h2>Edit Profile</h2>
-          <Link to={this.props.location.pathname.replace('/edit', '')}
-            className="btn btn-primary">
-            View Profile
-          </Link>
-          <hr />
+        <div className="page-header">
+          <div className="container">
+            <h1>Edit Profile</h1>
+          </div>
+        </div>
+        <div className="container">
           <div className="row">
             <div className="col-md-3">
+              <Link to={this.props.location.pathname.replace('/edit', '')}
+                className="btn btn-primary">
+                View Profile
+              </Link>
+              <hr />
               <ProfileEditingSidebar onClick={this.changeTabs} />
             </div>
             <div className="col-md-9">
@@ -134,6 +137,7 @@ class EditProfilePage extends Component {
               ) : null }
             </div>
           </div>
+        </div>
       </div>
     )
   }

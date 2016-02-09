@@ -3,10 +3,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { KeychainActions } from '../store/keychain'
-import Alert from '../components/Alert'
-import InputGroup from '../components/InputGroup'
-import { decrypt, encrypt } from '../utils/keychain-utils'
+import { Alert, InputGroup, AccountSidebar } from '../../components/index'
+import { KeychainActions } from '../../store/keychain'
+import { decrypt, encrypt } from '../../utils/keychain-utils'
 
 function mapStateToProps(state) {
   return {
@@ -88,24 +87,36 @@ class ChangePasswordPage extends Component {
   render() {
     return (
       <div>
-        <div>
-          <h3>Change Password</h3>
-          { this.state.alerts.map(function(alert, index) {
-            return (
-              <Alert key={index} message={alert.message} status={alert.status} />
-            )
-          })}
-          <div>
-            <InputGroup name="currentPassword" label="Current Password" type="password"
-              data={this.state} onChange={this.onValueChange} />
-            <InputGroup name="newPassword" label="New Password" type="password"
-              data={this.state} onChange={this.onValueChange} />
-            <InputGroup name="newPassword2" label="New Password" type="password"
-              data={this.state} onChange={this.onValueChange} />
-            <div>
-              <button className="btn btn-primary" onClick={this.reencryptMnemonic}>
-                Update Password
-              </button>
+        <div className="page-header">
+          <div className="container">
+            <h1>Change Password</h1>
+          </div>
+        </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-3">
+              <AccountSidebar />
+            </div>
+            <div className="col-md-9">
+              <h3>Change Password</h3>
+              { this.state.alerts.map(function(alert, index) {
+                return (
+                  <Alert key={index} message={alert.message} status={alert.status} />
+                )
+              })}
+              <div>
+                <InputGroup name="currentPassword" label="Current Password" type="password"
+                  data={this.state} onChange={this.onValueChange} />
+                <InputGroup name="newPassword" label="New Password" type="password"
+                  data={this.state} onChange={this.onValueChange} />
+                <InputGroup name="newPassword2" label="New Password" type="password"
+                  data={this.state} onChange={this.onValueChange} />
+                <div>
+                  <button className="btn btn-primary" onClick={this.reencryptMnemonic}>
+                    Update Password
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

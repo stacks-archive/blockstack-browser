@@ -3,14 +3,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import SocialAccountItem from '../components/SocialAccountItem'
+import { SocialAccountItem, Image } from '../../components/index'
 import {
   getName, getVerifiedAccounts, getAvatarUrl,
   getAddress, getBirthDate, getConnections
-} from '../utils/profile-utils.js'
-import { IdentityActions } from '../store/identities'
-import { SearchActions } from '../store/search'
-import Image from '../components/Image'
+} from '../../utils/profile-utils.js'
+import { IdentityActions } from '../../store/identities'
+import { SearchActions } from '../../store/search'
 
 function mapStateToProps(state) {
   return {

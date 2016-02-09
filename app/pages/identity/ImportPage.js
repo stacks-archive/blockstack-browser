@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 
-import { KeychainActions } from '../store/keychain'
+import { KeychainActions } from '../../store/keychain'
 
 function mapStateToProps(state) {
   return {
@@ -37,7 +37,7 @@ class ImportPage extends Component {
           currentAddress = accountKeychain.child(addressIndex).address().toString()
 
     return (
-      <div>
+      <div className="container">
         <div>
           <h3>Import Identity</h3>
           <p><i>

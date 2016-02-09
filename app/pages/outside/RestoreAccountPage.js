@@ -3,10 +3,9 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Alert from '../components/Alert'
-import InputGroup from '../components/InputGroup'
-import { KeychainActions } from '../store/keychain'
-import { isBackupPhraseValid } from '../utils/account-utils'
+import { Alert, InputGroup } from '../../components/index'
+import { KeychainActions } from '../../store/keychain'
+import { isBackupPhraseValid } from '../../utils/account-utils'
 
 function mapStateToProps(state) {
   return {
@@ -66,7 +65,7 @@ class RestorePage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div className="col-md-6 col-md-push-3">
           <h5>Restore Account</h5>
           { this.state.alerts.map(function(alert, index) {
