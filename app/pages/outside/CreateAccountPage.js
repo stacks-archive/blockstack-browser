@@ -89,14 +89,14 @@ class CreateAccountPage extends Component {
               <InputGroup name="password2" type="password" label="Password (again)"
                 placeholder="Password" data={this.state} onChange={this.onValueChange} />
               <div className="form-group">
-                <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-4">
+                <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
                   <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
                     Create
                   </button>
                 </div>
               </div>
             </div>
-            <p className="text-xs-center">Already have an account?
+            <p className="text-sm inverse text-xs-center">Already have an account?
               <br />
               <Link to="/account/restore">Restore from backup</Link>
             </p>

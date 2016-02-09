@@ -199,10 +199,7 @@ div.nav-item.nav-link > a > img {
   padding-right: 35px;
   padding-left: 15px;
 }
-.inverse {
-  color: #ffffff;
-  font-weight: 200;
-}
+
 .bookmarks-temp > .list-group-item {
   border: none;
   border-radius: 4px;
@@ -295,11 +292,6 @@ div.profile-right-col > ul > li > a:hover {
   margin-left: 15px;
   padding-top: 50px;
 }
-
-/* Temorary copy color */
-body {
-  color: #ffffff;
-}
 .connections {
   display: inline-block;
   margin-left: 15px;
@@ -326,9 +318,27 @@ div.container.outer-wrap {
   padding: 0;
 }
 
+
+
+
+
+
+
 /* Post rhythm */
 
-/* landing view */
+
+/* Type */
+a, a:focus {
+  outline:none;
+}
+.inverse {
+  color: #fff;
+  font-weight: 200;
+}
+
+/* Views */
+
+/* Views - Landing view */
 .out-block-wrap {
   width: 576px;
 }
@@ -339,12 +349,20 @@ div.container.outer-wrap {
   width: 490px;
   margin-left: -80px;
 }
-a, a:focus {
-  outline:none;
-}
+
+/* Forms */
+
+/* Inline forms */
+
+/* Sets inline forms to have a fixed label container width */
 .form-group-control-label {
     width: 150px;
 }
 
 
+/* controls the alert boxes when signing up */
+div.out-form-group > div > div.alert.alert-dismissible {
+  margin-left: 178px;
+  margin-right: 15px;
+}
 
