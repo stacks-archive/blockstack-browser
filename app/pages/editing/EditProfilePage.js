@@ -82,13 +82,13 @@ class EditProfilePage extends Component {
           </div>
         </div>
         <div className="container">
-          <Link to={this.props.location.pathname.replace('/edit', '')}
-            className="btn btn-secondary">
-            View Profile
-          </Link>
-          <hr />
           <div className="row">
             <div className="col-md-3">
+              <Link to={this.props.location.pathname.replace('/edit', '')}
+                className="btn btn-primary">
+                View Profile
+              </Link>
+              <hr />
               <ProfileEditingSidebar onClick={this.changeTabs} />
             </div>
             <div className="col-md-9">
