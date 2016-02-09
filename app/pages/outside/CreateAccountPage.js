@@ -78,7 +78,7 @@ class CreateAccountPage extends Component {
               The future is here!
               </p>
             </div>
-              <div className="out-form-group">
+            <div className="out-form-group">
               { this.state.alerts.map(function(alert, index) {
                 return (
                   <Alert key={index} message={alert.message} status={alert.status} />

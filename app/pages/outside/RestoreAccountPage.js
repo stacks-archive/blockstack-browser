@@ -65,31 +65,45 @@ class RestorePage extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="col-md-6 col-md-push-3">
-          <h5>Restore Account</h5>
-          { this.state.alerts.map(function(alert, index) {
-            return (
-              <Alert key={index} message={alert.message} status={alert.status} />
-            )
-          })}
-          <InputGroup name="backupPhrase" type="text" label="Backup phrase"
-            placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
-          <InputGroup name="password" type="password" label="New password"
-            placeholder="Password" data={this.state} onChange={this.onValueChange} />
-          <InputGroup name="password2" type="password" label="New password (again)"
-            placeholder="Password" data={this.state} onChange={this.onValueChange} />
-          <div>
-            <button className="btn btn-primary" onClick={this.restoreAccount}>
-              Restore
-            </button>
+     <div className="container out-block-wrap">
+        <div className="container-fluid out-block">
+          <div className="row">
+            <div className="centered">
+              <div className="m-b-4">
+                <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+                <p className="lead-out">browse the blockchain</p>
+              </div>
+              <h1 className="text-xs-center type-inverse">restore from backup</h1>
+              <p className="lead-out">
+              Enter your backup phrase and choose a new password <br />
+               to restore your account
+              </p>
+            </div>
+            <div className="out-form-group">
+            { this.state.alerts.map(function(alert, index) {
+              return (
+                <Alert key={index} message={alert.message} status={alert.status} />
+              )
+            })}
+            <InputGroup name="backupPhrase" type="text" label="Backup phrase"
+              placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
+            <InputGroup name="password" type="password" label="New password"
+              placeholder="Password" data={this.state} onChange={this.onValueChange} />
+            <InputGroup name="password2" type="password" label="New password (again)"
+              placeholder="Password" data={this.state} onChange={this.onValueChange} />
+              <div className="form-group">
+                <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
+                  <button className="btn btn-block btn-secondary" onClick={this.restoreAccount}>
+                    Restore
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p className="text-sm inverse text-xs-center">Don&#39;t have an account?
+              <br />
+              <Link to="/account/create">Create an account</Link>
+            </p>
           </div>
-          <hr />
-          <p>
-            Don&#39;t have an account?
-            <br />
-            <Link to="/account/create">Create an account</Link>
-          </p>
         </div>
       </div>
     )
