@@ -26,7 +26,7 @@ class InputGroup extends Component {
       disabled = this.props.disabled
     }
     return (
-      <div className="form-group">
+      <div className="form-group m-b-11">
         <fieldset>
           <div className="col-xs-8 pull-right">
             <input name={this.props.name}

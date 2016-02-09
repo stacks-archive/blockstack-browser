@@ -342,5 +342,9 @@ div.container.outer-wrap {
 a, a:focus {
   outline:none;
 }
+.form-group-control-label {
+    width: 150px;
+}
+
 
 

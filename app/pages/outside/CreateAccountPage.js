@@ -67,9 +67,11 @@ class CreateAccountPage extends Component {
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
-              <div><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></div>
-              <p className="lead-out">browse the blockchain</p>
-              <h1 className="text-xs-center">create an account</h1>
+              <div className="m-b-4">
+                <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+                <p className="lead-out">browse the blockchain</p>
+              </div>
+              <h1 className="text-xs-center type-inverse">create an account</h1>
               <p className="lead-out">
               Welcome to the first blockchain browser. <br/>
               Create a blockchain id and start surfing the blockchain.<br/>
@@ -87,7 +89,7 @@ class CreateAccountPage extends Component {
               <InputGroup name="password2" type="password" label="Password (again)"
                 placeholder="Password" data={this.state} onChange={this.onValueChange} />
               <div className="form-group">
-                <div className="col-xs-offset-3 col-xs-8 pull-right">
+                <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-4">
                   <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
                     Create
                   </button>
