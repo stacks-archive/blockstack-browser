@@ -77,36 +77,33 @@ class DashboardPage extends Component {
             <img src="images/icon-browser.svg" alt="chord icon" width="82px" />
           </div>
           <h1 className="text-xs-center type-inverse">search the blockchain</h1>
-          <p>
+          <p className="lead-out">
             Try searching for <Link to="/search/naval">naval</Link> or <Link to="/search/elizabeth">elizabeth</Link> or <Link to="/search/fred%20wilson">fred wilson</Link>
           </p>
         </div>
-        <div className="row">
-          <div className="col-md-6 col-md-offset-3">
-            <h4 className="text-xs-center lead-out">My Profiles</h4>
-            <div style={{paddingBottom: '15px'}}>
-              <ul className="list-group bookmarks-temp">
-              { localIdentities.map(function(identity) {
-                return (
-                  <IdentityItem key={identity.index}
-                    label={identity.registered ? identity.id : identity.id + ' (pending)'}
-                    avatarUrl={getAvatarUrl(identity.profile)}
-                    url={`/profile/local/${identity.index}`} />
-                )
-              })}
-              </ul>
-            </div>
-            <p>
-              <Link to="/identities/register" className="btn btn-primary">
-                Register
-              </Link>
-              &nbsp;
-              <Link to="/identities/import" className="btn btn-secondary">
-                Import
-              </Link>
-            </p>
+        <div className="container-fluid out-block m-t-2">
+          <h4 className="text-xs-center lead-out">My Profiles</h4>
+          <div style={{paddingBottom: '15px'}}>
+            <ul className="list-group bookmarks-temp">
+            { localIdentities.map(function(identity) {
+              return (
+                <IdentityItem key={identity.index}
+                  label={identity.registered ? identity.id : identity.id + ' (pending)'}
+                  avatarUrl={getAvatarUrl(identity.profile)}
+                  url={`/profile/local/${identity.index}`} />
+              )
+            })}
+            </ul>
           </div>
-          
+          <p>
+            <Link to="/identities/register" className="btn btn-primary">
+              Register
+            </Link>
+            &nbsp;
+            <Link to="/identities/import" className="btn btn-secondary">
+              Import
+            </Link>
+          </p>
         </div>
       </div>
     )
