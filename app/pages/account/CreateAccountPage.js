@@ -63,43 +63,52 @@ class CreateAccountPage extends Component {
 
   render() {
     return (
+      <div className="body-inner"
+        style={{ backgroundImage: "url('images/profile-collage.jpg')" }}>
       <div className="container out-block-wrap">
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
-              <div><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></div>
-              <p className="lead-out">browse the blockchain</p>
-              <h1 className="text-xs-center">create an account</h1>
-              <p className="lead-out">
-              Welcome to the first blockchain browser. <br/>
-              Create a blockchain id and start surfing the blockchain.<br/>
-              The future is here!
-              </p>
+              <div className="m-b-4">
+                <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+                <p className="lead-out">browse the blockchain</p>
+              </div>
             </div>
+            <div>
+              <div className="centered">
+                <h1 className="text-xs-center type-inverse">create an account</h1>
+              </div>
               <div className="out-form-group">
-              { this.state.alerts.map(function(alert, index) {
-                return (
-                  <Alert key={index} message={alert.message} status={alert.status} />
-                )
-              })}
-              <InputGroup name="password" type="password" label="Password"
-                placeholder="Password" data={this.state} onChange={this.onValueChange} />
-              <InputGroup name="password2" type="password" label="Password (again)"
-                placeholder="Password" data={this.state} onChange={this.onValueChange} />
-              <div className="form-group">
-                <div className="col-xs-offset-3 col-xs-8 pull-right">
-                  <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
-                    Create
-                  </button>
+                { this.state.alerts.map(function(alert, index) {
+                  return (
+                    <Alert key={index} message={alert.message} status={alert.status} />
+                  )
+                })}
+                <InputGroup name="password" type="password" label="Password" inverse="true"
+                  placeholder="Password" data={this.state} onChange={this.onValueChange} />
+                <InputGroup name="password2" type="password" label="Password (again)" inverse="true"
+                  placeholder="Password" data={this.state} onChange={this.onValueChange} />
+                <div className="form-group">
+                  <fieldset>
+                    <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
+                      <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
+                        Create Account
+                      </button>
+                    </div>
+                  </fieldset>
                 </div>
               </div>
             </div>
-            <p className="text-xs-center">Already have an account?
-              <br />
-              <Link to="/account/restore">Restore from backup</Link>
-            </p>
+            <div>
+              <p className="text-sm inverse text-xs-center">
+                Already have an account?
+                <br />
+                <Link to="/account/restore">Restore from backup</Link>
+              </p>
+            </div>
           </div>
         </div>
+      </div>
       </div>
     )
   }

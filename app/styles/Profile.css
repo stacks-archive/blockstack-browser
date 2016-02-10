@@ -1,63 +1,42 @@
 /*
-3px = .1875rem
-4px = .25rem
-5px = .3125rem
-6px = .375rem
-7px = .4375rem
-8px = .5rem
-9px = .5625rem
-10px = .625rem
-11px = .6875rem
-12px = .75rem
-13px = .8125rem
-** 14px = .875rem  /* font base
-15px = .9375rem
-** 16px = 1rem     /* base
-18px = 1.125rem
-20px = 1.25rem
-22px = 1.375rem
-24px = 1.5rem
-26px = 1.625rem
-28px = 1.75rem
-30px = 1.875rem
-32px = 2rem
-34px = 2.125rem
-36px = 2.25rem
+3px   =   .1875rem
+4px   =   .25rem
+5px   =   .3125rem
+6px   =   .375rem
+7px   =   .4375rem
+8px   =   .5rem
+9px   =   .5625rem
+10px  =   .625rem
+11px  =   .6875rem
+12px  =   .75rem
+13px  =   .8125rem
+14px  =   .875rem    /* font base
+15px  =   .9375rem
+16px  =  1rem        /* base
+18px  =  1.125rem
+20px  =  1.25rem
+22px  =  1.375rem
+24px  =  1.5rem
+26px  =  1.625rem
+28px  =  1.75rem
+30px  =  1.875rem
+32px  =  2rem
+34px  =  2.125rem
+36px  =  2.25rem
 */
 
-html, body {
-  background-color: #1b1e21;
-  height: 100%;
-}
-body {
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-}
-/* Extra markup and styles for table-esque vertical and horizontal centering */
-.site-wrapper {
-  display: table;
-  width: 100%;
-  height: 100%; /* For at least Firefox */
-  min-height: 100%; 
-  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-  box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-}
-.site-wrapper-inner {
-  display: table-cell;
-  vertical-align: top; 
-  background: url(/images/profile-collage.jpg) no-repeat center center fixed;
-  background-size: cover;
-}
-.cover-container {
-  margin-right: auto;
-  margin-left: auto;
-}
 
-/* Padding for spacing */
+
+/* Note inner class needs to be changed to the bootstrap p-3 */
 .inner {
   padding: 30px;
 }
+/* End note */
+
+
+/* 
+// ID card
+*/
 
 .idcard {
   position: relative;
@@ -138,23 +117,26 @@ i.fa {
   border-radius: 8px;
   background-color: rgba(0,0,0,0.2);
 }
+
+
+/* 
+// Browser bar 
+*/
+
 .navbar {
+  min-width: 768px;
   padding-top: 23px;
   padding-right: 0;
   padding-left: 0;
-  height: 83px;
+  height: 90px;
   background-color: rgba(235,235,235,1);
 }
-  /****** custom element ***************************************/
-  .nav-page {
-    border: none;
-    background-color: transparent;
-  }
-button {
-  outline: none!important;
+.nav-page {
+  border: none;
+  background-color: transparent;
 }
 .nav.navbar-nav {
-  padding-top: 2px;
+  padding-top: 6px;
   width: 100%;
   border-top: 1px solid #e1e1e1;
 }
@@ -163,65 +145,86 @@ button.btn.btn-sm.nav-page {
   padding-right: 8px; 
   padding-left: 8px;
 }
+/* browser search bar ---------------------------- */
 .nav-search {
   overflow: hidden;
 }
-.nav-search > div.nav-link > div > input.form-control.form-control-sm {
-  padding: 3px .75rem;
+.browser-search-bar input {
+  padding: .1875rem .75rem;
   border: none;
-  border: 0!important;
   color: #7B7B7B;
   text-align: center;
-  font-size: 12px;
+  font-size: .75rem;
+  border-radius: 20px;
 }
-div.nav-item.nav-link > a {
+.browser-search-bar input::-webkit-input-placeholder {
+  color: #aeaeae;
+  text-transform: none;
+  margin-top: .1875rem;
+  font-size: .75rem;  
+  padding: 0;
+}
+.browser-search-bar input::-webkit-input-placeholder::before {
+  font-family: fontAwesome;
+  font-size: .6875rem;  
+  content:'\f002  ';
+  color: #c7c7c7;
+}
+/* end browser search bar -------------------------- */
+/* browser-links */
+.browser-links {
+  padding-right: 5px;
+  padding-left: 30px;
+}
+.browser-links > div.nav-link {
+  padding-top: .3125rem;
+}
+.browser-links > div.nav-item.nav-link > a {
   display: block;
   margin-right: 5px;
   padding-top: 4px;
   text-decoration: none;
 }
-div.nav-item.nav-link > a > img {
+.browser-links > div.nav-item.nav-link > a > img {
   display: block;
   margin: 0 auto;
   width: 20px;
   height: 20px;
+  margin-bottom: 5px;
+}
+/* end browser-links */
+.back-forth {
+  padding-right: 35px;
+  padding-left: 15px;
+}
+.back-forth > div.nav-link {
+  padding-top: .0625rem;
 }
 .icon-labels {
   display: block;
   color: rgba(61,61,61,1);
   font-size: 11px;
 }
-.toolbar {
-  padding-right: 5px;
-  padding-left: 35px;
-}
-.back-forth {
-  padding-right: 35px;
-  padding-left: 15px;
-}
-.inverse {
-  color: #ffffff;
-  font-weight: 200;
+
+
+
+
+/* UNKNOWN STYLES ///////////////////////////////////// */
+.bookmarks-temp {
+  padding: 0;
 }
 .bookmarks-temp > .list-group-item {
   border: none;
   border-radius: 4px;
   background-color: transparent;
 }
-.bookmarks-temp > a.list-group-item {
+.bookmarks-temp > .list-group-item {
   color: #fff!important;
-}
-.bookmarks-temp > .list-group-item:before {
-  display: inline-block;
-  margin-left: 15px;
-  width: 32px;
-  height: 32px;
+  width: 100%;
+  display: block;
   border-radius: 3px;
-  background-color: #23262a;
-}
-.bookmarks-temp {
-  margin-left: -18px;
-  max-width: 275px;
+  background-color: #32373d;
+  height: 55px;
 }
 h4.headspace, h5.headspace {
   margin-bottom: 50px;
@@ -295,11 +298,6 @@ div.profile-right-col > ul > li > a:hover {
   margin-left: 15px;
   padding-top: 50px;
 }
-
-/* Temorary copy color */
-body {
-  color: #ffffff;
-}
 .connections {
   display: inline-block;
   margin-left: 15px;
@@ -325,10 +323,64 @@ div.col-md-3 > img {
 div.container.outer-wrap {
   padding: 0;
 }
+/* END UNKNOWN STYLES ///////////////////////////////////// */
+
+
+
+
+
 
 /* Post rhythm */
 
-/* landing view */
+
+/* Globals */
+
+html, body {
+  background-color: #1b1e21; /* 1b1e21 */
+  height: 100%;
+  min-width: 768px;
+}
+button {
+  outline: none!important;
+}
+
+/* Type */
+
+a, a:focus {
+  outline:none;
+}
+.inverse {
+  color: #fff;
+  font-weight: 200;
+}
+
+
+/* Views */
+
+/* Views - Landing view */
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  top: 0;
+  /*margin-top: -83px;*/
+  width: 100%;
+  height: 100%;
+  /*min-height: 100%; 
+  box-shadow: inset 0 0 100px rgba(0,0,0,.5);*/
+}
+.site-wrapper-inner {
+  display: table-cell;
+  min-height: 100%;
+  vertical-align: top; 
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
 .out-block-wrap {
   width: 576px;
 }
@@ -339,8 +391,35 @@ div.container.outer-wrap {
   width: 490px;
   margin-left: -80px;
 }
-a, a:focus {
-  outline:none;
+
+/* Views - deposit view */
+
+.page-header-wrap {
+  width: 100%;
+  display: table;
+}
+.page-header {
+  display:table-cell;
+  min-width: 100%;
+  height: 150px;
+  background-color: #1b1e21;
+  text-align: center;
+  vertical-align: middle;
 }
 
+
+/* Forms */
+
+/* Inline forms */
+
+/* Sets inline forms to have a fixed label container width */
+.form-group-control-label {
+    width: 150px;
+}
+
+/* controls the alert boxes when signing up */
+div.out-form-group > div > div.alert.alert-dismissible {
+  margin-left: 178px;
+  margin-right: 15px;
+}
 

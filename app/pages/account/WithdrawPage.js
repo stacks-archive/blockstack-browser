@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'
 
-import { InputGroup, AccountSidebar } from '../../components/index'
+import { InputGroup, AccountSidebar, PageHeader } from '../../components/index'
 import { KeychainActions } from '../../store/keychain'
 
 function mapStateToProps(state) {
@@ -27,16 +26,12 @@ class WithdrawPage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="page-header">
-          <div className="container">
-            <h1>Withdraw</h1>
-          </div>
-        </div>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="withdraw" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <AccountSidebar />
+              <AccountSidebar activeTab="withdraw" />
             </div>
             <div className="col-md-9">
               <p>Send your funds to another Bitcoin wallet.</p>

@@ -14,19 +14,30 @@
 }
 
 body {
-  padding-top: 83px;
   background-color: rgba(250,250,250,1);
   font-size: 14px;
   font-family: 'Lato', sans-serif;
 }
 
-.container {
-  padding-top: 40px;
+.body-main {
+  height: 100%;
+  width: 100%;
+  padding-top: 83px;
+}
+.body-landing {
+  height: 100%;
+  width: 100%;
+}
+.body-inner {
+  height: 100%;
+  width: 100%;
+}
+.body-inner-white {
+  background-color: white;
 }
 
-.page-header {
-  background-color: #2275d7;
-  padding-bottom: 40px;
+.container {
+  padding-top: 40px;
 }
 
 /* Highlight */

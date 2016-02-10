@@ -24,7 +24,7 @@ class Navbar extends Component {
               </ForwardButton>
             </div>
           </div>
-          <div className="pull-xs-right toolbar">
+          <div className="pull-xs-right browser-links">
             <div className="nav-item nav-link">
               <Link to="/">
                 <img src="images/icon-home.svg"/>

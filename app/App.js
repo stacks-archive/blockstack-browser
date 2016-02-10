@@ -17,7 +17,7 @@ class MainScreen extends Component {
 
   render() {
     return (
-      <div>
+      <div className="body-main">
         <Navbar />
         {this.props.children}
       </div>
@@ -28,7 +28,7 @@ class MainScreen extends Component {
 class WelcomeScreen extends Component {
   render() {
     return (
-      <div>
+      <div className="body-landing">
         {this.props.children}
       </div>
     )
@@ -53,7 +53,7 @@ class App extends Component {
   componentHasNewProps(encryptedMnemonic) {
     const accountExists = (encryptedMnemonic.length > 0) ? true : false
     if (!accountExists) {
-      this.context.router.push('/account/create')
+      this.context.router.push('/landing')
     } else {
       this.context.router.push('/')
     }
@@ -71,25 +71,24 @@ class App extends Component {
 
   render() {
     const accountExists = this.props.encryptedMnemonic.length ? true : false
-    return (
-      <div>
-      { accountExists ?
-        <MainScreen children={this.props.children} />
-      :
-        <WelcomeScreen children={this.props.children} />
-      }
-      {
-        (() => {
-          if (process.env.NODE_ENV !== 'production') {
-            //const DevTools = require('./components/DevTools')
-            //return <DevTools />
-          }
-        })()
-      }
-      </div>
-    )
+    if (accountExists) {
+      return (<MainScreen children={this.props.children} />)
+    } else {
+      return (<WelcomeScreen children={this.props.children} />)
+    }
   }
 }
 
 
 export default connect(mapStateToProps)(App)
+
+/*
+{
+  (() => {
+    if (process.env.NODE_ENV !== 'production') {
+      //const DevTools = require('./components/DevTools')
+      //return <DevTools />
+    }
+  })()
+}
+*/
