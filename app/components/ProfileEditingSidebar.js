@@ -3,27 +3,38 @@ import { Link } from 'react-router'
 
 class ProfileEditingSidebar extends Component {
   static propTypes = {
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    activeTab: PropTypes.string
   }
 
   render() {
+    let tabs = [
+      { label: 'basic info', isActive: false },
+      { label: 'photos', isActive: false },
+      { label: 'social accounts', isActive: false },
+      { label: 'private info', isActive: false },
+      { label: 'public keys', isActive: false }
+    ]
+    tabs.map((tab) => {
+      if (tab.label === this.props.activeTab) {
+        tab.isActive = true
+      }
+    })
+
     return (
       <div className="list-group">
-        <button onClick={() => {this.props.onClick(0)}} className="list-group-item">
-          Basic Info
-        </button>
-        <button onClick={() => {this.props.onClick(1)}} className="list-group-item">
-          Photos
-        </button>
-        <button onClick={() => {this.props.onClick(2)}} className="list-group-item">
-          Social Accounts
-        </button>
-        <button onClick={() => {this.props.onClick(4)}} className="list-group-item">
-          Public Keys
-        </button>
-        <button onClick={() => {this.props.onClick(3)}} className="list-group-item">
-          Private Info
-        </button>
+        {tabs.map((tab, index) => {
+          let className = 'list-group-item'
+          if (tab.isActive) {
+            className += ' active'
+          }
+          return (
+            <button onClick={() => {this.props.onClick(index)}}
+                    className={className}>
+              {tab.label}
+            </button>
+          )
+        })}
       </div>
     )
   }

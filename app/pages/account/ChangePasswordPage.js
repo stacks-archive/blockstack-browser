@@ -92,7 +92,7 @@ class ChangePasswordPage extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <AccountSidebar />
+              <AccountSidebar activeTab="change password" />
             </div>
             <div className="col-md-9">
               <h3>Change Password</h3>

@@ -68,7 +68,7 @@ class DeleteAccountPage extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <AccountSidebar />
+              <AccountSidebar activeTab="delete account" />
             </div>
             <div className="col-md-9">
               { this.state.alerts.map(function(alert, index) {
