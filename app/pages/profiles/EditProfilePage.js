@@ -3,7 +3,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { InputGroup, SaveButton, ProfileEditingSidebar } from '../../components/index'
+import {
+  InputGroup, SaveButton, ProfileEditingSidebar, PageHeader
+} from '../../components/index'
 import { IdentityActions } from '../../store/identities'
 import { getNameParts, uploadObject } from '../../utils/index'
 
@@ -99,20 +101,19 @@ class EditProfilePage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="page-header">
-          <div className="container">
-            <h1>Edit Profile</h1>
-          </div>
-        </div>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="backup account" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <Link to={this.props.location.pathname.replace('/edit', '')}
-                className="btn btn-secondary">
-                View Profile
-              </Link>
-              <hr />
+              <div className="form-group">
+                <fieldset>
+                  <Link to={this.props.location.pathname.replace('/edit', '')}
+                    className="btn btn-outline-primary">
+                    View Profile
+                  </Link>
+                </fieldset>
+              </div>
               <ProfileEditingSidebar
                 activeTab={this.state.tabName}
                 onClick={this.changeTabs} />
