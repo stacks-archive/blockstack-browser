@@ -81,18 +81,20 @@ class EditProfilePage extends Component {
   }
 
   uploadProfile() {
-    const credentials = {
-      key: this.props.api.s3ApiKey,
-      secret: this.props.api.s3ApiSecret,
-      bucket: this.props.api.s3Bucket
-    }
-    const filename = this.state.id,
-          data = JSON.stringify(this.state.profile, null, 2)
-    uploadObject(credentials, filename, data, ({ url, err }) => {
-      if (!err) {
-        console.log('profile uploaded to s3')
+    if (this.props.api.hasOwnProperty('s3ApiSecret').length > 0) {
+      const credentials = {
+        key: this.props.api.s3ApiKey,
+        secret: this.props.api.s3ApiSecret,
+        bucket: this.props.api.s3Bucket
       }
-    })
+      const filename = this.state.id,
+            data = JSON.stringify(this.state.profile, null, 2)
+      uploadObject(credentials, filename, data, ({ url, err }) => {
+        if (!err) {
+          console.log('profile uploaded to s3')
+        }
+      })
+    }
   }
 
   changeTabs(tabName) {
