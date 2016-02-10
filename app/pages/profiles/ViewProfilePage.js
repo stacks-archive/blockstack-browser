@@ -49,28 +49,29 @@ class ViewProfilePage extends Component {
     }
   }
 
-  componentHasNewRouteParams(routeParams) {
-    if (routeParams.index) {
-      const profile = this.props.localIdentities[routeParams.index].profile,
-            name = this.props.localIdentities[routeParams.index].id,
+  componentHasNewRouteParams(props) {
+    if (props.routeParams.index) {
+      const newDomainIndex = props.routeParams.index,
+            profile = props.localIdentities[newDomainIndex].profile,
+            name = props.localIdentities[newDomainIndex].id,
             verifications = []
       this.props.updateCurrentIdentity(name, profile, verifications)
-    } else if (routeParams.name) {
-      this.props.fetchCurrentIdentity(routeParams.name, this.props.nameLookupUrl)
+    } else if (props.routeParams.name) {
+      this.props.fetchCurrentIdentity(props.routeParams.name, props.nameLookupUrl)
     }
   }
 
   componentWillMount() {
-    this.componentHasNewRouteParams(this.props.routeParams)
+    this.componentHasNewRouteParams(this.props)
   }
 
   componentWillUnmount() {
-    this.props.updateCurrentIdentity('', {}, [])
+    //this.props.updateCurrentIdentity('', {}, [])
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.routeParams !== this.props.routeParams) {
-      this.componentHasNewRouteParams(nextProps.routeParams)
+      this.componentHasNewRouteParams(nextProps)
     }
     this.setState({
       currentIdentity: nextProps.currentIdentity
@@ -79,7 +80,7 @@ class ViewProfilePage extends Component {
 
   render() {
     let identity = this.state.currentIdentity,
-      blockchainId = identity.id
+        blockchainId = identity.id
 
     if (blockchainId === 'naval.id') {
       identity = this.props.bookmarks[0]

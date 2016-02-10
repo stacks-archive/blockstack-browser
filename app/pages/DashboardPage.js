@@ -12,10 +12,9 @@ import { getName, getAvatarUrl } from '../utils/profile-utils.js'
 
 function mapStateToProps(state) {
   return {
-    bookmarks: state.settings.bookmarks,
     localIdentities: state.identities.local,
     identityAccount: state.keychain.identityAccounts[0],
-    addressLookupUrl: state.settings.api.addressLookupUrl
+    addressLookupUrl: state.settings.api.addressLookupUrl || ''
   }
 }
 

@@ -49,12 +49,7 @@ class SettingsPage extends Component {
 
   updateApi() {
     const api = this.state.api
-    this.props.updateApi(
-      api.nameLookupUrl,
-      api.searchUrl,
-      api.registerUrl,
-      api.addressLookupUrl
-    )
+    this.props.updateApi(api)
   }
 
   resetApi() {
@@ -84,6 +79,12 @@ class SettingsPage extends Component {
                 <InputGroup name="registerUrl" label="Register URL"
                   data={this.state.api} onChange={this.onValueChange} />
                 <InputGroup name="addressLookupUrl" label="Address Names URL"
+                  data={this.state.api} onChange={this.onValueChange} />
+                <InputGroup name="s3ApiKey" label="S3 API Key"
+                  data={this.state.api} onChange={this.onValueChange} />
+                <InputGroup name="s3ApiSecret" label="S3 API Secret"
+                  data={this.state.api} onChange={this.onValueChange} />
+                <InputGroup name="s3Bucket" label="S3 Bucket"
                   data={this.state.api} onChange={this.onValueChange} />
                 <div className="form-group">
                   <SaveButton onSave={this.updateApi} />
