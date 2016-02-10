@@ -159,13 +159,19 @@ button.btn.btn-sm.nav-page {
   font-size: .75rem;
   border-radius: 20px;
 }
-.browser-search-bar input::placeholder {
-    color: #515862;  
-    text-transform: $text-casing;             
-    font-size: $font-size-xs;                 
-    padding: .25rem 0 0 0;                   
-    opacity: 1;
-  }
+.browser-search-bar input::-webkit-input-placeholder {
+  color: #aeaeae;
+  text-transform: capitalize;
+  margin-top: .1875rem;
+  font-size: .75rem;  
+  padding: 0;
+}
+.browser-search-bar input::-webkit-input-placeholder::before {
+  font-family: fontAwesome;
+  font-size: .6875rem;  
+  content:'\f002  ';
+  color: #c7c7c7;
+}
 /* end browser search bar -------------------------- */
 div.nav-item.nav-link > a {
   display: block;
