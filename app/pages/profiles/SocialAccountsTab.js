@@ -116,7 +116,7 @@ class SocialAccountsTab extends Component {
           </select>
         </div>
         <div className="form-group">
-          <button className="btn btn-secondary" onClick={this.createItem}>
+          <button className="btn btn-primary" onClick={this.createItem}>
             Add Account
           </button>
         </div>
@@ -144,7 +144,7 @@ class SocialAccountsTab extends Component {
                   onChange={(event) => { this.onChange(index, event) }} />
                 : null }
                 <div className="form-group">
-                  <button className="btn btn-secondary"
+                  <button className="btn btn-outline-primary"
                     onClick={() => {this.deleteItem(index)}}>
                     Delete
                   </button>

@@ -29,7 +29,7 @@ class ProfileEditingSidebar extends Component {
             className += ' active'
           }
           return (
-            <button onClick={() => {this.props.onClick(index)}}
+            <button key={index} onClick={() => {this.props.onClick(tab.label)}}
                     className={className}>
               {tab.label}
             </button>

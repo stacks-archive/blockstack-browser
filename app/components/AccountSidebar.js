@@ -23,13 +23,13 @@ class AccountSidebar extends Component {
 
     return (
       <div className="list-group">
-        {tabs.map((tab) => {
+        {tabs.map((tab, index) => {
           let className = 'list-group-item'
           if (tab.isActive) {
             className += ' active'
           }
           return (
-            <Link to={tab.url} className={className}>
+            <Link key={index} to={tab.url} className={className}>
               {tab.label}
             </Link>
           )

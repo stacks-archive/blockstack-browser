@@ -3,7 +3,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { InputGroup, SaveButton, ProfileEditingSidebar } from '../../components/index'
+import {
+  InputGroup, SaveButton, ProfileEditingSidebar, PageHeader
+} from '../../components/index'
 import { IdentityActions } from '../../store/identities'
 import { getNameParts, uploadObject } from '../../utils/index'
 
@@ -39,7 +41,7 @@ class EditProfilePage extends Component {
       profile: null,
       profileJustSaved: false,
       verifications: [],
-      tabIndex: 0
+      tabName: "basic info"
     }
 
     this.saveProfile = this.saveProfile.bind(this)
@@ -93,58 +95,59 @@ class EditProfilePage extends Component {
     })
   }
 
-  changeTabs(tabIndex) {
-    this.setState({tabIndex: tabIndex})
+  changeTabs(tabName) {
+    this.setState({tabName: tabName})
   }
 
   render() {
     return (
-      <div>
-        <div className="page-header">
-          <div className="container">
-            <h1>Edit Profile</h1>
-          </div>
-        </div>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="Edit Profile" subtitle={this.state.tabName} />
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <Link to={this.props.location.pathname.replace('/edit', '')}
-                className="btn btn-secondary">
-                View Profile
-              </Link>
-              <hr />
-              <ProfileEditingSidebar onClick={this.changeTabs} />
+              <div className="form-group">
+                <fieldset>
+                  <Link to={this.props.location.pathname.replace('/edit', '')}
+                    className="btn btn-outline-primary">
+                    View Profile
+                  </Link>
+                </fieldset>
+              </div>
+              <ProfileEditingSidebar
+                activeTab={this.state.tabName}
+                onClick={this.changeTabs} />
             </div>
             <div className="col-md-9">
               { this.state.profile ? (
               <div>
                 {(() => {
-                  switch (this.state.tabIndex) {
-                    case 0:
+                  switch (this.state.tabName) {
+                    case "basic info":
                       return (
                         <BasicInfoTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case 1:
+                    case "photos":
                       return (
                         <PhotosTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case 2:
+                    case "social accounts":
                       return (
                         <SocialAccountsTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case 3:
+                    case "private info":
                       return (
                         <PrivateInfoTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case 4:
+                    case "public keys":
                       return (
                         <PublicKeysTab
                           profile={this.state.profile}
