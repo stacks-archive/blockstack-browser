@@ -87,7 +87,7 @@ class SettingsPage extends Component {
                   <SaveButton onSave={this.updateApi} />
                 </div>
                 <p>
-                  <button onClick={this.resetApi} className="btn btn-secondary">
+                  <button onClick={this.resetApi} className="btn btn-outline-primary">
                     Reset API
                   </button>
                 </p>

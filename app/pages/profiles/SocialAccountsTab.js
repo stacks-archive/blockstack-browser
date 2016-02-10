@@ -94,8 +94,6 @@ class SocialAccountsTab extends Component {
             this.state.profile.account : []
     return (
       <div>
-        <h4>Social Accounts</h4>
-
         <div className="form-group">
           <select name="newAccountType" className="c-select" defaultValue="none"
             onChange={this.updateNewAccountType}>
