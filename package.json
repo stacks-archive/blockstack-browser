@@ -1,7 +1,7 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "0.7.0-beta",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "name": "chord-desktop",
+  "version": "0.0.0",
+  "description": "The Chord desktop app.",
   "main": "main.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --compilers js:babel/register --recursive --require ./test/setup.js $(find test -name '*.spec.js')",
@@ -19,29 +19,7 @@
   "bin": {
     "electron": "./node_modules/.bin/electron"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chentsulin/electron-react-boilerplate.git"
-  },
-  "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
-  },
-  "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "react-router",
-    "flux",
-    "webpack",
-    "react-hot"
-  ],
-  "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
+  "keywords": [],
   "devDependencies": {
     "asar": "^0.8.0",
     "babel": "^5.8.23",
@@ -97,6 +75,7 @@
     "hasprop": "0.0.4",
     "history": "^2.0.0-rc2",
     "keychain-manager": "^1.4.0",
+    "knox": "^0.9.2",
     "react": "^0.14.6",
     "react-bootstrap": "^0.28.2",
     "react-dom": "^0.14.6",

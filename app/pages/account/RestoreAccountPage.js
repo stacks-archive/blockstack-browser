@@ -5,11 +5,10 @@ import { connect } from 'react-redux'
 
 import { Alert, InputGroup } from '../../components/index'
 import { KeychainActions } from '../../store/keychain'
-import { isPasswordValid } from '../../utils/account-utils'
+import { isBackupPhraseValid } from '../../utils/account-utils'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic
   }
 }
 
@@ -17,7 +16,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(KeychainActions, dispatch)
 }
 
-class CreateAccountPage extends Component {
+class RestorePage extends Component {
   static propTypes = {
     initializeWallet: PropTypes.func.isRequired
   }
@@ -26,13 +25,14 @@ class CreateAccountPage extends Component {
     super(props)
 
     this.state = {
+      backupPhrase: '',
       password: '',
       password2: '',
       alerts: []
     }
 
     this.updateAlert = this.updateAlert.bind(this)
-    this.createAccount = this.createAccount.bind(this)
+    this.restoreAccount = this.restoreAccount.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
   }
 
@@ -42,16 +42,18 @@ class CreateAccountPage extends Component {
     })
   }
 
-  createAccount() {
-    if (isPasswordValid(this.state.password)) {
+  restoreAccount() {
+    let { isValid, error } = isBackupPhraseValid(this.state.backupPhrase)
+
+    if (isValid) {
       if (this.state.password === this.state.password2) {
-        this.updateAlert('success', 'Creating your account...')
-        this.props.initializeWallet(this.state.password)
+        this.updateAlert('success', 'Restoring your account...')
+        this.props.initializeWallet(this.state.password, this.state.backupPhrase)
       } else {
         this.updateAlert('danger', 'Passwords must match')
       }
     } else {
-      this.updateAlert('danger', 'Password must be at least 8 characters')
+      this.updateAlert('danger', error)
     }
   }
 
@@ -63,6 +65,7 @@ class CreateAccountPage extends Component {
 
   render() {
     return (
+      <div className="body-inner" style={{ backgroundImage: "url('images/profile-collage.jpg')" }}>
       <div className="container out-block-wrap">
         <div className="container-fluid out-block">
           <div className="row">
@@ -71,40 +74,42 @@ class CreateAccountPage extends Component {
                 <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
                 <p className="lead-out">browse the blockchain</p>
               </div>
-              <h1 className="text-xs-center type-inverse">create an account</h1>
+              <h1 className="text-xs-center type-inverse">restore from backup</h1>
               <p className="lead-out">
-              Welcome to the first blockchain browser. <br/>
-              Create a blockchain id and start surfing the blockchain.<br/>
-              The future is here!
+              Enter your backup phrase and choose a new password <br />
+               to restore your account
               </p>
             </div>
             <div className="out-form-group">
-              { this.state.alerts.map(function(alert, index) {
-                return (
-                  <Alert key={index} message={alert.message} status={alert.status} />
-                )
-              })}
-              <InputGroup name="password" type="password" label="Password"
-                placeholder="Password" data={this.state} onChange={this.onValueChange} />
-              <InputGroup name="password2" type="password" label="Password (again)"
-                placeholder="Password" data={this.state} onChange={this.onValueChange} />
+            { this.state.alerts.map(function(alert, index) {
+              return (
+                <Alert key={index} message={alert.message} status={alert.status} />
+              )
+            })}
+            <InputGroup name="backupPhrase" type="text" label="Backup phrase"
+              placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
+            <InputGroup name="password" type="password" label="New password"
+              placeholder="Password" data={this.state} onChange={this.onValueChange} />
+            <InputGroup name="password2" type="password" label="New password (again)"
+              placeholder="Password" data={this.state} onChange={this.onValueChange} />
               <div className="form-group">
                 <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
-                  <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
-                    Create
+                  <button className="btn btn-block btn-secondary" onClick={this.restoreAccount}>
+                    Restore
                   </button>
                 </div>
               </div>
             </div>
-            <p className="text-sm inverse text-xs-center">Already have an account?
+            <p className="text-sm inverse text-xs-center">Don&#39;t have an account?
               <br />
-              <Link to="/account/restore">Restore from backup</Link>
+              <Link to="/account/create">Create an account</Link>
             </p>
           </div>
         </div>
+      </div>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateAccountPage)
+export default connect(mapStateToProps, mapDispatchToProps)(RestorePage)

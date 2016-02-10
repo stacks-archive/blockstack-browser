@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'
 
-import { AccountSidebar } from '../../components/index'
+import { AccountSidebar, PageHeader } from '../../components/index'
 import { KeychainActions } from '../../store/keychain'
 
 function mapStateToProps(state) {
@@ -40,19 +40,12 @@ class DepositPage extends Component {
           currentAddress = accountKeychain.child(addressIndex).address().toString()
 
     return (
-      <div>
-        <div className="page-header-wrap">
-          <div className="container-fluid page-header p-r-5">
-            <div className="pull-left m-t-1">
-              <span className="m-l-2"><img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" /></span>
-            </div>
-            <h1 className="type-inverse text-lowercase m-t-11">Deposit</h1>
-          </div>
-        </div>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="deposit" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <AccountSidebar />
+              <AccountSidebar activeTab="deposit" />
             </div>
             <div className="col-md-9">
               <p><i>

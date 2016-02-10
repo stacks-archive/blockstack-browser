@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 
-import { InputGroup, AccountSidebar, SaveButton } from '../../components/index'
+import {
+  InputGroup, AccountSidebar, SaveButton, PageHeader
+} from '../../components/index'
 import { SettingsActions } from '../../store/settings'
 
 function mapStateToProps(state) {
@@ -49,12 +50,7 @@ class SettingsPage extends Component {
 
   updateApi() {
     const api = this.state.api
-    this.props.updateApi(
-      api.nameLookupUrl,
-      api.searchUrl,
-      api.registerUrl,
-      api.addressLookupUrl
-    )
+    this.props.updateApi(api)
   }
 
   resetApi() {
@@ -63,16 +59,12 @@ class SettingsPage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="page-header">
-          <div className="container">
-            <h1>Settings</h1>
-          </div>
-        </div>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="settings" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <AccountSidebar />
+              <AccountSidebar activeTab="settings" />
             </div>
             <div className="col-md-9">
               <div>
@@ -84,6 +76,12 @@ class SettingsPage extends Component {
                 <InputGroup name="registerUrl" label="Register URL"
                   data={this.state.api} onChange={this.onValueChange} />
                 <InputGroup name="addressLookupUrl" label="Address Names URL"
+                  data={this.state.api} onChange={this.onValueChange} />
+                <InputGroup name="s3ApiKey" label="S3 API Key"
+                  data={this.state.api} onChange={this.onValueChange} />
+                <InputGroup name="s3ApiSecret" label="S3 API Secret"
+                  data={this.state.api} onChange={this.onValueChange} />
+                <InputGroup name="s3Bucket" label="S3 Bucket"
                   data={this.state.api} onChange={this.onValueChange} />
                 <div className="form-group">
                   <SaveButton onSave={this.updateApi} />

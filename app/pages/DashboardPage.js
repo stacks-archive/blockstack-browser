@@ -12,10 +12,9 @@ import { getName, getAvatarUrl } from '../utils/profile-utils.js'
 
 function mapStateToProps(state) {
   return {
-    bookmarks: state.settings.bookmarks,
     localIdentities: state.identities.local,
     identityAccount: state.keychain.identityAccounts[0],
-    addressLookupUrl: state.settings.api.addressLookupUrl
+    addressLookupUrl: state.settings.api.addressLookupUrl || ''
   }
 }
 
@@ -94,10 +93,10 @@ class DashboardPage extends Component {
             })}
             </ul>
           <div>
-            <Link to="/identities/register" className="btn btn-block btn-primary m-b-11">
+            <Link to="/names/register" className="btn btn-block btn-primary m-b-11">
               Register
             </Link>
-            <Link to="/identities/import" className="btn btn-block btn-secondary">
+            <Link to="/names/import" className="btn btn-block btn-secondary">
               Import
             </Link>
           </div>
@@ -108,25 +107,3 @@ class DashboardPage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
-
-/*
-<div className="col-md-6">
-  <h4 className="headspace inverse">Featured Identities</h4>
-  <div style={{paddingBottom: '15px'}}>
-    <ul className="list-group bookmarks-temp">
-    { this.props.bookmarks.map(function(bookmark, index) {
-      let profile = bookmark.profile
-      if (!bookmark.profile.hasOwnProperty('@type')) {
-        profile = Person.fromLegacyFormat(bookmark.profile).profile
-      }
-      return (
-        <IdentityItem key={index}
-          label={getName(profile)} 
-          avatarUrl={getAvatarUrl(profile)}
-          url={`/profile/blockchain/${bookmark.id}`} />
-      )
-    })}
-    </ul>
-  </div>
-</div>
-*/
