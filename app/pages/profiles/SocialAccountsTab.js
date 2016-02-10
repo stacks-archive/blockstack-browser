@@ -97,7 +97,7 @@ class SocialAccountsTab extends Component {
         <h4>Social Accounts</h4>
 
         <div className="form-group">
-          <select name="newAccountType" className="c-select" defaultValue="none"
+          <select name="newAccountType" className="custom-select" defaultValue="none"
             onChange={this.updateNewAccountType}>
             <option value="none">Account type</option>
             <option value="twitter">Twitter</option>
