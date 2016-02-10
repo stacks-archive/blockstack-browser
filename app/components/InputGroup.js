@@ -8,7 +8,8 @@ class InputGroup extends Component {
     data: PropTypes.object,
     onChange: PropTypes.func,
     type: PropTypes.string,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    inverse: PropTypes.bool
   }
 
   render() {
@@ -24,19 +25,32 @@ class InputGroup extends Component {
     if (this.props.disabled) {
       disabled = this.props.disabled
     }
+    let inputClass = "form-control"
+    if (this.props.inverse) {
+      inputClass = "form-inverse-control"
+    }
+    let labelClass = "form-control-label"
+    if (this.props.inverse) {
+      labelClass = "form-control-label form-inverse-control-label"
+    }
+
     return (
       <div className="form-group m-b-11">
         <fieldset>
           <div className="col-xs-8 pull-right">
             <input name={this.props.name}
               disabled={disabled}
-              className="form-inverse-control"
+              className={inputClass}
               type={type}
-              placeholder={this.props.placeholder ? this.props.placeholder : this.props.label}
+              placeholder={
+                this.props.placeholder ? this.props.placeholder : this.props.label
+              }
               value={value}
               onChange={this.props.onChange} />
           </div>
-          <label className="col-xs-4 form-control-label form-inverse-control-label">{this.props.label}</label>
+          <label className={`col-xs-4 ${labelClass}`}>
+            {this.props.label}
+          </label>
         </fieldset>
       </div>
     )

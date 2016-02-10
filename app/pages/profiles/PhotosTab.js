@@ -85,7 +85,7 @@ class PhotosTab extends Component {
                 data={profile.image[index]}
                 onChange={(event) => {this.onChange(event, index)}} />
               <div className="form-group">
-                <button className="btn btn-primary"
+                <button className="btn btn-outline-primary"
                   onClick={() => {this.deleteItem(index)}}>
                   Delete
                 </button>

@@ -86,11 +86,11 @@ class RestorePage extends Component {
                 <Alert key={index} message={alert.message} status={alert.status} />
               )
             })}
-            <InputGroup name="backupPhrase" type="text" label="Backup phrase"
+            <InputGroup name="backupPhrase" type="text" label="Backup phrase" inverse="true"
               placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
-            <InputGroup name="password" type="password" label="New password"
+            <InputGroup name="password" type="password" label="New password" inverse="true"
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
-            <InputGroup name="password2" type="password" label="New password (again)"
+            <InputGroup name="password2" type="password" label="New password (again)" inverse="true"
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
               <div className="form-group">
                 <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">

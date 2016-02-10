@@ -102,7 +102,7 @@ class EditProfilePage extends Component {
   render() {
     return (
       <div className="body-inner body-inner-white">
-        <PageHeader title="backup account" />
+        <PageHeader title="Edit Profile" subtitle={this.state.tabName} />
         <div className="container">
           <div className="row">
             <div className="col-md-3">

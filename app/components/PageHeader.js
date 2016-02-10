@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 
 class PageHeader extends Component {
   static propTypes = {
-    title: PropTypes.string.isRequired
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string
   }
 
   render() {
@@ -15,9 +16,14 @@ class PageHeader extends Component {
                 <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
               </span>
             </div>
-            <h1 className="type-inverse text-lowercase m-t-11">
+            <h1 className="type-inverse m-t-11">
               {this.props.title}
             </h1>
+            { this.props.subtitle ?
+            <h4 className="type-inverse">
+              {this.props.subtitle}
+            </h4>
+            : null }
           </div>
         </div>
       </div>
