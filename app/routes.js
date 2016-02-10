@@ -39,8 +39,8 @@ export default (
 
     <Route path="home"                component={DashboardPage} />
 
-    <Route path="identities/register" component={RegisterPage} />
-    <Route path="identities/import"   component={ImportPage} />
+    <Route path="names/register" component={RegisterPage} />
+    <Route path="names/import"   component={ImportPage} />
 
     <Route path="account/deposit"     component={DepositPage} />
     <Route path="account/withdraw"    component={WithdrawPage} />

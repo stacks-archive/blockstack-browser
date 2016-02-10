@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Person, flattenObject, unflattenObject } from 'blockchain-profile'
 
 import { InputGroup, SaveButton, ProfileEditingSidebar } from '../../components/index'
 import { IdentityActions } from '../../store/identities'

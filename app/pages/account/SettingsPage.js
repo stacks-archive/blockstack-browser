@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 
 import { InputGroup, AccountSidebar, SaveButton } from '../../components/index'
 import { SettingsActions } from '../../store/settings'

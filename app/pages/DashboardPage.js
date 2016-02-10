@@ -90,11 +90,11 @@ class DashboardPage extends Component {
               </ul>
             </div>
             <p>
-              <Link to="/identities/register" className="btn btn-primary">
+              <Link to="/names/register" className="btn btn-primary">
                 Register
               </Link>
               &nbsp;
-              <Link to="/identities/import" className="btn btn-secondary">
+              <Link to="/names/import" className="btn btn-secondary">
                 Import
               </Link>
             </p>
