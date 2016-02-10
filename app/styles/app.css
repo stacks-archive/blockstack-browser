@@ -32,6 +32,9 @@ body {
   height: 100%;
   width: 100%;
 }
+.body-inner-white {
+  background-color: white;
+}
 
 .container {
   padding-top: 40px;

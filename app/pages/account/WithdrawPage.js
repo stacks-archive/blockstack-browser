@@ -26,10 +26,15 @@ class WithdrawPage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="page-header">
-          <div className="container">
-            <h1>Withdraw</h1>
+      <div className="body-inner body-inner-white">
+        <div className="page-header-wrap">
+          <div className="container-fluid page-header p-r-5">
+            <div className="pull-left m-t-1">
+              <span className="m-l-2">
+                <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+              </span>
+            </div>
+            <h1 className="type-inverse text-lowercase m-t-11">Withdraw</h1>
           </div>
         </div>
         <div className="container">
