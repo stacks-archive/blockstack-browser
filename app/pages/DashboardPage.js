@@ -81,10 +81,9 @@ class DashboardPage extends Component {
             Try searching for <Link to="/search/naval">naval</Link> or <Link to="/search/elizabeth">elizabeth</Link> or <Link to="/search/fred%20wilson">fred wilson</Link>
           </p>
         </div>
-        <div className="container-fluid out-block m-t-2">
+        <div className="col-sm-6 col-sm-offset-3 m-t-2">
           <h4 className="text-xs-center lead-out">My Profiles</h4>
-          <div style={{paddingBottom: '15px'}}>
-            <ul className="list-group bookmarks-temp">
+            <ul className="bookmarks-temp">
             { localIdentities.map(function(identity) {
               return (
                 <IdentityItem key={identity.index}
@@ -94,16 +93,14 @@ class DashboardPage extends Component {
               )
             })}
             </ul>
-          </div>
-          <p>
-            <Link to="/identities/register" className="btn btn-primary">
+          <div>
+            <Link to="/identities/register" className="btn btn-block btn-primary m-b-11">
               Register
             </Link>
-            &nbsp;
-            <Link to="/identities/import" className="btn btn-secondary">
+            <Link to="/identities/import" className="btn btn-block btn-secondary">
               Import
             </Link>
-          </p>
+          </div>
         </div>
       </div>
     )

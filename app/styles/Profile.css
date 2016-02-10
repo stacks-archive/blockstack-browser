@@ -182,26 +182,21 @@ div.nav-item.nav-link > a > img {
   padding-right: 35px;
   padding-left: 15px;
 }
-
+.bookmarks-temp {
+  padding: 0;
+}
 .bookmarks-temp > .list-group-item {
   border: none;
   border-radius: 4px;
   background-color: transparent;
 }
-.bookmarks-temp > a.list-group-item {
+.bookmarks-temp > .list-group-item {
   color: #fff!important;
-}
-.bookmarks-temp > .list-group-item:before {
-  display: inline-block;
-  margin-left: 15px;
-  width: 32px;
-  height: 32px;
+  width: 100%;
+  display: block;
   border-radius: 3px;
-  background-color: #23262a;
-}
-.bookmarks-temp {
-  margin-left: -18px;
-  max-width: 275px;
+  background-color: #32373d;
+  height: 55px;
 }
 h4.headspace, h5.headspace {
   margin-bottom: 50px;
