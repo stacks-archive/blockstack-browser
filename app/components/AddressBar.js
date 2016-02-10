@@ -117,9 +117,9 @@ class AddressBar extends Component {
 
   render() {
     return (
-      <div>
+      <div className="browser-search-bar">
         <input type="text"
-          className="form-control form-control-sm"
+          className="form-control form-control-sm "
           placeholder={this.state.placeholder} 
           name="query" value={this.state.query}
           onChange={this.onQueryChange}

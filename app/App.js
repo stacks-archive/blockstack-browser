@@ -28,8 +28,10 @@ class MainScreen extends Component {
 class WelcomeScreen extends Component {
   render() {
     return (
-      <div>
-        {this.props.children}
+      <div className="site-wrapper">
+        <div className="site-wrapper-inner">
+          {this.props.children}
+        </div>
       </div>
     )
   }
