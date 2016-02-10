@@ -1,28 +1,28 @@
 /*
-3px = .1875rem
-4px = .25rem
-5px = .3125rem
-6px = .375rem
-7px = .4375rem
-8px = .5rem
-9px = .5625rem
-10px = .625rem
-11px = .6875rem
-12px = .75rem
-13px = .8125rem
-14px = .875rem    /* font base
-15px = .9375rem
-16px = 1rem       /* base
-18px = 1.125rem
-20px = 1.25rem
-22px = 1.375rem
-24px = 1.5rem
-26px = 1.625rem
-28px = 1.75rem
-30px = 1.875rem
-32px = 2rem
-34px = 2.125rem
-36px = 2.25rem
+3px   =   .1875rem
+4px   =   .25rem
+5px   =   .3125rem
+6px   =   .375rem
+7px   =   .4375rem
+8px   =   .5rem
+9px   =   .5625rem
+10px  =   .625rem
+11px  =   .6875rem
+12px  =   .75rem
+13px  =   .8125rem
+14px  =   .875rem    /* font base
+15px  =   .9375rem
+16px  =  1rem        /* base
+18px  =  1.125rem
+20px  =  1.25rem
+22px  =  1.375rem
+24px  =  1.5rem
+26px  =  1.625rem
+28px  =  1.75rem
+30px  =  1.875rem
+32px  =  2rem
+34px  =  2.125rem
+36px  =  2.25rem
 */
 
 
@@ -124,21 +124,19 @@ i.fa {
 */
 
 .navbar {
+  min-width: 768px;
   padding-top: 23px;
   padding-right: 0;
   padding-left: 0;
-  height: 83px;
+  height: 90px;
   background-color: rgba(235,235,235,1);
 }
 .nav-page {
   border: none;
   background-color: transparent;
 }
-button {
-  outline: none!important;
-}
 .nav.navbar-nav {
-  padding-top: 2px;
+  padding-top: 6px;
   width: 100%;
   border-top: 1px solid #e1e1e1;
 }
@@ -161,7 +159,7 @@ button.btn.btn-sm.nav-page {
 }
 .browser-search-bar input::-webkit-input-placeholder {
   color: #aeaeae;
-  text-transform: capitalize;
+  text-transform: none;
   margin-top: .1875rem;
   font-size: .75rem;  
   padding: 0;
@@ -173,31 +171,41 @@ button.btn.btn-sm.nav-page {
   color: #c7c7c7;
 }
 /* end browser search bar -------------------------- */
-div.nav-item.nav-link > a {
+/* browser-links */
+.browser-links {
+  padding-right: 5px;
+  padding-left: 30px;
+}
+.browser-links > div.nav-link {
+  padding-top: .3125rem;
+}
+.browser-links > div.nav-item.nav-link > a {
   display: block;
   margin-right: 5px;
   padding-top: 4px;
   text-decoration: none;
 }
-div.nav-item.nav-link > a > img {
+.browser-links > div.nav-item.nav-link > a > img {
   display: block;
   margin: 0 auto;
   width: 20px;
   height: 20px;
+  margin-bottom: 5px;
+}
+/* end browser-links */
+.back-forth {
+  padding-right: 35px;
+  padding-left: 15px;
+}
+.back-forth > div.nav-link {
+  padding-top: .0625rem;
 }
 .icon-labels {
   display: block;
   color: rgba(61,61,61,1);
   font-size: 11px;
 }
-.toolbar {
-  padding-right: 5px;
-  padding-left: 35px;
-}
-.back-forth {
-  padding-right: 35px;
-  padding-left: 15px;
-}
+
 
 
 
@@ -328,10 +336,13 @@ div.container.outer-wrap {
 /* Globals */
 
 html, body {
-  background-color: #fff; /* #1b1e21 */
+  background-color: #1b1e21; /* 1b1e21 */
   height: 100%;
+  min-width: 768px;
 }
-
+button {
+  outline: none!important;
+}
 
 /* Type */
 
