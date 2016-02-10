@@ -1,8 +1,7 @@
 import knox from 'knox'
 
-export function uploadObject(credentials, filename, object, callback) {
+export function uploadObject(credentials, filename, string, callback) {
   let client = knox.createClient(credentials)
-  let string = JSON.stringify(object)
   let req = client.put(filename, {
     'Content-Length': Buffer.byteLength(string),
     'Content-Type': 'application/json',

@@ -86,7 +86,7 @@ class EditProfilePage extends Component {
       bucket: this.props.api.s3Bucket
     }
     const filename = this.state.id,
-          data = this.state.profile
+          data = JSON.stringify(this.state.profile, null, 2)
     uploadObject(credentials, filename, data, ({ url, err }) => {
       if (!err) {
         console.log('profile uploaded to s3')
