@@ -39,7 +39,7 @@ class EditProfilePage extends Component {
       profile: null,
       profileJustSaved: false,
       verifications: [],
-      tabIndex: 0
+      tabName: "basic info"
     }
 
     this.saveProfile = this.saveProfile.bind(this)
@@ -93,8 +93,8 @@ class EditProfilePage extends Component {
     })
   }
 
-  changeTabs(tabIndex) {
-    this.setState({tabIndex: tabIndex})
+  changeTabs(tabName) {
+    this.setState({tabName: tabName})
   }
 
   render() {
@@ -113,38 +113,40 @@ class EditProfilePage extends Component {
                 View Profile
               </Link>
               <hr />
-              <ProfileEditingSidebar onClick={this.changeTabs} />
+              <ProfileEditingSidebar
+                activeTab={this.state.tabName}
+                onClick={this.changeTabs} />
             </div>
             <div className="col-md-9">
               { this.state.profile ? (
               <div>
                 {(() => {
-                  switch (this.state.tabIndex) {
-                    case 0:
+                  switch (this.state.tabName) {
+                    case "basic info":
                       return (
                         <BasicInfoTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case 1:
+                    case "photos":
                       return (
                         <PhotosTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case 2:
+                    case "social accounts":
                       return (
                         <SocialAccountsTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case 3:
+                    case "private info":
                       return (
                         <PrivateInfoTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case 4:
+                    case "public keys":
                       return (
                         <PublicKeysTab
                           profile={this.state.profile}

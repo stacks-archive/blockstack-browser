@@ -31,7 +31,7 @@ class WithdrawPage extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-3">
-              <AccountSidebar />
+              <AccountSidebar activeTab="withdraw" />
             </div>
             <div className="col-md-9">
               <p>Send your funds to another Bitcoin wallet.</p>
