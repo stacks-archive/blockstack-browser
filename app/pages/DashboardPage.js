@@ -69,9 +69,12 @@ class DashboardPage extends Component {
     return (
       <div className="container">
         <div className="row centered">
-          <div className="m-b-4">
+          <div className="m-b-2">
             <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
             <p className="lead-out">browse the blockchain</p>
+          </div>
+          <div className="m-b-2">
+            <img src="images/icon-browser.svg" alt="chord icon" width="82px" />
           </div>
           <h1 className="text-xs-center type-inverse">search the blockchain</h1>
           <p>
@@ -80,7 +83,7 @@ class DashboardPage extends Component {
         </div>
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
-            <h4 className="headspace inverse">My Profiles</h4>
+            <h4 className="text-xs-center lead-out">My Profiles</h4>
             <div style={{paddingBottom: '15px'}}>
               <ul className="list-group bookmarks-temp">
               { localIdentities.map(function(identity) {
