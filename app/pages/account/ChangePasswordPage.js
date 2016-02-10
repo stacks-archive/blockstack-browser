@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Alert, InputGroup, AccountSidebar } from '../../components/index'
+import {
+  Alert, InputGroup, AccountSidebar, PageHeader
+} from '../../components/index'
 import { KeychainActions } from '../../store/keychain'
 import { decrypt, encrypt } from '../../utils/keychain-utils'
 
@@ -85,12 +87,8 @@ class ChangePasswordPage extends Component {
 
   render() {
     return (
-      <div>
-        <div className="page-header">
-          <div className="container">
-            <h1>Change Password</h1>
-          </div>
-        </div>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="change password" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">
