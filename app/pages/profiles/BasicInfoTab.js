@@ -28,7 +28,6 @@ class BasicInfoTab extends Component {
   render() {
     return (
       <div>
-        <h4>Basic Info</h4>
         <InputGroup name="givenName" label="First Name"
             data={this.props.profile}
             onChange={this.onChange} />

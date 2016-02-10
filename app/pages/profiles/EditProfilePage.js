@@ -106,6 +106,10 @@ class EditProfilePage extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-3">
+              <ProfileEditingSidebar
+                activeTab={this.state.tabName}
+                onClick={this.changeTabs} />
+              <hr />
               <div className="form-group">
                 <fieldset>
                   <Link to={this.props.location.pathname.replace('/edit', '')}
@@ -114,9 +118,6 @@ class EditProfilePage extends Component {
                   </Link>
                 </fieldset>
               </div>
-              <ProfileEditingSidebar
-                activeTab={this.state.tabName}
-                onClick={this.changeTabs} />
             </div>
             <div className="col-md-9">
               { this.state.profile ? (

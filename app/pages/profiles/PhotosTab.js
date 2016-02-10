@@ -15,7 +15,7 @@ class PhotosTab extends Component {
     }
     this.onChange = this.onChange.bind(this)
     this.saveProfile = this.saveProfile.bind(this)
-    this.createNewItem = this.createNewItem.bind(this)
+    this.createItem = this.createItem.bind(this)
     this.deleteItem = this.deleteItem.bind(this)
   }
 
@@ -45,14 +45,14 @@ class PhotosTab extends Component {
     this.props.saveProfile(newProfile)
   }
 
-  createNewItem() {
+  createItem(imageType) {
     let profile = this.state.profile
     if (!profile.hasOwnProperty('image')) {
       profile.image = []
     }
     profile.image.push({
       '@type': 'ImageObject',
-      'name': 'avatar',
+      'name': imageType,
       'contentUrl': ''
     })
     this.setState({profile: profile})
@@ -71,19 +71,21 @@ class PhotosTab extends Component {
             this.state.profile.image : []
     return (
       <div>
-        <h4>Photos</h4>
         <div className="form-group">
-          <button className="btn btn-primary" onClick={this.createNewItem}>
-            New Photo
+          <button className="btn btn-primary"
+            onClick={() => {this.createItem("avatar")}}>
+            Add Profile Photo
           </button>
         </div>
         { images.map((image, index) => {
           return (
             <div key={index}>
+              { image.name === 'avatar' ?
               <InputGroup
-                name="contentUrl" label="Image URL"
+                name="contentUrl" label="Profile Image URL"
                 data={profile.image[index]}
                 onChange={(event) => {this.onChange(event, index)}} />
+              : null }
               <div className="form-group">
                 <button className="btn btn-outline-primary"
                   onClick={() => {this.deleteItem(index)}}>
