@@ -69,12 +69,15 @@ class DashboardPage extends Component {
     return (
       <div className="container">
         <div className="row centered">
-          <h1>Search the blockchain</h1>
+          <div className="m-b-4">
+            <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+            <p className="lead-out">browse the blockchain</p>
+          </div>
+          <h1 className="text-xs-center type-inverse">search the blockchain</h1>
           <p>
             Try searching for <Link to="/search/naval">naval</Link> or <Link to="/search/elizabeth">elizabeth</Link> or <Link to="/search/fred%20wilson">fred wilson</Link>
           </p>
         </div>
-        <hr className="push-80" />
         <div className="row">
           <div className="col-md-6 col-md-offset-3">
             <h4 className="headspace inverse">My Profiles</h4>
