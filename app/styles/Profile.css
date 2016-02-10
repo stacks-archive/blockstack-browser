@@ -25,34 +25,7 @@
 36px = 2.25rem
 */
 
-html, body {
-  background-color: #1b1e21;
-  height: 100%;
-}
-body {
-  font-weight: 500;
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-}
-/* Extra markup and styles for table-esque vertical and horizontal centering */
-.site-wrapper {
-  display: table;
-  width: 100%;
-  height: 100%; /* For at least Firefox */
-  min-height: 100%; 
-  -webkit-box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-  box-shadow: inset 0 0 100px rgba(0,0,0,.5);
-}
-.site-wrapper-inner {
-  display: table-cell;
-  vertical-align: top; 
-  background: url(/images/profile-collage.jpg) no-repeat center center fixed;
-  background-size: cover;
-}
-.cover-container {
-  margin-right: auto;
-  margin-left: auto;
-}
+
 
 /* Padding for spacing */
 .inner {
@@ -129,6 +102,10 @@ i.fa {
   color: rgba(255,255,255,1);
   font-weight: inherit;
 }
+
+
+
+
 .overlay {
   position: absolute;
   margin: -371px 0 0 0;
@@ -138,6 +115,11 @@ i.fa {
   border-radius: 8px;
   background-color: rgba(0,0,0,0.2);
 }
+
+
+
+
+
 .navbar {
   padding-top: 23px;
   padding-right: 0;
@@ -173,6 +155,7 @@ button.btn.btn-sm.nav-page {
   color: #7B7B7B;
   text-align: center;
   font-size: 12px;
+  border-radius: 20px;
 }
 div.nav-item.nav-link > a {
   display: block;
@@ -327,7 +310,16 @@ div.container.outer-wrap {
 /* Post rhythm */
 
 
+/* Globals */
+
+html, body {
+  background-color: #1b1e21;
+  height: 100%;
+}
+
+
 /* Type */
+
 a, a:focus {
   outline:none;
 }
@@ -336,9 +328,34 @@ a, a:focus {
   font-weight: 200;
 }
 
+
 /* Views */
 
 /* Views - Landing view */
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  top: 0;
+  /*margin-top: -83px;*/
+  display: table;
+  width: 100%;
+  height: 100%;
+  /*min-height: 100%; 
+  box-shadow: inset 0 0 100px rgba(0,0,0,.5);*/
+}
+.site-wrapper-inner {
+  display: table-cell;
+  min-height: 100%;
+  vertical-align: top; 
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
 .out-block-wrap {
   width: 576px;
 }
@@ -350,6 +367,7 @@ a, a:focus {
   margin-left: -80px;
 }
 
+
 /* Forms */
 
 /* Inline forms */
@@ -358,7 +376,6 @@ a, a:focus {
 .form-group-control-label {
     width: 150px;
 }
-
 
 /* controls the alert boxes when signing up */
 div.out-form-group > div > div.alert.alert-dismissible {
