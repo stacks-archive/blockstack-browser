@@ -3,6 +3,7 @@ import { Route, IndexRoute } from 'react-router'
 
 import App                from './App'
 
+import LandingPage        from './pages/LandingPage'
 import DashboardPage      from './pages/DashboardPage'
 
 import RegisterPage       from './pages/names/RegisterPage'
@@ -37,7 +38,7 @@ export default (
 
     <Route path="search/:query"       component={SearchPage} />
 
-    <Route path="home"                component={DashboardPage} />
+    <Route path="landing"                component={LandingPage} />
 
     <Route path="names/register" component={RegisterPage} />
     <Route path="names/import"   component={ImportPage} />

@@ -65,7 +65,8 @@ class RestorePage extends Component {
 
   render() {
     return (
-     <div className="container out-block-wrap">
+      <div className="body-inner" style={{ backgroundImage: "url('images/profile-collage.jpg')" }}>
+      <div className="container out-block-wrap">
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
@@ -105,6 +106,7 @@ class RestorePage extends Component {
             </p>
           </div>
         </div>
+      </div>
       </div>
     )
   }
