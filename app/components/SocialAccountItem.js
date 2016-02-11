@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import { shell } from 'electron'
 
 class SocialAccountListItem extends Component {
   static propTypes = {
@@ -32,6 +33,9 @@ class SocialAccountListItem extends Component {
       socialMediaClass = socialMediaClasses.get(this.props.service)
     }
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
+    if (this.props.service === 'bitcoin') {
+      accountUrl = `https://www.blocktrail.com/BTC/address/${this.props.identifier}`
+    }
 
     let identifier = this.props.identifier
     if (identifier.length >= 18) {
@@ -40,10 +44,12 @@ class SocialAccountListItem extends Component {
 
     return (
       <li>
-        <Link to={accountUrl}>
+        <button onClick={() => {
+          shell.openExternal(accountUrl)
+        }} className="btn btn-outline-primary">
           <i className={`fa ${socialMediaClass}`} />
           <span>{identifier}</span>
-        </Link>
+        </button>
       </li>
     )
   }

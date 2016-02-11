@@ -88,7 +88,7 @@ class ChangePasswordPage extends Component {
   render() {
     return (
       <div className="body-inner body-inner-white">
-        <PageHeader title="change password" />
+        <PageHeader title="Change Password" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">

@@ -27,7 +27,7 @@ class WithdrawPage extends Component {
   render() {
     return (
       <div className="body-inner body-inner-white">
-        <PageHeader title="withdraw" />
+        <PageHeader title="Withdraw" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">
