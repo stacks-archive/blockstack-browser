@@ -1,49 +1,12 @@
-/*
- 3px  =   .1875rem
- 4px  =   .25rem
- 5px  =   .3125rem
- 6px  =   .375rem
- 7px  =   .4375rem
- 8px  =   .5rem
- 9px  =   .5625rem
-10px  =   .625rem
-11px  =   .6875rem
-12px  =   .75rem
-13px  =   .8125rem
-14px  =   .875rem    /* font base
-15px  =   .9375rem
-16px  =  1rem        /* base
-18px  =  1.125rem
-20px  =  1.25rem
-22px  =  1.375rem
-24px  =  1.5rem
-26px  =  1.625rem
-28px  =  1.75rem
-30px  =  1.875rem
-32px  =  2rem
-34px  =  2.125rem
-36px  =  2.25rem
-*/
+/* chord desktop app css */
 
-/* UNKNOWN STYLES ///////////////////////////////////// */
+/* unknown styles ///////////////////////////////////// */
 h4.headspace, h5.headspace {
   margin-bottom: 50px;
 }
 .bookmarks-temp > a.list-group-item:focus, .bookmarks-temp > a.list-group-item:hover {
   background-color: #23262a;
   color: #e6e6e6!important;
-}
-.btn-pro-edit {
-  margin-top: 15px;
-  padding: 0.8125rem 1.25rem;
-  width: 258px;
-  border: 1px solid #4a90e2;
-  background-color: #4a90e2;
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 700;
-  font-size: 11px;
 }
 .btn-pro-edit:hover, .btn-pro-edit:active, .btn-pro-edit:focus, .btn-pro-edit:active:focus {
   outline: none;
@@ -65,60 +28,6 @@ div.pill-nav > a > img {
   width: 17px;
   height: 17px;
 }
-.profile-right-col-fill {
-  position: relative;
-  top: -105px;
-  height:85vh;
-  border-left: 1px solid #282828;
-}
-.profile-right-col {
-  padding-top: 105px;
-}
-.profile-spacer {
-  padding-top: 65px;
-}
-div.profile-right-col > ul {
-  padding-left: 0;
-  list-style-type: none;
-}
-div.profile-right-col > ul > li > a,
-div.profile-right-col > ul > li > button {
-  display: block;
-  padding: 10px 5px;
-  color: #949494;
-  text-decoration: none;
-}
-.btn-social-account {
-  display: block;
-  padding: 10px 5px;
-  color: #949494;
-  text-decoration: none;
-}
-div.profile-right-col > ul > li > a:hover,
-div.profile-right-col > ul > li > button:hover {
-  border-radius: 4px;
-  background-color: #23262a;
-  text-decoration: none;
-}
-.btn-social-account:hover {
-  border-radius: 4px;
-  background-color: #23262a;
-  text-decoration: none;
-}
-.profile-foot {
-  position: relative;
-  display: block;
-  margin-left: 15px;
-  padding-top: 50px;
-}
-.connections {
-  display: inline-block;
-  margin-left: 15px;
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  background-color: #23262a;
-}
 div.col-md-3 > img {
   margin-right: 10px;
   width: 32px;
@@ -136,7 +45,7 @@ div.col-md-3 > img {
 div.container.outer-wrap {
   padding: 0;
 }
-/* END UNKNOWN STYLES ///////////////////////////////////// */
+/* end unknown styles ///////////////////////////////////// */
 
 
 .bookmarks-temp {
@@ -155,7 +64,23 @@ div.container.outer-wrap {
   background-color: #32373d;
   height: 55px;
 }
-
+.search-result {
+  border: none;
+  color: #fff!important;
+  font-weight: 300;
+  display: block;
+  border-radius: 3px;
+  background-color: #32373d;
+  height: 60px;
+}
+a.search-result:hover {
+  color: #fff!important;
+  background-color: #23262a;
+}
+.result-img {
+  width: 36px;
+  height: 36px;
+}
 
 
 /* 
@@ -193,6 +118,11 @@ a, a:focus {
 // ID card
 */
 
+.proid-wrap {
+  max-width: 980px;
+  width: 900px;
+  font-weight: 300;
+}
 .idcard {
   position: relative;
   border: .0625rem solid rgba(229,229,229,1);
@@ -207,7 +137,7 @@ a, a:focus {
 }
 .id-flex img {
   bottom: 0;
-  width: 260px;
+  width: 16.25rem;
   height: 371px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
@@ -216,7 +146,7 @@ a, a:focus {
 .id-flex {
   bottom: 0;
   display: table-cell;
-  width: 260px;
+  width: 16.25rem;
   height: 371px;
   vertical-align: top;
 }
@@ -266,12 +196,67 @@ i.fa {
 .overlay {
   position: absolute;
   margin: -371px 0 0 0;
-  width: 260px;
+  width: 16.25rem;
   height: 371px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
   background-color: rgba(0,0,0,0.2);
 }
+.profile-container, profile-wrap {
+  min-width: 18.125rem;
+  padding: .9375rem;
+}
+.profile-right-col-fill {
+  position: relative;
+  top: 50px;
+  height: 55vh;
+  border-left: 1px solid #282828;
+  padding: 0 0 0 10px;
+}
+div.profile-right-col > ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+div.profile-right-col > ul > li > a,
+div.profile-right-col > ul > li > button {
+  display: block;
+  padding: 10px 5px;
+  color: #949494;
+  text-decoration: none;
+}
+.btn-social-account {
+  display: block;
+  padding: 10px 5px;
+  color: #949494;
+  text-decoration: none;
+}
+div.profile-right-col > ul > li > a:hover,
+div.profile-right-col > ul > li > button:hover {
+  border-radius: 4px;
+  background-color: #23262a;
+  text-decoration: none;
+}
+.btn-social-account:hover {
+  border-radius: 4px;
+  background-color: #23262a;
+  text-decoration: none;
+}
+.profile-foot {
+  position: relative;
+  display: block;
+  margin-left: 15px;
+  padding-top: 50px;
+  color: #949494;
+}
+.connections {
+  display: inline-block;
+  margin-left: 15px;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: #23262a;
+}
+
 
 
 /* 
@@ -416,6 +401,11 @@ button.btn.btn-sm.nav-page {
   background-color: #1b1e21;
   text-align: center;
   vertical-align: middle;
+}
+/* Temporary position absolute */
+.header-logo {
+  position: absolute;
+  top: 150px;
 }
 
 

@@ -10,9 +10,9 @@ class PageHeader extends Component {
     return (
       <div>
         <div className="page-header-wrap">
-          <div className="container-fluid page-header p-r-5">
+          <div className="container-fluid page-header p-r-1">
             <div className="pull-left m-t-1">
-              <span className="m-l-2">
+              <span className="header-logo p-l-2 m-l-1">
                 <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
               </span>
             </div>
@@ -20,9 +20,9 @@ class PageHeader extends Component {
               {this.props.title}
             </h1>
             { this.props.subtitle ?
-            <h4 className="type-inverse">
+            <h5 className="type-inverse p-r-1">
               {this.props.subtitle}
-            </h4>
+            </h5>
             : null }
           </div>
         </div>

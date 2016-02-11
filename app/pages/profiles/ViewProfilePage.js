@@ -100,13 +100,12 @@ class ViewProfilePage extends Component {
     }
 
     return (
-      <div className="profile-spacer">
+      <div className="container-fluid proid-wrap p-t-4">
         { profile !== null && profile !== undefined ?
         <div>
-          <div className="col-md-9">
+          <div className="col-sm-9">
             <div className="container">
-              <div className="col-md-6">
-                <div>
+              <div className="profile-container col-sm-6 center-block">
                   <div className="profile-wrap">
                     <div className="idcard-block">
                       <div className="id-flex">
@@ -115,23 +114,22 @@ class ViewProfilePage extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
                 { isLocal ?
                 <div>
                   <Link to={this.props.location.pathname + "/edit"}
-                    className="btn btn-primary btn-lg btn-pro-edit">
+                    className="btn btn-block btn-primary m-t-1">
                     Edit
                   </Link>
                 </div>
                 :
                 <div>
-                  <button className="btn btn-primary btn-lg btn-pro-edit">
+                  <button className="btn btn-block btn-primary m-t-1">
                     Connect
                   </button>
                 </div>
                 }
               </div>
-              <div className="col-md-6">
+              <div className="col-sm-6">
                 <div className="idcard-wrap">
                   { (blockNumber && transactionIndex) ?
                   <div className="idcard-body dim">
@@ -174,7 +172,7 @@ class ViewProfilePage extends Component {
               })}
             </div>
           </div>
-          <div className="col-md-3 pull-right profile-right-col-fill">
+          <div className="col-sm-3 pull-right profile-right-col-fill">
             <div className="profile-right-col inverse">
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
