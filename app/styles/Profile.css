@@ -64,7 +64,23 @@ div.container.outer-wrap {
   background-color: #32373d;
   height: 55px;
 }
-
+.search-result {
+  border: none;
+  color: #fff!important;
+  font-weight: 300;
+  display: block;
+  border-radius: 3px;
+  background-color: #32373d;
+  height: 60px;
+}
+a.search-result:hover {
+  color: #fff!important;
+  background-color: #23262a;
+}
+.result-img {
+  width: 36px;
+  height: 36px;
+}
 
 
 /* 

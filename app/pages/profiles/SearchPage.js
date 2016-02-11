@@ -50,7 +50,7 @@ class SearchPage extends Component {
   render() {
     return (
       <div className="container">
-        <ul className="list-group bookmarks-temp">
+        <ul className="list-group">
           {this.state.searchResults.map((result, index) => {
             if (result.profile && result.username) {
               return (

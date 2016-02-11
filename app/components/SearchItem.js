@@ -24,16 +24,14 @@ class SearchItem extends Component {
           blockchainId = this.props.id
 
     return (
-      <Link to={`/profile/blockchain/${blockchainId}`} className="list-group-item m-b-11">
-        <div className="row">
+      <Link to={`/profile/blockchain/${blockchainId}`} className="list-group-item search-result p-l-11 m-b-11">
           <div className="col-md-1">
-            <Image src={avatarUrl} id={blockchainId}
-              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
-              style={{ width: '40px', height: '40px' }} />
+            <Image className="result-img" src={avatarUrl} id={blockchainId}
+              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
-          <div className="col-md-2">{name}</div>
+          <div className="col-md-3">{name}</div>
           <div className="col-md-2">{blockchainId}</div>
-          <div className="col-md-7">
+          <div className="col-md-6">
             {accounts.map((account, index) => {
               return (
                 <span key={index}>
@@ -45,7 +43,6 @@ class SearchItem extends Component {
               )
             })}
           </div>
-        </div>
       </Link>
     )
   }
