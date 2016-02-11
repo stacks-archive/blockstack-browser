@@ -117,13 +117,13 @@ class ViewProfilePage extends Component {
                 { isLocal ?
                 <div>
                   <Link to={this.props.location.pathname + "/edit"}
-                    className="btn btn-primary btn-lg btn-pro-edit">
+                    className="btn btn-block btn-primary m-t-1">
                     Edit
                   </Link>
                 </div>
                 :
                 <div>
-                  <button className="btn btn-primary btn-lg btn-pro-edit">
+                  <button className="btn btn-block btn-primary m-t-1">
                     Connect
                   </button>
                 </div>

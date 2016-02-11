@@ -33,18 +33,6 @@ h4.headspace, h5.headspace {
   background-color: #23262a;
   color: #e6e6e6!important;
 }
-.btn-pro-edit {
-  margin-top: 15px;
-  padding: 0.8125rem 1.25rem;
-  width: 258px;
-  border: 1px solid #4a90e2;
-  background-color: #4a90e2;
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 700;
-  font-size: 11px;
-}
 .btn-pro-edit:hover, .btn-pro-edit:active, .btn-pro-edit:focus, .btn-pro-edit:active:focus {
   outline: none;
   border: 1px solid #2d7edd;
@@ -142,6 +130,7 @@ a, a:focus {
 .proid-wrap {
   max-width: 980px;
   width: 900px;
+  font-weight: 300;
 }
 .idcard {
   position: relative;
@@ -228,13 +217,10 @@ i.fa {
 }
 .profile-right-col-fill {
   position: relative;
-  top: -105px;
-  height: 85vh;
+  top: 50px;
+  height: 55vh;
   border-left: 1px solid #282828;
   padding: 0 0 0 10px;
-}
-.profile-right-col {
-  padding-top: 105px;
 }
 div.profile-right-col > ul {
   padding-left: 0;
@@ -269,6 +255,7 @@ div.profile-right-col > ul > li > button:hover {
   display: block;
   margin-left: 15px;
   padding-top: 50px;
+  color: #949494;
 }
 .connections {
   display: inline-block;
