@@ -65,57 +65,6 @@ div.pill-nav > a > img {
   width: 17px;
   height: 17px;
 }
-.profile-right-col-fill {
-  position: relative;
-  top: -105px;
-  height:85vh;
-  border-left: 1px solid #282828;
-}
-.profile-right-col {
-  padding-top: 105px;
-}
-div.profile-right-col > ul {
-  padding-left: 0;
-  list-style-type: none;
-}
-div.profile-right-col > ul > li > a,
-div.profile-right-col > ul > li > button {
-  display: block;
-  padding: 10px 5px;
-  color: #949494;
-  text-decoration: none;
-}
-.btn-social-account {
-  display: block;
-  padding: 10px 5px;
-  color: #949494;
-  text-decoration: none;
-}
-div.profile-right-col > ul > li > a:hover,
-div.profile-right-col > ul > li > button:hover {
-  border-radius: 4px;
-  background-color: #23262a;
-  text-decoration: none;
-}
-.btn-social-account:hover {
-  border-radius: 4px;
-  background-color: #23262a;
-  text-decoration: none;
-}
-.profile-foot {
-  position: relative;
-  display: block;
-  margin-left: 15px;
-  padding-top: 50px;
-}
-.connections {
-  display: inline-block;
-  margin-left: 15px;
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  background-color: #23262a;
-}
 div.col-md-3 > img {
   margin-right: 10px;
   width: 32px;
@@ -192,6 +141,7 @@ a, a:focus {
 
 .proid-wrap {
   max-width: 980px;
+  width: 900px;
 }
 .idcard {
   position: relative;
@@ -262,7 +212,6 @@ i.fa {
   margin-top: 105px;
   color: rgba(255,255,255,1);
   font-weight: inherit;
-
 }
 .overlay {
   position: absolute;
@@ -277,6 +226,59 @@ i.fa {
   min-width: 18.125rem;
   padding: .9375rem;
 }
+.profile-right-col-fill {
+  position: relative;
+  top: -105px;
+  height: 85vh;
+  border-left: 1px solid #282828;
+  padding: 0 0 0 10px;
+}
+.profile-right-col {
+  padding-top: 105px;
+}
+div.profile-right-col > ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+div.profile-right-col > ul > li > a,
+div.profile-right-col > ul > li > button {
+  display: block;
+  padding: 10px 5px;
+  color: #949494;
+  text-decoration: none;
+}
+.btn-social-account {
+  display: block;
+  padding: 10px 5px;
+  color: #949494;
+  text-decoration: none;
+}
+div.profile-right-col > ul > li > a:hover,
+div.profile-right-col > ul > li > button:hover {
+  border-radius: 4px;
+  background-color: #23262a;
+  text-decoration: none;
+}
+.btn-social-account:hover {
+  border-radius: 4px;
+  background-color: #23262a;
+  text-decoration: none;
+}
+.profile-foot {
+  position: relative;
+  display: block;
+  margin-left: 15px;
+  padding-top: 50px;
+}
+.connections {
+  display: inline-block;
+  margin-left: 15px;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: #23262a;
+}
+
 
 
 /* 

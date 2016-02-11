@@ -103,9 +103,9 @@ class ViewProfilePage extends Component {
       <div className="container-fluid proid-wrap p-t-4">
         { profile !== null && profile !== undefined ?
         <div>
-          <div className="col-md-9">
+          <div className="col-sm-9">
             <div className="container">
-              <div className="profile-container col-md-6 center-block">
+              <div className="profile-container col-sm-6 center-block">
                   <div className="profile-wrap">
                     <div className="idcard-block">
                       <div className="id-flex">
@@ -129,7 +129,7 @@ class ViewProfilePage extends Component {
                 </div>
                 }
               </div>
-              <div className="col-md-6">
+              <div className="col-sm-6">
                 <div className="idcard-wrap">
                   { (blockNumber && transactionIndex) ?
                   <div className="idcard-body dim">
@@ -172,7 +172,7 @@ class ViewProfilePage extends Component {
               })}
             </div>
           </div>
-          <div className="col-md-3 pull-right profile-right-col-fill">
+          <div className="col-sm-3 pull-right profile-right-col-fill">
             <div className="profile-right-col inverse">
               <ul>
                 {getVerifiedAccounts(profile, verifications).map(function(account) {
