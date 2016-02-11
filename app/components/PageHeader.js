@@ -20,9 +20,9 @@ class PageHeader extends Component {
               {this.props.title}
             </h1>
             { this.props.subtitle ?
-            <h4 className="type-inverse">
+            <h5 className="type-inverse">
               {this.props.subtitle}
-            </h4>
+            </h5>
             : null }
           </div>
         </div>
