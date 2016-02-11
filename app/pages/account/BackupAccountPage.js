@@ -65,7 +65,7 @@ class BackupAccountPage extends Component {
   render() {
     return (
       <div className="body-inner body-inner-white">
-        <PageHeader title="backup account" />
+        <PageHeader title="Backup Account" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">
