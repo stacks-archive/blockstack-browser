@@ -75,7 +75,6 @@ class PublicKeysTab extends Component {
             this.state.profile.account : []
     return (
       <div>
-        <h4>Public Keys</h4>
         <div className="form-group">
           <button className="btn btn-primary"
             onClick={() => {this.createItem('bitcoin')}}>
@@ -119,12 +118,11 @@ class PublicKeysTab extends Component {
                   data={profile.account[index]}
                   onChange={(event) => {this.onChange(index, event)}} />
                 <div className="form-group">
-                  <button className="btn btn-primary"
+                  <button className="btn btn-outline-primary"
                     onClick={(event) => {this.deleteItem(index)}}>
                     Delete
                   </button>
                 </div>
-                <hr />
               </div>
               : null }
             </div>
