@@ -100,13 +100,12 @@ class ViewProfilePage extends Component {
     }
 
     return (
-      <div className="profile-spacer">
+      <div className="container-fluid proid-wrap p-t-4">
         { profile !== null && profile !== undefined ?
         <div>
           <div className="col-md-9">
             <div className="container">
-              <div className="col-md-6">
-                <div>
+              <div className="profile-container col-md-6 center-block">
                   <div className="profile-wrap">
                     <div className="idcard-block">
                       <div className="id-flex">
@@ -115,7 +114,6 @@ class ViewProfilePage extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
                 { isLocal ?
                 <div>
                   <Link to={this.props.location.pathname + "/edit"}

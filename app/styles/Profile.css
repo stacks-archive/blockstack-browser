@@ -74,9 +74,6 @@ div.pill-nav > a > img {
 .profile-right-col {
   padding-top: 105px;
 }
-.profile-spacer {
-  padding-top: 65px;
-}
 div.profile-right-col > ul {
   padding-left: 0;
   list-style-type: none;
@@ -193,6 +190,9 @@ a, a:focus {
 // ID card
 */
 
+.proid-wrap {
+  max-width: 980px;
+}
 .idcard {
   position: relative;
   border: .0625rem solid rgba(229,229,229,1);
@@ -207,7 +207,7 @@ a, a:focus {
 }
 .id-flex img {
   bottom: 0;
-  width: 260px;
+  width: 16.25rem;
   height: 371px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
@@ -216,7 +216,7 @@ a, a:focus {
 .id-flex {
   bottom: 0;
   display: table-cell;
-  width: 260px;
+  width: 16.25rem;
   height: 371px;
   vertical-align: top;
 }
@@ -262,15 +262,20 @@ i.fa {
   margin-top: 105px;
   color: rgba(255,255,255,1);
   font-weight: inherit;
+
 }
 .overlay {
   position: absolute;
   margin: -371px 0 0 0;
-  width: 260px;
+  width: 16.25rem;
   height: 371px;
   -webkit-border-radius: 8px;
   border-radius: 8px;
   background-color: rgba(0,0,0,0.2);
+}
+.profile-container, profile-wrap {
+  min-width: 18.125rem;
+  padding: .9375rem;
 }
 
 
@@ -417,6 +422,7 @@ button.btn.btn-sm.nav-page {
   text-align: center;
   vertical-align: middle;
 }
+/* Temporary position absolute */
 .header-logo {
   position: absolute;
   top: 150px;
