@@ -105,7 +105,7 @@ class ViewProfilePage extends Component {
         <div>
           <div className="col-md-9">
             <div className="container">
-              <div className="col-md-5">
+              <div className="col-md-6">
                 <div>
                   <div className="profile-wrap">
                     <div className="idcard-block">
@@ -131,7 +131,7 @@ class ViewProfilePage extends Component {
                 </div>
                 }
               </div>
-              <div className="col-md-7">
+              <div className="col-md-6">
                 <div className="idcard-wrap">
                   { (blockNumber && transactionIndex) ?
                   <div className="idcard-body dim">
