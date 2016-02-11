@@ -26,22 +26,6 @@
 */
 
 /* UNKNOWN STYLES ///////////////////////////////////// */
-.bookmarks-temp {
-  padding: 0;
-}
-.bookmarks-temp > .list-group-item {
-  border: none;
-  border-radius: 4px;
-  background-color: transparent;
-}
-.bookmarks-temp > .list-group-item {
-  color: #fff!important;
-  width: 100%;
-  display: block;
-  border-radius: 3px;
-  background-color: #32373d;
-  height: 55px;
-}
 h4.headspace, h5.headspace {
   margin-bottom: 50px;
 }
@@ -142,7 +126,22 @@ div.container.outer-wrap {
 /* END UNKNOWN STYLES ///////////////////////////////////// */
 
 
-
+.bookmarks-temp {
+  padding: 0;
+}
+.bookmarks-temp > .list-group-item {
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+}
+.bookmarks-temp > .list-group-item {
+  color: #fff!important;
+  width: 100%;
+  display: block;
+  border-radius: 3px;
+  background-color: #32373d;
+  height: 55px;
+}
 
 
 
