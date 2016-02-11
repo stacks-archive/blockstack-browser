@@ -41,7 +41,7 @@ class DepositPage extends Component {
 
     return (
       <div className="body-inner body-inner-white">
-        <PageHeader title="deposit" />
+        <PageHeader title="Deposit" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">

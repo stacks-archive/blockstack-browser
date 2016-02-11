@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import { shell } from 'electron'
 
 class SocialAccountListItem extends Component {
   static propTypes = {
@@ -40,10 +41,12 @@ class SocialAccountListItem extends Component {
 
     return (
       <li>
-        <Link to={accountUrl}>
+        <button onClick={() => {
+          shell.openExternal(accountUrl)
+        }} className="btn btn-outline-primary">
           <i className={`fa ${socialMediaClass}`} />
           <span>{identifier}</span>
-        </Link>
+        </button>
       </li>
     )
   }

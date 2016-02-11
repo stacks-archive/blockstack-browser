@@ -64,7 +64,7 @@ class DeleteAccountPage extends Component {
   render() {
     return (
       <div className="body-inner body-inner-white">
-        <PageHeader title="delete account" />
+        <PageHeader title="Delete Account" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">

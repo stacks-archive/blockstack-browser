@@ -41,7 +41,7 @@ class EditProfilePage extends Component {
       profile: null,
       profileJustSaved: false,
       verifications: [],
-      tabName: "basic info"
+      tabName: "Basic Info"
     }
 
     this.saveProfile = this.saveProfile.bind(this)
@@ -126,31 +126,31 @@ class EditProfilePage extends Component {
               <div>
                 {(() => {
                   switch (this.state.tabName) {
-                    case "basic info":
+                    case "Basic Info":
                       return (
                         <BasicInfoTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case "photos":
+                    case "Photos":
                       return (
                         <PhotosTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case "social accounts":
+                    case "Social Accounts":
                       return (
                         <SocialAccountsTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case "private info":
+                    case "Private Info":
                       return (
                         <PrivateInfoTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case "public keys":
+                    case "Public Keys":
                       return (
                         <PublicKeysTab
                           profile={this.state.profile}

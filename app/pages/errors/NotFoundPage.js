@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
+import { PageHeader } from '../../components/index'
+
 class NotFoundPage extends Component {
   constructor() {
     super()
@@ -8,14 +10,15 @@ class NotFoundPage extends Component {
 
   render() {
     return (
-      <div className="container">
-        <h3>Page Not Found</h3>
-        <hr />
-        <p>
-          <Link to="/" className="btn btn-primary">
-            Go Home
-          </Link>
-        </p>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="Page Not Found" />
+        <div className="container">
+          <p>
+            <Link to="/" className="btn btn-primary">
+              Go Home
+            </Link>
+          </p>
+        </div>
       </div>
     )
   }

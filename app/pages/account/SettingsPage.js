@@ -60,7 +60,7 @@ class SettingsPage extends Component {
   render() {
     return (
       <div className="body-inner body-inner-white">
-        <PageHeader title="settings" />
+        <PageHeader title="Settings" />
         <div className="container">
           <div className="row">
             <div className="col-md-3">

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Alert, InputGroup } from '../../components/index'
+import { Alert, InputGroup, PageHeader } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
 import { getNameCost, isNameAvailable, hasNameBeenPreordered } from '../../utils/name-utils'
 
@@ -107,41 +107,41 @@ class RegisterPage extends Component {
         nameLabel = this.state.nameLabels[this.state.type]
 
     return (
-      <div className="container">
-        <div>
-          <h3>Register Identity</h3>
-            { this.state.alerts.map(function(alert, index) {
-              return (
-                <Alert key={index} message={alert.message} status={alert.status} />
-              )
-            })}
-            <fieldset className="form-group">
-              <label className="capitalize">{nameLabel}</label>
-              <div className="input-group">
-                <input
-                  name="username"
-                  className="form-control"
-                  placeholder={nameLabel}
-                  value={this.state.username}
-                  onChange={this.onChange} />
-                <span className="input-group-addon">.{tld}</span>
-              </div>
-            </fieldset>
-            <div>
-              <label>Registration Cost</label>
-              <div className="highlight">
-                <pre>
-                  <code>
-                    {this.state.nameCost} mBTC
-                  </code>
-                </pre>
-              </div>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="Register" />
+        <div className="container">
+          { this.state.alerts.map(function(alert, index) {
+            return (
+              <Alert key={index} message={alert.message} status={alert.status} />
+            )
+          })}
+          <fieldset className="form-group">
+            <label className="capitalize">{nameLabel}</label>
+            <div className="input-group">
+              <input
+                name="username"
+                className="form-control"
+                placeholder={nameLabel}
+                value={this.state.username}
+                onChange={this.onChange} />
+              <span className="input-group-addon">.{tld}</span>
             </div>
-            <div>
-              <button className="btn btn-primary" onClick={this.registerIdentity}>
-                Register
-              </button>
+          </fieldset>
+          <div>
+            <label>Registration Cost</label>
+            <div className="highlight">
+              <pre>
+                <code>
+                  {this.state.nameCost} mBTC
+                </code>
+              </pre>
             </div>
+          </div>
+          <div>
+            <button className="btn btn-primary" onClick={this.registerIdentity}>
+              Register
+            </button>
+          </div>
         </div>
       </div>
     )

@@ -9,11 +9,11 @@ class ProfileEditingSidebar extends Component {
 
   render() {
     let tabs = [
-      { label: 'basic info', isActive: false },
-      { label: 'photos', isActive: false },
-      { label: 'social accounts', isActive: false },
-      { label: 'private info', isActive: false },
-      { label: 'public keys', isActive: false }
+      { label: 'Basic Info', isActive: false },
+      { label: 'Photos', isActive: false },
+      { label: 'Social Accounts', isActive: false },
+      { label: 'Private Info', isActive: false },
+      { label: 'Public Keys', isActive: false }
     ]
     tabs.map((tab) => {
       if (tab.label === this.props.activeTab) {

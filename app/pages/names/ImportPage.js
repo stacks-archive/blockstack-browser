@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
 
+import { PageHeader } from '../../components/index'
 import { KeychainActions } from '../../store/keychain'
 
 function mapStateToProps(state) {
@@ -36,18 +37,21 @@ class ImportPage extends Component {
           currentAddress = accountKeychain.child(addressIndex).address().toString()
 
     return (
-      <div className="container">
-        <div>
-          <h3>Import Identity</h3>
-          <p><i>
-            To import an identity into this app,
-            go to the app that owns the identity,
-            then find the export form and enter the transfer code below.
-          </i></p>
-          <div className="highlight">
-            <pre>
-              <code>{currentAddress}</code>
-            </pre>
+      <div className="body-inner body-inner-white">
+        <PageHeader title="Import" />
+        <div className="container">
+          <div>
+            <h3>Import Identity</h3>
+            <p><i>
+              To import an identity into this app,
+              go to the app that owns the identity,
+              then find the export form and enter the transfer code below.
+            </i></p>
+            <div className="highlight">
+              <pre>
+                <code>{currentAddress}</code>
+              </pre>
+            </div>
           </div>
         </div>
       </div>
