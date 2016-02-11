@@ -1,31 +1,6 @@
-/*
- 3px  =   .1875rem
- 4px  =   .25rem
- 5px  =   .3125rem
- 6px  =   .375rem
- 7px  =   .4375rem
- 8px  =   .5rem
- 9px  =   .5625rem
-10px  =   .625rem
-11px  =   .6875rem
-12px  =   .75rem
-13px  =   .8125rem
-14px  =   .875rem    /* font base
-15px  =   .9375rem
-16px  =  1rem        /* base
-18px  =  1.125rem
-20px  =  1.25rem
-22px  =  1.375rem
-24px  =  1.5rem
-26px  =  1.625rem
-28px  =  1.75rem
-30px  =  1.875rem
-32px  =  2rem
-34px  =  2.125rem
-36px  =  2.25rem
-*/
+/* chord desktop app css */
 
-/* UNKNOWN STYLES ///////////////////////////////////// */
+/* unknown styles ///////////////////////////////////// */
 h4.headspace, h5.headspace {
   margin-bottom: 50px;
 }
@@ -70,7 +45,7 @@ div.col-md-3 > img {
 div.container.outer-wrap {
   padding: 0;
 }
-/* END UNKNOWN STYLES ///////////////////////////////////// */
+/* end unknown styles ///////////////////////////////////// */
 
 
 .bookmarks-temp {
