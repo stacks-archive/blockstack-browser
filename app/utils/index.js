@@ -1,5 +1,6 @@
 export { isPasswordValid, isBackupPhraseValid } from './account-utils'
 export { getNamesOwned, getIdentities } from './api-utils'
+export { getNumberOfVerifications, compareProfilesByVerifications } from './search-utils'
 export { uploadObject } from './s3-utils'
 export {
   derivePrivateKeychain, getCoinTypeNumber, getAccountPrivateKeychain,

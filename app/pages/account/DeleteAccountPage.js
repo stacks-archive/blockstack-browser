@@ -24,6 +24,10 @@ class DeleteAccountPage extends Component {
     deleteMnemonic: PropTypes.func.isRequired
   }
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+
   constructor(props) {
     super(props)
 
@@ -48,7 +52,8 @@ class DeleteAccountPage extends Component {
           dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
     decrypt(dataBuffer, password, (err, plaintextBuffer) => {
       if (!err) {
-        this.props.deleteMnemonic()
+        localStorage.clear()
+        this.context.router.push('/landing')
       } else {
         this.updateAlert('danger', 'Incorrect password')
       }

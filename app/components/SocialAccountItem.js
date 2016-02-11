@@ -33,6 +33,9 @@ class SocialAccountListItem extends Component {
       socialMediaClass = socialMediaClasses.get(this.props.service)
     }
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
+    if (this.props.service === 'bitcoin') {
+      accountUrl = `https://www.blocktrail.com/BTC/address/${this.props.identifier}`
+    }
 
     let identifier = this.props.identifier
     if (identifier.length >= 18) {
@@ -41,12 +44,13 @@ class SocialAccountListItem extends Component {
 
     return (
       <li>
-        <button onClick={() => {
+        <a href="#" onClick={(event) => {
+          event.preventDefault()
           shell.openExternal(accountUrl)
-        }} className="btn btn-outline-primary">
+        }}>
           <i className={`fa ${socialMediaClass}`} />
           <span>{identifier}</span>
-        </button>
+        </a>
       </li>
     )
   }

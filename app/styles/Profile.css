@@ -88,8 +88,19 @@ div.profile-right-col > ul > li > button {
   color: #949494;
   text-decoration: none;
 }
+.btn-social-account {
+  display: block;
+  padding: 10px 5px;
+  color: #949494;
+  text-decoration: none;
+}
 div.profile-right-col > ul > li > a:hover,
 div.profile-right-col > ul > li > button:hover {
+  border-radius: 4px;
+  background-color: #23262a;
+  text-decoration: none;
+}
+.btn-social-account:hover {
   border-radius: 4px;
   background-color: #23262a;
   text-decoration: none;

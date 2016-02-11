@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-import { InputGroup } from '../../components/index'
+import { PageHeader, InputGroup } from '../../components/index'
 
 class ExportPage extends Component {
   constructor() {
@@ -9,13 +9,16 @@ class ExportPage extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div>
-          <h3>Export Identity</h3>
-          <p>Export your identity to another address.</p>
-          <InputGroup label="Recipient address" placeholder="Recipient address" />
+      <div className="body-inner body-inner-white">
+        <PageHeader title="Export" />
+        <div className="container">
           <div>
-            <button className="btn btn-primary">Send</button>
+            <h3>Export Identity</h3>
+            <p>Export your identity to another address.</p>
+            <InputGroup label="Recipient address" placeholder="Recipient address" />
+            <div>
+              <button className="btn btn-primary">Send</button>
+            </div>
           </div>
         </div>
       </div>

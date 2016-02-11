@@ -24,7 +24,7 @@ class SearchItem extends Component {
           blockchainId = this.props.id
 
     return (
-      <Link to={`/profile/blockchain/${blockchainId}`} className="list-group-item m-b-1">
+      <Link to={`/profile/blockchain/${blockchainId}`} className="list-group-item m-b-11">
         <div className="row">
           <div className="col-md-1">
             <Image src={avatarUrl} id={blockchainId}
