@@ -417,6 +417,10 @@ button.btn.btn-sm.nav-page {
   text-align: center;
   vertical-align: middle;
 }
+.header-logo {
+  position: absolute;
+  top: 150px;
+}
 
 
 /* 
