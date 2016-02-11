@@ -44,12 +44,13 @@ class SocialAccountListItem extends Component {
 
     return (
       <li>
-        <button onClick={() => {
+        <a href="#" onClick={(event) => {
+          event.preventDefault()
           shell.openExternal(accountUrl)
-        }} className="btn btn-outline-primary">
+        }}>
           <i className={`fa ${socialMediaClass}`} />
           <span>{identifier}</span>
-        </button>
+        </a>
       </li>
     )
   }
