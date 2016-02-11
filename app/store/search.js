@@ -1,3 +1,5 @@
+import { getNumberOfVerifications, compareProfilesByVerifications } from '../utils/index'
+
 const UPDATE_QUERY = 'UPDATE_QUERY'
 const UPDATE_RESULTS = 'UPDATE_RESULTS'
 
@@ -32,6 +34,7 @@ function searchIdentities(query, searchUrl, lookupUrl) {
         let results = []
         if (responseJson.hasOwnProperty('results')) {
           results = responseJson.results
+          results.sort(compareProfilesByVerifications)
         } else {
           results.push({
             profile: responseJson[username].profile,
