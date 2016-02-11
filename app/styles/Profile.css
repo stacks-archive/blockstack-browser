@@ -50,6 +50,7 @@ div.container.outer-wrap {
 
 .bookmarks-temp {
   padding: 0;
+  border-radius: 4px;
 }
 .bookmarks-temp > .list-group-item {
   border: none;

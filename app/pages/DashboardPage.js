@@ -82,7 +82,7 @@ class DashboardPage extends Component {
         </div>
         <div className="col-sm-6 col-sm-offset-3 m-t-2">
           <h4 className="text-xs-center lead-out">My Profiles</h4>
-            <ul className="bookmarks-temp">
+            <ul className="bookmarks-temp m-b-11">
             { localIdentities.map(function(identity) {
               return (
                 <IdentityItem key={identity.index}
@@ -93,7 +93,7 @@ class DashboardPage extends Component {
             })}
             </ul>
           <div>
-            <Link to="/names/register" className="btn btn-block btn-primary m-b-11">
+            <Link to="/names/register" className="btn btn-block btn-primary m-b-11 m-t-2">
               Register
             </Link>
             <Link to="/names/import" className="btn btn-block btn-secondary">
