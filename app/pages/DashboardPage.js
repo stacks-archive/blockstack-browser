@@ -69,7 +69,7 @@ class DashboardPage extends Component {
       <div className="container">
         <div className="row centered">
           <div className="m-b-2">
-            <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+            <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
             <p className="lead-out">browse the blockchain</p>
           </div>
           <div className="m-b-2">
