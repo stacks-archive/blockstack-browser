@@ -22,7 +22,7 @@ class CreateAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner" style={{ backgroundImage: "url('images/profile-collage.jpg')" }}>
+      <div className="body-inner">
         <div className="container out-block-wrap">
           <div className="container-fluid out-block">
             <div className="row">
