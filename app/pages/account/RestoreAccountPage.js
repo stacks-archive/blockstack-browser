@@ -71,7 +71,7 @@ class RestorePage extends Component {
           <div className="row">
             <div className="centered">
               <div className="m-b-4">
-                <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+                <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
                 <p className="lead-out">browse the blockchain</p>
               </div>
               <h1 className="text-xs-center type-inverse">restore from backup</h1>

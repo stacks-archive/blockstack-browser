@@ -28,7 +28,7 @@ class CreateAccountPage extends Component {
             <div className="row">
               <div className="centered">
                 <div className="m-b-4">
-                  <img src="images/blockstack-rev.svg" alt="Chord logo" width="100px" />
+                  <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
                   <p className="lead-out">browse the blockchain</p>
                 </div>
               </div>
