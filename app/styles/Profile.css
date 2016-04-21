@@ -10,8 +10,8 @@ h4.headspace, h5.headspace {
 }
 .btn-pro-edit:hover, .btn-pro-edit:active, .btn-pro-edit:focus, .btn-pro-edit:active:focus {
   outline: none;
-  border: 1px solid #2d7edd;
-  background-color: #2d7edd;
+  border: 1px solid #53206F;
+  background-color: #53206F;
   color: #ffffff;
 }
 .pill-nav {
@@ -342,6 +342,7 @@ button.btn.btn-sm.nav-page {
   padding-top: .0625rem;
 }
 .icon-labels {
+  font-family: 'Merriweather Sans', sans-serif;
   display: block;
   color: rgba(61,61,61,1);
   font-size: 11px;
