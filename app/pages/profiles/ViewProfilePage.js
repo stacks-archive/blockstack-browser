@@ -8,6 +8,8 @@ import { SocialAccountItem, Image } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
 import { SearchActions } from '../../store/search'
 
+const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
+
 function mapStateToProps(state) {
   return {
     currentIdentity: state.identities.current,
@@ -105,9 +107,8 @@ class ViewProfilePage extends Component {
                   <div className="profile-wrap">
                     <div className="idcard-block">
                       <div className="id-flex">
-                        <Image src={person.avatarUrl() || ''}
-                          fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
-                          className="img-idcard" />
+                        <Image src={person.avatarUrl() || placeholderImage}
+                          fallbackSrc={placeholderImage} className="img-idcard" />
                         <div className="overlay"></div>
                       </div>
                     </div>
@@ -162,7 +163,7 @@ class ViewProfilePage extends Component {
                     <Link to={`/profile/blockchain/${connection.id}`}
                       key={index} className="connections">
                       <Image src={new Profile(connection).avatarUrl()}
-                        fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
+                        fallbackSrc={placeholderImage}
                         style={{ width: '40px', height: '40px' }} />
                     </Link>
                   )
