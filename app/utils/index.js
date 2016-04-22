@@ -1,6 +1,8 @@
 export { isPasswordValid, isBackupPhraseValid } from './account-utils'
 export { getNamesOwned, getIdentities } from './api-utils'
-export { getNumberOfVerifications, compareProfilesByVerifications } from './search-utils'
+export {
+  getNumberOfVerifications, compareProfilesByVerifications
+} from './search-utils'
 export { uploadObject } from './s3-utils'
 export {
   derivePrivateKeychain, getCoinTypeNumber, getAccountPrivateKeychain,
@@ -9,7 +11,3 @@ export {
 export {
   isABlockstoreName, hasNameBeenPreordered, isNameAvailable, getNameCost
 } from './name-utils'
-export {
-  getName, getNameParts, getSocialAccounts, getVerifiedAccounts, getAvatarUrl,
-  getOrganizations, getConnections, getAddress, getBirthDate
-} from './profile-utils'

@@ -2,12 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { Person } from 'blockstack-profiles'
 
 import { SocialAccountItem, Image } from '../../components/index'
-import {
-  getName, getVerifiedAccounts, getAvatarUrl,
-  getAddress, getBirthDate, getConnections
-} from '../../utils/profile-utils.js'
 import { IdentityActions } from '../../store/identities'
 import { SearchActions } from '../../store/search'
 
@@ -89,19 +86,18 @@ class ViewProfilePage extends Component {
     let profile = identity.profile,
         verifications = identity.verifications,
         blockNumber = identity.blockNumber,
-        transactionIndex = identity.transactionIndex,
-        connections = getConnections(profile), 
-        address = getAddress(profile),
-        birthDate = getBirthDate(profile)
+        transactionIndex = identity.transactionIndex
 
     let isLocal = false
     if (this.props.routeParams.hasOwnProperty('index')) {
       isLocal = true
     }
 
+    let person = new Person(profile)
+
     return (
       <div className="container-fluid proid-wrap p-t-4">
-        { profile !== null && profile !== undefined ?
+        { person !== null ?
         <div>
           <div className="col-sm-9">
             <div className="container">
@@ -109,7 +105,9 @@ class ViewProfilePage extends Component {
                   <div className="profile-wrap">
                     <div className="idcard-block">
                       <div className="id-flex">
-                        <img className="img-idcard" src={getAvatarUrl(profile)} />
+                        <Image src={person.avatarUrl() || ''}
+                          fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
+                          className="img-idcard" />
                         <div className="overlay"></div>
                       </div>
                     </div>
@@ -137,33 +135,33 @@ class ViewProfilePage extends Component {
                     transaction <span className="inverse">#{transactionIndex}</span>
                   </div>
                   : null }
-                  <h1 className="idcard-name">{getName(profile)}</h1>
+                  <h1 className="idcard-name">{person.name()}</h1>
                   <div className="idcard-body inverse">
-                    {profile.description}
+                    {person.description()}
                   </div>
-                  { address ?
+                  { person.address() ?
                   <div className="idcard-body dim">
-                    {address}
+                    {person.address()}
                   </div>
                   : null }
-                  { birthDate ?
+                  { person.birthDate() ?
                   <div className="idcard-body dim">
-                    {birthDate}
+                    {person.birthDate()}
                   </div>
                   : null }
                 </div>
               </div>
             </div>
             <div className="container">
-              {connections.length ?
+              {person.connections().length ?
               <p className="profile-foot">Connections</p>
               : null }
-              {connections.map((connection, index) => {
+              {person.connections().map((connection, index) => {
                 if (connection.id) {
                   return (
                     <Link to={`/profile/blockchain/${connection.id}`}
                       key={index} className="connections">
-                      <Image src={getAvatarUrl(connection)}
+                      <Image src={new Profile(connection).avatarUrl()}
                         fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
                         style={{ width: '40px', height: '40px' }} />
                     </Link>
@@ -175,7 +173,7 @@ class ViewProfilePage extends Component {
           <div className="col-sm-3 pull-right profile-right-col-fill">
             <div className="profile-right-col inverse">
               <ul>
-                {getVerifiedAccounts(profile, verifications).map(function(account) {
+                {person.verifiedAccounts(verifications).map(function(account) {
                   return (
                     <SocialAccountItem
                       key={account.service + '-' + account.identifier}

@@ -3,12 +3,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
-import { Person } from 'blockchain-profile'
+import { Person } from 'blockstack-profiles'
 
 import { IdentityItem } from '../components/index'
 import { IdentityActions } from '../store/identities'
 import { getIdentities } from '../utils/api-utils'
-import { getName, getAvatarUrl } from '../utils/profile-utils.js'
 
 function mapStateToProps(state) {
   return {
@@ -83,11 +82,12 @@ class DashboardPage extends Component {
         <div className="col-sm-6 col-sm-offset-3 m-t-2">
           <h4 className="text-xs-center lead-out">My Profiles</h4>
             <ul className="bookmarks-temp m-b-11">
-            { localIdentities.map(function(identity) {
+            { localIdentities.map((identity) => {
+              let person = new Person(identity.profile)
               return (
                 <IdentityItem key={identity.index}
                   label={identity.registered ? identity.id : identity.id + ' (pending)'}
-                  avatarUrl={getAvatarUrl(identity.profile)}
+                  avatarUrl={person.avatarUrl() || ''}
                   url={`/profile/local/${identity.index}`} />
               )
             })}
