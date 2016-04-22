@@ -69,14 +69,16 @@ class DashboardPage extends Component {
         <div className="row centered">
           <div className="m-b-2">
             <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
-            <p className="lead-out">browse the blockchain</p>
           </div>
           <div className="m-b-2">
             <img src="images/icon-browser.svg" alt="chord icon" width="82px" />
           </div>
           <h1 className="text-xs-center type-inverse">search the blockchain</h1>
           <p className="lead-out">
-            Try searching for <Link to="/search/naval">naval</Link> or <Link to="/search/elizabeth">elizabeth</Link> or <Link to="/search/fred%20wilson">fred wilson</Link>
+            Try searching for&nbsp;
+            <Link to="/search/naval">naval</Link> or&nbsp;
+            <Link to="/search/elizabeth">elizabeth</Link> or&nbsp;
+            <Link to="/search/fred%20wilson">fred wilson</Link>
           </p>
         </div>
         <div className="col-sm-6 col-sm-offset-3 m-t-2">

@@ -96,7 +96,7 @@ class RegisterPage extends Component {
         } else {
           this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
           this.props.createNewIdentity(domainName)
-          this.context.router.push('/identities')
+          this.context.router.push('/')
         }
       })
     }

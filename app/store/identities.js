@@ -63,18 +63,19 @@ const initialState = {
     transactionNumber: null
   },
   local: [
-    {
-      index: 0,
-      id: 'ryan.id',
-      profile: {},
-      verifications: [],
-      registered: false,
-      blockNumber: null,
-      transactionNumber: null
-    }
   ],
   registered: []
 }
+
+/*{
+  index: 0,
+  id: 'ryan.id',
+  profile: {},
+  verifications: [],
+  registered: false,
+  blockNumber: null,
+  transactionNumber: null
+}*/
 
 export function IdentityReducer(state = initialState, action) {
   switch (action.type) {
