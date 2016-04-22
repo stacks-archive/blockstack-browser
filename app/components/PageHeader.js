@@ -13,7 +13,7 @@ class PageHeader extends Component {
           <div className="container-fluid page-header p-r-1">
             <div className="pull-left m-t-1">
               <span className="header-logo p-l-2 m-l-1">
-                <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+                <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
               </span>
             </div>
             <h1 className="type-inverse m-t-11">
