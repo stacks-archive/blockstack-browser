@@ -6,7 +6,7 @@ import {
   Alert, InputGroup, AccountSidebar, PageHeader
 } from '../../components/index'
 import { KeychainActions } from '../../store/keychain'
-import { decrypt, encrypt } from '../../utils/keychain-utils'
+import { decrypt, encrypt } from '../../utils'
 
 function mapStateToProps(state) {
   return {

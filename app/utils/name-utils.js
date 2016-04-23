@@ -1,6 +1,6 @@
 import hasProp from 'hasprop'
 
-export function isABlockstoreName(s) {
+export function isABlockstackName(s) {
   return /^[a-z0-9_-]+\.[a-z0-9_-]+$/.test(s)
 }
 
@@ -34,7 +34,7 @@ export function isNameAvailable(lookupUrl, domainName, callback) {
 }
 
 export function getNameCost(domainName) {
-  if (!isABlockstoreName(domainName)) {
+  if (!isABlockstackName(domainName)) {
     return 0
   }
 

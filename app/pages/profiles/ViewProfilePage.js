@@ -14,8 +14,7 @@ function mapStateToProps(state) {
   return {
     currentIdentity: state.identities.current,
     localIdentities: state.identities.local,
-    nameLookupUrl: state.settings.api.nameLookupUrl,
-    bookmarks: state.settings.bookmarks
+    nameLookupUrl: state.settings.api.nameLookupUrl
   }
 }
 
@@ -64,10 +63,6 @@ class ViewProfilePage extends Component {
     this.componentHasNewRouteParams(this.props)
   }
 
-  componentWillUnmount() {
-    //this.props.updateCurrentIdentity('', {}, [])
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.routeParams !== this.props.routeParams) {
       this.componentHasNewRouteParams(nextProps)
@@ -80,10 +75,6 @@ class ViewProfilePage extends Component {
   render() {
     let identity = this.state.currentIdentity,
         blockchainId = identity.id
-
-    if (blockchainId === 'naval.id') {
-      identity = this.props.bookmarks[0]
-    }
 
     let profile = identity.profile,
         verifications = identity.verifications,
@@ -196,3 +187,9 @@ class ViewProfilePage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewProfilePage)
+
+/*
+  componentWillUnmount() {
+    this.props.updateCurrentIdentity('', {}, [])
+  }
+*/

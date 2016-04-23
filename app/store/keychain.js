@@ -1,58 +1,53 @@
-import Mnemonic from 'bitcore-mnemonic'; delete global._bitcore
-import {
-  encrypt, decrypt, derivePrivateKeychain, derivePublicKeychain,
-  getAccountPrivateKeychain
-} from '../utils/keychain-utils'
-import { PrivateKeychain } from 'keychain-manager'; delete global._bitcore
+import bip39 from 'bip39'
+import { encrypt, decrypt } from '../utils'
+import { PrivateKeychain, getEntropy } from 'blockstack-keychains'
 
-const BITS_OF_ENTROPY_FOR_MNEMONIC = 160
 const CREATE_WALLET = 'CREATE_WALLET',
       NEW_IDENTITY_ADDRESS = 'NEW_IDENTITY_ADDRESS',
       NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
-      UPDATE_MNEMONIC = 'UPDATE_MNEMONIC'
+      UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE'
 
-function createWallet(encryptedMnemonic, identityPublicKeychain, bitcoinPublicKeychain) {
+function createWallet(encryptedBackupPhrase, identityPublicKeychain, bitcoinPublicKeychain) {
   return {
     type: CREATE_WALLET,
-    encryptedMnemonic: encryptedMnemonic,
+    encryptedBackupPhrase: encryptedBackupPhrase,
     identityPublicKeychain: identityPublicKeychain,
     bitcoinPublicKeychain: bitcoinPublicKeychain
   }
 }
 
-function updateMnemonic(encryptedMnemonic) {
+function updateBackupPhrase(encryptedBackupPhrase) {
   return {
-    type: UPDATE_MNEMONIC,
-    encryptedMnemonic: encryptedMnemonic
+    type: UPDATE_BACKUP_PHRASE,
+    encryptedBackupPhrase: encryptedBackupPhrase
   }
 }
 
-function deleteMnemonic() {
+function deleteBackupPhrase() {
   return dispatch => {
-    dispatch(updateMnemonic(null))
+    dispatch(updateBackupPhrase(null))
   }
 }
 
 function initializeWallet(password, backupPhrase) {
   return dispatch => {
-    let mnemonic
-    if (backupPhrase && Mnemonic.isValid(backupPhrase)) {
-      mnemonic = new Mnemonic(backupPhrase).toString()
+    let privateKeychain
+    if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
+      privateKeychain = PrivateKeychain.fromMnemonic(backupPhrase)
     } else {
-      mnemonic = new Mnemonic(BITS_OF_ENTROPY_FOR_MNEMONIC, Mnemonic.Words.ENGLISH).toString()
+      privateKeychain = new PrivateKeychain()
+      backupPhrase = privateKeychain.mnemonic()
     }
 
-    const masterPrivateKeychain = derivePrivateKeychain(mnemonic)
-    
-    const identityPublicKeychain = getAccountPrivateKeychain(
-      masterPrivateKeychain, 'blockstore', 0).publicKeychain().toString()
-    
-    const bitcoinPublicKeychain = getAccountPrivateKeychain(
-      masterPrivateKeychain, 'bitcoin', 0).publicKeychain().toString()
+    const identityPrivateKeychain = privateKeychain.privatelyNamedChild('blockstack-0'),
+          bitcoinPrivateKeychain = privateKeychain.privatelyNamedChild('bitcoin-0')
 
-    encrypt(new Buffer(mnemonic), password, function(err, ciphertextBuffer) {
-      const encryptedMnemonic = ciphertextBuffer.toString('hex')
-      dispatch(createWallet(encryptedMnemonic, identityPublicKeychain, bitcoinPublicKeychain))
+    const identityPublicKeychain = identityPrivateKeychain.publicKeychain().publicKey('hex'),
+          bitcoinPublicKeychain = bitcoinPrivateKeychain.publicKeychain().publicKey('hex')
+
+    encrypt(new Buffer(backupPhrase), password, function(err, ciphertextBuffer) {
+      const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
+      dispatch(createWallet(encryptedBackupPhrase, identityPublicKeychain, bitcoinPublicKeychain))
     })
   }
 }
@@ -73,15 +68,15 @@ function newBitcoinAddress(accountIndex = 0) {
 
 export const KeychainActions = {
   createWallet: createWallet,
-  updateMnemonic: updateMnemonic,
+  updateBackupPhrase: updateBackupPhrase,
   initializeWallet: initializeWallet,
   newIdentityAddress: newIdentityAddress,
   newBitcoinAddress: newBitcoinAddress,
-  deleteMnemonic: deleteMnemonic
+  deleteBackupPhrase: deleteBackupPhrase
 }
 
 const initialState = {
-  encryptedMnemonic: null,
+  encryptedBackupPhrase: null,
   identityAccounts: [],
   bitcoinAccounts: []
 }
@@ -90,7 +85,7 @@ export function KeychainReducer(state = initialState, action) {
   switch (action.type) {
     case CREATE_WALLET:
       return Object.assign({}, state, {
-        encryptedMnemonic: action.encryptedMnemonic,
+        encryptedBackupPhrase: action.encryptedBackupPhrase,
         identityAccounts: [
           {
             accountKeychain: action.identityPublicKeychain,
@@ -104,9 +99,9 @@ export function KeychainReducer(state = initialState, action) {
           }
         ]
       })
-    case UPDATE_MNEMONIC:
+    case UPDATE_BACKUP_PHRASE:
       return Object.assign({}, state, {
-        encryptedMnemonic: action.encryptedMnemonic
+        encryptedBackupPhrase: action.encryptedBackupPhrase
       })
     case NEW_IDENTITY_ADDRESS:
       return Object.assign({}, state, {

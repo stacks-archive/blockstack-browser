@@ -67,16 +67,6 @@ const initialState = {
   registered: []
 }
 
-/*{
-  index: 0,
-  id: 'ryan.id',
-  profile: {},
-  verifications: [],
-  registered: false,
-  blockNumber: null,
-  transactionNumber: null
-}*/
-
 export function IdentityReducer(state = initialState, action) {
   switch (action.type) {
     case UPDATE_CURRENT:
@@ -114,3 +104,13 @@ export function IdentityReducer(state = initialState, action) {
       return state
   }
 }
+
+/*{
+  index: 0,
+  id: 'ryan.id',
+  profile: {},
+  verifications: [],
+  registered: false,
+  blockNumber: null,
+  transactionNumber: null
+}*/

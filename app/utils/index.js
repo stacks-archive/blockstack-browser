@@ -4,10 +4,7 @@ export {
   getNumberOfVerifications, compareProfilesByVerifications
 } from './search-utils'
 export { uploadObject } from './s3-utils'
+export { encrypt, decrypt } from './encryption-utils'
 export {
-  derivePrivateKeychain, getCoinTypeNumber, getAccountPrivateKeychain,
-  encrypt, decrypt
-} from './keychain-utils'
-export {
-  isABlockstoreName, hasNameBeenPreordered, isNameAvailable, getNameCost
+  isABlockstackName, hasNameBeenPreordered, isNameAvailable, getNameCost
 } from './name-utils'

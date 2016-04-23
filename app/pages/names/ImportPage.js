@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
+import { PublicKeychain } from 'blockstack-keychains'
 
 import { PageHeader } from '../../components/index'
 import { KeychainActions } from '../../store/keychain'

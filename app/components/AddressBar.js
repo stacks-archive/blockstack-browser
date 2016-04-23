@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { isABlockstoreName } from '../utils/name-utils'
+import { isABlockstackName } from '../utils/name-utils'
 import routes from '../routes'
 
 function mapStateToProps(state) {
@@ -50,7 +50,7 @@ class AddressBar extends Component {
 
     if (/^\/profile\/blockchain\/.*$/.test(pathname)) {
       const domainName = pathname.replace('/profile/blockchain/', '')
-      if (isABlockstoreName(domainName)) {
+      if (isABlockstackName(domainName)) {
         query = pathname.replace('/profile/blockchain/', '')
       }
     } else if (/^\/profile\/local\/[0-9]+.*$/.test(pathname)) {
@@ -80,7 +80,7 @@ class AddressBar extends Component {
 
   submitQuery(query) {
     let newPath
-    if (isABlockstoreName(query)) {
+    if (isABlockstackName(query)) {
       newPath = `/profile/blockchain/${query}`
     } else if (/^local:\/\/.*$/.test(query)) {
       newPath = query.replace('local://', '/')

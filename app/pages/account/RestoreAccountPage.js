@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { Alert, InputGroup } from '../../components/index'
 import { KeychainActions } from '../../store/keychain'
-import { isBackupPhraseValid } from '../../utils/account-utils'
+import { isBackupPhraseValid } from '../../utils'
 
 function mapStateToProps(state) {
   return {
