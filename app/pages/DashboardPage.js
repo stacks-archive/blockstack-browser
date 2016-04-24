@@ -64,21 +64,6 @@ class DashboardPage extends Component {
 
     return (
       <div className="container">
-        <div className="row centered">
-          <div className="m-b-2">
-            <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
-          </div>
-          <div className="m-b-2">
-            <img src="images/icon-browser.svg" alt="chord icon" width="82px" />
-          </div>
-          <h1 className="text-xs-center type-inverse">search the blockchain</h1>
-          <p className="lead-out">
-            Try searching for&nbsp;
-            <Link to="/search/naval">naval</Link> or&nbsp;
-            <Link to="/search/elizabeth">elizabeth</Link> or&nbsp;
-            <Link to="/search/fred%20wilson">fred wilson</Link>
-          </p>
-        </div>
         <div className="col-sm-6 col-sm-offset-3 m-t-2">
           <h4 className="text-xs-center lead-out">My Profiles</h4>
             <ul className="bookmarks-temp m-b-11">
@@ -107,3 +92,21 @@ class DashboardPage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
+
+/*
+  <div className="row centered">
+    <div className="m-b-2">
+      <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
+    </div>
+    <div className="m-b-2">
+      <img src="images/icon-browser.svg" alt="chord icon" width="82px" />
+    </div>
+    <h1 className="text-xs-center type-inverse">search the blockchain</h1>
+    <p className="lead-out">
+      Try searching for&nbsp;
+      <Link to="/search/naval">naval</Link> or&nbsp;
+      <Link to="/search/elizabeth">elizabeth</Link> or&nbsp;
+      <Link to="/search/fred%20wilson">fred wilson</Link>
+    </p>
+  </div>
+*/
