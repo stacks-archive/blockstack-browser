@@ -69,7 +69,6 @@
   "dependencies": {
     "bip39": "^2.2.0",
     "bitcore-mnemonic": "git+ssh://git@github.com/onenameio/bitcore-mnemonic.git",
-    "blockstack-keychain": "0.0.2",
     "blockstack-keychains": "0.0.3",
     "blockstack-profiles": "^0.3.2",
     "bootstrap": "git+ssh://git@github.com/onenameio/rhythm-bootstrap.git",

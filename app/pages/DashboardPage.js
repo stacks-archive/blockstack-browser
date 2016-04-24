@@ -2,23 +2,23 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { PublicKeychain } from 'blockstack-keychains'
 import { Person } from 'blockstack-profiles'
 
 import { IdentityItem } from '../components/index'
 import { IdentityActions } from '../store/identities'
+import { AccountActions } from '../store/account'
 import { getIdentities } from '../utils/api-utils'
 
 function mapStateToProps(state) {
   return {
     localIdentities: state.identities.local,
-    identityAccount: state.keychain.identityAccounts[0],
+    identityAddresses: state.account.identityAccount.addresses,
     addressLookupUrl: state.settings.api.addressLookupUrl || ''
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(IdentityActions, dispatch)
+  return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
 }
 
 class DashboardPage extends Component {
@@ -37,9 +37,7 @@ class DashboardPage extends Component {
   }
 
   componentHasNewProps() {
-    const accountKeychain = new PublicKeychain(this.props.identityAccount.accountKeychain),
-          addressIndex = this.props.identityAccount.addressIndex,
-          currentAddress = accountKeychain.child(addressIndex).address().toString(),
+    const currentAddress = this.props.identityAddresses[this.props.identityAddresses.length-1],
           addressLookupUrl = this.props.addressLookupUrl,
           localIdentities = this.state.localIdentities
 

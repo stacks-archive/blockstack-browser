@@ -5,23 +5,23 @@ import { connect } from 'react-redux'
 import {
   Alert, InputGroup, AccountSidebar, PageHeader
 } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
+import { AccountActions } from '../../store/account'
 import { decrypt, encrypt } from '../../utils'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(KeychainActions, dispatch)
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class ChangePasswordPage extends Component {
   static propTypes = {
-    encryptedMnemonic: PropTypes.string.isRequired,
-    updateMnemonic: PropTypes.func.isRequired
+    encryptedBackupPhrase: PropTypes.string.isRequired,
+    updateBackupPhrase: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -52,7 +52,7 @@ class ChangePasswordPage extends Component {
     const currentPassword = this.state.currentPassword,
           newPassword = this.state.newPassword,
           newPassword2 = this.state.newPassword2,
-          dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
+          dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
 
     decrypt(dataBuffer, currentPassword, (err, plaintextBuffer) => {
       if (!err) {
@@ -63,7 +63,7 @@ class ChangePasswordPage extends Component {
             this.updateAlert('danger', 'New passwords must match')
           } else {
             encrypt(plaintextBuffer, newPassword, (err, ciphertextBuffer) => {
-              this.props.updateMnemonic(ciphertextBuffer.toString('hex'))
+              this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
               this.updateAlert('success', 'Password updated!')
               this.setState({
                 currentPassword: '',

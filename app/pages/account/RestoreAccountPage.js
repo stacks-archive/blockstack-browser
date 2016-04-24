@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Alert, InputGroup } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
+import { AccountActions } from '../../store/account'
 import { isBackupPhraseValid } from '../../utils'
 
 function mapStateToProps(state) {
@@ -13,7 +13,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(KeychainActions, dispatch)
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class RestorePage extends Component {
@@ -27,7 +27,7 @@ class RestorePage extends Component {
     this.state = {
       backupPhrase: '',
       password: '',
-      password2: '',
+      passwordConfirmation: '',
       alerts: []
     }
 
@@ -46,7 +46,7 @@ class RestorePage extends Component {
     let { isValid, error } = isBackupPhraseValid(this.state.backupPhrase)
 
     if (isValid) {
-      if (this.state.password === this.state.password2) {
+      if (this.state.password === this.state.passwordConfirmation) {
         this.updateAlert('success', 'Restoring your account...')
         this.props.initializeWallet(this.state.password, this.state.backupPhrase)
       } else {
@@ -90,7 +90,7 @@ class RestorePage extends Component {
               placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
             <InputGroup name="password" type="password" label="New password" inverse={true}
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
-            <InputGroup name="password2" type="password" label="New password (again)" inverse={true}
+            <InputGroup name="passwordConfirmation" type="password" label="New password (again)" inverse={true}
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
               <div className="form-group">
                 <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">

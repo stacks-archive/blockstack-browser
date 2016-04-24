@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { PublicKeychain } from 'blockstack-keychains'
 
 import { InputGroup, AccountSidebar, PageHeader } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
 
 function mapStateToProps(state) {
   return {

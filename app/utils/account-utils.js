@@ -3,11 +3,11 @@ import bip39 from 'bip39'
 const backupPhraseLength = 24
 
 export function isPasswordValid(password) {
-  let isValid = true,
+  let isValid = false,
       error = null
 
-  if (password.length < 8) {
-    isValid = false
+  if (password.length > 8) {
+    isValid = true
     error = 'Password must be at least 8 characters'
   }
 

@@ -4,17 +4,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Alert, InputGroup } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
+import { AccountActions } from '../../store/account'
 import { isPasswordValid } from '../../utils'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(KeychainActions, dispatch)
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class CreateAccountPage extends Component {
