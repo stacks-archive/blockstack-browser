@@ -13,7 +13,7 @@ const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
 function mapStateToProps(state) {
   return {
     currentIdentity: state.identities.current,
-    localIdentities: state.identities.local,
+    localIdentities: state.identities.localIdentities,
     nameLookupUrl: state.settings.api.nameLookupUrl
   }
 }

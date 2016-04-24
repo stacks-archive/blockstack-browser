@@ -9,7 +9,7 @@ import { getNameCost, isNameAvailable, hasNameBeenPreordered } from '../../utils
 function mapStateToProps(state) {
   return {
     username: '',
-    localIdentities: state.identities.local,
+    localIdentities: state.identities.localIdentities,
     lookupUrl: state.settings.api.nameLookupUrl
   }
 }

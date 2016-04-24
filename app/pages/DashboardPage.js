@@ -7,11 +7,10 @@ import { Person } from 'blockstack-profiles'
 import { IdentityItem } from '../components/index'
 import { IdentityActions } from '../store/identities'
 import { AccountActions } from '../store/account'
-import { getIdentities } from '../utils/api-utils'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.identities.local,
+    localIdentities: state.identities.localIdentities,
     identityAddresses: state.account.identityAccount.addresses,
     addressLookupUrl: state.settings.api.addressLookupUrl || ''
   }
@@ -25,53 +24,33 @@ class DashboardPage extends Component {
   static propTypes = {
     localIdentities: PropTypes.array.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
+    getIdentities: PropTypes.func.isRequired,
     addressLookupUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
     super(props)
-    this.state = {
-      localIdentities: this.props.localIdentities
-    }
-    this.componentHasNewProps = this.componentHasNewProps.bind(this)
   }
 
-  componentHasNewProps() {
-    const currentAddress = this.props.identityAddresses[this.props.identityAddresses.length-1],
-          addressLookupUrl = this.props.addressLookupUrl,
-          localIdentities = this.state.localIdentities
-
-    getIdentities(currentAddress, addressLookupUrl, localIdentities, (localIdentities, newNames) => {
-      this.setState({
-        localIdentities: localIdentities
-      })
-      newNames.forEach((name) => {
-        this.props.createNewIdentity(name)
-      })
-    })
-  }
-
-  componentDidMount() {
-    this.componentHasNewProps()
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.componentHasNewProps()
+  componentWillMount() {
+    this.props.getIdentities(
+      this.props.identityAddresses,
+      this.props.addressLookupUrl,
+      this.props.localIdentities
+    )
   }
 
   render() {
-    const localIdentities = this.state.localIdentities || []
-
     return (
       <div className="container">
         <div className="col-sm-6 col-sm-offset-3 m-t-2">
           <h4 className="text-xs-center lead-out">My Profiles</h4>
             <ul className="bookmarks-temp m-b-11">
-            { localIdentities.map((identity) => {
+            {this.props.localIdentities.map((identity) => {
               let person = new Person(identity.profile)
               return (
                 <IdentityItem key={identity.index}
-                  label={identity.registered ? identity.id : identity.id + ' (pending)'}
+                  label={identity.registered ? identity.domainName : identity.domainName + ' (pending)'}
                   avatarUrl={person.avatarUrl() || ''}
                   url={`/profile/local/${identity.index}`} />
               )
