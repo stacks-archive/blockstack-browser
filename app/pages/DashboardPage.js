@@ -44,7 +44,7 @@ class DashboardPage extends Component {
     return (
       <div className="container">
         <div className="col-sm-6 col-sm-offset-3 m-t-2">
-          <h4 className="text-xs-center lead-out">My Profiles</h4>
+          <h4 className="text-xs-center lead-out">My Identities</h4>
             <ul className="bookmarks-temp m-b-11">
             {this.props.localIdentities.map((identity) => {
               let person = new Person(identity.profile)

@@ -98,7 +98,7 @@ class ViewProfilePage extends Component {
                   <div className="profile-wrap">
                     <div className="idcard-block">
                       <div className="id-flex">
-                        <Image src={person.avatarUrl() || placeholderImage}
+                        <Image src={person.avatarUrl() || ''}
                           fallbackSrc={placeholderImage} className="img-idcard" />
                         <div className="overlay"></div>
                       </div>

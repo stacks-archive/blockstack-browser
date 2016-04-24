@@ -6,7 +6,7 @@ class PublicKeysTab extends Component {
   static propTypes = {
     profile: PropTypes.object.isRequired,
     saveProfile: PropTypes.func.isRequired,
-    blockchainId: PropTypes.string.isRequired
+    domainName: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -56,7 +56,7 @@ class PublicKeysTab extends Component {
       'service': service,
       'identifier': '',
       'proofType': 'signature',
-      'proofMessage': `Verifying that ${this.props.blockchainId} is my blockchain ID.`,
+      'proofMessage': `Verifying that ${this.props.domainName} is my blockchain ID.`,
       'proofSignature': ''
     })
     this.setState({profile: profile})
