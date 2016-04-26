@@ -80,27 +80,29 @@ class DashboardPage extends Component {
             Try searching for <Link to="/search/naval">naval</Link> or <Link to="/search/elizabeth">elizabeth</Link> or <Link to="/search/fred%20wilson">fred wilson</Link>
           </p>
         </div>
-        <div className="col-sm-6 col-sm-offset-3 m-t-2">
-          <h4 className="text-xs-center lead-out">My Profiles</h4>
-            <ul className="bookmarks-temp m-b-11">
-            { localIdentities.map(function(identity) {
-              return (
-                <IdentityItem key={identity.index}
-                  label={identity.registered ? identity.id : identity.id + ' (pending)'}
-                  avatarUrl={getAvatarUrl(identity.profile)}
-                  url={`/profile/local/${identity.index}`} />
-              )
-            })}
-            </ul>
-          <div>
-            <Link to="/names/register" className="btn btn-block btn-primary m-b-11 m-t-2">
-              Register
-            </Link>
-            <Link to="/names/import" className="btn btn-block btn-secondary">
-              Import
-            </Link>
+        <section className="container-fluid wrapper">
+          <div className="col-sm-6 wrapper m-t-2">
+            <h4 className="text-xs-center lead-out">My Profiles</h4>
+              <ul className="bookmarks-temp m-b-11">
+              { localIdentities.map(function(identity) {
+                return (
+                  <IdentityItem key={identity.index}
+                    label={identity.registered ? identity.id : identity.id + ' (pending)'}
+                    avatarUrl={getAvatarUrl(identity.profile)}
+                    url={`/profile/local/${identity.index}`} />
+                )
+              })}
+              </ul>
+            <div>
+              <Link to="/names/register" className="btn btn-block btn-primary m-b-11 m-t-2">
+                Register
+              </Link>
+              <Link to="/names/import" className="btn btn-block btn-secondary">
+                Import
+              </Link>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
     )
   }

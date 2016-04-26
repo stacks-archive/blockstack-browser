@@ -35,7 +35,9 @@ body {
 .body-inner-white {
   background-color: white;
 }
-
+.wrapper {
+  width: 800px;
+}
 .container {
   padding-top: 40px;
 }
