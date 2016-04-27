@@ -54,7 +54,7 @@ div.container.outer-wrap{padding:0;}
   border-radius: 4px;
   background-color: transparent;
 }
-.list-group-item-sidebar.active, .list-group-item-sidebar.active:hover {
+.list-group-item-sidebar.active, .list-group-item-sidebar.active:hover, .list-group-item-sidebar.active:focus {
   background-color: #53206f;
   background-image: none;
   color: #fff;
