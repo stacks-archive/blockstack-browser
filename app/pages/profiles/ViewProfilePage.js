@@ -88,6 +88,8 @@ class ViewProfilePage extends Component {
 
     let person = new Person(profile)
 
+    let accounts = person.profile().account || []
+
     return (
       <div className="container-fluid proid-wrap p-t-4">
         { person !== null ?
@@ -165,7 +167,7 @@ class ViewProfilePage extends Component {
           <div className="col-sm-3 pull-right profile-right-col-fill">
             <div className="profile-right-col inverse">
               <ul>
-                {person.verifiedAccounts(verifications).map(function(account) {
+                {accounts.map(function(account) {
                   return (
                     <SocialAccountItem
                       key={account.service + '-' + account.identifier}
