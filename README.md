@@ -1,4 +1,4 @@
-# Chord Desktop App
+# Blockstack Desktop App
 
 + [Installation](#installation)
 	+ [Toggling Chrome DevTools](#toggling-chrome-devtools)

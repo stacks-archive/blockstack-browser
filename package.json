@@ -71,7 +71,7 @@
     "bitcore-mnemonic": "git+ssh://git@github.com/onenameio/bitcore-mnemonic.git",
     "blockstack-keychains": "0.0.3",
     "blockstack-profiles": "^0.3.2",
-    "bootstrap": "git+ssh://git@github.com/onenameio/rhythm-bootstrap.git",
+    "bootstrap": "git+ssh://git@github.com/blockstack/blockstack-bootstrap.git",
     "electron-debug": "^0.5.1",
     "font-awesome": "^4.4.0",
     "hasprop": "0.0.4",

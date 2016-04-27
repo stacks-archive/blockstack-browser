@@ -7,7 +7,6 @@ import { createHashHistory } from 'history/lib'
 import routes from './routes'
 import configureDataStore from './store/configure/index'
 import './styles/app.css'
-import './styles/Profile.css'
 
 const store = configureDataStore()
 
