@@ -140,7 +140,21 @@ button.btn.btn-sm.nav-page{margin-top:-4px;padding-right:8px;padding-left:8px;}
 div.out-form-group > div > div.alert.alert-dismissible{margin-left:178px;margin-right:15px;}
 
 
-@media (max-width:767px){
+/* Media queries */
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width:768px){
   .view-with-sidebar{padding-left:90px;}
   .sidebar-section{left:90px;margin-left:-90px;width:90px;}
 }
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width:992px){
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width:1200px){
+}
+
