@@ -48,26 +48,14 @@ div.container.outer-wrap{padding:0;}
 /* end unknown styles ///////////////////////////////////// */
 
 .bookmarks-temp{padding:0;border-radius:4px;}
-
-.list-group-item-sidebar {
-  border: none;
-  border-radius: 4px;
-  background-color: transparent;
-}
-.list-group-item-sidebar.active, .list-group-item-sidebar.active:hover, .list-group-item-sidebar.active:focus {
-  background-color: #53206f;
-  background-image: none;
-  color: #fff;
-}
+.list-group-item-sidebar{border:none;border-radius:4px;background-color:transparent;}
+.list-group-item-sidebar.active,.list-group-item-sidebar.active:hover,.list-group-item-sidebar.active:focus{background-color:#53206f;background-image:none;color:#fff;}
 .list-group-item-dash{border:none;color:#fff!important;width:100%;display:block;border-radius:3px;background-color:#32373d;height:55px;}
 a.list-group-item-dash:focus,a.list-group-item-dash:hover{background-color:#23262a;color:#e6e6e6!important;}
 .search-result{border:none;color:#fff!important;font-weight:300;display:block;border-radius:3px;background-color:#32373d;height:60px;}
 a.search-result:hover{color:#fff!important;background-color:#23262a;}
 .result-img{width:36px;height:36px;}
 
-.list-group-accounts{
-
-}
 
 /* Post rhythm ----------------------------------------- */
 
@@ -113,8 +101,9 @@ button.btn.btn-sm.nav-page{margin-top:-4px;padding-right:8px;padding-left:8px;}
 
 /* Browser search bar */
 .nav-search{overflow:hidden;}
+.browser-search-bar{}
 .browser-search-bar input{padding:.1875rem .75rem;border:none;color:#7B7B7B;text-align:center;font-size:.75rem;border-radius:20px;}
-.browser-search-bar input::-webkit-input-placeholder{color:#aeaeae;text-transform:none;margin-top:.1875rem;font-size:.75rem;padding:0;}
+.browser-search-bar input::-webkit-input-placeholder{font-family:'Merriweather Sans',sans-serif;color:#aeaeae;text-transform:none;margin-top:.1875rem;font-size:.75rem;padding:0;}
 .browser-search-bar input::-webkit-input-placeholder::before{font-family:fontAwesome;font-size:.6875rem;content:'\f002  ';color:#c7c7c7;}
 
 /* Browser links */
