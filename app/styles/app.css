@@ -62,7 +62,7 @@ a.search-result:hover{color:#fff!important;background-color:#23262a;}
 /* Globals */
 html,body{background-color:#1b1e21;height:100%;min-width:768px;}
 button{outline:none!important;}
-.btn{line-height:inherit;}
+.btn{line-height:inherit;height:40px;text-transform:uppercase;letter-spacing:1px;}
 
 /* Type */
 a,a:focus{outline:none;}
