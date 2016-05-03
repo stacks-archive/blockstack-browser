@@ -32,7 +32,7 @@ app.on('ready', () => {
     height: 900,
     minWidth: 900,
     minHeight: 450,
-    frame: true,
+    frame: false,
     titleBarStyle: 'hidden'
   });
 
