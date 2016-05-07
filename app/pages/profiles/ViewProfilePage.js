@@ -2,21 +2,19 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { Person } from 'blockstack-profiles'
 
 import { SocialAccountItem, Image } from '../../components/index'
-import {
-  getName, getVerifiedAccounts, getAvatarUrl,
-  getAddress, getBirthDate, getConnections
-} from '../../utils/profile-utils.js'
 import { IdentityActions } from '../../store/identities'
 import { SearchActions } from '../../store/search'
+
+const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
 
 function mapStateToProps(state) {
   return {
     currentIdentity: state.identities.current,
-    localIdentities: state.identities.local,
-    nameLookupUrl: state.settings.api.nameLookupUrl,
-    bookmarks: state.settings.bookmarks
+    localIdentities: state.identities.localIdentities,
+    nameLookupUrl: state.settings.api.nameLookupUrl
   }
 }
 
@@ -65,10 +63,6 @@ class ViewProfilePage extends Component {
     this.componentHasNewRouteParams(this.props)
   }
 
-  componentWillUnmount() {
-    //this.props.updateCurrentIdentity('', {}, [])
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.routeParams !== this.props.routeParams) {
       this.componentHasNewRouteParams(nextProps)
@@ -82,26 +76,23 @@ class ViewProfilePage extends Component {
     let identity = this.state.currentIdentity,
         blockchainId = identity.id
 
-    if (blockchainId === 'naval.id') {
-      identity = this.props.bookmarks[0]
-    }
-
     let profile = identity.profile,
         verifications = identity.verifications,
         blockNumber = identity.blockNumber,
-        transactionIndex = identity.transactionIndex,
-        connections = getConnections(profile), 
-        address = getAddress(profile),
-        birthDate = getBirthDate(profile)
+        transactionIndex = identity.transactionIndex
 
     let isLocal = false
     if (this.props.routeParams.hasOwnProperty('index')) {
       isLocal = true
     }
 
+    let person = new Person(profile)
+
+    let accounts = person.profile().account || []
+
     return (
       <div className="container-fluid proid-wrap p-t-4">
-        { profile !== null && profile !== undefined ?
+        { person !== null ?
         <div>
           <div className="col-sm-9">
             <div className="container">
@@ -109,7 +100,8 @@ class ViewProfilePage extends Component {
                   <div className="profile-wrap">
                     <div className="idcard-block">
                       <div className="id-flex">
-                        <img className="img-idcard" src={getAvatarUrl(profile)} />
+                        <Image src={person.avatarUrl() || ''}
+                          fallbackSrc={placeholderImage} className="img-idcard" />
                         <div className="overlay"></div>
                       </div>
                     </div>
@@ -137,34 +129,34 @@ class ViewProfilePage extends Component {
                     transaction <span className="inverse">#{transactionIndex}</span>
                   </div>
                   : null }
-                  <h1 className="idcard-name">{getName(profile)}</h1>
+                  <h1 className="idcard-name">{person.name()}</h1>
                   <div className="idcard-body inverse">
-                    {profile.description}
+                    {person.description()}
                   </div>
-                  { address ?
+                  { person.address() ?
                   <div className="idcard-body dim">
-                    {address}
+                    {person.address()}
                   </div>
                   : null }
-                  { birthDate ?
+                  { person.birthDate() ?
                   <div className="idcard-body dim">
-                    {birthDate}
+                    {person.birthDate()}
                   </div>
                   : null }
                 </div>
               </div>
             </div>
             <div className="container">
-              {connections.length ?
+              {person.connections().length ?
               <p className="profile-foot">Connections</p>
               : null }
-              {connections.map((connection, index) => {
+              {person.connections().map((connection, index) => {
                 if (connection.id) {
                   return (
                     <Link to={`/profile/blockchain/${connection.id}`}
                       key={index} className="connections">
-                      <Image src={getAvatarUrl(connection)}
-                        fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
+                      <Image src={new Profile(connection).avatarUrl()}
+                        fallbackSrc={placeholderImage}
                         style={{ width: '40px', height: '40px' }} />
                     </Link>
                   )
@@ -175,7 +167,7 @@ class ViewProfilePage extends Component {
           <div className="col-sm-3 pull-right profile-right-col-fill">
             <div className="profile-right-col inverse">
               <ul>
-                {getVerifiedAccounts(profile, verifications).map(function(account) {
+                {accounts.map(function(account) {
                   return (
                     <SocialAccountItem
                       key={account.service + '-' + account.identifier}
@@ -197,3 +189,9 @@ class ViewProfilePage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewProfilePage)
+
+/*
+  componentWillUnmount() {
+    this.props.updateCurrentIdentity('', {}, [])
+  }
+*/

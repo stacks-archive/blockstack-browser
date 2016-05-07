@@ -6,7 +6,7 @@ import Navbar from './components/Navbar'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic || ''
+    accountCreated: state.account.accountCreated
   }
 }
 
@@ -38,7 +38,7 @@ class WelcomeScreen extends Component {
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    encryptedMnemonic: PropTypes.string.isRequired
+    accountCreated: PropTypes.bool.isRequired
   }
 
   static contextTypes = {
@@ -50,9 +50,8 @@ class App extends Component {
     this.state = {}
   }
 
-  componentHasNewProps(encryptedMnemonic) {
-    const accountExists = (encryptedMnemonic.length > 0) ? true : false
-    if (!accountExists) {
+  componentHasNewProps(accountCreated) {
+    if (!accountCreated) {
       this.context.router.push('/landing')
     } else {
       this.context.router.push('/')
@@ -60,18 +59,17 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.componentHasNewProps(this.props.encryptedMnemonic)
+    this.componentHasNewProps(this.props.accountCreated)
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.encryptedMnemonic !== this.props.encryptedMnemonic) {
-      this.componentHasNewProps(nextProps.encryptedMnemonic)
+    if (nextProps.accountCreated !== this.props.accountCreated) {
+      this.componentHasNewProps(nextProps.accountCreated)
     }
   }
 
   render() {
-    const accountExists = this.props.encryptedMnemonic.length ? true : false
-    if (accountExists) {
+    if (this.props.accountCreated) {
       return (<MainScreen children={this.props.children} />)
     } else {
       return (<WelcomeScreen children={this.props.children} />)

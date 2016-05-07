@@ -5,25 +5,24 @@ import { connect } from 'react-redux'
 import {
   Alert, InputGroup, AccountSidebar, PageHeader
 } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
-import { decrypt } from '../../utils/keychain-utils'
+import { decrypt } from '../../utils'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase
   }
 }
 
 class BackupAccountPage extends Component {
   static propTypes = {
-    encryptedMnemonic: PropTypes.string.isRequired
+    encryptedBackupPhrase: PropTypes.string.isRequired
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      decryptedMnemonic: null,
+      decryptedBackupPhrase: null,
       password: '',
       alerts: []
     }
@@ -49,12 +48,12 @@ class BackupAccountPage extends Component {
 
   decryptBackupPhrase() {
     const password = this.state.password,
-          dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
+          dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     decrypt(dataBuffer, password, (err, plaintextBuffer) => {
       if (!err) {
         this.updateAlert('success', 'Backup phrase decrypted')
         this.setState({
-          decryptedMnemonic: plaintextBuffer.toString()
+          decryptedBackupPhrase: plaintextBuffer.toString()
         })
       } else {
         this.updateAlert('danger', 'Invalid password')
@@ -78,7 +77,7 @@ class BackupAccountPage extends Component {
                 )
               })}
               {
-                this.state.decryptedMnemonic ?
+                this.state.decryptedBackupPhrase ?
                 <div>
                   <p>
                     <i>
@@ -88,7 +87,7 @@ class BackupAccountPage extends Component {
                   </p>
                   <div className="highlight">
                     <pre>
-                      <code>{this.state.decryptedMnemonic}</code>
+                      <code>{this.state.decryptedBackupPhrase}</code>
                     </pre>
                   </div>
                 </div>

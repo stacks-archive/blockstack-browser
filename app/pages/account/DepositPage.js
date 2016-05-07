@@ -2,26 +2,23 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { PublicKeychain } from 'keychain-manager'
 
 import { AccountSidebar, PageHeader } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
+import { AccountActions } from '../../store/account'
 
 function mapStateToProps(state) {
   return {
-    accountKeychain: state.keychain.bitcoinAccounts[0].accountKeychain,
-    addressIndex: state.keychain.bitcoinAccounts[0].addressIndex
+    addresses: state.account.bitcoinAccount.addresses
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(KeychainActions, dispatch)
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class DepositPage extends Component {
   static propTypes = {
-    accountKeychain: PropTypes.string.isRequired,
-    addressIndex: PropTypes.number.isRequired,
+    addresses: PropTypes.array.isRequired,
     newBitcoinAddress: PropTypes.func.isRequired
   }
 
@@ -35,10 +32,6 @@ class DepositPage extends Component {
   }
 
   render() {
-    const accountKeychain = new PublicKeychain(this.props.accountKeychain),
-          addressIndex = this.props.addressIndex,
-          currentAddress = accountKeychain.child(addressIndex).address().toString()
-
     return (
       <div className="body-inner body-inner-white">
         <PageHeader title="Deposit" />
@@ -56,7 +49,7 @@ class DepositPage extends Component {
               <h5>Send Bitcoins to this address</h5>
               <div className="highlight">
                 <pre>
-                  <code>{currentAddress}</code>
+                  <code>{this.props.addresses[this.props.addresses.length-1]}</code>
                 </pre>
               </div>
             </div>

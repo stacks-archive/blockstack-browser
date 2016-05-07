@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Alert, InputGroup } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
-import { isBackupPhraseValid } from '../../utils/account-utils'
+import { AccountActions } from '../../store/account'
+import { isBackupPhraseValid } from '../../utils'
 
 function mapStateToProps(state) {
   return {
@@ -13,7 +13,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(KeychainActions, dispatch)
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class RestorePage extends Component {
@@ -27,7 +27,7 @@ class RestorePage extends Component {
     this.state = {
       backupPhrase: '',
       password: '',
-      password2: '',
+      passwordConfirmation: '',
       alerts: []
     }
 
@@ -46,7 +46,7 @@ class RestorePage extends Component {
     let { isValid, error } = isBackupPhraseValid(this.state.backupPhrase)
 
     if (isValid) {
-      if (this.state.password === this.state.password2) {
+      if (this.state.password === this.state.passwordConfirmation) {
         this.updateAlert('success', 'Restoring your account...')
         this.props.initializeWallet(this.state.password, this.state.backupPhrase)
       } else {
@@ -65,13 +65,13 @@ class RestorePage extends Component {
 
   render() {
     return (
-      <div className="body-inner" style={{ backgroundImage: "url('images/profile-collage.jpg')" }}>
+      <div className="body-inner">
       <div className="container out-block-wrap">
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
               <div className="m-b-4">
-                <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+                <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
                 <p className="lead-out">browse the blockchain</p>
               </div>
               <h1 className="text-xs-center type-inverse">restore from backup</h1>
@@ -90,7 +90,7 @@ class RestorePage extends Component {
               placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
             <InputGroup name="password" type="password" label="New password" inverse={true}
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
-            <InputGroup name="password2" type="password" label="New password (again)" inverse={true}
+            <InputGroup name="passwordConfirmation" type="password" label="New password (again)" inverse={true}
               placeholder="Password" data={this.state} onChange={this.onValueChange} />
               <div className="form-group">
                 <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">

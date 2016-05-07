@@ -17,7 +17,7 @@ import PrivateInfoTab from './PrivateInfoTab'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.identities.local,
+    localIdentities: state.identities.localIdentities,
     api: state.settings.api
   }
 }
@@ -37,7 +37,7 @@ class EditProfilePage extends Component {
     super(props)
 
     this.state = {
-      id: null,
+      domainName: null,
       profile: null,
       profileJustSaved: false,
       verifications: [],
@@ -51,11 +51,11 @@ class EditProfilePage extends Component {
 
   componentHasNewLocalIdentities(props) {
     const profileIndex = this.props.routeParams.index,
-          newId = props.localIdentities[profileIndex].id,
+          newDomainName = props.localIdentities[profileIndex].domainName,
           newProfile = props.localIdentities[profileIndex].profile
     if (profileIndex) {
       this.setState({
-        id: newId,
+        domainName: newDomainName,
         profile: newProfile
       })
     }
@@ -87,7 +87,7 @@ class EditProfilePage extends Component {
         secret: this.props.api.s3ApiSecret,
         bucket: this.props.api.s3Bucket
       }
-      const filename = this.state.id,
+      const filename = this.state.domainName,
             data = JSON.stringify(this.state.profile, null, 2)
       uploadObject(credentials, filename, data, ({ url, err }) => {
         if (!err) {
@@ -155,7 +155,7 @@ class EditProfilePage extends Component {
                         <PublicKeysTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile}
-                          blockchainId={this.state.id} />
+                          domainName={this.state.domainName} />
                       )
                     default:
                       return (

@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { PublicKeychain } from 'keychain-manager'
+import { PublicKeychain } from 'blockstack-keychains'
 
 import { InputGroup, AccountSidebar, PageHeader } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
 
 function mapStateToProps(state) {
   return {

@@ -1,11 +1,13 @@
-import Mnemonic from 'bitcore-mnemonic'; delete global._bitcore
+import bip39 from 'bip39'
+
+const backupPhraseLength = 24
 
 export function isPasswordValid(password) {
-  let isValid = true,
+  let isValid = false,
       error = null
 
-  if (password.length < 8) {
-    isValid = false
+  if (password.length > 8) {
+    isValid = true
     error = 'Password must be at least 8 characters'
   }
 
@@ -16,10 +18,10 @@ export function isBackupPhraseValid(backupPhrase) {
   let isValid = true,
       error = null
 
-  if (backupPhrase.split(' ').length !== 15) {
+  if (backupPhrase.split(' ').length !== backupPhraseLength) {
     isValid = false
-    error = 'Backup phrase must be 15 words long'
-  } else if (!Mnemonic.isValid(backupPhrase)) {
+    error = `Backup phrase must be ${backupPhraseLength} words long`
+  } else if (!bip39.validateMnemonic(backupPhrase)) {
     isValid = false
     error = 'Backup phrase is not a valid set of words'
   }

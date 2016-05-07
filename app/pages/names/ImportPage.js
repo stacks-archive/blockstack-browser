@@ -1,24 +1,24 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { PublicKeychain } from 'keychain-manager'; delete global._bitcore
+import { Link } from 'react-router'
 
 import { PageHeader } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
+import { AccountActions } from '../../store/account'
 
 function mapStateToProps(state) {
   return {
-    identityAccount: state.keychain.identityAccounts[0]
+    addresses: state.account.identityAccount.addresses
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(KeychainActions, dispatch)
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class ImportPage extends Component {
   static propTypes = {
-    identityAccount: PropTypes.object.isRequired,
+    addresses: PropTypes.array.isRequired,
     newIdentityAddress: PropTypes.func.isRequired
   }
 
@@ -32,10 +32,6 @@ class ImportPage extends Component {
   }
 
   render() {
-    const accountKeychain = new PublicKeychain(this.props.identityAccount.accountKeychain),
-          addressIndex = this.props.identityAccount.addressIndex,
-          currentAddress = accountKeychain.child(addressIndex).address().toString()
-
     return (
       <div className="body-inner body-inner-white">
         <PageHeader title="Import" />
@@ -49,7 +45,7 @@ class ImportPage extends Component {
             </i></p>
             <div className="highlight">
               <pre>
-                <code>{currentAddress}</code>
+                <code>{this.props.addresses[this.props.addresses.length-1]}</code>
               </pre>
             </div>
           </div>

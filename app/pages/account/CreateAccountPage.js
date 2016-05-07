@@ -4,17 +4,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Alert, InputGroup } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
-import { isPasswordValid } from '../../utils/account-utils'
+import { AccountActions } from '../../store/account'
+import { isPasswordValid } from '../../utils'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(KeychainActions, dispatch)
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class CreateAccountPage extends Component {
@@ -63,14 +62,13 @@ class CreateAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner"
-        style={{ backgroundImage: "url('images/profile-collage.jpg')" }}>
+      <div className="body-inner">
       <div className="container out-block-wrap">
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
               <div className="m-b-4">
-                <img src="images/ch-bw-rgb-rev.svg" alt="Chord logo" width="60px" />
+                <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
                 <p className="lead-out">browse the blockchain</p>
               </div>
             </div>

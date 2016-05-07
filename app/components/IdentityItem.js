@@ -17,7 +17,7 @@ class BookmarkListItem extends Component {
 
   render() {
     return (
-      <Link to={this.props.url} className="list-group-item">
+      <Link to={this.props.url} className="list-group-item list-group-item-dash">
         <div className="row booklist-wrap">
           <div className="col-md-3">
             <Image src={this.props.avatarUrl}

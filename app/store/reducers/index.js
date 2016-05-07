@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux'
 
-import { IdentityReducer } from '../identities'
-import { KeychainReducer } from '../keychain'
+import { AccountReducer } from '../account'
 import { SettingsReducer } from '../settings'
+import { IdentityReducer } from '../identities'
 import { SearchReducer }   from '../search'
 
 const RootReducer = combineReducers({
-  identities: IdentityReducer,
-  keychain: KeychainReducer,
+  account: AccountReducer,
   settings: SettingsReducer,
+  identities: IdentityReducer,
   search: SearchReducer
 })
 

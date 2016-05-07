@@ -5,23 +5,22 @@ import { connect } from 'react-redux'
 import {
   Alert, InputGroup, AccountSidebar, PageHeader
 } from '../../components/index'
-import { KeychainActions } from '../../store/keychain'
-import { decrypt } from '../../utils/keychain-utils'
+import { AccountActions } from '../../store/account'
+import { decrypt } from '../../utils'
 
 function mapStateToProps(state) {
   return {
-    encryptedMnemonic: state.keychain.encryptedMnemonic || ''
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase || ''
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(KeychainActions, dispatch)
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class DeleteAccountPage extends Component {
   static propTypes = {
-    encryptedMnemonic: PropTypes.string.isRequired,
-    deleteMnemonic: PropTypes.func.isRequired
+    encryptedBackupPhrase: PropTypes.string.isRequired
   }
 
   static contextTypes = {
@@ -49,11 +48,12 @@ class DeleteAccountPage extends Component {
 
   deleteAccount() {
     const password = this.state.password,
-          dataBuffer = new Buffer(this.props.encryptedMnemonic, 'hex')
+          dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     decrypt(dataBuffer, password, (err, plaintextBuffer) => {
       if (!err) {
         localStorage.clear()
-        this.context.router.push('/landing')
+        location.reload()
+        //this.context.router.push('/landing')
       } else {
         this.updateAlert('danger', 'Incorrect password')
       }

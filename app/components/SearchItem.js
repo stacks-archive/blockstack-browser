@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import { Person } from 'blockchain-profile'
+import { Person } from 'blockstack-profiles'
 
 import Image from './Image'
-import { getName, getSocialAccounts, getAvatarUrl } from '../utils/profile-utils.js'
 
 class SearchItem extends Component {
   static propTypes = {
@@ -17,19 +16,18 @@ class SearchItem extends Component {
   }
 
   render() {
-    const profile = Person.fromLegacyFormat(this.props.profile).profile,
-          name = getName(profile),
-          avatarUrl = getAvatarUrl(profile),
-          accounts = getSocialAccounts(profile),
-          blockchainId = this.props.id
+    let person = Person.fromLegacyFormat(this.props.profile),
+        blockchainId = this.props.id,
+        accounts = person.profile().accounts
 
     return (
-      <Link to={`/profile/blockchain/${blockchainId}`} className="list-group-item search-result p-l-11 m-b-11">
+      <Link to={`/profile/blockchain/${blockchainId}`}
+        className="list-group-item search-result p-l-11 m-b-11">
           <div className="col-md-1">
-            <Image className="result-img" src={avatarUrl} id={blockchainId}
+            <Image className="result-img" src={person.avatarUrl()} id={blockchainId}
               fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
-          <div className="col-md-3">{name}</div>
+          <div className="col-md-3">{person.name()}</div>
           <div className="col-md-2">{blockchainId}</div>
           <div className="col-md-6">
             {accounts.map((account, index) => {
