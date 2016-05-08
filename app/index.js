@@ -7,10 +7,13 @@ import { createHashHistory } from 'history/lib'
 import routes from './routes'
 import configureDataStore from './store/configure/index'
 import './styles/app.css'
+import { setUpContextMenu } from './contextMenu'
 
 const store = configureDataStore()
 
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false })
+
+//setUpContextMenu()
 
 render(
   <Provider store={store}>
