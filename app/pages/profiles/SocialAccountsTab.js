@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-import { InputGroup, SaveButton } from '../../components/index'
+import { InputGroup, SaveButton, VerificationInfo } from '../../components/index'
 
 class SocialAccountsTab extends Component {
   static propTypes = {
@@ -27,6 +27,8 @@ class SocialAccountsTab extends Component {
         'angellist': 'AngelList',
         'stack-overflow': 'StackOverflow',
         'hacker-news': 'Hacker News'
+      },
+      shownInstructions: {
       }
     }
     this.onChange = this.onChange.bind(this)
@@ -88,6 +90,14 @@ class SocialAccountsTab extends Component {
     })
   }
 
+  showVerificationInstructions(index) {
+    let shownInstructions = this.state.shownInstructions
+    shownInstructions[index] = true
+    this.setState({
+      shownInstructions: shownInstructions
+    })
+  }
+
   render() {
     const profile = this.state.profile,
           accounts = this.state.profile.hasOwnProperty('account') ?
@@ -124,29 +134,46 @@ class SocialAccountsTab extends Component {
           return (
             <div key={index}>
               { account.proofType === 'http' ?
-              <div>
+              <div className="card">
+              <div className="card-header">
+                {accountServiceName}
                 <div hidden>
                   <InputGroup
                     name="service" label="Site Name"
                     data={account}
                     onChange={(event) => { this.onChange(index, event) }} />
                 </div>
+              </div>
+              <div className="card-block">
                 <InputGroup
-                  name="identifier" label={accountServiceName + " Username"}
+                  name="identifier" label={"Username"}
                   data={account}
                   onChange={(event) => { this.onChange(index, event) }} />
                 { ['twitter', 'facebook', 'github'].indexOf(account.service) > -1 ?
                 <InputGroup
-                  name="proofUrl" label={accountServiceName + " Proof URL"}
+                  name="proofUrl" label={"Proof URL"}
                   data={account}
                   onChange={(event) => { this.onChange(index, event) }} />
                 : null }
+
+                { this.state.shownInstructions.hasOwnProperty(index) ?
+                <VerificationInfo service={account.service} identifier={account.identifier} />
+                :
+                <div className="form-group">
+                  <button className="btn btn-outline-primary"
+                    onClick={() => {this.showVerificationInstructions(index)}}>
+                    Verification Instructions
+                  </button>
+                </div>
+                }
+
                 <div className="form-group">
                   <button className="btn btn-outline-primary"
                     onClick={() => {this.deleteItem(index)}}>
                     Delete
                   </button>
                 </div>
+              </div>
               </div>
               : null }
             </div>
