@@ -11,7 +11,7 @@ const argv = require('minimist')(process.argv.slice(2));
 const devDeps = Object.keys(require('./package.json').devDependencies);
 
 
-const appName = argv.name || argv.n || 'Chord';
+const appName = argv.name || argv.n || 'Blockstack';
 const shouldUseAsar = argv.asar || argv.a || false;
 const shouldBuildAll = argv.all || false;
 
