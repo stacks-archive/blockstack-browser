@@ -58,8 +58,3 @@ class InputGroup extends Component {
 }
 
 export default InputGroup
-
-
-
-
-

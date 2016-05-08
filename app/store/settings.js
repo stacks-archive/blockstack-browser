@@ -10,13 +10,15 @@ function updateApi(api) {
 function resetApi() {
   return dispatch => {
     const DEFAULT_API = {
+      apiCustomizationEnabled: true,
       nameLookupUrl: 'https://api.onename.com/v1/users/{name}',
       searchUrl: 'https://api.onename.com/v1/search?query={query}',
       registerUrl: 'https://api.onename.com/v1/users',
       addressLookupUrl: 'https://api.onename.com/v1/addresses/{address}/names',
-      s3ApiKey: 'AKIAICPHOLRQJ23JBVAQ',
+      hostedDataLocation: 'blockstack-labs-S3',
+      s3ApiKey: '',
       s3ApiSecret: '',
-      s3Bucket: 'zf9'
+      s3Bucket: ''
     }
     dispatch(updateApi(DEFAULT_API))
   }
@@ -29,13 +31,15 @@ export const SettingsActions = {
 
 const initialState = {
   api: {
+    apiCustomizationEnabled: true,
     nameLookupUrl: 'https://api.onename.com/v1/users/{name}',
     searchUrl: 'https://api.onename.com/v1/search?query={query}',
     registerUrl: 'https://api.onename.com/v1/users',
     addressLookupUrl: 'https://api.onename.com/v1/addresses/{address}/names',
-    s3ApiKey: 'AKIAICPHOLRQJ23JBVAQ',
+    hostedDataLocation: 'blockstack-labs-S3',
+    s3ApiKey: '',
     s3ApiSecret: '',
-    s3Bucket: 'zf9'
+    s3Bucket: ''
   }
 }
 
