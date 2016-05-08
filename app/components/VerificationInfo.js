@@ -3,7 +3,7 @@ import { shell } from 'electron'
 
 class FacebookVerificationInfo extends Component {
   static contextTypes = {
-    username: React.PropTypes.string.isRequired
+    username: React.PropTypes.string
   }
 
   render() {
@@ -20,7 +20,7 @@ class FacebookVerificationInfo extends Component {
           2. Copy the text below
         </p>
         <p>
-          <input value={verificationMessage} className="form-control" />
+          <input value={verificationMessage} className="form-control" readOnly />
         </p>
         <p>
           3. Create a Facebook post with the copied text to publicly verify yourself
@@ -48,7 +48,7 @@ class FacebookVerificationInfo extends Component {
 
 class GithubVerificationInfo extends Component {
   static contextTypes = {
-    username: React.PropTypes.string.isRequired
+    username: React.PropTypes.string
   }
 
   render() {
@@ -65,7 +65,7 @@ class GithubVerificationInfo extends Component {
           2. Copy the text below
         </p>
         <p>
-          <input value={verificationMessage} className="form-control" />
+          <input value={verificationMessage} className="form-control" readOnly />
         </p>
         <p>
           3. Create a Gist with the copied text to publicly verify yourself
@@ -90,7 +90,7 @@ class GithubVerificationInfo extends Component {
 
 class TwitterVerificationInfo extends Component {
   static contextTypes = {
-    username: React.PropTypes.string.isRequired
+    username: React.PropTypes.string
   }
 
   render() {
@@ -124,8 +124,8 @@ class TwitterVerificationInfo extends Component {
 
 class VerificationInfo extends Component {
   static contextTypes = {
-    service: React.PropTypes.string.isRequired,
-    identifier: React.PropTypes.string.isRequired
+    service: React.PropTypes.string,
+    identifier: React.PropTypes.string
   }
 
   constructor(props) {

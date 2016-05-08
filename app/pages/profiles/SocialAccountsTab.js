@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 
-import { InputGroup, SaveButton, VerificationInfo } from '../../components/index'
+import {
+  InputGroup, SaveButton, VerificationInfo
+} from '../../components/index'
 
 class SocialAccountsTab extends Component {
   static propTypes = {
@@ -28,7 +30,7 @@ class SocialAccountsTab extends Component {
         'stack-overflow': 'StackOverflow',
         'hacker-news': 'Hacker News'
       },
-      shownInstructions: {
+      instructionSectionsShown: {
       }
     }
     this.onChange = this.onChange.bind(this)
@@ -91,10 +93,10 @@ class SocialAccountsTab extends Component {
   }
 
   showVerificationInstructions(index) {
-    let shownInstructions = this.state.shownInstructions
-    shownInstructions[index] = true
+    let instructionSectionsShown = this.state.instructionSectionsShown
+    instructionSectionsShown[String(index)] = true
     this.setState({
-      shownInstructions: shownInstructions
+      instructionSectionsShown: instructionSectionsShown
     })
   }
 
@@ -149,23 +151,28 @@ class SocialAccountsTab extends Component {
                   name="identifier" label={"Username"}
                   data={account}
                   onChange={(event) => { this.onChange(index, event) }} />
+                
                 { ['twitter', 'facebook', 'github'].indexOf(account.service) > -1 ?
-                <InputGroup
-                  name="proofUrl" label={"Proof URL"}
-                  data={account}
-                  onChange={(event) => { this.onChange(index, event) }} />
-                : null }
+                <div>
+                  <InputGroup
+                    name="proofUrl" label={"Proof URL"}
+                    data={account}
+                    onChange={(event) => { this.onChange(index, event) }} />
 
-                { this.state.shownInstructions.hasOwnProperty(index) ?
-                <VerificationInfo service={account.service} identifier={account.identifier} />
-                :
-                <div className="form-group">
-                  <button className="btn btn-outline-primary"
-                    onClick={() => {this.showVerificationInstructions(index)}}>
-                    Verification Instructions
-                  </button>
+                  { this.state.instructionSectionsShown.hasOwnProperty(String(index)) ?
+                    <VerificationInfo
+                      service={account.service}
+                      identifier={account.identifier} />
+                  :
+                  <div className="form-group">
+                    <button className="btn btn-outline-primary"
+                      onClick={() => {this.showVerificationInstructions(index)}}>
+                      Verification Instructions
+                    </button>
+                  </div>
+                  }
                 </div>
-                }
+                : null }
 
                 <div className="form-group">
                   <button className="btn btn-outline-primary"
