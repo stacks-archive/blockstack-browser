@@ -7,7 +7,7 @@ import {
   InputGroup, SaveButton, ProfileEditingSidebar, PageHeader
 } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
-import { getNameParts, uploadObject } from '../../utils/index'
+import { getNameParts, uploadFile } from '../../utils/index'
 
 import BasicInfoTab from './BasicInfoTab'
 import PhotosTab from './PhotosTab'
@@ -81,20 +81,13 @@ class EditProfilePage extends Component {
   }
 
   uploadProfile() {
-    if (this.props.api.hasOwnProperty('s3ApiSecret').length > 0) {
-      const credentials = {
-        key: this.props.api.s3ApiKey,
-        secret: this.props.api.s3ApiSecret,
-        bucket: this.props.api.s3Bucket
+    const filename = this.state.domainName + '.json'
+    const data = JSON.stringify(this.state.profile, null, 2)
+    uploadFile(this.props.api, filename, data, ({ url, err }) => {
+      if (err) {
+        console.log('profile not uploaded to s3')
       }
-      const filename = this.state.domainName,
-            data = JSON.stringify(this.state.profile, null, 2)
-      uploadObject(credentials, filename, data, ({ url, err }) => {
-        if (!err) {
-          console.log('profile uploaded to s3')
-        }
-      })
-    }
+    })
   }
 
   changeTabs(tabName) {

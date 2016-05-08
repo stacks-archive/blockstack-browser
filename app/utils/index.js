@@ -3,7 +3,7 @@ export { getNamesOwned, getIdentities } from './api-utils'
 export {
   getNumberOfVerifications, compareProfilesByVerifications
 } from './search-utils'
-export { uploadObject } from './s3-utils'
+export { uploadFile } from './s3-utils'
 export { encrypt, decrypt } from './encryption-utils'
 export {
   isABlockstackName, hasNameBeenPreordered, isNameAvailable, getNameCost
