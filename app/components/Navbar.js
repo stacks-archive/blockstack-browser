@@ -32,7 +32,7 @@ class Navbar extends Component {
               </Link>
             </div>
             <div className="nav-item nav-link">
-              <Link to="/account/deposit">
+              <Link to="/account/password">
                 <img src="images/icon-cog.svg"/>
                 <span className="icon-labels">Account</span>
               </Link>

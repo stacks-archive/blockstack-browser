@@ -85,10 +85,16 @@ class BackupAccountPage extends Component {
                       Anyone who has it will be able to regain access to your account.
                     </i>
                   </p>
-                  <div className="highlight">
-                    <pre>
-                      <code>{this.state.decryptedBackupPhrase}</code>
-                    </pre>
+
+                  <div className="card">
+                    <div className="card-header">
+                      Backup Phrase
+                    </div>
+                    <div className="card-block">
+                      <p className="card-text">
+                        {this.state.decryptedBackupPhrase}
+                      </p>
+                    </div>
                   </div>
                 </div>
                 :
