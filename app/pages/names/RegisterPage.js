@@ -128,16 +128,6 @@ class RegisterPage extends Component {
             </div>
           </fieldset>
           <div>
-            <label>Registration Cost</label>
-            <div className="highlight">
-              <pre>
-                <code>
-                  {this.state.nameCost} mBTC
-                </code>
-              </pre>
-            </div>
-          </div>
-          <div>
             <button className="btn btn-primary" onClick={this.registerIdentity}>
               Register
             </button>
@@ -151,6 +141,17 @@ class RegisterPage extends Component {
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage)
 
 /*
+          <div>
+            <label>Registration Cost</label>
+            <div className="highlight">
+              <pre>
+                <code>
+                  {this.state.nameCost} mBTC
+                </code>
+              </pre>
+            </div>
+          </div>
+
 <fieldset className="form-group">
   <select name="type" className="c-select"
     defaultValue={this.state.type} onChange={this.onChange}>
