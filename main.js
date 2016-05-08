@@ -1,20 +1,15 @@
-/* eslint strict: 0 */
-'use strict';
+import { app, BrowserWindow, Menu, crashReporter, screen, shell } from 'electron';
 
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const Menu = electron.Menu;
-const crashReporter = electron.crashReporter;
-const shell = electron.shell;
+const menuTemplates = require('./menuTemplates');
 let menu;
 let template;
 let mainWindow = null;
 
-
-require('electron-debug')();
 crashReporter.start();
 
+if (process.env.NODE_ENV === 'development') {
+  require('electron-debug')();
+}
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -24,9 +19,8 @@ app.on('window-all-closed', () => {
   }
 });
 
-
 app.on('ready', () => {
-  var size = electron.screen.getPrimaryDisplay().workAreaSize;
+  var size = screen.getPrimaryDisplay().workAreaSize;
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 900,
@@ -51,8 +45,11 @@ app.on('ready', () => {
   }
 
   if (process.platform === 'darwin') {
-    template = [];
-    menu = Menu.buildFromTemplate(template);
-    mainWindow.setMenu(menu);
+    template = menuTemplates.darwinMenuTemplate;
+  } else {
+    template = menuTemplates.nonDarwinMenuTemplate;
   }
+
+  menu = Menu.buildFromTemplate(template);
+  mainWindow.setMenu(menu);
 });
