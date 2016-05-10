@@ -82,6 +82,11 @@ class PublicKeysTab extends Component {
           </button>
           &nbsp;
           <button className="btn btn-primary"
+            onClick={() => {this.createItem('ethereum')}}>
+            Add Ethereum Address
+          </button>
+          &nbsp;
+          <button className="btn btn-primary"
             onClick={() => {this.createItem('pgp')}}>
             Add PGP Key
           </button>
@@ -90,38 +95,49 @@ class PublicKeysTab extends Component {
           return (
             <div key={index}>
               { account.proofType === 'signature' ?
-              <div>
-                <div hidden>
+              <div className="card">
+                <div className="card-header">
+                  {account.service}
+                  <div hidden>
+                    <InputGroup
+                      name="service" label="Key Type"
+                      data={profile.account[index]}
+                      onChange={(event) => {this.onChange(index, event)}} />
+                  </div>
+                </div>
+                <div className="card-block">
+                  { account.service === 'bitcoin' ?
                   <InputGroup
-                    name="service" label="Key Type"
+                    name="identifier" label="Bitcoin Address"
                     data={profile.account[index]}
                     onChange={(event) => {this.onChange(index, event)}} />
-                </div>
-                { account.service === 'bitcoin' ?
-                <InputGroup
-                  name="identifier" label="Bitcoin Address"
-                  data={profile.account[index]}
-                  onChange={(event) => {this.onChange(index, event)}} />
-                : null }
-                { account.service === 'pgp' ?
-                <InputGroup
-                  name="identifier" label="PGP Public Key"
-                  data={profile.account[index]}
-                  onChange={(event) => {this.onChange(index, event)}} />
-                : null }
-                <InputGroup
-                  name="proofMessage" label="Proof Message"
-                  data={profile.account[index]}
-                  onChange={(event) => {this.onChange(index, event)}} />
-                <InputGroup
-                  name="proofSignature" label="Proof Signature"
-                  data={profile.account[index]}
-                  onChange={(event) => {this.onChange(index, event)}} />
-                <div className="form-group">
-                  <button className="btn btn-outline-primary"
-                    onClick={(event) => {this.deleteItem(index)}}>
-                    Delete
-                  </button>
+                  : null }
+                  { account.service === 'ethereum' ?
+                  <InputGroup
+                    name="identifier" label="Ethereum Address"
+                    data={profile.account[index]}
+                    onChange={(event) => {this.onChange(index, event)}} />
+                  : null }
+                  { account.service === 'pgp' ?
+                  <InputGroup
+                    name="identifier" label="PGP Public Key"
+                    data={profile.account[index]}
+                    onChange={(event) => {this.onChange(index, event)}} />
+                  : null }
+                  <InputGroup
+                    name="proofMessage" label="Proof Message"
+                    data={profile.account[index]}
+                    onChange={(event) => {this.onChange(index, event)}} />
+                  <InputGroup
+                    name="proofSignature" label="Proof Signature"
+                    data={profile.account[index]}
+                    onChange={(event) => {this.onChange(index, event)}} />
+                  <div className="form-group">
+                    <button className="btn btn-outline-primary"
+                      onClick={(event) => {this.deleteItem(index)}}>
+                      Delete
+                    </button>
+                  </div>
                 </div>
               </div>
               : null }

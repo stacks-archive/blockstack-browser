@@ -28,7 +28,8 @@ class SocialAccountsTab extends Component {
         'google-plus':'Google+',
         'angellist': 'AngelList',
         'stack-overflow': 'StackOverflow',
-        'hacker-news': 'Hacker News'
+        'hacker-news': 'Hacker News',
+        'openbazaar': 'OpenBazaar'
       },
       instructionSectionsShown: {
       }
@@ -123,6 +124,7 @@ class SocialAccountsTab extends Component {
             <option value="angellist">AngelList</option>
             <option value="stack-overflow">StackOverflow</option>
             <option value="hacker-news">Hacker News</option>
+            <option value="openbazaar">OpenBazaar</option>
           </select>
         </div>
         <div className="form-group">
@@ -137,50 +139,59 @@ class SocialAccountsTab extends Component {
             <div key={index}>
               { account.proofType === 'http' ?
               <div className="card">
-              <div className="card-header">
-                {accountServiceName}
-                <div hidden>
-                  <InputGroup
-                    name="service" label="Site Name"
-                    data={account}
-                    onChange={(event) => { this.onChange(index, event) }} />
+                <div className="card-header">
+                  {accountServiceName}
+                  <div hidden>
+                    <InputGroup
+                      name="service" label="Site Name"
+                      data={account}
+                      onChange={(event) => { this.onChange(index, event) }} />
+                  </div>
                 </div>
-              </div>
-              <div className="card-block">
-                <InputGroup
-                  name="identifier" label={"Username"}
-                  data={account}
-                  onChange={(event) => { this.onChange(index, event) }} />
-                
-                { ['twitter', 'facebook', 'github'].indexOf(account.service) > -1 ?
-                <div>
+                <div className="card-block">
+                  { ['openbazaar'].indexOf(account.service) < 0 ?
                   <InputGroup
-                    name="proofUrl" label={"Proof URL"}
+                    name="identifier" label={"Username"}
                     data={account}
                     onChange={(event) => { this.onChange(index, event) }} />
+                  : null }
 
-                  { this.state.instructionSectionsShown.hasOwnProperty(String(index)) ?
-                    <VerificationInfo
-                      service={account.service}
-                      identifier={account.identifier} />
-                  :
+                  { ['openbazaar'].indexOf(account.service) > -1 ?
+                  <InputGroup
+                    name="identifier" label={"GUID"}
+                    data={account}
+                    onChange={(event) => { this.onChange(index, event) }} />
+                  : null }
+                  
+                  { ['twitter', 'facebook', 'github'].indexOf(account.service) > -1 ?
+                  <div>
+                    <InputGroup
+                      name="proofUrl" label={"Proof URL"}
+                      data={account}
+                      onChange={(event) => { this.onChange(index, event) }} />
+
+                    { this.state.instructionSectionsShown.hasOwnProperty(String(index)) ?
+                      <VerificationInfo
+                        service={account.service}
+                        identifier={account.identifier} />
+                    :
+                    <div className="form-group">
+                      <button className="btn btn-outline-primary"
+                        onClick={() => {this.showVerificationInstructions(index)}}>
+                        Verification Instructions
+                      </button>
+                    </div>
+                    }
+                  </div>
+                  : null }
+
                   <div className="form-group">
                     <button className="btn btn-outline-primary"
-                      onClick={() => {this.showVerificationInstructions(index)}}>
-                      Verification Instructions
+                      onClick={() => {this.deleteItem(index)}}>
+                      Delete
                     </button>
                   </div>
-                  }
                 </div>
-                : null }
-
-                <div className="form-group">
-                  <button className="btn btn-outline-primary"
-                    onClick={() => {this.deleteItem(index)}}>
-                    Delete
-                  </button>
-                </div>
-              </div>
               </div>
               : null }
             </div>

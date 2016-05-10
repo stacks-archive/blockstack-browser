@@ -26,7 +26,8 @@ class SocialAccountListItem extends Component {
       ['hacker-news', 'fa-hacker-news'],
       ['bitcoin', 'fa-bitcoin'],
       ['pgp', 'fa-key'],
-      ['website', 'fa-link']
+      ['website', 'fa-link'],
+      ['openbazaar', 'fa-shopping-cart']
     ])
     let socialMediaClass = ''
     if (socialMediaClasses.has(this.props.service)) {
@@ -35,6 +36,8 @@ class SocialAccountListItem extends Component {
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
     if (this.props.service === 'bitcoin') {
       accountUrl = `https://www.blocktrail.com/BTC/address/${this.props.identifier}`
+    } else if (this.props.service === 'openbazaar') {
+      accountUrl = `ob://${this.props.identifier}`
     }
 
     let identifier = this.props.identifier

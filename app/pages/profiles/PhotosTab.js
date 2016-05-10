@@ -79,18 +79,20 @@ class PhotosTab extends Component {
         </div>
         { images.map((image, index) => {
           return (
-            <div key={index}>
-              { image.name === 'avatar' ?
-              <InputGroup
-                name="contentUrl" label="Profile Image URL"
-                data={profile.image[index]}
-                onChange={(event) => {this.onChange(event, index)}} />
-              : null }
-              <div className="form-group">
-                <button className="btn btn-outline-primary"
-                  onClick={() => {this.deleteItem(index)}}>
-                  Delete
-                </button>
+            <div key={index} className="card">
+              <div className="card-block">
+                { image.name === 'avatar' ?
+                <InputGroup
+                  name="contentUrl" label="Profile Image URL"
+                  data={profile.image[index]}
+                  onChange={(event) => {this.onChange(event, index)}} />
+                : null }
+                <div className="form-group">
+                  <button className="btn btn-outline-primary"
+                    onClick={() => {this.deleteItem(index)}}>
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           )
