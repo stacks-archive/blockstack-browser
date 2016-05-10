@@ -68,32 +68,42 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
 
 function getIdentities(addresses, addressLookupUrl, localIdentities) {
   return dispatch => {
-    fetch(addressLookupUrl.replace('{address}', addresses.join(',')))
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        let namesOwned = []
-        if (responseJson.hasOwnProperty('results')) {
-          responseJson.results.map((addressResult) => {
-            if (addressResult.hasOwnProperty('names')) {
-              addressResult.names.map((name) => {
-                namesOwned.push(name)
-              })
-            }
-          })
-        }
+    if (addresses.length === 0) {
+      let namesOwned = []
+      let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+      if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
+        // pass
+      } else {
+        dispatch(updateOwnedIdentities(localIdentities, namesOwned))
+      }
+    } else {
+      fetch(addressLookupUrl.replace('{address}', addresses.join(',')))
+        .then((response) => response.text())
+        .then((responseText) => JSON.parse(responseText))
+        .then((responseJson) => {
+          let namesOwned = []
+          if (responseJson.hasOwnProperty('results')) {
+            responseJson.results.map((addressResult) => {
+              if (addressResult.hasOwnProperty('names')) {
+                addressResult.names.map((name) => {
+                  namesOwned.push(name)
+                })
+              }
+            })
+          }
 
-        let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+          let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
 
-        if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
-          // pass
-        } else {
-          dispatch(updateOwnedIdentities(localIdentities, namesOwned))
-        }
-      })
-      .catch((error) => {
-        console.warn(error)
-      })
+          if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
+            // pass
+          } else {
+            dispatch(updateOwnedIdentities(localIdentities, namesOwned))
+          }
+        })
+        .catch((error) => {
+          console.warn(error)
+        })
+    }
   }
 }
 
