@@ -173,7 +173,8 @@ class ViewProfilePage extends Component {
                       key={account.service + '-' + account.identifier}
                       service={account.service}
                       identifier={account.identifier}
-                      proofUrl={account.proofUrl} />
+                      proofUrl={account.proofUrl}
+                      listItem={true} />
                   )
                 })}
               </ul>

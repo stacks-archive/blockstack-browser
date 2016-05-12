@@ -28,3 +28,23 @@ export function isBackupPhraseValid(backupPhrase) {
 
   return { isValid: isValid, error: error }
 }
+
+export const socialMediaClasses = new Map([
+  ['twitter', 'fa-twitter'],
+  ['facebook', 'fa-facebook'],
+  ['github', 'fa-github'],
+  ['linkedin', 'fa-linkedin'],
+  ['instagram', 'fa-instagram'],
+  ['pinterest', 'fa-pinterest'],
+  ['reddit', 'fa-reddit'],
+  ['youtube', 'fa-youtube'],
+  ['tumblr', 'fa-tumblr'],
+  ['google-plus', 'fa-google-plus'],
+  ['stack-overflow', 'fa-stack-overflow'],
+  ['angellist', 'fa-angellist'],
+  ['hacker-news', 'fa-hacker-news'],
+  ['bitcoin', 'fa-bitcoin'],
+  ['pgp', 'fa-key'],
+  ['website', 'fa-link'],
+  ['openbazaar', 'fa-shopping-cart']
+])

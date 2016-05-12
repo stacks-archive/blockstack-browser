@@ -55,7 +55,7 @@ class SearchPage extends Component {
             if (result.profile && result.username) {
               return (
                 <SearchItem key={result.username + '.id'}
-                  id={result.username + '.id'}
+                  domainName={result.username + '.id'}
                   profile={result.profile} />
               )
             }

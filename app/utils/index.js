@@ -1,4 +1,4 @@
-export { isPasswordValid, isBackupPhraseValid } from './account-utils'
+export { isPasswordValid, isBackupPhraseValid, socialMediaClasses } from './account-utils'
 export { getNamesOwned, getIdentities } from './api-utils'
 export {
   getNumberOfVerifications, compareProfilesByVerifications
