@@ -109,7 +109,7 @@ class EditProfilePage extends Component {
                 <fieldset>
                   <Link to={this.props.location.pathname.replace('/edit', '')}
                     className="btn btn-outline-primary">
-                    View Profile
+                    Save + View Profile
                   </Link>
                 </fieldset>
               </div>
@@ -137,13 +137,13 @@ class EditProfilePage extends Component {
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case "Private Info":
+                    case "Address":
                       return (
                         <PrivateInfoTab
                           profile={this.state.profile}
                           saveProfile={this.saveProfile} />
                       )
-                    case "Public Keys":
+                    case "Digital Keys":
                       return (
                         <PublicKeysTab
                           profile={this.state.profile}

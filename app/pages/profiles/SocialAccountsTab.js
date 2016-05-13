@@ -4,6 +4,8 @@ import {
   InputGroup, SaveButton, VerificationInfo
 } from '../../components/index'
 
+import { webAccountTypes } from '../../utils'
+
 class SocialAccountsTab extends Component {
   static propTypes = {
     profile: PropTypes.object.isRequired,
@@ -15,22 +17,6 @@ class SocialAccountsTab extends Component {
     this.state = {
       profile: this.props.profile,
       newAccountType: null,
-      accountServiceNames: {
-        'twitter': 'Twitter',
-        'facebook': 'Facebook',
-        'instagram': 'Instagram',
-        'linkedin': 'LinkedIn',
-        'reddit': 'Reddit',
-        'youtube': 'YouTube',
-        'tumblr': 'Tumblr',
-        'pinterest': 'Pinterest',
-        'github': 'GitHub',
-        'google-plus':'Google+',
-        'angellist': 'AngelList',
-        'stack-overflow': 'StackOverflow',
-        'hacker-news': 'Hacker News',
-        'openbazaar': 'OpenBazaar'
-      },
       instructionSectionsShown: {
       }
     }
@@ -111,20 +97,14 @@ class SocialAccountsTab extends Component {
           <select name="newAccountType" className="custom-select" defaultValue="none"
             onChange={this.updateNewAccountType}>
             <option value="none">Account type</option>
-            <option value="twitter">Twitter</option>
-            <option value="facebook">Facebook</option>
-            <option value="github">GitHub</option>
-            <option value="instagram">Instagram</option>
-            <option value="linkedin">Linkedin</option>
-            <option value="tumblr">Tumblr</option>
-            <option value="reddit">Reddit</option>
-            <option value="pinterest">Pinterest</option>
-            <option value="youtube">YouTube</option>
-            <option value="google-plus">Google+</option>
-            <option value="angellist">AngelList</option>
-            <option value="stack-overflow">StackOverflow</option>
-            <option value="hacker-news">Hacker News</option>
-            <option value="openbazaar">OpenBazaar</option>
+            { Object.keys(webAccountTypes).map((webAccountID) => {
+              let webAccountType = webAccountTypes[webAccountID]
+              if (webAccountType !== undefined && webAccountType.social) {
+                return (
+                  <option value={webAccountID}>{webAccountType.label}</option>
+                )
+              }
+            })}
           </select>
         </div>
         <div className="form-group">
@@ -134,68 +114,71 @@ class SocialAccountsTab extends Component {
         </div>
 
         { accounts.map((account, index) => {
-          let accountServiceName = this.state.accountServiceNames[account.service]
-          return (
-            <div key={index}>
-              { account.proofType === 'http' ?
-              <div className="card">
-                <div className="card-header">
-                  {accountServiceName}
-                  <div hidden>
-                    <InputGroup
-                      name="service" label="Site Name"
-                      data={account}
-                      onChange={(event) => { this.onChange(index, event) }} />
+          let webAccountType = webAccountTypes[account.service]
+          if (webAccountType) {
+            let accountServiceName = webAccountType.label
+            return (
+              <div key={index}>
+                { account.proofType === 'http' ?
+                <div className="card">
+                  <div className="card-header">
+                    {accountServiceName}
+                    <div hidden>
+                      <InputGroup
+                        name="service" label="Site Name"
+                        data={account}
+                        onChange={(event) => { this.onChange(index, event) }} />
+                    </div>
                   </div>
-                </div>
-                <div className="card-block">
-                  { ['openbazaar'].indexOf(account.service) < 0 ?
-                  <InputGroup
-                    name="identifier" label={"Username"}
-                    data={account}
-                    onChange={(event) => { this.onChange(index, event) }} />
-                  : null }
-
-                  { ['openbazaar'].indexOf(account.service) > -1 ?
-                  <InputGroup
-                    name="identifier" label={"GUID"}
-                    data={account}
-                    onChange={(event) => { this.onChange(index, event) }} />
-                  : null }
-                  
-                  { ['twitter', 'facebook', 'github'].indexOf(account.service) > -1 ?
-                  <div>
+                  <div className="card-block">
+                    { ['openbazaar'].indexOf(account.service) < 0 ?
                     <InputGroup
-                      name="proofUrl" label={"Proof URL"}
+                      name="identifier" label={"Username"}
                       data={account}
                       onChange={(event) => { this.onChange(index, event) }} />
+                    : null }
 
-                    { this.state.instructionSectionsShown.hasOwnProperty(String(index)) ?
-                      <VerificationInfo
-                        service={account.service}
-                        identifier={account.identifier} />
-                    :
+                    { ['openbazaar'].indexOf(account.service) > -1 ?
+                    <InputGroup
+                      name="identifier" label={"GUID"}
+                      data={account}
+                      onChange={(event) => { this.onChange(index, event) }} />
+                    : null }
+                    
+                    { ['twitter', 'facebook', 'github'].indexOf(account.service) > -1 ?
+                    <div>
+                      <InputGroup
+                        name="proofUrl" label={"Proof URL"}
+                        data={account}
+                        onChange={(event) => { this.onChange(index, event) }} />
+
+                      { this.state.instructionSectionsShown.hasOwnProperty(String(index)) ?
+                        <VerificationInfo
+                          service={account.service}
+                          identifier={account.identifier} />
+                      :
+                      <div className="form-group">
+                        <button className="btn btn-outline-primary"
+                          onClick={() => {this.showVerificationInstructions(index)}}>
+                          Verification Instructions
+                        </button>
+                      </div>
+                      }
+                    </div>
+                    : null }
+
                     <div className="form-group">
                       <button className="btn btn-outline-primary"
-                        onClick={() => {this.showVerificationInstructions(index)}}>
-                        Verification Instructions
+                        onClick={() => {this.deleteItem(index)}}>
+                        Delete
                       </button>
                     </div>
-                    }
-                  </div>
-                  : null }
-
-                  <div className="form-group">
-                    <button className="btn btn-outline-primary"
-                      onClick={() => {this.deleteItem(index)}}>
-                      Delete
-                    </button>
                   </div>
                 </div>
+                : null }
               </div>
-              : null }
-            </div>
-          )
+            )
+          }
         }) }
       </div>
     )

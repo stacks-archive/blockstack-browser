@@ -81,7 +81,7 @@
     "blockstack-profiles": "^0.3.2",
     "bootstrap": "git+ssh://git@github.com/blockstack/blockstack-bootstrap.git",
     "electron-debug": "^0.5.1",
-    "font-awesome": "^4.4.0",
+    "font-awesome": "^4.6.1",
     "hasprop": "0.0.4",
     "history": "^2.0.0-rc2",
     "is-retina": "^1.0.3",

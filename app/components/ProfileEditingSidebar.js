@@ -12,8 +12,8 @@ class ProfileEditingSidebar extends Component {
       { label: 'Basic Info', isActive: false },
       { label: 'Photos', isActive: false },
       { label: 'Social Accounts', isActive: false },
-      { label: 'Private Info', isActive: false },
-      { label: 'Public Keys', isActive: false }
+      { label: 'Digital Keys', isActive: false },
+      { label: 'Address', isActive: false },
     ]
     tabs.map((tab) => {
       if (tab.label === this.props.activeTab) {

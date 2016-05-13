@@ -39,10 +39,6 @@ class PersonalInfoTab extends Component {
     
     return (
       <div>
-        <InputGroup name="birthDate" label="Birth Date"
-          data={profile}
-          onChange={this.onChange}
-          onBlur={this.saveProfile} />
         <InputGroup name="streetAddress" label="Street Address"
           data={profile.address}
           onChange={(event) => {this.onChange(event, 'address')}}
@@ -61,6 +57,10 @@ class PersonalInfoTab extends Component {
           label="Address Country"
           data={profile.address}
           onChange={(event) => {this.onChange(event, 'address')}}
+          onBlur={this.saveProfile} />
+        <InputGroup name="birthDate" label="Birth Date"
+          data={profile}
+          onChange={this.onChange}
           onBlur={this.saveProfile} />
       </div>
     )
