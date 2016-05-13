@@ -101,7 +101,9 @@ class SocialAccountsTab extends Component {
               let webAccountType = webAccountTypes[webAccountID]
               if (webAccountType !== undefined && webAccountType.social) {
                 return (
-                  <option value={webAccountID}>{webAccountType.label}</option>
+                  <option key={webAccountID} value={webAccountID}>
+                    {webAccountType.label}
+                  </option>
                 )
               }
             })}

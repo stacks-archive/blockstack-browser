@@ -34,7 +34,6 @@ class SocialAccountItem extends Component {
 
   getIconClass() {
     let iconClass = ''
-    console.log(webAccountTypes)
     if (webAccountTypes.hasOwnProperty(this.props.service)) {
       iconClass = webAccountTypes[this.props.service].iconClass
     }
