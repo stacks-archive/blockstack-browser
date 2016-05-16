@@ -119,17 +119,24 @@ class PublicKeysTab extends Component {
                     onChange={(event) => {this.onChange(index, event)}} />
                   : null }
                   { account.service === 'pgp' ?
-                  <InputGroup
-                    name="identifier" label="PGP Public Key"
-                    data={profile.account[index]}
-                    onChange={(event) => {this.onChange(index, event)}} />
+                  <span>
+                    <InputGroup
+                      name="identifier" label="PGP Fingerprint"
+                      data={profile.account[index]}
+                      onChange={(event) => {this.onChange(index, event)}} />
+                    <InputGroup
+                      name="publicKey" label="PGP Public Key"
+                      data={profile.account[index]}
+                      onChange={(event) => {this.onChange(index, event)}}
+                      textarea={true} textareaRows={5} />
+                  </span>
                   : null }
                   <InputGroup
-                    name="proofMessage" label="Proof Message"
+                    name="proofSignature" label="Proof Signature"
                     data={profile.account[index]}
                     onChange={(event) => {this.onChange(index, event)}} />
                   <InputGroup
-                    name="proofSignature" label="Proof Signature"
+                    name="proofMessage" label="Proof Message"
                     data={profile.account[index]}
                     onChange={(event) => {this.onChange(index, event)}} />
                   <div className="form-group">

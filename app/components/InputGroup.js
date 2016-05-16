@@ -9,7 +9,9 @@ class InputGroup extends Component {
     onChange: PropTypes.func,
     type: PropTypes.string,
     disabled: PropTypes.bool,
-    inverse: PropTypes.bool
+    inverse: PropTypes.bool,
+    textarea: PropTypes.bool,
+    textareaRows: PropTypes.number
   }
 
   render() {
@@ -38,6 +40,18 @@ class InputGroup extends Component {
       <div className="form-group m-b-11">
         <fieldset>
           <div className="col-xs-8 pull-right">
+            { this.props.textarea ?
+              <textarea name={this.props.name}
+              disabled={disabled}
+              className={inputClass}
+              type={type}
+              placeholder={
+                this.props.placeholder ? this.props.placeholder : this.props.label
+              }
+              value={value}
+              onChange={this.props.onChange}
+              rows={this.props.textareaRows || 2} />
+            :
             <input name={this.props.name}
               disabled={disabled}
               className={inputClass}
@@ -47,6 +61,7 @@ class InputGroup extends Component {
               }
               value={value}
               onChange={this.props.onChange} />
+            }
           </div>
           <label className={`col-xs-4 ${labelClass}`}>
             {this.props.label}

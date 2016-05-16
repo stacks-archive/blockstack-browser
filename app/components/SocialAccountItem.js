@@ -18,18 +18,23 @@ class SocialAccountItem extends Component {
     this.getAccountUrl = this.getAccountUrl.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
     this.getIdentifier = this.getIdentifier.bind(this)
+    this.followLink = this.followLink.bind(this)
   }
 
   getAccountUrl() {
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
-    if (this.props.service === 'bitcoin') {
-      accountUrl = `https://www.blocktrail.com/BTC/address/${this.props.identifier}`
-    } else if (this.props.service === 'openbazaar') {
-      accountUrl = `ob://${this.props.identifier}`
-    } else if (this.props.service === 'snapchat') {
-      accountUrl = `https://snapchat.com/add/${this.props.identifier}`
+    if (webAccountTypes.hasOwnProperty(this.props.service)) {
+      if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
+        let urlTemplate = webAccountTypes[this.props.service].urlTemplate
+        accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
+      }
     }
     return accountUrl
+  }
+
+  followLink(event) {
+    event.preventDefault()
+    shell.openExternal(this.getAccountUrl())
   }
 
   getIconClass() {
@@ -52,10 +57,9 @@ class SocialAccountItem extends Component {
     if (this.props.listItem === true) {
       return (
         <li>
-          <a href="#" onClick={(event) => {
-            event.preventDefault()
-            shell.openExternal(this.getAccountUrl())
-          }}>
+          <a href="#" data-toggle="tooltip"
+            title={webAccountTypes[this.props.service].label}
+            onClick={this.followLink}>
             <i className={`fa ${this.getIconClass()}`} />
             <span>{this.getIdentifier()}</span>
           </a>

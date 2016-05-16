@@ -31,57 +31,79 @@ export function isBackupPhraseValid(backupPhrase) {
 
 export const webAccountTypes = {
   'twitter': {
-    label: 'Twitter', iconClass: 'fa-twitter', social: true
+    label: 'Twitter', iconClass: 'fa-twitter', social: true,
+    urlTemplate: 'https://twitter.com/{identifier}'
   },
   'facebook': {
-    label: 'Facebook', iconClass: 'fa-facebook', social: true
+    label: 'Facebook', iconClass: 'fa-facebook', social: true,
+    urlTemplate: 'https://facebook.com/{identifier}'
   },
   'github': {
-    label: 'GitHub', iconClass: 'fa-github', social: true
+    label: 'GitHub', iconClass: 'fa-github-alt', social: true,
+    urlTemplate: 'https://github.com/{identifier}'
   },
   'instagram': {
-    label: 'Instagram', iconClass: 'fa-instagram', social: true
+    label: 'Instagram', iconClass: 'fa-instagram', social: true,
+    urlTemplate: 'https://instagram.com/{identifier}'
   },
   'linkedin': {
-    label: 'LinkedIn', iconClass: 'fa-linkedin', social: true
+    label: 'LinkedIn', iconClass: 'fa-linkedin', social: true,
+    urlTemplate: 'https://www.linkedin.com/in/{identifier}'
   },
   'tumblr': {
-    label: 'Tumblr', iconClass: 'fa-tumblr', social: true
+    label: 'Tumblr', iconClass: 'fa-tumblr', social: true,
+    urlTemplate: 'http://{identifier}.tumblr.com'
   },
   'reddit': {
-    label: 'Reddit', iconClass: 'fa-reddit', social: true
+    label: 'Reddit', iconClass: 'fa-reddit-alien', social: true,
+    urlTemplate: 'https://www.reddit.com/user/{identifier}'
   },
   'pinterest': {
-    label: 'Pinterest', iconClass: 'fa-pinterest', social: true
+    label: 'Pinterest', iconClass: 'fa-pinterest', social: true,
+    urlTemplate: 'https://pinterest.com/{identifier}'
   },
   'youtube': {
-    label: 'YouTube', iconClass: 'fa-youtube', social: true
+    label: 'YouTube', iconClass: 'fa-youtube', social: true,
+    urlTemplate: 'https://www.youtube.com/channel/{identifier}'
   },
   'google-plus': {
-    label: 'Google+', iconClass: 'fa-google-plus', social: true
+    label: 'Google+', iconClass: 'fa-google-plus', social: true,
+    urlTemplate: 'https://plus.google.com/u/{identifier}'
   },
   'angellist': {
-    label: 'AngelList', iconClass: 'fa-angellist', social: true
+    label: 'AngelList', iconClass: 'fa-angellist', social: true,
+    urlTemplate: 'https://angel.co/{identifier}'
   },
   'stack-overflow': {
-    label: 'StackOverflow', iconClass: 'fa-stack-overflow', social: true
+    label: 'StackOverflow', iconClass: 'fa-stack-overflow', social: true,
+    urlTemplate: 'http://stackoverflow.com/users/{identifier}'
   },
   'hacker-news': {
-    label: 'Hacker News', iconClass: 'fa-hacker-news', social: true
+    label: 'Hacker News', iconClass: 'fa-hacker-news', social: true,
+    urlTemplate: 'https://news.ycombinator.com/user?id={identifier}'
   },
   'openbazaar': {
-    label: 'OpenBazaar', iconClass: 'fa-shopping-cart', social: true
+    label: 'OpenBazaar', iconClass: 'fa-shopping-cart', social: true,
+    urlTemplate: 'ob://{identifier}'
   },
   'snapchat': {
-    label: 'Snapchat', iconClass: 'fa-snapchat', social: true
+    label: 'Snapchat', iconClass: 'fa-snapchat-ghost', social: true,
+    urlTemplate: 'https://snapchat.com/add/{identifier}'
   },
   'website': {
-    label: 'Website', iconClass: 'fa-link', social: false
+    label: 'Website', iconClass: 'fa-link', social: false,
+    urlTemplate: '{identifier}'
   },
   'pgp': {
-    label: 'PGP', iconClass: 'fa-key', social: false
+    label: 'PGP', iconClass: 'fa-key', social: false,
+    urlTemplate: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on'
   },
   'bitcoin': {
-    label: 'Bitcoin', iconClass: 'fa-bitcoin', social: false
+    label: 'Bitcoin', iconClass: 'fa-bitcoin', social: false,
+    urlTemplate: 'https://www.blocktrail.com/BTC/address/{identifier}'
+  },
+  'ethereum': {
+    label: 'Ethereum', iconClass: 'fa-key', social: false,
+    urlTemplate: 'https://tradeblock.com/ethereum/account/{identifier}'
   }
 }
