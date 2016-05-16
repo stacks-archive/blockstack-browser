@@ -9,7 +9,8 @@ class SocialAccountItem extends Component {
     listItem: PropTypes.bool.isRequired,
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
-    proofUrl: PropTypes.string
+    proofUrl: PropTypes.string,
+    verified: PropTypes.bool
   }
 
   constructor(props) {
@@ -18,7 +19,7 @@ class SocialAccountItem extends Component {
     this.getAccountUrl = this.getAccountUrl.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
     this.getIdentifier = this.getIdentifier.bind(this)
-    this.followLink = this.followLink.bind(this)
+    this.openExternalLink = this.openExternalLink.bind(this)
   }
 
   getAccountUrl() {
@@ -32,7 +33,7 @@ class SocialAccountItem extends Component {
     return accountUrl
   }
 
-  followLink(event) {
+  openExternalLink(event) {
     event.preventDefault()
     shell.openExternal(this.getAccountUrl())
   }
@@ -59,9 +60,20 @@ class SocialAccountItem extends Component {
         <li>
           <a href="#" data-toggle="tooltip"
             title={webAccountTypes[this.props.service].label}
-            onClick={this.followLink}>
-            <i className={`fa ${this.getIconClass()}`} />
-            <span>{this.getIdentifier()}</span>
+            onClick={this.openExternalLink}>
+            {this.props.verified ?
+            <span className="fa-stack fa-lg">
+              <i className="fa fa-certificate fa-stack-2x fa-green" />
+              <i className={`fa ${this.getIconClass()} fa-inverse fa-stack-1x`} />
+            </span>
+            :
+            <span className="fa-stack fa-lg">
+              <i className={`fa ${this.getIconClass()} fa-inverse fa-stack-1x`} />
+            </span>
+            }
+            <span className="app-account-identifier">
+              {this.getIdentifier()}
+            </span>
           </a>
         </li>
       )

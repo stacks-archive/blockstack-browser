@@ -168,13 +168,18 @@ class ViewProfilePage extends Component {
             <div className="profile-right-col inverse">
               <ul>
                 {accounts.map(function(account) {
+                  let verified = false
+                  if (account.proofUrl && account.proofUrl !== "") {
+                    verified = true
+                  }
                   return (
                     <SocialAccountItem
                       key={account.service + '-' + account.identifier}
                       service={account.service}
                       identifier={account.identifier}
                       proofUrl={account.proofUrl}
-                      listItem={true} />
+                      listItem={true}
+                      verified={verified} />
                   )
                 })}
               </ul>

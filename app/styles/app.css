@@ -79,7 +79,7 @@ a,a:focus{outline:none;}
 .idcard-name{font-weight:300;font-size:1.25em;}
 .id-social > div > ul{margin-top:5px;margin-bottom:5px;margin-left:15px;height:39px;list-style:none;}
 .id-social > div > ul > li a{overflow:hidden;padding-left:10px;height:32px;color:rgba(255,255,255,1);vertical-align:middle;text-overflow:ellipsis;white-space:nowrap;line-height:32px;}
-i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;padding:0 6px;text-align:right;font-size:16px;}
+i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;}
 .id-social > div > ul > li a > span{padding-left:5px;}
 .idcard-wrap{margin-top:105px;color:rgba(255,255,255,1);font-weight:inherit;}
 .overlay{position:absolute;margin:-371px 0 0 0;width:16.25rem;height:371px;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,0.2);}
@@ -162,3 +162,5 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-left:178px;margin-
 @media (min-width:1200px){
 }
 
+.fa-green { color: #1d9d74; }
+.app-account-identifier { margin-left: 10px; }
