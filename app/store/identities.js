@@ -115,9 +115,8 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        const legacyProfile = responseJson[username]['profile'],
-              verifications = responseJson[username]['verifications'],
-              profile = Person.fromLegacyFormat(legacyProfile).profile
+        const profile = responseJson[username]['profile'],
+              verifications = responseJson[username]['verifications']
         dispatch(updateCurrentIdentity(domainName, profile, verifications))
       })
       .catch((error) => {
@@ -162,7 +161,10 @@ export function IdentityReducer(state = initialState, action) {
           {
             index: state.localIdentities.length,
             domainName: action.domainName,
-            profile: {},
+            profile: {
+              '@type': 'Person',
+              '@context': 'http://schema.org'
+            },
             verifications: [],
             registered: false
           }

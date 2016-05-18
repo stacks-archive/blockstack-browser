@@ -76,7 +76,7 @@ class ViewProfilePage extends Component {
     let identity = this.state.currentIdentity,
         blockchainId = identity.id
 
-    let profile = identity.profile,
+    let profile = identity.profile || {},
         verifications = identity.verifications,
         blockNumber = identity.blockNumber,
         transactionIndex = identity.transactionIndex
@@ -86,7 +86,12 @@ class ViewProfilePage extends Component {
       isLocal = true
     }
 
-    let person = new Person(profile)
+    let person
+    if (profile.hasOwnProperty('@type')) {
+      person = new Person(profile)
+    } else {
+      person = Person.fromLegacyFormat(profile)
+    }
 
     let accounts = person.profile().account || []
 
@@ -155,7 +160,7 @@ class ViewProfilePage extends Component {
                   return (
                     <Link to={`/profile/blockchain/${connection.id}`}
                       key={index} className="connections">
-                      <Image src={new Profile(connection).avatarUrl()}
+                      <Image src={new Person(connection).avatarUrl()}
                         fallbackSrc={placeholderImage}
                         style={{ width: '40px', height: '40px' }} />
                     </Link>
@@ -169,7 +174,8 @@ class ViewProfilePage extends Component {
               <ul>
                 {accounts.map(function(account) {
                   let verified = false
-                  if (account.proofUrl && account.proofUrl !== "") {
+                  if (account.proofUrl && account.proofUrl !== ""
+                      && account.proofUrl.indexOf(account.identifier) > 0) {
                     verified = true
                   }
                   return (
