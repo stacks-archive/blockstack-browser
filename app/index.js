@@ -6,7 +6,7 @@ import { createHashHistory } from 'history/lib'
 
 import routes from './routes'
 import configureDataStore from './store/configure/index'
-import './styles/app.css'
+import './app.global.css'
 import { setUpContextMenu } from './contextMenu'
 
 const store = configureDataStore()

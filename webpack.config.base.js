@@ -1,23 +1,18 @@
-/* eslint strict: 0 */
-'use strict';
+import path from 'path';
 
-const path = require('path');
-const fs = require('fs');
-
-var node_modules = fs.readdirSync('node_modules').filter(function(x) {
-  return x !== '.bin'
-});
-
-module.exports = {
+export default {
   module: {
     loaders: [{
       test: /\.jsx?$/,
       loaders: ['babel-loader'],
       exclude: /node_modules/
+    }, {
+      test: /\.json$/,
+      loader: 'json-loader'
     }]
   },
   output: {
-    path: path.join(__dirname, '../dist'),
+    path: path.join(__dirname, 'dist'),
     filename: 'bundle.js',
     libraryTarget: 'commonjs2'
   },
@@ -28,5 +23,8 @@ module.exports = {
   plugins: [
 
   ],
-  externals: node_modules
+  externals: [
+    // put your node 3rd party libraries which can't be built with webpack here
+    // (mysql, mongodb, and so on..)
+  ]
 };

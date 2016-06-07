@@ -1,34 +1,40 @@
-/* eslint strict: 0, no-console: 0 */
-'use strict';
+/* eslint no-console: 0 */
 
-const path = require('path');
-const express = require('express');
-const webpack = require('webpack');
-const config = require('./configs/webpack-development');
+import express from 'express';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
+
+import config from './webpack.config.development';
 
 const app = express();
 const compiler = webpack(config);
-
 const PORT = 3000;
 
-app.use(require('webpack-dev-middleware')(compiler, {
+const wdm = webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
   stats: {
     colors: true
   }
-}));
-
-app.use(require('webpack-hot-middleware')(compiler));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'app', 'dev-app.html'));
 });
 
-app.listen(PORT, 'localhost', err => {
+app.use(wdm);
+
+app.use(webpackHotMiddleware(compiler));
+
+const server = app.listen(PORT, 'localhost', err => {
   if (err) {
-    console.log(err);
+    console.error(err);
     return;
   }
 
   console.log(`Listening at http://localhost:${PORT}`);
+});
+
+process.on('SIGTERM', () => {
+  console.log('Stopping dev server');
+  wdm.close();
+  server.close(() => {
+    process.exit(0);
+  });
 });
