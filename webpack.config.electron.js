@@ -39,6 +39,7 @@ export default {
 
   externals: [
     ...baseConfig.externals,
+    'bootstrap',
     'font-awesome',
     'source-map-support'
   ]
