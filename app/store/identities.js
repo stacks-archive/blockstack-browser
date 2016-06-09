@@ -1,4 +1,4 @@
-import { Person, flattenObject } from 'blockchain-profile'
+import { Person } from 'blockstack-profiles'
 import { uploadObjectToS3, uploadToOnenameAPI } from '../utils'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',

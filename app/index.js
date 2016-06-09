@@ -9,12 +9,11 @@ import configureDataStore from './store/configure/index'
 
 import './app.global.css'
 
-import { setUpContextMenu } from './contextMenu'
-
 const store = configureDataStore()
 
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false })
 
+//import { setUpContextMenu } from './contextMenu'
 //setUpContextMenu()
 
 render(

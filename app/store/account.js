@@ -1,6 +1,7 @@
 import bip39 from 'bip39'
 import { encrypt, decrypt } from '../utils'
 import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
+import { ECPair } from 'bitcoinjs-lib'
 
 const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       DELETE_ACCOUNT = 'DELETE_ACCOUNT',
@@ -8,17 +9,13 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
       UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE'
 
-function createAccount(encryptedBackupPhrase, identityPublicKeychainString, bitcoinPublicKeychainString) {
-  const identityPublicKeychain = new PublicKeychain(identityPublicKeychainString),
-        bitcoinPublicKeychain = new PublicKeychain(bitcoinPublicKeychainString),
-        firstIdentityAddress = identityPublicKeychain.publiclyEnumeratedChild(0).address().toString(),
-        firstBitcoinAddress = bitcoinPublicKeychain.publiclyEnumeratedChild(0).address().toString()
-
+function createAccount(encryptedBackupPhrase, identityPublicKeychainString, bitcoinPublicKeychainString,
+                       firstIdentityAddress, firstBitcoinAddress) {
   return {
     type: CREATE_ACCOUNT,
     encryptedBackupPhrase: encryptedBackupPhrase,
-    identityPublicKeychain: identityPublicKeychain.publicKey('hex'),
-    bitcoinPublicKeychain: bitcoinPublicKeychain.publicKey('hex'),
+    identityPublicKeychain: identityPublicKeychainString,
+    bitcoinPublicKeychain: bitcoinPublicKeychainString,
     firstIdentityAddress: firstIdentityAddress,
     firstBitcoinAddress: firstBitcoinAddress
   }
@@ -49,15 +46,17 @@ function initializeWallet(password, backupPhrase) {
       backupPhrase = privateKeychain.mnemonic()
     }
 
-    const identityPrivateKeychain = privateKeychain.privatelyNamedChild('blockstack-0'),
-          bitcoinPrivateKeychain = privateKeychain.privatelyNamedChild('bitcoin-0')
+    const identityPrivateKeychain = privateKeychain.privatelyNamedChild('blockstack-0')
+    const bitcoinPrivateKeychain = privateKeychain.privatelyNamedChild('bitcoin-0')
 
-    const identityPublicKeychain = identityPrivateKeychain.publicKeychain().publicKey('hex'),
-          bitcoinPublicKeychain = bitcoinPrivateKeychain.publicKeychain().publicKey('hex')
+    const identityPublicKeychain = identityPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
+    const bitcoinPublicKeychain = bitcoinPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
+    const firstIdentityAddress = identityPrivateKeychain.ecPair.getAddress()
+    const firstBitcoinAddress = bitcoinPrivateKeychain.ecPair.getAddress()
 
     encrypt(new Buffer(backupPhrase), password, function(err, ciphertextBuffer) {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
-      dispatch(createAccount(encryptedBackupPhrase, identityPublicKeychain, bitcoinPublicKeychain))
+      dispatch(createAccount(encryptedBackupPhrase, identityPublicKeychain, bitcoinPublicKeychain, firstIdentityAddress, firstBitcoinAddress))
     })
   }
 }

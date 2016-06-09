@@ -6,7 +6,7 @@ export function isPasswordValid(password) {
   let isValid = false,
       error = null
 
-  if (password.length > 8) {
+  if (password.length >= 8) {
     isValid = true
     error = 'Password must be at least 8 characters'
   }

@@ -65,7 +65,7 @@ class RestorePage extends Component {
 
   render() {
     return (
-      <div className="body-inner">
+      <div className="body-inner draggable-page">
       <div className="container out-block-wrap">
         <div className="container-fluid out-block">
           <div className="row">

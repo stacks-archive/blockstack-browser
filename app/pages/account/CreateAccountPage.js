@@ -42,7 +42,7 @@ class CreateAccountPage extends Component {
   }
 
   createAccount() {
-    if (isPasswordValid(this.state.password)) {
+    if (isPasswordValid(this.state.password).isValid) {
       if (this.state.password === this.state.password2) {
         this.updateAlert('success', 'Creating your account...')
         this.props.initializeWallet(this.state.password)
@@ -62,7 +62,7 @@ class CreateAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner">
+      <div className="body-inner draggable-page">
       <div className="container out-block-wrap">
         <div className="container-fluid out-block">
           <div className="row">
