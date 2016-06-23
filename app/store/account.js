@@ -11,6 +11,9 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
 
 function createAccount(encryptedBackupPhrase, identityPublicKeychainString, bitcoinPublicKeychainString,
                        firstIdentityAddress, firstBitcoinAddress) {
+  mixpanel.track('Create account', {
+    distinct_id: identityPublicKeychainString
+  })
   return {
     type: CREATE_ACCOUNT,
     encryptedBackupPhrase: encryptedBackupPhrase,

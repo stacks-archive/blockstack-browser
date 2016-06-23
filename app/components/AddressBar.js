@@ -9,7 +9,8 @@ import routes from '../routes'
 function mapStateToProps(state) {
   return {
     query: state.search.query,
-    currentId: state.identities.current.id
+    currentId: state.identities.current.id,
+    identityPublicKeychain: state.account.identityAccount.publicKeychain
   }
 }
 
@@ -105,6 +106,9 @@ class AddressBar extends Component {
   onKeyPress(event) {
     if (event.key === 'Enter' && this.state.query !== '') {
       this.submitQuery(this.state.query)
+      mixpanel.track('Submit query', {
+        distinct_id: this.state.identityPublicKeychain
+      })
     }
   }
 

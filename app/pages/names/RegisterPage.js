@@ -10,7 +10,8 @@ function mapStateToProps(state) {
   return {
     username: '',
     localIdentities: state.identities.localIdentities,
-    lookupUrl: state.settings.api.nameLookupUrl
+    lookupUrl: state.settings.api.nameLookupUrl,
+    identityPublicKeychain: state.account.identityAccount.publicKeychain
   }
 }
 
@@ -100,6 +101,10 @@ class RegisterPage extends Component {
         }
       })
     }
+
+    mixpanel.track('Register identity', {
+      distinct_id: this.state.identityPublicKeychain
+    })
   }
 
   render() {
