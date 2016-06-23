@@ -103,7 +103,7 @@ class AddressBar extends Component {
   }
 
   onKeyPress(event) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && this.state.query !== '') {
       this.submitQuery(this.state.query)
     }
   }
