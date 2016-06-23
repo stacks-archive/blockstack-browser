@@ -110,27 +110,31 @@ class RegisterPage extends Component {
       <div className="body-inner body-inner-white">
         <PageHeader title="Register" />
         <div className="container">
-          { this.state.alerts.map(function(alert, index) {
-            return (
-              <Alert key={index} message={alert.message} status={alert.status} />
-            )
-          })}
-          <fieldset className="form-group">
-            <label className="capitalize">{nameLabel}</label>
-            <div className="input-group">
-              <input
-                name="username"
-                className="form-control"
-                placeholder={nameLabel}
-                value={this.state.username}
-                onChange={this.onChange} />
-              <span className="input-group-addon">.{tld}</span>
+          <div className="col-sm-3">
+          </div>
+          <div className="col-sm-6">
+            { this.state.alerts.map(function(alert, index) {
+              return (
+                <Alert key={index} message={alert.message} status={alert.status} />
+              )
+            })}
+            <fieldset className="form-group">
+              <label className="capitalize">{nameLabel}</label>
+              <div className="input-group">
+                <input
+                  name="username"
+                  className="form-control"
+                  placeholder={nameLabel}
+                  value={this.state.username}
+                  onChange={this.onChange} />
+                <span className="input-group-addon">.{tld}</span>
+              </div>
+            </fieldset>
+            <div>
+              <button className="btn btn-primary" onClick={this.registerIdentity}>
+                Register
+              </button>
             </div>
-          </fieldset>
-          <div>
-            <button className="btn btn-primary" onClick={this.registerIdentity}>
-              Register
-            </button>
           </div>
         </div>
       </div>

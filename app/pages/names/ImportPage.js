@@ -36,7 +36,9 @@ class ImportPage extends Component {
       <div className="body-inner body-inner-white">
         <PageHeader title="Import" />
         <div className="container">
-          <div>
+          <div className="col-sm-3">
+          </div>
+          <div className="col-sm-6">
             <h3>Import Identity</h3>
             <p><i>
               To import an identity into this app,
