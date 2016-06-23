@@ -44,7 +44,7 @@ class DashboardPage extends Component {
     return (
       <div className="container">
         <section className="container-fluid wrapper">
-          <div className="col-sm-6 wrapper m-t-2">
+          <div className="col-sm-6 m-t-2">
             <h4 className="text-xs-center lead-out">My Personas</h4>
               <ul className="bookmarks-temp m-b-11">
               {this.props.localIdentities.map((identity) => {
@@ -64,6 +64,14 @@ class DashboardPage extends Component {
               <Link to="/names/import" className="btn btn-block btn-secondary">
                 Import
               </Link>
+            </div>
+          </div>
+          <div className="col-sm-6 m-t-2">
+            <h4 className="text-xs-center lead-out">My Apps (coming soon)</h4>
+            <div>
+              <button className="btn btn-block btn-primary m-b-11 m-t-2" disabled>
+                Create
+              </button>
             </div>
           </div>
         </section>
