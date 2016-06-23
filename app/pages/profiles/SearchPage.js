@@ -50,6 +50,7 @@ class SearchPage extends Component {
   render() {
     return (
       <div className="container">
+        {this.state.searchResults.length ?
         <ul className="list-group">
           {this.state.searchResults.map((result, index) => {
             if (result.profile && result.username) {
@@ -61,6 +62,11 @@ class SearchPage extends Component {
             }
           })}
         </ul>
+        :
+        <h4 className="text-xs-center lead-out">
+          No results found
+        </h4>
+        }
       </div>
     )
   }
