@@ -81,29 +81,37 @@ class RestorePage extends Component {
               </p>
             </div>
             <div className="out-form-group">
-            { this.state.alerts.map(function(alert, index) {
-              return (
-                <Alert key={index} message={alert.message} status={alert.status} />
-              )
-            })}
-            <InputGroup name="backupPhrase" type="text" label="Backup phrase" inverse={true}
-              placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
-            <InputGroup name="password" type="password" label="New password" inverse={true}
-              placeholder="Password" data={this.state} onChange={this.onValueChange} />
-            <InputGroup name="passwordConfirmation" type="password" label="New password (again)" inverse={true}
-              placeholder="Password" data={this.state} onChange={this.onValueChange} />
+              { this.state.alerts.map(function(alert, index) {
+                return (
+                  <Alert key={index} message={alert.message} status={alert.status} />
+                )
+              })}
+              <InputGroup name="backupPhrase" type="text" label="Backup phrase" inverse={true}
+                placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
+              <InputGroup name="password" type="password" label="New password" inverse={true}
+                placeholder="Password" data={this.state} onChange={this.onValueChange} />
+              <InputGroup name="passwordConfirmation" type="password" label="New password (again)" inverse={true}
+                placeholder="Password" data={this.state} onChange={this.onValueChange} />
               <div className="form-group">
-                <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
-                  <button className="btn btn-block btn-secondary" onClick={this.restoreAccount}>
-                    Restore
-                  </button>
-                </div>
+                <fieldset>
+                  <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11">
+                    <button className="btn btn-block btn-secondary" onClick={this.restoreAccount}>
+                      Restore
+                    </button>
+                  </div>
+                </fieldset>
+              </div>
+              <div className="form-group">
+                <fieldset>
+                  <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11">
+                    <p className="text-sm inverse text-xs-center">Don&#39;t have an account?
+                      <br />
+                      <Link to="/account/create">Create an account</Link>
+                    </p>
+                  </div>
+                </fieldset>
               </div>
             </div>
-            <p className="text-sm inverse text-xs-center">Don&#39;t have an account?
-              <br />
-              <Link to="/account/create">Create an account</Link>
-            </p>
           </div>
         </div>
       </div>
