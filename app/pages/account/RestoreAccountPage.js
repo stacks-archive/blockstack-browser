@@ -94,7 +94,7 @@ class RestorePage extends Component {
                 placeholder="Password" data={this.state} onChange={this.onValueChange} />
               <div className="form-group">
                 <fieldset>
-                  <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11">
+                  <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
                     <button className="btn btn-block btn-secondary" onClick={this.restoreAccount}>
                       Restore
                     </button>
