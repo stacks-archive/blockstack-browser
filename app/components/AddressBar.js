@@ -94,13 +94,13 @@ class AddressBar extends Component {
       } else if (isABlockstackAppName(query)) {
         newPath = `/app/${query}`
       } else {
+        newPath = `/app/${query}`
       }
     } else if (/^local:\/\/.*$/.test(query)) {
       newPath = query.replace('local://', '/')
     } else {
       newPath = `/search/${query.replace(' ', '%20')}`
     }
-    console.log(newPath)
     this.context.router.push(newPath)
   }
 
