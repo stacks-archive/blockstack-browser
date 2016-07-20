@@ -25,7 +25,8 @@ class SearchPage extends Component {
     super(props)
 
     this.state = {
-      searchResults: []
+      searchResults: [],
+      isLoading: true
     }
   }
 
@@ -43,7 +44,8 @@ class SearchPage extends Component {
       this.componentHasNewRouteParams(nextProps.routeParams)
     }
     this.setState({
-      searchResults: nextProps.searchResults
+      searchResults: nextProps.searchResults,
+      isLoading: false
     })
   }
 
@@ -63,9 +65,17 @@ class SearchPage extends Component {
           })}
         </ul>
         :
+        <div>
+        {this.state.isLoading ?
+        <h4 className="text-xs-center lead-out">
+          Loading...
+        </h4>
+        :
         <h4 className="text-xs-center lead-out">
           No results found
         </h4>
+        }
+        </div>
         }
       </div>
     )

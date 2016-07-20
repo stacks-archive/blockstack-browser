@@ -38,10 +38,10 @@ export default (
 
     <Route path="search/:query"       component={SearchPage} />
 
-    <Route path="landing"                component={LandingPage} />
+    <Route path="landing"             component={LandingPage} />
 
-    <Route path="names/register" component={RegisterPage} />
-    <Route path="names/import"   component={ImportPage} />
+    <Route path="names/register"      component={RegisterPage} />
+    <Route path="names/import"        component={ImportPage} />
 
     <Route path="account/deposit"     component={DepositPage} />
     <Route path="account/withdraw"    component={WithdrawPage} />
