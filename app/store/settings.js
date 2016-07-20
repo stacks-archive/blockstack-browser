@@ -11,10 +11,10 @@ function resetApi() {
   return dispatch => {
     const DEFAULT_API = {
       apiCustomizationEnabled: true,
-      nameLookupUrl: 'https://api.onename.com/v1/users/{name}',
-      searchUrl: 'https://api.onename.com/v1/search?query={query}',
-      registerUrl: 'https://api.onename.com/v1/users',
-      addressLookupUrl: 'https://api.onename.com/v1/addresses/{address}/names',
+      nameLookupUrl: 'https://api.blockstack.com/v1/users/{name}',
+      searchUrl: 'https://api.blockstack.com/v1/search?query={query}',
+      registerUrl: 'https://api.blockstack.com/v1/users',
+      addressLookupUrl: 'https://api.blockstack.com/v1/addresses/{address}/names',
       hostedDataLocation: 'blockstack-labs-S3',
       s3ApiKey: '',
       s3ApiSecret: '',
@@ -32,10 +32,10 @@ export const SettingsActions = {
 const initialState = {
   api: {
     apiCustomizationEnabled: true,
-    nameLookupUrl: 'https://api.onename.com/v1/users/{name}',
-    searchUrl: 'https://api.onename.com/v1/search?query={query}',
-    registerUrl: 'https://api.onename.com/v1/users',
-    addressLookupUrl: 'https://api.onename.com/v1/addresses/{address}/names',
+    nameLookupUrl: 'https://api.blockstack.com/v1/users/{name}',
+    searchUrl: 'https://api.blockstack.com/v1/search?query={query}',
+    registerUrl: 'https://api.blockstack.com/v1/users',
+    addressLookupUrl: 'https://api.blockstack.com/v1/addresses/{address}/names',
     hostedDataLocation: 'blockstack-labs-S3',
     s3ApiKey: '',
     s3ApiSecret: '',
