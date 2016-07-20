@@ -43,7 +43,8 @@ class ViewProfilePage extends Component {
         verifications: [],
         blockNumber: null,
         transactionNumber: null
-      }
+      },
+      isLoading: true
     }
   }
 
@@ -68,7 +69,8 @@ class ViewProfilePage extends Component {
       this.componentHasNewRouteParams(nextProps)
     }
     this.setState({
-      currentIdentity: nextProps.currentIdentity
+      currentIdentity: nextProps.currentIdentity,
+      isLoading: false
     })
   }
 
@@ -76,7 +78,7 @@ class ViewProfilePage extends Component {
     let identity = this.state.currentIdentity,
         blockchainId = identity.id
 
-    let profile = identity.profile || {},
+    let profile = identity.profile || null,
         verifications = identity.verifications,
         blockNumber = identity.blockNumber,
         transactionIndex = identity.transactionIndex
@@ -86,14 +88,19 @@ class ViewProfilePage extends Component {
       isLocal = true
     }
 
-    let person
-    if (profile.hasOwnProperty('@type')) {
-      person = new Person(profile)
-    } else {
-      person = Person.fromLegacyFormat(profile)
-    }
+    let person = null,
+        accounts = [],
+        connections = []
 
-    let accounts = person.profile().account || []
+    if (profile !== null) {
+      if (profile.hasOwnProperty('@type')) {
+        person = new Person(profile)
+      } else {
+        person = Person.fromLegacyFormat(profile)
+      }
+      accounts = person.profile().account || []
+      connections = person.connections() || []
+    }
 
     return (
       <div className="container-fluid proid-wrap p-t-4">
@@ -152,10 +159,10 @@ class ViewProfilePage extends Component {
               </div>
             </div>
             <div className="container">
-              {person.connections().length ?
+              {connections.length ?
               <p className="profile-foot">Connections</p>
               : null }
-              {person.connections().map((connection, index) => {
+              {connections.map((connection, index) => {
                 if (connection.id) {
                   return (
                     <Link to={`/profile/blockchain/${connection.id}`}
@@ -193,7 +200,16 @@ class ViewProfilePage extends Component {
           </div>
         </div>
         :
-        <div></div>
+        <div>
+        {this.state.isLoading ?
+        <h4 className="text-xs-center lead-out">
+        </h4>
+        :
+        <h4 className="text-xs-center lead-out">
+          Profile not found
+        </h4>
+        }
+        </div>
         }
       </div>
     )

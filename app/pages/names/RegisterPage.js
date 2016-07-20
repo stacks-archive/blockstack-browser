@@ -105,6 +105,9 @@ class RegisterPage extends Component {
     mixpanel.track('Register identity', {
       distinct_id: this.state.identityPublicKeychain
     })
+    mixpanel.track('Perform action', {
+      distinct_id: this.state.identityPublicKeychain
+    })
   }
 
   render() {

@@ -4,6 +4,14 @@ export function isABlockstackName(s) {
   return /^[a-z0-9_-]+\.[a-z0-9_-]+$/.test(s)
 }
 
+export function isABlockstackIDName(s) {
+  return /^[a-z0-9_]+\.id$/.test(s)
+}
+
+export function isABlockstackAppName(s) {
+  return /^[a-z0-9-]+\.app$/.test(s)
+}
+
 export function hasNameBeenPreordered(domainName, localIdentities) {
   let nameHasBeenPreordered = false
   localIdentities.map(function(identity) {
@@ -26,6 +34,12 @@ export function isNameAvailable(lookupUrl, domainName, callback) {
       if (hasProp(responseJson, username + '.error.type')) {
         const errorType = responseJson[username]["error"]["type"]
         if (errorType === "username_not_registered") {
+          isAvailable = true
+        }
+      }
+      if (hasProp(responseJson, username + '.error')) {
+        const errorType = responseJson[username]["error"]
+        if (errorType === "Not found") {
           isAvailable = true
         }
       }

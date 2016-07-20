@@ -3,7 +3,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { isABlockstackName } from '../utils/name-utils'
+import {
+  isABlockstackName, isABlockstackIDName, isABlockstackAppName
+} from '../utils/name-utils'
 import routes from '../routes'
 
 function mapStateToProps(state) {
@@ -51,8 +53,13 @@ class AddressBar extends Component {
 
     if (/^\/profile\/blockchain\/.*$/.test(pathname)) {
       const domainName = pathname.replace('/profile/blockchain/', '')
-      if (isABlockstackName(domainName)) {
+      if (isABlockstackIDName(domainName)) {
         query = pathname.replace('/profile/blockchain/', '')
+      }
+    } else if (/^\/app\/.*$/.test(pathname)) {
+      const domainName = pathname.replace('local://app/', '')
+      if (isABlockstackAppName(domainName)) {
+        query = pathname.replace('local://app/', '')
       }
     } else if (/^\/profile\/local\/[0-9]+.*$/.test(pathname)) {
       query = 'local:/' + pathname.replace('/local/', '/')
@@ -82,7 +89,13 @@ class AddressBar extends Component {
   submitQuery(query) {
     let newPath
     if (isABlockstackName(query)) {
-      newPath = `/profile/blockchain/${query}`
+      if (isABlockstackIDName(query)) {
+        newPath = `/profile/blockchain/${query}`
+      } else if (isABlockstackAppName(query)) {
+        newPath = `/app/${query}`
+      } else {
+        newPath = `/app/${query}`
+      }
     } else if (/^local:\/\/.*$/.test(query)) {
       newPath = query.replace('local://', '/')
     } else {
@@ -106,9 +119,9 @@ class AddressBar extends Component {
   onKeyPress(event) {
     if (event.key === 'Enter' && this.state.query !== '') {
       this.submitQuery(this.state.query)
-      mixpanel.track('Submit query', {
-        distinct_id: this.state.identityPublicKeychain
-      })
+      let distinct_id = this.state.identityPublicKeychain
+      mixpanel.track('Submit query', { distinct_id: distinct_id })
+      mixpanel.track('Perform action', { distinct_id: distinct_id })
     }
   }
 

@@ -1,5 +1,4 @@
 import { Person } from 'blockstack-profiles'
-import { uploadObjectToS3, uploadToOnenameAPI } from '../utils'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
