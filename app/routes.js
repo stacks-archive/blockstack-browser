@@ -27,6 +27,8 @@ import RestoreAccountPage from './pages/account/RestoreAccountPage'
 
 import NotFoundPage       from './pages/errors/NotFoundPage'
 
+import AppPage            from './pages/apps/AppPage'
+
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={DashboardPage} />
@@ -52,6 +54,8 @@ export default (
 
     <Route path="account/create"      component={CreateAccountPage} />
     <Route path="account/restore"     component={RestoreAccountPage} />
+
+    <Route path="app/:name" component={AppPage} />
 
     <Route path="*" component={NotFoundPage} />
   </Route>

@@ -43,7 +43,8 @@ class ViewProfilePage extends Component {
         verifications: [],
         blockNumber: null,
         transactionNumber: null
-      }
+      },
+      isLoading: true
     }
   }
 
@@ -68,7 +69,8 @@ class ViewProfilePage extends Component {
       this.componentHasNewRouteParams(nextProps)
     }
     this.setState({
-      currentIdentity: nextProps.currentIdentity
+      currentIdentity: nextProps.currentIdentity,
+      isLoading: false
     })
   }
 
@@ -199,9 +201,14 @@ class ViewProfilePage extends Component {
         </div>
         :
         <div>
-          <h4 className="text-xs-center lead-out">
-            Page not found
-          </h4>
+        {this.state.isLoading ?
+        <h4 className="text-xs-center lead-out">
+        </h4>
+        :
+        <h4 className="text-xs-center lead-out">
+          Profile not found
+        </h4>
+        }
         </div>
         }
       </div>
