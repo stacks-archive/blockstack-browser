@@ -86,11 +86,9 @@ class ViewProfilePage extends Component {
       isLocal = true
     }
 
-    console.log(profile)
-
-    let person = null
-    let accounts = []
-    let connections = []
+    let person = null,
+        accounts = [],
+        connections = []
 
     if (profile !== null) {
       if (profile.hasOwnProperty('@type')) {
@@ -101,8 +99,6 @@ class ViewProfilePage extends Component {
       accounts = person.profile().account || []
       connections = person.connections() || []
     }
-
-    console.log(person)
 
     return (
       <div className="container-fluid proid-wrap p-t-4">
