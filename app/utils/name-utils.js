@@ -29,6 +29,12 @@ export function isNameAvailable(lookupUrl, domainName, callback) {
           isAvailable = true
         }
       }
+      if (hasProp(responseJson, username + '.error')) {
+        const errorType = responseJson[username]["error"]
+        if (errorType === "Not found") {
+          isAvailable = true
+        }
+      }
       callback(isAvailable)
     })
 }

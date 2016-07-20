@@ -109,6 +109,9 @@ class AddressBar extends Component {
       mixpanel.track('Submit query', {
         distinct_id: this.state.identityPublicKeychain
       })
+      mixpanel.track('Perform action', {
+        distinct_id: this.state.identityPublicKeychain
+      })
     }
   }
 
