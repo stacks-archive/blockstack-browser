@@ -15,7 +15,7 @@ function createAccount(encryptedBackupPhrase, identityPublicKeychainString, bitc
     distinct_id: identityPublicKeychainString
   })
   mixpanel.track('Perform action', {
-    distinct_id: this.state.identityPublicKeychain
+    distinct_id: identityPublicKeychainString
   })
   return {
     type: CREATE_ACCOUNT,
