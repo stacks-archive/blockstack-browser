@@ -18,7 +18,7 @@ export function uploadToS3(credentials, filename, string, callback) {
 }
 
 export function uploadToBlockstackLabsS3(filename, data, callback) {
-  fetch('https://api.blockstack.com/v1/upload', {
+  fetch('https://api.onename.com/v1/upload', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',

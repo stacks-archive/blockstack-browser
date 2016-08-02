@@ -1,4 +1,4 @@
-import { Person } from 'blockstack-profiles'
+import { Person, makeZoneFileForHostedProfile } from 'blockstack-profiles'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
@@ -106,6 +106,34 @@ function getIdentities(addresses, addressLookupUrl, localIdentities) {
   }
 }
 
+function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
+                      blockstackApiAppId, blockstackApiAppSecret) {
+  return dispatch => {
+    const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl)
+    fetch(registerUrl, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
+      },
+      body: JSON.stringify({
+        username: domainName,
+        recipient_address: recipientAddress,
+        profile: zoneFile
+      })
+    })
+      .then((response) => response.text())
+      .then((responseText) => JSON.parse(responseText))
+      .then((responseJson) => {
+        dispatch(createNewIdentity(domainName))
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+}
+
 function fetchCurrentIdentity(domainName, lookupUrl) {
   return dispatch => {
     const username = domainName.replace('.id', ''),
@@ -130,7 +158,8 @@ export const IdentityActions = {
   updateProfile: updateProfile,
   fetchCurrentIdentity: fetchCurrentIdentity,
   getIdentities: getIdentities,
-  updateOwnedIdentities: updateOwnedIdentities
+  updateOwnedIdentities: updateOwnedIdentities,
+  registerName: registerName
 }
 
 const initialState = {

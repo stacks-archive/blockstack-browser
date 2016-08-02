@@ -11,7 +11,11 @@ function mapStateToProps(state) {
     username: '',
     localIdentities: state.identities.localIdentities,
     lookupUrl: state.settings.api.nameLookupUrl,
-    identityPublicKeychain: state.account.identityAccount.publicKeychain
+    registerUrl: state.settings.api.registerUrl,
+    blockstackApiAppId: state.settings.api.blockstackApiAppId,
+    blockstackApiAppSecret: state.settings.api.blockstackApiAppSecret,
+    identityPublicKeychain: state.account.identityAccount.publicKeychain,
+    identityAddresses: state.account.identityAccount.addresses
   }
 }
 
@@ -22,9 +26,14 @@ function mapDispatchToProps(dispatch) {
 class RegisterPage extends Component {
   static propTypes = {
     username: PropTypes.string.isRequired,
-    createNewIdentity: PropTypes.func.isRequired,
     localIdentities: PropTypes.array.isRequired,
-    lookupUrl: PropTypes.string.isRequired
+    lookupUrl: PropTypes.string.isRequired,
+    registerUrl: PropTypes.string.isRequired,
+    blockstackApiAppId: PropTypes.string.isRequired,
+    blockstackApiAppSecret: PropTypes.string.isRequired,
+    identityPublicKeychain: PropTypes.string.isRequired,
+    identityAddresses: PropTypes.array.isRequired,
+    registerName: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -96,18 +105,19 @@ class RegisterPage extends Component {
           this.updateAlert('danger', 'Name has already been registered')
         } else {
           this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
-          this.props.createNewIdentity(domainName)
+          let address = this.props.identityAddresses[0]
+          let tokenFileUrl = 'https://blockstack.s3.amazonaws.com/staging/' + domainName + '.json'
+          this.props.registerName(
+            domainName, address, tokenFileUrl, this.props.registerUrl,
+            this.props.blockstackApiAppId, this.props.blockstackApiAppSecret)
           this.context.router.push('/')
         }
       })
     }
 
-    mixpanel.track('Register identity', {
-      distinct_id: this.state.identityPublicKeychain
-    })
-    mixpanel.track('Perform action', {
-      distinct_id: this.state.identityPublicKeychain
-    })
+    const distinct_id = this.state.identityPublicKeychain
+    mixpanel.track('Register identity', { distinct_id: distinct_id })
+    mixpanel.track('Perform action', { distinct_id: distinct_id })
   }
 
   render() {

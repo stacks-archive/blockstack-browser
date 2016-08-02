@@ -16,6 +16,8 @@ function resetApi() {
       registerUrl: 'https://api.blockstack.com/v1/users',
       addressLookupUrl: 'https://api.blockstack.com/v1/addresses/{address}/names',
       hostedDataLocation: 'blockstack-labs-S3',
+      blockstackApiAppId:'470c9d0c7dbd41b1bb6defac9be3595a',
+      blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
       s3ApiKey: '',
       s3ApiSecret: '',
       s3Bucket: ''
@@ -37,6 +39,8 @@ const initialState = {
     registerUrl: 'https://api.blockstack.com/v1/users',
     addressLookupUrl: 'https://api.blockstack.com/v1/addresses/{address}/names',
     hostedDataLocation: 'blockstack-labs-S3',
+    blockstackApiAppId:'470c9d0c7dbd41b1bb6defac9be3595a',
+    blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
     s3ApiKey: '',
     s3ApiSecret: '',
     s3Bucket: ''

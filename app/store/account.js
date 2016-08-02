@@ -9,14 +9,12 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
       UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE'
 
-function createAccount(encryptedBackupPhrase, identityPublicKeychainString, bitcoinPublicKeychainString,
-                       firstIdentityAddress, firstBitcoinAddress) {
-  mixpanel.track('Create account', {
-    distinct_id: identityPublicKeychainString
-  })
-  mixpanel.track('Perform action', {
-    distinct_id: identityPublicKeychainString
-  })
+function createAccount(encryptedBackupPhrase, identityPublicKeychainString,
+                       bitcoinPublicKeychainString, firstIdentityAddress,
+                       firstBitcoinAddress) {
+  const distinct_id = identityPublicKeychainString
+  mixpanel.track('Create account', { distinct_id: distinct_id })
+  mixpanel.track('Perform action', { distinct_id: distinct_id })
   return {
     type: CREATE_ACCOUNT,
     encryptedBackupPhrase: encryptedBackupPhrase,
@@ -62,7 +60,10 @@ function initializeWallet(password, backupPhrase) {
 
     encrypt(new Buffer(backupPhrase), password, function(err, ciphertextBuffer) {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
-      dispatch(createAccount(encryptedBackupPhrase, identityPublicKeychain, bitcoinPublicKeychain, firstIdentityAddress, firstBitcoinAddress))
+      dispatch(
+        createAccount(encryptedBackupPhrase, identityPublicKeychain,
+          bitcoinPublicKeychain, firstIdentityAddress, firstBitcoinAddress)
+      )
     })
   }
 }

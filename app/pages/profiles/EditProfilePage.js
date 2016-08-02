@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { signToken, wrapToken } from 'blockstack-profiles'
+import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
 
 import {
   InputGroup, SaveButton, ProfileEditingSidebar, PageHeader
@@ -82,9 +84,16 @@ class EditProfilePage extends Component {
 
   uploadProfile() {
     const filename = this.state.domainName + '.json'
-    const data = JSON.stringify(this.state.profile, null, 2)
-    uploadFile(this.props.api, filename, data, ({ url, err }) => {
+    const privateKeychain = new PrivateKeychain(),
+          publicKeychain = privateKeychain.publicKeychain()
+    const privateKey = privateKeychain.privateKey('hex'),
+          publicKey = publicKeychain.publicKey('hex')
+    const token = signToken(this.state.profile, privateKey, {publicKey: publicKey}),
+          tokenRecord = wrapToken(token)
+    const data = JSON.stringify(tokenRecord, null, 2)
+    uploadFile(this.props.api, filename, data, ({ url, err, res }) => {
       if (err) {
+        console.log(res)
         console.log('profile not uploaded to s3')
       }
     })
