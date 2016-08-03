@@ -118,7 +118,7 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
         'Authorization': 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
       },
       body: JSON.stringify({
-        username: domainName,
+        username: domainName.split('.')[0],
         recipient_address: recipientAddress,
         profile: zoneFile
       })
