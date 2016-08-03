@@ -106,7 +106,7 @@ class RegisterPage extends Component {
         } else {
           this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
           let address = this.props.identityAddresses[0]
-          let tokenFileUrl = 'https://blockstack.s3.amazonaws.com/staging/' + domainName + '.json'
+          let tokenFileUrl = 'https://blockstack.s3-us-west-1.amazonaws.com/staging/' + domainName + '.json'
           this.props.registerName(
             domainName, address, tokenFileUrl, this.props.registerUrl,
             this.props.blockstackApiAppId, this.props.blockstackApiAppSecret)
