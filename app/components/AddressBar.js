@@ -41,8 +41,6 @@ class AddressBar extends Component {
 
     this.onQueryChange = this.onQueryChange.bind(this)
     this.submitQuery = this.submitQuery.bind(this)
-    this.onFocus = this.onFocus.bind(this)
-    this.onBlur = this.onBlur.bind(this)
     this.onKeyPress = this.onKeyPress.bind(this)
     this.locationHasChanged = this.locationHasChanged.bind(this)
   }
@@ -104,18 +102,6 @@ class AddressBar extends Component {
     this.context.router.push(newPath)
   }
 
-  onFocus(event) {
-    this.setState({
-      placeholder: ''
-    })
-  }
-
-  onBlur(event) {
-    this.setState({
-      placeholder: this.props.placeholder
-    })
-  }
-
   onKeyPress(event) {
     if (event.key === 'Enter' && this.state.query !== '') {
       this.submitQuery(this.state.query)
@@ -140,8 +126,6 @@ class AddressBar extends Component {
           placeholder={this.state.placeholder} 
           name="query" value={this.state.query}
           onChange={this.onQueryChange}
-          onFocus={this.onFocus}
-          onBlur={this.onBlur}
           onKeyPress={this.onKeyPress} />
       </div>
     )
