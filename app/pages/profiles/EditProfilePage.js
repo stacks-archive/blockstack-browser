@@ -31,7 +31,7 @@ function mapDispatchToProps(dispatch) {
 class EditProfilePage extends Component {
   static propTypes = {
     updateProfile: PropTypes.func.isRequired,
-    localIdentities: PropTypes.array.isRequired,
+    localIdentities: PropTypes.object.isRequired,
     api: PropTypes.object.isRequired
   }
 

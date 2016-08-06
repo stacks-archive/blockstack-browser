@@ -29,7 +29,7 @@ class ViewProfilePage extends Component {
     updateCurrentIdentity: PropTypes.func.isRequired,
     updateQuery: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
-    localIdentities: PropTypes.array.isRequired,
+    localIdentities: PropTypes.object.isRequired,
     nameLookupUrl: PropTypes.string.isRequired
   }
 

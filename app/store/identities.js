@@ -21,17 +21,18 @@ function createNewIdentity(domainName) {
   }
 }
 
-function updateOwnedIdentities(localIdentities) {
+function updateOwnedIdentities(localIdentities, namesOwned) {
   return {
     type: UPDATE_IDENTITIES,
-    localIdentities: localIdentities
+    localIdentities: localIdentities,
+    namesOwned: namesOwned
   }
 }
 
-function updateProfile(index, profile) {
+function updateProfile(domainName, profile) {
   return {
     type: UPDATE_PROFILE,
-    index: index,
+    domainName: domainName,
     profile: profile
   }
 }
@@ -45,7 +46,8 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
     remoteNamesDict[name] = true
   })
 
-  localIdentities.map(function(identity) {
+  Object.keys(updatedLocalIdentities).forEach((name) => {
+    let identity = updatedLocalIdentities[name]
     localNamesDict[identity.domainName] = true
     if (remoteNamesDict.hasOwnProperty(identity.domainName)) {
       identity.registered = true
@@ -54,18 +56,36 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
 
   namesOwned.map(function(name) {
     if (!localNamesDict.hasOwnProperty(name)) {
-      updatedLocalIdentities.push({
-        index: updatedLocalIdentities.length,
+      updatedLocalIdentities[name] = {
         domainName: name,
+        profile: {
+          '@type': 'Person',
+          '@context': 'http://schema.org'
+        },
+        verifications: [],
         registered: true
-      })
+      }
     }
   })
 
   return updatedLocalIdentities
 }
 
-function getIdentities(addresses, addressLookupUrl, localIdentities) {
+function getNamesOwnedFromApiResponse(responseJson) {
+  let namesOwned = []
+  if (responseJson.hasOwnProperty('results')) {
+    responseJson.results.map((addressResult) => {
+      if (addressResult.hasOwnProperty('names')) {
+        addressResult.names.map((name) => {
+          namesOwned.push(name)
+        })
+      }
+    })
+  }
+  return namesOwned
+}
+
+function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNameLookup) {
   return dispatch => {
     if (addresses.length === 0) {
       let namesOwned = []
@@ -73,30 +93,20 @@ function getIdentities(addresses, addressLookupUrl, localIdentities) {
       if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
         // pass
       } else {
-        dispatch(updateOwnedIdentities(localIdentities, namesOwned))
+        dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
       }
     } else {
       fetch(addressLookupUrl.replace('{address}', addresses.join(',')))
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
-          let namesOwned = []
-          if (responseJson.hasOwnProperty('results')) {
-            responseJson.results.map((addressResult) => {
-              if (addressResult.hasOwnProperty('names')) {
-                addressResult.names.map((name) => {
-                  namesOwned.push(name)
-                })
-              }
-            })
-          }
+          let namesOwned = getNamesOwnedFromApiResponse(responseJson),
+              updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
 
-          let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
-
-          if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
+          if (JSON.stringify(lastNameLookup) === JSON.stringify(namesOwned)) {
             // pass
           } else {
-            dispatch(updateOwnedIdentities(localIdentities, namesOwned))
+            dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
           }
         })
         .catch((error) => {
@@ -109,13 +119,14 @@ function getIdentities(addresses, addressLookupUrl, localIdentities) {
 function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
                       blockstackApiAppId, blockstackApiAppSecret) {
   return dispatch => {
-    const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl)
+    const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl),
+      authHeader = 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
     fetch(registerUrl, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
+        'Authorization': authHeader
       },
       body: JSON.stringify({
         username: domainName.split('.')[0],
@@ -157,7 +168,7 @@ export const IdentityActions = {
   createNewIdentity: createNewIdentity,
   updateProfile: updateProfile,
   fetchCurrentIdentity: fetchCurrentIdentity,
-  getIdentities: getIdentities,
+  refreshIdentities: refreshIdentities,
   updateOwnedIdentities: updateOwnedIdentities,
   registerName: registerName
 }
@@ -169,7 +180,8 @@ const initialState = {
     verifications: null
   },
   localIdentities: [
-  ]
+  ],
+  lastNameLookup: []
 }
 
 export function IdentityReducer(state = initialState, action) {
@@ -184,10 +196,8 @@ export function IdentityReducer(state = initialState, action) {
       })
     case CREATE_NEW:
       return Object.assign({}, state, {
-        localIdentities: [
-          ...state.localIdentities,
-          {
-            index: state.localIdentities.length,
+        localIdentities: Object.assign({}, state.localIdentities, {
+          [action.domainName]: {
             domainName: action.domainName,
             profile: {
               '@type': 'Person',
@@ -196,21 +206,21 @@ export function IdentityReducer(state = initialState, action) {
             verifications: [],
             registered: false
           }
-        ]
+        })
       })
     case UPDATE_IDENTITIES:
+      console.log('UPDATE_IDENTITIES')
       return Object.assign({}, state, {
-        localIdentities: action.localIdentities
+        localIdentities: action.localIdentities,
+        lastNameLookup: action.namesOwned
       })
     case UPDATE_PROFILE:
       return Object.assign({}, state, {
-        localIdentities: [
-          ...state.localIdentities.slice(0, action.index),
-          Object.assign({}, state.localIdentities[action.index], {
+        localIdentities: Object.assign({}, state.localIdentities, {
+          [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
             profile: action.profile
-          }),
-          ...state.localIdentities.slice(action.index + 1)
-        ]
+          })
+        })
       })
     default:
       return state
@@ -218,7 +228,6 @@ export function IdentityReducer(state = initialState, action) {
 }
 
 /*{
-  index: 0,
   domainName: 'ryan.id',
   profile: {},
   verifications: [],

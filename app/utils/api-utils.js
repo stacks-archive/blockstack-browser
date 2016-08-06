@@ -12,6 +12,7 @@ export function getNamesOwned(address, addressLookupUrl, callback) {
     })
 }
 
+/*
 export function getIdentities(address, addressLookupUrl, localIdentities, callback) {
   let remoteNamesDict = {},
       localNamesDict = {},
@@ -41,4 +42,4 @@ export function getIdentities(address, addressLookupUrl, localIdentities, callba
 
     callback(localIdentities, newNames)
   })
-}
+}*/

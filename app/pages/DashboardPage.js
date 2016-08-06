@@ -11,6 +11,7 @@ import { AccountActions } from '../store/account'
 function mapStateToProps(state) {
   return {
     localIdentities: state.identities.localIdentities,
+    lastNameLookup: state.identities.lastNameLookup,
     identityAddresses: state.account.identityAccount.addresses,
     addressLookupUrl: state.settings.api.addressLookupUrl || ''
   }
@@ -22,22 +23,34 @@ function mapDispatchToProps(dispatch) {
 
 class DashboardPage extends Component {
   static propTypes = {
-    localIdentities: PropTypes.array.isRequired,
+    localIdentities: PropTypes.object.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
-    getIdentities: PropTypes.func.isRequired,
-    addressLookupUrl: PropTypes.string.isRequired
+    refreshIdentities: PropTypes.func.isRequired,
+    addressLookupUrl: PropTypes.string.isRequired,
+    lastNameLookup: PropTypes.array.isRequired
   }
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      localIdentities: this.props.localIdentities
+    }
   }
 
   componentWillMount() {
-    this.props.getIdentities(
+    this.props.refreshIdentities(
       this.props.identityAddresses,
       this.props.addressLookupUrl,
-      this.props.localIdentities
+      this.props.localIdentities,
+      this.props.lastNameLookup
     )
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      localIdentities: nextProps.localIdentities
+    })
   }
 
   render() {
@@ -47,14 +60,18 @@ class DashboardPage extends Component {
           <div className="col-sm-6 m-t-2">
             <h4 className="text-xs-center lead-out">My Personas</h4>
               <ul className="bookmarks-temp m-b-11">
-              {this.props.localIdentities.map((identity) => {
-                let person = new Person(identity.profile)
-                return (
-                  <IdentityItem key={identity.index}
-                    label={identity.registered ? identity.domainName : identity.domainName + ' (pending)'}
-                    avatarUrl={person.avatarUrl() || ''}
-                    url={`/profile/local/${identity.index}`} />
-                )
+              {Object.keys(this.state.localIdentities).map((domainName) => {
+                const identity = this.state.localIdentities[domainName],
+                      person = new Person(identity.profile)
+                if (identity.domainName) {
+                  return (
+                    <IdentityItem key={identity.domainName}
+                      label={identity.domainName}
+                      pending={!identity.registered}
+                      avatarUrl={person.avatarUrl() || ''}
+                      url={`/profile/local/${identity.domainName}`} />
+                  )
+                }
               })}
               </ul>
             <div>
@@ -79,21 +96,3 @@ class DashboardPage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
-
-/*
-  <div className="row centered">
-    <div className="m-b-2">
-      <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
-    </div>
-    <div className="m-b-2">
-      <img src="images/icon-browser.svg" alt="chord icon" width="82px" />
-    </div>
-    <h1 className="text-xs-center type-inverse">search the blockchain</h1>
-    <p className="lead-out">
-      Try searching for&nbsp;
-      <Link to="/search/naval">naval</Link> or&nbsp;
-      <Link to="/search/elizabeth">elizabeth</Link> or&nbsp;
-      <Link to="/search/fred%20wilson">fred wilson</Link>
-    </p>
-  </div>
-*/
