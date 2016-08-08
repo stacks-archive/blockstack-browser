@@ -101,13 +101,8 @@ button.btn.btn-sm.nav-page{margin-top:-4px;padding-right:8px;padding-left:8px;}
 
 /* Browser search bar */
 .nav-search {
-    overflow: hidden;
+  overflow: hidden;
 }
-.browser-search-bar {
-}
-input {	-webkit-transition: all 0.2s ease-in-out;
-  -o-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;}
 .browser-search-bar input {
 	padding: .1875rem .75rem;
 	border: none;
@@ -131,12 +126,6 @@ input {	-webkit-transition: all 0.2s ease-in-out;
 	-webkit-transition: all 0.4s ease-in-out;
   -o-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;
-}
-.browser-search-bar input::-webkit-input-placeholder::before {
-    font-family: fontAwesome;
-    font-size: .6875rem;
-    content: '\f002  ';
-    color: #c7c7c7;
 }
 
 /* Browser links */
