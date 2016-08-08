@@ -100,11 +100,34 @@ div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > butt
 button.btn.btn-sm.nav-page{margin-top:-4px;padding-right:8px;padding-left:8px;}
 
 /* Browser search bar */
-.nav-search{overflow:hidden;}
-.browser-search-bar{}
-.browser-search-bar input{padding:.1875rem .75rem;border:none;color:#7B7B7B;text-align:center;font-size:.75rem;border-radius:20px;}
-.browser-search-bar input::-webkit-input-placeholder{font-family:'Merriweather Sans',sans-serif;color:#aeaeae;text-transform:none;margin-top:.1875rem;font-size:.75rem;padding:0;}
-.browser-search-bar input::-webkit-input-placeholder::before{font-family:fontAwesome;font-size:.6875rem;content:'\f002  ';color:#c7c7c7;}
+.nav-search {
+    overflow: hidden;
+}
+.browser-search-bar {
+}
+.browser-search-bar input {
+    padding: .1875rem .75rem;
+    border: none;
+    color: #7B7B7B;
+    text-align: center;
+    font-size: .688rem;
+    border-radius: 20px;
+}
+.browser-search-bar input::-webkit-input-placeholder {
+    font-family: 'Open Sans', sans-serif;
+    color: #aeaeae;
+    font-weight: 400;
+    text-transform: none;
+    margin-top: .1875rem;
+    font-size: .688rem;
+    padding: 0;
+}
+.browser-search-bar input::-webkit-input-placeholder::before {
+    font-family: fontAwesome;
+    font-size: .6875rem;
+    content: '\f002  ';
+    color: #c7c7c7;
+}
 
 /* Browser links */
 .browser-links{padding-right:5px;padding-left:30px;}

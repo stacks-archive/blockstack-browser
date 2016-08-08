@@ -41,7 +41,9 @@ class Navbar extends Component {
           </div>
           <div className="nav-search">
             <div className="nav-link">
-              <AddressBar placeholder="Search the blockchain" timeout={500} />
+              <AddressBar
+                placeholder="Search the blockchain for people, apps and more…"
+                timeout={500} />
             </div>
           </div>
         </div>
