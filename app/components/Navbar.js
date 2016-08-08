@@ -20,7 +20,7 @@ class Navbar extends Component {
             </div>
             <div className="nav-item nav-link">
               <ForwardButton>
-                <img src="images/icon-next.svg"/>
+                <img className="bar-icon-settings" src="images/icon-next.svg" />
               </ForwardButton>
             </div>
           </div>
