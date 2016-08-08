@@ -128,11 +128,11 @@ button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
 .out-block-wrap{width:576px;}
 .out-block{width:490px;}
 .out-form-group{width:490px;margin-left:-80px;}
-.app-box-container{width:364px;position: relative;
-    min-height: 1px;
-    float: left;}
+.app-container{max-width:1100px;margin:0 auto;}
+.app-box-container{width:364px;position:relative;min-height:1px;float:left;}
 .app-box{width:364px;height:225px;}
 .app-box-gutter{margin-right:4px;}
+.app-icon{width:124px;z-index:40;margin-top:-45px;margin-left:120px;}
 
 /* Deposit view */
 .page-header-wrap{width:100%;display:table;}

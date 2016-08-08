@@ -57,18 +57,21 @@ class DashboardPage extends Component {
     return (
       <div>
         <div className="wrapper">
-          <div>
+          <div className="container-fluid">
             <h6 className="text-xs-center">Featured Apps (coming soon...)</h6> 
           </div>
-          <div>
+          <div className="app-container">
             <div className="app-box-container app-box-gutter">
               <img className="app-box" src="images/app-box-chord.jpg" />
+              <img className="app-icon" src="images/icon-chord.png" />
             </div>
             <div className="app-box-container app-box-gutter">
               <img className="app-box" src="images/app-box-greenleaf.jpg" />
+              <img className="app-icon" src="images/icon-greenleaf.png" />
             </div>
             <div className="app-box-container">
               <img className="app-box" src="images/app-box-guild.jpg" />
+              <img className="app-icon" src="images/icon-guild.png" />
             </div>
           </div>
 
@@ -102,7 +105,7 @@ class DashboardPage extends Component {
             <div className="col-sm-6 m-t-2">
               <h4 className="text-xs-center lead-out">My Apps</h4>
               <div>
-                <h4 className="text-xs-center">Featured Apps (coming soon...)</h4>
+                <h6 className="text-xs-center">more apps coming soon…</h6>
               </div>
             </div>
           </div>
