@@ -86,7 +86,10 @@ class DashboardPage extends Component {
           <div className="col-sm-6 m-t-2">
             <h4 className="text-xs-center lead-out">My Apps</h4>
             <div>
-              <h4 className="text-xs-center">(no apps installed)</h4>
+              <h4 className="text-xs-center">Featured Apps (coming soon...)</h4>
+              <div></div>
+              <div></div>
+              <div></div>
             </div>
           </div>
         </section>
