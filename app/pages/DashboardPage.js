@@ -58,7 +58,7 @@ class DashboardPage extends Component {
       <div>
         <div className="wrapper">
           <div className="container-fluid">
-            <h6 className="text-xs-center">Featured Apps (coming soon...)</h6> 
+            <h6 className="clean-font text-xs-center m-t-1 m-b-1">Featured Apps (coming soon...)</h6> 
           </div>
           <div className="app-container">
             <div className="app-box-container app-box-gutter">

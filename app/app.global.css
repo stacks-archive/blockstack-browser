@@ -1,8 +1,8 @@
 /* Custom styles */
 
 .col-without-padding,.col-no-pad{padding:0px 0px 0px 0px;vertical-align:middle;}
-body{background-color:rgba(250,250,250,1);font-size:14px;font-family:'Raleway',sans-serif;}
-.body-main{height:100%;width:100%;padding-top:90px;}
+body{background-color:rgba(250,250,250,1);font-size:14px;font-family:'Source Code Pro',sans-serif;}
+.body-main{height:100%;width:100%;padding-top:83px;}
 .body-landing{height:100%;width:100%;}
 .body-inner{min-height:100%;width:100%;}
 .body-inner-white{background-color:white;}
@@ -110,7 +110,7 @@ button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
 .browser-links{padding-right:5px;padding-left:37px;}
 .browser-links > div.nav-link{padding-top:.3125rem;}
 .browser-links > div.nav-item.nav-link > a{display:block;margin-right:7px;text-decoration:none;}
-.bar-icon-home{display:block;margin:0 auto;width:18px;height:18px;margin-bottom:3px;margin-top:6px;}
+.bar-icon-home{display:block;margin:0 auto;width:17.9px;height:18px;margin-bottom:3px;margin-top:6px;}
 .bar-icon-settings{display:block;margin:0 auto;width:20px;height:20px;margin-bottom:2px;margin-top:5px;}
 .back-forth{padding-right:45px;padding-left:15px;}
 .back-forth > div.nav-link{padding-top:.0625rem;}
@@ -128,6 +128,7 @@ button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
 .out-block-wrap{width:576px;}
 .out-block{width:490px;}
 .out-form-group{width:490px;margin-left:-80px;}
+h6.clean-font{font-family:'Open Sans', serif;}
 .app-container{max-width:1100px;margin:0 auto;}
 .app-box-container{width:364px;position:relative;min-height:1px;float:left;}
 .app-box{width:364px;height:225px;}
