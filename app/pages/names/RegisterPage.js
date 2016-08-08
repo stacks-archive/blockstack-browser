@@ -26,7 +26,7 @@ function mapDispatchToProps(dispatch) {
 class RegisterPage extends Component {
   static propTypes = {
     username: PropTypes.string.isRequired,
-    localIdentities: PropTypes.array.isRequired,
+    localIdentities: PropTypes.object.isRequired,
     lookupUrl: PropTypes.string.isRequired,
     registerUrl: PropTypes.string.isRequired,
     blockstackApiAppId: PropTypes.string.isRequired,
@@ -44,6 +44,7 @@ class RegisterPage extends Component {
     super(props)
 
     this.state = {
+      registrationLock: false,
       username: this.props.username,
       nameCost: 0,
       alerts: [],
@@ -85,6 +86,12 @@ class RegisterPage extends Component {
   }
 
   registerIdentity(event) {
+    if (this.state.registrationLock) {
+      return
+    }
+
+    this.setState({ registrationLock: true })
+
     const username = this.state.username,
           tld = this.state.tlds[this.state.type],
           domainName = username + '.' + tld
@@ -99,10 +106,12 @@ class RegisterPage extends Component {
 
     if (nameHasBeenPreordered) {
       this.updateAlert('danger', 'Name has already been preordered')
+      this.setState({ registrationLock: false })
     } else {
       isNameAvailable(this.props.lookupUrl, domainName, (isAvailable) => {
         if (!isAvailable) {
           this.updateAlert('danger', 'Name has already been registered')
+          this.setState({ registrationLock: false })
         } else {
           this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
           let address = this.props.identityAddresses[0]

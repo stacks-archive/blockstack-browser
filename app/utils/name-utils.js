@@ -14,8 +14,8 @@ export function isABlockstackAppName(s) {
 
 export function hasNameBeenPreordered(domainName, localIdentities) {
   let nameHasBeenPreordered = false
-  localIdentities.map(function(identity) {
-    if (identity.id === domainName) {
+  Object.keys(localIdentities).map((localDomainName) => {
+    if (localDomainName === domainName) {
       nameHasBeenPreordered = true
       return
     }
