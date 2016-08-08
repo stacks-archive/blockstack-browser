@@ -41,7 +41,7 @@ h4.headspace,h5.headspace{margin-bottom:50px;}
 .pill-nav{border:1px solid #484848;border-radius:20px;font-size:16px;}
 div.pill-nav > a{padding-right:15px;}
 div.pill-nav > a > img{margin-top:-5px;margin-left:15px;width:17px;height:17px;}
-div.col-md-3 > img{margin-right:10px;width:32px;height:32px;border-radius:4px;}
+div.col-md-3 > img > .profile-img{margin-right:10px;width:32px;height:32px;border-radius:4px;}
 .col-list-name{display:table-cell;vertical-align:middle;}
 .booklist-wrap{display:table;overflow:hidden;}
 div.container.outer-wrap{padding:0;}
@@ -127,6 +127,7 @@ button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
 .out-block-wrap{width:576px;}
 .out-block{width:490px;}
 .out-form-group{width:490px;margin-left:-80px;}
+.app-box{width:415px;height:255px;}
 
 /* Deposit view */
 .page-header-wrap{width:100%;display:table;}
