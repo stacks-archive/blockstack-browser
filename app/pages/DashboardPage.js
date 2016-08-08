@@ -55,17 +55,19 @@ class DashboardPage extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="container-fluid wrapper">
-
-          <div className="container-fluid">
-            <div className="col-md-3">
+      <div>
+        <div className="wrapper">
+          <div>
+            <h6 className="text-xs-center">Featured Apps (coming soon...)</h6> 
+          </div>
+          <div>
+            <div className="app-box-container app-box-gutter">
               <img className="app-box" src="images/app-box-chord.jpg" />
             </div>
-            <div className="col-md-3">
+            <div className="app-box-container app-box-gutter">
               <img className="app-box" src="images/app-box-greenleaf.jpg" />
             </div>
-            <div className="col-md-3">
+            <div className="app-box-container">
               <img className="app-box" src="images/app-box-guild.jpg" />
             </div>
           </div>

@@ -6,8 +6,9 @@ body{background-color:rgba(250,250,250,1);font-size:14px;font-family:'Raleway',s
 .body-landing{height:100%;width:100%;}
 .body-inner{min-height:100%;width:100%;}
 .body-inner-white{background-color:white;}
-.wrapper{width:100%;max-width:800px;}
+.wrapper{width:100%;}
 .container{padding-top:40px;}
+.no-padding{padding-left:0;padding-right:0;}
 
 /* Highlight */
 .highlight{margin:0rem 0rem 1rem 0rem;padding:1rem 1rem 1rem 1rem;background-color:#eeeeee;}
@@ -60,7 +61,7 @@ a.search-result:hover{color:#fff!important;background-color:#23262a;}
 /* Post rhythm ----------------------------------------- */
 
 /* Globals */
-html,body{background-color:#1b1e21;height:100%;min-width:768px;}
+html,body{background-color:#fff;height:100%;min-width:768px;}
 button{outline:none!important;}
 .btn{line-height:inherit;height:40px;text-transform:uppercase;letter-spacing:1px;}
 
@@ -127,7 +128,11 @@ button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
 .out-block-wrap{width:576px;}
 .out-block{width:490px;}
 .out-form-group{width:490px;margin-left:-80px;}
-.app-box{width:415px;height:255px;}
+.app-box-container{width:364px;position: relative;
+    min-height: 1px;
+    float: left;}
+.app-box{width:364px;height:225px;}
+.app-box-gutter{margin-right:4px;}
 
 /* Deposit view */
 .page-header-wrap{width:100%;display:table;}
