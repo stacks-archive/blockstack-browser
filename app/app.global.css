@@ -120,13 +120,14 @@ input {	-webkit-transition: all 0.2s ease-in-out;
   transition: all 0.4s ease-in-out;
 }
 .browser-search-bar input::-webkit-input-placeholder {
-	font-family: 'Open Sans', sans-serif;
+	font-family: fontAwesome, 'Open Sans', sans-serif;
 	color: #aeaeae;
 	font-weight: 400;
 	text-transform: none;
 	margin-top: .1875rem;
 	font-size: .688rem;
 	padding: 0;
+	-webkit-font-smoothing: antialiased;
 	-webkit-transition: all 0.4s ease-in-out;
   -o-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;

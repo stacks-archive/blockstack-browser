@@ -41,7 +41,7 @@ class Navbar extends Component {
           </div>
           <div className="nav-search">
             <div className="nav-link">
-              <AddressBar placeholder="Search the blockchain for people, apps and more…" />
+              <AddressBar placeholder="&#xf002;  Search the blockchain for people, apps and more…" />
             </div>
           </div>
         </div>
