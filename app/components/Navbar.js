@@ -20,20 +20,20 @@ class Navbar extends Component {
             </div>
             <div className="nav-item nav-link">
               <ForwardButton>
-                <img className="bar-icon-settings" src="images/icon-next.svg" />
+                <img src="images/icon-next.svg" />
               </ForwardButton>
             </div>
           </div>
           <div className="pull-xs-right browser-links">
             <div className="nav-item nav-link">
               <Link to="/">
-                <img src="images/icon-home.svg"/>
+                <img className="bar-icon-home" src="images/icon-home.svg"/>
                 <span className="icon-labels">Home</span>
               </Link>
             </div>
             <div className="nav-item nav-link">
               <Link to="/account/settings">
-                <img src="images/icon-cog.svg"/>
+                <img className="bar-icon-settings" src="images/icon-cog.svg"/>
                 <span className="icon-labels">Account</span>
               </Link>
             </div>
