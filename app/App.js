@@ -52,7 +52,7 @@ class App extends Component {
 
   componentHasNewProps(accountCreated) {
     if (!accountCreated) {
-      this.context.router.push('/landing')
+      this.context.router.push('/account/create')
     } else {
       this.context.router.push('/')
     }

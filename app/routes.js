@@ -3,14 +3,13 @@ import { Route, IndexRoute } from 'react-router'
 
 import App                from './App'
 
-import LandingPage        from './pages/LandingPage'
 import DashboardPage      from './pages/DashboardPage'
+import SearchPage         from './pages/SearchPage'
 
 import RegisterPage       from './pages/names/RegisterPage'
 import ImportPage         from './pages/names/ImportPage'
 import ExportPage         from './pages/names/ExportPage'
 
-import SearchPage         from './pages/profiles/SearchPage'
 import ViewProfilePage    from './pages/profiles/ViewProfilePage'
 import EditProfilePage    from './pages/profiles/EditProfilePage'
 
@@ -39,8 +38,6 @@ export default (
     <Route path="profile/local/:index/export" component={ExportPage} />
 
     <Route path="search/:query"       component={SearchPage} />
-
-    <Route path="landing"             component={LandingPage} />
 
     <Route path="names/register"      component={RegisterPage} />
     <Route path="names/import"        component={ImportPage} />
