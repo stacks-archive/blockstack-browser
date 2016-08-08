@@ -179,8 +179,7 @@ const initialState = {
     profile: null,
     verifications: null
   },
-  localIdentities: [
-  ],
+  localIdentities: {},
   lastNameLookup: []
 }
 
