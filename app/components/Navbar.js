@@ -10,7 +10,7 @@ class Navbar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-light bg-faded navbar-fixed-top">
+      <nav className="navbar navbar-light bg-faded navbar-fixed-top pull-xs-right">
         <div className="nav navbar-nav">
           <div className="pull-xs-left back-forth">
             <div className="nav-item nav-link">
@@ -27,13 +27,11 @@ class Navbar extends Component {
           <div className="pull-xs-right browser-links">
             <div className="nav-item nav-link">
               <Link to="/">
-                <img className="bar-icon-home" src="images/icon-home.svg"/>
                 <span className="icon-labels">Home</span>
               </Link>
             </div>
             <div className="nav-item nav-link">
               <Link to="/account/settings">
-                <img className="bar-icon-settings" src="images/icon-cog.svg"/>
                 <span className="icon-labels">Account</span>
               </Link>
             </div>
