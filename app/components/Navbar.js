@@ -27,12 +27,18 @@ class Navbar extends Component {
           <div className="pull-xs-right browser-links">
             <div className="nav-item nav-link">
               <Link to="/">
-                <span className="icon-labels">Home</span>
+                <div className="icon-labels">
+                  <img src="images/icon-dash.svg"/>
+                  <span className="icon-label-wrap">Home</span>
+                </div>
               </Link>
             </div>
             <div className="nav-item nav-link">
               <Link to="/account/settings">
-                <span className="icon-labels">Account</span>
+                <div className="icon-labels">
+                  <img src="images/icon-cog.svg"/>
+                  <span className="icon-label-wrap">Account</span>
+                </div>
               </Link>
             </div>
             

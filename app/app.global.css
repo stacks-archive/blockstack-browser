@@ -127,13 +127,15 @@ button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
 
 /* Browser links */
 .browser-links{padding-right:5px;padding-left:37px;}
-.browser-links > div.nav-link{padding-top:.3125rem;}
+.browser-links > div.nav-link{padding-top:8px;}
 .browser-links > div.nav-item.nav-link > a{display:block;margin-right:7px;text-decoration:none;}
 .bar-icon-home{display:block;margin:0 auto;width:17px;height:17px;margin-bottom:3px;margin-top:6px;}
 .bar-icon-settings{display:block;margin:0 auto;width:19px;height:19px;margin-bottom:2px;margin-top:5px;}
 .back-forth{padding-right:27px;padding-left:30px;margin-top:-2px;}
 .back-forth > div.nav-link{padding-top:.0625rem;}
 .icon-labels{font-family:'Open Sans',sans-serif;display:block;color:#444444;font-size:11px;font-weight:400;}
+.icon-labels img{margin-top:-3px;}
+.icon-label-wrap{padding-left:10px;margin-top:2px;}
 .navbar-nav .nav-item + .nav-item{margin-left:10px;}
 
 /* Browser content */
