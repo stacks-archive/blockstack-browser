@@ -57,27 +57,10 @@ class DashboardPage extends Component {
     return (
       <div>
         <div className="wrapper">
-          <div className="container-fluid">
-            <h6 className="clean-font text-xs-center m-t-1 m-b-1">Featured Apps (coming soon...)</h6> 
-          </div>
-          <div className="app-container">
-            <div className="app-box-container app-box-gutter">
-              <img className="app-box" src="images/app-box-chord.jpg" />
-              <img className="app-icon" src="images/icon-chord.png" />
-            </div>
-            <div className="app-box-container app-box-gutter">
-              <img className="app-box" src="images/app-box-greenleaf.jpg" />
-              <img className="app-icon" src="images/icon-greenleaf.png" />
-            </div>
-            <div className="app-box-container">
-              <img className="app-box" src="images/app-box-guild.jpg" />
-              <img className="app-icon" src="images/icon-guild.png" />
-            </div>
-          </div>
 
-          <div className="container-fluid">
-            <div className="col-sm-6 m-t-2">
-              <h4 className="text-xs-center lead-out">My Personas</h4>
+          <div className="container-fluid no-padding">
+            <div className="bsk-sidebar pull-xs-left">
+              <h4 className="text-xs-center lead-out">Personas</h4>
                 <ul className="bookmarks-temp m-b-11">
                 {Object.keys(this.state.localIdentities).map((domainName) => {
                   const identity = this.state.localIdentities[domainName],
@@ -94,7 +77,7 @@ class DashboardPage extends Component {
                 })}
                 </ul>
               <div>
-                <Link to="/names/register" className="btn btn-block btn-primary m-b-11 m-t-2">
+                <Link to="/names/register" className="btn btn-side-secondary">
                   Register
                 </Link>
                 <Link to="/names/import" className="btn btn-block btn-secondary">
@@ -102,7 +85,7 @@ class DashboardPage extends Component {
                 </Link>
               </div>
             </div>
-            <div className="col-sm-6 m-t-2">
+            <div className="col-content">
               <h4 className="text-xs-center lead-out">My Apps</h4>
               <div>
                 <h6 className="text-xs-center">more apps coming soon…</h6>
