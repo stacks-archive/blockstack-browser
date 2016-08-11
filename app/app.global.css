@@ -112,7 +112,7 @@ div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > butt
 .connections{display:inline-block;margin-left:15px;width:32px;height:32px;border-radius:4px;background-color:#23262a;}
 
 /* Browser bar */
-.navbar.navbar-light.bg-faded.navbar-fixed-top{overflow-x: hidden;margin-left:226px;padding-top:13px;padding-right:0;padding-left:0;height:60px;background-color:#fff;border-bottom:1px solid #e1e1e1;}
+.navbar.navbar-light.bg-faded.navbar-fixed-top{display:block;margin-left:226px;padding-top:13px;padding-right:0;padding-left:0;height:60px;background-color:#fff;border-bottom:1px solid #e1e1e1;}
 .nav-page{border:none;background-color:transparent;}
 button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 
@@ -157,7 +157,7 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .col-content{width:100%;margin-left:210px;}
 
 /* Content section */
-.content-section{margin-left:226px;left:0;right:0;padding-top:60px;}
+.content-section{position:absolute;margin-left:226px;left:0;right:0;overflow-y:auto;top:60px;}
 
 /* Views */
 
