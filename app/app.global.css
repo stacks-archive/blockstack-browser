@@ -113,7 +113,7 @@ div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > butt
 .connections{display:inline-block;margin-left:15px;width:32px;height:32px;border-radius:4px;background-color:#23262a;}
 
 /* Browser bar */
-.navbar.navbar-light.bg-faded.navbar-fixed-top{width:874px;padding-top:23px;padding-right:0;padding-left:0;height:83px;background-color:rgba(255,255,255,1);border-bottom:1px solid #e1e1e1;}
+.navbar.navbar-light.bg-faded.navbar-fixed-top{width:874px;margin-left:;padding-top:23px;padding-right:0;padding-left:0;height:83px;background-color:rgba(255,255,255,1);border-bottom:1px solid #e1e1e1;}
 .nav-page{border:none;background-color:transparent;}
 .nav.navbar-nav{padding-top:3px;width:100%;}
 button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
@@ -140,7 +140,7 @@ button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
 .col-content{width:100%;margin-left:210px;}
 
 /* Browser sidebar */
-.bsk-sidebar{width:210px;}
+.sidebar-section{min-width:210px;top:0;border-right:1px solid #E1E1E1;}
 
 
 /* Views */

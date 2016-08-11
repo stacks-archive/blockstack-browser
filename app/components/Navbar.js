@@ -10,7 +10,7 @@ class Navbar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-light bg-faded navbar-fixed-top pull-xs-right">
+      <nav className="navbar navbar-light bg-faded navbar-fixed-top">
         <div className="nav navbar-nav">
           <div className="pull-xs-left back-forth">
             <div className="nav-item nav-link">
