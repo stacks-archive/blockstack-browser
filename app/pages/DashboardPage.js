@@ -24,7 +24,7 @@ class DashboardPage extends Component {
     return (
       <div className="container">
         <section className="container-fluid wrapper">
-          <div className="col-sm-12 m-t-2">
+          <div className="">
             <h4 className="text-xs-center lead-out">My Apps</h4>
             <div>
               <h4 className="text-xs-center">(no apps installed)</h4>
