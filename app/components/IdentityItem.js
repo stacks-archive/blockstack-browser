@@ -25,8 +25,10 @@ class IdentityItem extends Component {
               fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
           <div className="col-list-name">
-            {this.props.label}
-            {this.props.pending ?
+            <span className="list-text-name">
+              {this.props.label}
+            </span>
+              {this.props.pending ?
             <span className="list-current-state">
              (pending)
             </span>
