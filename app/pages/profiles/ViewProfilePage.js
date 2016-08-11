@@ -142,7 +142,7 @@ class ViewProfilePage extends Component {
                   </div>
                   : null }
                   <h1 className="idcard-name">{person.name()}</h1>
-                  <div className="idcard-body inverse">
+                  <div className="idcard-body">
                     {person.description()}
                   </div>
                   { person.address() ?
