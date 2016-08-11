@@ -23,8 +23,6 @@ h4.headspace,h5.headspace{margin-bottom:50px;}
 .pill-nav{border:1px solid #484848;border-radius:20px;font-size:16px;}
 div.pill-nav > a{padding-right:15px;}
 div.pill-nav > a > img{margin-top:-5px;margin-left:15px;width:17px;height:17px;}
-div.col-md-3 > img > .profile-img{margin-right:10px;width:32px;height:32px;border-radius:4px;}
-.col-list-name{display:table-cell;vertical-align:middle;}
 .booklist-wrap{display:table;overflow:hidden;}
 div.container.outer-wrap{padding:0;}
 /* end unknown styles ///////////////////////////////////// */
@@ -150,9 +148,44 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .sidebar-gutter{width:14px;max-width:14px;min-height:100%;}
 .list-group-item-sidebar{border:none;border-radius:4px;background-color:transparent;}
 .list-group-item-sidebar.active,.list-group-item-sidebar.active:hover,.list-group-item-sidebar.active:focus{background-color:#53206f;background-image:none;color:#fff;}
-.list-group-item-dash{border:none;color:#fff!important;width:100%;display:block;border-radius:3px;background-color:#32373d;height:55px;}
+.list-group-item-dash {
+	border: none;
+	color: #fff !important;
+	width: 100%;
+	display: block;
+	padding: 16px 12px;
+	background-color: #2C96FF;
+	height: 62px;
+	min-width:204px;
+	margin-left: -20px;
+	font-size: 12px;
+	border-top-left-radius: 6px!important;
+	border-top-right-radius:0!important;
+	border-bottom-left-radius: 6px!important;
+	border-bottom-right-radius:0!important;
+}
 a.list-group-item-dash:focus,a.list-group-item-dash:hover{background-color:#e1e1e1;color:#e6e6e6!important;}
-
+.list-group-avatar{float:left; display: inline-block;}
+.list-group-avatar img {
+	margin-right: 10px;
+  width: 28px;
+  height: 28px;
+  background-size: cover;
+  display: block;
+  border-radius: 14px;
+  -webkit-border-radius: 14px;
+  -moz-border-radius: 14px;
+  background-position: center;
+  border:1px solid #c7c7c7;
+}
+.col-list-name{float: right; 
+}
+.col-list-name span{display: block;line-height: 12px;top: -25px;width:130px;
+	white-space: nowrap;
+  overflow: hidden;
+  box-sizing:border-box;
+  text-overflow: ellipsis;}
+.col-list-name span.list-current-state{display: block;line-height: 12px;margin-top: 0;}
 
 /* Browser content */
 .col-content{width:100%;margin-left:210px;}
