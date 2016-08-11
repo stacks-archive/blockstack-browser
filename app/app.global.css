@@ -120,7 +120,7 @@ button.btn.btn-sm.nav-page{margin-top:-2px;padding-right:8px;padding-left:8px;}
 /* Browser search bar */
 .nav-search{overflow:hidden;}
 .browser-search-bar{margin-top:-2px;font-size:12px;}
-.browser-search-bar input{font-family:'Open Sans',sans-serif;padding:0.063rem 0.75rem 0.063rem 40px;border:none;color:#444444;font-weight:500;font-size:12px;border-radius:20px;-webkit-transition:all 0.5s ease-in-out;-o-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;}
+.browser-search-bar input{font-family:'Open Sans',sans-serif;padding:0.063rem 0.75rem 0.063rem 40px;border:none;color:#444444;font-weight:500;font-size:12px;border-radius:20px;-webkit-font-smoothing:antialiased;-webkit-transition:all 0.5s ease-in-out;-o-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;}
 .browser-search-bar input::-webkit-input-placeholder{font-family:fontAwesome,'Open Sans',sans-serif;color:#444444;font-weight:500;text-transform:none;margin-top:.1875rem;font-size:12px;padding:0;-webkit-font-smoothing:antialiased;-webkit-transition:all 0.5s ease-in-out;-o-transition:all 0.5s ease-in-out;transition:all 0.5s ease-in-out;}
 .browser-search-bar input:focus{background-color:#fff;}
 .browser-search-bar img{margin-top:-48px;margin-left:12px;}
