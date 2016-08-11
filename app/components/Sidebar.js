@@ -55,7 +55,7 @@ class Sidebar extends Component {
 
   render() {
     return (
-      <div className="sidebar-wrapper">
+      <div className="sidebar-wrapper draggable-page">
         <div className="sidebar-section">
           <div className="sidebar-label m-b-2">Personas</div>
           <div>
