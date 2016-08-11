@@ -58,7 +58,7 @@ class Sidebar extends Component {
       <div className="sidebar-wrapper draggable-page">
         <div className="sidebar-section">
           <div className="sidebar-label m-b-2">Personas</div>
-          <div>
+          <div className="m-b-2">
             <Link to="/names/register" className="btn btn-side-emphasis btn-side-pull-left" >
               Register
             </Link>
