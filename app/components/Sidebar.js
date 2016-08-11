@@ -57,29 +57,31 @@ class Sidebar extends Component {
     return (
       <div className="sidebar-wrapper">
         <div className="sidebar-section">
-          <div className="sidebar-label">Personas</div>
-          <ul className="nav sidebar-list">
-          {Object.keys(this.state.localIdentities).map((domainName) => {
-            const identity = this.state.localIdentities[domainName],
-                  person = new Person(identity.profile)
-            if (identity.domainName) {
-              return (
-                <IdentityItem key={identity.domainName}
-                  label={identity.domainName}
-                  pending={!identity.registered}
-                  avatarUrl={person.avatarUrl() || ''}
-                  url={`/profile/local/${identity.domainName}`} />
-              )
-            }
-          })}
-          </ul>
+          <div className="sidebar-label m-b-2">Personas</div>
           <div>
-            <Link to="/names/register" className="btn btn-block btn-primary m-b-11 m-t-2">
+            <Link to="/names/register" className="btn btn-side-secondary">
               Register
             </Link>
             <Link to="/names/import" className="btn btn-block btn-secondary">
               Import
             </Link>
+          </div>
+          <div>
+            <ul className="nav sidebar-list">
+            {Object.keys(this.state.localIdentities).map((domainName) => {
+              const identity = this.state.localIdentities[domainName],
+                    person = new Person(identity.profile)
+              if (identity.domainName) {
+                return (
+                  <IdentityItem key={identity.domainName}
+                    label={identity.domainName}
+                    pending={!identity.registered}
+                    avatarUrl={person.avatarUrl() || ''}
+                    url={`/profile/local/${identity.domainName}`} />
+                )
+              }
+            })}
+            </ul>
           </div>
         </div>
         <div className="sidebar-gutter"></div>
