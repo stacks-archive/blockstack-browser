@@ -20,7 +20,8 @@ import PrivateInfoTab from './PrivateInfoTab'
 function mapStateToProps(state) {
   return {
     localIdentities: state.identities.localIdentities,
-    api: state.settings.api
+    api: state.settings.api,
+    identityKeypairs: state.account.identityAccount.keypairs
   }
 }
 
@@ -32,7 +33,8 @@ class EditProfilePage extends Component {
   static propTypes = {
     updateProfile: PropTypes.func.isRequired,
     localIdentities: PropTypes.object.isRequired,
-    api: PropTypes.object.isRequired
+    api: PropTypes.object.isRequired,
+    identityKeypairs: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -84,10 +86,11 @@ class EditProfilePage extends Component {
 
   uploadProfile() {
     const filename = this.state.domainName + '.json'
-    const privateKeychain = new PrivateKeychain(),
-          publicKeychain = privateKeychain.publicKeychain()
-    const privateKey = privateKeychain.privateKey('hex'),
-          publicKey = publicKeychain.publicKey('hex')
+
+    const keypair = this.props.identityKeypairs[0],
+          privateKey = keypair.key
+          publicKey = keypair.keyID
+
     const token = signToken(this.state.profile, privateKey, {publicKey: publicKey}),
           tokenRecord = wrapToken(token)
     const data = JSON.stringify(tokenRecord, null, 2)
