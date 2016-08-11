@@ -27,8 +27,8 @@ div.container.outer-wrap{padding:0;}
 /* end unknown styles ///////////////////////////////////// */
 
 .bookmarks-temp{padding:0;border-radius:4px;}
-.search-result{border:none;color:#fff!important;font-weight:300;display:block;border-radius:3px;background-color:#32373d;height:60px;}
-a.search-result:hover{color:#fff!important;background-color:#23262a;}
+.search-result{border:none;color:#fff!important;font-weight:300;margin-bottom:1px;display:block;border-radius:3px;background-color:#2C96FF;height:60px;}
+a.search-result:hover{color:#fff!important;background-color:#2275D7;}
 .result-img{width:36px;height:36px;}
 
 
@@ -101,7 +101,7 @@ i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;}
 div.profile-right-col > ul{padding-left:0;list-style-type:none;}
 div.profile-right-col > ul > li > a,div.profile-right-col > ul > li > button{display:block;padding:10px 5px;color:#949494;text-decoration:none;}
 .btn-social-account{display:block;padding:10px 5px;color:#949494;text-decoration:none;}
-div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > button:hover{border-radius:4px;background-color:#23262a;text-decoration:none;}
+div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > button:hover{border-radius:4px;background-color:#2C96FF;text-decoration:none;color:#fff;}
 .btn-social-account:hover{border-radius:4px;background-color:#23262a;text-decoration:none;}
 .profile-foot{position:relative;display:block;margin-left:15px;padding-top:50px;color:#949494;}
 .connections{display:inline-block;margin-left:15px;width:32px;height:32px;border-radius:4px;background-color:#23262a;}
