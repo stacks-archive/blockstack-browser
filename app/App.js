@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
 
 function mapStateToProps(state) {
@@ -18,8 +19,11 @@ class MainScreen extends Component {
   render() {
     return (
       <div className="body-main">
-        <Navbar />
-        {this.props.children}
+        <Sidebar />
+        <div className="content-section">
+          <Navbar />
+          {this.props.children}
+        </div>
       </div>
     )
   }
