@@ -150,7 +150,7 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .list-group-item-dash {
 	border: none;
 	width: 100%;
-	margin-bottom: 0;
+	margin-bottom: 1px;
 	display: block;
 	padding: 16px 12px;
 	background-color: #fff;
