@@ -76,20 +76,24 @@ class PublicKeysTab extends Component {
     return (
       <div>
         <div className="form-group">
+          <p>
           <button className="btn btn-primary"
             onClick={() => {this.createItem('bitcoin')}}>
             Add Bitcoin Address
           </button>
-          &nbsp;
+          </p>
+          <p>
           <button className="btn btn-primary"
             onClick={() => {this.createItem('ethereum')}}>
             Add Ethereum Address
           </button>
-          &nbsp;
-          <button className="btn btn-primary"
-            onClick={() => {this.createItem('pgp')}}>
-            Add PGP Key
-          </button>
+          </p>
+          <p>
+            <button className="btn btn-primary"
+              onClick={() => {this.createItem('pgp')}}>
+              Add PGP Key
+            </button>
+          </p>
         </div>
         { accounts.map((account, index) => {
           return (

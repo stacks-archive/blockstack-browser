@@ -91,8 +91,6 @@ class EditProfilePage extends Component {
           privateKey = keypair.key,
           publicKey = keypair.keyID
 
-    console.log(keypair)
-
     const token = signToken(this.state.profile, privateKey, {publicKey: publicKey}),
           tokenRecord = wrapToken(token),
           tokenRecords = [tokenRecord]
@@ -115,7 +113,7 @@ class EditProfilePage extends Component {
         <PageHeader title="Edit Profile" subtitle={this.state.tabName} />
         <div className="container">
           <div className="row">
-            <div className="col-md-3">
+            <div className="col-md-4">
               <ProfileEditingSidebar
                 activeTab={this.state.tabName}
                 onClick={this.changeTabs} />
@@ -123,13 +121,13 @@ class EditProfilePage extends Component {
               <div className="form-group">
                 <fieldset>
                   <Link to={this.props.location.pathname.replace('/edit', '')}
-                    className="btn btn-outline-primary">
+                    className="btn btn-primary">
                     Save + View Profile
                   </Link>
                 </fieldset>
               </div>
             </div>
-            <div className="col-md-9">
+            <div className="col-md-8">
               { this.state.profile ? (
               <div>
                 {(() => {

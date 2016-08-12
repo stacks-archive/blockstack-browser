@@ -54,7 +54,6 @@ class ViewProfilePage extends Component {
             profile = props.localIdentities[newDomainIndex].profile,
             name = props.localIdentities[newDomainIndex].domainName,
             verifications = []
-      console.log(name)
       this.props.updateCurrentIdentity(name, profile, verifications)
     } else if (props.routeParams.name) {
       this.props.fetchCurrentIdentity(props.routeParams.name, props.nameLookupUrl)
@@ -69,7 +68,6 @@ class ViewProfilePage extends Component {
     if (nextProps.routeParams !== this.props.routeParams) {
       this.componentHasNewRouteParams(nextProps)
     }
-    console.log(nextProps.currentIdentity)
     this.setState({
       currentIdentity: nextProps.currentIdentity,
       isLoading: false
