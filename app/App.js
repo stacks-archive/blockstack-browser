@@ -32,7 +32,7 @@ class MainScreen extends Component {
 class WelcomeScreen extends Component {
   render() {
     return (
-      <div className="body-landing">
+      <div className="body-landing" style={{ backgroundColor: '#1b1e21' }}>
         {this.props.children}
       </div>
     )

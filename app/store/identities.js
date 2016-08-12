@@ -125,7 +125,6 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
   return dispatch => {
     const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl),
       authHeader = 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
-    console.log(zoneFile)
     fetch(registerUrl, {
       method: 'POST',
       headers: {
@@ -161,8 +160,6 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
         const zoneFile = responseJson[username]['zone_file']
         const verifications = responseJson[username]['verifications']
         const ownerAddress = responseJson[username]['owner_address']
-
-        console.log('165')
 
         resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
