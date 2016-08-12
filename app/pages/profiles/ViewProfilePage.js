@@ -76,7 +76,7 @@ class ViewProfilePage extends Component {
 
   render() {
     let identity = this.state.currentIdentity,
-        blockchainId = identity.id
+        domainName = identity.domainName
 
     let profile = identity.profile || null,
         verifications = identity.verifications,
@@ -120,10 +120,18 @@ class ViewProfilePage extends Component {
                   </div>
                 { isLocal ?
                 <div>
-                  <Link to={this.props.location.pathname + "/edit"}
-                    className="btn btn-block btn-primary m-t-1">
-                    Edit
-                  </Link>
+                  <p>
+                    <Link to={this.props.location.pathname + "/edit"}
+                      className="btn btn-block btn-primary m-t-1">
+                      Edit
+                    </Link>
+                  </p>
+                  <p>
+                    <Link to={`/profile/blockchain/${domainName}`}
+                      className="btn btn-block btn-primary m-t-1">
+                      View Publicly
+                    </Link>
+                  </p>
                 </div>
                 :
                 <div>
