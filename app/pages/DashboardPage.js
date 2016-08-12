@@ -22,7 +22,7 @@ class DashboardPage extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="">
         <section className="container-fluid wrapper">
           <div className="container-fluid">
             <h6 className="clean-font text-xs-center m-t-1 m-b-1">Featured Apps (coming soon...)</h6> 
