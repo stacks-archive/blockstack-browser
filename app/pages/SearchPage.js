@@ -51,7 +51,7 @@ class SearchPage extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="">
         {this.state.searchResults.length ?
         <ul className="list-group">
           {this.state.searchResults.map((result, index) => {

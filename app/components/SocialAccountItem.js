@@ -64,11 +64,11 @@ class SocialAccountItem extends Component {
             {this.props.verified ?
             <span className="fa-stack fa-lg">
               <i className="fa fa-certificate fa-stack-2x fa-green" />
-              <i className={`fa ${this.getIconClass()} fa-inverse fa-stack-1x`} />
+              <i className={`fa ${this.getIconClass()} fa-stack-1x`} />
             </span>
             :
             <span className="fa-stack fa-lg">
-              <i className={`fa ${this.getIconClass()} fa-inverse fa-stack-1x`} />
+              <i className={`fa ${this.getIconClass()} fa-stack-1x`} />
             </span>
             }
             <span className="app-account-identifier">

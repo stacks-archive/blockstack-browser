@@ -20,9 +20,9 @@ app.on('window-all-closed', () => {
 app.once('ready', () => {
   let size = screen.getPrimaryDisplay().workAreaSize;
   let mainWindow = new BrowserWindow({
-    width: 1200,
+    width: 1100,
     height: 900,
-    minWidth: 900,
+    minWidth: 1100,
     minHeight: 450,
     frame: false,
     titleBarStyle: 'hidden'

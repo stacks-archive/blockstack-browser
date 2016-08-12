@@ -127,6 +127,7 @@ class AddressBar extends Component {
           name="query" value={this.state.query}
           onChange={this.onQueryChange}
           onKeyPress={this.onKeyPress} />
+          <img role="img" src="images/icon-magnifying-glass.svg" />
       </div>
     )
   }
