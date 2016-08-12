@@ -29,16 +29,13 @@ class DashboardPage extends Component {
           </div>
           <div className="col-sm-12 app-container no-padding">
             <div className="col-sm-4 app-box-container app-box-gutter no-padding">
-              <img className="app-box" src="images/app-box-chord@2x.jpg" />
-              <img className="app-icon" src="images/icon-chord.png" />
+              <img className="app-box" src="images/app-box-chord@2x.png" />
             </div>
             <div className="col-sm-4 app-box-container app-box-gutter no-padding">
-              <img className="app-box" src="images/app-box-greenleaf@2x.jpg" />
-              <img className="app-icon" src="images/icon-greenleaf.png" />
+              <img className="app-box" src="images/app-box-greenleaf@2x.png" />
             </div>
             <div className="col-sm-4 app-box-container no-padding">
-              <img className="app-box" src="images/app-box-guild@2x.jpg" />
-              <img className="app-icon" src="images/icon-guild.png" />
+              <img className="app-box" src="images/app-box-guild@2x.png" />
             </div>
           </div>
         </section>
