@@ -1,5 +1,8 @@
-import { Person, makeZoneFileForHostedProfile } from 'blockstack-profiles'
+import { Person } from 'blockstack-profiles'
 import { parseZoneFile } from 'blockstack-zones'
+import {
+  makeZoneFileForHostedProfile, resolveZoneFileToProfile
+} from '../utils/index'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
@@ -122,6 +125,7 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
   return dispatch => {
     const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl),
       authHeader = 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
+    console.log(zoneFile)
     fetch(registerUrl, {
       method: 'POST',
       headers: {
@@ -146,76 +150,6 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
   }
 }
 
-function getTokenFileUrlFromZoneFile(zoneFile) {
-  let zoneFileJson = parseZoneFile(zoneFile)
-  if (!zoneFileJson.hasOwnProperty('uri')) {
-    return null
-  }
-  if (!Array.isArray(zoneFileJson.uri)) {
-    return null
-  }
-  if (zoneFileJson.uri.length < 1) {
-    return null
-  }
-  let firstUriRecord = zoneFileJson.uri[0]
-
-  if (!firstUriRecord.hasOwnProperty('target')) {
-    return null
-  }
-  let tokenFileUrl = firstUriRecord.target
-
-  if (tokenFileUrl.startsWith('https')) {
-    // pass
-  } else if (tokenFileUrl.startsWith('http')) {
-    // pass
-  } else {
-    tokenFileUrl = 'https://' + tokenFileUrl
-  }
-
-  return tokenFileUrl
-}
-
-function resolveZoneFileToProfile(zoneFile, publicKeychain, callback) {
-  let zoneFileJson = null
-  try {
-    let zoneFileJson = parseZoneFile(zoneFile)
-  } catch (e) {
-  }
-
-  let tokenFileUrl = null
-  if (zoneFileJson) {
-    tokenFileUrl = getTokenFileUrlFromZoneFile(zoneFileJson)
-  } else {
-    let profile = null
-    try {
-      profile = JSON.parse(zoneFile)
-      profile = Person.fromLegacyFormat(profile).profile()
-    } catch(e) {
-    }
-    callback(profile)
-    return
-  }
-
-  if (tokenFileUrl) {
-    fetch(tokenFileUrl)
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        let tokenRecords = responseJson
-        let profile = Person.fromTokens(tokenRecords, publicKeychain).profile()
-        callback(profile)
-        return
-      })
-      .catch((error) => {
-        console.warn(error)
-      })
-  } else {
-    console.warn('Token file url not found')
-    callback({})
-    return
-  }
-}
-
 function fetchCurrentIdentity(domainName, lookupUrl) {
   return dispatch => {
     const username = domainName.replace('.id', ''),
@@ -227,6 +161,8 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
         const zoneFile = responseJson[username]['zone_file']
         const verifications = responseJson[username]['verifications']
         const ownerAddress = responseJson[username]['owner_address']
+
+        console.log('165')
 
         resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
