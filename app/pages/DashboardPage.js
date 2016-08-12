@@ -22,24 +22,34 @@ class DashboardPage extends Component {
 
   render() {
     return (
-      <div className="">
-        <section className="">
-          <div className="container-fluid">
-            <h6 className="clean-font text-xs-center m-t-1 m-b-1">Featured Apps (coming soon...)</h6> 
+      <div className="">
+        <section>
+          <div className="container-fluid">
+            <h6 className="clean-font text-xs-center m-t-1 m-b-1">Featured Apps, coming soon...</h6> 
           </div>
-          <div className="col-sm-12 app-container no-padding">
-            <div className="col-sm-4 app-box-container app-box-gutter no-padding">
-              <img className="app-box" src="images/app-box-chord@2x.png" />
-            </div>
-            <div className="col-sm-4 app-box-container app-box-gutter no-padding">
-              <img className="app-box" src="images/app-box-greenleaf@2x.png" />
-            </div>
-            <div className="col-sm-4 app-box-container no-padding">
-              <img className="app-box" src="images/app-box-guild@2x.png" />
+          <div className="container-fluid">
+            <div className="col-sm-12 app-container no-padding">
+              <div className="col-sm-4 no-padding app-box-container">
+                <img className="app-box" src="images/app-box-chord@2x.png" />
+              </div>
+              <div className="col-sm-4 no-padding app-box-container">
+                <img className="app-box" src="images/app-box-greenleaf@2x.png" />
+              </div>
+              <div className="col-sm-4 no-padding app-box-container">
+                <img className="app-box" src="images/app-box-guild@2x.png" />
+              </div>
             </div>
           </div>
-        </section>
-      </div>
+          <div className="container-fluid">
+            <h1 className="clean-font text-xs-center p-t-3">Browse the decentralized web</h1> 
+          </div>
+          <div className="container-fluid">
+              <div className="col-sm-6 offset-sm-3 text-xs-center">
+                <h5>Blockstack browser is the world’s first browser that enables you to browse the decentralized web</h5>
+              </div>
+          </div>
+        </section>
+      </div>
     )
   }
 }

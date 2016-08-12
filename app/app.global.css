@@ -38,6 +38,7 @@ a.search-result:hover{color:#fff!important;background-color:#2275D7;}
 html,body{background-color:#fff;height:100%;min-width:768px;}
 button{outline:none!important;}
 .btn{line-height:inherit;text-transform:uppercase;letter-spacing:1px;}
+.form-control:focus{color:#444444;}
 
 /* Type */
 a,a:focus{outline:none;}
@@ -82,7 +83,7 @@ a,a:focus{outline:none;}
 
 
 /* ID card */
-.proid-wrap{max-width:980px;width:900px;}
+.proid-wrap{max-width:980px;width:870px;}
 .idcard{position:relative;border:.0625rem solid rgba(229,229,229,1);border-radius:.25rem;}
 .idcard-body{color:#7b7b7b;display:block;margin-bottom:30px;}
 .dim{color:#7b7b7b;}
@@ -225,9 +226,10 @@ a.list-group-item-dash:focus, a.list-group-item-dash:hover {
 .out-form-group{width:490px;margin-left:-80px;}
 h6.clean-font{font-family:'Open Sans', serif;}
 .app-container {
+	width:101%;
 }
 .app-box-container {
-
+	padding-right: 4px;
 	min-height: 1px;
 	float: left;
 }
@@ -235,14 +237,7 @@ h6.clean-font{font-family:'Open Sans', serif;}
 	width: 100%;
   height: auto;
 }
-.app-box-gutter {
-}
-.app-icon {
-	width: 124px;
-	z-index: 40;
-	margin-top: -45px;
-	margin-left: 120px;
-}
+
 
 
 /* Deposit view */

@@ -103,7 +103,7 @@ class ViewProfilePage extends Component {
     }
 
     return (
-      <div className="container-fluid proid-wrap p-t-4">
+      <div className="container-fluid proid-wrap p-t-4 no-padding">
         { person !== null ?
         <div>
           <div className="col-sm-9">
