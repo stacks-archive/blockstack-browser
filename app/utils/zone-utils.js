@@ -1,5 +1,6 @@
-import { Person, getProfileFromTokens } from 'blockstack-profiles'
+import { Person } from 'blockstack-profiles'
 import { parseZoneFile, makeZoneFile } from 'blockstack-zones'
+import { getProfileFromTokens } from './profile-utils'
 
 export function makeZoneFileForHostedProfile(origin, tokenFileUrl) {
   if (tokenFileUrl.indexOf('://') < 0) {
@@ -89,6 +90,9 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress, callback)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
+        console.log(responseJson)
+        console.log(publicKeyOrAddress)
+
         let tokenRecords = responseJson
         let profile = getProfileFromTokens(tokenRecords, publicKeyOrAddress)
 
