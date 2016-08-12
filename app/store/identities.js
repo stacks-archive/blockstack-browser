@@ -145,17 +145,44 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
   }
 }
 
+function resolveZoneFileToProfile(zoneFile, callback) {
+  //let tokenFileUrl = getTokenFileUrlFromZoneFile(zoneFile)
+  let tokenFileUrl = 'https://blockstack.s3.amazonaws.com/staging/ryan_aug3_5.id.json'
+  fetch(tokenFileUrl)
+    .then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      let publicKeychain = "027506ed6996f4f4125ab1a4fb3d673687cd557918fc4e28f0c6693106d0e3a3b6"
+      let tokenRecords = responseJson
+      console.log(tokenRecords)
+      let profile = Person.fromTokens(tokenRecords, publicKeychain).profile()
+      console.log('Profile')
+      console.log(profile)
+      callback(profile)
+      return
+    })
+    .catch((error) => {
+      console.warn(error)
+    })
+}
+
 function fetchCurrentIdentity(domainName, lookupUrl) {
   return dispatch => {
     const username = domainName.replace('.id', ''),
           url = lookupUrl.replace('{name}', username)
+    console.log(url)
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        const profile = responseJson[username]['profile'],
-              verifications = responseJson[username]['verifications']
-        dispatch(updateCurrentIdentity(domainName, profile, verifications))
+        const zoneFile = responseJson[username]['zone_file']
+        const verifications = responseJson[username]['verifications']
+        resolveZoneFileToProfile(zoneFile, (profile) => {
+          console.log('Profile')
+          console.log(profile)
+          console.log(domainName)
+          dispatch(updateCurrentIdentity(domainName, profile, verifications))
+        })
       })
       .catch((error) => {
         console.warn(error)
@@ -208,7 +235,6 @@ export function IdentityReducer(state = initialState, action) {
         })
       })
     case UPDATE_IDENTITIES:
-      console.log('UPDATE_IDENTITIES')
       return Object.assign({}, state, {
         localIdentities: action.localIdentities,
         lastNameLookup: action.namesOwned

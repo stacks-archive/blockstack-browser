@@ -88,12 +88,15 @@ class EditProfilePage extends Component {
     const filename = this.state.domainName + '.json'
 
     const keypair = this.props.identityKeypairs[0],
-          privateKey = keypair.key
+          privateKey = keypair.key,
           publicKey = keypair.keyID
 
+    console.log(keypair)
+
     const token = signToken(this.state.profile, privateKey, {publicKey: publicKey}),
-          tokenRecord = wrapToken(token)
-    const data = JSON.stringify(tokenRecord, null, 2)
+          tokenRecord = wrapToken(token),
+          tokenRecords = [tokenRecord]
+    const data = JSON.stringify(tokenRecords, null, 2)
     uploadFile(this.props.api, filename, data, ({ url, err, res }) => {
       if (err) {
         console.log(res)

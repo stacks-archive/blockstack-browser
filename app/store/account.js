@@ -10,10 +10,6 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE'
 
 function createAccount(encryptedBackupPhrase, privateKeychain) {
-  const distinct_id = identityPublicKeychainString
-  mixpanel.track('Create account', { distinct_id: distinct_id })
-  mixpanel.track('Perform action', { distinct_id: distinct_id })
-
   const identityPrivateKeychain = privateKeychain.privatelyNamedChild('blockstack-0')
   const bitcoinPrivateKeychain = privateKeychain.privatelyNamedChild('bitcoin-0')
 
@@ -24,6 +20,10 @@ function createAccount(encryptedBackupPhrase, privateKeychain) {
 
   const firstIdentityKey = identityPrivateKeychain.ecPair.d.toBuffer(32).toString('hex')
   const firstIdentityKeyID = identityPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
+
+  const distinct_id = identityPublicKeychain
+  mixpanel.track('Create account', { distinct_id: distinct_id })
+  mixpanel.track('Perform action', { distinct_id: distinct_id })
 
   return {
     type: CREATE_ACCOUNT,
@@ -96,7 +96,8 @@ const initialState = {
   accountCreated: false,
   encryptedBackupPhrase: null,
   identityAccount: {
-    addresses: []
+    addresses: [],
+    keypairs: []
   },
   bitcoinAccount: {
     addresses: []
@@ -117,7 +118,9 @@ export function AccountReducer(state=initialState, action) {
           ],
           keypairs: [
             ...state.identityAccount.keypairs,
-            { key: action.firstIdentityKey, keyID: action.firstIdentityKeyID }
+            { key: action.firstIdentityKey,
+              keyID: action.firstIdentityKeyID,
+              address: action.firstIdentityAddress }
           ],
           addressIndex: 0
         },
