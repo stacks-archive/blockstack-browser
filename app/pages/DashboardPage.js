@@ -25,9 +25,9 @@ class DashboardPage extends Component {
       <div className="">
         <section>
           <div className="container-fluid">
-            <h6 className="clean-font text-xs-center m-t-1 m-b-1">Featured Apps, coming soon...</h6> 
+            <h6 className="text-xs-center text-feat-dash">Featured Apps, coming soon...</h6> 
           </div>
-          <div className="container-fluid">
+          <div className="container-fluid no-padding">
             <div className="col-sm-12 app-container no-padding">
               <div className="col-sm-4 no-padding app-box-container">
                 <img className="app-box" src="images/app-box-chord@2x.png" />
