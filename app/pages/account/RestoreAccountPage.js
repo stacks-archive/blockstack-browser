@@ -70,9 +70,8 @@ class RestorePage extends Component {
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
-              <div className="m-b-4">
-                <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
-                <p className="lead-out">browse the blockchain</p>
+              <div className="m-b-1">
+                <img className="beta-v1-0 m-t-1 m-b-1" src="images/browser-beta-v1-0@2x.png"/>
               </div>
               <h1 className="text-xs-center type-inverse">restore from backup</h1>
               <p className="lead-out">
@@ -106,7 +105,7 @@ class RestorePage extends Component {
                   <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11">
                     <p className="text-sm inverse text-xs-center">Don&#39;t have an account?
                       <br />
-                      <Link to="/account/create">Create an account</Link>
+                      <Link to="/account/create" className="view-out-link">Create an account</Link>
                     </p>
                   </div>
                 </fieldset>

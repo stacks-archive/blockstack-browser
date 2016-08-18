@@ -84,14 +84,12 @@ class CreateAccountPage extends Component {
           <div className="row">
             <div className="centered">
               <div className="m-b-1">
-                <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
-                <p className="lead-out">browse the blockchain</p>
-                <img className="m-b-1" src="images/browser-beta-v1-0.png"/>
+                <img className="beta-v1-0 m-t-1 m-b-1" src="images/browser-beta-v1-0@2x.png"/>
               </div>
             </div>
             <div>
               <div className="centered">
-                <h1 className="text-xs-center type-inverse">create an account</h1>
+                <h1 className="text-xs-center type-inverse m-t-2">create an account</h1>
               </div>
               <div className="out-form-group">
                 { this.state.alerts.map(function(alert, index) {
@@ -124,7 +122,7 @@ class CreateAccountPage extends Component {
               <p className="text-sm inverse text-xs-center">
                 Already have an account?
                 <br />
-                <Link to="/account/restore">Restore from backup</Link>
+                <Link to="/account/restore" className="view-out-link">Restore from backup</Link>
               </p>
             </div>
           </div>
