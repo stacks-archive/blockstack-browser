@@ -98,7 +98,7 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .browser-links{padding-right:5px;padding-left:37px;}
 .browser-links > div.nav-link{padding-top:8px;}
 .browser-links > div.nav-item.nav-link > a{display:block;margin-right:7px;text-decoration:none;}
-.bar-icon-home{display:block;width:17px;height:17px;margin:0 auto;margin-top:6px;margin-bottom:3px;}
+.bar-icon-home{width:15px;}
 .bar-icon-settings{display:block;width:19px;height:19px;margin:0 auto;margin-top:5px;margin-bottom:2px;}
 .back-forth{margin-top:-2px;padding-right:27px;padding-left:30px;}
 .back-forth > div.nav-link{padding-top:.0625rem;}

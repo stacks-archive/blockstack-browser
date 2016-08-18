@@ -28,7 +28,7 @@ class Navbar extends Component {
             <div className="nav-item nav-link">
               <Link to="/">
                 <div className="icon-labels">
-                  <img src="images/icon-dash.svg"/>
+                  <img className="bar-icon-home" src="images/icon-home.svg"/>
                   <span className="icon-label-wrap">Home</span>
                 </div>
               </Link>
