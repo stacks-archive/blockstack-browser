@@ -136,6 +136,7 @@ a.list-group-item-dash:focus,a.list-group-item-dash:hover{background-color:#f5f5
 
 /* Content section */
 .content-section{position:absolute;top:60px;right:0;left:0;overflow-y:auto;margin-left:226px;}
+.beta-v1-0{width:400px;}
 
 /* Views */
 
@@ -152,6 +153,7 @@ a.list-group-item-dash:focus,a.list-group-item-dash:hover{background-color:#f5f5
 .app-box-container{float:left;min-height:1px;padding-right:4px;}
 .app-box{width:100%;height:auto;}
 .text-feat-dash{padding:12px;margin-bottom:0;}
+a.view-out-link{color:#494f56;}
 
 /* Deposit view */
 .page-header-wrap{display:table;width:100%;}
