@@ -86,7 +86,7 @@ class CreateAccountPage extends Component {
               <div className="m-b-1">
                 <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
                 <p className="lead-out">browse the blockchain</p>
-                <p className="lead-out m-b-1">image</p>
+                <img className="m-b-1" src="images/browser-beta-v1-0.png"/>
               </div>
             </div>
             <div>
