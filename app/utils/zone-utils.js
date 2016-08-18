@@ -67,8 +67,6 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress, callback)
   } catch(e) {
   }
 
-  console.log(zoneFileJson)
-
   let tokenFileUrl = null
   if (zoneFileJson && Object.keys(zoneFileJson).length > 0) {
     tokenFileUrl = getTokenFileUrlFromZoneFile(zoneFileJson)
@@ -83,20 +81,14 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress, callback)
     return
   }
 
-  console.log(tokenFileUrl)
-
   if (tokenFileUrl) {
     fetch(tokenFileUrl)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        console.log(responseJson)
-        console.log(publicKeyOrAddress)
 
         let tokenRecords = responseJson
         let profile = getProfileFromTokens(tokenRecords, publicKeyOrAddress)
-
-        console.log(profile)
 
         callback(profile)
         return

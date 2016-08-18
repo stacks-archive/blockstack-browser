@@ -7,6 +7,41 @@ function updateApi(api) {
   }
 }
 
+function setAPICredentials(api, email, name, company, callback) {
+  return dispatch => {
+    const signupUrl = "https://api.blockstack.com/signup/browser"
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+    const body = JSON.stringify({
+      email: email,
+      name: name,
+      company: company
+    })
+
+    fetch(signupUrl, { method: 'POST', headers: headers, body: body })
+      .then((response) => response.text())
+      .then((responseText) => JSON.parse(responseText))
+      .then((responseJson) => {
+        if (responseJson.hasOwnProperty('error')) {
+          callback(false)
+        } else {
+          api.blockstackApiAppId = responseJson.app_id
+          api.blockstackApiAppSecret = responseJson.app_secret
+
+          dispatch(updateApi(api))
+
+          callback(true)
+        }
+      })
+      .catch((error) => {
+        console.warn(error)
+        callback(false)
+      })
+  }
+}
+
 function resetApi() {
   return dispatch => {
     const DEFAULT_API = {
@@ -28,7 +63,8 @@ function resetApi() {
 
 export const SettingsActions = {
   updateApi: updateApi,
-  resetApi: resetApi
+  resetApi: resetApi,
+  setAPICredentials: setAPICredentials
 }
 
 const initialState = {

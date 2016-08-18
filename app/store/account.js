@@ -9,7 +9,7 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
       UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE'
 
-function createAccount(encryptedBackupPhrase, privateKeychain) {
+function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
   const identityPrivateKeychain = privateKeychain.privatelyNamedChild('blockstack-0')
   const bitcoinPrivateKeychain = privateKeychain.privatelyNamedChild('bitcoin-0')
 
@@ -21,9 +21,12 @@ function createAccount(encryptedBackupPhrase, privateKeychain) {
   const firstIdentityKey = identityPrivateKeychain.ecPair.d.toBuffer(32).toString('hex')
   const firstIdentityKeyID = identityPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
 
-  const distinct_id = identityPublicKeychain
-  mixpanel.track('Create account', { distinct_id: distinct_id })
-  mixpanel.track('Perform action', { distinct_id: distinct_id })
+  let analyticsId = identityPublicKeychain
+  if (email) {
+    analyticsId = email
+  }
+  mixpanel.track('Create account', { distinct_id: analyticsId })
+  mixpanel.track('Perform action', { distinct_id: analyticsId })
 
   return {
     type: CREATE_ACCOUNT,
@@ -33,7 +36,8 @@ function createAccount(encryptedBackupPhrase, privateKeychain) {
     firstIdentityAddress: firstIdentityAddress,
     firstBitcoinAddress: firstBitcoinAddress,
     firstIdentityKey: firstIdentityKey,
-    firstIdentityKeyID: firstIdentityKeyID
+    firstIdentityKeyID: firstIdentityKeyID,
+    analyticsId: analyticsId
   }
 }
 
@@ -52,7 +56,7 @@ function updateBackupPhrase(encryptedBackupPhrase) {
   }
 }
 
-function initializeWallet(password, backupPhrase) {
+function initializeWallet(password, backupPhrase, email=null) {
   return dispatch => {
     let privateKeychain
     if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
@@ -65,7 +69,7 @@ function initializeWallet(password, backupPhrase) {
     encrypt(new Buffer(backupPhrase), password, function(err, ciphertextBuffer) {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
       dispatch(
-        createAccount(encryptedBackupPhrase, privateKeychain)
+        createAccount(encryptedBackupPhrase, privateKeychain, email)
       )
     })
   }
@@ -101,7 +105,8 @@ const initialState = {
   },
   bitcoinAccount: {
     addresses: []
-  }
+  },
+  analyticsId: ''
 }
 
 export function AccountReducer(state=initialState, action) {
@@ -131,7 +136,8 @@ export function AccountReducer(state=initialState, action) {
             action.firstBitcoinAddress
           ],
           addressIndex: 0
-        }
+        },
+        analyticsId: action.analyticsId
       })
     case DELETE_ACCOUNT:
       return Object.assign({}, state, {

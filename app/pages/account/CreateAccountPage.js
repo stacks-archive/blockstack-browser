@@ -5,26 +5,34 @@ import { connect } from 'react-redux'
 
 import { Alert, InputGroup } from '../../components/index'
 import { AccountActions } from '../../store/account'
+import { SettingsActions } from '../../store/settings'
 import { isPasswordValid } from '../../utils'
 
 function mapStateToProps(state) {
   return {
+    api: state.settings.api
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(AccountActions, dispatch)
+  let actions = Object.assign(AccountActions, SettingsActions)
+  return bindActionCreators(actions, dispatch)
 }
 
 class CreateAccountPage extends Component {
   static propTypes = {
-    initializeWallet: PropTypes.func.isRequired
+    api: PropTypes.object.isRequired,
+    initializeWallet: PropTypes.func.isRequired,
+    setAPICredentials: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
+      email: '',
+      name: '',
+      company: '',
       password: '',
       password2: '',
       alerts: []
@@ -44,8 +52,16 @@ class CreateAccountPage extends Component {
   createAccount() {
     if (isPasswordValid(this.state.password).isValid) {
       if (this.state.password === this.state.password2) {
-        this.updateAlert('success', 'Creating your account...')
-        this.props.initializeWallet(this.state.password)
+
+        this.props.setAPICredentials(this.props.api, this.state.email,
+          this.state.name, this.state.company, (success) => {
+          if (success) {
+            this.updateAlert('success', 'Creating your account...')
+            this.props.initializeWallet(this.state.password, this.state.email)
+          } else {
+            this.updateAlert('danger', 'Email already taken')
+          }
+        })
       } else {
         this.updateAlert('danger', 'Passwords must match')
       }
@@ -67,9 +83,10 @@ class CreateAccountPage extends Component {
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
-              <div className="m-b-4">
+              <div className="m-b-1">
                 <img src="images/blockstack-rev.svg" alt="Blockstack logo" width="100px" />
                 <p className="lead-out">browse the blockchain</p>
+                <p className="lead-out m-b-1">image</p>
               </div>
             </div>
             <div>
@@ -82,9 +99,15 @@ class CreateAccountPage extends Component {
                     <Alert key={index} message={alert.message} status={alert.status} />
                   )
                 })}
-                <InputGroup name="password" type="password" label="Password" inverse={true}
+                <InputGroup type="text" name="name" label="Name" inverse={true}
+                  placeholder="Name" data={this.state} onChange={this.onValueChange} />
+                <InputGroup type="text" name="company" label="Company" inverse={true}
+                  placeholder="Company" data={this.state} onChange={this.onValueChange} />
+                <InputGroup type="email" name="email" label="Email" inverse={true}
+                  placeholder="Email" data={this.state} onChange={this.onValueChange} />
+                <InputGroup type="password" name="password" label="Password" inverse={true}
                   placeholder="Password" data={this.state} onChange={this.onValueChange} />
-                <InputGroup name="password2" type="password" label="Password (again)" inverse={true}
+                <InputGroup type="password" name="password2" label="Password (again)" inverse={true}
                   placeholder="Password" data={this.state} onChange={this.onValueChange} />
                 <div className="form-group">
                   <fieldset>

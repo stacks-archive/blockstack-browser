@@ -100,7 +100,8 @@ function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNam
         dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
       }
     } else {
-      fetch(addressLookupUrl.replace('{address}', addresses.join(',')))
+      const url = addressLookupUrl.replace('{address}', addresses.join(','))
+      fetch(url)
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {

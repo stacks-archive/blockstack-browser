@@ -12,7 +12,7 @@ function mapStateToProps(state) {
   return {
     query: state.search.query,
     currentId: state.identities.current.id,
-    identityPublicKeychain: state.account.identityAccount.publicKeychain
+    analyticsId: state.account.analyticsId
   }
 }
 
@@ -23,7 +23,8 @@ function mapDispatchToProps(dispatch) {
 class AddressBar extends Component {
   static propTypes = {
     placeholder: PropTypes.string.isRequired,
-    query: PropTypes.string.isRequired
+    query: PropTypes.string.isRequired,
+    analyticsId: PropTypes.string.isRequired
   }
 
   static contextTypes = {
@@ -105,9 +106,9 @@ class AddressBar extends Component {
   onKeyPress(event) {
     if (event.key === 'Enter' && this.state.query !== '') {
       this.submitQuery(this.state.query)
-      let distinct_id = this.state.identityPublicKeychain
-      mixpanel.track('Submit query', { distinct_id: distinct_id })
-      mixpanel.track('Perform action', { distinct_id: distinct_id })
+      const analyticsId = this.props.analyticsId
+      mixpanel.track('Submit query', { distinct_id: analyticsId })
+      mixpanel.track('Perform action', { distinct_id: analyticsId })
     }
   }
 

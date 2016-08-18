@@ -21,7 +21,8 @@ function mapStateToProps(state) {
   return {
     localIdentities: state.identities.localIdentities,
     api: state.settings.api,
-    identityKeypairs: state.account.identityAccount.keypairs
+    identityKeypairs: state.account.identityAccount.keypairs,
+    analyticsId: state.account.analyticsId
   }
 }
 
@@ -34,7 +35,8 @@ class EditProfilePage extends Component {
     updateProfile: PropTypes.func.isRequired,
     localIdentities: PropTypes.object.isRequired,
     api: PropTypes.object.isRequired,
-    identityKeypairs: PropTypes.array.isRequired
+    identityKeypairs: PropTypes.array.isRequired,
+    analyticsId: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -82,6 +84,10 @@ class EditProfilePage extends Component {
 
   saveProfile(newProfile) {
     this.props.updateProfile(this.props.routeParams.index, newProfile)
+
+    const analyticsId = this.props.analyticsId
+    mixpanel.track('Save profile', { distinct_id: analyticsId })
+    mixpanel.track('Perform action', { distinct_id: analyticsId })
   }
 
   uploadProfile() {
