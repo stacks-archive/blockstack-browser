@@ -9,7 +9,8 @@ import { webAccountTypes } from '../../utils'
 class SocialAccountsTab extends Component {
   static propTypes = {
     profile: PropTypes.object.isRequired,
-    saveProfile: PropTypes.func.isRequired
+    saveProfile: PropTypes.func.isRequired,
+    domainName: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -157,7 +158,7 @@ class SocialAccountsTab extends Component {
                       { this.state.instructionSectionsShown.hasOwnProperty(String(index)) ?
                         <VerificationInfo
                           service={account.service}
-                          identifier={account.identifier} />
+                          domainName={this.props.domainName} />
                       :
                       <div className="form-group">
                         <button className="btn btn-outline-primary"

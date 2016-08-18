@@ -3,12 +3,14 @@ import { shell } from 'electron'
 
 class FacebookVerificationInfo extends Component {
   static contextTypes = {
-    username: React.PropTypes.string
+    domainName: PropTypes.string.isRequired
   }
 
   render() {
-    const verificationMessage = "Verifying that +{{ username }} is my blockchain ID. https://onename.com/{{ username }}"
-      .replace(new RegExp('{{ username }}', 'g'), this.props.username)
+    const username = this.props.domainName.split('.')[0]
+
+    const verificationMessage = "Verifying that \"{{ username }}.id\" is my Blockstack ID. https://onename.com/{{ username }}"
+      .replace(new RegExp('{{ username }}', 'g'), username)
     const verificationUrl = "https://www.facebook.com"
 
     return (
@@ -48,12 +50,14 @@ class FacebookVerificationInfo extends Component {
 
 class GithubVerificationInfo extends Component {
   static contextTypes = {
-    username: React.PropTypes.string
+    domainName: PropTypes.string.isRequired
   }
 
   render() {
-    const verificationMessage = "Verifying that +{{ username }} is my blockchain ID. https://onename.com/{{ username }}"
-      .replace(new RegExp('{{ username }}', 'g'), this.props.username)
+    const username = this.props.domainName.split('.')[0]
+
+    const verificationMessage = "Verifying that \"{{ username }}.id\" is my Blockstack ID. https://onename.com/{{ username }}"
+      .replace(new RegExp('{{ username }}', 'g'), username)
     const verificationUrl = 'https://gist.github.com/'
 
     return (
@@ -68,7 +72,7 @@ class GithubVerificationInfo extends Component {
           <input value={verificationMessage} className="form-control" readOnly />
         </p>
         <p>
-          3. Create a Gist with the copied text to publicly verify yourself
+          3. Create a public gist with the copied text to publicly verify yourself
         </p>
         <div className="form-group">
           <a href="#" onClick={(event) => {
@@ -90,12 +94,14 @@ class GithubVerificationInfo extends Component {
 
 class TwitterVerificationInfo extends Component {
   static contextTypes = {
-    username: React.PropTypes.string
+    domainName: PropTypes.string.isRequired
   }
 
   render() {
-    const verificationUrl = "https://twitter.com/intent/tweet?text=Verifying%20that%20%2B{{ username }}%20is%20my%20blockchain%20ID.%20https://onename.com/{{ username }}"
-      .replace(new RegExp('{{ username }}', 'g'), this.props.username)
+    const username = this.props.domainName.split('.')[0]
+
+    const verificationUrl = "https://twitter.com/intent/tweet?text=Verifying%20that%20%22{{ username }}.id%22%20is%20my%20Blockstack%20ID.%20https://onename.com/{{ username }}"
+      .replace(new RegExp('{{ username }}', 'g'), username)
     return (
       <div>
         <p>
@@ -124,8 +130,8 @@ class TwitterVerificationInfo extends Component {
 
 class VerificationInfo extends Component {
   static contextTypes = {
-    service: React.PropTypes.string,
-    identifier: React.PropTypes.string
+    service: PropTypes.string.isRequired,
+    domainName: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -147,15 +153,15 @@ class VerificationInfo extends Component {
           </div>
           <div className="card-block">
             { this.props.service === 'twitter' ?
-              <TwitterVerificationInfo username={this.props.identifier} />
+              <TwitterVerificationInfo domainName={this.props.domainName} />
             : null }
 
             { this.props.service === 'github' ? 
-              <GithubVerificationInfo username={this.props.identifier} />
+              <GithubVerificationInfo domainName={this.props.domainName} />
             : null }
 
             { this.props.service === 'facebook' ? 
-              <FacebookVerificationInfo username={this.props.identifier} />
+              <FacebookVerificationInfo domainName={this.props.domainName} />
             : null }
 
             { !this.state.services.hasOwnProperty(this.props.service) ?

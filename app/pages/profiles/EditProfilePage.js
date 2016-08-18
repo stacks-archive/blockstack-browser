@@ -148,7 +148,8 @@ class EditProfilePage extends Component {
                       return (
                         <SocialAccountsTab
                           profile={this.state.profile}
-                          saveProfile={this.saveProfile} />
+                          saveProfile={this.saveProfile}
+                          domainName={this.state.domainName} />
                       )
                     case "Address":
                       return (
