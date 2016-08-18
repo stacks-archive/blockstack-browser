@@ -57,7 +57,7 @@ class CreateAccountPage extends Component {
           this.state.name, this.state.company, (success) => {
           if (success) {
             this.updateAlert('success', 'Creating your account...')
-            this.props.initializeWallet(this.state.password, this.state.email)
+            this.props.initializeWallet(this.state.password, null, this.state.email)
           } else {
             this.updateAlert('danger', 'Email already taken')
           }

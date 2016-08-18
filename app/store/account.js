@@ -56,7 +56,7 @@ function updateBackupPhrase(encryptedBackupPhrase) {
   }
 }
 
-function initializeWallet(password, backupPhrase, email=null) {
+function initializeWallet(password, backupPhrase, email) {
   return dispatch => {
     let privateKeychain
     if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
