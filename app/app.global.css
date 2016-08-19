@@ -137,6 +137,7 @@ a.list-group-item-dash:focus,a.list-group-item-dash:hover{background-color:#f5f5
 /* Content section */
 .content-section{position:absolute;top:60px;right:0;left:0;overflow-y:auto;margin-left:226px;}
 .beta-v1-0{width:150px;}
+.dash-app-wrapper{overflow:hidden;}
 
 /* Views */
 
