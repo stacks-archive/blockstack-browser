@@ -20,7 +20,7 @@ class MainScreen extends Component {
     return (
       <div className="body-main">
         <Sidebar />
-        <div className="content-section">
+        <div className="content-section" style={{ height: '100%' }}>
           <Navbar />
           {this.props.children}
         </div>

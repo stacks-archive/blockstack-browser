@@ -39,6 +39,7 @@ class AppPage extends Component {
         'bitcoincore': 'https://bitcoincore.org',
         'coinbase': 'https://www.coinbase.com',
         '21': 'https://21.co',
+        'helloworld': 'https://blockstack-hello-world.firebaseapp.com/'
       }
 
       if (routeName in routes) {
