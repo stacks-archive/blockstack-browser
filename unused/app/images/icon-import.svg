@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="21px" height="20px" viewBox="0 0 21 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.5.1 (25234) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-import</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="browser-light-cards" sketch:type="MSArtboardGroup" transform="translate(-772.000000, -591.000000)" stroke="#FFFFFF">
+            <g id="icon-import" sketch:type="MSLayerGroup" transform="translate(764.000000, 582.000000)">
+                <g transform="translate(9.000000, 9.000000)" id="Shape" sketch:type="MSShapeGroup">
+                    <path d="M19,12.0909091 L0,12.0909091"></path>
+                    <path d="M9.5,0 L9.5,8.63636364"></path>
+                    <path d="M15.5454545,4.31818182 L16.4090909,4.31818182 L19,12.0909091 L19,19 L0,19 L0,12.0909091 L2.59090909,4.31818182 L3.45454545,4.31818182"></path>
+                    <path d="M12.0909091,6.04545455 L9.5,8.63636364 L6.90909091,6.04545455"></path>
+                    <path d="M15.5454545,15.5454545 L12.0909091,15.5454545"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
