@@ -2,7 +2,7 @@
 
 const config = {
 
-  browserPort: 80,
+  browserPort: 3000,
   UIPort: 3001,
 
   scripts: {
