@@ -126,18 +126,23 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
   return dispatch => {
     const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl),
       authHeader = 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
+    const requestHeaders = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': authHeader
+    }
+    const requestBody = JSON.stringify({
+      username: domainName.split('.')[0],
+      recipient_address: recipientAddress,
+      profile: zoneFile
+    })
+
     fetch(registerUrl, {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': authHeader
-      },
-      body: JSON.stringify({
-        username: domainName.split('.')[0],
-        recipient_address: recipientAddress,
-        profile: zoneFile
-      })
+      headers: requestHeaders,
+      mode: 'cors',
+      cache: 'default',
+      body: requestBody
     })
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
