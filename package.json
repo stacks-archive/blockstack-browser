@@ -122,10 +122,6 @@
     "triplesec": "^3.0.25",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.x",
-    "webpack": "^1.13.1",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.10.0",
-    "webpack-target-electron-renderer": "^0.2.0",
     "yargs": "^3.27.0"
   },
   "scripts": {

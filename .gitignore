@@ -27,3 +27,5 @@ build
 __coverage__
 
 .elasticbeanstalk/
+
+unused
