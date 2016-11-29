@@ -37,27 +37,20 @@ class AuthPage extends Component {
   }
 
   login() {
-    console.log('here')
-    var queryDict = queryString.parse(location.search)
-    console.log(queryDict)
-    var appURI = null
+    const queryDict = queryString.parse(location.search)
+    let appURI = null
     if (queryDict.authRequest) {
-      var authRequest = base64url.decode(queryDict.authRequest)
-      console.log(authRequest)
+      const authRequest = JSON.parse(base64url.decode(queryDict.authRequest))
       appURI = authRequest.appURI
     }
-    console.log(appURI)
-
-    var blockstackID = 'ryan.id'
-    var privateKey = '278a5de700e29faae8e40e366ec5012b5ec63d36ec77e8a2417154cc1d25383f'
-    var authResponse = new AuthResponse(privateKey)
-    console.log(authResponse)
-    var publicKeychain = 'xpub661MyMwAqRbcFQVrQr4Q4kPjaP4JjWaf39fBVKjPdK6oGBayE46GAmKzo5UDPQdLSM9DufZiP8eauy56XNuHicBySvZp7J5wsyQVpi2axzZ'
-    var chainPath = 'bd62885ec3f0e3838043115f4ce25eedd22cc86711803fb0c19601eeef185e39'
+    const blockstackID = 'ryan.id'
+    const privateKey = '278a5de700e29faae8e40e366ec5012b5ec63d36ec77e8a2417154cc1d25383f'
+    const authResponse = new AuthResponse(privateKey)
+    const publicKeychain = 'xpub661MyMwAqRbcFQVrQr4Q4kPjaP4JjWaf39fBVKjPdK6oGBayE46GAmKzo5UDPQdLSM9DufZiP8eauy56XNuHicBySvZp7J5wsyQVpi2axzZ'
+    const chainPath = 'bd62885ec3f0e3838043115f4ce25eedd22cc86711803fb0c19601eeef185e39'
     authResponse.setIssuer(blockstackID, publicKeychain, chainPath)
-    var authResponseToken = authResponse.sign()
-    console.log(authResponseToken)
-    //window.location = appURI + '?authResponse=' + authResponseToken
+    const authResponseToken = authResponse.sign()
+    window.location = appURI + '?authResponse=' + authResponseToken
   }
 
   render() {
