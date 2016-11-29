@@ -1,16 +1,13 @@
 'use strict'
 
-import React from 'react'
-import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { Router, useRouterHistory, browserHistory } from 'react-router'
+import React                        from 'react'
+import { render }                   from 'react-dom'
+import { Provider }                 from 'react-redux'
 
-import routes from './routes'
-import configureDataStore from './store/configure/index'
+import routes                       from './routes'
+import configureDataStore           from './store/configure/index'
 
 const store = configureDataStore()
-
-//const appHistory = useRouterHistory()({ queryKey: false })
 
 if (process.env.NODE_ENV !== 'production') {
   // Enable React devtools
@@ -19,9 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 render(
   <Provider store={store}>
-    <Router history={browserHistory}>
-      {routes}
-    </Router>
+    {routes}
   </Provider>,
   document.getElementById('app')
 )
