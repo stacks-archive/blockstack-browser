@@ -9,6 +9,8 @@ gulp.task('prod', ['clean'], function(cb) {
 
   global.isProd = true;
 
+  process.env.NODE_ENV = 'production';
+
   runSequence(['sass', 'imagemin', 'browserify', 'copyFonts', 'copyStyles', 'copyIndex', 'copyIcons'], cb);
 
 });
