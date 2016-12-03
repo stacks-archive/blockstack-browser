@@ -9,6 +9,8 @@ gulp.task('dev', ['clean'], function(cb) {
 
   global.isProd = false;
 
+  process.env.NODE_ENV = 'test';
+
   return runSequence(['sass', 'imagemin', 'browserify', 'copyFonts', 'copyStyles', 'copyIndex', 'copyIcons'], 'watch', cb);
 
 });
