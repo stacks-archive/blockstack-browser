@@ -99,6 +99,7 @@
     "blockstack-auth": "^0.1.9",
     "blockstack-keychains": "0.0.6",
     "blockstack-profiles": "^0.3.5",
+    "blockstack-proofs": "^0.2.2",
     "blockstack-zones": "^0.1.0",
     "bootstrap": "git+ssh://git@github.com/blockstack/blockstack-bootstrap.git",
     "ecurve": "^1.0.4",

@@ -189,10 +189,15 @@ class ViewProfilePage extends Component {
               <ul>
                 {accounts.map(function(account) {
                   let verified = false
-                  if (account.proofUrl && account.proofUrl !== ""
-                      && account.proofUrl.indexOf(account.identifier) > 0) {
-                    verified = true
+                  for(let i = 0; i < verifications.length; i++) {
+                    let verification = verifications[i]
+                    if(verification.service == account.service &&
+                      verification.valid == true) {
+                        verified = true
+                        break
+                    }
                   }
+
                   return (
                     <SocialAccountItem
                       key={account.service + '-' + account.identifier}

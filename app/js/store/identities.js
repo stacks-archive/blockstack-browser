@@ -3,6 +3,9 @@ import { parseZoneFile } from 'blockstack-zones'
 import {
   makeZoneFileForHostedProfile, resolveZoneFileToProfile
 } from '../utils/index'
+import {
+  validateProofs
+} from 'blockstack-proofs'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
@@ -164,11 +167,16 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
         const zoneFile = responseJson[username]['zone_file']
-        const verifications = responseJson[username]['verifications']
         const ownerAddress = responseJson[username]['owner_address']
+        let verifications = []
 
         resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
+          validateProofs(profile, username).then((proofs) => {
+            verifications = proofs
+            dispatch(updateCurrentIdentity(domainName, profile, verifications))
+          })
+
         })
       })
       .catch((error) => {
