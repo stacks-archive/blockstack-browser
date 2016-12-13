@@ -94,6 +94,9 @@ export const webAccountTypes = {
     label: 'Website', iconClass: 'fa-link', social: false,
     urlTemplate: '{identifier}'
   },
+  'ssh': {
+    label: 'SSH', iconClass: 'fa-key', social: false
+  },
   'pgp': {
     label: 'PGP', iconClass: 'fa-key', social: false,
     urlTemplate: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on'

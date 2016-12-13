@@ -94,6 +94,12 @@ class PublicKeysTab extends Component {
               Add PGP Key
             </button>
           </p>
+          <p>
+            <button className="btn btn-primary"
+              onClick={() => {this.createItem('ssh')}}>
+              Add SSH Key
+            </button>
+          </p>
         </div>
         { accounts.map((account, index) => {
           return (
@@ -130,6 +136,19 @@ class PublicKeysTab extends Component {
                       onChange={(event) => {this.onChange(index, event)}} />
                     <InputGroup
                       name="publicKey" label="PGP Public Key"
+                      data={profile.account[index]}
+                      onChange={(event) => {this.onChange(index, event)}}
+                      textarea={true} textareaRows={5} />
+                  </span>
+                  : null }
+                  { account.service === 'ssh' ?
+                  <span>
+                    <InputGroup
+                      name="identifier" label="SSH Fingerprint"
+                      data={profile.account[index]}
+                      onChange={(event) => {this.onChange(index, event)}} />
+                    <InputGroup
+                      name="publicKey" label="SSH Public Key"
                       data={profile.account[index]}
                       onChange={(event) => {this.onChange(index, event)}}
                       textarea={true} textareaRows={5} />
