@@ -172,7 +172,7 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
 
         resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
-          validateProofs(profile, username).then((proofs) => {
+          validateProofs(profile, username + '.id').then((proofs) => {
             verifications = proofs
             dispatch(updateCurrentIdentity(domainName, profile, verifications))
           })
