@@ -109,12 +109,11 @@ class PhotosTab extends Component {
                       <Dropzone
                       onDrop={(acceptedFiles, rejectedFiles) => { this.onDrop(acceptedFiles, rejectedFiles, index) } }
                       multiple={false} maxSize={5242880} accept="image/*" >
-                      <div>Try dropping some files here, or click to select files to upload.</div>
                       { files[index] ?
-                        <div>
+                      <div>
                       <img src={files[index].preview}/>
                       </div>
-                      : null }
+                      : <div>Drop your photo here or click/tap to select a file!</div> }
                       </Dropzone>
                     : null }
 
