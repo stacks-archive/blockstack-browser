@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 
 import { InputGroup, SaveButton } from '../../components/index'
 
+var Dropzone = require('react-dropzone');
+
 class PhotosTab extends Component {
   static propTypes = {
     profile: PropTypes.object.isRequired,
@@ -11,7 +13,8 @@ class PhotosTab extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      profile: null
+      profile: null,
+      files: []
     }
     this.onChange = this.onChange.bind(this)
     this.saveProfile = this.saveProfile.bind(this)
@@ -65,10 +68,29 @@ class PhotosTab extends Component {
     this.setState({profile: profile})
   }
 
+  onDrop(acceptedFiles, rejectedFiles, index) {
+    let files = this.state.files
+    console.log("index: " + index)
+    console.log(acceptedFiles)
+
+
+    files[index] = acceptedFiles[0] // only accept 1 file
+
+      this.setState({
+        files: files
+      })
+  }
+
+  onOpenClick() {
+      this.refs.dropzone.open();
+  }
+
+
   render() {
     const profile = this.state.profile,
           images = this.state.profile.hasOwnProperty('image') ?
-            this.state.profile.image : []
+            this.state.profile.image : [],
+          files = this.state.hasOwnProperty('files') ? this.state.files : []
     return (
       <div>
         <div className="form-group">
@@ -82,10 +104,25 @@ class PhotosTab extends Component {
             <div key={index} className="card">
               <div className="card-block">
                 { image.name === 'avatar' ?
-                <InputGroup
-                  name="contentUrl" label="Profile Image URL"
-                  data={profile.image[index]}
-                  onChange={(event) => {this.onChange(event, index)}} />
+                   <div>
+                   { image.contentUrl === '' ?
+                      <Dropzone
+                      onDrop={(acceptedFiles, rejectedFiles) => { this.onDrop(acceptedFiles, rejectedFiles, index) } }
+                      multiple={false} maxSize={5242880} accept="image/*" >
+                      <div>Try dropping some files here, or click to select files to upload.</div>
+                      { files[index] ?
+                        <div>
+                      <img src={files[index].preview}/>
+                      </div>
+                      : null }
+                      </Dropzone>
+                    : null }
+
+                    <InputGroup
+                      name="contentUrl" label="Profile Image URL"
+                      data={profile.image[index]}
+                      onChange={(event) => {this.onChange(event, index)}} />
+                    </div>
                 : null }
                 <div className="form-group">
                   <button className="btn btn-outline-primary"
