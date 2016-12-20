@@ -1,0 +1,11 @@
+{
+  "env": {
+    "jasmine": true,
+    "mocha": true
+  },
+  "globals": {
+    "sinon": true,
+    "sandbox": true,
+    "assert": true
+  }
+}
