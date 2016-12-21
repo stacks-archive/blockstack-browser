@@ -109,6 +109,28 @@ class EditProfilePage extends Component {
     })
   }
 
+  uploadPhoto(file, index) {
+    const filename = this.state.domainName + "-photo-" + index + ".jpg"
+
+    mixpanel.track('Upload photo', { distinct_id: analyticsId })
+    mixpanel.track('Perform action', { distinct_id: analyticsId })
+
+    return new Promise((resolve, reject) => {
+
+      // FIXME: this function expects a string for data
+      uploadFile(this.props.api, filename, data, ({ url, err, res }) => {
+        if (err) {
+          console.log(res)
+          console.log('profile photo not uploaded to s3')
+          reject(err)
+        } else {
+          resolve(url)
+        }
+      })
+    })
+
+  }
+
   changeTabs(tabName) {
     this.setState({tabName: tabName})
   }
@@ -148,7 +170,8 @@ class EditProfilePage extends Component {
                       return (
                         <PhotosTab
                           profile={this.state.profile}
-                          saveProfile={this.saveProfile} />
+                          saveProfile={this.saveProfile}
+                          uploadPhoto={this.uploadPhoto} />
                       )
                     case "Social Accounts":
                       return (

@@ -66,7 +66,7 @@ a,a:focus{outline:none;}
 .idcard{position:relative;border:.0625rem solid rgba(229,229,229,1);border-radius:.25rem;}
 .idcard-body{display:block;margin-bottom:30px;color:#7b7b7b;}
 .dim{color:#7b7b7b;}
-.id-flex img{bottom:0;width:16.25rem;height:371px;-webkit-border-radius:8px;border-radius:8px;object-fit:cover;}
+.id-flex img, .id-flex .dropzone {bottom:0;width:16.25rem;height:371px;-webkit-border-radius:8px;border-radius:8px;object-fit:cover;}
 .id-flex{bottom:0;display:table-cell;width:16.25rem;height:371px;vertical-align:top;}
 .idcard-block{display:table-cell;width:100%;vertical-align:top;}
 .idcard-name{font-size:1.25em;}
@@ -86,6 +86,9 @@ div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > butt
 .profile-foot{position:relative;display:block;margin-left:15px;padding-top:50px;color:#949494;}
 .connections{display:inline-block;width:32px;height:32px;margin-left:15px;border-radius:4px;background-color:#23262a;}
 
+/* Dropzone photo upload */
+.dropzone{border: dashed 1px black;}
+.dropzone-active{border: dashed 1px red;}
 /* Browser bar */
 .navbar.navbar-light.bg-faded.navbar-fixed-top{display:block;height:60px;margin-left:226px;padding-top:13px;padding-right:0;padding-left:0;border-bottom:1px solid #e1e1e1;background-color:#fff;}
 .nav-page{border:none;background-color:transparent;}

@@ -7,7 +7,8 @@ var Dropzone = require('react-dropzone');
 class PhotosTab extends Component {
   static propTypes = {
     profile: PropTypes.object.isRequired,
-    saveProfile: PropTypes.func.isRequired
+    saveProfile: PropTypes.func.isRequired,
+    uploadPhoto: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -75,6 +76,13 @@ class PhotosTab extends Component {
 
 
     files[index] = acceptedFiles[0] // only accept 1 file
+    files[index].uploaded = false
+    files[index].url = ''
+
+    /* this.props.uploadPhoto(files[index], index).then((url) => {
+      files[index].url = url
+      files[index].uploaded = true
+    }) */
 
       this.setState({
         files: files
@@ -106,17 +114,20 @@ class PhotosTab extends Component {
                 { image.name === 'avatar' ?
                    <div>
                    { image.contentUrl === '' ?
-                      <Dropzone
-                      onDrop={(acceptedFiles, rejectedFiles) => { this.onDrop(acceptedFiles, rejectedFiles, index) } }
-                      multiple={false} maxSize={5242880} accept="image/*" >
-                      { files[index] ?
-                      <div>
-                      <img src={files[index].preview}/>
+                      <div className="id-flex">
+                        <Dropzone
+                        onDrop={(acceptedFiles, rejectedFiles) => { this.onDrop(acceptedFiles, rejectedFiles, index) } }
+                        multiple={false} maxSize={5242880} accept="image/*"
+                        className="dropzone" activeClassName="dropzone-active">
+                        { files[index] ?
+                        <div>
+                        <img src={files[index].preview} className="img-idcard"/>
+                        <div className="overlay"></div>
+                        </div>
+                        : <div>Drop your photo here or click/tap to select a file!</div> }
+                        </Dropzone>
                       </div>
-                      : <div>Drop your photo here or click/tap to select a file!</div> }
-                      </Dropzone>
                     : null }
-
                     <InputGroup
                       name="contentUrl" label="Profile Image URL"
                       data={profile.image[index]}
