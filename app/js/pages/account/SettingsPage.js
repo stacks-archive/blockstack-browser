@@ -110,6 +110,12 @@ class SettingsPage extends Component {
                           Self-host data on Amazon S3
                         </label>
                       </div>
+                      <div className="radio">
+                        <label>
+                          <Radio value="self-hosted-dropbox" name="hostedDataLocation" />
+                          Self-host data on Dropbox
+                        </label>
+                      </div>
                     </div>
                   )}
                 </RadioGroup>
@@ -121,6 +127,13 @@ class SettingsPage extends Component {
                     <InputGroup name="s3ApiSecret" label="S3 API Secret"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="s3Bucket" label="S3 Bucket"
+                      data={this.state.api} onChange={this.onValueChange} />
+                  </div>
+                : null }
+
+                { this.state.api.hostedDataLocation === 'self-hosted-dropbox' ?
+                  <div>
+                    <InputGroup name="dropboxAccessToken" label="Dropbox Access Token"
                       data={this.state.api} onChange={this.onValueChange} />
                   </div>
                 : null }
