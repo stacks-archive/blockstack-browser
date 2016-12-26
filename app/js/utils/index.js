@@ -15,6 +15,10 @@ export {
 } from './search-utils'
 
 export {
+  uploadPhoto
+} from './dropbox-utils'
+
+export {
   uploadFile
 } from './s3-utils'
 
