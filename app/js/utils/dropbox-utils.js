@@ -3,24 +3,27 @@ var Dropbox = require('dropbox')
 
 export function uploadPhoto(api, name, file, index) {
   return new Promise((resolve, reject) => {
-
-    var dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
-    const path = `/${name}/avatar-${index}`
-
     // We try to delete any existing photo
-    dbx.filesDelete({path: path}).then((response) => {
-
-      uploadPhotoToDropbox(dbx, path, file, resolve, reject)
+    deletePhoto(api, name, index).then((response) => {
+      uploadPhotoToDropbox(api, name, index, file, resolve, reject)
     })
     .catch((error) => {
       // the file didn't exist
-      uploadPhotoToDropbox(dbx, path, file, resolve, reject)
+      uploadPhotoToDropbox(api, name, index, file, resolve, reject)
     })
   })
 }
 
+export function deletePhoto(api, name, index) {
+  var dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
+  const path = getAvatarPath(name, index)
+  return dbx.filesDelete({path: path})
+}
 
-function uploadPhotoToDropbox(dbx, path, file, resolve, reject) {
+
+function uploadPhotoToDropbox(api, name, index, file, resolve, reject) {
+  var dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
+  const path = getAvatarPath(name, index)
   dbx.filesUpload({path: path, contents: file})
   .then((response) => {
 
@@ -40,4 +43,14 @@ function uploadPhotoToDropbox(dbx, path, file, resolve, reject) {
   .catch((error) => {
     reject(error)
   })
+}
+
+function getAvatarPath(name, index) {
+  const path = `/${name}/avatar-${index}`
+  return path
+}
+
+function getProfilePath(name) {
+  const path = `/${name}/profile.json`
+  return path
 }
