@@ -134,13 +134,7 @@ class SettingsPage extends Component {
                       <div className="radio">
                         <label>
                           <Radio value={BLOCKSTACK_INC} name="hostedDataLocation" />
-                          Host data on Amazon S3 through Blockstack Labs
-                        </label>
-                      </div>
-                      <div className="radio">
-                        <label>
-                          <Radio value={SELF_HOSTED_S3} name="hostedDataLocation" />
-                          Self-host data on Amazon S3
+                          Host data on Amazon S3 through Blockstack Inc.
                         </label>
                       </div>
                       <div className="radio">
@@ -152,17 +146,6 @@ class SettingsPage extends Component {
                     </div>
                   )}
                 </RadioGroup>
-
-                { this.state.api.hostedDataLocation == SELF_HOSTED_S3 ?
-                  <div>
-                    <InputGroup name="s3ApiKey" label="S3 API Key"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="s3ApiSecret" label="S3 API Secret"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="s3Bucket" label="S3 Bucket"
-                      data={this.state.api} onChange={this.onValueChange} />
-                  </div>
-                : null }
 
                 { this.state.api.hostedDataLocation === DROPBOX ?
                   <div>
