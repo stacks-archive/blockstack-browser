@@ -1,5 +1,6 @@
 var Dropbox = require('dropbox')
 
+export const DROPBOX_APP_ID = "f3l2g7ge4bs68o4"
 
 export function uploadProfileToDropbox(api, domainName, signedProfileTokenData) {
   return new Promise((resolve, reject) => {
@@ -100,4 +101,18 @@ function uploadProfile(api, domainName, signedProfileTokenData, resolve, reject)
   .catch((error) => {
     reject(error)
   })
+}
+
+
+export function getDropboxAccessTokenFromHash(hash) {
+  let tokens = hash.split("access_token=")
+  if(tokens.length != 2)
+    return null
+
+  tokens = tokens[1].split("&")
+
+  if(tokens[0] === "")
+    return null
+
+  return tokens[0]
 }
