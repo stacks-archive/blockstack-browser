@@ -25,11 +25,11 @@ export function uploadProfile(api, name, signedProfileTokenData) {
   const storageMethod = getStorageMethod(api)
 
   switch(storageMethod) {
-    case DROPBOX:
-    return uploadProfileToDropbox(api, name, signedProfileTokenData)
+    // case DROPBOX:
+    // return uploadProfileToDropbox(api, name, signedProfileTokenData)
 
-    case SELF_HOSTED_S3:
-    return uploadProfileToS3(api, name, signedProfileTokenData)
+    // case SELF_HOSTED_S3:
+    // return uploadProfileToS3(api, name, signedProfileTokenData)
 
     default:
     return uploadProfileToBlockstackInc(api, name, signedProfileTokenData)
@@ -38,7 +38,6 @@ export function uploadProfile(api, name, signedProfileTokenData) {
 
 
 function getStorageMethod(api) {
-  console.log(api)
   if(api.hostedDataLocation == DROPBOX &&
     api.dropboxAccessToken.length > 0) {
       return DROPBOX
