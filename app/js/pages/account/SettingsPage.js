@@ -54,7 +54,6 @@ class SettingsPage extends Component {
 
   componentDidMount() {
     let api = this.state.api
-    console.log(api)
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     if(dropboxAccessToken != null) {
       api['dropboxAccessToken'] = dropboxAccessToken
