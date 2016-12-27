@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import RadioGroup from 'react-radio-group'
+import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../../utils/storage/index'
 
 import {
   InputGroup, AccountSidebar, SaveButton, PageHeader
@@ -100,19 +101,19 @@ class SettingsPage extends Component {
                     <div>
                       <div className="radio">
                         <label>
-                          <Radio value="blockstack-labs-S3" name="hostedDataLocation" />
+                          <Radio value={BLOCKSTACK_INC} name="hostedDataLocation" />
                           Host data on Amazon S3 through Blockstack Labs
                         </label>
                       </div>
                       <div className="radio">
                         <label>
-                          <Radio value="self-hosted-S3" name="hostedDataLocation" />
+                          <Radio value={SELF_HOSTED_S3} name="hostedDataLocation" />
                           Self-host data on Amazon S3
                         </label>
                       </div>
                       <div className="radio">
                         <label>
-                          <Radio value="self-hosted-dropbox" name="hostedDataLocation" />
+                          <Radio value={DROPBOX} name="hostedDataLocation" />
                           Self-host data on Dropbox
                         </label>
                       </div>
