@@ -87,8 +87,10 @@ div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > butt
 .connections{display:inline-block;width:32px;height:32px;margin-left:15px;border-radius:4px;background-color:#23262a;}
 
 /* Dropzone photo upload */
-.dropzone{border: dashed 1px black;}
+.dropzone{margin-bottom: 15px;}
 .dropzone-active{border: dashed 1px red;}
+.dropzone div {font-size:large;text-align:center;}
+.dropzone .overlay {margin: -63px 0 0 0;}
 /* Browser bar */
 .navbar.navbar-light.bg-faded.navbar-fixed-top{display:block;height:60px;margin-left:226px;padding-top:13px;padding-right:0;padding-left:0;border-bottom:1px solid #e1e1e1;background-color:#fff;}
 .nav-page{border:none;background-color:transparent;}

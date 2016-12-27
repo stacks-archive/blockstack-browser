@@ -129,7 +129,10 @@ class PhotosTab extends Component {
                         multiple={false} maxSize={5242880} accept="image/*"
                         className="dropzone" activeClassName="dropzone-active">
                         { !files[index] && !image.contentUrl ?
-                          <div>Drop your photo here or click/tap to select a file!</div>
+                          <div>
+                            <div>Drop your photo here or click/tap to select a file!</div>
+                            <div className="overlay"></div>
+                          </div>
                         :
                           <div>
                           { image.contentUrl ?
@@ -137,7 +140,6 @@ class PhotosTab extends Component {
                             :
                             <img src={files[index].preview} className="img-idcard"/>
                           }
-                          <div className="overlay"></div>
                           </div>
                         }
                         </Dropzone>
