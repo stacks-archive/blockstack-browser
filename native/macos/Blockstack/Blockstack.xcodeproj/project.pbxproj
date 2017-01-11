@@ -1,0 +1,382 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		463EBBDA1E2506CC0054FD49 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBD91E2506CC0054FD49 /* Images.xcassets */; };
+		463EBBE11E2526A20054FD49 /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE01E2524540054FD49 /* corsproxy */; };
+		463EBBE41E25273D0054FD49 /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE31E25273D0054FD49 /* blockstackProxy */; };
+		463EBBE61E2528170054FD49 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE51E2528170054FD49 /* browser */; };
+		DD4F7C0913C30F9F00825C6E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4F7C0813C30F9F00825C6E /* Cocoa.framework */; };
+		DD4F7C1513C30F9F00825C6E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C1413C30F9F00825C6E /* main.m */; };
+		DD4F7C1C13C30F9F00825C6E /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */; };
+		DD4F7C1F13C30F9F00825C6E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD4F7C1D13C30F9F00825C6E /* MainMenu.xib */; };
+		DD4F7C3813C317A500825C6E /* MenubarController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C3713C317A500825C6E /* MenubarController.m */; };
+		DD4F7C3C13C3180800825C6E /* StatusItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C3B13C3180800825C6E /* StatusItemView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		463EBBD91E2506CC0054FD49 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Blockstack/Images.xcassets; sourceTree = "<group>"; };
+		463EBBE01E2524540054FD49 /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = corsproxy; path = ../corsproxy; sourceTree = "<group>"; };
+		463EBBE31E25273D0054FD49 /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = blockstackProxy; path = ../blockstackProxy; sourceTree = "<group>"; };
+		463EBBE51E2528170054FD49 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; path = browser; sourceTree = "<group>"; };
+		DD4F7C0413C30F9F00825C6E /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD4F7C0813C30F9F00825C6E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		DD4F7C0B13C30F9F00825C6E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		DD4F7C0C13C30F9F00825C6E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		DD4F7C0D13C30F9F00825C6E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DD4F7C1013C30F9F00825C6E /* Blockstack-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Blockstack-Info.plist"; path = "Blockstack/Blockstack-Info.plist"; sourceTree = "<group>"; };
+		DD4F7C1413C30F9F00825C6E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DD4F7C1613C30F9F00825C6E /* Blockstack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blockstack-Prefix.pch"; sourceTree = "<group>"; };
+		DD4F7C1A13C30F9F00825C6E /* ApplicationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationDelegate.h; sourceTree = "<group>"; };
+		DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationDelegate.m; sourceTree = "<group>"; };
+		DD4F7C1E13C30F9F00825C6E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		DD4F7C3613C317A500825C6E /* MenubarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenubarController.h; sourceTree = "<group>"; };
+		DD4F7C3713C317A500825C6E /* MenubarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenubarController.m; sourceTree = "<group>"; };
+		DD4F7C3A13C3180800825C6E /* StatusItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusItemView.h; sourceTree = "<group>"; };
+		DD4F7C3B13C3180800825C6E /* StatusItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusItemView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DD4F7C0113C30F9F00825C6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD4F7C0913C30F9F00825C6E /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DD4F7BF913C30F9F00825C6E = {
+			isa = PBXGroup;
+			children = (
+				DD4F7C0E13C30F9F00825C6E /* Sources */,
+				DD4F7C2813C3123E00825C6E /* User Interface */,
+				DD4F7C0713C30F9F00825C6E /* Frameworks */,
+				DD4F7C0513C30F9F00825C6E /* Products */,
+				DD4F7C1013C30F9F00825C6E /* Blockstack-Info.plist */,
+			);
+			sourceTree = "<group>";
+		};
+		DD4F7C0513C30F9F00825C6E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD4F7C0413C30F9F00825C6E /* Blockstack.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD4F7C0713C30F9F00825C6E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DD4F7C0B13C30F9F00825C6E /* AppKit.framework */,
+				DD4F7C0C13C30F9F00825C6E /* CoreData.framework */,
+				DD4F7C0D13C30F9F00825C6E /* Foundation.framework */,
+				DD4F7C0813C30F9F00825C6E /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DD4F7C0E13C30F9F00825C6E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				DD4F7C2613C311DF00825C6E /* Controllers */,
+				DD4F7C3913C317EC00825C6E /* Views */,
+				DD4F7C0F13C30F9F00825C6E /* Supporting Files */,
+			);
+			name = Sources;
+			path = Blockstack;
+			sourceTree = "<group>";
+		};
+		DD4F7C0F13C30F9F00825C6E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				463EBBE51E2528170054FD49 /* browser */,
+				463EBBE31E25273D0054FD49 /* blockstackProxy */,
+				463EBBE01E2524540054FD49 /* corsproxy */,
+				DD4F7C1613C30F9F00825C6E /* Blockstack-Prefix.pch */,
+				DD4F7C1413C30F9F00825C6E /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DD4F7C2613C311DF00825C6E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DD4F7C1A13C30F9F00825C6E /* ApplicationDelegate.h */,
+				DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */,
+				DD4F7C3613C317A500825C6E /* MenubarController.h */,
+				DD4F7C3713C317A500825C6E /* MenubarController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		DD4F7C2813C3123E00825C6E /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				DD4F7C4813C322D800825C6E /* Graphics */,
+				DD4F7C2913C3124300825C6E /* XIBs */,
+			);
+			name = "User Interface";
+			sourceTree = "<group>";
+		};
+		DD4F7C2913C3124300825C6E /* XIBs */ = {
+			isa = PBXGroup;
+			children = (
+				DD4F7C1D13C30F9F00825C6E /* MainMenu.xib */,
+			);
+			name = XIBs;
+			sourceTree = "<group>";
+		};
+		DD4F7C3913C317EC00825C6E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DD4F7C3A13C3180800825C6E /* StatusItemView.h */,
+				DD4F7C3B13C3180800825C6E /* StatusItemView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		DD4F7C4813C322D800825C6E /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				463EBBD91E2506CC0054FD49 /* Images.xcassets */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DD4F7C0313C30F9F00825C6E /* Blockstack */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD4F7C2213C30F9F00825C6E /* Build configuration list for PBXNativeTarget "Blockstack" */;
+			buildPhases = (
+				DD4F7C0013C30F9F00825C6E /* Sources */,
+				DD4F7C0113C30F9F00825C6E /* Frameworks */,
+				DD4F7C0213C30F9F00825C6E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Blockstack;
+			productName = Popup;
+			productReference = DD4F7C0413C30F9F00825C6E /* Blockstack.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DD4F7BFB13C30F9F00825C6E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				TargetAttributes = {
+					DD4F7C0313C30F9F00825C6E = {
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = DD4F7BFE13C30F9F00825C6E /* Build configuration list for PBXProject "Blockstack" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = DD4F7BF913C30F9F00825C6E;
+			productRefGroup = DD4F7C0513C30F9F00825C6E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DD4F7C0313C30F9F00825C6E /* Blockstack */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DD4F7C0213C30F9F00825C6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD4F7C1F13C30F9F00825C6E /* MainMenu.xib in Resources */,
+				463EBBE11E2526A20054FD49 /* corsproxy in Resources */,
+				463EBBDA1E2506CC0054FD49 /* Images.xcassets in Resources */,
+				463EBBE41E25273D0054FD49 /* blockstackProxy in Resources */,
+				463EBBE61E2528170054FD49 /* browser in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DD4F7C0013C30F9F00825C6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD4F7C1513C30F9F00825C6E /* main.m in Sources */,
+				DD4F7C1C13C30F9F00825C6E /* ApplicationDelegate.m in Sources */,
+				DD4F7C3813C317A500825C6E /* MenubarController.m in Sources */,
+				DD4F7C3C13C3180800825C6E /* StatusItemView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		DD4F7C1D13C30F9F00825C6E /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DD4F7C1E13C30F9F00825C6E /* en */,
+			);
+			name = MainMenu.xib;
+			path = Blockstack;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DD4F7C2013C30F9F00825C6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj browser";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		DD4F7C2113C30F9F00825C6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj browser";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		DD4F7C2313C30F9F00825C6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CWQ2SUHV2E;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Blockstack/Blockstack-Prefix.pch";
+				INFOPLIST_FILE = "Blockstack/Blockstack-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DD4F7C2413C30F9F00825C6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CWQ2SUHV2E;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Blockstack/Blockstack-Prefix.pch";
+				INFOPLIST_FILE = "Blockstack/Blockstack-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DD4F7BFE13C30F9F00825C6E /* Build configuration list for PBXProject "Blockstack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD4F7C2013C30F9F00825C6E /* Debug */,
+				DD4F7C2113C30F9F00825C6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD4F7C2213C30F9F00825C6E /* Build configuration list for PBXNativeTarget "Blockstack" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD4F7C2313C30F9F00825C6E /* Debug */,
+				DD4F7C2413C30F9F00825C6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DD4F7BFB13C30F9F00825C6E /* Project object */;
+}
