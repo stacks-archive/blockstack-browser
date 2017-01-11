@@ -46,3 +46,18 @@ Along with many Gulp libraries (these can be seen in either `package.json`, or a
 ##### Code coverage
 
 When running tests, code coverage will be automatically calculated and output to an HTML file using the [Istanbul](https://github.com/gotwarlost/istanbul) library. These files can be seen in the generated `coverage/` directory.
+
+
+### Building for macOS
+
+You'll need a working installation of Xcode 8 (or higher). You will need to
+install the node to native binary tool globally by running: `npm install nexe -g`.
+
+Before working on the Mac app in Xcode, you'll need to go through this build process
+once. It creates and copies the needed proxy binaries into place and copies a built version of
+the browser web app into the source tree. Please note that the first build will take
+a while as `nexe` downloads and compiles a source copy of node.
+
+Run `gulp mac`.
+
+This has only been tested on macOS Sierra 10.12.
