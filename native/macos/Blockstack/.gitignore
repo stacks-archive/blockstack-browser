@@ -24,3 +24,7 @@ bin
 
 # default project workspace
 project.xcworkspace
+
+corsproxy
+blockstackProxy
+browser
