@@ -1,3 +1,10 @@
+/*
+ Quick and dirty server for serving single page apps on localhost. 
+
+ Usage:
+ node blockstackProxy.js <port> <basePath>
+*/
+
 var http = require("http"),
     path = require("path"),
     url = require("url"),
