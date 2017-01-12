@@ -1,7 +1,7 @@
 Blockstack Browser
 ============
 
-[![Slack](http://slack.blockstack.org/badge.svg)](http://slack.blockstack.org/)
+[![Slack](http://chat.blockstack.org/badge.svg)](http://chat.blockstack.org/)
 
 The Blockstack Browser allows you to explore the Blockstack internet.
 
