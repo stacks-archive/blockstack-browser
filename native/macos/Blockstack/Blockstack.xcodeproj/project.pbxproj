@@ -331,6 +331,8 @@
 				INFOPLIST_FILE = "Blockstack/Blockstack-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
