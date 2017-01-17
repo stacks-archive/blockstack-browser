@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import BackButton from '../components/BackButton'
 import ForwardButton from '../components/ForwardButton'
-import AddressBar from './AddressBar'
 
 class Navbar extends Component {
   static propTypes = {
@@ -32,20 +31,6 @@ class Navbar extends Component {
                   <span className="icon-label-wrap">Home</span>
                 </div>
               </Link>
-            </div>
-            <div className="nav-item nav-link">
-              <Link to="/account/settings">
-                <div className="icon-labels">
-                  <img src="/images/icon-cog.svg"/>
-                  <span className="icon-label-wrap">Account</span>
-                </div>
-              </Link>
-            </div>
-            
-          </div>
-          <div className="nav-search">
-            <div className="nav-link">
-              <AddressBar placeholder="Search for people, apps & more…" />
             </div>
           </div>
         </div>

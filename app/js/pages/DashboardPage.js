@@ -24,29 +24,40 @@ class DashboardPage extends Component {
     return (
       <div className="">
         <section>
-          <div className="container-fluid">
-            <h6 className="text-xs-center text-feat-dash">Featured Apps, coming soon...</h6> 
-          </div>
           <div className="container-fluid no-padding">
             <div className="col-sm-12 app-container no-padding">
-              <div className="col-sm-4 no-padding app-box-container">
-                <img className="app-box" src="/images/app-box-chord@2x.png" />
+              <div className="col-sm-4">
+                <Link to="/account/settings" className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-blockstack.png" />
+                  </div>
+                </Link>
+                <div className="app-text-container">
+                  <h3>Settings</h3>
+                </div>
               </div>
-              <div className="col-sm-4 no-padding app-box-container">
-                <img className="app-box" src="/images/app-box-greenleaf@2x.png" />
+              <div className="col-sm-4">
+                <Link to="/identity" className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-identity.png" />
+                  </div>
+                </Link>
+                <div className="app-text-container">
+                  <h3>Identity</h3>
+                </div>
               </div>
-              <div className="col-sm-4 no-padding app-box-container">
-                <img className="app-box" src="/images/app-box-guild@2x.png" />
+              <div className="col-sm-4">
+                <Link to="https://blockstack-hello-world.firebaseapp.com/"
+                  className="app-box-container" target="_blank">
+                  <div className="app-box">
+                    <img src="/images/app-hello-blockstack.png" />
+                  </div>
+                </Link>
+                <div className="app-text-container">
+                  <h3>Hello, Blockstack</h3>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="container-fluid">
-            <h1 className="clean-font text-xs-center p-t-3">Browse the decentralized web</h1> 
-          </div>
-          <div className="container-fluid">
-              <div className="col-sm-6 offset-sm-3 text-xs-center">
-                <h5>Blockstack browser is the world’s first browser that enables you to browse the decentralized web</h5>
-              </div>
           </div>
         </section>
       </div>

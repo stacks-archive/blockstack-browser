@@ -11,6 +11,7 @@ import App                from './App'
 import DashboardPage      from './pages/DashboardPage'
 import SearchPage         from './pages/SearchPage'
 import AuthPage           from './pages/AuthPage'
+import IdentityPage       from './pages/IdentityPage'
 
 import RegisterPage       from './pages/names/RegisterPage'
 import ImportPage         from './pages/names/ImportPage'
@@ -31,8 +32,6 @@ import CreateAccountPage  from './pages/account/CreateAccountPage'
 import RestoreAccountPage from './pages/account/RestoreAccountPage'
 
 import NotFoundPage       from './pages/errors/NotFoundPage'
-
-import AppPage            from './pages/apps/AppPage'
 
 export default (
 <Router history={browserHistory}>
@@ -61,8 +60,7 @@ export default (
     <Route path="/account/restore"     component={RestoreAccountPage} />
 
     <Route path="/auth"                component={AuthPage} />
-
-    <Route path="/app/:name" component={AppPage} />
+    <Route path="/identity"            component={IdentityPage} />
 
     <Route path="/*" component={NotFoundPage} />
   </Route>
