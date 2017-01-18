@@ -5,22 +5,38 @@ import { connect } from 'react-redux'
 
 import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
+import { AccountActions } from './store/account'
 
 function mapStateToProps(state) {
   return {
-    accountCreated: state.account.accountCreated
   }
 }
 
-class MainScreen extends Component {
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(AccountActions, dispatch)
+}
+
+class App extends Component {
   static propTypes = {
-    children: PropTypes.element.isRequired
+    children: PropTypes.element.isRequired,
+    initializeWallet: PropTypes.func.isRequired,
+  }
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+
+  constructor(props) {
+    super(props)
+  }
+
+  componentWillMount() {
+    this.props.initializeWallet("password", null)
   }
 
   render() {
     return (
       <div className="body-main">
-        <Sidebar />
         <div className="content-section" style={{ height: '100%' }}>
           <Navbar />
           {this.props.children}
@@ -30,58 +46,7 @@ class MainScreen extends Component {
   }
 }
 
-class WelcomeScreen extends Component {
-  render() {
-    return (
-      <div className="body-landing" style={{ backgroundColor: '#1b1e21' }}>
-        {this.props.children}
-      </div>
-    )
-  }
-}
-
-class App extends Component {
-  static propTypes = {
-    children: PropTypes.element.isRequired,
-    accountCreated: PropTypes.bool.isRequired
-  }
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
-  componentHasNewProps(accountCreated) {
-    if (!accountCreated) {
-      this.context.router.push('/account/create')
-    }
-  }
-
-  componentWillMount() {
-    this.componentHasNewProps(this.props.accountCreated)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.accountCreated !== this.props.accountCreated) {
-      this.componentHasNewProps(nextProps.accountCreated)
-    }
-  }
-
-  render() {
-    if (this.props.accountCreated) {
-      return (<MainScreen children={this.props.children} />)
-    } else {
-      return (<WelcomeScreen children={this.props.children} />)
-    }
-  }
-}
-
-
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 /*
 {
