@@ -37,10 +37,7 @@ class App extends Component {
   render() {
     return (
       <div className="body-main">
-        <div className="content-section" style={{ height: '100%' }}>
-          <Navbar />
-          {this.props.children}
-        </div>
+        {this.props.children}
       </div>
     )
   }

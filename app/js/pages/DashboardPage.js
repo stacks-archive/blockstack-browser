@@ -27,23 +27,23 @@ class DashboardPage extends Component {
           <div className="container-fluid no-padding">
             <div className="col-sm-12 app-container no-padding">
               <div className="col-sm-4">
-                <Link to="/account/settings" className="app-box-container">
-                  <div className="app-box">
-                    <img src="/images/app-blockstack.png" />
-                  </div>
-                </Link>
-                <div className="app-text-container">
-                  <h3>Settings</h3>
-                </div>
-              </div>
-              <div className="col-sm-4">
                 <Link to="/identity" className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-identity.png" />
                   </div>
                 </Link>
                 <div className="app-text-container">
-                  <h3>Identity</h3>
+                  <h3>Profiles</h3>
+                </div>
+              </div>
+              <div className="col-sm-4">
+                <Link to="/account/settings" className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-settings.png" />
+                  </div>
+                </Link>
+                <div className="app-text-container">
+                  <h3>Settings</h3>
                 </div>
               </div>
               <div className="col-sm-4">
