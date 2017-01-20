@@ -11,6 +11,6 @@ gulp.task('mac', ['clean'], function(cb) {
 
   process.env.NODE_ENV = 'production';
 
-  runSequence('prod','copyBrowserForMac', 'compileBlockstackProxyForMac', 'compileCorsProxyForMac', 'buildMac', cb);
+  runSequence('prod','copyBrowserForMac', 'compileBlockstackProxyForMac', 'compileCorsProxyForMac', 'compileBlockstackMockCoreForMac', 'buildMac', cb);
 
 });
