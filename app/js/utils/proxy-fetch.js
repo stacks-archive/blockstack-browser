@@ -2,7 +2,8 @@
  * Proxies all fetch requests to work around
  * CORS issues
  */
-let realFetch = window.fetch
+import fetch from 'isomorphic-fetch'
+let realFetch = fetch
 
 let proxy = "http://localhost:1337/"
 

@@ -5,45 +5,21 @@ import { connect } from 'react-redux'
 
 import Sidebar from './components/Sidebar'
 import Navbar from './components/Navbar'
+import { AccountActions } from './store/account'
 
 function mapStateToProps(state) {
   return {
-    accountCreated: state.account.accountCreated
   }
 }
 
-class MainScreen extends Component {
-  static propTypes = {
-    children: PropTypes.element.isRequired
-  }
-
-  render() {
-    return (
-      <div className="body-main">
-        <Sidebar />
-        <div className="content-section" style={{ height: '100%' }}>
-          <Navbar />
-          {this.props.children}
-        </div>
-      </div>
-    )
-  }
-}
-
-class WelcomeScreen extends Component {
-  render() {
-    return (
-      <div className="body-landing" style={{ backgroundColor: '#1b1e21' }}>
-        {this.props.children}
-      </div>
-    )
-  }
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(AccountActions, dispatch)
 }
 
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    accountCreated: PropTypes.bool.isRequired
+    initializeWallet: PropTypes.func.isRequired,
   }
 
   static contextTypes = {
@@ -52,36 +28,22 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {}
-  }
-
-  componentHasNewProps(accountCreated) {
-    if (!accountCreated) {
-      this.context.router.push('/account/create')
-    }
   }
 
   componentWillMount() {
-    this.componentHasNewProps(this.props.accountCreated)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.accountCreated !== this.props.accountCreated) {
-      this.componentHasNewProps(nextProps.accountCreated)
-    }
+    this.props.initializeWallet("password", null)
   }
 
   render() {
-    if (this.props.accountCreated) {
-      return (<MainScreen children={this.props.children} />)
-    } else {
-      return (<WelcomeScreen children={this.props.children} />)
-    }
+    return (
+      <div className="body-main">
+        {this.props.children}
+      </div>
+    )
   }
 }
 
-
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 /*
 {

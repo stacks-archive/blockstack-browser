@@ -9,7 +9,7 @@ import {
   InputGroup, SaveButton, ProfileEditingSidebar, PageHeader
 } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
-import { getNameParts, uploadFile } from '../../utils/index'
+import { getNameParts, uploadProfile, uploadPhoto } from '../../utils/index'
 
 import BasicInfoTab from './BasicInfoTab'
 import PhotosTab from './PhotosTab'
@@ -51,8 +51,8 @@ class EditProfilePage extends Component {
     }
 
     this.saveProfile = this.saveProfile.bind(this)
-    this.uploadProfile = this.uploadProfile.bind(this)
     this.changeTabs = this.changeTabs.bind(this)
+    this.uploadProfilePhoto = this.uploadProfilePhoto.bind(this)
   }
 
   componentHasNewLocalIdentities(props) {
@@ -79,18 +79,14 @@ class EditProfilePage extends Component {
 
   componentWillUnmount() {
     this.saveProfile(this.state.profile)
-    this.uploadProfile()
   }
 
   saveProfile(newProfile) {
     this.props.updateProfile(this.props.routeParams.index, newProfile)
-
     const analyticsId = this.props.analyticsId
     mixpanel.track('Save profile', { distinct_id: analyticsId })
     mixpanel.track('Perform action', { distinct_id: analyticsId })
-  }
 
-  uploadProfile() {
     const filename = this.state.domainName + '.json'
 
     const keypair = this.props.identityKeypairs[0],
@@ -101,12 +97,23 @@ class EditProfilePage extends Component {
           tokenRecord = wrapToken(token),
           tokenRecords = [tokenRecord]
     const data = JSON.stringify(tokenRecords, null, 2)
-    uploadFile(this.props.api, filename, data, ({ url, err, res }) => {
-      if (err) {
-        console.log(res)
-        console.log('profile not uploaded to s3')
-      }
+
+    uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
+        console.error(err)
+        console.error('profile not uploaded ')
     })
+
+  }
+
+
+  uploadProfilePhoto(file, index) {
+
+    const analyticsId = this.props.analyticsId
+    mixpanel.track('Upload photo', { distinct_id: analyticsId })
+    mixpanel.track('Perform action', { distinct_id: analyticsId })
+    const name = this.state.domainName
+    return uploadPhoto(this.props.api, name, file, index)
+
   }
 
   changeTabs(tabName) {
@@ -148,7 +155,8 @@ class EditProfilePage extends Component {
                       return (
                         <PhotosTab
                           profile={this.state.profile}
-                          saveProfile={this.saveProfile} />
+                          saveProfile={this.saveProfile}
+                          uploadProfilePhoto={this.uploadProfilePhoto} />
                       )
                     case "Social Accounts":
                       return (

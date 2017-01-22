@@ -15,8 +15,8 @@ export {
 } from './search-utils'
 
 export {
-  uploadFile
-} from './s3-utils'
+  uploadPhoto, uploadProfile
+} from './storage/index'
 
 export {
   encrypt,
