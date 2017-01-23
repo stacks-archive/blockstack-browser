@@ -22,13 +22,28 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 
 ## Building for macOS
 
-1. Make sure you have a working installation of Xcode 8 or higher
+1. Make sure you have a working installation of Xcode 8 or higher & valid Mac Developer signing certificate
 1. Run `npm install nexe -g` to install the "node to native" binary tool globally
-1. Run `npm run mac`
+1. Open the Blockstack macOS project in Xcode and configure your code signing development team (You only need to do this once)
+1. Run `npm run mac` to build a release signed with your Mac Developer certificate
 
 *Note: You only need to run `nexe` once but the first build will take a while as `nexe` downloads and compiles a source copy of node. Then it creates and copies the needed proxy binaries into place and copies a built version of the browser web app into the source tree.*
 
 *Note: This has only been tested on macOS Sierra 10.12.*
+
+
+### Building a macOS release for distribution
+
+1. Ensure you have valid Developer ID signing credentials in your Keychain. (See https://developer.apple.com/developer-id/ for more information)
+1. Follow the instructions in the above section for building for macOS.
+1. Open the Blockstack macOS project in Xcode.
+1. Select the Product menu and click Archive.
+1. When the archive build completes, the Organizer window will open. Select your new build.
+1. Click "Export..."
+1. Click "Export a Developer ID-signed Application"
+1. Choose the development team with the Developer ID you'd like to use to sign the application.
+1. Click "Export" and select the location to which you would like to save the signed build.
+
 
 ## Tech Stack
 
