@@ -8,8 +8,9 @@
 var express = require('express')
 var app = express(),
     port = process.argv[2] || 8889
-const exec = require('child_process').exec
 
+const blockstack = process.argv[3] || "./blockstack-venv/bin/python2.7 ./blockstack-venv/bin/blockstack";
+const exec = require('child_process').exec
 
 
 app.get('/names/:name', function (req, res) {
@@ -39,8 +40,12 @@ app.get('/search', function (req, res) {
     })
 })
 
+exec(`pwd`, function (error, stdout, stderr) {
+    console.log(`pwd: ${stdout}`)
+})
+
 console.log('Trying to enabling Blockstack CLI advanced mode...')
-exec('blockstack set_advanced_mode on', function (error, stdout, stderr) {
+exec(`${blockstack} set_advanced_mode on`, function (error, stdout, stderr) {
   if(error !== null) {
     console.error(error);
     console.error('You need to have a working installation of blockstack.')
@@ -49,7 +54,7 @@ exec('blockstack set_advanced_mode on', function (error, stdout, stderr) {
 
   response =  JSON.parse(stdout);
   if(response.status != true) {
-    console.error('Enabling Blockstack CLI advanced mode fail.');
+    console.error('Enabling Blockstack CLI advanced mode failed.');
     console.error('Check you Blockstack installation and try again.');
     process.exit(1);
   }
@@ -65,7 +70,7 @@ exec('blockstack set_advanced_mode on', function (error, stdout, stderr) {
 
 function blockstackGetNamesOwnedByAddress(address) {
   return new Promise((resolve, reject) => {
-    exec('blockstack get_names_owned_by_address ' + address, function (error, stdout, stderr) {
+    exec(`${blockstack} get_names_owned_by_address ` + address, function (error, stdout, stderr) {
       if(error !== null) {
         reject(error);
         return;
@@ -77,7 +82,7 @@ function blockstackGetNamesOwnedByAddress(address) {
 
 function blockstackLookup(name) {
   return new Promise((resolve, reject) => {
-    exec('blockstack lookup ' + name, function (error, stdout, stderr) {
+    exec(`${blockstack} lookup ` + name, function (error, stdout, stderr) {
       if(error !== null) {
         reject(error);
         return;
@@ -89,7 +94,7 @@ function blockstackLookup(name) {
 
 function blockstackRegister(name) {
   return new Promise((resolve, reject) => {
-    exec('blockstack get_name_blockchain_record ' + name, function (error, stdout, stderr) {
+    exec(`${blockstack} get_name_blockchain_record ` + name, function (error, stdout, stderr) {
       if(error !== null) {
 
         reject(error);
