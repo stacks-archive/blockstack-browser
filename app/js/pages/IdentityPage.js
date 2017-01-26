@@ -68,7 +68,7 @@ class IdentityPage extends Component {
         </nav>
 
         <div className="m-b-2">
-          <h3>Personas</h3>
+          <h3>Profiles</h3>
         </div>
         <div className="m-b-2">
           <Link to="/names/register" className="btn btn-side-emphasis btn-side-pull-left" >
