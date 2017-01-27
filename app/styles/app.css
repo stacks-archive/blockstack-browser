@@ -163,7 +163,7 @@ a.list-group-item-dash:focus,a.list-group-item-dash:hover{background-color:#f5f5
 .app-box-container{min-height:1px;padding-right:4px;text-align:center;}
 .app-text-container{min-height:1px;padding-right:4px;text-align:center;}
 .app-box{width:60%;height:auto;margin:40px auto;}
-.app-box img{width:100%;}
+.app-box img{width:100%;max-width:256px;}
 .text-feat-dash{padding:12px;margin-bottom:0;}
 a.view-out-link{color:#494f56;}
 
