@@ -4,6 +4,8 @@
 # the macOS app
 
 
+# make working directory the same as location of script
+cd "$(dirname "$0")"
 
 echo "Removing any existing virtualenv dir..."
 
@@ -22,3 +24,7 @@ echo "Installing latest blockstack..."
 pip install --upgrade blockstack
 
 echo "Blockstack virtual environment created."
+
+echo "Build Blockstack virtualenv archive..."
+
+tar -czvf Blockstack/Blockstack/blockstack-venv.tar.gz blockstack-venv
