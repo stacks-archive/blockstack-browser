@@ -2,6 +2,6 @@ import gulp from 'gulp'
 var shell = require('gulp-shell')
 
 
-gulp.task('mock-core', shell.task([
+gulp.task('mockCore', shell.task([
   'node ./utils/mockBlockstackCoreApi.js'
 ]))
