@@ -47,8 +47,8 @@ class DashboardPage extends Component {
                 </div>
               </div>
               <div className="col-sm-4">
-                <a href="https://blockstack-hello-world.firebaseapp.com/"
-                  className="app-box-container">
+                <a href="http://localhost:5000/"
+                  className="app-box-container" target="_blank">
                   <div className="app-box">
                     <img src="/images/app-hello-blockstack.png" />
                   </div>

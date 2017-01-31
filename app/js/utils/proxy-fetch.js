@@ -20,5 +20,6 @@ let proxyFetch = function(url, options) {
   return realFetch.call(this, proxy + hostAndPath, options)
 }
 
-window.fetch = proxyFetch
+window.fetch = realFetch // = proxyFetch
 window.realFetch = realFetch
+window.proxyFetch = proxyFetch
