@@ -29,7 +29,7 @@ class DashboardPage extends Component {
             <div className="col-sm-12 app-container no-padding">
               <div className="col-sm-4">
                 <Link to="/identity" className="app-box-container">
-                  <div className="app-box">
+                  <div className="app-box container-fluid">
                     <img src="/images/app-identity.png" />
                   </div>
                 </Link>
