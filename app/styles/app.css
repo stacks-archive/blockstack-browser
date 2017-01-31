@@ -204,3 +204,15 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 }
 .fa-green{color:#1d9d74;}
 .app-account-identifier{margin-left:10px;}
+
+
+/* Guy quick */
+.profile-wrap{max-width: 800px;}
+/* Buttons */
+.btn-secondary,.btn-outline-primary{font-size:0.875rem;padding:0.6875rem 3.4375rem;line-height:1.75rem;margin-right:1.25rem;}
+.btn-lg{font-size:0.875rem;padding:0.6875rem 3.4375rem;line-height:1.75rem;}
+.btn-block{display:inline-block;width:initial;}
+.special-space-btn{margin-right:15px!important;}
+.browser-search-bar img{top:18px;}
+.list-group-item-dash{margin-left:0px;background-color: #f7f7f9;}
+

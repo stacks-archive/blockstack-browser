@@ -56,7 +56,8 @@ class IdentityPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container-fluid">
+      <div className="container profile-wrap">
         <nav className="navbar navbar-toggleable-md navbar-light bg-faded">          
           <a className="navbar-brand" href="#">Profiles</a>
           <div className="collapse navbar-collapse" id="navbarNav">
@@ -76,7 +77,7 @@ class IdentityPage extends Component {
             </ul>
           </div>
         </nav>
-        <nav className="navbar">
+        <nav className="navbar bg-faded">
           <div>
             <div className=""></div>
           </div>
@@ -92,13 +93,13 @@ class IdentityPage extends Component {
         </nav>
 
         <div className="m-b-2">
-          <h3>Profiles</h3>
+          
         </div>
         <div className="m-b-2">
-          <Link to="/names/register" className="btn btn-side-emphasis btn-side-pull-left" >
+          <Link to="/names/register" className="btn btn-secondary special-space-btn" >
             Register
           </Link>
-          <Link to="/names/import" className="btn btn-side-secondary">
+          <Link to="/names/import" className="btn btn-secondary">
             Import
           </Link>
         </div>
@@ -119,6 +120,7 @@ class IdentityPage extends Component {
           })}
           </ul>
         </div>
+      </div>
       </div>
     )
   }
