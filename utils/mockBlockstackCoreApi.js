@@ -6,12 +6,15 @@
 */
 
 var express = require('express')
+var cors = cors = require('cors')
+
 var app = express(),
     port = process.argv[2] || 8889
 
 const blockstack = process.argv[3] || "./blockstack-venv/bin/python2.7 ./blockstack-venv/bin/blockstack";
 const exec = require('child_process').exec
 
+app.use(cors())
 
 app.get('/names/:name', function (req, res) {
     blockstackLookup(req.params.name).then((profile) => {
