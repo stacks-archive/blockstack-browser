@@ -22,7 +22,8 @@ class DashboardPage extends Component {
 
   render() {
     return (
-      <div className="">
+      <div className="container-fluid">
+      <div className="container profile-wrap-wide">
         <section>
           <div className="container-fluid no-padding">
             <div className="col-sm-12 app-container no-padding">
@@ -60,6 +61,7 @@ class DashboardPage extends Component {
             </div>
           </div>
         </section>
+      </div>
       </div>
     )
   }

@@ -46,7 +46,7 @@ function resetApi() {
   return dispatch => {
     const DEFAULT_API = {
       apiCustomizationEnabled: true,
-      nameLookupUrl: 'https://api.blockstack.com/v1/users/{name}',
+      nameLookupUrl: 'http://localhost:8889/names/{name}',
       searchUrl: 'https://api.blockstack.com/v1/search?query={query}',
       registerUrl: 'https://api.blockstack.com/v1/users',
       addressLookupUrl: 'https://api.blockstack.com/v1/addresses/{address}/names',

@@ -56,25 +56,50 @@ class IdentityPage extends Component {
 
   render() {
     return (
-      <div>
-        <nav className="navbar navbar-light bg-faded">
-          <div className="nav navbar-nav">
-            <div className="nav-search">
-              <div className="nav-link">
-                <AddressBar placeholder="Search for people, apps & more…" />
+      <div className="container-fluid">
+      <div className="container profile-wrap">
+        <nav className="navbar navbar-toggleable-md navbar-light bg-faded">          
+          <a className="navbar-brand" href="#">Profiles</a>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item active">
+                <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Features</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Pricing</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link disabled" href="#">Disabled</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <nav className="navbar bg-faded">
+          <div>
+            <div className=""></div>
+          </div>
+          <div className="navbar-light bg-faded">
+            <div className="nav navbar-nav">
+              <div className="nav-search">
+                <div className="nav-link">
+                  <AddressBar placeholder="Search for people, apps & more…" />
+                </div>
               </div>
             </div>
           </div>
         </nav>
 
         <div className="m-b-2">
-          <h3>Personas</h3>
+          
         </div>
         <div className="m-b-2">
-          <Link to="/names/register" className="btn btn-side-emphasis btn-side-pull-left" >
+          <Link to="/names/register" className="btn btn-secondary special-space-btn" >
             Register
           </Link>
-          <Link to="/names/import" className="btn btn-side-secondary">
+          <Link to="/names/import" className="btn btn-secondary">
             Import
           </Link>
         </div>
@@ -95,6 +120,7 @@ class IdentityPage extends Component {
           })}
           </ul>
         </div>
+      </div>
       </div>
     )
   }

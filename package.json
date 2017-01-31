@@ -1,6 +1,6 @@
 {
   "name": "blockstack-browser",
-  "version": "0.0.0",
+  "version": "0.3.0",
   "author": "Blockstack Inc <admin@blockstack.com>",
   "description": "The Blockstack browser",
   "license": "MPL-2.0",
@@ -15,7 +15,8 @@
     "mac": "NODE_ENV=production ./node_modules/.bin/gulp mac",
     "dev-ui": "NODE_ENV=development ./node_modules/.bin/gulp dev",
     "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy",
-    "dev": "concurrently --kill-others \"npm run dev-ui\" \"npm run dev-proxy\""
+    "dev-mock-core": "NODE_ENV=development ./node_modules/.bin/gulp mockCore",
+    "dev": "concurrently --kill-others \"npm run dev-ui\" \"npm run dev-proxy\" \"npm run dev-mock-core\""
   },
   "keywords": [
     "gulp",
