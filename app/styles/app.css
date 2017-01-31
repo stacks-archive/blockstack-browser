@@ -208,6 +208,7 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 
 /* Guy quick */
 .profile-wrap{max-width: 800px;}
+.profile-wrap-wide{max-width: 1050px;}
 /* Buttons */
 .btn-secondary,.btn-outline-primary{font-size:0.875rem;padding:0.6875rem 3.4375rem;line-height:1.75rem;margin-right:1.25rem;}
 .btn-lg{font-size:0.875rem;padding:0.6875rem 3.4375rem;line-height:1.75rem;}
@@ -216,4 +217,4 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 .browser-search-bar img{top:18px;}
 .list-group-item-dash{margin-left:0px;background-color: #f7f7f9;}
 a.list-group-item-dash:focus, a.list-group-item-dash:hover{background-color: rgb(238, 238, 238)}
-
+.app-box img {min-width: 256px;}
