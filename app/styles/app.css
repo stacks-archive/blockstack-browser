@@ -215,4 +215,5 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 .special-space-btn{margin-right:15px!important;}
 .browser-search-bar img{top:18px;}
 .list-group-item-dash{margin-left:0px;background-color: #f7f7f9;}
+a.list-group-item-dash:focus, a.list-group-item-dash:hover{background-color: rgb(238, 238, 238)}
 
