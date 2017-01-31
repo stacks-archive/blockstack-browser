@@ -160,23 +160,17 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
 
 function fetchCurrentIdentity(domainName, lookupUrl) {
   return dispatch => {
-    const username = domainName.replace('.id', ''),
-          url = lookupUrl.replace('{name}', username)
+    const url = lookupUrl.replace('{name}', domainName)
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        const zoneFile = responseJson[username]['zone_file']
-        const ownerAddress = responseJson[username]['owner_address']
         let verifications = []
-
-        resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
+        const profile = responseJson['profile']
+        dispatch(updateCurrentIdentity(domainName, profile, verifications))
+        validateProofs(profile, domainName).then((proofs) => {
+          verifications = proofs
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
-          validateProofs(profile, username + '.id').then((proofs) => {
-            verifications = proofs
-            dispatch(updateCurrentIdentity(domainName, profile, verifications))
-          })
-
         })
       })
       .catch((error) => {
