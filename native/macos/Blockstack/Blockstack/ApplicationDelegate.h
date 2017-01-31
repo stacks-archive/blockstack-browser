@@ -7,6 +7,7 @@
 @property (nonatomic, strong) MenubarController *menubarController;
 @property (nonatomic, strong) NSTask *blockstackProxyTask;
 @property (nonatomic, strong) NSTask *corsProxyTask;
+@property (nonatomic, strong) NSTask *mockBlockstackCoreApiTask;
 
 - (IBAction)handleClick:(id)sender;
 
