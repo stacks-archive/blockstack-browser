@@ -17,8 +17,8 @@ const exec = require('child_process').exec
 app.use(cors())
 
 app.get('/names/:name', function (req, res) {
-    blockstackLookup(req.params.name).then((profile) => {
-      res.json(JSON.parse(profile))
+    blockstackGetNameZonefile(req.params.name).then((zonefile) => {
+      res.json(zonefile)
     }).catch((error) => {
       res.status(404)
       res.json({ 'error': 'Not found' })
@@ -26,9 +26,10 @@ app.get('/names/:name', function (req, res) {
 })
 
 app.get('/addresses/:address/names', function (req, res) {
-    blockstackGetNamesOwnedByAddress(req.params.address).then((names) => {
-      res.json(JSON.parse(names))
-    })
+    const addresses = req.params.address.split(',')
+    let count =  addresses.length
+    let results = []
+
 })
 
 app.post('/users', function (req, res) {
@@ -70,27 +71,57 @@ exec(`${blockstack} set_advanced_mode on`, function (error, stdout, stderr) {
 
 })
 
+// function getNamesOwnedByAddress(address, count, results) {
+//     new Promise((resolve, reject) => {
+//       blockstackGetNamesOwnedByAddress(req.params.address).then((names) => {
+//       results.push(names)
+//       count = count - 1
+//       if( count < 1) {
+//         res.json({results: results })
+//       } else {
+//         return getNamesOwnedByAddress(address, count, results)
+//       }
+//     })
+//   })
+// }
 
 function blockstackGetNamesOwnedByAddress(address) {
-  return new Promise((resolve, reject) => {
-    exec(`${blockstack} get_names_owned_by_address ` + address, function (error, stdout, stderr) {
-      if(error !== null) {
-        reject(error);
-        return;
-      }
-      resolve(stdout);
-    })
-  })
+  throw "not yet implemented"
+  // return new Promise((resolve, reject) => {
+  //   exec(`${blockstack} get_names_owned_by_address ` + address, function (error, stdout, stderr) {
+  //     if(error !== null) {
+  //       reject(error);
+  //       return;
+  //     }
+  //
+  //     resolve({address: address, names: JSON.parse(stdout)});
+  //   })
+  // })
 }
 
-function blockstackLookup(name) {
+function blockstackGetNameZonefile(name) {
   return new Promise((resolve, reject) => {
-    exec(`${blockstack} lookup ` + name, function (error, stdout, stderr) {
-      if(error !== null) {
-        reject(error);
+    exec(`${blockstack} get_name_zonefile ` + name, function (zonefileError, zonefileStdout, zonefileStderr) {
+      if(zonefileError !== null) {
+        reject(zonefileError);
         return;
       }
-      resolve(stdout);
+
+      const zonefile = JSON.parse(zonefileStdout);
+
+      exec(`${blockstack} whois ` + name, function (whoisError, whoisStdout, whoisStderr) {
+        if(whoisError !== null) {
+          reject(whoisError);
+          return;
+        }
+
+        const whois = JSON.parse(whoisStdout);
+
+        resolve({
+            address: whois['owner_address'],
+            zonefile: zonefile['zonefile']
+          });
+      })
     })
   })
 }

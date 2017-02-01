@@ -165,14 +165,17 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
+        const zoneFile = responseJson['zonefile']
+        const ownerAddress = responseJson['address']
+        resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
         let verifications = []
-        const profile = responseJson['profile']
         dispatch(updateCurrentIdentity(domainName, profile, verifications))
         validateProofs(profile, domainName).then((proofs) => {
           verifications = proofs
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
         })
       })
+    })
       .catch((error) => {
         console.warn(error)
       })
