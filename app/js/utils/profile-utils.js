@@ -20,7 +20,7 @@ export function verifyToken(token, verifyingKeyOrAddress) {
     throw new Error("Token doesn't have an issuer")
   }
   if (!payload.issuer.hasOwnProperty('publicKey')) {
-    throw new Error("Token doesn't have an issuer public key")    
+    throw new Error("Token doesn't have an issuer public key")
   }
   if (!payload.hasOwnProperty('claim')) {
     throw new Error("Token doesn't have a claim")
@@ -49,7 +49,7 @@ export function verifyToken(token, verifyingKeyOrAddress) {
   if (!tokenVerifier) {
     throw new Error("Invalid token verifier")
   }
-  
+
   let tokenVerified = tokenVerifier.verify(token)
   if (!tokenVerified) {
     throw new Error("Token verification failed")
@@ -89,10 +89,10 @@ export function getProfileFromTokens(tokenRecords, publicKeychain) {
   tokenRecords.map((tokenRecord) => {
     let token = tokenRecord.token,
         decodedToken = null
-    
+
     try {
       decodedToken = decodeToken(tokenRecord.token)
-      //decodedToken = verifyTokenRecord(tokenRecord, publicKeychain)
+      decodedToken = verifyTokenRecord(tokenRecord, publicKeychain)
     } catch (e) {
       // pass
       console.log(e)
