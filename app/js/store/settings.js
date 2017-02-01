@@ -46,7 +46,7 @@ function resetApi() {
   return dispatch => {
     const DEFAULT_API = {
       apiCustomizationEnabled: true,
-      nameLookupUrl: 'http://localhost:8889/names/{name}/zonefile',
+      nameLookupUrl: 'http://localhost:8889/names/{name}',
       searchUrl: 'http://localhost:8889/search?query={query}',
       registerUrl: 'https://api.blockstack.com/v1/users',
       addressLookupUrl: 'http://localhost:8889/addresses/{address}/names',
@@ -70,7 +70,7 @@ export const SettingsActions = {
 const initialState = {
   api: {
     apiCustomizationEnabled: true,
-    nameLookupUrl: 'http://localhost:8889/names/{name}/zonefile',
+    nameLookupUrl: 'http://localhost:8889/names/{name}',
     searchUrl: 'http://localhost:8889/search?query={query}',
     registerUrl: 'https://api.blockstack.com/v1/users',
     addressLookupUrl: 'http://localhost:8889/addresses/{address}/names',
