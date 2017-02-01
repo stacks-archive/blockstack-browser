@@ -23,6 +23,6 @@ let proxyFetch = function(url, options) {
     }
 }
 
-window.fetch = realFetch // = proxyFetch
+window.fetch = proxyFetch
 window.realFetch = realFetch
 window.proxyFetch = proxyFetch
