@@ -30,6 +30,16 @@ app.get('/addresses/:address/names', function (req, res) {
     let count =  addresses.length
     let results = []
 
+    addresses.forEach((address) => {
+      blockstackGetNamesOwnedByAddress(address).then((result) => {
+        results.push(result)
+
+        if(results.length >= addresses.length)
+          res.json({results: results})
+          
+      })
+    })
+
 })
 
 app.post('/users', function (req, res) {
@@ -71,32 +81,18 @@ exec(`${blockstack} set_advanced_mode on`, function (error, stdout, stderr) {
 
 })
 
-// function getNamesOwnedByAddress(address, count, results) {
-//     new Promise((resolve, reject) => {
-//       blockstackGetNamesOwnedByAddress(req.params.address).then((names) => {
-//       results.push(names)
-//       count = count - 1
-//       if( count < 1) {
-//         res.json({results: results })
-//       } else {
-//         return getNamesOwnedByAddress(address, count, results)
-//       }
-//     })
-//   })
-// }
 
 function blockstackGetNamesOwnedByAddress(address) {
-  throw "not yet implemented"
-  // return new Promise((resolve, reject) => {
-  //   exec(`${blockstack} get_names_owned_by_address ` + address, function (error, stdout, stderr) {
-  //     if(error !== null) {
-  //       reject(error);
-  //       return;
-  //     }
-  //
-  //     resolve({address: address, names: JSON.parse(stdout)});
-  //   })
-  // })
+  return new Promise((resolve, reject) => {
+    exec(`${blockstack} get_names_owned_by_address ` + address, function (error, stdout, stderr) {
+      if(error !== null) {
+        reject(error);
+        return;
+      }
+
+      resolve({address: address, names: JSON.parse(stdout)});
+    })
+  })
 }
 
 function blockstackGetNameZonefile(name) {
