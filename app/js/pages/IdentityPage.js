@@ -57,44 +57,23 @@ class IdentityPage extends Component {
   render() {
     return (
       <div className="container-fluid">
-      <div className="container profile-wrap">
-        <nav className="navbar navbar-toggleable-md navbar-light bg-faded">          
-          <a className="navbar-brand" href="#">Profiles</a>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
+        <nav className="navbar navbar-toggleable-md navbar-light bg-faded">
+          <a className="navbar-brand" href="#">Navbar</a>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav mr-auto">
               <li className="nav-item active">
                 <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Features</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Pricing</a>
+                <a className="nav-link" href="#">Link</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link disabled" href="#">Disabled</a>
               </li>
             </ul>
+            <AddressBar placeholder="Search for people, apps & more…" />
           </div>
         </nav>
-        <nav className="navbar bg-faded">
-          <div>
-            <div className=""></div>
-          </div>
-          <div className="navbar-light bg-faded">
-            <div className="nav navbar-nav">
-              <div className="nav-search">
-                <div className="nav-link">
-                  <AddressBar placeholder="Search for people, apps & more…" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        <div className="m-b-2">
-          
-        </div>
         <div className="m-b-2">
           <Link to="/names/register" className="btn btn-secondary special-space-btn" >
             Register
@@ -120,7 +99,6 @@ class IdentityPage extends Component {
           })}
           </ul>
         </div>
-      </div>
       </div>
     )
   }
