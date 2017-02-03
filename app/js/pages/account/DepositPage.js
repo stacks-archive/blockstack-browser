@@ -8,7 +8,8 @@ import { AccountActions } from '../../store/account'
 
 function mapStateToProps(state) {
   return {
-    addresses: state.account.bitcoinAccount.addresses
+    addresses: state.account.bitcoinAccount.addresses,
+    balances: state.account.bitcoinAccount.balances
   }
 }
 
@@ -19,7 +20,8 @@ function mapDispatchToProps(dispatch) {
 class DepositPage extends Component {
   static propTypes = {
     addresses: PropTypes.array.isRequired,
-    newBitcoinAddress: PropTypes.func.isRequired
+    newBitcoinAddress: PropTypes.func.isRequired,
+    refreshBalances: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -27,6 +29,9 @@ class DepositPage extends Component {
     this.refreshAddress = this.refreshAddress.bind(this)
   }
 
+  componentDidMount() {
+    this.props.refreshBalances(this.props.addresses)
+  }
   refreshAddress(event) {
     this.props.newBitcoinAddress()
   }
@@ -41,6 +46,7 @@ class DepositPage extends Component {
               <AccountSidebar activeTab="deposit" />
             </div>
             <div className="col-md-9">
+              <p>Balance: {this.props.balances.total} btc</p>
               <p><i>
                 Note: All identity registrations require funds from your account.
                 To fund your account, send bitcoins to the address below.
