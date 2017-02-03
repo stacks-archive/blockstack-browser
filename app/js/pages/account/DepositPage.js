@@ -3,13 +3,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { AccountSidebar, PageHeader } from '../../components/index'
+import { AccountSidebar, Balance, PageHeader } from '../../components/index'
 import { AccountActions } from '../../store/account'
 
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
-    balances: state.account.bitcoinAccount.balances
   }
 }
 
@@ -21,7 +20,6 @@ class DepositPage extends Component {
   static propTypes = {
     addresses: PropTypes.array.isRequired,
     newBitcoinAddress: PropTypes.func.isRequired,
-    refreshBalances: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -29,9 +27,6 @@ class DepositPage extends Component {
     this.refreshAddress = this.refreshAddress.bind(this)
   }
 
-  componentDidMount() {
-    this.props.refreshBalances(this.props.addresses)
-  }
   refreshAddress(event) {
     this.props.newBitcoinAddress()
   }
@@ -46,7 +41,7 @@ class DepositPage extends Component {
               <AccountSidebar activeTab="deposit" />
             </div>
             <div className="col-md-9">
-              <p>Balance: {this.props.balances.total} btc</p>
+              <Balance/>
               <p><i>
                 Note: All identity registrations require funds from your account.
                 To fund your account, send bitcoins to the address below.

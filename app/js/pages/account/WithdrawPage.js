@@ -3,10 +3,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { PublicKeychain } from 'blockstack-keychains'
 
-import { InputGroup, AccountSidebar, PageHeader } from '../../components/index'
+import { InputGroup, AccountSidebar, Balance, PageHeader } from '../../components/index'
 
 function mapStateToProps(state) {
   return {
+    balances: state.account.bitcoinAccount.balances
   }
 }
 
@@ -16,6 +17,7 @@ function mapDispatchToProps(dispatch) {
 
 class WithdrawPage extends Component {
   static propTypes = {
+
   }
 
   constructor(props) {
@@ -33,6 +35,7 @@ class WithdrawPage extends Component {
               <AccountSidebar activeTab="withdraw" />
             </div>
             <div className="col-md-9">
+              <Balance/>
               <p>Send your funds to another Bitcoin wallet.</p>
               <InputGroup label="Recipient address" placeholder="Recipient address" />
               <div>
