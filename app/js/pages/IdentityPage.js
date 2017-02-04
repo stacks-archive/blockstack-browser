@@ -56,7 +56,7 @@ class IdentityPage extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
+      <div className="container-fluid site-wrapper">
         <nav className="navbar navbar-toggleable-md navbar-light bg-faded">
           <a className="navbar-brand" href="#">
             <img src="/images/app-icon-profiles.png" />
