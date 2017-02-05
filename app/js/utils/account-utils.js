@@ -37,14 +37,22 @@ export function decryptPrivateKeychain(password, encryptedBackupPhrase) {
 
     decrypt(dataBuffer, password, (err, plaintextBuffer) => {
       if (!err) {
-        let backupPhrase = plaintextBuffer.toString()
-        let privateKeychain = PrivateKeychain.fromMnemonic(backupPhrase)
+        const backupPhrase = plaintextBuffer.toString()
+        const privateKeychain = PrivateKeychain.fromMnemonic(backupPhrase)
         resolve(privateKeychain)
       } else {
         reject("Incorrect password")
       }
     })
   })
+}
+
+export function getBitcoinPrivateKeychain(privateKeychain) {
+  return privateKeychain.privatelyNamedChild('bitcoin-0')
+}
+
+export function getIdentityPrivateKeychain(privateKeychain) {
+  return privateKeychain.privatelyNamedChild('blockstack-0')
 }
 
 export const webAccountTypes = {

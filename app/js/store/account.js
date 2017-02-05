@@ -1,5 +1,5 @@
 import bip39 from 'bip39'
-import { encrypt, decrypt, decryptPrivateKeychain } from '../utils'
+import { encrypt, decrypt, decryptPrivateKeychain, getIdentityPrivateKeychain, getBitcoinPrivateKeychain } from '../utils'
 import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
 import { ECPair } from 'bitcoinjs-lib'
 
@@ -11,8 +11,8 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       UPDATE_BALANCES = 'UPDATE_BALANCES'
 
 function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
-  const identityPrivateKeychain = privateKeychain.privatelyNamedChild('blockstack-0')
-  const bitcoinPrivateKeychain = privateKeychain.privatelyNamedChild('bitcoin-0')
+  const identityPrivateKeychain = getIdentityPrivateKeychain(privateKeychain)
+  const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(privateKeychain)
 
   const identityPublicKeychain = identityPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
   const bitcoinPublicKeychain = bitcoinPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')

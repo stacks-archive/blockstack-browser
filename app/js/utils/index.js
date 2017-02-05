@@ -1,5 +1,7 @@
 export {
   decryptPrivateKeychain,
+  getBitcoinPrivateKeychain,
+  getIdentityPrivateKeychain,
   isPasswordValid,
   isBackupPhraseValid,
   webAccountTypes
