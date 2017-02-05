@@ -1,14 +1,6 @@
-.navbar-brand img{
-	width: 48px;
-}
-body, html, #app, .app-landing {height:100%;}
-.body-profiles{
-	width:100%;height:100%;
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fafafa+0,f2f2f2+100 */
-background: #fafafa; /* Old browsers */
-background: -moz-linear-gradient(top,  #fafafa 0%, #f2f2f2 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  #fafafa 0%,#f2f2f2 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  #fafafa 0%,#f2f2f2 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#f2f2f2',GradientType=0 ); /* IE6-9 */
-}
+.navbar-brand img{width:48px;}
+body,html,#app,.app-landing{height:100%;}
+body{font-family:'Lato',sans-serif;font-size:14px;background-color:rgba(250,250,250,1);}
+.body-profiles{width:100%;height:100%;background:#fafafa;background:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);}
 .site-wrapper{display:flex;flex-direction:column;height:100%;}
+.navbar{padding-right:0!important;padding-left:0!important;}
