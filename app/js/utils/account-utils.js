@@ -1,4 +1,6 @@
 import bip39 from 'bip39'
+import { PrivateKeychain } from 'blockstack-keychains'
+import { decrypt } from './encryption-utils'
 
 const backupPhraseLength = 24
 
@@ -27,6 +29,22 @@ export function isBackupPhraseValid(backupPhrase) {
   }
 
   return { isValid: isValid, error: error }
+}
+
+export function decryptPrivateKeychain(password, encryptedBackupPhrase) {
+  return new Promise((resolve, reject) => {
+    let dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+
+    decrypt(dataBuffer, password, (err, plaintextBuffer) => {
+      if (!err) {
+        let backupPhrase = plaintextBuffer.toString()
+        let privateKeychain = PrivateKeychain.fromMnemonic(backupPhrase)
+        resolve(privateKeychain)
+      } else {
+        reject("Incorrect password")
+      }
+    })
+  })
 }
 
 export const webAccountTypes = {
