@@ -13,6 +13,10 @@ export {
 } from './api-utils'
 
 export {
+  getMinerFee, getUtxo
+} from './bitcoin-utils'
+
+export {
   getNumberOfVerifications,
   compareProfilesByVerifications
 } from './search-utils'

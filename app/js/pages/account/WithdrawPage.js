@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { PublicKeychain } from 'blockstack-keychains'
 
-import { decryptPrivateKeychain, getBitcoinPrivateKeychain } from '../../utils'
+import { decryptPrivateKeychain, getMinerFee, getBitcoinPrivateKeychain, getUtxo } from '../../utils'
 
 
 import { InputGroup, AccountSidebar, Balance, PageHeader } from '../../components/index'
@@ -33,23 +33,50 @@ class WithdrawPage extends Component {
   }
 
   withdrawBitcoin(event) {
-    // TODO: add user entered password 
+    // TODO: add user entered password
     decryptPrivateKeychain("password", this.props.account.encryptedBackupPhrase)
     .then((privateKeychain) => {
      const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(privateKeychain)
-     bitcoinPrivateKeychain.ecPair.getAddress()
+
      const key = ECPair.fromWIF(bitcoinPrivateKeychain.ecPair.toWIF())
+     const address = bitcoinPrivateKeychain.ecPair.getAddress()
 
-     let tx = new TransactionBuilder();
-     // TODO: retrive and add inputs
-     tx.addInput("d18e7106e5492baf8f3929d2d573d27d89277f3825d3836aa86ea1d843b5158b", 1);
+     let tx = new TransactionBuilder()
+     let totalSatoshis = 0
 
-     // TODO: add user entered output and proper value
-     tx.addOutput("12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT", 149000);
-     tx.sign(0, key);
+     getUtxo(address).then((utxo) => {
 
-     // TODO: broadcast transaction
-     console.log(tx.build().toHex());
+       for(let i = 0; i++; i < utxo.length) {
+         let input = utxo[i]
+         tx.addInput(input.txid, input.vout)
+         totalSatoshis = totalSatoshis + input.satoshis
+       }
+
+     const incompleteTransaction = tx.buildIncomplete()
+     const byteLength = incompleteTransaction.byteLength()
+
+
+     getMinerFee(byteLength).then((fee) => {
+       console.log(`Mining fee: ${fee}`)
+
+       if(totalSatoshis <= fee) {
+         throw "There isn't enough bitcoin to pay the mining fee."
+       }
+
+       // TODO: add user entered output and proper value
+       tx.addOutput("12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT", totalSatoshis - fee);
+
+       tx.sign(0, key);
+
+       // TODO: broadcast transaction
+       console.log(tx.build().toHex());
+     })
+
+     }).catch((error) => {
+       console.error(error)
+     })
+
+
     }).catch((error) => {
       console.error(error)
     })
