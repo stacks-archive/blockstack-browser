@@ -32,10 +32,10 @@ class IdentityItem extends Component {
               </li>
               <li>
                 {this.props.pending ?
-                <h3 className="card-title">
+                <p className="card-subtitle profile-list-card-subtitle">
                  (pending)
-                </h3>
-                : <h3></h3> }
+                </p>
+                : <p></p> }
               </li>
             </ul>
           </div>            
