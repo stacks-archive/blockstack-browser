@@ -13,7 +13,7 @@ export {
 } from './api-utils'
 
 export {
-  getMinerFee, getUtxo
+  broadcastTransaction, getNetworkFee, getUtxo
 } from './bitcoin-utils'
 
 export {

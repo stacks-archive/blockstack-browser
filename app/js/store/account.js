@@ -83,7 +83,7 @@ function refreshBalances(addresses) {
         if(results.length >= addresses.length) {
           let balances = {}
           let total = 0.0
-          console.log(addresses)
+
           for(let i = 0; i < results.length; i++) {
             let address = results[i]['address']
             if(!balances.hasOwnProperty(address)) {

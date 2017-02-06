@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { PublicKeychain } from 'blockstack-keychains'
 
-import { decryptPrivateKeychain, getMinerFee, getBitcoinPrivateKeychain, getUtxo } from '../../utils'
+import { broadcastTransaction, decryptPrivateKeychain, getNetworkFee, getBitcoinPrivateKeychain, getUtxo } from '../../utils'
 
 
 import { InputGroup, AccountSidebar, Balance, PageHeader } from '../../components/index'
@@ -29,10 +29,20 @@ class WithdrawPage extends Component {
     super(props)
     this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
 
-    this.state = {}
+    this.state = {
+      alerts: []
+    }
+    this.onValueChange = this.onValueChange.bind(this)
+  }
+
+  onValueChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   withdrawBitcoin(event) {
+    event.preventDefault()
     // TODO: add user entered password
     decryptPrivateKeychain("password", this.props.account.encryptedBackupPhrase)
     .then((privateKeychain) => {
@@ -44,9 +54,11 @@ class WithdrawPage extends Component {
      let tx = new TransactionBuilder()
      let totalSatoshis = 0
 
+     const recipientAddress = this.state.recipientAddress
+
      getUtxo(address).then((utxo) => {
 
-       for(let i = 0; i++; i < utxo.length) {
+       for(let i = 0; i < utxo.length; i++) {
          let input = utxo[i]
          tx.addInput(input.txid, input.vout)
          totalSatoshis = totalSatoshis + input.satoshis
@@ -56,20 +68,22 @@ class WithdrawPage extends Component {
      const byteLength = incompleteTransaction.byteLength()
 
 
-     getMinerFee(byteLength).then((fee) => {
-       console.log(`Mining fee: ${fee}`)
+     getNetworkFee(byteLength).then((fee) => {
+       const amountToSend = totalSatoshis - fee
 
-       if(totalSatoshis <= fee) {
-         throw "There isn't enough bitcoin to pay the mining fee."
+       console.log(`Amount to send to ${recipientAddress}: ${amountToSend} Network fee: ${fee}`)
+
+       // TODO: instead of 0 we should use dust amount
+       if(amountToSend <= 0) {
+         throw "There isn't enough bitcoin to pay the network fee."
        }
 
-       // TODO: add user entered output and proper value
-       tx.addOutput("12idKQBikRgRuZEbtxXQ4WFYB7Wa3hZzhT", totalSatoshis - fee);
+       tx.addOutput(recipientAddress, amountToSend)
 
-       tx.sign(0, key);
-
-       // TODO: broadcast transaction
-       console.log(tx.build().toHex());
+       tx.sign(0, key)
+       const rawTransaction = tx.build().toHex()
+       console.log(rawTransaction)
+       broadcastTransaction(rawTransaction)
      })
 
      }).catch((error) => {
@@ -94,7 +108,7 @@ class WithdrawPage extends Component {
             <div className="col-md-9">
               <Balance/>
               <p>Send your funds to another Bitcoin wallet.</p>
-              <InputGroup label="Recipient address" placeholder="Recipient address" />
+              <InputGroup data={this.state} onChange={this.onValueChange} name="recipientAddress" label="Recipient address" placeholder="Recipient address" />
               <div>
                 <button className="btn btn-primary" onClick={this.withdrawBitcoin}>Send</button>
               </div>
