@@ -73,12 +73,7 @@ class IdentityPage extends Component {
               </ul>
               <AddressBar placeholder="Search for people" />
             </div>
-          </nav>
-          <div className="m-b-2">
-            <Link to="/names/register" className="btn btn-blue btn-lg" role="button" >
-              +
-            </Link>
-          </div>
+          </nav>          
           <div>
             <ul>
             {Object.keys(this.state.localIdentities).map((domainName) => {
@@ -95,6 +90,11 @@ class IdentityPage extends Component {
               }
             })}
             </ul>
+          </div>
+          <div className="m-t-2">
+            <Link to="/names/register" className="btn btn-blue btn-lg" role="button" >
+              +
+            </Link>
           </div>
         </div>
       </div>
