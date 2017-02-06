@@ -62,7 +62,7 @@ class IdentityPage extends Component {
             <img src="/images/app-icon-profiles.png" />
           </a>
           <div className="navbar-collapse" id="navbarSupportedContent">
-            <ul className="nav navbar-nav">
+            <ul className="nav navbar-nav m-b-20">
               <li className="navbar-text">
                 Profiles
               </li>
