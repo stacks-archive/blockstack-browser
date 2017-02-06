@@ -56,47 +56,46 @@ class IdentityPage extends Component {
 
   render() {
     return (
-      <div className="container-fluid site-wrapper">
-        <nav className="navbar navbar-toggleable-md navbar-light bg-faded">
-          <a className="navbar-brand" href="#">
-            <img src="/images/app-icon-profiles.png" />
-          </a>
-          <div className="navbar-collapse" id="navbarSupportedContent">
-            <ul className="nav navbar-nav m-b-20">
-              <li className="navbar-text">
-                Profiles
-              </li>
-              <li className="navbar-text navbar-text-secondary">
-                Utility
-              </li>
-            </ul>
-            <AddressBar placeholder="Search for people" />
+      <div className="app-wrap-profiles">
+        <div className="container-fluid site-wrapper">
+          <nav className="navbar navbar-toggleable-md navbar-light bg-faded">
+            <a className="navbar-brand" href="#">
+              <img src="/images/app-icon-profiles.png" />
+            </a>
+            <div className="navbar-collapse" id="navbarSupportedContent">
+              <ul className="nav navbar-nav m-b-20">
+                <li className="navbar-text">
+                  Profiles
+                </li>
+                <li className="navbar-text navbar-text-secondary">
+                  Utility
+                </li>
+              </ul>
+              <AddressBar placeholder="Search for people" />
+            </div>
+          </nav>
+          <div className="m-b-2">
+            <Link to="/names/register" className="btn btn-blue btn-lg" role="button" >
+              +
+            </Link>
           </div>
-        </nav>
-        <div className="m-b-2">
-          <Link to="/names/register" className="btn btn-secondary special-space-btn" >
-            Register
-          </Link>
-          <Link to="/names/import" className="btn btn-secondary">
-            Import
-          </Link>
-        </div>
-        <div>
-          <ul>
-          {Object.keys(this.state.localIdentities).map((domainName) => {
-            const identity = this.state.localIdentities[domainName],
-                  person = new Person(identity.profile)
-            if (identity.domainName) {
-              return (
-                <IdentityItem key={identity.domainName}
-                  label={identity.domainName}
-                  pending={!identity.registered}
-                  avatarUrl={person.avatarUrl() || ''}
-                  url={`/profile/local/${identity.domainName}`} />
-              )
-            }
-          })}
-          </ul>
+          <div>
+            <ul>
+            {Object.keys(this.state.localIdentities).map((domainName) => {
+              const identity = this.state.localIdentities[domainName],
+                    person = new Person(identity.profile)
+              if (identity.domainName) {
+                return (
+                  <IdentityItem key={identity.domainName}
+                    label={identity.domainName}
+                    pending={!identity.registered}
+                    avatarUrl={person.avatarUrl() || ''}
+                    url={`/profile/local/${identity.domainName}`} />
+                )
+              }
+            })}
+            </ul>
+          </div>
         </div>
       </div>
     )
