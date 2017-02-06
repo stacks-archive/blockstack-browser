@@ -63,17 +63,14 @@ class IdentityPage extends Component {
           </a>
           <div className="navbar-collapse" id="navbarSupportedContent">
             <ul className="nav navbar-nav">
-              <li className="nav-item">
+              <li className="navbar-text">
                 Profiles
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Link</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled" href="#">Disabled</a>
+              <li className="navbar-text navbar-text-secondary">
+                Utility
               </li>
             </ul>
-            <AddressBar placeholder="Search for people, apps & more…" />
+            <AddressBar placeholder="Search for people" />
           </div>
         </nav>
         <div className="m-b-2">
@@ -84,8 +81,8 @@ class IdentityPage extends Component {
             Import
           </Link>
         </div>
-        <div className="m-b-2">
-          <ul className="nav sidebar-list">
+        <div>
+          <ul>
           {Object.keys(this.state.localIdentities).map((domainName) => {
             const identity = this.state.localIdentities[domainName],
                   person = new Person(identity.profile)

@@ -1,6 +1,50 @@
-.navbar-brand img{width:48px;}
+
+/* Table of Contents
+//
+//  1. Colors
+//  2. Options
+//  3. Spacing
+//  4. Body
+//  5. Links
+//  6. Grid breakpoints
+//  7. Grid containers
+//  8. Grid columns
+//  9. Fonts
+// 10. Components
+// 11. Tables
+// 12. Buttons
+// 13. Forms
+// 14. Dropdowns
+// 15. Z-index master list
+// 16. Navbar
+// 17. Navs
+// 18. Pagination
+// 19. Jumbotron
+// 20. Form states and alerts
+// 21. Cards
+// 22. Tooltips
+// 23. Popovers
+// 24. Tags
+// 25. Modals
+// 26. Alerts
+// 27. Progress bars
+// 28. List group
+// 29. Image thumbnails
+// 30. Figures
+// 31. Breadcrumbs
+// 32. Media objects
+// 33. Carousel
+// 34. Close
+// 35. Code
+*/
+
+/* 4. Body */
 body,html,#app,.app-landing{height:100%;}
 body{font-family:'Lato',sans-serif;font-size:14px;background-color:rgba(250,250,250,1);}
 .body-profiles{width:100%;height:100%;background:#fafafa;background:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);}
 .site-wrapper{display:flex;flex-direction:column;height:100%;}
+
+/* 16. Navbar */
 .navbar{padding-right:0!important;padding-left:0!important;}
+.navbar-brand img{width:48px;}
+.navbar-text-secondary{color:#949494;}
