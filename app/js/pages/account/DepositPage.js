@@ -24,11 +24,11 @@ class DepositPage extends Component {
 
   constructor(props) {
     super(props)
-    //this.refreshAddress = this.refreshAddress.bind(this)
+    this.refreshAddress = this.refreshAddress.bind(this)
   }
 
   refreshAddress(event) {
-    this.props.newBitcoinAddress()
+    //this.props.newBitcoinAddress()
   }
 
   render() {
