@@ -172,11 +172,9 @@ export function AccountReducer(state=initialState, action) {
         identityAccount: {
           publicKeychain: action.identityPublicKeychain,
           addresses: [
-            ...state.identityAccount.addresses,
             action.firstIdentityAddress
           ],
           keypairs: [
-            ...state.identityAccount.keypairs,
             { key: action.firstIdentityKey,
               keyID: action.firstIdentityKeyID,
               address: action.firstIdentityAddress }
@@ -186,7 +184,6 @@ export function AccountReducer(state=initialState, action) {
         bitcoinAccount: {
           publicKeychain: action.bitcoinPublicKeychain,
           addresses: [
-            ...state.bitcoinAccount.addresses,
             action.firstBitcoinAddress
           ],
           addressIndex: 0,
