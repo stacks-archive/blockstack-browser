@@ -6,7 +6,7 @@ import { PublicKeychain } from 'blockstack-keychains'
 import { broadcastTransaction, decryptPrivateKeychain, getNetworkFee, getBitcoinPrivateKeychain, getUtxo } from '../../utils'
 
 
-import { InputGroup, AccountSidebar, Balance, PageHeader } from '../../components/index'
+import { Alert, InputGroup, AccountSidebar, Balance, PageHeader } from '../../components/index'
 
 import { ECPair, ECKey, TransactionBuilder } from 'bitcoinjs-lib'
 
@@ -32,6 +32,7 @@ class WithdrawPage extends Component {
     this.state = {
       alerts: []
     }
+    this.updateAlert = this.updateAlert.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
   }
 
@@ -41,10 +42,21 @@ class WithdrawPage extends Component {
     })
   }
 
+  updateAlert(alertStatus, alertMessage) {
+    this.setState({
+      alerts: [{
+        status: alertStatus,
+        message: alertMessage
+      }]
+    })
+  }
+
   withdrawBitcoin(event) {
     event.preventDefault()
-    // TODO: add user entered password
-    decryptPrivateKeychain("password", this.props.account.encryptedBackupPhrase)
+
+    const password = this.state.password
+
+    decryptPrivateKeychain(password, this.props.account.encryptedBackupPhrase)
     .then((privateKeychain) => {
      const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(privateKeychain)
 
@@ -75,23 +87,27 @@ class WithdrawPage extends Component {
 
        // TODO: instead of 0 we should use dust amount
        if(amountToSend <= 0) {
-         throw "There isn't enough bitcoin to pay the network fee."
+          this.updateAlert('danger', "There isn't enough bitcoin to pay the network fee.")
+       } else {
+         tx.addOutput(recipientAddress, amountToSend)
+
+         tx.sign(0, key)
+         const rawTransaction = tx.build().toHex()
+         console.log(rawTransaction)
+         broadcastTransaction(rawTransaction)
        }
-
-       tx.addOutput(recipientAddress, amountToSend)
-
-       tx.sign(0, key)
-       const rawTransaction = tx.build().toHex()
-       console.log(rawTransaction)
-       broadcastTransaction(rawTransaction)
      })
 
      }).catch((error) => {
+       this.updateAlert('danger', error)
+
        console.error(error)
      })
 
 
     }).catch((error) => {
+      this.updateAlert('danger', error)
+
       console.error(error)
     })
   }
@@ -106,12 +122,20 @@ class WithdrawPage extends Component {
               <AccountSidebar activeTab="withdraw" />
             </div>
             <div className="col-md-9">
+            { this.state.alerts.map(function(alert, index) {
+              return (
+                <Alert key={index} message={alert.message} status={alert.status} />
+              )
+            })}
               <Balance/>
               <p>Send your funds to another Bitcoin wallet.</p>
-              <InputGroup data={this.state} onChange={this.onValueChange} name="recipientAddress" label="Recipient address" placeholder="Recipient address" />
+              <form onSubmit={this.withdrawBitcoin}>
+              <InputGroup data={this.state} onChange={this.onValueChange} name="recipientAddress" label="Recipient address" placeholder="Recipient address" required={true}/>
+              <InputGroup data={this.state} onChange={this.onValueChange} name="password" label="Password" placeholder="Password" type="password" required={true}/>
               <div>
-                <button className="btn btn-primary" onClick={this.withdrawBitcoin}>Send</button>
+                <button className="btn btn-primary" type="submit">Send</button>
               </div>
+              </form>
             </div>
           </div>
         </div>
