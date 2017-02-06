@@ -121,7 +121,7 @@ class AddressBar extends Component {
 
   render() {
     return (
-      <div className="browser-search-bar">
+      <div className="browser-search-bar m-b-40">
         <input type="text"
           className="form-control form-control-sm"
           placeholder={this.state.placeholder} 
