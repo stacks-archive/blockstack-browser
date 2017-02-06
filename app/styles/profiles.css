@@ -52,8 +52,10 @@ body{font-family:'Lato',sans-serif;font-size:14px;background-color:rgba(250,250,
 .site-wrapper{display:flex;flex-direction:column;height:100%;padding:35px;}
 
 /* 13. Forms */
-.form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.75rem 1.375rem;border:1px solid #fff;border-radius:0;}
+.form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border:1px solid #fff;border-radius:0;box-shadow:none;}
 .form-control::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;}
+.form-control:hover,.form-control:focus{background-color:#fff;border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.browser-search-bar-btn{display: none!important;}
 
 /* 16. Navbar */
 .navbar{padding:0!important;}
@@ -61,3 +63,4 @@ body{font-family:'Lato',sans-serif;font-size:14px;background-color:rgba(250,250,
 .navbar-brand img{width:48px;}
 .navbar-text-secondary{color:#949494;margin-top:-5px;}
 
+ 
