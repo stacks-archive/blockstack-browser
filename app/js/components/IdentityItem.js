@@ -19,20 +19,18 @@ class IdentityItem extends Component {
   render() {
     return (
       <Link to={this.props.url} className="list-group-item list-group-item-dash">
-        <div className="booklist-wrap">
-          <div className="list-group-avatar">
-            <Image src={this.props.avatarUrl}
-              fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
-          </div>
-          <div className="col-list-name">
-            <span className="list-text-name">
-              {this.props.label}
-            </span>
-              {this.props.pending ?
-            <span className="list-current-state">
+        <div class="card w-50">
+          <div class="card-block">
+            <div className="card-avatar">
+              <Image src={this.props.avatarUrl}
+                fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" className="img-circle" />
+            </div>
+            <h3 class="card-title">{this.props.label}</h3>
+            {this.props.pending ?
+            <h3 class="card-title">
              (pending)
-            </span>
-          : <span></span> }
+            </h3>
+            : <h3></h3> }
           </div>
         </div>
       </Link>

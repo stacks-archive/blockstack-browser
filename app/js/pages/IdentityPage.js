@@ -73,9 +73,12 @@ class IdentityPage extends Component {
               </ul>
               <AddressBar placeholder="Search for people" />
             </div>
-          </nav>          
-          <div>
-            <ul>
+          </nav>
+          <div class="card w-50">
+            <div class="card-block">
+              <h3 class="card-title">Card title</h3>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
             {Object.keys(this.state.localIdentities).map((domainName) => {
               const identity = this.state.localIdentities[domainName],
                     person = new Person(identity.profile)
@@ -89,7 +92,8 @@ class IdentityPage extends Component {
                 )
               }
             })}
-            </ul>
+
+            </div>
           </div>
           <div className="m-t-2">
             <Link to="/names/register" className="btn btn-blue btn-lg" role="button" >
