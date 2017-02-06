@@ -1,4 +1,7 @@
 export {
+  decryptPrivateKeychain,
+  getBitcoinPrivateKeychain,
+  getIdentityPrivateKeychain,
   isPasswordValid,
   isBackupPhraseValid,
   webAccountTypes
@@ -8,6 +11,10 @@ export {
   getNamesOwned,
   getIdentities
 } from './api-utils'
+
+export {
+  broadcastTransaction, getNetworkFee, getUtxo
+} from './bitcoin-utils'
 
 export {
   getNumberOfVerifications,
