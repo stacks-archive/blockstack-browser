@@ -12,7 +12,6 @@ export function broadcastTransaction(rawTransaction) {
   }).then((response) => response.text())
   .then((responseText) => JSON.parse(responseText))
   .then((responseJson) => {
-      console.log(responseJson)
       resolve(responseJson)
     }).catch((error) => {
       reject(error)

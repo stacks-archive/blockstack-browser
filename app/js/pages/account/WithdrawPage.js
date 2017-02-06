@@ -76,8 +76,11 @@ class WithdrawPage extends Component {
          totalSatoshis = totalSatoshis + input.satoshis
        }
 
-     const incompleteTransaction = tx.buildIncomplete()
-     const byteLength = incompleteTransaction.byteLength()
+     let clonedTx = TransactionBuilder.fromTransaction(tx.buildIncomplete())
+     clonedTx.addOutput(recipientAddress, totalSatoshis)
+     clonedTx.sign(0, key)
+     const wrongFeeTransaction = clonedTx.build()
+     const byteLength = wrongFeeTransaction.byteLength()
 
 
      getNetworkFee(byteLength).then((fee) => {
@@ -92,21 +95,29 @@ class WithdrawPage extends Component {
          tx.addOutput(recipientAddress, amountToSend)
 
          tx.sign(0, key)
+
          const rawTransaction = tx.build().toHex()
-         console.log(rawTransaction)
-         broadcastTransaction(rawTransaction)
+
+         broadcastTransaction(rawTransaction).then((result) => {
+           console.log(result)
+           this.updateAlert('success', "Transaction sent!")
+
+         }).catch((error) => {
+           console.log(error)
+           this.updateAlert('danger', "There was a problem broadcasting the transaction")
+         })
        }
      })
 
      }).catch((error) => {
-       this.updateAlert('danger', error)
+       this.updateAlert('danger', error.toString())
 
        console.error(error)
      })
 
 
     }).catch((error) => {
-      this.updateAlert('danger', error)
+      this.updateAlert('danger', error.toString())
 
       console.error(error)
     })
