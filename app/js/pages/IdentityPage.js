@@ -74,7 +74,7 @@ class IdentityPage extends Component {
               <AddressBar placeholder="Search for people" />
             </div>
           </nav>
-          <div className="profile-content-wrapper">
+          <div className="card-list-container profile-content-wrapper">
             <div>
               <h5 className="h5-landing">My Profiles</h5>
             </div>
