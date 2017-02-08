@@ -74,7 +74,7 @@ class IdentityPage extends Component {
               <AddressBar placeholder="Search for people" />
             </div>
           </nav>
-          <div className="main-contain">
+          <div className="card-list-container">
             <div>
               <h5 className="h5-landing">My Profiles</h5>
             </div>
@@ -148,7 +148,7 @@ class IdentityPage extends Component {
               </ul>
             </div>            
           </div>
-          <div className="main-contain m-t-30">
+          <div className="card-list-container m-t-30">
             <Link to="/names/register" className="btn btn-blue btn-lg" role="button" >
               +
             </Link>
