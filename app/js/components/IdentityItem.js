@@ -18,7 +18,8 @@ class IdentityItem extends Component {
 
   render() {
     return (
-      <Link to={this.props.url} className="card profile-list-card m-b-35">
+      <li className="card-list-wrap">
+        <Link to={this.props.url} className="card profile-list-card m-b-35">
           <div className="card-avatar profile-list-avatar">
             <Image src={this.props.avatarUrl}
               fallbackSrc="/images/avatar.png" className="img-circle" />
@@ -39,7 +40,8 @@ class IdentityItem extends Component {
               </li>
             </ul>
           </div>            
-      </Link>
+        </Link>
+      </li>
     )
   }
 }
