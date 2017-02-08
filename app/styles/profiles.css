@@ -80,7 +80,7 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .card-wrapper{padding-left:0;}
 
 /* 36. Misc */
-.card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;}
+.card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
 
 /* Media queries */
 
@@ -91,18 +91,19 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 /* Small devices (tablets, 768px and up) */
 @media (min-width:768px){
 	.nav{display:inline-block;float:left;padding-right:50px;}
-	.card-list-wrap{display:inline-block;margin-left:auto;margin-right:auto;overflow:hidden;}
+	.card-list-wrap{min-width:310px;display:inline-block;padding-left:0;padding-right:0;}
 	.card-list-card{width:310px;}
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
-	.profile-list-card{width:310px;margin-right:2rem;}
+	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
 }
 
-/* Medium devices (desktops, 992px and up) */
-@media (min-width:992px){
-	.card-list-wrap{padding-right:1rem;padding-left:1rem;min-width:310px;}
+/* Medium devices (desktops, 975px and up) */
+/* NOTE: change breaking point @media (min-width: 975px;) to @media (min-width: 992px;) in blockstack-bootstrap as this is a non-standard break point */
+@media (min-width:975px){
+	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 }
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width:1200px){
-	.profile-content-wrapper{margin-left:160px;}
+	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;}
 }

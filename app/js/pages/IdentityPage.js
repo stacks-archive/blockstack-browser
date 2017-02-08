@@ -79,75 +79,73 @@ class IdentityPage extends Component {
               <h5 className="h5-landing">My Profiles</h5>
             </div>
             <div className="container card-list-container">
-              <div>
-                <ul className="card-wrapper">
-                  {Object.keys(this.state.localIdentities).map((domainName) => {
-                    const identity = this.state.localIdentities[domainName],
-                          person = new Person(identity.profile)
-                    if (identity.domainName) {
-                      return (
-                        <IdentityItem key={identity.domainName}
-                          label={identity.domainName}
-                          pending={!identity.registered}
-                          avatarUrl={person.avatarUrl() || ''}
-                          url={`/profile/local/${identity.domainName}`} />
-                      )
-                    }
-                  })}
-                  {Object.keys(this.state.localIdentities).map((domainName) => {
-                    const identity = this.state.localIdentities[domainName],
-                          person = new Person(identity.profile)
-                    if (identity.domainName) {
-                      return (
-                        <IdentityItem key={identity.domainName}
-                          label={identity.domainName}
-                          pending={!identity.registered}
-                          avatarUrl={person.avatarUrl() || ''}
-                          url={`/profile/local/${identity.domainName}`} />
-                      )
-                    }
-                  })}
-                  {Object.keys(this.state.localIdentities).map((domainName) => {
-                    const identity = this.state.localIdentities[domainName],
-                          person = new Person(identity.profile)
-                    if (identity.domainName) {
-                      return (
-                        <IdentityItem key={identity.domainName}
-                          label={identity.domainName}
-                          pending={!identity.registered}
-                          avatarUrl={person.avatarUrl() || ''}
-                          url={`/profile/local/${identity.domainName}`} />
-                      )
-                    }
-                  })}
-                  {Object.keys(this.state.localIdentities).map((domainName) => {
-                    const identity = this.state.localIdentities[domainName],
-                          person = new Person(identity.profile)
-                    if (identity.domainName) {
-                      return (
-                        <IdentityItem key={identity.domainName}
-                          label={identity.domainName}
-                          pending={!identity.registered}
-                          avatarUrl={person.avatarUrl() || ''}
-                          url={`/profile/local/${identity.domainName}`} />
-                      )
-                    }
-                  })}
-                  {Object.keys(this.state.localIdentities).map((domainName) => {
-                    const identity = this.state.localIdentities[domainName],
-                          person = new Person(identity.profile)
-                    if (identity.domainName) {
-                      return (
-                        <IdentityItem key={identity.domainName}
-                          label={identity.domainName}
-                          pending={!identity.registered}
-                          avatarUrl={person.avatarUrl() || ''}
-                          url={`/profile/local/${identity.domainName}`} />
-                      )
-                    }
-                  })}
-                </ul>
-              </div>            
+              <ul className="card-wrapper">
+                {Object.keys(this.state.localIdentities).map((domainName) => {
+                  const identity = this.state.localIdentities[domainName],
+                        person = new Person(identity.profile)
+                  if (identity.domainName) {
+                    return (
+                      <IdentityItem key={identity.domainName}
+                        label={identity.domainName}
+                        pending={!identity.registered}
+                        avatarUrl={person.avatarUrl() || ''}
+                        url={`/profile/local/${identity.domainName}`} />
+                    )
+                  }
+                })}
+                {Object.keys(this.state.localIdentities).map((domainName) => {
+                  const identity = this.state.localIdentities[domainName],
+                        person = new Person(identity.profile)
+                  if (identity.domainName) {
+                    return (
+                      <IdentityItem key={identity.domainName}
+                        label={identity.domainName}
+                        pending={!identity.registered}
+                        avatarUrl={person.avatarUrl() || ''}
+                        url={`/profile/local/${identity.domainName}`} />
+                    )
+                  }
+                })}
+                {Object.keys(this.state.localIdentities).map((domainName) => {
+                  const identity = this.state.localIdentities[domainName],
+                        person = new Person(identity.profile)
+                  if (identity.domainName) {
+                    return (
+                      <IdentityItem key={identity.domainName}
+                        label={identity.domainName}
+                        pending={!identity.registered}
+                        avatarUrl={person.avatarUrl() || ''}
+                        url={`/profile/local/${identity.domainName}`} />
+                    )
+                  }
+                })}
+                {Object.keys(this.state.localIdentities).map((domainName) => {
+                  const identity = this.state.localIdentities[domainName],
+                        person = new Person(identity.profile)
+                  if (identity.domainName) {
+                    return (
+                      <IdentityItem key={identity.domainName}
+                        label={identity.domainName}
+                        pending={!identity.registered}
+                        avatarUrl={person.avatarUrl() || ''}
+                        url={`/profile/local/${identity.domainName}`} />
+                    )
+                  }
+                })}
+                {Object.keys(this.state.localIdentities).map((domainName) => {
+                  const identity = this.state.localIdentities[domainName],
+                        person = new Person(identity.profile)
+                  if (identity.domainName) {
+                    return (
+                      <IdentityItem key={identity.domainName}
+                        label={identity.domainName}
+                        pending={!identity.registered}
+                        avatarUrl={person.avatarUrl() || ''}
+                        url={`/profile/local/${identity.domainName}`} />
+                    )
+                  }
+                })}
+              </ul>
             </div>
             <div className="card-list-container m-t-30">
               <Link to="/names/register" className="btn btn-blue btn-lg" role="button" >
