@@ -93,58 +93,6 @@ class IdentityPage extends Component {
                     )
                   }
                 })}
-                {Object.keys(this.state.localIdentities).map((domainName) => {
-                  const identity = this.state.localIdentities[domainName],
-                        person = new Person(identity.profile)
-                  if (identity.domainName) {
-                    return (
-                      <IdentityItem key={identity.domainName}
-                        label={identity.domainName}
-                        pending={!identity.registered}
-                        avatarUrl={person.avatarUrl() || ''}
-                        url={`/profile/local/${identity.domainName}`} />
-                    )
-                  }
-                })}
-                {Object.keys(this.state.localIdentities).map((domainName) => {
-                  const identity = this.state.localIdentities[domainName],
-                        person = new Person(identity.profile)
-                  if (identity.domainName) {
-                    return (
-                      <IdentityItem key={identity.domainName}
-                        label={identity.domainName}
-                        pending={!identity.registered}
-                        avatarUrl={person.avatarUrl() || ''}
-                        url={`/profile/local/${identity.domainName}`} />
-                    )
-                  }
-                })}
-                {Object.keys(this.state.localIdentities).map((domainName) => {
-                  const identity = this.state.localIdentities[domainName],
-                        person = new Person(identity.profile)
-                  if (identity.domainName) {
-                    return (
-                      <IdentityItem key={identity.domainName}
-                        label={identity.domainName}
-                        pending={!identity.registered}
-                        avatarUrl={person.avatarUrl() || ''}
-                        url={`/profile/local/${identity.domainName}`} />
-                    )
-                  }
-                })}
-                {Object.keys(this.state.localIdentities).map((domainName) => {
-                  const identity = this.state.localIdentities[domainName],
-                        person = new Person(identity.profile)
-                  if (identity.domainName) {
-                    return (
-                      <IdentityItem key={identity.domainName}
-                        label={identity.domainName}
-                        pending={!identity.registered}
-                        avatarUrl={person.avatarUrl() || ''}
-                        url={`/profile/local/${identity.domainName}`} />
-                    )
-                  }
-                })}
               </ul>
             </div>
             <div className="card-list-container m-t-30">
