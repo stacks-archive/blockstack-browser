@@ -19,7 +19,7 @@ class IdentityItem extends Component {
   render() {
     return (
       <li className="card-list-wrap">
-        <Link to={this.props.url} className="card profile-list-card m-b-35">
+        <Link to={this.props.url} className="card profile-list-card container-fluid m-b-35">
           <div className="card-avatar profile-list-avatar">
             <Image src={this.props.avatarUrl}
               fallbackSrc="/images/avatar.png" className="img-circle" />

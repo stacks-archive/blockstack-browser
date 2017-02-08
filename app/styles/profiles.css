@@ -83,7 +83,7 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 .navbar-text-secondary{color:#949494;margin-top:-5px;}
 
 /* 21. Cards */
-.profile-list-card{background-color:#fff;padding:35px;max-width:310px;overflow:hidden;border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
+.profile-list-card{background-color:#fff;padding:35px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
 a.card:hover{text-decoration:none;}
 .profile-card-list{margin-bottom:0;}
 .profile-list-card-title{font-size:15px;color:#19191A;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -94,6 +94,9 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 
+/* 36. Misc */
+.main-contain{width:100%;max-width:500px;margin-left:auto;margin-right:auto;}
+
 /* Media queries */
 
 /* Extra small devices (phones, less than 768px) */
@@ -102,9 +105,12 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width:768px){
-	.nav{display:inline-block;float:left;padding-right:40px;}
+	.nav{display:inline-block;float:left;padding-right:50px;}
+	/*.profile-list-card{max-width:310px;}*/
 	.card-list-wrap{display: inline-block;float:left;margin-right: 35px;}
 }
 
-
-
+/* Medium devices (desktops, 992px and up) */
+@media (min-width:992px){
+	/*.nav{padding-right:100px;}*/
+}
