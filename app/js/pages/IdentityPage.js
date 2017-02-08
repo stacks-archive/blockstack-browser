@@ -146,12 +146,12 @@ class IdentityPage extends Component {
                   }
                 })}
               </ul>
-            </div>
-            <div className="m-t-30">
-              <Link to="/names/register" className="btn btn-blue btn-lg" role="button" >
-                +
-              </Link>
-            </div>
+            </div>            
+          </div>
+          <div className="main-contain m-t-30">
+            <Link to="/names/register" className="btn btn-blue btn-lg" role="button" >
+              +
+            </Link>
           </div>
         </div>
       </div>

@@ -108,6 +108,7 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 	.nav{display:inline-block;float:left;padding-right:50px;}
 	/*.profile-list-card{max-width:310px;}*/
 	.card-list-wrap{display: inline-block;float:left;margin-right: 35px;}
+	.main-contain{width:auto;max-width: none; margin:initial;}
 }
 
 /* Medium devices (desktops, 992px and up) */
