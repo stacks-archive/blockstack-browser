@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack-profiles'
 
-import AddressBar from '../components/AddressBar'
-import { IdentityItem } from '../components/index'
-import { IdentityActions } from '../store/identities'
-import { AccountActions } from '../store/account'
+import AddressBar          from '../../components/AddressBar'
+import { IdentityItem }    from '../../components/index'
+import { IdentityActions } from '../../store/identities'
+import { AccountActions }  from '../../store/account'
 
 function mapStateToProps(state) {
   return {

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import { AccountSidebar, Balance, PageHeader } from '../../components/index'
-import { AccountActions } from '../../store/account'
+import { AccountActions }                      from '../../store/account'
 
 function mapStateToProps(state) {
   return {

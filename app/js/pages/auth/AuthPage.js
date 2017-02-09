@@ -6,8 +6,8 @@ import { AuthResponse, decodeToken } from 'blockstack-auth'
 import queryString from 'query-string'
 import base64url from 'base64url'
 
-import { PageHeader } from '../components/index'
-import { AccountActions } from '../store/account'
+import { PageHeader }     from '../../components/index'
+import { AccountActions } from '../../store/account'
 
 function mapStateToProps(state) {
   return {

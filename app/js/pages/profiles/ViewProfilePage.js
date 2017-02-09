@@ -214,14 +214,14 @@ class ViewProfilePage extends Component {
         </div>
         :
         <div>
-        {this.state.isLoading ?
-        <h4 className="text-xs-center lead-out">
-        </h4>
-        :
-        <h4 className="text-xs-center lead-out">
-          Profile not found
-        </h4>
-        }
+          {this.state.isLoading ?
+            <h4 className="text-xs-center">
+            </h4>
+          :
+            <h4 className="text-xs-center">
+              Profile not found
+            </h4>
+          }
         </div>
         }
       </div>

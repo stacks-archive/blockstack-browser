@@ -3,10 +3,14 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { PublicKeychain } from 'blockstack-keychains'
 
-import { broadcastTransaction, decryptPrivateKeychain, getNetworkFee, getBitcoinPrivateKeychain, getUtxo } from '../../utils'
+import {
+  broadcastTransaction, decryptPrivateKeychain, getNetworkFee,
+  getBitcoinPrivateKeychain, getUtxo
+} from '../../utils'
 
-
-import { Alert, InputGroup, AccountSidebar, Balance, PageHeader } from '../../components/index'
+import {
+  Alert, InputGroup, AccountSidebar, Balance, PageHeader
+} from '../../components/index'
 
 import { ECPair, ECKey, TransactionBuilder } from 'bitcoinjs-lib'
 
