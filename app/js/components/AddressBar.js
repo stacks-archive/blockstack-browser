@@ -50,21 +50,21 @@ class AddressBar extends Component {
     let pathname = location.pathname,
         query = null
 
-    if (/^\/profile\/blockchain\/.*$/.test(pathname)) {
-      const domainName = pathname.replace('/profile/blockchain/', '')
+    if (/^\/profiles\/blockchain\/.*$/.test(pathname)) {
+      const domainName = pathname.replace('/profiles/blockchain/', '')
       if (isABlockstackIDName(domainName)) {
-        query = pathname.replace('/profile/blockchain/', '')
+        query = pathname.replace('/profiles/blockchain/', '')
       }
     } else if (/^\/app\/.*$/.test(pathname)) {
       const domainName = pathname.replace('local://app/', '')
       if (isABlockstackAppName(domainName)) {
         query = pathname.replace('local://app/', '')
       }
-    } else if (/^\/profile\/local\/[0-9]+.*$/.test(pathname)) {
+    } else if (/^\/profiles\/local\/[0-9]+.*$/.test(pathname)) {
       query = 'local:/' + pathname.replace('/local/', '/')
-    } else if (/^\/search\/.*$/.test(pathname)) {
+    } else if (/^\/profiles\/search\/.*$/.test(pathname)) {
       // do nothing
-      query = pathname.replace('/search/', '').replace('%20', ' ')
+      query = pathname.replace('/profiles/search/', '').replace('%20', ' ')
     } else if (pathname === '/') {
       query = ''
     } else {
@@ -89,7 +89,7 @@ class AddressBar extends Component {
     let newPath
     if (isABlockstackName(query)) {
       if (isABlockstackIDName(query)) {
-        newPath = `/profile/blockchain/${query}`
+        newPath = `/profiles/blockchain/${query}`
       } else if (isABlockstackAppName(query)) {
         newPath = `/app/${query}`
       } else {
@@ -98,7 +98,7 @@ class AddressBar extends Component {
     } else if (/^local:\/\/.*$/.test(query)) {
       newPath = query.replace('local://', '/')
     } else {
-      newPath = `/search/${query.replace(' ', '%20')}`
+      newPath = `/profiles/search/${query.replace(' ', '%20')}`
     }
     this.context.router.push(newPath)
   }

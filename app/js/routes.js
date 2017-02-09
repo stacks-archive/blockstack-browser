@@ -39,15 +39,14 @@ export default (
     <IndexRoute     component={DashboardPage} />
     <Route path="/" component={DashboardPage} />
 
-    <Route path="/profile/blockchain/:name"    component={ViewProfilePage} />
-    <Route path="/profile/local/:index"        component={ViewProfilePage} />
-    <Route path="/profile/local/:index/edit"   component={EditProfilePage} />
-    <Route path="/profile/local/:index/export" component={ExportPage} />
-
-    <Route path="/search/:query"       component={SearchPage} />
-
-    <Route path="/names/register"      component={RegisterPage} />
-    <Route path="/names/import"        component={ImportPage} />
+    <Route path="/profiles"                     component={IdentityPage} />
+    <Route path="/profiles/blockchain/:name"    component={ViewProfilePage} />
+    <Route path="/profiles/local/:index"        component={ViewProfilePage} />
+    <Route path="/profiles/local/:index/edit"   component={EditProfilePage} />
+    <Route path="/profiles/local/:index/export" component={ExportPage} />
+    <Route path="/profiles/search/:query"       component={SearchPage} />
+    <Route path="/profiles/register"            component={RegisterPage} />
+    <Route path="/profiles/import"              component={ImportPage} />
 
     <Route path="/account/deposit"     component={DepositPage} />
     <Route path="/account/withdraw"    component={WithdrawPage} />
@@ -60,7 +59,6 @@ export default (
     <Route path="/account/restore"     component={RestoreAccountPage} />
 
     <Route path="/auth"                component={AuthPage} />
-    <Route path="/identity"            component={IdentityPage} />
 
     <Route path="/*" component={NotFoundPage} />
   </Route>

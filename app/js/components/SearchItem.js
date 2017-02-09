@@ -21,7 +21,7 @@ class SearchItem extends Component {
         accounts = person.profile().account
 
     return (
-      <Link to={`/profile/blockchain/${this.props.domainName}`}
+      <Link to={`/profiles/blockchain/${this.props.domainName}`}
         className="list-group-item search-result p-l-11 m-b-11">
           <div className="col-md-1">
             <Image className="result-img" src={person.avatarUrl() || "https://s3.amazonaws.com/65m/avatar-placeholder.png"}

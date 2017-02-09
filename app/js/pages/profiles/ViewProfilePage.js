@@ -127,7 +127,7 @@ class ViewProfilePage extends Component {
                     </Link>
                   </p>
                   <p>
-                    <Link to={`/profile/blockchain/${domainName}`}
+                    <Link to={`/profiles/blockchain/${domainName}`}
                       className="btn btn-block btn-primary m-t-1">
                       View Publicly
                     </Link>
@@ -173,7 +173,7 @@ class ViewProfilePage extends Component {
               {connections.map((connection, index) => {
                 if (connection.id) {
                   return (
-                    <Link to={`/profile/blockchain/${connection.id}`}
+                    <Link to={`/profiles/blockchain/${connection.id}`}
                       key={index} className="connections">
                       <Image src={new Person(connection).avatarUrl()}
                         fallbackSrc={placeholderImage}
