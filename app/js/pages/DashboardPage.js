@@ -20,6 +20,9 @@ class DashboardPage extends Component {
     super(props)
   }
 
+  componentDidMount() {
+  }
+
   render() {
     return (
       <div className="container-fluid">
@@ -50,7 +53,7 @@ class DashboardPage extends Component {
                   </div>
                 </div>
                 <div className="col-sm-4">
-                  <a href="http://localhost:5000/"
+                  <a href="https://helloblockstack.com"
                      className="app-box-container" target="_blank">
                     <div className="app-box">
                       <img src="/images/app-hello-blockstack.png" />
