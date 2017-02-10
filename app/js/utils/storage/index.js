@@ -21,18 +21,18 @@ export function uploadPhoto(api, name, photoFile, index) {
   }
 }
 
-export function uploadProfile(api, name, signedProfileTokenData) {
+export function uploadProfile(api, name, signedProfileTokenData, firstUpload=false) {
   const storageMethod = getStorageMethod(api)
 
   switch(storageMethod) {
-    // case DROPBOX:
-    // return uploadProfileToDropbox(api, name, signedProfileTokenData)
+    case DROPBOX:
+      return uploadProfileToDropbox(api, name, signedProfileTokenData, firstUpload)
 
     // case SELF_HOSTED_S3:
     // return uploadProfileToS3(api, name, signedProfileTokenData)
 
     default:
-    return uploadProfileToBlockstackInc(api, name, signedProfileTokenData)
+      return uploadProfileToBlockstackInc(api, name, signedProfileTokenData)
   }
 }
 

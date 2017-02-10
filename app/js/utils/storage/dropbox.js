@@ -2,16 +2,19 @@ var Dropbox = require('dropbox')
 
 export const DROPBOX_APP_ID = "f3l2g7ge4bs68o4"
 
-export function uploadProfileToDropbox(api, domainName, signedProfileTokenData) {
+export function uploadProfileToDropbox(api, domainName, signedProfileTokenData, firstUpload=false) {
   return new Promise((resolve, reject) => {
-    // We try to delete any existing profile file
-    deleteProfile(api, domainName).then((response) => {
-      uploadProfil(api, domainName, signedProfileTokenData, resolve, reject)
-    })
-    .catch((error) => {
-      // the file didn't exist
-      uploadProfile(api, domainName, signedProfileTokenData, resolve, reject)
-    })
+    if(firstUpload == true) {// We try to delete any existing profile file
+      deleteProfile(api, domainName).then((response) => {
+        uploadProfile(api, domainName, signedProfileTokenData, resolve, reject, firstUpload)
+      })
+      .catch((error) => {
+        // the file didn't exist
+        uploadProfile(api, domainName, signedProfileTokenData, resolve, reject, firstUpload)
+      })
+    } else {
+      uploadProfile(api, domainName, signedProfileTokenData, resolve, reject, firstUpload)
+    }
   })
 }
 
@@ -75,23 +78,26 @@ function uploadPhoto(api, domainName, photoFile, index, resolve, reject) {
 }
 
 
-function uploadProfile(api, domainName, signedProfileTokenData, resolve, reject) {
+function uploadProfile(api, domainName, signedProfileTokenData, resolve, reject, firstUpload) {
   var dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
   const path = getProfilePath(domainName)
-  dbx.filesUpload({path: path, contents: signedProfileTokenData})
+  dbx.filesUpload({path: path, contents: signedProfileTokenData, mode:'overwrite'})
   .then((response) => {
+    if(firstUpload == true) { // we can only create shared link
+      dbx.sharingCreateSharedLinkWithSettings({path: response.path_lower, settings: {} })
+      .then((response) => {
 
-    dbx.sharingCreateSharedLinkWithSettings({path: response.path_lower, settings: {} })
-    .then((response) => {
-
-      /* Appending dropbox share url with ?dl=1 returns the actual file
-      instead of dropbox sign up page */
-      const profileUrl = response.url.split("=")[0] + "=1"
-      resolve(profileUrl)
-    })
-    .catch((error) => {
-      reject(error)
-    })
+        /* Appending dropbox share url with ?dl=1 returns the actual file
+        instead of dropbox sign up page */
+        const profileUrl = response.url.split("=")[0] + "=1"
+        resolve(profileUrl)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    } else {
+      resolve(null)
+    }
   })
   .catch((error) => {
     reject(error)
