@@ -1,3 +1,7 @@
+import {
+  SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX
+} from '../utils/storage/index'
+
 const UPDATE_API = 'UPDATE_API'
 
 function updateApi(api) {
@@ -53,7 +57,7 @@ function resetApi() {
       priceUrl: 'http://localhost:8889/v1/prices/names/{name}',
       walletPaymentAddressUrl: 'http://localhost:8889/v1/wallet/payment_address',
       pendingQueuesUrl: 'http://localhost:8889/v1/blockchain/bitcoin/pending',
-      hostedDataLocation: 'blockstack-labs-S3',
+      hostedDataLocation: DROPBOX,
       blockstackApiAppId:'470c9d0c7dbd41b1bb6defac9be3595a',
       blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
       s3ApiKey: '',
@@ -80,7 +84,7 @@ const initialState = {
     priceUrl: 'http://localhost:8889/v1/prices/names/{name}',
     walletPaymentAddressUrl: 'http://localhost:8889/v1/wallet/payment_address',
     pendingQueuesUrl: 'http://localhost:8889/v1/blockchain/bitcoin/pending',
-    hostedDataLocation: 'blockstack-labs-S3',
+    hostedDataLocation: DROPBOX,
     blockstackApiAppId:'470c9d0c7dbd41b1bb6defac9be3595a',
     blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
     s3ApiKey: '',
