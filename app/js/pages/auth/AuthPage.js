@@ -40,7 +40,8 @@ class AuthPage extends Component {
     const queryDict = queryString.parse(location.search)
     let appURI = null
     if (queryDict.authRequest) {
-      const authRequest = JSON.parse(base64url.decode(queryDict.authRequest))
+      const encodedAuthRequest = queryDict.authRequest.split("web+blockstack:").join("")
+      const authRequest = JSON.parse(base64url.decode(encodedAuthRequest))
       appURI = authRequest.appURI
     }
     const blockstackID = 'ryan.id'
