@@ -78,20 +78,6 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
   return updatedLocalIdentities
 }
 
-function getNamesOwnedFromApiResponse(responseJson) {
-  let namesOwned = []
-  if (responseJson.hasOwnProperty('results')) {
-    responseJson.results.map((addressResult) => {
-      if (addressResult.hasOwnProperty('names')) {
-        addressResult.names.map((name) => {
-          namesOwned.push(name)
-        })
-      }
-    })
-  }
-  return namesOwned
-}
-
 function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNameLookup) {
   return dispatch => {
     if (addresses.length === 0) {
@@ -103,23 +89,33 @@ function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNam
         dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
       }
     } else {
-      const url = addressLookupUrl.replace('{address}', addresses.join(','))
-      fetch(url)
-        .then((response) => response.text())
-        .then((responseText) => JSON.parse(responseText))
-        .then((responseJson) => {
-          let namesOwned = getNamesOwnedFromApiResponse(responseJson),
-              updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
 
-          if (JSON.stringify(lastNameLookup) === JSON.stringify(namesOwned)) {
-            // pass
-          } else {
-            dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
-          }
-        })
-        .catch((error) => {
-          console.warn(error)
-        })
+      let count =  addresses.length
+      let namesOwned = []
+
+      addresses.forEach((address) => {
+        const url = addressLookupUrl.replace('{address}', address)
+        fetch(url)
+          .then((response) => response.text())
+          .then((responseText) => JSON.parse(responseText))
+          .then((responseJson) => {
+            count++
+            namesOwned = namesOwned.concat(responseJson['names'])
+
+            if(count >= addresses.length) {
+              let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+
+              if (JSON.stringify(lastNameLookup) === JSON.stringify(namesOwned)) {
+                // pass
+              } else {
+                dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
+              }
+            }
+          }).catch((error) => {
+            console.warn(error)
+          })
+
+      })
     }
   }
 }
