@@ -120,32 +120,29 @@ function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNam
   }
 }
 
-function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
-                      blockstackApiAppId, blockstackApiAppSecret) {
+function registerName(api, domainName, tokenFileUrl, recipientAddress) {
   return dispatch => {
-    const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl),
-      authHeader = 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
+    const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl)
+
     const requestHeaders = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': authHeader
+      'Content-Type': 'application/json'
     }
     const requestBody = JSON.stringify({
-      username: domainName.split('.')[0],
-      recipient_address: recipientAddress,
-      profile: zoneFile
+      name: domainName,
+      owner_address: recipientAddress,
+      zonefile: zoneFile
     })
 
-    fetch(registerUrl, {
+    fetch(api.registerUrl, {
       method: 'POST',
       headers: requestHeaders,
-      mode: 'cors',
-      cache: 'default',
       body: requestBody
     })
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
+        console.log(responseJson)
         dispatch(createNewIdentity(domainName))
       })
       .catch((error) => {
