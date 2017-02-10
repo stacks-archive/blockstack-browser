@@ -1,0 +1,15 @@
+{
+  "name": "Blockstack",
+  "version": "0.1.0",
+  "description": "Sets the new tab page to the Blockstack Browser Portal.",
+  "icons": {
+    "16": "images/blockstack-rounded-16x16.png",
+    "48": "images/blockstack-rounded-48x48.png",
+    "128": "images/blockstack-rounded-128x128.png"
+  },
+  "chrome_url_overrides" : {
+    "newtab": "src/index.html"
+  },
+  "manifest_version": 2,
+  "permissions": ["tabs"]
+}

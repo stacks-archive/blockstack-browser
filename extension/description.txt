@@ -1,0 +1,1 @@
+Sets the new tab page to the Blockstack Browser Portal.
