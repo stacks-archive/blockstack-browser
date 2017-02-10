@@ -6,6 +6,7 @@
 */
 
 var express = require('express')
+var bodyParser = require("body-parser")
 var cors = cors = require('cors')
 
 var app = express(),
@@ -15,8 +16,11 @@ const blockstack = process.argv[3] || "./blockstack-venv/bin/python2.7 ./blockst
 const exec = require('child_process').exec
 
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.post('/v1/names', function (req, res) {
+  console.log(req.body)
   res.json({transaction_hash: "57fff5dbde35e6ce8914b755f86c90592debd98cc2ce03d779d361cb0458e049"})
 })
 
