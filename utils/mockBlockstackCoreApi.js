@@ -16,36 +16,48 @@ const exec = require('child_process').exec
 
 app.use(cors())
 
-app.get('/names/:name', function (req, res) {
+app.post('/v1/names', function (req, res) {
+  res.json({transaction_hash: "57fff5dbde35e6ce8914b755f86c90592debd98cc2ce03d779d361cb0458e049"})
+})
+
+app.get('/v1/names/:name', function (req, res) {
     blockstackGetNameZonefile(req.params.name).then((zonefile) => {
       res.json(zonefile)
     }).catch((error) => {
+      console.error(error)
       res.status(404)
       res.json({ 'error': 'Not found' })
     })
 })
 
-app.get('/addresses/:address/names', function (req, res) {
-    const addresses = req.params.address.split(',')
-    let count =  addresses.length
-    let results = []
-
-    addresses.forEach((address) => {
-      blockstackGetNamesOwnedByAddress(address).then((result) => {
-        results.push(result)
-
-        if(results.length >= addresses.length)
-          res.json({results: results})
-          
-      })
+app.get('/v1/prices/names/:name', function (req, res) {
+    blockstackPrice(req.params.name).then((price) => {
+      res.json(price)
+    }).catch((error) => {
+      console.error(error)
+      res.status(404)
+      res.json({ 'error': 'Not found' })
     })
-
 })
 
-app.post('/users', function (req, res) {
-    blockstackRegister(req.body.name).then((result) => {
-      res.json(JSON.parse(names))
-    })
+app.get('/v1/addresses/:address', function (req, res) {
+  blockstackGetNamesOwnedByAddress(req.params.address).then((result) => {
+    res.json(result)
+  }).catch((error) => {
+    console.error(error)
+    res.status(404)
+    res.json({ 'error': 'Not found' })
+  })
+})
+
+app.get('/v1/blockchain/bitcoin/pending', function (req, res) {
+  res.json(mockPending())
+})
+
+app.get('/v1/wallet/payment_address', function (req, res) {
+  res.json({
+    address: "12zJpjAhHEr27DZabEUGCrf7Zf9PcTCvHK"
+  })
 })
 
 app.get('/search', function (req, res) {
@@ -90,7 +102,7 @@ function blockstackGetNamesOwnedByAddress(address) {
         return;
       }
 
-      resolve({address: address, names: JSON.parse(stdout)});
+      resolve({names: JSON.parse(stdout)});
     })
   })
 }
@@ -118,6 +130,19 @@ function blockstackGetNameZonefile(name) {
             zonefile: zonefile['zonefile']
           });
       })
+    })
+  })
+}
+
+function blockstackPrice(name) {
+  return new Promise((resolve, reject) => {
+    exec(`${blockstack} price ` + name, function (error, stdout, stderr) {
+      if(error !== null) {
+        reject(error);
+        return;
+      }
+      let result = JSON.parse(stdout)
+      resolve(result)
     })
   })
 }
@@ -160,4 +185,39 @@ function blockstackSearch(query) {
 
     resolve(JSON.stringify(results));
   })
+}
+
+function mockPending() {
+    return {
+     "queues": {
+        "preorder": [
+           {
+               "name": "...",
+               "tx_hash": "...",
+               "confirmations": 12
+           }
+        ],
+        "register": [
+           {
+               "name": "...",
+               "tx_hash": "...",
+               "confirmations": 6
+           }
+        ],
+        "update": [
+           {
+               "name": "...",
+               "tx_hash": "...",
+               "confirmations": 1
+           }
+        ],
+        "transfer": [
+           {
+               "name": "...",
+               "tx_hash": "...",
+               "confirmations": 1
+           }
+        ],
+     }
+  }
 }
