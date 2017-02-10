@@ -46,6 +46,7 @@
     "chromedriver": "^2.21.2",
     "co-mocha": "^1.1.2",
     "concurrently": "^2.1.0",
+    "cors": "^2.8.1",
     "corsproxy": "^1.5.0",
     "corsproxy-https": "^1.5.2",
     "cross-env": "^1.0.8",

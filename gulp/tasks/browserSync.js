@@ -29,7 +29,8 @@ gulp.task('browserSync', function() {
     },
     ghostMode: {
       links: false
-    }
+    },
+    browser: "google chrome"
   });
 
 });
