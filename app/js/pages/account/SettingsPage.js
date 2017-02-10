@@ -2,8 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import RadioGroup from 'react-radio-group'
-import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../../utils/storage/index'
-import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from '../../utils/storage/dropbox'
+import {
+  SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX
+} from '../../utils/storage/index'
+import {
+  DROPBOX_APP_ID, getDropboxAccessTokenFromHash
+} from '../../utils/storage/dropbox'
 
 import {
   InputGroup, AccountSidebar, SaveButton, PageHeader
@@ -44,6 +48,7 @@ class SettingsPage extends Component {
     this.onHostedDataValueChange = this.onHostedDataValueChange.bind(this)
     this.connectDropbox = this.connectDropbox.bind(this)
     this.disconnectDropbox = this.disconnectDropbox.bind(this)
+    this.registerProtocolHandler = this.registerProtocolHandler.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,7 +60,7 @@ class SettingsPage extends Component {
   componentDidMount() {
     let api = this.state.api
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
-    if(dropboxAccessToken != null) {
+    if (dropboxAccessToken != null) {
       api['dropboxAccessToken'] = dropboxAccessToken
       this.setState({ api: api })
       window.location.hash = ""
@@ -86,8 +91,10 @@ class SettingsPage extends Component {
 
   connectDropbox() {
     var dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
-    window.location = dbx.getAuthenticationUrl('http://localhost:3000/account/settings')
+    window.location = dbx.getAuthenticationUrl(
+      'http://localhost:3000/account/settings')
   }
+
   disconnectDropbox() {
     let api = this.state.api
     var dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
@@ -95,6 +102,14 @@ class SettingsPage extends Component {
     api.dropboxAccessToken = null
     this.setState({ api: api })
     this.props.updateApi(api)
+  }
+
+  registerProtocolHandler() {
+    window.navigator.registerProtocolHandler(
+      "web+blockstack",
+      location.origin + "/auth?authRequest=%s",
+      "Blockstack handler"
+    )
   }
 
   render() {
@@ -169,6 +184,15 @@ class SettingsPage extends Component {
                 <p>
                   <button onClick={this.resetApi} className="btn btn-outline-primary">
                     Reset API
+                  </button>
+                </p>
+
+                <hr />
+
+                <p>
+                  <button onClick={this.registerProtocolHandler}
+                    className="btn btn-sm btn-primary">
+                    Allow App Logins
                   </button>
                 </p>
               </div>

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-import { InputGroup, SaveButton } from '../../components/index'
+import { InputGroup, SaveButton } from '../../../components/index'
 
 var Dropbox = require('dropbox');
 

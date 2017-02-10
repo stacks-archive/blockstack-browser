@@ -41,28 +41,3 @@ class ProfileEditingSidebar extends Component {
 }
 
 export default ProfileEditingSidebar
-
-/*
-      <div className="list-group">
-        <Link to={`/profile/local/${this.props.itemIndex}/edit/basicinfo`}
-          className="list-group-item">
-          Basic Info
-        </Link>
-        <Link to={`/profile/local/${this.props.itemIndex}/edit/photos`}
-          className="list-group-item">
-          Photos
-        </Link>
-        <Link to={`/profile/local/${this.props.itemIndex}/edit/social`}
-          className="list-group-item">
-          Social Accounts
-        </Link>
-        <Link to={`/profile/local/${this.props.itemIndex}/edit/privateinfo`}
-          className="list-group-item">
-          Private Info
-        </Link>
-        <Link to={`/profile/local/${this.props.itemIndex}/edit/keys`}
-          className="list-group-item">
-          Bitcoin and PGP Keys
-        </Link>
-      </div>
-*/

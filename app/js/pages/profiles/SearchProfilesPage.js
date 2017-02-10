@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { SearchActions } from '../store/search'
-import { SearchItem } from '../components/index'
+import { SearchActions } from '../../store/search'
+import { SearchItem }    from '../../components/index'
 
 function mapStateToProps(state) {
   return {

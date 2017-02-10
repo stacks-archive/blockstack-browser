@@ -160,23 +160,46 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
 
 function fetchCurrentIdentity(domainName, lookupUrl) {
   return dispatch => {
-    const url = lookupUrl.replace('{name}', domainName)
+    let username
+    if (lookupUrl.search('localhost') >= 0) {
+      username = domainName
+    } else if (lookupUrl.search('api.blockstack.com') >= 0) {
+      username = domainName.split('.')[0]
+    } else {
+      throw "Invalid lookup URL"
+    }
+    const url = lookupUrl.replace('{name}', username)
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        const zoneFile = responseJson['zonefile']
-        const ownerAddress = responseJson['address']
+        let zoneFile
+        let ownerAddress
+
+        if (lookupUrl.search('localhost') >= 0) {
+          zoneFile = responseJson['zonefile']
+          ownerAddress = responseJson['address']
+        } else if (lookupUrl.search('api.blockstack.com') >= 0) {
+          const userData = responseJson[username]
+          zoneFile = userData['zone_file']
+          ownerAddress = userData['owner_address']
+        } else {
+          throw "Invalid lookup URL"
+        }
+
         resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
-        let verifications = []
-        dispatch(updateCurrentIdentity(domainName, profile, verifications))
-        validateProofs(profile, domainName).then((proofs) => {
-          verifications = proofs
+          let verifications = []
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
+          if (profile) {
+            validateProofs(profile, domainName).then((proofs) => {
+              verifications = proofs
+              dispatch(updateCurrentIdentity(domainName, profile, verifications))
+            })
+          }
         })
       })
-    })
       .catch((error) => {
+        dispatch(updateCurrentIdentity(domainName, null, []))
         console.warn(error)
       })
   }

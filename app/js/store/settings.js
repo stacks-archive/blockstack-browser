@@ -47,7 +47,7 @@ function resetApi() {
     const DEFAULT_API = {
       apiCustomizationEnabled: true,
       nameLookupUrl: 'http://localhost:8889/names/{name}',
-      searchUrl: 'http://localhost:8889/search?query={query}',
+      searchUrl: 'https://api.blockstack.com/search?query={query}',
       registerUrl: 'https://api.blockstack.com/v1/users',
       addressLookupUrl: 'http://localhost:8889/addresses/{address}/names',
       hostedDataLocation: 'blockstack-labs-S3',
@@ -71,7 +71,7 @@ const initialState = {
   api: {
     apiCustomizationEnabled: true,
     nameLookupUrl: 'http://localhost:8889/names/{name}',
-    searchUrl: 'http://localhost:8889/search?query={query}',
+    searchUrl: 'https://api.blockstack.com/search?query={query}',
     registerUrl: 'https://api.blockstack.com/v1/users',
     addressLookupUrl: 'http://localhost:8889/addresses/{address}/names',
     hostedDataLocation: 'blockstack-labs-S3',

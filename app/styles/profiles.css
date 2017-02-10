@@ -57,25 +57,10 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 .btn-blue:hover,.btn-blue:focus,.btn-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
 
 /* 13. Forms */
-.form-control {
-	font-size: 0.875rem;
-	font-weight: 400;
-	line-height: 28px;
-	color: #949494;
-	padding: 0.875rem 1.375rem;
-	border: 1px solid #fff;
-	border-radius: 0;
-	box-shadow: none;
-}
-.form-control::-webkit-input-placeholder {
-	text-transform: capitalize;
-	font-size: 0.875rem;
-}
-.form-control:hover, .form-control:focus {
-	background-color: #fff;
-	border: 1px solid #fff;
-	box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
-}
+.form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border:1px solid #fff;border-radius:0;box-shadow:none;}
+.form-control::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;}
+.form-control:hover,.form-control:focus{background-color:#fff;border:1px solid #fff;box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+
 /* 16. Navbar */
 .navbar{padding:0!important;}
 .navbar-brand{padding:0;}
@@ -83,7 +68,7 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 .navbar-text-secondary{color:#949494;margin-top:-5px;}
 
 /* 21. Cards */
-.profile-list-card{background-color:#fff;padding:35px;max-width:310px;overflow:hidden;border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
+.profile-list-card{background-color:#fff;padding:35px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
 a.card:hover{text-decoration:none;}
 .profile-card-list{margin-bottom:0;}
 .profile-list-card-title{font-size:15px;color:#19191A;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -94,6 +79,9 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 
+/* 36. Misc */
+.card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
+
 /* Media queries */
 
 /* Extra small devices (phones, less than 768px) */
@@ -102,9 +90,20 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width:768px){
-	.nav{display:inline-block;float:left;padding-right:40px;}
-	.card-list-wrap{display: inline-block;float:left;margin-right: 35px;}
+	.nav{display:inline-block;float:left;padding-right:50px;}
+	.card-list-wrap{min-width:310px;display:inline-block;padding-left:0;padding-right:0;}
+	.card-list-card{width:310px;}
+	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
+	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
 }
 
+/* Medium devices (desktops, 975px and up) */
+/* NOTE: change breaking point @media (min-width: 975px;) to @media (min-width: 992px;) in blockstack-bootstrap as this is a non-standard break point */
+@media (min-width:975px){
+	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
+}
 
-
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width:1200px){
+	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;}
+}
