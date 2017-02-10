@@ -147,12 +147,6 @@ class SettingsPage extends Component {
                     <div>
                       <div className="radio">
                         <label>
-                          <Radio value={BLOCKSTACK_INC} name="hostedDataLocation" />
-                          Host data on Amazon S3 through Blockstack Inc.
-                        </label>
-                      </div>
-                      <div className="radio">
-                        <label>
                           <Radio value={DROPBOX} name="hostedDataLocation" />
                           Self-host data on Dropbox
                         </label>
