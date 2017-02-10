@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { Alert, InputGroup, PageHeader } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
-import { getNameCost, isNameAvailable, hasNameBeenPreordered } from '../../utils/name-utils'
+import { getNamePrices, isNameAvailable, hasNameBeenPreordered, isABlockstackName } from '../../utils/name-utils'
 
 function mapStateToProps(state) {
   return {
@@ -12,6 +12,7 @@ function mapStateToProps(state) {
     localIdentities: state.identities.localIdentities,
     lookupUrl: state.settings.api.nameLookupUrl,
     registerUrl: state.settings.api.registerUrl,
+    priceUrl: state.settings.api.priceUrl,
     blockstackApiAppId: state.settings.api.blockstackApiAppId,
     blockstackApiAppSecret: state.settings.api.blockstackApiAppSecret,
     analyticsId: state.account.analyticsId,
@@ -67,11 +68,42 @@ class RegisterPage extends Component {
   onChange(event) {
     if (event.target.name === 'username') {
       const username = event.target.value.toLowerCase().replace(/\W+/g, ''),
-            tld = this.state.tlds[this.state.type],
-            nameCost = getNameCost(`${username}.${tld}`) / 1000
+      tld = this.state.tlds[this.state.type],
+      domainName = `${username}.${tld}`
+
       this.setState({
-        username: username,
-        nameCost: nameCost
+        username: username
+      })
+
+      if(username === '') {
+        this.setState({
+          alerts:[]
+        })
+        return
+      }
+
+      if(!isABlockstackName(domainName)) {
+        this.updateAlert('danger', `${domainName} Not valid Blockstack name`)
+        return
+      }
+
+      isNameAvailable(this.props.lookupUrl, domainName).then((isAvailable) => {
+        if(isAvailable) {
+          if(this.state.username === username) { // don't continue if user has already changed input
+            this.updateAlert('info', `Checking price for ${domainName}...`)
+            getNamePrices(this.props.priceUrl, domainName).then((prices)=> {
+              const cost = prices.total_estimated_cost.btc
+              this.setState({
+                nameCost: cost
+              })
+              if(this.state.username === username) // don't update if user has already changed input
+                this.updateAlert('info', `${username}.id costs ~${cost} btc to register.`)
+            })
+          }
+        } else {
+          if(this.state.username === username) // don't update if user has already changed input
+            this.updateAlert('danger', 'Name has already been registered')
+        }
       })
     }
   }
@@ -95,7 +127,7 @@ class RegisterPage extends Component {
     const username = this.state.username,
           tld = this.state.tlds[this.state.type],
           domainName = username + '.' + tld
-    
+
     if (username.length === 0) {
       this.updateAlert('danger', 'Name must have at least one character')
       return
