@@ -1,3 +1,42 @@
+/* Styles for Release v0.3.0 */
+
+/* Table of Contents */
+/*  1. Colors */
+/*  2. Options */
+/*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version we are utilizing the custom spacing rules from blockstack.com. Upon import of blockstack-bootstrap, go through styles and replace with latest spacing rules from b4. */
+/*  4. Body */
+/*  5. Links */
+/*  6. Grid breakpoints */
+/*  7. Grid containers */
+/*  8. Grid columns */
+/*  9. Fonts */
+/* 10. Components */
+/* 11. Tables */
+/* 12. Buttons */
+/* 13. Forms */
+/* 14. Dropdowns */
+/* 15. Z-index master list */
+/* 16. Navbar */
+/* 17. Navs */
+/* 18. Pagination */
+/* 19. Jumbotron */
+/* 20. Form states and alerts */
+/* 21. Cards */
+/* 22. Tooltips */
+/* 23. Popovers */
+/* 24. Tags */
+/* 25. Modals */
+/* 26. Alerts */
+/* 27. Progress bars */
+/* 28. List group */
+/* 29. Image thumbnails */
+/* 30. Figures */
+/* 31. Breadcrumbs */
+/* 32. Media objects */
+/* 33. Carousel */
+/* 34. Close */
+/* 35. Code */
+
 #app {
   height: 100%;
   width: 100%;
@@ -219,3 +258,78 @@ a.list-group-item-dash:focus, a.list-group-item-dash:hover{background-color: rgb
 .app-box img {min-width: 256px;}
 .app-text-container h3{text-align: center;}
 div.app-box{width:100%;margin-left: 0px; margin-right: 0px!important;}
+
+
+
+/* Styles ported over from profiles.css */
+
+/* 3. Spacing */
+/* Custom spacing classes to be removed */.m-t-0{margin-top:0px}.m-t-10{margin-top:10px}.m-t-15{margin-top:15px}.m-t-20{margin-top:20px}.m-t-25{margin-top:25px}.m-t-30{margin-top:30px}.m-t-35{margin-top:35px}.m-t-40{margin-top:40px}.m-t-45{margin-top:45px}.m-t-50{margin-top:50px}.m-t-55{margin-top:55px}.m-t-60{margin-top:60px}.m-t-65{margin-top:65px}.m-t-70{margin-top:70px}.m-t-75{margin-top:75px}.m-t-80{margin-top:80px}.m-t-85{margin-top:85px}.m-t-90{margin-top:90px}.m-t-95{margin-top:95px}.m-b-0{margin-bottom:0px}.m-b-10{margin-bottom:10px}.m-b-15{margin-bottom:15px}.m-b-20{margin-bottom:20px}.m-b-25{margin-bottom:25px}.m-b-30{margin-bottom:30px}.m-b-35{margin-bottom:35px}.m-b-40{margin-bottom:40px}.m-b-45{margin-bottom:45px}.m-b-50{margin-bottom:50px}.m-b-55{margin-bottom:55px}.m-b-60{margin-bottom:60px}.m-b-65{margin-bottom:65px}.m-b-70{margin-bottom:70px}.m-b-75{margin-bottom:75px}.m-b-80{margin-bottom:80px}.m-b-85{margin-bottom:85px}.m-b-90{margin-bottom:90px}.m-b-95{margin-bottom:95px}.p-t-0{padding-top:0px}.p-t-10{padding-top:10px}.p-t-15{padding-top:15px}.p-t-20{padding-top:20px}.p-t-25{padding-top:25px}.p-t-30{padding-top:30px}.p-t-35{padding-top:35px}.p-t-40{padding-top:40px}.p-t-45{padding-top:45px}.p-t-50{padding-top:50px}.p-t-55{padding-top:55px}.p-t-60{padding-top:60px}.p-t-65{padding-top:65px}.p-t-70{padding-top:70px}.p-t-75{padding-top:75px}.p-t-80{padding-top:80px}.p-t-85{padding-top:85px}.p-t-90{padding-top:90px}.p-t-95{padding-top:95px}.p-b-0{padding-bottom:0px}.p-b-10{padding-bottom:10px}.p-b-15{padding-bottom:15px}.p-b-20{padding-bottom:20px}.p-b-25{padding-bottom:25px}.p-b-30{padding-bottom:30px}.p-b-35{padding-bottom:35px}.p-b-40{padding-bottom:40px}.p-b-45{padding-bottom:45px}.p-b-50{padding-bottom:50px}.p-b-55{padding-bottom:55px}.p-b-60{padding-bottom:60px}.p-b-65{padding-bottom:65px}.p-b-70{padding-bottom:70px}.p-b-75{padding-bottom:75px}.p-b-80{padding-bottom:80px}.p-b-85{padding-bottom:85px}.p-b-90{padding-bottom:90px}.p-b-95{padding-bottom:95px}
+
+/* 4. Body */
+body,html,#app,.app-landing,.body-main{min-height:100%;min-width:inherit;}
+body{font-family:'Lato',sans-serif;font-size:14px;}
+.app-wrap-profiles{width:100%;min-height:100%;background:#fafafa;background:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);}
+.site-wrapper{display:flex;flex-direction:column;min-height:100%;padding:35px;}
+
+/* 9. Fonts */
+.h5-landing{color:#AEAEAE;font-size:18px;font-weight:400;}
+
+/* 12. Buttons */
+.btn{font-family:'Source Code Pro',monospace;padding:0.375rem 2.125rem;font-size:0.8125rem;font-weight:400;line-height:1.75rem;border-radius:0!important;}
+.btn-sm{font-size:0.8125rem;padding:0.375rem 2.125rem;line-height:1.5rem;}
+.btn-lg{font-size:0.875rem;padding:0.6875rem 3.4375rem;line-height:1.75rem;}
+.btn-blue{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;padding-right:1.375rem;padding-left:1.375rem;border-radius:0;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.btn-blue:hover,.btn-blue:focus,.btn-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
+
+/* 13. Forms */
+.form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border:1px solid #fff;border-radius:0;box-shadow:none;}
+.form-control::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;}
+.form-control:hover,.form-control:focus{background-color:#fff;border:1px solid #fff;box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+
+/* 16. Navbar */
+.navbar{padding:0!important;}
+.navbar-brand{padding:0;}
+.navbar-brand img{width:48px;}
+.navbar-text-secondary{color:#949494;margin-top:-5px;}
+
+/* 21. Cards */
+.profile-list-card{background-color:#fff;padding:35px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
+a.card:hover{text-decoration:none;}
+.profile-card-list{margin-bottom:0;}
+.profile-list-card-title{font-size:15px;color:#19191A;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.profile-list-card-subtitle{font-size:13px;color:#949494;}
+.profile-list-card-avatar{display:inline-block;}
+.profile-list-avatar{float:left;margin-right:15px;padding:0;}
+div.card-avatar.profile-list-avatar img{max-width:48px;}
+.profile-card-list{list-style:none;padding:0;}
+.card-wrapper{padding-left:0;}
+
+/* 36. Misc */
+.card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
+
+/* Media queries */
+
+/* Extra small devices (phones, less than 768px) */
+
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width:768px){
+	.nav{display:inline-block;float:left;padding-right:50px;}
+	.card-list-wrap{min-width:310px;display:inline-block;padding-left:0;padding-right:0;}
+	.card-list-card{width:310px;}
+	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
+	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
+}
+
+/* Medium devices (desktops, 975px and up) */
+/* NOTE: change breaking point @media (min-width: 975px;) to @media (min-width: 992px;) in blockstack-bootstrap as this is a non-standard break point */
+@media (min-width:975px){
+	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width:1200px){
+	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;}
+}
