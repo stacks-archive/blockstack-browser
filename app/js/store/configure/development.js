@@ -7,7 +7,7 @@ import DevTools from '../../components/DevTools'
 
 const finalCreateStore = compose(
   applyMiddleware(thunk),
-  DevTools.instrument(),
+  DevTools.instrument({ maxAge: 50 }),
   persistState()
 )(createStore)
 
