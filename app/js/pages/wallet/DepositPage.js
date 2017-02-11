@@ -9,6 +9,7 @@ import { AccountActions }                      from '../../store/account'
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
+    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
   }
 }
 
@@ -25,6 +26,18 @@ class DepositPage extends Component {
   constructor(props) {
     super(props)
     this.refreshAddress = this.refreshAddress.bind(this)
+    this.state = {
+      coreWalletAddress: ''
+    }
+  }
+
+  componentWillMount() {
+    fetch(this.props.walletPaymentAddressUrl).then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      const address = responseJson.address
+      this.setState({coreWalletAddress: address})
+    })
   }
 
   refreshAddress(event) {
@@ -50,7 +63,7 @@ class DepositPage extends Component {
               <h5>Send Bitcoins to this address</h5>
               <div className="highlight">
                 <pre>
-                  <code>{this.props.addresses[this.props.addresses.length-1]}</code>
+                  <code>{this.state.coreWalletAddress}</code>
                 </pre>
               </div>
             </div>
