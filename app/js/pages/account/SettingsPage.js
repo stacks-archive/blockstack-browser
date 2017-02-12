@@ -158,11 +158,11 @@ class SettingsPage extends Component {
                 { this.state.api.hostedDataLocation === DROPBOX ?
                   <div>
                       { this.state.api.dropboxAccessToken == null ?
-                        <button onClick={this.connectDropbox} className="btn btn-default">
+                        <button onClick={this.connectDropbox} className="btn btn-sm btn-outline-primary">
                         Connect Dropbox
                         </button>
                       :
-                      <button onClick={this.disconnectDropbox} className="btn btn-default">
+                      <button onClick={this.disconnectDropbox} className="btn btn-sm btn-outline-primary">
                       Disconnect Dropbox
                       </button>
                       }
@@ -176,7 +176,7 @@ class SettingsPage extends Component {
                 </div>
 
                 <p>
-                  <button onClick={this.resetApi} className="btn btn-outline-primary">
+                  <button onClick={this.resetApi} className="btn btn-primary">
                     Reset API
                   </button>
                 </p>
@@ -185,7 +185,7 @@ class SettingsPage extends Component {
 
                 <p>
                   <button onClick={this.registerProtocolHandler}
-                    className="btn btn-sm btn-primary">
+                    className="btn btn-sm btn-outline-primary">
                     Allow App Logins
                   </button>
                 </p>
