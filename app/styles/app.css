@@ -1,42 +1,5 @@
 /* Styles for Release v0.3.0 */
 
-/* Table of Contents */
-/*  1. Colors */
-/*  2. Options */
-/*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version we are utilizing the custom spacing rules from blockstack.com. Upon import of blockstack-bootstrap, go through styles and replace with latest spacing rules from b4. */
-/*  4. Body */
-/*  5. Links */
-/*  6. Grid breakpoints */
-/*  7. Grid containers */
-/*  8. Grid columns */
-/*  9. Fonts */
-/* 10. Components */
-/* 11. Tables */
-/* 12. Buttons */
-/* 13. Forms */
-/* 14. Dropdowns */
-/* 15. Z-index master list */
-/* 16. Navbar */
-/* 17. Navs */
-/* 18. Pagination */
-/* 19. Jumbotron */
-/* 20. Form states and alerts */
-/* 21. Cards */
-/* 22. Tooltips */
-/* 23. Popovers */
-/* 24. Tags */
-/* 25. Modals */
-/* 26. Alerts */
-/* 27. Progress bars */
-/* 28. List group */
-/* 29. Image thumbnails */
-/* 30. Figures */
-/* 31. Breadcrumbs */
-/* 32. Media objects */
-/* 33. Carousel */
-/* 34. Close */
-/* 35. Code */
-
 #app{height:100%;width:100%;}
 
 /* Custom styles */
@@ -224,13 +187,9 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 /* Guy quick */
 .profile-wrap{max-width: 800px;}
 .profile-wrap-wide{max-width: 1050px;}
-/* 12. Buttons (refactor 2) */
-.list-group-item-dash{margin-left:0px;background-color: #f7f7f9;}
-a.list-group-item-dash:focus, a.list-group-item-dash:hover{background-color: rgb(238, 238, 238)}
 .app-box img {min-width: 256px;}
 .app-text-container h3{text-align: center;}
 div.app-box{width:100%;margin-left: 0px; margin-right: 0px!important;}
-
 
 
 /* Styles ported over from profiles.css */
@@ -315,28 +274,12 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 */
 
 /* 13. Forms */
-.form-control {
-	font-size: 0.875rem;
-	font-weight: 400;
-	line-height: 28px;
-	color: #949494;
-	padding: 0.875rem 1.375rem;
-	border: 1px solid #fff;
-	border-radius: 0;
-	box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
-}
-.form-control::-webkit-input-placeholder {
-	text-transform: capitalize;
-	font-size: 0.875rem;
-}
-.form-control:hover, .form-control:focus {
-	background-color: #fff;
-	border: 1px solid #fff;
-	box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
-}
-.form-control-label {
-	padding:1.25rem 1rem;
-}
+.form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border:1px solid #fff;border-radius:0;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.form-control::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;}
+.form-control:hover,.form-control:focus{background-color:#fff;border:1px solid #fff;}
+.input-special{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+.input-special:hover,.input-special:focus,.input-special:active{-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.form-control-label{padding:1.25rem 1rem;}
 
 /* 16. Navbar */
 .navbar{padding:0!important;}
@@ -357,43 +300,12 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .card-wrapper{padding-left:0;}
 
 /* 28. List group */
-.list-group-item-sidebar {
-	font-family:'Source Code Pro',monospace;
-	font-size:0.75rem;
-	line-height: 1.5rem;
-	border: none;
-	background-color: transparent;
-	padding-top:0.5625rem;
-	padding-bottom:0.5625rem;
-}
-.list-group-item-sidebar.active, .list-group-item-sidebar.active:hover, .list-group-item-sidebar.active:focus {
-	color: #fff;
-	background-color: #270F34;
-	background-image: none;
-}
-.col-list-name {
-	float: left;
-}
-.list-text-name {
-	line-height: 14px;
-	display: block;
-	overflow: hidden;
-	box-sizing: border-box;
-	width: 130px;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	color: #444;
-}
-.list-current-state {
-	font-size: 11px;
-	line-height: 15px;
-	display: block;
-	margin-top: 0;
-	color: rgba(8, 8, 9, .3);
-}
-.list-group-item:last-child,.list-group-item:first-child{
-	border-radius: 0;
-}
+.list-group-item-sidebar{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;}
+.list-group-item-sidebar.active,.list-group-item-sidebar.active:hover,.list-group-item-sidebar.active:focus{color:#fff;background-color:#270F34;background-image:none;}
+.col-list-name{float:left;}
+.list-text-name{line-height:14px;display:block;overflow:hidden;box-sizing:border-box;width:130px;white-space:nowrap;text-overflow:ellipsis;color:#444;}
+.list-current-state{font-size:11px;line-height:15px;display:block;margin-top:0;color:rgba(8,8,9,.3);}
+.list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
 /* removed
 .list-group-item-dash,
 a.list-group-item-dash:focus,

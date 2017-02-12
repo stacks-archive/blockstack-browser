@@ -123,7 +123,7 @@ class AddressBar extends Component {
     return (
       <div className="nav-search m-b-40">
         <input type="text"
-          className="form-control form-control-sm"
+          className="form-control form-control-sm input-special"
           placeholder={this.state.placeholder} 
           name="query" value={this.state.query}
           onChange={this.onQueryChange}
