@@ -63,9 +63,9 @@ class BackupAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
+      <div className="body-inner-white">
         <PageHeader title="Backup Account" />
-        <div className="container">
+        <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">
               <AccountSidebar activeTab="backup account" />

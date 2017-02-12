@@ -44,7 +44,7 @@
 body{font-family:'Lato',sans-serif;font-size:14px;background-color:rgba(250,250,250,1);}
 .body-main{width:100%;height:100%;}
 .body-landing{width:100%;height:100%;}
-.body-inner{width:100%;min-height:100%;}
+.body-inner{width:100%;}
 .body-inner-white{background-color:white;}
 .wrapper{width:100%;}
 .no-padding{padding-right:0;padding-left:0;}
@@ -195,10 +195,6 @@ a.list-group-item-dash:focus,a.list-group-item-dash:hover{background-color:#f5f5
 .text-feat-dash{padding:12px;margin-bottom:0;}
 a.view-out-link{color:#494f56;}
 
-/* Deposit view */
-.page-header-wrap{display:table;width:100%;}
-.page-header{display:table-cell;min-width:100%;height:150px;text-align:center;vertical-align:middle;background-color:#1b1e21;}
-
 /* Temporary position absolute */
 .header-logo{position:absolute;top:150px;}
 
@@ -297,6 +293,7 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 
 /* 9. Fonts */
 .h5-landing{color:#AEAEAE;font-size:18px;font-weight:400;}
+.h1-modern{font-family:'Source Code Pro',monospace!important;font-size:1.875rem;}
 
 /* 12. Buttons */
 .btn{font-family:'Source Code Pro',monospace;padding:0.5625rem 2.5rem;font-size:0.8125rem;font-weight:400;line-height:1.75rem;border-radius:0!important;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
@@ -325,8 +322,6 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 .btn-pro-edit:focus,
 .btn-pro-edit:active:focus
 */
-
-
 
 /* 13. Forms */
 .form-control {
@@ -369,6 +364,11 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 
 /* 36. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
+.page-header{width:100%;height:150px;background-color:#270F34;display:flex;align-items:center;justify-content:center;}
+.page-header > h1{margin-bottom:0;}
+.vertical-split-content{
+	margin-top: 40px;
+}
 
 /* Media queries */
 

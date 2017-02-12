@@ -87,15 +87,14 @@ class ChangePasswordPage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
+      <div className="body-inner-white">
         <PageHeader title="Change Password" />
-        <div className="container">
+        <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">
               <AccountSidebar activeTab="change password" />
             </div>
             <div className="col-md-9">
-              <h3>Change Password</h3>
               { this.state.alerts.map(function(alert, index) {
                 return (
                   <Alert key={index} message={alert.message} status={alert.status} />
