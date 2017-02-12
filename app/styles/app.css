@@ -158,15 +158,6 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .sidebar-wrapper{top:0;display:block;float:left;width:226px;min-height:100%;border-right:1px solid #e1e1e1;background-color:#fafafa;}
 .sidebar-section{min-width:210px;padding-top:55px;border-right:1px solid #e1e1e1;background-color:#fff;}
 .sidebar-gutter{width:14px;max-width:14px;min-height:100%;}
-.list-group-item-sidebar{border:none;border-radius:4px;background-color:transparent;}
-.list-group-item-sidebar.active,.list-group-item-sidebar.active:hover,.list-group-item-sidebar.active:focus{color:#fff;background-color:#53206f;background-image:none;}
-.list-group-item-dash{font-size:12px;display:block;width:100%;min-width:204px;height:62px;margin-bottom:1px;margin-left:-20px;padding:16px 12px;border:none;border-top-left-radius:6px!important;border-top-right-radius:0!important;border-bottom-right-radius:0!important;border-bottom-left-radius:6px!important;background-color:#fff;}
-a.list-group-item-dash:focus,a.list-group-item-dash:hover{background-color:#f5f5f5;}
-.list-group-avatar{float:left;}
-.list-group-avatar img{display:block;width:28px;height:28px;margin-right:10px;border:1px solid #c7c7c7;-webkit-border-radius:14px;-moz-border-radius:14px;border-radius:14px;background-color:#fff;background-position:center;background-size:cover;}
-.col-list-name{float:left;}
-.list-text-name{line-height:14px;display:block;overflow:hidden;box-sizing:border-box;width:130px;white-space:nowrap;text-overflow:ellipsis;color:#444;}
-.list-current-state{font-size:11px;line-height:15px;display:block;margin-top:0;color:rgba(8,8,9,.3);}
 .booklist-wrap,.col-list-name{color:inherit;}
 
 /* Browser content */
@@ -364,6 +355,52 @@ a.card:hover{text-decoration:none;}
 div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
+
+/* 28. List group */
+.list-group-item-sidebar {
+	font-family:'Source Code Pro',monospace;
+	font-size:0.75rem;
+	line-height: 1.5rem;
+	border: none;
+	background-color: transparent;
+	padding-top:0.5625rem;
+	padding-bottom:0.5625rem;
+}
+.list-group-item-sidebar.active, .list-group-item-sidebar.active:hover, .list-group-item-sidebar.active:focus {
+	color: #fff;
+	background-color: #270F34;
+	background-image: none;
+}
+.col-list-name {
+	float: left;
+}
+.list-text-name {
+	line-height: 14px;
+	display: block;
+	overflow: hidden;
+	box-sizing: border-box;
+	width: 130px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #444;
+}
+.list-current-state {
+	font-size: 11px;
+	line-height: 15px;
+	display: block;
+	margin-top: 0;
+	color: rgba(8, 8, 9, .3);
+}
+.list-group-item:last-child,.list-group-item:first-child{
+	border-radius: 0;
+}
+/* removed
+.list-group-item-dash,
+a.list-group-item-dash:focus,
+a.list-group-item-dash:hover,
+.list-group-avatar,
+.list-group-avatar img
+*/
 
 /* 36. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
