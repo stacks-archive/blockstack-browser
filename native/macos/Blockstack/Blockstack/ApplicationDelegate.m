@@ -19,6 +19,8 @@
     // Add our icon to menu bar
     self.menubarController = [[MenubarController alloc] init];
     
+    NSString* coreWalletPassword = [self createOrRetrieveCoreWalletPassword];
+    
     [self startBlockstackProxy];
     [self startCorsProxy];
     [self startMockBlockstackCoreApi];
@@ -173,6 +175,91 @@
 
 
     return blockstackDataPath;
+}
+
+/* Keychain management of Blockstack Core wallet password */
+
+
+
+-(NSString*)createOrRetrieveCoreWalletPassword
+{
+    NSString* service = [self serviceName];
+    NSString* account = [self accountName];
+    
+    UInt32 pwLength = 0;
+    void* pwData = NULL;
+    SecKeychainItemRef itemRef = NULL;
+    
+    OSStatus status = SecKeychainFindGenericPassword(
+                                                     NULL,         // Search default keychains
+                                                     (UInt32)service.length,
+                                                     [service UTF8String],
+                                                     (UInt32)account.length,
+                                                     [account UTF8String],
+                                                     &pwLength,
+                                                     &pwData,
+                                                     &itemRef      // Get a reference this time
+                                                     );
+    
+    if (status == errSecSuccess) {
+        NSData* data = [NSData dataWithBytes:pwData length:pwLength];
+        NSString* password = [[NSString alloc] initWithData:data
+                                                   encoding:NSUTF8StringEncoding];
+        NSLog(@"Blockstack Core wallet password found in keychain");
+        
+        if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
+        
+        return password;
+    } else {
+        NSLog(@"Blockstack Core wallet password not found in keychain: %@", SecCopyErrorMessageString(status, NULL));
+        
+        if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
+        
+        return [self createAndStorePasswordInKeychain];
+    }
+}
+
+-(NSString*)createAndStorePasswordInKeychain
+{
+    
+    NSString* service = [self serviceName];
+    NSString* account = [self accountName];
+    NSString* password = [self generatePassword];
+    const void* passwordData = [[password dataUsingEncoding:NSUTF8StringEncoding] bytes];
+    
+    OSStatus status = SecKeychainAddGenericPassword(
+                                                    NULL,        // Use default keychain
+                                                    (UInt32)service.length,
+                                                    [service UTF8String],
+                                                    (UInt32)account.length,
+                                                    [account UTF8String],
+                                                    (UInt32)password.length,
+                                                    passwordData,
+                                                    NULL         // Uninterested in item reference
+                                                    );
+    
+    if (status != errSecSuccess) {     // Always check the status
+        NSLog(@"Problem storing Blockstack Core wallet password to Keychain %@", SecCopyErrorMessageString(status, NULL));
+    }
+    return password;
+}
+
+
+-(NSString*)generatePassword
+{
+    // this isn't necessarily secure or random, but good enough for our purposes.
+    NSString* password = [[NSProcessInfo processInfo] globallyUniqueString];
+    return password;
+}
+
+-(NSString*)serviceName
+{
+    return @"blockstack-core-wallet-password";
+}
+
+-(NSString*)accountName
+{
+    return @"blockstack-core";
 }
 
 @end

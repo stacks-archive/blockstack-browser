@@ -11,6 +11,7 @@
 		463EBBE11E2526A20054FD49 /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE01E2524540054FD49 /* corsproxy */; };
 		463EBBE41E25273D0054FD49 /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE31E25273D0054FD49 /* blockstackProxy */; };
 		463EBBE61E2528170054FD49 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE51E2528170054FD49 /* browser */; };
+		4649DD931E50CB9000E2084C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4649DD921E50CB9000E2084C /* Security.framework */; };
 		464F044C1E3A08E10015C054 /* mockBlockstackCoreApi in Resources */ = {isa = PBXBuildFile; fileRef = 464F044B1E3A08E10015C054 /* mockBlockstackCoreApi */; };
 		4691B0051E3A102F00DF0353 /* blockstack-venv.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 4691B0041E3A102F00DF0353 /* blockstack-venv.tar.gz */; };
 		DD4F7C0913C30F9F00825C6E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4F7C0813C30F9F00825C6E /* Cocoa.framework */; };
@@ -26,6 +27,7 @@
 		463EBBE01E2524540054FD49 /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = corsproxy; path = ../corsproxy; sourceTree = "<group>"; };
 		463EBBE31E25273D0054FD49 /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = blockstackProxy; path = ../blockstackProxy; sourceTree = "<group>"; };
 		463EBBE51E2528170054FD49 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; path = browser; sourceTree = "<group>"; };
+		4649DD921E50CB9000E2084C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		464F044B1E3A08E10015C054 /* mockBlockstackCoreApi */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = mockBlockstackCoreApi; sourceTree = SOURCE_ROOT; };
 		4691B0041E3A102F00DF0353 /* blockstack-venv.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "blockstack-venv.tar.gz"; sourceTree = "<group>"; };
 		DD4F7C0413C30F9F00825C6E /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4649DD931E50CB9000E2084C /* Security.framework in Frameworks */,
 				DD4F7C0913C30F9F00825C6E /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -79,6 +82,7 @@
 		DD4F7C0713C30F9F00825C6E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4649DD921E50CB9000E2084C /* Security.framework */,
 				DD4F7C0B13C30F9F00825C6E /* AppKit.framework */,
 				DD4F7C0C13C30F9F00825C6E /* CoreData.framework */,
 				DD4F7C0D13C30F9F00825C6E /* Foundation.framework */,
