@@ -168,9 +168,9 @@ class RegisterPage extends Component {
         nameLabel = this.state.nameLabels[this.state.type]
 
     return (
-      <div className="body-inner body-inner-white">
+      <div className="body-inner-white">
         <PageHeader title="Register" />
-        <div className="container">
+        <div className="container vertical-split-content">
           <div className="col-sm-3">
           </div>
           <div className="col-sm-6">
