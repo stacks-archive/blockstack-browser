@@ -19,9 +19,21 @@ echo "Activating virtualenv..."
 
 source blockstack-venv/bin/activate
 
+echo "Installing latest virtualchain..."
+
+pip install git+https://github.com/blockstack/virtualchain.git@rc-0.14.1
+
+echo "Installing latest blockstack-profiles..."
+
+pip install git+https://github.com/blockstack/blockstack-profiles-py.git@rc-0.14.1
+
+echo "Installing latest blockstack-zones..."
+
+pip install git+https://github.com/blockstack/dns-zone-file-py.git@rc-0.14.1
+
 echo "Installing latest blockstack..."
 
-pip install --upgrade blockstack
+pip install git+https://github.com/larrysalibra/blockstack-core.git@rc-0.14.1b-larry
 
 echo "Blockstack virtual environment created."
 
