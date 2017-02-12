@@ -7,7 +7,8 @@ import { AccountActions } from '../store/account'
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
-    balances: state.account.bitcoinAccount.balances
+    balances: state.account.bitcoinAccount.balances,
+    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
   }
 }
 
@@ -24,16 +25,34 @@ class Balance extends Component {
 
   constructor() {
     super()
+    this.state = {
+      coreWalletBalance: 0
+    }
+    this.updateBalancesFromCore = this.updateBalancesFromCore.bind(this)
   }
 
   componentDidMount() {
-    this.props.refreshBalances(this.props.addresses)
+    this.updateBalancesFromCore()
   }
 
+  updateBalancesFromCore() {
+    fetch(this.props.walletPaymentAddressUrl).then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      const address = responseJson.address
+      fetch(`https://explorer.blockstack.org/insight-api/addr/${address}`).then((response) => response.text())
+      .then((responseText) => JSON.parse(responseText))
+      .then((responseJson) => {
+        let balance = responseJson.unconfirmedBalance + responseJson.balance
+        this.setState({coreWalletBalance: balance})
+      })
+
+    })
+  }
   render() {
     return (
       <div className="balance">
-      <label>Balance:</label>&nbsp;{this.props.balances.total}&nbsp;<label>btc</label>
+      <label>Balance:</label>&nbsp;{this.state.coreWalletBalance}&nbsp;<label>btc</label>
       </div>
     )
   }
