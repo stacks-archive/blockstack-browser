@@ -123,7 +123,7 @@ class SettingsPage extends Component {
             </div>
             <div className="col-md-9">
               <div>
-                <h5>Blockstack API Options</h5>
+                <h4>Blockstack API Options</h4>
 
                 { this.state.api.apiCustomizationEnabled === true ?
                   <div>
@@ -138,7 +138,19 @@ class SettingsPage extends Component {
                   </div>
                 : null }
 
-                <h5>Data Hosting Options</h5>
+                <div className="form-group">
+                  <SaveButton onSave={this.updateApi} />
+                </div>
+
+                <p>
+                  <button onClick={this.resetApi} className="btn btn-outline-primary">
+                    Reset API
+                  </button>
+                </p>
+
+                <hr />
+
+                <h4>Data Hosting Options</h4>
 
                 <RadioGroup name="hostedDataLocation"
                   selectedValue={this.state.api.hostedDataLocation}
@@ -171,17 +183,7 @@ class SettingsPage extends Component {
 
                 <hr />
 
-                <div className="form-group">
-                  <SaveButton onSave={this.updateApi} />
-                </div>
-
-                <p>
-                  <button onClick={this.resetApi} className="btn btn-outline-primary">
-                    Reset API
-                  </button>
-                </p>
-
-                <hr />
+                <h4>Authentication</h4>
 
                 <p>
                   <button onClick={this.registerProtocolHandler}
