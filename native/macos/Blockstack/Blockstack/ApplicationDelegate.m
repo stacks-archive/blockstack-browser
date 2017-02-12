@@ -62,10 +62,6 @@
         [self.corsProxyTask terminate];
         NSLog(@"CORS proxy terminated");
         
-        
-        // Remove the icon from the menu bar
-        self.menubarController = nil;
-        
         [self stopBlockstackCoreApiAndExit];
 
     }
@@ -219,6 +215,8 @@
 
 -(void)stopBlockstackCoreApiAndExit
 {
+    NSLog(@"Attempting to stop Blockstack Core API before exiting...");
+    
     NSTask* blockstackCoreApiStopTask = [[NSTask alloc] init];
     
     blockstackCoreApiStopTask.launchPath = self.pythonPath;
@@ -237,10 +235,15 @@
     
     blockstackCoreApiStopTask.terminationHandler = ^(NSTask *aTask){
         NSLog(@"Blockstack Core api stopped.");
+        
+        // Remove the icon from the menu bar
+        self.menubarController = nil;
+        
         NSLog(@"Goodbye!");
         exit(0);
     };
-
+    
+    [blockstackCoreApiStopTask launch];
     
 }
 
