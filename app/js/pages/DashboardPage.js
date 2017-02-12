@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import Modal from 'react-modal'
 
 function mapStateToProps(state) {
   return {
@@ -18,15 +19,42 @@ class DashboardPage extends Component {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      modalIsOpen: false
+    }
+
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   componentDidMount() {
+  }
+
+  openModal() {
+    this.setState({modalIsOpen: true})
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false})
   }
 
   render() {
     return (
       <div className="container-fluid">
         <div className="container profile-wrap-wide">
+
+          <Modal isOpen={this.state.modalIsOpen}
+                 onRequestClose={this.closeModal}
+                 contentLabel="This is My Modal"
+                 shouldCloseOnOverlayClick={false}>
+            <h2 ref="subtitle">Hello</h2>
+            <div>I am a modal</div>
+            <button onClick={this.closeModal} className="btn btn-primary">
+              close
+            </button>
+          </Modal>
+
           <section>
             <div className="container-fluid no-padding">
               <div className="col-sm-12 app-container no-padding">
