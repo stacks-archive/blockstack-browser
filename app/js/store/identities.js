@@ -131,7 +131,8 @@ function registerName(api, domainName, tokenFileUrl, recipientAddress) {
     const requestBody = JSON.stringify({
       name: domainName,
       owner_address: recipientAddress,
-      zonefile: zoneFile
+      zonefile: zoneFile,
+      min_confs: 0
     })
 
     fetch(api.registerUrl, {
