@@ -127,13 +127,9 @@ class ViewProfilePage extends Component {
             <div className="col-sm-9">
               <div className="container">
                 <div className="profile-container col-sm-6 center-block">
-                    <div className="profile-wrap">
-                      <div className="idcard-block">
-                        <div className="id-flex">
-                          <Image src={person.avatarUrl() || ''}
-                            fallbackSrc={placeholderImage} className="img-circle" />
-                        </div>
-                      </div>
+                    <div className="pro-avatar">
+                      <Image src={person.avatarUrl() || ''}
+                        fallbackSrc="/images/avatar.png" className="img-circle" />
                     </div>
                   { isLocal ?
                   <div>

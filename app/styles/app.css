@@ -300,6 +300,8 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 
+div.pro-avatar img{max-width:58px;}
+
 /* 28. List group */
 .list-group-item-sidebar{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;}
 .list-group-item-sidebar.active,.list-group-item-sidebar.active:hover,.list-group-item-sidebar.active:focus{color:#fff;background-color:#270F34;background-image:none;}
