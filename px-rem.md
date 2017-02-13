@@ -15,9 +15,7 @@
 13px	0.8125rem
 14px	0.875rem
 15px	0.9375rem
-
-16px	1rem
-
+	16px	1rem
 17px	1.0625rem
 18px	1.125rem
 19px	1.1875rem
@@ -62,3 +60,23 @@
 58px	3.625rem
 59px	3.6875rem
 60px	3.75rem
+61px  3.813rem
+62px  3.875rem
+63px  3.938rem
+64px  4rem
+65px  4.063rem
+66px  4.125rem
+67px  4.188rem
+68px  4.25rem
+69px  4.313rem
+70px  4.375rem
+71px  4.438rem
+72px  4.5rem
+73px  4.563rem
+74px  4.625rem
+75px  4.688rem
+76px  4.75rem
+77px  4.813rem
+78px  4.875rem
+79px  4.938rem
+80px  5rem
