@@ -20,7 +20,8 @@ class Balance extends Component {
   static propTypes = {
     addresses: PropTypes.array.isRequired,
     balances: PropTypes.object.isRequired,
-    refreshBalances: PropTypes.func.isRequired
+    refreshBalances: PropTypes.func.isRequired,
+    walletPaymentAddressUrl: PropTypes.string.isRequired
   }
 
   constructor() {
