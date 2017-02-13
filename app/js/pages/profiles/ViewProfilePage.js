@@ -155,18 +155,14 @@ class ViewProfilePage extends Component {
                   </div>
                   { isLocal ?
                   <div>
-                    <p>
                       <Link to={this.props.location.pathname + "/edit"}
-                        className="btn btn-sm btn-secondary m-t-10">
+                        className="btn btn-sm btn-secondary m-t-10 btn-inline">
                         Edit
                       </Link>
-                    </p>
-                    <p>
                       <Link to={`/profiles/blockchain/${domainName}`}
-                        className="btn btn-sm btn-secondary m-t-10">
+                        className="btn btn-sm btn-secondary m-t-10 btn-inline">
                         View Publicly
                       </Link>
-                    </p>
                   </div>
                   :
                   <div>
