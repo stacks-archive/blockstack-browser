@@ -8,7 +8,8 @@ import { WelcomeModal } from './components/index'
 
 function mapStateToProps(state) {
   return {
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    dropboxAccessToken: state.settings.api.dropboxAccessToken
   }
 }
 
@@ -19,25 +20,27 @@ function mapDispatchToProps(dispatch) {
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    encryptedBackupPhrase: PropTypes.string
+    encryptedBackupPhrase: PropTypes.string,
+    dropboxAccessToken: PropTypes.string
   }
 
   constructor(props) {
     super(props)
 
-    const modalIsOpen = this.props.encryptedBackupPhrase ? false : true
-
     this.state = {
-      modalIsOpen: modalIsOpen,
+      accountCreated: this.props.encryptedBackupPhrase ? true : false,
+      storageConnected: this.props.dropboxAccessToken ? true : false,
       password: ''
     }
 
-    this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true})
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      accountCreated: nextProps.encryptedBackupPhrase ? true : false,
+      storageConnected: nextProps.dropboxAccessToken ? true : false,
+    })
   }
 
   closeModal() {
@@ -48,7 +51,8 @@ class App extends Component {
     return (
       <div className="body-main">
         <WelcomeModal
-          isOpen={this.state.modalIsOpen}
+          accountCreated={this.state.accountCreated}
+          storageConnected={this.state.storageConnected}
           closeModal={this.closeModal} />
         {this.props.children}
       </div>
@@ -59,16 +63,6 @@ class App extends Component {
 export default connect(mapStateToProps, mapDispatchToProps)(App)
 
 /*
-<section>
-  <div className="container-fluid no-padding">
-    <div className="app-text-container">
-      <button onClick={this.openModal} className="btn btn-primary">
-        Open Welcome Modal
-      </button>
-    </div>
-  </div>
-</section>
-
 {
   (() => {
     if (process.env.NODE_ENV !== 'production') {

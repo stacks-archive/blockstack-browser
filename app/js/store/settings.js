@@ -63,7 +63,8 @@ function resetApi() {
       blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
       s3ApiKey: '',
       s3ApiSecret: '',
-      s3Bucket: ''
+      s3Bucket: '',
+      dropboxAccessToken: null
     }
     dispatch(updateApi(DEFAULT_API))
   }
@@ -91,7 +92,8 @@ const initialState = {
     blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
     s3ApiKey: '',
     s3ApiSecret: '',
-    s3Bucket: ''
+    s3Bucket: '',
+    dropboxAccessToken: null
   }
 }
 
