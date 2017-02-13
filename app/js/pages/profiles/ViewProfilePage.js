@@ -123,7 +123,7 @@ class ViewProfilePage extends Component {
               <AddressBar placeholder="Search for people" />
             </div>
           </nav>
-          <div className="container-fluid proid-wrap m-t-50">
+          <div className="container-fluid pro-wrap m-t-50">
             <div className="col-sm-9">
               <div className="container">
                 <div className="profile-container col-sm-6 center-block">
@@ -133,15 +133,15 @@ class ViewProfilePage extends Component {
                   </div>
                 </div>
                 <div className="col-sm-6">
-                  <div className="idcard-wrap">
+                  <div className="">
                     { (blockNumber && transactionIndex) ?
                     <div className="idcard-body dim">
                       Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
                       transaction <span className="inverse">#{transactionIndex}</span>
                     </div>
                     : null }
-                    <h1 className="idcard-name">{person.name()}</h1>
-                    <div className="idcard-body">
+                    <h1 className="pro-card-name">{person.name()}</h1>
+                    <div className="pro-card-body">
                       {person.description()}
                     </div>
                     { person.address() ?

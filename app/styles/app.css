@@ -52,14 +52,11 @@ a,a:focus{outline:none;}
 .btn-sm,.btn-group-sm > .btn{font-size:11px;line-height:12px;padding:6px 10px;border-radius:2px;}
 
 /* ID card */
-.proid-wrap{width:870px;max-width:980px;}
 .idcard{position:relative;border:.0625rem solid rgba(229,229,229,1);border-radius:.25rem;}
-.idcard-body{display:block;margin-bottom:30px;color:#7b7b7b;}
 .dim{color:#7b7b7b;}
 .id-flex img, .id-flex .dropzone {bottom:0;width:16.25rem;height:371px;-webkit-border-radius:8px;border-radius:8px;object-fit:cover;}
 .id-flex{bottom:0;display:table-cell;width:16.25rem;height:371px;vertical-align:top;}
 .idcard-block{display:table-cell;width:100%;vertical-align:top;}
-.idcard-name{font-size:1.25em;}
 .id-social > div > ul{height:39px;margin-top:5px;margin-bottom:5px;margin-left:15px;list-style:none;}
 .id-social > div > ul > li a{line-height:32px;overflow:hidden;height:32px;padding-left:10px;vertical-align:middle;white-space:nowrap;text-overflow:ellipsis;color:rgba(255,255,255,1);}
 i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;}
@@ -300,7 +297,10 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 
+.pro-wrap{font-family:'Source Code Pro',monospace;width:870px;max-width:980px;background-color:#080809;padding:35px;}
 div.pro-avatar img{max-width:58px;}
+.pro-card-name{font-size:0.875rem;color:#fff;font-weight:400;}
+.pro-card-body{display:block;margin-bottom:30px;font-size:0.75rem;color:#fff;}
 
 /* 28. List group */
 .list-group-item-sidebar{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;}
