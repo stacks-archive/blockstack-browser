@@ -82,10 +82,10 @@ class WelcomeModal extends Component {
           style={{overlay: {zIndex: 10}}}
           className="container-fluid"
         >
-          <h2>Welcome to Blockstack</h2>
+          <h4>Welcome to Blockstack</h4>
           { page === 1 ?
             <div>
-              <h4>Step 1: Create an account</h4>
+              <p>Step 1: Create an account</p>
               <InputGroup name="password" label="Password" type="password"
                 data={this.state} onChange={this.onValueChange} />
               <div className="container m-t-40">
@@ -97,10 +97,10 @@ class WelcomeModal extends Component {
           : null }
           { page === 2 ?
             <div>
-              <h4>Step 2: Setup your storage</h4>
-              <div className="container m-t-40">
+              <p className="m-b-30">Step 2: Setup your storage</p>
+              <div>
                 <button onClick={this.connectDropbox}
-                  className="btn btn-sm btn-outline-primary">
+                  className="btn btn-lg btn-primary btn-block">
                 Connect Dropbox
                 </button>
               </div>
