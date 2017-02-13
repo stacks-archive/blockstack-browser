@@ -124,7 +124,7 @@ class ViewProfilePage extends Component {
             </div>
           </nav>
           <div className="container-fluid pro-wrap m-t-50">
-            <div className="col-sm-9">
+            <div className="col-sm-4">
               <div className="container">
                 <div className="profile-container col-sm-12 center-block">
                   <div className="pro-avatar m-b-20">
@@ -191,7 +191,7 @@ class ViewProfilePage extends Component {
                 })}
               </div>
             </div>
-            <div className="col-sm-3 pull-right profile-right-col-fill">
+            <div className="col-sm-8 pull-right profile-right-col-fill">
               <div className="profile-right-col inverse">
                 <ul>
                   {accounts.map(function(account) {
