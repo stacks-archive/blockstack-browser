@@ -68,7 +68,8 @@ class WithdrawPage extends Component {
     }
 
     const requestBody = JSON.stringify({
-      address: recipientAddress
+      address: recipientAddress,
+      min_confs: 0
     })
 
     fetch(this.props.coreWalletWithdrawUrl, {
