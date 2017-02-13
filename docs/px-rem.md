@@ -1,5 +1,6 @@
-// px to rem
+# Pixels to REM Chart
 
+```
 1px 	0.0625rem
 2px 	0.125rem
 3px 	0.1875rem
@@ -15,7 +16,7 @@
 13px	0.8125rem
 14px	0.875rem
 15px	0.9375rem
-	16px	1rem
+16px	1rem
 17px	1.0625rem
 18px	1.125rem
 19px	1.1875rem
@@ -80,3 +81,4 @@
 78px  4.875rem
 79px  4.938rem
 80px  5rem
+```
