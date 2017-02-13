@@ -324,6 +324,15 @@ a.list-group-item-dash:hover,
 .page-header > h1{margin-bottom:0;}
 .vertical-split-content{margin-top:40px;}
 
+/* Modal */
+div.ReactModal__Content.ReactModal__Content--after-open{
+	width: 500px;
+	background-color: #fff;
+	-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);
+	padding:75px 35px;
+	margin-top: 50px;
+}
+
 /* Media queries */
 
 /* Extra small devices (phones, less than 768px) */
