@@ -157,13 +157,13 @@ class ViewProfilePage extends Component {
                   <div>
                     <p>
                       <Link to={this.props.location.pathname + "/edit"}
-                        className="btn btn-block btn-primary m-t-1">
+                        className="btn btn-sm btn-secondary m-t-10">
                         Edit
                       </Link>
                     </p>
                     <p>
                       <Link to={`/profiles/blockchain/${domainName}`}
-                        className="btn btn-block btn-primary m-t-1">
+                        className="btn btn-sm btn-secondary m-t-10">
                         View Publicly
                       </Link>
                     </p>
