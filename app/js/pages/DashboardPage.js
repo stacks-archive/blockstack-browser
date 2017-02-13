@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import Modal from 'react-modal'
+import { WelcomeModal } from '../components/index'
 
 function mapStateToProps(state) {
   return {
@@ -21,21 +21,21 @@ class DashboardPage extends Component {
     super(props)
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      password: ''
     }
 
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
   }
 
-  componentDidMount() {
-  }
-
   openModal() {
+    console.log('opening modal')
     this.setState({modalIsOpen: true})
   }
 
   closeModal() {
+    console.log('closing modal')
     this.setState({modalIsOpen: false})
   }
 
@@ -44,16 +44,9 @@ class DashboardPage extends Component {
       <div className="container-fluid">
         <div className="container profile-wrap-wide">
 
-          <Modal isOpen={this.state.modalIsOpen}
-                 onRequestClose={this.closeModal}
-                 contentLabel="This is My Modal"
-                 shouldCloseOnOverlayClick={false}>
-            <h2 ref="subtitle">Hello</h2>
-            <div>I am a modal</div>
-            <button onClick={this.closeModal} className="btn btn-primary">
-              close
-            </button>
-          </Modal>
+          <WelcomeModal
+            isOpen={this.state.modalIsOpen}
+            closeModal={this.closeModal} />
 
           <section>
             <div className="container-fluid no-padding">
@@ -91,6 +84,16 @@ class DashboardPage extends Component {
                     <h3>Hello, Blockstack</h3>
                   </div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <div className="container-fluid no-padding">
+              <div className="app-text-container">
+                <button onClick={this.openModal} className="btn btn-primary">
+                  Open Welcome Modal
+                </button>
               </div>
             </div>
           </section>
