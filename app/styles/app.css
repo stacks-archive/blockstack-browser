@@ -63,7 +63,7 @@ i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;}
 .id-social > div > ul > li a > span{padding-left:5px;}
 .idcard-wrap{font-weight:inherit;margin-top:105px;color:#444;}
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
-.profile-container,profile-wrap{min-width:18.125rem;padding:.9375rem;}
+.profile-container,profile-wrap{padding:.9375rem;}
 .profile-right-col-fill{position:relative;top:50px;min-height:45vh;padding:0 0 0 10px;}
 div.profile-right-col > ul{padding-left:0;list-style-type:none;}
 div.profile-right-col > ul > li > a,div.profile-right-col > ul > li > button{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
