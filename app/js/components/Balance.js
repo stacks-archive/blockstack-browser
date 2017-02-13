@@ -36,26 +36,30 @@ class Balance extends Component {
   }
 
   updateBalancesFromCore() {
-    fetch(this.props.walletPaymentAddressUrl).then((response) => response.text())
+    fetch(this.props.walletPaymentAddressUrl)
+    .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
       const address = responseJson.address
-      fetch(`https://explorer.blockstack.org/insight-api/addr/${address}`).then((response) => response.text())
+      fetch(`https://explorer.blockstack.org/insight-api/addr/${address}`)
+      .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        let balance = responseJson.unconfirmedBalance + responseJson.balance
+        const balance = responseJson.unconfirmedBalance + responseJson.balance
         this.setState({coreWalletBalance: balance})
       })
-
     })
   }
   render() {
     return (
       <div className="balance">
-      <label>Balance:</label>&nbsp;{this.state.coreWalletBalance}&nbsp;<label>btc</label>
+        <label>Balance:</label>
+        &nbsp;
+        {this.state.coreWalletBalance}&nbsp;
+        <label>btc</label>
       </div>
     )
   }
 }
 
-export default  connect(mapStateToProps, mapDispatchToProps)(Balance)
+export default connect(mapStateToProps, mapDispatchToProps)(Balance)
