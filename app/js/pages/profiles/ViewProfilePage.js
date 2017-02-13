@@ -127,32 +127,10 @@ class ViewProfilePage extends Component {
             <div className="col-sm-9">
               <div className="container">
                 <div className="profile-container col-sm-6 center-block">
-                    <div className="pro-avatar">
-                      <Image src={person.avatarUrl() || ''}
-                        fallbackSrc="/images/avatar.png" className="img-circle" />
-                    </div>
-                  { isLocal ?
-                  <div>
-                    <p>
-                      <Link to={this.props.location.pathname + "/edit"}
-                        className="btn btn-block btn-primary m-t-1">
-                        Edit
-                      </Link>
-                    </p>
-                    <p>
-                      <Link to={`/profiles/blockchain/${domainName}`}
-                        className="btn btn-block btn-primary m-t-1">
-                        View Publicly
-                      </Link>
-                    </p>
+                  <div className="pro-avatar">
+                    <Image src={person.avatarUrl() || ''}
+                      fallbackSrc="/images/avatar.png" className="img-circle" />
                   </div>
-                  :
-                  <div>
-                    <button className="btn btn-block btn-primary m-t-1">
-                      Connect
-                    </button>
-                  </div>
-                  }
                 </div>
                 <div className="col-sm-6">
                   <div className="idcard-wrap">
@@ -177,6 +155,28 @@ class ViewProfilePage extends Component {
                     </div>
                     : null }
                   </div>
+                  { isLocal ?
+                  <div>
+                    <p>
+                      <Link to={this.props.location.pathname + "/edit"}
+                        className="btn btn-block btn-primary m-t-1">
+                        Edit
+                      </Link>
+                    </p>
+                    <p>
+                      <Link to={`/profiles/blockchain/${domainName}`}
+                        className="btn btn-block btn-primary m-t-1">
+                        View Publicly
+                      </Link>
+                    </p>
+                  </div>
+                  :
+                  <div>
+                    <button className="btn btn-block btn-primary m-t-1">
+                      Connect
+                    </button>
+                  </div>
+                  }
                 </div>
               </div>
               <div className="container">
