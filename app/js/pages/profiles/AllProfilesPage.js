@@ -59,7 +59,7 @@ class IdentityPage extends Component {
       <div className="app-wrap-profiles">
         <div className="container-fluid site-wrapper">
           <nav className="navbar navbar-toggleable-md navbar-light">
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" href="/profiles">
               <img src="/images/app-icon-profiles.png" />
             </a>
             <div className="navbar-collapse" id="navbarSupportedContent">

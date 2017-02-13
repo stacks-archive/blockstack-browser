@@ -52,22 +52,19 @@ a,a:focus{outline:none;}
 .btn-sm,.btn-group-sm > .btn{font-size:11px;line-height:12px;padding:6px 10px;border-radius:2px;}
 
 /* ID card */
-.proid-wrap{width:870px;max-width:980px;}
 .idcard{position:relative;border:.0625rem solid rgba(229,229,229,1);border-radius:.25rem;}
-.idcard-body{display:block;margin-bottom:30px;color:#7b7b7b;}
 .dim{color:#7b7b7b;}
 .id-flex img, .id-flex .dropzone {bottom:0;width:16.25rem;height:371px;-webkit-border-radius:8px;border-radius:8px;object-fit:cover;}
 .id-flex{bottom:0;display:table-cell;width:16.25rem;height:371px;vertical-align:top;}
 .idcard-block{display:table-cell;width:100%;vertical-align:top;}
-.idcard-name{font-size:1.25em;}
 .id-social > div > ul{height:39px;margin-top:5px;margin-bottom:5px;margin-left:15px;list-style:none;}
 .id-social > div > ul > li a{line-height:32px;overflow:hidden;height:32px;padding-left:10px;vertical-align:middle;white-space:nowrap;text-overflow:ellipsis;color:rgba(255,255,255,1);}
 i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;}
 .id-social > div > ul > li a > span{padding-left:5px;}
 .idcard-wrap{font-weight:inherit;margin-top:105px;color:#444;}
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
-.profile-container,profile-wrap{min-width:18.125rem;padding:.9375rem;}
-.profile-right-col-fill{position:relative;top:50px;height:55vh;padding:0 0 0 10px;border-left:1px solid #e1e1e1;}
+.profile-container,profile-wrap{padding:.9375rem;}
+.profile-right-col-fill{position:relative;top:50px;min-height:45vh;padding:0 0 0 10px;}
 div.profile-right-col > ul{padding-left:0;list-style-type:none;}
 div.profile-right-col > ul > li > a,div.profile-right-col > ul > li > button{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
 .btn-social-account{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
@@ -253,12 +250,13 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 .btn:focus,.btn:active:focus,.btn.active:focus{outline:none;}
 .btn-default{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;}
 .btn-primary{background-color:#270F34;border:1px solid #270F34;}
-.btn-outline-primary{color:#270F34;border:1px solid #270F34;}
-.btn-outline-primary:hover,.btn-outline-primary:focus,.btn-outline-primary:active,.btn-default:hover,.btn-default:focus,.btn-default:active{color:#fff;border:1px solid #2275d7;background-color:#2275d7;}
+.btn-outline-primary{color:#270F34;background-color:#fff;border:1px solid #270F34;}
 .btn-side-secondary{font-family:'Source Code Pro',monospace;color:#270F34;border:1px solid #fff;border-right:none;border-radius:0;background-color:#f5f5f5;}
+.btn-outline-primary:hover,.btn-outline-primary:focus,.btn-outline-primary:active,.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active{color:#fff;border:1px solid #2275d7;background-color:#2275d7;}
 .btn-blue{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;padding-right:1.375rem;padding-left:1.375rem;border-radius:0;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
 .btn-blue:hover,.btn-blue:focus,.btn-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
 .btn-block{display:inline-block;width:initial;}
+.btn-inline{margin-right:15px;}
 /* removed
 .btn-side-emphasis, 
 .btn-side-emphasis:hover, 
@@ -300,7 +298,10 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 
+.pro-wrap{font-family:'Source Code Pro',monospace;max-width:1180px;background-color:#080809;padding:35px;font-weight:300;}
 div.pro-avatar img{max-width:58px;}
+.pro-card-name{font-size:0.875rem;color:#fff;font-weight:300;}
+.pro-card-body{display:block;margin-bottom:30px;font-size:0.75rem;color:#fff;}
 
 /* 28. List group */
 .list-group-item-sidebar{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;}
@@ -342,9 +343,11 @@ a.list-group-item-dash:hover,
 /* NOTE: change breaking point @media (min-width: 975px;) to @media (min-width: 992px;) in blockstack-bootstrap as this is a non-standard break point */
 @media (min-width:975px){
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
+	.pro-wrap{min-width:905px;}
 }
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width:1200px){
 	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;}
+	.pro-wrap{min-width:1130px;}
 }

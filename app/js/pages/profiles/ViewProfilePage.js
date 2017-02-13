@@ -108,7 +108,7 @@ class ViewProfilePage extends Component {
         { person !== null ?   
         <div className="container-fluid site-wrapper">
           <nav className="navbar navbar-toggleable-md navbar-light">
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" href="/profiles">
               <img src="/images/app-icon-profiles.png" />
             </a>
             <div className="navbar-collapse" id="navbarSupportedContent">
@@ -123,60 +123,54 @@ class ViewProfilePage extends Component {
               <AddressBar placeholder="Search for people" />
             </div>
           </nav>
-          <div className="container-fluid proid-wrap m-t-50">
+          <div className="container-fluid pro-wrap m-t-50">
             <div className="col-sm-9">
               <div className="container">
-                <div className="profile-container col-sm-6 center-block">
-                    <div className="pro-avatar">
-                      <Image src={person.avatarUrl() || ''}
-                        fallbackSrc="/images/avatar.png" className="img-circle" />
-                    </div>
-                  { isLocal ?
-                  <div>
-                    <p>
-                      <Link to={this.props.location.pathname + "/edit"}
-                        className="btn btn-block btn-primary m-t-1">
-                        Edit
-                      </Link>
-                    </p>
-                    <p>
-                      <Link to={`/profiles/blockchain/${domainName}`}
-                        className="btn btn-block btn-primary m-t-1">
-                        View Publicly
-                      </Link>
-                    </p>
+                <div className="profile-container col-sm-12 center-block">
+                  <div className="pro-avatar m-b-20">
+                    <Image src={person.avatarUrl() || ''}
+                      fallbackSrc="/images/avatar.png" className="img-circle" />
                   </div>
-                  :
-                  <div>
-                    <button className="btn btn-block btn-primary m-t-1">
-                      Connect
-                    </button>
-                  </div>
-                  }
-                </div>
-                <div className="col-sm-6">
-                  <div className="idcard-wrap">
+                  <div className="">
                     { (blockNumber && transactionIndex) ?
                     <div className="idcard-body dim">
                       Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
                       transaction <span className="inverse">#{transactionIndex}</span>
                     </div>
                     : null }
-                    <h1 className="idcard-name">{person.name()}</h1>
-                    <div className="idcard-body">
+                    <h1 className="pro-card-name">{person.name()}</h1>
+                    <div className="pro-card-body">
                       {person.description()}
                     </div>
                     { person.address() ?
-                    <div className="idcard-body dim">
+                    <div className="pro-card-body">
                       {person.address()}
                     </div>
                     : null }
                     { person.birthDate() ?
-                    <div className="idcard-body dim">
+                    <div className="pro-card-body">
                       {person.birthDate()}
                     </div>
                     : null }
                   </div>
+                  { isLocal ?
+                  <div>
+                      <Link to={this.props.location.pathname + "/edit"}
+                        className="btn btn-sm btn-secondary m-t-10 btn-inline">
+                        Edit
+                      </Link>
+                      <Link to={`/profiles/blockchain/${domainName}`}
+                        className="btn btn-sm btn-secondary m-t-10 btn-inline">
+                        View Publicly
+                      </Link>
+                  </div>
+                  :
+                  <div>
+                    <button className="btn btn-sm btn-secondary m-t-10">
+                      Connect
+                    </button>
+                  </div>
+                  }
                 </div>
               </div>
               <div className="container">
