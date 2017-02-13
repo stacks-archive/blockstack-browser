@@ -1,4 +1,4 @@
 # Docs
 
-[Dependencies](/dependencies.md)
-[Pixels to REM Units](/px-rem.md)
+- [Dependencies](/docs/dependencies.md)
+- [Pixels to REM Units](/docs/px-rem.md)
