@@ -57,12 +57,14 @@ function resetApi() {
       priceUrl: 'http://localhost:6270/v1/prices/names/{name}',
       walletPaymentAddressUrl: 'http://localhost:6270/v1/wallet/payment_address',
       pendingQueuesUrl: 'http://localhost:6270/v1/blockchains/bitcoin/pending',
+      coreWalletWithdrawUrl: 'http://localhost:6270/v1/wallet/balance',
       hostedDataLocation: DROPBOX,
       blockstackApiAppId:'470c9d0c7dbd41b1bb6defac9be3595a',
       blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
       s3ApiKey: '',
       s3ApiSecret: '',
-      s3Bucket: ''
+      s3Bucket: '',
+      dropboxAccessToken: null
     }
     dispatch(updateApi(DEFAULT_API))
   }
@@ -84,12 +86,14 @@ const initialState = {
     priceUrl: 'http://localhost:6270/v1/prices/names/{name}',
     walletPaymentAddressUrl: 'http://localhost:6270/v1/wallet/payment_address',
     pendingQueuesUrl: 'http://localhost:6270/v1/blockchains/bitcoin/pending',
+    coreWalletWithdrawUrl: 'http://localhost:6270/v1/wallet/balance',
     hostedDataLocation: DROPBOX,
     blockstackApiAppId:'470c9d0c7dbd41b1bb6defac9be3595a',
     blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
     s3ApiKey: '',
     s3ApiSecret: '',
-    s3Bucket: ''
+    s3Bucket: '',
+    dropboxAccessToken: null
   }
 }
 

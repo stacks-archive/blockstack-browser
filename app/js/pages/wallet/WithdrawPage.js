@@ -16,7 +16,8 @@ import { ECPair, ECKey, TransactionBuilder } from 'bitcoinjs-lib'
 
 function mapStateToProps(state) {
   return {
-    account: state.account
+    account: state.account,
+    coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl
   }
 }
 
@@ -32,6 +33,7 @@ class WithdrawPage extends Component {
   constructor(props) {
     super(props)
     this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
+    this.withdrawBitcoinFromCoreWallet = this.withdrawBitcoinFromCoreWallet.bind(this)
 
     this.state = {
       alerts: []
@@ -52,6 +54,37 @@ class WithdrawPage extends Component {
         status: alertStatus,
         message: alertMessage
       }]
+    })
+  }
+
+  withdrawBitcoinFromCoreWallet(event) {
+    event.preventDefault()
+
+    const recipientAddress = this.state.recipientAddress
+
+    const requestHeaders = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+
+    const requestBody = JSON.stringify({
+      address: recipientAddress
+    })
+
+    fetch(this.props.coreWalletWithdrawUrl, {
+      method: 'POST',
+      headers: requestHeaders,
+      body: requestBody
+    })
+    .then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      console.log(responseJson)
+      this.updateAlert('success', "Transaction sent!")
+    })
+    .catch((error) => {
+      console.warn(error)
+      this.updateAlert('danger', "There was a problem withdrawing your bitcoin.")
     })
   }
 
@@ -144,7 +177,7 @@ class WithdrawPage extends Component {
             })}
               <Balance/>
               <p>Send your funds to another Bitcoin wallet.</p>
-              <form onSubmit={this.withdrawBitcoin}>
+              <form onSubmit={this.withdrawBitcoinFromCoreWallet} method='post'>
               <InputGroup data={this.state} onChange={this.onValueChange} name="recipientAddress" label="Recipient address" placeholder="Recipient address" required={true}/>
               <InputGroup data={this.state} onChange={this.onValueChange} name="password" label="Password" placeholder="Password" type="password" required={true}/>
               <div className="container m-t-40">

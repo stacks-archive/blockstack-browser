@@ -32,7 +32,8 @@ class DepositPage extends Component {
   }
 
   componentWillMount() {
-    fetch(this.props.walletPaymentAddressUrl).then((response) => response.text())
+    fetch(this.props.walletPaymentAddressUrl)
+    .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
       const address = responseJson.address
@@ -54,7 +55,7 @@ class DepositPage extends Component {
               <AccountSidebar activeTab="deposit" />
             </div>
             <div className="col-md-9">
-              <Balance/>
+              <Balance />
               <p><i>
                 Note: All identity registrations require funds from your account.
                 To fund your account, send bitcoins to the address below.

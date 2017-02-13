@@ -13,14 +13,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 class DashboardPage extends Component {
-  static propTypes = {
-  }
-
   constructor(props) {
     super(props)
-  }
-
-  componentDidMount() {
   }
 
   render() {
