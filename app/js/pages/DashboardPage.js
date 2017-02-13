@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { WelcomeModal } from '../components/index'
 
 function mapStateToProps(state) {
   return {
@@ -14,40 +13,14 @@ function mapDispatchToProps(dispatch) {
 }
 
 class DashboardPage extends Component {
-  static propTypes = {
-  }
-
   constructor(props) {
     super(props)
-
-    this.state = {
-      modalIsOpen: false,
-      password: ''
-    }
-
-    this.openModal = this.openModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
-  }
-
-  openModal() {
-    console.log('opening modal')
-    this.setState({modalIsOpen: true})
-  }
-
-  closeModal() {
-    console.log('closing modal')
-    this.setState({modalIsOpen: false})
   }
 
   render() {
     return (
       <div className="container-fluid">
         <div className="container profile-wrap-wide">
-
-          <WelcomeModal
-            isOpen={this.state.modalIsOpen}
-            closeModal={this.closeModal} />
-
           <section>
             <div className="container-fluid no-padding">
               <div className="col-sm-12 app-container no-padding">
@@ -84,16 +57,6 @@ class DashboardPage extends Component {
                     <h3>Hello, Blockstack</h3>
                   </div>
                 </div>
-              </div>
-            </div>
-          </section>
-
-          <section>
-            <div className="container-fluid no-padding">
-              <div className="app-text-container">
-                <button onClick={this.openModal} className="btn btn-primary">
-                  Open Welcome Modal
-                </button>
               </div>
             </div>
           </section>

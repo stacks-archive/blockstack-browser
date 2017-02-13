@@ -1,6 +1,19 @@
 import React, { Component, PropTypes } from 'react'
 import Modal from 'react-modal'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
 import InputGroup from '../components/InputGroup'
+import { AccountActions } from '../store/account'
+
+function mapStateToProps(state) {
+  return {
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(AccountActions, dispatch)
+}
 
 class WelcomeModal extends Component {
   static propTypes = {
@@ -16,7 +29,8 @@ class WelcomeModal extends Component {
       password: ''
     }
 
-    this.savePassword = this.savePassword.bind(this)
+    this.createAccount = this.createAccount.bind(this)
+    this.onValueChange = this.onValueChange.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,8 +39,18 @@ class WelcomeModal extends Component {
     })
   }
 
-  savePassword()  {
-    console.log('password saved') 
+  createAccount()  {
+    if (this.state.password.length) {
+      console.log('password saved') 
+      this.props.initializeWallet(this.state.password, null)
+      this.props.closeModal()
+    }
+  }
+
+  onValueChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   render() {
@@ -39,20 +63,16 @@ class WelcomeModal extends Component {
           shouldCloseOnOverlayClick={false}
         >
 
-          <h2 ref="subtitle">Welcome to Blockstack</h2>
+          <h2>Welcome to Blockstack</h2>
 
-          <h4>Create an account</h4>
+          <h4>Step 1: Create an account</h4>
 
           <InputGroup name="password" label="Password" type="password"
             data={this.state} onChange={this.onValueChange} />
 
           <div className="container m-t-40">
-            <button className="btn btn-primary" onClick={this.savePassword}>
-              Save
-            </button>
-            &nbsp;
-            <button className="btn btn-secondary" onClick={this.props.closeModal}>
-              close
+            <button className="btn btn-primary" onClick={this.createAccount}>
+              Create Account
             </button>
           </div>
 
@@ -62,4 +82,4 @@ class WelcomeModal extends Component {
   }
 }
 
-export default WelcomeModal
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomeModal)
