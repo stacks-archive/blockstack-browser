@@ -193,6 +193,9 @@ class ViewProfilePage extends Component {
             </div>
             <div className="col-sm-3 pull-right profile-right-col-fill">
               <div className="profile-right-col inverse">
+                <h3>
+                  {domainName}
+                </h3>
                 <ul>
                   {accounts.map(function(account) {
                     let verified = false
