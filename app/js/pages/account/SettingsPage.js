@@ -114,9 +114,9 @@ class SettingsPage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
+      <div className="body-inner-white">
         <PageHeader title="Settings" />
-        <div className="container">
+        <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">
               <AccountSidebar activeTab="settings" />
@@ -170,11 +170,11 @@ class SettingsPage extends Component {
                 { this.state.api.hostedDataLocation === DROPBOX ?
                   <div>
                       { this.state.api.dropboxAccessToken == null ?
-                        <button onClick={this.connectDropbox} className="btn btn-default">
+                        <button onClick={this.connectDropbox} className="btn btn-sm btn-outline-primary">
                         Connect Dropbox
                         </button>
                       :
-                      <button onClick={this.disconnectDropbox} className="btn btn-default">
+                      <button onClick={this.disconnectDropbox} className="btn btn-sm btn-outline-primary">
                       Disconnect Dropbox
                       </button>
                       }
@@ -182,12 +182,12 @@ class SettingsPage extends Component {
                 : null }
 
                 <hr />
-
+                
                 <h4>Authentication</h4>
 
                 <p>
                   <button onClick={this.registerProtocolHandler}
-                    className="btn btn-sm btn-primary">
+                    className="btn btn-sm btn-outline-primary">
                     Allow App Logins
                   </button>
                 </p>

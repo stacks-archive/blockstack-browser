@@ -122,9 +122,9 @@ class EditProfilePage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
-        <PageHeader title="Edit Profile" subtitle={this.state.tabName} />
-        <div className="container">
+      <div className="body-inner-white">
+        <PageHeader title="Edit Profile"/>
+        <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-4">
               <ProfileEditingSidebar
