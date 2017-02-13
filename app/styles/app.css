@@ -63,8 +63,7 @@ i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;}
 .id-social > div > ul > li a > span{padding-left:5px;}
 .idcard-wrap{font-weight:inherit;margin-top:105px;color:#444;}
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
-.profile-container,profile-wrap{padding:.9375rem;}
-.profile-right-col-fill{position:relative;top:50px;min-height:45vh;padding:0 0 0 10px;}
+.profile-right-col-fill{position:relative;top:1.5rem;min-height:45vh;padding:0 0 0 10px;}
 div.profile-right-col > ul{padding-left:0;list-style-type:none;}
 div.profile-right-col > ul > li > a,div.profile-right-col > ul > li > button{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
 .btn-social-account{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
@@ -302,6 +301,7 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 div.pro-avatar img{max-width:58px;}
 .pro-card-name{font-size:0.875rem;color:#fff;font-weight:300;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.75rem;color:#fff;}
+.pro-container{padding-top:1.5rem;}
 
 /* 28. List group */
 .list-group-item-sidebar{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;}
