@@ -297,9 +297,9 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 
-.pro-wrap{font-family:'Source Code Pro',monospace;max-width:1180px;background-color:#080809;padding:35px;}
+.pro-wrap{font-family:'Source Code Pro',monospace;max-width:1180px;background-color:#080809;padding:35px;font-weight:300;}
 div.pro-avatar img{max-width:58px;}
-.pro-card-name{font-size:0.875rem;color:#fff;font-weight:400;}
+.pro-card-name{font-size:0.875rem;color:#fff;font-weight:300;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.75rem;color:#fff;}
 
 /* 28. List group */
