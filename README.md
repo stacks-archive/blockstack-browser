@@ -30,6 +30,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 1. Run `npm install` from the root directory
 1. Run `npm run dev` to run locally
 
+
 *Note: When you do `npm run dev` you're running three concurrent processes. One starts a CORS proxy on port 1337. The second starts a server that mocks the future Blockstack REST API on port 8889. The third runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. Anytime changes are made to the original files, they are rebuilt and resynced to the browser frames you have open.*
 
 
@@ -61,6 +62,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 1. Click "Export a Developer ID-signed Application"
 1. Choose the development team with the Developer ID you'd like to use to sign the application.
 1. Click "Export" and select the location to which you would like to save the signed build.
+
 
 
 ## Contributing

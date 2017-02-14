@@ -29,3 +29,6 @@ __coverage__
 .elasticbeanstalk/
 
 unused
+
+tmp
+
