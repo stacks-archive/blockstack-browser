@@ -6,8 +6,9 @@
 @synthesize blockstackProxyTask;
 @synthesize corsProxyTask;
 @synthesize blockstackCoreConfigFilePath;
-@synthesize pythonPath;
-@synthesize blockstackPath;
+@synthesize blockstackWrapperScriptPath;
+@synthesize blockstackVenvPath;
+
 
 
 
@@ -115,23 +116,18 @@
     NSString*archivePath=[mainBundle pathForResource:@"blockstack-venv.tar" ofType:@"gz"];
     NSLog(@"Blockstack Virtualenv archive path: %@", archivePath);
     
-    //NSArray *tokens = [archivePath componentsSeparatedByString:@"blockstack-venv.tar."];
+    self.blockstackWrapperScriptPath = [mainBundle pathForResource:@"blockstack-wrapper-mac" ofType:@"sh"];
+    NSLog(@"Blockstack wrapper script path: %@", self.blockstackWrapperScriptPath);
+
+    
     NSString *extractToPath = [self blockstackDataPath];
     NSLog(@"Extract Blockstack venv to: %@", extractToPath);
     
     self.blockstackCoreConfigFilePath = [NSString stringWithFormat:@"%@/config/client.ini", [self blockstackDataPath]];
-
     NSLog(@"Blockstack Core config file path: %@", self.blockstackCoreConfigFilePath);
     
-    NSString *blockstackVenvPath = [NSString stringWithFormat:@"%@/blockstack-venv", extractToPath];
-    NSLog(@"Blockstack Virtualenv Path: %@", blockstackVenvPath);
-
-    
-    self.blockstackPath = [NSString stringWithFormat:@"%@/bin/blockstack", blockstackVenvPath];
-    self.pythonPath = [NSString stringWithFormat:@"%@/bin/python2.7", blockstackVenvPath];
-
-    NSLog(@"Python path: %@", self.pythonPath);
-    NSLog(@"Blockstack path: %@", self.blockstackPath);
+    self.blockstackVenvPath = [NSString stringWithFormat:@"%@/blockstack-venv", extractToPath];
+    NSLog(@"Blockstack Virtualenv Path: %@", self.blockstackVenvPath);
 
 
     NSTask *extractTask = [[NSTask alloc] init];
@@ -145,7 +141,6 @@
     extractTask.launchPath = @"/usr/bin/tar";
     extractTask.arguments = @[@"-xvzf", archivePath, @"-C", extractToPath];
 
-    
     NSPipe *pipe = [[NSPipe alloc] init];
     [extractTask setStandardOutput:pipe];
     [extractTask setStandardError:pipe];
@@ -166,10 +161,11 @@
     
     /* Blockstack Core setup task */
     
-    blockstackCoreApiSetupTask.launchPath = self.pythonPath;
+    blockstackCoreApiSetupTask.launchPath = @"/bin/bash";
     
-    blockstackCoreApiSetupTask.arguments = @[self.blockstackPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"setup", @"--password", coreWalletPassword];
-    
+    blockstackCoreApiSetupTask.arguments = @[self.blockstackWrapperScriptPath, self.blockstackVenvPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"setup", @"--password", coreWalletPassword];
+    NSLog(@"HERE!!!");
+
     NSPipe *setupPipe = [[NSPipe alloc] init];
     [blockstackCoreApiSetupTask setStandardOutput:setupPipe];
     [blockstackCoreApiSetupTask setStandardError:setupPipe];
@@ -179,7 +175,7 @@
         NSLog(@"Blockstack Core setup output: %@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
         
     }];
-    
+
     blockstackCoreApiSetupTask.terminationHandler = ^(NSTask *aTask){
         NSLog(@"Finished Blockstack Core setup!");
         NSLog(@"Starting Blockstack Core API endpoint...");
@@ -190,9 +186,9 @@
     /* Blockstack Core api start task */
     
     
-    blockstackCoreApiStartTask.launchPath = self.pythonPath;
+    blockstackCoreApiStartTask.launchPath = @"/bin/bash";
     
-    blockstackCoreApiStartTask.arguments = @[self.blockstackPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"api", @"start", @"--password", coreWalletPassword];
+    blockstackCoreApiStartTask.arguments = @[self.blockstackWrapperScriptPath, self.blockstackVenvPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"api", @"start", @"--password", coreWalletPassword];
     
     NSPipe *startPipe = [[NSPipe alloc] init];
     [blockstackCoreApiStartTask setStandardOutput:startPipe];
@@ -217,11 +213,12 @@
 {
     NSLog(@"Attempting to stop Blockstack Core API before exiting...");
     
+    
     NSTask* blockstackCoreApiStopTask = [[NSTask alloc] init];
     
-    blockstackCoreApiStopTask.launchPath = self.pythonPath;
+    blockstackCoreApiStopTask.launchPath = @"/bin/bash";
     
-    blockstackCoreApiStopTask.arguments = @[self.blockstackPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"api", @"stop"];
+    blockstackCoreApiStopTask.arguments = @[self.blockstackWrapperScriptPath, self.blockstackVenvPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"api", @"stop"];
     
     NSPipe *pipe = [[NSPipe alloc] init];
     [blockstackCoreApiStopTask setStandardOutput:pipe];
