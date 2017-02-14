@@ -168,7 +168,7 @@
     
     blockstackCoreApiSetupTask.launchPath = self.pythonPath;
     
-    blockstackCoreApiSetupTask.arguments = @[self.blockstackPath, @"--debug", @"--config", self.blockstackCoreConfigFilePath, @"setup", @"--password", coreWalletPassword];
+    blockstackCoreApiSetupTask.arguments = @[self.blockstackPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"setup", @"--password", coreWalletPassword];
     
     NSPipe *setupPipe = [[NSPipe alloc] init];
     [blockstackCoreApiSetupTask setStandardOutput:setupPipe];
@@ -192,7 +192,7 @@
     
     blockstackCoreApiStartTask.launchPath = self.pythonPath;
     
-    blockstackCoreApiStartTask.arguments = @[self.blockstackPath, @"--debug", @"--config", self.blockstackCoreConfigFilePath, @"api", @"start", @"--password", coreWalletPassword];
+    blockstackCoreApiStartTask.arguments = @[self.blockstackPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"api", @"start", @"--password", coreWalletPassword];
     
     NSPipe *startPipe = [[NSPipe alloc] init];
     [blockstackCoreApiStartTask setStandardOutput:startPipe];
@@ -221,7 +221,7 @@
     
     blockstackCoreApiStopTask.launchPath = self.pythonPath;
     
-    blockstackCoreApiStopTask.arguments = @[self.blockstackPath, @"--debug", @"--config", self.blockstackCoreConfigFilePath, @"api", @"stop"];
+    blockstackCoreApiStopTask.arguments = @[self.blockstackPath, @"--debug", @"-y", @"--config", self.blockstackCoreConfigFilePath, @"api", @"stop"];
     
     NSPipe *pipe = [[NSPipe alloc] init];
     [blockstackCoreApiStopTask setStandardOutput:pipe];
