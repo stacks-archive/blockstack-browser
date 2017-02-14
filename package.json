@@ -1,8 +1,8 @@
 {
-  "name": "blockstack-browser",
+  "name": "blockstack-portal",
   "version": "0.3.0",
   "author": "Blockstack Inc <admin@blockstack.com>",
-  "description": "The Blockstack browser",
+  "description": "The Blockstack browser portal",
   "license": "MPL-2.0",
   "repository": {
     "type": "git",

@@ -1,9 +1,9 @@
-Blockstack Browser
+Blockstack Browser Portal
 ============
 
 [![Slack](http://chat.blockstack.org/badge.svg)](http://chat.blockstack.org/)
 
-The Blockstack Browser allows you to explore the Blockstack internet.
+The Blockstack Browser Portal allows you to explore the Blockstack internet.
 
 ---
 
