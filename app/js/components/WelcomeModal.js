@@ -54,8 +54,9 @@ class WelcomeModal extends Component {
 
   connectDropbox() {
     const dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
+    const port = location.port === '' ? 80 : location.port
     window.location = dbx.getAuthenticationUrl(
-      'http://localhost:3000/account/settings')
+      `http://localhost:${port}/account/settings`)
   }
 
   onValueChange(event) {

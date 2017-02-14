@@ -91,8 +91,10 @@ class SettingsPage extends Component {
 
   connectDropbox() {
     var dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
+    const port = location.port === '' ? 80 : location.port
+    console.log(port) 
     window.location = dbx.getAuthenticationUrl(
-      'http://localhost:3000/account/settings')
+      `http://localhost:${port}/account/settings`)
   }
 
   disconnectDropbox() {
@@ -182,7 +184,7 @@ class SettingsPage extends Component {
                 : null }
 
                 <hr />
-                
+
                 <h4>Authentication</h4>
 
                 <p>
