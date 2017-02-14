@@ -37,6 +37,10 @@ pip install git+https://github.com/blockstack/blockstack-core.git@rc-0.14.1b
 
 echo "Blockstack virtual environment created."
 
+echo "Making Blockstack virtual environment relocatable..."
+
+virtualenv --relocatable blockstack-venv
+
 echo "Build Blockstack virtualenv archive..."
 
 tar -czvf Blockstack/Blockstack/blockstack-venv.tar.gz blockstack-venv
