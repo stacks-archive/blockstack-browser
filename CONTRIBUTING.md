@@ -9,7 +9,7 @@ Following these guidelines helps to communicate that you respect the time of eve
 
 ## Using the issue tracker
 
-The [issue tracker](https://github.com/twbs/bootstrap/issues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following
+The [issue tracker](/issues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following
 restrictions:
 
 * Please **do not** use the issue tracker for personal support requests.  Please use the [Forum](https://forum.blockstack.org) or [Slack](https://chat.blockstack.org) as they are better places to get help.
@@ -25,26 +25,11 @@ Our bug tracker utilizes several labels to help organize and identify issues. He
 
 - `bug` - Issues where code is demonstrably a problem
 - `chore` - Issues that are not 
-- `copywriting` - Issues requiring copywriting
 - `design` - Issues related to design
 - `documentation` - Issue that is specifically for addition, creation or editing of documentation
-- `duplicate` - Duplicate issue
 - `enhancement` - Issues that enhance the product
 - `feature` - Issues that identify a new feature
-- `fixed in the next release` - Issues that will be addressed in the next release
-- `future` - Issues that will be address and/or dealt with in the future
-- `help wanted` - Issues calling for assistance from the community
-- `invalid` - Issues that are not valid
-- `priority` - Issues that are immediate and/or of high importance
-- `production` - Issues that require production work
-- `question` - Issues that are questions about code and/or other issues
-- `refactoring` - Issues that require code to be restructured
 - `release-overview` - Overview of release
-- `request` - Issues that are requesting a feature or other item
-- `strategy` - Issues where strategic thinking is required
-- `ui` - Issues requiring the building or styling of front-end UI
-- `v-old` - Old version issues
-- `wontfix` - Issues that will not be resolved
 
 For a complete look at our labels, see the [project labels page](https://github.com/blockstack/blockstack-browser/labels).
 
@@ -150,9 +135,9 @@ Adhering to the following process is the best way to get your work included in t
     with a clear title and description against the `master` branch.
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project owners to
-license your work under the terms of the [MIT License](LICENSE) (if it
+license your work under the terms of the [MPL-2.0 License](LICENSE.md) (if it
 includes code changes) and under the terms of the
-[Creative Commons Attribution 3.0 Unported License](docs/LICENSE)
+[Creative Commons Attribution 3.0 Unported License](docs/LICENSE.md)
 (if it includes documentation changes).
 
 
@@ -163,8 +148,6 @@ includes code changes) and under the terms of the
 [Adhere to the Code Guide.](http://codeguide.co/#html)
 
 - Use tags and elements appropriate for an HTML5 doctype (e.g., self-closing tags).
-- Use CDNs and HTTPS for third-party JS when possible. We don't use protocol-relative URLs in this case because they break when viewing the page locally via `file://`.
-- Use [WAI-ARIA](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) attributes in documentation examples to promote accessibility.
 
 ### JS
 
@@ -172,7 +155,7 @@ includes code changes) and under the terms of the
 - 2 spaces (no tabs)
 - strict mode
 - "Attractive"
-- Don't use [jQuery event alias convenience methods](https://github.com/jquery/jquery/blob/master/src/event/alias.js) (such as `$().focus()`). Instead, use [`$().trigger(eventType, ...)`](https://api.jquery.com/trigger/) or [`$().on(eventType, ...)`](https://api.jquery.com/on/), depending on whether you're firing an event or listening for an event. (For example, `$().trigger('focus')` or `$().on('focus', function (event) { /* handle focus event */ })`) We do this to be compatible with custom builds of jQuery where the event aliases module has been excluded.
+- Don't use jQuery (no "$" allowed)
 
 ### Checking code
 
@@ -181,6 +164,4 @@ Run `npm run dev` before committing to ensure your changes follow our coding sta
 
 ## License
 
-By contributing your code, you agree to license your contribution under the [MIT License](LICENSE).
-By contributing to the documentation, you agree to license your contribution under the [Creative Commons Attribution 3.0 Unported License](docs/LICENSE).
-
+By contributing your code, you agree to license your contribution under the [MPL-2.0 License](LICENSE.md).

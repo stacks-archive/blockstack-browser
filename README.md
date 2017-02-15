@@ -9,35 +9,39 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 
 ## Table of contents
 
-- [Quick start](#quick-start)
-- [Building for the Web](#building-for-the-web)
+- [Releases](#releases)
+- [Developing](#developing)
 - [Building for macOS](#building-for-macos)
-- [Documentation (coming soon...)](#)
+- [Building for the Web](#building-for-the-web)
 - [Contributing](#contributing)
-- [Community (coming soon...)](#)
-- [Versioning (coming soon...)](#)
 - [Tech Stack](#tech-stack)
 - [Testing](#testing)
-- [Creators (coming soon...)](#)
-- [Copyright and license (coming soon...)](#)
 
 ---
 
-## Quick start
+## Releases
 
-1. Install Blockstack CLI https://github.com/blockstack/blockstack-cli
-1. Clone this repo from `https://github.com/blockstack/blockstack-browser.git`
-1. Run `npm install` from the root directory
+[Download the latest release](https://github.com/blockstack/blockstack-portal/releases)
+
+## Developing
+
+Blockstack Portal requires a local instance of Blockstack Core to run. To get started, first install Blockstack Core and then proceed with the installation of Blockstack Portal.
+
+### Part 1: Install Blockstack Core
+
+1. Create and enter a virtual environment
+1. Install blockstack core from the latest development branch: `pip install git+https://github.com/blockstack/virtualchain.git@rc-0.14.1 git+https://github.com/blockstack/blockstack-profiles-py.git@rc-0.14.1 git+https://github.com/blockstack/dns-zone-file-py.git@rc-0.14.1 git+https://github.com/blockstack/blockstack-core.git@rc-0.14.1b`
+1. Setup the Blockstack Core wallet: `blockstack setup`
+1. Start the Blockstack Core API: `blockstack api start`
+1. Make sure there's a local Blockstack Core API running by checking `http://localhost:6270/v1/names/blockstack.id` to see if it returns a response.
+
+### Part 2: Install Blockstack Portal
+
+1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
+1. Install node dependencies: `npm install`
 1. Run `npm run dev` to run locally
 
-
-*Note: When you do `npm run dev` you're running three concurrent processes. One starts a CORS proxy on port 1337. The second starts a server that mocks the future Blockstack REST API on port 8889. The third runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. Anytime changes are made to the original files, they are rebuilt and resynced to the browser frames you have open.*
-
-
-## Building for the Web
-
-1. Make sure you've cloned the repo and installed all npm assets (as shown above)
-1. Run `npm run web`
+*Note: When you do `npm run dev` you're running two concurrent processes. One starts a CORS proxy on port 1337. The second runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. Anytime changes are made to the original files, they are rebuilt and resynced to the browser frames you have open.*
 
 
 ## Building for macOS
@@ -64,10 +68,17 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 1. Click "Export" and select the location to which you would like to save the signed build.
 
 
+## Building for the Web
+
+1. Make sure you've cloned the repo and installed all npm assets (as shown above)
+1. Run `npm run web`
+
 
 ## Contributing
 
-Please read through our [contributing guidelines](https://github.com/blockstack/blockstack-browser/blob/master/CONTRIBUTING.md). Included are directions for opening issues, coding standards, and notes on development.
+We do project-wide sprints every two weeks and we're always looking for more help.
+
+If you'd like to contribute, head to the [contributing guidelines](/CONTRIBUTING.md). Inside you'll find directions for opening issues, coding standards, and notes on development.
 
 
 ## Tech Stack
