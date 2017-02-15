@@ -75,7 +75,8 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress, callback)
     try {
       profile = JSON.parse(zoneFile)
       profile = Person.fromLegacyFormat(profile).profile()
-    } catch(e) {
+    } catch (error) {
+      console.warn(error)
     }
     callback(profile)
     return

@@ -59,10 +59,10 @@ class Sidebar extends Component {
         <div className="sidebar-section">
           <div className="sidebar-label m-b-2">Personas</div>
           <div className="m-b-2">
-            <Link to="/names/register" className="btn btn-side-emphasis btn-side-pull-left" >
+            <Link to="/profiles/register" className="btn btn-side-emphasis btn-side-pull-left" >
               Register
             </Link>
-            <Link to="/names/import" className="btn btn-side-secondary">
+            <Link to="/profiles/import" className="btn btn-side-secondary">
               Import
             </Link>
           </div>
@@ -77,7 +77,7 @@ class Sidebar extends Component {
                     label={identity.domainName}
                     pending={!identity.registered}
                     avatarUrl={person.avatarUrl() || ''}
-                    url={`/profile/local/${identity.domainName}`} />
+                    url={`/profiles/local/${identity.domainName}`} />
                 )
               }
             })}

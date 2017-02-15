@@ -68,9 +68,9 @@ class DeleteAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
+      <div className="body-inner-white">
         <PageHeader title="Delete Account" />
-        <div className="container">
+        <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">
               <AccountSidebar activeTab="delete account" />
@@ -84,7 +84,7 @@ class DeleteAccountPage extends Component {
               <div>
                 <InputGroup name="password" label="Password" type="password"
                   data={this.state} onChange={this.onValueChange} />
-                <div>
+                <div className="container m-t-40">
                   <button className="btn btn-primary" onClick={this.deleteAccount}>
                     Delete Account
                   </button>

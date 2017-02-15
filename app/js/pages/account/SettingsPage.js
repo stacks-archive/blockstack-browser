@@ -2,8 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import RadioGroup from 'react-radio-group'
-import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../../utils/storage/index'
-import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from '../../utils/storage/dropbox'
+import {
+  SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX
+} from '../../utils/storage/index'
+import {
+  DROPBOX_APP_ID, getDropboxAccessTokenFromHash
+} from '../../utils/storage/dropbox'
 
 import {
   InputGroup, AccountSidebar, SaveButton, PageHeader
@@ -44,6 +48,7 @@ class SettingsPage extends Component {
     this.onHostedDataValueChange = this.onHostedDataValueChange.bind(this)
     this.connectDropbox = this.connectDropbox.bind(this)
     this.disconnectDropbox = this.disconnectDropbox.bind(this)
+    this.registerProtocolHandler = this.registerProtocolHandler.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,7 +60,7 @@ class SettingsPage extends Component {
   componentDidMount() {
     let api = this.state.api
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
-    if(dropboxAccessToken != null) {
+    if (dropboxAccessToken != null) {
       api['dropboxAccessToken'] = dropboxAccessToken
       this.setState({ api: api })
       window.location.hash = ""
@@ -86,8 +91,12 @@ class SettingsPage extends Component {
 
   connectDropbox() {
     var dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
-    window.location = dbx.getAuthenticationUrl('http://localhost:3000/account/settings')
+    const port = location.port === '' ? 80 : location.port
+    console.log(port) 
+    window.location = dbx.getAuthenticationUrl(
+      `http://localhost:${port}/account/settings`)
   }
+
   disconnectDropbox() {
     let api = this.state.api
     var dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
@@ -97,18 +106,26 @@ class SettingsPage extends Component {
     this.props.updateApi(api)
   }
 
+  registerProtocolHandler() {
+    window.navigator.registerProtocolHandler(
+      "web+blockstack",
+      location.origin + "/auth?authRequest=%s",
+      "Blockstack handler"
+    )
+  }
+
   render() {
     return (
-      <div className="body-inner body-inner-white">
+      <div className="body-inner-white">
         <PageHeader title="Settings" />
-        <div className="container">
+        <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">
               <AccountSidebar activeTab="settings" />
             </div>
             <div className="col-md-9">
               <div>
-                <h5>Blockstack API Options</h5>
+                <h4>Blockstack API Options</h4>
 
                 { this.state.api.apiCustomizationEnabled === true ?
                   <div>
@@ -123,19 +140,25 @@ class SettingsPage extends Component {
                   </div>
                 : null }
 
-                <h5>Data Hosting Options</h5>
+                <div className="form-group">
+                  <SaveButton onSave={this.updateApi} />
+                </div>
+
+                <p>
+                  <button onClick={this.resetApi} className="btn btn-outline-primary">
+                    Reset API
+                  </button>
+                </p>
+
+                <hr />
+
+                <h4>Data Hosting Options</h4>
 
                 <RadioGroup name="hostedDataLocation"
                   selectedValue={this.state.api.hostedDataLocation}
                   onChange={this.onHostedDataValueChange}>
                   {Radio => (
                     <div>
-                      <div className="radio">
-                        <label>
-                          <Radio value={BLOCKSTACK_INC} name="hostedDataLocation" />
-                          Host data on Amazon S3 through Blockstack Inc.
-                        </label>
-                      </div>
                       <div className="radio">
                         <label>
                           <Radio value={DROPBOX} name="hostedDataLocation" />
@@ -149,11 +172,11 @@ class SettingsPage extends Component {
                 { this.state.api.hostedDataLocation === DROPBOX ?
                   <div>
                       { this.state.api.dropboxAccessToken == null ?
-                        <button onClick={this.connectDropbox} className="btn btn-default">
+                        <button onClick={this.connectDropbox} className="btn btn-sm btn-outline-primary">
                         Connect Dropbox
                         </button>
                       :
-                      <button onClick={this.disconnectDropbox} className="btn btn-default">
+                      <button onClick={this.disconnectDropbox} className="btn btn-sm btn-outline-primary">
                       Disconnect Dropbox
                       </button>
                       }
@@ -162,13 +185,12 @@ class SettingsPage extends Component {
 
                 <hr />
 
-                <div className="form-group">
-                  <SaveButton onSave={this.updateApi} />
-                </div>
+                <h4>Authentication</h4>
 
                 <p>
-                  <button onClick={this.resetApi} className="btn btn-outline-primary">
-                    Reset API
+                  <button onClick={this.registerProtocolHandler}
+                    className="btn btn-sm btn-outline-primary">
+                    Allow App Logins
                   </button>
                 </p>
               </div>

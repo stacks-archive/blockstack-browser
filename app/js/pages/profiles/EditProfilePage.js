@@ -11,11 +11,11 @@ import {
 import { IdentityActions } from '../../store/identities'
 import { getNameParts, uploadProfile, uploadPhoto } from '../../utils/index'
 
-import BasicInfoTab from './BasicInfoTab'
-import PhotosTab from './PhotosTab'
-import SocialAccountsTab from './SocialAccountsTab'
-import PublicKeysTab from './PublicKeysTab'
-import PrivateInfoTab from './PrivateInfoTab'
+import BasicInfoTab      from './tabs/BasicInfoTab'
+import PhotosTab         from './tabs/PhotosTab'
+import SocialAccountsTab from './tabs/SocialAccountsTab'
+import PublicKeysTab     from './tabs/PublicKeysTab'
+import PrivateInfoTab    from './tabs/PrivateInfoTab'
 
 function mapStateToProps(state) {
   return {
@@ -122,9 +122,9 @@ class EditProfilePage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
-        <PageHeader title="Edit Profile" subtitle={this.state.tabName} />
-        <div className="container">
+      <div className="body-inner-white">
+        <PageHeader title="Edit Profile"/>
+        <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-4">
               <ProfileEditingSidebar

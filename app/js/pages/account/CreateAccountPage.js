@@ -70,13 +70,13 @@ class CreateAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner draggable-page">
-      <div className="container out-block-wrap">
+      <div className="draggable-page">
+      <div className="container vertical-split-content out-block-wrap">
         <div className="container-fluid out-block">
           <div className="row">
             <div className="centered">
               <div className="m-b-1">
-                <img className="beta-v1-0 m-t-1 m-b-1" src="/images/browser-beta-v1-0@2x.png"/>
+                <img className="title-version m-t-1 m-b-1" src="/images/browser-beta-v1-0@2x.png"/>
               </div>
             </div>
             <div>

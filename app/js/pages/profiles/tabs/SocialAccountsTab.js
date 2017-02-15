@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react'
 
 import {
   InputGroup, SaveButton, VerificationInfo
-} from '../../components/index'
+} from '../../../components/index'
 
-import { webAccountTypes } from '../../utils'
+import { webAccountTypes } from '../../../utils'
 
 class SocialAccountsTab extends Component {
   static propTypes = {

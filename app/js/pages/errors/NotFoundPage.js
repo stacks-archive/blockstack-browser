@@ -10,9 +10,9 @@ class NotFoundPage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
+      <div className="body-inner-white">
         <PageHeader title="Page Not Found" />
-        <div className="container">
+        <div className="container vertical-split-content">
           <p>
             <Link to="/" className="btn btn-primary">
               Go Home

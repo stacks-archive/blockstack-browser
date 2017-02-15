@@ -3,12 +3,13 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Sidebar from './components/Sidebar'
-import Navbar from './components/Navbar'
 import { AccountActions } from './store/account'
+import { WelcomeModal } from './components/index'
 
 function mapStateToProps(state) {
   return {
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    dropboxAccessToken: state.settings.api.dropboxAccessToken
   }
 }
 
@@ -19,24 +20,40 @@ function mapDispatchToProps(dispatch) {
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    initializeWallet: PropTypes.func.isRequired,
-  }
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired
+    encryptedBackupPhrase: PropTypes.string,
+    dropboxAccessToken: PropTypes.string
   }
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      accountCreated: this.props.encryptedBackupPhrase ? true : false,
+      storageConnected: this.props.dropboxAccessToken ? true : false,
+      password: ''
+    }
+
+    this.closeModal = this.closeModal.bind(this)
   }
 
-  componentWillMount() {
-    this.props.initializeWallet("password", null)
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      accountCreated: nextProps.encryptedBackupPhrase ? true : false,
+      storageConnected: nextProps.dropboxAccessToken ? true : false,
+    })
+  }
+
+  closeModal() {
+    this.setState({modalIsOpen: false})
   }
 
   render() {
     return (
       <div className="body-main">
+        <WelcomeModal
+          accountCreated={this.state.accountCreated}
+          storageConnected={this.state.storageConnected}
+          closeModal={this.closeModal} />
         {this.props.children}
       </div>
     )

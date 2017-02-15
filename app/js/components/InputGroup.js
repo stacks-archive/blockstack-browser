@@ -11,13 +11,15 @@ class InputGroup extends Component {
     disabled: PropTypes.bool,
     inverse: PropTypes.bool,
     textarea: PropTypes.bool,
-    textareaRows: PropTypes.number
+    textareaRows: PropTypes.number,
+    required: PropTypes.bool
   }
 
   render() {
     let value = '',
         type = "text",
-        disabled = false
+        disabled = false,
+        required = false
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
     }
@@ -26,6 +28,9 @@ class InputGroup extends Component {
     }
     if (this.props.disabled) {
       disabled = this.props.disabled
+    }
+    if (this.props.required) {
+      required = this.props.required
     }
     let inputClass = "form-control"
     if (this.props.inverse) {
@@ -56,6 +61,7 @@ class InputGroup extends Component {
               disabled={disabled}
               className={inputClass}
               type={type}
+              required={required}
               placeholder={
                 this.props.placeholder ? this.props.placeholder : this.props.label
               }

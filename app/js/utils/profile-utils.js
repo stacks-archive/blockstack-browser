@@ -20,7 +20,7 @@ export function verifyToken(token, verifyingKeyOrAddress) {
     throw new Error("Token doesn't have an issuer")
   }
   if (!payload.issuer.hasOwnProperty('publicKey')) {
-    throw new Error("Token doesn't have an issuer public key")    
+    throw new Error("Token doesn't have an issuer public key")
   }
   if (!payload.hasOwnProperty('claim')) {
     throw new Error("Token doesn't have a claim")
@@ -49,7 +49,7 @@ export function verifyToken(token, verifyingKeyOrAddress) {
   if (!tokenVerifier) {
     throw new Error("Invalid token verifier")
   }
-  
+
   let tokenVerified = tokenVerifier.verify(token)
   if (!tokenVerified) {
     throw new Error("Token verification failed")
@@ -58,44 +58,34 @@ export function verifyToken(token, verifyingKeyOrAddress) {
   return decodedToken
 }
 
-export function verifyTokenRecord(tokenRecord, publicKeyOrKeychain) {
-  if (publicKeyOrKeychain === null) {
+export function verifyTokenRecord(tokenRecord, publicKeyOrAddress) {
+  if (publicKeyOrAddress === null) {
     throw new Error('A public key or keychain is required')
   }
 
-  let token = tokenRecord.token
-  let verifyingPublicKey
-
-  if (typeof publicKeyOrKeychain === 'string') {
-    verifyingPublicKey = publicKeyOrKeychain
-  } else if (publicKeyOrKeychain instanceof PublicKeychain) {
-    let childKeychain = publicKeyOrKeychain.child(
-      new Buffer(tokenRecord.derivationEntropy, 'hex'))
-    verifyingPublicKey = childKeychain.publicKey('hex')
+  if (typeof publicKeyOrAddress === 'string') {
+    // do nothing
   } else {
-    throw new Error('A valid public key or PublicKeychain object is required')
+    throw new Error('A valid address or public key is required')
   }
 
-  let decodedToken = verifyToken(token, verifyingPublicKey)
+  let decodedToken = verifyToken(tokenRecord.token, publicKeyOrAddress)
 
   return decodedToken
 }
 
 export function getProfileFromTokens(tokenRecords, publicKeychain) {
-  console.log('get profile from tokens')
-
   let profile = {}
 
   tokenRecords.map((tokenRecord) => {
     let token = tokenRecord.token,
         decodedToken = null
-    
+
     try {
       decodedToken = decodeToken(tokenRecord.token)
-      //decodedToken = verifyTokenRecord(tokenRecord, publicKeychain)
-    } catch (e) {
-      // pass
-      console.log(e)
+      decodedToken = verifyTokenRecord(tokenRecord, publicKeychain)
+    } catch (error) {
+      console.warn(error)
     }
 
     if (decodedToken !== null) {

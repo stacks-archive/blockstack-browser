@@ -63,9 +63,9 @@ class BackupAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
+      <div className="body-inner-white">
         <PageHeader title="Backup Account" />
-        <div className="container">
+        <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">
               <AccountSidebar activeTab="backup account" />
@@ -104,7 +104,7 @@ class BackupAccountPage extends Component {
                   </p>
                   <InputGroup name="password" label="Password" type="password"
                     data={this.state} onChange={this.onChange} />
-                  <div>
+                  <div className="container m-t-40">
                     <button className="btn btn-primary" onClick={this.decryptBackupPhrase}>
                       Decrypt Backup Phrase
                     </button>

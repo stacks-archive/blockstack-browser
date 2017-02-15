@@ -6,8 +6,8 @@ import { AuthResponse, decodeToken } from 'blockstack-auth'
 import queryString from 'query-string'
 import base64url from 'base64url'
 
-import { PageHeader } from '../components/index'
-import { AccountActions } from '../store/account'
+import { PageHeader }     from '../../components/index'
+import { AccountActions } from '../../store/account'
 
 function mapStateToProps(state) {
   return {
@@ -40,7 +40,8 @@ class AuthPage extends Component {
     const queryDict = queryString.parse(location.search)
     let appURI = null
     if (queryDict.authRequest) {
-      const authRequest = JSON.parse(base64url.decode(queryDict.authRequest))
+      const encodedAuthRequest = queryDict.authRequest.split("web+blockstack:").join("")
+      const authRequest = JSON.parse(base64url.decode(encodedAuthRequest))
       appURI = authRequest.appURI
     }
     const blockstackID = 'ryan.id'

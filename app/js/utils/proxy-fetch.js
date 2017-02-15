@@ -13,12 +13,16 @@ let proxyFetch = function(url, options) {
   let hostAndPath = tokens[1]
   let scheme = tokens[0]
 
-  if(scheme == "http") {
-    throw new Error("Only supports https requests")
-  }
-
-  return realFetch.call(this, proxy + hostAndPath, options)
+  if(hostAndPath.substring(0, 9) == "localhost")
+      return realFetch.call(this, url, options)
+    else {
+      if(scheme == "http") {
+        throw new Error("Only supports https requests")
+      }
+      return realFetch.call(this, proxy + hostAndPath, options)
+    }
 }
 
 window.fetch = proxyFetch
 window.realFetch = realFetch
+window.proxyFetch = proxyFetch

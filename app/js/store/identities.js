@@ -78,20 +78,6 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
   return updatedLocalIdentities
 }
 
-function getNamesOwnedFromApiResponse(responseJson) {
-  let namesOwned = []
-  if (responseJson.hasOwnProperty('results')) {
-    responseJson.results.map((addressResult) => {
-      if (addressResult.hasOwnProperty('names')) {
-        addressResult.names.map((name) => {
-          namesOwned.push(name)
-        })
-      }
-    })
-  }
-  return namesOwned
-}
-
 function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNameLookup) {
   return dispatch => {
     if (addresses.length === 0) {
@@ -103,53 +89,61 @@ function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNam
         dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
       }
     } else {
-      const url = addressLookupUrl.replace('{address}', addresses.join(','))
-      fetch(url)
-        .then((response) => response.text())
-        .then((responseText) => JSON.parse(responseText))
-        .then((responseJson) => {
-          let namesOwned = getNamesOwnedFromApiResponse(responseJson),
-              updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
 
-          if (JSON.stringify(lastNameLookup) === JSON.stringify(namesOwned)) {
-            // pass
-          } else {
-            dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
-          }
-        })
-        .catch((error) => {
-          console.warn(error)
-        })
+      let count =  addresses.length
+      let namesOwned = []
+
+      addresses.forEach((address) => {
+        const url = addressLookupUrl.replace('{address}', address)
+        fetch(url)
+          .then((response) => response.text())
+          .then((responseText) => JSON.parse(responseText))
+          .then((responseJson) => {
+            count++
+            namesOwned = namesOwned.concat(responseJson['names'])
+
+            if(count >= addresses.length) {
+              let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+
+              if (JSON.stringify(lastNameLookup) === JSON.stringify(namesOwned)) {
+                // pass
+              } else {
+                dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
+              }
+            }
+          }).catch((error) => {
+            console.warn(error)
+          })
+
+      })
     }
   }
 }
 
-function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
-                      blockstackApiAppId, blockstackApiAppSecret) {
+function registerName(api, domainName, tokenFileUrl, recipientAddress) {
   return dispatch => {
-    const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl),
-      authHeader = 'Basic ' + btoa(blockstackApiAppId + ':' + blockstackApiAppSecret)
+    const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl)
+
     const requestHeaders = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': authHeader
+      'Content-Type': 'application/json'
     }
     const requestBody = JSON.stringify({
-      username: domainName.split('.')[0],
-      recipient_address: recipientAddress,
-      profile: zoneFile
+      name: domainName,
+      owner_address: recipientAddress,
+      zonefile: zoneFile,
+      min_confs: 0
     })
 
-    fetch(registerUrl, {
+    fetch(api.registerUrl, {
       method: 'POST',
       headers: requestHeaders,
-      mode: 'cors',
-      cache: 'default',
       body: requestBody
     })
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
+        console.log(responseJson)
         dispatch(createNewIdentity(domainName))
       })
       .catch((error) => {
@@ -160,26 +154,46 @@ function registerName(domainName, recipientAddress, tokenFileUrl, registerUrl,
 
 function fetchCurrentIdentity(domainName, lookupUrl) {
   return dispatch => {
-    const username = domainName.replace('.id', ''),
-          url = lookupUrl.replace('{name}', username)
+    let username
+    if (lookupUrl.search('localhost') >= 0) {
+      username = domainName
+    } else if (lookupUrl.search('api.blockstack.com') >= 0) {
+      username = domainName.split('.')[0]
+    } else {
+      throw "Invalid lookup URL"
+    }
+    const url = lookupUrl.replace('{name}', username)
     fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        const zoneFile = responseJson[username]['zone_file']
-        const ownerAddress = responseJson[username]['owner_address']
-        let verifications = []
+        let zoneFile
+        let ownerAddress
+
+        if (lookupUrl.search('localhost') >= 0) {
+          zoneFile = responseJson['zonefile']
+          ownerAddress = responseJson['address']
+        } else if (lookupUrl.search('api.blockstack.com') >= 0) {
+          const userData = responseJson[username]
+          zoneFile = userData['zone_file']
+          ownerAddress = userData['owner_address']
+        } else {
+          throw "Invalid lookup URL"
+        }
 
         resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
+          let verifications = []
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
-          validateProofs(profile, username + '.id').then((proofs) => {
-            verifications = proofs
-            dispatch(updateCurrentIdentity(domainName, profile, verifications))
-          })
-
+          if (profile) {
+            validateProofs(profile, domainName).then((proofs) => {
+              verifications = proofs
+              dispatch(updateCurrentIdentity(domainName, profile, verifications))
+            })
+          }
         })
       })
       .catch((error) => {
+        dispatch(updateCurrentIdentity(domainName, null, []))
         console.warn(error)
       })
   }

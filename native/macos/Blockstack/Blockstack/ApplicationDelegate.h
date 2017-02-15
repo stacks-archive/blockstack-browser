@@ -8,6 +8,11 @@
 @property (nonatomic, strong) NSTask *blockstackProxyTask;
 @property (nonatomic, strong) NSTask *corsProxyTask;
 
+@property (strong) NSString *blockstackCoreConfigFilePath;
+
+@property (strong) NSString *blockstackPath;
+
+
 - (IBAction)handleClick:(id)sender;
 
 @end
