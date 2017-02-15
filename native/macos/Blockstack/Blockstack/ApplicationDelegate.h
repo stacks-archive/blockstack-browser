@@ -10,8 +10,7 @@
 
 @property (strong) NSString *blockstackCoreConfigFilePath;
 
-@property (strong) NSString *blockstackWrapperScriptPath;
-@property (strong) NSString *blockstackVenvPath;
+@property (strong) NSString *blockstackPath;
 
 
 - (IBAction)handleClick:(id)sender;

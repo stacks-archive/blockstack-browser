@@ -13,7 +13,6 @@
 		463EBBE61E2528170054FD49 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE51E2528170054FD49 /* browser */; };
 		4649DD931E50CB9000E2084C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4649DD921E50CB9000E2084C /* Security.framework */; };
 		4691B0051E3A102F00DF0353 /* blockstack-venv.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 4691B0041E3A102F00DF0353 /* blockstack-venv.tar.gz */; };
-		46DE9D151E533B9600275197 /* blockstack-wrapper-mac.sh in Resources */ = {isa = PBXBuildFile; fileRef = 46DE9D141E533B9600275197 /* blockstack-wrapper-mac.sh */; };
 		DD4F7C0913C30F9F00825C6E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4F7C0813C30F9F00825C6E /* Cocoa.framework */; };
 		DD4F7C1513C30F9F00825C6E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C1413C30F9F00825C6E /* main.m */; };
 		DD4F7C1C13C30F9F00825C6E /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */; };
@@ -29,7 +28,6 @@
 		463EBBE51E2528170054FD49 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; path = browser; sourceTree = "<group>"; };
 		4649DD921E50CB9000E2084C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		4691B0041E3A102F00DF0353 /* blockstack-venv.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "blockstack-venv.tar.gz"; sourceTree = "<group>"; };
-		46DE9D141E533B9600275197 /* blockstack-wrapper-mac.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "blockstack-wrapper-mac.sh"; sourceTree = "<group>"; };
 		DD4F7C0413C30F9F00825C6E /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD4F7C0813C30F9F00825C6E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		DD4F7C0B13C30F9F00825C6E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -105,7 +103,6 @@
 		DD4F7C0F13C30F9F00825C6E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				46DE9D141E533B9600275197 /* blockstack-wrapper-mac.sh */,
 				4691B0041E3A102F00DF0353 /* blockstack-venv.tar.gz */,
 				463EBBE51E2528170054FD49 /* browser */,
 				463EBBE31E25273D0054FD49 /* blockstackProxy */,
@@ -222,7 +219,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD4F7C1F13C30F9F00825C6E /* MainMenu.xib in Resources */,
-				46DE9D151E533B9600275197 /* blockstack-wrapper-mac.sh in Resources */,
 				463EBBE11E2526A20054FD49 /* corsproxy in Resources */,
 				463EBBDA1E2506CC0054FD49 /* Images.xcassets in Resources */,
 				463EBBE41E25273D0054FD49 /* blockstackProxy in Resources */,
