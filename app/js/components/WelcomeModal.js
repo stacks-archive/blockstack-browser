@@ -75,11 +75,13 @@ class WelcomeModal extends Component {
     }
   }
 
-  showCreateAccount()  {
+  showCreateAccount(event)  {
+    event.preventDefault()
     this.setState({pageOneView: 'create'})
   }
 
-  showRestoreAccount()  {
+  showRestoreAccount(event)  {
+    event.preventDefault()
     this.setState({pageOneView: 'restore'})
   }
 
@@ -141,9 +143,9 @@ class WelcomeModal extends Component {
                   <button className="btn btn-primary" onClick={this.createAccount}>
                     Create Account
                   </button>
-                  <button className="btn btn-secondary" onClick={this.showRestoreAccount}>
-                    Restore an Account
-                  </button>
+                  <a href="#" onClick={this.showRestoreAccount}>
+                    Restore Account
+                  </a>
                 </div>
               </div>
               :
@@ -157,9 +159,9 @@ class WelcomeModal extends Component {
                   <button className="btn btn-primary" onClick={this.restoreAccount}>
                     Restore Account
                   </button>
-                  <button className="btn btn-secondary" onClick={this.showCreateAccount}>
-                    Create a new Account
-                  </button>
+                  <a href="#" onClick={this.showCreateAccount}>
+                    Create Account
+                  </a>
                 </div>
               </div>
               }
