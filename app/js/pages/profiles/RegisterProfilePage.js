@@ -76,6 +76,8 @@ class RegisterPage extends Component {
         username: username
       })
 
+      this.updateAlert('info', `Checking if ${domainName} is available...`)
+
       if(username === '') {
         this.setState({
           alerts:[]
@@ -83,29 +85,40 @@ class RegisterPage extends Component {
         return
       }
 
-      if(!isABlockstackName(domainName)) {
-        this.updateAlert('danger', `${domainName} Not valid Blockstack name`)
-        return
+      if(this.timer) {
+        clearInterval(this.timer)
       }
 
-      isNameAvailable(this.props.lookupUrl, domainName).then((isAvailable) => {
-        if(isAvailable) {
-          if(this.state.username === username) { // don't continue if user has already changed input
-            this.updateAlert('info', `Checking price for ${domainName}...`)
-            getNamePrices(this.props.priceUrl, domainName).then((prices)=> {
-              const cost = prices.total_estimated_cost.btc
-              this.setState({
-                nameCost: cost
-              })
-              if(this.state.username === username) // don't update if user has already changed input
-                this.updateAlert('info', `${username}.id costs ~${cost} btc to register.`)
-            })
-          }
-        } else {
-          if(this.state.username === username) // don't update if user has already changed input
-            this.updateAlert('danger', 'Name has already been registered')
+      event.persist()
+      const _this = this
+
+      this.timer = setTimeout( () => {
+
+        if(!isABlockstackName(domainName)) {
+          _this.updateAlert('danger', `${domainName} Not valid Blockstack name`)
+          return
         }
-      })
+
+        isNameAvailable(_this.props.lookupUrl, domainName).then((isAvailable) => {
+          if(isAvailable) {
+            if(_this.state.username === username) { // don't continue if user has already changed input
+              _this.updateAlert('info', `${domainName} is available! Checking price...`)
+              getNamePrices(_this.props.priceUrl, domainName).then((prices)=> {
+                const cost = prices.total_estimated_cost.btc
+                _this.setState({
+                  nameCost: cost
+                })
+                if(_this.state.username === username) // don't update if user has already changed input
+                  _this.updateAlert('info', `${username}.id costs ~${cost} btc to register.`)
+              })
+            }
+          } else {
+            if(_this.state.username === username) // don't update if user has already changed input
+              _this.updateAlert('danger', `${domainName} has already been registered`)
+          }
+        })
+      },
+      500) // wait 500ms after user stops typing to check availability 
     }
   }
 
