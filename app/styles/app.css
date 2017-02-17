@@ -236,6 +236,7 @@ body,html,#app,.app-landing,.body-main{min-height:100%;min-width:inherit;}
 body{font-family:'Lato',sans-serif;font-size:14px;}
 .app-wrap-profiles{width:100%;min-height:100%;background:#fafafa;background:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);}
 .site-wrapper{display:flex;flex-direction:column;min-height:100%;padding:35px;}
+.dashboard{width:100%;min-height:100%;background:#000000; /* Old browsers */background:-moz-linear-gradient(-45deg,#000000 0%,#15081c 7%,#1c0b25 40%,#250e31 53%,#361d44 67%,#564061 86%,#604c6b 98%,#604c6b 100%); /* FF3.6-15 */background:-webkit-linear-gradient(-45deg,#000000 0%,#15081c 7%,#1c0b25 40%,#250e31 53%,#361d44 67%,#564061 86%,#604c6b 98%,#604c6b 100%); /* Chrome10-25,Safari5.1-6 */background:linear-gradient(135deg,#000000 0%,#15081c 7%,#1c0b25 40%,#250e31 53%,#361d44 67%,#564061 86%,#604c6b 98%,#604c6b 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000',endColorstr='#604c6b',GradientType=1); /* IE6-9 fallback on horizontal gradient */}
 
 /* 9. Fonts */
 .h5-landing{color:#AEAEAE;font-size:18px;font-weight:400;}
