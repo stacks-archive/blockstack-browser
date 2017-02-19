@@ -137,11 +137,19 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .out-block-wrap{width:576px;}
 .out-block{width:490px;}
 .out-form-group{width:490px;margin-left:-80px;}
-.app-container{width:101%;}
-.app-box-container{min-height:1px;padding-right:4px;text-align:center;}
-.app-text-container{min-height:1px;padding-right:4px;text-align:center;}
-.app-box{height:auto;margin:40px auto;}
-.app-box img{width:100%;max-width:256px;}
+.app-box-container{display:block;min-height:1px;padding-right:4px;text-align:center;}
+.app-box {
+	height: auto;
+	margin: 1.5rem auto;
+	width: 100%;
+	margin-left: 0px;
+	margin-right: 0px !important;
+}
+.app-box img {
+	width: 100%;
+	max-width: 192px;
+}
+
 .text-feat-dash{padding:12px;margin-bottom:0;}
 a.view-out-link{color:#494f56;}
 
@@ -183,9 +191,8 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 /* Guy quick */
 .profile-wrap{max-width: 800px;}
 .profile-wrap-wide{max-width: 1050px;}
-.app-box img {min-width: 256px;}
 .app-text-container h3{text-align: center;}
-div.app-box{width:100%;margin-left: 0px; margin-right: 0px!important;}
+
 
 
 /* Styles ported over from profiles.css */
@@ -323,6 +330,11 @@ a.list-group-item-dash:hover,
 .page-header{width:100%;height:150px;background-color:#270F34;display:flex;align-items:center;justify-content:center;}
 .page-header > h1{margin-bottom:0;}
 .vertical-split-content{margin-top:40px;}
+.app-center{display:flex;align-items:center;justify-content:center;}
+.app-wrap{width:940px;display:flex;align-items:center;justify-content:center;}
+.app-container{display:flex;align-items:center;justify-content:center;}
+div.app-text-container > h3 {color:#fff;font-weight:300;font-size:1.5rem;}
+
 
 /* Modal */
 div.ReactModal__Overlay.ReactModal__Overlay--after-open {
