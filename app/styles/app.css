@@ -148,6 +148,11 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .app-box img {
 	width: 100%;
 	max-width: 192px;
+	background-color: rgba(44,150,255,0.5);
+	-webkit-box-shadow: 0px 0px 100px 0px rgba(44,150,255,1);
+-moz-box-shadow: 0px 0px 100px 0px rgba(44,150,255,1);
+box-shadow: 0px 0px 100px 0px rgba(44,150,255,1);
+-moz-border-radius:42px; -webkit-border-radius:42px; border-radius:42px;
 }
 
 .text-feat-dash{padding:12px;margin-bottom:0;}
