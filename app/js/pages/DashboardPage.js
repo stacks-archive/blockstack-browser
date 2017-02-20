@@ -23,7 +23,7 @@ class DashboardPage extends Component {
         <div className="container app-wrap">
           <div className="col-sm-12 app-container no-padding">
             <div className="col-sm-4">
-              <Link to="/profiles" className="app-box-container" target="_blank">
+              <Link to="/profiles" className="app-box-container">
                 <div className="app-box container-fluid">
                   <img src="/images/app-icon-profiles@2x.png" />
                 </div>
@@ -34,7 +34,7 @@ class DashboardPage extends Component {
             </div>
             <div className="col-sm-4">
               <Link to="/account/settings"
-                    className="app-box-container" target="_blank">
+                    className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-settings.png" />
                 </div>
@@ -45,7 +45,7 @@ class DashboardPage extends Component {
             </div>
             <div className="col-sm-4">
               <a href="https://helloblockstack.com"
-                 className="app-box-container" target="_blank">
+                 className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-hello-blockstack.png" />
                 </div>
