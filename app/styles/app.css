@@ -351,6 +351,7 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:360px;background-c
 @media (min-width:975px){
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 	.pro-wrap{min-width:905px;}
+	.app-wrap{width:80%;}
 }
 
 /* Large devices (large desktops, 1200px and up) */
