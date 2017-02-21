@@ -9,7 +9,7 @@ function mapStateToProps(state) {
     addresses: state.account.bitcoinAccount.addresses,
     balances: state.account.bitcoinAccount.balances,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    uxtoUrl: state.settings.api.uxtoUrl,
+    utxoUrl: state.settings.api.utxoUrl,
     addressBalanceUrl: state.settings.api.addressBalanceUrl
   }
 }
@@ -24,7 +24,7 @@ class Balance extends Component {
     balances: PropTypes.object.isRequired,
     refreshBalances: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
-    uxtoUrl: PropTypes.string.isRequired,
+    utxoUrl: PropTypes.string.isRequired,
     addressBalanceUrl: PropTypes.string.isRequired
   }
 
