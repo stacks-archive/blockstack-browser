@@ -1,8 +1,8 @@
-export function broadcastTransaction(rawTransaction) {
+export function broadcastTransaction(broadcastTransactionUrl, rawTransaction) {
   return new Promise((resolve, reject) => {
     const payload =  {rawtx: rawTransaction}
 
-    fetch('https://explorer.blockstack.org/insight-api/tx/send', {
+    fetch(broadcastTransactionUrl, {
       headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
@@ -19,9 +19,10 @@ export function broadcastTransaction(rawTransaction) {
   })
 }
 
-export function getUtxo(address) {
+export function getUtxo(utxoUrl, address) {
   return new Promise((resolve, reject) => {
-    fetch(`https://explorer.blockstack.org/insight-api/addr/${address}/utxo`)
+    const url = utxoUrl.replace({address}, address)
+    fetch(url)
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {

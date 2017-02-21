@@ -68,29 +68,19 @@ class DeleteAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Delete Account" />
-        <div className="container vertical-split-content">
-          <div className="row">
-            <div className="col-md-3">
-              <AccountSidebar activeTab="delete account" />
-            </div>
-            <div className="col-md-9">
-              { this.state.alerts.map(function(alert, index) {
-                return (
-                  <Alert key={index} message={alert.message} status={alert.status} />
-                )
-              })}
-              <div>
-                <InputGroup name="password" label="Password" type="password"
-                  data={this.state} onChange={this.onValueChange} />
-                <div className="container m-t-40">
-                  <button className="btn btn-primary" onClick={this.deleteAccount}>
-                    Delete Account
-                  </button>
-                </div>
-              </div>
-            </div>
+      <div>
+        { this.state.alerts.map(function(alert, index) {
+          return (
+            <Alert key={index} message={alert.message} status={alert.status} />
+          )
+        })}
+        <div>
+          <InputGroup name="password" label="Password" type="password"
+            data={this.state} onChange={this.onValueChange} />
+          <div className="container m-t-40">
+            <button className="btn btn-primary" onClick={this.deleteAccount}>
+              Delete Account
+            </button>
           </div>
         </div>
       </div>

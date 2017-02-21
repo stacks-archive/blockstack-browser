@@ -1,12 +1,12 @@
 {
   "name": "blockstack-portal",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "Blockstack Inc <admin@blockstack.com>",
   "description": "The Blockstack browser portal",
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/blockstack/blockstack-browser.git"
+    "url": "https://github.com/blockstack/blockstack-portal.git"
   },
   "scripts": {
     "lint": "NODE_ENV=test ./node_modules/.bin/gulp lint",
@@ -114,7 +114,7 @@
     "bip39": "^2.2.0",
     "bitcoinjs-lib": "https://github.com/shea256/bitcoinjs-lib.git",
     "blockstack-auth": "^0.2.4",
-    "blockstack-keychains": "0.0.6",
+    "blockstack-keychains": "0.0.8",
     "blockstack-profiles": "^0.3.6",
     "blockstack-proofs": "^0.3.0",
     "blockstack-zones": "^0.1.0",
