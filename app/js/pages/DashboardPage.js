@@ -40,7 +40,7 @@ class DashboardPage extends Component {
                 </div>
               </Link>
               <div className="app-text-container">
-                <h3>Settings</h3>
+                <h3>Account</h3>
               </div>
             </div>
             <div className="col-sm-4">

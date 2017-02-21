@@ -16,6 +16,7 @@ import ImportProfilePage   from './pages/profiles/ImportProfilePage'
 import ExportProfilePage   from './pages/profiles/ExportProfilePage'
 import SearchProfilesPage  from './pages/profiles/SearchProfilesPage'
 
+import AccountApp         from './pages/account/AccountApp'
 import SettingsPage       from './pages/account/SettingsPage'
 import DeleteAccountPage  from './pages/account/DeleteAccountPage'
 import BackupAccountPage  from './pages/account/BackupAccountPage'
@@ -46,19 +47,19 @@ export default (
         <Route path="import"              component={ImportProfilePage} />
     </Route>
 
-    <Route path="/account/delete"      component={DeleteAccountPage} />
-    <Route path="/account/backup"      component={BackupAccountPage} />
-    <Route path="/account/password"    component={ChangePasswordPage} />
-    <Route path="/account/settings"    component={SettingsPage} />
+    <Route path="account" component={AccountApp}>
+        <Route path="delete"      component={DeleteAccountPage} />
+        <Route path="backup"      component={BackupAccountPage} />
+        <Route path="password"    component={ChangePasswordPage} />
+        <Route path="settings"    component={SettingsPage} />
+        <Route path="create"      component={CreateAccountPage} />
+        <Route path="restore"     component={RestoreAccountPage} />
 
-    <Route path="/account/create"      component={CreateAccountPage} />
-    <Route path="/account/restore"     component={RestoreAccountPage} />
+        <Route path="deposit"     component={DepositPage} />
+        <Route path="withdraw"    component={WithdrawPage} />
+    </Route>
 
-    <Route path="/account/deposit"     component={DepositPage} />
-    <Route path="/account/withdraw"    component={WithdrawPage} />
-
-    <Route path="/auth"                component={AuthPage} />
-
+    <Route path="/auth" component={AuthPage} />
     <Route path="/*" component={NotFoundPage} />
   </Route>
 </Router> 
