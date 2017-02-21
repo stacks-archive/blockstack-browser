@@ -8,7 +8,9 @@ function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
     balances: state.account.bitcoinAccount.balances,
-    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
+    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
+    uxtoUrl: state.settings.api.uxtoUrl,
+    addressBalanceUrl: state.settings.api.addressBalanceUrl
   }
 }
 
@@ -21,7 +23,9 @@ class Balance extends Component {
     addresses: PropTypes.array.isRequired,
     balances: PropTypes.object.isRequired,
     refreshBalances: PropTypes.func.isRequired,
-    walletPaymentAddressUrl: PropTypes.string.isRequired
+    walletPaymentAddressUrl: PropTypes.string.isRequired,
+    uxtoUrl: PropTypes.string.isRequired,
+    addressBalanceUrl: PropTypes.string.isRequired
   }
 
   constructor() {
@@ -42,7 +46,8 @@ class Balance extends Component {
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
       const address = responseJson.address
-      fetch(`https://explorer.blockstack.org/insight-api/addr/${address}`)
+      const url = this.props.addressBalanceUrl.replace('{address}', address)
+      fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {

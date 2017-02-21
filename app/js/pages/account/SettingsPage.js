@@ -92,7 +92,7 @@ class SettingsPage extends Component {
   connectDropbox() {
     var dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
     const port = location.port === '' ? 80 : location.port
-    console.log(port) 
+    console.log(port)
     window.location = dbx.getAuthenticationUrl(
       `http://localhost:${port}/account/settings`)
   }
@@ -137,6 +137,21 @@ class SettingsPage extends Component {
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="addressLookupUrl" label="Address Names URL"
                       data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="addressBalanceUrl" label="Address URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="utxoUrl" label="UTXO URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="broadcastTransactionUrl" label="Broadcast Transaction URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="networkFeeUrl" label="Network Fee URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="walletPaymentAddressUrl" label="Core node wallet payment address URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="coreWalletWithdrawUrl" label="Core node wallet withdraw URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="pendingQueuesUrl" label="Core node pending queues URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+
                   </div>
                 : null }
 

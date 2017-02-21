@@ -17,7 +17,8 @@ import { ECPair, ECKey, TransactionBuilder } from 'bitcoinjs-lib'
 function mapStateToProps(state) {
   return {
     account: state.account,
-    coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl
+    coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl,
+    broadcastTransactionUrl: state.settings.api.broadcastTransactionUrl
   }
 }
 
