@@ -68,37 +68,27 @@ class RestorePage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Restore Account" />
-        <div className="container vertical-split-content">
-          <div className="row">
-            <div className="col-md-3">
-              <AccountSidebar activeTab="restore account" />
+      <div>
+        <p>
+        Enter your backup phrase and choose a new password
+         to restore your account. <i>This will delete your current account.</i>
+        </p>
+        { this.state.alerts.map(function(alert, index) {
+          return (
+            <Alert key={index} message={alert.message} status={alert.status} />
+          )
+        })}
+        <InputGroup name="backupPhrase" type="text" label="Backup phrase"
+          placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
+        <InputGroup name="password" type="password" label="New password"
+          placeholder="Password" data={this.state} onChange={this.onValueChange} />
+        <InputGroup name="passwordConfirmation" type="password" label="New password (again)"
+          placeholder="Password" data={this.state} onChange={this.onValueChange} />
+            <div className="container m-t-40">
+              <button className="btn btn-primary" onClick={this.restoreAccount}>
+                Restore
+              </button>
             </div>
-            <div className="col-md-9">
-              <p>
-              Enter your backup phrase and choose a new password
-               to restore your account. <i>This will delete your current account.</i>
-              </p>
-              { this.state.alerts.map(function(alert, index) {
-                return (
-                  <Alert key={index} message={alert.message} status={alert.status} />
-                )
-              })}
-              <InputGroup name="backupPhrase" type="text" label="Backup phrase"
-                placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
-              <InputGroup name="password" type="password" label="New password"
-                placeholder="Password" data={this.state} onChange={this.onValueChange} />
-              <InputGroup name="passwordConfirmation" type="password" label="New password (again)"
-                placeholder="Password" data={this.state} onChange={this.onValueChange} />
-                  <div className="container m-t-40">
-                    <button className="btn btn-primary" onClick={this.restoreAccount}>
-                      Restore
-                    </button>
-                  </div>
-            </div>
-          </div>
-        </div>
       </div>
     )
   }

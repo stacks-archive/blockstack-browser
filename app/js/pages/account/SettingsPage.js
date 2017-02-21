@@ -116,14 +116,57 @@ class SettingsPage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Settings" />
-        <div className="container vertical-split-content">
-          <div className="row">
-            <div className="col-md-3">
-              <AccountSidebar activeTab="settings" />
+      <div className="col-md-9">
+        <div>
+          <h4>Blockstack API Options</h4>
+
+          { this.state.api.apiCustomizationEnabled === true ?
+            <div>
+              <InputGroup name="nameLookupUrl" label="Name Lookup URL"
+                data={this.state.api} onChange={this.onValueChange} />
+              <InputGroup name="searchUrl" label="Search URL"
+                data={this.state.api} onChange={this.onValueChange} />
+              <InputGroup name="registerUrl" label="Register URL"
+                data={this.state.api} onChange={this.onValueChange} />
+              <InputGroup name="addressLookupUrl" label="Address Names URL"
+                data={this.state.api} onChange={this.onValueChange} />
             </div>
-            <div className="col-md-9">
+          : null }
+
+          <div className="form-group">
+            <SaveButton onSave={this.updateApi} />
+          </div>
+
+          <p>
+            <button onClick={this.resetApi} className="btn btn-outline-primary">
+              Reset API
+            </button>
+          </p>
+
+          <hr />
+
+          <h4>Data Hosting Options</h4>
+
+          { this.state.api.hostedDataLocation === DROPBOX ?
+            <div>
+                { this.state.api.dropboxAccessToken == null ?
+                  <button onClick={this.connectDropbox} className="btn btn-sm btn-outline-primary">
+                  Connect Dropbox
+                  </button>
+                :
+                <button onClick={this.disconnectDropbox} className="btn btn-sm btn-outline-primary">
+                Disconnect Dropbox
+                </button>
+                }
+            </div>
+          : null }
+
+          <hr />
+
+          <RadioGroup name="hostedDataLocation"
+            selectedValue={this.state.api.hostedDataLocation}
+            onChange={this.onHostedDataValueChange}>
+            {Radio => (
               <div>
                 <h4>Blockstack API Options</h4>
 
@@ -151,66 +194,26 @@ class SettingsPage extends Component {
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="pendingQueuesUrl" label="Core node pending queues URL"
                       data={this.state.api} onChange={this.onValueChange} />
-
                   </div>
                 : null }
 
                 <div className="form-group">
                   <SaveButton onSave={this.updateApi} />
                 </div>
-
-                <p>
-                  <button onClick={this.resetApi} className="btn btn-outline-primary">
-                    Reset API
-                  </button>
-                </p>
-
-                <hr />
-
-                <h4>Data Hosting Options</h4>
-
-                <RadioGroup name="hostedDataLocation"
-                  selectedValue={this.state.api.hostedDataLocation}
-                  onChange={this.onHostedDataValueChange}>
-                  {Radio => (
-                    <div>
-                      <div className="radio">
-                        <label>
-                          <Radio value={DROPBOX} name="hostedDataLocation" />
-                          Self-host data on Dropbox
-                        </label>
-                      </div>
-                    </div>
-                  )}
-                </RadioGroup>
-
-                { this.state.api.hostedDataLocation === DROPBOX ?
-                  <div>
-                      { this.state.api.dropboxAccessToken == null ?
-                        <button onClick={this.connectDropbox} className="btn btn-sm btn-outline-primary">
-                        Connect Dropbox
-                        </button>
-                      :
-                      <button onClick={this.disconnectDropbox} className="btn btn-sm btn-outline-primary">
-                      Disconnect Dropbox
-                      </button>
-                      }
-                  </div>
-                : null }
-
-                <hr />
-
-                <h4>Authentication</h4>
-
-                <p>
-                  <button onClick={this.registerProtocolHandler}
-                    className="btn btn-sm btn-outline-primary">
-                    Allow App Logins
-                  </button>
-                </p>
               </div>
-            </div>
-          </div>
+            )}
+          </RadioGroup>
+
+          <hr />
+
+          <h4>Authentication</h4>
+
+          <p>
+            <button onClick={this.registerProtocolHandler}
+              className="btn btn-sm btn-outline-primary">
+              Allow App Logins
+            </button>
+          </p>
         </div>
       </div>
     )

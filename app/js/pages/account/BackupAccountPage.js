@@ -63,57 +63,47 @@ class BackupAccountPage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Backup Account" />
-        <div className="container vertical-split-content">
-          <div className="row">
-            <div className="col-md-3">
-              <AccountSidebar activeTab="backup account" />
-            </div>
-            <div className="col-md-9">
-              { this.state.alerts.map(function(alert, index) {
-                return (
-                  <Alert key={index} message={alert.message} status={alert.status} />
-                )
-              })}
-              {
-                this.state.decryptedBackupPhrase ?
-                <div>
-                  <p>
-                    <i>
-                      Write down the backup phrase below and keep it safe.
-                      Anyone who has it will be able to regain access to your account.
-                    </i>
-                  </p>
+      <div>
+        { this.state.alerts.map(function(alert, index) {
+          return (
+            <Alert key={index} message={alert.message} status={alert.status} />
+          )
+        })}
+        {
+          this.state.decryptedBackupPhrase ?
+          <div>
+            <p>
+              <i>
+                Write down the backup phrase below and keep it safe.
+                Anyone who has it will be able to regain access to your account.
+              </i>
+            </p>
 
-                  <div className="card">
-                    <div className="card-header">
-                      Backup Phrase
-                    </div>
-                    <div className="card-block">
-                      <p className="card-text">
-                        {this.state.decryptedBackupPhrase}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                :
-                <div>
-                  <p>
-                    <i>Enter your password to view your backup phrase and backup your account.</i>
-                  </p>
-                  <InputGroup name="password" label="Password" type="password"
-                    data={this.state} onChange={this.onChange} />
-                  <div className="container m-t-40">
-                    <button className="btn btn-primary" onClick={this.decryptBackupPhrase}>
-                      Decrypt Backup Phrase
-                    </button>
-                  </div>
-                </div>
-              }
+            <div className="card">
+              <div className="card-header">
+                Backup Phrase
+              </div>
+              <div className="card-block">
+                <p className="card-text">
+                  {this.state.decryptedBackupPhrase}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+          :
+          <div>
+            <p>
+              <i>Enter your password to view your backup phrase and backup your account.</i>
+            </p>
+            <InputGroup name="password" label="Password" type="password"
+              data={this.state} onChange={this.onChange} />
+            <div className="container m-t-40">
+              <button className="btn btn-primary" onClick={this.decryptBackupPhrase}>
+                Decrypt Backup Phrase
+              </button>
+            </div>
+          </div>
+        }
       </div>
     )
   }
