@@ -22,9 +22,9 @@ class DashboardPage extends Component {
       <div className="container-fluid app-center dashboard">
         <div className="container app-wrap">
           <div className="col-sm-12 app-container no-padding">
-            <div className="col-sm-4">
+            <div className="col-sm-3">
               <Link to="/profiles" className="app-box-container">
-                <div className="app-box container-fluid">
+                <div className="app-box">
                   <img src="/images/app-icon-profiles@2x.png" />
                 </div>
               </Link>
@@ -32,9 +32,8 @@ class DashboardPage extends Component {
                 <h3>Profiles</h3>
               </div>
             </div>
-            <div className="col-sm-4">
-              <Link to="/wallet/deposit"
-                    className="app-box-container">
+            <div className="col-sm-3">
+              <Link to="/wallet/deposit" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-wallet.png" />
                 </div>
@@ -43,9 +42,8 @@ class DashboardPage extends Component {
                 <h3>Wallet</h3>
               </div>
             </div>
-            <div className="col-sm-4">
-              <Link to="/account/settings"
-                    className="app-box-container">
+            <div className="col-sm-3">
+              <Link to="/account/settings" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-settings.png" />
                 </div>
@@ -54,7 +52,7 @@ class DashboardPage extends Component {
                 <h3>Account</h3>
               </div>
             </div>
-            <div className="col-sm-4">
+            <div className="col-sm-3">
               <a href="https://helloblockstack.com"
                  className="app-box-container">
                 <div className="app-box">
