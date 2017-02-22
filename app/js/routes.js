@@ -24,10 +24,11 @@ import ChangePasswordPage from './pages/account/ChangePasswordPage'
 import CreateAccountPage  from './pages/account/CreateAccountPage'
 import RestoreAccountPage from './pages/account/RestoreAccountPage'
 
-import AuthPage           from './pages/auth/AuthPage'
-
+import WalletApp          from './pages/wallet/WalletApp'
 import DepositPage        from './pages/wallet/DepositPage'
 import WithdrawPage       from './pages/wallet/WithdrawPage'
+
+import AuthPage           from './pages/auth/AuthPage'
 
 import NotFoundPage       from './pages/errors/NotFoundPage'
 
@@ -54,7 +55,9 @@ export default (
         <Route path="settings"    component={SettingsPage} />
         <Route path="create"      component={CreateAccountPage} />
         <Route path="restore"     component={RestoreAccountPage} />
+    </Route>
 
+    <Route path="wallet" component={WalletApp}>
         <Route path="deposit"     component={DepositPage} />
         <Route path="withdraw"    component={WithdrawPage} />
     </Route>
@@ -62,5 +65,5 @@ export default (
     <Route path="/auth" component={AuthPage} />
     <Route path="/*" component={NotFoundPage} />
   </Route>
-</Router> 
+</Router>
 )

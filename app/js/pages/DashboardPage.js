@@ -33,6 +33,17 @@ class DashboardPage extends Component {
               </div>
             </div>
             <div className="col-sm-4">
+              <Link to="/wallet/deposit"
+                    className="app-box-container">
+                <div className="app-box">
+                  <img src="/images/app-wallet.png" />
+                </div>
+              </Link>
+              <div className="app-text-container">
+                <h3>Wallet</h3>
+              </div>
+            </div>
+            <div className="col-sm-4">
               <Link to="/account/settings"
                     className="app-box-container">
                 <div className="app-box">
