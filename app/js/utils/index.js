@@ -2,9 +2,9 @@ export {
   decryptPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityPrivateKeychain,
+  getWebAccountTypes,
   isPasswordValid,
-  isBackupPhraseValid,
-  webAccountTypes
+  isBackupPhraseVali
 } from './account-utils'
 
 export {

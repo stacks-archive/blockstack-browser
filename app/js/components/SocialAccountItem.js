@@ -1,7 +1,14 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
 
-import { webAccountTypes } from '../utils'
+import { getWebAccountTypes } from '../utils'
+
+function mapStateToProps(state) {
+  return {
+    api: state.settings.api
+  }
+}
 
 class SocialAccountItem extends Component {
   static propTypes = {
@@ -9,7 +16,8 @@ class SocialAccountItem extends Component {
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
     proofUrl: PropTypes.string,
-    verified: PropTypes.bool
+    verified: PropTypes.bool,
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -21,6 +29,7 @@ class SocialAccountItem extends Component {
   }
 
   getAccountUrl() {
+    const webAccountTypes = getWebAccountTypes(this.props.api)
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
     if (webAccountTypes.hasOwnProperty(this.props.service)) {
       if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
@@ -32,6 +41,7 @@ class SocialAccountItem extends Component {
   }
 
   getIconClass() {
+    const webAccountTypes = getWebAccountTypes(this.props.api)
     let iconClass = ''
     if (webAccountTypes.hasOwnProperty(this.props.service)) {
       iconClass = webAccountTypes[this.props.service].iconClass
@@ -48,6 +58,7 @@ class SocialAccountItem extends Component {
   }
 
   render() {
+    const webAccountTypes = getWebAccountTypes(this.props.api)
     if (this.props.listItem === true) {
       return (
         <li>
@@ -80,4 +91,4 @@ class SocialAccountItem extends Component {
   }
 }
 
-export default SocialAccountItem
+export default connect(mapStateToProps, null)(SocialAccountItem)

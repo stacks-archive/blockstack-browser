@@ -1,16 +1,24 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 
 import {
   InputGroup, SaveButton, VerificationInfo
 } from '../../../components/index'
 
-import { webAccountTypes } from '../../../utils'
+import { getWebAccountTypes } from '../../../utils'
+
+function mapStateToProps(state) {
+  return {
+    api: state.settings.api
+  }
+}
 
 class SocialAccountsTab extends Component {
   static propTypes = {
     profile: PropTypes.object.isRequired,
     saveProfile: PropTypes.func.isRequired,
-    domainName: PropTypes.string.isRequired
+    domainName: PropTypes.string.isRequired,
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -91,7 +99,9 @@ class SocialAccountsTab extends Component {
   render() {
     const profile = this.state.profile,
           accounts = this.state.profile.hasOwnProperty('account') ?
-            this.state.profile.account : []
+            this.state.profile.account : [],
+            webAccountTypes = getWebAccountTypes(this.props.api)
+
     return (
       <div>
         <div className="form-group">
@@ -147,7 +157,7 @@ class SocialAccountsTab extends Component {
                       data={account}
                       onChange={(event) => { this.onChange(index, event) }} />
                     : null }
-                    
+
                     { ['twitter', 'facebook', 'github'].indexOf(account.service) > -1 ?
                     <div>
                       <InputGroup
@@ -188,4 +198,4 @@ class SocialAccountsTab extends Component {
   }
 }
 
-export default SocialAccountsTab
+export default connect(mapStateToProps, null)(SocialAccountsTab)

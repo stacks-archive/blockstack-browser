@@ -177,6 +177,12 @@ class SettingsPage extends Component {
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="pendingQueuesUrl" label="Core node pending queues URL"
                       data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="bitcoinAddressUrl" label="Bitcoin Address URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="ethereumAddressUrl" label="Ethereum Address URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="pgpKeyUrl" label="PGP Key URL"
+                      data={this.state.api} onChange={this.onValueChange} />
                   </div>
                 : null }
 
