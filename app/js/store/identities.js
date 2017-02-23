@@ -1,7 +1,7 @@
 import { Person } from 'blockstack-profiles'
 import { parseZoneFile } from 'blockstack-zones'
 import {
-  makeZoneFileForHostedProfile, resolveZoneFileToProfile
+  isNameAvailable, getNamePrices, makeZoneFileForHostedProfile, resolveZoneFileToProfile
 } from '../utils/index'
 import {
   validateProofs
@@ -10,7 +10,12 @@ import {
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
       CREATE_NEW = 'CREATE_NEW',
-      UPDATE_PROFILE = 'UPDATE_PROFILE'
+      UPDATE_PROFILE = 'UPDATE_PROFILE',
+      CHECKING_NAME_AVAILABILITY = 'CHECK_NAME_AVAILABILITY',
+      NAME_AVAILABLE = 'NAME_AVAILABLE',
+      NAME_UNAVAILABLE = 'NAME_UNAVAILABLE',
+      CHECKING_NAME_PRICE = 'CHECK_NAME_PRICE',
+      NAME_PRICE = 'NAME_PRICE'
 
 function updateCurrentIdentity(domainName, profile, verifications) {
   return {
@@ -41,6 +46,42 @@ function updateProfile(domainName, profile) {
     type: UPDATE_PROFILE,
     domainName: domainName,
     profile: profile
+  }
+}
+
+function checkingNameAvailability(domainName) {
+  return {
+    type: CHECKING_NAME_AVAILABILITY,
+    domainName: domainName
+  }
+}
+
+function nameAvailable(domainName) {
+  return {
+    type: NAME_AVAILABLE,
+    domainName: domainName
+  }
+}
+
+function nameUnavailable(domainName) {
+  return {
+    type: NAME_UNAVAILABLE,
+    domainName: domainName
+  }
+}
+
+function checkingNamePrice(domainName) {
+  return {
+    type: CHECKING_NAME_PRICE,
+    domainName: domainName
+  }
+}
+
+function namePrice(domainName, price) {
+  return {
+    type: NAME_PRICE,
+    domainName: domainName,
+    price: price
   }
 }
 
@@ -199,6 +240,26 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
   }
 }
 
+function checkNameAvailabilityAndPrice(api, domainName) {
+  return dispatch => {
+
+    dispatch(checkingNameAvailability(domainName))
+
+    isNameAvailable(api.nameLookupUrl, domainName).then((isAvailable) => {
+      if(isAvailable) {
+        dispatch(nameAvailable(domainName))
+        dispatch(checkingNamePrice(domainName))
+        getNamePrices(api.priceUrl, domainName).then((prices)=> {
+            const price = prices.total_estimated_cost.btc
+            dispatch(namePrice(domainName, price))
+        })
+      } else {
+        dispatch(nameUnavailable(domainName))
+      }
+    })
+  }
+}
+
 export const IdentityActions = {
   updateCurrentIdentity: updateCurrentIdentity,
   createNewIdentity: createNewIdentity,
@@ -206,7 +267,8 @@ export const IdentityActions = {
   fetchCurrentIdentity: fetchCurrentIdentity,
   refreshIdentities: refreshIdentities,
   updateOwnedIdentities: updateOwnedIdentities,
-  registerName: registerName
+  registerName: registerName,
+  checkNameAvailabilityAndPrice: checkNameAvailabilityAndPrice
 }
 
 const initialState = {
@@ -216,7 +278,11 @@ const initialState = {
     verifications: null
   },
   localIdentities: {},
-  lastNameLookup: []
+  lastNameLookup: [],
+  registration: {
+    lastNameEntered: null,
+    names: {}
+  }
 }
 
 export function IdentityReducer(state = initialState, action) {
@@ -256,6 +322,67 @@ export function IdentityReducer(state = initialState, action) {
           })
         })
       })
+    case CHECKING_NAME_AVAILABILITY:
+      state.registration.names[action.domainName] = {
+        checkingAvailability: true,
+        available: false,
+        checkingPrice: true,
+        price: 0.0
+      }
+      return Object.assign({}, state, {
+        registration: {
+          names: state.registration.names,
+          lastNameEntered: action.domainName
+        }
+      })
+    case NAME_AVAILABLE:
+      state.registration.names[action.domainName].checkingAvailability = false
+      state.registration.names[action.domainName].available = true
+      return Object.assign({}, state, {
+        registration: {
+          names: state.registration.names,
+          lastNameEntered: state.registration.lastNameEntered
+        }
+      })
+    case NAME_UNAVAILABLE:
+      return Object.assign({}, state, {
+        registration: {
+          names: Object.assign({}, state.registration.names, {
+            [action.domainName]: Object.assign({},state.registration.names[action.domainName],
+            {
+              checkingAvailability: false,
+              available: false
+            })
+          }),
+          lastNameEntered: state.registration.lastNameEntered
+        }
+      })
+    case CHECKING_NAME_PRICE:
+    return Object.assign({}, state, {
+      registration: {
+        names: Object.assign({}, state.registration.names, {
+          [action.domainName]: Object.assign({},state.registration.names[action.domainName],
+          {
+            checkingPrice: true
+          })
+        }),
+        lastNameEntered: state.registration.lastNameEntered
+      }
+    })
+    case NAME_PRICE:
+    return Object.assign({}, state, {
+      registration: {
+        names: Object.assign({}, state.registration.names, {
+          [action.domainName]: Object.assign({},state.registration.names[action.domainName],
+          {
+            checkingPrice: false,
+            price: action.price
+          })
+        }),
+        lastNameEntered: state.registration.lastNameEntered
+      }
+    })
+
     default:
       return state
   }

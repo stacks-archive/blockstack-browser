@@ -34,7 +34,7 @@ export {
   isABlockstackName,
   hasNameBeenPreordered,
   isNameAvailable,
-  getNameCost
+  getNamePrices
 } from './name-utils'
 
 export {

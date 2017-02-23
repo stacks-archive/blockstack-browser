@@ -17,7 +17,9 @@ function mapStateToProps(state) {
     blockstackApiAppSecret: state.settings.api.blockstackApiAppSecret,
     analyticsId: state.account.analyticsId,
     identityAddresses: state.account.identityAccount.addresses,
-    api: state.settings.api
+    api: state.settings.api,
+    lastNameEntered: state.identities.registration.lastNameEntered,
+    names: state.identities.registration.names
   }
 }
 
@@ -35,7 +37,9 @@ class RegisterPage extends Component {
     blockstackApiAppSecret: PropTypes.string.isRequired,
     analyticsId: PropTypes.string.isRequired,
     identityAddresses: PropTypes.array.isRequired,
-    registerName: PropTypes.func.isRequired
+    registerName: PropTypes.func.isRequired,
+    lastNameEntered: PropTypes.string,
+    names: PropTypes.object.isRequired
   }
 
   static contextTypes = {
@@ -66,6 +70,25 @@ class RegisterPage extends Component {
     this.updateAlert = this.updateAlert.bind(this)
   }
 
+  componentWillReceiveProps(nextProps) {
+    let tld = this.state.tlds[this.state.type]
+
+    const domainName = `${this.state.username}.${tld}`
+    if(domainName === nextProps.lastNameEntered) {
+      if(nextProps.names[domainName].checkingAvailability)
+        this.updateAlert('info', `Checking if ${domainName} is available...`)
+      else if(nextProps.names[domainName].available) {
+        if(nextProps.names[domainName].checkingPrice) {
+          this.updateAlert('info', `${domainName} is available! Checking price...`)
+        } else {
+          this.updateAlert('info', `${domainName} costs ~${cost} btc to register.`)
+        }
+      } else {
+        this.updateAlert('danger', `${domainName} has already been registered.`)
+      }
+    }
+  }
+
   onChange(event) {
     if (event.target.name === 'username') {
       const username = event.target.value.toLowerCase().replace(/\W+/g, ''),
@@ -75,8 +98,6 @@ class RegisterPage extends Component {
       this.setState({
         username: username
       })
-
-      this.updateAlert('info', `Checking if ${domainName} is available...`)
 
       if(username === '') {
         this.setState({
@@ -93,32 +114,15 @@ class RegisterPage extends Component {
       const _this = this
 
       this.timer = setTimeout( () => {
-
         if(!isABlockstackName(domainName)) {
           _this.updateAlert('danger', `${domainName} Not valid Blockstack name`)
           return
         }
 
-        isNameAvailable(_this.props.lookupUrl, domainName).then((isAvailable) => {
-          if(isAvailable) {
-            if(_this.state.username === username) { // don't continue if user has already changed input
-              _this.updateAlert('info', `${domainName} is available! Checking price...`)
-              getNamePrices(_this.props.priceUrl, domainName).then((prices)=> {
-                const cost = prices.total_estimated_cost.btc
-                _this.setState({
-                  nameCost: cost
-                })
-                if(_this.state.username === username) // don't update if user has already changed input
-                  _this.updateAlert('info', `${username}.id costs ~${cost} btc to register.`)
-              })
-            }
-          } else {
-            if(_this.state.username === username) // don't update if user has already changed input
-              _this.updateAlert('danger', `${domainName} has already been registered`)
-          }
-        })
+        this.props.checkNameAvailabilityAndPrice(this.props.api, domainName)
+
       },
-      500) // wait 500ms after user stops typing to check availability 
+      500) // wait 500ms after user stops typing to check availability
     }
   }
 
@@ -162,7 +166,7 @@ class RegisterPage extends Component {
 
           const tokenFileUrl = profileUrl
           this.props.registerName(this.props.api, domainName, tokenFileUrl, address)
-            this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
+          this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
 
             //this.context.router.push('/')
           })
@@ -179,7 +183,6 @@ class RegisterPage extends Component {
   render() {
     let tld = this.state.tlds[this.state.type],
         nameLabel = this.state.nameLabels[this.state.type]
-
     return (
       <div className="body-inner-white">
         <PageHeader title="Register" />
