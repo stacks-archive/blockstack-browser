@@ -78,7 +78,7 @@ class IdentityPage extends Component {
         </div>
         <div className="card-list-container m-t-30">
           <Link to="/profiles/register" className="btn btn-blue btn-lg" role="button" >
-            +
+            + Create
           </Link>
         </div>
       </div>
