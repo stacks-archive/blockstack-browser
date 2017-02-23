@@ -9,6 +9,10 @@ class PageHeader extends Component {
   render() {
     return (
       <div className="page-header">
+        <a className="navbar-brand" href="/"
+          style={{ position: 'absolute', left: '0px', top: '0px' }}>
+          <img src="/images/icon-home.svg" />
+        </a>
         <h1 className="type-inverse h1-modern">
           {this.props.title}
         </h1>

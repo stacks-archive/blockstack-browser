@@ -237,7 +237,7 @@ class RegisterPage extends Component {
               </div>
             </fieldset>
             <div>
-              <button className="btn btn-primary" onClick={this.registerIdentity}
+              <button className="btn btn-blue" onClick={this.registerIdentity}
               disabled={this.props.registration.preventRegistration}>
                 Register
               </button>
