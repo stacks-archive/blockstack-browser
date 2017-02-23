@@ -14,8 +14,10 @@ const UPDATE_CURRENT = 'UPDATE_CURRENT',
       CHECKING_NAME_AVAILABILITY = 'CHECK_NAME_AVAILABILITY',
       NAME_AVAILABLE = 'NAME_AVAILABLE',
       NAME_UNAVAILABLE = 'NAME_UNAVAILABLE',
+      NAME_AVAILABILITIY_ERROR = 'NAME_AVAILABILITIY_ERROR',
       CHECKING_NAME_PRICE = 'CHECK_NAME_PRICE',
-      NAME_PRICE = 'NAME_PRICE'
+      NAME_PRICE = 'NAME_PRICE',
+      NAME_PRICE_ERROR = 'NAME_PRICE_ERROR'
 
 function updateCurrentIdentity(domainName, profile, verifications) {
   return {
@@ -70,6 +72,14 @@ function nameUnavailable(domainName) {
   }
 }
 
+function nameAvailabilityError(domainName, error) {
+  return {
+    type: NAME_AVAILABILITIY_ERROR,
+    domainName: domainName,
+    error: error
+  }
+}
+
 function checkingNamePrice(domainName) {
   return {
     type: CHECKING_NAME_PRICE,
@@ -82,6 +92,14 @@ function namePrice(domainName, price) {
     type: NAME_PRICE,
     domainName: domainName,
     price: price
+  }
+}
+
+function namePriceError(domainName, error) {
+  return {
+    type: NAME_PRICE_ERROR,
+    domainName: domainName,
+    error: error
   }
 }
 
@@ -252,10 +270,14 @@ function checkNameAvailabilityAndPrice(api, domainName) {
         getNamePrices(api.priceUrl, domainName).then((prices)=> {
             const price = prices.total_estimated_cost.btc
             dispatch(namePrice(domainName, price))
+        }).catch((error) => {
+          dispatch(namePriceError(domainName, error))
         })
       } else {
         dispatch(nameUnavailable(domainName))
       }
+    }).catch((error) => {
+      dispatch(nameAvailabilityError(domainName, error))
     })
   }
 }
@@ -327,7 +349,8 @@ export function IdentityReducer(state = initialState, action) {
         checkingAvailability: true,
         available: false,
         checkingPrice: true,
-        price: 0.0
+        price: 0.0,
+        error: null
       }
       return Object.assign({}, state, {
         registration: {
@@ -357,6 +380,19 @@ export function IdentityReducer(state = initialState, action) {
           lastNameEntered: state.registration.lastNameEntered
         }
       })
+    case NAME_AVAILABILITIY_ERROR:
+      return Object.assign({}, state, {
+        registration: {
+          names: Object.assign({}, state.registration.names, {
+            [action.domainName]: Object.assign({},state.registration.names[action.domainName],
+            {
+              checkingAvailability: false,
+              error: action.error
+            })
+          }),
+          lastNameEntered: state.registration.lastNameEntered
+        }
+      })
     case CHECKING_NAME_PRICE:
     return Object.assign({}, state, {
       registration: {
@@ -377,6 +413,19 @@ export function IdentityReducer(state = initialState, action) {
           {
             checkingPrice: false,
             price: action.price
+          })
+        }),
+        lastNameEntered: state.registration.lastNameEntered
+      }
+    })
+    case NAME_PRICE_ERROR:
+    return Object.assign({}, state, {
+      registration: {
+        names: Object.assign({}, state.registration.names, {
+          [action.domainName]: Object.assign({},state.registration.names[action.domainName],
+          {
+            checkingPrice: false,
+            error: action.error
           })
         }),
         lastNameEntered: state.registration.lastNameEntered

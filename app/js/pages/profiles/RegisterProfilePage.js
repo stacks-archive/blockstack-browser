@@ -75,16 +75,22 @@ class RegisterPage extends Component {
 
     const domainName = `${this.state.username}.${tld}`
     if(domainName === nextProps.lastNameEntered) {
-      if(nextProps.names[domainName].checkingAvailability)
-        this.updateAlert('info', `Checking if ${domainName} is available...`)
-      else if(nextProps.names[domainName].available) {
-        if(nextProps.names[domainName].checkingPrice) {
-          this.updateAlert('info', `${domainName} is available! Checking price...`)
-        } else {
-          this.updateAlert('info', `${domainName} costs ~${cost} btc to register.`)
-        }
+      if(nextProps.names[domainName].error) {
+        const error = nextProps.names[domainName].error
+        console.error(error)
+        this.updateAlert('danger', `There was a problem checking on price & availability of ${domainName}`)
       } else {
-        this.updateAlert('danger', `${domainName} has already been registered.`)
+        if(nextProps.names[domainName].checkingAvailability)
+          this.updateAlert('info', `Checking if ${domainName} is available...`)
+        else if(nextProps.names[domainName].available) {
+          if(nextProps.names[domainName].checkingPrice) {
+            this.updateAlert('info', `${domainName} is available! Checking price...`)
+          } else {
+            this.updateAlert('info', `${domainName} costs ~${cost} btc to register.`)
+          }
+        } else {
+          this.updateAlert('danger', `${domainName} has already been registered.`)
+        }
       }
     }
   }
