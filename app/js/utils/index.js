@@ -4,7 +4,7 @@ export {
   getIdentityPrivateKeychain,
   getWebAccountTypes,
   isPasswordValid,
-  isBackupPhraseVali
+  isBackupPhraseValid
 } from './account-utils'
 
 export {
