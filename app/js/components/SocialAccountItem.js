@@ -34,7 +34,9 @@ class SocialAccountItem extends Component {
     if (webAccountTypes.hasOwnProperty(this.props.service)) {
       if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
         let urlTemplate = webAccountTypes[this.props.service].urlTemplate
-        accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
+        if (urlTemplate) {
+          accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
+        }
       }
     }
     return accountUrl
