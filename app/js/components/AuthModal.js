@@ -58,20 +58,19 @@ class AuthModal extends Component {
           contentLabel="This is My Modal"
           shouldCloseOnOverlayClick={false}
           style={{overlay: {zIndex: 10}}}
-          className="container-fluid"
-        >
+          className="container-fluid">
           <h3>Auth Request</h3>
-          <p><i>
+          <p>
             The app "{this.state.appName}" would like to access your basic information.
-          </i></p>
-          <p><i>
+          </p>
+          <p>
             Click below to log in.
-          </i></p>
+          </p>
           <div>
-            <Link to="/" className="btn btn-secondary">
+            <Link to="/" className="btn btn-outline-primary btn-block">
               Deny
             </Link>
-            <button className="btn btn-primary" onClick={this.login}>
+            <button className="btn btn-primary btn-block" onClick={this.login}>
               Approve
             </button>
           </div>
