@@ -2,14 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { signToken, wrapToken } from 'blockstack-profiles'
 import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
 
 import {
   InputGroup, SaveButton, ProfileEditingSidebar, PageHeader
 } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
-import { getNameParts, uploadProfile, uploadPhoto } from '../../utils/index'
+import { signProfileForUpload, getNameParts, uploadProfile, uploadPhoto } from '../../utils/index'
 
 import BasicInfoTab      from './tabs/BasicInfoTab'
 import PhotosTab         from './tabs/PhotosTab'
@@ -87,17 +86,8 @@ class EditProfilePage extends Component {
     mixpanel.track('Save profile', { distinct_id: analyticsId })
     mixpanel.track('Perform action', { distinct_id: analyticsId })
 
-    const filename = this.state.domainName + '.json'
-
-    const keypair = this.props.identityKeypairs[0],
-          privateKey = keypair.key,
-          publicKey = keypair.keyID
-
-    const token = signToken(this.state.profile, privateKey, {publicKey: publicKey}),
-          tokenRecord = wrapToken(token),
-          tokenRecords = [tokenRecord]
-    const data = JSON.stringify(tokenRecords, null, 2)
-
+    const data = signProfileForUpload(this.state.profile, this.props.identityKeypairs[0])
+    
     uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
         console.error(err)
         console.error('profile not uploaded ')

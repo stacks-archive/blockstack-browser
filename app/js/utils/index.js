@@ -38,6 +38,12 @@ export {
 } from './name-utils'
 
 export {
+  getProfileFromTokens,
+  signProfileForUpload,
+  verifyToken
+} from './profile-utils'
+
+export {
   makeZoneFileForHostedProfile,
   getTokenFileUrlFromZoneFile,
   resolveZoneFileToProfile
