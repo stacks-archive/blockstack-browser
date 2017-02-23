@@ -67,12 +67,12 @@ class AuthModal extends Component {
             Click below to log in.
           </p>
           <div>
-            <Link to="/" className="btn btn-outline-primary btn-block">
-              Deny
-            </Link>
             <button className="btn btn-primary btn-block" onClick={this.login}>
               Approve
             </button>
+            <Link to="/" className="btn btn-outline-primary btn-block">
+              Deny
+            </Link>
           </div>
         </Modal>
       </div>
