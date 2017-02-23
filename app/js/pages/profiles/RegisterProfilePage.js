@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 
 import { Alert, InputGroup, PageHeader } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
-import { getNamePrices, isNameAvailable, hasNameBeenPreordered, isABlockstackName } from '../../utils/name-utils'
-import { uploadProfile } from '../../utils/index'
+import { getNamePrices, isNameAvailable,
+         hasNameBeenPreordered, isABlockstackName } from '../../utils/name-utils'
+
 function mapStateToProps(state) {
   return {
     username: '',
@@ -18,8 +19,8 @@ function mapStateToProps(state) {
     analyticsId: state.account.analyticsId,
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api,
-    lastNameEntered: state.identities.registration.lastNameEntered,
-    names: state.identities.registration.names
+    identityKeypairs: state.account.identityAccount.keypairs,
+    registration: state.identities.registration
   }
 }
 
@@ -38,8 +39,8 @@ class RegisterPage extends Component {
     analyticsId: PropTypes.string.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     registerName: PropTypes.func.isRequired,
-    lastNameEntered: PropTypes.string,
-    names: PropTypes.object.isRequired
+    identityKeypairs: PropTypes.array.isRequired,
+    registration: PropTypes.object.isRequired
   }
 
   static contextTypes = {
@@ -68,22 +69,54 @@ class RegisterPage extends Component {
     this.onChange = this.onChange.bind(this)
     this.registerIdentity = this.registerIdentity.bind(this)
     this.updateAlert = this.updateAlert.bind(this)
+    this.displayPricingAndAvailabilityAlerts = this.displayPricingAndAvailabilityAlerts.bind(this)
+    this.displayRegistrationAlerts = this.displayRegistrationAlerts.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
-    let tld = this.state.tlds[this.state.type]
 
+    // Clear alerts
+    this.setState({
+      alerts:[]
+    })
+
+    const registration = nextProps.registration
+
+    if(registration.registrationSubmitting ||
+      registration.registrationSubmitted ||
+      registration.profileUploading ||
+      registration.error)
+      this.displayRegistrationAlerts(registration)
+    else
+      this.displayPricingAndAvailabilityAlerts(registration)
+  }
+
+  displayRegistrationAlerts(registration) {
+    if(registration.error) {
+      this.updateAlert('danger', 'There was a problem submitting your registration.')
+    } else {
+      if(registration.profileUploading)
+        this.updateAlert('info', 'Signing & uploading your profile...')
+      else if(registration.registrationSubmitting)
+        this.updateAlert('info', 'Submitting your registration to your Blockstack Core node...')
+      else if(registration.registrationSubmitted)
+        this.updateAlert('success', 'Congrats! Your name is preordered! Registration will automatically complete over the next few hours.')
+    }
+  }
+
+  displayPricingAndAvailabilityAlerts(registration) {
+    let tld = this.state.tlds[this.state.type]
     const domainName = `${this.state.username}.${tld}`
-    if(domainName === nextProps.lastNameEntered) {
-      if(nextProps.names[domainName].error) {
-        const error = nextProps.names[domainName].error
+    if(domainName === registration.lastNameEntered) {
+      if(registration.names[domainName].error) {
+        const error = registration.names[domainName].error
         console.error(error)
         this.updateAlert('danger', `There was a problem checking on price & availability of ${domainName}`)
       } else {
-        if(nextProps.names[domainName].checkingAvailability)
+        if(registration.names[domainName].checkingAvailability)
           this.updateAlert('info', `Checking if ${domainName} is available...`)
-        else if(nextProps.names[domainName].available) {
-          if(nextProps.names[domainName].checkingPrice) {
+        else if(registration.names[domainName].available) {
+          if(registration.names[domainName].checkingPrice) {
             this.updateAlert('info', `${domainName} is available! Checking price...`)
           } else {
             this.updateAlert('info', `${domainName} costs ~${cost} btc to register.`)
@@ -148,43 +181,34 @@ class RegisterPage extends Component {
 
     this.setState({ registrationLock: true })
 
-    const username = this.state.username,
-    tld = this.state.tlds[this.state.type],
-    domainName = username + '.' + tld
+    const username = this.state.username
 
     if (username.length === 0) {
       this.updateAlert('danger', 'Name must have at least one character')
       return
     }
 
-    const nameHasBeenPreordered = hasNameBeenPreordered(
-      domainName, this.props.localIdentities)
+    const tld = this.state.tlds[this.state.type],
+    domainName = username + '.' + tld
 
-      if (nameHasBeenPreordered) {
-        this.updateAlert('danger', 'Name has already been preordered')
-        this.setState({ registrationLock: false })
-      } else {
-        let address = this.props.identityAddresses[0]
-        //let tokenFileUrl = 'https://blockstack.s3-us-west-1.amazonaws.com/staging/' + domainName + '.json'
-        // TODO create blank profile.json on dropbox
+    const nameHasBeenPreordered = hasNameBeenPreordered(domainName, this.props.localIdentities)
 
-        uploadProfile(this.props.api, domainName, "{}", true).then((profileUrl) => {
+    if (nameHasBeenPreordered) {
+      this.updateAlert('danger', 'Name has already been preordered')
+      this.setState({ registrationLock: false })
+    } else {
+      const address = this.props.identityAddresses[0]
+      const keypair = this.props.identityKeypairs[0]
 
-          const tokenFileUrl = profileUrl
-          this.props.registerName(this.props.api, domainName, tokenFileUrl, address)
-          this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
+      this.props.registerName(this.props.api, domainName, address, keypair)
+      this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
+      this.setState({ registrationLock: false })
+    }
 
-            //this.context.router.push('/')
-          })
-        }
-        return
-
-
-
-        const analyticsId = this.props.analyticsId
-        mixpanel.track('Register identity', { distinct_id: analyticsId })
-        mixpanel.track('Perform action', { distinct_id: analyticsId })
-      }
+    const analyticsId = this.props.analyticsId
+    mixpanel.track('Register identity', { distinct_id: analyticsId })
+    mixpanel.track('Perform action', { distinct_id: analyticsId })
+  }
 
   render() {
     let tld = this.state.tlds[this.state.type],

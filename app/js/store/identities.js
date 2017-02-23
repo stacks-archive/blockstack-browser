@@ -1,8 +1,13 @@
 import { Person } from 'blockstack-profiles'
 import { parseZoneFile } from 'blockstack-zones'
 import {
-  isNameAvailable, getNamePrices, makeZoneFileForHostedProfile, resolveZoneFileToProfile
+  isNameAvailable, getNamePrices,
+  makeZoneFileForHostedProfile, resolveZoneFileToProfile,
+  signProfileForUpload
 } from '../utils/index'
+import {
+  uploadProfile
+} from '../utils/storage/index'
 import {
   validateProofs
 } from 'blockstack-proofs'
@@ -17,7 +22,18 @@ const UPDATE_CURRENT = 'UPDATE_CURRENT',
       NAME_AVAILABILITIY_ERROR = 'NAME_AVAILABILITIY_ERROR',
       CHECKING_NAME_PRICE = 'CHECK_NAME_PRICE',
       NAME_PRICE = 'NAME_PRICE',
-      NAME_PRICE_ERROR = 'NAME_PRICE_ERROR'
+      NAME_PRICE_ERROR = 'NAME_PRICE_ERROR',
+      PROFILE_UPLOADING = 'UPLOAD_LOADING_PROFILE',
+      PROFILE_UPLOAD_ERROR = 'PROFILE_UPLOAD_ERROR',
+      REGISTRATION_SUBMITTING = 'REGISTRATION_SUBMITTING',
+      REGISTRATION_SUBMITTED = 'REGISTRATION_SUBMITTED',
+      REGISTRATION_ERROR = 'REGISTRATION_ERROR'
+
+
+const DEFAULT_PROFILE = {
+  '@type': 'Person',
+  '@context': 'http://schema.org'
+}
 
 function updateCurrentIdentity(domainName, profile, verifications) {
   return {
@@ -103,6 +119,38 @@ function namePriceError(domainName, error) {
   }
 }
 
+function profileUploading() {
+  return {
+    type: PROFILE_UPLOADING
+  }
+}
+
+function profileUploadError(error) {
+  return {
+    type: PROFILE_UPLOAD_ERROR,
+    error: error
+  }
+}
+
+function registrationSubmitting() {
+  return {
+    type: REGISTRATION_SUBMITTING
+  }
+}
+
+function registrationSubmitted() {
+  return {
+    type: REGISTRATION_SUBMITTED
+  }
+}
+
+function registrationError(error) {
+  return {
+    type: REGISTRATION_ERROR,
+    error: error
+  }
+}
+
 function calculateLocalIdentities(localIdentities, namesOwned) {
   let remoteNamesDict = {},
       localNamesDict = {},
@@ -179,36 +227,51 @@ function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNam
   }
 }
 
-function registerName(api, domainName, tokenFileUrl, recipientAddress) {
+function registerName(api, domainName, recipientAddress, keypair) {
   return dispatch => {
-    const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl)
+    const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
 
-    const requestHeaders = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+    dispatch(profileUploading())
+
+    uploadProfile(api, domainName, signedProfileTokenData, true).then((profileUrl) => {
+
+      const tokenFileUrl = profileUrl
+      const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl)
+
+      const requestHeaders = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+
+      const requestBody = JSON.stringify({
+        name: domainName,
+        owner_address: recipientAddress,
+        zonefile: zoneFile,
+        min_confs: 0
+      })
+
+      dispatch(registrationSubmitting())
+
+      fetch(api.registerUrl, {
+        method: 'POST',
+        headers: requestHeaders,
+        body: requestBody
+      })
+        .then((response) => response.text())
+        .then((responseText) => JSON.parse(responseText))
+        .then((responseJson) => {
+          console.log(responseJson)
+          dispatch(registrationSubmitted())
+          dispatch(createNewIdentity(domainName))
+        })
+        .catch((error) => {
+          dispatch(registrationError(error))
+          console.error(error)
+        })
+      }).catch((error) => {
+        dispatch(profileUploadError(error))
+      })
     }
-    const requestBody = JSON.stringify({
-      name: domainName,
-      owner_address: recipientAddress,
-      zonefile: zoneFile,
-      min_confs: 0
-    })
-
-    fetch(api.registerUrl, {
-      method: 'POST',
-      headers: requestHeaders,
-      body: requestBody
-    })
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        console.log(responseJson)
-        dispatch(createNewIdentity(domainName))
-      })
-      .catch((error) => {
-        console.warn(error)
-      })
-  }
 }
 
 function fetchCurrentIdentity(domainName, lookupUrl) {
@@ -322,10 +385,7 @@ export function IdentityReducer(state = initialState, action) {
         localIdentities: Object.assign({}, state.localIdentities, {
           [action.domainName]: {
             domainName: action.domainName,
-            profile: {
-              '@type': 'Person',
-              '@context': 'http://schema.org'
-            },
+            profile: DEFAULT_PROFILE,
             verifications: [],
             registered: false
           }
@@ -431,7 +491,44 @@ export function IdentityReducer(state = initialState, action) {
         lastNameEntered: state.registration.lastNameEntered
       }
     })
-
+    case PROFILE_UPLOADING:
+      return Object.assign({}, state, {
+        registration: Object.assign({}, state.registration, {
+          profileUploading: true,
+          error: null
+        })
+      })
+    case PROFILE_UPLOAD_ERROR:
+      return Object.assign({}, state, {
+        registration: Object.assign({}, state.registration, {
+          profileUploading: false,
+          error: action.error
+        })
+      })
+    case REGISTRATION_SUBMITTING:
+      return Object.assign({}, state, {
+        registration: Object.assign({}, state.registration, {
+          profileUploading: false,
+          registrationSubmitting: true,
+          error: null
+        })
+      })
+    case REGISTRATION_SUBMITTED:
+      return Object.assign({}, state, {
+        registration: Object.assign({}, state.registration, {
+          profileUploading: false,
+          registrationSubmitting: false,
+          registrationSubmitted: true,
+          error: null
+        })
+      })
+    case REGISTRATION_ERROR:
+      return Object.assign({}, state, {
+        registration: Object.assign({}, state.registration, {
+          registrationSubmitting: false,
+          error: action.error
+        })
+      })
     default:
       return state
   }
