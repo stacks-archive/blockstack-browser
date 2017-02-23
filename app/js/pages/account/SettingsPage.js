@@ -118,33 +118,6 @@ class SettingsPage extends Component {
     return (
       <div className="col-md-9">
         <div>
-          <h4>Blockstack API Options</h4>
-
-          { this.state.api.apiCustomizationEnabled === true ?
-            <div>
-              <InputGroup name="nameLookupUrl" label="Name Lookup URL"
-                data={this.state.api} onChange={this.onValueChange} />
-              <InputGroup name="searchUrl" label="Search URL"
-                data={this.state.api} onChange={this.onValueChange} />
-              <InputGroup name="registerUrl" label="Register URL"
-                data={this.state.api} onChange={this.onValueChange} />
-              <InputGroup name="addressLookupUrl" label="Address Names URL"
-                data={this.state.api} onChange={this.onValueChange} />
-            </div>
-          : null }
-
-          <div className="form-group">
-            <SaveButton onSave={this.updateApi} />
-          </div>
-
-          <p>
-            <button onClick={this.resetApi} className="btn btn-outline-primary">
-              Reset API
-            </button>
-          </p>
-
-          <hr />
-
           <h4>Data Hosting Options</h4>
 
           { this.state.api.hostedDataLocation === DROPBOX ?
@@ -160,6 +133,16 @@ class SettingsPage extends Component {
                 }
             </div>
           : null }
+          <hr />
+
+          <h4>Authentication</h4>
+
+          <p>
+            <button onClick={this.registerProtocolHandler}
+              className="btn btn-sm btn-outline-primary">
+              Allow App Logins
+            </button>
+          </p>
 
           <hr />
 
@@ -194,26 +177,26 @@ class SettingsPage extends Component {
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="pendingQueuesUrl" label="Core node pending queues URL"
                       data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="bitcoinAddressUrl" label="Bitcoin Address URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="ethereumAddressUrl" label="Ethereum Address URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="pgpKeyUrl" label="PGP Key URL"
+                      data={this.state.api} onChange={this.onValueChange} />
                   </div>
                 : null }
 
                 <div className="form-group">
                   <SaveButton onSave={this.updateApi} />
                 </div>
+                <p>
+                  <button onClick={this.resetApi} className="btn btn-outline-primary">
+                    Reset API
+                  </button>
+                </p>
               </div>
             )}
           </RadioGroup>
-
-          <hr />
-
-          <h4>Authentication</h4>
-
-          <p>
-            <button onClick={this.registerProtocolHandler}
-              className="btn btn-sm btn-outline-primary">
-              Allow App Logins
-            </button>
-          </p>
         </div>
       </div>
     )
