@@ -495,14 +495,16 @@ export function IdentityReducer(state = initialState, action) {
       return Object.assign({}, state, {
         registration: Object.assign({}, state.registration, {
           profileUploading: true,
-          error: null
+          error: null,
+          preventRegistration: true
         })
       })
     case PROFILE_UPLOAD_ERROR:
       return Object.assign({}, state, {
         registration: Object.assign({}, state.registration, {
           profileUploading: false,
-          error: action.error
+          error: action.error,
+          preventRegistration: false
         })
       })
     case REGISTRATION_SUBMITTING:
@@ -510,7 +512,8 @@ export function IdentityReducer(state = initialState, action) {
         registration: Object.assign({}, state.registration, {
           profileUploading: false,
           registrationSubmitting: true,
-          error: null
+          error: null,
+          preventRegistration: true
         })
       })
     case REGISTRATION_SUBMITTED:
@@ -519,14 +522,16 @@ export function IdentityReducer(state = initialState, action) {
           profileUploading: false,
           registrationSubmitting: false,
           registrationSubmitted: true,
-          error: null
+          error: null,
+          preventRegistration: false
         })
       })
     case REGISTRATION_ERROR:
       return Object.assign({}, state, {
         registration: Object.assign({}, state.registration, {
           registrationSubmitting: false,
-          error: action.error
+          error: action.error,
+          preventRegistration: false
         })
       })
     default:
