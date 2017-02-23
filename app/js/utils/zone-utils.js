@@ -65,6 +65,7 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress, callback)
       throw('zone file is missing an origin')
     }
   } catch(e) {
+    console.error(e)
   }
 
   let tokenFileUrl = null

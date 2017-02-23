@@ -185,7 +185,7 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
   return updatedLocalIdentities
 }
 
-function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNameLookup) {
+function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
   return dispatch => {
     if (addresses.length === 0) {
       let namesOwned = []
@@ -201,7 +201,7 @@ function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNam
       let namesOwned = []
 
       addresses.forEach((address) => {
-        const url = addressLookupUrl.replace('{address}', address)
+        const url = api.addressLookupUrl.replace('{address}', address)
         fetch(url)
           .then((response) => response.text())
           .then((responseText) => JSON.parse(responseText))
@@ -216,6 +216,23 @@ function refreshIdentities(addresses, addressLookupUrl, localIdentities, lastNam
                 // pass
               } else {
                 dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
+                namesOwned.forEach((domainName) => {
+                  let identity = updatedLocalIdentities[domainName]
+                  const lookupUrl = api.nameLookupUrl.replace('{name}', identity.domainName)
+                  fetch(lookupUrl).then((response) => response.text())
+                  .then((responseText) => JSON.parse(responseText))
+                  .then((responseJson) => {
+                    const zoneFile = responseJson.zonefile,
+                          ownerAddress = responseJson.address
+
+                    resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
+                      if (profile)
+                        dispatch(updateProfile(domainName, profile))
+                    })
+                  }).catch((error) => {
+                    console.error(error)
+                  })
+                })
               }
             }
           }).catch((error) => {
