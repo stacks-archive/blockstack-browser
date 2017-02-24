@@ -7,7 +7,11 @@
 @synthesize blockstackCoreConfigFilePath;
 @synthesize blockstackPath;
 @synthesize statusItem;
+@synthesize devModeEnabled;
 
+@synthesize prodModePortalPort = _prodModePortalPort;
+@synthesize devModePortalPort = _devModePortalPort;
+@synthesize corsProxyPort = _corsProxyPort;
 
 
 
@@ -27,29 +31,34 @@
 {
     NSURL *url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     NSLog(@"Blockstack URL: %@", url);
+    NSLog(@"Blockstack URL host: %@", [url host]);
+    
+    NSString* portalPath = [NSString stringWithFormat:@"%@%@", [self portalAuthPath], [url host]];
+    [self launchBrowser:portalPath];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    _prodModePortalPort = 8888;
+    _devModePortalPort = 3000;
+    _corsProxyPort = 1337;
+    
+    self.devModeEnabled = NO;
+    
     // Add our icon to menu bar
     self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     self.statusItem.highlightMode = YES;
     self.statusItem.button.image = [NSImage imageNamed:@"MenuBar"];
     self.statusItem.button.alternateImage = [NSImage imageNamed:@"MenuBarDark"];
-    NSMenu *menu = [[NSMenu alloc] init];
-    
-    [menu addItemWithTitle:@"Go to Portal" action:@selector(openPortalClick:) keyEquivalent:@"g"];
-    [menu addItem:[NSMenuItem separatorItem]];
-    [menu addItemWithTitle:@"Turn Off Blockstack" action:@selector(exitClick:) keyEquivalent:@"q"];
-    
-    self.statusItem.menu = menu;
+    self.statusItem.button.target = self;
+    self.statusItem.action = @selector(statusItemClick:);
     
     
     NSString* coreWalletPassword = [self createOrRetrieveCoreWalletPassword];
     
-    [self startBlockstackProxy];
-    [self startCorsProxy];
-    [self startBlockstackCoreApiwithCoreWalletPassword:coreWalletPassword];
+    //[self startBlockstackProxy];
+    //[self startCorsProxy];
+    //[self startBlockstackCoreApiwithCoreWalletPassword:coreWalletPassword];
     
     [self performSelector:@selector(launchBrowser) withObject:self afterDelay:LAUNCH_BROWSER_DELAY];
     
@@ -65,6 +74,65 @@
     return NSTerminateNow;
 }
 
+- (void)statusItemClick:(id)sender
+{
+    NSMenu *menu = [[NSMenu alloc] init];
+    
+    
+    NSLog(@"statusItemClick");
+    
+    if ((([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption) != 0)
+        || self.devModeEnabled == YES)
+    {
+        NSLog(@"Option click");
+        
+        if(self.devModeEnabled == YES)
+            [menu addItemWithTitle:@"Go to Development Portal" action:@selector(openPortalClick:) keyEquivalent:@"g"];
+        else
+            [menu addItemWithTitle:@"Go to Portal" action:@selector(openPortalClick:) keyEquivalent:@"g"];
+        
+        [menu addItem:[NSMenuItem separatorItem]];
+        
+        NSMenuItem *portalPortMenuItem = [[NSMenuItem alloc] init];
+        portalPortMenuItem.title = [NSString stringWithFormat:@"Portal proxy running port on %d", [self portalPort]];
+        portalPortMenuItem.enabled = NO;
+        
+        NSMenuItem *corsProxyPortMenuItem = [[NSMenuItem alloc] init];
+        corsProxyPortMenuItem.title = [NSString stringWithFormat:@"CORS proxy running port on %d", [self corsProxyPort]];
+        corsProxyPortMenuItem.enabled = NO;
+                                          
+        NSMenuItem *corePortMenuItem = [[NSMenuItem alloc] init];
+        corePortMenuItem.title = @"Core node running port on 6270";
+        corePortMenuItem.enabled = NO;
+        
+        [menu addItem:portalPortMenuItem];
+        [menu addItem:corsProxyPortMenuItem];
+        [menu addItem:corePortMenuItem];
+        [menu addItem:[NSMenuItem separatorItem]];
+        
+        NSMenuItem *devModeStatusMenuItem = [[NSMenuItem alloc] init];
+        devModeStatusMenuItem.title = [NSString stringWithFormat:@"Portal Development Mode: %@", self.devModeEnabled ? @"Enabled" : @"Disabled"];
+        devModeStatusMenuItem.enabled = NO;
+        
+        [menu addItem:devModeStatusMenuItem];
+        
+        [menu addItemWithTitle:[NSString stringWithFormat:@"%@ Portal Development Mode", self.devModeEnabled ? @"Disable" : @"Enable"] action:@selector(devModeClick:) keyEquivalent:@"d"];
+        
+        [menu addItem:[NSMenuItem separatorItem]];
+    } else {
+        [menu addItemWithTitle:@"Go to Portal" action:@selector(openPortalClick:) keyEquivalent:@"g"];
+        [menu addItem:[NSMenuItem separatorItem]];
+    }
+    
+    [menu addItemWithTitle:@"Turn Off Blockstack" action:@selector(exitClick:) keyEquivalent:@"q"];
+    [self.statusItem popUpStatusItemMenu:menu];
+}
+
+- (void)devModeClick:(id)sender
+{
+    NSLog(@"devModeClick");
+    self.devModeEnabled = !self.devModeEnabled;
+}
 
 - (void)openPortalClick:(id)sender
 {
@@ -86,7 +154,7 @@
     if ([alert runModal] == NSAlertFirstButtonReturn) {
     
         [self.blockstackProxyTask terminate];
-        NSLog(@"Blockstack Browser proxy terminated");
+        NSLog(@"Blockstack Portal proxy terminated");
         
         [self.corsProxyTask terminate];
         NSLog(@"CORS proxy terminated");
@@ -102,7 +170,16 @@
 
 - (void)launchBrowser
 {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://localhost:8888"]];
+    [self launchBrowser:NULL];
+}
+- (void)launchBrowser:(NSString*)path
+{
+    if(path == NULL)
+        path = @"/";
+    
+    NSURL *portalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [self portalBaseUrl], path]];
+    NSLog(@"Opening portal: %@", portalURL);
+    [[NSWorkspace sharedWorkspace] openURL:portalURL];
 }
 
 - (void)startBlockstackProxy
@@ -117,9 +194,9 @@
     self.blockstackProxyTask = [[NSTask alloc] init];
     self.blockstackProxyTask.launchPath = path;
     
-    self.blockstackProxyTask.arguments = @[@"8888", browserPath];
+    self.blockstackProxyTask.arguments = @[[NSString stringWithFormat:@"%d", self.prodModePortalPort], browserPath];
 
-    NSLog(@"Starting Blockstack Browser proxy...");
+    NSLog(@"Starting Blockstack Portal proxy...");
     
     [self.blockstackProxyTask launch];
 
@@ -369,6 +446,21 @@
 -(NSString*)accountName
 {
     return @"blockstack-core";
+}
+
+-(int)portalPort
+{
+    return self.devModeEnabled ? self.devModePortalPort : self.prodModePortalPort;
+}
+
+-(NSString*)portalBaseUrl
+{
+    return [NSString stringWithFormat:@"http://localhost:%d", [self portalPort]];
+}
+
+-(NSString*) portalAuthPath
+{
+    return @"/auth?authRequest=";
 }
 
 @end

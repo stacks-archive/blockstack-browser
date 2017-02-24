@@ -12,5 +12,10 @@
 
 @property (strong) NSStatusItem *statusItem;
 
+@property BOOL devModeEnabled;
+
+@property (readonly) int prodModePortalPort;
+@property (readonly) int devModePortalPort;
+@property (readonly) int corsProxyPort;
 
 @end
