@@ -56,9 +56,9 @@
     
     NSString* coreWalletPassword = [self createOrRetrieveCoreWalletPassword];
     
-    //[self startBlockstackProxy];
-    //[self startCorsProxy];
-    //[self startBlockstackCoreApiwithCoreWalletPassword:coreWalletPassword];
+    [self startBlockstackProxy];
+    [self startCorsProxy];
+    [self startBlockstackCoreApiwithCoreWalletPassword:coreWalletPassword];
     
     [self performSelector:@selector(launchBrowser) withObject:self afterDelay:LAUNCH_BROWSER_DELAY];
     
