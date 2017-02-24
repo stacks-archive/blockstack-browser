@@ -2,11 +2,11 @@
 
 @implementation ApplicationDelegate
 
-@synthesize menubarController = _menubarController;
 @synthesize blockstackProxyTask;
 @synthesize corsProxyTask;
 @synthesize blockstackCoreConfigFilePath;
 @synthesize blockstackPath;
+@synthesize statusItem;
 
 
 
@@ -32,7 +32,18 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
     // Add our icon to menu bar
-    self.menubarController = [[MenubarController alloc] init];
+    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    self.statusItem.highlightMode = YES;
+    self.statusItem.button.image = [NSImage imageNamed:@"MenuBar"];
+    self.statusItem.button.alternateImage = [NSImage imageNamed:@"MenuBarDark"];
+    NSMenu *menu = [[NSMenu alloc] init];
+    
+    [menu addItemWithTitle:@"Go to Portal" action:@selector(openPortalClick:) keyEquivalent:@"g"];
+    [menu addItem:[NSMenuItem separatorItem]];
+    [menu addItemWithTitle:@"Turn Off Blockstack" action:@selector(exitClick:) keyEquivalent:@"q"];
+    
+    self.statusItem.menu = menu;
+    
     
     NSString* coreWalletPassword = [self createOrRetrieveCoreWalletPassword];
     
@@ -47,7 +58,7 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     // Explicitly remove the icon from the menu bar
-    self.menubarController = nil;
+    [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
     [self.blockstackProxyTask terminate];
     [self.corsProxyTask terminate];
     [self stopBlockstackCoreApiAndExit];
@@ -55,9 +66,15 @@
 }
 
 
-- (IBAction)handleClick:(id)sender
+- (void)openPortalClick:(id)sender
 {
-    NSLog(@"handleClick");
+    NSLog(@"openPortalClick");
+    [self launchBrowser];
+}
+
+- (void)exitClick:(id)sender
+{
+    NSLog(@"exitClick");
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Turn off"];
@@ -73,6 +90,9 @@
         
         [self.corsProxyTask terminate];
         NSLog(@"CORS proxy terminated");
+        
+        // Remove the icon from the menu bar
+        [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
         
         [self stopBlockstackCoreApiAndExit];
 
@@ -244,8 +264,6 @@
     blockstackCoreApiStopTask.terminationHandler = ^(NSTask *aTask){
         NSLog(@"Blockstack Core api stopped.");
         
-        // Remove the icon from the menu bar
-        self.menubarController = nil;
         
         NSLog(@"Goodbye!");
         exit(0);
