@@ -94,15 +94,15 @@
         [menu addItem:[NSMenuItem separatorItem]];
         
         NSMenuItem *portalPortMenuItem = [[NSMenuItem alloc] init];
-        portalPortMenuItem.title = [NSString stringWithFormat:@"Portal proxy running on port on %d", [self portalPort]];
+        portalPortMenuItem.title = [NSString stringWithFormat:@"Portal proxy running on port %d", [self portalPort]];
         portalPortMenuItem.enabled = NO;
         
         NSMenuItem *corsProxyPortMenuItem = [[NSMenuItem alloc] init];
-        corsProxyPortMenuItem.title = [NSString stringWithFormat:@"CORS proxy running on port on %d", [self corsProxyPort]];
+        corsProxyPortMenuItem.title = [NSString stringWithFormat:@"CORS proxy running on port %d", [self corsProxyPort]];
         corsProxyPortMenuItem.enabled = NO;
                                           
         NSMenuItem *corePortMenuItem = [[NSMenuItem alloc] init];
-        corePortMenuItem.title = @"Core node running port on 6270";
+        corePortMenuItem.title = @"Core node running on port 6270";
         corePortMenuItem.enabled = NO;
         
         [menu addItem:portalPortMenuItem];
