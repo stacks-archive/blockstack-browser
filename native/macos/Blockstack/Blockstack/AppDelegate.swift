@@ -16,15 +16,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let developmentModePortalPort = 3000
     let corsProxyPort = 1337
     let coreProxyPort = 6270
-    
+    let portalAuthenticationPath = "/auth?authRequest="
     
     var statusItem : NSStatusItem = NSStatusItem()
     
     var isDevModeEnabled : Bool = false
 
-
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSLog("applicationDidFinishLaunching")
+        
+        let appleEventManager = NSAppleEventManager.shared()
+        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
+        
         statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
         
         if let button = statusItem.button {
@@ -37,6 +40,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
+    }
+    
+    func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
+        let url = URL(string: (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue) ?? "")
+        
+        NSLog("Blockstack URL: \(url)")
+        NSLog("Blockstack URL: \(url?.host)")
+        
+        if let value = url?.host {
+            openPortal(path: "\(portalAuthenticationPath)\(value)")
+        }
     }
 
     func portalBaseUrl() -> String {
@@ -52,8 +66,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "/")
     }
     
-    func openPortal(path: String?) {
-        let portalURL = URL(string: "\(portalBaseUrl())\(path ?? "/")")
+    func openPortal(path: String) {
+        let portalURLString = "\(portalBaseUrl())\(path)"
+        NSLog("Opening portal with String: \(portalURLString)")
+        let portalURL = URL(string: portalURLString )
         NSLog("Opening portal with URL: \(portalURL)")
         NSWorkspace.shared().open(portalURL!)
     }
