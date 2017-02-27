@@ -24,8 +24,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     var isShutdown : Bool = false
     
+    let keychainServiceName = "blockstack-core-wallet-password"
+    let keychainAccountName = "blockstack-core"
+    
     let portalProxyProcess = Process()
     let corsProxyProcess = Process()
+    let coreProcess = Process()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSLog("applicationDidFinishLaunching")
@@ -211,6 +215,60 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSLog("Starting CORS proxy...")
         
         corsProxyProcess.launch()
+    }
+    
+    /* Keychain management of Blockstack Core wallet password */
+    
+    func createOrRetrieveCoreWalletPassword() -> String {
+        
+        let serviceNameData = (keychainServiceName as NSString).utf8String
+        let accountNameData = (keychainAccountName as NSString).utf8String
+        
+        var passwordLength : UInt32 = 0
+        var passwordData : UnsafeMutableRawPointer? = nil
+        
+        var unmanagedItem : SecKeychainItem? = nil
+        
+        let keychains : CFTypeRef? = nil // use the default keychain
+        
+        
+        let status = SecKeychainFindGenericPassword(keychains, UInt32(strlen(serviceNameData)), serviceNameData, UInt32(strlen(accountNameData)), accountNameData, &passwordLength, &passwordData, &unmanagedItem)
+        if(status == errSecSuccess) {
+            let password = String(NSString(bytes: UnsafeMutableRawPointer(passwordData)!, length: Int(passwordLength), encoding: String.Encoding.utf8.rawValue)!)
+            SecKeychainItemFreeContent(nil, passwordData) // free memory
+            NSLog("Blockstack Core wallet password found in keychain")
+            return password
+        } else {
+            NSLog("Blockstack Core wallet password not found in keychain: \(SecCopyErrorMessageString(status, nil))")
+            SecKeychainItemFreeContent(nil, passwordData) // free memory
+            
+            return createOrRetrieveCoreWalletPassword()
+        }
+    }
+    
+    func createAndStorePasswordInKeychain() -> String {
+        let serviceNameData = (keychainServiceName as NSString).utf8String
+        let accountNameData = (keychainAccountName as NSString).utf8String
+        
+        let password : String = generatePassword()
+        let passwordData = (password as NSString).utf8String
+        
+        var unmanagedItem : SecKeychainItem? = nil
+        
+        let keychains : SecKeychain? = nil // use the default keychain
+        
+        let status = SecKeychainAddGenericPassword(keychains, UInt32(strlen(serviceNameData)), serviceNameData, UInt32(strlen(accountNameData)), accountNameData, UInt32(strlen(passwordData)), passwordData!, &unmanagedItem)
+        
+        if(status != errSecSuccess) {
+            NSLog("Problem storing Blockstack Core wallet password to Keychain \(SecCopyErrorMessageString(status, nil))");
+        }
+        
+        return password
+    }
+    
+    func generatePassword() -> String {
+        // this isn't necessarily secure or random, but good enough for our purposes.
+        return ProcessInfo.processInfo.globallyUniqueString
     }
     
 }
