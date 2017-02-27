@@ -1,9 +1,0 @@
-//
-// Prefix header for all source files of the 'Blockstack' target in the 'Blockstack' project
-//
-
-#ifdef __OBJC__
-
-#import <Cocoa/Cocoa.h>
-
-#endif
