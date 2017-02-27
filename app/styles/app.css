@@ -140,7 +140,6 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .app-box-container{display:block;min-height:1px;padding-right:4px;text-align:center;}
 .app-box-wrap {
 	width:135px;
-	margin: auto;
 	padding: 0;
 }
 .app-box {
@@ -183,14 +182,6 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 /* No media query since this is the default in Bootstrap */
 
 /* Small devices (tablets, 768px and up) */
-@media (min-width:330px){
-	.app-box-wrap {
-	width:135px;
-	margin: initial;
-	padding: 0;
-}
-}
-
 @media (min-width:768px){
 	.view-with-sidebar{padding-left:90px;}
 }
@@ -400,25 +391,60 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.card-list-card{width:310px;}
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
 	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
+	.app-box-wrap {
+		width:175px;
+		padding: 0;
+	}
+	.app-box {
+		height: auto;
+		margin: 1.125rem auto;
+		width: 100%;
+		margin-left: 0px;
+		margin-right: 0px !important;
+	}
+	.app-box img {
+		width: 144px;
+		-webkit-box-shadow: 0px 0px 70px 0px rgba(44, 150, 255, 1);
+		-moz-box-shadow: 0px 0px 70px 0px rgba(44, 150, 255, 1);
+		box-shadow: 0px 0px 70px 0px rgba(44, 150, 255, 1);
+		-moz-border-radius: 28px;
+		-webkit-border-radius: 28px;
+		border-radius: 28px;
+	}
+	div.app-text-container > h3 {
+		font-size: 1.25rem;
+	}
 }
 
 /* Medium devices (desktops, 975px and up) */
 /* NOTE: change breaking point @media (min-width: 975px;) to @media (min-width: 992px;) in blockstack-bootstrap as this is a non-standard break point */
-@media (min-width:975px){
+@media (min-width:992px){
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 	.pro-wrap{min-width:905px;}
-	/*.app-wrap{width:80%;}*/
-	.app-center{display:flex;align-items:center;justify-content:center;}
-	.app-wrap{width:975px;display:flex;align-items:center;justify-content:center;}
-	.app-container {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
+	.app-wrap{width:90%;}
+	/*	.app-box-wrap {
+		width:220px;
+		padding: 0;
+	}
+	.app-box img {
+		width: 192px;
+		-webkit-box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
+		-moz-box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
+		box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
+		-moz-border-radius: 38px;
+		-webkit-border-radius: 38px;
+		border-radius: 38px;
+	}*/
 }
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width:1200px){
+	.app-wrap{width:80%;}
 	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;}
 	.pro-wrap{min-width:1130px;}
+}
+
+/* Special Home Screen event -- 1 App centering (329px and down) */
+@media (max-width:329px){
+	.app-box-wrap{margin:auto;}
 }
