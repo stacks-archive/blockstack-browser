@@ -52,7 +52,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         startPortalProxy()
         startCorsProxy()
-        startCoreAPI(walletPassword: createOrRetrieveCoreWalletPassword())
+        startCoreAPI(walletPassword: createOrRetrieveCoreWalletPassword(), complete: {
+            self.openPortal(path: "/")
+        })
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -223,7 +225,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     /* Blockstack Core */
     
-    func startCoreAPI(walletPassword: String) {
+    func startCoreAPI(walletPassword: String, complete: @escaping () -> Void) {
         if let archivePath = Bundle.main.path(forResource: coreArchive, ofType: "") {
             NSLog("Blockstack Virtualenv archive path: \(archivePath)")
             
@@ -277,6 +279,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             coreAPIStartProcess.terminationHandler = { process in
                 NSLog("Blockstack Core API started!")
+                complete()
             }
             
             NSLog("Starting Blockstack Core Virtualenv extraction...")
