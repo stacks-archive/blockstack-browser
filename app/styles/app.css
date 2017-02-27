@@ -139,7 +139,9 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .out-form-group{width:490px;margin-left:-80px;}
 .app-box-container{display:block;min-height:1px;padding-right:4px;text-align:center;}
 .app-box-wrap {
-	width:105px;
+	width:135px;
+	margin: auto;
+	padding: 0;
 }
 .app-box {
 	height: auto;
@@ -149,16 +151,15 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 	margin-right: 0px !important;
 }
 .app-box img {
-	width: 76px;
+	width: 96px;
 	background-color: rgba(44, 150, 255, 0.5);
-	-webkit-box-shadow: 0px 0px 20px 0px rgba(44, 150, 255, 1);
-	-moz-box-shadow: 0px 0px 20px 0px rgba(44, 150, 255, 1);
-	box-shadow: 0px 0px 20px 0px rgba(44, 150, 255, 1);
-	-moz-border-radius: 15px;
-	-webkit-border-radius: 15px;
-	border-radius: 15px;
+	-webkit-box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
+	-moz-box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
+	box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
+	-moz-border-radius: 19px;
+	-webkit-border-radius: 19px;
+	border-radius: 19px;
 }
-
 .text-feat-dash{padding:12px;margin-bottom:0;}
 a.view-out-link{color:#494f56;}
 
@@ -182,6 +183,14 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 /* No media query since this is the default in Bootstrap */
 
 /* Small devices (tablets, 768px and up) */
+@media (min-width:330px){
+	.app-box-wrap {
+	width:135px;
+	margin: initial;
+	padding: 0;
+}
+}
+
 @media (min-width:768px){
 	.view-with-sidebar{padding-left:90px;}
 }
@@ -340,32 +349,35 @@ a.list-group-item-dash:hover,
 .page-header > h1{margin-bottom:0;}
 .vertical-split-content{margin-top:40px;}
 .app-center {
+	width: 100%;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: space-between;
 }
 .app-wrap {
-	max-width:unset;
+	width: 100%;
+	max-width:initial;
 	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: space-between;
 }
 .app-container {
+	width: 100%;
 	display: flex;
 	flex-wrap:wrap;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	flex-direction: row;
-	justify-content: center;
+	justify-content: space-between;
 }
 div.app-text-container > h3 {
 	color: #fff;
 	font-weight: 300;
-	font-size: 0.875rem;
+	font-size: 1rem;
 }
 .btn-home-profiles{position:absolute;font-size:12px;font-weight:500;top:75px;left:0px;padding:2px 10px;background-color:#fafafa;border-radius:6px;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);}
 .btn-home-pageheader{position:absolute;font-size:11px;font-weight:400;color:rgba(255,255,255,0.85);top:15px;left:15px;padding:3px 20px;background-color:rgba(255,255,255,0.15);border-radius:6px;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);}
