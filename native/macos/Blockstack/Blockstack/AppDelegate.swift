@@ -17,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let corsProxyPort = 1337
     let coreProxyPort = 6270
     
+    
     var statusItem : NSStatusItem = NSStatusItem()
     
     var isDevModeEnabled : Bool = false
@@ -32,16 +33,29 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(statusItemClick)
         }
         
-        
-        
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
 
+    func portalBaseUrl() -> String {
+        return "http://localhost:\(portalPort())"
+    }
+    
+    func portalPort() -> Int {
+        return isDevModeEnabled ? developmentModePortalPort : productionModePortalPort
+    }
+    
     func openPortalClick(sender: AnyObject?) {
-        
+        NSLog("openPortalClick")
+        openPortal(path: "/")
+    }
+    
+    func openPortal(path: String?) {
+        let portalURL = URL(string: "\(portalBaseUrl())\(path ?? "/")")
+        NSLog("Opening portal with URL: \(portalURL)")
+        NSWorkspace.shared().open(portalURL!)
     }
     
     func statusItemClick(sender: AnyObject?) {
@@ -69,7 +83,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if showExpandedMenu {
             
             let portalPortMenuItem = NSMenuItem()
-            portalPortMenuItem.title = "Portal proxy running on port \(isDevModeEnabled ? developmentModePortalPort : productionModePortalPort)"
+            portalPortMenuItem.title = "Portal proxy running on port \(portalPort())"
             portalPortMenuItem.isEnabled = false
             menu.addItem(portalPortMenuItem)
             
@@ -108,6 +122,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func exitClick(sender: AnyObject?) {
         NSLog("exitClick")
+        
+        let alert = NSAlert()
+        
+        alert.addButton(withTitle: "Turn off")
+        alert.addButton(withTitle: "Cancel")
+        alert.messageText = "Turn off Blockstack?"
+        alert.informativeText = "You will not be able to access the decentralized internet if you turn off Blockstack."
+        alert.alertStyle = NSAlertStyle.warning
+        
+        if alert.runModal() == NSAlertFirstButtonReturn {
+            NSLog("User decided to exit...")
+            
+            NSStatusBar.system().removeStatusItem(statusItem)
+            
+            //            [self.blockstackProxyTask terminate];
+            //            NSLog(@"Blockstack Portal proxy terminated");
+            //
+            //            [self.corsProxyTask terminate];
+            //            NSLog(@"CORS proxy terminated");
+            //
+            //            [self stopBlockstackCoreApiAndExit];
+            
+            
+        }
     }
 }
 
