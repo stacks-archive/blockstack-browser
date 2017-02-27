@@ -27,12 +27,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let keychainServiceName = "blockstack-core-wallet-password"
     let keychainAccountName = "blockstack-core"
     
+    let coreArchive = "blockstack-venv.tar.gz"
+    let coreConfigFileRelativePath = "config/client.ini"
+    let coreVenvDirectory = "blockstack-venv"
+    let extractCoreVenvToPath = "/tmp"
+    
     let portalProxyProcess = Process()
     let corsProxyProcess = Process()
     let coreProcess = Process()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        NSLog("applicationDidFinishLaunching")
+        NSLog("applicationDidFinishLaunching: \(blockstackDataURL())")
         
         let appleEventManager = NSAppleEventManager.shared()
         appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
@@ -47,7 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         startPortalProxy()
         startCorsProxy()
-        
+        startCoreAPI(walletPassword: createOrRetrieveCoreWalletPassword())
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -166,26 +171,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func shutdown(terminate: Bool = true) {
-        
         if(!isShutdown) {
             isShutdown = true // prevent shutdown code from running twice
             NSStatusBar.system().removeStatusItem(statusItem)
+            
             portalProxyProcess.terminate()
             NSLog("Blockstack Portal proxy terminated")
+            
             corsProxyProcess.terminate()
             NSLog("CORS proxy terminated")
             
-            //            [self stopBlockstackCoreApiAndExit];
+            stopCoreAPI(terminationHandler: {
+                if(terminate) {
+                    NSApplication.shared().terminate(self)
+                    NSLog("Goodbye!")
+                }
+            })
         }
-        
-        if(terminate) {
-            NSApplication.shared().terminate(self)
-        }
-        
-   
     }
     
-
     func startPortalProxy() {
         let proxyPath = Bundle.main.path(forResource: "blockstackProxy", ofType: "")
         let portalPath = Bundle.main.path(forResource: "browser", ofType: "")
@@ -216,6 +220,124 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         corsProxyProcess.launch()
     }
+    
+    /* Blockstack Core */
+    
+    func startCoreAPI(walletPassword: String) {
+        if let archivePath = Bundle.main.path(forResource: coreArchive, ofType: "") {
+            NSLog("Blockstack Virtualenv archive path: \(archivePath)")
+            
+            NSLog("Extract Core venv to: \(extractCoreVenvToPath)")
+            NSLog("Blockstack Core config file path: \(coreConfigPath())")
+            NSLog("Blockstack Virtualenv Path: \(coreVenvPath())")
+            NSLog("Blockstack path: \(blockstackPath())")
+            
+            let extractProcess = Process()
+            let coreAPISetupProcess = Process()
+            let coreAPIStartProcess = Process()
+            
+            /* Extract Blockstack Core virtualenv task */
+            
+            let extractPipe = loggingPipe()
+            extractProcess.launchPath = "/usr/bin/tar"
+            extractProcess.arguments = ["-xvzf", archivePath, "-C", extractCoreVenvToPath];
+            extractProcess.standardOutput = extractPipe
+            extractProcess.standardError = extractPipe
+            extractProcess.terminationHandler = { process in
+                NSLog("Finished extraction!")
+                NSLog("Setting up Blockstack Core...")
+                coreAPISetupProcess.launch()
+            }
+            
+            
+            /* Blockstack Core setup task */
+            
+            coreAPISetupProcess.launchPath = blockstackPath()
+            coreAPISetupProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "setup", "--password", walletPassword]
+            
+            let coreAPISetupPipe = loggingPipe()
+            coreAPISetupProcess.standardOutput = coreAPISetupPipe
+            coreAPISetupProcess.standardError = coreAPISetupPipe
+            
+            coreAPISetupProcess.terminationHandler = { process in
+                NSLog("Finished Blockstack Core setup!");
+                NSLog("Starting Blockstack Core API endpoint...");
+                coreAPIStartProcess.launch()
+            }
+            
+            
+            /* Blockstack Core API start task */
+            
+            coreAPIStartProcess.launchPath = blockstackPath()
+            coreAPIStartProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "api", "start", "--password", walletPassword]
+            
+            let coreAPIStartPipe = loggingPipe()
+            coreAPIStartProcess.standardOutput = coreAPIStartPipe
+            coreAPIStartProcess.standardError = coreAPIStartPipe
+            
+            coreAPIStartProcess.terminationHandler = { process in
+                NSLog("Blockstack Core API started!")
+            }
+            
+            NSLog("Starting Blockstack Core Virtualenv extraction...")
+            extractProcess.launch()
+            
+        } else {
+            NSLog("Error: Blockstack Core Virtualenv archive file not found!")
+        }
+        
+    }
+    
+    func stopCoreAPI(terminationHandler:@escaping () -> Void) {
+        NSLog("Attempting to stop Blockstack Core API...")
+        
+        let coreAPIStopProcess = Process()
+        
+        coreAPIStopProcess.launchPath = blockstackPath()
+        coreAPIStopProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "api", "stop"]
+        
+        let coreAPIStopPipe = loggingPipe()
+        coreAPIStopProcess.standardOutput = coreAPIStopPipe
+        coreAPIStopProcess.standardError = coreAPIStopPipe
+        
+        coreAPIStopProcess.terminationHandler = { process in
+            NSLog("Blockstack Core api stopped.")
+            terminationHandler()
+        }
+        
+        coreAPIStopProcess.launch()
+    }
+
+    func blockstackPath() -> String {
+        return coreVenvPath() + "/bin/blockstack"
+    }
+    
+    func coreVenvPath() -> String {
+        return extractCoreVenvToPath  + "/\(coreVenvDirectory)"
+    }
+    
+    func coreConfigPath() -> String {
+        return blockstackDataURL().path + "/\(coreConfigFileRelativePath)"
+    }
+    
+    func blockstackDataURL() -> URL {
+        let applicationSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        
+        //NSLog("Application Support directory: \(applicationSupportDirectory)")
+        
+        let blockstackDataPath = applicationSupportDirectory.appendingPathComponent("Blockstack")
+        
+        //NSLog("Blockstack data directory: \(blockstackDataPath)")
+        
+        do {
+            try FileManager.default.createDirectory(atPath: blockstackDataPath.path, withIntermediateDirectories: false, attributes: nil)
+        } catch {
+            //NSLog("Blockstack data directory probably already exists: \(error)")
+        }
+        
+        return blockstackDataPath
+    }
+    
     
     /* Keychain management of Blockstack Core wallet password */
     
@@ -270,6 +392,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // this isn't necessarily secure or random, but good enough for our purposes.
         return ProcessInfo.processInfo.globallyUniqueString
     }
+    
+    func loggingPipe() -> Pipe {
+        let pipe = Pipe()
+        pipe.fileHandleForReading.readabilityHandler = { pipe in
+            
+            if let line = String(data: pipe.availableData, encoding: String.Encoding.utf8) {
+                NSLog(line)
+            } else {
+                NSLog("Error decoding data: \(pipe.availableData)")
+            }
+        }
+        return pipe
+    }
+    
+
     
 }
 
