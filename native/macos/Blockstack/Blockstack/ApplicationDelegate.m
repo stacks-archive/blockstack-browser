@@ -2,12 +2,16 @@
 
 @implementation ApplicationDelegate
 
-@synthesize menubarController = _menubarController;
 @synthesize blockstackProxyTask;
 @synthesize corsProxyTask;
 @synthesize blockstackCoreConfigFilePath;
 @synthesize blockstackPath;
+@synthesize statusItem;
+@synthesize devModeEnabled;
 
+@synthesize prodModePortalPort = _prodModePortalPort;
+@synthesize devModePortalPort = _devModePortalPort;
+@synthesize corsProxyPort = _corsProxyPort;
 
 
 
@@ -15,12 +19,40 @@
 {
 }
 
+-(void)applicationWillFinishLaunching:(NSNotification *)aNotification
+{
+    NSAppleEventManager *appleEventManager = [NSAppleEventManager sharedAppleEventManager];
+    [appleEventManager setEventHandler:self
+                           andSelector:@selector(handleGetURLEvent:withReplyEvent:)
+                         forEventClass:kInternetEventClass andEventID:kAEGetURL];
+}
 
+- (void)handleGetURLEvent:(NSAppleEventDescriptor *)event withReplyEvent:(NSAppleEventDescriptor *)replyEvent
+{
+    NSURL *url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
+    NSLog(@"Blockstack URL: %@", url);
+    NSLog(@"Blockstack URL host: %@", [url host]);
+    
+    NSString* portalPath = [NSString stringWithFormat:@"%@%@", [self portalAuthPath], [url host]];
+    [self launchBrowser:portalPath];
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    _prodModePortalPort = 8888;
+    _devModePortalPort = 3000;
+    _corsProxyPort = 1337;
+    
+    self.devModeEnabled = NO;
+    
     // Add our icon to menu bar
-    self.menubarController = [[MenubarController alloc] init];
+    self.statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    self.statusItem.highlightMode = YES;
+    self.statusItem.button.image = [NSImage imageNamed:@"MenuBar"];
+    self.statusItem.button.alternateImage = [NSImage imageNamed:@"MenuBarDark"];
+    self.statusItem.button.target = self;
+    self.statusItem.action = @selector(statusItemClick:);
+    
     
     NSString* coreWalletPassword = [self createOrRetrieveCoreWalletPassword];
     
@@ -35,17 +67,82 @@
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
     // Explicitly remove the icon from the menu bar
-    self.menubarController = nil;
+    [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
     [self.blockstackProxyTask terminate];
     [self.corsProxyTask terminate];
     [self stopBlockstackCoreApiAndExit];
     return NSTerminateNow;
 }
 
-
-- (IBAction)handleClick:(id)sender
+- (void)statusItemClick:(id)sender
 {
-    NSLog(@"handleClick");
+    NSMenu *menu = [[NSMenu alloc] init];
+    
+    
+    NSLog(@"statusItemClick");
+    
+    if ((([[NSApp currentEvent] modifierFlags] & NSEventModifierFlagOption) != 0)
+        || self.devModeEnabled == YES)
+    {
+        NSLog(@"Option click");
+        
+        if(self.devModeEnabled == YES)
+            [menu addItemWithTitle:@"Go to Development Portal" action:@selector(openPortalClick:) keyEquivalent:@"g"];
+        else
+            [menu addItemWithTitle:@"Go to Portal" action:@selector(openPortalClick:) keyEquivalent:@"g"];
+        
+        [menu addItem:[NSMenuItem separatorItem]];
+        
+        NSMenuItem *portalPortMenuItem = [[NSMenuItem alloc] init];
+        portalPortMenuItem.title = [NSString stringWithFormat:@"Portal proxy running on port %d", [self portalPort]];
+        portalPortMenuItem.enabled = NO;
+        
+        NSMenuItem *corsProxyPortMenuItem = [[NSMenuItem alloc] init];
+        corsProxyPortMenuItem.title = [NSString stringWithFormat:@"CORS proxy running on port %d", [self corsProxyPort]];
+        corsProxyPortMenuItem.enabled = NO;
+                                          
+        NSMenuItem *corePortMenuItem = [[NSMenuItem alloc] init];
+        corePortMenuItem.title = @"Core node running on port 6270";
+        corePortMenuItem.enabled = NO;
+        
+        [menu addItem:portalPortMenuItem];
+        [menu addItem:corsProxyPortMenuItem];
+        [menu addItem:corePortMenuItem];
+        [menu addItem:[NSMenuItem separatorItem]];
+        
+        NSMenuItem *devModeStatusMenuItem = [[NSMenuItem alloc] init];
+        devModeStatusMenuItem.title = [NSString stringWithFormat:@"Portal Development Mode: %@", self.devModeEnabled ? @"Enabled" : @"Disabled"];
+        devModeStatusMenuItem.enabled = NO;
+        
+        [menu addItem:devModeStatusMenuItem];
+        
+        [menu addItemWithTitle:[NSString stringWithFormat:@"%@ Portal Development Mode", self.devModeEnabled ? @"Disable" : @"Enable"] action:@selector(devModeClick:) keyEquivalent:@"d"];
+        
+        [menu addItem:[NSMenuItem separatorItem]];
+    } else {
+        [menu addItemWithTitle:@"Go to Portal" action:@selector(openPortalClick:) keyEquivalent:@"g"];
+        [menu addItem:[NSMenuItem separatorItem]];
+    }
+    
+    [menu addItemWithTitle:@"Turn Off Blockstack" action:@selector(exitClick:) keyEquivalent:@"q"];
+    [self.statusItem popUpStatusItemMenu:menu];
+}
+
+- (void)devModeClick:(id)sender
+{
+    NSLog(@"devModeClick");
+    self.devModeEnabled = !self.devModeEnabled;
+}
+
+- (void)openPortalClick:(id)sender
+{
+    NSLog(@"openPortalClick");
+    [self launchBrowser];
+}
+
+- (void)exitClick:(id)sender
+{
+    NSLog(@"exitClick");
     
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Turn off"];
@@ -57,10 +154,13 @@
     if ([alert runModal] == NSAlertFirstButtonReturn) {
     
         [self.blockstackProxyTask terminate];
-        NSLog(@"Blockstack Browser proxy terminated");
+        NSLog(@"Blockstack Portal proxy terminated");
         
         [self.corsProxyTask terminate];
         NSLog(@"CORS proxy terminated");
+        
+        // Remove the icon from the menu bar
+        [[NSStatusBar systemStatusBar] removeStatusItem:self.statusItem];
         
         [self stopBlockstackCoreApiAndExit];
 
@@ -70,7 +170,16 @@
 
 - (void)launchBrowser
 {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://localhost:8888"]];
+    [self launchBrowser:NULL];
+}
+- (void)launchBrowser:(NSString*)path
+{
+    if(path == NULL)
+        path = @"/";
+    
+    NSURL *portalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [self portalBaseUrl], path]];
+    NSLog(@"Opening portal: %@", portalURL);
+    [[NSWorkspace sharedWorkspace] openURL:portalURL];
 }
 
 - (void)startBlockstackProxy
@@ -85,9 +194,9 @@
     self.blockstackProxyTask = [[NSTask alloc] init];
     self.blockstackProxyTask.launchPath = path;
     
-    self.blockstackProxyTask.arguments = @[@"8888", browserPath];
+    self.blockstackProxyTask.arguments = @[[NSString stringWithFormat:@"%d", self.prodModePortalPort], browserPath];
 
-    NSLog(@"Starting Blockstack Browser proxy...");
+    NSLog(@"Starting Blockstack Portal proxy...");
     
     [self.blockstackProxyTask launch];
 
@@ -232,8 +341,6 @@
     blockstackCoreApiStopTask.terminationHandler = ^(NSTask *aTask){
         NSLog(@"Blockstack Core api stopped.");
         
-        // Remove the icon from the menu bar
-        self.menubarController = nil;
         
         NSLog(@"Goodbye!");
         exit(0);
@@ -339,6 +446,21 @@
 -(NSString*)accountName
 {
     return @"blockstack-core";
+}
+
+-(int)portalPort
+{
+    return self.devModeEnabled ? self.devModePortalPort : self.prodModePortalPort;
+}
+
+-(NSString*)portalBaseUrl
+{
+    return [NSString stringWithFormat:@"http://localhost:%d", [self portalPort]];
+}
+
+-(NSString*) portalAuthPath
+{
+    return @"/auth?authRequest=";
 }
 
 @end

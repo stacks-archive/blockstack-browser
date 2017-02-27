@@ -17,8 +17,6 @@
 		DD4F7C1513C30F9F00825C6E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C1413C30F9F00825C6E /* main.m */; };
 		DD4F7C1C13C30F9F00825C6E /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */; };
 		DD4F7C1F13C30F9F00825C6E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD4F7C1D13C30F9F00825C6E /* MainMenu.xib */; };
-		DD4F7C3813C317A500825C6E /* MenubarController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C3713C317A500825C6E /* MenubarController.m */; };
-		DD4F7C3C13C3180800825C6E /* StatusItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C3B13C3180800825C6E /* StatusItemView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,10 +37,6 @@
 		DD4F7C1A13C30F9F00825C6E /* ApplicationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationDelegate.h; sourceTree = "<group>"; };
 		DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationDelegate.m; sourceTree = "<group>"; };
 		DD4F7C1E13C30F9F00825C6E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		DD4F7C3613C317A500825C6E /* MenubarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenubarController.h; sourceTree = "<group>"; };
-		DD4F7C3713C317A500825C6E /* MenubarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenubarController.m; sourceTree = "<group>"; };
-		DD4F7C3A13C3180800825C6E /* StatusItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusItemView.h; sourceTree = "<group>"; };
-		DD4F7C3B13C3180800825C6E /* StatusItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusItemView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,8 +112,6 @@
 			children = (
 				DD4F7C1A13C30F9F00825C6E /* ApplicationDelegate.h */,
 				DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */,
-				DD4F7C3613C317A500825C6E /* MenubarController.h */,
-				DD4F7C3713C317A500825C6E /* MenubarController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -144,8 +136,6 @@
 		DD4F7C3913C317EC00825C6E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				DD4F7C3A13C3180800825C6E /* StatusItemView.h */,
-				DD4F7C3B13C3180800825C6E /* StatusItemView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -236,8 +226,6 @@
 			files = (
 				DD4F7C1513C30F9F00825C6E /* main.m in Sources */,
 				DD4F7C1C13C30F9F00825C6E /* ApplicationDelegate.m in Sources */,
-				DD4F7C3813C317A500825C6E /* MenubarController.m in Sources */,
-				DD4F7C3C13C3180800825C6E /* StatusItemView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Artboard.png",
+      "filename" : "blockstack-bug-mac-menubar-1x-inverted.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Artboard-2x.png",
+      "filename" : "blockstack-bug-mac-menubar-2x-inverted.png",
       "scale" : "2x"
     },
     {
