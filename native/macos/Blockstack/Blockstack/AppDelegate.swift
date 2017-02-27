@@ -21,6 +21,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem : NSStatusItem = NSStatusItem()
     
     var isDevModeEnabled : Bool = false
+    
+    var isShutdown : Bool = false
+    
+    let portalProxyProcess = Process()
+    let corsProxyProcess = Process()
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSLog("applicationDidFinishLaunching")
@@ -36,10 +41,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(statusItemClick)
         }
         
+        startPortalProxy()
+        startCorsProxy()
+        
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        // Insert code here to tear down your application
+        shutdown(terminate: false)
     }
     
     func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
@@ -149,19 +157,61 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if alert.runModal() == NSAlertFirstButtonReturn {
             NSLog("User decided to exit...")
-            
-            NSStatusBar.system().removeStatusItem(statusItem)
-            
-            //            [self.blockstackProxyTask terminate];
-            //            NSLog(@"Blockstack Portal proxy terminated");
-            //
-            //            [self.corsProxyTask terminate];
-            //            NSLog(@"CORS proxy terminated");
-            //
-            //            [self stopBlockstackCoreApiAndExit];
-            
-            
+            shutdown(terminate: true)
         }
     }
+    
+    func shutdown(terminate: Bool = true) {
+        
+        if(!isShutdown) {
+            isShutdown = true // prevent shutdown code from running twice
+            NSStatusBar.system().removeStatusItem(statusItem)
+            portalProxyProcess.terminate()
+            NSLog("Blockstack Portal proxy terminated")
+            corsProxyProcess.terminate()
+            NSLog("CORS proxy terminated")
+            
+            //            [self stopBlockstackCoreApiAndExit];
+        }
+        
+        if(terminate) {
+            NSApplication.shared().terminate(self)
+        }
+        
+   
+    }
+    
+
+    func startPortalProxy() {
+        let proxyPath = Bundle.main.path(forResource: "blockstackProxy", ofType: "")
+        let portalPath = Bundle.main.path(forResource: "browser", ofType: "")
+        
+        NSLog("Portal proxy path: \(proxyPath)")
+        NSLog("Portal path: \(portalPath)")
+        
+        portalProxyProcess.launchPath = proxyPath
+        if let portalPath = portalPath {
+            portalProxyProcess.arguments = [String(productionModePortalPort), portalPath]
+            
+            NSLog("Starting Blockstack Portal proxy...")
+            
+            portalProxyProcess.launch()
+        } else {
+            NSLog("Error: Portal directory not found!")
+        }
+    }
+    
+    func startCorsProxy() {
+        let corsProxyPath = Bundle.main.path(forResource: "corsproxy", ofType: "")
+        
+        NSLog("CORS proxy Path: \(corsProxyPath)")
+        
+        corsProxyProcess.launchPath = corsProxyPath
+        
+        NSLog("Starting CORS proxy...")
+        
+        corsProxyProcess.launch()
+    }
+    
 }
 
