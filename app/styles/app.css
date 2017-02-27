@@ -138,14 +138,22 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .out-block{width:490px;}
 .out-form-group{width:490px;margin-left:-80px;}
 .app-box-container{display:block;min-height:1px;padding-right:4px;text-align:center;}
-.app-box{height:auto;margin:1.5rem auto;width:100%;margin-left:0px;margin-right:0px!important;}
-.app-box img {
+.app-box-wrap {
+	width:105px;
+}
+.app-box {
+	height: auto;
+	margin: 0.5rem auto;
 	width: 100%;
-	max-width: 76px;
+	margin-left: 0px;
+	margin-right: 0px !important;
+}
+.app-box img {
+	width: 76px;
 	background-color: rgba(44, 150, 255, 0.5);
-	-webkit-box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
-	-moz-box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
-	box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
+	-webkit-box-shadow: 0px 0px 20px 0px rgba(44, 150, 255, 1);
+	-moz-box-shadow: 0px 0px 20px 0px rgba(44, 150, 255, 1);
+	box-shadow: 0px 0px 20px 0px rgba(44, 150, 255, 1);
 	-moz-border-radius: 15px;
 	-webkit-border-radius: 15px;
 	border-radius: 15px;
@@ -339,18 +347,26 @@ a.list-group-item-dash:hover,
 	justify-content: center;
 }
 .app-wrap {
+	max-width:unset;
+	display: flex;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	flex-direction: row;
 	justify-content: center;
 }
 .app-container {
+	display: flex;
+	flex-wrap:wrap;
 	-webkit-box-orient: horizontal;
 	-webkit-box-direction: normal;
 	flex-direction: row;
 	justify-content: center;
 }
-div.app-text-container > h3 {color:#fff;font-weight:300;font-size:1.5rem;}
+div.app-text-container > h3 {
+	color: #fff;
+	font-weight: 300;
+	font-size: 0.875rem;
+}
 .btn-home-profiles{position:absolute;font-size:12px;font-weight:500;top:75px;left:0px;padding:2px 10px;background-color:#fafafa;border-radius:6px;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);}
 .btn-home-pageheader{position:absolute;font-size:11px;font-weight:400;color:rgba(255,255,255,0.85);top:15px;left:15px;padding:3px 20px;background-color:rgba(255,255,255,0.15);border-radius:6px;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);}
 
