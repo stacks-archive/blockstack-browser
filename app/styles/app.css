@@ -319,7 +319,7 @@ a.list-group-item-dash:hover,
 .vertical-split-content{margin-top:40px;}
 .app-box-container{display:block;min-height:1px;text-align:center;}
 .app-box-wrap {
-	width:90px;
+	width:100px;
 	padding: 0;
 }
 .app-box {
@@ -330,14 +330,14 @@ a.list-group-item-dash:hover,
 	margin-right: 0px !important;
 }
 .app-box img {
-	width: 80px;
+	width: 72px;
 	background-color: rgba(44, 150, 255, 0.5);
-	-webkit-box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
-	-moz-box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
-	box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
-	-moz-border-radius: 16px;
-	-webkit-border-radius: 16px;
-	border-radius: 16px;
+	-webkit-box-shadow: 0px 0px 35px 0px rgba(44, 150, 255, 1);
+	-moz-box-shadow: 0px 0px 35px 0px rgba(44, 150, 255, 1);
+	box-shadow: 0px 0px 35px 0px rgba(44, 150, 255, 1);
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
 }
 .app-center {
 	width: 100%;
@@ -369,7 +369,7 @@ a.list-group-item-dash:hover,
 div.app-text-container > h3 {
 	color: #fff;
 	font-weight: 300;
-	font-size: 0.875rem;
+	font-size: 0.8125rem;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -404,26 +404,7 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 		padding-right: 5px;
 	}
 	.app-box-wrap {
-		width: 80px;
-	}
-	.app-box {
-		margin: 0.5rem auto;		
-	}
-	.app-box img {
-		width: 76px;
-		-webkit-box-shadow: 0px 0px 35px 0px rgba(44, 150, 255, 1);
-		-moz-box-shadow: 0px 0px 35px 0px rgba(44, 150, 255, 1);
-		box-shadow: 0px 0px 35px 0px rgba(44, 150, 255, 1);
-		-moz-border-radius: 15px;
-		-webkit-border-radius: 15px;
-		border-radius: 15px;
-	}
-	div.app-text-container > h3 {
-		font-size: 0.8125rem;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-		margin-bottom: 1rem;
+		width: 90px;
 	}
 }
 
@@ -456,15 +437,28 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	}
 	.app-center {
 		width: 100%;
+		display: flex;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		flex-direction: row;
 		justify-content: space-between;
 	}
 	.app-wrap {
 		width: 95%;
-		max-width:initial;
+		display: flex;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		flex-direction: row;
 		justify-content: space-between;
+		align-items:center;
 	}
 	.app-container {
 		width: 100%;
+		display: flex;
+		flex-wrap:wrap;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		flex-direction: row;
 		justify-content: space-between;
 	}
 	div.app-text-container > h3 {
@@ -480,9 +474,14 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.pro-wrap{min-width:905px;}
 	.app-container {
 		max-width: 954px;
+		margin:0 auto;
 	}
-	.app-wrap{width:90%;}
-		.app-box-wrap {
+	.app-wrap {
+		width: 90%;
+		margin-top: 10rem;
+
+	}
+	.app-box-wrap {
 		width:190px;
 		padding: 0;
 	}
