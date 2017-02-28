@@ -478,6 +478,9 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 @media (min-width:992px){
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 	.pro-wrap{min-width:905px;}
+	.app-container {
+		max-width: 954px;
+	}
 	.app-wrap{width:90%;}
 		.app-box-wrap {
 		width:190px;
