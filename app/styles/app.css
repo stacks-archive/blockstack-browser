@@ -392,7 +392,7 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
 	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
 	.app-box-wrap {
-		width:175px;
+		width:250px;
 		padding: 0;
 	}
 	.app-box {
@@ -414,6 +414,32 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	div.app-text-container > h3 {
 		font-size: 1.25rem;
 	}
+	.app-center {
+	width: 100%;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	flex-direction: row;
+	justify-content: center;
+}
+.app-wrap {
+	width: 100%;
+	max-width:initial;
+	display: flex;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	flex-direction: row;
+	justify-content: center;
+}
+.app-container {
+	width: 100%;
+	display: flex;
+	flex-wrap:wrap;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	flex-direction: row;
+	justify-content: center;
+}
 }
 
 /* Medium devices (desktops, 975px and up) */
@@ -422,19 +448,19 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 	.pro-wrap{min-width:905px;}
 	.app-wrap{width:90%;}
-	/*	.app-box-wrap {
-		width:220px;
+		.app-box-wrap {
+		width:190px;
 		padding: 0;
 	}
 	.app-box img {
-		width: 192px;
-		-webkit-box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
-		-moz-box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
-		box-shadow: 0px 0px 100px 0px rgba(44, 150, 255, 1);
-		-moz-border-radius: 38px;
-		-webkit-border-radius: 38px;
-		border-radius: 38px;
-	}*/
+		width: 152px;
+		-webkit-box-shadow: 0px 0px 80px 0px rgba(44, 150, 255, 1);
+		-moz-box-shadow: 0px 0px 80px 0px rgba(44, 150, 255, 1);
+		box-shadow: 0px 0px 80px 0px rgba(44, 150, 255, 1);
+		-moz-border-radius: 30px;
+		-webkit-border-radius: 30px;
+		border-radius: 30px;
+	}
 }
 
 /* Large devices (large desktops, 1200px and up) */
