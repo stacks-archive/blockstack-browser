@@ -454,34 +454,22 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 		-webkit-border-radius: 28px;
 		border-radius: 28px;
 	}
-	div.app-text-container > h3 {
-		font-size: 1.25rem;
-	}
 	.app-center {
 		width: 100%;
-		display: flex;
-		-webkit-box-orient: horizontal;
-		-webkit-box-direction: normal;
-		flex-direction: row;
 		justify-content: space-between;
 	}
 	.app-wrap {
 		width: 95%;
 		max-width:initial;
-		display: flex;
-		-webkit-box-orient: horizontal;
-		-webkit-box-direction: normal;
-		flex-direction: row;
 		justify-content: space-between;
 	}
 	.app-container {
 		width: 100%;
-		display: flex;
-		flex-wrap:wrap;
-		-webkit-box-orient: horizontal;
-		-webkit-box-direction: normal;
-		flex-direction: row;
 		justify-content: space-between;
+	}
+	div.app-text-container > h3 {
+		font-size: 1.375rem;
+		margin-bottom: 1.75rem;
 	}
 }
 
