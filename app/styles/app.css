@@ -137,9 +137,9 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 .out-block-wrap{width:576px;}
 .out-block{width:490px;}
 .out-form-group{width:490px;margin-left:-80px;}
-.app-box-container{display:block;min-height:1px;padding-right:4px;text-align:center;}
+.app-box-container{display:block;min-height:1px;text-align:center;}
 .app-box-wrap {
-	width:135px;
+	width:90px;
 	padding: 0;
 }
 .app-box {
@@ -150,7 +150,7 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 	margin-right: 0px !important;
 }
 .app-box img {
-	width: 96px;
+	width: 80px;
 	background-color: rgba(44, 150, 255, 0.5);
 	-webkit-box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
 	-moz-box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
@@ -392,7 +392,7 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
 	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
 	.app-box-wrap {
-		width:250px;
+		width:200px;
 		padding: 0;
 	}
 	.app-box {
@@ -415,31 +415,31 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 		font-size: 1.25rem;
 	}
 	.app-center {
-	width: 100%;
-	display: flex;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	flex-direction: row;
-	justify-content: center;
-}
-.app-wrap {
-	width: 100%;
-	max-width:initial;
-	display: flex;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	flex-direction: row;
-	justify-content: center;
-}
-.app-container {
-	width: 100%;
-	display: flex;
-	flex-wrap:wrap;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	flex-direction: row;
-	justify-content: center;
-}
+		width: 100%;
+		display: flex;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.app-wrap {
+		width: 95%;
+		max-width:initial;
+		display: flex;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+	.app-container {
+		width: 100%;
+		display: flex;
+		flex-wrap:wrap;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		flex-direction: row;
+		justify-content: space-between;
+	}
 }
 
 /* Medium devices (desktops, 975px and up) */
@@ -470,7 +470,39 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.pro-wrap{min-width:1130px;}
 }
 
-/* Special Home Screen event -- 1 App centering (329px and down) */
-@media (max-width:329px){
+/* Special Home Screen event -- 1 App centering (319px and down) */
+@media (max-width:320px){
+.app-wrap {
+	width: 100%;
+	padding: 0;
+	margin-top: 1.25rem;
+}
+.app-container {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.app-box-wrap {
+	width: 80px;
+}
+.app-box img {
+	width: 76px;
+	-webkit-box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
+	-moz-box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
+	box-shadow: 0px 0px 40px 0px rgba(44, 150, 255, 1);
+	-moz-border-radius: 19px;
+	-webkit-border-radius: 19px;
+	border-radius: 19px;
+}
+div.app-text-container > h3 {
+	font-size: 0.8125rem;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	margin-bottom: 1rem;
+}
+}
+
+/* Special Home Screen event -- 1 App centering (319px and down) */
+@media (max-width:319px){
 	.app-box-wrap{margin:auto;}
 }
