@@ -425,7 +425,7 @@
 				DEVELOPMENT_TEAM = CWQ2SUHV2E;
 				INFOPLIST_FILE = Blockstack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac.Blockstack;
+				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -440,7 +440,7 @@
 				DEVELOPMENT_TEAM = CWQ2SUHV2E;
 				INFOPLIST_FILE = Blockstack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac.Blockstack;
+				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
