@@ -9,6 +9,11 @@ class PageHeader extends Component {
   render() {
     return (
       <div className="page-header">
+        <a className="navbar-brand" href="/">
+          <div className="btn-home-pageheader">
+            ‹ Home
+          </div>
+        </a>
         <h1 className="type-inverse h1-modern">
           {this.props.title}
         </h1>

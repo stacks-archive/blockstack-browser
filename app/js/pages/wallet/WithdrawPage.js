@@ -17,7 +17,8 @@ import { ECPair, ECKey, TransactionBuilder } from 'bitcoinjs-lib'
 function mapStateToProps(state) {
   return {
     account: state.account,
-    coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl
+    coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl,
+    broadcastTransactionUrl: state.settings.api.broadcastTransactionUrl
   }
 }
 
@@ -163,31 +164,25 @@ class WithdrawPage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Withdraw" />
-        <div className="container vertical-split-content">
-          <div className="row">
-            <div className="col-md-3">
-              <AccountSidebar activeTab="withdraw" />
-            </div>
-            <div className="col-md-9">
-            { this.state.alerts.map(function(alert, index) {
-              return (
-                <Alert key={index} message={alert.message} status={alert.status} />
-              )
-            })}
-              <Balance/>
-              <p>Send your funds to another Bitcoin wallet.</p>
-              <form onSubmit={this.withdrawBitcoinFromCoreWallet} method='post'>
-              <InputGroup data={this.state} onChange={this.onValueChange} name="recipientAddress" label="Recipient address" placeholder="Recipient address" required={true}/>
-              <InputGroup data={this.state} onChange={this.onValueChange} name="password" label="Password" placeholder="Password" type="password" required={true}/>
-              <div className="container m-t-40">
-                <button className="btn btn-primary" type="submit">Send</button>
-              </div>
-              </form>
-            </div>
-          </div>
+      <div>
+        { this.state.alerts.map(function(alert, index) {
+          return (
+            <Alert key={index} message={alert.message} status={alert.status} />
+          )
+        })}
+        <Balance />
+        <p>Send your funds to another Bitcoin wallet.</p>
+        <form onSubmit={this.withdrawBitcoinFromCoreWallet} method='post'>
+        <InputGroup data={this.state} onChange={this.onValueChange}
+          name="recipientAddress" label="Recipient address"
+          placeholder="Recipient address" required={true}/>
+        <InputGroup data={this.state} onChange={this.onValueChange}
+          name="password" label="Password"
+          placeholder="Password" type="password" required={true}/>
+        <div className="container m-t-40">
+          <button className="btn btn-primary" type="submit">Send</button>
         </div>
+        </form>
       </div>
     )
   }

@@ -104,119 +104,101 @@ class ViewProfilePage extends Component {
     }
 
     return (
-      <div className="app-wrap-profiles">  
-        { person !== null ?   
-        <div className="container-fluid site-wrapper">
-          <nav className="navbar navbar-toggleable-md navbar-light">
-            <a className="navbar-brand" href="/profiles">
-              <img src="/images/app-icon-profiles.png" />
-            </a>
-            <div className="navbar-collapse" id="navbarSupportedContent">
-              <ul className="nav navbar-nav m-b-20">
-                <li className="navbar-text">
-                  Profiles
-                </li>
-                <li className="navbar-text navbar-text-secondary">
-                  Utility
-                </li>
-              </ul>
-              <AddressBar placeholder="Search for people" />
-            </div>
-          </nav>
-          <div className="container-fluid pro-wrap m-t-50">
-            <div className="col-sm-4">
-              <div className="pro-container col-sm-12">
-                <div className="pro-avatar m-b-20">
-                  <Image src={person.avatarUrl() || ''}
-                    fallbackSrc="/images/avatar.png" className="img-circle" />
-                </div>
-                <div className="">
-                  { (blockNumber && transactionIndex) ?
-                  <div className="idcard-body dim">
-                    Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
-                    transaction <span className="inverse">#{transactionIndex}</span>
-                  </div>
-                  : null }
-                  <h1 className="pro-card-name">{person.name()}</h1>
-                  <div className="pro-card-body">
-                    {person.description()}
-                  </div>
-                  { person.address() ?
-                  <div className="pro-card-body">
-                    {person.address()}
-                  </div>
-                  : null }
-                  { person.birthDate() ?
-                  <div className="pro-card-body">
-                    {person.birthDate()}
-                  </div>
-                  : null }
-                </div>
-                { isLocal ?
-                <div>
-                    <Link to={this.props.location.pathname + "/edit"}
-                      className="btn btn-sm btn-secondary m-t-10 btn-inline">
-                      Edit
-                    </Link>
-                    <Link to={`/profiles/blockchain/${domainName}`}
-                      className="btn btn-sm btn-secondary m-t-10 btn-inline">
-                      View Publicly
-                    </Link>
-                </div>
-                :
-                <div>
-                  <button className="btn btn-sm btn-secondary m-t-10">
-                    Connect
-                  </button>
-                </div>
-                }
+      <div>
+        { person !== null ?
+        <div className="container-fluid pro-wrap m-t-50">
+          <div className="col-sm-4">
+            <div className="pro-container col-sm-12">
+              <div className="pro-avatar m-b-20">
+                <Image src={person.avatarUrl() || ''}
+                  fallbackSrc="/images/avatar.png" className="img-circle" />
               </div>
-              <div className="container">
-                {connections.length ?
-                <p className="profile-foot">Connections</p>
+              <div className="">
+                { (blockNumber && transactionIndex) ?
+                <div className="idcard-body dim">
+                  Registered in block <span className="inverse">#{blockNumber}</span>,<br/>
+                  transaction <span className="inverse">#{transactionIndex}</span>
+                </div>
                 : null }
-                {connections.map((connection, index) => {
-                  if (connection.id) {
-                    return (
-                      <Link to={`/profiles/blockchain/${connection.id}`}
-                        key={index} className="connections">
-                        <Image src={new Person(connection).avatarUrl()}
-                          fallbackSrc={placeholderImage}
-                          style={{ width: '40px', height: '40px' }} />
-                      </Link>
-                    )
-                  }
-                })}
+                <h1 className="pro-card-name">{person.name()}</h1>
+                <div className="pro-card-body">
+                  {person.description()}
+                </div>
+                { person.address() ?
+                <div className="pro-card-body">
+                  {person.address()}
+                </div>
+                : null }
+                { person.birthDate() ?
+                <div className="pro-card-body">
+                  {person.birthDate()}
+                </div>
+                : null }
               </div>
+              { isLocal ?
+              <div>
+                  <Link to={this.props.location.pathname + "/edit"}
+                    className="btn btn-sm btn-secondary m-t-10 btn-inline">
+                    Edit
+                  </Link>
+                  <Link to={`/profiles/blockchain/${domainName}`}
+                    className="btn btn-sm btn-secondary m-t-10 btn-inline">
+                    View Publicly
+                  </Link>
+              </div>
+              :
+              <div>
+                <button className="btn btn-sm btn-secondary m-t-10">
+                  Connect
+                </button>
+              </div>
+              }
             </div>
-            <div className="col-sm-8 pull-right profile-right-col-fill">
-              <div className="profile-right-col inverse">
-                <h3>
-                  {domainName}
-                </h3>
-                <ul>
-                  {accounts.map(function(account) {
-                    let verified = false
-                    for(let i = 0; i < verifications.length; i++) {
-                      let verification = verifications[i]
-                      if(verification.service == account.service &&
-                        verification.valid == true) {
-                          verified = true
-                          break
-                      }
+            <div className="container">
+              {connections.length ?
+              <p className="profile-foot">Connections</p>
+              : null }
+              {connections.map((connection, index) => {
+                if (connection.id) {
+                  return (
+                    <Link to={`/profiles/blockchain/${connection.id}`}
+                      key={index} className="connections">
+                      <Image src={new Person(connection).avatarUrl()}
+                        fallbackSrc={placeholderImage}
+                        style={{ width: '40px', height: '40px' }} />
+                    </Link>
+                  )
+                }
+              })}
+            </div>
+          </div>
+          <div className="col-sm-8 pull-right profile-right-col-fill">
+            <div className="profile-right-col inverse">
+              <h3>
+                {domainName}
+              </h3>
+              <ul>
+                {accounts.map(function(account) {
+                  let verified = false
+                  for(let i = 0; i < verifications.length; i++) {
+                    let verification = verifications[i]
+                    if(verification.service == account.service &&
+                      verification.valid == true) {
+                        verified = true
+                        break
                     }
-                    return (
-                      <SocialAccountItem
-                        key={account.service + '-' + account.identifier}
-                        service={account.service}
-                        identifier={account.identifier}
-                        proofUrl={account.proofUrl}
-                        listItem={true}
-                        verified={verified} />
-                    )
-                  })}
-                </ul>
-              </div>
+                  }
+                  return (
+                    <SocialAccountItem
+                      key={account.service + '-' + account.identifier}
+                      service={account.service}
+                      identifier={account.identifier}
+                      proofUrl={account.proofUrl}
+                      listItem={true}
+                      verified={verified} />
+                  )
+                })}
+              </ul>
             </div>
           </div>
         </div>

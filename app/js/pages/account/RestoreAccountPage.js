@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
-import { Alert, InputGroup } from '../../components/index'
+import {
+  Alert, InputGroup, AccountSidebar, PageHeader
+} from '../../components/index'
 import { AccountActions } from '../../store/account'
 import { isBackupPhraseValid } from '../../utils'
 
@@ -48,7 +49,9 @@ class RestorePage extends Component {
     if (isValid) {
       if (this.state.password === this.state.passwordConfirmation) {
         this.updateAlert('success', 'Restoring your account...')
+        localStorage.clear()
         this.props.initializeWallet(this.state.password, this.state.backupPhrase)
+        this.updateAlert('success', 'Account restored.')
       } else {
         this.updateAlert('danger', 'Passwords must match')
       }
@@ -65,55 +68,27 @@ class RestorePage extends Component {
 
   render() {
     return (
-      <div className="body-inner draggable-page">
-      <div className="container vertical-split-content out-block-wrap">
-        <div className="container-fluid out-block">
-          <div className="row">
-            <div className="centered">
-              <div className="m-b-1">
-                <img className="title-version m-t-1 m-b-1" src="/images/browser-beta-v1-0@2x.png"/>
-              </div>
-              <h1 className="text-xs-center type-inverse">restore from backup</h1>
-              <p className="lead-out">
-              Enter your backup phrase and choose a new password <br />
-               to restore your account
-              </p>
+      <div>
+        <p>
+        Enter your backup phrase and choose a new password
+         to restore your account. <i>This will delete your current account.</i>
+        </p>
+        { this.state.alerts.map(function(alert, index) {
+          return (
+            <Alert key={index} message={alert.message} status={alert.status} />
+          )
+        })}
+        <InputGroup name="backupPhrase" type="text" label="Backup phrase"
+          placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
+        <InputGroup name="password" type="password" label="New password"
+          placeholder="Password" data={this.state} onChange={this.onValueChange} />
+        <InputGroup name="passwordConfirmation" type="password" label="New password (again)"
+          placeholder="Password" data={this.state} onChange={this.onValueChange} />
+            <div className="container m-t-40">
+              <button className="btn btn-primary" onClick={this.restoreAccount}>
+                Restore
+              </button>
             </div>
-            <div className="out-form-group">
-              { this.state.alerts.map(function(alert, index) {
-                return (
-                  <Alert key={index} message={alert.message} status={alert.status} />
-                )
-              })}
-              <InputGroup name="backupPhrase" type="text" label="Backup phrase" inverse={true}
-                placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
-              <InputGroup name="password" type="password" label="New password" inverse={true}
-                placeholder="Password" data={this.state} onChange={this.onValueChange} />
-              <InputGroup name="passwordConfirmation" type="password" label="New password (again)" inverse={true}
-                placeholder="Password" data={this.state} onChange={this.onValueChange} />
-              <div className="form-group">
-                <fieldset>
-                  <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
-                    <button className="btn btn-block btn-secondary" onClick={this.restoreAccount}>
-                      Restore
-                    </button>
-                  </div>
-                </fieldset>
-              </div>
-              <div className="form-group">
-                <fieldset>
-                  <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11">
-                    <p className="text-sm inverse text-xs-center">Don&#39;t have an account?
-                      <br />
-                      <Link to="/account/create" className="view-out-link">Create an account</Link>
-                    </p>
-                  </div>
-                </fieldset>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       </div>
     )
   }

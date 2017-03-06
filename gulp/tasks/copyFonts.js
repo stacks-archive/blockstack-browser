@@ -5,7 +5,7 @@ import config from '../config';
 
 gulp.task('copyFonts', function() {
 
-  return gulp.src([config.sourceDir + '../node_modules/font-awesome/fonts/**/*'])
+  return gulp.src([config.sourceDir + 'fonts/**/*'])
     .pipe(gulp.dest(config.buildDir + 'fonts/'));
 
 });

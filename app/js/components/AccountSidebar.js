@@ -8,15 +8,14 @@ class AccountSidebar extends Component {
 
   render() {
     let tabs = [
-      { url: '/account/deposit', label: 'deposit', isActive: false },
-      { url: '/account/withdraw', label: 'withdraw', isActive: false },
       { url: '/account/settings', label: 'settings', isActive: false },
       { url: '/account/password', label: 'change password', isActive: false },
       { url: '/account/backup', label: 'backup account', isActive: false },
+      { url: '/account/restore', label: 'restore account', isActive: false },
       { url: '/account/delete', label: 'delete account', isActive: false },
     ]
     tabs.map((tab) => {
-      if (tab.label === this.props.activeTab) {
+      if (tab.url === this.props.activeTab) {
         tab.isActive = true
       }
     })

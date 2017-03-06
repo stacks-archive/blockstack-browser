@@ -19,49 +19,55 @@ class DashboardPage extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
-        <div className="container profile-wrap-wide">
-          <section>
-            <div className="container-fluid no-padding">
-              <div className="col-sm-12 app-container no-padding">
-                <div className="col-sm-4">
-                  <Link to="/profiles"
-                        className="app-box-container" target="_blank">
-                    <div className="app-box container-fluid">
-                      <img src="/images/app-icon-profiles@2x.png" />
-                    </div>
-                  </Link>
-                  <div className="app-text-container">
-                    <h3>Profiles</h3>
-                  </div>
+    <div className="dashboard">
+      <div className="container-fluid app-center">
+        <div className="container app-wrap">
+          <div className="app-container no-padding">
+            <div className="col-sm-3 app-box-wrap">
+              <Link to="/profiles" className="app-box-container">
+                <div className="app-box">
+                  <img src="/images/app-icon-profiles@2x.png" />
                 </div>
-                <div className="col-sm-4">
-                  <Link to="/account/settings"
-                        className="app-box-container" target="_blank">
-                    <div className="app-box">
-                      <img src="/images/app-settings.png" />
-                    </div>
-                  </Link>
-                  <div className="app-text-container">
-                    <h3>Settings</h3>
-                  </div>
-                </div>
-                <div className="col-sm-4">
-                  <a href="https://helloblockstack.com"
-                     className="app-box-container" target="_blank">
-                    <div className="app-box">
-                      <img src="/images/app-hello-blockstack.png" />
-                    </div>
-                  </a>
-                  <div className="app-text-container">
-                    <h3>Hello, Blockstack</h3>
-                  </div>
-                </div>
+              </Link>
+              <div className="app-text-container">
+                <h3>Profiles</h3>
               </div>
             </div>
-          </section>
+            <div className="col-sm-3 app-box-wrap">
+              <Link to="/wallet/deposit" className="app-box-container">
+                <div className="app-box">
+                  <img src="/images/app-icon-wallet@2x.png" />
+                </div>
+              </Link>
+              <div className="app-text-container">
+                <h3>Wallet</h3>
+              </div>
+            </div>
+            <div className="col-sm-3 app-box-wrap">
+              <Link to="/account/settings" className="app-box-container">
+                <div className="app-box">
+                  <img src="/images/app-settings.png" />
+                </div>
+              </Link>
+              <div className="app-text-container">
+                <h3>Account</h3>
+              </div>
+            </div>
+            <div className="col-sm-3 app-box-wrap">
+              <a href="https://helloblockstack.com"
+                 className="app-box-container">
+                <div className="app-box">
+                  <img src="/images/app-hello-blockstack.png" />
+                </div>
+              </a>
+              <div className="app-text-container">
+                <h3>Hello, Blockstack</h3>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
     )
   }
 }
