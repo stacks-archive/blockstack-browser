@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 
 class PageHeader extends Component {
   static propTypes = {
@@ -9,11 +10,11 @@ class PageHeader extends Component {
   render() {
     return (
       <div className="page-header">
-        <a className="navbar-brand" href="/">
+        <Link to="/" className="navbar-brand">
           <div className="btn-home-pageheader">
             ‹ Home
           </div>
-        </a>
+        </Link>
         <h1 className="type-inverse h1-modern">
           {this.props.title}
         </h1>

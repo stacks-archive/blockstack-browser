@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
 import AddressBar          from '../../components/AddressBar'
 
@@ -29,14 +30,14 @@ class ProfilesApp extends Component {
       <div className="app-wrap-profiles">
         <div className="container-fluid site-wrapper">
           <nav className="navbar navbar-toggleable-md navbar-light">
-            <a className="navbar-brand" href="/">
+            <Link to="/" className="navbar-brand">
               <div className="btn-home-profiles">
                 ‹ Home
               </div>
-            </a>
-            <a className="navbar-brand" href="/profiles">
+            </Link>
+            <Link to="/profiles" className="navbar-brand">
               <img src="/images/app-icon-profiles.png" />
-            </a>
+            </Link>
             <div className="navbar-collapse" id="navbarSupportedContent">
               <ul className="nav navbar-nav m-b-20">
                 <li className="navbar-text">

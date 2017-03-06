@@ -105,10 +105,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             showExpandedMenu = true
         }
         
-        var goToPortalTitle = "Go to Portal"
+        var goToPortalTitle = "Go to Blockstack"
         
         if isDevModeEnabled {
-            goToPortalTitle = "Go to Development Portal"
+            goToPortalTitle = "Go to Development View"
             showExpandedMenu = true
         }
         
@@ -118,7 +118,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if showExpandedMenu {
             
             let portalPortMenuItem = NSMenuItem()
-            portalPortMenuItem.title = "Portal proxy running on port \(portalPort())"
+            portalPortMenuItem.title = "Web portal running on port \(portalPort())"
             portalPortMenuItem.isEnabled = false
             menu.addItem(portalPortMenuItem)
             
@@ -135,11 +135,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(NSMenuItem.separator())
             
             let devModeStatusMenuItem = NSMenuItem()
-            devModeStatusMenuItem.title = "Portal Development Mode: \(isDevModeEnabled ? "Enabled" : "Disabled")"
+            devModeStatusMenuItem.title = "Development Mode: \(isDevModeEnabled ? "Enabled" : "Disabled")"
             devModeStatusMenuItem.isEnabled = false
             menu.addItem(devModeStatusMenuItem)
             
-            menu.addItem(withTitle: "\(isDevModeEnabled ? "Disable" : "Enable") Portal Development Mode", action: #selector(devModeClick), keyEquivalent: "d")
+            menu.addItem(withTitle: "\(isDevModeEnabled ? "Disable" : "Enable") Development Mode", action: #selector(devModeClick), keyEquivalent: "d")
             
             menu.addItem(NSMenuItem.separator())
 
