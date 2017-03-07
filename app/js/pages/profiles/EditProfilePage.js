@@ -112,9 +112,9 @@ class EditProfilePage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
+      <div className="card-list-container profile-content-wrapper">
         <PageHeader title="Edit Profile"/>
-        <div className="container vertical-split-content">
+        <div className="vertical-split-content">
           <div className="row">
             <div className="col-md-4">
               <ProfileEditingSidebar

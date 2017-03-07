@@ -15,7 +15,7 @@ class PageHeader extends Component {
             ‹ Home
           </div>
         </Link>
-        <h1 className="type-inverse h1-modern">
+        <h1 className="h1-modern vertical-split-content">
           {this.props.title}
         </h1>
         { this.props.subtitle ?
