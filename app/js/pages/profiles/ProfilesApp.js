@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import HomeButton          from '../../components/HomeButton'
 import AddressBar          from '../../components/AddressBar'
 
 function mapStateToProps(state) {
@@ -30,11 +31,7 @@ class ProfilesApp extends Component {
       <div className="app-wrap-profiles">
         <div className="container-fluid site-wrapper">
           <nav className="navbar navbar-toggleable-md navbar-light">
-            <Link to="/" className="navbar-brand">
-              <div className="btn-home-profiles">
-                ‹ Home
-              </div>
-            </Link>
+            <HomeButton />
             <Link to="/profiles" className="navbar-brand">
               <img src="/images/app-icon-profiles.png" />
             </Link>
