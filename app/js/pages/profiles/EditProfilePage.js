@@ -116,7 +116,7 @@ class EditProfilePage extends Component {
         <PageHeader title="Edit Profile"/>
         <div className="vertical-split-content">
           <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-3 sidebar-list">
               <ProfileEditingSidebar
                 activeTab={this.state.tabName}
                 onClick={this.changeTabs} />
@@ -130,7 +130,7 @@ class EditProfilePage extends Component {
                 </fieldset>
               </div>
             </div>
-            <div className="col-md-8">
+            <div className="col-md-7">
               { this.state.profile ? (
               <div>
                 {(() => {
