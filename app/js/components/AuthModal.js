@@ -3,18 +3,24 @@ import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { AuthResponse, decodeToken } from 'blockstack-auth'
 import queryString from 'query-string'
 import base64url from 'base64url'
+import { decodeToken } from 'jsontokens'
+import Image from './Image'
+import { makeAuthResponse } from 'blockstack'
 
 function mapStateToProps(state) {
   return {
+    localIdentities: state.identities.localIdentities,
+    identityKeypairs: state.account.identityAccount.keypairs
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
+
+const BLOCKSTACK_HANDLER = "web+blockstack"
 
 class AuthModal extends Component {
   static propTypes = {
@@ -23,30 +29,41 @@ class AuthModal extends Component {
   constructor(props) {
     super(props)
 
+    let appURI = null
+    let appName = null
+    let appIcon = null
+
+    const queryDict = queryString.parse(location.search)
+    if (queryDict.authRequest) {
+      const encodedAuthRequest = queryDict.authRequest.split(BLOCKSTACK_HANDLER + ":").join("")
+      const authRequest = decodeToken(encodedAuthRequest)
+      console.log(authRequest)
+      const manifest = authRequest.payload.appManifest
+      console.log(manifest)
+      appURI = manifest.start_url
+      appName = manifest.name
+      appIcon = manifest.icons[0].src
+    }
+
     this.state = {
-      appName: "Hello, Blockstack",
-      blockstackID: "ryan.id",
-      privateKey: "278a5de700e29faae8e40e366ec5012b5ec63d36ec77e8a2417154cc1d25383f",
-      publicKeychain: "xpub661MyMwAqRbcFQVrQr4Q4kPjaP4JjWaf39fBVKjPdK6oGBayE46GAmKzo5UDPQdLSM9DufZiP8eauy56XNuHicBySvZp7J5wsyQVpi2axzZ",
-      chainPath: "bd62885ec3f0e3838043115f4ce25eedd22cc86711803fb0c19601eeef185e39"
+      appURI: appURI,
+      appName: appName,
+      appIcon: appIcon
     }
 
     this.login = this.login.bind(this)
   }
 
   login() {
-    const queryDict = queryString.parse(location.search)
-    let appURI = null
-    if (queryDict.authRequest) {
-      const encodedAuthRequest = queryDict.authRequest.split("web+blockstack:").join("")
-      const authRequest = JSON.parse(base64url.decode(encodedAuthRequest))
-      appURI = authRequest.appURI
+    if (Object.keys(this.props.localIdentities).length > 0) {
+      const userDomainName = Object.keys(this.props.localIdentities)[0]
+      const identity = this.props.localIdentities[userDomainName]
+      const profile = identity.profile
+
+      const privateKey = this.props.identityKeypairs[0].key
+      const authResponseToken = makeAuthResponse(privateKey, profile)
+      window.location = this.state.appURI + '?authResponse=' + authResponseToken
     }
-    const authResponse = new AuthResponse(this.state.privateKey)
-    authResponse.setIssuer(
-      this.state.blockstackID, this.state.publicKeychain, this.state.chainPath)
-    const authResponseToken = authResponse.sign()
-    window.location = appURI + '?authResponse=' + authResponseToken
   }
 
   render() {
@@ -59,21 +76,35 @@ class AuthModal extends Component {
           shouldCloseOnOverlayClick={false}
           style={{overlay: {zIndex: 10}}}
           className="container-fluid">
-          <h3>Auth Request</h3>
+          <h3>Sign In Request</h3>
           <p>
-            The app "{this.state.appName}" would like to access your basic information.
+            The app "{this.state.appName}" wants to access your basic info
           </p>
           <p>
-            Click below to log in.
+            <Image src={this.state.appIcon} style={{ width: '128px', height: '128px' }}
+              fallbackSrc="https://raw.githubusercontent.com/blockstack/blockstack-portal/master/app/images/app-hello-blockstack.png" />
           </p>
+          { Object.keys(this.props.localIdentities).length > 0 ?
           <div>
-            <button className="btn btn-primary btn-block" onClick={this.login}>
-              Approve
-            </button>
-            <Link to="/" className="btn btn-outline-primary btn-block">
-              Deny
-            </Link>
+            <p>
+              Click below to log in.
+            </p>
+            <div>
+              <button className="btn btn-primary btn-block" onClick={this.login}>
+                Approve
+              </button>
+              <Link to="/" className="btn btn-outline-primary btn-block">
+                Deny
+              </Link>
+            </div>
           </div>
+          :
+          <div>
+            <p>
+              You must have created a profile in order to log in.
+            </p>
+          </div>
+          }
         </Modal>
       </div>
     )

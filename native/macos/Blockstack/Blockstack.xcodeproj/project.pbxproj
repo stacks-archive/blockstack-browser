@@ -3,376 +3,551 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		463EBBDA1E2506CC0054FD49 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBD91E2506CC0054FD49 /* Images.xcassets */; };
-		463EBBE11E2526A20054FD49 /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE01E2524540054FD49 /* corsproxy */; };
-		463EBBE41E25273D0054FD49 /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE31E25273D0054FD49 /* blockstackProxy */; };
-		463EBBE61E2528170054FD49 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 463EBBE51E2528170054FD49 /* browser */; };
-		4649DD931E50CB9000E2084C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4649DD921E50CB9000E2084C /* Security.framework */; };
-		4691B0051E3A102F00DF0353 /* blockstack-venv.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 4691B0041E3A102F00DF0353 /* blockstack-venv.tar.gz */; };
-		DD4F7C0913C30F9F00825C6E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4F7C0813C30F9F00825C6E /* Cocoa.framework */; };
-		DD4F7C1513C30F9F00825C6E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C1413C30F9F00825C6E /* main.m */; };
-		DD4F7C1C13C30F9F00825C6E /* ApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */; };
-		DD4F7C1F13C30F9F00825C6E /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD4F7C1D13C30F9F00825C6E /* MainMenu.xib */; };
+		46AB7B3C1E632F08004DACD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */; };
+		46AB7B3E1E632F08004DACD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B3D1E632F08004DACD8 /* Assets.xcassets */; };
+		46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B3F1E632F08004DACD8 /* MainMenu.xib */; };
+		46AB7B4C1E632F08004DACD8 /* BlockstackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B4B1E632F08004DACD8 /* BlockstackTests.swift */; };
+		46AB7B571E632F09004DACD8 /* BlockstackUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B561E632F09004DACD8 /* BlockstackUITests.swift */; };
+		46AB7B661E64363B004DACD8 /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B641E64363B004DACD8 /* corsproxy */; };
+		46AB7B671E64363B004DACD8 /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B651E64363B004DACD8 /* blockstackProxy */; };
+		46AB7B6B1E643675004DACD8 /* blockstack-venv.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */; };
+		46AB7B6C1E643675004DACD8 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B6A1E643675004DACD8 /* browser */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		46AB7B481E632F08004DACD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46AB7B301E632F08004DACD8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46AB7B371E632F08004DACD8;
+			remoteInfo = Blockstack;
+		};
+		46AB7B531E632F09004DACD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 46AB7B301E632F08004DACD8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46AB7B371E632F08004DACD8;
+			remoteInfo = Blockstack;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		463EBBD91E2506CC0054FD49 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Blockstack/Images.xcassets; sourceTree = "<group>"; };
-		463EBBE01E2524540054FD49 /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = corsproxy; path = ../corsproxy; sourceTree = "<group>"; };
-		463EBBE31E25273D0054FD49 /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = blockstackProxy; path = ../blockstackProxy; sourceTree = "<group>"; };
-		463EBBE51E2528170054FD49 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; path = browser; sourceTree = "<group>"; };
-		4649DD921E50CB9000E2084C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		4691B0041E3A102F00DF0353 /* blockstack-venv.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "blockstack-venv.tar.gz"; sourceTree = "<group>"; };
-		DD4F7C0413C30F9F00825C6E /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD4F7C0813C30F9F00825C6E /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		DD4F7C0B13C30F9F00825C6E /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		DD4F7C0C13C30F9F00825C6E /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		DD4F7C0D13C30F9F00825C6E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		DD4F7C1013C30F9F00825C6E /* Blockstack-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Blockstack-Info.plist"; path = "Blockstack/Blockstack-Info.plist"; sourceTree = "<group>"; };
-		DD4F7C1413C30F9F00825C6E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		DD4F7C1613C30F9F00825C6E /* Blockstack-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Blockstack-Prefix.pch"; sourceTree = "<group>"; };
-		DD4F7C1A13C30F9F00825C6E /* ApplicationDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplicationDelegate.h; sourceTree = "<group>"; };
-		DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ApplicationDelegate.m; sourceTree = "<group>"; };
-		DD4F7C1E13C30F9F00825C6E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		46AB7B381E632F08004DACD8 /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		46AB7B3D1E632F08004DACD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		46AB7B401E632F08004DACD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		46AB7B421E632F08004DACD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46AB7B471E632F08004DACD8 /* BlockstackTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlockstackTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		46AB7B4B1E632F08004DACD8 /* BlockstackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstackTests.swift; sourceTree = "<group>"; };
+		46AB7B4D1E632F08004DACD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46AB7B521E632F09004DACD8 /* BlockstackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlockstackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		46AB7B561E632F09004DACD8 /* BlockstackUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstackUITests.swift; sourceTree = "<group>"; };
+		46AB7B581E632F09004DACD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46AB7B641E64363B004DACD8 /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = corsproxy; path = Blockstack/corsproxy; sourceTree = "<group>"; };
+		46AB7B651E64363B004DACD8 /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = blockstackProxy; path = Blockstack/blockstackProxy; sourceTree = "<group>"; };
+		46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; name = "blockstack-venv.tar.gz"; path = "Blockstack/blockstack-venv.tar.gz"; sourceTree = "<group>"; };
+		46AB7B6A1E643675004DACD8 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; name = browser; path = Blockstack/browser; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		DD4F7C0113C30F9F00825C6E /* Frameworks */ = {
+		46AB7B351E632F08004DACD8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4649DD931E50CB9000E2084C /* Security.framework in Frameworks */,
-				DD4F7C0913C30F9F00825C6E /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46AB7B441E632F08004DACD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46AB7B4F1E632F09004DACD8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DD4F7BF913C30F9F00825C6E = {
+		46AB7B2F1E632F08004DACD8 = {
 			isa = PBXGroup;
 			children = (
-				DD4F7C0E13C30F9F00825C6E /* Sources */,
-				DD4F7C2813C3123E00825C6E /* User Interface */,
-				DD4F7C0713C30F9F00825C6E /* Frameworks */,
-				DD4F7C0513C30F9F00825C6E /* Products */,
-				DD4F7C1013C30F9F00825C6E /* Blockstack-Info.plist */,
+				46AB7B681E643643004DACD8 /* Binaries */,
+				46AB7B3A1E632F08004DACD8 /* Blockstack */,
+				46AB7B4A1E632F08004DACD8 /* BlockstackTests */,
+				46AB7B551E632F09004DACD8 /* BlockstackUITests */,
+				46AB7B391E632F08004DACD8 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		DD4F7C0513C30F9F00825C6E /* Products */ = {
+		46AB7B391E632F08004DACD8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DD4F7C0413C30F9F00825C6E /* Blockstack.app */,
+				46AB7B381E632F08004DACD8 /* Blockstack.app */,
+				46AB7B471E632F08004DACD8 /* BlockstackTests.xctest */,
+				46AB7B521E632F09004DACD8 /* BlockstackUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DD4F7C0713C30F9F00825C6E /* Frameworks */ = {
+		46AB7B3A1E632F08004DACD8 /* Blockstack */ = {
 			isa = PBXGroup;
 			children = (
-				4649DD921E50CB9000E2084C /* Security.framework */,
-				DD4F7C0B13C30F9F00825C6E /* AppKit.framework */,
-				DD4F7C0C13C30F9F00825C6E /* CoreData.framework */,
-				DD4F7C0D13C30F9F00825C6E /* Foundation.framework */,
-				DD4F7C0813C30F9F00825C6E /* Cocoa.framework */,
+				46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */,
+				46AB7B3D1E632F08004DACD8 /* Assets.xcassets */,
+				46AB7B3F1E632F08004DACD8 /* MainMenu.xib */,
+				46AB7B421E632F08004DACD8 /* Info.plist */,
 			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		DD4F7C0E13C30F9F00825C6E /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				DD4F7C2613C311DF00825C6E /* Controllers */,
-				DD4F7C3913C317EC00825C6E /* Views */,
-				DD4F7C0F13C30F9F00825C6E /* Supporting Files */,
-			);
-			name = Sources;
 			path = Blockstack;
 			sourceTree = "<group>";
 		};
-		DD4F7C0F13C30F9F00825C6E /* Supporting Files */ = {
+		46AB7B4A1E632F08004DACD8 /* BlockstackTests */ = {
 			isa = PBXGroup;
 			children = (
-				4691B0041E3A102F00DF0353 /* blockstack-venv.tar.gz */,
-				463EBBE51E2528170054FD49 /* browser */,
-				463EBBE31E25273D0054FD49 /* blockstackProxy */,
-				463EBBE01E2524540054FD49 /* corsproxy */,
-				DD4F7C1613C30F9F00825C6E /* Blockstack-Prefix.pch */,
-				DD4F7C1413C30F9F00825C6E /* main.m */,
+				46AB7B4B1E632F08004DACD8 /* BlockstackTests.swift */,
+				46AB7B4D1E632F08004DACD8 /* Info.plist */,
 			);
-			name = "Supporting Files";
+			path = BlockstackTests;
 			sourceTree = "<group>";
 		};
-		DD4F7C2613C311DF00825C6E /* Controllers */ = {
+		46AB7B551E632F09004DACD8 /* BlockstackUITests */ = {
 			isa = PBXGroup;
 			children = (
-				DD4F7C1A13C30F9F00825C6E /* ApplicationDelegate.h */,
-				DD4F7C1B13C30F9F00825C6E /* ApplicationDelegate.m */,
+				46AB7B561E632F09004DACD8 /* BlockstackUITests.swift */,
+				46AB7B581E632F09004DACD8 /* Info.plist */,
 			);
-			name = Controllers;
+			path = BlockstackUITests;
 			sourceTree = "<group>";
 		};
-		DD4F7C2813C3123E00825C6E /* User Interface */ = {
+		46AB7B681E643643004DACD8 /* Binaries */ = {
 			isa = PBXGroup;
 			children = (
-				DD4F7C4813C322D800825C6E /* Graphics */,
-				DD4F7C2913C3124300825C6E /* XIBs */,
+				46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */,
+				46AB7B6A1E643675004DACD8 /* browser */,
+				46AB7B641E64363B004DACD8 /* corsproxy */,
+				46AB7B651E64363B004DACD8 /* blockstackProxy */,
 			);
-			name = "User Interface";
-			sourceTree = "<group>";
-		};
-		DD4F7C2913C3124300825C6E /* XIBs */ = {
-			isa = PBXGroup;
-			children = (
-				DD4F7C1D13C30F9F00825C6E /* MainMenu.xib */,
-			);
-			name = XIBs;
-			sourceTree = "<group>";
-		};
-		DD4F7C3913C317EC00825C6E /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
-		DD4F7C4813C322D800825C6E /* Graphics */ = {
-			isa = PBXGroup;
-			children = (
-				463EBBD91E2506CC0054FD49 /* Images.xcassets */,
-			);
-			name = Graphics;
+			name = Binaries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DD4F7C0313C30F9F00825C6E /* Blockstack */ = {
+		46AB7B371E632F08004DACD8 /* Blockstack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DD4F7C2213C30F9F00825C6E /* Build configuration list for PBXNativeTarget "Blockstack" */;
+			buildConfigurationList = 46AB7B5B1E632F09004DACD8 /* Build configuration list for PBXNativeTarget "Blockstack" */;
 			buildPhases = (
-				DD4F7C0013C30F9F00825C6E /* Sources */,
-				DD4F7C0113C30F9F00825C6E /* Frameworks */,
-				DD4F7C0213C30F9F00825C6E /* Resources */,
+				46AB7B341E632F08004DACD8 /* Sources */,
+				46AB7B351E632F08004DACD8 /* Frameworks */,
+				46AB7B361E632F08004DACD8 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Blockstack;
-			productName = Popup;
-			productReference = DD4F7C0413C30F9F00825C6E /* Blockstack.app */;
+			productName = Blockstack;
+			productReference = 46AB7B381E632F08004DACD8 /* Blockstack.app */;
 			productType = "com.apple.product-type.application";
+		};
+		46AB7B461E632F08004DACD8 /* BlockstackTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 46AB7B5E1E632F09004DACD8 /* Build configuration list for PBXNativeTarget "BlockstackTests" */;
+			buildPhases = (
+				46AB7B431E632F08004DACD8 /* Sources */,
+				46AB7B441E632F08004DACD8 /* Frameworks */,
+				46AB7B451E632F08004DACD8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				46AB7B491E632F08004DACD8 /* PBXTargetDependency */,
+			);
+			name = BlockstackTests;
+			productName = BlockstackTests;
+			productReference = 46AB7B471E632F08004DACD8 /* BlockstackTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		46AB7B511E632F09004DACD8 /* BlockstackUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 46AB7B611E632F09004DACD8 /* Build configuration list for PBXNativeTarget "BlockstackUITests" */;
+			buildPhases = (
+				46AB7B4E1E632F09004DACD8 /* Sources */,
+				46AB7B4F1E632F09004DACD8 /* Frameworks */,
+				46AB7B501E632F09004DACD8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				46AB7B541E632F09004DACD8 /* PBXTargetDependency */,
+			);
+			name = BlockstackUITests;
+			productName = BlockstackUITests;
+			productReference = 46AB7B521E632F09004DACD8 /* BlockstackUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		DD4F7BFB13C30F9F00825C6E /* Project object */ = {
+		46AB7B301E632F08004DACD8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = Blockstack;
 				TargetAttributes = {
-					DD4F7C0313C30F9F00825C6E = {
+					46AB7B371E632F08004DACD8 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = CWQ2SUHV2E;
 						ProvisioningStyle = Automatic;
-						SystemCapabilities = {
-							com.apple.Sandbox = {
-								enabled = 0;
-							};
-						};
+					};
+					46AB7B461E632F08004DACD8 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = CWQ2SUHV2E;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 46AB7B371E632F08004DACD8;
+					};
+					46AB7B511E632F09004DACD8 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = CWQ2SUHV2E;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 46AB7B371E632F08004DACD8;
 					};
 				};
 			};
-			buildConfigurationList = DD4F7BFE13C30F9F00825C6E /* Build configuration list for PBXProject "Blockstack" */;
-			compatibilityVersion = "Xcode 8.0";
+			buildConfigurationList = 46AB7B331E632F08004DACD8 /* Build configuration list for PBXProject "Blockstack" */;
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
-			mainGroup = DD4F7BF913C30F9F00825C6E;
-			productRefGroup = DD4F7C0513C30F9F00825C6E /* Products */;
+			mainGroup = 46AB7B2F1E632F08004DACD8;
+			productRefGroup = 46AB7B391E632F08004DACD8 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DD4F7C0313C30F9F00825C6E /* Blockstack */,
+				46AB7B371E632F08004DACD8 /* Blockstack */,
+				46AB7B461E632F08004DACD8 /* BlockstackTests */,
+				46AB7B511E632F09004DACD8 /* BlockstackUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		DD4F7C0213C30F9F00825C6E /* Resources */ = {
+		46AB7B361E632F08004DACD8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD4F7C1F13C30F9F00825C6E /* MainMenu.xib in Resources */,
-				463EBBE11E2526A20054FD49 /* corsproxy in Resources */,
-				463EBBDA1E2506CC0054FD49 /* Images.xcassets in Resources */,
-				463EBBE41E25273D0054FD49 /* blockstackProxy in Resources */,
-				4691B0051E3A102F00DF0353 /* blockstack-venv.tar.gz in Resources */,
-				463EBBE61E2528170054FD49 /* browser in Resources */,
+				46AB7B661E64363B004DACD8 /* corsproxy in Resources */,
+				46AB7B3E1E632F08004DACD8 /* Assets.xcassets in Resources */,
+				46AB7B6B1E643675004DACD8 /* blockstack-venv.tar.gz in Resources */,
+				46AB7B6C1E643675004DACD8 /* browser in Resources */,
+				46AB7B671E64363B004DACD8 /* blockstackProxy in Resources */,
+				46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46AB7B451E632F08004DACD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46AB7B501E632F09004DACD8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		DD4F7C0013C30F9F00825C6E /* Sources */ = {
+		46AB7B341E632F08004DACD8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD4F7C1513C30F9F00825C6E /* main.m in Sources */,
-				DD4F7C1C13C30F9F00825C6E /* ApplicationDelegate.m in Sources */,
+				46AB7B3C1E632F08004DACD8 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46AB7B431E632F08004DACD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46AB7B4C1E632F08004DACD8 /* BlockstackTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46AB7B4E1E632F09004DACD8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46AB7B571E632F09004DACD8 /* BlockstackUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		46AB7B491E632F08004DACD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46AB7B371E632F08004DACD8 /* Blockstack */;
+			targetProxy = 46AB7B481E632F08004DACD8 /* PBXContainerItemProxy */;
+		};
+		46AB7B541E632F09004DACD8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 46AB7B371E632F08004DACD8 /* Blockstack */;
+			targetProxy = 46AB7B531E632F09004DACD8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
-		DD4F7C1D13C30F9F00825C6E /* MainMenu.xib */ = {
+		46AB7B3F1E632F08004DACD8 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DD4F7C1E13C30F9F00825C6E /* en */,
+				46AB7B401E632F08004DACD8 /* Base */,
 			);
 			name = MainMenu.xib;
-			path = Blockstack;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		DD4F7C2013C30F9F00825C6E /* Debug */ = {
+		46AB7B591E632F09004DACD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj browser";
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		DD4F7C2113C30F9F00825C6E /* Release */ = {
+		46AB7B5A1E632F09004DACD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
-				COPY_PHASE_STRIP = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES = "*.nib *.lproj *.framework *.gch *.xcode* *.xcassets (*) .DS_Store CVS .svn .git .hg *.pbproj *.pbxproj browser";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
-		DD4F7C2313C30F9F00825C6E /* Debug */ = {
+		46AB7B5C1E632F09004DACD8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = CWQ2SUHV2E;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Blockstack/Blockstack-Prefix.pch";
-				INFOPLIST_FILE = "Blockstack/Blockstack-Info.plist";
+				INFOPLIST_FILE = Blockstack/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				WRAPPER_EXTENSION = app;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
-		DD4F7C2413C30F9F00825C6E /* Release */ = {
+		46AB7B5D1E632F09004DACD8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = CWQ2SUHV2E;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Blockstack/Blockstack-Prefix.pch";
-				INFOPLIST_FILE = "Blockstack/Blockstack-Info.plist";
+				INFOPLIST_FILE = Blockstack/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				WRAPPER_EXTENSION = app;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		46AB7B5F1E632F09004DACD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CWQ2SUHV2E;
+				INFOPLIST_FILE = BlockstackTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac.BlockstackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Blockstack.app/Contents/MacOS/Blockstack";
+			};
+			name = Debug;
+		};
+		46AB7B601E632F09004DACD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CWQ2SUHV2E;
+				INFOPLIST_FILE = BlockstackTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac.BlockstackTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Blockstack.app/Contents/MacOS/Blockstack";
+			};
+			name = Release;
+		};
+		46AB7B621E632F09004DACD8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CWQ2SUHV2E;
+				INFOPLIST_FILE = BlockstackUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac.BlockstackUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Blockstack;
+			};
+			name = Debug;
+		};
+		46AB7B631E632F09004DACD8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CWQ2SUHV2E;
+				INFOPLIST_FILE = BlockstackUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac.BlockstackUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Blockstack;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DD4F7BFE13C30F9F00825C6E /* Build configuration list for PBXProject "Blockstack" */ = {
+		46AB7B331E632F08004DACD8 /* Build configuration list for PBXProject "Blockstack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DD4F7C2013C30F9F00825C6E /* Debug */,
-				DD4F7C2113C30F9F00825C6E /* Release */,
+				46AB7B591E632F09004DACD8 /* Debug */,
+				46AB7B5A1E632F09004DACD8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DD4F7C2213C30F9F00825C6E /* Build configuration list for PBXNativeTarget "Blockstack" */ = {
+		46AB7B5B1E632F09004DACD8 /* Build configuration list for PBXNativeTarget "Blockstack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DD4F7C2313C30F9F00825C6E /* Debug */,
-				DD4F7C2413C30F9F00825C6E /* Release */,
+				46AB7B5C1E632F09004DACD8 /* Debug */,
+				46AB7B5D1E632F09004DACD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		46AB7B5E1E632F09004DACD8 /* Build configuration list for PBXNativeTarget "BlockstackTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46AB7B5F1E632F09004DACD8 /* Debug */,
+				46AB7B601E632F09004DACD8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		46AB7B611E632F09004DACD8 /* Build configuration list for PBXNativeTarget "BlockstackUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				46AB7B621E632F09004DACD8 /* Debug */,
+				46AB7B631E632F09004DACD8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = DD4F7BFB13C30F9F00825C6E /* Project object */;
+	rootObject = 46AB7B301E632F08004DACD8 /* Project object */;
 }
