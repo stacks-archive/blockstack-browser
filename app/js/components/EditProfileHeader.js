@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-class PageHeader extends Component {
+class EditProfileHeader extends Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
     subtitle: PropTypes.string
@@ -9,8 +9,8 @@ class PageHeader extends Component {
 
   render() {
     return (
-      <div className="page-header">
-        <h1 className="type-inverse h1-modern">
+      <div className="">
+        <h1 className="h1-modern vertical-split-content">
           {this.props.title}
         </h1>
         { this.props.subtitle ?
@@ -23,4 +23,4 @@ class PageHeader extends Component {
   }
 }
 
-export default PageHeader
+export default EditProfileHeader
