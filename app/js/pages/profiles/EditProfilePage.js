@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
 
 import {
-  InputGroup, SaveButton, ProfileEditingSidebar, PageHeader
+  InputGroup, SaveButton, ProfileEditingSidebar, EditProfileHeader
 } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
 import { signProfileForUpload, getNameParts, uploadProfile, uploadPhoto } from '../../utils/index'
@@ -112,11 +112,11 @@ class EditProfilePage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Edit Profile"/>
-        <div className="container vertical-split-content">
+      <div className="card-list-container profile-content-wrapper">
+        <EditProfileHeader title="Edit Profile"/>
+        <div className="vertical-split-content">
           <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-3 sidebar-list">
               <ProfileEditingSidebar
                 activeTab={this.state.tabName}
                 onClick={this.changeTabs} />
@@ -130,7 +130,7 @@ class EditProfilePage extends Component {
                 </fieldset>
               </div>
             </div>
-            <div className="col-md-8">
+            <div className="col-md-7">
               { this.state.profile ? (
               <div>
                 {(() => {
