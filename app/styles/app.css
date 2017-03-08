@@ -376,7 +376,15 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.app-container{max-width:954px;margin:0 auto;}
 	.app-wrap{width:90%;margin-top:10rem;}
 	.app-box-wrap{width:190px;padding:0;}
-	.app-box img{width:152px;-webkit-box-shadow:0px 0px 80px 0px rgba(44,150,255,1);-moz-box-shadow:0px 0px 80px 0px rgba(44,150,255,1);box-shadow:0px 0px 80px 0px rgba(44,150,255,1);-moz-border-radius:30px;-webkit-border-radius:30px;border-radius:30px;}
+.app-box img {
+	width: 152px;
+	-webkit-box-shadow: 0px 0px 80px 0px rgba(44, 150, 255, 1);
+	-moz-box-shadow: 0px 0px 80px 0px rgba(44, 150, 255, 1);
+	box-shadow: 0px 0px 80px 0px rgba(44, 150, 255, 1);
+	-moz-border-radius: 33px;
+	-webkit-border-radius: 33px;
+	border-radius: 33px;
+}
 }
 
 /* Large devices (large desktops, 1200px and up) */
