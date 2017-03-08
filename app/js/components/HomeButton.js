@@ -7,8 +7,8 @@ class HomeButton extends Component {
 
   render() {
     return (
-      <Link to="/" className="navbar-brand">
-        <div className="btn-home-profiles">
+      <Link to="/">
+        <div className="btn-home-button">
           ‹ Home
         </div>
       </Link>

@@ -31,7 +31,9 @@ class ProfilesApp extends Component {
       <div className="app-wrap-profiles">
         <div className="container-fluid site-wrapper">
           <nav className="navbar navbar-toggleable-md navbar-light">
-            <HomeButton />
+            <div className="home-profiles">
+              <HomeButton />
+            </div>
             <Link to="/profiles" className="navbar-brand">
               <img src="/images/app-icon-profiles.png" />
             </Link>

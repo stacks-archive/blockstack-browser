@@ -248,19 +248,9 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 .btn-blue{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;padding-right:1.375rem;padding-left:1.375rem;border-radius:0;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
 .btn-blue:hover,.btn-blue:focus,.btn-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
 .btn-inline{margin-right:15px;}
-/* removed
-.btn-side-emphasis, 
-.btn-side-emphasis:hover, 
-.btn-side-emphasis:focus, 
-.btn-side-emphasis:active, 
-.btn-side-secondary:hover, 
-.btn-side-secondary:focus, 
-.btn-side-secondary:active,
-.btn-pro-edit:hover,
-.btn-pro-edit:active,
-.btn-pro-edit:focus,
-.btn-pro-edit:active:focus
-*/
+.btn-home-button{position:absolute;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:400;border-radius:6px;padding:3px 20px;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
+div.home-profiles a .btn-home-button{position:absolute;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
+div.home-wallet a .btn-home-button{position:absolute;color:rgba(255,255,255,0.85);top:15px;right:15px;background-color:rgba(255,255,255,0.15);-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);}
 
 /* 13. Forms */
 .form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;}
@@ -323,8 +313,6 @@ a.list-group-item-dash:hover,
 .app-wrap{width:100%;max-width:initial;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;margin-top:1.625rem;}
 .app-container{width:100%;display:flex;flex-wrap:wrap;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
 div.app-text-container > h3{color:#fff;font-weight:300;font-size:0.8125rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:1.25rem;}
-.btn-home-profiles{position:absolute;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:400;top:0px;right:0;padding:3px 20px;background-color:#fafafa;border-radius:6px;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
-.btn-home-pageheader{position:absolute;font-size:11px;font-weight:400;color:rgba(255,255,255,0.85);top:15px;left:15px;padding:3px 20px;background-color:rgba(255,255,255,0.15);border-radius:6px;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);}
 .sidebar-list{margin-bottom:20px;}
 .sidebar-list .btn{margin-bottom:5px;}
 
@@ -361,11 +349,13 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.app-center{width:100%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
 	.app-wrap{width:95%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;align-items:center;}
 	.app-container{width:100%;display:flex;flex-wrap:wrap;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
-	div.app-text-container > h3{font-size:1.375rem;margin-bottom:1.75rem;}
- .btn-home-profiles{top:75px;left:0px;right:auto;}
+	div.app-text-container > h3{font-size:1.375rem;margin-bottom:1.75rem;}	
 	div.card-list-container.profile-content-wrapper > div > h5.h5-landing{margin-top:25px;}
 	.sidebar-list{width:245px;margin-bottom:20px;padding-right:0;}
 	.sidebar-list .btn{margin-bottom:5px;}
+	.btn-home-button{position:absolute;top:0;left:0;right:auto;}
+	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
+	div.home-wallet a .btn-home-button{position:absolute;top:15px;left:15px;right:auto;}
 }
 
 /* Medium devices (desktops, 975px to 992px) */
