@@ -3,8 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import HomeButton          from '../../components/HomeButton'
-import AddressBar          from '../../components/AddressBar'
+import { HomeButton, AddressBar } from '../../components/index'
 
 function mapStateToProps(state) {
   return {
