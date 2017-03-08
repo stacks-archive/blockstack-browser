@@ -143,7 +143,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(corsProxyPortMenuItem)
             
             let corePortMenuItem = NSMenuItem()
-            corePortMenuItem.title = "Core node running on port \(corsProxyPort)"
+            corePortMenuItem.title = "Core node running on port \(coreProxyPort)"
             corePortMenuItem.isEnabled = false
             menu.addItem(corePortMenuItem)
             
