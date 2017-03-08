@@ -85,6 +85,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "/")
     }
     
+    func openProfilesClick(sender: AnyObject?) {
+        NSLog("openProfilesClick")
+        openPortal(path: "/profiles")
+    }
+    
+    func openWalletClick(sender: AnyObject?) {
+        NSLog("openWalletClick")
+        openPortal(path: "/wallet/deposit")
+    }
+    
+    func openAccountClick(sender: AnyObject?) {
+        NSLog("openAccountClick")
+        openPortal(path: "/account/settings")
+    }
+    
     func openPortal(path: String) {
         let portalURLString = "\(portalBaseUrl())\(path)"
         NSLog("Opening portal with String: \(portalURLString)")
@@ -105,14 +120,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             showExpandedMenu = true
         }
         
-        var goToPortalTitle = "Go to Blockstack"
-        
         if isDevModeEnabled {
-            goToPortalTitle = "Go to Development View"
             showExpandedMenu = true
         }
         
-        menu.addItem(withTitle: goToPortalTitle, action: #selector(openPortalClick), keyEquivalent: "g")
+        menu.addItem(withTitle: "Home", action: #selector(openPortalClick), keyEquivalent: "h")
+        menu.addItem(withTitle: "Profiles", action: #selector(openProfilesClick), keyEquivalent: "p")
+        menu.addItem(withTitle: "Wallet", action: #selector(openWalletClick), keyEquivalent: "w")
+        menu.addItem(withTitle: "Account", action: #selector(openAccountClick), keyEquivalent: "a")
         menu.addItem(NSMenuItem.separator())
         
         if showExpandedMenu {
@@ -145,7 +160,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         }
         
-        menu.addItem(withTitle: "Turn off Blockstack", action: #selector(exitClick), keyEquivalent: "q")
+        menu.addItem(withTitle: "Quit Blockstack", action: #selector(exitClick), keyEquivalent: "q")
         
         statusItem.popUpMenu(menu)
     }
@@ -160,10 +175,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let alert = NSAlert()
         
-        alert.addButton(withTitle: "Turn off")
+        alert.addButton(withTitle: "Quit")
         alert.addButton(withTitle: "Cancel")
-        alert.messageText = "Turn off Blockstack?"
-        alert.informativeText = "You will not be able to access the decentralized internet if you turn off Blockstack."
+        alert.messageText = "Quit Blockstack?"
+        alert.informativeText = "You will not be able to access the decentralized internet if you quit Blockstack."
         alert.alertStyle = NSAlertStyle.warning
         
         if alert.runModal() == NSAlertFirstButtonReturn {
