@@ -37,9 +37,7 @@ class AuthModal extends Component {
     if (queryDict.authRequest) {
       const encodedAuthRequest = queryDict.authRequest.split(BLOCKSTACK_HANDLER + ":").join("")
       const authRequest = decodeToken(encodedAuthRequest)
-      console.log(authRequest)
       const manifest = authRequest.payload.appManifest
-      console.log(manifest)
       appURI = manifest.start_url
       appName = manifest.name
       appIcon = manifest.icons[0].src
