@@ -70,7 +70,7 @@ class IdentityPage extends Component {
                     label={identity.domainName}
                     pending={!identity.registered}
                     avatarUrl={person.avatarUrl() || ''}
-                    url={`/profiles/local/${identity.domainName}`} />
+                    url={`/profiles/${identity.domainName}/local`} />
                 )
               }
             })}

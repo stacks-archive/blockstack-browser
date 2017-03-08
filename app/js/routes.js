@@ -39,13 +39,13 @@ export default (
 
     <Route path="profiles" component={ProfilesApp}>
         <IndexRoute component={AllProfilesPage} />
-        <Route path="search/:query"       component={SearchProfilesPage} />
-        <Route path="blockchain/:name"    component={ViewProfilePage} />
-        <Route path="local/:index"        component={ViewProfilePage} />
-        <Route path="local/:index/edit"   component={EditProfilePage} />
-        <Route path="local/:index/export" component={ExportProfilePage} />
-        <Route path="register"            component={RegisterProfilePage} />
-        <Route path="import"              component={ImportProfilePage} />
+        <Route path="i/search/:query" component={SearchProfilesPage} />
+        <Route path=":name"           component={ViewProfilePage} />
+        <Route path=":index/local"    component={ViewProfilePage} />
+        <Route path=":index/edit"     component={EditProfilePage} />
+        <Route path=":index/export"   component={ExportProfilePage} />
+        <Route path="i/register"      component={RegisterProfilePage} />
+        <Route path="i/import"        component={ImportProfilePage} />
     </Route>
 
     <Route path="account" component={AccountApp}>

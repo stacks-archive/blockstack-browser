@@ -18,7 +18,8 @@ function mapDispatchToProps(dispatch) {
 
 class SearchPage extends Component {
   static propTypes = {
-    searchResults: PropTypes.array.isRequired
+    searchResults: PropTypes.array.isRequired,
+    searchIdentities: PropTypes.func.isRequired
   }
 
   constructor(props) {

@@ -141,7 +141,7 @@ class ViewProfilePage extends Component {
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     Edit
                   </Link>
-                  <Link to={`/profiles/blockchain/${domainName}`}
+                  <Link to={`/profiles/${domainName}`}
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     View Publicly
                   </Link>
