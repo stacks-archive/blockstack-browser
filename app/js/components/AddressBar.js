@@ -43,9 +43,7 @@ class AddressBar extends Component {
   }
 
   componentWillMount() {
-    console.log(location.pathname)
     if (!/^\/profiles\/search\/.*$/.test(location.pathname)) {
-      console.log('here')
       this.props.updateQuery("")
     }
   }
