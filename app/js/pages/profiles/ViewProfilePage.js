@@ -137,7 +137,7 @@ class ViewProfilePage extends Component {
               </div>
               { isLocal ?
               <div>
-                  <Link to={this.props.location.pathname + "/edit"}
+                  <Link to={`/profiles/${domainName}/edit`}
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     Edit
                   </Link>
