@@ -83,7 +83,7 @@ Good pull requests—patches, improvements, new features—are a fantastic help.
 
 Please adhere to the [coding guidelines](#code-guidelines) used throughout the project (indentation, accurate comments, etc.) and any other requirements (such as test coverage).
 
-When contributing to Blockstack's documentation, you should edit the documentation source files in [the `/browser/app/` directory of the `master` branch](https://github.com/blockstack/blockstack-portal/tree/master/app).
+When contributing to Blockstack's documentation, you should edit the documentation source files in [the `/app/` directory of the `master` branch](https://github.com/blockstack/blockstack-portal/tree/master/app).
 
 Adhering to the following process is the best way to get your work included in the project:
 
