@@ -149,7 +149,7 @@ class ViewProfilePage extends Component {
               :
               <div>
                 <button className="btn btn-sm btn-secondary m-t-10">
-                  Connect
+                  Add Friend
                 </button>
               </div>
               }

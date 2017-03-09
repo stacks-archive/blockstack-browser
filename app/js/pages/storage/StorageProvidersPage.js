@@ -97,7 +97,7 @@ class StorageProvidersPage extends Component {
 
       { this.state.api.hostedDataLocation === DROPBOX ?
         <div>
-          <div>
+          <p>
             { this.state.api.dropboxAccessToken == null ?
               <button onClick={this.connectDropbox} className="btn btn-sm btn-outline-primary">
               Connect Dropbox
@@ -107,17 +107,17 @@ class StorageProvidersPage extends Component {
             Disconnect Dropbox
             </button>
             }
-          </div>
-          <div>
+          </p>
+          <p>
             <button disabled className="btn btn-sm btn-outline-primary" title="Coming soon!">
             Connect Google Drive
             </button>
-          </div>
-          <div>
+          </p>
+          <p>
             <button disabled className="btn btn-sm btn-outline-primary" title="Coming soon!">
             Connect Amazon Cloud Drive
             </button>
-          </div>
+          </p>
         </div>
       : null }
       </div>
