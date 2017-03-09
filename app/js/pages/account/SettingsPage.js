@@ -2,19 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import RadioGroup from 'react-radio-group'
-import {
-  SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX
-} from '../../utils/storage/index'
-import {
-  DROPBOX_APP_ID, getDropboxAccessTokenFromHash
-} from '../../utils/storage/dropbox'
 
 import {
   InputGroup, AccountSidebar, SaveButton, PageHeader
 } from '../../components/index'
 import { SettingsActions } from '../../store/settings'
 
-var Dropbox = require('dropbox')
 
 
 function mapStateToProps(state) {
@@ -41,13 +34,9 @@ class SettingsPage extends Component {
       api: this.props.api
     }
 
-
     this.onValueChange = this.onValueChange.bind(this)
     this.updateApi = this.updateApi.bind(this)
     this.resetApi = this.resetApi.bind(this)
-    this.onHostedDataValueChange = this.onHostedDataValueChange.bind(this)
-    this.connectDropbox = this.connectDropbox.bind(this)
-    this.disconnectDropbox = this.disconnectDropbox.bind(this)
     this.registerProtocolHandler = this.registerProtocolHandler.bind(this)
   }
 
@@ -57,28 +46,12 @@ class SettingsPage extends Component {
     })
   }
 
-  componentDidMount() {
-    let api = this.state.api
-    const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
-    if (dropboxAccessToken != null) {
-      api['dropboxAccessToken'] = dropboxAccessToken
-      this.setState({ api: api })
-      window.location.hash = ""
-      this.props.updateApi(api)
-    }
-  }
-
   onValueChange(event) {
     let api = this.state.api
     api[event.target.name] = event.target.value
     this.setState({ api: api })
   }
 
-  onHostedDataValueChange(value) {
-    let api = this.state.api
-    api['hostedDataLocation'] = value
-    this.setState({ api: api })
-  }
 
   updateApi() {
     const api = this.state.api
@@ -89,22 +62,7 @@ class SettingsPage extends Component {
     this.props.resetApi()
   }
 
-  connectDropbox() {
-    var dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
-    const port = location.port === '' ? 80 : location.port
-    console.log(port)
-    window.location = dbx.getAuthenticationUrl(
-      `http://localhost:${port}/account/settings`)
-  }
 
-  disconnectDropbox() {
-    let api = this.state.api
-    var dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
-    dbx.authTokenRevoke()
-    api.dropboxAccessToken = null
-    this.setState({ api: api })
-    this.props.updateApi(api)
-  }
 
   registerProtocolHandler() {
     window.navigator.registerProtocolHandler(
@@ -118,23 +76,6 @@ class SettingsPage extends Component {
     return (
       <div className="col-md-9">
         <div>
-          <h4>Data Hosting Options</h4>
-
-          { this.state.api.hostedDataLocation === DROPBOX ?
-            <div>
-                { this.state.api.dropboxAccessToken == null ?
-                  <button onClick={this.connectDropbox} className="btn btn-sm btn-outline-primary">
-                  Connect Dropbox
-                  </button>
-                :
-                <button onClick={this.disconnectDropbox} className="btn btn-sm btn-outline-primary">
-                Disconnect Dropbox
-                </button>
-                }
-            </div>
-          : null }
-          <hr />
-
           <h4>Authentication</h4>
 
           <p>

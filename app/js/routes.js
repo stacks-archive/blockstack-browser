@@ -28,6 +28,10 @@ import WalletApp          from './pages/wallet/WalletApp'
 import DepositPage        from './pages/wallet/DepositPage'
 import WithdrawPage       from './pages/wallet/WithdrawPage'
 
+import StorageApp          from './pages/storage/StorageApp'
+import StorageProvidersPage from './pages/storage/StorageProvidersPage'
+
+
 import AuthPage           from './pages/auth/AuthPage'
 
 import NotFoundPage       from './pages/errors/NotFoundPage'
@@ -55,6 +59,10 @@ export default (
         <Route path="settings"    component={SettingsPage} />
         <Route path="create"      component={CreateAccountPage} />
         <Route path="restore"     component={RestoreAccountPage} />
+    </Route>
+
+    <Route path="storage" component={StorageApp}>
+        <Route path="providers"     component={StorageProvidersPage} />
     </Route>
 
     <Route path="wallet" component={WalletApp}>
