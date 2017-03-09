@@ -2,9 +2,9 @@ export {
   decryptPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityPrivateKeychain,
+  getWebAccountTypes,
   isPasswordValid,
-  isBackupPhraseValid,
-  webAccountTypes
+  isBackupPhraseValid
 } from './account-utils'
 
 export {
@@ -34,8 +34,14 @@ export {
   isABlockstackName,
   hasNameBeenPreordered,
   isNameAvailable,
-  getNameCost
+  getNamePrices
 } from './name-utils'
+
+export {
+  getProfileFromTokens,
+  signProfileForUpload,
+  verifyToken
+} from './profile-utils'
 
 export {
   makeZoneFileForHostedProfile,

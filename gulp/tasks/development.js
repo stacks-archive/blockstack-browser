@@ -11,6 +11,6 @@ gulp.task('dev', ['clean'], function(cb) {
 
   process.env.NODE_ENV = 'test';
 
-  return runSequence(['imagemin', 'browserify', 'copyFonts', 'copyStyles', 'copyIndex', 'copyIcons'], 'watch', cb);
+  return runSequence(['imagemin', 'browserify', 'copyFonts', 'copyFontAwesomeFonts', 'copyStyles', 'copyIndex', 'copyIcons'], 'watch', cb);
 
 });

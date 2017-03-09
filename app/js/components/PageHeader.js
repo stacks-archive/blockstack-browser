@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 
 class PageHeader extends Component {
   static propTypes = {

@@ -47,28 +47,18 @@ class DepositPage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Deposit" />
-        <div className="container vertical-split-content">
-          <div className="row">
-            <div className="col-md-3">
-              <AccountSidebar activeTab="deposit" />
-            </div>
-            <div className="col-md-9">
-              <Balance />
-              <p><i>
-                Note: All identity registrations require funds from your account.
-                To fund your account, send bitcoins to the address below.
-              </i></p>
+      <div>
+        <Balance />
+        <p><i>
+          Note: All identity registrations require funds from your account.
+          To fund your account, send bitcoins to the address below.
+        </i></p>
 
-              <h5>Send Bitcoins to this address</h5>
-              <div className="highlight">
-                <pre>
-                  <code>{this.state.coreWalletAddress}</code>
-                </pre>
-              </div>
-            </div>
-          </div>
+        <h5>Send Bitcoins to this address</h5>
+        <div className="highlight">
+          <pre>
+            <code>{this.state.coreWalletAddress}</code>
+          </pre>
         </div>
       </div>
     )

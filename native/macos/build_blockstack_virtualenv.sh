@@ -63,7 +63,7 @@ pip install git+https://github.com/blockstack/dns-zone-file-py.git@rc-0.14.1
 
 echo "Installing latest blockstack..."
 
-pip install git+https://github.com/blockstack/blockstack-core.git@rc-0.14.1b
+pip install git+https://github.com/blockstack/blockstack-core.git@089d436caea79919296fbc05d6d46e5e52b57d6c
 
 echo "Blockstack virtual environment created."
 

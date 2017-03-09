@@ -2,14 +2,13 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { signToken, wrapToken } from 'blockstack-profiles'
 import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
 
 import {
-  InputGroup, SaveButton, ProfileEditingSidebar, PageHeader
+  InputGroup, SaveButton, ProfileEditingSidebar, EditProfileHeader
 } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
-import { getNameParts, uploadProfile, uploadPhoto } from '../../utils/index'
+import { signProfileForUpload, getNameParts, uploadProfile, uploadPhoto } from '../../utils/index'
 
 import BasicInfoTab      from './tabs/BasicInfoTab'
 import PhotosTab         from './tabs/PhotosTab'
@@ -56,14 +55,18 @@ class EditProfilePage extends Component {
   }
 
   componentHasNewLocalIdentities(props) {
-    const profileIndex = this.props.routeParams.index,
-          newDomainName = props.localIdentities[profileIndex].domainName,
-          newProfile = props.localIdentities[profileIndex].profile
-    if (profileIndex) {
-      this.setState({
-        domainName: newDomainName,
-        profile: newProfile
-      })
+    const profileIndex = this.props.routeParams.index
+    if (props.localIdentities[profileIndex]) {
+      const newDomainName = props.localIdentities[profileIndex].domainName
+      const newProfile = props.localIdentities[profileIndex].profile
+      if (profileIndex) {
+        this.setState({
+          domainName: newDomainName,
+          profile: newProfile
+        })
+      }
+    } else {
+      // Do nothing
     }
   }
 
@@ -87,33 +90,21 @@ class EditProfilePage extends Component {
     mixpanel.track('Save profile', { distinct_id: analyticsId })
     mixpanel.track('Perform action', { distinct_id: analyticsId })
 
-    const filename = this.state.domainName + '.json'
-
-    const keypair = this.props.identityKeypairs[0],
-          privateKey = keypair.key,
-          publicKey = keypair.keyID
-
-    const token = signToken(this.state.profile, privateKey, {publicKey: publicKey}),
-          tokenRecord = wrapToken(token),
-          tokenRecords = [tokenRecord]
-    const data = JSON.stringify(tokenRecords, null, 2)
-
+    const data = signProfileForUpload(this.state.profile, this.props.identityKeypairs[0])
+    
     uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
-        console.error(err)
-        console.error('profile not uploaded ')
+      console.error(err)
+      console.error('profile not uploaded')
     })
-
   }
 
 
   uploadProfilePhoto(file, index) {
-
     const analyticsId = this.props.analyticsId
     mixpanel.track('Upload photo', { distinct_id: analyticsId })
     mixpanel.track('Perform action', { distinct_id: analyticsId })
     const name = this.state.domainName
     return uploadPhoto(this.props.api, name, file, index)
-
   }
 
   changeTabs(tabName) {
@@ -122,73 +113,84 @@ class EditProfilePage extends Component {
 
   render() {
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Edit Profile"/>
-        <div className="container vertical-split-content">
-          <div className="row">
-            <div className="col-md-4">
-              <ProfileEditingSidebar
-                activeTab={this.state.tabName}
-                onClick={this.changeTabs} />
-              <hr />
-              <div className="form-group">
-                <fieldset>
-                  <Link to={this.props.location.pathname.replace('/edit', '')}
-                    className="btn btn-primary">
-                    Save + View Profile
-                  </Link>
-                </fieldset>
+      <div className="card-list-container profile-content-wrapper">
+        {this.state.profile && this.state.domainName ?
+        <div>
+          <EditProfileHeader title="Edit Profile"/>
+          <div className="vertical-split-content">
+            <div className="row">
+              <div className="col-md-3 sidebar-list">
+                <ProfileEditingSidebar
+                  activeTab={this.state.tabName}
+                  onClick={this.changeTabs} />
+                <hr />
+                <div className="form-group">
+                  <fieldset>
+                    <Link to={this.props.location.pathname.replace('/edit', '')}
+                      className="btn btn-primary">
+                      Save + View Profile
+                    </Link>
+                  </fieldset>
+                </div>
               </div>
-            </div>
-            <div className="col-md-8">
-              { this.state.profile ? (
-              <div>
-                {(() => {
-                  switch (this.state.tabName) {
-                    case "Basic Info":
-                      return (
-                        <BasicInfoTab
-                          profile={this.state.profile}
-                          saveProfile={this.saveProfile} />
-                      )
-                    case "Photos":
-                      return (
-                        <PhotosTab
-                          profile={this.state.profile}
-                          saveProfile={this.saveProfile}
-                          uploadProfilePhoto={this.uploadProfilePhoto} />
-                      )
-                    case "Social Accounts":
-                      return (
-                        <SocialAccountsTab
-                          profile={this.state.profile}
-                          saveProfile={this.saveProfile}
-                          domainName={this.state.domainName} />
-                      )
-                    case "Address":
-                      return (
-                        <PrivateInfoTab
-                          profile={this.state.profile}
-                          saveProfile={this.saveProfile} />
-                      )
-                    case "Digital Keys":
-                      return (
-                        <PublicKeysTab
-                          profile={this.state.profile}
-                          saveProfile={this.saveProfile}
-                          domainName={this.state.domainName} />
-                      )
-                    default:
-                      return (
-                        <div></div>
-                      )
-                  }
-                })()}
+              <div className="col-md-7">
+                { this.state.profile ? (
+                <div>
+                  {(() => {
+                    switch (this.state.tabName) {
+                      case "Basic Info":
+                        return (
+                          <BasicInfoTab
+                            profile={this.state.profile}
+                            saveProfile={this.saveProfile} />
+                        )
+                      case "Photos":
+                        return (
+                          <PhotosTab
+                            profile={this.state.profile}
+                            saveProfile={this.saveProfile}
+                            uploadProfilePhoto={this.uploadProfilePhoto} />
+                        )
+                      case "Social Accounts":
+                        return (
+                          <SocialAccountsTab
+                            profile={this.state.profile}
+                            saveProfile={this.saveProfile}
+                            domainName={this.state.domainName} />
+                        )
+                      case "Address":
+                        return (
+                          <PrivateInfoTab
+                            profile={this.state.profile}
+                            saveProfile={this.saveProfile} />
+                        )
+                      case "Digital Keys":
+                        return (
+                          <PublicKeysTab
+                            profile={this.state.profile}
+                            saveProfile={this.saveProfile}
+                            domainName={this.state.domainName} />
+                        )
+                      default:
+                        return (
+                          <div></div>
+                        )
+                    }
+                  })()}
+                </div>
+                ) : null }
               </div>
-              ) : null }
             </div>
           </div>
         </div>
+        :
+        <div>
+          <h1 className="h1-modern vertical-split-content">
+            Page Not Found
+          </h1>
+          <p>You don't own this profile and therefore you cannot edit it.</p>
+        </div>
+        }
       </div>
     )
   }

@@ -13,7 +13,7 @@ function mapStateToProps(state) {
     localIdentities: state.identities.localIdentities,
     lastNameLookup: state.identities.lastNameLookup,
     identityAddresses: state.account.identityAccount.addresses,
-    addressLookupUrl: state.settings.api.addressLookupUrl || ''
+    api: state.settings.api
   }
 }
 
@@ -26,8 +26,8 @@ class Sidebar extends Component {
     localIdentities: PropTypes.object.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
-    addressLookupUrl: PropTypes.string.isRequired,
-    lastNameLookup: PropTypes.array.isRequired
+    lastNameLookup: PropTypes.array.isRequired,
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -40,8 +40,8 @@ class Sidebar extends Component {
 
   componentWillMount() {
     this.props.refreshIdentities(
+      this.props.api,
       this.props.identityAddresses,
-      this.props.addressLookupUrl,
       this.props.localIdentities,
       this.props.lastNameLookup
     )
