@@ -17,12 +17,12 @@ import ExportProfilePage   from './pages/profiles/ExportProfilePage'
 import SearchProfilesPage  from './pages/profiles/SearchProfilesPage'
 
 import AccountApp         from './pages/account/AccountApp'
-import SettingsPage       from './pages/account/SettingsPage'
 import DeleteAccountPage  from './pages/account/DeleteAccountPage'
 import BackupAccountPage  from './pages/account/BackupAccountPage'
 import ChangePasswordPage from './pages/account/ChangePasswordPage'
 import CreateAccountPage  from './pages/account/CreateAccountPage'
 import RestoreAccountPage from './pages/account/RestoreAccountPage'
+import ApiSettingsPage       from './pages/account/ApiSettingsPage'
 
 import WalletApp          from './pages/wallet/WalletApp'
 import DepositPage        from './pages/wallet/DepositPage'
@@ -56,9 +56,9 @@ export default (
         <Route path="delete"      component={DeleteAccountPage} />
         <Route path="backup"      component={BackupAccountPage} />
         <Route path="password"    component={ChangePasswordPage} />
-        <Route path="settings"    component={SettingsPage} />
         <Route path="create"      component={CreateAccountPage} />
         <Route path="restore"     component={RestoreAccountPage} />
+        <Route path="api"         component={ApiSettingsPage} />
     </Route>
 
     <Route path="storage" component={StorageApp}>

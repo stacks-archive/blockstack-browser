@@ -54,7 +54,7 @@ class DashboardPage extends Component {
               </div>
             </div>
             <div className="col-sm-3 app-box-wrap">
-              <Link to="/account/settings" className="app-box-container">
+              <Link to="/account/password" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-settings.png" />
                 </div>

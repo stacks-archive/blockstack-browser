@@ -97,7 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func openAccountClick(sender: AnyObject?) {
         NSLog("openAccountClick")
-        openPortal(path: "/account/settings")
+        openPortal(path: "/account/password")
     }
     
     func openPortal(path: String) {
