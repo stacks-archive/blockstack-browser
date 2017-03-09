@@ -56,8 +56,8 @@ class StorageProvidersPage extends Component {
     if (dropboxAccessToken != null) {
       api['dropboxAccessToken'] = dropboxAccessToken
       this.setState({ api: api })
-      window.location.hash = ""
       this.props.updateApi(api)
+      window.location = "/"
     }
   }
 
