@@ -9,7 +9,7 @@ class EditProfileHeader extends Component {
 
   render() {
     return (
-      <div className="">
+      <div>
         <h1 className="h1-modern vertical-split-content">
           {this.props.title}
         </h1>
