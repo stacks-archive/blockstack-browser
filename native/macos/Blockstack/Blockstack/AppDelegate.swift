@@ -367,7 +367,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             NSLog("Blockstack Core wallet password not found in keychain: \(SecCopyErrorMessageString(status, nil))")
             SecKeychainItemFreeContent(nil, passwordData) // free memory
             
-            return createOrRetrieveCoreWalletPassword()
+            return createAndStorePasswordInKeychain()
         }
     }
     
