@@ -62,14 +62,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
-        let url = URL(string: (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue) ?? "")
-        
+        let url = (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue) ?? ""
+        let authRequest = url.replacingOccurrences(of: "blockstack:", with: "")
         NSLog("Blockstack URL: \(url)")
-        NSLog("Blockstack URL: \(url?.host)")
+        NSLog("Blockstack Auth Request: \(authRequest)")
         
-        if let value = url?.host {
-            openPortal(path: "\(portalAuthenticationPath)\(value)")
-        }
+        openPortal(path: "\(portalAuthenticationPath)\(authRequest)")
+
     }
 
     func portalBaseUrl() -> String {
