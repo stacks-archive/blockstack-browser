@@ -59,7 +59,7 @@ class AuthModal extends Component {
       const profile = identity.profile
 
       const privateKey = this.props.identityKeypairs[0].key
-      const authResponseToken = makeAuthResponse(privateKey, profile)
+      const authResponseToken = makeAuthResponse(privateKey, profile, userDomainName)
       window.location = this.state.appURI + '?authResponse=' + authResponseToken
     }
   }
