@@ -20,7 +20,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-const BLOCKSTACK_HANDLER = "web+blockstack"
+const BLOCKSTACK_HANDLER = "blockstack"
 
 class AuthModal extends Component {
   static propTypes = {
