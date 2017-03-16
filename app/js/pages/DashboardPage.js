@@ -67,7 +67,7 @@ class DashboardPage extends Component {
               <a href="https://helloblockstack.com"
                  className="app-box-container">
                 <div className="app-box">
-                  <img src="/images/app-hello-blockstack.png" />
+                  <img src="/images/app-icon-hello-blockstack@2x.png" />
                 </div>
               </a>
               <div className="app-text-container">
