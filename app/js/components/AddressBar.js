@@ -6,25 +6,23 @@ import { Link } from 'react-router'
 import {
   isABlockstackName, isABlockstackIDName, isABlockstackAppName
 } from '../utils/name-utils'
-import routes from '../routes'
+import { SearchActions } from '../store/search'
 
 function mapStateToProps(state) {
   return {
-    query: state.search.query,
-    currentId: state.identities.current.id,
-    analyticsId: state.account.analyticsId
+    query: state.search.query
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch)
+  return bindActionCreators(SearchActions, dispatch)
 }
 
 class AddressBar extends Component {
   static propTypes = {
-    placeholder: PropTypes.string.isRequired,
     query: PropTypes.string.isRequired,
-    analyticsId: PropTypes.string.isRequired
+    placeholder: PropTypes.string.isRequired,
+    updateQuery: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -35,70 +33,41 @@ class AddressBar extends Component {
     super(props)
 
     this.state = {
-      query: '',
-      placeholder: this.props.placeholder,
-      routerUnlistener: null
+      query: this.props.query,
+      placeholder: this.props.placeholder
     }
 
-    this.onQueryChange = this.onQueryChange.bind(this)
     this.submitQuery = this.submitQuery.bind(this)
     this.onKeyPress = this.onKeyPress.bind(this)
-    this.locationHasChanged = this.locationHasChanged.bind(this)
+    this.onQueryChange = this.onQueryChange.bind(this)
   }
 
-  locationHasChanged(location) {
-    let pathname = location.pathname,
-        query = null
-
-    if (/^\/profiles\/blockchain\/.*$/.test(pathname)) {
-      const domainName = pathname.replace('/profiles/blockchain/', '')
-      if (isABlockstackIDName(domainName)) {
-        query = pathname.replace('/profiles/blockchain/', '')
-      }
-    } else if (/^\/app\/.*$/.test(pathname)) {
-      const domainName = pathname.replace('local://app/', '')
-      if (isABlockstackAppName(domainName)) {
-        query = pathname.replace('local://app/', '')
-      }
-    } else if (/^\/profiles\/local\/[0-9]+.*$/.test(pathname)) {
-      query = 'local:/' + pathname.replace('/local/', '/')
-    } else if (/^\/profiles\/search\/.*$/.test(pathname)) {
-      // do nothing
-      query = pathname.replace('/profiles/search/', '').replace('%20', ' ')
-    } else if (pathname === '/') {
-      query = ''
-    } else {
-      query = 'local:/' + pathname
+  componentWillMount() {
+    if (!/^\/profiles\/search\/.*$/.test(location.pathname)) {
+      this.props.updateQuery("")
     }
-    if (query !== null) {
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.query !== this.props.query) {
       this.setState({
-        query: query
+        query: nextProps.query
       })
     }
   }
 
-  componentDidMount() {
-    this.state.routerUnlistener = this.context.router.listen(this.locationHasChanged)
-  }
-
   componentWillUnmount() {
-    this.state.routerUnlistener()
+    this.props.updateQuery("")
   }
 
   submitQuery(query) {
     let newPath
     if (isABlockstackName(query)) {
       if (isABlockstackIDName(query)) {
-        newPath = `/profiles/blockchain/${query}`
-      } else if (isABlockstackAppName(query)) {
-        newPath = `/app/${query}`
-      } else {
-        newPath = `/app/${query}`
+        newPath = `/profiles/${query}`
       }
-    } else if (/^local:\/\/.*$/.test(query)) {
-      newPath = query.replace('local://', '/')
     } else {
-      newPath = `/profiles/search/${query.replace(' ', '%20')}`
+      newPath = `/profiles/i/search/${query.replace(' ', '%20')}`
     }
     this.context.router.push(newPath)
   }
@@ -106,16 +75,12 @@ class AddressBar extends Component {
   onKeyPress(event) {
     if (event.key === 'Enter' && this.state.query !== '') {
       this.submitQuery(this.state.query)
-      const analyticsId = this.props.analyticsId
-      mixpanel.track('Submit query', { distinct_id: analyticsId })
-      mixpanel.track('Perform action', { distinct_id: analyticsId })
     }
   }
 
   onQueryChange(event) {
-    const query = event.target.value
     this.setState({
-      query: query
+      query: event.target.value
     })
   }
 
@@ -134,3 +99,49 @@ class AddressBar extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddressBar)
+
+
+/*
+
+else if (/^local:\/\/.*$/.test(query)) {
+      newPath = query.replace('local://', '/')
+    } 
+
+locationHasChanged(location) {
+  let pathname = location.pathname,
+      query = null
+
+  if (/^\/profiles\/blockchain\/.*$/.test(pathname)) {
+    const domainName = pathname.replace('/profiles/blockchain/', '')
+    if (isABlockstackIDName(domainName)) {
+      query = pathname.replace('/profiles/blockchain/', '')
+    }
+  } else if (/^\/app\/.*$/.test(pathname)) {
+    const domainName = pathname.replace('local://app/', '')
+    if (isABlockstackAppName(domainName)) {
+      query = pathname.replace('local://app/', '')
+    }
+  } else if (/^\/profiles\/local\/[0-9]+.*$/.test(pathname)) {
+    query = 'local:/' + pathname.replace('/local/', '/')
+  } else if (/^\/profiles\/search\/.*$/.test(pathname)) {
+    // do nothing
+    query = pathname.replace('/profiles/search/', '').replace('%20', ' ')
+  } else if (pathname === '/') {
+    query = ''
+  } else {
+    query = 'local:/' + pathname
+  }
+  if (query !== null) {
+    this.setState({
+      query: query
+    })
+  }
+}
+
+componentDidMount() {
+  this.state.routerUnlistener = this.context.router.listen(this.locationHasChanged)
+}
+
+componentWillUnmount() {
+  this.state.routerUnlistener()
+}*/

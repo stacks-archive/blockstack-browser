@@ -1,4 +1,4 @@
-Blockstack Browser Portal
+Blockstack Portal
 ============
 
 [![Slack](http://chat.blockstack.org/badge.svg)](http://chat.blockstack.org/)

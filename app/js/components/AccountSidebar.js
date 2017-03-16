@@ -8,11 +8,11 @@ class AccountSidebar extends Component {
 
   render() {
     let tabs = [
-      { url: '/account/settings', label: 'settings', isActive: false },
       { url: '/account/password', label: 'change password', isActive: false },
       { url: '/account/backup', label: 'backup account', isActive: false },
       { url: '/account/restore', label: 'restore account', isActive: false },
       { url: '/account/delete', label: 'delete account', isActive: false },
+      { url: '/account/api', label: 'api settings', isActive: false }
     ]
     tabs.map((tab) => {
       if (tab.url === this.props.activeTab) {
@@ -39,24 +39,3 @@ class AccountSidebar extends Component {
 }
 
 export default AccountSidebar
-
-/*
-        <Link to="/account/deposit" className={`list-group-item ${}`}>
-          Deposit
-        </Link>
-        <Link to="/account/withdraw" className="list-group-item">
-          Withdraw
-        </Link>
-        <Link to="/account/password" className="list-group-item">
-          Change Password
-        </Link>
-        <Link to="/account/backup" className="list-group-item">
-          Backup Account
-        </Link>
-        <Link to="/account/delete" className="list-group-item">
-          Delete Account
-        </Link>
-        <Link to="/account/settings" className="list-group-item">
-          Settings
-        </Link>
-*/

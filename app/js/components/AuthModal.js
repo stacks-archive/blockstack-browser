@@ -20,7 +20,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-const BLOCKSTACK_HANDLER = "web+blockstack"
+const BLOCKSTACK_HANDLER = "blockstack"
 
 class AuthModal extends Component {
   static propTypes = {
@@ -37,9 +37,7 @@ class AuthModal extends Component {
     if (queryDict.authRequest) {
       const encodedAuthRequest = queryDict.authRequest.split(BLOCKSTACK_HANDLER + ":").join("")
       const authRequest = decodeToken(encodedAuthRequest)
-      console.log(authRequest)
       const manifest = authRequest.payload.appManifest
-      console.log(manifest)
       appURI = manifest.start_url
       appName = manifest.name
       appIcon = manifest.icons[0].src
@@ -61,7 +59,7 @@ class AuthModal extends Component {
       const profile = identity.profile
 
       const privateKey = this.props.identityKeypairs[0].key
-      const authResponseToken = makeAuthResponse(privateKey, profile)
+      const authResponseToken = makeAuthResponse(privateKey, profile, userDomainName)
       window.location = this.state.appURI + '?authResponse=' + authResponseToken
     }
   }

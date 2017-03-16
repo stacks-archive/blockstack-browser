@@ -34,6 +34,16 @@ class DashboardPage extends Component {
               </div>
             </div>
             <div className="col-sm-3 app-box-wrap">
+              <Link to="/storage/providers" className="app-box-container">
+                <div className="app-box">
+                  <img src="/images/app-icon-storage@2x.png" />
+                </div>
+              </Link>
+              <div className="app-text-container">
+                <h3>Storage</h3>
+              </div>
+            </div>
+            <div className="col-sm-3 app-box-wrap">
               <Link to="/wallet/deposit" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-icon-wallet2@2x.png" />
@@ -44,7 +54,7 @@ class DashboardPage extends Component {
               </div>
             </div>
             <div className="col-sm-3 app-box-wrap">
-              <Link to="/account/settings" className="app-box-container">
+              <Link to="/account/password" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-settings.png" />
                 </div>

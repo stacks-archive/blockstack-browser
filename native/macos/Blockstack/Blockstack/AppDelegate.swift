@@ -62,14 +62,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
-        let url = URL(string: (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue) ?? "")
-        
+        let url = (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue) ?? ""
+        let authRequest = url.replacingOccurrences(of: "blockstack:", with: "")
         NSLog("Blockstack URL: \(url)")
-        NSLog("Blockstack URL: \(url?.host)")
+        NSLog("Blockstack Auth Request: \(authRequest)")
         
-        if let value = url?.host {
-            openPortal(path: "\(portalAuthenticationPath)\(value)")
-        }
+        openPortal(path: "\(portalAuthenticationPath)\(authRequest)")
+
     }
 
     func portalBaseUrl() -> String {
@@ -83,6 +82,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func openPortalClick(sender: AnyObject?) {
         NSLog("openPortalClick")
         openPortal(path: "/")
+    }
+    
+    func openProfilesClick(sender: AnyObject?) {
+        NSLog("openProfilesClick")
+        openPortal(path: "/profiles")
+    }
+    
+    func openWalletClick(sender: AnyObject?) {
+        NSLog("openWalletClick")
+        openPortal(path: "/wallet/deposit")
+    }
+    
+    func openAccountClick(sender: AnyObject?) {
+        NSLog("openAccountClick")
+        openPortal(path: "/account/password")
     }
     
     func openPortal(path: String) {
@@ -105,14 +119,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             showExpandedMenu = true
         }
         
-        var goToPortalTitle = "Go to Blockstack"
-        
         if isDevModeEnabled {
-            goToPortalTitle = "Go to Development View"
             showExpandedMenu = true
         }
         
-        menu.addItem(withTitle: goToPortalTitle, action: #selector(openPortalClick), keyEquivalent: "g")
+        menu.addItem(withTitle: "Home", action: #selector(openPortalClick), keyEquivalent: "h")
+        menu.addItem(withTitle: "Profiles", action: #selector(openProfilesClick), keyEquivalent: "p")
+        menu.addItem(withTitle: "Wallet", action: #selector(openWalletClick), keyEquivalent: "w")
+        menu.addItem(withTitle: "Account", action: #selector(openAccountClick), keyEquivalent: "a")
         menu.addItem(NSMenuItem.separator())
         
         if showExpandedMenu {
@@ -128,7 +142,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(corsProxyPortMenuItem)
             
             let corePortMenuItem = NSMenuItem()
-            corePortMenuItem.title = "Core node running on port \(corsProxyPort)"
+            corePortMenuItem.title = "Core node running on port \(coreProxyPort)"
             corePortMenuItem.isEnabled = false
             menu.addItem(corePortMenuItem)
             
@@ -145,7 +159,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         }
         
-        menu.addItem(withTitle: "Turn off Blockstack", action: #selector(exitClick), keyEquivalent: "q")
+        menu.addItem(withTitle: "Quit Blockstack", action: #selector(exitClick), keyEquivalent: "q")
         
         statusItem.popUpMenu(menu)
     }
@@ -160,10 +174,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let alert = NSAlert()
         
-        alert.addButton(withTitle: "Turn off")
+        alert.addButton(withTitle: "Quit")
         alert.addButton(withTitle: "Cancel")
-        alert.messageText = "Turn off Blockstack?"
-        alert.informativeText = "You will not be able to access the decentralized internet if you turn off Blockstack."
+        alert.messageText = "Quit Blockstack?"
+        alert.informativeText = "You will not be able to access the decentralized internet if you quit Blockstack."
         alert.alertStyle = NSAlertStyle.warning
         
         if alert.runModal() == NSAlertFirstButtonReturn {
