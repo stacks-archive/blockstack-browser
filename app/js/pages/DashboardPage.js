@@ -23,7 +23,7 @@ class DashboardPage extends Component {
       <div className="container-fluid app-center">
         <div className="container app-wrap">
           <div className="app-container no-padding">
-            <div className="col-sm-3 app-box-wrap">
+            <div className="app-box-wrap">
               <Link to="/profiles" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-icon-profiles@2x.png" />
@@ -33,7 +33,7 @@ class DashboardPage extends Component {
                 <h3>Profiles</h3>
               </div>
             </div>
-            <div className="col-sm-3 app-box-wrap">
+            <div className="app-box-wrap">
               <Link to="/storage/providers" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-icon-storage@2x.png" />
@@ -43,7 +43,7 @@ class DashboardPage extends Component {
                 <h3>Storage</h3>
               </div>
             </div>
-            <div className="col-sm-3 app-box-wrap">
+            <div className="app-box-wrap">
               <Link to="/wallet/deposit" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-icon-wallet-card@2x.png" />
@@ -53,7 +53,7 @@ class DashboardPage extends Component {
                 <h3>Wallet</h3>
               </div>
             </div>
-            <div className="col-sm-3 app-box-wrap">
+            <div className="app-box-wrap">
               <Link to="/account/password" className="app-box-container">
                 <div className="app-box">
                   <img src="/images/app-icon-settings@2x.png" />
@@ -63,7 +63,7 @@ class DashboardPage extends Component {
                 <h3>Account</h3>
               </div>
             </div>
-            <div className="col-sm-3 app-box-wrap">
+            <div className="app-box-wrap">
               <a href="https://helloblockstack.com"
                  className="app-box-container">
                 <div className="app-box">

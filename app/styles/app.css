@@ -86,7 +86,19 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 /* Browser search bar */
 .nav-search{overflow:hidden;}
 .browser-search-bar{font-size:12px;margin-top:-2px;}
-.browser-search-bar input{font-family:'Lato',sans-serif;font-size:12px;font-weight:500;padding:.063rem .75rem .063rem 40px;-webkit-transition:all .5s ease-in-out;-o-transition:all .5s ease-in-out;transition:all .5s ease-in-out;color:#444;border:none;border-radius:20px;-webkit-font-smoothing:antialiased;}
+.browser-search-bar input {
+	font-family: 'Lato', sans-serif;
+	font-size: 12px;
+	font-weight: 500;
+	padding: .063rem .75rem .063rem 40px;
+	-webkit-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+	color: #444;
+	border: none;
+	border-radius: 20px;
+	-webkit-font-smoothing: antialiased;
+}
 .browser-search-bar input::-webkit-input-placeholder{font-family:'Lato',sans-serif;font-size:12px;font-weight:500;margin-top:.1875rem;padding:0;-webkit-transition:all .5s ease-in-out;-o-transition:all .5s ease-in-out;transition:all .5s ease-in-out;text-transform:none;color:#444;-webkit-font-smoothing:antialiased;}
 .browser-search-bar input:focus{background-color:#fff;}
 .browser-search-bar img{position:absolute;top:23px;margin-left:12px;}
@@ -306,7 +318,7 @@ a.list-group-item-dash:hover,
 .page-header > h1{margin-bottom:0;}
 .vertical-split-content{margin-top:40px;}
 .app-box-container{display:block;min-height:1px;text-align:center;}
-.app-box-wrap{width:100px;padding:0;}
+.app-box-wrap{width:100px;padding:0;-webkit-transition:all .5s ease-in-out;-o-transition:all .5s ease-in-out;transition:all .5s ease-in-out;}
 .app-box{height:auto;margin:0.625rem auto;width:100%;margin-left:0px;margin-right:0px!important;}
 .app-box img{width:72px;background-color:rgba(44,150,255,0.5);-webkit-box-shadow:0px 0px 35px 0px rgba(44,150,255,1);-moz-box-shadow:0px 0px 35px 0px rgba(44,150,255,1);box-shadow:0px 0px 35px 0px rgba(44,150,255,1);-moz-border-radius:15px;-webkit-border-radius:15px;border-radius:15px;}
 .app-center{width:100%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
@@ -343,7 +355,7 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.card-list-card{width:310px;}
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
 	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
-	.app-box-wrap{width:200px;padding:0;}
+	.app-box-wrap{width:190px;padding:0;}
 	.app-box{height:auto;margin:1.125rem auto;width:100%;margin-left:0px;margin-right:0px!important;}
 	.app-box img{width:144px;-webkit-box-shadow:0px 0px 70px 0px rgba(44,150,255,1);-moz-box-shadow:0px 0px 70px 0px rgba(44,150,255,1);box-shadow:0px 0px 70px 0px rgba(44,150,255,1);-moz-border-radius:28px;-webkit-border-radius:28px;border-radius:28px;}
 	.app-center{width:100%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
@@ -374,15 +386,21 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 	.pro-wrap{min-width:905px;}
 	.app-container{max-width:954px;margin:0 auto;}
-	.app-wrap{width:90%;margin-top:25%;}
+	.app-wrap{width:95%;margin-top:25%;}
 	.app-box-wrap{width:190px;padding:0;}
 	.app-box img{width:152px;-webkit-box-shadow:0px 0px 80px 0px rgba(44,150,255,1);-moz-box-shadow:0px 0px 80px 0px rgba(44,150,255,1);box-shadow:0px 0px 80px 0px rgba(44,150,255,1);-moz-border-radius:33px;-webkit-border-radius:33px;border-radius:33px;}
 }
 
-/* Large devices (large desktops, 1200px and up) */
+/* Large devices (large desktops, 1200px to 1400px) */
 @media (min-width:1200px){
-	.app-wrap{width:80%;margin-top:20%;}
+	.app-container{max-width:initial;}
+	.app-wrap{width:90%;margin-top:25%;}
 	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;margin-right:0;}
-	.pro-wrap{min-width:1130px;}
+	.pro-wrap{min-width:80%;}
+}
+
+/* Extra large devices (large desktops, 1400px and up) */
+@media (min-width:1400px){
+	.app-wrap{width:75%;max-width:1150px;margin-top:20%;}
 }
 
