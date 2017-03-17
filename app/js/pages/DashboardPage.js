@@ -36,7 +36,7 @@ class DashboardPage extends Component {
             <div className="app-box-wrap">
               <Link to="/storage/providers" className="app-box-container">
                 <div className="app-box">
-                  <img src="/images/app-icon-storage@2x.png" />
+                  <img src="/images/app-icon-storage-light@2x.png" />
                 </div>
               </Link>
               <div className="app-text-container">
