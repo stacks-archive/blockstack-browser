@@ -93,8 +93,7 @@ class StorageProvidersPage extends Component {
   render() {
     return (
       <div>
-      <h4>Data Hosting Options</h4>
-
+      <p>Your profile and app data will be securely stored in the storage providers you connect.</p>
       { this.state.api.hostedDataLocation === DROPBOX ?
         <div>
           <p>
