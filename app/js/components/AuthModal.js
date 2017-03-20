@@ -54,7 +54,7 @@ class AuthModal extends Component {
       const identity = this.props.localIdentities[userDomainName]
       const profile = identity.profile
       const privateKey = this.props.identityKeypairs[0].key
-      const authResponse = makeAuthResponse(privateKey, profile)
+      const authResponse = makeAuthResponse(privateKey, profile, userDomainName)
       redirectUserToApp(this.state.authRequest, authResponse)
     }
   }
