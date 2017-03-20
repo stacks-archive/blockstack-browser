@@ -18,7 +18,7 @@ let proxyFetch = function(url, options) {
     throw new Error("Only supports https requests")
   }
 
-  if(host.endsWith("s3.amazonaws.com") ||
+  if(host.endsWith("amazonaws.com") ||
      host.endsWith("facebook.com") ||
      host.endsWith("twitter.com") ||
      host.endsWith("github.com")) {
