@@ -125,8 +125,7 @@ export function getWebAccountTypes(api) {
       label: 'SSH', iconClass: 'fa-key', social: false
     },
     'pgp': {
-      label: 'PGP', iconClass: 'fa-key', social: false,
-      urlTemplate: api.pgpKeyUrl
+      label: 'PGP', iconClass: 'fa-key', social: false
     },
     'bitcoin': {
       label: 'Bitcoin', iconClass: 'fa-bitcoin', social: false,

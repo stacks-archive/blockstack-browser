@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { Person } from 'blockstack-profiles'
 
 import AddressBar          from '../../components/AddressBar'
-import { SocialAccountItem, Image } from '../../components/index'
+import { SocialAccountItem, PGPAccountItem, Image } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
 import { SearchActions } from '../../store/search'
 
@@ -188,15 +188,26 @@ class ViewProfilePage extends Component {
                         break
                     }
                   }
-                  return (
-                    <SocialAccountItem
-                      key={account.service + '-' + account.identifier}
-                      service={account.service}
-                      identifier={account.identifier}
-                      proofUrl={account.proofUrl}
-                      listItem={true}
-                      verified={verified} />
-                  )
+                  if (account.service === 'pgp') {
+                    return (
+                      <PGPAccountItem 
+                        key={account.service + '-' + account.identifier}
+                        service={account.service}
+                        identifier={account.identifier}
+                        contentUrl={account.contentUrl}
+                        listItem={true} />
+                    )
+                  } else {
+                    return (
+                      <SocialAccountItem
+                        key={account.service + '-' + account.identifier}
+                        service={account.service}
+                        identifier={account.identifier}
+                        proofUrl={account.proofUrl}
+                        listItem={true}
+                        verified={verified} />
+                    )
+                  }
                 })}
               </ul>
             </div>

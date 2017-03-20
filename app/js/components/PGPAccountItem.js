@@ -11,36 +11,63 @@ function mapStateToProps(state) {
   }
 }
 
-class SocialAccountItem extends Component {
+class PGPAccountItem extends Component {
   static propTypes = {
     listItem: PropTypes.bool.isRequired,
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
-    proofUrl: PropTypes.string,
-    verified: PropTypes.bool,
-    api: PropTypes.object.isRequired
+    contentUrl: PropTypes.string
   }
 
   constructor(props) {
     super(props)
 
-    this.getAccountUrl = this.getAccountUrl.bind(this)
+    this.state = {
+      modalIsOpen: false,
+      publicKey: ''
+    }
+
+    this.loadPublicKey = this.loadPublicKey.bind(this)
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
     this.getIdentifier = this.getIdentifier.bind(this)
   }
 
-  getAccountUrl() {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
-        let urlTemplate = webAccountTypes[this.props.service].urlTemplate
-        if (urlTemplate) {
-          accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
-        }
-      }
+  componentWillMount() {
+    this.loadPublicKey()
+  }
+
+  componentWillReceiveProps() {
+    this.loadPublicKey()
+  }
+
+  openModal() {
+    this.setState({
+      modalIsOpen: true
+    })
+  }
+
+  closeModal() {
+    this.setState({
+      modalIsOpen: false
+    })
+  }
+
+  loadPublicKey() {
+    if (this.props.contentUrl) {
+      const contentUrl = this.props.contentUrl
+      proxyFetch(contentUrl)
+        .then(response => response.text())
+        .then(responseText => {
+          this.setState({
+            publicKey: responseText
+          })
+        })
+        .catch((e) => {
+          console.log(e.stack)
+        })
     }
-    return accountUrl
   }
 
   getIconClass() {
@@ -65,7 +92,20 @@ class SocialAccountItem extends Component {
     if (this.props.listItem === true) {
       return (
         <li>
-          <a href={this.getAccountUrl()} data-toggle="tooltip"
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            contentLabel="PGP Key"
+            shouldCloseOnOverlayClick={true}
+            style={{overlay: {zIndex: 10}}}
+            className="container-fluid react-modal-pgp">
+            <button onClick={this.closeModal}>close</button>
+            <h2>PGP Key</h2>
+            <p>Fingerprint: {this.props.identifier}</p>
+            <textarea className="form-control" readOnly="true" rows="10"
+              value={this.state.publicKey}>
+            </textarea>
+          </Modal>
+          <a href="#" onClick={this.openModal} data-toggle="tooltip"
             title={webAccountTypes[this.props.service].label}>
             {this.props.verified ?
             <span className="fa-stack fa-lg">
@@ -94,4 +134,4 @@ class SocialAccountItem extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(SocialAccountItem)
+export default connect(mapStateToProps, null)(PGPAccountItem)
