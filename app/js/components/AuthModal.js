@@ -4,10 +4,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import queryString from 'query-string'
-import base64url from 'base64url'
 import { decodeToken } from 'jsontokens'
 import Image from './Image'
-import { makeAuthResponse } from 'blockstack'
+import {
+  makeAuthResponse, getAuthRequestFromURL, fetchAppManifest, redirectUserToApp
+} from 'blockstack'
 
 function mapStateToProps(state) {
   return {
@@ -20,8 +21,6 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-const BLOCKSTACK_HANDLER = "web+blockstack"
-
 class AuthModal extends Component {
   static propTypes = {
   }
@@ -29,27 +28,24 @@ class AuthModal extends Component {
   constructor(props) {
     super(props)
 
-    let appURI = null
-    let appName = null
-    let appIcon = null
-
-    const queryDict = queryString.parse(location.search)
-    if (queryDict.authRequest) {
-      const encodedAuthRequest = queryDict.authRequest.split(BLOCKSTACK_HANDLER + ":").join("")
-      const authRequest = decodeToken(encodedAuthRequest)
-      const manifest = authRequest.payload.appManifest
-      appURI = manifest.start_url
-      appName = manifest.name
-      appIcon = manifest.icons[0].src
-    }
-
     this.state = {
-      appURI: appURI,
-      appName: appName,
-      appIcon: appIcon
+      authRequest: null,
+      appManifest: null
     }
 
     this.login = this.login.bind(this)
+  }
+
+  componentWillMount() {
+    const authRequest = getAuthRequestFromURL()
+    fetchAppManifest(authRequest).then(appManifest => {
+      this.setState({
+        authRequest: authRequest,
+        appManifest: appManifest
+      })
+    }).catch((e) => {
+      console.log(e.stack)
+    })
   }
 
   login() {
@@ -57,14 +53,16 @@ class AuthModal extends Component {
       const userDomainName = Object.keys(this.props.localIdentities)[0]
       const identity = this.props.localIdentities[userDomainName]
       const profile = identity.profile
-
       const privateKey = this.props.identityKeypairs[0].key
-      const authResponseToken = makeAuthResponse(privateKey, profile)
-      window.location = this.state.appURI + '?authResponse=' + authResponseToken
+      console.log(privateKey)
+      console.log(profile)
+      const authResponse = makeAuthResponse(privateKey, profile)
+      redirectUserToApp(this.state.authRequest, authResponse)
     }
   }
 
   render() {
+    const appManifest = this.state.appManifest
     return (
       <div className="">
         <Modal
@@ -75,34 +73,38 @@ class AuthModal extends Component {
           style={{overlay: {zIndex: 10}}}
           className="container-fluid">
           <h3>Sign In Request</h3>
-          <p>
-            The app "{this.state.appName}" wants to access your basic info
-          </p>
-          <p>
-            <Image src={this.state.appIcon} style={{ width: '128px', height: '128px' }}
-              fallbackSrc="https://raw.githubusercontent.com/blockstack/blockstack-portal/master/app/images/app-hello-blockstack.png" />
-          </p>
-          { Object.keys(this.props.localIdentities).length > 0 ?
+          { this.state.appManifest ?
           <div>
             <p>
-              Click below to log in.
+              The app "{appManifest.name}" wants to access your basic info
             </p>
+            <p>
+              <Image src={appManifest.icons[0].src} style={{ width: '128px', height: '128px' }}
+                fallbackSrc="https://raw.githubusercontent.com/blockstack/blockstack-portal/master/app/images/app-hello-blockstack.png" />
+            </p>
+            { Object.keys(this.props.localIdentities).length > 0 ?
             <div>
-              <button className="btn btn-primary btn-block" onClick={this.login}>
-                Approve
-              </button>
-              <Link to="/" className="btn btn-outline-primary btn-block">
-                Deny
-              </Link>
+              <p>
+                Click below to log in.
+              </p>
+              <div>
+                <button className="btn btn-primary btn-block" onClick={this.login}>
+                  Approve
+                </button>
+                <Link to="/" className="btn btn-outline-primary btn-block">
+                  Deny
+                </Link>
+              </div>
             </div>
+            :
+            <div>
+              <p>
+                You must have created a profile in order to log in.
+              </p>
+            </div>
+            }
           </div>
-          :
-          <div>
-            <p>
-              You must have created a profile in order to log in.
-            </p>
-          </div>
-          }
+          : null }
         </Modal>
       </div>
     )
