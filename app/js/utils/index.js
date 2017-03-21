@@ -9,7 +9,8 @@ export {
 
 export {
   getNamesOwned,
-  getIdentities
+  getIdentities,
+  authorizationHeaderValue
 } from './api-utils'
 
 export {

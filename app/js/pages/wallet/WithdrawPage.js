@@ -5,7 +5,7 @@ import { PublicKeychain } from 'blockstack-keychains'
 
 import {
   broadcastTransaction, decryptPrivateKeychain, getNetworkFee,
-  getBitcoinPrivateKeychain, getUtxo
+  getBitcoinPrivateKeychain, getUtxo, authorizationHeaderValue
 } from '../../utils'
 
 import {
@@ -65,7 +65,8 @@ class WithdrawPage extends Component {
 
     const requestHeaders = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      "Authorization": authorizationHeaderValue()
     }
 
     const requestBody = JSON.stringify({
@@ -81,8 +82,11 @@ class WithdrawPage extends Component {
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
-      console.log(responseJson)
-      this.updateAlert('success', "Transaction sent!")
+      if(responseJson["error"]) {
+        this.updateAlert('danger', responseJson["error"])
+      } else {
+        this.updateAlert('success', "Transaction sent!")
+      }
     })
     .catch((error) => {
       console.warn(error)

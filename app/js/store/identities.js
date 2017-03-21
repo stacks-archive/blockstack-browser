@@ -3,7 +3,7 @@ import { parseZoneFile } from 'blockstack-zones'
 import {
   isNameAvailable, getNamePrices,
   makeZoneFileForHostedProfile, resolveZoneFileToProfile,
-  signProfileForUpload
+  signProfileForUpload, authorizationHeaderValue
 } from '../utils/index'
 import {
   uploadProfile
@@ -257,7 +257,8 @@ function registerName(api, domainName, recipientAddress, keypair) {
 
       const requestHeaders = {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': authorizationHeaderValue()
       }
 
       const requestBody = JSON.stringify({
@@ -278,14 +279,19 @@ function registerName(api, domainName, recipientAddress, keypair) {
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
           console.log(responseJson)
-          dispatch(registrationSubmitted())
-          dispatch(createNewIdentity(domainName))
+          if(responseJson['error']) {
+            dispatch(registrationError(responseJson['error']))
+          } else {
+            dispatch(registrationSubmitted())
+            dispatch(createNewIdentity(domainName))
+          }
         })
         .catch((error) => {
-          dispatch(registrationError(error))
           console.error(error)
+          dispatch(registrationError(error))
         })
       }).catch((error) => {
+        console.error(error)
         dispatch(profileUploadError(error))
       })
     }
