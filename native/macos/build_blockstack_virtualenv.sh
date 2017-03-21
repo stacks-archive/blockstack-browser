@@ -49,9 +49,9 @@ echo "Installing fastecdsa..."
 
 CFLAGS="-I/tmp/blockstack-venv/include" LDFLAGS="-L/tmp/blockstack-venv/lib" pip install fastecdsa --no-cache-dir
 
-echo "Installing blockstack 0.14.1.2..."
+echo "Installing blockstack 0.14.1.3..."
 
-pip install blockstack==0.14.1.2
+pip install blockstack==0.14.1.3
 
 echo "Blockstack virtual environment created."
 
