@@ -336,7 +336,7 @@ let apiPasswordPipe = loggingPipe()
             /* Blockstack Core API start task */
             
             coreAPIStartProcess.launchPath = blockstackPath()
-            coreAPIStartProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "api", "start", "--password", walletPassword]
+            coreAPIStartProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "api", "start", "--password", walletPassword, "--api_password", walletPassword]
             
             let coreAPIStartPipe = loggingPipe()
             coreAPIStartProcess.standardOutput = coreAPIStartPipe
