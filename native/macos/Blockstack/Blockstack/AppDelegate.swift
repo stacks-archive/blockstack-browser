@@ -252,6 +252,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let coreAPISetupProcess = Process()
             let coreAPIStartProcess = Process()
             
+            do {
+                // see https://github.com/blockstack/blockstack-core/issues/345#issuecomment-288098844
+                NSLog("Trying to remove existing config file because format changes between Core upgrades can break things.")
+                try FileManager.default.removeItem(atPath: coreConfigPath())
+            } catch {
+                NSLog("Can't remove existing config file. It probably doesn't exist.")
+            }
+
+            
             /* Extract Blockstack Core virtualenv task */
             
             let extractPipe = loggingPipe()
