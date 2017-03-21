@@ -9,12 +9,17 @@ export {
 
 export {
   getNamesOwned,
-  getIdentities
+  getIdentities,
+  authorizationHeaderValue
 } from './api-utils'
 
 export {
   broadcastTransaction, getNetworkFee, getUtxo
 } from './bitcoin-utils'
+
+export {
+  CORE_API_PASSWORD
+} from './core-api-password'
 
 export {
   getNumberOfVerifications,

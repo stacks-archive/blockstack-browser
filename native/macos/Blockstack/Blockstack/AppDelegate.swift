@@ -31,6 +31,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let coreConfigFileRelativePath = "config/client.ini"
     let coreVenvDirectory = "blockstack-venv"
     let extractCoreVenvToPath = "/tmp"
+    let portalRunDirectory = "portal"
     
     let portalProxyProcess = Process()
     let corsProxyProcess = Process()
@@ -50,9 +51,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(statusItemClick)
         }
         
-        startPortalProxy()
+        let walletPassword = createOrRetrieveCoreWalletPassword()
+        
+        // using the wallet password as Core API password is intentional
+        startPortalProxy(coreAPIPassword: walletPassword)
+        
         startCorsProxy()
-        startCoreAPI(walletPassword: createOrRetrieveCoreWalletPassword(), complete: {
+        
+        startCoreAPI(walletPassword: walletPassword, complete: {
             self.openPortal(path: "/")
         })
     }
@@ -206,23 +212,58 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    func startPortalProxy() {
+    func startPortalProxy(coreAPIPassword: String) {
         let proxyPath = Bundle.main.path(forResource: "blockstackProxy", ofType: "")
         let portalPath = Bundle.main.path(forResource: "browser", ofType: "")
         
         NSLog("Portal proxy path: \(proxyPath)")
         NSLog("Portal path: \(portalPath)")
         
-        portalProxyProcess.launchPath = proxyPath
-        if let portalPath = portalPath {
-            portalProxyProcess.arguments = [String(productionModePortalPort), portalPath]
-            
-            NSLog("Starting Blockstack Portal proxy...")
-            
-            portalProxyProcess.launch()
-        } else {
-            NSLog("Error: Portal directory not found!")
+        do {
+            NSLog("Trying to remove any existing portal code...")
+            try FileManager.default.removeItem(atPath: portalRunPath())
+        } catch {
+            NSLog("Can't remove existing portal code. It probably doesn't exist.")
         }
+        
+        NSLog("Copying the latest portal code into the portal run path \(portalRunPath())")
+
+        do {
+            try FileManager.default.copyItem(atPath: portalPath!, toPath: portalRunPath())
+        } catch {
+            NSLog("Can't copy Portal code to the run path: \(portalRunPath())")
+        }
+        
+        /* Configure the Core API Password */
+        
+        /* This searches through the uglified Portal JavaScript and replaces
+         * the placeholder Core API password with the real password. */
+        
+        let sedCommand = "s/REPLACE_ME_WITH_CORE_API_PASSWORD/\(coreAPIPassword)/g"
+        
+        NSLog("Preparing to configure Core API password with this sed command: \(sedCommand)")
+        
+        let configureCoreApiPasswordProcess = Process()
+let apiPasswordPipe = loggingPipe()
+        configureCoreApiPasswordProcess.launchPath = "/usr/bin/sed"
+        configureCoreApiPasswordProcess.arguments =
+            ["-i", "", "-e", sedCommand, "\(portalRunPath())/js/main.js"]
+        configureCoreApiPasswordProcess.standardOutput = apiPasswordPipe
+        configureCoreApiPasswordProcess.standardError = apiPasswordPipe
+        configureCoreApiPasswordProcess.terminationHandler = { process in
+            NSLog("Finished configuring Core API password!")
+            
+            self.portalProxyProcess.launchPath = proxyPath
+ 
+            self.portalProxyProcess.arguments = [String(self.productionModePortalPort), self.portalRunPath()]
+                
+            NSLog("Starting Blockstack Portal proxy...")
+                
+            self.portalProxyProcess.launch()
+
+        }
+        configureCoreApiPasswordProcess.launch()
+ 
     }
     
     func startCorsProxy() {
@@ -252,6 +293,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let coreAPISetupProcess = Process()
             let coreAPIStartProcess = Process()
             
+            do {
+                // see https://github.com/blockstack/blockstack-core/issues/345#issuecomment-288098844
+                NSLog("Trying to remove existing config file because format changes between Core upgrades can break things.")
+                try FileManager.default.removeItem(atPath: coreConfigPath())
+            } catch {
+                NSLog("Can't remove existing config file. It probably doesn't exist.")
+            }
+
+            
             /* Extract Blockstack Core virtualenv task */
             
             let extractPipe = loggingPipe()
@@ -264,6 +314,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 NSLog("Setting up Blockstack Core...")
                 coreAPISetupProcess.launch()
             }
+            
             
             
             /* Blockstack Core setup task */
@@ -285,7 +336,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             /* Blockstack Core API start task */
             
             coreAPIStartProcess.launchPath = blockstackPath()
-            coreAPIStartProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "api", "start", "--password", walletPassword]
+            coreAPIStartProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "api", "start", "--password", walletPassword, "--api_password", walletPassword]
             
             let coreAPIStartPipe = loggingPipe()
             coreAPIStartProcess.standardOutput = coreAPIStartPipe
@@ -335,6 +386,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func coreConfigPath() -> String {
         return blockstackDataURL().path + "/\(coreConfigFileRelativePath)"
+    }
+    
+    func portalRunPath() -> String {
+        return blockstackDataURL().path + "/\(portalRunDirectory)"
     }
     
     func blockstackDataURL() -> URL {

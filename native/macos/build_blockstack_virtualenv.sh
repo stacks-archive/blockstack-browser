@@ -49,21 +49,9 @@ echo "Installing fastecdsa..."
 
 CFLAGS="-I/tmp/blockstack-venv/include" LDFLAGS="-L/tmp/blockstack-venv/lib" pip install fastecdsa --no-cache-dir
 
-echo "Installing latest virtualchain..."
+echo "Installing blockstack 0.14.1.3..."
 
-pip install git+https://github.com/blockstack/virtualchain.git@rc-0.14.1
-
-echo "Installing latest blockstack-profiles..."
-
-pip install git+https://github.com/blockstack/blockstack-profiles-py.git@rc-0.14.1
-
-echo "Installing latest blockstack-zones..."
-
-pip install git+https://github.com/blockstack/dns-zone-file-py.git@rc-0.14.1
-
-echo "Installing latest blockstack..."
-
-pip install git+https://github.com/blockstack/blockstack-core.git@089d436caea79919296fbc05d6d46e5e52b57d6c
+pip install blockstack==0.14.1.3
 
 echo "Blockstack virtual environment created."
 

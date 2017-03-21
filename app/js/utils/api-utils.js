@@ -1,3 +1,4 @@
+import { CORE_API_PASSWORD } from './core-api-password'
 export function getNamesOwned(address, addressLookupUrl, callback) {
   const url = addressLookupUrl.replace('{address}', address)
   fetch(url)
@@ -10,6 +11,10 @@ export function getNamesOwned(address, addressLookupUrl, callback) {
       console.warn(error)
       callback([])
     })
+}
+
+export function authorizationHeaderValue() {
+  return `basic ${CORE_API_PASSWORD}`
 }
 
 /*

@@ -7,6 +7,8 @@ import { IdentityActions } from '../../store/identities'
 import { getNamePrices, isNameAvailable,
          hasNameBeenPreordered, isABlockstackName } from '../../utils/name-utils'
 
+import { authorizationHeaderValue } from '../../utils'
+
 function mapStateToProps(state) {
   return {
     username: '',
@@ -107,6 +109,7 @@ class RegisterPage extends Component {
   displayPricingAndAvailabilityAlerts(registration) {
     let tld = this.state.tlds[this.state.type]
     const domainName = `${this.state.username}.${tld}`
+
     if(domainName === registration.lastNameEntered) {
       if(registration.names[domainName].error) {
         const error = registration.names[domainName].error
@@ -119,7 +122,8 @@ class RegisterPage extends Component {
           if(registration.names[domainName].checkingPrice) {
             this.updateAlert('info', `${domainName} is available! Checking price...`)
           } else {
-            this.updateAlert('info', `${domainName} costs ~${cost} btc to register.`)
+            const price = registration.names[domainName].price
+            this.updateAlert('info', `${domainName} costs ~${price} btc to register.`)
           }
         } else {
           this.updateAlert('danger', `${domainName} has already been registered.`)
