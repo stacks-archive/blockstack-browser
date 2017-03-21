@@ -17,6 +17,10 @@ export {
 } from './bitcoin-utils'
 
 export {
+  CORE_API_PASSWORD
+} from './core-api-password'
+
+export {
   getNumberOfVerifications,
   compareProfilesByVerifications
 } from './search-utils'
