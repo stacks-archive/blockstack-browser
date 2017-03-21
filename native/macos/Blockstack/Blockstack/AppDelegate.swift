@@ -219,6 +219,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSLog("Portal proxy path: \(proxyPath)")
         NSLog("Portal path: \(portalPath)")
         
+        do {
+            NSLog("Trying to remove any existing portal code...")
+            try FileManager.default.removeItem(atPath: portalRunPath())
+        } catch {
+            NSLog("Can't remove existing portal code. It probably doesn't exist.")
+        }
+        
         NSLog("Copying the latest portal code into the portal run path \(portalRunPath())")
 
         do {
