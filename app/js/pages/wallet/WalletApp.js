@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { WalletSidebar, PageHeader } from '../../components/index'
+import { WalletSidebar, PageHeader, HomeButton } from '../../components/index'
 
 function mapStateToProps(state) {
   return {
@@ -30,6 +30,9 @@ class WalletApp extends Component {
     return (
       <div className="body-inner-white">
         <PageHeader title="Wallet" />
+        <div className="home-wallet">
+          <HomeButton />
+        </div>
         <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">

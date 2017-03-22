@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 
 import { AccountActions } from '../store/account'
 
+import { authorizationHeaderValue } from '../utils'
+
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
@@ -41,7 +43,9 @@ class Balance extends Component {
   }
 
   updateBalancesFromCore() {
-    fetch(this.props.walletPaymentAddressUrl)
+    fetch(this.props.walletPaymentAddressUrl,{
+      headers: { "Authorization": authorizationHeaderValue() }
+    })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {

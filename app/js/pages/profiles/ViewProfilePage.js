@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { Person } from 'blockstack-profiles'
 
 import AddressBar          from '../../components/AddressBar'
-import { SocialAccountItem, Image } from '../../components/index'
+import { SocialAccountItem, PGPAccountItem, Image } from '../../components/index'
 import { IdentityActions } from '../../store/identities'
 import { SearchActions } from '../../store/search'
 
@@ -137,11 +137,11 @@ class ViewProfilePage extends Component {
               </div>
               { isLocal ?
               <div>
-                  <Link to={this.props.location.pathname + "/edit"}
+                  <Link to={`/profiles/${domainName}/edit`}
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     Edit
                   </Link>
-                  <Link to={`/profiles/blockchain/${domainName}`}
+                  <Link to={`/profiles/${domainName}`}
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     View Publicly
                   </Link>
@@ -149,7 +149,7 @@ class ViewProfilePage extends Component {
               :
               <div>
                 <button className="btn btn-sm btn-secondary m-t-10">
-                  Connect
+                  Add Friend
                 </button>
               </div>
               }
@@ -188,15 +188,26 @@ class ViewProfilePage extends Component {
                         break
                     }
                   }
-                  return (
-                    <SocialAccountItem
-                      key={account.service + '-' + account.identifier}
-                      service={account.service}
-                      identifier={account.identifier}
-                      proofUrl={account.proofUrl}
-                      listItem={true}
-                      verified={verified} />
-                  )
+                  if (account.service === 'pgp') {
+                    return (
+                      <PGPAccountItem 
+                        key={account.service + '-' + account.identifier}
+                        service={account.service}
+                        identifier={account.identifier}
+                        contentUrl={account.contentUrl}
+                        listItem={true} />
+                    )
+                  } else {
+                    return (
+                      <SocialAccountItem
+                        key={account.service + '-' + account.identifier}
+                        service={account.service}
+                        identifier={account.identifier}
+                        proofUrl={account.proofUrl}
+                        listItem={true}
+                        verified={verified} />
+                    )
+                  }
                 })}
               </ul>
             </div>

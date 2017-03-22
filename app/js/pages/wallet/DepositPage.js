@@ -6,6 +6,8 @@ import { Link } from 'react-router'
 import { AccountSidebar, Balance, PageHeader } from '../../components/index'
 import { AccountActions }                      from '../../store/account'
 
+import { authorizationHeaderValue } from '../../utils'
+
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
@@ -32,7 +34,10 @@ class DepositPage extends Component {
   }
 
   componentWillMount() {
-    fetch(this.props.walletPaymentAddressUrl)
+    fetch(this.props.walletPaymentAddressUrl,
+    {
+      headers: {"Authorization": authorizationHeaderValue() }
+    })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {

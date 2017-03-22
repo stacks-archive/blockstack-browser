@@ -15,7 +15,7 @@
 		46AB7B661E64363B004DACD8 /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B641E64363B004DACD8 /* corsproxy */; };
 		46AB7B671E64363B004DACD8 /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B651E64363B004DACD8 /* blockstackProxy */; };
 		46AB7B6B1E643675004DACD8 /* blockstack-venv.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */; };
-		46AB7B6C1E643675004DACD8 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B6A1E643675004DACD8 /* browser */; };
+		46CA5EA51E81BEDD00CF6E38 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 46CA5EA41E81BEDC00CF6E38 /* browser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +50,7 @@
 		46AB7B641E64363B004DACD8 /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = corsproxy; path = Blockstack/corsproxy; sourceTree = "<group>"; };
 		46AB7B651E64363B004DACD8 /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = blockstackProxy; path = Blockstack/blockstackProxy; sourceTree = "<group>"; };
 		46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; name = "blockstack-venv.tar.gz"; path = "Blockstack/blockstack-venv.tar.gz"; sourceTree = "<group>"; };
-		46AB7B6A1E643675004DACD8 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; name = browser; path = Blockstack/browser; sourceTree = "<group>"; };
+		46CA5EA41E81BEDC00CF6E38 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; name = browser; path = Blockstack/browser; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,8 +131,8 @@
 		46AB7B681E643643004DACD8 /* Binaries */ = {
 			isa = PBXGroup;
 			children = (
+				46CA5EA41E81BEDC00CF6E38 /* browser */,
 				46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */,
-				46AB7B6A1E643675004DACD8 /* browser */,
 				46AB7B641E64363B004DACD8 /* corsproxy */,
 				46AB7B651E64363B004DACD8 /* blockstackProxy */,
 			);
@@ -252,7 +252,7 @@
 				46AB7B661E64363B004DACD8 /* corsproxy in Resources */,
 				46AB7B3E1E632F08004DACD8 /* Assets.xcassets in Resources */,
 				46AB7B6B1E643675004DACD8 /* blockstack-venv.tar.gz in Resources */,
-				46AB7B6C1E643675004DACD8 /* browser in Resources */,
+				46CA5EA51E81BEDD00CF6E38 /* browser in Resources */,
 				46AB7B671E64363B004DACD8 /* blockstackProxy in Resources */,
 				46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */,
 			);

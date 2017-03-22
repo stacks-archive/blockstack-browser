@@ -10,11 +10,6 @@ class PageHeader extends Component {
   render() {
     return (
       <div className="page-header">
-        <Link to="/" className="navbar-brand">
-          <div className="btn-home-pageheader">
-            ‹ Home
-          </div>
-        </Link>
         <h1 className="type-inverse h1-modern">
           {this.props.title}
         </h1>

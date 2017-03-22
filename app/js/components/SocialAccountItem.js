@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
+import Modal from 'react-modal'
 
 import { getWebAccountTypes } from '../utils'
 

@@ -31,7 +31,7 @@ Our bug tracker utilizes several labels to help organize and identify issues. He
 - `feature` - Issues that identify a new feature
 - `release-overview` - Overview of release
 
-For a complete look at our labels, see the [project labels page](https://github.com/blockstack/blockstack-browser/labels).
+For a complete look at our labels, see the [project labels page](https://github.com/blockstack/blockstack-portal/labels).
 
 
 ## Bug reports
@@ -83,7 +83,7 @@ Good pull requests—patches, improvements, new features—are a fantastic help.
 
 Please adhere to the [coding guidelines](#code-guidelines) used throughout the project (indentation, accurate comments, etc.) and any other requirements (such as test coverage).
 
-When contributing to Blockstack's documentation, you should edit the documentation source files in [the `/browser/app/` directory of the `master` branch](https://github.com/blockstack/blockstack-browser/tree/master/app).
+When contributing to Blockstack's documentation, you should edit the documentation source files in [the `/app/` directory of the `master` branch](https://github.com/blockstack/blockstack-portal/tree/master/app).
 
 Adhering to the following process is the best way to get your work included in the project:
 
@@ -92,11 +92,11 @@ Adhering to the following process is the best way to get your work included in t
 
    ```bash
    # Clone your fork of the repo into the current directory
-   git clone https://github.com/<your-username>/blockstack-browser.git
+   git clone https://github.com/<your-username>/blockstack-portal.git
    # Navigate to the newly cloned directory
-   cd blockstack-browser
+   cd blockstack-portal
    # Assign the original repo to a remote called "upstream"
-   git remote add upstream https://github.com/blockstack/blockstack-browser.git
+   git remote add upstream https://github.com/blockstack/blockstack-portal.git
    ```
 
 2. If you cloned a while ago, get the latest changes from upstream:

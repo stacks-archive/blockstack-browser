@@ -9,19 +9,25 @@ let proxy = "http://localhost:1337/"
 
 
 let proxyFetch = function(url, options) {
-  let tokens = url.split("//")
-  let hostAndPath = tokens[1]
-  let scheme = tokens[0]
+  const tokens = url.split("//")
+  const hostAndPath = tokens[1]
+  const scheme = tokens[0]
+  const host = hostAndPath.split('/')[0]
 
-  if(hostAndPath.substring(0, 9) == "localhost")
-      return realFetch.call(this, url, options)
-    else {
-      if(scheme == "http") {
-        throw new Error("Only supports https requests")
-      }
-      return realFetch.call(this, proxy + hostAndPath, options)
-    }
+  if(scheme == "http") {
+    throw new Error("Only supports https requests")
+  }
+
+  if(host.endsWith("amazonaws.com") ||
+     host.endsWith("facebook.com") ||
+     host.endsWith("twitter.com") ||
+     host.endsWith("github.com")) {
+    return realFetch.call(this, proxy + hostAndPath, options)
+  } else {
+    return realFetch.call(this, url, options)
+  }
 }
+
 
 window.fetch = proxyFetch
 window.realFetch = realFetch
