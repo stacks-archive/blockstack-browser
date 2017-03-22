@@ -30,18 +30,19 @@ Blockstack Portal requires a local instance of Blockstack Core to run. To get st
 ### Part 1: Install Blockstack Core
 
 1. Create and enter a virtual environment
-1. Install blockstack core from the latest development branch: `pip install git+https://github.com/blockstack/virtualchain.git@rc-0.14.1 git+https://github.com/blockstack/blockstack-profiles-py.git@rc-0.14.1 git+https://github.com/blockstack/dns-zone-file-py.git@rc-0.14.1 git+https://github.com/blockstack/blockstack-core.git@rc-0.14.1b`
+1. Install Blockstack Core version 0.14.1.3 from pypi
 1. Setup the Blockstack Core wallet: `blockstack setup`
-1. Start the Blockstack Core API: `blockstack api start`
+1. Start the Blockstack Core API: `blockstack api start --api_password <apisecret> --password <wallet password`
 1. Make sure there's a local Blockstack Core API running by checking `http://localhost:6270/v1/names/blockstack.id` to see if it returns a response.
 
 ### Part 2: Install Blockstack Portal
 
-1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
+1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
-1. Run `npm run dev` to run locally
+1. Run `npm run dev-proxy` to start the CORS proxy (skip this step if you're also running macOS app in development mode)
+1. Run `npm run dev-ui -- --api_password <apisecret>` to run locally
 
-*Note: When you do `npm run dev` you're running two concurrent processes. One starts a CORS proxy on port 1337. The second runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. Anytime changes are made to the original files, they are rebuilt and resynced to the browser frames you have open.*
+*Note: npm dev-ui runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. Anytime changes are made to the original files, they are rebuilt and resynced to the browser frames you have open.*
 
 
 ## Building for macOS
