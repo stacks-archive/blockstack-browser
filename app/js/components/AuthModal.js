@@ -70,6 +70,7 @@ class AuthModal extends Component {
 
   render() {
     const appManifest = this.state.appManifest
+
     return (
       <div className="">
         <Modal
@@ -80,15 +81,17 @@ class AuthModal extends Component {
           style={{overlay: {zIndex: 10}}}
           className="container-fluid">
           <h3>Sign In Request</h3>
-          { this.state.appManifest ?
+          { appManifest ?
           <div>
             <p>
               The app "{appManifest.name}" wants to access your basic info
             </p>
+            { appManifest.hasOwnProperty('icons') ?
             <p>
               <Image src={appManifest.icons[0].src} style={{ width: '128px', height: '128px' }}
-                fallbackSrc="https://raw.githubusercontent.com/blockstack/blockstack-portal/master/app/images/app-hello-blockstack.png" />
+                fallbackSrc="/images/app-icon-hello-blockstack.png" />
             </p>
+            : null }
             { Object.keys(this.props.localIdentities).length > 0 ?
             <div>
               <p>
