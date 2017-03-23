@@ -22,6 +22,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 class AuthModal extends Component {
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
   static propTypes = {
   }
 
@@ -34,6 +38,7 @@ class AuthModal extends Component {
     }
 
     this.login = this.login.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   componentWillMount() {
@@ -46,6 +51,10 @@ class AuthModal extends Component {
     }).catch((e) => {
       console.log(e.stack)
     })
+  }
+
+  closeModal() {
+    this.context.router.push('/')
   }
 
   login() {
@@ -65,9 +74,9 @@ class AuthModal extends Component {
       <div className="">
         <Modal
           isOpen={true}
-          onRequestClose={this.props.closeModal}
+          onRequestClose={this.closeModal}
           contentLabel="This is My Modal"
-          shouldCloseOnOverlayClick={false}
+          shouldCloseOnOverlayClick={true}
           style={{overlay: {zIndex: 10}}}
           className="container-fluid">
           <h3>Sign In Request</h3>
