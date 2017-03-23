@@ -98,22 +98,22 @@ class StorageProvidersPage extends Component {
         <div>
           <p>
             { this.state.api.dropboxAccessToken == null ?
-              <button onClick={this.connectDropbox} className="btn btn-sm btn-outline-primary">
+              <button onClick={this.connectDropbox} className="btn btn-storage-primary">
               Connect Dropbox
               </button>
             :
-            <button onClick={this.disconnectDropbox} className="btn btn-sm btn-outline-primary">
+            <button onClick={this.disconnectDropbox} className="btn btn-storage-primary">
             Disconnect Dropbox
             </button>
             }
           </p>
           <p>
-            <button disabled className="btn btn-sm btn-outline-primary" title="Coming soon!">
+            <button disabled className="btn btn-storage-primary" title="Coming soon!">
             Connect Google Drive
             </button>
           </p>
           <p>
-            <button disabled className="btn btn-sm btn-outline-primary" title="Coming soon!">
+            <button disabled className="btn btn-storage-primary" title="Coming soon!">
             Connect Amazon Cloud Drive
             </button>
           </p>
