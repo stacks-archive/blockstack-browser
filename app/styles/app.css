@@ -334,10 +334,33 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 .react-modal-pgp { width: 700px !important; }
 
 /* Storage App */
-.storage-sidebar-wrap{position:absolute;float:left;padding:0;padding-top:75px;width:200px;min-height:100%;text-align:center;background:#007be8;background:-moz-linear-gradient(top,#007be8 9%,#0099e8 85%);background:-webkit-linear-gradient(top,#007be8 9%,#0099e8 85%);background:linear-gradient(to bottom,#007be8 9%,#0099e8 85%);}
-div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar.active,div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar{font-family:'Lato',sans-serif;text-transform:uppercase;}
-div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar.active{color:#fff;background-color:transparent;}
-div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar{color:rgba(255,255,255,0.45);}
+.storage-sidebar-wrap {
+	position: absolute;
+	float: left;
+	padding: 0;
+	padding-top: 75px;
+	width: 200px;
+	min-height: 100%;
+	text-align: center;
+	background: #007be8;
+	background: -moz-linear-gradient(top, #007be8 9%, #0099e8 85%);
+	background: -webkit-linear-gradient(top, #007be8 9%, #0099e8 85%);
+	background: linear-gradient(to bottom, #007be8 9%, #0099e8 85%);
+}
+div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar.active, div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar {
+	font-family: 'Lato', sans-serif;
+	text-transform: uppercase;
+}
+div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar.active {
+	color: #fff;
+	background-color: transparent;
+}
+div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar:hover {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar {
+	color: rgba(255, 255, 255, 0.45);
+}
 .storage-content-wrap {
 	position: relative;
 	float: left;
@@ -352,7 +375,7 @@ div.storage-content-wrap > div.page-header {
 	height: auto;
 }
 div.storage-content-wrap > div.page-header > h1 {
-	font-family: 'Lato',sans-serif!important;
+	font-family: 'Lato', sans-serif !important;
 	font-weight: 400;
 	font-size: 24px;
 	text-align: left;
@@ -361,18 +384,18 @@ div.storage-content-wrap > div.page-header > h1 {
 .btn-storage-primary {
 	padding: 32px 50px;
 	width: 100%;
-  max-width: 750px;
-  background-color: #007BE8;
-  border: 1px solid #007BE8;
-  color: #fff;
-  font-family: 'Lato',sans-serif;
-  font-size: 16px;
-  text-align: left;
-  font-weight: 300;
-  margin-bottom: -21px;
--webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
--moz-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+	max-width: 750px;
+	background-color: #007BE8;
+	border: 1px solid #007BE8;
+	color: #fff;
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+	text-align: left;
+	font-weight: 300;
+	margin-bottom: -21px;
+	-webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
 }
 .btn.disabled.btn-storage-primary, .btn:disabled.btn-storage-primary {
 	-webkit-box-shadow: none;
@@ -381,7 +404,6 @@ box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.15);
 	background-color: #8CC3F4;
 	border: 1px solid #8CC3F4;
 }
-
 /* Media queries */
 
 /* Extra small devices (phones, less than 768px) */
