@@ -27,27 +27,34 @@ class DepositPage extends Component {
 
   constructor(props) {
     super(props)
-    this.refreshAddress = this.refreshAddress.bind(this)
+
     this.state = {
-      coreWalletAddress: ''
+      coreWalletAddress: null
     }
+
+    this.loadAddress = this.loadAddress.bind(this)
   }
 
   componentWillMount() {
-    fetch(this.props.walletPaymentAddressUrl,
-    {
-      headers: {"Authorization": authorizationHeaderValue() }
-    })
+    this.loadAddress()
+  }
+
+  componentWillReceiveProps() {
+    this.loadAddress()
+  }
+
+  loadAddress() {
+    const url = this.props.walletPaymentAddressUrl
+    const headers = {"Authorization": authorizationHeaderValue() }
+    fetch(url, { headers: headers })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
       const address = responseJson.address
-      this.setState({coreWalletAddress: address})
-    })
-  }
-
-  refreshAddress(event) {
-    //this.props.newBitcoinAddress()
+      this.setState({
+        coreWalletAddress: address
+      })
+    })    
   }
 
   render() {
@@ -59,23 +66,23 @@ class DepositPage extends Component {
           To fund your account, send bitcoins to the address below.
         </i></p>
 
-        <h5>Send Bitcoins to this address</h5>
-        <div className="highlight">
-          <pre>
-            <code>{this.state.coreWalletAddress}</code>
-          </pre>
+        { this.state.coreWalletAddress ?
+        <div>
+          <h5>Send Bitcoins to this address</h5>
+          <div className="highlight">
+            <pre>
+              <code>{this.state.coreWalletAddress}</code>
+            </pre>
+          </div>
         </div>
+        :
+        <div>
+          <h5>Loading address...</h5>
+        </div>
+        }
       </div>
     )
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepositPage)
-
-/*
-  <div>
-    <button className="btn btn-secondary" onClick={this.refreshAddress}>
-      New Address
-    </button>
-  </div>
-*/
