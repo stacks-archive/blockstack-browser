@@ -328,6 +328,15 @@ div.app-text-container > h3{color:#fff;font-weight:300;font-size:0.8125rem;overf
 .sidebar-list{margin-bottom:20px;}
 .sidebar-list .btn{margin-bottom:5px;}
 
+/* Status Bars */
+.statusbar-dark {
+	width: 100%;
+	background-color: #000;
+}
+.statusbar-btn-home {
+
+}
+
 /* Modal */
 div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:rgba(0,0,0,0.5)!important;display:flex;align-items:center;justify-content:center;}
 div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-color:#fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);padding:4.688rem 3.125rem;text-align:center;margin-top:-25%;}
