@@ -37,7 +37,7 @@ class StorageApp extends Component {
           <PageHeader title="Storage" />
           <div className="home-wallet">
           </div>
-          <div className="container vertical-split-content">
+          <div className="vertical-split-content">
             <div className="row">
               <div className="col-md-9">
                 {this.props.children}

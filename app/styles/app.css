@@ -371,6 +371,20 @@ div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-si
 	float: left;
 	margin-left: 200px;
 	width: 100%;
+	padding-left: 70px;
+}
+div.storage-content-wrap > div.page-header {
+	display: block;
+	margin-top: 75px;
+	background-color: transparent;
+	height: auto;
+}
+div.storage-content-wrap > div.page-header > h1 {
+	font-family: 'Lato',sans-serif;
+	font-weight: 400;
+	font-size: 24px;
+	text-align: left;
+	color: #7B7B7B;
 }
 
 /* Media queries */
