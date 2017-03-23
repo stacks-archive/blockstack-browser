@@ -288,7 +288,15 @@ div.pro-avatar img{max-width:58px;}
 .pro-container{padding-top:1.5rem;}
 
 /* 28. List group */
-.list-group-item-sidebar{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;}
+.list-group-item-sidebar {
+	font-family: 'Source Code Pro', monospace;
+	font-size: 0.75rem;
+	line-height: 1.5rem;
+	border: none;
+	background-color: transparent;
+	padding-top: 0.5625rem;
+	padding-bottom: 0.5625rem;
+}
 .list-group-item-sidebar.active,.list-group-item-sidebar.active:hover,.list-group-item-sidebar.active:focus{color:#fff;background-color:#270F34;background-image:none;}
 .col-list-name{float:left;}
 .list-text-name{line-height:14px;display:block;overflow:hidden;box-sizing:border-box;width:130px;white-space:nowrap;text-overflow:ellipsis;color:#444;}
@@ -338,8 +346,25 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	position: absolute;
 	float: left;
 	padding: 0;
+	padding-top: 75px;
   width: 200px;
+  min-height: 100%;
   text-align: center;
+  background: #007be8;
+  background: -moz-linear-gradient(top, #007be8 9%, #0099e8 85%);
+  background: -webkit-linear-gradient(top, #007be8 9%,#0099e8 85%);
+  background: linear-gradient(to bottom, #007be8 9%,#0099e8 85%);
+}
+div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar.active, div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar {
+	font-family: 'Lato',sans-serif;
+	text-transform: uppercase;
+}
+div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar.active {
+	color: #fff;
+	background-color: transparent;
+}
+div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar {
+	color: rgba(255,255,255,0.45);
 }
 .storage-content-wrap {
 	position: relative;
