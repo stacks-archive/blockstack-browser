@@ -7,7 +7,7 @@ class StatusBar extends Component {
 
   render() {
     return (
-      <div className="status-bar status-bar-light">
+      <div className="status-bar status-bar-dark">
         <Link to="/">
           <i className="fa fa-angle-left status-bar-icon"></i>
           Home Screen
