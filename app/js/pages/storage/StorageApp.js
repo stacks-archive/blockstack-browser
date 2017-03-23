@@ -30,10 +30,10 @@ class StorageApp extends Component {
     return (
       <div className="body-inner-white">
         <StatusBar />
-        <div className="col-md-3">
+        <div className="storage-sidebar-wrap">
           <StorageSideBar activeTab={activeTabUrl} />
         </div>
-        <div className="col-md-9">
+        <div className="storage-content-wrap">
           <PageHeader title="Storage" />
           <div className="home-wallet">
           </div>

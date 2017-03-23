@@ -9,7 +9,7 @@ class StorageSideBar extends Component {
   render() {
     let tabs = [
       { url: '/storage/providers', label: 'storage', isActive: false },
-      { url: '#', label: 'files', isActive: false },
+      { url: '/storage/providers/#', label: 'files', isActive: false },
     ]
     tabs.map((tab) => {
       if (tab.url === this.props.activeTab) {

@@ -86,19 +86,7 @@ button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
 /* Browser search bar */
 .nav-search{overflow:hidden;}
 .browser-search-bar{font-size:12px;margin-top:-2px;}
-.browser-search-bar input {
-	font-family: 'Lato', sans-serif;
-	font-size: 12px;
-	font-weight: 500;
-	padding: .063rem .75rem .063rem 40px;
-	-webkit-transition: all .5s ease-in-out;
-	-o-transition: all .5s ease-in-out;
-	transition: all .5s ease-in-out;
-	color: #444;
-	border: none;
-	border-radius: 20px;
-	-webkit-font-smoothing: antialiased;
-}
+.browser-search-bar input{font-family:'Lato',sans-serif;font-size:12px;font-weight:500;padding:.063rem .75rem .063rem 40px;-webkit-transition:all .5s ease-in-out;-o-transition:all .5s ease-in-out;transition:all .5s ease-in-out;color:#444;border:none;border-radius:20px;-webkit-font-smoothing:antialiased;}
 .browser-search-bar input::-webkit-input-placeholder{font-family:'Lato',sans-serif;font-size:12px;font-weight:500;margin-top:.1875rem;padding:0;-webkit-transition:all .5s ease-in-out;-o-transition:all .5s ease-in-out;transition:all .5s ease-in-out;text-transform:none;color:#444;-webkit-font-smoothing:antialiased;}
 .browser-search-bar input:focus{background-color:#fff;}
 .browser-search-bar img{position:absolute;top:23px;margin-left:12px;}
@@ -344,6 +332,21 @@ div.app-text-container > h3{color:#fff;font-weight:300;font-size:0.8125rem;overf
 div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:rgba(0,0,0,0.5)!important;display:flex;align-items:center;justify-content:center;}
 div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-color:#fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);padding:4.688rem 3.125rem;text-align:center;margin-top:-25%;}
 .react-modal-pgp { width: 700px !important; }
+
+/* Storage App */
+.storage-sidebar-wrap {
+	position: absolute;
+	float: left;
+	padding: 0;
+  width: 200px;
+  text-align: center;
+}
+.storage-content-wrap {
+	position: relative;
+	float: left;
+	margin-left: 200px;
+	width: 100%;
+}
 
 /* Media queries */
 
