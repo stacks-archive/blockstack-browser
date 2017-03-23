@@ -9,9 +9,8 @@ class StatusBar extends Component {
     return (
       <div className="statusbar-dark">
         <Link to="/">
-          <div className="statusbar-btn-home">
-            ‹ Home
-          </div>
+          <i className="fa fa-angle-left status-icon"></i>
+          <span className="statusbar-btn-home">Home Screen</span>
         </Link>
       </div>
     )

@@ -333,16 +333,28 @@ div.app-text-container > h3{color:#fff;font-weight:300;font-size:0.8125rem;overf
 	width: 100%;
 	height: 29px;
 	background-color: #000;
+	display: inline-block;
 }
-.statusbar-btn-home {
+.statusbar-dark > a {
+	padding: 8px 18px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 10px;
 	font-weight: 400;
-	color: #fff;
-	padding: 6px 18px;
-	line-height: 1rem;
+	color: rgba(255,255,255,0.9);
 }
-
+.statusbar-dark > a:hover, .statusbar-dark > a:focus, .statusbar-dark > a:active {
+	color: rgba(255,255,255,1);
+	text-decoration: none;
+}
+.statusbar-btn-home {
+	line-height: 29px;
+}
+.status-icon {
+	vertical-align: middle;
+	font-size: 13px;
+	padding-right: 3px;
+	margin-top: -1px!important;
+}
 
 
 /* Modal */
