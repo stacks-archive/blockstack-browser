@@ -6,11 +6,10 @@ import { Link } from 'react-router'
 import { AccountSidebar, Balance, PageHeader } from '../../components/index'
 import { AccountActions }                      from '../../store/account'
 
-import { authorizationHeaderValue } from '../../utils'
-
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
+    coreWalletAddress: state.account.coreWalletAddress,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
   }
 }
@@ -22,39 +21,29 @@ function mapDispatchToProps(dispatch) {
 class DepositPage extends Component {
   static propTypes = {
     addresses: PropTypes.array.isRequired,
-    newBitcoinAddress: PropTypes.func.isRequired,
+    coreWalletAddress: PropTypes.string,
+    getCoreWalletAddress: PropTypes.func.isRequired,
+    walletPaymentAddressUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      coreWalletAddress: null
+      coreWalletAddress: this.props.coreWalletAddress
     }
-
-    this.loadAddress = this.loadAddress.bind(this)
   }
 
   componentWillMount() {
-    this.loadAddress()
+    this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl)
   }
 
-  componentWillReceiveProps() {
-    this.loadAddress()
-  }
-
-  loadAddress() {
-    const url = this.props.walletPaymentAddressUrl
-    const headers = {"Authorization": authorizationHeaderValue() }
-    fetch(url, { headers: headers })
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      const address = responseJson.address
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.coreWalletAddress !== this.props.coreWalletAddress) {
       this.setState({
-        coreWalletAddress: address
+        coreWalletAddress: this.props.coreWalletAddress
       })
-    })    
+    }
   }
 
   render() {

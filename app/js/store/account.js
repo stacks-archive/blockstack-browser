@@ -2,13 +2,15 @@ import bip39 from 'bip39'
 import { encrypt, decrypt, decryptPrivateKeychain, getIdentityPrivateKeychain, getBitcoinPrivateKeychain } from '../utils'
 import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
 import { ECPair } from 'bitcoinjs-lib'
+import { authorizationHeaderValue } from '../utils'
 
 const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       DELETE_ACCOUNT = 'DELETE_ACCOUNT',
       NEW_IDENTITY_ADDRESS = 'NEW_IDENTITY_ADDRESS',
       NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
       UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE',
-      UPDATE_BALANCES = 'UPDATE_BALANCES'
+      UPDATE_BALANCES = 'UPDATE_BALANCES',
+      UPDATE_CORE_ADDRESS = 'UPDATE_CORE_ADDRESS'
 
 function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
   const identityPrivateKeychain = getIdentityPrivateKeychain(privateKeychain)
@@ -42,6 +44,13 @@ function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
   }
 }
 
+function updateCoreWalletAddress(coreWalletAddress) {
+  return {
+    type: UPDATE_CORE_ADDRESS,
+    coreWalletAddress: coreWalletAddress
+  }
+}
+
 function deleteAccount() {
   return {
     type: DELETE_ACCOUNT,
@@ -61,6 +70,21 @@ function updateBalances(balances) {
   return {
     type: UPDATE_BALANCES,
     balances: balances
+  }
+}
+
+function getCoreWalletAddress(walletPaymentAddressUrl) {
+  return dispatch => {
+    const headers = {"Authorization": authorizationHeaderValue() }
+    fetch(walletPaymentAddressUrl, { headers: headers })
+    .then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      const address = responseJson.address
+      dispatch(
+        updateCoreWalletAddress(address)
+      )
+    })
   }
 }
 
@@ -147,7 +171,8 @@ export const AccountActions = {
   newIdentityAddress: newIdentityAddress,
   newBitcoinAddress: newBitcoinAddress,
   deleteAccount: deleteAccount,
-  refreshBalances: refreshBalances
+  refreshBalances: refreshBalances,
+  getCoreWalletAddress: getCoreWalletAddress
 }
 
 const initialState = {
@@ -161,7 +186,8 @@ const initialState = {
     addresses: [],
     balances: { total: 0.0 }
   },
-  analyticsId: ''
+  analyticsId: '',
+  coreWalletAddress: null
 }
 
 export function AccountReducer(state=initialState, action) {
@@ -196,6 +222,10 @@ export function AccountReducer(state=initialState, action) {
       return Object.assign({}, state, {
         accountCreated: false,
         encryptedBackupPhrase: null
+      })
+    case UPDATE_CORE_ADDRESS:
+      return Object.assign({}, state, {
+        coreWalletAddress: action.coreWalletAddress
       })
     case UPDATE_BACKUP_PHRASE:
       return Object.assign({}, state, {
