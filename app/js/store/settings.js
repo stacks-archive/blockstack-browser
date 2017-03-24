@@ -1,6 +1,4 @@
-import {
-  SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX
-} from '../utils/storage/index'
+import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../storage/utils/index'
 
 const UPDATE_API = 'UPDATE_API'
 

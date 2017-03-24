@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { AccountActions } from './store/account'
-import { WelcomeModal } from './components/index'
+import WelcomeModal from './components/WelcomeModal'
 
 function mapStateToProps(state) {
   return {
