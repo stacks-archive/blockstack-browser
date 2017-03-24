@@ -55,7 +55,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // using the wallet password as Core API password is intentional
         startPortalProxy(coreAPIPassword: walletPassword, complete: {
-            self.openPortal(path: "/")
+            let delayInSeconds = 0.5
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+                self.openPortal(path: "/")
+            }
         })
         
         startCorsProxy(complete: {
