@@ -8,8 +8,8 @@ class StorageSideBar extends Component {
 
   render() {
     let tabs = [
-      { url: '/storage/providers', label: 'storage', isActive: false },
-      { url: '/storage/providers/#', label: 'files', isActive: false },
+      { url: '/storage/providers', label: 'providers', isActive: true, disabled: false },
+      { url: '/storage/files', label: 'files', isActive: false, disabled: true },
     ]
     tabs.map((tab) => {
       if (tab.url === this.props.activeTab) {
@@ -18,18 +18,31 @@ class StorageSideBar extends Component {
     })
 
     return (
-      <div className="list-group">
-        {tabs.map((tab, index) => {
-          let className = 'list-group-item list-group-item-sidebar'
-          if (tab.isActive) {
-            className += ' active'
-          }
-          return (
-            <Link key={index} to={tab.url} className={className}>
-              {tab.label}
-            </Link>
-          )
-        })}
+      <div>
+        <h1 className="type-inverse h1-modern">
+          Storage
+        </h1>
+        <div className="list-group">
+          {tabs.map((tab, index) => {
+            let className = 'list-group-item list-group-item-sidebar'
+            if (tab.isActive) {
+              className += ' active'
+            }
+            if (tab.disabled) {
+              return (
+                <Link key={index} className={className} disabled>
+                  {tab.label}
+                </Link>
+              )
+            } else {
+              return (
+                <Link key={index} to={tab.url} className={className}>
+                  {tab.label}
+                </Link>
+              )
+            }
+          })}
+        </div>
       </div>
     )
   }

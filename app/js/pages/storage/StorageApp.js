@@ -34,7 +34,6 @@ class StorageApp extends Component {
           <StorageSideBar activeTab={activeTabUrl} />
         </div>
         <div className="storage-content-wrap">
-          <PageHeader title="Storage" />
           <div className="home-wallet">
           </div>
           <div className="vertical-split-content">

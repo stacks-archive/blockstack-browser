@@ -347,18 +347,18 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:465px;background-c
 	background: -webkit-linear-gradient(top, #007be8 9%, #0099e8 85%);
 	background: linear-gradient(to bottom, #007be8 9%, #0099e8 85%);
 }
-div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar.active, div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar {
+div.storage-sidebar-wrap > div > div.list-group > a.list-group-item.list-group-item-sidebar.active, div.storage-sidebar-wrap > div > div.list-group > a.list-group-item.list-group-item-sidebar {
 	font-family: 'Lato', sans-serif;
 	text-transform: uppercase;
 }
-div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar.active {
+div.storage-sidebar-wrap > div > div.list-group > a.list-group-item.list-group-item-sidebar.active {
 	color: #fff;
 	background-color: transparent;
 }
-div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar:hover {
+div.storage-sidebar-wrap > div > div.list-group > a.list-group-item.list-group-item-sidebar:hover {
 	background-color: rgba(255, 255, 255, 0.1);
 }
-div.storage-sidebar-wrap > div.list-group > a.list-group-item.list-group-item-sidebar {
+div.storage-sidebar-wrap > div > div.list-group > a.list-group-item.list-group-item-sidebar {
 	color: rgba(255, 255, 255, 0.45);
 }
 .storage-content-wrap {
