@@ -88,7 +88,9 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
+      console.log(responseJson)
       const balance = responseJson.unconfirmedBalance + responseJson.balance
+      console.log(balance)
       dispatch(
         updateCoreWalletBalance(balance)
       )
@@ -251,6 +253,10 @@ export function AccountReducer(state=initialState, action) {
     case UPDATE_CORE_ADDRESS:
       return Object.assign({}, state, {
         coreWalletAddress: action.coreWalletAddress
+      })
+    case UPDATE_CORE_BALANCE:
+      return Object.assign({}, state, {
+        coreWalletBalance: action.coreWalletBalance
       })
     case UPDATE_BACKUP_PHRASE:
       return Object.assign({}, state, {
