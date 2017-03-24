@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		467AF8CC1E85397200216B2A /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 467AF8CB1E85397200216B2A /* corsproxy */; };
+		467AF8CE1E85398300216B2A /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 467AF8CD1E85398300216B2A /* blockstackProxy */; };
 		46AB7B3C1E632F08004DACD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */; };
 		46AB7B3E1E632F08004DACD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B3D1E632F08004DACD8 /* Assets.xcassets */; };
 		46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B3F1E632F08004DACD8 /* MainMenu.xib */; };
 		46AB7B4C1E632F08004DACD8 /* BlockstackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B4B1E632F08004DACD8 /* BlockstackTests.swift */; };
 		46AB7B571E632F09004DACD8 /* BlockstackUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B561E632F09004DACD8 /* BlockstackUITests.swift */; };
-		46AB7B661E64363B004DACD8 /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B641E64363B004DACD8 /* corsproxy */; };
-		46AB7B671E64363B004DACD8 /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B651E64363B004DACD8 /* blockstackProxy */; };
 		46AB7B6B1E643675004DACD8 /* blockstack-venv.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */; };
 		46CA5EA51E81BEDD00CF6E38 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 46CA5EA41E81BEDC00CF6E38 /* browser */; };
 /* End PBXBuildFile section */
@@ -36,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		467AF8CB1E85397200216B2A /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = corsproxy; sourceTree = "<group>"; };
+		467AF8CD1E85398300216B2A /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = blockstackProxy; sourceTree = "<group>"; };
 		46AB7B381E632F08004DACD8 /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46AB7B3D1E632F08004DACD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -47,8 +49,6 @@
 		46AB7B521E632F09004DACD8 /* BlockstackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlockstackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		46AB7B561E632F09004DACD8 /* BlockstackUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstackUITests.swift; sourceTree = "<group>"; };
 		46AB7B581E632F09004DACD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		46AB7B641E64363B004DACD8 /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = corsproxy; path = Blockstack/corsproxy; sourceTree = "<group>"; };
-		46AB7B651E64363B004DACD8 /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = blockstackProxy; path = Blockstack/blockstackProxy; sourceTree = "<group>"; };
 		46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; name = "blockstack-venv.tar.gz"; path = "Blockstack/blockstack-venv.tar.gz"; sourceTree = "<group>"; };
 		46CA5EA41E81BEDC00CF6E38 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; name = browser; path = Blockstack/browser; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -131,10 +131,10 @@
 		46AB7B681E643643004DACD8 /* Binaries */ = {
 			isa = PBXGroup;
 			children = (
+				467AF8CD1E85398300216B2A /* blockstackProxy */,
 				46CA5EA41E81BEDC00CF6E38 /* browser */,
 				46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */,
-				46AB7B641E64363B004DACD8 /* corsproxy */,
-				46AB7B651E64363B004DACD8 /* blockstackProxy */,
+				467AF8CB1E85397200216B2A /* corsproxy */,
 			);
 			name = Binaries;
 			sourceTree = "<group>";
@@ -249,11 +249,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46AB7B661E64363B004DACD8 /* corsproxy in Resources */,
 				46AB7B3E1E632F08004DACD8 /* Assets.xcassets in Resources */,
 				46AB7B6B1E643675004DACD8 /* blockstack-venv.tar.gz in Resources */,
+				467AF8CE1E85398300216B2A /* blockstackProxy in Resources */,
 				46CA5EA51E81BEDD00CF6E38 /* browser in Resources */,
-				46AB7B671E64363B004DACD8 /* blockstackProxy in Resources */,
+				467AF8CC1E85397200216B2A /* corsproxy in Resources */,
 				46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

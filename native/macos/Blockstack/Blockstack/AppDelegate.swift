@@ -169,7 +169,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(withTitle: "\(isDevModeEnabled ? "Disable" : "Enable") Development Mode", action: #selector(devModeClick), keyEquivalent: "d")
             
             menu.addItem(NSMenuItem.separator())
-
+            
+            let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+            let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+            
+            let versionMenuItem = NSMenuItem()
+            versionMenuItem.title = "Blockstack v\(version) (\(build))"
+            versionMenuItem.isEnabled = false
+            menu.addItem(versionMenuItem)
+            
+            menu.addItem(NSMenuItem.separator())
         }
         
         menu.addItem(withTitle: "Quit Blockstack", action: #selector(exitClick), keyEquivalent: "q")
