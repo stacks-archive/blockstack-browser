@@ -10,7 +10,8 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
       UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE',
       UPDATE_BALANCES = 'UPDATE_BALANCES',
-      UPDATE_CORE_ADDRESS = 'UPDATE_CORE_ADDRESS'
+      UPDATE_CORE_ADDRESS = 'UPDATE_CORE_ADDRESS',
+      UPDATE_CORE_BALANCE = 'UPDATE_CORE_BALANCE'
 
 function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
   const identityPrivateKeychain = getIdentityPrivateKeychain(privateKeychain)
@@ -51,6 +52,13 @@ function updateCoreWalletAddress(coreWalletAddress) {
   }
 }
 
+function updateCoreWalletBalance(coreWalletBalance) {
+  return {
+    type: UPDATE_CORE_BALANCE,
+    coreWalletBalance: coreWalletBalance
+  }
+}
+
 function deleteAccount() {
   return {
     type: DELETE_ACCOUNT,
@@ -70,6 +78,23 @@ function updateBalances(balances) {
   return {
     type: UPDATE_BALANCES,
     balances: balances
+  }
+}
+
+function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
+  return dispatch => {
+    const url = addressBalanceUrl.replace('{address}', coreWalletAddress)
+    fetch(url)
+    .then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      console.log(responseJson)
+      const balance = responseJson.unconfirmedBalance + responseJson.balance
+      console.log(balance)
+      dispatch(
+        updateCoreWalletBalance(balance)
+      )
+    })
   }
 }
 
@@ -172,7 +197,8 @@ export const AccountActions = {
   newBitcoinAddress: newBitcoinAddress,
   deleteAccount: deleteAccount,
   refreshBalances: refreshBalances,
-  getCoreWalletAddress: getCoreWalletAddress
+  getCoreWalletAddress: getCoreWalletAddress,
+  refreshCoreWalletBalance: refreshCoreWalletBalance
 }
 
 const initialState = {
@@ -187,7 +213,8 @@ const initialState = {
     balances: { total: 0.0 }
   },
   analyticsId: '',
-  coreWalletAddress: null
+  coreWalletAddress: null,
+  coreWalletBalance: 0.0
 }
 
 export function AccountReducer(state=initialState, action) {
@@ -226,6 +253,10 @@ export function AccountReducer(state=initialState, action) {
     case UPDATE_CORE_ADDRESS:
       return Object.assign({}, state, {
         coreWalletAddress: action.coreWalletAddress
+      })
+    case UPDATE_CORE_BALANCE:
+      return Object.assign({}, state, {
+        coreWalletBalance: action.coreWalletBalance
       })
     case UPDATE_BACKUP_PHRASE:
       return Object.assign({}, state, {

@@ -4,15 +4,15 @@ import { connect } from 'react-redux'
 
 import { AccountActions } from '../store/account'
 
-import { authorizationHeaderValue } from '../utils'
-
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
     balances: state.account.bitcoinAccount.balances,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     utxoUrl: state.settings.api.utxoUrl,
-    addressBalanceUrl: state.settings.api.addressBalanceUrl
+    addressBalanceUrl: state.settings.api.addressBalanceUrl,
+    coreWalletBalance: state.account.coreWalletBalance,
+    coreWalletAddress: state.account.coreWalletAddress
   }
 }
 
@@ -27,45 +27,35 @@ class Balance extends Component {
     refreshBalances: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
     utxoUrl: PropTypes.string.isRequired,
-    addressBalanceUrl: PropTypes.string.isRequired
+    addressBalanceUrl: PropTypes.string.isRequired,
+    refreshCoreWalletBalance: PropTypes.func.isRequired,
+    coreWalletBalance: PropTypes.number,
+    coreWalletAddress: PropTypes.string
   }
 
   constructor() {
     super()
-    this.state = {
-      coreWalletBalance: 0
-    }
-    this.updateBalancesFromCore = this.updateBalancesFromCore.bind(this)
   }
 
   componentDidMount() {
-    this.updateBalancesFromCore()
+    if(this.props.coreWalletAddress != null) {
+      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl, this.props.coreWalletAddress)
+    }
   }
 
-  updateBalancesFromCore() {
-    fetch(this.props.walletPaymentAddressUrl,{
-      headers: { "Authorization": authorizationHeaderValue() }
-    })
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      const address = responseJson.address
-      const url = this.props.addressBalanceUrl.replace('{address}', address)
-      fetch(url)
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        const balance = responseJson.unconfirmedBalance + responseJson.balance
-        this.setState({coreWalletBalance: balance})
-      })
-    })
+  componentWillReceiveProps(nextProps) {
+    if(this.props.coreWalletAddress != nextProps.coreWalletAddress) {
+      this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, nextProps.coreWalletAddress)
+    }
   }
+
   render() {
+    const coreWalletBalance = this.props.coreWalletBalance
     return (
       <div className="balance">
         <label>Balance:</label>
         &nbsp;
-        {this.state.coreWalletBalance}&nbsp;
+        { coreWalletBalance != null ? coreWalletBalance : 0 }&nbsp;
         <label>btc</label>
       </div>
     )
