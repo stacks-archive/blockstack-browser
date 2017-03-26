@@ -50,7 +50,7 @@ Blockstack Portal requires a local instance of Blockstack Core to run. To get st
 1. Make sure you have a working installation of Xcode 8 or higher & valid Mac Developer signing certificate
 1. Run `npm install nexe -g` to install the "node to native" binary tool globally
 1. Open the Blockstack macOS project in Xcode and configure your code signing development team (You only need to do this once)
-1. Run `npm run mac` to build a release signed with your Mac Developer certificate
+1. Run `npm run mac` to build a debug release signed with your Mac Developer certificate
 
 *Note: You only need to run `nexe` once but the first build will take a while as `nexe` downloads and compiles a source copy of node. Then it creates and copies the needed proxy binaries into place and copies a built version of the browser web app into the source tree.*
 

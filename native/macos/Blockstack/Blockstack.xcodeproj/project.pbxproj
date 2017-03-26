@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0269336F851483B57BC4EF28 /* Pods_BlockstackTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8DB2C2D533E703048FE31F8 /* Pods_BlockstackTests.framework */; };
 		03D84AF47B48C8D13A44AB1F /* Pods_BlockstackUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 151BBEEEC2F6FF783F2FB820 /* Pods_BlockstackUITests.framework */; };
+		4612AE971E87E20600AC866A /* export.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4612AE961E87E20600AC866A /* export.plist */; };
 		467AF8CC1E85397200216B2A /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 467AF8CB1E85397200216B2A /* corsproxy */; };
 		467AF8CE1E85398300216B2A /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 467AF8CD1E85398300216B2A /* blockstackProxy */; };
 		46AB7B3C1E632F08004DACD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		151BBEEEC2F6FF783F2FB820 /* Pods_BlockstackUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlockstackUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		253C1468E9D7BB9D0C6ABA2E /* Pods-BlockstackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockstackTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlockstackTests/Pods-BlockstackTests.debug.xcconfig"; sourceTree = "<group>"; };
+		4612AE961E87E20600AC866A /* export.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = export.plist; sourceTree = "<group>"; };
 		467AF8CB1E85397200216B2A /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = corsproxy; sourceTree = "<group>"; };
 		467AF8CD1E85398300216B2A /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = blockstackProxy; sourceTree = "<group>"; };
 		46AB7B381E632F08004DACD8 /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,6 +98,7 @@
 		46AB7B2F1E632F08004DACD8 = {
 			isa = PBXGroup;
 			children = (
+				4612AE961E87E20600AC866A /* export.plist */,
 				46AB7B681E643643004DACD8 /* Binaries */,
 				46AB7B3A1E632F08004DACD8 /* Blockstack */,
 				46AB7B4A1E632F08004DACD8 /* BlockstackTests */,
@@ -304,6 +307,7 @@
 				46CA5EA51E81BEDD00CF6E38 /* browser in Resources */,
 				467AF8CC1E85397200216B2A /* corsproxy in Resources */,
 				46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */,
+				4612AE971E87E20600AC866A /* export.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

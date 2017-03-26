@@ -13,6 +13,7 @@
     "test": "NODE_ENV=test ./node_modules/.bin/gulp test",
     "web": "NODE_ENV=production ./node_modules/.bin/gulp prod",
     "mac": "NODE_ENV=production ./node_modules/.bin/gulp mac",
+    "mac-release": "NODE_ENV=production ./node_modules/.bin/gulp mac-release",
     "dev-ui": "NODE_ENV=development ./node_modules/.bin/gulp dev",
     "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy",
     "dev": "concurrently --kill-others \"npm run dev-ui\" \"npm run dev-proxy\""
@@ -32,6 +33,7 @@
     "boilerplate"
   ],
   "devDependencies": {
+    "appdmg": "^0.4.5",
     "asar": "^0.11.0",
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.4",
