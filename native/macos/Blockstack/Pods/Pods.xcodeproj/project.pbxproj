@@ -20,13 +20,18 @@
 
 /* Begin PBXFileReference section */
 		07D609382172ECFA677FA291E70A3CC8 /* Pods_Blockstack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Blockstack.framework; path = "Pods-Blockstack.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08F0E3ABE0F7FFF0B060E49C18859B20 /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
+		098E6864A7B900C354092929510F6742 /* SUExport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUExport.h; path = Sparkle.framework/Versions/A/Headers/SUExport.h; sourceTree = "<group>"; };
 		098EBE97B33A3664431620EF46CAFAC0 /* Pods-BlockstackUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BlockstackUITests-umbrella.h"; sourceTree = "<group>"; };
+		146EB1FFD3039CBBC121466BC10E749F /* SUVersionComparisonProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUVersionComparisonProtocol.h; path = Sparkle.framework/Versions/A/Headers/SUVersionComparisonProtocol.h; sourceTree = "<group>"; };
 		16210158C83EF905F8FB5FEDE0512043 /* Pods-BlockstackTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BlockstackTests-dummy.m"; sourceTree = "<group>"; };
 		183A22549278084E2D017302A9BF84C9 /* Pods-Blockstack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Blockstack.release.xcconfig"; sourceTree = "<group>"; };
+		206FC0298653B913F6DE0E15DF72023A /* SUAppcastItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUAppcastItem.h; path = Sparkle.framework/Versions/A/Headers/SUAppcastItem.h; sourceTree = "<group>"; };
 		2184018C9E4C7FF5A79FB7C012C36454 /* Pods_BlockstackTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_BlockstackTests.framework; path = "Pods-BlockstackTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		220BBAD3A9DAC1379A3777CD19BDFB7C /* Pods-BlockstackTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BlockstackTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		25D7245D0B55BCF6D613B0FC5845CC07 /* Pods-BlockstackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BlockstackTests.debug.xcconfig"; sourceTree = "<group>"; };
 		270DD1219F1E6CF00379D39F252D87C6 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		2A68FB6161EB6D13E0025D572C32A5C8 /* SUVersionDisplayProtocol.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUVersionDisplayProtocol.h; path = Sparkle.framework/Versions/A/Headers/SUVersionDisplayProtocol.h; sourceTree = "<group>"; };
 		3D241C78F57483A71DF20965A68ADB78 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		412E3148AB98716D55019679D9A540D5 /* Pods-Blockstack-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Blockstack-acknowledgements.plist"; sourceTree = "<group>"; };
 		4258F712A189756D3C4131946DC1C208 /* Pods-BlockstackUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BlockstackUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -42,18 +47,24 @@
 		85BB92E16B03C8A15B65FC4E75AFD7D1 /* Pods-Blockstack-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Blockstack-resources.sh"; sourceTree = "<group>"; };
 		884D7BD2EE1D079DC8F41C2E580DAE51 /* Pods-BlockstackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BlockstackTests.release.xcconfig"; sourceTree = "<group>"; };
 		8AA9AEB38CD86FB380A7E9B62A1DED28 /* Pods-BlockstackUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-BlockstackUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		90E75E9DC7A922B4F94EA6E11741D6A8 /* SUErrors.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUErrors.h; path = Sparkle.framework/Versions/A/Headers/SUErrors.h; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9486F65DB9A112D5A3C58D3C2A3458D1 /* Pods-BlockstackUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BlockstackUITests.release.xcconfig"; sourceTree = "<group>"; };
 		AB40E47DEC00FE8BE4F04DE1959670A9 /* Pods-Blockstack-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Blockstack-dummy.m"; sourceTree = "<group>"; };
 		B1FD34012F5511389FFA0430F1560FF9 /* Pods-BlockstackUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-BlockstackUITests-acknowledgements.plist"; sourceTree = "<group>"; };
+		BE06FF81E8B47CAE2929E9997A0FDD00 /* SUUpdaterDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUUpdaterDelegate.h; path = Sparkle.framework/Versions/A/Headers/SUUpdaterDelegate.h; sourceTree = "<group>"; };
+		C2C9D1B34A27BA4F6CC2A7CE29DF23D1 /* SUUpdater.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUUpdater.h; path = Sparkle.framework/Versions/A/Headers/SUUpdater.h; sourceTree = "<group>"; };
 		CABB4B9C81CDA9663595BE20223AB75C /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFC2150FE91499A0C52A00AED7BC2471 /* Sparkle.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Sparkle.h; path = Sparkle.framework/Versions/A/Headers/Sparkle.h; sourceTree = "<group>"; };
 		DBD19D78172D4CC8FF42EA445DFD2D3C /* Pods-Blockstack-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Blockstack-frameworks.sh"; sourceTree = "<group>"; };
 		E1090AF36C23D0671191DA7B897B9087 /* Pods-Blockstack.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-Blockstack.modulemap"; sourceTree = "<group>"; };
 		E3A1673D675327277A0B773ECCF7E741 /* Pods-BlockstackTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BlockstackTests-umbrella.h"; sourceTree = "<group>"; };
 		E706D51CBF2D65C73656C35E7325CC69 /* Pods-BlockstackTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-BlockstackTests.modulemap"; sourceTree = "<group>"; };
 		E78426ACBFEDAD1A02DF9EA7C841DB58 /* Pods-BlockstackTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BlockstackTests-resources.sh"; sourceTree = "<group>"; };
 		EC7BE06E49FCED39C29F5D0978304FA9 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDCF64026B6B952731DC763935DBB677 /* SUAppcast.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUAppcast.h; path = Sparkle.framework/Versions/A/Headers/SUAppcast.h; sourceTree = "<group>"; };
 		F4E75A6D160881C5053360C7D7E31286 /* Pods-BlockstackTests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-BlockstackTests-frameworks.sh"; sourceTree = "<group>"; };
+		F8ACA9546912BB31E3554E432CC1AA43 /* SUStandardVersionComparator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SUStandardVersionComparator.h; path = Sparkle.framework/Versions/A/Headers/SUStandardVersionComparator.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,11 +157,39 @@
 			path = "Target Support Files/Pods-Blockstack";
 			sourceTree = "<group>";
 		};
+		6C4A8D6723EA64B63D81821C58551253 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7DA37F5FD06B7D9792753E9152A8621A /* Sparkle */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		7DA37F5FD06B7D9792753E9152A8621A /* Sparkle */ = {
+			isa = PBXGroup;
+			children = (
+				CFC2150FE91499A0C52A00AED7BC2471 /* Sparkle.h */,
+				EDCF64026B6B952731DC763935DBB677 /* SUAppcast.h */,
+				206FC0298653B913F6DE0E15DF72023A /* SUAppcastItem.h */,
+				90E75E9DC7A922B4F94EA6E11741D6A8 /* SUErrors.h */,
+				098E6864A7B900C354092929510F6742 /* SUExport.h */,
+				F8ACA9546912BB31E3554E432CC1AA43 /* SUStandardVersionComparator.h */,
+				C2C9D1B34A27BA4F6CC2A7CE29DF23D1 /* SUUpdater.h */,
+				BE06FF81E8B47CAE2929E9997A0FDD00 /* SUUpdaterDelegate.h */,
+				146EB1FFD3039CBBC121466BC10E749F /* SUVersionComparisonProtocol.h */,
+				2A68FB6161EB6D13E0025D572C32A5C8 /* SUVersionDisplayProtocol.h */,
+				B51F172CB8B6401B0613A2D3DBE6BB0B /* Frameworks */,
+			);
+			name = Sparkle;
+			path = Sparkle;
+			sourceTree = "<group>";
+		};
 		7DB346D0F39D3F0E887471402A8071AB = {
 			isa = PBXGroup;
 			children = (
 				93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */,
 				39E9EE8210D861DFD82346C1F5EB7218 /* Frameworks */,
+				6C4A8D6723EA64B63D81821C58551253 /* Pods */,
 				B76218D5B5C6867D1BEDEE75B8CC501D /* Products */,
 				35E0F0D0512A90D81FA9FCD04BA1E116 /* Targets Support Files */,
 			);
@@ -172,6 +211,14 @@
 			);
 			name = "Pods-BlockstackTests";
 			path = "Target Support Files/Pods-BlockstackTests";
+			sourceTree = "<group>";
+		};
+		B51F172CB8B6401B0613A2D3DBE6BB0B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				08F0E3ABE0F7FFF0B060E49C18859B20 /* Sparkle.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B76218D5B5C6867D1BEDEE75B8CC501D /* Products */ = {
