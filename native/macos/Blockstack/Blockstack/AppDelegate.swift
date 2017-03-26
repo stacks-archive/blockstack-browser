@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Sparkle
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -36,6 +37,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let portalProxyProcess = Process()
     let corsProxyProcess = Process()
     let coreProcess = Process()
+    
+    let sparkleUpdater = SUUpdater.init(for: Bundle.main)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSLog("applicationDidFinishLaunching: \(blockstackDataURL())")

@@ -42,7 +42,7 @@
 /* Begin PBXFileReference section */
 		151BBEEEC2F6FF783F2FB820 /* Pods_BlockstackUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlockstackUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		253C1468E9D7BB9D0C6ABA2E /* Pods-BlockstackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockstackTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlockstackTests/Pods-BlockstackTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4612AE961E87E20600AC866A /* export.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = export.plist; sourceTree = "<group>"; };
+		4612AE961E87E20600AC866A /* export.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = export.plist; path = ../export.plist; sourceTree = "<group>"; };
 		467AF8CB1E85397200216B2A /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = corsproxy; sourceTree = "<group>"; };
 		467AF8CD1E85398300216B2A /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = blockstackProxy; sourceTree = "<group>"; };
 		46AB7B381E632F08004DACD8 /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,7 +98,6 @@
 		46AB7B2F1E632F08004DACD8 = {
 			isa = PBXGroup;
 			children = (
-				4612AE961E87E20600AC866A /* export.plist */,
 				46AB7B681E643643004DACD8 /* Binaries */,
 				46AB7B3A1E632F08004DACD8 /* Blockstack */,
 				46AB7B4A1E632F08004DACD8 /* BlockstackTests */,
@@ -122,6 +121,7 @@
 		46AB7B3A1E632F08004DACD8 /* Blockstack */ = {
 			isa = PBXGroup;
 			children = (
+				4612AE961E87E20600AC866A /* export.plist */,
 				46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */,
 				46AB7B3D1E632F08004DACD8 /* Assets.xcassets */,
 				46AB7B3F1E632F08004DACD8 /* MainMenu.xib */,
