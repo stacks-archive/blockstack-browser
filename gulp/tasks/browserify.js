@@ -37,17 +37,13 @@ function buildScript(file, watch) {
   bundler.transform(babelify);
   bundler.transform(debowerify);
 
-
   if ( !global.isProd && process.argv.length < 5) {
     console.error("Please provide your Core API password as an argument to this npm script:")
     console.error("npm run dev -- --api-password <password>")
-    console.error("or")
-    console.error("npm run dev-ui -- --api-password <password>")
     process.exit()
   }
 
   const coreApiPassword = process.argv[4]
-
   function rebundle() {
     const stream = bundler.bundle();
 

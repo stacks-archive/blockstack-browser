@@ -27,22 +27,38 @@ The Blockstack Browser Portal allows you to explore the Blockstack internet.
 
 Blockstack Portal requires a local instance of Blockstack Core to run. To get started, first install Blockstack Core and then proceed with the installation of Blockstack Portal.
 
-### Part 1: Install Blockstack Core
+### macOS
 
-1. Create and enter a virtual environment
-1. Install Blockstack Core version 0.14.1.3 from pypi
-1. Setup the Blockstack Core wallet: `blockstack setup`
-1. Start the Blockstack Core API: `blockstack api start --api_password <apisecret> --password <wallet password`
+Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
+
+*Please note these instructions have only been tested on macOS 10.12.4.*
+
+1. Download and install the [latest release of Blockstack for Mac](https://github.com/blockstack/blockstack-portal/releases).
+1. Start Blockstack
+1. Option-click the Blockstack menu bar item and select "Enable Development Mode"
+1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
+1. Install node dependencies: `npm install`
+1. Click the Blockstack menu bar item and select "Copy Core API password"
+1. Run `npm run dev -- --api_password <core-api-password>` replacing "<core-api-password>" with the value you copied in the previous step.
+
+### Linux
+
+#### Part 1: Install & configure Blockstack Core
+
+1. Install [Blockstack Core](https://github.com/blockstack/blockstack-core). Please follow the instructions in Blockstack Core's repository.
+1. Setup the Blockstack Core wallet: `blockstack setup`. You will be prompted to select a wallet password. *Skip this step if you already have a Core wallet*
+1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where "<core-api-password>" is a String value you select and "<wallet-password>" is the wallet password you selected previously.
 1. Make sure there's a local Blockstack Core API running by checking `http://localhost:6270/v1/names/blockstack.id` to see if it returns a response.
 
 ### Part 2: Install Blockstack Portal
 
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
-1. Run `npm run dev-proxy` to start the CORS proxy (skip this step if you're also running macOS app in development mode)
-1. Run `npm run dev-ui -- --api_password <apisecret>` to run locally
+1. Run `npm run dev-proxy` to start the CORS proxy
+1. Run `npm run dev -- --api_password <core-api-password>` replacing "<core-api-password>" with the value you selected in part 1.
 
-*Note: npm dev-ui runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. Anytime changes are made to the original files, they are rebuilt and resynced to the browser frames you have open.*
+
+*Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
 
 
 ## Building for macOS
@@ -54,7 +70,7 @@ Blockstack Portal requires a local instance of Blockstack Core to run. To get st
 
 *Note: You only need to run `nexe` once but the first build will take a while as `nexe` downloads and compiles a source copy of node. Then it creates and copies the needed proxy binaries into place and copies a built version of the browser web app into the source tree.*
 
-*Note: This has only been tested on macOS Sierra 10.12.*
+*Note: This has only been tested on macOS Sierra 10.12.4*
 
 ### Building a macOS release for distribution
 
