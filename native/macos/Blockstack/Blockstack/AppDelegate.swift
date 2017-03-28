@@ -180,7 +180,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             versionMenuItem.title = "Blockstack v\(version) (\(build))"
             versionMenuItem.isEnabled = false
             menu.addItem(versionMenuItem)
-            
+            menu.addItem(withTitle: "Check for updates...", action: #selector(checkForUpdatesClick), keyEquivalent: "u")
+
             menu.addItem(NSMenuItem.separator())
         }
         
@@ -209,6 +210,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             NSLog("User decided to exit...")
             shutdown(terminate: true)
         }
+    }
+    
+    func checkForUpdatesClick(sender: AnyObject?) {
+        NSLog("checkForUpdatesClick")
+        sparkleUpdater?.checkForUpdates(nil)
     }
     
     func shutdown(terminate: Bool = true) {
