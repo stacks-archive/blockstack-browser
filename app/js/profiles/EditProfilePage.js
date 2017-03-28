@@ -7,7 +7,8 @@ import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
 import EditProfileHeader from './components/EditProfileHeader'
 import ProfileEditingSidebar from './components/ProfileEditingSidebar'
 import { IdentityActions } from '../store/identities'
-import { signProfileForUpload, getNameParts, uploadProfile, uploadPhoto } from '../utils/index'
+import { signProfileForUpload, getNameParts } from '../utils/index'
+import { uploadProfile, uploadPhoto } from '../storage/utils'
 
 import BasicInfoTab      from './tabs/BasicInfoTab'
 import PhotosTab         from './tabs/PhotosTab'
@@ -125,7 +126,7 @@ class EditProfilePage extends Component {
                 <hr />
                 <div className="form-group">
                   <fieldset>
-                    <Link to={this.props.location.pathname.replace('/edit', '')}
+                    <Link to={this.props.location.pathname.replace('/edit', '/local')}
                       className="btn btn-primary">
                       Save + View Profile
                     </Link>
