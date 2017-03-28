@@ -59,7 +59,7 @@ class ApiSettingsPage extends Component {
   }
 
   resetApi() {
-    this.props.resetApi()
+    this.props.resetApi(this.props.api)
   }
 
 

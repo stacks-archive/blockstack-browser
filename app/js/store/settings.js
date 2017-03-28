@@ -72,9 +72,11 @@ function setAPICredentials(api, email, name, company, callback) {
   }
 }
 
-function resetApi() {
+function resetApi(api) {
   return dispatch => {
-    dispatch(updateApi(DEFAULT_API))
+    dispatch(updateApi(Object.assign({}, DEFAULT_API, {
+      dropboxAccessToken: api.dropboxAccessToken
+    })))
   }
 }
 
