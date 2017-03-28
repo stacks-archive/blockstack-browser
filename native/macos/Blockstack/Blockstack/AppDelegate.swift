@@ -162,6 +162,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             corePortMenuItem.isEnabled = false
             menu.addItem(corePortMenuItem)
             
+            if(isDevModeEnabled) {
+                menu.addItem(NSMenuItem.separator())
+                menu.addItem(withTitle: "Copy Core API password", action: #selector(copyAPIKeyClick), keyEquivalent: "")
+            }
+            
             menu.addItem(NSMenuItem.separator())
             
             let devModeStatusMenuItem = NSMenuItem()
@@ -188,6 +193,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(withTitle: "Quit Blockstack", action: #selector(exitClick), keyEquivalent: "q")
         
         statusItem.popUpMenu(menu)
+    }
+    
+    func copyAPIKeyClick(sender: AnyObject?) {
+        NSLog("copyAPIKeyClick")
+        let pasteboard = NSPasteboard.general()
+        pasteboard.declareTypes([NSPasteboardTypeString], owner: nil)
+        pasteboard.setString(createOrRetrieveCoreWalletPassword(), forType: NSPasteboardTypeString)
     }
     
     func devModeClick(sender: AnyObject?) {
