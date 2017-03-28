@@ -3,5 +3,5 @@ var shell = require('gulp-shell')
 
 
 gulp.task('buildMacReleaseSignDMG', shell.task([
-  'codesign --force --sign "Developer ID Application: Appartisan Limited" ./native/macos/export/Blockstack.dmg'
+  'codesign --force --sign "Developer ID Application: Appartisan Limited" ./native/macos/export/Blockstack.dmg; open ./native/macos/export/'
 ]))
