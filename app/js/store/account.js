@@ -2,8 +2,8 @@ import bip39 from 'bip39'
 import { encrypt, decrypt, decryptPrivateKeychain, getIdentityPrivateKeychain, getBitcoinPrivateKeychain } from '../utils'
 import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
 import { ECPair } from 'bitcoinjs-lib'
-import { authorizationHeaderValue } from '../utils'
-
+import { authorizationHeaderValue, CORE_API_PASSWORD } from '../utils'
+import { getCoreSession } from 'blockstack'
 const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       DELETE_ACCOUNT = 'DELETE_ACCOUNT',
       NEW_IDENTITY_ADDRESS = 'NEW_IDENTITY_ADDRESS',
@@ -11,7 +11,8 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE',
       UPDATE_BALANCES = 'UPDATE_BALANCES',
       UPDATE_CORE_ADDRESS = 'UPDATE_CORE_ADDRESS',
-      UPDATE_CORE_BALANCE = 'UPDATE_CORE_BALANCE'
+      UPDATE_CORE_BALANCE = 'UPDATE_CORE_BALANCE',
+      UPDATE_CORE_SESSION = 'UPDATE_CORE_SESSION'
 
 function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
   const identityPrivateKeychain = getIdentityPrivateKeychain(privateKeychain)
@@ -81,6 +82,14 @@ function updateBalances(balances) {
   }
 }
 
+
+function updateCoreSessionToken(token) {
+   return {
+      type: UPDATE_CORE_SESSION,
+      coreSessionToken: token,
+   };
+}
+
 function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
   return dispatch => {
     const url = addressBalanceUrl.replace('{address}', coreWalletAddress)
@@ -111,6 +120,16 @@ function getCoreWalletAddress(walletPaymentAddressUrl) {
       )
     })
   }
+}
+
+
+function getCoreSessionToken(core_host, core_port, privk_app, blockchain_id, auth_request) {
+   return dispatch => {
+      getCoreSession(core_host, core_port, CORE_API_PASSWORD, privk_app, blockchain_id, auth_request)
+        .then((session) => {
+           dispatch( updateCoreSessionToken(session) );
+        });
+   }
 }
 
 function refreshBalances(addressBalanceUrl, addresses) {
@@ -201,6 +220,10 @@ export const AccountActions = {
   refreshCoreWalletBalance: refreshCoreWalletBalance
 }
 
+export const AuthActions = {
+  getCoreSessionToken: getCoreSessionToken,
+}
+
 const initialState = {
   accountCreated: false,
   encryptedBackupPhrase: null,
@@ -214,7 +237,8 @@ const initialState = {
   },
   analyticsId: '',
   coreWalletAddress: null,
-  coreWalletBalance: 0.0
+  coreWalletBalance: 0.0,
+  coreSessionToken: null,
 }
 
 export function AccountReducer(state=initialState, action) {
@@ -297,6 +321,11 @@ export function AccountReducer(state=initialState, action) {
         balances: action.balances
       }
     })
+     case UPDATE_CORE_SESSION:
+        return Object.assign({}, state, {
+           coreSessionToken: action.coreSessionToken,
+        });
+
     default:
       return state
   }
