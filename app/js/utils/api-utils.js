@@ -14,7 +14,7 @@ export function getNamesOwned(address, addressLookupUrl, callback) {
 }
 
 export function authorizationHeaderValue() {
-  return `basic ${CORE_API_PASSWORD}`
+  return `bearer ${CORE_API_PASSWORD}`
 }
 
 /*
