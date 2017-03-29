@@ -10,23 +10,29 @@ import {
   makeAuthResponse, getAuthRequestFromURL, fetchAppManifest, redirectUserToApp
 } from 'blockstack'
 
+import { AuthActions } from '../store/account'
+
 function mapStateToProps(state) {
   return {
     localIdentities: state.identities.localIdentities,
-    identityKeypairs: state.account.identityAccount.keypairs
+    identityKeypairs: state.account.identityAccount.keypairs,
+    coreSessionToken: state.account.coreSessionToken,
+    coreHost: state.settings.api.coreHost,
+    corePort: state.settings.api.corePort
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch)
+  let actions = Object.assign({}, AuthActions);
+  return bindActionCreators(actions, dispatch)
 }
 
 class AuthModal extends Component {
   static contextTypes = {
     router: PropTypes.object
   }
-
   static propTypes = {
+     getCoreSessionToken: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -34,7 +40,8 @@ class AuthModal extends Component {
 
     this.state = {
       authRequest: null,
-      appManifest: null
+      appManifest: null,
+      coreSessionToken: null,
     }
 
     this.login = this.login.bind(this)
@@ -53,6 +60,14 @@ class AuthModal extends Component {
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if( nextProps.coreSessionToken ) {
+       this.setState({
+          coreSessionToken: nextProps.coreSessionToken
+       })
+    }
+  }
+
   closeModal() {
     this.context.router.push('/')
   }
@@ -63,8 +78,18 @@ class AuthModal extends Component {
       const identity = this.props.localIdentities[userDomainName]
       const profile = identity.profile
       const privateKey = this.props.identityKeypairs[0].key
-      const authResponse = makeAuthResponse(privateKey, profile, userDomainName)
-      redirectUserToApp(this.state.authRequest, authResponse)
+
+      console.log("core session: " + this.coreSessionToken)
+      if( this.props.coreSessionToken ) {
+          // got core token already.
+          // TODO: what if the token is expired?
+          const authResponse = makeAuthResponse(privateKey, profile, userDomainName, this.coreSessionToken)
+          redirectUserToApp(this.state.authRequest, authResponse)
+      }
+      else {
+          // go get it 
+          this.props.getCoreSessionToken(this.props.coreHost, this.props.corePort, privateKey, userDomainName)
+      }
     }
   }
 
