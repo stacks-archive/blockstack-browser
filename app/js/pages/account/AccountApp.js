@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { AccountSidebar, PageHeader, AddressBar, HomeButton } from '../../components/index'
+import { AccountSidebar, PageHeader, AddressBar, StatusBar } from '../../components/index'
 
 function mapStateToProps(state) {
   return {
@@ -29,10 +29,8 @@ class AccountApp extends Component {
 
     return (
       <div className="body-inner-white">
-        <PageHeader title="Account" />
-        <div className="home-wallet">
-          <HomeButton />
-        </div>
+          <StatusBar />
+          <PageHeader title="Account" />
         <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">
