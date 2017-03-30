@@ -54,12 +54,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let walletPassword = createOrRetrieveCoreWalletPassword()
         
         // using the wallet password as Core API password is intentional
-        startPortalProxy(coreAPIPassword: walletPassword)
+        startPortalProxy(coreAPIPassword: walletPassword, complete: {
+            let delayInSeconds = 0.5
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+                self.openPortal(path: "/")
+            }
+        })
         
-        startCorsProxy()
+        startCorsProxy(complete: {
+            // do nothing on task completion
+        })
         
         startCoreAPI(walletPassword: walletPassword, complete: {
-            self.openPortal(path: "/")
+            // do nothing on task completion
         })
     }
 
@@ -162,7 +169,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(withTitle: "\(isDevModeEnabled ? "Disable" : "Enable") Development Mode", action: #selector(devModeClick), keyEquivalent: "d")
             
             menu.addItem(NSMenuItem.separator())
-
+            
+            let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+            let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+            
+            let versionMenuItem = NSMenuItem()
+            versionMenuItem.title = "Blockstack v\(version) (\(build))"
+            versionMenuItem.isEnabled = false
+            menu.addItem(versionMenuItem)
+            
+            menu.addItem(NSMenuItem.separator())
         }
         
         menu.addItem(withTitle: "Quit Blockstack", action: #selector(exitClick), keyEquivalent: "q")
@@ -212,7 +228,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    func startPortalProxy(coreAPIPassword: String) {
+    func startPortalProxy(coreAPIPassword: String, complete: @escaping () -> Void) {
         let proxyPath = Bundle.main.path(forResource: "blockstackProxy", ofType: "")
         let portalPath = Bundle.main.path(forResource: "browser", ofType: "")
         
@@ -260,13 +276,14 @@ let apiPasswordPipe = loggingPipe()
             NSLog("Starting Blockstack Portal proxy...")
                 
             self.portalProxyProcess.launch()
+            complete()
 
         }
         configureCoreApiPasswordProcess.launch()
  
     }
     
-    func startCorsProxy() {
+    func startCorsProxy(complete: @escaping () -> Void) {
         let corsProxyPath = Bundle.main.path(forResource: "corsproxy", ofType: "")
         
         NSLog("CORS proxy Path: \(corsProxyPath)")
@@ -276,6 +293,7 @@ let apiPasswordPipe = loggingPipe()
         NSLog("Starting CORS proxy...")
         
         corsProxyProcess.launch()
+        complete()
     }
     
     /* Blockstack Core */

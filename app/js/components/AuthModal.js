@@ -22,6 +22,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 class AuthModal extends Component {
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
   static propTypes = {
   }
 
@@ -34,6 +38,7 @@ class AuthModal extends Component {
     }
 
     this.login = this.login.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   componentWillMount() {
@@ -46,6 +51,10 @@ class AuthModal extends Component {
     }).catch((e) => {
       console.log(e.stack)
     })
+  }
+
+  closeModal() {
+    this.context.router.push('/')
   }
 
   login() {
@@ -61,25 +70,28 @@ class AuthModal extends Component {
 
   render() {
     const appManifest = this.state.appManifest
+
     return (
       <div className="">
         <Modal
           isOpen={true}
-          onRequestClose={this.props.closeModal}
+          onRequestClose={this.closeModal}
           contentLabel="This is My Modal"
-          shouldCloseOnOverlayClick={false}
+          shouldCloseOnOverlayClick={true}
           style={{overlay: {zIndex: 10}}}
           className="container-fluid">
           <h3>Sign In Request</h3>
-          { this.state.appManifest ?
+          { appManifest ?
           <div>
             <p>
               The app "{appManifest.name}" wants to access your basic info
             </p>
+            { appManifest.hasOwnProperty('icons') ?
             <p>
               <Image src={appManifest.icons[0].src} style={{ width: '128px', height: '128px' }}
-                fallbackSrc="https://raw.githubusercontent.com/blockstack/blockstack-portal/master/app/images/app-hello-blockstack.png" />
+                fallbackSrc="/images/app-icon-hello-blockstack.png" />
             </p>
+            : null }
             { Object.keys(this.props.localIdentities).length > 0 ?
             <div>
               <p>

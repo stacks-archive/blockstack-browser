@@ -6,11 +6,10 @@ import { Link } from 'react-router'
 import { AccountSidebar, Balance, PageHeader } from '../../components/index'
 import { AccountActions }                      from '../../store/account'
 
-import { authorizationHeaderValue } from '../../utils'
-
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
+    coreWalletAddress: state.account.coreWalletAddress,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
   }
 }
@@ -22,32 +21,29 @@ function mapDispatchToProps(dispatch) {
 class DepositPage extends Component {
   static propTypes = {
     addresses: PropTypes.array.isRequired,
-    newBitcoinAddress: PropTypes.func.isRequired,
+    coreWalletAddress: PropTypes.string,
+    getCoreWalletAddress: PropTypes.func.isRequired,
+    walletPaymentAddressUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
     super(props)
-    this.refreshAddress = this.refreshAddress.bind(this)
+
     this.state = {
-      coreWalletAddress: ''
+      coreWalletAddress: this.props.coreWalletAddress
     }
   }
 
   componentWillMount() {
-    fetch(this.props.walletPaymentAddressUrl,
-    {
-      headers: {"Authorization": authorizationHeaderValue() }
-    })
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      const address = responseJson.address
-      this.setState({coreWalletAddress: address})
-    })
+    this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl)
   }
 
-  refreshAddress(event) {
-    //this.props.newBitcoinAddress()
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.coreWalletAddress !== this.props.coreWalletAddress) {
+      this.setState({
+        coreWalletAddress: this.props.coreWalletAddress
+      })
+    }
   }
 
   render() {
@@ -59,23 +55,23 @@ class DepositPage extends Component {
           To fund your account, send bitcoins to the address below.
         </i></p>
 
-        <h5>Send Bitcoins to this address</h5>
-        <div className="highlight">
-          <pre>
-            <code>{this.state.coreWalletAddress}</code>
-          </pre>
+        { this.state.coreWalletAddress ?
+        <div>
+          <h5>Send Bitcoins to this address</h5>
+          <div className="highlight">
+            <pre>
+              <code>{this.state.coreWalletAddress}</code>
+            </pre>
+          </div>
         </div>
+        :
+        <div>
+          <h5>Loading address...</h5>
+        </div>
+        }
       </div>
     )
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DepositPage)
-
-/*
-  <div>
-    <button className="btn btn-secondary" onClick={this.refreshAddress}>
-      New Address
-    </button>
-  </div>
-*/
