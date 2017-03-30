@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
+import { PrivateKeychain, PublicKeychain } from 'blockstack'
 
 import {
   InputGroup, SaveButton, ProfileEditingSidebar, EditProfileHeader
@@ -91,7 +91,7 @@ class EditProfilePage extends Component {
     mixpanel.track('Perform action', { distinct_id: analyticsId })
 
     const data = signProfileForUpload(this.state.profile, this.props.identityKeypairs[0])
-    
+
     uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
       console.error(err)
       console.error('profile not uploaded')

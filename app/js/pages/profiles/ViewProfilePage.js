@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { Person } from 'blockstack-profiles'
+import { Person } from 'blockstack'
 
 import AddressBar          from '../../components/AddressBar'
 import { SocialAccountItem, PGPAccountItem, Image } from '../../components/index'
@@ -190,7 +190,7 @@ class ViewProfilePage extends Component {
                   }
                   if (account.service === 'pgp') {
                     return (
-                      <PGPAccountItem 
+                      <PGPAccountItem
                         key={account.service + '-' + account.identifier}
                         service={account.service}
                         identifier={account.identifier}

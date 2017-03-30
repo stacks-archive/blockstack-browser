@@ -1,16 +1,12 @@
-import { Person } from 'blockstack-profiles'
-import { parseZoneFile } from 'blockstack-zones'
+import { makeProfileZoneFile, parseZoneFile, Person, validateProofs } from 'blockstack'
 import {
   isNameAvailable, getNamePrices,
-  makeZoneFileForHostedProfile, resolveZoneFileToProfile,
+  resolveZoneFileToProfile,
   signProfileForUpload, authorizationHeaderValue
 } from '../utils/index'
 import {
   uploadProfile
 } from '../utils/storage/index'
-import {
-  validateProofs
-} from 'blockstack-proofs'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
@@ -253,7 +249,7 @@ function registerName(api, domainName, recipientAddress, keypair) {
     uploadProfile(api, domainName, signedProfileTokenData, true).then((profileUrl) => {
 
       const tokenFileUrl = profileUrl
-      const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl)
+      const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
 
       const requestHeaders = {
         'Accept': 'application/json',

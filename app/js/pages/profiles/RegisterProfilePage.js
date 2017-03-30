@@ -3,11 +3,14 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Alert, InputGroup, PageHeader } from '../../components/index'
+import { AccountActions } from '../../store/account'
 import { IdentityActions } from '../../store/identities'
 import { getNamePrices, isNameAvailable,
          hasNameBeenPreordered, isABlockstackName } from '../../utils/name-utils'
 
 import { authorizationHeaderValue } from '../../utils'
+
+const WALLET_URL = '/wallet/deposit'
 
 function mapStateToProps(state) {
   return {
@@ -22,12 +25,15 @@ function mapStateToProps(state) {
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs,
-    registration: state.identities.registration
+    registration: state.identities.registration,
+    addressBalanceUrl: state.settings.api.addressBalanceUrl,
+    coreWalletBalance: state.account.coreWalletBalance,
+    coreWalletAddress: state.account.coreWalletAddress
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(IdentityActions, dispatch)
+  return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
 }
 
 class RegisterPage extends Component {
@@ -42,7 +48,11 @@ class RegisterPage extends Component {
     identityAddresses: PropTypes.array.isRequired,
     registerName: PropTypes.func.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
-    registration: PropTypes.object.isRequired
+    registration: PropTypes.object.isRequired,
+    addressBalanceUrl: PropTypes.string.isRequired,
+    refreshCoreWalletBalance: PropTypes.func.isRequired,
+    coreWalletBalance: PropTypes.number.isRequired,
+    coreWalletAddress: PropTypes.string
   }
 
   static contextTypes = {
@@ -54,7 +64,7 @@ class RegisterPage extends Component {
 
     this.state = {
       registrationLock: false,
-      username: this.props.username,
+      username: props.username,
       nameCost: 0,
       alerts: [],
       type: 'person',
@@ -65,7 +75,8 @@ class RegisterPage extends Component {
       nameLabels: {
         person: 'Username',
         organization: 'Domain'
-      }
+      },
+      zeroBalance: props.coreWalletBalance <= 0
     }
 
     this.onChange = this.onChange.bind(this)
@@ -73,6 +84,7 @@ class RegisterPage extends Component {
     this.updateAlert = this.updateAlert.bind(this)
     this.displayPricingAndAvailabilityAlerts = this.displayPricingAndAvailabilityAlerts.bind(this)
     this.displayRegistrationAlerts = this.displayRegistrationAlerts.bind(this)
+    this.displayZeroBalanceAlert = this.displayZeroBalanceAlert.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -82,15 +94,37 @@ class RegisterPage extends Component {
       alerts:[]
     })
 
-    const registration = nextProps.registration
+    if(this.props.coreWalletAddress != nextProps.coreWalletAddress) {
+      this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, nextProps.coreWalletAddress)
+    }
 
-    if(registration.registrationSubmitting ||
+    const registration = nextProps.registration
+    const zeroBalance = this.props.coreWalletBalance <= 0
+
+    this.setState({
+      zeroBalance: zeroBalance
+    })
+
+    if (zeroBalance) {
+      this.displayZeroBalanceAlert()
+    } else if (registration.registrationSubmitting ||
       registration.registrationSubmitted ||
       registration.profileUploading ||
       registration.error)
       this.displayRegistrationAlerts(registration)
-    else
+    else {
       this.displayPricingAndAvailabilityAlerts(registration)
+    }
+
+  }
+
+  componentDidMount() {
+    if(this.props.coreWalletAddress != null) {
+      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl, this.props.coreWalletAddress)
+    }
+    if (this.state.zeroBalance) {
+      this.displayZeroBalanceAlert()
+    }
   }
 
   displayRegistrationAlerts(registration) {
@@ -117,19 +151,28 @@ class RegisterPage extends Component {
         this.updateAlert('danger', `There was a problem checking on price & availability of ${domainName}`)
       } else {
         if(registration.names[domainName].checkingAvailability)
-          this.updateAlert('info', `Checking if ${domainName} is available...`)
+          this.updateAlert('info', `Checking if ${domainName} available...`)
         else if(registration.names[domainName].available) {
           if(registration.names[domainName].checkingPrice) {
             this.updateAlert('info', `${domainName} is available! Checking price...`)
           } else {
             const price = registration.names[domainName].price
-            this.updateAlert('info', `${domainName} costs ~${price} btc to register.`)
+            if(price < this.props.coreWalletBalance) {
+              this.updateAlert('info', `${domainName} costs ~${price} btc to register.`)
+            } else {
+              const shortfall = price - this.props.coreWalletBalance
+              this.updateAlert('danger', `Your wallet doesn't have enough money to buy ${domainName}. Please send at least ${shortfall} more bitcoin to your wallet.`, WALLET_URL)
+            }
           }
         } else {
           this.updateAlert('danger', `${domainName} has already been registered.`)
         }
       }
     }
+  }
+
+  displayZeroBalanceAlert() {
+    this.updateAlert('danger', 'You need to deposit bitcoin before you can register a username. Click here to go to your wallet.', WALLET_URL)
   }
 
   onChange(event) {
@@ -169,11 +212,12 @@ class RegisterPage extends Component {
     }
   }
 
-  updateAlert(alertStatus, alertMessage) {
+  updateAlert(alertStatus, alertMessage, url=null) {
     this.setState({
       alerts: [{
         status: alertStatus,
-        message: alertMessage
+        message: alertMessage,
+        url: url
       }]
     })
   }
@@ -225,7 +269,7 @@ class RegisterPage extends Component {
           <div className="col-sm-6">
             { this.state.alerts.map(function(alert, index) {
               return (
-                <Alert key={index} message={alert.message} status={alert.status} />
+                <Alert key={index} message={alert.message} status={alert.status} url={alert.url} />
               )
             })}
             <fieldset className="form-group">
@@ -236,13 +280,14 @@ class RegisterPage extends Component {
                   className="form-control"
                   placeholder={nameLabel}
                   value={this.state.username}
-                  onChange={this.onChange} />
+                  onChange={this.onChange}
+                  disabled={this.state.zeroBalance}/>
                 <span className="input-group-addon">.{tld}</span>
               </div>
             </fieldset>
             <div>
               <button className="btn btn-blue" onClick={this.registerIdentity}
-              disabled={this.props.registration.preventRegistration}>
+              disabled={this.props.registration.preventRegistration || this.state.zeroBalance}>
                 Register
               </button>
             </div>
