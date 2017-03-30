@@ -51,7 +51,7 @@ class DepositPage extends Component {
       <div>
         <Balance />
         <p><i>
-          Send at least <strong>0.1 bitcoins</strong> to the address below to register a username.<br/>
+          Send at least <strong>0.01 bitcoins</strong> to the address below to register a username.<br/>
           All username registrations use funds from your wallet.
         </i></p>
 
