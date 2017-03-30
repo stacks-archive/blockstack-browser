@@ -33,14 +33,12 @@ class WalletApp extends Component {
           <PageHeader title="Wallet" />
         <div className="home-wallet">
         </div>
-        <div className="container vertical-split-content">
-          <div className="row">
-            <div className="col-md-3">
-              <WalletSidebar activeTab={activeTabUrl} />
-            </div>
-            <div className="col-md-9">
-              {this.props.children}
-            </div>
+        <div className="container wallet-container">
+          <div className="col-md-4 col-lg-3 wallet-sidebar">
+            <WalletSidebar activeTab={activeTabUrl} />
+          </div>
+          <div className="col-md-8 col-lg-9 wallet-content">
+            {this.props.children}
           </div>
         </div>
       </div>
