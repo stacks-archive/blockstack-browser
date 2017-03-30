@@ -30,7 +30,6 @@ class WalletApp extends Component {
     return (
       <div className="body-inner bkg-green">
           <StatusBar />
-          <PageHeader title="Wallet" />
         <div className="home-wallet">
         </div>
         <div className="container wallet-container">
