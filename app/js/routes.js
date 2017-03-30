@@ -26,7 +26,7 @@ import ApiSettingsPage       from './pages/account/ApiSettingsPage'
 
 import WalletApp          from './pages/wallet/WalletApp'
 import ReceivePage        from './pages/wallet/ReceivePage'
-import WithdrawPage       from './pages/wallet/WithdrawPage'
+import SendPage       from './pages/wallet/SendPage'
 
 import StorageApp          from './pages/storage/StorageApp'
 import StorageProvidersPage from './pages/storage/StorageProvidersPage'
@@ -67,7 +67,7 @@ export default (
 
     <Route path="wallet" component={WalletApp}>
         <Route path="receive"     component={ReceivePage} />
-        <Route path="withdraw"    component={WithdrawPage} />
+        <Route path="send"        component={SendPage} />
     </Route>
 
     <Route path="/auth" component={AuthPage} />

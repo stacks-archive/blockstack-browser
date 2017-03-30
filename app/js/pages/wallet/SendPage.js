@@ -26,7 +26,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-class WithdrawPage extends Component {
+class SendPage extends Component {
   static propTypes = {
 
   }
@@ -191,4 +191,4 @@ class WithdrawPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WithdrawPage)
+export default connect(mapStateToProps, mapDispatchToProps)(SendPage)
