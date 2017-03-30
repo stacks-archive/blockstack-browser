@@ -28,7 +28,7 @@ class AccountApp extends Component {
     const activeTabUrl = `/account/${childPath}`
 
     return (
-      <div className="body-inner-white">
+      <div className="body-inner bkg-white">
           <StatusBar />
           <PageHeader title="Account" />
         <div className="container vertical-split-content">

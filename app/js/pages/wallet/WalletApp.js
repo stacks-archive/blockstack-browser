@@ -28,7 +28,7 @@ class WalletApp extends Component {
     const activeTabUrl = `/wallet/${childPath}`
 
     return (
-      <div className="body-inner-white">
+      <div className="body-inner bkg-green">
           <StatusBar />
           <PageHeader title="Wallet" />
         <div className="home-wallet">

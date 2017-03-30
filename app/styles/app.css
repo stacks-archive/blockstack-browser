@@ -7,8 +7,9 @@
 body{font-family:'Lato',sans-serif;font-size:14px;background-color:rgba(250,250,250,1);}
 .body-main{width:100%;height:100%;}
 .body-landing{width:100%;height:100%;}
-.body-inner{width:100%;}
-.body-inner-white{background-color:white;}
+.body-inner{width:100%;height:100%;}
+.bkg-white{background-color:#fff;}
+.bkg-green{background-color:#00CF98;}
 .wrapper{width:100%;}
 .no-padding{padding-right:0;padding-left:0;}
 
