@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-import { Person } from 'blockstack-profiles'
+import { Person } from 'blockstack'
 
 import Image from './Image'
 import SocialAccountItem from './SocialAccountItem'

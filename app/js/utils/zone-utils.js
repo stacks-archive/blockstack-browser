@@ -1,4 +1,4 @@
-import { Person } from 'blockstack-profiles'
+import { Person } from 'blockstack'
 import { parseZoneFile, makeZoneFile } from 'blockstack-zones'
 import { getProfileFromTokens } from './profile-utils'
 

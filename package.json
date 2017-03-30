@@ -120,8 +120,6 @@
     "blockstack": "^0.2.22",
     "blockstack-auth": "^0.2.4",
     "blockstack-keychains": "0.0.8",
-    "blockstack-profiles": "^0.3.6",
-    "blockstack-proofs": "^0.3.0",
     "blockstack-zones": "^0.1.0",
     "body-parser": "^1.16.1",
     "bootstrap": "https://github.com/blockstack/blockstack-bootstrap.git",
