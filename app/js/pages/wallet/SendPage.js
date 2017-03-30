@@ -177,13 +177,13 @@ class SendPage extends Component {
         <p>Send your funds to another Bitcoin wallet.</p>
         <form onSubmit={this.withdrawBitcoinFromCoreWallet} method='post'>
         <InputGroup data={this.state} onChange={this.onValueChange}
-          name="recipientAddress" label="Recipient address"
-          placeholder="Recipient address" required={true}/>
+          name="recipientAddress" label="To"
+          placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ" required={true}/>
         <InputGroup data={this.state} onChange={this.onValueChange}
           name="password" label="Password"
           placeholder="Password" type="password" required={true}/>
         <div className="container m-t-40">
-          <button className="btn btn-primary" type="submit">Send Money</button>
+          <button className="btn btn-wallet" type="submit">Send Money</button>
         </div>
         </form>
       </div>
