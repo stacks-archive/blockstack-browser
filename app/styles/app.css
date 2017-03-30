@@ -348,7 +348,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 
 /* Wallet App */
 .wallet-container{margin-top:40px;}
-.wallet-content{background-color:#fff;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;}
+.wallet-content{background-color:#fff;padding:35px 50px 50px 50px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;}
 .balance{padding-right:15px;padding-left:15px;}
 .item-sidebar-wallet{font-family:'Lato',sans-serif;font-size:0.9375rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;text-transform:capitalize!important;text-align:center!important;}
 a.list-group-item.list-group-item-sidebar.item-sidebar-wallet:hover,a.list-group-item.list-group-item-sidebar.item-sidebar-wallet.active:hover,a.list-group-item.list-group-item-sidebar.item-sidebar-wallet:focus{background-color:rgba(255,255,255,0.15);}
@@ -403,7 +403,6 @@ a.list-group-item.list-group-item-sidebar.item-sidebar-wallet.active{color:#fff;
 	.app-box-wrap{width:190px;padding:0;}
 	.app-box img{width:152px;-webkit-box-shadow:0px 0px 80px 0px rgba(44,150,255,1);-moz-box-shadow:0px 0px 80px 0px rgba(44,150,255,1);box-shadow:0px 0px 80px 0px rgba(44,150,255,1);-moz-border-radius:30px;-webkit-border-radius:30px;border-radius:30px;}
 	.wallet-container{max-width:900px;}
-	.wallet-sidebar{padding:0;}
 	.wallet-content{padding:35px 50px 50px 50px;}
 }
 
