@@ -53,8 +53,6 @@ class Balance extends Component {
     const coreWalletBalance = this.props.coreWalletBalance
     return (
       <div className="balance">
-        <label>Balance:</label>
-        &nbsp;
         { coreWalletBalance != null ? coreWalletBalance : 0 }&nbsp;
         <label>btc</label>
       </div>

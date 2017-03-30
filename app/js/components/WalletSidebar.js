@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
+import { Balance } from '../components/index'
+
 class WalletSidebar extends Component {
   static propTypes = {
     activeTab: PropTypes.string
@@ -19,6 +21,7 @@ class WalletSidebar extends Component {
 
     return (
       <div className="list-group">
+        <Balance />
         {tabs.map((tab, index) => {
           let className = 'list-group-item list-group-item-sidebar'
           if (tab.isActive) {

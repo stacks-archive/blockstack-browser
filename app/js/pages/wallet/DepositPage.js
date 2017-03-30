@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import { AccountSidebar, Balance, PageHeader } from '../../components/index'
+import { AccountSidebar, PageHeader } from '../../components/index'
 import { AccountActions }                      from '../../store/account'
 
 function mapStateToProps(state) {
@@ -49,7 +49,6 @@ class DepositPage extends Component {
   render() {
     return (
       <div>
-        <Balance />
         <p><i>
           Send at least <strong>0.01 bitcoins</strong> to the address below to register a username.<br/>
           All username registrations use funds from your wallet.

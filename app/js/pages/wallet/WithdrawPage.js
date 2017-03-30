@@ -9,7 +9,7 @@ import {
 } from '../../utils'
 
 import {
-  Alert, InputGroup, AccountSidebar, Balance, PageHeader
+  Alert, InputGroup, AccountSidebar, PageHeader
 } from '../../components/index'
 
 import { ECPair, ECKey, TransactionBuilder } from 'bitcoinjs-lib'
@@ -174,7 +174,6 @@ class WithdrawPage extends Component {
             <Alert key={index} message={alert.message} status={alert.status} />
           )
         })}
-        <Balance />
         <p>Send your funds to another Bitcoin wallet.</p>
         <form onSubmit={this.withdrawBitcoinFromCoreWallet} method='post'>
         <InputGroup data={this.state} onChange={this.onValueChange}
