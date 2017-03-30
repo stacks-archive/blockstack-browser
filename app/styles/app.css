@@ -349,7 +349,9 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 /* Wallet App */
 .wallet-container{margin-top:40px;}
 .wallet-content{background-color:#fff;padding:35px 50px 50px 50px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;}
-.balance{padding-right:15px;padding-left:15px;}
+.balance{margin-bottom:15px;}
+.balance-main{font-family:'Source Code Pro',monospace;font-size:32px;font-weight:300;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
+.balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:300;color:#080809;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
 .item-sidebar-wallet{font-family:'Lato',sans-serif;font-size:0.9375rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;text-transform:capitalize!important;text-align:center!important;}
 a.list-group-item.list-group-item-sidebar.item-sidebar-wallet:hover,a.list-group-item.list-group-item-sidebar.item-sidebar-wallet.active:hover,a.list-group-item.list-group-item-sidebar.item-sidebar-wallet:focus{background-color:rgba(255,255,255,0.15);}
 a.list-group-item.list-group-item-sidebar.item-sidebar-wallet.active:visited,a.list-group-item.list-group-item-sidebar.item-sidebar-wallet.active:focus{background-color:transparent;background-image:none;}
