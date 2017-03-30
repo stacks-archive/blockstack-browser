@@ -120,7 +120,6 @@
     "blockstack": "^0.2.22",
     "blockstack-auth": "^0.2.4",
     "blockstack-keychains": "0.0.8",
-    "blockstack-zones": "^0.1.0",
     "body-parser": "^1.16.1",
     "bootstrap": "https://github.com/blockstack/blockstack-bootstrap.git",
     "dropbox": "^2.5.0",
@@ -157,6 +156,7 @@
     "redux-promise": "^0.5.1",
     "redux-thunk": "^2.1.0",
     "reflux": "^5.0.3",
-    "triplesec": "^3.0.25"
+    "triplesec": "^3.0.25",
+    "zone-file": "^0.2.2"
   }
 }

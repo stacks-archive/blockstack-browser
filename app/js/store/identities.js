@@ -1,5 +1,4 @@
-import { Person, validateProofs } from 'blockstack'
-import { parseZoneFile } from 'blockstack-zones'
+import { parseZoneFile, Person, validateProofs } from 'blockstack'
 import {
   isNameAvailable, getNamePrices,
   makeZoneFileForHostedProfile, resolveZoneFileToProfile,

@@ -1,6 +1,6 @@
-import { Person } from 'blockstack'
-import { parseZoneFile, makeZoneFile } from 'blockstack-zones'
+import { makeZoneFile, Person } from 'blockstack'
 import { getProfileFromTokens } from './profile-utils'
+import { parseZoneFile } from 'zone-file'
 
 export function makeZoneFileForHostedProfile(origin, tokenFileUrl) {
   if (tokenFileUrl.indexOf('://') < 0) {
