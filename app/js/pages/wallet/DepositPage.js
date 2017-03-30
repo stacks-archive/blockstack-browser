@@ -51,8 +51,8 @@ class DepositPage extends Component {
       <div>
         <Balance />
         <p><i>
-          Note: All identity registrations require funds from your account.
-          To fund your account, send bitcoins to the address below.
+          Send at least <strong>0.1 bitcoins</strong> to the address below to register a username.<br/>
+          All username registrations use funds from your wallet.
         </i></p>
 
         { this.state.coreWalletAddress ?
