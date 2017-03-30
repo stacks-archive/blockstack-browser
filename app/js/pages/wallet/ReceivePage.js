@@ -18,7 +18,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(AccountActions, dispatch)
 }
 
-class DepositPage extends Component {
+class ReceivePage extends Component {
   static propTypes = {
     addresses: PropTypes.array.isRequired,
     coreWalletAddress: PropTypes.string,
@@ -73,4 +73,4 @@ class DepositPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepositPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ReceivePage)

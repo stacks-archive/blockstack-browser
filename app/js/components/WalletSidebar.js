@@ -10,7 +10,7 @@ class WalletSidebar extends Component {
 
   render() {
     let tabs = [
-      { url: '/wallet/deposit', label: 'deposit', isActive: false },
+      { url: '/wallet/receive', label: 'receive', isActive: false },
       { url: '/wallet/withdraw', label: 'withdraw', isActive: false }
     ]
     tabs.map((tab) => {

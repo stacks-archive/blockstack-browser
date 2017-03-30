@@ -25,7 +25,7 @@ import RestoreAccountPage from './pages/account/RestoreAccountPage'
 import ApiSettingsPage       from './pages/account/ApiSettingsPage'
 
 import WalletApp          from './pages/wallet/WalletApp'
-import DepositPage        from './pages/wallet/DepositPage'
+import ReceivePage        from './pages/wallet/ReceivePage'
 import WithdrawPage       from './pages/wallet/WithdrawPage'
 
 import StorageApp          from './pages/storage/StorageApp'
@@ -66,7 +66,7 @@ export default (
     </Route>
 
     <Route path="wallet" component={WalletApp}>
-        <Route path="deposit"     component={DepositPage} />
+        <Route path="receive"     component={ReceivePage} />
         <Route path="withdraw"    component={WithdrawPage} />
     </Route>
 
