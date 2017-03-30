@@ -1,4 +1,4 @@
-import { PrivateKeychain, PublicKeychain, signToken, wrapToken } from 'blockstack'
+import { PrivateKeychain, PublicKeychain, signProfileToken, wrapProfileToken } from 'blockstack'
 import { decodeToken, TokenSigner, TokenVerifier } from 'jwt-js'
 
 import BigInteger from 'bigi'
@@ -100,8 +100,8 @@ export function signProfileForUpload(profile, keypair) {
   const privateKey = keypair.key,
         publicKey = keypair.keyID
 
-  const token = signToken(profile, privateKey, {publicKey: publicKey}),
-        tokenRecord = wrapToken(token),
+  const token = signProfileToken(profile, privateKey, {publicKey: publicKey}),
+        tokenRecord = wrapProfileToken(token),
         tokenRecords = [tokenRecord]
   return JSON.stringify(tokenRecords, null, 2)
 }
