@@ -269,7 +269,8 @@ input[type=radio]{margin-right:1rem;}
 .navbar{padding:0!important;}
 .navbar-brand{padding:0;}
 .navbar-brand img{width:48px;}
-.navbar-text-secondary{color:#949494;margin-top:-5px;}
+.navbar-text-secondary-profiles{color:#949494;margin-top:-5px;font-size:13px;}
+.navbar-text-secondary-wallet{color:rgba(255,255,255,0.9);margin-top:-5px;font-weight:300;font-size:13px;}
 
 /* 21. Cards */
 .profile-list-card{background-color:#fff;padding:35px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}

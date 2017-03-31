@@ -39,9 +39,9 @@ class WalletApp extends Component {
             <div className="navbar-collapse" id="navbarSupportedContent">
               <ul className="nav navbar-nav m-b-20">
                 <li className="navbar-text">
-                  Profiles
+                  Wallet
                 </li>
-                <li className="navbar-text navbar-text-secondary">
+                <li className="navbar-text navbar-text-secondary-wallet">
                   Utility
                 </li>
               </ul>
