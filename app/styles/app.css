@@ -255,7 +255,6 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 .btn-inline{margin-right:15px;}
 .btn-home-button{position:absolute;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:400;border-radius:6px;padding:3px 20px;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
 div.home-profiles a .btn-home-button{position:absolute;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
-div.home-wallet a .btn-home-button{position:absolute;color:rgba(255,255,255,0.85);top:15px;right:15px;background-color:rgba(255,255,255,0.15);-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);}
 
 /* 13. Forms */
 .form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;}
@@ -392,7 +391,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.sidebar-list .btn{margin-bottom:5px;}
 	.btn-home-button{position:absolute;top:0;left:0;right:auto;}
 	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
-	div.home-wallet a .btn-home-button{position:absolute;top:15px;left:15px;right:auto;}
 	.wallet-container{width:90%;max-width:initial;padding:0;}
 }
 
