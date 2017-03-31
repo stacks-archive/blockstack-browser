@@ -169,6 +169,9 @@ class SendPage extends Component {
   render() {
     return (
       <div>
+        <h1 className="h1-modern">
+            Send
+        </h1>
         { this.state.alerts.map(function(alert, index) {
           return (
             <Alert key={index} message={alert.message} status={alert.status} />

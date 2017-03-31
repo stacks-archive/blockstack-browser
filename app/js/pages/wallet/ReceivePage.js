@@ -49,6 +49,9 @@ class ReceivePage extends Component {
   render() {
     return (
       <div>
+        <h1 className="h1-modern">
+            Receive
+        </h1>
         <p><i>
           Send at least <strong>0.01 bitcoins</strong> to the address below to register a username.<br/>
           All username registrations use funds from your wallet.
