@@ -349,7 +349,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .balance{margin-bottom:15px;}
 .balance-main{font-family:'Source Code Pro',monospace;font-size:32px;font-weight:300;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
 .balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:300;color:#080809;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
-.list-group-item.item-sidebar-wallet{color:rgba(255,255,255,0.5);}
+.list-group-item.item-sidebar-wallet{color:rgba(255,255,255,0.5);font-weight:300;}
 .item-sidebar-wallet.active{color:#fff;}
 .item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{font-family:'Source Code Pro',monospace;line-height:2rem;border:none;background-color:transparent;text-align:center;padding-top:0.8125rem;padding-bottom:0.8125rem;padding-left:4.188rem;padding-right:4.188rem;}
 .list-group-item.item-sidebar-wallet:hover,.list-group-item.item-sidebar-wallet:focus{color:#fff;background-color:transparent;}
