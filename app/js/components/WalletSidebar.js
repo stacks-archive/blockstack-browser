@@ -23,7 +23,7 @@ class WalletSidebar extends Component {
       <div className="list-group">
         <Balance />
         {tabs.map((tab, index) => {
-          let className = 'list-group-item list-group-item-sidebar item-sidebar-wallet'
+          let className = 'list-group-item item-sidebar-wallet'
           if (tab.isActive) {
             className += ' active'
           }

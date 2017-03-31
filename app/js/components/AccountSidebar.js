@@ -23,7 +23,7 @@ class AccountSidebar extends Component {
     return (
       <div className="list-group">
         {tabs.map((tab, index) => {
-          let className = 'list-group-item list-group-item-sidebar'
+          let className = 'list-group-item item-sidebar-account'
           if (tab.isActive) {
             className += ' active'
           }

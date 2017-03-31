@@ -34,13 +34,9 @@ class StorageApp extends Component {
           <StorageSideBar activeTab={activeTabUrl} />
         </div>
         <div className="storage-content-wrap">
-          <div className="home-wallet">
-          </div>
           <div className="vertical-split-content">
-            <div className="row">
-              <div className="col-md-9">
-                {this.props.children}
-              </div>
+            <div col-md-12>
+              {this.props.children}
             </div>
           </div>
         </div>
