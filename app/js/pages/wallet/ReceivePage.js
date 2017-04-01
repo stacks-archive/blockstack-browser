@@ -60,7 +60,7 @@ class ReceivePage extends Component {
         { this.state.coreWalletAddress ?
         <div>
           <h5>Send Bitcoins to this address</h5>
-          <div className="highlight">
+          <div className="highlight highlight-wallet">
             <pre>
               <code>{this.state.coreWalletAddress}</code>
             </pre>

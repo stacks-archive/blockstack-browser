@@ -181,7 +181,7 @@ class SendPage extends Component {
         <form onSubmit={this.withdrawBitcoinFromCoreWallet} method='post'>
         <InputGroup data={this.state} onChange={this.onValueChange}
           name="recipientAddress" label="To"
-          placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ" required={true}/>
+          placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ" className="wallet-form" required={true}/>
         <InputGroup data={this.state} onChange={this.onValueChange}
           name="password" label="Password"
           placeholder="Password" type="password" required={true}/>

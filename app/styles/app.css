@@ -13,11 +13,6 @@ body{font-family:'Lato',sans-serif;font-size:14px;background-color:rgba(250,250,
 .wrapper{width:100%;}
 .no-padding{padding-right:0;padding-left:0;}
 
-/* Highlight */
-.highlight{margin:0rem 0rem 1rem 0rem;padding:1rem 1rem 1rem 1rem;background-color:#eee;}
-.highlight pre{margin-top:0;margin-bottom:0;padding:0;border:0;background-color:transparent;}
-.capitalize{text-transform:capitalize;}
-
 /* (Formerly Profile.css */
 
 /* unknown styles //////////////////////////////////////// */
@@ -318,6 +313,9 @@ div.pro-avatar img{max-width:58px;}
 div.app-text-container > h3{color:#fff;font-weight:300;font-size:0.8125rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:1.25rem;}
 .sidebar-list{margin-bottom:20px;}
 .sidebar-list .btn{margin-bottom:5px;}
+.highlight{margin:0rem 0rem 1rem 0rem;padding:1rem;background-color:#eee;}
+.highlight pre{margin-top:0;margin-bottom:0;padding:0;border:0;background-color:transparent;}
+.capitalize{text-transform:capitalize;}
 
 /* Modal */
 div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:rgba(0,0,0,0.5)!important;display:flex;align-items:center;justify-content:center;}
@@ -355,6 +353,39 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .list-group-item.item-sidebar-wallet:hover,.list-group-item.item-sidebar-wallet:focus{color:#fff;background-color:transparent;}
 .list-group-item.item-sidebar-wallet:hover:after{width:90%!important;background:#fff!important;margin-left:5%;}
 .list-group-item.item-sidebar-wallet:after{content:'';display:block;padding-left:45px;height:1px;width:0;background:transparent;transition:width .3s ease,background-color .3s ease;}
+.highlight-wallet{
+	font-family: 'Source Code Pro', monospace;
+	color: #fff;
+	font-weight: 400;
+	line-height: 1.75rem;
+	border: 1px solid #00CF98;
+	background-color: #00CF98;
+	padding: 0.75rem 2.5rem;
+	-moz-border-radius: 4px !important;
+	-webkit-border-radius: 4px !important;
+	border-radius: 4px !important;
+}
+.highlight-wallet > pre{
+	font-size: 0.8125rem;
+	color:#fff!important;
+	text-align: center;
+}
+
+
+.form-control {
+	font-size: 0.875rem;
+	font-weight: 400;
+	line-height: 28px;
+	color: #949494;
+	padding: 0.875rem 1.375rem;
+	border-radius: 0;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none;
+}
 
 
 
