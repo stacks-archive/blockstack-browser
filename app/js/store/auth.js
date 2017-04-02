@@ -5,7 +5,6 @@ const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING',
       APP_MANIFEST_LOADED = 'APP_MANIFEST_LOADED'
 
 export const AuthActions = {
-  resetAuthRequest: resetAuthRequest,
   loadAppManifest: loadAppManifest
 }
 
