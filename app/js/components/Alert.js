@@ -33,11 +33,12 @@ class Alert extends Component {
             <span aria-hidden="true">&times;</span>
           </button>
           { this.props.url ?
+
             <Link to={this.props.url} className="alert-link">
-              {this.props.message}
+              <span dangerouslySetInnerHTML={{__html: this.props.message}}></span>
             </Link>
             :
-            <span>{this.props.message}</span>
+            <span dangerouslySetInnerHTML={{__html: this.props.message}}></span>
           }
         </div>
         : null }
