@@ -11,8 +11,8 @@ function mapStateToProps(state) {
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     utxoUrl: state.settings.api.utxoUrl,
     addressBalanceUrl: state.settings.api.addressBalanceUrl,
-    coreWalletBalance: state.account.coreWalletBalance,
-    coreWalletAddress: state.account.coreWalletAddress
+    coreWalletBalance: state.account.coreWallet.balance,
+    coreWalletAddress: state.account.coreWallet.address
   }
 }
 

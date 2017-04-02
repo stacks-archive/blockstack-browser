@@ -27,8 +27,8 @@ function mapStateToProps(state) {
     identityKeypairs: state.account.identityAccount.keypairs,
     registration: state.identities.registration,
     addressBalanceUrl: state.settings.api.addressBalanceUrl,
-    coreWalletBalance: state.account.coreWalletBalance,
-    coreWalletAddress: state.account.coreWalletAddress
+    coreWalletBalance: state.account.coreWallet.balance,
+    coreWalletAddress: state.account.coreWallet.address
   }
 }
 

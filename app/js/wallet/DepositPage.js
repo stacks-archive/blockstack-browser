@@ -9,7 +9,7 @@ import { AccountActions } from '../store/account'
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
-    coreWalletAddress: state.account.coreWalletAddress,
+    coreWalletAddress: state.account.coreWallet.address,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
   }
 }

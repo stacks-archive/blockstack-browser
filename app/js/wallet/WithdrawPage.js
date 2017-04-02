@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+
+import { AccountActions } from '../store/account'
+
 import { PublicKeychain } from 'blockstack'
 
 import {
@@ -22,24 +25,40 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch)
+  return bindActionCreators(Object.assign({}, AccountActions), dispatch)
 }
 
 class WithdrawPage extends Component {
   static propTypes = {
-
+    account: PropTypes.object.isRequired,
+    coreWalletWithdrawUrl: PropTypes.string.isRequired,
+    broadcastTransactionUrl: PropTypes.string.isRequired,
+    resetCoreWithdrawal: PropTypes.func.isRequired,
+    withdrawBitcoinFromCoreWallet: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
     this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
-    this.withdrawBitcoinFromCoreWallet = this.withdrawBitcoinFromCoreWallet.bind(this)
 
     this.state = {
       alerts: []
     }
     this.updateAlert = this.updateAlert.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
+    this.displayCoreWalletWithdrawalAlerts = this.displayCoreWalletWithdrawalAlerts.bind(this)
+  }
+
+  componentWillMount() {
+    this.props.resetCoreWithdrawal()
+  }
+
+  componentWillUnmount() {
+    this.props.resetCoreWithdrawal()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.displayCoreWalletWithdrawalAlerts(nextProps)
   }
 
   onValueChange(event) {
@@ -57,44 +76,13 @@ class WithdrawPage extends Component {
     })
   }
 
-  withdrawBitcoinFromCoreWallet(event) {
-    event.preventDefault()
 
-    const recipientAddress = this.state.recipientAddress
-
-    const requestHeaders = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      "Authorization": authorizationHeaderValue()
-    }
-
-    const requestBody = JSON.stringify({
-      address: recipientAddress,
-      min_confs: 0
-    })
-
-    fetch(this.props.coreWalletWithdrawUrl, {
-      method: 'POST',
-      headers: requestHeaders,
-      body: requestBody
-    })
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      if(responseJson["error"]) {
-        this.updateAlert('danger', responseJson["error"])
-      } else {
-        this.updateAlert('success', "Transaction sent!")
-      }
-    })
-    .catch((error) => {
-      console.warn(error)
-      this.updateAlert('danger', "There was a problem withdrawing your bitcoin.")
-    })
-  }
 
   withdrawBitcoin(event) {
     event.preventDefault()
+
+    this.props.withdrawBitcoinFromCoreWallet(this.props.coreWalletWithdrawUrl, this.state.recipientAddress)
+    return // temporary until we switch back to built in wallet
 
     const password = this.state.password
 
@@ -165,7 +153,27 @@ class WithdrawPage extends Component {
     })
   }
 
+  displayCoreWalletWithdrawalAlerts(props) {
+    if(props.account.hasOwnProperty('coreWallet')) {
+      const withdrawal = props.account.coreWallet.withdrawal
+
+      this.setState({
+        alerts: []
+      })
+
+      if(withdrawal.inProgress) {
+        this.updateAlert('success', `Preparing to send your balance to ${withdrawal.recipientAddress}...`)
+      } else if(withdrawal.error !== null) {
+        console.error(withdrawal.error)
+        this.updateAlert('danger', 'Withdrawal failed.')
+      } else if(withdrawal.success) {
+        this.updateAlert('success', `Your bitcoins have been sent to ${withdrawal.recipientAddress}`)
+      }
+    }
+  }
+
   render() {
+    const disabled = this.props.account.coreWallet.withdrawal.inProgress
     return (
       <div>
         { this.state.alerts.map(function(alert, index) {
@@ -175,7 +183,7 @@ class WithdrawPage extends Component {
         })}
         <Balance />
         <p>Send your funds to another Bitcoin wallet.</p>
-        <form onSubmit={this.withdrawBitcoinFromCoreWallet} method='post'>
+        <form onSubmit={this.withdrawBitcoin} method='post'>
         <InputGroup data={this.state} onChange={this.onValueChange}
           name="recipientAddress" label="Recipient address"
           placeholder="Recipient address" required={true}/>
@@ -183,7 +191,7 @@ class WithdrawPage extends Component {
           name="password" label="Password"
           placeholder="Password" type="password" required={true}/>
         <div className="container m-t-40">
-          <button className="btn btn-primary" type="submit">Send</button>
+          <button className="btn btn-primary" type="submit" disabled={disabled}>Send</button>
         </div>
         </form>
       </div>

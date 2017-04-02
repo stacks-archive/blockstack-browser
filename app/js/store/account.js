@@ -11,7 +11,11 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE',
       UPDATE_BALANCES = 'UPDATE_BALANCES',
       UPDATE_CORE_ADDRESS = 'UPDATE_CORE_ADDRESS',
-      UPDATE_CORE_BALANCE = 'UPDATE_CORE_BALANCE'
+      UPDATE_CORE_BALANCE = 'UPDATE_CORE_BALANCE',
+      RESET_CORE_BALANCE_WITHDRAWAL = 'RESET_CORE_BALANCE_WITHDRAWAL',
+      WITHDRAWING_CORE_BALANCE = 'WITHDRAWING_CORE_BALANCE',
+      WITHDRAW_CORE_BALANCE_SUCCESS = 'WITHDRAW_CORE_BALANCE_SUCCESS',
+      WITHDRAW_CORE_BALANCE_ERROR = 'WITHDRAW_CORE_BALANCE_ERROR'
 
 function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
   const identityPrivateKeychain = getIdentityPrivateKeychain(privateKeychain)
@@ -81,6 +85,32 @@ function updateBalances(balances) {
   }
 }
 
+function resetCoreBalanceWithdrawal() {
+  return {
+    type: RESET_CORE_BALANCE_WITHDRAWAL
+  }
+}
+
+function withdrawingCoreBalance(recipientAddress) {
+  return {
+    type: WITHDRAWING_CORE_BALANCE,
+    recipientAddress: recipientAddress
+  }
+}
+
+function withdrawCoreBalanceSuccess() {
+  return {
+    type: WITHDRAW_CORE_BALANCE_SUCCESS
+  }
+}
+
+function withdrawCoreBalanceError(error) {
+  return {
+    type: WITHDRAW_CORE_BALANCE_ERROR,
+    error: error
+  }
+}
+
 function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
   return dispatch => {
     const url = addressBalanceUrl.replace('{address}', coreWalletAddress)
@@ -88,9 +118,7 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
-      console.log(responseJson)
       const balance = responseJson.unconfirmedBalance + responseJson.balance
-      console.log(balance)
       dispatch(
         updateCoreWalletBalance(balance)
       )
@@ -109,6 +137,47 @@ function getCoreWalletAddress(walletPaymentAddressUrl) {
       dispatch(
         updateCoreWalletAddress(address)
       )
+    })
+  }
+}
+
+function resetCoreWithdrawal() {
+  return dispatch => {
+    dispatch(resetCoreBalanceWithdrawal())
+  }
+}
+
+function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress) {
+return dispatch => {
+    dispatch(withdrawingCoreBalance(recipientAddress))
+    const requestHeaders = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      "Authorization": authorizationHeaderValue()
+    }
+
+    const requestBody = JSON.stringify({
+      address: recipientAddress,
+      min_confs: 0
+    })
+
+    fetch(coreWalletWithdrawUrl, {
+      method: 'POST',
+      headers: requestHeaders,
+      body: requestBody
+    })
+    .then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      if(responseJson["error"]) {
+        dispatch(withdrawCoreBalanceError(responseJson["error"]))
+      } else {
+        dispatch(withdrawCoreBalanceSuccess())
+      }
+    })
+    .catch((error) => {
+      console.warn(error)
+      dispatch(withdrawCoreBalanceError(error))
     })
   }
 }
@@ -198,7 +267,9 @@ export const AccountActions = {
   deleteAccount: deleteAccount,
   refreshBalances: refreshBalances,
   getCoreWalletAddress: getCoreWalletAddress,
-  refreshCoreWalletBalance: refreshCoreWalletBalance
+  refreshCoreWalletBalance: refreshCoreWalletBalance,
+  resetCoreWithdrawal: resetCoreWithdrawal,
+  withdrawBitcoinFromCoreWallet: withdrawBitcoinFromCoreWallet
 }
 
 const initialState = {
@@ -213,8 +284,16 @@ const initialState = {
     balances: { total: 0.0 }
   },
   analyticsId: '',
-  coreWalletAddress: null,
-  coreWalletBalance: 0.0
+  coreWallet: {
+    address: null,
+    balance: 0.0,
+    withdrawal: {
+      inProgress: false,
+      error: null,
+      recipient: null,
+      success: false
+    }
+  }
 }
 
 export function AccountReducer(state=initialState, action) {
@@ -252,11 +331,15 @@ export function AccountReducer(state=initialState, action) {
       })
     case UPDATE_CORE_ADDRESS:
       return Object.assign({}, state, {
-        coreWalletAddress: action.coreWalletAddress
+        coreWallet: Object.assign({}, state.coreWallet, {
+          address: action.coreWalletAddress
+        })
       })
     case UPDATE_CORE_BALANCE:
       return Object.assign({}, state, {
-        coreWalletBalance: action.coreWalletBalance
+        coreWallet: Object.assign({}, state.coreWallet, {
+          balance: action.coreWalletBalance
+        })
       })
     case UPDATE_BACKUP_PHRASE:
       return Object.assign({}, state, {
@@ -297,6 +380,47 @@ export function AccountReducer(state=initialState, action) {
         balances: action.balances
       }
     })
+    case RESET_CORE_BALANCE_WITHDRAWAL:
+      return Object.assign({}, state, {
+        coreWallet: Object.assign({}, state.coreWallet, {
+          withdrawal: {
+            inProgress: false,
+            error: null,
+            success: false,
+            recipientAddress: null
+          }
+        })
+      })
+    case WITHDRAWING_CORE_BALANCE:
+      return Object.assign({}, state, {
+        coreWallet: Object.assign({}, state.coreWallet, {
+          withdrawal: {
+            inProgress: true,
+            error: null,
+            success: false,
+            recipientAddress: action.recipientAddress
+          }
+        })
+      })
+    case WITHDRAW_CORE_BALANCE_SUCCESS:
+      return Object.assign({}, state, {
+        coreWallet: Object.assign({}, state.coreWallet, {
+          withdrawal: Object.assign({}, state.coreWallet.withdrawal, {
+          inProgress: false,
+          success: true
+          })
+        })
+      })
+    case WITHDRAW_CORE_BALANCE_ERROR:
+      return Object.assign({}, state, {
+        coreWallet: Object.assign({}, state.coreWallet, {
+          withdrawal: Object.assign({}, state.coreWallet.withdrawal, {
+            inProgress: false,
+            success: false,
+            error: action.error
+          })
+        })
+      })
     default:
       return state
   }
