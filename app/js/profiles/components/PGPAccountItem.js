@@ -1,14 +1,21 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import { IdentityActions } from '../../store/identities'
 
 import { getWebAccountTypes } from '../../utils'
 
 function mapStateToProps(state) {
   return {
-    api: state.settings.api
+    api: state.settings.api,
+    pgpPublicKeys: state.identities.pgpPublicKeys
   }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(IdentityActions, dispatch)
 }
 
 class PGPAccountItem extends Component {
@@ -16,15 +23,16 @@ class PGPAccountItem extends Component {
     listItem: PropTypes.bool.isRequired,
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
-    contentUrl: PropTypes.string
+    contentUrl: PropTypes.string,
+    loadPGPPublicKey: PropTypes.func.isRequired,
+    pgpPublicKeys: PropTypes.object
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      modalIsOpen: false,
-      publicKey: ''
+      modalIsOpen: false
     }
 
     this.loadPublicKey = this.loadPublicKey.bind(this)
@@ -35,10 +43,6 @@ class PGPAccountItem extends Component {
   }
 
   componentWillMount() {
-    this.loadPublicKey()
-  }
-
-  componentWillReceiveProps() {
     this.loadPublicKey()
   }
 
@@ -57,16 +61,7 @@ class PGPAccountItem extends Component {
   loadPublicKey() {
     if (this.props.contentUrl) {
       const contentUrl = this.props.contentUrl
-      proxyFetch(contentUrl)
-        .then(response => response.text())
-        .then(responseText => {
-          this.setState({
-            publicKey: responseText
-          })
-        })
-        .catch((e) => {
-          console.log(e.stack)
-        })
+      this.props.loadPGPPublicKey(contentUrl, this.props.identifier)
     }
   }
 
@@ -88,7 +83,24 @@ class PGPAccountItem extends Component {
   }
 
   render() {
+    const identifier = this.props.identifier
     const webAccountTypes = getWebAccountTypes(this.props.api)
+    const pgpPublicKeys = this.props.pgpPublicKeys
+    let loading = false
+    let error = false
+    let key = null
+
+
+    if(pgpPublicKeys && pgpPublicKeys.hasOwnProperty(identifier)) {
+      const publicKey = pgpPublicKeys[identifier]
+      if(publicKey.loading)
+        loading = true
+      if(publicKey.error)
+        error = publicKey.error
+      if(publicKey.key)
+        key = publicKey.key
+    }
+
     if (this.props.listItem === true) {
       return (
         <li>
@@ -100,10 +112,26 @@ class PGPAccountItem extends Component {
             className="container-fluid react-modal-pgp">
             <button onClick={this.closeModal}>close</button>
             <h2>PGP Key</h2>
-            <p>Fingerprint: {this.props.identifier}</p>
+            <p>Fingerprint: {identifier}</p>
+            <div> { loading
+              ?
+              <textarea className="form-control" readOnly="true" rows="10"
+                value="Loading...">
+              </textarea>
+              :
+              <div>
+              { error ?
+                <textarea className="form-control" readOnly="true" rows="10"
+                  value="Problem loading key.">
+                </textarea>
+                :
             <textarea className="form-control" readOnly="true" rows="10"
-              value={this.state.publicKey}>
+              value={key}>
             </textarea>
+            }
+              </div>
+            }
+            </div>
           </Modal>
           <a href="#" onClick={this.openModal} data-toggle="tooltip"
             title={webAccountTypes[this.props.service].label}>
@@ -118,7 +146,7 @@ class PGPAccountItem extends Component {
             </span>
             }
             <span className="app-account-identifier">
-              {this.getIdentifier()}
+              {identifier}
             </span>
           </a>
         </li>
@@ -134,4 +162,4 @@ class PGPAccountItem extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(PGPAccountItem)
+export default connect(mapStateToProps, mapDispatchToProps)(PGPAccountItem)
