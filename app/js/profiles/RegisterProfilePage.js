@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
+import { AccountActions } from '../store/account'
 import { IdentityActions } from '../store/identities'
 
 import { getNamePrices, isNameAvailable,
@@ -171,7 +172,7 @@ class RegisterPage extends Component {
   }
 
   displayZeroBalanceAlert() {
-    this.updateAlert('danger', 'You need to deposit bitcoin before you can register a username. Click here to go to your wallet.', WALLET_URL)
+    this.updateAlert('danger', `You need to deposit at least 0.01 bitcoins before you can register a username.<br> Click here to go to your wallet or send bitcoins directly to ${this.props.coreWalletAddress}`, WALLET_URL)
   }
 
   onChange(event) {
