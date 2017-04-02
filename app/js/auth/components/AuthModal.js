@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { AuthActions } from '../../store/auth'
 import { Link } from 'react-router'
 import queryString from 'query-string'
 import { decodeToken } from 'jsontokens'
@@ -14,12 +15,15 @@ import Image from '../../components/Image'
 function mapStateToProps(state) {
   return {
     localIdentities: state.identities.localIdentities,
-    identityKeypairs: state.account.identityAccount.keypairs
+    identityKeypairs: state.account.identityAccount.keypairs,
+    appManifest: state.auth.appManifest,
+    appManifestLoading: state.auth.appManifestLoading,
+    appManifestLoadingError: state.auth.appManifestLoadingError
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch)
+  return bindActionCreators(AuthActions, dispatch)
 }
 
 class AuthModal extends Component {
@@ -28,6 +32,7 @@ class AuthModal extends Component {
   }
 
   static propTypes = {
+    loadAppManifest: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -35,7 +40,6 @@ class AuthModal extends Component {
 
     this.state = {
       authRequest: null,
-      appManifest: null
     }
 
     this.login = this.login.bind(this)
@@ -44,14 +48,10 @@ class AuthModal extends Component {
 
   componentWillMount() {
     const authRequest = getAuthRequestFromURL()
-    fetchAppManifest(authRequest).then(appManifest => {
-      this.setState({
-        authRequest: authRequest,
-        appManifest: appManifest
-      })
-    }).catch((e) => {
-      console.log(e.stack)
+    this.setState({
+        authRequest: authRequest
     })
+    this.props.loadAppManifest(authRequest)
   }
 
   closeModal() {
@@ -70,7 +70,9 @@ class AuthModal extends Component {
   }
 
   render() {
-    const appManifest = this.state.appManifest
+    const appManifest = this.props.appManifest
+    const appManifestLoading = this.props.appManifestLoading
+    const appManifestLoadingError = this.props.appManifestLoadingError
 
     return (
       <div className="">
@@ -82,7 +84,21 @@ class AuthModal extends Component {
           style={{overlay: {zIndex: 10}}}
           className="container-fluid">
           <h3>Sign In Request</h3>
-          { appManifest ?
+          { appManifestLoading ?
+            <div>
+               <p>
+                 Loading app details...
+               </p>
+             </div>
+            :
+            <div>
+          { appManifest === null ?
+            <div>
+               <p>
+                 Invalid Sign In Request
+               </p>
+             </div>
+            :
           <div>
             <p>
               The app "{appManifest.name}" wants to access your basic info
@@ -103,19 +119,21 @@ class AuthModal extends Component {
                   Approve
                 </button>
                 <Link to="/" className="btn btn-outline-primary btn-block">
-                  Deny
-                </Link>
+                 Deny
+               </Link>
               </div>
             </div>
             :
             <div>
               <p>
-                You must have created a profile in order to log in.
+                You need to <Link to="/profiles/i/register">create a profile</Link> in order to log in.
               </p>
             </div>
             }
           </div>
-          : null }
+        }
+        </div>
+           }
         </Modal>
       </div>
     )
