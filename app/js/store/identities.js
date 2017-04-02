@@ -1,12 +1,15 @@
-import { makeProfileZoneFile, parseZoneFile, Person, validateProofs } from 'blockstack'
+import {
+  makeProfileZoneFile, parseZoneFile,
+  Person, validateProofs
+} from 'blockstack'
+
 import {
   isNameAvailable, getNamePrices,
   resolveZoneFileToProfile,
   signProfileForUpload, authorizationHeaderValue
 } from '../utils/index'
-import {
-  uploadProfile
-} from '../utils/storage/index'
+
+import { uploadProfile } from '../storage/utils/index'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',

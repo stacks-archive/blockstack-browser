@@ -27,10 +27,6 @@ export {
 } from './search-utils'
 
 export {
-  uploadPhoto, uploadProfile
-} from './storage/index'
-
-export {
   encrypt,
   decrypt
 } from './encryption-utils'

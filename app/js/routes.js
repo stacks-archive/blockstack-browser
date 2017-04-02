@@ -3,38 +3,36 @@
 import React                        from 'react'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
-import App                from './App'
+import App                  from './App'
+import DashboardPage        from './DashboardPage'
 
-import DashboardPage      from './pages/DashboardPage'
+import ProfilesApp          from './profiles/ProfilesApp'
+import AllProfilesPage      from './profiles/AllProfilesPage'
+import ViewProfilePage      from './profiles/ViewProfilePage'
+import EditProfilePage      from './profiles/EditProfilePage'
+import RegisterProfilePage  from './profiles/RegisterProfilePage'
+import ImportProfilePage    from './profiles/ImportProfilePage'
+import ExportProfilePage    from './profiles/ExportProfilePage'
+import SearchProfilesPage   from './profiles/SearchProfilesPage'
 
-import ProfilesApp         from './pages/profiles/ProfilesApp'
-import AllProfilesPage     from './pages/profiles/AllProfilesPage'
-import ViewProfilePage     from './pages/profiles/ViewProfilePage'
-import EditProfilePage     from './pages/profiles/EditProfilePage'
-import RegisterProfilePage from './pages/profiles/RegisterProfilePage'
-import ImportProfilePage   from './pages/profiles/ImportProfilePage'
-import ExportProfilePage   from './pages/profiles/ExportProfilePage'
-import SearchProfilesPage  from './pages/profiles/SearchProfilesPage'
+import AccountApp           from './account/AccountApp'
+import DeleteAccountPage    from './account/DeleteAccountPage'
+import BackupAccountPage    from './account/BackupAccountPage'
+import ChangePasswordPage   from './account/ChangePasswordPage'
+import CreateAccountPage    from './account/CreateAccountPage'
+import RestoreAccountPage   from './account/RestoreAccountPage'
+import ApiSettingsPage      from './account/ApiSettingsPage'
 
-import AccountApp         from './pages/account/AccountApp'
-import DeleteAccountPage  from './pages/account/DeleteAccountPage'
-import BackupAccountPage  from './pages/account/BackupAccountPage'
-import ChangePasswordPage from './pages/account/ChangePasswordPage'
-import CreateAccountPage  from './pages/account/CreateAccountPage'
-import RestoreAccountPage from './pages/account/RestoreAccountPage'
-import ApiSettingsPage       from './pages/account/ApiSettingsPage'
+import WalletApp            from './wallet/WalletApp'
+import DepositPage          from './wallet/DepositPage'
+import WithdrawPage         from './wallet/WithdrawPage'
 
-import WalletApp          from './pages/wallet/WalletApp'
-import DepositPage        from './pages/wallet/DepositPage'
-import WithdrawPage       from './pages/wallet/WithdrawPage'
+import StorageApp           from './storage/StorageApp'
+import StorageProvidersPage from './storage/StorageProvidersPage'
 
-import StorageApp          from './pages/storage/StorageApp'
-import StorageProvidersPage from './pages/storage/StorageProvidersPage'
+import AuthPage             from './auth/AuthPage'
 
-
-import AuthPage           from './pages/auth/AuthPage'
-
-import NotFoundPage       from './pages/errors/NotFoundPage'
+import NotFoundPage         from './errors/NotFoundPage'
 
 export default (
 <Router history={browserHistory}>

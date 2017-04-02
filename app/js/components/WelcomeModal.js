@@ -3,11 +3,11 @@ import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Alert, InputGroup } from '../components/index'
+import Alert from './Alert'
+import InputGroup from './InputGroup'
 import { AccountActions } from '../store/account'
-import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from '../utils/storage/dropbox'
+import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from '../storage/utils/dropbox'
 import { isBackupPhraseValid } from '../utils'
-
 
 const Dropbox = require('dropbox')
 
