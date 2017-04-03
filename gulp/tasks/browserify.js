@@ -10,7 +10,6 @@ import rename       from 'gulp-rename';
 import watchify     from 'watchify';
 import browserify   from 'browserify';
 import babelify     from 'babelify';
-import uglify       from 'gulp-uglify';
 import browserSync  from 'browser-sync';
 import debowerify   from 'debowerify';
 import handleErrors from '../util/handle-errors';
@@ -51,7 +50,7 @@ function buildScript(file, watch) {
 
     return stream.on('error', handleErrors)
     .pipe(source(file))
-    .pipe(gulpif(global.isProd, streamify(uglify()))).pipe(gulpif(!global.isProd, spawn({
+    .pipe(gulpif(!global.isProd, spawn({
 		cmd: "sed",
 		args: [
 			"-e",
