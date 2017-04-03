@@ -3,16 +3,16 @@
 import React     from 'react';
 import TestUtils from 'react-addons-test-utils';
 
-import Header    from '../../app/js/components/Header';
+import StatusBar    from '../../app/js/components/StatusBar';
 
-describe('Component: Header', function() {
+describe('Component: StatusBar', function() {
 
   let rendered;
   let props;
 
   function renderComponent() {
     rendered = TestUtils.renderIntoDocument(
-      <Header {...props} />
+      <StatusBar {...props} />
     );
   }
 
@@ -22,7 +22,7 @@ describe('Component: Header', function() {
   });
 
   it('should render properly', function() {
-    assert.doesNotThrow(TestUtils.findRenderedDOMComponentWithTag.bind(null, rendered, 'header'));
+    assert.doesNotThrow(TestUtils.findRenderedDOMComponentWithClass.bind(null, rendered, 'status-bar'));
   });
 
 });
