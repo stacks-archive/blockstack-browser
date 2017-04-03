@@ -1,15 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 
-import Balance from './components/Balance'
 import { AccountActions } from '../store/account'
 
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
-    coreWalletAddress: state.account.coreWallet.address,
+    coreWalletAddress: state.account.coreWalletAddress,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
   }
 }
@@ -18,7 +16,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(AccountActions, dispatch)
 }
 
-class DepositPage extends Component {
+class ReceivePage extends Component {
   static propTypes = {
     addresses: PropTypes.array.isRequired,
     coreWalletAddress: PropTypes.string,
@@ -49,7 +47,9 @@ class DepositPage extends Component {
   render() {
     return (
       <div>
-        <Balance />
+        <h1 className="h1-modern">
+            Receive
+        </h1>
         <p><i>
           Send at least <strong>0.01 bitcoins</strong> to the address below to register a username.<br/>
           All username registrations use funds from your wallet.
@@ -58,7 +58,7 @@ class DepositPage extends Component {
         { this.state.coreWalletAddress ?
         <div>
           <h5>Send Bitcoins to this address</h5>
-          <div className="highlight">
+          <div className="highlight highlight-wallet">
             <pre>
               <code>{this.state.coreWalletAddress}</code>
             </pre>
@@ -74,4 +74,4 @@ class DepositPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DepositPage)
+export default connect(mapStateToProps, mapDispatchToProps)(ReceivePage)

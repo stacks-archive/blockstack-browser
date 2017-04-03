@@ -1,15 +1,17 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
+import Balance from './Balance'
+
 class WalletSidebar extends Component {
   static propTypes = {
-    activeTab: PropTypes.string
+    activeTab: PropTypes.string,
   }
 
   render() {
-    let tabs = [
-      { url: '/wallet/deposit', label: 'deposit', isActive: false },
-      { url: '/wallet/withdraw', label: 'withdraw', isActive: false }
+    const tabs = [
+      { url: '/wallet/receive', label: 'receive', isActive: false },
+      { url: '/wallet/send', label: 'send', isActive: false },
     ]
     tabs.map((tab) => {
       if (tab.url === this.props.activeTab) {
@@ -19,8 +21,9 @@ class WalletSidebar extends Component {
 
     return (
       <div className="list-group">
+        <Balance />
         {tabs.map((tab, index) => {
-          let className = 'list-group-item list-group-item-sidebar'
+          let className = 'list-group-item item-sidebar-wallet'
           if (tab.isActive) {
             className += ' active'
           }

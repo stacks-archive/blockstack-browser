@@ -29,19 +29,15 @@ class StorageApp extends Component {
     const activeTabUrl = `/storage/${childPath}`
 
     return (
-      <div className="body-inner-white">
+      <div className="body-inner bkg-white">
         <StatusBar />
         <div className="storage-sidebar-wrap">
           <StorageSideBar activeTab={activeTabUrl} />
         </div>
         <div className="storage-content-wrap">
-          <div className="home-wallet">
-          </div>
           <div className="vertical-split-content">
-            <div className="row">
-              <div className="col-md-9">
-                {this.props.children}
-              </div>
+            <div col-md-12>
+              {this.props.children}
             </div>
           </div>
         </div>

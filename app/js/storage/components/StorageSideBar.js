@@ -24,13 +24,13 @@ class StorageSideBar extends Component {
         </h1>
         <div className="list-group">
           {tabs.map((tab, index) => {
-            let className = 'list-group-item list-group-item-sidebar'
+            let className = 'list-group-item item-sidebar-storage'
             if (tab.isActive) {
               className += ' active'
             }
             if (tab.disabled) {
               return (
-                <Link key={index} className={className} disabled>
+                <Link key={index} className={className += ' disabled'} >
                   {tab.label}
                 </Link>
               )

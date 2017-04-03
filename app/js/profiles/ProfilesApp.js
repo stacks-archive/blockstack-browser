@@ -39,7 +39,7 @@ class ProfilesApp extends Component {
                 <li className="navbar-text">
                   Profiles
                 </li>
-                <li className="navbar-text navbar-text-secondary">
+                <li className="navbar-text navbar-text-secondary-profiles">
                   Utility
                 </li>
               </ul>

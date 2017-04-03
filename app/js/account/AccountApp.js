@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import AccountSidebar from './components/AccountSidebar'
 import PageHeader from '../components/PageHeader'
-import HomeButton from '../components/HomeButton'
+import StatusBar from '../components/StatusBar'
 
 function mapStateToProps(state) {
   return {
@@ -30,11 +30,9 @@ class AccountApp extends Component {
     const activeTabUrl = `/account/${childPath}`
 
     return (
-      <div className="body-inner-white">
-        <PageHeader title="Account" />
-        <div className="home-wallet">
-          <HomeButton />
-        </div>
+      <div className="body-inner bkg-white">
+          <StatusBar />
+          <PageHeader title="Account" />
         <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">

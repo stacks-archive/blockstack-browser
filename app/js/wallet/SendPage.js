@@ -4,17 +4,15 @@ import { connect } from 'react-redux'
 
 import { AccountActions } from '../store/account'
 
-import { PublicKeychain } from 'blockstack'
-
 import {
   broadcastTransaction, decryptPrivateKeychain, getNetworkFee,
-  getBitcoinPrivateKeychain, getUtxo, authorizationHeaderValue
+  getBitcoinPrivateKeychain, getUtxo,
 } from '../utils'
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import Balance from './components/Balance'
 
-import { ECPair, ECKey, TransactionBuilder } from 'bitcoinjs-lib'
+import { ECPair, TransactionBuilder } from 'bitcoinjs-lib'
 
 function mapStateToProps(state) {
   return {
@@ -28,7 +26,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions), dispatch)
 }
 
-class WithdrawPage extends Component {
+class SendPage extends Component {
   static propTypes = {
     account: PropTypes.object.isRequired,
     coreWalletWithdrawUrl: PropTypes.string.isRequired,
@@ -42,7 +40,7 @@ class WithdrawPage extends Component {
     this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
 
     this.state = {
-      alerts: []
+      alerts: [],
     }
     this.updateAlert = this.updateAlert.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
@@ -53,17 +51,17 @@ class WithdrawPage extends Component {
     this.props.resetCoreWithdrawal()
   }
 
-  componentWillUnmount() {
-    this.props.resetCoreWithdrawal()
-  }
-
   componentWillReceiveProps(nextProps) {
     this.displayCoreWalletWithdrawalAlerts(nextProps)
   }
 
+  componentWillUnmount() {
+    this.props.resetCoreWithdrawal()
+  }
+
   onValueChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
     })
   }
 
@@ -71,17 +69,16 @@ class WithdrawPage extends Component {
     this.setState({
       alerts: [{
         status: alertStatus,
-        message: alertMessage
-      }]
+        message: alertMessage,
+      }],
     })
   }
-
-
 
   withdrawBitcoin(event) {
     event.preventDefault()
 
-    this.props.withdrawBitcoinFromCoreWallet(this.props.coreWalletWithdrawUrl, this.state.recipientAddress)
+    this.props.withdrawBitcoinFromCoreWallet(
+      this.props.coreWalletWithdrawUrl, this.state.recipientAddress)
     return // temporary until we switch back to built in wallet
 
     const password = this.state.password
@@ -112,14 +109,13 @@ class WithdrawPage extends Component {
      const wrongFeeTransaction = clonedTx.build()
      const byteLength = wrongFeeTransaction.byteLength()
 
-
      getNetworkFee(byteLength).then((fee) => {
        const amountToSend = totalSatoshis - fee
 
        console.log(`Amount to send to ${recipientAddress}: ${amountToSend} Network fee: ${fee}`)
 
        // TODO: instead of 0 we should use dust amount
-       if(amountToSend <= 0) {
+       if (amountToSend <= 0) {
           this.updateAlert('danger', "There isn't enough bitcoin to pay the network fee.")
        } else {
          tx.addOutput(recipientAddress, amountToSend)
@@ -154,19 +150,19 @@ class WithdrawPage extends Component {
   }
 
   displayCoreWalletWithdrawalAlerts(props) {
-    if(props.account.hasOwnProperty('coreWallet')) {
+    if (props.account.hasOwnProperty('coreWallet')) {
       const withdrawal = props.account.coreWallet.withdrawal
 
       this.setState({
-        alerts: []
+        alerts: [],
       })
 
-      if(withdrawal.inProgress) {
+      if (withdrawal.inProgress) {
         this.updateAlert('success', `Preparing to send your balance to ${withdrawal.recipientAddress}...`)
-      } else if(withdrawal.error !== null) {
+      } else if (withdrawal.error !== null) {
         console.error(withdrawal.error)
         this.updateAlert('danger', 'Withdrawal failed.')
-      } else if(withdrawal.success) {
+      } else if (withdrawal.success) {
         this.updateAlert('success', `Your bitcoins have been sent to ${withdrawal.recipientAddress}`)
       }
     }
@@ -176,27 +172,31 @@ class WithdrawPage extends Component {
     const disabled = this.props.account.coreWallet.withdrawal.inProgress
     return (
       <div>
+        <h1 className="h1-modern">
+          Send
+        </h1>
         { this.state.alerts.map(function(alert, index) {
           return (
             <Alert key={index} message={alert.message} status={alert.status} />
           )
         })}
-        <Balance />
         <p>Send your funds to another Bitcoin wallet.</p>
         <form onSubmit={this.withdrawBitcoin} method='post'>
-        <InputGroup data={this.state} onChange={this.onValueChange}
-          name="recipientAddress" label="Recipient address"
-          placeholder="Recipient address" required={true}/>
-        <InputGroup data={this.state} onChange={this.onValueChange}
-          name="password" label="Password"
-          placeholder="Password" type="password" required={true}/>
-        <div className="container m-t-40">
-          <button className="btn btn-primary" type="submit" disabled={disabled}>Send</button>
-        </div>
+          <InputGroup data={this.state} onChange={this.onValueChange} name="recipientAddress"
+            label="To" placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ" className="wallet-form"
+            required={true}/>
+          <InputGroup data={this.state} onChange={this.onValueChange}
+            name="password" label="Password"
+            placeholder="Password" type="password" required={true}/>
+          <div className="container m-t-40">
+            <button className="btn btn-wallet" type="submit pull-right" disabled={disabled}>
+              Send
+            </button>
+          </div>
         </form>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WithdrawPage)
+export default connect(mapStateToProps, mapDispatchToProps)(SendPage)

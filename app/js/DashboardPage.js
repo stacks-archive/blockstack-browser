@@ -44,9 +44,9 @@ class DashboardPage extends Component {
               </div>
             </div>
             <div className="app-box-wrap">
-              <Link to="/wallet/deposit" className="app-box-container">
+              <Link to="/wallet/receive" className="app-box-container">
                 <div className="app-box">
-                  <img src="/images/app-icon-wallet-card@2x.png" />
+                  <img src="/images/app-icon-wallet-card-flat@2x.png" />
                 </div>
               </Link>
               <div className="app-text-container">
