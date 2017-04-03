@@ -33,7 +33,6 @@
     "boilerplate"
   ],
   "devDependencies": {
-    "appdmg": "^0.4.5",
     "asar": "^0.11.0",
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.4",
@@ -155,5 +154,8 @@
     "reflux": "^5.0.3",
     "triplesec": "^3.0.25",
     "zone-file": "^0.2.2"
+  },
+  "optionalDevDependencies": {
+    "appdmg": "^0.4.5"
   }
 }
