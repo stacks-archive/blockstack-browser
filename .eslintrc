@@ -28,7 +28,6 @@
     "no-param-reassign": 0,
     "no-else-return": 0,
     "no-console": 0,
-    "object-shorthand": [2, "consistent"],
     "prefer-const": 2,
     "new-cap": 0,
     "camelcase": 2,
