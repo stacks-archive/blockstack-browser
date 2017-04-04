@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.5.3</string>
+	<string>0.6.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -30,11 +30,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>26</string>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUScheduledCheckInterval</key>
-	<integer>3600</integer>
+	<string>28</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSMinimumSystemVersion</key>
@@ -47,7 +43,11 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
 	<key>SUFeedURL</key>
-	<string>https://blockstackupdatemac.appartisan.com/appcast.xml</string>
+	<string>https://updates.blockstack.org/appcast.xml</string>
+	<key>SUScheduledCheckInterval</key>
+	<integer>3600</integer>
 </dict>
 </plist>
