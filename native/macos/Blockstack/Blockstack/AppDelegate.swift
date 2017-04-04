@@ -105,9 +105,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "/profiles")
     }
     
+    func openStorageClick(sender: AnyObject?) {
+        NSLog("openStorageClick")
+        openPortal(path: "/storage/providers")
+    }
+    
     func openWalletClick(sender: AnyObject?) {
         NSLog("openWalletClick")
-        openPortal(path: "/wallet/deposit")
+        openPortal(path: "/wallet/receive")
     }
     
     func openAccountClick(sender: AnyObject?) {
@@ -141,6 +146,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         menu.addItem(withTitle: "Home", action: #selector(openPortalClick), keyEquivalent: "h")
         menu.addItem(withTitle: "Profiles", action: #selector(openProfilesClick), keyEquivalent: "p")
+        menu.addItem(withTitle: "Storage", action: #selector(openStorageClick), keyEquivalent: "s")
         menu.addItem(withTitle: "Wallet", action: #selector(openWalletClick), keyEquivalent: "w")
         menu.addItem(withTitle: "Account", action: #selector(openAccountClick), keyEquivalent: "a")
         menu.addItem(NSMenuItem.separator())
