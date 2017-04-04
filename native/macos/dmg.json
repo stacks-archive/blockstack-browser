@@ -1,0 +1,14 @@
+{
+  "title": "Blockstack",
+  "background": "dmg-assets/blockstack-dmg-background.png",
+  "window": {
+    "size": {
+      "width": 480,
+      "height": 300
+    }
+  },
+  "contents": [
+    { "x": 350, "y": 120, "type": "link", "path": "/Applications" },
+    { "x": 130, "y": 120, "type": "file", "path": "export/Blockstack.app" }
+  ]
+}

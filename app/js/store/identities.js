@@ -1,16 +1,15 @@
-import { Person } from 'blockstack-profiles'
-import { parseZoneFile } from 'blockstack-zones'
+import {
+  makeProfileZoneFile, parseZoneFile,
+  Person, validateProofs
+} from 'blockstack'
+
 import {
   isNameAvailable, getNamePrices,
-  makeZoneFileForHostedProfile, resolveZoneFileToProfile,
+  resolveZoneFileToProfile,
   signProfileForUpload, authorizationHeaderValue
 } from '../utils/index'
-import {
-  uploadProfile
-} from '../utils/storage/index'
-import {
-  validateProofs
-} from 'blockstack-proofs'
+
+import { uploadProfile } from '../storage/utils/index'
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
@@ -27,7 +26,10 @@ const UPDATE_CURRENT = 'UPDATE_CURRENT',
       PROFILE_UPLOAD_ERROR = 'PROFILE_UPLOAD_ERROR',
       REGISTRATION_SUBMITTING = 'REGISTRATION_SUBMITTING',
       REGISTRATION_SUBMITTED = 'REGISTRATION_SUBMITTED',
-      REGISTRATION_ERROR = 'REGISTRATION_ERROR'
+      REGISTRATION_ERROR = 'REGISTRATION_ERROR',
+      LOADING_PGP_KEY = 'LOADING_PGP_KEY',
+      LOADED_PGP_KEY = 'LOADED_PGP_KEY',
+      LOADING_PGP_KEY_ERROR = 'LOADING_PGP_KEY_ERROR'
 
 
 const DEFAULT_PROFILE = {
@@ -151,6 +153,29 @@ function registrationError(error) {
   }
 }
 
+function loadingPGPKey(identifier) {
+  return {
+    type: LOADING_PGP_KEY,
+    identifier: identifier
+  }
+}
+
+function loadingPGPKeyError(identifier, error) {
+  return {
+    type: LOADING_PGP_KEY_ERROR,
+    identifier: identifier,
+    error: error
+  }
+}
+
+function loadedPGPKey(identifier, key) {
+  return {
+    type: LOADED_PGP_KEY,
+    identifier: identifier,
+    key: key
+  }
+}
+
 function calculateLocalIdentities(localIdentities, namesOwned) {
   let remoteNamesDict = {},
       localNamesDict = {},
@@ -253,7 +278,7 @@ function registerName(api, domainName, recipientAddress, keypair) {
     uploadProfile(api, domainName, signedProfileTokenData, true).then((profileUrl) => {
 
       const tokenFileUrl = profileUrl
-      const zoneFile = makeZoneFileForHostedProfile(domainName, tokenFileUrl)
+      const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
 
       const requestHeaders = {
         'Accept': 'application/json',
@@ -368,6 +393,22 @@ function checkNameAvailabilityAndPrice(api, domainName) {
   }
 }
 
+function loadPGPPublicKey(contentUrl, identifier) {
+  console.log("loadPGPPublicKey")
+  return dispatch => {
+    dispatch(loadingPGPKey(identifier))
+    proxyFetch(contentUrl)
+      .then(response => response.text())
+      .then(publicKey => {
+        dispatch(loadedPGPKey(identifier, publicKey))
+      })
+      .catch((e) => {
+        console.error(e)
+        dispatch(loadingPGPKeyError(identifier, e))
+      })
+  }
+}
+
 export const IdentityActions = {
   updateCurrentIdentity: updateCurrentIdentity,
   createNewIdentity: createNewIdentity,
@@ -376,7 +417,8 @@ export const IdentityActions = {
   refreshIdentities: refreshIdentities,
   updateOwnedIdentities: updateOwnedIdentities,
   registerName: registerName,
-  checkNameAvailabilityAndPrice: checkNameAvailabilityAndPrice
+  checkNameAvailabilityAndPrice: checkNameAvailabilityAndPrice,
+  loadPGPPublicKey: loadPGPPublicKey
 }
 
 const initialState = {
@@ -390,7 +432,8 @@ const initialState = {
   registration: {
     lastNameEntered: null,
     names: {}
-  }
+  },
+  pgpPublicKeys: {}
 }
 
 export function IdentityReducer(state = initialState, action) {
@@ -555,6 +598,36 @@ export function IdentityReducer(state = initialState, action) {
           registrationSubmitting: false,
           error: action.error,
           preventRegistration: false
+        })
+      })
+    case LOADING_PGP_KEY:
+      return Object.assign({}, state, {
+        pgpPublicKeys: Object.assign({}, state.pgpPublicKeys, {
+          [action.identifier]: {
+            loading: true,
+            key: null,
+            error: null
+          }
+        })
+      })
+    case LOADED_PGP_KEY:
+      return Object.assign({}, state, {
+        pgpPublicKeys: Object.assign({}, state.pgpPublicKeys, {
+          [action.identifier]: {
+            loading: false,
+            key: action.key,
+            error: null
+          }
+        })
+      })
+    case LOADING_PGP_KEY_ERROR:
+      return Object.assign({}, state, {
+        pgpPublicKeys: Object.assign({}, state.pgpPublicKeys, {
+          [action.identifier]: {
+            loading: false,
+            key: null,
+            error: action.error
+          }
         })
       })
     default:

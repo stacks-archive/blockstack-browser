@@ -1,4 +1,5 @@
 import { CORE_API_PASSWORD } from './core-api-password'
+
 export function getNamesOwned(address, addressLookupUrl, callback) {
   const url = addressLookupUrl.replace('{address}', address)
   fetch(url)

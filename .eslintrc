@@ -1,4 +1,5 @@
 {
+  "extends": "airbnb",
   "parser": "babel-eslint",
   "plugins": [
     "react"
@@ -24,10 +25,13 @@
     "no-undef": 2,
     "no-unused-vars": 2,
     "no-var": 2,
+    "no-param-reassign": 0,
+    "no-else-return": 0,
+    "no-console": 0,
     "prefer-const": 2,
     "new-cap": 0,
     "camelcase": 2,
-    "semi": 2,
+    "semi": [2, "never"],
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,

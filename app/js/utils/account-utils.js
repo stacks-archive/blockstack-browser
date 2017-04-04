@@ -1,5 +1,5 @@
 import bip39 from 'bip39'
-import { PrivateKeychain } from 'blockstack-keychains'
+import { PrivateKeychain } from 'blockstack'
 import { decrypt } from './encryption-utils'
 
 const backupPhraseLength = 24

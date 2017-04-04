@@ -1,6 +1,6 @@
 {
   "name": "blockstack-portal",
-  "version": "0.5.2",
+  "version": "0.6.1",
   "author": "Blockstack Inc <admin@blockstack.com>",
   "description": "The Blockstack browser portal",
   "license": "MPL-2.0",
@@ -13,9 +13,10 @@
     "test": "NODE_ENV=test ./node_modules/.bin/gulp test",
     "web": "NODE_ENV=production ./node_modules/.bin/gulp prod",
     "mac": "NODE_ENV=production ./node_modules/.bin/gulp mac",
-    "dev-ui": "NODE_ENV=development ./node_modules/.bin/gulp dev",
-    "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy",
-    "dev": "concurrently --kill-others \"npm run dev-ui\" \"npm run dev-proxy\""
+    "mac-release": "NODE_ENV=production ./node_modules/.bin/gulp mac-release",
+    "dev": "NODE_ENV=development ./node_modules/.bin/gulp dev",
+    "dev-ui": "echo 'Please use dev instead of dev-ui'",
+    "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy"
   },
   "keywords": [
     "blockstack",
@@ -82,7 +83,6 @@
     "gulp-sourcemaps": "^1.9.1",
     "gulp-spawn": "^0.3.0",
     "gulp-streamify": "^1.0.2",
-    "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.6",
     "istanbul": "^0.4.0",
     "jsdom": "^9.2.0",
@@ -116,11 +116,6 @@
     "bip39": "^2.2.0",
     "bitcoinjs-lib": "https://github.com/shea256/bitcoinjs-lib.git",
     "blockstack": "^0.2.22",
-    "blockstack-auth": "^0.2.4",
-    "blockstack-keychains": "0.0.8",
-    "blockstack-profiles": "^0.3.6",
-    "blockstack-proofs": "^0.3.0",
-    "blockstack-zones": "^0.1.0",
     "body-parser": "^1.16.1",
     "bootstrap": "https://github.com/blockstack/blockstack-bootstrap.git",
     "dropbox": "^2.5.0",
@@ -157,6 +152,10 @@
     "redux-promise": "^0.5.1",
     "redux-thunk": "^2.1.0",
     "reflux": "^5.0.3",
-    "triplesec": "^3.0.25"
+    "triplesec": "^3.0.25",
+    "zone-file": "^0.2.2"
+  },
+  "optionalDevDependencies": {
+    "appdmg": "^0.4.5"
   }
 }

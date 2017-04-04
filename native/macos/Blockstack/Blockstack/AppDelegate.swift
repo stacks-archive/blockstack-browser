@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Sparkle
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -36,6 +37,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let portalProxyProcess = Process()
     let corsProxyProcess = Process()
     let coreProcess = Process()
+    
+    let sparkleUpdater = SUUpdater.init(for: Bundle.main)
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSLog("applicationDidFinishLaunching: \(blockstackDataURL())")
@@ -102,9 +105,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "/profiles")
     }
     
+    func openStorageClick(sender: AnyObject?) {
+        NSLog("openStorageClick")
+        openPortal(path: "/storage/providers")
+    }
+    
     func openWalletClick(sender: AnyObject?) {
         NSLog("openWalletClick")
-        openPortal(path: "/wallet/deposit")
+        openPortal(path: "/wallet/receive")
     }
     
     func openAccountClick(sender: AnyObject?) {
@@ -138,6 +146,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         menu.addItem(withTitle: "Home", action: #selector(openPortalClick), keyEquivalent: "h")
         menu.addItem(withTitle: "Profiles", action: #selector(openProfilesClick), keyEquivalent: "p")
+        menu.addItem(withTitle: "Storage", action: #selector(openStorageClick), keyEquivalent: "s")
         menu.addItem(withTitle: "Wallet", action: #selector(openWalletClick), keyEquivalent: "w")
         menu.addItem(withTitle: "Account", action: #selector(openAccountClick), keyEquivalent: "a")
         menu.addItem(NSMenuItem.separator())
@@ -159,6 +168,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             corePortMenuItem.isEnabled = false
             menu.addItem(corePortMenuItem)
             
+            if(isDevModeEnabled) {
+                menu.addItem(NSMenuItem.separator())
+                menu.addItem(withTitle: "Copy Core API password", action: #selector(copyAPIKeyClick), keyEquivalent: "")
+            }
+            
             menu.addItem(NSMenuItem.separator())
             
             let devModeStatusMenuItem = NSMenuItem()
@@ -177,13 +191,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             versionMenuItem.title = "Blockstack v\(version) (\(build))"
             versionMenuItem.isEnabled = false
             menu.addItem(versionMenuItem)
-            
+            menu.addItem(withTitle: "Check for updates...", action: #selector(checkForUpdatesClick), keyEquivalent: "u")
+
             menu.addItem(NSMenuItem.separator())
         }
         
         menu.addItem(withTitle: "Quit Blockstack", action: #selector(exitClick), keyEquivalent: "q")
         
         statusItem.popUpMenu(menu)
+    }
+    
+    func copyAPIKeyClick(sender: AnyObject?) {
+        NSLog("copyAPIKeyClick")
+        let pasteboard = NSPasteboard.general()
+        pasteboard.declareTypes([NSPasteboardTypeString], owner: nil)
+        pasteboard.setString(createOrRetrieveCoreWalletPassword(), forType: NSPasteboardTypeString)
     }
     
     func devModeClick(sender: AnyObject?) {
@@ -206,6 +228,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             NSLog("User decided to exit...")
             shutdown(terminate: true)
         }
+    }
+    
+    func checkForUpdatesClick(sender: AnyObject?) {
+        NSLog("checkForUpdatesClick")
+        sparkleUpdater?.checkForUpdates(nil)
     }
     
     func shutdown(terminate: Bool = true) {

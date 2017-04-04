@@ -1,32 +1,7 @@
-import { Person } from 'blockstack-profiles'
-import { parseZoneFile, makeZoneFile } from 'blockstack-zones'
+import { Person } from 'blockstack'
 import { getProfileFromTokens } from './profile-utils'
+import { parseZoneFile } from 'zone-file'
 
-export function makeZoneFileForHostedProfile(origin, tokenFileUrl) {
-  if (tokenFileUrl.indexOf('://') < 0) {
-    throw new Error('Invalid token file url')
-  }
-
-  let zoneFile = {
-    "$origin": origin,
-    "$ttl": 3600,
-    "uri": [
-      {
-        "name": "_http._tcp",
-        "priority": 10,
-        "weight": 1,
-        "target": tokenFileUrl
-      }
-    ]
-  }
-
-  let zoneFileTemplate = '{$origin}\n\
-{$ttl}\n\
-{uri}\n\
-'
-
-  return makeZoneFile(zoneFile, zoneFileTemplate)
-}
 
 export function getTokenFileUrlFromZoneFile(zoneFileJson) {
   if (!zoneFileJson.hasOwnProperty('uri')) {

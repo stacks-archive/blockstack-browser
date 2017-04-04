@@ -1,6 +1,4 @@
-import {
-  SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX
-} from '../utils/storage/index'
+import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../storage/utils/index'
 
 const UPDATE_API = 'UPDATE_API'
 
@@ -72,9 +70,11 @@ function setAPICredentials(api, email, name, company, callback) {
   }
 }
 
-function resetApi() {
+function resetApi(api) {
   return dispatch => {
-    dispatch(updateApi(DEFAULT_API))
+    dispatch(updateApi(Object.assign({}, DEFAULT_API, {
+      dropboxAccessToken: api.dropboxAccessToken
+    })))
   }
 }
 
