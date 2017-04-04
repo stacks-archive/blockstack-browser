@@ -58,8 +58,8 @@ class Balance extends Component {
           <label>&nbsp;btc</label>
         </div>
         <div className="balance-sml">
-          245.63
-          <label>&nbsp;USD</label>
+
+          <label>&nbsp;</label>
         </div>
       </div>
     )
