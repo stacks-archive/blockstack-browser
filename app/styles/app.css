@@ -347,32 +347,14 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .balance{margin-bottom:15px;}
 .balance-main{font-family:'Source Code Pro',monospace;font-size:32px;font-weight:300;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
 .balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:300;color:#080809;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
-
 .list-group-item.item-sidebar-wallet{color:rgba(255,255,255,0.5);font-weight:300;}
 .item-sidebar-wallet.active{color:#fff;}
-.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{font-family:'Source Code Pro',monospace;line-height:2rem;border:none;background-color:transparent;text-align:center;padding-top:0.8125rem;padding-bottom:0.8125rem;padding-left:4.188rem;padding-right:4.188rem;}
+.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{font-family:'Source Code Pro',monospace;line-height:2rem;border:none;background-color:transparent;text-align:center;padding-top:0.8125rem;padding-bottom:0.8125rem;padding-left:11.25rem;padding-right:11.25rem;}
 .list-group-item.item-sidebar-wallet:hover,.list-group-item.item-sidebar-wallet:focus{color:#fff;background-color:transparent;}
 .list-group-item.item-sidebar-wallet:hover:after{width:90%!important;background:#fff!important;margin-left:5%;}
 .list-group-item.item-sidebar-wallet:after{content:'';display:block;padding-left:45px;height:1px;width:0;background:transparent;transition:width .3s ease,background-color .3s ease;}
-.highlight-wallet{
-	font-family: 'Source Code Pro', monospace;
-	color: #fff;
-	font-weight: 400;
-	line-height: 1.75rem;
-	border: 1px solid #00CF98;
-	background-color: #00CF98;
-	padding: 0.75rem 2.5rem;
-	-moz-border-radius: 4px !important;
-	-webkit-border-radius: 4px !important;
-	border-radius: 4px !important;
-}
-.highlight-wallet > pre{
-	font-size: 0.8125rem;
-	color:#fff!important;
-	text-align: center;
-}
-
-
+.highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;font-weight:400;line-height:1.75rem;border:1px solid #00CF98;background-color:#00CF98;padding:0.75rem 2.5rem;-moz-border-radius:4px!important;-webkit-border-radius:4px!important;border-radius:4px!important;}
+.highlight-wallet > pre{font-size:0.8125rem;color:#fff!important;text-align:center;}
 .form-control {
 	font-size: 0.875rem;
 	font-weight: 400;
@@ -425,6 +407,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.btn-home-button{position:absolute;top:0;left:0;right:auto;}
 	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
 	.wallet-container{width:900px;padding:0;}
+	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
 }
 
 /* Medium devices (desktops, 975px to 992px) */
@@ -437,6 +420,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.app-box img{width:152px;-webkit-box-shadow:0px 0px 80px 0px rgba(44,150,255,1);-moz-box-shadow:0px 0px 80px 0px rgba(44,150,255,1);box-shadow:0px 0px 80px 0px rgba(44,150,255,1);-moz-border-radius:30px;-webkit-border-radius:30px;border-radius:30px;}
 	.wallet-container{max-width:950px;}
 	.wallet-content{padding:35px 50px 50px 50px;}
+	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:9.25rem;padding-right:9.25rem;}
 }
 
 /* Medium devices (desktops, 975px and up) */
