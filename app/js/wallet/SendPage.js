@@ -189,7 +189,7 @@ class SendPage extends Component {
             name="password" label="Password"
             placeholder="Password" type="password" required={true}/>
           <div className="container m-t-40">
-            <button className="btn btn-wallet" type="submit pull-right" disabled={disabled}>
+            <button className="btn btn-wallet pull-right" type="submit" disabled={disabled}>
               Send
             </button>
           </div>
