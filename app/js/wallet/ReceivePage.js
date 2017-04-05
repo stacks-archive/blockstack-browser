@@ -7,7 +7,7 @@ import { AccountActions } from '../store/account'
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
-    coreWalletAddress: state.account.coreWalletAddress,
+    coreWalletAddress: state.account.coreWallet.address,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
   }
 }
@@ -26,22 +26,10 @@ class ReceivePage extends Component {
 
   constructor(props) {
     super(props)
-
-    this.state = {
-      coreWalletAddress: this.props.coreWalletAddress
-    }
   }
 
   componentWillMount() {
     this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.coreWalletAddress !== this.props.coreWalletAddress) {
-      this.setState({
-        coreWalletAddress: this.props.coreWalletAddress
-      })
-    }
   }
 
   render() {
@@ -55,12 +43,12 @@ class ReceivePage extends Component {
           All username registrations use funds from your wallet.
         </i></p>
 
-        { this.state.coreWalletAddress ?
+        { this.props.coreWalletAddress ?
         <div>
           <h5>Send Bitcoins to this address</h5>
           <div className="highlight highlight-wallet">
             <pre>
-              <code>{this.state.coreWalletAddress}</code>
+              <code>{this.props.coreWalletAddress}</code>
             </pre>
           </div>
         </div>

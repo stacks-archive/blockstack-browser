@@ -1,6 +1,6 @@
 import bip39 from 'bip39'
 import { encrypt, decrypt, decryptPrivateKeychain, getIdentityPrivateKeychain, getBitcoinPrivateKeychain } from '../utils'
-import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack'
+import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
 import { ECPair } from 'bitcoinjs-lib'
 import { authorizationHeaderValue } from '../utils'
 
