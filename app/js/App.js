@@ -6,6 +6,7 @@ import queryString from 'query-string'
 import { AccountActions } from './store/account'
 import { SettingsActions } from './store/settings'
 import WelcomeModal from './components/WelcomeModal'
+import qsm from 'qsm'
 
 function mapStateToProps(state) {
   return {
@@ -47,6 +48,8 @@ class App extends Component {
       let api = this.props.api
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
+      const newLocation = qsm.remove(location.href, 'coreAPIPassword')
+      window.location = newLocation
     }
   }
 
