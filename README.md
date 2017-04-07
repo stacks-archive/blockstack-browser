@@ -39,7 +39,8 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
 1. Click the Blockstack menu bar item and select "Copy Core API password"
-1. Run `npm run dev -- --api_password <core-api-password>` replacing "<core-api-password>" with the value you copied in the previous step.
+1. Run `npm run dev`
+1. When prompted in your browser, enter the Core API password and click save.
 
 ### Linux
 
@@ -55,7 +56,8 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
 1. Run `npm run dev-proxy` to start the CORS proxy
-1. Run `npm run dev -- --api_password <core-api-password>` replacing "<core-api-password>" with the value you selected in part 1.
+1. Run `npm run dev`
+1. When prompted in your browser, enter the Core API password you selected in part 1.
 
 
 *Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
