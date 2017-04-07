@@ -57,7 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let walletPassword = createOrRetrieveCoreWalletPassword()
         
         // using the wallet password as Core API password is intentional
-        startPortalProxy(coreAPIPassword: walletPassword, complete: {
+        startPortalProxy(complete: {
             let delayInSeconds = 0.5
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
                 self.openPortal(path: "/")
@@ -256,7 +256,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    func startPortalProxy(coreAPIPassword: String, complete: @escaping () -> Void) {
+    func startPortalProxy(complete: @escaping () -> Void) {
         let proxyPath = Bundle.main.path(forResource: "blockstackProxy", ofType: "")
         let portalPath = Bundle.main.path(forResource: "browser", ofType: "")
         
@@ -278,37 +278,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             NSLog("Can't copy Portal code to the run path: \(portalRunPath())")
         }
         
-        /* Configure the Core API Password */
-        
-        /* This searches through the uglified Portal JavaScript and replaces
-         * the placeholder Core API password with the real password. */
-        
-        let sedCommand = "s/REPLACE_ME_WITH_CORE_API_PASSWORD/\(coreAPIPassword)/g"
-        
-        NSLog("Preparing to configure Core API password with this sed command: \(sedCommand)")
-        
-        let configureCoreApiPasswordProcess = Process()
-let apiPasswordPipe = loggingPipe()
-        configureCoreApiPasswordProcess.launchPath = "/usr/bin/sed"
-        configureCoreApiPasswordProcess.arguments =
-            ["-i", "", "-e", sedCommand, "\(portalRunPath())/js/main.js"]
-        configureCoreApiPasswordProcess.standardOutput = apiPasswordPipe
-        configureCoreApiPasswordProcess.standardError = apiPasswordPipe
-        configureCoreApiPasswordProcess.terminationHandler = { process in
-            NSLog("Finished configuring Core API password!")
             
-            self.portalProxyProcess.launchPath = proxyPath
- 
-            self.portalProxyProcess.arguments = [String(self.productionModePortalPort), self.portalRunPath()]
-                
-            NSLog("Starting Blockstack Portal proxy...")
-                
-            self.portalProxyProcess.launch()
-            complete()
+        self.portalProxyProcess.launchPath = proxyPath
 
-        }
-        configureCoreApiPasswordProcess.launch()
- 
+        self.portalProxyProcess.arguments = [String(self.productionModePortalPort), self.portalRunPath()]
+            
+        NSLog("Starting Blockstack Portal proxy...")
+            
+        self.portalProxyProcess.launch()
+        complete()
+        
     }
     
     func startCorsProxy(complete: @escaping () -> Void) {
