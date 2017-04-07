@@ -35,6 +35,7 @@ class App extends Component {
     this.state = {
       accountCreated: this.props.encryptedBackupPhrase ? true : false,
       storageConnected: this.props.dropboxAccessToken ? true : false,
+      coreConnected: this.props.api.coreAPIPassword ? true : false,
       password: ''
     }
 
@@ -56,6 +57,7 @@ class App extends Component {
     this.setState({
       accountCreated: nextProps.encryptedBackupPhrase ? true : false,
       storageConnected: nextProps.dropboxAccessToken ? true : false,
+      coreConnected: nextProps.api.coreAPIPassword ? true : false
     })
   }
 
@@ -77,6 +79,7 @@ class App extends Component {
         <WelcomeModal
           accountCreated={this.state.accountCreated}
           storageConnected={this.state.storageConnected}
+          coreConnected={this.state.coreConnected}
           closeModal={this.closeModal} />
         {this.props.children}
       </div>
