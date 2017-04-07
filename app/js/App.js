@@ -6,7 +6,7 @@ import queryString from 'query-string'
 import { AccountActions } from './store/account'
 import { SettingsActions } from './store/settings'
 import WelcomeModal from './components/WelcomeModal'
-import qsm from 'qsm'
+import hash from 'hash-handler'
 
 function mapStateToProps(state) {
   return {
@@ -48,8 +48,7 @@ class App extends Component {
       let api = this.props.api
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
-      const newLocation = qsm.remove(location.href, 'coreAPIPassword')
-      window.location = newLocation
+      hash.getInstance().clear()
     }
   }
 
@@ -61,12 +60,11 @@ class App extends Component {
   }
 
   getCoreAPIPasswordFromURL() {
-    const queryDict = queryString.parse(location.search)
-    if (queryDict.coreAPIPassword !== null && queryDict.coreAPIPassword !== undefined) {
-      return queryDict.coreAPIPassword
-    } else {
+    const coreAPIPassword = hash.getInstance().get('coreAPIPassword')
+    if (typeof coreAPIPassword === undefined) {
       return null
     }
+    return coreAPIPassword
   }
 
   closeModal() {

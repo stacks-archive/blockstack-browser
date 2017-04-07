@@ -123,7 +123,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func openPortal(path: String) {
         let portalURLString = "\(portalBaseUrl())\(path)"
         NSLog("Opening portal with String: \(portalURLString)")
-        let portalURLWithSecretString = "\(portalURLString)?coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
+        let portalURLWithSecretString = "\(portalURLString)#coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
         let portalURL = URL(string: portalURLWithSecretString )
         //NSLog("Opening portal with URL: \(portalURL!)")
         NSWorkspace.shared().open(portalURL!)
