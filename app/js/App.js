@@ -4,24 +4,28 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import { AccountActions } from './store/account'
+import { SettingsActions } from './store/settings'
 import WelcomeModal from './components/WelcomeModal'
 
 function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    dropboxAccessToken: state.settings.api.dropboxAccessToken
+    dropboxAccessToken: state.settings.api.dropboxAccessToken,
+    api: state.settings.api
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(AccountActions, dispatch)
+  return bindActionCreators(Object.assign({}, AccountActions, SettingsActions), dispatch)
 }
 
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
-    dropboxAccessToken: PropTypes.string
+    dropboxAccessToken: PropTypes.string,
+    api: PropTypes.object.isRequired,
+    updateApi: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -39,7 +43,11 @@ class App extends Component {
 
   componentWillMount() {
     const coreAPIPassword = this.getCoreAPIPasswordFromURL()
-    console.log(coreAPIPassword)
+    if (coreAPIPassword != null) {
+      let api = this.props.api
+      api = Object.assign({}, api, { coreAPIPassword })
+      this.props.updateApi(api)
+    }
   }
 
   componentWillReceiveProps(nextProps) {

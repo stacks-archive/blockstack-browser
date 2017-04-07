@@ -283,7 +283,7 @@ function registerName(api, domainName, recipientAddress, keypair) {
       const requestHeaders = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': authorizationHeaderValue()
+        'Authorization': authorizationHeaderValue(api.coreAPIPassword)
       }
 
       const requestBody = JSON.stringify({

@@ -93,6 +93,8 @@ class ApiSettingsPage extends Component {
 
                 { this.state.api.apiCustomizationEnabled === true ?
                   <div>
+                    <InputGroup name="coreAPIPassword" label="Blockstack Core API Password"
+                    data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="nameLookupUrl" label="Name Lookup URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="searchUrl" label="Search URL"

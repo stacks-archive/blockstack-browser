@@ -126,9 +126,9 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
   }
 }
 
-function getCoreWalletAddress(walletPaymentAddressUrl) {
+function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
   return dispatch => {
-    const headers = {"Authorization": authorizationHeaderValue() }
+    const headers = {"Authorization": authorizationHeaderValue(coreAPIPassword) }
     fetch(walletPaymentAddressUrl, { headers: headers })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
@@ -147,13 +147,13 @@ function resetCoreWithdrawal() {
   }
 }
 
-function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress) {
+function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, coreAPIPassword) {
 return dispatch => {
     dispatch(withdrawingCoreBalance(recipientAddress))
     const requestHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "Authorization": authorizationHeaderValue()
+      "Authorization": authorizationHeaderValue(coreAPIPassword)
     }
 
     const requestBody = JSON.stringify({

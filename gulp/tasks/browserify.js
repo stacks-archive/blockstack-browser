@@ -36,13 +36,6 @@ function buildScript(file, watch) {
   bundler.transform(babelify);
   bundler.transform(debowerify);
 
-  if ( !global.isProd && process.argv.length < 5) {
-    console.error("Please provide your Core API password as an argument to this npm script:")
-    console.error("npm run dev -- --api-password <password>")
-    process.exit()
-  }
-
-  const coreApiPassword = process.argv[4]
   function rebundle() {
     const stream = bundler.bundle();
 
@@ -50,13 +43,6 @@ function buildScript(file, watch) {
 
     return stream.on('error', handleErrors)
     .pipe(source(file))
-    .pipe(gulpif(!global.isProd, spawn({
-		cmd: "sed",
-		args: [
-			"-e",
-			`s/REPLACE_ME_WITH_CORE_API_PASSWORD/${coreApiPassword}/g`
-		]
-	})))
     .pipe(streamify(rename({
       basename: 'main'
     })))

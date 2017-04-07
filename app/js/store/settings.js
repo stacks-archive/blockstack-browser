@@ -20,7 +20,8 @@ const DEFAULT_API = {
   ethereumAddressUrl: 'https://tradeblock.com/ethereum/account/{identifier}',
   pgpKeyUrl: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on',
   hostedDataLocation: DROPBOX,
-  blockstackApiAppId:'470c9d0c7dbd41b1bb6defac9be3595a',
+  coreAPIPassword: null,
+  blockstackApiAppId: '470c9d0c7dbd41b1bb6defac9be3595a',
   blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
   s3ApiKey: '',
   s3ApiSecret: '',
@@ -73,7 +74,8 @@ function setAPICredentials(api, email, name, company, callback) {
 function resetApi(api) {
   return dispatch => {
     dispatch(updateApi(Object.assign({}, DEFAULT_API, {
-      dropboxAccessToken: api.dropboxAccessToken
+      dropboxAccessToken: api.dropboxAccessToken,
+      coreAPIPassword: api.coreAPIPassword
     })))
   }
 }
