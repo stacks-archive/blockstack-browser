@@ -2,7 +2,7 @@ import './utils/proxy-fetch'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
+import queryString from 'query-string'
 import { AccountActions } from './store/account'
 import WelcomeModal from './components/WelcomeModal'
 
@@ -34,6 +34,12 @@ class App extends Component {
     }
 
     this.closeModal = this.closeModal.bind(this)
+    this.getCoreAPIPasswordFromURL = this.getCoreAPIPasswordFromURL.bind(this)
+  }
+
+  componentWillMount() {
+    const coreAPIPassword = this.getCoreAPIPasswordFromURL()
+    console.log(coreAPIPassword)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -41,6 +47,15 @@ class App extends Component {
       accountCreated: nextProps.encryptedBackupPhrase ? true : false,
       storageConnected: nextProps.dropboxAccessToken ? true : false,
     })
+  }
+
+  getCoreAPIPasswordFromURL() {
+    const queryDict = queryString.parse(location.search)
+    if (queryDict.coreAPIPassword !== null && queryDict.coreAPIPassword !== undefined) {
+      return queryDict.coreAPIPassword
+    } else {
+      return null
+    }
   }
 
   closeModal() {
