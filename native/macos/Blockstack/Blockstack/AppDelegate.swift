@@ -8,6 +8,7 @@
 
 import Cocoa
 import Sparkle
+import os.log
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -39,9 +40,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let coreProcess = Process()
     
     let sparkleUpdater = SUUpdater.init(for: Bundle.main)
-
+    
+    let log = OSLog(subsystem: "org.blockstack.mac.Blockstack", category: "Default")
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        NSLog("applicationDidFinishLaunching: \(blockstackDataURL())")
+        os_log("applicationDidFinishLaunching: %{public}@", log: log, type: .default, blockstackDataURL().absoluteString)
         
         let appleEventManager = NSAppleEventManager.shared()
         appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
