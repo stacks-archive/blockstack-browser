@@ -3,6 +3,9 @@ import { encrypt, decrypt, decryptPrivateKeychain, getIdentityPrivateKeychain, g
 import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
 import { ECPair } from 'bitcoinjs-lib'
 import { authorizationHeaderValue } from '../utils'
+import log4js from '../utils/logging-utils'
+
+const logger = log4js.getLogger('store/account.js')
 
 const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       DELETE_ACCOUNT = 'DELETE_ACCOUNT',
@@ -137,6 +140,8 @@ function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
       dispatch(
         updateCoreWalletAddress(address)
       )
+    }).catch((error) => {
+      logger.error('getCoreWalletAddress: error fetching address', error)
     })
   }
 }

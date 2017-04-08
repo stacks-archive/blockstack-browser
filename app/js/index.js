@@ -6,8 +6,19 @@ import routes                       from './routes'
 import configureDataStore           from './store/configure/index'
 import log4js                       from './utils/logging-utils'
 
-const logger = log4js.getLogger('index.js')
 
+
+window.addEventListener('error', (event) => {
+  const logger = log4js.getLogger('window.addWindowListener(\'error\')')
+  logger.error(event)
+})
+
+window.onerror = (messageOrEvent, source, lineno, colno, error) => {
+  const logger = log4js.getLogger('window.onerror')
+  logger.error(messageOrEvent, error)
+}
+
+const logger = log4js.getLogger('index.js')
 const store = configureDataStore()
 
 if (process.env.NODE_ENV !== 'production') {
