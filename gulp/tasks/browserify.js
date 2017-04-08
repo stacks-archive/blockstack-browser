@@ -28,6 +28,9 @@ function buildScript(file, watch) {
     fullPaths: global.isProd ? false : true
   });
 
+  bundler.require('./node_modules/log4js/lib/appenders/stdout.js', { expose: 'stdout' })
+  bundler.require('./node_modules/log4js/lib/appenders/console.js', { expose: 'console' })
+
   if ( watch ) {
     bundler = watchify(bundler);
     bundler.on('update', rebundle);

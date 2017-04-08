@@ -7,6 +7,9 @@ import { AccountActions } from './store/account'
 import { SettingsActions } from './store/settings'
 import WelcomeModal from './components/WelcomeModal'
 import hash from 'hash-handler'
+import log4js from './utils/logging-utils'
+
+const logger = log4js.getLogger('App.js')
 
 function mapStateToProps(state) {
   return {
@@ -44,6 +47,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    logger.trace('componentWillMount')
     const coreAPIPassword = this.getCoreAPIPasswordFromURL()
     if (coreAPIPassword != null) {
       let api = this.props.api

@@ -28,6 +28,10 @@ export {
 } from './encryption-utils'
 
 export {
+  logger
+} from './logging-utils'
+
+export {
   isABlockstackName,
   hasNameBeenPreordered,
   isNameAvailable,
