@@ -41,7 +41,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let sparkleUpdater = SUUpdater.init(for: Bundle.main)
     
-    let log = OSLog(subsystem: "org.blockstack.mac.Blockstack", category: "Default")
+    let portalLogServer = PortalLogServer.init(port: 8883)
+    
+    let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "Default")
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         os_log("applicationDidFinishLaunching: %{public}@", log: log, type: .default, blockstackDataURL().absoluteString)
