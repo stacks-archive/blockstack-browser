@@ -7,14 +7,22 @@
 //
 
 import os.log
+import Foundation
 import Swifter
 
 class PortalLogServer {
     
+    enum LogEventDecoderError: Error {
+        case noRootObjectFound
+        case noMessageFound
+        case noCategoryFound
+        case noLevelFound
+    }
+    
     let server = HttpServer()
     
     let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "PortalLogServer")
-    let portal_log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "Portal")
+    let portalLogSubsystem = "org.blockstack.portal"
     
     init(port: UInt16) {
         initRoutes(server: server)
@@ -37,34 +45,79 @@ class PortalLogServer {
         os_log("initRoutes", log: log, type: .debug)
         
         let corsHeaders = ["Access-Control-Allow-Origin":"*",
-                       "Access-Control-Allow-Methods":"GET, POST, OPTIONS",
-                       "Access-Control-Allow-Headers": "Content-Type" ]
+                           "Access-Control-Allow-Methods":"GET, POST, OPTIONS",
+                           "Access-Control-Allow-Headers": "Content-Type" ]
         
         server["/log"] = { request in
             
             switch request.method {
                 
             case "POST":
-                    guard let logMessage = String(bytes: request.body, encoding: .utf8) else {
-                        let errorMessage : StaticString = "Unable to decode portal log entry"
-                        os_log(errorMessage, log: self.log, type: .error)
-                        return HttpResponse.raw(400, String(describing: errorMessage), corsHeaders, {
-                            try $0.write([UInt8](String(describing: errorMessage).utf8))
-                        })
-                    }
-                    os_log("%{public}@", log: self.portal_log, type: .default, logMessage)
-                    return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
+                let logEvent = Data(bytes: request.body)
+                
+                do {
+                    try self.processPortalLogEvent(logEvent:logEvent)
+                } catch {
+                    os_log("Error trying to process portal log: %{public}@", log: self.log, type: .error, error.localizedDescription)
+                    return HttpResponse.raw(400, "Error trying to process portal log", corsHeaders, {
+                        try $0.write([UInt8]("Error trying to process portal log".utf8))
+                    })
+                }
+                
+                return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
                 
             case "OPTIONS": // CORS pre-flight
-                    return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
+                return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
                 
             default:
-                    return HttpResponse.notFound
-
+                return HttpResponse.notFound
+                
             }
+        }
+    }
+    
+    private func processPortalLogEvent(logEvent:Data) throws {
+        let logEventJson = try JSONSerialization.jsonObject(with: logEvent, options: [])
+        guard let dictionary = logEventJson as? [String: Any]
+            else {
+                throw LogEventDecoderError.noRootObjectFound
+        }
+        
+        guard let category = dictionary["category"] as? String
+            else {
+                throw LogEventDecoderError.noCategoryFound
+        }
+        
+        guard let level = dictionary["level"] as? String
+            else {
+                throw LogEventDecoderError.noLevelFound
+        }
+        
+        guard let message = dictionary["message"] as? String
+            else {
+                throw LogEventDecoderError.noMessageFound
+        }
+        
+        let portalLog = OSLog(subsystem: portalLogSubsystem, category: category)
+        
+        switch level {
+        case "TRACE", "DEBUG": // Map to macOS's Debug level
+            os_log("%{public}@", log: portalLog, type: .debug, message)
+            
+        case "INFO": // Map to macOS's Info level
+            os_log("%{public}@", log: portalLog, type: .info, message)
+            
+        case "WARN": // Map to macOS's Default level
+            os_log("%{public}@", log: portalLog, type: .default, message)
+            
+        case "ERROR", "FATAL": // Map both to macOS's Error level (macOS's Fault level indicates system problem)
+            os_log("%{public}@", log: portalLog, type: .error, message)
+            
+        default:  // Map MARK, OFF, ALL and any other level to macOS's Default level
+            os_log("%{public}@", log: portalLog, type: .default, message)
             
         }
     }
-
+    
 }
 

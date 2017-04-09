@@ -6,7 +6,7 @@ function portalAppender(config) {
   return function log(event) {
     const logEvent = {
       time: event.startTime.getTime(),
-      priority: event.level.levelStr,
+      level: event.level.levelStr,
       category: event.categoryName,
       message: format(event.data)
     }
@@ -15,7 +15,6 @@ function portalAppender(config) {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
-    console.log(logEvent)
     fetch(logServerUrl, {
       method: 'POST',
       headers: requestHeaders,
