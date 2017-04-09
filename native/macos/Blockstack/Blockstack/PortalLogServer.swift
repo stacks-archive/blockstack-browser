@@ -35,17 +35,36 @@ class PortalLogServer {
     
     private func initRoutes(server: HttpServer) {
         os_log("initRoutes", log: log, type: .debug)
-        server.POST["/log"] = { request in
-            guard let logMessage = String(bytes: request.body, encoding: .utf8) else {
-                let errorMessage : StaticString = "Unable to decode portal log entry"
-                os_log(errorMessage, log: self.log, type: .error)
-                return HttpResponse.badRequest(.text(String(describing: errorMessage)))
+        
+        let corsHeaders = ["Access-Control-Allow-Origin":"*",
+                       "Access-Control-Allow-Methods":"GET, POST, OPTIONS",
+                       "Access-Control-Allow-Headers": "Content-Type" ]
+        
+        server["/log"] = { request in
+            
+            switch request.method {
+                
+            case "POST":
+                    guard let logMessage = String(bytes: request.body, encoding: .utf8) else {
+                        let errorMessage : StaticString = "Unable to decode portal log entry"
+                        os_log(errorMessage, log: self.log, type: .error)
+                        return HttpResponse.raw(400, String(describing: errorMessage), corsHeaders, {
+                            try $0.write([UInt8](String(describing: errorMessage).utf8))
+                        })
+                    }
+                    os_log("%{public}@", log: self.portal_log, type: .default, logMessage)
+                    return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
+                
+            case "OPTIONS": // CORS pre-flight
+                    return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
+                
+            default:
+                    return HttpResponse.notFound
+
             }
-            os_log("%{public}@", log: self.portal_log, type: .default, logMessage)
-            return HttpResponse.ok(.text("OK"))
+            
         }
     }
-    
-    
+
 }
 

@@ -13,9 +13,15 @@ const CONSOLE_APPENDER = {
   }
 }
 
+const PORTAL_APPENDER = {
+  type: 'portal-appender',
+  url: 'http://localhost:8883/log'
+}
+
 log4js.configure({
   appenders: [
-    CONSOLE_APPENDER
+    CONSOLE_APPENDER,
+    PORTAL_APPENDER
   ],
   /* The browser console allows us to log expandable objects which are useful
     in development while log4js only logs text. */
