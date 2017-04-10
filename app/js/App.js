@@ -7,7 +7,7 @@ import { AccountActions } from './store/account'
 import { SettingsActions } from './store/settings'
 import WelcomeModal from './components/WelcomeModal'
 import hash from 'hash-handler'
-import log4js from './utils/logging-utils'
+import log4js from 'log4js'
 
 const logger = log4js.getLogger('App.js')
 

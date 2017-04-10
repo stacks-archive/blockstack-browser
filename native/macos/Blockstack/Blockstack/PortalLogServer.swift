@@ -19,13 +19,20 @@ class PortalLogServer {
         case noLevelFound
     }
     
+    enum AuthorizationError: Error {
+        case noHeader
+        case invalidHeader
+    }
+    
     let server = HttpServer()
     
     let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "PortalLogServer")
     let portalLogSubsystem = "org.blockstack.portal"
     
-    init(port: UInt16) {
-        initRoutes(server: server)
+    
+    
+    init(port: UInt16, password: String) {
+        initRoutes(server: server, password: password)
         do {
             server.listenAddressIPv4 = "127.0.0.1"
             try server.start(port, forceIPv4: true)
@@ -41,19 +48,29 @@ class PortalLogServer {
         server.stop()
     }
     
-    private func initRoutes(server: HttpServer) {
+    private func initRoutes(server: HttpServer, password: String) {
         os_log("initRoutes", log: log, type: .debug)
         
         let corsHeaders = ["Access-Control-Allow-Origin":"*",
                            "Access-Control-Allow-Methods":"GET, POST, OPTIONS",
-                           "Access-Control-Allow-Headers": "Content-Type" ]
+                           "Access-Control-Allow-Headers": "Authorization, Content-Type" ]
         
         server["/log"] = { request in
             
             switch request.method {
                 
             case "POST":
+                os_log("POST /log", log: self.log, type: .debug)
                 let logEvent = Data(bytes: request.body)
+                
+                do {
+                    os_log("Trying to authenticate log event request", log: self.log, type: .debug)
+                    try self.authenticatePortal(request: request, password: password)
+                    os_log("Log request authenticated", log: self.log, type: .debug)
+                } catch {
+                    os_log("Authorization failed", log: self.log, type: .error)
+                    return HttpResponse.forbidden
+                }
                 
                 do {
                     try self.processPortalLogEvent(logEvent:logEvent)
@@ -67,12 +84,28 @@ class PortalLogServer {
                 return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
                 
             case "OPTIONS": // CORS pre-flight
+                os_log("OPTIONS /log", log: self.log, type: .debug)
                 return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
                 
             default:
                 return HttpResponse.notFound
                 
             }
+        }
+    }
+    
+    private func authenticatePortal(request: HttpRequest, password: String) throws {
+        guard let authorizationHeader = request.headers["authorization"]
+            else {
+                os_log("No authorization header", log: log, type: .error)
+                throw AuthorizationError.noHeader
+        }
+        
+        if(authorizationHeader == "basic \(password)") {
+            os_log("Authorization succeeded", log: log, type: .debug)
+        } else {
+            os_log("Invalid authorization header", log: log, type: .error)
+            throw AuthorizationError.invalidHeader
         }
     }
     

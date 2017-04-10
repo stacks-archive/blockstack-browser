@@ -2,6 +2,7 @@ var util = require('util')
 
 function portalAppender(config) {
   const logServerUrl = config.url
+  const authorizationHeaderValue = config.authorizationHeaderValue
 
   return function log(event) {
     const logEvent = {
@@ -13,12 +14,17 @@ function portalAppender(config) {
 
     const requestHeaders = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization': authorizationHeaderValue
     }
+
     fetch(logServerUrl, {
       method: 'POST',
       headers: requestHeaders,
       body: JSON.stringify(logEvent)
+    }).catch((error) => {
+      console.error('Portal log append failed to send log event to remote server.')
+      console.error(error)
     })
   }
 }

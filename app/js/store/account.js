@@ -3,7 +3,7 @@ import { encrypt, decrypt, decryptPrivateKeychain, getIdentityPrivateKeychain, g
 import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
 import { ECPair } from 'bitcoinjs-lib'
 import { authorizationHeaderValue } from '../utils'
-import log4js from '../utils/logging-utils'
+import log4js from 'log4js'
 
 const logger = log4js.getLogger('store/account.js')
 

@@ -4,9 +4,18 @@ import { Provider }                 from 'react-redux'
 
 import routes                       from './routes'
 import configureDataStore           from './store/configure/index'
-import log4js                       from './utils/logging-utils'
 
 
+import log4js  from 'log4js'
+import { authorizationHeaderValue } from './utils/api-utils'
+import { configureLogging } from './utils/logging-utils'
+
+
+const store = configureDataStore()
+const state = store.getState()
+const coreAPIPassword = state.settings.api.coreAPIPassword
+
+configureLogging(log4js, authorizationHeaderValue(coreAPIPassword), process.env.NODE_ENV)
 
 window.addEventListener('error', (event) => {
   const logger = log4js.getLogger('window.addWindowListener(\'error\')')
@@ -19,7 +28,6 @@ window.onerror = (messageOrEvent, source, lineno, colno, error) => {
 }
 
 const logger = log4js.getLogger('index.js')
-const store = configureDataStore()
 
 if (process.env.NODE_ENV !== 'production') {
   logger.trace('NODE_ENV is not production')
