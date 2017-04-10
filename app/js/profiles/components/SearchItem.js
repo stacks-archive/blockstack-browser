@@ -28,8 +28,8 @@ class SearchItem extends Component {
               id={this.props.domainName}
               fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
-          <div className="livesearch-name col-md-3">{person.name()}</div>
           <div className="livesearch-id col-md-2">{this.props.domainName}</div>
+          <div className="livesearch-name col-md-3">{person.name()}</div>
           <div className="col-md-6">
             {accounts.map((account, index) => {
               if (account.service && account.identifier) {

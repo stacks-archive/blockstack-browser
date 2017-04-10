@@ -330,11 +330,15 @@ a.search-result:hover {
 .livesearch-avatar{
 	display: inline-block;
 }
-.livesearch-name {
-	display: inline-block;
-}
 .livesearch-id {
 	display: inline-block;
+	margin-left: 10px;
+	font-weight: 400;
+}
+.livesearch-name {
+	display: inline-block;
+	text-transform: capitalize;
+	margin-left: 10px;
 }
 .result-img{width:32px;height:32px;}
 
