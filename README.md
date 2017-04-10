@@ -2,8 +2,6 @@
 
 The Blockstack Browser Portal allows you to explore the Blockstack internet.
 
----
-
 ## Table of contents
 
 - [Releases](#releases)
@@ -13,8 +11,6 @@ The Blockstack Browser Portal allows you to explore the Blockstack internet.
 - [Contributing](#contributing)
 - [Tech Stack](#tech-stack)
 - [Testing](#testing)
-
----
 
 ## Releases
 
