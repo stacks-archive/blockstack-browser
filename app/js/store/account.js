@@ -126,6 +126,9 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
         updateCoreWalletBalance(balance)
       )
     })
+    .catch((error) => {
+      logger.error('refreshCoreWalletBalance: error refreshing balance', error)
+    })
   }
 }
 
@@ -181,7 +184,7 @@ return dispatch => {
       }
     })
     .catch((error) => {
-      console.warn(error)
+      logger.error('withdrawBitcoinFromCoreWallet:', error)
       dispatch(withdrawCoreBalanceError(error))
     })
   }
@@ -191,7 +194,6 @@ function refreshBalances(addressBalanceUrl, addresses) {
   return dispatch => {
     let results = []
     addresses.forEach((address) => {
-
       // fetch balances from https://explorer.blockstack.org/insight-api/addr/{address}/?noTxList=1
       // parse results from: {"addrStr":"1Fvoya7XMvzfpioQnzaskndL7YigwHDnRE","balance":0.02431567,"balanceSat":2431567,"totalReceived":38.82799913,"totalReceivedSat":3882799913,"totalSent":38.80368346,"totalSentSat":3880368346,"unconfirmedBalance":0,"unconfirmedBalanceSat":0,"unconfirmedTxApperances":0,"txApperances":2181}
       const url = addressBalanceUrl.replace('{address}', address)
@@ -227,6 +229,9 @@ function refreshBalances(addressBalanceUrl, addresses) {
           )
         }
       })
+    })
+    .catch((error) => {
+      logger.error('refreshBalances: error', error)
     })
   }
 }

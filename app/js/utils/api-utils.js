@@ -1,3 +1,6 @@
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('utils/api-utils.js')
 
 export function getNamesOwned(address, addressLookupUrl, callback) {
   const url = addressLookupUrl.replace('{address}', address)
@@ -8,7 +11,7 @@ export function getNamesOwned(address, addressLookupUrl, callback) {
       callback([])
     })
     .catch((error) => {
-      console.warn(error)
+      logger.error('getNamesOwned: error', error)
       callback([])
     })
 }

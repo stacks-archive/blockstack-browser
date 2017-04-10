@@ -11,6 +11,10 @@ import {
 
 import { uploadProfile } from '../storage/utils/index'
 
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('store/identities.js')
+
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
       CREATE_NEW = 'CREATE_NEW',
@@ -250,18 +254,22 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
                     const zoneFile = responseJson.zonefile,
                           ownerAddress = responseJson.address
 
-                    resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
+                    resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                       if (profile)
                         dispatch(updateProfile(domainName, profile))
                     })
-                  }).catch((error) => {
-                    console.error(error)
+                    .catch((error) => {
+                      logger.error('refreshIdentities: resolveZoneFileToProfile: error', error)
+                    })
+                  })
+                  .catch((error) => {
+                    logger.error('refreshIdentities: lookupUrl: error', error)
                   })
                 })
               }
             }
           }).catch((error) => {
-            console.warn(error)
+            logger.error('refreshIdentities: addressLookup: error', error)
           })
 
       })
@@ -312,11 +320,11 @@ function registerName(api, domainName, recipientAddress, keypair) {
           }
         })
         .catch((error) => {
-          console.error(error)
+          logger.error('registerName: error POSTing regitsration to Core', error)
           dispatch(registrationError(error))
         })
       }).catch((error) => {
-        console.error(error)
+        logger.error('registerName: error uploading profile', error)
         dispatch(profileUploadError(error))
       })
     }
@@ -351,20 +359,25 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
           throw "Invalid lookup URL"
         }
 
-        resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
+        resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
           let verifications = []
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
           if (profile) {
             validateProofs(profile, domainName).then((proofs) => {
               verifications = proofs
               dispatch(updateCurrentIdentity(domainName, profile, verifications))
+            }).catch((error) => {
+              logger.error('fetchCurrentIdentity: validateProofs: error', error)
             })
           }
+        })
+        .catch((error) => {
+          logger.error('fetchCurrentIdentity: resolveZoneFileToProfile: error', error)
         })
       })
       .catch((error) => {
         dispatch(updateCurrentIdentity(domainName, null, []))
-        console.warn(error)
+        logger.error('fetchCurrentIdentity: lookup error', error)
       })
   }
 }
@@ -382,12 +395,14 @@ function checkNameAvailabilityAndPrice(api, domainName) {
             const price = prices.total_estimated_cost.btc
             dispatch(namePrice(domainName, price))
         }).catch((error) => {
+          logger.error('checkNameAvailabilityAndPrice: getNamePrices: error', error)
           dispatch(namePriceError(domainName, error))
         })
       } else {
         dispatch(nameUnavailable(domainName))
       }
     }).catch((error) => {
+      logger.error('checkNameAvailabilityAndPrice: isNameAvailable: error', error)
       dispatch(nameAvailabilityError(domainName, error))
     })
   }
@@ -403,7 +418,7 @@ function loadPGPPublicKey(contentUrl, identifier) {
         dispatch(loadedPGPKey(identifier, publicKey))
       })
       .catch((e) => {
-        console.error(e)
+        logger.error('loadPGPPublicKey: error', error)
         dispatch(loadingPGPKeyError(identifier, e))
       })
   }

@@ -1,4 +1,7 @@
 import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../storage/utils/index'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('store/settings.js')
 
 const UPDATE_API = 'UPDATE_API'
 
@@ -66,7 +69,7 @@ function setAPICredentials(api, email, name, company, callback) {
         }
       })
       .catch((error) => {
-        console.warn(error)
+        logger.error('setAPICredentials: error', error)
         callback(false)
       })
   }
