@@ -14,8 +14,9 @@ import { configureLogging } from './utils/logging-utils'
 const store = configureDataStore()
 const state = store.getState()
 const coreAPIPassword = state.settings.api.coreAPIPassword
+const logServerPort = state.settings.api.logServerPort
 
-configureLogging(log4js, authorizationHeaderValue(coreAPIPassword), process.env.NODE_ENV)
+configureLogging(log4js, logServerPort, authorizationHeaderValue(coreAPIPassword), process.env.NODE_ENV)
 
 window.addEventListener('error', (event) => {
   const logger = log4js.getLogger('window.addWindowListener(\'error\')')

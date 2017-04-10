@@ -55,12 +55,12 @@ class PortalLogServer {
                            "Access-Control-Allow-Methods":"GET, POST, OPTIONS",
                            "Access-Control-Allow-Headers": "Authorization, Content-Type" ]
         
-        server["/log"] = { request in
+        server["/"] = { request in
             
             switch request.method {
                 
             case "POST":
-                os_log("POST /log", log: self.log, type: .debug)
+                os_log("POST /", log: self.log, type: .debug)
                 let logEvent = Data(bytes: request.body)
                 
                 do {
@@ -84,7 +84,7 @@ class PortalLogServer {
                 return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
                 
             case "OPTIONS": // CORS pre-flight
-                os_log("OPTIONS /log", log: self.log, type: .debug)
+                os_log("OPTIONS /", log: self.log, type: .debug)
                 return HttpResponse.raw(200, "OK", corsHeaders, { try $0.write([UInt8]("OK".utf8)) })
                 
             default:

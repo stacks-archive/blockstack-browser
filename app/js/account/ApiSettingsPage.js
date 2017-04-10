@@ -95,6 +95,8 @@ class ApiSettingsPage extends Component {
                   <div>
                     <InputGroup name="coreAPIPassword" label="Blockstack Core API Password"
                     data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="logServerPort" label="localhost Logging Port"
+                    data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="nameLookupUrl" label="Name Lookup URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="searchUrl" label="Search URL"

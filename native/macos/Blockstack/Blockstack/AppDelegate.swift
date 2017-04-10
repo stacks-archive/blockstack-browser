@@ -42,13 +42,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let sparkleUpdater = SUUpdater.init(for: Bundle.main)
     
     var portalLogServer:PortalLogServer? = nil
+    let logServerPort = 8883
     
     let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "Default")
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         os_log("applicationDidFinishLaunching: %{public}@", log: log, type: .default, blockstackDataURL().absoluteString)
         
-        portalLogServer = PortalLogServer.init(port: 8883, password: self.createOrRetrieveCoreWalletPassword())
+        portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
         
         let appleEventManager = NSAppleEventManager.shared()
         appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
@@ -131,7 +132,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let portalURLString = "\(portalBaseUrl())\(path)"
         NSLog("Opening portal with String: \(portalURLString)")
         let portalURLWithSecretString = "\(portalURLString)#coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
-        let portalURL = URL(string: portalURLWithSecretString )
+        let portalURLWithSecretAndLogPortString = "\(portalURLWithSecretString)&logServerPort=\(logServerPort)"
+        let portalURL = URL(string: portalURLWithSecretAndLogPortString )
         //NSLog("Opening portal with URL: \(portalURL!)")
         NSWorkspace.shared().open(portalURL!)
     }
