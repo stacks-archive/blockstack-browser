@@ -21,7 +21,6 @@ function mapStateToProps(state) {
     priceUrl: state.settings.api.priceUrl,
     blockstackApiAppId: state.settings.api.blockstackApiAppId,
     blockstackApiAppSecret: state.settings.api.blockstackApiAppSecret,
-    analyticsId: state.account.analyticsId,
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs,
@@ -45,7 +44,6 @@ class RegisterPage extends Component {
     registerUrl: PropTypes.string.isRequired,
     blockstackApiAppId: PropTypes.string.isRequired,
     blockstackApiAppSecret: PropTypes.string.isRequired,
-    analyticsId: PropTypes.string.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     registerName: PropTypes.func.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
@@ -254,9 +252,6 @@ class RegisterPage extends Component {
       this.setState({ registrationLock: false })
     }
 
-    const analyticsId = this.props.analyticsId
-    mixpanel.track('Register identity', { distinct_id: analyticsId })
-    mixpanel.track('Perform action', { distinct_id: analyticsId })
   }
 
   render() {

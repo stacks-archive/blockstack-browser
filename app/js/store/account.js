@@ -32,12 +32,6 @@ function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
   const firstIdentityKey = identityPrivateKeychain.ecPair.d.toBuffer(32).toString('hex')
   const firstIdentityKeyID = identityPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
 
-  let analyticsId = identityPublicKeychain
-  if (email) {
-    analyticsId = email
-  }
-  mixpanel.track('Create account', { distinct_id: analyticsId })
-  mixpanel.track('Perform action', { distinct_id: analyticsId })
 
   return {
     type: CREATE_ACCOUNT,
@@ -47,8 +41,7 @@ function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
     firstIdentityAddress: firstIdentityAddress,
     firstBitcoinAddress: firstBitcoinAddress,
     firstIdentityKey: firstIdentityKey,
-    firstIdentityKeyID: firstIdentityKeyID,
-    analyticsId: analyticsId
+    firstIdentityKeyID: firstIdentityKeyID
   }
 }
 
@@ -293,7 +286,6 @@ const initialState = {
     addresses: [],
     balances: { total: 0.0 }
   },
-  analyticsId: '',
   coreWallet: {
     address: null,
     balance: 0.0,
@@ -331,8 +323,7 @@ export function AccountReducer(state=initialState, action) {
           ],
           addressIndex: 0,
           balances: state.bitcoinAccount.balances
-        },
-        analyticsId: action.analyticsId
+        }
       })
     case DELETE_ACCOUNT:
       return Object.assign({}, state, {
