@@ -336,7 +336,7 @@ a.search-result:hover {
 .livesearch-id {
 	display: inline-block;
 }
-.result-img{width:36px;height:36px;}
+.result-img{width:29px;height:29px;}
 
 /* Modal */
 div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:rgba(0,0,0,0.5)!important;display:flex;align-items:center;justify-content:center;}

@@ -24,7 +24,7 @@ class SearchItem extends Component {
       <Link to={`/profiles/${this.props.domainName}`}
         className="list-group-item search-result p-l-11 m-b-11">
           <div className="livesearch-avatar col-md-1">
-            <Image className="result-img img-circle" src={person.avatarUrl() || "https://s3.amazonaws.com/65m/avatar-placeholder.png"}
+            <Image className="result-img img-circle" src={person.avatarUrl() || "/images/avatar.png"}
               id={this.props.domainName}
               fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
