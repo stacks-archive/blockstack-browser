@@ -190,14 +190,14 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
   })
 
   Object.keys(updatedLocalIdentities).forEach((name) => {
-    let identity = updatedLocalIdentities[name]
+    const identity = updatedLocalIdentities[name]
     localNamesDict[identity.domainName] = true
     if (remoteNamesDict.hasOwnProperty(identity.domainName)) {
       identity.registered = true
     }
   })
 
-  namesOwned.map(function(name) {
+  namesOwned.map((name) => {
     if (!localNamesDict.hasOwnProperty(name)) {
       updatedLocalIdentities[name] = {
         domainName: name,
@@ -215,17 +215,17 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
 }
 
 function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
+  logger.trace('refreshIdentities')
   return dispatch => {
     if (addresses.length === 0) {
-      let namesOwned = []
-      let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+      const namesOwned = []
+      const updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
       if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
         // pass
       } else {
         dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
       }
     } else {
-
       let count =  addresses.length
       let namesOwned = []
 
@@ -236,10 +236,10 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
           .then((responseText) => JSON.parse(responseText))
           .then((responseJson) => {
             count++
-            namesOwned = namesOwned.concat(responseJson['names'])
+            namesOwned = namesOwned.concat(responseJson.names)
 
-            if(count >= addresses.length) {
-              let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+            if (count >= addresses.length) {
+              const updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
 
               if (JSON.stringify(lastNameLookup) === JSON.stringify(namesOwned)) {
                 // pass
@@ -278,14 +278,19 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
 }
 
 function registerName(api, domainName, recipientAddress, keypair) {
+  logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
+    logger.debug(`Signing a blank default profile for ${domainName}`)
     const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
 
     dispatch(profileUploading())
-
+    logger.trace(`Uploading ${domainName} profile...`)
     uploadProfile(api, domainName, signedProfileTokenData, true).then((profileUrl) => {
-
+      logger.trace(`Uploading ${domainName} profiled succeeded.`)
       const tokenFileUrl = profileUrl
+      logger.debug(`tokenFileUrl: ${tokenFileUrl}`)
+
+      logger.trace(`Making profile zonefile...`)
       const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
 
       const requestHeaders = {
@@ -302,7 +307,7 @@ function registerName(api, domainName, recipientAddress, keypair) {
       })
 
       dispatch(registrationSubmitting())
-
+      logger.trace(`Submitting registration for %{domainName} to Core node at ${api.registerUrl}`)
       fetch(api.registerUrl, {
         method: 'POST',
         headers: requestHeaders,
@@ -311,10 +316,11 @@ function registerName(api, domainName, recipientAddress, keypair) {
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
-          console.log(responseJson)
           if(responseJson['error']) {
+            logger.error(responseJson['error'])
             dispatch(registrationError(responseJson['error']))
           } else {
+            logger.debug(`Successfully submitted registration for ${domainName}`)
             dispatch(registrationSubmitted())
             dispatch(createNewIdentity(domainName))
           }

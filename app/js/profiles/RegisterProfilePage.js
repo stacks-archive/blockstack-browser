@@ -6,9 +6,10 @@ import Alert from '../components/Alert'
 import { AccountActions } from '../store/account'
 import { IdentityActions } from '../store/identities'
 
-import { getNamePrices, isNameAvailable,
-         hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
-import { authorizationHeaderValue } from '../utils'
+import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('account/RegisterProfilePage.js')
 
 const WALLET_URL = '/wallet/deposit'
 
@@ -51,7 +52,9 @@ class RegisterPage extends Component {
     addressBalanceUrl: PropTypes.string.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     coreWalletBalance: PropTypes.number.isRequired,
-    coreWalletAddress: PropTypes.string
+    coreWalletAddress: PropTypes.string,
+    api: PropTypes.object.isRequired,
+    checkNameAvailabilityAndPrice: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -86,14 +89,28 @@ class RegisterPage extends Component {
     this.displayZeroBalanceAlert = this.displayZeroBalanceAlert.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidMount() {
+    logger.trace('componentDidMount')
+    if (this.props.coreWalletAddress != null) {
+      logger.debug('coreWalletAddress exists...refreshing core wallet balance...')
+      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+        this.props.coreWalletAddress)
+    }
+    if (this.state.zeroBalance) {
+      logger.debug('Zero balance...displaying alert...')
+      this.displayZeroBalanceAlert()
+    }
+  }
 
+  componentWillReceiveProps(nextProps) {
+    logger.trace('componentWillReceiveProps')
     // Clear alerts
     this.setState({
-      alerts:[]
+      alerts: []
     })
 
     if(this.props.coreWalletAddress != nextProps.coreWalletAddress) {
+      logger.debug('coreWalletAddress changed. Refreshing core wallet balance...')
       this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, nextProps.coreWalletAddress)
     }
 
@@ -115,15 +132,6 @@ class RegisterPage extends Component {
       this.displayPricingAndAvailabilityAlerts(registration)
     }
 
-  }
-
-  componentDidMount() {
-    if(this.props.coreWalletAddress != null) {
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl, this.props.coreWalletAddress)
-    }
-    if (this.state.zeroBalance) {
-      this.displayZeroBalanceAlert()
-    }
   }
 
   displayRegistrationAlerts(registration) {
@@ -176,52 +184,56 @@ class RegisterPage extends Component {
 
   onChange(event) {
     if (event.target.name === 'username') {
-      const username = event.target.value.toLowerCase().replace(/\W+/g, ''),
-      tld = this.state.tlds[this.state.type],
-      domainName = `${username}.${tld}`
+      const username = event.target.value.toLowerCase().replace(/\W+/g, '')
+      const tld = this.state.tlds[this.state.type]
+      const domainName = `${username}.${tld}`
 
       this.setState({
-        username: username
+        username
       })
 
-      if(username === '') {
+      if (username === '') {
         this.setState({
-          alerts:[]
+          alerts: []
         })
         return
       }
 
-      if(this.timer) {
+      if (this.timer) {
+        logger.debug('Clearing existing timer')
         clearInterval(this.timer)
       }
 
       event.persist()
       const _this = this
 
-      this.timer = setTimeout( () => {
-        if(!isABlockstackName(domainName)) {
+      this.timer = setTimeout(() => {
+        logger.trace('Timer fired')
+        if (!isABlockstackName(domainName)) {
           _this.updateAlert('danger', `${domainName} Not valid Blockstack name`)
           return
         }
-
         this.props.checkNameAvailabilityAndPrice(this.props.api, domainName)
-
       },
       500) // wait 500ms after user stops typing to check availability
     }
   }
 
-  updateAlert(alertStatus, alertMessage, url=null) {
+  updateAlert(alertStatus, alertMessage, url = null) {
+    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{
         status: alertStatus,
         message: alertMessage,
-        url: url
+        url
       }]
     })
   }
 
   registerIdentity(event) {
+    logger.trace('registerIdentity')
+    event.preventDefault()
+
     if (this.state.registrationLock) {
       return
     }
@@ -235,8 +247,8 @@ class RegisterPage extends Component {
       return
     }
 
-    const tld = this.state.tlds[this.state.type],
-    domainName = username + '.' + tld
+    const tld = this.state.tlds[this.state.type]
+    const domainName = `${username}.${tld}`
 
     const nameHasBeenPreordered = hasNameBeenPreordered(domainName, this.props.localIdentities)
 
@@ -251,23 +263,25 @@ class RegisterPage extends Component {
       this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
       this.setState({ registrationLock: false })
     }
-
   }
 
   render() {
-    let tld = this.state.tlds[this.state.type],
-        nameLabel = this.state.nameLabels[this.state.type]
+    const tld = this.state.tlds[this.state.type]
+    const nameLabel = this.state.nameLabels[this.state.type]
     return (
       <div>
         <div className="container vertical-split-content">
           <div className="col-sm-3">
           </div>
           <div className="col-sm-6">
-            { this.state.alerts.map(function(alert, index) {
-              return (
-                <Alert key={index} message={alert.message} status={alert.status} url={alert.url} />
+            {
+              this.state.alerts.map((alert, index) => {
+                return (
+                  <Alert
+                    key={index} message={alert.message} status={alert.status} url={alert.url}
+                  />
               )
-            })}
+              })}
             <fieldset className="form-group">
               <label className="capitalize">{nameLabel}</label>
               <div className="input-group">
@@ -277,13 +291,16 @@ class RegisterPage extends Component {
                   placeholder={nameLabel}
                   value={this.state.username}
                   onChange={this.onChange}
-                  disabled={this.state.zeroBalance}/>
+                  disabled={this.state.zeroBalance}
+                />
                 <span className="input-group-addon">.{tld}</span>
               </div>
             </fieldset>
             <div>
-              <button className="btn btn-blue" onClick={this.registerIdentity}
-              disabled={this.props.registration.preventRegistration || this.state.zeroBalance}>
+              <button
+                className="btn btn-blue" onClick={this.registerIdentity}
+                disabled={this.props.registration.preventRegistration || this.state.zeroBalance}
+              >
                 Register
               </button>
             </div>
@@ -295,24 +312,3 @@ class RegisterPage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterPage)
-
-/*
-          <div>
-            <label>Registration Cost</label>
-            <div className="highlight">
-              <pre>
-                <code>
-                  {this.state.nameCost} mBTC
-                </code>
-              </pre>
-            </div>
-          </div>
-
-<fieldset className="form-group">
-  <select name="type" className="c-select"
-    defaultValue={this.state.type} onChange={this.onChange}>
-    <option value="person">Person</option>
-    <option value="organization">Organization</option>
-  </select>
-</fieldset>
-*/

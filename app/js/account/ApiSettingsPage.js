@@ -41,7 +41,7 @@ class ApiSettingsPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    logger.trace('componentWillReceiveProps', nextProps)
+    logger.trace('componentWillReceiveProps')
     this.setState({
       api: nextProps.api
     })
