@@ -1,3 +1,7 @@
+# Blockstack Portal Design Recommendations
+
+Blockstack is a progressive open source platform that values user experience and usercentric design. As a result of this passion we have developed design elements and recommendations to assist developers building on Blockstack to quickly and easily provide an optimal and consistent user experience.
+
 ## Status Bar
 The reasoning behind the Blockstack portal status bar is to provide users with an intuitive way to navigate back to their home screen and possibly other useful information.
 
