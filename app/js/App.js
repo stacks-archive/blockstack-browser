@@ -2,26 +2,34 @@ import './utils/proxy-fetch'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
+import queryString from 'query-string'
 import { AccountActions } from './store/account'
+import { SettingsActions } from './store/settings'
 import WelcomeModal from './components/WelcomeModal'
+import hash from 'hash-handler'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('App.js')
 
 function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    dropboxAccessToken: state.settings.api.dropboxAccessToken
+    dropboxAccessToken: state.settings.api.dropboxAccessToken,
+    api: state.settings.api
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(AccountActions, dispatch)
+  return bindActionCreators(Object.assign({}, AccountActions, SettingsActions), dispatch)
 }
 
 class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
-    dropboxAccessToken: PropTypes.string
+    dropboxAccessToken: PropTypes.string,
+    api: PropTypes.object.isRequired,
+    updateApi: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -30,17 +38,57 @@ class App extends Component {
     this.state = {
       accountCreated: this.props.encryptedBackupPhrase ? true : false,
       storageConnected: this.props.dropboxAccessToken ? true : false,
+      coreConnected: this.props.api.coreAPIPassword ? true : false,
       password: ''
     }
 
     this.closeModal = this.closeModal.bind(this)
+    this.getCoreAPIPasswordFromURL = this.getCoreAPIPasswordFromURL.bind(this)
+    this.getLogServerPortFromURL = this.getLogServerPortFromURL.bind(this)
+  }
+
+  componentWillMount() {
+    logger.trace('componentWillMount')
+    const coreAPIPassword = this.getCoreAPIPasswordFromURL()
+    const logServerPort = this.getLogServerPortFromURL()
+    if (coreAPIPassword != null) {
+      let api = this.props.api
+      api = Object.assign({}, api, { coreAPIPassword })
+      this.props.updateApi(api)
+    }
+
+    if (logServerPort != null) {
+      console.log(logServerPort)
+      let api = this.props.api
+      api = Object.assign({}, api, { logServerPort })
+      this.props.updateApi(api)
+    }
+
+    hash.getInstance().clear()
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       accountCreated: nextProps.encryptedBackupPhrase ? true : false,
       storageConnected: nextProps.dropboxAccessToken ? true : false,
+      coreConnected: nextProps.api.coreAPIPassword ? true : false
     })
+  }
+
+  getCoreAPIPasswordFromURL() {
+    const coreAPIPassword = hash.getInstance().get('coreAPIPassword')
+    if (typeof coreAPIPassword === undefined) {
+      return null
+    }
+    return coreAPIPassword
+  }
+
+  getLogServerPortFromURL() {
+    const logServerPort = hash.getInstance().get('logServerPort')
+    if (typeof logServerPort === undefined) {
+      return null
+    }
+    return logServerPort
   }
 
   closeModal() {
@@ -53,6 +101,7 @@ class App extends Component {
         <WelcomeModal
           accountCreated={this.state.accountCreated}
           storageConnected={this.state.storageConnected}
+          coreConnected={this.state.coreConnected}
           closeModal={this.closeModal} />
         {this.props.children}
       </div>

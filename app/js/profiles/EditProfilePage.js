@@ -20,8 +20,7 @@ function mapStateToProps(state) {
   return {
     localIdentities: state.identities.localIdentities,
     api: state.settings.api,
-    identityKeypairs: state.account.identityAccount.keypairs,
-    analyticsId: state.account.analyticsId
+    identityKeypairs: state.account.identityAccount.keypairs
   }
 }
 
@@ -34,8 +33,7 @@ class EditProfilePage extends Component {
     updateProfile: PropTypes.func.isRequired,
     localIdentities: PropTypes.object.isRequired,
     api: PropTypes.object.isRequired,
-    identityKeypairs: PropTypes.array.isRequired,
-    analyticsId: PropTypes.string.isRequired
+    identityKeypairs: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -86,12 +84,9 @@ class EditProfilePage extends Component {
 
   saveProfile(newProfile) {
     this.props.updateProfile(this.props.routeParams.index, newProfile)
-    const analyticsId = this.props.analyticsId
-    mixpanel.track('Save profile', { distinct_id: analyticsId })
-    mixpanel.track('Perform action', { distinct_id: analyticsId })
 
     const data = signProfileForUpload(this.state.profile, this.props.identityKeypairs[0])
-    
+
     uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
       console.error(err)
       console.error('profile not uploaded')
@@ -100,9 +95,6 @@ class EditProfilePage extends Component {
 
 
   uploadProfilePhoto(file, index) {
-    const analyticsId = this.props.analyticsId
-    mixpanel.track('Upload photo', { distinct_id: analyticsId })
-    mixpanel.track('Perform action', { distinct_id: analyticsId })
     const name = this.state.domainName
     return uploadPhoto(this.props.api, name, file, index)
   }

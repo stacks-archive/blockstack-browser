@@ -1,4 +1,7 @@
 import { getNumberOfVerifications, compareProfilesByVerifications } from '../utils/index'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('store/search.js')
 
 const UPDATE_QUERY = 'UPDATE_QUERY'
 const UPDATE_RESULTS = 'UPDATE_RESULTS'
@@ -44,7 +47,7 @@ function searchIdentities(query, searchUrl, lookupUrl) {
         dispatch(updateResults(query, results))
       })
       .catch((error) => {
-        console.warn(error)
+        logger.warn('searchIdentities: error', error)
       })
   }
 }

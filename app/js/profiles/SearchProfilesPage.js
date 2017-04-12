@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 
 import SearchItem from './components/SearchItem'
 import { SearchActions } from '../store/search'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('profiles/SearchProfilesPage.js')
 
 function mapStateToProps(state) {
   return {
@@ -19,7 +22,9 @@ function mapDispatchToProps(dispatch) {
 class SearchPage extends Component {
   static propTypes = {
     searchResults: PropTypes.array.isRequired,
-    searchIdentities: PropTypes.func.isRequired
+    searchIdentities: PropTypes.func.isRequired,
+    routeParams: PropTypes.object.isRequired,
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -29,11 +34,6 @@ class SearchPage extends Component {
       searchResults: [],
       isLoading: true
     }
-  }
-
-  componentHasNewRouteParams(routeParams) {
-    this.props.searchIdentities(routeParams.query,
-      this.props.api.searchUrl, this.props.api.nameLookupUrl)
   }
 
   componentWillMount() {
@@ -50,33 +50,48 @@ class SearchPage extends Component {
     })
   }
 
+  componentHasNewRouteParams(routeParams) {
+    logger.trace('componentHasNewRouteParams')
+    logger.debug(`Searching for ${routeParams.query}...`)
+    this.props.searchIdentities(routeParams.query,
+      this.props.api.searchUrl, this.props.api.nameLookupUrl)
+  }
+
   render() {
     return (
       <div className="">
         {this.state.searchResults.length ?
-        <ul className="list-group">
-          {this.state.searchResults.map((result, index) => {
-            if (result.profile && result.username) {
-              return (
-                <SearchItem key={result.username + '.id'}
-                  domainName={result.username + '.id'}
-                  profile={result.profile} />
-              )
-            }
-          })}
-        </ul>
+          <ul
+            className="list-group"
+          >
+            {this.state.searchResults.map((result) => {
+              if (result.profile && result.username) {
+                return (
+                  <SearchItem
+                    key={`${result.username}.id`}
+                    domainName={`${result.username}.id`}
+                    profile={result.profile}
+                  />
+                )
+              }
+            })}
+          </ul>
         :
-        <div>
-        {this.state.isLoading ?
-        <h4 className="text-xs-center lead-out">
-          Loading...
-        </h4>
+          <div>
+          {this.state.isLoading ?
+            <h4
+              className="text-xs-center lead-out"
+            >
+            Loading...
+            </h4>
         :
-        <h4 className="text-xs-center lead-out">
-          No results found
-        </h4>
+            <h4
+              className="text-xs-center lead-out"
+            >
+              No results found
+            </h4>
         }
-        </div>
+          </div>
         }
       </div>
     )
