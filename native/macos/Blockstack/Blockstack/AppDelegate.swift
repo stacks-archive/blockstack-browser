@@ -88,8 +88,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
         let url = (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue) ?? ""
         let authRequest = url.replacingOccurrences(of: "blockstack:", with: "")
-        NSLog("Blockstack URL: \(url)")
-        NSLog("Blockstack Auth Request: \(authRequest)")
+        os_log("Blockstack URL: %{public}@", log: log, type: .info, url)
+        os_log("Blockstack Auth Request: %{public}@", log: log, type: .debug, authRequest)
         
         openPortal(path: "\(portalAuthenticationPath)\(authRequest)")
 
@@ -104,49 +104,48 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func openPortalClick(sender: AnyObject?) {
-        NSLog("openPortalClick")
+        os_log("openPortalClick", log: log, type: .debug)
         openPortal(path: "/")
     }
     
     func openProfilesClick(sender: AnyObject?) {
-        NSLog("openProfilesClick")
+        os_log("openProfilesClick", log: log, type: .debug)
         openPortal(path: "/profiles")
     }
     
     func openStorageClick(sender: AnyObject?) {
-        NSLog("openStorageClick")
+        os_log("openStorageClick", log: log, type: .debug)
         openPortal(path: "/storage/providers")
     }
     
     func openWalletClick(sender: AnyObject?) {
-        NSLog("openWalletClick")
+        os_log("openWalletClick", log: log, type: .debug)
         openPortal(path: "/wallet/receive")
     }
     
     func openAccountClick(sender: AnyObject?) {
-        NSLog("openAccountClick")
+        os_log("openAccountClick", log: log, type: .debug)
         openPortal(path: "/account/password")
     }
     
     func openPortal(path: String) {
         let portalURLString = "\(portalBaseUrl())\(path)"
-        NSLog("Opening portal with String: \(portalURLString)")
+        os_log("Opening portal with String: %{public}@", log: log, type: .info, portalURLString)
         let portalURLWithSecretString = "\(portalURLString)#coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
         let portalURLWithSecretAndLogPortString = "\(portalURLWithSecretString)&logServerPort=\(logServerPort)"
         let portalURL = URL(string: portalURLWithSecretAndLogPortString )
-        //NSLog("Opening portal with URL: \(portalURL!)")
         NSWorkspace.shared().open(portalURL!)
     }
     
     func statusItemClick(sender: AnyObject?) {
-        NSLog("statusItemClick")
+        os_log("statusItemClick", log: log, type: .debug)
         
         let menu = NSMenu()
         
         var showExpandedMenu = false
         
         if(NSApp.currentEvent?.modifierFlags.contains(NSEventModifierFlags.option) ?? false) {
-            NSLog("Option click")
+            os_log("Option click", log: log, type: .debug)
             showExpandedMenu = true
         }
         
@@ -212,19 +211,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func copyAPIKeyClick(sender: AnyObject?) {
-        NSLog("copyAPIKeyClick")
+        os_log("copyAPIKeyClick", log: log, type: .debug)
         let pasteboard = NSPasteboard.general()
         pasteboard.declareTypes([NSPasteboardTypeString], owner: nil)
         pasteboard.setString(createOrRetrieveCoreWalletPassword(), forType: NSPasteboardTypeString)
     }
     
     func devModeClick(sender: AnyObject?) {
-        NSLog("devModeClick")
+        os_log("devModeClick", log: log, type: .debug)
         isDevModeEnabled = !isDevModeEnabled
     }
     
     func exitClick(sender: AnyObject?) {
-        NSLog("exitClick")
+        os_log("exitClick", log: log, type: .debug)
         
         let alert = NSAlert()
         
@@ -235,13 +234,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         alert.alertStyle = NSAlertStyle.warning
         
         if alert.runModal() == NSAlertFirstButtonReturn {
-            NSLog("User decided to exit...")
+            os_log("User decided to exit...", log: log, type: .info)
             shutdown(terminate: true)
         }
     }
     
     func checkForUpdatesClick(sender: AnyObject?) {
-        NSLog("checkForUpdatesClick")
+        os_log("checkForUpdatesClick", log: log, type: .debug)
         sparkleUpdater?.checkForUpdates(nil)
     }
     
@@ -251,15 +250,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             NSStatusBar.system().removeStatusItem(statusItem)
             
             portalProxyProcess.terminate()
-            NSLog("Blockstack Portal proxy terminated")
+            os_log("Blockstack Portal proxy terminated", log: log, type: .default)
             
             corsProxyProcess.terminate()
-            NSLog("CORS proxy terminated")
+            os_log("CORS proxy terminated", log: log, type: .default)
             
             stopCoreAPI(terminationHandler: {
                 if(terminate) {
                     NSApplication.shared().terminate(self)
-                    NSLog("Goodbye!")
+                    os_log("Goodbye!", log: self.log, type: .default)
                 }
             })
         }
@@ -269,22 +268,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let proxyPath = Bundle.main.path(forResource: "blockstackProxy", ofType: "")
         let portalPath = Bundle.main.path(forResource: "browser", ofType: "")
         
-        NSLog("Portal proxy path: \(proxyPath)")
-        NSLog("Portal path: \(portalPath)")
+        os_log("Portal proxy path: %{public}@", log: log, type: .info, proxyPath!)
+        os_log("Portal path: %{public}@", log: log, type: .info, portalPath!)
         
         do {
-            NSLog("Trying to remove any existing portal code...")
+            os_log("Trying to remove any existing portal code...", log: log, type: .info)
             try FileManager.default.removeItem(atPath: portalRunPath())
         } catch {
-            NSLog("Can't remove existing portal code. It probably doesn't exist.")
+            os_log("Can't remove existing portal code. It probably doesn't exist.", log: log, type: .info)
         }
         
-        NSLog("Copying the latest portal code into the portal run path \(portalRunPath())")
+        os_log("Copying the latest portal code into the portal run path %{public}@", log: log, type: .info, portalRunPath())
 
         do {
             try FileManager.default.copyItem(atPath: portalPath!, toPath: portalRunPath())
         } catch {
-            NSLog("Can't copy Portal code to the run path: \(portalRunPath())")
+            os_log("Can't copy Portal code to the run path: %{public}@", log: log, type: .error, portalRunPath())
         }
         
             
@@ -292,7 +291,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         self.portalProxyProcess.arguments = [String(self.productionModePortalPort), self.portalRunPath()]
             
-        NSLog("Starting Blockstack Portal proxy...")
+        os_log("Starting Blockstack Portal proxy...", log: log, type: .default)
             
         self.portalProxyProcess.launch()
         complete()
@@ -302,11 +301,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func startCorsProxy(complete: @escaping () -> Void) {
         let corsProxyPath = Bundle.main.path(forResource: "corsproxy", ofType: "")
         
-        NSLog("CORS proxy Path: \(corsProxyPath)")
+        os_log("CORS proxy Path: %{public}@", log: log, type: .info, corsProxyPath!)
         
         corsProxyProcess.launchPath = corsProxyPath
         
-        NSLog("Starting CORS proxy...")
+        os_log("Starting CORS proxy...", log: log, type: .default)
         
         corsProxyProcess.launch()
         complete()
@@ -316,12 +315,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func startCoreAPI(walletPassword: String, complete: @escaping () -> Void) {
         if let archivePath = Bundle.main.path(forResource: coreArchive, ofType: "") {
-            NSLog("Blockstack Virtualenv archive path: \(archivePath)")
+            os_log("Blockstack Virtualenv archive path: %{public}@", log: log, type: .info, archivePath)
             
-            NSLog("Extract Core venv to: \(extractCoreVenvToPath)")
-            NSLog("Blockstack Core config file path: \(coreConfigPath())")
-            NSLog("Blockstack Virtualenv Path: \(coreVenvPath())")
-            NSLog("Blockstack path: \(blockstackPath())")
+            os_log("Extract Core venv to: %{public}@", log: log, type: .info, extractCoreVenvToPath)
+            os_log("Blockstack Core config file path: %{public}@", log: log, type: .info, coreConfigPath())
+            os_log("Blockstack Virtualenv Path: %{public}@", log: log, type: .info, coreVenvPath())
+            os_log("Blockstack path: %{public}@", log: log, type: .info, blockstackPath())
             
             let extractProcess = Process()
             let coreAPISetupProcess = Process()
@@ -329,10 +328,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             do {
                 // see https://github.com/blockstack/blockstack-core/issues/345#issuecomment-288098844
-                NSLog("Trying to remove existing config file because format changes between Core upgrades can break things.")
+                os_log("Trying to remove existing config file because format changes between Core upgrades can break things.", log: log, type: .info)
                 try FileManager.default.removeItem(atPath: coreConfigPath())
             } catch {
-                NSLog("Can't remove existing config file. It probably doesn't exist.")
+                os_log("Can't remove existing config file. It probably doesn't exist.", log: log, type: .info)
             }
 
             
@@ -344,8 +343,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             extractProcess.standardOutput = extractPipe
             extractProcess.standardError = extractPipe
             extractProcess.terminationHandler = { process in
-                NSLog("Finished extraction!")
-                NSLog("Setting up Blockstack Core...")
+                os_log("Finished extraction!", log: self.log, type: .default)
+                os_log("Setting up Blockstack Core...", log: self.log, type: .default)
                 coreAPISetupProcess.launch()
             }
             
@@ -361,8 +360,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             coreAPISetupProcess.standardError = coreAPISetupPipe
             
             coreAPISetupProcess.terminationHandler = { process in
-                NSLog("Finished Blockstack Core setup!");
-                NSLog("Starting Blockstack Core API endpoint...");
+                os_log("Finished Blockstack Core setup!", log: self.log, type: .default)
+                os_log("Starting Blockstack Core API endpoint...", log: self.log, type: .default)
                 coreAPIStartProcess.launch()
             }
             
@@ -377,21 +376,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             coreAPIStartProcess.standardError = coreAPIStartPipe
             
             coreAPIStartProcess.terminationHandler = { process in
-                NSLog("Blockstack Core API started!")
+                os_log("Blockstack Core API started!", log: self.log, type: .default)
                 complete()
             }
             
-            NSLog("Starting Blockstack Core Virtualenv extraction...")
+            os_log("Starting Blockstack Core Virtualenv extraction...", log: log, type: .default)
             extractProcess.launch()
             
         } else {
-            NSLog("Error: Blockstack Core Virtualenv archive file not found!")
+            os_log("Error: Blockstack Core Virtualenv archive file not found!", log: log, type: .error)
         }
         
     }
     
     func stopCoreAPI(terminationHandler:@escaping () -> Void) {
-        NSLog("Attempting to stop Blockstack Core API...")
+        os_log("Attempting to stop Blockstack Core API...", log: log, type: .default)
         
         let coreAPIStopProcess = Process()
         
@@ -403,7 +402,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         coreAPIStopProcess.standardError = coreAPIStopPipe
         
         coreAPIStopProcess.terminationHandler = { process in
-            NSLog("Blockstack Core api stopped.")
+            os_log("Blockstack Core api stopped.", log: self.log, type: .default)
             terminationHandler()
         }
         
@@ -429,16 +428,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func blockstackDataURL() -> URL {
         let applicationSupportDirectory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         
-        //NSLog("Application Support directory: \(applicationSupportDirectory)")
+        os_log("Application Support directory: %{public}@", log: log, type: .debug, applicationSupportDirectory.absoluteString)
         
         let blockstackDataPath = applicationSupportDirectory.appendingPathComponent("Blockstack")
         
-        //NSLog("Blockstack data directory: \(blockstackDataPath)")
+        os_log("Blockstack data directory: %{public}@", log: log, type: .debug, blockstackDataPath.absoluteString)
         
         do {
             try FileManager.default.createDirectory(atPath: blockstackDataPath.path, withIntermediateDirectories: false, attributes: nil)
         } catch {
-            //NSLog("Blockstack data directory probably already exists: \(error)")
+            os_log("Blockstack data directory probably already exists", log: log, type: .debug)
         }
         
         return blockstackDataPath
@@ -448,7 +447,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     /* Keychain management of Blockstack Core wallet password */
     
     func createOrRetrieveCoreWalletPassword() -> String {
-        
+        os_log("createOrRetrieveCoreWalletPassword", log: log, type: .debug)
         let serviceNameData = (keychainServiceName as NSString).utf8String
         let accountNameData = (keychainAccountName as NSString).utf8String
         
@@ -464,17 +463,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if(status == errSecSuccess) {
             let password = String(NSString(bytes: UnsafeMutableRawPointer(passwordData)!, length: Int(passwordLength), encoding: String.Encoding.utf8.rawValue)!)
             SecKeychainItemFreeContent(nil, passwordData) // free memory
-            NSLog("Blockstack Core wallet password found in keychain")
+            os_log("Blockstack Core wallet password found in keychain", log: log, type: .info)
             return password
         } else {
-            NSLog("Blockstack Core wallet password not found in keychain: \(SecCopyErrorMessageString(status, nil))")
+            os_log("Blockstack Core wallet password not found in keychain: %{public}@", log: log, type: .info, SecCopyErrorMessageString(status, nil) as! CVarArg)
             SecKeychainItemFreeContent(nil, passwordData) // free memory
-            
+
             return createAndStorePasswordInKeychain()
         }
     }
     
     func createAndStorePasswordInKeychain() -> String {
+        os_log("createAndStorePasswordInKeychain", log: log, type: .debug)
         let serviceNameData = (keychainServiceName as NSString).utf8String
         let accountNameData = (keychainAccountName as NSString).utf8String
         
@@ -485,16 +485,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let keychains : SecKeychain? = nil // use the default keychain
         
+        os_log("Storing new password in Keychain: service name: %{public} account name: %{public}@", keychainServiceName, keychainAccountName)
         let status = SecKeychainAddGenericPassword(keychains, UInt32(strlen(serviceNameData)), serviceNameData, UInt32(strlen(accountNameData)), accountNameData, UInt32(strlen(passwordData)), passwordData!, &unmanagedItem)
         
         if(status != errSecSuccess) {
-            NSLog("Problem storing Blockstack Core wallet password to Keychain \(SecCopyErrorMessageString(status, nil))");
+            os_log("Problem storing Blockstack Core wallet password to Keychain %{public}@", log: log, type: .error, (SecCopyErrorMessageString(status, nil) as! CVarArg))
         }
         
         return password
     }
     
     func generatePassword() -> String {
+        os_log("generatePassword", log: log, type: .debug)
         // this isn't necessarily secure or random, but good enough for our purposes.
         return ProcessInfo.processInfo.globallyUniqueString
     }
@@ -504,9 +506,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         pipe.fileHandleForReading.readabilityHandler = { pipe in
             
             if let line = String(data: pipe.availableData, encoding: String.Encoding.utf8) {
-                NSLog(line)
+                os_log("%{public}@", log: self.log, type: .debug, line)
             } else {
-                NSLog("Error decoding data: \(pipe.availableData)")
+                os_log("Error decoding data: %{public}@", log: self.log, type: .error, pipe.availableData as CVarArg)
             }
         }
         return pipe
