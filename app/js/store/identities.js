@@ -307,7 +307,7 @@ function registerName(api, domainName, recipientAddress, keypair) {
       })
 
       dispatch(registrationSubmitting())
-      logger.trace(`Submitting registration for %{domainName} to Core node at ${api.registerUrl}`)
+      logger.trace(`Submitting registration for ${domainName} to Core node at ${api.registerUrl}`)
       fetch(api.registerUrl, {
         method: 'POST',
         headers: requestHeaders,
