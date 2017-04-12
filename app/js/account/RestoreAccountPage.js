@@ -7,6 +7,9 @@ import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import { AccountActions } from '../store/account'
 import { isBackupPhraseValid } from '../utils'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('account/RestoreAccountPage.js')
 
 function mapStateToProps(state) {
   return {
@@ -37,14 +40,22 @@ class RestorePage extends Component {
     this.onValueChange = this.onValueChange.bind(this)
   }
 
+  onValueChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
   updateAlert(alertStatus, alertMessage) {
+    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
   }
 
   restoreAccount() {
-    let { isValid, error } = isBackupPhraseValid(this.state.backupPhrase)
+    logger.trace('restoreAccount')
+    const { isValid, error } = isBackupPhraseValid(this.state.backupPhrase)
 
     if (isValid) {
       if (this.state.password === this.state.passwordConfirmation) {
@@ -56,14 +67,9 @@ class RestorePage extends Component {
         this.updateAlert('danger', 'Passwords must match')
       }
     } else {
+      logger.error('Backup phrase invalid', error)
       this.updateAlert('danger', error)
     }
-  }
-
-  onValueChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
   }
 
   render() {

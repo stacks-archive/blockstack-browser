@@ -8,7 +8,8 @@ function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
     coreWalletAddress: state.account.coreWallet.address,
-    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
+    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
+    coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
 
@@ -21,7 +22,8 @@ class ReceivePage extends Component {
     addresses: PropTypes.array.isRequired,
     coreWalletAddress: PropTypes.string,
     getCoreWalletAddress: PropTypes.func.isRequired,
-    walletPaymentAddressUrl: PropTypes.string.isRequired
+    walletPaymentAddressUrl: PropTypes.string.isRequired,
+    coreAPIPassword: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -29,7 +31,7 @@ class ReceivePage extends Component {
   }
 
   componentWillMount() {
-    this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl)
+    this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl, this.props.coreAPIPassword)
   }
 
   render() {

@@ -18,7 +18,8 @@ function mapStateToProps(state) {
   return {
     account: state.account,
     coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl,
-    broadcastTransactionUrl: state.settings.api.broadcastTransactionUrl
+    broadcastTransactionUrl: state.settings.api.broadcastTransactionUrl,
+    coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
 
@@ -32,7 +33,8 @@ class SendPage extends Component {
     coreWalletWithdrawUrl: PropTypes.string.isRequired,
     broadcastTransactionUrl: PropTypes.string.isRequired,
     resetCoreWithdrawal: PropTypes.func.isRequired,
-    withdrawBitcoinFromCoreWallet: PropTypes.func.isRequired
+    withdrawBitcoinFromCoreWallet: PropTypes.func.isRequired,
+    coreAPIPassword: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -78,7 +80,7 @@ class SendPage extends Component {
     event.preventDefault()
 
     this.props.withdrawBitcoinFromCoreWallet(
-      this.props.coreWalletWithdrawUrl, this.state.recipientAddress)
+      this.props.coreWalletWithdrawUrl, this.state.recipientAddress, this.props.coreAPIPassword)
     return // temporary until we switch back to built in wallet
 
     const password = this.state.password
@@ -189,7 +191,7 @@ class SendPage extends Component {
             name="password" label="Password"
             placeholder="Password" type="password" required={true}/>
           <div className="container m-t-40">
-            <button className="btn btn-wallet" type="submit pull-right" disabled={disabled}>
+            <button className="btn btn-wallet pull-right" type="submit" disabled={disabled}>
               Send
             </button>
           </div>

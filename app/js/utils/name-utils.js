@@ -1,4 +1,7 @@
 import hasProp from 'hasprop'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('utils/name-utils.js')
 
 export function isABlockstackName(s) {
   return /^[a-z0-9_-]+\.[a-z0-9_-]+$/.test(s)
@@ -37,7 +40,7 @@ export function isNameAvailable(lookupUrl, domainName) {
         }
       })
       .catch((error) => {
-        console.warn(error)
+        logger.error('isNameAvailable', error)
         reject(error)
       })
   })
@@ -46,7 +49,7 @@ export function isNameAvailable(lookupUrl, domainName) {
 export function getNamePrices(priceUrl, domainName) {
   return new Promise((resolve, reject) => {
     if (!isABlockstackName(domainName)) {
-      reject("Not a Blockstack name")
+      reject('Not a Blockstack name')
       return
     }
 
@@ -55,19 +58,19 @@ export function getNamePrices(priceUrl, domainName) {
     fetch(url).then(
 
     ).then((response) => {
-      if(response.ok) {
+      if (response.ok) {
         response.text().then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
           resolve(responseJson)
         })
       } else {
-        reject("Error")
+        logger.error('getNamePrices: error parsing price result')
+        reject('Error')
       }
     })
     .catch((error) => {
-      console.warn(error)
+      logger.error('getNamePrices: error retrieving price', error)
       reject(error)
     })
   })
-
 }

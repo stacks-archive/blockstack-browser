@@ -1,3 +1,5 @@
+import log4js from 'log4js'
+const logger = log4js.getLogger('storage/utils/blockstack-inc.js')
 
 // TODO implement
 export function uploadPhotoToBlockstackInc(api, name, photoFile, index) {
@@ -32,7 +34,7 @@ function uploadToBlockstackLabsS3(filename, data, resolve, reject) {
       }
     })
     .catch((error) => {
-      console.warn(error)
+      logger.error('uploadToBlockstackLabsS3: error uploading', error)
       reject(error)
     })
 }

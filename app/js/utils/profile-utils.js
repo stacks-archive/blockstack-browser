@@ -1,4 +1,5 @@
-import { PrivateKeychain, PublicKeychain, signProfileToken, wrapProfileToken } from 'blockstack'
+import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
+import { signProfileToken, wrapProfileToken } from 'blockstack'
 import { decodeToken, TokenSigner, TokenVerifier } from 'jwt-js'
 
 import BigInteger from 'bigi'
