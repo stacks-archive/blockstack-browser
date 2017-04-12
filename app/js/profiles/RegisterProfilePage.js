@@ -9,7 +9,7 @@ import { IdentityActions } from '../store/identities'
 import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/RegisterProfilePage.js')
+const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
 
 const WALLET_URL = '/wallet/deposit'
 

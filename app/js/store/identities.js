@@ -373,17 +373,17 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
               verifications = proofs
               dispatch(updateCurrentIdentity(domainName, profile, verifications))
             }).catch((error) => {
-              logger.error('fetchCurrentIdentity: validateProofs: error', error)
+              logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
             })
           }
         })
         .catch((error) => {
-          logger.error('fetchCurrentIdentity: resolveZoneFileToProfile: error', error)
+          logger.error(`fetchCurrentIdentity: ${domainName} resolveZoneFileToProfile: error`, error)
         })
       })
       .catch((error) => {
         dispatch(updateCurrentIdentity(domainName, null, []))
-        logger.error('fetchCurrentIdentity: lookup error', error)
+        logger.error(`fetchCurrentIdentity: ${domainName} lookup error`, error)
       })
   }
 }
@@ -415,7 +415,7 @@ function checkNameAvailabilityAndPrice(api, domainName) {
 }
 
 function loadPGPPublicKey(contentUrl, identifier) {
-  console.log("loadPGPPublicKey")
+  logger.trace('loadPGPPublicKey')
   return dispatch => {
     dispatch(loadingPGPKey(identifier))
     proxyFetch(contentUrl)
