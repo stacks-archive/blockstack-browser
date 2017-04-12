@@ -7,6 +7,9 @@ import { AccountActions } from './store/account'
 import { SettingsActions } from './store/settings'
 import WelcomeModal from './components/WelcomeModal'
 import hash from 'hash-handler'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('App.js')
 
 function mapStateToProps(state) {
   return {
@@ -41,16 +44,27 @@ class App extends Component {
 
     this.closeModal = this.closeModal.bind(this)
     this.getCoreAPIPasswordFromURL = this.getCoreAPIPasswordFromURL.bind(this)
+    this.getLogServerPortFromURL = this.getLogServerPortFromURL.bind(this)
   }
 
   componentWillMount() {
+    logger.trace('componentWillMount')
     const coreAPIPassword = this.getCoreAPIPasswordFromURL()
+    const logServerPort = this.getLogServerPortFromURL()
     if (coreAPIPassword != null) {
       let api = this.props.api
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
-      hash.getInstance().clear()
     }
+
+    if (logServerPort != null) {
+      console.log(logServerPort)
+      let api = this.props.api
+      api = Object.assign({}, api, { logServerPort })
+      this.props.updateApi(api)
+    }
+
+    hash.getInstance().clear()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,6 +81,14 @@ class App extends Component {
       return null
     }
     return coreAPIPassword
+  }
+
+  getLogServerPortFromURL() {
+    const logServerPort = hash.getInstance().get('logServerPort')
+    if (typeof logServerPort === undefined) {
+      return null
+    }
+    return logServerPort
   }
 
   closeModal() {

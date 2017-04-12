@@ -9,6 +9,7 @@ The Blockstack Browser Portal allows you to explore the Blockstack internet.
 - [Building for macOS](#building-for-macos)
 - [Building for the Web](#building-for-the-web)
 - [Contributing](#contributing)
+- [Logging](#logging)
 - [Tech Stack](#tech-stack)
 - [Testing](#testing)
 
@@ -92,6 +93,40 @@ We do project-wide sprints every two weeks and we're always looking for more hel
 
 If you'd like to contribute, head to the [contributing guidelines](/CONTRIBUTING.md). Inside you'll find directions for opening issues, coding standards, and notes on development.
 
+## Logging
+
+The Portal uses `log4js` for logging. The macOS app uses macOS's unified logging
+API, `os_log` for logging.
+
+### macOS
+
+On macOS, the Portal sends log events to the macOS
+app's log server. These are then included in macOS's unified logging API. You
+can view logs by starting `Console.app`. Set up a filter the `Blockstack` process
+to only see Blockstack logs. If you'd like to see more detail, in enable inclusion
+of Info and Debug messages in the Action menu.
+
+#### Sending logs to developers
+
+Blockstack logs are included in macOS's unified logging system. This allows
+us to easily collect a large amount of information about the user's system when
+we need to troubleshoot a problem while protecting their privacy.
+
+1. Press Shift-Control-Option-Command-Period. Your screen will briefly flash.
+2. After a few minutes, a Finder window will automatically open to `/private/var/tmp`
+3. Send the most recent `sysdiagnose_DATE_TIME.tar.gz` file to your friendly developers.
+
+The most important file in this archive is `system_logs.logarchive`, which will
+include recent system logs including Blockstack's logs. You can open it on
+a Mac using `Console.app`. The other files include information about your computer
+that may help in diagnosing problems.
+
+If you're worried about inadvertently sending some private information,
+you can select the log entries you'd like to send inside `Console.app` and copy
+them into an email or github issue.
+
+More technical users (with admin permission) can use the `sysdiagnose` command
+to generate a custom dump of information.
 
 ## Tech Stack
 

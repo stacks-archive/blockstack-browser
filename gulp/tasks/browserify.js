@@ -28,6 +28,10 @@ function buildScript(file, watch) {
     fullPaths: global.isProd ? false : true
   });
 
+  bundler.require('./node_modules/log4js/lib/appenders/stdout.js', { expose: 'stdout' })
+  bundler.require('./node_modules/log4js/lib/appenders/console.js', { expose: 'console' })
+  bundler.require('./app/js/utils/log4js/portal-appender.js', { expose: 'portal-appender' })
+
   if ( watch ) {
     bundler = watchify(bundler);
     bundler.on('update', rebundle);

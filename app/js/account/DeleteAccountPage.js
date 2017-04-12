@@ -6,6 +6,9 @@ import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import { AccountActions } from '../store/account'
 import { decrypt } from '../utils'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('account/DeleteAccountPage.js')
 
 function mapStateToProps(state) {
   return {
@@ -39,43 +42,51 @@ class DeleteAccountPage extends Component {
     this.onValueChange = this.onValueChange.bind(this)
   }
 
-  updateAlert(alertStatus, alertMessage) {
-    this.setState({
-      alerts: [{ status: alertStatus, message: alertMessage }]
-    })
-  }
-
-  deleteAccount() {
-    const password = this.state.password,
-          dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
-    decrypt(dataBuffer, password, (err, plaintextBuffer) => {
-      if (!err) {
-        localStorage.clear()
-        location.reload()
-        //this.context.router.push('/landing')
-      } else {
-        this.updateAlert('danger', 'Incorrect password')
-      }
-    })
-  }
-
   onValueChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
+  updateAlert(alertStatus, alertMessage) {
+    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    this.setState({
+      alerts: [{ status: alertStatus, message: alertMessage }]
+    })
+  }
+
+  deleteAccount() {
+    logger.trace('deleteAccount')
+    const password = this.state.password
+    const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
+    logger.debug('Trying to decrypt backup phrase...')
+    decrypt(dataBuffer, password, (err) => {
+      if (!err) {
+        logger.debug('Backup phrase successfully decrypted')
+        logger.debug('Clearing localStorage...')
+        localStorage.clear()
+        logger.trace('Reloading page...')
+        location.reload()
+      } else {
+        this.updateAlert('danger', 'Incorrect password')
+      }
+    })
+  }
+
   render() {
     return (
       <div>
-        { this.state.alerts.map(function(alert, index) {
-          return (
-            <Alert key={index} message={alert.message} status={alert.status} />
-          )
-        })}
+        {
+          this.state.alerts.map((alert, index) => {
+            return (
+              <Alert key={index} message={alert.message} status={alert.status} />
+            )
+          })}
         <div>
-          <InputGroup name="password" label="Password" type="password"
-            data={this.state} onChange={this.onValueChange} />
+          <InputGroup
+            name="password" label="Password" type="password"
+            data={this.state} onChange={this.onValueChange}
+          />
           <div className="container m-t-40">
             <button className="btn btn-primary" onClick={this.deleteAccount}>
               Delete Account

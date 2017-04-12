@@ -3,6 +3,9 @@ import { encrypt, decrypt, decryptPrivateKeychain, getIdentityPrivateKeychain, g
 import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
 import { ECPair } from 'bitcoinjs-lib'
 import { authorizationHeaderValue } from '../utils'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('store/account.js')
 
 const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
       DELETE_ACCOUNT = 'DELETE_ACCOUNT',
@@ -29,12 +32,6 @@ function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
   const firstIdentityKey = identityPrivateKeychain.ecPair.d.toBuffer(32).toString('hex')
   const firstIdentityKeyID = identityPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
 
-  let analyticsId = identityPublicKeychain
-  if (email) {
-    analyticsId = email
-  }
-  mixpanel.track('Create account', { distinct_id: analyticsId })
-  mixpanel.track('Perform action', { distinct_id: analyticsId })
 
   return {
     type: CREATE_ACCOUNT,
@@ -44,8 +41,7 @@ function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
     firstIdentityAddress: firstIdentityAddress,
     firstBitcoinAddress: firstBitcoinAddress,
     firstIdentityKey: firstIdentityKey,
-    firstIdentityKeyID: firstIdentityKeyID,
-    analyticsId: analyticsId
+    firstIdentityKeyID: firstIdentityKeyID
   }
 }
 
@@ -123,6 +119,9 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
         updateCoreWalletBalance(balance)
       )
     })
+    .catch((error) => {
+      logger.error('refreshCoreWalletBalance: error refreshing balance', error)
+    })
   }
 }
 
@@ -137,6 +136,8 @@ function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
       dispatch(
         updateCoreWalletAddress(address)
       )
+    }).catch((error) => {
+      logger.error('getCoreWalletAddress: error fetching address', error)
     })
   }
 }
@@ -176,7 +177,7 @@ return dispatch => {
       }
     })
     .catch((error) => {
-      console.warn(error)
+      logger.error('withdrawBitcoinFromCoreWallet:', error)
       dispatch(withdrawCoreBalanceError(error))
     })
   }
@@ -186,7 +187,6 @@ function refreshBalances(addressBalanceUrl, addresses) {
   return dispatch => {
     let results = []
     addresses.forEach((address) => {
-
       // fetch balances from https://explorer.blockstack.org/insight-api/addr/{address}/?noTxList=1
       // parse results from: {"addrStr":"1Fvoya7XMvzfpioQnzaskndL7YigwHDnRE","balance":0.02431567,"balanceSat":2431567,"totalReceived":38.82799913,"totalReceivedSat":3882799913,"totalSent":38.80368346,"totalSentSat":3880368346,"unconfirmedBalance":0,"unconfirmedBalanceSat":0,"unconfirmedTxApperances":0,"txApperances":2181}
       const url = addressBalanceUrl.replace('{address}', address)
@@ -222,6 +222,9 @@ function refreshBalances(addressBalanceUrl, addresses) {
           )
         }
       })
+    })
+    .catch((error) => {
+      logger.error('refreshBalances: error', error)
     })
   }
 }
@@ -283,7 +286,6 @@ const initialState = {
     addresses: [],
     balances: { total: 0.0 }
   },
-  analyticsId: '',
   coreWallet: {
     address: null,
     balance: 0.0,
@@ -321,8 +323,7 @@ export function AccountReducer(state=initialState, action) {
           ],
           addressIndex: 0,
           balances: state.bitcoinAccount.balances
-        },
-        analyticsId: action.analyticsId
+        }
       })
     case DELETE_ACCOUNT:
       return Object.assign({}, state, {

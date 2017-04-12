@@ -11,6 +11,10 @@ import {
 
 import { uploadProfile } from '../storage/utils/index'
 
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('store/identities.js')
+
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
       CREATE_NEW = 'CREATE_NEW',
@@ -186,14 +190,14 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
   })
 
   Object.keys(updatedLocalIdentities).forEach((name) => {
-    let identity = updatedLocalIdentities[name]
+    const identity = updatedLocalIdentities[name]
     localNamesDict[identity.domainName] = true
     if (remoteNamesDict.hasOwnProperty(identity.domainName)) {
       identity.registered = true
     }
   })
 
-  namesOwned.map(function(name) {
+  namesOwned.map((name) => {
     if (!localNamesDict.hasOwnProperty(name)) {
       updatedLocalIdentities[name] = {
         domainName: name,
@@ -211,17 +215,17 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
 }
 
 function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
+  logger.trace('refreshIdentities')
   return dispatch => {
     if (addresses.length === 0) {
-      let namesOwned = []
-      let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+      const namesOwned = []
+      const updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
       if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
         // pass
       } else {
         dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
       }
     } else {
-
       let count =  addresses.length
       let namesOwned = []
 
@@ -232,10 +236,10 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
           .then((responseText) => JSON.parse(responseText))
           .then((responseJson) => {
             count++
-            namesOwned = namesOwned.concat(responseJson['names'])
+            namesOwned = namesOwned.concat(responseJson.names)
 
-            if(count >= addresses.length) {
-              let updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+            if (count >= addresses.length) {
+              const updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
 
               if (JSON.stringify(lastNameLookup) === JSON.stringify(namesOwned)) {
                 // pass
@@ -250,18 +254,22 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
                     const zoneFile = responseJson.zonefile,
                           ownerAddress = responseJson.address
 
-                    resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
+                    resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                       if (profile)
                         dispatch(updateProfile(domainName, profile))
                     })
-                  }).catch((error) => {
-                    console.error(error)
+                    .catch((error) => {
+                      logger.error('refreshIdentities: resolveZoneFileToProfile: error', error)
+                    })
+                  })
+                  .catch((error) => {
+                    logger.error('refreshIdentities: lookupUrl: error', error)
                   })
                 })
               }
             }
           }).catch((error) => {
-            console.warn(error)
+            logger.error('refreshIdentities: addressLookup: error', error)
           })
 
       })
@@ -270,14 +278,19 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
 }
 
 function registerName(api, domainName, recipientAddress, keypair) {
+  logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
+    logger.debug(`Signing a blank default profile for ${domainName}`)
     const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
 
     dispatch(profileUploading())
-
+    logger.trace(`Uploading ${domainName} profile...`)
     uploadProfile(api, domainName, signedProfileTokenData, true).then((profileUrl) => {
-
+      logger.trace(`Uploading ${domainName} profiled succeeded.`)
       const tokenFileUrl = profileUrl
+      logger.debug(`tokenFileUrl: ${tokenFileUrl}`)
+
+      logger.trace(`Making profile zonefile...`)
       const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
 
       const requestHeaders = {
@@ -294,7 +307,7 @@ function registerName(api, domainName, recipientAddress, keypair) {
       })
 
       dispatch(registrationSubmitting())
-
+      logger.trace(`Submitting registration for ${domainName} to Core node at ${api.registerUrl}`)
       fetch(api.registerUrl, {
         method: 'POST',
         headers: requestHeaders,
@@ -303,20 +316,21 @@ function registerName(api, domainName, recipientAddress, keypair) {
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
-          console.log(responseJson)
           if(responseJson['error']) {
+            logger.error(responseJson['error'])
             dispatch(registrationError(responseJson['error']))
           } else {
+            logger.debug(`Successfully submitted registration for ${domainName}`)
             dispatch(registrationSubmitted())
             dispatch(createNewIdentity(domainName))
           }
         })
         .catch((error) => {
-          console.error(error)
+          logger.error('registerName: error POSTing regitsration to Core', error)
           dispatch(registrationError(error))
         })
       }).catch((error) => {
-        console.error(error)
+        logger.error('registerName: error uploading profile', error)
         dispatch(profileUploadError(error))
       })
     }
@@ -351,20 +365,25 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
           throw "Invalid lookup URL"
         }
 
-        resolveZoneFileToProfile(zoneFile, ownerAddress, (profile) => {
+        resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
           let verifications = []
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
           if (profile) {
             validateProofs(profile, domainName).then((proofs) => {
               verifications = proofs
               dispatch(updateCurrentIdentity(domainName, profile, verifications))
+            }).catch((error) => {
+              logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
             })
           }
+        })
+        .catch((error) => {
+          logger.error(`fetchCurrentIdentity: ${domainName} resolveZoneFileToProfile: error`, error)
         })
       })
       .catch((error) => {
         dispatch(updateCurrentIdentity(domainName, null, []))
-        console.warn(error)
+        logger.error(`fetchCurrentIdentity: ${domainName} lookup error`, error)
       })
   }
 }
@@ -382,19 +401,21 @@ function checkNameAvailabilityAndPrice(api, domainName) {
             const price = prices.total_estimated_cost.btc
             dispatch(namePrice(domainName, price))
         }).catch((error) => {
+          logger.error('checkNameAvailabilityAndPrice: getNamePrices: error', error)
           dispatch(namePriceError(domainName, error))
         })
       } else {
         dispatch(nameUnavailable(domainName))
       }
     }).catch((error) => {
+      logger.error('checkNameAvailabilityAndPrice: isNameAvailable: error', error)
       dispatch(nameAvailabilityError(domainName, error))
     })
   }
 }
 
 function loadPGPPublicKey(contentUrl, identifier) {
-  console.log("loadPGPPublicKey")
+  logger.trace('loadPGPPublicKey')
   return dispatch => {
     dispatch(loadingPGPKey(identifier))
     proxyFetch(contentUrl)
@@ -403,7 +424,7 @@ function loadPGPPublicKey(contentUrl, identifier) {
         dispatch(loadedPGPKey(identifier, publicKey))
       })
       .catch((e) => {
-        console.error(e)
+        logger.error('loadPGPPublicKey: error', error)
         dispatch(loadingPGPKeyError(identifier, e))
       })
   }

@@ -1,4 +1,7 @@
 import { fetchAppManifest } from 'blockstack'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('store/auth.js')
 
 const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING',
       APP_MANIFEST_LOADING_ERROR = 'APP_MANIFEST_LOADING_ERROR',
@@ -34,7 +37,7 @@ function loadAppManifest(authRequest) {
     fetchAppManifest(authRequest).then(appManifest => {
       dispatch(appManifestLoaded(appManifest))
     }).catch((e) => {
-      console.error(e)
+      logger.error('loadAppManifest: error', e)
       dispatch(appManifestLoadingError(e))
     })
   }

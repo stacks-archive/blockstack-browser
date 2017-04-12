@@ -1,4 +1,7 @@
 import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../storage/utils/index'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('store/settings.js')
 
 const UPDATE_API = 'UPDATE_API'
 
@@ -21,6 +24,7 @@ const DEFAULT_API = {
   pgpKeyUrl: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on',
   hostedDataLocation: DROPBOX,
   coreAPIPassword: null,
+  logServerPort: '',
   blockstackApiAppId: '470c9d0c7dbd41b1bb6defac9be3595a',
   blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
   s3ApiKey: '',
@@ -65,7 +69,7 @@ function setAPICredentials(api, email, name, company, callback) {
         }
       })
       .catch((error) => {
-        console.warn(error)
+        logger.error('setAPICredentials: error', error)
         callback(false)
       })
   }
