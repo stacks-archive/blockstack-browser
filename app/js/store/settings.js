@@ -36,24 +36,24 @@ export const DEFAULT_API = {
 function updateApi(api) {
   return {
     type: UPDATE_API,
-    api: api
+    api
   }
 }
 
 function setAPICredentials(api, email, name, company, callback) {
   return dispatch => {
-    const signupUrl = "https://api.blockstack.com/signup/browser"
+    const signupUrl = 'https://api.blockstack.com/signup/browser'
     const headers = {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json'
     }
     const body = JSON.stringify({
-      email: email,
-      name: name,
-      company: company
+      email,
+      name,
+      company
     })
 
-    fetch(signupUrl, { method: 'POST', headers: headers, mode: 'cors', body: body })
+    fetch(signupUrl, { method: 'POST', headers, mode: 'cors', body })
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
