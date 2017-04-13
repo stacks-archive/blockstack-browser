@@ -25,8 +25,6 @@ export const DEFAULT_API = {
   hostedDataLocation: DROPBOX,
   coreAPIPassword: null,
   logServerPort: '',
-  blockstackApiAppId: '470c9d0c7dbd41b1bb6defac9be3595a',
-  blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
   s3ApiKey: '',
   s3ApiSecret: '',
   s3Bucket: '',
@@ -40,42 +38,8 @@ function updateApi(api) {
   }
 }
 
-function setAPICredentials(api, email, name, company, callback) {
-  return dispatch => {
-    const signupUrl = 'https://api.blockstack.com/signup/browser'
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-    const body = JSON.stringify({
-      email,
-      name,
-      company
-    })
-
-    fetch(signupUrl, { method: 'POST', headers, mode: 'cors', body })
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        if (responseJson.hasOwnProperty('error')) {
-          callback(false)
-        } else {
-          api.blockstackApiAppId = responseJson.app_id
-          api.blockstackApiAppSecret = responseJson.app_secret
-
-          dispatch(updateApi(api))
-
-          callback(true)
-        }
-      })
-      .catch((error) => {
-        logger.error('setAPICredentials: error', error)
-        callback(false)
-      })
-  }
-}
-
 function resetApi(api) {
+  logger.trace('resetApi')
   return dispatch => {
     dispatch(updateApi(Object.assign({}, DEFAULT_API, {
       dropboxAccessToken: api.dropboxAccessToken,
@@ -95,8 +59,7 @@ function addMissingApiKeys(newState) {
 
 export const SettingsActions = {
   updateApi,
-  resetApi,
-  setAPICredentials
+  resetApi
 }
 
 const initialState = {
