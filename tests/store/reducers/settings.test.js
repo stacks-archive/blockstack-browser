@@ -67,4 +67,13 @@ describe('SettingsReducer', () => {
         api: DEFAULT_API
       })
   })
+
+  it('should update the bitcoin price', () => {
+    const action = {
+      type: 'UPDATE_BTC_PRICE',
+      price: 1234.56
+    }
+    const state = SettingsReducer(undefined, action)
+    assert.equal(state.api.btcPrice, 1234.56)
+  })
 })

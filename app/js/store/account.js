@@ -35,27 +35,27 @@ function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
 
   return {
     type: CREATE_ACCOUNT,
-    encryptedBackupPhrase: encryptedBackupPhrase,
-    identityPublicKeychain: identityPublicKeychain,
-    bitcoinPublicKeychain: bitcoinPublicKeychain,
-    firstIdentityAddress: firstIdentityAddress,
-    firstBitcoinAddress: firstBitcoinAddress,
-    firstIdentityKey: firstIdentityKey,
-    firstIdentityKeyID: firstIdentityKeyID
+    encryptedBackupPhrase,
+    identityPublicKeychain,
+    bitcoinPublicKeychain,
+    firstIdentityAddress,
+    firstBitcoinAddress,
+    firstIdentityKey,
+    firstIdentityKeyID
   }
 }
 
 function updateCoreWalletAddress(coreWalletAddress) {
   return {
     type: UPDATE_CORE_ADDRESS,
-    coreWalletAddress: coreWalletAddress
+    coreWalletAddress
   }
 }
 
 function updateCoreWalletBalance(coreWalletBalance) {
   return {
     type: UPDATE_CORE_BALANCE,
-    coreWalletBalance: coreWalletBalance
+    coreWalletBalance
   }
 }
 
@@ -70,14 +70,14 @@ function deleteAccount() {
 function updateBackupPhrase(encryptedBackupPhrase) {
   return {
     type: UPDATE_BACKUP_PHRASE,
-    encryptedBackupPhrase: encryptedBackupPhrase
+    encryptedBackupPhrase
   }
 }
 
 function updateBalances(balances) {
   return {
     type: UPDATE_BALANCES,
-    balances: balances
+    balances
   }
 }
 
@@ -90,7 +90,7 @@ function resetCoreBalanceWithdrawal() {
 function withdrawingCoreBalance(recipientAddress) {
   return {
     type: WITHDRAWING_CORE_BALANCE,
-    recipientAddress: recipientAddress
+    recipientAddress
   }
 }
 
@@ -103,7 +103,7 @@ function withdrawCoreBalanceSuccess() {
 function withdrawCoreBalanceError(error) {
   return {
     type: WITHDRAW_CORE_BALANCE_ERROR,
-    error: error
+    error
   }
 }
 

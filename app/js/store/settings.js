@@ -4,6 +4,7 @@ import log4js from 'log4js'
 const logger = log4js.getLogger('store/settings.js')
 
 const UPDATE_API = 'UPDATE_API'
+const UPDATE_BTC_PRICE = 'UPDATE_BTC_PRICE'
 
 
 // DEFAULT_API values are only used if
@@ -27,19 +28,28 @@ export const DEFAULT_API = {
   bitcoinAddressUrl: 'https://explorer.blockstack.org/address/{identifier}',
   ethereumAddressUrl: 'https://tradeblock.com/ethereum/account/{identifier}',
   pgpKeyUrl: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on',
+  btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
   hostedDataLocation: DROPBOX,
   coreAPIPassword: null,
   logServerPort: '',
   s3ApiKey: '',
   s3ApiSecret: '',
   s3Bucket: '',
-  dropboxAccessToken: null
+  dropboxAccessToken: null,
+  btcPrice: '1000.00'
 }
 
 function updateApi(api) {
   return {
     type: UPDATE_API,
     api
+  }
+}
+
+function updateBtcPrice(price) {
+  return {
+    type: UPDATE_BTC_PRICE,
+    price
   }
 }
 
@@ -50,6 +60,19 @@ function resetApi(api) {
       dropboxAccessToken: api.dropboxAccessToken,
       coreAPIPassword: api.coreAPIPassword
     })))
+  }
+}
+
+function refreshBtcPrice(btcPriceUrl) {
+  return dispatch => {
+    fetch(btcPriceUrl).then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      dispatch(updateBtcPrice(responseJson.last))
+    })
+    .catch((error) => {
+      logger.error('refreshBtcPrice:', error)
+    })
   }
 }
 
@@ -64,7 +87,8 @@ function addMissingApiKeys(newState) {
 
 export const SettingsActions = {
   updateApi,
-  resetApi
+  resetApi,
+  refreshBtcPrice
 }
 
 const initialState = {
@@ -76,6 +100,12 @@ export function SettingsReducer(state = initialState, action) {
     case UPDATE_API:
       return Object.assign({}, state, {
         api: action.api || {}
+      })
+    case UPDATE_BTC_PRICE:
+      return Object.assign({}, state, {
+        api: Object.assign({}, state.api, {
+          btcPrice: action.price
+        })
       })
     default: {
       let newState = Object.assign({}, state, {

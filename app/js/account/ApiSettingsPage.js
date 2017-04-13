@@ -138,6 +138,8 @@ class ApiSettingsPage extends Component {
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="pgpKeyUrl" label="PGP Key URL"
                       data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="btcPriceUrl" label="BTCUSD price URL"
+                      data={this.state.api} onChange={this.onValueChange} />
                   </div>
                 : null }
 

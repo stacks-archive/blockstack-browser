@@ -120,6 +120,7 @@
     "body-parser": "^1.16.1",
     "bootstrap": "https://github.com/blockstack/blockstack-bootstrap.git",
     "browser-stdout": "^1.3.0",
+    "currency-formatter": "^1.2.1",
     "dropbox": "^2.5.0",
     "ecurve": "^1.0.4",
     "hash-handler": "^1.5.1",
