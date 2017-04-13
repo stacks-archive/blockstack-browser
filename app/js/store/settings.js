@@ -1,4 +1,4 @@
-import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../storage/utils/index'
+import { DROPBOX } from '../storage/utils/index'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('store/settings.js')
@@ -84,9 +84,11 @@ function resetApi(api) {
   }
 }
 
-function addMissingApi(newState) {
+function addMissingApiKeys(newState) {
+  logger.trace('addMissingApi')
   Object.keys(DEFAULT_API).forEach((key) => {
-    if (!newState.api[key]) {
+    if (newState.api[key] === undefined) {
+      logger.debug(`State settings.api.${key} is missing. Adding & setting to default.`)
       newState.api[key] = DEFAULT_API[key]
     }
   })
@@ -113,7 +115,7 @@ export function SettingsReducer(state = initialState, action) {
       let newState = Object.assign({}, state, {
         api: state.api
       })
-      newState = addMissingApi(newState)
+      newState = addMissingApiKeys(newState)
       return newState
     }
   }

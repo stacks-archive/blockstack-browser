@@ -22,4 +22,49 @@ describe('SettingsReducer', () => {
         api: DEFAULT_API
       })
   })
+
+  it('should not overwrite existing api urls', () => {
+    const initialState = {
+      api: Object.assign({}, DEFAULT_API)
+    }
+    initialState.api.nameLookupUrl = 'test'
+    assert(initialState.api.nameLookupUrl === 'test')
+
+    const state = SettingsReducer(initialState, {})
+    assert(state.api.nameLookupUrl === 'test')
+    assert.notDeepEqual(state,
+      {
+        api: DEFAULT_API
+      })
+  })
+
+  it('should not overwrite existing api urls that are null', () => {
+    const initialState = {
+      api: Object.assign({}, DEFAULT_API)
+    }
+    initialState.api.s3ApiKey = null
+    assert(initialState.api.s3ApiKey === null)
+
+    const state = SettingsReducer(initialState, {})
+    assert(state.api.s3ApiKey === null)
+    assert.notDeepEqual(state,
+      {
+        api: DEFAULT_API
+      })
+  })
+
+  it('should not overwrite existing api urls that are blank strings', () => {
+    const initialState = {
+      api: Object.assign({}, DEFAULT_API)
+    }
+    initialState.api.dropboxAccessToken = ''
+    assert(initialState.api.dropboxAccessToken === '')
+
+    const state = SettingsReducer(initialState, {})
+    assert(state.api.dropboxAccessToken === '')
+    assert.notDeepEqual(state,
+      {
+        api: DEFAULT_API
+      })
+  })
 })
