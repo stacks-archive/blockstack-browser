@@ -5,7 +5,7 @@ const logger = log4js.getLogger('store/settings.js')
 
 const UPDATE_API = 'UPDATE_API'
 
-const DEFAULT_API = {
+export const DEFAULT_API = {
   apiCustomizationEnabled: true,
   nameLookupUrl: 'http://localhost:6270/v1/names/{name}',
   searchUrl: 'https://api.blockstack.com/v1/search?query={query}',
@@ -84,10 +84,19 @@ function resetApi(api) {
   }
 }
 
+function addMissingApi(newState) {
+  Object.keys(DEFAULT_API).forEach((key) => {
+    if (!newState.api[key]) {
+      newState.api[key] = DEFAULT_API[key]
+    }
+  })
+  return newState
+}
+
 export const SettingsActions = {
-  updateApi: updateApi,
-  resetApi: resetApi,
-  setAPICredentials: setAPICredentials
+  updateApi,
+  resetApi,
+  setAPICredentials
 }
 
 const initialState = {
@@ -100,7 +109,12 @@ export function SettingsReducer(state = initialState, action) {
       return Object.assign({}, state, {
         api: action.api || {}
       })
-    default:
-      return state
+    default: {
+      let newState = Object.assign({}, state, {
+        api: state.api
+      })
+      newState = addMissingApi(newState)
+      return newState
+    }
   }
 }
