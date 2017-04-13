@@ -85,10 +85,8 @@ function resetApi(api) {
 }
 
 function addMissingApiKeys(newState) {
-  logger.trace('addMissingApi')
   Object.keys(DEFAULT_API).forEach((key) => {
     if (newState.api[key] === undefined) {
-      logger.debug(`State settings.api.${key} is missing. Adding & setting to default.`)
       newState.api[key] = DEFAULT_API[key]
     }
   })
