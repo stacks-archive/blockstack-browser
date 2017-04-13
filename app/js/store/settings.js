@@ -5,6 +5,11 @@ const logger = log4js.getLogger('store/settings.js')
 
 const UPDATE_API = 'UPDATE_API'
 
+
+// DEFAULT_API values are only used if
+// the user's settings.api state doesn't
+// already have an existing key.
+// To change a value, use a new key.
 export const DEFAULT_API = {
   apiCustomizationEnabled: true,
   nameLookupUrl: 'http://localhost:6270/v1/names/{name}',
