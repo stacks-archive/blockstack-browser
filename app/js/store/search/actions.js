@@ -1,29 +1,28 @@
-import { getNumberOfVerifications, compareProfilesByVerifications } from '../utils/index'
+import * as types from './types'
+import { compareProfilesByVerifications } from '../../utils/index'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('store/search.js')
-
-const UPDATE_QUERY = 'UPDATE_QUERY'
-const UPDATE_RESULTS = 'UPDATE_RESULTS'
+const logger = log4js.getLogger('store/search/actions.js')
 
 function updateQuery(query) {
   return {
-    type: UPDATE_QUERY,
-    query: query
+    type: types.UPDATE_QUERY,
+    query
   }
 }
 
 function updateResults(query, results) {
   return {
-    type: UPDATE_RESULTS,
-    query: query,
-    results: results
+    type: types.UPDATE_RESULTS,
+    query,
+    results
   }
 }
 
 function searchIdentities(query, searchUrl, lookupUrl) {
   return dispatch => {
-    let url, username
+    let url
+    let username
     if (/^[a-z0-9_-]+.id+$/.test(query)) {
       username = query.replace('.id', '')
       url = lookupUrl.replace('{name}', username)
@@ -41,7 +40,7 @@ function searchIdentities(query, searchUrl, lookupUrl) {
         } else {
           results.push({
             profile: responseJson[username].profile,
-            username: username
+            username
           })
         }
         dispatch(updateResults(query, results))
@@ -52,29 +51,10 @@ function searchIdentities(query, searchUrl, lookupUrl) {
   }
 }
 
-export const SearchActions = {
-  updateQuery: updateQuery,
-  updateResults: updateResults,
-  searchIdentities: searchIdentities
+const SearchActions = {
+  searchIdentities,
+  updateQuery,
+  updateResults
 }
 
-const initialState = {
-  query: '',
-  results: []
-}
-
-export function SearchReducer(state = initialState, action) {
-  switch (action.type) {
-    case UPDATE_QUERY:
-      return Object.assign({}, state, {
-        query: action.query
-      })
-    case UPDATE_RESULTS:
-      return Object.assign({}, state, {
-        query: action.query,
-        results: action.results
-      })
-    default:
-      return state
-  }
-}
+export default SearchActions
