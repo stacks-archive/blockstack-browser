@@ -1,0 +1,2 @@
+export const UPDATE_API = 'UPDATE_API'
+export const UPDATE_BTC_PRICE = 'UPDATE_BTC_PRICE'

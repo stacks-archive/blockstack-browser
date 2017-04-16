@@ -1,6 +1,36 @@
-import { SettingsReducer, DEFAULT_API } from '../../../app/js/store/settings.js'
+import { SettingsActions, SettingsReducer } from '../../../app/js/store/settings'
+import DEFAULT_API from '../../../app/js/store/settings/default'
 
-describe('SettingsReducer', () => {
+
+describe('Settings Store: SettingsReducer', () => {
+  it('should return the proper initial state', () => {
+    const initialState = {
+      api: Object.assign({}, DEFAULT_API)
+    }
+    assert.deepEqual(
+      SettingsReducer(undefined, {}),
+      initialState)
+  })
+
+  it('should update api', () => {
+    const state = {
+      api: {
+        lookupURL: 'https://example.com/v1/lookup'
+      }
+    }
+
+    const newApi = {
+      lookupURL: 'https://example/v2/lookup/'
+    }
+
+    const action = SettingsActions.updateApi(newApi)
+    assert.deepEqual(
+      SettingsReducer(state, action),
+      {
+        api: newApi
+      })
+  })
+
   it('should return the initial state', () => {
     assert.deepEqual(
       SettingsReducer(undefined, {}),
