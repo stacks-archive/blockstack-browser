@@ -5,7 +5,7 @@ const initialState = {
   results: []
 }
 
-describe('SearchReducer', () => {
+describe('Search Store: SearchReducer', () => {
   it('should return the proper initial state', () => {
     assert.deepEqual(
       SearchReducer(undefined, {}),
