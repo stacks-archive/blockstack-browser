@@ -20,13 +20,17 @@ function updateResults(query, results) {
 }
 
 function searchIdentities(query, searchUrl, lookupUrl) {
+  logger.trace(`searchIdentities: query: "${query}" searchUrl: ${searchUrl} ${lookupUrl}`)
   return dispatch => {
     let url
     let username
     if (/^[a-z0-9_-]+.id+$/.test(query)) {
+      logger.debug(`searchIdentities:
+        "${query}": looks like a '.id' Blockstack ID. Let's look it up...`)
       username = query.replace('.id', '')
       url = lookupUrl.replace('{name}', username)
     } else {
+      logger.debug(`"${query}": isn't a '.id' Blockstack ID. Let's search...`)
       url = searchUrl.replace('{query}', query).replace(' ', '%20')
     }
     return fetch(url)
@@ -35,9 +39,11 @@ function searchIdentities(query, searchUrl, lookupUrl) {
       .then((responseJson) => {
         let results = []
         if (responseJson.hasOwnProperty('results')) {
+          logger.debug(`"${query}" produced multiple results. Sorting by verification level...`)
           results = responseJson.results
           results.sort(compareProfilesByVerifications)
         } else {
+          logger.debug(`Found an exact match for "${query}"`)
           results.push({
             profile: responseJson[username].profile,
             username
