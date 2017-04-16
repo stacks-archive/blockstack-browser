@@ -29,7 +29,7 @@ function searchIdentities(query, searchUrl, lookupUrl) {
     } else {
       url = searchUrl.replace('{query}', query).replace(' ', '%20')
     }
-    fetch(url)
+    return fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
