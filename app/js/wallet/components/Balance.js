@@ -3,6 +3,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { AccountActions } from '../../store/account'
+import { SettingsActions } from '../../store/settings'
+import currencyFormatter from 'currency-formatter'
 
 function mapStateToProps(state) {
   return {
@@ -12,12 +14,14 @@ function mapStateToProps(state) {
     utxoUrl: state.settings.api.utxoUrl,
     addressBalanceUrl: state.settings.api.addressBalanceUrl,
     coreWalletBalance: state.account.coreWallet.balance,
-    coreWalletAddress: state.account.coreWallet.address
+    coreWalletAddress: state.account.coreWallet.address,
+    btcPriceUrl: state.settings.api.btcPriceUrl,
+    btcPrice: state.settings.api.btcPrice
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(AccountActions, dispatch)
+  return bindActionCreators(Object.assign({}, AccountActions, SettingsActions), dispatch)
 }
 
 class Balance extends Component {
@@ -30,23 +34,38 @@ class Balance extends Component {
     addressBalanceUrl: PropTypes.string.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     coreWalletBalance: PropTypes.number,
-    coreWalletAddress: PropTypes.string
+    coreWalletAddress: PropTypes.string,
+    btcPriceUrl: PropTypes.string.isRequired,
+    btcPrice: PropTypes.string.isRequired,
+    refreshBtcPrice: PropTypes.func.isRequired
   }
 
   constructor() {
     super()
+    this.usdBalance = this.usdBalance.bind(this)
   }
 
   componentDidMount() {
-    if(this.props.coreWalletAddress != null) {
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl, this.props.coreWalletAddress)
+    if (this.props.coreWalletAddress !== null) {
+      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+        this.props.coreWalletAddress)
     }
+    this.props.refreshBtcPrice(this.props.btcPriceUrl)
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.coreWalletAddress != nextProps.coreWalletAddress) {
+    if (this.props.coreWalletAddress !== nextProps.coreWalletAddress) {
       this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, nextProps.coreWalletAddress)
     }
+  }
+
+  usdBalance() {
+    let btcPrice = this.props.btcPrice
+    const btcBalance = this.props.coreWalletBalance
+
+    btcPrice = Number(btcPrice)
+    let usdBalance = btcPrice * btcBalance
+    return currencyFormatter.format(usdBalance, { code: 'USD' })
   }
 
   render() {
@@ -54,12 +73,12 @@ class Balance extends Component {
     return (
       <div className="balance">
         <div className="balance-main">
-          { coreWalletBalance != null ? coreWalletBalance : 0 }
+          {coreWalletBalance != null ? coreWalletBalance : 0}
           <label>&nbsp;btc</label>
         </div>
         <div className="balance-sml">
-
-          <label>&nbsp;</label>
+          {this.usdBalance()}
+          <label>&nbsp;USD</label>
         </div>
       </div>
     )

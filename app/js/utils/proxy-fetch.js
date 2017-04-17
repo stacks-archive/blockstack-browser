@@ -22,7 +22,8 @@ let proxyFetch = function(url, options) {
   if(host.endsWith("amazonaws.com") ||
      host.endsWith("facebook.com") ||
      host.endsWith("twitter.com") ||
-     host.endsWith("github.com")) {
+     host.endsWith("github.com") ||
+     host.endsWith("bitstamp.net")) {
     return realFetch.call(this, proxy + hostAndPath, options)
   } else {
     return realFetch.call(this, url, options)

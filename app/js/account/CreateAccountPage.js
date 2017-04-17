@@ -23,8 +23,7 @@ function mapDispatchToProps(dispatch) {
 class CreateAccountPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
-    initializeWallet: PropTypes.func.isRequired,
-    setAPICredentials: PropTypes.func.isRequired
+    initializeWallet: PropTypes.func.isRequired
   }
 
   constructor(props) {

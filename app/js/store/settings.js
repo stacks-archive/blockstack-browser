@@ -1,11 +1,17 @@
-import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from '../storage/utils/index'
+import { DROPBOX } from '../storage/utils/index'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('store/settings.js')
 
 const UPDATE_API = 'UPDATE_API'
+const UPDATE_BTC_PRICE = 'UPDATE_BTC_PRICE'
 
-const DEFAULT_API = {
+
+// DEFAULT_API values are only used if
+// the user's settings.api state doesn't
+// already have an existing key.
+// To change a value, use a new key.
+export const DEFAULT_API = {
   apiCustomizationEnabled: true,
   nameLookupUrl: 'http://localhost:6270/v1/names/{name}',
   searchUrl: 'https://api.blockstack.com/v1/search?query={query}',
@@ -22,60 +28,33 @@ const DEFAULT_API = {
   bitcoinAddressUrl: 'https://explorer.blockstack.org/address/{identifier}',
   ethereumAddressUrl: 'https://tradeblock.com/ethereum/account/{identifier}',
   pgpKeyUrl: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on',
+  btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
   hostedDataLocation: DROPBOX,
   coreAPIPassword: null,
   logServerPort: '',
-  blockstackApiAppId: '470c9d0c7dbd41b1bb6defac9be3595a',
-  blockstackApiAppSecret: 'c1e21c522cbd59c78b05294604f8bb88fc06fd7b1d7c3308e91f4f1124487117',
   s3ApiKey: '',
   s3ApiSecret: '',
   s3Bucket: '',
-  dropboxAccessToken: null
+  dropboxAccessToken: null,
+  btcPrice: '1000.00'
 }
 
 function updateApi(api) {
   return {
     type: UPDATE_API,
-    api: api
+    api
   }
 }
 
-function setAPICredentials(api, email, name, company, callback) {
-  return dispatch => {
-    const signupUrl = "https://api.blockstack.com/signup/browser"
-    const headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    }
-    const body = JSON.stringify({
-      email: email,
-      name: name,
-      company: company
-    })
-
-    fetch(signupUrl, { method: 'POST', headers: headers, mode: 'cors', body: body })
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        if (responseJson.hasOwnProperty('error')) {
-          callback(false)
-        } else {
-          api.blockstackApiAppId = responseJson.app_id
-          api.blockstackApiAppSecret = responseJson.app_secret
-
-          dispatch(updateApi(api))
-
-          callback(true)
-        }
-      })
-      .catch((error) => {
-        logger.error('setAPICredentials: error', error)
-        callback(false)
-      })
+function updateBtcPrice(price) {
+  return {
+    type: UPDATE_BTC_PRICE,
+    price
   }
 }
 
 function resetApi(api) {
+  logger.trace('resetApi')
   return dispatch => {
     dispatch(updateApi(Object.assign({}, DEFAULT_API, {
       dropboxAccessToken: api.dropboxAccessToken,
@@ -84,10 +63,32 @@ function resetApi(api) {
   }
 }
 
+function refreshBtcPrice(btcPriceUrl) {
+  return dispatch => {
+    fetch(btcPriceUrl).then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      dispatch(updateBtcPrice(responseJson.last))
+    })
+    .catch((error) => {
+      logger.error('refreshBtcPrice:', error)
+    })
+  }
+}
+
+function addMissingApiKeys(newState) {
+  Object.keys(DEFAULT_API).forEach((key) => {
+    if (newState.api[key] === undefined) {
+      newState.api[key] = DEFAULT_API[key]
+    }
+  })
+  return newState
+}
+
 export const SettingsActions = {
-  updateApi: updateApi,
-  resetApi: resetApi,
-  setAPICredentials: setAPICredentials
+  updateApi,
+  resetApi,
+  refreshBtcPrice
 }
 
 const initialState = {
@@ -100,7 +101,18 @@ export function SettingsReducer(state = initialState, action) {
       return Object.assign({}, state, {
         api: action.api || {}
       })
-    default:
-      return state
+    case UPDATE_BTC_PRICE:
+      return Object.assign({}, state, {
+        api: Object.assign({}, state.api, {
+          btcPrice: action.price
+        })
+      })
+    default: {
+      let newState = Object.assign({}, state, {
+        api: state.api
+      })
+      newState = addMissingApiKeys(newState)
+      return newState
+    }
   }
 }
