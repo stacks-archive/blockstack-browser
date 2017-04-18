@@ -58,7 +58,6 @@ class App extends Component {
     }
 
     if (logServerPort != null) {
-      console.log(logServerPort)
       let api = this.props.api
       api = Object.assign({}, api, { logServerPort })
       this.props.updateApi(api)
@@ -76,17 +75,19 @@ class App extends Component {
 
   getCoreAPIPasswordFromURL() {
     const coreAPIPassword = hash.getInstance().get('coreAPIPassword')
-    if (typeof coreAPIPassword === undefined) {
+    if (typeof coreAPIPassword === undefined || coreAPIPassword === 'null') {
       return null
     }
+    hash.getInstance().set('coreAPIPassword', null)
     return coreAPIPassword
   }
 
   getLogServerPortFromURL() {
     const logServerPort = hash.getInstance().get('logServerPort')
-    if (typeof logServerPort === undefined) {
+    if (typeof logServerPort === undefined || logServerPort === 'null') {
       return null
     }
+    hash.getInstance().set('logServerPort', null)
     return logServerPort
   }
 
