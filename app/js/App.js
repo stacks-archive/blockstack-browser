@@ -51,18 +51,16 @@ class App extends Component {
     logger.trace('componentWillMount')
     const coreAPIPassword = this.getCoreAPIPasswordFromURL()
     const logServerPort = this.getLogServerPortFromURL()
-    if (coreAPIPassword != null) {
-      let api = this.props.api
+    let api = this.props.api
+    if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
     }
 
-    if (logServerPort != null) {
-      let api = this.props.api
+    if (logServerPort !== null) {
       api = Object.assign({}, api, { logServerPort })
       this.props.updateApi(api)
     }
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,19 +73,19 @@ class App extends Component {
 
   getCoreAPIPasswordFromURL() {
     const coreAPIPassword = hash.getInstance().get('coreAPIPassword')
-    if (typeof coreAPIPassword === undefined || coreAPIPassword === 'null') {
+    if (typeof coreAPIPassword === undefined || coreAPIPassword === 'off') {
       return null
     }
-    hash.getInstance().set('coreAPIPassword', null)
+    hash.getInstance().set('coreAPIPassword', 'off')
     return coreAPIPassword
   }
 
   getLogServerPortFromURL() {
     const logServerPort = hash.getInstance().get('logServerPort')
-    if (typeof logServerPort === undefined || logServerPort === 'null') {
+    if (typeof logServerPort === undefined || logServerPort === 'off') {
       return null
     }
-    hash.getInstance().set('logServerPort', null)
+    hash.getInstance().set('logServerPort', 'off')
     return logServerPort
   }
 
