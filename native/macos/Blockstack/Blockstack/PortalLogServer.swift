@@ -28,6 +28,7 @@ class PortalLogServer {
     
     let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "PortalLogServer")
     let portalLogSubsystem = "org.blockstack.portal"
+    let coreLogSubsystem = "org.blockstack.core"
     
     
     
@@ -69,7 +70,7 @@ class PortalLogServer {
                     os_log("Log request authenticated", log: self.log, type: .debug)
                 } catch {
                     os_log("Authorization failed", log: self.log, type: .error)
-                    return HttpResponse.forbidden
+                    return HttpResponse.raw(403, "Authorization failed", corsHeaders, { try $0.write([UInt8]("Authorization failed".utf8)) })
                 }
                 
                 do {
@@ -101,7 +102,7 @@ class PortalLogServer {
                 throw AuthorizationError.noHeader
         }
         
-        if(authorizationHeader == "basic \(password)") {
+        if(authorizationHeader == "bearer \(password)") {
             os_log("Authorization succeeded", log: log, type: .debug)
         } else {
             os_log("Invalid authorization header", log: log, type: .error)
@@ -130,12 +131,18 @@ class PortalLogServer {
             else {
                 throw LogEventDecoderError.noMessageFound
         }
+        var isCore = true
+        if let subsystem = dictionary["subsystem"]  as? String {
+            if subsystem == "portal" {
+                isCore = false
+            }
+        }
         
-        let portalLog = OSLog(subsystem: portalLogSubsystem, category: category)
+        let portalLog = OSLog(subsystem: isCore ? coreLogSubsystem : portalLogSubsystem, category: category)
         
         switch level {
-        case "TRACE", "DEBUG": // Map to macOS's Debug level
-            os_log("%{public}@", log: portalLog, type: .debug, message)
+        case "TRACE", "DEBUG": // Map to macOS's Info level
+            os_log("%{public}@", log: portalLog, type: .info, message)
             
         case "INFO": // Map to macOS's Info level
             os_log("%{public}@", log: portalLog, type: .info, message)

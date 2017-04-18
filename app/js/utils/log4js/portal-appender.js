@@ -9,7 +9,8 @@ function portalAppender(config) {
       time: event.startTime.getTime(),
       level: event.level.levelStr,
       category: event.categoryName,
-      message: format(event.data)
+      message: format(event.data),
+      subsystem: 'portal'
     }
 
     const requestHeaders = {

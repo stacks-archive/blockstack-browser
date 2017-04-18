@@ -42,7 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let sparkleUpdater = SUUpdater.init(for: Bundle.main)
     
     var portalLogServer:PortalLogServer? = nil
-    let logServerPort = 8883
+    let logServerPort = 8333
     
     let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "Default")
     
@@ -353,7 +353,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             /* Blockstack Core setup task */
             
             coreAPISetupProcess.launchPath = blockstackPath()
-            coreAPISetupProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "setup", "--password", walletPassword]
+            coreAPISetupProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "setup", "--password", walletPassword, "--api_password", walletPassword]
             
             let coreAPISetupPipe = loggingPipe()
             coreAPISetupProcess.standardOutput = coreAPISetupPipe
