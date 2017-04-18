@@ -64,7 +64,6 @@ class App extends Component {
       this.props.updateApi(api)
     }
 
-    hash.getInstance().clear()
   }
 
   componentWillReceiveProps(nextProps) {
