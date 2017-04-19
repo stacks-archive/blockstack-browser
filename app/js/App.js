@@ -2,11 +2,10 @@ import './utils/proxy-fetch'
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import queryString from 'query-string'
 import { AccountActions } from './store/account'
 import { SettingsActions } from './store/settings'
 import WelcomeModal from './components/WelcomeModal'
-import hash from 'hash-handler'
+import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('App.js')
@@ -43,14 +42,12 @@ class App extends Component {
     }
 
     this.closeModal = this.closeModal.bind(this)
-    this.getCoreAPIPasswordFromURL = this.getCoreAPIPasswordFromURL.bind(this)
-    this.getLogServerPortFromURL = this.getLogServerPortFromURL.bind(this)
   }
 
   componentWillMount() {
     logger.trace('componentWillMount')
-    const coreAPIPassword = this.getCoreAPIPasswordFromURL()
-    const logServerPort = this.getLogServerPortFromURL()
+    const coreAPIPassword = getCoreAPIPasswordFromURL()
+    const logServerPort = getLogServerPortFromURL()
     let api = this.props.api
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
@@ -71,26 +68,9 @@ class App extends Component {
     })
   }
 
-  getCoreAPIPasswordFromURL() {
-    const coreAPIPassword = hash.getInstance().get('coreAPIPassword')
-    if (typeof coreAPIPassword === undefined || coreAPIPassword === 'off') {
-      return null
-    }
-    hash.getInstance().set('coreAPIPassword', 'off')
-    return coreAPIPassword
-  }
-
-  getLogServerPortFromURL() {
-    const logServerPort = hash.getInstance().get('logServerPort')
-    if (typeof logServerPort === undefined || logServerPort === 'off') {
-      return null
-    }
-    hash.getInstance().set('logServerPort', 'off')
-    return logServerPort
-  }
 
   closeModal() {
-    this.setState({modalIsOpen: false})
+    this.setState({ modalIsOpen: false })
   }
 
   render() {
@@ -100,7 +80,8 @@ class App extends Component {
           accountCreated={this.state.accountCreated}
           storageConnected={this.state.storageConnected}
           coreConnected={this.state.coreConnected}
-          closeModal={this.closeModal} />
+          closeModal={this.closeModal}
+        />
         {this.props.children}
       </div>
     )

@@ -1,3 +1,4 @@
+import hash from 'hash-handler'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/api-utils.js')
@@ -20,6 +21,23 @@ export function authorizationHeaderValue(coreAPIPassword) {
   return `bearer ${coreAPIPassword}`
 }
 
+export function getCoreAPIPasswordFromURL() {
+  const coreAPIPassword = hash.getInstance().get('coreAPIPassword')
+  if (!coreAPIPassword || coreAPIPassword === 'off') {
+    return null
+  }
+  hash.getInstance().set('coreAPIPassword', 'off')
+  return coreAPIPassword
+}
+
+export function getLogServerPortFromURL() {
+  const logServerPort = hash.getInstance().get('logServerPort')
+  if (!logServerPort || logServerPort === 'off') {
+    return null
+  }
+  hash.getInstance().set('logServerPort', 'off')
+  return logServerPort
+}
 /*
 export function getIdentities(address, addressLookupUrl, localIdentities, callback) {
   let remoteNamesDict = {},
