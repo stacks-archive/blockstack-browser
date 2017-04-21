@@ -1,8 +1,8 @@
 import bip39 from 'bip39'
-import { encrypt, decrypt, decryptPrivateKeychain, getIdentityPrivateKeychain, getBitcoinPrivateKeychain } from '../utils'
+import { authorizationHeaderValue, encrypt, decrypt, decryptPrivateKeychain,
+  getIdentityPrivateKeychain, getBitcoinPrivateKeychain } from '../../utils'
 import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
 import { ECPair } from 'bitcoinjs-lib'
-import { authorizationHeaderValue } from '../utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('store/account.js')

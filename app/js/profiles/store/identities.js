@@ -7,9 +7,9 @@ import {
   isNameAvailable, getNamePrices,
   resolveZoneFileToProfile,
   signProfileForUpload, authorizationHeaderValue
-} from '../utils/index'
+} from '../../utils/index'
 
-import { uploadProfile } from '../storage/utils/index'
+import { uploadProfile } from '../../storage/utils/index'
 
 import log4js from 'log4js'
 
