@@ -10,7 +10,7 @@ import { SearchActions } from '../store/search'
 
 function mapStateToProps(state) {
   return {
-    query: state.search.query
+    query: state.profiles.search.query
   }
 }
 

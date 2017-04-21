@@ -11,7 +11,7 @@ const logger = log4js.getLogger('profiles/SearchProfilesPage.js')
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
-    searchResults: state.search.results
+    searchResults: state.profiles.search.results
   }
 }
 

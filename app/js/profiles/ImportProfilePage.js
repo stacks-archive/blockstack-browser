@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import PageHeader from '../components/PageHeader'
-import { AccountActions } from '../store/account'
+import { AccountActions } from '../account/store/account'
 
 function mapStateToProps(state) {
   return {

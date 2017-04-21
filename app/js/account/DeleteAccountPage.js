@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
-import { AccountActions } from '../store/account'
+import { AccountActions } from './store/account'
 import { decrypt } from '../utils'
 import log4js from 'log4js'
 

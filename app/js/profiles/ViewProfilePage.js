@@ -7,15 +7,15 @@ import { Person } from 'blockstack'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import Image from '../components/Image'
-import { IdentityActions } from '../store/identities'
+import { IdentityActions } from './store/identities'
 import { SearchActions } from './store/search'
 
 const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
 
 function mapStateToProps(state) {
   return {
-    currentIdentity: state.identities.current,
-    localIdentities: state.identities.localIdentities,
+    currentIdentity: state.profiles.identities.current,
+    localIdentities: state.profiles.identities.localIdentities,
     nameLookupUrl: state.settings.api.nameLookupUrl
   }
 }

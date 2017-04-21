@@ -6,7 +6,7 @@ import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
 
 import EditProfileHeader from './components/EditProfileHeader'
 import ProfileEditingSidebar from './components/ProfileEditingSidebar'
-import { IdentityActions } from '../store/identities'
+import { IdentityActions } from './store/identities'
 import { signProfileForUpload, getNameParts } from '../utils/index'
 import { uploadProfile, uploadPhoto } from '../storage/utils'
 
@@ -18,7 +18,7 @@ import PrivateInfoTab    from './tabs/PrivateInfoTab'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.identities.localIdentities,
+    localIdentities: state.profiles.identities.localIdentities,
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs
   }

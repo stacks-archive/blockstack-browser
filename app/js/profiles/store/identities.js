@@ -13,7 +13,7 @@ import { uploadProfile } from '../../storage/utils/index'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('store/identities.js')
+const logger = log4js.getLogger('profiles/store/identities.js')
 
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
@@ -30,10 +30,7 @@ const UPDATE_CURRENT = 'UPDATE_CURRENT',
       PROFILE_UPLOAD_ERROR = 'PROFILE_UPLOAD_ERROR',
       REGISTRATION_SUBMITTING = 'REGISTRATION_SUBMITTING',
       REGISTRATION_SUBMITTED = 'REGISTRATION_SUBMITTED',
-      REGISTRATION_ERROR = 'REGISTRATION_ERROR',
-      LOADING_PGP_KEY = 'LOADING_PGP_KEY',
-      LOADED_PGP_KEY = 'LOADED_PGP_KEY',
-      LOADING_PGP_KEY_ERROR = 'LOADING_PGP_KEY_ERROR'
+      REGISTRATION_ERROR = 'REGISTRATION_ERROR'
 
 
 const DEFAULT_PROFILE = {
@@ -154,29 +151,6 @@ function registrationError(error) {
   return {
     type: REGISTRATION_ERROR,
     error: error
-  }
-}
-
-function loadingPGPKey(identifier) {
-  return {
-    type: LOADING_PGP_KEY,
-    identifier: identifier
-  }
-}
-
-function loadingPGPKeyError(identifier, error) {
-  return {
-    type: LOADING_PGP_KEY_ERROR,
-    identifier: identifier,
-    error: error
-  }
-}
-
-function loadedPGPKey(identifier, key) {
-  return {
-    type: LOADED_PGP_KEY,
-    identifier: identifier,
-    key: key
   }
 }
 
@@ -414,21 +388,6 @@ function checkNameAvailabilityAndPrice(api, domainName) {
   }
 }
 
-function loadPGPPublicKey(contentUrl, identifier) {
-  logger.trace('loadPGPPublicKey')
-  return dispatch => {
-    dispatch(loadingPGPKey(identifier))
-    proxyFetch(contentUrl)
-      .then(response => response.text())
-      .then(publicKey => {
-        dispatch(loadedPGPKey(identifier, publicKey))
-      })
-      .catch((e) => {
-        logger.error('loadPGPPublicKey: error', error)
-        dispatch(loadingPGPKeyError(identifier, e))
-      })
-  }
-}
 
 export const IdentityActions = {
   updateCurrentIdentity: updateCurrentIdentity,
@@ -438,8 +397,7 @@ export const IdentityActions = {
   refreshIdentities: refreshIdentities,
   updateOwnedIdentities: updateOwnedIdentities,
   registerName: registerName,
-  checkNameAvailabilityAndPrice: checkNameAvailabilityAndPrice,
-  loadPGPPublicKey: loadPGPPublicKey
+  checkNameAvailabilityAndPrice: checkNameAvailabilityAndPrice
 }
 
 const initialState = {
@@ -453,8 +411,7 @@ const initialState = {
   registration: {
     lastNameEntered: null,
     names: {}
-  },
-  pgpPublicKeys: {}
+  }
 }
 
 export function IdentityReducer(state = initialState, action) {
@@ -619,36 +576,6 @@ export function IdentityReducer(state = initialState, action) {
           registrationSubmitting: false,
           error: action.error,
           preventRegistration: false
-        })
-      })
-    case LOADING_PGP_KEY:
-      return Object.assign({}, state, {
-        pgpPublicKeys: Object.assign({}, state.pgpPublicKeys, {
-          [action.identifier]: {
-            loading: true,
-            key: null,
-            error: null
-          }
-        })
-      })
-    case LOADED_PGP_KEY:
-      return Object.assign({}, state, {
-        pgpPublicKeys: Object.assign({}, state.pgpPublicKeys, {
-          [action.identifier]: {
-            loading: false,
-            key: action.key,
-            error: null
-          }
-        })
-      })
-    case LOADING_PGP_KEY_ERROR:
-      return Object.assign({}, state, {
-        pgpPublicKeys: Object.assign({}, state.pgpPublicKeys, {
-          [action.identifier]: {
-            loading: false,
-            key: null,
-            error: action.error
-          }
         })
       })
     default:

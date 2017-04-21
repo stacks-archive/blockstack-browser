@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
-import { AccountActions } from '../store/account'
-import { IdentityActions } from '../store/identities'
+import { AccountActions } from '../account/store/account'
+import { IdentityActions } from './store/identities'
 
 import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
 import log4js from 'log4js'
@@ -16,14 +16,14 @@ const WALLET_URL = '/wallet/deposit'
 function mapStateToProps(state) {
   return {
     username: '',
-    localIdentities: state.identities.localIdentities,
+    localIdentities: state.profiles.identities.localIdentities,
     lookupUrl: state.settings.api.nameLookupUrl,
     registerUrl: state.settings.api.registerUrl,
     priceUrl: state.settings.api.priceUrl,
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs,
-    registration: state.identities.registration,
+    registration: state.profiles.identities.registration,
     addressBalanceUrl: state.settings.api.addressBalanceUrl,
     coreWalletBalance: state.account.coreWallet.balance,
     coreWalletAddress: state.account.coreWallet.address,
