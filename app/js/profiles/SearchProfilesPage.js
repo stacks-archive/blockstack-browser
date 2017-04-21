@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import SearchItem from './components/SearchItem'
-import { SearchActions } from '../store/search/index'
+import { SearchActions } from './store/search/index'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/SearchProfilesPage.js')

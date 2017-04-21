@@ -8,7 +8,7 @@ import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import Image from '../components/Image'
 import { IdentityActions } from '../store/identities'
-import { SearchActions } from '../store/search'
+import { SearchActions } from './store/search'
 
 const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
 

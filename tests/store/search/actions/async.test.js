@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import nock from 'nock'
-import { SearchActions } from '../../../../app/js/store/search'
+import { SearchActions } from '../../../../app/js/profiles/store/search'
 import searchResults from '../../../fixtures/search'
 
 const middlewares = [thunk]

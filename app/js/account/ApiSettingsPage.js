@@ -5,7 +5,7 @@ import RadioGroup from 'react-radio-group'
 
 import InputGroup from '../components/InputGroup'
 import SaveButton from '../components/SaveButton'
-import { SettingsActions } from '../store/settings'
+import { SettingsActions } from './store/settings'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/ApiSettingsPage.js')

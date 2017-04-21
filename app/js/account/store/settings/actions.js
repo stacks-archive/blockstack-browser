@@ -2,7 +2,7 @@ import DEFAULT_API from './default'
 import * as types from './types'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('store/settings/actions.js')
+const logger = log4js.getLogger('account/store/settings/actions.js')
 
 function updateApi(api) {
   return {

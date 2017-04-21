@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { AccountActions } from '../../store/account'
-import { SettingsActions } from '../../store/settings'
+import { SettingsActions } from '../../account/store/settings'
 import currencyFormatter from 'currency-formatter'
 
 function mapStateToProps(state) {

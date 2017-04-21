@@ -1,4 +1,4 @@
-import { DROPBOX } from '../../storage/utils/index'
+import { DROPBOX } from '../../../storage/utils/index'
 
 // DEFAULT_API values are only used if
 // the user's settings.api state doesn't
