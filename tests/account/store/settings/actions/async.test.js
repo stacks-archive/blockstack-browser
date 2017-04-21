@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import nock from 'nock'
-import { SettingsActions } from '../../../../app/js/account/store/settings'
-import btcPrice from '../../../fixtures/btcprice'
+import { SettingsActions } from '../../../../../app/js/account/store/settings'
+import btcPrice from '../../../../fixtures/btcprice'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

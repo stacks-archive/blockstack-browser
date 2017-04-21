@@ -1,5 +1,5 @@
-import { SettingsActions } from '../../../../app/js/account/store/settings'
-import DEFAULT_API from '../../../../app/js/account/store/settings/default'
+import { SettingsActions } from '../../../../../app/js/account/store/settings'
+import DEFAULT_API from '../../../../../app/js/account/store/settings/default'
 
 describe('Settings Store: Sync Actions', () => {
   describe('resetApi', () => {

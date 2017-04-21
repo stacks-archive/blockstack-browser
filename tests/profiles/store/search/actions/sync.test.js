@@ -1,4 +1,4 @@
-import { SearchActions } from '../../../../app/js/profiles/store/search'
+import { SearchActions } from '../../../../../app/js/profiles/store/search'
 
 describe('Search Store: Sync Actions', () => {
   describe('updateQuery', () => {

@@ -1,4 +1,4 @@
-import { SearchActions, SearchReducer } from '../../../app/js/profiles/store/search'
+import { SearchActions, SearchReducer } from '../../../../app/js/profiles/store/search'
 
 const initialState = {
   query: '',
