@@ -3,19 +3,19 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
-import { IdentityActions } from '../store/identities'
+import { PGPActions } from '../store/pgp'
 
 import { getWebAccountTypes } from '../../utils'
 
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
-    pgpPublicKeys: state.identities.pgpPublicKeys
+    pgpPublicKeys: state.profiles.pgp.publicKeys
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(IdentityActions, dispatch)
+  return bindActionCreators(PGPActions, dispatch)
 }
 
 class PGPAccountItem extends Component {
