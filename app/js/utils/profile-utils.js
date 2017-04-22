@@ -106,3 +106,8 @@ export function signProfileForUpload(profile, keypair) {
         tokenRecords = [tokenRecord]
   return JSON.stringify(tokenRecords, null, 2)
 }
+
+export const DEFAULT_PROFILE = {
+  '@type': 'Person',
+  '@context': 'http://schema.org'
+}

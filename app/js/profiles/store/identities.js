@@ -1,15 +1,11 @@
-import {
-  makeProfileZoneFile, parseZoneFile,
-  Person, validateProofs
-} from 'blockstack'
+import { validateProofs } from 'blockstack'
 
 import {
   isNameAvailable, getNamePrices,
-  resolveZoneFileToProfile,
-  signProfileForUpload, authorizationHeaderValue
+  resolveZoneFileToProfile
 } from '../../utils/index'
 
-import { uploadProfile } from '../../storage/utils/index'
+import { DEFAULT_PROFILE } from '../../utils/profile-utils'
 
 import log4js from 'log4js'
 
@@ -18,32 +14,21 @@ const logger = log4js.getLogger('profiles/store/identities.js')
 const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
       CREATE_NEW = 'CREATE_NEW',
-      UPDATE_PROFILE = 'UPDATE_PROFILE',
-      CHECKING_NAME_AVAILABILITY = 'CHECK_NAME_AVAILABILITY',
-      NAME_AVAILABLE = 'NAME_AVAILABLE',
-      NAME_UNAVAILABLE = 'NAME_UNAVAILABLE',
-      NAME_AVAILABILITIY_ERROR = 'NAME_AVAILABILITIY_ERROR',
-      CHECKING_NAME_PRICE = 'CHECK_NAME_PRICE',
-      NAME_PRICE = 'NAME_PRICE',
-      NAME_PRICE_ERROR = 'NAME_PRICE_ERROR',
-      PROFILE_UPLOADING = 'UPLOAD_LOADING_PROFILE',
-      PROFILE_UPLOAD_ERROR = 'PROFILE_UPLOAD_ERROR',
-      REGISTRATION_SUBMITTING = 'REGISTRATION_SUBMITTING',
-      REGISTRATION_SUBMITTED = 'REGISTRATION_SUBMITTED',
-      REGISTRATION_ERROR = 'REGISTRATION_ERROR'
-
-
-const DEFAULT_PROFILE = {
-  '@type': 'Person',
-  '@context': 'http://schema.org'
-}
+      UPDATE_PROFILE = 'UPDATE_PROFILE'
+export const CHECKING_NAME_AVAILABILITY = 'CHECK_NAME_AVAILABILITY'
+export const NAME_AVAILABLE = 'NAME_AVAILABLE'
+export const NAME_UNAVAILABLE = 'NAME_UNAVAILABLE'
+export const NAME_AVAILABILITIY_ERROR = 'NAME_AVAILABILITIY_ERROR'
+export const CHECKING_NAME_PRICE = 'CHECK_NAME_PRICE'
+export const NAME_PRICE = 'NAME_PRICE'
+export const NAME_PRICE_ERROR = 'NAME_PRICE_ERROR'
 
 function updateCurrentIdentity(domainName, profile, verifications) {
   return {
     type: UPDATE_CURRENT,
     domainName: domainName,
     profile: profile,
-    verifications: verifications
+    verifications: verifications,
   }
 }
 
@@ -122,35 +107,9 @@ function namePriceError(domainName, error) {
   }
 }
 
-function profileUploading() {
-  return {
-    type: PROFILE_UPLOADING
-  }
-}
-
-function profileUploadError(error) {
-  return {
-    type: PROFILE_UPLOAD_ERROR,
-    error: error
-  }
-}
-
-function registrationSubmitting() {
-  return {
-    type: REGISTRATION_SUBMITTING
-  }
-}
-
-function registrationSubmitted() {
-  return {
-    type: REGISTRATION_SUBMITTED
-  }
-}
-
-function registrationError(error) {
-  return {
-    type: REGISTRATION_ERROR,
-    error: error
+function createNewIdentityFromDomain(domainName) {
+  return dispatch => {
+    dispatch(createNewIdentity(domainName))
   }
 }
 
@@ -251,65 +210,6 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
   }
 }
 
-function registerName(api, domainName, recipientAddress, keypair) {
-  logger.trace(`registerName: domainName: ${domainName}`)
-  return dispatch => {
-    logger.debug(`Signing a blank default profile for ${domainName}`)
-    const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
-
-    dispatch(profileUploading())
-    logger.trace(`Uploading ${domainName} profile...`)
-    uploadProfile(api, domainName, signedProfileTokenData, true).then((profileUrl) => {
-      logger.trace(`Uploading ${domainName} profiled succeeded.`)
-      const tokenFileUrl = profileUrl
-      logger.debug(`tokenFileUrl: ${tokenFileUrl}`)
-
-      logger.trace(`Making profile zonefile...`)
-      const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
-
-      const requestHeaders = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': authorizationHeaderValue(api.coreAPIPassword)
-      }
-
-      const requestBody = JSON.stringify({
-        name: domainName,
-        owner_address: recipientAddress,
-        zonefile: zoneFile,
-        min_confs: 0
-      })
-
-      dispatch(registrationSubmitting())
-      logger.trace(`Submitting registration for ${domainName} to Core node at ${api.registerUrl}`)
-      fetch(api.registerUrl, {
-        method: 'POST',
-        headers: requestHeaders,
-        body: requestBody
-      })
-        .then((response) => response.text())
-        .then((responseText) => JSON.parse(responseText))
-        .then((responseJson) => {
-          if(responseJson['error']) {
-            logger.error(responseJson['error'])
-            dispatch(registrationError(responseJson['error']))
-          } else {
-            logger.debug(`Successfully submitted registration for ${domainName}`)
-            dispatch(registrationSubmitted())
-            dispatch(createNewIdentity(domainName))
-          }
-        })
-        .catch((error) => {
-          logger.error('registerName: error POSTing regitsration to Core', error)
-          dispatch(registrationError(error))
-        })
-      }).catch((error) => {
-        logger.error('registerName: error uploading profile', error)
-        dispatch(profileUploadError(error))
-      })
-    }
-}
-
 function fetchCurrentIdentity(domainName, lookupUrl) {
   return dispatch => {
     let username
@@ -396,8 +296,8 @@ export const IdentityActions = {
   fetchCurrentIdentity: fetchCurrentIdentity,
   refreshIdentities: refreshIdentities,
   updateOwnedIdentities: updateOwnedIdentities,
-  registerName: registerName,
-  checkNameAvailabilityAndPrice: checkNameAvailabilityAndPrice
+  checkNameAvailabilityAndPrice: checkNameAvailabilityAndPrice,
+  createNewIdentityFromDomain
 }
 
 const initialState = {
@@ -408,9 +308,9 @@ const initialState = {
   },
   localIdentities: {},
   lastNameLookup: [],
-  registration: {
-    lastNameEntered: null,
-    names: {}
+  availability: {
+    names: {},
+    lastNameEntered: null
   }
 }
 
@@ -449,145 +349,104 @@ export function IdentityReducer(state = initialState, action) {
         })
       })
     case CHECKING_NAME_AVAILABILITY:
-      state.registration.names[action.domainName] = {
-        checkingAvailability: true,
-        available: false,
-        checkingPrice: true,
-        price: 0.0,
-        error: null
+      const availability = state.availability
+      let names
+      if(state.availability) {
+        names = state.availability.names
+      } else {
+        names = {}
       }
       return Object.assign({}, state, {
-        registration: {
-          names: state.registration.names,
+        availability: {
+          names: Object.assign({}, names, {
+            [action.domainName]: Object.assign({}, names[action.domainName], {
+              checkingAvailability: true,
+              available: false,
+              checkingPrice: true,
+              price: 0.0,
+              error: null
+            })
+          }),
           lastNameEntered: action.domainName
         }
       })
     case NAME_AVAILABLE:
-      state.registration.names[action.domainName].checkingAvailability = false
-      state.registration.names[action.domainName].available = true
       return Object.assign({}, state, {
-        registration: {
-          names: state.registration.names,
-          lastNameEntered: state.registration.lastNameEntered
+        availability: {
+          names: Object.assign({}, state.availability.names, {
+            [action.domainName]: Object.assign({}, state.availability.names[action.domainName], {
+              checkingAvailability: false,
+              available: true
+            })
+          }),
+          lastNameEntered: action.domainName
         }
       })
     case NAME_UNAVAILABLE:
       return Object.assign({}, state, {
-        registration: {
-          names: Object.assign({}, state.registration.names, {
-            [action.domainName]: Object.assign({},state.registration.names[action.domainName],
-            {
-              checkingAvailability: false,
-              available: false
-            })
+        availability: {
+          names: Object.assign({}, state.availability.names, {
+            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
+              {
+                checkingAvailability: false,
+                available: false
+              })
           }),
-          lastNameEntered: state.registration.lastNameEntered
+          lastNameEntered: state.availability.lastNameEntered
         }
       })
     case NAME_AVAILABILITIY_ERROR:
       return Object.assign({}, state, {
-        registration: {
-          names: Object.assign({}, state.registration.names, {
-            [action.domainName]: Object.assign({},state.registration.names[action.domainName],
-            {
-              checkingAvailability: false,
-              error: action.error
-            })
+        availability: {
+          names: Object.assign({}, state.availability.names, {
+            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
+              {
+                checkingAvailability: false,
+                error: action.error
+              })
           }),
-          lastNameEntered: state.registration.lastNameEntered
+          lastNameEntered: state.availability.lastNameEntered
         }
       })
     case CHECKING_NAME_PRICE:
-    return Object.assign({}, state, {
-      registration: {
-        names: Object.assign({}, state.registration.names, {
-          [action.domainName]: Object.assign({},state.registration.names[action.domainName],
-          {
-            checkingPrice: true
-          })
-        }),
-        lastNameEntered: state.registration.lastNameEntered
-      }
-    })
+      return Object.assign({}, state, {
+        availability: {
+          names: Object.assign({}, state.availability.names, {
+            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
+              {
+                checkingPrice: true
+              })
+          }),
+          lastNameEntered: state.availability.lastNameEntered
+        }
+      })
     case NAME_PRICE:
-    return Object.assign({}, state, {
-      registration: {
-        names: Object.assign({}, state.registration.names, {
-          [action.domainName]: Object.assign({},state.registration.names[action.domainName],
-          {
-            checkingPrice: false,
-            price: action.price
-          })
-        }),
-        lastNameEntered: state.registration.lastNameEntered
-      }
-    })
+      return Object.assign({}, state, {
+        availability: {
+          names: Object.assign({}, state.availability.names, {
+            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
+              {
+                checkingPrice: false,
+                price: action.price
+              })
+          }),
+          lastNameEntered: state.availability.lastNameEntered
+        }
+      })
     case NAME_PRICE_ERROR:
-    return Object.assign({}, state, {
-      registration: {
-        names: Object.assign({}, state.registration.names, {
-          [action.domainName]: Object.assign({},state.registration.names[action.domainName],
-          {
-            checkingPrice: false,
-            error: action.error
-          })
-        }),
-        lastNameEntered: state.registration.lastNameEntered
-      }
-    })
-    case PROFILE_UPLOADING:
       return Object.assign({}, state, {
-        registration: Object.assign({}, state.registration, {
-          profileUploading: true,
-          error: null,
-          preventRegistration: true
-        })
-      })
-    case PROFILE_UPLOAD_ERROR:
-      return Object.assign({}, state, {
-        registration: Object.assign({}, state.registration, {
-          profileUploading: false,
-          error: action.error,
-          preventRegistration: false
-        })
-      })
-    case REGISTRATION_SUBMITTING:
-      return Object.assign({}, state, {
-        registration: Object.assign({}, state.registration, {
-          profileUploading: false,
-          registrationSubmitting: true,
-          error: null,
-          preventRegistration: true
-        })
-      })
-    case REGISTRATION_SUBMITTED:
-      return Object.assign({}, state, {
-        registration: Object.assign({}, state.registration, {
-          profileUploading: false,
-          registrationSubmitting: false,
-          registrationSubmitted: true,
-          error: null,
-          preventRegistration: false
-        })
-      })
-    case REGISTRATION_ERROR:
-      return Object.assign({}, state, {
-        registration: Object.assign({}, state.registration, {
-          registrationSubmitting: false,
-          error: action.error,
-          preventRegistration: false
-        })
+        availability: {
+          names: Object.assign({}, state.availability.names, {
+            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
+              {
+                checkingPrice: false,
+                error: action.error
+              })
+          }),
+          lastNameEntered: state.availability.lastNameEntered
+        }
       })
     default:
       return state
   }
 }
-
-/*{
-  domainName: 'ryan.id',
-  profile: {},
-  verifications: [],
-  registered: false,
-  blockNumber: null,
-  transactionNumber: null
-}*/

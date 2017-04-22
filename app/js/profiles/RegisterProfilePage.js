@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identities'
+import { RegistrationActions } from './store/registration'
 
 import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
 import log4js from 'log4js'
@@ -23,7 +24,8 @@ function mapStateToProps(state) {
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs,
-    registration: state.profiles.identities.registration,
+    registration: state.profiles.registration,
+    availability: state.profiles.identities.availability,
     addressBalanceUrl: state.settings.api.addressBalanceUrl,
     coreWalletBalance: state.account.coreWallet.balance,
     coreWalletAddress: state.account.coreWallet.address,
@@ -32,7 +34,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
+  return bindActionCreators(Object.assign({},
+    IdentityActions, AccountActions, RegistrationActions), dispatch)
 }
 
 class RegisterPage extends Component {
@@ -45,6 +48,7 @@ class RegisterPage extends Component {
     registerName: PropTypes.func.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
     registration: PropTypes.object.isRequired,
+    availability: PropTypes.object.isRequired,
     addressBalanceUrl: PropTypes.string.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     coreWalletBalance: PropTypes.number.isRequired,
@@ -111,10 +115,11 @@ class RegisterPage extends Component {
     }
 
     const registration = nextProps.registration
+    const availability = nextProps.availability
     const zeroBalance = this.props.coreWalletBalance <= 0
 
     this.setState({
-      zeroBalance: zeroBalance
+      zeroBalance
     })
 
     if (zeroBalance) {
@@ -122,10 +127,11 @@ class RegisterPage extends Component {
     } else if (registration.registrationSubmitting ||
       registration.registrationSubmitted ||
       registration.profileUploading ||
-      registration.error)
+      registration.error) {
       this.displayRegistrationAlerts(registration)
+    }
     else {
-      this.displayPricingAndAvailabilityAlerts(registration)
+      this.displayPricingAndAvailabilityAlerts(availability)
     }
 
   }
@@ -143,23 +149,23 @@ class RegisterPage extends Component {
     }
   }
 
-  displayPricingAndAvailabilityAlerts(registration) {
+  displayPricingAndAvailabilityAlerts(availability) {
     let tld = this.state.tlds[this.state.type]
     const domainName = `${this.state.username}.${tld}`
 
-    if(domainName === registration.lastNameEntered) {
-      if(registration.names[domainName].error) {
-        const error = registration.names[domainName].error
+    if(domainName === availability.lastNameEntered) {
+      if(availability.names[domainName].error) {
+        const error = availability.names[domainName].error
         console.error(error)
         this.updateAlert('danger', `There was a problem checking on price & availability of ${domainName}`)
       } else {
-        if(registration.names[domainName].checkingAvailability)
+        if(availability.names[domainName].checkingAvailability)
           this.updateAlert('info', `Checking if ${domainName} available...`)
-        else if(registration.names[domainName].available) {
-          if(registration.names[domainName].checkingPrice) {
+        else if(availability.names[domainName].available) {
+          if(availability.names[domainName].checkingPrice) {
             this.updateAlert('info', `${domainName} is available! Checking price...`)
           } else {
-            const price = registration.names[domainName].price
+            const price = availability.names[domainName].price
             if(price < this.props.coreWalletBalance) {
               this.updateAlert('info', `${domainName} costs ~${price} btc to register.`)
             } else {
