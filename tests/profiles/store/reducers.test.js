@@ -5,6 +5,7 @@ describe('Profiles Store: ProfilesReducer', () => {
     const actualResult = ProfilesReducer(undefined, {})
     assert(actualResult.hasOwnProperty('identities'), 'Missing identities state.')
     assert(actualResult.hasOwnProperty('pgp'), 'Missing pgp state.')
+    assert(actualResult.hasOwnProperty('registration'), 'Missing registration state.')
     assert(actualResult.hasOwnProperty('search'), 'Missing search state.')
   })
 })
