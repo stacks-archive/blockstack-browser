@@ -116,7 +116,7 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
     .then((responseJson) => {
       const balance = responseJson.unconfirmedBalance + responseJson.balance
       dispatch(
-        updateCoreWalletBalance(1.0)
+        updateCoreWalletBalance(balance)
       )
     })
     .catch((error) => {

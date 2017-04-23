@@ -1,7 +1,6 @@
 import { validateProofs } from 'blockstack'
 
 import {
-  isNameAvailable, getNamePrices,
   resolveZoneFileToProfile
 } from '../../utils/index'
 
@@ -15,13 +14,6 @@ const UPDATE_CURRENT = 'UPDATE_CURRENT',
       UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
       CREATE_NEW = 'CREATE_NEW',
       UPDATE_PROFILE = 'UPDATE_PROFILE'
-export const CHECKING_NAME_AVAILABILITY = 'CHECK_NAME_AVAILABILITY'
-export const NAME_AVAILABLE = 'NAME_AVAILABLE'
-export const NAME_UNAVAILABLE = 'NAME_UNAVAILABLE'
-export const NAME_AVAILABILITIY_ERROR = 'NAME_AVAILABILITIY_ERROR'
-export const CHECKING_NAME_PRICE = 'CHECK_NAME_PRICE'
-export const NAME_PRICE = 'NAME_PRICE'
-export const NAME_PRICE_ERROR = 'NAME_PRICE_ERROR'
 
 function updateCurrentIdentity(domainName, profile, verifications) {
   return {
@@ -52,58 +44,6 @@ function updateProfile(domainName, profile) {
     type: UPDATE_PROFILE,
     domainName: domainName,
     profile: profile
-  }
-}
-
-function checkingNameAvailability(domainName) {
-  return {
-    type: CHECKING_NAME_AVAILABILITY,
-    domainName: domainName
-  }
-}
-
-function nameAvailable(domainName) {
-  return {
-    type: NAME_AVAILABLE,
-    domainName: domainName
-  }
-}
-
-function nameUnavailable(domainName) {
-  return {
-    type: NAME_UNAVAILABLE,
-    domainName: domainName
-  }
-}
-
-function nameAvailabilityError(domainName, error) {
-  return {
-    type: NAME_AVAILABILITIY_ERROR,
-    domainName: domainName,
-    error: error
-  }
-}
-
-function checkingNamePrice(domainName) {
-  return {
-    type: CHECKING_NAME_PRICE,
-    domainName: domainName
-  }
-}
-
-function namePrice(domainName, price) {
-  return {
-    type: NAME_PRICE,
-    domainName: domainName,
-    price: price
-  }
-}
-
-function namePriceError(domainName, error) {
-  return {
-    type: NAME_PRICE_ERROR,
-    domainName: domainName,
-    error: error
   }
 }
 
@@ -262,31 +202,6 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
   }
 }
 
-function checkNameAvailabilityAndPrice(api, domainName) {
-  return dispatch => {
-
-    dispatch(checkingNameAvailability(domainName))
-
-    isNameAvailable(api.nameLookupUrl, domainName).then((isAvailable) => {
-      if(isAvailable) {
-        dispatch(nameAvailable(domainName))
-        dispatch(checkingNamePrice(domainName))
-        getNamePrices(api.priceUrl, domainName).then((prices)=> {
-            const price = prices.total_estimated_cost.btc
-            dispatch(namePrice(domainName, price))
-        }).catch((error) => {
-          logger.error('checkNameAvailabilityAndPrice: getNamePrices: error', error)
-          dispatch(namePriceError(domainName, error))
-        })
-      } else {
-        dispatch(nameUnavailable(domainName))
-      }
-    }).catch((error) => {
-      logger.error('checkNameAvailabilityAndPrice: isNameAvailable: error', error)
-      dispatch(nameAvailabilityError(domainName, error))
-    })
-  }
-}
 
 
 export const IdentityActions = {
@@ -296,7 +211,6 @@ export const IdentityActions = {
   fetchCurrentIdentity: fetchCurrentIdentity,
   refreshIdentities: refreshIdentities,
   updateOwnedIdentities: updateOwnedIdentities,
-  checkNameAvailabilityAndPrice: checkNameAvailabilityAndPrice,
   createNewIdentityFromDomain
 }
 
@@ -347,104 +261,6 @@ export function IdentityReducer(state = initialState, action) {
             profile: action.profile
           })
         })
-      })
-    case CHECKING_NAME_AVAILABILITY:
-      const availability = state.availability
-      let names
-      if(state.availability) {
-        names = state.availability.names
-      } else {
-        names = {}
-      }
-      return Object.assign({}, state, {
-        availability: {
-          names: Object.assign({}, names, {
-            [action.domainName]: Object.assign({}, names[action.domainName], {
-              checkingAvailability: true,
-              available: false,
-              checkingPrice: true,
-              price: 0.0,
-              error: null
-            })
-          }),
-          lastNameEntered: action.domainName
-        }
-      })
-    case NAME_AVAILABLE:
-      return Object.assign({}, state, {
-        availability: {
-          names: Object.assign({}, state.availability.names, {
-            [action.domainName]: Object.assign({}, state.availability.names[action.domainName], {
-              checkingAvailability: false,
-              available: true
-            })
-          }),
-          lastNameEntered: action.domainName
-        }
-      })
-    case NAME_UNAVAILABLE:
-      return Object.assign({}, state, {
-        availability: {
-          names: Object.assign({}, state.availability.names, {
-            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
-              {
-                checkingAvailability: false,
-                available: false
-              })
-          }),
-          lastNameEntered: state.availability.lastNameEntered
-        }
-      })
-    case NAME_AVAILABILITIY_ERROR:
-      return Object.assign({}, state, {
-        availability: {
-          names: Object.assign({}, state.availability.names, {
-            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
-              {
-                checkingAvailability: false,
-                error: action.error
-              })
-          }),
-          lastNameEntered: state.availability.lastNameEntered
-        }
-      })
-    case CHECKING_NAME_PRICE:
-      return Object.assign({}, state, {
-        availability: {
-          names: Object.assign({}, state.availability.names, {
-            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
-              {
-                checkingPrice: true
-              })
-          }),
-          lastNameEntered: state.availability.lastNameEntered
-        }
-      })
-    case NAME_PRICE:
-      return Object.assign({}, state, {
-        availability: {
-          names: Object.assign({}, state.availability.names, {
-            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
-              {
-                checkingPrice: false,
-                price: action.price
-              })
-          }),
-          lastNameEntered: state.availability.lastNameEntered
-        }
-      })
-    case NAME_PRICE_ERROR:
-      return Object.assign({}, state, {
-        availability: {
-          names: Object.assign({}, state.availability.names, {
-            [action.domainName]: Object.assign({}, state.availability.names[action.domainName],
-              {
-                checkingPrice: false,
-                error: action.error
-              })
-          }),
-          lastNameEntered: state.availability.lastNameEntered
-        }
       })
     default:
       return state

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
+import { AvailabilityActions } from './store/availability'
 import { IdentityActions } from './store/identities'
 import { RegistrationActions } from './store/registration'
 
@@ -25,7 +26,7 @@ function mapStateToProps(state) {
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs,
     registration: state.profiles.registration,
-    availability: state.profiles.identities.availability,
+    availability: state.profiles.availability,
     addressBalanceUrl: state.settings.api.addressBalanceUrl,
     coreWalletBalance: state.account.coreWallet.balance,
     coreWalletAddress: state.account.coreWallet.address,
@@ -35,7 +36,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({},
-    IdentityActions, AccountActions, RegistrationActions), dispatch)
+    IdentityActions, AccountActions, RegistrationActions, AvailabilityActions), dispatch)
 }
 
 class RegisterPage extends Component {
