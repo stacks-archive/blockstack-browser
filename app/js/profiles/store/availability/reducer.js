@@ -13,7 +13,7 @@ function AvailabilityReducer(state = initialState, action) {
           [action.domainName]: Object.assign({}, state.names[action.domainName], {
             checkingAvailability: true,
             available: false,
-            checkingPrice: true,
+            checkingPrice: false,
             price: 0.0,
             error: null
           })
