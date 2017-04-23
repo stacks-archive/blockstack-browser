@@ -24,6 +24,12 @@ function profileUploadError(error) {
   }
 }
 
+function registrationBeforeSubmit() {
+  return {
+    type: types.REGISTRATION_BEFORE_SUBMIT
+  }
+}
+
 function registrationSubmitting() {
   return {
     type: types.REGISTRATION_SUBMITTING
@@ -40,6 +46,13 @@ function registrationError(error) {
   return {
     type: types.REGISTRATION_ERROR,
     error
+  }
+}
+
+function beforeRegister() {
+  logger.trace('beforeRegister')
+  return dispatch => {
+    dispatch(registrationBeforeSubmit())
   }
 }
 
@@ -106,7 +119,9 @@ function registerName(api, domainName, recipientAddress, keypair) {
 const RegistrationActions = {
   profileUploading,
   profileUploadError,
+  beforeRegister,
   registerName,
+  registrationBeforeSubmit,
   registrationSubmitting,
   registrationSubmitted,
   registrationError

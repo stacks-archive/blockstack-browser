@@ -6,6 +6,14 @@ const initialState = {
 
 function RegistrationReducer(state = initialState, action) {
   switch (action.type) {
+    case types.REGISTRATION_BEFORE_SUBMIT:
+      return Object.assign({}, state, {
+        profileUploading: false,
+        registrationSubmitting: false,
+        registrationSubmitted: false,
+        error: null,
+        preventRegistration: false
+      })
     case types.REGISTRATION_SUBMITTING:
       return Object.assign({}, state, {
         profileUploading: false,

@@ -16,6 +16,19 @@ describe('Registration Store: Async Actions', () => {
     nock.cleanAll()
   })
 
+  describe('beforeRegister', () => {
+    it('should return an action of type REGISTRATION_BEFORE_SUBMIT', () => {
+      const expectedActions = [{
+        type: 'REGISTRATION_BEFORE_SUBMIT'
+      }]
+
+      const store = mockStore({
+      })
+      store.dispatch(RegistrationActions.beforeRegister())
+      assert.deepEqual(store.getActions(), expectedActions)
+    })
+  })
+
   describe('registerName', () => {
     const ecPair = ECPair.fromWIF(BitcoinKeyPairs.test1.wif)
     const address = ecPair.getAddress()

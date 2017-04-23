@@ -22,6 +22,16 @@ describe('Registration Store: Sync Actions', () => {
     })
   })
 
+  describe('registrationBeforeSubmit', () => {
+    it('should return an action of type REGISTRATION_BEFORE_SUBMIT', () => {
+      const expectedResult = {
+        type: 'REGISTRATION_BEFORE_SUBMIT'
+      }
+      const actualResult = RegistrationActions.registrationBeforeSubmit()
+      assert.deepEqual(actualResult, expectedResult)
+    })
+  })
+
   describe('registrationSubmitting', () => {
     it('should return an action of type REGISTRATION_SUBMITTING', () => {
       const expectedResult = {

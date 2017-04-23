@@ -54,7 +54,8 @@ class RegisterPage extends Component {
     coreWalletBalance: PropTypes.number.isRequired,
     coreWalletAddress: PropTypes.string,
     api: PropTypes.object.isRequired,
-    checkNameAvailabilityAndPrice: PropTypes.func.isRequired
+    checkNameAvailabilityAndPrice: PropTypes.func.isRequired,
+    beforeRegister: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -186,6 +187,8 @@ class RegisterPage extends Component {
 
   onChange(event) {
     if (event.target.name === 'username') {
+      this.props.beforeRegister() // clears any error & resets registration state
+
       const username = event.target.value.toLowerCase().replace(/\W+/g, '')
       const tld = this.state.tlds[this.state.type]
       const domainName = `${username}.${tld}`
