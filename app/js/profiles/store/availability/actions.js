@@ -65,11 +65,11 @@ function checkNameAvailabilityAndPrice(api, domainName) {
   return dispatch => {
     dispatch(checkingNameAvailability(domainName))
 
-    isNameAvailable(api.nameLookupUrl, domainName).then((isAvailable) => {
+    return isNameAvailable(api.nameLookupUrl, domainName).then((isAvailable) => {
       if (isAvailable) {
         dispatch(nameAvailable(domainName))
         dispatch(checkingNamePrice(domainName))
-        getNamePrices(api.priceUrl, domainName).then((prices) => {
+        return getNamePrices(api.priceUrl, domainName).then((prices) => {
           const price = prices.total_estimated_cost.btc
           dispatch(namePrice(domainName, price))
         }).catch((error) => {
