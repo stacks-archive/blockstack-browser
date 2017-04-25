@@ -8,11 +8,7 @@ const initialState = {
     verifications: null
   },
   localIdentities: {},
-  lastNameLookup: [],
-  availability: {
-    names: {},
-    lastNameEntered: null
-  }
+  lastNameLookup: []
 }
 
 function IdentityReducer(state = initialState, action) {
