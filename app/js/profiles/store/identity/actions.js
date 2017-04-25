@@ -203,6 +203,7 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
 }
 
 const IdentityActions = {
+  calculateLocalIdentities,
   updateCurrentIdentity,
   createNewIdentity,
   updateProfile,
