@@ -88,65 +88,95 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
 function refreshIdentities(api, addresses, localIdentities, namesOwned) {
   logger.trace('refreshIdentities')
   return dispatch => {
-    if (addresses.length === 0) {
-      const namesOwned = []
-      const updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
-      if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
-        // pass
+    return new Promise((resolve, reject) => {
+      if (addresses.length === 0) {
+        const newNamesOwned = []
+        const updatedLocalIdentities = calculateLocalIdentities(localIdentities, newNamesOwned)
+        if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
+          // pass
+          resolve()
+        } else {
+          dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
+          resolve()
+        }
       } else {
-        dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
-      }
-    } else {
-      let count =  addresses.length
-      let newNamesOwned = []
+        let i =  0
+        let newNamesOwned = []
 
-      addresses.forEach((address) => {
-        const url = api.addressLookupUrl.replace('{address}', address)
-        fetch(url)
-          .then((response) => response.text())
-          .then((responseText) => JSON.parse(responseText))
-          .then((responseJson) => {
-            count++
-            newNamesOwned = newNamesOwned.concat(responseJson.names)
+        addresses.forEach((address) => {
+          const url = api.addressLookupUrl.replace('{address}', address)
+          fetch(url)
+            .then((response) => response.text())
+            .then((responseText) => JSON.parse(responseText))
+            .then((responseJson) => {
+              i++
+              newNamesOwned = newNamesOwned.concat(responseJson.names)
 
-            if (count >= addresses.length) {
-              const updatedLocalIdentities = calculateLocalIdentities(localIdentities,
-                newNamesOwned)
+              logger.debug(`i: ${i} addresses.length: ${addresses.length}`)
+              if (i >= addresses.length) {
+                const updatedLocalIdentities = calculateLocalIdentities(localIdentities,
+                  newNamesOwned)
 
-              if (JSON.stringify(newNamesOwned) === JSON.stringify(namesOwned)) {
-                // pass
-              } else {
-                dispatch(updateOwnedIdentities(updatedLocalIdentities, newNamesOwned))
-                namesOwned.forEach((domainName) => {
-                  const identity = updatedLocalIdentities[domainName]
-                  const lookupUrl = api.nameLookupUrl.replace('{name}', identity.domainName)
-                  fetch(lookupUrl).then((response) => response.text())
-                  .then((responseText) => JSON.parse(responseText))
-                  .then((lookupResponseJson) => {
-                    const zoneFile = lookupResponseJson.zonefile
-                    const ownerAddress = lookupResponseJson.address
+                if (JSON.stringify(newNamesOwned) === JSON.stringify(namesOwned)) {
+                  // pass
+                  logger.trace('Names owned have not changed')
+                  resolve()
+                } else {
+                  logger.trace('Names owned changed. Dispatching updateOwnedIdentities')
+                  dispatch(updateOwnedIdentities(updatedLocalIdentities, newNamesOwned))
+                  logger.debug(`Preparing to resolve profiles for ${namesOwned.length} names`)
+                  let j = 0
+                  newNamesOwned.forEach((domainName) => {
+                    const identity = updatedLocalIdentities[domainName]
+                    const lookupUrl = api.nameLookupUrl.replace('{name}', identity.domainName)
+                    logger.debug(`j: ${j} fetching: ${lookupUrl}`)
+                    fetch(lookupUrl).then((response) => response.text())
+                    .then((responseText) => JSON.parse(responseText))
+                    .then((lookupResponseJson) => {
 
-                    resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
-                      if (profile) {
-                        dispatch(updateProfile(domainName, profile))
-                      }
+                      const zoneFile = lookupResponseJson.zonefile
+                      const ownerAddress = lookupResponseJson.address
+
+                      logger.debug(`j: ${j} resolving zonefile to profile`)
+                      resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
+                        j++
+                        if (profile) {
+                          dispatch(updateProfile(domainName, profile))
+                        }
+                        logger.debug(`j: ${j} namesOwned.length: ${namesOwned.length}`)
+                        if (j >= namesOwned.length) {
+                          resolve()
+                        }
+                      })
+                      .catch((error) => {
+                        j++
+                        logger.error(`j: ${j} refreshIdentities: resolveZoneFileToProfile: error`, error)
+                        if (j >= namesOwned.length) {
+                          resolve()
+                        }
+                      })
                     })
                     .catch((error) => {
-                      logger.error('refreshIdentities: resolveZoneFileToProfile: error', error)
+                      j++
+                      logger.error(`j: ${j} refreshIdentities: lookupUrl: error`, error)
+                      if (j >= namesOwned.length) {
+                        resolve()
+                      }
                     })
                   })
-                  .catch((error) => {
-                    logger.error('refreshIdentities: lookupUrl: error', error)
-                  })
-                })
+                }
               }
-            }
-          })
-          .catch((error) => {
-            logger.error('refreshIdentities: addressLookup: error', error)
-          })
-      })
-    }
+            })
+            .catch((error) => {
+              i++
+              logger.error(`i: ${i} refreshIdentities: addressLookup: error`, error)
+              if (i >= addresses.length)  {
+                resolve()
+              }
+            })
+        })
+      }
+    })
   }
 }
 
