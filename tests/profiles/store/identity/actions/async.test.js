@@ -221,8 +221,7 @@ describe('Availability Store: Async Actions', () => {
 
       })
 
-      return store.dispatch(IdentityActions.fetchCurrentIdentity('guylepage.id',
-      mockAPI.nameLookupUrl))
+      return store.dispatch(IdentityActions.fetchCurrentIdentity(mockAPI.nameLookupUrl, 'guylepage.id'))
       .then(() => {
         const expectedActions = [
         {

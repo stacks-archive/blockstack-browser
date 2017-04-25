@@ -58,7 +58,7 @@ class ViewProfilePage extends Component {
             verifications = []
       this.props.updateCurrentIdentity(name, profile, verifications)
     } else if (props.routeParams.name) {
-      this.props.fetchCurrentIdentity(props.routeParams.name, props.nameLookupUrl)
+      this.props.fetchCurrentIdentity(props.nameLookupUrl, props.routeParams.name)
     }
   }
 

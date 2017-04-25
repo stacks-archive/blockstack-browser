@@ -179,7 +179,7 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
   }
 }
 
-function fetchCurrentIdentity(domainName, lookupUrl) {
+function fetchCurrentIdentity(lookupUrl, domainName) {
   return dispatch => {
     let username
     if (lookupUrl.search('localhost') >= 0) {
