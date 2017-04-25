@@ -133,7 +133,6 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
                     fetch(lookupUrl).then((response) => response.text())
                     .then((responseText) => JSON.parse(responseText))
                     .then((lookupResponseJson) => {
-
                       const zoneFile = lookupResponseJson.zonefile
                       const ownerAddress = lookupResponseJson.address
 
@@ -191,7 +190,7 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
       throw "Invalid lookup URL"
     }
     const url = lookupUrl.replace('{name}', username)
-    fetch(url)
+    return fetch(url)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
@@ -209,11 +208,11 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
           throw 'Invalid lookup URL'
         }
 
-        resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
+        return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
           let verifications = []
           dispatch(updateCurrentIdentity(domainName, profile, verifications))
           if (profile) {
-            validateProofs(profile, domainName).then((proofs) => {
+            return validateProofs(profile, domainName).then((proofs) => {
               verifications = proofs
               dispatch(updateCurrentIdentity(domainName, profile, verifications))
             }).catch((error) => {
