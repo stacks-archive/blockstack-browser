@@ -9,7 +9,12 @@ const initialState = {
     verifications: null
   },
   localIdentities: {},
-  lastNameLookup: []
+  namesOwned: []
+}
+
+const DEFAULT_PROFILE = {
+  '@type': 'Person',
+  '@context': 'http://schema.org'
 }
 
 describe('Identity Store: IdentityReducer', () => {
@@ -17,5 +22,103 @@ describe('Identity Store: IdentityReducer', () => {
     assert.deepEqual(
       IdentityReducer(undefined, {}),
       initialState)
+  })
+
+  it('should update the current identity with the proper values', () => {
+    const profile = {
+      key: 'value'
+    }
+    const verifications = {
+      verified: true
+    }
+    const action = IdentityActions.updateCurrentIdentity('satoshi.id', profile, verifications)
+    const expectedState = {
+      current: {
+        domainName: 'satoshi.id',
+        profile: { key: 'value' },
+        verifications: { verified: true }
+      },
+      localIdentities: {},
+      namesOwned: []
+    }
+    const actualState = IdentityReducer(undefined, action)
+    assert.deepEqual(actualState, expectedState)
+  })
+
+  it('should create a new identity that is unregistered & unverified', () => {
+    const action = IdentityActions.createNewIdentity('satoshi.id')
+    const expectedState = {
+      current: {
+        domainName: null,
+        profile: null,
+        verifications: null
+      },
+      localIdentities: {
+        'satoshi.id': {
+          domainName: 'satoshi.id',
+          profile: DEFAULT_PROFILE,
+          verifications: [],
+          registered: false
+        }
+      },
+      namesOwned: []
+    }
+    const actualState = IdentityReducer(undefined, action)
+    assert.deepEqual(actualState, expectedState)
+  })
+
+  it('should update the collection of local identites and list of names owned', () => {
+    const namesOwned = ['satoshi.id']
+    const localIdentities = {
+      'satoshi.id': {
+        domainName: 'satoshi.id',
+        profile: DEFAULT_PROFILE,
+        verifications: [],
+        registered: false
+      }
+    }
+    const action = IdentityActions.updateOwnedIdentities(localIdentities, namesOwned)
+    const expectedState = {
+      current: {
+        domainName: null,
+        profile: null,
+        verifications: null
+      },
+      localIdentities: {
+        'satoshi.id': {
+          domainName: 'satoshi.id',
+          profile: DEFAULT_PROFILE,
+          verifications: [],
+          registered: false
+        }
+      },
+      namesOwned: ['satoshi.id']
+    }
+    const actualState = IdentityReducer(undefined, action)
+    assert.deepEqual(actualState, expectedState)
+  })
+
+  it('should update the profile of the specified name', () => {
+    const profile = {
+      key: 'value'
+    }
+    const action = IdentityActions.updateProfile('satoshi.id', profile)
+    const expectedState = {
+      current: {
+        domainName: null,
+        profile: null,
+        verifications: null
+      },
+      localIdentities: {
+        'satoshi.id': {
+          profile: {
+            key: 'value'
+          }
+        }
+      },
+      namesOwned: []
+    }
+    const actualState = IdentityReducer(undefined, action)
+    assert.deepEqual(actualState, expectedState)
   })
 })

@@ -11,7 +11,7 @@ import { AccountActions }  from '../account/store/account'
 function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
-    lastNameLookup: state.profiles.identity.lastNameLookup,
+    namesOwned: state.profiles.identity.namesOwned,
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api
   }
@@ -26,7 +26,7 @@ class IdentityPage extends Component {
     localIdentities: PropTypes.object.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
-    lastNameLookup: PropTypes.array.isRequired,
+    namesOwned: PropTypes.array.isRequired,
     api: PropTypes.object.isRequired
   }
 
@@ -43,7 +43,7 @@ class IdentityPage extends Component {
       this.props.api,
       this.props.identityAddresses,
       this.props.localIdentities,
-      this.props.lastNameLookup
+      this.props.namesOwned
     )
   }
 

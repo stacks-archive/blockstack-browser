@@ -8,7 +8,7 @@ const initialState = {
     verifications: null
   },
   localIdentities: {},
-  lastNameLookup: []
+  namesOwned: []
 }
 
 function IdentityReducer(state = initialState, action) {
@@ -35,7 +35,7 @@ function IdentityReducer(state = initialState, action) {
     case types.UPDATE_IDENTITIES:
       return Object.assign({}, state, {
         localIdentities: action.localIdentities,
-        lastNameLookup: action.namesOwned
+        namesOwned: action.namesOwned
       })
     case types.UPDATE_PROFILE:
       return Object.assign({}, state, {

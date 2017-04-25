@@ -85,7 +85,7 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
   return updatedLocalIdentities
 }
 
-function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
+function refreshIdentities(api, addresses, localIdentities, namesOwned) {
   logger.trace('refreshIdentities')
   return dispatch => {
     if (addresses.length === 0) {
@@ -98,7 +98,7 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
       }
     } else {
       let count =  addresses.length
-      let namesOwned = []
+      let newNamesOwned = []
 
       addresses.forEach((address) => {
         const url = api.addressLookupUrl.replace('{address}', address)
@@ -107,15 +107,16 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
           .then((responseText) => JSON.parse(responseText))
           .then((responseJson) => {
             count++
-            namesOwned = namesOwned.concat(responseJson.names)
+            newNamesOwned = newNamesOwned.concat(responseJson.names)
 
             if (count >= addresses.length) {
-              const updatedLocalIdentities = calculateLocalIdentities(localIdentities, namesOwned)
+              const updatedLocalIdentities = calculateLocalIdentities(localIdentities,
+                newNamesOwned)
 
-              if (JSON.stringify(lastNameLookup) === JSON.stringify(namesOwned)) {
+              if (JSON.stringify(newNamesOwned) === JSON.stringify(namesOwned)) {
                 // pass
               } else {
-                dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
+                dispatch(updateOwnedIdentities(updatedLocalIdentities, newNamesOwned))
                 namesOwned.forEach((domainName) => {
                   const identity = updatedLocalIdentities[domainName]
                   const lookupUrl = api.nameLookupUrl.replace('{name}', identity.domainName)
