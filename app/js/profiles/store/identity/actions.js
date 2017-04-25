@@ -1,49 +1,47 @@
+import * as types from './types'
 import { validateProofs } from 'blockstack'
 
 import {
   resolveZoneFileToProfile
-} from '../../utils/index'
-
-import { DEFAULT_PROFILE } from '../../utils/profile-utils'
+} from '../../../utils/index'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/store/identities.js')
 
-const UPDATE_CURRENT = 'UPDATE_CURRENT',
-      UPDATE_IDENTITIES = 'UPDATE_IDENTITIES',
-      CREATE_NEW = 'CREATE_NEW',
-      UPDATE_PROFILE = 'UPDATE_PROFILE'
+const logger = log4js.getLogger('profiles/store/identity/actions.js')
+
+
+
 
 function updateCurrentIdentity(domainName, profile, verifications) {
   return {
-    type: UPDATE_CURRENT,
-    domainName: domainName,
-    profile: profile,
-    verifications: verifications,
+    type: types.UPDATE_CURRENT,
+    domainName,
+    profile,
+    verifications
   }
 }
 
 function createNewIdentity(domainName) {
   return {
-    type: CREATE_NEW,
-    domainName: domainName
+    type: types.CREATE_NEW,
+    domainName
   }
 }
 
 function updateOwnedIdentities(localIdentities, namesOwned) {
   return {
-    type: UPDATE_IDENTITIES,
-    localIdentities: localIdentities,
-    namesOwned: namesOwned
+    type: types.UPDATE_IDENTITIES,
+    localIdentities,
+    namesOwned
   }
 }
 
 function updateProfile(domainName, profile) {
   return {
-    type: UPDATE_PROFILE,
-    domainName: domainName,
-    profile: profile
+    type: types.UPDATE_PROFILE,
+    domainName,
+    profile
   }
 }
 
@@ -54,11 +52,11 @@ function createNewIdentityFromDomain(domainName) {
 }
 
 function calculateLocalIdentities(localIdentities, namesOwned) {
-  let remoteNamesDict = {},
-      localNamesDict = {},
-      updatedLocalIdentities = localIdentities
+  const remoteNamesDict = {}
+  const localNamesDict = {}
+  const updatedLocalIdentities = localIdentities
 
-  namesOwned.map(function(name) {
+  namesOwned.map((name) => {
     remoteNamesDict[name] = true
   })
 
@@ -119,17 +117,18 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
               } else {
                 dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
                 namesOwned.forEach((domainName) => {
-                  let identity = updatedLocalIdentities[domainName]
+                  const identity = updatedLocalIdentities[domainName]
                   const lookupUrl = api.nameLookupUrl.replace('{name}', identity.domainName)
                   fetch(lookupUrl).then((response) => response.text())
                   .then((responseText) => JSON.parse(responseText))
-                  .then((responseJson) => {
-                    const zoneFile = responseJson.zonefile,
-                          ownerAddress = responseJson.address
+                  .then((lookupResponseJson) => {
+                    const zoneFile = lookupResponseJson.zonefile
+                    const ownerAddress = lookupResponseJson.address
 
                     resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
-                      if (profile)
+                      if (profile) {
                         dispatch(updateProfile(domainName, profile))
+                      }
                     })
                     .catch((error) => {
                       logger.error('refreshIdentities: resolveZoneFileToProfile: error', error)
@@ -141,10 +140,10 @@ function refreshIdentities(api, addresses, localIdentities, lastNameLookup) {
                 })
               }
             }
-          }).catch((error) => {
+          })
+          .catch((error) => {
             logger.error('refreshIdentities: addressLookup: error', error)
           })
-
       })
     }
   }
@@ -169,14 +168,14 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
         let ownerAddress
 
         if (lookupUrl.search('localhost') >= 0) {
-          zoneFile = responseJson['zonefile']
-          ownerAddress = responseJson['address']
+          zoneFile = responseJson.zonefile
+          ownerAddress = responseJson.address
         } else if (lookupUrl.search('api.blockstack.com') >= 0) {
           const userData = responseJson[username]
-          zoneFile = userData['zone_file']
-          ownerAddress = userData['owner_address']
+          zoneFile = userData.zone_file
+          ownerAddress = userData.owner_address
         } else {
-          throw "Invalid lookup URL"
+          throw 'Invalid lookup URL'
         }
 
         resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
@@ -202,67 +201,15 @@ function fetchCurrentIdentity(domainName, lookupUrl) {
   }
 }
 
-
-
-export const IdentityActions = {
-  updateCurrentIdentity: updateCurrentIdentity,
-  createNewIdentity: createNewIdentity,
-  updateProfile: updateProfile,
-  fetchCurrentIdentity: fetchCurrentIdentity,
-  refreshIdentities: refreshIdentities,
-  updateOwnedIdentities: updateOwnedIdentities,
+const IdentityActions = {
+  updateCurrentIdentity,
+  createNewIdentity,
+  updateProfile,
+  fetchCurrentIdentity,
+  refreshIdentities,
+  updateOwnedIdentities,
   createNewIdentityFromDomain
 }
 
-const initialState = {
-  current: {
-    domainName: null,
-    profile: null,
-    verifications: null
-  },
-  localIdentities: {},
-  lastNameLookup: [],
-  availability: {
-    names: {},
-    lastNameEntered: null
-  }
-}
 
-export function IdentityReducer(state = initialState, action) {
-  switch (action.type) {
-    case UPDATE_CURRENT:
-      return Object.assign({}, state, {
-        current: {
-          domainName: action.domainName,
-          profile: action.profile,
-          verifications: action.verifications
-        }
-      })
-    case CREATE_NEW:
-      return Object.assign({}, state, {
-        localIdentities: Object.assign({}, state.localIdentities, {
-          [action.domainName]: {
-            domainName: action.domainName,
-            profile: DEFAULT_PROFILE,
-            verifications: [],
-            registered: false
-          }
-        })
-      })
-    case UPDATE_IDENTITIES:
-      return Object.assign({}, state, {
-        localIdentities: action.localIdentities,
-        lastNameLookup: action.namesOwned
-      })
-    case UPDATE_PROFILE:
-      return Object.assign({}, state, {
-        localIdentities: Object.assign({}, state.localIdentities, {
-          [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
-            profile: action.profile
-          })
-        })
-      })
-    default:
-      return state
-  }
-}
+export default IdentityActions

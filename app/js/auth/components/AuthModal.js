@@ -14,7 +14,7 @@ import Image from '../../components/Image'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.profiles.identities.localIdentities,
+    localIdentities: state.profiles.identity.localIdentities,
     identityKeypairs: state.account.identityAccount.keypairs,
     appManifest: state.profiles.auth.appManifest,
     appManifestLoading: state.profiles.auth.appManifestLoading,

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { AvailabilityActions } from './store/availability'
-import { IdentityActions } from './store/identities'
+import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
 
 import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
@@ -18,7 +18,7 @@ const WALLET_URL = '/wallet/deposit'
 function mapStateToProps(state) {
   return {
     username: '',
-    localIdentities: state.profiles.identities.localIdentities,
+    localIdentities: state.profiles.identity.localIdentities,
     lookupUrl: state.settings.api.nameLookupUrl,
     registerUrl: state.settings.api.registerUrl,
     priceUrl: state.settings.api.priceUrl,

@@ -5,13 +5,13 @@ import { Link } from 'react-router'
 import { Person } from 'blockstack'
 
 import IdentityItem from './components/IdentityItem'
-import { IdentityActions } from './store/identities'
+import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.profiles.identities.localIdentities,
-    lastNameLookup: state.profiles.identities.lastNameLookup,
+    localIdentities: state.profiles.identity.localIdentities,
+    lastNameLookup: state.profiles.identity.lastNameLookup,
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api
   }

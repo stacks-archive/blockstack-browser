@@ -1,6 +1,6 @@
 import * as types from './types'
 import { makeProfileZoneFile } from 'blockstack'
-import { IdentityActions } from  '../identities'
+import { IdentityActions } from  '../identity'
 import { uploadProfile } from '../../../storage/utils'
 import {
   signProfileForUpload, authorizationHeaderValue
