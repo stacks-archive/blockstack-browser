@@ -1,4 +1,7 @@
-import { CORE_API_PASSWORD } from './core-api-password'
+import hash from 'hash-handler'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('utils/api-utils.js')
 
 export function getNamesOwned(address, addressLookupUrl, callback) {
   const url = addressLookupUrl.replace('{address}', address)
@@ -9,15 +12,32 @@ export function getNamesOwned(address, addressLookupUrl, callback) {
       callback([])
     })
     .catch((error) => {
-      console.warn(error)
+      logger.error('getNamesOwned: error', error)
       callback([])
     })
 }
 
-export function authorizationHeaderValue() {
-  return `basic ${CORE_API_PASSWORD}`
+export function authorizationHeaderValue(coreAPIPassword) {
+  return `bearer ${coreAPIPassword}`
 }
 
+export function getCoreAPIPasswordFromURL() {
+  const coreAPIPassword = hash.getInstance().get('coreAPIPassword')
+  if (!coreAPIPassword || coreAPIPassword === 'off') {
+    return null
+  }
+  hash.getInstance().set('coreAPIPassword', 'off')
+  return coreAPIPassword
+}
+
+export function getLogServerPortFromURL() {
+  const logServerPort = hash.getInstance().get('logServerPort')
+  if (!logServerPort || logServerPort === 'off') {
+    return null
+  }
+  hash.getInstance().set('logServerPort', 'off')
+  return logServerPort
+}
 /*
 export function getIdentities(address, addressLookupUrl, localIdentities, callback) {
   let remoteNamesDict = {},

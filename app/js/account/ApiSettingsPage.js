@@ -6,6 +6,9 @@ import RadioGroup from 'react-radio-group'
 import InputGroup from '../components/InputGroup'
 import SaveButton from '../components/SaveButton'
 import { SettingsActions } from '../store/settings'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('account/ApiSettingsPage.js')
 
 function mapStateToProps(state) {
   return {
@@ -38,24 +41,31 @@ class ApiSettingsPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    logger.trace('componentWillReceiveProps')
     this.setState({
       api: nextProps.api
     })
   }
 
   onValueChange(event) {
-    let api = this.state.api
-    api[event.target.name] = event.target.value
-    this.setState({ api: api })
+    logger.trace('onValueChange')
+    const api = this.state.api
+    const newValue = event.target.value
+    const key = event.target.name
+    logger.debug(`onValueChange: key: ${key} newValue: ${newValue}`)
+    api[key] = newValue
+    this.setState({ api })
   }
 
 
   updateApi() {
+    logger.trace('updateApi')
     const api = this.state.api
     this.props.updateApi(api)
   }
 
   resetApi() {
+    logger.trace('resetApi')
     this.props.resetApi(this.props.api)
   }
 
@@ -63,9 +73,9 @@ class ApiSettingsPage extends Component {
 
   registerProtocolHandler() {
     window.navigator.registerProtocolHandler(
-      "web+blockstack",
-      location.origin + "/auth?authRequest=%s",
-      "Blockstack handler"
+      'web+blockstack',
+      `${location.origin}/auth?authRequest=%s`,
+      'Blockstack handler'
     )
   }
 
@@ -76,15 +86,18 @@ class ApiSettingsPage extends Component {
           <h4>Authentication</h4>
 
           <p>
-            <button onClick={this.registerProtocolHandler}
-              className="btn btn-sm btn-outline-primary">
+            <button
+              onClick={this.registerProtocolHandler}
+              className="btn btn-sm btn-outline-primary"
+            >
               Allow App Logins
             </button>
           </p>
 
           <hr />
 
-          <RadioGroup name="hostedDataLocation"
+          <RadioGroup
+            name="hostedDataLocation"
             selectedValue={this.state.api.hostedDataLocation}
             onChange={this.onHostedDataValueChange}>
             {Radio => (
@@ -93,6 +106,10 @@ class ApiSettingsPage extends Component {
 
                 { this.state.api.apiCustomizationEnabled === true ?
                   <div>
+                    <InputGroup name="coreAPIPassword" label="Blockstack Core API Password"
+                    data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="logServerPort" label="localhost Logging Port"
+                    data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="nameLookupUrl" label="Name Lookup URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="searchUrl" label="Search URL"
@@ -120,6 +137,8 @@ class ApiSettingsPage extends Component {
                     <InputGroup name="ethereumAddressUrl" label="Ethereum Address URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="pgpKeyUrl" label="PGP Key URL"
+                      data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="btcPriceUrl" label="BTCUSD price URL"
                       data={this.state.api} onChange={this.onValueChange} />
                   </div>
                 : null }

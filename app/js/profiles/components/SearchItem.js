@@ -23,13 +23,13 @@ class SearchItem extends Component {
     return (
       <Link to={`/profiles/${this.props.domainName}`}
         className="list-group-item search-result p-l-11 m-b-11">
-          <div className="col-md-1">
-            <Image className="result-img" src={person.avatarUrl() || "https://s3.amazonaws.com/65m/avatar-placeholder.png"}
+          <div className="livesearch-avatar col-md-1">
+            <Image className="result-img img-circle" src={person.avatarUrl() || "/images/avatar.png"}
               id={this.props.domainName}
               fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png" />
           </div>
-          <div className="col-md-3">{person.name()}</div>
-          <div className="col-md-2">{this.props.domainName}</div>
+          <div className="livesearch-id col-md-2">{this.props.domainName}</div>
+          <div className="livesearch-name col-md-3">{person.name()}</div>
           <div className="col-md-6">
             {accounts.map((account, index) => {
               if (account.service && account.identifier) {

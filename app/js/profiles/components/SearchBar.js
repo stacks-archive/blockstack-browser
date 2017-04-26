@@ -89,7 +89,7 @@ class SearchBar extends Component {
       <div className="nav-search m-b-40">
         <input type="text"
           className="form-control form-control-sm input-special"
-          placeholder={this.state.placeholder} 
+          placeholder={this.state.placeholder}
           name="query" value={this.state.query}
           onChange={this.onQueryChange}
           onKeyPress={this.onKeyPress} />
@@ -105,7 +105,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(SearchBar)
 
 else if (/^local:\/\/.*$/.test(query)) {
       newPath = query.replace('local://', '/')
-    } 
+    }
 
 locationHasChanged(location) {
   let pathname = location.pathname,

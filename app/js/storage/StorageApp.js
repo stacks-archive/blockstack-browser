@@ -36,7 +36,7 @@ class StorageApp extends Component {
         </div>
         <div className="storage-content-wrap">
           <div className="vertical-split-content">
-            <div col-md-12>
+            <div className="col-md-12">
               {this.props.children}
             </div>
           </div>

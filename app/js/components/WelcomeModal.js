@@ -6,25 +6,30 @@ import { connect } from 'react-redux'
 import Alert from './Alert'
 import InputGroup from './InputGroup'
 import { AccountActions } from '../store/account'
-import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from '../storage/utils/dropbox'
+import { SettingsActions } from '../store/settings'
+import { DROPBOX_APP_ID } from '../storage/utils/dropbox'
 import { isBackupPhraseValid } from '../utils'
 
 const Dropbox = require('dropbox')
 
 function mapStateToProps(state) {
   return {
+    api: state.settings.api
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(AccountActions, dispatch)
+  return bindActionCreators(Object.assign({}, AccountActions, SettingsActions), dispatch)
 }
 
 class WelcomeModal extends Component {
   static propTypes = {
     accountCreated: PropTypes.bool.isRequired,
     storageConnected: PropTypes.bool.isRequired,
-    closeModal: PropTypes.func.isRequired
+    coreConnected: PropTypes.bool.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    updateApi: PropTypes.func.isRequired,
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -33,6 +38,7 @@ class WelcomeModal extends Component {
     this.state = {
       accountCreated: this.props.accountCreated,
       storageConnected: this.props.storageConnected,
+      coreConnected: this.props.coreConnected,
       password: '',
       backupPhrase: '',
       pageOneView: 'create',
@@ -45,12 +51,14 @@ class WelcomeModal extends Component {
     this.showRestoreAccount = this.showRestoreAccount.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
     this.connectDropbox = this.connectDropbox.bind(this)
+    this.saveCoreAPIPassword = this.saveCoreAPIPassword.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       accountCreated: nextProps.accountCreated,
-      storageConnected: nextProps.storageConnected
+      storageConnected: nextProps.storageConnected,
+      coreConnected: nextProps.coreConnected
     })
   }
 
@@ -92,6 +100,13 @@ class WelcomeModal extends Component {
       `http://localhost:${port}/storage/providers`)
   }
 
+  saveCoreAPIPassword(event) {
+    event.preventDefault()
+    let api = this.props.api
+    api = Object.assign({}, api, { coreAPIPassword: this.state.coreAPIPassword })
+    this.props.updateApi(api)
+  }
+
   onValueChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -107,10 +122,14 @@ class WelcomeModal extends Component {
   render() {
     const isOpen = !this.state.accountCreated || !this.state.storageConnected
 
-    let page = 1
-    if (this.state.accountCreated) {
-      page = 2
+    let page = 0
+    if (this.state.coreConnected) {
+      page = 1
+      if (this.state.accountCreated) {
+        page = 2
+      }
     }
+
 
     const pageOneView = this.state.pageOneView
 
@@ -125,6 +144,19 @@ class WelcomeModal extends Component {
           className="container-fluid"
         >
           <h4>Welcome to Blockstack</h4>
+          { page === 0 ?
+            <div>
+              <p className="m-b-30">Step 0: Enter your Blockstack Core API Password</p>
+              <InputGroup name="coreAPIPassword" label="Core API Password" type="text"
+                data={this.state} onChange={this.onValueChange} />
+              <div>
+                <button onClick={this.saveCoreAPIPassword}
+                  className="btn btn-lg btn-primary btn-block">
+                Save Core API Password
+                </button>
+              </div>
+            </div>
+          : null }
           { page === 1 ?
             <div>
               <div>

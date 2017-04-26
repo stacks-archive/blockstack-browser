@@ -6,6 +6,9 @@ import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import { AccountActions } from '../store/account'
 import { decrypt, encrypt } from '../utils'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('account/ChangePasswordPage.js')
 
 function mapStateToProps(state) {
   return {
@@ -38,7 +41,14 @@ class ChangePasswordPage extends Component {
     this.onValueChange = this.onValueChange.bind(this)
   }
 
+  onValueChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
   updateAlert(alertStatus, alertMessage) {
+    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{
         status: alertStatus,
@@ -48,20 +58,23 @@ class ChangePasswordPage extends Component {
   }
 
   reencryptMnemonic() {
-    const currentPassword = this.state.currentPassword,
-          newPassword = this.state.newPassword,
-          newPassword2 = this.state.newPassword2,
-          dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
-
+    logger.trace('reencryptMnemonic')
+    const currentPassword = this.state.currentPassword
+    const newPassword = this.state.newPassword
+    const newPassword2 = this.state.newPassword2
+    const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
+    logger.debug('Trying to decrypt backup phrase...')
     decrypt(dataBuffer, currentPassword, (err, plaintextBuffer) => {
       if (!err) {
+        logger.debug('Backup phrase successfully decrypted')
         if (newPassword.length < 8) {
           this.updateAlert('danger', 'New password must be at least 8 characters')
         } else {
           if (newPassword !== newPassword2) {
             this.updateAlert('danger', 'New passwords must match')
           } else {
-            encrypt(plaintextBuffer, newPassword, (err, ciphertextBuffer) => {
+            logger.debug('Trying to re-encrypt backup phrase with new password...')
+            encrypt(plaintextBuffer, newPassword, (error, ciphertextBuffer) => {
               this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
               this.updateAlert('success', 'Password updated!')
               this.setState({
@@ -73,32 +86,34 @@ class ChangePasswordPage extends Component {
           }
         }
       } else {
+        logger.error('Invalid password')
         this.updateAlert('danger', 'Incorrect password')
       }
-    })
-  }
-
-  onValueChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
     })
   }
 
   render() {
     return (
       <div>
-        { this.state.alerts.map(function(alert, index) {
-          return (
-            <Alert key={index} message={alert.message} status={alert.status} />
-          )
-        })}
+        {
+          this.state.alerts.map((alert, index) => {
+            return (
+              <Alert key={index} message={alert.message} status={alert.status} />
+            )
+          })}
         <div>
-          <InputGroup name="currentPassword" label="Current Password" type="password"
-            data={this.state} onChange={this.onValueChange} />
-          <InputGroup name="newPassword" label="New Password" type="password"
-            data={this.state} onChange={this.onValueChange} />
-          <InputGroup name="newPassword2" label="New Password" type="password"
-            data={this.state} onChange={this.onValueChange} />
+          <InputGroup
+            name="currentPassword" label="Current Password" type="password"
+            data={this.state} onChange={this.onValueChange}
+          />
+          <InputGroup
+            name="newPassword" label="New Password" type="password"
+            data={this.state} onChange={this.onValueChange}
+          />
+          <InputGroup
+            name="newPassword2" label="New Password" type="password"
+            data={this.state} onChange={this.onValueChange}
+          />
           <div className="container m-t-40">
             <button className="btn btn-primary" onClick={this.reencryptMnemonic}>
               Update Password

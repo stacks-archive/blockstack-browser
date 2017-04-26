@@ -47,11 +47,23 @@ source blockstack-venv/bin/activate
 
 echo "Installing fastecdsa..."
 
-CFLAGS="-I/tmp/blockstack-venv/include" LDFLAGS="-L/tmp/blockstack-venv/lib" pip install fastecdsa --no-cache-dir
+CFLAGS="-I/tmp/blockstack-venv/include" LDFLAGS="-L/tmp/blockstack-venv/lib" pip install -v --force --no-cache-dir --no-binary :all: fastecdsa
 
-echo "Installing blockstack 0.14.1.3..."
+echo "Installing latest virtualchain..."
 
-pip install blockstack==0.14.1.3
+pip install git+https://github.com/blockstack/virtualchain.git@43956be4c653038d4069eaac4497463bad176429
+
+echo "Installing latest blockstack-profiles..."
+
+pip install git+https://github.com/blockstack/blockstack-profiles-py.git@103783798df78cf0f007801e79ec6298f00b2817
+
+echo "Installing latest blockstack-zones..."
+
+pip install git+https://github.com/blockstack/zone-file-py.git@73739618b51d4c8b85966887fae4ca22cba87e10
+
+echo "Installing latest blockstack..."
+
+pip install git+https://github.com/blockstack/blockstack-core.git@master-sprint-2017-04-13
 
 echo "Blockstack virtual environment created."
 

@@ -4,7 +4,7 @@ import { AccountReducer }  from '../account'
 import { AuthReducer }     from '../auth'
 import { SettingsReducer } from '../settings'
 import { IdentityReducer } from '../identities'
-import { SearchReducer }   from '../search'
+import { SearchReducer }   from '../search/index'
 
 const RootReducer = combineReducers({
   account: AccountReducer,

@@ -50,10 +50,10 @@ class WalletApp extends Component {
             </div>
           </nav>  
           <div className="container wallet-container">
-            <div className="col-md-4 col-lg-3 wallet-sidebar">
+            <div className="col-md-5 wallet-sidebar">
               <WalletSidebar activeTab={activeTabUrl} />
             </div>
-            <div className="col-md-8 col-lg-9 wallet-content">
+            <div className="col-md-7 wallet-content">
               {this.props.children}
             </div>
           </div>
