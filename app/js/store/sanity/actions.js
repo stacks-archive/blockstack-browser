@@ -18,8 +18,9 @@ function coreIsRunning() {
 }
 
 function isCoreRunning(corePingUrl) {
+  logger.debug(`isCoreRunning: ${corePingUrl}`)
   return dispatch => {
-    isCoreApiRunning(corePingUrl)
+    return isCoreApiRunning(corePingUrl)
     .then((running) => {
       if (running)  {
         dispatch(coreIsRunning())

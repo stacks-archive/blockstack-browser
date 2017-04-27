@@ -46,6 +46,7 @@ export function isCoreApiRunning(corePingUrl) {
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
+      console.log(responseJson)
       if (responseJson.status === 'alive') {
         resolve(true)
       } else {
