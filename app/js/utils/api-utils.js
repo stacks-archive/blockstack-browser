@@ -60,6 +60,36 @@ export function isCoreApiRunning(corePingUrl) {
     })
   })
 }
+
+export function isCoreApiPasswordValid(corePasswordProtectedReadUrl, coreAPIPassword) {
+  logger.debug(`isCoreApiPasswordValid: ${corePasswordProtectedReadUrl}`)
+
+  const requestHeaders = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: authorizationHeaderValue(coreAPIPassword)
+  }
+
+  return new Promise((resolve) => {
+    fetch(corePasswordProtectedReadUrl, {
+      headers: requestHeaders
+    })
+    .then((response) => {
+      if (response.ok) {
+        logger.trace('isCoreApiPasswordValid? Yes!')
+        resolve(true)
+      } else {
+        logger.error('isCoreApiPasswordValid? No!')
+        resolve(false)
+      }
+    })
+    .catch((error) => {
+      logger.error(`isCoreApiPasswordValid: problem checking ${corePasswordProtectedReadUrl}`,
+        error)
+      resolve(false)
+    })
+  })
+}
 /*
 export function getIdentities(address, addressLookupUrl, localIdentities, callback) {
   let remoteNamesDict = {},
