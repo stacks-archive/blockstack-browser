@@ -6,6 +6,7 @@ describe('Root Store: RootReducer', () => {
     assert(actualResult.hasOwnProperty('account'), 'Missing account state.')
     assert(actualResult.hasOwnProperty('auth'), 'Missing auth state.')
     assert(actualResult.hasOwnProperty('profiles'), 'Missing profiles state.')
+    assert(actualResult.hasOwnProperty('sanity'), 'Missing sanity state.')
     assert(actualResult.hasOwnProperty('settings'), 'Missing settings state.')
   })
 })
