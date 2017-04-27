@@ -61,13 +61,13 @@ export function isCoreApiRunning(corePingUrl) {
   })
 }
 
-export function isCoreApiPasswordValid(corePasswordProtectedReadUrl, coreAPIPassword) {
-  logger.debug(`isCoreApiPasswordValid: ${corePasswordProtectedReadUrl}`)
+export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
+  logger.debug(`isApiPasswordValid: ${corePasswordProtectedReadUrl}`)
 
   const requestHeaders = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    Authorization: authorizationHeaderValue(coreAPIPassword)
+    Authorization: authorizationHeaderValue(coreApiPassword)
   }
 
   return new Promise((resolve) => {
@@ -84,7 +84,7 @@ export function isCoreApiPasswordValid(corePasswordProtectedReadUrl, coreAPIPass
       }
     })
     .catch((error) => {
-      logger.error(`isCoreApiPasswordValid: problem checking ${corePasswordProtectedReadUrl}`,
+      logger.error(`isApiPasswordValid: problem checking ${corePasswordProtectedReadUrl}`,
         error)
       resolve(false)
     })
