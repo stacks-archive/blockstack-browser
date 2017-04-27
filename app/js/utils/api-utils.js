@@ -50,7 +50,7 @@ export function isCoreApiRunning(corePingUrl) {
         logger.trace('isCoreApiRunning? Yes!')
         resolve(true)
       } else {
-        logger.trace('isCoreApiRunning? No!')
+        logger.error('isCoreApiRunning? No!')
         resolve(false)
       }
     })
