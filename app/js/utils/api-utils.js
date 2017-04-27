@@ -38,6 +38,26 @@ export function getLogServerPortFromURL() {
   hash.getInstance().set('logServerPort', 'off')
   return logServerPort
 }
+
+export function isCoreApiRunning(corePingUrl) {
+  logger.debug(`isCoreApiRunning: ${corePingUrl}`)
+  return new Promise((resolve, reject) => {
+    fetch(corePingUrl)
+    .then((response) => response.text())
+    .then((responseText) => JSON.parse(responseText))
+    .then((responseJson) => {
+      if (responseJson.status === 'alive') {
+        resolve(true)
+      } else {
+        resolve(false)
+      }
+    })
+    .catch((error) => {
+      logger.error(`isCoreApiRunning: problem checking ${corePingUrl}` )
+      resolve(false)
+    })
+  })
+}
 /*
 export function getIdentities(address, addressLookupUrl, localIdentities, callback) {
   let remoteNamesDict = {},
