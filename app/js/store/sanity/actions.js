@@ -19,8 +19,8 @@ function coreIsRunning() {
 
 function isCoreRunning(corePingUrl) {
   logger.debug(`isCoreRunning: ${corePingUrl}`)
-  return dispatch => {
-    return isCoreApiRunning(corePingUrl)
+  return dispatch =>
+    isCoreApiRunning(corePingUrl)
     .then((running) => {
       if (running)  {
         dispatch(coreIsRunning())
@@ -32,7 +32,6 @@ function isCoreRunning(corePingUrl) {
       // Promise returned should always resolve even if there is an error
       logger.error('isCoreApiRunning returned an unexpected error', error)
     })
-  }
 }
 
 const SanityActions = {
