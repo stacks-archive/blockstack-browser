@@ -1,0 +1,2 @@
+export const CORE_IS_NOT_RUNNING = 'CORE_IS_NOT_RUNNING'
+export const CORE_IS_RUNNING = 'CORE_IS_RUNNING'

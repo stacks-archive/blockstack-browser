@@ -41,7 +41,7 @@ export function getLogServerPortFromURL() {
 
 export function isCoreApiRunning(corePingUrl) {
   logger.debug(`isCoreApiRunning: ${corePingUrl}`)
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     fetch(corePingUrl)
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
@@ -53,7 +53,7 @@ export function isCoreApiRunning(corePingUrl) {
       }
     })
     .catch((error) => {
-      logger.error(`isCoreApiRunning: problem checking ${corePingUrl}` )
+      logger.error(`isCoreApiRunning: problem checking ${corePingUrl}`, error)
       resolve(false)
     })
   })
