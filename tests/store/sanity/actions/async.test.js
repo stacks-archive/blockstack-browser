@@ -11,6 +11,60 @@ describe('Sanity Store: Async Actions', () => {
     nock.cleanAll()
   })
 
+  describe('isCoreApiPasswordValid', () => {
+    it('returns password valid & core running actions if password is valid', () => {
+      nock('http://localhost:6270',
+        {
+          reqheaders: {
+            authorization: 'bearer secretdonttell'
+          }
+        })
+      .get('/v1/wallet/payment_address')
+      .reply(200, { address: '1EZBqbJSHFKSkVPNKzc5v26HA6nAHiTXq6' },
+      { 'Content-Type': 'application/json' })
+
+      const store = mockStore({
+      })
+
+      const corePasswordProtectedReadUrl = 'http://localhost:6270/v1/wallet/payment_address'
+      const coreApiPassword = 'secretdonttell'
+
+      return store.dispatch(
+        SanityActions.isCoreApiPasswordValid(corePasswordProtectedReadUrl,
+          coreApiPassword))
+      .then(() => {
+        const expectedActions = [
+          { type: 'CORE_API_PASSWORD_VALID' },
+          { type: 'CORE_IS_RUNNING' }
+        ]
+        assert.deepEqual(store.getActions(), expectedActions)
+      })
+    })
+
+    it('returns password not action if password is invalid', () => {
+      nock('http://localhost:6270')
+      .get('/v1/wallet/payment_address')
+      .reply(403, { },
+      { 'Content-Type': 'application/json' })
+
+      const store = mockStore({
+      })
+
+      const corePasswordProtectedReadUrl = 'http://localhost:6270/v1/wallet/payment_address'
+      const coreApiPassword = 'rightpassword'
+
+      return store.dispatch(
+        SanityActions.isCoreApiPasswordValid(corePasswordProtectedReadUrl,
+          coreApiPassword))
+      .then(() => {
+        const expectedActions = [
+          { type: 'CORE_API_PASSWORD_NOT_VALID' }
+        ]
+        assert.deepEqual(store.getActions(), expectedActions)
+      })
+    })
+  })
+
   describe('isCoreRunning', () => {
     it('returns true if core node status is alive', () => {
       nock('http://localhost:6270')
