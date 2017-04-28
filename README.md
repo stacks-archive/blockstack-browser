@@ -39,7 +39,7 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
 1. Click the Blockstack menu bar item and select "Copy Core API password"
-1. Run `npm run dev -- --api_password <core-api-password>` replacing "<core-api-password>" with the value you copied in the previous step.
+1. Run `npm run dev -- --api_password <core-api-password>` replacing `<core-api-password>` with the value you copied in the previous step.
 
 ### Linux
 
@@ -47,15 +47,15 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 1. Install [Blockstack Core](https://github.com/blockstack/blockstack-core). Please follow the instructions in Blockstack Core's repository.
 1. Setup the Blockstack Core wallet: `blockstack setup`. You will be prompted to select a wallet password. *Skip this step if you already have a Core wallet*
-1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where "<core-api-password>" is a String value you select and "<wallet-password>" is the wallet password you selected previously.
+1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where `<core-api-password>` is a String value you select and `<wallet-password>` is the wallet password you selected previously.
 1. Make sure there's a local Blockstack Core API running by checking `http://localhost:6270/v1/names/blockstack.id` to see if it returns a response.
 
-### Part 2: Install Blockstack Portal
+#### Part 2: Install Blockstack Portal
 
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
 1. Run `npm run dev-proxy` to start the CORS proxy
-1. Run `npm run dev -- --api_password <core-api-password>` replacing "<core-api-password>" with the value you selected in part 1.
+1. Run `npm run dev -- --api_password <core-api-password>` replacing `<core-api-password>` with the value you selected in part 1.
 
 
 *Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
