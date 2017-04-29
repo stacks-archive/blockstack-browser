@@ -42,7 +42,7 @@ export function getLogServerPortFromURL() {
 export function isCoreApiRunning(corePingUrl) {
   logger.debug(`isCoreApiRunning: ${corePingUrl}`)
   return new Promise((resolve) => {
-    fetch(corePingUrl)
+    fetch(corePingUrl, { cache: 'no-store' })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
@@ -71,7 +71,13 @@ export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword
   }
 
   return new Promise((resolve) => {
+    if (!coreApiPassword) {
+      logger.error('isCoreApiPasswordValid? Password is missing!')
+      resolve(false)
+      return
+    }
     fetch(corePasswordProtectedReadUrl, {
+      cache: 'no-store',
       headers: requestHeaders
     })
     .then((response) => {

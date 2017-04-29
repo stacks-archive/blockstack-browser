@@ -41,7 +41,7 @@ describe('Sanity Store: Async Actions', () => {
       })
     })
 
-    it('returns password not action if password is invalid', () => {
+    it('returns password not valid action if password is wrong', () => {
       nock('http://localhost:6270')
       .get('/v1/wallet/payment_address')
       .reply(403, { },
@@ -62,6 +62,90 @@ describe('Sanity Store: Async Actions', () => {
         ]
         assert.deepEqual(store.getActions(), expectedActions)
       })
+    })
+
+    it('returns password not valid action if password is null', () => {
+      nock('http://localhost:6270',
+        {
+          reqheaders: {
+            authorization: 'bearer secretdonttell'
+          }
+        })
+      .get('/v1/wallet/payment_address')
+      .reply(200, { address: '1EZBqbJSHFKSkVPNKzc5v26HA6nAHiTXq6' },
+      { 'Content-Type': 'application/json' })
+
+      const store = mockStore({
+      })
+
+      const corePasswordProtectedReadUrl = 'http://localhost:6270/v1/wallet/payment_address'
+      const coreApiPassword = null
+
+      return store.dispatch(
+        SanityActions.isCoreApiPasswordValid(corePasswordProtectedReadUrl,
+          coreApiPassword))
+      .then(() => {
+        const expectedActions = [
+          { type: 'CORE_API_PASSWORD_NOT_VALID' }
+        ]
+        assert.deepEqual(store.getActions(), expectedActions)
+      })
+    })
+  })
+
+  it('returns password not valid action if password is empty string', () => {
+    nock('http://localhost:6270',
+      {
+        reqheaders: {
+          authorization: 'bearer secretdonttell'
+        }
+      })
+    .get('/v1/wallet/payment_address')
+    .reply(200, { address: '1EZBqbJSHFKSkVPNKzc5v26HA6nAHiTXq6' },
+    { 'Content-Type': 'application/json' })
+
+    const store = mockStore({
+    })
+
+    const corePasswordProtectedReadUrl = 'http://localhost:6270/v1/wallet/payment_address'
+    const coreApiPassword = ''
+
+    return store.dispatch(
+      SanityActions.isCoreApiPasswordValid(corePasswordProtectedReadUrl,
+        coreApiPassword))
+    .then(() => {
+      const expectedActions = [
+        { type: 'CORE_API_PASSWORD_NOT_VALID' }
+      ]
+      assert.deepEqual(store.getActions(), expectedActions)
+    })
+  })
+
+  it('returns password not valid action if password is undefined', () => {
+    nock('http://localhost:6270',
+      {
+        reqheaders: {
+          authorization: 'bearer secretdonttell'
+        }
+      })
+    .get('/v1/wallet/payment_address')
+    .reply(200, { address: '1EZBqbJSHFKSkVPNKzc5v26HA6nAHiTXq6' },
+    { 'Content-Type': 'application/json' })
+
+    const store = mockStore({
+    })
+
+    const corePasswordProtectedReadUrl = 'http://localhost:6270/v1/wallet/payment_address'
+    const coreApiPassword = undefined
+
+    return store.dispatch(
+      SanityActions.isCoreApiPasswordValid(corePasswordProtectedReadUrl,
+        coreApiPassword))
+    .then(() => {
+      const expectedActions = [
+        { type: 'CORE_API_PASSWORD_NOT_VALID' }
+      ]
+      assert.deepEqual(store.getActions(), expectedActions)
     })
   })
 
