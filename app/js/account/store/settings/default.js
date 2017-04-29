@@ -22,6 +22,7 @@ const DEFAULT_API = {
   ethereumAddressUrl: 'https://tradeblock.com/ethereum/account/{identifier}',
   pgpKeyUrl: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on',
   btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
+  corePingUrl: 'http://localhost:6270/v1/node/ping',
   hostedDataLocation: DROPBOX,
   coreAPIPassword: null,
   logServerPort: '',
