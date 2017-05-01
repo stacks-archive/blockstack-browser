@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 
+import { openInNewTab } from '../../utils'
+
 class FacebookVerificationInfo extends Component {
   static contextTypes = {
     domainName: PropTypes.string.isRequired
@@ -71,10 +73,12 @@ class GithubVerificationInfo extends Component {
           3. Create a public gist with the copied text to publicly verify yourself
         </p>
         <div className="form-group">
-          <a href="#" onClick={(event) => {
-            event.preventDefault()
-            shell.openExternal(verificationUrl)
-          }}>
+          <a
+            href="#" onClick={(event) => {
+              event.preventDefault()
+              openInNewTab(verificationUrl)
+            }}
+          >
             <button className="btn btn-outline-primary">
               Create Gist
             </button>
@@ -107,10 +111,12 @@ class TwitterVerificationInfo extends Component {
           2. Create a tweet to publicly verify yourself
         </p>
         <div className="form-group">
-          <a href="#" onClick={(event) => {
-            event.preventDefault()
-            shell.openExternal(verificationUrl)
-          }}>
+          <a
+            href="#" onClick={(event) => {
+              event.preventDefault()
+              openInNewTab(verificationUrl)
+            }}
+          >
             <button className="btn btn-outline-primary">
               Create Tweet
             </button>
@@ -138,6 +144,7 @@ class VerificationInfo extends Component {
         github: true
       }
     }
+    console.log(props)
   }
 
   render() {
@@ -152,11 +159,11 @@ class VerificationInfo extends Component {
               <TwitterVerificationInfo domainName={this.props.domainName} />
             : null }
 
-            { this.props.service === 'github' ? 
+            { this.props.service === 'github' ?
               <GithubVerificationInfo domainName={this.props.domainName} />
             : null }
 
-            { this.props.service === 'facebook' ? 
+            { this.props.service === 'facebook' ?
               <FacebookVerificationInfo domainName={this.props.domainName} />
             : null }
 

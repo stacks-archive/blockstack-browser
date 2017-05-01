@@ -96,8 +96,8 @@ class SocialAccountsTab extends Component {
   }
 
   render() {
-    const profile = this.state.profile,
-          accounts = this.state.profile.hasOwnProperty('account') ?
+    const profile = this.state.profile
+    const accounts = this.state.profile.hasOwnProperty('account') ?
             this.state.profile.account : [],
             webAccountTypes = getWebAccountTypes(this.props.api)
 

@@ -41,6 +41,10 @@ export {
 } from './profile-utils'
 
 export {
+  openInNewTab
+} from './window-utils'
+
+export {
   makeZoneFileForHostedProfile,
   getTokenFileUrlFromZoneFile,
   resolveZoneFileToProfile
