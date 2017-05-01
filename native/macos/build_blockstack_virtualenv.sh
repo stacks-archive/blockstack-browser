@@ -21,25 +21,25 @@ echo "Creating a new virtualenv..."
 
 virtualenv -p /usr/bin/python2.7 blockstack-venv
 
-echo "Downloading gmp..."
-
-curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
-
-bunzip2 gmp-6.1.2.tar.bz2
-
-tar -xf gmp-6.1.2.tar
-
-echo "Building gmp..."
-
-cd gmp-6.1.2
-
-./configure --prefix=/tmp/blockstack-venv
-
-make
-
-make install
-
-cd ..
+# echo "Downloading gmp..."
+#
+# curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
+#
+# bunzip2 gmp-6.1.2.tar.bz2
+#
+# tar -xf gmp-6.1.2.tar
+#
+# echo "Building gmp..."
+#
+# cd gmp-6.1.2
+#
+# ./configure --prefix=/tmp/blockstack-venv
+#
+# make
+#
+# make install
+#
+# cd ..
 
 echo "Activating virtualenv..."
 
@@ -51,19 +51,19 @@ CFLAGS="-I/tmp/blockstack-venv/include" LDFLAGS="-L/tmp/blockstack-venv/lib" pip
 
 echo "Installing latest virtualchain..."
 
-pip install git+https://github.com/blockstack/virtualchain.git@43956be4c653038d4069eaac4497463bad176429
+pip install git+https://github.com/blockstack/virtualchain.git@rc-0.14.2
 
 echo "Installing latest blockstack-profiles..."
 
-pip install git+https://github.com/blockstack/blockstack-profiles-py.git@103783798df78cf0f007801e79ec6298f00b2817
+pip install git+https://github.com/blockstack/blockstack-profiles-py.git@rc-0.14.2
 
 echo "Installing latest blockstack-zones..."
 
-pip install git+https://github.com/blockstack/zone-file-py.git@73739618b51d4c8b85966887fae4ca22cba87e10
+pip install git+https://github.com/blockstack/zone-file-py.git@rc-0.14.2
 
 echo "Installing latest blockstack..."
 
-pip install git+https://github.com/blockstack/blockstack-core.git@master-sprint-2017-04-13
+pip install git+https://github.com/blockstack/blockstack-core.git@rc-0.14.2
 
 echo "Blockstack virtual environment created."
 
