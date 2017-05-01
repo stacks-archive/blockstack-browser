@@ -122,7 +122,7 @@ class PGPAccountItem extends Component {
               <div>
               { error ?
                 <textarea className="form-control" readOnly="true" rows="10"
-                  value="Problem loading key.">
+                  value={error}>
                 </textarea>
                 :
             <textarea className="form-control" readOnly="true" rows="10"

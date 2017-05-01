@@ -37,7 +37,8 @@ function loadPGPPublicKey(contentUrl, identifier) {
       })
       .catch((error) => {
         logger.error('loadPGPPublicKey: error', error)
-        dispatch(loadingPGPKeyError(identifier, error))
+        const errorMessage = `We were unable to load the PGP key at ${contentUrl}. Please make sure the server is online and uses https.`
+        dispatch(loadingPGPKeyError(identifier,  errorMessage))
       })
   }
 }
