@@ -144,7 +144,6 @@ class VerificationInfo extends Component {
         github: true
       }
     }
-    console.log(props)
   }
 
   render() {
