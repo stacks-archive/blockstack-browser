@@ -36,16 +36,17 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Run `npm run dev`
 1. When prompted in your browser, enter the Core API password and click save.
 
+
 ### Linux
 
 #### Part 1: Install & configure Blockstack Core
 
 1. Install [Blockstack Core](https://github.com/blockstack/blockstack-core). Please follow the instructions in Blockstack Core's repository.
 1. Setup the Blockstack Core wallet: `blockstack setup`. You will be prompted to select a wallet password. *Skip this step if you already have a Core wallet*
-1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where "<core-api-password>" is a String value you select and "<wallet-password>" is the wallet password you selected previously.
+1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where `<core-api-password>` is a String value you select and `<wallet-password>` is the wallet password you selected previously.
 1. Make sure there's a local Blockstack Core API running by checking `http://localhost:6270/v1/names/blockstack.id` to see if it returns a response.
 
-### Part 2: Install Blockstack Portal
+#### Part 2: Install Blockstack Portal
 
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
