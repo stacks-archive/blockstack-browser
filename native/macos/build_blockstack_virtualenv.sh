@@ -40,11 +40,11 @@ pip install git+https://github.com/blockstack/virtualchain.git@rc-0.14.2
 
 echo "Installing latest blockstack-profiles..."
 
-pip install git+https://github.com/blockstack/blockstack-profiles-py.git@rc-0.14.2
+pip install git+https://github.com/blockstack/blockstack-profiles-py.git@master
 
 echo "Installing latest blockstack-zones..."
 
-pip install git+https://github.com/blockstack/zone-file-py.git@rc-0.14.2
+pip install git+https://github.com/blockstack/zone-file-py.git@master
 
 echo "Installing latest blockstack..."
 
