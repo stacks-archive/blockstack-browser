@@ -7,6 +7,7 @@
 ## make working directory the same as location of script
 #cd "$(dirname "$0")"
 
+# Make build script exit if any command returns error code.
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/"
@@ -53,9 +54,10 @@ echo "Blockstack virtual environment created."
 
 echo "Making Blockstack virtual environment relocatable..."
 
-virtualenv --relocatable /tmp/blockstack-venv
-
-echo "Build Blockstack virtualenv archive..."
 cd /tmp/
 
-tar -czvf $SCRIPT_DIR/blockstack-venv.tar.gz blockstack-venv
+virtualenv --relocatable blockstack-venv
+
+echo "Build Blockstack virtualenv archive..."
+
+tar -czvf $SCRIPT_DIR/Blockstack/Blockstack/blockstack-venv.tar.gz blockstack-venv
