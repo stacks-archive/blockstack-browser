@@ -1,11 +1,6 @@
-Blockstack Portal
-============
-
-[![Slack](http://chat.blockstack.org/badge.svg)](http://chat.blockstack.org/)
+# Blockstack Portal [![CircleCI](https://img.shields.io/circleci/project/blockstack/blockstack-portal/master.svg)](https://circleci.com/gh/blockstack/blockstack-portal/tree/master) [![License](https://img.shields.io/github/license/blockstack/blockstack-portal.svg)](https://github.com/blockstack/blockstack-portal/blob/master/LICENSE.md) [![Slack](http://chat.blockstack.org/badge.svg)](http://chat.blockstack.org/)
 
 The Blockstack Browser Portal allows you to explore the Blockstack internet.
-
----
 
 ## Table of contents
 
@@ -14,10 +9,9 @@ The Blockstack Browser Portal allows you to explore the Blockstack internet.
 - [Building for macOS](#building-for-macos)
 - [Building for the Web](#building-for-the-web)
 - [Contributing](#contributing)
+- [Logging](#logging)
 - [Tech Stack](#tech-stack)
 - [Testing](#testing)
-
----
 
 ## Releases
 
@@ -39,7 +33,8 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
 1. Click the Blockstack menu bar item and select "Copy Core API password"
-1. Run `npm run dev -- --api_password <core-api-password>` replacing "<core-api-password>" with the value you copied in the previous step.
+1. Run `npm run dev`
+1. When prompted in your browser, enter the Core API password and click save.
 
 ### Linux
 
@@ -55,7 +50,8 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
 1. Run `npm run dev-proxy` to start the CORS proxy
-1. Run `npm run dev -- --api_password <core-api-password>` replacing "<core-api-password>" with the value you selected in part 1.
+1. Run `npm run dev`
+1. When prompted in your browser, enter the Core API password you selected in part 1.
 
 
 *Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
@@ -97,6 +93,40 @@ We do project-wide sprints every two weeks and we're always looking for more hel
 
 If you'd like to contribute, head to the [contributing guidelines](/CONTRIBUTING.md). Inside you'll find directions for opening issues, coding standards, and notes on development.
 
+## Logging
+
+The Portal uses `log4js` for logging. The macOS app uses macOS's unified logging
+API, `os_log` for logging.
+
+### macOS
+
+On macOS, the Portal sends log events to the macOS
+app's log server. These are then included in macOS's unified logging API. You
+can view logs by starting `Console.app`. Set up a filter the `Blockstack` process
+to only see Blockstack logs. If you'd like to see more detail, in enable inclusion
+of Info and Debug messages in the Action menu.
+
+#### Sending logs to developers
+
+Blockstack logs are included in macOS's unified logging system. This allows
+us to easily collect a large amount of information about the user's system when
+we need to troubleshoot a problem while protecting their privacy.
+
+1. Press Shift-Control-Option-Command-Period. Your screen will briefly flash.
+2. After a few minutes, a Finder window will automatically open to `/private/var/tmp`
+3. Send the most recent `sysdiagnose_DATE_TIME.tar.gz` file to your friendly developers.
+
+The most important file in this archive is `system_logs.logarchive`, which will
+include recent system logs including Blockstack's logs. You can open it on
+a Mac using `Console.app`. The other files include information about your computer
+that may help in diagnosing problems.
+
+If you're worried about inadvertently sending some private information,
+you can select the log entries you'd like to send inside `Console.app` and copy
+them into an email or github issue.
+
+More technical users (with admin permission) can use the `sysdiagnose` command
+to generate a custom dump of information.
 
 ## Tech Stack
 

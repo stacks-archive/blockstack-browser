@@ -1,15 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 
-import PageHeader from '../components/PageHeader'
 import { SettingsActions } from '../store/settings'
 
-import { SELF_HOSTED_S3, BLOCKSTACK_INC, DROPBOX } from './utils/index'
+import { DROPBOX } from './utils/index'
 import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from './utils/dropbox'
 
-var Dropbox = require('dropbox')
+const Dropbox = require('dropbox')
 
 function mapStateToProps(state) {
   return {
@@ -25,35 +23,29 @@ function mapDispatchToProps(dispatch) {
 
 class StorageProvidersPage extends Component {
   static propTypes = {
-    api: PropTypes.object.isRequired
+    api: PropTypes.object.isRequired,
+    updateApi: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
 
-    this.state = {
-      api: this.props.api
-    }
-
-    this.onHostedDataValueChange = this.onHostedDataValueChange.bind(this)
     this.connectDropbox = this.connectDropbox.bind(this)
     this.disconnectDropbox = this.disconnectDropbox.bind(this)
     this.updateApi = this.updateApi.bind(this)
   }
 
   componentDidMount() {
-    let api = this.state.api
+    const api = this.props.api
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     if (dropboxAccessToken != null) {
-      api['dropboxAccessToken'] = dropboxAccessToken
-      this.setState({ api: api })
-      this.props.updateApi(api)
-      window.location = "/"
+      this.props.updateApi(Object.assign({}, api, { dropboxAccessToken }))
+      window.location = '/'
     }
   }
 
   connectDropbox() {
-    var dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
+    const dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
     const port = location.port === '' ? 80 : location.port
     console.log(port)
     window.location = dbx.getAuthenticationUrl(
@@ -61,26 +53,19 @@ class StorageProvidersPage extends Component {
   }
 
   disconnectDropbox() {
-    let api = this.state.api
-    var dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
+    const api = this.props.api
+    const dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
     dbx.authTokenRevoke()
-    api.dropboxAccessToken = null
-    this.setState({ api: api })
-    this.props.updateApi(api)
-  }
-
-  onHostedDataValueChange(value) {
-    let api = this.state.api
-    api['hostedDataLocation'] = value
-    this.setState({ api: api })
+    this.props.updateApi(Object.assign({}, api, { dropboxAccessToken: null }))
   }
 
   updateApi() {
-    const api = this.state.api
+    const api = this.props.api
     this.props.updateApi(api)
   }
 
   render() {
+    const api = this.props.api
     return (
       <div>
         <h1 className="h1-modern" style={{ marginTop: '35px' }}>
@@ -89,17 +74,20 @@ class StorageProvidersPage extends Component {
         <p>
           Your profile and app data will be securely stored in the storage providers you connect.
         </p>
-        { this.state.api.hostedDataLocation === DROPBOX ?
+        {api.hostedDataLocation === DROPBOX ?
           <div>
             <p>
-              { this.state.api.dropboxAccessToken == null ?
+              {api.dropboxAccessToken == null ?
                 <button onClick={this.connectDropbox} className="btn btn-storage-primary">
                 Connect Dropbox
                 </button>
               :
-              <button onClick={this.disconnectDropbox} className="btn btn-storage-primary">
+                <button
+                  onClick={this.disconnectDropbox}
+                  className="btn btn-storage-primary"
+                >
                 Disconnect Dropbox
-              </button>
+                </button>
               }
             </p>
             <p>
@@ -123,7 +111,7 @@ class StorageProvidersPage extends Component {
               </button>
             </p>
           </div>
-        : null }
+        : null}
       </div>
     )
   }
