@@ -61,6 +61,7 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 ## Building for macOS
 
 1. Make sure you have a working installation of Xcode 8 or higher & valid Mac Developer signing certificate
+1. Make sure you have an OpenSSL ready for bottling by homebrew by running `brew install openssl --build-bottle`
 1. Run `npm install nexe -g` to install the "node to native" binary tool globally
 1. Open the Blockstack macOS project in Xcode and configure your code signing development team (You only need to do this once)
 1. Run `npm run mac` to build a debug release signed with your Mac Developer certificate

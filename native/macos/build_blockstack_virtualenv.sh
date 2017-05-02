@@ -7,6 +7,9 @@
 ## make working directory the same as location of script
 #cd "$(dirname "$0")"
 
+# Make build script exit if any command returns error code.
+set -e
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/"
 
 echo "Script is running in $SCRIPT_DIR"
@@ -21,33 +24,15 @@ echo "Creating a new virtualenv..."
 
 virtualenv -p /usr/bin/python2.7 blockstack-venv
 
-# echo "Downloading gmp..."
-#
-# curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
-#
-# bunzip2 gmp-6.1.2.tar.bz2
-#
-# tar -xf gmp-6.1.2.tar
-#
-# echo "Building gmp..."
-#
-# cd gmp-6.1.2
-#
-# ./configure --prefix=/tmp/blockstack-venv
-#
-# make
-#
-# make install
-#
-# cd ..
-
 echo "Activating virtualenv..."
 
 source blockstack-venv/bin/activate
 
-echo "Installing fastecdsa..."
+echo "Install cryptography, making sure we get the universal binary"
+pip install cryptography --only-binary cryptography
 
-CFLAGS="-I/tmp/blockstack-venv/include" LDFLAGS="-L/tmp/blockstack-venv/lib" pip install -v --force --no-cache-dir --no-binary :all: fastecdsa
+echo "Build statically-linked scrypt..."
+PYSCRYPT_NO_LINK_FLAGS="1" LDFLAGS="/usr/local/opt/openssl/lib/libcrypto.a /usr/local/opt/openssl/lib/libssl.a" CFLAGS="-I/usr/local/opt/openssl/include" pip install hg+https://bitbucket.org/kantai/py-scrypt --no-use-wheel
 
 echo "Installing latest virtualchain..."
 
@@ -68,6 +53,8 @@ pip install git+https://github.com/blockstack/blockstack-core.git@rc-0.14.2
 echo "Blockstack virtual environment created."
 
 echo "Making Blockstack virtual environment relocatable..."
+
+cd /tmp/
 
 virtualenv --relocatable blockstack-venv
 
