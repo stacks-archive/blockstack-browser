@@ -353,7 +353,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             /* Blockstack Core setup task */
             
             coreAPISetupProcess.launchPath = blockstackPath()
-            coreAPISetupProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "setup", "--password", walletPassword, "--api_password", walletPassword]
+            coreAPISetupProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "setup_wallet", "--password", walletPassword, "--api_password", walletPassword]
             
             let coreAPISetupPipe = loggingPipe()
             coreAPISetupProcess.standardOutput = coreAPISetupPipe
