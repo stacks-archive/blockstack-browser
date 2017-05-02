@@ -29,7 +29,7 @@ describe('Availability Store: Async Actions', () => {
     it('adds new identities', () => {
       // mock core
       nock('http://localhost:6270')
-      .get('/v1/addresses/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
+      .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
       .reply(200, { names: ['guylepage.id'] },
       { 'Content-Type': 'application/json' })
 
@@ -166,7 +166,7 @@ describe('Availability Store: Async Actions', () => {
     it('emits no actions if addresss owns no names', () => {
       // mock core
       nock('http://localhost:6270')
-      .get('/v1/addresses/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
+      .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
       .reply(200, { names: [] },
       { 'Content-Type': 'application/json' })
 
