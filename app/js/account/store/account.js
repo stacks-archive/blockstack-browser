@@ -107,14 +107,14 @@ function withdrawCoreBalanceError(error) {
   }
 }
 
-function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
+function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
-    const url = addressBalanceUrl.replace('{address}', coreWalletAddress)
-    fetch(url)
+    const headers = {"Authorization": authorizationHeaderValue(coreAPIPassword) }
+    fetch(addressBalanceUrl, { headers: headers })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
-      const balance = responseJson.unconfirmedBalance + responseJson.balance
+      const balance = responseJson.balance.bitcoin;
       dispatch(
         updateCoreWalletBalance(balance)
       )

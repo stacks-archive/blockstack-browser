@@ -56,7 +56,8 @@ class RegisterPage extends Component {
     coreWalletAddress: PropTypes.string,
     api: PropTypes.object.isRequired,
     checkNameAvailabilityAndPrice: PropTypes.func.isRequired,
-    beforeRegister: PropTypes.func.isRequired
+    beforeRegister: PropTypes.func.isRequired,
+    coreAPIPassword: PropTypes.string
   }
 
   static contextTypes = {
@@ -96,7 +97,7 @@ class RegisterPage extends Component {
     if (this.props.coreWalletAddress != null) {
       logger.debug('coreWalletAddress exists...refreshing core wallet balance...')
       this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
-        this.props.coreWalletAddress)
+        this.props.coreAPIPassword)
     }
     if (this.state.zeroBalance) {
       logger.debug('Zero balance...displaying alert...')
@@ -113,7 +114,7 @@ class RegisterPage extends Component {
 
     if(this.props.coreWalletAddress != nextProps.coreWalletAddress) {
       logger.debug('coreWalletAddress changed. Refreshing core wallet balance...')
-      this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, nextProps.coreWalletAddress)
+      this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, this.props.coreAPIPassword)
     }
 
     const registration = nextProps.registration
