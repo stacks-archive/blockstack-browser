@@ -9,7 +9,7 @@ const DEFAULT_API = {
   nameLookupUrl: 'http://localhost:6270/v1/names/{name}',
   searchUrl: 'https://api.blockstack.com/v1/search?query={query}',
   registerUrl: 'http://localhost:6270/v1/names',
-  addressLookupUrl: 'http://localhost:6270/v1/addresses/{address}',
+  bitcoinAddressLookupUrl: 'http://localhost:6270/v1/addresses/bitcoin/{address}',
   addressBalanceUrl: 'https://explorer.blockstack.org/insight-api/addr/{address}/?noTxList=1',
   utxoUrl: 'https://explorer.blockstack.org/insight-api/addr/{address}/utxo',
   broadcastTransactionUrl: 'https://explorer.blockstack.org/insight-api/tx/send',

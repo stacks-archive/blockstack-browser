@@ -104,7 +104,7 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
         let newNamesOwned = []
 
         addresses.forEach((address) => {
-          const url = api.addressLookupUrl.replace('{address}', address)
+          const url = api.bitcoinAddressLookupUrl.replace('{address}', address)
           fetch(url)
             .then((response) => response.text())
             .then((responseText) => JSON.parse(responseText))
