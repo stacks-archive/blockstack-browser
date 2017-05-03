@@ -17,7 +17,8 @@ function mapStateToProps(state) {
     coreWalletBalance: state.account.coreWallet.balance,
     coreWalletAddress: state.account.coreWallet.address,
     btcPriceUrl: state.settings.api.btcPriceUrl,
-    btcPrice: state.settings.api.btcPrice
+    btcPrice: state.settings.api.btcPrice,
+    coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
 
@@ -38,7 +39,8 @@ class Balance extends Component {
     coreWalletAddress: PropTypes.string,
     btcPriceUrl: PropTypes.string.isRequired,
     btcPrice: PropTypes.string.isRequired,
-    refreshBtcPrice: PropTypes.func.isRequired
+    refreshBtcPrice: PropTypes.func.isRequired,
+    coreAPIPassword: PropTypes.string
   }
 
   constructor() {
