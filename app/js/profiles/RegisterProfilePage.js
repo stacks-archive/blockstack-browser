@@ -9,6 +9,8 @@ import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
 
 import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
+import roundTo from 'round-to'
+
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
@@ -169,7 +171,8 @@ class RegisterPage extends Component {
           } else {
             const price = availability.names[domainName].price
             if(price < this.props.coreWalletBalance) {
-              this.updateAlert('info', `${domainName} costs ~${price} btc to register.`)
+              const roundedUpPrice = roundTo.up(price, 3)
+              this.updateAlert('info', `${domainName} costs ~${roundedUpPrice} btc to register.`)
             } else {
               const shortfall = price - this.props.coreWalletBalance
               this.updateAlert('danger', `Your wallet doesn't have enough money to buy ${domainName}. Please send at least ${shortfall} more bitcoin to your wallet.`, WALLET_URL)
