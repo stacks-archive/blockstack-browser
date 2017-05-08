@@ -16,9 +16,9 @@ function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
     identityKeypairs: state.account.identityAccount.keypairs,
-    appManifest: state.profiles.auth.appManifest,
-    appManifestLoading: state.profiles.auth.appManifestLoading,
-    appManifestLoadingError: state.profiles.auth.appManifestLoadingError
+    appManifest: state.auth.appManifest,
+    appManifestLoading: state.auth.appManifestLoading,
+    appManifestLoadingError: state.auth.appManifestLoadingError
   }
 }
 
