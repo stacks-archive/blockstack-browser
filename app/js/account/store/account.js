@@ -1,26 +1,29 @@
 import bip39 from 'bip39'
-import { authorizationHeaderValue, encrypt, decrypt, decryptPrivateKeychain,
-  getIdentityPrivateKeychain, getBitcoinPrivateKeychain } from '../../utils'
-import { PrivateKeychain, PublicKeychain, getEntropy } from 'blockstack-keychains'
-import { ECPair } from 'bitcoinjs-lib'
+import { authorizationHeaderValue, CORE_API_PASSWORD, encrypt,
+   getIdentityPrivateKeychain,
+  getBitcoinPrivateKeychain } from '../../utils'
+import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('store/account.js')
+const logger = log4js.getLogger('account/store/account.js')
+
 
 const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
-      DELETE_ACCOUNT = 'DELETE_ACCOUNT',
-      NEW_IDENTITY_ADDRESS = 'NEW_IDENTITY_ADDRESS',
-      NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
-      UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE',
-      UPDATE_BALANCES = 'UPDATE_BALANCES',
-      UPDATE_CORE_ADDRESS = 'UPDATE_CORE_ADDRESS',
-      UPDATE_CORE_BALANCE = 'UPDATE_CORE_BALANCE',
-      RESET_CORE_BALANCE_WITHDRAWAL = 'RESET_CORE_BALANCE_WITHDRAWAL',
-      WITHDRAWING_CORE_BALANCE = 'WITHDRAWING_CORE_BALANCE',
-      WITHDRAW_CORE_BALANCE_SUCCESS = 'WITHDRAW_CORE_BALANCE_SUCCESS',
-      WITHDRAW_CORE_BALANCE_ERROR = 'WITHDRAW_CORE_BALANCE_ERROR'
+  DELETE_ACCOUNT = 'DELETE_ACCOUNT',
+  NEW_IDENTITY_ADDRESS = 'NEW_IDENTITY_ADDRESS',
+  NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
+  UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE',
+  UPDATE_BALANCES = 'UPDATE_BALANCES',
+  UPDATE_CORE_ADDRESS = 'UPDATE_CORE_ADDRESS',
+  UPDATE_CORE_BALANCE = 'UPDATE_CORE_BALANCE',
+  RESET_CORE_BALANCE_WITHDRAWAL = 'RESET_CORE_BALANCE_WITHDRAWAL',
+  WITHDRAWING_CORE_BALANCE = 'WITHDRAWING_CORE_BALANCE',
+  WITHDRAW_CORE_BALANCE_SUCCESS = 'WITHDRAW_CORE_BALANCE_SUCCESS',
+  WITHDRAW_CORE_BALANCE_ERROR = 'WITHDRAW_CORE_BALANCE_ERROR'
 
-function createAccount(encryptedBackupPhrase, privateKeychain, email=null) {
+
+
+function createAccount(encryptedBackupPhrase, privateKeychain) {
   const identityPrivateKeychain = getIdentityPrivateKeychain(privateKeychain)
   const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(privateKeychain)
 
@@ -107,6 +110,7 @@ function withdrawCoreBalanceError(error) {
   }
 }
 
+
 function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
   return dispatch => {
     const url = addressBalanceUrl.replace('{address}', coreWalletAddress)
@@ -127,8 +131,8 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreWalletAddress) {
 
 function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
   return dispatch => {
-    const headers = {"Authorization": authorizationHeaderValue(coreAPIPassword) }
-    fetch(walletPaymentAddressUrl, { headers: headers })
+    const headers = { 'Authorization': authorizationHeaderValue(coreAPIPassword) }
+    fetch(walletPaymentAddressUrl, { headers })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
@@ -149,12 +153,12 @@ function resetCoreWithdrawal() {
 }
 
 function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, coreAPIPassword) {
-return dispatch => {
+  return dispatch => {
     dispatch(withdrawingCoreBalance(recipientAddress))
     const requestHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      "Authorization": authorizationHeaderValue(coreAPIPassword)
+      'Authorization': authorizationHeaderValue(coreAPIPassword)
     }
 
     const requestBody = JSON.stringify({
@@ -170,8 +174,8 @@ return dispatch => {
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
-      if(responseJson["error"]) {
-        dispatch(withdrawCoreBalanceError(responseJson["error"]))
+      if (responseJson['error']) {
+        dispatch(withdrawCoreBalanceError(responseJson['error']))
       } else {
         dispatch(withdrawCoreBalanceSuccess())
       }
@@ -183,6 +187,7 @@ return dispatch => {
   }
 }
 
+
 function refreshBalances(addressBalanceUrl, addresses) {
   return dispatch => {
     let results = []
@@ -193,26 +198,24 @@ function refreshBalances(addressBalanceUrl, addresses) {
       fetch(url).then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-
         results.push({
-          address: address,
+          address,
           balance: responseJson['balance']
         })
 
-        if(results.length >= addresses.length) {
+        if (results.length >= addresses.length) {
           let balances = {}
           let total = 0.0
 
-          for(let i = 0; i < results.length; i++) {
+          for (let i = 0; i < results.length; i++) {
             let address = results[i]['address']
-            if(!balances.hasOwnProperty(address)) {
+            if (!balances.hasOwnProperty(address)) {
               let balance = results[i]['balance']
               total = total + balance
               balances[address] = balance
             } else {
               console.warn(`Duplicate address ${address} in addresses array`)
             }
-
           }
 
           balances['total'] = total
@@ -229,7 +232,7 @@ function refreshBalances(addressBalanceUrl, addresses) {
   }
 }
 
-function initializeWallet(password, backupPhrase, email=null) {
+function initializeWallet(password, backupPhrase, email = null) {
   return dispatch => {
     let privateKeychain
     if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
@@ -239,7 +242,7 @@ function initializeWallet(password, backupPhrase, email=null) {
       backupPhrase = privateKeychain.mnemonic()
     }
 
-    encrypt(new Buffer(backupPhrase), password, function(err, ciphertextBuffer) {
+    encrypt(new Buffer(backupPhrase), password, function (err, ciphertextBuffer) {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
       dispatch(
         createAccount(encryptedBackupPhrase, privateKeychain, email)
@@ -262,17 +265,17 @@ function newBitcoinAddress() {
 
 
 export const AccountActions = {
-  createAccount: createAccount,
-  updateBackupPhrase: updateBackupPhrase,
-  initializeWallet: initializeWallet,
-  newIdentityAddress: newIdentityAddress,
-  newBitcoinAddress: newBitcoinAddress,
-  deleteAccount: deleteAccount,
-  refreshBalances: refreshBalances,
-  getCoreWalletAddress: getCoreWalletAddress,
-  refreshCoreWalletBalance: refreshCoreWalletBalance,
-  resetCoreWithdrawal: resetCoreWithdrawal,
-  withdrawBitcoinFromCoreWallet: withdrawBitcoinFromCoreWallet
+  createAccount,
+  updateBackupPhrase,
+  initializeWallet,
+  newIdentityAddress,
+  newBitcoinAddress,
+  deleteAccount,
+  refreshBalances,
+  getCoreWalletAddress,
+  refreshCoreWalletBalance,
+  resetCoreWithdrawal,
+  withdrawBitcoinFromCoreWallet
 }
 
 const initialState = {
@@ -298,7 +301,7 @@ const initialState = {
   }
 }
 
-export function AccountReducer(state=initialState, action) {
+export function AccountReducer(state = initialState, action) {
   switch (action.type) {
     case CREATE_ACCOUNT:
       return Object.assign({}, state, {
@@ -374,13 +377,13 @@ export function AccountReducer(state=initialState, action) {
         }
       })
     case UPDATE_BALANCES:
-    return Object.assign({}, state, {
-      bitcoinAccount: {
-        publicKeychain: state.bitcoinAccount.publicKeychain,
-        addresses: state.bitcoinAccount.addresses,
-        balances: action.balances
-      }
-    })
+      return Object.assign({}, state, {
+        bitcoinAccount: {
+          publicKeychain: state.bitcoinAccount.publicKeychain,
+          addresses: state.bitcoinAccount.addresses,
+          balances: action.balances
+        }
+      })
     case RESET_CORE_BALANCE_WITHDRAWAL:
       return Object.assign({}, state, {
         coreWallet: Object.assign({}, state.coreWallet, {
@@ -407,8 +410,8 @@ export function AccountReducer(state=initialState, action) {
       return Object.assign({}, state, {
         coreWallet: Object.assign({}, state.coreWallet, {
           withdrawal: Object.assign({}, state.coreWallet.withdrawal, {
-          inProgress: false,
-          success: true
+            inProgress: false,
+            success: true
           })
         })
       })
