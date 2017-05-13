@@ -9,6 +9,7 @@ const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING',
       UPDATE_CORE_SESSION = 'UPDATE_CORE_SESSION'
 
 export const AuthActions = {
+  clearSessionToken,
   getCoreSessionToken,
   loadAppManifest
 }
@@ -33,19 +34,26 @@ function appManifestLoaded(appManifest) {
   }
 }
 
-function updateCoreSessionToken(token) {
+function updateCoreSessionToken(appDomain, token) {
   return {
     type: UPDATE_CORE_SESSION,
-    coreSessionToken: token
+    appDomain,
+    token
   }
 }
 
-function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey, blockchainId, authRequest) {
+function clearSessionToken(appDomain) {
+  return dispatch => {
+    dispatch(updateCoreSessionToken(appDomain, null))
+  }
+}
+
+function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey, appDomain, blockchainId, authRequest) {
   return dispatch => {
     getCoreSession(coreHost, corePort, coreApiPassword, appPrivateKey, blockchainId, authRequest)
-        .then((session) => {
-          logger.trace(`getCoreSessionToken: generated a token!`)
-          dispatch(updateCoreSessionToken(session))
+        .then((coreSessionToken) => {
+          logger.trace('getCoreSessionToken: generated a token!')
+          dispatch(updateCoreSessionToken(appDomain, coreSessionToken))
         })
   }
 }
@@ -66,7 +74,7 @@ const initialState = {
   appManifest: null,
   appManifestLoading: false,
   appManifestLoadingError: null,
-  coreSessionToken: null
+  coreSessionTokens: {}
 }
 
 export function AuthReducer(state=initialState, action) {
@@ -90,7 +98,9 @@ export function AuthReducer(state=initialState, action) {
       })
     case UPDATE_CORE_SESSION:
       return Object.assign({}, state, {
-        coreSessionToken: action.coreSessionToken
+        coreSessionTokens: Object.assign({}, state.coreSessionTokens, {
+          [action.appDomain]: action.token
+        })
       })
     default:
       return state
