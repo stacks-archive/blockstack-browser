@@ -1,7 +1,7 @@
 import { getCoreSession, fetchAppManifest } from 'blockstack'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('store/auth.js')
+const logger = log4js.getLogger('auth/store/auth.js')
 
 const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING',
       APP_MANIFEST_LOADING_ERROR = 'APP_MANIFEST_LOADING_ERROR',
@@ -44,6 +44,7 @@ function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey,
   return dispatch => {
     getCoreSession(coreHost, corePort, coreApiPassword, appPrivateKey, blockchainId, authRequest)
         .then((session) => {
+          logger.trace(`getCoreSessionToken: generated a token!`)
           dispatch(updateCoreSessionToken(session))
         })
   }

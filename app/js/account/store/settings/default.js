@@ -24,7 +24,7 @@ const DEFAULT_API = {
   btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
   corePingUrl: 'http://localhost:6270/v1/node/ping',
   hostedDataLocation: DROPBOX,
-  coreHost: 'locahost',
+  coreHost: 'localhost',
   corePort: 6270,
   coreAPIPassword: null,
   logServerPort: '',

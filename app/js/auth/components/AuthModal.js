@@ -21,7 +21,7 @@ function mapStateToProps(state) {
     appManifest: state.auth.appManifest,
     appManifestLoading: state.auth.appManifestLoading,
     appManifestLoadingError: state.auth.appManifestLoadingError,
-    coreSessionToken: state.account.coreSessionToken,
+    coreSessionToken: state.auth.coreSessionToken,
     coreHost: state.settings.api.coreHost,
     corePort: state.settings.api.corePort,
     coreAPIPassword: state.settings.api.coreAPIPassword
@@ -39,7 +39,8 @@ class AuthModal extends Component {
   }
   static propTypes = {
     loadAppManifest: PropTypes.func.isRequired,
-    getCoreSessionToken: PropTypes.func.isRequired
+    getCoreSessionToken: PropTypes.func.isRequired,
+    coreAPIPassword: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -65,9 +66,17 @@ class AuthModal extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.coreSessionToken) {
-      this.setState({
-        coreSessionToken: nextProps.coreSessionToken
-      })
+      logger.debug(`coreSessionToken: ${nextProps.coreSessionToken}`)
+      if (Object.keys(this.props.localIdentities).length > 0) {
+        const userDomainName = Object.keys(this.props.localIdentities)[0]
+        const identity = this.props.localIdentities[userDomainName]
+        const profile = identity.profile
+        const privateKey = this.props.identityKeypairs[0].key
+        // TODO: what if the token is expired?
+        const authResponse = makeAuthResponse(privateKey, profile, userDomainName,
+        nextProps.coreSessionToken)
+        redirectUserToApp(this.state.authRequest, authResponse)
+      }
     }
   }
 
@@ -82,18 +91,8 @@ class AuthModal extends Component {
       const profile = identity.profile
       const privateKey = this.props.identityKeypairs[0].key
 
-      logger.debug(`core session: ${this.coreSessionToken}`)
-      if( this.props.coreSessionToken ) {
-          // got core token already.
-          // TODO: what if the token is expired?
-          const authResponse = makeAuthResponse(privateKey, profile, userDomainName, this.coreSessionToken)
-          redirectUserToApp(this.state.authRequest, authResponse)
-      }
-      else {
-          // go get it
-          this.props.getCoreSessionToken(this.props.coreHost,
-            this.props.corePort, this.props.coreApiPassword, privateKey, userDomainName)
-      }
+      this.props.getCoreSessionToken(this.props.coreHost,
+          this.props.corePort, this.props.coreAPIPassword, privateKey, userDomainName)
     }
   }
 
