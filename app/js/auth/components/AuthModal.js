@@ -98,10 +98,14 @@ class AuthModal extends Component {
       const profile = identity.profile
       const privateKey = this.props.identityKeypairs[0].key
       const appDomain = this.state.decodedToken.payload.domain_name
-      console.log(`appDomain: ${appDomain}`)
-      this.props.getCoreSessionToken(this.props.coreHost,
-          this.props.corePort, this.props.coreAPIPassword, privateKey,
-          appDomain, this.state.authRequest, userDomainName)
+      const scopes = this.state.decodedToken.payload.scopes
+      if (scopes.length === 0) {
+        this.props.getCoreSessionToken(this.props.coreHost,
+            this.props.corePort, this.props.coreAPIPassword, privateKey,
+            appDomain, this.state.authRequest, userDomainName)
+      } else {
+        logger.error(`login: Logging into app ${appDomain} with scopes ${scopes} isn't supported`)
+      }
     }
   }
 
