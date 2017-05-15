@@ -40,7 +40,6 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress) {
       zoneFileJson = parseZoneFile(zoneFile)
       if (!zoneFileJson.hasOwnProperty('$origin')) {
         zoneFileJson = null
-        throw('zone file is missing an origin')
       }
     } catch (e) {
       reject(e)

@@ -61,13 +61,13 @@ class PortalLogServer {
             switch request.method {
                 
             case "POST":
-                os_log("POST /", log: self.log, type: .debug)
+                //os_log("POST /", log: self.log, type: .debug)
                 let logEvent = Data(bytes: request.body)
                 
                 do {
-                    os_log("Trying to authenticate log event request", log: self.log, type: .debug)
+                    //os_log("Trying to authenticate log event request", log: self.log, type: .debug)
                     try self.authenticatePortal(request: request, password: password)
-                    os_log("Log request authenticated", log: self.log, type: .debug)
+                    //os_log("Log request authenticated", log: self.log, type: .debug)
                 } catch {
                     os_log("Authorization failed", log: self.log, type: .error)
                     return HttpResponse.raw(403, "Authorization failed", corsHeaders, { try $0.write([UInt8]("Authorization failed".utf8)) })

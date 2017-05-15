@@ -32,23 +32,23 @@ echo "Install cryptography, making sure we get the universal binary"
 pip install cryptography --only-binary cryptography
 
 echo "Build statically-linked scrypt..."
-PYSCRYPT_NO_LINK_FLAGS="1" LDFLAGS="/usr/local/opt/openssl/lib/libcrypto.a /usr/local/opt/openssl/lib/libssl.a" CFLAGS="-I/usr/local/opt/openssl/include" pip install hg+https://bitbucket.org/kantai/py-scrypt --no-use-wheel
+PYSCRYPT_NO_LINK_FLAGS="1" LDFLAGS="/usr/local/opt/openssl/lib/libcrypto.a /usr/local/opt/openssl/lib/libssl.a" CFLAGS="-I/usr/local/opt/openssl/include" pip install git+https://github.com/larrysalibra/py-scrypt --no-use-wheel
 
 echo "Installing latest virtualchain..."
 
-pip install git+https://github.com/blockstack/virtualchain.git@rc-0.14.2
+pip install --upgrade git+https://github.com/blockstack/virtualchain.git@e9e650d1f6343d357a47366f22cc6161a743c7dc
 
 echo "Installing latest blockstack-profiles..."
 
-pip install git+https://github.com/blockstack/blockstack-profiles-py.git@master
+pip install --upgrade git+https://github.com/blockstack/blockstack-profiles-py.git@103783798df78cf0f007801e79ec6298f00b2817
 
 echo "Installing latest blockstack-zones..."
 
-pip install git+https://github.com/blockstack/zone-file-py.git@master
+pip install --upgrade git+https://github.com/blockstack/zone-file-py.git@73739618b51d4c8b85966887fae4ca22cba87e10
 
 echo "Installing latest blockstack..."
 
-pip install git+https://github.com/blockstack/blockstack-core.git@rc-0.14.2
+pip install --upgrade git+https://github.com/blockstack/blockstack-core.git@1a98efe91eca89cb1afe680bf4af7e15a53b2296
 
 echo "Blockstack virtual environment created."
 

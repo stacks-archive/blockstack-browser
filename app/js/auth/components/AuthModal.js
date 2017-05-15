@@ -9,30 +9,40 @@ import { decodeToken } from 'jsontokens'
 import {
   makeAuthResponse, getAuthRequestFromURL, fetchAppManifest, redirectUserToApp
 } from 'blockstack'
-
 import Image from '../../components/Image'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('auth/components/AuthModal.js')
 
 function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
     identityKeypairs: state.account.identityAccount.keypairs,
-    appManifest: state.profiles.auth.appManifest,
-    appManifestLoading: state.profiles.auth.appManifestLoading,
-    appManifestLoadingError: state.profiles.auth.appManifestLoadingError
+    appManifest: state.auth.appManifest,
+    appManifestLoading: state.auth.appManifestLoading,
+    appManifestLoadingError: state.auth.appManifestLoadingError,
+    coreSessionTokens: state.auth.coreSessionTokens,
+    coreHost: state.settings.api.coreHost,
+    corePort: state.settings.api.corePort,
+    coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(AuthActions, dispatch)
+  const actions = Object.assign({}, AuthActions)
+  return bindActionCreators(actions, dispatch)
 }
 
 class AuthModal extends Component {
   static contextTypes = {
     router: PropTypes.object
   }
-
   static propTypes = {
-    loadAppManifest: PropTypes.func.isRequired
+    loadAppManifest: PropTypes.func.isRequired,
+    clearSessionToken: PropTypes.func.isRequired,
+    getCoreSessionToken: PropTypes.func.isRequired,
+    coreAPIPassword: PropTypes.string.isRequired,
+    coreSessionTokens: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -40,6 +50,9 @@ class AuthModal extends Component {
 
     this.state = {
       authRequest: null,
+      appManifest: null,
+      coreSessionToken: null,
+      decodedToken: null
     }
 
     this.login = this.login.bind(this)
@@ -48,10 +61,30 @@ class AuthModal extends Component {
 
   componentWillMount() {
     const authRequest = getAuthRequestFromURL()
+    const decodedToken = decodeToken(authRequest)
     this.setState({
-        authRequest: authRequest
+      authRequest,
+      decodedToken
     })
     this.props.loadAppManifest(authRequest)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const appDomain = this.state.decodedToken.payload.domain_name
+    if (appDomain && nextProps.coreSessionTokens[appDomain]) {
+      logger.trace('componentWillReceiveProps: received coreSessionToken')
+      if (Object.keys(this.props.localIdentities).length > 0) {
+        const userDomainName = Object.keys(this.props.localIdentities)[0]
+        const identity = this.props.localIdentities[userDomainName]
+        const profile = identity.profile
+        const privateKey = this.props.identityKeypairs[0].key
+        // TODO: what if the token is expired?
+        const authResponse = makeAuthResponse(privateKey, profile, userDomainName,
+        nextProps.coreSessionTokens[appDomain])
+        this.props.clearSessionToken(appDomain)
+        redirectUserToApp(this.state.authRequest, authResponse)
+      }
+    }
   }
 
   closeModal() {
@@ -64,8 +97,15 @@ class AuthModal extends Component {
       const identity = this.props.localIdentities[userDomainName]
       const profile = identity.profile
       const privateKey = this.props.identityKeypairs[0].key
-      const authResponse = makeAuthResponse(privateKey, profile, userDomainName)
-      redirectUserToApp(this.state.authRequest, authResponse)
+      const appDomain = this.state.decodedToken.payload.domain_name
+      const scopes = this.state.decodedToken.payload.scopes
+      if (scopes.length === 0) {
+        this.props.getCoreSessionToken(this.props.coreHost,
+            this.props.corePort, this.props.coreAPIPassword, privateKey,
+            appDomain, this.state.authRequest, userDomainName)
+      } else {
+        logger.error(`login: Logging into app ${appDomain} with scopes ${scopes} isn't supported`)
+      }
     }
   }
 

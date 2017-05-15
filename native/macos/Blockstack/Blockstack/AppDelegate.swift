@@ -321,6 +321,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             os_log("Blockstack Core config file path: %{public}@", log: log, type: .info, coreConfigPath())
             os_log("Blockstack Virtualenv Path: %{public}@", log: log, type: .info, coreVenvPath())
             os_log("Blockstack path: %{public}@", log: log, type: .info, blockstackPath())
+            os_log("Python path: %{public}@", log: log, type: .info, pythonPath())
             
             let extractProcess = Process()
             let coreAPISetupProcess = Process()
@@ -352,8 +353,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             /* Blockstack Core setup task */
             
-            coreAPISetupProcess.launchPath = blockstackPath()
-            coreAPISetupProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "setup_wallet", "--password", walletPassword, "--api_password", walletPassword]
+            coreAPISetupProcess.launchPath = pythonPath()
+            coreAPISetupProcess.arguments = [blockstackPath(), "--debug", "-y", "--config", coreConfigPath(), "setup_wallet", "--password", walletPassword, "--api_password", walletPassword]
             
             let coreAPISetupPipe = loggingPipe()
             coreAPISetupProcess.standardOutput = coreAPISetupPipe
@@ -368,8 +369,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             /* Blockstack Core API start task */
             
-            coreAPIStartProcess.launchPath = blockstackPath()
-            coreAPIStartProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "api", "start", "--password", walletPassword, "--api_password", walletPassword]
+            coreAPIStartProcess.launchPath = pythonPath()
+            coreAPIStartProcess.arguments = [blockstackPath(), "--debug", "-y", "--config", coreConfigPath(), "api", "start", "--password", walletPassword, "--api_password", walletPassword]
             
             let coreAPIStartPipe = loggingPipe()
             coreAPIStartProcess.standardOutput = coreAPIStartPipe
@@ -394,8 +395,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let coreAPIStopProcess = Process()
         
-        coreAPIStopProcess.launchPath = blockstackPath()
-        coreAPIStopProcess.arguments = ["--debug", "-y", "--config", coreConfigPath(), "api", "stop"]
+        coreAPIStopProcess.launchPath = pythonPath()
+        coreAPIStopProcess.arguments = [blockstackPath(), "--debug", "-y", "--config", coreConfigPath(), "api", "stop"]
         
         let coreAPIStopPipe = loggingPipe()
         coreAPIStopProcess.standardOutput = coreAPIStopPipe
@@ -407,6 +408,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         coreAPIStopProcess.launch()
+    }
+    
+    func pythonPath() -> String {
+        return coreVenvPath() + "/bin/python2.7"
     }
 
     func blockstackPath() -> String {

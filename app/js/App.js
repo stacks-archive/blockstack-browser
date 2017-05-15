@@ -88,7 +88,8 @@ class App extends Component {
     if (this.props.coreApiRunning) {
       logger.debug('Sanity check: Core API endpoint is running!')
     } else {
-      alert('Sanity check: Error! Core API is NOT running!')
+      // TODO connect to future notification system here
+      //alert('Sanity check: Error! Core API is NOT running!')
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 
