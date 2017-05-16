@@ -1,5 +1,5 @@
 import bip39 from 'bip39'
-import { authorizationHeaderValue, CORE_API_PASSWORD, encrypt,
+import { authorizationHeaderValue, btcToSatoshis, CORE_API_PASSWORD, encrypt,
    getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain } from '../../utils'
 import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
@@ -152,18 +152,20 @@ function resetCoreWithdrawal() {
   }
 }
 
-function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, coreAPIPassword) {
+function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, amount, coreAPIPassword) {
   return dispatch => {
-    dispatch(withdrawingCoreBalance(recipientAddress))
+    dispatch(withdrawingCoreBalance(recipientAddress, amount))
     const requestHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
       'Authorization': authorizationHeaderValue(coreAPIPassword)
     }
 
+
     const requestBody = JSON.stringify({
       address: recipientAddress,
-      min_confs: 0
+      min_confs: 0,
+      amount: btcToSatoshis(amount)
     })
 
     fetch(coreWalletWithdrawUrl, {

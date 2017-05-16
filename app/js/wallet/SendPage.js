@@ -80,7 +80,8 @@ class SendPage extends Component {
     event.preventDefault()
 
     this.props.withdrawBitcoinFromCoreWallet(
-      this.props.coreWalletWithdrawUrl, this.state.recipientAddress, this.props.coreAPIPassword)
+      this.props.coreWalletWithdrawUrl, this.state.recipientAddress,
+      parseFloat(this.state.amount), this.props.coreAPIPassword)
     return // temporary until we switch back to built in wallet
 
     const password = this.state.password
@@ -186,6 +187,9 @@ class SendPage extends Component {
         <form onSubmit={this.withdrawBitcoin} method='post'>
           <InputGroup data={this.state} onChange={this.onValueChange} name="recipientAddress"
             label="To" placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ" className="wallet-form"
+            required={true}/>
+          <InputGroup data={this.state} onChange={this.onValueChange} name="amount"
+            label="Amount" placeholder="0.937" className="wallet-form" type="number"
             required={true}/>
           <InputGroup data={this.state} onChange={this.onValueChange}
             name="password" label="Password"

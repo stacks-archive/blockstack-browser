@@ -14,7 +14,7 @@ export {
 } from './api-utils'
 
 export {
-  broadcastTransaction, getNetworkFee, getUtxo
+  broadcastTransaction, btcToSatoshis, getNetworkFee, getUtxo
 } from './bitcoin-utils'
 
 export {
