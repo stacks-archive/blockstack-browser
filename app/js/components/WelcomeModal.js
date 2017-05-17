@@ -41,8 +41,10 @@ class WelcomeModal extends Component {
       coreConnected: this.props.coreConnected,
       password: '',
       backupPhrase: '',
-      pageOneView: 'create',
-      alerts: []
+      pageOneView: 'getStarted',
+      alerts: [],
+      keychainProgress: 0,
+      disableCreateAccountButton: false
     }
 
     this.createAccount = this.createAccount.bind(this)
@@ -52,6 +54,8 @@ class WelcomeModal extends Component {
     this.onValueChange = this.onValueChange.bind(this)
     this.connectDropbox = this.connectDropbox.bind(this)
     this.saveCoreAPIPassword = this.saveCoreAPIPassword.bind(this)
+    this.showGenerateKeychain = this.showGenerateKeychain.bind(this)
+    this.showEnterPassword = this.showEnterPassword.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,8 +68,17 @@ class WelcomeModal extends Component {
 
   createAccount()  {
     if (this.state.password.length) {
+      this.setState({ disableCreateAccountButton: true })
       this.props.initializeWallet(this.state.password, null)
     }
+  }
+
+  createKeychain() {
+    this.setState({pageOneView: 'create'})
+  }
+
+  showGenerateKeychain() {
+    this.setState({pageOneView: 'generateKeychain'})
   }
 
   restoreAccount() {
@@ -91,6 +104,14 @@ class WelcomeModal extends Component {
   showRestoreAccount(event)  {
     event.preventDefault()
     this.setState({pageOneView: 'restore'})
+  }
+
+  showEnterPassword(event) {
+    event.preventDefault()
+      this.setState({ keychainProgress: 100 })
+    setTimeout(() => {
+      this.setState({ pageOneView: 'enterPassword' })
+    }, 1000)
   }
 
   connectDropbox() {
@@ -120,7 +141,7 @@ class WelcomeModal extends Component {
   }
 
   render() {
-    const isOpen = !this.state.accountCreated || !this.state.storageConnected
+    const isOpen = !this.state.accountCreated || !this.state.coreConnected
 
     let page = 0
     if (this.state.coreConnected) {
@@ -143,7 +164,6 @@ class WelcomeModal extends Component {
           style={{overlay: {zIndex: 10}}}
           className="container-fluid"
         >
-          <h4>Welcome to Blockstack</h4>
           { page === 0 ?
             <div>
               <p className="m-b-30">Step 0: Enter your Blockstack Core API Password</p>
@@ -166,15 +186,17 @@ class WelcomeModal extends Component {
                 )
               })}
               </div>
-            {  pageOneView === "create" ?
+            {pageOneView === 'getStarted' ?
               <div>
-                <p>Step 1: Create an account</p>
-                <InputGroup name="password" label="Password" type="password"
-                  data={this.state} onChange={this.onValueChange} />
+                <h4>Welcome to the new<br></br> decentralized internet</h4>
+                <p>On Blockstack, there are no 3rd party servers with your identity or
+                data. You are in control.</p>
+                <img src="/images/blockstack-logo-vertical-bug.svg" style={{ width: '80%' }} />
                 <div className="container m-t-40">
-                  <button className="btn btn-primary" onClick={this.createAccount}>
-                    Create Account
+                  <button className="btn btn-primary" onClick={this.showGenerateKeychain}>
+                    Get Started
                   </button>
+                  <br></br>
                   <a href="#" onClick={this.showRestoreAccount}>
                     Restore Account
                   </a>
@@ -182,26 +204,82 @@ class WelcomeModal extends Component {
               </div>
               :
               <div>
-                <p>Step 1: Restore an account</p>
-                <InputGroup name="backupPhrase" type="text" label="Backup phrase"
-                  placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
-                <InputGroup name="password" label="Password" type="password"
-                  data={this.state} onChange={this.onValueChange} />
-                <div className="container m-t-40">
-                  <button className="btn btn-primary" onClick={this.restoreAccount}>
-                    Restore Account
-                  </button>
-                  <a href="#" onClick={this.showCreateAccount}>
-                    Create Account
-                  </a>
+              {pageOneView === 'generateKeychain' ?
+                <div>
+                  <h4>Your keychain lets you unlock the new internet</h4>
+                  <p>Traditional apps hold user keys on 3rd party servers
+                  protected by weak sign in forms. On Blockstack, the keys are on
+                  your device.</p>
+                  <div className="progress">
+                    <div className="progress-bar"
+                    style={{ width: `${this.state.keychainProgress}%`,
+                    backgroundColor: '#2275d7', height: '16px',
+                    transition: 'width 1s ease-in-out' }}
+                    role="progressbar"
+                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                  </div>
+                  <div className="container m-t-40">
+                    <button className="btn btn-primary" onClick={this.showEnterPassword}>
+                      Create Keychain
+                    </button>
+                  </div>
                 </div>
+              :
+                <div>
+                  {pageOneView === 'enterPassword' ?
+                    <div>
+                      <h4>Choose a password to encrypt your keychain</h4>
+                      <p>The keychain on this device will be encrypted with your
+                      password. Later you will have the chance to backup the keychain
+                      itself.</p>
+                      <InputGroup name="password" label="Password" type="password"
+                        data={this.state} onChange={this.onValueChange}
+                      />
+                      <div className="container m-t-40">
+                        <button className="btn btn-primary"
+                        onClick={this.createAccount}
+                        disabled={this.state.disableCreateAccountButton}
+                        >
+                          { this.state.disableCreateAccountButton ?
+                            <span>Saving...</span>
+                            :
+                            <span>Continue</span>
+                          }
+                        </button>
+                      </div>
+                    </div>
+                  :
+                    <div>
+                      <h4>Restore your account</h4>
+                      <p></p>
+                      <InputGroup name="backupPhrase" type="text" label="Backup phrase"
+                        placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
+                      <InputGroup name="password" label="Password" type="password"
+                        data={this.state} onChange={this.onValueChange} />
+                      <div className="container m-t-40">
+                        <button className="btn btn-primary" onClick={this.restoreAccount}>
+                          Restore Account
+                        </button>
+                        <a href="#" onClick={this.showGenerateKeychain}>
+                          Create Account
+                        </a>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
               </div>
+
               }
             </div>
           : null }
           { page === 2 ?
             <div>
-              <p className="m-b-30">Step 2: Setup your storage</p>
+              <h4>Enter your email to protect your keychain</h4>
+              <p className="m-b-30">Enter your email to receive an encrypted copy
+              of your keychain. This will help you recover your account if you lose
+              your device.</p>
               <div>
                 <button onClick={this.connectDropbox}
                   className="btn btn-lg btn-primary btn-block">
