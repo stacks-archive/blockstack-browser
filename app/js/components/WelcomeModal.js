@@ -61,6 +61,7 @@ class WelcomeModal extends Component {
     this.showGenerateKeychain = this.showGenerateKeychain.bind(this)
     this.showEnterPassword = this.showEnterPassword.bind(this)
     this.emailKeychainBackup = this.emailKeychainBackup.bind(this)
+    this.skipEmailBackup = this.skipEmailBackup.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -125,6 +126,11 @@ class WelcomeModal extends Component {
     event.preventDefault()
     this.props.emailKeychainBackup(this.state.email)
     return false
+  }
+
+  skipEmailBackup(event) {
+    event.preventDefault()
+    this.props.skipEmailBackup()
   }
 
   connectDropbox() {
@@ -306,6 +312,10 @@ class WelcomeModal extends Component {
                 >
                 Finish
                 </button>
+                <br></br>
+                <a href="#" onClick={this.skipEmailBackup}>
+                  Skip
+                </a>
               </div>
             </form>
           : null }

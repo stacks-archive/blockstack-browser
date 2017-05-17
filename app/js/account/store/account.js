@@ -125,6 +125,12 @@ function emailKeychainBackup(email) {
   }
 }
 
+function skipEmailBackup() {
+  logger.trace('skipEmailBackup')
+  return dispatch => {
+    dispatch(promptedForEmail())
+  }
+}
 
 function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
@@ -292,7 +298,8 @@ export const AccountActions = {
   refreshCoreWalletBalance,
   resetCoreWithdrawal,
   withdrawBitcoinFromCoreWallet,
-  emailKeychainBackup
+  emailKeychainBackup,
+  skipEmailBackup
 }
 
 const initialState = {
