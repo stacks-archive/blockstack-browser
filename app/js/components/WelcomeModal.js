@@ -14,7 +14,8 @@ const Dropbox = require('dropbox')
 
 function mapStateToProps(state) {
   return {
-    api: state.settings.api
+    api: state.settings.api,
+    promptedForEmail: state.account.promptedForEmail
   }
 }
 
@@ -29,7 +30,9 @@ class WelcomeModal extends Component {
     coreConnected: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
     updateApi: PropTypes.func.isRequired,
-    api: PropTypes.object.isRequired
+    api: PropTypes.object.isRequired,
+    emailKeychainBackup: PropTypes.func.isRequired,
+    promptedForEmail: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -44,7 +47,8 @@ class WelcomeModal extends Component {
       pageOneView: 'getStarted',
       alerts: [],
       keychainProgress: 0,
-      disableCreateAccountButton: false
+      disableCreateAccountButton: false,
+      email: ''
     }
 
     this.createAccount = this.createAccount.bind(this)
@@ -56,6 +60,7 @@ class WelcomeModal extends Component {
     this.saveCoreAPIPassword = this.saveCoreAPIPassword.bind(this)
     this.showGenerateKeychain = this.showGenerateKeychain.bind(this)
     this.showEnterPassword = this.showEnterPassword.bind(this)
+    this.emailKeychainBackup = this.emailKeychainBackup.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -66,11 +71,13 @@ class WelcomeModal extends Component {
     })
   }
 
-  createAccount()  {
+  createAccount(event)  {
+    event.preventDefault()
     if (this.state.password.length) {
       this.setState({ disableCreateAccountButton: true })
       this.props.initializeWallet(this.state.password, null)
     }
+    return false
   }
 
   createKeychain() {
@@ -114,6 +121,12 @@ class WelcomeModal extends Component {
     }, 1000)
   }
 
+  emailKeychainBackup(event) {
+    event.preventDefault()
+    this.props.emailKeychainBackup(this.state.email)
+    return false
+  }
+
   connectDropbox() {
     const dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
     const port = location.port === '' ? 80 : location.port
@@ -141,7 +154,8 @@ class WelcomeModal extends Component {
   }
 
   render() {
-    const isOpen = !this.state.accountCreated || !this.state.coreConnected
+    const isOpen = !this.state.accountCreated ||
+      !this.state.coreConnected || !this.props.promptedForEmail
 
     let page = 0
     if (this.state.coreConnected) {
@@ -229,25 +243,27 @@ class WelcomeModal extends Component {
                 <div>
                   {pageOneView === 'enterPassword' ?
                     <div>
-                      <h4>Choose a password to encrypt your keychain</h4>
-                      <p>The keychain on this device will be encrypted with your
-                      password. Later you will have the chance to backup the keychain
-                      itself.</p>
-                      <InputGroup name="password" label="Password" type="password"
-                        data={this.state} onChange={this.onValueChange}
-                      />
-                      <div className="container m-t-40">
-                        <button className="btn btn-primary"
-                        onClick={this.createAccount}
-                        disabled={this.state.disableCreateAccountButton}
-                        >
-                          { this.state.disableCreateAccountButton ?
-                            <span>Saving...</span>
-                            :
-                            <span>Continue</span>
-                          }
-                        </button>
-                      </div>
+                      <form onSubmit={this.createAccount}>
+                        <h4>Choose a password to encrypt your keychain</h4>
+                        <p>The keychain on this device will be encrypted with your
+                        password. Later you will have the chance to backup the keychain
+                        itself.</p>
+                        <InputGroup name="password" label="Password" type="password"
+                          data={this.state} onChange={this.onValueChange}
+                          required={true}
+                        />
+                        <div className="container m-t-40">
+                          <button type="submit" className="btn btn-primary"
+                          disabled={this.state.disableCreateAccountButton}
+                          >
+                            { this.state.disableCreateAccountButton ?
+                              <span>Saving...</span>
+                              :
+                              <span>Continue</span>
+                            }
+                          </button>
+                        </div>
+                      </form>
                     </div>
                   :
                     <div>
@@ -275,18 +291,23 @@ class WelcomeModal extends Component {
             </div>
           : null }
           { page === 2 ?
-            <div>
+            <form onSubmit={this.emailKeychainBackup}>
               <h4>Enter your email to protect your keychain</h4>
               <p className="m-b-30">Enter your email to receive an encrypted copy
               of your keychain. This will help you recover your account if you lose
               your device.</p>
+              <InputGroup name="email" label="Email address" type="email"
+                data={this.state} onChange={this.onValueChange} required={true}
+              />
               <div>
-                <button onClick={this.connectDropbox}
-                  className="btn btn-lg btn-primary btn-block">
-                Connect Dropbox
+                <button
+                  type="submit"
+                  className="btn btn-lg btn-primary btn-block"
+                >
+                Finish
                 </button>
               </div>
-            </div>
+            </form>
           : null }
         </Modal>
       </div>

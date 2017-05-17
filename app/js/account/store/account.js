@@ -19,7 +19,8 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
   RESET_CORE_BALANCE_WITHDRAWAL = 'RESET_CORE_BALANCE_WITHDRAWAL',
   WITHDRAWING_CORE_BALANCE = 'WITHDRAWING_CORE_BALANCE',
   WITHDRAW_CORE_BALANCE_SUCCESS = 'WITHDRAW_CORE_BALANCE_SUCCESS',
-  WITHDRAW_CORE_BALANCE_ERROR = 'WITHDRAW_CORE_BALANCE_ERROR'
+  WITHDRAW_CORE_BALANCE_ERROR = 'WITHDRAW_CORE_BALANCE_ERROR',
+  PROMPTED_FOR_EMAIL = 'PROMPTED_FOR_EMAIL'
 
 
 
@@ -110,6 +111,20 @@ function withdrawCoreBalanceError(error) {
   }
 }
 
+function promptedForEmail() {
+  return {
+    type: PROMPTED_FOR_EMAIL
+  }
+}
+
+function emailKeychainBackup(email) {
+  logger.debug(`emailKeychainBackup: ${email}`)
+  // TODO implement
+  return dispatch => {
+    dispatch(promptedForEmail())
+  }
+}
+
 
 function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
@@ -160,7 +175,6 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, 
       'Content-Type': 'application/json',
       'Authorization': authorizationHeaderValue(coreAPIPassword)
     }
-
 
     const requestBody = JSON.stringify({
       address: recipientAddress,
@@ -277,11 +291,13 @@ export const AccountActions = {
   getCoreWalletAddress,
   refreshCoreWalletBalance,
   resetCoreWithdrawal,
-  withdrawBitcoinFromCoreWallet
+  withdrawBitcoinFromCoreWallet,
+  emailKeychainBackup
 }
 
 const initialState = {
   accountCreated: false,
+  promptedForEmail: false,
   encryptedBackupPhrase: null,
   identityAccount: {
     addresses: [],
@@ -426,6 +442,10 @@ export function AccountReducer(state = initialState, action) {
             error: action.error
           })
         })
+      })
+    case PROMPTED_FOR_EMAIL:
+      return Object.assign({}, state, {
+        promptedForEmail: true
       })
     default:
       return state
