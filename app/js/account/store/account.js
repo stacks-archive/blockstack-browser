@@ -119,9 +119,34 @@ function promptedForEmail() {
 
 function emailKeychainBackup(email) {
   logger.debug(`emailKeychainBackup: ${email}`)
-  // TODO implement
   return dispatch => {
     dispatch(promptedForEmail())
+    const requestHeaders = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+
+    const requestBody = {
+      email,
+      encryptedPortalKey: 'abc'
+    }
+
+    const options = {
+      method: 'POST',
+      headers: requestHeaders,
+      body: JSON.stringify(requestBody)
+    }
+
+    const emailBackupUrl = 'http://localhost:2888/backup'
+
+    return fetch(emailBackupUrl, options)
+    .then(() => {
+      logger.debug(`emailKeychainBackup: backup sent to ${email}`)
+    }, (error) => {
+      logger.error('emailKeychainBackup: error backing up keychain', error)
+    }).catch(error => {
+      logger.error('emailKeychainBackup: error backing up keychain', error)
+    })
   }
 }
 
