@@ -9,18 +9,28 @@ class StatusBar extends Component {
 
   render() {
     return (
-      <div className="status-bar status-bar-dark">
-        <Link to="/" style={{ width: '150px' }}>
+      <div className="status-bar status-bar-transparent-light">
+        <Link to="/" className="status-bar-back">
           <i className="fa fa-angle-left status-bar-icon"></i>
           Home Screen
         </Link>
         <div className="pull-right">
           <div className="status-inline status-completion">
-            <Image className="status-complete-dot img-circle" />
-            <Image className="status-complete-dot img-circle" />
-            <Image className="status-complete-dot img-circle" />
-            <Image className="status-complete-dot img-circle" />
-            <Image className="status-complete-dot img-circle" />
+            <div className="status-inline status-complete-wrap">
+              <div className="status-inline status-complete-dot img-circle"></div>
+            </div>
+            <div className="status-inline status-complete-wrap">
+              <div className="status-inline status-complete-dot img-circle"></div>
+            </div>
+            <div className="status-inline status-complete-wrap">
+              <div className="status-inline status-complete-dot img-circle"></div>
+            </div>
+            <div className="status-inline status-complete-wrap">
+              <div className="status-inline status-complete-dot img-circle"></div>
+            </div>
+            <div className="status-inline status-complete-wrap">
+              <div className="status-inline status-complete-dot img-circle"></div>
+            </div>
           </div>
           <div className="status-inline status-balance">
             <p>Balance 0.0009233 BTC</p>

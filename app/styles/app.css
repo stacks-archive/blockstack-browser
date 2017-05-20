@@ -289,10 +289,10 @@ div.pro-avatar img{max-width:58px;}
   width: 100%;
   height: 78px;
   display: inline-block;
-  font-family:'Lato',sans-serif;
+  font-family: 'Lato', sans-serif;
   font-size: 13px;
   font-weight: 400;
-  padding: 25px 30px;
+  padding: 20px 30px;
 }
 .status-bar a, .status-bar a:hover, .status-bar a:focus, .status-bar a:active {
   text-decoration: none;
@@ -320,11 +320,34 @@ div.pro-avatar img{max-width:58px;}
   background-color: rgba(255, 255, 255, 0);
   color: #080809;
 }
-.status-inline {display:inline-block;}
-.status-balance{margin-right:30px;}
-.status-completion{margin-right:30px;}
-.status-profile-img{width:22px;height:22px;}
-.status-complete-dot{background-color:#FAFAFA;width:7px;height:7px;margin-right:15px;}
+.status-bar-back {
+  width:150px;
+  top: 114px;
+  line-height: 34px;
+}
+.status-inline {
+  display: inline-block;
+}
+.status-balance {
+  margin-right: 30px;
+}
+.status-completion {
+  margin-right: 30px;
+}
+.status-profile-img {
+  width: 22px;
+  height: 22px;
+}
+.status-complete-wrap {
+  padding:15px 10px;
+  margin-right: 5px;
+  line-height: 0px;
+}
+.status-complete-dot {
+  background-color: #FAFAFA;
+  width: 7px;
+  height: 7px;
+}
 
 /* 37. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
