@@ -287,12 +287,12 @@ div.pro-avatar img{max-width:58px;}
 /* 36. Status Bars */
 .status-bar {
   width: 100%;
-  height: 68px;
+  height: 78px;
   display: inline-block;
   font-family:'Lato',sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
-  padding: 20px 19px;
+  padding: 25px 30px;
 }
 .status-bar a, .status-bar a:hover, .status-bar a:focus, .status-bar a:active {
   text-decoration: none;
@@ -321,7 +321,9 @@ div.pro-avatar img{max-width:58px;}
   color: #080809;
 }
 .status-inline {display:inline-block;}
-.status-profile-img{width:29px;height:29px;}
+.status-balance{margin-right:30px;}
+.status-completion{margin-right:30px;}
+.status-profile-img{width:22px;height:22px;}
 .status-complete-dot{background-color:#FAFAFA;width:7px;height:7px;margin-right:15px;}
 
 /* 37. Misc */

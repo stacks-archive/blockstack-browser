@@ -22,10 +22,10 @@ class StatusBar extends Component {
             <Image className="status-complete-dot img-circle" />
             <Image className="status-complete-dot img-circle" />
           </div>
-          <div className="status-inline zstatus-balance">
+          <div className="status-inline status-balance">
             <p>Balance 0.0009233 BTC</p>
           </div>
-          <div className="status-inline zstatus-profile">
+          <div className="status-inline status-profile">
             <Image className="status-profile-img img-circle" src="/images/avatar.png" />
           </div>
         </div>
