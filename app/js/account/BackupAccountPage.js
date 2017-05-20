@@ -1,10 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
 import { decrypt } from '../utils'
 import log4js from 'log4js'
+
+import { AccountActions } from './store/account'
 
 const logger = log4js.getLogger('account/BackupAccountPage.js')
 
@@ -14,9 +17,15 @@ function mapStateToProps(state) {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  const actions = Object.assign({}, AccountActions)
+  return bindActionCreators(actions, dispatch)
+}
+
 class BackupAccountPage extends Component {
   static propTypes = {
-    encryptedBackupPhrase: PropTypes.string.isRequired
+    encryptedBackupPhrase: PropTypes.string.isRequired,
+    displayedRecoveryCode: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -58,6 +67,7 @@ class BackupAccountPage extends Component {
       if (!err) {
         logger.debug('Backup phrase successfully decrypted')
         this.updateAlert('success', 'Backup phrase decrypted')
+        this.props.displayedRecoveryCode()
         this.setState({
           decryptedBackupPhrase: plaintextBuffer.toString()
         })
@@ -120,4 +130,4 @@ class BackupAccountPage extends Component {
   }
 }
 
-export default connect(mapStateToProps)(BackupAccountPage)
+export default connect(mapStateToProps, mapDispatchToProps)(BackupAccountPage)

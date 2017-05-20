@@ -20,7 +20,8 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
   WITHDRAWING_CORE_BALANCE = 'WITHDRAWING_CORE_BALANCE',
   WITHDRAW_CORE_BALANCE_SUCCESS = 'WITHDRAW_CORE_BALANCE_SUCCESS',
   WITHDRAW_CORE_BALANCE_ERROR = 'WITHDRAW_CORE_BALANCE_ERROR',
-  PROMPTED_FOR_EMAIL = 'PROMPTED_FOR_EMAIL'
+  PROMPTED_FOR_EMAIL = 'PROMPTED_FOR_EMAIL',
+  VIEWED_RECOVERY_CODE = 'VIEWED_RECOVERY_CODE'
 
 
 
@@ -114,6 +115,18 @@ function withdrawCoreBalanceError(error) {
 function promptedForEmail() {
   return {
     type: PROMPTED_FOR_EMAIL
+  }
+}
+
+function viewedRecoveryCode() {
+  return {
+    type: VIEWED_RECOVERY_CODE
+  }
+}
+
+function displayedRecoveryCode() {
+  return dispatch => {
+    dispatch(viewedRecoveryCode())
   }
 }
 
@@ -324,7 +337,8 @@ export const AccountActions = {
   resetCoreWithdrawal,
   withdrawBitcoinFromCoreWallet,
   emailKeychainBackup,
-  skipEmailBackup
+  skipEmailBackup,
+  displayedRecoveryCode
 }
 
 const initialState = {
@@ -348,7 +362,8 @@ const initialState = {
       recipient: null,
       success: false
     }
-  }
+  },
+  viewedRecoveryCode: false
 }
 
 export function AccountReducer(state = initialState, action) {
@@ -478,6 +493,10 @@ export function AccountReducer(state = initialState, action) {
     case PROMPTED_FOR_EMAIL:
       return Object.assign({}, state, {
         promptedForEmail: true
+      })
+    case VIEWED_RECOVERY_CODE:
+      return Object.assign({}, state, {
+        viewedRecoveryCode: true
       })
     default:
       return state
