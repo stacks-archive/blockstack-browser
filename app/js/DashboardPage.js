@@ -21,7 +21,7 @@ class DashboardPage extends Component {
   render() {
     return (
     <div className="dashboard">
-      <StatusBar />
+      <StatusBar hideBackToHomeLink={true} />
       <div className="container-fluid app-center">
         <div className="container app-wrap">
           <div className="app-container no-padding">
