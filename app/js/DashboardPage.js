@@ -21,9 +21,9 @@ class DashboardPage extends Component {
 
   render() {
     return (
-    <div>
+    <div className="home-screen-wrap">
     <StatusBar />
-    <div className="dashboard">
+    <div className="home-screen">
       <div className="container-fluid app-center">
         <div className="container app-wrap">          
           <div className="app-container no-padding">
