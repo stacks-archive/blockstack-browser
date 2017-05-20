@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import StatusBar from './components/StatusBar'
 
 function mapStateToProps(state) {
   return {
@@ -20,6 +21,7 @@ class DashboardPage extends Component {
   render() {
     return (
     <div className="dashboard">
+      <StatusBar />
       <div className="container-fluid app-center">
         <div className="container app-wrap">
           <div className="app-container no-padding">
