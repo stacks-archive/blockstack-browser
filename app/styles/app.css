@@ -285,69 +285,21 @@ div.pro-avatar img{max-width:58px;}
 .list-group-item.active,.list-group-item.active:hover,.list-group-item.active:focus{background-image:none;}
 
 /* 36. Status Bars */
-.status-bar {
-  width: 100%;
-  height: 78px;
-  display: inline-block;
-  font-family: 'Lato', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  padding: 20px 30px;
-}
-.status-bar a, .status-bar a:hover, .status-bar a:focus, .status-bar a:active {
-  text-decoration: none;
-}
-.status-bar-icon {
-  vertical-align: middle;
-  font-size: 19px !important;
-  padding-right: 8px;
-  margin-top: -2px !important;
-}
-/* Status Bars variants */
-.status-bar-light, .status-bar-light > a {
-  background-color: #fff;
-  color: #080809;
-}
-.status-bar-dark, .status-bar-dark > a {
-  background-color: #000;
-  color: #e6e6e6;
-}
-.status-bar-transparent-light, .status-bar-transparent-light > a {
-  background-color: rgba(0, 0, 0, 0);
-  color: #e6e6e6;
-}
-.status-bar-transparent-dark, .status-bar-transparent-dark > a {
-  background-color: rgba(255, 255, 255, 0);
-  color: #080809;
-}
-.status-bar-back {
-  width:150px;
-  top: 114px;
-  line-height: 34px;
-}
-.status-inline {
-  display: inline-block;
-}
-.status-balance {
-  margin-right: 30px;
-}
-.status-completion {
-  margin-right: 30px;
-}
-.status-profile-img {
-  width: 22px;
-  height: 22px;
-}
-.status-complete-wrap {
-  padding:15px 10px;
-  margin-right: 5px;
-  line-height: 0px;
-}
-.status-complete-dot {
-  background-color: #FAFAFA;
-  width: 7px;
-  height: 7px;
-}
+.status-bar{width:100%;height:78px;display:inline-block;font-family:'Lato',sans-serif;font-size:13px;font-weight:400;padding:20px 30px;}
+.status-bar a,.status-bar a:hover,.status-bar a:focus,.status-bar a:active{text-decoration:none;}
+.status-bar-icon{vertical-align:middle;font-size:19px!important;padding-right:8px;margin-top:-2px!important;}
+/* --- Status Bars variants --- */
+.status-bar-light,.status-bar-light > a{background-color:#fff;color:#080809;}
+.status-bar-dark,.status-bar-dark > a{background-color:#000;color:#e6e6e6;}
+.status-bar-transparent-light,.status-bar-transparent-light > a{background-color:rgba(0,0,0,0);color:#e6e6e6;}
+.status-bar-transparent-dark,.status-bar-transparent-dark > a{background-color:rgba(255,255,255,0);color:#080809;}
+.status-bar-back{width:150px;top:114px;line-height:34px;}
+.status-inline{display:inline-block;}
+.status-balance{margin-right:30px;}
+.status-completion{margin-right:30px;}
+.status-profile-img{width:22px;height:22px;}
+.status-complete-wrap{padding:15px 10px;margin-right:5px;line-height:0px;}
+.status-complete-dot{background-color:#FAFAFA;width:7px;height:7px;}
 
 /* 37. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
