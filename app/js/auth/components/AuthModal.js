@@ -42,7 +42,8 @@ class AuthModal extends Component {
     clearSessionToken: PropTypes.func.isRequired,
     getCoreSessionToken: PropTypes.func.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
-    coreSessionTokens: PropTypes.object.isRequired
+    coreSessionTokens: PropTypes.object.isRequired,
+    loginToApp: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -92,6 +93,7 @@ class AuthModal extends Component {
   }
 
   login() {
+    this.props.loginToApp()
     if (Object.keys(this.props.localIdentities).length > 0) {
       const userDomainName = Object.keys(this.props.localIdentities)[0]
       const identity = this.props.localIdentities[userDomainName]
