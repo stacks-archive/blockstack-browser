@@ -1,5 +1,4 @@
 import bip39 from 'bip39'
-import { PrivateKeychain } from 'blockstack-keychains'
 import { decrypt } from './encryption-utils'
 
 const backupPhraseLength = 24
@@ -31,28 +30,69 @@ export function isBackupPhraseValid(backupPhrase) {
   return { isValid: isValid, error: error }
 }
 
-export function decryptPrivateKeychain(password, encryptedBackupPhrase) {
+export function decryptMasterKeychain(password, encryptedBackupPhrase) {
   return new Promise((resolve, reject) => {
     let dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
 
     decrypt(dataBuffer, password, (err, plaintextBuffer) => {
       if (!err) {
         const backupPhrase = plaintextBuffer.toString()
-        const privateKeychain = PrivateKeychain.fromMnemonic(backupPhrase)
-        resolve(privateKeychain)
+        const seed = bip39.mnemonicToSeed(backupPhrase)
+        const masterKeychain = HDNode.fromSeedBuffer(seed)
+        resolve(masterKeychain)
       } else {
-        reject("Incorrect password")
+        reject('Incorrect password')
       }
     })
   })
 }
 
-export function getBitcoinPrivateKeychain(privateKeychain) {
-  return privateKeychain.privatelyNamedChild('bitcoin-0')
+const EXTERNAL_ADDRESS = 'EXTERNAL_ADDRESS'
+const CHANGE_ADDRESS = 'CHANGE_ADDRESS'
+
+export function getBitcoinPrivateKeychain(masterKeychain) {
+  const BIP_44_PURPOSE = 44
+  const BITCOIN_COIN_TYPE = 0
+
+  return masterKeychain.deriveHardened(BIP_44_PURPOSE)
+  .deriveHardened(BITCOIN_COIN_TYPE)
 }
 
-export function getIdentityPrivateKeychain(privateKeychain) {
-  return privateKeychain.privatelyNamedChild('blockstack-0')
+export function getBitcoinAddressNode(masterKeychain,  addressIndex = 0,
+  chainType = EXTERNAL_ADDRESS, accountIndex = 0) {
+  let chain = null
+
+  if (chainType === EXTERNAL_ADDRESS) {
+    chain = 0
+  } else if (chainType === CHANGE_ADDRESS) {
+    chain = 1
+  } else {
+    throw new Error('Invalid chain type')
+  }
+
+  return getBitcoinPrivateKeychain(masterKeychain)
+  .deriveHardened(accountIndex)
+  .derive(chain)
+  .derive(addressIndex)
+}
+
+export function getBitcoinAddress(masterKeychain, addressIndex = 0,
+  chainType = EXTERNAL_ADDRESS, accountIndex = 0) {
+  return getBitcoinAddressNode(masterKeychain, addressIndex, chainType, accountIndex)
+  .keyPair.getAddress()
+}
+
+
+export function getIdentityPrivateKeychain(masterKeychain) {
+  return masterKeychain.deriveHardened(888).deriveHardened(0)
+}
+
+export function getIdentityAddressNode(masterKeychain, index = 0) {
+  return getIdentityPrivateKeychain(masterKeychain).derive(index)
+}
+
+export function getIdentityAddress(masterKeychain, index = 0) {
+  return getIdentityAddressNode(masterKeychain, index).keyPair.getAddress()
 }
 
 export function getWebAccountTypes(api) {

@@ -82,11 +82,13 @@ class SendPage extends Component {
     this.props.withdrawBitcoinFromCoreWallet(
       this.props.coreWalletWithdrawUrl, this.state.recipientAddress,
       parseFloat(this.state.amount), this.props.coreAPIPassword)
-    return // temporary until we switch back to built in wallet
+    return // TODO temporary until we switch back to built in wallet
 
     const password = this.state.password
 
-    decryptPrivateKeychain(password, this.props.account.encryptedBackupPhrase)
+
+    // FIXME this needs to be written to use our BIP44 compliant wallet structure
+    decryptMasterKeychain(password, this.props.account.encryptedBackupPhrase)
     .then((privateKeychain) => {
      const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(privateKeychain)
 

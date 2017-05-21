@@ -1,8 +1,15 @@
 import bip39 from 'bip39'
-import { authorizationHeaderValue, btcToSatoshis, CORE_API_PASSWORD, encrypt,
+import { authorizationHeaderValue, btcToSatoshis,
+  CORE_API_PASSWORD, encrypt,
    getIdentityPrivateKeychain,
-  getBitcoinPrivateKeychain } from '../../utils'
-import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
+  getBitcoinPrivateKeychain,
+  getIdentityAddressNode,
+  getIdentityAddress,
+  getBitcoinAddress } from '../../utils'
+
+  import { randomBytes } from 'crypto'
+  import { HDNode } from 'bitcoinjs-lib'
+
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/store/account.js')
@@ -24,17 +31,20 @@ const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
 
 
 
-function createAccount(encryptedBackupPhrase, privateKeychain) {
-  const identityPrivateKeychain = getIdentityPrivateKeychain(privateKeychain)
-  const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(privateKeychain)
+function createAccount(encryptedBackupPhrase, masterKeychain) {
+  const identityPrivateKeychain = getIdentityPrivateKeychain(masterKeychain)
+  const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
 
-  const identityPublicKeychain = identityPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
-  const bitcoinPublicKeychain = bitcoinPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
-  const firstIdentityAddress = identityPrivateKeychain.ecPair.getAddress()
-  const firstBitcoinAddress = bitcoinPrivateKeychain.ecPair.getAddress()
+  const identityPublicKeychain = identityPrivateKeychain.keyPair
+    .getPublicKeyBuffer().toString('hex')
 
-  const firstIdentityKey = identityPrivateKeychain.ecPair.d.toBuffer(32).toString('hex')
-  const firstIdentityKeyID = identityPrivateKeychain.ecPair.getPublicKeyBuffer().toString('hex')
+  const bitcoinPublicKeychain = bitcoinPrivateKeychain.keyPair.getPublicKeyBuffer().toString('hex')
+  const firstIdentityAddress = getIdentityAddress(masterKeychain)
+  const firstBitcoinAddress = getBitcoinAddress(masterKeychain)
+
+  const firstIdentityAddressNode = getIdentityAddressNode(masterKeychain)
+  const firstIdentityKey = firstIdentityAddressNode.keyPair.d.toBuffer(32).toString('hex')
+  const firstIdentityKeyID = firstIdentityAddressNode.keyPair.getPublicKeyBuffer().toString('hex')
 
 
   return {
@@ -281,18 +291,21 @@ function refreshBalances(addressBalanceUrl, addresses) {
 
 function initializeWallet(password, backupPhrase, email = null) {
   return dispatch => {
-    let privateKeychain
+    let masterKeychain
     if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
-      privateKeychain = PrivateKeychain.fromMnemonic(backupPhrase)
+      const seed = bip39.mnemonicToSeed(backupPhrase)
+      masterKeychain = HDNode.fromSeedBuffer(seed)
     } else {
-      privateKeychain = new PrivateKeychain()
-      backupPhrase = privateKeychain.mnemonic()
+      masterKeychain = HDNode.fromSeedBuffer(randomBytes(32))
+      const privateKeyBuffer = masterKeychain.keyPair.d.toBuffer(32)
+      const entropy = privateKeyBuffer.toString('hex')
+      backupPhrase = bip39.entropyToMnemonic(entropy)
     }
 
     encrypt(new Buffer(backupPhrase), password, function (err, ciphertextBuffer) {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
       dispatch(
-        createAccount(encryptedBackupPhrase, privateKeychain, email)
+        createAccount(encryptedBackupPhrase, masterKeychain, email)
       )
     })
   }
