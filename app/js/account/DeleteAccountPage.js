@@ -60,16 +60,15 @@ class DeleteAccountPage extends Component {
     const password = this.state.password
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt backup phrase...')
-    decrypt(dataBuffer, password, (err) => {
-      if (!err) {
-        logger.debug('Backup phrase successfully decrypted')
-        logger.debug('Clearing localStorage...')
-        localStorage.clear()
-        logger.trace('Reloading page...')
-        location.reload()
-      } else {
-        this.updateAlert('danger', 'Incorrect password')
-      }
+    decrypt(dataBuffer, password)
+    .then((plaintextBuffer) => {
+      logger.debug('Backup phrase successfully decrypted')
+      logger.debug('Clearing localStorage...')
+      localStorage.clear()
+      logger.trace('Reloading page...')
+      location.reload()
+    }, (error) => {
+      this.updateAlert('danger', 'Incorrect password')
     })
   }
 

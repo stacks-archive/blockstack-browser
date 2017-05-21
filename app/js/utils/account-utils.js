@@ -34,17 +34,16 @@ export function isBackupPhraseValid(backupPhrase) {
 
 export function decryptMasterKeychain(password, encryptedBackupPhrase) {
   return new Promise((resolve, reject) => {
-    let dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
 
-    decrypt(dataBuffer, password, (err, plaintextBuffer) => {
-      if (!err) {
-        const backupPhrase = plaintextBuffer.toString()
-        const seed = bip39.mnemonicToSeed(backupPhrase)
-        const masterKeychain = HDNode.fromSeedBuffer(seed)
-        resolve(masterKeychain)
-      } else {
-        reject('Incorrect password')
-      }
+    decrypt(dataBuffer, password)
+    .then((plaintextBuffer) => {
+      const backupPhrase = plaintextBuffer.toString()
+      const seed = bip39.mnemonicToSeed(backupPhrase)
+      const masterKeychain = HDNode.fromSeedBuffer(seed)
+      resolve(masterKeychain)
+    }, (error) => {
+      reject('Incorrect password')
     })
   })
 }

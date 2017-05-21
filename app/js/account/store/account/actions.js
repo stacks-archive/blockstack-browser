@@ -1,4 +1,6 @@
+import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
+import { randomBytes } from 'crypto'
 import { authorizationHeaderValue, btcToSatoshis, encrypt,
   getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
@@ -281,7 +283,7 @@ function initializeWallet(password, backupPhrase, email = null) {
       backupPhrase = bip39.entropyToMnemonic(entropy)
     }
 
-    encrypt(new Buffer(backupPhrase), password, function (err, ciphertextBuffer) {
+    return encrypt(new Buffer(backupPhrase), password).then((ciphertextBuffer) => {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
       dispatch(
         createAccount(encryptedBackupPhrase, masterKeychain, email)
@@ -292,13 +294,13 @@ function initializeWallet(password, backupPhrase, email = null) {
 
 function newIdentityAddress() {
   return {
-    type: NEW_IDENTITY_ADDRESS
+    type: types.NEW_IDENTITY_ADDRESS
   }
 }
 
 function newBitcoinAddress() {
   return {
-    type: NEW_BITCOIN_ADDRESS
+    type: types.NEW_BITCOIN_ADDRESS
   }
 }
 

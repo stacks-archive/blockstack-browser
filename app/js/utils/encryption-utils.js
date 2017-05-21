@@ -1,19 +1,31 @@
 import triplesec from 'triplesec'
 
-export function encrypt(plaintextBuffer, password, callback) {
-  triplesec.encrypt({
-    key: new Buffer(password),
-    data: plaintextBuffer
-  }, function(err, ciphertext) {
-    callback(err, ciphertext)
+export function encrypt(plaintextBuffer, password) {
+  return new Promise((resolve, reject) => {
+    triplesec.encrypt({
+      key: new Buffer(password),
+      data: plaintextBuffer
+    }, (err, ciphertext) => {
+      if (!err) {
+        resolve(ciphertext)
+      } else {
+        reject(err)
+      }
+    })
   })
 }
 
-export function decrypt(dataBuffer, password, callback) {
-  triplesec.decrypt({
-    key: new Buffer(password),
-    data: dataBuffer
-  }, function(err, plaintextBuffer) {
-    callback(err, plaintextBuffer)
+export function decrypt(dataBuffer, password) {
+  return new Promise((resolve, reject) => {
+    triplesec.decrypt({
+      key: new Buffer(password),
+      data: dataBuffer
+    }, (err, plaintextBuffer) => {
+      if (!err) {
+        resolve(plaintextBuffer)
+      } else {
+        reject(err)
+      }
+    })
   })
 }

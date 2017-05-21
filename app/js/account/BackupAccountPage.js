@@ -54,17 +54,16 @@ class BackupAccountPage extends Component {
     const password = this.state.password
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt backup phrase...')
-    decrypt(dataBuffer, password, (err, plaintextBuffer) => {
-      if (!err) {
-        logger.debug('Backup phrase successfully decrypted')
-        this.updateAlert('success', 'Backup phrase decrypted')
-        this.setState({
-          decryptedBackupPhrase: plaintextBuffer.toString()
-        })
-      } else {
-        logger.error('Invalid password')
-        this.updateAlert('danger', 'Invalid password')
-      }
+    decrypt(dataBuffer, password)
+    .then((plaintextBuffer) => {
+      logger.debug('Backup phrase successfully decrypted')
+      this.updateAlert('success', 'Backup phrase decrypted')
+      this.setState({
+        decryptedBackupPhrase: plaintextBuffer.toString()
+      })
+    }, (error) => {
+      logger.error('Invalid password')
+      this.updateAlert('danger', 'Invalid password')
     })
   }
 
