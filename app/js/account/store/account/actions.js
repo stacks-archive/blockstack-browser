@@ -4,31 +4,11 @@ import { authorizationHeaderValue, btcToSatoshis, encrypt,
   getBitcoinPrivateKeychain,
   getIdentityAddressNode,
   getIdentityAddress,
-  getBitcoinAddress } from '../../utils'
-
-import { randomBytes } from 'crypto'
-import { HDNode } from 'bitcoinjs-lib'
-
+  getBitcoinAddress } from '../../../utils'
+import * as types from './types'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/store/account.js')
-
-
-const CREATE_ACCOUNT = 'CREATE_ACCOUNT',
-  DELETE_ACCOUNT = 'DELETE_ACCOUNT',
-  NEW_IDENTITY_ADDRESS = 'NEW_IDENTITY_ADDRESS',
-  NEW_BITCOIN_ADDRESS = 'NEW_BITCOIN_ADDRESS',
-  UPDATE_BACKUP_PHRASE = 'UPDATE_BACKUP_PHRASE',
-  UPDATE_BALANCES = 'UPDATE_BALANCES',
-  UPDATE_CORE_ADDRESS = 'UPDATE_CORE_ADDRESS',
-  UPDATE_CORE_BALANCE = 'UPDATE_CORE_BALANCE',
-  RESET_CORE_BALANCE_WITHDRAWAL = 'RESET_CORE_BALANCE_WITHDRAWAL',
-  WITHDRAWING_CORE_BALANCE = 'WITHDRAWING_CORE_BALANCE',
-  WITHDRAW_CORE_BALANCE_SUCCESS = 'WITHDRAW_CORE_BALANCE_SUCCESS',
-  WITHDRAW_CORE_BALANCE_ERROR = 'WITHDRAW_CORE_BALANCE_ERROR',
-  PROMPTED_FOR_EMAIL = 'PROMPTED_FOR_EMAIL'
-
-
+const logger = log4js.getLogger('account/store/account/actions.js')
 
 function createAccount(encryptedBackupPhrase, masterKeychain) {
   const identityPrivateKeychain = getIdentityPrivateKeychain(masterKeychain)
@@ -47,7 +27,7 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
 
 
   return {
-    type: CREATE_ACCOUNT,
+    type: types.CREATE_ACCOUNT,
     encryptedBackupPhrase,
     identityPublicKeychain,
     bitcoinPublicKeychain,
@@ -60,21 +40,21 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
 
 function updateCoreWalletAddress(coreWalletAddress) {
   return {
-    type: UPDATE_CORE_ADDRESS,
+    type: types.UPDATE_CORE_ADDRESS,
     coreWalletAddress
   }
 }
 
 function updateCoreWalletBalance(coreWalletBalance) {
   return {
-    type: UPDATE_CORE_BALANCE,
+    type: types.UPDATE_CORE_BALANCE,
     coreWalletBalance
   }
 }
 
 function deleteAccount() {
   return {
-    type: DELETE_ACCOUNT,
+    type: types.DELETE_ACCOUNT,
     encryptedBackupPhrase: null,
     accountCreated: false
   }
@@ -82,47 +62,47 @@ function deleteAccount() {
 
 function updateBackupPhrase(encryptedBackupPhrase) {
   return {
-    type: UPDATE_BACKUP_PHRASE,
+    type: types.UPDATE_BACKUP_PHRASE,
     encryptedBackupPhrase
   }
 }
 
 function updateBalances(balances) {
   return {
-    type: UPDATE_BALANCES,
+    type: types.UPDATE_BALANCES,
     balances
   }
 }
 
 function resetCoreBalanceWithdrawal() {
   return {
-    type: RESET_CORE_BALANCE_WITHDRAWAL
+    type: types.RESET_CORE_BALANCE_WITHDRAWAL
   }
 }
 
 function withdrawingCoreBalance(recipientAddress) {
   return {
-    type: WITHDRAWING_CORE_BALANCE,
+    type: types.WITHDRAWING_CORE_BALANCE,
     recipientAddress
   }
 }
 
 function withdrawCoreBalanceSuccess() {
   return {
-    type: WITHDRAW_CORE_BALANCE_SUCCESS
+    type: types.WITHDRAW_CORE_BALANCE_SUCCESS
   }
 }
 
 function withdrawCoreBalanceError(error) {
   return {
-    type: WITHDRAW_CORE_BALANCE_ERROR,
+    type: types.WITHDRAW_CORE_BALANCE_ERROR,
     error
   }
 }
 
 function promptedForEmail() {
   return {
-    type: PROMPTED_FOR_EMAIL
+    type: types.PROMPTED_FOR_EMAIL
   }
 }
 
@@ -323,7 +303,7 @@ function newBitcoinAddress() {
 }
 
 
-export const AccountActions = {
+const AccountActions = {
   createAccount,
   updateBackupPhrase,
   initializeWallet,
@@ -339,159 +319,4 @@ export const AccountActions = {
   skipEmailBackup
 }
 
-const initialState = {
-  accountCreated: false,
-  promptedForEmail: false,
-  encryptedBackupPhrase: null,
-  identityAccount: {
-    addresses: [],
-    keypairs: []
-  },
-  bitcoinAccount: {
-    addresses: [],
-    balances: { total: 0.0 }
-  },
-  coreWallet: {
-    address: null,
-    balance: 0.0,
-    withdrawal: {
-      inProgress: false,
-      error: null,
-      recipient: null,
-      success: false
-    }
-  }
-}
-
-export function AccountReducer(state = initialState, action) {
-  switch (action.type) {
-    case CREATE_ACCOUNT:
-      return Object.assign({}, state, {
-        accountCreated: true,
-        encryptedBackupPhrase: action.encryptedBackupPhrase,
-        identityAccount: {
-          publicKeychain: action.identityPublicKeychain,
-          addresses: [
-            action.firstIdentityAddress
-          ],
-          keypairs: [
-            { key: action.firstIdentityKey,
-              keyID: action.firstIdentityKeyID,
-              address: action.firstIdentityAddress }
-          ],
-          addressIndex: 0
-        },
-        bitcoinAccount: {
-          publicKeychain: action.bitcoinPublicKeychain,
-          addresses: [
-            action.firstBitcoinAddress
-          ],
-          addressIndex: 0,
-          balances: state.bitcoinAccount.balances
-        }
-      })
-    case DELETE_ACCOUNT:
-      return Object.assign({}, state, {
-        accountCreated: false,
-        encryptedBackupPhrase: null
-      })
-    case UPDATE_CORE_ADDRESS:
-      return Object.assign({}, state, {
-        coreWallet: Object.assign({}, state.coreWallet, {
-          address: action.coreWalletAddress
-        })
-      })
-    case UPDATE_CORE_BALANCE:
-      return Object.assign({}, state, {
-        coreWallet: Object.assign({}, state.coreWallet, {
-          balance: action.coreWalletBalance
-        })
-      })
-    case UPDATE_BACKUP_PHRASE:
-      return Object.assign({}, state, {
-        encryptedBackupPhrase: action.encryptedBackupPhrase
-      })
-    case NEW_IDENTITY_ADDRESS:
-      return Object.assign({}, state, {
-        identityAccount: {
-          publicKeychain: state.identityAccount.publicKeychain,
-          addresses: [
-            ...state.identityAccount.addresses,
-            new PublicKeychain(state.identityAccount.publicKeychain)
-              .publiclyEnumeratedChild(state.identityAccount.addressIndex + 1)
-              .address().toString()
-          ],
-          addressIndex: state.identityAccount.addressIndex + 1
-        }
-      })
-    case NEW_BITCOIN_ADDRESS:
-      return Object.assign({}, state, {
-        bitcoinAccount: {
-          publicKeychain: state.bitcoinAccount.publicKeychain,
-          addresses: [
-            ...state.bitcoinAccount.addresses,
-            new PublicKeychain(state.bitcoinAccount.publicKeychain)
-              .publiclyEnumeratedChild(state.bitcoinAccount.addressIndex + 1)
-              .address().toString()
-          ],
-          addressIndex: state.bitcoinAccount.addressIndex + 1,
-          balances: state.bitcoinAccount.balances
-        }
-      })
-    case UPDATE_BALANCES:
-      return Object.assign({}, state, {
-        bitcoinAccount: {
-          publicKeychain: state.bitcoinAccount.publicKeychain,
-          addresses: state.bitcoinAccount.addresses,
-          balances: action.balances
-        }
-      })
-    case RESET_CORE_BALANCE_WITHDRAWAL:
-      return Object.assign({}, state, {
-        coreWallet: Object.assign({}, state.coreWallet, {
-          withdrawal: {
-            inProgress: false,
-            error: null,
-            success: false,
-            recipientAddress: null
-          }
-        })
-      })
-    case WITHDRAWING_CORE_BALANCE:
-      return Object.assign({}, state, {
-        coreWallet: Object.assign({}, state.coreWallet, {
-          withdrawal: {
-            inProgress: true,
-            error: null,
-            success: false,
-            recipientAddress: action.recipientAddress
-          }
-        })
-      })
-    case WITHDRAW_CORE_BALANCE_SUCCESS:
-      return Object.assign({}, state, {
-        coreWallet: Object.assign({}, state.coreWallet, {
-          withdrawal: Object.assign({}, state.coreWallet.withdrawal, {
-            inProgress: false,
-            success: true
-          })
-        })
-      })
-    case WITHDRAW_CORE_BALANCE_ERROR:
-      return Object.assign({}, state, {
-        coreWallet: Object.assign({}, state.coreWallet, {
-          withdrawal: Object.assign({}, state.coreWallet.withdrawal, {
-            inProgress: false,
-            success: false,
-            error: action.error
-          })
-        })
-      })
-    case PROMPTED_FOR_EMAIL:
-      return Object.assign({}, state, {
-        promptedForEmail: true
-      })
-    default:
-      return state
-  }
-}
+export default AccountActions
