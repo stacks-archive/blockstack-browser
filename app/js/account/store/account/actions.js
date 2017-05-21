@@ -272,17 +272,16 @@ function refreshBalances(addressBalanceUrl, addresses) {
 
 function initializeWallet(password, backupPhrase, email = null) {
   return dispatch => {
-    let masterKeychain
+    let masterKeychain = null
     if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
-      const seed = bip39.mnemonicToSeed(backupPhrase)
-      masterKeychain = HDNode.fromSeedBuffer(seed)
-    } else {
-      masterKeychain = HDNode.fromSeedBuffer(randomBytes(32))
-      const privateKeyBuffer = masterKeychain.keyPair.d.toBuffer(32)
-      const entropy = privateKeyBuffer.toString('hex')
+      const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+      masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+    } else { // Create a new wallet
+      const entropy = randomBytes(32)
       backupPhrase = bip39.entropyToMnemonic(entropy)
+      const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+      masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
     }
-
     return encrypt(new Buffer(backupPhrase), password).then((ciphertextBuffer) => {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
       dispatch(
