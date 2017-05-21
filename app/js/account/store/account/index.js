@@ -1,2 +1,2 @@
-export SettingsActions from './actions'
-export SettingsReducer from './reducer'
+export AccountActions from './actions'
+export AccountReducer from './reducer'
