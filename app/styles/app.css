@@ -299,8 +299,8 @@ div.pro-avatar img{max-width:58px;}
 .status-balance{margin-right:30px;}
 .status-completion{margin-right:30px;}
 .status-profile-img{width:22px;height:22px;}
-.status-complete-wrap{padding:15px 10px;margin-right:5px;line-height:0px;}
-.status-complete-dot{background-color:#E6E6E6;width:7px;height:7px;}
+.status-complete-wrap{padding:15px 10px;line-height:0px;}
+.status-complete-dot{background-color:#E1E1E1;width:7px;height:7px;}
 
 /* 37. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
@@ -314,7 +314,7 @@ div.pro-avatar img{max-width:58px;}
 .app-center{width:100%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
 .app-wrap{width:100%;max-width:initial;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;margin-top:1.625rem;}
 .app-container{width:100%;display:flex;flex-wrap:wrap;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
-div.app-text-container > h3{color:#fff;font-weight:300;font-size:0.8125rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:1.25rem;}
+div.app-text-container > h3{color:#080809;font-weight:400;font-size:0.8125rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;margin-bottom:1.25rem;}
 .sidebar-list{margin-bottom:20px;}
 .sidebar-list .btn{margin-bottom:5px;}
 .highlight{margin:0rem 0rem 1rem 0rem;padding:1rem;background-color:#eee;}
@@ -396,7 +396,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.app-center{width:100%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
 	.app-wrap{width:95%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;align-items:center;}
 	.app-container{width:100%;display:flex;flex-wrap:wrap;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:space-between;}
-	div.app-text-container > h3{font-size:1.375rem;margin-bottom:1.75rem;}	
+	div.app-text-container > h3{font-size:1.25rem;margin-bottom:1.75rem;}	
 	div.card-list-container.profile-content-wrapper > div > h5.h5-landing{margin-top:25px;}
 	.sidebar-list{width:245px;margin-bottom:20px;padding-right:0;}
 	.sidebar-list .btn{margin-bottom:5px;}
