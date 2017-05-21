@@ -1,5 +1,7 @@
 import bip39 from 'bip39'
 import { decrypt } from './encryption-utils'
+import { HDNode } from 'bitcoinjs-lib'
+
 
 const backupPhraseLength = 24
 

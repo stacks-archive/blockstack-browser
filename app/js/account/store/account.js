@@ -1,14 +1,13 @@
 import bip39 from 'bip39'
-import { authorizationHeaderValue, btcToSatoshis,
-  CORE_API_PASSWORD, encrypt,
-   getIdentityPrivateKeychain,
+import { authorizationHeaderValue, btcToSatoshis, encrypt,
+  getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityAddressNode,
   getIdentityAddress,
   getBitcoinAddress } from '../../utils'
 
-  import { randomBytes } from 'crypto'
-  import { HDNode } from 'bitcoinjs-lib'
+import { randomBytes } from 'crypto'
+import { HDNode } from 'bitcoinjs-lib'
 
 import log4js from 'log4js'
 
