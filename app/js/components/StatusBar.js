@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 
 import Image from './../components/Image'
+import Completion from './../components/Completion'
 
 class StatusBar extends Component {
   static propTypes = {
@@ -17,18 +18,7 @@ class StatusBar extends Component {
         <div className="pull-right">
           <div className="status-inline status-completion">
             <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
-            </div>
-            <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
-            </div>
-            <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
-            </div>
-            <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
-            </div>
-            <div className="status-inline status-complete-wrap">
+              <Completion />
               <div className="status-inline status-complete-dot img-circle"></div>
             </div>
           </div>
