@@ -108,7 +108,7 @@ function promptedForEmail() {
   }
 }
 
-function emailKeychainBackup(email) {
+function emailKeychainBackup(email, encryptedPortalKey) {
   logger.debug(`emailKeychainBackup: ${email}`)
   return dispatch => {
     dispatch(promptedForEmail())
@@ -119,7 +119,7 @@ function emailKeychainBackup(email) {
 
     const requestBody = {
       email,
-      encryptedPortalKey: 'abc'
+      encryptedPortalKey
     }
 
     const options = {
@@ -128,7 +128,7 @@ function emailKeychainBackup(email) {
       body: JSON.stringify(requestBody)
     }
 
-    const emailBackupUrl = 'http://localhost:2888/backup'
+    const emailBackupUrl = 'https://blockstack-portal-emailer.appartisan.com/backup'
 
     return fetch(emailBackupUrl, options)
     .then(() => {

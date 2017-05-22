@@ -15,7 +15,8 @@ const Dropbox = require('dropbox')
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
-    promptedForEmail: state.account.promptedForEmail
+    promptedForEmail: state.account.promptedForEmail,
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase
   }
 }
 
@@ -32,7 +33,8 @@ class WelcomeModal extends Component {
     updateApi: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
     emailKeychainBackup: PropTypes.func.isRequired,
-    promptedForEmail: PropTypes.bool.isRequired
+    promptedForEmail: PropTypes.bool.isRequired,
+    encryptedBackupPhrase: PropTypes.string
   }
 
   constructor(props) {
@@ -124,7 +126,7 @@ class WelcomeModal extends Component {
 
   emailKeychainBackup(event) {
     event.preventDefault()
-    this.props.emailKeychainBackup(this.state.email)
+    this.props.emailKeychainBackup(this.state.email, this.props.encryptedBackupPhrase)
     return false
   }
 
