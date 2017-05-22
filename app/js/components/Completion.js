@@ -3,6 +3,9 @@ import { Link } from 'react-router'
 
 class Completion extends Component {
   static propTypes = {
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
   }
 
   render() {
