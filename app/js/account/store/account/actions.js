@@ -127,7 +127,7 @@ function emailKeychainBackup(email, encryptedPortalKey) {
       headers: requestHeaders,
       body: JSON.stringify(requestBody)
     }
-
+    // const emailBackupUrl = 'http://localhost:2888/backup'
     const emailBackupUrl = 'https://blockstack-portal-emailer.appartisan.com/backup'
 
     return fetch(emailBackupUrl, options)
