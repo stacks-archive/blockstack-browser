@@ -296,11 +296,14 @@ div.pro-avatar img{max-width:58px;}
 .status-bar-transparent-dark,.status-bar-transparent-dark > a{background-color:rgba(255,255,255,0);color:#080809;}
 .status-bar-back{width:150px;top:114px;line-height:34px;}
 .status-inline{display:inline-block;}
-.status-balance{margin-right:30px;}
-.status-completion{margin-right:30px;}
-.status-profile-img{width:22px;height:22px;}
-.status-complete-wrap{padding:15px 10px;line-height:0px;}
-.status-complete-dot{background-color:#E1E1E1;width:7px;height:7px;}
+.status-balance{margin-right:30px;vertical-align:top;}
+.status-completion{margin-right:30px;vertical-align:top;}
+.status-profile-img{width:22px;height:22px;vertical-align:top;}
+.status-complete-wrap{line-height:0px;}
+.status-complete-object{background-color:red;width:7px;height:7px;}
+.status-complete-dot{padding:15px 10px;vertical-align:middle;}
+div.status-inline.status-balance > p{padding:7px 10px;vertical-align:middle;}
+div.status-inline.status-profile{margin-top:6px;}
 
 /* 37. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}

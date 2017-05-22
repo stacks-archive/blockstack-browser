@@ -66,9 +66,11 @@ class StatusBar extends Component {
         </Link>
         <div className="pull-right">
           <div className="status-inline status-completion">
-            <div className="status-inline status-complete-wrap">
+            <div className="status-complete-wrap">
               <OverlayTrigger trigger={['click']} placement="bottom" overlay={popover}>
-                <div className="status-inline status-complete-dot img-circle"></div>
+                <div className="status-complete-dot">
+                  <div className="status-complete-object img-circle"></div>
+                </div>
               </OverlayTrigger>
             </div>
           </div>
