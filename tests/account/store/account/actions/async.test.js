@@ -22,7 +22,6 @@ describe('Account Store: Async Actions', () => {
       return store.dispatch(AccountActions.initializeWallet(password))
       .then(() => {
         const actions = store.getActions()
-        console.log(actions)
         assert.equal(actions.length, 1)
         assert.equal(actions[0].type, 'CREATE_ACCOUNT')
       })
@@ -33,8 +32,8 @@ describe('Account Store: Async Actions', () => {
       const password = 'password'
       const backupPhrase = 'sound idle panel often situate develop unit text design antenna vendor screen opinion balcony share trigger accuse scatter visa uniform brass update opinion media'
 
-      const bitcoinPublicKeychain = '03789baa7041b0c0ec8c42e1a46b9da04f6f2b0906df65901edf8b80c7db962656'
-      const identityPublicKeychain = '03dddec01c1334ee131921f8f2d2bcad2218467f32e720563d5771916aff3612e3'
+      const bitcoinPublicKeychain = 'xpub6Br2scNTh9Luk2VPebfEvjbWWC5WhvxpxgK8ap2qhYTS4xvZu8Y3G1npmx8DdvwUdCbtNb7qNLyTChKMbY8dThLV5Zvdq9AojQjxrM6gTC8'
+      const identityPublicKeychain = 'xpub6B6tCCb8T5eXUKVYUoppmSi5KhNRboRJUwqHavxdvQTncfmBNFCX4Nq9w8DsfuS6AYPpBYRuS3dcUuyF8mQtwEydAEN3A4Cx6HDy58jpKEb'
       const firstBitcoinAddress = '112FogMTesWmLzkWbtKrSg3p9LK6Lucn4s'
       const firstIdentityAddress = '14Sx3aur1gkZg3mptVLfVYWr1pjHbvBTLe'
       const firstIdentityKey = 'c42fe514dc4744c6ae4ecd7e4f9c2d939a9f4b976501228a055a8284906d85c6'

@@ -5,28 +5,28 @@ import { authorizationHeaderValue, btcToSatoshis, encrypt,
   getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityAddressNode,
-  getIdentityAddress,
-  getBitcoinAddress } from '../../../utils'
+  getBitcoinAddressNode } from '../../../utils'
 import * as types from './types'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/store/account/actions.js')
 
 function createAccount(encryptedBackupPhrase, masterKeychain) {
-  const identityPrivateKeychain = getIdentityPrivateKeychain(masterKeychain)
-  const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
+  const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+  const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(masterKeychain)
 
-  const identityPublicKeychain = identityPrivateKeychain.keyPair
-    .getPublicKeyBuffer().toString('hex')
+  const identityPublicKeychainNode = identityPrivateKeychainNode.neutered()
+  const identityPublicKeychain = identityPublicKeychainNode.toBase58()
 
-  const bitcoinPublicKeychain = bitcoinPrivateKeychain.keyPair.getPublicKeyBuffer().toString('hex')
-  const firstIdentityAddress = getIdentityAddress(masterKeychain)
-  const firstBitcoinAddress = getBitcoinAddress(masterKeychain)
+  const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
+  const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
 
-  const firstIdentityAddressNode = getIdentityAddressNode(masterKeychain)
+  const firstIdentityAddressNode = getIdentityAddressNode(identityPrivateKeychainNode)
   const firstIdentityKey = firstIdentityAddressNode.keyPair.d.toBuffer(32).toString('hex')
   const firstIdentityKeyID = firstIdentityAddressNode.keyPair.getPublicKeyBuffer().toString('hex')
 
+  const firstIdentityAddress = firstIdentityAddressNode.getAddress()
+  const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
 
   return {
     type: types.CREATE_ACCOUNT,

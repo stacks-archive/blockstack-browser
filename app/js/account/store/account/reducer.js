@@ -1,4 +1,6 @@
 import * as types from './types'
+import { HDNode } from 'bitcoinjs-lib'
+import { getBitcoinAddressNode, getIdentityAddressNode } from '../../../utils'
 
 
 const initialState = {
@@ -79,9 +81,8 @@ function AccountReducer(state = initialState, action) {
           publicKeychain: state.identityAccount.publicKeychain,
           addresses: [
             ...state.identityAccount.addresses,
-            new PublicKeychain(state.identityAccount.publicKeychain)
-              .publiclyEnumeratedChild(state.identityAccount.addressIndex + 1)
-              .address().toString()
+            getIdentityAddressNode(HDNode.fromBase58(state.identityAccount.publicKeychain),
+            state.identityAccount.addressIndex + 1).getAddress()
           ],
           addressIndex: state.identityAccount.addressIndex + 1
         }
@@ -92,9 +93,8 @@ function AccountReducer(state = initialState, action) {
           publicKeychain: state.bitcoinAccount.publicKeychain,
           addresses: [
             ...state.bitcoinAccount.addresses,
-            new PublicKeychain(state.bitcoinAccount.publicKeychain)
-              .publiclyEnumeratedChild(state.bitcoinAccount.addressIndex + 1)
-              .address().toString()
+            getBitcoinAddressNode(HDNode.fromBase58(state.bitcoinAccount.publicKeychain),
+            state.bitcoinAccount.addressIndex + 1).getAddress()
           ],
           addressIndex: state.bitcoinAccount.addressIndex + 1,
           balances: state.bitcoinAccount.balances

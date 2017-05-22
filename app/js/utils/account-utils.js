@@ -54,13 +54,19 @@ const CHANGE_ADDRESS = 'CHANGE_ADDRESS'
 export function getBitcoinPrivateKeychain(masterKeychain) {
   const BIP_44_PURPOSE = 44
   const BITCOIN_COIN_TYPE = 0
+  const ACCOUNT_INDEX = 0
 
   return masterKeychain.deriveHardened(BIP_44_PURPOSE)
   .deriveHardened(BITCOIN_COIN_TYPE)
+  .deriveHardened(ACCOUNT_INDEX)
 }
 
-export function getBitcoinAddressNode(masterKeychain,  addressIndex = 0,
-  chainType = EXTERNAL_ADDRESS, accountIndex = 0) {
+export function getBitcoinPublicKeychain(masterKeychain) {
+  return getBitcoinPrivateKeychain(masterKeychain).neutered()
+}
+
+export function getBitcoinAddressNode(bitcoinKeychain,
+  addressIndex = 0, chainType = EXTERNAL_ADDRESS) {
   let chain = null
 
   if (chainType === EXTERNAL_ADDRESS) {
@@ -71,29 +77,19 @@ export function getBitcoinAddressNode(masterKeychain,  addressIndex = 0,
     throw new Error('Invalid chain type')
   }
 
-  return getBitcoinPrivateKeychain(masterKeychain)
-  .deriveHardened(accountIndex)
-  .derive(chain)
-  .derive(addressIndex)
+  return bitcoinKeychain.derive(chain).derive(addressIndex)
 }
-
-export function getBitcoinAddress(masterKeychain, addressIndex = 0,
-  chainType = EXTERNAL_ADDRESS, accountIndex = 0) {
-  return getBitcoinAddressNode(masterKeychain, addressIndex, chainType, accountIndex)
-  .keyPair.getAddress()
-}
-
 
 export function getIdentityPrivateKeychain(masterKeychain) {
   return masterKeychain.deriveHardened(888).deriveHardened(0)
 }
 
-export function getIdentityAddressNode(masterKeychain, index = 0) {
-  return getIdentityPrivateKeychain(masterKeychain).derive(index)
+export function getIdentityPublicKeychain(masterKeychain) {
+  return getIdentityPrivateKeychain(masterKeychain).neutered()
 }
 
-export function getIdentityAddress(masterKeychain, index = 0) {
-  return getIdentityAddressNode(masterKeychain, index).keyPair.getAddress()
+export function getIdentityAddressNode(identityKeychain, index = 0) {
+  return identityKeychain.derive(index)
 }
 
 export function getWebAccountTypes(api) {
