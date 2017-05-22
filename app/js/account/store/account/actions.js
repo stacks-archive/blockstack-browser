@@ -122,6 +122,18 @@ function promptedForEmail() {
   }
 }
 
+function viewedRecoveryCode() {
+  return {
+    type: types.VIEWED_RECOVERY_CODE
+  }
+}
+
+function displayedRecoveryCode() {
+  return dispatch => {
+    dispatch(viewedRecoveryCode())
+  }
+}
+
 function emailKeychainBackup(email, encryptedPortalKey) {
   logger.debug(`emailKeychainBackup: ${email}`)
   return dispatch => {
@@ -324,7 +336,8 @@ const AccountActions = {
   resetCoreWithdrawal,
   withdrawBitcoinFromCoreWallet,
   emailKeychainBackup,
-  skipEmailBackup
+  skipEmailBackup,
+  displayedRecoveryCode
 }
 
 export default AccountActions

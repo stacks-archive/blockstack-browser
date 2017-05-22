@@ -24,7 +24,8 @@ const initialState = {
       recipient: null,
       success: false
     }
-  }
+  },
+  viewedRecoveryCode: false
 }
 
 function AccountReducer(state = initialState, action) {
@@ -134,6 +135,10 @@ function AccountReducer(state = initialState, action) {
     case types.PROMPTED_FOR_EMAIL:
       return Object.assign({}, state, {
         promptedForEmail: true
+      })
+    case types.VIEWED_RECOVERY_CODE:
+      return Object.assign({}, state, {
+        viewedRecoveryCode: true
       })
     default:
       return state
