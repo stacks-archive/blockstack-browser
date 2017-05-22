@@ -35,14 +35,8 @@ function AccountReducer(state = initialState, action) {
         encryptedBackupPhrase: action.encryptedBackupPhrase,
         identityAccount: {
           publicKeychain: action.identityPublicKeychain,
-          addresses: [
-            action.firstIdentityAddress
-          ],
-          keypairs: [
-            { key: action.firstIdentityKey,
-              keyID: action.firstIdentityKeyID,
-              address: action.firstIdentityAddress }
-          ],
+          addresses: action.identityAddresses,
+          keypairs: action.identityKeypairs,
           addressIndex: 0
         },
         bitcoinAccount: {
@@ -74,18 +68,6 @@ function AccountReducer(state = initialState, action) {
     case types.UPDATE_BACKUP_PHRASE:
       return Object.assign({}, state, {
         encryptedBackupPhrase: action.encryptedBackupPhrase
-      })
-    case types.NEW_IDENTITY_ADDRESS:
-      return Object.assign({}, state, {
-        identityAccount: {
-          publicKeychain: state.identityAccount.publicKeychain,
-          addresses: [
-            ...state.identityAccount.addresses,
-            getIdentityAddressNode(HDNode.fromBase58(state.identityAccount.publicKeychain),
-            state.identityAccount.addressIndex + 1).getAddress()
-          ],
-          addressIndex: state.identityAccount.addressIndex + 1
-        }
       })
     case types.NEW_BITCOIN_ADDRESS:
       return Object.assign({}, state, {
