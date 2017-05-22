@@ -1,10 +1,14 @@
 export {
-  decryptPrivateKeychain,
+  decryptMasterKeychain,
   getBitcoinPrivateKeychain,
+  getBitcoinPublicKeychain,
   getIdentityPrivateKeychain,
+  getIdentityPublicKeychain,
   getWebAccountTypes,
   isPasswordValid,
-  isBackupPhraseValid
+  isBackupPhraseValid,
+  getIdentityAddressNode,
+  getBitcoinAddressNode
 } from './account-utils'
 
 export {
