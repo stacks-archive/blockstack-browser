@@ -64,31 +64,31 @@ class ChangePasswordPage extends Component {
     const newPassword2 = this.state.newPassword2
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt backup phrase...')
-    decrypt(dataBuffer, currentPassword, (err, plaintextBuffer) => {
-      if (!err) {
-        logger.debug('Backup phrase successfully decrypted')
-        if (newPassword.length < 8) {
-          this.updateAlert('danger', 'New password must be at least 8 characters')
-        } else {
-          if (newPassword !== newPassword2) {
-            this.updateAlert('danger', 'New passwords must match')
-          } else {
-            logger.debug('Trying to re-encrypt backup phrase with new password...')
-            encrypt(plaintextBuffer, newPassword, (error, ciphertextBuffer) => {
-              this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
-              this.updateAlert('success', 'Password updated!')
-              this.setState({
-                currentPassword: '',
-                newPassword: '',
-                newPassword2: ''
-              })
-            })
-          }
-        }
+    decrypt(dataBuffer, currentPassword)
+    .then((plaintextBuffer) => {
+      logger.debug('Backup phrase successfully decrypted')
+      if (newPassword.length < 8) {
+        this.updateAlert('danger', 'New password must be at least 8 characters')
       } else {
-        logger.error('Invalid password')
-        this.updateAlert('danger', 'Incorrect password')
+        if (newPassword !== newPassword2) {
+          this.updateAlert('danger', 'New passwords must match')
+        } else {
+          logger.debug('Trying to re-encrypt backup phrase with new password...')
+          encrypt(plaintextBuffer, newPassword)
+          .then((ciphertextBuffer) => {
+            this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
+            this.updateAlert('success', 'Password updated!')
+            this.setState({
+              currentPassword: '',
+              newPassword: '',
+              newPassword2: ''
+            })
+          })
+        }
       }
+    }, (error) => {
+      logger.error('Invalid password')
+      this.updateAlert('danger', 'Incorrect password')
     })
   }
 
