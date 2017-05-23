@@ -352,7 +352,8 @@ const AccountActions = {
   skipEmailBackup,
   updateViewedRecoveryCode,
   incrementIdentityAddressIndex,
-  usedIdentityAddress
+  usedIdentityAddress,
+  displayedRecoveryCode
 }
 
 export default AccountActions
