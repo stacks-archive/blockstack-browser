@@ -46,7 +46,7 @@ describe('Identity Store: IdentityReducer', () => {
   })
 
   it('should create a new identity that is unregistered & unverified', () => {
-    const action = IdentityActions.createNewIdentity('satoshi.id')
+    const action = IdentityActions.createNewIdentity('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
     const expectedState = {
       current: {
         domainName: null,
@@ -58,7 +58,8 @@ describe('Identity Store: IdentityReducer', () => {
           domainName: 'satoshi.id',
           profile: DEFAULT_PROFILE,
           verifications: [],
-          registered: false
+          registered: false,
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
         }
       },
       namesOwned: []

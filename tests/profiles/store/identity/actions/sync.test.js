@@ -34,9 +34,10 @@ describe('Identity Store: Sync Actions', () => {
     it('should return an action of type CREATE_NEW', () => {
       const expectedResult = {
         type: 'CREATE_NEW',
-        domainName: 'satoshi.id'
+        domainName: 'satoshi.id',
+        ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
       }
-      const actualResult = IdentityActions.createNewIdentity('satoshi.id')
+      const actualResult = IdentityActions.createNewIdentity('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
       assert.deepEqual(actualResult, expectedResult)
     })
   })

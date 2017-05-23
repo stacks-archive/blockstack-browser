@@ -22,10 +22,11 @@ function updateCurrentIdentity(domainName, profile, verifications) {
   }
 }
 
-function createNewIdentity(domainName) {
+function createNewIdentity(domainName, ownerAddress) {
   return {
     type: types.CREATE_NEW,
-    domainName
+    domainName,
+    ownerAddress
   }
 }
 
@@ -45,9 +46,9 @@ function updateProfile(domainName, profile) {
   }
 }
 
-function createNewIdentityFromDomain(domainName) {
+function createNewIdentityFromDomain(domainName, ownerAddress) {
   return dispatch => {
-    dispatch(createNewIdentity(domainName))
+    dispatch(createNewIdentity(domainName, ownerAddress))
   }
 }
 

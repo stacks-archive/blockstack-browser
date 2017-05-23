@@ -28,7 +28,8 @@ function IdentityReducer(state = initialState, action) {
             domainName: action.domainName,
             profile: DEFAULT_PROFILE,
             verifications: [],
-            registered: false
+            registered: false,
+            ownerAddress: action.ownerAddress
           }
         })
       })
