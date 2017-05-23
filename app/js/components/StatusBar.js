@@ -134,9 +134,9 @@ class StatusBar extends Component {
         <div className="pull-right">
           <div className="status-inline status-completion">
             <div className="status-complete-wrap">
-              <OverlayTrigger trigger={['click']} placement="bottom" overlay={popover}>
+              <OverlayTrigger trigger={['click', 'hover']} placement="bottom" overlay={popover}>
                 <div className="status-complete-dot">
-                  <div className="status-complete-object img-circle">6</div>
+                  <div className="status-complete-object img-circle" style={{ cursor: 'default' }}>6</div>
                 </div>
               </OverlayTrigger>
             </div>
