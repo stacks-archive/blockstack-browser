@@ -335,8 +335,8 @@ class WelcomeModal extends Component {
           : null }
           { page === 2 ?
             <form onSubmit={this.emailKeychainBackup}>
-              <h4>Enter your email to protect your keychain</h4>
-              <p className="m-b-30">Enter your email to receive an encrypted copy
+              <h4>Want an email backup of your keychain?</h4>
+              <p className="m-b-30">Enter your email to receive an <strong>encrypted</strong> copy
               of your keychain. This will help you recover your account if you lose
               your device.</p>
               <InputGroup name="email" label="Email address" type="email"
@@ -347,12 +347,14 @@ class WelcomeModal extends Component {
                   type="submit"
                   className="btn btn-lg btn-primary btn-block"
                 >
-                Finish
+                Yes
                 </button>
-                <br></br>
-                <a href="#" onClick={this.skipEmailBackup}>
-                  Skip
-                </a>
+                <button
+                  onClick={this.skipEmailBackup}
+                  className="btn btn-lg btn-secondary btn-block"
+                >
+                  No
+                </button>
               </div>
             </form>
           : null }
