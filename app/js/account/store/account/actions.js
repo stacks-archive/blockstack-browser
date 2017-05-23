@@ -129,6 +129,7 @@ function viewedRecoveryCode() {
 }
 
 function displayedRecoveryCode() {
+  logger.trace('displayedRecoveryCode')
   return dispatch => {
     dispatch(viewedRecoveryCode())
   }
@@ -337,6 +338,7 @@ const AccountActions = {
   withdrawBitcoinFromCoreWallet,
   emailKeychainBackup,
   skipEmailBackup,
+  viewedRecoveryCode,
   displayedRecoveryCode
 }
 

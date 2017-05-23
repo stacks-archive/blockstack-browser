@@ -74,4 +74,10 @@ describe('Account Store: AccountReducer', () => {
     assert.deepEqual(actualState,
       expectedState)
   })
+
+  it('should indicated backup phrase has been displayed', () => {
+    const action = AccountActions.viewedRecoveryCode()
+    const actualState = AccountReducer(initialState, action)
+    assert(actualState.viewedRecoveryCode, true)
+  })
 })
