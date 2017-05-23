@@ -89,7 +89,7 @@ class EditProfilePage extends Component {
   saveProfile(newProfile) {
     logger.trace(`saveProfile`)
     this.props.updateProfile(this.props.routeParams.index, newProfile)
-      if (this.hasUsername()) {
+      if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
         logger.trace('saveProfile: Preparing to upload profile')
         const data = signProfileForUpload(this.state.profile, this.props.identityKeypairs[0])
 
@@ -98,7 +98,7 @@ class EditProfilePage extends Component {
         console.error('profile not uploaded')
       })
     } else {
-      logger.trace('saveProfile: No userame so we skipped profile upload')
+      logger.trace('saveProfile: No username or storage so we skipped profile upload')
     }
   }
 

@@ -12,6 +12,7 @@ function mapStateToProps(state) {
   return {
     currentIdentity: state.profiles.identity.current,
     localIdentities: state.profiles.identity.localIdentities,
+    dropboxAccessToken: state.settings.api.dropboxAccessToken
   }
 }
 
@@ -22,7 +23,8 @@ class PhotosTab extends Component {
     saveProfile: PropTypes.func.isRequired,
     uploadProfilePhoto: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
-    localIdentities: PropTypes.object.isRequired
+    localIdentities: PropTypes.object.isRequired,
+    dropboxAccessToken: PropTypes.string
   }
 
   constructor(props) {
@@ -35,6 +37,7 @@ class PhotosTab extends Component {
     this.saveProfile = this.saveProfile.bind(this)
     this.createItem = this.createItem.bind(this)
     this.deleteItem = this.deleteItem.bind(this)
+    this.storageNotConnected = this.storageNotConnected.bind(this)
   }
 
   componentWillMount() {
@@ -120,23 +123,32 @@ class PhotosTab extends Component {
     return currentDomainName !== localIdentities[currentDomainName].ownerAddress
   }
 
+  storageNotConnected() {
+    return this.props.dropboxAccessToken === null
+  }
+
   render() {
     const profile = this.state.profile,
           images = this.state.profile.hasOwnProperty('image') ?
             this.state.profile.image : [],
           files = this.state.hasOwnProperty('files') ? this.state.files : []
-    const title = this.hasUsername() ? 'Click here to add a photo' : 'Add a username & connect your storage to add a photo.'
+    const title = !this.hasUsername() || this.storageNotConnected() ?
+    'Add a username & connect your storage to add a photo.' : 'Click here to add a photo'
     return (
       <div>
         <div className="form-group">
            <button
              title={title}
-             disabled={!this.hasUsername()}
+             disabled={!this.hasUsername() || this.storageNotConnected()}
              className="btn btn-primary"
              onClick={() => {this.createItem("avatar")}}>
              Add Profile Photo
            </button>
         </div>
+        {this.storageNotConnected() ?
+          <p>You need to connect storage and add a username to this profile before you can manage your photos.</p> 
+        :
+        <div>
         { images.map((image, index) => {
           return (
             <div key={index} className="card">
@@ -182,6 +194,8 @@ class PhotosTab extends Component {
             </div>
           )
         }) }
+        </div>
+      }
       </div>
     )
   }

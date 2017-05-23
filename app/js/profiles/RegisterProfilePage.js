@@ -16,6 +16,7 @@ import log4js from 'log4js'
 const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
 
 const WALLET_URL = '/wallet/receive'
+const STORAGE_URL = '/storage/providers'
 
 function mapStateToProps(state) {
   return {
@@ -83,7 +84,8 @@ class RegisterPage extends Component {
         person: 'Username',
         organization: 'Domain'
       },
-      zeroBalance: props.coreWalletBalance <= 0
+      zeroBalance: props.coreWalletBalance <= 0,
+      storageConnected: this.props.api.dropboxAccessToken !== null
     }
 
     this.onChange = this.onChange.bind(this)
@@ -93,6 +95,7 @@ class RegisterPage extends Component {
     this.displayRegistrationAlerts = this.displayRegistrationAlerts.bind(this)
     this.displayZeroBalanceAlert = this.displayZeroBalanceAlert.bind(this)
     this.findAddressIndex = this.findAddressIndex.bind(this)
+    this.displayConnectStorageAlert = this.displayConnectStorageAlert.bind(this)
   }
 
   componentDidMount() {
@@ -102,7 +105,9 @@ class RegisterPage extends Component {
       this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
         this.props.coreAPIPassword)
     }
-    if (this.state.zeroBalance) {
+    if (!this.state.storageConnected) {
+      this.displayConnectStorageAlert()
+    } else if (this.state.zeroBalance) {
       logger.debug('Zero balance...displaying alert...')
       this.displayZeroBalanceAlert()
     }
@@ -123,12 +128,15 @@ class RegisterPage extends Component {
     const registration = nextProps.registration
     const availability = nextProps.availability
     const zeroBalance = this.props.coreWalletBalance <= 0
+    const storageConnected = this.props.api.dropboxAccessToken !== null
 
     this.setState({
-      zeroBalance
+      zeroBalance,
+      storageConnected
     })
-
-    if (zeroBalance) {
+    if (!storageConnected) {
+      this.displayConnectStorageAlert()
+    } else if (zeroBalance) {
       this.displayZeroBalanceAlert()
     } else if (registration.registrationSubmitting ||
       registration.registrationSubmitted ||
@@ -189,6 +197,11 @@ class RegisterPage extends Component {
 
   displayZeroBalanceAlert() {
     this.updateAlert('danger', `You need to deposit at least 0.01 bitcoins before you can register a username.<br> Click here to go to your wallet or send bitcoins directly to ${this.props.coreWalletAddress}`, WALLET_URL)
+  }
+
+  displayConnectStorageAlert() {
+    this.updateAlert('danger', 'Please go to the Storage app and connect a storage provider.', STORAGE_URL)
+
   }
 
   onChange(event) {
@@ -316,7 +329,7 @@ class RegisterPage extends Component {
                   placeholder={nameLabel}
                   value={this.state.username}
                   onChange={this.onChange}
-                  disabled={this.state.zeroBalance}
+                  disabled={this.state.zeroBalance || !this.state.storageConnected}
                 />
                 <span className="input-group-addon">.{tld}</span>
               </div>
@@ -324,7 +337,7 @@ class RegisterPage extends Component {
             <div>
               <button
                 className="btn btn-blue" onClick={this.registerIdentity}
-                disabled={this.props.registration.preventRegistration || this.state.zeroBalance}
+                disabled={this.props.registration.preventRegistration || this.state.zeroBalance || !this.state.storageConnected}
               >
                 Register
               </button>
