@@ -1,4 +1,4 @@
-# Blockstack Portal [![CircleCI](https://img.shields.io/circleci/project/blockstack/blockstack-portal/master.svg)](https://circleci.com/gh/blockstack/blockstack-portal/tree/master) [![License](https://img.shields.io/github/license/blockstack/blockstack-portal.svg)](https://github.com/blockstack/blockstack-portal/blob/master/LICENSE.md) [![Slack](http://chat.blockstack.org/badge.svg)](http://chat.blockstack.org/)
+# Blockstack Browser [![CircleCI](https://img.shields.io/circleci/project/blockstack/blockstack-portal/master.svg)](https://circleci.com/gh/blockstack/blockstack-portal/tree/master) [![License](https://img.shields.io/github/license/blockstack/blockstack-portal.svg)](https://github.com/blockstack/blockstack-portal/blob/master/LICENSE.md) [![Slack](http://chat.blockstack.org/badge.svg)](http://chat.blockstack.org/)
 
 The Blockstack Browser Portal allows you to explore the Blockstack internet.
 
