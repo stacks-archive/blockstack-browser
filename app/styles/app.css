@@ -296,11 +296,49 @@ div.pro-avatar img{max-width:58px;}
 .status-bar-transparent-dark,.status-bar-transparent-dark > a{background-color:rgba(255,255,255,0);color:#080809;}
 .status-bar-back{width:150px;top:114px;line-height:34px;}
 .status-inline{display:inline-block;}
-.status-balance{margin-right:30px;}
-.status-completion{margin-right:30px;}
-.status-profile-img{width:22px;height:22px;}
-.status-complete-wrap{padding:15px 10px;line-height:0px;}
-.status-complete-dot{background-color:#E1E1E1;width:7px;height:7px;}
+.status-balance{margin-right:30px;vertical-align:top;}
+.status-completion{margin-right:15px;vertical-align:top;margin-top:-1px;}
+.status-profile-img{width:22px;height:22px;vertical-align:top;}
+.status-complete-wrap{line-height:0px;}
+.status-complete-object{background-color:red;width:19px;height:19px;font-family:'Source Code Pro',monospace;padding-top:10px;padding-left:6px;color:#fff;}
+.status-complete-dot{padding:10px;vertical-align:middle;}
+div.status-inline.status-balance > p{padding:7px 10px;vertical-align:middle;}
+div.status-inline.status-profile{margin-top:6px;}
+/* --- Status bar tooltip arrow --- */
+.popover.bottom>.arrow {
+  left: 50%;
+  margin-left: -11px;
+  border-top-width: 0;
+  border-bottom-color: #fff;
+  top: -11px;
+}
+.popover>.arrow {
+  border-width: 11px;
+}
+.popover>.arrow, .popover>.arrow:after {
+  position: absolute;
+  display: block;
+  width: 0;
+  height: 0;
+  border-color: rgba(0, 0, 0, 0);
+  border-style: solid;
+}
+*, :after, :before {
+  box-sizing: border-box;
+}
+div{display:block;}
+.popover{position:absolute;top:0;left:0;z-index:1060;display:none;max-width:276px;padding:1px;letter-spacing:normal;line-break:auto;line-height:1.42857143;text-align:left;text-align:start;text-decoration:none;text-shadow:none;text-transform:none;white-space:normal;word-break:normal;word-spacing:normal;word-wrap:normal;font-size:14px;background-color:#fff;background-clip:padding-box;border:1px solid #fff;border-radius:6px;box-shadow:0 5px 30px rgba(0,0,0,.2);}
+*,:after,:before{box-sizing:border-box;}
+.popover.bottom>.arrow:after{content:" ";top:1px;margin-left:-10px;border-top-width:0;border-bottom-color:#fff;}
+.popover>.arrow:after{border-width:10px;content:"";}
+.popover>.arrow,.popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:rgba(0,0,0,0);border-style:solid;}
+*,:after,:before{box-sizing:border-box;}
+.popover-content{padding:25px;}
+.action-item{padding-bottom:10px;margin-top:5px;margin-bottom:15px;font-family:'Lato',sans-serif;}
+.tooltip-link{display:block;padding-top:8px;color:#2C96FF;}
+.tooltip-link:hover,.tooltip-link:focus{display:block;padding-top:8px;color:#2C96FF;}
+
+
 
 /* 37. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}

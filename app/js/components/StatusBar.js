@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import Image from './../components/Image'
 import { AccountActions } from '../account/store/account'
-
+import Completion from './Completion'
+import ActionItem from './ActionItem'
+import { Popover, OverlayTrigger } from 'react-bootstrap'
 
 function mapStateToProps(state) {
   return {
@@ -20,6 +22,47 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions), dispatch)
 }
+
+const popover = (
+  <Popover>
+    <ActionItem
+      action="Connect a storage provider to regain control of your data"
+      destinationUrl="/storage/providers"
+      destinationName="Storage"
+      completed={false}
+    />
+    <ActionItem
+      action="Create your first profile independent of 3rd parties"
+      destinationUrl="/profiles"
+      destinationName="Profiles"
+      completed={false}
+    />
+    <ActionItem
+      action="Sign in to your first Blockstack app"
+      destinationUrl="https://helloblockstack.com"
+      destinationName="Apps"
+      completed={false}
+    />
+    <ActionItem
+      action="Write down your backup code for keychain recovery"
+      destinationUrl="/account/backup"
+      destinationName="Backup"
+      completed={false}
+    />
+    <ActionItem
+      action="Deposit Bitcoin to enable username registration"
+      destinationUrl="/wallet/receive"
+      destinationName="Wallet"
+      completed={false}
+    />
+    <ActionItem
+      action="Register a username for your profile"
+      destinationUrl="/wallet/receive"
+      destinationName="Wallet"
+      completed={false}
+    />
+  </Popover>
+)
 
 class StatusBar extends Component {
   static propTypes = {
@@ -90,20 +133,12 @@ class StatusBar extends Component {
       }
         <div className="pull-right">
           <div className="status-inline status-completion">
-            <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
-            </div>
-            <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
-            </div>
-            <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
-            </div>
-            <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
-            </div>
-            <div className="status-inline status-complete-wrap">
-              <div className="status-inline status-complete-dot img-circle"></div>
+            <div className="status-complete-wrap">
+              <OverlayTrigger trigger={['click']} placement="bottom" overlay={popover}>
+                <div className="status-complete-dot">
+                  <div className="status-complete-object img-circle">6</div>
+                </div>
+              </OverlayTrigger>
             </div>
           </div>
           <div className="status-inline status-balance">
