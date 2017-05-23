@@ -48,6 +48,7 @@ class ViewProfilePage extends Component {
       },
       isLoading: true
     }
+    this.hasUsername = this.hasUsername.bind(this)
   }
 
   componentHasNewRouteParams(props) {
@@ -74,6 +75,12 @@ class ViewProfilePage extends Component {
       currentIdentity: nextProps.currentIdentity,
       isLoading: false
     })
+  }
+
+  hasUsername() {
+    const localIdentities = this.props.localIdentities
+    const currentDomainName = this.state.currentIdentity.domainName
+    return currentDomainName !== localIdentities[currentDomainName].ownerAddress
   }
 
   render() {
@@ -142,10 +149,19 @@ class ViewProfilePage extends Component {
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     Edit
                   </Link>
+                  {!this.hasUsername() ?
+                    <button
+                      className="btn btn-sm btn-secondary m-t-10 btn-inline"
+                      disabled={true}
+                    >
+                    View Publicly
+                    </button>
+                    :
                   <Link to={`/profiles/${domainName}`}
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     View Publicly
                   </Link>
+                  }
               </div>
               :
               <div>
