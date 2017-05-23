@@ -5,6 +5,8 @@ import {
   resolveZoneFileToProfile
 } from '../../../utils/index'
 
+import { AccountActions } from '../../../account/store/account'
+
 import log4js from 'log4js'
 
 
@@ -47,8 +49,10 @@ function updateProfile(domainName, profile) {
 }
 
 function createNewIdentityFromDomain(domainName, ownerAddress) {
+  logger.debug(`createNewIdentityFromDomain: domainName: ${domainName} ownerAddress: ${ownerAddress}`)
   return dispatch => {
     dispatch(createNewIdentity(domainName, ownerAddress))
+    dispatch(AccountActions.usedIdentityAddress())
   }
 }
 

@@ -1,18 +1,22 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { Person } from 'blockstack'
 
 import IdentityItem from './components/IdentityItem'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
 
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('profiles/AllProfilesPage.js')
+
 function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
     namesOwned: state.profiles.identity.namesOwned,
     identityAddresses: state.account.identityAccount.addresses,
+    nextUnusedAddressIndex: state.account.identityAccount.addressIndex,
     api: state.settings.api
   }
 }
@@ -24,10 +28,12 @@ function mapDispatchToProps(dispatch) {
 class IdentityPage extends Component {
   static propTypes = {
     localIdentities: PropTypes.object.isRequired,
-    createNewIdentity: PropTypes.func.isRequired,
+    createNewIdentityFromDomain: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
     namesOwned: PropTypes.array.isRequired,
-    api: PropTypes.object.isRequired
+    api: PropTypes.object.isRequired,
+    identityAddresses: PropTypes.array.isRequired,
+    nextUnusedAddressIndex: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -36,6 +42,9 @@ class IdentityPage extends Component {
     this.state = {
       localIdentities: this.props.localIdentities
     }
+
+    this.createNewProfile = this.createNewProfile.bind(this)
+    this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
   }
 
   componentWillMount() {
@@ -51,6 +60,17 @@ class IdentityPage extends Component {
     this.setState({
       localIdentities: nextProps.localIdentities
     })
+  }
+
+  createNewProfile(event) {
+    event.preventDefault()
+    const ownerAddress = this.props.identityAddresses[this.props.nextUnusedAddressIndex]
+    logger.debug(`createNewProfile: ownerAddress: ${ownerAddress}`)
+    this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
+  }
+
+  availableIdentityAddresses() {
+    return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
   }
 
   render() {
@@ -77,9 +97,12 @@ class IdentityPage extends Component {
           </ul>
         </div>
         <div className="card-list-container m-t-30">
-          <Link to="/profiles/i/register" className="btn btn-blue btn-lg" role="button" >
+          <button
+            className="btn btn-blue btn-lg" onClick={this.createNewProfile}
+            disabled={!this.availableIdentityAddresses()}
+          >
             + Create
-          </Link>
+          </button>
         </div>
       </div>
     )

@@ -44,13 +44,7 @@ describe('Account Store: Async Actions', () => {
        '1HjKNbLWvQfSdhpDAQw7RGPE5CUY5gLNHH',
        '1N7Bu3evb7GWRg8yRXZN8A9dj9mny6zxm8',
        '1PFQ6F4Ntug1o29jU2XJTWfH3wsxNug9Y2',
-       '1Mko7SGvKjNfZLYLphcMUPDP9kph3gfuJe',
-       '1QK463ayWwrYwXNGN45oH3owfTkkiXp96w',
-       '1FtSPdTameYY1NkNPQqSc1TFea4KA4iZsz',
-       '17TY2WZAww7JwoQS5BTQ9ubSaT2iWXpya',
-       '1E9R7Ji1CpyU2NCfM9rEiXS2FLYkq2mH1t',
-       '1MHFWK9MinFdzHFJxhVrytiBdpxKgimxJk',
-       '135hncEebn9R6c5uN5ksZeNdb7xB9jsD4p' ]
+       '1Mko7SGvKjNfZLYLphcMUPDP9kph3gfuJe']
 
        const identityKeypairs = [ { key: '6f7de55a5248da935d127568f7ddb76ddd36617677184d534c51950be78a908a',
     keyID: '0378a24a992d123c035303978ee395b2f50714fb1c97837cfb2cc7b6ee8fae6a87',
@@ -78,25 +72,7 @@ describe('Account Store: Async Actions', () => {
     address: '1PFQ6F4Ntug1o29jU2XJTWfH3wsxNug9Y2' },
   { key: '06e35a1694eb29d6691f7446dd74ce3f638ccbf066fbceb785c24233f6db9018',
     keyID: '03fbe8d407f87109fe28ffd92c80f725989642c155f11b84dee1911c77591f4a3b',
-    address: '1Mko7SGvKjNfZLYLphcMUPDP9kph3gfuJe' },
-  { key: 'eb08a55646b1a695c2a03239a9ff89e3b05f0f7c00ab11e36252b0780d3a7436',
-    keyID: '03e7da002cc9a04f9c175678b153bd81fb72fc0693441b09011b321cae54cf3cf8',
-    address: '1QK463ayWwrYwXNGN45oH3owfTkkiXp96w' },
-  { key: 'cf20360c1f9093a7457a8345ded725fef7bd1186a2765760ee5fdebde4dd8f17',
-    keyID: '022a9d5d309228824ba097b63cfdeae8c21b70699337c5c846f6316ced854d7611',
-    address: '1FtSPdTameYY1NkNPQqSc1TFea4KA4iZsz' },
-  { key: 'e441b29ffce8782703ec15665e2cd503f1c0ca4b796d557435389119b4de3438',
-    keyID: '02dd64fb2c78e12b778802f68ca81dbe5a4e2096c56433a6c8d4e5d6cd26ae21ed',
-    address: '17TY2WZAww7JwoQS5BTQ9ubSaT2iWXpya' },
-  { key: '2e0bca1297a80301db502e65dadd99a5deff9b68c673a563c520de15a726d727',
-    keyID: '03015a280ac8dd5aed1a7d188cc640754c1424e0dbf93ec8b17b714a5f12b34721',
-    address: '1E9R7Ji1CpyU2NCfM9rEiXS2FLYkq2mH1t' },
-  { key: '9d18b2e8bf9d7243973a26417e585c9e57d295afe241f413031a52d64506c183',
-    keyID: '02d0959c25ecfc891cf8b0bb83f5981b0c352c665f749fe4f0b8f1cd0ae46fbb81',
-    address: '1MHFWK9MinFdzHFJxhVrytiBdpxKgimxJk' },
-  { key: '0f63d6d9e128893a361c63fee6c847429cf593340c4714853cc58a4b36dd9dfe',
-    keyID: '022a09fbcf580c44e1d087824f4eed72443c640ecfdaa7841fda536fb3209aa7aa',
-    address: '135hncEebn9R6c5uN5ksZeNdb7xB9jsD4p' } ]
+    address: '1Mko7SGvKjNfZLYLphcMUPDP9kph3gfuJe' }]
 
       return store.dispatch(AccountActions.initializeWallet(password, backupPhrase))
       .then(() => {
