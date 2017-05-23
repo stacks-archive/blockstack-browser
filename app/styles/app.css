@@ -304,6 +304,22 @@ div.pro-avatar img{max-width:58px;}
 .status-complete-dot{padding:10px;vertical-align:middle;}
 div.status-inline.status-balance > p{padding:7px 10px;vertical-align:middle;}
 div.status-inline.status-profile{margin-top:6px;}
+/* --- Status bar tooltip arrow --- */
+.popover.bottom>.arrow{left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#999;border-bottom-color:rgba(0,0,0,.25);top:-11px;}
+.popover>.arrow{border-width:11px;}
+.popover>.arrow,.popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:rgba(0,0,0,0);border-style:solid;}
+*,:after,:before{box-sizing:border-box;}
+div{display:block;}
+.popover{position:absolute;top:0;left:0;z-index:1060;display:none;max-width:276px;padding:1px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-style:normal;font-weight:400;letter-spacing:normal;line-break:auto;line-height:1.42857143;text-align:left;text-align:start;text-decoration:none;text-shadow:none;text-transform:none;white-space:normal;word-break:normal;word-spacing:normal;word-wrap:normal;font-size:14px;background-color:#fff;background-clip:padding-box;border:1px solid #ccc;border:1px solid rgba(0,0,0,.2);border-radius:6px;box-shadow:0 5px 10px rgba(0,0,0,.2);}
+body{font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.42857143;color:#333;background-color:#fff;}
+html{font-size:10px;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;}
+*,:after,:before{box-sizing:border-box;}
+.popover.bottom>.arrow:after{content:" ";top:1px;margin-left:-10px;border-top-width:0;border-bottom-color:#fff;}
+.popover>.arrow:after{border-width:10px;content:"";}
+.popover>.arrow,.popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:rgba(0,0,0,0);border-style:solid;}
+*,:after,:before{box-sizing:border-box;}
+
 
 /* 37. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
