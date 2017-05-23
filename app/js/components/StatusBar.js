@@ -69,7 +69,7 @@ class StatusBar extends Component {
             <div className="status-complete-wrap">
               <OverlayTrigger trigger={['click']} placement="bottom" overlay={popover}>
                 <div className="status-complete-dot">
-                  <div className="status-complete-object img-circle"></div>
+                  <div className="status-complete-object img-circle">6</div>
                 </div>
               </OverlayTrigger>
             </div>
