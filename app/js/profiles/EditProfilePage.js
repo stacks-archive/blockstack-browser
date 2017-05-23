@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { PrivateKeychain, PublicKeychain } from 'blockstack-keychains'
 
 import EditProfileHeader from './components/EditProfileHeader'
 import ProfileEditingSidebar from './components/ProfileEditingSidebar'
@@ -15,6 +14,10 @@ import PhotosTab         from './tabs/PhotosTab'
 import SocialAccountsTab from './tabs/SocialAccountsTab'
 import PublicKeysTab     from './tabs/PublicKeysTab'
 import PrivateInfoTab    from './tabs/PrivateInfoTab'
+
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('profiles/EditProfilePage.js')
 
 function mapStateToProps(state) {
   return {
@@ -50,6 +53,7 @@ class EditProfilePage extends Component {
     this.saveProfile = this.saveProfile.bind(this)
     this.changeTabs = this.changeTabs.bind(this)
     this.uploadProfilePhoto = this.uploadProfilePhoto.bind(this)
+    this.hasUsername = this.hasUsername.bind(this)
   }
 
   componentHasNewLocalIdentities(props) {
@@ -83,14 +87,19 @@ class EditProfilePage extends Component {
   }
 
   saveProfile(newProfile) {
+    logger.trace(`saveProfile`)
     this.props.updateProfile(this.props.routeParams.index, newProfile)
+      if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
+        logger.trace('saveProfile: Preparing to upload profile')
+        const data = signProfileForUpload(this.state.profile, this.props.identityKeypairs[0])
 
-    const data = signProfileForUpload(this.state.profile, this.props.identityKeypairs[0])
-
-    uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
-      console.error(err)
-      console.error('profile not uploaded')
-    })
+      uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
+        console.error(err)
+        console.error('profile not uploaded')
+      })
+    } else {
+      logger.trace('saveProfile: No username or storage so we skipped profile upload')
+    }
   }
 
 
@@ -101,6 +110,12 @@ class EditProfilePage extends Component {
 
   changeTabs(tabName) {
     this.setState({tabName: tabName})
+  }
+
+  hasUsername() {
+    const localIdentities = this.props.localIdentities
+    const currentDomainName = this.state.domainName
+    return currentDomainName !== localIdentities[currentDomainName].ownerAddress
   }
 
   render() {

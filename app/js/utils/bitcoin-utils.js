@@ -2,6 +2,12 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/bitcoin-utils.js')
 
+const SATOSHIS_IN_BTC = 100000000
+
+export function btcToSatoshis(amountInBtc) {
+  return amountInBtc * SATOSHIS_IN_BTC
+}
+
 export function broadcastTransaction(broadcastTransactionUrl, rawTransaction) {
   return new Promise((resolve, reject) => {
     const payload =  { rawtx: rawTransaction }

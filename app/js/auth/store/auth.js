@@ -1,14 +1,19 @@
-import { fetchAppManifest } from 'blockstack'
+import { getCoreSession, fetchAppManifest } from 'blockstack'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('store/auth.js')
+const logger = log4js.getLogger('auth/store/auth.js')
 
-const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING',
-      APP_MANIFEST_LOADING_ERROR = 'APP_MANIFEST_LOADING_ERROR',
-      APP_MANIFEST_LOADED = 'APP_MANIFEST_LOADED'
+const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING'
+const APP_MANIFEST_LOADING_ERROR = 'APP_MANIFEST_LOADING_ERROR'
+const APP_MANIFEST_LOADED = 'APP_MANIFEST_LOADED'
+const UPDATE_CORE_SESSION = 'UPDATE_CORE_SESSION'
+const LOGGED_IN_TO_APP = 'LOGGED_IN_TO_APP'
 
 export const AuthActions = {
-  loadAppManifest: loadAppManifest
+  clearSessionToken,
+  getCoreSessionToken,
+  loadAppManifest,
+  loginToApp
 }
 
 function appManifestLoading() {
@@ -31,6 +36,42 @@ function appManifestLoaded(appManifest) {
   }
 }
 
+function updateCoreSessionToken(appDomain, token) {
+  return {
+    type: UPDATE_CORE_SESSION,
+    appDomain,
+    token
+  }
+}
+
+function loggedIntoApp() {
+  return {
+    type: LOGGED_IN_TO_APP
+  }
+}
+
+function clearSessionToken(appDomain) {
+  return dispatch => {
+    dispatch(updateCoreSessionToken(appDomain, null))
+  }
+}
+
+function loginToApp() {
+  return dispatch => {
+    dispatch(loggedIntoApp())
+  }
+}
+
+function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey, appDomain, blockchainId, authRequest) {
+  return dispatch => {
+    getCoreSession(coreHost, corePort, coreApiPassword, appPrivateKey, blockchainId, authRequest)
+        .then((coreSessionToken) => {
+          logger.trace('getCoreSessionToken: generated a token!')
+          dispatch(updateCoreSessionToken(appDomain, coreSessionToken))
+        })
+  }
+}
+
 function loadAppManifest(authRequest) {
   return dispatch => {
     dispatch(appManifestLoading())
@@ -46,7 +87,9 @@ function loadAppManifest(authRequest) {
 const initialState = {
   appManifest: null,
   appManifestLoading: false,
-  appManifestLoadingError: null
+  appManifestLoadingError: null,
+  coreSessionTokens: {},
+  loggedIntoApp: false
 }
 
 export function AuthReducer(state=initialState, action) {
@@ -67,6 +110,16 @@ export function AuthReducer(state=initialState, action) {
         appManifest: null,
         appManifestLoading: false,
         appManifestLoadingError: action.error
+      })
+    case UPDATE_CORE_SESSION:
+      return Object.assign({}, state, {
+        coreSessionTokens: Object.assign({}, state.coreSessionTokens, {
+          [action.appDomain]: action.token
+        })
+      })
+    case LOGGED_IN_TO_APP:
+      return Object.assign({}, state, {
+        loggedIntoApp: true
       })
     default:
       return state

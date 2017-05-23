@@ -1,10 +1,14 @@
 export {
-  decryptPrivateKeychain,
+  decryptMasterKeychain,
   getBitcoinPrivateKeychain,
+  getBitcoinPublicKeychain,
   getIdentityPrivateKeychain,
+  getIdentityPublicKeychain,
   getWebAccountTypes,
   isPasswordValid,
-  isBackupPhraseValid
+  isBackupPhraseValid,
+  getIdentityOwnerAddressNode,
+  getBitcoinAddressNode
 } from './account-utils'
 
 export {
@@ -14,7 +18,7 @@ export {
 } from './api-utils'
 
 export {
-  broadcastTransaction, getNetworkFee, getUtxo
+  broadcastTransaction, btcToSatoshis, getNetworkFee, getUtxo
 } from './bitcoin-utils'
 
 export {

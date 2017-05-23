@@ -1,6 +1,7 @@
 import bip39 from 'bip39'
-import { PrivateKeychain } from 'blockstack-keychains'
 import { decrypt } from './encryption-utils'
+import { HDNode } from 'bitcoinjs-lib'
+
 
 const backupPhraseLength = 24
 
@@ -31,28 +32,71 @@ export function isBackupPhraseValid(backupPhrase) {
   return { isValid: isValid, error: error }
 }
 
-export function decryptPrivateKeychain(password, encryptedBackupPhrase) {
+export function decryptMasterKeychain(password, encryptedBackupPhrase) {
   return new Promise((resolve, reject) => {
-    let dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
 
-    decrypt(dataBuffer, password, (err, plaintextBuffer) => {
-      if (!err) {
-        const backupPhrase = plaintextBuffer.toString()
-        const privateKeychain = PrivateKeychain.fromMnemonic(backupPhrase)
-        resolve(privateKeychain)
-      } else {
-        reject("Incorrect password")
-      }
+    decrypt(dataBuffer, password)
+    .then((plaintextBuffer) => {
+      const backupPhrase = plaintextBuffer.toString()
+      const seed = bip39.mnemonicToSeed(backupPhrase)
+      const masterKeychain = HDNode.fromSeedBuffer(seed)
+      resolve(masterKeychain)
+    }, (error) => {
+      reject('Incorrect password')
     })
   })
 }
 
-export function getBitcoinPrivateKeychain(privateKeychain) {
-  return privateKeychain.privatelyNamedChild('bitcoin-0')
+const EXTERNAL_ADDRESS = 'EXTERNAL_ADDRESS'
+const CHANGE_ADDRESS = 'CHANGE_ADDRESS'
+
+export function getBitcoinPrivateKeychain(masterKeychain) {
+  const BIP_44_PURPOSE = 44
+  const BITCOIN_COIN_TYPE = 0
+  const ACCOUNT_INDEX = 0
+
+  return masterKeychain.deriveHardened(BIP_44_PURPOSE)
+  .deriveHardened(BITCOIN_COIN_TYPE)
+  .deriveHardened(ACCOUNT_INDEX)
 }
 
-export function getIdentityPrivateKeychain(privateKeychain) {
-  return privateKeychain.privatelyNamedChild('blockstack-0')
+export function getBitcoinPublicKeychain(masterKeychain) {
+  return getBitcoinPrivateKeychain(masterKeychain).neutered()
+}
+
+export function getBitcoinAddressNode(bitcoinKeychain,
+  addressIndex = 0, chainType = EXTERNAL_ADDRESS) {
+  let chain = null
+
+  if (chainType === EXTERNAL_ADDRESS) {
+    chain = 0
+  } else if (chainType === CHANGE_ADDRESS) {
+    chain = 1
+  } else {
+    throw new Error('Invalid chain type')
+  }
+
+  return bitcoinKeychain.derive(chain).derive(addressIndex)
+}
+
+const IDENTITY_KEYCHAIN = 888
+const BLOCKSTACK_ON_BITCOIN = 0
+export function getIdentityPrivateKeychain(masterKeychain) {
+  return masterKeychain.deriveHardened(IDENTITY_KEYCHAIN)
+  .deriveHardened(BLOCKSTACK_ON_BITCOIN)
+}
+
+export function getIdentityPublicKeychain(masterKeychain) {
+  return getIdentityPrivateKeychain(masterKeychain).neutered()
+}
+
+const OWNER_ADDRESS = 0
+export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityIndex = 0) {
+  if (identityPrivateKeychain.isNeutered()) {
+    throw new Error('You need the private key to generate identity addresses')
+  }
+  return identityPrivateKeychain.deriveHardened(identityIndex).derive(OWNER_ADDRESS)
 }
 
 export function getWebAccountTypes(api) {

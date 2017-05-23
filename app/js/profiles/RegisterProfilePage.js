@@ -16,6 +16,7 @@ import log4js from 'log4js'
 const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
 
 const WALLET_URL = '/wallet/receive'
+const STORAGE_URL = '/storage/providers'
 
 function mapStateToProps(state) {
   return {
@@ -58,7 +59,8 @@ class RegisterPage extends Component {
     coreWalletAddress: PropTypes.string,
     api: PropTypes.object.isRequired,
     checkNameAvailabilityAndPrice: PropTypes.func.isRequired,
-    beforeRegister: PropTypes.func.isRequired
+    beforeRegister: PropTypes.func.isRequired,
+    coreAPIPassword: PropTypes.string
   }
 
   static contextTypes = {
@@ -82,7 +84,8 @@ class RegisterPage extends Component {
         person: 'Username',
         organization: 'Domain'
       },
-      zeroBalance: props.coreWalletBalance <= 0
+      zeroBalance: props.coreWalletBalance <= 0,
+      storageConnected: this.props.api.dropboxAccessToken !== null
     }
 
     this.onChange = this.onChange.bind(this)
@@ -91,6 +94,8 @@ class RegisterPage extends Component {
     this.displayPricingAndAvailabilityAlerts = this.displayPricingAndAvailabilityAlerts.bind(this)
     this.displayRegistrationAlerts = this.displayRegistrationAlerts.bind(this)
     this.displayZeroBalanceAlert = this.displayZeroBalanceAlert.bind(this)
+    this.findAddressIndex = this.findAddressIndex.bind(this)
+    this.displayConnectStorageAlert = this.displayConnectStorageAlert.bind(this)
   }
 
   componentDidMount() {
@@ -98,9 +103,11 @@ class RegisterPage extends Component {
     if (this.props.coreWalletAddress != null) {
       logger.debug('coreWalletAddress exists...refreshing core wallet balance...')
       this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
-        this.props.coreWalletAddress)
+        this.props.coreAPIPassword)
     }
-    if (this.state.zeroBalance) {
+    if (!this.state.storageConnected) {
+      this.displayConnectStorageAlert()
+    } else if (this.state.zeroBalance) {
       logger.debug('Zero balance...displaying alert...')
       this.displayZeroBalanceAlert()
     }
@@ -115,18 +122,21 @@ class RegisterPage extends Component {
 
     if(this.props.coreWalletAddress != nextProps.coreWalletAddress) {
       logger.debug('coreWalletAddress changed. Refreshing core wallet balance...')
-      this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, nextProps.coreWalletAddress)
+      this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, this.props.coreAPIPassword)
     }
 
     const registration = nextProps.registration
     const availability = nextProps.availability
     const zeroBalance = this.props.coreWalletBalance <= 0
+    const storageConnected = this.props.api.dropboxAccessToken !== null
 
     this.setState({
-      zeroBalance
+      zeroBalance,
+      storageConnected
     })
-
-    if (zeroBalance) {
+    if (!storageConnected) {
+      this.displayConnectStorageAlert()
+    } else if (zeroBalance) {
       this.displayZeroBalanceAlert()
     } else if (registration.registrationSubmitting ||
       registration.registrationSubmitted ||
@@ -189,6 +199,11 @@ class RegisterPage extends Component {
     this.updateAlert('danger', `You need to deposit at least 0.01 bitcoins before you can register a username.<br> Click here to go to your wallet or send bitcoins directly to ${this.props.coreWalletAddress}`, WALLET_URL)
   }
 
+  displayConnectStorageAlert() {
+    this.updateAlert('danger', 'Please go to the Storage app and connect a storage provider.', STORAGE_URL)
+
+  }
+
   onChange(event) {
     if (event.target.name === 'username') {
       this.props.beforeRegister() // clears any error & resets registration state
@@ -239,9 +254,21 @@ class RegisterPage extends Component {
     })
   }
 
+  findAddressIndex(address) {
+    const identityAddresses = this.props.identityAddresses
+    for (let i = 0; i < identityAddresses.length; i++) {
+      if (identityAddresses[i] === address) {
+        return i
+      }
+    }
+    return null
+  }
+
   registerIdentity(event) {
     logger.trace('registerIdentity')
     event.preventDefault()
+
+    const ownerAddress = this.props.routeParams.index
 
     if (this.state.registrationLock) {
       return
@@ -265,8 +292,10 @@ class RegisterPage extends Component {
       this.updateAlert('danger', 'Name has already been preordered')
       this.setState({ registrationLock: false })
     } else {
-      const address = this.props.identityAddresses[0]
-      const keypair = this.props.identityKeypairs[0]
+      const addressIndex = this.findAddressIndex(ownerAddress)
+
+      const address = this.props.identityAddresses[addressIndex]
+      const keypair = this.props.identityKeypairs[addressIndex]
 
       this.props.registerName(this.props.api, domainName, address, keypair)
       this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
@@ -300,7 +329,7 @@ class RegisterPage extends Component {
                   placeholder={nameLabel}
                   value={this.state.username}
                   onChange={this.onChange}
-                  disabled={this.state.zeroBalance}
+                  disabled={this.state.zeroBalance || !this.state.storageConnected}
                 />
                 <span className="input-group-addon">.{tld}</span>
               </div>
@@ -308,7 +337,7 @@ class RegisterPage extends Component {
             <div>
               <button
                 className="btn btn-blue" onClick={this.registerIdentity}
-                disabled={this.props.registration.preventRegistration || this.state.zeroBalance}
+                disabled={this.props.registration.preventRegistration || this.state.zeroBalance || !this.state.storageConnected}
               >
                 Register
               </button>
