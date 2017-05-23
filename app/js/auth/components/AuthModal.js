@@ -95,8 +95,13 @@ class AuthModal extends Component {
   login() {
     this.props.loginToApp()
     if (Object.keys(this.props.localIdentities).length > 0) {
-      const userDomainName = Object.keys(this.props.localIdentities)[0]
-      const identity = this.props.localIdentities[userDomainName]
+      const localIdentities = this.props.localIdentities
+      let userDomainName = Object.keys(localIdentities)[0]
+      let hasUsername = true
+      if (userDomainName === localIdentities[userDomainName].ownerAddress) {
+        hasUsername = false
+      }
+      const identity = localIdentities[userDomainName]
       const profile = identity.profile
       const privateKey = this.props.identityKeypairs[0].key
       const appDomain = this.state.decodedToken.payload.domain_name
@@ -104,7 +109,7 @@ class AuthModal extends Component {
       if (scopes.length === 0) {
         this.props.getCoreSessionToken(this.props.coreHost,
             this.props.corePort, this.props.coreAPIPassword, privateKey,
-            appDomain, this.state.authRequest, userDomainName)
+            appDomain, this.state.authRequest, hasUsername ? userDomainName : null)
       } else {
         logger.error(`login: Logging into app ${appDomain} with scopes ${scopes} isn't supported`)
       }
