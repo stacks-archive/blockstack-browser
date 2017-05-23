@@ -157,7 +157,7 @@ class StatusBar extends Component {
         />
         <ActionItem
           action="Sign in to your first Blockstack app"
-          destinationUrl="https://helloblockstack.com"
+          destinationUrl="/"
           destinationName="Apps"
           completed={this.signedIntoFirstApp()}
         />
