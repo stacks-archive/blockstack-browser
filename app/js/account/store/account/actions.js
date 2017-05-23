@@ -122,7 +122,7 @@ function promptedForEmail() {
   }
 }
 
-function viewedRecoveryCode() {
+function updateViewedRecoveryCode() {
   return {
     type: types.VIEWED_RECOVERY_CODE
   }
@@ -131,7 +131,7 @@ function viewedRecoveryCode() {
 function displayedRecoveryCode() {
   logger.trace('displayedRecoveryCode')
   return dispatch => {
-    dispatch(viewedRecoveryCode())
+    dispatch(updateViewedRecoveryCode())
   }
 }
 
@@ -338,7 +338,7 @@ const AccountActions = {
   withdrawBitcoinFromCoreWallet,
   emailKeychainBackup,
   skipEmailBackup,
-  viewedRecoveryCode,
+  updateViewedRecoveryCode,
   displayedRecoveryCode
 }
 
