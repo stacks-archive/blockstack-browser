@@ -84,13 +84,22 @@ class IdentityPage extends Component {
             {Object.keys(this.state.localIdentities).map((domainName) => {
               const identity = this.state.localIdentities[domainName],
                     person = new Person(identity.profile)
+
+                    if (identity.ownerAddress === domainName) {
+                      identity.canAddUsername = true
+                    } else {
+                      identity.canAddUsername = false
+                    }
               if (identity.domainName) {
                 return (
                   <IdentityItem key={identity.domainName}
                     label={identity.domainName}
                     pending={!identity.registered}
                     avatarUrl={person.avatarUrl() || ''}
-                    url={`/profiles/${identity.domainName}/local`} />
+                    url={`/profiles/${identity.domainName}/local`}
+                    ownerAddress={identity.ownerAddress}
+                    canAddUsername={identity.canAddUsername}
+                  />
                 )
               }
             })}

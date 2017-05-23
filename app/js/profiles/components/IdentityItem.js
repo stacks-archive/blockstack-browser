@@ -8,7 +8,9 @@ class IdentityItem extends Component {
     label: PropTypes.string.isRequired,
     avatarUrl: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
-    pending: PropTypes.bool.isRequired
+    pending: PropTypes.bool.isRequired,
+    ownerAddress: PropTypes.string.isRequired,
+    canAddUsername: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -32,14 +34,24 @@ class IdentityItem extends Component {
                 </h3>
               </li>
               <li>
-                {this.props.pending ?
-                <p className="card-subtitle profile-list-card-subtitle">
-                 (pending)
-                </p>
-                : <p></p> }
+                {this.props.canAddUsername ?
+                 <Link to={`/profiles/i/register/${this.props.ownerAddress}`}>
+                   Add username
+                 </Link>
+                 :
+                  <div>
+                   {this.props.pending ?
+                     <p className="card-subtitle profile-list-card-subtitle">
+                      (pending)
+                     </p>
+                     :
+                     <p></p>
+                  }
+                  </div>
+                }
               </li>
             </ul>
-          </div>            
+          </div>
         </Link>
       </li>
     )
