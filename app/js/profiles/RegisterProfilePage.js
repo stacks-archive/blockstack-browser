@@ -92,6 +92,7 @@ class RegisterPage extends Component {
     this.displayPricingAndAvailabilityAlerts = this.displayPricingAndAvailabilityAlerts.bind(this)
     this.displayRegistrationAlerts = this.displayRegistrationAlerts.bind(this)
     this.displayZeroBalanceAlert = this.displayZeroBalanceAlert.bind(this)
+    this.findAddressIndex = this.findAddressIndex.bind(this)
   }
 
   componentDidMount() {
@@ -240,9 +241,21 @@ class RegisterPage extends Component {
     })
   }
 
+  findAddressIndex(address) {
+    const identityAddresses = this.props.identityAddresses
+    for (let i = 0; i < identityAddresses.length; i++) {
+      if (identityAddresses[i] === address) {
+        return i
+      }
+    }
+    return null
+  }
+
   registerIdentity(event) {
     logger.trace('registerIdentity')
     event.preventDefault()
+
+    const ownerAddress = this.props.routeParams.index
 
     if (this.state.registrationLock) {
       return
@@ -266,8 +279,10 @@ class RegisterPage extends Component {
       this.updateAlert('danger', 'Name has already been preordered')
       this.setState({ registrationLock: false })
     } else {
-      const address = this.props.identityAddresses[0]
-      const keypair = this.props.identityKeypairs[0]
+      const addressIndex = this.findAddressIndex(ownerAddress)
+
+      const address = this.props.identityAddresses[addressIndex]
+      const keypair = this.props.identityKeypairs[addressIndex]
 
       this.props.registerName(this.props.api, domainName, address, keypair)
       this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')

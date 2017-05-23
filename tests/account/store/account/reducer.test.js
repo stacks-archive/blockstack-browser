@@ -80,4 +80,25 @@ describe('Account Store: AccountReducer', () => {
     const actualState = AccountReducer(initialState, action)
     assert(actualState.viewedRecoveryCode, true)
   })
+
+  it('increment the identity address index', () => {
+    const initialState = {
+      identityAccount: {
+        addressIndex: 0
+      }
+    }
+
+    const action = AccountActions.incrementIdentityAddressIndex()
+
+    const expectedState = {
+      identityAccount: {
+        addressIndex: 1
+      }
+    }
+
+    const actualState = AccountReducer(initialState, action)
+
+    assert.deepEqual(actualState,
+      expectedState)
+  })
 })

@@ -140,6 +140,14 @@ function AccountReducer(state = initialState, action) {
       return Object.assign({}, state, {
         viewedRecoveryCode: true
       })
+    case types.INCREMENT_IDENTITY_ADDRESS_INDEX:
+      return Object.assign({}, state, {
+        identityAccount: Object.assign({},
+          state.identityAccount,
+          {
+            addressIndex: state.identityAccount.addressIndex + 1
+          })
+      })
     default:
       return state
   }

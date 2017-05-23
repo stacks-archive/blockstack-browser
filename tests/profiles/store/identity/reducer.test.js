@@ -46,7 +46,7 @@ describe('Identity Store: IdentityReducer', () => {
   })
 
   it('should create a new identity that is unregistered & unverified', () => {
-    const action = IdentityActions.createNewIdentity('satoshi.id')
+    const action = IdentityActions.createNewIdentity('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
     const expectedState = {
       current: {
         domainName: null,
@@ -58,7 +58,8 @@ describe('Identity Store: IdentityReducer', () => {
           domainName: 'satoshi.id',
           profile: DEFAULT_PROFILE,
           verifications: [],
-          registered: false
+          registered: false,
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
         }
       },
       namesOwned: []
@@ -119,6 +120,35 @@ describe('Identity Store: IdentityReducer', () => {
       namesOwned: []
     }
     const actualState = IdentityReducer(undefined, action)
+    assert.deepEqual(actualState, expectedState)
+  })
+
+  it('should move the identity from owner address key to domain key', () => {
+    const initialState = {
+      localIdentities: {
+        '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC': {
+          profile: {
+            key: 'value'
+          },
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
+        }
+      }
+    }
+
+    const expectedState = {
+      localIdentities: {
+        'satoshi.id': {
+          profile: {
+            key: 'value'
+          },
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
+          domainName: 'satoshi.id'
+        }
+      }
+    }
+    const action = IdentityActions.addUsername('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
+
+    const actualState = IdentityReducer(initialState, action)
     assert.deepEqual(actualState, expectedState)
   })
 })

@@ -23,7 +23,7 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
 
   const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
 
-  const ADDRESSES_TO_GENERATE = 15
+  const ADDRESSES_TO_GENERATE = 9
   const identityAddresses = []
   const identityKeypairs = []
 
@@ -324,6 +324,18 @@ function newBitcoinAddress() {
   }
 }
 
+function incrementIdentityAddressIndex() {
+  return {
+    type: types.INCREMENT_IDENTITY_ADDRESS_INDEX
+  }
+}
+
+function usedIdentityAddress() {
+  logger.trace('usedIdentityAddress')
+  return dispatch => {
+    dispatch(incrementIdentityAddressIndex())
+  }
+}
 
 const AccountActions = {
   createAccount,
@@ -339,7 +351,8 @@ const AccountActions = {
   emailKeychainBackup,
   skipEmailBackup,
   updateViewedRecoveryCode,
-  displayedRecoveryCode
+  incrementIdentityAddressIndex,
+  usedIdentityAddress
 }
 
 export default AccountActions

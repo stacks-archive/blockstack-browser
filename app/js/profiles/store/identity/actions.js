@@ -5,6 +5,8 @@ import {
   resolveZoneFileToProfile
 } from '../../../utils/index'
 
+import { AccountActions } from '../../../account/store/account'
+
 import log4js from 'log4js'
 
 
@@ -22,10 +24,11 @@ function updateCurrentIdentity(domainName, profile, verifications) {
   }
 }
 
-function createNewIdentity(domainName) {
+function createNewIdentity(domainName, ownerAddress) {
   return {
     type: types.CREATE_NEW,
-    domainName
+    domainName,
+    ownerAddress
   }
 }
 
@@ -45,9 +48,23 @@ function updateProfile(domainName, profile) {
   }
 }
 
-function createNewIdentityFromDomain(domainName) {
+function addUsername(domainName, ownerAddress) {
+  return {
+    type: types.ADD_USERNAME,
+    domainName,
+    ownerAddress
+  }
+}
+
+function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false) {
+  logger.debug(`createNewIdentityFromDomain: domainName: ${domainName} ownerAddress: ${ownerAddress}`)
   return dispatch => {
-    dispatch(createNewIdentity(domainName))
+    if (!addingUsername) {
+      dispatch(createNewIdentity(domainName, ownerAddress))
+      dispatch(AccountActions.usedIdentityAddress())
+    } else {
+      dispatch(addUsername(domainName, ownerAddress))
+    }
   }
 }
 
@@ -239,7 +256,8 @@ const IdentityActions = {
   fetchCurrentIdentity,
   refreshIdentities,
   updateOwnedIdentities,
-  createNewIdentityFromDomain
+  createNewIdentityFromDomain,
+  addUsername
 }
 
 
