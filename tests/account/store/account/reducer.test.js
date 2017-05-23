@@ -21,7 +21,8 @@ const initialState = {
       recipient: null,
       success: false
     }
-  }
+  },
+  viewedRecoveryCode: false
 }
 
 describe('Account Store: AccountReducer', () => {

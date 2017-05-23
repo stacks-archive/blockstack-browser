@@ -25,7 +25,7 @@ describe('Account Store: Async Actions', () => {
         assert.equal(actions.length, 1)
         assert.equal(actions[0].type, 'CREATE_ACCOUNT')
       })
-    })
+    }).timeout(5000)
 
     it('restores an existing wallet and keychain', () => {
       const store = mockStore({})
@@ -108,7 +108,7 @@ describe('Account Store: Async Actions', () => {
         assert.deepEqual(actions[0].identityAddresses, identityAddresses)
         assert.deepEqual(actions[0].identityKeypairs, identityKeypairs)
       })
-    })
+    }).timeout(5000)
 
     it('generates and restores the same wallet', () => {
       const store1 = mockStore({})
