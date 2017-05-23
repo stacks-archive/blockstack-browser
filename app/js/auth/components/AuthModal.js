@@ -168,7 +168,7 @@ class AuthModal extends Component {
             :
             <div>
               <p>
-                You need to <Link to="/profiles/i/register">create a profile</Link> in order to log in.
+                You need to <Link to="/profiles">create a profile</Link> in order to log in.
               </p>
             </div>
             }
