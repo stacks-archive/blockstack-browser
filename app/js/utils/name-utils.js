@@ -36,6 +36,9 @@ export function isNameAvailable(lookupUrl, domainName) {
         } else {
           if(response.status == 404) {
             resolve(true)
+          } else {
+            logger.error('isNameAvailable', response)
+            reject('Error')
           }
         }
       })

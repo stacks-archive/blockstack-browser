@@ -3,27 +3,32 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
-import { AccountActions } from '../store/account'
-import { IdentityActions } from '../store/identities'
+import { AccountActions } from '../account/store/account'
+import { AvailabilityActions } from './store/availability'
+import { IdentityActions } from './store/identity'
+import { RegistrationActions } from './store/registration'
 
 import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
+import roundTo from 'round-to'
+
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
 
-const WALLET_URL = '/wallet/deposit'
+const WALLET_URL = '/wallet/receive'
 
 function mapStateToProps(state) {
   return {
     username: '',
-    localIdentities: state.identities.localIdentities,
+    localIdentities: state.profiles.identity.localIdentities,
     lookupUrl: state.settings.api.nameLookupUrl,
     registerUrl: state.settings.api.registerUrl,
     priceUrl: state.settings.api.priceUrl,
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs,
-    registration: state.identities.registration,
+    registration: state.profiles.registration,
+    availability: state.profiles.availability,
     addressBalanceUrl: state.settings.api.addressBalanceUrl,
     coreWalletBalance: state.account.coreWallet.balance,
     coreWalletAddress: state.account.coreWallet.address,
@@ -32,7 +37,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
+  return bindActionCreators(Object.assign({},
+    IdentityActions, AccountActions, RegistrationActions, AvailabilityActions), dispatch)
 }
 
 class RegisterPage extends Component {
@@ -45,12 +51,14 @@ class RegisterPage extends Component {
     registerName: PropTypes.func.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
     registration: PropTypes.object.isRequired,
+    availability: PropTypes.object.isRequired,
     addressBalanceUrl: PropTypes.string.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     coreWalletBalance: PropTypes.number.isRequired,
     coreWalletAddress: PropTypes.string,
     api: PropTypes.object.isRequired,
-    checkNameAvailabilityAndPrice: PropTypes.func.isRequired
+    checkNameAvailabilityAndPrice: PropTypes.func.isRequired,
+    beforeRegister: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -111,10 +119,11 @@ class RegisterPage extends Component {
     }
 
     const registration = nextProps.registration
+    const availability = nextProps.availability
     const zeroBalance = this.props.coreWalletBalance <= 0
 
     this.setState({
-      zeroBalance: zeroBalance
+      zeroBalance
     })
 
     if (zeroBalance) {
@@ -122,10 +131,11 @@ class RegisterPage extends Component {
     } else if (registration.registrationSubmitting ||
       registration.registrationSubmitted ||
       registration.profileUploading ||
-      registration.error)
+      registration.error) {
       this.displayRegistrationAlerts(registration)
+    }
     else {
-      this.displayPricingAndAvailabilityAlerts(registration)
+      this.displayPricingAndAvailabilityAlerts(availability)
     }
 
   }
@@ -143,25 +153,26 @@ class RegisterPage extends Component {
     }
   }
 
-  displayPricingAndAvailabilityAlerts(registration) {
+  displayPricingAndAvailabilityAlerts(availability) {
     let tld = this.state.tlds[this.state.type]
     const domainName = `${this.state.username}.${tld}`
 
-    if(domainName === registration.lastNameEntered) {
-      if(registration.names[domainName].error) {
-        const error = registration.names[domainName].error
+    if(domainName === availability.lastNameEntered) {
+      if(availability.names[domainName].error) {
+        const error = availability.names[domainName].error
         console.error(error)
         this.updateAlert('danger', `There was a problem checking on price & availability of ${domainName}`)
       } else {
-        if(registration.names[domainName].checkingAvailability)
+        if(availability.names[domainName].checkingAvailability)
           this.updateAlert('info', `Checking if ${domainName} available...`)
-        else if(registration.names[domainName].available) {
-          if(registration.names[domainName].checkingPrice) {
+        else if(availability.names[domainName].available) {
+          if(availability.names[domainName].checkingPrice) {
             this.updateAlert('info', `${domainName} is available! Checking price...`)
           } else {
-            const price = registration.names[domainName].price
+            const price = availability.names[domainName].price
             if(price < this.props.coreWalletBalance) {
-              this.updateAlert('info', `${domainName} costs ~${price} btc to register.`)
+              const roundedUpPrice = roundTo.up(price, 3)
+              this.updateAlert('info', `${domainName} costs ~${roundedUpPrice} btc to register.`)
             } else {
               const shortfall = price - this.props.coreWalletBalance
               this.updateAlert('danger', `Your wallet doesn't have enough money to buy ${domainName}. Please send at least ${shortfall} more bitcoin to your wallet.`, WALLET_URL)
@@ -180,6 +191,8 @@ class RegisterPage extends Component {
 
   onChange(event) {
     if (event.target.name === 'username') {
+      this.props.beforeRegister() // clears any error & resets registration state
+
       const username = event.target.value.toLowerCase().replace(/\W+/g, '')
       const tld = this.state.tlds[this.state.type]
       const domainName = `${username}.${tld}`

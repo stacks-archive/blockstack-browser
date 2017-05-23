@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { AuthActions } from '../../store/auth'
+import { AuthActions } from '../store/auth'
 import { Link } from 'react-router'
 import queryString from 'query-string'
 import { decodeToken } from 'jsontokens'
@@ -14,7 +14,7 @@ import Image from '../../components/Image'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.identities.localIdentities,
+    localIdentities: state.profiles.identity.localIdentities,
     identityKeypairs: state.account.identityAccount.keypairs,
     appManifest: state.auth.appManifest,
     appManifestLoading: state.auth.appManifestLoading,

@@ -7,6 +7,9 @@
 ## make working directory the same as location of script
 #cd "$(dirname "$0")"
 
+# Make build script exit if any command returns error code.
+set -e
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/"
 
 echo "Script is running in $SCRIPT_DIR"
@@ -21,53 +24,37 @@ echo "Creating a new virtualenv..."
 
 virtualenv -p /usr/bin/python2.7 blockstack-venv
 
-echo "Downloading gmp..."
-
-curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
-
-bunzip2 gmp-6.1.2.tar.bz2
-
-tar -xf gmp-6.1.2.tar
-
-echo "Building gmp..."
-
-cd gmp-6.1.2
-
-./configure --prefix=/tmp/blockstack-venv
-
-make
-
-make install
-
-cd ..
-
 echo "Activating virtualenv..."
 
 source blockstack-venv/bin/activate
 
-echo "Installing fastecdsa..."
+echo "Install cryptography, making sure we get the universal binary"
+pip install cryptography --only-binary cryptography
 
-CFLAGS="-I/tmp/blockstack-venv/include" LDFLAGS="-L/tmp/blockstack-venv/lib" pip install -v --force --no-cache-dir --no-binary :all: fastecdsa
+echo "Build statically-linked scrypt..."
+PYSCRYPT_NO_LINK_FLAGS="1" LDFLAGS="/usr/local/opt/openssl/lib/libcrypto.a /usr/local/opt/openssl/lib/libssl.a" CFLAGS="-I/usr/local/opt/openssl/include" pip install git+https://github.com/larrysalibra/py-scrypt --no-use-wheel
 
 echo "Installing latest virtualchain..."
 
-pip install git+https://github.com/blockstack/virtualchain.git@43956be4c653038d4069eaac4497463bad176429
+pip install --upgrade git+https://github.com/blockstack/virtualchain.git@e9e650d1f6343d357a47366f22cc6161a743c7dc
 
 echo "Installing latest blockstack-profiles..."
 
-pip install git+https://github.com/blockstack/blockstack-profiles-py.git@103783798df78cf0f007801e79ec6298f00b2817
+pip install --upgrade git+https://github.com/blockstack/blockstack-profiles-py.git@103783798df78cf0f007801e79ec6298f00b2817
 
 echo "Installing latest blockstack-zones..."
 
-pip install git+https://github.com/blockstack/zone-file-py.git@73739618b51d4c8b85966887fae4ca22cba87e10
+pip install --upgrade git+https://github.com/blockstack/zone-file-py.git@73739618b51d4c8b85966887fae4ca22cba87e10
 
 echo "Installing latest blockstack..."
 
-pip install git+https://github.com/blockstack/blockstack-core.git@master-sprint-2017-04-13
+pip install --upgrade git+https://github.com/blockstack/blockstack-core.git@1a98efe91eca89cb1afe680bf4af7e15a53b2296
 
 echo "Blockstack virtual environment created."
 
 echo "Making Blockstack virtual environment relocatable..."
+
+cd /tmp/
 
 virtualenv --relocatable blockstack-venv
 

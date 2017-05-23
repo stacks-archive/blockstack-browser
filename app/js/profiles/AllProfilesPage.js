@@ -5,13 +5,13 @@ import { Link } from 'react-router'
 import { Person } from 'blockstack'
 
 import IdentityItem from './components/IdentityItem'
-import { IdentityActions } from '../store/identities'
-import { AccountActions }  from '../store/account'
+import { IdentityActions } from './store/identity'
+import { AccountActions }  from '../account/store/account'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.identities.localIdentities,
-    lastNameLookup: state.identities.lastNameLookup,
+    localIdentities: state.profiles.identity.localIdentities,
+    namesOwned: state.profiles.identity.namesOwned,
     identityAddresses: state.account.identityAccount.addresses,
     api: state.settings.api
   }
@@ -26,7 +26,7 @@ class IdentityPage extends Component {
     localIdentities: PropTypes.object.isRequired,
     createNewIdentity: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
-    lastNameLookup: PropTypes.array.isRequired,
+    namesOwned: PropTypes.array.isRequired,
     api: PropTypes.object.isRequired
   }
 
@@ -43,7 +43,7 @@ class IdentityPage extends Component {
       this.props.api,
       this.props.identityAddresses,
       this.props.localIdentities,
-      this.props.lastNameLookup
+      this.props.namesOwned
     )
   }
 

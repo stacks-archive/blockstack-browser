@@ -7,15 +7,15 @@ import { Person } from 'blockstack'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import Image from '../components/Image'
-import { IdentityActions } from '../store/identities'
-import { SearchActions } from '../store/search'
+import { IdentityActions } from './store/identity'
+import { SearchActions } from './store/search'
 
 const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
 
 function mapStateToProps(state) {
   return {
-    currentIdentity: state.identities.current,
-    localIdentities: state.identities.localIdentities,
+    currentIdentity: state.profiles.identity.current,
+    localIdentities: state.profiles.identity.localIdentities,
     nameLookupUrl: state.settings.api.nameLookupUrl
   }
 }
@@ -58,7 +58,7 @@ class ViewProfilePage extends Component {
             verifications = []
       this.props.updateCurrentIdentity(name, profile, verifications)
     } else if (props.routeParams.name) {
-      this.props.fetchCurrentIdentity(props.routeParams.name, props.nameLookupUrl)
+      this.props.fetchCurrentIdentity(props.nameLookupUrl, props.routeParams.name)
     }
   }
 

@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 
 import Alert from './Alert'
 import InputGroup from './InputGroup'
-import { AccountActions } from '../store/account'
-import { SettingsActions } from '../store/settings'
+import { AccountActions } from '../account/store/account'
+import { SettingsActions } from '../account/store/settings'
 import { DROPBOX_APP_ID } from '../storage/utils/dropbox'
 import { isBackupPhraseValid } from '../utils'
 

@@ -1,6 +1,6 @@
 {
   "name": "blockstack-portal",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "author": "Blockstack Inc <admin@blockstack.com>",
   "description": "The Blockstack browser portal",
   "license": "MPL-2.0",
@@ -159,6 +159,7 @@
     "redux-promise": "^0.5.3",
     "redux-thunk": "^2.2.0",
     "reflux": "^5.0.3",
+    "round-to": "^2.0.0",
     "triplesec": "^3.0.25",
     "zone-file": "^0.2.2"
   },

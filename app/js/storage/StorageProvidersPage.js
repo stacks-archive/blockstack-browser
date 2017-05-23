@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { SettingsActions } from '../store/settings'
+import { SettingsActions } from '../account/store/settings'
 
 import { DROPBOX } from './utils/index'
 import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from './utils/dropbox'

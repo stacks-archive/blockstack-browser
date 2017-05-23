@@ -5,7 +5,7 @@ import RadioGroup from 'react-radio-group'
 
 import InputGroup from '../components/InputGroup'
 import SaveButton from '../components/SaveButton'
-import { SettingsActions } from '../store/settings'
+import { SettingsActions } from './store/settings'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/ApiSettingsPage.js')
@@ -116,7 +116,7 @@ class ApiSettingsPage extends Component {
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="registerUrl" label="Register URL"
                       data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="addressLookupUrl" label="Address Names URL"
+                    <InputGroup name="bitcoinAddressLookupUrl" label="Address Names URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="addressBalanceUrl" label="Address URL"
                       data={this.state.api} onChange={this.onValueChange} />

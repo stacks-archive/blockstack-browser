@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { AccountActions } from '../store/account'
+import { AccountActions } from '../account/store/account'
 
 import {
   broadcastTransaction, decryptPrivateKeychain, getNetworkFee,

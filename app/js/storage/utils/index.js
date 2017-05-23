@@ -38,12 +38,12 @@ export function uploadProfile(api, name, signedProfileTokenData, firstUpload=fal
 
 
 function getStorageMethod(api) {
-  if(api.hostedDataLocation == DROPBOX &&
+  if(api.hostedDataLocation === DROPBOX &&
     api.dropboxAccessToken.length > 0) {
       return DROPBOX
     }
 
-  if(api.hostedDataLocation == SELF_HOSTED_S3 &&
+  if(api.hostedDataLocation === SELF_HOSTED_S3 &&
     api.s3ApiKey.length > 0 &&
     api.s3ApiSecret.length > 0 &&
     api.s3Bucket.length > 0) {

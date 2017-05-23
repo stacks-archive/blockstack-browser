@@ -6,11 +6,11 @@ import { Link } from 'react-router'
 import {
   isABlockstackName, isABlockstackIDName, isABlockstackAppName
 } from '../../utils/name-utils'
-import { SearchActions } from '../../store/search'
+import { SearchActions } from '../store/search'
 
 function mapStateToProps(state) {
   return {
-    query: state.search.query
+    query: state.profiles.search.query
   }
 }
 

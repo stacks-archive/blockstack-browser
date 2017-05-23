@@ -2,9 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { AccountActions } from '../../store/account'
-import { SettingsActions } from '../../store/settings'
+import { AccountActions } from '../../account/store/account'
+import { SettingsActions } from '../../account/store/settings'
 import currencyFormatter from 'currency-formatter'
+import roundTo from 'round-to'
 
 function mapStateToProps(state) {
   return {
@@ -42,6 +43,7 @@ class Balance extends Component {
 
   constructor() {
     super()
+    this.roundedBtcBalance = this.roundedBtcBalance.bind(this)
     this.usdBalance = this.usdBalance.bind(this)
   }
 
@@ -59,6 +61,16 @@ class Balance extends Component {
     }
   }
 
+  roundedBtcBalance() {
+    const btcBalance = this.props.coreWalletBalance
+    if (btcBalance === null) {
+      return 0
+    } else {
+      const roundedAmount = roundTo(btcBalance, 3)
+      return roundedAmount
+    }
+  }
+
   usdBalance() {
     let btcPrice = this.props.btcPrice
     const btcBalance = this.props.coreWalletBalance
@@ -72,8 +84,8 @@ class Balance extends Component {
     const coreWalletBalance = this.props.coreWalletBalance
     return (
       <div className="balance">
-        <div className="balance-main">
-          {coreWalletBalance != null ? coreWalletBalance : 0}
+        <div className="balance-main" title={`${this.props.coreWalletBalance} btc`}>
+          {this.roundedBtcBalance()}
           <label>&nbsp;btc</label>
         </div>
         <div className="balance-sml">

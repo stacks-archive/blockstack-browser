@@ -36,16 +36,17 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Run `npm run dev`
 1. When prompted in your browser, enter the Core API password and click save.
 
+
 ### Linux
 
 #### Part 1: Install & configure Blockstack Core
 
 1. Install [Blockstack Core](https://github.com/blockstack/blockstack-core). Please follow the instructions in Blockstack Core's repository.
 1. Setup the Blockstack Core wallet: `blockstack setup`. You will be prompted to select a wallet password. *Skip this step if you already have a Core wallet*
-1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where "<core-api-password>" is a String value you select and "<wallet-password>" is the wallet password you selected previously.
+1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where `<core-api-password>` is a String value you select and `<wallet-password>` is the wallet password you selected previously.
 1. Make sure there's a local Blockstack Core API running by checking `http://localhost:6270/v1/names/blockstack.id` to see if it returns a response.
 
-### Part 2: Install Blockstack Portal
+#### Part 2: Install Blockstack Portal
 
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
 1. Install node dependencies: `npm install`
@@ -60,6 +61,8 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 ## Building for macOS
 
 1. Make sure you have a working installation of Xcode 8 or higher & valid Mac Developer signing certificate
+1. Make sure you have an OpenSSL ready for bottling by homebrew by running `brew install openssl --build-bottle`
+1. Make sure you have `hg` installed by running `brew install hg`
 1. Run `npm install nexe -g` to install the "node to native" binary tool globally
 1. Open the Blockstack macOS project in Xcode and configure your code signing development team (You only need to do this once)
 1. Run `npm run mac` to build a debug release signed with your Mac Developer certificate
