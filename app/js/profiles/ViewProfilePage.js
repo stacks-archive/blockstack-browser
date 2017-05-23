@@ -153,6 +153,7 @@ class ViewProfilePage extends Component {
                     <button
                       className="btn btn-sm btn-secondary m-t-10 btn-inline"
                       disabled={true}
+                      title="Add a username to view publicly."
                     >
                     View Publicly
                     </button>
