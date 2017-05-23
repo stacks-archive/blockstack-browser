@@ -84,8 +84,9 @@ class ViewProfilePage extends Component {
   }
 
   render() {
-    let identity = this.state.currentIdentity,
-        domainName = identity.domainName
+    const identity = this.state.currentIdentity
+
+    const domainName = identity.domainName
 
     let profile = identity.profile || null,
         verifications = identity.verifications,
@@ -162,6 +163,14 @@ class ViewProfilePage extends Component {
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     View Publicly
                   </Link>
+                  }
+                  {!this.hasUsername() ?
+                    <Link to={`/profiles/i/register/${domainName}`}
+                      className="btn btn-sm btn-secondary m-t-10 btn-inline">
+                     Add a username
+                    </Link>
+                    :
+                    null
                   }
               </div>
               :

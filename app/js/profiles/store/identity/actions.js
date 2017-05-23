@@ -48,11 +48,23 @@ function updateProfile(domainName, profile) {
   }
 }
 
-function createNewIdentityFromDomain(domainName, ownerAddress) {
+function addUsername(domainName, ownerAddress) {
+  return {
+    type: types.ADD_USERNAME,
+    domainName,
+    ownerAddress
+  }
+}
+
+function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false) {
   logger.debug(`createNewIdentityFromDomain: domainName: ${domainName} ownerAddress: ${ownerAddress}`)
   return dispatch => {
-    dispatch(createNewIdentity(domainName, ownerAddress))
-    dispatch(AccountActions.usedIdentityAddress())
+    if (!addingUsername) {
+      dispatch(createNewIdentity(domainName, ownerAddress))
+      dispatch(AccountActions.usedIdentityAddress())
+    } else {
+      dispatch(addUsername(domainName, ownerAddress))
+    }
   }
 }
 
@@ -244,7 +256,8 @@ const IdentityActions = {
   fetchCurrentIdentity,
   refreshIdentities,
   updateOwnedIdentities,
-  createNewIdentityFromDomain
+  createNewIdentityFromDomain,
+  addUsername
 }
 
 

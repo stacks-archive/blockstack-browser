@@ -122,4 +122,33 @@ describe('Identity Store: IdentityReducer', () => {
     const actualState = IdentityReducer(undefined, action)
     assert.deepEqual(actualState, expectedState)
   })
+
+  it('should move the identity from owner address key to domain key', () => {
+    const initialState = {
+      localIdentities: {
+        '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC': {
+          profile: {
+            key: 'value'
+          },
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
+        }
+      }
+    }
+
+    const expectedState = {
+      localIdentities: {
+        'satoshi.id': {
+          profile: {
+            key: 'value'
+          },
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
+          domainName: 'satoshi.id'
+        }
+      }
+    }
+    const action = IdentityActions.addUsername('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
+
+    const actualState = IdentityReducer(initialState, action)
+    assert.deepEqual(actualState, expectedState)
+  })
 })

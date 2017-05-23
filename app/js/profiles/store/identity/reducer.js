@@ -46,6 +46,16 @@ function IdentityReducer(state = initialState, action) {
           })
         })
       })
+    case types.ADD_USERNAME:
+      const localIdentitiesCopy = Object.assign({}, state.localIdentities, {
+        [action.domainName]: Object.assign({}, state.localIdentities[action.ownerAddress], {
+          domainName: action.domainName
+        })
+      })
+      delete localIdentitiesCopy[action.ownerAddress]
+      return Object.assign({}, state, {
+      localIdentities: localIdentitiesCopy
+      })
     default:
       return state
   }
