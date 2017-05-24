@@ -189,7 +189,7 @@ class WelcomeModal extends Component {
           { page === 0 ?
             <div>
               <p className="m-b-30">Step 0: Enter your Blockstack Core API Password</p>
-              <InputGroup name="coreAPIPassword" label="Core API Password" type="text"
+              <InputGroup label="Core API Password" name="coreAPIPassword" type="text"
                 data={this.state} onChange={this.onValueChange} />
               <div>
                 <button onClick={this.saveCoreAPIPassword}
