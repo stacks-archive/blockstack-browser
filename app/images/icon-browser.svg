@@ -6,7 +6,7 @@
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
         <g id="browser-light-cards" sketch:type="MSArtboardGroup" transform="translate(-920.000000, -276.000000)">
-            <g id="DashboardPage.js" sketch:type="MSLayerGroup" transform="translate(335.000000, 105.000000)">
+            <g id="HomeScreenPage.js" sketch:type="MSLayerGroup" transform="translate(335.000000, 105.000000)">
                 <g id="content" transform="translate(393.000000, 129.000000)" sketch:type="MSShapeGroup">
                     <g id="icon-browser" transform="translate(192.000000, 42.000000)">
                         <path d="M82,16.3432836 L82,9.53358209 C82,4.22201493 77.9,0 72.7419355,0 L9.25806452,0 C4.1,0 0,4.22201493 0,9.53358209 L0,16.3432836 L82,16.3432836 L82,16.3432836 Z" id="Shape" fill="#FFFFFF"></path>
