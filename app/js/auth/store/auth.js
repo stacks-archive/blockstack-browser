@@ -3,15 +3,17 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('auth/store/auth.js')
 
-const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING',
-      APP_MANIFEST_LOADING_ERROR = 'APP_MANIFEST_LOADING_ERROR',
-      APP_MANIFEST_LOADED = 'APP_MANIFEST_LOADED',
-      UPDATE_CORE_SESSION = 'UPDATE_CORE_SESSION'
+const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING'
+const APP_MANIFEST_LOADING_ERROR = 'APP_MANIFEST_LOADING_ERROR'
+const APP_MANIFEST_LOADED = 'APP_MANIFEST_LOADED'
+const UPDATE_CORE_SESSION = 'UPDATE_CORE_SESSION'
+const LOGGED_IN_TO_APP = 'LOGGED_IN_TO_APP'
 
 export const AuthActions = {
   clearSessionToken,
   getCoreSessionToken,
-  loadAppManifest
+  loadAppManifest,
+  loginToApp
 }
 
 function appManifestLoading() {
@@ -42,9 +44,21 @@ function updateCoreSessionToken(appDomain, token) {
   }
 }
 
+function loggedIntoApp() {
+  return {
+    type: LOGGED_IN_TO_APP
+  }
+}
+
 function clearSessionToken(appDomain) {
   return dispatch => {
     dispatch(updateCoreSessionToken(appDomain, null))
+  }
+}
+
+function loginToApp() {
+  return dispatch => {
+    dispatch(loggedIntoApp())
   }
 }
 
@@ -74,7 +88,8 @@ const initialState = {
   appManifest: null,
   appManifestLoading: false,
   appManifestLoadingError: null,
-  coreSessionTokens: {}
+  coreSessionTokens: {},
+  loggedIntoApp: false
 }
 
 export function AuthReducer(state=initialState, action) {
@@ -101,6 +116,10 @@ export function AuthReducer(state=initialState, action) {
         coreSessionTokens: Object.assign({}, state.coreSessionTokens, {
           [action.appDomain]: action.token
         })
+      })
+    case LOGGED_IN_TO_APP:
+      return Object.assign({}, state, {
+        loggedIntoApp: true
       })
     default:
       return state

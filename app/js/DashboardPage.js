@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-
 import StatusBar from './components/StatusBar'
 
 function mapStateToProps(state) {
@@ -22,10 +21,10 @@ class DashboardPage extends Component {
   render() {
     return (
     <div className="home-screen-wrap">
-      <StatusBar />
+      <StatusBar hideBackToHomeLink={true} />
       <div className="home-screen">
         <div className="container-fluid app-center">
-          <div className="container app-wrap">          
+          <div className="container app-wrap">
             <div className="app-container no-padding">
               <div className="app-box-wrap">
                 <Link to="/profiles" className="app-box-container">

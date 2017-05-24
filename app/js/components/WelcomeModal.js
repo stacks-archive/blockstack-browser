@@ -46,6 +46,7 @@ class WelcomeModal extends Component {
       coreConnected: this.props.coreConnected,
       password: '',
       backupPhrase: '',
+      pageZeroView: 'friendly',
       pageOneView: 'getStarted',
       alerts: [],
       keychainProgress: 0,
@@ -64,6 +65,8 @@ class WelcomeModal extends Component {
     this.showEnterPassword = this.showEnterPassword.bind(this)
     this.emailKeychainBackup = this.emailKeychainBackup.bind(this)
     this.skipEmailBackup = this.skipEmailBackup.bind(this)
+    this.showFriendlyMode = this.showFriendlyMode.bind(this)
+    this.showAdvancedMode = this.showAdvancedMode.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -124,6 +127,16 @@ class WelcomeModal extends Component {
     }, 1000)
   }
 
+  showFriendlyMode(event) {
+    event.preventDefault()
+    this.setState({ pageZeroView: 'friendly' })
+  }
+
+  showAdvancedMode(event) {
+    event.preventDefault()
+    this.setState({ pageZeroView: 'advanced' })
+  }
+
   emailKeychainBackup(event) {
     event.preventDefault()
     this.props.emailKeychainBackup(this.state.email, this.props.encryptedBackupPhrase)
@@ -175,6 +188,7 @@ class WelcomeModal extends Component {
 
 
     const pageOneView = this.state.pageOneView
+    const pageZeroView = this.state.pageZeroView
 
     return (
       <div className="">
@@ -186,17 +200,38 @@ class WelcomeModal extends Component {
           style={{overlay: {zIndex: 10}}}
           className="container-fluid"
         >
-          { page === 0 ?
+          {page === 0 ?
             <div>
-              <p className="m-b-30">Step 0: Enter your Blockstack Core API Password</p>
-              <InputGroup label="Core API Password" name="coreAPIPassword" type="text"
-                data={this.state} onChange={this.onValueChange} />
+            {pageZeroView === 'friendly' ?
               <div>
-                <button onClick={this.saveCoreAPIPassword}
-                  className="btn btn-lg btn-primary btn-block">
-                Save Core API Password
+                <h4>Please pair your browser with Blockstack</h4>
+                <p>To pair your default browser with Blockstack, click on the
+                Blockstack icon in your menu bar and then click on Home.</p>
+                <img
+                  alt="Open this page via the Blockstack icon to pair your browser"
+                  src="/images/mac-open-from-menubar.png"
+                  style={{ 'max-width': '80%', border: '1px solid #f0f0f0',
+                  'margin-bottom': '20px' }}
+                />
+                <button onClick={this.showAdvancedMode}
+                  className="btn btn-sm btn-secondary">
+                Advanced Mode
                 </button>
               </div>
+              :
+              <div>
+                <h4>Enter your Blockstack Core API Password</h4>
+                <p>Don't know what this is? <a href='' onClick={this.showFriendlyMode}>Go back to normal pairing mode.</a></p>
+                <InputGroup name="coreAPIPassword" label="Core API Password" type="text"
+                  data={this.state} onChange={this.onValueChange} />
+                <div>
+                  <button onClick={this.saveCoreAPIPassword}
+                    className="btn btn-lg btn-primary btn-block">
+                  Save Core API Password
+                  </button>
+                </div>
+              </div>
+            }
             </div>
           : null }
           { page === 1 ?
@@ -300,8 +335,8 @@ class WelcomeModal extends Component {
           : null }
           { page === 2 ?
             <form onSubmit={this.emailKeychainBackup}>
-              <h4>Enter your email to protect your keychain</h4>
-              <p className="m-b-30">Enter your email to receive an encrypted copy
+              <h4>Want an email backup of your keychain?</h4>
+              <p className="m-b-30">Enter your email to receive an <strong>encrypted</strong> copy
               of your keychain. This will help you recover your account if you lose
               your device.</p>
               <InputGroup name="email" label="Email address" type="email"
@@ -312,12 +347,14 @@ class WelcomeModal extends Component {
                   type="submit"
                   className="btn btn-lg btn-primary btn-block"
                 >
-                Finish
+                Yes
                 </button>
-                <br></br>
-                <a href="#" onClick={this.skipEmailBackup}>
-                  Skip
-                </a>
+                <button
+                  onClick={this.skipEmailBackup}
+                  className="btn btn-lg btn-secondary btn-block"
+                >
+                  No
+                </button>
               </div>
             </form>
           : null }

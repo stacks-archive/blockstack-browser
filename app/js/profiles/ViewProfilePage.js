@@ -48,6 +48,7 @@ class ViewProfilePage extends Component {
       },
       isLoading: true
     }
+    this.hasUsername = this.hasUsername.bind(this)
   }
 
   componentHasNewRouteParams(props) {
@@ -76,9 +77,16 @@ class ViewProfilePage extends Component {
     })
   }
 
+  hasUsername() {
+    const localIdentities = this.props.localIdentities
+    const currentDomainName = this.state.currentIdentity.domainName
+    return currentDomainName !== localIdentities[currentDomainName].ownerAddress
+  }
+
   render() {
-    let identity = this.state.currentIdentity,
-        domainName = identity.domainName
+    const identity = this.state.currentIdentity
+
+    const domainName = identity.domainName
 
     let profile = identity.profile || null,
         verifications = identity.verifications,
@@ -142,10 +150,28 @@ class ViewProfilePage extends Component {
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     Edit
                   </Link>
+                  {!this.hasUsername() ?
+                    <button
+                      className="btn btn-sm btn-secondary m-t-10 btn-inline"
+                      disabled={true}
+                      title="Add a username to view publicly."
+                    >
+                    View Publicly
+                    </button>
+                    :
                   <Link to={`/profiles/${domainName}`}
                     className="btn btn-sm btn-secondary m-t-10 btn-inline">
                     View Publicly
                   </Link>
+                  }
+                  {!this.hasUsername() ?
+                    <Link to={`/profiles/i/register/${domainName}`}
+                      className="btn btn-sm btn-secondary m-t-10 btn-inline">
+                     Add a username
+                    </Link>
+                    :
+                    null
+                  }
               </div>
               :
               <div>

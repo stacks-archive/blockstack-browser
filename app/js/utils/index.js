@@ -7,7 +7,7 @@ export {
   getWebAccountTypes,
   isPasswordValid,
   isBackupPhraseValid,
-  getIdentityAddressNode,
+  getIdentityOwnerAddressNode,
   getBitcoinAddressNode
 } from './account-utils'
 

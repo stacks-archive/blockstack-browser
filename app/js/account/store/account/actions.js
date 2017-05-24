@@ -4,7 +4,7 @@ import { randomBytes } from 'crypto'
 import { authorizationHeaderValue, btcToSatoshis, encrypt,
   getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
-  getIdentityAddressNode,
+  getIdentityOwnerAddressNode,
   getBitcoinAddressNode } from '../../../utils'
 import * as types from './types'
 import log4js from 'log4js'
@@ -21,22 +21,36 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
   const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
   const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
 
-  const firstIdentityAddressNode = getIdentityAddressNode(identityPrivateKeychainNode)
-  const firstIdentityKey = firstIdentityAddressNode.keyPair.d.toBuffer(32).toString('hex')
-  const firstIdentityKeyID = firstIdentityAddressNode.keyPair.getPublicKeyBuffer().toString('hex')
-
-  const firstIdentityAddress = firstIdentityAddressNode.getAddress()
   const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
+
+  const ADDRESSES_TO_GENERATE = 9
+  const identityAddresses = []
+  const identityKeypairs = []
+
+  // We pre-generate a number of identity addresses so that we
+  // don't have to prompt the user for the password on each new profile
+  for (let addressIndex = 0; addressIndex < ADDRESSES_TO_GENERATE; addressIndex++) {
+    const identityOwnerAddressNode =
+    getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
+    const identityAddress = identityOwnerAddressNode.getAddress()
+    identityAddresses.push(identityAddress)
+    const identityKey = identityOwnerAddressNode.keyPair.d.toBuffer(32).toString('hex')
+    const identityKeyID = identityOwnerAddressNode.keyPair.getPublicKeyBuffer().toString('hex')
+    identityKeypairs.push({
+      key: identityKey,
+      keyID: identityKeyID,
+      address: identityAddress
+    })
+  }
 
   return {
     type: types.CREATE_ACCOUNT,
     encryptedBackupPhrase,
     identityPublicKeychain,
     bitcoinPublicKeychain,
-    firstIdentityAddress,
     firstBitcoinAddress,
-    firstIdentityKey,
-    firstIdentityKeyID
+    identityAddresses,
+    identityKeypairs
   }
 }
 
@@ -108,6 +122,19 @@ function promptedForEmail() {
   }
 }
 
+function updateViewedRecoveryCode() {
+  return {
+    type: types.VIEWED_RECOVERY_CODE
+  }
+}
+
+function displayedRecoveryCode() {
+  logger.trace('displayedRecoveryCode')
+  return dispatch => {
+    dispatch(updateViewedRecoveryCode())
+  }
+}
+
 function emailKeychainBackup(email, encryptedPortalKey) {
   logger.debug(`emailKeychainBackup: ${email}`)
   return dispatch => {
@@ -127,7 +154,7 @@ function emailKeychainBackup(email, encryptedPortalKey) {
       headers: requestHeaders,
       body: JSON.stringify(requestBody)
     }
-
+    // const emailBackupUrl = 'http://localhost:2888/backup'
     const emailBackupUrl = 'https://blockstack-portal-emailer.appartisan.com/backup'
 
     return fetch(emailBackupUrl, options)
@@ -291,24 +318,29 @@ function initializeWallet(password, backupPhrase, email = null) {
   }
 }
 
-function newIdentityAddress() {
-  return {
-    type: types.NEW_IDENTITY_ADDRESS
-  }
-}
-
 function newBitcoinAddress() {
   return {
     type: types.NEW_BITCOIN_ADDRESS
   }
 }
 
+function incrementIdentityAddressIndex() {
+  return {
+    type: types.INCREMENT_IDENTITY_ADDRESS_INDEX
+  }
+}
+
+function usedIdentityAddress() {
+  logger.trace('usedIdentityAddress')
+  return dispatch => {
+    dispatch(incrementIdentityAddressIndex())
+  }
+}
 
 const AccountActions = {
   createAccount,
   updateBackupPhrase,
   initializeWallet,
-  newIdentityAddress,
   newBitcoinAddress,
   deleteAccount,
   refreshBalances,
@@ -317,7 +349,11 @@ const AccountActions = {
   resetCoreWithdrawal,
   withdrawBitcoinFromCoreWallet,
   emailKeychainBackup,
-  skipEmailBackup
+  skipEmailBackup,
+  updateViewedRecoveryCode,
+  incrementIdentityAddressIndex,
+  usedIdentityAddress,
+  displayedRecoveryCode
 }
 
 export default AccountActions

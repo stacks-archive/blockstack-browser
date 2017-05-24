@@ -56,7 +56,7 @@ function beforeRegister() {
   }
 }
 
-function registerName(api, domainName, recipientAddress, keypair) {
+function registerName(api, domainName, ownerAddress, keypair) {
   logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
     logger.debug(`Signing a blank default profile for ${domainName}`)
@@ -81,7 +81,7 @@ function registerName(api, domainName, recipientAddress, keypair) {
 
       const requestBody = JSON.stringify({
         name: domainName,
-        owner_address: recipientAddress,
+        owner_address: ownerAddress,
         zonefile: zoneFile,
         min_confs: 0
       })
@@ -102,7 +102,7 @@ function registerName(api, domainName, recipientAddress, keypair) {
           } else {
             logger.debug(`Successfully submitted registration for ${domainName}`)
             dispatch(registrationSubmitted())
-            IdentityActions.createNewIdentityFromDomain(domainName)
+            IdentityActions.createNewIdentityFromDomain(domainName, ownerAddress)
           }
         })
         .catch((error) => {

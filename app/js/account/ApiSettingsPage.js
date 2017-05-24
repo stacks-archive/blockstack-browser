@@ -83,19 +83,6 @@ class ApiSettingsPage extends Component {
     return (
       <div className="col-md-9">
         <div>
-          <h4>Authentication</h4>
-
-          <p>
-            <button
-              onClick={this.registerProtocolHandler}
-              className="btn btn-sm btn-outline-primary"
-            >
-              Allow App Logins
-            </button>
-          </p>
-
-          <hr />
-
           <RadioGroup
             name="hostedDataLocation"
             selectedValue={this.state.api.hostedDataLocation}

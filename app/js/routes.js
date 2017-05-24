@@ -46,7 +46,7 @@ export default (
         <Route path=":index/local"    component={ViewProfilePage} />
         <Route path=":index/edit"     component={EditProfilePage} />
         <Route path=":index/export"   component={ExportProfilePage} />
-        <Route path="i/register"      component={RegisterProfilePage} />
+        <Route path="i/register/:index" component={RegisterProfilePage} />
         <Route path="i/import"        component={ImportProfilePage} />
     </Route>
 

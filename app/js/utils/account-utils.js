@@ -80,16 +80,23 @@ export function getBitcoinAddressNode(bitcoinKeychain,
   return bitcoinKeychain.derive(chain).derive(addressIndex)
 }
 
+const IDENTITY_KEYCHAIN = 888
+const BLOCKSTACK_ON_BITCOIN = 0
 export function getIdentityPrivateKeychain(masterKeychain) {
-  return masterKeychain.deriveHardened(888).deriveHardened(0)
+  return masterKeychain.deriveHardened(IDENTITY_KEYCHAIN)
+  .deriveHardened(BLOCKSTACK_ON_BITCOIN)
 }
 
 export function getIdentityPublicKeychain(masterKeychain) {
   return getIdentityPrivateKeychain(masterKeychain).neutered()
 }
 
-export function getIdentityAddressNode(identityKeychain, index = 0) {
-  return identityKeychain.derive(index)
+const OWNER_ADDRESS = 0
+export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityIndex = 0) {
+  if (identityPrivateKeychain.isNeutered()) {
+    throw new Error('You need the private key to generate identity addresses')
+  }
+  return identityPrivateKeychain.deriveHardened(identityIndex).derive(OWNER_ADDRESS)
 }
 
 export function getWebAccountTypes(api) {
