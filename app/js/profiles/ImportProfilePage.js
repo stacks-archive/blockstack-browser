@@ -47,7 +47,7 @@ class ImportPage extends Component {
             </i></p>
             <div className="highlight">
               <pre>
-                <code>{this.props.addresses[0]}</code> // FIXME: show first unused name 
+                <code>{this.props.addresses[0]}</code>
               </pre>
             </div>
           </div>
