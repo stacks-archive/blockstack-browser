@@ -44,8 +44,10 @@ One per name per device.
   }
 }
 ```
+
 This JSON object MUST be signed by the `sign` key of the corresponding device
 in the key delegation bundle.
+
 ---
 
 ## Blockstack Token File
