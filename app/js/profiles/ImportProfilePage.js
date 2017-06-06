@@ -8,7 +8,8 @@ import { AccountActions } from '../account/store/account'
 
 function mapStateToProps(state) {
   return {
-    addresses: state.account.identityAccount.addresses
+    addresses: state.account.identityAccount.addresses,
+    nextUnusedAddressIndex: state.account.identityAccount.addressIndex
   }
 }
 
@@ -33,21 +34,20 @@ class ImportPage extends Component {
 
   render() {
     return (
-      <div className="body-inner body-inner-white">
-        <PageHeader title="Import" />
+      <div className="card-list-container profile-content-wrapper">
+        <div>
+          <h5 className="h5-landing">Import Name</h5>
+        </div>
         <div className="container">
-          <div className="col-sm-3">
-          </div>
           <div className="col-sm-6">
-            <h3>Import Identity</h3>
             <p><i>
-              To import an identity into this app,
-              go to the app that owns the identity,
-              then find the export form and enter the transfer code below.
+              To import a name into this wallet,
+              go to the app that owns the name,
+              find the export form and enter the transfer code below.
             </i></p>
             <div className="highlight">
               <pre>
-                <code>{this.props.addresses[this.props.addresses.length-1]}</code>
+                <code>{this.props.addresses[0]}</code>
               </pre>
             </div>
           </div>
