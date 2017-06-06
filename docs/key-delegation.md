@@ -44,8 +44,27 @@ One per name per device.
   }
 }
 ```
-
+This JSON object MUST be signed by the `sign` key of the corresponding device
+in the key delegation bundle.
 ---
 
-Key delegation object and app key bundle objects are included in the profile JSON
-object.
+## Blockstack Token File
+
+These are packaged in the token file along with the profile.
+
+```JSON
+{
+  "version": "3.0",
+  "profile": <profile-jwt>,
+  "keys": {
+    "delegation": <key-bundle-jwt>,
+    "apps": {
+      "laptop": <app-key-bundle-jwt>,
+      "phone": <app-key-bundle-jwt>
+      }
+    }
+  }
+}
+```
+
+The entire token file is signed by 1 of the `sign` keys in the key delegation bundle.
