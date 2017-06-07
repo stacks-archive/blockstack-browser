@@ -61,7 +61,7 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress) {
     }
 
     if (tokenFileUrl) {
-      fetch(tokenFileUrl)
+      proxyFetch(tokenFileUrl)
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
