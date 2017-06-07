@@ -41,7 +41,7 @@ describe('Registration Store: Async Actions', () => {
     }
     const registrationBody = { name: 'satoshi.id',
       owner_address: ecPair.getAddress(),
-      zonefile: '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"www.dropbox.com/s/eft9mgspq5ff3qe/profile.json?dl=1"\n\n',
+      zonefile: '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://www.dropbox.com/s/eft9mgspq5ff3qe/profile.json?dl=1"\n\n',
       min_confs: 0 }
 
     it('successfully registers a name', () => {
