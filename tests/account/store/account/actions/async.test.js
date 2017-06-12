@@ -78,7 +78,6 @@ describe('Account Store: Async Actions', () => {
       return store.dispatch(AccountActions.initializeWallet(password, backupPhrase))
       .then(() => {
         const actions = store.getActions()
-        console.log(actions[0].identityKeypairs)
         assert.equal(actions.length, 1)
         assert.equal(actions[0].bitcoinPublicKeychain, bitcoinPublicKeychain)
         assert.equal(actions[0].identityPublicKeychain, identityPublicKeychain)

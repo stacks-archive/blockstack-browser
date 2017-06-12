@@ -5,6 +5,58 @@ import { HDNode } from 'bitcoinjs-lib'
 
 const backupPhraseLength = 24
 
+const APPS_NODE_INDEX = 0
+const SIGNING_NODE_INDEX = 1
+const ENCRYPTION_NODE_INDEX = 2
+
+class AppsNode {
+  constructor(appsHdNode) {
+    this.hdNode = appsHdNode
+  }
+
+  getNode() {
+    return this.hdNode
+  }
+
+  getAppNode(appDomain) {
+    //
+  }
+}
+
+class IdentityAddressOwnerNode {
+  constructor(ownerHdNode) {
+    this.hdNode = ownerHdNode
+  }
+
+  getNode() {
+    return this.hdNode
+  }
+
+  getIdentityKey() {
+    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
+  }
+
+  getIdentityKeyID() {
+    return this.hdNode.keyPair.getPublicKeyBuffer().toString('hex')
+  }
+
+  getAppsNode() {
+    return new AppsNode(hdNode.deriveHardened(APPS_NODE_INDEX))
+  }
+
+  getAddress() {
+    return this.hdNode.getAddress()
+  }
+
+  getEncryptionNode() {
+    return this.hdNode.deriveHardened(ENCRYPTION_NODE_INDEX)
+  }
+
+  getSigningNode() {
+    return this.hdNode.deriveHardened(SIGNING_NODE_INDEX)
+  }
+}
+
 export function isPasswordValid(password) {
   let isValid = false,
       error = null
@@ -95,7 +147,7 @@ export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityInd
   if (identityPrivateKeychain.isNeutered()) {
     throw new Error('You need the private key to generate identity addresses')
   }
-  return identityPrivateKeychain.deriveHardened(identityIndex)
+  return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex))
 }
 
 export function getWebAccountTypes(api) {
