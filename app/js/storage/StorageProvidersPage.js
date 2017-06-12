@@ -92,6 +92,21 @@ class StorageProvidersPage extends Component {
             </p>
             <p>
               <button disabled className="btn btn-storage-primary" title="Coming soon!">
+                Connect IPFS
+              </button>
+            </p>
+            <p>
+              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+                Connect Sia
+              </button>
+            </p>
+            <p>
+              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+                Connect Storj
+              </button>
+            </p>
+            <p>
+              <button disabled className="btn btn-storage-primary" title="Coming soon!">
                 Connect Google Drive
               </button>
             </p>
