@@ -41,7 +41,7 @@ class IdentityAddressOwnerNode {
   }
 
   getAppsNode() {
-    return new AppsNode(hdNode.deriveHardened(APPS_NODE_INDEX))
+    return new AppsNode(this.hdNode.deriveHardened(APPS_NODE_INDEX))
   }
 
   getAddress() {
