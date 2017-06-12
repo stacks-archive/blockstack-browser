@@ -91,12 +91,11 @@ export function getIdentityPublicKeychain(masterKeychain) {
   return getIdentityPrivateKeychain(masterKeychain).neutered()
 }
 
-const OWNER_ADDRESS = 0
 export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityIndex = 0) {
   if (identityPrivateKeychain.isNeutered()) {
     throw new Error('You need the private key to generate identity addresses')
   }
-  return identityPrivateKeychain.deriveHardened(identityIndex).derive(OWNER_ADDRESS)
+  return identityPrivateKeychain.deriveHardened(identityIndex)
 }
 
 export function getWebAccountTypes(api) {
