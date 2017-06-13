@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Blockstack Token File",
+    "description": "A file containing Blockstack profile & key delegation JWTs",
+    "type": "object",
+    "properties": {
+        "version": {
+            "description": "The unique identifier for a product",
+            "type": "number",
+            "minimum": 0
+        },
+        "profile": {
+            "description": "User profile",
+            "type": "object",
+            "properties": {
+              "header": {
+
+              },
+              "payload": {
+                "type": "object",
+                "properties": {
+
+                }
+              },
+              "signature": {
+
+              }
+            },
+            "required": ["header", "payload", "signature"]
+        },
+        "keys": {
+            "type": "object",
+            "minimum": 1
+        }
+    },
+    "required": ["version", "profile", "keys"]
+}
