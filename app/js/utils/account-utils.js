@@ -1,6 +1,18 @@
 import bip39 from 'bip39'
 import { decrypt } from './encryption-utils'
 import { HDNode } from 'bitcoinjs-lib'
+import crypto from 'crypto'
+
+function hashCode(string) {
+  let hash = 0
+  if (string.length === 0) return hash
+  for (let i = 0; i < string.length; i++) {
+    const character = string.charCodeAt(i)
+    hash = ((hash << 5) - hash) + character
+    hash = hash & hash
+  }
+  return hash
+}
 
 
 const backupPhraseLength = 24
@@ -10,8 +22,9 @@ const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
 
 class AppsNode {
-  constructor(appsHdNode) {
+  constructor(appsHdNode, salt) {
     this.hdNode = appsHdNode
+    this.salt = salt
   }
 
   getNode() {
@@ -19,17 +32,25 @@ class AppsNode {
   }
 
   getAppNode(appDomain) {
-    //
+    const hash = crypto.createHash('sha256').update(`${appDomain}${this.salt}`).digest('hex')
+    const appIndex = hashCode(hash)
+    const appNode = this.hdNode.deriveHardened(appIndex)
+    return appNode
   }
 }
 
 class IdentityAddressOwnerNode {
-  constructor(ownerHdNode) {
+  constructor(ownerHdNode, salt) {
     this.hdNode = ownerHdNode
+    this.salt = salt
   }
 
   getNode() {
     return this.hdNode
+  }
+
+  getSalt() {
+    return this.salt
   }
 
   getIdentityKey() {
@@ -147,7 +168,11 @@ export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityInd
   if (identityPrivateKeychain.isNeutered()) {
     throw new Error('You need the private key to generate identity addresses')
   }
-  return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex))
+
+  const publicKeyHex = identityPrivateKeychain.keyPair.getPublicKeyBuffer().toString('hex')
+  const salt = crypto.createHash('sha256').update(publicKeyHex).digest('hex')
+
+  return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex), salt)
 }
 
 export function getWebAccountTypes(api) {
