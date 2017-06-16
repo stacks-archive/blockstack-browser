@@ -112,7 +112,6 @@ class AuthModal extends Component {
       const salt = this.props.identityKeypairs[0].salt
       const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-      console.log(appPrivateKey)
       if (scopes.length === 0) {
         setCoreStorageConfig({ dropbox: { access_token: dropboxAccessToken } }, privateKey)
         .then(() => {
