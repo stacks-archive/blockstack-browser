@@ -29,7 +29,7 @@ address that owns name1.id.
 * `app` is the public key of the key that signs the app
 * `enc` is the public key of the data encryption key
 * `sign`: is the public key of the signature key (used to sign the profile)
-* `index`: is index of the owner private key on given device 
+* `index`: is index of the owner private key on given device
 ---
 
 ## App key bundle object
