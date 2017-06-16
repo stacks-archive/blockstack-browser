@@ -48,7 +48,7 @@ pip install --upgrade git+https://github.com/blockstack/zone-file-py.git@7373961
 
 echo "Installing latest blockstack..."
 
-pip install --upgrade git+https://github.com/blockstack/blockstack-core.git@bbb4a5b3fe6d77451f7dd834d5f61219f60f8dda
+pip install --upgrade git+https://github.com/blockstack/blockstack-core.git@6cdf12bd529c00f9e829f2d9bca8b4fceba32d16
 
 echo "Blockstack virtual environment created."
 
