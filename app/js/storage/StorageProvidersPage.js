@@ -7,13 +7,17 @@ import { SettingsActions } from '../account/store/settings'
 import { DROPBOX } from './utils/index'
 import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from './utils/dropbox'
 
+import { setCoreStorageConfig } from '../utils/api-utils'
+
 const Dropbox = require('dropbox')
 
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
     updateApi: PropTypes.func.isRequired,
-    resetApi: PropTypes.func.isRequired
+    resetApi: PropTypes.func.isRequired,
+    localIdentities: state.profiles.identity.localIdentities,
+    identityKeypairs: state.account.identityAccount.keypairs
   }
 }
 
@@ -24,7 +28,9 @@ function mapDispatchToProps(dispatch) {
 class StorageProvidersPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
-    updateApi: PropTypes.func.isRequired
+    updateApi: PropTypes.func.isRequired,
+    localIdentities: PropTypes.object.isRequired,
+    identityKeypairs: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -40,7 +46,12 @@ class StorageProvidersPage extends Component {
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     if (dropboxAccessToken != null) {
       this.props.updateApi(Object.assign({}, api, { dropboxAccessToken }))
-      window.location = '/'
+      const privateKey = this.props.identityKeypairs[0].key
+      setCoreStorageConfig({ dropbox: { access_token: dropboxAccessToken } }, privateKey)
+      .then(() => {
+        console.log(privateKey)
+        window.location = '/'
+      })
     }
   }
 

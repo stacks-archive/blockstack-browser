@@ -96,3 +96,20 @@ export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword
     })
   })
 }
+
+
+/* Expects a JavaScript object with a key containing the config for each storage
+ * provider
+ * Example:
+ * const config = { dropbox: { access_token: '123abc'} }
+ */
+export function setCoreStorageConfig(config, profileSigningKey) {
+  // we don't necessarily have any names
+  // at dropbox connect time & only allow auth with the 0th name,
+  // so let's hardcode this
+  const blockstackId = 'unknown'
+  return new Promise((resolve, reject) => {
+    // TODO: implement
+    resolve('OK')
+  })
+}

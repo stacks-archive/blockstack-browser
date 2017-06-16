@@ -107,9 +107,13 @@ class AuthModal extends Component {
       const appDomain = this.state.decodedToken.payload.domain_name
       const scopes = this.state.decodedToken.payload.scopes
       if (scopes.length === 0) {
-        this.props.getCoreSessionToken(this.props.coreHost,
-            this.props.corePort, this.props.coreAPIPassword, privateKey,
-            appDomain, this.state.authRequest, hasUsername ? userDomainName : null)
+        setCoreStorageConfig({ dropbox: { access_token: dropboxAccessToken } }, privateKey)
+        .then(() => {
+          this.props.getCoreSessionToken(this.props.coreHost,
+              this.props.corePort, this.props.coreAPIPassword, privateKey,
+              appDomain, this.state.authRequest, hasUsername ? userDomainName : null)
+        })
+
       } else {
         logger.error(`login: Logging into app ${appDomain} with scopes ${scopes} isn't supported`)
       }

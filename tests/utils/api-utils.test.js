@@ -1,4 +1,9 @@
-import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from '../../app/js/utils/api-utils'
+import { getCoreAPIPasswordFromURL,
+  getLogServerPortFromURL,
+  setCoreStorageConfig } from '../../app/js/utils/api-utils'
+
+import nock from 'nock'
+
 
 describe('api-utils', () => {
   beforeEach(() => {
@@ -14,6 +19,7 @@ describe('api-utils', () => {
   })
 
   afterEach(() => {
+    nock.cleanAll()
     global.window = global.origWindow
   })
   describe('getCoreAPIPasswordFromURL()', () => {
@@ -55,6 +61,28 @@ describe('api-utils', () => {
       const hash = ''
       window.location.hash = hash
       assert.equal(getLogServerPortFromURL(), null)
+    })
+  })
+
+  describe('setCoreStorageConfig', () => {
+    it('should send a properly formatted request to core', () => {
+      const config = { dropbox: { access_token: '123abc' } }
+      const privateKey = 'a29c3e73dba79ab0f84cb792bafd65ec71f243ebe67a7ebd842ef5cdce3b21eb'
+
+      const expectedBody = {}
+      const expectedResponse = 'OK'
+
+      // TODO update test to reflect implementation & make it pass
+
+      // mock core
+      const core = nock('http://localhost:6270')
+      .post('/v1/storage/config', expectedBody)
+      .reply(201, expectedResponse)
+
+      return setCoreStorageConfig(config, privateKey).then((actualResponse) => {
+        assert.deepEqual(actualResponse, expectedResponse)
+        core.done() // will throw AssertionError if mock not called
+      })
     })
   })
 })
