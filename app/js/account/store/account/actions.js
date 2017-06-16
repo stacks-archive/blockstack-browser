@@ -36,10 +36,13 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
     identityAddresses.push(identityAddress)
     const identityKey = identityOwnerAddressNode.getIdentityKey()
     const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
+    const appsNode = identityOwnerAddressNode.getAppsNode()
     identityKeypairs.push({
       key: identityKey,
       keyID: identityKeyID,
-      address: identityAddress
+      address: identityAddress,
+      appsNodeKey: appsNode.toBase58(),
+      salt: appsNode.getSalt()
     })
   }
 

@@ -21,7 +21,18 @@ const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
 
-class AppsNode {
+export class AppNode {
+  constructor(hdNode, appDomain) {
+    this.hdNode = hdNode
+    this.appDomain = appDomain
+  }
+
+  getAppPrivateKey() {
+    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
+  }
+}
+
+export class AppsNode {
   constructor(appsHdNode, salt) {
     this.hdNode = appsHdNode
     this.salt = salt
@@ -35,7 +46,15 @@ class AppsNode {
     const hash = crypto.createHash('sha256').update(`${appDomain}${this.salt}`).digest('hex')
     const appIndex = hashCode(hash)
     const appNode = this.hdNode.deriveHardened(appIndex)
-    return appNode
+    return new AppNode(appNode, appDomain)
+  }
+
+  toBase58() {
+    return this.hdNode.toBase58()
+  }
+
+  getSalt() {
+    return this.salt
   }
 }
 
@@ -62,7 +81,7 @@ class IdentityAddressOwnerNode {
   }
 
   getAppsNode() {
-    return new AppsNode(this.hdNode.deriveHardened(APPS_NODE_INDEX))
+    return new AppsNode(this.hdNode.deriveHardened(APPS_NODE_INDEX), this.salt)
   }
 
   getAddress() {
