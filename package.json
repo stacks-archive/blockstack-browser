@@ -33,6 +33,7 @@
     "boilerplate"
   ],
   "devDependencies": {
+    "appdmg": "^0.4.5",
     "asar": "^0.11.0",
     "babel-core": "^6.9.0",
     "babel-eslint": "^6.0.4",
