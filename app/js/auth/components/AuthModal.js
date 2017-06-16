@@ -107,7 +107,7 @@ class AuthModal extends Component {
       const appDomain = this.state.decodedToken.payload.domain_name
       const scopes = this.state.decodedToken.payload.scopes
       if (scopes.length === 0) {
-        setCoreStorageConfig({ dropbox: { access_token: dropboxAccessToken } }, privateKey)
+        setCoreStorageConfig({ dropbox: { token: dropboxAccessToken } }, privateKey)
         .then(() => {
           this.props.getCoreSessionToken(this.props.coreHost,
               this.props.corePort, this.props.coreAPIPassword, privateKey,

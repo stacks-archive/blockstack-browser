@@ -47,7 +47,7 @@ class StorageProvidersPage extends Component {
     if (dropboxAccessToken != null) {
       this.props.updateApi(Object.assign({}, api, { dropboxAccessToken }))
       const privateKey = this.props.identityKeypairs[0].key
-      setCoreStorageConfig({ dropbox: { access_token: dropboxAccessToken } }, privateKey)
+      setCoreStorageConfig({ dropbox: { token: dropboxAccessToken } }, privateKey)
       .then(() => {
         console.log(privateKey)
         window.location = '/'
