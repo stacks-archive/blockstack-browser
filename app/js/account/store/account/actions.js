@@ -37,7 +37,6 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
     const identityKey = identityOwnerAddressNode.getIdentityKey()
     const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
     const appsNode = identityOwnerAddressNode.getAppsNode()
-    console.log(appsNode.toBase58())
     identityKeypairs.push({
       key: identityKey,
       keyID: identityKeyID,
