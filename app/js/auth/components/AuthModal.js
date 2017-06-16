@@ -10,6 +10,8 @@ import {
   makeAuthResponse, getAuthRequestFromURL, fetchAppManifest, redirectUserToApp
 } from 'blockstack'
 import Image from '../../components/Image'
+import { AppsNode } from '../../utils/account-utils'
+import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
@@ -106,11 +108,16 @@ class AuthModal extends Component {
       const privateKey = this.props.identityKeypairs[0].key
       const appDomain = this.state.decodedToken.payload.domain_name
       const scopes = this.state.decodedToken.payload.scopes
+      const appsNodeKey = this.props.identityKeypairs[0].appsNodeKey
+      const salt = this.props.identityKeypairs[0].salt
+      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+      const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+      console.log(appPrivateKey)
       if (scopes.length === 0) {
         setCoreStorageConfig({ dropbox: { access_token: dropboxAccessToken } }, privateKey)
         .then(() => {
           this.props.getCoreSessionToken(this.props.coreHost,
-              this.props.corePort, this.props.coreAPIPassword, privateKey,
+              this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
               appDomain, this.state.authRequest, hasUsername ? userDomainName : null)
         })
 
