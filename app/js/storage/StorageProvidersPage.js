@@ -45,8 +45,9 @@ class StorageProvidersPage extends Component {
     const api = this.props.api
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     if (dropboxAccessToken != null) {
-      this.props.updateApi(Object.assign({}, api, { dropboxAccessToken }))
-      setCoreStorageConfig(api)
+      const newApi = Object.assign({}, api, { dropboxAccessToken })
+      this.props.updateApi(newApi)
+      setCoreStorageConfig(newApi)
       .then(() => {
         window.location = '/'
       })
