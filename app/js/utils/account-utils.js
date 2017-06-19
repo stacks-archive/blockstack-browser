@@ -30,6 +30,10 @@ export class AppNode {
   getAppPrivateKey() {
     return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
   }
+
+  getAddress() {
+    return this.hdNode.getAddress()
+  }
 }
 
 export class AppsNode {
