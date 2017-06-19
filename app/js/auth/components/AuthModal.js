@@ -11,6 +11,7 @@ import {
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
+import { setCoreStorageConfig } from '../../utils/api-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 
@@ -26,7 +27,8 @@ function mapStateToProps(state) {
     coreSessionTokens: state.auth.coreSessionTokens,
     coreHost: state.settings.api.coreHost,
     corePort: state.settings.api.corePort,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    api: state.settings.api
   }
 }
 
@@ -45,7 +47,8 @@ class AuthModal extends Component {
     getCoreSessionToken: PropTypes.func.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
     coreSessionTokens: PropTypes.object.isRequired,
-    loginToApp: PropTypes.func.isRequired
+    loginToApp: PropTypes.func.isRequired,
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -120,7 +123,7 @@ class AuthModal extends Component {
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
       const blockchainId = (hasUsername ? userDomainName : null);
 
-      setCoreStorageConfig({ dropbox: { token: dropboxAccessToken } }, this.props.coreAPIPassword, blockchainId, profile, privateKey)
+      setCoreStorageConfig(this.props.api, blockchainId, profile, privateKey)
       .then(() => {
         this.props.getCoreSessionToken(this.props.coreHost,
             this.props.corePort, this.props.coreAPIPassword, appPrivateKey,

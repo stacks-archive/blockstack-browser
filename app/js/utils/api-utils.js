@@ -3,7 +3,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/api-utils.js')
 
-import { uploadProfile } from '../storage/utils'
+import { uploadProfile, DROPBOX } from '../storage/utils'
 import { signProfileForUpload } from './index'
 
 export function getNamesOwned(address, bitcoinAddressLookupUrl, callback) {
@@ -139,22 +139,18 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
  * Example:
  * const config = { dropbox: { token: '123abc'} }
  */
-export function setCoreStorageConfig(config, coreAPIPassword,
-  blockchainId = null, profile = null, profileSigningKey = null) {
+export function setCoreStorageConfig(api,
+  blockchainId = null, profile = null, profileSigningKeypair = null) {
   return new Promise((resolve, reject) => {
-    // for now, only take driver config for dropbox
-    if (Object.keys(config).length !== 1) {
-      throw new Error('Driver config must have exactly one driver entry')
-    }
 
-    const driverName = Object.keys(config)[0]
-
-    // for now, we only support 'dropbox'
-    if (driverName !== 'dropbox') {
+    // for now, we only support Dropbox
+    if (api.hostedDataLocation !== DROPBOX) {
       throw new Error('Only support "dropbox" driver at this time')
     }
 
-    const requestBody = { driver_config: config[driverName] }
+    const driverName = 'dropbox'
+
+    const requestBody = { driver_config: { token: api.dropboxAccessToken } }
     const url = `http://localhost:6270/v1/node/drivers/storage/${driverName}?index=1`
     const bodyText = JSON.stringify(requestBody)
 
@@ -166,7 +162,7 @@ export function setCoreStorageConfig(config, coreAPIPassword,
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': bodyText.length,
-        Authorization: authorizationHeaderValue(coreAPIPassword)
+        Authorization: authorizationHeaderValue(api.coreAPIPassword)
       },
       body: bodyText
     }
@@ -176,26 +172,32 @@ export function setCoreStorageConfig(config, coreAPIPassword,
       if (response.status !== 200) {
         throw new Error(response.statusText)
       }
+      return response.text()
+        .then((responseText) => JSON.parse(responseText))
+        .then((responseJson) => {
+         // expect the index URL (for some drivers, like Dropbox)
+          const driverConfigResult = responseJson
 
-       // expect the index URL (for some drivers, like Dropbox)
-      const driverConfigResult = response.json()
-      if (driverConfigResult.indexUrl && profile && blockchainId) {
-        // insert it into the profile and replicate it.
-        profile = profileInsertStorageRoutingInfo(profile, driverName, driverConfigResult.indexUrl)
-        const data = signProfileForUpload(profile, profileSigningKey)
+          if (driverConfigResult.index_url && profile && blockchainId) {
+            // insert it into the profile and replicate it.
+            profile = profileInsertStorageRoutingInfo(profile,
+              driverName, driverConfigResult.index_url)
+            const data = signProfileForUpload(profile, profileSigningKeypair)
 
-        uploadProfile(driverName, blockchainId, data)
-        .then((result) => {
-          // saved!
-          resolve(result)
+            return uploadProfile(api, blockchainId, data)
+            .then((result) => {
+              // saved!
+              resolve(result)
+            })
+            .catch((error) => {
+              reject(error)
+            })
+          } else {
+            // Some drivers won't return an indexUrl
+            // or we'll want to initialize
+            resolve('OK')
+          }
         })
-        .catch((error) => {
-          reject(error)
-        })
-      } else {
-        // done!
-        resolve(result) // TODO: this seems like it should be a failure - ask jude
-      }
     })
     .catch((error) => {
       reject(error)
