@@ -194,7 +194,7 @@ export function setCoreStorageConfig(config, coreAPIPassword,
         })
       } else {
         // done!
-        resolve(result)
+        resolve(result) // TODO: this seems like it should be a failure - ask jude
       }
     })
     .catch((error) => {
