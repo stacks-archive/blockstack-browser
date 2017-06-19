@@ -81,9 +81,15 @@ class AuthModal extends Component {
         const identity = this.props.localIdentities[userDomainName]
         const profile = identity.profile
         const privateKey = this.props.identityKeypairs[0].key
+        const appsNodeKey = this.props.identityKeypairs[0].appsNodeKey
+        const salt = this.props.identityKeypairs[0].salt
+        const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+        const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+
         // TODO: what if the token is expired?
         const authResponse = makeAuthResponse(privateKey, profile, userDomainName,
-        nextProps.coreSessionTokens[appDomain])
+            nextProps.coreSessionTokens[appDomain], appPrivateKey)
+
         this.props.clearSessionToken(appDomain)
         redirectUserToApp(this.state.authRequest, authResponse)
       }
@@ -112,17 +118,14 @@ class AuthModal extends Component {
       const salt = this.props.identityKeypairs[0].salt
       const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-      if (scopes.length === 0) {
-        setCoreStorageConfig({ dropbox: { token: dropboxAccessToken } }, privateKey)
-        .then(() => {
-          this.props.getCoreSessionToken(this.props.coreHost,
-              this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
-              appDomain, this.state.authRequest, hasUsername ? userDomainName : null)
-        })
+      const blockchainId = (hasUsername ? userDomainName : null);
 
-      } else {
-        logger.error(`login: Logging into app ${appDomain} with scopes ${scopes} isn't supported`)
-      }
+      setCoreStorageConfig({ dropbox: { token: dropboxAccessToken } }, this.props.coreAPIPassword, blockchainId, profile, privateKey)
+      .then(() => {
+        this.props.getCoreSessionToken(this.props.coreHost,
+            this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
+            appDomain, blockchainId, this.state.authRequest)
+      })
     }
   }
 
