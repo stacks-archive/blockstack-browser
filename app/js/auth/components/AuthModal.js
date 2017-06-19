@@ -114,16 +114,17 @@ class AuthModal extends Component {
       }
       const identity = localIdentities[userDomainName]
       const profile = identity.profile
-      const privateKey = this.props.identityKeypairs[0].key
+      const profileSigningKeypair = this.props.identityKeypairs[0]
       const appDomain = this.state.decodedToken.payload.domain_name
       const scopes = this.state.decodedToken.payload.scopes
       const appsNodeKey = this.props.identityKeypairs[0].appsNodeKey
       const salt = this.props.identityKeypairs[0].salt
       const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-      const blockchainId = (hasUsername ? userDomainName : null);
+      const blockchainId = (hasUsername ? userDomainName : null)
 
-      setCoreStorageConfig(this.props.api, blockchainId, profile, privateKey)
+      setCoreStorageConfig(this.props.api, blockchainId,
+        localIdentities[userDomainName].profile, profileSigningKeypair)
       .then(() => {
         this.props.getCoreSessionToken(this.props.coreHost,
             this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
