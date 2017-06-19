@@ -3,7 +3,8 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/api-utils.js')
 
-import { uploadProfile } from '../storage/utils';
+import { uploadProfile } from '../storage/utils'
+import { signProfileForUpload } from './index'
 
 export function getNamesOwned(address, bitcoinAddressLookupUrl, callback) {
   const url = bitcoinAddressLookupUrl.replace('{address}', address)
@@ -100,7 +101,7 @@ export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword
 }
 
 
-/* 
+/*
  * Insert storage driver routing information into a profile.
  * Existing routing information for this driver will be overwritten.
  *
@@ -108,28 +109,28 @@ export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword
  *
  * Return the new profile.
  */
-function profileInsertStorageRoutingInfo( profile, driver_name, index_url ) {
-   if (!profile.account) {
-      profile.account = [];
-   }
+function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
+  if (!profile.account) {
+    profile.account = []
+  }
 
-   for (let i = 0; i < profile.account.length; i++) {
-      if (profile.account[i].identifier === "storage" && profile.account[i].service === driver_name) {
-         // patch this instance 
-         profile.account[i].contentUrl = index_url;
-         return profile;
-      }
-   }
+  for (let i = 0; i < profile.account.length; i++) {
+    if (profile.account[i].identifier === 'storage' && profile.account[i].service === driverName) {
+       // patch this instance
+      profile.account[i].contentUrl = indexUrl
+      return profile
+    }
+  }
 
-   // not yet present 
-   const storage_account = {
-      'identifier': 'storage',
-      'service': driver_name,
-      'contentUrl': index_url,
-   };
+   // not yet present
+  const storageAccount = {
+    identifier: 'storage',
+    service: driverName,
+    contentUrl: indexUrl
+  }
 
-   profile.account[i].push(storage_account);
-   return profile;
+  profile.account.push(storageAccount)
+  return profile
 }
 
 
@@ -138,67 +139,66 @@ function profileInsertStorageRoutingInfo( profile, driver_name, index_url ) {
  * Example:
  * const config = { dropbox: { token: '123abc'} }
  */
-export function setCoreStorageConfig(config, coreAPIPassword, blockchain_id=null, profile=null, profileSigningKey=null) {
+export function setCoreStorageConfig(config, coreAPIPassword,
+  blockchainId = null, profile = null, profileSigningKey = null) {
+  return new Promise((resolve, reject) => {
+    // for now, only take driver config for dropbox
+    if (Object.keys(config).length !== 1) {
+      throw new Error('Driver config must have exactly one driver entry')
+    }
 
-  // for now, only take driver config for dropbox
-  if (Object.keys(config).length != 1) {
-     throw new Error("Driver config must have exactly one driver entry");
-  }
+    const driverName = Object.keys(config)[0]
 
-  const driver_name = Object.keys(config)[0];
+    // for now, we only support 'dropbox'
+    if (driverName !== 'dropbox') {
+      throw new Error('Only support "dropbox" driver at this time')
+    }
 
-  // for now, we only support 'dropbox'
-  if (driver_name !== "dropbox") {
-     throw new Error("Only support 'dropbox' driver at this time");
-  }
+    const requestBody = { driver_config: config[driverName] }
+    const url = `http://localhost:6270/v1/node/drivers/storage/${driverName}?index=1`
+    const bodyText = JSON.stringify(requestBody)
 
-  const request_body = { 'driver_config': config[driver_name] };
-  const url = `http://localhost:6270/v1/node/drivers/storage/${driver_name}?index=1`;
-  const body_txt = JSON.stringify(request_body)
-
-  const options = {
-     'method': 'POST',
-     'host': 'localhost',
-     'port': '6270',
-     'path': `/v1/node/drivers/storage/${driver_name}?index=1`,
-     'headers': {
+    const options = {
+      method: 'POST',
+      host: 'localhost',
+      port: '6270',
+      path: `/v1/node/drivers/storage/${driverName}?index=1`,
+      headers: {
         'Content-Type': 'application/json',
-        'Content-Length': body_txt.length,
-        'Authorization': authorizationHeaderValue(coreAPIPassword),
-     },
-     'body': body_txt,
-  };
+        'Content-Length': bodyText.length,
+        Authorization: authorizationHeaderValue(coreAPIPassword)
+      },
+      body: bodyText
+    }
 
-  return fetch(url, options)
-  .then((response) => {
-     if (response.status != 200) {
-        throw new Error(response.statusText);
-     }
+    return fetch(url, options)
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error(response.statusText)
+      }
 
-     // expect the index URL (for some drivers, like Dropbox)
-     const driver_config_result = response.json();
-     if (driver_config_result.index_url && profile && blockchain_id) {
-
+       // expect the index URL (for some drivers, like Dropbox)
+      const driverConfigResult = response.json()
+      if (driverConfigResult.indexUrl && profile && blockchainId) {
         // insert it into the profile and replicate it.
-        profile = profileInsertStorageRoutingInfo(profile, driver_name, driver_config_result.index_url);
-        const data = signProfileForUpload(profile, profileSigningKey);
+        profile = profileInsertStorageRoutingInfo(profile, driverName, driverConfigResult.indexUrl)
+        const data = signProfileForUpload(profile, profileSigningKey)
 
-        uploadProfile(driver_name, blockchain_id, data)
+        uploadProfile(driverName, blockchainId, data)
         .then((result) => {
-
-           // saved!
-           resolve('OK');
+          // saved!
+          resolve(result)
         })
         .catch((error) => {
-           reject(error);
-        });
-     }
-     else {
+          reject(error)
+        })
+      } else {
         // done!
-        resolve('OK');
-     }
+        resolve(result)
+      }
+    })
+    .catch((error) => {
+      reject(error)
+    })
   })
-  .catch((error) => {
-     reject(error);
-  });
 }
