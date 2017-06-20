@@ -103,7 +103,8 @@ function registerName(api, domainName, ownerAddress, keypair) {
             logger.debug(`Successfully submitted registration for ${domainName}`)
             dispatch(registrationSubmitted())
             const addingUsername = true
-            IdentityActions.createNewIdentityFromDomain(domainName, ownerAddress, addingUsername)
+            dispatch(IdentityActions.createNewIdentityFromDomain(domainName,
+              ownerAddress, addingUsername))
           }
         })
         .catch((error) => {
