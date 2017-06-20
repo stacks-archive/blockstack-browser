@@ -10,6 +10,9 @@ import {
   makeAuthResponse, getAuthRequestFromURL, fetchAppManifest, redirectUserToApp
 } from 'blockstack'
 import Image from '../../components/Image'
+import { AppsNode } from '../../utils/account-utils'
+import { setCoreStorageConfig } from '../../utils/api-utils'
+import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
@@ -24,7 +27,8 @@ function mapStateToProps(state) {
     coreSessionTokens: state.auth.coreSessionTokens,
     coreHost: state.settings.api.coreHost,
     corePort: state.settings.api.corePort,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    api: state.settings.api
   }
 }
 
@@ -43,7 +47,8 @@ class AuthModal extends Component {
     getCoreSessionToken: PropTypes.func.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
     coreSessionTokens: PropTypes.object.isRequired,
-    loginToApp: PropTypes.func.isRequired
+    loginToApp: PropTypes.func.isRequired,
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -79,9 +84,15 @@ class AuthModal extends Component {
         const identity = this.props.localIdentities[userDomainName]
         const profile = identity.profile
         const privateKey = this.props.identityKeypairs[0].key
+        const appsNodeKey = this.props.identityKeypairs[0].appsNodeKey
+        const salt = this.props.identityKeypairs[0].salt
+        const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+        const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+
         // TODO: what if the token is expired?
         const authResponse = makeAuthResponse(privateKey, profile, userDomainName,
-        nextProps.coreSessionTokens[appDomain])
+            nextProps.coreSessionTokens[appDomain], appPrivateKey)
+
         this.props.clearSessionToken(appDomain)
         redirectUserToApp(this.state.authRequest, authResponse)
       }
@@ -103,16 +114,22 @@ class AuthModal extends Component {
       }
       const identity = localIdentities[userDomainName]
       const profile = identity.profile
-      const privateKey = this.props.identityKeypairs[0].key
+      const profileSigningKeypair = this.props.identityKeypairs[0]
       const appDomain = this.state.decodedToken.payload.domain_name
       const scopes = this.state.decodedToken.payload.scopes
-      if (scopes.length === 0) {
+      const appsNodeKey = this.props.identityKeypairs[0].appsNodeKey
+      const salt = this.props.identityKeypairs[0].salt
+      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+      const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+      const blockchainId = (hasUsername ? userDomainName : null)
+
+      setCoreStorageConfig(this.props.api, blockchainId,
+        localIdentities[userDomainName].profile, profileSigningKeypair)
+      .then(() => {
         this.props.getCoreSessionToken(this.props.coreHost,
-            this.props.corePort, this.props.coreAPIPassword, privateKey,
-            appDomain, this.state.authRequest, hasUsername ? userDomainName : null)
-      } else {
-        logger.error(`login: Logging into app ${appDomain} with scopes ${scopes} isn't supported`)
-      }
+            this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
+            appDomain, blockchainId, this.state.authRequest)
+      })
     }
   }
 

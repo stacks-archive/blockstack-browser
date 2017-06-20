@@ -34,12 +34,15 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
     getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
     const identityAddress = identityOwnerAddressNode.getAddress()
     identityAddresses.push(identityAddress)
-    const identityKey = identityOwnerAddressNode.keyPair.d.toBuffer(32).toString('hex')
-    const identityKeyID = identityOwnerAddressNode.keyPair.getPublicKeyBuffer().toString('hex')
+    const identityKey = identityOwnerAddressNode.getIdentityKey()
+    const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
+    const appsNode = identityOwnerAddressNode.getAppsNode()
     identityKeypairs.push({
       key: identityKey,
       keyID: identityKeyID,
-      address: identityAddress
+      address: identityAddress,
+      appsNodeKey: appsNode.toBase58(),
+      salt: appsNode.getSalt()
     })
   }
 
