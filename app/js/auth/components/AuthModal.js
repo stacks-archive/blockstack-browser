@@ -110,6 +110,7 @@ class AuthModal extends Component {
       let userDomainName = Object.keys(localIdentities)[0]
       let hasUsername = true
       if (userDomainName === localIdentities[userDomainName].ownerAddress) {
+        logger.debug(`login(): this profile ${userDomainName} has no username`)
         hasUsername = false
       }
       const identity = localIdentities[userDomainName]
@@ -122,13 +123,15 @@ class AuthModal extends Component {
       const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
       const blockchainId = (hasUsername ? userDomainName : null)
-
+      logger.trace(`login(): Calling setCoreStorageConfig()...`)
       setCoreStorageConfig(this.props.api, blockchainId,
         localIdentities[userDomainName].profile, profileSigningKeypair)
       .then(() => {
+        logger.trace('login(): Core storage successfully configured.')
+        logger.trace('login(): Calling getCoreSessionToken()...')
         this.props.getCoreSessionToken(this.props.coreHost,
             this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
-            appDomain, blockchainId, this.state.authRequest)
+            appDomain, this.state.authRequest, blockchainId)
       })
     }
   }
