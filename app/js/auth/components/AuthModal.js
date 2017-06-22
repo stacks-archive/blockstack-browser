@@ -58,7 +58,8 @@ class AuthModal extends Component {
       authRequest: null,
       appManifest: null,
       coreSessionToken: null,
-      decodedToken: null
+      decodedToken: null,
+      storageConnected: this.props.api.dropboxAccessToken !== null
     }
 
     this.login = this.login.bind(this)
@@ -76,16 +77,27 @@ class AuthModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const storageConnected = this.props.api.dropboxAccessToken !== null
+    this.setState({
+      storageConnected
+    })
+
     const appDomain = this.state.decodedToken.payload.domain_name
+    const localIdentities = nextProps.localIdentities
+    const identityKeypairs = nextProps.identityKeypairs
     if (appDomain && nextProps.coreSessionTokens[appDomain]) {
       logger.trace('componentWillReceiveProps: received coreSessionToken')
-      if (Object.keys(this.props.localIdentities).length > 0) {
-        const userDomainName = Object.keys(this.props.localIdentities)[0]
-        const identity = this.props.localIdentities[userDomainName]
+      if (Object.keys(localIdentities).length > 0) {
+        let userDomainName = Object.keys(localIdentities)[0]
+        if (userDomainName === localIdentities[userDomainName].ownerAddress) {
+          logger.debug(`login(): this profile ${userDomainName} has no username`)
+          userDomainName = null
+        }
+        const identity = localIdentities[userDomainName]
         const profile = identity.profile
-        const privateKey = this.props.identityKeypairs[0].key
-        const appsNodeKey = this.props.identityKeypairs[0].appsNodeKey
-        const salt = this.props.identityKeypairs[0].salt
+        const privateKey = identityKeypairs[0].key
+        const appsNodeKey = identityKeypairs[0].appsNodeKey
+        const salt = identityKeypairs[0].salt
         const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
         const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
@@ -177,6 +189,8 @@ class AuthModal extends Component {
             </p>
             : null }
             { Object.keys(this.props.localIdentities).length > 0 ?
+              <div>
+              { this.state.storageConnected ?
             <div>
               <p>
                 Click below to log in.
@@ -189,6 +203,14 @@ class AuthModal extends Component {
                  Deny
                </Link>
               </div>
+            </div>
+            :
+            <div>
+              <p>
+                You need to <Link to="/storage/providers">connect your storage</Link> in order to log in.
+              </p>
+            </div>
+            }
             </div>
             :
             <div>
