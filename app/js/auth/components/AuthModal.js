@@ -89,10 +89,13 @@ class AuthModal extends Component {
       logger.trace('componentWillReceiveProps: received coreSessionToken')
       if (Object.keys(localIdentities).length > 0) {
         let userDomainName = Object.keys(localIdentities)[0]
+
+        let hasUsername = true
         if (userDomainName === localIdentities[userDomainName].ownerAddress) {
           logger.debug(`login(): this profile ${userDomainName} has no username`)
-          userDomainName = null
+          hasUsername = false
         }
+        const blockchainId = (hasUsername ? userDomainName : null)
         const identity = localIdentities[userDomainName]
         const profile = identity.profile
         const privateKey = identityKeypairs[0].key
@@ -102,7 +105,7 @@ class AuthModal extends Component {
         const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
         // TODO: what if the token is expired?
-        const authResponse = makeAuthResponse(privateKey, profile, userDomainName,
+        const authResponse = makeAuthResponse(privateKey, profile, blockchainId,
             nextProps.coreSessionTokens[appDomain], appPrivateKey)
 
         this.props.clearSessionToken(appDomain)
