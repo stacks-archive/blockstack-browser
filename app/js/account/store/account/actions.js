@@ -180,12 +180,15 @@ function skipEmailBackup() {
 
 function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
-    const headers = {"Authorization": authorizationHeaderValue(coreAPIPassword) }
-    fetch(addressBalanceUrl, { headers: headers })
+    logger.trace('refreshCoreWalletBalance: Beginning refresh...')
+    logger.debug(`refreshCoreWalletBalance: addressBalanceUrl: ${addressBalanceUrl}`)
+    const headers = { Authorization: authorizationHeaderValue(coreAPIPassword) }
+    fetch(addressBalanceUrl, { headers })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
-      const balance = responseJson.balance.bitcoin;
+      const balance = responseJson.balance.bitcoin
+      logger.debug(`refreshCoreWalletBalance: balance is ${balance}.`)
       dispatch(
         updateCoreWalletBalance(balance)
       )

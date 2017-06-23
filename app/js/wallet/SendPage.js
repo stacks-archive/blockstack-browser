@@ -18,7 +18,7 @@ function mapStateToProps(state) {
   return {
     account: state.account,
     coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl,
-    broadcastTransactionUrl: state.settings.api.broadcastTransactionUrl,
+    broadcastTransactionUrl: state.settings.api.broadcastUrl,
     coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
