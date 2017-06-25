@@ -66,8 +66,9 @@ function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey,
   return dispatch => {
     logger.trace('getCoreSessionToken(): dispatched')
     console.log(authRequest)
-    getCoreSession(coreHost, corePort, coreApiPassword, appPrivateKey,
-      authRequest, blockchainId)
+    const deviceId = '0' // Hard code device id until we support multi-device
+    getCoreSession(coreHost, corePort, coreApiPassword, appPrivateKey, blockchainId,
+      authRequest, deviceId)
         .then((coreSessionToken) => {
           logger.trace('getCoreSessionToken: generated a token!')
           dispatch(updateCoreSessionToken(appDomain, coreSessionToken))
