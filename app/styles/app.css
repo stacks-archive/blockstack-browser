@@ -480,7 +480,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 /* Large devices (large desktops, 1200px to 1400px) */
 @media (min-width:1200px){
 	.app-container{max-width:initial;}
-	.app-wrap{width:90%;margin-top:25%;}
+	.app-wrap{width:90%;margin-top:20%;}
 	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;margin-right:0;}
 	.pro-wrap{min-width:80%;}
 	.wallet-container{width:1000px;}
@@ -488,6 +488,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 
 /* Extra large devices (large desktops, 1400px and up) */
 @media (min-width:1400px){
-	.app-wrap{width:75%;max-width:1150px;margin-top:18%;}
+	.app-wrap{width:75%;max-width:1150px;margin-top:15%;}
 }
 
