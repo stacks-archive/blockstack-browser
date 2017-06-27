@@ -77,6 +77,17 @@ class DashboardPage extends Component {
                   <h3>Hello, Blockstack</h3>
                 </div>
               </div>
+              <div className="app-box-wrap">
+                <a href="https://forum.blockstack.org"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-forum@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>Forum</h3>
+                </div>
+              </div>
             </div>
           </div>
         </div>

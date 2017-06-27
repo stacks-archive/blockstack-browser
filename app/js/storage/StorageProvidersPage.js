@@ -7,13 +7,17 @@ import { SettingsActions } from '../account/store/settings'
 import { DROPBOX } from './utils/index'
 import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from './utils/dropbox'
 
+import { setCoreStorageConfig } from '../utils/api-utils'
+
 const Dropbox = require('dropbox')
 
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
     updateApi: PropTypes.func.isRequired,
-    resetApi: PropTypes.func.isRequired
+    resetApi: PropTypes.func.isRequired,
+    localIdentities: state.profiles.identity.localIdentities,
+    identityKeypairs: state.account.identityAccount.keypairs
   }
 }
 
@@ -24,7 +28,9 @@ function mapDispatchToProps(dispatch) {
 class StorageProvidersPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
-    updateApi: PropTypes.func.isRequired
+    updateApi: PropTypes.func.isRequired,
+    localIdentities: PropTypes.object.isRequired,
+    identityKeypairs: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -39,8 +45,12 @@ class StorageProvidersPage extends Component {
     const api = this.props.api
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     if (dropboxAccessToken != null) {
-      this.props.updateApi(Object.assign({}, api, { dropboxAccessToken }))
-      window.location = '/'
+      const newApi = Object.assign({}, api, { dropboxAccessToken })
+      this.props.updateApi(newApi)
+      setCoreStorageConfig(newApi)
+      .then(() => {
+        window.location = '/'
+      })
     }
   }
 
@@ -89,6 +99,21 @@ class StorageProvidersPage extends Component {
                 Disconnect Dropbox
                 </button>
               }
+            </p>
+            <p>
+              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+                Connect IPFS
+              </button>
+            </p>
+            <p>
+              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+                Connect Sia
+              </button>
+            </p>
+            <p>
+              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+                Connect Storj
+              </button>
             </p>
             <p>
               <button disabled className="btn btn-storage-primary" title="Coming soon!">

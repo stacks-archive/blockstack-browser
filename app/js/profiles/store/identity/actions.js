@@ -60,9 +60,11 @@ function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = 
   logger.debug(`createNewIdentityFromDomain: domainName: ${domainName} ownerAddress: ${ownerAddress}`)
   return dispatch => {
     if (!addingUsername) {
+      logger.trace('createNewIdentityFromDomain: Not adding a username')
       dispatch(createNewIdentity(domainName, ownerAddress))
       dispatch(AccountActions.usedIdentityAddress())
     } else {
+      logger.trace('createNewIdentityFromDomain: adding username to existing profile')
       dispatch(addUsername(domainName, ownerAddress))
     }
   }

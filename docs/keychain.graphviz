@@ -1,0 +1,62 @@
+digraph G {
+	"M_laptop" -> "44'"
+	"M_laptop" -> "888'"
+	"888'" -> "0'"
+	"0'" -> "0'\nname0.id"
+
+	lapps [label="app'",color = "blue"]
+	lapp0 [label="twitter.app'",color = "blue"]
+	lapp1 [label="block.app'",color = "blue"]
+	enc [label = "enc'",color="blue"]
+	sign [label = "sign'",color="blue"]
+
+	lnn1 [label="1'\nname1.id", color="brown"]
+	"0'" -> lnn1
+	"0'" -> "2'\nname2.id"
+	lnn1 -> pnnetc
+
+
+	lapps -> lapp0
+	lapps -> lapp1
+
+	p44 [label="44'"]
+	p888 [label="888'"]
+	p0 [label="0'"]
+	pnn0 [label="0'\nname0.id"]
+	pnn1 [label="1'\nname1.id", color = "brown"]
+	pnn2 [label="2'\nname2.id"]
+
+	"M_phone" -> p44
+	"M_phone" -> p888
+	
+	p888->p0
+	p0 -> pnn0
+	p0 -> pnn1
+	p0 -> pnn2
+
+	pnn1 -> "sign"
+	pnn1 -> "enc"
+	pnn1 -> lapps
+
+	pnnetc [color="blue",label="..."]
+	
+	t44 [label="44'"]
+	t888 [label="888'"]
+	t0 [label="0'"]
+	tnn0 [label="0'\nname0.id"]
+	tnn1 [label="1'\nname1.id", color="brown"]
+	tnn2 [label="2'\nname2.id"]
+
+	"M_tablet" -> t44
+	"M_tablet" -> t888
+	
+	t888->t0
+	t0 -> tnn0
+	t0 -> tnn1
+	t0 -> tnn2
+
+	tnnetc [color="blue",label="..."]
+
+	tnn1 -> tnnetc
+
+}

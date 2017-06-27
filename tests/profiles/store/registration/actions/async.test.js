@@ -41,7 +41,7 @@ describe('Registration Store: Async Actions', () => {
     }
     const registrationBody = { name: 'satoshi.id',
       owner_address: ecPair.getAddress(),
-      zonefile: '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"www.dropbox.com/s/eft9mgspq5ff3qe/profile.json?dl=1"\n\n',
+      zonefile: '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://www.dropbox.com/s/eft9mgspq5ff3qe/profile.json?dl=1"\n\n',
       min_confs: 0 }
 
     it('successfully registers a name', () => {
@@ -96,7 +96,10 @@ describe('Registration Store: Async Actions', () => {
         const expectedActions = [
           { type: 'PROFILE_UPLOADING' },
           { type: 'REGISTRATION_SUBMITTING' },
-          { type: 'REGISTRATION_SUBMITTED' }
+          { type: 'REGISTRATION_SUBMITTED' },
+          { domainName: 'satoshi.id',
+            ownerAddress: '1GnrEexgXvHCZobXDVdhpto6QPXKthN99n',
+            type: 'ADD_USERNAME' }
         ]
         assert.deepEqual(store.getActions(), expectedActions)
       })
