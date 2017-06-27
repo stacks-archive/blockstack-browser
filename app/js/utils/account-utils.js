@@ -11,7 +11,7 @@ function hashCode(string) {
     hash = ((hash << 5) - hash) + character
     hash = hash & hash
   }
-  return hash
+  return hash & 0x7fffffff
 }
 
 

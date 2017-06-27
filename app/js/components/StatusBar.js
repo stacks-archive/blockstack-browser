@@ -13,7 +13,7 @@ function mapStateToProps(state) {
   return {
     dropboxAccessToken: state.settings.api.dropboxAccessToken,
     localIdentities: state.profiles.identity.localIdentities,
-    addressBalanceUrl: state.settings.api.addressBalanceUrl,
+    addressBalanceUrl: state.settings.api.balanceUrl,
     coreWalletAddress: state.account.coreWallet.address,
     coreWalletBalance: state.account.coreWallet.balance,
     coreAPIPassword: state.settings.api.coreAPIPassword,
@@ -39,7 +39,7 @@ class StatusBar extends Component {
     addressBalanceUrl: PropTypes.string,
     nextIdentityAddressIndex: PropTypes.number.isRequired,
     loggedIntoApp: PropTypes.bool.isRequired,
-    viewedRecoveryCode: PropTypes.bool.isRequired
+    viewedRecoveryCode: PropTypes.bool
   }
 
   constructor(props) {

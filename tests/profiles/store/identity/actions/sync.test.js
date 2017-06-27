@@ -168,4 +168,17 @@ describe('Identity Store: Sync Actions', () => {
       assert.deepEqual(actualResult, expectedResult)
     })
   })
+
+  describe('addUsername', () => {
+    it('should return an action of type ADD_USERNAME', () => {
+      const expectedResult = {
+        type: 'ADD_USERNAME',
+        domainName: 'satoshi.id',
+        ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
+      }
+      const actualResult = IdentityActions.addUsername('satoshi.id',
+      '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
+      assert.deepEqual(actualResult, expectedResult)
+    })
+  })
 })

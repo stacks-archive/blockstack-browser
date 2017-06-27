@@ -62,12 +62,17 @@ function loginToApp() {
   }
 }
 
-function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey, appDomain, blockchainId, authRequest) {
+function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey, appDomain, authRequest, blockchainId) {
   return dispatch => {
-    getCoreSession(coreHost, corePort, coreApiPassword, appPrivateKey, blockchainId, authRequest)
+    logger.trace('getCoreSessionToken(): dispatched')
+    console.log(authRequest)
+    getCoreSession(coreHost, corePort, coreApiPassword, appPrivateKey,
+      authRequest, blockchainId)
         .then((coreSessionToken) => {
           logger.trace('getCoreSessionToken: generated a token!')
           dispatch(updateCoreSessionToken(appDomain, coreSessionToken))
+        }, (error) => {
+          logger.error('getCoreSessionToken: failed:', error)
         })
   }
 }

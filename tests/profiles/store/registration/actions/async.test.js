@@ -96,7 +96,10 @@ describe('Registration Store: Async Actions', () => {
         const expectedActions = [
           { type: 'PROFILE_UPLOADING' },
           { type: 'REGISTRATION_SUBMITTING' },
-          { type: 'REGISTRATION_SUBMITTED' }
+          { type: 'REGISTRATION_SUBMITTED' },
+          { domainName: 'satoshi.id',
+            ownerAddress: '1GnrEexgXvHCZobXDVdhpto6QPXKthN99n',
+            type: 'ADD_USERNAME' }
         ]
         assert.deepEqual(store.getActions(), expectedActions)
       })
