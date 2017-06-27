@@ -501,6 +501,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 
 /* Extra large devices (large desktops, 1400px and up) */
 @media (min-width:1400px){
-	.app-wrap{width:75%;max-width:1150px;margin-top:15%;}
+	.app-wrap{width:75%;max-width:1150px;margin-top:13%;}
 }
 
