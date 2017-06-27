@@ -4,7 +4,7 @@ import React                        from 'react'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 import App                  from './App'
-import DashboardPage        from './DashboardPage'
+import HomeScreenPage        from './HomeScreenPage'
 
 import ProfilesApp          from './profiles/ProfilesApp'
 import AllProfilesPage      from './profiles/AllProfilesPage'
@@ -37,7 +37,7 @@ import NotFoundPage         from './errors/NotFoundPage'
 export default (
 <Router history={browserHistory}>
   <Route path="/" component={App}>
-    <IndexRoute component={DashboardPage} />
+    <IndexRoute component={HomeScreenPage} />
 
     <Route path="profiles" component={ProfilesApp}>
         <IndexRoute component={AllProfilesPage} />

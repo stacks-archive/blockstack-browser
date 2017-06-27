@@ -13,7 +13,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-class DashboardPage extends Component {
+class HomeScreenPage extends Component {
   constructor(props) {
     super(props)
   }
@@ -97,4 +97,4 @@ class DashboardPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreenPage)
