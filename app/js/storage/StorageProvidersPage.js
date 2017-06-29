@@ -8,6 +8,9 @@ import { DROPBOX } from './utils/index'
 import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from './utils/dropbox'
 
 import { setCoreStorageConfig } from '../utils/api-utils'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('storage/StorageProvidersPage.js')
 
 const Dropbox = require('dropbox')
 
@@ -48,8 +51,9 @@ class StorageProvidersPage extends Component {
       const newApi = Object.assign({}, api, { dropboxAccessToken })
       this.props.updateApi(newApi)
       setCoreStorageConfig(newApi)
-      .then(() => {
-        window.location = '/'
+      .then((indexUrl) => {
+        // TODO add index URL to token file
+        logger.debug(`componentDidMount: storage initialized`)
       })
     }
   }
