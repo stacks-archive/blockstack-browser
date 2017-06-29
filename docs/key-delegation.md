@@ -113,7 +113,7 @@ APP_KEY_BUNDLE_SCHEMA = {
         'apps': {
             'type': 'object',
             'patternProperties': {
-                '.+': {
+                '^.+\.[1x]{1}$': {
                     'type': 'string',
                     'pattern': OP_PUBKEY_PATTERN,
                 },
@@ -185,7 +185,7 @@ BLOCKSTACK_TOKEN_FILE_SCHEMA = {
             'apps': {
                 'type': 'object',
                 'patternProperties': {
-                    '.+': {
+                    '^.+\.[1x]{1}$': {
                         'type': 'string',
                         'pattern': OP_BASE64_URLSAFE_PATTERN,
                     }
