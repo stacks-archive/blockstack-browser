@@ -113,7 +113,7 @@ APP_KEY_BUNDLE_SCHEMA = {
         'apps': {
             'type': 'object',
             'patternProperties': {
-                '^.+\.[1x]{1}$': {
+                OP_APP_NAME_PATTERN: {
                     'type': 'string',
                     'pattern': OP_PUBKEY_PATTERN,
                 },
@@ -175,19 +175,19 @@ BLOCKSTACK_TOKEN_FILE_SCHEMA = {
         },
         'profile': {
             'type': 'string',
-            'pattern': OP_BASE64_URLSAFE_PATTERN,
+            'pattern': '.+',
         },
         'keys': {
             'delegation': {
                 'type': 'string', 
-                'pattern': OP_BASE64_URLSAFE_PATTERN,
+                'pattern': '.+',
             },
             'apps': {
                 'type': 'object',
                 'patternProperties': {
-                    '^.+\.[1x]{1}$': {
+                    OP_APP_NAME_PATTERN: {
                         'type': 'string',
-                        'pattern': OP_BASE64_URLSAFE_PATTERN,
+                        'pattern': '.+',
                     }
                 },
             },
@@ -214,10 +214,10 @@ Example:
   "version": "3.0",
   "profile": <profile-jwt>,
   "keys": {
-    "delegation": <key-bundle-jwt>,
+    "delegation": "<key-bundle-jwt>",
     "apps": {
-      "laptop": <app-key-bundle-jwt>,
-      "phone": <app-key-bundle-jwt>
+      "laptop": "<app-key-bundle-jwt>",
+      "phone": "<app-key-bundle-jwt>"
       }
     }
   }
@@ -236,8 +236,11 @@ Fields:
 * `profile`:  This is a urlsafe-base64-encoded JWT string.
 * `keys`
    * `delegation`:  This is the key delegation bundle, encoded as a
-     urlsafe-base64-encoded JWT string.
+     serialized JWT string (e.g. the output of `JSON.stringify()`)
    * `apps`:  This is an object whose properties are application names (ending
-     in either `.1` or `.x`), and whose values are urlsafe-base64-encoded JWT
-     strings.
+     in either `.1` or `.x`), and whose values are serialized JWT strings
+     (e.g. the output of `JSON.stringify()`).
+
+The serialized JWTs will either be stringify'ed JSON strings (for
+multi-signature JWTs) or compact-serialized JWTs (for single-signature JWTs)
 
