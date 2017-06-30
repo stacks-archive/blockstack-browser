@@ -212,7 +212,7 @@ Example:
 ```JSON
 {
   "version": "3.0",
-  "profile": <profile-jwt>,
+  "profile": "<profile-jwt>",
   "keys": {
     "delegation": "<key-bundle-jwt>",
     "apps": {
