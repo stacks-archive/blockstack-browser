@@ -37,16 +37,6 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <Link to="/wallet/receive" className="app-box-container">
-                  <div className="app-box">
-                    <img src="/images/app-icon-wallet-card-flat@2x.png" />
-                  </div>
-                </Link>
-                <div className="app-text-container">
-                  <h3>Wallet</h3>
-                </div>
-              </div>
-              <div className="app-box-wrap">
                 <Link to="/account/password" className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-settings@2x.png" />
