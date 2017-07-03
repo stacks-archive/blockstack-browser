@@ -216,7 +216,9 @@ class StatusBar extends Component {
             <p>Balance {this.roundedBtcBalance()} BTC</p>
           </div>
           <div className="status-inline status-profile">
-            <Image className="status-profile-img img-circle" src="/images/avatar.png" />
+            <Link to="/profiles" className="">
+              <Image className="status-profile-img img-circle" src="/images/avatar.png" />
+            </Link>
           </div>
         </div>
       </div>
