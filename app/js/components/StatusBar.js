@@ -213,7 +213,9 @@ class StatusBar extends Component {
             </div>
           </div>
           <div className="status-inline status-balance">
-            <p>Balance {this.roundedBtcBalance()} BTC</p>
+            <Link to="/wallet/receive" className="">
+              <p>Balance {this.roundedBtcBalance()} BTC</p>
+            </Link>
           </div>
           <div className="status-inline status-profile">
             <Link to="/profiles" className="">
