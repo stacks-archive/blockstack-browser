@@ -61,6 +61,7 @@ class WelcomeModal extends Component {
     this.onValueChange = this.onValueChange.bind(this)
     this.connectDropbox = this.connectDropbox.bind(this)
     this.saveCoreAPIPassword = this.saveCoreAPIPassword.bind(this)
+    this.showGetStarted = this.showGetStarted.bind(this)
     this.showGenerateKeychain = this.showGenerateKeychain.bind(this)
     this.showEnterPassword = this.showEnterPassword.bind(this)
     this.emailKeychainBackup = this.emailKeychainBackup.bind(this)
@@ -90,8 +91,12 @@ class WelcomeModal extends Component {
     this.setState({pageOneView: 'create'})
   }
 
+  showGetStarted() {
+    this.setState({pageOneView: 'getStarted'})
+  }
+
   showGenerateKeychain() {
-    this.setState({pageOneView: 'generateKeychain'})
+    this.setState({pageOneView: 'generateKeychain', keychainProgress: 0})
   }
 
   restoreAccount() {
@@ -281,6 +286,9 @@ class WelcomeModal extends Component {
                       Create Keychain
                     </button>
                   </div>
+                  <a href="#" onClick={this.showGetStarted}>
+                    Back
+                  </a>
                 </div>
               :
                 <div>
@@ -306,6 +314,9 @@ class WelcomeModal extends Component {
                             }
                           </button>
                         </div>
+                        <a href="#" onClick={this.showGenerateKeychain}>
+                          Back
+                        </a>
                       </form>
                     </div>
                   :
