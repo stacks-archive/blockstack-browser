@@ -10,18 +10,24 @@ import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { SearchActions } from './store/search'
 
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('profiles/ViewProfilePage.js')
+
 const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
 
 function mapStateToProps(state) {
   return {
     currentIdentity: state.profiles.identity.current,
     localIdentities: state.profiles.identity.localIdentities,
+    identityAddresses: state.account.identityAccount.addresses,
+    nextUnusedAddressIndex: state.account.identityAccount.addressIndex,
     nameLookupUrl: state.settings.api.nameLookupUrl
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  let actions = Object.assign(IdentityActions, SearchActions)
+  const actions = Object.assign(IdentityActions, SearchActions)
   return bindActionCreators(actions, dispatch)
 }
 
@@ -32,7 +38,10 @@ class ViewProfilePage extends Component {
     updateQuery: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
     localIdentities: PropTypes.object.isRequired,
-    nameLookupUrl: PropTypes.string.isRequired
+    nameLookupUrl: PropTypes.string.isRequired,
+    createNewIdentityFromDomain: PropTypes.func.isRequired,
+    identityAddresses: PropTypes.array.isRequired,
+    nextUnusedAddressIndex: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -49,6 +58,8 @@ class ViewProfilePage extends Component {
       isLoading: true
     }
     this.hasUsername = this.hasUsername.bind(this)
+    this.createNewProfile = this.createNewProfile.bind(this)
+    this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
   }
 
   componentHasNewRouteParams(props) {
@@ -75,6 +86,16 @@ class ViewProfilePage extends Component {
       currentIdentity: nextProps.currentIdentity,
       isLoading: false
     })
+  }
+
+  createNewProfile() {
+    const ownerAddress = this.props.identityAddresses[this.props.nextUnusedAddressIndex]
+    logger.debug(`createNewProfile: ownerAddress: ${ownerAddress}`)
+    this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
+  }
+
+  availableIdentityAddresses() {
+    return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
   }
 
   hasUsername() {
@@ -252,6 +273,16 @@ class ViewProfilePage extends Component {
           }
         </div>
         }
+        <div className="pro-wrap" style={{ backgroundColor: 'transparent' }}>
+          <Link
+            to={'/profiles'}
+            className="btn btn-blue btn-lg"
+            disabled={!this.availableIdentityAddresses()}
+            onClick={this.createNewProfile}
+          >
+            + CREATE A PROFILE
+          </Link>
+        </div>
       </div>
     )
   }
