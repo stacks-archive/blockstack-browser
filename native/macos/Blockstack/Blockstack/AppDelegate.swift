@@ -24,6 +24,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     var isDevModeEnabled : Bool = false
     
+    var isRegTestModeEnabled : Bool = false
+    var isRegTestModeChanging : Bool = false
+    let regTestCoreAPIPassword = "blockstack_integration_test_api_password"
+    
     var isShutdown : Bool = false
     
     let keychainServiceName = "blockstack-core-wallet-password"
@@ -173,7 +177,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             menu.addItem(corsProxyPortMenuItem)
             
             let corePortMenuItem = NSMenuItem()
-            corePortMenuItem.title = "Core node running on port \(coreProxyPort)"
+            var title = "Core node running on port \(coreProxyPort)"
+            if(isRegTestModeChanging) {
+                title = "Core node changing regtest mode state..."
+            } else if(isRegTestModeEnabled) {
+                title = "Core node is not running. Please start your regtest core node."
+            }
+            corePortMenuItem.title = title
             corePortMenuItem.isEnabled = false
             menu.addItem(corePortMenuItem)
             
@@ -189,7 +199,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             devModeStatusMenuItem.isEnabled = false
             menu.addItem(devModeStatusMenuItem)
             
-            menu.addItem(withTitle: "\(isDevModeEnabled ? "Disable" : "Enable") Development Mode", action: #selector(devModeClick), keyEquivalent: "d")
+            let devModeMenuItem = NSMenuItem()
+            devModeMenuItem.title = "\(isDevModeEnabled ? "Disable" : "Enable") Development Mode"
+            
+            if(!isRegTestModeEnabled && !isRegTestModeChanging) {
+            devModeMenuItem.action = #selector(devModeClick)
+            devModeMenuItem.keyEquivalent = "d"
+            }
+            
+            menu.addItem(devModeMenuItem)
+            
+            menu.addItem(NSMenuItem.separator())
+            
+            let regTestModeStatusMenuItem = NSMenuItem()
+            regTestModeStatusMenuItem.title = "Regtest Mode: \(isRegTestModeEnabled ? "Enabled" : "Disabled")"
+            menu.addItem(regTestModeStatusMenuItem)
+            
+            if(isDevModeEnabled) {
+                let regTestModeMenuItem = NSMenuItem()
+                regTestModeMenuItem.title = "\(isRegTestModeEnabled ? "Disable" : "Enable") Regtest Mode"
+                
+                if(!isRegTestModeChanging) {
+                    regTestModeMenuItem.action = #selector(regTestModeClick)
+                    regTestModeMenuItem.keyEquivalent = "r"
+                }
+                
+                menu.addItem(regTestModeMenuItem)
+            }
+
             
             menu.addItem(NSMenuItem.separator())
             
@@ -214,13 +251,51 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         os_log("copyAPIKeyClick", log: log, type: .debug)
         let pasteboard = NSPasteboard.general()
         pasteboard.declareTypes([NSPasteboardTypeString], owner: nil)
-        pasteboard.setString(createOrRetrieveCoreWalletPassword(), forType: NSPasteboardTypeString)
+        if(isRegTestModeEnabled) {
+            os_log("copying regtest core api password", log: log, type: .debug)
+            pasteboard.setString(regTestCoreAPIPassword, forType: NSPasteboardTypeString)
+        } else {
+            os_log("copying production core api password", log: log, type: .debug)
+            pasteboard.setString(createOrRetrieveCoreWalletPassword(), forType: NSPasteboardTypeString)
+        }
     }
     
     func devModeClick(sender: AnyObject?) {
         os_log("devModeClick", log: log, type: .debug)
         isDevModeEnabled = !isDevModeEnabled
     }
+    
+    func regTestModeClick(sender: AnyObject?) {
+        os_log("regTestModeClick", log: log, type: .debug)
+        if(!isRegTestModeChanging) {
+            isRegTestModeChanging = true
+            os_log("Stopping log server...", log: log, type: .debug)
+            portalLogServer?.server.stop()
+            if(!isRegTestModeEnabled) {
+                os_log("Preparing to stop bundled Core API endpoint for reg test mode...", log: log, type: .debug)
+                stopCoreAPI(terminationHandler: {
+                    self.isRegTestModeChanging = false
+                    self.isRegTestModeEnabled = true
+                    os_log("Restarting log server with new API password", log: self.log, type: .debug)
+                    self.portalLogServer = PortalLogServer.init(port: UInt16(self.logServerPort), password: self.createOrRetrieveCoreWalletPassword())
+                })
+            } else {
+                os_log("Exiting reg test mode: restarting bundled Core API endpoint...", log: log, type: .debug)
+                let walletPassword = createOrRetrieveCoreWalletPassword()
+                portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
+                startCoreAPI(walletPassword: walletPassword, complete: {
+                    self.isRegTestModeChanging = false
+                    self.isRegTestModeEnabled = false
+                    os_log("Restarting log server with new API password", log: self.log, type: .debug)
+                    self.portalLogServer = PortalLogServer.init(port: UInt16(self.logServerPort), password: self.createOrRetrieveCoreWalletPassword())
+
+                })
+            }
+        } else {
+            os_log("Regtest mode is already changing. Doing nothing.", log: log, type: .debug)
+        }
+    }
+    
     
     func exitClick(sender: AnyObject?) {
         os_log("exitClick", log: log, type: .debug)
@@ -453,6 +528,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     func createOrRetrieveCoreWalletPassword() -> String {
         os_log("createOrRetrieveCoreWalletPassword", log: log, type: .debug)
+        if(isRegTestModeEnabled && !isRegTestModeChanging) {
+            return regTestCoreAPIPassword
+        }
+        
         let serviceNameData = (keychainServiceName as NSString).utf8String
         let accountNameData = (keychainAccountName as NSString).utf8String
         
