@@ -105,7 +105,7 @@ class StatusBar extends Component {
     if (btcBalance === null) {
       return 0
     } else {
-      const roundedAmount = roundTo(btcBalance, 3)
+      const roundedAmount = roundTo(btcBalance, 6)
       return roundedAmount
     }
   }
