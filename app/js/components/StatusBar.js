@@ -219,7 +219,8 @@ class StatusBar extends Component {
           </div>
           <div className="status-inline status-profile">
             <Link to="/profiles" className="">
-              <Image className="status-profile-img img-circle" src="/images/avatar.png" />
+              <Image className="status-profile-img img-circle" src="/images/avatar.png" /><br />
+              Me
             </Link>
           </div>
         </div>
