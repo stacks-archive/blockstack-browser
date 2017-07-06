@@ -141,6 +141,7 @@
     "react-history": "^0.15.1",
     "react-mixin": "^3.0.3",
     "react-modal": "^1.6.5",
+    "react-qr-svg": "^2.0.1",
     "react-radio-group": "^2.2.0",
     "react-redux": "^4.4.8",
     "react-router": "^3.0.0",
