@@ -195,33 +195,10 @@ class StatusBar extends Component {
         </Link>
       }
         <div className="pull-right">
-          <div className="status-inline status-completion">
-            <div className="status-complete-wrap">
-            {numberOfActionItems > 0 ?
-              <OverlayTrigger trigger={['click']} placement="bottom" overlay={popover}>
-                <div className="status-complete-dot">
-                  <div
-                  className="status-complete-object img-circle"
-                  style={{ cursor: 'default' }}>
-                  {numberOfActionItems}
-                  </div>
-                </div>
-              </OverlayTrigger>
-              :
-              null
-            }
-            </div>
-          </div>
           <div className="status-inline status-balance">
             <Link to="/wallet/receive" className="statusBar-link">
               <Image className="" src="/images/icon-wallet-sm.svg" /><br />
                 <p>{this.roundedBtcBalance()} BTC</p>
-            </Link>
-          </div>
-          <div className="status-inline status-profile">
-            <Link to="/storage/providers" className="statusBar-link">
-              <Image className="" src="/images/icon-storage-sm.svg" /><br />
-                Storage
             </Link>
           </div>
           <div className="status-inline status-profile">
