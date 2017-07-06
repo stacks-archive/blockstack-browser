@@ -1,6 +1,6 @@
 {
   "name": "blockstack-portal",
-  "version": "0.11.0-alpha.2",
+  "version": "0.11.0-alpha.3",
   "author": "Blockstack Inc <admin@blockstack.com>",
   "description": "The Blockstack browser portal",
   "license": "MPL-2.0",
