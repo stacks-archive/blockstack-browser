@@ -434,7 +434,7 @@ div.pro-avatar img{max-width:58px;}
 .status-bar-dark,.status-bar-dark > a{background-color:#000;color:#e6e6e6;}
 .status-bar-transparent-light,.status-bar-transparent-light > a{background-color:rgba(0,0,0,0);color:#e6e6e6;}
 .status-bar-transparent-dark,.status-bar-transparent-dark > a{background-color:rgba(255,255,255,0);color:#080809;}
-.status-bar-back{width:150px;top:114px;line-height:34px;margin-top:5px;}
+.status-bar-back{width:150px;top:114px;line-height:34px;margin-top:3px;}
 .status-inline{display:inline-block;}
 .status-completion{margin-right:15px;vertical-align:top;margin-top:-1px;}
 .status-profile-img{width:22px;height:22px;vertical-align:top;}
