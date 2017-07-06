@@ -13,6 +13,13 @@ import os.log
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
     
+    var mainWindowController: MainWindowController? = nil
+    
+    var mainWindow = NSWindow(contentRect: NSMakeRect(0, 0, 900, 700),
+                              styleMask: [.titled, .closable, .miniaturizable, .resizable],
+                              backing: .buffered, defer: false)
+    
+    var browserViewController: BrowserViewController? = nil
     
     let productionModePortalPort = 8888
     let developmentModePortalPort = 3000
@@ -72,6 +79,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         startPortalProxy(complete: {
             let delayInSeconds = 0.5
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+                self.createMainWindow()
                 self.openPortal(path: "/")
             }
         })
@@ -83,7 +91,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         startCoreAPI(walletPassword: walletPassword, complete: {
             // do nothing on task completion
         })
+        
     }
+    
 
     func applicationWillTerminate(_ aNotification: Notification) {
         shutdown(terminate: false)
@@ -98,12 +108,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "\(portalAuthenticationPath)\(authRequest)")
 
     }
+    
+    func createMainWindow() {
+        NSLog("createMainWindow")
+        mainWindowController = MainWindowController(window: mainWindow)
+        
+        browserViewController = BrowserViewController()
+        browserViewController?.appDelegate = self
+        
+        mainWindow.contentView!.addSubview(browserViewController!.view)
+        mainWindowController!.showWindow(self)
+    }
 
     func portalBaseUrl() -> String {
         return "http://localhost:\(portalPort())"
     }
     
-    func portalPort() -> Int {
+    public func portalPort() -> Int {
         return isDevModeEnabled ? developmentModePortalPort : productionModePortalPort
     }
     
@@ -138,7 +159,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let portalURLWithSecretString = "\(portalURLString)#coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
         let portalURLWithSecretAndLogPortString = "\(portalURLWithSecretString)&logServerPort=\(logServerPort)"
         let portalURL = URL(string: portalURLWithSecretAndLogPortString )
-        NSWorkspace.shared().open(portalURL!)
+        mainWindowController?.showWindow(self)
+        NSApp.activate(ignoringOtherApps: true)
+        browserViewController!.open(url: portalURL)
     }
     
     func statusItemClick(sender: AnyObject?) {
