@@ -175,33 +175,54 @@ BLOCKSTACK_TOKEN_FILE_SCHEMA = {
         },
         'profile': {
             'type': 'string',
-            'pattern': '.+',
+            'pattern': '.+', 
         },
         'keys': {
-            'delegation': {
-                'type': 'string', 
-                'pattern': '.+',
-            },
-            'apps': {
-                'type': 'object',
-                'patternProperties': {
-                    OP_APP_NAME_PATTERN: {
+            'type': 'object',
+            'properties': {
+                'name': {
+                    'type': 'array',
+                    'items': {
                         'type': 'string',
-                        'pattern': '.+',
-                    }
+                        'pattern': OP_PUBKEY_PATTERN,
+                    },
+                },
+                'delegation': {
+                    'type': 'string', 
+                    'pattern': '.+',
+                },
+                'apps': {
+                    'type': 'object',
+                    'patternProperties': {
+                        '.+': {                 # device ID
+                            'type': 'string',
+                            'pattern': '.+',
+                        },
+                    },
                 },
             },
             'required': [
+                'name',
                 'delegation',
                 'apps',
             ],
             'additionalProperties': False,
+        },
+        'writes': {
+            'type': 'integer',
+            'minimum': 0,
+        },
+        'timestamp': {
+            'type': 'integer',
+            'minimum': 0,
         },
     },
     'required': [
         'version',
         'profile',
         'keys',
+        'writes',
+        'timestamp',
     ],
     'additionalProperties': False,
 }
@@ -214,20 +235,24 @@ Example:
   "version": "3.0",
   "profile": "<profile-jwt>",
   "keys": {
+    "name": [ "pubkey1", "pubkey2", ... ],
     "delegation": "<key-bundle-jwt>",
     "apps": {
       "laptop": "<app-key-bundle-jwt>",
       "phone": "<app-key-bundle-jwt>"
       }
     }
-  }
+  },
+  "writes": 24,
+  "timestamp": 1499121510
 }
 ```
 
 Authentication:
 
 * Signed by _one of_ the name owner's device-specific `sign` keys in the
-  delegation bundle.
+  delegation bundle.  Specifically, the key belonging to the device listed
+  at  `/apps/:deviceName` must sign the `/apps/:deviceName` JWT.
 * Verified by _any of_ the name owner's device-specific `sign` public keys or
   public key hashes in the verification bundle.
 
@@ -240,6 +265,9 @@ Fields:
    * `apps`:  This is an object whose properties are application names (ending
      in either `.1` or `.x`), and whose values are serialized JWT strings
      (e.g. the output of `JSON.stringify()`).
+* 'writes': this is the number of times this token file has been updated. It
+should increase monotonically.
+* 'timestamp': this is the UNIX timestamp at which this token file was created
 
 The serialized JWTs will either be stringify'ed JSON strings (for
 multi-signature JWTs) or compact-serialized JWTs (for single-signature JWTs)
