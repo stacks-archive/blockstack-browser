@@ -7,7 +7,7 @@ import { DROPBOX } from '../../../storage/utils/index'
 const DEFAULT_API = {
   apiCustomizationEnabled: true,
   nameLookupUrl: 'http://localhost:6270/v1/names/{name}',
-  searchUrl: 'https://api.blockstack.com/v1/search?query={query}',
+  searchServiceUrl: 'https://core.blockstack.org/v1/search?query={query}',
   registerUrl: 'http://localhost:6270/v1/names',
   bitcoinAddressLookupUrl: 'http://localhost:6270/v1/addresses/bitcoin/{address}',
   balanceUrl: 'http://localhost:6270/v1/wallet/balance',

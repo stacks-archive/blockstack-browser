@@ -62,32 +62,39 @@ class SocialAccountItem extends Component {
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
-    if (this.props.listItem === true) {
-      return (
-        <li>
-          <a href={this.getAccountUrl()} data-toggle="tooltip"
-            title={webAccountTypes[this.props.service].label}>
-            {this.props.verified ?
-            <span className="fa-stack fa-lg">
-              <i className="fa fa-certificate fa-stack-2x fa-green" />
-              <i className={`fa ${this.getIconClass()} fa-stack-1x`} />
-            </span>
-            :
-            <span className="fa-stack fa-lg">
-              <i className={`fa ${this.getIconClass()} fa-stack-1x`} />
-            </span>
-            }
-            <span className="app-account-identifier">
-              {this.getIdentifier()}
-            </span>
-          </a>
-        </li>
-      )
+    if (webAccountTypes[this.props.service]) {
+      if (this.props.listItem === true) {
+        return (
+          <li>
+            <a href={this.getAccountUrl()} data-toggle="tooltip"
+              title={webAccountTypes[this.props.service].label}>
+              {this.props.verified ?
+              <span className="fa-stack fa-lg">
+                <i className="fa fa-certificate fa-stack-2x fa-green" />
+                <i className={`fa ${this.getIconClass()} fa-stack-1x`} />
+              </span>
+              :
+              <span className="fa-stack fa-lg">
+                <i className={`fa ${this.getIconClass()} fa-stack-1x`} />
+              </span>
+              }
+              <span className="app-account-identifier">
+                {this.getIdentifier()}
+              </span>
+            </a>
+          </li>
+        )
+      } else {
+        return (
+          <span>
+            <i className={`fa ${this.getIconClass()}`} />
+            <span>{this.getIdentifier()}</span>
+          </span>
+        )
+      }
     } else {
       return (
         <span>
-          <i className={`fa ${this.getIconClass()}`} />
-          <span>{this.getIdentifier()}</span>
         </span>
       )
     }

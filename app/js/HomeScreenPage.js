@@ -13,7 +13,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-class DashboardPage extends Component {
+class HomeScreenPage extends Component {
   constructor(props) {
     super(props)
   }
@@ -27,16 +27,6 @@ class DashboardPage extends Component {
           <div className="container app-wrap">
             <div className="app-container no-padding">
               <div className="app-box-wrap">
-                <Link to="/profiles" className="app-box-container">
-                  <div className="app-box">
-                    <img src="/images/app-icon-profiles@2x.png" />
-                  </div>
-                </Link>
-                <div className="app-text-container">
-                  <h3>Profiles</h3>
-                </div>
-              </div>
-              <div className="app-box-wrap">
                 <Link to="/storage/providers" className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-storage-light@2x.png" />
@@ -44,16 +34,6 @@ class DashboardPage extends Component {
                 </Link>
                 <div className="app-text-container">
                   <h3>Storage</h3>
-                </div>
-              </div>
-              <div className="app-box-wrap">
-                <Link to="/wallet/receive" className="app-box-container">
-                  <div className="app-box">
-                    <img src="/images/app-icon-wallet-card-flat@2x.png" />
-                  </div>
-                </Link>
-                <div className="app-text-container">
-                  <h3>Wallet</h3>
                 </div>
               </div>
               <div className="app-box-wrap">
@@ -97,4 +77,4 @@ class DashboardPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreenPage)

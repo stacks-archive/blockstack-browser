@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import AuthModal from './components/AuthModal'
-import DashboardPage from '../DashboardPage'
+import HomeScreenPage from '../HomeScreenPage'
 
 function mapStateToProps(state) {
   return {
@@ -29,7 +29,7 @@ class AuthPage extends Component {
   render() {
     return (
       <div style={{ width: '100%', height: '100%' }}>
-        <DashboardPage />
+        <HomeScreenPage />
         <AuthModal
           addresses={this.props.addresses}
           publicKeychain={this.props.publicKeychain} />

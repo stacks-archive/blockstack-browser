@@ -1,4 +1,44 @@
-/* Styles for Release v0.4.0 */
+/* Styles */
+
+/* Table of Contents */
+/*  1. Colors */
+/*  2. Options */
+/*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version we are utilizing the custom spacing rules from blockstack.com. Upon import of blockstack-bootstrap, go through styles and replace with latest spacing rules from b4. */
+/*  4. Body */
+/*  5. Links */
+/*  6. Grid breakpoints */
+/*  7. Grid containers */
+/*  8. Grid columns */
+/*  9. Fonts */
+/* 10. Components */
+/* 11. Tables */
+/* 12. Buttons */
+/* 13. Forms */
+/* 14. Dropdowns */
+/* 15. Z-index master list */
+/* 16. Navbar */
+/* 17. Navs */
+/* 18. Pagination */
+/* 19. Jumbotron */
+/* 20. Form states and alerts */
+/* 21. Cards */
+/* 22. Tooltips */
+/* 23. Popovers */
+/* 24. Tags */
+/* 25. Modals */
+/* 26. Alerts */
+/* 27. Progress bars */
+/* 28. List group */
+/* 29. Image thumbnails */
+/* 30. Figures */
+/* 31. Breadcrumbs */
+/* 32. Media objects */
+/* 33. Carousel */
+/* 34. Close */
+/* 35. Code */
+/* 36. Status Bars */
+/* 37. Misc */
+
 
 #app{height:100%;width:100%;}
 
@@ -305,27 +345,10 @@ div.pro-avatar img{max-width:58px;}
 div.status-inline.status-balance > p{padding:7px 10px;vertical-align:middle;}
 div.status-inline.status-profile{margin-top:6px;}
 /* --- Status bar tooltip arrow --- */
-.popover.bottom>.arrow {
-  left: 50%;
-  margin-left: -11px;
-  border-top-width: 0;
-  border-bottom-color: #fff;
-  top: -11px;
-}
-.popover>.arrow {
-  border-width: 11px;
-}
-.popover>.arrow, .popover>.arrow:after {
-  position: absolute;
-  display: block;
-  width: 0;
-  height: 0;
-  border-color: rgba(0, 0, 0, 0);
-  border-style: solid;
-}
-*, :after, :before {
-  box-sizing: border-box;
-}
+.popover.bottom>.arrow{left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#fff;top:-11px;}
+.popover>.arrow{border-width:11px;}
+.popover>.arrow,.popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:rgba(0,0,0,0);border-style:solid;}
+*,:after,:before{box-sizing:border-box;}
 div{display:block;}
 .popover{position:absolute;top:0;left:0;z-index:1060;display:none;max-width:276px;padding:1px;letter-spacing:normal;line-break:auto;line-height:1.42857143;text-align:left;text-align:start;text-decoration:none;text-shadow:none;text-transform:none;white-space:normal;word-break:normal;word-spacing:normal;word-wrap:normal;font-size:14px;background-color:#fff;background-clip:padding-box;border:1px solid #fff;border-radius:6px;box-shadow:0 5px 30px rgba(0,0,0,.2);}
 *,:after,:before{box-sizing:border-box;}
@@ -337,8 +360,6 @@ div{display:block;}
 .action-item{padding-bottom:10px;margin-top:5px;margin-bottom:15px;font-family:'Lato',sans-serif;}
 .tooltip-link{display:block;padding-top:8px;color:#2C96FF;}
 .tooltip-link:hover,.tooltip-link:focus{display:block;padding-top:8px;color:#2C96FF;}
-
-
 
 /* 37. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
@@ -429,10 +450,10 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
 	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
 	.app-box-wrap{width:190px;padding:0;}
-	.app-box{height:auto;margin:1.125rem auto;width:100%;margin-left:0px;margin-right:0px!important;}
-	.app-box img{width:144px;-webkit-box-shadow:0px 0px 70px 0px rgba(44,150,255,1);-moz-box-shadow:0px 0px 70px 0px rgba(44,150,255,1);box-shadow:0px 0px 70px 0px rgba(44,150,255,1);-moz-border-radius:28px;-webkit-border-radius:28px;border-radius:28px;}
-	.app-center{width:100%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:flex-start;}
-	.app-wrap{width:95%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:flex-start;align-items:center;}
+  .app-box{height:auto;margin:1.125rem auto;width:100%;margin-left:0px;margin-right:0px!important;}
+  .app-box img{width:144px;-webkit-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-border-radius:24px;-webkit-border-radius:24px;border-radius:24px;}
+  .app-center{width:100%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:flex-start;}
+  .app-wrap{width:95%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:flex-start;align-items:center;}
 	.app-container{width:100%;display:flex;flex-wrap:wrap;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:flex-start;}
 	div.app-text-container > h3{font-size:1.25rem;margin-bottom:1.75rem;}	
 	div.card-list-container.profile-content-wrapper > div > h5.h5-landing{margin-top:25px;}
@@ -450,19 +471,11 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.pro-wrap{min-width:905px;}
 	.app-container{max-width:954px;margin:0 auto;}
 	.app-wrap{width:90%;margin-top:25%;}
-	.app-box-wrap{width:190px;padding:0;}
-.app-box img {  
-  width: 152px; 
-  -webkit-box-shadow: 0px 0px 80px 0px rgba(0,0 ,0,0.15);
-  -moz-box-shadow: 0px 0px 80px 0px rgba(0,0,0,0.15);
-  box-shadow: 0px 0px 80px 0px rgba(0,0,0,0.15);
-  -moz-border-radius: 30px;
-  -webkit-border-radius: 30px;
-  border-radius: 30px;
-}
-	.wallet-container{max-width:950px;}
-	.wallet-content{padding:35px 50px 50px 50px;}
-	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:9.25rem;padding-right:9.25rem;}
+  .app-box-wrap{width:190px;padding:0;}
+  .app-box img{width:152px;-webkit-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-border-radius:30px;-webkit-border-radius:30px;border-radius:30px;}
+  .wallet-container{max-width:950px;}
+  .wallet-content{padding:35px 50px 50px 50px;}
+  .item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:9.25rem;padding-right:9.25rem;}
 }
 
 /* Medium devices (desktops, 975px and up) */
@@ -480,7 +493,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 /* Large devices (large desktops, 1200px to 1400px) */
 @media (min-width:1200px){
 	.app-container{max-width:initial;}
-	.app-wrap{width:90%;margin-top:25%;}
+	.app-wrap{width:90%;margin-top:20%;}
 	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;margin-right:0;}
 	.pro-wrap{min-width:80%;}
 	.wallet-container{width:1000px;}
@@ -488,6 +501,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 
 /* Extra large devices (large desktops, 1400px and up) */
 @media (min-width:1400px){
-	.app-wrap{width:75%;max-width:1150px;margin-top:18%;}
+	.app-wrap{width:75%;max-width:1150px;margin-top:13%;}
 }
 
