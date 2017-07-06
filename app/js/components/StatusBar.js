@@ -189,16 +189,20 @@ class StatusBar extends Component {
       {this.props.hideBackToHomeLink ?
         null
       :
-        <Link to="/" className="status-bar-back">
-          <i className="fa fa-angle-left status-bar-icon"></i>
-          Home Screen
-        </Link>
+        <div className="pull-left">
+          <div className="status-inline status-balance">
+            <Link to="/" className="status-bar-back statusBar-link">
+              <i className="fa fa-angle-left status-bar-icon"></i>
+              Home Screen
+            </Link>
+          </div>
+        </div>
       }
         <div className="pull-right">
           <div className="status-inline status-balance">
             <Link to="/wallet/receive" className="statusBar-link">
               <Image className="" src="/images/icon-wallet-sm.svg" /><br />
-                <p>{this.roundedBtcBalance()} BTC</p>
+                {this.roundedBtcBalance()} BTC
             </Link>
           </div>
           <div className="status-inline status-profile">
