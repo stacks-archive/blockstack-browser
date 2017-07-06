@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="29px" viewBox="0 0 29 29" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.1 (43504) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-wallet-sm-rev</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Status-Bar/Status-Bar-Dark-v4" transform="translate(-1094.000000, -23.000000)" stroke="#FFFFFF" stroke-width="2">
+            <g id="Status-Bar/Status-Bar-Balance-Light" transform="translate(1067.000000, 23.000000)">
+                <g id="wallet-90" transform="translate(31.045166, 4.045166)">
+                    <path d="M4.75313045,1.90125218 L1.90125218,1.90125218 C0.85081035,1.90125218 0,2.75206253 0,3.80250436 L0,3.80250436 C0,4.85294619 0.85081035,5.70375654 1.90125218,5.70375654" id="Shape"></path>
+                    <polyline id="Shape" points="4.75313045 5.70375654 4.75313045 0 18.0618957 0 18.0618957 5.70375654"></polyline>
+                    <path d="M20.913774,5.70375654 L1.90125218,5.70375654 C0.85081035,5.70375654 0,4.85294619 0,3.80250436 L0,18.0618957 C0,19.6370831 1.27669084,20.913774 2.85187827,20.913774 L20.913774,20.913774 L20.913774,5.70375654 Z" id="Shape"></path>
+                    <circle id="Oval" cx="15.2100174" cy="13.3087653" r="1.90125218"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

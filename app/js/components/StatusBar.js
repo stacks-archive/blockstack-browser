@@ -185,7 +185,7 @@ class StatusBar extends Component {
     const numberOfActionItems = this.numberOfActionItems()
 
     return (
-      <div className="status-bar status-bar-transparent-dark">
+      <div className="status-bar status-bar-light">
       {this.props.hideBackToHomeLink ?
         null
       :
@@ -213,14 +213,27 @@ class StatusBar extends Component {
             </div>
           </div>
           <div className="status-inline status-balance">
-            <Link to="/wallet/receive" className="">
-              <p>Balance {this.roundedBtcBalance()} BTC</p>
+            <Link to="/wallet/receive" className="statusBar-link">
+              <Image className="" src="/images/icon-wallet-sm.svg" /><br />
+                <p>{this.roundedBtcBalance()} BTC</p>
             </Link>
           </div>
           <div className="status-inline status-profile">
-            <Link to="/profiles" className="">
-              <Image className="status-profile-img img-circle" src="/images/avatar.png" /><br />
-              Me
+            <Link to="/storage/providers" className="statusBar-link">
+              <Image className="" src="/images/icon-storage-sm.svg" /><br />
+                Storage
+            </Link>
+          </div>
+          <div className="status-inline status-profile">
+            <Link to="/account/password" className="statusBar-link">
+              <Image className="" src="/images/icon-settings-sm.svg" /><br />
+                Settings
+            </Link>
+          </div>
+          <div className="status-inline status-profile">
+            <Link to="/profiles" className="statusBar-link">
+              <Image className="" src="/images/icon-account-sm.svg" /><br />
+                Account
             </Link>
           </div>
         </div>
