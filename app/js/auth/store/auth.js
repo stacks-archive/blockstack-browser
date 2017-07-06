@@ -65,9 +65,9 @@ function loginToApp() {
 function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey, appDomain, authRequest, blockchainId) {
   return dispatch => {
     logger.trace('getCoreSessionToken(): dispatched')
-    console.log(authRequest)
+    console.log(`authRequest = ${authRequest}`)
     getCoreSession(coreHost, corePort, coreApiPassword, appPrivateKey,
-      authRequest, blockchainId)
+      blockchainId, authRequest)
         .then((coreSessionToken) => {
           logger.trace('getCoreSessionToken: generated a token!')
           dispatch(updateCoreSessionToken(appDomain, coreSessionToken))
