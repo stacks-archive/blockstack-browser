@@ -165,5 +165,9 @@
   },
   "optionalDevDependencies": {
     "appdmg": "^0.4.5"
+  },
+  "engines": {
+    "node": ">=6",
+    "npm": ">=5"
   }
 }
