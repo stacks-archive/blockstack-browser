@@ -425,7 +425,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;font-weight:400;line-height:1.75rem;border:1px solid #00CF98;background-color:#00CF98;padding:0.75rem 2.5rem;-moz-border-radius:4px!important;-webkit-border-radius:4px!important;border-radius:4px!important;}
 .highlight-wallet > pre{font-size:0.8125rem;color:#fff!important;text-align:center;}
 .form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;}
-
+.qrcode-wallet{margin-bottom:20px;text-align:center;}
 
 /* Media queries */
 
