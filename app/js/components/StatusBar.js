@@ -13,7 +13,7 @@ function mapStateToProps(state) {
   return {
     dropboxAccessToken: state.settings.api.dropboxAccessToken,
     localIdentities: state.profiles.identity.localIdentities,
-    addressBalanceUrl: state.settings.api.balanceUrl,
+    addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletAddress: state.account.coreWallet.address,
     coreWalletBalance: state.account.coreWallet.balance,
     coreAPIPassword: state.settings.api.coreAPIPassword,
