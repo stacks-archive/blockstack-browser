@@ -86,7 +86,7 @@ function registerName(api, domainName, ownerAddress, keypair) {
         min_confs: 0
       })
 
-      const setOwnerKeyRequestBody = JSON.stringify(keypair.key)
+      const setOwnerKeyRequestBody = JSON.stringify(keypair.key + '01')
 
       dispatch(registrationSubmitting())
       logger.trace(`Submitting registration for ${domainName} to Core node at ${api.registerUrl}`)
