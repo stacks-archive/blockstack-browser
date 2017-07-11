@@ -248,10 +248,11 @@ class WelcomeModal extends Component {
 
             {pageOneView === 'getStarted' ?
               <div>
-                <h4>Welcome to the new<br></br> decentralized internet</h4>
-                <p>On Blockstack, there are no 3rd party servers with your identity or
-                data. You are in control.</p>
-                <img src="/images/blockstack-logo-vertical-bug.svg" style={{ width: '80%' }} />
+                <img src="/images/blockstack-logo-vertical.svg" style={{ width: '80%' }} />
+                <h4>
+                  Join the new internet.<br />
+                  Use apps that put you in control
+                </h4>
                 <div className="container m-t-40">
                   <button className="btn btn-primary" onClick={this.showGenerateKeychain}>
                     Get Started
