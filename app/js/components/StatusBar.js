@@ -145,7 +145,7 @@ class StatusBar extends Component {
       <Popover id="things-to-do">
         <ActionItem
           action="Connect a storage provider to regain control of your data"
-          destinationUrl="/storage/providers"
+          destinationUrl="/account/storage"
           destinationName="Storage"
           completed={this.storageProviderConnected()}
         />

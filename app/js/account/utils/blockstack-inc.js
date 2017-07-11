@@ -1,5 +1,5 @@
 import log4js from 'log4js'
-const logger = log4js.getLogger('storage/utils/blockstack-inc.js')
+const logger = log4js.getLogger('account/utils/blockstack-inc.js')
 
 // TODO implement
 export function uploadPhotoToBlockstackInc(api, name, photoFile, index) {

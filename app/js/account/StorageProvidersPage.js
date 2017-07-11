@@ -59,7 +59,7 @@ class StorageProvidersPage extends Component {
     const port = location.port === '' ? 80 : location.port
     console.log(port)
     window.location = dbx.getAuthenticationUrl(
-      `http://localhost:${port}/storage/providers`)
+      `http://localhost:${port}/account/storage`)
   }
 
   disconnectDropbox() {
@@ -143,4 +143,3 @@ class StorageProvidersPage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StorageProvidersPage)
-

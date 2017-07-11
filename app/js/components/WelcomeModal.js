@@ -7,7 +7,7 @@ import Alert from './Alert'
 import InputGroup from './InputGroup'
 import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
-import { DROPBOX_APP_ID } from '../storage/utils/dropbox'
+import { DROPBOX_APP_ID } from '../account/utils/dropbox'
 import { isBackupPhraseValid } from '../utils'
 
 const Dropbox = require('dropbox')
@@ -152,7 +152,7 @@ class WelcomeModal extends Component {
     const dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
     const port = location.port === '' ? 80 : location.port
     window.location = dbx.getAuthenticationUrl(
-      `http://localhost:${port}/storage/providers`)
+      `http://localhost:${port}/account/storage`)
   }
 
   saveCoreAPIPassword(event) {

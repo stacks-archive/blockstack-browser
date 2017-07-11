@@ -16,7 +16,7 @@ import log4js from 'log4js'
 const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
 
 const WALLET_URL = '/wallet/receive'
-const STORAGE_URL = '/storage/providers'
+const STORAGE_URL = '/account/storage'
 
 function mapStateToProps(state) {
   return {

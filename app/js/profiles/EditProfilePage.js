@@ -7,7 +7,7 @@ import EditProfileHeader from './components/EditProfileHeader'
 import ProfileEditingSidebar from './components/ProfileEditingSidebar'
 import { IdentityActions } from './store/identity'
 import { signProfileForUpload, getNameParts } from '../utils/index'
-import { uploadProfile, uploadPhoto } from '../storage/utils'
+import { uploadProfile, uploadPhoto } from '../account/utils'
 
 import BasicInfoTab      from './tabs/BasicInfoTab'
 import PhotosTab         from './tabs/PhotosTab'

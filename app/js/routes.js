@@ -55,7 +55,7 @@ export default (
         <Route path="create"      component={CreateAccountPage} />
         <Route path="restore"     component={RestoreAccountPage} />
         <Route path="api"         component={ApiSettingsPage} />
-        <Route path="providers"   component={StorageProvidersPage} />
+        <Route path="storage"   component={StorageProvidersPage} />
     </Route>
 
     <Route path="wallet" component={WalletApp}>
