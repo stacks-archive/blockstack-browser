@@ -248,13 +248,13 @@ class WelcomeModal extends Component {
 
             {pageOneView === 'getStarted' ?
               <div>
-                <img src="/images/blockstack-logo-vertical.svg" style={{ width: '80%' }} />
-                <h4>
+                <img src="/images/blockstack-logo-vertical.svg" className="m-b-65" style={{ width: '210px' }} />
+                <h3 className="m-b-100">
                   Join the new internet.<br />
                   Use apps that put you in control
-                </h4>
-                <div className="container m-t-40">
-                  <button className="btn btn-primary" onClick={this.showGenerateKeychain}>
+                </h3>
+                <div className="container">
+                  <button className="btn btn-lg btn-primary btn-block m-b-20" onClick={this.showGenerateKeychain}>
                     Get Started
                   </button>
                   <br></br>
