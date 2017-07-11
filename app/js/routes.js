@@ -22,13 +22,11 @@ import ChangePasswordPage   from './account/ChangePasswordPage'
 import CreateAccountPage    from './account/CreateAccountPage'
 import RestoreAccountPage   from './account/RestoreAccountPage'
 import ApiSettingsPage      from './account/ApiSettingsPage'
+import StorageProvidersPage from './account/StorageProvidersPage'
 
 import WalletApp            from './wallet/WalletApp'
 import ReceivePage          from './wallet/ReceivePage'
 import SendPage             from './wallet/SendPage'
-
-import StorageApp           from './storage/StorageApp'
-import StorageProvidersPage from './storage/StorageProvidersPage'
 
 import AuthPage             from './auth/AuthPage'
 
@@ -57,10 +55,7 @@ export default (
         <Route path="create"      component={CreateAccountPage} />
         <Route path="restore"     component={RestoreAccountPage} />
         <Route path="api"         component={ApiSettingsPage} />
-    </Route>
-
-    <Route path="storage" component={StorageApp}>
-        <Route path="providers"     component={StorageProvidersPage} />
+        <Route path="providers"   component={StorageProvidersPage} />
     </Route>
 
     <Route path="wallet" component={WalletApp}>

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { SettingsActions } from './store/settings'
+import { SettingsActions } from '../account/store/settings'
 
 import { DROPBOX } from './utils/index'
 import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from './utils/dropbox'
@@ -59,7 +59,7 @@ class StorageProvidersPage extends Component {
     const port = location.port === '' ? 80 : location.port
     console.log(port)
     window.location = dbx.getAuthenticationUrl(
-      `http://localhost:${port}/providers`)
+      `http://localhost:${port}/storage/providers`)
   }
 
   disconnectDropbox() {
@@ -143,3 +143,4 @@ class StorageProvidersPage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(StorageProvidersPage)
+

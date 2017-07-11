@@ -12,7 +12,8 @@ class AccountSidebar extends Component {
       { url: '/account/backup', label: 'backup account', isActive: false },
       { url: '/account/restore', label: 'restore account', isActive: false },
       { url: '/account/delete', label: 'delete account', isActive: false },
-      { url: '/account/api', label: 'api settings', isActive: false }
+      { url: '/account/api', label: 'api settings', isActive: false },
+      { url: '/account/providers', label: 'storage providers', isActive: false }
     ]
     tabs.map((tab) => {
       if (tab.url === this.props.activeTab) {
