@@ -1,7 +1,7 @@
 import * as types from './types'
 import { makeProfileZoneFile } from 'blockstack'
 import { IdentityActions } from  '../identity'
-import { uploadProfile } from '../../../storage/utils'
+import { uploadProfile } from '../../../account/utils'
 import {
   signProfileForUpload, authorizationHeaderValue
 } from '../../../utils'
@@ -79,20 +79,39 @@ function registerName(api, domainName, ownerAddress, keypair) {
         Authorization: authorizationHeaderValue(api.coreAPIPassword)
       }
 
-      const requestBody = JSON.stringify({
+      const registrationRequestBody = JSON.stringify({
         name: domainName,
         owner_address: ownerAddress,
         zonefile: zoneFile,
-        min_confs: 0
+        min_confs: 0,
+        unsafe: true
       })
+
+      // Core registers with an uncompressed address,
+      // browser expects compressed addresses,
+      // we need to add a suffix to indicate to core
+      // that it should use a compressed addresses
+      // see https://en.bitcoin.it/wiki/Wallet_import_format
+      // and https://github.com/blockstack/blockstack-browser/issues/607
+      const compressedPublicKeySuffix = '01'
+
+      const setOwnerKeyRequestBody = JSON.stringify(`${keypair.key}${compressedPublicKeySuffix}`)
 
       dispatch(registrationSubmitting())
       logger.trace(`Submitting registration for ${domainName} to Core node at ${api.registerUrl}`)
-      return fetch(api.registerUrl, {
-        method: 'POST',
+
+      const setOwnerKeyUrl = `http://${api.coreHost}:${api.corePort}/v1/wallet/keys/owner`
+
+      return fetch(setOwnerKeyUrl, {
+        method: 'PUT',
         headers: requestHeaders,
-        body: requestBody
+        body: setOwnerKeyRequestBody
       })
+        .then(() => fetch(api.registerUrl, {
+          method: 'POST',
+          headers: requestHeaders,
+          body: registrationRequestBody
+        })
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
@@ -111,6 +130,10 @@ function registerName(api, domainName, ownerAddress, keypair) {
           logger.error('registerName: error POSTing regitsration to Core', error)
           dispatch(registrationError(error))
         })
+      ).catch((error) => {
+        logger.error('registerName: error setting owner key', error)
+        dispatch(registrationError(error))
+      })
     }).catch((error) => {
       logger.error('registerName: error uploading profile', error)
       dispatch(profileUploadError(error))

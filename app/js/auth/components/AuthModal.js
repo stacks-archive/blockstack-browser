@@ -210,7 +210,7 @@ class AuthModal extends Component {
             :
             <div>
               <p>
-                You need to <Link to="/storage/providers">connect your storage</Link> in order to log in.
+                You need to <Link to="/account/storage">connect your storage</Link> in order to log in.
               </p>
             </div>
             }

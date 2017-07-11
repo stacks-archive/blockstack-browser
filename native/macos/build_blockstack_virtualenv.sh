@@ -36,7 +36,11 @@ PYSCRYPT_NO_LINK_FLAGS="1" LDFLAGS="/usr/local/opt/openssl/lib/libcrypto.a /usr/
 
 echo "Installing latest virtualchain..."
 
-pip install --upgrade git+https://github.com/blockstack/virtualchain.git@e9e650d1f6343d357a47366f22cc6161a743c7dc
+pip install --upgrade git+https://github.com/blockstack/virtualchain.git@c2f42e3a03d3d49d6e7d6fc7f5828a319b7a58e4
+
+echo "Installing lastest jsontokens-py"
+
+pip install --upgrade git+https://github.com/blockstack/jsontokens-py.git@0a6134820ee6929e7f00c62b331f5439d38b6b17
 
 echo "Installing latest blockstack-profiles..."
 
@@ -44,11 +48,11 @@ pip install --upgrade git+https://github.com/blockstack/blockstack-profiles-py.g
 
 echo "Installing latest blockstack-zones..."
 
-pip install --upgrade git+https://github.com/blockstack/zone-file-py.git@73739618b51d4c8b85966887fae4ca22cba87e10
+pip install --upgrade git+https://github.com/blockstack/zone-file-py.git@00d801b8c1d2d5024eec80dd6531ab8441742127
 
 echo "Installing latest blockstack..."
 
-pip install --upgrade git+https://github.com/blockstack/blockstack-core.git@d5d742659d0488de331e13e90730904c99ed2693
+pip install --upgrade git+https://github.com/blockstack/blockstack-core.git@a70e71dc2f26eb2232b48f918f202fc8f9c3e9de
 
 echo "Blockstack virtual environment created."
 

@@ -74,8 +74,11 @@ class RestorePage extends Component {
 
   render() {
     return (
-      <div>
-        <p>
+      <div className="m-b-100">
+        <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
+          Restore Account
+        </h1>
+        <p style={{ paddingLeft: '15px' }}>
         Enter your backup phrase and choose a new password
          to restore your account. <i>This will delete your current account.</i>
         </p>
