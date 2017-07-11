@@ -77,7 +77,7 @@ class StorageProvidersPage extends Component {
   render() {
     const api = this.props.api
     return (
-      <div style={{ paddingLeft: '15px' }}>
+      <div className="m-b-100" style={{ paddingLeft: '15px' }}>
         <h1 className="h1-modern m-t-10">
           Storage Providers
         </h1>
