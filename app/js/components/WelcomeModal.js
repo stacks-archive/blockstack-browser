@@ -243,6 +243,9 @@ class WelcomeModal extends Component {
                 )
               })}
               </div>
+
+            {/* On-boarding screens --- Start */}
+
             {pageOneView === 'getStarted' ?
               <div>
                 <h4>Welcome to the new<br></br> decentralized internet</h4>
