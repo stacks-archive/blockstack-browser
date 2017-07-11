@@ -105,7 +105,7 @@ class ApiSettingsPage extends Component {
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="bitcoinAddressLookupUrl" label="Address Names URL"
                       data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="balanceUrl" label="Address URL"
+                    <InputGroup name="zeroConfBalanceUrl" label="Address URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="utxoUrl" label="UTXO URL"
                       data={this.state.api} onChange={this.onValueChange} />

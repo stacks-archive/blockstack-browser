@@ -10,7 +10,7 @@ const DEFAULT_API = {
   searchServiceUrl: 'https://core.blockstack.org/v1/search?query={query}',
   registerUrl: 'http://localhost:6270/v1/names',
   bitcoinAddressLookupUrl: 'http://localhost:6270/v1/addresses/bitcoin/{address}',
-  balanceUrl: 'http://localhost:6270/v1/wallet/balance',
+  zeroConfBalanceUrl: 'http://localhost:6270/v1/wallet/balance/0',
   utxoUrl: 'https://utxo.blockstack.org/insight-api/addr/{address}/utxo',
   broadcastUrl: 'https://utxo.blockstack.org/insight-api/tx/send',
   priceUrl: 'http://localhost:6270/v1/prices/names/{name}',

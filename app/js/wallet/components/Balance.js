@@ -13,7 +13,7 @@ function mapStateToProps(state) {
     balances: state.account.bitcoinAccount.balances,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     utxoUrl: state.settings.api.utxoUrl,
-    addressBalanceUrl: state.settings.api.balanceUrl,
+    addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletBalance: state.account.coreWallet.balance,
     coreWalletAddress: state.account.coreWallet.address,
     btcPriceUrl: state.settings.api.btcPriceUrl,
