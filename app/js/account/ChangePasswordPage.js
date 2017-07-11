@@ -94,7 +94,10 @@ class ChangePasswordPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="m-b-100">
+        <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
+          Change Password
+        </h1>
         {
           this.state.alerts.map((alert, index) => {
             return (
