@@ -81,7 +81,7 @@ class ApiSettingsPage extends Component {
 
   render() {
     return (
-      <div className="col-md-9">
+      <div>
         <div>
           <RadioGroup
             name="hostedDataLocation"
