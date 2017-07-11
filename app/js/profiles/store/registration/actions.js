@@ -83,7 +83,8 @@ function registerName(api, domainName, ownerAddress, keypair) {
         name: domainName,
         owner_address: ownerAddress,
         zonefile: zoneFile,
-        min_confs: 0
+        min_confs: 0,
+        unsafe: true
       })
 
       // Core registers with an uncompressed address,

@@ -42,7 +42,8 @@ describe('Registration Store: Async Actions', () => {
     const registrationBody = { name: 'satoshi.id',
       owner_address: ecPair.getAddress(),
       zonefile: '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://www.dropbox.com/s/eft9mgspq5ff3qe/profile.json?dl=1"\n\n',
-      min_confs: 0 }
+      min_confs: 0,
+      unsafe: true }
 
     const setOwnerKeyBody = JSON.stringify('76d53e1f52578b41e865ec327d6f51cd6e78633d8a1b674beb30f53d1a1e389501')
 
