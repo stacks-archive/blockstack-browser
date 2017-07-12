@@ -192,7 +192,7 @@ class SendPage extends Component {
             required={true}/>
           <InputGroup data={this.state} onChange={this.onValueChange} name="amount"
             label="Amount" placeholder="0.937" className="wallet-form" type="number"
-            required={true}/>
+            required={true} step={0.000001} />
           <InputGroup data={this.state} onChange={this.onValueChange}
             name="password" label="Password"
             placeholder="Password" type="password" required={true}/>
