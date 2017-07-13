@@ -105,15 +105,11 @@ class RegisterPage extends Component {
 
   componentDidMount() {
     logger.trace('componentDidMount')
-    if (this.props.coreWalletAddress !== null) {
-      logger.debug('coreWalletAddress exists...refreshing core wallet balance...')
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
-        this.props.coreAPIPassword)
-    } else {
-      logger.debug('coreWalletAddress does not exist...getting core wallet address...')
-      this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl,
-        this.props.coreAPIPassword)
-    }
+    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+      this.props.coreAPIPassword)
+    logger.debug('getting core wallet address...')
+    this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl,
+      this.props.coreAPIPassword)
     if (!this.state.storageConnected) {
       this.displayConnectStorageAlert()
     } else if (this.state.zeroBalance) {

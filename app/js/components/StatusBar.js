@@ -55,10 +55,8 @@ class StatusBar extends Component {
   }
 
   componentDidMount() {
-    if (this.props.coreWalletAddress !== null) {
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
             this.props.coreAPIPassword)
-    }
   }
 
   componentWillReceiveProps(nextProps) {

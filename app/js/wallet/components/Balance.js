@@ -50,10 +50,8 @@ class Balance extends Component {
   }
 
   componentDidMount() {
-    if (this.props.coreWalletAddress !== null) {
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
-					  this.props.coreAPIPassword)
-    }
+    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+          this.props.coreAPIPassword)
     this.props.refreshBtcPrice(this.props.btcPriceUrl)
   }
 
