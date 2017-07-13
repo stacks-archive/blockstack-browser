@@ -3,12 +3,14 @@ import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Alert from './Alert'
-import InputGroup from './InputGroup'
+import Alert from '../components/Alert'
+import InputGroup from '../components/InputGroup'
 import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
 import { DROPBOX_APP_ID } from '../account/utils/dropbox'
 import { isBackupPhraseValid } from '../utils'
+
+import { LandingPage } from './components'
 
 const Dropbox = require('dropbox')
 
@@ -244,21 +246,7 @@ class WelcomeModal extends Component {
               })}
               </div>
             {pageOneView === 'getStarted' ?
-              <div>
-                <h4>Welcome to the new<br></br> decentralized internet</h4>
-                <p>On Blockstack, there are no 3rd party servers with your identity or
-                data. You are in control.</p>
-                <img src="/images/blockstack-logo-vertical-bug.svg" style={{ width: '80%' }} />
-                <div className="container m-t-40">
-                  <button className="btn btn-primary" onClick={this.showGenerateKeychain}>
-                    Get Started
-                  </button>
-                  <br></br>
-                  <a href="#" onClick={this.showRestoreAccount}>
-                    Restore Account
-                  </a>
-                </div>
-              </div>
+            <LandingPage showGenerateKeychain={this.showGenerateKeychain} showRestoreAccount={this.showRestoreAccount} />
               :
               <div>
               {pageOneView === 'generateKeychain' ?
