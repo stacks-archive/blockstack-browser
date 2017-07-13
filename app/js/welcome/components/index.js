@@ -1,1 +1,2 @@
-export LandingPage from './LandingPage'
+export LandingView from './LandingView'
+export RestoreView from './RestoreView'

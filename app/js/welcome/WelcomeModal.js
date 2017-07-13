@@ -10,7 +10,7 @@ import { SettingsActions } from '../account/store/settings'
 import { DROPBOX_APP_ID } from '../account/utils/dropbox'
 import { isBackupPhraseValid } from '../utils'
 
-import { LandingPage } from './components'
+import { LandingView, RestoreView } from './components'
 
 const Dropbox = require('dropbox')
 
@@ -246,7 +246,7 @@ class WelcomeModal extends Component {
               })}
               </div>
             {pageOneView === 'getStarted' ?
-            <LandingPage showGenerateKeychain={this.showGenerateKeychain} showRestoreAccount={this.showRestoreAccount} />
+            <LandingView showGenerateKeychain={this.showGenerateKeychain} showRestoreAccount={this.showRestoreAccount} />
               :
               <div>
               {pageOneView === 'generateKeychain' ?
@@ -297,22 +297,10 @@ class WelcomeModal extends Component {
                       </form>
                     </div>
                   :
-                    <div>
-                      <h4>Restore your account</h4>
-                      <p></p>
-                      <InputGroup name="backupPhrase" type="text" label="Backup phrase"
-                        placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
-                      <InputGroup name="password" label="Password" type="password"
-                        data={this.state} onChange={this.onValueChange} />
-                      <div className="container m-t-40">
-                        <button className="btn btn-primary" onClick={this.restoreAccount}>
-                          Restore Account
-                        </button>
-                        <a href="#" onClick={this.showGenerateKeychain}>
-                          Create Account
-                        </a>
-                      </div>
-                    </div>
+                    <RestoreView
+                      restoreAccount={this.restoreAccount}
+                      showGenerateKeychain={this.showGenerateKeychain}
+                    />
                   }
                 </div>
               }
