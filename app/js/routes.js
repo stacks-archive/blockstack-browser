@@ -4,7 +4,7 @@ import React                        from 'react'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 import App                  from './App'
-import DashboardPage        from './DashboardPage'
+import HomeScreenPage        from './HomeScreenPage'
 
 import ProfilesApp          from './profiles/ProfilesApp'
 import AllProfilesPage      from './profiles/AllProfilesPage'
@@ -22,13 +22,11 @@ import ChangePasswordPage   from './account/ChangePasswordPage'
 import CreateAccountPage    from './account/CreateAccountPage'
 import RestoreAccountPage   from './account/RestoreAccountPage'
 import ApiSettingsPage      from './account/ApiSettingsPage'
+import StorageProvidersPage from './account/StorageProvidersPage'
 
 import WalletApp            from './wallet/WalletApp'
 import ReceivePage          from './wallet/ReceivePage'
 import SendPage             from './wallet/SendPage'
-
-import StorageApp           from './storage/StorageApp'
-import StorageProvidersPage from './storage/StorageProvidersPage'
 
 import AuthPage             from './auth/AuthPage'
 
@@ -37,7 +35,7 @@ import NotFoundPage         from './errors/NotFoundPage'
 export default (
 <Router history={browserHistory}>
   <Route path="/" component={App}>
-    <IndexRoute component={DashboardPage} />
+    <IndexRoute component={HomeScreenPage} />
 
     <Route path="profiles" component={ProfilesApp}>
         <IndexRoute component={AllProfilesPage} />
@@ -57,10 +55,7 @@ export default (
         <Route path="create"      component={CreateAccountPage} />
         <Route path="restore"     component={RestoreAccountPage} />
         <Route path="api"         component={ApiSettingsPage} />
-    </Route>
-
-    <Route path="storage" component={StorageApp}>
-        <Route path="providers"     component={StorageProvidersPage} />
+        <Route path="storage"   component={StorageProvidersPage} />
     </Route>
 
     <Route path="wallet" component={WalletApp}>

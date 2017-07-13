@@ -1,4 +1,4 @@
-import { DROPBOX } from '../../../storage/utils/index'
+import { DROPBOX } from '../../../account/utils/index'
 
 // DEFAULT_API values are only used if
 // the user's settings.api state doesn't
@@ -7,10 +7,10 @@ import { DROPBOX } from '../../../storage/utils/index'
 const DEFAULT_API = {
   apiCustomizationEnabled: true,
   nameLookupUrl: 'http://localhost:6270/v1/names/{name}',
-  searchUrl: 'https://api.blockstack.com/v1/search?query={query}',
+  searchServiceUrl: 'https://core.blockstack.org/v1/search?query={query}',
   registerUrl: 'http://localhost:6270/v1/names',
   bitcoinAddressLookupUrl: 'http://localhost:6270/v1/addresses/bitcoin/{address}',
-  balanceUrl: 'http://localhost:6270/v1/wallet/balance',
+  zeroConfBalanceUrl: 'http://localhost:6270/v1/wallet/balance/0',
   utxoUrl: 'https://utxo.blockstack.org/insight-api/addr/{address}/utxo',
   broadcastUrl: 'https://utxo.blockstack.org/insight-api/tx/send',
   priceUrl: 'http://localhost:6270/v1/prices/names/{name}',

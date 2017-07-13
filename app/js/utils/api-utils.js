@@ -1,9 +1,10 @@
+
 import hash from 'hash-handler'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/api-utils.js')
 
-import { uploadProfile, DROPBOX } from '../storage/utils'
+import { uploadProfile, DROPBOX } from '../account/utils'
 import { signProfileForUpload } from './index'
 
 export function getNamesOwned(address, bitcoinAddressLookupUrl, callback) {

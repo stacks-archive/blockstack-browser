@@ -13,7 +13,7 @@ function mapStateToProps(state) {
   return {
     dropboxAccessToken: state.settings.api.dropboxAccessToken,
     localIdentities: state.profiles.identity.localIdentities,
-    addressBalanceUrl: state.settings.api.balanceUrl,
+    addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletAddress: state.account.coreWallet.address,
     coreWalletBalance: state.account.coreWallet.balance,
     coreAPIPassword: state.settings.api.coreAPIPassword,
@@ -55,10 +55,8 @@ class StatusBar extends Component {
   }
 
   componentDidMount() {
-    if (this.props.coreWalletAddress !== null) {
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
             this.props.coreAPIPassword)
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -105,7 +103,7 @@ class StatusBar extends Component {
     if (btcBalance === null) {
       return 0
     } else {
-      const roundedAmount = roundTo(btcBalance, 3)
+      const roundedAmount = roundTo(btcBalance, 6)
       return roundedAmount
     }
   }
@@ -145,7 +143,7 @@ class StatusBar extends Component {
       <Popover id="things-to-do">
         <ActionItem
           action="Connect a storage provider to regain control of your data"
-          destinationUrl="/storage/providers"
+          destinationUrl="/account/storage"
           destinationName="Storage"
           completed={this.storageProviderConnected()}
         />
@@ -185,38 +183,37 @@ class StatusBar extends Component {
     const numberOfActionItems = this.numberOfActionItems()
 
     return (
-      <div className="status-bar status-bar-transparent-dark">
+      <div className="status-bar status-bar-light">
       {this.props.hideBackToHomeLink ?
         null
       :
-        <Link to="/" className="status-bar-back">
-          <i className="fa fa-angle-left status-bar-icon"></i>
-          Home Screen
-        </Link>
+        <div className="pull-left">
+          <div className="status-inline status-balance">
+            <Link to="/" className="status-bar-back statusBar-link">
+              <i className="fa fa-angle-left status-bar-icon"></i>
+              Home Screen
+            </Link>
+          </div>
+        </div>
       }
         <div className="pull-right">
-          <div className="status-inline status-completion">
-            <div className="status-complete-wrap">
-            {numberOfActionItems > 0 ?
-              <OverlayTrigger trigger={['click']} placement="bottom" overlay={popover}>
-                <div className="status-complete-dot">
-                  <div
-                  className="status-complete-object img-circle"
-                  style={{ cursor: 'default' }}>
-                  {numberOfActionItems}
-                  </div>
-                </div>
-              </OverlayTrigger>
-              :
-              null
-            }
-            </div>
-          </div>
           <div className="status-inline status-balance">
-            <p>Balance {this.roundedBtcBalance()} BTC</p>
+            <Link to="/wallet/receive" className="statusBar-link">
+              <Image className="" src="/images/icon-wallet-sm.svg" /><br />
+                {this.roundedBtcBalance()} BTC
+            </Link>
           </div>
           <div className="status-inline status-profile">
-            <Image className="status-profile-img img-circle" src="/images/avatar.png" />
+            <Link to="/account/password" className="statusBar-link">
+              <Image className="" src="/images/icon-settings-sm.svg" /><br />
+                Settings
+            </Link>
+          </div>
+          <div className="status-inline status-profile">
+            <Link to="/profiles" className="statusBar-link">
+              <Image className="" src="/images/icon-account-sm.svg" /><br />
+                Me
+            </Link>
           </div>
         </div>
       </div>

@@ -8,6 +8,9 @@ import { DROPBOX } from './utils/index'
 import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from './utils/dropbox'
 
 import { setCoreStorageConfig } from '../utils/api-utils'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('storage/StorageProvidersPage.js')
 
 const Dropbox = require('dropbox')
 
@@ -48,8 +51,9 @@ class StorageProvidersPage extends Component {
       const newApi = Object.assign({}, api, { dropboxAccessToken })
       this.props.updateApi(newApi)
       setCoreStorageConfig(newApi)
-      .then(() => {
-        window.location = '/'
+      .then((indexUrl) => {
+        // TODO add index URL to token file
+        logger.debug(`componentDidMount: storage initialized`)
       })
     }
   }
@@ -59,7 +63,7 @@ class StorageProvidersPage extends Component {
     const port = location.port === '' ? 80 : location.port
     console.log(port)
     window.location = dbx.getAuthenticationUrl(
-      `http://localhost:${port}/storage/providers`)
+      `http://localhost:${port}/account/storage`)
   }
 
   disconnectDropbox() {
@@ -77,9 +81,9 @@ class StorageProvidersPage extends Component {
   render() {
     const api = this.props.api
     return (
-      <div>
-        <h1 className="h1-modern" style={{ marginTop: '35px' }}>
-          Providers
+      <div className="m-b-100" style={{ paddingLeft: '15px' }}>
+        <h1 className="h1-modern m-t-10">
+          Storage Providers
         </h1>
         <p>
           Your profile and app data will be securely stored in the storage providers you connect.

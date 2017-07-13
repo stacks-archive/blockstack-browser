@@ -16,7 +16,7 @@ import log4js from 'log4js'
 const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
 
 const WALLET_URL = '/wallet/receive'
-const STORAGE_URL = '/storage/providers'
+const STORAGE_URL = '/account/storage'
 
 function mapStateToProps(state) {
   return {
@@ -30,10 +30,11 @@ function mapStateToProps(state) {
     identityKeypairs: state.account.identityAccount.keypairs,
     registration: state.profiles.registration,
     availability: state.profiles.availability,
-    addressBalanceUrl: state.settings.api.balanceUrl,
+    addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletBalance: state.account.coreWallet.balance,
     coreWalletAddress: state.account.coreWallet.address,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl
   }
 }
 
@@ -62,7 +63,9 @@ class RegisterPage extends Component {
     beforeRegister: PropTypes.func.isRequired,
     coreAPIPassword: PropTypes.string,
     createNewIdentityFromDomain: PropTypes.func.isRequired,
-    routeParams: PropTypes.object
+    routeParams: PropTypes.object,
+    getCoreWalletAddress: PropTypes.func.isRequired,
+    walletPaymentAddressUrl: PropTypes.string.isRequired
   }
 
   static contextTypes = {
@@ -102,11 +105,11 @@ class RegisterPage extends Component {
 
   componentDidMount() {
     logger.trace('componentDidMount')
-    if (this.props.coreWalletAddress != null) {
-      logger.debug('coreWalletAddress exists...refreshing core wallet balance...')
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
-        this.props.coreAPIPassword)
-    }
+    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+      this.props.coreAPIPassword)
+    logger.debug('getting core wallet address...')
+    this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl,
+      this.props.coreAPIPassword)
     if (!this.state.storageConnected) {
       this.displayConnectStorageAlert()
     } else if (this.state.zeroBalance) {

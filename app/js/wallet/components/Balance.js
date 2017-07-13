@@ -13,7 +13,7 @@ function mapStateToProps(state) {
     balances: state.account.bitcoinAccount.balances,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     utxoUrl: state.settings.api.utxoUrl,
-    addressBalanceUrl: state.settings.api.balanceUrl,
+    addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletBalance: state.account.coreWallet.balance,
     coreWalletAddress: state.account.coreWallet.address,
     btcPriceUrl: state.settings.api.btcPriceUrl,
@@ -50,10 +50,8 @@ class Balance extends Component {
   }
 
   componentDidMount() {
-    if (this.props.coreWalletAddress !== null) {
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
-					  this.props.coreAPIPassword)
-    }
+    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+          this.props.coreAPIPassword)
     this.props.refreshBtcPrice(this.props.btcPriceUrl)
   }
 
@@ -68,7 +66,7 @@ class Balance extends Component {
     if (btcBalance === null) {
       return 0
     } else {
-      const roundedAmount = roundTo(btcBalance, 3)
+      const roundedAmount = roundTo(btcBalance, 6)
       return roundedAmount
     }
   }

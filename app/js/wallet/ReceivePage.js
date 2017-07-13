@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { QRCode } from 'react-qr-svg'
 
 import { AccountActions } from '../account/store/account'
 
@@ -48,6 +49,12 @@ class ReceivePage extends Component {
         { this.props.coreWalletAddress ?
         <div>
           <h5>Send Bitcoins to this address</h5>
+          <div className="qrcode-wallet">
+            <QRCode
+              style={{ width: 256 }}
+              value={this.props.coreWalletAddress}
+            />
+          </div>
           <div className="highlight highlight-wallet">
             <pre>
               <code>{this.props.coreWalletAddress}</code>

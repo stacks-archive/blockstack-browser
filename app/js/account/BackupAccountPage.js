@@ -79,7 +79,10 @@ class BackupAccountPage extends Component {
 
   render() {
     return (
-      <div>
+      <div className="m-b-100">
+        <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
+          Backup Account
+        </h1>
         {
           this.state.alerts.map((alert, index) => {
             return (
@@ -110,7 +113,7 @@ class BackupAccountPage extends Component {
             </div>
           :
             <div>
-              <p>
+              <p style={{ paddingLeft: '15px' }}>
                 <i>Enter your password to view your backup phrase and backup your account.</i>
               </p>
               <InputGroup
