@@ -4,7 +4,7 @@ import InputGroup from '../../components/InputGroup'
 
 class ConfirmIdentityKeyView extends Component {
   static propTypes = {
-    identitykeyPhrase: PropTypes.string.isRequired,
+    identityKeyPhrase: PropTypes.string.isRequired,
     showNextView: PropTypes.func.isRequired
   }
 

@@ -3,10 +3,8 @@ import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
-import { isBackupPhraseValid } from '../utils'
 
 import { PairBrowserView, LandingView,
   NewInternetView, RestoreView, DataControlView,
@@ -63,6 +61,7 @@ class WelcomeModal extends Component {
       page: startingPage
     }
 
+    this.showLandingView = this.showLandingView.bind(this)
     this.showNewInternetView = this.showNewInternetView.bind(this)
     this.showRestoreView = this.showRestoreView.bind(this)
     this.showNextView = this.showNextView.bind(this)
@@ -95,15 +94,12 @@ class WelcomeModal extends Component {
     this.props.initializeWallet('password', null)
   }
 
-  restoreAccount() {
-    const { isValid, error } = isBackupPhraseValid(this.state.backupPhrase)
-
-    if (!isValid) {
-      this.updateAlert('danger', error)
-      return
-    }
-    // TODO: we're removing password, so hardcoding password until we refactor
-    this.props.initializeWallet('password', this.state.backupPhrase)
+  showLandingView(event) {
+    event.preventDefault()
+    this.setState({
+      pageOneView: 'newInternet',
+      page: 0
+    })
   }
 
   showNewInternetView(event)  {
@@ -190,7 +186,9 @@ class WelcomeModal extends Component {
                             showNextView={this.showNextView}
                           />
                         :
-                          <div>restore</div>
+                          <RestoreView
+                            showLandingView={this.showLandingView}
+                          />
                     }
                     </div>
                   :
