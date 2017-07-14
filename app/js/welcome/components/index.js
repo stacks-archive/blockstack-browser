@@ -1,2 +1,7 @@
+export PairBrowserView from './PairBrowserView'
 export LandingView from './LandingView'
 export RestoreView from './RestoreView'
+export NewInternetView from './NewInternetView'
+export DataControlView from './DataControlView'
+export CreateIdentityView from './CreateIdentityView'
+export ConfirmIdentityKeyView from './ConfirmIdentityKeyView'
