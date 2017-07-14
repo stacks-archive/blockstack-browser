@@ -4,8 +4,8 @@ import InputGroup from '../../components/InputGroup'
 
 class ConfirmIdentityKeyView extends Component {
   static propTypes = {
-    restoreAccount: PropTypes.func.isRequired,
-    showGenerateKeychain: PropTypes.func.isRequired
+    identitykeyPhrase: PropTypes.string.isRequired,
+    showNextView: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -36,7 +36,7 @@ class ConfirmIdentityKeyView extends Component {
           onChange={this.onValueChange}
         />
         <div className="container m-t-40">
-          <button className="btn btn-primary" onClick={this.props.restoreAccount}>
+          <button className="btn btn-primary" onClick={this.props.showNextView}>
             Continue
           </button>
         </div>

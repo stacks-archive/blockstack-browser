@@ -11,11 +11,11 @@ const LandingPage = (props) =>
     <p>Join the new internet.</p>
     <p>Use apps that put you in control.</p>
     <div className="container m-t-40">
-      <button className="btn btn-primary" onClick={props.showGenerateKeychain}>
+      <button className="btn btn-primary" onClick={props.showNewInternetView}>
         Get Started
       </button>
       <br></br>
-      <a href="#" onClick={props.showRestoreAccount}>
+      <a href="#" onClick={props.showRestoreView}>
         Restore from backup
       </a>
     </div>
@@ -23,8 +23,8 @@ const LandingPage = (props) =>
  )
 
 LandingPage.propTypes = {
-  showGenerateKeychain: PropTypes.func.isRequired,
-  showRestoreAccount: PropTypes.func.isRequired
+  showNewInternetView: PropTypes.func.isRequired,
+  showRestoreView: PropTypes.func.isRequired
 }
 
 export default LandingPage

@@ -10,7 +10,7 @@ const DataControlView = (props) =>
       style={{ width: '80%' }}
     />
     <div className="container m-t-40">
-      <button className="btn btn-primary" onClick={props.showGenerateKeychain}>
+      <button className="btn btn-primary" onClick={props.showNextView}>
         Continue
       </button>
     </div>
@@ -18,8 +18,7 @@ const DataControlView = (props) =>
  )
 
 DataControlView.propTypes = {
-  showGenerateKeychain: PropTypes.func.isRequired,
-  showRestoreAccount: PropTypes.func.isRequired
+  showNextView: PropTypes.func.isRequired
 }
 
 export default DataControlView
