@@ -42,8 +42,8 @@ class EnterEmailView extends Component {
         <InputGroup
           name="email"
           type="email"
-          label="Identity key"
-          placeholder="Identity key"
+          label="Email"
+          placeholder="you@example.com"
           data={this.state}
           onChange={this.onValueChange}
         />

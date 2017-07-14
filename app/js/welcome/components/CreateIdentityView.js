@@ -10,7 +10,7 @@ const CreateIdentityView = (props) =>
       style={{ width: '80%' }}
     />
     <div className="container m-t-40">
-      <button className="btn btn-primary" onClick={props.createIdentity}>
+      <button className="btn btn-primary" onClick={props.showNextView}>
         Create identity key
       </button>
     </div>
@@ -18,7 +18,7 @@ const CreateIdentityView = (props) =>
  )
 
 CreateIdentityView.propTypes = {
-  createIdentity: PropTypes.func.isRequired
+  showNextView: PropTypes.func.isRequired
 }
 
 export default CreateIdentityView

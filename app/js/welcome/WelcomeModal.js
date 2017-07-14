@@ -7,12 +7,18 @@ import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
 
 import { PairBrowserView, LandingView,
-  NewInternetView, RestoreView, DataControlView,
+  NewInternetView, RestoreView, DataControlView, EnterPasswordView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
   EnterEmailView } from './components'
 
+import log4js from 'log4js'
 
-const WRITE_DOWN_KEY_PAGE = 4
+
+const logger = log4js.getLogger('welcome/WelcomeModal.js')
+
+
+
+const CREATE_IDENTITY_KEY_PAGE = 4
 
 const TESTING_IDENTITY_KEY =
 'biology amazing joke rib defy emotion fruit ecology blanket absent ivory bird'
@@ -48,7 +54,7 @@ class WelcomeModal extends Component {
 
     let startingPage = 0
     if (this.props.accountCreated) {
-      startingPage = WRITE_DOWN_KEY_PAGE
+      startingPage = CREATE_IDENTITY_KEY_PAGE
     }
     this.state = {
       accountCreated: this.props.accountCreated,
@@ -56,16 +62,17 @@ class WelcomeModal extends Component {
       coreConnected: this.props.coreConnected,
       pageOneView: 'create',
       alerts: [],
-      disableCreateAccountButton: false,
       email: '',
-      page: startingPage
+      page: startingPage,
+      password: null,
+      identityKeyPhrase: null
     }
 
     this.showLandingView = this.showLandingView.bind(this)
     this.showNewInternetView = this.showNewInternetView.bind(this)
     this.showRestoreView = this.showRestoreView.bind(this)
     this.showNextView = this.showNextView.bind(this)
-    this.createIdentity = this.createIdentity.bind(this)
+    this.createAccount = this.createAccount.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -75,9 +82,9 @@ class WelcomeModal extends Component {
       coreConnected: nextProps.coreConnected
     })
 
-    if (this.props.accountCreated) {
+    if (nextProps.accountCreated && !this.props.accountCreated) {
       this.setState({
-        page: WRITE_DOWN_KEY_PAGE
+        page: CREATE_IDENTITY_KEY_PAGE
       })
     }
   }
@@ -88,10 +95,11 @@ class WelcomeModal extends Component {
     })
   }
 
-  createIdentity(event) {
-    event.preventDefault()
-    // TODO: we're removing password, so hardcoding password until we refactor
-    this.props.initializeWallet('password', null)
+  createAccount(password) {
+    console.log(password)
+    logger.trace('createAccount')
+    this.setState({ password })
+    this.props.initializeWallet(password, null)
   }
 
   showLandingView(event) {
@@ -208,8 +216,8 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 3 ?
-                  <CreateIdentityView
-                    createIdentity={this.createIdentity}
+                  <EnterPasswordView
+                    createAccount={this.createAccount}
                   />
                 :
                 null
@@ -217,7 +225,17 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === WRITE_DOWN_KEY_PAGE ?
+                page === 4 ?
+                  <CreateIdentityView
+                    showNextView={this.showNextView}
+                  />
+                :
+                null
+              }
+              </div>
+              <div>
+              {
+                page === 5 ?
                   <WriteDownKeyView
                     identityKeyPhrase={TESTING_IDENTITY_KEY} // TODO: replace w/ real key
                     showNextView={this.showNextView}
@@ -228,7 +246,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 5 ?
+                page === 6 ?
                   <ConfirmIdentityKeyView
                     identityKeyPhrase={TESTING_IDENTITY_KEY}
                     showNextView={this.showNextView}
@@ -239,7 +257,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 6 ?
+                page === 7 ?
                   <EnterEmailView
                     skipEmailBackup={this.props.skipEmailBackup}
                   />
