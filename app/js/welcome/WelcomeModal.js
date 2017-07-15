@@ -216,8 +216,8 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 3 ?
-                  <EnterPasswordView
-                    createAccount={this.createAccount}
+                  <CreateIdentityView
+                    showNextView={this.showNextView}
                   />
                 :
                 null
@@ -226,8 +226,8 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 4 ?
-                  <CreateIdentityView
-                    showNextView={this.showNextView}
+                  <EnterPasswordView
+                    createAccount={this.createAccount}
                   />
                 :
                 null

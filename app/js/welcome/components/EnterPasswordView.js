@@ -39,10 +39,7 @@ class EnterPasswordView extends Component {
     return (
       <div>
         <form onSubmit={this.createAccount}>
-          <h4>Choose a password to encrypt your keychain</h4>
-          <p>The keychain on this device will be encrypted with your
-          password. Later you will have the chance to backup the keychain
-          itself.</p>
+          <h4>Choose a password to protect your identity key</h4>
           <InputGroup
             name="password"
             label="Password"
