@@ -18,7 +18,7 @@ const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
 
 
-const CREATE_IDENTITY_KEY_PAGE = 4
+const WRITE_DOWN_IDENTITY_KEY_PAGE = 5
 
 const TESTING_IDENTITY_KEY =
 'biology amazing joke rib defy emotion fruit ecology blanket absent ivory bird'
@@ -54,7 +54,7 @@ class WelcomeModal extends Component {
 
     let startingPage = 0
     if (this.props.accountCreated) {
-      startingPage = CREATE_IDENTITY_KEY_PAGE
+      startingPage = WRITE_DOWN_IDENTITY_KEY_PAGE
     }
     this.state = {
       accountCreated: this.props.accountCreated,
@@ -84,7 +84,7 @@ class WelcomeModal extends Component {
 
     if (nextProps.accountCreated && !this.props.accountCreated) {
       this.setState({
-        page: CREATE_IDENTITY_KEY_PAGE
+        page: WRITE_DOWN_IDENTITY_KEY_PAGE
       })
     }
   }
