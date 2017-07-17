@@ -41,11 +41,33 @@ class HomeScreenPage extends Component {
                 <a href="https://forum.blockstack.org"
                    className="app-box-container">
                   <div className="app-box">
-                    <img src="/images/app-icon-forum@2x.png" />
+                    <img src="/images/app-icon-todo-list@2x.png" />
                   </div>
                 </a>
                 <div className="app-text-container">
-                  <h3>Forum</h3>
+                  <h3>To Do List</h3>
+                </div>
+              </div>
+              <div className="app-box-wrap">
+                <a href="https://forum.blockstack.org"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-guild@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>Guild</h3>
+                </div>
+              </div>
+              <div className="app-box-wrap">
+                <a href="https://forum.blockstack.org"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-ongaku-ryoho@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>Ongaku Ryoho</h3>
                 </div>
               </div>
             </div>
