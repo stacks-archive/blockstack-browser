@@ -18,7 +18,8 @@ const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
 
 
-const WRITE_DOWN_IDENTITY_KEY_PAGE = 5
+const WRITE_DOWN_IDENTITY_KEY_PAGE = 4
+const DEFAULT_PASSWORD = 'password'
 
 const TESTING_IDENTITY_KEY =
 'biology amazing joke rib defy emotion fruit ecology blanket absent ivory bird'
@@ -95,11 +96,11 @@ class WelcomeModal extends Component {
     })
   }
 
-  createAccount(password) {
-    console.log(password)
+  createAccount(event) {
+    event.preventDefault()
     logger.trace('createAccount')
-    this.setState({ password })
-    this.props.initializeWallet(password, null)
+
+    this.props.initializeWallet(DEFAULT_PASSWORD, null)
   }
 
   showLandingView(event) {
@@ -217,16 +218,6 @@ class WelcomeModal extends Component {
               {
                 page === 3 ?
                   <CreateIdentityView
-                    showNextView={this.showNextView}
-                  />
-                :
-                null
-              }
-              </div>
-              <div>
-              {
-                page === 4 ?
-                  <EnterPasswordView
                     createAccount={this.createAccount}
                   />
                 :
@@ -235,7 +226,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 5 ?
+                page === 4 ?
                   <WriteDownKeyView
                     identityKeyPhrase={TESTING_IDENTITY_KEY} // TODO: replace w/ real key
                     showNextView={this.showNextView}
@@ -246,7 +237,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 6 ?
+                page === 5 ?
                   <ConfirmIdentityKeyView
                     identityKeyPhrase={TESTING_IDENTITY_KEY}
                     showNextView={this.showNextView}
@@ -257,7 +248,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 7 ?
+                page === 6  ?
                   <EnterEmailView
                     skipEmailBackup={this.props.skipEmailBackup}
                   />
