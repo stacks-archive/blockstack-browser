@@ -96,8 +96,9 @@ i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;font-w
 .idcard-wrap{font-weight:inherit;margin-top:105px;color:#444;}
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
 .profile-right-col-fill{position:relative;top:1.5rem;min-height:45vh;padding:0 0 0 10px;}
+.profile-right-col .fa-stack .fa {line-height:2rem;}
 div.profile-right-col > ul{padding-left:0;list-style-type:none;}
-div.profile-right-col > ul > li > a,div.profile-right-col > ul > li > button{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
+div.profile-right-col > ul > li > a,div.profile-right-col > ul > li > button{display:block;padding:10px 5px;text-decoration:none;color:#080809;}
 .btn-social-account{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
 div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > button:hover{text-decoration:none;color:#fff;border-radius:4px;background-color:#2c96ff;}
 .btn-social-account:hover{text-decoration:none;border-radius:4px;background-color:#23262a;}
@@ -493,10 +494,11 @@ a.card:hover{text-decoration:none;}
 div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
-.pro-wrap{font-family:'Source Code Pro',monospace;max-width:1180px;background-color:#080809;padding:35px;font-weight:300;}
+.pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
+.pro-actions-wrap{max-width:1180px;}
 div.pro-avatar img{max-width:58px;}
-.pro-card-name{font-size:0.875rem;color:#fff;font-weight:300;}
-.pro-card-body{display:block;margin-bottom:30px;font-size:0.75rem;color:#fff;}
+.pro-card-name{font-size:1.0rem;font-weight:600;}
+.pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 
 /* 28. List group */

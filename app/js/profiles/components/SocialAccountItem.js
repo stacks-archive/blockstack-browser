@@ -69,13 +69,13 @@ class SocialAccountItem extends Component {
             <a href={this.getAccountUrl()} data-toggle="tooltip"
               title={webAccountTypes[this.props.service].label}>
               {this.props.verified ?
-              <span className="fa-stack fa-lg">
-                <i className="fa fa-certificate fa-stack-2x fa-green" />
-                <i className={`fa ${this.getIconClass()} fa-stack-1x`} />
+              <span className="">
+                <i className="fa fa-check fa-green" />
+                <i className={`fa ${this.getIconClass()} fa-lg`} />
               </span>
               :
-              <span className="fa-stack fa-lg">
-                <i className={`fa ${this.getIconClass()} fa-stack-1x`} />
+              <span className="">
+                <i className={`fa ${this.getIconClass()} fa-lg`} />
               </span>
               }
               <span className="app-account-identifier">
