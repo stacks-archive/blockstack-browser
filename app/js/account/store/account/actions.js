@@ -310,8 +310,9 @@ function initializeWallet(password, backupPhrase, email = null) {
       const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
       masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
     } else { // Create a new wallet
-      const entropy = randomBytes(32)
-      backupPhrase = bip39.entropyToMnemonic(entropy)
+      const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
+      backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
+      console.log(backupPhrase)
       const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
       masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
     }
