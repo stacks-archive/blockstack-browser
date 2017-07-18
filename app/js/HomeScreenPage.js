@@ -49,7 +49,7 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <a href="#"
+                <a href="https://blockstack-todo-app.netlify.com/"
                    className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-todo-list@2x.png" />
