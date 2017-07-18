@@ -1,6 +1,6 @@
 {
   "name": "blockstack-portal",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "author": "Blockstack Inc <admin@blockstack.com>",
   "description": "The Blockstack browser portal",
   "license": "MPL-2.0",
@@ -117,7 +117,7 @@
     "bigi": "^1.4.2",
     "bip39": "^2.2.0",
     "bitcoinjs-lib": "https://github.com/shea256/bitcoinjs-lib.git",
-    "blockstack": "0.9.0",
+    "blockstack": "0.9.1",
     "body-parser": "^1.16.1",
     "bootstrap": "https://github.com/blockstack/blockstack-bootstrap.git",
     "browser-stdout": "^1.3.0",
