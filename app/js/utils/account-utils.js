@@ -15,8 +15,6 @@ function hashCode(string) {
 }
 
 
-const backupPhraseLength = 24
-
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
@@ -117,10 +115,7 @@ export function isBackupPhraseValid(backupPhrase) {
   let isValid = true,
       error = null
 
-  if (backupPhrase.split(' ').length !== backupPhraseLength) {
-    isValid = false
-    error = `Backup phrase must be ${backupPhraseLength} words long`
-  } else if (!bip39.validateMnemonic(backupPhrase)) {
+  if (!bip39.validateMnemonic(backupPhrase)) {
     isValid = false
     error = 'Backup phrase is not a valid set of words'
   }
