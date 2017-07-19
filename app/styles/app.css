@@ -481,9 +481,6 @@ div.home-profiles a .btn-home-button{position:absolute;top:0;right:0;color:#373a
   -moz-transition: none;
   transition: none;  
 }
-/*label.form-control-label {
-  text-align: left!important;
-}*/
 .form-control::-webkit-input-placeholder {
   text-transform: capitalize;
   font-size: 0.875rem;
@@ -509,21 +506,6 @@ input.form-control.form-control-sm.input-special:hover, input[type='text'].form-
 input[type=radio] {
   margin-right: 1rem;
 }
-/*.form-control {
-  font-size: 0.875rem;
-  font-weight: 400;
-  line-height: 28px;
-  color: #949494;
-  padding: 0.875rem 1.375rem;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  -webkit-transition: none;
-  -moz-transition: none;
-  transition: none;
-}*/
-
 
 /* 16. Navbar */
 .navbar{padding:0!important;}
@@ -660,6 +642,7 @@ a.modal-body {
   line-height: 1.125rem;
   margin: 0 auto;
   text-align: center;
+  display: block;
 }
 .form-control-label {
   text-transform: capitalize;

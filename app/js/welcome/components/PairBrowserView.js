@@ -62,7 +62,7 @@ class PairBrowserView extends Component {
             alt="Open this page via the Blockstack icon to pair your browser"
             src="/images/mac-open-from-menubar.png"
             style={{ maxWidth: '80%', border: '1px solid #f0f0f0',
-            marginBottom: '20px' }}
+            margin: '0 auto', display: 'block' }}
           />
           <p>
             <a href="#" className="modal-body" onClick={this.toggleAdvancedMode}>Advanced Mode</a>
@@ -81,13 +81,12 @@ class PairBrowserView extends Component {
           <div>
             <button
               onClick={this.saveCoreAPIPassword}
-              className="btn btn-lg btn-primary btn-block"
-            >
-            Save Core API Password
+              className="btn btn-lg btn-primary btn-block">
+                Save Core API Password
             </button>
           </div>
           <p>
-            <a href="#" onClick={this.toggleAdvancedMode}>Go back to normal pairing mode.</a>
+            <a href="#" className="modal-body" onClick={this.toggleAdvancedMode}>Go back to normal pairing mode.</a>
           </p>
         </div>
       }

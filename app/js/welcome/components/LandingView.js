@@ -3,19 +3,16 @@ import React, { PropTypes } from 'react'
 const LandingPage = (props) =>
   (
   <div>
-    <img
-      src="/images/blockstack-logo-vertical-bug.svg"
-      alt="Blockstack"
-      style={{ width: '80%' }}
-    />
-    <p>Join the new internet.</p>
-    <p>Use apps that put you in control.</p>
+    <img src="/images/blockstack-logo-vertical.svg" className="m-b-20" style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }} />
+    <h3 className="modal-heading p-b-25">Join the new internet. <br />
+      Use apps that put you in control.
+    </h3>
     <div className="container m-t-40">
-      <button className="btn btn-primary" onClick={props.showNewInternetView}>
+      <button className="btn btn-lg btn-primary btn-block" onClick={props.showNewInternetView}>
         Get Started
       </button>
       <br></br>
-      <a href="#" onClick={props.showRestoreView}>
+      <a href="#" className="modal-body" onClick={props.showRestoreView}>
         Restore from backup
       </a>
     </div>
