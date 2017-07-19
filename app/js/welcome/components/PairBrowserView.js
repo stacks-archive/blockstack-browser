@@ -70,11 +70,8 @@ class PairBrowserView extends Component {
         </div>
         :
         <div>
-          <h4>Enter your Blockstack Core API Password</h4>
-          <p>Don’t know what this is?</p>
-          <p>
-            <a href="#" onClick={this.toggleAdvancedMode}>Go back to normal pairing mode.</a>
-          </p>
+          <h3 className="modal-heading">Enter your Blockstack Core API Password</h3>
+          <p className="modal-body">Don’t know what this is?</p>          
           <InputGroup
             name="coreAPIPassword"
             label="Core API Password"
@@ -89,6 +86,9 @@ class PairBrowserView extends Component {
             Save Core API Password
             </button>
           </div>
+          <p>
+            <a href="#" onClick={this.toggleAdvancedMode}>Go back to normal pairing mode.</a>
+          </p>
         </div>
       }
       </div>

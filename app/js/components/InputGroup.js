@@ -44,7 +44,10 @@ class InputGroup extends Component {
     return (
       <div className="form-group m-b-11">
         <fieldset>
-          <div className="col-xs-9 pull-right">
+          <label className={`${labelClass}`}>
+            {this.props.label}
+          </label>
+          <div className="">
             { this.props.textarea ?
               <textarea name={this.props.name}
               disabled={disabled}
@@ -68,10 +71,7 @@ class InputGroup extends Component {
               value={value}
               onChange={this.props.onChange} />
             }
-          </div>
-          <label className={`col-xs-3 ${labelClass}`}>
-            {this.props.label}
-          </label>
+          </div>          
         </fieldset>
       </div>
     )
