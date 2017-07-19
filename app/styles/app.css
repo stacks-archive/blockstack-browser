@@ -565,8 +565,34 @@ a.search-result:hover{color:#fff!important;background-color:#2275d7;}
 .result-img{width:32px;height:32px;}
 
 /* Modal */
-div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:#fff!important;display:flex;align-items:center;justify-content:center;margin-top:94px;border-top:1px solid #F0F0F0;}
-div.ReactModal__Content.ReactModal__Content--after-open{width:480px;background-color:transparent;padding:6rem 3.125rem;text-align:center;margin-top:-35%;}
+/*div.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-color: #fff !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 94px;
+  border-top: 1px solid #F0F0F0;
+}*/
+div.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-image: url('/images/img-teddy-kelley-181683@2x.png');
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 94px;
+}
+div.ReactModal__Content.ReactModal__Content--after-open {
+  width: 480px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  padding: 6rem 3.125rem;
+  text-align: center;
+  margin-top: -35%;
+}
 .react-modal-pgp { width: 700px !important; }
 
 /* Account App */
