@@ -7,19 +7,17 @@ import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
 
 import { PairBrowserView, LandingView,
-  NewInternetView, RestoreView, DataControlView, EnterPasswordView,
+  NewInternetView, RestoreView, DataControlView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
   EnterEmailView } from './components'
 
-import log4js from 'log4js'
+import { DEFAULT_PASSWORD } from '../utils/account-utils'
 
+import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
-
-
 const WRITE_DOWN_IDENTITY_KEY_PAGE = 4
-const DEFAULT_PASSWORD = 'password'
 
 const TESTING_IDENTITY_KEY =
 'biology amazing joke rib defy emotion fruit ecology blanket absent ivory bird'
@@ -62,7 +60,6 @@ class WelcomeModal extends Component {
       storageConnected: this.props.storageConnected,
       coreConnected: this.props.coreConnected,
       pageOneView: 'create',
-      alerts: [],
       email: '',
       page: startingPage,
       password: null,

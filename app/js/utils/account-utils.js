@@ -18,6 +18,7 @@ function hashCode(string) {
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
+export const DEFAULT_PASSWORD = 'password'
 
 export class AppNode {
   constructor(hdNode, appDomain) {

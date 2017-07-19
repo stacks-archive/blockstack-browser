@@ -4,6 +4,15 @@ import { connect } from 'react-redux'
 import { isBackupPhraseValid } from '../../utils'
 import InputGroup from '../../components/InputGroup'
 import { AccountActions } from '../../account/store/account'
+import Alert from '../../components/Alert'
+
+import { DEFAULT_PASSWORD } from '../../utils/account-utils'
+
+
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('welcome/components/RestoreView.js')
+
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions), dispatch)
@@ -18,10 +27,12 @@ class RestoreView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      identityKeyPhrase: ''
+      identityKeyPhrase: '',
+      alert: null
     }
     this.onValueChange = this.onValueChange.bind(this)
     this.restoreAccount = this.restoreAccount.bind(this)
+    this.updateAlert = this.updateAlert.bind(this)
   }
 
   onValueChange(event) {
@@ -31,21 +42,36 @@ class RestoreView extends Component {
   }
 
   restoreAccount(event) {
+    logger.trace('restoreAccount')
     event.preventDefault()
-    const { isValid, error } = isBackupPhraseValid(this.state.identityKeyPhrase)
+    const { isValid } = isBackupPhraseValid(this.state.identityKeyPhrase)
 
     if (!isValid) {
-      this.updateAlert('danger', error)
+      logger.error('restoreAccount: invalid backup phrase entered')
+      this.updateAlert('danger', 'The identity key you entered is not valid.')
       return
     }
-    // TODO: we're removing password, so hardcoding password until we refactor
     this.props.initializeWallet('password', this.state.identityKeyPhrase)
   }
 
+  updateAlert(alertStatus, alertMessage) {
+    this.setState({
+      alert: { status: alertStatus, message: alertMessage }
+    })
+  }
+
   render() {
+    const alert = this.state.alert
     return (
       <div>
         <h4>Restore your account by typing in your identity key</h4>
+        <div>
+            {alert ?
+              <Alert key="1" message={alert.message} status={alert.status} />
+              :
+              null
+            }
+        </div>
         <p>Type your identity key here:</p>
         <InputGroup
           name="identityKeyPhrase"
