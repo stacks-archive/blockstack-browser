@@ -4,6 +4,7 @@ class InputGroup extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
+    step: PropTypes.number,
     name: PropTypes.string,
     data: PropTypes.object,
     onChange: PropTypes.func,
@@ -19,9 +20,13 @@ class InputGroup extends Component {
     let value = '',
         type = "text",
         disabled = false,
-        required = false
+        required = false,
+        step = 1
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
+    }
+    if (this.props.step) {
+      step = this.props.step
     }
     if (this.props.type) {
       type = this.props.type
@@ -62,6 +67,7 @@ class InputGroup extends Component {
               className={inputClass}
               type={type}
               required={required}
+              step={step}
               placeholder={
                 this.props.placeholder ? this.props.placeholder : this.props.label
               }
