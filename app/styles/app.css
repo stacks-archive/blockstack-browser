@@ -565,14 +565,6 @@ a.search-result:hover{color:#fff!important;background-color:#2275d7;}
 .result-img{width:32px;height:32px;}
 
 /* Modal */
-/*div.ReactModal__Overlay.ReactModal__Overlay--after-open {
-  background-color: #fff !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 94px;
-  border-top: 1px solid #F0F0F0;
-}*/
 div.ReactModal__Overlay.ReactModal__Overlay--after-open {
   background-image: url('/images/img-teddy-kelley-181683@2x.png');
   background-repeat: no-repeat;
@@ -589,13 +581,35 @@ div.ReactModal__Content.ReactModal__Content--after-open {
   width: 415px;
   background-color: #fff;
   border: 1px solid #fff;
-  padding: 6rem 3.125rem;
+  padding: 3.75rem 3.4375rem;
   text-align: center;
   margin-top: -35%;
-  -webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);
-  -webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;    
+  -webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+.modal-heading{
+  font-size: 1.5rem;
+  color: #080809;
+  line-height: 1.75rem;
+  margin-bottom: .5rem;
+}
+.modal-body {
+  color: #080809;
+  line-height: 1.125rem;
+  margin-bottom: 0.875rem;
+}
+a.modal-body {
+  color: #949494;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  line-height: 1.125rem;
 }
 .react-modal-pgp { width: 700px !important; }
+
 
 /* Account App */
 .item-sidebar-account{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}

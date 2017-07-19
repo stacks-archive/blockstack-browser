@@ -204,7 +204,7 @@ class WelcomeModal extends Component {
             <div>
             {pageZeroView === 'friendly' ?
               <div>
-                <h4>Please pair your browser with Blockstack</h4>
+                <h3>Please pair your browser with Blockstack</h3>
                 <p>To pair your default browser with Blockstack, click on the
                 Blockstack icon in your menu bar and then click on Home.</p>
                 <img

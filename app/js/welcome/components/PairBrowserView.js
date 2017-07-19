@@ -55,8 +55,8 @@ class PairBrowserView extends Component {
       <div>
       {!advancedMode ?
         <div>
-          <h4>Please pair your browser with Blockstack</h4>
-          <p>To pair your default browser with Blockstack, click on the
+          <h3 className="modal-heading">Please pair your browser with Blockstack</h3>
+          <p className="modal-body">To pair your default browser with Blockstack, click on the
           Blockstack icon in your menu bar and then click on Home.</p>
           <img
             alt="Open this page via the Blockstack icon to pair your browser"
@@ -64,12 +64,9 @@ class PairBrowserView extends Component {
             style={{ maxWidth: '80%', border: '1px solid #f0f0f0',
             marginBottom: '20px' }}
           />
-          <button
-            onClick={this.toggleAdvancedMode}
-            className="btn btn-sm btn-secondary"
-          >
-              Advanced Mode
-          </button>
+          <p>
+            <a href="#" className="modal-body" onClick={this.toggleAdvancedMode}>Advanced Mode</a>
+          </p>
         </div>
         :
         <div>
