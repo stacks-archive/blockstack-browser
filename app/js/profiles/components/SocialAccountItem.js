@@ -70,12 +70,13 @@ class SocialAccountItem extends Component {
               title={webAccountTypes[this.props.service].label}>
               {this.props.verified ?
               <span className="">
-                <i className="fa fa-check fa-green" />
-                <i className={`fa ${this.getIconClass()} fa-lg`} />
+                <i className="fa fa-fw fa-check fa-green" />
+                <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
               </span>
               :
               <span className="">
-                <i className={`fa ${this.getIconClass()} fa-lg`} />
+                <i className="fa fa-fw">&nbsp;</i>
+                <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
               </span>
               }
               <span className="app-account-identifier">

@@ -116,7 +116,7 @@ class ViewProfilePage extends Component {
       <div>
         { person !== null ?
         <div>
-          <div className="container-fluid pro-wrap m-t-50">
+          <div className="container-fluid pro-wrap m-t-50 profile-content-wrapper">
             <div className="col-sm-4">
               <div className="pro-container col-sm-12">
                 <div className="pro-avatar m-b-20">
@@ -205,45 +205,43 @@ class ViewProfilePage extends Component {
               </div>
             </div>
           </div>
-          <div className="container-fluid pro-actions-wrap">
-            <div className="col-sm-12">
-              { isLocal ?
-              <div>
-                  <Link to={`/profiles/${domainName}/edit`}
-                    className="btn btn-sm btn-primary m-t-10 btn-inline">
-                    Edit
+          <div className="container-fluid profile-content-wrapper pro-actions-wrap">
+            { isLocal ?
+            <div>
+                <Link to={`/profiles/${domainName}/edit`}
+                  className="btn btn-sm btn-primary btn-inline btn-tight">
+                  Edit
+                </Link>
+                {!this.hasUsername() ?
+                  <button
+                    className="btn btn-sm btn-primary btn-inline btn-tight"
+                    disabled={true}
+                    title="Add a username to view publicly."
+                  >
+                  View Publicly
+                  </button>
+                  :
+                <Link to={`/profiles/${domainName}`}
+                  className="btn btn-sm btn-primary btn-inline btn-tight">
+                  View Publicly
+                </Link>
+                }
+                {!this.hasUsername() ?
+                  <Link to={`/profiles/i/register/${domainName}`}
+                    className="btn btn-sm btn-primary btn-inline btn-tight">
+                   Add a username
                   </Link>
-                  {!this.hasUsername() ?
-                    <button
-                      className="btn btn-sm btn-primary m-t-10 btn-inline"
-                      disabled={true}
-                      title="Add a username to view publicly."
-                    >
-                    View Publicly
-                    </button>
-                    :
-                  <Link to={`/profiles/${domainName}`}
-                    className="btn btn-sm btn-primary m-t-10 btn-inline">
-                    View Publicly
-                  </Link>
-                  }
-                  {!this.hasUsername() ?
-                    <Link to={`/profiles/i/register/${domainName}`}
-                      className="btn btn-sm btn-primary m-t-10 btn-inline">
-                     Add a username
-                    </Link>
-                    :
-                    null
-                  }
-              </div>
-              :
-              <div>
-                <button className="btn btn-sm btn-primary m-t-10">
-                  Add Friend
-                </button>
-              </div>
-              }
+                  :
+                  null
+                }
             </div>
+            :
+            <div>
+              <button className="btn btn-sm btn-primary btn-tight">
+                Add Friend
+              </button>
+            </div>
+            }
           </div>
         </div>
         :

@@ -466,6 +466,7 @@ a {color: #E91E63;}
 .btn-inline{margin-right:15px;}
 .btn-home-button{position:absolute;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:400;border-radius:6px;padding:3px 20px;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
 div.home-profiles a .btn-home-button{position:absolute;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
+.btn-tight {margin:0}
 
 /* 13. Forms */
 .form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;}
@@ -495,7 +496,7 @@ div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 .pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
-.pro-actions-wrap{max-width:1180px;}
+.pro-actions-wrap{max-width:1180px;padding:0px;}
 div.pro-avatar img{max-width:58px;}
 .pro-card-name{font-size:1.0rem;font-weight:600;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
