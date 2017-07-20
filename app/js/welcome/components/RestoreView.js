@@ -6,8 +6,6 @@ import InputGroup from '../../components/InputGroup'
 import { AccountActions } from '../../account/store/account'
 import Alert from '../../components/Alert'
 
-import { DEFAULT_PASSWORD } from '../../utils/account-utils'
-
 
 import log4js from 'log4js'
 
@@ -78,6 +76,23 @@ class RestoreView extends Component {
           type="text"
           label="Identity key"
           placeholder="Identity key"
+          data={this.state}
+          onChange={this.onValueChange}
+        />
+        <p>Select a password:</p>
+        <InputGroup
+          name="password"
+          type="password"
+          label="Password"
+          placeholder=""
+          data={this.state}
+          onChange={this.onValueChange}
+        />
+        <InputGroup
+          name="passwordConfirmation"
+          type="password"
+          label="Confirm"
+          placeholder=""
           data={this.state}
           onChange={this.onValueChange}
         />

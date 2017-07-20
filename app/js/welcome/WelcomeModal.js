@@ -11,13 +11,11 @@ import { PairBrowserView, LandingView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
   EnterEmailView } from './components'
 
-import { DEFAULT_PASSWORD } from '../utils/account-utils'
-
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
-const WRITE_DOWN_IDENTITY_KEY_PAGE = 4
+const CREATE_IDENTITY_PAGE_VIEW = 4
 
 const TESTING_IDENTITY_KEY =
 'biology amazing joke rib defy emotion fruit ecology blanket absent ivory bird'
@@ -53,7 +51,7 @@ class WelcomeModal extends Component {
 
     let startingPage = 0
     if (this.props.accountCreated) {
-      startingPage = WRITE_DOWN_IDENTITY_KEY_PAGE
+      startingPage = CREATE_IDENTITY_PAGE_VIEW
     }
     this.state = {
       accountCreated: this.props.accountCreated,
@@ -82,7 +80,7 @@ class WelcomeModal extends Component {
 
     if (nextProps.accountCreated && !this.props.accountCreated) {
       this.setState({
-        page: WRITE_DOWN_IDENTITY_KEY_PAGE
+        page: CREATE_IDENTITY_PAGE_VIEW
       })
     }
   }
@@ -93,11 +91,11 @@ class WelcomeModal extends Component {
     })
   }
 
-  createAccount(event) {
-    event.preventDefault()
+  createAccount(password) {
+    console.log(password)
     logger.trace('createAccount')
-
-    this.props.initializeWallet(DEFAULT_PASSWORD, null)
+    this.setState({ password })
+    this.props.initializeWallet(password, null)
   }
 
   showLandingView(event) {
@@ -214,7 +212,7 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 3 ?
-                  <CreateIdentityView
+                  <EnterPasswordView
                     createAccount={this.createAccount}
                   />
                 :
@@ -224,6 +222,16 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 4 ?
+                  <CreateIdentityView
+                    showNextView={this.showNextView}
+                  />
+                :
+                null
+              }
+              </div>
+              <div>
+              {
+                page === 5 ?
                   <WriteDownKeyView
                     identityKeyPhrase={TESTING_IDENTITY_KEY} // TODO: replace w/ real key
                     showNextView={this.showNextView}
@@ -234,7 +242,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 5 ?
+                page === 6 ?
                   <ConfirmIdentityKeyView
                     identityKeyPhrase={TESTING_IDENTITY_KEY}
                     showNextView={this.showNextView}
@@ -245,7 +253,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 6  ?
+                page === 7 ?
                   <EnterEmailView
                     skipEmailBackup={this.props.skipEmailBackup}
                   />
