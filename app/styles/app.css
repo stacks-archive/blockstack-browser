@@ -491,11 +491,11 @@ a.card:hover{text-decoration:none;}
 .profile-list-card-subtitle{font-size:13px;color:#949494;line-height:1.9rem;}
 .profile-list-card-avatar{display:inline-block;}
 .profile-list-avatar{float:left;margin-right:15px;padding:0;}
-div.card-avatar.profile-list-avatar img{max-width:48px;}
+div.card-avatar.profile-list-avatar img{width:48px;height:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 .pro-wrap{font-family:'Source Code Pro',monospace;max-width:1180px;background-color:#080809;padding:35px;font-weight:300;}
-div.pro-avatar img{max-width:58px;}
+div.pro-avatar img{width:58px;height:58px;}
 .pro-card-name{font-size:0.875rem;color:#fff;font-weight:300;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.75rem;color:#fff;}
 .pro-container{padding-top:1.5rem;}
@@ -503,6 +503,9 @@ div.pro-avatar img{max-width:58px;}
 /* 28. List group */
 .list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
 .list-group-item.active,.list-group-item.active:hover,.list-group-item.active:focus{background-image:none;}
+
+/* 29. Image thumbnails */
+.img-cover {object-fit: cover;}
 
 /* 36. Status Bars */
 .statusBar-link,.statusBar-link:hover,.statusBar-link:focus,.statusBar-link:active{display:block;padding:6px 12px;color:#080809;text-align:center;margin-left:8px;margin-right:8px;}
