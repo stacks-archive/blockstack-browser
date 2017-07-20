@@ -39,14 +39,10 @@ class IdentityItem extends Component {
                    Add username
                  </Link>
                  :
-                  <div>
-                   {this.props.pending ?
+                  <div>                   
                      <p className="card-subtitle profile-list-card-subtitle">
-                      (pending)
+                      {this.props.pending ? '(pending)' : '\u00A0'}
                      </p>
-                     :
-                     <p></p>
-                  }
                   </div>
                 }
               </li>
