@@ -55,29 +55,23 @@ class PairBrowserView extends Component {
       <div>
       {!advancedMode ?
         <div>
-          <h4>Please pair your browser with Blockstack</h4>
-          <p>To pair your default browser with Blockstack, click on the
+          <h3 className="modal-heading">Please pair your browser with Blockstack</h3>
+          <p className="modal-body">To pair your default browser with Blockstack, click on the
           Blockstack icon in your menu bar and then click on Home.</p>
           <img
             alt="Open this page via the Blockstack icon to pair your browser"
             src="/images/mac-open-from-menubar.png"
             style={{ maxWidth: '80%', border: '1px solid #f0f0f0',
-            marginBottom: '20px' }}
+            margin: '0 auto', display: 'block' }}
           />
-          <button
-            onClick={this.toggleAdvancedMode}
-            className="btn btn-sm btn-secondary"
-          >
-              Advanced Mode
-          </button>
+          <p>
+            <a href="#" className="modal-body" onClick={this.toggleAdvancedMode}>Advanced Mode</a>
+          </p>
         </div>
         :
         <div>
-          <h4>Enter your Blockstack Core API Password</h4>
-          <p>Don’t know what this is?</p>
-          <p>
-            <a href="#" onClick={this.toggleAdvancedMode}>Go back to normal pairing mode.</a>
-          </p>
+          <h3 className="modal-heading">Enter your Blockstack Core API Password</h3>
+          <p className="modal-body">Don’t know what this is?</p>          
           <InputGroup
             name="coreAPIPassword"
             label="Core API Password"
@@ -87,11 +81,13 @@ class PairBrowserView extends Component {
           <div>
             <button
               onClick={this.saveCoreAPIPassword}
-              className="btn btn-lg btn-primary btn-block"
-            >
-            Save Core API Password
+              className="btn btn-lg btn-primary btn-block">
+                Save Core API Password
             </button>
           </div>
+          <p>
+            <a href="#" className="modal-body" onClick={this.toggleAdvancedMode}>Go back to normal pairing mode.</a>
+          </p>
         </div>
       }
       </div>

@@ -204,7 +204,7 @@ class WelcomeModal extends Component {
             <div>
             {pageZeroView === 'friendly' ?
               <div>
-                <h4>Please pair your browser with Blockstack</h4>
+                <h3>Please pair your browser with Blockstack</h3>
                 <p>To pair your default browser with Blockstack, click on the
                 Blockstack icon in your menu bar and then click on Home.</p>
                 <img
@@ -220,7 +220,7 @@ class WelcomeModal extends Component {
               </div>
               :
               <div>
-                <h4>Enter your Blockstack Core API Password</h4>
+                <h3 className="modal-heading">Enter your Blockstack Core API Password</h3>
                 <p>Don't know what this is? <a href='' onClick={this.showFriendlyMode}>Go back to normal pairing mode.</a></p>
                 <InputGroup name="coreAPIPassword" label="Core API Password" type="text"
                   data={this.state} onChange={this.onValueChange} />
@@ -248,17 +248,16 @@ class WelcomeModal extends Component {
 
             {pageOneView === 'getStarted' ?
               <div>
-                <img src="/images/blockstack-logo-vertical.svg" className="m-b-65" style={{ width: '210px' }} />
-                <h3 className="m-b-100">
-                  Join the new internet.<br />
-                  Use apps that put you in control
+                <img src="/images/blockstack-logo-vertical.svg" className="m-b-20" style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }} />
+                <h3 className="modal-heading p-b-25">Join the new internet. <br />
+                  Use apps that put you in control.
                 </h3>
                 <div className="container">
-                  <button className="btn btn-lg btn-primary btn-block m-b-20" onClick={this.showGenerateKeychain}>
+                  <button className="btn btn-lg btn-primary btn-block" onClick={this.showGenerateKeychain}>
                     Get Started
                   </button>
                   <br></br>
-                  <a href="#" onClick={this.showRestoreAccount}>
+                  <a href="#" className="modal-body" onClick={this.showRestoreAccount}>
                     Restore Account
                   </a>
                 </div>
@@ -267,7 +266,7 @@ class WelcomeModal extends Component {
               <div>
               {pageOneView === 'generateKeychain' ?
                 <div>
-                  <h4>Your keychain lets you unlock the new internet</h4>
+                  <h3 className="modal-heading">Your keychain lets you unlock the new internet</h3>
                   <p>Traditional apps hold user keys on 3rd party servers
                   protected by weak sign in forms. On Blockstack, the keys are on
                   your device.</p>
@@ -291,7 +290,7 @@ class WelcomeModal extends Component {
                   {pageOneView === 'enterPassword' ?
                     <div>
                       <form onSubmit={this.createAccount}>
-                        <h4>Choose a password to encrypt your keychain</h4>
+                        <h3 className="modal-heading">Choose a password to encrypt your keychain</h3>
                         <p>The keychain on this device will be encrypted with your
                         password. Later you will have the chance to backup the keychain
                         itself.</p>
@@ -314,7 +313,7 @@ class WelcomeModal extends Component {
                     </div>
                   :
                     <div>
-                      <h4>Restore your account</h4>
+                      <h3 className="modal-heading">Restore your account</h3>
                       <p></p>
                       <InputGroup name="backupPhrase" type="text" label="Backup phrase"
                         placeholder="Backup phrase" data={this.state} onChange={this.onValueChange} />
@@ -339,7 +338,7 @@ class WelcomeModal extends Component {
           : null }
           { page === 2 ?
             <form onSubmit={this.emailKeychainBackup}>
-              <h4>Want an email backup of your keychain?</h4>
+              <h3 className="modal-heading">Want an email backup of your keychain?</h3>
               <p className="m-b-30">Enter your email to receive an <strong>encrypted</strong> copy
               of your keychain. This will help you recover your account if you lose
               your device.</p>

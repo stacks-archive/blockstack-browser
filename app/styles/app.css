@@ -178,7 +178,7 @@ a.view-out-link{color:#494f56;}
 /* Inline forms */
 
 /* Sets inline forms to have a fixed label container width */
-.form-group-control-label{width:150px;}
+/*.form-group-control-label{width:150px;}*/
 
 /* controls the alert boxes when signing up */
 div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-left:178px;}
@@ -467,13 +467,45 @@ a {color: #E91E63;}
 div.home-profiles a .btn-home-button{position:absolute;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
 
 /* 13. Forms */
-.form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;}
-.form-control::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;color:#c7c7c7;}
-.form-control:hover,.form-control:focus{background-color:#fff;}
-.form-control-label{padding:1.25rem 1rem;}
-input.form-control.form-control-sm.input-special{background-color:#fff;border:1px solid #fff;}
-input.form-control.form-control-sm.input-special:hover,input[type='text'].form-control.form-control-sm.input-special:hover,input.form-control.form-control-sm.input-special:focus,input[type='text'].form-control.form-control-sm.input-special:focus{-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-webkit-transition:none;-moz-transition:none;transition:none;border:1px solid #fff;}
-input[type=radio]{margin-right:1rem;}
+.form-control {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 28px;
+  color: #949494;
+  padding: 0.75rem 1.375rem;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;  
+}
+.form-control::-webkit-input-placeholder {
+  text-transform: capitalize;
+  font-size: 0.875rem;
+  color: #c7c7c7;
+  font-weight: 400!important;
+}
+.form-control:hover, .form-control:focus {
+  background-color: #fff;
+}
+input.form-control.form-control-sm.input-special {
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+input.form-control.form-control-sm.input-special:hover, input[type='text'].form-control.form-control-sm.input-special:hover, input.form-control.form-control-sm.input-special:focus, input[type='text'].form-control.form-control-sm.input-special:focus {
+  -webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+  border: 1px solid #fff;
+}
+input[type=radio] {
+  margin-right: 1rem;
+}
 
 /* 16. Navbar */
 .navbar{padding:0!important;}
@@ -565,9 +597,70 @@ a.search-result:hover{color:#fff!important;background-color:#2275d7;}
 .result-img{width:32px;height:32px;}
 
 /* Modal */
-div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:#fff!important;display:flex;align-items:center;justify-content:center;margin-top:94px;border-top:1px solid #F0F0F0;}
-div.ReactModal__Content.ReactModal__Content--after-open{width:480px;background-color:transparent;padding:6rem 3.125rem;text-align:center;margin-top:-35%;}
+div.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-image: url('/images/img-teddy-kelley-181683@2x.png');
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 94px;
+}
+div.ReactModal__Content.ReactModal__Content--after-open {
+  width: 415px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  padding: 3.75rem 3.4375rem;
+  margin-top: -35%;
+  -webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+.modal-heading{
+  font-size: 1.5rem;
+  color: #080809;
+  line-height: 1.75rem;
+  margin-bottom: .5rem;
+  text-align: center;
+}
+.modal-body {
+  color: #080809;
+  line-height: 1.125rem;
+  margin-bottom: 0.875rem;
+  text-align: center;
+}
+a.modal-body {
+  color: #949494;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  line-height: 1.125rem;
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+}
+.modal-code {
+  font-family:'Source Code Pro',monospace;
+  color: #616161;
+  font-size: 13px;
+  background-color: #E6E6E6;
+  padding: 25px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px; 
+}
+.form-control-label {
+  text-transform: capitalize;
+  font-size: 0.875rem;
+  padding-left: 0;
+}
 .react-modal-pgp { width: 700px !important; }
+
 
 /* Account App */
 .item-sidebar-account{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
@@ -602,7 +695,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .list-group-item.item-sidebar-wallet:after{content:'';display:block;padding-left:45px;height:1px;width:0;background:transparent;transition:width .3s ease,background-color .3s ease;}
 .highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;font-weight:400;line-height:1.75rem;border:1px solid #00CF98;background-color:#00CF98;padding:0.75rem 2.5rem;-moz-border-radius:4px!important;-webkit-border-radius:4px!important;border-radius:4px!important;}
 .highlight-wallet > pre{font-size:0.8125rem;color:#fff!important;text-align:center;}
-.form-control{font-size:0.875rem;font-weight:400;line-height:28px;color:#949494;padding:0.875rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;}
 .qrcode-wallet{margin-bottom:20px;text-align:center;}
 
 /* Media queries */
