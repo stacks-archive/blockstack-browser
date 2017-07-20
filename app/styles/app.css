@@ -463,7 +463,6 @@ a {color: #E91E63;}
 .btn-blue:hover,.btn-blue:focus,.btn-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
 .btn-black{color:#fff;border:1px solid #060607;background-color:#060607;padding-right:1.375rem;padding-left:1.375rem;-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
 .btn-black:hover,.btn-black:focus,.btn-black:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
-
 .btn-wallet{color:#fff;border:1px solid #00CF98;background-color:#00CF98;padding-right:3rem;padding-left:3rem;-moz-border-radius:4px!important;-webkit-border-radius:4px!important;border-radius:4px!important;}
 .btn-wallet:hover,.btn-wallet:focus,.btn-wallet:active{color:#fff;border:1px solid #06AB7F;background-color:#06AB7F;}
 .btn-inline{margin-right:15px;}
@@ -495,12 +494,12 @@ a.card:hover{text-decoration:none;}
 .profile-list-card-subtitle{font-size:13px;color:#949494;}
 .profile-list-card-avatar{display:inline-block;}
 .profile-list-avatar{float:left;margin-right:15px;padding:0;}
-div.card-avatar.profile-list-avatar img{max-width:48px;}
+div.card-avatar.profile-list-avatar img{width:48px;height:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
 .pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
-div.pro-avatar img{max-width:58px;}
+div.pro-avatar img{width:58px;height:58px;}
 .pro-card-name{font-size:1.0rem;font-weight:600;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
@@ -508,6 +507,9 @@ div.pro-avatar img{max-width:58px;}
 /* 28. List group */
 .list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
 .list-group-item.active,.list-group-item.active:hover,.list-group-item.active:focus{background-image:none;}
+
+/* 29. Image thumbnails */
+.img-cover {object-fit: cover;}
 
 /* 36. Status Bars */
 .statusBar-link,.statusBar-link:hover,.statusBar-link:focus,.statusBar-link:active{display:block;padding:6px 12px;color:#080809;text-align:center;margin-left:8px;margin-right:8px;}

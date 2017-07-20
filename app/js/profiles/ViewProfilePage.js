@@ -121,7 +121,7 @@ class ViewProfilePage extends Component {
               <div className="pro-container col-sm-12">
                 <div className="pro-avatar m-b-20">
                   <Image src={person.avatarUrl() || ''}
-                    fallbackSrc="/images/avatar.png" className="img-circle" />
+                    fallbackSrc="/images/avatar.png" className="img-circle img-cover" />
                 </div>
                 <div className="">
                   { (blockNumber && transactionIndex) ?
