@@ -461,6 +461,9 @@ a {color: #E91E63;}
 .btn-outline-primary:hover,.btn-outline-primary:focus,.btn-outline-primary:active,.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active{color:#fff;border:1px solid #2275d7;background-color:#2275d7;}
 .btn-blue{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;padding-right:1.375rem;padding-left:1.375rem;-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
 .btn-blue:hover,.btn-blue:focus,.btn-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
+.btn-black{color:#fff;border:1px solid #060607;background-color:#060607;padding-right:1.375rem;padding-left:1.375rem;-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.btn-black:hover,.btn-black:focus,.btn-black:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
+
 .btn-wallet{color:#fff;border:1px solid #00CF98;background-color:#00CF98;padding-right:3rem;padding-left:3rem;-moz-border-radius:4px!important;-webkit-border-radius:4px!important;border-radius:4px!important;}
 .btn-wallet:hover,.btn-wallet:focus,.btn-wallet:active{color:#fff;border:1px solid #06AB7F;background-color:#06AB7F;}
 .btn-inline{margin-right:15px;}

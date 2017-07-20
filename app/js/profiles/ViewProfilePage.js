@@ -209,12 +209,12 @@ class ViewProfilePage extends Component {
             { isLocal ?
             <div>
                 <Link to={`/profiles/${domainName}/edit`}
-                  className="btn btn-sm btn-primary btn-inline btn-tight">
+                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
                   Edit
                 </Link>
                 {!this.hasUsername() ?
                   <button
-                    className="btn btn-sm btn-primary btn-inline btn-tight"
+                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
                     disabled={true}
                     title="Add a username to view publicly."
                   >
@@ -222,13 +222,13 @@ class ViewProfilePage extends Component {
                   </button>
                   :
                 <Link to={`/profiles/${domainName}`}
-                  className="btn btn-sm btn-primary btn-inline btn-tight">
+                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
                   View Publicly
                 </Link>
                 }
                 {!this.hasUsername() ?
                   <Link to={`/profiles/i/register/${domainName}`}
-                    className="btn btn-sm btn-primary btn-inline btn-tight">
+                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
                    Add a username
                   </Link>
                   :
@@ -237,7 +237,7 @@ class ViewProfilePage extends Component {
             </div>
             :
             <div>
-              <button className="btn btn-sm btn-primary btn-tight">
+              <button className="btn btn-lg btn-primary btn-black btn-tight">
                 Add Friend
               </button>
             </div>
