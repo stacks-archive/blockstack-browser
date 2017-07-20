@@ -644,6 +644,16 @@ a.modal-body {
   text-align: center;
   display: block;
 }
+.modal-code {
+  font-family:'Source Code Pro',monospace;
+  color: #616161;
+  font-size: 13px;
+  background-color: #E6E6E6;
+  padding: 25px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px; 
+}
 .form-control-label {
   text-transform: capitalize;
   font-size: 0.875rem;

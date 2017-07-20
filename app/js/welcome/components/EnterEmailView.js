@@ -37,8 +37,8 @@ class EnterEmailView extends Component {
   render() {
     return (
       <div>
-        <h4>Enter your email address to get useful notifications regarding your account</h4>
-        <p>Type in your email address:</p>
+        <h3 className="modal-heading">Enter your email address to get useful notifications regarding your account</h3>
+        <p className="modal-body">Type in your email address:</p>
         <InputGroup
           name="email"
           type="email"
@@ -47,12 +47,12 @@ class EnterEmailView extends Component {
           data={this.state}
           onChange={this.onValueChange}
         />
-        <div className="container m-t-40">
-          <button className="btn btn-primary" onClick={this.finish}>
+        <div style={{ marginBottom: '-20px' }}>
+          <button className="btn btn-lg btn-primary btn-block m-b-20" onClick={this.finish}>
             Finish
           </button>
           <p>
-            <a href="" onClick={this.finish}>Skip</a>
+            <a href="#" className="modal-body" onClick={this.finish}>Skip</a>
           </p>
         </div>
       </div>

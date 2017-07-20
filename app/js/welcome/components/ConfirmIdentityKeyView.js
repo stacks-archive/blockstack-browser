@@ -25,8 +25,8 @@ class ConfirmIdentityKeyView extends Component {
   render() {
     return (
       <div>
-        <h4>Re-enter your identity key to confirm you&#39;ve kept it in a safe place</h4>
-        <p>Type your identity key here:</p>
+        <h3 className="modal-heading">Re-enter your identity key to confirm you&#39;ve kept it in a safe place</h3>
+        <p className="modal-body">Type your identity key here:</p>
         <InputGroup
           name="identityKeyPhrase"
           type="text"
@@ -35,8 +35,8 @@ class ConfirmIdentityKeyView extends Component {
           data={this.state}
           onChange={this.onValueChange}
         />
-        <div className="container m-t-40">
-          <button className="btn btn-primary" onClick={this.props.showNextView}>
+        <div>
+          <button className="btn btn-lg btn-primary btn-block m-b-20" onClick={this.props.showNextView}>
             Continue
           </button>
         </div>
