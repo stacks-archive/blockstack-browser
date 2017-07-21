@@ -13,13 +13,14 @@ import { PairBrowserView, LandingView,
   EnterEmailView } from './components'
 
 
-import { isBackupPhraseValid } from '../utils'
+import { decrypt, isBackupPhraseValid } from '../utils'
 
 
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
+const START_PAGE_VIEW = 0
 const CREATE_IDENTITY_PAGE_VIEW = 4
 
 function mapStateToProps(state) {
@@ -45,23 +46,24 @@ class WelcomeModal extends Component {
     emailKeychainBackup: PropTypes.func.isRequired,
     promptedForEmail: PropTypes.bool.isRequired,
     encryptedBackupPhrase: PropTypes.string,
-    initializeWallet: PropTypes.func.isRequired
+    initializeWallet: PropTypes.func.isRequired,
+    skipEmailBackup: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
 
-    let startingPage = 0
     if (this.props.accountCreated) {
-      startingPage = CREATE_IDENTITY_PAGE_VIEW
+      logger.error('User has refreshed browser mid onboarding.')
     }
+
     this.state = {
       accountCreated: this.props.accountCreated,
       storageConnected: this.props.storageConnected,
       coreConnected: this.props.coreConnected,
       pageOneView: 'create',
       email: '',
-      page: startingPage,
+      page: START_PAGE_VIEW,
       password: null,
       identityKeyPhrase: null,
       alert: null
@@ -71,7 +73,7 @@ class WelcomeModal extends Component {
     this.showNewInternetView = this.showNewInternetView.bind(this)
     this.showRestoreView = this.showRestoreView.bind(this)
     this.showNextView = this.showNextView.bind(this)
-    this.createAccount = this.createAccount.bind(this)
+    this.verifyPasswordAndCreateAccount = this.verifyPasswordAndCreateAccount.bind(this)
     this.restoreAccount = this.restoreAccount.bind(this)
     this.updateAlert = this.updateAlert.bind(this)
     this.setPage = this.setPage.bind(this)
@@ -85,7 +87,17 @@ class WelcomeModal extends Component {
     })
 
     if (nextProps.accountCreated && !this.props.accountCreated) {
-      this.setPage(CREATE_IDENTITY_PAGE_VIEW)
+      logger.debug('account already created - checking for valid password in component state')
+      decrypt(new Buffer(this.props.encryptedBackupPhrase, 'hex'), this.state.password)
+      .then((identityKeyPhraseBuffer) => {
+        logger.debug('Backup phrase successfully decrypted. Storing identity key.')
+        this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
+        this.setPage(CREATE_IDENTITY_PAGE_VIEW)
+      }, () => {
+        logger.debug('User has refreshed browser mid onboarding.')
+
+        this.setPage(START_PAGE_VIEW)
+      })
     }
   }
 
@@ -95,7 +107,14 @@ class WelcomeModal extends Component {
     })
   }
 
-  createAccount(password, passwordConfirmation) {
+  setPage(page) {
+    this.setState({
+      page,
+      alert: null
+    })
+  }
+
+  verifyPasswordAndCreateAccount(password, passwordConfirmation) {
     logger.trace('createAccount')
     return new Promise((resolve, reject) => {
       if (password !== passwordConfirmation) {
@@ -105,6 +124,8 @@ class WelcomeModal extends Component {
         reject()
       } else {
         this.setState({ password })
+
+        logger.debug('Initializing account...')
         this.props.initializeWallet(password, null)
         resolve()
       }
@@ -184,13 +205,6 @@ class WelcomeModal extends Component {
     })
   }
 
-  setPage(page) {
-    this.setState({
-      page,
-      alert: null
-    })
-  }
-
   render() {
     const isOpen = !this.state.accountCreated ||
       !this.state.coreConnected || !this.props.promptedForEmail
@@ -264,7 +278,7 @@ class WelcomeModal extends Component {
               {
                 page === 3 ?
                   <EnterPasswordView
-                    createAccount={this.createAccount}
+                    verifyPasswordAndCreateAccount={this.verifyPasswordAndCreateAccount}
                   />
                 :
                 null
@@ -284,7 +298,7 @@ class WelcomeModal extends Component {
               {
                 page === 5 ?
                   <WriteDownKeyView
-                    identityKeyPhrase={TESTING_IDENTITY_KEY} // TODO: replace w/ real key
+                    identityKeyPhrase={this.state.identityKeyPhrase}
                     showNextView={this.showNextView}
                   />
                 :
@@ -295,7 +309,7 @@ class WelcomeModal extends Component {
               {
                 page === 6 ?
                   <ConfirmIdentityKeyView
-                    identityKeyPhrase={TESTING_IDENTITY_KEY}
+                    identityKeyPhrase={this.state.identityKeyPhrase}
                     showNextView={this.showNextView}
                   />
                 :

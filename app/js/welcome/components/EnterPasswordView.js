@@ -1,13 +1,23 @@
 import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import InputGroup from '../../components/InputGroup'
+import { AccountActions } from '../../account/store/account'
+
 
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/components/EnterPasswordView.js')
 
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Object.assign({}, AccountActions), dispatch)
+}
+
 class EnterPasswordView extends Component {
   static propTypes = {
-    createAccount: PropTypes.func.isRequired
+    verifyPasswordAndCreateAccount: PropTypes.func.isRequired,
+    deleteAccount: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -20,6 +30,12 @@ class EnterPasswordView extends Component {
     this.enterPasswordSubmit = this.enterPasswordSubmit.bind(this)
   }
 
+  componentDidMount() {
+    logger.trace('componentDidMount')
+    logger.debug('Deleting account from previous onboarding session.')
+    this.props.deleteAccount()
+  }
+
   onValueChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -30,7 +46,7 @@ class EnterPasswordView extends Component {
     logger.trace('createAccount')
     event.preventDefault()
     this.setState({ disableContinueButton: true })
-    this.props.createAccount(this.state.password, this.state.passwordConfirmation)
+    this.props.verifyPasswordAndCreateAccount(this.state.password, this.state.passwordConfirmation)
     .then(null, () => this.setState({ disableContinueButton: false }))
   }
 
@@ -76,4 +92,4 @@ class EnterPasswordView extends Component {
   }
  }
 
-export default EnterPasswordView
+export default connect(null, mapDispatchToProps)(EnterPasswordView)
