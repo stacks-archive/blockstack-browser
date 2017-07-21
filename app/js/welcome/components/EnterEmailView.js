@@ -48,7 +48,7 @@ class EnterEmailView extends Component {
           onChange={this.onValueChange}
         />
         <div style={{ marginBottom: '-20px' }}>
-          <button className="btn btn-lg btn-primary btn-block m-b-10" onClick={this.finish}>
+          <button className="btn btn-primary btn-block m-b-10" onClick={this.finish}>
             Finish
           </button>
           <p>

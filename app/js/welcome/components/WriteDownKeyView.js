@@ -8,7 +8,7 @@ const WriteDownkeyView = (props) =>
     <p className="modal-body m-b-0 m-t-25">Identity key:</p>
     <p className="modal-body modal-code">{props.identityKeyPhrase}</p>
     <div className="m-t-40">
-      <button className="btn btn-lg btn-primary btn-block m-b-10" onClick={props.showNextView}>
+      <button className="btn btn-primary btn-block m-b-10" onClick={props.showNextView}>
         I’ve written it down
       </button>
     </div>

@@ -81,7 +81,7 @@ class PairBrowserView extends Component {
           <div>
             <button
               onClick={this.saveCoreAPIPassword}
-              className="btn btn-lg btn-primary btn-block">
+              className="btn btn-primary btn-block">
                 Save Core API Password
             </button>
           </div>
