@@ -4,7 +4,8 @@ import InputGroup from '../../components/InputGroup'
 
 class ConfirmIdentityKeyView extends Component {
   static propTypes = {
-    confirmIdentityKeyPhrase: PropTypes.func.isRequired
+    confirmIdentityKeyPhrase: PropTypes.func.isRequired,
+    showPreviousView: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -51,6 +52,9 @@ class ConfirmIdentityKeyView extends Component {
             >
               Continue
             </button>
+            <p>
+              <a href="#" className="modal-body" onClick={this.props.showPreviousView}>Back</a>
+            </p>
           </div>
         </form>
       </div>

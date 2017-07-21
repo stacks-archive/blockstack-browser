@@ -73,6 +73,7 @@ class WelcomeModal extends Component {
     this.showNewInternetView = this.showNewInternetView.bind(this)
     this.showRestoreView = this.showRestoreView.bind(this)
     this.showNextView = this.showNextView.bind(this)
+    this.showPreviousView = this.showPreviousView.bind(this)
     this.verifyPasswordAndCreateAccount = this.verifyPasswordAndCreateAccount.bind(this)
     this.confirmIdentityKeyPhrase = this.confirmIdentityKeyPhrase.bind(this)
     this.restoreAccount = this.restoreAccount.bind(this)
@@ -182,11 +183,23 @@ class WelcomeModal extends Component {
   }
 
   showNextView(event)  {
+    logger.trace('showNextView')
+
     if (event) {
       event.preventDefault()
     }
 
     this.setPage(this.state.page + 1)
+  }
+
+  showPreviousView(event)  {
+    logger.trace('showPreviousView')
+    
+    if (event) {
+      event.preventDefault()
+    }
+
+    this.setPage(this.state.page - 1)
   }
 
   confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
@@ -322,6 +335,7 @@ class WelcomeModal extends Component {
                 page === 6 ?
                   <ConfirmIdentityKeyView
                     confirmIdentityKeyPhrase={this.confirmIdentityKeyPhrase}
+                    showPreviousView={this.showPreviousView}
                   />
                 :
                 null
