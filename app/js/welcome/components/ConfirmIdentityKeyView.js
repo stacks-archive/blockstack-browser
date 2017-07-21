@@ -46,8 +46,10 @@ class ConfirmIdentityKeyView extends Component {
             required
           />
           <div style={{ marginBottom: '-20px' }}>
-            <button type="submit"
-              className="btn btn-primary btn-block m-b-10">
+            <button
+              type="submit"
+              className="btn btn-primary btn-block m-b-10"
+            >
               Continue
             </button>
             <p>

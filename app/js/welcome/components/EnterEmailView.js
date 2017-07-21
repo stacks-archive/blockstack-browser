@@ -37,7 +37,9 @@ class EnterEmailView extends Component {
   render() {
     return (
       <div>
-        <h3 className="modal-heading">Enter your email address to get useful notifications regarding your account</h3>
+        <h3 className="modal-heading">
+          Enter your email address to get useful notifications regarding your account
+        </h3>
         <p className="modal-body">Type in your email address:</p>
         <InputGroup
           name="email"
