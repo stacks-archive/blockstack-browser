@@ -40,8 +40,8 @@ class RestoreView extends Component {
   render() {
     return (
       <div>
-        <h4>Restore your account by typing in your identity key</h4>
-        <form onSubmit={this.restoreAccountSubmit}>
+        <h3 className="modal-heading">Restore your account by typing in your identity key</h3>
+        <form className="modal-form" onSubmit={this.restoreAccountSubmit}>
           <InputGroup
             name="identityKeyPhrase"
             type="text"
@@ -60,7 +60,7 @@ class RestoreView extends Component {
             onChange={this.onValueChange}
             required
           />
-          <InputGroup
+          <InputGroup 
             name="passwordConfirmation"
             type="password"
             label="Confirm password"
@@ -69,15 +69,14 @@ class RestoreView extends Component {
             onChange={this.onValueChange}
             required
           />
-          <div className="container m-t-40">
+          <div className="m-t-25">
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary btn-block"
             >
               Restore account
             </button>
-            <br />
-            <a href="#" onClick={this.props.showLandingView}>
+            <a href="#" className="modal-body" onClick={this.props.showLandingView}>
               Create new account
             </a>
           </div>

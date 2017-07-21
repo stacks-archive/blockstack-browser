@@ -659,6 +659,9 @@ a.modal-body {
   font-size: 0.875rem;
   padding-left: 0;
 }
+form.modal-form > div.form-group {
+  margin-bottom: 0;
+}
 .react-modal-pgp { width: 700px !important; }
 
 

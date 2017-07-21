@@ -7,11 +7,10 @@ const LandingPage = (props) =>
     <h3 className="modal-heading p-b-25">Join the new internet. <br />
       Use apps that put you in control.
     </h3>
-    <div className="container m-t-40">
-      <button className="btn btn-lg btn-primary btn-block" onClick={props.showNewInternetView}>
+    <div className="m-t-30 m-b-20">
+      <button className="btn btn-lg btn-primary btn-block m-b-10" onClick={props.showNewInternetView}>
         Get Started
       </button>
-      <br></br>
       <a href="#" className="modal-body" onClick={props.showRestoreView}>
         Restore from backup
       </a>

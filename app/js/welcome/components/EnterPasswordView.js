@@ -53,8 +53,8 @@ class EnterPasswordView extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={this.enterPasswordSubmit}>
-          <h4>Choose a password to protect your identity key</h4>
+        <h3 className="modal-heading">Choose a password to protect your identity key</h3>
+        <form className="modal-form" onSubmit={this.enterPasswordSubmit}>          
           <InputGroup
             name="password"
             type="password"
@@ -73,10 +73,10 @@ class EnterPasswordView extends Component {
             onChange={this.onValueChange}
             required
           />
-          <div className="container m-t-40">
+          <div className="m-t-25 m-b-30">
             <button
               type="submit"
-              className="btn btn-primary"
+              className="btn btn-primary btn-block"
               disabled={this.state.disableContinueButton}
             >
               {this.state.disableContinueButton ?

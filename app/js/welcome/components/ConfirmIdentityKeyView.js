@@ -45,11 +45,9 @@ class ConfirmIdentityKeyView extends Component {
             onChange={this.onValueChange}
             required
           />
-          <div>
-            <button
-              type="submit"
-              className="btn btn-lg btn-primary btn-block m-b-20"
-            >
+          <div style={{ marginBottom: '-20px' }}>
+            <button type="submit"
+              className="btn btn-lg btn-primary btn-block m-b-10">
               Continue
             </button>
             <p>
