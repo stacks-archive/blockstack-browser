@@ -17,7 +17,7 @@ class EnterPasswordView extends Component {
       disableContinueButton: false
     }
     this.onValueChange = this.onValueChange.bind(this)
-    this.createAccount = this.createAccount.bind(this)
+    this.enterPasswordSubmit = this.enterPasswordSubmit.bind(this)
   }
 
   onValueChange(event) {
@@ -26,24 +26,33 @@ class EnterPasswordView extends Component {
     })
   }
 
-  createAccount(event) {
+  enterPasswordSubmit(event) {
     logger.trace('createAccount')
     event.preventDefault()
-    if (this.state.password.length) {
-      this.setState({ disableContinueButton: true })
-      this.props.createAccount(this.state.password)
-    }
+    this.setState({ disableContinueButton: true })
+    this.props.createAccount(this.state.password, this.state.passwordConfirmation)
+    .then(null, () => this.setState({ disableContinueButton: false }))
   }
 
   render() {
     return (
       <div>
-        <form onSubmit={this.createAccount}>
+        <form onSubmit={this.enterPasswordSubmit}>
           <h4>Choose a password to protect your identity key</h4>
           <InputGroup
             name="password"
-            label="Password"
             type="password"
+            label="Select a password"
+            placeholder=""
+            data={this.state}
+            onChange={this.onValueChange}
+            required
+          />
+          <InputGroup
+            name="passwordConfirmation"
+            type="password"
+            label="Confirm password"
+            placeholder=""
             data={this.state}
             onChange={this.onValueChange}
             required

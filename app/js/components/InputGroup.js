@@ -77,7 +77,7 @@ class InputGroup extends Component {
               value={value}
               onChange={this.props.onChange} />
             }
-          </div>          
+          </div>
         </fieldset>
       </div>
     )

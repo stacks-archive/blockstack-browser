@@ -2,23 +2,25 @@ import React, { Component, PropTypes } from 'react'
 import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import Alert from '../components/Alert'
 
 import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
 
 import { PairBrowserView, LandingView,
-  NewInternetView, RestoreView, DataControlView,
+  NewInternetView, RestoreView, DataControlView, EnterPasswordView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
   EnterEmailView } from './components'
+
+
+import { isBackupPhraseValid } from '../utils'
+
 
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
 const CREATE_IDENTITY_PAGE_VIEW = 4
-
-const TESTING_IDENTITY_KEY =
-'biology amazing joke rib defy emotion fruit ecology blanket absent ivory bird'
 
 function mapStateToProps(state) {
   return {
@@ -61,7 +63,8 @@ class WelcomeModal extends Component {
       email: '',
       page: startingPage,
       password: null,
-      identityKeyPhrase: null
+      identityKeyPhrase: null,
+      alert: null
     }
 
     this.showLandingView = this.showLandingView.bind(this)
@@ -69,6 +72,9 @@ class WelcomeModal extends Component {
     this.showRestoreView = this.showRestoreView.bind(this)
     this.showNextView = this.showNextView.bind(this)
     this.createAccount = this.createAccount.bind(this)
+    this.restoreAccount = this.restoreAccount.bind(this)
+    this.updateAlert = this.updateAlert.bind(this)
+    this.setPage = this.setPage.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,9 +85,7 @@ class WelcomeModal extends Component {
     })
 
     if (nextProps.accountCreated && !this.props.accountCreated) {
-      this.setState({
-        page: CREATE_IDENTITY_PAGE_VIEW
-      })
+      this.setPage(CREATE_IDENTITY_PAGE_VIEW)
     }
   }
 
@@ -91,19 +95,52 @@ class WelcomeModal extends Component {
     })
   }
 
-  createAccount(password) {
-    console.log(password)
+  createAccount(password, passwordConfirmation) {
     logger.trace('createAccount')
-    this.setState({ password })
-    this.props.initializeWallet(password, null)
+    return new Promise((resolve, reject) => {
+      if (password !== passwordConfirmation) {
+        logger.error('createAccount: password and confirmation do not match')
+        this.updateAlert('danger',
+        'The password confirmation does not match the password you entered.')
+        reject()
+      } else {
+        this.setState({ password })
+        this.props.initializeWallet(password, null)
+        resolve()
+      }
+    })
+  }
+
+  restoreAccount(identityKeyPhrase, password, passwordConfirmation) {
+    logger.trace('restoreAccount')
+    const { isValid } = isBackupPhraseValid(identityKeyPhrase)
+
+    if (!isValid) {
+      logger.error('restoreAccount: invalid backup phrase entered')
+      this.updateAlert('danger', 'The identity key you entered is not valid.')
+      return
+    }
+
+    if (password !== passwordConfirmation) {
+      logger.error('restoreAccount: password and confirmation do not match')
+      this.updateAlert('danger',
+      'The password confirmation does not match the password you entered.')
+      return
+    }
+
+    this.setState({
+      identityKeyPhrase,
+      password
+    })
+    this.props.initializeWallet(password, this.state.identityKeyPhrase)
   }
 
   showLandingView(event) {
     event.preventDefault()
     this.setState({
-      pageOneView: 'newInternet',
-      page: 0
+      pageOneView: 'newInternet'
     })
+    this.setPage(0)
   }
 
   showNewInternetView(event)  {
@@ -127,9 +164,7 @@ class WelcomeModal extends Component {
       event.preventDefault()
     }
 
-    this.setState({
-      page: this.state.page + 1
-    })
+    this.setPage(this.state.page + 1)
   }
 
   emailKeychainBackup(event) {
@@ -145,7 +180,14 @@ class WelcomeModal extends Component {
 
   updateAlert(alertStatus, alertMessage) {
     this.setState({
-      alerts: [{ status: alertStatus, message: alertMessage }]
+      alert: { status: alertStatus, message: alertMessage }
+    })
+  }
+
+  setPage(page) {
+    this.setState({
+      page,
+      alert: null
     })
   }
 
@@ -157,6 +199,7 @@ class WelcomeModal extends Component {
 
     const page =  this.state.page
     const pageOneView = this.state.pageOneView
+    const alert = this.state.alert
 
     return (
       <div className="">
@@ -172,6 +215,13 @@ class WelcomeModal extends Component {
             <PairBrowserView />
           :
             <div>
+              <div>
+                {alert ?
+                  <Alert key="1" message={alert.message} status={alert.status} />
+                  :
+                  null
+                }
+              </div>
               <div>
               {page === 0 ?
                 <LandingView
@@ -192,6 +242,7 @@ class WelcomeModal extends Component {
                         :
                           <RestoreView
                             showLandingView={this.showLandingView}
+                            restoreAccount={this.restoreAccount}
                           />
                     }
                     </div>

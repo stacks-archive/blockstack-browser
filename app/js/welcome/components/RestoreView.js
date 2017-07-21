@@ -1,36 +1,26 @@
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { isBackupPhraseValid } from '../../utils'
 import InputGroup from '../../components/InputGroup'
-import { AccountActions } from '../../account/store/account'
-import Alert from '../../components/Alert'
-
 
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/components/RestoreView.js')
 
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AccountActions), dispatch)
-}
-
 class RestoreView extends Component {
   static propTypes = {
     showLandingView: PropTypes.func.isRequired,
-    initializeWallet: PropTypes.func.isRequired
+    restoreAccount: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      identityKeyPhrase: '',
-      alert: null
+      identityKeyPhrase: null,
+      password: null,
+      passwordConfirmation: null
     }
     this.onValueChange = this.onValueChange.bind(this)
-    this.restoreAccount = this.restoreAccount.bind(this)
-    this.updateAlert = this.updateAlert.bind(this)
+    this.restoreAccountSubmit = this.restoreAccountSubmit.bind(this)
   }
 
   onValueChange(event) {
@@ -39,75 +29,62 @@ class RestoreView extends Component {
     })
   }
 
-  restoreAccount(event) {
-    logger.trace('restoreAccount')
+  restoreAccountSubmit(event) {
     event.preventDefault()
-    const { isValid } = isBackupPhraseValid(this.state.identityKeyPhrase)
-
-    if (!isValid) {
-      logger.error('restoreAccount: invalid backup phrase entered')
-      this.updateAlert('danger', 'The identity key you entered is not valid.')
-      return
-    }
-    this.props.initializeWallet('password', this.state.identityKeyPhrase)
-  }
-
-  updateAlert(alertStatus, alertMessage) {
-    this.setState({
-      alert: { status: alertStatus, message: alertMessage }
-    })
+    logger.trace('restoreAccountSubmit')
+    this.props.restoreAccount(this.state.identityKeyPhrase,
+      this.state.password,
+      this.state.passwordConfirmation)
   }
 
   render() {
-    const alert = this.state.alert
     return (
       <div>
         <h4>Restore your account by typing in your identity key</h4>
-        <div>
-            {alert ?
-              <Alert key="1" message={alert.message} status={alert.status} />
-              :
-              null
-            }
-        </div>
-        <p>Type your identity key here:</p>
-        <InputGroup
-          name="identityKeyPhrase"
-          type="text"
-          label="Identity key"
-          placeholder="Identity key"
-          data={this.state}
-          onChange={this.onValueChange}
-        />
-        <p>Select a password:</p>
-        <InputGroup
-          name="password"
-          type="password"
-          label="Password"
-          placeholder=""
-          data={this.state}
-          onChange={this.onValueChange}
-        />
-        <InputGroup
-          name="passwordConfirmation"
-          type="password"
-          label="Confirm"
-          placeholder=""
-          data={this.state}
-          onChange={this.onValueChange}
-        />
-        <div className="container m-t-40">
-          <button className="btn btn-primary" onClick={this.restoreAccount}>
-            Restore account
-          </button>
-          <br />
-          <a href="#" onClick={this.props.showLandingView}>
-            Create new account
-          </a>
-        </div>
+        <form onSubmit={this.restoreAccountSubmit}>
+          <InputGroup
+            name="identityKeyPhrase"
+            type="text"
+            label="Type your identity key here"
+            placeholder="Identity key"
+            data={this.state}
+            onChange={this.onValueChange}
+            required
+          />
+          <InputGroup
+            name="password"
+            type="password"
+            label="Select a password"
+            placeholder=""
+            data={this.state}
+            onChange={this.onValueChange}
+            required
+          />
+          <InputGroup
+            name="passwordConfirmation"
+            type="password"
+            label="Confirm password"
+            placeholder=""
+            data={this.state}
+            onChange={this.onValueChange}
+            required
+          />
+          <div className="container m-t-40">
+            <button
+              type="submit"
+              className="btn btn-primary"
+            >
+              Restore account
+            </button>
+            <br />
+            <a href="#" onClick={this.props.showLandingView}>
+              Create new account
+            </a>
+          </div>
+        </form>
       </div>
     )
   }
  }
 
-export default connect(null, mapDispatchToProps)(RestoreView)
+export default RestoreView
