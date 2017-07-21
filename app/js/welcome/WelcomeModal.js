@@ -74,6 +74,7 @@ class WelcomeModal extends Component {
     this.showRestoreView = this.showRestoreView.bind(this)
     this.showNextView = this.showNextView.bind(this)
     this.verifyPasswordAndCreateAccount = this.verifyPasswordAndCreateAccount.bind(this)
+    this.confirmIdentityKeyPhrase = this.confirmIdentityKeyPhrase.bind(this)
     this.restoreAccount = this.restoreAccount.bind(this)
     this.updateAlert = this.updateAlert.bind(this)
     this.setPage = this.setPage.bind(this)
@@ -186,6 +187,17 @@ class WelcomeModal extends Component {
     }
 
     this.setPage(this.state.page + 1)
+  }
+
+  confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
+    if (this.state.identityKeyPhrase !== enteredIdentityKeyPhrase) {
+      logger.error('confirmIdentityKeyPhrase: user entered identity phrase does not match')
+      this.updateAlert('danger',
+      'The identity key you entered does not match! Please make sure you wrote it down correctly.')
+      return
+    }
+    logger.debug('confirmIdentityKeyPhrase: user entered identity phrase matches!')
+    this.showNextView()
   }
 
   emailKeychainBackup(event) {
@@ -309,8 +321,7 @@ class WelcomeModal extends Component {
               {
                 page === 6 ?
                   <ConfirmIdentityKeyView
-                    identityKeyPhrase={this.state.identityKeyPhrase}
-                    showNextView={this.showNextView}
+                    confirmIdentityKeyPhrase={this.confirmIdentityKeyPhrase}
                   />
                 :
                 null
