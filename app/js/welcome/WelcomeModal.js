@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Alert from '../components/Alert'
 
 import { AccountActions } from '../account/store/account'
+import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 
 import { PairBrowserView, LandingView,
@@ -27,12 +28,15 @@ function mapStateToProps(state) {
   return {
     api: state.settings.api,
     promptedForEmail: state.account.promptedForEmail,
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    identityAddresses: state.account.identityAccount.addresses
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AccountActions, SettingsActions), dispatch)
+  return bindActionCreators(Object.assign({},
+    AccountActions, SettingsActions, IdentityActions),
+    dispatch)
 }
 
 class WelcomeModal extends Component {
@@ -47,7 +51,9 @@ class WelcomeModal extends Component {
     promptedForEmail: PropTypes.bool.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     initializeWallet: PropTypes.func.isRequired,
-    skipEmailBackup: PropTypes.func.isRequired
+    skipEmailBackup: PropTypes.func.isRequired,
+    identityAddresses: PropTypes.array,
+    createNewIdentityFromDomain: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -89,11 +95,17 @@ class WelcomeModal extends Component {
     })
 
     if (nextProps.accountCreated && !this.props.accountCreated) {
-      logger.debug('account already created - checking for valid password in component state')
+      logger.debug('account created - checking for valid password in component state')
       decrypt(new Buffer(this.props.encryptedBackupPhrase, 'hex'), this.state.password)
       .then((identityKeyPhraseBuffer) => {
         logger.debug('Backup phrase successfully decrypted. Storing identity key.')
         this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
+
+        const ownerAddress = this.props.identityAddresses[0]
+        
+        // create first profile
+        this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
+
         this.setPage(CREATE_IDENTITY_PAGE_VIEW)
       }, () => {
         logger.debug('User has refreshed browser mid onboarding.')
@@ -194,7 +206,7 @@ class WelcomeModal extends Component {
 
   showPreviousView(event)  {
     logger.trace('showPreviousView')
-    
+
     if (event) {
       event.preventDefault()
     }

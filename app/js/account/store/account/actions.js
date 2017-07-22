@@ -23,7 +23,7 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
 
   const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
 
-  const ADDRESSES_TO_GENERATE = 9
+  const ADDRESSES_TO_GENERATE = 1
   const identityAddresses = []
   const identityKeypairs = []
 
