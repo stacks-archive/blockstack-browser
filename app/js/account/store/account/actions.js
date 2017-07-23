@@ -6,6 +6,7 @@ import { authorizationHeaderValue, btcToSatoshis, encrypt,
   getBitcoinPrivateKeychain,
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode } from '../../../utils'
+import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
 
@@ -225,6 +226,11 @@ function resetCoreWithdrawal() {
 function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, amount, coreAPIPassword) {
   return dispatch => {
     dispatch(withdrawingCoreBalance(recipientAddress, amount))
+
+    const satoshisAmount = btcToSatoshis(amount)
+    const roundedSatoshiAmount = roundTo(satoshisAmount, 0)
+    logger.debug(`withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} satoshis to ${recipientAddress}`)
+
     const requestHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -234,7 +240,7 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, 
     const requestBody = JSON.stringify({
       address: recipientAddress,
       min_confs: 0,
-      amount: btcToSatoshis(amount)
+      amount: roundedSatoshiAmount
     })
 
     fetch(coreWalletWithdrawUrl, {
