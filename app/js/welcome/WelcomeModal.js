@@ -22,7 +22,7 @@ import log4js from 'log4js'
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
 const START_PAGE_VIEW = 0
-const CREATE_IDENTITY_PAGE_VIEW = 4
+const WRITE_DOWN_IDENTITY_PAGE_VIEW = 5
 
 function mapStateToProps(state) {
   return {
@@ -102,11 +102,11 @@ class WelcomeModal extends Component {
         this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
 
         const ownerAddress = this.props.identityAddresses[0]
-        
+
         // create first profile
         this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
 
-        this.setPage(CREATE_IDENTITY_PAGE_VIEW)
+        this.setPage(WRITE_DOWN_IDENTITY_PAGE_VIEW)
       }, () => {
         logger.debug('User has refreshed browser mid onboarding.')
 
@@ -314,8 +314,8 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 3 ?
-                  <EnterPasswordView
-                    verifyPasswordAndCreateAccount={this.verifyPasswordAndCreateAccount}
+                  <CreateIdentityView
+                    showNextView={this.showNextView}
                   />
                 :
                 null
@@ -324,8 +324,8 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 4 ?
-                  <CreateIdentityView
-                    showNextView={this.showNextView}
+                  <EnterPasswordView
+                    verifyPasswordAndCreateAccount={this.verifyPasswordAndCreateAccount}
                   />
                 :
                 null

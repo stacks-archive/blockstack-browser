@@ -41,22 +41,28 @@ class EnterEmailView extends Component {
           Enter your email address to get useful notifications regarding your account
         </h3>
         <p className="modal-body">Type in your email address:</p>
-        <InputGroup
-          name="email"
-          type="email"
-          label="Email"
-          placeholder="you@example.com"
-          data={this.state}
-          onChange={this.onValueChange}
-        />
-        <div style={{ marginBottom: '-20px' }}>
-          <button className="btn btn-primary btn-block m-b-10" onClick={this.finish}>
-            Finish
-          </button>
-          <p>
-            <a href="#" className="modal-body" onClick={this.finish}>Skip</a>
-          </p>
-        </div>
+        <form onSubmit={this.finish}>
+          <InputGroup
+            name="email"
+            type="email"
+            label="Email Address"
+            placeholder="Email Address"
+            data={this.state}
+            onChange={this.onValueChange}
+            required
+          />
+          <div style={{ marginBottom: '-20px' }}>
+            <button
+              type="submit"
+              className="btn btn-primary btn-block m-b-10"
+            >
+              Finish
+            </button>
+            <p>
+              <a href="#" className="modal-body" onClick={this.finish}>Skip</a>
+            </p>
+          </div>
+        </form>
       </div>
     )
   }
