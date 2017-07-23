@@ -35,9 +35,9 @@ echo "Build statically-linked scrypt..."
 PYSCRYPT_NO_LINK_FLAGS="1" LDFLAGS="/usr/local/opt/openssl/lib/libcrypto.a /usr/local/opt/openssl/lib/libssl.a" CFLAGS="-I/usr/local/opt/openssl/include" pip install git+https://github.com/larrysalibra/py-scrypt --no-use-wheel
 
 
-echo "Installing latest blockstack-core..."
+echo "Installing blockstack-core..."
 
-pip install --upgrade blockstack==0.14.3.0
+pip install --upgrade git+https://github.com/blockstack/blockstack-core.git@50a64766e6a4212ba25f74a210a35c0bf0b2bf93
 
 echo "Blockstack virtual environment created."
 
