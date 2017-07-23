@@ -87,7 +87,6 @@ function createNewProfile(encryptedBackupPhrase, password, nextUnusedAddressInde
     logger.trace('createNewProfile')
     // Decrypt master keychain
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
-    console.log(encryptedBackupPhrase)
     logger.debug('createNewProfile: Trying to decrypt backup phrase...')
     return decrypt(dataBuffer, password)
     .then((plaintextBuffer) => {
