@@ -1,7 +1,10 @@
 import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
-import { authorizationHeaderValue, btcToSatoshis, encrypt,
+import { authorizationHeaderValue,
+  btcToSatoshis,
+  deriveIdentityKeyPair,
+  encrypt,
   getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityOwnerAddressNode,
@@ -33,18 +36,9 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
   for (let addressIndex = 0; addressIndex < ADDRESSES_TO_GENERATE; addressIndex++) {
     const identityOwnerAddressNode =
     getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
-    const identityAddress = identityOwnerAddressNode.getAddress()
-    identityAddresses.push(identityAddress)
-    const identityKey = identityOwnerAddressNode.getIdentityKey()
-    const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
-    const appsNode = identityOwnerAddressNode.getAppsNode()
-    identityKeypairs.push({
-      key: identityKey,
-      keyID: identityKeyID,
-      address: identityAddress,
-      appsNodeKey: appsNode.toBase58(),
-      salt: appsNode.getSalt()
-    })
+    const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
+    identityKeypairs.push(identityKeyPair)
+    identityAddresses.push(identityKeyPair.address)
   }
 
   return {
@@ -336,6 +330,14 @@ function newBitcoinAddress() {
   }
 }
 
+
+function newIdentityAddress(newIdentityKeypair) {
+  return {
+    type: types.NEW_BITCOIN_ADDRESS,
+    keypair: newIdentityKeypair
+  }
+}
+
 function incrementIdentityAddressIndex() {
   return {
     type: types.INCREMENT_IDENTITY_ADDRESS_INDEX
@@ -365,7 +367,8 @@ const AccountActions = {
   updateViewedRecoveryCode,
   incrementIdentityAddressIndex,
   usedIdentityAddress,
-  displayedRecoveryCode
+  displayedRecoveryCode,
+  newIdentityAddress
 }
 
 export default AccountActions

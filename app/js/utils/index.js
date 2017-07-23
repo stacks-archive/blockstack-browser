@@ -1,5 +1,6 @@
 export {
   decryptMasterKeychain,
+  deriveIdentityKeyPair,
   getBitcoinPrivateKeychain,
   getBitcoinPublicKeychain,
   getIdentityPrivateKeychain,

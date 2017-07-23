@@ -1,8 +1,13 @@
+import { HDNode } from 'bitcoinjs-lib'
+import bip39 from 'bip39'
 import * as types from './types'
 import { validateProofs } from 'blockstack'
-
 import {
-  resolveZoneFileToProfile
+  decrypt,
+  deriveIdentityKeyPair,
+  resolveZoneFileToProfile,
+  getIdentityPrivateKeychain,
+  getIdentityOwnerAddressNode
 } from '../../../utils/index'
 
 import { AccountActions } from '../../../account/store/account'
@@ -29,6 +34,13 @@ function createNewIdentity(domainName, ownerAddress) {
     type: types.CREATE_NEW,
     domainName,
     ownerAddress
+  }
+}
+
+function createNewProfileError(error) {
+  return {
+    type: types.CREATE_PROFILE_ERROR,
+    error
   }
 }
 
@@ -67,6 +79,35 @@ function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = 
       logger.trace('createNewIdentityFromDomain: adding username to existing profile')
       dispatch(addUsername(domainName, ownerAddress))
     }
+  }
+}
+
+function createNewProfile(encryptedBackupPhrase, password, nextUnusedAddressIndex) {
+  return dispatch => {
+    logger.trace('createNewProfile')
+    // Decrypt master keychain
+    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    console.log(encryptedBackupPhrase)
+    logger.debug('createNewProfile: Trying to decrypt backup phrase...')
+    return decrypt(dataBuffer, password)
+    .then((plaintextBuffer) => {
+      logger.debug('createNewProfile: Backup phrase successfully decrypted')
+      const backupPhrase = plaintextBuffer.toString()
+      const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+      const masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+      const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+      const identityOwnerAddressNode =
+      getIdentityOwnerAddressNode(identityPrivateKeychainNode, nextUnusedAddressIndex)
+      const newIdentityKeypair = deriveIdentityKeyPair(identityOwnerAddressNode)
+      logger.debug(`createNewProfile: new identity: ${newIdentityKeypair.address}`)
+      dispatch(AccountActions.newIdentityAddress(newIdentityKeypair))
+      dispatch(AccountActions.usedIdentityAddress())
+      const ownerAddress = newIdentityKeypair.address
+      dispatch(createNewIdentityFromDomain(ownerAddress, ownerAddress))
+    }, () => {
+      logger.error('createNewProfile: Invalid password')
+      dispatch(createNewProfileError('Your password is incorrect.'))
+    })
   }
 }
 
@@ -254,6 +295,7 @@ const IdentityActions = {
   calculateLocalIdentities,
   updateCurrentIdentity,
   createNewIdentity,
+  createNewProfile,
   updateProfile,
   fetchCurrentIdentity,
   refreshIdentities,

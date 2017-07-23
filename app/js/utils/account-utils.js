@@ -193,6 +193,21 @@ export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityInd
   return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex), salt)
 }
 
+export function deriveIdentityKeyPair(identityOwnerAddressNode) {
+  const address = identityOwnerAddressNode.getAddress()
+  const identityKey = identityOwnerAddressNode.getIdentityKey()
+  const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
+  const appsNode = identityOwnerAddressNode.getAppsNode()
+  const keyPair = {
+    key: identityKey,
+    keyID: identityKeyID,
+    address,
+    appsNodeKey: appsNode.toBase58(),
+    salt: appsNode.getSalt()
+  }
+  return keyPair
+}
+
 export function getWebAccountTypes(api) {
   const webAccountTypes = {
     'twitter': {

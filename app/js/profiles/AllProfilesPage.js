@@ -17,7 +17,8 @@ function mapStateToProps(state) {
     namesOwned: state.profiles.identity.namesOwned,
     identityAddresses: state.account.identityAccount.addresses,
     nextUnusedAddressIndex: state.account.identityAccount.addressIndex,
-    api: state.settings.api
+    api: state.settings.api,
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase
   }
 }
 
@@ -28,7 +29,7 @@ function mapDispatchToProps(dispatch) {
 class IdentityPage extends Component {
   static propTypes = {
     localIdentities: PropTypes.object.isRequired,
-    createNewIdentityFromDomain: PropTypes.func.isRequired,
+    createNewProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
     namesOwned: PropTypes.array.isRequired,
     api: PropTypes.object.isRequired,
@@ -64,9 +65,9 @@ class IdentityPage extends Component {
 
   createNewProfile(event) {
     event.preventDefault()
-    const ownerAddress = this.props.identityAddresses[this.props.nextUnusedAddressIndex]
-    logger.debug(`createNewProfile: ownerAddress: ${ownerAddress}`)
-    this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
+    logger.trace(`createNewProfile`)
+    this.props.createNewProfile(this.props.encryptedBackupPhrase,
+      '123', this.props.nextUnusedAddressIndex) // TODO: remove test password
   }
 
   availableIdentityAddresses() {
@@ -108,7 +109,6 @@ class IdentityPage extends Component {
         <div className="card-list-container m-t-30">
           <button
             className="btn btn-blue btn-lg" onClick={this.createNewProfile}
-            disabled={!this.availableIdentityAddresses()}
           >
             + Create
           </button>
