@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import Alert from '../components/Alert'
 
 import { AccountActions } from '../account/store/account'
+import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 
 import { PairBrowserView, LandingView,
@@ -11,29 +13,30 @@ import { PairBrowserView, LandingView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
   EnterEmailView } from './components'
 
-import log4js from 'log4js'
 
+import { decrypt, isBackupPhraseValid } from '../utils'
+
+
+import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
-
-
-const WRITE_DOWN_IDENTITY_KEY_PAGE = 4
-const DEFAULT_PASSWORD = 'password'
-
-const TESTING_IDENTITY_KEY =
-'biology amazing joke rib defy emotion fruit ecology blanket absent ivory bird'
+const START_PAGE_VIEW = 0
+const WRITE_DOWN_IDENTITY_PAGE_VIEW = 5
 
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
     promptedForEmail: state.account.promptedForEmail,
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    identityAddresses: state.account.identityAccount.addresses
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AccountActions, SettingsActions), dispatch)
+  return bindActionCreators(Object.assign({},
+    AccountActions, SettingsActions, IdentityActions),
+    dispatch)
 }
 
 class WelcomeModal extends Component {
@@ -47,33 +50,41 @@ class WelcomeModal extends Component {
     emailKeychainBackup: PropTypes.func.isRequired,
     promptedForEmail: PropTypes.bool.isRequired,
     encryptedBackupPhrase: PropTypes.string,
-    initializeWallet: PropTypes.func.isRequired
+    initializeWallet: PropTypes.func.isRequired,
+    skipEmailBackup: PropTypes.func.isRequired,
+    identityAddresses: PropTypes.array,
+    createNewIdentityFromDomain: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
 
-    let startingPage = 0
     if (this.props.accountCreated) {
-      startingPage = WRITE_DOWN_IDENTITY_KEY_PAGE
+      logger.error('User has refreshed browser mid onboarding.')
     }
+
     this.state = {
       accountCreated: this.props.accountCreated,
       storageConnected: this.props.storageConnected,
       coreConnected: this.props.coreConnected,
       pageOneView: 'create',
-      alerts: [],
       email: '',
-      page: startingPage,
+      page: START_PAGE_VIEW,
       password: null,
-      identityKeyPhrase: null
+      identityKeyPhrase: null,
+      alert: null
     }
 
     this.showLandingView = this.showLandingView.bind(this)
     this.showNewInternetView = this.showNewInternetView.bind(this)
     this.showRestoreView = this.showRestoreView.bind(this)
     this.showNextView = this.showNextView.bind(this)
-    this.createAccount = this.createAccount.bind(this)
+    this.showPreviousView = this.showPreviousView.bind(this)
+    this.verifyPasswordAndCreateAccount = this.verifyPasswordAndCreateAccount.bind(this)
+    this.confirmIdentityKeyPhrase = this.confirmIdentityKeyPhrase.bind(this)
+    this.restoreAccount = this.restoreAccount.bind(this)
+    this.updateAlert = this.updateAlert.bind(this)
+    this.setPage = this.setPage.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,8 +95,22 @@ class WelcomeModal extends Component {
     })
 
     if (nextProps.accountCreated && !this.props.accountCreated) {
-      this.setState({
-        page: WRITE_DOWN_IDENTITY_KEY_PAGE
+      logger.debug('account created - checking for valid password in component state')
+      decrypt(new Buffer(this.props.encryptedBackupPhrase, 'hex'), this.state.password)
+      .then((identityKeyPhraseBuffer) => {
+        logger.debug('Backup phrase successfully decrypted. Storing identity key.')
+        this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
+
+        const ownerAddress = this.props.identityAddresses[0]
+
+        // create first profile
+        this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
+
+        this.setPage(WRITE_DOWN_IDENTITY_PAGE_VIEW)
+      }, () => {
+        logger.debug('User has refreshed browser mid onboarding.')
+
+        this.setPage(START_PAGE_VIEW)
       })
     }
   }
@@ -96,19 +121,61 @@ class WelcomeModal extends Component {
     })
   }
 
-  createAccount(event) {
-    event.preventDefault()
-    logger.trace('createAccount')
+  setPage(page) {
+    this.setState({
+      page,
+      alert: null
+    })
+  }
 
-    this.props.initializeWallet(DEFAULT_PASSWORD, null)
+  verifyPasswordAndCreateAccount(password, passwordConfirmation) {
+    logger.trace('createAccount')
+    return new Promise((resolve, reject) => {
+      if (password !== passwordConfirmation) {
+        logger.error('createAccount: password and confirmation do not match')
+        this.updateAlert('danger',
+        'The password confirmation does not match the password you entered.')
+        reject()
+      } else {
+        this.setState({ password })
+
+        logger.debug('Initializing account...')
+        this.props.initializeWallet(password, null)
+        resolve()
+      }
+    })
+  }
+
+  restoreAccount(identityKeyPhrase, password, passwordConfirmation) {
+    logger.trace('restoreAccount')
+    const { isValid } = isBackupPhraseValid(identityKeyPhrase)
+
+    if (!isValid) {
+      logger.error('restoreAccount: invalid backup phrase entered')
+      this.updateAlert('danger', 'The identity key you entered is not valid.')
+      return
+    }
+
+    if (password !== passwordConfirmation) {
+      logger.error('restoreAccount: password and confirmation do not match')
+      this.updateAlert('danger',
+      'The password confirmation does not match the password you entered.')
+      return
+    }
+
+    this.setState({
+      identityKeyPhrase,
+      password
+    })
+    this.props.initializeWallet(password, this.state.identityKeyPhrase)
   }
 
   showLandingView(event) {
     event.preventDefault()
     this.setState({
-      pageOneView: 'newInternet',
-      page: 0
+      pageOneView: 'newInternet'
     })
+    this.setPage(0)
   }
 
   showNewInternetView(event)  {
@@ -128,13 +195,34 @@ class WelcomeModal extends Component {
   }
 
   showNextView(event)  {
+    logger.trace('showNextView')
+
     if (event) {
       event.preventDefault()
     }
 
-    this.setState({
-      page: this.state.page + 1
-    })
+    this.setPage(this.state.page + 1)
+  }
+
+  showPreviousView(event)  {
+    logger.trace('showPreviousView')
+
+    if (event) {
+      event.preventDefault()
+    }
+
+    this.setPage(this.state.page - 1)
+  }
+
+  confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
+    if (this.state.identityKeyPhrase !== enteredIdentityKeyPhrase) {
+      logger.error('confirmIdentityKeyPhrase: user entered identity phrase does not match')
+      this.updateAlert('danger',
+      'The identity key you entered does not match! Please make sure you wrote it down correctly.')
+      return
+    }
+    logger.debug('confirmIdentityKeyPhrase: user entered identity phrase matches!')
+    this.showNextView()
   }
 
   emailKeychainBackup(event) {
@@ -150,7 +238,7 @@ class WelcomeModal extends Component {
 
   updateAlert(alertStatus, alertMessage) {
     this.setState({
-      alerts: [{ status: alertStatus, message: alertMessage }]
+      alert: { status: alertStatus, message: alertMessage }
     })
   }
 
@@ -162,6 +250,7 @@ class WelcomeModal extends Component {
 
     const page =  this.state.page
     const pageOneView = this.state.pageOneView
+    const alert = this.state.alert
 
     return (
       <div className="">
@@ -177,6 +266,13 @@ class WelcomeModal extends Component {
             <PairBrowserView />
           :
             <div>
+              <div>
+                {alert ?
+                  <Alert key="1" message={alert.message} status={alert.status} />
+                  :
+                  null
+                }
+              </div>
               <div>
               {page === 0 ?
                 <LandingView
@@ -197,6 +293,7 @@ class WelcomeModal extends Component {
                         :
                           <RestoreView
                             showLandingView={this.showLandingView}
+                            restoreAccount={this.restoreAccount}
                           />
                     }
                     </div>
@@ -218,7 +315,7 @@ class WelcomeModal extends Component {
               {
                 page === 3 ?
                   <CreateIdentityView
-                    createAccount={this.createAccount}
+                    showNextView={this.showNextView}
                   />
                 :
                 null
@@ -227,9 +324,8 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 4 ?
-                  <WriteDownKeyView
-                    identityKeyPhrase={TESTING_IDENTITY_KEY} // TODO: replace w/ real key
-                    showNextView={this.showNextView}
+                  <EnterPasswordView
+                    verifyPasswordAndCreateAccount={this.verifyPasswordAndCreateAccount}
                   />
                 :
                 null
@@ -238,8 +334,8 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 5 ?
-                  <ConfirmIdentityKeyView
-                    identityKeyPhrase={TESTING_IDENTITY_KEY}
+                  <WriteDownKeyView
+                    identityKeyPhrase={this.state.identityKeyPhrase}
                     showNextView={this.showNextView}
                   />
                 :
@@ -248,7 +344,18 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 6  ?
+                page === 6 ?
+                  <ConfirmIdentityKeyView
+                    confirmIdentityKeyPhrase={this.confirmIdentityKeyPhrase}
+                    showPreviousView={this.showPreviousView}
+                  />
+                :
+                null
+              }
+              </div>
+              <div>
+              {
+                page === 7 ?
                   <EnterEmailView
                     skipEmailBackup={this.props.skipEmailBackup}
                   />

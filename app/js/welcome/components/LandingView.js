@@ -4,18 +4,25 @@ const LandingPage = (props) =>
   (
   <div>
     <img
-      src="/images/blockstack-logo-vertical-bug.svg"
-      alt="Blockstack"
-      style={{ width: '80%' }}
+      role="presentation"
+      src="/images/blockstack-logo-vertical.svg"
+      className="m-b-20"
+      style={{
+        width: '200px',
+        display: 'block',
+        marginRight: 'auto',
+        marginLeft: 'auto',
+        marginTop: '10px'
+      }} 
     />
-    <p>Join the new internet.</p>
-    <p>Use apps that put you in control.</p>
-    <div className="container m-t-40">
-      <button className="btn btn-primary" onClick={props.showNewInternetView}>
+    <h3 className="modal-heading p-b-25">Join the new internet. <br />
+      Use apps that put you in control.
+    </h3>
+    <div className="m-t-30 m-b-20">
+      <button className="btn btn-primary btn-block m-b-10" onClick={props.showNewInternetView}>
         Get Started
       </button>
-      <br></br>
-      <a href="#" onClick={props.showRestoreView}>
+      <a href="#" className="modal-body" onClick={props.showRestoreView}>
         Restore from backup
       </a>
     </div>

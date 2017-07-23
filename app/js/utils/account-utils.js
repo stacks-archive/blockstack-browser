@@ -15,8 +15,6 @@ function hashCode(string) {
 }
 
 
-const backupPhraseLength = 24
-
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
@@ -117,10 +115,7 @@ export function isBackupPhraseValid(backupPhrase) {
   let isValid = true,
       error = null
 
-  if (backupPhrase.split(' ').length !== backupPhraseLength) {
-    isValid = false
-    error = `Backup phrase must be ${backupPhraseLength} words long`
-  } else if (!bip39.validateMnemonic(backupPhrase)) {
+  if (!bip39.validateMnemonic(backupPhrase)) {
     isValid = false
     error = 'Backup phrase is not a valid set of words'
   }
@@ -196,6 +191,21 @@ export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityInd
   const salt = crypto.createHash('sha256').update(publicKeyHex).digest('hex')
 
   return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex), salt)
+}
+
+export function deriveIdentityKeyPair(identityOwnerAddressNode) {
+  const address = identityOwnerAddressNode.getAddress()
+  const identityKey = identityOwnerAddressNode.getIdentityKey()
+  const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
+  const appsNode = identityOwnerAddressNode.getAppsNode()
+  const keyPair = {
+    key: identityKey,
+    keyID: identityKeyID,
+    address,
+    appsNodeKey: appsNode.toBase58(),
+    salt: appsNode.getSalt()
+  }
+  return keyPair
 }
 
 export function getWebAccountTypes(api) {
