@@ -44,6 +44,12 @@ function createNewProfileError(error) {
   }
 }
 
+function resetCreateNewProfileError() {
+  return {
+    type: types.RESET_CREATE_PROFILE_ERROR
+  }
+}
+
 function updateOwnedIdentities(localIdentities, namesOwned) {
   return {
     type: types.UPDATE_IDENTITIES,
@@ -300,7 +306,9 @@ const IdentityActions = {
   refreshIdentities,
   updateOwnedIdentities,
   createNewIdentityFromDomain,
-  addUsername
+  addUsername,
+  createNewProfileError,
+  resetCreateNewProfileError
 }
 
 
