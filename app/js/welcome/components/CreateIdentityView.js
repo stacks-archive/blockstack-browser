@@ -14,7 +14,7 @@ const CreateIdentityView = (props) =>
     />
     <div className="m-t-40">
       <button className="btn btn-primary btn-block m-b-20" onClick={props.showNextView}>
-        Create identity key
+        Continue
       </button>
     </div>
   </div>
