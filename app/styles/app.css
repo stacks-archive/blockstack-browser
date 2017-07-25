@@ -497,7 +497,7 @@ a.card:hover{text-decoration:none;}
 .profile-list-avatar{float:left;margin-right:15px;padding:0;}
 div.card-avatar.profile-list-avatar img{width:48px;height:48px;}
 .profile-card-list{list-style:none;padding:0;}
-.card-wrapper{padding-left:0;}
+.card-wrapper{list-style:none;padding-left:0;}
 .pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
 div.pro-avatar img{max-width:58px;}
