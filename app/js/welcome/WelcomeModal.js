@@ -253,7 +253,7 @@ class WelcomeModal extends Component {
     const alert = this.state.alert
 
     return (
-      <div className="">
+      <div>
         <Modal
           isOpen={isOpen}
           onRequestClose={this.props.closeModal}
@@ -261,6 +261,7 @@ class WelcomeModal extends Component {
           shouldCloseOnOverlayClick={false}
           style={{ overlay: { zIndex: 10 } }}
           className="container-fluid"
+          portalClassName="welcome-modal"
         >
           {needToPair ?
             <PairBrowserView />
