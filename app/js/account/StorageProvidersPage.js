@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import { SettingsActions } from '../account/store/settings'
 
 import { DROPBOX } from './utils/index'
-import { DROPBOX_APP_ID, getDropboxAccessTokenFromHash } from './utils/dropbox'
+import { DROPBOX_APP_ID,
+  getDropboxAccessTokenFromHash,
+  redirectToConnectToDropbox } from './utils/dropbox'
 
 import { setCoreStorageConfig } from '../utils/api-utils'
 import log4js from 'log4js'
@@ -59,11 +61,7 @@ class StorageProvidersPage extends Component {
   }
 
   connectDropbox() {
-    const dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
-    const port = location.port === '' ? 80 : location.port
-    console.log(port)
-    window.location = dbx.getAuthenticationUrl(
-      `http://localhost:${port}/account/storage`)
+    redirectToConnectToDropbox()
   }
 
   disconnectDropbox() {
