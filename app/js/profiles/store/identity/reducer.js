@@ -8,7 +8,8 @@ const initialState = {
     verifications: null
   },
   localIdentities: {},
-  namesOwned: []
+  namesOwned: [],
+  createProfileError: null
 }
 
 function IdentityReducer(state = initialState, action) {
@@ -55,6 +56,16 @@ function IdentityReducer(state = initialState, action) {
       delete localIdentitiesCopy[action.ownerAddress]
       return Object.assign({}, state, {
         localIdentities: localIdentitiesCopy
+      })
+    }
+    case types.RESET_CREATE_PROFILE_ERROR: {
+      return Object.assign({}, state, {
+        createProfileError: null
+      })
+    }
+    case types.CREATE_PROFILE_ERROR: {
+      return Object.assign({}, state, {
+        createProfileError: action.error
       })
     }
     default:

@@ -6,7 +6,7 @@ import { AccountActions } from '../account/store/account'
 
 import {
   broadcastTransaction, decryptPrivateKeychain, getNetworkFee,
-  getBitcoinPrivateKeychain, getUtxo,
+  getBitcoinPrivateKeychain, getUtxo
 } from '../utils'
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
@@ -84,7 +84,7 @@ class SendPage extends Component {
       parseFloat(this.state.amount), this.props.coreAPIPassword)
     return // TODO temporary until we switch back to built in wallet
 
-    const password = this.state.password
+    const password = this.state.password 
 
 
     // FIXME this needs to be written to use our BIP44 compliant wallet structure
@@ -192,7 +192,7 @@ class SendPage extends Component {
             required={true}/>
           <InputGroup data={this.state} onChange={this.onValueChange} name="amount"
             label="Amount" placeholder="0.937" className="wallet-form" type="number"
-            required={true}/>
+            required={true} step={0.000001} />
           <InputGroup data={this.state} onChange={this.onValueChange}
             name="password" label="Password"
             placeholder="Password" type="password" required={true}/>

@@ -48,6 +48,39 @@ class HomeScreenPage extends Component {
                   <h3>Forum</h3>
                 </div>
               </div>
+              <div className="app-box-wrap">
+                <a href="https://blockstack-todo-app.netlify.com/"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-todo-list@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>To Do List</h3>
+                </div>
+              </div>
+              <div className="app-box-wrap">
+                <a href="#"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-guild@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>Guild</h3>
+                </div>
+              </div>
+              <div className="app-box-wrap">
+                <a href="#"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-ongaku-ryoho@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>Ongaku Ryoho</h3>
+                </div>
+              </div>
             </div>
           </div>
         </div>

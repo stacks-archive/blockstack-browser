@@ -25,6 +25,46 @@ describe('Availability Store: Async Actions', () => {
     nock.cleanAll()
   })
 
+  describe('createNewProfile', () => {
+    it('creates a new profile', () => {
+      const encryptedBackupPhrase = '1c94d7de00000003aea6d30f8ec79b18c75e5b6537638c0e9a7b9e97fef61596099892fc3f6854dc0472804a8e333a478d1912f89ee6043ed9da1a2c134c72141c4cb78382fea8d980c823dcf1d79a96311ff1552b97c2d42fb3fbde00dfe957f28d5b57d6cafcd4bcde364d31d42232d1f296eb47b7777727158a99aa25014322e06745eef36fc51cfc357594955769925cdadce66de2d3ad3fa88134406f60eeedd7e9b4cf7bd0b6d69dafb6b6a72056a3421e868aa408ba9edb48d75c949023aa3254e80ad8e8131603af21e5ac974028521aff060f8718af4ab2ae04622034cc9210d1d04f7f7b7cae8bce6c0da599031844c33fe6f849aa24dceda9aaaded30d8eb00d08f76215fe79866d62de6d7e841bdea6a5af96c36de70eb114a'
+      const password = '123'
+      const nextUnusedAddressIndex = 0
+      const initialState = {
+
+      }
+      const store = mockStore(initialState)
+      return store.dispatch(IdentityActions.createNewProfile(encryptedBackupPhrase,
+        password, nextUnusedAddressIndex))
+      .then(() => {
+        const expectedActions = [
+        {
+          "keypair": {
+            "address": "13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ",
+            "appsNodeKey": "xprv9zn1Mwu3hGDz9ytK4Pvp6ckfswdeMRngASKEcT9J4f2THGjo2UjyrMocunoohYQW2fMx9Cb21KvooM8pVrbuVVjHuqTJ2Kdru5VKGLR1MZa",
+            "key": "5c21340bdc95b66c203f1080d6c83655137edbb2fcbbf35849e82b10b993b7ad",
+            "keyID": "0359e44963688f2b3e95cb14ce4026f1ea34540ce04260e23c1ed3b8ff4a08da6c",
+            "salt": "0816f31b782a4121f4222b8d0f2a60b025b20f3f40136042d806bdccddfcf300"
+          },
+          "type": "NEW_BITCOIN_ADDRESS"
+        },
+        {
+          "type": "INCREMENT_IDENTITY_ADDRESS_INDEX"
+        },
+        {
+          "domainName": "13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ",
+          "ownerAddress": "13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ",
+          "type": "CREATE_NEW"
+        },
+        {
+          "type": "INCREMENT_IDENTITY_ADDRESS_INDEX"
+        }
+      ]
+        assert.deepEqual(store.getActions(), expectedActions)
+      })
+    })
+  })
+
   describe('refreshIdentities', () => {
     it('adds new identities', () => {
       // mock core

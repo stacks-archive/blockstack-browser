@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AccountActions } from './account/store/account'
 import { SettingsActions } from './account/store/settings'
-import WelcomeModal from './components/WelcomeModal'
+import WelcomeModal from './welcome/WelcomeModal'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
 import { SanityActions }    from './store/sanity'
 

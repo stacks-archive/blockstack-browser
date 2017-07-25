@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="94px" height="94px" viewBox="0 0 94 94" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-a-security</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="browser-26a-onBoarding-data" transform="translate(-673.000000, -390.000000)">
+            <g id="icon-a-security" transform="translate(673.000000, 390.000000)">
+                <path d="M54.5,59.822 C50.498,59.3135 46.004,59 41,59 C24.29,59 13.259,62.4965 7.3205,65.1305 C4.0685,66.572 2,69.794 2,73.3505 L2,89 L50,89" id="Shape" stroke="#444444" stroke-width="3"></path>
+                <circle id="Oval" fill="#2C96FF" fill-rule="nonzero" cx="77" cy="81.5" r="3"></circle>
+                <path d="M20,23 C20,11.402 29.402,2 41,2 C52.598,2 62,11.402 62,23 C62,34.598 52.598,47 41,47 C29.402,47 20,34.598 20,23 Z" id="Shape" stroke="#444444" stroke-width="3" stroke-linecap="square"></path>
+                <rect id="Rectangle-path" stroke="#2C96FF" stroke-width="3" stroke-linecap="square" x="62" y="71" width="30" height="21"></rect>
+                <path d="M68,71 L68,59 C68,54.029 72.029,50 77,50 L77,50 C81.971,50 86,54.029 86,59 L86,71" id="Shape" stroke="#2C96FF" stroke-width="3" stroke-linecap="square"></path>
+            </g>
+        </g>
+    </g>
+</svg>
