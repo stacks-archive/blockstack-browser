@@ -96,8 +96,9 @@ i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;font-w
 .idcard-wrap{font-weight:inherit;margin-top:105px;color:#444;}
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
 .profile-right-col-fill{position:relative;top:1.5rem;min-height:45vh;padding:0 0 0 10px;}
+.profile-right-col .fa-stack .fa {line-height:2rem;}
 div.profile-right-col > ul{padding-left:0;list-style-type:none;}
-div.profile-right-col > ul > li > a,div.profile-right-col > ul > li > button{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
+div.profile-right-col > ul > li > a,div.profile-right-col > ul > li > button{display:block;padding:10px 5px;text-decoration:none;color:#080809;}
 .btn-social-account{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
 div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > button:hover{text-decoration:none;color:#fff;border-radius:4px;background-color:#2c96ff;}
 .btn-social-account:hover{text-decoration:none;border-radius:4px;background-color:#23262a;}
@@ -461,11 +462,15 @@ a {color: #E91E63;}
 .btn-outline-primary:hover,.btn-outline-primary:focus,.btn-outline-primary:active,.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active{color:#fff;border:1px solid #2275d7;background-color:#2275d7;}
 .btn-blue{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;padding-right:1.375rem;padding-left:1.375rem;-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
 .btn-blue:hover,.btn-blue:focus,.btn-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
+.btn-black{color:#fff;border:1px solid #060607;background-color:#060607;padding-right:1.375rem;padding-left:1.375rem;-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.btn-black:hover,.btn-black:focus,.btn-black:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
+
 .btn-wallet{color:#fff;border:1px solid #00CF98;background-color:#00CF98;padding-right:3rem;padding-left:3rem;-moz-border-radius:4px!important;-webkit-border-radius:4px!important;border-radius:4px!important;}
 .btn-wallet:hover,.btn-wallet:focus,.btn-wallet:active{color:#fff;border:1px solid #06AB7F;background-color:#06AB7F;}
 .btn-inline{margin-right:15px;}
 .btn-home-button{position:absolute;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:400;border-radius:6px;padding:3px 20px;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
 div.home-profiles a .btn-home-button{position:absolute;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
+.btn-tight {margin:0 0 0 1px}
 
 /* 13. Forms */
 .form-control{font-size:0.875rem;font-weight:400;color:#949494;padding:0.75rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;}
@@ -493,10 +498,11 @@ a.card:hover{text-decoration:none;}
 div.card-avatar.profile-list-avatar img{width:48px;height:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{padding-left:0;}
-.pro-wrap{font-family:'Source Code Pro',monospace;max-width:1180px;background-color:#080809;padding:35px;font-weight:300;}
-div.pro-avatar img{width:58px;height:58px;}
-.pro-card-name{font-size:0.875rem;color:#fff;font-weight:300;}
-.pro-card-body{display:block;margin-bottom:30px;font-size:0.75rem;color:#fff;}
+.pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
+.pro-actions-wrap{max-width:1180px;padding:0px;}
+div.pro-avatar img{max-width:58px;}
+.pro-card-name{font-size:1.0rem;font-weight:600;}
+.pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 
 /* 28. List group */
