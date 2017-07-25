@@ -491,7 +491,7 @@ a.card:hover{text-decoration:none;}
 .profile-list-avatar{float:left;margin-right:15px;padding:0;}
 div.card-avatar.profile-list-avatar img{max-width:48px;}
 .profile-card-list{list-style:none;padding:0;}
-.card-wrapper{padding-left:0;}
+.card-wrapper{list-style:none;padding-left:0;}
 .pro-wrap{font-family:'Source Code Pro',monospace;max-width:1180px;background-color:#080809;padding:35px;font-weight:300;}
 div.pro-avatar img{max-width:58px;}
 .pro-card-name{font-size:0.875rem;color:#fff;font-weight:300;}
@@ -637,7 +637,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
   .app-center{width:100%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:flex-start;}
   .app-wrap{width:95%;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:flex-start;align-items:center;}
 	.app-container{width:100%;display:flex;flex-wrap:wrap;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;justify-content:flex-start;}
-	div.app-text-container > h3{font-size:1.25rem;margin-bottom:1.75rem;}	
+	div.app-text-container > h3{font-size:1.25rem;margin-bottom:1.75rem;}
 	div.card-list-container.profile-content-wrapper > div > h5.h5-landing{margin-top:25px;}
 	.sidebar-list{width:245px;margin-bottom:20px;padding-right:0;}
 	.sidebar-list .btn{margin-bottom:5px;}
@@ -688,4 +688,3 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.app-wrap{width:75%;max-width:1025px;margin-top:16%;}
   div.ReactModal__Content.ReactModal__Content--after-open{margin-top:-10%;}
 }
-
