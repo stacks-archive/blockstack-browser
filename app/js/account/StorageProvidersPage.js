@@ -21,7 +21,8 @@ function mapStateToProps(state) {
     updateApi: PropTypes.func.isRequired,
     resetApi: PropTypes.func.isRequired,
     localIdentities: state.profiles.identity.localIdentities,
-    identityKeypairs: state.account.identityAccount.keypairs
+    identityKeypairs: state.account.identityAccount.keypairs,
+    connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
   }
 }
 
@@ -36,7 +37,8 @@ class StorageProvidersPage extends Component {
     updateApi: PropTypes.func.isRequired,
     localIdentities: PropTypes.object.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
-    storageConnected: PropTypes.func.isRequired
+    storageIsConnected: PropTypes.func.isRequired,
+    connectedStorageAtLeastOnce: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -51,7 +53,7 @@ class StorageProvidersPage extends Component {
     const api = this.props.api
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     if (dropboxAccessToken != null) {
-      this.props.storageConnected()
+      this.props.storageIsConnected()
       const newApi = Object.assign({}, api, { dropboxAccessToken })
       this.props.updateApi(newApi)
       setCoreStorageConfig(newApi)
@@ -60,6 +62,15 @@ class StorageProvidersPage extends Component {
         // TODO add index URL to token file
         logger.debug('componentDidMount: storage initialized')
       })
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.api.dropboxAccessToken) {
+      if (!this.props.connectedStorageAtLeastOnce &&
+        nextProps.connectedStorageAtLeastOnce) {
+        window.location = '/'
+      }
     }
   }
 
