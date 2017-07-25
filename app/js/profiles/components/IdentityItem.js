@@ -24,7 +24,7 @@ class IdentityItem extends Component {
         <Link to={this.props.url} className="card profile-list-card container-fluid m-b-35">
           <div className="card-avatar profile-list-avatar">
             <Image src={this.props.avatarUrl}
-              fallbackSrc="/images/avatar.png" className="img-circle" />
+              fallbackSrc="/images/avatar.png" className="img-circle img-cover" />
           </div>
           <div>
             <ul className="profile-card-list">
@@ -39,14 +39,10 @@ class IdentityItem extends Component {
                    Add username
                  </Link>
                  :
-                  <div>
-                   {this.props.pending ?
+                  <div>                   
                      <p className="card-subtitle profile-list-card-subtitle">
-                      (pending)
+                      {this.props.pending ? '(pending)' : '\u00A0'}
                      </p>
-                     :
-                     <p></p>
-                  }
                   </div>
                 }
               </li>
