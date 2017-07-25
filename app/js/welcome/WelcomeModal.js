@@ -33,7 +33,8 @@ function mapStateToProps(state) {
     api: state.settings.api,
     promptedForEmail: state.account.promptedForEmail,
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    identityAddresses: state.account.identityAccount.addresses
+    identityAddresses: state.account.identityAccount.addresses,
+    connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
   }
 }
 
@@ -57,7 +58,8 @@ class WelcomeModal extends Component {
     initializeWallet: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired,
     identityAddresses: PropTypes.array,
-    createNewIdentityFromDomain: PropTypes.func.isRequired
+    createNewIdentityFromDomain: PropTypes.func.isRequired,
+    connectedStorageAtLeastOnce: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -67,7 +69,7 @@ class WelcomeModal extends Component {
       this.props.coreConnected && this.props.promptedForEmail
 
 
-    const storageConnectedDuringOnboarding = false // TODO replace with redux state
+    const storageConnectedDuringOnboarding = this.props.connectedStorageAtLeastOnce
     const needToOnboardStorage = !storageConnectedDuringOnboarding && !this.props.storageConnected
 
     if (this.props.accountCreated && !onboardingExceptStorageComplete) {
@@ -112,7 +114,7 @@ class WelcomeModal extends Component {
       coreConnected: nextProps.coreConnected
     })
 
-    const storageConnectedDuringOnboarding = false // TODO replace with redux state
+    const storageConnectedDuringOnboarding = nextProps.connectedStorageAtLeastOnce
     const needToOnboardStorage = !storageConnectedDuringOnboarding && !nextProps.storageConnected
 
     const onboardingExceptStorageComplete = nextProps.accountCreated &&

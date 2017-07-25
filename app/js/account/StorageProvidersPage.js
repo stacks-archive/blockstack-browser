@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
+import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
 
 import { DROPBOX } from './utils/index'
-import { DROPBOX_APP_ID,
-  getDropboxAccessTokenFromHash,
+import { getDropboxAccessTokenFromHash,
   redirectToConnectToDropbox } from './utils/dropbox'
 
 import { setCoreStorageConfig } from '../utils/api-utils'
@@ -27,7 +26,8 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(SettingsActions, dispatch)
+  const actions = Object.assign({}, SettingsActions, AccountActions)
+  return bindActionCreators(actions, dispatch)
 }
 
 class StorageProvidersPage extends Component {
@@ -35,7 +35,8 @@ class StorageProvidersPage extends Component {
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
     localIdentities: PropTypes.object.isRequired,
-    identityKeypairs: PropTypes.array.isRequired
+    identityKeypairs: PropTypes.array.isRequired,
+    storageConnected: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -50,12 +51,14 @@ class StorageProvidersPage extends Component {
     const api = this.props.api
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     if (dropboxAccessToken != null) {
+      this.props.storageConnected()
       const newApi = Object.assign({}, api, { dropboxAccessToken })
       this.props.updateApi(newApi)
       setCoreStorageConfig(newApi)
       .then((indexUrl) => {
+        logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
         // TODO add index URL to token file
-        logger.debug(`componentDidMount: storage initialized`)
+        logger.debug('componentDidMount: storage initialized')
       })
     }
   }
