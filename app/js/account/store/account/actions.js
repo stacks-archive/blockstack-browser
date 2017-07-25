@@ -1,7 +1,10 @@
 import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
-import { authorizationHeaderValue, btcToSatoshis, encrypt,
+import { authorizationHeaderValue,
+  btcToSatoshis,
+  deriveIdentityKeyPair,
+  encrypt,
   getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityOwnerAddressNode,
@@ -24,7 +27,7 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
 
   const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
 
-  const ADDRESSES_TO_GENERATE = 9
+  const ADDRESSES_TO_GENERATE = 1
   const identityAddresses = []
   const identityKeypairs = []
 
@@ -33,18 +36,9 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
   for (let addressIndex = 0; addressIndex < ADDRESSES_TO_GENERATE; addressIndex++) {
     const identityOwnerAddressNode =
     getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
-    const identityAddress = identityOwnerAddressNode.getAddress()
-    identityAddresses.push(identityAddress)
-    const identityKey = identityOwnerAddressNode.getIdentityKey()
-    const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
-    const appsNode = identityOwnerAddressNode.getAppsNode()
-    identityKeypairs.push({
-      key: identityKey,
-      keyID: identityKeyID,
-      address: identityAddress,
-      appsNodeKey: appsNode.toBase58(),
-      salt: appsNode.getSalt()
-    })
+    const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
+    identityKeypairs.push(identityKeyPair)
+    identityAddresses.push(identityKeyPair.address)
   }
 
   return {
@@ -316,8 +310,8 @@ function initializeWallet(password, backupPhrase, email = null) {
       const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
       masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
     } else { // Create a new wallet
-      const entropy = randomBytes(32)
-      backupPhrase = bip39.entropyToMnemonic(entropy)
+      const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
+      backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
       const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
       masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
     }
@@ -333,6 +327,14 @@ function initializeWallet(password, backupPhrase, email = null) {
 function newBitcoinAddress() {
   return {
     type: types.NEW_BITCOIN_ADDRESS
+  }
+}
+
+
+function newIdentityAddress(newIdentityKeypair) {
+  return {
+    type: types.NEW_BITCOIN_ADDRESS,
+    keypair: newIdentityKeypair
   }
 }
 
@@ -365,7 +367,8 @@ const AccountActions = {
   updateViewedRecoveryCode,
   incrementIdentityAddressIndex,
   usedIdentityAddress,
-  displayedRecoveryCode
+  displayedRecoveryCode,
+  newIdentityAddress
 }
 
 export default AccountActions

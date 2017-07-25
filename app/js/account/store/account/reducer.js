@@ -148,6 +148,17 @@ function AccountReducer(state = initialState, action) {
             addressIndex: state.identityAccount.addressIndex + 1
           })
       })
+    case types.NEW_IDENTITY_ADDRESS:
+      return Object.assign({}, state, {
+        identityAccount: Object.assign({}, state.identityAccount, {
+          addresses: [
+            ...state.identityAccount.addresses, action.keypair.address
+          ],
+          keypairs: [
+            ...state.identityAccount.keypairs,
+            action.keypair]
+        })
+      })
     default:
       return state
   }

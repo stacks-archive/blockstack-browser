@@ -9,7 +9,8 @@ const initialState = {
     verifications: null
   },
   localIdentities: {},
-  namesOwned: []
+  namesOwned: [],
+  createProfileError: null
 }
 
 const DEFAULT_PROFILE = {
@@ -39,7 +40,8 @@ describe('Identity Store: IdentityReducer', () => {
         verifications: { verified: true }
       },
       localIdentities: {},
-      namesOwned: []
+      namesOwned: [],
+      createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
     assert.deepEqual(actualState, expectedState)
@@ -62,7 +64,8 @@ describe('Identity Store: IdentityReducer', () => {
           ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
         }
       },
-      namesOwned: []
+      namesOwned: [],
+      createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
     assert.deepEqual(actualState, expectedState)
@@ -93,7 +96,8 @@ describe('Identity Store: IdentityReducer', () => {
           registered: false
         }
       },
-      namesOwned: ['satoshi.id']
+      namesOwned: ['satoshi.id'],
+      createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
     assert.deepEqual(actualState, expectedState)
@@ -117,7 +121,8 @@ describe('Identity Store: IdentityReducer', () => {
           }
         }
       },
-      namesOwned: []
+      namesOwned: [],
+      createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
     assert.deepEqual(actualState, expectedState)
@@ -132,7 +137,8 @@ describe('Identity Store: IdentityReducer', () => {
           },
           ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
         }
-      }
+      },
+      createProfileError: null
     }
 
     const expectedState = {
@@ -144,9 +150,27 @@ describe('Identity Store: IdentityReducer', () => {
           ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
           domainName: 'satoshi.id'
         }
-      }
+      },
+      createProfileError: null
     }
     const action = IdentityActions.addUsername('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
+
+    const actualState = IdentityReducer(initialState, action)
+    assert.deepEqual(actualState, expectedState)
+  })
+
+  it('should create a create new profile error', () => {
+    const expectedState = {
+      current: {
+        domainName: null,
+        profile: null,
+        verifications: null
+      },
+      localIdentities: {},
+      namesOwned: [],
+      createProfileError: 'error'
+    }
+    const action = IdentityActions.createNewProfileError('error')
 
     const actualState = IdentityReducer(initialState, action)
     assert.deepEqual(actualState, expectedState)
