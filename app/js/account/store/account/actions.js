@@ -139,8 +139,8 @@ function displayedRecoveryCode() {
   }
 }
 
-function emailKeychainBackup(email, encryptedPortalKey) {
-  logger.debug(`emailKeychainBackup: ${email}`)
+function emailNotifications(email) {
+  logger.debug(`emailNotifications: ${email}`)
   return dispatch => {
     dispatch(promptedForEmail())
     const requestHeaders = {
@@ -149,8 +149,7 @@ function emailKeychainBackup(email, encryptedPortalKey) {
     }
 
     const requestBody = {
-      email,
-      encryptedPortalKey
+      email
     }
 
     const options = {
@@ -158,16 +157,15 @@ function emailKeychainBackup(email, encryptedPortalKey) {
       headers: requestHeaders,
       body: JSON.stringify(requestBody)
     }
-    // const emailBackupUrl = 'http://localhost:2888/backup'
-    const emailBackupUrl = 'https://blockstack-portal-emailer.appartisan.com/backup'
+    const emailNotificationsUrl = 'https://blockstack-portal-emailer.appartisan.com/notifications'
 
-    return fetch(emailBackupUrl, options)
+    return fetch(emailNotificationsUrl, options)
     .then(() => {
-      logger.debug(`emailKeychainBackup: backup sent to ${email}`)
+      logger.debug(`emailNotifications: registered ${email} for notifications`)
     }, (error) => {
-      logger.error('emailKeychainBackup: error backing up keychain', error)
+      logger.error('emailNotifications: error', error)
     }).catch(error => {
-      logger.error('emailKeychainBackup: error backing up keychain', error)
+      logger.error('emailNotifications: error', error)
     })
   }
 }
@@ -375,7 +373,7 @@ const AccountActions = {
   refreshCoreWalletBalance,
   resetCoreWithdrawal,
   withdrawBitcoinFromCoreWallet,
-  emailKeychainBackup,
+  emailNotifications,
   skipEmailBackup,
   storageIsConnected,
   updateViewedRecoveryCode,

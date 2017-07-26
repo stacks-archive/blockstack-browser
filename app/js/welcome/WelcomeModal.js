@@ -56,6 +56,7 @@ class WelcomeModal extends Component {
     promptedForEmail: PropTypes.bool.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     initializeWallet: PropTypes.func.isRequired,
+    emailNotifications: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired,
     identityAddresses: PropTypes.array,
     createNewIdentityFromDomain: PropTypes.func.isRequired,
@@ -400,6 +401,7 @@ class WelcomeModal extends Component {
               {
                 page === 7 ?
                   <EnterEmailView
+                    emailNotifications={this.props.emailNotifications}
                     skipEmailBackup={this.props.skipEmailBackup}
                   />
                 :

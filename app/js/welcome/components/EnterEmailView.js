@@ -11,6 +11,7 @@ function mapDispatchToProps(dispatch) {
 
 class EnterEmailView extends Component {
   static propTypes = {
+    emailNotifications: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired
   }
 
@@ -20,7 +21,8 @@ class EnterEmailView extends Component {
       identityKeyPhrase: ''
     }
     this.onValueChange = this.onValueChange.bind(this)
-    this.finish = this.finish.bind(this)
+    this.skip = this.skip.bind(this)
+    this.saveEmail = this.saveEmail.bind(this)
   }
 
   onValueChange(event) {
@@ -29,7 +31,12 @@ class EnterEmailView extends Component {
     })
   }
 
-  finish(event) {
+  saveEmail(event) {
+    event.preventDefault()
+    this.props.emailNotifications(this.state.email)
+  }
+
+  skip(event) {
     event.preventDefault()
     this.props.skipEmailBackup()
   }
@@ -41,7 +48,7 @@ class EnterEmailView extends Component {
           Enter your email address to get useful notifications regarding your account
         </h3>
         <p className="modal-body">Type in your email address:</p>
-        <form onSubmit={this.finish}>
+        <form onSubmit={this.saveEmail}>
           <InputGroup
             name="email"
             type="email"
@@ -59,7 +66,7 @@ class EnterEmailView extends Component {
               Continue
             </button>
             <p>
-              <a href="#" className="modal-body" onClick={this.finish}>Skip</a>
+              <a href="#" className="modal-body" onClick={this.skip}>Skip</a>
             </p>
           </div>
         </form>
