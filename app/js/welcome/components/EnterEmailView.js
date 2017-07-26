@@ -56,7 +56,7 @@ class EnterEmailView extends Component {
               type="submit"
               className="btn btn-primary btn-block m-b-10"
             >
-              Finish
+              Continue
             </button>
             <p>
               <a href="#" className="modal-body" onClick={this.finish}>Skip</a>

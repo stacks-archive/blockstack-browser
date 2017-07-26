@@ -25,7 +25,8 @@ const initialState = {
       success: false
     }
   },
-  viewedRecoveryCode: false
+  viewedRecoveryCode: false,
+  connectedStorageAtLeastOnce: false
 }
 
 function AccountReducer(state = initialState, action) {
@@ -158,6 +159,10 @@ function AccountReducer(state = initialState, action) {
             ...state.identityAccount.keypairs,
             action.keypair]
         })
+      })
+    case types.CONNECTED_STORAGE:
+      return Object.assign({}, state, {
+        connectedStorageAtLeastOnce: true
       })
     default:
       return state

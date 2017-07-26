@@ -120,6 +120,12 @@ function promptedForEmail() {
   }
 }
 
+function connectedStorage() {
+  return {
+    type: types.CONNECTED_STORAGE
+  }
+}
+
 function updateViewedRecoveryCode() {
   return {
     type: types.VIEWED_RECOVERY_CODE
@@ -170,6 +176,13 @@ function skipEmailBackup() {
   logger.trace('skipEmailBackup')
   return dispatch => {
     dispatch(promptedForEmail())
+  }
+}
+
+function storageIsConnected() {
+  logger.trace('storageConnected')
+  return dispatch => {
+    dispatch(connectedStorage())
   }
 }
 
@@ -364,6 +377,7 @@ const AccountActions = {
   withdrawBitcoinFromCoreWallet,
   emailKeychainBackup,
   skipEmailBackup,
+  storageIsConnected,
   updateViewedRecoveryCode,
   incrementIdentityAddressIndex,
   usedIdentityAddress,

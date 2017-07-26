@@ -7,11 +7,14 @@ import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
+import { redirectToConnectToDropbox } from '../account/utils/dropbox'
+
 
 import { PairBrowserView, LandingView,
   NewInternetView, RestoreView, DataControlView, EnterPasswordView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
-  EnterEmailView } from './components'
+  EnterEmailView,
+  ConnectStorageView } from './components'
 
 
 import { decrypt, isBackupPhraseValid } from '../utils'
@@ -23,13 +26,15 @@ const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
 const START_PAGE_VIEW = 0
 const WRITE_DOWN_IDENTITY_PAGE_VIEW = 5
+const STORAGE_PAGE_VIEW = 8
 
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
     promptedForEmail: state.account.promptedForEmail,
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    identityAddresses: state.account.identityAccount.addresses
+    identityAddresses: state.account.identityAccount.addresses,
+    connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
   }
 }
 
@@ -53,23 +58,38 @@ class WelcomeModal extends Component {
     initializeWallet: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired,
     identityAddresses: PropTypes.array,
-    createNewIdentityFromDomain: PropTypes.func.isRequired
+    createNewIdentityFromDomain: PropTypes.func.isRequired,
+    connectedStorageAtLeastOnce: PropTypes.bool.isRequired
   }
 
   constructor(props) {
     super(props)
 
-    if (this.props.accountCreated) {
+    const onboardingExceptStorageComplete = this.props.accountCreated &&
+      this.props.coreConnected && this.props.promptedForEmail
+
+
+    const storageConnectedDuringOnboarding = this.props.connectedStorageAtLeastOnce
+    const needToOnboardStorage = !storageConnectedDuringOnboarding && !this.props.storageConnected
+
+    if (this.props.accountCreated && !onboardingExceptStorageComplete) {
       logger.error('User has refreshed browser mid onboarding.')
+    }
+
+    let startPageView = START_PAGE_VIEW
+
+    if (onboardingExceptStorageComplete && needToOnboardStorage) {
+      startPageView = STORAGE_PAGE_VIEW
     }
 
     this.state = {
       accountCreated: this.props.accountCreated,
       storageConnected: this.props.storageConnected,
       coreConnected: this.props.coreConnected,
+      needToOnboardStorage,
       pageOneView: 'create',
       email: '',
-      page: START_PAGE_VIEW,
+      page: startPageView,
       password: null,
       identityKeyPhrase: null,
       alert: null
@@ -93,6 +113,20 @@ class WelcomeModal extends Component {
       storageConnected: nextProps.storageConnected,
       coreConnected: nextProps.coreConnected
     })
+
+    const storageConnectedDuringOnboarding = nextProps.connectedStorageAtLeastOnce
+    const needToOnboardStorage = !storageConnectedDuringOnboarding && !nextProps.storageConnected
+
+    const onboardingExceptStorageComplete = nextProps.accountCreated &&
+      nextProps.coreConnected && nextProps.promptedForEmail
+
+    this.setState({
+      needToOnboardStorage
+    })
+
+    if (onboardingExceptStorageComplete && needToOnboardStorage) {
+      this.setPage(STORAGE_PAGE_VIEW)
+    }
 
     if (nextProps.accountCreated && !this.props.accountCreated) {
       logger.debug('account created - checking for valid password in component state')
@@ -214,6 +248,11 @@ class WelcomeModal extends Component {
     this.setPage(this.state.page - 1)
   }
 
+  connectDropbox(event) {
+    event.preventDefault()
+    redirectToConnectToDropbox()
+  }
+
   confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
     if (this.state.identityKeyPhrase !== enteredIdentityKeyPhrase) {
       logger.error('confirmIdentityKeyPhrase: user entered identity phrase does not match')
@@ -243,8 +282,11 @@ class WelcomeModal extends Component {
   }
 
   render() {
+
     const isOpen = !this.state.accountCreated ||
-      !this.state.coreConnected || !this.props.promptedForEmail
+      !this.state.coreConnected || !this.props.promptedForEmail ||
+      this.state.needToOnboardStorage
+
 
     const needToPair = !this.state.coreConnected
 
@@ -359,6 +401,16 @@ class WelcomeModal extends Component {
                 page === 7 ?
                   <EnterEmailView
                     skipEmailBackup={this.props.skipEmailBackup}
+                  />
+                :
+                null
+              }
+              </div>
+              <div>
+              {
+                page === 8 ?
+                  <ConnectStorageView
+                    connectDropbox={this.connectDropbox}
                   />
                 :
                 null

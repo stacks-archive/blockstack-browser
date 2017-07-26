@@ -204,7 +204,7 @@ class StatusBar extends Component {
             </Link>
           </div>
           <div className="status-inline status-profile">
-            <Link to="/account/password" className="statusBar-link">
+            <Link to="/account/storage" className="statusBar-link">
               <Image className="" src="/images/icon-settings-sm.svg" /><br />
                 Settings
             </Link>
