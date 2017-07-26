@@ -4,7 +4,7 @@ const ConnectStorageView = (props) =>
   (
   <div>
     <h3 className="modal-heading m-t-15 p-b-20">
-      Connect Storage
+      Blockstack puts app data in storage you control
     </h3>
     <img
       role="presentation"
