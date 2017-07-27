@@ -164,7 +164,8 @@ class AuthModal extends Component {
           contentLabel="This is My Modal"
           shouldCloseOnOverlayClick={true}
           style={{overlay: {zIndex: 10}}}
-          className="container-fluid">
+          className="container-fluid"
+          portalClassName="auth-modal">
           <h3>Sign In Request</h3>
           { appManifestLoading ?
             <div>

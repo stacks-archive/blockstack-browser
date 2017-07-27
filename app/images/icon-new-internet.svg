@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="88px" height="88px" viewBox="0 0 88 88" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 45.2 (43514) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-new-internet</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="browser-25a-onBoarding-new-internet" transform="translate(-676.000000, -393.000000)" stroke-width="3">
+            <g id="pin-2" transform="translate(676.000000, 393.000000)">
+                <path d="M53,77 L68,77" id="Shape" stroke="#2C96FF"></path>
+                <path d="M20,44 L35,44" id="Shape" stroke="#2C96FF"></path>
+                <path d="M44,53 L44,68" id="Shape" stroke="#2C96FF"></path>
+                <circle id="Oval" stroke="#2C96FF" stroke-linecap="square" cx="11" cy="11" r="9"></circle>
+                <circle id="Oval" stroke="#2C96FF" stroke-linecap="square" cx="11" cy="44" r="9"></circle>
+                <circle id="Oval" stroke="#2C96FF" stroke-linecap="square" cx="44" cy="44" r="9"></circle>
+                <circle id="Oval" stroke="#2C96FF" stroke-linecap="square" cx="44" cy="77" r="9"></circle>
+                <circle id="Oval" stroke="#2C96FF" stroke-linecap="square" cx="77" cy="77" r="9"></circle>
+                <path d="M11,20 L11,35" id="Shape" stroke="#2C96FF"></path>
+                <circle id="Oval" stroke="#444444" stroke-linecap="square" cx="44" cy="11" r="9"></circle>
+                <circle id="Oval" stroke="#444444" stroke-linecap="square" cx="77" cy="11" r="9"></circle>
+                <circle id="Oval" stroke="#444444" stroke-linecap="square" cx="77" cy="44" r="9"></circle>
+                <circle id="Oval" stroke="#444444" stroke-linecap="square" cx="11" cy="77" r="9"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

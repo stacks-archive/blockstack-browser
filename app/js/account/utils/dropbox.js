@@ -1,6 +1,14 @@
-var Dropbox = require('dropbox')
+import Dropbox from 'dropbox'
 
-export const DROPBOX_APP_ID = "f3l2g7ge4bs68o4"
+export const DROPBOX_APP_ID = 'f3l2g7ge4bs68o4'
+
+export function redirectToConnectToDropbox() {
+  const dbx = new Dropbox({ clientId: DROPBOX_APP_ID })
+  const port = location.port === '' ? 80 : location.port
+  console.log(port)
+  window.location = dbx.getAuthenticationUrl(
+    `http://localhost:${port}/account/storage`)
+}
 
 export function uploadProfileToDropbox(api, domainName, signedProfileTokenData, firstUpload=false) {
   return new Promise((resolve, reject) => {

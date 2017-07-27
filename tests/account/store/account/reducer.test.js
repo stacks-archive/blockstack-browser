@@ -22,6 +22,7 @@ const initialState = {
       success: false
     }
   },
+  connectedStorageAtLeastOnce: false,
   viewedRecoveryCode: false
 }
 
