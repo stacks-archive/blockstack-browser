@@ -81,6 +81,28 @@ class HomeScreenPage extends Component {
                   <h3>Ongaku Ryoho</h3>
                 </div>
               </div>
+              <div className="app-box-wrap">
+                <a href="#"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-casa@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>Casa</h3>
+                </div>
+              </div>
+              <div className="app-box-wrap">
+                <a href="#"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-openbazaar@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>OpenBazaar</h3>
+                </div>
+              </div>
             </div>
           </div>
         </div>
