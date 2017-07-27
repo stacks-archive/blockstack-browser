@@ -103,6 +103,28 @@ class HomeScreenPage extends Component {
                   <h3>OpenBazaar</h3>
                 </div>
               </div>
+              <div className="app-box-wrap">
+                <a href="https://ntzwrk.org/projects/beacon/"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-beacon@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>Beacon</h3>
+                </div>
+              </div>
+              <div className="app-box-wrap">
+                <a href="http://www.afiabeta.com/"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-afia@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>Beacon</h3>
+                </div>
+              </div>
             </div>
           </div>
         </div>
