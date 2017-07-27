@@ -49,17 +49,6 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <a href="http://blockstack-todos.appartisan.com/"
-                   className="app-box-container">
-                  <div className="app-box">
-                    <img src="/images/app-icon-todo-list@2x.png" />
-                  </div>
-                </a>
-                <div className="app-text-container">
-                  <h3>To Do List</h3>
-                </div>
-              </div>
-              <div className="app-box-wrap">
                 <a href="http://guild2.herokuapp.com/"
                    className="app-box-container">
                   <div className="app-box">
@@ -123,6 +112,17 @@ class HomeScreenPage extends Component {
                 </a>
                 <div className="app-text-container">
                   <h3>Beacon</h3>
+                </div>
+              </div>
+              <div className="app-box-wrap">
+                <a href="http://blockstack-todos.appartisan.com/"
+                   className="app-box-container">
+                  <div className="app-box">
+                    <img src="/images/app-icon-todo-list@2x.png" />
+                  </div>
+                </a>
+                <div className="app-text-container">
+                  <h3>To Do List</h3>
                 </div>
               </div>
             </div>
