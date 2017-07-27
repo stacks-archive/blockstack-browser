@@ -49,7 +49,7 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <a href="https://blockstack-todo-app.netlify.com/"
+                <a href="http://blockstack-todos.appartisan.com/"
                    className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-todo-list@2x.png" />
@@ -60,7 +60,7 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <a href="#"
+                <a href="https://guild2.herokuapp.com/"
                    className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-guild@2x.png" />
@@ -71,7 +71,7 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <a href="#"
+                <a href="http://ongakuryoho.com"
                    className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-ongaku-ryoho@2x.png" />
@@ -82,7 +82,7 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <a href="#"
+                <a href="https://casa.cash"
                    className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-casa@2x.png" />
@@ -93,7 +93,7 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <a href="#"
+                <a href="https://www.openbazaar.org"
                    className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-openbazaar@2x.png" />
