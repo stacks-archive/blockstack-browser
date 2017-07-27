@@ -111,7 +111,7 @@ class HomeScreenPage extends Component {
                   </div>
                 </a>
                 <div className="app-text-container">
-                  <h3>Beacon</h3>
+                  <h3>Afia</h3>
                 </div>
               </div>
               <div className="app-box-wrap">
