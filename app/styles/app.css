@@ -513,17 +513,20 @@ div.pro-avatar img{max-width:58px;}
 .img-cover {object-fit: cover;}
 
 /* 36. Status Bars */
-.statusBar-link,.statusBar-link:hover,.statusBar-link:focus,.statusBar-link:active{display:block;padding:6px 12px;color:#080809;text-align:center;margin-left:8px;margin-right:8px;}
-.statusBar-link:hover{background-color:rgba(148,148,148,0.1);-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;}
-.status-bar{width:100%;height:94px;display:inline-block;font-family:'Lato',sans-serif;font-size:13px;font-weight:400;padding:20px 30px;}
+.statusBar-link,.statusBar-link:hover,.statusBar-link:focus,.statusBar-link:active{display:block;padding:2px 12px;color:#e6e6e6;text-align:center;margin-left:8px;margin-right:8px;}
+.statusBar-link:hover{background-color:rgba(148,148,148,0.1);-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;}
+.status-bar{width:100%;height:34px;display:inline-block;font-family:'Lato',sans-serif;font-size:13px;font-weight:400;padding:4px 30px;}
 .status-bar a,.status-bar a:hover,.status-bar a:focus,.status-bar a:active{text-decoration:none;}
 .status-bar-icon{vertical-align:middle;font-size:19px!important;padding-right:8px;margin-top:-2px!important;}
 /* --- Status Bars variants --- */
-.status-bar-light,.status-bar-light > a{background-color:#fff;color:#080809;}
-.status-bar-dark,.status-bar-dark > a{background-color:#000;color:#e6e6e6;}
+.status-bar-light{background-color:#fff;}
+.status-bar-light > a{color:#080809;}
+.status-bar-dark{background-color:#2A2D31;}
+.status-bar-dark > a{color:#e6e6e6;}
+.status-bar-gray{background-color:#F0F0F0;border-bottom:1px solid #E6E6E6;}
+.status-bar-gray > a{color:#080809;}
 .status-bar-transparent-light,.status-bar-transparent-light > a{background-color:rgba(0,0,0,0);color:#e6e6e6;}
 .status-bar-transparent-dark,.status-bar-transparent-dark > a{background-color:rgba(255,255,255,0);color:#080809;}
-.status-bar-back{width:150px;top:114px;line-height:34px;margin-top:3px;}
 .status-inline{display:inline-block;}
 .status-completion{margin-right:15px;vertical-align:top;margin-top:-1px;}
 .status-profile-img{width:22px;height:22px;vertical-align:top;}
@@ -547,6 +550,7 @@ div{display:block;}
 .action-item{padding-bottom:10px;margin-top:5px;margin-bottom:15px;font-family:'Lato',sans-serif;}
 .tooltip-link{display:block;padding-top:8px;color:#2C96FF;}
 .tooltip-link:hover,.tooltip-link:focus{display:block;padding-top:8px;color:#2C96FF;}
+
 
 /* 37. Misc */
 .card-list-container{width:100%;max-width:500px;margin-left:auto;margin-right:auto;padding-left:0;padding-right:0;}
