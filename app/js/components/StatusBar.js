@@ -183,7 +183,7 @@ class StatusBar extends Component {
     const numberOfActionItems = this.numberOfActionItems()
 
     return (
-      <div className="status-bar statusBar">
+      <div className="status-bar statusBar-gray">
       {this.props.hideBackToHomeLink ?
         null
       :
