@@ -578,18 +578,81 @@ a.search-result:hover{color:#fff!important;background-color:#2275d7;}
 .result-img{width:32px;height:32px;}
 
 /* Modal */
-div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-image:none;background-repeat:no-repeat;background-position-x:center;background-position-y:center;background-size:cover;background-attachment:fixed;display:flex;align-items:center;justify-content:center;margin-top:94px;}
-div.ReactModal__Content.ReactModal__Content--after-open{width:415px;background-color:#fff;border:1px solid #fff;padding:3.75rem 42px;margin-top:-35%;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;}
-.modal-heading{font-size:1.5rem;color:#080809;line-height:1.75rem;margin-bottom:.5rem;text-align:center;}
-.modal-body{color:#080809;line-height:1.125rem;margin-bottom:0.875rem;text-align:center;}
-a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-height:1.125rem;margin:0 auto;text-align:center;display:block;}
-.modal-code{font-family:'Source Code Pro',monospace;color:#616161;font-size:13px;background-color:#E6E6E6;padding:25px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;}
-.form-control-label{text-transform:capitalize;font-size:0.875rem;padding-left:0;}
-form.modal-form > div.form-group{margin-bottom:0;}
-.react-modal-pgp{width:700px!important;}
-
+div.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-image: none;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0;
+}
+div.ReactModal__Content.ReactModal__Content--after-open {
+  width: 415px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  padding: 3.75rem 42px;
+  margin-top: -35%;
+  -webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+.modal-heading {
+  font-size: 1.5rem;
+  color: #080809;
+  line-height: 1.75rem;
+  margin-bottom: .5rem;
+  text-align: center;
+}
+.modal-body {
+  color: #080809;
+  line-height: 1.125rem;
+  margin-bottom: 0.875rem;
+  text-align: center;
+}
+a.modal-body {
+  color: #949494;
+  font-size: 0.8125rem;
+  text-decoration: underline;
+  line-height: 1.125rem;
+  margin: 0 auto;
+  text-align: center;
+  display: block;
+}
+.modal-code {
+  font-family: 'Source Code Pro', monospace;
+  color: #616161;
+  font-size: 13px;
+  background-color: #E6E6E6;
+  padding: 25px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+.form-control-label {
+  text-transform: capitalize;
+  font-size: 0.875rem;
+  padding-left: 0;
+}
+form.modal-form > div.form-group {
+  margin-bottom: 0;
+}
+.react-modal-pgp {
+  width: 700px !important;
+}
 /* Welcome Modal */
-.welcome-modal div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-image:url('/images/img-teddy-kelley-181683@2x.png');}
+.welcome-modal div.ReactModal__Overlay.ReactModal__Overlay--after-open {
+  background-image: url('/images/img-teddy-kelley-181683@2x.png');
+  background-position: top 34px center;
+  background-color: rgba(26,29,31,0)!important;
+}
+
 
 /* Auth Modal */
 .auth-modal {text-align: center}
