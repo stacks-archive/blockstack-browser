@@ -190,7 +190,6 @@ class StatusBar extends Component {
         <div className="pull-left">
           <div className="status-inline status-balance">
             <Link to="/" className="status-bar-back statusBar-link">
-              <i className="fa fa-angle-left status-bar-icon"></i>
               Home Screen
             </Link>
           </div>
@@ -199,19 +198,16 @@ class StatusBar extends Component {
         <div className="pull-right">
           <div className="status-inline status-balance">
             <Link to="/wallet/receive" className="statusBar-link">
-              <Image className="" src="/images/icon-wallet-sm.svg" /><br />
                 {this.roundedBtcBalance()} BTC
             </Link>
           </div>
           <div className="status-inline status-profile">
             <Link to="/account/storage" className="statusBar-link">
-              <Image className="" src="/images/icon-settings-sm.svg" /><br />
                 Settings
             </Link>
           </div>
           <div className="status-inline status-profile">
             <Link to="/profiles" className="statusBar-link">
-              <Image className="" src="/images/icon-account-sm.svg" /><br />
                 Me
             </Link>
           </div>
