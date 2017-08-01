@@ -183,32 +183,32 @@ class StatusBar extends Component {
     const numberOfActionItems = this.numberOfActionItems()
 
     return (
-      <div className="status-bar statusBar-gray">
+      <div className="status-bar status-bar-dark">
       {this.props.hideBackToHomeLink ?
         null
       :
-        <div className="pull-left">
+        <div className="pull-left" style={{ marginLeft: '-15px' }} >
           <div className="status-inline status-balance">
-            <Link to="/" className="status-bar-back statusBar-link">
+            <Link to="/" className="statusBar-link">
               Home Screen
             </Link>
           </div>
         </div>
       }
-        <div className="pull-right">
+        <div className="pull-right" style={{ marginRight: '-15px' }}>
           <div className="status-inline status-balance">
             <Link to="/wallet/receive" className="statusBar-link">
-                {this.roundedBtcBalance()} BTC
-            </Link>
-          </div>
-          <div className="status-inline status-profile">
-            <Link to="/account/storage" className="statusBar-link">
-                Settings
+                Wallet
             </Link>
           </div>
           <div className="status-inline status-profile">
             <Link to="/profiles" className="statusBar-link">
                 Me
+            </Link>
+          </div>
+          <div className="status-inline status-profile">
+            <Link to="/account/storage" className="statusBar-link">
+                Settings
             </Link>
           </div>
         </div>
