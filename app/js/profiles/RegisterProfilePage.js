@@ -112,9 +112,6 @@ class RegisterPage extends Component {
       this.props.coreAPIPassword)
     if (!this.state.storageConnected) {
       this.displayConnectStorageAlert()
-    } else if (this.state.zeroBalance) {
-      logger.debug('Zero balance...displaying alert...')
-      this.displayZeroBalanceAlert()
     }
   }
 
@@ -141,15 +138,12 @@ class RegisterPage extends Component {
     })
     if (!storageConnected) {
       this.displayConnectStorageAlert()
-    } else if (zeroBalance) {
-      this.displayZeroBalanceAlert()
     } else if (registration.registrationSubmitting ||
       registration.registrationSubmitted ||
       registration.profileUploading ||
       registration.error) {
       this.displayRegistrationAlerts(registration)
-    }
-    else {
+    } else {
       this.displayPricingAndAvailabilityAlerts(availability)
     }
 
@@ -214,8 +208,6 @@ class RegisterPage extends Component {
       this.props.beforeRegister() // clears any error & resets registration state
 
       const username = event.target.value.toLowerCase().replace(/\W+/g, '')
-      const tld = this.state.tlds[this.state.type]
-      const domainName = `${username}.${tld}`
 
       this.setState({
         username
@@ -314,9 +306,10 @@ class RegisterPage extends Component {
     return (
       <div>
         <div className="container vertical-split-content">
-          <div className="col-sm-3">
+          <div className="col-sm-2">
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-8">
+            <h3>Search for your username</h3>
             {
               this.state.alerts.map((alert, index) => {
                 return (
@@ -324,28 +317,31 @@ class RegisterPage extends Component {
                     key={index} message={alert.message} status={alert.status} url={alert.url}
                   />
               )
-              })}
-            <fieldset className="form-group">
-              <label className="capitalize">{nameLabel}</label>
-              <div className="input-group">
-                <input
-                  name="username"
-                  className="form-control"
-                  placeholder={nameLabel}
-                  value={this.state.username}
-                  onChange={this.onChange}
-                  disabled={this.state.zeroBalance || !this.state.storageConnected}
-                />
-                <span className="input-group-addon">.{tld}</span>
-              </div>
-            </fieldset>
-            <div>
+              })
+            }
+            <p>
+              Add a username to save your profile so you can interact with other
+              people on the decentralized internet.
+            </p>
+            <form className="form-inline">
+              <input
+                name="username"
+                className="form-control"
+                placeholder={nameLabel}
+                value={this.state.username}
+                onChange={this.onChange}
+                disabled={!this.state.storageConnected}
+              />
               <button
-                className="btn btn-blue" onClick={this.registerIdentity}
-                disabled={this.props.registration.preventRegistration || this.state.zeroBalance || !this.state.storageConnected}
+                type="submit"
+                className="btn btn-blue"
+                disabled={!this.state.storageConnected}
               >
-                Register
+                Search
               </button>
+            </form>
+            <div>
+
             </div>
           </div>
         </div>

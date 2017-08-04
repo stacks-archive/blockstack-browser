@@ -5,6 +5,9 @@ import App                  from './App'
 import HomeScreenPage        from './HomeScreenPage'
 
 import ProfilesApp          from './profiles/ProfilesApp'
+import AddUsernameSearchPage  from './profiles/AddUsernameSearchPage'
+import AddUsernamePaymentPage  from './profiles/AddUsernamePaymentPage'
+import AddUsernameConfirmationPage from './profiles/AddUsernameConfirmationPage'
 import AllProfilesPage      from './profiles/AllProfilesPage'
 import ViewProfilePage      from './profiles/ViewProfilePage'
 import EditProfilePage      from './profiles/EditProfilePage'
@@ -42,6 +45,9 @@ export default (
         <Route path=":index/local"    component={ViewProfilePage} />
         <Route path=":index/edit"     component={EditProfilePage} />
         <Route path=":index/export"   component={ExportProfilePage} />
+        <Route path="i/add-username/:index/search" component={AddUsernameSearchPage} />
+        <Route path="i/add-username/:index/payment" component={AddUsernamePaymentPage} />
+        <Route path="i/add-username/:index/confirm" component={AddUsernameConfirmationPage} />
         <Route path="i/register/:index" component={RegisterProfilePage} />
         <Route path="i/import"        component={ImportProfilePage} />
       </Route>
