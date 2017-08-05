@@ -227,7 +227,7 @@ class ViewProfilePage extends Component {
                 </Link>
                 }
                 {!this.hasUsername() ?
-                  <Link to={`/profiles/i/register/${domainName}`}
+                  <Link to={`/profiles/i/add-username/${domainName}/search`}
                     className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
                    Add a username
                   </Link>
