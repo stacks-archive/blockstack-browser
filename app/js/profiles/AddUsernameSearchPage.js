@@ -18,7 +18,8 @@ const STORAGE_URL = '/account/storage'
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
-    availability: state.profiles.availability
+    availability: state.profiles.availability,
+    walletBalance: state.account.coreWallet.balance
   }
 }
 
@@ -31,7 +32,9 @@ class AddUsernameSearchPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
     availability: PropTypes.object.isRequired,
-    checkNameAvailabilityAndPrice: PropTypes.func.isRequired
+    checkNameAvailabilityAndPrice: PropTypes.func.isRequired,
+    refreshCoreWalletBalance: PropTypes.func.isRequired,
+    walletBalance: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -59,6 +62,13 @@ class AddUsernameSearchPage extends Component {
     this.updateAlert = this.updateAlert.bind(this)
     this.displayConnectStorageAlert = this.displayConnectStorageAlert.bind(this)
   }
+
+  componentDidMount() {
+    logger.trace('componentDidMount')
+    this.props.refreshCoreWalletBalance(this.props.api.addressBalanceUrl,
+      this.props.api.coreAPIPassword)
+  }
+
 
   componentWillReceiveProps(nextProps) {
     logger.trace('componentWillReceiveProps')
@@ -121,6 +131,7 @@ class AddUsernameSearchPage extends Component {
   render() {
     const searchingUsername = this.state.searchingUsername
     const availableNames = this.props.availability.names
+    const walletBalance = this.props.walletBalance
     return (
       <div>
         <div className="container vertical-split-content">
@@ -168,12 +179,15 @@ class AddUsernameSearchPage extends Component {
                   nameAvailabilityObject.checkingAvailability
                   const isSubdomain = nameSuffix.split('.').length > 1
 
-                  const available = nameAvailabilityObject && nameAvailabilityObject.available
-                  const checkingPrice = nameAvailabilityObject && nameAvailabilityObject.checkingPrice
+                  const available = nameAvailabilityObject &&
+                    nameAvailabilityObject.available
+                  const checkingPrice = nameAvailabilityObject &&
+                    nameAvailabilityObject.checkingPrice
                   let price = 0
                   if (nameAvailabilityObject) {
                     price = nameAvailabilityObject.price
                   }
+
                   return (
                     <div>
                     {searching ?
@@ -182,18 +196,18 @@ class AddUsernameSearchPage extends Component {
                       <div>
                         {available ?
                           <div>
-                          <h4>{name} is available!</h4>
-                          {isSubdomain ?
-                            <a href="">Get</a>
-                          :
-                            <div>
-                            {checkingPrice ?
-                              <span>Checking price...</span>
-                              :
-                              <a href="">Buy for {price}</a>
+                            <h4>{name} is available!</h4>
+                            {isSubdomain ?
+                              <a href={`select/${name}`}>Get</a>
+                            :
+                              <div>
+                              {checkingPrice ?
+                                <span>Checking price...</span>
+                                :
+                                <a href={`select/${name}`}>Buy for {price}</a>
+                              }
+                              </div>
                             }
-                            </div>
-                          }
                           </div>
                           :
                           <h4>{name} is already taken.</h4>
