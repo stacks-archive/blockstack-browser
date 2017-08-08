@@ -30,22 +30,19 @@ function mapDispatchToProps(dispatch) {
 class AddUsernameSearchPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
-    availability: PropTypes.object.isRequired
+    availability: PropTypes.object.isRequired,
+    checkNameAvailabilityAndPrice: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
-
-    const availableDomains = {
-      id: {
-        registerUrl: this.props.api.registerUrl,
-        free: false
+    const availableDomains = Object.assign({},
+      {
+        id: {
+          registerUrl: this.props.api.registerUrl
+        }
       },
-      'blockstack.id': {
-        registerUrl: this.props.api.registerUrl,
-        free: true
-      }
-    }
+      this.props.api.subdomains)
 
     const nameSuffixes = Object.keys(availableDomains)
 
@@ -60,7 +57,6 @@ class AddUsernameSearchPage extends Component {
     this.onChange = this.onChange.bind(this)
     this.search = this.search.bind(this)
     this.updateAlert = this.updateAlert.bind(this)
-    this.displayPricingAndAvailabilityAlerts = this.displayPricingAndAvailabilityAlerts.bind(this)
     this.displayConnectStorageAlert = this.displayConnectStorageAlert.bind(this)
   }
 
@@ -72,12 +68,9 @@ class AddUsernameSearchPage extends Component {
     })
 
     const storageConnected = this.props.api.dropboxAccessToken !== null
-    const availability = nextProps.availability
 
     if (!storageConnected) {
       this.displayConnectStorageAlert()
-    } else {
-      this.displayPricingAndAvailabilityAlerts(availability)
     }
   }
 
@@ -94,16 +87,19 @@ class AddUsernameSearchPage extends Component {
     const username = this.state.username
     logger.debug(`search: user is searching for ${username}`)
     event.preventDefault()
-    const availableDomainSuffixes = Object.keys(this.state.availableDomains)
-    const testDomainName = `${username}.${availableDomainSuffixes[0]}`
+    const nameSuffixes = this.state.nameSuffixes
+    const testDomainName = `${username}.${nameSuffixes[0]}`
     if (!isABlockstackName(testDomainName)) {
-      this.updateAlert('danger', `${username} is not a valid Blockstack name`)
+      this.updateAlert('danger', `${testDomainName} is not a valid Blockstack name`)
       return
     }
-
     this.setState({
       searchingUsername: username
     })
+
+    nameSuffixes.forEach((nameSuffix) =>
+    this.props.checkNameAvailabilityAndPrice(this.props.api,
+      `${username}.${nameSuffix}`))
   }
 
   updateAlert(alertStatus, alertMessage, url = null) {
@@ -115,38 +111,6 @@ class AddUsernameSearchPage extends Component {
         url
       }]
     })
-  }
-
-  displayPricingAndAvailabilityAlerts(availability) {
-    const username = this.state.username
-
-    if (availability.lastNameEntered &&
-      (username === availability.lastNameEntered.split('.')[0])) {
-      if (availability.names[domainName].error) {
-        const error = availability.names[domainName].error
-        console.error(error)
-        this.updateAlert('danger', `There was a problem checking on price & availability of ${domainName}`)
-      } else {
-        if(availability.names[domainName].checkingAvailability)
-          this.updateAlert('info', `Checking if ${domainName} available...`)
-        else if(availability.names[domainName].available) {
-          if(availability.names[domainName].checkingPrice) {
-            this.updateAlert('info', `${domainName} is available! Checking price...`)
-          } else {
-            const price = availability.names[domainName].price
-            if(price < this.props.coreWalletBalance) {
-              const roundedUpPrice = roundTo.up(price, 3)
-              this.updateAlert('info', `${domainName} costs ~${roundedUpPrice} btc to register.`)
-            } else {
-              const shortfall = price - this.props.coreWalletBalance
-              this.updateAlert('danger', `Your wallet doesn't have enough money to buy ${domainName}. Please send at least ${shortfall} more bitcoin to your wallet.`, WALLET_URL)
-            }
-          }
-        } else {
-          this.updateAlert('danger', `${domainName} has already been registered.`)
-        }
-      }
-    }
   }
 
   displayConnectStorageAlert() {
