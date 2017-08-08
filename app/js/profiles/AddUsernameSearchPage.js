@@ -36,20 +36,26 @@ class AddUsernameSearchPage extends Component {
   constructor(props) {
     super(props)
 
+    const availableDomains = {
+      id: {
+        registerUrl: this.props.api.registerUrl,
+        free: false
+      },
+      'blockstack.id': {
+        registerUrl: this.props.api.registerUrl,
+        free: true
+      }
+    }
+
+    const nameSuffixes = Object.keys(availableDomains)
+
     this.state = {
       alerts: [],
       username: '',
+      searchingUsername: '',
       storageConnected: this.props.api.dropboxAccessToken !== null,
-      availableDomains: {
-        id: {
-          registerUrl: this.props.api.registerUrl,
-          free: false
-        },
-        'blockstack.id': {
-          registerUrl: this.props.api.registerUrl,
-          free: true
-        }
-      }
+      availableDomains,
+      nameSuffixes
     }
     this.onChange = this.onChange.bind(this)
     this.search = this.search.bind(this)
@@ -85,16 +91,19 @@ class AddUsernameSearchPage extends Component {
 
   search(event) {
     logger.trace('search')
-    const username = this.state.useranme
+    const username = this.state.username
     logger.debug(`search: user is searching for ${username}`)
     event.preventDefault()
-    const availableDomainSuffixes = Object.keys(this.availableDomains)
+    const availableDomainSuffixes = Object.keys(this.state.availableDomains)
     const testDomainName = `${username}.${availableDomainSuffixes[0]}`
     if (!isABlockstackName(testDomainName)) {
-      this.updateAlert('danger', `${username} is notNot valid Blockstack name`)
+      this.updateAlert('danger', `${username} is not a valid Blockstack name`)
       return
     }
 
+    this.setState({
+      searchingUsername: username
+    })
   }
 
   updateAlert(alertStatus, alertMessage, url = null) {
@@ -109,11 +118,11 @@ class AddUsernameSearchPage extends Component {
   }
 
   displayPricingAndAvailabilityAlerts(availability) {
-    let tld = this.state.tlds[this.state.type]
-    const domainName = `${this.state.username}.${tld}`
+    const username = this.state.username
 
-    if(domainName === availability.lastNameEntered) {
-      if(availability.names[domainName].error) {
+    if (availability.lastNameEntered &&
+      (username === availability.lastNameEntered.split('.')[0])) {
+      if (availability.names[domainName].error) {
         const error = availability.names[domainName].error
         console.error(error)
         this.updateAlert('danger', `There was a problem checking on price & availability of ${domainName}`)
@@ -141,10 +150,13 @@ class AddUsernameSearchPage extends Component {
   }
 
   displayConnectStorageAlert() {
-    this.updateAlert('danger', 'Please go to the Storage app and connect a storage provider.', STORAGE_URL)
+    this.updateAlert('danger', 'Please go to the Storage app and connect a storage provider.',
+    STORAGE_URL)
   }
 
   render() {
+    const searchingUsername = this.state.searchingUsername
+    const availableNames = this.props.availability.names
     return (
       <div>
         <div className="container vertical-split-content">
@@ -184,7 +196,33 @@ class AddUsernameSearchPage extends Component {
               </button>
             </form>
             <div>
+              {searchingUsername ?
+                this.state.nameSuffixes.map((nameSuffix) => {
+                  const name = `${searchingUsername}.${nameSuffix}`
+                  const nameAvailabilityObject = availableNames[name]
+                  const searching = !nameAvailabilityObject ||
+                  nameAvailabilityObject.checkingAvailability
 
+                  const available = nameAvailabilityObject && nameAvailabilityObject.available
+                  return (
+                    <div>
+                    {searching ?
+                      <h4>Checking {name}...</h4>
+                      :
+                      <div>
+                        {available ?
+                          <h4>{name} is available!</h4>
+                          :
+                          <h4>{name} is already taken.</h4>
+                        }
+                      </div>
+                    }
+                    </div>
+                  )
+                })
+                :
+                null
+              }
             </div>
           </div>
         </div>
