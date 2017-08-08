@@ -166,8 +166,14 @@ class AddUsernameSearchPage extends Component {
                   const nameAvailabilityObject = availableNames[name]
                   const searching = !nameAvailabilityObject ||
                   nameAvailabilityObject.checkingAvailability
+                  const isSubdomain = nameSuffix.split('.').length > 1
 
                   const available = nameAvailabilityObject && nameAvailabilityObject.available
+                  const checkingPrice = nameAvailabilityObject && nameAvailabilityObject.checkingPrice
+                  let price = 0
+                  if (nameAvailabilityObject) {
+                    price = nameAvailabilityObject.price
+                  }
                   return (
                     <div>
                     {searching ?
@@ -175,7 +181,20 @@ class AddUsernameSearchPage extends Component {
                       :
                       <div>
                         {available ?
+                          <div>
                           <h4>{name} is available!</h4>
+                          {isSubdomain ?
+                            <a href="">Get</a>
+                          :
+                            <div>
+                            {checkingPrice ?
+                              <span>Checking price...</span>
+                              :
+                              <a href="">Buy for {price}</a>
+                            }
+                            </div>
+                          }
+                          </div>
                           :
                           <h4>{name} is already taken.</h4>
                         }
