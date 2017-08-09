@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -7,7 +8,7 @@ import { AccountActions } from '../account/store/account'
 import { AvailabilityActions } from './store/availability'
 import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
-import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
+import { isABlockstackName } from '../utils/name-utils'
 
 import log4js from 'log4js'
 
@@ -19,7 +20,8 @@ function mapStateToProps(state) {
   return {
     api: state.settings.api,
     availability: state.profiles.availability,
-    walletBalance: state.account.coreWallet.balance
+    walletBalance: state.account.coreWallet.balance,
+    balanceUrl: state.settings.api.zeroConfBalanceUrl
   }
 }
 
@@ -34,7 +36,9 @@ class AddUsernameSearchPage extends Component {
     availability: PropTypes.object.isRequired,
     checkNameAvailabilityAndPrice: PropTypes.func.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
-    walletBalance: PropTypes.number.isRequired
+    walletBalance: PropTypes.number.isRequired,
+    routeParams: PropTypes.object.isRequired,
+    balanceUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -65,7 +69,7 @@ class AddUsernameSearchPage extends Component {
 
   componentDidMount() {
     logger.trace('componentDidMount')
-    this.props.refreshCoreWalletBalance(this.props.api.addressBalanceUrl,
+    this.props.refreshCoreWalletBalance(this.props.balanceUrl,
       this.props.api.coreAPIPassword)
   }
 
@@ -131,7 +135,7 @@ class AddUsernameSearchPage extends Component {
   render() {
     const searchingUsername = this.state.searchingUsername
     const availableNames = this.props.availability.names
-    const walletBalance = this.props.walletBalance
+    const ownerAddress = this.props.routeParams.index
     return (
       <div>
         <div className="container vertical-split-content">
@@ -189,7 +193,7 @@ class AddUsernameSearchPage extends Component {
                   }
 
                   return (
-                    <div>
+                    <div key={nameSuffix}>
                     {searching ?
                       <h4>Checking {name}...</h4>
                       :
@@ -198,13 +202,21 @@ class AddUsernameSearchPage extends Component {
                           <div>
                             <h4>{name} is available!</h4>
                             {isSubdomain ?
-                              <a href={`select/${name}`}>Get</a>
+                              <Link
+                                to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                              >
+                                Get
+                              </Link>
                             :
                               <div>
                               {checkingPrice ?
                                 <span>Checking price...</span>
                                 :
-                                <a href={`select/${name}`}>Buy for {price}</a>
+                                <Link
+                                  to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                                >
+                                  Buy for {price}
+                                </Link>
                               }
                               </div>
                             }
