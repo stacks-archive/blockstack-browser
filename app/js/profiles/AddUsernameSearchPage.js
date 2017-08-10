@@ -3,13 +3,13 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Modal from 'react-modal'
 import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { AvailabilityActions } from './store/availability'
 import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
 import { isABlockstackName } from '../utils/name-utils'
+import roundTo from 'round-to'
 
 import log4js from 'log4js'
 
@@ -160,7 +160,7 @@ class AddUsernameSearchPage extends Component {
             <form
               className="form-inline"
               onSubmit={this.search}
-              style={{ 'margin-bottom': '2em' }}
+              style={{ marginBottom: '2em' }}
             >
               <input
                 name="username"
@@ -196,7 +196,7 @@ class AddUsernameSearchPage extends Component {
                   if (nameAvailabilityObject) {
                     price = nameAvailabilityObject.price
                   }
-
+                  price = roundTo(price, 6)
                   return (
                     <div key={nameSuffix}>
                     {searching ?

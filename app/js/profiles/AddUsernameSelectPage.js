@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AccountActions } from '../account/store/account'
@@ -6,6 +7,8 @@ import { AvailabilityActions } from './store/availability'
 import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
 import { hasNameBeenPreordered } from '../utils/name-utils'
+import roundTo from 'round-to'
+
 
 import log4js from 'log4js'
 
@@ -54,6 +57,12 @@ class AddUsernameSelectPage extends Component {
     if (!nameAvailabilityObject) {
       logger.error(`componentDidMount: not sure if ${name} is available.`)
       props.router.push(`/profiles/i/add-username/${ownerAddress}/search`)
+    }
+
+    const nameHasBeenPreordered = hasNameBeenPreordered(name, props.localIdentities)
+    if (nameHasBeenPreordered) {
+      logger.error(`constructor: Name ${name} has already been preordered.`)
+      props.router.push('/profiles')
     }
 
     this.state = {
@@ -147,6 +156,7 @@ class AddUsernameSelectPage extends Component {
     if (nameAvailabilityObject) {
       price = nameAvailabilityObject.price
     }
+    price = roundTo(price, 6)
     const walletBalance = this.props.walletBalance
 
     if (isSubdomain || (walletBalance > price)) {
@@ -157,20 +167,44 @@ class AddUsernameSelectPage extends Component {
 
     return (
       <div>
-      AddUsernameSelectPage: {this.state.name}
-      {enoughMoney ?
-        <div>
-          <button
-            onClick={this.register}
-            className="btn btn-primary"
-            disabled={registrationInProgress}
-          >
-            Confirm
-          </button>
+        <div className="container vertical-split-content">
+          <div className="col-sm-2">
+          </div>
+          <div className="col-sm-8">
+            {enoughMoney ?
+              <div>
+                <h3>Are you sure you want to buy <strong>{name}</strong>?</h3>
+                <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
+                from your wallet.</p>
+                <div
+                  style={{ textAlign: 'center' }}
+                >
+                  <button
+                    onClick={this.register}
+                    className="btn btn-primary"
+                    disabled={registrationInProgress}
+                  >
+                    {registrationInProgress ?
+                      <span>Buying...</span>
+                      :
+                      <span>Buy</span>
+                    }
+                  </button>
+                  <br />
+                  {registrationInProgress ?
+                    null
+                    :
+                    <Link to="/profiles">
+                      Cancel
+                    </Link>
+                  }
+                </div>
+              </div>
+              :
+              <div>deposit {price}</div>
+            }
+          </div>
         </div>
-        :
-        <div>deposit {price}</div>
-      }
       </div>
     )
   }
