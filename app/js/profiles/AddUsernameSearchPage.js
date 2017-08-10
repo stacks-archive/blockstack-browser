@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import Modal from 'react-modal'
 import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { AvailabilityActions } from './store/availability'
@@ -156,7 +157,11 @@ class AddUsernameSearchPage extends Component {
               Add a username to save your profile so you can interact with other
               people on the decentralized internet.
             </p>
-            <form className="form-inline" onSubmit={this.search}>
+            <form
+              className="form-inline"
+              onSubmit={this.search}
+              style={{ 'margin-bottom': '2em' }}
+            >
               <input
                 name="username"
                 className="form-control"
@@ -210,13 +215,34 @@ class AddUsernameSearchPage extends Component {
                             :
                               <div>
                               {checkingPrice ?
-                                <span>Checking price...</span>
+                                <div className="progress">
+                                  <div
+                                    className="progress-bar progress-bar-striped progress-bar-animated"
+                                    role="progressbar"
+                                    aria-valuenow="100"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                    style={{ width: '100%' }}
+                                  >
+                                  Checking price...
+                                  </div>
+                                </div>
                                 :
-                                <Link
-                                  to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                                <div
+                                  style={{ margin: '1em' }}
                                 >
-                                  Buy for {price}
-                                </Link>
+                                  <ul>
+                                    <li><strong>Price:</strong> {price} bitcoins</li>
+                                    <li><strong>Censorship resistant:</strong> Yes!</li>
+                                    <li>Arrives in ~2 hours</li>
+                                  </ul>
+                                  <Link
+                                    className="btn btn-primary btn-sm"
+                                    to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                                  >
+                                    Buy {name}
+                                  </Link>
+                                </div>
                               }
                               </div>
                             }
