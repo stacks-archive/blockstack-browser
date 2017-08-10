@@ -8,6 +8,7 @@ import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
 import { hasNameBeenPreordered } from '../utils/name-utils'
 import roundTo from 'round-to'
+import { QRCode } from 'react-qr-svg'
 
 
 import log4js from 'log4js'
@@ -19,6 +20,7 @@ function mapStateToProps(state) {
     api: state.settings.api,
     availability: state.profiles.availability,
     walletBalance: state.account.coreWallet.balance,
+    walletAddress: state.account.coreWallet.address,
     identityKeypairs: state.account.identityAccount.keypairs,
     identityAddresses: state.account.identityAccount.addresses,
     registration: state.profiles.registration,
@@ -40,6 +42,7 @@ class AddUsernameSelectPage extends Component {
     availability: PropTypes.object.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     walletBalance: PropTypes.number.isRequired,
+    walletAddress: PropTypes.string.isRequired,
     registerName: PropTypes.func.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
     identityAddresses: PropTypes.array.isRequired,
@@ -79,6 +82,7 @@ class AddUsernameSelectPage extends Component {
     console.log(this.props.balanceUrl)
     this.props.refreshCoreWalletBalance(this.props.balanceUrl,
       this.props.api.coreAPIPassword)
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -156,7 +160,7 @@ class AddUsernameSelectPage extends Component {
     if (nameAvailabilityObject) {
       price = nameAvailabilityObject.price
     }
-    price = roundTo(price, 6)
+    price = roundTo(price, 3)
     const walletBalance = this.props.walletBalance
 
     if (isSubdomain || (walletBalance > price)) {
@@ -201,7 +205,37 @@ class AddUsernameSelectPage extends Component {
                 </div>
               </div>
               :
-              <div>deposit {price}</div>
+              <div>
+                <h3>Buy {name}</h3>
+                <p>Send {price} bitcoins to your wallet:<br/>
+                <strong>{this.props.walletAddress}</strong></p>
+                <div style={{ textAlign: 'center' }}>
+                  <QRCode
+                    style={{ width: 256 }}
+                    value={this.props.walletAddress}
+                  />
+                  <div>
+                    <div className="progress">
+                      <div
+                        className="progress-bar progress-bar-striped progress-bar-animated"
+                        role="progressbar"
+                        aria-valuenow="100"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        style={{ width: '100%' }}
+                      >
+                      Waiting for payment...
+                      </div>
+                    </div>
+                    <Link
+                      to="/profiles"
+                      className="btn btn-secondary btn-sm"
+                    >
+                      Cancel
+                    </Link>
+                  </div>
+                </div>
+              </div>
             }
           </div>
         </div>
