@@ -49,7 +49,7 @@ class HomeScreenPage extends Component {
                 </div>
               </div>
               <div className="app-box-wrap">
-                <a href="http://guild2.herokuapp.com/"
+                <a href="http://www.guildblog.com/"
                    className="app-box-container">
                   <div className="app-box">
                     <img src="/images/app-icon-guild@2x.png" />
