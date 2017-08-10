@@ -344,7 +344,7 @@ function newBitcoinAddress() {
 
 function newIdentityAddress(newIdentityKeypair) {
   return {
-    type: types.NEW_BITCOIN_ADDRESS,
+    type: types.NEW_IDENTITY_ADDRESS,
     keypair: newIdentityKeypair
   }
 }

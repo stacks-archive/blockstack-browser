@@ -46,7 +46,7 @@ describe('Availability Store: Async Actions', () => {
             "keyID": "0359e44963688f2b3e95cb14ce4026f1ea34540ce04260e23c1ed3b8ff4a08da6c",
             "salt": "0816f31b782a4121f4222b8d0f2a60b025b20f3f40136042d806bdccddfcf300"
           },
-          "type": "NEW_BITCOIN_ADDRESS"
+          "type": "NEW_IDENTITY_ADDRESS"
         },
         {
           "type": "INCREMENT_IDENTITY_ADDRESS_INDEX"
