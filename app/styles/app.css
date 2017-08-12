@@ -656,6 +656,7 @@ form.modal-form > div.form-group {
 
 /* Auth Modal */
 .auth-modal {text-align: center}
+.auth-modal .profile-select{margin-bottom:20px;}
 
 /* Account App */
 .item-sidebar-account{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
