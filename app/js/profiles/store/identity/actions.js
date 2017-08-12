@@ -29,6 +29,13 @@ function updateCurrentIdentity(domainName, profile, verifications) {
   }
 }
 
+function setDefaultIdentity(domainName) {
+  return {
+    type: types.SET_DEFAULT,
+    domainName
+  }
+}
+
 function createNewIdentity(domainName, ownerAddress) {
   return {
     type: types.CREATE_NEW,
@@ -299,6 +306,7 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
 const IdentityActions = {
   calculateLocalIdentities,
   updateCurrentIdentity,
+  setDefaultIdentity,
   createNewIdentity,
   createNewProfile,
   updateProfile,

@@ -7,6 +7,7 @@ const initialState = {
     profile: null,
     verifications: null
   },
+  default: null,
   localIdentities: {},
   namesOwned: [],
   createProfileError: null
@@ -21,6 +22,10 @@ function IdentityReducer(state = initialState, action) {
           profile: action.profile,
           verifications: action.verifications
         }
+      })
+    case types.SET_DEFAULT:
+      return Object.assign({}, state, {
+        default: action.domainName
       })
     case types.CREATE_NEW:
       return Object.assign({}, state, {
