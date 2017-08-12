@@ -10,7 +10,8 @@ class IdentityItem extends Component {
     url: PropTypes.string.isRequired,
     pending: PropTypes.bool.isRequired,
     ownerAddress: PropTypes.string.isRequired,
-    canAddUsername: PropTypes.bool.isRequired
+    canAddUsername: PropTypes.bool.isRequired,
+    isDefault: PropTypes.bool
   }
 
   constructor(props) {
@@ -22,11 +23,11 @@ class IdentityItem extends Component {
     return (
       <li className="col-md-6 col-lg-4 col-xl-3 card-list-wrap">
         <Link to={this.props.url} className="card profile-list-card container-fluid m-b-35">
-          <div className="card-avatar profile-list-avatar">
+          <div className="card-avatar profile-list-avatar col-xs-3">
             <Image src={this.props.avatarUrl}
               fallbackSrc="/images/avatar.png" className="img-circle img-cover" />
           </div>
-          <div>
+          <div className="col-xs-9">
             <ul className="profile-card-list">
               <li>
                 <h3 className="card-title profile-list-card-title">
@@ -44,6 +45,13 @@ class IdentityItem extends Component {
                       {this.props.pending ? '(pending)' : '\u00A0'}
                      </p>
                   </div>
+                }
+              </li>
+              <li>
+                {this.props.isDefault ?
+                  <span>Default Profile</span>
+                :
+                  <a href="#">Set as Default Profile</a>
                 }
               </li>
             </ul>

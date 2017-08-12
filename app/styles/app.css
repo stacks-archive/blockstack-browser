@@ -494,7 +494,7 @@ a.card:hover{text-decoration:none;}
 .profile-list-card-title{font-size:15px;color:#19191A;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .profile-list-card-subtitle{font-size:13px;color:#949494;line-height:1.9rem;}
 .profile-list-card-avatar{display:inline-block;}
-.profile-list-avatar{float:left;margin-right:15px;padding:0;}
+.profile-list-avatar{padding:0;}
 div.card-avatar.profile-list-avatar img{width:48px;height:48px;}
 .profile-card-list{list-style:none;padding:0;}
 .card-wrapper{list-style:none;padding-left:0;}
