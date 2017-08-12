@@ -106,7 +106,6 @@ class IdentityPage extends Component {
   }
 
   setDefaultIdentity(domainName) {
-    console.log(domainName)
     this.props.setDefaultIdentity(domainName)
   }
 

@@ -94,8 +94,6 @@ class AuthModal extends Component {
       return
     }
 
-    // TODO Should put all the following this into side-effects!
-
     logger.trace('componentWillReceiveProps: received coreSessionToken')
     if (!Object.keys(localIdentities).length) {
       return
@@ -154,7 +152,6 @@ class AuthModal extends Component {
     // Get keypair corresponding to the current user identity
     const profileSigningKeypair = this.props.identityKeypairs.find((keypair) => keypair.address === userDomainName)
 
-    // TODO Should put this into side-effects!
     const appDomain = this.state.decodedToken.payload.domain_name
     const scopes = this.state.decodedToken.payload.scopes
     const appsNodeKey = profileSigningKeypair.appsNodeKey
