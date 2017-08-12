@@ -16,6 +16,7 @@ const logger = log4js.getLogger('profiles/AllProfilesPage.js')
 function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
     namesOwned: state.profiles.identity.namesOwned,
     createProfileError: state.profiles.identity.createProfileError,
     identityAddresses: state.account.identityAccount.addresses,
@@ -32,6 +33,7 @@ function mapDispatchToProps(dispatch) {
 class IdentityPage extends Component {
   static propTypes = {
     localIdentities: PropTypes.object.isRequired,
+    defaultIdentity: PropTypes.string.isRequired,
     createNewProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
     namesOwned: PropTypes.array.isRequired,
@@ -39,6 +41,7 @@ class IdentityPage extends Component {
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
+    setDefaultIdentity: PropTypes.string.isRequired,
     resetCreateNewProfileError: PropTypes.func.isRequired,
     createProfileError: PropTypes.string
   }
@@ -56,6 +59,7 @@ class IdentityPage extends Component {
     console.log(props)
 
     this.onValueChange = this.onValueChange.bind(this)
+    this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
     this.createNewProfile = this.createNewProfile.bind(this)
     this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
     this.openPasswordPrompt = this.openPasswordPrompt.bind(this)
@@ -99,6 +103,11 @@ class IdentityPage extends Component {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
+
+  setDefaultIdentity(domainName) {
+    console.log(domainName)
+    this.props.setDefaultIdentity(domainName)
   }
 
   createNewProfile(event) {
@@ -210,6 +219,8 @@ class IdentityPage extends Component {
                     url={`/profiles/${identity.domainName}/local`}
                     ownerAddress={identity.ownerAddress}
                     canAddUsername={identity.canAddUsername}
+                    isDefault={identity.domainName === this.props.defaultIdentity}
+                    setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
                   />
                 )
               } else {

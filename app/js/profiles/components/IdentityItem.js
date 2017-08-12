@@ -11,12 +11,20 @@ class IdentityItem extends Component {
     pending: PropTypes.bool.isRequired,
     ownerAddress: PropTypes.string.isRequired,
     canAddUsername: PropTypes.bool.isRequired,
-    isDefault: PropTypes.bool
+    isDefault: PropTypes.bool,
+    setDefaultIdentity: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
     this.state = {}
+
+    this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
+  }
+
+  setDefaultIdentity(event) {
+    event.preventDefault()
+    this.props.setDefaultIdentity()
   }
 
   render() {
@@ -51,7 +59,7 @@ class IdentityItem extends Component {
                 {this.props.isDefault ?
                   <span>Default Profile</span>
                 :
-                  <a href="#">Set as Default Profile</a>
+                  <a href="#" onClick={this.setDefaultIdentity}>Set as Default Profile</a>
                 }
               </li>
             </ul>
