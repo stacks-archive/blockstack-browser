@@ -196,7 +196,7 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
       const balance = responseJson.balance.bitcoin
       logger.debug(`refreshCoreWalletBalance: balance is ${balance}.`)
       dispatch(
-        updateCoreWalletBalance(0)
+        updateCoreWalletBalance(balance)
       )
     })
     .catch((error) => {

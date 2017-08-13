@@ -14,6 +14,8 @@ import { QRCode } from 'react-qr-svg'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/AddUsernameSelectPage.js')
+const CHECK_FOR_PAYMENT_INTERVAL = 10000
+
 
 function mapStateToProps(state) {
   return {
@@ -68,9 +70,33 @@ class AddUsernameSelectPage extends Component {
       props.router.push('/profiles')
     }
 
+
+    const isSubdomain = name.split('.').length === 3
+    let enoughMoney = false
+    let price = 0
+    if (nameAvailabilityObject) {
+      price = nameAvailabilityObject.price
+    }
+    price = roundTo.up(price, 3)
+    const walletBalance = this.props.walletBalance
+
+    if (isSubdomain || (walletBalance > price)) {
+      enoughMoney = true
+    }
+
+    const that = this
+    if (!enoughMoney) {
+      this.paymentTimer = setInterval(() => {
+        logger.debug('paymentTimer: calling refreshCoreWalletBalance...')
+        that.props.refreshCoreWalletBalance(that.props.balanceUrl,
+          that.props.api.coreAPIPassword)
+      }, CHECK_FOR_PAYMENT_INTERVAL)
+    }
     this.state = {
       ownerAddress,
       name,
+      isSubdomain,
+      enoughMoney,
       registrationInProgress: false
     }
     this.findAddressIndex = this.findAddressIndex.bind(this)
@@ -79,10 +105,8 @@ class AddUsernameSelectPage extends Component {
 
   componentDidMount() {
     logger.trace('componentDidMount')
-    console.log(this.props.balanceUrl)
     this.props.refreshCoreWalletBalance(this.props.balanceUrl,
       this.props.api.coreAPIPassword)
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -92,6 +116,35 @@ class AddUsernameSelectPage extends Component {
       logger.debug('componentWillReceiveProps: registration submitted! redirecting...')
       this.props.router.push('/profiles') // TODO this should go to the status page
     }
+
+
+    const name = nextProps.routeParams.name
+    const availableNames = this.props.availability.names
+    const nameAvailabilityObject = availableNames[name]
+
+    const isSubdomain = name.split('.').length === 3
+    let enoughMoney = false
+    let price = 0
+    if (nameAvailabilityObject) {
+      price = nameAvailabilityObject.price
+    }
+    price = roundTo.up(price, 3)
+    const walletBalance = this.props.walletBalance
+
+    if (isSubdomain || (walletBalance > price)) {
+      enoughMoney = true
+    }
+
+    if (enoughMoney && !this.state.enoughMoney) {
+      logger.debug('componentWillReceiveProps: payment received')
+      logger.debug('componentWillReceiveProps: clearing payment timer')
+      clearTimeout(this.paymentTimer)
+      this.register()
+    }
+    this.setState({
+      isSubdomain,
+      enoughMoney
+    })
   }
 
   findAddressIndex(address) {
@@ -106,7 +159,11 @@ class AddUsernameSelectPage extends Component {
 
   register(event) {
     logger.trace('register')
-    event.preventDefault()
+
+    if (event) {
+      event.preventDefault()
+    }
+
     this.setState({
       registrationInProgress: true
     })

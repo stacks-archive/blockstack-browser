@@ -196,7 +196,7 @@ class AddUsernameSearchPage extends Component {
                   if (nameAvailabilityObject) {
                     price = nameAvailabilityObject.price
                   }
-                  price = roundTo(price, 6)
+                  price = roundTo.up(price, 6)
                   return (
                     <div key={nameSuffix}>
                     {searching ?
