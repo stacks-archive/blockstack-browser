@@ -84,7 +84,7 @@ class AuthModal extends Component {
     const storageConnected = this.props.api.dropboxAccessToken !== null
     this.setState({
       storageConnected,
-      currentIdentity: this.state.currentIdentity || nextProps.defaultIdentity
+      currentIdentity: this.state.currentIdentity || nextProps.defaultIdentity || undefined
     })
 
     const appDomain = this.state.decodedToken.payload.domain_name
