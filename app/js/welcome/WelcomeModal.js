@@ -59,7 +59,8 @@ class WelcomeModal extends Component {
     emailNotifications: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired,
     identityAddresses: PropTypes.array,
-    createNewIdentityFromDomain: PropTypes.func.isRequired,
+    createNewIdentityFromDomain: PropTypes.func.isRequired,    
+    setDefaultIdentity: PropTypes.func.isRequired,
     connectedStorageAtLeastOnce: PropTypes.bool.isRequired
   }
 
@@ -141,6 +142,9 @@ class WelcomeModal extends Component {
         // create first profile
         this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
 
+        // Set as default profile
+        this.props.setDefaultIdentity(ownerAddress)
+
         this.setPage(WRITE_DOWN_IDENTITY_PAGE_VIEW)
       }, () => {
         logger.debug('User has refreshed browser mid onboarding.')
@@ -176,6 +180,7 @@ class WelcomeModal extends Component {
 
         logger.debug('Initializing account...')
         this.props.initializeWallet(password, null)
+        this.props.
         resolve()
       }
     })
