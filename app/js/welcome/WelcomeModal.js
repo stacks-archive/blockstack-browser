@@ -59,7 +59,7 @@ class WelcomeModal extends Component {
     emailNotifications: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired,
     identityAddresses: PropTypes.array,
-    createNewIdentityFromDomain: PropTypes.func.isRequired,    
+    createNewIdentityFromDomain: PropTypes.func.isRequired,
     setDefaultIdentity: PropTypes.func.isRequired,
     connectedStorageAtLeastOnce: PropTypes.bool.isRequired
   }

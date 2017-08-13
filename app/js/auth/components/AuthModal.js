@@ -100,7 +100,7 @@ class AuthModal extends Component {
     }
     // Careful with this.state, as the above this.setState is async. But
     // there shouldn't be any problem with the above check.
-    // TODO: Side-effects to avoid confusion. 
+    // TODO: Side-effects to avoid confusion.
     const userDomainName = this.state.currentIdentity
 
     let hasUsername = true
