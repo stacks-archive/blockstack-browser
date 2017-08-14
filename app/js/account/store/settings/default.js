@@ -24,8 +24,8 @@ const DEFAULT_API = {
   btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
   corePingUrl: 'http://localhost:6270/v1/node/ping',
   subdomains: {
-    'subdomaintest.id': {
-      registerUrl: 'http://localhost:6270/v1/names'
+    'foo.id': {
+      registerUrl: 'http://localhost:7103/v1/names'
     }
   },
   hostedDataLocation: DROPBOX,
