@@ -77,7 +77,7 @@ class IdentityPage extends Component {
     this.setState({
       localIdentities: nextProps.localIdentities
     })
-    if (!this.props.createProfileError && nextProps.createProfileError) {
+    if (nextProps.createProfileError) {
       this.setState({
         processing: false
       })
