@@ -6,7 +6,7 @@ import { AccountActions } from '../account/store/account'
 import { AvailabilityActions } from './store/availability'
 import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
-import { hasNameBeenPreordered } from '../utils/name-utils'
+import { hasNameBeenPreordered, isSubdomain } from '../utils/name-utils'
 import roundTo from 'round-to'
 import { QRCode } from 'react-qr-svg'
 
@@ -71,7 +71,7 @@ class AddUsernameSelectPage extends Component {
     }
 
 
-    const isSubdomain = name.split('.').length === 3
+    const nameIsSubdomain = isSubdomain(name)
     let enoughMoney = false
     let price = 0
     if (nameAvailabilityObject) {
@@ -80,7 +80,7 @@ class AddUsernameSelectPage extends Component {
     price = roundTo.up(price, 3)
     const walletBalance = this.props.walletBalance
 
-    if (isSubdomain || (walletBalance > price)) {
+    if (nameIsSubdomain || (walletBalance > price)) {
       enoughMoney = true
     }
 
@@ -95,7 +95,7 @@ class AddUsernameSelectPage extends Component {
     this.state = {
       ownerAddress,
       name,
-      isSubdomain,
+      nameIsSubdomain,
       enoughMoney,
       registrationInProgress: false
     }
@@ -121,8 +121,7 @@ class AddUsernameSelectPage extends Component {
     const name = nextProps.routeParams.name
     const availableNames = this.props.availability.names
     const nameAvailabilityObject = availableNames[name]
-
-    const isSubdomain = name.split('.').length === 3
+    const nameIsSubdomain = isSubdomain(name)
     let enoughMoney = false
     let price = 0
     if (nameAvailabilityObject) {
@@ -131,7 +130,7 @@ class AddUsernameSelectPage extends Component {
     price = roundTo.up(price, 3)
     const walletBalance = this.props.walletBalance
 
-    if (isSubdomain || (walletBalance > price)) {
+    if (nameIsSubdomain || (walletBalance > price)) {
       enoughMoney = true
     }
 
@@ -142,7 +141,7 @@ class AddUsernameSelectPage extends Component {
       this.register()
     }
     this.setState({
-      isSubdomain,
+      nameIsSubdomain,
       enoughMoney
     })
   }
@@ -192,17 +191,13 @@ class AddUsernameSelectPage extends Component {
 
       const nameTokens = name.split('.')
       const nameSuffix = name.split(nameTokens[0])
-      const isSubdomain = nameTokens.length === 0
+      const nameIsSubdomain = isSubdomain(name)
 
       logger.debug(`register: ${name} has name suffix ${nameSuffix}`)
-      logger.debug(`register: is ${name} a subdomain? ${isSubdomain}`)
+      logger.debug(`register: is ${name} a subdomain? ${nameIsSubdomain}`)
 
-      if (isSubdomain) {
-        // TODO implement subdomains
-      } else {
-        this.props.registerName(this.props.api, name, address, keypair)
-      }
-      //
+      this.props.registerName(this.props.api, name, address, keypair)
+
       logger.debug(`register: ${name} preordered! Waiting for registration confirmation.`)
     }
   }
@@ -211,7 +206,7 @@ class AddUsernameSelectPage extends Component {
     const name = this.props.routeParams.name
     const availableNames = this.props.availability.names
     const nameAvailabilityObject = availableNames[name]
-    const isSubdomain = name.split('.').length === 3
+    const nameIsSubdomain = isSubdomain(name)
     let enoughMoney = false
     let price = 0
     if (nameAvailabilityObject) {
@@ -220,7 +215,7 @@ class AddUsernameSelectPage extends Component {
     price = roundTo(price, 3)
     const walletBalance = this.props.walletBalance
 
-    if (isSubdomain || (walletBalance > price)) {
+    if (nameIsSubdomain || (walletBalance > price)) {
       enoughMoney = true
     }
 
@@ -234,38 +229,70 @@ class AddUsernameSelectPage extends Component {
           <div className="col-sm-8">
             {enoughMoney ?
               <div>
-                <h3>Are you sure you want to buy <strong>{name}</strong>?</h3>
-                <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
-                from your wallet.</p>
-                <div
-                  style={{ textAlign: 'center' }}
-                >
-                  <button
-                    onClick={this.register}
-                    className="btn btn-primary"
-                    disabled={registrationInProgress}
+              {nameIsSubdomain ?
+                <div>
+                  <h3>Are you sure you want to register <strong>{name}</strong>?</h3>
+                  <div
+                    style={{ textAlign: 'center' }}
                   >
+                    <button
+                      onClick={this.register}
+                      className="btn btn-primary"
+                      disabled={registrationInProgress}
+                    >
+                      {registrationInProgress ?
+                        <span>Registering...</span>
+                        :
+                        <span>Register</span>
+                      }
+                    </button>
+                    <br />
                     {registrationInProgress ?
-                      <span>Buying...</span>
+                      null
                       :
-                      <span>Buy</span>
+                      <Link to="/profiles">
+                        Cancel
+                      </Link>
                     }
-                  </button>
-                  <br />
-                  {registrationInProgress ?
-                    null
-                    :
-                    <Link to="/profiles">
-                      Cancel
-                    </Link>
-                  }
+                  </div>
                 </div>
+                :
+                <div>
+                  <h3>Are you sure you want to buy <strong>{name}</strong>?</h3>
+                  <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
+                  from your wallet.</p>
+                  <div
+                    style={{ textAlign: 'center' }}
+                  >
+                    <button
+                      onClick={this.register}
+                      className="btn btn-primary"
+                      disabled={registrationInProgress}
+                    >
+                      {registrationInProgress ?
+                        <span>Buying...</span>
+                        :
+                        <span>Buy</span>
+                      }
+                    </button>
+                    <br />
+                    {registrationInProgress ?
+                      null
+                      :
+                      <Link to="/profiles">
+                        Cancel
+                      </Link>
+                    }
+                  </div>
+                </div>
+              }
               </div>
               :
               <div>
                 <h3>Buy {name}</h3>
-                <p>Send {price} bitcoins to your wallet:<br/>
-                <strong>{this.props.walletAddress}</strong></p>
+                <p>Send {price} bitcoins to your wallet:<br />
+                  <strong>{this.props.walletAddress}</strong>
+                </p>
                 <div style={{ textAlign: 'center' }}>
                   <QRCode
                     style={{ width: 256 }}

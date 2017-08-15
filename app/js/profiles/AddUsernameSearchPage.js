@@ -207,11 +207,19 @@ class AddUsernameSearchPage extends Component {
                           <div>
                             <h4>{name} is available!</h4>
                             {isSubdomain ?
-                              <Link
-                                to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
-                              >
-                                Get
-                              </Link>
+                              <div>
+                                <ul>
+                                  <li><strong>Price:</strong> Free!</li>
+                                  <li><strong>Censorship resistant:</strong> Partial!</li>
+                                  <li>Arrives in ~30 minutes</li>
+                                </ul>
+                                <Link
+                                  className="btn btn-primary btn-sm"
+                                  to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                                >
+                                  Get {name}
+                                </Link>
+                              </div>
                             :
                               <div>
                               {checkingPrice ?
