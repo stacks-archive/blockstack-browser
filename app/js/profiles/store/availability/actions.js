@@ -70,8 +70,8 @@ function checkNameAvailabilityAndPrice(api, domainName) {
       const subdomain = `${nameTokens[1]}.${nameTokens[2]}`
       logger.debug(`checkNameAvailabilityAndPrice: subdomain ${subdomain}`)
       if (!api.subdomains[subdomain]) {
-        logger.error(`checkNameAvailabilityAndPrice: no config in for subdomain ${subdomain}`)
-        dispatch(nameAvailabilityError(domainName, `no config in for subdomain ${subdomain}`))
+        logger.error(`checkNameAvailabilityAndPrice: no config for subdomain ${subdomain}`)
+        dispatch(nameAvailabilityError(domainName, `no config for subdomain ${subdomain}`))
       }
     }
     return isNameAvailable(api.nameLookupUrl, domainName).then((isAvailable) => {

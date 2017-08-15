@@ -86,7 +86,7 @@ describe('Availability Store: Async Actions', () => {
     it('indicates subdomain name is available and costs 0 btc', () => {
       // mock core
       nock('http://localhost:6270')
-      .get('/v1/names/satoshi.subdomaintest.id')
+      .get('/v1/names/satoshi.foo.id')
       .reply(404, {}, { 'Content-Type': 'application/json' })
 
 
@@ -98,24 +98,24 @@ describe('Availability Store: Async Actions', () => {
       })
 
       return store.dispatch(AvailabilityActions.checkNameAvailabilityAndPrice(mockAPI,
-        'satoshi.subdomaintest.id'))
+        'satoshi.foo.id'))
       .then(() => {
         const expectedActions = [
           {
             type: 'CHECKING_NAME_AVAILABILITY',
-            domainName: 'satoshi.subdomaintest.id'
+            domainName: 'satoshi.foo.id'
           },
           {
             type: 'NAME_AVAILABLE',
-            domainName: 'satoshi.subdomaintest.id'
+            domainName: 'satoshi.foo.id'
           },
           {
             type: 'CHECKING_NAME_PRICE',
-            domainName: 'satoshi.subdomaintest.id'
+            domainName: 'satoshi.foo.id'
           },
           {
             type: 'NAME_PRICE',
-            domainName: 'satoshi.subdomaintest.id',
+            domainName: 'satoshi.foo.id',
             price: 0
           }
         ]
