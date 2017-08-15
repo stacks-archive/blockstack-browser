@@ -6,6 +6,7 @@ import {
   signProfileForUpload, authorizationHeaderValue
 } from '../../../utils'
 import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
+import { isSubdomain, getNameSuffix } from '../../../utils/name-utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/store/registration/actions.js')
@@ -56,6 +57,36 @@ function beforeRegister() {
   }
 }
 
+function setOwnerKey(setOwnerKeyUrl, requestHeaders, keypair, nameIsSubdomain) {
+  return new Promise((resolve, reject) => {
+    if (nameIsSubdomain) {
+      logger.debug('setOwnerKey: skipping setting core owner key for subdomain')
+      resolve()
+      return
+    }
+
+    // Core registers with an uncompressed address,
+    // browser expects compressed addresses,
+    // we need to add a suffix to indicate to core
+    // that it should use a compressed addresses
+    // see https://en.bitcoin.it/wiki/Wallet_import_format
+    // and https://github.com/blockstack/blockstack-browser/issues/607
+    const compressedPublicKeySuffix = '01'
+
+    const setOwnerKeyRequestBody = JSON.stringify(`${keypair.key}${compressedPublicKeySuffix}`)
+
+    logger.debug('setOwnerKey: setting core owner key')
+
+    fetch(setOwnerKeyUrl, {
+      method: 'PUT',
+      headers: requestHeaders,
+      body: setOwnerKeyRequestBody
+    })
+    .then(() => resolve())
+    .catch((error) => reject(error))
+  })
+}
+
 function registerName(api, domainName, ownerAddress, keypair) {
   logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
@@ -79,6 +110,17 @@ function registerName(api, domainName, ownerAddress, keypair) {
         Authorization: authorizationHeaderValue(api.coreAPIPassword)
       }
 
+      const nameIsSubdomain = isSubdomain(domainName)
+      let registerUrl = api.registerUrl
+      let nameSuffix = null
+      if (nameIsSubdomain) {
+        nameSuffix = getNameSuffix(domainName)
+        logger.debug(`registerName: ${domainName} is a subdomain of ${nameSuffix}`)
+        registerUrl = api.subdomains[nameSuffix].registerUrl
+      } else {
+        logger.debug(`registerName: ${domainName} is not a subdomain`)
+      }
+
       const registrationRequestBody = JSON.stringify({
         name: domainName,
         owner_address: ownerAddress,
@@ -87,31 +129,18 @@ function registerName(api, domainName, ownerAddress, keypair) {
         unsafe: true
       })
 
-      // Core registers with an uncompressed address,
-      // browser expects compressed addresses,
-      // we need to add a suffix to indicate to core
-      // that it should use a compressed addresses
-      // see https://en.bitcoin.it/wiki/Wallet_import_format
-      // and https://github.com/blockstack/blockstack-browser/issues/607
-      const compressedPublicKeySuffix = '01'
-
-      const setOwnerKeyRequestBody = JSON.stringify(`${keypair.key}${compressedPublicKeySuffix}`)
-
       dispatch(registrationSubmitting())
-      logger.trace(`Submitting registration for ${domainName} to Core node at ${api.registerUrl}`)
+      logger.trace(`Submitting registration for ${domainName} to Core node at ${registerUrl}`)
 
       const setOwnerKeyUrl = `http://${api.coreHost}:${api.corePort}/v1/wallet/keys/owner`
 
-      return fetch(setOwnerKeyUrl, {
-        method: 'PUT',
+
+      return setOwnerKey(setOwnerKeyUrl, requestHeaders, keypair, nameIsSubdomain)
+      .then(() => fetch(registerUrl, {
+        method: 'POST',
         headers: requestHeaders,
-        body: setOwnerKeyRequestBody
+        body: registrationRequestBody
       })
-        .then(() => fetch(api.registerUrl, {
-          method: 'POST',
-          headers: requestHeaders,
-          body: registrationRequestBody
-        })
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
@@ -127,7 +156,7 @@ function registerName(api, domainName, ownerAddress, keypair) {
           }
         })
         .catch((error) => {
-          logger.error('registerName: error POSTing regitsration to Core', error)
+          logger.error('registerName: error POSTing registration to Core', error)
           dispatch(registrationError(error))
         })
       ).catch((error) => {
