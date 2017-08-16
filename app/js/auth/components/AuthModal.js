@@ -110,7 +110,7 @@ class AuthModal extends Component {
     }
 
     // Get keypair corresponding to the current user identity
-    const profileSigningKeypair = identityKeypairs.find((keypair) => keypair.address === userDomainName)
+    const profileSigningKeypair = identityKeypairs.find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
 
     const blockchainId = (hasUsername ? userDomainName : null)
     const identity = localIdentities[userDomainName]
@@ -150,7 +150,7 @@ class AuthModal extends Component {
     }
 
     // Get keypair corresponding to the current user identity
-    const profileSigningKeypair = this.props.identityKeypairs.find((keypair) => keypair.address === userDomainName)
+    const profileSigningKeypair = this.props.identityKeypairs.find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
 
     const appDomain = this.state.decodedToken.payload.domain_name
     const scopes = this.state.decodedToken.payload.scopes

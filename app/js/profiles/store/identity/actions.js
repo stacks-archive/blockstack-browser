@@ -83,7 +83,7 @@ function addUsername(domainName, ownerAddress) {
 
 function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false) {
   logger.debug(`createNewIdentityFromDomain: domainName: ${domainName} ownerAddress: ${ownerAddress}`)
-  return dispatch => {
+  return (dispatch, getState) => {
     if (!addingUsername) {
       logger.trace('createNewIdentityFromDomain: Not adding a username')
       dispatch(createNewIdentity(domainName, ownerAddress))
@@ -91,6 +91,15 @@ function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = 
     } else {
       logger.trace('createNewIdentityFromDomain: adding username to existing profile')
       dispatch(addUsername(domainName, ownerAddress))
+      const state = getState()
+      if (!state.profiles) {
+        return
+      }
+      // If we are adding a domainName to the default identity, then
+      // we need to update our default field to the new domainName
+      if (state.profiles.identity.default === ownerAddress) {
+        dispatch(setDefaultIdentity(domainName))
+      }
     }
   }
 }
