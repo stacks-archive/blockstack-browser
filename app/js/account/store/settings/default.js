@@ -25,7 +25,7 @@ const DEFAULT_API = {
   corePingUrl: 'http://localhost:6270/v1/node/ping',
   subdomains: {
     'foo.id': {
-      registerUrl: 'http://localhost:7103/v1/names'
+      registerUrl: 'http://localhost:7103/register'
     }
   },
   hostedDataLocation: DROPBOX,
