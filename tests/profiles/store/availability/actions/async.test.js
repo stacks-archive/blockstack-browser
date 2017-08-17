@@ -83,6 +83,46 @@ describe('Availability Store: Async Actions', () => {
       })
     })
 
+    it('indicates subdomain name is available and costs 0 btc', () => {
+      // mock core
+      nock('http://localhost:6270')
+      .get('/v1/names/satoshi.foo.id')
+      .reply(404, {}, { 'Content-Type': 'application/json' })
+
+
+      const store = mockStore({
+      })
+
+      const mockAPI = Object.assign({}, DEFAULT_API, {
+
+      })
+
+      return store.dispatch(AvailabilityActions.checkNameAvailabilityAndPrice(mockAPI,
+        'satoshi.foo.id'))
+      .then(() => {
+        const expectedActions = [
+          {
+            type: 'CHECKING_NAME_AVAILABILITY',
+            domainName: 'satoshi.foo.id'
+          },
+          {
+            type: 'NAME_AVAILABLE',
+            domainName: 'satoshi.foo.id'
+          },
+          {
+            type: 'CHECKING_NAME_PRICE',
+            domainName: 'satoshi.foo.id'
+          },
+          {
+            type: 'NAME_PRICE',
+            domainName: 'satoshi.foo.id',
+            price: 0
+          }
+        ]
+        assert.deepEqual(store.getActions(), expectedActions)
+      })
+    })
+
     it('indicates name is unavailable', () => {
       // mock core
       nock('http://localhost:6270')

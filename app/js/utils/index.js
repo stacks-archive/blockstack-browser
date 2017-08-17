@@ -36,6 +36,7 @@ export {
   isABlockstackName,
   hasNameBeenPreordered,
   isNameAvailable,
+  isSubdomain,
   getNamePrices
 } from './name-utils'
 

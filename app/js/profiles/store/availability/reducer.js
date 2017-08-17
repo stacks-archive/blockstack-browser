@@ -18,7 +18,7 @@ function AvailabilityReducer(state = initialState, action) {
             error: null
           })
         }),
-        lastNameEntered: action.domainName
+        lastNameEntered: action.domainName.split('.')[0]
       })
     }
     case types.NAME_AVAILABLE:

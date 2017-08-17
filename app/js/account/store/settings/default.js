@@ -23,6 +23,11 @@ const DEFAULT_API = {
   pgpKeyUrl: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on',
   btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
   corePingUrl: 'http://localhost:6270/v1/node/ping',
+  subdomains: {
+    'foo.id': {
+      registerUrl: 'http://localhost:7103/register'
+    }
+  },
   hostedDataLocation: DROPBOX,
   coreHost: 'localhost',
   corePort: 6270,

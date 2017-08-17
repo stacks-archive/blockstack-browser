@@ -1,5 +1,3 @@
-'use strict'
-
 import React                        from 'react'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
@@ -7,6 +5,9 @@ import App                  from './App'
 import HomeScreenPage        from './HomeScreenPage'
 
 import ProfilesApp          from './profiles/ProfilesApp'
+import AddUsernameModal      from './profiles/AddUsernameModal'
+import AddUsernameSearchPage  from './profiles/AddUsernameSearchPage'
+import AddUsernameSelectPage  from './profiles/AddUsernameSelectPage'
 import AllProfilesPage      from './profiles/AllProfilesPage'
 import ViewProfilePage      from './profiles/ViewProfilePage'
 import EditProfilePage      from './profiles/EditProfilePage'
@@ -33,22 +34,26 @@ import AuthPage             from './auth/AuthPage'
 import NotFoundPage         from './errors/NotFoundPage'
 
 export default (
-<Router history={browserHistory}>
-  <Route path="/" component={App}>
-    <IndexRoute component={HomeScreenPage} />
+  <Router history={browserHistory}>
+    <Route path="/" component={App}>
+      <IndexRoute component={HomeScreenPage} />
 
-    <Route path="profiles" component={ProfilesApp}>
+      <Route path="profiles" component={ProfilesApp}>
         <IndexRoute component={AllProfilesPage} />
         <Route path="i/search/:query" component={SearchProfilesPage} />
         <Route path=":name"           component={ViewProfilePage} />
         <Route path=":index/local"    component={ViewProfilePage} />
         <Route path=":index/edit"     component={EditProfilePage} />
         <Route path=":index/export"   component={ExportProfilePage} />
+        <Route path="i/add-username"  component={AddUsernameModal} >
+          <Route path=":index/search" component={AddUsernameSearchPage} />
+          <Route path=":index/select/:name" component={AddUsernameSelectPage} />
+        </Route>
         <Route path="i/register/:index" component={RegisterProfilePage} />
         <Route path="i/import"        component={ImportProfilePage} />
-    </Route>
+      </Route>
 
-    <Route path="account" component={AccountApp}>
+      <Route path="account" component={AccountApp}>
         <Route path="delete"      component={DeleteAccountPage} />
         <Route path="backup"      component={BackupAccountPage} />
         <Route path="password"    component={ChangePasswordPage} />
@@ -56,15 +61,15 @@ export default (
         <Route path="restore"     component={RestoreAccountPage} />
         <Route path="api"         component={ApiSettingsPage} />
         <Route path="storage"   component={StorageProvidersPage} />
-    </Route>
+      </Route>
 
-    <Route path="wallet" component={WalletApp}>
+      <Route path="wallet" component={WalletApp}>
         <Route path="receive"     component={ReceivePage} />
         <Route path="send"        component={SendPage} />
-    </Route>
+      </Route>
 
-    <Route path="/auth" component={AuthPage} />
-    <Route path="/*" component={NotFoundPage} />
-  </Route>
-</Router>
+      <Route path="/auth" component={AuthPage} />
+      <Route path="/*" component={NotFoundPage} />
+    </Route>
+  </Router>
 )
