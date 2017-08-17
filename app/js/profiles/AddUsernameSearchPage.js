@@ -17,6 +17,22 @@ const logger = log4js.getLogger('profiles/AddUsernameSearchPage.js')
 
 const STORAGE_URL = '/account/storage'
 
+const listWrapperStyle = {
+
+}
+
+const listStyle = {
+  textAlign: 'left',
+  paddingLeft: '12em'
+}
+
+const nameResultStyle = {
+  marginBottom: '3em'
+}
+
+const availabilityHeaderStyle = {
+  marginBottom: '0.5em'
+}
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
@@ -139,135 +155,135 @@ class AddUsernameSearchPage extends Component {
     const ownerAddress = this.props.routeParams.index
     return (
       <div>
-        <div className="container vertical-split-content">
-          <div className="col-sm-2">
-          </div>
-          <div className="col-sm-8">
-            <h3>Search for your username</h3>
-            {
-              this.state.alerts.map((alert, index) => {
-                return (
-                  <Alert
-                    key={index} message={alert.message} status={alert.status} url={alert.url}
-                  />
-              )
-              })
-            }
-            <p>
-              Add a username to save your profile so you can interact with other
-              people on the decentralized internet.
-            </p>
-            <form
-              className="form-inline"
-              onSubmit={this.search}
-              style={{ marginBottom: '2em' }}
+        <h3 className="modal-heading">Search for your username</h3>
+        <div className="modal-body">
+          {
+            this.state.alerts.map((alert, index) => {
+              return (
+                <Alert
+                  key={index} message={alert.message} status={alert.status} url={alert.url}
+                />
+            )
+            })
+          }
+          <p>
+            Add a username to save your profile so you can interact with other
+            people on the decentralized internet.
+          </p>
+          <form
+            className="form-inline"
+            onSubmit={this.search}
+            style={{ marginBottom: '2em' }}
+          >
+            <input
+              name="username"
+              className="form-control"
+              placeholder="Username"
+              value={this.state.username}
+              onChange={this.onChange}
+              required
+              disabled={!this.state.storageConnected}
+            />
+            <button
+              type="submit"
+              className="btn btn-blue"
+              disabled={!this.state.storageConnected}
             >
-              <input
-                name="username"
-                className="form-control"
-                placeholder="Username"
-                value={this.state.username}
-                onChange={this.onChange}
-                required
-                disabled={!this.state.storageConnected}
-              />
-              <button
-                type="submit"
-                className="btn btn-blue"
-                disabled={!this.state.storageConnected}
-              >
-                Search
-              </button>
-            </form>
-            <div>
-              {searchingUsername ?
-                this.state.nameSuffixes.map((nameSuffix) => {
-                  const name = `${searchingUsername}.${nameSuffix}`
-                  const nameAvailabilityObject = availableNames[name]
-                  const searching = !nameAvailabilityObject ||
-                  nameAvailabilityObject.checkingAvailability
-                  const isSubdomain = nameSuffix.split('.').length > 1
+              Search
+            </button>
+          </form>
+          <div>
+            {searchingUsername ?
+              this.state.nameSuffixes.map((nameSuffix) => {
+                const name = `${searchingUsername}.${nameSuffix}`
+                const nameAvailabilityObject = availableNames[name]
+                const searching = !nameAvailabilityObject ||
+                nameAvailabilityObject.checkingAvailability
+                const isSubdomain = nameSuffix.split('.').length > 1
 
-                  const available = nameAvailabilityObject &&
-                    nameAvailabilityObject.available
-                  const checkingPrice = nameAvailabilityObject &&
-                    nameAvailabilityObject.checkingPrice
-                  let price = 0
-                  if (nameAvailabilityObject) {
-                    price = nameAvailabilityObject.price
-                  }
-                  price = roundTo.up(price, 6)
-                  return (
-                    <div key={nameSuffix}>
-                    {searching ?
-                      <h4>Checking {name}...</h4>
-                      :
-                      <div>
-                        {available ?
-                          <div>
-                            <h4>{name} is available!</h4>
-                            {isSubdomain ?
-                              <div>
-                                <ul>
-                                  <li><strong>Price:</strong> Free!</li>
-                                  <li><strong>Censorship resistant:</strong> Partial!</li>
-                                  <li>Arrives in ~30 minutes</li>
+                const available = nameAvailabilityObject &&
+                  nameAvailabilityObject.available
+                const checkingPrice = nameAvailabilityObject &&
+                  nameAvailabilityObject.checkingPrice
+                let price = 0
+                if (nameAvailabilityObject) {
+                  price = nameAvailabilityObject.price
+                }
+                price = roundTo.up(price, 6)
+                return (
+                  <div key={nameSuffix}>
+                  {searching ?
+                    <h4>Checking {name}...</h4>
+                    :
+                    <div>
+                      {available ?
+                        <div style={nameResultStyle}>
+                          <h4 style={availabilityHeaderStyle}>{name} is available!</h4>
+                          {isSubdomain ?
+                            <div style={listWrapperStyle}>
+                              <ul style={listStyle}>
+                                <li><strong>Price:</strong> Free!</li>
+                                <li><strong>Censorship resistant:</strong> Partial!</li>
+                                <li>Arrives in ~30 minutes</li>
+                              </ul>
+                              <Link
+                                className="btn btn-primary btn-sm"
+                                to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                              >
+                                Get {name}
+                              </Link>
+                            </div>
+                          :
+                            <div>
+                            {checkingPrice ?
+                              <div className="progress">
+                                <div
+                                  className="progress-bar progress-bar-striped progress-bar-animated"
+                                  role="progressbar"
+                                  aria-valuenow="100"
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"
+                                  style={{ width: '100%' }}
+                                >
+                                Checking price...
+                                </div>
+                              </div>
+                              :
+                              <div style={listWrapperStyle}>
+                                <ul style={listStyle}>
+                                  <li><strong>Price:</strong> {price} bitcoins</li>
+                                  <li><strong>Censorship resistant:</strong> Yes!</li>
+                                  <li>Arrives in ~2 hours</li>
                                 </ul>
                                 <Link
                                   className="btn btn-primary btn-sm"
                                   to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
                                 >
-                                  Get {name}
+                                  Buy {name}
                                 </Link>
                               </div>
-                            :
-                              <div>
-                              {checkingPrice ?
-                                <div className="progress">
-                                  <div
-                                    className="progress-bar progress-bar-striped progress-bar-animated"
-                                    role="progressbar"
-                                    aria-valuenow="100"
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                    style={{ width: '100%' }}
-                                  >
-                                  Checking price...
-                                  </div>
-                                </div>
-                                :
-                                <div
-                                  style={{ margin: '1em' }}
-                                >
-                                  <ul>
-                                    <li><strong>Price:</strong> {price} bitcoins</li>
-                                    <li><strong>Censorship resistant:</strong> Yes!</li>
-                                    <li>Arrives in ~2 hours</li>
-                                  </ul>
-                                  <Link
-                                    className="btn btn-primary btn-sm"
-                                    to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
-                                  >
-                                    Buy {name}
-                                  </Link>
-                                </div>
-                              }
-                              </div>
                             }
-                          </div>
-                          :
-                          <h4>{name} is already taken.</h4>
-                        }
-                      </div>
-                    }
+                            </div>
+                          }
+                        </div>
+                        :
+                        <h4 style={availabilityHeaderStyle}>{name} is already taken.</h4>
+                      }
                     </div>
-                  )
-                })
-                :
-                null
-              }
-            </div>
+                  }
+                  </div>
+                )
+              })
+              :
+              null
+            }
           </div>
+          <Link
+            to="/profiles"
+            className="btn btn-secondary btn-sm"
+          >
+            Cancel
+          </Link>
         </div>
       </div>
     )

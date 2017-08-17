@@ -223,106 +223,95 @@ class AddUsernameSelectPage extends Component {
 
     return (
       <div>
-        <div className="container vertical-split-content">
-          <div className="col-sm-2">
-          </div>
-          <div className="col-sm-8">
-            {enoughMoney ?
+        {enoughMoney ?
+          <div style={{ textAlign: 'center' }}>
+          {nameIsSubdomain ?
+            <div>
+              <h3 className="modal-heading">Are you sure you want to register <strong>{name}</strong>?</h3>
               <div>
-              {nameIsSubdomain ?
-                <div>
-                  <h3>Are you sure you want to register <strong>{name}</strong>?</h3>
-                  <div
-                    style={{ textAlign: 'center' }}
-                  >
-                    <button
-                      onClick={this.register}
-                      className="btn btn-primary"
-                      disabled={registrationInProgress}
-                    >
-                      {registrationInProgress ?
-                        <span>Registering...</span>
-                        :
-                        <span>Register</span>
-                      }
-                    </button>
-                    <br />
-                    {registrationInProgress ?
-                      null
-                      :
-                      <Link to="/profiles">
-                        Cancel
-                      </Link>
-                    }
-                  </div>
-                </div>
-                :
-                <div>
-                  <h3>Are you sure you want to buy <strong>{name}</strong>?</h3>
-                  <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
-                  from your wallet.</p>
-                  <div
-                    style={{ textAlign: 'center' }}
-                  >
-                    <button
-                      onClick={this.register}
-                      className="btn btn-primary"
-                      disabled={registrationInProgress}
-                    >
-                      {registrationInProgress ?
-                        <span>Buying...</span>
-                        :
-                        <span>Buy</span>
-                      }
-                    </button>
-                    <br />
-                    {registrationInProgress ?
-                      null
-                      :
-                      <Link to="/profiles">
-                        Cancel
-                      </Link>
-                    }
-                  </div>
-                </div>
-              }
+                <button
+                  onClick={this.register}
+                  className="btn btn-primary"
+                  disabled={registrationInProgress}
+                >
+                  {registrationInProgress ?
+                    <span>Registering...</span>
+                    :
+                    <span>Register</span>
+                  }
+                </button>
+                <br />
+                {registrationInProgress ?
+                  null
+                  :
+                  <Link to="/profiles">
+                    Cancel
+                  </Link>
+                }
               </div>
-              :
-              <div>
-                <h3>Buy {name}</h3>
-                <p>Send {price} bitcoins to your wallet:<br />
-                  <strong>{this.props.walletAddress}</strong>
-                </p>
-                <div style={{ textAlign: 'center' }}>
-                  <QRCode
-                    style={{ width: 256 }}
-                    value={this.props.walletAddress}
-                  />
-                  <div>
-                    <div className="progress">
-                      <div
-                        className="progress-bar progress-bar-striped progress-bar-animated"
-                        role="progressbar"
-                        aria-valuenow="100"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                        style={{ width: '100%' }}
-                      >
-                      Waiting for payment...
-                      </div>
-                    </div>
-                    <Link
-                      to="/profiles"
-                      className="btn btn-secondary btn-sm"
-                    >
-                      Cancel
-                    </Link>
-                  </div>
-                </div>
+            </div>
+            :
+            <div>
+              <h3 className="modal-heading">Are you sure you want to buy <strong>{name}</strong>?</h3>
+              <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
+              from your wallet.</p>
+              <div
+                style={{ textAlign: 'center' }}
+              >
+                <button
+                  onClick={this.register}
+                  className="btn btn-primary"
+                  disabled={registrationInProgress}
+                >
+                  {registrationInProgress ?
+                    <span>Buying...</span>
+                    :
+                    <span>Buy</span>
+                  }
+                </button>
+                <br />
+                {registrationInProgress ?
+                  null
+                  :
+                  <Link to="/profiles">
+                    Cancel
+                  </Link>
+                }
               </div>
-            }
+            </div>
+          }
           </div>
-        </div>
+          :
+          <div>
+            <h3>Buy {name}</h3>
+            <p>Send {price} bitcoins to your wallet:<br />
+              <strong>{this.props.walletAddress}</strong>
+            </p>
+            <div style={{ textAlign: 'center' }}>
+              <QRCode
+                style={{ width: 256 }}
+                value={this.props.walletAddress}
+              />
+              <div>
+                <div className="progress">
+                  <div
+                    className="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    aria-valuenow="100"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    style={{ width: '100%' }}
+                  >
+                  Waiting for payment...
+                  </div>
+                </div>
+                <Link to="/profiles">
+                  Cancel
+                </Link>
+              </div>
+            </div>
+          </div>
+        }
       </div>
     )
   }
