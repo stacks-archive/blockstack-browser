@@ -121,16 +121,27 @@ function registerName(api, domainName, ownerAddress, keypair) {
         logger.debug(`registerName: ${domainName} is not a subdomain`)
       }
 
-      const registrationRequestBody = JSON.stringify({
-        name: domainName,
-        owner_address: ownerAddress,
-        zonefile: zoneFile,
-        min_confs: 0,
-        unsafe: true
-      })
+      let registrationRequestBody = null
+
+      if (nameIsSubdomain) {
+        registrationRequestBody = JSON.stringify({
+          name: domainName.split('.')[0],
+          owner_address: ownerAddress,
+          zonefile: zoneFile
+        })
+      } else {
+        registrationRequestBody = JSON.stringify({
+          name: domainName,
+          owner_address: ownerAddress,
+          zonefile: zoneFile,
+          min_confs: 0,
+          unsafe: true
+        })
+      }
 
       dispatch(registrationSubmitting())
-      logger.trace(`Submitting registration for ${domainName} to Core node at ${registerUrl}`)
+      
+      logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
 
       const setOwnerKeyUrl = `http://${api.coreHost}:${api.corePort}/v1/wallet/keys/owner`
 
