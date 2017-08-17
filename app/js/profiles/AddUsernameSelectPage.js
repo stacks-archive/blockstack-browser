@@ -42,9 +42,10 @@ class AddUsernameSelectPage extends Component {
     router: PropTypes.object.isRequired,
     api: PropTypes.object.isRequired,
     availability: PropTypes.object.isRequired,
+    getCoreWalletAddress: PropTypes.func.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     walletBalance: PropTypes.number.isRequired,
-    walletAddress: PropTypes.string.isRequired,
+    walletAddress: PropTypes.string,
     registerName: PropTypes.func.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
     identityAddresses: PropTypes.array.isRequired,
@@ -105,6 +106,8 @@ class AddUsernameSelectPage extends Component {
 
   componentDidMount() {
     logger.trace('componentDidMount')
+    this.props.getCoreWalletAddress(this.props.api.walletPaymentAddressUrl,
+      this.props.api.coreAPIPassword)
     this.props.refreshCoreWalletBalance(this.props.balanceUrl,
       this.props.api.coreAPIPassword)
   }
@@ -219,6 +222,8 @@ class AddUsernameSelectPage extends Component {
       enoughMoney = true
     }
 
+    const walletAddress = this.props.walletAddress
+
     const registrationInProgress = this.state.registrationInProgress
 
     return (
@@ -228,6 +233,7 @@ class AddUsernameSelectPage extends Component {
           {nameIsSubdomain ?
             <div>
               <h3 className="modal-heading">Are you sure you want to register <strong>{name}</strong>?</h3>
+              <p><strong>{name}</strong> is a subdomain that is free to register.</p>
               <div>
                 <button
                   onClick={this.register}
@@ -282,16 +288,20 @@ class AddUsernameSelectPage extends Component {
           }
           </div>
           :
-          <div>
-            <h3>Buy {name}</h3>
-            <p>Send {price} bitcoins to your wallet:<br />
+          <div style={{ textAlign: 'center' }}>
+            <h3 className="modal-heading">Buy {name}</h3>
+            <p>Send at least {price} bitcoins to your wallet:<br />
               <strong>{this.props.walletAddress}</strong>
             </p>
             <div style={{ textAlign: 'center' }}>
-              <QRCode
-                style={{ width: 256 }}
-                value={this.props.walletAddress}
-              />
+              {walletAddress ?
+                <QRCode
+                  style={{ width: 256 }}
+                  value={this.props.walletAddress}
+                />
+                :
+                null
+              }
               <div>
                 <div className="progress">
                   <div
