@@ -3,7 +3,8 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Alert from '../components/Alert'
+import AddUsernameSearchBox from './AddUsernameSearchBox'
+
 import { AccountActions } from '../account/store/account'
 import { AvailabilityActions } from './store/availability'
 import { IdentityActions } from './store/identity'
@@ -161,46 +162,13 @@ class AddUsernameSearchPage extends Component {
     return (
       <div style={{ textAlign: 'center' }}>
         {!showSearchResults ?
-          <div>
-            <h3 className="modal-heading">Search for your username</h3>
-            <div className="modal-body">
-            {
-              this.state.alerts.map((alert, index) => {
-                return (
-                  <Alert
-                    key={index} message={alert.message} status={alert.status} url={alert.url}
-                  />
-              )
-              })
-            }
-              <p>
-                Add a username to save your profile so you can interact with other
-                people on the decentralized internet.
-              </p>
-              <form
-                className="form-inline"
-                onSubmit={this.search}
-                style={{ marginBottom: '2em' }}
-              >
-                <input
-                  name="username"
-                  className="form-control"
-                  placeholder="Username"
-                  value={this.state.username}
-                  onChange={this.onChange}
-                  required
-                  disabled={!this.state.storageConnected}
-                />
-                <button
-                  type="submit"
-                  className="btn btn-blue"
-                  disabled={!this.state.storageConnected}
-                >
-                  Search
-                </button>
-              </form>
-            </div>
-          </div>
+          <AddUsernameSearchBox
+            alerts={this.state.alerts}
+            search={this.search}
+            username={this.state.username}
+            onChange={this.onChange}
+            disabled={!this.state.storageConnected}
+          />
           :
           <div>
             <a
