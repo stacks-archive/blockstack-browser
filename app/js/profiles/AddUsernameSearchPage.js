@@ -17,20 +17,12 @@ const logger = log4js.getLogger('profiles/AddUsernameSearchPage.js')
 
 const STORAGE_URL = '/account/storage'
 
-const listWrapperStyle = {
-
-}
-
-const listStyle = {
-  textAlign: 'left',
-  paddingLeft: '12em'
-}
-
 const nameResultStyle = {
   marginBottom: '3em'
 }
 
 const availabilityHeaderStyle = {
+  marginTop: '1em',
   marginBottom: '0.5em'
 }
 function mapStateToProps(state) {
@@ -83,6 +75,7 @@ class AddUsernameSearchPage extends Component {
     this.search = this.search.bind(this)
     this.updateAlert = this.updateAlert.bind(this)
     this.displayConnectStorageAlert = this.displayConnectStorageAlert.bind(this)
+    this.showSearchBox = this.showSearchBox.bind(this)
   }
 
   componentDidMount() {
@@ -132,6 +125,16 @@ class AddUsernameSearchPage extends Component {
     nameSuffixes.forEach((nameSuffix) =>
     this.props.checkNameAvailabilityAndPrice(this.props.api,
       `${username}.${nameSuffix}`))
+  }
+
+  showSearchBox(event) {
+    logger.trace('showSearchBox')
+    event.preventDefault()
+    this.setState({
+      username: '',
+      searchingUsername: '',
+      showSearchResults: false
+    })
   }
 
   updateAlert(alertStatus, alertMessage, url = null) {
@@ -200,6 +203,14 @@ class AddUsernameSearchPage extends Component {
           </div>
           :
           <div>
+            <a
+              href=""
+              className="pull-left"
+              onClick={this.showSearchBox}
+            >
+              &lt; Back
+            </a>
+            <br />
             <h3 className="modal-heading">Available names</h3>
             <div className="modal-body">
               {searchingUsername ?
@@ -229,19 +240,12 @@ class AddUsernameSearchPage extends Component {
                           <div style={nameResultStyle}>
                             <h4 style={availabilityHeaderStyle}>{name}</h4>
                             {isSubdomain ?
-                              <div style={listWrapperStyle}>
-                                <ul style={listStyle}>
-                                  <li><strong>Price:</strong> Free!</li>
-                                  <li><strong>Censorship resistant:</strong> Partial!</li>
-                                  <li>Arrives in ~30 minutes</li>
-                                </ul>
-                                <Link
-                                  className="btn btn-primary btn-sm"
-                                  to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
-                                >
-                                  Get <strong>{name}</strong> for free
-                                </Link>
-                              </div>
+                              <Link
+                                className="btn btn-primary btn-sm"
+                                to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                              >
+                                Get <strong>{name}</strong> for free
+                              </Link>
                             :
                               <div>
                               {checkingPrice ?
@@ -258,25 +262,27 @@ class AddUsernameSearchPage extends Component {
                                   </div>
                                 </div>
                                 :
-                                <div style={listWrapperStyle}>
-                                  <ul style={listStyle}>
-                                    <li><strong>Price:</strong> {price} bitcoins</li>
-                                    <li><strong>Censorship resistant:</strong> Yes!</li>
-                                    <li>Arrives in ~2 hours</li>
-                                  </ul>
-                                  <Link
-                                    className="btn btn-primary btn-sm"
-                                    to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
-                                  >
-                                    Buy <strong>{name}</strong> for {price} bitcoins
-                                  </Link>
-                                </div>
+                                <Link
+                                  className="btn btn-primary btn-sm"
+                                  to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                                >
+                                  Buy <strong>{name}</strong> for {price} bitcoins
+                                </Link>
                               }
                               </div>
                             }
                           </div>
                           :
-                          <h4 style={availabilityHeaderStyle}>{name} is already taken.</h4>
+                          <div>
+                            <h4 style={availabilityHeaderStyle}>{name}</h4>
+                            <button
+                              className="btn btn-primary btn-sm"
+                              disabled
+                            >
+                              {name} is already taken
+                            </button>
+                          </div>
+
                         }
                       </div>
                     }
