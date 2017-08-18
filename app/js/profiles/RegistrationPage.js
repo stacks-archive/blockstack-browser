@@ -15,7 +15,7 @@ const customStyles = {
   overlay: customOverlayStyles
 }
 
-class AddUsernameModal extends Component {
+class RegistrationPage extends Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
     router: PropTypes.object.isRequired
@@ -47,4 +47,4 @@ class AddUsernameModal extends Component {
   }
 }
 
-export default AddUsernameModal
+export default RegistrationPage
