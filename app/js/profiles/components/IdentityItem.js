@@ -44,11 +44,11 @@ class IdentityItem extends Component {
               </li>
               <li>
                 {this.props.canAddUsername ?
-                 <Link to={`/profiles/i/register/${this.props.ownerAddress}`}>
+                 <Link to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
                    Add username
                  </Link>
                  :
-                  <div>                   
+                  <div>
                      <p className="card-subtitle profile-list-card-subtitle">
                       {this.props.pending ? '(pending)' : '\u00A0'}
                      </p>

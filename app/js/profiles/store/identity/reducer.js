@@ -70,7 +70,7 @@ function IdentityReducer(state = initialState, action) {
     }
     case types.CREATE_PROFILE_ERROR: {
       return Object.assign({}, state, {
-        createProfileError: action.error
+        createProfileError: new String(action.error)
       })
     }
     default:

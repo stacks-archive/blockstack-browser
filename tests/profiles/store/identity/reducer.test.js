@@ -208,6 +208,7 @@ describe('Identity Store: IdentityReducer', () => {
   })
 
   it('should create a create new profile error', () => {
+    const error = new String('error')
     const expectedState = {
       default: null,
       current: {
@@ -217,9 +218,9 @@ describe('Identity Store: IdentityReducer', () => {
       },
       localIdentities: {},
       namesOwned: [],
-      createProfileError: 'error'
+      createProfileError: error
     }
-    const action = IdentityActions.createNewProfileError('error')
+    const action = IdentityActions.createNewProfileError(error)
 
     const actualState = IdentityReducer(initialState, action)
     assert.deepEqual(actualState, expectedState)

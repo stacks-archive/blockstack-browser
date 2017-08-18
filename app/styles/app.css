@@ -505,6 +505,12 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 
+/* 27. Progress bars */
+.progress{font-size: .75rem;line-height: 1rem;text-align: center;}
+.progress-bar{height: 1rem;color: #fff;background-color: #2275d7}
+.progress-bar-animated{-webkit-animation:progress-bar-stripes 1s linear infinite;-o-animation:progress-bar-stripes 1s linear infinite;animation:progress-bar-stripes 1s linear infinite}
+.progress-bar-striped{background-image:-webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);-webkit-background-size: 1rem 1rem;background-size: 1rem 1rem}
+
 /* 28. List group */
 .list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
 .list-group-item.active,.list-group-item.active:hover,.list-group-item.active:focus{background-image:none;}
@@ -602,6 +608,8 @@ div.ReactModal__Content.ReactModal__Content--after-open {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
+	transition:all 300ms ease-in-out;
+
 }
 .modal-heading {
   font-size: 1.5rem;
@@ -657,6 +665,12 @@ form.modal-form > div.form-group {
 /* Auth Modal */
 .auth-modal {text-align: center}
 .auth-modal .profile-select{margin-bottom:20px;}
+
+/* Add Username Modal */
+.add-username-modal div div.ReactModal__Content.ReactModal__Content--after-open {
+	width: 615px;
+	margin-top: 0;
+}
 
 /* Account App */
 .item-sidebar-account{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
