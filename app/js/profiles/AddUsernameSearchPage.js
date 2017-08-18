@@ -76,7 +76,8 @@ class AddUsernameSearchPage extends Component {
       searchingUsername: '',
       storageConnected: this.props.api.dropboxAccessToken !== null,
       availableDomains,
-      nameSuffixes
+      nameSuffixes,
+      showSearchResults: false
     }
     this.onChange = this.onChange.bind(this)
     this.search = this.search.bind(this)
@@ -107,7 +108,6 @@ class AddUsernameSearchPage extends Component {
 
   onChange(event) {
     const username = event.target.value.toLowerCase().replace(/\W+/g, '')
-    logger.debug(`onChange: ${username}`)
     this.setState({
       username
     })
@@ -125,7 +125,8 @@ class AddUsernameSearchPage extends Component {
       return
     }
     this.setState({
-      searchingUsername: username
+      searchingUsername: username,
+      showSearchResults: true
     })
 
     nameSuffixes.forEach((nameSuffix) =>
@@ -153,138 +154,147 @@ class AddUsernameSearchPage extends Component {
     const searchingUsername = this.state.searchingUsername
     const availableNames = this.props.availability.names
     const ownerAddress = this.props.routeParams.index
+    const showSearchResults = this.state.showSearchResults
     return (
-      <div>
-        <h3 className="modal-heading">Search for your username</h3>
-        <div className="modal-body">
-          {
-            this.state.alerts.map((alert, index) => {
-              return (
-                <Alert
-                  key={index} message={alert.message} status={alert.status} url={alert.url}
-                />
-            )
-            })
-          }
-          <p>
-            Add a username to save your profile so you can interact with other
-            people on the decentralized internet.
-          </p>
-          <form
-            className="form-inline"
-            onSubmit={this.search}
-            style={{ marginBottom: '2em' }}
-          >
-            <input
-              name="username"
-              className="form-control"
-              placeholder="Username"
-              value={this.state.username}
-              onChange={this.onChange}
-              required
-              disabled={!this.state.storageConnected}
-            />
-            <button
-              type="submit"
-              className="btn btn-blue"
-              disabled={!this.state.storageConnected}
-            >
-              Search
-            </button>
-          </form>
+      <div style={{ textAlign: 'center' }}>
+        {!showSearchResults ?
           <div>
-            {searchingUsername ?
-              this.state.nameSuffixes.map((nameSuffix) => {
-                const name = `${searchingUsername}.${nameSuffix}`
-                const nameAvailabilityObject = availableNames[name]
-                const searching = !nameAvailabilityObject ||
-                nameAvailabilityObject.checkingAvailability
-                const isSubdomain = nameSuffix.split('.').length > 1
-
-                const available = nameAvailabilityObject &&
-                  nameAvailabilityObject.available
-                const checkingPrice = nameAvailabilityObject &&
-                  nameAvailabilityObject.checkingPrice
-                let price = 0
-                if (nameAvailabilityObject) {
-                  price = nameAvailabilityObject.price
-                }
-                price = roundTo.up(price, 6)
+            <h3 className="modal-heading">Search for your username</h3>
+            <div className="modal-body">
+            {
+              this.state.alerts.map((alert, index) => {
                 return (
-                  <div key={nameSuffix}>
-                  {searching ?
-                    <h4>Checking {name}...</h4>
-                    :
-                    <div>
-                      {available ?
-                        <div style={nameResultStyle}>
-                          <h4 style={availabilityHeaderStyle}>{name} is available!</h4>
-                          {isSubdomain ?
-                            <div style={listWrapperStyle}>
-                              <ul style={listStyle}>
-                                <li><strong>Price:</strong> Free!</li>
-                                <li><strong>Censorship resistant:</strong> Partial!</li>
-                                <li>Arrives in ~30 minutes</li>
-                              </ul>
-                              <Link
-                                className="btn btn-primary btn-sm"
-                                to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
-                              >
-                                Get {name}
-                              </Link>
-                            </div>
-                          :
-                            <div>
-                            {checkingPrice ?
-                              <div className="progress">
-                                <div
-                                  className="progress-bar progress-bar-striped progress-bar-animated"
-                                  role="progressbar"
-                                  aria-valuenow="100"
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                  style={{ width: '100%' }}
-                                >
-                                Checking price...
-                                </div>
-                              </div>
-                              :
+                  <Alert
+                    key={index} message={alert.message} status={alert.status} url={alert.url}
+                  />
+              )
+              })
+            }
+              <p>
+                Add a username to save your profile so you can interact with other
+                people on the decentralized internet.
+              </p>
+              <form
+                className="form-inline"
+                onSubmit={this.search}
+                style={{ marginBottom: '2em' }}
+              >
+                <input
+                  name="username"
+                  className="form-control"
+                  placeholder="Username"
+                  value={this.state.username}
+                  onChange={this.onChange}
+                  required
+                  disabled={!this.state.storageConnected}
+                />
+                <button
+                  type="submit"
+                  className="btn btn-blue"
+                  disabled={!this.state.storageConnected}
+                >
+                  Search
+                </button>
+              </form>
+            </div>
+          </div>
+          :
+          <div>
+            <h3 className="modal-heading">Available names</h3>
+            <div className="modal-body">
+              {searchingUsername ?
+                this.state.nameSuffixes.map((nameSuffix) => {
+                  const name = `${searchingUsername}.${nameSuffix}`
+                  const nameAvailabilityObject = availableNames[name]
+                  const searching = !nameAvailabilityObject ||
+                  nameAvailabilityObject.checkingAvailability
+                  const isSubdomain = nameSuffix.split('.').length > 1
+
+                  const available = nameAvailabilityObject &&
+                    nameAvailabilityObject.available
+                  const checkingPrice = nameAvailabilityObject &&
+                    nameAvailabilityObject.checkingPrice
+                  let price = 0
+                  if (nameAvailabilityObject) {
+                    price = nameAvailabilityObject.price
+                  }
+                  price = roundTo.up(price, 6)
+                  return (
+                    <div key={nameSuffix}>
+                    {searching ?
+                      <h4>Checking {name}...</h4>
+                      :
+                      <div>
+                        {available ?
+                          <div style={nameResultStyle}>
+                            <h4 style={availabilityHeaderStyle}>{name}</h4>
+                            {isSubdomain ?
                               <div style={listWrapperStyle}>
                                 <ul style={listStyle}>
-                                  <li><strong>Price:</strong> {price} bitcoins</li>
-                                  <li><strong>Censorship resistant:</strong> Yes!</li>
-                                  <li>Arrives in ~2 hours</li>
+                                  <li><strong>Price:</strong> Free!</li>
+                                  <li><strong>Censorship resistant:</strong> Partial!</li>
+                                  <li>Arrives in ~30 minutes</li>
                                 </ul>
                                 <Link
                                   className="btn btn-primary btn-sm"
                                   to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
                                 >
-                                  Buy {name}
+                                  Get <strong>{name}</strong> for free
                                 </Link>
                               </div>
+                            :
+                              <div>
+                              {checkingPrice ?
+                                <div className="progress">
+                                  <div
+                                    className="progress-bar progress-bar-striped progress-bar-animated"
+                                    role="progressbar"
+                                    aria-valuenow="100"
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                    style={{ width: '100%' }}
+                                  >
+                                  Checking price...
+                                  </div>
+                                </div>
+                                :
+                                <div style={listWrapperStyle}>
+                                  <ul style={listStyle}>
+                                    <li><strong>Price:</strong> {price} bitcoins</li>
+                                    <li><strong>Censorship resistant:</strong> Yes!</li>
+                                    <li>Arrives in ~2 hours</li>
+                                  </ul>
+                                  <Link
+                                    className="btn btn-primary btn-sm"
+                                    to={`/profiles/i/add-username/${ownerAddress}/select/${name}`}
+                                  >
+                                    Buy <strong>{name}</strong> for {price} bitcoins
+                                  </Link>
+                                </div>
+                              }
+                              </div>
                             }
-                            </div>
-                          }
-                        </div>
-                        :
-                        <h4 style={availabilityHeaderStyle}>{name} is already taken.</h4>
-                      }
+                          </div>
+                          :
+                          <h4 style={availabilityHeaderStyle}>{name} is already taken.</h4>
+                        }
+                      </div>
+                    }
                     </div>
-                  }
-                  </div>
-                )
-              })
-              :
-              null
-            }
+                  )
+                })
+                :
+                null
+              }
+            </div>
           </div>
-          <Link
-            to="/profiles"
-            className="btn btn-secondary btn-sm"
-          >
-            Cancel
-          </Link>
-        </div>
+        }
+        <Link
+          to="/profiles"
+          className="btn btn-secondary btn-sm"
+        >
+          Cancel
+        </Link>
       </div>
     )
   }
