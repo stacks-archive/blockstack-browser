@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { AccountActions } from '../account/store/account'
-import { AvailabilityActions } from './store/availability'
-import { IdentityActions } from './store/identity'
-import { RegistrationActions } from './store/registration'
-import { hasNameBeenPreordered, isSubdomain } from '../utils/name-utils'
+import { AccountActions } from '../../../account/store/account'
+import { AvailabilityActions } from '../../store/availability'
+import { IdentityActions } from '../../store/identity'
+import { RegistrationActions } from '../../store/registration'
+import { hasNameBeenPreordered, isSubdomain } from '../../../utils/name-utils'
 import roundTo from 'round-to'
 import { QRCode } from 'react-qr-svg'
 
@@ -258,7 +258,9 @@ class AddUsernameSelectPage extends Component {
             </div>
             :
             <div>
-              <h3 className="modal-heading">Are you sure you want to buy <strong>{name}</strong>?</h3>
+              <h3 className="modal-heading">
+                Are you sure you want to buy <strong>{name}</strong>?
+              </h3>
               <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
               from your wallet.</p>
               <div

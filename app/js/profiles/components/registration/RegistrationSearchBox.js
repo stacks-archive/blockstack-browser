@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
-import Alert from '../components/Alert'
+import Alert from '../../../components/Alert'
 
-const AddUsernameSearchBox = (props) =>
+const RegistrationSearchBox = (props) =>
   (
   <div>
     <h3 className="modal-heading">Search for your username</h3>
@@ -45,7 +45,7 @@ const AddUsernameSearchBox = (props) =>
   </div>
  )
 
-AddUsernameSearchBox.propTypes = {
+RegistrationSearchBox.propTypes = {
   alerts: PropTypes.array.isRequired,
   search: PropTypes.func.isRequired,
   username: PropTypes.string,
@@ -53,4 +53,4 @@ AddUsernameSearchBox.propTypes = {
   disabled: PropTypes.bool.isRequired
 }
 
-export default AddUsernameSearchBox
+export default RegistrationSearchBox
