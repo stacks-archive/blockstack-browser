@@ -1,6 +1,7 @@
 /* Styles */
 
 /* Table of Contents */
+
 /*  1. Colors */
 /*  2. Options */
 /*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version we are utilizing the custom spacing rules from blockstack.com. Upon import of blockstack-bootstrap, go through styles and replace with latest spacing rules from b4. */
@@ -37,7 +38,24 @@
 /* 34. Close */
 /* 35. Code */
 /* 36. Status Bars */
+
 /* 37. Misc */
+
+/* 38. Utilities */
+/* 38. a. - Align */
+/* 38. b. - Background */
+/* 38. c. - Borders */
+/* 38. d. - Clearfix */
+/* 38. e. - Display */
+/* 38. f. - Embed */
+/* 38. g. - Flex */
+/* 38. h. - Float */
+/* 38. i. - Position */
+/* 38. j. - Screenreaders */
+/* 38. k. - Sizing */
+/* 38. l. - Spacing */
+/* 38. m. - Text */
+/* 38. n. - Visibility */
 
 
 #app{height:100%;width:100%;}
@@ -216,6 +234,7 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 /* Styles ported over from profiles.css */
 
 /* Table of Contents */
+
 /*  1. Colors */
 /*  2. Options */
 /*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version we are utilizing the custom spacing rules from blockstack.com. Upon import of blockstack-bootstrap, go through styles and replace with latest spacing rules from b4. */
@@ -252,7 +271,24 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 /* 34. Close */
 /* 35. Code */
 /* 36. Status Bars */
+
 /* 37. Misc */
+
+/* 38. Utilities */
+/* 38. a. - Align */
+/* 38. b. - Background */
+/* 38. c. - Borders */
+/* 38. d. - Clearfix */
+/* 38. e. - Display */
+/* 38. f. - Embed */
+/* 38. g. - Flex */
+/* 38. h. - Float */
+/* 38. i. - Position */
+/* 38. j. - Screenreaders */
+/* 38. k. - Sizing */
+/* 38. l. - Spacing */
+/* 38. m. - Text */
+/* 38. n. - Visibility */
 
 /* 1. Colors */
 /* Blockstack Label Colors - https://projects.invisionapp.com/boards/HE2VVROFSGB27/ */
