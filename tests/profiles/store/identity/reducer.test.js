@@ -128,7 +128,7 @@ describe('Identity Store: IdentityReducer', () => {
     const profile = {
       key: 'value'
     }
-    const action = IdentityActions.updateProfile('satoshi.id', profile)
+    const action = IdentityActions.updateProfile('satoshi.id', profile, 'test')
     const expectedState = {
       default: null,
       current: {
@@ -140,7 +140,8 @@ describe('Identity Store: IdentityReducer', () => {
         'satoshi.id': {
           profile: {
             key: 'value'
-          }
+          },
+          zoneFile: 'test'
         }
       },
       namesOwned: [],
@@ -154,7 +155,8 @@ describe('Identity Store: IdentityReducer', () => {
     const profile = {
       key: 'value'
     }
-    const action = IdentityActions.updateProfile('satoshi.id', profile)
+    const zoneFile = 'test'
+    const action = IdentityActions.updateProfile('satoshi.id', profile, zoneFile)
     const expectedState = {
       default: null,
       current: {
@@ -166,7 +168,8 @@ describe('Identity Store: IdentityReducer', () => {
         'satoshi.id': {
           profile: {
             key: 'value'
-          }
+          },
+          zoneFile: 'test'
         }
       },
       namesOwned: [],

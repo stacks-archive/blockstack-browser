@@ -65,11 +65,12 @@ function updateOwnedIdentities(localIdentities, namesOwned) {
   }
 }
 
-function updateProfile(domainName, profile) {
+function updateProfile(domainName, profile, zoneFile) {
   return {
     type: types.UPDATE_PROFILE,
     domainName,
-    profile
+    profile,
+    zoneFile
   }
 }
 
@@ -221,7 +222,7 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
                       resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                         j++
                         if (profile) {
-                          dispatch(updateProfile(domainName, profile))
+                          dispatch(updateProfile(domainName, profile, zoneFile))
                         }
                         logger.debug(`j: ${j} namesOwned.length: ${namesOwned.length}`)
                         if (j >= namesOwned.length) {

@@ -48,7 +48,8 @@ function IdentityReducer(state = initialState, action) {
       return Object.assign({}, state, {
         localIdentities: Object.assign({}, state.localIdentities, {
           [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
-            profile: action.profile
+            profile: action.profile,
+            zoneFile: action.zoneFile
           })
         })
       })

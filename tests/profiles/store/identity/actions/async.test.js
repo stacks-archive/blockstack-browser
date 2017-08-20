@@ -195,6 +195,7 @@ describe('Availability Store: Async Actions', () => {
               }
             ]
           },
+          zoneFile: "$ORIGIN guylepage.id\n$TTL 3600\n_http._tcp URI 10 1 \"https://blockstack.s3.amazonaws.com/guylepage.id\"\n",
           "type": "UPDATE_PROFILE"
         }
       ]
