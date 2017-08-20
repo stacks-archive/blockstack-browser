@@ -26,16 +26,17 @@ const RegistrationSearchBox = (props) =>
       >
         <input
           name="username"
-          className="form-control text-xs-center m-b-15"
+          className="form-control text-xs-center"
           placeholder="Username"
           value={props.username}
           onChange={props.onChange}
           required
           disabled={props.disabled}
+          style={{ marginBottom: '5px' }}
         />
         <button
           type="submit"
-          className="btn btn-electric-blue"
+          className="btn btn-electric-blue btn-block"
           disabled={props.disabled}
         >
           Search
