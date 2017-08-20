@@ -323,7 +323,7 @@ class RegisterPage extends Component {
               Add a username to save your profile so you can interact with other
               people on the decentralized internet.
             </p>
-            <form className="form-inline">
+            <form>
               <input
                 name="username"
                 className="form-control"
@@ -334,7 +334,7 @@ class RegisterPage extends Component {
               />
               <button
                 type="submit"
-                className="btn btn-blue"
+                className="btn btn-electric-blue"
                 disabled={!this.state.storageConnected}
               >
                 Search

@@ -19,14 +19,14 @@ const RegistrationSearchBox = (props) =>
         Add a username to save your profile so you can interact with other
         people on the decentralized internet.
       </p>
-      <form
-        className="form-inline"
+      <form 
+        className="container-fluid"
         onSubmit={props.search}
-        style={{ marginBottom: '2em' }}
+        style={{ marginBottom: '2rem', width: '90%' }}
       >
         <input
           name="username"
-          className="form-control"
+          className="form-control text-xs-center m-b-15"
           placeholder="Username"
           value={props.username}
           onChange={props.onChange}
@@ -35,7 +35,7 @@ const RegistrationSearchBox = (props) =>
         />
         <button
           type="submit"
-          className="btn btn-blue"
+          className="btn btn-electric-blue"
           disabled={props.disabled}
         >
           Search
