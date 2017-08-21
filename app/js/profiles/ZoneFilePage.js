@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import InputGroup from '../components/InputGroup'
 import { AccountActions } from '../account/store/account'
+import { IdentityActions } from './store/identity'
 
 
 import log4js from 'log4js'
@@ -12,30 +13,64 @@ const logger = log4js.getLogger('profiles/ZoneFilePage.js')
 
 function mapStateToProps(state) {
   return {
-    zoneFileUrl: state.settings.api.zoneFileUrl
+    nameLookupUrl: state.settings.api.nameLookupUrl,
+    identityAddresses: state.account.identityAccount.addresses,
+    localIdentities: state.profiles.identity.localIdentities,
+    namesOwned: state.profiles.identity.namesOwned,
+    zoneFileUrl: state.settings.api.zoneFileUrl,
+    currentIdentity: state.profiles.identity.current
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(AccountActions, dispatch)
+  return bindActionCreators(Object.assign({}, AccountActions, IdentityActions), dispatch)
 }
 
 class EditProfilePage extends Component {
   static propTypes = {
+    currentIdentity: PropTypes.object.isRequired,
+    identityAddresses: PropTypes.array.isRequired,
+    localIdentities: PropTypes.object.isRequired,
+    nameLookupUrl: PropTypes.string.isRequired,
+    namesOwned: PropTypes.array.isRequired,
+    fetchCurrentIdentity: PropTypes.func.isRequired,
+    routeParams: PropTypes.object.isRequired,
     zoneFileUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
     super(props)
-
+    const currentIdentity = props.currentIdentity
     this.state = {
-      zoneFile: '',
+      zoneFile: currentIdentity.zoneFile,
       agreed: false
     }
     this.onToggle = this.onToggle.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
     this.reset = this.reset.bind(this)
     this.updateZoneFile = this.updateZoneFile.bind(this)
+  }
+
+  componentWillMount() {
+    logger.trace('componentWillMount')
+    const name = this.props.routeParams.index
+    this.props.fetchCurrentIdentity(
+      this.props.nameLookupUrl,
+      name
+    )
+  }
+
+  componentWillReceiveProps(nextProps) {
+    logger.trace('componentWillReceiveProps')
+    const currentIdentity = nextProps.currentIdentity
+    const zoneFile = currentIdentity.zoneFile
+    if (zoneFile) {
+      this.setState({
+        zoneFile
+      })
+    } else {
+      logger.error('componentWillReceiveProps: no zone file!')
+    }
   }
 
   onToggle(event) {
@@ -86,7 +121,7 @@ class EditProfilePage extends Component {
                   <textarea
                     className="form-control"
                     name="zoneFile"
-                    data={zoneFile}
+                    value={zoneFile}
                     onChange={this.onValueChange}
                     required
                     rows={5}
