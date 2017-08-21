@@ -107,7 +107,9 @@ describe('Registration Store: Async Actions', () => {
           { type: 'REGISTRATION_SUBMITTED' },
           { domainName: 'satoshi.id',
             ownerAddress: '1GnrEexgXvHCZobXDVdhpto6QPXKthN99n',
-            type: 'ADD_USERNAME' }
+            type: 'ADD_USERNAME',
+            zoneFile: '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://www.dropbox.com/s/eft9mgspq5ff3qe/profile.json?dl=1"\n\n'
+          }
         ]
         assert.deepEqual(store.getActions(), expectedActions)
       })

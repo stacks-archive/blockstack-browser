@@ -91,7 +91,6 @@ function registerName(api, domainName, ownerAddress, keypair) {
   logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
     logger.debug(`Signing a blank default profile for ${domainName}`)
-
     const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
 
     dispatch(profileUploading())
@@ -140,7 +139,7 @@ function registerName(api, domainName, ownerAddress, keypair) {
       }
 
       dispatch(registrationSubmitting())
-      
+
       logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
 
       const setOwnerKeyUrl = `http://${api.coreHost}:${api.corePort}/v1/wallet/keys/owner`
@@ -163,7 +162,7 @@ function registerName(api, domainName, ownerAddress, keypair) {
             dispatch(registrationSubmitted())
             const addingUsername = true
             dispatch(IdentityActions.createNewIdentityFromDomain(domainName,
-              ownerAddress, addingUsername))
+              ownerAddress, addingUsername, zoneFile))
           }
         })
         .catch((error) => {

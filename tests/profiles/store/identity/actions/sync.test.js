@@ -22,10 +22,11 @@ describe('Identity Store: Sync Actions', () => {
         },
         verifications: [{
           something: true
-        }]
+        }],
+        zoneFile: 'test'
       }
       const actualResult = IdentityActions.updateCurrentIdentity('satoshi.id',
-      profile, verifications)
+      profile, verifications, 'test')
       assert.deepEqual(actualResult, expectedResult)
     })
   })
@@ -175,10 +176,11 @@ describe('Identity Store: Sync Actions', () => {
       const expectedResult = {
         type: 'ADD_USERNAME',
         domainName: 'satoshi.id',
-        ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
+        ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
+        zoneFile: 'test'
       }
       const actualResult = IdentityActions.addUsername('satoshi.id',
-      '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
+      '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC', 'test')
       assert.deepEqual(actualResult, expectedResult)
     })
   })

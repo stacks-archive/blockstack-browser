@@ -20,12 +20,13 @@ const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
 
 
-function updateCurrentIdentity(domainName, profile, verifications) {
+function updateCurrentIdentity(domainName, profile, verifications, zoneFile) {
   return {
     type: types.UPDATE_CURRENT,
     domainName,
     profile,
-    verifications
+    verifications,
+    zoneFile
   }
 }
 
@@ -74,15 +75,16 @@ function updateProfile(domainName, profile, zoneFile) {
   }
 }
 
-function addUsername(domainName, ownerAddress) {
+function addUsername(domainName, ownerAddress, zoneFile) {
   return {
     type: types.ADD_USERNAME,
     domainName,
-    ownerAddress
+    ownerAddress,
+    zoneFile
   }
 }
 
-function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false) {
+function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false, zoneFile) {
   logger.debug(`createNewIdentityFromDomain: domainName: ${domainName} ownerAddress: ${ownerAddress}`)
   return (dispatch, getState) => {
     if (!addingUsername) {
@@ -91,7 +93,7 @@ function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = 
       dispatch(AccountActions.usedIdentityAddress())
     } else {
       logger.trace('createNewIdentityFromDomain: adding username to existing profile')
-      dispatch(addUsername(domainName, ownerAddress))
+      dispatch(addUsername(domainName, ownerAddress, zoneFile))
       const state = getState()
       if (!state.profiles) {
         return
@@ -292,11 +294,11 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
 
         return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
           let verifications = []
-          dispatch(updateCurrentIdentity(domainName, profile, verifications))
+          dispatch(updateCurrentIdentity(domainName, profile, verifications, zoneFile))
           if (profile) {
             return validateProofs(profile, domainName).then((proofs) => {
               verifications = proofs
-              dispatch(updateCurrentIdentity(domainName, profile, verifications))
+              dispatch(updateCurrentIdentity(domainName, profile, verifications, zoneFile))
             }).catch((error) => {
               logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
             })
@@ -307,7 +309,7 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
         })
       })
       .catch((error) => {
-        dispatch(updateCurrentIdentity(domainName, null, []))
+        dispatch(updateCurrentIdentity(domainName, null, [], null))
         logger.error(`fetchCurrentIdentity: ${domainName} lookup error`, error)
       })
   }

@@ -13,7 +13,7 @@ import { QRCode } from 'react-qr-svg'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/AddUsernameSelectPage.js')
+const logger = log4js.getLogger('profiles/components/registration/RegistrationSelectView.js')
 const CHECK_FOR_PAYMENT_INTERVAL = 10000
 
 
@@ -200,7 +200,6 @@ class AddUsernameSelectPage extends Component {
       logger.debug(`register: is ${name} a subdomain? ${nameIsSubdomain}`)
 
       this.props.registerName(this.props.api, name, address, keypair)
-
       logger.debug(`register: ${name} preordered! Waiting for registration confirmation.`)
     }
   }

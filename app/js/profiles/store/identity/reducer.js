@@ -5,7 +5,8 @@ const initialState = {
   current: {
     domainName: null,
     profile: null,
-    verifications: null
+    verifications: null,
+    zoneFile: null
   },
   default: null,
   localIdentities: {},
@@ -20,7 +21,8 @@ function IdentityReducer(state = initialState, action) {
         current: {
           domainName: action.domainName,
           profile: action.profile,
-          verifications: action.verifications
+          verifications: action.verifications,
+          zoneFile: action.zoneFile
         }
       })
     case types.SET_DEFAULT:
@@ -35,7 +37,8 @@ function IdentityReducer(state = initialState, action) {
             profile: DEFAULT_PROFILE,
             verifications: [],
             registered: false,
-            ownerAddress: action.ownerAddress
+            ownerAddress: action.ownerAddress,
+            zoneFile: null
           }
         })
       })
@@ -56,7 +59,8 @@ function IdentityReducer(state = initialState, action) {
     case types.ADD_USERNAME: {
       const localIdentitiesCopy = Object.assign({}, state.localIdentities, {
         [action.domainName]: Object.assign({}, state.localIdentities[action.ownerAddress], {
-          domainName: action.domainName
+          domainName: action.domainName,
+          zoneFile: action.zoneFile
         })
       })
       delete localIdentitiesCopy[action.ownerAddress]
