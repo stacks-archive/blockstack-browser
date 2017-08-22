@@ -166,7 +166,7 @@ class AddUsernameSelectPage extends Component {
     if (nameHasBeenPreordered) {
       logger.error(`register: Name ${name} has already been preordered`)
     } else {
-      const addressIndex = this.findAddressIndex(ownerAddress, this.props.identityAddresses)
+      const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
 
       if (!addressIndex) {
         logger.error(`register: can't find address ${ownerAddress}`)
