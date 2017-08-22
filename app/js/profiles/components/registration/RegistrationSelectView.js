@@ -7,6 +7,7 @@ import { AvailabilityActions } from '../../store/availability'
 import { IdentityActions } from '../../store/identity'
 import { RegistrationActions } from '../../store/registration'
 import { hasNameBeenPreordered, isSubdomain } from '../../../utils/name-utils'
+import { findAddressIndex } from '../../../utils'
 import roundTo from 'round-to'
 import { QRCode } from 'react-qr-svg'
 
@@ -100,7 +101,6 @@ class AddUsernameSelectPage extends Component {
       enoughMoney,
       registrationInProgress: false
     }
-    this.findAddressIndex = this.findAddressIndex.bind(this)
     this.register = this.register.bind(this)
   }
 
@@ -149,16 +149,6 @@ class AddUsernameSelectPage extends Component {
     })
   }
 
-  findAddressIndex(address) {
-    const identityAddresses = this.props.identityAddresses
-    for (let i = 0; i < identityAddresses.length; i++) {
-      if (identityAddresses[i] === address) {
-        return i
-      }
-    }
-    return null
-  }
-
   register(event) {
     logger.trace('register')
 
@@ -176,7 +166,7 @@ class AddUsernameSelectPage extends Component {
     if (nameHasBeenPreordered) {
       logger.error(`register: Name ${name} has already been preordered`)
     } else {
-      const addressIndex = this.findAddressIndex(ownerAddress)
+      const addressIndex = this.findAddressIndex(ownerAddress, this.props.identityAddresses)
 
       if (!addressIndex) {
         logger.error(`register: can't find address ${ownerAddress}`)

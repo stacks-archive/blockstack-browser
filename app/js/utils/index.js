@@ -9,7 +9,8 @@ export {
   isPasswordValid,
   isBackupPhraseValid,
   getIdentityOwnerAddressNode,
-  getBitcoinAddressNode
+  getBitcoinAddressNode,
+  findAddressIndex
 } from './account-utils'
 
 export {
