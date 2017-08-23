@@ -164,6 +164,7 @@ class EditProfilePage extends Component {
   render() {
     const agreed = this.state.agreed
     const zoneFile = this.state.zoneFile
+    const name = this.props.routeParams.index
     return (
       <div className="card-list-container profile-content-wrapper">
         <div>
@@ -172,8 +173,9 @@ class EditProfilePage extends Component {
               <div className="col-md-3 sidebar-list">
               </div>
               <div className="col-md-7">
+                <Link to={`/profiles/${name}/local`}>&lt; Back </Link>
                 <h1 className="h1-modern">
-                  Update zone file
+                  Update {name} zone file
                 </h1>
                 {
                   this.state.alerts.map((alert, index) => {
@@ -233,7 +235,7 @@ class EditProfilePage extends Component {
                     className="btn btn-sm btn-secondary"
                     onClick={this.reset}
                     disabled={this.state.disabled}
-                    title="Reset your edits to current zone file"
+                    title="Reset your edits to the current zone file."
                   >
                     Reset
                   </button>
