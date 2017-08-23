@@ -221,10 +221,16 @@ class ViewProfilePage extends Component {
                   View Publicly
                   </button>
                   :
-                <Link to={`/profiles/${domainName}`}
-                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
-                  View Publicly
-                </Link>
+                  <span>
+                    <Link to={`/profiles/${domainName}`}
+                      className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                      View Publicly
+                    </Link>
+                    <Link to={`/profiles/${domainName}/zone-file`}
+                      className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                      Zone File
+                    </Link>
+                  </span>
                 }
                 {!this.hasUsername() ?
                   <Link to={`/profiles/i/add-username/${domainName}/search`}

@@ -14,7 +14,7 @@ import { isABlockstackName } from '../../../utils/name-utils'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/AddUsernameSearchPage.js')
+const logger = log4js.getLogger('profiles/components/registration/RegistrationSearchView.js')
 
 const STORAGE_URL = '/account/storage'
 

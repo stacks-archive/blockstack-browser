@@ -6,7 +6,7 @@ import { Link } from 'react-router'
 import EditProfileHeader from './components/EditProfileHeader'
 import ProfileEditingSidebar from './components/ProfileEditingSidebar'
 import { IdentityActions } from './store/identity'
-import { signProfileForUpload, getNameParts } from '../utils/index'
+import { signProfileForUpload, findAddressIndex } from '../utils/index'
 import { uploadProfile, uploadPhoto } from '../account/utils'
 
 import BasicInfoTab      from './tabs/BasicInfoTab'
@@ -23,7 +23,9 @@ function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
     api: state.settings.api,
-    identityKeypairs: state.account.identityAccount.keypairs
+    identityKeypairs: state.account.identityAccount.keypairs,
+    identityAddresses: state.account.identityAccount.addresses
+
   }
 }
 
@@ -36,7 +38,9 @@ class EditProfilePage extends Component {
     updateProfile: PropTypes.func.isRequired,
     localIdentities: PropTypes.object.isRequired,
     api: PropTypes.object.isRequired,
-    identityKeypairs: PropTypes.array.isRequired
+    identityAddresses: PropTypes.array.isRequired,
+    identityKeypairs: PropTypes.array.isRequired,
+    routeParams: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -56,6 +60,20 @@ class EditProfilePage extends Component {
     this.hasUsername = this.hasUsername.bind(this)
   }
 
+  componentWillMount() {
+    this.componentHasNewLocalIdentities(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.localIdentities !== this.props.localIdentities) {
+      this.componentHasNewLocalIdentities(nextProps)
+    }
+  }
+
+  componentWillUnmount() {
+    this.saveProfile(this.state.profile)
+  }
+
   componentHasNewLocalIdentities(props) {
     const profileIndex = this.props.routeParams.index
     if (props.localIdentities[profileIndex]) {
@@ -72,26 +90,17 @@ class EditProfilePage extends Component {
     }
   }
 
-  componentWillMount() {
-    this.componentHasNewLocalIdentities(this.props)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.localIdentities !== this.props.localIdentities) {
-      this.componentHasNewLocalIdentities(nextProps)
-    }
-  }
-
-  componentWillUnmount() {
-    this.saveProfile(this.state.profile)
-  }
-
   saveProfile(newProfile) {
-    logger.trace(`saveProfile`)
+    logger.trace('saveProfile')
     this.props.updateProfile(this.props.routeParams.index, newProfile)
-      if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
-        logger.trace('saveProfile: Preparing to upload profile')
-        const data = signProfileForUpload(this.state.profile, this.props.identityKeypairs[0])
+    if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
+      logger.trace('saveProfile: Preparing to upload profile')
+      const profileIndex = this.props.routeParams.index
+      const ownerAddress = this.props.localIdentities[profileIndex].ownerAddress
+      const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
+      logger.debug(`saveProfile: signing with key index ${addressIndex}`)
+      const data = signProfileForUpload(this.state.profile,
+        this.props.identityKeypairs[addressIndex])
 
       uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
         console.error(err)

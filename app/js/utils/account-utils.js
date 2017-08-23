@@ -291,3 +291,12 @@ export function getWebAccountTypes(api) {
   }
   return webAccountTypes
 }
+
+export function findAddressIndex(address, identityAddresses) {
+  for (let i = 0; i < identityAddresses.length; i++) {
+    if (identityAddresses[i] === address) {
+      return i
+    }
+  }
+  return null
+}

@@ -9,6 +9,7 @@ import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
 
 import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
+import { findAddressIndex } from '../utils'
 import roundTo from 'round-to'
 
 import log4js from 'log4js'
@@ -99,7 +100,6 @@ class RegisterPage extends Component {
     this.displayPricingAndAvailabilityAlerts = this.displayPricingAndAvailabilityAlerts.bind(this)
     this.displayRegistrationAlerts = this.displayRegistrationAlerts.bind(this)
     this.displayZeroBalanceAlert = this.displayZeroBalanceAlert.bind(this)
-    this.findAddressIndex = this.findAddressIndex.bind(this)
     this.displayConnectStorageAlert = this.displayConnectStorageAlert.bind(this)
   }
 
@@ -251,16 +251,6 @@ class RegisterPage extends Component {
     })
   }
 
-  findAddressIndex(address) {
-    const identityAddresses = this.props.identityAddresses
-    for (let i = 0; i < identityAddresses.length; i++) {
-      if (identityAddresses[i] === address) {
-        return i
-      }
-    }
-    return null
-  }
-
   registerIdentity(event) {
     logger.trace('registerIdentity')
     event.preventDefault()
@@ -289,7 +279,7 @@ class RegisterPage extends Component {
       this.updateAlert('danger', 'Name has already been preordered')
       this.setState({ registrationLock: false })
     } else {
-      const addressIndex = this.findAddressIndex(ownerAddress)
+      const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
 
       const address = this.props.identityAddresses[addressIndex]
       const keypair = this.props.identityKeypairs[addressIndex]
