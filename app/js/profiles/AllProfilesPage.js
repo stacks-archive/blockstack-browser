@@ -230,7 +230,7 @@ class IdentityPage extends Component {
         </div>
         <div className="card-list-container m-t-30">
           <button
-            className="btn btn-blue btn-lg" onClick={this.openPasswordPrompt}
+            className="btn btn-electric-blue btn-lg" onClick={this.openPasswordPrompt}
           >
             + Create
           </button>
