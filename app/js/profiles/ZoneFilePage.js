@@ -183,8 +183,8 @@ class EditProfilePage extends Component {
                   })
                 }
                 <p>
-                Updating your zone file is an advanced feature and can break
-                Blockstack name and profile. It requires broadcasting a
+                Updating your zone file is an advanced feature that can break
+                your Blockstack name and profile. It requires broadcasting a
                 transaction on Bitcoin network and costs Bitcoin.
                 </p>
                 <form
@@ -218,7 +218,7 @@ class EditProfilePage extends Component {
                         type="checkbox"
                       />
                       &nbsp;I understand this could break my Blockstack
-                      name and costs money.
+                      name and will cost me money.
                     </label>
                   </fieldset>
 
@@ -233,6 +233,7 @@ class EditProfilePage extends Component {
                     className="btn btn-sm btn-secondary"
                     onClick={this.reset}
                     disabled={this.state.disabled}
+                    title="Reset your edits to current zone file"
                   >
                     Reset
                   </button>
