@@ -228,7 +228,7 @@ class ViewProfilePage extends Component {
                     </Link>
                     <Link to={`/profiles/${domainName}/zone-file`}
                       className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
-                      Zone File
+                      Advanced
                     </Link>
                   </span>
                 }
