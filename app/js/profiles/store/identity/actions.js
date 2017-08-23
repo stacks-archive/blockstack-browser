@@ -7,9 +7,11 @@ import {
   deriveIdentityKeyPair,
   resolveZoneFileToProfile,
   getIdentityPrivateKeychain,
-  getIdentityOwnerAddressNode
+  getIdentityOwnerAddressNode,
+  authorizationHeaderValue
 } from '../../../utils/index'
 
+import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 import { AccountActions } from '../../../account/store/account'
 
 import log4js from 'log4js'
@@ -81,6 +83,28 @@ function addUsername(domainName, ownerAddress, zoneFile) {
     domainName,
     ownerAddress,
     zoneFile
+  }
+}
+
+function broadcastingZoneFileUpdate(domainName) {
+  return {
+    type: types.BROADCASTING_ZONE_FILE_UPDATE,
+    domainName
+  }
+}
+
+function broadcastedZoneFileUpdate(domainName) {
+  return {
+    type: types.BROADCASTED_ZONE_FILE_UPDATE,
+    domainName
+  }
+}
+
+function broadcastingZoneFileUpdateError(domainName, error) {
+  return {
+    type: types.BROADCASTING_ZONE_FILE_UPDATE_ERROR,
+    domainName,
+    error
   }
 }
 
@@ -306,12 +330,55 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
         })
         .catch((error) => {
           logger.error(`fetchCurrentIdentity: ${domainName} resolveZoneFileToProfile: error`, error)
+          dispatch(updateCurrentIdentity(domainName, DEFAULT_PROFILE, [], zoneFile))
         })
       })
       .catch((error) => {
         dispatch(updateCurrentIdentity(domainName, null, [], null))
         logger.error(`fetchCurrentIdentity: ${domainName} lookup error`, error)
       })
+  }
+}
+
+function broadcastZoneFileUpdate(zoneFileUrl, coreAPIPassword, name, keypair, zoneFile) {
+  logger.trace('broadcastZoneFileUpdate: entering')
+  return dispatch => {
+    dispatch(broadcastingZoneFileUpdate(name))
+    // Core registers with an uncompressed address,
+    // browser expects compressed addresses,
+    // we need to add a suffix to indicate to core
+    // that it should use a compressed addresses
+    // see https://en.bitcoin.it/wiki/Wallet_import_format
+    // and https://github.com/blockstack/blockstack-browser/issues/607
+    const compressedPublicKeySuffix = '01'
+    const coreFormatOwnerKey = `${keypair.key}${compressedPublicKeySuffix}`
+    const url = zoneFileUrl.replace('{name}', name)
+    const requestHeaders = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: authorizationHeaderValue(coreAPIPassword)
+    }
+    const ownerKey = coreFormatOwnerKey
+    const requestBody = JSON.stringify({
+      owner_key: ownerKey,
+      zonefile: zoneFile
+    })
+    logger.debug(`broadcastZoneFileUpdate: PUT to ${url}`)
+    return fetch(url,
+      {
+        method: 'PUT',
+        headers: requestHeaders,
+        body: requestBody
+      })
+      .then(() => dispatch(broadcastedZoneFileUpdate(name)),
+    (error) => {
+      logger.error('broadcastZoneFileUpdate: error', error)
+      dispatch(broadcastingZoneFileUpdateError(name, error))
+    })
+    .catch((error) => {
+      logger.error('broadcastZoneFileUpdate: error', error)
+      dispatch(broadcastingZoneFileUpdateError(name, error))
+    })
   }
 }
 
@@ -328,7 +395,11 @@ const IdentityActions = {
   createNewIdentityFromDomain,
   addUsername,
   createNewProfileError,
-  resetCreateNewProfileError
+  resetCreateNewProfileError,
+  broadcastingZoneFileUpdate,
+  broadcastedZoneFileUpdate,
+  broadcastingZoneFileUpdateError,
+  broadcastZoneFileUpdate
 }
 
 

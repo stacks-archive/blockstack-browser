@@ -12,7 +12,8 @@ const initialState = {
   },
   localIdentities: {},
   namesOwned: [],
-  createProfileError: null
+  createProfileError: null,
+  zoneFileUpdates: []
 }
 
 const DEFAULT_PROFILE = {
@@ -46,6 +47,7 @@ describe('Identity Store: IdentityReducer', () => {
       },
       localIdentities: {},
       namesOwned: [],
+      zoneFileUpdates: [],
       createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
@@ -73,6 +75,7 @@ describe('Identity Store: IdentityReducer', () => {
         }
       },
       namesOwned: [],
+      zoneFileUpdates: [],
       createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
@@ -91,6 +94,7 @@ describe('Identity Store: IdentityReducer', () => {
       },
       localIdentities: {},
       namesOwned: [],
+      zoneFileUpdates: [],
       createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
@@ -127,6 +131,7 @@ describe('Identity Store: IdentityReducer', () => {
         }
       },
       namesOwned: ['satoshi.id'],
+      zoneFileUpdates: [],
       createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
@@ -155,6 +160,7 @@ describe('Identity Store: IdentityReducer', () => {
         }
       },
       namesOwned: [],
+      zoneFileUpdates: [],
       createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
@@ -184,6 +190,7 @@ describe('Identity Store: IdentityReducer', () => {
         }
       },
       namesOwned: [],
+      zoneFileUpdates: [],
       createProfileError: null
     }
     const actualState = IdentityReducer(undefined, action)
@@ -234,6 +241,7 @@ describe('Identity Store: IdentityReducer', () => {
       },
       localIdentities: {},
       namesOwned: [],
+      zoneFileUpdates: [],
       createProfileError: error
     }
     const action = IdentityActions.createNewProfileError(error)

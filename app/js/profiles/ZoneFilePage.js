@@ -2,9 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import InputGroup from '../components/InputGroup'
+import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
+import { findAddressIndex } from '../utils'
 
 
 import log4js from 'log4js'
@@ -15,10 +16,13 @@ function mapStateToProps(state) {
   return {
     nameLookupUrl: state.settings.api.nameLookupUrl,
     identityAddresses: state.account.identityAccount.addresses,
+    identityKeypairs: state.account.identityAccount.keypairs,
     localIdentities: state.profiles.identity.localIdentities,
     namesOwned: state.profiles.identity.namesOwned,
     zoneFileUrl: state.settings.api.zoneFileUrl,
-    currentIdentity: state.profiles.identity.current
+    currentIdentity: state.profiles.identity.current,
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    zoneFileUpdates: state.profiles.identity.zoneFileUpdates
   }
 }
 
@@ -30,12 +34,16 @@ class EditProfilePage extends Component {
   static propTypes = {
     currentIdentity: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
+    identityKeypairs: PropTypes.array.isRequired,
     localIdentities: PropTypes.object.isRequired,
     nameLookupUrl: PropTypes.string.isRequired,
     namesOwned: PropTypes.array.isRequired,
     fetchCurrentIdentity: PropTypes.func.isRequired,
     routeParams: PropTypes.object.isRequired,
-    zoneFileUrl: PropTypes.string.isRequired
+    zoneFileUrl: PropTypes.string.isRequired,
+    coreAPIPassword: PropTypes.string.isRequired,
+    broadcastZoneFileUpdate: PropTypes.func.isRequired,
+    zoneFileUpdates: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -43,11 +51,16 @@ class EditProfilePage extends Component {
     const currentIdentity = props.currentIdentity
     this.state = {
       zoneFile: currentIdentity.zoneFile,
-      agreed: false
+      agreed: false,
+      alerts: [],
+      clickedBroadcast: false,
+      disabled: false
     }
     this.onToggle = this.onToggle.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
+    this.displayAlerts = this.displayAlerts.bind(this)
     this.reset = this.reset.bind(this)
+    this.updateAlert = this.updateAlert.bind(this)
     this.updateZoneFile = this.updateZoneFile.bind(this)
   }
 
@@ -58,6 +71,7 @@ class EditProfilePage extends Component {
       this.props.nameLookupUrl,
       name
     )
+    this.displayAlerts(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -71,6 +85,7 @@ class EditProfilePage extends Component {
     } else {
       logger.error('componentWillReceiveProps: no zone file!')
     }
+    this.displayAlerts(nextProps)
   }
 
   onToggle(event) {
@@ -85,14 +100,60 @@ class EditProfilePage extends Component {
     })
   }
 
+  displayAlerts(props) {
+    const name = props.routeParams.index
+    const updateState = props.zoneFileUpdates[name]
+    if (updateState && this.state.clickedBroadcast) {
+      if (updateState.error) {
+        this.updateAlert('danger', updateState.error)
+        this.setState({
+          disabled: false
+        })
+      } else if (updateState.broadcasting) {
+        this.updateAlert('success', 'Broadcasting zone file update transaction...')
+      } else {
+        this.updateAlert('success', 'Broadcasted zone file update transaction.')
+        this.setState({
+          disabled: false
+        })
+      }
+    } else {
+      this.setState({
+        alerts: []
+      })
+    }
+  }
+
   reset(event) {
     logger.trace('reset')
     event.preventDefault()
+    this.setState({
+      clickedBroadcast: false,
+      zoneFile: this.props.currentIdentity.zoneFile
+    })
+  }
+
+  updateAlert(alertStatus, alertMessage) {
+    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    this.setState({
+      alerts: [{ status: alertStatus, message: alertMessage }]
+    })
   }
 
   updateZoneFile(event) {
     logger.trace('updateZoneFile')
     event.preventDefault()
+    this.setState({
+      clickedBroadcast: true,
+      disabled: true
+    })
+    const name = this.props.routeParams.index
+    const ownerAddress = this.props.localIdentities[name].ownerAddress
+    const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
+    const keypair = this.props.identityKeypairs[addressIndex]
+    logger.debug(`updateZoneFile: using key with index ${addressIndex}`)
+    this.props.broadcastZoneFileUpdate(this.props.zoneFileUrl,
+      this.props.coreAPIPassword, name, keypair, this.state.zoneFile)
   }
 
   render() {
@@ -109,6 +170,13 @@ class EditProfilePage extends Component {
                 <h1 className="h1-modern">
                   Update zone file
                 </h1>
+                {
+                  this.state.alerts.map((alert, index) => {
+                    return (
+                      <Alert key={index} message={alert.message} status={alert.status} />
+                    )
+                  })
+                }
                 <p>
                 Updating your zone file is an advanced feature and can break
                 Blockstack name and profile. It requires broadcasting a
@@ -117,6 +185,7 @@ class EditProfilePage extends Component {
                 <form
                   className="form-check"
                   onSubmit={this.updateZoneFile}
+                  disabled={this.state.disabled}
                 >
                   <textarea
                     className="form-control"

@@ -11,7 +11,8 @@ const initialState = {
   default: null,
   localIdentities: {},
   namesOwned: [],
-  createProfileError: null
+  createProfileError: null,
+  zoneFileUpdates: []
 }
 
 function IdentityReducer(state = initialState, action) {
@@ -78,6 +79,38 @@ function IdentityReducer(state = initialState, action) {
         createProfileError: new String(action.error)
       })
     }
+    case types.BROADCASTING_ZONE_FILE_UPDATE: {
+      let zoneFileUpdates = []
+      if (state.zoneFileUpdates) {
+        zoneFileUpdates = state.zoneFileUpdates
+      }
+      return Object.assign({}, state, {
+        zoneFileUpdates: Object.assign({}, zoneFileUpdates, {
+          [action.domainName]: Object.assign({}, zoneFileUpdates[action.domainName], {
+            broadcasting: true,
+            error: null
+          })
+        })
+      })
+    }
+    case types.BROADCASTED_ZONE_FILE_UPDATE:
+      return Object.assign({}, state, {
+        zoneFileUpdates: Object.assign({}, state.zoneFileUpdates, {
+          [action.domainName]: Object.assign({}, state.zoneFileUpdates[action.domainName], {
+            broadcasting: false,
+            error: null
+          })
+        })
+      })
+    case types.BROADCASTING_ZONE_FILE_UPDATE_ERROR:
+      return Object.assign({}, state, {
+        zoneFileUpdates: Object.assign({}, state.zoneFileUpdates, {
+          [action.domainName]: Object.assign({}, state.zoneFileUpdates[action.domainName], {
+            broadcasting: false,
+            error: action.error
+          })
+        })
+      })
     default:
       return state
   }
