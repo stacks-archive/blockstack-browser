@@ -370,15 +370,23 @@ function broadcastZoneFileUpdate(zoneFileUrl, coreAPIPassword, name, keypair, zo
         headers: requestHeaders,
         body: requestBody
       })
-      .then(() => dispatch(broadcastedZoneFileUpdate(name)),
-    (error) => {
-      logger.error('broadcastZoneFileUpdate: error', error)
-      dispatch(broadcastingZoneFileUpdateError(name, error))
-    })
-    .catch((error) => {
-      logger.error('broadcastZoneFileUpdate: error', error)
-      dispatch(broadcastingZoneFileUpdateError(name, error))
-    })
+      .then((response) => {
+        if (response.ok) {
+          dispatch(broadcastedZoneFileUpdate(name))
+        } else {
+          response.text()
+          .then((responseText) => JSON.parse(responseText))
+          .then((responseJson) => {
+            const error = responseJson.error
+            logger.error('broadcastZoneFileUpdate: error', error)
+            dispatch(broadcastingZoneFileUpdateError(name, error))
+          })
+        }
+      })
+      .catch((error) => {
+        logger.error('broadcastZoneFileUpdate: error', error)
+        dispatch(broadcastingZoneFileUpdateError(name, error))
+      })
   }
 }
 

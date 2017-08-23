@@ -54,7 +54,8 @@ class EditProfilePage extends Component {
       agreed: false,
       alerts: [],
       clickedBroadcast: false,
-      disabled: false
+      disabled: false,
+      edited: false
     }
     this.onToggle = this.onToggle.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
@@ -78,7 +79,7 @@ class EditProfilePage extends Component {
     logger.trace('componentWillReceiveProps')
     const currentIdentity = nextProps.currentIdentity
     const zoneFile = currentIdentity.zoneFile
-    if (zoneFile) {
+    if (zoneFile && !nextProps.edited) {
       this.setState({
         zoneFile
       })
@@ -96,7 +97,8 @@ class EditProfilePage extends Component {
 
   onValueChange(event) {
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      edited: true
     })
   }
 
@@ -129,7 +131,9 @@ class EditProfilePage extends Component {
     event.preventDefault()
     this.setState({
       clickedBroadcast: false,
-      zoneFile: this.props.currentIdentity.zoneFile
+      zoneFile: this.props.currentIdentity.zoneFile,
+      edited: false,
+      alerts: []
     })
   }
 
@@ -145,7 +149,8 @@ class EditProfilePage extends Component {
     event.preventDefault()
     this.setState({
       clickedBroadcast: true,
-      disabled: true
+      disabled: true,
+      edited: true
     })
     const name = this.props.routeParams.index
     const ownerAddress = this.props.localIdentities[name].ownerAddress
@@ -194,6 +199,7 @@ class EditProfilePage extends Component {
                     onChange={this.onValueChange}
                     required
                     rows={5}
+                    disabled={this.state.disabled}
                   />
                   <fieldset>
                     <label
@@ -219,13 +225,14 @@ class EditProfilePage extends Component {
                   <button
                     className="btn btn-sm btn-primary"
                     type="submit"
-                    disabled={!agreed}
+                    disabled={!agreed || this.state.disabled}
                   >
                     Broadcast update
                   </button>
                   <button
                     className="btn btn-sm btn-secondary"
                     onClick={this.reset}
+                    disabled={this.state.disabled}
                   >
                     Reset
                   </button>
