@@ -10,23 +10,32 @@ class IdentityItem extends Component {
     url: PropTypes.string.isRequired,
     pending: PropTypes.bool.isRequired,
     ownerAddress: PropTypes.string.isRequired,
-    canAddUsername: PropTypes.bool.isRequired
+    canAddUsername: PropTypes.bool.isRequired,
+    isDefault: PropTypes.bool,
+    setDefaultIdentity: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
     this.state = {}
+
+    this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
+  }
+
+  setDefaultIdentity(event) {
+    event.preventDefault()
+    this.props.setDefaultIdentity()
   }
 
   render() {
     return (
       <li className="col-md-6 col-lg-4 col-xl-3 card-list-wrap">
         <Link to={this.props.url} className="card profile-list-card container-fluid m-b-35">
-          <div className="card-avatar profile-list-avatar">
+          <div className="card-avatar profile-list-avatar col-xs-3">
             <Image src={this.props.avatarUrl}
               fallbackSrc="/images/avatar.png" className="img-circle img-cover" />
           </div>
-          <div>
+          <div className="col-xs-9">
             <ul className="profile-card-list">
               <li>
                 <h3 className="card-title profile-list-card-title">
@@ -35,15 +44,22 @@ class IdentityItem extends Component {
               </li>
               <li>
                 {this.props.canAddUsername ?
-                 <Link to={`/profiles/i/register/${this.props.ownerAddress}`}>
+                 <Link to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
                    Add username
                  </Link>
                  :
-                  <div>                   
+                  <div>
                      <p className="card-subtitle profile-list-card-subtitle">
                       {this.props.pending ? '(pending)' : '\u00A0'}
                      </p>
                   </div>
+                }
+              </li>
+              <li>
+                {this.props.isDefault ?
+                  <span className="default">Default Profile <i className="fa fa-check"></i></span>
+                :
+                  <a href="#" onClick={this.setDefaultIdentity}>Set as Default Profile</a>
                 }
               </li>
             </ul>

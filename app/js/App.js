@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AccountActions } from './account/store/account'
+import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
 import WelcomeModal from './welcome/WelcomeModal'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
@@ -21,13 +22,19 @@ function mapStateToProps(state) {
     coreApiRunning: state.sanity.coreApiRunning,
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    defaultIdentity: state.profiles.identity.default,
+    localIdentities: state.profiles.identity.localIdentities
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AccountActions,
-    SanityActions, SettingsActions), dispatch)
+  return bindActionCreators(Object.assign({},
+    AccountActions,
+    SanityActions,
+    SettingsActions,
+    IdentityActions,
+  ), dispatch)
 }
 
 class App extends Component {
@@ -43,8 +50,10 @@ class App extends Component {
     isCoreRunning: PropTypes.func.isRequired,
     isCoreApiPasswordValid: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
-    coreAPIPassword: PropTypes.string
-
+    coreAPIPassword: PropTypes.string,
+    localIdentities: PropTypes.object,
+    defaultIdentity: PropTypes.string,
+    setDefaultIdentity: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -104,6 +113,15 @@ class App extends Component {
       coreConnected: nextProps.api.coreAPIPassword ? true : false,
       currentPath: nextPath
     })
+
+    // Only for backward-compatibility purpose.
+    // Since we added a `default` field in state.profiles.identity, if the user
+    // already had localIdentities but doesn't have a default one, we put the
+    // default as his 1st one.
+    const localIdentities = Object.keys(nextProps.localIdentities)
+    if (!nextProps.defaultIdentity && localIdentities.length) {
+      nextProps.setDefaultIdentity(nextProps.localIdentities[localIdentities[0]].domainName)
+    }
   }
 
 

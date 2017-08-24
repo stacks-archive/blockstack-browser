@@ -1,6 +1,7 @@
 /* Styles */
 
 /* Table of Contents */
+
 /*  1. Colors */
 /*  2. Options */
 /*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version we are utilizing the custom spacing rules from blockstack.com. Upon import of blockstack-bootstrap, go through styles and replace with latest spacing rules from b4. */
@@ -37,7 +38,24 @@
 /* 34. Close */
 /* 35. Code */
 /* 36. Status Bars */
+
 /* 37. Misc */
+
+/* 38. Utilities */
+/* 38. a. - Align */
+/* 38. b. - Background */
+/* 38. c. - Borders */
+/* 38. d. - Clearfix */
+/* 38. e. - Display */
+/* 38. f. - Embed */
+/* 38. g. - Flex */
+/* 38. h. - Float */
+/* 38. i. - Position */
+/* 38. j. - Screenreaders */
+/* 38. k. - Sizing */
+/* 38. l. - Spacing */
+/* 38. m. - Text */
+/* 38. n. - Visibility */
 
 
 #app{height:100%;width:100%;}
@@ -216,6 +234,7 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 /* Styles ported over from profiles.css */
 
 /* Table of Contents */
+
 /*  1. Colors */
 /*  2. Options */
 /*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version we are utilizing the custom spacing rules from blockstack.com. Upon import of blockstack-bootstrap, go through styles and replace with latest spacing rules from b4. */
@@ -252,7 +271,24 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 /* 34. Close */
 /* 35. Code */
 /* 36. Status Bars */
+
 /* 37. Misc */
+
+/* 38. Utilities */
+/* 38. a. - Align */
+/* 38. b. - Background */
+/* 38. c. - Borders */
+/* 38. d. - Clearfix */
+/* 38. e. - Display */
+/* 38. f. - Embed */
+/* 38. g. - Flex */
+/* 38. h. - Float */
+/* 38. i. - Position */
+/* 38. j. - Screenreaders */
+/* 38. k. - Sizing */
+/* 38. l. - Spacing */
+/* 38. m. - Text */
+/* 38. n. - Visibility */
 
 /* 1. Colors */
 /* Blockstack Label Colors - https://projects.invisionapp.com/boards/HE2VVROFSGB27/ */
@@ -460,8 +496,8 @@ a {color: #E91E63;}
 .btn-outline-primary{color:#270F34;background-color:#fff;border:1px solid #270F34;}
 .btn-side-secondary{font-family:'Source Code Pro',monospace;color:#270F34;border:1px solid #fff;border-right:none;border-radius:0;background-color:#f5f5f5;}
 .btn-outline-primary:hover,.btn-outline-primary:focus,.btn-outline-primary:active,.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active{color:#fff;border:1px solid #2275d7;background-color:#2275d7;}
-.btn-blue{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;padding-right:1.375rem;padding-left:1.375rem;-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
-.btn-blue:hover,.btn-blue:focus,.btn-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
+.btn-electric-blue{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;padding-right:1.375rem;padding-left:1.375rem;-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.btn-electric-blue:hover,.btn-electric-blue:focus,.btn-electric-blue:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
 .btn-black{color:#fff;border:1px solid #060607;background-color:#060607;padding-right:1.375rem;padding-left:1.375rem;-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
 .btn-black:hover,.btn-black:focus,.btn-black:active{color:#fff;border:1px solid #2378CC;background-color:#2378CC;}
 
@@ -490,13 +526,13 @@ input[type=radio]{margin-right:1rem;}
 /* 21. Cards */
 .profile-list-card{background-color:#fff;padding:35px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
 a.card:hover{text-decoration:none;}
-.profile-card-list{margin-bottom:0;}
+.profile-card-list{margin-bottom:0;list-style:none;padding:0;}
+.profile-card-list .default{color: #19191A;text-decoration: none;}
 .profile-list-card-title{font-size:15px;color:#19191A;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .profile-list-card-subtitle{font-size:13px;color:#949494;line-height:1.9rem;}
 .profile-list-card-avatar{display:inline-block;}
-.profile-list-avatar{float:left;margin-right:15px;padding:0;}
+.profile-list-avatar{padding:0;}
 div.card-avatar.profile-list-avatar img{width:48px;height:48px;}
-.profile-card-list{list-style:none;padding:0;}
 .card-wrapper{list-style:none;padding-left:0;}
 .pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
@@ -504,6 +540,12 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-name{font-size:1.0rem;font-weight:600;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
+
+/* 27. Progress bars */
+.progress{font-size: .75rem;line-height: 1rem;text-align: center;}
+.progress-bar{height: 1rem;color: #fff;background-color: #2275d7}
+.progress-bar-animated{-webkit-animation:progress-bar-stripes 1s linear infinite;-o-animation:progress-bar-stripes 1s linear infinite;animation:progress-bar-stripes 1s linear infinite}
+.progress-bar-striped{background-image:-webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);-webkit-background-size: 1rem 1rem;background-size: 1rem 1rem}
 
 /* 28. List group */
 .list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
@@ -602,6 +644,8 @@ div.ReactModal__Content.ReactModal__Content--after-open {
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
+	transition:all 300ms ease-in-out;
+
 }
 .modal-heading {
   font-size: 1.5rem;
@@ -656,6 +700,13 @@ form.modal-form > div.form-group {
 
 /* Auth Modal */
 .auth-modal {text-align: center}
+.auth-modal .profile-select{margin-bottom:20px;}
+
+/* Add Username Modal */
+.add-username-modal div div.ReactModal__Content.ReactModal__Content--after-open {
+	width: 615px;
+	margin-top: 0;
+}
 
 /* Account App */
 .item-sidebar-account{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}

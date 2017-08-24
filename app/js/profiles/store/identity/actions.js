@@ -7,9 +7,11 @@ import {
   deriveIdentityKeyPair,
   resolveZoneFileToProfile,
   getIdentityPrivateKeychain,
-  getIdentityOwnerAddressNode
+  getIdentityOwnerAddressNode,
+  authorizationHeaderValue
 } from '../../../utils/index'
 
+import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 import { AccountActions } from '../../../account/store/account'
 
 import log4js from 'log4js'
@@ -20,12 +22,20 @@ const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
 
 
-function updateCurrentIdentity(domainName, profile, verifications) {
+function updateCurrentIdentity(domainName, profile, verifications, zoneFile) {
   return {
     type: types.UPDATE_CURRENT,
     domainName,
     profile,
-    verifications
+    verifications,
+    zoneFile
+  }
+}
+
+function setDefaultIdentity(domainName) {
+  return {
+    type: types.SET_DEFAULT,
+    domainName
   }
 }
 
@@ -58,32 +68,65 @@ function updateOwnedIdentities(localIdentities, namesOwned) {
   }
 }
 
-function updateProfile(domainName, profile) {
+function updateProfile(domainName, profile, zoneFile) {
   return {
     type: types.UPDATE_PROFILE,
     domainName,
-    profile
+    profile,
+    zoneFile
   }
 }
 
-function addUsername(domainName, ownerAddress) {
+function addUsername(domainName, ownerAddress, zoneFile) {
   return {
     type: types.ADD_USERNAME,
     domainName,
-    ownerAddress
+    ownerAddress,
+    zoneFile
   }
 }
 
-function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false) {
+function broadcastingZoneFileUpdate(domainName) {
+  return {
+    type: types.BROADCASTING_ZONE_FILE_UPDATE,
+    domainName
+  }
+}
+
+function broadcastedZoneFileUpdate(domainName) {
+  return {
+    type: types.BROADCASTED_ZONE_FILE_UPDATE,
+    domainName
+  }
+}
+
+function broadcastingZoneFileUpdateError(domainName, error) {
+  return {
+    type: types.BROADCASTING_ZONE_FILE_UPDATE_ERROR,
+    domainName,
+    error
+  }
+}
+
+function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false, zoneFile) {
   logger.debug(`createNewIdentityFromDomain: domainName: ${domainName} ownerAddress: ${ownerAddress}`)
-  return dispatch => {
+  return (dispatch, getState) => {
     if (!addingUsername) {
       logger.trace('createNewIdentityFromDomain: Not adding a username')
       dispatch(createNewIdentity(domainName, ownerAddress))
       dispatch(AccountActions.usedIdentityAddress())
     } else {
       logger.trace('createNewIdentityFromDomain: adding username to existing profile')
-      dispatch(addUsername(domainName, ownerAddress))
+      dispatch(addUsername(domainName, ownerAddress, zoneFile))
+      const state = getState()
+      if (!state.profiles) {
+        return
+      }
+      // If we are adding a domainName to the default identity, then
+      // we need to update our default field to the new domainName
+      if (state.profiles.identity.default === ownerAddress) {
+        dispatch(setDefaultIdentity(domainName))
+      }
     }
   }
 }
@@ -205,7 +248,7 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
                       resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                         j++
                         if (profile) {
-                          dispatch(updateProfile(domainName, profile))
+                          dispatch(updateProfile(domainName, profile, zoneFile))
                         }
                         logger.debug(`j: ${j} namesOwned.length: ${namesOwned.length}`)
                         if (j >= namesOwned.length) {
@@ -275,11 +318,11 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
 
         return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
           let verifications = []
-          dispatch(updateCurrentIdentity(domainName, profile, verifications))
+          dispatch(updateCurrentIdentity(domainName, profile, verifications, zoneFile))
           if (profile) {
             return validateProofs(profile, domainName).then((proofs) => {
               verifications = proofs
-              dispatch(updateCurrentIdentity(domainName, profile, verifications))
+              dispatch(updateCurrentIdentity(domainName, profile, verifications, zoneFile))
             }).catch((error) => {
               logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
             })
@@ -287,11 +330,62 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
         })
         .catch((error) => {
           logger.error(`fetchCurrentIdentity: ${domainName} resolveZoneFileToProfile: error`, error)
+          dispatch(updateCurrentIdentity(domainName, DEFAULT_PROFILE, [], zoneFile))
         })
       })
       .catch((error) => {
-        dispatch(updateCurrentIdentity(domainName, null, []))
+        dispatch(updateCurrentIdentity(domainName, null, [], null))
         logger.error(`fetchCurrentIdentity: ${domainName} lookup error`, error)
+      })
+  }
+}
+
+function broadcastZoneFileUpdate(zoneFileUrl, coreAPIPassword, name, keypair, zoneFile) {
+  logger.trace('broadcastZoneFileUpdate: entering')
+  return dispatch => {
+    dispatch(broadcastingZoneFileUpdate(name))
+    // Core registers with an uncompressed address,
+    // browser expects compressed addresses,
+    // we need to add a suffix to indicate to core
+    // that it should use a compressed addresses
+    // see https://en.bitcoin.it/wiki/Wallet_import_format
+    // and https://github.com/blockstack/blockstack-browser/issues/607
+    const compressedPublicKeySuffix = '01'
+    const coreFormatOwnerKey = `${keypair.key}${compressedPublicKeySuffix}`
+    const url = zoneFileUrl.replace('{name}', name)
+    const requestHeaders = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: authorizationHeaderValue(coreAPIPassword)
+    }
+    const ownerKey = coreFormatOwnerKey
+    const requestBody = JSON.stringify({
+      owner_key: ownerKey,
+      zonefile: zoneFile
+    })
+    logger.debug(`broadcastZoneFileUpdate: PUT to ${url}`)
+    return fetch(url,
+      {
+        method: 'PUT',
+        headers: requestHeaders,
+        body: requestBody
+      })
+      .then((response) => {
+        if (response.ok) {
+          dispatch(broadcastedZoneFileUpdate(name))
+        } else {
+          response.text()
+          .then((responseText) => JSON.parse(responseText))
+          .then((responseJson) => {
+            const error = responseJson.error
+            logger.error('broadcastZoneFileUpdate: error', error)
+            dispatch(broadcastingZoneFileUpdateError(name, error))
+          })
+        }
+      })
+      .catch((error) => {
+        logger.error('broadcastZoneFileUpdate: error', error)
+        dispatch(broadcastingZoneFileUpdateError(name, error))
       })
   }
 }
@@ -299,6 +393,7 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
 const IdentityActions = {
   calculateLocalIdentities,
   updateCurrentIdentity,
+  setDefaultIdentity,
   createNewIdentity,
   createNewProfile,
   updateProfile,
@@ -308,7 +403,11 @@ const IdentityActions = {
   createNewIdentityFromDomain,
   addUsername,
   createNewProfileError,
-  resetCreateNewProfileError
+  resetCreateNewProfileError,
+  broadcastingZoneFileUpdate,
+  broadcastedZoneFileUpdate,
+  broadcastingZoneFileUpdateError,
+  broadcastZoneFileUpdate
 }
 
 

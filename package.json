@@ -1,6 +1,6 @@
 {
   "name": "blockstack-portal",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "author": "Blockstack Inc <admin@blockstack.com>",
   "description": "The Blockstack browser portal",
   "license": "MPL-2.0",
@@ -164,7 +164,7 @@
     "zone-file": "^0.2.2"
   },
   "engines": {
-    "node": ">=6",
+    "node": ">=6 <8",
     "npm": ">=5"
   }
 }

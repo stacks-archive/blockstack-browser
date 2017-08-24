@@ -1,5 +1,5 @@
 /*
- Quick and dirty server for serving single page apps on localhost. 
+ Quick and dirty server for serving single page apps on localhost.
 
  Usage:
  node blockstackProxy.js <port> <basePath>
@@ -60,7 +60,10 @@ http.createServer(function(request, response) {
         return;
       }
 
-      response.writeHead(200, {"Content-Type": mimeLookup(filename)});
+      response.writeHead(200, {
+        "Content-Type": mimeLookup(filename),
+        "X-Frame-Options":	"DENY"
+     });
       response.write(file, "binary");
       response.end();
     });
