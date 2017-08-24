@@ -12,7 +12,7 @@ import { AccountActions }  from '../account/store/account'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/AllProfilesPage.js')
+const logger = log4js.getLogger('profiles/DefaultProfilePage.js')
 
 function mapStateToProps(state) {
   return {
@@ -31,7 +31,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
 }
 
-class IdentityPage extends Component {
+class DefaultProfilePage extends Component {
   static propTypes = {
     localIdentities: PropTypes.object.isRequired,
     defaultIdentity: PropTypes.string.isRequired,
@@ -153,6 +153,15 @@ class IdentityPage extends Component {
   render() {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
+    const defaultIdentityName = this.props.defaultIdentity
+    const identity = this.state.localIdentities[defaultIdentityName]
+    const person = new Person(identity.profile)
+
+    if (identity.ownerAddress === defaultIdentityName) {
+      identity.canAddUsername = true
+    } else {
+      identity.canAddUsername = false
+    }
     return (
       <div className="card-list-container profile-content-wrapper">
         <Modal
@@ -195,38 +204,21 @@ class IdentityPage extends Component {
           </form>
         </Modal>
         <div>
-          <h5 className="h5-landing">All Profiles</h5>
+          <h5 className="h5-landing">Me</h5>
         </div>
         <div className="container card-list-container">
           <ul className="card-wrapper">
-            {Object.keys(this.state.localIdentities).map((domainName) => {
-              const identity = this.state.localIdentities[domainName]
-              const person = new Person(identity.profile)
-
-              if (identity.ownerAddress === domainName) {
-                identity.canAddUsername = true
-              } else {
-                identity.canAddUsername = false
-              }
-
-              if (identity.domainName) {
-                return (
-                  <IdentityItem
-                    key={identity.domainName}
-                    label={identity.domainName}
-                    pending={!identity.registered}
-                    avatarUrl={person.avatarUrl() || ''}
-                    url={`/profiles/${identity.domainName}/local`}
-                    ownerAddress={identity.ownerAddress}
-                    canAddUsername={identity.canAddUsername}
-                    isDefault={identity.domainName === this.props.defaultIdentity}
-                    setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
-                  />
-                )
-              } else {
-                return null
-              }
-            })}
+            <IdentityItem
+              key={identity.domainName}
+              label={identity.domainName}
+              pending={!identity.registered}
+              avatarUrl={person.avatarUrl() || ''}
+              url={`/profiles/${identity.domainName}/local`}
+              ownerAddress={identity.ownerAddress}
+              canAddUsername={identity.canAddUsername}
+              isDefault={identity.domainName === this.props.defaultIdentity}
+              setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
+            />
           </ul>
         </div>
         <div className="card-list-container m-t-30">
@@ -238,13 +230,13 @@ class IdentityPage extends Component {
           <Link
             className="btn btn-electric-blue btn-lg"
             to="/profiles"
+            disabled
           >
             Me
           </Link>
           <Link
             className="btn btn-electric-blue btn-lg"
             to="/profiles/i/all"
-            disabled
           >
             All profiles
           </Link>
@@ -254,4 +246,4 @@ class IdentityPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IdentityPage)
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultProfilePage)
