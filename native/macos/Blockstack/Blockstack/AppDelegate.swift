@@ -16,8 +16,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     var mainWindowController: MainWindowController? = nil
 
-    var mainWindow = NSWindow(contentRect: NSMakeRect(0, 0, 900, 700),
-                              styleMask: [.titled, .closable, .miniaturizable, .resizable],
+    var mainWindow = NSWindow(contentRect: NSMakeRect(0, 0, 392, 650),
+                              styleMask: [.titled, .closable, .miniaturizable],
                               backing: .buffered, defer: false)
 
     var browserViewController: BrowserViewController? = nil
