@@ -26,7 +26,7 @@ describe('Availability Store: AvailabilityReducer', () => {
           error: null
         }
       },
-      lastNameEntered: 'satoshi.id'
+      lastNameEntered: 'satoshi'
     }
     const actualState = AvailabilityReducer(undefined, action)
     assert.deepEqual(actualState, expectedState)

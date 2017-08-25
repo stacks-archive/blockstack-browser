@@ -7,13 +7,14 @@ class AccountSidebar extends Component {
   }
 
   render() {
-    let tabs = [
+    const tabs = [
+      { url: '/account/storage', label: 'storage providers', isActive: false },
       { url: '/account/password', label: 'change password', isActive: false },
       { url: '/account/backup', label: 'backup account', isActive: false },
       { url: '/account/restore', label: 'restore account', isActive: false },
       { url: '/account/delete', label: 'delete account', isActive: false },
-      { url: '/account/api', label: 'api settings', isActive: false },
-      { url: '/account/storage', label: 'storage providers', isActive: false }
+      { url: '/account/api', label: 'api settings', isActive: false }
+
     ]
     tabs.map((tab) => {
       if (tab.url === this.props.activeTab) {

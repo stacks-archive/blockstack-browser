@@ -1,11 +1,15 @@
 import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
-import { authorizationHeaderValue, btcToSatoshis, encrypt,
+import { authorizationHeaderValue,
+  btcToSatoshis,
+  deriveIdentityKeyPair,
+  encrypt,
   getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode } from '../../../utils'
+import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
 
@@ -23,7 +27,7 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
 
   const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
 
-  const ADDRESSES_TO_GENERATE = 9
+  const ADDRESSES_TO_GENERATE = 1
   const identityAddresses = []
   const identityKeypairs = []
 
@@ -32,18 +36,9 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
   for (let addressIndex = 0; addressIndex < ADDRESSES_TO_GENERATE; addressIndex++) {
     const identityOwnerAddressNode =
     getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
-    const identityAddress = identityOwnerAddressNode.getAddress()
-    identityAddresses.push(identityAddress)
-    const identityKey = identityOwnerAddressNode.getIdentityKey()
-    const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
-    const appsNode = identityOwnerAddressNode.getAppsNode()
-    identityKeypairs.push({
-      key: identityKey,
-      keyID: identityKeyID,
-      address: identityAddress,
-      appsNodeKey: appsNode.toBase58(),
-      salt: appsNode.getSalt()
-    })
+    const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
+    identityKeypairs.push(identityKeyPair)
+    identityAddresses.push(identityKeyPair.address)
   }
 
   return {
@@ -125,6 +120,12 @@ function promptedForEmail() {
   }
 }
 
+function connectedStorage() {
+  return {
+    type: types.CONNECTED_STORAGE
+  }
+}
+
 function updateViewedRecoveryCode() {
   return {
     type: types.VIEWED_RECOVERY_CODE
@@ -138,8 +139,8 @@ function displayedRecoveryCode() {
   }
 }
 
-function emailKeychainBackup(email, encryptedPortalKey) {
-  logger.debug(`emailKeychainBackup: ${email}`)
+function emailNotifications(email) {
+  logger.debug(`emailNotifications: ${email}`)
   return dispatch => {
     dispatch(promptedForEmail())
     const requestHeaders = {
@@ -148,8 +149,7 @@ function emailKeychainBackup(email, encryptedPortalKey) {
     }
 
     const requestBody = {
-      email,
-      encryptedPortalKey
+      email
     }
 
     const options = {
@@ -157,16 +157,15 @@ function emailKeychainBackup(email, encryptedPortalKey) {
       headers: requestHeaders,
       body: JSON.stringify(requestBody)
     }
-    // const emailBackupUrl = 'http://localhost:2888/backup'
-    const emailBackupUrl = 'https://blockstack-portal-emailer.appartisan.com/backup'
+    const emailNotificationsUrl = 'https://blockstack-portal-emailer.appartisan.com/notifications'
 
-    return fetch(emailBackupUrl, options)
+    return fetch(emailNotificationsUrl, options)
     .then(() => {
-      logger.debug(`emailKeychainBackup: backup sent to ${email}`)
+      logger.debug(`emailNotifications: registered ${email} for notifications`)
     }, (error) => {
-      logger.error('emailKeychainBackup: error backing up keychain', error)
+      logger.error('emailNotifications: error', error)
     }).catch(error => {
-      logger.error('emailKeychainBackup: error backing up keychain', error)
+      logger.error('emailNotifications: error', error)
     })
   }
 }
@@ -175,6 +174,13 @@ function skipEmailBackup() {
   logger.trace('skipEmailBackup')
   return dispatch => {
     dispatch(promptedForEmail())
+  }
+}
+
+function storageIsConnected() {
+  logger.trace('storageConnected')
+  return dispatch => {
+    dispatch(connectedStorage())
   }
 }
 
@@ -225,6 +231,11 @@ function resetCoreWithdrawal() {
 function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, amount, coreAPIPassword) {
   return dispatch => {
     dispatch(withdrawingCoreBalance(recipientAddress, amount))
+
+    const satoshisAmount = btcToSatoshis(amount)
+    const roundedSatoshiAmount = roundTo(satoshisAmount, 0)
+    logger.debug(`withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} satoshis to ${recipientAddress}`)
+
     const requestHeaders = {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -234,7 +245,7 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, 
     const requestBody = JSON.stringify({
       address: recipientAddress,
       min_confs: 0,
-      amount: btcToSatoshis(amount)
+      amount: roundedSatoshiAmount
     })
 
     fetch(coreWalletWithdrawUrl, {
@@ -310,8 +321,8 @@ function initializeWallet(password, backupPhrase, email = null) {
       const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
       masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
     } else { // Create a new wallet
-      const entropy = randomBytes(32)
-      backupPhrase = bip39.entropyToMnemonic(entropy)
+      const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
+      backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
       const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
       masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
     }
@@ -327,6 +338,14 @@ function initializeWallet(password, backupPhrase, email = null) {
 function newBitcoinAddress() {
   return {
     type: types.NEW_BITCOIN_ADDRESS
+  }
+}
+
+
+function newIdentityAddress(newIdentityKeypair) {
+  return {
+    type: types.NEW_IDENTITY_ADDRESS,
+    keypair: newIdentityKeypair
   }
 }
 
@@ -354,12 +373,14 @@ const AccountActions = {
   refreshCoreWalletBalance,
   resetCoreWithdrawal,
   withdrawBitcoinFromCoreWallet,
-  emailKeychainBackup,
+  emailNotifications,
   skipEmailBackup,
+  storageIsConnected,
   updateViewedRecoveryCode,
   incrementIdentityAddressIndex,
   usedIdentityAddress,
-  displayedRecoveryCode
+  displayedRecoveryCode,
+  newIdentityAddress
 }
 
 export default AccountActions

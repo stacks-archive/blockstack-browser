@@ -2,7 +2,8 @@ import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import {
   getIdentityPrivateKeychain,
-  getIdentityOwnerAddressNode
+  getIdentityOwnerAddressNode,
+  findAddressIndex
  } from '../../app/js/utils'
 
 let masterKeychain = null
@@ -39,6 +40,26 @@ describe('account-utils', () => {
       const expectedAppNodeAddress = '1A9NEhnXq5jDp9BRT4DrwadRP5jbBK896X'
       const actualAppNodeAddress = appNode.getAddress()
       assert.equal(actualAppNodeAddress, expectedAppNodeAddress)
+    })
+  })
+
+  describe('findAddressIndex', () => {
+    it('should return the index for the address', () => {
+      const address = '155fzsEBHy9Ri2bMQ8uuuR3tv1YzcDywd4'
+      const identityAddresses = ['1rfWPdz4YvtnKqCuTcd5pqjemmk34HqnU',
+      '155fzsEBHy9Ri2bMQ8uuuR3tv1YzcDywd4']
+      const actualResult = findAddressIndex(address, identityAddresses)
+      const expectedResult = 1
+      assert.equal(actualResult, expectedResult)
+    })
+
+    it('should return null if address is not in identity addresses', () => {
+      const address = '1uVWPykNnn3r6gupWFBLxC1rHYh7MmsT7'
+      const identityAddresses = ['1rfWPdz4YvtnKqCuTcd5pqjemmk34HqnU',
+      '155fzsEBHy9Ri2bMQ8uuuR3tv1YzcDywd4']
+      const actualResult = findAddressIndex(address, identityAddresses)
+      const expectedResult = null
+      assert.equal(actualResult, expectedResult)
     })
   })
 })

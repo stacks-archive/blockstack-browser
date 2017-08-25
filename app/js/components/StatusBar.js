@@ -55,10 +55,8 @@ class StatusBar extends Component {
   }
 
   componentDidMount() {
-    if (this.props.coreWalletAddress !== null) {
-      this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
+    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
             this.props.coreAPIPassword)
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -185,36 +183,32 @@ class StatusBar extends Component {
     const numberOfActionItems = this.numberOfActionItems()
 
     return (
-      <div className="status-bar status-bar-light">
+      <div className="status-bar status-bar-dark">
       {this.props.hideBackToHomeLink ?
         null
       :
-        <div className="pull-left">
+        <div className="pull-left" style={{ marginLeft: '-15px' }} >
           <div className="status-inline status-balance">
-            <Link to="/" className="status-bar-back statusBar-link">
-              <i className="fa fa-angle-left status-bar-icon"></i>
+            <Link to="/" className="statusBar-link">
               Home Screen
             </Link>
           </div>
         </div>
       }
-        <div className="pull-right">
+        <div className="pull-right" style={{ marginRight: '-15px' }}>
           <div className="status-inline status-balance">
             <Link to="/wallet/receive" className="statusBar-link">
-              <Image className="" src="/images/icon-wallet-sm.svg" /><br />
-                {this.roundedBtcBalance()} BTC
-            </Link>
-          </div>
-          <div className="status-inline status-profile">
-            <Link to="/account/password" className="statusBar-link">
-              <Image className="" src="/images/icon-settings-sm.svg" /><br />
-                Settings
+                Wallet
             </Link>
           </div>
           <div className="status-inline status-profile">
             <Link to="/profiles" className="statusBar-link">
-              <Image className="" src="/images/icon-account-sm.svg" /><br />
                 Me
+            </Link>
+          </div>
+          <div className="status-inline status-profile">
+            <Link to="/account/storage" className="statusBar-link">
+                Settings
             </Link>
           </div>
         </div>

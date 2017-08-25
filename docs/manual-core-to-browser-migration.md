@@ -23,6 +23,7 @@ associated with it. Copy this address to an easily accessible place.
 3. Click on the Blockstack icon in your menu bar.
 4. Click "Copy Core API Password"
 5. Put this in an easily accessible place.
+6. Option-Click on the Blockstack icon in your menu bar to disable.
 
 ## Sanity checks
 

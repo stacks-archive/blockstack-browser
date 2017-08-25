@@ -49,6 +49,31 @@ export function isNameAvailable(lookupUrl, domainName) {
   })
 }
 
+/**
+ * Performs a basic check to differentiate subdomains from other Blockstack
+ * names
+ * @param  {String}  name a Blockstack name
+ * @return {Boolean} `true` if it is a subdomain, otherwise false
+ */
+export function isSubdomain(name) {
+  return name.split('.').length === 3
+}
+
+/**
+ * Given a blockstack subdomain name, returns the
+ * parent domain.
+ * @param  {String} name a Blockstack subdomain name
+ * @return {String}  the parent domain without leading period
+ */
+export function getNameSuffix(name) {
+  if (!isSubdomain(name)) {
+    throw new Error('Only works with subdomains')
+  }
+  const nameTokens = name.split('.')
+  const suffix = name.split(`${nameTokens[0]}.`)[1]
+  return suffix
+}
+
 export function getNamePrices(priceUrl, domainName) {
   return new Promise((resolve, reject) => {
     if (!isABlockstackName(domainName)) {

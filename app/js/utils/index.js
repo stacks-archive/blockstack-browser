@@ -1,5 +1,6 @@
 export {
   decryptMasterKeychain,
+  deriveIdentityKeyPair,
   getBitcoinPrivateKeychain,
   getBitcoinPublicKeychain,
   getIdentityPrivateKeychain,
@@ -8,7 +9,8 @@ export {
   isPasswordValid,
   isBackupPhraseValid,
   getIdentityOwnerAddressNode,
-  getBitcoinAddressNode
+  getBitcoinAddressNode,
+  findAddressIndex
 } from './account-utils'
 
 export {
@@ -35,6 +37,7 @@ export {
   isABlockstackName,
   hasNameBeenPreordered,
   isNameAvailable,
+  isSubdomain,
   getNamePrices
 } from './name-utils'
 

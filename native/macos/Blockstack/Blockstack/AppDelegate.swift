@@ -9,23 +9,19 @@
 import Cocoa
 import Sparkle
 import os.log
+import ServiceManagement
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-<<<<<<< HEAD
-    
+
     var mainWindowController: MainWindowController? = nil
-    
+
     var mainWindow = NSWindow(contentRect: NSMakeRect(0, 0, 900, 700),
                               styleMask: [.titled, .closable, .miniaturizable, .resizable],
                               backing: .buffered, defer: false)
-    
+
     var browserViewController: BrowserViewController? = nil
-    
-=======
 
-
->>>>>>> v0.11
     let productionModePortalPort = 8888
     let developmentModePortalPort = 3000
     let corsProxyPort = 1337
@@ -50,6 +46,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let coreVenvDirectory = "blockstack-venv"
     let extractCoreVenvToPath = "/tmp"
     let portalRunDirectory = "portal"
+    let launcherBundleIdentifier = "org.blockstack.macLauncher"
+
+    let startOnLogInUserDefaultKey = "StartOnLogIn"
 
     let portalProxyProcess = Process()
     let corsProxyProcess = Process()
@@ -67,6 +66,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
 
+        // register initial user default values
+        registerInitialUserDefaults()
+
+        // configure to start at login
+        configureStartOnLogIn(enabled: isUserDefaultSetToStartOnLogin(), writeDefaults: false)
+
+        // kill launcher service if started at login
+        var startedAtLogin = false
+        if !NSRunningApplication.runningApplications(withBundleIdentifier: launcherBundleIdentifier).isEmpty {
+            startedAtLogin = true
+            killLauncher()
+        }
+
         let appleEventManager = NSAppleEventManager.shared()
         appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
 
@@ -82,10 +94,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         // using the wallet password as Core API password is intentional
         startPortalProxy(complete: {
-            let delayInSeconds = 0.5
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
-                self.createMainWindow()
-                self.openPortal(path: "/")
+            if !startedAtLogin {
+                let delayInSeconds = 0.5
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + delayInSeconds) {
+                    self.createMainWindow()
+                    self.openPortal(path: "/")
+                }
             }
         })
 
@@ -96,12 +110,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         startCoreAPI(walletPassword: walletPassword, complete: {
             // do nothing on task completion
         })
-        
+
     }
-    
 
     func applicationWillTerminate(_ aNotification: Notification) {
         shutdown(terminate: false)
+    }
+
+    func configureStartOnLogIn(enabled: Bool, writeDefaults: Bool = true) {
+        if SMLoginItemSetEnabled(launcherBundleIdentifier as CFString, enabled) {
+            os_log("Launcher login item set successfully", log: log, type: .debug)
+        }
+        else {
+            os_log("Failed to set launcher login item", log: log, type: .debug)
+        }
+
+        if writeDefaults {
+            setUserDefaultStartOnLogIn(enabled: enabled)
+        }
+    }
+
+    func registerInitialUserDefaults() {
+        let userDefaults = [
+            startOnLogInUserDefaultKey: true
+        ]
+        UserDefaults.standard.register(defaults: userDefaults)
+    }
+
+    func isUserDefaultSetToStartOnLogin() -> Bool {
+        return UserDefaults.standard.bool(forKey: startOnLogInUserDefaultKey)
+    }
+
+    func setUserDefaultStartOnLogIn(enabled: Bool) {
+        UserDefaults.standard.set(enabled, forKey: startOnLogInUserDefaultKey)
+    }
+
+    func killLauncher() {
+        DistributedNotificationCenter.default().postNotificationName(Notification.Name("kill"), object: Bundle.main.bundleIdentifier, options: DistributedNotificationCenter.Options.deliverImmediately)
     }
 
     func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
@@ -113,14 +158,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "\(portalAuthenticationPath)\(authRequest)")
 
     }
-    
+
     func createMainWindow() {
         NSLog("createMainWindow")
         mainWindowController = MainWindowController(window: mainWindow)
-        
+
         browserViewController = BrowserViewController()
         browserViewController?.appDelegate = self
-        
+
         mainWindow.contentView!.addSubview(browserViewController!.view)
         mainWindowController!.showWindow(self)
     }
@@ -128,13 +173,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func portalBaseUrl() -> String {
         return "http://localhost:\(portalPort())"
     }
-<<<<<<< HEAD
-    
-    public func portalPort() -> Int {
-=======
 
-    func portalPort() -> Int {
->>>>>>> v0.11
+    public func portalPort() -> Int {
         return isDevModeEnabled ? developmentModePortalPort : productionModePortalPort
     }
 
@@ -297,7 +337,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         os_log("devModeClick", log: log, type: .debug)
         isDevModeEnabled = !isDevModeEnabled
     }
-    
+
     func regTestModeClick(sender: AnyObject?) {
         os_log("regTestModeClick", log: log, type: .debug)
         if(!isRegTestModeChanging) {
@@ -341,9 +381,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         alert.informativeText = "You will not be able to access the decentralized internet if you quit Blockstack."
         alert.alertStyle = NSAlertStyle.warning
 
+        let startOnLoginCheckbox = NSButton.init(checkboxWithTitle: "Start Blockstack when logging back in", target: self, action: #selector(handleStartOnLogInCheckboxClick))
+        startOnLoginCheckbox.state = isUserDefaultSetToStartOnLogin() ? NSOnState : NSOffState
+        alert.accessoryView = startOnLoginCheckbox
+
         if alert.runModal() == NSAlertFirstButtonReturn {
             os_log("User decided to exit...", log: log, type: .info)
             shutdown(terminate: true)
+        }
+    }
+
+    func handleStartOnLogInCheckboxClick(sender: NSButton) {
+        if sender.state == NSOnState {
+            os_log("startOnLogInCheckboxClick On", log: log, type: .debug)
+            configureStartOnLogIn(enabled: true)
+        }
+        else {
+            os_log("startOnLogInCheckboxClick Off", log: log, type: .debug)
+            configureStartOnLogIn(enabled: false)
         }
     }
 
