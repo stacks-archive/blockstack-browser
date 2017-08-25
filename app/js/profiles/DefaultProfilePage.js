@@ -324,33 +324,41 @@ class DefaultProfilePage extends Component {
           </div>
           <div className="container-fluid profile-content-wrapper pro-actions-wrap">
             <div>
-              <Link to={`/profiles/${domainName}/edit`}
-                className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+              <Link
+                to={`/profiles/${domainName}/edit`}
+                className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+              >
                 Edit
               </Link>
               {identity.canAddUsername ?
                 <button
                   className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
-                  disabled={true}
+                  disabled
                   title="Add a username to view publicly."
                 >
                 View Publicly
                 </button>
                 :
                 <span>
-                  <Link to={`/profiles/${domainName}`}
-                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                  <Link
+                    to={`/profiles/${domainName}`}
+                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                  >
                     View Publicly
                   </Link>
-                  <Link to={`/profiles/${domainName}/zone-file`}
-                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                  <Link
+                    to={`/profiles/${domainName}/zone-file`}
+                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                  >
                     Advanced
                   </Link>
                 </span>
               }
               {identity.canAddUsername ?
-                <Link to={`/profiles/i/add-username/${domainName}/search`}
-                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                <Link
+                  to={`/profiles/i/add-username/${domainName}/search`}
+                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                >
                  Add a username
                 </Link>
                 :
@@ -383,63 +391,5 @@ class DefaultProfilePage extends Component {
     )
   }
 }
-
-//   render() {
-//     const createProfileError = this.props.createProfileError
-//     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
-//     const defaultIdentityName = this.props.defaultIdentity
-//     const identity = this.state.localIdentities[defaultIdentityName]
-//     const person = new Person(identity.profile)
-//
-//     if (identity.ownerAddress === defaultIdentityName) {
-//       identity.canAddUsername = true
-//     } else {
-//       identity.canAddUsername = false
-//     }
-//     return (
-//       <div className="card-list-container profile-content-wrapper">
-//
-//         <div>
-//           <h5 className="h5-landing">Me</h5>
-//         </div>
-//         <div className="container card-list-container">
-//           <ul className="card-wrapper">
-//             <IdentityItem
-//               key={identity.domainName}
-//               label={identity.domainName}
-//               pending={!identity.registered}
-//               avatarUrl={person.avatarUrl() || ''}
-//               url={`/profiles/${identity.domainName}/local`}
-//               ownerAddress={identity.ownerAddress}
-//               canAddUsername={identity.canAddUsername}
-//               isDefault={identity.domainName === this.props.defaultIdentity}
-//               setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
-//             />
-//           </ul>
-//         </div>
-//         <div className="card-list-container m-t-30">
-//           <button
-//             className="btn btn-electric-blue btn-lg" onClick={this.openPasswordPrompt}
-//           >
-//             + Create
-//           </button>
-//           <Link
-//             className="btn btn-electric-blue btn-lg"
-//             to="/profiles"
-//             disabled
-//           >
-//             Me
-//           </Link>
-//           <Link
-//             className="btn btn-electric-blue btn-lg"
-//             to="/profiles/i/all"
-//           >
-//             All profiles
-//           </Link>
-//         </div>
-//       </div>
-//     )
-//   }
-// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultProfilePage)
