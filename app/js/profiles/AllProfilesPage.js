@@ -57,8 +57,6 @@ class IdentityPage extends Component {
       password: ''
     }
 
-    console.log(props)
-
     this.onValueChange = this.onValueChange.bind(this)
     this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
     this.createNewProfile = this.createNewProfile.bind(this)

@@ -5,10 +5,12 @@ import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
 import Alert from '../components/Alert'
-import IdentityItem from './components/IdentityItem'
+import Image from '../components/Image'
 import InputGroup from '../components/InputGroup'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
+import SocialAccountItem from './components/SocialAccountItem'
+import PGPAccountItem from './components/PGPAccountItem'
 
 import log4js from 'log4js'
 
@@ -42,7 +44,7 @@ class DefaultProfilePage extends Component {
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
-    setDefaultIdentity: PropTypes.string.isRequired,
+    setDefaultIdentity: PropTypes.func.isRequired,
     resetCreateNewProfileError: PropTypes.func.isRequired,
     createProfileError: PropTypes.string
   }
@@ -56,8 +58,6 @@ class DefaultProfilePage extends Component {
       processing: false,
       password: ''
     }
-
-    console.log(props)
 
     this.onValueChange = this.onValueChange.bind(this)
     this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
@@ -154,7 +154,16 @@ class DefaultProfilePage extends Component {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
     const defaultIdentityName = this.props.defaultIdentity
+    console.log(`defaultIdentity: ${defaultIdentityName}`)
     const identity = this.state.localIdentities[defaultIdentityName]
+
+    // render() sometimes gets called before defaultIdentityName
+    // is updated from ownerAddress to the actual name when adding
+    // a username.
+    if (!identity) {
+      return null
+    }
+
     const person = new Person(identity.profile)
 
     if (identity.ownerAddress === defaultIdentityName) {
@@ -162,8 +171,19 @@ class DefaultProfilePage extends Component {
     } else {
       identity.canAddUsername = false
     }
+
+    const domainName = identity.domainName
+
+    const verifications = identity.verifications
+    const blockNumber = identity.blockNumber
+    const transactionIndex = identity.transactionIndex
+
+    const accounts = person.profile().account || []
+    const connections = person.connections() || []
+
+
     return (
-      <div className="card-list-container profile-content-wrapper">
+      <div>
         <Modal
           isOpen={passwordPromptIsOpen}
           onRequestClose={this.closePasswordPrompt}
@@ -204,22 +224,140 @@ class DefaultProfilePage extends Component {
           </form>
         </Modal>
         <div>
-          <h5 className="h5-landing">Me</h5>
-        </div>
-        <div className="container card-list-container">
-          <ul className="card-wrapper">
-            <IdentityItem
-              key={identity.domainName}
-              label={identity.domainName}
-              pending={!identity.registered}
-              avatarUrl={person.avatarUrl() || ''}
-              url={`/profiles/${identity.domainName}/local`}
-              ownerAddress={identity.ownerAddress}
-              canAddUsername={identity.canAddUsername}
-              isDefault={identity.domainName === this.props.defaultIdentity}
-              setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
-            />
-          </ul>
+          <div className="container-fluid pro-wrap m-t-50 profile-content-wrapper">
+            <div className="col-sm-4">
+              <div className="pro-container col-sm-12">
+                <div className="pro-avatar m-b-20">
+                  <Image
+                    src={person.avatarUrl() || ''}
+                    fallbackSrc="/images/avatar.png" className="img-circle"
+                  />
+                </div>
+                <div className="">
+                  {(blockNumber && transactionIndex) ?
+                    <div className="idcard-body dim">
+                      Registered in block <span>#{blockNumber}</span>,<br />
+                      transaction <span>#{transactionIndex}</span>
+                    </div>
+                  : null}
+                  <h1 className="pro-card-name">{person.name()}</h1>
+                  <div className="pro-card-body">
+                    {person.description()}
+                  </div>
+                  {person.address() ?
+                    <div className="pro-card-body">
+                    {person.address()}
+                    </div>
+                  : null}
+                  {person.birthDate() ?
+                    <div className="pro-card-body">
+                    {person.birthDate()}
+                    </div>
+                  : null}
+                </div>
+              </div>
+              <div className="container">
+                {connections.length ?
+                  <p className="profile-foot">Connections</p>
+                : null}
+                {connections.map((connection, index) => {
+                  if (connection.id) {
+                    return (
+                      <Link
+                        to={`/profiles/blockchain/${connection.id}`}
+                        key={index} className="connections"
+                      >
+                        <Image
+                          src={new Person(connection).avatarUrl()}
+                          style={{ width: '40px', height: '40px' }}
+                        />
+                      </Link>
+                    )
+                  } else {
+                    return null
+                  }
+                })}
+              </div>
+            </div>
+            <div className="col-sm-8 pull-right profile-right-col-fill">
+              <div className="profile-right-col">
+                <h3>
+                  {domainName}
+                </h3>
+                <ul>
+                  {accounts.map((account) => {
+                    let verified = false
+                    for (let i = 0; i < verifications.length; i++) {
+                      const verification = verifications[i]
+                      if (verification.service === account.service &&
+                        verification.valid === true) {
+                        verified = true
+                        break
+                      }
+                    }
+                    if (account.service === 'pgp') {
+                      return (
+                        <PGPAccountItem
+                          key={`${account.service}-${account.identifier}`}
+                          service={account.service}
+                          identifier={account.identifier}
+                          contentUrl={account.contentUrl}
+                          listItem
+                        />
+                      )
+                    } else {
+                      return (
+                        <SocialAccountItem
+                          key={`${account.service}-${account.identifier}`}
+                          service={account.service}
+                          identifier={account.identifier}
+                          proofUrl={account.proofUrl}
+                          listItem
+                          verified={verified}
+                        />
+                      )
+                    }
+                  })}
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="container-fluid profile-content-wrapper pro-actions-wrap">
+            <div>
+              <Link to={`/profiles/${domainName}/edit`}
+                className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                Edit
+              </Link>
+              {identity.canAddUsername ?
+                <button
+                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                  disabled={true}
+                  title="Add a username to view publicly."
+                >
+                View Publicly
+                </button>
+                :
+                <span>
+                  <Link to={`/profiles/${domainName}`}
+                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                    View Publicly
+                  </Link>
+                  <Link to={`/profiles/${domainName}/zone-file`}
+                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                    Advanced
+                  </Link>
+                </span>
+              }
+              {identity.canAddUsername ?
+                <Link to={`/profiles/i/add-username/${domainName}/search`}
+                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                 Add a username
+                </Link>
+                :
+                null
+              }
+            </div>
+          </div>
         </div>
         <div className="card-list-container m-t-30">
           <button
@@ -245,5 +383,63 @@ class DefaultProfilePage extends Component {
     )
   }
 }
+
+//   render() {
+//     const createProfileError = this.props.createProfileError
+//     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
+//     const defaultIdentityName = this.props.defaultIdentity
+//     const identity = this.state.localIdentities[defaultIdentityName]
+//     const person = new Person(identity.profile)
+//
+//     if (identity.ownerAddress === defaultIdentityName) {
+//       identity.canAddUsername = true
+//     } else {
+//       identity.canAddUsername = false
+//     }
+//     return (
+//       <div className="card-list-container profile-content-wrapper">
+//
+//         <div>
+//           <h5 className="h5-landing">Me</h5>
+//         </div>
+//         <div className="container card-list-container">
+//           <ul className="card-wrapper">
+//             <IdentityItem
+//               key={identity.domainName}
+//               label={identity.domainName}
+//               pending={!identity.registered}
+//               avatarUrl={person.avatarUrl() || ''}
+//               url={`/profiles/${identity.domainName}/local`}
+//               ownerAddress={identity.ownerAddress}
+//               canAddUsername={identity.canAddUsername}
+//               isDefault={identity.domainName === this.props.defaultIdentity}
+//               setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
+//             />
+//           </ul>
+//         </div>
+//         <div className="card-list-container m-t-30">
+//           <button
+//             className="btn btn-electric-blue btn-lg" onClick={this.openPasswordPrompt}
+//           >
+//             + Create
+//           </button>
+//           <Link
+//             className="btn btn-electric-blue btn-lg"
+//             to="/profiles"
+//             disabled
+//           >
+//             Me
+//           </Link>
+//           <Link
+//             className="btn btn-electric-blue btn-lg"
+//             to="/profiles/i/all"
+//           >
+//             All profiles
+//           </Link>
+//         </div>
+//       </div>
+//     )
+//   }
+// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultProfilePage)
