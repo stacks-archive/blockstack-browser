@@ -12,6 +12,3 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 
 # Install blockstack-browser
 RUN apt-get update && apt-get install -y blockstack-browser
-
-
-
