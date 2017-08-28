@@ -63,7 +63,7 @@ push () {
 
 commands () {
   cat <<-EOF
-bsdocker commands:
+blockstack docker launcher commands:
   start -> start the blockstack browser server
   stop -> stop the blockstack browser server
   logs -> access the logs from the blockstack browser server
