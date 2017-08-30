@@ -1,12 +1,12 @@
 {
-  "name": "blockstack-portal",
+  "name": "blockstack-browser",
   "version": "0.14.0",
   "author": "Blockstack Inc <admin@blockstack.com>",
-  "description": "The Blockstack browser portal",
+  "description": "The Blockstack browser",
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/blockstack/blockstack-portal.git"
+    "url": "https://github.com/blockstack/blockstack-browser.git"
   },
   "scripts": {
     "lint": "NODE_ENV=test ./node_modules/.bin/gulp lint",
