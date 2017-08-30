@@ -1,0 +1,14 @@
+[ignore]
+.*/node_modules/bower-json/*
+.*/node_modules/config-chain/*
+.*/node_modules/config-chain/*
+.*/node_modules/npmconf/*
+.*/tmp/nexe/*
+
+[include]
+
+[libs]
+
+[options]
+
+[lints]
