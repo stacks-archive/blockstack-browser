@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
 import Alert from '../components/Alert'
@@ -55,8 +56,6 @@ class IdentityPage extends Component {
       processing: false,
       password: ''
     }
-
-    console.log(props)
 
     this.onValueChange = this.onValueChange.bind(this)
     this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
@@ -194,7 +193,7 @@ class IdentityPage extends Component {
           </form>
         </Modal>
         <div>
-          <h5 className="h5-landing">My Profiles</h5>
+          <h5 className="h5-landing">All Profiles</h5>
         </div>
         <div className="container card-list-container">
           <ul className="card-wrapper">
@@ -234,6 +233,19 @@ class IdentityPage extends Component {
           >
             + Create
           </button>
+          <Link
+            className="btn btn-electric-blue btn-lg"
+            to="/profiles"
+          >
+            Me
+          </Link>
+          <Link
+            className="btn btn-electric-blue btn-lg"
+            to="/profiles/i/all"
+            disabled
+          >
+            All profiles
+          </Link>
         </div>
       </div>
     )
