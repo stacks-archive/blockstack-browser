@@ -125,6 +125,7 @@
     "currency-formatter": "^1.2.1",
     "dropbox": "^2.5.0",
     "ecurve": "^1.0.4",
+    "eslint-plugin-flowtype": "^2.35.0",
     "flow-bin": "^0.53.1",
     "hash-handler": "^1.5.1",
     "hasprop": "0.0.4",
