@@ -30,7 +30,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions, IdentityActions), dispatch)
 }
 
-class EditProfilePage extends Component {
+class ZoneFilePage extends Component {
   static propTypes = {
     currentIdentity: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
@@ -249,4 +249,4 @@ class EditProfilePage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage)
+export default connect(mapStateToProps, mapDispatchToProps)(ZoneFilePage)
