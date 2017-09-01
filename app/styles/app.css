@@ -165,9 +165,7 @@ div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > butt
 .title-version{width:150px;}
 
 /* Views */
-
 /* Views Landing view */
-
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper{top:0;width:100%;height:100%;}
 .site-wrapper-inner{display:table-cell;min-height:100%;vertical-align:top;background-repeat:no-repeat;background-attachment:fixed;background-position:center;background-size:cover;}
@@ -181,29 +179,12 @@ a.view-out-link{color:#494f56;}
 /* Temporary position absolute */
 .header-logo{position:absolute;top:150px;}
 
-/* Forms */
-
-/* Inline forms */
-
-/* Sets inline forms to have a fixed label container width */
-/*.form-group-control-label{width:150px;}*/
-
 /* controls the alert boxes when signing up */
 div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-left:178px;}
-
-/* Media queries */
-
-/* Extra small devices (phones, less than 768px) */
-
-/* No media query since this is the default in Bootstrap */
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width:768px){
 	.view-with-sidebar{padding-left:90px;}
-}
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width:992px){
 }
 
 /* Large devices (large desktops, 1200px and up) */
@@ -458,6 +439,7 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 .p-b-100{padding-bottom:100px}
 .special-space-btn{margin-right:15px!important;}
 
+
 /* 4. Body */
 body,html,#app,.app-landing,.body-main{min-height:100%;min-width:inherit;}
 body{font-family:'Lato',sans-serif;font-size:14px;}
@@ -467,47 +449,17 @@ body{font-family:'Lato',sans-serif;font-size:14px;}
 .home-screen-wrap{width:100%;min-height:100%;background:#FAFAFA;}
 .home-screen{width:100%;min-height:100%;background:#FAFAFA;}
 
+
 /* 5. Links */
 a {color: #E91E63;}
+
 
 /* 9. Fonts */
 .h5-landing{color:#AEAEAE;font-size:18px;font-weight:400;}
 .h1-modern{font-family:'Source Code Pro',monospace!important;font-size:1.25rem;font-weight:400;}
 
+
 /* 12. Buttons */
-
-/* Update upon upgrade of v4 */
-
-.btn-lg, .btn-group-lg > .btn {
-  font-size: 13px;
-  font-style: normal;
-  line-height: 12px;
-  padding: 16px 50px;
-  vertical-align: middle;
-  border-radius: 3px;
-}
-.btn-sm, .btn-group-sm > .btn {
-  font-size: 11px;
-  line-height: 12px;
-  padding: 6px 10px;
-  border-radius: 2px;
-}
-.btn-social-account {
-  display: block;
-  padding: 10px 5px;
-  text-decoration: none;
-  color: #949494;
-}
-.btn-social-account:hover {
-  text-decoration: none;
-  border-radius: 4px;
-  background-color: #23262a;
-}
-button.btn.btn-sm.nav-page {
-  margin-top: -1px;
-  padding: 10px 8px;
-}
-
 .btn{font-family:'Source Code Pro',monospace;padding:0.5625rem 2.5rem;font-size:0.8125rem;font-weight:400;line-height:1.75rem;border-radius:0!important;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
 .btn-xs{font-size:0.75rem;padding:0.375rem 2.125rem;line-height:1rem;}
 .btn-sm{font-size:0.75rem;padding:0.375rem 2.125rem;line-height:1.5rem;}
@@ -529,6 +481,7 @@ button.btn.btn-sm.nav-page {
 .btn-home-button{position:absolute;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:400;border-radius:6px;padding:3px 20px;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
 div.home-profiles a .btn-home-button{position:absolute;top:0;right:0;color:#373a3c;background-color:#fafafa;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.10);}
 .btn-tight {margin:0 0 0 1px}
+
 
 /* 13. Forms */
 .form-control{font-size:0.875rem;font-weight:400;color:#949494;padding:0.75rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;}
