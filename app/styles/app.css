@@ -477,15 +477,36 @@ a {color: #E91E63;}
 /* 12. Buttons */
 
 /* Update upon upgrade of v4 */
-.btn-side-pull-left{margin-left:-25px!important;padding:8px 29px 8px 30px;}
-.btn-primary,div.uploadcare-widget-button.uploadcare-widget-button-open{color:#fff;border-color:#080809;background-color:#080809;}
-.btn-primary:hover,.btn-primary:focus,.btn-primary:active,.btn-primary.active,.open > .dropdown-toggle.btn-primary,div.uploadcare-widget-button.uploadcare-widget-button-open:hover,div.uploadcare-widget-button.uploadcare-widget-button-open:focus,div.uploadcare-widget-button.uploadcare-widget-button-open:active{color:#fff;border-color:#2275d7;background-color:#2275d7;}
-.btn-primary.disabled,.btn-primary[disabled],fieldset[disabled] .btn-primary,.btn-primary.disabled:hover,.btn-primary[disabled]:hover,fieldset[disabled] .btn-primary:hover,.btn-primary.disabled:focus,.btn-primary[disabled]:focus,fieldset[disabled] .btn-primary:focus,.btn-primary.disabled:active,.btn-primary[disabled]:active,fieldset[disabled] .btn-primary:active,.btn-primary.disabled.active,.btn-primary[disabled].active,fieldset[disabled] .btn-primary.active{border-color:#494f56;background-color:#494f56;}
-.btn-lg,.btn-group-lg > .btn{font-size:13px;font-style:normal;line-height:12px;padding:16px 50px;vertical-align:middle;border-radius:3px;}
-.btn-sm,.btn-group-sm > .btn{font-size:11px;line-height:12px;padding:6px 10px;border-radius:2px;}
-.btn-social-account{display:block;padding:10px 5px;text-decoration:none;color:#949494;}
-.btn-social-account:hover{text-decoration:none;border-radius:4px;background-color:#23262a;}
-button.btn.btn-sm.nav-page{margin-top:-1px;padding:10px 8px;}
+
+.btn-lg, .btn-group-lg > .btn {
+  font-size: 13px;
+  font-style: normal;
+  line-height: 12px;
+  padding: 16px 50px;
+  vertical-align: middle;
+  border-radius: 3px;
+}
+.btn-sm, .btn-group-sm > .btn {
+  font-size: 11px;
+  line-height: 12px;
+  padding: 6px 10px;
+  border-radius: 2px;
+}
+.btn-social-account {
+  display: block;
+  padding: 10px 5px;
+  text-decoration: none;
+  color: #949494;
+}
+.btn-social-account:hover {
+  text-decoration: none;
+  border-radius: 4px;
+  background-color: #23262a;
+}
+button.btn.btn-sm.nav-page {
+  margin-top: -1px;
+  padding: 10px 8px;
+}
 
 .btn{font-family:'Source Code Pro',monospace;padding:0.5625rem 2.5rem;font-size:0.8125rem;font-weight:400;line-height:1.75rem;border-radius:0!important;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
 .btn-xs{font-size:0.75rem;padding:0.375rem 2.125rem;line-height:1rem;}
