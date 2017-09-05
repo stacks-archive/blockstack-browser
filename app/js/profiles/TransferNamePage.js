@@ -6,10 +6,8 @@ import { Link } from 'react-router'
 import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
-import { findAddressIndex,
-authorizationHeaderValue } from '../utils'
+import { findAddressIndex } from '../utils'
 import AdvancedSidebar from './components/AdvancedSidebar'
-
 
 import log4js from 'log4js'
 
@@ -22,7 +20,10 @@ type Props = {
   identityAddresses: Array<string>,
   identityKeypairs: Object,
   localIdentities: Object,
-  namesOwned: Array<string>
+  namesOwned: Array<string>,
+  nameTransfers: Array<mixed>,
+  broadcastNameTransfer: Function,
+  nameTransferUrl: string
 }
 
 type State = {
@@ -39,7 +40,9 @@ function mapStateToProps(state) {
     identityAddresses: state.account.identityAccount.addresses,
     identityKeypairs: state.account.identityAccount.keypairs,
     localIdentities: state.profiles.identity.localIdentities,
-    namesOwned: state.profiles.identity.namesOwned
+    namesOwned: state.profiles.identity.namesOwned,
+    nameTransfers: state.profiles.identity.nameTransfers,
+    nameTransferUrl: state.settings.api.nameTransferUrl
   }
 }
 
@@ -93,7 +96,27 @@ class TransferNamePage extends Component<Props, State> {
 
   displayAlerts: Function
   displayAlerts(props) {
-
+    const name = props.routeParams.index
+    const transferState = props.nameTransfers[name]
+    if (transferState && this.state.clickedBroadcast) {
+      if (transferState.error) {
+        this.updateAlert('danger', transferState.error)
+        this.setState({
+          disabled: false
+        })
+      } else if (transferState.broadcasting) {
+        this.updateAlert('success', 'Broadcasting zone file update transaction...')
+      } else {
+        this.updateAlert('success', 'Broadcasted zone file update transaction.')
+        this.setState({
+          disabled: false
+        })
+      }
+    } else {
+      this.setState({
+        alerts: []
+      })
+    }
   }
 
   updateAlert: Function
@@ -119,34 +142,9 @@ class TransferNamePage extends Component<Props, State> {
     const newOwner = this.state.newOwner
     const keypair = this.props.identityKeypairs[addressIndex]
     const coreAPIPassword = this.props.coreAPIPassword
-    logger.debug(`updateZoneFile: using key with index ${addressIndex}`)
-
-    const url = `http://localhost:6270/v1/names/${name}/owner`
-    const requestHeaders = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: authorizationHeaderValue(coreAPIPassword)
-    }
-
-    // Core registers with an uncompressed address,
-    // browser expects compressed addresses,
-    // we need to add a suffix to indicate to core
-    // that it should use a compressed addresses
-    // see https://en.bitcoin.it/wiki/Wallet_import_format
-    // and https://github.com/blockstack/blockstack-browser/issues/607
-    const compressedPublicKeySuffix = '01'
-    const coreFormatOwnerKey = `${keypair.key}${compressedPublicKeySuffix}`
-    const ownerKey = coreFormatOwnerKey
-    const requestBody = JSON.stringify({
-      owner_key: ownerKey,
-      owner: newOwner
-    })
-    fetch(url,
-      {
-        method: 'PUT',
-        headers: requestHeaders,
-        body: requestBody
-      })
+    logger.debug(`transferName: using key with index ${addressIndex}`)
+    this.props.broadcastNameTransfer(this.props.nameTransferUrl,
+      coreAPIPassword, name, keypair, newOwner)
   }
 
   render() {

@@ -19,9 +19,6 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
-
-
-
 function updateCurrentIdentity(domainName, profile, verifications, zoneFile) {
   return {
     type: types.UPDATE_CURRENT,
@@ -103,6 +100,28 @@ function broadcastedZoneFileUpdate(domainName) {
 function broadcastingZoneFileUpdateError(domainName, error) {
   return {
     type: types.BROADCASTING_ZONE_FILE_UPDATE_ERROR,
+    domainName,
+    error
+  }
+}
+
+function broadcastingNameTransfer(domainName) {
+  return {
+    type: types.BROADCASTING_NAME_TRANSFER,
+    domainName
+  }
+}
+
+function broadcastedNameTransfer(domainName) {
+  return {
+    type: types.BROADCASTED_NAME_TRANSFER,
+    domainName
+  }
+}
+
+function broadcastingNameTransferError(domainName, error) {
+  return {
+    type: types.BROADCASTING_NAME_TRANSFER_ERROR,
     domainName,
     error
   }
@@ -390,6 +409,56 @@ function broadcastZoneFileUpdate(zoneFileUrl, coreAPIPassword, name, keypair, zo
   }
 }
 
+function broadcastNameTransfer(nameTransferUrl, coreAPIPassword, name, keypair, newOwnerAddress) {
+  logger.trace('broadcastNameTransfer: entering')
+  return dispatch => {
+    dispatch(broadcastingNameTransfer(name))
+    // Core registers with an uncompressed address,
+    // browser expects compressed addresses,
+    // we need to add a suffix to indicate to core
+    // that it should use a compressed addresses
+    // see https://en.bitcoin.it/wiki/Wallet_import_format
+    // and https://github.com/blockstack/blockstack-browser/issues/607
+    const compressedPublicKeySuffix = '01'
+    const coreFormatOwnerKey = `${keypair.key}${compressedPublicKeySuffix}`
+    const url = nameTransferUrl.replace('{name}', name)
+    const requestHeaders = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: authorizationHeaderValue(coreAPIPassword)
+    }
+    const ownerKey = coreFormatOwnerKey
+    const requestBody = JSON.stringify({
+      owner_key: ownerKey,
+      owner: newOwnerAddress
+    })
+    logger.debug(`broadcastNameTransfer: PUT to ${url}`)
+    return fetch(url,
+      {
+        method: 'PUT',
+        headers: requestHeaders,
+        body: requestBody
+      })
+      .then((response) => {
+        if (response.ok) {
+          dispatch(broadcastedNameTransfer(name))
+        } else {
+          response.text()
+          .then((responseText) => JSON.parse(responseText))
+          .then((responseJson) => {
+            const error = responseJson.error
+            logger.error('broadcastNameTransfer: error', error)
+            dispatch(broadcastingNameTransferError(name, error))
+          })
+        }
+      })
+      .catch((error) => {
+        logger.error('broadcastZoneFileUpdate: error', error)
+        dispatch(broadcastingNameTransferError(name, error))
+      })
+  }
+}
+
 const IdentityActions = {
   calculateLocalIdentities,
   updateCurrentIdentity,
@@ -407,7 +476,11 @@ const IdentityActions = {
   broadcastingZoneFileUpdate,
   broadcastedZoneFileUpdate,
   broadcastingZoneFileUpdateError,
-  broadcastZoneFileUpdate
+  broadcastZoneFileUpdate,
+  broadcastingNameTransfer,
+  broadcastedNameTransfer,
+  broadcastingNameTransferError,
+  broadcastNameTransfer
 }
 
 
