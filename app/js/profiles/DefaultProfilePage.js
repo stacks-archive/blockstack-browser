@@ -326,13 +326,13 @@ class DefaultProfilePage extends Component {
             <div>
               <Link
                 to={`/profiles/${domainName}/edit`}
-                className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                className="btn btn-link"
               >
                 Edit
               </Link>
               {identity.canAddUsername ?
                 <button
-                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                  className="btn btn-link-secondary"
                   disabled
                   title="Add a username to view publicly."
                 >
@@ -342,13 +342,13 @@ class DefaultProfilePage extends Component {
                 <span>
                   <Link
                     to={`/profiles/${domainName}`}
-                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                    className="btn btn-link-secondary"
                   >
                     View Publicly
                   </Link>
                   <Link
                     to={`/profiles/${domainName}/zone-file`}
-                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                    className="btn btn-link-secondary"
                   >
                     Advanced
                   </Link>
@@ -357,7 +357,7 @@ class DefaultProfilePage extends Component {
               {identity.canAddUsername ?
                 <Link
                   to={`/profiles/i/add-username/${domainName}/search`}
-                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                  className="btn btn-link"
                 >
                  Add a username
                 </Link>
@@ -369,19 +369,19 @@ class DefaultProfilePage extends Component {
         </div>
         <div className="card-list-container m-t-30">
           <button
-            className="btn btn-electric-blue btn-lg" onClick={this.openPasswordPrompt}
+            className="btn btn-link-secondary" onClick={this.openPasswordPrompt}
           >
             + Create
           </button>
           <Link
-            className="btn btn-electric-blue btn-lg"
+            className="btn btn-link-secondary"
             to="/profiles"
             disabled
           >
             Me
           </Link>
           <Link
-            className="btn btn-electric-blue btn-lg"
+            className="btn btn-link"
             to="/profiles/i/all"
           >
             All profiles
