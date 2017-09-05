@@ -136,6 +136,7 @@ class EditProfilePage extends Component {
       <div className="card-list-container profile-content-wrapper">
         {this.state.profile && this.state.domainName ?
         <div>
+          { this.state.tabName !== "" ? (
           <div className="row">
             <div className="col-md-12">
               <button
@@ -147,6 +148,8 @@ class EditProfilePage extends Component {
               </button>
             </div>
           </div>
+          ) : 
+          (<div></div>)}
           <EditProfileHeader title="Edit Profile"/>
             <div className="row">
 
