@@ -37,7 +37,7 @@ class WalletApp extends Component {
           <WalletSidebar activeTab={activeTabUrl} />
         </div>
         <div className="container-fluid wallet-container">
-          <div className="col-md-7 wallet-content">
+          <div className="wallet-content">
             {this.props.children}
           </div>
         </div>

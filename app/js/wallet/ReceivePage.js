@@ -50,7 +50,6 @@ class ReceivePage extends Component {
           <h5>Send Bitcoins to this address</h5>
           <div className="qrcode-wallet">
             <QRCode
-              style={{ width: 256 }}
               value={this.props.coreWalletAddress}
             />
           </div>

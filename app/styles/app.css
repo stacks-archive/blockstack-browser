@@ -557,7 +557,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .list-group-item.item-sidebar-wallet:after{content:'';display:block;padding-left:45px;height:1px;width:0;background:transparent;transition:width .3s ease,background-color .3s ease;}
 .highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;font-weight:400;line-height:1.75rem;padding:0.75rem 2.5rem;}
 .highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;color:#fff!important;text-align:center;}
-.qrcode-wallet{margin-bottom:20px;text-align:center;}
+.qrcode-wallet{max-width:175px;margin:0 auto 20px auto;text-align:center;padding:15px;background-color:#fff;}
 
 
 
@@ -602,6 +602,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.btn-home-button{position:absolute;top:0;left:0;right:auto;}
 	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
 	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
+  .qrcode-wallet{max-width:225px;}
 }
 
 /* Medium devices (desktops, 975px to 992px) */
