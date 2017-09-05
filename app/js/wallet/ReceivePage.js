@@ -40,17 +40,19 @@ class ReceivePage extends Component {
     return (
       <div>
         <Balance />
-          <div style={{ maxWidth: '300px', margin: '0 auto' }} >
-            <p style={{ fontWeight: '300' }} >
+          <div className="m-b-25">
+            <p>
               Send at least 0.01 bitcoins to the address below to register a 
               username. All username registrations use funds from your wallet.
             </p>
           </div>
         { this.props.coreWalletAddress ?
         <div>
-          <div style={{ maxWidth: '300px', margin: '0 auto' }} >
-            <p style={{ fontWeight: '300' }} >Send Bitcoins to this address</p>
+          {/* 
+          <div className="m-b-25">
+            <p className="font-weight-bold">Send Bitcoins to this address:</p>
           </div>
+          */}
           <div className="qrcode-wallet">
             <QRCode
               value={this.props.coreWalletAddress}

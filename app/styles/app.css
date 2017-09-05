@@ -275,6 +275,9 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 .gray-950                  {color: #151515;}
 
 
+/* 2. Options */
+.col-centered{float:none;margin:0 auto;overflow:none;}
+
 /* 3. Spacing */
 /* Custom spacing classes to be removed */
 .m-t-0{margin-top:0px}
@@ -364,7 +367,7 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 html,body{min-width:768px;height:100%;background-color:#fff;}
 #app{height:100%;width:100%;}
 body,html,#app,.app-landing,.body-main{min-height:100%;min-width:inherit;color:#484848;}
-body{font-family:'Lato',sans-serif;font-size:14px;}
+body{font-family:'Lato',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
 .app-wrap-profiles{width:100%;min-height:100%;background:#fafafa;background:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);}
 .app-wrap-wallet{width:100%;min-height:100%;background:#FAFAFA;}
 .site-wrapper{display:flex;flex-direction:column;min-height:100%;padding:35px;}
@@ -384,7 +387,7 @@ a {color: #E91E63;}
 
 /* 12. Buttons */
 button{outline:none!important;background-color:transparent;font-size:11px;cursor:pointer;}
-.btn{font-family:'Lato',sans-serif;padding:0.5625rem 2.5rem;font-size:0.8125rem;font-weight:400;line-height:1.75rem;border-radius:0!important;text-transform:uppercase;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.btn{font-family:'Lato',sans-serif;padding:0.5625rem 2.5rem;font-size:0.8125rem;font-weight:700;line-height:1.75rem;border-radius:0!important;text-transform:uppercase;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
 .btn-xs{font-size:0.75rem;padding:0.375rem 2.125rem;line-height:1rem;}
 .btn-sm{font-size:0.75rem;padding:0.375rem 2.125rem;line-height:1.5rem;}
 .btn-lg{font-size:0.875rem;padding:0.6875rem 3.4375rem;line-height:1.75rem;}
@@ -544,16 +547,14 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .btn-storage-primary:hover{background-color:#0668BF;}
 .btn.disabled.btn-storage-primary,.btn:disabled.btn-storage-primary{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
 /* Wallet App */
-.wallet-container{background-color:#2C96FF;}
-.wallet-content{padding:35px 50px 50px 50px;color:#fff;}
-.balance{margin-bottom:15px;}
-.balance-main{font-family:'Source Code Pro',monospace;font-size:30px;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
-.balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:300;color:#080809;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
-.highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;font-weight:400;line-height:1.75rem;padding:0.75rem 2.5rem;}
+.frame-light{background-color:#fff;padding-top:20px;}
+.container-primary{background-color:#2C96FF;max-width:550px;}
+.container-content{padding:35px 20px 75px 20px;margin:0 auto;color:#fff;max-width:545px;}
+.balance-main{font-family:'Source Code Pro',monospace;font-size:26px;font-weight:700;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
+.balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;color:#95CAFF;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
+.highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;line-height:1.75rem;padding:0.75rem 0;}
 .highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;color:#fff!important;text-align:center;}
-.qrcode-wallet{max-width:175px;margin:0 auto 20px auto;padding:15px;background-color:#fff;}
-
-
+.qrcode-wallet{max-width:200px;margin:20px auto 20px auto;padding:20px;background-color:#fff;}
 
 
 
@@ -596,7 +597,10 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.btn-home-button{position:absolute;top:0;left:0;right:auto;}
 	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
 	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
-  .qrcode-wallet{max-width:225px;}
+  .qrcode-wallet{max-width:225px;}  
+  .frame-light{border-right:1px solid #F0F0F0;border-left:1px solid #F0F0F0;height:100vh;}
+  .container-primary{border:1px solid #2786E5;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;}
+  .container-content{padding:35px 50px 50px 50px;}
 }
 
 /* Medium devices (desktops, 975px to 992px) */
