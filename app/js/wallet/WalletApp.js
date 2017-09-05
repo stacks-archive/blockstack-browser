@@ -31,7 +31,7 @@ class WalletApp extends Component {
     const activeTabUrl = `/wallet/${childPath}`
 
     return (
-      <div className="app-wrap-wallet bkg-green">
+      <div className="app-wrap-wallet">
           <StatusBar />
         <div className="container-fluid site-wrapper">
           <nav className="navbar navbar-toggleable-md navbar-light">
