@@ -372,7 +372,7 @@ div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-
 body,html,#app,.app-landing,.body-main{min-height:100%;min-width:inherit;}
 body{font-family:'Lato',sans-serif;font-size:14px;}
 .app-wrap-profiles{width:100%;min-height:100%;background:#fafafa;background:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);}
-.app-wrap-wallet{width:100%;min-height:100%;}
+.app-wrap-wallet{width:100%;min-height:100%;background:#FAFAFA;}
 .site-wrapper{display:flex;flex-direction:column;min-height:100%;padding:35px;}
 .home-screen-wrap{width:100%;min-height:100%;background:#FAFAFA;}
 .home-screen{width:100%;min-height:100%;background:#FAFAFA;}
@@ -563,7 +563,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 
 /* Wallet App */
 .wallet-container{margin-top:40px;background-color:#2C96FF;}
-.wallet-content{background-color:#fff;padding:35px 50px 50px 50px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;-webkit-box-shadow:0px 0px 35px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 35px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 35px 0px rgba(0,0,0,0.15);}
+.wallet-content{padding:35px 50px 50px 50px;}
 .balance{margin-bottom:15px;}
 .balance-main{font-family:'Source Code Pro',monospace;font-size:32px;font-weight:300;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
 .balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:300;color:#080809;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
@@ -573,7 +573,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .list-group-item.item-sidebar-wallet:hover,.list-group-item.item-sidebar-wallet:focus{color:#fff;background-color:transparent;}
 .list-group-item.item-sidebar-wallet:hover:after{width:90%!important;background:#fff!important;margin-left:5%;}
 .list-group-item.item-sidebar-wallet:after{content:'';display:block;padding-left:45px;height:1px;width:0;background:transparent;transition:width .3s ease,background-color .3s ease;}
-.highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;font-weight:400;line-height:1.75rem;border:1px solid #00CF98;background-color:#00CF98;padding:0.75rem 2.5rem;-moz-border-radius:4px!important;-webkit-border-radius:4px!important;border-radius:4px!important;}
+.highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;font-weight:400;line-height:1.75rem;padding:0.75rem 2.5rem;}
 .highlight-wallet > pre{font-size:0.8125rem;color:#fff!important;text-align:center;}
 .qrcode-wallet{margin-bottom:20px;text-align:center;}
 

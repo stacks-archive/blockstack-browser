@@ -55,7 +55,7 @@ class ReceivePage extends Component {
               value={this.props.coreWalletAddress}
             />
           </div>
-          <div className="highlight highlight-wallet">
+          <div className="highlight-wallet">
             <pre>
               <code>{this.props.coreWalletAddress}</code>
             </pre>
