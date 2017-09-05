@@ -28,7 +28,7 @@ class AccountApp extends Component {
     return (
       <div className="body-inner bkg-light">
         <StatusBar />
-        <PageHeader title="Account" />
+        <PageHeader title="Settings" />
         <div className="container vertical-split-content">
           <div className="row">
             <div className="col-md-3">
