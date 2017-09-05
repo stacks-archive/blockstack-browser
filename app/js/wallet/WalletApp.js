@@ -36,9 +36,11 @@ class WalletApp extends Component {
         <div className="wallet-sidebar">
           <WalletSidebar activeTab={activeTabUrl} />
         </div>
-        <div className="container-fluid wallet-container">
-          <div className="wallet-content">
-            {this.props.children}
+        <div className="row">
+          <div className="container-fluid wallet-container">
+            <div className="wallet-content">
+              {this.props.children}
+            </div>
           </div>
         </div>
       </div>

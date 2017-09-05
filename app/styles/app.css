@@ -549,15 +549,9 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .balance{margin-bottom:15px;}
 .balance-main{font-family:'Source Code Pro',monospace;font-size:32px;font-weight:300;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
 .balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;font-weight:300;color:#080809;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
-.list-group-item.item-sidebar-wallet{color:rgba(255,255,255,0.5);font-weight:300;}
-.item-sidebar-wallet.active{color:#fff;}
-.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{font-family:'Source Code Pro',monospace;line-height:2rem;border:none;background-color:transparent;text-align:center;padding-top:0.8125rem;padding-bottom:0.8125rem;padding-left:11.25rem;padding-right:11.25rem;}
-.list-group-item.item-sidebar-wallet:hover,.list-group-item.item-sidebar-wallet:focus{color:#fff;background-color:transparent;}
-.list-group-item.item-sidebar-wallet:hover:after{width:90%!important;background:#fff!important;margin-left:5%;}
-.list-group-item.item-sidebar-wallet:after{content:'';display:block;padding-left:45px;height:1px;width:0;background:transparent;transition:width .3s ease,background-color .3s ease;}
 .highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;font-weight:400;line-height:1.75rem;padding:0.75rem 2.5rem;}
 .highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;color:#fff!important;text-align:center;}
-.qrcode-wallet{max-width:175px;margin:0 auto 20px auto;text-align:center;padding:15px;background-color:#fff;}
+.qrcode-wallet{max-width:175px;margin:0 auto 20px auto;padding:15px;background-color:#fff;}
 
 
 
