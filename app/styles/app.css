@@ -6,8 +6,7 @@ body{font-family:'Lato',sans-serif;font-size:14px;background-color:rgba(250,250,
 .body-main{width:100%;height:100%;}
 .body-landing{width:100%;height:100%;}
 .body-inner{width:100%;height:100%;}
-.bkg-white{background-color:#fff;}
-.bkg-green{background-color:#00CF98;}
+.bkg-light{background-color:#FAFAFA;}
 .wrapper{width:100%;}
 .no-padding{padding-right:0;padding-left:0;}
 
@@ -543,9 +542,8 @@ form.modal-form > div.form-group{margin-bottom:0;}
 .add-username-modal div div.ReactModal__Content.ReactModal__Content--after-open{width:615px;margin-top:0;}
 
 /* Account App */
-.item-sidebar-account{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;padding-top:0.5625rem;padding-bottom:0.5625rem;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
-.list-group-item.item-sidebar-account:hover{background-color:rgba(0,0,0,0.1);}
-.item-sidebar-account.active,.item-sidebar-account.active:focus,.item-sidebar-account.active:hover{background-color:#270F34;}
+.item-sidebar-account{font-family:'Source Code Pro',monospace;font-size:0.75rem;line-height:1.5rem;border:none;color:#2C96FF;background-color:#fff;padding-top:0.5625rem;padding-bottom:0.5625rem;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
+.list-group-item.item-sidebar-account:hover,.item-sidebar-account.active,.item-sidebar-account.active:focus,.item-sidebar-account.active:hover{background-color:#2C96FF;color:#fff;}
 
 /* Storage App */
 .storage-sidebar-wrap{position:absolute;float:left;padding:0;padding-top:75px;width:200px;min-height:100%;text-align:center;background:#007be8;background:-moz-linear-gradient(top,#007be8 9%,#0099e8 85%);background:-webkit-linear-gradient(top,#007be8 9%,#0099e8 85%);background:linear-gradient(to bottom,#007be8 9%,#0099e8 85%);}
