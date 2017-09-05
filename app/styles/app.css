@@ -562,7 +562,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .btn.disabled.btn-storage-primary,.btn:disabled.btn-storage-primary{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
 
 /* Wallet App */
-.wallet-container{margin-top:40px;}
+.wallet-container{margin-top:40px;background-color:#2C96FF;}
 .wallet-content{background-color:#fff;padding:35px 50px 50px 50px;-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;-webkit-box-shadow:0px 0px 35px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 35px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 35px 0px rgba(0,0,0,0.15);}
 .balance{margin-bottom:15px;}
 .balance-main{font-family:'Source Code Pro',monospace;font-size:32px;font-weight:300;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
