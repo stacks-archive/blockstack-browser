@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import AccountSidebar from './components/AccountSidebar'
 import PageHeader from '../components/PageHeader'
 import StatusBar from '../components/StatusBar'
 
@@ -22,8 +21,7 @@ class AccountApp extends Component {
   }
 
   render() {
-    const childPath = this.props.children.props.route.path
-    const activeTabUrl = `/account/${childPath}`
+    const indexRoute = "/account"
 
     return (
       <div className="body-inner bkg-light">
@@ -31,10 +29,7 @@ class AccountApp extends Component {
         <PageHeader title="Settings" />
         <div className="container vertical-split-content">
           <div className="row">
-            <div className="col-md-3">
-              <AccountSidebar activeTab={activeTabUrl} />
-            </div>
-            <div className="col-md-9">
+            <div className="col-md-12">
               {this.props.children}
             </div>
           </div>

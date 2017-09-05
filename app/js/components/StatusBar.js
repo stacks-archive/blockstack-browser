@@ -207,7 +207,7 @@ class StatusBar extends Component {
             </Link>
           </div>
           <div className="status-inline status-profile">
-            <Link to="/account/storage" className="statusBar-link">
+            <Link to="/account" className="statusBar-link">
                 Settings
             </Link>
           </div>
