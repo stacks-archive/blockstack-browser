@@ -544,7 +544,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 .btn-storage-primary:hover{background-color:#0668BF;}
 .btn.disabled.btn-storage-primary,.btn:disabled.btn-storage-primary{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
 /* Wallet App */
-.wallet-container{margin-top:40px;background-color:#2C96FF;}
+.wallet-container{background-color:#2C96FF;}
 .wallet-content{padding:35px 50px 50px 50px;color:#fff;}
 .balance{margin-bottom:15px;}
 .balance-main{font-family:'Source Code Pro',monospace;font-size:32px;font-weight:300;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
@@ -601,7 +601,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.sidebar-list .btn{margin-bottom:5px;}
 	.btn-home-button{position:absolute;top:0;left:0;right:auto;}
 	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
-	.wallet-container{width:900px;padding:0;}
 	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
 }
 
@@ -613,7 +612,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.app-wrap{width:90%;margin-top:25%;}
   .app-box-wrap{width:190px;padding:0;}
   .app-box img{width:152px;-webkit-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-border-radius:30px;-webkit-border-radius:30px;border-radius:30px;}
-  .wallet-container{max-width:950px;}
   .wallet-content{padding:35px 50px 50px 50px;}
   .item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:9.25rem;padding-right:9.25rem;}
 }
@@ -628,7 +626,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
   div.ReactModal__Content.ReactModal__Content--after-open{margin-top:-25%;}
 	.app-box-wrap{width:190px;padding:0;}
   .app-box img{width:128px;-webkit-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-border-radius:33px;-webkit-border-radius:33px;border-radius:33px;}
-	.wallet-container{width:950px;}
 }
 
 /* Large devices (large desktops, 1200px to 1400px) */
@@ -638,7 +635,6 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
   div.ReactModal__Content.ReactModal__Content--after-open{margin-top:-18%;}
 	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;margin-right:0;}
 	.pro-wrap{min-width:80%;}
-	.wallet-container{width:1000px;}
 }
 
 /* Extra large devices (large desktops, 1400px and up) */
