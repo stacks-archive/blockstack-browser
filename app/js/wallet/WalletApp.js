@@ -33,22 +33,7 @@ class WalletApp extends Component {
     return (
       <div className="app-wrap-wallet">
           <StatusBar />
-        <div className="container-fluid site-wrapper">
-          <nav className="navbar navbar-toggleable-md navbar-light">
-            <Link to="/wallet/receive" className="navbar-brand">
-              <img src="../images/app-icon-wallet-card-flat.png" />
-            </Link>
-            <div className="navbar-collapse" id="navbarSupportedContent">
-              <ul className="nav navbar-nav m-b-20">
-                <li className="navbar-text">
-                  Wallet
-                </li>
-                <li className="navbar-text navbar-text-secondary-wallet">
-                  Utility
-                </li>
-              </ul>
-            </div>
-          </nav>  
+        <div className="container-fluid site-wrapper"> 
           <div className="container wallet-container">
             <div className="col-md-5 wallet-sidebar">
               <WalletSidebar activeTab={activeTabUrl} />
