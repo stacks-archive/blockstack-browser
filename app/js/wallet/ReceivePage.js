@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { QRCode } from 'react-qr-svg'
 
 import { AccountActions } from '../account/store/account'
+import Balance            from './components/Balance'
 
 function mapStateToProps(state) {
   return {
@@ -38,9 +39,7 @@ class ReceivePage extends Component {
   render() {
     return (
       <div>
-        <h1 className="h1-modern">
-            Receive
-        </h1>
+        <Balance />
         <p><i>
           Send at least <strong>0.01 bitcoins</strong> to the address below to register a username.<br/>
           All username registrations use funds from your wallet.
