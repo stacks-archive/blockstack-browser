@@ -6,6 +6,7 @@ import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
 import { findAddressIndex } from '../utils'
+import AdvancedSidebar from './components/AdvancedSidebar'
 
 
 import log4js from 'log4js'
@@ -171,6 +172,7 @@ class ZoneFilePage extends Component {
           <div className="vertical-split-content">
             <div className="row">
               <div className="col-md-3 sidebar-list">
+                <AdvancedSidebar activeTab="zone-file" name={name} />
               </div>
               <div className="col-md-7">
                 <Link to={`/profiles/${name}/local`}>&lt; Back </Link>
