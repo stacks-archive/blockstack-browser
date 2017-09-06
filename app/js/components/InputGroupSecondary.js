@@ -47,7 +47,7 @@ class InputGroupSecondary extends Component {
     }
 
     return (
-      <div className="form-group m-b-11">
+      <div className="form-group">
         <fieldset>
           <label className={`${labelClass}`}>
             {this.props.label}
