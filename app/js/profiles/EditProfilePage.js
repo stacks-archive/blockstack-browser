@@ -210,8 +210,8 @@ class EditProfilePage extends Component {
                 ) : null }
               </div>
 
+              { this.state.tabName !== "" ? (
               <div className="col-md-12">
-                <hr />
                 <div className="form-group">
                   <fieldset>
                     <Link to={this.props.location.pathname.replace('/edit', '/local')}
@@ -221,8 +221,10 @@ class EditProfilePage extends Component {
                   </fieldset>
                 </div>
               </div>
-            </div>
+              ) : 
+              (<div></div>)}
 
+            </div>
         </div>
         :
         <div>
