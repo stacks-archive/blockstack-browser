@@ -36,15 +36,13 @@ class WalletApp extends Component {
         <div className="wallet-sidebar">
           <WalletSidebar activeTab={activeTabUrl} />
         </div>
-        <div className="container frame-light">
-                <div className="row">
+        <div className="frame-light">
+            <div className="col-md-10 col-centered container-primary">
 
-          <div className="col col-md-8 col-centered container-primary">
-            <div className="container-content">
-              {this.props.children}
-            </div>
+              <div className="container-content">
+                {this.props.children}
+              </div>
           </div>
-        </div>
         </div>
       </div>
     )
