@@ -263,6 +263,11 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
                       const zoneFile = lookupResponseJson.zonefile
                       const ownerAddress = lookupResponseJson.address
 
+                      if (updatedLocalIdentities[ownerAddress]) {
+                        logger.debug(`j: ${j} attempting to add username to ${ownerAddress}`)
+                        dispatch(addUsername(domainName, ownerAddress, zoneFile))
+                      }
+
                       logger.debug(`j: ${j} resolving zonefile to profile`)
                       resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                         j++

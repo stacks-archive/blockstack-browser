@@ -59,12 +59,24 @@ function IdentityReducer(state = initialState, action) {
         })
       })
     case types.ADD_USERNAME: {
-      const localIdentitiesCopy = Object.assign({}, state.localIdentities, {
-        [action.domainName]: Object.assign({}, state.localIdentities[action.ownerAddress], {
-          domainName: action.domainName,
-          zoneFile: action.zoneFile
+      let localIdentitiesCopy = null
+      if (state.localIdentities[action.domainName]) {
+        // we need to merge existing profiles
+        localIdentitiesCopy = Object.assign({}, state.localIdentities, {
+          [action.domainName]: Object.assign({}, state.localIdentities[action.domainName],
+            state.localIdentities[action.ownerAddress], {
+              domainName: action.domainName,
+              zoneFile: action.zoneFile
+            })
         })
-      })
+      } else {
+        localIdentitiesCopy = Object.assign({}, state.localIdentities, {
+          [action.domainName]: Object.assign({}, state.localIdentities[action.ownerAddress], {
+            domainName: action.domainName,
+            zoneFile: action.zoneFile
+          })
+        })
+      }
       delete localIdentitiesCopy[action.ownerAddress]
       return Object.assign({}, state, {
         localIdentities: localIdentitiesCopy

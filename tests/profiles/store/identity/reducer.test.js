@@ -236,6 +236,45 @@ describe('Identity Store: IdentityReducer', () => {
     assert.deepEqual(actualState, expectedState)
   })
 
+  it('should move the identity from owner address key to domain key, merging existing domain key state', () => {
+    const initialState = {
+      localIdentities: {
+        '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC': {
+          profile: {
+            key: 'value'
+          },
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
+        },
+        'satoshi.id': {
+          profile: {
+            key2: 'value2'
+          },
+          testState: 'somestate'
+        }
+      },
+      createProfileError: null
+    }
+
+    const expectedState = {
+      localIdentities: {
+        'satoshi.id': {
+          profile: {
+            key: 'value'
+          },
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
+          domainName: 'satoshi.id',
+          zoneFile: 'test',
+          testState: 'somestate'
+        }
+      },
+      createProfileError: null
+    }
+    const action = IdentityActions.addUsername('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC', 'test')
+
+    const actualState = IdentityReducer(initialState, action)
+    assert.deepEqual(actualState, expectedState)
+  })
+
   it('should create a create new profile error', () => {
     const error = new String('error')
     const expectedState = {
