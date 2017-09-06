@@ -26,25 +26,16 @@ class AccountApp extends Component {
     return (
       <div className="body-inner bkg-light">
         <StatusBar />
-        <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/"/>
+        { this.props.location.pathname !== '/account' && (
+        <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/account" />
+        )}
+
         <div className="container vertical-split-content">
-
-          { this.props.location.pathname !== '/account' ? (
-          <div className="row">
-            <div className="col-md-12">
-              <Link to="/account" className="btn btn-link">
-                Back
-              </Link>
-            </div>
-          </div>
-          ) : (<div></div>) }
-
           <div className="row">
             <div className="col-md-12">
               {this.props.children}
             </div>
           </div>
-
         </div>
       </div>
     )
