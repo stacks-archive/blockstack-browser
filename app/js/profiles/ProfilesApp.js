@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import HomeButton from '../components/HomeButton'
 import SearchBar from './components/SearchBar'
 import StatusBar from '../components/StatusBar'
@@ -29,6 +30,7 @@ class ProfilesApp extends Component {
     return (
       <div className="app-wrap-profiles">
           <StatusBar />
+          <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/" rightButtonTitle="All Avatars" rightButtonLink="/" />
         <div className="container-fluid site-wrapper">
           {this.props.children}
         </div>
