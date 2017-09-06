@@ -177,9 +177,6 @@ class SendPage extends Component {
     const disabled = this.props.account.coreWallet.withdrawal.inProgress
     return (
       <div>
-        <h1 className="h1-modern">
-          Send
-        </h1>
         { this.state.alerts.map(function(alert, index) {
           return (
             <Alert key={index} message={alert.message} status={alert.status} />
@@ -196,8 +193,8 @@ class SendPage extends Component {
           <InputGroup data={this.state} onChange={this.onValueChange}
             name="password" label="Password"
             placeholder="Password" type="password" required={true}/>
-          <div className="container m-t-40">
-            <button className="btn btn-light pull-right" type="submit" disabled={disabled}>
+          <div className="container m-t-40 m-b-75">
+            <button className="btn btn-light btn-block" type="submit" disabled={disabled}>
               Send
             </button>
           </div>

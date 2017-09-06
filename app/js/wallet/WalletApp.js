@@ -33,15 +33,18 @@ class WalletApp extends Component {
     return (
       <div className="app-wrap-wallet">
           <StatusBar />
-        <div className="container-fluid site-wrapper"> 
-          <div className="container wallet-container">
-            <div className="col-md-5 wallet-sidebar">
-              <WalletSidebar activeTab={activeTabUrl} />
-            </div>
-            <div className="col-md-7 wallet-content">
+        <div className="wallet-sidebar">
+          <WalletSidebar activeTab={activeTabUrl} />
+        </div>
+        <div className="container frame-light">
+                <div className="row">
+
+          <div className="col col-md-8 col-centered container-primary">
+            <div className="container-content">
               {this.props.children}
             </div>
           </div>
+        </div>
         </div>
       </div>
     )
