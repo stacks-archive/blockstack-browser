@@ -2,19 +2,25 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
 const SecondaryNavLink = props => {
+  const alignment = (props.align === "right") ? "float-right pull-right" : "float-left pull-left"
+  const active = props.isActive === true ? "active" : ""
+
   return (
     <Link 
-      to={props.link} 
-      className="btn btn-link btn-block">
+      className={`btn btn-link ${alignment} ${active}`}
+      to={props.link}>
       {props.title}
     </Link>
   )
 }
 
 const SecondaryNavButton = props => {
+  const alignment = (props.align === "right") ? "float-right pull-right" : "float-left pull-left"
+  const active = props.isActive === true ? "active" : ""
+
   return (
     <button
-      className="btn btn-link btn-block"
+      className={`btn btn-link ${alignment} ${active}`}
       title={props.title}
       onClick={props.onClick}>
       {props.title}
@@ -31,39 +37,45 @@ class SecondaryNavBar extends Component {
     rightButtonLink: PropTypes.string,
     onLeftButtonClick: PropTypes.func,
     onRightButtonClick: PropTypes.func,
+    isLeftActive: PropTypes.bool,
+    isRightActive: PropTypes.bool
   }
 
   render() {
     return (
-      <div className="container">
-        <div className="secondary-nav">
-          <div className="row">
-            <div className="col-xs-4 col-sm-3 col-md-2">
-              {this.props.leftButtonTitle !== undefined && (
-                this.props.onLeftButtonClick !== undefined ?
-                <SecondaryNavButton
-                  title={this.props.leftButtonTitle}
-                  onClick={this.props.onLeftButtonClick} />
-                :
-                <SecondaryNavLink 
-                  title={this.props.leftButtonTitle} 
-                  link={this.props.leftButtonLink} />
-                ) }
-            </div>
-            <div className="col-xs-4 col-sm-6 col-md-8 text-center">
-              {this.props.title !== undefined && (
-              <h1 className="secondary-nav-title">
-                {this.props.title}
-              </h1>
-              )}
-            </div>
-            <div className="col-xs-4 col-sm-3 col-md-2">
-              {this.props.rightButtonTitle !== undefined && (
-                <SecondaryNavLink 
-                  title={this.props.rightButtonTitle} 
-                  link={this.props.rightButtonLink} />
-                )}
-            </div>
+      <div className="container-fluid secondary-nav">
+        <div className="row">
+          <div className="col-xs-6">
+            {this.props.leftButtonTitle !== undefined && (
+              this.props.onLeftButtonClick !== undefined ?
+              <SecondaryNavButton
+                title={this.props.leftButtonTitle}
+                onClick={this.props.onLeftButtonClick}
+                align="left" 
+                isActive={this.props.isLeftActive} />
+              :
+              <SecondaryNavLink 
+                title={this.props.leftButtonTitle} 
+                link={this.props.leftButtonLink}
+                align="left"
+                isActive={this.props.isLeftActive} />
+              ) }
+          </div>
+          <div className="col-xs-6">
+          {this.props.rightButtonTitle !== undefined && (
+            this.props.onRightButtonClick !== undefined ?
+            <SecondaryNavButton
+              title={this.props.rightButtonTitle}
+              onClick={this.props.onRightButtonClick}
+              align="right"
+              isActive={this.props.isRightActive} />
+            :
+            <SecondaryNavLink 
+              title={this.props.rightButtonTitle} 
+              link={this.props.rightButtonLink}
+              align="right"
+              isActive={this.props.isRightActive} />
+            ) }
           </div>
         </div>
       </div>

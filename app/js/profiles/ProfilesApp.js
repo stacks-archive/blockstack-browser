@@ -29,9 +29,7 @@ class ProfilesApp extends Component {
     return (
       <div className="app-wrap-profiles">
         <StatusBar />
-        <div className="container-fluid site-wrapper">
           {this.props.children}
-        </div>
       </div>
     )
   }
