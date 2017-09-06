@@ -11,6 +11,7 @@ const initialState = {
     zoneFile: null
   },
   localIdentities: {},
+  nameTransfers: [],
   namesOwned: [],
   createProfileError: null,
   zoneFileUpdates: []
@@ -46,6 +47,7 @@ describe('Identity Store: IdentityReducer', () => {
         zoneFile: 'test'
       },
       localIdentities: {},
+      nameTransfers: [],
       namesOwned: [],
       zoneFileUpdates: [],
       createProfileError: null
@@ -74,6 +76,7 @@ describe('Identity Store: IdentityReducer', () => {
           zoneFile: null
         }
       },
+      nameTransfers: [],
       namesOwned: [],
       zoneFileUpdates: [],
       createProfileError: null
@@ -93,6 +96,7 @@ describe('Identity Store: IdentityReducer', () => {
         zoneFile: null
       },
       localIdentities: {},
+      nameTransfers: [],
       namesOwned: [],
       zoneFileUpdates: [],
       createProfileError: null
@@ -130,6 +134,7 @@ describe('Identity Store: IdentityReducer', () => {
           zoneFile: 'test'
         }
       },
+      nameTransfers: [],
       namesOwned: ['satoshi.id'],
       zoneFileUpdates: [],
       createProfileError: null
@@ -159,6 +164,7 @@ describe('Identity Store: IdentityReducer', () => {
           zoneFile: 'test'
         }
       },
+      nameTransfers: [],
       namesOwned: [],
       zoneFileUpdates: [],
       createProfileError: null
@@ -189,6 +195,7 @@ describe('Identity Store: IdentityReducer', () => {
           zoneFile: 'test'
         }
       },
+      nameTransfers: [],
       namesOwned: [],
       zoneFileUpdates: [],
       createProfileError: null
@@ -240,6 +247,7 @@ describe('Identity Store: IdentityReducer', () => {
         zoneFile: null
       },
       localIdentities: {},
+      nameTransfers: [],
       namesOwned: [],
       zoneFileUpdates: [],
       createProfileError: error
