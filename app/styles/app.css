@@ -65,7 +65,6 @@ div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > butt
 .navbar-nav .nav-item + .nav-item{margin-left:10px;}
 
 /* Browser sidebar */
-.view-with-sidebar{padding-left:180px;transition:all .4s ease 0s;}
 .sidebar-section{position:fixed;z-index:1000;left:180px;overflow-y:auto;width:180px;height:100%;margin-left:-180px;padding-left:25px;transition:all .4s ease 0s;}
 .sidebar-label{font-size:14px;color:#7b7b7b;}
 .centered{text-align:center;}
@@ -92,27 +91,11 @@ div.profile-right-col > ul > li > a:hover,div.profile-right-col > ul > li > butt
 .cover-container{margin-right:auto;margin-left:auto;}
 .out-block-wrap{width:576px;}
 .out-block{width:490px;}
-.out-form-group{width:490px;margin-left:-80px;}
 .text-feat-dash{padding:12px;margin-bottom:0;}
 a.view-out-link{color:#494f56;}
 
-/* Temporary position absolute */
-.header-logo{position:absolute;top:150px;}
-
-/* controls the alert boxes when signing up */
-div.out-form-group > div > div.alert.alert-dismissible{margin-right:15px;margin-left:178px;}
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width:768px){
-	.view-with-sidebar{padding-left:90px;}
-}
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width:1200px){
-}
 .fa-green{color:#1d9d74;}
 .app-account-identifier{margin-left:10px;}
-
 
 /* Guy quick */
 .profile-wrap{max-width: 800px;}
@@ -398,13 +381,76 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-light{background-color:#fff;border-color:#fff;color:#2C96FF;}
 
 /* 13. Forms */
-.form-control{font-size:0.875rem;font-weight:400;color:#484848;padding:0.75rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;border:1px solid #fff;}
-.form-control::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;color:#c7c7c7;font-weight:400!important;}
-.form-control:hover,.form-control:focus{background-color:#fff;}
-input.form-control.form-control-sm.input-special{background-color:#fff;border:1px solid #fff;}
-input.form-control.form-control-sm.input-special:hover,input[type='text'].form-control.form-control-sm.input-special:hover,input.form-control.form-control-sm.input-special:focus,input[type='text'].form-control.form-control-sm.input-special:focus{-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-webkit-transition:none;-moz-transition:none;transition:none;border:1px solid #fff;}
-input[type=radio]{margin-right:1rem;}
-.form-control-label{color:#AEAEAE;}
+.form-control {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #484848;
+  padding: 0.75rem 1.375rem;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+  border: 1px solid #fff;
+}
+.form-control::-webkit-input-placeholder {
+  text-transform: capitalize;
+  font-size: 0.875rem;
+  color: #c7c7c7;
+  font-weight: 400 !important;
+}
+.form-control:hover, .form-control:focus {
+  background-color: #fff;
+}
+input.form-control.form-control-sm.input-special {
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+input.form-control.form-control-sm.input-special:hover, input[type='text'].form-control.form-control-sm.input-special:hover, input.form-control.form-control-sm.input-special:focus, input[type='text'].form-control.form-control-sm.input-special:focus {
+  -webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+  border: 1px solid #fff;
+}
+input[type=radio] {
+  margin-right: 1rem;
+}
+.form-control-label {
+  color: #AEAEAE;
+}
+
+
+.form-control-secondary {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: #fff;
+  padding: 1rem 1.375rem;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+  border: 1px solid #fff;
+  -webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;
+}
+.form-control::-webkit-input-placeholder {
+  text-transform: capitalize;
+  font-size: 0.875rem;
+  color: #fff;
+  font-weight: 400 !important;
+}
+input.form-control-secondary {
+  background-color: #60B0FF;
+  border: 1px solid #60B0FF;
+}
+
 
 
 /* 16. Navbar */

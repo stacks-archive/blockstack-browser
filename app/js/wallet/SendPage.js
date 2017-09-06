@@ -9,7 +9,7 @@ import {
   getBitcoinPrivateKeychain, getUtxo
 } from '../utils'
 import Alert from '../components/Alert'
-import InputGroup from '../components/InputGroup'
+import InputGroupSecondary from '../components/InputGroupSecondary'
 import Balance from './components/Balance'
 
 import { ECPair, TransactionBuilder } from 'bitcoinjs-lib'
@@ -184,13 +184,13 @@ class SendPage extends Component {
         })}
         <p>Send your funds to another Bitcoin wallet.</p>
         <form onSubmit={this.withdrawBitcoin} method='post'>
-          <InputGroup data={this.state} onChange={this.onValueChange} name="recipientAddress"
-            label="To" placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ" className="wallet-form"
+          <InputGroupSecondary data={this.state} onChange={this.onValueChange} name="recipientAddress"
+            label="To" placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ"
             required={true}/>
-          <InputGroup data={this.state} onChange={this.onValueChange} name="amount"
-            label="Amount" placeholder="0.937" className="wallet-form" type="number"
+          <InputGroupSecondary data={this.state} onChange={this.onValueChange} name="amount"
+            label="Amount" placeholder="0.937" type="number"
             required={true} step={0.000001} />
-          <InputGroup data={this.state} onChange={this.onValueChange}
+          <InputGroupSecondary data={this.state} onChange={this.onValueChange}
             name="password" label="Password"
             placeholder="Password" type="password" required={true}/>
           <div className="m-t-40 m-b-75">
