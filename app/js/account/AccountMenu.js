@@ -32,15 +32,17 @@ class AccountMenu extends Component {
     ]
 
     return (
-      <div className="list-group">
-        {tabs.map((tab, index) => {
-          let className = 'list-group-item item-sidebar-primary'
-          return (
-            <Link key={index} to={tab.url} className={className}>
-              {tab.label}
-            </Link>
-          )
-        })}
+      <div>
+        <div className="list-group">
+          {tabs.map((tab, index) => {
+            let className = 'list-group-item item-sidebar-primary'
+            return (
+              <Link key={index} to={tab.url} className={className}>
+                {tab.label}
+              </Link>
+            )
+          })}
+        </div>
       </div>
     )
   }

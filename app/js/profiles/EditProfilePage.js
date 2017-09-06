@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import EditProfileHeader from './components/EditProfileHeader'
 import ProfileEditingSidebar from './components/ProfileEditingSidebar'
 import { IdentityActions } from './store/identity'
@@ -133,107 +134,112 @@ class EditProfilePage extends Component {
 
   render() {
     return (
-      <div className="card-list-container profile-content-wrapper">
-        {this.state.profile && this.state.domainName ?
-        <div>
-          { this.state.tabName !== "" ? (
-          <div className="row">
-            <div className="col-md-12">
-              <button
-                className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
-                title="Back"
-                onClick={() => this.backClick()}
-              >
-              Back
-              </button>
-            </div>
-          </div>
-          ) : 
-          (<div></div>)}
-          <EditProfileHeader title="Edit Profile"/>
+      <div>
+        <SecondaryNavBar 
+          leftButtonTitle="Back" 
+          leftButtonLink="/profiles" />
+        <div className="card-list-container profile-content-wrapper">
+          {this.state.profile && this.state.domainName ?
+          <div>
+            { this.state.tabName !== "" ? (
             <div className="row">
-
-              { this.state.tabName === "" ? (
               <div className="col-md-12">
-                <ProfileEditingSidebar
-                  activeTab={this.state.tabName}
-                  onClick={this.changeTabs} />
+                <button
+                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
+                  title="Back"
+                  onClick={() => this.backClick()}
+                >
+                Back
+                </button>
               </div>
-              ) : 
-              (<div></div>)}
-
-              <div className="col-md-12">
-                { this.state.profile ? (
-                <div>
-                  {(() => {
-                    switch (this.state.tabName) {
-                      case "Basic Info":
-                        return (
-                          <BasicInfoTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile} />
-                        )
-                      case "Photos":
-                        return (
-                          <PhotosTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile}
-                            uploadProfilePhoto={this.uploadProfilePhoto} />
-                        )
-                      case "Social Accounts":
-                        return (
-                          <SocialAccountsTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile}
-                            domainName={this.state.domainName} />
-                        )
-                      case "Address":
-                        return (
-                          <PrivateInfoTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile} />
-                        )
-                      case "Digital Keys":
-                        return (
-                          <PublicKeysTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile}
-                            domainName={this.state.domainName} />
-                        )
-                      default:
-                        return (
-                          <div></div>
-                        )
-                    }
-                  })()}
-                </div>
-                ) : null }
-              </div>
-
-              { this.state.tabName !== "" ? (
-              <div className="col-md-12">
-                <div className="form-group">
-                  <fieldset>
-                    <Link to={this.props.location.pathname.replace('/edit', '/local')}
-                      className="btn btn-primary">
-                      Save + View Profile
-                    </Link>
-                  </fieldset>
-                </div>
-              </div>
-              ) : 
-              (<div></div>)}
-
             </div>
+            ) : 
+            (<div></div>)}
+            <EditProfileHeader title="Edit Profile"/>
+              <div className="row">
+
+                { this.state.tabName === "" ? (
+                <div className="col-md-12">
+                  <ProfileEditingSidebar
+                    activeTab={this.state.tabName}
+                    onClick={this.changeTabs} />
+                </div>
+                ) : 
+                (<div></div>)}
+
+                <div className="col-md-12">
+                  { this.state.profile ? (
+                  <div>
+                    {(() => {
+                      switch (this.state.tabName) {
+                        case "Basic Info":
+                          return (
+                            <BasicInfoTab
+                              profile={this.state.profile}
+                              saveProfile={this.saveProfile} />
+                          )
+                        case "Photos":
+                          return (
+                            <PhotosTab
+                              profile={this.state.profile}
+                              saveProfile={this.saveProfile}
+                              uploadProfilePhoto={this.uploadProfilePhoto} />
+                          )
+                        case "Social Accounts":
+                          return (
+                            <SocialAccountsTab
+                              profile={this.state.profile}
+                              saveProfile={this.saveProfile}
+                              domainName={this.state.domainName} />
+                          )
+                        case "Address":
+                          return (
+                            <PrivateInfoTab
+                              profile={this.state.profile}
+                              saveProfile={this.saveProfile} />
+                          )
+                        case "Digital Keys":
+                          return (
+                            <PublicKeysTab
+                              profile={this.state.profile}
+                              saveProfile={this.saveProfile}
+                              domainName={this.state.domainName} />
+                          )
+                        default:
+                          return (
+                            <div></div>
+                          )
+                      }
+                    })()}
+                  </div>
+                  ) : null }
+                </div>
+
+                { this.state.tabName !== "" ? (
+                <div className="col-md-12">
+                  <div className="form-group">
+                    <fieldset>
+                      <Link to={this.props.location.pathname.replace('/edit', '/local')}
+                        className="btn btn-primary">
+                        Save + View Profile
+                      </Link>
+                    </fieldset>
+                  </div>
+                </div>
+                ) : 
+                (<div></div>)}
+
+              </div>
+          </div>
+          :
+          <div>
+            <h1 className="h1-modern vertical-split-content">
+              Page Not Found
+            </h1>
+            <p>You don't own this profile and therefore you cannot edit it.</p>
+          </div>
+          }
         </div>
-        :
-        <div>
-          <h1 className="h1-modern vertical-split-content">
-            Page Not Found
-          </h1>
-          <p>You don't own this profile and therefore you cannot edit it.</p>
-        </div>
-        }
       </div>
     )
   }

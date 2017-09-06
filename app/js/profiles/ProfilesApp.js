@@ -28,10 +28,8 @@ class ProfilesApp extends Component {
   render() {
     return (
       <div className="app-wrap-profiles">
-          <StatusBar />
-        <div className="container-fluid site-wrapper">
+        <StatusBar />
           {this.props.children}
-        </div>
       </div>
     )
   }

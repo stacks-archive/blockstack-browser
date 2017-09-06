@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import Alert from '../components/Alert'
 import Image from '../components/Image'
 import InputGroup from '../components/InputGroup'
@@ -224,6 +225,11 @@ class DefaultProfilePage extends Component {
           </form>
         </Modal>
         <div>
+          <SecondaryNavBar 
+            leftButtonTitle="Edit" 
+            leftButtonLink={`/profiles/${domainName}/edit`}
+            rightButtonTitle="All Avatars" 
+            rightButtonLink="/profiles/i/all" />
           <div className="container-fluid pro-wrap m-t-50 profile-content-wrapper">
             <div className="col-sm-4">
               <div className="pro-container col-sm-12">

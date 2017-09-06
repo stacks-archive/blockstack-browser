@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import PageHeader from '../components/PageHeader'
 import StatusBar from '../components/StatusBar'
 
@@ -25,25 +26,16 @@ class AccountApp extends Component {
     return (
       <div className="body-inner bkg-light">
         <StatusBar />
-        <PageHeader title="Settings" />
+        { this.props.location.pathname !== '/account' && (
+        <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/account" />
+        )}
+
         <div className="container vertical-split-content">
-
-          { this.props.location.pathname !== '/account' ? (
-          <div className="row">
-            <div className="col-md-12">
-              <Link to="/account" className="btn btn-link">
-                Back
-              </Link>
-            </div>
-          </div>
-          ) : (<div></div>) }
-
           <div className="row">
             <div className="col-md-12">
               {this.props.children}
             </div>
           </div>
-
         </div>
       </div>
     )

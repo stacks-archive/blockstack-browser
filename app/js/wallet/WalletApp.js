@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import WalletSidebar from './components/WalletSidebar'
 import StatusBar from '../components/StatusBar'
 
@@ -32,12 +33,16 @@ class WalletApp extends Component {
 
     return (
       <div className="app-wrap-wallet">
-          <StatusBar />
-        <div className="wallet-sidebar">
-          <WalletSidebar activeTab={activeTabUrl} />
-        </div>
+        <StatusBar />
+        <SecondaryNavBar 
+          leftButtonTitle="Send" 
+          leftButtonLink="/wallet/send"
+          isLeftActive={(activeTabUrl === '/wallet/send')}
+          rightButtonTitle="Receive" 
+          rightButtonLink="/wallet/receive"
+          isRightActive={(activeTabUrl === '/wallet/receive')} />
         <div className="container frame-light">
-                <div className="row">
+          <div className="row">
 
           <div className="col col-md-8 col-centered container-primary">
             <div className="container-content">
