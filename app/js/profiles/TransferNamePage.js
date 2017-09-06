@@ -86,7 +86,6 @@ class TransferNamePage extends Component<Props, State> {
   onValueChange: Function
   onValueChange(event) {
     event.persist()
-    console.log(event.target)
     this.setState(() => ({
       [event.target.name]: event.target.value
     }))
