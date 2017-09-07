@@ -5,12 +5,10 @@ import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
 import Alert from '../components/Alert'
-import Image from '../components/Image'
+import IdentityItem from './components/IdentityItem'
 import InputGroup from '../components/InputGroup'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
-import SocialAccountItem from './components/SocialAccountItem'
-import PGPAccountItem from './components/PGPAccountItem'
 
 import log4js from 'log4js'
 
@@ -44,7 +42,7 @@ class DefaultProfilePage extends Component {
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
-    setDefaultIdentity: PropTypes.func.isRequired,
+    setDefaultIdentity: PropTypes.string.isRequired,
     resetCreateNewProfileError: PropTypes.func.isRequired,
     createProfileError: PropTypes.string
   }
@@ -58,6 +56,8 @@ class DefaultProfilePage extends Component {
       processing: false,
       password: ''
     }
+
+    console.log(props)
 
     this.onValueChange = this.onValueChange.bind(this)
     this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
@@ -154,16 +154,7 @@ class DefaultProfilePage extends Component {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
     const defaultIdentityName = this.props.defaultIdentity
-    console.log(`defaultIdentity: ${defaultIdentityName}`)
     const identity = this.state.localIdentities[defaultIdentityName]
-
-    // render() sometimes gets called before defaultIdentityName
-    // is updated from ownerAddress to the actual name when adding
-    // a username.
-    if (!identity) {
-      return null
-    }
-
     const person = new Person(identity.profile)
 
     if (identity.ownerAddress === defaultIdentityName) {
@@ -171,19 +162,8 @@ class DefaultProfilePage extends Component {
     } else {
       identity.canAddUsername = false
     }
-
-    const domainName = identity.domainName
-
-    const verifications = identity.verifications
-    const blockNumber = identity.blockNumber
-    const transactionIndex = identity.transactionIndex
-
-    const accounts = person.profile().account || []
-    const connections = person.connections() || []
-
-
     return (
-      <div>
+      <div className="card-list-container profile-content-wrapper">
         <Modal
           isOpen={passwordPromptIsOpen}
           onRequestClose={this.closePasswordPrompt}
@@ -224,6 +204,7 @@ class DefaultProfilePage extends Component {
           </form>
         </Modal>
         <div>
+<<<<<<< HEAD
           <div className="container-fluid pro-wrap m-t-50 profile-content-wrapper">
             <div className="col-sm-4">
               <div className="pro-container col-sm-12">
@@ -366,6 +347,24 @@ class DefaultProfilePage extends Component {
               }
             </div>
           </div>
+=======
+          <h5 className="h5-landing">Me</h5>
+        </div>
+        <div className="container card-list-container">
+          <ul className="card-wrapper">
+            <IdentityItem
+              key={identity.domainName}
+              label={identity.domainName}
+              pending={!identity.registered}
+              avatarUrl={person.avatarUrl() || ''}
+              url={`/profiles/${identity.domainName}/local`}
+              ownerAddress={identity.ownerAddress}
+              canAddUsername={identity.canAddUsername}
+              isDefault={identity.domainName === this.props.defaultIdentity}
+              setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
+            />
+          </ul>
+>>>>>>> parent of d960a5c... move large profile to default profile page #695
         </div>
         <div className="card-list-container m-t-30">
           <button
