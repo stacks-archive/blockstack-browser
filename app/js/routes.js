@@ -8,7 +8,6 @@ import ProfilesApp          from './profiles/ProfilesApp'
 import RegistrationPage      from './profiles/RegistrationPage'
 import RegistrationSearchView  from './profiles/components/registration/RegistrationSearchView'
 import RegistrationSelectView  from './profiles/components/registration/RegistrationSelectView'
-import DefaultProfilePage      from './profiles/DefaultProfilePage'
 import AllProfilesPage      from './profiles/AllProfilesPage'
 import ViewProfilePage      from './profiles/ViewProfilePage'
 import EditProfilePage      from './profiles/EditProfilePage'
@@ -41,8 +40,7 @@ export default (
       <IndexRoute component={HomeScreenPage} />
 
       <Route path="profiles" component={ProfilesApp}>
-        <IndexRoute component={DefaultProfilePage} />
-        <Route path="i/all"           component={AllProfilesPage} />
+        <IndexRoute component={AllProfilesPage} />
         <Route path="i/search/:query" component={SearchProfilesPage} />
         <Route path=":name"           component={ViewProfilePage} />
         <Route path=":index/local"    component={ViewProfilePage} />
