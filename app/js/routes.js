@@ -25,7 +25,6 @@ import DeleteAccountPage    from './account/DeleteAccountPage'
 import BackupAccountPage    from './account/BackupAccountPage'
 import ChangePasswordPage   from './account/ChangePasswordPage'
 import CreateAccountPage    from './account/CreateAccountPage'
-import RestoreAccountPage   from './account/RestoreAccountPage'
 import ApiSettingsPage      from './account/ApiSettingsPage'
 import StorageProvidersPage from './account/StorageProvidersPage'
 
@@ -66,7 +65,6 @@ export default (
         <Route path="backup"      component={BackupAccountPage} />
         <Route path="password"    component={ChangePasswordPage} />
         <Route path="create"      component={CreateAccountPage} />
-        <Route path="restore"     component={RestoreAccountPage} />
         <Route path="api"         component={ApiSettingsPage} />
         <Route path="storage"     component={StorageProvidersPage} />
       </Route>
