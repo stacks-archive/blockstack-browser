@@ -11,8 +11,7 @@ class AccountSidebar extends Component {
       { url: '/account/storage', label: 'storage providers', isActive: false },
       { url: '/account/password', label: 'change password', isActive: false },
       { url: '/account/backup', label: 'backup account', isActive: false },
-      { url: '/account/restore', label: 'restore account', isActive: false },
-      { url: '/account/delete', label: 'delete account', isActive: false },
+      { url: '/account/delete', label: 'remove account', isActive: false },
       { url: '/account/api', label: 'api settings', isActive: false }
 
     ]
