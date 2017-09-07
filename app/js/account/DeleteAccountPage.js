@@ -73,9 +73,9 @@ class DeleteAccountPage extends Component {
   render() {
     return (
       <div className="m-b-100">
-        <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
+        <h3 className="m-t-10" style={{ paddingLeft: '15px' }}>
           Remove Account
-        </h1>
+        </h3>
         {
           this.state.alerts.map((alert, index) => {
             return (
