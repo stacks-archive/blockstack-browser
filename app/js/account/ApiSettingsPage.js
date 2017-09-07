@@ -89,9 +89,9 @@ class ApiSettingsPage extends Component {
             onChange={this.onHostedDataValueChange}>
             {Radio => (
               <div>
-                <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
+                <h3 className="m-t-10" style={{ paddingLeft: '15px' }}>
                   Blockstack API Options
-                </h1>
+                </h3>
 
                 { this.state.api.apiCustomizationEnabled === true ?
                   <div>
