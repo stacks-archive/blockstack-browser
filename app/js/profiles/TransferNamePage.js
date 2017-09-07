@@ -72,8 +72,9 @@ class TransferNamePage extends Component<Props, State> {
     logger.trace('componentWillMount')
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     logger.trace('componentWillReceiveProps')
+    this.displayAlerts(nextProps)
   }
 
   onToggle: Function
@@ -104,9 +105,9 @@ class TransferNamePage extends Component<Props, State> {
           disabled: false
         })
       } else if (transferState.broadcasting) {
-        this.updateAlert('success', 'Broadcasting zone file update transaction...')
+        this.updateAlert('success', 'Broadcasting name transfer transaction...')
       } else {
-        this.updateAlert('success', 'Broadcasted zone file update transaction.')
+        this.updateAlert('success', 'Broadcasted name transfer transaction.')
         this.setState({
           disabled: false
         })
