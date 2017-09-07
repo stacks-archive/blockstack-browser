@@ -30,9 +30,9 @@ class AccountApp extends Component {
         <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/account" />
         )}
 
-        <div className="container vertical-split-content">
+        <div className="container-fluid vertical-split-content">
           <div className="row">
-            <div className="col-md-12">
+            <div className="w-100">
               {this.props.children}
             </div>
           </div>
