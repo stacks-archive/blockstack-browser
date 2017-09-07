@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import StatusBar from './components/StatusBar'
+import Navbar from './components/Navbar'
 
 function mapStateToProps(state) {
   return {
@@ -21,7 +21,7 @@ class HomeScreenPage extends Component {
   render() {
     return (
     <div className="home-screen-wrap">
-      <StatusBar hideBackToHomeLink={true} />
+      <Navbar hideBackToHomeLink={true} />
       <div className="home-screen">
         <div className="container-fluid app-center">
           <div className="container app-wrap">

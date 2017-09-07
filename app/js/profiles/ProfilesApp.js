@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 
 import HomeButton from '../components/HomeButton'
 import SearchBar from './components/SearchBar'
-import StatusBar from '../components/StatusBar'
+import Navbar from '../components/Navbar'
 
 
 function mapStateToProps(state) {
@@ -28,7 +28,7 @@ class ProfilesApp extends Component {
   render() {
     return (
       <div className="app-wrap-profiles">
-        <StatusBar />
+        <Navbar />
           {this.props.children}
       </div>
     )

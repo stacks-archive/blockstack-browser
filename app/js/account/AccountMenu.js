@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import PageHeader from '../components/PageHeader'
-import StatusBar from '../components/StatusBar'
+import Navbar from '../components/Navbar'
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)

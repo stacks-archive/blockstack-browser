@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import WalletSidebar from './components/WalletSidebar'
-import StatusBar from '../components/StatusBar'
+import Navbar from '../components/Navbar'
 
 
 function mapStateToProps(state) {
@@ -33,7 +33,7 @@ class WalletApp extends Component {
 
     return (
       <div className="app-wrap-wallet">
-        <StatusBar />
+        <Navbar />
         <SecondaryNavBar 
           leftButtonTitle="Send" 
           leftButtonLink="/wallet/send"
