@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
 const SecondaryNavLink = props => {
-  const alignment = (props.align === "right") ? "float-right pull-right" : "float-left pull-left"
+  const alignment = (props.align === "right") ? "float-right" : "float-left"
   const active = props.isActive === true ? "active" : ""
 
   return (
@@ -15,7 +15,7 @@ const SecondaryNavLink = props => {
 }
 
 const SecondaryNavButton = props => {
-  const alignment = (props.align === "right") ? "float-right pull-right" : "float-left pull-left"
+  const alignment = (props.align === "right") ? "float-right" : "float-left"
   const active = props.isActive === true ? "active" : ""
 
   return (
@@ -45,7 +45,7 @@ class SecondaryNavBar extends Component {
     return (
       <div className="container-fluid secondary-nav">
         <div className="row">
-          <div className="col-xs-6">
+          <div className="col">
             {this.props.leftButtonTitle !== undefined && (
               this.props.onLeftButtonClick !== undefined ?
               <SecondaryNavButton
@@ -61,7 +61,7 @@ class SecondaryNavBar extends Component {
                 isActive={this.props.isLeftActive} />
               ) }
           </div>
-          <div className="col-xs-6">
+          <div className="col">
           {this.props.rightButtonTitle !== undefined && (
             this.props.onRightButtonClick !== undefined ?
             <SecondaryNavButton
