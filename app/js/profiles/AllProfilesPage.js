@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
 import SecondaryNavBar from '../components/SecondaryNavBar'
@@ -57,6 +56,8 @@ class IdentityPage extends Component {
       processing: false,
       password: ''
     }
+
+    console.log(props)
 
     this.onValueChange = this.onValueChange.bind(this)
     this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
@@ -154,8 +155,8 @@ class IdentityPage extends Component {
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
     return (
       <div>
-        <SecondaryNavBar 
-          leftButtonTitle="Back" 
+        <SecondaryNavBar
+          leftButtonTitle="Back"
           leftButtonLink="/profiles" />
         <div className="card-list-container profile-content-wrapper">
           <Modal
