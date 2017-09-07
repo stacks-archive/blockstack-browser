@@ -26,6 +26,7 @@ const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
 const START_PAGE_VIEW = 0
 const WRITE_DOWN_IDENTITY_PAGE_VIEW = 5
+const EMAIL_VIEW = 7
 const STORAGE_PAGE_VIEW = 8
 
 function mapStateToProps(state) {
@@ -94,7 +95,8 @@ class WelcomeModal extends Component {
       page: startPageView,
       password: null,
       identityKeyPhrase: null,
-      alert: null
+      alert: null,
+      restored: false
     }
 
     this.showLandingView = this.showLandingView.bind(this)
@@ -144,8 +146,11 @@ class WelcomeModal extends Component {
 
         // Set as default profile
         this.props.setDefaultIdentity(ownerAddress)
-
-        this.setPage(WRITE_DOWN_IDENTITY_PAGE_VIEW)
+        if (this.state.restored) {
+          this.setPage(EMAIL_VIEW)
+        } else {
+          this.setPage(WRITE_DOWN_IDENTITY_PAGE_VIEW)
+        }
       }, () => {
         logger.debug('User has refreshed browser mid onboarding.')
 
@@ -205,9 +210,10 @@ class WelcomeModal extends Component {
 
     this.setState({
       identityKeyPhrase,
-      password
+      password,
+      restored: true
     })
-    this.props.initializeWallet(password, this.state.identityKeyPhrase)
+    this.props.initializeWallet(password, identityKeyPhrase)
   }
 
   showLandingView(event) {

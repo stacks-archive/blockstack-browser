@@ -16,6 +16,7 @@ import RegisterProfilePage  from './profiles/RegisterProfilePage'
 import ImportProfilePage    from './profiles/ImportProfilePage'
 import ExportProfilePage    from './profiles/ExportProfilePage'
 import SearchProfilesPage   from './profiles/SearchProfilesPage'
+import TransferNamePage     from './profiles/TransferNamePage'
 import ZoneFilePage         from './profiles/ZoneFilePage'
 
 import AccountApp           from './account/AccountApp'
@@ -48,6 +49,7 @@ export default (
         <Route path=":name"           component={ViewProfilePage} />
         <Route path=":index/local"    component={ViewProfilePage} />
         <Route path=":index/edit"     component={EditProfilePage} />
+        <Route path=":index/transfer-name" component={TransferNamePage} />
         <Route path=":index/zone-file" component={ZoneFilePage} />
         <Route path=":index/export"   component={ExportProfilePage} />
         <Route path="i/add-username"  component={RegistrationPage} >
