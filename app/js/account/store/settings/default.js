@@ -24,6 +24,7 @@ const DEFAULT_API = {
   btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
   corePingUrl: 'http://localhost:6270/v1/node/ping',
   zoneFileUrl: 'http://localhost:6270/v1/names/{name}/zonefile',
+  nameTransferUrl: 'http://localhost:6270/v1/names/{name}/owner',
   subdomains: {
     'foo.id': {
       registerUrl: 'http://localhost:7103/register'
