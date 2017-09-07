@@ -224,175 +224,165 @@ class DefaultProfilePage extends Component {
             </button>
           </form>
         </Modal>
+
         <div>
           <SecondaryNavBar 
             leftButtonTitle="Edit" 
             leftButtonLink={`/profiles/${domainName}/edit`}
             rightButtonTitle="All Avatars" 
             rightButtonLink="/profiles/i/all" />
-          <div className="container-fluid pro-wrap m-t-50 profile-content-wrapper">
-            <div className="col-sm-4">
-              <div className="pro-container col-sm-12">
-                <div className="pro-avatar m-b-20">
+
+          <div className="container-fluid m-t-50">
+            <div class="row">
+              <div className="col-xs-12">
+
+                <div className="pro-avatar m-b-20 text-center">
                   <Image
                     src={person.avatarUrl() || ''}
-                    fallbackSrc="/images/avatar.png" className="img-circle"
-                  />
+                    fallbackSrc="/images/avatar.png" className="rounded-circle" />
                 </div>
-                <div className="">
+
+                <div className="text-center">
                   {(blockNumber && transactionIndex) ?
                     <div className="idcard-body dim">
                       Registered in block <span>#{blockNumber}</span>,<br />
                       transaction <span>#{transactionIndex}</span>
                     </div>
                   : null}
-                  <h1 className="pro-card-name">{person.name()}</h1>
-                  <div className="pro-card-body">
+                  <h1 className="pro-card-name text-center">{person.name()}</h1>
+                  <div className="pro-card-domain-name m-b-20 text-center">{domainName}</div>
+                  <div className="pro-card-body text-center">
                     {person.description()}
                   </div>
                   {person.address() ?
-                    <div className="pro-card-body">
+                    <div className="pro-card-body text-center">
                     {person.address()}
                     </div>
                   : null}
                   {person.birthDate() ?
-                    <div className="pro-card-body">
+                    <div className="pro-card-body text-center">
                     {person.birthDate()}
                     </div>
                   : null}
                 </div>
-              </div>
-              <div className="container">
-                {connections.length ?
-                  <p className="profile-foot">Connections</p>
-                : null}
-                {connections.map((connection, index) => {
-                  if (connection.id) {
-                    return (
-                      <Link
-                        to={`/profiles/blockchain/${connection.id}`}
-                        key={index} className="connections"
-                      >
-                        <Image
-                          src={new Person(connection).avatarUrl()}
-                          style={{ width: '40px', height: '40px' }}
-                        />
-                      </Link>
-                    )
-                  } else {
-                    return null
-                  }
-                })}
-              </div>
-            </div>
-            <div className="col-sm-8 pull-right profile-right-col-fill">
-              <div className="profile-right-col">
-                <h3>
-                  {domainName}
-                </h3>
-                <ul>
-                  {accounts.map((account) => {
-                    let verified = false
-                    for (let i = 0; i < verifications.length; i++) {
-                      const verification = verifications[i]
-                      if (verification.service === account.service &&
-                        verification.valid === true) {
-                        verified = true
-                        break
-                      }
-                    }
-                    if (account.service === 'pgp') {
+
+                <div className="text-center">
+                  {connections.length ?
+                    <p className="profile-foot">Connections</p>
+                  : null}
+                  {connections.map((connection, index) => {
+                    if (connection.id) {
                       return (
-                        <PGPAccountItem
-                          key={`${account.service}-${account.identifier}`}
-                          service={account.service}
-                          identifier={account.identifier}
-                          contentUrl={account.contentUrl}
-                          listItem
-                        />
+                        <Link
+                          to={`/profiles/blockchain/${connection.id}`}
+                          key={index} className="connections"
+                        >
+                          <Image
+                            src={new Person(connection).avatarUrl()}
+                            style={{ width: '40px', height: '40px' }}
+                          />
+                        </Link>
                       )
                     } else {
-                      return (
-                        <SocialAccountItem
-                          key={`${account.service}-${account.identifier}`}
-                          service={account.service}
-                          identifier={account.identifier}
-                          proofUrl={account.proofUrl}
-                          listItem
-                          verified={verified}
-                        />
-                      )
+                      return null
                     }
                   })}
-                </ul>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="container-fluid profile-content-wrapper pro-actions-wrap">
-            <div>
-              <Link
-                to={`/profiles/${domainName}/edit`}
-                className="btn btn-link"
-              >
-                Edit
-              </Link>
-              {identity.canAddUsername ?
-                <button
-                  className="btn btn-link-secondary"
-                  disabled
-                  title="Add a username to view publicly."
-                >
-                View Publicly
-                </button>
-                :
-                <span>
-                  <Link
-                    to={`/profiles/${domainName}`}
-                    className="btn btn-link-secondary"
-                  >
-                    View Publicly
-                  </Link>
-                  <Link
-                    to={`/profiles/${domainName}/zone-file`}
-                    className="btn btn-link-secondary"
-                  >
+
+            <div className="row">
+              {identity.canAddUsername &&
+                (<div className="col text-center">
+                  <Link to={`/profiles/${domainName}/zone-file`}
+                    className="btn btn-link">
                     Advanced
                   </Link>
-                </span>
-              }
-              {identity.canAddUsername ?
-                <Link
-                  to={`/profiles/i/add-username/${domainName}/search`}
-                  className="btn btn-link"
-                >
-                 Add a username
-                </Link>
-                :
-                null
-              }
+                </div>
+              )}
+              <div className="col text-center">
+                {identity.canAddUsername ? 
+                  (<button
+                    className="btn btn-link"
+                    disabled
+                    title="Add a username to view publicly."> 
+                    View Publicly
+                  </button>
+                  ) : (
+                  <Link to={`/profiles/${domainName}`}
+                  className="btn btn-link">
+                  View Publicly
+                  </Link> 
+                  )}
+              </div>
+              <div className="col text-center">
+                <button
+                  className="btn btn-link" onClick={this.openPasswordPrompt}> 
+                  + Create
+                </button>
+              </div>
             </div>
+            
+            <div className="row m-t-20">
+              <div className="col">
+                <div className="profile-right-col">
+                  <ul>
+                    {accounts.map((account) => {
+                      let verified = false
+                      for (let i = 0; i < verifications.length; i++) {
+                        const verification = verifications[i]
+                        if (verification.service === account.service &&
+                          verification.valid === true) {
+                          verified = true
+                          break
+                        }
+                      }
+                      if (account.service === 'pgp') {
+                        return (
+                          <PGPAccountItem
+                            key={`${account.service}-${account.identifier}`}
+                            service={account.service}
+                            identifier={account.identifier}
+                            contentUrl={account.contentUrl}
+                            listItem
+                          />
+                        )
+                      } else {
+                        return (
+                          <SocialAccountItem
+                            key={`${account.service}-${account.identifier}`}
+                            service={account.service}
+                            identifier={account.identifier}
+                            proofUrl={account.proofUrl}
+                            listItem
+                            verified={verified}
+                          />
+                        )
+                      }
+                    })}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
           </div>
+
+          {/*
+          <div className="container-fluid">
+            {identity.canAddUsername ?
+              <Link
+                to={`/profiles/i/add-username/${domainName}/search`}
+                className="btn btn-link"
+              >
+               Add a username
+              </Link>
+              :
+              null
+            }
+          </div>
+          */}
         </div>
-        <div className="card-list-container m-t-30">
-          <button
-            className="btn btn-link-secondary" onClick={this.openPasswordPrompt}
-          >
-            + Create
-          </button>
-          <Link
-            className="btn btn-link-secondary"
-            to="/profiles"
-            disabled
-          >
-            Me
-          </Link>
-          <Link
-            className="btn btn-link"
-            to="/profiles/i/all"
-          >
-            All profiles
-          </Link>
-        </div>
+
       </div>
     )
   }

@@ -421,6 +421,7 @@ div.card-avatar.profile-list-avatar img{width:48px;height:48px;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
 div.pro-avatar img{max-width:58px;}
 .pro-card-name{font-size:1.0rem;font-weight:600;}
+.pro-card-domain-name{font-size:0.8rem;color:#2C96FF;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 
