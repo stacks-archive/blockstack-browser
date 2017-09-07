@@ -233,7 +233,7 @@ class DefaultProfilePage extends Component {
             rightButtonLink="/profiles/i/all" />
 
           <div className="container-fluid m-t-50">
-            <div class="row">
+            <div className="row">
               <div className="col-xs-12">
 
                 <div className="pro-avatar m-b-20 text-center">
