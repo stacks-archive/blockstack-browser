@@ -29,11 +29,11 @@ class IdentityItem extends Component {
 
   render() {
     return (
-      <li className="col-md-6 col-lg-4 col-xl-3 card-list-wrap">
+      <li className="col-12 card-list-wrap">
         <Link to={this.props.url} className="card profile-list-card container-fluid m-b-35">
           <div className="card-avatar profile-list-avatar col-xs-3">
             <Image src={this.props.avatarUrl}
-              fallbackSrc="/images/avatar.png" className="img-circle img-cover" />
+              fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" />
           </div>
           <div className="col-xs-9">
             <ul className="profile-card-list">
