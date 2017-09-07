@@ -22,7 +22,8 @@ function mapDispatchToProps(dispatch) {
 
 class DeleteAccountPage extends Component {
   static propTypes = {
-    encryptedBackupPhrase: PropTypes.string.isRequired
+    encryptedBackupPhrase: PropTypes.string.isRequired,
+    deleteAccount: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -61,13 +62,10 @@ class DeleteAccountPage extends Component {
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt backup phrase...')
     decrypt(dataBuffer, password)
-    .then((plaintextBuffer) => {
+    .then(() => {
       logger.debug('Backup phrase successfully decrypted')
-      logger.debug('Clearing localStorage...')
-      localStorage.clear()
-      logger.trace('Reloading page...')
-      location.reload()
-    }, (error) => {
+      this.props.deleteAccount()
+    }, () => {
       this.updateAlert('danger', 'Incorrect password')
     })
   }
@@ -76,7 +74,7 @@ class DeleteAccountPage extends Component {
     return (
       <div className="m-b-100">
         <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
-          Delete Account
+          Remove Account
         </h1>
         {
           this.state.alerts.map((alert, index) => {
@@ -85,13 +83,19 @@ class DeleteAccountPage extends Component {
             )
           })}
         <div>
+          <p>
+            <i>
+              Remove your account from this browser so you can create a new one or
+              restore another account.
+            </i>
+          </p>
           <InputGroup
             name="password" label="Password" type="password"
             data={this.state} onChange={this.onValueChange}
           />
           <div className="container m-t-40">
             <button className="btn btn-primary" onClick={this.deleteAccount}>
-              Delete Account
+              Remove Account
             </button>
           </div>
         </div>
