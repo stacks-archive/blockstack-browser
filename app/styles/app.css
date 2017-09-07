@@ -436,8 +436,28 @@ div.pro-avatar img{max-width:58px;}
 /* 28. List group */
 .list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
 .list-group-item.active,.list-group-item.active:hover,.list-group-item.active:focus{background-image:none;}
-.item-sidebar-primary{font-size:0.75rem;font-weight:700;text-transform:uppercase;padding:1.0625rem 1.375rem;border:none;color:#2C96FF;background-color:#fff;border:1px solid #fff;margin-bottom:1px;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
-.list-group-item.item-sidebar-primary:hover,.item-sidebar-primary.active,.item-sidebar-primary.active:focus,.item-sidebar-primary.active:hover{background-color:#2C96FF;color:#fff;cursor:pointer;}
+.item-sidebar-primary {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 1.0625rem 1.375rem;
+  border: none;
+  color: #2C96FF;
+  background-color: #fff;
+  border: 1px solid #fff;
+  margin-bottom: 1px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  -ms-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+.list-group-item.item-sidebar-primary:hover, .item-sidebar-primary.active, .item-sidebar-primary.active:focus, .item-sidebar-primary.active:hover {
+  background-color: #2C96FF;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid #2C96FF;
+}
 
 /* 29. Image thumbnails */
 .img-cover {object-fit: cover;}
