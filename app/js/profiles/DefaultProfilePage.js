@@ -234,9 +234,9 @@ class DefaultProfilePage extends Component {
 
           <div className="container-fluid m-t-50">
             <div className="row">
-              <div className="col-xs-12">
+              <div className="col-12">
 
-                <div className="pro-avatar m-b-20 text-center">
+                <div className="avatar-md m-b-20 text-center">
                   <Image
                     src={person.avatarUrl() || ''}
                     fallbackSrc="/images/avatar.png" className="rounded-circle" />
@@ -292,7 +292,7 @@ class DefaultProfilePage extends Component {
             </div>
 
             <div className="row">
-              {identity.canAddUsername &&
+              {!identity.canAddUsername &&
                 (<div className="col text-center">
                   <Link to={`/profiles/${domainName}/zone-file`}
                     className="btn btn-link">
