@@ -323,9 +323,12 @@ class DefaultProfilePage extends Component {
               </div>
             </div>
             
-            <div className="row m-t-20">
+          </div>
+
+          <div className="container-fluid p-0">
+            <div className="row m-t-20 no-gutters">
               <div className="col">
-                <div className="profile-right-col">
+                <div className="profile-accounts">
                   <ul>
                     {accounts.map((account) => {
                       let verified = false
@@ -364,7 +367,6 @@ class DefaultProfilePage extends Component {
                 </div>
               </div>
             </div>
-
           </div>
 
           {/*
