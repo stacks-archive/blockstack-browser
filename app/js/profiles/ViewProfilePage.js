@@ -192,10 +192,57 @@ class ViewProfilePage extends Component {
                 </div>
               </div>
             </div>
+          </div>
+          
+          <div className="container-fluid">
+            { isLocal ?
+              (<div className="row">
+                {this.hasUsername &&
+                  (<div className="col text-center">
+                    <Link to={`/profiles/${domainName}/zone-file`}
+                      className="btn btn-link">
+                      Advanced
+                    </Link>
+                  </div>
+                )}
+                <div className="col text-center">
+                  {!this.hasUsername ? 
+                    (<button
+                      className="btn btn-link"
+                      disabled
+                      title="Add a username to view publicly."> 
+                      View Publicly
+                    </button>
+                    ) : (
+                    <Link to={`/profiles/${domainName}`}
+                    className="btn btn-link">
+                    View Publicly
+                    </Link> 
+                    )}
+                </div>
+                <div className="col text-center">
+                  <button
+                    className="btn btn-link" onClick={this.openPasswordPrompt}> 
+                    + Create
+                  </button>
+                </div>
+              </div>
+              ) : (
+              <div className="row">
+                <div className="col text-center">
+                  <button className="btn btn-link">
+                    Add Friend
+                  </button>
+                </div>
+              </div>
+              )
+            }
+          </div>
 
-            <div className="row m-t-20">
+          <div className="container-fluid p-0">
+            <div className="row m-t-20 no-gutters">
               <div className="col">
-                <div className="profile-right-col">
+                <div className="profile-accounts">
                   <ul>
                     {accounts.map((account) => {
                       let verified = false
@@ -234,43 +281,6 @@ class ViewProfilePage extends Component {
                 </div>
               </div>
             </div>
-
-            { isLocal ?
-              (<div className="row">
-                {this.hasUsername() &&
-                  (<div className="col text-center">
-                    <Link to={`/profiles/${domainName}/zone-file`}
-                      className="btn btn-link">
-                      Advanced
-                    </Link>
-                  </div>
-                )}
-                <div className="col text-center">
-                  {this.hasUsername() ? 
-                    (<button
-                      className="btn btn-link"
-                      disabled
-                      title="Add a username to view publicly."> 
-                      View Publicly
-                    </button>
-                    ) : (
-                    <Link to={`/profiles/${domainName}`}
-                    className="btn btn-link">
-                    View Publicly
-                    </Link> 
-                    )}
-                </div>
-              </div>
-              ) : (
-              <div className="row">
-                <div className="col text-center">
-                  <button className="btn btn-link">
-                    Add Friend
-                  </button>
-                </div>
-              </div>
-              )
-            }
           </div>
 
         </div>

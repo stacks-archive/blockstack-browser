@@ -65,7 +65,7 @@ class SocialAccountItem extends Component {
     if (webAccountTypes[this.props.service]) {
       if (this.props.listItem === true) {
         return (
-          <li>
+          <li className={!this.props.verified ? "verified" : "pending"}>
             <a href={this.getAccountUrl()} data-toggle="tooltip"
               title={webAccountTypes[this.props.service].label}>
               {this.props.verified ?
@@ -81,6 +81,9 @@ class SocialAccountItem extends Component {
               }
               <span className="app-account-identifier">
                 {this.getIdentifier()}
+              </span>
+              <span className="app-account-service">
+                {`@${this.props.service}`}
               </span>
             </a>
           </li>
