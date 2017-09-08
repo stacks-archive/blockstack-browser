@@ -352,15 +352,8 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 
 
 /* 21. Cards */
-.profile-list-card{background-color:#fff;padding:35px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
+.card-default{background-color:#fff;padding:35px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
 a.card:hover{text-decoration:none;}
-.profile-card-list{margin-bottom:0;list-style:none;padding:0;}
-.profile-card-list .default{color: #19191A;text-decoration: none;}
-.profile-list-card-title{font-size:15px;color:#19191A;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.profile-list-card-subtitle{font-size:13px;color:#949494;line-height:1.9rem;}
-.profile-list-card-avatar{display:inline-block;}
-.profile-list-avatar{padding:0;}
-div.card-avatar.profile-list-avatar img{width:48px;height:48px;}
 .card-wrapper{list-style:none;padding-left:0;}
 .pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
@@ -369,7 +362,7 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-domain-name{font-size:0.8rem;color:#2C96FF;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
-
+.list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
 
 /* 27. Progress bars */
 .progress{font-size: .75rem;line-height: 1rem;text-align: center;}
@@ -384,9 +377,10 @@ div.pro-avatar img{max-width:58px;}
 .item-sidebar-primary{font-size:0.75rem;font-weight:700;text-transform:uppercase;padding:1.0625rem 1.375rem;border:none;color:#2C96FF;background-color:#fff;border:1px solid #fff;margin-bottom:1px;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
 .list-group-item.item-sidebar-primary:hover,.item-sidebar-primary.active,.item-sidebar-primary.active:focus,.item-sidebar-primary.active:hover{background-color:#2C96FF;color:#fff;cursor:pointer;border:1px solid #2C96FF;}
 
-/* 29. Image thumbnails */
+/* 29. Image */
 .img-cover {object-fit: cover;}
-
+div.avatar-sm img{padding:0;width:48px;height:48px;}
+div.avatar-md img{padding:0;width:58px;height:58px;}
 
 /* 36. Status Bars */
 .statusBar-link,.statusBar-link:hover,.statusBar-link:focus,.statusBar-link:active{display:block;padding:2px 12px;color:#e6e6e6;text-align:center;margin-left:8px;margin-right:8px;}
@@ -522,7 +516,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.card-list-wrap{min-width:310px;display:inline-block;padding-left:0;padding-right:0;}
 	.card-list-card{width:310px;}
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
-	.profile-list-card{min-width:310px;margin-left:0;margin-right:1.875rem;}
+	.card-default{min-width:310px;margin-left:0;margin-right:1.875rem;}
 	.app-box-wrap{width:190px;padding:0;}
   .app-box{height:auto;margin:1.125rem auto;width:100%;margin-left:0px;margin-right:0px!important;}
   .app-box img{width:128px;-webkit-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-border-radius:24px;-webkit-border-radius:24px;border-radius:24px;}
