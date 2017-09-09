@@ -24,6 +24,7 @@ import BackupAccountPage    from './account/BackupAccountPage'
 import ChangePasswordPage   from './account/ChangePasswordPage'
 import CreateAccountPage    from './account/CreateAccountPage'
 import ApiSettingsPage      from './account/ApiSettingsPage'
+import MigrationToolPage    from './account/MigrationToolPage'
 import StorageProvidersPage from './account/StorageProvidersPage'
 
 import WalletApp            from './wallet/WalletApp'
@@ -62,6 +63,7 @@ export default (
         <Route path="password"    component={ChangePasswordPage} />
         <Route path="create"      component={CreateAccountPage} />
         <Route path="api"         component={ApiSettingsPage} />
+        <Route path="migration"   component={MigrationToolPage} />
         <Route path="storage"   component={StorageProvidersPage} />
       </Route>
 

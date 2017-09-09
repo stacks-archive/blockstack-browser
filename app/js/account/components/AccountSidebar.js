@@ -12,7 +12,8 @@ class AccountSidebar extends Component {
       { url: '/account/password', label: 'change password', isActive: false },
       { url: '/account/backup', label: 'backup account', isActive: false },
       { url: '/account/delete', label: 'remove account', isActive: false },
-      { url: '/account/api', label: 'api settings', isActive: false }
+      { url: '/account/api', label: 'api settings', isActive: false },
+      { url: '/account/migration', label: 'migration tool', isActive: false }
 
     ]
     tabs.map((tab) => {
