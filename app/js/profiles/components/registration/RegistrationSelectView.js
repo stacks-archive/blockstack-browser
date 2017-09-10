@@ -189,7 +189,7 @@ class AddUsernameSelectPage extends Component {
       logger.debug(`register: ${name} has name suffix ${nameSuffix}`)
       logger.debug(`register: is ${name} a subdomain? ${nameIsSubdomain}`)
 
-      this.props.registerName(this.props.api, name, address, keypair)
+      this.props.registerName(this.props.api, name, address, addressIndex, keypair)
       logger.debug(`register: ${name} preordered! Waiting for registration confirmation.`)
     }
   }
