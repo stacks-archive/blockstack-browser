@@ -7,6 +7,10 @@ const logger = log4js.getLogger('utils/api-utils.js')
 import { uploadProfile, DROPBOX } from '../account/utils'
 import { signProfileForUpload } from './index'
 
+import { keyFileCreate, keyFileParse, keyFileProfileSerialize, keyFileUpdateApps, keyFileMakeDelegationPrivateKeys, keyFileICANNToAppName, getPubkeyHex, datastoreMountOrCreate } from 'blockstack'
+const jsontokens = require('jsontokens')
+const assert = require('assert')
+
 export function getNamesOwned(address, bitcoinAddressLookupUrl, callback) {
   const url = bitcoinAddressLookupUrl.replace('{address}', address)
   fetch(url)
@@ -205,3 +209,87 @@ export function setCoreStorageConfig(api,
     })
   })
 }
+
+
+/*
+ * Set up the datastore for this app.
+ * If we created it for the first time, then update the profile as well
+ * with a new keyfile.
+ *
+ * Returns the new profile on success, *if* we create the datastore and have to update the profile.
+ * Returns null otherwise.
+ * Throws on error.
+ */
+export function setupAppDatastore(api, profile, sessionToken, identityAddress, identityAddressIndex, signingKeypair,
+                           appPrivateKey, apiPassword, replicationStrategy={'publish': 1, 'local': 1, 'drivers': ['dropbox', 'disk']}) {
+   return new Promise((resolve, reject) => {
+      const session = jsontokens.decodeToken(sessionToken).payload
+      const blockchainId = session.blockchain_id
+      const deviceId = session.device_id
+      const appName = session.app_domain
+      const datastoreId = session.app_user_id
+
+      assert(blockchainId, 'Invalid session: missing blockchain ID')
+      assert(deviceId, 'Invalid session: missing device ID')
+      assert(appName, 'Invalid session: missing application name')
+      assert(datastoreId, 'Invalid session: missing datastore ID')
+
+      // does this profile have a keyfile yet?
+      if (!profile.keyfile) {
+         logger.trace('Profile does not have a keyfile yet; creating one')
+         
+         const keyfileToken = keyFileCreate(blockchainId, signingKeypair, deviceId, {'profile': profile, 'index': identityAddressIndex})
+         profile = jsontokens.decodeToken(keyfileToken)['payload']['claim']
+         assert(profile, `BUG: invalid keyfileToken ${keyfileToken}`)
+      }
+
+      datastoreMountOrCreate(replicationStrategy, sessionToken, appPrivateKey, apiPassword)
+      .then((datastoreInfo) => {
+         if (datastoreInfo.error) {
+            reject(`Failed to create datastore: ${datastoreInfo.error}`)
+         }
+         else {
+            // URLs will be set if we created it for the first time 
+            if (datastoreInfo.created) {
+                assert(datastoreInfo.urls.root, 'Datastore is missing root directory URLs')
+                assert(datastoreInfo.urls.datastore, 'Datastore is missing datastore control record URLs')
+
+                logger.trace(`created datastore! roots at ${datastoreInfo.urls.root.join(',')}, datastore records at ${datastoreInfo.urls.datastore.join(',')}`)
+                
+                // re-construct the serialized keyfile-bearing profile and extract it
+                const delegationKeys = keyFileMakeDelegationPrivateKeys(signingKeypair, identityAddressIndex)
+                const profileToken = keyFileProfileSerialize(profile, delegationKeys['sign'])
+                
+                logger.trace(`current profile token for ${identityAddress}: ${profileToken}`);
+                const parsedProfile = keyFileParse(profileToken, identityAddress)
+                assert(parsedProfile, 'Failed to parse profile')
+
+                const appPublicKey = getPubkeyHex(appPrivateKey)
+               
+                // insert the application data
+                const newProfileToken = keyFileUpdateApps(parsedProfile, deviceId, keyFileICANNToAppName(appName), appPublicKey, deviceId,
+                                                          datastoreId, datastoreInfo.urls.datastore, datastoreInfo.urls.root, delegationKeys['sign'])
+
+                assert(newProfileToken, 'Failed to add application to profile keyfile')
+
+                // update the key file with this info 
+                uploadProfile(api, blockchainId, newProfileToken).then(() => {
+                   resolve(newProfileToken);
+                })
+                .catch((error) => {
+                   // creating the datastore technically failed, since it's not discoverable (i.e. we replicated the datastore
+                   // metadata and records, but not the keyfile-containing profile that points to them).
+                   // Make sure that we retry creating this datastore.
+                   datastoreCreateSetRetry(sessionToken);
+                   reject(error);
+                })
+            }
+            else {
+                // already exists
+                resolve(null);
+            }
+         }
+      })
+   })
+}
+
