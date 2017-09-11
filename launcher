@@ -11,6 +11,14 @@ containerdir=/root/.blockstack
 corecontainer=blockstack-api
 # Name of Blockstack Browser container
 browsercontainer=blockstack-browser
+# Local temporary directory
+tmpdir=/tmp/.blockstack_tmp
+if [ ! -e $tmpdir ]; then
+   mkdir -p $tmpdir
+fi
+# set password blank so we know when to prompt
+password=0
+
 
 build () {
   echo "Building blockstack docker image. This might take a minute..."
@@ -22,21 +30,34 @@ create-wallet () {
     echo "Need to input new wallet password when running setup: ./launcher create-wallet mypass"
     exit 1
   fi
-  docker run -it -v $homedir:$containerdir $coreimage blockstack setup -y --password $1
-  
+  docker run -it -v "$homedir":$containerdir $coreimage blockstack setup -y --password $1
+
   # Use init containers to set the API bind to 0.0.0.0
-  docker run -it -v $homedir:$containerdir $coreimage sed -i 's/api_endpoint_bind = localhost/api_endpoint_bind = 0.0.0.0/' $containerdir/client.in -e CORSPROXY_HOST="0.0.0.0"i
-  docker run -it -v $homedir:$containerdir $coreimage sed -i 's/api_endpoint_host = localhost/api_endpoint_host = 0.0.0.0/' $containerdir/client.ini
+  docker run -it -v "$homedir":$containerdir $coreimage sed -i 's/api_endpoint_bind = localhost/api_endpoint_bind = 0.0.0.0/' $containerdir/client.ini
+  docker run -it -v "$homedir":$containerdir $coreimage sed -i 's/api_endpoint_host = localhost/api_endpoint_host = 0.0.0.0/' $containerdir/client.ini
 }
 
-start () {
+start-containers () {
   # Check for args first
-  if [ $# -eq 0 ]; then
-    echo "Need to input password for wallet located in the $HOME/.blockstack folder when staring api: ./launcher start mypass"
-    exit 1
+  if [ $# -ne 0 ]; then
+      password=$1
   fi
-  
-  # Check for the blockstack-api container is running or stopped. 
+
+  # let's see if we should create a new wallet
+  if [ ! -e "$homedir/wallet.json" ]; then
+    if [ $password == "0" ]; then
+      prompt-new-password
+    fi
+    echo "Wallet does not exist yet. Setting up wallet"
+    create-wallet $password
+  fi
+
+  # otherwise, prompt for an OLD password
+  if [ $password == "0" ]; then
+      prompt-password
+  fi
+
+  # Check for the blockstack-api container is running or stopped.
   if [ "$(docker ps -q -f name=$corecontainer)" ]; then
     echo "blockstack core container is already running"
     exit 1
@@ -46,19 +67,29 @@ start () {
       echo "removing old blockstack-core container..."
       docker rm $corecontainer
     fi
-    
+
+    if [ "$BLOCKSTACK_DEBUG" == "1" ]; then
+      runcommand="bash"
+    else
+      runcommand="blockstack api start-foreground --password $password --api_password $password"
+    fi
+
     # If there is no existing $corecontainer container, run one
     if [[ $(uname) == 'Linux' ]]; then
-      docker run -d --name $corecontainer -v $homedir:$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
+      docker run -dt --name $corecontainer -v "$tmpdir":/tmp -v "$homedir":$containerdir -p 6270:6270 $coreimage $runcommand
     elif [[ $(uname) == 'Darwin' ]]; then
-      docker run -d --name $corecontainer -v $homedir:$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
-    elif [[ $(uname) == 'Windows' ]]; then
-      echo "Don't know if this works!!!"
-      docker run -d --name $corecontainer -v $homedir:$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
+      docker run -dt --name $corecontainer -v "$tmpdir":/tmp -v "$homedir":$containerdir -p 6270:6270 $coreimage $runcommand
+    elif [[ $(uname) == 'Windows' || $(uname) == 'MINGW64_NT-10.0' ]]; then
+      docker run -dt --name $corecontainer -v "$tmpdir":/tmp -v "$homedir":$containerdir -p 6270:6270 $coreimage $runcommand
+    fi
+
+    if [ "$BLOCKSTACK_DEBUG" == "1" ]; then
+      docker exec -t $corecontainer apt-get install lsof
+      docker exec -t $corecontainer blockstack api start --debug --password $password --api_password $password
     fi
   fi
-  
-  # Check for the blockstack-browser-* containers are running or stopped. 
+
+  # Check for the blockstack-browser-* containers are running or stopped.
   if [ "$(docker ps -q -f name=$browsercontainer)" ]; then
     echo "browser containers are already running"
     exit 1
@@ -68,33 +99,30 @@ start () {
       echo "removing old browser containers..."
       docker rm $(docker ps -aq -f status=exited -f name=$browsercontainer)
     fi
-    
+
     # If there are no existing blockstack-browser-* containers, run them
+    docker run -d --name $browsercontainer-static -p 8888:8888 $browserimage blockstack-browser
+    docker run -d --name $browsercontainer-cors  -e CORSPROXY_HOST="0.0.0.0" -p 1337:1337 $browserimage blockstack-cors-proxy
+
     if [[ $(uname) == 'Linux' ]]; then
-      docker run -d --name $browsercontainer-static -p 8888:8888 $browserimage blockstack-browser
-      docker run -d --name $browsercontainer-cors -p 1337:1337 $browserimage blockstack-cors-proxy
-      sensible-browser "http://localhost:8888/#coreAPIPassword=$1"
+      sensible-browser "http://localhost:8888/#coreAPIPassword=$password"
     elif [[ $(uname) == 'Darwin' ]]; then
-      docker run -d --name $browsercontainer-static -p 8888:8888 $browserimage blockstack-browser
-      docker run -d --name $browsercontainer-cors -p 1337:1337 $browserimage blockstack-cors-proxy
-      open "http://localhost:8888/#coreAPIPassword=$1"
-    elif [[ $(uname) == 'Windows' ]]; then
-      echo "Don't know if this works!!!"
-      docker run -d --name $browsercontainer-static -p 8888:8888 $browserimage blockstack-browser
-      docker run -d --name $browsercontainer-cors -p 1337:1337 $browserimage blockstack-cors-proxy
+      open "http://localhost:8888/#coreAPIPassword=$password"
+    elif [[ $(uname) == 'Windows' || $(uname) == 'MINGW64_NT-10.0' ]]; then
+      start "http://localhost:8888/#coreAPIPassword=$password"
     fi
   fi
 }
 
 stop () {
   bc=$(docker ps -a -f name=$browsercontainer -q)
-  cc=$(docker ps -f name=$corecontainer -q) 
+  cc=$(docker ps -f name=$corecontainer -q)
   if [ ! -z "$cc" ]; then
     echo "stopping the running blockstack-api container"
     docker stop $cc
     docker rm $cc
   fi
-  
+
   if [ ! -z "$bc" ]; then
     echo "stopping the running blockstack-browser containers"
     docker stop $bc
@@ -127,6 +155,31 @@ blockstack docker launcher commands:
 EOF
 }
 
+prompt-new-password () {
+  cat <<EOF
+
+
+Please enter a password to protect your Blockstack core node.
+IMPORTANT: This will be used to encrypt information stored within the containers
+           which may include private keys for your Blockstack wallet.
+           It is important that you remember this password.
+           This will be the password you use to "pair" your Blockstack Browser
+           with your Blockstack core node.
+
+EOF
+  echo -n "Password: " ; read -s password ; echo
+  echo -n "Repeat: " ; read -s password_repeated ; echo
+  while [ ! $password == $password_repeated ] ; do
+      echo "Passwords do not match, please try again."
+      echo -n "Password: " ; read -s password ; echo
+      echo -n "Repeat: " ; read -s password_repeated ; echo
+  done
+}
+
+prompt-password () {
+  echo "Enter your Blockstack Core password: " ; read -s password; echo
+}
+
 case $1 in
   stop)
     stop
@@ -135,16 +188,16 @@ case $1 in
     create-wallet $2
     ;;
   start)
-    start $2
+    start-containers $2
     ;;
   logs)
     logs
     ;;
   build)
-    build 
+    build
     ;;
   enter)
-    enter 
+    enter
     ;;
   push)
     push
