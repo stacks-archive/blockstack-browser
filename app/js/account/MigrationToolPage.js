@@ -44,7 +44,8 @@ class MigrationToolPage extends Component {
       backupPhrase: null,
       password: '',
       alerts: [],
-      number: 10
+      number: 10,
+      currentResults: []
     }
 
     this.onChange = this.onChange.bind(this)
@@ -55,11 +56,9 @@ class MigrationToolPage extends Component {
   }
 
   onChange(event) {
-    if (event.target.name === 'password') {
-      this.setState({
-        password: event.target.value
-      })
-    }
+    this.setState({
+      [event.target.name]: event.target.value
+    })
   }
 
   updateAlert(alertStatus, alertMessage) {
@@ -100,7 +99,14 @@ class MigrationToolPage extends Component {
     }
     const seed = bip39.mnemonicToSeed(backupPhrase)
     const masterKeychain = HDNode.fromSeedBuffer(seed)
-    
+    const currentResults = []
+    for (let addressIndex = 0; addressIndex < this.state.number; addressIndex++) {
+      const keyPair = this.getCurrentKeyVersionKeyPair(masterKeychain, addressIndex)
+      currentResults.push(keyPair)
+    }
+    this.setState({
+      currentResults
+    })
   }
 
   getCurrentKeyVersionKeyPair(masterKeychain, addressIndex) {
@@ -112,17 +118,18 @@ class MigrationToolPage extends Component {
 
 
   render() {
+    const currentResults = this.state.currentResults
     return (
       <div className="m-b-100">
         <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
           Name Migration Tool
         </h1>
         {
-          this.state.alerts.map((alert, index) => {
-            return (
-              <Alert key={index} message={alert.message} status={alert.status} />
+          this.state.alerts.map((alert, index) =>
+            (
+            <Alert key={index} message={alert.message} status={alert.status} />
             )
-          })
+          )
         }
         <div>
           <form onSubmit={this.search}>
@@ -143,7 +150,7 @@ class MigrationToolPage extends Component {
             />
             <InputGroup
               name="number" label="Number of names to search for" type="number"
-              data={this.state} onChange={this.onChange} required
+              data={this.state} onChange={this.onChange} required step={1}
             />
             <div className="container m-t-40">
               <button className="btn btn-secondary" onClick={this.decryptBackupPhrase}>
@@ -155,6 +162,32 @@ class MigrationToolPage extends Component {
             </div>
           </form>
         </div>
+        <h2>Current Version</h2>
+        <table>
+          <tr>
+            <td>Address</td>
+            <td>Private key</td>
+          </tr>
+          {
+            currentResults.length ?
+              <tbody>
+                {
+                  currentResults.map((keyPair) =>
+                   (
+                    <tr>
+                      <td>{keyPair.address}</td>
+                      <td>{keyPair.key}</td>
+                    </tr>
+                  )
+                )
+                }
+              </tbody>
+            :
+              <tr>
+                <td colSpan="3">None</td>
+              </tr>
+          }
+        </table>
       </div>
     )
   }
