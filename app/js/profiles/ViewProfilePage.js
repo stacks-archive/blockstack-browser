@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
 
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import Image from '../components/Image'
@@ -114,152 +115,189 @@ class ViewProfilePage extends Component {
 
     return (
       <div>
+        <SecondaryNavBar 
+          leftButtonTitle="Edit" 
+          leftButtonLink={`/profiles/${domainName}/edit`}
+          rightButtonTitle="All Avatars" 
+          rightButtonLink="/profiles/i/all" />
+
         { person !== null ?
         <div>
-          <div className="container-fluid pro-wrap m-t-50 profile-content-wrapper">
-            <div className="col-sm-4">
-              <div className="pro-container col-sm-12">
-                <div className="pro-avatar m-b-20">
-                  <Image src={person.avatarUrl() || ''}
-                    fallbackSrc="/images/avatar.png" className="img-circle" />
+
+          <div className="container-fluid m-t-50">
+            <div className="row">
+              <div className="col-12">
+
+                <div className="avatar-md m-b-20 text-center">
+                  <Image
+                    src={person.avatarUrl() || ''}
+                    fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" />
                 </div>
-                <div className="">
-                  { (blockNumber && transactionIndex) ?
-                  <div className="idcard-body dim">
-                    Registered in block <span>#{blockNumber}</span>,<br/>
-                    transaction <span>#{transactionIndex}</span>
+
+                <div className="text-center">
+                  {(blockNumber && transactionIndex) ?
+                    <div className="idcard-body dim">
+                      Registered in block <span>#{blockNumber}</span>,<br />
+                      transaction <span>#{transactionIndex}</span>
+                    </div>
+                  : null}
+                  <h1 className="pro-card-name text-center">{person.name()}</h1>
+                  <div className="pro-card-domain-name m-b-10 text-center">
+                    {domainName}
                   </div>
-                  : null }
-                  <h1 className="pro-card-name">{person.name()}</h1>
-                  <div className="pro-card-body">
+                  <div className="m-b-20 text-center">
+                    { isLocal && !this.hasUsername() ?
+                      <Link to={`/profiles/i/add-username/${domainName}/search`}
+                        className="">
+                       Add a username
+                      </Link>
+                      :
+                      null
+                    }
+                  </div>
+                  <div className="pro-card-body text-center">
                     {person.description()}
                   </div>
-                  { person.address() ?
-                  <div className="pro-card-body">
+                  {person.address() ?
+                    <div className="pro-card-body text-center">
                     {person.address()}
-                  </div>
-                  : null }
-                  { person.birthDate() ?
-                  <div className="pro-card-body">
+                    </div>
+                  : null}
+                  {person.birthDate() ?
+                    <div className="pro-card-body text-center">
                     {person.birthDate()}
-                  </div>
-                  : null }
+                    </div>
+                  : null}
                 </div>
-              </div>
-              <div className="container">
-                {connections.length ?
-                <p className="profile-foot">Connections</p>
-                : null }
-                {connections.map((connection, index) => {
-                  if (connection.id) {
-                    return (
-                      <Link to={`/profiles/blockchain/${connection.id}`}
-                        key={index} className="connections">
-                        <Image src={new Person(connection).avatarUrl()}
-                          fallbackSrc={placeholderImage}
-                          style={{ width: '40px', height: '40px' }} />
-                      </Link>
-                    )
-                  }
-                })}
-              </div>
-            </div>
-            <div className="col-sm-8 pull-right profile-right-col-fill">
-              <div className="profile-right-col">
-                <h3>
-                  {domainName}
-                </h3>
-                <ul>
-                  {accounts.map(function(account) {
-                    let verified = false
-                    for(let i = 0; i < verifications.length; i++) {
-                      let verification = verifications[i]
-                      if(verification.service == account.service &&
-                        verification.valid == true) {
-                          verified = true
-                          break
-                      }
-                    }
-                    if (account.service === 'pgp') {
+
+                <div className="text-center">
+                  {connections.length ?
+                    <p className="profile-foot">Connections</p>
+                  : null}
+                  {connections.map((connection, index) => {
+                    if (connection.id) {
                       return (
-                        <PGPAccountItem
-                          key={account.service + '-' + account.identifier}
-                          service={account.service}
-                          identifier={account.identifier}
-                          contentUrl={account.contentUrl}
-                          listItem={true} />
+                        <Link
+                          to={`/profiles/blockchain/${connection.id}`}
+                          key={index} className="connections" >
+                          <Image
+                            src={new Person(connection).avatarUrl()}
+                            style={{ width: '40px', height: '40px' }} />
+                        </Link>
                       )
                     } else {
-                      return (
-                        <SocialAccountItem
-                          key={account.service + '-' + account.identifier}
-                          service={account.service}
-                          identifier={account.identifier}
-                          proofUrl={account.proofUrl}
-                          listItem={true}
-                          verified={verified} />
-                      )
+                      return null
                     }
                   })}
-                </ul>
+                </div>
               </div>
             </div>
           </div>
-          <div className="container-fluid profile-content-wrapper pro-actions-wrap">
+          
+          <div className="container-fluid">
             { isLocal ?
-            <div>
-                <Link to={`/profiles/${domainName}/edit`}
-                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
-                  Edit
-                </Link>
-                {!this.hasUsername() ?
-                  <button
-                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
-                    disabled={true}
-                    title="Add a username to view publicly."
-                  >
-                  View Publicly
-                  </button>
-                  :
-                  <span>
-                    <Link to={`/profiles/${domainName}`}
-                      className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
-                      View Publicly
-                    </Link>
+              (<div className="row">
+                {this.hasUsername() &&
+                  (<div className="col text-center">
                     <Link to={`/profiles/${domainName}/zone-file`}
-                      className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
+                      className="btn btn-link">
                       Advanced
                     </Link>
-                  </span>
-                }
-                {!this.hasUsername() ?
-                  <Link to={`/profiles/i/add-username/${domainName}/search`}
-                    className="btn btn-lg btn-primary btn-black btn-inline btn-tight">
-                   Add a username
-                  </Link>
-                  :
-                  null
-                }
-            </div>
-            :
-            <div>
-              <button className="btn btn-lg btn-primary btn-black btn-tight">
-                Add Friend
-              </button>
-            </div>
+                  </div>
+                )}
+                <div className="col text-center">
+                  {!this.hasUsername() ? 
+                    (<button
+                      className="btn btn-link"
+                      disabled
+                      title="Add a username to view publicly."> 
+                      View Publicly
+                    </button>
+                    ) : (
+                    <Link to={`/profiles/${domainName}`}
+                    className="btn btn-link">
+                    View Publicly
+                    </Link> 
+                    )}
+                </div>
+                <div className="col text-center">
+                  <button
+                    className="btn btn-link" onClick={this.openPasswordPrompt}> 
+                    + Create
+                  </button>
+                </div>
+              </div>
+              ) : (
+              <div className="row">
+                <div className="col text-center">
+                  <button className="btn btn-link">
+                    Add Friend
+                  </button>
+                </div>
+              </div>
+              )
             }
           </div>
+
+          <div className="container-fluid p-0">
+            <div className="row m-t-20 no-gutters">
+              <div className="col">
+                <div className="profile-accounts">
+                  <ul>
+                    {accounts.map((account) => {
+                      let verified = false
+                      for (let i = 0; i < verifications.length; i++) {
+                        const verification = verifications[i]
+                        if (verification.service === account.service &&
+                          verification.valid === true) {
+                          verified = true
+                          break
+                        }
+                      }
+                      if (account.service === 'pgp') {
+                        return (
+                          <PGPAccountItem
+                            key={`${account.service}-${account.identifier}`}
+                            service={account.service}
+                            identifier={account.identifier}
+                            contentUrl={account.contentUrl}
+                            listItem
+                          />
+                        )
+                      } else {
+                        return (
+                          <SocialAccountItem
+                            key={`${account.service}-${account.identifier}`}
+                            service={account.service}
+                            identifier={account.identifier}
+                            proofUrl={account.proofUrl}
+                            listItem
+                            verified={verified}
+                          />
+                        )
+                      }
+                    })}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
         :
-        <div>
-          {this.state.isLoading ?
-            <h4 className="text-xs-center">
-            </h4>
-          :
-            <h4 className="text-xs-center">
-              Profile not found
-            </h4>
-          }
+        <div className="container-fluid m-t-50">
+          <div className="row">
+            <div className="col-12">
+              {this.state.isLoading ?
+                <h4 className="text-center">
+                </h4>
+              :
+                <h4 className="text-center">
+                  Profile not found
+                </h4>
+              }
+            </div>
+          </div>
         </div>
         }
       </div>
