@@ -348,7 +348,11 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 
 
 /* 16. Navbar */
-.navbar{padding:0!important;}
+.navbar{padding:0!important;height:70px;}
+.navbar-expand{width:85%;}
+.navbar-nav{margin-top:15px;}
+.nav-link{width:100%;}
+.navbar-expand .navbar-nav .nav-link{padding:12px 13px;}
 
 
 /* 21. Cards */
@@ -512,7 +516,11 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width:768px){
-	.nav{display:inline-block;float:left;padding-right:50px;}
+  /* 16. Navbars */
+  .navbar-expand{width:70%;}
+  .navbar-expand .navbar-nav .nav-link{padding:12px 26px;}
+  .navbar-expand .navbar-nav .nav-link > img {width:110%;}
+
 	.card-list-wrap{min-width:310px;display:inline-block;padding-left:0;padding-right:0;}
 	.card-list-card{width:310px;}
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
@@ -551,6 +559,10 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 /* Medium devices (desktops, 975px and up) */
 /* NOTE: change breaking point @media (min-width: 975px;) to @media (min-width: 992px;) in blockstack-bootstrap as this is a non-standard break point */
 @media (min-width:992px){
+  /* 16. Navbars */
+  .navbar-expand{width:50%;}
+  .navbar-expand .navbar-nav .nav-link > img {width:115%;}
+
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 	.pro-wrap{min-width:905px;}
 	.app-container{max-width:954px;margin:0 auto;}
