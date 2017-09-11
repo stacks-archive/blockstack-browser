@@ -257,15 +257,6 @@ class IdentityPage extends Component {
                 Me
               </Link>
             </div>
-            <div className="col text-center">
-              <Link
-                className="btn btn-link"
-                to="/profiles/i/all"
-                disabled
-              >
-                All profiles
-              </Link>
-            </div>
           </div>
 
         </div>
