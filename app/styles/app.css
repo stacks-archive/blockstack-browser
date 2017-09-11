@@ -348,7 +348,9 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 
 
 /* 16. Navbar */
-.navbar{padding:0!important;height:85px;}
+.navbar{padding:0!important;height:70px;padding-top:15px;}
+.nav-link{width:100%;}
+.navbar-expand .navbar-nav .nav-link{padding:12px 30px;}
 
 
 /* 21. Cards */

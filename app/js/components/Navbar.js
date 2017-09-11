@@ -185,7 +185,7 @@ class Navbar extends Component {
     return (
       <header className="container-fluid">
         <nav className="navbar navbar-expand">
-          <ul className="navbar-nav">
+          <ul className="navbar-nav container-fluid">
           {this.props.hideBackToHomeLink ?
             null
           :
