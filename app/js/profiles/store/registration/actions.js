@@ -95,7 +95,7 @@ function registerName(api, domainName, ownerAddress, ownerAddressIndex, keypair)
     // const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
     
     const deviceId = '0'   // hard-code device ID for now
-    const signedProfileTokenData = keyFileCreate(domainName, keypair, deviceId, {'profile': DEFAULT_PROFILE, 'index': ownerAddressIndex})
+    const signedProfileTokenData = keyFileCreate(keypair, deviceId, {'profile': DEFAULT_PROFILE, 'index': ownerAddressIndex})
 
     dispatch(profileUploading())
     logger.trace(`Uploading ${domainName} profile...`)

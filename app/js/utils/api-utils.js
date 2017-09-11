@@ -229,7 +229,6 @@ export function setupAppDatastore(api, profile, sessionToken, identityAddress, i
       const appName = session.app_domain
       const datastoreId = session.app_user_id
 
-      assert(blockchainId, 'Invalid session: missing blockchain ID')
       assert(deviceId, 'Invalid session: missing device ID')
       assert(appName, 'Invalid session: missing application name')
       assert(datastoreId, 'Invalid session: missing datastore ID')
@@ -238,7 +237,7 @@ export function setupAppDatastore(api, profile, sessionToken, identityAddress, i
       if (!profile.keyfile) {
          logger.trace('Profile does not have a keyfile yet; creating one')
          
-         const keyfileToken = keyFileCreate(blockchainId, signingKeypair, deviceId, {'profile': profile, 'index': identityAddressIndex})
+         const keyfileToken = keyFileCreate(signingKeypair, deviceId, {'profile': profile, 'index': identityAddressIndex})
          profile = jsontokens.decodeToken(keyfileToken)['payload']['claim']
          assert(profile, `BUG: invalid keyfileToken ${keyfileToken}`)
       }
