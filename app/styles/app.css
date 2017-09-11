@@ -22,7 +22,7 @@ i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;font-w
 .profile-accounts {margin:0;}
 .profile-accounts .fa-stack .fa {line-height:2rem;}
 div.profile-accounts > ul{padding-left:0;list-style-type:none;}
-div.profile-accounts > ul > li {margin-bottom: 1px;}
+div.profile-accounts > ul > li {margin-bottom: 1px;padding-left:15px;padding-right:15px;}
 div.profile-accounts > ul > li > a,div.profile-accounts > ul > li > button{display:block;padding:15px 5px;text-decoration:none;color:#080809;font-weight:600}
 div.profile-accounts > ul > li.verified {background-color:#2c96ff;}
 div.profile-accounts > ul > li.verified > a,div.profile-accounts > ul > li.verified > button{color:#fff;}

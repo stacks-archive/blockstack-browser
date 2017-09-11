@@ -146,7 +146,7 @@ class ViewProfilePage extends Component {
                     {domainName}
                   </div>
                   <div className="m-b-20 text-center">
-                    {!this.hasUsername() ?
+                    { isLocal && !this.hasUsername() ?
                       <Link to={`/profiles/i/add-username/${domainName}/search`}
                         className="">
                        Add a username
@@ -197,7 +197,7 @@ class ViewProfilePage extends Component {
           <div className="container-fluid">
             { isLocal ?
               (<div className="row">
-                {this.hasUsername &&
+                {this.hasUsername() &&
                   (<div className="col text-center">
                     <Link to={`/profiles/${domainName}/zone-file`}
                       className="btn btn-link">
@@ -206,7 +206,7 @@ class ViewProfilePage extends Component {
                   </div>
                 )}
                 <div className="col text-center">
-                  {!this.hasUsername ? 
+                  {!this.hasUsername() ? 
                     (<button
                       className="btn btn-link"
                       disabled
@@ -285,19 +285,17 @@ class ViewProfilePage extends Component {
 
         </div>
         :
-        <div>
-          <div className="container-fluid m-t-50">
-            <div className="row">
-              <div className="col-12">
-                {this.state.isLoading ?
-                  <h4 className="text-center">
-                  </h4>
-                :
-                  <h4 className="text-center">
-                    Profile not found
-                  </h4>
-                }
-              </div>
+        <div className="container-fluid m-t-50">
+          <div className="row">
+            <div className="col-12">
+              {this.state.isLoading ?
+                <h4 className="text-center">
+                </h4>
+              :
+                <h4 className="text-center">
+                  Profile not found
+                </h4>
+              }
             </div>
           </div>
         </div>
