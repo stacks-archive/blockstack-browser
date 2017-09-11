@@ -135,26 +135,18 @@ class EditProfilePage extends Component {
   render() {
     return (
       <div>
-        <SecondaryNavBar 
-          leftButtonTitle="Back" 
-          leftButtonLink="/profiles" />
+        { this.state.tabName === "" ? (
+          <SecondaryNavBar 
+            leftButtonTitle="Back" 
+            leftButtonLink="/profiles" />
+        ) : (
+          <SecondaryNavBar 
+            leftButtonTitle="Back" 
+            onLeftButtonClick={() => this.backClick()} />
+        )}
         <div className="card-list-container profile-content-wrapper">
           {this.state.profile && this.state.domainName ?
           <div>
-            { this.state.tabName !== "" ? (
-            <div className="row">
-              <div className="col-md-12">
-                <button
-                  className="btn btn-lg btn-primary btn-black btn-inline btn-tight"
-                  title="Back"
-                  onClick={() => this.backClick()}
-                >
-                Back
-                </button>
-              </div>
-            </div>
-            ) : 
-            (<div></div>)}
             <EditProfileHeader title="Edit Profile"/>
               <div className="row">
 
