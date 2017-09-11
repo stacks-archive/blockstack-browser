@@ -183,31 +183,27 @@ class Navbar extends Component {
     const numberOfActionItems = this.numberOfActionItems()
 
     return (
-      <header className="container-fluid">
-        <nav className="navbar navbar-expand">
+      <header className="container-fluid no-padding">
+        <nav className="navbar navbar-expand container-fluid">
           <ul className="navbar-nav container-fluid">
-          {this.props.hideBackToHomeLink ?
-            null
-          :
             <li className="nav-item">
               <Link to="/" className="nav-link">
-                Home Screen
+                <img src="/images/icon-nav-home.svg" />
               </Link>
             </li>
-          }
             <li className="nav-item">
               <Link to="/wallet/receive" className="nav-link">
-                Wallet
+                <img src="/images/icon-nav-wallet.svg" />
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/profiles" className="nav-link">
-                Me
+                <img src="/images/icon-nav-avatar.svg" />
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/account" className="nav-link">
-                Settings
+                <img src="/images/icon-nav-settings.svg" />
               </Link>
             </li>
           </ul>
