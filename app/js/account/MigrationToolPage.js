@@ -19,6 +19,8 @@ import {
 
 const logger = log4js.getLogger('account/MigrationToolPage.js')
 
+const KEYCHAIN_VERSIONS = ['current', 'v0.9']
+
 function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: state.account.encryptedBackupPhrase
@@ -45,14 +47,14 @@ class MigrationToolPage extends Component {
       password: '',
       alerts: [],
       number: 10,
-      currentResults: []
+      results: {}
     }
 
     this.onChange = this.onChange.bind(this)
     this.decryptBackupPhrase = this.decryptBackupPhrase.bind(this)
     this.updateAlert = this.updateAlert.bind(this)
     this.search = this.search.bind(this)
-    this.getCurrentKeyVersionKeyPair = this.getCurrentKeyVersionKeyPair.bind(this)
+    this.getKeyPair = this.getKeyPair.bind(this)
   }
 
   onChange(event) {
@@ -99,26 +101,46 @@ class MigrationToolPage extends Component {
     }
     const seed = bip39.mnemonicToSeed(backupPhrase)
     const masterKeychain = HDNode.fromSeedBuffer(seed)
-    const currentResults = []
-    for (let addressIndex = 0; addressIndex < this.state.number; addressIndex++) {
-      const keyPair = this.getCurrentKeyVersionKeyPair(masterKeychain, addressIndex)
-      currentResults.push(keyPair)
-    }
+    const results = {}
+
+    KEYCHAIN_VERSIONS.forEach((version) => {
+      const thisVersionResults = []
+      for (let addressIndex = 0; addressIndex < this.state.number; addressIndex++) {
+        const keyPair = this.getKeyPair(masterKeychain, addressIndex, version)
+        thisVersionResults.push(keyPair)
+      }
+      results[version] = thisVersionResults
+    })
     this.setState({
-      currentResults
+      results
     })
   }
 
-  getCurrentKeyVersionKeyPair(masterKeychain, addressIndex) {
-    const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
-    const identityOwnerAddressNode =
-    getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
-    return deriveIdentityKeyPair(identityOwnerAddressNode)
+  getKeyPair(masterKeychain, addressIndex, version = 'current') {
+    switch (version) {
+      case 'v0.9': {
+        const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+        const identityOwnerAddressHdNode = identityPrivateKeychainNode
+        .deriveHardened(addressIndex).derive(0)
+        return {
+          address: identityOwnerAddressHdNode.getAddress(),
+          key: identityOwnerAddressHdNode.keyPair.d.toBuffer(32).toString('hex')
+        }
+      }
+      case 'current':
+      default: {
+        const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+        const identityOwnerAddressNode =
+        getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
+        return deriveIdentityKeyPair(identityOwnerAddressNode)
+      }
+    }
   }
 
+  getOhNine
 
   render() {
-    const currentResults = this.state.currentResults
+    const results = this.state.results
     return (
       <div className="m-b-100">
         <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
@@ -162,32 +184,39 @@ class MigrationToolPage extends Component {
             </div>
           </form>
         </div>
-        <h2>Current Version</h2>
-        <table>
-          <tr>
-            <td>Address</td>
-            <td>Private key</td>
-          </tr>
-          {
-            currentResults.length ?
-              <tbody>
+        {
+          KEYCHAIN_VERSIONS.map((version) => {
+            const thisResults = results[version]
+            return (<div>
+              <h2>{version} keychain</h2>
+              <table>
+                <tr>
+                  <td>Address</td>
+                  <td>Private key</td>
+                </tr>
                 {
-                  currentResults.map((keyPair) =>
-                   (
+                  thisResults && thisResults.length ?
+                    <tbody>
+                      {
+                        thisResults.map((keyPair) =>
+                         (
+                          <tr>
+                            <td>{keyPair.address}</td>
+                            <td>{keyPair.key}</td>
+                          </tr>
+                        )
+                      )
+                      }
+                    </tbody>
+                  :
                     <tr>
-                      <td>{keyPair.address}</td>
-                      <td>{keyPair.key}</td>
+                      <td colSpan="3">None</td>
                     </tr>
-                  )
-                )
                 }
-              </tbody>
-            :
-              <tr>
-                <td colSpan="3">None</td>
-              </tr>
-          }
-        </table>
+              </table>
+            </div>)
+        })
+      }
       </div>
     )
   }
