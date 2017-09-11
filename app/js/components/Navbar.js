@@ -183,36 +183,36 @@ class Navbar extends Component {
     const numberOfActionItems = this.numberOfActionItems()
 
     return (
-      <div className="navbar">
-      {this.props.hideBackToHomeLink ?
-        null
-      :
-        <div className="pull-left" style={{ marginLeft: '-15px' }} >
-          <div className="status-inline status-balance">
-            <Link to="/" className="statusBar-link">
-              Home Screen
-            </Link>
-          </div>
-        </div>
-      }
-        <div className="pull-right" style={{ marginRight: '-15px' }}>
-          <div className="status-inline status-balance">
-            <Link to="/wallet/receive" className="statusBar-link">
+      <header className="container-fluid">
+        <nav className="navbar navbar-expand">
+          <ul className="navbar-nav">
+          {this.props.hideBackToHomeLink ?
+            null
+          :
+            <li className="nav-item">
+              <Link to="/" className="nav-link">
+                Home Screen
+              </Link>
+            </li>
+          }
+            <li className="nav-item">
+              <Link to="/wallet/receive" className="nav-link">
                 Wallet
-            </Link>
-          </div>
-          <div className="status-inline status-profile">
-            <Link to="/profiles" className="statusBar-link">
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/profiles" className="nav-link">
                 Me
-            </Link>
-          </div>
-          <div className="status-inline status-profile">
-            <Link to="/account" className="statusBar-link">
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/account" className="nav-link">
                 Settings
-            </Link>
-          </div>
-        </div>
-      </div>
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
     )
   }
 }
