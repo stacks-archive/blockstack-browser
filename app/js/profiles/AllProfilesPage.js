@@ -196,16 +196,18 @@ class IdentityPage extends Component {
 
         <SecondaryNavBar 
             leftButtonTitle="Back" 
-            leftButtonLink="/profiles" />
+            leftButtonLink="/profiles"
+            rightButtonTitle="+ Create"
+            onRightButtonClick={this.openPasswordPrompt} />
 
         <div className="container-fluid">
             {/*<div className="card-list-container profile-content-wrapper">*/}
           <div class="row">
             <div className="col-12">
 
-              <div>
+{/*              <div>
                 <h5 className="h5-landing">All Profiles</h5>
-              </div>
+              </div>*/}
               <div className="">
                 <ul className="card-wrapper">
                   {Object.keys(this.state.localIdentities).map((domainName) => {
@@ -239,23 +241,6 @@ class IdentityPage extends Component {
                 </ul>
               </div>
 
-            </div>
-          </div>
-
-          <div className="row m-t-30">
-            <div className="col text-center">
-              <button 
-              className="btn btn-link" onClick={this.openPasswordPrompt}>
-                + Create
-              </button>
-            </div>
-            <div className="col text-center">
-              <Link
-                className="btn btn-link"
-                to="/profiles"
-              >
-                Me
-              </Link>
             </div>
           </div>
 
