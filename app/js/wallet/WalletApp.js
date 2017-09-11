@@ -35,13 +35,13 @@ class WalletApp extends Component {
       <div className="app-wrap-wallet">
         <Navbar />
         <SecondaryNavBar 
-          leftButtonTitle="Send" 
-          leftButtonLink="/wallet/send"
-          isLeftActive={(activeTabUrl === '/wallet/send')}
-          rightButtonTitle="Receive" 
-          rightButtonLink="/wallet/receive"
-          isRightActive={(activeTabUrl === '/wallet/receive')} />
-        <div className="frame-light">
+          leftButtonTitle="Receive" 
+          leftButtonLink="/wallet/receive"
+          isLeftActive={(activeTabUrl === '/wallet/receive')}
+          rightButtonTitle="Send" 
+          rightButtonLink="/wallet/send"
+          isRightActive={(activeTabUrl === '/wallet/send')} />
+        <div>
           <div className="row">
             <div className="col-md-10 col-centered container-primary">
               <div className="container-content">
