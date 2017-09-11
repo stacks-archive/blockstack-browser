@@ -21,6 +21,10 @@ const logger = log4js.getLogger('account/MigrationToolPage.js')
 
 const KEYCHAIN_VERSIONS = ['current', 'v0.9']
 
+const tableStyle = {
+  width: '100%'
+}
+
 function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: state.account.encryptedBackupPhrase
@@ -189,7 +193,9 @@ class MigrationToolPage extends Component {
             const thisResults = results[version]
             return (<div>
               <h2>{version} keychain</h2>
-              <table>
+              <table
+                style={tableStyle}
+              >
                 <tr>
                   <td>Address</td>
                   <td>Private key</td>
@@ -201,7 +207,14 @@ class MigrationToolPage extends Component {
                         thisResults.map((keyPair) =>
                          (
                           <tr>
-                            <td>{keyPair.address}</td>
+                            <td>
+                              <a
+                                href={`https://explorer.blockstack.org/address/${keyPair.address}`}
+                                target="_blank"
+                              >
+                                {keyPair.address}
+                              </a>
+                            </td>
                             <td>{keyPair.key}</td>
                           </tr>
                         )
