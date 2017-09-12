@@ -144,7 +144,7 @@ class EditProfilePage extends Component {
             leftButtonTitle="Back" 
             onLeftButtonClick={() => this.backClick()} />
         )}
-        <div className="card-list-container">
+        <div>
           {this.state.profile && this.state.domainName ?
           <div>
             <div className="row">
