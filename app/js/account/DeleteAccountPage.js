@@ -92,6 +92,7 @@ class DeleteAccountPage extends Component {
           <InputGroup
             name="password" label="Password" type="password"
             data={this.state} onChange={this.onValueChange}
+            onReturnKeyPress={this.deleteAccount}
           />
           <div className="container m-t-40">
             <button className="btn btn-primary" onClick={this.deleteAccount}>
