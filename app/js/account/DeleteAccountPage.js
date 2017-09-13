@@ -77,11 +77,10 @@ class DeleteAccountPage extends Component {
           Remove Account
         </h3>
         {
-          this.state.alerts.map((alert, index) => {
-            return (
-              <Alert key={index} message={alert.message} status={alert.status} />
-            )
-          })}
+          this.state.alerts.map((alert, index) => (
+            <Alert key={index} message={alert.message} status={alert.status} />
+          ))
+        }
         <div>
           <p className="container-fluid">
             <i>
@@ -95,7 +94,7 @@ class DeleteAccountPage extends Component {
             onReturnKeyPress={this.deleteAccount}
           />
           <div className="container-fluid m-t-40">
-            <button className="btn btn-primary btn-block" onClick={this.deleteAccount}>
+            <button className="btn btn-danger btn-block" onClick={this.deleteAccount}>
               Remove Account
             </button>
           </div>
