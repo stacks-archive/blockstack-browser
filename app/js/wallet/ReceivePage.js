@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { QRCode } from 'react-qr-svg'
 
 import { AccountActions } from '../account/store/account'
+import Balance            from './components/Balance'
 
 function mapStateToProps(state) {
   return {
@@ -38,24 +39,26 @@ class ReceivePage extends Component {
   render() {
     return (
       <div>
-        <h1 className="h1-modern">
-            Receive
-        </h1>
-        <p><i>
-          Send at least <strong>0.01 bitcoins</strong> to the address below to register a username.<br/>
-          All username registrations use funds from your wallet.
-        </i></p>
-
+        <Balance />
+          <div className="m-b-25">
+            <p>
+              Send at least 0.01 bitcoins to the address below to register a 
+              username. All username registrations use funds from your wallet.
+            </p>
+          </div>
         { this.props.coreWalletAddress ?
         <div>
-          <h5>Send Bitcoins to this address</h5>
+          {/* 
+          <div className="m-b-25">
+            <p className="font-weight-bold">Send Bitcoins to this address:</p>
+          </div>
+          */}
           <div className="qrcode-wallet">
             <QRCode
-              style={{ width: 256 }}
               value={this.props.coreWalletAddress}
             />
           </div>
-          <div className="highlight highlight-wallet">
+          <div className="highlight-wallet text-center">
             <pre>
               <code>{this.props.coreWalletAddress}</code>
             </pre>

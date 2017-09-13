@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import Alert from '../components/Alert'
 import IdentityItem from './components/IdentityItem'
 import InputGroup from '../components/InputGroup'
@@ -153,87 +154,105 @@ class IdentityPage extends Component {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
     return (
-      <div className="card-list-container profile-content-wrapper">
-        <Modal
-          isOpen={passwordPromptIsOpen}
-          onRequestClose={this.closePasswordPrompt}
-          contentLabel="Password Modal"
-          shouldCloseOnOverlayClick
-          style={{ overlay: { zIndex: 10 } }}
-          className="container-fluid"
-        >
-          <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new profile</h3>
-            <div>
-              {createProfileError ?
-                <Alert key="1" message="Incorrect password" status="danger" />
-                :
-                null
-              }
-            </div>
-            <InputGroup
-              name="password"
-              type="password"
-              label=""
-              placeholder="Password"
-              data={this.state}
-              onChange={this.onValueChange}
-              required
-            />
-            <button
-              disabled={this.state.processing}
-              className="btn btn-primary btn-block"
-              type="submit"
-            >
-              {this.state.processing ?
-                <span>Creating...</span>
-                :
-                <span>Create new profile</span>
-              }
-            </button>
-          </form>
-        </Modal>
-        <div>
-          <h5 className="h5-landing">My Profiles</h5>
-        </div>
-        <div className="container card-list-container">
-          <ul className="card-wrapper">
-            {Object.keys(this.state.localIdentities).map((domainName) => {
-              const identity = this.state.localIdentities[domainName]
-              const person = new Person(identity.profile)
-
-              if (identity.ownerAddress === domainName) {
-                identity.canAddUsername = true
-              } else {
-                identity.canAddUsername = false
-              }
-
-              if (identity.domainName) {
-                return (
-                  <IdentityItem
-                    key={identity.domainName}
-                    label={identity.domainName}
-                    pending={!identity.registered}
-                    avatarUrl={person.avatarUrl() || ''}
-                    url={`/profiles/${identity.domainName}/local`}
-                    ownerAddress={identity.ownerAddress}
-                    canAddUsername={identity.canAddUsername}
-                    isDefault={identity.domainName === this.props.defaultIdentity}
-                    setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
-                  />
-                )
-              } else {
-                return null
-              }
-            })}
-          </ul>
-        </div>
-        <div className="card-list-container m-t-30">
-          <button
-            className="btn btn-electric-blue btn-lg" onClick={this.openPasswordPrompt}
+      <div>
+        <SecondaryNavBar
+          leftButtonTitle="Back"
+          leftButtonLink="/profiles" />
+        <div className="card-list-container profile-content-wrapper">
+          <Modal
+            isOpen={passwordPromptIsOpen}
+            onRequestClose={this.closePasswordPrompt}
+            contentLabel="Password Modal"
+            shouldCloseOnOverlayClick
+            style={{ overlay: { zIndex: 10 } }}
+            className="container-fluid"
           >
-            + Create
-          </button>
+            <form onSubmit={this.createNewProfile}>
+              <h3 className="modal-heading">Enter your password to create a new profile</h3>
+              <div>
+                {createProfileError ?
+                  <Alert key="1" message="Incorrect password" status="danger" />
+                  :
+                  null
+                }
+              </div>
+              <InputGroup
+                name="password"
+                type="password"
+                label=""
+                placeholder="Password"
+                data={this.state}
+                onChange={this.onValueChange}
+                required
+              />
+              <button
+                disabled={this.state.processing}
+                className="btn btn-primary btn-block"
+                type="submit"
+              >
+                {this.state.processing ?
+                  <span>Creating...</span>
+                  :
+                  <span>Create new profile</span>
+                }
+              </button>
+            </form>
+          </Modal>
+          <div>
+            <h5 className="h5-landing">All Profiles</h5>
+          </div>
+          <div className="container card-list-container">
+            <ul className="card-wrapper">
+              {Object.keys(this.state.localIdentities).map((domainName) => {
+                const identity = this.state.localIdentities[domainName]
+                const person = new Person(identity.profile)
+
+                if (identity.ownerAddress === domainName) {
+                  identity.canAddUsername = true
+                } else {
+                  identity.canAddUsername = false
+                }
+
+                if (identity.domainName) {
+                  return (
+                    <IdentityItem
+                      key={identity.domainName}
+                      label={identity.domainName}
+                      pending={!identity.registered}
+                      avatarUrl={person.avatarUrl() || ''}
+                      url={`/profiles/${identity.domainName}/local`}
+                      ownerAddress={identity.ownerAddress}
+                      canAddUsername={identity.canAddUsername}
+                      isDefault={identity.domainName === this.props.defaultIdentity}
+                      setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
+                    />
+                  )
+                } else {
+                  return null
+                }
+              })}
+            </ul>
+          </div>
+          <div className="card-list-container m-t-30">
+            <button
+              className="btn btn-electric-blue btn-lg" onClick={this.openPasswordPrompt}
+            >
+              + Create
+            </button>
+            <Link
+              className="btn btn-electric-blue btn-lg"
+              to="/profiles"
+            >
+              Me
+            </Link>
+            <Link
+              className="btn btn-electric-blue btn-lg"
+              to="/profiles/i/all"
+              disabled
+            >
+              All profiles
+            </Link>
+          </div>
         </div>
       </div>
     )

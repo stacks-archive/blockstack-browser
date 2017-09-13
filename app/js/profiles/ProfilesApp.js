@@ -28,26 +28,8 @@ class ProfilesApp extends Component {
   render() {
     return (
       <div className="app-wrap-profiles">
-          <StatusBar />
-        <div className="container-fluid site-wrapper">
-          <nav className="navbar navbar-toggleable-md navbar-light">
-            <Link to="/profiles" className="navbar-brand">
-              <img src="/images/app-icon-profiles.png" />
-            </Link>
-            <div className="navbar-collapse" id="navbarSupportedContent">
-              <ul className="nav navbar-nav m-b-20">
-                <li className="navbar-text">
-                  Profiles
-                </li>
-                <li className="navbar-text navbar-text-secondary-profiles">
-                  Utility
-                </li>
-              </ul>
-              <SearchBar placeholder="Search for people" />
-            </div>
-          </nav>
+        <StatusBar />
           {this.props.children}
-        </div>
       </div>
     )
   }

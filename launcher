@@ -22,11 +22,11 @@ create-wallet () {
     echo "Need to input new wallet password when running setup: ./launcher create-wallet mypass"
     exit 1
   fi
-  docker run -it -v $homedir:$containerdir $coreimage blockstack setup -y --password $1
-  
+  docker run -it -v "$homedir":$containerdir $coreimage blockstack setup -y --password $1
+
   # Use init containers to set the API bind to 0.0.0.0
-  docker run -it -v $homedir:$containerdir $coreimage sed -i 's/api_endpoint_bind = localhost/api_endpoint_bind = 0.0.0.0/' $containerdir/client.in -e CORSPROXY_HOST="0.0.0.0"i
-  docker run -it -v $homedir:$containerdir $coreimage sed -i 's/api_endpoint_host = localhost/api_endpoint_host = 0.0.0.0/' $containerdir/client.ini
+  docker run -it -v "$homedir":$containerdir $coreimage sed -i 's/api_endpoint_bind = localhost/api_endpoint_bind = 0.0.0.0/' $containerdir/client.ini
+  docker run -it -v "$homedir":$containerdir $coreimage sed -i 's/api_endpoint_host = localhost/api_endpoint_host = 0.0.0.0/' $containerdir/client.ini
 }
 
 start () {
@@ -35,8 +35,8 @@ start () {
     echo "Need to input password for wallet located in the $HOME/.blockstack folder when staring api: ./launcher start mypass"
     exit 1
   fi
-  
-  # Check for the blockstack-api container is running or stopped. 
+
+  # Check for the blockstack-api container is running or stopped.
   if [ "$(docker ps -q -f name=$corecontainer)" ]; then
     echo "blockstack core container is already running"
     exit 1
@@ -46,19 +46,18 @@ start () {
       echo "removing old blockstack-core container..."
       docker rm $corecontainer
     fi
-    
+
     # If there is no existing $corecontainer container, run one
     if [[ $(uname) == 'Linux' ]]; then
-      docker run -d --name $corecontainer -v $homedir:$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
+      docker run -d --name $corecontainer -v "$homedir":$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
     elif [[ $(uname) == 'Darwin' ]]; then
-      docker run -d --name $corecontainer -v $homedir:$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
-    elif [[ $(uname) == 'Windows' ]]; then
-      echo "Don't know if this works!!!"
-      docker run -d --name $corecontainer -v $homedir:$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
+      docker run -d --name $corecontainer -v "$homedir":$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
+    elif [[ $(uname) == 'Windows' || $(uname) == 'MINGW64_NT-10.0' ]]; then
+      docker run -d --name $corecontainer -v "$homedir":$containerdir -p 6270:6270 $coreimage blockstack api start-foreground --password $1 --api_password $1
     fi
   fi
-  
-  # Check for the blockstack-browser-* containers are running or stopped. 
+
+  # Check for the blockstack-browser-* containers are running or stopped.
   if [ "$(docker ps -q -f name=$browsercontainer)" ]; then
     echo "browser containers are already running"
     exit 1
@@ -68,33 +67,32 @@ start () {
       echo "removing old browser containers..."
       docker rm $(docker ps -aq -f status=exited -f name=$browsercontainer)
     fi
-    
+
     # If there are no existing blockstack-browser-* containers, run them
     if [[ $(uname) == 'Linux' ]]; then
       docker run -d --name $browsercontainer-static -p 8888:8888 $browserimage blockstack-browser
-      docker run -d --name $browsercontainer-cors -p 1337:1337 $browserimage blockstack-cors-proxy
+      docker run -d --name $browsercontainer-cors  -e CORSPROXY_HOST="0.0.0.0" -p 1337:1337 $browserimage blockstack-cors-proxy
       sensible-browser "http://localhost:8888/#coreAPIPassword=$1"
     elif [[ $(uname) == 'Darwin' ]]; then
       docker run -d --name $browsercontainer-static -p 8888:8888 $browserimage blockstack-browser
-      docker run -d --name $browsercontainer-cors -p 1337:1337 $browserimage blockstack-cors-proxy
+      docker run -d --name $browsercontainer-cors  -e CORSPROXY_HOST="0.0.0.0" -p 1337:1337 $browserimage blockstack-cors-proxy
       open "http://localhost:8888/#coreAPIPassword=$1"
-    elif [[ $(uname) == 'Windows' ]]; then
-      echo "Don't know if this works!!!"
+    elif [[ $(uname) == 'Windows' || $(uname) == 'MINGW64_NT-10.0' ]]; then
       docker run -d --name $browsercontainer-static -p 8888:8888 $browserimage blockstack-browser
-      docker run -d --name $browsercontainer-cors -p 1337:1337 $browserimage blockstack-cors-proxy
+      docker run -d --name $browsercontainer-cors  -e CORSPROXY_HOST="0.0.0.0" -p 1337:1337 $browserimage blockstack-cors-proxy
     fi
   fi
 }
 
 stop () {
   bc=$(docker ps -a -f name=$browsercontainer -q)
-  cc=$(docker ps -f name=$corecontainer -q) 
+  cc=$(docker ps -f name=$corecontainer -q)
   if [ ! -z "$cc" ]; then
     echo "stopping the running blockstack-api container"
     docker stop $cc
     docker rm $cc
   fi
-  
+
   if [ ! -z "$bc" ]; then
     echo "stopping the running blockstack-browser containers"
     docker stop $bc
@@ -141,10 +139,10 @@ case $1 in
     logs
     ;;
   build)
-    build 
+    build
     ;;
   enter)
-    enter 
+    enter
     ;;
   push)
     push

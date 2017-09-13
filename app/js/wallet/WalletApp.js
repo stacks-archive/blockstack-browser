@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import WalletSidebar from './components/WalletSidebar'
 import StatusBar from '../components/StatusBar'
 
@@ -31,30 +32,21 @@ class WalletApp extends Component {
     const activeTabUrl = `/wallet/${childPath}`
 
     return (
-      <div className="app-wrap-wallet bkg-green">
-          <StatusBar />
-        <div className="container-fluid site-wrapper">
-          <nav className="navbar navbar-toggleable-md navbar-light">
-            <Link to="/wallet/receive" className="navbar-brand">
-              <img src="../images/app-icon-wallet-card-flat.png" />
-            </Link>
-            <div className="navbar-collapse" id="navbarSupportedContent">
-              <ul className="nav navbar-nav m-b-20">
-                <li className="navbar-text">
-                  Wallet
-                </li>
-                <li className="navbar-text navbar-text-secondary-wallet">
-                  Utility
-                </li>
-              </ul>
-            </div>
-          </nav>  
-          <div className="container wallet-container">
-            <div className="col-md-5 wallet-sidebar">
-              <WalletSidebar activeTab={activeTabUrl} />
-            </div>
-            <div className="col-md-7 wallet-content">
-              {this.props.children}
+      <div className="app-wrap-wallet">
+        <StatusBar />
+        <SecondaryNavBar 
+          leftButtonTitle="Send" 
+          leftButtonLink="/wallet/send"
+          isLeftActive={(activeTabUrl === '/wallet/send')}
+          rightButtonTitle="Receive" 
+          rightButtonLink="/wallet/receive"
+          isRightActive={(activeTabUrl === '/wallet/receive')} />
+        <div className="frame-light">
+          <div className="row">
+            <div className="col-md-10 col-centered container-primary">
+              <div className="container-content">
+                {this.props.children}
+              </div>
             </div>
           </div>
         </div>

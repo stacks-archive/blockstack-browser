@@ -19,6 +19,7 @@ import TransferNamePage     from './profiles/TransferNamePage'
 import ZoneFilePage         from './profiles/ZoneFilePage'
 
 import AccountApp           from './account/AccountApp'
+import AccountMenu          from './account/AccountMenu'
 import DeleteAccountPage    from './account/DeleteAccountPage'
 import BackupAccountPage    from './account/BackupAccountPage'
 import ChangePasswordPage   from './account/ChangePasswordPage'
@@ -57,12 +58,13 @@ export default (
       </Route>
 
       <Route path="account" component={AccountApp}>
+        <IndexRoute               component={AccountMenu} />
         <Route path="delete"      component={DeleteAccountPage} />
         <Route path="backup"      component={BackupAccountPage} />
         <Route path="password"    component={ChangePasswordPage} />
         <Route path="create"      component={CreateAccountPage} />
         <Route path="api"         component={ApiSettingsPage} />
-        <Route path="storage"   component={StorageProvidersPage} />
+        <Route path="storage"     component={StorageProvidersPage} />
       </Route>
 
       <Route path="wallet" component={WalletApp}>

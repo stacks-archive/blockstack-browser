@@ -120,7 +120,7 @@
     "bitcoinjs-lib": "https://github.com/shea256/bitcoinjs-lib.git",
     "blockstack": "0.9.1",
     "body-parser": "^1.16.1",
-    "bootstrap": "https://github.com/blockstack/blockstack-bootstrap.git",
+    "bootstrap": "^4.0.0-beta",
     "browser-stdout": "^1.3.0",
     "currency-formatter": "^1.2.1",
     "dropbox": "^2.5.0",
