@@ -21,7 +21,7 @@ class HomeScreenPage extends Component {
   render() {
     return (
     <div className="home-screen-wrap">
-      <Navbar hideBackToHomeLink={true} />
+      <Navbar hideBackToHomeLink={true} activeTab="home"/>
       <div className="home-screen">
         <div className="container-fluid app-center">
           <div className="container app-wrap">

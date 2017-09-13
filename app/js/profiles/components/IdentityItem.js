@@ -31,11 +31,11 @@ class IdentityItem extends Component {
     return (
       <Link to={this.props.url} className="card card-default m-b-35">
         <div className="row">
-          <div className="avatar-sm col-3">
+          <div className="avatar-sm col-2">
             <Image src={this.props.avatarUrl}
               fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" />
           </div>
-          <div className="col-9">
+          <div className="col-10">
             <ul className="list-card">
               <li>
                 <h3 className="card-title">

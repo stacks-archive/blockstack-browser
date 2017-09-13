@@ -313,7 +313,7 @@ body{font-family:'Lato',sans-serif;font-size:14px;-webkit-font-smoothing:antiali
 
 /* 5. Links */
 a,a:focus{outline:none;}
-a {color: #E91E63;}
+a {color: #2C96FF;}
 
 
 /* 9. Fonts */
@@ -373,6 +373,9 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 .list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
+
+/* 26. Alerts */
+.alert .close {line-height: 20px;}
 
 /* 27. Progress bars */
 .progress{font-size: .75rem;line-height: 1rem;text-align: center;}

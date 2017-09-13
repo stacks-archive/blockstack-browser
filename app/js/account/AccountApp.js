@@ -25,7 +25,7 @@ class AccountApp extends Component {
   render() {
     return (
       <div className="body-inner bkg-light">
-        <Navbar />
+        <Navbar activeTab="settings"/>
         { this.props.location.pathname !== '/account' && (
         <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/account" />
         )}

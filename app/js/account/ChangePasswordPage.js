@@ -116,6 +116,7 @@ class ChangePasswordPage extends Component {
           <InputGroup
             name="newPassword2" label="New Password" type="password"
             data={this.state} onChange={this.onValueChange}
+            onReturnKeyPress={this.reencryptMnemonic}
           />
           <div className="container m-t-40">
             <button className="btn btn-primary" onClick={this.reencryptMnemonic}>
