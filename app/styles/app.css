@@ -374,6 +374,9 @@ div.pro-avatar img{max-width:58px;}
 .pro-container{padding-top:1.5rem;}
 .list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
 
+/* 26. Alerts */
+.alert .close {line-height: 20px;}
+
 /* 27. Progress bars */
 .progress{font-size: .75rem;line-height: 1rem;text-align: center;}
 .progress-bar{height: 1rem;color: #fff;background-color: #2275d7}
