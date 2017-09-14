@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 
 const SecondaryNavLink = props => {
   const alignment = (props.align === "right") ? "float-right" : "float-left"
-  const active = props.isActive === true ? "active" : ""
+  const active = props.isActive === true ? "active" : "default"
 
   return (
     <Link 
@@ -16,7 +16,7 @@ const SecondaryNavLink = props => {
 
 const SecondaryNavButton = props => {
   const alignment = (props.align === "right") ? "float-right" : "float-left"
-  const active = props.isActive === true ? "active" : ""
+  const active = props.isActive === true ? "active" : "default"
 
   return (
     <button
