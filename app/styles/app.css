@@ -550,7 +550,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
   .qrcode-wallet{max-width:225px;}  
   .frame-light{border-right:1px solid #F0F0F0;border-left:1px solid #F0F0F0;height:100vh;}
-  .container-content{padding:35px 100px 100px 100px;}
+  .container-content{padding:35px 40px 100px 40px;}
 }
 
 /* Medium devices (desktops, 975px to 992px) */
