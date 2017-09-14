@@ -357,6 +357,7 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 .navbar{padding:0!important;height:70px;}
 .navbar-expand{width:85%;}
 .navbar-nav{margin-top:15px;}
+.nav-item{width:88px;}
 .nav-link{width:100%;}
 .navbar-expand .navbar-nav .nav-link{padding:12px 13px;}
 
