@@ -4,12 +4,16 @@ import { connect } from 'react-redux'
 import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
 
-import { DROPBOX } from './utils/index'
+import { DROPBOX, BLOCKSTACK_INC } from './utils/index'
 import { getDropboxAccessTokenFromHash,
   redirectToConnectToDropbox } from './utils/dropbox'
 
+import { connectToBlockstackService } from './utils/blockstack-inc'
+
 import { setCoreStorageConfig } from '../utils/api-utils'
 import log4js from 'log4js'
+
+import bitcoin from 'bitcoinjs-lib'
 
 const logger = log4js.getLogger('storage/StorageProvidersPage.js')
 
@@ -54,7 +58,7 @@ class StorageProvidersPage extends Component {
     const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     if (dropboxAccessToken != null) {
       this.props.storageIsConnected()
-      const newApi = Object.assign({}, api, { dropboxAccessToken })
+      const newApi = Object.assign({}, api, { dropboxAccessToken, storageConnected : true })
       this.props.updateApi(newApi)
       setCoreStorageConfig(newApi)
       .then((indexUrl) => {
@@ -62,6 +66,9 @@ class StorageProvidersPage extends Component {
         // TODO add index URL to token file
         logger.debug('componentDidMount: storage initialized')
       })
+    }
+    if (window.location.hash === "#blockstack") {
+      this.connectSharedService()
     }
   }
 
@@ -83,6 +90,26 @@ class StorageProvidersPage extends Component {
     const dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
     dbx.authTokenRevoke()
     this.props.updateApi(Object.assign({}, api, { dropboxAccessToken: null }))
+  }
+
+  connectSharedService() {
+    const storageProvider = "http://localhost:5000"
+    const signer = bitcoin.ECPair.makeRandom()
+    connectToBlockstackService(storageProvider, signer)
+      .then( (gaiaHubConfig) => {
+        this.props.storageIsConnected()
+        const newApi = Object.assign({}, this.props.api,
+                                     { gaiaHubConfig,
+                                       storageConnected : true,
+                                       hostedDataLocation : BLOCKSTACK_INC })
+        this.props.updateApi(newApi)
+        setCoreStorageConfig(newApi)
+        logger.debug('storage configured')
+      })
+  }
+
+  disconnectSharedService() {
+    // noop
   }
 
   updateApi() {

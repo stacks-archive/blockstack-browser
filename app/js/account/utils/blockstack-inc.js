@@ -1,4 +1,5 @@
 import log4js from 'log4js'
+import { crypto } from 'bitcoinjs-lib'
 const logger = log4js.getLogger('account/utils/blockstack-inc.js')
 
 // TODO implement
@@ -10,6 +11,35 @@ export function uploadProfileToBlockstackInc(api, name, signedProfileTokenData) 
   return new Promise((resolve, reject) => {
     uploadToBlockstackLabsS3(`${name}.json`, signedProfileTokenData, resolve, reject)
   })
+}
+
+export function connectToBlockstackService(serviceProvider, challengeSigner){
+  logger.debug(`${serviceProvider}/hub_info`)
+  return new Promise((resolve, reject) => {
+    fetch(`${serviceProvider}/hub_info`)
+      .then((response) => response.text())
+      .then((responseText) => JSON.parse(responseText))
+      .then((responseJSON) => {
+        const readURL = responseJSON.read_url_prefix
+        const challenge = responseJSON.challenge_text
+        const digest = crypto.sha256(challenge)
+        const signature = challengeSigner.sign(digest)
+              .toDER().toString('hex')
+        const publickey = challengeSigner.getPublicKeyBuffer()
+              .toString('hex')
+        const token = Buffer( JSON.stringify(
+          { publickey, signature } )).toString('base64')
+        const address = challengeSigner.getAddress()
+        resolve( { url_prefix : readURL,
+                   address,
+                   token,
+                   server : serviceProvider }
+               )})})
+}
+
+export function redirectToConnectToBlockstack() {
+  const port = location.port === '' ? 80 : location.port
+  window.top.location.href = `http://localhost:${port}/account/storage#blockstack`
 }
 
 function uploadToBlockstackLabsS3(filename, data, resolve, reject) {

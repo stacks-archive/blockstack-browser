@@ -8,6 +8,7 @@ import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 import { redirectToConnectToDropbox } from '../account/utils/dropbox'
+import { redirectToConnectToBlockstack } from '../account/utils/blockstack-inc'
 
 
 import { PairBrowserView, LandingView,
@@ -265,6 +266,11 @@ class WelcomeModal extends Component {
     redirectToConnectToDropbox()
   }
 
+  connectBlockstackStore(event) {
+    event.preventDefault()
+    redirectToConnectToBlockstack()
+  }
+
   confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
     if (this.state.identityKeyPhrase !== enteredIdentityKeyPhrase) {
       logger.error('confirmIdentityKeyPhrase: user entered identity phrase does not match')
@@ -423,7 +429,8 @@ class WelcomeModal extends Component {
               {
                 page === 8 ?
                   <ConnectStorageView
-                    connectDropbox={this.connectDropbox}
+                    connectBlockstackStore={this.connectBlockstackStore}
+                    connectDropbox={this.conenctDropbox}
                   />
                 :
                 null
