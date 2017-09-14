@@ -465,33 +465,8 @@ a.search-result:hover{color:#fff!important;background-color:#2275d7;}
 .dropzone div {font-size:large;text-align:center;}
 .dropzone .overlay {margin: -63px 0 0 0;}
 /* Modal */
-div.ReactModal__Overlay.ReactModal__Overlay--after-open {
-  background-image: none;
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-position-y: center;
-  background-size: cover;
-  background-attachment: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0;
-}
-
-div.ReactModal__Content.ReactModal__Content--after-open {
-  width: 415px;
-  background-color: #FAFAFA;background-color:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);
-  border: 1px solid #FAFAFA;
-  padding: 3.75rem 42px;
-  margin-top: -35%;
-  -webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
-  -moz-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
-  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.25);
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-  transition: all 300ms ease-in-out;
-}
+div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-image:none;background-repeat:no-repeat;background-position-x:center;background-position-y:center;background-size:cover;background-attachment:fixed;display:flex;align-items:center;justify-content:center;margin-top:0;}
+div.ReactModal__Content.ReactModal__Content--after-open{width:415px;background-color:#FAFAFA;background-color:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);border:1px solid #FAFAFA;padding:3.75rem 42px;margin-top:-35%;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;transition:all 300ms ease-in-out;}
 .modal-heading{font-size:1.5rem;color:#080809;line-height:1.75rem;margin-bottom:.5rem;text-align:center;}
 .modal-body{color:#080809;line-height:1.125rem;margin-bottom:0.875rem;text-align:center;}
 a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-height:1.125rem;margin:0 auto;text-align:center;display:block;}
