@@ -40,7 +40,7 @@ class ReceivePage extends Component {
     return (
       <div>
         <Balance />
-          <div className="m-b-25">
+          <div className="m-b-25 text-center">
             <p>
               Send at least 0.01 bitcoins to the address below to register a 
               username. All username registrations use funds from your wallet.

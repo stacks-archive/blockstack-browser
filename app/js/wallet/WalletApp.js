@@ -43,7 +43,7 @@ class WalletApp extends Component {
           isRightActive={(activeTabUrl === '/wallet/send')} />
         <div>
           <div className="row">
-            <div className="col-md-10 col-centered container-primary">
+            <div className="container-fluid col-centered container-primary">
               <div className="container-content">
                 {this.props.children}
               </div>
