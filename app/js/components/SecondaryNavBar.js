@@ -7,7 +7,7 @@ const SecondaryNavLink = props => {
 
   return (
     <Link 
-      className={`btn btn-link ${alignment} ${active}`}
+      className={`btn btn-link btn-block ${alignment} ${active}`}
       to={props.link}>
       {props.title}
     </Link>
@@ -20,7 +20,7 @@ const SecondaryNavButton = props => {
 
   return (
     <button
-      className={`btn btn-link ${alignment} ${active}`}
+      className={`btn btn-link btn-block ${alignment} ${active}`}
       title={props.title}
       onClick={props.onClick}>
       {props.title}

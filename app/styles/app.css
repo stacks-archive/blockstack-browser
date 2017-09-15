@@ -330,7 +330,8 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-lg{font-size:0.875rem;padding:0.6875rem 3.4375rem;line-height:1.75rem;}
 .btn:focus,.btn:active:focus,.btn.active:focus{outline:none;}
 .btn-primary{background-color:#2C96FF;border:1px solid #2C96FF;}
-.btn-link{color:#2C96FF;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+.btn-link{color:#AEAEAE;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+.btn-link:focus,.btn-link:hover{color:#2C96FF;text-decoration:none;}
 .btn-link-secondary{color:#AEAEAE;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 .btn-light{background-color:#fff;border-color:#fff;color:#2C96FF;}
 
@@ -375,6 +376,7 @@ div.pro-avatar img{max-width:58px;}
 .pro-container{padding-top:1.5rem;}
 .list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
 
+
 /* 26. Alerts */
 .alert .close {line-height: 20px;}
 
@@ -391,10 +393,12 @@ div.pro-avatar img{max-width:58px;}
 .item-sidebar-primary{font-size:0.75rem;font-weight:700;text-transform:uppercase;padding:1.0625rem 1.375rem;border:none;color:#2C96FF;background-color:#fff;border:1px solid #fff;margin-bottom:1px;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
 .list-group-item.item-sidebar-primary:hover,.item-sidebar-primary.active,.item-sidebar-primary.active:focus,.item-sidebar-primary.active:hover{background-color:#2C96FF;color:#fff;cursor:pointer;border:1px solid #2C96FF;}
 
+
 /* 29. Image */
 .img-cover {object-fit: cover;}
 div.avatar-sm img{padding:0;width:48px;height:48px;}
 div.avatar-md img{padding:0;width:58px;height:58px;}
+
 
 /* 36. Status Bars */
 .statusBar-link,.statusBar-link:hover,.statusBar-link:focus,.statusBar-link:active{display:block;padding:2px 12px;color:#e6e6e6;text-align:center;margin-left:8px;margin-right:8px;}
@@ -466,7 +470,7 @@ a.search-result:hover{color:#fff!important;background-color:#2275d7;}
 .dropzone .overlay {margin: -63px 0 0 0;}
 /* Modal */
 div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-image:none;background-repeat:no-repeat;background-position-x:center;background-position-y:center;background-size:cover;background-attachment:fixed;display:flex;align-items:center;justify-content:center;margin-top:0;}
-div.ReactModal__Content.ReactModal__Content--after-open{width:415px;background-color:#fff;border:1px solid #fff;padding:3.75rem 42px;margin-top:-35%;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;transition:all 300ms ease-in-out;}
+div.ReactModal__Content.ReactModal__Content--after-open{width:415px;background-color:#FAFAFA;background-color:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);border:1px solid #FAFAFA;padding:3.75rem 42px;margin-top:-35%;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;transition:all 300ms ease-in-out;}
 .modal-heading{font-size:1.5rem;color:#080809;line-height:1.75rem;margin-bottom:.5rem;text-align:center;}
 .modal-body{color:#080809;line-height:1.125rem;margin-bottom:0.875rem;text-align:center;}
 a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-height:1.125rem;margin:0 auto;text-align:center;display:block;}
@@ -550,7 +554,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
 	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
   .qrcode-wallet{max-width:225px;}  
   .frame-light{border-right:1px solid #F0F0F0;border-left:1px solid #F0F0F0;height:100vh;}
-  .container-content{padding:35px 100px 100px 100px;}
+  .container-content{padding:35px 40px 100px 40px;}
 }
 
 /* Medium devices (desktops, 975px to 992px) */
