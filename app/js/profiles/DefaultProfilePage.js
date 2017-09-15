@@ -250,7 +250,17 @@ class DefaultProfilePage extends Component {
                     </div>
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  <div className="pro-card-domain-name m-b-20 text-center">{domainName}</div>
+                  <div className="pro-card-domain-name m-b-10 text-center">{domainName}</div>
+                  <div className="m-b-20 text-center">
+                    { identity.canAddUsername ?
+                      <Link to={`/profiles/i/add-username/${domainName}/search`}
+                        className="">
+                       Add a username
+                      </Link>
+                      :
+                      null
+                    }
+                  </div>
                   <div className="pro-card-body text-center">
                     {person.description()}
                   </div>
