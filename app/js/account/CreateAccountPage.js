@@ -81,7 +81,7 @@ class CreateAccountPage extends Component {
             </div>
             <div>
               <div className="centered">
-                <h1 className="text-xs-center type-inverse m-t-2">create an account</h1>
+                <h3 className="text-xs-center type-inverse m-t-2">create an account</h3>
               </div>
               <div className="out-form-group">
                 { this.state.alerts.map(function(alert, index) {

@@ -29,16 +29,16 @@ class IdentityItem extends Component {
 
   render() {
     return (
-      <li className="col-md-6 col-lg-4 col-xl-3 card-list-wrap">
-        <Link to={this.props.url} className="card profile-list-card container-fluid m-b-35">
-          <div className="card-avatar profile-list-avatar col-xs-3">
+      <Link to={this.props.url} className="card card-default m-b-35">
+        <div className="row">
+          <div className="avatar-sm col-2">
             <Image src={this.props.avatarUrl}
-              fallbackSrc="/images/avatar.png" className="img-circle img-cover" />
+              fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" />
           </div>
-          <div className="col-xs-9">
-            <ul className="profile-card-list">
+          <div className="col-10">
+            <ul className="list-card">
               <li>
-                <h3 className="card-title profile-list-card-title">
+                <h3 className="card-title">
                   {this.props.label}
                 </h3>
               </li>
@@ -49,7 +49,7 @@ class IdentityItem extends Component {
                  </Link>
                  :
                   <div>
-                     <p className="card-subtitle profile-list-card-subtitle">
+                     <p className="card-subtitle">
                       {this.props.pending ? '(pending)' : '\u00A0'}
                      </p>
                   </div>
@@ -57,15 +57,15 @@ class IdentityItem extends Component {
               </li>
               <li>
                 {this.props.isDefault ?
-                  <span className="default">Default Profile <i className="fa fa-check"></i></span>
+                  <span>Default Profile <i className="fa fa-check"></i></span>
                 :
                   <a href="#" onClick={this.setDefaultIdentity}>Set as Default Profile</a>
                 }
               </li>
             </ul>
           </div>
-        </Link>
-      </li>
+        </div>
+      </Link>
     )
   }
 }

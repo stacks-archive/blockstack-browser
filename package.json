@@ -1,22 +1,23 @@
 {
-  "name": "blockstack-portal",
-  "version": "0.14.0",
+  "name": "blockstack-browser",
+  "version": "0.15.0",
   "author": "Blockstack Inc <admin@blockstack.com>",
-  "description": "The Blockstack browser portal",
+  "description": "The Blockstack browser",
   "license": "MPL-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/blockstack/blockstack-portal.git"
+    "url": "https://github.com/blockstack/blockstack-browser.git"
   },
   "scripts": {
     "lint": "NODE_ENV=test ./node_modules/.bin/gulp lint",
-    "test": "NODE_ENV=test ./node_modules/.bin/gulp test",
+    "test": "NODE_ENV=test npm run flow && ./node_modules/.bin/gulp test",
     "web": "NODE_ENV=production ./node_modules/.bin/gulp prod",
     "mac": "NODE_ENV=production ./node_modules/.bin/gulp mac",
     "mac-release": "npm install --no-save appdmg && NODE_ENV=production ./node_modules/.bin/gulp mac-release",
     "dev": "NODE_ENV=development ./node_modules/.bin/gulp dev",
     "dev-ui": "echo 'Please use dev instead of dev-ui'",
-    "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy"
+    "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy",
+    "flow": "flow"
   },
   "keywords": [
     "blockstack",
@@ -119,11 +120,13 @@
     "bitcoinjs-lib": "https://github.com/shea256/bitcoinjs-lib.git",
     "blockstack": "0.9.1",
     "body-parser": "^1.16.1",
-    "bootstrap": "https://github.com/blockstack/blockstack-bootstrap.git",
+    "bootstrap": "^4.0.0-beta",
     "browser-stdout": "^1.3.0",
     "currency-formatter": "^1.2.1",
     "dropbox": "^2.5.0",
     "ecurve": "^1.0.4",
+    "eslint-plugin-flowtype": "^2.35.0",
+    "flow-bin": "^0.53.1",
     "hash-handler": "^1.5.1",
     "hasprop": "0.0.4",
     "is-retina": "^1.0.3",

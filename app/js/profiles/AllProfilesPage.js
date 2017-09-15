@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import Alert from '../components/Alert'
 import IdentityItem from './components/IdentityItem'
 import InputGroup from '../components/InputGroup'
@@ -153,7 +154,7 @@ class IdentityPage extends Component {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
     return (
-      <div className="card-list-container profile-content-wrapper">
+      <div>
         <Modal
           isOpen={passwordPromptIsOpen}
           onRequestClose={this.closePasswordPrompt}
@@ -193,47 +194,57 @@ class IdentityPage extends Component {
             </button>
           </form>
         </Modal>
-        <div>
-          <h5 className="h5-landing">My Profiles</h5>
-        </div>
-        <div className="container card-list-container">
-          <ul className="card-wrapper">
-            {Object.keys(this.state.localIdentities).map((domainName) => {
-              const identity = this.state.localIdentities[domainName]
-              const person = new Person(identity.profile)
 
-              if (identity.ownerAddress === domainName) {
-                identity.canAddUsername = true
-              } else {
-                identity.canAddUsername = false
-              }
+        <SecondaryNavBar 
+            leftButtonTitle="Back" 
+            leftButtonLink="/profiles"
+            rightButtonTitle="+ Create"
+            onRightButtonClick={this.openPasswordPrompt} />
 
-              if (identity.domainName) {
-                return (
-                  <IdentityItem
-                    key={identity.domainName}
-                    label={identity.domainName}
-                    pending={!identity.registered}
-                    avatarUrl={person.avatarUrl() || ''}
-                    url={`/profiles/${identity.domainName}/local`}
-                    ownerAddress={identity.ownerAddress}
-                    canAddUsername={identity.canAddUsername}
-                    isDefault={identity.domainName === this.props.defaultIdentity}
-                    setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
-                  />
-                )
-              } else {
-                return null
-              }
-            })}
-          </ul>
-        </div>
-        <div className="card-list-container m-t-30">
-          <button
-            className="btn btn-electric-blue btn-lg" onClick={this.openPasswordPrompt}
-          >
-            + Create
-          </button>
+        <div className="container-fluid">
+            {/*<div className="card-list-container profile-content-wrapper">*/}
+          <div class="row">
+            <div className="col-12">
+
+{/*              <div>
+                <h5 className="h5-landing">All Profiles</h5>
+              </div>*/}
+              <div className="">
+                <ul className="card-wrapper">
+                  {Object.keys(this.state.localIdentities).map((domainName) => {
+                    const identity = this.state.localIdentities[domainName]
+                    const person = new Person(identity.profile)
+
+                    if (identity.ownerAddress === domainName) {
+                      identity.canAddUsername = true
+                    } else {
+                      identity.canAddUsername = false
+                    }
+
+                    if (identity.domainName) {
+                      return (
+                        <IdentityItem
+                          key={identity.domainName}
+                          label={identity.domainName}
+                          pending={!identity.registered}
+                          avatarUrl={person.avatarUrl() || ''}
+                          url={`/profiles/${identity.domainName}/local`}
+                          ownerAddress={identity.ownerAddress}
+                          canAddUsername={identity.canAddUsername}
+                          isDefault={identity.domainName === this.props.defaultIdentity}
+                          setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
+                        />
+                      )
+                    } else {
+                      return null
+                    }
+                  })}
+                </ul>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
     )

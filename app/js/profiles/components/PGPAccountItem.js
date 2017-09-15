@@ -103,7 +103,7 @@ class PGPAccountItem extends Component {
 
     if (this.props.listItem === true) {
       return (
-        <li>
+        <li className={!this.props.verified ? "verified" : "pending"}>
           <Modal
             isOpen={this.state.modalIsOpen}
             contentLabel="PGP Key"
@@ -135,20 +135,17 @@ class PGPAccountItem extends Component {
           </Modal>
           <a href="#" onClick={this.openModal} data-toggle="tooltip"
             title={webAccountTypes[this.props.service].label}>
-            {this.props.verified ?
             <span className="">
-              <i className="fa fa-fw fa-check fa-green" />
               <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
             </span>
-            :
-            <span className="">
-              <i className="fa fa-fw">&nbsp;</i>
-              <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
-            </span>
-            }
             <span className="app-account-identifier">
               {identifier}
             </span>
+            {this.props.verified &&
+              <span className="float-right">
+                <i className="fa fa-fw fa-check-circle fa-lg" />
+              </span>
+            }
           </a>
         </li>
       )

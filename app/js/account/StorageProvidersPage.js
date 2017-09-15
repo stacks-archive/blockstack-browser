@@ -94,9 +94,9 @@ class StorageProvidersPage extends Component {
     const api = this.props.api
     return (
       <div className="m-b-100" style={{ paddingLeft: '15px' }}>
-        <h1 className="h1-modern m-t-10">
+        <h3 className="m-t-10">
           Storage Providers
-        </h1>
+        </h3>
         <p>
           Your profile and app data will be securely stored in the storage providers you connect.
         </p>
