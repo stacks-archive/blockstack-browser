@@ -370,8 +370,8 @@ a.card:hover{text-decoration:none;}
 .pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
 div.pro-avatar img{max-width:58px;}
-.pro-card-name{font-size:1.0rem;font-weight:600;}
-.pro-card-domain-name{font-size:0.8rem;color:#2C96FF;}
+.pro-card-name{font-size:1.125rem;font-weight:700;}
+.pro-card-domain-name{font-size:1rem;color:#AEAEAE;}
 .pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 .list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
@@ -479,7 +479,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 form.modal-form > div.form-group{margin-bottom:0;}
 .react-modal-pgp{width:700px!important;}
 /* Welcome Modal */
-.welcome-modal div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-image:url('/images/img-teddy-kelley-181683@2x.png');background-position:top 34px center;background-color:rgba(26,29,31,0)!important;}
+.welcome-modal div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-image:url('/images/img-teddy-kelley-181683@2x.png');background-position:top center;background-color:rgba(26,29,31,0)!important;}
 /* Auth Modal */
 .auth-modal {text-align: center}
 .auth-modal .profile-select{margin-bottom:20px;}
@@ -558,20 +558,7 @@ div.storage-content-wrap > div.page-header > h1{font-family:'Lato',sans-serif!im
   .container-content{padding:35px 40px 100px 40px;}
 }
 
-/* Medium devices (desktops, 975px to 992px) */
-@media (min-width:975px){
-	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
-	.pro-wrap{min-width:905px;}
-	.app-container{max-width:954px;margin:0 auto;}
-	.app-wrap{width:90%;margin-top:25%;}
-  .app-box-wrap{width:190px;padding:0;}
-  .app-box img{width:152px;-webkit-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-border-radius:30px;-webkit-border-radius:30px;border-radius:30px;}
-  .wallet-content{padding:35px 50px 50px 50px;}
-  .item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:9.25rem;padding-right:9.25rem;}
-}
-
 /* Medium devices (desktops, 975px and up) */
-/* NOTE: change breaking point @media (min-width: 975px;) to @media (min-width: 992px;) in blockstack-bootstrap as this is a non-standard break point */
 @media (min-width:992px){
   /* 16. Navbars */
   .navbar-expand{width:50%;}
