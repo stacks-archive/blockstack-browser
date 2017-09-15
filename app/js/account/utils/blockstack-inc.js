@@ -1,5 +1,6 @@
 import log4js from 'log4js'
-import { crypto } from 'bitcoinjs-lib'
+import bitcoin from 'bitcoinjs-lib'
+import bigi from 'bigi'
 const logger = log4js.getLogger('account/utils/blockstack-inc.js')
 
 // TODO implement
@@ -13,8 +14,10 @@ export function uploadProfileToBlockstackInc(api, name, signedProfileTokenData) 
   })
 }
 
-export function connectToBlockstackService(serviceProvider, challengeSigner){
+export function connectToBlockstackService(serviceProvider, challengeSignerHex){
   logger.debug(`${serviceProvider}/hub_info`)
+  const challengeSigner = new bitcoin.ECPair(
+    bigi.fromHex(challengeSignerHex))
   return new Promise((resolve, reject) => {
     fetch(`${serviceProvider}/hub_info`)
       .then((response) => response.text())
@@ -22,7 +25,7 @@ export function connectToBlockstackService(serviceProvider, challengeSigner){
       .then((responseJSON) => {
         const readURL = responseJSON.read_url_prefix
         const challenge = responseJSON.challenge_text
-        const digest = crypto.sha256(challenge)
+        const digest = bitcoin.crypto.sha256(challenge)
         const signature = challengeSigner.sign(digest)
               .toDER().toString('hex')
         const publickey = challengeSigner.getPublicKeyBuffer()
