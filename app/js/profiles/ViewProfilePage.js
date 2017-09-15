@@ -120,7 +120,6 @@ class ViewProfilePage extends Component {
           leftButtonLink={`/profiles/${domainName}/edit`}
           rightButtonTitle="All Avatars" 
           rightButtonLink="/profiles/i/all" />
-
         { person !== null ?
         <div>
 
