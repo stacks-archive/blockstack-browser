@@ -24,8 +24,10 @@ class InputGroup extends Component {
   }
 
   onKeyPress(e) {
-    if(e.key === 'Enter') {
-      this.props.onReturnKeyPress()
+    if (this.props.onReturnKeyPress !== undefined) {
+      if(e.key === 'Enter') {
+        this.props.onReturnKeyPress()
+      }
     }
   }
 

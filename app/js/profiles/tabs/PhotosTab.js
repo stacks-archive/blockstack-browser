@@ -120,7 +120,12 @@ class PhotosTab extends Component {
   hasUsername() {
     const localIdentities = this.props.localIdentities
     const currentDomainName = this.props.currentIdentity.domainName
-    return currentDomainName !== localIdentities[currentDomainName].ownerAddress
+    if (!currentDomainName) {
+      return false
+    }
+    else {
+      return currentDomainName !== localIdentities[currentDomainName].ownerAddress
+    }
   }
 
   storageNotConnected() {
@@ -145,7 +150,7 @@ class PhotosTab extends Component {
              Add Profile Photo
            </button>
         </div>
-        {this.storageNotConnected() ?
+        {this.storageNotConnected() || !this.hasUsername() ?
           <p>You need to connect storage and add a username to this profile before you can manage your photos.</p> 
         :
         <div>
