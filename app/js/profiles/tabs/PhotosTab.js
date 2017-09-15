@@ -4,15 +4,13 @@ import { connect } from 'react-redux'
 import InputGroup from '../../components/InputGroup'
 import SaveButton from '../../components/SaveButton'
 
-var Dropbox = require('dropbox');
-
 var Dropzone = require('react-dropzone');
 
 function mapStateToProps(state) {
   return {
     currentIdentity: state.profiles.identity.current,
     localIdentities: state.profiles.identity.localIdentities,
-    dropboxAccessToken: state.settings.api.dropboxAccessToken
+    storageConnected: state.settings.api.storageConnected
   }
 }
 
@@ -24,7 +22,7 @@ class PhotosTab extends Component {
     uploadProfilePhoto: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
     localIdentities: PropTypes.object.isRequired,
-    dropboxAccessToken: PropTypes.string
+    storageConnected: PropTypes.bool
   }
 
   constructor(props) {

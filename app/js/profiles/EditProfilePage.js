@@ -93,7 +93,7 @@ class EditProfilePage extends Component {
   saveProfile(newProfile) {
     logger.trace('saveProfile')
     this.props.updateProfile(this.props.routeParams.index, newProfile)
-    if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
+    if (this.hasUsername() && this.props.api.storageConnected) {
       logger.trace('saveProfile: Preparing to upload profile')
       const profileIndex = this.props.routeParams.index
       const ownerAddress = this.props.localIdentities[profileIndex].ownerAddress
