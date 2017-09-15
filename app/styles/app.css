@@ -380,6 +380,7 @@ div.pro-avatar img{max-width:58px;}
 /* 26. Alerts */
 .alert .close {line-height: 20px;}
 
+
 /* 27. Progress bars */
 .progress{font-size: .75rem;line-height: 1rem;text-align: center;}
 .progress-bar{height: 1rem;color: #fff;background-color: #2275d7}
@@ -394,10 +395,10 @@ div.pro-avatar img{max-width:58px;}
 .list-group-item.item-sidebar-primary:hover,.item-sidebar-primary.active,.item-sidebar-primary.active:focus,.item-sidebar-primary.active:hover{background-color:#2C96FF;color:#fff;cursor:pointer;border:1px solid #2C96FF;}
 
 
-/* 29. Image */
+/* 29. Image thumbnails */
 .img-cover {object-fit: cover;}
-div.avatar-sm img{padding:0;width:48px;height:48px;}
-div.avatar-md img{padding:0;width:58px;height:58px;}
+div.avatar-sm img{padding:0;width:48px;height:48px;border:1px solid #e1e1e1;}
+div.avatar-md img{padding:0;width:72px;height:72px;border:1px solid #e1e1e1;}
 
 
 /* 36. Status Bars */
