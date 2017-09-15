@@ -250,12 +250,12 @@ class DefaultProfilePage extends Component {
                     </div>
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  <div className="pro-card-domain-name m-b-20 text-center">{domainName}</div>
+                  <div className="pro-card-domain-name m-b-20 text-center text-secondary">{domainName}</div>
                   <div className="pro-card-body text-center">
                     {person.description()}
                   </div>
                   {person.address() ?
-                    <div className="pro-card-body text-center">
+                    <div className="pro-card-body text-center text-secondary">
                     {person.address()}
                     </div>
                   : null}

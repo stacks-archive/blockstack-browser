@@ -142,7 +142,7 @@ class ViewProfilePage extends Component {
                     </div>
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  <div className="pro-card-domain-name m-b-10 text-center">
+                  <div className="pro-card-domain-name m-b-10 text-center text-secondary">
                     {domainName}
                   </div>
                   <div className="m-b-20 text-center">
@@ -159,7 +159,7 @@ class ViewProfilePage extends Component {
                     {person.description()}
                   </div>
                   {person.address() ?
-                    <div className="pro-card-body text-center">
+                    <div className="pro-card-body text-center text-secondary">
                     {person.address()}
                     </div>
                   : null}

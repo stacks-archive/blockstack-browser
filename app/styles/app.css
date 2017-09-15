@@ -210,6 +210,9 @@ a.view-out-link{color:#494f56;}
 .gray-900                  {color: #1c1c1c;}
 .gray-950                  {color: #151515;}
 
+.text-primary              {color: #2C96FF!important;}
+.text-secondary            {color: #AEAEAE!important;}
+.text-dark                 {color: #484848!important;}
 
 /* 2. Options */
 .col-centered{float:none;margin:0 auto;overflow:none;}
@@ -371,8 +374,8 @@ a.card:hover{text-decoration:none;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
 div.pro-avatar img{max-width:58px;}
 .pro-card-name{font-size:1.125rem;font-weight:700;}
-.pro-card-domain-name{font-size:1rem;color:#AEAEAE;}
-.pro-card-body{display:block;margin-bottom:30px;font-size:0.9rem;}
+.pro-card-domain-name{font-size:1rem;}
+.pro-card-body{display:block;margin-bottom:15px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 .list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
 
@@ -534,6 +537,13 @@ form.modal-form > div.form-group{margin-bottom:0;}
   .navbar-expand{width:70%;}
   .navbar-expand .navbar-nav .nav-link{padding:12px 26px;}
   .navbar-expand .navbar-nav .nav-link > img {width:110%;}
+
+  /* 21. Cards */
+  .pro-card-body{
+    margin-left:auto;
+    margin-right:auto;
+    max-width: 300px;
+  }
 
 	.card-list-wrap{min-width:310px;display:inline-block;padding-left:0;padding-right:0;}
 	.card-list-card{width:310px;}
