@@ -44,7 +44,7 @@ class WalletApp extends Component {
         <div>
           <div className="row">
             <div className="container-fluid col-centered container-primary">
-              <div className="container-content">
+              <div>
                 {this.props.children}
               </div>
             </div>
