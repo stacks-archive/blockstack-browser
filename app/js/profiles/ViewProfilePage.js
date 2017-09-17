@@ -115,11 +115,13 @@ class ViewProfilePage extends Component {
 
     return (
       <div>
+        { isLocal &&
         <SecondaryNavBar 
           leftButtonTitle="Edit" 
           leftButtonLink={`/profiles/${domainName}/edit`}
           rightButtonTitle="All Avatars" 
           rightButtonLink="/profiles/i/all" />
+        }
 
         { person !== null ?
         <div>

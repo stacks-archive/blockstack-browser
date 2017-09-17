@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
+import ReactTooltip from 'react-tooltip'
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import Alert from '../components/Alert'
 import Image from '../components/Image'
@@ -182,7 +183,6 @@ class DefaultProfilePage extends Component {
     const accounts = person.profile().account || []
     const connections = person.connections() || []
 
-
     return (
       <div>
         <Modal
@@ -224,7 +224,9 @@ class DefaultProfilePage extends Component {
             </button>
           </form>
         </Modal>
-
+        <ReactTooltip place="top" type="dark" effect="solid" id="domainName">
+          This is your owner address. You can switch to a more meaningful name by adding an username.
+        </ReactTooltip>
         <div>
           <SecondaryNavBar 
             leftButtonTitle="Edit" 
@@ -250,7 +252,19 @@ class DefaultProfilePage extends Component {
                     </div>
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  <div className="pro-card-domain-name m-b-20 text-center text-secondary">{domainName}</div>
+                  <div className="pro-card-domain-name m-b-10 text-center text-secondary">
+                    {domainName} <span className="tip" data-tip data-for="domainName">(?)</span>
+                  </div>
+                  <div className="m-b-20 text-center">
+                    { identity.canAddUsername ?
+                      <Link to={`/profiles/i/add-username/${domainName}/search`}
+                        className="">
+                       Add a username
+                      </Link>
+                      :
+                      null
+                    }
+                  </div>
                   <div className="pro-card-body text-center">
                     {person.description()}
                   </div>

@@ -379,7 +379,7 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-body{display:block;margin-bottom:15px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 .list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
-
+.pro-card-domain-name .tip {color:#080809;}
 
 /* 26. Alerts */
 .alert .close {line-height: 20px;}
