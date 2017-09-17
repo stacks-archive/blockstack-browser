@@ -74,7 +74,7 @@ class SocialAccountItem extends Component {
               <span className="app-account-identifier">
                 {this.getIdentifier()}
               </span>
-              <span className="app-account-service">
+              <span className="app-account-service font-weight-normal">
                 {`@${this.props.service}`}
               </span>
               {this.props.verified &&
