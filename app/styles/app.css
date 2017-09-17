@@ -340,7 +340,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 
 
 /* 13. Forms */
-/* Default forms are "Light forms" for now (GL Sep 17, 2017) */
+/* Default forms are "Light forms" for now GL Sep 17, 2017 */
 .form-group{margin-bottom:15px;}
 .form-control{font-size:0.875rem;font-weight:400;color:#484848;padding:1.0625rem 0.9375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;border:1px solid #fff;}
 .form-control::-webkit-input-placeholder{color:#c7c7c7;font-weight:400!important;}
