@@ -341,7 +341,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 
 /* 13. Forms */
 .form-group{margin-bottom:15px;}
-.form-control{font-size:0.875rem;font-weight:400;color:#484848;padding:1.0625rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;border:1px solid #fff;}
+.form-control{font-size:0.875rem;font-weight:400;color:#484848;padding:1.0625rem 1.375rem;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;-webkit-transition:none;-moz-transition:none;transition:none;border:1px solid #F0F0F0;}
 .form-control::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;color:#c7c7c7;font-weight:400!important;}
 .form-control:hover,.form-control:focus{background-color:#fff;}
 input.form-control.form-control-sm.input-special{background-color:#fff;border:1px solid #fff;}
