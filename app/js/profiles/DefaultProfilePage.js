@@ -224,8 +224,9 @@ class DefaultProfilePage extends Component {
             </button>
           </form>
         </Modal>
-        <ReactTooltip place="top" type="dark" effect="solid" id="domainName">
-          This is your owner address. You can switch to a more meaningful name by adding an username.
+        <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
+          <div>This is your owner address.</div>
+          <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
         </ReactTooltip>
         <div>
           <SecondaryNavBar 
@@ -253,7 +254,7 @@ class DefaultProfilePage extends Component {
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
                   <div className="pro-card-domain-name m-b-10 text-center text-secondary">
-                    {domainName} <span className="tip" data-tip data-for="domainName">(?)</span>
+                    {domainName} { identity.canAddUsername && <span data-tip data-for="domainName">(?)</span> }
                   </div>
                   <div className="m-b-20 text-center">
                     { identity.canAddUsername ?

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
-
+import ReactTooltip from 'react-tooltip'
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
@@ -126,6 +126,11 @@ class ViewProfilePage extends Component {
         { person !== null ?
         <div>
 
+          <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
+            <div>This is your owner address.</div>
+            <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
+          </ReactTooltip>
+
           <div className="container-fluid m-t-50">
             <div className="row">
               <div className="col-12">
@@ -145,7 +150,7 @@ class ViewProfilePage extends Component {
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
                   <div className="pro-card-domain-name m-b-10 text-center text-secondary">
-                    {domainName}
+                    {domainName} { (isLocal && !this.hasUsername()) && <span data-tip data-for="domainName">(?)</span> }
                   </div>
                   <div className="m-b-20 text-center">
                     { isLocal && !this.hasUsername() ?
