@@ -203,10 +203,9 @@ class IdentityPage extends Component {
 
         <div className="container-fluid">
             {/*<div className="card-list-container profile-content-wrapper">*/}
-          <div class="row">
-            <div className="col-12">
-
-{/*              <div>
+          <div>
+            <div className="m-t-40">
+            {/*<div>
                 <h5 className="h5-landing">All Profiles</h5>
               </div>*/}
               <div className="">

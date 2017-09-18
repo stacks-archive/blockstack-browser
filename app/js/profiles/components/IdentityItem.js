@@ -31,20 +31,20 @@ class IdentityItem extends Component {
     return (
       <Link to={this.props.url} className="card card-default m-b-35">
         <div className="row">
-          <div className="avatar-sm col-2">
+          <div className="avatar-sm">
             <Image src={this.props.avatarUrl}
               fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" />
           </div>
           <div className="col-10">
             <ul className="list-card">
               <li>
-                <h3 className="card-title">
+                <p className="card-title text-secondary">
                   {this.props.label}
-                </h3>
+                </p>
               </li>
               <li>
                 {this.props.canAddUsername ?
-                 <Link to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
+                 <Link style={{ paddingTop: '-15px' }} to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
                    Add username
                  </Link>
                  :
