@@ -116,10 +116,10 @@ class ViewProfilePage extends Component {
     return (
       <div>
         { isLocal &&
-        <SecondaryNavBar 
-          leftButtonTitle="Edit" 
+        <SecondaryNavBar
+          leftButtonTitle="Edit"
           leftButtonLink={`/profiles/${domainName}/edit`}
-          rightButtonTitle="All Avatars" 
+          rightButtonTitle="More" 
           rightButtonLink="/profiles/i/all" />
         }
 
@@ -200,7 +200,7 @@ class ViewProfilePage extends Component {
               </div>
             </div>
           </div>
-          
+
           <div className="container-fluid">
             { isLocal ?
               (<div className="row">
@@ -213,23 +213,23 @@ class ViewProfilePage extends Component {
                   </div>
                 )}
                 <div className="col text-center">
-                  {!this.hasUsername() ? 
+                  {!this.hasUsername() ?
                     (<button
                       className="btn btn-link"
                       disabled
-                      title="Add a username to view publicly."> 
+                      title="Add a username to view publicly.">
                       View Publicly
                     </button>
                     ) : (
                     <Link to={`/profiles/${domainName}`}
                     className="btn btn-link">
                     View Publicly
-                    </Link> 
+                    </Link>
                     )}
                 </div>
                 <div className="col text-center">
                   <button
-                    className="btn btn-link" onClick={this.openPasswordPrompt}> 
+                    className="btn btn-link" onClick={this.openPasswordPrompt}>
                     + Create
                   </button>
                 </div>

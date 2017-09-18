@@ -57,9 +57,9 @@ class IdentityItem extends Component {
               </li>
               <li>
                 {this.props.isDefault ?
-                  <span>Default Profile <i className="fa fa-check"></i></span>
+                  <span>Current ID <i className="fa fa-check"></i></span>
                 :
-                  <a href="#" onClick={this.setDefaultIdentity}>Set as Default Profile</a>
+                  <a href="#" onClick={this.setDefaultIdentity}>Use this ID</a>
                 }
               </li>
             </ul>

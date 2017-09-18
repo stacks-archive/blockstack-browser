@@ -133,17 +133,27 @@ class EditProfilePage extends Component {
   }
 
   render() {
+    const domainName = this.state.domainName
     return (
       <div>
-        { this.state.tabName === "" ? (
-          <SecondaryNavBar 
-            leftButtonTitle="Back" 
-            leftButtonLink="/profiles" />
+      {this.state.tabName === '' ? (
+        <SecondaryNavBar
+          centerButtonTitle="Edit"
+          centerButtonLink={`/profiles/${domainName}/edit`}
+          isCenterActive
+          rightButtonTitle="Me"
+          rightButtonLink="/profiles"
+        />
         ) : (
-          <SecondaryNavBar 
-            leftButtonTitle="Back" 
-            onLeftButtonClick={() => this.backClick()} />
+        <SecondaryNavBar
+          centerButtonTitle="Edit"
+          onCenterButtonClick={() => this.backClick()}
+          isCenterActive
+          rightButtonTitle="Me"
+          rightButtonLink="/profiles"
+        />
         )}
+
         <div>
           {this.state.profile && this.state.domainName ?
           <div>
@@ -155,7 +165,7 @@ class EditProfilePage extends Component {
                   activeTab={this.state.tabName}
                   onClick={this.changeTabs} />
               </div>
-              ) : 
+              ) :
               (<div></div>)}
 
               <div className="col-md-12">
@@ -217,7 +227,7 @@ class EditProfilePage extends Component {
                   </fieldset>
                 </div>
               </div>
-              ) : 
+              ) :
               (<div></div>)}
 
             </div>

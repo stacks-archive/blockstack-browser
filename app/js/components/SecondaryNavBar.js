@@ -6,7 +6,7 @@ const SecondaryNavLink = props => {
   const active = props.isActive === true ? "active" : "default"
 
   return (
-    <Link 
+    <Link
       className={`btn btn-link btn-block ${alignment} ${active}`}
       to={props.link}>
       {props.title}
@@ -32,12 +32,16 @@ class SecondaryNavBar extends Component {
   static propTypes = {
     title: PropTypes.string,
     leftButtonTitle: PropTypes.string,
+    centerButtonTitle: PropTypes.string,
     rightButtonTitle: PropTypes.string,
     leftButtonLink: PropTypes.string,
+    centerButtonLink: PropTypes.string,
     rightButtonLink: PropTypes.string,
     onLeftButtonClick: PropTypes.func,
+    onCenterButtonClick: PropTypes.func,
     onRightButtonClick: PropTypes.func,
     isLeftActive: PropTypes.bool,
+    isCenterActive: PropTypes.bool,
     isRightActive: PropTypes.bool
   }
 
@@ -51,15 +55,33 @@ class SecondaryNavBar extends Component {
               <SecondaryNavButton
                 title={this.props.leftButtonTitle}
                 onClick={this.props.onLeftButtonClick}
-                align="left" 
+                align="left"
                 isActive={this.props.isLeftActive} />
               :
-              <SecondaryNavLink 
-                title={this.props.leftButtonTitle} 
+              <SecondaryNavLink
+                title={this.props.leftButtonTitle}
                 link={this.props.leftButtonLink}
                 align="left"
                 isActive={this.props.isLeftActive} />
               ) }
+          </div>
+          <div className="col text-center">
+          {this.props.centerButtonTitle !== undefined && (
+            this.props.onCenterButtonClick !== undefined ?
+              <SecondaryNavLink
+                title={this.props.centerButtonTitle}
+                onClick={this.props.onCenterButtonClick}
+                align="right"
+                isActive={this.props.isCenterActive}
+              />
+            :
+              <SecondaryNavLink
+                title={this.props.centerButtonTitle}
+                link={this.props.centerButtonLink}
+                align="right"
+                isActive={this.props.isCenterActive}
+              />
+          )}
           </div>
           <div className="col">
           {this.props.rightButtonTitle !== undefined && (
@@ -70,8 +92,8 @@ class SecondaryNavBar extends Component {
               align="right"
               isActive={this.props.isRightActive} />
             :
-            <SecondaryNavLink 
-              title={this.props.rightButtonTitle} 
+            <SecondaryNavLink
+              title={this.props.rightButtonTitle}
               link={this.props.rightButtonLink}
               align="right"
               isActive={this.props.isRightActive} />
