@@ -103,7 +103,7 @@ class DeleteAccountPage extends Component {
           <InputGroup
             name="password" label="Password" type="password"
             data={this.state} onChange={this.onValueChange}
-            onReturnKeyPress={this.deleteAccount}
+            onReturnKeyPress={this.openModal}
           />
 
           <div className="container-fluid m-t-40">
