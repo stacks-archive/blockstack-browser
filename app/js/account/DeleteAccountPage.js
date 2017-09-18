@@ -105,8 +105,9 @@ class DeleteAccountPage extends Component {
             data={this.state} onChange={this.onValueChange}
             onReturnKeyPress={this.deleteAccount}
           />
-          <div className="container m-t-40">
-            <button className="btn btn-primary" onClick={this.openModal}>
+
+          <div className="container-fluid m-t-40">
+            <button className="btn btn-danger btn-block" onClick={this.openModal}>
               Remove Account
             </button>
           </div>
