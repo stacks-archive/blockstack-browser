@@ -73,7 +73,7 @@ class DeleteAccountPage extends Component {
   render() {
     return (
       <div className="m-b-100">
-        <h3 className="m-t-10" style={{ paddingLeft: '15px' }}>
+        <h3 className="container-fluid m-t-10">
           Remove Account
         </h3>
         {
@@ -83,7 +83,7 @@ class DeleteAccountPage extends Component {
             )
           })}
         <div>
-          <p>
+          <p className="container-fluid">
             <i>
               Remove your account from this browser so you can create a new one or
               restore another account.
@@ -94,8 +94,8 @@ class DeleteAccountPage extends Component {
             data={this.state} onChange={this.onValueChange}
             onReturnKeyPress={this.deleteAccount}
           />
-          <div className="container m-t-40">
-            <button className="btn btn-primary" onClick={this.deleteAccount}>
+          <div className="container-fluid m-t-40">
+            <button className="btn btn-primary btn-block" onClick={this.deleteAccount}>
               Remove Account
             </button>
           </div>

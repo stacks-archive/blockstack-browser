@@ -95,7 +95,7 @@ class ChangePasswordPage extends Component {
   render() {
     return (
       <div className="m-b-100">
-        <h3 className="m-t-10" style={{ paddingLeft: '15px' }}>
+        <h3 className="container-fluid m-t-10">
           Change Password
         </h3>
         {
@@ -118,8 +118,8 @@ class ChangePasswordPage extends Component {
             data={this.state} onChange={this.onValueChange}
             onReturnKeyPress={this.reencryptMnemonic}
           />
-          <div className="container m-t-40">
-            <button className="btn btn-primary" onClick={this.reencryptMnemonic}>
+          <div className="container-fluid m-t-40">
+            <button className="btn btn-primary btn-block" onClick={this.reencryptMnemonic}>
               Update Password
             </button>
           </div>
