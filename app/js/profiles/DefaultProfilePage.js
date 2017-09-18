@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
-import ReactTooltip from 'react-tooltip'
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import Alert from '../components/Alert'
 import Image from '../components/Image'
@@ -13,6 +12,7 @@ import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
+import ToolTip from '../components/ToolTip'
 
 import log4js from 'log4js'
 
@@ -224,10 +224,14 @@ class DefaultProfilePage extends Component {
             </button>
           </form>
         </Modal>
-        <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
-          <div>This is your owner address.</div>
-          <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
-        </ReactTooltip>
+        <ToolTip id="domainName">
+          <div>
+            <div>This is your owner address.</div>
+            <div className="text-secondary">
+              You can switch to a more meaningful name by adding an username.
+            </div>
+          </div>
+        </ToolTip>
         <div>
           <SecondaryNavBar
             leftButtonTitle="Edit"
