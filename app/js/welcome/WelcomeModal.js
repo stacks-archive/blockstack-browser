@@ -392,6 +392,7 @@ class WelcomeModal extends Component {
                   <WriteDownKeyView
                     identityKeyPhrase={this.state.identityKeyPhrase}
                     showNextView={this.showNextView}
+                    showPreviousView={this.showPreviousView}
                   />
                 :
                 null
