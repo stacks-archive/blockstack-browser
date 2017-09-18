@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
+import DeleteAccountModal from './components/DeleteAccountModal'
 import { AccountActions } from './store/account'
 import { decrypt } from '../utils'
 import log4js from 'log4js'
@@ -35,12 +36,15 @@ class DeleteAccountPage extends Component {
 
     this.state = {
       password: '',
-      alerts: []
+      alerts: [],
+      isOpen: false
     }
 
     this.updateAlert = this.updateAlert.bind(this)
     this.deleteAccount = this.deleteAccount.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   onValueChange(event) {
@@ -57,17 +61,25 @@ class DeleteAccountPage extends Component {
   }
 
   deleteAccount() {
+    this.props.deleteAccount()
+    this.closeModal()
+  }
+
+  openModal() {
     logger.trace('deleteAccount')
     const password = this.state.password
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt backup phrase...')
     decrypt(dataBuffer, password)
     .then(() => {
-      logger.debug('Backup phrase successfully decrypted')
-      this.props.deleteAccount()
+      this.setState({ isOpen: true })
     }, () => {
       this.updateAlert('danger', 'Incorrect password')
     })
+  }
+
+  closeModal() {
+    this.setState({ isOpen: false })
   }
 
   render() {
@@ -93,12 +105,19 @@ class DeleteAccountPage extends Component {
             data={this.state} onChange={this.onValueChange}
             onReturnKeyPress={this.deleteAccount}
           />
+
           <div className="container-fluid m-t-40">
-            <button className="btn btn-danger btn-block" onClick={this.deleteAccount}>
+            <button className="btn btn-danger btn-block" onClick={this.openModal}>
               Remove Account
             </button>
           </div>
         </div>
+        <DeleteAccountModal
+          isOpen={this.state.isOpen}
+          closeModal={this.closeModal}
+          contentLabel="Modal"
+          deleteAccount={this.deleteAccount}
+        />
       </div>
     )
   }
