@@ -26,7 +26,7 @@ class HomeScreenPage extends Component {
         <div className="container-fluid app-center">
           <div className="container app-wrap">
             <div className="app-container no-padding">
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="https://helloblockstack.com"
                    className="app-box-container">
                   <div className="app-box">
@@ -37,7 +37,7 @@ class HomeScreenPage extends Component {
                   <h3>Hello, Blockstack</h3>
                 </div>
               </div>
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="https://forum.blockstack.org"
                    className="app-box-container">
                   <div className="app-box">
@@ -48,7 +48,7 @@ class HomeScreenPage extends Component {
                   <h3>Forum</h3>
                 </div>
               </div>
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="http://www.guildblog.com/"
                    className="app-box-container">
                   <div className="app-box">
@@ -59,7 +59,7 @@ class HomeScreenPage extends Component {
                   <h3>Guild</h3>
                 </div>
               </div>
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="http://ongakuryoho.com"
                    className="app-box-container">
                   <div className="app-box">
@@ -70,7 +70,7 @@ class HomeScreenPage extends Component {
                   <h3>Ongaku Ryoho</h3>
                 </div>
               </div>
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="https://casa.cash"
                    className="app-box-container">
                   <div className="app-box">
@@ -81,7 +81,7 @@ class HomeScreenPage extends Component {
                   <h3>Casa</h3>
                 </div>
               </div>
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="https://www.openbazaar.org"
                    className="app-box-container">
                   <div className="app-box">
@@ -92,7 +92,7 @@ class HomeScreenPage extends Component {
                   <h3>OpenBazaar</h3>
                 </div>
               </div>
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="https://ntzwrk.org/projects/beacon/"
                    className="app-box-container">
                   <div className="app-box">
@@ -103,7 +103,7 @@ class HomeScreenPage extends Component {
                   <h3>Beacon</h3>
                 </div>
               </div>
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="http://www.afiabeta.com/"
                    className="app-box-container">
                   <div className="app-box">
@@ -114,7 +114,7 @@ class HomeScreenPage extends Component {
                   <h3>Afia</h3>
                 </div>
               </div>
-              <div className="app-box-wrap">
+              <div className="container-fluid app-box-wrap">
                 <a href="http://blockstack-todos.appartisan.com/"
                    className="app-box-container">
                   <div className="app-box">
