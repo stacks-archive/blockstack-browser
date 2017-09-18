@@ -44,7 +44,7 @@ class IdentityItem extends Component {
               </li>
               <li>
                 {this.props.canAddUsername ?
-                 <Link style={{ paddingTop: '-15px' }} to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
+                 <Link to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
                    Add username
                  </Link>
                  :
