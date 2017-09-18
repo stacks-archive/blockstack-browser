@@ -30,40 +30,40 @@ class IdentityItem extends Component {
   render() {
     return (
       <Link to={this.props.url} className="card card-default m-b-35">
-        <div className="row">
-          <div className="avatar-sm">
-            <Image src={this.props.avatarUrl}
-              fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" />
-          </div>
-          <div className="col-10">
-            <ul className="list-card">
-              <li>
-                <p className="card-title text-secondary">
-                  {this.props.label}
-                </p>
-              </li>
-              <li>
-                {this.props.canAddUsername ?
-                 <Link to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
-                   Add username
-                 </Link>
-                 :
-                  <div>
-                     <p className="card-subtitle">
-                      {this.props.pending ? '(pending)' : '\u00A0'}
-                     </p>
-                  </div>
-                }
-              </li>
-              <li>
-                {this.props.isDefault ?
-                  <span>Default Profile <i className="fa fa-check"></i></span>
-                :
-                  <a href="#" onClick={this.setDefaultIdentity}>Set as Default Profile</a>
-                }
-              </li>
-            </ul>
-          </div>
+      <div>
+        <div className="avatar-sm float-left" style={{ display: 'inline' }}>
+          <Image src={this.props.avatarUrl}
+            fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" style={{ display: 'inline-block' }} />
+        </div>
+        <div style={{ display: 'inline' }}>
+          <ul className="container-fluid list-card">
+            <li>
+              <p className="card-title text-secondary">
+                {this.props.label}
+              </p>
+            </li>
+            <li>
+              {this.props.canAddUsername ?
+               <Link to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
+                 Add username
+               </Link>
+               :
+                <div>
+                   <p className="card-subtitle">
+                    {this.props.pending ? '(pending)' : '\u00A0'}
+                   </p>
+                </div>
+              }
+            </li>
+            <li>
+              {this.props.isDefault ?
+                <span>Default Profile <i className="fa fa-check"></i></span>
+              :
+                <a href="#" onClick={this.setDefaultIdentity}>Set as Default Profile</a>
+              }
+            </li>
+          </ul>
+        </div>
         </div>
       </Link>
     )

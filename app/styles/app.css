@@ -373,7 +373,7 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 /* 21. Cards */
 .card-default {
   background-color: #fff;
-  padding: 35px;
+  padding: 25px 15px 25px 25px;
   overflow: hidden;/*width:100%;*/
   border: 1px solid #fff;
   -webkit-box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
@@ -392,9 +392,12 @@ div.pro-avatar img{max-width:58px;}
 .pro-container{padding-top:1.5rem;}
 .list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
 /* All-IDs */
+.avatar-sm {margin-right:15px;}
 .card-title {
+  margin-bottom:0;
   font-size:0.875rem;
   overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  padding-right: 15px;
 }
 
 /* 26. Alerts */

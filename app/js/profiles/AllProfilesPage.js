@@ -201,49 +201,37 @@ class IdentityPage extends Component {
             rightButtonTitle="+ Create"
             onRightButtonClick={this.openPasswordPrompt} />
 
-        <div className="container-fluid">
-            {/*<div className="card-list-container profile-content-wrapper">*/}
-          <div>
-            <div className="m-t-40">
-            {/*<div>
-                <h5 className="h5-landing">All Profiles</h5>
-              </div>*/}
-              <div className="">
-                <ul className="card-wrapper">
-                  {Object.keys(this.state.localIdentities).map((domainName) => {
-                    const identity = this.state.localIdentities[domainName]
-                    const person = new Person(identity.profile)
-
-                    if (identity.ownerAddress === domainName) {
-                      identity.canAddUsername = true
-                    } else {
-                      identity.canAddUsername = false
-                    }
-
-                    if (identity.domainName) {
-                      return (
-                        <IdentityItem
-                          key={identity.domainName}
-                          label={identity.domainName}
-                          pending={!identity.registered}
-                          avatarUrl={person.avatarUrl() || ''}
-                          url={`/profiles/${identity.domainName}/local`}
-                          ownerAddress={identity.ownerAddress}
-                          canAddUsername={identity.canAddUsername}
-                          isDefault={identity.domainName === this.props.defaultIdentity}
-                          setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
-                        />
-                      )
-                    } else {
-                      return null
-                    }
-                  })}
-                </ul>
-              </div>
-
-            </div>
+        <div className="m-t-40">
+          <div className="container-fluid">
+            <ul className="card-wrapper">
+              {Object.keys(this.state.localIdentities).map((domainName) => {
+                const identity = this.state.localIdentities[domainName]
+                const person = new Person(identity.profile)
+                if (identity.ownerAddress === domainName) {
+                  identity.canAddUsername = true
+                } else {
+                  identity.canAddUsername = false
+                }
+                if (identity.domainName) {
+                  return (
+                    <IdentityItem
+                      key={identity.domainName}
+                      label={identity.domainName}
+                      pending={!identity.registered}
+                      avatarUrl={person.avatarUrl() || ''}
+                      url={`/profiles/${identity.domainName}/local`}
+                      ownerAddress={identity.ownerAddress}
+                      canAddUsername={identity.canAddUsername}
+                      isDefault={identity.domainName === this.props.defaultIdentity}
+                      setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
+                    />
+                  )
+                } else {
+                  return null
+                }
+              })}
+            </ul>
           </div>
-
         </div>
       </div>
     )
