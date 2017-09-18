@@ -232,10 +232,10 @@ class DefaultProfilePage extends Component {
           <SecondaryNavBar
             leftButtonTitle="Edit"
             leftButtonLink={`/profiles/${domainName}/edit`}
-            centerButtonTitle="Me"
+            centerButtonTitle="View"
             centerButtonLink="/profiles"
             isCenterActive
-            rightButtonTitle="IDs"
+            rightButtonTitle="More"
             rightButtonLink="/profiles/i/all"
           />
           <div className="container-fluid m-t-50">

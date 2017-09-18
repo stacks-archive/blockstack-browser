@@ -138,19 +138,23 @@ class EditProfilePage extends Component {
       <div>
       {this.state.tabName === '' ? (
         <SecondaryNavBar
-          centerButtonTitle="Edit"
-          centerButtonLink={`/profiles/${domainName}/edit`}
-          isCenterActive
-          rightButtonTitle="Me"
-          rightButtonLink="/profiles"
+          leftButtonTitle="Edit"
+          leftButtonLink={`/profiles/${domainName}/edit`}
+          isLeftActive
+          centerButtonTitle="View"
+          centerButtonLink="/profiles"
+          rightButtonTitle="More"
+          rightButtonLink="/profiles/i/all"
         />
         ) : (
         <SecondaryNavBar
-          centerButtonTitle="Edit"
-          onCenterButtonClick={() => this.backClick()}
-          isCenterActive
-          rightButtonTitle="Me"
-          rightButtonLink="/profiles"
+          leftButtonTitle="Edit"
+          onLeftButtonClick={() => this.backClick()}
+          isLeftActive
+          centerButtonTitle="View"
+          centerButtonLink="/profiles"
+          rightButtonTitle="More"
+          rightButtonLink="/profiles/i/all"
         />
         )}
 

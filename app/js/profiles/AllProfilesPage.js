@@ -164,7 +164,7 @@ class IdentityPage extends Component {
           className="container-fluid"
         >
           <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new Blockchain ID</h3>
+            <h3 className="modal-heading">Enter your password to create a new profile</h3>
             <div>
               {createProfileError ?
                 <Alert key="1" message="Incorrect password" status="danger" />
@@ -189,25 +189,23 @@ class IdentityPage extends Component {
               {this.state.processing ?
                 <span>Creating...</span>
                 :
-                <span>Create new ID</span>
+                <span>Create new profile</span>
               }
             </button>
           </form>
         </Modal>
-
         <SecondaryNavBar
-          leftButtonTitle="Me"
-          leftButtonLink="/profiles"
-          centerButtonTitle="IDs"
-          centerButtonLink="/profiles/i/all"
-          isCenterActive
-          rightButtonTitle="+ New ID"
-          onRightButtonClick={this.openPasswordPrompt}
+          leftButtonTitle="Edit"
+          leftButtonLink={`/profiles/${this.props.defaultIdentity}/edit`}
+          centerButtonTitle="View"
+          centerButtonLink="/profiles"
+          rightButtonTitle="More"
+          rightButtonLink="/profiles/i/all"
+          isRightActive
         />
-
         <div className="container-fluid">
             {/*<div className="card-list-container profile-content-wrapper">*/}
-          <div class="row">
+          <div className="row">
             <div className="col-12">
 
 {/*              <div>
@@ -248,7 +246,15 @@ class IdentityPage extends Component {
 
             </div>
           </div>
-
+          <div className="row">
+            <div className="container m-t-40">
+              <button
+                className="btn btn-primary"
+                onClick={this.openPasswordPrompt}
+              >+ Create
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     )
