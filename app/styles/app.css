@@ -315,9 +315,8 @@ body{font-family:'Lato',sans-serif;font-size:14px;-webkit-font-smoothing:antiali
 
 
 /* 5. Links */
-a,a:focus{outline:none;}
+a,a:focus{outline:none; cursor:pointer}
 a {color: #2C96FF;}
-
 
 /* 9. Fonts */
 .inverse{font-weight:200;color:#fff;}
@@ -338,6 +337,9 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-link.active{color:#2C96FF;text-decoration:none;}
 .btn-link-secondary{color:#AEAEAE;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 .btn-light{background-color:#fff;border-color:#fff;color:#2C96FF;}
+.btn-storage{background-color:#2C96FF;border:1px solid #2C96FF;margin-bottom:-15px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);}
+.btn-storage:hover{background-color:#0668BF;}
+.btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
 
 
 /* 13. Forms */
@@ -360,16 +362,16 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 
 
 /* 16. Navbar */
+header{padding-top:15px;}
 .navbar{padding:0!important;height:70px;}
 .navbar-expand{width:85%;}
-.navbar-nav{margin-top:15px;}
 .nav-item{width:88px;}
 .nav-link{width:100%;}
 .navbar-expand .navbar-nav .nav-link{padding:12px 13px;}
-
+.secondary-nav{margin-top:5px;}
 
 /* 21. Cards */
-.card-default{background-color:#fff;padding:35px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
+.card-default{background-color:#fff;padding:25px 15px 25px 25px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
 a.card:hover{text-decoration:none;}
 .card-wrapper{list-style:none;padding-left:0;}
 .pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
@@ -379,7 +381,10 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-domain-name{font-size:1rem;}
 .pro-card-body{display:block;margin-bottom:15px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
-.list-card {margin-bottom:0;list-style:none;padding:0;color: #19191A;text-decoration: none;}
+.list-card{margin-bottom:0;list-style:none;padding:0;color:#19191A;text-decoration:none;}
+/* All-IDs */
+.avatar-sm{margin-right:15px;}
+.card-title{margin-bottom:0;font-size:0.875rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding-right:15px;}
 
 /* 26. Alerts */
 .alert .close {line-height: 20px;}
@@ -498,9 +503,6 @@ form.modal-form > div.form-group{margin-bottom:0;}
 .item-sidebar-storage:hover,.item-sidebar-storage.active:hover, .item-sidebar-storage.active:visited, .item-sidebar-storage.active:focus{background-color:#0668BF;}
 .item-sidebar-storage.disabled{color:rgba(255,255,255,0.45);border:none;background-color:transparent;text-transform:uppercase;}
 .item-sidebar-storage.disabled:hover{color:rgba(255,255,255,0.45);border:none;background-color:rgba(255,255,255,0.05);}
-.btn-storage-primary{padding:32px 50px;width:100%;max-width:750px;background-color:#007BE8;border:1px solid #007BE8;color:#fff;font-family:'Lato',sans-serif;font-size:16px;text-align:left;font-weight:300;margin-bottom:-21px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);}
-.btn-storage-primary:hover{background-color:#0668BF;}
-.btn.disabled.btn-storage-primary,.btn:disabled.btn-storage-primary{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
 /* Wallet App */
 .frame-light{background-color:#fff;padding-top:20px;}
 .balance-main{font-family:'Source Code Pro',monospace;font-size:26px;font-weight:700;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}

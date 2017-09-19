@@ -203,16 +203,9 @@ class IdentityPage extends Component {
           rightButtonLink="/profiles/i/all"
           isRightActive
         />
-        <div className="container-fluid">
-            {/*<div className="card-list-container profile-content-wrapper">*/}
-          <div className="row">
-            <div className="col-12">
-
-{/*              <div>
-                <h5 className="h5-landing">All Profiles</h5>
-              </div>*/}
-              <div className="">
-                <ul className="card-wrapper">
+        <div className="m-t-40">
+          <div className="container-fluid">
+            <ul className="card-wrapper">
                   {Object.keys(this.state.localIdentities).map((domainName) => {
                     const identity = this.state.localIdentities[domainName]
                     const person = new Person(identity.profile)
@@ -241,10 +234,7 @@ class IdentityPage extends Component {
                       return null
                     }
                   })}
-                </ul>
-              </div>
-
-            </div>
+            </ul>
           </div>
           <div className="row">
             <div className="container m-t-40">

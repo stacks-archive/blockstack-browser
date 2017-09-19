@@ -80,7 +80,7 @@ class BackupAccountPage extends Component {
   render() {
     return (
       <div className="m-b-100">
-        <h3 className="m-t-10" style={{ paddingLeft: '15px' }}>
+        <h3 className="container-fluid m-t-10">
           Backup Account
         </h3>
         {
@@ -113,7 +113,7 @@ class BackupAccountPage extends Component {
             </div>
           :
             <div>
-              <p style={{ paddingLeft: '15px' }}>
+              <p className="container-fluid">
                 <i>Enter your password to view your backup phrase and backup your account.</i>
               </p>
               <InputGroup
@@ -121,8 +121,8 @@ class BackupAccountPage extends Component {
                 data={this.state} onChange={this.onChange}
                 onReturnKeyPress={this.decryptBackupPhrase}
               />
-              <div className="container m-t-40">
-                <button className="btn btn-primary" onClick={this.decryptBackupPhrase}>
+              <div className="container-fluid m-t-40">
+                <button className="btn btn-primary btn-block" onClick={this.decryptBackupPhrase}>
                   Decrypt Backup Phrase
                 </button>
               </div>
