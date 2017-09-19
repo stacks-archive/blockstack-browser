@@ -16,7 +16,6 @@ const logger = log4js.getLogger('App.js')
 function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    dropboxAccessToken: state.settings.api.dropboxAccessToken,
     api: state.settings.api,
     corePingUrl: state.settings.api.corePingUrl,
     coreApiRunning: state.sanity.coreApiRunning,
@@ -41,7 +40,6 @@ class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
-    dropboxAccessToken: PropTypes.string,
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
     corePingUrl: PropTypes.string.isRequired,
@@ -61,7 +59,7 @@ class App extends Component {
 
     this.state = {
       accountCreated: this.props.encryptedBackupPhrase ? true : false,
-      storageConnected: this.props.dropboxAccessToken ? true : false,
+      storageConnected: this.props.api.storageConnected ? true : false,
       coreConnected: this.props.api.coreAPIPassword ? true : false,
       password: '',
       currentPath: ''
@@ -109,7 +107,7 @@ class App extends Component {
     }
     this.setState({
       accountCreated: nextProps.encryptedBackupPhrase ? true : false,
-      storageConnected: nextProps.dropboxAccessToken ? true : false,
+      storageConnected: this.props.api.storageConnected ? true : false,
       coreConnected: nextProps.api.coreAPIPassword ? true : false,
       currentPath: nextPath
     })

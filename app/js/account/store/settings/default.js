@@ -39,6 +39,8 @@ const DEFAULT_API = {
   s3ApiSecret: '',
   s3Bucket: '',
   dropboxAccessToken: null,
+  storageConnected: false,
+  gaiaHubConfig: null,
   gaiaHubUrl: 'https://hub.technofractal.com',
   btcPrice: '1000.00'
 }

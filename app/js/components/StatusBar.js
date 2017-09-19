@@ -11,7 +11,7 @@ import roundTo from 'round-to'
 
 function mapStateToProps(state) {
   return {
-    dropboxAccessToken: state.settings.api.dropboxAccessToken,
+    storageConnected: state.settings.api.storageConnected,
     localIdentities: state.profiles.identity.localIdentities,
     addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletAddress: state.account.coreWallet.address,
@@ -30,7 +30,7 @@ function mapDispatchToProps(dispatch) {
 class StatusBar extends Component {
   static propTypes = {
     hideBackToHomeLink: PropTypes.bool,
-    dropboxAccessToken: PropTypes.string,
+    storageConnected: PropTypes.bool,
     localIdentities: PropTypes.object.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     coreWalletBalance: PropTypes.number,
@@ -67,7 +67,7 @@ class StatusBar extends Component {
   }
 
   storageProviderConnected() {
-    return this.props.dropboxAccessToken ? true : false
+    return this.props.storageConnected
   }
 
   profileCreated() {

@@ -122,7 +122,7 @@ class PhotosTab extends Component {
   }
 
   storageNotConnected() {
-    return this.props.dropboxAccessToken === null
+    return this.props.storageConnected !== true
   }
 
   render() {
