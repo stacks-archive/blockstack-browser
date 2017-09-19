@@ -3,19 +3,19 @@ import bitcoin from 'bitcoinjs-lib'
 import bigi from 'bigi'
 const logger = log4js.getLogger('account/utils/blockstack-inc.js')
 
-export function uploadPhotoToBlockstackInc(api, name, photoFile, index) {
+export function uploadPhotoToGaiaHub(api, name, photoFile, index) {
   const hubConfig = api.gaiaHubConfig
   const filename = `${name}/avatar-${index}`
   return uploadToGaiaHub(hubConfig, filename, photoFile)
 }
 
-export function uploadProfileToBlockstackInc(api, name, signedProfileTokenData) {
+export function uploadProfileToGaiaHub(api, name, signedProfileTokenData) {
   const hubConfig = api.gaiaHubConfig
   const filename = `${name}.json`
   return uploadToGaiaHub(hubConfig, filename, signedProfileTokenData)
 }
 
-export function connectToBlockstackService(serviceProvider, challengeSignerHex){
+export function connectToGaiaHub(serviceProvider, challengeSignerHex){
   logger.debug(`${serviceProvider}/hub_info`)
   const challengeSigner = new bitcoin.ECPair(
     bigi.fromHex(challengeSignerHex))
@@ -41,9 +41,9 @@ export function connectToBlockstackService(serviceProvider, challengeSignerHex){
                )})})
 }
 
-export function redirectToConnectToBlockstack() {
+export function redirectToConnectToGaiaHub() {
   const port = location.port === '' ? 80 : location.port
-  window.top.location.href = `http://localhost:${port}/account/storage#blockstack`
+  window.top.location.href = `http://localhost:${port}/account/storage#gaiahub`
 }
 
 function uploadToGaiaHub(hubConfig, name, contents){

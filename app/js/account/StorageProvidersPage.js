@@ -8,7 +8,7 @@ import { DROPBOX, BLOCKSTACK_INC } from './utils/index'
 import { getDropboxAccessTokenFromHash,
   redirectToConnectToDropbox } from './utils/dropbox'
 
-import { connectToBlockstackService } from './utils/blockstack-inc'
+import { connectToGaiaHub } from './utils/blockstack-inc'
 
 import { setCoreStorageConfig } from '../utils/api-utils'
 import log4js from 'log4js'
@@ -67,7 +67,7 @@ class StorageProvidersPage extends Component {
         logger.debug('componentDidMount: storage initialized')
       })
     }
-    if (window.location.hash === "#blockstack") {
+    if (window.location.hash === "#gaiahub") {
       this.connectSharedService()
     }
   }
@@ -95,7 +95,7 @@ class StorageProvidersPage extends Component {
   connectSharedService() {
     const storageProvider = this.props.api.gaiaHubUrl
     const signer = this.props.identityKeypairs[0].key
-    connectToBlockstackService(storageProvider, signer)
+    connectToGaiaHub(storageProvider, signer)
       .then( (gaiaHubConfig) => {
         this.props.storageIsConnected()
         const newApi = Object.assign({}, this.props.api,

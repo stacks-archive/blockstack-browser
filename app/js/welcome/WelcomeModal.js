@@ -8,7 +8,7 @@ import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 import { redirectToConnectToDropbox } from '../account/utils/dropbox'
-import { redirectToConnectToBlockstack } from '../account/utils/blockstack-inc'
+import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
 
 
 import { PairBrowserView, LandingView,
@@ -266,9 +266,9 @@ class WelcomeModal extends Component {
     redirectToConnectToDropbox()
   }
 
-  connectBlockstackStore(event) {
+  connectGaiaHub(event) {
     event.preventDefault()
-    redirectToConnectToBlockstack()
+    redirectToConnectToGaiaHub()
   }
 
   confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
@@ -429,8 +429,8 @@ class WelcomeModal extends Component {
               {
                 page === 8 ?
                   <ConnectStorageView
-                    connectBlockstackStore={this.connectBlockstackStore}
-                    connectDropbox={this.conenctDropbox}
+                    connectGaiaHub={this.connectGaiaHub}
+                    connectDropbox={this.connectDropbox}
                   />
                 :
                 null
