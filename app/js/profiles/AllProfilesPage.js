@@ -164,7 +164,7 @@ class IdentityPage extends Component {
           className="container-fluid"
         >
           <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new profile</h3>
+            <h3 className="modal-heading">Enter your password to create a new Blockchain ID</h3>
             <div>
               {createProfileError ?
                 <Alert key="1" message="Incorrect password" status="danger" />
@@ -189,7 +189,7 @@ class IdentityPage extends Component {
               {this.state.processing ?
                 <span>Creating...</span>
                 :
-                <span>Create new profile</span>
+                <span>Create new ID</span>
               }
             </button>
           </form>
@@ -251,7 +251,7 @@ class IdentityPage extends Component {
               <button
                 className="btn btn-primary"
                 onClick={this.openPasswordPrompt}
-              >+ Create
+              >+ Create new ID
               </button>
             </div>
           </div>
