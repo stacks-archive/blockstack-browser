@@ -310,14 +310,6 @@ class DefaultProfilePage extends Component {
             </div>
 
             <div className="row">
-              {!identity.canAddUsername &&
-                (<div className="col text-center">
-                  <Link to={`/profiles/${domainName}/zone-file`}
-                    className="btn btn-link">
-                    Advanced
-                  </Link>
-                </div>
-              )}
               <div className="col text-center">
 
               </div>
