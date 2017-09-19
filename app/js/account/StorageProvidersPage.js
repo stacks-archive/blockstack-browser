@@ -93,7 +93,7 @@ class StorageProvidersPage extends Component {
   }
 
   connectSharedService() {
-    const storageProvider = "http://localhost:5000"
+    const storageProvider = this.props.api.gaiaHubUrl
     const signer = this.props.identityKeypairs[0].key
     connectToBlockstackService(storageProvider, signer)
       .then( (gaiaHubConfig) => {
