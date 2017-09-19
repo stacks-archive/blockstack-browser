@@ -223,11 +223,13 @@ class IdentityPage extends Component {
                           label={identity.domainName}
                           pending={!identity.registered}
                           avatarUrl={person.avatarUrl() || ''}
-                          url={`/profiles/${identity.domainName}/local`}
+                          onClick={(event) => {
+                            event.preventDefault()
+                            this.setDefaultIdentity(identity.domainName)
+                          }}
                           ownerAddress={identity.ownerAddress}
                           canAddUsername={identity.canAddUsername}
                           isDefault={identity.domainName === this.props.defaultIdentity}
-                          setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
                         />
                       )
                     } else {
