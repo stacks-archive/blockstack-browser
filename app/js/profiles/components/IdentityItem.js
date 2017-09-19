@@ -52,7 +52,7 @@ class IdentityItem extends Component {
                 {this.props.isDefault ?
                   <span>Default ID <i className="fa fa-check"></i></span>
                 :
-                  <a href="#" onClick={this.props.onClick}>Set as Default ID</a>
+                  <span>&nbsp;</span>
                 }
               </li>
             </ul>
