@@ -51,7 +51,7 @@ function uploadToGaiaHub(hubConfig, name, contents){
     fetch(`${hubConfig.server}/store/${hubConfig.address}/${name}`,
           { method : 'POST',
             headers: {'Content-Type': 'application/octet-stream',
-                    'Authentication': `bearer ${hubConfig.token}`},
+                    'Authorization': `bearer ${hubConfig.token}`},
             body: contents })
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
