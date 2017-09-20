@@ -160,7 +160,7 @@ class EditProfilePage extends Component {
 
         <div>
           {this.state.profile && this.state.domainName ?
-          <div className="container-fluid">
+          <div className="container-fluid no-padding">
             <div className="row">
 
               { this.state.tabName === "" ? (
