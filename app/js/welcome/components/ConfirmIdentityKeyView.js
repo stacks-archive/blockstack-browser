@@ -63,7 +63,7 @@ class ConfirmIdentityKeyView extends Component {
         <h3 className="modal-heading">
           Let&#39;s verify your identity key to confirm you&#39;ve kept it in a safe place
         </h3>
-        <p className="modal-body">Tap each word your in the correct order:</p>
+        <p className="modal-body">Tap each word in the correct order:</p>
         <p className="tapped-identity-words">
             {this.state.tappedWords.map((tappedWord) => {
                 return (
