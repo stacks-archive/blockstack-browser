@@ -14,7 +14,8 @@ class InputGroup extends Component {
     textarea: PropTypes.bool,
     textareaRows: PropTypes.number,
     required: PropTypes.bool,
-    onReturnKeyPress: PropTypes.func
+    onReturnKeyPress: PropTypes.func,
+    hidden: PropTypes.bool
   }
 
   constructor(props) {
@@ -62,7 +63,7 @@ class InputGroup extends Component {
     }
 
     return (
-      <div className="form-group m-b-11">
+      <div className={this.props.hidden? 'form-group m-b-11 hidden-form-group': 'form-group m-b-11' }>
         <fieldset>
           <label className={`${labelClass}`}>
             {this.props.label}
