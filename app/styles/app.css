@@ -566,13 +566,12 @@ form.modal-form > div.form-group{margin-bottom:0;}
 /* Medium devices (desktops, 975px and up) */
 @media (min-width:992px){
   /* 16. Navbars */
-  .navbar-expand{width:50%;}
   .navbar-expand .navbar-nav .nav-link > img {width:115%;}
 
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 	.pro-wrap{min-width:905px;}
 	.app-container{max-width:954px;margin:0 auto;}
-	.app-wrap{width:95%;max-width:1025px;margin-top:10%;}
+	.app-wrap{width:95%;margin-top:10%;}
   div.ReactModal__Content.ReactModal__Content--after-open{margin-top:-25%;}
 	.app-box-wrap{width:190px;padding:0;}
   .app-box img{width:128px;-webkit-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 80px 0px rgba(0,0,0,0.15);-moz-border-radius:33px;-webkit-border-radius:33px;border-radius:33px;}
@@ -581,7 +580,7 @@ form.modal-form > div.form-group{margin-bottom:0;}
 /* Large devices (large desktops, 1200px to 1400px) */
 @media (min-width:1200px){
 	.app-container{max-width:initial;}
-	.app-wrap{width:90%;max-width:1025px;margin-top:12%;}
+	.app-wrap{width:90%;margin-top:12%;}
   div.ReactModal__Content.ReactModal__Content--after-open{margin-top:-18%;}
 	.profile-content-wrapper{margin-left:160px;max-width:1460px;width:initial;margin-right:0;}
 	.pro-wrap{min-width:80%;}
@@ -589,6 +588,6 @@ form.modal-form > div.form-group{margin-bottom:0;}
 
 /* Extra large devices (large desktops, 1400px and up) */
 @media (min-width:1400px){
-	.app-wrap{width:75%;max-width:1025px;margin-top:12%;}
+	.app-wrap{width:90%;margin-top:12%;}
   div.ReactModal__Content.ReactModal__Content--after-open{margin-top:-10%;}
 }
