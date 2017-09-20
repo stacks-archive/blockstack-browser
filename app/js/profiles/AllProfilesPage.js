@@ -238,13 +238,15 @@ class IdentityPage extends Component {
                   })}
             </ul>
           </div>
-          <div className="row">
-            <div className="container m-t-40">
-              <button
-                className="btn btn-primary"
-                onClick={this.openPasswordPrompt}
-              >+ Create new ID
-              </button>
+          <div className="container-fluid">
+            <div className="row m-t-40">
+              <div className="col">
+                <button
+                  className="btn btn-primary"
+                  onClick={this.openPasswordPrompt}
+                >+ Create new ID
+                </button>
+              </div>
             </div>
           </div>
         </div>
