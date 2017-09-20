@@ -560,6 +560,7 @@ form.modal-form > div.form-group{margin-bottom:0;}
 	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
 	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
   .qrcode-wallet{max-width:225px;}
+  .container-fluid{max-width: 768px;}
 }
 
 /* Medium devices (desktops, 975px and up) */
