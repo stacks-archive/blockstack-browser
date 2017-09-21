@@ -2,15 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import InputGroup from '../../components/InputGroup'
-import SaveButton from '../../components/SaveButton'
 
-var Dropbox = require('dropbox');
-
-var Dropzone = require('react-dropzone');
+let Dropzone = require('react-dropzone')
 
 function mapStateToProps(state) {
   return {
-    currentIdentity: state.profiles.identity.current,
     localIdentities: state.profiles.identity.localIdentities,
     dropboxAccessToken: state.settings.api.dropboxAccessToken
   }
@@ -22,7 +18,6 @@ class PhotosTab extends Component {
     profile: PropTypes.object.isRequired,
     saveProfile: PropTypes.func.isRequired,
     uploadProfilePhoto: PropTypes.func.isRequired,
-    currentIdentity: PropTypes.object.isRequired,
     localIdentities: PropTypes.object.isRequired,
     dropboxAccessToken: PropTypes.string,
     hasUsername: PropTypes.func.isRequired
@@ -42,12 +37,12 @@ class PhotosTab extends Component {
   }
 
   componentWillMount() {
-    this.setState({profile: this.props.profile})
+    this.setState( {profile: this.props.profile} )
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.profile !== this.props.profile) {
-      this.setState({profile: nextProps.profile})
+      this.setState({ profile: nextProps.profile })
     }
   }
 
