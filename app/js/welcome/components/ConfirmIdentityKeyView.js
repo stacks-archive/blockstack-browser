@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import InputGroup from '../../components/InputGroup'
 
 class ConfirmIdentityKeyView extends Component {
   static propTypes = {
@@ -86,16 +85,6 @@ class ConfirmIdentityKeyView extends Component {
           })}
         </p>
         <form onSubmit={this.confirmIdentityKeyPhraseSubmit}>
-          <InputGroup
-            hidden={true}
-            name="identityKeyPhrase"
-            type="text"
-            label="Identity key"
-            placeholder="Identity key"
-            data={this.state}
-            onChange={this.onValueChange}
-            required
-          />
           <div style={{ marginBottom: '-20px' }}>
             <button
               type="submit"

@@ -77,6 +77,8 @@ a.view-out-link{color:#494f56;}
     border: 3px solid #2C96FF;
     text-align: center;
     content: ' ';
+    min-width: 1fr;
+    min-height: 3em;
 }
 
 .hidden-form-group {
