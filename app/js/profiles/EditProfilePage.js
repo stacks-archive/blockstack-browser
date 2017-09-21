@@ -224,8 +224,10 @@ class EditProfilePage extends Component {
               <div className="col-md-12">
                 <div className="form-group">
                   <fieldset>
-                    <Link to={this.props.location.pathname.replace('/edit', '/local')}
-                      className="btn btn-primary">
+                    <Link
+                      to="/profiles"
+                      className="btn btn-primary"
+                    >
                       Save + View Profile
                     </Link>
                   </fieldset>
