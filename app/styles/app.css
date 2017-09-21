@@ -487,7 +487,6 @@ div.ReactModal__Content.ReactModal__Content--after-open{width:415px;background-c
 .modal-body{color:#080809;line-height:1.125rem;margin-bottom:0.875rem;text-align:center;}
 a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-height:1.125rem;margin:0 auto;text-align:center;display:block;}
 .modal-code{font-family:'Source Code Pro',monospace;color:#616161;font-size:13px;background-color:#E6E6E6;padding:25px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;}
-form.modal-form > div.form-group{margin-bottom:0;}
 .react-modal-pgp{width:700px!important;}
 /* Welcome Modal */
 .welcome-modal div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:rgba(255,255,255,0.9)!important;}
