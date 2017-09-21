@@ -72,7 +72,7 @@ class RestoreView extends Component {
           <div className="m-t-25 modal-body">
             <button
               type="submit"
-              className="btn btn-primary btn-block"
+              className="btn btn-primary btn-block m-b-10"
             >
               Restore account
             </button>
