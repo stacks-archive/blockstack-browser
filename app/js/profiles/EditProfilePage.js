@@ -188,7 +188,9 @@ class EditProfilePage extends Component {
                           <PhotosTab
                             profile={this.state.profile}
                             saveProfile={this.saveProfile}
-                            uploadProfilePhoto={this.uploadProfilePhoto} />
+                            uploadProfilePhoto={this.uploadProfilePhoto}
+                            hasUsername={this.hasUsername}
+                          />
                         )
                       case "Social Accounts":
                         return (
