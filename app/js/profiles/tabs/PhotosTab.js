@@ -2,15 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import InputGroup from '../../components/InputGroup'
-import SaveButton from '../../components/SaveButton'
 
-var Dropbox = require('dropbox');
-
-var Dropzone = require('react-dropzone');
+let Dropzone = require('react-dropzone')
 
 function mapStateToProps(state) {
   return {
-    currentIdentity: state.profiles.identity.current,
     localIdentities: state.profiles.identity.localIdentities,
     dropboxAccessToken: state.settings.api.dropboxAccessToken
   }
@@ -22,9 +18,9 @@ class PhotosTab extends Component {
     profile: PropTypes.object.isRequired,
     saveProfile: PropTypes.func.isRequired,
     uploadProfilePhoto: PropTypes.func.isRequired,
-    currentIdentity: PropTypes.object.isRequired,
     localIdentities: PropTypes.object.isRequired,
-    dropboxAccessToken: PropTypes.string
+    dropboxAccessToken: PropTypes.string,
+    hasUsername: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -41,12 +37,12 @@ class PhotosTab extends Component {
   }
 
   componentWillMount() {
-    this.setState({profile: this.props.profile})
+    this.setState( {profile: this.props.profile} )
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.profile !== this.props.profile) {
-      this.setState({profile: nextProps.profile})
+      this.setState({ profile: nextProps.profile })
     }
   }
 
@@ -117,17 +113,6 @@ class PhotosTab extends Component {
       this.refs.dropzone.open();
   }
 
-  hasUsername() {
-    const localIdentities = this.props.localIdentities
-    const currentDomainName = this.props.currentIdentity.domainName
-    if (!currentDomainName) {
-      return false
-    }
-    else {
-      return currentDomainName !== localIdentities[currentDomainName].ownerAddress
-    }
-  }
-
   storageNotConnected() {
     return this.props.dropboxAccessToken === null
   }
@@ -137,26 +122,31 @@ class PhotosTab extends Component {
           images = this.state.profile.hasOwnProperty('image') ?
             this.state.profile.image : [],
           files = this.state.hasOwnProperty('files') ? this.state.files : []
-    const title = !this.hasUsername() || this.storageNotConnected() ?
+    const title = !this.props.hasUsername() || this.storageNotConnected() ?
     'Add a username & connect your storage to add a photo.' : 'Click here to add a photo'
     return (
       <div>
         <div className="form-group">
            <button
              title={title}
-             disabled={!this.hasUsername() || this.storageNotConnected()}
+             disabled={!this.props.hasUsername() || this.storageNotConnected()}
              className="btn btn-primary"
              onClick={() => {this.createItem("avatar")}}>
              Add Profile Photo
            </button>
         </div>
-        {this.storageNotConnected() || !this.hasUsername() ?
-          <p>You need to connect storage and add a username to this profile before you can manage your photos.</p> 
+        {this.storageNotConnected() || !this.props.hasUsername() ?
+          <p>You need to connect storage and add a username to this profile before you can manage your photos.</p>
         :
         <div>
         { images.map((image, index) => {
           return (
-            <div key={index} className="card">
+            <div key={index} className="card" style={
+              {
+                border: 'inherit',
+                background: 'inherit'
+              }
+            }>
               <div className="card-block">
                 { image.name === 'avatar' ?
                    <div>
@@ -168,8 +158,10 @@ class PhotosTab extends Component {
                         className="dropzone" activeClassName="dropzone-active">
                         { !files[index] && !image.contentUrl ?
                           <div>
-                            <div>Drop your photo here or click/tap to select a file!</div>
-                            <div className="overlay"></div>
+                            <div
+                              className="overlay"
+                            >Drop your photo here
+                            </div>
                           </div>
                         :
                           <div>

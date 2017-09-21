@@ -104,7 +104,7 @@ class ConfirmIdentityKeyView extends Component {
             >
               Continue
             </button>
-            <p>
+            <p className="modal-body">
               <a href="#" className="modal-body" onClick={this.props.showPreviousView}>Back</a>
             </p>
           </div>

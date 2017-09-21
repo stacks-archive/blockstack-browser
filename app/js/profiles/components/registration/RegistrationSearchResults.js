@@ -2,18 +2,12 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import roundTo from 'round-to'
 
-
-const nameResultStyle = {
-  marginBottom: '3em'
-}
-
 const availabilityHeaderStyle = {
   marginTop: '1em',
   marginBottom: '0.5em'
 }
 
-const RegistrationSearchResults = (props) =>
-  (
+const RegistrationSearchResults = (props) => (
   <div>
     <a
       href=""
@@ -23,7 +17,9 @@ const RegistrationSearchResults = (props) =>
       &lt; Back
     </a>
     <br />
+
     <h3 className="modal-heading">Available names</h3>
+
     <div className="modal-body">
       {props.searchingUsername ?
         props.nameSuffixes.map((nameSuffix) => {
@@ -42,6 +38,7 @@ const RegistrationSearchResults = (props) =>
             price = nameAvailabilityObject.price
           }
           price = roundTo.up(price, 6)
+
           return (
             <div key={nameSuffix}>
             {searching ?
@@ -49,7 +46,7 @@ const RegistrationSearchResults = (props) =>
               :
               <div>
                 {available ?
-                  <div style={nameResultStyle}>
+                  <div>
                     <h4 style={availabilityHeaderStyle}>{name}</h4>
                     {isSubdomain ?
                       <Link
@@ -94,7 +91,6 @@ const RegistrationSearchResults = (props) =>
                       {name} is already taken
                     </button>
                   </div>
-
                 }
               </div>
             }

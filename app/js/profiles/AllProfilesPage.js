@@ -44,7 +44,8 @@ class IdentityPage extends Component {
     encryptedBackupPhrase: PropTypes.string.isRequired,
     setDefaultIdentity: PropTypes.string.isRequired,
     resetCreateNewProfileError: PropTypes.func.isRequired,
-    createProfileError: PropTypes.string
+    createProfileError: PropTypes.string,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -164,7 +165,7 @@ class IdentityPage extends Component {
           className="container-fluid"
         >
           <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new profile</h3>
+            <h3 className="modal-heading">Enter your password to create a new Blockchain ID</h3>
             <div>
               {createProfileError ?
                 <Alert key="1" message="Incorrect password" status="danger" />
@@ -189,48 +190,66 @@ class IdentityPage extends Component {
               {this.state.processing ?
                 <span>Creating...</span>
                 :
-                <span>Create new profile</span>
+                <span>Create new ID</span>
               }
             </button>
           </form>
         </Modal>
-
-        <SecondaryNavBar 
-            leftButtonTitle="Back" 
-            leftButtonLink="/profiles"
-            rightButtonTitle="+ Create"
-            onRightButtonClick={this.openPasswordPrompt} />
-
+        <SecondaryNavBar
+          leftButtonTitle="Edit"
+          leftButtonLink={`/profiles/${this.props.defaultIdentity}/edit`}
+          centerButtonTitle="View"
+          centerButtonLink="/profiles"
+          rightButtonTitle="More"
+          rightButtonLink="/profiles/i/all"
+          isRightActive
+        />
         <div className="m-t-40">
           <div className="container-fluid">
             <ul className="card-wrapper">
-              {Object.keys(this.state.localIdentities).map((domainName) => {
-                const identity = this.state.localIdentities[domainName]
-                const person = new Person(identity.profile)
-                if (identity.ownerAddress === domainName) {
-                  identity.canAddUsername = true
-                } else {
-                  identity.canAddUsername = false
-                }
-                if (identity.domainName) {
-                  return (
-                    <IdentityItem
-                      key={identity.domainName}
-                      label={identity.domainName}
-                      pending={!identity.registered}
-                      avatarUrl={person.avatarUrl() || ''}
-                      url={`/profiles/${identity.domainName}/local`}
-                      ownerAddress={identity.ownerAddress}
-                      canAddUsername={identity.canAddUsername}
-                      isDefault={identity.domainName === this.props.defaultIdentity}
-                      setDefaultIdentity={() => this.setDefaultIdentity(identity.domainName)}
-                    />
-                  )
-                } else {
-                  return null
-                }
-              })}
+                  {Object.keys(this.state.localIdentities).map((domainName) => {
+                    const identity = this.state.localIdentities[domainName]
+                    const person = new Person(identity.profile)
+
+                    if (identity.ownerAddress === domainName) {
+                      identity.canAddUsername = true
+                    } else {
+                      identity.canAddUsername = false
+                    }
+
+                    if (identity.domainName) {
+                      return (
+                        <IdentityItem
+                          key={identity.domainName}
+                          label={identity.domainName}
+                          pending={!identity.registered}
+                          avatarUrl={person.avatarUrl() || ''}
+                          onClick={(event) => {
+                            event.preventDefault()
+                            this.setDefaultIdentity(identity.domainName)
+                          }}
+                          ownerAddress={identity.ownerAddress}
+                          canAddUsername={identity.canAddUsername}
+                          isDefault={identity.domainName === this.props.defaultIdentity}
+                          router={this.props.router}
+                        />
+                      )
+                    } else {
+                      return null
+                    }
+                  })}
             </ul>
+          </div>
+          <div className="container-fluid">
+            <div className="row m-t-40">
+              <div className="col">
+                <button
+                  className="btn btn-primary"
+                  onClick={this.openPasswordPrompt}
+                >+ Create new ID
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

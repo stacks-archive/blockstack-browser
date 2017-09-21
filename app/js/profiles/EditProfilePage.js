@@ -133,20 +133,34 @@ class EditProfilePage extends Component {
   }
 
   render() {
+    const domainName = this.state.domainName
     return (
       <div>
-        { this.state.tabName === "" ? (
-          <SecondaryNavBar 
-            leftButtonTitle="Back" 
-            leftButtonLink="/profiles" />
+      {this.state.tabName === '' ? (
+        <SecondaryNavBar
+          leftButtonTitle="Edit"
+          leftButtonLink={`/profiles/${domainName}/edit`}
+          isLeftActive
+          centerButtonTitle="View"
+          centerButtonLink="/profiles"
+          rightButtonTitle="More"
+          rightButtonLink="/profiles/i/all"
+        />
         ) : (
-          <SecondaryNavBar 
-            leftButtonTitle="Back" 
-            onLeftButtonClick={() => this.backClick()} />
+        <SecondaryNavBar
+          leftButtonTitle="Edit"
+          onLeftButtonClick={() => this.backClick()}
+          isLeftActive
+          centerButtonTitle="View"
+          centerButtonLink="/profiles"
+          rightButtonTitle="More"
+          rightButtonLink="/profiles/i/all"
+        />
         )}
+
         <div>
           {this.state.profile && this.state.domainName ?
-          <div>
+          <div className="container-fluid no-padding">
             <div className="row">
 
               { this.state.tabName === "" ? (
@@ -155,7 +169,7 @@ class EditProfilePage extends Component {
                   activeTab={this.state.tabName}
                   onClick={this.changeTabs} />
               </div>
-              ) : 
+              ) :
               (<div></div>)}
 
               <div className="col-md-12">
@@ -174,7 +188,9 @@ class EditProfilePage extends Component {
                           <PhotosTab
                             profile={this.state.profile}
                             saveProfile={this.saveProfile}
-                            uploadProfilePhoto={this.uploadProfilePhoto} />
+                            uploadProfilePhoto={this.uploadProfilePhoto}
+                            hasUsername={this.hasUsername}
+                          />
                         )
                       case "Social Accounts":
                         return (
@@ -210,14 +226,16 @@ class EditProfilePage extends Component {
               <div className="col-md-12">
                 <div className="form-group">
                   <fieldset>
-                    <Link to={this.props.location.pathname.replace('/edit', '/local')}
-                      className="btn btn-primary">
+                    <Link
+                      to="/profiles"
+                      className="btn btn-primary"
+                    >
                       Save + View Profile
                     </Link>
                   </fieldset>
                 </div>
               </div>
-              ) : 
+              ) :
               (<div></div>)}
 
             </div>

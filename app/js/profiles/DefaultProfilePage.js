@@ -194,7 +194,7 @@ class DefaultProfilePage extends Component {
           className="container-fluid"
         >
           <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new profile</h3>
+            <h3 className="modal-heading">Enter your password to create a new Blockchain ID</h3>
             <div>
               {createProfileError ?
                 <Alert key="1" message="Incorrect password" status="danger" />
@@ -219,7 +219,7 @@ class DefaultProfilePage extends Component {
               {this.state.processing ?
                 <span>Creating...</span>
                 :
-                <span>Create new profile</span>
+                <span>Create new ID</span>
               }
             </button>
           </form>
@@ -229,12 +229,15 @@ class DefaultProfilePage extends Component {
           <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
         </ReactTooltip>
         <div>
-          <SecondaryNavBar 
-            leftButtonTitle="Edit" 
+          <SecondaryNavBar
+            leftButtonTitle="Edit"
             leftButtonLink={`/profiles/${domainName}/edit`}
-            rightButtonTitle="All Avatars" 
-            rightButtonLink="/profiles/i/all" />
-
+            centerButtonTitle="View"
+            centerButtonLink="/profiles"
+            isCenterActive
+            rightButtonTitle="More"
+            rightButtonLink="/profiles/i/all"
+          />
           <div className="container-fluid m-t-50">
             <div className="row">
               <div className="col-12">
@@ -307,37 +310,14 @@ class DefaultProfilePage extends Component {
             </div>
 
             <div className="row">
-              {!identity.canAddUsername &&
-                (<div className="col text-center">
-                  <Link to={`/profiles/${domainName}/zone-file`}
-                    className="btn btn-link">
-                    Advanced
-                  </Link>
-                </div>
-              )}
               <div className="col text-center">
-                {identity.canAddUsername ? 
-                  (<button
-                    className="btn btn-link"
-                    disabled
-                    title="Add a username to view publicly."> 
-                    View Publicly
-                  </button>
-                  ) : (
-                  <Link to={`/profiles/${domainName}`}
-                  className="btn btn-link">
-                  View Publicly
-                  </Link> 
-                  )}
+
               </div>
               <div className="col text-center">
-                <button
-                  className="btn btn-link" onClick={this.openPasswordPrompt}> 
-                  + Create
-                </button>
+
               </div>
             </div>
-            
+
           </div>
 
           <div className="container-fluid p-0">
