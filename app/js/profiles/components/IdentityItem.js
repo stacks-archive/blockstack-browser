@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { Link } from 'react-router'
 
 import Image from '../../components/Image'
 
@@ -11,7 +10,8 @@ class IdentityItem extends Component {
     ownerAddress: PropTypes.string.isRequired,
     canAddUsername: PropTypes.bool.isRequired,
     isDefault: PropTypes.bool,
-    onClick: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -37,9 +37,16 @@ class IdentityItem extends Component {
               </li>
               <li>
                 {this.props.canAddUsername ?
-                 <Link to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
+                  <a
+                    href="#"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      event.stopPropagation()
+                      this.props.router.push(`/profiles/i/add-username/${this.props.ownerAddress}/search`)
+                    }}
+                  >
                    Add username
-                 </Link>
+                 </a>
                  :
                   <div>
                      <p className="card-subtitle">

@@ -44,7 +44,8 @@ class IdentityPage extends Component {
     encryptedBackupPhrase: PropTypes.string.isRequired,
     setDefaultIdentity: PropTypes.string.isRequired,
     resetCreateNewProfileError: PropTypes.func.isRequired,
-    createProfileError: PropTypes.string
+    createProfileError: PropTypes.string,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -230,6 +231,7 @@ class IdentityPage extends Component {
                           ownerAddress={identity.ownerAddress}
                           canAddUsername={identity.canAddUsername}
                           isDefault={identity.domainName === this.props.defaultIdentity}
+                          router={this.props.router}
                         />
                       )
                     } else {
