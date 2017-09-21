@@ -141,7 +141,12 @@ class PhotosTab extends Component {
         <div>
         { images.map((image, index) => {
           return (
-            <div key={index} className="card">
+            <div key={index} className="card" style={
+              {
+                border: 'inherit',
+                background: 'inherit'
+              }
+            }>
               <div className="card-block">
                 { image.name === 'avatar' ?
                    <div>
@@ -153,8 +158,10 @@ class PhotosTab extends Component {
                         className="dropzone" activeClassName="dropzone-active">
                         { !files[index] && !image.contentUrl ?
                           <div>
-                            <div>Drop your photo here or click/tap to select a file!</div>
-                            <div className="overlay"></div>
+                            <div
+                              className="overlay"
+                            >Drop your photo here
+                            </div>
                           </div>
                         :
                           <div>
