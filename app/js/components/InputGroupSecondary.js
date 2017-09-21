@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
-class InputGroup extends Component {
+class InputGroupSecondary extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
@@ -13,22 +13,7 @@ class InputGroup extends Component {
     inverse: PropTypes.bool,
     textarea: PropTypes.bool,
     textareaRows: PropTypes.number,
-    required: PropTypes.bool,
-    onReturnKeyPress: PropTypes.func
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.onKeyPress = this.onKeyPress.bind(this)
-  }
-
-  onKeyPress(e) {
-    if (this.props.onReturnKeyPress !== undefined) {
-      if(e.key === 'Enter') {
-        this.props.onReturnKeyPress()
-      }
-    }
+    required: PropTypes.bool
   }
 
   render() {
@@ -52,17 +37,17 @@ class InputGroup extends Component {
     if (this.props.required) {
       required = this.props.required
     }
-    let inputClass = "form-control"
+    let inputClass = "form-control form-control-secondary"
     if (this.props.inverse) {
       inputClass = "form-inverse-control"
     }
-    let labelClass = "form-control-label"
+    let labelClass = "form-control-label form-control-label-secondary"
     if (this.props.inverse) {
       labelClass = "form-control-label form-inverse-control-label"
     }
 
     return (
-      <div className="form-group m-b-11">
+      <div className="form-group">
         <fieldset>
           <label className={`${labelClass}`}>
             {this.props.label}
@@ -90,8 +75,7 @@ class InputGroup extends Component {
                 this.props.placeholder ? this.props.placeholder : this.props.label
               }
               value={value}
-              onChange={this.props.onChange}
-              onKeyPress={this.onKeyPress} />
+              onChange={this.props.onChange} />
             }
           </div>
         </fieldset>
@@ -100,4 +84,4 @@ class InputGroup extends Component {
   }
 }
 
-export default InputGroup
+export default InputGroupSecondary

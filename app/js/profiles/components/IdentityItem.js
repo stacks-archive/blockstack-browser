@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { Link } from 'react-router'
 
 import Image from '../../components/Image'
 
@@ -7,49 +6,50 @@ class IdentityItem extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     avatarUrl: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
     pending: PropTypes.bool.isRequired,
     ownerAddress: PropTypes.string.isRequired,
     canAddUsername: PropTypes.bool.isRequired,
     isDefault: PropTypes.bool,
-    setDefaultIdentity: PropTypes.func.isRequired
+    onClick: PropTypes.func.isRequired,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props)
     this.state = {}
-
-    this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
   }
 
-  setDefaultIdentity(event) {
-    event.preventDefault()
-    this.props.setDefaultIdentity()
-  }
 
   render() {
     return (
-      <li className="col-md-6 col-lg-4 col-xl-3 card-list-wrap">
-        <Link to={this.props.url} className="card profile-list-card container-fluid m-b-35">
-          <div className="card-avatar profile-list-avatar col-xs-3">
+      <a href="" onClick={this.props.onClick} className="card card-default m-b-35">
+        <div>
+          <div className="avatar-sm float-left" style={{ display: 'inline' }}>
             <Image src={this.props.avatarUrl}
-              fallbackSrc="/images/avatar.png" className="img-circle img-cover" />
+              fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" style={{ display: 'inline-block' }} />
           </div>
-          <div className="col-xs-9">
-            <ul className="profile-card-list">
+          <div style={{ display: 'inline' }}>
+            <ul className="container-fluid list-card">
               <li>
-                <h3 className="card-title profile-list-card-title">
+                <p className="card-title text-secondary">
                   {this.props.label}
-                </h3>
+                </p>
               </li>
               <li>
                 {this.props.canAddUsername ?
-                 <Link to={`/profiles/i/add-username/${this.props.ownerAddress}/search`}>
+                  <a
+                    href="#"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      event.stopPropagation()
+                      this.props.router.push(`/profiles/i/add-username/${this.props.ownerAddress}/search`)
+                    }}
+                  >
                    Add username
-                 </Link>
+                 </a>
                  :
                   <div>
-                     <p className="card-subtitle profile-list-card-subtitle">
+                     <p className="card-subtitle">
                       {this.props.pending ? '(pending)' : '\u00A0'}
                      </p>
                   </div>
@@ -57,15 +57,15 @@ class IdentityItem extends Component {
               </li>
               <li>
                 {this.props.isDefault ?
-                  <span className="default">Default Profile <i className="fa fa-check"></i></span>
+                  <span>Default ID <i className="fa fa-check"></i></span>
                 :
-                  <a href="#" onClick={this.setDefaultIdentity}>Set as Default Profile</a>
+                  <span>&nbsp;</span>
                 }
               </li>
             </ul>
           </div>
-        </Link>
-      </li>
+        </div>
+      </a>
     )
   }
 }

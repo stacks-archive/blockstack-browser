@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import EditProfileHeader from './components/EditProfileHeader'
 import ProfileEditingSidebar from './components/ProfileEditingSidebar'
 import { IdentityActions } from './store/identity'
@@ -51,7 +52,7 @@ class EditProfilePage extends Component {
       profile: null,
       profileJustSaved: false,
       verifications: [],
-      tabName: "Basic Info"
+      tabName: ""
     }
 
     this.saveProfile = this.saveProfile.bind(this)
@@ -121,6 +122,10 @@ class EditProfilePage extends Component {
     this.setState({tabName: tabName})
   }
 
+  backClick() {
+    this.setState({tabName: ''})
+  }
+
   hasUsername() {
     const localIdentities = this.props.localIdentities
     const currentDomainName = this.state.domainName
@@ -128,28 +133,46 @@ class EditProfilePage extends Component {
   }
 
   render() {
+    const domainName = this.state.domainName
     return (
-      <div className="card-list-container profile-content-wrapper">
-        {this.state.profile && this.state.domainName ?
+      <div>
+      {this.state.tabName === '' ? (
+        <SecondaryNavBar
+          leftButtonTitle="Edit"
+          leftButtonLink={`/profiles/${domainName}/edit`}
+          isLeftActive
+          centerButtonTitle="View"
+          centerButtonLink="/profiles"
+          rightButtonTitle="More"
+          rightButtonLink="/profiles/i/all"
+        />
+        ) : (
+        <SecondaryNavBar
+          leftButtonTitle="Edit"
+          onLeftButtonClick={() => this.backClick()}
+          isLeftActive
+          centerButtonTitle="View"
+          centerButtonLink="/profiles"
+          rightButtonTitle="More"
+          rightButtonLink="/profiles/i/all"
+        />
+        )}
+
         <div>
-          <EditProfileHeader title="Edit Profile"/>
-          <div className="vertical-split-content">
+          {this.state.profile && this.state.domainName ?
+          <div className="container-fluid no-padding">
             <div className="row">
-              <div className="col-md-3 sidebar-list">
+
+              { this.state.tabName === "" ? (
+              <div className="col-md-12">
                 <ProfileEditingSidebar
                   activeTab={this.state.tabName}
                   onClick={this.changeTabs} />
-                <hr />
-                <div className="form-group">
-                  <fieldset>
-                    <Link to={this.props.location.pathname.replace('/edit', '/local')}
-                      className="btn btn-primary">
-                      Save + View Profile
-                    </Link>
-                  </fieldset>
-                </div>
               </div>
-              <div className="col-md-7">
+              ) :
+              (<div></div>)}
+
+              <div className="col-md-12">
                 { this.state.profile ? (
                 <div>
                   {(() => {
@@ -165,7 +188,9 @@ class EditProfilePage extends Component {
                           <PhotosTab
                             profile={this.state.profile}
                             saveProfile={this.saveProfile}
-                            uploadProfilePhoto={this.uploadProfilePhoto} />
+                            uploadProfilePhoto={this.uploadProfilePhoto}
+                            hasUsername={this.hasUsername}
+                          />
                         )
                       case "Social Accounts":
                         return (
@@ -196,17 +221,34 @@ class EditProfilePage extends Component {
                 </div>
                 ) : null }
               </div>
+
+              { this.state.tabName !== "" ? (
+              <div className="col-md-12">
+                <div className="form-group">
+                  <fieldset>
+                    <Link
+                      to="/profiles"
+                      className="btn btn-primary"
+                    >
+                      Save + View Profile
+                    </Link>
+                  </fieldset>
+                </div>
+              </div>
+              ) :
+              (<div></div>)}
+
             </div>
           </div>
+          :
+          <div>
+            <h1 className="h1-modern vertical-split-content">
+              Page Not Found
+            </h1>
+            <p>You don't own this profile and therefore you cannot edit it.</p>
+          </div>
+          }
         </div>
-        :
-        <div>
-          <h1 className="h1-modern vertical-split-content">
-            Page Not Found
-          </h1>
-          <p>You don't own this profile and therefore you cannot edit it.</p>
-        </div>
-        }
       </div>
     )
   }
