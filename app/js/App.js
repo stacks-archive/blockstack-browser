@@ -121,8 +121,9 @@ class App extends Component {
     // We also reset the default to the 1st one if it no longer exists. This
     // can happen during account restoration when the user already has a username
     const localIdentities = Object.keys(nextProps.localIdentities)
+
     if (localIdentities.length &&
-      (!nextProps.defaultIdentity || !localIdentities.indexOf(nextProps.defaultIdentity) < 0)) {
+      (!nextProps.defaultIdentity || localIdentities.indexOf(nextProps.defaultIdentity) < 0)) {
       nextProps.setDefaultIdentity(nextProps.localIdentities[localIdentities[0]].domainName)
     }
   }
