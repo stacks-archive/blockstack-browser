@@ -28,7 +28,7 @@ class Alert extends Component {
     return (
       <div>
         { this.state.shown ?
-        <div className={`alert alert-dismissible fade in alert-${this.props.status}`} role="alert">
+        <div className={`alert alert-dismissible fade show alert-${this.props.status}`} role="alert">
           <button className="close" data-dismiss="alert" aria-label="Close" onClick={this.hide}>
             <span aria-hidden="true">&times;</span>
           </button>

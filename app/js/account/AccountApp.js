@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
-import AccountSidebar from './components/AccountSidebar'
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import PageHeader from '../components/PageHeader'
-import StatusBar from '../components/StatusBar'
+import Navbar from '../components/Navbar'
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
@@ -22,19 +23,16 @@ class AccountApp extends Component {
   }
 
   render() {
-    const childPath = this.props.children.props.route.path
-    const activeTabUrl = `/account/${childPath}`
-
     return (
-      <div className="body-inner bkg-white">
-        <StatusBar />
-        <PageHeader title="Account" />
-        <div className="container vertical-split-content">
+      <div className="body-inner bkg-light">
+        <Navbar activeTab="settings"/>
+        { this.props.location.pathname !== '/account' && (
+        <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/account" />
+        )}
+
+        <div className="container-fluid vertical-split-content">
           <div className="row">
-            <div className="col-md-3">
-              <AccountSidebar activeTab={activeTabUrl} />
-            </div>
-            <div className="col-md-9">
+            <div className="w-100">
               {this.props.children}
             </div>
           </div>
