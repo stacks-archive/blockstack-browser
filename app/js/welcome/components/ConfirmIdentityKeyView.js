@@ -9,7 +9,6 @@ class ConfirmIdentityKeyView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      submitEnabled: false,
       identityKeyPhrase: props.identityKeyPhrase,
       tappedWords: [],
       keyPhraseArrays:
@@ -89,7 +88,6 @@ class ConfirmIdentityKeyView extends Component {
             <button
               type="submit"
               className="btn btn-primary btn-block m-b-10"
-              disabled={this.state.submitEnabled}
             >
               Continue
             </button>
