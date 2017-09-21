@@ -19,7 +19,7 @@ class WriteDownkeyView extends Component {
           <button className="btn btn-primary btn-block m-b-10" onClick={this.props.showNextView}>
             I’ve written it down
           </button>
-          <p>
+          <p className="modal-body">
             <a href="#" className="modal-body" onClick={this.props.showPreviousView}>Back</a>
           </p>
         </div>
