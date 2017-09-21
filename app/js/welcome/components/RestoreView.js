@@ -60,7 +60,7 @@ class RestoreView extends Component {
             onChange={this.onValueChange}
             required
           />
-          <InputGroup 
+          <InputGroup
             name="passwordConfirmation"
             type="password"
             label="Confirm password"
@@ -69,7 +69,7 @@ class RestoreView extends Component {
             onChange={this.onValueChange}
             required
           />
-          <div className="m-t-25">
+          <div className="m-t-25 modal-body">
             <button
               type="submit"
               className="btn btn-primary btn-block"
