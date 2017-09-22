@@ -16,7 +16,7 @@
 - [ ] on `develop` branch `git push origin develop`
 - [ ] `git push origin --tags`
 - [ ] `git checkout master`
-- [ ] Create a branch of master so that we give CircleCI a chance to run tests successfully `git checkout -b master-test` 
+- [ ] Create a branch of master so that we give CircleCI a chance to run tests successfully `git checkout -b master-test`
 - [ ] `git push origin master-test`
 - [ ] After CircleCI tests on `master-test` pass, `git checkout master`
 - [ ] `git push origin master`
@@ -27,8 +27,8 @@
 - [ ] Draft a new release on github: https://github.com/blockstack/blockstack-browser/releases/new
 - [ ] Enter the tag (eg. `v0.14.0`) the tag box and as the name of the release.
 - [ ] Enter release notes
+- [ ] Rename files to format `Blockstack-for-<platform>-v0.14.0<.extension>`
 - [ ] Upload the `.dmg` file generated earlier
 - [ ] Upload Linux launcher (packaging deploys it to azure "https://blockstack.blob.core.windows.net/packaging/blockstack-launcher-vTAG")
 - [ ] Upload Windows installer (packaging deploys it to azure "https://blockstack.blob.core.windows.net/packaging/windows-installer-vTAG.exe")
 - [ ] After verifying tests, push new version to update server.
-
