@@ -45,6 +45,9 @@
       "version": "15.0",// React version, default to the latest React stable release
       "flowVersion": "0.53" // Flow version
     },
+    "import/resolver": {
+      "babel-module": {}
+    },
     "propWrapperFunctions": [ "forbidExtraProps" ] // The names of any functions used to wrap the propTypes object, such as `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
   }
 }
