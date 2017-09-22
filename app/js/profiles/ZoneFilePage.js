@@ -6,6 +6,7 @@ import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
 import { findAddressIndex } from '../utils'
+import AdvancedSidebar from './components/AdvancedSidebar'
 
 
 import log4js from 'log4js'
@@ -30,7 +31,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions, IdentityActions), dispatch)
 }
 
-class EditProfilePage extends Component {
+class ZoneFilePage extends Component {
   static propTypes = {
     currentIdentity: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
@@ -171,6 +172,7 @@ class EditProfilePage extends Component {
           <div className="vertical-split-content">
             <div className="row">
               <div className="col-md-3 sidebar-list">
+                <AdvancedSidebar activeTab="zone-file" name={name} />
               </div>
               <div className="col-md-7">
                 <Link to={`/profiles/${name}/local`}>&lt; Back </Link>
@@ -249,4 +251,4 @@ class EditProfilePage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage)
+export default connect(mapStateToProps, mapDispatchToProps)(ZoneFilePage)

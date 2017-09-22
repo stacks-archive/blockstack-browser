@@ -1,16 +1,16 @@
-# Blockstack Portal Design Recommendations
+# Blockstack Human Interface Design Guide
 
 Blockstack is a progressive open source platform that values user experience and usercentric design. As a result of this passion we have developed design elements and recommendations to assist developers building on Blockstack to quickly and easily provide an optimal and consistent user experience.
 
 ## Status Bar
-The reasoning behind the Blockstack portal status bar is to provide users with an intuitive way to navigate back to their home screen and possibly other useful information.
+The reasoning behind the Blockstack browser status bar is to provide users with an intuitive way to navigate back to their home screen and possibly other useful information.
 
 What we have discovered in building these new decentralized applications was that, if the developer is left with creating their own home screen button they will place it in a consistent position than it's application peers.
 
-The other secondary objective of the Blockstack portal status bar is to provide developers with a quick and easy way to implement this global standard. It is imperative that developers can quickly and easily grab a small snippet of code, paste it into their application and deploy.
+The other secondary objective of the Blockstack browser status bar is to provide developers with a quick and easy way to implement this global standard. It is imperative that developers can quickly and easily grab a small snippet of code, paste it into their application and deploy.
 
 ### Positioning & sizing
-The Blockstack portal status bar is a appears along the upper edge of the screen with a full width. `width: 100%;`. And height of `height: 38px;`. 
+The Blockstack browser status bar is a appears along the upper edge of the screen with a full width. `width: 100%;`. And height of `height: 38px;`. 
 
 Although the developer may choose to utilize either the `status-bar-light`, `status-bar status-bar-dark`, `status-bar status-bar-transparent-light` or `status-bar status-bar-transparent-dark` status bar, we highly recommend leaving the top 38px the space required for future information that may appear in the status bar.
 

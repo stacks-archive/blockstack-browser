@@ -80,9 +80,9 @@ class BackupAccountPage extends Component {
   render() {
     return (
       <div className="m-b-100">
-        <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
+        <h3 className="container-fluid m-t-10">
           Backup Account
-        </h1>
+        </h3>
         {
           this.state.alerts.map((alert, index) => {
             return (
@@ -113,15 +113,16 @@ class BackupAccountPage extends Component {
             </div>
           :
             <div>
-              <p style={{ paddingLeft: '15px' }}>
+              <p className="container-fluid">
                 <i>Enter your password to view your backup phrase and backup your account.</i>
               </p>
               <InputGroup
                 name="password" label="Password" type="password"
                 data={this.state} onChange={this.onChange}
+                onReturnKeyPress={this.decryptBackupPhrase}
               />
-              <div className="container m-t-40">
-                <button className="btn btn-primary" onClick={this.decryptBackupPhrase}>
+              <div className="container-fluid m-t-40">
+                <button className="btn btn-primary btn-block" onClick={this.decryptBackupPhrase}>
                   Decrypt Backup Phrase
                 </button>
               </div>

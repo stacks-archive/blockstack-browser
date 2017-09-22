@@ -324,7 +324,7 @@ class RegisterPage extends Component {
               />
               <button
                 type="submit"
-                className="btn btn-electric-blue"
+                className="btn btn-primary btn-block"
                 disabled={!this.state.storageConnected}
               >
                 Search

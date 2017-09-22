@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
 import InputGroup from '../components/InputGroup'
+import DeleteAccountModal from './components/DeleteAccountModal'
 import { AccountActions } from './store/account'
 import { decrypt } from '../utils'
 import log4js from 'log4js'
@@ -22,7 +23,8 @@ function mapDispatchToProps(dispatch) {
 
 class DeleteAccountPage extends Component {
   static propTypes = {
-    encryptedBackupPhrase: PropTypes.string.isRequired
+    encryptedBackupPhrase: PropTypes.string.isRequired,
+    deleteAccount: PropTypes.func.isRequired
   }
 
   static contextTypes = {
@@ -34,12 +36,15 @@ class DeleteAccountPage extends Component {
 
     this.state = {
       password: '',
-      alerts: []
+      alerts: [],
+      isOpen: false
     }
 
     this.updateAlert = this.updateAlert.bind(this)
     this.deleteAccount = this.deleteAccount.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   onValueChange(event) {
@@ -56,45 +61,63 @@ class DeleteAccountPage extends Component {
   }
 
   deleteAccount() {
+    this.props.deleteAccount()
+    this.closeModal()
+  }
+
+  openModal() {
     logger.trace('deleteAccount')
     const password = this.state.password
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt backup phrase...')
     decrypt(dataBuffer, password)
-    .then((plaintextBuffer) => {
-      logger.debug('Backup phrase successfully decrypted')
-      logger.debug('Clearing localStorage...')
-      localStorage.clear()
-      logger.trace('Reloading page...')
-      location.reload()
-    }, (error) => {
+    .then(() => {
+      this.setState({ isOpen: true })
+    }, () => {
       this.updateAlert('danger', 'Incorrect password')
     })
+  }
+
+  closeModal() {
+    this.setState({ isOpen: false })
   }
 
   render() {
     return (
       <div className="m-b-100">
-        <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
-          Delete Account
-        </h1>
+        <h3 className="container-fluid m-t-10">
+          Remove Account
+        </h3>
         {
-          this.state.alerts.map((alert, index) => {
-            return (
-              <Alert key={index} message={alert.message} status={alert.status} />
-            )
-          })}
+          this.state.alerts.map((alert, index) => (
+            <Alert key={index} message={alert.message} status={alert.status} />
+          ))
+        }
         <div>
+          <p className="container-fluid">
+            <i>
+              Remove your account from this browser so you can create a new one or
+              restore another account.
+            </i>
+          </p>
           <InputGroup
             name="password" label="Password" type="password"
             data={this.state} onChange={this.onValueChange}
+            onReturnKeyPress={this.openModal}
           />
-          <div className="container m-t-40">
-            <button className="btn btn-primary" onClick={this.deleteAccount}>
-              Delete Account
+
+          <div className="container-fluid m-t-40">
+            <button className="btn btn-danger btn-block" onClick={this.openModal}>
+              Remove Account
             </button>
           </div>
         </div>
+        <DeleteAccountModal
+          isOpen={this.state.isOpen}
+          closeModal={this.closeModal}
+          contentLabel="Modal"
+          deleteAccount={this.deleteAccount}
+        />
       </div>
     )
   }

@@ -1,4 +1,4 @@
-# Blockstack Browser [![CircleCI](https://img.shields.io/circleci/project/blockstack/blockstack-browser/master.svg)](https://circleci.com/gh/blockstack/blockstack-portal/tree/master) [![License](https://img.shields.io/github/license/blockstack/blockstack-portal.svg)](https://github.com/blockstack/blockstack-portal/blob/master/LICENSE.md) [![Slack](https://img.shields.io/badge/join-slack-e32072.svg?style=flat)](http://slack.blockstack.org/)
+# Blockstack Browser [![CircleCI](https://img.shields.io/circleci/project/blockstack/blockstack-browser/master.svg)](https://circleci.com/gh/blockstack/blockstack-browser/tree/master) [![License](https://img.shields.io/github/license/blockstack/blockstack-browser.svg)](https://github.com/blockstack/blockstack-browser/blob/master/LICENSE.md) [![Slack](https://img.shields.io/badge/join-slack-e32072.svg?style=flat)](http://slack.blockstack.org/)
 
 The Blockstack Browser Portal allows you to explore the Blockstack internet.
 
@@ -15,7 +15,7 @@ The Blockstack Browser Portal allows you to explore the Blockstack internet.
 
 ## Releases
 
-[Download the latest release](https://github.com/blockstack/blockstack-portal/releases)
+[Download the latest release](https://github.com/blockstack/blockstack-browser/releases)
 
 ## Developing
 
@@ -27,10 +27,10 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 *Please note these instructions have only been tested on macOS 10.12.4.*
 
-1. Download and install the [latest release of Blockstack for Mac](https://github.com/blockstack/blockstack-portal/releases).
+1. Download and install the [latest release of Blockstack for Mac](https://github.com/blockstack/blockstack-browser/releases).
 1. Start Blockstack
 1. Option-click the Blockstack menu bar item and select "Enable Development Mode"
-1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
+1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
 1. Install node dependencies: `npm install`
 1. Click the Blockstack menu bar item and select "Copy Core API password"
 1. Run `npm run dev`
@@ -48,7 +48,7 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 #### Part 2: Install Blockstack Portal
 
-1. Clone this repo: `git clone https://github.com/blockstack/blockstack-portal.git`
+1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
 1. Install node dependencies: `npm install`
 1. Run `npm run dev-proxy` to start the CORS proxy
 1. Run `npm run dev`

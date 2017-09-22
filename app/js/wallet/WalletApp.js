@@ -3,8 +3,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import WalletSidebar from './components/WalletSidebar'
-import StatusBar from '../components/StatusBar'
+import Navbar from '../components/Navbar'
 
 
 function mapStateToProps(state) {
@@ -31,33 +32,20 @@ class WalletApp extends Component {
     const activeTabUrl = `/wallet/${childPath}`
 
     return (
-      <div className="app-wrap-wallet bkg-green">
-          <StatusBar />
-        <div className="container-fluid site-wrapper">
-          <nav className="navbar navbar-toggleable-md navbar-light">
-            <Link to="/wallet/receive" className="navbar-brand">
-              <img src="../images/app-icon-wallet-card-flat.png" />
-            </Link>
-            <div className="navbar-collapse" id="navbarSupportedContent">
-              <ul className="nav navbar-nav m-b-20">
-                <li className="navbar-text">
-                  Wallet
-                </li>
-                <li className="navbar-text navbar-text-secondary-wallet">
-                  Utility
-                </li>
-              </ul>
-            </div>
-          </nav>  
-          <div className="container wallet-container">
-            <div className="col-md-5 wallet-sidebar">
-              <WalletSidebar activeTab={activeTabUrl} />
-            </div>
-            <div className="col-md-7 wallet-content">
-              {this.props.children}
-            </div>
+      <div className="app-wrap-wallet">
+        <Navbar activeTab="wallet"/>
+        <SecondaryNavBar 
+          leftButtonTitle="Receive" 
+          leftButtonLink="/wallet/receive"
+          isLeftActive={(activeTabUrl === '/wallet/receive')}
+          rightButtonTitle="Send" 
+          rightButtonLink="/wallet/send"
+          isRightActive={(activeTabUrl === '/wallet/send')} />
+          <div className="container-fluid col-centered form-container-secondary">
+          <div>
+            {this.props.children}
           </div>
-        </div>
+          </div>
       </div>
     )
   }

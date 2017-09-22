@@ -13,12 +13,12 @@ const LandingPage = (props) =>
         marginRight: 'auto',
         marginLeft: 'auto',
         marginTop: '10px'
-      }} 
+      }}
     />
     <h3 className="modal-heading p-b-25">Join the new internet. <br />
       Use apps that put you in control.
     </h3>
-    <div className="m-t-30 m-b-20">
+    <div className="m-t-30 m-b-20 modal-body">
       <button className="btn btn-primary btn-block m-b-10" onClick={props.showNewInternetView}>
         Get Started
       </button>

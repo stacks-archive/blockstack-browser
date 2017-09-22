@@ -13,7 +13,22 @@ class InputGroup extends Component {
     inverse: PropTypes.bool,
     textarea: PropTypes.bool,
     textareaRows: PropTypes.number,
-    required: PropTypes.bool
+    required: PropTypes.bool,
+    onReturnKeyPress: PropTypes.func
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.onKeyPress = this.onKeyPress.bind(this)
+  }
+
+  onKeyPress(e) {
+    if (this.props.onReturnKeyPress !== undefined) {
+      if(e.key === 'Enter') {
+        this.props.onReturnKeyPress()
+      }
+    }
   }
 
   render() {
@@ -75,7 +90,8 @@ class InputGroup extends Component {
                 this.props.placeholder ? this.props.placeholder : this.props.label
               }
               value={value}
-              onChange={this.props.onChange} />
+              onChange={this.props.onChange}
+              onKeyPress={this.onKeyPress} />
             }
           </div>
         </fieldset>

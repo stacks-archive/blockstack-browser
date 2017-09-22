@@ -1,4 +1,4 @@
-# Manually transfer a name from core to portal
+# Manually transfer a name from core to the browser
 
 This guide assumes you have the latest mac app installed (v0.10.0 as of writing),
 you've created a new profile in the Profiles app that doesn't have any username
