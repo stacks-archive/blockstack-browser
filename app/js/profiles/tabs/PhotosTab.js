@@ -3,11 +3,7 @@ import { connect } from 'react-redux'
 
 import InputGroup from '../../components/InputGroup'
 
-<<<<<<< HEAD
-var Dropzone = require('react-dropzone');
-=======
 let Dropzone = require('react-dropzone')
->>>>>>> develop
 
 function mapStateToProps(state) {
   return {
@@ -23,12 +19,7 @@ class PhotosTab extends Component {
     saveProfile: PropTypes.func.isRequired,
     uploadProfilePhoto: PropTypes.func.isRequired,
     localIdentities: PropTypes.object.isRequired,
-<<<<<<< HEAD
     storageConnected: PropTypes.bool
-=======
-    dropboxAccessToken: PropTypes.string,
-    hasUsername: PropTypes.func.isRequired
->>>>>>> develop
   }
 
   constructor(props) {
