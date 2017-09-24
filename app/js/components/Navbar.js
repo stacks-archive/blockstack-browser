@@ -11,7 +11,7 @@ import roundTo from 'round-to'
 
 function mapStateToProps(state) {
   return {
-    storageConnected: state.settings.api.storageConnected,
+    dropboxAccessToken: state.settings.api.dropboxAccessToken,
     localIdentities: state.profiles.identity.localIdentities,
     addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletAddress: state.account.coreWallet.address,
@@ -27,10 +27,21 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions), dispatch)
 }
 
-class StatusBar extends Component {
+const icons = {
+  homeNav: "/images/icon-nav-home.svg",
+  homeNavActive: "/images/icon-nav-home-hover.svg",
+  walletNav: "/images/icon-nav-wallet.svg",
+  walletNavActive: "/images/icon-nav-wallet-hover.svg",
+  avatarNav: "/images/icon-nav-avatar.svg",
+  avatarNavActive: "/images/icon-nav-avatar-hover.svg",
+  settingsNav: "/images/icon-nav-settings.svg",
+  settingsNavActive: "/images/icon-nav-settings-hover.svg"
+}
+
+class Navbar extends Component {
   static propTypes = {
     hideBackToHomeLink: PropTypes.bool,
-    storageConnected: PropTypes.bool,
+    dropboxAccessToken: PropTypes.string,
     localIdentities: PropTypes.object.isRequired,
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     coreWalletBalance: PropTypes.number,
@@ -39,7 +50,8 @@ class StatusBar extends Component {
     addressBalanceUrl: PropTypes.string,
     nextIdentityAddressIndex: PropTypes.number.isRequired,
     loggedIntoApp: PropTypes.bool.isRequired,
-    viewedRecoveryCode: PropTypes.bool
+    viewedRecoveryCode: PropTypes.bool,
+    activeTab: PropTypes.string
   }
 
   constructor(props) {
@@ -52,6 +64,21 @@ class StatusBar extends Component {
     this.registeredUsername = this.registeredUsername.bind(this)
     this.roundedBtcBalance = this.roundedBtcBalance.bind(this)
     this.numberOfActionItems = this.numberOfActionItems.bind(this)
+    this.onHomeNavMouseOver = this.onHomeNavMouseOver.bind(this)
+    this.onHomeNavMouseOut = this.onHomeNavMouseOut.bind(this)
+    this.onWalletNavMouseOver = this.onWalletNavMouseOver.bind(this)
+    this.onWalletNavMouseOut = this.onWalletNavMouseOut.bind(this)
+    this.onAvatarNavMouseOver = this.onAvatarNavMouseOver.bind(this)
+    this.onAvatarNavMouseOut = this.onAvatarNavMouseOut.bind(this)
+    this.onSettingsNavMouseOver = this.onSettingsNavMouseOver.bind(this)
+    this.onSettingsNavMouseOut = this.onSettingsNavMouseOut.bind(this)
+
+    this.state = {
+      homeTabHover: false,
+      walletTabHover: false,
+      avatarTabHover: false,
+      settingsTabHover: false
+    }
   }
 
   componentDidMount() {
@@ -67,7 +94,7 @@ class StatusBar extends Component {
   }
 
   storageProviderConnected() {
-    return this.props.storageConnected
+    return this.props.dropboxAccessToken ? true : false
   }
 
   profileCreated() {
@@ -138,6 +165,78 @@ class StatusBar extends Component {
     return count
   }
 
+  homeNavIconImage() {
+    if(this.props.activeTab === 'home'
+      || this.state.homeTabHover ) { 
+      return icons.homeNavActive
+    }
+    else {
+      return icons.homeNav
+    }
+  }
+
+  walletNavIconImage() {
+    if(this.props.activeTab === 'wallet'
+      || this.state.walletTabHover ) { 
+      return icons.walletNavActive
+    }
+    else {
+      return icons.walletNav
+    }
+  }
+
+  avatarNavIconImage() {
+    if(this.props.activeTab === 'avatar'
+      || this.state.avatarTabHover ) { 
+      return icons.avatarNavActive
+    }
+    else {
+      return icons.avatarNav
+    }
+  }
+
+  settingsNavIconImage() {
+    if(this.props.activeTab === 'settings'
+      || this.state.settingsTabHover ) { 
+      return icons.settingsNavActive
+    }
+    else {
+      return icons.settingsNav
+    }
+  }
+
+  onHomeNavMouseOver() {
+    this.setState({ homeTabHover: true })
+  }
+
+  onHomeNavMouseOut() {
+    this.setState({ homeTabHover: false })
+  }
+
+  onWalletNavMouseOver() {
+    this.setState({ walletTabHover: true })
+  }
+
+  onWalletNavMouseOut() {
+    this.setState({ walletTabHover: false })
+  }
+
+  onAvatarNavMouseOver() {
+    this.setState({ avatarTabHover: true })
+  }
+
+  onAvatarNavMouseOut() {
+    this.setState({ avatarTabHover: false })
+  }
+
+  onSettingsNavMouseOver() {
+    this.setState({ settingsTabHover: true })
+  }
+
+  onSettingsNavMouseOut() {
+    this.setState({ settingsTabHover: false })
+  }
+
   render() {
     const popover = (
       <Popover id="things-to-do">
@@ -183,38 +282,42 @@ class StatusBar extends Component {
     const numberOfActionItems = this.numberOfActionItems()
 
     return (
-      <div className="status-bar status-bar-dark">
-      {this.props.hideBackToHomeLink ?
-        null
-      :
-        <div className="pull-left" style={{ marginLeft: '-15px' }} >
-          <div className="status-inline status-balance">
-            <Link to="/" className="statusBar-link">
-              Home Screen
-            </Link>
-          </div>
-        </div>
-      }
-        <div className="pull-right" style={{ marginRight: '-15px' }}>
-          <div className="status-inline status-balance">
-            <Link to="/wallet/receive" className="statusBar-link">
-                Wallet
-            </Link>
-          </div>
-          <div className="status-inline status-profile">
-            <Link to="/profiles" className="statusBar-link">
-                Me
-            </Link>
-          </div>
-          <div className="status-inline status-profile">
-            <Link to="/account" className="statusBar-link">
-                Settings
-            </Link>
-          </div>
-        </div>
-      </div>
+      <header className="container-fluid no-padding">
+        <nav className="navbar navbar-expand container-fluid">
+          <ul className="navbar-nav container-fluid">
+            <li className="nav-item">
+              <Link to="/" className="nav-link"
+                  onMouseOver={this.onHomeNavMouseOver} 
+                  onMouseOut={this.onHomeNavMouseOut} >
+                <img src={this.homeNavIconImage()} />
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/wallet/receive" className="nav-link"
+                  onMouseOver={this.onWalletNavMouseOver} 
+                  onMouseOut={this.onWalletNavMouseOut} >
+                <img src={this.walletNavIconImage()} />
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/profiles" className="nav-link"
+                  onMouseOver={this.onAvatarNavMouseOver} 
+                  onMouseOut={this.onAvatarNavMouseOut} >
+                <img src={this.avatarNavIconImage()} />
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/account" className="nav-link"
+                  onMouseOver={this.onSettingsNavMouseOver} 
+                  onMouseOut={this.onSettingsNavMouseOut} >
+                <img src={this.settingsNavIconImage()} />
+              </Link>
+            </li>
+          </ul>
+        </nav>
+      </header>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StatusBar)
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

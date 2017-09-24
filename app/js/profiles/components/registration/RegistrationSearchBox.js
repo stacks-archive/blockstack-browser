@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import Alert from '../../../components/Alert'
+import { Link } from 'react-router'
 
 const RegistrationSearchBox = (props) =>
   (
@@ -19,10 +20,10 @@ const RegistrationSearchBox = (props) =>
         Add a username to save your profile so you can interact with other
         people on the decentralized internet.
       </p>
-      <form 
+      <form
         className="container-fluid"
         onSubmit={props.search}
-        style={{ marginBottom: '2rem', width: '90%' }}
+        style={{ width: '90%' }}
       >
         <input
           name="username"
@@ -36,11 +37,18 @@ const RegistrationSearchBox = (props) =>
         />
         <button
           type="submit"
-          className="btn btn-electric-blue btn-block"
+          className="btn btn-primary btn-block"
           disabled={props.disabled}
         >
           Search
         </button>
+
+        <Link
+          to="/profiles"
+          className="btn btn-secondary btn-block"
+        >
+          Cancel
+        </Link>
       </form>
     </div>
   </div>

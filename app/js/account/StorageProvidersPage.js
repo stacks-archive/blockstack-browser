@@ -120,61 +120,61 @@ class StorageProvidersPage extends Component {
   render() {
     const api = this.props.api
     return (
-      <div className="m-b-100" style={{ paddingLeft: '15px' }}>
-        <h1 className="h1-modern m-t-10">
+      <div className="m-b-100">
+        <h3 className="container-fluid m-t-10">
           Storage Providers
-        </h1>
-        <p>
+        </h3>
+        <p className="container-fluid">
           Your profile and app data will be securely stored in the storage providers you connect.
         </p>
         {api.hostedDataLocation === DROPBOX ?
-          <div>
+          <div className="container-fluid">
             <p>
               {api.dropboxAccessToken == null ?
-                <button onClick={this.connectDropbox} className="btn btn-storage-primary">
+                <button onClick={this.connectDropbox} className="btn btn-primary btn-storage btn-lg btn-block">
                 Connect Dropbox
                 </button>
               :
                 <button
                   onClick={this.disconnectDropbox}
-                  className="btn btn-storage-primary"
+                  className="btn btn-primary btn-storage btn-lg btn-block"
                 >
                 Disconnect Dropbox
                 </button>
               }
             </p>
             <p>
-              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+              <button disabled className="btn btn-primary btn-storage btn-lg btn-block" title="Coming soon!">
                 Connect IPFS
               </button>
             </p>
             <p>
-              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+              <button disabled className="btn btn-primary btn-storage btn-lg btn-block" title="Coming soon!">
                 Connect Sia
               </button>
             </p>
             <p>
-              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+              <button disabled className="btn btn-primary btn-storage btn-lg btn-block" title="Coming soon!">
                 Connect Storj
               </button>
             </p>
             <p>
-              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+              <button disabled className="btn btn-primary btn-storage btn-lg btn-block" title="Coming soon!">
                 Connect Google Drive
               </button>
             </p>
             <p>
-              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+              <button disabled className="btn btn-primary btn-storage btn-lg btn-block" title="Coming soon!">
                 Connect Amazon Cloud Drive
               </button>
             </p>
             <p>
-              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+              <button disabled className="btn btn-primary btn-storage btn-lg btn-block" title="Coming soon!">
               Connect Microsoft OneDrive
               </button>
             </p>
             <p>
-              <button disabled className="btn btn-storage-primary" title="Coming soon!">
+              <button disabled className="btn btn-primary btn-storage btn-lg btn-block" title="Coming soon!">
               Connect Self-hosted Drive
               </button>
             </p>

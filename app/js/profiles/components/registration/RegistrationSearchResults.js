@@ -2,18 +2,12 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import roundTo from 'round-to'
 
-
-const nameResultStyle = {
-  marginBottom: '3em'
-}
-
 const availabilityHeaderStyle = {
   marginTop: '1em',
   marginBottom: '0.5em'
 }
 
-const RegistrationSearchResults = (props) =>
-  (
+const RegistrationSearchResults = (props) => (
   <div>
     <a
       href=""
@@ -23,7 +17,9 @@ const RegistrationSearchResults = (props) =>
       &lt; Back
     </a>
     <br />
+
     <h3 className="modal-heading">Available names</h3>
+
     <div className="modal-body">
       {props.searchingUsername ?
         props.nameSuffixes.map((nameSuffix) => {
@@ -42,22 +38,39 @@ const RegistrationSearchResults = (props) =>
             price = nameAvailabilityObject.price
           }
           price = roundTo.up(price, 6)
+
           return (
             <div key={nameSuffix}>
             {searching ?
-              <h4>Checking {name}...</h4>
+              <div className="account-check">
+                <h4>Checking {name}...</h4>
+                <Link
+                  to="/profiles"
+                  className="btn btn-secondary btn-block"
+                >
+                  Cancel
+                </Link>
+              </div>
               :
               <div>
                 {available ?
-                  <div style={nameResultStyle}>
+                  <div>
                     <h4 style={availabilityHeaderStyle}>{name}</h4>
                     {isSubdomain ?
-                      <Link
-                        className="btn btn-primary btn-sm"
-                        to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
-                      >
-                        Get <strong>{name}</strong> for free
-                      </Link>
+                      <div className="username-search-result">
+                        <Link
+                          className="btn btn-primary btn-block"
+                          to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
+                        >
+                          Get <strong>{name}</strong> for free
+                        </Link>
+                        <Link
+                          to="/profiles"
+                          className="btn btn-secondary btn-block"
+                        >
+                          Cancel
+                        </Link>
+                      </div>
                     :
                       <div>
                       {checkingPrice ?
@@ -74,27 +87,41 @@ const RegistrationSearchResults = (props) =>
                           </div>
                         </div>
                         :
-                        <Link
-                          className="btn btn-primary btn-sm"
-                          to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
-                        >
-                          Buy <strong>{name}</strong> for {price} bitcoins
-                        </Link>
+                        <div className="username-search-result">
+                          <Link
+                            className="btn btn-primary btn-block"
+                            to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
+                          >
+                            Buy <strong>{name}</strong> for {price} bitcoins
+                          </Link>
+                          <Link
+                            to="/profiles"
+                            className="btn btn-secondary btn-block"
+                          >
+                            Cancel
+                          </Link>
+                        </div>
                       }
                       </div>
                     }
+
                   </div>
                   :
                   <div>
                     <h4 style={availabilityHeaderStyle}>{name}</h4>
                     <button
-                      className="btn btn-primary btn-sm"
+                      className="btn btn-primary btn-block"
                       disabled
                     >
                       {name} is already taken
                     </button>
+                    <Link
+                      to="/profiles"
+                      className="btn btn-secondary btn-block"
+                    >
+                      Cancel
+                    </Link>
                   </div>
-
                 }
               </div>
             }

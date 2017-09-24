@@ -95,9 +95,9 @@ class ChangePasswordPage extends Component {
   render() {
     return (
       <div className="m-b-100">
-        <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
+        <h3 className="container-fluid m-t-10">
           Change Password
-        </h1>
+        </h3>
         {
           this.state.alerts.map((alert, index) => {
             return (
@@ -116,9 +116,10 @@ class ChangePasswordPage extends Component {
           <InputGroup
             name="newPassword2" label="New Password" type="password"
             data={this.state} onChange={this.onValueChange}
+            onReturnKeyPress={this.reencryptMnemonic}
           />
-          <div className="container m-t-40">
-            <button className="btn btn-primary" onClick={this.reencryptMnemonic}>
+          <div className="container-fluid m-t-40">
+            <button className="btn btn-primary btn-block" onClick={this.reencryptMnemonic}>
               Update Password
             </button>
           </div>

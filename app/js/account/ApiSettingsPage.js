@@ -89,9 +89,9 @@ class ApiSettingsPage extends Component {
             onChange={this.onHostedDataValueChange}>
             {Radio => (
               <div>
-                <h1 className="h1-modern m-t-10" style={{ paddingLeft: '15px' }}>
+                <h3 className="m-t-10" style={{ paddingLeft: '15px' }}>
                   Blockstack API Options
-                </h1>
+                </h3>
 
                 { this.state.api.apiCustomizationEnabled === true ?
                   <div>
@@ -130,7 +130,8 @@ class ApiSettingsPage extends Component {
                     <InputGroup name="pgpKeyUrl" label="PGP Key URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="btcPriceUrl" label="BTCUSD price URL"
-                      data={this.state.api} onChange={this.onValueChange} />
+                      data={this.state.api} onChange={this.onValueChange} 
+                      onReturnKeyPress={this.resetApi} />
                   </div>
                 : null }
 

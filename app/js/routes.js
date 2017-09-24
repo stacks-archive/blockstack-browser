@@ -8,6 +8,7 @@ import ProfilesApp          from './profiles/ProfilesApp'
 import RegistrationPage      from './profiles/RegistrationPage'
 import RegistrationSearchView  from './profiles/components/registration/RegistrationSearchView'
 import RegistrationSelectView  from './profiles/components/registration/RegistrationSelectView'
+import DefaultProfilePage      from './profiles/DefaultProfilePage'
 import AllProfilesPage      from './profiles/AllProfilesPage'
 import ViewProfilePage      from './profiles/ViewProfilePage'
 import EditProfilePage      from './profiles/EditProfilePage'
@@ -19,6 +20,7 @@ import TransferNamePage     from './profiles/TransferNamePage'
 import ZoneFilePage         from './profiles/ZoneFilePage'
 
 import AccountApp           from './account/AccountApp'
+import AccountMenu          from './account/AccountMenu'
 import DeleteAccountPage    from './account/DeleteAccountPage'
 import BackupAccountPage    from './account/BackupAccountPage'
 import ChangePasswordPage   from './account/ChangePasswordPage'
@@ -40,7 +42,8 @@ export default (
       <IndexRoute component={HomeScreenPage} />
 
       <Route path="profiles" component={ProfilesApp}>
-        <IndexRoute component={AllProfilesPage} />
+        <IndexRoute component={DefaultProfilePage} />
+        <Route path="i/all"           component={AllProfilesPage} />
         <Route path="i/search/:query" component={SearchProfilesPage} />
         <Route path=":name"           component={ViewProfilePage} />
         <Route path=":index/local"    component={ViewProfilePage} />
@@ -57,12 +60,13 @@ export default (
       </Route>
 
       <Route path="account" component={AccountApp}>
+        <IndexRoute               component={AccountMenu} />
         <Route path="delete"      component={DeleteAccountPage} />
         <Route path="backup"      component={BackupAccountPage} />
         <Route path="password"    component={ChangePasswordPage} />
         <Route path="create"      component={CreateAccountPage} />
         <Route path="api"         component={ApiSettingsPage} />
-        <Route path="storage"   component={StorageProvidersPage} />
+        <Route path="storage"     component={StorageProvidersPage} />
       </Route>
 
       <Route path="wallet" component={WalletApp}>
