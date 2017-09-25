@@ -18,7 +18,7 @@ RUN ln /usr/bin/corsproxy /usr/bin/blockstack-cors-proxy
 
 # Install dependencies at specified branch
 WORKDIR /src/blockstack-deps
-RUN git clone https://github.com/blockstack/blockstack-storage-js.git -b develop-multiplayer-storage
+RUN git clone https://github.com/kantai/blockstack-storage-js.git -b develop-multiplayer-storage
 RUN git clone https://github.com/blockstack/blockstack.js.git -b develop-keyfile
 RUN cd blockstack-storage-js && npm i && npm run compile
 RUN cd blockstack.js && npm install ../blockstack-storage-js/ && npm i && npm run compile
