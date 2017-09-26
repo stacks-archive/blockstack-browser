@@ -60,9 +60,9 @@ class App extends Component {
     super(props)
 
     this.state = {
-      accountCreated: this.props.encryptedBackupPhrase,
-      storageConnected: this.props.dropboxAccessToken,
-      coreConnected: this.props.api.coreAPIPassword,
+      accountCreated: !!this.props.encryptedBackupPhrase,
+      storageConnected: !!this.props.dropboxAccessToken,
+      coreConnected: !!this.props.api.coreAPIPassword,
       password: '',
       currentPath: ''
     }
