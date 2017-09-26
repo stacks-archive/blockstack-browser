@@ -16,8 +16,20 @@ RUN npm install -g corsproxy
 # Alias the cors-proxy
 RUN ln /usr/bin/corsproxy /usr/bin/blockstack-cors-proxy
 
+# Install dependencies at specified branch
+WORKDIR /src/blockstack-deps
+RUN git clone https://github.com/kantai/blockstack-storage-js.git -b develop-multiplayer-storage
+RUN git clone https://github.com/blockstack/blockstack.js.git -b develop-keyfile
+RUN cd blockstack-storage-js && npm i && npm run compile
+RUN cd blockstack.js && npm install ../blockstack-storage-js/ && npm i && npm run compile
+
 # Copy files into container
+WORKDIR /src/blockstack-browser
+
 COPY . .
+
+RUN npm install ../blockstack-deps/blockstack-storage-js
+RUN npm install ../blockstack-deps/blockstack.js
 
 # Install dependencies
 RUN npm install
