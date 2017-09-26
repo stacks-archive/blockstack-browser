@@ -60,9 +60,9 @@ class App extends Component {
     super(props)
 
     this.state = {
-      accountCreated: this.props.encryptedBackupPhrase ? true : false,
-      storageConnected: this.props.dropboxAccessToken ? true : false,
-      coreConnected: this.props.api.coreAPIPassword ? true : false,
+      accountCreated: !!this.props.encryptedBackupPhrase,
+      storageConnected: !!this.props.dropboxAccessToken,
+      coreConnected: !!this.props.api.coreAPIPassword,
       password: '',
       currentPath: ''
     }
@@ -98,7 +98,7 @@ class App extends Component {
       logger.debug('Sanity check: Core API endpoint is running!')
     } else {
       // TODO connect to future notification system here
-      //alert('Sanity check: Error! Core API is NOT running!')
+      // alert('Sanity check: Error! Core API is NOT running!')
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 
@@ -108,9 +108,9 @@ class App extends Component {
       logger.error('Sanity check: Error! Core API password is wrong!')
     }
     this.setState({
-      accountCreated: nextProps.encryptedBackupPhrase ? true : false,
-      storageConnected: nextProps.dropboxAccessToken ? true : false,
-      coreConnected: nextProps.api.coreAPIPassword ? true : false,
+      accountCreated: !!nextProps.encryptedBackupPhrase,
+      storageConnected: !!nextProps.dropboxAccessToken,
+      coreConnected: !!nextProps.api.coreAPIPassword,
       currentPath: nextPath
     })
 

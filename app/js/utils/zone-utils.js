@@ -4,6 +4,7 @@ import { parseZoneFile } from 'zone-file'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/zone-utils.js')
+const jsontokens = require('jsontokens')
 
 export function getTokenFileUrlFromZoneFile(zoneFileJson) {
   if (!zoneFileJson.hasOwnProperty('uri')) {
@@ -63,7 +64,22 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress) {
     if (tokenFileUrl) {
       proxyFetch(tokenFileUrl)
         .then((response) => response.text())
-        .then((responseText) => JSON.parse(responseText))
+        .then((responseText) => {
+           try {
+              return JSON.parse(responseText)
+           }
+           catch (e) {
+              // possibly a string-ified token 
+              try {
+                 const tok = jsontokens.decodeToken(responseText)
+                 logger.trace('profile is encoded as a JWT')
+                 return {'token': responseText}
+              }
+              catch (e2) {
+                 throw new Error("Invalid profile: neither JSON nor JWT")
+              }
+           }
+        })
         .then((responseJson) => {
           const tokenRecords = responseJson
           const profile = getProfileFromTokens(tokenRecords, publicKeyOrAddress)

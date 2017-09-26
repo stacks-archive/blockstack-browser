@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import Alert from '../../../components/Alert'
+import { Link } from 'react-router'
 
 const RegistrationSearchBox = (props) =>
   (
@@ -41,6 +42,13 @@ const RegistrationSearchBox = (props) =>
         >
           Search
         </button>
+
+        <Link
+          to="/profiles"
+          className="btn btn-secondary btn-block"
+        >
+          Cancel
+        </Link>
       </form>
     </div>
   </div>
