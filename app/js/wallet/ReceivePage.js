@@ -37,30 +37,31 @@ class ReceivePage extends Component {
   }
 
   render() {
+    const address = this.props.addresses[0]
     return (
       <div>
         <Balance />
           <div className="m-b-25 text-center">
             <p>
-              Send at least 0.01 bitcoins to the address below to register a 
+              Send at least 0.01 bitcoins to the address below to register a
               username. All username registrations use funds from your wallet.
             </p>
           </div>
-        { this.props.coreWalletAddress ?
+        {address ?
         <div>
-          {/* 
+          {/*
           <div className="m-b-25">
             <p className="font-weight-bold">Send Bitcoins to this address:</p>
           </div>
           */}
           <div className="qrcode-wallet">
             <QRCode
-              value={this.props.coreWalletAddress}
+              value={address}
             />
           </div>
           <div className="highlight-wallet text-center">
             <pre>
-              <code>{this.props.coreWalletAddress}</code>
+              <code>{address}</code>
             </pre>
           </div>
         </div>

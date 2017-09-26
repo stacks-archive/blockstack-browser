@@ -31,6 +31,7 @@ import StorageProvidersPage from './account/StorageProvidersPage'
 import WalletApp            from './wallet/WalletApp'
 import ReceivePage          from './wallet/ReceivePage'
 import SendPage             from './wallet/SendPage'
+import SendCorePage             from './wallet/SendCorePage'
 
 import AuthPage             from './auth/AuthPage'
 
@@ -72,6 +73,7 @@ export default (
       <Route path="wallet" component={WalletApp}>
         <Route path="receive"     component={ReceivePage} />
         <Route path="send"        component={SendPage} />
+        <Route path="send-core"        component={SendCorePage} />
       </Route>
 
       <Route path="/auth" component={AuthPage} />
