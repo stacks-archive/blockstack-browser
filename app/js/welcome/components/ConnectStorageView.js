@@ -13,6 +13,9 @@ const ConnectStorageView = (props) =>
       style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }}
     />
     <div className="m-t-40">
+      <button className="btn btn-primary btn-block m-b-20" onClick={props.connectGaiaHub}>
+        Connect Gaia Hub
+      </button>
       <button className="btn btn-primary btn-block m-b-20" onClick={props.connectDropbox}>
         Connect Dropbox
       </button>

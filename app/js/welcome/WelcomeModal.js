@@ -8,6 +8,7 @@ import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 import { redirectToConnectToDropbox } from '../account/utils/dropbox'
+import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
 
 
 import { PairBrowserView, LandingView,
@@ -265,6 +266,11 @@ class WelcomeModal extends Component {
     redirectToConnectToDropbox()
   }
 
+  connectGaiaHub(event) {
+    event.preventDefault()
+    redirectToConnectToGaiaHub()
+  }
+
   confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
     if (this.state.identityKeyPhrase !== enteredIdentityKeyPhrase) {
       logger.error('confirmIdentityKeyPhrase: user entered identity phrase does not match')
@@ -424,6 +430,7 @@ class WelcomeModal extends Component {
               {
                 page === 8 ?
                   <ConnectStorageView
+                    connectGaiaHub={this.connectGaiaHub}
                     connectDropbox={this.connectDropbox}
                   />
                 :

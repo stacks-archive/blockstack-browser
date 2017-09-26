@@ -68,7 +68,7 @@ class AuthModal extends Component {
       appManifest: null,
       coreSessionToken: null,
       decodedToken: null,
-      storageConnected: this.props.api.dropboxAccessToken !== null
+      storageConnected: this.props.api.storageConnected
     }
 
     this.login = this.login.bind(this)
@@ -86,7 +86,7 @@ class AuthModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const storageConnected = this.props.api.dropboxAccessToken !== null
+    const storageConnected = this.props.api.storageConnected
     this.setState({
       storageConnected,
       currentIdentity: this.state.currentIdentity || nextProps.defaultIdentity || undefined

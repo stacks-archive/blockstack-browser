@@ -4,7 +4,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/api-utils.js')
 
-import { uploadProfile, DROPBOX } from '../account/utils'
+import { uploadProfile, DROPBOX, BLOCKSTACK_INC } from '../account/utils'
 import { signProfileForUpload } from './index'
 
 import { keyFileCreate, keyFileParse, keyFileProfileSerialize, keyFileUpdateApps, keyFileMakeDelegationPrivateKeys, keyFileICANNToAppName, getPubkeyHex, datastoreMountOrCreate } from 'blockstack'
@@ -138,7 +138,6 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
   return profile
 }
 
-
 /* Expects a JavaScript object with a key containing the config for each storage
  * provider
  * Example:
@@ -147,15 +146,20 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
 export function setCoreStorageConfig(api,
   blockchainId = null, profile = null, profileSigningKeypair = null) {
   return new Promise((resolve, reject) => {
+    var driverName = null;
+    var requestBody = null;
 
-    // for now, we only support Dropbox
-    if (api.hostedDataLocation !== DROPBOX) {
-      throw new Error('Only support "dropbox" driver at this time')
+    if (api.hostedDataLocation === DROPBOX) {
+      driverName = 'dropbox'
+      requestBody = { driver_config: { token: api.dropboxAccessToken } }
+    }else if (api.hostedDataLocation === BLOCKSTACK_INC) {
+      driverName = 'gaia_hub'
+      requestBody = { driver_config: api.gaiaHubConfig }
+    }else{
+      throw new Error('Only support "dropbox" or "blockstack" driver at this time')
     }
 
-    const driverName = 'dropbox'
 
-    const requestBody = { driver_config: { token: api.dropboxAccessToken } }
     const url = `http://localhost:6270/v1/node/drivers/storage/${driverName}?index=1`
     const bodyText = JSON.stringify(requestBody)
 
