@@ -1,0 +1,13 @@
+build/*
+gulp/*
+tests/*
+
+app/js/account/*
+app/js/auth/*
+app/js/components/*
+app/js/errors/*
+app/js/profiles/*
+app/js/store/*
+app/js/utils/*
+app/js/wallet/*
+app/js/welcome/*

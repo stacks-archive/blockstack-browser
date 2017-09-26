@@ -10,7 +10,7 @@
   },
   "scripts": {
     "lint": "NODE_ENV=test ./node_modules/.bin/gulp lint",
-    "test": "NODE_ENV=test npm run flow && ./node_modules/.bin/gulp test",
+    "test": "NODE_ENV=test npm run lint && npm run flow && ./node_modules/.bin/gulp test",
     "web": "NODE_ENV=production ./node_modules/.bin/gulp prod",
     "mac": "NODE_ENV=production ./node_modules/.bin/gulp mac",
     "mac-release": "npm install --no-save appdmg && NODE_ENV=production ./node_modules/.bin/gulp mac-release",
