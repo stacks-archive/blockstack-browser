@@ -240,7 +240,7 @@ export function setupAppDatastore(api, profile, sessionToken, identityAddress, i
       // does this profile have a keyfile yet?
       if (!profile.keyfile) {
          logger.trace('Profile does not have a keyfile yet; creating one')
-         
+
          const keyfileToken = keyFileCreate(signingKeypair, deviceId, {'profile': profile, 'index': identityAddressIndex})
          profile = jsontokens.decodeToken(keyfileToken)['payload']['claim']
          assert(profile, `BUG: invalid keyfileToken ${keyfileToken}`)
@@ -252,30 +252,30 @@ export function setupAppDatastore(api, profile, sessionToken, identityAddress, i
             reject(`Failed to create datastore: ${datastoreInfo.error}`)
          }
          else {
-            // URLs will be set if we created it for the first time 
+            // URLs will be set if we created it for the first time
             if (datastoreInfo.created) {
                 assert(datastoreInfo.urls.root, 'Datastore is missing root directory URLs')
                 assert(datastoreInfo.urls.datastore, 'Datastore is missing datastore control record URLs')
 
                 logger.trace(`created datastore! roots at ${datastoreInfo.urls.root.join(',')}, datastore records at ${datastoreInfo.urls.datastore.join(',')}`)
-                
+
                 // re-construct the serialized keyfile-bearing profile and extract it
                 const delegationKeys = keyFileMakeDelegationPrivateKeys(signingKeypair, identityAddressIndex)
                 const profileToken = keyFileProfileSerialize(profile, delegationKeys['sign'])
-                
+
                 logger.trace(`current profile token for ${identityAddress}: ${profileToken}`);
                 const parsedProfile = keyFileParse(profileToken, identityAddress)
                 assert(parsedProfile, 'Failed to parse profile')
 
                 const appPublicKey = getPubkeyHex(appPrivateKey)
-               
+
                 // insert the application data
                 const newProfileToken = keyFileUpdateApps(parsedProfile, deviceId, keyFileICANNToAppName(appName), appPublicKey, deviceId,
                                                           datastoreId, datastoreInfo.urls.datastore, datastoreInfo.urls.root, delegationKeys['sign'])
 
                 assert(newProfileToken, 'Failed to add application to profile keyfile')
 
-                // update the key file with this info 
+                // update the key file with this info
                 uploadProfile(api, blockchainId, newProfileToken).then(() => {
                    resolve(newProfileToken);
                 })

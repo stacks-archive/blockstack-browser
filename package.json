@@ -118,7 +118,7 @@
     "bigi": "^1.4.2",
     "bip39": "^2.2.0",
     "bitcoinjs-lib": "https://github.com/shea256/bitcoinjs-lib.git",
-    "blockstack": "0.9.1",
+    "blockstack": "^0.9.1",
     "blockstack-storage": "0.3.0",
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0-beta",

@@ -30,8 +30,8 @@ WORKDIR /src/blockstack-browser
 
 COPY . .
 
-RUN npm install ../blockstack-deps/blockstack-storage-js
-RUN npm install ../blockstack-deps/blockstack.js
+RUN npm install ../blockstack-deps/blockstack-storage-js/
+RUN npm install ../blockstack-deps/blockstack.js/
 
 # Install dependencies
 RUN npm install

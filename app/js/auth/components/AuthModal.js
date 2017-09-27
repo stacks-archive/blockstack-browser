@@ -13,6 +13,7 @@ import {
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
 import { findAddressIndex } from '../../utils'
+import { DROPBOX, BLOCKSTACK_INC } from '../../utils/index'
 import { setCoreStorageConfig, setupAppDatastore } from '../../utils/api-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
@@ -56,7 +57,7 @@ class AuthModal extends Component {
     coreSessionTokens: PropTypes.object.isRequired,
     loginToApp: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
-    updateProfile: PropTypes.func.isRequired 
+    updateProfile: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -142,8 +143,17 @@ class AuthModal extends Component {
         nextProps.coreSessionTokens[appDomain], appPrivateKey)
 
     if (hasUsername) {
-       setupAppDatastore(this.props.api, profile, nextProps.coreSessionTokens[appDomain], address, addressIndex,
-                         profileSigningKeypair, appPrivateKey, this.props.coreAPIPassword)
+      var storageDriver = 'gaia_hub'
+      if (this.props.api.hostedDataLocation == DROPBOX){
+        storageDriver = 'dropbox'
+      }
+      const replicationStrategy = {
+        'publish' : 1,
+        'local' : 1,
+        'drivers' : ['disk', storageDriver]
+      }
+      setupAppDatastore(this.props.api, profile, nextProps.coreSessionTokens[appDomain], address, addressIndex,
+                         profileSigningKeypair, appPrivateKey, this.props.coreAPIPassword, replicationStrategy)
        .then((newProfileToken) => {
           this.props.clearSessionToken(appDomain)
 
