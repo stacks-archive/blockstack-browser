@@ -276,16 +276,19 @@ export function setupAppDatastore(api, profile, sessionToken, identityAddress, i
                 assert(newProfileToken, 'Failed to add application to profile keyfile')
 
                 // update the key file with this info
-                uploadProfile(api, blockchainId, newProfileToken).then(() => {
-                   resolve(newProfileToken);
-                })
-                .catch((error) => {
-                   // creating the datastore technically failed, since it's not discoverable (i.e. we replicated the datastore
-                   // metadata and records, but not the keyfile-containing profile that points to them).
-                   // Make sure that we retry creating this datastore.
-                   datastoreCreateSetRetry(sessionToken);
-                   reject(error);
-                })
+                if (!blockchainId) {
+                    uploadProfile(api, blockchainId, newProfileToken).then(() => {
+                        resolve(newProfileToken);
+                    })
+                        .catch((error) => {
+                            // creating the datastore technically failed, since it's not discoverable (i.e. we replicated the datastore
+                            // metadata and records, but not the keyfile-containing profile that points to them).
+                            // Make sure that we retry creating this datastore.
+                            datastoreCreateSetRetry(sessionToken);
+                            reject(error);
+                        }) }else{
+                            resolve(null);
+                        }
             }
             else {
                 // already exists

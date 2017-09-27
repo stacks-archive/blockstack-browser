@@ -142,7 +142,6 @@ class AuthModal extends Component {
     const authResponse = makeAuthResponse(privateKey, profile, blockchainId,
         nextProps.coreSessionTokens[appDomain], appPrivateKey)
 
-    if (hasUsername) {
       var storageDriver = 'gaia_hub'
       if (this.props.api.hostedDataLocation == DROPBOX){
         storageDriver = 'dropbox'
@@ -152,6 +151,7 @@ class AuthModal extends Component {
         'local' : 1,
         'drivers' : ['disk', storageDriver]
       }
+
       setupAppDatastore(this.props.api, profile, nextProps.coreSessionTokens[appDomain], address, addressIndex,
                          profileSigningKeypair, appPrivateKey, this.props.coreAPIPassword, replicationStrategy)
        .then((newProfileToken) => {
@@ -164,12 +164,6 @@ class AuthModal extends Component {
           logger.trace(`login(): profile ${userDomainName} is logging in`)
           redirectUserToApp(this.state.authRequest, authResponse)
        })
-    }
-    else {
-        this.props.clearSessionToken(appDomain)
-        logger.trace(`login(): profile ${userDomainName} is logging in`)
-        redirectUserToApp(this.state.authRequest, authResponse)
-    }
   }
 
   closeModal() {
