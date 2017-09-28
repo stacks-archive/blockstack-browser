@@ -276,7 +276,7 @@ export function setupAppDatastore(api, profile, sessionToken, identityAddress, i
                 assert(newProfileToken, 'Failed to add application to profile keyfile')
 
                 // update the key file with this info
-                if (!blockchainId) {
+                if (blockchainId) {
                     uploadProfile(api, blockchainId, newProfileToken).then(() => {
                         resolve(newProfileToken);
                     })
