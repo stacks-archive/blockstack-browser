@@ -183,10 +183,8 @@ class WelcomeModal extends Component {
         reject()
       } else {
         this.setState({ password })
-
         logger.debug('Initializing account...')
         this.props.initializeWallet(password, null)
-        this.props.
         resolve()
       }
     })
@@ -300,7 +298,6 @@ class WelcomeModal extends Component {
   }
 
   render() {
-
     const isOpen = !this.state.accountCreated ||
       !this.state.coreConnected || !this.props.promptedForEmail ||
       this.state.needToOnboardStorage
