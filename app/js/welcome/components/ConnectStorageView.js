@@ -30,7 +30,8 @@ const ConnectStorageView = (props) =>
  )
 
 ConnectStorageView.propTypes = {
-  connectDropbox: PropTypes.func.isRequired
+  connectDropbox: PropTypes.func.isRequired,
+  connectGaiaHub: PropTypes.func.isRequired
 }
 
 export default ConnectStorageView
