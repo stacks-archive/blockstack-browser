@@ -490,6 +490,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .react-modal-pgp{width:700px!important;}
 /* Welcome Modal */
 .welcome-modal div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:rgba(255,255,255,0.9)!important;}
+.welcome-modal-icon {width:200px;height:200px;display:block;margin-right:auto;margin-left:auto}
 /* Auth Modal */
 .auth-modal {text-align: center}
 .auth-modal .profile-select{margin-bottom:20px;}
