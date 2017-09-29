@@ -3,6 +3,7 @@ import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AuthActions } from '../store/auth'
+import { IdentityActions } from '../../profiles/store/identity'
 import { Link } from 'react-router'
 import queryString from 'query-string'
 import { decodeToken } from 'jsontokens'
@@ -11,10 +12,13 @@ import {
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
-import { setCoreStorageConfig } from '../../utils/api-utils'
+import { findAddressIndex } from '../../utils'
+import { DROPBOX, BLOCKSTACK_INC } from '../../utils/index'
+import { setCoreStorageConfig, setupAppDatastore } from '../../utils/api-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 
+const assert = require('assert');
 const logger = log4js.getLogger('auth/components/AuthModal.js')
 
 function mapStateToProps(state) {
@@ -22,6 +26,7 @@ function mapStateToProps(state) {
     localIdentities: state.profiles.identity.localIdentities,
     defaultIdentity: state.profiles.identity.default,
     identityKeypairs: state.account.identityAccount.keypairs,
+    identityAddresses: state.account.identityAccount.addresses,
     appManifest: state.auth.appManifest,
     appManifestLoading: state.auth.appManifestLoading,
     appManifestLoadingError: state.auth.appManifestLoadingError,
@@ -34,7 +39,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, AuthActions)
+  const actions = Object.assign({}, AuthActions, IdentityActions)
   return bindActionCreators(actions, dispatch)
 }
 
@@ -51,7 +56,8 @@ class AuthModal extends Component {
     coreAPIPassword: PropTypes.string.isRequired,
     coreSessionTokens: PropTypes.object.isRequired,
     loginToApp: PropTypes.func.isRequired,
-    api: PropTypes.object.isRequired
+    api: PropTypes.object.isRequired,
+    updateProfile: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -63,7 +69,7 @@ class AuthModal extends Component {
       appManifest: null,
       coreSessionToken: null,
       decodedToken: null,
-      storageConnected: this.props.api.dropboxAccessToken !== null
+      storageConnected: this.props.api.storageConnected
     }
 
     this.login = this.login.bind(this)
@@ -81,7 +87,7 @@ class AuthModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const storageConnected = this.props.api.dropboxAccessToken !== null
+    const storageConnected = this.props.api.storageConnected
     this.setState({
       storageConnected,
       currentIdentity: this.state.currentIdentity || nextProps.defaultIdentity || undefined
@@ -90,6 +96,8 @@ class AuthModal extends Component {
     const appDomain = this.state.decodedToken.payload.domain_name
     const localIdentities = nextProps.localIdentities
     const identityKeypairs = nextProps.identityKeypairs
+    const identityAddresses = nextProps.identityAddresses
+
     if (!appDomain || !nextProps.coreSessionTokens[appDomain]) {
       return
     }
@@ -103,6 +111,11 @@ class AuthModal extends Component {
     // TODO: Side-effects to avoid confusion.
     const userDomainName = this.state.currentIdentity
 
+    if (!Object.keys(localIdentities).includes(userDomainName)) {
+       logger.trace(`componentWillReceiveProps: no such user ${userDomainName}: ${JSON.stringify(localIdentities)}`);
+       return;
+    }
+
     let hasUsername = true
     if (userDomainName === localIdentities[userDomainName].ownerAddress) {
       logger.debug(`login(): this profile ${userDomainName} has no username`)
@@ -111,24 +124,46 @@ class AuthModal extends Component {
 
     // Get keypair corresponding to the current user identity
     const profileSigningKeypair = identityKeypairs.find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
-
+    const addressIndex = findAddressIndex(profileSigningKeypair.address, identityAddresses)
     const blockchainId = (hasUsername ? userDomainName : null)
+    const address = profileSigningKeypair.address
     const identity = localIdentities[userDomainName]
     const profile = identity.profile
+    const zonefile = identity.zoneFile
     const privateKey = profileSigningKeypair.key
     const appsNodeKey = profileSigningKeypair.appsNodeKey
     const salt = profileSigningKeypair.salt
     const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
     const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
+    console.log(`profile for ${userDomainName} is: ${JSON.stringify(profile)}`)
+
     // TODO: what if the token is expired?
     const authResponse = makeAuthResponse(privateKey, profile, blockchainId,
         nextProps.coreSessionTokens[appDomain], appPrivateKey)
 
-    this.props.clearSessionToken(appDomain)
+      var storageDriver = 'gaia_hub'
+      if (this.props.api.hostedDataLocation == DROPBOX){
+        storageDriver = 'dropbox'
+      }
+      const replicationStrategy = {
+        'publish' : 1,
+        'local' : 1,
+        'drivers' : ['disk', storageDriver]
+      }
 
-    logger.trace(`login(): profile ${userDomainName} is logging in`)
-    redirectUserToApp(this.state.authRequest, authResponse)
+      setupAppDatastore(this.props.api, profile, nextProps.coreSessionTokens[appDomain], address, addressIndex,
+                         profileSigningKeypair, appPrivateKey, this.props.coreAPIPassword, replicationStrategy)
+       .then((newProfileToken) => {
+          this.props.clearSessionToken(appDomain)
+
+          if (newProfileToken) {
+              this.props.updateProfile(userDomainName, decodeToken(newProfileToken).payload.claim, zonefile)
+          }
+
+          logger.trace(`login(): profile ${userDomainName} is logging in`)
+          redirectUserToApp(this.state.authRequest, authResponse)
+       })
   }
 
   closeModal() {

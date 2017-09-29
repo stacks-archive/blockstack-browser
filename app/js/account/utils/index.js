@@ -1,9 +1,9 @@
 import { uploadPhotoToDropbox, uploadProfileToDropbox } from './dropbox'
 import { uploadPhotoToS3, uploadProfileToS3 } from './s3'
-import { uploadPhotoToBlockstackInc, uploadProfileToBlockstackInc } from './blockstack-inc'
+import { uploadPhotoToGaiaHub, uploadProfileToGaiaHub } from './blockstack-inc'
 
 export const SELF_HOSTED_S3 = "self-hosted-S3",
-  BLOCKSTACK_INC = "blockstack-labs-S3",
+  BLOCKSTACK_INC = "gaia-hub",
   DROPBOX = "dropbox"
 
 export function uploadPhoto(api, name, photoFile, index) {
@@ -17,7 +17,7 @@ export function uploadPhoto(api, name, photoFile, index) {
     // return uploadPhotoToS3(api, name, photoFile, index)
 
     default:
-    return uploadPhotoToBlockstackInc(api, name, photoFile, index)
+    return uploadPhotoToGaiaHub(api, name, photoFile, index)
   }
 }
 
@@ -32,7 +32,7 @@ export function uploadProfile(api, name, signedProfileTokenData, firstUpload=fal
     // return uploadProfileToS3(api, name, signedProfileTokenData)
 
     default:
-      return uploadProfileToBlockstackInc(api, name, signedProfileTokenData)
+      return uploadProfileToGaiaHub(api, name, signedProfileTokenData)
   }
 }
 

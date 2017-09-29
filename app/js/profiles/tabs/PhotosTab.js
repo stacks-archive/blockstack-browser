@@ -8,7 +8,7 @@ let Dropzone = require('react-dropzone')
 function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
-    dropboxAccessToken: state.settings.api.dropboxAccessToken
+    storageConnected: state.settings.api.storageConnected
   }
 }
 
@@ -19,8 +19,7 @@ class PhotosTab extends Component {
     saveProfile: PropTypes.func.isRequired,
     uploadProfilePhoto: PropTypes.func.isRequired,
     localIdentities: PropTypes.object.isRequired,
-    dropboxAccessToken: PropTypes.string,
-    hasUsername: PropTypes.func.isRequired
+    storageConnected: PropTypes.bool
   }
 
   constructor(props) {
@@ -114,7 +113,7 @@ class PhotosTab extends Component {
   }
 
   storageNotConnected() {
-    return this.props.dropboxAccessToken === null
+    return this.props.storageConnected !== true
   }
 
   render() {

@@ -1,5 +1,5 @@
 import * as types from './types'
-import { makeProfileZoneFile } from 'blockstack'
+import { makeProfileZoneFile, keyFileCreate } from 'blockstack'
 import { IdentityActions } from  '../identity'
 import { uploadProfile } from '../../../account/utils'
 import {
@@ -87,11 +87,15 @@ function setOwnerKey(setOwnerKeyUrl, requestHeaders, keypair, nameIsSubdomain) {
   })
 }
 
-function registerName(api, domainName, ownerAddress, keypair) {
+function registerName(api, domainName, ownerAddress, ownerAddressIndex, keypair) {
   logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
-    logger.debug(`Signing a blank default profile for ${domainName}`)
-    const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
+    logger.debug(`Signing a blank default profile and keyfile for ${domainName}`)
+  
+    // const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
+    
+    const deviceId = '0'   // hard-code device ID for now
+    const signedProfileTokenData = keyFileCreate(keypair, deviceId, {'profile': DEFAULT_PROFILE, 'index': ownerAddressIndex})
 
     dispatch(profileUploading())
     logger.trace(`Uploading ${domainName} profile...`)

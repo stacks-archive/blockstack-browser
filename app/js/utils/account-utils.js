@@ -198,11 +198,14 @@ export function deriveIdentityKeyPair(identityOwnerAddressNode) {
   const identityKey = identityOwnerAddressNode.getIdentityKey()
   const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
   const appsNode = identityOwnerAddressNode.getAppsNode()
+  const signingNode = identityOwnerAddressNode.getSigningNode()
   const keyPair = {
+    nodeKey: identityOwnerAddressNode.getNode().toBase58(),
     key: identityKey,
     keyID: identityKeyID,
     address,
     appsNodeKey: appsNode.toBase58(),
+    signingNodeKey: signingNode.toBase58(),
     salt: appsNode.getSalt()
   }
   return keyPair

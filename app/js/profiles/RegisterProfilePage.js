@@ -91,7 +91,7 @@ class RegisterPage extends Component {
         organization: 'Domain'
       },
       zeroBalance: props.coreWalletBalance <= 0,
-      storageConnected: this.props.api.dropboxAccessToken !== null
+      storageConnected: this.props.api.storageConnected
     }
 
     this.onChange = this.onChange.bind(this)
@@ -130,7 +130,7 @@ class RegisterPage extends Component {
     const registration = nextProps.registration
     const availability = nextProps.availability
     const zeroBalance = this.props.coreWalletBalance <= 0
-    const storageConnected = this.props.api.dropboxAccessToken !== null
+    const storageConnected = this.props.api.storageConnected
 
     this.setState({
       zeroBalance,
@@ -284,7 +284,7 @@ class RegisterPage extends Component {
       const address = this.props.identityAddresses[addressIndex]
       const keypair = this.props.identityKeypairs[addressIndex]
 
-      this.props.registerName(this.props.api, domainName, address, keypair)
+      this.props.registerName(this.props.api, domainName, address, addressIndex, keypair)
       this.updateAlert('success', 'Name preordered! Waiting for registration confirmation.')
       this.setState({ registrationLock: false })
     }
