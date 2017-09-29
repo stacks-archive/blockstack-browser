@@ -14,13 +14,15 @@ class InputGroup extends Component {
     textarea: PropTypes.bool,
     textareaRows: PropTypes.number,
     required: PropTypes.bool,
-    onReturnKeyPress: PropTypes.func
+    onReturnKeyPress: PropTypes.func,
+    stopClickPropagation: PropTypes.bool
   }
 
   constructor(props) {
     super(props)
 
     this.onKeyPress = this.onKeyPress.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   onKeyPress(e) {
@@ -28,6 +30,12 @@ class InputGroup extends Component {
       if(e.key === 'Enter') {
         this.props.onReturnKeyPress()
       }
+    }
+  }
+
+  handleClick(e) {
+    if(this.props.stopClickPropagation) {
+      e.stopPropagation()
     }
   }
 
@@ -62,7 +70,7 @@ class InputGroup extends Component {
     }
 
     return (
-      <div className="form-group m-b-11">
+      <div className="form-group m-b-11" onClick={this.handleClick}>
         <fieldset>
           <label className={`${labelClass}`}>
             {this.props.label}

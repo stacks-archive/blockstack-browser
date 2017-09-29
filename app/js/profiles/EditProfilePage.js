@@ -12,7 +12,7 @@ import { IdentityActions } from './store/identity'
 import { signProfileForUpload, findAddressIndex } from '../utils/index'
 import { uploadProfile, uploadPhoto } from '../account/utils'
 
-import SocialAccountItem from './components/SocialAccountItem'
+import EditSocialAccountItem from './components/EditSocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 
 import BasicInfoTab      from './tabs/BasicInfoTab'
@@ -106,6 +106,7 @@ class EditProfilePage extends Component {
       const ownerAddress = this.props.localIdentities[profileIndex].ownerAddress
       const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
       logger.debug(`saveProfile: signing with key index ${addressIndex}`)
+
       const data = signProfileForUpload(this.state.profile,
         this.props.identityKeypairs[addressIndex])
 
@@ -145,6 +146,19 @@ class EditProfilePage extends Component {
   }
 
   render() {
+
+    const profileIndex = this.props.routeParams.index
+    const identity = this.props.localIdentities[profileIndex]
+
+    console.log(profileIndex)
+    console.log(identity)
+
+    // render() sometimes gets called before defaultIdentityName
+    // is updated from ownerAddress to the actual name when adding
+    // a username.
+    if (!identity) {
+      return null
+    }
 
     console.log(this.state.profile)
     const domainName = this.state.domainName
@@ -210,8 +224,7 @@ class EditProfilePage extends Component {
             <div className="container-fluid p-0">
               <div className="row m-t-20 no-gutters">
                 <div className="col-12">
-                  <div className="profile-accounts">
-                    <ul>
+                  <div className="edit-profile-accounts">
                       {this.state.profile.account.map((account) => {
                         let verified = false
                         // for (let i = 0; i < verifications.length; i++) {
@@ -234,18 +247,18 @@ class EditProfilePage extends Component {
                           )
                         } else {
                           return (
-                            <SocialAccountItem
+                            <EditSocialAccountItem
                               key={`${account.service}-${account.identifier}`}
                               service={account.service}
                               identifier={account.identifier}
                               proofUrl={account.proofUrl}
                               listItem
                               verified={verified}
+                              editMode={true}
                             />
                           )
                         }
                       })}
-                    </ul>
                   </div>
                 </div>
               </div>

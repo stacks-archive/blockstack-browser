@@ -28,7 +28,21 @@ div.profile-accounts > ul > li.verified {background-color:#2c96ff;}
 div.profile-accounts > ul > li.verified > a,div.profile-accounts > ul > li.verified > button{color:#fff;}
 div.profile-accounts > ul > li.pending {background-color:#2c96ff;}
 div.profile-accounts > ul > li.pending > a,div.profile-accounts > ul > li.verified > button{color:#fff;}
-div.profile-accounts > ul > li > a > span.app-account-service {color:#95CAFF;margin-left:10px;font-weigth:400;}
+div.profile-accounts > ul > li > a > span.app-account-service {color:#95CAFF;margin-left:10px;}
+
+div.edit-profile-accounts .account {padding-left:0;color:#fff;margin-bottom:1px;padding:15px 15px;background-color:#2c96ff;}
+div.edit-profile-accounts .account > span.app-account-identifier {font-weight:600}
+div.edit-profile-accounts .account > span.app-account-service {color:#95CAFF;margin-left:10px;}
+div.edit-profile-accounts .account .form-group {margin-top:20px;}
+div.edit-profile-accounts .account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.4);}
+/*div.edit-profile-accounts .account  {margin-bottom: 1px;padding-left:15px;padding-right:15px;}
+div.edit-profile-accounts .account, div.edit-profile-accounts .account button{display:block;padding:15px 5px;text-decoration:none;color:#080809;font-weight:600}
+div.edit-profile-accounts .account.verified {background-color:#2c96ff;}
+div.edit-profile-accounts .account.verified > a, div.edit-profile-accounts .account .verified > button{color:#fff;}
+div.edit-profile-accounts .account.pending {background-color:#2c96ff;}
+div.edit-profile-accounts .account.pending > a,div.profile-accounts > ul > li.verified > button{color:#fff;}
+div.edit-profile-accounts .account > a > span.app-account-service {color:#95CAFF;margin-left:10px;font-weigth:400;}*/
+
 /*div.profile-accounts > ul > li > a:hover,div.profile-accounts > ul > li > button:hover{text-decoration:none;color:#fff;border-radius:4px;background-color:#2c96ff;}*/
 .profile-foot{position:relative;display:block;margin-left:15px;padding-top:50px;color:#949494;}
 .connections{display:inline-block;width:32px;height:32px;margin-left:15px;border-radius:4px;background-color:#23262a;}

@@ -156,7 +156,6 @@ class DefaultProfilePage extends Component {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
     const defaultIdentityName = this.props.defaultIdentity
-    console.log(`defaultIdentity: ${defaultIdentityName}`)
     const identity = this.state.localIdentities[defaultIdentityName]
 
     // render() sometimes gets called before defaultIdentityName
