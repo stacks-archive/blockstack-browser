@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import InputGroup from '../components/InputGroup'
+import Image from '../components/Image'
 
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import EditProfileHeader from './components/EditProfileHeader'
@@ -9,6 +11,9 @@ import ProfileEditingSidebar from './components/ProfileEditingSidebar'
 import { IdentityActions } from './store/identity'
 import { signProfileForUpload, findAddressIndex } from '../utils/index'
 import { uploadProfile, uploadPhoto } from '../account/utils'
+
+import SocialAccountItem from './components/SocialAccountItem'
+import PGPAccountItem from './components/PGPAccountItem'
 
 import BasicInfoTab      from './tabs/BasicInfoTab'
 import PhotosTab         from './tabs/PhotosTab'
@@ -59,6 +64,7 @@ class EditProfilePage extends Component {
     this.changeTabs = this.changeTabs.bind(this)
     this.uploadProfilePhoto = this.uploadProfilePhoto.bind(this)
     this.hasUsername = this.hasUsername.bind(this)
+    this.onChange = this.onChange.bind(this)
   }
 
   componentWillMount() {
@@ -132,7 +138,15 @@ class EditProfilePage extends Component {
     return currentDomainName !== localIdentities[currentDomainName].ownerAddress
   }
 
+  onChange(event) {
+    let profile = this.state.profile
+    profile[event.target.name] = event.target.value
+    this.setState({profile: profile})
+  }
+
   render() {
+
+    console.log(this.state.profile)
     const domainName = this.state.domainName
     return (
       <div>
@@ -160,85 +174,84 @@ class EditProfilePage extends Component {
 
         <div>
           {this.state.profile && this.state.domainName ?
-          <div className="container-fluid no-padding">
-            <div className="row">
+          <div>
+            <div className="container-fluid no-padding">
+              <div className="row">
 
-              { this.state.tabName === "" ? (
-              <div className="col-md-12">
-                <ProfileEditingSidebar
-                  activeTab={this.state.tabName}
-                  onClick={this.changeTabs} />
-              </div>
-              ) :
-              (<div></div>)}
-
-              <div className="col-md-12">
-                { this.state.profile ? (
-                <div>
-                  {(() => {
-                    switch (this.state.tabName) {
-                      case "Basic Info":
-                        return (
-                          <BasicInfoTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile} />
-                        )
-                      case "Photos":
-                        return (
-                          <PhotosTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile}
-                            uploadProfilePhoto={this.uploadProfilePhoto}
-                            hasUsername={this.hasUsername}
-                          />
-                        )
-                      case "Social Accounts":
-                        return (
-                          <SocialAccountsTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile}
-                            domainName={this.state.domainName} />
-                        )
-                      case "Address":
-                        return (
-                          <PrivateInfoTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile} />
-                        )
-                      case "Digital Keys":
-                        return (
-                          <PublicKeysTab
-                            profile={this.state.profile}
-                            saveProfile={this.saveProfile}
-                            domainName={this.state.domainName} />
-                        )
-                      default:
-                        return (
-                          <div></div>
-                        )
-                    }
-                  })()}
+                <div className="col-12">
+                  <div className="avatar-md m-t-50 m-b-10 text-center">
+                    <Image
+                      src={this.state.profile.image[0].contentUrl || ''}
+                      fallbackSrc="/images/avatar.png" className="rounded-circle" />
+                  </div>
                 </div>
-                ) : null }
-              </div>
-
-              { this.state.tabName !== "" ? (
-              <div className="col-md-12">
-                <div className="form-group">
-                  <fieldset>
-                    <Link
-                      to="/profiles"
-                      className="btn btn-primary"
-                    >
-                      Save + View Profile
-                    </Link>
-                  </fieldset>
+                <div className="col-12 text-center">
+                    <button className="btn btn-link active m-b-30">
+                      Change Photo
+                    </button>
                 </div>
-              </div>
-              ) :
-              (<div></div>)}
 
+                <div className="col-12">
+                  <InputGroup name="givenName" label="First Name"
+                      data={this.state.profile}
+                      onChange={this.onChange} />
+                  <InputGroup name="familyName" label="Last Name"
+                      data={this.state.profile}
+                      onChange={this.onChange} />
+                  <InputGroup name="description" label="Short Bio"
+                      data={this.state.profile}
+                      onChange={this.onChange} />
+                </div>
+
+              </div>
             </div>
+
+
+            <div className="container-fluid p-0">
+              <div className="row m-t-20 no-gutters">
+                <div className="col-12">
+                  <div className="profile-accounts">
+                    <ul>
+                      {this.state.profile.account.map((account) => {
+                        let verified = false
+                        // for (let i = 0; i < verifications.length; i++) {
+                        //   const verification = verifications[i]
+                        //   if (verification.service === account.service &&
+                        //     verification.valid === true) {
+                        //     verified = true
+                        //     break
+                        //   }
+                        // }
+                        if (account.service === 'pgp') {
+                          return (
+                            <PGPAccountItem
+                              key={`${account.service}-${account.identifier}`}
+                              service={account.service}
+                              identifier={account.identifier}
+                              contentUrl={account.contentUrl}
+                              listItem
+                            />
+                          )
+                        } else {
+                          return (
+                            <SocialAccountItem
+                              key={`${account.service}-${account.identifier}`}
+                              service={account.service}
+                              identifier={account.identifier}
+                              proofUrl={account.proofUrl}
+                              listItem
+                              verified={verified}
+                            />
+                          )
+                        }
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           </div>
           :
           <div>
