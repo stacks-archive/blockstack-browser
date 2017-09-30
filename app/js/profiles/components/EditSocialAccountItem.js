@@ -102,23 +102,36 @@ class EditSocialAccountItem extends Component {
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
+    const placeholderClass = this.props.placeholder ? "placeholder" : ""
     const verifiedClass = !this.props.verified ? "verified" : "pending" 
     const collapsedClass = this.state.collapsed ? "collapsed" : ""
 
     if (webAccountTypes[this.props.service]) {
-      if (!this.props.placeholder) {
+      if (this.props.listItem === true) {
         return (
-          <div className={`account ${verifiedClass} ${collapsedClass}`} 
+          <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`} 
             onClick={this.handleClick}>
             <span className="">
               <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
             </span>
-            <span className="app-account-identifier">
-              {this.getIdentifier()}
-            </span>
-            <span className="app-account-service font-weight-normal">
-              {`@${this.props.service}`}
-            </span>
+            { !this.props.placeholder && (
+                <span className="app-account-identifier">
+                  {this.getIdentifier()}
+                </span>
+              )}
+
+            { !this.props.placeholder && (
+                <span className="app-account-service font-weight-normal">
+                  {`@${this.props.service}`}
+                </span>
+              )}
+
+            { this.props.placeholder && (
+                <span className="app-account-service font-weight-normal">
+                  { this.getPlaceholderText(this.props.service) }
+                </span>
+              )}
+
             <span className="float-right">
               { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
                 <i className="fa fa-w fa-chevron-up" />
@@ -144,19 +157,7 @@ class EditSocialAccountItem extends Component {
         )
       } else {
         return (
-          <div className={`account placeholder ${collapsedClass}`} onClick={this.handleClick}>
-            <span className="">
-              <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
-            </span>
-            <span className="app-account-service font-weight-normal">
-              { this.getPlaceholderText(this.props.service) }
-            </span>
-            <span className="float-right">
-              { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
-                <i className="fa fa-w fa-chevron-up" />
-              }
-            </span>
-          </div>
+          <div></div>
         )
       }
     } else {

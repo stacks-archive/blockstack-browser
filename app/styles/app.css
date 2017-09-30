@@ -39,8 +39,11 @@ div.edit-profile-accounts .account > span.app-account-identifier {font-weight:60
 div.edit-profile-accounts .account > span.app-account-service {color:#95CAFF;margin-left:10px;}
 div.edit-profile-accounts .account .form-group {margin-top:20px;}
 div.edit-profile-accounts .account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.4);}
-div.edit-profile-accounts .account.placeholder {color:#C7C7C7;background-color:transparent;}
-div.edit-profile-accounts .account.placeholder > span.app-account-service {color:#C7C7C7;}
+div.edit-profile-accounts .account.placeholder.collapsed {color:#C7C7C7;background-color:transparent;}
+div.edit-profile-accounts .account.placeholder.collapsed > span.app-account-service {color:#C7C7C7;}
+div.edit-profile-accounts .account.placeholder > span.app-account-service {color:#4B4B4B;}
+div.edit-profile-accounts .account.placeholder {color:#4B4B4B;background-color:#fff;}
+div.edit-profile-accounts .account.placeholder .form-group input.form-control {color:#fff;background-color:#FAFAFA;border:1px solid #FAFAFA;}
 
 /*div.edit-profile-accounts .account  {margin-bottom: 1px;padding-left:15px;padding-right:15px;}
 div.edit-profile-accounts .account, div.edit-profile-accounts .account button{display:block;padding:15px 5px;text-decoration:none;color:#080809;font-weight:600}
