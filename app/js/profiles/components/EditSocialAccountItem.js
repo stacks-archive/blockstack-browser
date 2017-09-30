@@ -78,6 +78,19 @@ class EditSocialAccountItem extends Component {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const verifiedClass = !this.props.verified ? "verified" : "pending" 
     const collapsedClass = this.state.collapsed ? "collapsed" : ""
+    var placeholderText = ''
+
+    if (this.props.placeholder) {
+      if(this.props.service === 'bitcoin' || this.props.service === 'ethereum') {
+        placeholderText = `Prove your ${this.props.service} address`
+      }
+      else if (this.props.service === 'pgp' || this.props.service === 'ssh') {
+        placeholderText = `Prove your ${this.props.service} key`
+      }
+      else {
+        placeholderText = `Prove your ${this.props.service} account`
+      }
+    }
 
     if (webAccountTypes[this.props.service]) {
       if (!this.props.placeholder) {
@@ -123,7 +136,7 @@ class EditSocialAccountItem extends Component {
               <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
             </span>
             <span className="app-account-service font-weight-normal">
-              {`Prove your ${this.props.service}`}
+              { placeholderText }
             </span>
             <span className="float-right">
               { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
