@@ -25,6 +25,19 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/EditProfilePage.js')
 
+const availableAccountTypes = [
+  'twitter',
+  'facebook',
+  'linkedin',
+  'github',
+  'instagram',
+  'hackernews',
+  'bitcoin',
+  'ethereum',
+  'pgp',
+  'ssh'
+]
+
 function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
@@ -160,6 +173,17 @@ class EditProfilePage extends Component {
       return null
     }
 
+    const accounts = this.state.profile.account.map((account) => {
+      return account.service
+    })
+
+    const placeHolderAccounts = availableAccountTypes.filter((account) => {
+      return accounts.indexOf(account) < 0
+    })
+
+    console.log(accounts)
+    console.log(placeHolderAccounts)
+
     console.log(this.state.profile)
     const domainName = this.state.domainName
     return (
@@ -190,7 +214,7 @@ class EditProfilePage extends Component {
           {this.state.profile && this.state.domainName ?
           <div>
             <div className="container-fluid no-padding">
-              <div className="row">
+              <div className="row no-gutters">
 
                 <div className="col-12">
                   <div className="avatar-md m-t-50 m-b-10 text-center">
@@ -204,7 +228,7 @@ class EditProfilePage extends Component {
                       Change Photo
                     </button>
                 </div>
-
+                
                 <div className="col-12">
                   <InputGroup name="givenName" label="First Name"
                       data={this.state.profile}
@@ -222,7 +246,7 @@ class EditProfilePage extends Component {
 
 
             <div className="container-fluid p-0">
-              <div className="row m-t-20 no-gutters">
+              <div className="row m-t-20 p-b-45 no-gutters">
                 <div className="col-12">
                   <div className="edit-profile-accounts">
                       {this.state.profile.account.map((account) => {
@@ -254,7 +278,31 @@ class EditProfilePage extends Component {
                               proofUrl={account.proofUrl}
                               listItem
                               verified={verified}
-                              editMode={true}
+                            />
+                          )
+                        }
+                      })}
+
+                      {placeHolderAccounts.map((account) => {
+                        if (account.service === 'pgp') {
+                          return (
+                            <PGPAccountItem
+                              key={account}
+                              service={account}
+                              identifier=""
+                              contentUrl=""
+                              listItem
+                            />
+                          )
+                        } else {
+                          return (
+                            <EditSocialAccountItem
+                              key={account}
+                              service={account}
+                              identifier=""
+                              proofUrl=""
+                              listItem
+                              placeholder
                             />
                           )
                         }

@@ -21,8 +21,7 @@ class EditSocialAccountItem extends Component {
     proofUrl: PropTypes.string,
     verified: PropTypes.bool,
     api: PropTypes.object.isRequired,
-    editMode: PropTypes.bool,
-    filled: PropTypes.bool
+    placeholder: PropTypes.bool
   }
 
   constructor(props) {
@@ -77,11 +76,14 @@ class EditSocialAccountItem extends Component {
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
-    const verifiedClass = !this.props.verified ? "verified" : "pending"
+    const verifiedClass = !this.props.verified ? "verified" : "pending" 
+    const collapsedClass = this.state.collapsed ? "collapsed" : ""
+
     if (webAccountTypes[this.props.service]) {
-      if (this.props.listItem === true) {
+      if (!this.props.placeholder) {
         return (
-          <div className={`account ${verifiedClass}`} onClick={this.handleClick}>
+          <div className={`account ${verifiedClass} ${collapsedClass}`} 
+            onClick={this.handleClick}>
             <span className="">
               <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
             </span>
@@ -97,11 +99,8 @@ class EditSocialAccountItem extends Component {
               }
             </span>
 
-            {this.state.collapsed ? 
+            {!this.state.collapsed && 
               (
-                <div></div>
-                ) 
-              : (
                 <div>
                   <InputGroup 
                     name="identifier" 
@@ -119,10 +118,19 @@ class EditSocialAccountItem extends Component {
         )
       } else {
         return (
-          <span>
-            <i className={`fa ${this.getIconClass()}`} />
-            <span>{this.getIdentifier()}</span>
-          </span>
+          <div className={`account placeholder ${collapsedClass}`} onClick={this.handleClick}>
+            <span className="">
+              <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
+            </span>
+            <span className="app-account-service font-weight-normal">
+              {`Prove your ${this.props.service}`}
+            </span>
+            <span className="float-right">
+              { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
+                <i className="fa fa-w fa-chevron-up" />
+              }
+            </span>
+          </div>
         )
       }
     } else {
