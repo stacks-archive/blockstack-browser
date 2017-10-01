@@ -1,5 +1,6 @@
 build/*
 gulp/*
+
 tests/*
 
 app/js/account/*
@@ -10,4 +11,3 @@ app/js/profiles/*
 app/js/store/*
 app/js/utils/*
 app/js/wallet/*
-

@@ -1,5 +1,9 @@
 import { DROPBOX } from '../../../account/utils/index'
 
+export const REGTEST_CORE_API_PASSWORD = 'blockstack_integration_test_api_password'
+export const REGTEST_CORE_INSIGHT_API_URL =
+  'http://localhost:6270/insight-api/addr/{address}'
+
 // DEFAULT_API values are only used if
 // the user's settings.api state doesn't
 // already have an existing key.
