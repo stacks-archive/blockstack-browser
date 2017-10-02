@@ -272,46 +272,52 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, 
 function refreshBalances(insightUrl, addresses, coreAPIPassword) {
 
   return dispatch => {
-    let results = []
+    const results = []
     addresses.forEach((address) => {
-      // fetch balances from https://explorer.blockstack.org/insight-api/addr/{address}/?noTxList=1
-      // parse results from: {"addrStr":"1Fvoya7XMvzfpioQnzaskndL7YigwHDnRE","balance":0.02431567,"balanceSat":2431567,"totalReceived":38.82799913,"totalReceivedSat":3882799913,"totalSent":38.80368346,"totalSentSat":3880368346,"unconfirmedBalance":0,"unconfirmedBalanceSat":0,"unconfirmedTxApperances":0,"txApperances":2181}
-      const url = `${getInsightUrl(insightUrl, address, coreAPIPassword)}/balance`
-
-      fetch(url).then((response) => response.text())
+      logger.debug(`refreshBalances: refreshing balances for address ${address}`)
+      const urlBase = getInsightUrl(insightUrl, address, coreAPIPassword)
+      const confirmedBalanceUrl = `${urlBase}/balance`
+      const unconfirmedBalanceUrl = `${urlBase}/unconfirmedBalance`
+      fetch(confirmedBalanceUrl)
+      .then((response) => response.text())
       .then((responseText) => {
-        const balance = parseInt(responseText)
+        const confirmedBalance = parseInt(responseText)
+        fetch(unconfirmedBalanceUrl)
+        .then((response) => response.text())
+        .then((responseText) => {
+          const unconfirmedBalance = parseInt(responseText)
+          results.push({
+            address,
+            balance: satoshisToBtc(unconfirmedBalance + confirmedBalance)
+          })
 
-        results.push({
-          address,
-          balance: satoshisToBtc(balance)
-        })
+          if (results.length >= addresses.length) {
+            const balances = {}
+            let total = 0.0
 
-        if (results.length >= addresses.length) {
-          let balances = {}
-          let total = 0.0
-
-          for (let i = 0; i < results.length; i++) {
-            let address = results[i]['address']
-            if (!balances.hasOwnProperty(address)) {
-              let balance = results[i]['balance']
-              total = total + balance
-              balances[address] = balance
-            } else {
-              console.warn(`Duplicate address ${address} in addresses array`)
+            for (let i = 0; i < results.length; i++) {
+              const address = results[i]['address']
+              if (!balances.hasOwnProperty(address)) {
+                const balance = results[i]['balance']
+                total = total + balance
+                balances[address] = balance
+              } else {
+                logger.error(`refreshBalances: Duplicate address ${address} in addresses array`)
+              }
             }
+
+            balances['total'] = total
+
+            dispatch(
+              updateBalances(balances)
+            )
           }
-
-          balances['total'] = total
-
-          dispatch(
-            updateBalances(balances)
-          )
-        }
+        }).catch((error) => {
+          logger.error('refreshBalances: error fetching ${address} unconfirmed balance', error)
+        })
+      }).catch((error) => {
+        logger.error('refreshBalances: error fetching ${address} confirmed balance', error)
       })
-    })
-    .catch((error) => {
-      logger.error('refreshBalances: error', error)
     })
   }
 }
