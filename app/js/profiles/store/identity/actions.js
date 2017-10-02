@@ -344,7 +344,7 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
           let verifications = []
           dispatch(updateCurrentIdentity(domainName, profile, verifications, zoneFile))
           if (profile) {
-            return validateProofs(profile, domainName).then((proofs) => {
+            return validateProofs(profile, ownerAddress, domainName).then((proofs) => {
               verifications = proofs
               dispatch(updateCurrentIdentity(domainName, profile, verifications, zoneFile))
             }).catch((error) => {
