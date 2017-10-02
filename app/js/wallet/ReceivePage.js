@@ -28,10 +28,6 @@ class ReceivePage extends Component {
     coreAPIPassword: PropTypes.string.isRequired
   }
 
-  constructor(props) {
-    super(props)
-  }
-
   componentWillMount() {
     this.props.getCoreWalletAddress(this.props.walletPaymentAddressUrl, this.props.coreAPIPassword)
   }
@@ -41,34 +37,34 @@ class ReceivePage extends Component {
     return (
       <div>
         <Balance />
-          <div className="m-b-25 text-center">
-            <p>
-              Send at least 0.01 bitcoins to the address below to register a
-              username. All username registrations use funds from your wallet.
-            </p>
-          </div>
+        <div className="m-b-25 text-center">
+          <p>
+            Send at least 0.01 bitcoins to the address below to register a
+            username. All username registrations use funds from your wallet.
+          </p>
+        </div>
         {address ?
-        <div>
-          {/*
-          <div className="m-b-25">
-            <p className="font-weight-bold">Send Bitcoins to this address:</p>
+          <div>
+            {/*
+            <div className="m-b-25">
+              <p className="font-weight-bold">Send Bitcoins to this address:</p>
+            </div>
+            */}
+            <div className="qrcode-wallet">
+              <QRCode
+                value={address}
+              />
+            </div>
+            <div className="highlight-wallet text-center">
+              <pre>
+                <code>{address}</code>
+              </pre>
+            </div>
           </div>
-          */}
-          <div className="qrcode-wallet">
-            <QRCode
-              value={address}
-            />
-          </div>
-          <div className="highlight-wallet text-center">
-            <pre>
-              <code>{address}</code>
-            </pre>
-          </div>
-        </div>
         :
-        <div>
-          <h5>Loading address...</h5>
-        </div>
+          <div>
+            <h5>Loading address...</h5>
+          </div>
         }
       </div>
     )

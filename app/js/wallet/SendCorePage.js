@@ -6,7 +6,7 @@ import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
 import InputGroupSecondary from '../components/InputGroupSecondary'
-import Balance from './components/Balance'
+import CoreBalance from './components/CoreBalance'
 
 function mapStateToProps(state) {
   return {
@@ -33,7 +33,7 @@ class SendCorePage extends Component {
 
   constructor(props) {
     super(props)
-    this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
+    this.withdrawAllBitcoin = this.withdrawAllBitcoin.bind(this)
 
     this.state = {
       alerts: []
@@ -108,7 +108,7 @@ class SendCorePage extends Component {
           <Alert key={index} message={alert.message} status={alert.status} />
           )
         )}
-        <Balance />
+        <CoreBalance />
         <p>Send your legacy Core wallet funds to another Bitcoin wallet.</p>
         <form onSubmit={this.withdrawAllBitcoin}>
           <InputGroupSecondary

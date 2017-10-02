@@ -9,6 +9,10 @@ export function btcToSatoshis(amountInBtc) {
   return amountInBtc * SATOSHIS_IN_BTC
 }
 
+export function satoshisToBtc(amountInSatoshis) {
+  return (1.0 * amountInSatoshis) / SATOSHIS_IN_BTC
+}
+
 export function broadcastTransaction(broadcastTransactionUrl, rawTransaction) {
   return new Promise((resolve, reject) => {
     const payload =  { rawtx: rawTransaction }

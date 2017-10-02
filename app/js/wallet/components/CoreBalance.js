@@ -11,7 +11,11 @@ function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
     balances: state.account.bitcoinAccount.balances,
-    insightUrl: state.settings.api.insightUrl,
+    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
+    utxoUrl: state.settings.api.utxoUrl,
+    addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
+    coreWalletBalance: state.account.coreWallet.balance,
+    coreWalletAddress: state.account.coreWallet.address,
     btcPriceUrl: state.settings.api.btcPriceUrl,
     btcPrice: state.settings.api.btcPrice,
     coreAPIPassword: state.settings.api.coreAPIPassword
@@ -27,7 +31,12 @@ class Balance extends Component {
     addresses: PropTypes.array.isRequired,
     balances: PropTypes.object.isRequired,
     refreshBalances: PropTypes.func.isRequired,
-    insightUrl: PropTypes.string.isRequired,
+    walletPaymentAddressUrl: PropTypes.string.isRequired,
+    utxoUrl: PropTypes.string.isRequired,
+    addressBalanceUrl: PropTypes.string.isRequired,
+    refreshCoreWalletBalance: PropTypes.func.isRequired,
+    coreWalletBalance: PropTypes.number,
+    coreWalletAddress: PropTypes.string,
     btcPriceUrl: PropTypes.string.isRequired,
     btcPrice: PropTypes.string.isRequired,
     refreshBtcPrice: PropTypes.func.isRequired,
@@ -36,29 +45,25 @@ class Balance extends Component {
 
   constructor() {
     super()
-    this.btcBalance = this.btcBalance.bind(this)
     this.roundedBtcBalance = this.roundedBtcBalance.bind(this)
     this.usdBalance = this.usdBalance.bind(this)
   }
 
   componentDidMount() {
-    this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
+    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
           this.props.coreAPIPassword)
     this.props.refreshBtcPrice(this.props.btcPriceUrl)
   }
 
-  btcBalance() {
-    let btcBalance = 0
-    const balances = this.props.balances
-    if (balances && balances.total) {
-      btcBalance = balances.total
+  componentWillReceiveProps(nextProps) {
+    if (this.props.coreWalletAddress !== nextProps.coreWalletAddress) {
+      this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl, this.props.coreAPIPassword)
     }
-    return btcBalance
   }
 
   roundedBtcBalance() {
-    const btcBalance = this.btcBalance()
-    if (!btcBalance) {
+    const btcBalance = this.props.coreWalletBalance
+    if (btcBalance === null) {
       return 0
     } else {
       const roundedAmount = roundTo(btcBalance, 6)
@@ -68,7 +73,7 @@ class Balance extends Component {
 
   usdBalance() {
     let btcPrice = this.props.btcPrice
-    const btcBalance = this.btcBalance()
+    const btcBalance = this.props.coreWalletBalance
 
     btcPrice = Number(btcPrice)
     const usdBalance = btcPrice * btcBalance
@@ -76,9 +81,10 @@ class Balance extends Component {
   }
 
   render() {
+    const coreWalletBalance = this.props.coreWalletBalance
     return (
       <div className="balance m-b-30">
-        <div className="balance-main" title={`${this.btcBalance()} BTC`}>
+        <div className="balance-main" title={`${coreWalletBalance} BTC`}>
           {this.roundedBtcBalance()}
           <label>&nbsp;BTC</label>
         </div>

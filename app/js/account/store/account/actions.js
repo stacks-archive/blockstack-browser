@@ -3,12 +3,14 @@ import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
 import { authorizationHeaderValue,
   btcToSatoshis,
+  satoshisToBtc,
   deriveIdentityKeyPair,
   encrypt,
   getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityOwnerAddressNode,
-  getBitcoinAddressNode } from '../../../utils'
+  getBitcoinAddressNode,
+  getInsightUrl } from '../../../utils'
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
@@ -267,19 +269,22 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, 
 }
 
 
-function refreshBalances(addressBalanceUrl, addresses) {
+function refreshBalances(insightUrl, addresses, coreAPIPassword) {
+
   return dispatch => {
     let results = []
     addresses.forEach((address) => {
       // fetch balances from https://explorer.blockstack.org/insight-api/addr/{address}/?noTxList=1
       // parse results from: {"addrStr":"1Fvoya7XMvzfpioQnzaskndL7YigwHDnRE","balance":0.02431567,"balanceSat":2431567,"totalReceived":38.82799913,"totalReceivedSat":3882799913,"totalSent":38.80368346,"totalSentSat":3880368346,"unconfirmedBalance":0,"unconfirmedBalanceSat":0,"unconfirmedTxApperances":0,"txApperances":2181}
-      const url = addressBalanceUrl.replace('{address}', address)
+      const url = `${getInsightUrl(insightUrl, address, coreAPIPassword)}/balance`
+
       fetch(url).then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
+      .then((responseText) => {
+        const balance = parseInt(responseText)
+
         results.push({
           address,
-          balance: responseJson['balance']
+          balance: satoshisToBtc(balance)
         })
 
         if (results.length >= addresses.length) {

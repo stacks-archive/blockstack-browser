@@ -15,7 +15,7 @@ const DEFAULT_API = {
   registerUrl: 'http://localhost:6270/v1/names',
   bitcoinAddressLookupUrl: 'http://localhost:6270/v1/addresses/bitcoin/{address}',
   zeroConfBalanceUrl: 'http://localhost:6270/v1/wallet/balance/0',
-  utxoUrl: 'https://utxo.blockstack.org/insight-api/addr/{address}/utxo',
+  insightUrl: 'https://utxo.blockstack.org/insight-api/addr/{address}',
   broadcastUrl: 'https://utxo.blockstack.org/insight-api/tx/send',
   priceUrl: 'http://localhost:6270/v1/prices/names/{name}',
   networkFeeUrl: 'https://bitcoinfees.21.co/api/v1/fees/recommended',

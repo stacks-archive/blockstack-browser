@@ -4,15 +4,9 @@ import { connect } from 'react-redux'
 
 import { AccountActions } from '../account/store/account'
 
-import {
-  broadcastTransaction, decryptPrivateKeychain, getNetworkFee,
-  getBitcoinPrivateKeychain, getUtxo
-} from '../utils'
 import Alert from '../components/Alert'
 import InputGroupSecondary from '../components/InputGroupSecondary'
 import Balance from './components/Balance'
-
-import { ECPair, TransactionBuilder } from 'bitcoinjs-lib'
 
 function mapStateToProps(state) {
   return {
@@ -42,7 +36,7 @@ class SendPage extends Component {
     this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
 
     this.state = {
-      alerts: [],
+      alerts: []
     }
     this.updateAlert = this.updateAlert.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
@@ -63,7 +57,7 @@ class SendPage extends Component {
 
   onValueChange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     })
   }
 
@@ -71,8 +65,8 @@ class SendPage extends Component {
     this.setState({
       alerts: [{
         status: alertStatus,
-        message: alertMessage,
-      }],
+        message: alertMessage
+      }]
     })
   }
 
@@ -82,76 +76,6 @@ class SendPage extends Component {
     this.props.withdrawBitcoinFromCoreWallet(
       this.props.coreWalletWithdrawUrl, this.state.recipientAddress,
       parseFloat(this.state.amount), this.props.coreAPIPassword)
-    return // TODO temporary until we switch back to built in wallet
-
-    const password = this.state.password 
-
-
-    // FIXME this needs to be written to use our BIP44 compliant wallet structure
-    decryptMasterKeychain(password, this.props.account.encryptedBackupPhrase)
-    .then((privateKeychain) => {
-     const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(privateKeychain)
-
-     const key = ECPair.fromWIF(bitcoinPrivateKeychain.ecPair.toWIF())
-     const address = bitcoinPrivateKeychain.ecPair.getAddress()
-
-     let tx = new TransactionBuilder()
-     let totalSatoshis = 0
-
-     const recipientAddress = this.state.recipientAddress
-
-     getUtxo(address).then((utxo) => {
-
-       for(let i = 0; i < utxo.length; i++) {
-         let input = utxo[i]
-         tx.addInput(input.txid, input.vout)
-         totalSatoshis = totalSatoshis + input.satoshis
-       }
-
-     let clonedTx = TransactionBuilder.fromTransaction(tx.buildIncomplete())
-     clonedTx.addOutput(recipientAddress, totalSatoshis)
-     clonedTx.sign(0, key)
-     const wrongFeeTransaction = clonedTx.build()
-     const byteLength = wrongFeeTransaction.byteLength()
-
-     getNetworkFee(byteLength).then((fee) => {
-       const amountToSend = totalSatoshis - fee
-
-       console.log(`Amount to send to ${recipientAddress}: ${amountToSend} Network fee: ${fee}`)
-
-       // TODO: instead of 0 we should use dust amount
-       if (amountToSend <= 0) {
-          this.updateAlert('danger', "There isn't enough bitcoin to pay the network fee.")
-       } else {
-         tx.addOutput(recipientAddress, amountToSend)
-
-         tx.sign(0, key)
-
-         const rawTransaction = tx.build().toHex()
-
-         broadcastTransaction(rawTransaction).then((result) => {
-           console.log(result)
-           this.updateAlert('success', "Transaction sent!")
-
-         }).catch((error) => {
-           console.log(error)
-           this.updateAlert('danger', "There was a problem broadcasting the transaction")
-         })
-       }
-     })
-
-     }).catch((error) => {
-       this.updateAlert('danger', error.toString())
-
-       console.error(error)
-     })
-
-
-    }).catch((error) => {
-      this.updateAlert('danger', error.toString())
-
-      console.error(error)
-    })
   }
 
   displayCoreWalletWithdrawalAlerts(props) {
@@ -159,16 +83,18 @@ class SendPage extends Component {
       const withdrawal = props.account.coreWallet.withdrawal
 
       this.setState({
-        alerts: [],
+        alerts: []
       })
 
       if (withdrawal.inProgress) {
-        this.updateAlert('success', `Preparing to send your balance to ${withdrawal.recipientAddress}...`)
+        this.updateAlert('success',
+        `Preparing to send your balance to ${withdrawal.recipientAddress}...`)
       } else if (withdrawal.error !== null) {
         console.error(withdrawal.error)
         this.updateAlert('danger', 'Withdrawal failed.')
       } else if (withdrawal.success) {
-        this.updateAlert('success', `Your bitcoins have been sent to ${withdrawal.recipientAddress}`)
+        this.updateAlert('success',
+        `Your bitcoins have been sent to ${withdrawal.recipientAddress}`)
       }
     }
   }
@@ -177,23 +103,41 @@ class SendPage extends Component {
     const disabled = this.props.account.coreWallet.withdrawal.inProgress
     return (
       <div>
-        { this.state.alerts.map(function(alert, index) {
-          return (
-            <Alert key={index} message={alert.message} status={alert.status} />
+        {this.state.alerts.map((alert, index) =>
+           (
+          <Alert key={index} message={alert.message} status={alert.status} />
           )
-        })}
+        )}
         <Balance />
         <p>Send your funds to another Bitcoin wallet.</p>
-        <form onSubmit={this.withdrawBitcoin} method='post'>
-          <InputGroupSecondary data={this.state} onChange={this.onValueChange} name="recipientAddress"
-            label="To" placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ"
-            required={true}/>
-          <InputGroupSecondary data={this.state} onChange={this.onValueChange} name="amount"
-            label="Amount" placeholder="0.937" type="number"
-            required={true} step={0.000001} />
-          <InputGroupSecondary data={this.state} onChange={this.onValueChange}
-            name="password" label="Password"
-            placeholder="Password" type="password" required={true}/>
+        <form onSubmit={this.withdrawBitcoin}>
+          <InputGroupSecondary 
+            data={this.state}
+            onChange={this.onValueChange}
+            name="recipientAddress"
+            label="To"
+            placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ"
+            required
+          />
+          <InputGroupSecondary
+            data={this.state}
+            onChange={this.onValueChange}
+            name="amount"
+            label="Amount"
+            placeholder="0.937"
+            type="number"
+            required
+            step={0.000001}
+          />
+          <InputGroupSecondary
+            data={this.state}
+            onChange={this.onValueChange}
+            name="password"
+            label="Password"
+            placeholder="Password"
+            type="password"
+            required
+          />
           <div className="m-t-40 m-b-75">
             <button className="btn btn-light btn-block" type="submit" disabled={disabled}>
               Send
