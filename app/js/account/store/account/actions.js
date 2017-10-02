@@ -230,11 +230,26 @@ function resetCoreWithdrawal() {
   }
 }
 
-function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, coreAPIPassword) {
+function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, coreAPIPassword, amount = null, paymentKey = null) {
   return dispatch => {
-    dispatch(withdrawingCoreBalance(recipientAddress, 1))
+    if (!amount) {
+      dispatch(withdrawingCoreBalance(recipientAddress, 1))
+      logger.debug(`withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`)
+    } else {
+      dispatch(withdrawingCoreBalance(recipientAddress, amount))
+    }
 
-    logger.debug(`withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`)
+    const requestBody = {
+      address: recipientAddress,
+      min_confs: 0
+    }
+
+    if (amount) {
+      const satoshisAmount = btcToSatoshis(amount)
+      const roundedSatoshiAmount = roundTo(satoshisAmount, 0)
+      logger.debug(`withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} satoshis to ${recipientAddress}`)
+      requestBody['amount'] = roundedSatoshiAmount
+    }
 
     const requestHeaders = {
       'Accept': 'application/json',
@@ -242,15 +257,25 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, 
       'Authorization': authorizationHeaderValue(coreAPIPassword)
     }
 
-    const requestBody = JSON.stringify({
-      address: recipientAddress,
-      min_confs: 0
-    })
+    if (paymentKey) {
+      // Core registers with an uncompressed address,
+      // browser expects compressed addresses,
+      // we need to add a suffix to indicate to core
+      // that it should use a compressed addresses
+      // see https://en.bitcoin.it/wiki/Wallet_import_format
+      // and https://github.com/blockstack/blockstack-browser/issues/607
+      const compressedPublicKeySuffix = '01'
+      const key = `${paymentKey}${compressedPublicKeySuffix}`
+      requestBody['payment_key'] = key
+      logger.debug('withdrawBitcoinFromCoreWallet: Using provided payment key')
+    } else {
+      logger.debug('withdrawBitcoinFromCoreWallet: No payment key, using core wallet')
+    }
 
     fetch(coreWalletWithdrawUrl, {
       method: 'POST',
       headers: requestHeaders,
-      body: requestBody
+      body: JSON.stringify(requestBody)
     })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))

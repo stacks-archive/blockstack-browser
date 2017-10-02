@@ -1,7 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
+import {
+  decryptMasterKeychain,
+  getBitcoinPrivateKeychain,
+  getBitcoinAddressNode
+} from '../utils'
 import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
@@ -36,7 +40,10 @@ class SendPage extends Component {
     this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
 
     this.state = {
-      alerts: []
+      alerts: [],
+      amount: '',
+      password: '',
+      recipientAddress: ''
     }
     this.updateAlert = this.updateAlert.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
@@ -72,10 +79,20 @@ class SendPage extends Component {
 
   withdrawBitcoin(event) {
     event.preventDefault()
-
-    this.props.withdrawBitcoinFromCoreWallet(
+    const password = this.state.password
+    decryptMasterKeychain(password, this.props.account.encryptedBackupPhrase)
+    .then((masterKeychain) => {
+      const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
+      const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
+      const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
+      this.props.withdrawBitcoinFromCoreWallet(
       this.props.coreWalletWithdrawUrl, this.state.recipientAddress,
-      parseFloat(this.state.amount), this.props.coreAPIPassword)
+       this.props.coreAPIPassword, parseFloat(this.state.amount), paymentKey)
+    }).
+    catch((error) => {
+      this.updateAlert('danger', error.toString())
+      console.error(error)
+    })
   }
 
   displayCoreWalletWithdrawalAlerts(props) {
@@ -111,7 +128,7 @@ class SendPage extends Component {
         <Balance />
         <p>Send your funds to another Bitcoin wallet.</p>
         <form onSubmit={this.withdrawBitcoin}>
-          <InputGroupSecondary 
+          <InputGroupSecondary
             data={this.state}
             onChange={this.onValueChange}
             name="recipientAddress"
