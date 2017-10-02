@@ -65,12 +65,13 @@ function updateOwnedIdentities(localIdentities, namesOwned) {
   }
 }
 
-function updateProfile(domainName, profile, zoneFile) {
+function updateProfile(domainName, profile, zoneFile, verifications) {
   return {
     type: types.UPDATE_PROFILE,
     domainName,
     profile,
-    zoneFile
+    zoneFile,
+    verifications
   }
 }
 
@@ -272,7 +273,14 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
                       resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                         j++
                         if (profile) {
-                          dispatch(updateProfile(domainName, profile, zoneFile))
+                          dispatch(updateProfile(domainName, profile, zoneFile, []))
+                          let verifications = []
+                          validateProofs(profile, ownerAddress, domainName).then((proofs) => {
+                            verifications = proofs
+                            dispatch(updateProfile(domainName, profile, zoneFile, verifications))
+                          }).catch((error) => {
+                            logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
+                          })
                         }
                         logger.debug(`j: ${j} namesOwned.length: ${namesOwned.length}`)
                         if (j >= namesOwned.length) {
