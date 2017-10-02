@@ -54,8 +54,8 @@ class SocialAccountItem extends Component {
 
   getIdentifier() {
     let identifier = this.props.identifier
-    if (identifier.length >= 15) {
-      identifier = identifier.slice(0, 15) + '...'
+    if (identifier.length >= 40) {
+      identifier = identifier.slice(0, 40) + '...'
     }
     return identifier
   }

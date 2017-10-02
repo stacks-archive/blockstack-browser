@@ -76,8 +76,8 @@ class PGPAccountItem extends Component {
 
   getIdentifier() {
     let identifier = this.props.identifier
-    if (identifier.length >= 15) {
-      identifier = identifier.slice(0, 15) + '...'
+    if (identifier.length >= 40) {
+      identifier = identifier.slice(0, 40) + '...'
     }
     return identifier
   }
@@ -135,12 +135,21 @@ class PGPAccountItem extends Component {
           </Modal>
           <a href="#" onClick={this.openModal} data-toggle="tooltip"
             title={webAccountTypes[this.props.service].label}>
+            
             <span className="">
               <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
             </span>
+
             <span className="app-account-identifier">
-              {identifier}
+              {this.getIdentifier()}
             </span>
+
+            { !this.props.placeholder && (
+                <span className="app-account-service font-weight-normal">
+                  {`${this.props.service.toUpperCase()}`}
+                </span>
+              )}
+
             {this.props.verified &&
               <span className="float-right">
                 <i className="fa fa-fw fa-check-circle fa-lg" />
