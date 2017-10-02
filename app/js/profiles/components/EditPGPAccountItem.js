@@ -42,6 +42,7 @@ class EditPGPAccountItem extends Component {
     this.closeModal = this.closeModal.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
     this.getIdentifier = this.getIdentifier.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentWillMount() {
@@ -114,7 +115,8 @@ class EditPGPAccountItem extends Component {
 
     if (this.props.listItem === true) {
       return (
-        <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`} >
+        <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`} 
+          onClick={this.handleClick} >
           <Modal
             isOpen={this.state.modalIsOpen}
             contentLabel="PGP Key"
@@ -147,7 +149,7 @@ class EditPGPAccountItem extends Component {
           {/*<a href="#" onClick={this.openModal} data-toggle="tooltip"
             title={webAccountTypes[this.props.service].label}>*/}
             <span className="">
-              <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
+              <i className={`fa fa-fw ${this.getIconClass()}`} />
             </span>
 
             { !this.props.placeholder && (

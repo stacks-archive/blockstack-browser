@@ -112,7 +112,7 @@ class EditSocialAccountItem extends Component {
           <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`} 
             onClick={this.handleClick}>
             <span className="">
-              <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
+              <i className={`fa fa-fw ${this.getIconClass()}`} />
             </span>
             { !this.props.placeholder && (
                 <span className="app-account-identifier">
