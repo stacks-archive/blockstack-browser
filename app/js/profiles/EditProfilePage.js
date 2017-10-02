@@ -13,7 +13,7 @@ import { signProfileForUpload, findAddressIndex } from '../utils/index'
 import { uploadProfile, uploadPhoto } from '../account/utils'
 
 import EditSocialAccountItem from './components/EditSocialAccountItem'
-import PGPAccountItem from './components/PGPAccountItem'
+import EditPGPAccountItem from './components/EditPGPAccountItem'
 
 import BasicInfoTab      from './tabs/BasicInfoTab'
 import PhotosTab         from './tabs/PhotosTab'
@@ -261,7 +261,7 @@ class EditProfilePage extends Component {
                         // }
                         if (account.service === 'pgp') {
                           return (
-                            <PGPAccountItem
+                            <EditPGPAccountItem
                               key={`${account.service}-${account.identifier}`}
                               service={account.service}
                               identifier={account.identifier}
@@ -286,12 +286,13 @@ class EditProfilePage extends Component {
                       {placeHolderAccounts.map((account) => {
                         if (account.service === 'pgp') {
                           return (
-                            <PGPAccountItem
+                            <EditPGPAccountItem
                               key={account}
                               service={account}
                               identifier=""
                               contentUrl=""
                               listItem
+                              placeholder
                             />
                           )
                         } else {
