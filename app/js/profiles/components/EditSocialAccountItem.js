@@ -146,10 +146,19 @@ class EditSocialAccountItem extends Component {
                     label="Username" 
                     data={this.props}
                     stopClickPropagation={true} />
-                  <button className="btn btn-block btn-light"
-                    onClick={() => {}}>
-                    Verify
-                  </button>
+                    { !this.props.placeholder ? (
+                      <button className="btn btn-block btn-light"
+                        onClick={() => {}}>
+                        Verify
+                      </button>
+                      ) : (
+                      <button className="btn btn-block btn-primary"
+                        onClick={() => {}}>
+                        Verify
+                      </button>
+                      )
+                    }
+
                 </div>
               )
             }

@@ -162,6 +162,7 @@ class EditProfilePage extends Component {
 
     const profileIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[profileIndex]
+    const verifications = identity.verifications
 
     console.log(profileIndex)
     console.log(identity)
@@ -259,7 +260,7 @@ class EditProfilePage extends Component {
                         //     break
                         //   }
                         // }
-                        if (account.service === 'pgp') {
+                        if (account.service === 'pgp' || account.service === 'ssh') {
                           return (
                             <EditPGPAccountItem
                               key={`${account.service}-${account.identifier}`}
@@ -284,7 +285,7 @@ class EditProfilePage extends Component {
                       })}
 
                       {placeHolderAccounts.map((account) => {
-                        if (account.service === 'pgp') {
+                        if (account.service === 'pgp' || account.service === 'ssh') {
                           return (
                             <EditPGPAccountItem
                               key={account}
