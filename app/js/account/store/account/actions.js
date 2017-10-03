@@ -3,12 +3,14 @@ import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
 import { authorizationHeaderValue,
   btcToSatoshis,
+  satoshisToBtc,
   deriveIdentityKeyPair,
   encrypt,
   getIdentityPrivateKeychain,
   getBitcoinPrivateKeychain,
   getIdentityOwnerAddressNode,
-  getBitcoinAddressNode } from '../../../utils'
+  getBitcoinAddressNode,
+  getInsightUrl } from '../../../utils'
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
@@ -228,13 +230,26 @@ function resetCoreWithdrawal() {
   }
 }
 
-function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, amount, coreAPIPassword) {
+function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, coreAPIPassword, amount = null, paymentKey = null) {
   return dispatch => {
-    dispatch(withdrawingCoreBalance(recipientAddress, amount))
+    if (!amount) {
+      dispatch(withdrawingCoreBalance(recipientAddress, 1))
+      logger.debug(`withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`)
+    } else {
+      dispatch(withdrawingCoreBalance(recipientAddress, amount))
+    }
 
-    const satoshisAmount = btcToSatoshis(amount)
-    const roundedSatoshiAmount = roundTo(satoshisAmount, 0)
-    logger.debug(`withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} satoshis to ${recipientAddress}`)
+    const requestBody = {
+      address: recipientAddress,
+      min_confs: 0
+    }
+
+    if (amount) {
+      const satoshisAmount = btcToSatoshis(amount)
+      const roundedSatoshiAmount = roundTo(satoshisAmount, 0)
+      logger.debug(`withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} satoshis to ${recipientAddress}`)
+      requestBody['amount'] = roundedSatoshiAmount
+    }
 
     const requestHeaders = {
       'Accept': 'application/json',
@@ -242,16 +257,25 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, 
       'Authorization': authorizationHeaderValue(coreAPIPassword)
     }
 
-    const requestBody = JSON.stringify({
-      address: recipientAddress,
-      min_confs: 0,
-      amount: roundedSatoshiAmount
-    })
+    if (paymentKey) {
+      // Core registers with an uncompressed address,
+      // browser expects compressed addresses,
+      // we need to add a suffix to indicate to core
+      // that it should use a compressed addresses
+      // see https://en.bitcoin.it/wiki/Wallet_import_format
+      // and https://github.com/blockstack/blockstack-browser/issues/607
+      const compressedPublicKeySuffix = '01'
+      const key = `${paymentKey}${compressedPublicKeySuffix}`
+      requestBody['payment_key'] = key
+      logger.debug('withdrawBitcoinFromCoreWallet: Using provided payment key')
+    } else {
+      logger.debug('withdrawBitcoinFromCoreWallet: No payment key, using core wallet')
+    }
 
     fetch(coreWalletWithdrawUrl, {
       method: 'POST',
       headers: requestHeaders,
-      body: requestBody
+      body: JSON.stringify(requestBody)
     })
     .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
@@ -270,46 +294,55 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, 
 }
 
 
-function refreshBalances(addressBalanceUrl, addresses) {
+function refreshBalances(insightUrl, addresses, coreAPIPassword) {
+
   return dispatch => {
-    let results = []
+    const results = []
     addresses.forEach((address) => {
-      // fetch balances from https://explorer.blockstack.org/insight-api/addr/{address}/?noTxList=1
-      // parse results from: {"addrStr":"1Fvoya7XMvzfpioQnzaskndL7YigwHDnRE","balance":0.02431567,"balanceSat":2431567,"totalReceived":38.82799913,"totalReceivedSat":3882799913,"totalSent":38.80368346,"totalSentSat":3880368346,"unconfirmedBalance":0,"unconfirmedBalanceSat":0,"unconfirmedTxApperances":0,"txApperances":2181}
-      const url = addressBalanceUrl.replace('{address}', address)
-      fetch(url).then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        results.push({
-          address,
-          balance: responseJson['balance']
-        })
+      logger.debug(`refreshBalances: refreshing balances for address ${address}`)
+      const urlBase = getInsightUrl(insightUrl, address, coreAPIPassword)
+      const confirmedBalanceUrl = `${urlBase}/balance`
+      const unconfirmedBalanceUrl = `${urlBase}/unconfirmedBalance`
+      fetch(confirmedBalanceUrl)
+      .then((response) => response.text())
+      .then((responseText) => {
+        const confirmedBalance = parseInt(responseText)
+        fetch(unconfirmedBalanceUrl)
+        .then((response) => response.text())
+        .then((responseText) => {
+          const unconfirmedBalance = parseInt(responseText)
+          results.push({
+            address,
+            balance: satoshisToBtc(unconfirmedBalance + confirmedBalance)
+          })
 
-        if (results.length >= addresses.length) {
-          let balances = {}
-          let total = 0.0
+          if (results.length >= addresses.length) {
+            const balances = {}
+            let total = 0.0
 
-          for (let i = 0; i < results.length; i++) {
-            let address = results[i]['address']
-            if (!balances.hasOwnProperty(address)) {
-              let balance = results[i]['balance']
-              total = total + balance
-              balances[address] = balance
-            } else {
-              console.warn(`Duplicate address ${address} in addresses array`)
+            for (let i = 0; i < results.length; i++) {
+              const address = results[i]['address']
+              if (!balances.hasOwnProperty(address)) {
+                const balance = results[i]['balance']
+                total = total + balance
+                balances[address] = balance
+              } else {
+                logger.error(`refreshBalances: Duplicate address ${address} in addresses array`)
+              }
             }
+
+            balances['total'] = total
+
+            dispatch(
+              updateBalances(balances)
+            )
           }
-
-          balances['total'] = total
-
-          dispatch(
-            updateBalances(balances)
-          )
-        }
+        }).catch((error) => {
+          logger.error('refreshBalances: error fetching ${address} unconfirmed balance', error)
+        })
+      }).catch((error) => {
+        logger.error('refreshBalances: error fetching ${address} confirmed balance', error)
       })
-    })
-    .catch((error) => {
-      logger.error('refreshBalances: error', error)
     })
   }
 }

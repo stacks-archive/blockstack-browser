@@ -1,5 +1,9 @@
 import { DROPBOX } from '../../../account/utils/index'
 
+export const REGTEST_CORE_API_PASSWORD = 'blockstack_integration_test_api_password'
+export const REGTEST_CORE_INSIGHT_API_URL =
+  'http://localhost:6270/insight-api/addr/{address}'
+
 // DEFAULT_API values are only used if
 // the user's settings.api state doesn't
 // already have an existing key.
@@ -11,7 +15,7 @@ const DEFAULT_API = {
   registerUrl: 'http://localhost:6270/v1/names',
   bitcoinAddressLookupUrl: 'http://localhost:6270/v1/addresses/bitcoin/{address}',
   zeroConfBalanceUrl: 'http://localhost:6270/v1/wallet/balance/0',
-  utxoUrl: 'https://utxo.blockstack.org/insight-api/addr/{address}/utxo',
+  insightUrl: 'https://utxo.blockstack.org/insight-api/addr/{address}',
   broadcastUrl: 'https://utxo.blockstack.org/insight-api/tx/send',
   priceUrl: 'http://localhost:6270/v1/prices/names/{name}',
   networkFeeUrl: 'https://bitcoinfees.21.co/api/v1/fees/recommended',
