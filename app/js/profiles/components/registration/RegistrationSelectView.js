@@ -23,14 +23,15 @@ function mapStateToProps(state) {
   return {
     api: state.settings.api,
     availability: state.profiles.availability,
-    walletBalance: state.account.coreWallet.balance,
-    walletAddress: state.account.coreWallet.address,
+    addresses: state.account.bitcoinAccount.addresses,
     identityKeypairs: state.account.identityAccount.keypairs,
     identityAddresses: state.account.identityAccount.addresses,
     registration: state.profiles.registration,
     localIdentities: state.profiles.identity.localIdentities,
     balanceUrl: state.settings.api.zeroConfBalanceUrl,
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    balances: state.account.bitcoinAccount.balances,
+    insightUrl: state.settings.api.insightUrl
   }
 }
 
@@ -45,17 +46,17 @@ class AddUsernameSelectPage extends Component {
     router: PropTypes.object.isRequired,
     api: PropTypes.object.isRequired,
     availability: PropTypes.object.isRequired,
-    getCoreWalletAddress: PropTypes.func.isRequired,
-    refreshCoreWalletBalance: PropTypes.func.isRequired,
-    walletBalance: PropTypes.number.isRequired,
-    walletAddress: PropTypes.string,
     registerName: PropTypes.func.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     registration: PropTypes.object.isRequired,
     localIdentities: PropTypes.object.isRequired,
     balanceUrl: PropTypes.string.isRequired,
-    encryptedBackupPhrase: PropTypes.string.isRequired
+    encryptedBackupPhrase: PropTypes.string.isRequired,
+    addresses: PropTypes.array.isRequired,
+    balances: PropTypes.object.isRequired,
+    insightUrl: PropTypes.string.isRequired,
+    refreshBalances: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -83,7 +84,7 @@ class AddUsernameSelectPage extends Component {
       price = nameAvailabilityObject.price
     }
     price = roundTo.up(price, 3)
-    const walletBalance = this.props.walletBalance
+    const walletBalance = this.props.balances.total
 
     if (nameIsSubdomain || (walletBalance > price)) {
       enoughMoney = true
@@ -92,9 +93,9 @@ class AddUsernameSelectPage extends Component {
     const that = this
     if (!enoughMoney) {
       this.paymentTimer = setInterval(() => {
-        logger.debug('paymentTimer: calling refreshCoreWalletBalance...')
-        that.props.refreshCoreWalletBalance(that.props.balanceUrl,
-          that.props.api.coreAPIPassword)
+        logger.debug('paymentTimer: calling refreshBalances...')
+        that.props.refreshBalances(that.props.insightUrl, that.props.addresses,
+              that.props.api.coreAPIPassword)
       }, CHECK_FOR_PAYMENT_INTERVAL)
     }
     this.state = {
@@ -113,10 +114,8 @@ class AddUsernameSelectPage extends Component {
 
   componentDidMount() {
     logger.trace('componentDidMount')
-    this.props.getCoreWalletAddress(this.props.api.walletPaymentAddressUrl,
-      this.props.api.coreAPIPassword)
-    this.props.refreshCoreWalletBalance(this.props.balanceUrl,
-      this.props.api.coreAPIPassword)
+    this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
+          this.props.api.coreAPIPassword)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -138,7 +137,7 @@ class AddUsernameSelectPage extends Component {
       price = nameAvailabilityObject.price
     }
     price = roundTo.up(price, 3)
-    const walletBalance = this.props.walletBalance
+    const walletBalance = this.props.balances.total
 
     if (nameIsSubdomain || (walletBalance > price)) {
       enoughMoney = true
@@ -148,7 +147,6 @@ class AddUsernameSelectPage extends Component {
       logger.debug('componentWillReceiveProps: payment received')
       logger.debug('componentWillReceiveProps: clearing payment timer')
       clearTimeout(this.paymentTimer)
-      this.register()
     }
     this.setState({
       nameIsSubdomain,
@@ -249,13 +247,13 @@ class AddUsernameSelectPage extends Component {
       price = nameAvailabilityObject.price
     }
     price = roundTo(price, 3)
-    const walletBalance = this.props.walletBalance
+    const walletBalance = this.props.balances.total
 
     if (nameIsSubdomain || (walletBalance > price)) {
       enoughMoney = true
     }
 
-    const walletAddress = this.props.walletAddress
+    const walletAddress = this.props.addresses[0]
 
     const registrationInProgress = this.state.registrationInProgress
 
@@ -345,13 +343,13 @@ class AddUsernameSelectPage extends Component {
           <div style={{ textAlign: 'center' }}>
             <h3 className="modal-heading">Buy {name}</h3>
             <p>Send at least {price} bitcoins to your wallet:<br />
-              <strong>{this.props.walletAddress}</strong>
+              <strong>{walletAddress}</strong>
             </p>
             <div style={{ textAlign: 'center' }}>
               {walletAddress ?
                 <QRCode
                   style={{ width: 256 }}
-                  value={this.props.walletAddress}
+                  value={walletAddress}
                 />
                 :
                 null
