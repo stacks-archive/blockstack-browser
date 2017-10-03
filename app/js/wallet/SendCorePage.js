@@ -1,16 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {
-  decryptMasterKeychain,
-  getBitcoinPrivateKeychain,
-  getBitcoinAddressNode
-} from '../utils'
+
 import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
 import InputGroupSecondary from '../components/InputGroupSecondary'
-import Balance from './components/Balance'
+import CoreBalance from './components/CoreBalance'
 
 function mapStateToProps(state) {
   return {
@@ -25,7 +21,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions), dispatch)
 }
 
-class SendPage extends Component {
+class SendCorePage extends Component {
   static propTypes = {
     account: PropTypes.object.isRequired,
     coreWalletWithdrawUrl: PropTypes.string.isRequired,
@@ -37,15 +33,10 @@ class SendPage extends Component {
 
   constructor(props) {
     super(props)
-    this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
+    this.withdrawAllBitcoin = this.withdrawAllBitcoin.bind(this)
 
     this.state = {
-      alerts: [],
-      amount: '',
-      password: '',
-      recipientAddress: '',
-      disabled: false,
-      lastAmount: ''
+      alerts: []
     }
     this.updateAlert = this.updateAlert.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
@@ -79,67 +70,37 @@ class SendPage extends Component {
     })
   }
 
-  withdrawBitcoin(event) {
+  withdrawAllBitcoin(event) {
     event.preventDefault()
-    this.setState({
-      disabled: true
-    })
-    const password = this.state.password
-    const encryptedBackupPhrase = this.props.account.encryptedBackupPhrase
-    decryptMasterKeychain(password, encryptedBackupPhrase)
-    .then((masterKeychain) => {
-      const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
-      const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
-      const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
-      const amount = this.state.amount
-      const recipientAddress = this.state.recipientAddress
-      this.setState({
-        lastAmount: amount
-      })
-      this.props.withdrawBitcoinFromCoreWallet(
-      this.props.coreWalletWithdrawUrl, recipientAddress,
-       this.props.coreAPIPassword, parseFloat(amount), paymentKey)
-      this.setState({
-        amount: '',
-        password: '',
-        recipientAddress: '',
-        lastAmount: this.state.amount
-      })
-    }).
-    catch((error) => {
-      this.setState({
-        disabled: false
-      })
-      this.updateAlert('danger', error.toString())
-      console.error(error)
-    })
+    this.props.withdrawBitcoinFromCoreWallet(
+      this.props.coreWalletWithdrawUrl, this.state.recipientAddress,
+      this.props.coreAPIPassword)
+    return
   }
 
   displayCoreWalletWithdrawalAlerts(props) {
     if (props.account.hasOwnProperty('coreWallet')) {
       const withdrawal = props.account.coreWallet.withdrawal
-      const amount = this.state.lastAmount
+
       this.setState({
         alerts: []
       })
 
       if (withdrawal.inProgress) {
         this.updateAlert('success',
-        `Preparing to send ${amount} bitcoins to ${withdrawal.recipientAddress}...`)
+        `Preparing to send your balance to ${withdrawal.recipientAddress}...`)
       } else if (withdrawal.error !== null) {
-        this.updateAlert('danger', withdrawal.error)
+        console.error(withdrawal.error)
+        this.updateAlert('danger', 'Withdrawal failed.')
       } else if (withdrawal.success) {
-        this.setState({
-          disabled: false
-        })
         this.updateAlert('success',
-        `${amount} bitcoins have been sent to ${withdrawal.recipientAddress}`)
+        `Your bitcoins have been sent to ${withdrawal.recipientAddress}`)
       }
     }
   }
 
   render() {
-    const disabled = this.state.disabled
+    const disabled = this.props.account.coreWallet.withdrawal.inProgress
     return (
       <div>
         {this.state.alerts.map((alert, index) =>
@@ -147,9 +108,9 @@ class SendPage extends Component {
           <Alert key={index} message={alert.message} status={alert.status} />
           )
         )}
-        <Balance />
-        <p>Send money to a Bitcoin address.</p>
-        <form onSubmit={this.withdrawBitcoin}>
+        <CoreBalance />
+        <p>Send your legacy Core wallet funds to another Bitcoin wallet.</p>
+        <form onSubmit={this.withdrawAllBitcoin}>
           <InputGroupSecondary
             data={this.state}
             onChange={this.onValueChange}
@@ -161,29 +122,13 @@ class SendPage extends Component {
           <InputGroupSecondary
             data={this.state}
             onChange={this.onValueChange}
-            name="amount"
-            label="Amount"
-            placeholder="0.937"
-            type="number"
-            required
-            step={0.000001}
-          />
-          <InputGroupSecondary
-            data={this.state}
-            onChange={this.onValueChange}
-            name="password"
-            label="Password"
-            placeholder="Password"
-            type="password"
+            name="password" label="Password"
+            placeholder="Password" type="password"
             required
           />
           <div className="m-t-40 m-b-75">
             <button className="btn btn-light btn-block" type="submit" disabled={disabled}>
-              {disabled ?
-                <span>Sending...</span>
-              :
-                <span>Send</span>
-              }
+              Send
             </button>
           </div>
         </form>
@@ -192,4 +137,4 @@ class SendPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendPage)
+export default connect(mapStateToProps, mapDispatchToProps)(SendCorePage)

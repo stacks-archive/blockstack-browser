@@ -1,9 +1,7 @@
-'use strict';
+beforeEach(() => {
+  global.sandbox = sinon.sandbox.create()
+})
 
-beforeEach(function() {
-  global.sandbox = sinon.sandbox.create();
-});
-
-afterEach(function() {
-  global.sandbox.restore();
-});
+afterEach(() => {
+  global.sandbox.restore()
+})

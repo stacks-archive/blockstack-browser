@@ -220,7 +220,7 @@ class AuthModal extends Component {
               <select
                 className="form-control profile-select"
                 onChange={(event) => this.setState({ currentIdentity: event.target.value })}
-                value={this.state.currentIdentity}
+                value={this.state.currentIdentity ? this.state.currentIdentity : ''}
               >
                 {Object.keys(this.props.localIdentities).map((domainName) => (
                   <option
