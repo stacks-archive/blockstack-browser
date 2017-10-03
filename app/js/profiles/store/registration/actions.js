@@ -87,7 +87,7 @@ function setOwnerKey(setOwnerKeyUrl, requestHeaders, keypair, nameIsSubdomain) {
   })
 }
 
-function registerName(api, domainName, ownerAddress, keypair) {
+function registerName(api, domainName, ownerAddress, keypair, paymentKey = null) {
   logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
     logger.debug(`Signing a blank default profile for ${domainName}`)
@@ -129,12 +129,27 @@ function registerName(api, domainName, ownerAddress, keypair) {
           zonefile: zoneFile
         })
       } else {
+        if (!paymentKey) {
+          logger.error('registerName: payment key not provided for non-subdomain registration')
+          return Promise.reject('Missing payment key')
+        }
+
+        // Core registers with an uncompressed address,
+        // browser expects compressed addresses,
+        // we need to add a suffix to indicate to core
+        // that it should use a compressed addresses
+        // see https://en.bitcoin.it/wiki/Wallet_import_format
+        // and https://github.com/blockstack/blockstack-browser/issues/607
+        const compressedPublicKeySuffix = '01'
+        const key = `${paymentKey}${compressedPublicKeySuffix}`
+
         registrationRequestBody = JSON.stringify({
           name: domainName,
           owner_address: ownerAddress,
           zonefile: zoneFile,
           min_confs: 0,
-          unsafe: true
+          unsafe: true,
+          payment_key: key
         })
       }
 

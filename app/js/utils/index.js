@@ -10,7 +10,8 @@ export {
   isBackupPhraseValid,
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode,
-  findAddressIndex
+  findAddressIndex,
+  decryptBitcoinPrivateKey
 } from './account-utils'
 
 export {

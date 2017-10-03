@@ -7,10 +7,11 @@ import { AvailabilityActions } from '../../store/availability'
 import { IdentityActions } from '../../store/identity'
 import { RegistrationActions } from '../../store/registration'
 import { hasNameBeenPreordered, isSubdomain } from '../../../utils/name-utils'
-import { findAddressIndex } from '../../../utils'
+import { decryptBitcoinPrivateKey, findAddressIndex } from '../../../utils'
 import roundTo from 'round-to'
 import { QRCode } from 'react-qr-svg'
-
+import Alert from '../../../components/Alert'
+import InputGroup from '../../../components/InputGroup'
 
 import log4js from 'log4js'
 
@@ -28,7 +29,8 @@ function mapStateToProps(state) {
     identityAddresses: state.account.identityAccount.addresses,
     registration: state.profiles.registration,
     localIdentities: state.profiles.identity.localIdentities,
-    balanceUrl: state.settings.api.zeroConfBalanceUrl
+    balanceUrl: state.settings.api.zeroConfBalanceUrl,
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase
   }
 }
 
@@ -52,7 +54,8 @@ class AddUsernameSelectPage extends Component {
     identityAddresses: PropTypes.array.isRequired,
     registration: PropTypes.object.isRequired,
     localIdentities: PropTypes.object.isRequired,
-    balanceUrl: PropTypes.string.isRequired
+    balanceUrl: PropTypes.string.isRequired,
+    encryptedBackupPhrase: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -99,9 +102,13 @@ class AddUsernameSelectPage extends Component {
       name,
       nameIsSubdomain,
       enoughMoney,
-      registrationInProgress: false
+      registrationInProgress: false,
+      alerts: [],
+      password: ''
     }
+    this.onValueChange = this.onValueChange.bind(this)
     this.register = this.register.bind(this)
+    this.updateAlert = this.updateAlert.bind(this)
   }
 
   componentDidMount() {
@@ -149,6 +156,12 @@ class AddUsernameSelectPage extends Component {
     })
   }
 
+  onValueChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
   register(event) {
     logger.trace('register')
 
@@ -168,8 +181,12 @@ class AddUsernameSelectPage extends Component {
     } else {
       const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
 
-      if (!addressIndex) {
+      if (addressIndex !== 0 && !addressIndex) {
+        this.setState({
+          registrationInProgress: false
+        })
         logger.error(`register: can't find address ${ownerAddress}`)
+        this.updateAlert('danger', 'There is a problem with your account.')
       }
 
       logger.debug(`register: ${ownerAddress} index is ${addressIndex}`)
@@ -177,7 +194,11 @@ class AddUsernameSelectPage extends Component {
       const address = this.props.identityAddresses[addressIndex]
 
       if (ownerAddress !== address) {
-        logger.error(`register: Address ${address} at index ${addressIndex} doesn't match owner address ${ownerAddress}`)
+        this.setState({
+          registrationInProgress: false
+        })
+        logger.error(`register: ${address} @ ${addressIndex} doesn't match owner ${ownerAddress}`)
+        this.updateAlert('danger', 'There is a problem with your account.')
       }
 
       const keypair = this.props.identityKeypairs[addressIndex]
@@ -189,9 +210,32 @@ class AddUsernameSelectPage extends Component {
       logger.debug(`register: ${name} has name suffix ${nameSuffix}`)
       logger.debug(`register: is ${name} a subdomain? ${nameIsSubdomain}`)
 
-      this.props.registerName(this.props.api, name, address, keypair)
-      logger.debug(`register: ${name} preordered! Waiting for registration confirmation.`)
+      if (nameIsSubdomain) {
+        this.props.registerName(this.props.api, name, address, keypair)
+      } else {
+        const password = this.state.password
+        const encryptedBackupPhrase = this.props.encryptedBackupPhrase
+        decryptBitcoinPrivateKey(password, encryptedBackupPhrase)
+        .then((paymentKey) => {
+          this.props.registerName(this.props.api, name, address, keypair, paymentKey)
+        })
+        .catch((error) => {
+          this.setState({
+            registrationInProgress: false
+          })
+          this.updateAlert('danger', error)
+        })
+      }
     }
+  }
+
+  updateAlert(alertStatus, alertMessage) {
+    this.setState({
+      alerts: [{
+        status: alertStatus,
+        message: alertMessage
+      }]
+    })
   }
 
   render() {
@@ -217,11 +261,18 @@ class AddUsernameSelectPage extends Component {
 
     return (
       <div>
+        {this.state.alerts.map((alert, index) =>
+           (
+          <Alert key={index} message={alert.message} status={alert.status} />
+          )
+        )}
         {enoughMoney ?
           <div style={{ textAlign: 'center' }}>
           {nameIsSubdomain ?
             <div>
-              <h3 className="modal-heading">Are you sure you want to register <strong>{name}</strong>?</h3>
+              <h3 className="modal-heading">
+                Are you sure you want to register <strong>{name}</strong>?
+              </h3>
               <p><strong>{name}</strong> is a subdomain that is free to register.</p>
               <div>
                 <button
@@ -248,24 +299,36 @@ class AddUsernameSelectPage extends Component {
             :
             <div>
               <h3 className="modal-heading">
-                Are you sure you want to buy <strong>{name}</strong>?
+                Enter your password to buy <strong>{name}</strong>
               </h3>
               <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
               from your wallet.</p>
               <div
                 style={{ textAlign: 'center' }}
               >
-                <button
-                  onClick={this.register}
-                  className="btn btn-primary"
-                  disabled={registrationInProgress}
-                >
-                  {registrationInProgress ?
-                    <span>Buying...</span>
-                    :
-                    <span>Buy</span>
-                  }
-                </button>
+                <form onSubmit={this.register}>
+                  <InputGroup
+                    data={this.state}
+                    onChange={this.onValueChange}
+                    name="password"
+                    label="Password"
+                    placeholder="Password"
+                    type="password"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    onClick={this.register}
+                    className="btn btn-primary"
+                    disabled={registrationInProgress}
+                  >
+                    {registrationInProgress ?
+                      <span>Buying...</span>
+                      :
+                      <span>Buy</span>
+                    }
+                  </button>
+                </form>
                 <br />
                 {registrationInProgress ?
                   null

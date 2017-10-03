@@ -80,7 +80,8 @@ class SendPage extends Component {
   withdrawBitcoin(event) {
     event.preventDefault()
     const password = this.state.password
-    decryptMasterKeychain(password, this.props.account.encryptedBackupPhrase)
+    const encryptedBackupPhrase = this.props.account.encryptedBackupPhrase
+    decryptMasterKeychain(password, encryptedBackupPhrase)
     .then((masterKeychain) => {
       const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
       const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
