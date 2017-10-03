@@ -176,9 +176,13 @@ class EditProfilePage extends Component {
       return null
     }
 
-    const accounts = this.state.profile.account.map((account) => {
-      return account.service
-    })
+    var accounts = []
+
+    if (this.state.profile.account) {
+      this.state.profile.account.map((account) => {
+        return account.service
+      })
+    }
 
     const placeHolderAccounts = availableAccountTypes.filter((account) => {
       return accounts.indexOf(account) < 0
@@ -219,7 +223,8 @@ class EditProfilePage extends Component {
                 <div className="col-12">
                   <div className="avatar-md m-t-50 m-b-10 text-center">
                     <Image
-                      src={this.state.profile.image[0].contentUrl || ''}
+                      src={(this.state.profile.image && this.state.profile.image[0].contentUrl) 
+                        ? this.state.profile.image[0].contentUrl : ''}
                       fallbackSrc="/images/avatar.png" className="rounded-circle" />
                   </div>
                 </div>
@@ -249,7 +254,8 @@ class EditProfilePage extends Component {
               <div className="row m-t-20 p-b-45 no-gutters">
                 <div className="col-12">
                   <div className="edit-profile-accounts">
-                      {this.state.profile.account.map((account) => {
+                    {this.state.profile.account && 
+                      this.state.profile.account.map((account) => {
                         let verified = false
                         if(verifications) {
                           for (let i = 0; i < verifications.length; i++) {
@@ -284,34 +290,35 @@ class EditProfilePage extends Component {
                             />
                           )
                         }
-                      })}
+                      })
+                    }
 
-                      {placeHolderAccounts.map((account) => {
-                        if (account === 'pgp' || account === 'ssh') {
-                          return (
-                            <EditPGPAccountItem
-                              key={account}
-                              service={account}
-                              identifier=""
-                              contentUrl=""
-                              listItem
-                              placeholder
-                            />
-                          )
-                        } else {
-                          return (
-                            <EditSocialAccountItem
-                              key={account}
-                              service={account}
-                              identifier=""
-                              proofUrl=""
-                              listItem
-                              placeholder
-                              onChange={this.onSocialAccountChange}
-                            />
-                          )
-                        }
-                      })}
+                    {placeHolderAccounts.map((account) => {
+                      if (account === 'pgp' || account === 'ssh') {
+                        return (
+                          <EditPGPAccountItem
+                            key={account}
+                            service={account}
+                            identifier=""
+                            contentUrl=""
+                            listItem
+                            placeholder
+                          />
+                        )
+                      } else {
+                        return (
+                          <EditSocialAccountItem
+                            key={account}
+                            service={account}
+                            identifier=""
+                            proofUrl=""
+                            listItem
+                            placeholder
+                            onChange={this.onSocialAccountChange}
+                          />
+                        )
+                      }
+                    })}
                   </div>
                 </div>
               </div>

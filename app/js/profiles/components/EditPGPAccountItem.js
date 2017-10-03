@@ -157,8 +157,6 @@ class EditPGPAccountItem extends Component {
             }
             </div>
           </Modal>
-          {/*<a href="#" onClick={this.openModal} data-toggle="tooltip"
-            title={webAccountTypes[this.props.service].label}>*/}
             <span className="">
               <i className={`fa fa-fw ${this.getIconClass()}`} />
             </span>
@@ -180,13 +178,12 @@ class EditPGPAccountItem extends Component {
                   { this.getPlaceholderText(this.props.service) }
                 </span>
               )}
-            
+
             <span className="float-right">
               { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
                 <i className="fa fa-w fa-chevron-up" />
               }
             </span>
-          {/*</a>*/}
         </div>
       )
     } else {
