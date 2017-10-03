@@ -112,7 +112,7 @@ class EditSocialAccountItem extends Component {
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const placeholderClass = this.props.placeholder ? "placeholder" : ""
-    const verifiedClass = !this.props.verified ? "verified" : "pending" 
+    const verifiedClass = this.props.verified ? "verified" : "pending" 
     const collapsedClass = this.state.collapsed ? "collapsed" : ""
 
     if (webAccountTypes[this.props.service]) {

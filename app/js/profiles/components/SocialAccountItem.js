@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import ReactTooltip from 'react-tooltip'
 
 import { getWebAccountTypes } from '../../utils'
 
@@ -65,7 +66,10 @@ class SocialAccountItem extends Component {
     if (webAccountTypes[this.props.service]) {
       if (this.props.listItem === true) {
         return (
-          <li className={!this.props.verified ? "verified" : "pending"}>
+          <li className={this.props.verified ? "verified" : "pending"}>
+            <ReactTooltip place="top" type="dark" effect="solid" id="verified" className="text-center">
+              {this.props.verified ? 'verified' : 'pending'}
+            </ReactTooltip>
             <a href={this.getAccountUrl()} data-toggle="tooltip"
               title={webAccountTypes[this.props.service].label}>
               <span className="">
@@ -77,9 +81,13 @@ class SocialAccountItem extends Component {
               <span className="app-account-service font-weight-normal">
                 {`@${this.props.service}`}
               </span>
-              {this.props.verified &&
-                <span className="float-right">
+              {this.props.verified ?
+                <span className="float-right" data-tip data-for="verified">
                   <i className="fa fa-fw fa-check-circle fa-lg" />
+                </span>
+                : 
+                <span className="float-right" data-tip data-for="verified">
+                  <i className="fa fa-fw fa-clock-o fa-lg" />
                 </span>
               }
             </a>

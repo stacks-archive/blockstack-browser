@@ -152,12 +152,26 @@ class EditProfilePage extends Component {
 
   onSocialAccountChange(service, event) {
     let profile = this.state.profile
-    profile.account.forEach(account => {
-      if(account.service === service) {
-        account.identifier = event.target.value
-        this.setState({profile: profile})
-      }
-    })
+    if (profile.hasOwnProperty('account')) {
+      profile.account.forEach(account => {
+        if(account.service === service) {
+          account.identifier = event.target.value
+          this.setState({profile: profile})
+        }
+      })
+    }
+    else {
+      profile.account = []
+      profile.account.push({
+        '@type': 'Account',
+        'service': service,
+        'identifier': '',
+        'proofType': 'http',
+        'proofUrl': ''
+      })
+      this.setState({profile: profile})
+      this.saveProfile(profile)
+    }
   }
 
   render() {
@@ -165,9 +179,6 @@ class EditProfilePage extends Component {
     const profileIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[profileIndex]
     const verifications = identity.verifications
-
-    console.log(profileIndex)
-    console.log(identity)
 
     // render() sometimes gets called before defaultIdentityName
     // is updated from ownerAddress to the actual name when adding
@@ -178,8 +189,8 @@ class EditProfilePage extends Component {
 
     var accounts = []
 
-    if (this.state.profile.account) {
-      this.state.profile.account.map((account) => {
+    if (this.state.profile.hasOwnProperty('account')) {
+      accounts = this.state.profile.account.map((account) => {
         return account.service
       })
     }
@@ -224,7 +235,7 @@ class EditProfilePage extends Component {
                   <div className="avatar-md m-t-50 m-b-10 text-center">
                     <Image
                       src={(this.state.profile.image && this.state.profile.image[0].contentUrl) 
-                        ? this.state.profile.image[0].contentUrl : ''}
+                        ? this.state.profile.image[0].contentUrl : "/images/avatar.png"}
                       fallbackSrc="/images/avatar.png" className="rounded-circle" />
                   </div>
                 </div>

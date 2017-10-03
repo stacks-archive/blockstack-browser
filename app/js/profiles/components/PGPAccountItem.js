@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import ReactTooltip from 'react-tooltip'
 import { PGPActions } from '../store/pgp'
 
 import { getWebAccountTypes } from '../../utils'
@@ -103,7 +104,7 @@ class PGPAccountItem extends Component {
 
     if (this.props.listItem === true) {
       return (
-        <li className={!this.props.verified ? "verified" : "pending"}>
+        <li className={this.props.verified ? "verified" : "pending"}>
           <Modal
             isOpen={this.state.modalIsOpen}
             contentLabel="PGP Key"
@@ -133,6 +134,9 @@ class PGPAccountItem extends Component {
             }
             </div>
           </Modal>
+          <ReactTooltip place="top" type="dark" effect="solid" id="verified" className="text-center">
+            {this.props.verified ? 'verified' : 'pending'}
+          </ReactTooltip>
           <a href="#" onClick={this.openModal} data-toggle="tooltip"
             title={webAccountTypes[this.props.service].label}>
             
@@ -150,9 +154,13 @@ class PGPAccountItem extends Component {
                 </span>
               )}
 
-            {this.props.verified &&
-              <span className="float-right">
+            {this.props.verified ?
+              <span className="float-right" data-tip data-for="verified">
                 <i className="fa fa-fw fa-check-circle fa-lg" />
+              </span>
+              : 
+              <span className="float-right" data-tip data-for="verified">
+                <i className="fa fa-fw fa-clock-o fa-lg" />
               </span>
             }
           </a>
