@@ -7,6 +7,12 @@ import { SettingsActions } from '../../account/store/settings'
 import currencyFormatter from 'currency-formatter'
 import roundTo from 'round-to'
 
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('profiles/wallet/components/Balance.js')
+
+const UPDATE_BALANCE_INTERVAL = 10000
+
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
@@ -45,6 +51,17 @@ class Balance extends Component {
     this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
           this.props.coreAPIPassword)
     this.props.refreshBtcPrice(this.props.btcPriceUrl)
+    this.balanceTimer = setInterval(() => {
+      logger.debug('balanceTimer: calling refreshBalances...')
+      this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
+            this.props.coreAPIPassword)
+      this.props.refreshBtcPrice(this.props.btcPriceUrl)
+    }, UPDATE_BALANCE_INTERVAL)
+  }
+
+  componentWillUnmount() {
+    logger.debug('componentWillUnmount: clearing balanceTimer...')
+    clearTimeout(this.balanceTimer)
   }
 
   btcBalance() {
