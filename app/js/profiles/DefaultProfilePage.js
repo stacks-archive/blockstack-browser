@@ -326,12 +326,14 @@ class DefaultProfilePage extends Component {
                   <ul>
                     {accounts.map((account) => {
                       let verified = false
-                      for (let i = 0; i < verifications.length; i++) {
-                        const verification = verifications[i]
-                        if (verification.service === account.service &&
-                          verification.valid === true) {
-                          verified = true
-                          break
+                      if(verifications) {
+                        for (let i = 0; i < verifications.length; i++) {
+                          const verification = verifications[i]
+                          if (verification.service === account.service &&
+                            verification.valid === true) {
+                            verified = true
+                            break
+                          }
                         }
                       }
                       if (account.service === 'pgp') {

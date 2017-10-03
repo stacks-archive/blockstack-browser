@@ -74,10 +74,10 @@ class EditProfilePage extends Component {
     }
 
     this.saveProfile = this.saveProfile.bind(this)
-    this.changeTabs = this.changeTabs.bind(this)
     this.uploadProfilePhoto = this.uploadProfilePhoto.bind(this)
     this.hasUsername = this.hasUsername.bind(this)
     this.onChange = this.onChange.bind(this)
+    this.onSocialAccountChange = this.onSocialAccountChange.bind(this)
   }
 
   componentWillMount() {
@@ -138,14 +138,6 @@ class EditProfilePage extends Component {
     return uploadPhoto(this.props.api, name, file, index)
   }
 
-  changeTabs(tabName) {
-    this.setState({tabName: tabName})
-  }
-
-  backClick() {
-    this.setState({tabName: ''})
-  }
-
   hasUsername() {
     const localIdentities = this.props.localIdentities
     const currentDomainName = this.state.domainName
@@ -156,6 +148,16 @@ class EditProfilePage extends Component {
     let profile = this.state.profile
     profile[event.target.name] = event.target.value
     this.setState({profile: profile})
+  }
+
+  onSocialAccountChange(service, event) {
+    let profile = this.state.profile
+    profile.account.forEach(account => {
+      if(account.service === service) {
+        account.identifier = event.target.value
+        this.setState({profile: profile})
+      }
+    })
   }
 
   render() {
@@ -181,9 +183,6 @@ class EditProfilePage extends Component {
     const placeHolderAccounts = availableAccountTypes.filter((account) => {
       return accounts.indexOf(account) < 0
     })
-
-    console.log(accounts)
-    console.log(placeHolderAccounts)
 
     console.log(this.state.profile)
     const domainName = this.state.domainName
@@ -252,18 +251,20 @@ class EditProfilePage extends Component {
                   <div className="edit-profile-accounts">
                       {this.state.profile.account.map((account) => {
                         let verified = false
-                        // for (let i = 0; i < verifications.length; i++) {
-                        //   const verification = verifications[i]
-                        //   if (verification.service === account.service &&
-                        //     verification.valid === true) {
-                        //     verified = true
-                        //     break
-                        //   }
-                        // }
+                        if(verifications) {
+                          for (let i = 0; i < verifications.length; i++) {
+                            const verification = verifications[i]
+                            if (verification.service === account.service &&
+                              verification.valid === true) {
+                              verified = true
+                              break
+                            }
+                          }
+                        }
                         if (account.service === 'pgp' || account.service === 'ssh') {
                           return (
                             <EditPGPAccountItem
-                              key={`${account.service}-${account.identifier}`}
+                              key={`${account.service}`}
                               service={account.service}
                               identifier={account.identifier}
                               contentUrl={account.contentUrl}
@@ -273,19 +274,20 @@ class EditProfilePage extends Component {
                         } else {
                           return (
                             <EditSocialAccountItem
-                              key={`${account.service}-${account.identifier}`}
+                              key={`${account.service}`}
                               service={account.service}
                               identifier={account.identifier}
                               proofUrl={account.proofUrl}
                               listItem
                               verified={verified}
+                              onChange={this.onSocialAccountChange}
                             />
                           )
                         }
                       })}
 
                       {placeHolderAccounts.map((account) => {
-                        if (account.service === 'pgp' || account.service === 'ssh') {
+                        if (account === 'pgp' || account === 'ssh') {
                           return (
                             <EditPGPAccountItem
                               key={account}
@@ -305,6 +307,7 @@ class EditProfilePage extends Component {
                               proofUrl=""
                               listItem
                               placeholder
+                              onChange={this.onSocialAccountChange}
                             />
                           )
                         }

@@ -4,7 +4,7 @@ import { openInNewTab } from '../../utils'
 
 class FacebookVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string.isRequired
+    domainName: PropTypes.string
   }
 
   render() {
@@ -48,7 +48,7 @@ class FacebookVerificationInfo extends Component {
 
 class GithubVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string.isRequired
+    domainName: PropTypes.string
   }
 
   render() {
@@ -94,7 +94,7 @@ class GithubVerificationInfo extends Component {
 
 class TwitterVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string.isRequired
+    domainName: PropTypes.string
   }
 
   render() {
@@ -132,8 +132,8 @@ class TwitterVerificationInfo extends Component {
 
 class VerificationInfo extends Component {
   static contextTypes = {
-    service: PropTypes.string.isRequired,
-    domainName: PropTypes.string.isRequired
+    service: PropTypes.string,
+    domainName: PropTypes.string
   }
 
   constructor(props) {

@@ -34,6 +34,7 @@ class EditPGPAccountItem extends Component {
 
     this.state = {
       collapsed: true,
+      showVerificationInstructions: false,
       modalIsOpen: false
     }
 
@@ -75,6 +76,16 @@ class EditPGPAccountItem extends Component {
       iconClass = webAccountTypes[this.props.service].iconClass
     }
     return iconClass
+  }
+
+  getPlaceholderText(service) {
+    if (service === 'pgp' || service === 'ssh') {
+      return (
+        <span className="app-account-service font-weight-normal">
+          Prove your {service.toUpperCase()} key
+        </span>
+      )
+    }
   }
 
   getIdentifier() {
@@ -164,6 +175,12 @@ class EditPGPAccountItem extends Component {
                 </span>
               )}
 
+            { this.props.placeholder && (
+                <span className="app-account-service font-weight-normal">
+                  { this.getPlaceholderText(this.props.service) }
+                </span>
+              )}
+            
             <span className="float-right">
               { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
                 <i className="fa fa-w fa-chevron-up" />

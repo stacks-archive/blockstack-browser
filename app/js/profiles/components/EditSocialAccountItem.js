@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 
 import InputGroup from '../../components/InputGroup'
+import VerificationInfo from '../components/VerificationInfo'
 
 import { getWebAccountTypes } from '../../utils'
 
@@ -21,7 +22,8 @@ class EditSocialAccountItem extends Component {
     proofUrl: PropTypes.string,
     verified: PropTypes.bool,
     api: PropTypes.object.isRequired,
-    placeholder: PropTypes.bool
+    placeholder: PropTypes.bool,
+    onChange: PropTypes.func
   }
 
   constructor(props) {
@@ -29,12 +31,15 @@ class EditSocialAccountItem extends Component {
 
     this.state = {
       collapsed: true,
+      showVerificationInstructions: false,
+      identifier: props.identifier,
     }
 
     this.getAccountUrl = this.getAccountUrl.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
     this.getIdentifier = this.getIdentifier.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.onIdentifierChange = this.onIdentifierChange.bind(this)
   }
 
   getAccountUrl() {
@@ -74,6 +79,12 @@ class EditSocialAccountItem extends Component {
     })
   }
 
+  onIdentifierChange(event) {
+    if (this.props.onChange) {
+      this.props.onChange(this.props.service, event)
+    }
+  }
+
   getPlaceholderText(service) {
     if(service === 'bitcoin' || service === 'ethereum') {
       return (
@@ -83,7 +94,6 @@ class EditSocialAccountItem extends Component {
       )
     }
     else if (service === 'pgp' || service === 'ssh') {
-
       return (
         <span className="app-account-service font-weight-normal">
           Prove your {service.toUpperCase()} key
@@ -91,7 +101,6 @@ class EditSocialAccountItem extends Component {
       )
     }
     else {
-
       return (
         <span className="app-account-service font-weight-normal">
           Prove your <span className="text-capitalize">{service}</span> account
@@ -145,20 +154,18 @@ class EditSocialAccountItem extends Component {
                     name="identifier" 
                     label="Username" 
                     data={this.props}
-                    stopClickPropagation={true} />
-                    { !this.props.placeholder ? (
-                      <button className="btn btn-block btn-light"
-                        onClick={() => {}}>
-                        Verify
-                      </button>
-                      ) : (
-                      <button className="btn btn-block btn-primary"
-                        onClick={() => {}}>
-                        Verify
-                      </button>
-                      )
-                    }
+                    stopClickPropagation={true} 
+                    onChange={this.onIdentifierChange} />
+                </div>
+              )
+            }
 
+            {this.state.showVerificationInstructions && 
+              (
+                <div>
+                  <VerificationInfo
+                    service={this.props.service}
+                    domainName={this.getIdentifier()} />
                 </div>
               )
             }
