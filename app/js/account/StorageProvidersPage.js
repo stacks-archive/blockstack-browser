@@ -154,6 +154,9 @@ class StorageProvidersPage extends Component {
           <p className="container-fluid">
             Your profile and app data will be securely stored in the storage provider you connect.
           </p>
+          <p className="container-fluid">
+            <em>Note: our storage migration feature will be included in a future version.</em>
+          </p>
           <div className="container-fluid">
             <p>
               {api.hostedDataLocation !== BLOCKSTACK_INC ?
@@ -162,7 +165,7 @@ class StorageProvidersPage extends Component {
                   className="btn btn-primary btn-storage btn-lg btn-block"
                   disabled={this.props.storageIsConnected}
                 >
-                Connect default storage
+                Connect default storage (free storage hub provided by Blockstack PBC)
                 </button>
               :
                 <button
@@ -171,7 +174,7 @@ class StorageProvidersPage extends Component {
                   disabled
                   title="Changing storage service providers will be supported in a future version."
                 >
-                Disconnect default storage
+                Disconnect default storage (free storage hub provided by Blockstack PBC)
                 </button>
               }
             </p>
