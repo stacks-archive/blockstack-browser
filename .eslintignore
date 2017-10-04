@@ -10,6 +10,9 @@ tests/utils/e*
 tests/utils/n*
 
 app/js/account/*
+!app/js/account/StorageProvidersPage*
+
+
 app/js/auth/*
 app/js/components/*
 app/js/errors/*
