@@ -78,6 +78,7 @@ class EditProfilePage extends Component {
     this.hasUsername = this.hasUsername.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onSocialAccountChange = this.onSocialAccountChange.bind(this)
+    this.onChangePhotoClick = this.onChangePhotoClick.bind(this)
   }
 
   componentWillMount() {
@@ -132,10 +133,20 @@ class EditProfilePage extends Component {
     }
   }
 
-
-  uploadProfilePhoto(file, index) {
+  uploadProfilePhoto(e) {
     const name = this.state.domainName
-    return uploadPhoto(this.props.api, name, file, index)
+    let profile = this.state.profile
+    uploadPhoto(this.props.api, name, e.target.files[0], 0)
+    .then((avatarUrl) => {
+      profile.image[0].contentUrl = avatarUrl
+      this.setState({
+        profile: profile
+      })
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+
   }
 
   hasUsername() {
@@ -148,6 +159,10 @@ class EditProfilePage extends Component {
     let profile = this.state.profile
     profile[event.target.name] = event.target.value
     this.setState({profile: profile})
+  }
+
+  onChangePhotoClick() {
+    this.photoUpload.click()
   }
 
   onSocialAccountChange(service, event) {
@@ -240,7 +255,8 @@ class EditProfilePage extends Component {
                   </div>
                 </div>
                 <div className="col-12 text-center">
-                    <button className="btn btn-link active m-b-30">
+                    <input type="file" ref={ ref => this.photoUpload = ref} onChange={this.uploadProfilePhoto} style={{display:'none'}} />
+                    <button className="btn btn-link active m-b-30" onClick={this.onChangePhotoClick}>
                       Change Photo
                     </button>
                 </div>
