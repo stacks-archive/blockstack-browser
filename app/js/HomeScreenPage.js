@@ -15,34 +15,18 @@ const HomeScreenPage = () =>
           <div className="app-container no-padding">
             <div className="container-fluid app-box-wrap">
               <a
-                href="https://helloblockstack.com"
+                href="http://blockstack-todos.appartisan.com/"
                 className="app-box-container"
               >
                 <div className="app-box">
                   <img
-                    src="/images/app-icon-hello-blockstack@2x.png"
-                    alt="Hello, Blockstack"
+                    src="/images/app-icon-todo-list@2x.png"
+                    alt="To Do List"
                   />
                 </div>
               </a>
               <div className="app-text-container">
-                <h3>Hello, Blockstack</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="https://forum.blockstack.org"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-forum@2x.png"
-                    alt="Forum"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>Forum</h3>
+                <h3>To Do List</h3>
               </div>
             </div>
             <div className="container-fluid app-box-wrap">
@@ -75,6 +59,38 @@ const HomeScreenPage = () =>
               </a>
               <div className="app-text-container">
                 <h3>Ongaku Ryoho</h3>
+              </div>
+            </div>
+            <div className="container-fluid app-box-wrap">
+              <a
+                href="https://helloblockstack.com"
+                className="app-box-container"
+              >
+                <div className="app-box">
+                  <img
+                    src="/images/app-icon-hello-blockstack@2x.png"
+                    alt="Hello, Blockstack"
+                  />
+                </div>
+              </a>
+              <div className="app-text-container">
+                <h3>Hello, Blockstack</h3>
+              </div>
+            </div>
+            <div className="container-fluid app-box-wrap">
+              <a
+                href="https://forum.blockstack.org"
+                className="app-box-container"
+              >
+                <div className="app-box">
+                  <img
+                    src="/images/app-icon-forum@2x.png"
+                    alt="Forum"
+                  />
+                </div>
+              </a>
+              <div className="app-text-container">
+                <h3>Forum</h3>
               </div>
             </div>
             <div className="container-fluid app-box-wrap">
@@ -139,22 +155,6 @@ const HomeScreenPage = () =>
               </a>
               <div className="app-text-container">
                 <h3>Afia</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="http://blockstack-todos.appartisan.com/"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-todo-list@2x.png"
-                    alt="To Do List"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>To Do List</h3>
               </div>
             </div>
           </div>
