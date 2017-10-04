@@ -82,9 +82,10 @@ describe('Identity Store: Sync Actions', () => {
         profile: {
           key: 'value'
         },
-        zoneFile: 'test'
+        zoneFile: 'test',
+        verifications: []
       }
-      const actualResult = IdentityActions.updateProfile('satoshi.id', profile, 'test')
+      const actualResult = IdentityActions.updateProfile('satoshi.id', profile, 'test', [])
       assert.deepEqual(actualResult, expectedResult)
     })
   })
