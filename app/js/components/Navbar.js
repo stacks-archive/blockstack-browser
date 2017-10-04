@@ -9,6 +9,7 @@ function mapStateToProps(state) {
   return {
     dropboxAccessToken: state.settings.api.dropboxAccessToken,
     localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
     addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletAddress: state.account.coreWallet.address,
     coreWalletBalance: state.account.coreWallet.balance,
@@ -68,6 +69,7 @@ class Navbar extends Component {
     this.onAvatarNavMouseOut = this.onAvatarNavMouseOut.bind(this)
     this.onSettingsNavMouseOver = this.onSettingsNavMouseOver.bind(this)
     this.onSettingsNavMouseOut = this.onSettingsNavMouseOut.bind(this)
+    this.getProfileRoute = this.getProfileRoute.bind(this)
 
     this.state = {
       homeTabHover: false,
@@ -230,7 +232,24 @@ class Navbar extends Component {
     return !!this.props.dropboxAccessToken
   }
 
+  getProfileRoute() {
+    const defaultIdentityName = this.props.defaultIdentity
+    const identity = this.props.localIdentities[defaultIdentityName]
+    const profile = identity.profile
+    if (!profile.hasOwnProperty('givenName') 
+      && !profile.hasOwnProperty('familyName') 
+      && !profile.hasOwnProperty('description')
+      && !profile.hasOwnProperty('account')
+      && !profile.hasOwnProperty('image')) {
+      return `/profiles/${identity.domainName}/edit`
+    }
+    else {
+      return "/profiles"
+    }
+  }
+
   render() {
+
     return (
       <header className="container-fluid no-padding">
         <nav className="navbar navbar-expand container-fluid">
