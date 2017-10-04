@@ -25,7 +25,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/EditProfilePage.js')
 
-const availableAccountTypes = [
+const accountTypes = [
   'twitter',
   'facebook',
   'linkedin',
@@ -189,6 +189,17 @@ class EditProfilePage extends Component {
     }
   }
 
+  createPlaceholderAccount(accountType) {
+    return {
+      "@type": "Account",
+      placeholder: true,
+      service: accountType,
+      identifier: "",
+      proofType: "",
+      proofURL: "",
+    }
+  }
+
   render() {
 
     const profileIndex = this.props.routeParams.index
@@ -202,18 +213,36 @@ class EditProfilePage extends Component {
       return null
     }
 
-    var accounts = []
+    var filledAccounts = []
+    var placeholders = []
 
     if (this.state.profile.hasOwnProperty('account')) {
-      accounts = this.state.profile.account.map((account) => {
-        return account.service
+      accountTypes.forEach((accountType) => {
+
+        var hasAccount = false
+        this.state.profile.account.forEach((account) => {
+          if (account.service === accountType) {
+            hasAccount = true
+            account.placeholder = false
+            filledAccounts.push(account)
+          }
+        })
+
+        if(!hasAccount) {
+          placeholders.push(this.createPlaceholderAccount(accountType))
+        }
+
+      })
+    }
+    else {
+      accountTypes.forEach((accountType) => {
+        placeholders.push(this.createPlaceholderAccount(accountType))
       })
     }
 
-    const placeHolderAccounts = availableAccountTypes.filter((account) => {
-      return accounts.indexOf(account) < 0
-    })
+    const accounts = filledAccounts.concat(placeholders)
 
+    console.log(accounts)
     console.log(this.state.profile)
     const domainName = this.state.domainName
     return (
@@ -281,8 +310,8 @@ class EditProfilePage extends Component {
               <div className="row m-t-20 p-b-45 no-gutters">
                 <div className="col-12">
                   <div className="edit-profile-accounts">
-                    {this.state.profile.account && 
-                      this.state.profile.account.map((account) => {
+                    {accounts && 
+                      accounts.map((account) => {
                         let verified = false
                         if(verifications) {
                           for (let i = 0; i < verifications.length; i++) {
@@ -301,6 +330,7 @@ class EditProfilePage extends Component {
                               service={account.service}
                               identifier={account.identifier}
                               contentUrl={account.contentUrl}
+                              placeholder={account.placeholder}
                               listItem
                             />
                           )
@@ -313,6 +343,7 @@ class EditProfilePage extends Component {
                               proofUrl={account.proofUrl}
                               listItem
                               verified={verified}
+                              placeholder={account.placeholder}
                               onChange={this.onSocialAccountChange}
                             />
                           )
@@ -320,32 +351,6 @@ class EditProfilePage extends Component {
                       })
                     }
 
-                    {placeHolderAccounts.map((account) => {
-                      if (account === 'pgp' || account === 'ssh') {
-                        return (
-                          <EditPGPAccountItem
-                            key={account}
-                            service={account}
-                            identifier=""
-                            contentUrl=""
-                            listItem
-                            placeholder
-                          />
-                        )
-                      } else {
-                        return (
-                          <EditSocialAccountItem
-                            key={account}
-                            service={account}
-                            identifier=""
-                            proofUrl=""
-                            listItem
-                            placeholder
-                            onChange={this.onSocialAccountChange}
-                          />
-                        )
-                      }
-                    })}
                   </div>
                 </div>
               </div>
