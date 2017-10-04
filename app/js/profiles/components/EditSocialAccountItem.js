@@ -31,7 +31,6 @@ class EditSocialAccountItem extends Component {
 
     this.state = {
       collapsed: true,
-      showVerificationInstructions: false,
       identifier: props.identifier,
     }
 
@@ -40,6 +39,8 @@ class EditSocialAccountItem extends Component {
     this.getIdentifier = this.getIdentifier.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.onIdentifierChange = this.onIdentifierChange.bind(this)
+    this.shouldShowVerificationInstructions = this.shouldShowVerificationInstructions.bind(this)
+    this.onVerifyButtonClick = this.onVerifyButtonClick.bind(this)
   }
 
   getAccountUrl() {
@@ -79,6 +80,10 @@ class EditSocialAccountItem extends Component {
     })
   }
 
+  onVerifyButtonClick() {
+
+  }
+
   onIdentifierChange(event) {
     if (this.props.onChange) {
       this.props.onChange(this.props.service, event)
@@ -109,11 +114,15 @@ class EditSocialAccountItem extends Component {
     }
   }
 
+  shouldShowVerificationInstructions() {
+    return !this.props.verified && (this.props.identifier.length > 0)
+  }
+
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const placeholderClass = this.props.placeholder ? "placeholder" : ""
-    const verifiedClass = this.props.verified ? "verified" : "pending" 
-    const collapsedClass = this.state.collapsed ? "collapsed" : ""
+    const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
+    const collapsedClass = this.state.collapsed ? "collapsed" : "active"
 
     if (webAccountTypes[this.props.service]) {
       if (this.props.listItem === true) {
@@ -160,12 +169,13 @@ class EditSocialAccountItem extends Component {
               )
             }
 
-            {this.state.showVerificationInstructions && 
+            {(this.shouldShowVerificationInstructions() && !this.state.collapsed) && 
               (
                 <div>
                   <VerificationInfo
                     service={this.props.service}
-                    domainName={this.getIdentifier()} />
+                    domainName={this.getIdentifier()}
+                    onVerifyButtonClick={this.onVerifyButtonClick} />
                 </div>
               )
             }

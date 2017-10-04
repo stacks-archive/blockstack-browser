@@ -111,8 +111,8 @@ class EditPGPAccountItem extends Component {
     let key = null
 
     const placeholderClass = this.props.placeholder ? "placeholder" : ""
-    const verifiedClass = !this.props.verified ? "verified" : "pending" 
-    const collapsedClass = this.state.collapsed ? "collapsed" : ""
+    const verifiedClass = !this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "") 
+    const collapsedClass = this.state.collapsed ? "collapsed" : "active"
 
     if(pgpPublicKeys && pgpPublicKeys.hasOwnProperty(identifier)) {
       const publicKey = pgpPublicKeys[identifier]

@@ -4,7 +4,8 @@ import { openInNewTab } from '../../utils'
 
 class FacebookVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string
+    domainName: PropTypes.string,
+    onVerifyButtonClick: PropTypes.func
   }
 
   render() {
@@ -17,30 +18,15 @@ class FacebookVerificationInfo extends Component {
     return (
       <div>
         <p>
-          1. Fill out your username
+          Post your proof to Facebook. We’ll ask for permission 
+          to read your posts, so that we can find this one 
+          afterwards. The text can be anything you like, but 
+          make sure your post is public. Click the Verify button
+          when you’re done.
         </p>
-        <p>
-          2. Copy the text below
-        </p>
-        <p>
-          <input value={verificationMessage} className="form-control" readOnly />
-        </p>
-        <p>
-          3. Create a Facebook post with the copied text to publicly verify yourself
-        </p>
-        <div className="form-group">
-          <a href={verificationUrl}>
-            <button className="btn btn-outline-primary">
-              Create Post
-            </button>
-          </a>
-        </div>
-        <p>
-          4. Set the post visibility to public, then share it
-        </p>
-        <p>
-          5. Copy the post URL and paste it in the proof URL field
-        </p>
+        <button className="btn btn-verify btn-facebook btn-block" onClick={this.props.onVerifyButtonClick}>
+          <i className="fa fa-fw fa-facebook fa-lg" /> CONTINUE WITH FACEBOOK
+        </button>
       </div>
     )
   }
@@ -61,32 +47,15 @@ class GithubVerificationInfo extends Component {
     return (
       <div>
         <p>
-          1. Fill out your username
+          Post your proof to Github. We’ll ask for permission 
+          to read your posts, so that we can find this one 
+          afterwards. The text can be anything you like, but 
+          make sure your post is public. Click the Verify button
+          when you’re done.
         </p>
-        <p>
-          2. Copy the text below
-        </p>
-        <p>
-          <input value={verificationMessage} className="form-control" readOnly />
-        </p>
-        <p>
-          3. Create a public gist with the copied text to publicly verify yourself
-        </p>
-        <div className="form-group">
-          <a
-            href="#" onClick={(event) => {
-              event.preventDefault()
-              openInNewTab(verificationUrl)
-            }}
-          >
-            <button className="btn btn-outline-primary">
-              Create Gist
-            </button>
-          </a>
-        </div>
-        <p>
-          4. Copy the gist URL and paste it in the proof URL field
-        </p>
+        <button className="btn btn-verify btn-github btn-block" onClick={this.props.onVerifyButtonClick}>
+          <i className="fa fa-fw fa-github fa-lg" /> CREATE GIST
+        </button>
       </div>
     )
   }
@@ -105,65 +74,70 @@ class TwitterVerificationInfo extends Component {
     return (
       <div>
         <p>
-          1. Fill out your username
+          Post your proof to Twitter. We’ll ask for permission 
+          to read your posts, so that we can find this one 
+          afterwards. The text can be anything you like, but 
+          make sure your post is public. Click the Verify button
+          when you’re done.
         </p>
-        <p>
-          2. Create a tweet to publicly verify yourself
-        </p>
-        <div className="form-group">
-          <a
-            href="#" onClick={(event) => {
-              event.preventDefault()
-              openInNewTab(verificationUrl)
-            }}
-          >
-            <button className="btn btn-outline-primary">
-              Create Tweet
-            </button>
-          </a>
-        </div>
-        <p>
-          3. Copy the tweet URL and paste it in the proof URL field
-        </p>
+        <button className="btn btn-verify btn-twitter btn-block" onClick={this.props.onVerifyButtonClick}>
+          <i className="fa fa-fw fa-twitter fa-lg" /> TWEET VERIFICATION
+        </button>
       </div>
     )
   }
 }
 
+/*          <a
+            href="#" onClick={(event) => {
+              event.preventDefault()
+              openInNewTab(verificationUrl)
+            }}
+          >*/
+
 class VerificationInfo extends Component {
   static contextTypes = {
     service: PropTypes.string,
-    domainName: PropTypes.string
+    domainName: PropTypes.string,
+    onVerifyButtonClick: PropTypes.func
   }
 
   constructor(props) {
     super(props)
     this.state = {
       services: {
+        facebook: true,
         twitter: true,
         github: true
       }
     }
   }
 
+  handleClick(e) {
+    e.stopPropagation()
+  }
+
   render() {
     return (
-      <div>
-        <div className="card">
-          <div className="card-header">
+      <div onClick={this.handleClick}>
+        <div className="verification-instructions-container">
+          <p className="verification-instructions-heading">
             Verification Instructions
-          </div>
-          <div className="card-block">
+          </p>
+          <div className="verification-instructions">
             { this.props.service === 'twitter' ?
-              <TwitterVerificationInfo domainName={this.props.domainName} />
+              <TwitterVerificationInfo domainName={this.props.domainName} 
+                onVerifyButtonClick={this.props.onVerifyButtonClick}/>
             : null }
 
             { this.props.service === 'github' ?
-              <GithubVerificationInfo domainName={this.props.domainName} />
+              <GithubVerificationInfo domainName={this.props.domainName} 
+                onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
             { this.props.service === 'facebook' ?
-              <FacebookVerificationInfo domainName={this.props.domainName} />
+              <FacebookVerificationInfo domainName={this.props.domainName} 
+                onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
             { !this.state.services.hasOwnProperty(this.props.service) ?
