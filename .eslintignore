@@ -22,7 +22,6 @@ app/js/auth/*
 app/js/components/*
 !app/js/components/Navbar*
 
-app/js/errors/*
 app/js/store/*
 app/js/utils/*
 !app/js/utils/account-utils*

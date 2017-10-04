@@ -1,27 +1,30 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 
-import PageHeader from '../components/PageHeader'
+import Navbar from '../components/Navbar'
 
-class NotFoundPage extends Component {
-  constructor() {
-    super()
-  }
-
-  render() {
-    return (
-      <div className="body-inner bkg-white">
-        <PageHeader title="Page Not Found" />
-        <div className="container vertical-split-content">
-          <p>
+const NotFoundPage = (props) =>
+(
+  <div className="app-wrap-profiles">
+    <Navbar />
+      {props.children}
+    <div className="container-fluid m-t-50">
+      <div className="row">
+        <div className="col-12">
+          <h1 style={{ textAlign: 'center' }}>Page not found</h1>
+          <div className="avatar-md m-b-20 text-center">
             <Link to="/" className="btn btn-primary">
               Go Home
             </Link>
-          </p>
+          </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  </div>
+)
+
+NotFoundPage.propTypes = {
+  children: PropTypes.object.isRequired
 }
 
 export default NotFoundPage
