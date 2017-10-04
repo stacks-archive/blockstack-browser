@@ -167,7 +167,7 @@ class Navbar extends Component {
 
   homeNavIconImage() {
     if(this.props.activeTab === 'home'
-      || this.state.homeTabHover ) { 
+      || this.state.homeTabHover ) {
       return icons.homeNavActive
     }
     else {
@@ -177,7 +177,7 @@ class Navbar extends Component {
 
   walletNavIconImage() {
     if(this.props.activeTab === 'wallet'
-      || this.state.walletTabHover ) { 
+      || this.state.walletTabHover ) {
       return icons.walletNavActive
     }
     else {
@@ -187,7 +187,7 @@ class Navbar extends Component {
 
   avatarNavIconImage() {
     if(this.props.activeTab === 'avatar'
-      || this.state.avatarTabHover ) { 
+      || this.state.avatarTabHover ) {
       return icons.avatarNavActive
     }
     else {
@@ -197,7 +197,7 @@ class Navbar extends Component {
 
   settingsNavIconImage() {
     if(this.props.activeTab === 'settings'
-      || this.state.settingsTabHover ) { 
+      || this.state.settingsTabHover ) {
       return icons.settingsNavActive
     }
     else {
@@ -287,28 +287,28 @@ class Navbar extends Component {
           <ul className="navbar-nav container-fluid">
             <li className="nav-item">
               <Link to="/" className="nav-link"
-                  onMouseOver={this.onHomeNavMouseOver} 
+                  onMouseOver={this.onHomeNavMouseOver}
                   onMouseOut={this.onHomeNavMouseOut} >
                 <img src={this.homeNavIconImage()} />
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/wallet/receive" className="nav-link"
-                  onMouseOver={this.onWalletNavMouseOver} 
-                  onMouseOut={this.onWalletNavMouseOut} >
-                <img src={this.walletNavIconImage()} />
-              </Link>
-            </li>
-            <li className="nav-item">
               <Link to="/profiles" className="nav-link"
-                  onMouseOver={this.onAvatarNavMouseOver} 
+                  onMouseOver={this.onAvatarNavMouseOver}
                   onMouseOut={this.onAvatarNavMouseOut} >
                 <img src={this.avatarNavIconImage()} />
               </Link>
             </li>
             <li className="nav-item">
+              <Link to="/wallet/receive" className="nav-link"
+                  onMouseOver={this.onWalletNavMouseOver}
+                  onMouseOut={this.onWalletNavMouseOut} >
+                <img src={this.walletNavIconImage()} />
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link to="/account" className="nav-link"
-                  onMouseOver={this.onSettingsNavMouseOver} 
+                  onMouseOver={this.onSettingsNavMouseOver}
                   onMouseOut={this.onSettingsNavMouseOut} >
                 <img src={this.settingsNavIconImage()} />
               </Link>
