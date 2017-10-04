@@ -148,14 +148,13 @@ class SendPage extends Component {
           )
         )}
         <Balance />
-        <p>Send money to a Bitcoin address.</p>
         <form onSubmit={this.withdrawBitcoin}>
           <InputGroupSecondary
             data={this.state}
             onChange={this.onValueChange}
             name="recipientAddress"
             label="To"
-            placeholder="1Mp5vKwCbekeWetMHLKDD2fDLJzw4vKxiQ"
+            placeholder="&nbsp;"
             required
           />
           <InputGroupSecondary
@@ -163,7 +162,7 @@ class SendPage extends Component {
             onChange={this.onValueChange}
             name="amount"
             label="Amount"
-            placeholder="0.937"
+            placeholder="&nbsp;"
             type="number"
             required
             step={0.000001}
@@ -173,7 +172,7 @@ class SendPage extends Component {
             onChange={this.onValueChange}
             name="password"
             label="Password"
-            placeholder="Password"
+            placeholder="&nbsp;"
             type="password"
             required
           />

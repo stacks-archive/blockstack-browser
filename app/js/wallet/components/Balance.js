@@ -95,6 +95,9 @@ class Balance extends Component {
   render() {
     return (
       <div className="balance m-b-30">
+        <div className="balance-sml">
+          Balance
+        </div>
         <div className="balance-main" title={`${this.btcBalance()} BTC`}>
           {this.roundedBtcBalance()}
           <label>&nbsp;BTC</label>
