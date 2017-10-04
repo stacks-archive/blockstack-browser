@@ -194,7 +194,7 @@ class DefaultProfilePage extends Component {
           className="container-fluid"
         >
           <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new Blockchain ID</h3>
+            <h3 className="modal-heading">Enter your password to create a new Blockstack ID</h3>
             <div>
               {createProfileError ?
                 <Alert key="1" message="Incorrect password" status="danger" />

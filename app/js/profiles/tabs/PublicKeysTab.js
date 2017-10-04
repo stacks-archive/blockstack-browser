@@ -57,7 +57,7 @@ class PublicKeysTab extends Component {
       'service': service,
       'identifier': '',
       'proofType': 'signature',
-      'proofMessage': `Verifying that ${this.props.domainName} is my blockchain ID.`,
+      'proofMessage': `Verifying that ${this.props.domainName} is my Blockstack ID.`,
       'proofSignature': ''
     })
     this.setState({profile: profile})
