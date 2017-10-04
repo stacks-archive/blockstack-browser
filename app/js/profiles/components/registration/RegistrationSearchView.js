@@ -58,7 +58,7 @@ class RegistrationSearchView extends Component {
       alerts: [],
       username: '',
       searchingUsername: '',
-      storageConnected: this.props.api.dropboxAccessToken !== null,
+      storageConnected: this.props.api.storageConnected,
       availableDomains,
       nameSuffixes,
       showSearchResults: false
@@ -84,7 +84,7 @@ class RegistrationSearchView extends Component {
       alerts: []
     })
 
-    const storageConnected = this.props.api.dropboxAccessToken !== null
+    const storageConnected = this.props.api.storageConnected
 
     if (!storageConnected) {
       this.displayConnectStorageAlert()

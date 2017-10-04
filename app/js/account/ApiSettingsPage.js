@@ -99,6 +99,8 @@ class ApiSettingsPage extends Component {
                     data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="logServerPort" label="localhost Logging Port"
                     data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="gaiaHubUrl" label="URL for Gaia Hub Connection"
+                    data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="nameLookupUrl" label="Name Lookup URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="searchUrl" label="Search URL"
