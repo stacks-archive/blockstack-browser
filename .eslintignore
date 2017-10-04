@@ -11,7 +11,7 @@ tests/utils/n*
 
 app/js/account/*
 !app/js/account/StorageProvidersPage*
-
+!app/js/account/utils*
 
 app/js/auth/*
 app/js/components/*
