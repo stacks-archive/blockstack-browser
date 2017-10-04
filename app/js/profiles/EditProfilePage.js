@@ -78,6 +78,8 @@ class EditProfilePage extends Component {
     this.onChange = this.onChange.bind(this)
     this.onSocialAccountChange = this.onSocialAccountChange.bind(this)
     this.onChangePhotoClick = this.onChangePhotoClick.bind(this)
+    this.createNewAccount= this.createNewAccount.bind(this)
+    this.removeAccount = this.removeAccount.bind(this)
   }
 
   componentWillMount() {
@@ -120,7 +122,7 @@ class EditProfilePage extends Component {
       const ownerAddress = this.props.localIdentities[profileIndex].ownerAddress
       const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
       logger.debug(`saveProfile: signing with key index ${addressIndex}`)
-      
+
       const data = signProfileForUpload(this.state.profile,
         this.props.identityKeypairs[addressIndex])
 
@@ -167,25 +169,58 @@ class EditProfilePage extends Component {
 
   onSocialAccountChange(service, event) {
     let profile = this.state.profile
+    let identifier = event.target.value
+
     if (profile.hasOwnProperty('account')) {
+      let hasAccount = false
       profile.account.forEach(account => {
         if(account.service === service) {
-          account.identifier = event.target.value
-          this.setState({profile: profile})
+          hasAccount = true
+          if (identifier.length > 0) {
+            account.identifier = identifier
+            this.setState({profile: profile})
+          }
+          else {
+            this.removeAccount(service, identifier)
+          }
         }
       })
+
+      if (!hasAccount && identifier.length > 0) {
+        profile.account.push(this.createNewAccount(service, identifier))
+        this.setState({profile: profile})
+        this.saveProfile(profile)
+      }
     }
     else {
       profile.account = []
-      profile.account.push({
-        '@type': 'Account',
-        'service': service,
-        'identifier': '',
-        'proofType': 'http',
-        'proofUrl': ''
-      })
+      profile.account.push(this.createNewAccount(service, identifier))
       this.setState({profile: profile})
-      this.saveProfile(profile)
+      if(identifier.length > 0) {
+        this.saveProfile(profile)
+      }
+    }
+  }
+
+  removeAccount(service, identifier) {
+    let profile = this.state.profile
+    let accounts = profile.account
+    let newAccounts = accounts.filter(account => {
+      return (account.service !== service && account.identifier !== identifier)
+    })
+    profile.account = newAccounts
+    this.setState({profile: profile})
+    this.saveProfile(profile)
+  }
+
+  createNewAccount(service, identifier) {
+    return {
+      '@type': 'Account',
+      placeholder: false,
+      service: service,
+      identifier: identifier,
+      proofType: 'http',
+      proofUrl: ''
     }
   }
 
