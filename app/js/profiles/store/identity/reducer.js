@@ -55,7 +55,7 @@ function IdentityReducer(state = initialState, action) {
           [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
             profile: action.profile,
             zoneFile: action.zoneFile,
-            verifications: action.verifications
+            verifications: action.profile.verifications
           })
         })
       })

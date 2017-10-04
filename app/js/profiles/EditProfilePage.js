@@ -69,7 +69,6 @@ class EditProfilePage extends Component {
       domainName: null,
       profile: null,
       profileJustSaved: false,
-      verifications: [],
       tabName: ""
     }
 
@@ -100,6 +99,7 @@ class EditProfilePage extends Component {
     if (props.localIdentities[profileIndex]) {
       const newDomainName = props.localIdentities[profileIndex].domainName
       const newProfile = props.localIdentities[profileIndex].profile
+      newProfile.verifications = props.localIdentities[profileIndex].verifications
       if (profileIndex) {
         this.setState({
           domainName: newDomainName,
@@ -120,7 +120,7 @@ class EditProfilePage extends Component {
       const ownerAddress = this.props.localIdentities[profileIndex].ownerAddress
       const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
       logger.debug(`saveProfile: signing with key index ${addressIndex}`)
-
+      
       const data = signProfileForUpload(this.state.profile,
         this.props.identityKeypairs[addressIndex])
 
