@@ -31,14 +31,18 @@ class ConnectStorageView extends Component {
             <h3 className="modal-heading m-t-15 p-b-20">
               App data is stored in the storage provider of your choice
             </h3>
-            <p className="modal-body">Blockstack is pre-configured to use a free
-            Gaia Hub provided by Blockstack PBC.</p>
+            <img
+              role="presentation"
+              src="/images/blockstack-logo-vertical.svg"
+              className="m-b-20"
+              style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }}
+            />
             <div className="m-t-40 modal-body">
               <button
                 className="btn btn-primary btn-block m-b-20"
                 onClick={this.props.connectGaiaHub}
               >
-                Use Free Gaia Hub
+                Use default storage
               </button>
               <a href="#" className="modal-body" onClick={this.toggleView}>
                 Choose another storage provider
@@ -48,20 +52,14 @@ class ConnectStorageView extends Component {
         :
           <div>
             <h3 className="modal-heading m-t-15 p-b-20">
-              Connect a storage provider to store app data in a place you control
+              Choose your storage provider
             </h3>
-            <img
-              role="presentation"
-              src="/images/blockstack-logo-vertical.svg"
-              className="m-b-20"
-              style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }}
-            />
             <div className="m-t-40">
               <button
                 className="btn btn-primary btn-block m-b-20"
                 onClick={this.props.connectGaiaHub}
               >
-                Connect Gaia Hub
+                Use default storage
               </button>
               <button
                 className="btn btn-primary btn-block m-b-20"
@@ -81,8 +79,13 @@ class ConnectStorageView extends Component {
                 disabled
                 title="Coming soon!"
               >
-                Connect Self-hosted Drive
+                Connect self-hosted storage
               </button>
+              <div className="modal-body">
+                <a href="#" className="modal-body" onClick={this.toggleView}>
+                  Back
+                </a>
+              </div>
             </div>
           </div>
       }
