@@ -1,7 +1,6 @@
 import { signProfileToken, wrapProfileToken } from 'blockstack'
-import { decodeToken, TokenSigner, TokenVerifier } from 'jwt-js'
+import { decodeToken, TokenVerifier } from 'jsontokens'
 
-import BigInteger from 'bigi'
 import ecurve from 'ecurve'
 import { ECPair as ECKeyPair } from 'bitcoinjs-lib'
 const secp256k1 = ecurve.getCurveByName('secp256k1')
