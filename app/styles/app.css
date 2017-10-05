@@ -542,7 +542,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;line-height:1.75rem;padding:0.75rem 0;}
 .highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;color:#fff!important;text-align:center;}
 .qrcode-wallet{max-width:200px;margin:20px auto 20px auto;padding:20px;background-color:#fff;}
-
+.clickable{cursor:pointer;}
 
 
 

@@ -11,6 +11,7 @@ import ProfileEditingSidebar from './components/ProfileEditingSidebar'
 import { IdentityActions } from './store/identity'
 import { signProfileForUpload, findAddressIndex } from '../utils/index'
 import { uploadProfile, uploadPhoto } from '../account/utils'
+import Modal from 'react-modal'
 
 import EditSocialAccountItem from './components/EditSocialAccountItem'
 import EditPGPAccountItem from './components/EditPGPAccountItem'
@@ -69,7 +70,8 @@ class EditProfilePage extends Component {
       domainName: null,
       profile: null,
       profileJustSaved: false,
-      tabName: ""
+      tabName: "",
+      photoModalIsOpen: false
     }
 
     this.saveProfile = this.saveProfile.bind(this)
@@ -77,9 +79,12 @@ class EditProfilePage extends Component {
     this.hasUsername = this.hasUsername.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onSocialAccountChange = this.onSocialAccountChange.bind(this)
+    this.onPhotoClick = this.onPhotoClick.bind(this)
     this.onChangePhotoClick = this.onChangePhotoClick.bind(this)
     this.createNewAccount= this.createNewAccount.bind(this)
     this.removeAccount = this.removeAccount.bind(this)
+    this.openPhotoModal = this.openPhotoModal.bind(this)
+    this.closePhotoModal = this.closePhotoModal.bind(this)
   }
 
   componentWillMount() {
@@ -161,6 +166,26 @@ class EditProfilePage extends Component {
     let profile = this.state.profile
     profile[event.target.name] = event.target.value
     this.setState({profile: profile})
+  }
+
+  onPhotoClick(event) {
+    this.openPhotoModal(event)
+  }
+
+  openPhotoModal(event) {
+    event.preventDefault()
+    this.setState({
+      photoModalIsOpen: true
+    })
+  }
+
+  closePhotoModal(event) {
+    if (event) {
+      event.preventDefault()
+    }
+    this.setState({
+      photoModalIsOpen: false
+    })
   }
 
   onChangePhotoClick() {
@@ -305,6 +330,21 @@ class EditProfilePage extends Component {
         />
         )}
 
+        <Modal
+          isOpen={this.state.photoModalIsOpen}
+          contentLabel=""
+          onRequestClose={this.closePhotoModal}
+          shouldCloseOnOverlayClick
+          style={{ overlay: { zIndex: 10 } }}
+          className="container-fluid text-center"
+        >
+          <Image
+            src={(this.state.profile.image && this.state.profile.image[0].contentUrl) 
+              ? this.state.profile.image[0].contentUrl : "/images/avatar.png"}
+            fallbackSrc="/images/avatar.png" className="img-fluid clickable" 
+            onClick={this.closePhotoModal}/>
+        </Modal>
+
         <div>
           {this.state.profile && this.state.domainName ?
           <div>
@@ -316,7 +356,8 @@ class EditProfilePage extends Component {
                     <Image
                       src={(this.state.profile.image && this.state.profile.image[0].contentUrl) 
                         ? this.state.profile.image[0].contentUrl : "/images/avatar.png"}
-                      fallbackSrc="/images/avatar.png" className="rounded-circle" />
+                      fallbackSrc="/images/avatar.png" className="rounded-circle clickable" 
+                      onClick={this.onPhotoClick}/>
                   </div>
                 </div>
                 <div className="col-12 text-center">
