@@ -15,6 +15,7 @@ class InputGroup extends Component {
     textareaRows: PropTypes.number,
     required: PropTypes.bool,
     onReturnKeyPress: PropTypes.func,
+    onBlur: PropTypes.func,
     stopClickPropagation: PropTypes.bool
   }
 
@@ -22,6 +23,7 @@ class InputGroup extends Component {
     super(props)
 
     this.onKeyPress = this.onKeyPress.bind(this)
+    this.onBlur = this.onBlur.bind(this)
     this.handleClick = this.handleClick.bind(this)
   }
 
@@ -30,6 +32,12 @@ class InputGroup extends Component {
       if(e.key === 'Enter') {
         this.props.onReturnKeyPress()
       }
+    }
+  }
+
+  onBlur(e) {
+    if (this.props.onBlur !== undefined) {
+      this.props.onBlur(e)
     }
   }
 
@@ -99,6 +107,7 @@ class InputGroup extends Component {
               }
               value={value}
               onChange={this.props.onChange}
+              onBlur={this.onBlur}
               onKeyPress={this.onKeyPress} />
             }
           </div>

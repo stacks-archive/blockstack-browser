@@ -11,6 +11,7 @@ import ProfileEditingSidebar from './components/ProfileEditingSidebar'
 import { IdentityActions } from './store/identity'
 import { signProfileForUpload, findAddressIndex } from '../utils/index'
 import { uploadProfile, uploadPhoto } from '../account/utils'
+import { openInNewTab } from '../utils'
 import Modal from 'react-modal'
 
 import EditSocialAccountItem from './components/EditSocialAccountItem'
@@ -79,12 +80,15 @@ class EditProfilePage extends Component {
     this.hasUsername = this.hasUsername.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onSocialAccountChange = this.onSocialAccountChange.bind(this)
+    this.onSocialAccountProofUrlChange = this.onSocialAccountProofUrlChange.bind(this)
+    this.onSocialAccountDelete = this.onSocialAccountDelete.bind(this)
     this.onPhotoClick = this.onPhotoClick.bind(this)
     this.onChangePhotoClick = this.onChangePhotoClick.bind(this)
     this.createNewAccount= this.createNewAccount.bind(this)
     this.removeAccount = this.removeAccount.bind(this)
     this.openPhotoModal = this.openPhotoModal.bind(this)
     this.closePhotoModal = this.closePhotoModal.bind(this)
+    this.onVerifyButtonClick = this.onVerifyButtonClick.bind(this)
   }
 
   componentWillMount() {
@@ -192,6 +196,32 @@ class EditProfilePage extends Component {
     this.photoUpload.click()
   }
 
+  onVerifyButtonClick(event, service, identifier) {
+    const profileIndex = this.props.routeParams.index
+    const identity = this.props.localIdentities[profileIndex]
+
+    const verificationText = `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress}`
+    let verificationUrl = ""
+
+    if(service === 'twitter') {
+      verificationUrl = `https://twitter.com/intent/tweet?text=${verificationText}`
+    } else if (service === 'facebook') {
+      verificationUrl = `https://www.facebook.com/dialog/feed?app_id=258121411364320`
+    } else if (service === 'github') {
+      verificationUrl = `https://gist.github.com/`
+    } else if (service === 'instagram') {
+      
+    } else if (service === 'linkedin') {
+      verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org`
+    } else if (service === 'hackernews') {
+      verificationUrl = `https://news.ycombinator.com/user?id=${identifier}`
+    }
+
+    if (verificationUrl.length > 0) {
+      openInNewTab(verificationUrl)
+    }
+  }
+
   onSocialAccountChange(service, event) {
     let profile = this.state.profile
     let identifier = event.target.value
@@ -201,13 +231,13 @@ class EditProfilePage extends Component {
       profile.account.forEach(account => {
         if(account.service === service) {
           hasAccount = true
-          if (identifier.length > 0) {
+          // if (identifier.length > 0) {
             account.identifier = identifier
             this.setState({profile: profile})
-          }
-          else {
-            this.removeAccount(service, identifier)
-          }
+          // }
+          // else {
+          //   this.removeAccount(service, identifier)
+          // }
         }
       })
 
@@ -227,11 +257,29 @@ class EditProfilePage extends Component {
     }
   }
 
-  removeAccount(service, identifier) {
+  onSocialAccountProofUrlChange(service, event) {
+    let profile = this.state.profile
+    let proofUrl = event.target.value
+
+    if (profile.hasOwnProperty('account')) {
+      profile.account.forEach(account => {
+        if(account.service === service) {
+          account.proofUrl = proofUrl
+          this.setState({profile: profile})
+        }
+      })
+    }
+  }
+
+  onSocialAccountDelete(service) {
+    this.removeAccount(service)
+  }
+
+  removeAccount(service) {
     let profile = this.state.profile
     let accounts = profile.account
     let newAccounts = accounts.filter(account => {
-      return (account.service !== service && account.identifier !== identifier)
+      return (account.service !== service)
     })
     profile.account = newAccounts
     this.setState({profile: profile})
@@ -424,6 +472,9 @@ class EditProfilePage extends Component {
                               verified={verified}
                               placeholder={account.placeholder}
                               onChange={this.onSocialAccountChange}
+                              onProofUrlChange={this.onSocialAccountProofUrlChange}
+                              onVerifyButtonClick={this.onVerifyButtonClick}
+                              onDelete={this.onSocialAccountDelete}
                             />
                           )
                         }

@@ -24,7 +24,10 @@ class EditSocialAccountItem extends Component {
     verified: PropTypes.bool,
     api: PropTypes.object.isRequired,
     placeholder: PropTypes.bool,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onDelete: PropTypes.func,
+    onProofUrlChange: PropTypes.func,
+    onVerifyButtonClick: PropTypes.func
   }
 
   constructor(props) {
@@ -39,9 +42,11 @@ class EditSocialAccountItem extends Component {
     this.getIconClass = this.getIconClass.bind(this)
     this.getIdentifier = this.getIdentifier.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.collapse = this.collapse.bind(this)
     this.onIdentifierChange = this.onIdentifierChange.bind(this)
+    this.onIdentifierBlur = this.onIdentifierBlur.bind(this)
+    this.onProofUrlChange = this.onProofUrlChange.bind(this)
     this.shouldShowVerificationInstructions = this.shouldShowVerificationInstructions.bind(this)
-    this.onVerifyButtonClick = this.onVerifyButtonClick.bind(this)
   }
 
   getAccountUrl() {
@@ -76,18 +81,32 @@ class EditSocialAccountItem extends Component {
   }
 
   handleClick() {
-    this.setState({
-      collapsed: !this.state.collapsed
-    })
+    this.collapse(!this.state.collapsed)
   }
 
-  onVerifyButtonClick() {
-
+  collapse(collapsed = true) {
+    this.setState({
+      collapsed: collapsed
+    })
   }
 
   onIdentifierChange(event) {
     if (this.props.onChange) {
       this.props.onChange(this.props.service, event)
+    }
+  }
+
+  onIdentifierBlur(event) {
+    let identifier = event.target.value
+    if (this.props.onDelete && identifier.length == 0) {
+      this.collapse()
+      this.props.onDelete(this.props.service)
+    }
+  }
+
+  onProofUrlChange(event) {
+    if (this.props.onProofUrlChange) {
+      this.props.onProofUrlChange(this.props.service, event)
     }
   }
 
@@ -124,6 +143,22 @@ class EditSocialAccountItem extends Component {
     const placeholderClass = this.props.placeholder ? "placeholder" : ""
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     const collapsedClass = this.state.collapsed ? "collapsed" : "active"
+
+    const proofURLInput = () => {
+      if (this.props.service === 'instagram' || this.props.service === 'github'
+          || this.props.service === 'twitter' || this.props.service === 'facebook'
+          || this.props.service === 'linkedin' || this.props.service === 'hackernews') {
+        return <InputGroup 
+                  name="proofUrl" 
+                  label="Proof URL" 
+                  data={this.props}
+                  placeholder="Paste Proof URL here"
+                  stopClickPropagation={true} 
+                  onChange={this.onProofUrlChange} />
+      } else {
+        return <div></div>
+      }
+    }
 
     if (webAccountTypes[this.props.service]) {
       if (this.props.listItem === true) {
@@ -165,9 +200,16 @@ class EditSocialAccountItem extends Component {
                     label="Username" 
                     data={this.props}
                     stopClickPropagation={true} 
-                    onChange={this.onIdentifierChange} />
+                    onChange={this.onIdentifierChange} 
+                    onBlur={this.onIdentifierBlur} />
                 </div>
               )
+            }
+
+            {(this.shouldShowVerificationInstructions() && !this.state.collapsed) && 
+              <div>
+                {proofURLInput()}
+              </div>
             }
 
             {(this.shouldShowVerificationInstructions() && !this.state.collapsed) && 
@@ -177,7 +219,9 @@ class EditSocialAccountItem extends Component {
                     service={this.props.service}
                     ownerAddress={this.props.ownerAddress}
                     domainName={this.getIdentifier()}
-                    onVerifyButtonClick={this.onVerifyButtonClick} />
+                    onVerifyButtonClick={(e) => 
+                      this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)} 
+                    />
                 </div>
               )
             }
