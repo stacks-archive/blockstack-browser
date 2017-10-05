@@ -161,6 +161,7 @@ describe('Identity Store: IdentityReducer', () => {
           profile: {
             key: 'value'
           },
+          verifications: undefined,
           zoneFile: 'test'
         }
       },
@@ -192,6 +193,7 @@ describe('Identity Store: IdentityReducer', () => {
           profile: {
             key: 'value'
           },
+          verifications: undefined,
           zoneFile: 'test'
         }
       },
