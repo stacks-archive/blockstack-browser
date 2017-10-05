@@ -19,6 +19,7 @@ class EditSocialAccountItem extends Component {
     listItem: PropTypes.bool.isRequired,
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
+    ownerAddress: PropTypes.string.isRequired,
     proofUrl: PropTypes.string,
     verified: PropTypes.bool,
     api: PropTypes.object.isRequired,
@@ -174,6 +175,7 @@ class EditSocialAccountItem extends Component {
                 <div>
                   <VerificationInfo
                     service={this.props.service}
+                    ownerAddress={this.props.ownerAddress}
                     domainName={this.getIdentifier()}
                     onVerifyButtonClick={this.onVerifyButtonClick} />
                 </div>

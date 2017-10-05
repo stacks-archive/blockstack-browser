@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 
+import InputGroup from '../../components/InputGroup'
 import { openInNewTab } from '../../utils'
 
 class FacebookVerificationInfo extends Component {
   static contextTypes = {
     domainName: PropTypes.string,
+    ownerAddress: PropTypes.string,
     onVerifyButtonClick: PropTypes.func
   }
 
@@ -18,14 +20,12 @@ class FacebookVerificationInfo extends Component {
     return (
       <div>
         <p>
-          Post your proof to Facebook. We’ll ask for permission 
-          to read your posts, so that we can find this one 
-          afterwards. The text can be anything you like, but 
-          make sure your post is public. Click the Verify button
-          when you’re done.
+          Click the button below to post your proof to Facebook. 
+          Make sure your post is public, we'll read the post to 
+          verify that the account belongs to you.
         </p>
         <button className="btn btn-verify btn-facebook btn-block" onClick={this.props.onVerifyButtonClick}>
-          <i className="fa fa-fw fa-facebook fa-lg" /> CONTINUE WITH FACEBOOK
+          <i className="fa fa-fw fa-facebook fa-lg" /> Continue with Facebook
         </button>
       </div>
     )
@@ -34,7 +34,8 @@ class FacebookVerificationInfo extends Component {
 
 class GithubVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string
+    domainName: PropTypes.string,
+    ownerAddress: PropTypes.string
   }
 
   render() {
@@ -47,14 +48,16 @@ class GithubVerificationInfo extends Component {
     return (
       <div>
         <p>
-          Post your proof to Github. We’ll ask for permission 
-          to read your posts, so that we can find this one 
-          afterwards. The text can be anything you like, but 
-          make sure your post is public. Click the Verify button
-          when you’re done.
+          1. Create a public gist with the following text.
+        </p>
+        <div className="verification-quote">
+          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+        </div>
+        <p>
+          2. Copy the gist URL and paste it into the proof URL field.
         </p>
         <button className="btn btn-verify btn-github btn-block" onClick={this.props.onVerifyButtonClick}>
-          <i className="fa fa-fw fa-github fa-lg" /> CREATE GIST
+          <i className="fa fa-fw fa-github fa-lg" /> Create Gist
         </button>
       </div>
     )
@@ -63,7 +66,8 @@ class GithubVerificationInfo extends Component {
 
 class TwitterVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string
+    domainName: PropTypes.string,
+    ownerAddress: PropTypes.string
   }
 
   render() {
@@ -74,15 +78,62 @@ class TwitterVerificationInfo extends Component {
     return (
       <div>
         <p>
-          Post your proof to Twitter. We’ll ask for permission 
-          to read your posts, so that we can find this one 
-          afterwards. The text can be anything you like, but 
-          make sure your post is public. Click the Verify button
-          when you’re done.
+          Click the button below to post your proof to Twitter. 
+          We'll read the tweet to verify that the account belongs 
+          to you.
         </p>
         <button className="btn btn-verify btn-twitter btn-block" onClick={this.props.onVerifyButtonClick}>
-          <i className="fa fa-fw fa-twitter fa-lg" /> TWEET VERIFICATION
+          <i className="fa fa-fw fa-twitter fa-lg" /> Tweet Verification
         </button>
+      </div>
+    )
+  }
+}
+
+class LinkedInVerificationInfo extends Component {
+  static contextTypes = {
+    domainName: PropTypes.string,
+    ownerAddress: PropTypes.string
+  }
+
+  render() {
+    const verificationUrl = ""
+
+    return (
+      <div>
+        <p>
+          Click the button below to post your proof to LinkedIn. 
+          We'll read the post to verify that the account belongs 
+          to you.
+        </p>
+        <button className="btn btn-verify btn-linkedin btn-block" onClick={this.props.onVerifyButtonClick}>
+          <i className="fa fa-fw fa-linkedin fa-lg" /> Post Verification to LinkedIn
+        </button>
+      </div>
+    )
+  }
+}
+
+class InstagramVerificationInfo extends Component {
+  static contextTypes = {
+    domainName: PropTypes.string,
+    ownerAddress: PropTypes.string
+  }
+
+  render() {
+    const verificationUrl = ""
+
+    return (
+      <div>
+        <p>
+          1. Post a photo to instagram with the following caption.
+        </p>
+        <div className="verification-quote">
+          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+        </div>
+        <p>
+          2. Copy the post URL and paste it into the proof URL field.
+        </p>
       </div>
     )
   }
@@ -99,6 +150,7 @@ class VerificationInfo extends Component {
   static contextTypes = {
     service: PropTypes.string,
     domainName: PropTypes.string,
+    ownerAddress: PropTypes.string,
     onVerifyButtonClick: PropTypes.func
   }
 
@@ -108,7 +160,10 @@ class VerificationInfo extends Component {
       services: {
         facebook: true,
         twitter: true,
-        github: true
+        github: true,
+        linkedin: true,
+        instagram: true,
+        hackernews: true,
       }
     }
   }
@@ -120,23 +175,49 @@ class VerificationInfo extends Component {
   render() {
     return (
       <div onClick={this.handleClick}>
+        { (this.props.service === 'instagram' || this.props.service === 'github') &&
+        <InputGroup 
+          name="proofURL" 
+          label="Paste proof URL here" 
+          stopClickPropagation={true} />
+        }
         <div className="verification-instructions-container">
           <p className="verification-instructions-heading">
             Verification Instructions
           </p>
           <div className="verification-instructions">
             { this.props.service === 'twitter' ?
-              <TwitterVerificationInfo domainName={this.props.domainName} 
+              <TwitterVerificationInfo 
+                domainName={this.props.domainName} 
+                ownerAddress={this.props.ownerAddress}
                 onVerifyButtonClick={this.props.onVerifyButtonClick}/>
             : null }
 
             { this.props.service === 'github' ?
-              <GithubVerificationInfo domainName={this.props.domainName} 
+              <GithubVerificationInfo 
+                domainName={this.props.domainName} 
+                ownerAddress={this.props.ownerAddress}
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
             { this.props.service === 'facebook' ?
-              <FacebookVerificationInfo domainName={this.props.domainName} 
+              <FacebookVerificationInfo 
+                domainName={this.props.domainName} 
+                ownerAddress={this.props.ownerAddress}
+                onVerifyButtonClick={this.props.onVerifyButtonClick} />
+            : null }
+
+            { this.props.service === 'linkedin' ?
+              <LinkedInVerificationInfo 
+                domainName={this.props.domainName} 
+                ownerAddress={this.props.ownerAddress}
+                onVerifyButtonClick={this.props.onVerifyButtonClick} />
+            : null }
+
+            { this.props.service === 'instagram' ?
+              <InstagramVerificationInfo 
+                domainName={this.props.domainName} 
+                ownerAddress={this.props.ownerAddress}
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 

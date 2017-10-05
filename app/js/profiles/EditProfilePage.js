@@ -280,6 +280,7 @@ class EditProfilePage extends Component {
     console.log(accounts)
     console.log(this.state.profile)
     const domainName = this.state.domainName
+    const ownerAddress = identity.ownerAddress
     return (
       <div>
       {this.state.tabName === '' ? (
@@ -364,6 +365,7 @@ class EditProfilePage extends Component {
                               key={`${account.service}`}
                               service={account.service}
                               identifier={account.identifier}
+                              ownerAddress={ownerAddress}
                               contentUrl={account.contentUrl}
                               placeholder={account.placeholder}
                               listItem
@@ -375,6 +377,7 @@ class EditProfilePage extends Component {
                               key={`${account.service}`}
                               service={account.service}
                               identifier={account.identifier}
+                              ownerAddress={ownerAddress}
                               proofUrl={account.proofUrl}
                               listItem
                               verified={verified}
