@@ -7,7 +7,7 @@ const RegistrationSubmittedView = (props) => (
 
     <div className="modal-body">
       <p>You username, <strong>{props.routeParams.name}</strong>, should be ready
-      to use within 3 or 4 hours.</p>
+      to use within 4 hours.</p>
       <img
         role="presentation"
         src="/images/blockstack-logo-vertical.svg"
