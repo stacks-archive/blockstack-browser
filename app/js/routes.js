@@ -8,6 +8,7 @@ import ProfilesApp          from './profiles/ProfilesApp'
 import RegistrationPage      from './profiles/RegistrationPage'
 import RegistrationSearchView  from './profiles/components/registration/RegistrationSearchView'
 import RegistrationSelectView  from './profiles/components/registration/RegistrationSelectView'
+import RegistrationSubmittedView from './profiles/components/registration/RegistrationSubmittedView'
 import DefaultProfilePage      from './profiles/DefaultProfilePage'
 import AllProfilesPage      from './profiles/AllProfilesPage'
 import ViewProfilePage      from './profiles/ViewProfilePage'
@@ -55,6 +56,7 @@ export default (
         <Route path="i/add-username"  component={RegistrationPage} >
           <Route path=":index/search" component={RegistrationSearchView} />
           <Route path=":index/select/:name" component={RegistrationSelectView} />
+          <Route path=":index/submitted/:name" component={RegistrationSubmittedView} />
         </Route>
         <Route path="i/register/:index" component={RegisterProfilePage} />
         <Route path="i/import"        component={ImportProfilePage} />

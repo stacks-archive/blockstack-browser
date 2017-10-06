@@ -81,7 +81,7 @@ export function getNamePrices(priceUrl, domainName) {
       return
     }
 
-    const url = priceUrl.replace('{name}', domainName)
+    const url = `${priceUrl.replace('{name}', domainName)}?single_sig=1`
 
     fetch(url).then(
 
