@@ -143,6 +143,7 @@ class EditSocialAccountItem extends Component {
     const placeholderClass = this.props.placeholder ? "placeholder" : ""
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     const collapsedClass = this.state.collapsed ? "collapsed" : "active"
+    let webAccountType = webAccountTypes[this.props.service]
 
     const proofURLInput = () => {
       if (this.props.service === 'instagram' || this.props.service === 'github'
@@ -160,7 +161,8 @@ class EditSocialAccountItem extends Component {
       }
     }
 
-    if (webAccountTypes[this.props.service]) {
+    if (webAccountType) {
+      let accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
           <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`} 
@@ -176,7 +178,7 @@ class EditSocialAccountItem extends Component {
 
             { !this.props.placeholder && (
                 <span className="app-account-service font-weight-normal">
-                  {`@${this.props.service}`}
+                  {`@${accountServiceName}`}
                 </span>
               )}
 

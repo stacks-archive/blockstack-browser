@@ -275,7 +275,7 @@ export function getWebAccountTypes(api) {
       label: 'StackOverflow', iconClass: 'fa-stack-overflow', social: true,
       urlTemplate: 'http://stackoverflow.com/users/{identifier}'
     },
-    'hacker-news': {
+    'hackernews': {
       label: 'Hacker News', iconClass: 'fa-hacker-news', social: true,
       urlTemplate: 'https://news.ycombinator.com/user?id={identifier}'
     },

@@ -63,7 +63,9 @@ class SocialAccountItem extends Component {
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
-    if (webAccountTypes[this.props.service]) {
+    let webAccountType = webAccountTypes[this.props.service]
+    if (webAccountType) {
+      let accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
           <li className={this.props.verified ? "verified" : "pending"}>
@@ -79,7 +81,7 @@ class SocialAccountItem extends Component {
                 {this.getIdentifier()}
               </span>
               <span className="app-account-service font-weight-normal">
-                {`@${this.props.service}`}
+                {`@${accountServiceName}`}
               </span>
               {this.props.verified ?
                 <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>

@@ -17,8 +17,11 @@ class TwitterVerificationInfo extends Component {
     return (
       <div>
         <p>
-          1. Click the Tweet Verification button below to post your proof to Twitter. 
+          1. Copy the text below and click the Tweet Verification button post your proof to Twitter. 
         </p>
+        <div className="verification-quote">
+          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+        </div>
         <p>
           2. Copy the tweet URL and paste it into the proof URL field. 
         </p>
@@ -148,6 +151,29 @@ class InstagramVerificationInfo extends Component {
   }
 }
 
+class HackerNewsVerificationInfo extends Component {
+  static contextTypes = {
+    domainName: PropTypes.string,
+    ownerAddress: PropTypes.string
+  }
+
+  render() {
+    return (
+      <div>
+        <p>
+          1. Copy the text below and add it to the about section in your Hacker News user profile. 
+        </p>
+        <div className="verification-quote">
+          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+        </div>
+        <button className="btn btn-verify btn-twitter btn-block" onClick={this.props.onVerifyButtonClick}>
+          <i className="fa fa-fw fa-hacker-news fa-lg" /> Verify Hacker News Account
+        </button>
+      </div>
+    )
+  }
+}
+
 /*          <a
             href="#" onClick={(event) => {
               event.preventDefault()
@@ -220,6 +246,13 @@ class VerificationInfo extends Component {
 
             { this.props.service === 'instagram' ?
               <InstagramVerificationInfo 
+                domainName={this.props.domainName} 
+                ownerAddress={this.props.ownerAddress}
+                onVerifyButtonClick={this.props.onVerifyButtonClick} />
+            : null }
+
+            { this.props.service === 'hackernews' ?
+              <HackerNewsVerificationInfo 
                 domainName={this.props.domainName} 
                 ownerAddress={this.props.ownerAddress}
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
