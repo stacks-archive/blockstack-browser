@@ -23,7 +23,7 @@ describe('Availability Store: Async Actions', () => {
       .reply(404, {}, { 'Content-Type': 'application/json' })
 
       nock('http://localhost:6270')
-      .get('/v1/prices/names/satoshi.id')
+      .get('/v1/prices/names/satoshi.id?single_sig=1')
       .reply(200, {
         name_price: {
           satoshis: 1600000,
@@ -160,7 +160,7 @@ describe('Availability Store: Async Actions', () => {
       .reply(404, {}, { 'Content-Type': 'application/json' })
 
       nock('http://localhost:6270')
-      .get('/v1/prices/names/satoshi.id')
+      .get('/v1/prices/names/satoshi.id?single_sig=1')
       .reply(500, 'UTXO provider unavailable')
 
       const store = mockStore({
