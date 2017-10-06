@@ -81,7 +81,7 @@ class AddUsernameSelectPage extends Component {
     if (nameAvailabilityObject) {
       price = nameAvailabilityObject.price
     }
-    const roundedUpPrice = roundTo.up(price, 3)
+    price = roundTo.up(price, 3)
     const walletBalance = this.props.balances.total
 
     if (nameIsSubdomain || (walletBalance >= price)) {
@@ -247,7 +247,7 @@ class AddUsernameSelectPage extends Component {
     price = roundTo(price, 3)
     const walletBalance = this.props.balances.total
 
-    if (nameIsSubdomain || (walletBalance > price)) {
+    if (nameIsSubdomain || (walletBalance >= price)) {
       enoughMoney = true
     }
 
