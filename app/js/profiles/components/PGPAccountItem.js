@@ -134,8 +134,8 @@ class PGPAccountItem extends Component {
             }
             </div>
           </Modal>
-          <ReactTooltip place="top" type="dark" effect="solid" id="verified" className="text-center">
-            {this.props.verified ? 'verified' : 'pending'}
+          <ReactTooltip place="top" type="dark" effect="solid" id={`verified-${this.props.service}`} className="text-center">
+            {this.props.verified ? 'Verified' : 'Pending...'}
           </ReactTooltip>
           <a href="#" onClick={this.openModal} data-toggle="tooltip"
             title={webAccountTypes[this.props.service].label}>
@@ -155,11 +155,11 @@ class PGPAccountItem extends Component {
               )}
 
             {this.props.verified ?
-              <span className="float-right" data-tip data-for="verified">
+              <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
                 <i className="fa fa-fw fa-check-circle fa-lg" />
               </span>
               : 
-              <span className="float-right" data-tip data-for="verified">
+              <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
                 <i className="fa fa-fw fa-clock-o fa-lg" />
               </span>
             }
