@@ -25,7 +25,7 @@ class EditSocialAccountItem extends Component {
     api: PropTypes.object.isRequired,
     placeholder: PropTypes.bool,
     onChange: PropTypes.func,
-    onDelete: PropTypes.func,
+    onBlur: PropTypes.func,
     onProofUrlChange: PropTypes.func,
     onVerifyButtonClick: PropTypes.func
   }
@@ -97,10 +97,10 @@ class EditSocialAccountItem extends Component {
   }
 
   onIdentifierBlur(event) {
+    this.props.onBlur(event, this.props.service)
     let identifier = event.target.value
-    if (this.props.onDelete && identifier.length == 0) {
+    if (identifier.length == 0) {
       this.collapse()
-      this.props.onDelete(this.props.service)
     }
   }
 
@@ -155,7 +155,10 @@ class EditSocialAccountItem extends Component {
                   data={this.props}
                   placeholder="Paste Proof URL here"
                   stopClickPropagation={true} 
-                  onChange={this.onProofUrlChange} />
+                  onChange={this.onProofUrlChange} 
+                  onBlur={event => this.props.onBlur(event, this.props.service)}
+                  accessoryIcon={this.props.verified}
+                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" />
       } else {
         return <div></div>
       }
@@ -208,7 +211,7 @@ class EditSocialAccountItem extends Component {
               )
             }
 
-            {(this.shouldShowVerificationInstructions() && !this.state.collapsed) && 
+            {((this.props.verified || this.shouldShowVerificationInstructions()) && !this.state.collapsed) && 
               <div>
                 {proofURLInput()}
               </div>

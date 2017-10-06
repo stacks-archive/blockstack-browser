@@ -65,13 +65,21 @@ function updateOwnedIdentities(localIdentities, namesOwned) {
   }
 }
 
-function updateProfile(domainName, profile, zoneFile, verifications) {
+function updateProfile(domainName, profile, verifications, zoneFile) {
   return {
     type: types.UPDATE_PROFILE,
     domainName,
     profile,
-    zoneFile,
-    verifications
+    verifications,
+    zoneFile
+  }
+}
+
+function updateSocialProofVerifications(domainName, verifications) {
+  return {
+    type: types.UPDATE_SOCIAL_PROOF_VERIFICATIONS,
+    domainName,
+    verifications,
   }
 }
 
@@ -273,13 +281,13 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
                       resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                         j++
                         if (profile) {
-                          dispatch(updateProfile(domainName, profile, zoneFile, []))
                           let verifications = []
                           validateProofs(profile, ownerAddress, domainName).then((proofs) => {
                             verifications = proofs
-                            dispatch(updateProfile(domainName, profile, zoneFile, verifications))
+                            dispatch(updateProfile(domainName, profile, verifications, zoneFile))
                           }).catch((error) => {
                             logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
+                            dispatch(updateProfile(domainName, profile, [], zoneFile))
                           })
                         }
                         logger.debug(`j: ${j} namesOwned.length: ${namesOwned.length}`)
@@ -315,6 +323,23 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
             })
         })
       }
+    })
+  }
+}
+
+function refreshSocialProofVerifications(profile, ownerAddress, domainName) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      let verifications = []
+      validateProofs(profile, ownerAddress, domainName).then((proofs) => {
+        verifications = proofs
+        dispatch(updateSocialProofVerifications(domainName, verifications))
+        resolve()
+      }).catch((error) => {
+        logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
+        dispatch(updateSocialProofVerifications(domainName, []))
+        resolve()
+      })
     })
   }
 }
@@ -481,6 +506,7 @@ const IdentityActions = {
   updateProfile,
   fetchCurrentIdentity,
   refreshIdentities,
+  refreshSocialProofVerifications,
   updateOwnedIdentities,
   createNewIdentityFromDomain,
   addUsername,

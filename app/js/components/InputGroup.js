@@ -16,7 +16,9 @@ class InputGroup extends Component {
     required: PropTypes.bool,
     onReturnKeyPress: PropTypes.func,
     onBlur: PropTypes.func,
-    stopClickPropagation: PropTypes.bool
+    stopClickPropagation: PropTypes.bool,
+    accessoryIcon: PropTypes.bool,
+    accessoryIconClass: PropTypes.string
   }
 
   constructor(props) {
@@ -68,9 +70,9 @@ class InputGroup extends Component {
     if (this.props.required) {
       required = this.props.required
     }
-    let inputClass = "form-control"
+    let inputClass = `form-control ${this.props.accessoryIcon ? 'input-accessory-icon' : ''}`
     if (this.props.inverse) {
-      inputClass = "form-inverse-control"
+      inputClass = `form-inverse-control ${this.props.accessoryIcon ? 'input-accessory-icon' : ''}`
     }
     let labelClass = "form-control-label"
     if (this.props.inverse) {
@@ -109,6 +111,9 @@ class InputGroup extends Component {
               onChange={this.props.onChange}
               onBlur={this.onBlur}
               onKeyPress={this.onKeyPress} />
+            }
+            {this.props.accessoryIcon && 
+              <span className={this.props.accessoryIconClass}></span>
             }
           </div>
         </fieldset>

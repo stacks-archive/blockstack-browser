@@ -45,8 +45,8 @@ function mapStateToProps(state) {
     localIdentities: state.profiles.identity.localIdentities,
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs,
-    identityAddresses: state.account.identityAccount.addresses
-
+    identityAddresses: state.account.identityAccount.addresses,
+    namesOwned: state.profiles.identity.namesOwned,
   }
 }
 
@@ -61,7 +61,11 @@ class EditProfilePage extends Component {
     api: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
-    routeParams: PropTypes.object.isRequired
+    routeParams: PropTypes.object.isRequired,
+    refreshSocialProofVerifications: PropTypes.func.isRequired,
+
+    refreshIdentities: PropTypes.func.isRequired,
+    namesOwned: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -81,7 +85,9 @@ class EditProfilePage extends Component {
     this.onChange = this.onChange.bind(this)
     this.onSocialAccountChange = this.onSocialAccountChange.bind(this)
     this.onSocialAccountProofUrlChange = this.onSocialAccountProofUrlChange.bind(this)
+    this.onSocialAccountBlur = this.onSocialAccountBlur.bind(this)
     this.onSocialAccountDelete = this.onSocialAccountDelete.bind(this)
+    this.refreshProofs = this.refreshProofs.bind(this)
     this.onPhotoClick = this.onPhotoClick.bind(this)
     this.onChangePhotoClick = this.onChangePhotoClick.bind(this)
     this.createNewAccount= this.createNewAccount.bind(this)
@@ -110,7 +116,7 @@ class EditProfilePage extends Component {
     if (props.localIdentities[profileIndex]) {
       const newDomainName = props.localIdentities[profileIndex].domainName
       const newProfile = props.localIdentities[profileIndex].profile
-      newProfile.verifications = props.localIdentities[profileIndex].verifications
+      // newProfile.verifications = props.localIdentities[profileIndex].verifications
       if (profileIndex) {
         this.setState({
           domainName: newDomainName,
@@ -124,10 +130,14 @@ class EditProfilePage extends Component {
 
   saveProfile(newProfile) {
     logger.trace('saveProfile')
-    this.props.updateProfile(this.props.routeParams.index, newProfile)
-    if (this.hasUsername() && this.props.api.storageConnected) {
+
+    const profileIndex = this.props.routeParams.index
+    const identity = this.props.localIdentities[profileIndex]
+    const verifications = identity.verifications
+
+    this.props.updateProfile(this.props.routeParams.index, newProfile, verifications)
+    if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
       logger.trace('saveProfile: Preparing to upload profile')
-      const profileIndex = this.props.routeParams.index
       const ownerAddress = this.props.localIdentities[profileIndex].ownerAddress
       const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
       logger.debug(`saveProfile: signing with key index ${addressIndex}`)
@@ -135,7 +145,8 @@ class EditProfilePage extends Component {
       const data = signProfileForUpload(this.state.profile,
         this.props.identityKeypairs[addressIndex])
 
-      uploadProfile(this.props.api, this.state.domainName, data).catch((err) => {
+      uploadProfile(this.props.api, this.state.domainName, data)
+      .catch((err) => {
         console.error(err)
         console.error('profile not uploaded')
       })
@@ -149,7 +160,12 @@ class EditProfilePage extends Component {
     let profile = this.state.profile
     uploadPhoto(this.props.api, name, e.target.files[0], 0)
     .then((avatarUrl) => {
-      profile.image[0].contentUrl = avatarUrl
+      profile.image = []
+      profile.image.push({
+        '@type': 'ImageObject',
+        'name': "avatar",
+        'contentUrl': avatarUrl
+      })
       this.setState({
         profile: profile
       })
@@ -231,20 +247,15 @@ class EditProfilePage extends Component {
       profile.account.forEach(account => {
         if(account.service === service) {
           hasAccount = true
-          // if (identifier.length > 0) {
-            account.identifier = identifier
-            this.setState({profile: profile})
-          // }
-          // else {
-          //   this.removeAccount(service, identifier)
-          // }
+          account.identifier = identifier
+          this.setState({profile: profile})
         }
       })
 
       if (!hasAccount && identifier.length > 0) {
         profile.account.push(this.createNewAccount(service, identifier))
         this.setState({profile: profile})
-        this.saveProfile(profile)
+        // this.saveProfile(profile)
       }
     }
     else {
@@ -252,22 +263,43 @@ class EditProfilePage extends Component {
       profile.account.push(this.createNewAccount(service, identifier))
       this.setState({profile: profile})
       if(identifier.length > 0) {
-        this.saveProfile(profile)
+        // this.saveProfile(profile)
       }
     }
   }
 
   onSocialAccountProofUrlChange(service, event) {
-    let profile = this.state.profile
-    let proofUrl = event.target.value
+    const profile = this.state.profile
+    const proofUrl = event.target.value
 
     if (profile.hasOwnProperty('account')) {
       profile.account.forEach(account => {
         if(account.service === service) {
           account.proofUrl = proofUrl
           this.setState({profile: profile})
+          // this.saveProfile(profile)
         }
       })
+    }
+  }
+
+  onSocialAccountBlur(event, service) {
+    const profile = this.state.profile
+
+    if (event.target.name === 'identifier') {
+      const identifier = event.target.value    
+
+      this.saveProfile(profile)
+
+      if (identifier.length == 0) {
+        this.removeAccount(service)
+      }
+    } else if (event.target.name === 'proofUrl') {
+
+      if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
+        this.refreshProofs(profile)
+      }
+
     }
   }
 
@@ -284,6 +316,16 @@ class EditProfilePage extends Component {
     profile.account = newAccounts
     this.setState({profile: profile})
     this.saveProfile(profile)
+    this.refreshProofs(profile)
+  }
+
+  refreshProofs(profile) {
+    const profileIndex = this.props.routeParams.index
+    const identity = this.props.localIdentities[profileIndex]
+    const ownerAddress = identity.ownerAddress
+    const domainName = identity.domainName
+
+    this.props.refreshSocialProofVerifications(profile, ownerAddress, domainName)
   }
 
   createNewAccount(service, identifier) {
@@ -473,6 +515,7 @@ class EditProfilePage extends Component {
                               placeholder={account.placeholder}
                               onChange={this.onSocialAccountChange}
                               onProofUrlChange={this.onSocialAccountProofUrlChange}
+                              onBlur={this.onSocialAccountBlur}
                               onVerifyButtonClick={this.onVerifyButtonClick}
                               onDelete={this.onSocialAccountDelete}
                             />

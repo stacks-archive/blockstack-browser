@@ -391,7 +391,8 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 .form-control-secondary:hover{background-color:#80C0FF;color:#fff;border:1px solid #80C0FF;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
 .form-control-secondary:focus,.form-control-secondary:active{background-color:#fff;color:#484848;border:1px solid #fff;}
 .form-control-label-secondary{color:#95CAFF;margin-bottom:0.375rem;}
-
+.input-accessory-icon-right{float:right;margin-right:10px;margin-top:-27px;position:relative;z-index:2;}
+.input-accessory-icon{padding-right:40px;}
 
 /* 16. Navbar */
 header{padding-top:15px;}

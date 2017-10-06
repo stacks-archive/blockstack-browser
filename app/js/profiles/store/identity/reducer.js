@@ -50,12 +50,24 @@ function IdentityReducer(state = initialState, action) {
         namesOwned: action.namesOwned
       })
     case types.UPDATE_PROFILE:
+      console.log('####### update profile')
+      console.log(action)
       return Object.assign({}, state, {
         localIdentities: Object.assign({}, state.localIdentities, {
           [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
             profile: action.profile,
             zoneFile: action.zoneFile,
-            verifications: action.profile.verifications
+            verifications: action.verifications
+          })
+        })
+      })
+    case types.UPDATE_SOCIAL_PROOF_VERIFICATIONS:
+      console.log('####### update proof verifications')
+      console.log(action)
+      return Object.assign({}, state, {
+        localIdentities: Object.assign({}, state.localIdentities, {
+          [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
+            verifications: action.verifications
           })
         })
       })
