@@ -12,12 +12,10 @@ import roundTo from 'round-to'
 import { QRCode } from 'react-qr-svg'
 import Alert from '../../../components/Alert'
 import InputGroup from '../../../components/InputGroup'
-
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/components/registration/RegistrationSelectView.js')
 const CHECK_FOR_PAYMENT_INTERVAL = 10000
-
 
 function mapStateToProps(state) {
   return {
@@ -120,14 +118,14 @@ class AddUsernameSelectPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     const registration = nextProps.registration
+    const name = nextProps.routeParams.name
+    const address = nextProps.routeParams.index
 
     if (this.state.registrationInProgress && registration.registrationSubmitted) {
       logger.debug('componentWillReceiveProps: registration submitted! redirecting...')
-      this.props.router.push('/profiles') // TODO this should go to the status page
+      this.props.router.push(`/profiles/i/add-username/${address}/submitted/${name}`)
     }
 
-
-    const name = nextProps.routeParams.name
     const availableNames = this.props.availability.names
     const nameAvailabilityObject = availableNames[name]
     const nameIsSubdomain = isSubdomain(name)
