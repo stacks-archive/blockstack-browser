@@ -233,14 +233,14 @@ class Navbar extends Component {
   }
 
   getProfileRoute() {
-    const defaultIdentityName = this.props.defaultIdentity
-
-    if (!defaultIdentityName) {
+    if (this.props.localIdentities === undefined && this.props.localIdentities.length === 0) {
       return "/profiles"
     }
 
+    const defaultIdentityName = this.props.defaultIdentity
     const identity = this.props.localIdentities[defaultIdentityName]
     const profile = identity.profile
+    
     if (!profile.hasOwnProperty('givenName') 
       && !profile.hasOwnProperty('familyName') 
       && !profile.hasOwnProperty('description')
