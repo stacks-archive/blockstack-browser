@@ -148,7 +148,7 @@ class EditSocialAccountItem extends Component {
     const proofURLInput = () => {
       if (this.props.service === 'instagram' || this.props.service === 'github'
           || this.props.service === 'twitter' || this.props.service === 'facebook'
-          || this.props.service === 'linkedin' || this.props.service === 'hackernews') {
+          || this.props.service === 'linkedIn' || this.props.service === 'hackerNews') {
         return <InputGroup 
                   name="proofUrl" 
                   label="Proof URL" 

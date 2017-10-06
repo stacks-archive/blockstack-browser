@@ -197,9 +197,9 @@ class VerificationInfo extends Component {
         facebook: true,
         twitter: true,
         github: true,
-        linkedin: true,
+        linkedIn: true,
         instagram: true,
-        hackernews: true,
+        hackerNews: true,
       }
     }
   }
@@ -237,7 +237,7 @@ class VerificationInfo extends Component {
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
-            { this.props.service === 'linkedin' ?
+            { this.props.service === 'linkedIn' ?
               <LinkedInVerificationInfo 
                 domainName={this.props.domainName} 
                 ownerAddress={this.props.ownerAddress}
@@ -251,7 +251,7 @@ class VerificationInfo extends Component {
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
-            { this.props.service === 'hackernews' ?
+            { this.props.service === 'hackerNews' ?
               <HackerNewsVerificationInfo 
                 domainName={this.props.domainName} 
                 ownerAddress={this.props.ownerAddress}

@@ -30,10 +30,10 @@ const logger = log4js.getLogger('profiles/EditProfilePage.js')
 const accountTypes = [
   'twitter',
   'facebook',
-  'linkedin',
+  'linkedIn',
   'github',
   'instagram',
-  'hackernews',
+  'hackerNews',
   'bitcoin',
   'ethereum',
   'pgp',
