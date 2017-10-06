@@ -7,6 +7,7 @@ import ReactTooltip from 'react-tooltip'
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
+import Modal from 'react-modal'
 import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { SearchActions } from './store/search'
@@ -45,11 +46,15 @@ class ViewProfilePage extends Component {
         profile: null,
         verifications: [],
         blockNumber: null,
-        transactionNumber: null
+        transactionNumber: null,
+        photoModalIsOpen: false
       },
       isLoading: true
     }
     this.hasUsername = this.hasUsername.bind(this)
+    this.onPhotoClick = this.onPhotoClick.bind(this)
+    this.openPhotoModal = this.openPhotoModal.bind(this)
+    this.closePhotoModal = this.closePhotoModal.bind(this)
   }
 
   componentHasNewRouteParams(props) {
@@ -75,6 +80,26 @@ class ViewProfilePage extends Component {
     this.setState({
       currentIdentity: nextProps.currentIdentity,
       isLoading: false
+    })
+  }
+
+  onPhotoClick(event) {
+    this.openPhotoModal(event)
+  }
+
+  openPhotoModal(event) {
+    event.preventDefault()
+    this.setState({
+      photoModalIsOpen: true
+    })
+  }
+
+  closePhotoModal(event) {
+    if (event) {
+      event.preventDefault()
+    }
+    this.setState({
+      photoModalIsOpen: false
     })
   }
 
@@ -122,10 +147,21 @@ class ViewProfilePage extends Component {
           rightButtonTitle="More" 
           rightButtonLink="/profiles/i/all" />
         }
-
         { person !== null ?
         <div>
-
+          <Modal
+            isOpen={this.state.photoModalIsOpen}
+            contentLabel=""
+            onRequestClose={this.closePhotoModal}
+            shouldCloseOnOverlayClick
+            style={{ overlay: { zIndex: 10 } }}
+            className="container-fluid text-center"
+          >
+            <Image
+              src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
+              fallbackSrc="/images/avatar.png" className="img-fluid clickable" 
+              onClick={this.closePhotoModal}/>
+          </Modal>
           <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
             <div>This is your owner address.</div>
             <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
@@ -137,8 +173,9 @@ class ViewProfilePage extends Component {
 
                 <div className="avatar-md m-b-20 text-center">
                   <Image
-                    src={person.avatarUrl() || ''}
-                    fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" />
+                    src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
+                    fallbackSrc="/images/avatar.png" className="rounded-circle clickable" 
+                    onClick={this.onPhotoClick}/>
                 </div>
 
                 <div className="text-center">

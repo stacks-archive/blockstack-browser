@@ -58,7 +58,8 @@ class DefaultProfilePage extends Component {
       localIdentities: this.props.localIdentities,
       passwordPromptIsOpen: false,
       processing: false,
-      password: ''
+      password: '',
+      photoModalIsOpen: false
     }
 
     this.onValueChange = this.onValueChange.bind(this)
@@ -67,6 +68,9 @@ class DefaultProfilePage extends Component {
     this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
     this.openPasswordPrompt = this.openPasswordPrompt.bind(this)
     this.closePasswordPrompt = this.closePasswordPrompt.bind(this)
+    this.onPhotoClick = this.onPhotoClick.bind(this)
+    this.openPhotoModal = this.openPhotoModal.bind(this)
+    this.closePhotoModal = this.closePhotoModal.bind(this)
   }
 
   componentWillMount() {
@@ -126,6 +130,26 @@ class DefaultProfilePage extends Component {
       encryptedBackupPhrase,
       password, nextUnusedAddressIndex
     )
+  }
+
+  onPhotoClick(event) {
+    this.openPhotoModal(event)
+  }
+
+  openPhotoModal(event) {
+    event.preventDefault()
+    this.setState({
+      photoModalIsOpen: true
+    })
+  }
+
+  closePhotoModal(event) {
+    if (event) {
+      event.preventDefault()
+    }
+    this.setState({
+      photoModalIsOpen: false
+    })
   }
 
   openPasswordPrompt(event) {
@@ -223,6 +247,19 @@ class DefaultProfilePage extends Component {
             </button>
           </form>
         </Modal>
+        <Modal
+          isOpen={this.state.photoModalIsOpen}
+          contentLabel=""
+          onRequestClose={this.closePhotoModal}
+          shouldCloseOnOverlayClick
+          style={{ overlay: { zIndex: 10 } }}
+          className="container-fluid text-center"
+        >
+          <Image
+            src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
+            fallbackSrc="/images/avatar.png" className="img-fluid clickable" 
+            onClick={this.closePhotoModal}/>
+        </Modal>
         <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
           <div>This is your owner address.</div>
           <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
@@ -243,8 +280,9 @@ class DefaultProfilePage extends Component {
 
                 <div className="avatar-md m-b-20 text-center">
                   <Image
-                    src={person.avatarUrl() || ''}
-                    fallbackSrc="/images/avatar.png" className="rounded-circle" />
+                    src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
+                    fallbackSrc="/images/avatar.png" className="rounded-circle clickable" 
+                    onClick={this.onPhotoClick}/>
                 </div>
 
                 <div className="text-center">
