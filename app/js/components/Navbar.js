@@ -232,7 +232,6 @@ class Navbar extends Component {
   }
 
   render() {
-
     return (
       <header className="container-fluid no-padding">
         <nav className="navbar navbar-expand container-fluid">
