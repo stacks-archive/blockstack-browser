@@ -9,6 +9,7 @@ function mapStateToProps(state) {
   return {
     dropboxAccessToken: state.settings.api.dropboxAccessToken,
     localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
     addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletAddress: state.account.coreWallet.address,
     coreWalletBalance: state.account.coreWallet.balance,
@@ -231,6 +232,7 @@ class Navbar extends Component {
   }
 
   render() {
+
     return (
       <header className="container-fluid no-padding">
         <nav className="navbar navbar-expand container-fluid">

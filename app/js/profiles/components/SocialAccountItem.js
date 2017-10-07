@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import ReactTooltip from 'react-tooltip'
 
 import { getWebAccountTypes } from '../../utils'
 
@@ -54,18 +55,23 @@ class SocialAccountItem extends Component {
 
   getIdentifier() {
     let identifier = this.props.identifier
-    if (identifier.length >= 15) {
-      identifier = identifier.slice(0, 15) + '...'
+    if (identifier.length >= 40) {
+      identifier = identifier.slice(0, 40) + '...'
     }
     return identifier
   }
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
-    if (webAccountTypes[this.props.service]) {
+    let webAccountType = webAccountTypes[this.props.service]
+    if (webAccountType) {
+      let accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
-          <li className={!this.props.verified ? "verified" : "pending"}>
+          <li className={this.props.verified ? "verified" : "pending"}>
+            <ReactTooltip place="top" type="dark" effect="solid" id={`verified-${this.props.service}`} className="text-center">
+              {this.props.verified ? 'Verified' : 'Pending...'}
+            </ReactTooltip>
             <a href={this.getAccountUrl()} data-toggle="tooltip"
               title={webAccountTypes[this.props.service].label}>
               <span className="">
@@ -75,11 +81,15 @@ class SocialAccountItem extends Component {
                 {this.getIdentifier()}
               </span>
               <span className="app-account-service font-weight-normal">
-                {`@${this.props.service}`}
+                {`@${accountServiceName}`}
               </span>
-              {this.props.verified &&
-                <span className="float-right">
+              {this.props.verified ?
+                <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
                   <i className="fa fa-fw fa-check-circle fa-lg" />
+                </span>
+                : 
+                <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
+                  <i className="fa fa-fw fa-clock-o fa-lg" />
                 </span>
               }
             </a>
