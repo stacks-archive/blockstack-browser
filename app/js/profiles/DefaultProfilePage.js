@@ -374,7 +374,8 @@ class DefaultProfilePage extends Component {
                           }
                         }
                       }
-                      if (account.service === 'pgp') {
+                      if (account.service === 'pgp' || account.service === 'ssh' 
+                        || account.service === 'bitcoin' || account.service === 'ethereum') {
                         return (
                           <PGPAccountItem
                             key={`${account.service}-${account.identifier}`}
