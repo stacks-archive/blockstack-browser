@@ -227,9 +227,9 @@ class EditProfilePage extends Component {
       verificationUrl = `https://gist.github.com/`
     } else if (service === 'instagram') {
       
-    } else if (service === 'linkedin') {
-      verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org`
-    } else if (service === 'hackernews') {
+    } else if (service === 'linkedIn') {
+      verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org&title=${verificationText}`
+    } else if (service === 'hackerNews') {
       verificationUrl = `https://news.ycombinator.com/user?id=${identifier}`
     }
 
