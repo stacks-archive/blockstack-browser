@@ -59,7 +59,7 @@ div.edit-profile-accounts .account.placeholder .form-group input.form-control {c
 .account-leave.account-leave-active {opacity: 0.01;transition: all 200ms ease-in}
 
 .verification-instructions-container {cursor:default;}
-.verification-instructions {padding:25px 20px;border:0px solid rgba(255,255,255,0.4);background-color:rgba(255,255,255,0.4);border-radius:6px}
+.verification-instructions {padding:25px 20px;border:0px solid rgba(255,255,255,0.26);background-color:rgba(255,255,255,0.26);border-radius:6px}
 .verification-instructions-heading {padding-left:15px;margin-top:1rem;margin-bottom:0.7rem;font-weight:600;}
 .verification-quote {padding:20px 60px 20px 20px;margin-bottom:1rem;background-color:#2c96ff;border-radius:6px}
 .verification-copy {padding:0;position:absolute;right:45px;margin-top:-30px;}
