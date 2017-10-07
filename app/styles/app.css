@@ -35,7 +35,7 @@ div.profile-accounts > ul > li > a > span.app-account-service {margin-left:10px;
 div.profile-accounts > ul > li.verified > a > span.app-account-service {color:#95CAFF;}
 div.profile-accounts > ul > li.pending > a > span.app-account-service {color:#C7C7C7;}
 
-div.edit-profile-accounts .account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;}
+div.edit-profile-accounts .account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;transition:all 200ms ease-in-out}
 div.edit-profile-accounts .account.verified, div.edit-profile-accounts .account.active {color:#fff;background-color:#2c96ff;}
 div.edit-profile-accounts .account.pending {color:#AEAEAE;background-color:#fff;}
 div.edit-profile-accounts .account.collapsed {padding:15px 15px;}
@@ -44,7 +44,7 @@ div.edit-profile-accounts .account > span.app-account-identifier {font-weight:60
 div.edit-profile-accounts .account > span.app-account-service {color:#95CAFF;margin-left:10px;}
 div.edit-profile-accounts .account.verified > span.app-account-service {color:#95CAFF;}
 div.edit-profile-accounts .account.pending > span.app-account-service {color:#AEAEAE;}
-div.edit-profile-accounts .account .form-group {margin-top:20px;}
+div.edit-profile-accounts .account .form-group {margin-top:20px;transition:all 200ms ease-in-out}
 div.edit-profile-accounts .account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);}
 div.edit-profile-accounts .account.verified .form-group input.form-control, div.edit-profile-accounts .account.active .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);}
 div.edit-profile-accounts .account.pending .form-group input.form-control {color:#4B4B4B;background-color:#FAFAFA;border:1px solid #FAFAFA;}
@@ -53,6 +53,10 @@ div.edit-profile-accounts .account.placeholder.collapsed > span.app-account-serv
 div.edit-profile-accounts .account.placeholder > span.app-account-service {color:#4B4B4B;}
 div.edit-profile-accounts .account.placeholder {color:#4B4B4B;background-color:#fff;}
 div.edit-profile-accounts .account.placeholder .form-group input.form-control {color:#fff;background-color:#FAFAFA;border:1px solid #FAFAFA;}
+.account-enter {opacity: 0.01;}
+.account-enter.account-enter-active {opacity: 1;transition: all 400ms ease-in}
+.account-leave {opacity: 1;}
+.account-leave.account-leave-active {opacity: 0.01;transition: all 200ms ease-in}
 
 .verification-instructions-container {cursor:default;}
 .verification-instructions {padding:25px 20px;border:0px solid rgba(255,255,255,0.4);background-color:rgba(255,255,255,0.4);border-radius:6px}

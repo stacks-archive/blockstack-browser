@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import InputGroup from '../../components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
@@ -197,39 +198,46 @@ class EditSocialAccountItem extends Component {
               }
             </span>
 
-            {!this.state.collapsed && 
-              (
-                <div>
-                  <InputGroup 
-                    name="identifier" 
-                    label="Username" 
-                    data={this.props}
-                    stopClickPropagation={true} 
-                    onChange={this.onIdentifierChange} 
-                    onBlur={this.onIdentifierBlur} />
-                </div>
-              )
-            }
+            <div onClick={e => e.stopPropagation()}>
+              <ReactCSSTransitionGroup
+                transitionName="account"
+                transitionEnterTimeout={400}
+                transitionLeaveTimeout={200}>
 
-            {((this.props.verified || this.shouldShowVerificationInstructions()) && !this.state.collapsed) && 
-              <div>
-                {proofURLInput()}
-              </div>
-            }
+                {!this.state.collapsed && 
+                  (
+                    <InputGroup 
+                      key="input-group-identifier"
+                      name="identifier" 
+                      label="Username" 
+                      data={this.props}
+                      stopClickPropagation={true} 
+                      onChange={this.onIdentifierChange} 
+                      onBlur={this.onIdentifierBlur} />
+                  )
+                }
 
-            {(this.shouldShowVerificationInstructions() && !this.state.collapsed) && 
-              (
-                <div>
-                  <VerificationInfo
-                    service={this.props.service}
-                    ownerAddress={this.props.ownerAddress}
-                    domainName={this.getIdentifier()}
-                    onVerifyButtonClick={(e) => 
-                      this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)} 
-                    />
-                </div>
-              )
-            }
+                {((this.props.verified || this.shouldShowVerificationInstructions()) && !this.state.collapsed) && 
+                  <div key="input-group-proof">
+                    {proofURLInput()}
+                  </div>
+                }
+              
+                {(this.shouldShowVerificationInstructions() && !this.state.collapsed) && 
+                  (
+                    <div>
+                      <VerificationInfo
+                        service={this.props.service}
+                        ownerAddress={this.props.ownerAddress}
+                        domainName={this.getIdentifier()}
+                        onVerifyButtonClick={(e) => 
+                          this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)} 
+                        />
+                    </div>
+                  )
+                }
+              </ReactCSSTransitionGroup>
+            </div>
           </div>
         )
       } else {
