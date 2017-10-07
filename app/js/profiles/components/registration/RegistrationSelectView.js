@@ -263,9 +263,9 @@ class AddUsernameSelectPage extends Component {
           )
         )}
         {enoughMoney ?
-          <div style={{ textAlign: 'center' }}>
+          <div>
           {nameIsSubdomain ?
-            <div>
+            <div className="text-center">
               <h3 className="modal-heading">
                 Are you sure you want to register <strong>{name}</strong>?
               </h3>
@@ -299,11 +299,11 @@ class AddUsernameSelectPage extends Component {
               <h3 className="modal-heading">
                 Enter your password to buy <strong>{name}</strong>
               </h3>
-              <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
-              from your wallet.</p>
-              <div
-                style={{ textAlign: 'center' }}
-              >
+              <div className="text-center">
+                <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
+                  from your wallet.</p>
+              </div>
+              <div>
                 <form onSubmit={this.register}>
                   <InputGroup
                     data={this.state}
