@@ -233,7 +233,9 @@ class Navbar extends Component {
   }
 
   getProfileRoute() {
-    if (this.props.localIdentities === undefined && this.props.localIdentities.length === 0) {
+    if (this.props.localIdentities == null
+      || this.props.localIdentities.length === 0
+      || this.props.defaultIdentity == null) {
       return "/profiles"
     }
 
