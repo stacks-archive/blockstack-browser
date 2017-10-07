@@ -79,11 +79,15 @@ describe('Availability Store: Async Actions', () => {
       { 'Content-Type': 'application/json' })
 
       nock('https://blockstack.s3.amazonaws.com')
+      .persist()
       .get('/guylepage.id')
       .reply(200, TokenFileLookups['guylepage.id'],
       { 'Content-Type': 'application/json' })
 
-
+      nock('https://www.facebook.com')
+      .persist()
+      .get('/g3lepage/posts/10154179855498760')
+      .reply(200, 'verifying that guylepage.id is my blockstack id')
 
       const store = mockStore(initialState)
 
@@ -98,6 +102,7 @@ describe('Availability Store: Async Actions', () => {
       return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
         addresses, localIdentities, namesOwned))
       .then(() => {
+
         const expectedActions = [
         {
           "localIdentities": {
@@ -196,7 +201,8 @@ describe('Availability Store: Async Actions', () => {
             ]
           },
           zoneFile: "$ORIGIN guylepage.id\n$TTL 3600\n_http._tcp URI 10 1 \"https://blockstack.s3.amazonaws.com/guylepage.id\"\n",
-          "type": "UPDATE_PROFILE"
+          "type": "UPDATE_PROFILE",
+          "verifications": []
         }
       ]
 
@@ -240,15 +246,22 @@ describe('Availability Store: Async Actions', () => {
       { 'Content-Type': 'application/json' })
 
       nock('https://blockstack.s3.amazonaws.com')
+      .persist()
       .get('/guylepage.id')
       .reply(200, TokenFileLookups['guylepage.id'],
       { 'Content-Type': 'application/json' })
 
       nock('https://twitter.com')
       .get('/guylepage3/status/750437834532777984')
+      .reply(200, '<html><head><meta property="og:description" content="“verifying that +guylepage is my blockchain id”"></head></html>')
+
+      nock('https://www.facebook.com')
+      .persist()
+      .get('/g3lepage/posts/10154179855498760')
       .reply(200, 'verifying that guylepage.id is my blockstack id')
 
       nock('https://www.facebook.com')
+      .persist()
       .get('/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fg3lepage%2Fposts%2F10154179855498760')
       .reply(200, 'verifying that guylepage.id is my blockstack id')
 
@@ -430,6 +443,12 @@ describe('Availability Store: Async Actions', () => {
           "type": "UPDATE_CURRENT",
           "verifications": [
             {
+              "identifier": "guylepage3",
+              "proof_url": "https://twitter.com/guylepage3/status/750437834532777984",
+              "service": "twitter",
+              "valid": true
+            },
+            {
               "identifier": "g3lepage",
               "proof_url": "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fg3lepage%2Fposts%2F10154179855498760",
               "service": "facebook",
@@ -437,15 +456,9 @@ describe('Availability Store: Async Actions', () => {
             },
             {
               "identifier": "guylepage3",
-              "proof_url": "https://twitter.com/guylepage3/status/750437834532777984",
-              "service": "twitter",
-              "valid": true
-            },
-            {
-              "identifier": "guylepage3",
               "proof_url": "https://gist.github.com/guylepage3/48777a21a70d322b0fa4c1fcc53f4477",
               "service": "github",
-              "valid": true
+              "valid": false
             }
           ],
           "zoneFile": "$ORIGIN guylepage.id\n$TTL 3600\n_http._tcp URI 10 1 \"https://blockstack.s3.amazonaws.com/guylepage.id\"\n"

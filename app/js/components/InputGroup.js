@@ -14,13 +14,19 @@ class InputGroup extends Component {
     textarea: PropTypes.bool,
     textareaRows: PropTypes.number,
     required: PropTypes.bool,
-    onReturnKeyPress: PropTypes.func
+    onReturnKeyPress: PropTypes.func,
+    onBlur: PropTypes.func,
+    stopClickPropagation: PropTypes.bool,
+    accessoryIcon: PropTypes.bool,
+    accessoryIconClass: PropTypes.string
   }
 
   constructor(props) {
     super(props)
 
     this.onKeyPress = this.onKeyPress.bind(this)
+    this.onBlur = this.onBlur.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   onKeyPress(e) {
@@ -28,6 +34,18 @@ class InputGroup extends Component {
       if(e.key === 'Enter') {
         this.props.onReturnKeyPress()
       }
+    }
+  }
+
+  onBlur(e) {
+    if (this.props.onBlur !== undefined) {
+      this.props.onBlur(e)
+    }
+  }
+
+  handleClick(e) {
+    if(this.props.stopClickPropagation) {
+      e.stopPropagation()
     }
   }
 
@@ -52,9 +70,9 @@ class InputGroup extends Component {
     if (this.props.required) {
       required = this.props.required
     }
-    let inputClass = "form-control"
+    let inputClass = `form-control ${this.props.accessoryIcon ? 'input-accessory-icon' : ''}`
     if (this.props.inverse) {
-      inputClass = "form-inverse-control"
+      inputClass = `form-inverse-control ${this.props.accessoryIcon ? 'input-accessory-icon' : ''}`
     }
     let labelClass = "form-control-label"
     if (this.props.inverse) {
@@ -62,7 +80,7 @@ class InputGroup extends Component {
     }
 
     return (
-      <div className="form-group m-b-11">
+      <div className="form-group m-b-11" onClick={this.handleClick}>
         <fieldset>
           <label className={`${labelClass}`}>
             {this.props.label}
@@ -91,7 +109,11 @@ class InputGroup extends Component {
               }
               value={value}
               onChange={this.props.onChange}
+              onBlur={this.onBlur}
               onKeyPress={this.onKeyPress} />
+            }
+            {this.props.accessoryIcon && 
+              <span className={this.props.accessoryIconClass}></span>
             }
           </div>
         </fieldset>

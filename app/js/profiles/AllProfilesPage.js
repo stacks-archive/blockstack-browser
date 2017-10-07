@@ -246,7 +246,7 @@ class IdentityPage extends Component {
                 <button
                   className="btn btn-primary"
                   onClick={this.openPasswordPrompt}
-                >+ Create new ID
+                >Create new ID
                 </button>
               </div>
             </div>

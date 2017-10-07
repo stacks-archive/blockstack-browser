@@ -44,10 +44,19 @@ function IdentityReducer(state = initialState, action) {
       const newLocalIdentities = state.localIdentities.slice()
       newLocalIdentities[action.index].profile = action.profile
       newLocalIdentities[action.index].zoneFile = action.zoneFile
+      newLocalIdentities[action.index].verifications = action.verifications
       return Object.assign({}, state, {
         localIdentities: newLocalIdentities
       })
     }
+    case types.UPDATE_SOCIAL_PROOF_VERIFICATIONS:
+      return Object.assign({}, state, {
+        localIdentities: Object.assign({}, state.localIdentities, {
+          [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
+            verifications: action.verifications
+          })
+        })
+      })
     case types.ADD_USERNAME: {
       const newLocalIdentities = state.localIdentities.slice()
       newLocalIdentities[action.index].username = action.username

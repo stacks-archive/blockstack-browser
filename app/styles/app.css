@@ -9,6 +9,8 @@
 .no-padding{padding-right:0;padding-left:0;}
 .bookmarks-temp{padding:0;border-radius:4px;}
 
+.col-12{margin-right:0;}
+
 /* ID card */
 .idcard{position:relative;border:.0625rem solid rgba(229,229,229,1);border-radius:.25rem;}
 .dim{color:#7b7b7b;}
@@ -26,9 +28,45 @@ div.profile-accounts > ul > li {margin-bottom: 1px;padding-left:15px;padding-rig
 div.profile-accounts > ul > li > a,div.profile-accounts > ul > li > button{display:block;padding:15px 5px;text-decoration:none;color:#080809;font-weight:600}
 div.profile-accounts > ul > li.verified {background-color:#2c96ff;}
 div.profile-accounts > ul > li.verified > a,div.profile-accounts > ul > li.verified > button{color:#fff;}
-div.profile-accounts > ul > li.pending {background-color:#2c96ff;}
-div.profile-accounts > ul > li.pending > a,div.profile-accounts > ul > li.verified > button{color:#fff;}
-div.profile-accounts > ul > li > a > span.app-account-service {color:#95CAFF;margin-left:10px;font-weigth:400;}
+div.profile-accounts > ul > li.pending {background-color:#fff;}
+div.profile-accounts > ul > li.pending > a,div.profile-accounts > ul > li.pending > button{color:#AEAEAE;}
+div.profile-accounts > ul > li > a > span.app-account-service {color:#95CAFF;margin-left:10px;}
+div.profile-accounts > ul > li > a > span.app-account-service {margin-left:10px;}
+div.profile-accounts > ul > li.verified > a > span.app-account-service {color:#95CAFF;}
+div.profile-accounts > ul > li.pending > a > span.app-account-service {color:#C7C7C7;}
+
+div.edit-profile-accounts .account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;transition:all 200ms ease-in-out}
+div.edit-profile-accounts .account.verified, div.edit-profile-accounts .account.active {color:#fff;background-color:#2c96ff;}
+div.edit-profile-accounts .account.pending {color:#AEAEAE;background-color:#fff;}
+div.edit-profile-accounts .account.collapsed {padding:15px 15px;}
+div.edit-profile-accounts .account {padding:15px 15px 30px 15px;}
+div.edit-profile-accounts .account > span.app-account-identifier {font-weight:600}
+div.edit-profile-accounts .account > span.app-account-service {color:#95CAFF;margin-left:10px;}
+div.edit-profile-accounts .account.verified > span.app-account-service {color:#95CAFF;}
+div.edit-profile-accounts .account.pending > span.app-account-service {color:#AEAEAE;}
+div.edit-profile-accounts .account .form-group {margin-top:20px;transition:all 200ms ease-in-out}
+div.edit-profile-accounts .account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #4B4B4B;}
+div.edit-profile-accounts .account.verified .form-group input.form-control, div.edit-profile-accounts .account.active .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
+div.edit-profile-accounts .account.pending .form-group input.form-control {color:#4B4B4B;background-color:#FAFAFA;border:1px solid #FAFAFA;}
+div.edit-profile-accounts .account.placeholder.collapsed {color:#C7C7C7;background-color:transparent;}
+div.edit-profile-accounts .account.placeholder.collapsed > span.app-account-service {color:#C7C7C7;}
+div.edit-profile-accounts .account.placeholder > span.app-account-service {color:#4B4B4B;}
+div.edit-profile-accounts .account.placeholder {color:#4B4B4B;background-color:#fff;}
+div.edit-profile-accounts .account.placeholder .form-group input.form-control {color:#fff;background-color:#FAFAFA;border:1px solid #FAFAFA;}
+.account-enter {opacity: 0.01;}
+.account-enter.account-enter-active {opacity: 1;transition: all 400ms ease-in}
+.account-leave {opacity: 1;}
+.account-leave.account-leave-active {opacity: 0.01;transition: all 200ms ease-in}
+
+.verification-instructions-container {cursor:default;}
+.verification-instructions {padding:25px 20px;border:0px solid rgba(255,255,255,0.26);background-color:rgba(255,255,255,0.26);border-radius:6px}
+.verification-instructions-heading {padding-left:15px;margin-top:1rem;margin-bottom:0.7rem;font-weight:600;}
+.verification-quote {padding:20px 60px 20px 20px;margin-bottom:1rem;background-color:#2c96ff;border-radius:6px}
+.verification-copy {padding:0;position:absolute;right:45px;margin-top:-30px;}
+.verification-copy-button {width:40px;height:40px;color:#fff;padding:0;border:0;}
+.form-control.verification-input {color:#000;background-color:rgba(0,0,0,0.4);border:1px solid rgba(0,0,0,0.4);}
+.verification-input::-webkit-input-placeholder {color:#fff;}
+
 /*div.profile-accounts > ul > li > a:hover,div.profile-accounts > ul > li > button:hover{text-decoration:none;color:#fff;border-radius:4px;background-color:#2c96ff;}*/
 .profile-foot{position:relative;display:block;margin-left:15px;padding-top:50px;color:#949494;}
 .connections{display:inline-block;width:32px;height:32px;margin-left:15px;border-radius:4px;background-color:#23262a;}
@@ -340,7 +378,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-storage{background-color:#2C96FF;border:1px solid #2C96FF;margin-bottom:-15px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);}
 .btn-storage:hover{background-color:#0668BF;}
 .btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
-
+.btn-verify{font-size:0.65rem;padding:0.375rem 2.125rem;line-height:2rem;color:#fff;background-color:#2c96ff;border:1px solid #fff;}
 
 /* 13. Forms */
 /* Default forms are "Light forms" for now GL Sep 17, 2017 */
@@ -359,7 +397,8 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 .form-control-secondary:hover{background-color:#80C0FF;color:#fff;border:1px solid #80C0FF;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
 .form-control-secondary:focus,.form-control-secondary:active{background-color:#fff;color:#484848;border:1px solid #fff;}
 .form-control-label-secondary{color:#95CAFF;margin-bottom:0.375rem;}
-
+.input-accessory-icon-right{float:right;margin-right:10px;margin-top:-27px;position:relative;z-index:2;}
+.input-accessory-icon{padding-right:40px;}
 
 /* 16. Navbar */
 header{padding-top:15px;}
@@ -510,7 +549,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;line-height:1.75rem;padding:0.75rem 0;}
 .highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;color:#fff!important;text-align:center;}
 .qrcode-wallet{max-width:200px;margin:20px auto 20px auto;padding:20px;background-color:#fff;}
-
+.clickable{cursor:pointer;}
 
 
 
