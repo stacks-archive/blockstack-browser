@@ -36,12 +36,8 @@ class TwitterVerificationInfo extends Component {
     return (
       <div>
         <p>
-          1. Copy the text below and click the Tweet Verification button post your proof to Twitter. 
+          1. Click the Tweet Verification button to post your proof to Twitter. 
         </p>
-        <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
-        </div>
         <p>
           2. Copy the tweet URL and paste it into the proof URL field. 
         </p>
