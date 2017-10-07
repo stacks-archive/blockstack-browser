@@ -234,7 +234,8 @@ class EditProfilePage extends Component {
     } else if (service === 'instagram') {
       
     } else if (service === 'linkedIn') {
-      verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org&title=${verificationText}`
+      verificationUrl = 'https://www.linkedin.com/feed/'
+      // verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org&title=${verificationText}`
     } else if (service === 'hackerNews') {
       verificationUrl = `https://news.ycombinator.com/user?id=${identifier}`
     }
