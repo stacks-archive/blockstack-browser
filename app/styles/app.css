@@ -45,8 +45,8 @@ div.edit-profile-accounts .account > span.app-account-service {color:#95CAFF;mar
 div.edit-profile-accounts .account.verified > span.app-account-service {color:#95CAFF;}
 div.edit-profile-accounts .account.pending > span.app-account-service {color:#AEAEAE;}
 div.edit-profile-accounts .account .form-group {margin-top:20px;transition:all 200ms ease-in-out}
-div.edit-profile-accounts .account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);}
-div.edit-profile-accounts .account.verified .form-group input.form-control, div.edit-profile-accounts .account.active .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);}
+div.edit-profile-accounts .account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #4B4B4B;}
+div.edit-profile-accounts .account.verified .form-group input.form-control, div.edit-profile-accounts .account.active .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
 div.edit-profile-accounts .account.pending .form-group input.form-control {color:#4B4B4B;background-color:#FAFAFA;border:1px solid #FAFAFA;}
 div.edit-profile-accounts .account.placeholder.collapsed {color:#C7C7C7;background-color:transparent;}
 div.edit-profile-accounts .account.placeholder.collapsed > span.app-account-service {color:#C7C7C7;}
