@@ -79,11 +79,15 @@ describe('Availability Store: Async Actions', () => {
       { 'Content-Type': 'application/json' })
 
       nock('https://blockstack.s3.amazonaws.com')
+      .persist()
       .get('/guylepage.id')
       .reply(200, TokenFileLookups['guylepage.id'],
       { 'Content-Type': 'application/json' })
 
-
+      nock('https://www.facebook.com')
+      .persist()
+      .get('/g3lepage/posts/10154179855498760')
+      .reply(200, 'verifying that guylepage.id is my blockstack id')
 
       const store = mockStore(initialState)
 
@@ -98,6 +102,7 @@ describe('Availability Store: Async Actions', () => {
       return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
         addresses, localIdentities, namesOwned))
       .then(() => {
+
         const expectedActions = [
         {
           "localIdentities": {
@@ -241,6 +246,7 @@ describe('Availability Store: Async Actions', () => {
       { 'Content-Type': 'application/json' })
 
       nock('https://blockstack.s3.amazonaws.com')
+      .persist()
       .get('/guylepage.id')
       .reply(200, TokenFileLookups['guylepage.id'],
       { 'Content-Type': 'application/json' })
@@ -250,6 +256,12 @@ describe('Availability Store: Async Actions', () => {
       .reply(200, '<html><head><meta property="og:description" content="“verifying that +guylepage is my blockchain id”"></head></html>')
 
       nock('https://www.facebook.com')
+      .persist()
+      .get('/g3lepage/posts/10154179855498760')
+      .reply(200, 'verifying that guylepage.id is my blockstack id')
+
+      nock('https://www.facebook.com')
+      .persist()
       .get('/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fg3lepage%2Fposts%2F10154179855498760')
       .reply(200, 'verifying that guylepage.id is my blockstack id')
 

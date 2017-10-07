@@ -31,7 +31,7 @@ export const TokenFileLookups = {
               "identifier": "g3lepage",
               "@type": "Account",
               "service": "facebook",
-              "proofUrl": "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fg3lepage%2Fposts%2F10154179855498760"
+              "proofUrl": "https://www.facebook.com/g3lepage/posts/10154179855498760"
             },
             {
               "identifier": "guylepage3",

@@ -70,8 +70,8 @@ function updateProfile(domainName, profile, verifications, zoneFile) {
     type: types.UPDATE_PROFILE,
     domainName,
     profile,
-    verifications,
-    zoneFile
+    zoneFile,
+    verifications
   }
 }
 
@@ -281,13 +281,13 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
                       resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                         j++
                         if (profile) {
+                          dispatch(updateProfile(domainName, profile, [], zoneFile))
                           let verifications = []
                           validateProofs(profile, ownerAddress, domainName).then((proofs) => {
                             verifications = proofs
                             dispatch(updateProfile(domainName, profile, verifications, zoneFile))
                           }).catch((error) => {
                             logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
-                            dispatch(updateProfile(domainName, profile, [], zoneFile))
                           })
                         }
                         logger.debug(`j: ${j} namesOwned.length: ${namesOwned.length}`)
@@ -332,6 +332,7 @@ function refreshSocialProofVerifications(profile, ownerAddress, domainName) {
     return new Promise((resolve, reject) => {
       let verifications = []
       validateProofs(profile, ownerAddress, domainName).then((proofs) => {
+        console.log('test')
         verifications = proofs
         dispatch(updateSocialProofVerifications(domainName, verifications))
         resolve()

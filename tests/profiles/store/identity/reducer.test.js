@@ -147,7 +147,7 @@ describe('Identity Store: IdentityReducer', () => {
     const profile = {
       key: 'value'
     }
-    const action = IdentityActions.updateProfile('satoshi.id', profile, 'test')
+    const action = IdentityActions.updateProfile('satoshi.id', profile, [], 'test')
     const expectedState = {
       default: null,
       current: {
@@ -161,7 +161,7 @@ describe('Identity Store: IdentityReducer', () => {
           profile: {
             key: 'value'
           },
-          verifications: undefined,
+          verifications: [],
           zoneFile: 'test'
         }
       },
@@ -179,7 +179,7 @@ describe('Identity Store: IdentityReducer', () => {
       key: 'value'
     }
     const zoneFile = 'test'
-    const action = IdentityActions.updateProfile('satoshi.id', profile, zoneFile)
+    const action = IdentityActions.updateProfile('satoshi.id', profile, [], zoneFile)
     const expectedState = {
       default: null,
       current: {
@@ -193,7 +193,7 @@ describe('Identity Store: IdentityReducer', () => {
           profile: {
             key: 'value'
           },
-          verifications: undefined,
+          verifications: [],
           zoneFile: 'test'
         }
       },
