@@ -332,7 +332,6 @@ function refreshSocialProofVerifications(profile, ownerAddress, domainName) {
     return new Promise((resolve, reject) => {
       let verifications = []
       validateProofs(profile, ownerAddress, domainName).then((proofs) => {
-        console.log('test')
         verifications = proofs
         dispatch(updateSocialProofVerifications(domainName, verifications))
         resolve()

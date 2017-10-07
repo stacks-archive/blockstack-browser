@@ -23,6 +23,8 @@ import SocialAccountsTab from './tabs/SocialAccountsTab'
 import PublicKeysTab     from './tabs/PublicKeysTab'
 import PrivateInfoTab    from './tabs/PrivateInfoTab'
 
+import { debounce } from 'lodash'
+
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/EditProfilePage.js')
@@ -95,6 +97,10 @@ class EditProfilePage extends Component {
     this.openPhotoModal = this.openPhotoModal.bind(this)
     this.closePhotoModal = this.closePhotoModal.bind(this)
     this.onVerifyButtonClick = this.onVerifyButtonClick.bind(this)
+
+    this.debouncedRefreshProofs = debounce(() => {
+      this.refreshProofs.apply(this)
+    }, 1000)
   }
 
   componentWillMount() {
@@ -255,16 +261,12 @@ class EditProfilePage extends Component {
       if (!hasAccount && identifier.length > 0) {
         profile.account.push(this.createNewAccount(service, identifier))
         this.setState({profile: profile})
-        // this.saveProfile(profile)
       }
     }
     else {
       profile.account = []
       profile.account.push(this.createNewAccount(service, identifier))
       this.setState({profile: profile})
-      if(identifier.length > 0) {
-        // this.saveProfile(profile)
-      }
     }
   }
 
@@ -277,7 +279,7 @@ class EditProfilePage extends Component {
         if(account.service === service) {
           account.proofUrl = proofUrl
           this.setState({profile: profile})
-          // this.saveProfile(profile)
+          this.debouncedRefreshProofs()
         }
       })
     }
@@ -297,7 +299,7 @@ class EditProfilePage extends Component {
     } else if (event.target.name === 'proofUrl') {
 
       if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
-        this.refreshProofs(profile)
+        this.refreshProofs()
       }
 
     }
@@ -316,10 +318,11 @@ class EditProfilePage extends Component {
     profile.account = newAccounts
     this.setState({profile: profile})
     this.saveProfile(profile)
-    this.refreshProofs(profile)
+    this.refreshProofs()
   }
 
-  refreshProofs(profile) {
+  refreshProofs() {
+    const profile = this.state.profile
     const profileIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[profileIndex]
     const ownerAddress = identity.ownerAddress
