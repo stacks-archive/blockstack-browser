@@ -89,7 +89,7 @@ function IdentityReducer(state = initialState, action) {
     }
     case types.CREATE_PROFILE_ERROR: {
       return Object.assign({}, state, {
-        createProfileError: new String(action.error)
+        createProfileError: `${action.error}`
       })
     }
     case types.BROADCASTING_ZONE_FILE_UPDATE: {

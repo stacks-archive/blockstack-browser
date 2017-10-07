@@ -39,3 +39,4 @@ app/js/profiles/View*
 app/js/profiles/components/*
 !app/js/profiles/components/registration*
 !app/js/profiles/store/registration*
+!app/js/profiles/store/identity*

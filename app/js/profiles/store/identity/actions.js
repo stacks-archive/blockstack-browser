@@ -128,7 +128,7 @@ function broadcastingNameTransferError(domainName, error) {
 }
 
 function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false, zoneFile) {
-  logger.debug(`createNewIdentityFromDomain: domainName: ${domainName} ownerAddress: ${ownerAddress}`)
+  logger.debug(`createNewIdentityFromDomain: name: ${domainName} address: ${ownerAddress}`)
   return (dispatch, getState) => {
     if (!addingUsername) {
       logger.trace('createNewIdentityFromDomain: Not adding a username')
@@ -183,7 +183,7 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
   const localNamesDict = {}
   const updatedLocalIdentities = localIdentities
 
-  namesOwned.map((name) => {
+  namesOwned.forEach((name) => {
     remoteNamesDict[name] = true
   })
 
@@ -195,7 +195,7 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
     }
   })
 
-  namesOwned.map((name) => {
+  namesOwned.forEach((name) => {
     if (!localNamesDict.hasOwnProperty(name)) {
       updatedLocalIdentities[name] = {
         domainName: name,
@@ -214,101 +214,100 @@ function calculateLocalIdentities(localIdentities, namesOwned) {
 
 function refreshIdentities(api, addresses, localIdentities, namesOwned) {
   logger.trace('refreshIdentities')
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      if (addresses.length === 0) {
-        const newNamesOwned = []
-        const updatedLocalIdentities = calculateLocalIdentities(localIdentities, newNamesOwned)
-        if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
-          // pass
-          resolve()
-        } else {
-          dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
-          resolve()
-        }
+  return dispatch => new Promise((resolve) => {
+    if (addresses.length === 0) {
+      const newNamesOwned = []
+      const updatedLocalIdentities = calculateLocalIdentities(localIdentities, newNamesOwned)
+      if (JSON.stringify(updatedLocalIdentities) === JSON.stringify(localIdentities)) {
+        // pass
+        resolve()
       } else {
-        let i =  0
-        let newNamesOwned = []
-
-        addresses.forEach((address) => {
-          const url = api.bitcoinAddressLookupUrl.replace('{address}', address)
-          fetch(url)
-            .then((response) => response.text())
-            .then((responseText) => JSON.parse(responseText))
-            .then((responseJson) => {
-              i++
-              newNamesOwned = newNamesOwned.concat(responseJson.names)
-
-              logger.debug(`i: ${i} addresses.length: ${addresses.length}`)
-              if (i >= addresses.length) {
-                const updatedLocalIdentities = calculateLocalIdentities(localIdentities,
-                  newNamesOwned)
-
-                if (JSON.stringify(newNamesOwned) === JSON.stringify(namesOwned)) {
-                  // pass
-                  logger.trace('Names owned have not changed')
-                  resolve()
-                } else {
-                  logger.trace('Names owned changed. Dispatching updateOwnedIdentities')
-                  dispatch(updateOwnedIdentities(updatedLocalIdentities, newNamesOwned))
-                  logger.debug(`Preparing to resolve profiles for ${namesOwned.length} names`)
-                  let j = 0
-                  newNamesOwned.forEach((domainName) => {
-                    const identity = updatedLocalIdentities[domainName]
-                    const lookupUrl = api.nameLookupUrl.replace('{name}', identity.domainName)
-                    logger.debug(`j: ${j} fetching: ${lookupUrl}`)
-                    fetch(lookupUrl).then((response) => response.text())
-                    .then((responseText) => JSON.parse(responseText))
-                    .then((lookupResponseJson) => {
-                      const zoneFile = lookupResponseJson.zonefile
-                      const ownerAddress = lookupResponseJson.address
-
-                      if (updatedLocalIdentities[ownerAddress]) {
-                        logger.debug(`j: ${j} attempting to add username to ${ownerAddress}`)
-                        dispatch(addUsername(domainName, ownerAddress, zoneFile))
-                      }
-
-                      logger.debug(`j: ${j} resolving zonefile to profile`)
-                      resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
-                        j++
-                        if (profile) {
-                          dispatch(updateProfile(domainName, profile, zoneFile))
-                        }
-                        logger.debug(`j: ${j} namesOwned.length: ${namesOwned.length}`)
-                        if (j >= namesOwned.length) {
-                          resolve()
-                        }
-                      })
-                      .catch((error) => {
-                        j++
-                        logger.error(`j: ${j} refreshIdentities: resolveZoneFileToProfile: error`, error)
-                        if (j >= namesOwned.length) {
-                          resolve()
-                        }
-                      })
-                    })
-                    .catch((error) => {
-                      j++
-                      logger.error(`j: ${j} refreshIdentities: lookupUrl: error`, error)
-                      if (j >= namesOwned.length) {
-                        resolve()
-                      }
-                    })
-                  })
-                }
-              }
-            })
-            .catch((error) => {
-              i++
-              logger.error(`i: ${i} refreshIdentities: addressLookup: error`, error)
-              if (i >= addresses.length)  {
-                resolve()
-              }
-            })
-        })
+        dispatch(updateOwnedIdentities(updatedLocalIdentities, namesOwned))
+        resolve()
       }
-    })
-  }
+    } else {
+      let i = 0
+      let newNamesOwned = []
+
+      addresses.forEach((address) => {
+        const url = api.bitcoinAddressLookupUrl.replace('{address}', address)
+        fetch(url)
+        .then((response) => response.text())
+        .then((responseText) => JSON.parse(responseText))
+        .then((responseJson) => {
+          i++
+          newNamesOwned = newNamesOwned.concat(responseJson.names)
+
+          logger.debug(`i: ${i} addresses.length: ${addresses.length}`)
+          if (i >= addresses.length) {
+            const updatedLocalIdentities = calculateLocalIdentities(localIdentities,
+              newNamesOwned)
+
+            if (JSON.stringify(newNamesOwned) === JSON.stringify(namesOwned)) {
+              // pass
+              logger.trace('Names owned have not changed')
+              resolve()
+            } else {
+              logger.trace('Names owned changed. Dispatching updateOwnedIdentities')
+              dispatch(updateOwnedIdentities(updatedLocalIdentities, newNamesOwned))
+              logger.debug(`Preparing to resolve profiles for ${namesOwned.length} names`)
+              let j = 0
+              newNamesOwned.forEach((domainName) => {
+                const identity = updatedLocalIdentities[domainName]
+                const lookupUrl = api.nameLookupUrl.replace('{name}', identity.domainName)
+                logger.debug(`j: ${j} fetching: ${lookupUrl}`)
+                fetch(lookupUrl).then((response) => response.text())
+                .then((responseText) => JSON.parse(responseText))
+                .then((lookupResponseJson) => {
+                  const zoneFile = lookupResponseJson.zonefile
+                  const ownerAddress = lookupResponseJson.address
+
+                  if (updatedLocalIdentities[ownerAddress]) {
+                    logger.debug(`j: ${j} attempting to add username to ${ownerAddress}`)
+                    dispatch(addUsername(domainName, ownerAddress, zoneFile))
+                  }
+
+                  logger.debug(`j: ${j} resolving zonefile to profile`)
+                  resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
+                    j++
+                    if (profile) {
+                      dispatch(updateProfile(domainName, profile, zoneFile))
+                    }
+                    logger.debug(`j: ${j} namesOwned.length: ${namesOwned.length}`)
+                    if (j >= namesOwned.length) {
+                      resolve()
+                    }
+                  })
+                  .catch((error) => {
+                    j++
+                    logger.error(`j: ${j} refreshIdentities: resolveZoneFileToProfile: error`,
+                      error)
+                    if (j >= namesOwned.length) {
+                      resolve()
+                    }
+                  })
+                })
+                .catch((error) => {
+                  j++
+                  logger.error(`j: ${j} refreshIdentities: lookupUrl: error`, error)
+                  if (j >= namesOwned.length) {
+                    resolve()
+                  }
+                })
+              })
+            }
+          }
+        })
+        .catch((error) => {
+          i++
+          logger.error(`i: ${i} refreshIdentities: addressLookup: error`, error)
+          if (i >= addresses.length)  {
+            resolve()
+          }
+        })
+      })
+    }
+  })
 }
 
 function fetchCurrentIdentity(lookupUrl, domainName) {
@@ -319,7 +318,7 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
     } else if (lookupUrl.search('api.blockstack.com') >= 0) {
       username = domainName.split('.')[0]
     } else {
-      throw "Invalid lookup URL"
+      throw new Error('Invalid lookup URL')
     }
     const url = lookupUrl.replace('{name}', username)
     return fetch(url)
@@ -337,7 +336,7 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
           zoneFile = userData.zone_file
           ownerAddress = userData.owner_address
         } else {
-          throw 'Invalid lookup URL'
+          throw new Error('Invalid lookup URL')
         }
 
         return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
@@ -350,6 +349,9 @@ function fetchCurrentIdentity(lookupUrl, domainName) {
             }).catch((error) => {
               logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
             })
+          } else {
+            logger.debug('fetchCurrentIdentity: no profile: not updating identity')
+            return Promise.reject()
           }
         })
         .catch((error) => {
