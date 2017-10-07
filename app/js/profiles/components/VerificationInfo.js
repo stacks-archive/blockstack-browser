@@ -2,6 +2,25 @@ import React, { Component, PropTypes } from 'react'
 
 import InputGroup from '../../components/InputGroup'
 import { openInNewTab } from '../../utils'
+import ReactTooltip from 'react-tooltip'
+
+class CopyToClipBoardButton extends Component {
+
+  render() {
+    return (
+      <div className="verification-copy">
+        <button 
+          className="verification-copy-button"
+          data-for="tooltip"
+          data-event="click"
+          data-event-off="mouseout"
+          data-tip>
+            <i className="fa fa-fw fa-clipboard fa-lg"></i>
+        </button>
+      </div>
+    )
+  }
+}
 
 class TwitterVerificationInfo extends Component {
   static contextTypes = {
@@ -20,7 +39,8 @@ class TwitterVerificationInfo extends Component {
           1. Copy the text below and click the Tweet Verification button post your proof to Twitter. 
         </p>
         <div className="verification-quote">
-          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+          {this.props.verificationMessage}
+          <CopyToClipBoardButton />
         </div>
         <p>
           2. Copy the tweet URL and paste it into the proof URL field. 
@@ -53,7 +73,8 @@ class FacebookVerificationInfo extends Component {
           1. Post the following text to your Facebook timeline. Make sure your post is public!
         </p>
         <div className="verification-quote">
-          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+          {this.props.verificationMessage}
+          <CopyToClipBoardButton />
         </div>
         <p>
           2. Copy the post URL and paste it into the proof URL field. 
@@ -85,7 +106,8 @@ class GithubVerificationInfo extends Component {
           1. Create a public gist with the following text.
         </p>
         <div className="verification-quote">
-          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+          {this.props.verificationMessage}
+          <CopyToClipBoardButton />
         </div>
         <p>
           2. Copy the gist URL and paste it into the proof URL field.
@@ -113,7 +135,8 @@ class LinkedInVerificationInfo extends Component {
           1. Post the following text on your LinkedIn. Make sure your post is public!
         </p>
         <div className="verification-quote">
-          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+          {this.props.verificationMessage}
+          <CopyToClipBoardButton />
         </div>
         <p>
           2. Copy the post URL and paste it into the proof URL field. 
@@ -141,7 +164,8 @@ class InstagramVerificationInfo extends Component {
           1. Post a photo to instagram with the following caption.
         </p>
         <div className="verification-quote">
-          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+          {this.props.verificationMessage}
+          <CopyToClipBoardButton />
         </div>
         <p>
           2. Copy the post URL and paste it into the proof URL field.
@@ -164,7 +188,8 @@ class HackerNewsVerificationInfo extends Component {
           1. Copy the text below and add it to the about section in your Hacker News user profile. 
         </p>
         <div className="verification-quote">
-          Verifying my Blockstack ID is secured with the address {this.props.ownerAddress}
+          {this.props.verificationMessage}
+          <CopyToClipBoardButton />
         </div>
         <button className="btn btn-verify btn-twitter btn-block" onClick={this.props.onVerifyButtonClick}>
           <i className="fa fa-fw fa-hacker-news fa-lg" /> Verify Hacker News Account
@@ -173,13 +198,6 @@ class HackerNewsVerificationInfo extends Component {
     )
   }
 }
-
-/*          <a
-            href="#" onClick={(event) => {
-              event.preventDefault()
-              openInNewTab(verificationUrl)
-            }}
-          >*/
 
 class VerificationInfo extends Component {
   static contextTypes = {
@@ -202,59 +220,84 @@ class VerificationInfo extends Component {
         hackerNews: true,
       }
     }
+    this.copy = this.copy.bind(this)
   }
 
   handleClick(e) {
     e.stopPropagation()
   }
 
+  copy(e) {
+    let verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress}`
+    var textField = document.createElement('textarea')
+    textField.innerText = verificationMessage
+    document.body.appendChild(textField)
+    textField.select()
+    document.execCommand('copy')
+    textField.remove()
+  }
+
   render() {
+    const verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress}`
+
     return (
       <div onClick={this.handleClick}>
         <div className="verification-instructions-container">
           <p className="verification-instructions-heading">
             Verification Instructions
           </p>
+          <ReactTooltip 
+            place="top" 
+            type="dark" 
+            effect="solid" 
+            id="tooltip" 
+            delayHide={1000}
+            className="text-center"
+            scrollHide={true}
+            resizeHide={true}
+            afterShow={this.copy}>
+            Copied!
+          </ReactTooltip>
           <div className="verification-instructions">
             { this.props.service === 'twitter' ?
               <TwitterVerificationInfo 
                 domainName={this.props.domainName} 
-                ownerAddress={this.props.ownerAddress}
+                verificationMessage={verificationMessage}
                 onVerifyButtonClick={this.props.onVerifyButtonClick}/>
             : null }
 
             { this.props.service === 'github' ?
               <GithubVerificationInfo 
                 domainName={this.props.domainName} 
-                ownerAddress={this.props.ownerAddress}
+                verificationMessage={verificationMessage}
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
             { this.props.service === 'facebook' ?
               <FacebookVerificationInfo 
                 domainName={this.props.domainName} 
-                ownerAddress={this.props.ownerAddress}
+                verificationMessage={verificationMessage}
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
             { this.props.service === 'linkedIn' ?
               <LinkedInVerificationInfo 
                 domainName={this.props.domainName} 
-                ownerAddress={this.props.ownerAddress}
+                verificationMessage={verificationMessage}
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
             { this.props.service === 'instagram' ?
               <InstagramVerificationInfo 
                 domainName={this.props.domainName} 
-                ownerAddress={this.props.ownerAddress}
+                verificationMessage={verificationMessage}
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
             { this.props.service === 'hackerNews' ?
               <HackerNewsVerificationInfo 
                 domainName={this.props.domainName} 
-                ownerAddress={this.props.ownerAddress}
+                verificationMessage={verificationMessage}
                 onVerifyButtonClick={this.props.onVerifyButtonClick} />
             : null }
 
