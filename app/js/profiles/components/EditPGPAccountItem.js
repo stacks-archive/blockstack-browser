@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { PGPActions } from '../store/pgp'
+import InputGroup from '../../components/InputGroup'
 
 import { getWebAccountTypes } from '../../utils'
 
@@ -26,7 +27,9 @@ class EditPGPAccountItem extends Component {
     contentUrl: PropTypes.string,
     loadPGPPublicKey: PropTypes.func.isRequired,
     pgpPublicKeys: PropTypes.object,
-    placeholder: PropTypes.bool
+    placeholder: PropTypes.bool,
+    onChange: PropTypes.func,
+    onBlur: PropTypes.func
   }
 
   constructor(props) {
@@ -34,16 +37,18 @@ class EditPGPAccountItem extends Component {
 
     this.state = {
       collapsed: true,
-      showVerificationInstructions: false,
       modalIsOpen: false
     }
 
     this.loadPublicKey = this.loadPublicKey.bind(this)
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
+    this.collapse = this.collapse.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
     this.getIdentifier = this.getIdentifier.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.onIdentifierChange = this.onIdentifierChange.bind(this)
+    this.onIdentifierBlur = this.onIdentifierBlur.bind(this)
   }
 
   componentWillMount() {
@@ -79,6 +84,9 @@ class EditPGPAccountItem extends Component {
   }
 
   getPlaceholderText(service) {
+    const webAccountTypes = getWebAccountTypes(this.props.api)
+    const webAccountType = webAccountTypes[this.props.service]
+    let accountServiceName = webAccountType.label
     if (service === 'pgp' || service === 'ssh') {
       return (
         <span className="app-account-service font-weight-normal">
@@ -86,6 +94,26 @@ class EditPGPAccountItem extends Component {
         </span>
       )
     }
+  }
+
+  onIdentifierChange(event) {
+    if (this.props.onChange) {
+      this.props.onChange(this.props.service, event)
+    }
+  }
+
+  onIdentifierBlur(event) {
+    this.props.onBlur(event, this.props.service)
+    let identifier = event.target.value
+    if (identifier.length == 0) {
+      this.collapse()
+    }
+  }
+
+  collapse(collapsed = true) {
+    this.setState({
+      collapsed: collapsed
+    })
   }
 
   getIdentifier() {
@@ -111,7 +139,7 @@ class EditPGPAccountItem extends Component {
     let key = null
 
     const placeholderClass = this.props.placeholder ? "placeholder" : ""
-    const verifiedClass = !this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "") 
+    const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "") 
     const collapsedClass = this.state.collapsed ? "collapsed" : "active"
 
     if(pgpPublicKeys && pgpPublicKeys.hasOwnProperty(identifier)) {
@@ -123,6 +151,10 @@ class EditPGPAccountItem extends Component {
       if(publicKey.key)
         key = publicKey.key
     }
+
+    const webAccountType = webAccountTypes[this.props.service]
+    const accountServiceName = webAccountType.label
+    const identifierType = (this.props.service === 'pgp' || this.props.service === 'ssh') ? 'Key' : 'Address'
 
     if (this.props.listItem === true) {
       return (
@@ -169,14 +201,14 @@ class EditPGPAccountItem extends Component {
 
             { !this.props.placeholder && (
                 <span className="app-account-service font-weight-normal">
-                  {`${this.props.service.toUpperCase()}`}
+                  { accountServiceName }
                 </span>
               )}
 
             { this.props.placeholder && (
                 <span className="app-account-service font-weight-normal">
-                  { this.getPlaceholderText(this.props.service) }
-                </span>
+                  Prove your { accountServiceName } {identifierType.toLowerCase()}
+                </span> 
               )}
 
             <span className="float-right">
@@ -184,6 +216,20 @@ class EditPGPAccountItem extends Component {
                 <i className="fa fa-w fa-chevron-up" />
               }
             </span>
+
+            {!this.state.collapsed && 
+              (
+                <div>
+                  <InputGroup 
+                    name="identifier" 
+                    label={identifierType} 
+                    data={this.props}
+                    stopClickPropagation={true} 
+                    onChange={this.onIdentifierChange} 
+                    onBlur={this.onIdentifierBlur} />
+                </div>
+              )
+            }
         </div>
       )
     } else {

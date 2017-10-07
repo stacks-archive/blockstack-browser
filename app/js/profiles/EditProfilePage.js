@@ -391,9 +391,6 @@ class EditProfilePage extends Component {
     }
 
     const accounts = filledAccounts.concat(placeholders)
-
-    console.log(accounts)
-    console.log(this.state.profile)
     const domainName = this.state.domainName
     const ownerAddress = identity.ownerAddress
     return (
@@ -490,7 +487,8 @@ class EditProfilePage extends Component {
                             }
                           }
                         }
-                        if (account.service === 'pgp' || account.service === 'ssh') {
+                        if (account.service === 'pgp' || account.service === 'ssh'
+                          || account.service === 'bitcoin' || account.service === 'ethereum') {
                           return (
                             <EditPGPAccountItem
                               key={`${account.service}`}
@@ -499,6 +497,8 @@ class EditProfilePage extends Component {
                               ownerAddress={ownerAddress}
                               contentUrl={account.contentUrl}
                               placeholder={account.placeholder}
+                              onChange={this.onSocialAccountChange}
+                              onBlur={this.onSocialAccountBlur}
                               listItem
                             />
                           )
