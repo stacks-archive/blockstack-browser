@@ -35,11 +35,6 @@ function IdentityReducer(state = initialState, action) {
         }
       ]
       })
-    case types.UPDATE_IDENTITIES:
-      return Object.assign({}, state, {
-        localIdentities: action.localIdentities,
-        namesOwned: action.namesOwned
-      })
     case types.UPDATE_PROFILE: {
       const newLocalIdentities = state.localIdentities.slice()
       newLocalIdentities[action.index].profile = action.profile
