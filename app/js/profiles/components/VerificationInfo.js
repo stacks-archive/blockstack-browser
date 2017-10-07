@@ -187,6 +187,9 @@ class HackerNewsVerificationInfo extends Component {
           {this.props.verificationMessage}
           <CopyToClipBoardButton />
         </div>
+        <p>
+          2. Copy your profile URL and paste it into the proof URL field.
+        </p>
         <button className="btn btn-verify btn-twitter btn-block" onClick={this.props.onVerifyButtonClick}>
           <i className="fa fa-fw fa-hacker-news fa-lg" /> Verify Hacker News Account
         </button>
