@@ -5,6 +5,7 @@
 
 build/*
 gulp/*
+flow-typed/*
 
 tests/account/*
 tests/fixtures/*
