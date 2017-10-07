@@ -3,14 +3,9 @@ import {
 } from '../../../../app/js/profiles/store/identity'
 
 const initialState = {
-  default: null,
-  current: {
-    domainName: null,
-    profile: null,
-    verifications: null,
-    zoneFile: null
-  },
-  localIdentities: {},
+  default: 0,
+  current: 0,
+  localIdentities: [],
   nameTransfers: [],
   namesOwned: [],
   createProfileError: null,
