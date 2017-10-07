@@ -3,13 +3,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
-import ReactTooltip from 'react-tooltip'
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { SearchActions } from './store/search'
+import ToolTip from '../components/ToolTip'
 
 const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
 
@@ -119,17 +119,18 @@ class ViewProfilePage extends Component {
         <SecondaryNavBar
           leftButtonTitle="Edit"
           leftButtonLink={`/profiles/${domainName}/edit`}
-          rightButtonTitle="More" 
+          rightButtonTitle="More"
           rightButtonLink="/profiles/i/all" />
         }
 
         { person !== null ?
         <div>
-
-          <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
+          <ToolTip id="domainName">
             <div>This is your owner address.</div>
-            <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
-          </ReactTooltip>
+            <div className="text-secondary">
+              You can switch to a more meaningful name by adding an username.
+            </div>
+          </ToolTip>
 
           <div className="container-fluid m-t-50">
             <div className="row">
