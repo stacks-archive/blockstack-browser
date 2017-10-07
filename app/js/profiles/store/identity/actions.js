@@ -1,3 +1,4 @@
+// @flow
 import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import * as types from './types'
@@ -19,32 +20,29 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
-function updateCurrentIdentity(domainName, profile, verifications, zoneFile) {
+function updateCurrentIdentity(index: number) {
   return {
     type: types.UPDATE_CURRENT,
-    domainName,
-    profile,
-    verifications,
-    zoneFile
+    index
   }
 }
 
-function setDefaultIdentity(domainName) {
+function setDefaultIdentity(index: number) {
   return {
     type: types.SET_DEFAULT,
-    domainName
+    index
   }
 }
 
-function createNewIdentity(domainName, ownerAddress) {
+function createNewIdentity(index: number, ownerAddress: string) {
   return {
     type: types.CREATE_NEW,
-    domainName,
+    index,
     ownerAddress
   }
 }
 
-function createNewProfileError(error) {
+function createNewProfileError(error: any) {
   return {
     type: types.CREATE_PROFILE_ERROR,
     error
@@ -57,47 +55,53 @@ function resetCreateNewProfileError() {
   }
 }
 
-function updateOwnedIdentities(localIdentities, namesOwned) {
+function usernameOwned(index: number, username: string) {
   return {
-    type: types.UPDATE_IDENTITIES,
-    localIdentities,
-    namesOwned
+    type: types.USERNAME_OWNED,
+    index,
+    username
   }
 }
 
-function updateProfile(domainName, profile, zoneFile) {
+function noUsernameOwned(index: number) {
+  return {
+    type: types.NO_USERNAME_OWNED,
+    index
+  }
+}
+
+function updateProfile(index: number, profile: any, zoneFile: string) {
   return {
     type: types.UPDATE_PROFILE,
-    domainName,
+    index,
     profile,
     zoneFile
   }
 }
 
-function addUsername(domainName, ownerAddress, zoneFile) {
+function addUsername(index: number, username: string) {
   return {
     type: types.ADD_USERNAME,
-    domainName,
-    ownerAddress,
-    zoneFile
+    index,
+    username
   }
 }
 
-function broadcastingZoneFileUpdate(domainName) {
+function broadcastingZoneFileUpdate(domainName: string) {
   return {
     type: types.BROADCASTING_ZONE_FILE_UPDATE,
     domainName
   }
 }
 
-function broadcastedZoneFileUpdate(domainName) {
+function broadcastedZoneFileUpdate(domainName: string) {
   return {
     type: types.BROADCASTED_ZONE_FILE_UPDATE,
     domainName
   }
 }
 
-function broadcastingZoneFileUpdateError(domainName, error) {
+function broadcastingZoneFileUpdateError(domainName: string, error: any) {
   return {
     type: types.BROADCASTING_ZONE_FILE_UPDATE_ERROR,
     domainName,
@@ -105,21 +109,21 @@ function broadcastingZoneFileUpdateError(domainName, error) {
   }
 }
 
-function broadcastingNameTransfer(domainName) {
+function broadcastingNameTransfer(domainName: string) {
   return {
     type: types.BROADCASTING_NAME_TRANSFER,
     domainName
   }
 }
 
-function broadcastedNameTransfer(domainName) {
+function broadcastedNameTransfer(domainName: string) {
   return {
     type: types.BROADCASTED_NAME_TRANSFER,
     domainName
   }
 }
 
-function broadcastingNameTransferError(domainName, error) {
+function broadcastingNameTransferError(domainName: string, error: any) {
   return {
     type: types.BROADCASTING_NAME_TRANSFER_ERROR,
     domainName,
@@ -127,7 +131,7 @@ function broadcastingNameTransferError(domainName, error) {
   }
 }
 
-function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = false, zoneFile) {
+function createNewIdentityWithOwnerAddress(domainName, ownerAddress, addingUsername = false, zoneFile) {
   logger.debug(`createNewIdentityFromDomain: name: ${domainName} address: ${ownerAddress}`)
   return (dispatch, getState) => {
     if (!addingUsername) {
@@ -150,8 +154,9 @@ function createNewIdentityFromDomain(domainName, ownerAddress, addingUsername = 
   }
 }
 
-function createNewProfile(encryptedBackupPhrase, password, nextUnusedAddressIndex) {
-  return dispatch => {
+function createNewProfile(encryptedBackupPhrase: string,
+  password: string, nextUnusedAddressIndex: number) {
+  return (dispatch: () => mixed): void => {
     logger.trace('createNewProfile')
     // Decrypt master keychain
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
@@ -163,14 +168,15 @@ function createNewProfile(encryptedBackupPhrase, password, nextUnusedAddressInde
       const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
       const masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
       const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+      const index = nextUnusedAddressIndex
       const identityOwnerAddressNode =
-      getIdentityOwnerAddressNode(identityPrivateKeychainNode, nextUnusedAddressIndex)
+      getIdentityOwnerAddressNode(identityPrivateKeychainNode, index)
       const newIdentityKeypair = deriveIdentityKeyPair(identityOwnerAddressNode)
       logger.debug(`createNewProfile: new identity: ${newIdentityKeypair.address}`)
       dispatch(AccountActions.newIdentityAddress(newIdentityKeypair))
       dispatch(AccountActions.usedIdentityAddress())
       const ownerAddress = newIdentityKeypair.address
-      dispatch(createNewIdentityFromDomain(ownerAddress, ownerAddress))
+      dispatch(createNewIdentityWithOwnerAddress(index, ownerAddress))
     }, () => {
       logger.error('createNewProfile: Invalid password')
       dispatch(createNewProfileError('Your password is incorrect.'))
@@ -475,9 +481,10 @@ const IdentityActions = {
   updateProfile,
   fetchCurrentIdentity,
   refreshIdentities,
-  updateOwnedIdentities,
   createNewIdentityFromDomain,
   addUsername,
+  usernameOwned,
+  noUsernameOwned,
   createNewProfileError,
   resetCreateNewProfileError,
   broadcastingZoneFileUpdate,

@@ -2,14 +2,9 @@ import * as types from './types'
 import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 
 const initialState = {
-  current: {
-    domainName: null,
-    profile: null,
-    verifications: null,
-    zoneFile: null
-  },
-  default: null,
-  localIdentities: {},
+  current: 0,
+  default: 0,
+  localIdentities: [],
   namesOwned: [],
   createProfileError: null,
   nameTransfers: [],
@@ -20,66 +15,69 @@ function IdentityReducer(state = initialState, action) {
   switch (action.type) {
     case types.UPDATE_CURRENT:
       return Object.assign({}, state, {
-        current: {
-          domainName: action.domainName,
-          profile: action.profile,
-          verifications: action.verifications,
-          zoneFile: action.zoneFile
-        }
+        current: action.index
       })
     case types.SET_DEFAULT:
       return Object.assign({}, state, {
-        default: action.domainName
+        default: action.index
       })
     case types.CREATE_NEW:
       return Object.assign({}, state, {
-        localIdentities: Object.assign({}, state.localIdentities, {
-          [action.domainName]: {
-            domainName: action.domainName,
-            profile: DEFAULT_PROFILE,
-            verifications: [],
-            registered: false,
-            ownerAddress: action.ownerAddress,
-            zoneFile: null
-          }
-        })
+        localIdentities: [...state.localIdentities, {
+          username: null,
+          usernameOwned: false,
+          usernamePending: false,
+          profile: DEFAULT_PROFILE,
+          verifications: [],
+          registered: false,
+          ownerAddress: action.ownerAddress,
+          zoneFile: null
+        }
+      ]
       })
     case types.UPDATE_IDENTITIES:
       return Object.assign({}, state, {
         localIdentities: action.localIdentities,
         namesOwned: action.namesOwned
       })
-    case types.UPDATE_PROFILE:
+    case types.UPDATE_PROFILE: {
+      const newLocalIdentities = state.localIdentities.slice()
+      newLocalIdentities[action.index].profile = action.profile
+      newLocalIdentities[action.index].zoneFile = action.zoneFile
       return Object.assign({}, state, {
-        localIdentities: Object.assign({}, state.localIdentities, {
-          [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
-            profile: action.profile,
-            zoneFile: action.zoneFile
-          })
-        })
+        localIdentities: newLocalIdentities
       })
+    }
     case types.ADD_USERNAME: {
-      let localIdentitiesCopy = null
-      if (state.localIdentities[action.domainName]) {
-        // we need to merge existing profiles
-        localIdentitiesCopy = Object.assign({}, state.localIdentities, {
-          [action.domainName]: Object.assign({}, state.localIdentities[action.domainName],
-            state.localIdentities[action.ownerAddress], {
-              domainName: action.domainName,
-              zoneFile: action.zoneFile
-            })
-        })
-      } else {
-        localIdentitiesCopy = Object.assign({}, state.localIdentities, {
-          [action.domainName]: Object.assign({}, state.localIdentities[action.ownerAddress], {
-            domainName: action.domainName,
-            zoneFile: action.zoneFile
-          })
-        })
-      }
-      delete localIdentitiesCopy[action.ownerAddress]
+      const newLocalIdentities = state.localIdentities.slice()
+      newLocalIdentities[action.index].username = action.username
+      newLocalIdentities[action.index].usernamePending = true
+      newLocalIdentities[action.index].usernameOwned = false
       return Object.assign({}, state, {
-        localIdentities: localIdentitiesCopy
+        localIdentities: newLocalIdentities
+      })
+    }
+    case types.USERNAME_OWNED: {
+      const newLocalIdentities = state.localIdentities.slice()
+      newLocalIdentities[action.index].username = action.username
+      newLocalIdentities[action.index].usernamePending = false
+      newLocalIdentities[action.index].usernameOwned = true
+      return Object.assign({}, state, {
+        localIdentities: newLocalIdentities
+      })
+    }
+    case types.NO_USERNAME_OWNED: {
+      const newLocalIdentities = state.localIdentities.slice()
+      if (newLocalIdentities[action.index].usernamePending) {
+        // we've submitted a registration but never owned this name
+        // do nothing
+      } else {
+        // we've owned this name in the past but it's likely
+        // expired or been transferred away
+        newLocalIdentities[action.index].usernameOwned = false
+      }
+      return Object.assign({}, state, {
+        localIdentities: newLocalIdentities
       })
     }
     case types.RESET_CREATE_PROFILE_ERROR: {
