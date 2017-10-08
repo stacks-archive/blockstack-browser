@@ -12,8 +12,6 @@ import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { SearchActions } from './store/search'
 
-const placeholderImage = "https://s3.amazonaws.com/65m/avatar-placeholder.png"
-
 function mapStateToProps(state) {
   return {
     currentIdentity: state.profiles.identity.current,
@@ -23,7 +21,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  let actions = Object.assign(IdentityActions, SearchActions)
+  const actions = Object.assign(IdentityActions, SearchActions)
   return bindActionCreators(actions, dispatch)
 }
 
@@ -34,7 +32,8 @@ class ViewProfilePage extends Component {
     updateQuery: PropTypes.func.isRequired,
     currentIdentity: PropTypes.object.isRequired,
     localIdentities: PropTypes.object.isRequired,
-    nameLookupUrl: PropTypes.string.isRequired
+    nameLookupUrl: PropTypes.string.isRequired,
+    routeParams: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -55,18 +54,6 @@ class ViewProfilePage extends Component {
     this.onPhotoClick = this.onPhotoClick.bind(this)
     this.openPhotoModal = this.openPhotoModal.bind(this)
     this.closePhotoModal = this.closePhotoModal.bind(this)
-  }
-
-  componentHasNewRouteParams(props) {
-    if (props.routeParams.index) {
-      const newDomainIndex = props.routeParams.index,
-            profile = props.localIdentities[newDomainIndex].profile,
-            name = props.localIdentities[newDomainIndex].domainName,
-            verifications = []
-      this.props.updateCurrentIdentity(name, profile, verifications)
-    } else if (props.routeParams.name) {
-      this.props.fetchCurrentIdentity(props.nameLookupUrl, props.routeParams.name)
-    }
   }
 
   componentWillMount() {
@@ -94,6 +81,18 @@ class ViewProfilePage extends Component {
     })
   }
 
+  componentHasNewRouteParams(props) {
+    if (props.routeParams.index) {
+      const newDomainIndex = props.routeParams.index
+      const profile = props.localIdentities[newDomainIndex].profile
+      const name = props.localIdentities[newDomainIndex].domainName
+      const verifications = []
+      this.props.updateCurrentIdentity(name, profile, verifications)
+    } else if (props.routeParams.name) {
+      this.props.fetchCurrentIdentity(props.nameLookupUrl, props.routeParams.name)
+    }
+  }
+
   closePhotoModal(event) {
     if (event) {
       event.preventDefault()
@@ -114,19 +113,19 @@ class ViewProfilePage extends Component {
 
     const domainName = identity.domainName
 
-    let profile = identity.profile || null,
-        verifications = identity.verifications,
-        blockNumber = identity.blockNumber,
-        transactionIndex = identity.transactionIndex
+    const profile = identity.profile || null
+    const verifications = identity.verifications
+    const blockNumber = identity.blockNumber
+    const transactionIndex = identity.transactionIndex
 
     let isLocal = false
     if (this.props.routeParams.hasOwnProperty('index')) {
       isLocal = true
     }
 
-    let person = null,
-        accounts = [],
-        connections = []
+    let person = null
+    let accounts = []
+    let connections = []
 
     if (profile !== null) {
       if (profile.hasOwnProperty('@type')) {
@@ -140,210 +139,229 @@ class ViewProfilePage extends Component {
 
     return (
       <div>
-        { isLocal &&
-        <SecondaryNavBar
-          leftButtonTitle="Edit"
-          leftButtonLink={`/profiles/${domainName}/edit`}
-          rightButtonTitle="More" 
-          rightButtonLink="/profiles/i/all" />
+        {isLocal &&
+          <SecondaryNavBar
+            leftButtonTitle="Edit"
+            leftButtonLink={`/profiles/${domainName}/edit`}
+            rightButtonTitle="More"
+            rightButtonLink="/profiles/i/all"
+          />
         }
-        { person !== null ?
-        <div>
-          <Modal
-            isOpen={this.state.photoModalIsOpen}
-            contentLabel=""
-            onRequestClose={this.closePhotoModal}
-            shouldCloseOnOverlayClick
-            style={{ overlay: { zIndex: 10 } }}
-            className="container-fluid text-center"
-          >
-            <Image
-              src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
-              fallbackSrc="/images/avatar.png" className="img-fluid clickable" 
-              onClick={this.closePhotoModal}/>
-          </Modal>
-          <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
-            <div>This is your owner address.</div>
-            <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
-          </ReactTooltip>
+        {person !== null ?
+          <div>
+            <Modal
+              isOpen={this.state.photoModalIsOpen}
+              contentLabel=""
+              onRequestClose={this.closePhotoModal}
+              shouldCloseOnOverlayClick
+              style={{ overlay: { zIndex: 10 } }}
+              className="container-fluid text-center"
+            >
+              <Image
+                src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+                fallbackSrc="/images/avatar.png" className="img-fluid clickable"
+                onClick={this.closePhotoModal}
+              />
+            </Modal>
+            <ReactTooltip
+              place="top" type="dark"
+              effect="solid" id="domainName"
+              className="text-center"
+            >
+              <div>This is your owner address.</div>
+              <div className="text-secondary">You can switch to a more
+                meaningful name by adding an username.
+              </div>
+            </ReactTooltip>
 
-          <div className="container-fluid m-t-50">
-            <div className="row">
-              <div className="col-12">
+            <div className="container-fluid m-t-50">
+              <div className="row">
+                <div className="col-12">
 
-                <div className="avatar-md m-b-20 text-center">
-                  <Image
-                    src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
-                    fallbackSrc="/images/avatar.png" className="rounded-circle clickable" 
-                    onClick={this.onPhotoClick}/>
-                </div>
+                  <div className="avatar-md m-b-20 text-center">
+                    <Image
+                      src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+                      fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
+                      onClick={this.onPhotoClick}
+                    />
+                  </div>
 
-                <div className="text-center">
+                  <div className="text-center">
                   {(blockNumber && transactionIndex) ?
                     <div className="idcard-body dim">
                       Registered in block <span>#{blockNumber}</span>,<br />
                       transaction <span>#{transactionIndex}</span>
                     </div>
                   : null}
-                  <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  <div className="pro-card-domain-name m-b-10 text-center text-secondary">
-                    {domainName} { (isLocal && !this.hasUsername()) && <span data-tip data-for="domainName">(?)</span> }
-                  </div>
-                  <div className="m-b-20 text-center">
-                    { isLocal && !this.hasUsername() ?
-                      <Link to={`/profiles/i/add-username/${domainName}/search`}
-                        className="">
-                       Add a username
-                      </Link>
-                      :
-                      null
-                    }
-                  </div>
-                  <div className="pro-card-body text-center">
-                    {person.description()}
-                  </div>
-                  {person.address() ?
-                    <div className="pro-card-body text-center text-secondary">
-                    {person.address()}
+                    <h1 className="pro-card-name text-center">{person.name()}</h1>
+                    <div className="pro-card-domain-name m-b-10 text-center text-secondary">
+                      {domainName}
+                      {(isLocal && !this.hasUsername()) &&
+                        <span data-tip data-for="domainName">(?)</span>}
                     </div>
-                  : null}
-                  {person.birthDate() ?
-                    <div className="pro-card-body text-center">
-                    {person.birthDate()}
-                    </div>
-                  : null}
-                </div>
-
-                <div className="text-center">
-                  {connections.length ?
-                    <p className="profile-foot">Connections</p>
-                  : null}
-                  {connections.map((connection, index) => {
-                    if (connection.id) {
-                      return (
+                    <div className="m-b-20 text-center">
+                      {isLocal && !this.hasUsername() ?
                         <Link
-                          to={`/profiles/blockchain/${connection.id}`}
-                          key={index} className="connections" >
-                          <Image
-                            src={new Person(connection).avatarUrl()}
-                            style={{ width: '40px', height: '40px' }} />
+                          to={`/profiles/i/add-username/${domainName}/search`}
+                        >
+                         Add a username
                         </Link>
-                      )
-                    } else {
-                      return null
-                    }
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="container-fluid">
-            { isLocal ?
-              (<div className="row">
-                {this.hasUsername() &&
-                  (<div className="col text-center">
-                    <Link to={`/profiles/${domainName}/zone-file`}
-                      className="btn btn-link">
-                      Advanced
-                    </Link>
-                  </div>
-                )}
-                <div className="col text-center">
-                  {!this.hasUsername() ?
-                    (<button
-                      className="btn btn-link"
-                      disabled
-                      title="Add a username to view publicly.">
-                      View Publicly
-                    </button>
-                    ) : (
-                    <Link to={`/profiles/${domainName}`}
-                    className="btn btn-link">
-                    View Publicly
-                    </Link>
-                    )}
-                </div>
-                <div className="col text-center">
-                  <button
-                    className="btn btn-link" onClick={this.openPasswordPrompt}>
-                    + Create
-                  </button>
-                </div>
-              </div>
-              ) : (
-              <div className="row">
-                <div className="col text-center">
-                  <button className="btn btn-link">
-                    Add Friend
-                  </button>
-                </div>
-              </div>
-              )
-            }
-          </div>
-
-          <div className="container-fluid p-0">
-            <div className="row m-t-20 no-gutters">
-              <div className="col">
-                <div className="profile-accounts">
-                  <ul>
-                    {accounts.map((account) => {
-                      let verified = false
-                      for (let i = 0; i < verifications.length; i++) {
-                        const verification = verifications[i]
-                        if (verification.service === account.service &&
-                          verification.valid === true) {
-                          verified = true
-                          break
-                        }
+                        :
+                        null
                       }
-                      if (account.service === 'pgp' || account.service === 'ssh' 
-                        || account.service === 'bitcoin' || account.service === 'ethereum') {
+                    </div>
+                    <div className="pro-card-body text-center">
+                      {person.description()}
+                    </div>
+                    {person.address() ?
+                      <div className="pro-card-body text-center text-secondary">
+                      {person.address()}
+                      </div>
+                    : null}
+                    {person.birthDate() ?
+                      <div className="pro-card-body text-center">
+                      {person.birthDate()}
+                      </div>
+                    : null}
+                  </div>
+
+                  <div className="text-center">
+                    {connections.length ?
+                      <p className="profile-foot">Connections</p>
+                    : null}
+                    {connections.map((connection, index) => {
+                      if (connection.id) {
                         return (
-                          <PGPAccountItem
-                            key={`${account.service}-${account.identifier}`}
-                            service={account.service}
-                            identifier={account.identifier}
-                            contentUrl={account.contentUrl}
-                            listItem
-                          />
+                          <Link
+                            to={`/profiles/blockchain/${connection.id}`}
+                            key={index} className="connections"
+                          >
+                            <Image
+                              src={new Person(connection).avatarUrl()}
+                              style={{ width: '40px', height: '40px' }}
+                            />
+                          </Link>
                         )
                       } else {
-                        return (
-                          <SocialAccountItem
-                            key={`${account.service}-${account.identifier}`}
-                            service={account.service}
-                            identifier={account.identifier}
-                            proofUrl={account.proofUrl}
-                            listItem
-                            verified={verified}
-                          />
-                        )
+                        return null
                       }
                     })}
-                  </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="container-fluid">
+              {isLocal ?
+                (<div className="row">
+                  {this.hasUsername() &&
+                    (<div className="col text-center">
+                      <Link
+                        to={`/profiles/${domainName}/zone-file`}
+                        className="btn btn-link"
+                      >
+                        Advanced
+                      </Link>
+                    </div>
+                  )}
+                  <div className="col text-center">
+                    {!this.hasUsername() ?
+                      (<button
+                        className="btn btn-link"
+                        disabled
+                        title="Add a username to view publicly."
+                      >
+                        View Publicly
+                      </button>
+                      ) : (
+                      <Link
+                        to={`/profiles/${domainName}`}
+                        className="btn btn-link"
+                      >
+                      View Publicly
+                      </Link>
+                      )}
+                  </div>
+                  <div className="col text-center">
+                    <button
+                      className="btn btn-link" onClick={this.openPasswordPrompt}
+                    >
+                      + Create
+                    </button>
+                  </div>
+                </div>
+                ) : (
+                <div className="row">
+                  <div className="col text-center">
+                    <button className="btn btn-link">
+                      Add Friend
+                    </button>
+                  </div>
+                </div>
+                )
+              }
+            </div>
+
+            <div className="container-fluid p-0">
+              <div className="row m-t-20 no-gutters">
+                <div className="col">
+                  <div className="profile-accounts">
+                    <ul>
+                      {accounts.map((account) => {
+                        let verified = false
+                        for (let i = 0; i < verifications.length; i++) {
+                          const verification = verifications[i]
+                          if (verification.service === account.service &&
+                            verification.valid === true) {
+                            verified = true
+                            break
+                          }
+                        }
+                        if (account.service === 'pgp' || account.service === 'ssh'
+                          || account.service === 'bitcoin' || account.service === 'ethereum') {
+                          return (
+                            <PGPAccountItem
+                              key={`${account.service}-${account.identifier}`}
+                              service={account.service}
+                              identifier={account.identifier}
+                              contentUrl={account.contentUrl}
+                              listItem
+                            />
+                          )
+                        } else {
+                          return (
+                            <SocialAccountItem
+                              key={`${account.service}-${account.identifier}`}
+                              service={account.service}
+                              identifier={account.identifier}
+                              proofUrl={account.proofUrl}
+                              listItem
+                              verified={verified}
+                            />
+                          )
+                        }
+                      })}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-        </div>
         :
-        <div className="container-fluid m-t-50">
-          <div className="row">
-            <div className="col-12">
-              {this.state.isLoading ?
-                <h4 className="text-center">
-                </h4>
-              :
-                <h4 className="text-center">
-                  Profile not found
-                </h4>
-              }
+          <div className="container-fluid m-t-50">
+            <div className="row">
+              <div className="col-12">
+                {this.state.isLoading ?
+                  <h4 className="text-center">
+                  </h4>
+                :
+                  <h4 className="text-center">
+                    Profile not found
+                  </h4>
+                }
+              </div>
             </div>
           </div>
-        </div>
         }
       </div>
     )
@@ -351,9 +369,3 @@ class ViewProfilePage extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewProfilePage)
-
-/*
-  componentWillUnmount() {
-    this.props.updateCurrentIdentity('', {}, [])
-  }
-*/
