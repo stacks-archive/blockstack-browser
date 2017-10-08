@@ -16,7 +16,6 @@ const logger = log4js.getLogger('App.js')
 function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    dropboxAccessToken: state.settings.api.dropboxAccessToken,
     api: state.settings.api,
     corePingUrl: state.settings.api.corePingUrl,
     coreApiRunning: state.sanity.coreApiRunning,
@@ -41,7 +40,6 @@ class App extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
-    dropboxAccessToken: PropTypes.string,
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
     corePingUrl: PropTypes.string.isRequired,
@@ -60,9 +58,9 @@ class App extends Component {
     super(props)
 
     this.state = {
-      accountCreated: this.props.encryptedBackupPhrase ? true : false,
-      storageConnected: this.props.dropboxAccessToken ? true : false,
-      coreConnected: this.props.api.coreAPIPassword ? true : false,
+      accountCreated: !!this.props.encryptedBackupPhrase,
+      storageConnected: !!this.props.api.storageConnected,
+      coreConnected: !!this.props.api.coreAPIPassword,
       password: '',
       currentPath: ''
     }
@@ -98,7 +96,7 @@ class App extends Component {
       logger.debug('Sanity check: Core API endpoint is running!')
     } else {
       // TODO connect to future notification system here
-      //alert('Sanity check: Error! Core API is NOT running!')
+      // alert('Sanity check: Error! Core API is NOT running!')
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 
@@ -108,9 +106,9 @@ class App extends Component {
       logger.error('Sanity check: Error! Core API password is wrong!')
     }
     this.setState({
-      accountCreated: nextProps.encryptedBackupPhrase ? true : false,
-      storageConnected: nextProps.dropboxAccessToken ? true : false,
-      coreConnected: nextProps.api.coreAPIPassword ? true : false,
+      accountCreated: !!nextProps.encryptedBackupPhrase,
+      storageConnected: !!nextProps.api.storageConnected,
+      coreConnected: !!nextProps.api.coreAPIPassword,
       currentPath: nextPath
     })
 

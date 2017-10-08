@@ -64,7 +64,7 @@ class PairBrowserView extends Component {
             style={{ maxWidth: '80%', border: '1px solid #f0f0f0',
             margin: '0 auto', display: 'block' }}
           />
-          <p>
+          <p className="modal-body">
             <a href="#" className="modal-body" onClick={this.toggleAdvancedMode}>Advanced Mode</a>
           </p>
         </div>

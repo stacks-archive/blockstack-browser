@@ -180,11 +180,11 @@ class ZoneFilePage extends Component {
                   Update {name} zone file
                 </h1>
                 {
-                  this.state.alerts.map((alert, index) => {
-                    return (
-                      <Alert key={index} message={alert.message} status={alert.status} />
+                  this.state.alerts.map((alert, index) =>
+                     (
+                    <Alert key={index} message={alert.message} status={alert.status} />
                     )
-                  })
+                  )
                 }
                 <p>
                 Updating your zone file is an advanced feature that can break

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import Alert from '../../../components/Alert'
+import { Link } from 'react-router'
 
 const RegistrationSearchBox = (props) =>
   (
@@ -16,7 +17,7 @@ const RegistrationSearchBox = (props) =>
       )
     }
       <p>
-        Add a username to save your profile so you can interact with other
+        Add a username to your Blockstack ID so you can interact with other
         people on the decentralized internet.
       </p>
       <form
@@ -41,6 +42,13 @@ const RegistrationSearchBox = (props) =>
         >
           Search
         </button>
+
+        <Link
+          to="/profiles"
+          className="btn btn-secondary btn-block"
+        >
+          Cancel
+        </Link>
       </form>
     </div>
   </div>

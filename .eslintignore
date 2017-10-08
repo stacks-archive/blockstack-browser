@@ -1,0 +1,41 @@
+# Please remove files from this ignore file as you work on them
+# and remove the lint.
+#
+# Prepending a ! to a line un-ignores the files that match the pattern.
+
+build/*
+gulp/*
+
+tests/account/*
+tests/fixtures/*
+tests/profiles/*
+tests/store/*
+tests/utils/a*
+tests/utils/e*
+tests/utils/n*
+
+app/js/account/*
+!app/js/account/StorageProvidersPage*
+!app/js/account/utils*
+
+app/js/auth/*
+app/js/components/*
+!app/js/components/Navbar*
+
+app/js/store/*
+app/js/utils/*
+!app/js/utils/account-utils*
+
+app/js/profiles/store/*
+app/js/profiles/tabs/*
+app/js/profiles/AllProfiles*
+app/js/profiles/Default*
+app/js/profiles/E*
+app/js/profiles/Import*
+app/js/profiles/ProfilesApp*
+app/js/profiles/Reg*
+app/js/profiles/Search*
+!app/js/profiles/View
+app/js/profiles/components/*
+!app/js/profiles/components/registration*
+!app/js/profiles/store/registration*

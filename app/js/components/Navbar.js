@@ -2,17 +2,14 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import Image from './../components/Image'
 import { AccountActions } from '../account/store/account'
-import Completion from './Completion'
-import ActionItem from './ActionItem'
-import { Popover, OverlayTrigger } from 'react-bootstrap'
 import roundTo from 'round-to'
 
 function mapStateToProps(state) {
   return {
     dropboxAccessToken: state.settings.api.dropboxAccessToken,
     localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
     addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
     coreWalletAddress: state.account.coreWallet.address,
     coreWalletBalance: state.account.coreWallet.balance,
@@ -28,14 +25,14 @@ function mapDispatchToProps(dispatch) {
 }
 
 const icons = {
-  homeNav: "/images/icon-nav-home.svg",
-  homeNavActive: "/images/icon-nav-home-hover.svg",
-  walletNav: "/images/icon-nav-wallet.svg",
-  walletNavActive: "/images/icon-nav-wallet-hover.svg",
-  avatarNav: "/images/icon-nav-avatar.svg",
-  avatarNavActive: "/images/icon-nav-avatar-hover.svg",
-  settingsNav: "/images/icon-nav-settings.svg",
-  settingsNavActive: "/images/icon-nav-settings-hover.svg"
+  homeNav: '/images/icon-nav-home.svg',
+  homeNavActive: '/images/icon-nav-home-hover.svg',
+  walletNav: '/images/icon-nav-wallet.svg',
+  walletNavActive: '/images/icon-nav-wallet-hover.svg',
+  avatarNav: '/images/icon-nav-avatar.svg',
+  avatarNavActive: '/images/icon-nav-avatar-hover.svg',
+  settingsNav: '/images/icon-nav-settings.svg',
+  settingsNavActive: '/images/icon-nav-settings-hover.svg'
 }
 
 class Navbar extends Component {
@@ -93,16 +90,46 @@ class Navbar extends Component {
     }
   }
 
-  storageProviderConnected() {
-    return this.props.dropboxAccessToken ? true : false
+  onHomeNavMouseOver() {
+    this.setState({ homeTabHover: true })
   }
 
-  profileCreated() {
-    return this.props.nextIdentityAddressIndex > 0
+  onHomeNavMouseOut() {
+    this.setState({ homeTabHover: false })
   }
 
-  depositedBitcoin() {
-    return this.props.coreWalletBalance > 0
+  onWalletNavMouseOver() {
+    this.setState({ walletTabHover: true })
+  }
+
+  onWalletNavMouseOut() {
+    this.setState({ walletTabHover: false })
+  }
+
+  onAvatarNavMouseOver() {
+    this.setState({ avatarTabHover: true })
+  }
+
+  onAvatarNavMouseOut() {
+    this.setState({ avatarTabHover: false })
+  }
+
+  onSettingsNavMouseOver() {
+    this.setState({ settingsTabHover: true })
+  }
+
+  onSettingsNavMouseOut() {
+    this.setState({ settingsTabHover: false })
+  }
+
+
+  settingsNavIconImage() {
+    if (this.props.activeTab === 'settings'
+      || this.state.settingsTabHover) {
+      return icons.settingsNavActive
+    } else {
+      return icons.settingsNav
+    }
   }
 
   signedIntoFirstApp() {
@@ -166,151 +193,84 @@ class Navbar extends Component {
   }
 
   homeNavIconImage() {
-    if(this.props.activeTab === 'home'
-      || this.state.homeTabHover ) { 
+    if (this.props.activeTab === 'home'
+      || this.state.homeTabHover) {
       return icons.homeNavActive
-    }
-    else {
+    } else {
       return icons.homeNav
     }
   }
 
   walletNavIconImage() {
-    if(this.props.activeTab === 'wallet'
-      || this.state.walletTabHover ) { 
+    if (this.props.activeTab === 'wallet'
+      || this.state.walletTabHover) {
       return icons.walletNavActive
-    }
-    else {
+    } else {
       return icons.walletNav
     }
   }
 
   avatarNavIconImage() {
-    if(this.props.activeTab === 'avatar'
-      || this.state.avatarTabHover ) { 
+    if (this.props.activeTab === 'avatar'
+      || this.state.avatarTabHover) {
       return icons.avatarNavActive
-    }
-    else {
+    } else {
       return icons.avatarNav
     }
   }
 
-  settingsNavIconImage() {
-    if(this.props.activeTab === 'settings'
-      || this.state.settingsTabHover ) { 
-      return icons.settingsNavActive
-    }
-    else {
-      return icons.settingsNav
-    }
+  depositedBitcoin() {
+    return this.props.coreWalletBalance > 0
   }
 
-  onHomeNavMouseOver() {
-    this.setState({ homeTabHover: true })
+  profileCreated() {
+    return this.props.nextIdentityAddressIndex > 0
   }
 
-  onHomeNavMouseOut() {
-    this.setState({ homeTabHover: false })
-  }
-
-  onWalletNavMouseOver() {
-    this.setState({ walletTabHover: true })
-  }
-
-  onWalletNavMouseOut() {
-    this.setState({ walletTabHover: false })
-  }
-
-  onAvatarNavMouseOver() {
-    this.setState({ avatarTabHover: true })
-  }
-
-  onAvatarNavMouseOut() {
-    this.setState({ avatarTabHover: false })
-  }
-
-  onSettingsNavMouseOver() {
-    this.setState({ settingsTabHover: true })
-  }
-
-  onSettingsNavMouseOut() {
-    this.setState({ settingsTabHover: false })
+  storageProviderConnected() {
+    return !!this.props.dropboxAccessToken
   }
 
   render() {
-    const popover = (
-      <Popover id="things-to-do">
-        <ActionItem
-          action="Connect a storage provider to regain control of your data"
-          destinationUrl="/account/storage"
-          destinationName="Storage"
-          completed={this.storageProviderConnected()}
-        />
-        <ActionItem
-          action="Create your first profile independent of 3rd parties"
-          destinationUrl="/profiles"
-          destinationName="Profiles"
-          completed={this.profileCreated()}
-        />
-        <ActionItem
-          action="Sign in to your first Blockstack app"
-          destinationUrl="https://helloblockstack.com"
-          destinationName="Apps"
-          completed={this.signedIntoFirstApp()}
-        />
-        <ActionItem
-          action="Write down your backup code for keychain recovery"
-          destinationUrl="/account/backup"
-          destinationName="Backup"
-          completed={this.wroteDownRecoveryCode()}
-        />
-        <ActionItem
-          action="Deposit Bitcoin to enable username registration"
-          destinationUrl="/wallet/receive"
-          destinationName="Wallet"
-          completed={this.depositedBitcoin()}
-        />
-        <ActionItem
-          action="Register a username for your profile"
-          destinationUrl="/profiles"
-          destinationName="Profiles"
-          completed={this.registeredUsername()}
-        />
-      </Popover>
-    )
-
-    const numberOfActionItems = this.numberOfActionItems()
-
     return (
       <header className="container-fluid no-padding">
         <nav className="navbar navbar-expand container-fluid">
           <ul className="navbar-nav container-fluid">
             <li className="nav-item">
-              <Link to="/" className="nav-link"
-                  onMouseOver={this.onHomeNavMouseOver} 
-                  onMouseOut={this.onHomeNavMouseOut} >
-                <img src={this.homeNavIconImage()} />
+              <Link
+                to="/" className="nav-link"
+                onMouseOver={this.onHomeNavMouseOver}
+                onMouseOut={this.onHomeNavMouseOut}
+              >
+                <img src={this.homeNavIconImage()} alt="Home" />
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/wallet/receive" className="nav-link"
-                  onMouseOver={this.onWalletNavMouseOver} 
-                  onMouseOut={this.onWalletNavMouseOut} >
-                <img src={this.walletNavIconImage()} />
+              <Link
+                to="/profiles"
+                className="nav-link"
+                onMouseOver={this.onAvatarNavMouseOver}
+                onMouseOut={this.onAvatarNavMouseOut}
+              >
+                <img src={this.avatarNavIconImage()} alt="IDs" />
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/profiles" className="nav-link"
-                  onMouseOver={this.onAvatarNavMouseOver} 
-                  onMouseOut={this.onAvatarNavMouseOut} >
-                <img src={this.avatarNavIconImage()} />
+              <Link
+                to="/wallet/receive" className="nav-link"
+                onMouseOver={this.onWalletNavMouseOver}
+                onMouseOut={this.onWalletNavMouseOut}
+              >
+                <img src={this.walletNavIconImage()} alt="Wallet" />
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/account" className="nav-link"
-                  onMouseOver={this.onSettingsNavMouseOver} 
-                  onMouseOut={this.onSettingsNavMouseOut} >
-                <img src={this.settingsNavIconImage()} />
+              <Link
+                to="/account" className="nav-link"
+                onMouseOver={this.onSettingsNavMouseOver}
+                onMouseOut={this.onSettingsNavMouseOut}
+              >
+                <img src={this.settingsNavIconImage()} alt="Settings" />
               </Link>
             </li>
           </ul>

@@ -99,6 +99,8 @@ class ApiSettingsPage extends Component {
                     data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="logServerPort" label="localhost Logging Port"
                     data={this.state.api} onChange={this.onValueChange} />
+                    <InputGroup name="gaiaHubUrl" label="URL for Gaia Hub Connection"
+                    data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="nameLookupUrl" label="Name Lookup URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="searchUrl" label="Search URL"
@@ -109,7 +111,7 @@ class ApiSettingsPage extends Component {
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="zeroConfBalanceUrl" label="Address URL"
                       data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="utxoUrl" label="UTXO URL"
+                    <InputGroup name="insightUrl" label="Insight API URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="broadcastUrl" label="Broadcast Transaction URL"
                       data={this.state.api} onChange={this.onValueChange} />
@@ -128,7 +130,7 @@ class ApiSettingsPage extends Component {
                     <InputGroup name="pgpKeyUrl" label="PGP Key URL"
                       data={this.state.api} onChange={this.onValueChange} />
                     <InputGroup name="btcPriceUrl" label="BTCUSD price URL"
-                      data={this.state.api} onChange={this.onValueChange} 
+                      data={this.state.api} onChange={this.onValueChange}
                       onReturnKeyPress={this.resetApi} />
                   </div>
                 : null }

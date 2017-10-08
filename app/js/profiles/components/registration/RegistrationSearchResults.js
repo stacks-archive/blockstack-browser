@@ -9,15 +9,6 @@ const availabilityHeaderStyle = {
 
 const RegistrationSearchResults = (props) => (
   <div>
-    <a
-      href=""
-      className="pull-left"
-      onClick={props.showSearchBox}
-    >
-      &lt; Back
-    </a>
-    <br />
-
     <h3 className="modal-heading">Available names</h3>
 
     <div className="modal-body">
@@ -42,19 +33,35 @@ const RegistrationSearchResults = (props) => (
           return (
             <div key={nameSuffix}>
             {searching ?
-              <h4>Checking {name}...</h4>
+              <div className="account-check">
+                <h4>Checking {name}...</h4>
+                <Link
+                  to="/profiles"
+                  className="btn btn-secondary btn-block"
+                >
+                  Cancel
+                </Link>
+              </div>
               :
               <div>
                 {available ?
                   <div>
                     <h4 style={availabilityHeaderStyle}>{name}</h4>
                     {isSubdomain ?
-                      <Link
-                        className="btn btn-primary btn-sm"
-                        to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
-                      >
-                        Get <strong>{name}</strong> for free
-                      </Link>
+                      <div className="username-search-result">
+                        <Link
+                          className="btn btn-primary btn-block"
+                          to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
+                        >
+                          Get <strong>{name}</strong> for free
+                        </Link>
+                        <Link
+                          to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
+                          className="btn btn-secondary btn-block"
+                        >
+                          Cancel
+                        </Link>
+                      </div>
                     :
                       <div>
                       {checkingPrice ?
@@ -71,24 +78,39 @@ const RegistrationSearchResults = (props) => (
                           </div>
                         </div>
                         :
-                        <Link
-                          className="btn btn-primary btn-sm"
-                          to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
-                        >
-                          Buy <strong>{name}</strong> for {price} bitcoins
-                        </Link>
+                        <div className="username-search-result">
+                          <Link
+                            className="btn btn-primary btn-block"
+                            to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
+                          >
+                            Buy <strong>{name}</strong> for {price} bitcoins
+                          </Link>
+                          <button
+                            onClick={props.showSearchBox}
+                            className="btn btn-secondary btn-block"
+                          >
+                            Back
+                          </button>
+                        </div>
                       }
                       </div>
                     }
+
                   </div>
                   :
                   <div>
                     <h4 style={availabilityHeaderStyle}>{name}</h4>
                     <button
-                      className="btn btn-primary btn-sm"
+                      className="btn btn-primary btn-block"
                       disabled
                     >
                       {name} is already taken
+                    </button>
+                    <button
+                      onClick={props.showSearchBox}
+                      className="btn btn-secondary btn-block"
+                    >
+                      Back
                     </button>
                   </div>
                 }

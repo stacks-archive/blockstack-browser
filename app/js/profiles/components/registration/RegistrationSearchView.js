@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -59,7 +58,7 @@ class RegistrationSearchView extends Component {
       alerts: [],
       username: '',
       searchingUsername: '',
-      storageConnected: this.props.api.dropboxAccessToken !== null,
+      storageConnected: this.props.api.storageConnected,
       availableDomains,
       nameSuffixes,
       showSearchResults: false
@@ -85,7 +84,7 @@ class RegistrationSearchView extends Component {
       alerts: []
     })
 
-    const storageConnected = this.props.api.dropboxAccessToken !== null
+    const storageConnected = this.props.api.storageConnected
 
     if (!storageConnected) {
       this.displayConnectStorageAlert()
@@ -170,12 +169,6 @@ class RegistrationSearchView extends Component {
             ownerAddress={ownerAddress}
           />
         }
-        <Link
-          to="/profiles"
-          className="btn btn-secondary btn-sm"
-        >
-          Cancel
-        </Link>
       </div>
     )
   }

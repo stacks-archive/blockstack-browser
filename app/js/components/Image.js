@@ -8,7 +8,8 @@ class Image extends Component {
     style: PropTypes.object,
     className: PropTypes.string,
     onLoad: PropTypes.func,
-    retinaSupport: PropTypes.bool
+    retinaSupport: PropTypes.bool,
+    onClick: PropTypes.func
   }
 
   constructor(props) {
@@ -49,7 +50,8 @@ class Image extends Component {
         style={this.props.style}
         className={this.props.className}
         onLoad={this.props.onLoad}
-        onError={this.onError} />
+        onError={this.onError}
+        onClick={this.props.onClick} />
     )
   }
 }

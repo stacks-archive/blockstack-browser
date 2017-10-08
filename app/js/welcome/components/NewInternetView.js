@@ -9,8 +9,7 @@ const NewInternetView = (props) =>
     <img
       role="presentation"
       src="/images/icon-new-internet.svg"
-      className="m-b-15 m-t-15"
-      style={{ width: '200px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }}
+      className="m-b-15 m-t-15 welcome-modal-icon"
     />
     <div className="m-t-25">
       <button className="btn btn-primary btn-block m-b-20" onClick={props.showNextView}>

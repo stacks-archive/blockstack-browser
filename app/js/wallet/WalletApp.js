@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 
 import SecondaryNavBar from '../components/SecondaryNavBar'
-import WalletSidebar from './components/WalletSidebar'
 import Navbar from '../components/Navbar'
 
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   return {
   }
 }
@@ -19,6 +17,7 @@ function mapDispatchToProps(dispatch) {
 
 class WalletApp extends Component {
   static propTypes = {
+    children: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -33,19 +32,20 @@ class WalletApp extends Component {
 
     return (
       <div className="app-wrap-wallet">
-        <Navbar activeTab="wallet"/>
-        <SecondaryNavBar 
-          leftButtonTitle="Receive" 
+        <Navbar activeTab="wallet" />
+        <SecondaryNavBar
+          leftButtonTitle="Receive"
           leftButtonLink="/wallet/receive"
           isLeftActive={(activeTabUrl === '/wallet/receive')}
-          rightButtonTitle="Send" 
+          rightButtonTitle="Send"
           rightButtonLink="/wallet/send"
-          isRightActive={(activeTabUrl === '/wallet/send')} />
-          <div className="container-fluid col-centered form-container-secondary">
+          isRightActive={(activeTabUrl === '/wallet/send')}
+        />
+        <div className="container-fluid col-centered form-container-secondary">
           <div>
             {this.props.children}
           </div>
-          </div>
+        </div>
       </div>
     )
   }

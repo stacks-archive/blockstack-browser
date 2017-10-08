@@ -43,6 +43,9 @@ function proxyFetchForSomeHosts(url, options) {
        host.endsWith('facebook.com') ||
        host.endsWith('twitter.com') ||
        host.endsWith('github.com') ||
+       host.endsWith('instagram.com') ||
+       host.endsWith('linkedin.com') ||
+       host.endsWith('ycombinator.com') ||
        host.endsWith('bitstamp.net')) {
     return proxyFetch(url, options)
   } else {
