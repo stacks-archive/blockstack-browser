@@ -289,7 +289,7 @@ class AddUsernameSelectPage extends Component {
                   <Link 
                     to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
                     className="btn btn-secondary btn-block">
-                    Cancel
+                    Back
                   </Link>
                 }
               </div>
@@ -334,7 +334,7 @@ class AddUsernameSelectPage extends Component {
                   <Link 
                     to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
                     className="btn btn-secondary btn-block">
-                    Cancel
+                    Back
                   </Link>
                 }
               </div>
@@ -372,7 +372,7 @@ class AddUsernameSelectPage extends Component {
                 <Link 
                   to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
                   className="btn btn-secondary btn-block">
-                  Cancel
+                  Back
                 </Link>
               </div>
             </div>

@@ -88,7 +88,7 @@ const RegistrationSearchResults = (props) => (
                           <button 
                             onClick={props.showSearchBox}
                             className="btn btn-secondary btn-block">
-                            Cancel
+                            Back
                           </button>
                         </div>
                       }
