@@ -1,4 +1,11 @@
 {
   "presets": ["flow", "es2015", "stage-0", "react"],
-  "plugins": ["transform-object-rest-spread"]
+  "plugins": [
+    ["module-resolver", {
+        "alias": {
+          "js": "./app/js"
+        }
+    }],
+    "transform-object-rest-spread"
+  ]
 }
