@@ -232,23 +232,21 @@ function resetCoreWithdrawal() {
 
 function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress, coreAPIPassword, amount = null, paymentKey = null) {
   return dispatch => {
-    if (!amount) {
-      dispatch(withdrawingCoreBalance(recipientAddress, 1))
-      logger.debug(`withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`)
-    } else {
-      dispatch(withdrawingCoreBalance(recipientAddress, amount))
-    }
 
     const requestBody = {
       address: recipientAddress,
       min_confs: 0
     }
 
-    if (amount) {
+    if (amount !== null) {
       const satoshisAmount = btcToSatoshis(amount)
       const roundedSatoshiAmount = roundTo(satoshisAmount, 0)
       logger.debug(`withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} satoshis to ${recipientAddress}`)
       requestBody['amount'] = roundedSatoshiAmount
+      dispatch(withdrawingCoreBalance(recipientAddress, amount))
+    } else {
+      dispatch(withdrawingCoreBalance(recipientAddress, 1))
+      logger.debug(`withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`)
     }
 
     const requestHeaders = {
