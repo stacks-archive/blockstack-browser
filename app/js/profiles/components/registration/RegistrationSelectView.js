@@ -286,9 +286,10 @@ class AddUsernameSelectPage extends Component {
                 {registrationInProgress ?
                   null
                   :
-                  <Link 
+                  <Link
                     to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
-                    className="btn btn-secondary btn-block">
+                    className="btn btn-secondary btn-block"
+                  >
                     Back
                   </Link>
                 }
@@ -301,7 +302,7 @@ class AddUsernameSelectPage extends Component {
               </h3>
               <div className="text-center">
                 <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
-                  from your wallet.</p>
+                from your wallet.</p>
               </div>
               <div>
                 <form onSubmit={this.register}>
@@ -331,9 +332,10 @@ class AddUsernameSelectPage extends Component {
                 {registrationInProgress ?
                   null
                   :
-                  <Link 
+                  <Link
                     to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
-                    className="btn btn-secondary btn-block">
+                    className="btn btn-secondary btn-block"
+                  >
                     Back
                   </Link>
                 }
@@ -369,9 +371,10 @@ class AddUsernameSelectPage extends Component {
                   Waiting for payment...
                   </div>
                 </div>
-                <Link 
+                <Link
                   to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
-                  className="btn btn-secondary btn-block">
+                  className="btn btn-secondary btn-block"
+                >
                   Back
                 </Link>
               </div>

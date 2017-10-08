@@ -85,9 +85,10 @@ const RegistrationSearchResults = (props) => (
                           >
                             Buy <strong>{name}</strong> for {price} bitcoins
                           </Link>
-                          <button 
+                          <button
                             onClick={props.showSearchBox}
-                            className="btn btn-secondary btn-block">
+                            className="btn btn-secondary btn-block"
+                          >
                             Back
                           </button>
                         </div>
@@ -105,9 +106,10 @@ const RegistrationSearchResults = (props) => (
                     >
                       {name} is already taken
                     </button>
-                    <button 
+                    <button
                       onClick={props.showSearchBox}
-                      className="btn btn-secondary btn-block">
+                      className="btn btn-secondary btn-block"
+                    >
                       Back
                     </button>
                   </div>
