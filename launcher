@@ -26,7 +26,6 @@ create-wallet () {
 
   # Use init containers to set the API bind to 0.0.0.0
   docker run -it -v "$homedir":$containerdir $coreimage sed -i 's/api_endpoint_bind = localhost/api_endpoint_bind = 0.0.0.0/' $containerdir/client.ini
-  docker run -it -v "$homedir":$containerdir $coreimage sed -i 's/api_endpoint_host = localhost/api_endpoint_host = 0.0.0.0/' $containerdir/client.ini
 }
 
 start () {
