@@ -1,6 +1,6 @@
 # Blockstack Browser [![CircleCI](https://img.shields.io/circleci/project/blockstack/blockstack-browser/master.svg)](https://circleci.com/gh/blockstack/blockstack-browser/tree/master) [![License](https://img.shields.io/github/license/blockstack/blockstack-browser.svg)](https://github.com/blockstack/blockstack-browser/blob/master/LICENSE.md) [![Slack](https://img.shields.io/badge/join-slack-e32072.svg?style=flat)](http://slack.blockstack.org/)
 
-The Blockstack Browser Portal allows you to explore the Blockstack internet.
+The Blockstack Browser allows you to explore the Blockstack internet.
 
 ## Table of contents
 
@@ -25,7 +25,7 @@ Blockstack Portal requires a local instance of Blockstack Core to run. To get st
 
 Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
-*Please note these instructions have only been tested on macOS 10.12.4.*
+*Please note these instructions have only been tested on macOS 10.13*
 
 1. Download and install the [latest release of Blockstack for Mac](https://github.com/blockstack/blockstack-browser/releases).
 1. Start Blockstack
@@ -60,7 +60,7 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 ## Building for macOS
 
-1. Make sure you have a working installation of Xcode 8 or higher & valid Mac Developer signing certificate
+1. Make sure you have a working installation of Xcode 9 or higher & valid Mac Developer signing certificate
 1. Make sure you have an OpenSSL ready for bottling by homebrew by running `brew install openssl --build-bottle`
 1. Make sure you have `hg` installed by running `brew install hg`
 1. Run `npm install nexe -g` to install the "node to native" binary tool globally
@@ -69,7 +69,7 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 *Note: You only need to run `nexe` once but the first build will take a while as `nexe` downloads and compiles a source copy of node. Then it creates and copies the needed proxy binaries into place and copies a built version of the browser web app into the source tree.*
 
-*Note: This has only been tested on macOS Sierra 10.12.4*
+*Note: This has only been tested on macOS High Sierra 10.13*
 
 ### Building a macOS release for distribution
 
