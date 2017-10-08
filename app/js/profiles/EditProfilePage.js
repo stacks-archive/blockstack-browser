@@ -36,8 +36,6 @@ const accountTypes = [
   'github',
   'instagram',
   'hackerNews',
-  'bitcoin',
-  'ethereum',
   'pgp',
   'ssh'
 ]
@@ -232,7 +230,7 @@ class EditProfilePage extends Component {
     } else if (service === 'github') {
       verificationUrl = `https://gist.github.com/`
     } else if (service === 'instagram') {
-      
+
     } else if (service === 'linkedIn') {
       verificationUrl = 'https://www.linkedin.com/feed/'
       // verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org&title=${verificationText}`
@@ -290,7 +288,7 @@ class EditProfilePage extends Component {
     const profile = this.state.profile
 
     if (event.target.name === 'identifier') {
-      const identifier = event.target.value    
+      const identifier = event.target.value
 
       this.saveProfile(profile)
 
@@ -430,9 +428,9 @@ class EditProfilePage extends Component {
           className="container-fluid text-center"
         >
           <Image
-            src={(this.state.profile.image && this.state.profile.image[0].contentUrl) 
+            src={(this.state.profile.image && this.state.profile.image[0].contentUrl)
               ? this.state.profile.image[0].contentUrl : "/images/avatar.png"}
-            fallbackSrc="/images/avatar.png" className="img-fluid clickable" 
+            fallbackSrc="/images/avatar.png" className="img-fluid clickable"
             onClick={this.closePhotoModal}/>
         </Modal>
 
@@ -445,9 +443,9 @@ class EditProfilePage extends Component {
                 <div className="col-12">
                   <div className="avatar-md m-t-50 m-b-10 text-center">
                     <Image
-                      src={(this.state.profile.image && this.state.profile.image[0].contentUrl) 
+                      src={(this.state.profile.image && this.state.profile.image[0].contentUrl)
                         ? this.state.profile.image[0].contentUrl : "/images/avatar.png"}
-                      fallbackSrc="/images/avatar.png" className="rounded-circle clickable" 
+                      fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
                       onClick={this.onPhotoClick}/>
                   </div>
                 </div>
@@ -457,7 +455,7 @@ class EditProfilePage extends Component {
                       Change Photo
                     </button>
                 </div>
-                
+
                 <div className="col-12">
                   <InputGroup name="givenName" label="First Name"
                       data={this.state.profile}
@@ -478,7 +476,7 @@ class EditProfilePage extends Component {
               <div className="row m-t-20 p-b-45 no-gutters">
                 <div className="col-12">
                   <div className="edit-profile-accounts">
-                    {accounts && 
+                    {accounts &&
                       accounts.map((account) => {
                         let verified = false
                         if(verifications) {

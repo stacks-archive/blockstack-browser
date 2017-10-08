@@ -14,9 +14,12 @@ tests/utils/a*
 tests/utils/e*
 tests/utils/n*
 
-app/js/account/*
-!app/js/account/StorageProvidersPage*
-!app/js/account/utils*
+app/js/account/A*
+app/js/account/B*
+app/js/account/C*
+app/js/account/D*
+app/js/account/store/settings*
+app/js/account/components*
 
 app/js/auth/*
 app/js/components/*

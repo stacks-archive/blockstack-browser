@@ -1,6 +1,6 @@
 import * as types from './types'
 import { HDNode } from 'bitcoinjs-lib'
-import { getBitcoinAddressNode, getIdentityAddressNode } from '../../../utils'
+import { getBitcoinAddressNode } from '../../../utils'
 
 
 const initialState = {
