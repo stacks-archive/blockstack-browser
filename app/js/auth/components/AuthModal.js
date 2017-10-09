@@ -99,6 +99,8 @@ class AuthModal extends Component {
     }
 
     logger.trace('componentWillReceiveProps: received coreSessionToken')
+    const coreSessionToken = nextProps.coreSessionTokens[appDomain]
+    const decodedCoreSessionToken = decodeToken(coreSessionToken)
     if (!Object.keys(localIdentities).length) {
       return
     }
@@ -107,17 +109,16 @@ class AuthModal extends Component {
     // TODO: Side-effects to avoid confusion.
     const userDomainName = this.state.currentIdentity
 
-    let hasUsername = true
-    if (userDomainName === localIdentities[userDomainName].ownerAddress) {
+    const hasUsername = this.state.hasUsername
+    if (hasUsername) {
       logger.debug(`login(): this profile ${userDomainName} has no username`)
-      hasUsername = false
     }
 
     // Get keypair corresponding to the current user identity
     const profileSigningKeypair = identityKeypairs
     .find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
 
-    const blockchainId = (hasUsername ? userDomainName : null)
+    const blockchainId = decodedCoreSessionToken.payload.blockchain_id
     const identity = localIdentities[userDomainName]
     const profile = identity.profile
     const privateKey = profileSigningKeypair.key
@@ -128,7 +129,7 @@ class AuthModal extends Component {
 
     // TODO: what if the token is expired?
     const authResponse = makeAuthResponse(privateKey, profile, blockchainId,
-        nextProps.coreSessionTokens[appDomain], appPrivateKey)
+        coreSessionToken, appPrivateKey)
 
     this.props.clearSessionToken(appDomain)
 
@@ -147,33 +148,64 @@ class AuthModal extends Component {
     }
     const localIdentities = this.props.localIdentities
     const userDomainName = this.state.currentIdentity
-
+    const identity = localIdentities[userDomainName]
     let hasUsername = true
-    if (userDomainName === localIdentities[userDomainName].ownerAddress) {
+    if (userDomainName === identity.ownerAddress) {
       logger.debug(`login(): this profile ${userDomainName} has no username`)
       hasUsername = false
     }
 
-    // Get keypair corresponding to the current user identity
-    const profileSigningKeypair = this.props.identityKeypairs
-    .find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
+    // check to see if username is resolvable until we get name state managament
+    // fixed in
+    // https://github.com/blockstack/blockstack-browser/issues/864#issuecomment-335035037
 
-    const appDomain = this.state.decodedToken.payload.domain_name
-    const appsNodeKey = profileSigningKeypair.appsNodeKey
-    const salt = profileSigningKeypair.salt
-    const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-    const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-    const blockchainId = (hasUsername ? userDomainName : null)
-    logger.trace('login(): Calling setCoreStorageConfig()...')
-    setCoreStorageConfig(this.props.api, blockchainId,
-      localIdentities[userDomainName].profile, profileSigningKeypair)
-    .then(() => {
-      logger.trace('login(): Core storage successfully configured.')
-      logger.trace('login(): Calling getCoreSessionToken()...')
-      this.props.getCoreSessionToken(this.props.coreHost,
-          this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
-          appDomain, this.state.authRequest, blockchainId)
-    })
+
+    const lookupValue = hasUsername ? userDomainName : ''
+
+
+    // if profile has no name, lookupUrl will be
+    // http://localhost:6270/v1/names/ which returns 401
+    const lookupUrl = this.props.api.nameLookupUrl.replace('{name}', lookupValue)
+    fetch(lookupUrl)
+        .then(response => response.text())
+        .then(responseText => JSON.parse(responseText))
+        .then(responseJSON => {
+          if (hasUsername) {
+            if (responseJSON.hasOwnProperty('address')) {
+              const nameOwningAddress = responseJSON.address
+              if (nameOwningAddress === identity.ownerAddress) {
+                logger.debug('login: name has propagated on the network.')
+              } else {
+                logger.debug('login: name is not usable on the network.')
+                hasUsername = false
+              }
+            } else {
+              logger.debug('login: name is not visible on the network.')
+              hasUsername = false
+            }
+          }
+
+          // Get keypair corresponding to the current user identity
+          const profileSigningKeypair = this.props.identityKeypairs
+          .find((keypair) => keypair.address === identity.ownerAddress)
+
+          const appDomain = this.state.decodedToken.payload.domain_name
+          const appsNodeKey = profileSigningKeypair.appsNodeKey
+          const salt = profileSigningKeypair.salt
+          const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+          const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+          const blockchainId = (hasUsername ? userDomainName : null)
+          logger.trace('login(): Calling setCoreStorageConfig()...')
+          setCoreStorageConfig(this.props.api, blockchainId,
+          identity.profile, profileSigningKeypair)
+          .then(() => {
+            logger.trace('login(): Core storage successfully configured.')
+            logger.trace('login(): Calling getCoreSessionToken()...')
+            this.props.getCoreSessionToken(this.props.coreHost,
+                this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
+                appDomain, this.state.authRequest, blockchainId)
+          })
+        })
   }
 
   render() {
