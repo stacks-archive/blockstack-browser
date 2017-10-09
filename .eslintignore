@@ -21,7 +21,6 @@ app/js/account/D*
 app/js/account/store/settings*
 app/js/account/components*
 
-app/js/auth/*
 app/js/components/*
 !app/js/components/Navbar*
 

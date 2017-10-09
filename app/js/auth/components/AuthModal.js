@@ -4,10 +4,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AuthActions } from '../store/auth'
 import { Link } from 'react-router'
-import queryString from 'query-string'
 import { decodeToken } from 'jsontokens'
 import {
-  makeAuthResponse, getAuthRequestFromURL, fetchAppManifest, redirectUserToApp
+  makeAuthResponse, getAuthRequestFromURL, redirectUserToApp
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
@@ -51,7 +50,12 @@ class AuthModal extends Component {
     coreAPIPassword: PropTypes.string.isRequired,
     coreSessionTokens: PropTypes.object.isRequired,
     loginToApp: PropTypes.func.isRequired,
-    api: PropTypes.object.isRequired
+    api: PropTypes.object.isRequired,
+    identityKeypairs: PropTypes.array.isRequired,
+    coreHost: PropTypes.string.isRequired,
+    corePort: PropTypes.number.isRequired,
+    appManifest: PropTypes.object,
+    appManifestLoading: PropTypes.bool
   }
 
   constructor(props) {
@@ -95,6 +99,8 @@ class AuthModal extends Component {
     }
 
     logger.trace('componentWillReceiveProps: received coreSessionToken')
+    const coreSessionToken = nextProps.coreSessionTokens[appDomain]
+    const decodedCoreSessionToken = decodeToken(coreSessionToken)
     if (!Object.keys(localIdentities).length) {
       return
     }
@@ -103,16 +109,16 @@ class AuthModal extends Component {
     // TODO: Side-effects to avoid confusion.
     const userDomainName = this.state.currentIdentity
 
-    let hasUsername = true
-    if (userDomainName === localIdentities[userDomainName].ownerAddress) {
+    const hasUsername = this.state.hasUsername
+    if (hasUsername) {
       logger.debug(`login(): this profile ${userDomainName} has no username`)
-      hasUsername = false
     }
 
     // Get keypair corresponding to the current user identity
-    const profileSigningKeypair = identityKeypairs.find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
+    const profileSigningKeypair = identityKeypairs
+    .find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
 
-    const blockchainId = (hasUsername ? userDomainName : null)
+    const blockchainId = decodedCoreSessionToken.payload.blockchain_id
     const identity = localIdentities[userDomainName]
     const profile = identity.profile
     const privateKey = profileSigningKeypair.key
@@ -123,7 +129,7 @@ class AuthModal extends Component {
 
     // TODO: what if the token is expired?
     const authResponse = makeAuthResponse(privateKey, profile, blockchainId,
-        nextProps.coreSessionTokens[appDomain], appPrivateKey)
+        coreSessionToken, appPrivateKey)
 
     this.props.clearSessionToken(appDomain)
 
@@ -142,122 +148,158 @@ class AuthModal extends Component {
     }
     const localIdentities = this.props.localIdentities
     const userDomainName = this.state.currentIdentity
-
+    const identity = localIdentities[userDomainName]
     let hasUsername = true
-    if (userDomainName === localIdentities[userDomainName].ownerAddress) {
+    if (userDomainName === identity.ownerAddress) {
       logger.debug(`login(): this profile ${userDomainName} has no username`)
       hasUsername = false
     }
 
-    // Get keypair corresponding to the current user identity
-    const profileSigningKeypair = this.props.identityKeypairs.find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
+    // check to see if username is resolvable until we get name state managament
+    // fixed in
+    // https://github.com/blockstack/blockstack-browser/issues/864#issuecomment-335035037
 
-    const appDomain = this.state.decodedToken.payload.domain_name
-    const scopes = this.state.decodedToken.payload.scopes
-    const appsNodeKey = profileSigningKeypair.appsNodeKey
-    const salt = profileSigningKeypair.salt
-    const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-    const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-    const blockchainId = (hasUsername ? userDomainName : null)
-    logger.trace(`login(): Calling setCoreStorageConfig()...`)
-    setCoreStorageConfig(this.props.api, blockchainId,
-      localIdentities[userDomainName].profile, profileSigningKeypair)
-    .then(() => {
-      logger.trace('login(): Core storage successfully configured.')
-      logger.trace('login(): Calling getCoreSessionToken()...')
-      this.props.getCoreSessionToken(this.props.coreHost,
-          this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
-          appDomain, this.state.authRequest, blockchainId)
-    })
+
+    const lookupValue = hasUsername ? userDomainName : ''
+
+
+    // if profile has no name, lookupUrl will be
+    // http://localhost:6270/v1/names/ which returns 401
+    const lookupUrl = this.props.api.nameLookupUrl.replace('{name}', lookupValue)
+    fetch(lookupUrl)
+        .then(response => response.text())
+        .then(responseText => JSON.parse(responseText))
+        .then(responseJSON => {
+          if (hasUsername) {
+            if (responseJSON.hasOwnProperty('address')) {
+              const nameOwningAddress = responseJSON.address
+              if (nameOwningAddress === identity.ownerAddress) {
+                logger.debug('login: name has propagated on the network.')
+              } else {
+                logger.debug('login: name is not usable on the network.')
+                hasUsername = false
+              }
+            } else {
+              logger.debug('login: name is not visible on the network.')
+              hasUsername = false
+            }
+          }
+
+          // Get keypair corresponding to the current user identity
+          const profileSigningKeypair = this.props.identityKeypairs
+          .find((keypair) => keypair.address === identity.ownerAddress)
+
+          const appDomain = this.state.decodedToken.payload.domain_name
+          const appsNodeKey = profileSigningKeypair.appsNodeKey
+          const salt = profileSigningKeypair.salt
+          const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+          const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+          const blockchainId = (hasUsername ? userDomainName : null)
+          logger.trace('login(): Calling setCoreStorageConfig()...')
+          setCoreStorageConfig(this.props.api, blockchainId,
+          identity.profile, profileSigningKeypair)
+          .then(() => {
+            logger.trace('login(): Core storage successfully configured.')
+            logger.trace('login(): Calling getCoreSessionToken()...')
+            this.props.getCoreSessionToken(this.props.coreHost,
+                this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
+                appDomain, this.state.authRequest, blockchainId)
+          })
+        })
   }
 
   render() {
     const appManifest = this.props.appManifest
     const appManifestLoading = this.props.appManifestLoading
-    const appManifestLoadingError = this.props.appManifestLoadingError
 
     return (
       <div className="">
         <Modal
-          isOpen={true}
+          isOpen
           onRequestClose={this.closeModal}
           contentLabel="This is My Modal"
-          shouldCloseOnOverlayClick={true}
-          style={{overlay: {zIndex: 10}}}
+          shouldCloseOnOverlayClick
+          style={{ overlay: { zIndex: 10 } }}
           className="container-fluid"
-          portalClassName="auth-modal">
+          portalClassName="auth-modal"
+        >
           <h3>Sign In Request</h3>
-          { appManifestLoading ?
+          {appManifestLoading ?
             <div>
-               <p>
+              <p>
                  Loading app details...
-               </p>
-             </div>
+              </p>
+            </div>
             :
             <div>
-          { appManifest === null ?
+          {appManifest === null ?
             <div>
-               <p>
+              <p>
                  Invalid Sign In Request
-               </p>
-             </div>
+              </p>
+            </div>
             :
-          <div>
-            <p>
+            <div>
+              <p>
               The app "{appManifest.name}" wants to access your basic info
-            </p>
-            { appManifest.hasOwnProperty('icons') ?
-            <p>
-              <Image src={appManifest.icons[0].src} style={{ width: '128px', height: '128px' }}
-                fallbackSrc="/images/app-icon-hello-blockstack.png" />
-            </p>
-            : null }
-            { Object.keys(this.props.localIdentities).length > 0 ?
+              </p>
+            {appManifest.hasOwnProperty('icons') ?
+              <p>
+                <Image
+                  src={appManifest.icons[0].src}
+                  style={{ width: '128px', height: '128px' }}
+                  fallbackSrc="/images/app-icon-hello-blockstack.png"
+                />
+              </p>
+            : null}
+            {Object.keys(this.props.localIdentities).length > 0 ?
               <div>
-              { this.state.storageConnected ?
-            <div>
-              <p>Choose a profile to log in with.</p>
-              <select
-                className="form-control profile-select"
-                onChange={(event) => this.setState({ currentIdentity: event.target.value })}
-                value={this.state.currentIdentity ? this.state.currentIdentity : ''}
-              >
-                {Object.keys(this.props.localIdentities).map((domainName) => (
-                  <option
-                    key={domainName}
-                    value={this.props.localIdentities[domainName].domainName}
+              {this.state.storageConnected ?
+                <div>
+                  <p>Choose a profile to log in with.</p>
+                  <select
+                    className="form-control profile-select"
+                    onChange={(event) => this.setState({ currentIdentity: event.target.value })}
+                    value={this.state.currentIdentity ? this.state.currentIdentity : ''}
                   >
-                    {this.props.localIdentities[domainName].domainName}
-                  </option>
-                ))}
-              </select>
-              <div>
-                <button className="btn btn-primary btn-block" onClick={this.login}>
-                  Approve
-                </button>
-                <Link to="/" className="btn btn-outline-primary btn-block">
-                 Deny
-               </Link>
+                    {Object.keys(this.props.localIdentities).map((domainName) => (
+                      <option
+                        key={domainName}
+                        value={this.props.localIdentities[domainName].domainName}
+                      >
+                        {this.props.localIdentities[domainName].domainName}
+                      </option>
+                    ))}
+                  </select>
+                  <div>
+                    <button className="btn btn-primary btn-block" onClick={this.login}>
+                      Approve
+                    </button>
+                    <Link to="/" className="btn btn-outline-primary btn-block">
+                     Deny
+                    </Link>
+                  </div>
+                </div>
+            :
+                <div>
+                  <p>
+                    You need to
+                    <Link to="/account/storage">connect your storage</Link>
+                    in order to log in.
+                  </p>
+                </div>
+            }
               </div>
-            </div>
             :
-            <div>
-              <p>
-                You need to <Link to="/account/storage">connect your storage</Link> in order to log in.
-              </p>
-            </div>
+              <div>
+                <p>
+                  You need to <Link to="/profiles">create a profile</Link> in order to log in.
+                </p>
+              </div>
             }
             </div>
-            :
-            <div>
-              <p>
-                You need to <Link to="/profiles">create a profile</Link> in order to log in.
-              </p>
-            </div>
-            }
-          </div>
         }
-        </div>
+            </div>
            }
         </Modal>
       </div>
