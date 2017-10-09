@@ -264,6 +264,7 @@ class AuthModal extends Component {
                     className="form-control profile-select"
                     onChange={(event) => this.setState({ currentIdentity: event.target.value })}
                     value={this.state.currentIdentity ? this.state.currentIdentity : ''}
+                    disabled={processing}
                   >
                     {Object.keys(this.props.localIdentities).map((domainName) => (
                       <option
@@ -280,10 +281,12 @@ class AuthModal extends Component {
                       onClick={this.login}
                       disabled={processing}
                     >
-                      {processing ? 'Please wait...' : 'Approve'}
+                      {processing ? 'Signing in...' : 'Approve'}
                     </button>
                     {processing ?
-                    null
+                      <a href="/" className="btn btn-outline-primary btn-block">
+                        Cancel
+                      </a>
                     :
                       <Link to="/" className="btn btn-outline-primary btn-block">
                         Deny
