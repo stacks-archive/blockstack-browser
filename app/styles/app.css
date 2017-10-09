@@ -52,7 +52,7 @@ div.edit-profile-accounts .account.placeholder.collapsed {color:#C7C7C7;backgrou
 div.edit-profile-accounts .account.placeholder.collapsed > span.app-account-service {color:#C7C7C7;}
 div.edit-profile-accounts .account.placeholder > span.app-account-service {color:#4B4B4B;}
 div.edit-profile-accounts .account.placeholder {color:#4B4B4B;background-color:#fff;}
-div.edit-profile-accounts .account.placeholder .form-group input.form-control {color:#fff;background-color:#FAFAFA;border:1px solid #FAFAFA;}
+div.edit-profile-accounts .account.placeholder .form-group input.form-control {color:#fff;background-color:#FAFAFA;border:1px solid #FAFAFA;caret-color: #4B4B4B;}
 .account-enter {opacity: 0.01;}
 .account-enter.account-enter-active {opacity: 1;transition: all 400ms ease-in}
 .account-leave {opacity: 1;}
