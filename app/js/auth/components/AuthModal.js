@@ -67,7 +67,8 @@ class AuthModal extends Component {
       appManifest: null,
       coreSessionToken: null,
       decodedToken: null,
-      storageConnected: this.props.api.storageConnected
+      storageConnected: this.props.api.storageConnected,
+      processing: false
     }
 
     this.login = this.login.bind(this)
@@ -142,6 +143,7 @@ class AuthModal extends Component {
   }
 
   login() {
+    this.setState({ processing: true })
     this.props.loginToApp()
     if (!Object.keys(this.props.localIdentities).length) {
       return
@@ -211,6 +213,7 @@ class AuthModal extends Component {
   render() {
     const appManifest = this.props.appManifest
     const appManifestLoading = this.props.appManifestLoading
+    const processing = this.state.processing
 
     return (
       <div className="">
@@ -272,12 +275,20 @@ class AuthModal extends Component {
                     ))}
                   </select>
                   <div>
-                    <button className="btn btn-primary btn-block" onClick={this.login}>
-                      Approve
+                    <button
+                      className="btn btn-primary btn-block"
+                      onClick={this.login}
+                      disabled={processing}
+                    >
+                      {processing ? 'Please wait...' : 'Approve'}
                     </button>
-                    <Link to="/" className="btn btn-outline-primary btn-block">
-                     Deny
-                    </Link>
+                    {processing ?
+                    null
+                    :
+                      <Link to="/" className="btn btn-outline-primary btn-block">
+                        Deny
+                      </Link>
+                  }
                   </div>
                 </div>
             :
