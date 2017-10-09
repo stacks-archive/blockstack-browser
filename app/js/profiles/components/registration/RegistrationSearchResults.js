@@ -9,15 +9,6 @@ const availabilityHeaderStyle = {
 
 const RegistrationSearchResults = (props) => (
   <div>
-    <a
-      href=""
-      className="pull-left"
-      onClick={props.showSearchBox}
-    >
-      &lt; Back
-    </a>
-    <br />
-
     <h3 className="modal-heading">Available names</h3>
 
     <div className="modal-body">
@@ -65,7 +56,7 @@ const RegistrationSearchResults = (props) => (
                           Get <strong>{name}</strong> for free
                         </Link>
                         <Link
-                          to="/profiles"
+                          to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
                           className="btn btn-secondary btn-block"
                         >
                           Cancel
@@ -94,12 +85,12 @@ const RegistrationSearchResults = (props) => (
                           >
                             Buy <strong>{name}</strong> for {price} bitcoins
                           </Link>
-                          <Link
-                            to="/profiles"
+                          <button
+                            onClick={props.showSearchBox}
                             className="btn btn-secondary btn-block"
                           >
-                            Cancel
-                          </Link>
+                            Back
+                          </button>
                         </div>
                       }
                       </div>
@@ -115,12 +106,12 @@ const RegistrationSearchResults = (props) => (
                     >
                       {name} is already taken
                     </button>
-                    <Link
-                      to="/profiles"
+                    <button
+                      onClick={props.showSearchBox}
                       className="btn btn-secondary btn-block"
                     >
-                      Cancel
-                    </Link>
+                      Back
+                    </button>
                   </div>
                 }
               </div>

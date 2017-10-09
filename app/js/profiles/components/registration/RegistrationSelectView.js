@@ -263,9 +263,9 @@ class AddUsernameSelectPage extends Component {
           )
         )}
         {enoughMoney ?
-          <div style={{ textAlign: 'center' }}>
+          <div>
           {nameIsSubdomain ?
-            <div>
+            <div className="text-center">
               <h3 className="modal-heading">
                 Are you sure you want to register <strong>{name}</strong>?
               </h3>
@@ -286,8 +286,11 @@ class AddUsernameSelectPage extends Component {
                 {registrationInProgress ?
                   null
                   :
-                  <Link to="/profiles">
-                    Cancel
+                  <Link
+                    to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
+                    className="btn btn-secondary btn-block"
+                  >
+                    Back
                   </Link>
                 }
               </div>
@@ -297,11 +300,11 @@ class AddUsernameSelectPage extends Component {
               <h3 className="modal-heading">
                 Enter your password to buy <strong>{name}</strong>
               </h3>
-              <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
-              from your wallet.</p>
-              <div
-                style={{ textAlign: 'center' }}
-              >
+              <div className="text-center">
+                <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
+                from your wallet.</p>
+              </div>
+              <div>
                 <form onSubmit={this.register}>
                   <InputGroup
                     data={this.state}
@@ -315,7 +318,7 @@ class AddUsernameSelectPage extends Component {
                   <button
                     type="submit"
                     onClick={this.register}
-                    className="btn btn-primary"
+                    className="btn btn-primary btn-block"
                     disabled={registrationInProgress}
                   >
                     {registrationInProgress ?
@@ -329,8 +332,11 @@ class AddUsernameSelectPage extends Component {
                 {registrationInProgress ?
                   null
                   :
-                  <Link to="/profiles">
-                    Cancel
+                  <Link
+                    to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
+                    className="btn btn-secondary btn-block"
+                  >
+                    Back
                   </Link>
                 }
               </div>
@@ -353,7 +359,7 @@ class AddUsernameSelectPage extends Component {
                 null
               }
               <div>
-                <div className="progress">
+                <div className="progress m-t-20 m-b-20">
                   <div
                     className="progress-bar progress-bar-striped progress-bar-animated"
                     role="progressbar"
@@ -365,8 +371,11 @@ class AddUsernameSelectPage extends Component {
                   Waiting for payment...
                   </div>
                 </div>
-                <Link to="/profiles">
-                  Cancel
+                <Link
+                  to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
+                  className="btn btn-secondary btn-block"
+                >
+                  Back
                 </Link>
               </div>
             </div>

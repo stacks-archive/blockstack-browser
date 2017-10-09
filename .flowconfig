@@ -1,8 +1,10 @@
 [ignore]
+.*/node_modules/bigi/*
 .*/node_modules/bower-json/*
 .*/node_modules/config-chain/*
 .*/node_modules/config-chain/*
 .*/node_modules/npmconf/*
+.*/node_modules/immutable/*
 .*/tmp/nexe/*
 
 [include]

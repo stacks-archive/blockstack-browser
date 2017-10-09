@@ -14,7 +14,7 @@ const RegistrationSubmittedView = (props) => (
         className="m-b-20"
         style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }}
       />
-      <Link to="/profiles" className="btn btn-primary">I understand</Link>
+      <Link to="/profiles" className="btn btn-primary btn-block">I understand</Link>
     </div>
   </div>
  )
