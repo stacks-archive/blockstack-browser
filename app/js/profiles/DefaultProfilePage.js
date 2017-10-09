@@ -77,9 +77,7 @@ class DefaultProfilePage extends Component {
     logger.trace('componentWillMount')
     this.props.refreshIdentities(
       this.props.api,
-      this.props.identityAddresses,
-      this.props.localIdentities,
-      this.props.namesOwned
+      this.props.identityAddresses
     )
   }
 
@@ -257,7 +255,7 @@ class DefaultProfilePage extends Component {
         >
           <Image
             src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
-            fallbackSrc="/images/avatar.png" className="img-fluid clickable" 
+            fallbackSrc="/images/avatar.png" className="img-fluid clickable"
             onClick={this.closePhotoModal}/>
         </Modal>
         <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
@@ -281,7 +279,7 @@ class DefaultProfilePage extends Component {
                 <div className="avatar-md m-b-20 text-center">
                   <Image
                     src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
-                    fallbackSrc="/images/avatar.png" className="rounded-circle clickable" 
+                    fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
                     onClick={this.onPhotoClick}/>
                 </div>
 
@@ -374,7 +372,7 @@ class DefaultProfilePage extends Component {
                           }
                         }
                       }
-                      if (account.service === 'pgp' || account.service === 'ssh' 
+                      if (account.service === 'pgp' || account.service === 'ssh'
                         || account.service === 'bitcoin' || account.service === 'ethereum') {
                         return (
                           <PGPAccountItem

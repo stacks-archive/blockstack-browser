@@ -96,151 +96,107 @@ describe('Identity Store: IdentityReducer', () => {
     const profile = {
       key: 'value'
     }
-    const action = IdentityActions.updateProfile('satoshi.id', profile, [], 'test')
-    const expectedState = {
-      default: null,
-      current: {
-        domainName: null,
-        profile: null,
-        verifications: null,
+    const testInitialState = {
+      default: 0,
+      current: 0,
+      localIdentities: [{
+        username: null,
+        usernameOwned: false,
+        usernamePending: false,
+        profile: {},
+        verifications: [],
+        registered: false,
+        ownerAddress: '123',
         zoneFile: null
-      },
-      localIdentities: {
-        'satoshi.id': {
-          profile: {
-            key: 'value'
-          },
-          verifications: [],
-          zoneFile: 'test'
-        }
-      },
+      }],
       nameTransfers: [],
       namesOwned: [],
       zoneFileUpdates: [],
       createProfileError: null
     }
-    const actualState = IdentityReducer(undefined, action)
-    assert.deepEqual(actualState, expectedState)
-  })
-
-  it('should update the profile of the specified name', () => {
-    const profile = {
-      key: 'value'
-    }
-    const zoneFile = 'test'
-    const action = IdentityActions.updateProfile('satoshi.id', profile, [], zoneFile)
+    const action = IdentityActions.updateProfile(0, profile, ['a'], 'test')
     const expectedState = {
-      default: null,
-      current: {
-        domainName: null,
-        profile: null,
-        verifications: null,
-        zoneFile: null
-      },
-      localIdentities: {
-        'satoshi.id': {
-          profile: {
-            key: 'value'
-          },
-          verifications: [],
-          zoneFile: 'test'
-        }
-      },
+      default: 0,
+      current: 0,
+      localIdentities: [{
+        username: null,
+        usernameOwned: false,
+        usernamePending: false,
+        profile: {
+          key: 'value'
+        },
+        verifications: ['a'],
+        registered: false,
+        ownerAddress: '123',
+        zoneFile: 'test'
+      }],
       nameTransfers: [],
       namesOwned: [],
       zoneFileUpdates: [],
       createProfileError: null
     }
-    const actualState = IdentityReducer(undefined, action)
+    const actualState = IdentityReducer(testInitialState, action)
     assert.deepEqual(actualState, expectedState)
   })
 
   it('should move the identity from owner address key to domain key', () => {
     const initialState = {
-      localIdentities: {
-        '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC': {
-          profile: {
-            key: 'value'
-          },
-          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
-        }
-      },
-      createProfileError: null
-    }
-
-    const expectedState = {
-      localIdentities: {
-        'satoshi.id': {
-          profile: {
-            key: 'value'
-          },
-          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
-          domainName: 'satoshi.id',
-          zoneFile: 'test'
-        }
-      },
-      createProfileError: null
-    }
-    const action = IdentityActions.addUsername('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC', 'test')
-
-    const actualState = IdentityReducer(initialState, action)
-    assert.deepEqual(actualState, expectedState)
-  })
-
-  it('should move the identity from owner address key to domain key, merging existing domain key state', () => {
-    const initialState = {
-      localIdentities: {
-        '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC': {
-          profile: {
-            key: 'value'
-          },
-          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
+      default: 0,
+      current: 0,
+      localIdentities: [{
+        username: null,
+        usernameOwned: false,
+        usernamePending: false,
+        profile: {
+          key: 'value'
         },
-        'satoshi.id': {
-          profile: {
-            key2: 'value2'
-          },
-          testState: 'somestate'
-        }
-      },
+        verifications: ['a'],
+        registered: false,
+        ownerAddress: '123',
+        zoneFile: 'test'
+      }],
+      nameTransfers: [],
+      namesOwned: [],
+      zoneFileUpdates: [],
       createProfileError: null
     }
 
     const expectedState = {
-      localIdentities: {
-        'satoshi.id': {
-          profile: {
-            key: 'value'
-          },
-          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
-          domainName: 'satoshi.id',
-          zoneFile: 'test',
-          testState: 'somestate'
-        }
-      },
+      default: 0,
+      current: 0,
+      localIdentities: [{
+        username: 'name.id',
+        usernameOwned: false,
+        usernamePending: true,
+        profile: {
+          key: 'value'
+        },
+        verifications: ['a'],
+        registered: false,
+        ownerAddress: '123',
+        zoneFile: 'test'
+      }],
+      nameTransfers: [],
+      namesOwned: [],
+      zoneFileUpdates: [],
       createProfileError: null
     }
-    const action = IdentityActions.addUsername('satoshi.id', '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC', 'test')
+    const action = IdentityActions.addUsername(0, 'name.id')
 
     const actualState = IdentityReducer(initialState, action)
     assert.deepEqual(actualState, expectedState)
   })
 
   it('should create a create new profile error', () => {
-    const error = new String('error')
+    const error = 'error'
     const expectedState = {
-      default: null,
-      current: {
-        domainName: null,
-        profile: null,
-        verifications: null,
-        zoneFile: null
-      },
-      localIdentities: {},
+      default: 0,
+      current: 0,
+      localIdentities: [],
       nameTransfers: [],
       namesOwned: [],
-      zoneFileUpdates: [],
-      createProfileError: error
+      createProfileError: 'error',
+      zoneFileUpdates: []
     }
     const action = IdentityActions.createNewProfileError(error)
 

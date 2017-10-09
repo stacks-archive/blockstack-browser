@@ -72,10 +72,7 @@ class IdentityPage extends Component {
     logger.trace('componentWillMount')
     this.props.refreshIdentities(
       this.props.api,
-      this.props.identityAddresses,
-      this.props.localIdentities,
-      this.props.namesOwned
-    )
+      this.props.identityAddresses)
   }
 
   componentWillReceiveProps(nextProps) {

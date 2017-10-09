@@ -192,10 +192,12 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
     ownerAddresses.forEach((address, index) => {
       const promise: Promise<*> = new Promise((resolve) => {
         const url = api.bitcoinAddressLookupUrl.replace('{address}', address)
+        logger.debug(`refreshIdentities: fetching ${url}`)
         fetch(url)
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
+          console.log(responseJson)
           if (responseJson.names.length === 0) {
             logger.debug(`refreshIdentities: ${address} owns no names`)
             resolve()
@@ -221,11 +223,11 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
                 if (profile) {
                   dispatch(updateProfile(index, profile, [], zoneFile))
                   let verifications = []
-                  validateProofs(profile, ownerAddress, domainName).then((proofs) => {
+                  validateProofs(profile, ownerAddress, nameOwned).then((proofs) => {
                     verifications = proofs
                     dispatch(updateProfile(index, profile, verifications, zoneFile))
                   }).catch((error) => {
-                    logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
+                    logger.error(`fetchCurrentIdentity: ${nameOwned} validateProofs: error`, error)
                   })
                 }
                 resolve()
