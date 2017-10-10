@@ -1,13 +1,13 @@
-// flow-typed signature: 7214d6a569d27677797b02e00e23e1fc
-// flow-typed version: a2aed2eebc/react-addons-css-transition-group_v15.x.x/flow_>=v0.53.x
+// flow-typed signature: 4289f578eae9e926f15a7597e4322fcb
+// flow-typed version: 72fd37b4b1/react-addons-css-transition-group_v15.x.x/flow_>=v0.53.x
 
 declare module 'react-addons-css-transition-group' {
   declare type ReactCSSTransitionGroupNames = {
-    enter: string,
+    enter?: string,
     enterActive?: string,
-    leave: string,
+    leave?: string,
     leaveActive?: string,
-    appear: string,
+    appear?: string,
     appearActive?: string
   };
   declare type Props = {
