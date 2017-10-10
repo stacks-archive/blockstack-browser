@@ -268,6 +268,7 @@ class EditProfilePage extends Component {
             account.proofUrl = this.generateProofUrl(service, identifier)
           }
           this.setState({profile: profile})
+          this.refreshProofs()
         }
       })
 
@@ -278,6 +279,7 @@ class EditProfilePage extends Component {
         }
         profile.account.push(newAccount)
         this.setState({profile: profile})
+        this.refreshProofs()
       }
     }
   }

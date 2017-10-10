@@ -53,7 +53,7 @@ class EditSocialAccountItem extends Component {
 
     this.debouncedOnChange = debounce(() => {
       this.props.onChange(this.props.service, this.state.identifier)
-    }, 1000)
+    }, 1500)
 
     this.debouncedOnProofUrlChange = debounce(() => {
       this.props.onProofUrlChange(this.props.service, this.state.proofUrl)
