@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="36px" height="46px" viewBox="0 0 36 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 47 (45396) - http://www.bohemiancoding.com/sketch -->
     <title>icon-nav-wallet</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
-        <g id="browser-macOS-40b-profile-d16" transform="translate(-264.000000, -61.000000)" stroke="#949494" stroke-width="1.19">
-            <g id="navbar-384px" transform="translate(42.000000, 49.000000)">
-                <g id="wallet" transform="translate(222.000000, 12.000000)">
-                    <path d="M13.0741118,15.6296447 L10.6296447,15.6296447 C9.72926601,15.6296447 9,16.3589107 9,17.2592894 L9,17.2592894 C9,18.1596682 9.72926601,18.8889342 10.6296447,18.8889342" id="Shape"></path>
-                    <polyline id="Shape" points="13.0741118 18.8889342 13.0741118 14 24.4816249 14 24.4816249 18.8889342"></polyline>
+        <g id="browser-macOS-40a-profile-d18" transform="translate(-260.000000, -59.000000)" stroke="#949494" stroke-width="1.19">
+            <g id="navbar-352px" transform="translate(58.000000, 47.000000)">
+                <g id="wallet" transform="translate(202.000000, 12.000000)">
+                    <path d="M24.0839844,15.6296447 L10.6296447,15.6296447 C9.72926601,15.6296447 9,16.3589107 9,17.2592894 C9,18.1596682 9.72926601,18.8889342 10.6296447,18.8889342 C19.5992045,18.8889342 24.0839844,18.7981892 24.0839844,18.6166992 C24.0839844,17.7117594 24.0839844,16.7160745 24.0839844,15.6296447 Z" id="Shape"></path>
                     <path d="M26.926092,18.8889342 L10.6296447,18.8889342 C9.72926601,18.8889342 9,18.1596682 9,17.2592894 L9,29.4816249 C9,30.8317855 10.0943064,31.926092 11.4444671,31.926092 L26.926092,31.926092 L26.926092,18.8889342 Z" id="Shape"></path>
                     <circle id="Oval" cx="22.0371578" cy="25.4075131" r="1.62964472"></circle>
                 </g>
