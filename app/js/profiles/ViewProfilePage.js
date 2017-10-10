@@ -10,7 +10,6 @@ import Modal from 'react-modal'
 import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { SearchActions } from './store/search'
-import ToolTip from '../components/ToolTip'
 
 function mapStateToProps(state) {
   return {
@@ -164,13 +163,6 @@ class ViewProfilePage extends Component {
                 onClick={this.closePhotoModal}
               />
             </Modal>
-            <ToolTip id="domainName">
-              <div>This is your owner address.</div>
-              <div className="text-secondary">
-                You can switch to a more meaningful name by adding an username.
-              </div>
-            </ToolTip>
-
             <div className="container-fluid m-t-50">
               <div className="row">
                 <div className="col-12">
@@ -193,24 +185,11 @@ class ViewProfilePage extends Component {
                     <h1 className="pro-card-name text-center">{person.name()}</h1>
                     <div className="pro-card-domain-name m-b-10 text-center text-secondary">
                       {domainName}
-                      {(isLocal && !this.hasUsername()) &&
-                        <span data-tip data-for="domainName">(?)</span>}
-                    </div>
-                    <div className="m-b-20 text-center">
-                      {isLocal && !this.hasUsername() ?
-                        <Link
-                          to={`/profiles/i/add-username/${domainName}/search`}
-                        >
-                         Add a username
-                        </Link>
-                        :
-                        null
-                      }
                     </div>
                     <div className="pro-card-body text-center">
                       {person.description()}
                     </div>
-                    {person.address() ?
+                    {/* {person.address() ?
                       <div className="pro-card-body text-center text-secondary">
                       {person.address()}
                       </div>
@@ -219,7 +198,7 @@ class ViewProfilePage extends Component {
                       <div className="pro-card-body text-center">
                       {person.birthDate()}
                       </div>
-                    : null}
+                    : null} */}
                   </div>
 
                   <div className="text-center">
@@ -287,15 +266,7 @@ class ViewProfilePage extends Component {
                     </button>
                   </div>
                 </div>
-                ) : (
-                <div className="row">
-                  <div className="col text-center">
-                    <button className="btn btn-link">
-                      Add Friend
-                    </button>
-                  </div>
-                </div>
-                )
+                ) : (<div></div>)
               }
             </div>
 
