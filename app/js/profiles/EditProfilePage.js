@@ -23,8 +23,6 @@ import SocialAccountsTab from './tabs/SocialAccountsTab'
 import PublicKeysTab     from './tabs/PublicKeysTab'
 import PrivateInfoTab    from './tabs/PrivateInfoTab'
 
-import { debounce } from 'lodash'
-
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/EditProfilePage.js')
@@ -97,10 +95,6 @@ class EditProfilePage extends Component {
     this.openPhotoModal = this.openPhotoModal.bind(this)
     this.closePhotoModal = this.closePhotoModal.bind(this)
     this.onVerifyButtonClick = this.onVerifyButtonClick.bind(this)
-
-    this.debouncedRefreshProofs = debounce(() => {
-      this.refreshProofs.apply(this)
-    }, 1000)
   }
 
   componentWillMount() {
@@ -257,9 +251,8 @@ class EditProfilePage extends Component {
     return ''
   }
 
-  onSocialAccountChange(service, event) {
+  onSocialAccountChange(service, identifier) {
     let profile = this.state.profile
-    let identifier = event.target.value
 
     if (!profile.hasOwnProperty('account')) {
       profile.account = []
@@ -289,16 +282,15 @@ class EditProfilePage extends Component {
     }
   }
 
-  onSocialAccountProofUrlChange(service, event) {
+  onSocialAccountProofUrlChange(service, proofUrl) {
     const profile = this.state.profile
-    const proofUrl = event.target.value
 
     if (profile.hasOwnProperty('account')) {
       profile.account.forEach(account => {
         if(account.service === service) {
           account.proofUrl = proofUrl
           this.setState({profile: profile})
-          this.debouncedRefreshProofs()
+          this.refreshProofs()
         }
       })
     }
