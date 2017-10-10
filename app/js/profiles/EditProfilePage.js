@@ -471,10 +471,7 @@ class EditProfilePage extends Component {
                 </div>
 
                 <div className="col-12">
-                  <InputGroup name="givenName" label="First Name"
-                      data={this.state.profile}
-                      onChange={this.onChange} />
-                  <InputGroup name="familyName" label="Last Name"
+                  <InputGroup name="name" label="Full Name"
                       data={this.state.profile}
                       onChange={this.onChange} />
                   <InputGroup name="description" label="Short Bio"
