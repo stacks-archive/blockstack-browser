@@ -36,6 +36,8 @@ const accountTypes = [
   'github',
   'instagram',
   'hackerNews',
+  'bitcoin',
+  'ethereum',
   'pgp',
   'ssh'
 ]
