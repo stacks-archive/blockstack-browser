@@ -243,9 +243,25 @@ class EditProfilePage extends Component {
     }
   }
 
+  shouldAutoGenerateProofUrl(service) {
+    return service === 'hackerNews'
+  }
+
+  generateProofUrl(service, identifier) {
+    if (service === 'hackerNews') {
+      return `https://news.ycombinator.com/user?id=${identifier}`
+    }
+
+    return ''
+  }
+
   onSocialAccountChange(service, event) {
     let profile = this.state.profile
     let identifier = event.target.value
+
+    if (!profile.hasOwnProperty('account')) {
+      profile.account = []
+    }
 
     if (profile.hasOwnProperty('account')) {
       let hasAccount = false
@@ -253,19 +269,21 @@ class EditProfilePage extends Component {
         if(account.service === service) {
           hasAccount = true
           account.identifier = identifier
+          if (this.shouldAutoGenerateProofUrl(service)) {
+            account.proofUrl = this.generateProofUrl(service, identifier)
+          }
           this.setState({profile: profile})
         }
       })
 
       if (!hasAccount && identifier.length > 0) {
-        profile.account.push(this.createNewAccount(service, identifier))
+        let newAccount = this.createNewAccount(service, identifier)
+        if (this.shouldAutoGenerateProofUrl(service)) {
+          newAccount.proofUrl = this.generateProofUrl(service, identifier)
+        }
+        profile.account.push(newAccount)
         this.setState({profile: profile})
       }
-    }
-    else {
-      profile.account = []
-      profile.account.push(this.createNewAccount(service, identifier))
-      this.setState({profile: profile})
     }
   }
 

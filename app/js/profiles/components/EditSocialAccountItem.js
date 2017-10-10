@@ -145,6 +145,7 @@ class EditSocialAccountItem extends Component {
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     const collapsedClass = this.state.collapsed ? "collapsed" : "active"
     let webAccountType = webAccountTypes[this.props.service]
+    const disabled = this.props.service === 'hackerNews'
 
     const proofURLInput = () => {
       if (this.props.service === 'instagram' || this.props.service === 'github'
@@ -159,7 +160,9 @@ class EditSocialAccountItem extends Component {
                   onChange={this.onProofUrlChange} 
                   onBlur={event => this.props.onBlur(event, this.props.service)}
                   accessoryIcon={this.props.verified}
-                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" />
+                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+                  disabled={false}
+                />
       } else {
         return <div></div>
       }
