@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="36px" height="46px" viewBox="0 0 36 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 47 (45396) - http://www.bohemiancoding.com/sketch -->
     <title>icon-nav-wallet-hover</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="browser-macOS-40b-profile-d16" transform="translate(-264.000000, -61.000000)">
-            <g id="navbar-384px" transform="translate(42.000000, 49.000000)">
-                <g id="wallet:hover" transform="translate(192.000000, 0.000000)">
-                    <g id="wallet" transform="translate(39.000000, 26.000000)" stroke="#2C96FF" stroke-width="1.19" stroke-linecap="square">
-                        <path d="M4.07411181,1.62964472 L1.62964472,1.62964472 C0.729266014,1.62964472 0,2.35891074 0,3.25928945 L0,3.25928945 C0,4.15966816 0.729266014,4.88893417 1.62964472,4.88893417" id="Shape"></path>
-                        <polyline id="Shape" points="4.07411181 4.88893417 4.07411181 0 15.4816249 0 15.4816249 4.88893417"></polyline>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="browser-macOS-40a-profile-d18" transform="translate(-260.000000, -59.000000)" stroke="#2C96FF" stroke-width="1.19">
+            <g id="navbar-352px" transform="translate(58.000000, 47.000000)">
+                <g id="wallet:hover" transform="translate(176.000000, 0.000000)">
+                    <g id="wallet-temporary" transform="translate(35.000000, 26.000000)">
+                        <path d="M15.0839844,1.62964472 L1.62964472,1.62964472 C0.729266014,1.62964472 0,2.35891074 0,3.25928945 C0,4.15966816 0.729266014,4.88893417 1.62964472,4.88893417 C10.5992045,4.88893417 15.0839844,4.79818919 15.0839844,4.61669922 C15.0839844,3.71175937 15.0839844,2.71607454 15.0839844,1.62964472 Z" id="Shape"></path>
                         <path d="M17.926092,4.88893417 L1.62964472,4.88893417 C0.729266014,4.88893417 0,4.15966816 0,3.25928945 L0,15.4816249 C0,16.8317855 1.09430643,17.926092 2.44446709,17.926092 L17.926092,17.926092 L17.926092,4.88893417 Z" id="Shape"></path>
                         <circle id="Oval" cx="13.0371578" cy="11.4075131" r="1.62964472"></circle>
                     </g>
-                    <rect id="::after" fill="#2C96FF" x="30" y="56" width="36" height="2"></rect>
                 </g>
             </g>
         </g>
