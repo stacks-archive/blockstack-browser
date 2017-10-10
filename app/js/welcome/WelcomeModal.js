@@ -61,7 +61,7 @@ class WelcomeModal extends Component {
     emailNotifications: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired,
     identityAddresses: PropTypes.array,
-    createNewIdentityFromDomain: PropTypes.func.isRequired,
+    createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
     setDefaultIdentity: PropTypes.func.isRequired,
     connectedStorageAtLeastOnce: PropTypes.bool.isRequired
   }
@@ -140,13 +140,14 @@ class WelcomeModal extends Component {
         logger.debug('Backup phrase successfully decrypted. Storing identity key.')
         this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
 
-        const ownerAddress = this.props.identityAddresses[0]
+        const firstIdentityIndex = 0
+        const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
 
         // create first profile
-        this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
+        this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
 
         // Set as default profile
-        this.props.setDefaultIdentity(ownerAddress)
+        this.props.setDefaultIdentity(firstIdentityIndex)
         if (this.state.restored) {
           this.setPage(EMAIL_VIEW)
         } else {

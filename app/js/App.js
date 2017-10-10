@@ -111,19 +111,6 @@ class App extends Component {
       coreConnected: !!nextProps.api.coreAPIPassword,
       currentPath: nextPath
     })
-
-    // Only for backward-compatibility purpose.
-    // Since we added a `default` field in state.profiles.identity, if the user
-    // already had localIdentities but doesn't have a default one, we put the
-    // default as his 1st one.
-    // We also reset the default to the 1st one if it no longer exists. This
-    // can happen during account restoration when the user already has a username
-    const localIdentities = Object.keys(nextProps.localIdentities)
-
-    if (localIdentities.length &&
-      (!nextProps.defaultIdentity || localIdentities.indexOf(nextProps.defaultIdentity) < 0)) {
-      nextProps.setDefaultIdentity(nextProps.localIdentities[localIdentities[0]].domainName)
-    }
   }
 
 

@@ -32,7 +32,6 @@ app/js/utils/*
 app/js/profiles/store/*
 app/js/profiles/tabs/*
 app/js/profiles/AllProfiles*
-app/js/profiles/Default*
 app/js/profiles/E*
 app/js/profiles/Import*
 app/js/profiles/ProfilesApp*

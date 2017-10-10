@@ -85,7 +85,7 @@ function updateSocialProofVerifications(index: number, verifications: Array<any>
   return {
     type: types.UPDATE_SOCIAL_PROOF_VERIFICATIONS,
     index,
-    verifications,
+    verifications
   }
 }
 

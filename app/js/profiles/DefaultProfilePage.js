@@ -63,8 +63,6 @@ class DefaultProfilePage extends Component {
     }
 
     this.onValueChange = this.onValueChange.bind(this)
-    this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
-    this.createNewProfile = this.createNewProfile.bind(this)
     this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
     this.openPasswordPrompt = this.openPasswordPrompt.bind(this)
     this.closePasswordPrompt = this.closePasswordPrompt.bind(this)
@@ -108,26 +106,6 @@ class DefaultProfilePage extends Component {
     this.setState({
       [event.target.name]: event.target.value
     })
-  }
-
-  setDefaultIdentity(domainName) {
-    this.props.setDefaultIdentity(domainName)
-  }
-
-  createNewProfile(event) {
-    logger.trace('createNewProfile')
-    this.setState({
-      processing: true
-    })
-    event.preventDefault()
-    const encryptedBackupPhrase = this.props.encryptedBackupPhrase
-    const password = this.state.password
-    const nextUnusedAddressIndex = this.props.nextUnusedAddressIndex
-
-    this.props.createNewProfile(
-      encryptedBackupPhrase,
-      password, nextUnusedAddressIndex
-    )
   }
 
   onPhotoClick(event) {
@@ -177,25 +155,15 @@ class DefaultProfilePage extends Component {
   render() {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
-    const defaultIdentityName = this.props.defaultIdentity
-    const identity = this.state.localIdentities[defaultIdentityName]
-
-    // render() sometimes gets called before defaultIdentityName
-    // is updated from ownerAddress to the actual name when adding
-    // a username.
-    if (!identity) {
-      return null
-    }
-
+    const identityIndex = this.props.defaultIdentity
+    const identity = this.state.localIdentities[identityIndex]
     const person = new Person(identity.profile)
 
-    if (identity.ownerAddress === defaultIdentityName) {
-      identity.canAddUsername = true
-    } else {
+    if (identity.username) {
       identity.canAddUsername = false
+    } else {
+      identity.canAddUsername = true
     }
-
-    const domainName = identity.domainName
 
     const verifications = identity.verifications
     const blockNumber = identity.blockNumber
@@ -254,18 +222,25 @@ class DefaultProfilePage extends Component {
           className="container-fluid text-center"
         >
           <Image
-            src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
+            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
             fallbackSrc="/images/avatar.png" className="img-fluid clickable"
-            onClick={this.closePhotoModal}/>
+            onClick={this.closePhotoModal}
+          />
         </Modal>
-        <ReactTooltip place="top" type="dark" effect="solid" id="domainName" className="text-center">
+        <ReactTooltip
+          place="top" type="dark" effect="solid"
+          id="ownerAddress" className="text-center"
+        >
           <div>This is your owner address.</div>
-          <div className="text-secondary">You can switch to a more meaningful name by adding an username.</div>
+          <div
+            className="text-secondary"
+          >You can switch to a more meaningful name by adding an username.
+          </div>
         </ReactTooltip>
         <div>
           <SecondaryNavBar
             leftButtonTitle="Edit"
-            leftButtonLink={`/profiles/${domainName}/edit`}
+            leftButtonLink={`/profiles/${identityIndex}/edit`}
             centerButtonTitle="View"
             centerButtonLink="/profiles"
             isCenterActive
@@ -278,9 +253,10 @@ class DefaultProfilePage extends Component {
 
                 <div className="avatar-md m-b-20 text-center">
                   <Image
-                    src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
+                    src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
                     fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
-                    onClick={this.onPhotoClick}/>
+                    onClick={this.onPhotoClick}
+                  />
                 </div>
 
                 <div className="text-center">
@@ -292,12 +268,12 @@ class DefaultProfilePage extends Component {
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
                   <div className="pro-card-domain-name m-b-10 text-center text-secondary">
-                    {domainName} { identity.canAddUsername && <span data-tip data-for="domainName">(?)</span> }
+                    {identity.ownerAddress} {identity.canAddUsername &&
+                      <span data-tip data-for="ownerAddress">(?)</span>}
                   </div>
                   <div className="m-b-20 text-center">
-                    { identity.canAddUsername ?
-                      <Link to={`/profiles/i/add-username/${domainName}/search`}
-                        className="">
+                    {identity.canAddUsername ?
+                      <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
                        Add a username
                       </Link>
                       :
@@ -362,7 +338,7 @@ class DefaultProfilePage extends Component {
                   <ul>
                     {accounts.map((account) => {
                       let verified = false
-                      if(verifications) {
+                      if (verifications) {
                         for (let i = 0; i < verifications.length; i++) {
                           const verification = verifications[i]
                           if (verification.service === account.service &&
@@ -401,23 +377,7 @@ class DefaultProfilePage extends Component {
               </div>
             </div>
           </div>
-
-          {/*
-          <div className="container-fluid">
-            {identity.canAddUsername ?
-              <Link
-                to={`/profiles/i/add-username/${domainName}/search`}
-                className="btn btn-link"
-              >
-               Add a username
-              </Link>
-              :
-              null
-            }
-          </div>
-          */}
         </div>
-
       </div>
     )
   }
