@@ -1,5 +1,4 @@
-import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 
 import AuthModal from './components/AuthModal'
@@ -12,30 +11,21 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({}, dispatch)
+const AuthPage = (props) =>
+(
+  <div style={{ width: '100%', height: '100%' }}>
+    <HomeScreenPage />
+    <AuthModal
+      addresses={props.addresses}
+      publicKeychain={props.publicKeychain}
+    />
+  </div>
+)
+
+AuthPage.propTypes = {
+  addresses: PropTypes.array.isRequired,
+  publicKeychain: PropTypes.string.isRequired
 }
 
-class AuthPage extends Component {
-  static propTypes = {
-    addresses: PropTypes.array.isRequired,
-    publicKeychain: PropTypes.string.isRequired
-  }
 
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
-    return (
-      <div style={{ width: '100%', height: '100%' }}>
-        <HomeScreenPage />
-        <AuthModal
-          addresses={this.props.addresses}
-          publicKeychain={this.props.publicKeychain} />
-      </div>
-    )
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AuthPage)
+export default connect(mapStateToProps)(AuthPage)
