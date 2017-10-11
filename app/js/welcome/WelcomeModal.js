@@ -54,7 +54,6 @@ class WelcomeModal extends Component {
     closeModal: PropTypes.func.isRequired,
     updateApi: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
-    emailKeychainBackup: PropTypes.func.isRequired,
     promptedForEmail: PropTypes.bool.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     initializeWallet: PropTypes.func.isRequired,
@@ -279,12 +278,6 @@ class WelcomeModal extends Component {
     }
     logger.debug('confirmIdentityKeyPhrase: user entered identity phrase matches!')
     this.showNextView()
-  }
-
-  emailKeychainBackup(event) {
-    event.preventDefault()
-    this.props.emailKeychainBackup(this.state.email, this.props.encryptedBackupPhrase)
-    return false
   }
 
   skipEmailBackup(event) {
