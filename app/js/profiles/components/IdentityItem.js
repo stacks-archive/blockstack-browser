@@ -11,7 +11,8 @@ class IdentityItem extends Component {
     canAddUsername: PropTypes.bool.isRequired,
     isDefault: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -22,11 +23,18 @@ class IdentityItem extends Component {
 
   render() {
     return (
-      <a href="" onClick={this.props.onClick} className="card card-default m-b-35">
+      <div
+        onClick={this.props.onClick}
+        className="card card-default m-b-35"
+        style={{ cursor: 'pointer' }}
+      >
         <div>
           <div className="avatar-sm float-left" style={{ display: 'inline' }}>
-            <Image src={this.props.avatarUrl}
-              fallbackSrc="/images/avatar.png" className="rounded-circle img-cover" style={{ display: 'inline-block' }} />
+            <Image
+              src={this.props.avatarUrl}
+              fallbackSrc="/images/avatar.png" className="rounded-circle img-cover"
+              style={{ display: 'inline-block' }}
+            />
           </div>
           <div style={{ display: 'inline' }}>
             <ul className="container-fluid list-card">
@@ -42,16 +50,16 @@ class IdentityItem extends Component {
                     onClick={(event) => {
                       event.preventDefault()
                       event.stopPropagation()
-                      this.props.router.push(`/profiles/i/add-username/${this.props.ownerAddress}/search`)
+                      this.props.router.push(`/profiles/i/add-username/${this.props.index}/search`)
                     }}
                   >
                    Add username
-                 </a>
+                  </a>
                  :
                   <div>
-                     <p className="card-subtitle">
+                    <p className="card-subtitle">
                       {this.props.pending ? '(pending)' : '\u00A0'}
-                     </p>
+                    </p>
                   </div>
                 }
               </li>
@@ -65,7 +73,7 @@ class IdentityItem extends Component {
             </ul>
           </div>
         </div>
-      </a>
+      </div>
     )
   }
 }

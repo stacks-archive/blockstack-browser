@@ -148,7 +148,7 @@ class RegistrationSearchView extends Component {
   render() {
     const searchingUsername = this.state.searchingUsername
     const availableNames = this.props.availability.names
-    const ownerAddress = this.props.routeParams.index
+    const index = this.props.routeParams.index
     const showSearchResults = this.state.showSearchResults
     return (
       <div style={{ textAlign: 'center' }}>
@@ -166,7 +166,7 @@ class RegistrationSearchView extends Component {
             searchingUsername={searchingUsername}
             nameSuffixes={this.state.nameSuffixes}
             availableNames={availableNames}
-            ownerAddress={ownerAddress}
+            index={index}
           />
         }
       </div>

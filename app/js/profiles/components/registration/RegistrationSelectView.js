@@ -59,13 +59,13 @@ class AddUsernameSelectPage extends Component {
 
   constructor(props) {
     super(props)
-    const ownerAddress = this.props.routeParams.index
+    const index = this.props.routeParams.index
     const name = this.props.routeParams.name
     const availableNames = this.props.availability.names
     const nameAvailabilityObject = availableNames[name]
     if (!nameAvailabilityObject) {
       logger.error(`componentDidMount: not sure if ${name} is available.`)
-      props.router.push(`/profiles/i/add-username/${ownerAddress}/search`)
+      props.router.push(`/profiles/i/add-username/${index}/search`)
     }
 
     const nameHasBeenPreordered = hasNameBeenPreordered(name, props.localIdentities)
@@ -97,7 +97,7 @@ class AddUsernameSelectPage extends Component {
       }, CHECK_FOR_PAYMENT_INTERVAL)
     }
     this.state = {
-      ownerAddress,
+      index,
       name,
       nameIsSubdomain,
       enoughMoney,
@@ -119,11 +119,11 @@ class AddUsernameSelectPage extends Component {
   componentWillReceiveProps(nextProps) {
     const registration = nextProps.registration
     const name = nextProps.routeParams.name
-    const address = nextProps.routeParams.index
+    const index = nextProps.routeParams.index
 
     if (this.state.registrationInProgress && registration.registrationSubmitted) {
       logger.debug('componentWillReceiveProps: registration submitted! redirecting...')
-      this.props.router.push(`/profiles/i/add-username/${address}/submitted/${name}`)
+      this.props.router.push(`/profiles/i/add-username/${index}/submitted/${name}`)
     }
 
     const availableNames = this.props.availability.names
@@ -168,7 +168,7 @@ class AddUsernameSelectPage extends Component {
     this.setState({
       registrationInProgress: true
     })
-    const ownerAddress = this.props.routeParams.index
+    const index = this.props.routeParams.index
     const name = this.props.routeParams.name
     const nameHasBeenPreordered = hasNameBeenPreordered(name, this.props.localIdentities)
 

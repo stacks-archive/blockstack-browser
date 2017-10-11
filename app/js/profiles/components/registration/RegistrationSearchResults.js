@@ -51,12 +51,12 @@ const RegistrationSearchResults = (props) => (
                       <div className="username-search-result">
                         <Link
                           className="btn btn-primary btn-block"
-                          to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
+                          to={`/profiles/i/add-username/${props.index}/select/${name}`}
                         >
                           Get <strong>{name}</strong> for free
                         </Link>
                         <Link
-                          to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
+                          to={`/profiles/i/add-username/${this.state.index}/search`}
                           className="btn btn-secondary btn-block"
                         >
                           Cancel
@@ -81,7 +81,7 @@ const RegistrationSearchResults = (props) => (
                         <div className="username-search-result">
                           <Link
                             className="btn btn-primary btn-block"
-                            to={`/profiles/i/add-username/${props.ownerAddress}/select/${name}`}
+                            to={`/profiles/i/add-username/${props.index}/select/${name}`}
                           >
                             Buy <strong>{name}</strong> for {price} bitcoins
                           </Link>
@@ -131,7 +131,7 @@ RegistrationSearchResults.propTypes = {
   searchingUsername: PropTypes.string,
   nameSuffixes: PropTypes.array.isRequired,
   availableNames: PropTypes.object.isRequired,
-  ownerAddress: PropTypes.string.isRequired
+  index: PropTypes.number.isRequired
 }
 
 export default RegistrationSearchResults

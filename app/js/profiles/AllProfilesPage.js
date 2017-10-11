@@ -31,10 +31,10 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
 }
 
-class IdentityPage extends Component {
+class AllProfilesPage extends Component {
   static propTypes = {
-    localIdentities: PropTypes.object.isRequired,
-    defaultIdentity: PropTypes.string.isRequired,
+    localIdentities: PropTypes.array.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
     createNewProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
     namesOwned: PropTypes.array.isRequired,
@@ -42,7 +42,7 @@ class IdentityPage extends Component {
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
-    setDefaultIdentity: PropTypes.string.isRequired,
+    setDefaultIdentity: PropTypes.func.isRequired,
     resetCreateNewProfileError: PropTypes.func.isRequired,
     createProfileError: PropTypes.string,
     router: PropTypes.object.isRequired
@@ -212,7 +212,8 @@ class IdentityPage extends Component {
                     }
                     return (
                       <IdentityItem
-                        key={identity.index}
+                        key={index}
+                        index={index}
                         label={identity.username ? identity.username : identity.ownerAddress}
                         pending={identity.usernamePending}
                         avatarUrl={person.avatarUrl() || ''}
@@ -246,4 +247,4 @@ class IdentityPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IdentityPage)
+export default connect(mapStateToProps, mapDispatchToProps)(AllProfilesPage)
