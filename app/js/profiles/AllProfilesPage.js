@@ -58,8 +58,6 @@ class IdentityPage extends Component {
       password: ''
     }
 
-    console.log(props)
-
     this.onValueChange = this.onValueChange.bind(this)
     this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
     this.createNewProfile = this.createNewProfile.bind(this)
@@ -104,8 +102,8 @@ class IdentityPage extends Component {
     })
   }
 
-  setDefaultIdentity(domainName) {
-    this.props.setDefaultIdentity(domainName)
+  setDefaultIdentity(index) {
+    this.props.setDefaultIdentity(index)
   }
 
   createNewProfile(event) {
@@ -204,36 +202,30 @@ class IdentityPage extends Component {
         <div className="m-t-40">
           <div className="container-fluid">
             <ul className="card-wrapper">
-                  {Object.keys(this.state.localIdentities).map((domainName) => {
-                    const identity = this.state.localIdentities[domainName]
+                  {this.state.localIdentities.map((identity, index) => {
                     const person = new Person(identity.profile)
 
-                    if (identity.ownerAddress === domainName) {
-                      identity.canAddUsername = true
-                    } else {
+                    if (identity.username) {
                       identity.canAddUsername = false
-                    }
-
-                    if (identity.domainName) {
-                      return (
-                        <IdentityItem
-                          key={identity.domainName}
-                          label={identity.domainName}
-                          pending={!identity.registered}
-                          avatarUrl={person.avatarUrl() || ''}
-                          onClick={(event) => {
-                            event.preventDefault()
-                            this.setDefaultIdentity(identity.domainName)
-                          }}
-                          ownerAddress={identity.ownerAddress}
-                          canAddUsername={identity.canAddUsername}
-                          isDefault={identity.domainName === this.props.defaultIdentity}
-                          router={this.props.router}
-                        />
-                      )
                     } else {
-                      return null
+                      identity.canAddUsername = true
                     }
+                    return (
+                      <IdentityItem
+                        key={identity.index}
+                        label={identity.username ? identity.username : identity.ownerAddress}
+                        pending={identity.usernamePending}
+                        avatarUrl={person.avatarUrl() || ''}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          this.setDefaultIdentity(index)
+                        }}
+                        ownerAddress={identity.ownerAddress}
+                        canAddUsername={identity.canAddUsername}
+                        isDefault={index === this.props.defaultIdentity}
+                        router={this.props.router}
+                      />
+                    )
                   })}
             </ul>
           </div>

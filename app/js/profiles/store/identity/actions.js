@@ -197,7 +197,6 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
-          console.log(responseJson)
           if (responseJson.names.length === 0) {
             logger.debug(`refreshIdentities: ${address} owns no names`)
             resolve()
