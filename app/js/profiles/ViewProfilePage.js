@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
-import ReactTooltip from 'react-tooltip'
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
@@ -11,6 +10,7 @@ import Modal from 'react-modal'
 import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { SearchActions } from './store/search'
+import ToolTip from '../components/ToolTip'
 
 function mapStateToProps(state) {
   return {
@@ -139,12 +139,13 @@ class ViewProfilePage extends Component {
 
     return (
       <div>
+
         {isLocal &&
           <SecondaryNavBar
             leftButtonTitle="Edit"
             leftButtonLink={`/profiles/${domainName}/edit`}
             rightButtonTitle="More"
-            rightButtonLink="/profiles/i/all"
+            rightButtonLink="/profiles/i/all" 
           />
         }
         {person !== null ?
@@ -163,16 +164,12 @@ class ViewProfilePage extends Component {
                 onClick={this.closePhotoModal}
               />
             </Modal>
-            <ReactTooltip
-              place="top" type="dark"
-              effect="solid" id="domainName"
-              className="text-center"
-            >
+            <ToolTip id="domainName">
               <div>This is your owner address.</div>
-              <div className="text-secondary">You can switch to a more
-                meaningful name by adding an username.
+              <div className="text-secondary">
+                You can switch to a more meaningful name by adding an username.
               </div>
-            </ReactTooltip>
+            </ToolTip>
 
             <div className="container-fluid m-t-50">
               <div className="row">

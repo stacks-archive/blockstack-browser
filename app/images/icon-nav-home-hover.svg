@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="36px" height="46px" viewBox="0 0 36 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 47 (45396) - http://www.bohemiancoding.com/sketch -->
     <title>icon-nav-home-hover</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="browser-macOS-40b-profile-d16" transform="translate(-72.000000, -61.000000)">
-            <g id="navbar-384px" transform="translate(42.000000, 49.000000)">
+        <g id="browser-macOS-40a-profile-d18" transform="translate(-84.000000, -59.000000)">
+            <g id="navbar-352px" transform="translate(58.000000, 47.000000)">
                 <g id="home:hover">
-                    <g id="home" transform="translate(40.000000, 26.000000)" stroke="#2C96FF" stroke-width="1.19047619" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M0.119047619,2.45238095 C0.119047619,1.46607143 0.918452381,0.666666667 1.9047619,0.666666667 C2.89107143,0.666666667 3.69047619,1.46607143 3.69047619,2.45238095 C3.69047619,3.43869048 2.89107143,4.23809524 1.9047619,4.23809524 C0.918452381,4.23809524 0.119047619,3.43869048 0.119047619,2.45238095 L0.119047619,2.45238095 Z" id="Stroke-1790"></path>
-                        <path d="M0.119047619,9 C0.119047619,8.01369048 0.918452381,7.21428571 1.9047619,7.21428571 C2.89107143,7.21428571 3.69047619,8.01369048 3.69047619,9 C3.69047619,9.98630952 2.89107143,10.7857143 1.9047619,10.7857143 C0.918452381,10.7857143 0.119047619,9.98630952 0.119047619,9 L0.119047619,9 Z" id="Stroke-1791"></path>
-                        <path d="M0.119047619,15.547619 C0.119047619,14.5613095 0.918452381,13.7619048 1.9047619,13.7619048 C2.89107143,13.7619048 3.69047619,14.5613095 3.69047619,15.547619 C3.69047619,16.5339286 2.89107143,17.3333333 1.9047619,17.3333333 C0.918452381,17.3333333 0.119047619,16.5339286 0.119047619,15.547619 L0.119047619,15.547619 Z" id="Stroke-1792"></path>
-                        <path d="M6.66666667,2.45238095 L16.7857143,2.45238095" id="Stroke-1793"></path>
-                        <path d="M6.66666667,9 L16.7857143,9" id="Stroke-1794"></path>
-                        <path d="M6.66666667,15.547619 L16.7857143,15.547619" id="Stroke-1795"></path>
+                    <g id="home-temporary" transform="translate(36.000000, 26.000000)" stroke-linecap="round" stroke-width="1.5" stroke="#2C96FF" stroke-linejoin="round">
+                        <polyline id="Shape" points="0 7 0 18 6.375 18 6.375 13.6784788 10.625 13.6784788 10.625 18 17 18 17 7"></polyline>
+                        <polyline id="Shape" points="0 7 8.5 0 17 7"></polyline>
                     </g>
-                    <rect id="::after" fill="#2C96FF" x="30" y="56" width="36" height="2"></rect>
+                    <rect id="::after" fill="#2C96FF" x="26" y="56" width="36" height="2"></rect>
                 </g>
             </g>
         </g>
