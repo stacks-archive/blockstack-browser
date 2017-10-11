@@ -1,28 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { AccountActions } from '../account/store/account'
-import roundTo from 'round-to'
-
-function mapStateToProps(state) {
-  return {
-    dropboxAccessToken: state.settings.api.dropboxAccessToken,
-    localIdentities: state.profiles.identity.localIdentities,
-    defaultIdentity: state.profiles.identity.default,
-    addressBalanceUrl: state.settings.api.zeroConfBalanceUrl,
-    coreWalletAddress: state.account.coreWallet.address,
-    coreWalletBalance: state.account.coreWallet.balance,
-    coreAPIPassword: state.settings.api.coreAPIPassword,
-    nextIdentityAddressIndex: state.account.identityAccount.addressIndex,
-    loggedIntoApp: state.auth.loggedIntoApp,
-    viewedRecoveryCode: state.account.viewedRecoveryCode
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AccountActions), dispatch)
-}
 
 const icons = {
   homeNav: '/images/icon-nav-home.svg',
@@ -37,30 +14,11 @@ const icons = {
 
 class Navbar extends Component {
   static propTypes = {
-    hideBackToHomeLink: PropTypes.bool,
-    dropboxAccessToken: PropTypes.string,
-    localIdentities: PropTypes.object.isRequired,
-    refreshCoreWalletBalance: PropTypes.func.isRequired,
-    coreWalletBalance: PropTypes.number,
-    coreWalletAddress: PropTypes.string,
-    coreAPIPassword: PropTypes.string,
-    addressBalanceUrl: PropTypes.string,
-    nextIdentityAddressIndex: PropTypes.number.isRequired,
-    loggedIntoApp: PropTypes.bool.isRequired,
-    viewedRecoveryCode: PropTypes.bool,
     activeTab: PropTypes.string
   }
 
   constructor(props) {
     super(props)
-    this.storageProviderConnected = this.storageProviderConnected.bind(this)
-    this.profileCreated = this.profileCreated.bind(this)
-    this.depositedBitcoin = this.depositedBitcoin.bind(this)
-    this.signedIntoFirstApp = this.signedIntoFirstApp.bind(this)
-    this.wroteDownRecoveryCode = this.wroteDownRecoveryCode.bind(this)
-    this.registeredUsername = this.registeredUsername.bind(this)
-    this.roundedBtcBalance = this.roundedBtcBalance.bind(this)
-    this.numberOfActionItems = this.numberOfActionItems.bind(this)
     this.onHomeNavMouseOver = this.onHomeNavMouseOver.bind(this)
     this.onHomeNavMouseOut = this.onHomeNavMouseOut.bind(this)
     this.onWalletNavMouseOver = this.onWalletNavMouseOver.bind(this)
@@ -75,18 +33,6 @@ class Navbar extends Component {
       walletTabHover: false,
       avatarTabHover: false,
       settingsTabHover: false
-    }
-  }
-
-  componentDidMount() {
-    this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
-            this.props.coreAPIPassword)
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.coreWalletAddress !== nextProps.coreWalletAddress) {
-      this.props.refreshCoreWalletBalance(nextProps.addressBalanceUrl,
-        this.props.coreAPIPassword)
     }
   }
 
@@ -132,66 +78,6 @@ class Navbar extends Component {
     }
   }
 
-  signedIntoFirstApp() {
-    return this.props.loggedIntoApp
-  }
-
-  wroteDownRecoveryCode() {
-    return this.props.viewedRecoveryCode
-  }
-
-  registeredUsername() {
-    const localIdentities = this.props.localIdentities
-    const localIdentitiesKeys = Object.keys(localIdentities)
-    for (let i = 0; i < localIdentitiesKeys.length; i++) {
-      const key = localIdentitiesKeys[i]
-      if (localIdentities[key].ownerAddress !== key) {
-        return true
-      }
-    }
-    return false
-  }
-
-  roundedBtcBalance() {
-    const btcBalance = this.props.coreWalletBalance
-    if (btcBalance === null) {
-      return 0
-    } else {
-      const roundedAmount = roundTo(btcBalance, 6)
-      return roundedAmount
-    }
-  }
-
-  numberOfActionItems() {
-    let count = 0
-
-    if (!this.storageProviderConnected()) {
-      count = count + 1
-    }
-
-    if (!this.profileCreated()) {
-      count = count + 1
-    }
-
-    if (!this.depositedBitcoin()) {
-      count = count + 1
-    }
-
-    if (!this.signedIntoFirstApp()) {
-      count = count + 1
-    }
-
-    if (!this.wroteDownRecoveryCode()) {
-      count = count + 1
-    }
-
-    if (!this.registeredUsername()) {
-      count = count + 1
-    }
-
-    return count
-  }
-
   homeNavIconImage() {
     if (this.props.activeTab === 'home'
       || this.state.homeTabHover) {
@@ -217,18 +103,6 @@ class Navbar extends Component {
     } else {
       return icons.avatarNav
     }
-  }
-
-  depositedBitcoin() {
-    return this.props.coreWalletBalance > 0
-  }
-
-  profileCreated() {
-    return this.props.nextIdentityAddressIndex > 0
-  }
-
-  storageProviderConnected() {
-    return !!this.props.dropboxAccessToken
   }
 
   render() {
@@ -280,4 +154,4 @@ class Navbar extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
+export default Navbar
