@@ -23,8 +23,6 @@ import SocialAccountsTab from './tabs/SocialAccountsTab'
 import PublicKeysTab     from './tabs/PublicKeysTab'
 import PrivateInfoTab    from './tabs/PrivateInfoTab'
 
-import { debounce } from 'lodash'
-
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/EditProfilePage.js')
@@ -36,6 +34,8 @@ const accountTypes = [
   'github',
   'instagram',
   'hackerNews',
+  'bitcoin',
+  'ethereum',
   'pgp',
   'ssh'
 ]
@@ -95,10 +95,6 @@ class EditProfilePage extends Component {
     this.openPhotoModal = this.openPhotoModal.bind(this)
     this.closePhotoModal = this.closePhotoModal.bind(this)
     this.onVerifyButtonClick = this.onVerifyButtonClick.bind(this)
-
-    this.debouncedRefreshProofs = debounce(() => {
-      this.refreshProofs.apply(this)
-    }, 1000)
   }
 
   componentWillMount() {
@@ -243,9 +239,24 @@ class EditProfilePage extends Component {
     }
   }
 
-  onSocialAccountChange(service, event) {
+  shouldAutoGenerateProofUrl(service) {
+    return service === 'hackerNews'
+  }
+
+  generateProofUrl(service, identifier) {
+    if (service === 'hackerNews') {
+      return `https://news.ycombinator.com/user?id=${identifier}`
+    }
+
+    return ''
+  }
+
+  onSocialAccountChange(service, identifier) {
     let profile = this.state.profile
-    let identifier = event.target.value
+
+    if (!profile.hasOwnProperty('account')) {
+      profile.account = []
+    }
 
     if (profile.hasOwnProperty('account')) {
       let hasAccount = false
@@ -253,32 +264,35 @@ class EditProfilePage extends Component {
         if(account.service === service) {
           hasAccount = true
           account.identifier = identifier
+          if (this.shouldAutoGenerateProofUrl(service)) {
+            account.proofUrl = this.generateProofUrl(service, identifier)
+          }
           this.setState({profile: profile})
+          this.refreshProofs()
         }
       })
 
       if (!hasAccount && identifier.length > 0) {
-        profile.account.push(this.createNewAccount(service, identifier))
+        let newAccount = this.createNewAccount(service, identifier)
+        if (this.shouldAutoGenerateProofUrl(service)) {
+          newAccount.proofUrl = this.generateProofUrl(service, identifier)
+        }
+        profile.account.push(newAccount)
         this.setState({profile: profile})
+        this.refreshProofs()
       }
-    }
-    else {
-      profile.account = []
-      profile.account.push(this.createNewAccount(service, identifier))
-      this.setState({profile: profile})
     }
   }
 
-  onSocialAccountProofUrlChange(service, event) {
+  onSocialAccountProofUrlChange(service, proofUrl) {
     const profile = this.state.profile
-    const proofUrl = event.target.value
 
     if (profile.hasOwnProperty('account')) {
       profile.account.forEach(account => {
         if(account.service === service) {
           account.proofUrl = proofUrl
           this.setState({profile: profile})
-          this.debouncedRefreshProofs()
+          this.refreshProofs()
         }
       })
     }
@@ -457,10 +471,7 @@ class EditProfilePage extends Component {
                 </div>
 
                 <div className="col-12">
-                  <InputGroup name="givenName" label="First Name"
-                      data={this.state.profile}
-                      onChange={this.onChange} />
-                  <InputGroup name="familyName" label="Last Name"
+                  <InputGroup name="name" label="Full Name"
                       data={this.state.profile}
                       onChange={this.onChange} />
                   <InputGroup name="description" label="Short Bio"

@@ -112,6 +112,10 @@ class DefaultProfilePage extends Component {
     })
   }
 
+  onPhotoClick(event) {
+    this.openPhotoModal(event)
+  }
+
   setDefaultIdentity(domainName) {
     this.props.setDefaultIdentity(domainName)
   }
@@ -130,10 +134,6 @@ class DefaultProfilePage extends Component {
       encryptedBackupPhrase,
       password, nextUnusedAddressIndex
     )
-  }
-
-  onPhotoClick(event) {
-    this.openPhotoModal(event)
   }
 
   openPhotoModal(event) {
@@ -198,6 +198,7 @@ class DefaultProfilePage extends Component {
     }
 
     const domainName = identity.domainName
+    const ownerAddress = identity.ownerAddress
 
     const verifications = identity.verifications
     const blockNumber = identity.blockNumber
@@ -256,16 +257,14 @@ class DefaultProfilePage extends Component {
           className="container-fluid text-center"
         >
           <Image
-            src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
+            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
             fallbackSrc="/images/avatar.png" className="img-fluid clickable" 
-            onClick={this.closePhotoModal}/>
+            onClick={this.closePhotoModal}
+          />
         </Modal>
         <ToolTip id="domainName">
           <div>
             <div>This is your owner address.</div>
-            <div className="text-secondary">
-              You can switch to a more meaningful name by adding an username.
-            </div>
           </div>
         </ToolTip>
         <div>
@@ -284,9 +283,10 @@ class DefaultProfilePage extends Component {
 
                 <div className="avatar-md m-b-20 text-center">
                   <Image
-                    src={person.avatarUrl() ? person.avatarUrl() : "/images/avatar.png"}
+                    src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
                     fallbackSrc="/images/avatar.png" className="rounded-circle clickable" 
-                    onClick={this.onPhotoClick}/>
+                    onClick={this.onPhotoClick}
+                  />
                 </div>
 
                 <div className="text-center">
@@ -297,19 +297,28 @@ class DefaultProfilePage extends Component {
                     </div>
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  <div className="pro-card-domain-name m-b-10 text-center text-secondary">
-                    {domainName} { identity.canAddUsername && <span data-tip data-for="domainName">(?)</span> }
-                  </div>
-                  <div className="m-b-20 text-center">
-                    { identity.canAddUsername ?
-                      <Link to={`/profiles/i/add-username/${domainName}/search`}
-                        className="">
+                  {identity.canAddUsername ?
+                    <div className="text-center">
+                      <Link 
+                        to={`/profiles/i/add-username/${domainName}/search`}
+                        className="btn btn-link active btn-thin"
+                      >
                        Add a username
                       </Link>
-                      :
-                      null
-                    }
+                    </div>
+                    :
+                    <div className="pro-card-domain-name text-center text-secondary m-t-0">
+                      <span>{domainName}</span>
+                    </div>
+                  }
+
+                  <div className="pro-card-domain-name m-b-10 text-center text-secondary m-t-0">
+                    <small>
+                      {ownerAddress} {identity.canAddUsername && 
+                        <span data-tip data-for="domainName">(?)</span>}
+                    </small>
                   </div>
+
                   <div className="pro-card-body text-center">
                     {person.description()}
                   </div>
@@ -368,7 +377,7 @@ class DefaultProfilePage extends Component {
                   <ul>
                     {accounts.map((account) => {
                       let verified = false
-                      if(verifications) {
+                      if (verifications) {
                         for (let i = 0; i < verifications.length; i++) {
                           const verification = verifications[i]
                           if (verification.service === account.service &&

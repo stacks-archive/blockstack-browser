@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import { debounce } from 'lodash'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import InputGroup from '../../components/InputGroup'
@@ -37,6 +38,7 @@ class EditSocialAccountItem extends Component {
     this.state = {
       collapsed: true,
       identifier: props.identifier,
+      proofUrl: props.proofUrl,
     }
 
     this.getAccountUrl = this.getAccountUrl.bind(this)
@@ -48,6 +50,14 @@ class EditSocialAccountItem extends Component {
     this.onIdentifierBlur = this.onIdentifierBlur.bind(this)
     this.onProofUrlChange = this.onProofUrlChange.bind(this)
     this.shouldShowVerificationInstructions = this.shouldShowVerificationInstructions.bind(this)
+
+    this.debouncedOnChange = debounce(() => {
+      this.props.onChange(this.props.service, this.state.identifier)
+    }, 1500)
+
+    this.debouncedOnProofUrlChange = debounce(() => {
+      this.props.onProofUrlChange(this.props.service, this.state.proofUrl)
+    }, 1000)
   }
 
   getAccountUrl() {
@@ -74,7 +84,7 @@ class EditSocialAccountItem extends Component {
   }
 
   getIdentifier() {
-    let identifier = this.props.identifier
+    let identifier = this.state.identifier
     if (identifier.length >= 40) {
       identifier = identifier.slice(0, 40) + '...'
     }
@@ -92,8 +102,13 @@ class EditSocialAccountItem extends Component {
   }
 
   onIdentifierChange(event) {
+    let identifier = event.target.value
+    this.setState({
+      identifier: identifier
+    })
+
     if (this.props.onChange) {
-      this.props.onChange(this.props.service, event)
+      this.debouncedOnChange()
     }
   }
 
@@ -106,8 +121,13 @@ class EditSocialAccountItem extends Component {
   }
 
   onProofUrlChange(event) {
+    let proofUrl = event.target.value
+    this.setState({
+      proofUrl: proofUrl
+    })
+
     if (this.props.onProofUrlChange) {
-      this.props.onProofUrlChange(this.props.service, event)
+      this.debouncedOnProofUrlChange()
     }
   }
 
@@ -145,6 +165,7 @@ class EditSocialAccountItem extends Component {
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     const collapsedClass = this.state.collapsed ? "collapsed" : "active"
     let webAccountType = webAccountTypes[this.props.service]
+    const disabled = this.props.service === 'hackerNews'
 
     const proofURLInput = () => {
       if (this.props.service === 'instagram' || this.props.service === 'github'
@@ -153,13 +174,15 @@ class EditSocialAccountItem extends Component {
         return <InputGroup 
                   name="proofUrl" 
                   label="Proof URL" 
-                  data={this.props}
+                  data={this.state}
                   placeholder="Paste Proof URL here"
                   stopClickPropagation={true} 
                   onChange={this.onProofUrlChange} 
                   onBlur={event => this.props.onBlur(event, this.props.service)}
                   accessoryIcon={this.props.verified}
-                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" />
+                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+                  disabled={false}
+                />
       } else {
         return <div></div>
       }
@@ -210,7 +233,7 @@ class EditSocialAccountItem extends Component {
                       key="input-group-identifier"
                       name="identifier" 
                       label="Username" 
-                      data={this.props}
+                      data={this.state}
                       stopClickPropagation={true} 
                       onChange={this.onIdentifierChange} 
                       onBlur={this.onIdentifierBlur} />

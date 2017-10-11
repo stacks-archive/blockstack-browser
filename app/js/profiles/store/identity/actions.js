@@ -331,6 +331,10 @@ function refreshSocialProofVerifications(profile, ownerAddress, domainName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       let verifications = []
+      // let fqdn = null
+      // if (ownerAddress !== domainName) {
+      //   fqdn = domainName
+      // }
       validateProofs(profile, ownerAddress, domainName).then((proofs) => {
         verifications = proofs
         dispatch(updateSocialProofVerifications(domainName, verifications))
