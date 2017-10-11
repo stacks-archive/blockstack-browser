@@ -21,9 +21,7 @@ function mapStateToProps(state) {
     coreApiRunning: state.sanity.coreApiRunning,
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword,
-    defaultIdentity: state.profiles.identity.default,
-    localIdentities: state.profiles.identity.localIdentities
+    coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
 
@@ -48,10 +46,7 @@ class App extends Component {
     isCoreRunning: PropTypes.func.isRequired,
     isCoreApiPasswordValid: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
-    coreAPIPassword: PropTypes.string,
-    localIdentities: PropTypes.object,
-    defaultIdentity: PropTypes.string,
-    setDefaultIdentity: PropTypes.func.isRequired
+    coreAPIPassword: PropTypes.string
   }
 
   constructor(props) {
