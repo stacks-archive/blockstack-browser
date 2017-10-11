@@ -9,13 +9,6 @@ const APP_MANIFEST_LOADED = 'APP_MANIFEST_LOADED'
 const UPDATE_CORE_SESSION = 'UPDATE_CORE_SESSION'
 const LOGGED_IN_TO_APP = 'LOGGED_IN_TO_APP'
 
-export const AuthActions = {
-  clearSessionToken,
-  getCoreSessionToken,
-  loadAppManifest,
-  loginToApp
-}
-
 function appManifestLoading() {
   return {
     type: APP_MANIFEST_LOADING
@@ -25,14 +18,14 @@ function appManifestLoading() {
 function appManifestLoadingError(error) {
   return {
     type: APP_MANIFEST_LOADING_ERROR,
-    error: error
+    error
   }
 }
 
 function appManifestLoaded(appManifest) {
   return {
     type: APP_MANIFEST_LOADED,
-    appManifest: appManifest
+    appManifest
   }
 }
 
@@ -62,7 +55,8 @@ function loginToApp() {
   }
 }
 
-function getCoreSessionToken(coreHost, corePort, coreApiPassword, appPrivateKey, appDomain, authRequest, blockchainId) {
+function getCoreSessionToken(coreHost, corePort, coreApiPassword,
+  appPrivateKey, appDomain, authRequest, blockchainId) {
   return dispatch => {
     logger.trace('getCoreSessionToken(): dispatched')
     const deviceId = '0' // Hard code device id until we support multi-device
@@ -97,7 +91,7 @@ const initialState = {
   loggedIntoApp: false
 }
 
-export function AuthReducer(state=initialState, action) {
+export function AuthReducer(state = initialState, action) {
   switch (action.type) {
     case APP_MANIFEST_LOADING:
       return Object.assign({}, state, {
@@ -129,4 +123,11 @@ export function AuthReducer(state=initialState, action) {
     default:
       return state
   }
+}
+
+export const AuthActions = {
+  clearSessionToken,
+  getCoreSessionToken,
+  loadAppManifest,
+  loginToApp
 }
