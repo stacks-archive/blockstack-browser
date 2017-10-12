@@ -3,17 +3,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import InputGroup from '../components/InputGroup'
 import Image from '../components/Image'
-
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import { IdentityActions } from './store/identity'
 import { uploadProfile, uploadPhoto } from '../account/utils'
 import { openInNewTab, signProfileForUpload } from '../utils'
 import Modal from 'react-modal'
-
 import EditSocialAccountItem from './components/EditSocialAccountItem'
 import EditPGPAccountItem from './components/EditPGPAccountItem'
-
-import { debounce } from 'lodash'
 
 import log4js from 'log4js'
 
@@ -26,6 +22,8 @@ const accountTypes = [
   'github',
   'instagram',
   'hackerNews',
+  'bitcoin',
+  'ethereum',
   'pgp',
   'ssh'
 ]
@@ -83,10 +81,6 @@ class EditProfilePage extends Component {
     this.openPhotoModal = this.openPhotoModal.bind(this)
     this.closePhotoModal = this.closePhotoModal.bind(this)
     this.onVerifyButtonClick = this.onVerifyButtonClick.bind(this)
-
-    this.debouncedRefreshProofs = debounce(() => {
-      this.refreshProofs.apply(this)
-    }, 1000)
   }
 
   componentWillMount() {
@@ -144,10 +138,13 @@ class EditProfilePage extends Component {
       openInNewTab(verificationUrl)
     }
   }
-
-  onSocialAccountChange(service, event) {
+  
+  onSocialAccountChange(service, identifier) {
     const profile = this.state.profile
-    const identifier = event.target.value
+
+    if (!profile.hasOwnProperty('account')) {
+      profile.account = []
+    }
 
     if (profile.hasOwnProperty('account')) {
       let hasAccount = false
@@ -155,31 +152,35 @@ class EditProfilePage extends Component {
         if (account.service === service) {
           hasAccount = true
           account.identifier = identifier
+          if (this.shouldAutoGenerateProofUrl(service)) {
+            account.proofUrl = this.generateProofUrl(service, identifier)
+          }
           this.setState({ profile })
+          this.refreshProofs()
         }
       })
 
       if (!hasAccount && identifier.length > 0) {
-        profile.account.push(this.createNewAccount(service, identifier))
+        const newAccount = this.createNewAccount(service, identifier)
+        if (this.shouldAutoGenerateProofUrl(service)) {
+          newAccount.proofUrl = this.generateProofUrl(service, identifier)
+        }
+        profile.account.push(newAccount)
         this.setState({ profile })
+        this.refreshProofs()
       }
-    } else {
-      profile.account = []
-      profile.account.push(this.createNewAccount(service, identifier))
-      this.setState({ profile })
     }
   }
 
-  onSocialAccountProofUrlChange(service, event) {
+  onSocialAccountProofUrlChange(service, proofUrl) {
     const profile = this.state.profile
-    const proofUrl = event.target.value
 
     if (profile.hasOwnProperty('account')) {
       profile.account.forEach(account => {
         if (account.service === service) {
           account.proofUrl = proofUrl
           this.setState({ profile })
-          this.debouncedRefreshProofs()
+          this.refreshProofs()
         }
       })
     }
@@ -205,6 +206,18 @@ class EditProfilePage extends Component {
 
   onSocialAccountDelete(service) {
     this.removeAccount(service)
+  }
+
+  shouldAutoGenerateProofUrl(service) {
+    return service === 'hackerNews'
+  }
+
+  generateProofUrl(service, identifier) {
+    if (service === 'hackerNews') {
+      return `https://news.ycombinator.com/user?id=${identifier}`
+    }
+
+    return ''
   }
 
   componentHasNewLocalIdentities(props) {
@@ -451,14 +464,8 @@ class EditProfilePage extends Component {
 
                   <div className="col-12">
                     <InputGroup
-                      name="givenName"
-                      label="First Name"
-                      data={this.state.profile}
-                      onChange={this.onChange}
-                    />
-                    <InputGroup
-                      name="familyName"
-                      label="Last Name"
+                      name="name"
+                      label="Full Name"
                       data={this.state.profile}
                       onChange={this.onChange}
                     />

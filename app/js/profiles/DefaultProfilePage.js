@@ -143,9 +143,6 @@ class DefaultProfilePage extends Component {
         <ToolTip id="ownerAddress">
           <div>
             <div>This is your owner address.</div>
-            <div className="text-secondary">
-              You can switch to a more meaningful name by adding an username.
-            </div>
           </div>
         </ToolTip>
         <div>
@@ -178,19 +175,25 @@ class DefaultProfilePage extends Component {
                     </div>
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  <div className="pro-card-domain-name m-b-10 text-center text-secondary">
-                    {identity.ownerAddress} {identity.canAddUsername &&
-                      <span data-tip data-for="ownerAddress">(?)</span>}
-                  </div>
                   <div className="m-b-20 text-center">
                     {identity.canAddUsername ?
                       <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
                        Add a username
                       </Link>
-                      :
-                      null
-                    }
+                    :
+                      <div className="pro-card-domain-name text-center text-secondary m-t-0">
+                        <span>{identity.username}</span>
+                      </div>
+                  }
                   </div>
+
+                  <div className="pro-card-domain-name m-b-10 text-center text-secondary m-t-0">
+                    <small>
+                      {identity.ownerAddress} {identity.canAddUsername &&
+                        <span data-tip data-for="domainName">(?)</span>}
+                    </small>
+                  </div>
+
                   <div className="pro-card-body text-center">
                     {person.description()}
                   </div>
