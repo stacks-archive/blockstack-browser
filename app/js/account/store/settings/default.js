@@ -45,7 +45,7 @@ const DEFAULT_API = {
   dropboxAccessToken: null,
   storageConnected: false,
   gaiaHubConfig: null,
-  gaiaHubUrl: 'https://hub.technofractal.com',
+  gaiaHubUrl: 'https://hub.blockstack.org',
   btcPrice: '1000.00'
 }
 
