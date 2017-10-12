@@ -84,22 +84,6 @@ describe('api-utils', () => {
       .post('/v1/node/drivers/storage/dropbox?index=1', expectedBody)
       .reply(200, response)
 
-      // mock dropbox
-      const dropbox = nock('https://content.dropboxapi.com').options('/2/files/upload')
-      .reply(200)
-      .post('/2/files/upload')
-      .reply(200, {
-        name: 'profile.json',
-        path_lower: '/satoshi.id/profile.json',
-        path_display: '/satoshi.id/profile.json',
-        id: 'id:tFN0g-hnfJAAAAAAAAAAdA',
-        client_modified: '2017-04-22T12:53:25Z',
-        server_modified: '2017-04-22T12:53:26Z',
-        rev: 'c0524a1d34',
-        size: 1353,
-        content_hash: 'a9b121c41aa35d580e22798b4863c973a34dce2b8b6498304913f9bf1733045c'
-      })
-
       return setCoreStorageConfig(api).then((actualResult) => {
         assert.deepEqual(actualResult, expectedResult)
         core.done() // will throw AssertionError if mock not called
@@ -107,7 +91,8 @@ describe('api-utils', () => {
     })
 
     it('should have core initialize storage and update profile with index_url', () => {
-      const blockchainId = 'satoshi.id'
+      const identityIndex = '0'
+      const identityAddress = '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk'
       const profile = Object.assign({}, DEFAULT_PROFILE)
       const profileSigningKeypair = { key: 'a29c3e73dba79ab0f84cb792bafd65ec71f243ebe67a7ebd842ef5cdce3b21eb',
         keyID: '03e93ae65d6675061a167c34b8321bef87594468e9b2dd19c05a67a7b4caefa017',
@@ -139,8 +124,8 @@ describe('api-utils', () => {
       .post('/2/files/upload')
       .reply(200, {
         name: 'profile.json',
-        path_lower: '/satoshi.id/profile.json',
-        path_display: '/satoshi.id/profile.json',
+        path_lower: '/1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk/0/profile.json',
+        path_display: '/1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk/0/profile.json',
         id: 'id:tFN0g-hnfJAAAAAAAAAAdA',
         client_modified: '2017-04-22T12:53:25Z',
         server_modified: '2017-04-22T12:53:26Z',
@@ -150,10 +135,11 @@ describe('api-utils', () => {
       })
 
       return setCoreStorageConfig(api,
-        blockchainId, profile, profileSigningKeypair).then((actualResult) => {
+        identityAddress, identityIndex, profile, profileSigningKeypair).then((actualResult) => {
           assert.deepEqual(actualResult, expectedResult)
           core.done() // will throw AssertionError if mock not called
+          dropbox.done() // will throw AssertionError if mock not called
         })
-    })
+    }).timeout(5000)
   })
 })

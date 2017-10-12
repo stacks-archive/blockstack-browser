@@ -198,7 +198,7 @@ class AuthModal extends Component {
           const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
           const blockchainId = (hasUsername ? userDomainName : null)
           logger.trace('login(): Calling setCoreStorageConfig()...')
-          setCoreStorageConfig(this.props.api, blockchainId,
+          setCoreStorageConfig(this.props.api, identityIndex, identityAddress,
           identity.profile, profileSigningKeypair)
           .then(() => {
             logger.trace('login(): Core storage successfully configured.')

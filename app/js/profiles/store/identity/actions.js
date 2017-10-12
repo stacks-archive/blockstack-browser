@@ -11,7 +11,6 @@ import {
   getIdentityOwnerAddressNode,
   authorizationHeaderValue
 } from '../../../utils/index'
-
 import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 import { AccountActions } from '../../../account/store/account'
 
@@ -21,10 +20,16 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
-function updateCurrentIdentity(index: number) {
+function updatePublicIdentity(username: string, ownerAddress: ?string = null,
+  zoneFile: ?string = null, profile: ?{} = Object.assign({}, DEFAULT_PROFILE),
+  verifications: Array<*> = []) {
   return {
-    type: types.UPDATE_CURRENT,
-    index
+    type: types.UPDATE_PUBLIC_IDENTITY,
+    username,
+    ownerAddress,
+    zoneFile,
+    profile,
+    verifications
   }
 }
 
@@ -143,7 +148,7 @@ function broadcastingNameTransferError(domainName: string, error: any) {
 
 function createNewIdentityWithOwnerAddress(index: number, ownerAddress: string) {
   logger.debug(`createNewIdentityWithOwnerAddress: index: ${index} address: ${ownerAddress}`)
-  return (dispatch: Dispatch<*>) => {
+  return (dispatch: Dispatch<*>): void => {
     dispatch(createNewIdentity(index, ownerAddress))
     dispatch(AccountActions.usedIdentityAddress())
   }
@@ -151,7 +156,7 @@ function createNewIdentityWithOwnerAddress(index: number, ownerAddress: string) 
 
 function createNewProfile(encryptedBackupPhrase: string,
   password: string, nextUnusedAddressIndex: number) {
-  return (dispatch: Dispatch<*>): void => {
+  return (dispatch: Dispatch<*>): Promise<*> => {
     logger.trace('createNewProfile')
     // Decrypt master keychain
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
@@ -171,6 +176,7 @@ function createNewProfile(encryptedBackupPhrase: string,
       dispatch(AccountActions.newIdentityAddress(newIdentityKeypair))
       dispatch(AccountActions.usedIdentityAddress())
       const ownerAddress = newIdentityKeypair.address
+      // $FlowFixMe
       dispatch(createNewIdentityWithOwnerAddress(index, ownerAddress))
     }, () => {
       logger.error('createNewProfile: Invalid password')
@@ -254,33 +260,24 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
   }
 }
 
-function refreshSocialProofVerifications(profile, ownerAddress, domainName) {
-  return dispatch => {
-    return new Promise((resolve, reject) => {
-      let verifications = []
-      validateProofs(profile, ownerAddress, domainName).then((proofs) => {
-        verifications = proofs
-        dispatch(updateSocialProofVerifications(domainName, verifications))
-        resolve()
-      }).catch((error) => {
-        logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
-        dispatch(updateSocialProofVerifications(domainName, []))
-        resolve()
-      })
+function refreshSocialProofVerifications(identityIndex: number,
+  ownerAddress: string, username: string, profile: {}) {
+  return (dispatch: Dispatch<*>): Promise<*> => new Promise((resolve) => {
+    let verifications = []
+    validateProofs(profile, ownerAddress, username).then((proofs) => {
+      verifications = proofs
+      dispatch(updateSocialProofVerifications(identityIndex, verifications))
+      resolve()
+    }).catch((error) => {
+      logger.error(`refreshSocialProofVerifications: index ${identityIndex} proofs error`, error)
+      dispatch(updateSocialProofVerifications(identityIndex, []))
+      resolve()
     })
-  }
+  })
 }
 
-function fetchCurrentIdentity(lookupUrl: string, domainName: string) {
+function fetchPublicIdentity(lookupUrl: string, username: string) {
   return (dispatch: Dispatch<*>): Promise<*> => {
-    let username
-    if (lookupUrl.search('localhost') >= 0) {
-      username = domainName
-    } else if (lookupUrl.search('api.blockstack.com') >= 0) {
-      username = domainName.split('.')[0]
-    } else {
-      throw new Error('Invalid lookup URL')
-    }
     const url = lookupUrl.replace('{name}', username)
     return fetch(url)
       .then((response) => response.text())
@@ -302,34 +299,38 @@ function fetchCurrentIdentity(lookupUrl: string, domainName: string) {
 
         return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
           let verifications = []
-          dispatch(updateCurrentIdentity(domainName, profile, verifications, zoneFile))
+          dispatch(updatePublicIdentity(username, ownerAddress, zoneFile, profile,
+            verifications))
           if (profile) {
-            return validateProofs(profile, ownerAddress, domainName).then((proofs) => {
+            return validateProofs(profile, ownerAddress, username).then((proofs) => {
               verifications = proofs
-              dispatch(updateCurrentIdentity(domainName, profile, verifications, zoneFile))
+              dispatch(updatePublicIdentity(ownerAddress, username,
+                profile, verifications, zoneFile))
             }).catch((error) => {
-              logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
+              logger.error(`fetchPublicIdentity: ${username} validateProofs: error`, error)
             })
           } else {
-            logger.debug('fetchCurrentIdentity: no profile: not updating identity')
-            return Promise.reject()
+            logger.debug('fetchPublicIdentity: no profile')
+            dispatch(updatePublicIdentity(username, ownerAddress, zoneFile))
+            return Promise.resolve()
           }
         })
         .catch((error) => {
-          logger.error(`fetchCurrentIdentity: ${domainName} resolveZoneFileToProfile: error`, error)
-          dispatch(updateCurrentIdentity(domainName, DEFAULT_PROFILE, [], zoneFile))
+          logger.error(`fetchPublicIdentity: ${username} resolveZoneFileToProfile: error`, error)
+          dispatch(updatePublicIdentity(username, ownerAddress, zoneFile))
         })
       })
       .catch((error) => {
-        dispatch(updateCurrentIdentity(domainName, null, [], null))
-        logger.error(`fetchCurrentIdentity: ${domainName} lookup error`, error)
+        dispatch(updatePublicIdentity(username))
+        logger.error(`fetchCurrentIdentity: ${username} lookup error`, error)
       })
   }
 }
 
-function broadcastZoneFileUpdate(zoneFileUrl, coreAPIPassword, name, keypair, zoneFile) {
+function broadcastZoneFileUpdate(zoneFileUrl: string, coreAPIPassword: string,
+  name: string, keypair: {key: string}, zoneFile: string) {
   logger.trace('broadcastZoneFileUpdate: entering')
-  return dispatch => {
+  return (dispatch: Dispatch<*>): Promise<*> => {
     dispatch(broadcastingZoneFileUpdate(name))
     // Core registers with an uncompressed address,
     // browser expects compressed addresses,
@@ -377,9 +378,10 @@ function broadcastZoneFileUpdate(zoneFileUrl, coreAPIPassword, name, keypair, zo
   }
 }
 
-function broadcastNameTransfer(nameTransferUrl, coreAPIPassword, name, keypair, newOwnerAddress) {
+function broadcastNameTransfer(nameTransferUrl: string, coreAPIPassword: string,
+  name: string, keypair: {key: string}, newOwnerAddress: string) {
   logger.trace('broadcastNameTransfer: entering')
-  return dispatch => {
+  return (dispatch: Dispatch<*>): Promise<*> =>  {
     dispatch(broadcastingNameTransfer(name))
     // Core registers with an uncompressed address,
     // browser expects compressed addresses,
@@ -428,13 +430,13 @@ function broadcastNameTransfer(nameTransferUrl, coreAPIPassword, name, keypair, 
 }
 
 const IdentityActions = {
-  updateCurrentIdentity,
+  updatePublicIdentity,
   setDefaultIdentity,
   createNewIdentity,
   createNewIdentityWithOwnerAddress,
   createNewProfile,
   updateProfile,
-  fetchCurrentIdentity,
+  fetchPublicIdentity,
   refreshIdentities,
   refreshSocialProofVerifications,
   addUsername,

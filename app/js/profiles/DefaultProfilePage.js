@@ -5,9 +5,7 @@ import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
 import SecondaryNavBar from '../components/SecondaryNavBar'
-import Alert from '../components/Alert'
 import Image from '../components/Image'
-import InputGroup from '../components/InputGroup'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
 import SocialAccountItem from './components/SocialAccountItem'
@@ -37,18 +35,15 @@ function mapDispatchToProps(dispatch) {
 
 class DefaultProfilePage extends Component {
   static propTypes = {
-    localIdentities: PropTypes.object.isRequired,
-    defaultIdentity: PropTypes.string.isRequired,
+    localIdentities: PropTypes.array.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
     createNewProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
-    namesOwned: PropTypes.array.isRequired,
     api: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
-    setDefaultIdentity: PropTypes.func.isRequired,
-    resetCreateNewProfileError: PropTypes.func.isRequired,
-    createProfileError: PropTypes.string
+    setDefaultIdentity: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -56,16 +51,11 @@ class DefaultProfilePage extends Component {
 
     this.state = {
       localIdentities: this.props.localIdentities,
-      passwordPromptIsOpen: false,
-      processing: false,
-      password: '',
       photoModalIsOpen: false
     }
 
     this.onValueChange = this.onValueChange.bind(this)
     this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
-    this.openPasswordPrompt = this.openPasswordPrompt.bind(this)
-    this.closePasswordPrompt = this.closePasswordPrompt.bind(this)
     this.onPhotoClick = this.onPhotoClick.bind(this)
     this.openPhotoModal = this.openPhotoModal.bind(this)
     this.closePhotoModal = this.closePhotoModal.bind(this)
@@ -84,22 +74,6 @@ class DefaultProfilePage extends Component {
     this.setState({
       localIdentities: nextProps.localIdentities
     })
-    if (nextProps.createProfileError) {
-      this.setState({
-        processing: false
-      })
-    }
-
-    const currentIdentityCount = Object.keys(this.props.localIdentities).length
-
-    const newIdentityCount = Object.keys(nextProps.localIdentities).length
-    if (currentIdentityCount < newIdentityCount) {
-      this.setState({
-        processing: false,
-        password: ''
-      })
-      this.closePasswordPrompt()
-    }
   }
 
   onValueChange(event) {
@@ -128,33 +102,11 @@ class DefaultProfilePage extends Component {
     })
   }
 
-  openPasswordPrompt(event) {
-    event.preventDefault()
-    this.setState({
-      processing: false
-    })
-    this.props.resetCreateNewProfileError()
-    this.setState({
-      passwordPromptIsOpen: true
-    })
-  }
-
-  closePasswordPrompt(event) {
-    if (event) {
-      event.preventDefault()
-    }
-    this.setState({
-      passwordPromptIsOpen: false
-    })
-  }
-
   availableIdentityAddresses() {
     return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
   }
 
   render() {
-    const createProfileError = this.props.createProfileError
-    const passwordPromptIsOpen = this.state.passwordPromptIsOpen
     const identityIndex = this.props.defaultIdentity
     const identity = this.state.localIdentities[identityIndex]
     const person = new Person(identity.profile)
@@ -174,45 +126,6 @@ class DefaultProfilePage extends Component {
 
     return (
       <div>
-        <Modal
-          isOpen={passwordPromptIsOpen}
-          onRequestClose={this.closePasswordPrompt}
-          contentLabel="Password Modal"
-          shouldCloseOnOverlayClick
-          style={{ overlay: { zIndex: 10 } }}
-          className="container-fluid"
-        >
-          <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new Blockstack ID</h3>
-            <div>
-              {createProfileError ?
-                <Alert key="1" message="Incorrect password" status="danger" />
-                :
-                null
-              }
-            </div>
-            <InputGroup
-              name="password"
-              type="password"
-              label=""
-              placeholder="Password"
-              data={this.state}
-              onChange={this.onValueChange}
-              required
-            />
-            <button
-              disabled={this.state.processing}
-              className="btn btn-primary btn-block"
-              type="submit"
-            >
-              {this.state.processing ?
-                <span>Creating...</span>
-                :
-                <span>Create new ID</span>
-              }
-            </button>
-          </form>
-        </Modal>
         <Modal
           isOpen={this.state.photoModalIsOpen}
           contentLabel=""

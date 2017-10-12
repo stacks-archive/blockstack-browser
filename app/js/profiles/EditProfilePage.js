@@ -35,7 +35,8 @@ function mapStateToProps(state) {
     localIdentities: state.profiles.identity.localIdentities,
     api: state.settings.api,
     identityKeypairs: state.account.identityAccount.keypairs,
-    identityAddresses: state.account.identityAccount.addresses
+    identityAddresses: state.account.identityAccount.addresses,
+    storageConnected: state.settings.api.storageConnected
   }
 }
 
@@ -52,14 +53,14 @@ class EditProfilePage extends Component {
     identityKeypairs: PropTypes.array.isRequired,
     routeParams: PropTypes.object.isRequired,
     refreshSocialProofVerifications: PropTypes.func.isRequired,
-    refreshIdentities: PropTypes.func.isRequired
+    refreshIdentities: PropTypes.func.isRequired,
+    storageConnected: PropTypes.bool.isRequired
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      domainName: null,
       profile: null,
       profileJustSaved: false,
       tabName: '',
@@ -196,7 +197,7 @@ class EditProfilePage extends Component {
         this.removeAccount(service)
       }
     } else if (event.target.name === 'proofUrl') {
-      if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
+      if (this.hasUsername() && this.props.storageConnected) {
         this.refreshProofs()
       }
     }
@@ -248,30 +249,31 @@ class EditProfilePage extends Component {
     const identityIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[identityIndex]
     const verifications = identity.verifications
+    const identityAddress = identity.identityAddress
 
     this.props.updateProfile(this.props.routeParams.index, newProfile, verifications)
-    if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
-      logger.trace('saveProfile: Preparing to upload profile')
-      logger.debug(`saveProfile: signing with key index ${identityIndex}`)
+    logger.trace('saveProfile: Preparing to upload profile')
+    logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 
-      const data = signProfileForUpload(this.state.profile,
-        this.props.identityKeypairs[identityIndex])
+    const signedProfileTokenData = signProfileForUpload(this.state.profile,
+      this.props.identityKeypairs[identityIndex])
 
-      uploadProfile(this.props.api, this.state.index, data)
-      .catch((err) => {
-        console.error(err)
-        console.error('profile not uploaded')
-      })
-    } else {
-      logger.trace('saveProfile: No username or storage so we skipped profile upload')
-    }
+    uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
+    .catch((err) => {
+      logger.error('saveProfile: profile not uploaded', err)
+    })
   }
 
   uploadProfilePhoto(e) {
-    const index = this.state.index
+    const identityIndex = this.state.index
+    const identity = this.props.localIdentities[identityIndex]
+    const ownerAddress = identity.ownerAddress
     const profile = this.state.profile
-    uploadPhoto(this.props.api, index, e.target.files[0], 0)
+    const photoIndex = 0
+    logger.debug('uploadProfilePhoto: trying to upload...')
+    uploadPhoto(this.props.api, identityIndex, ownerAddress, e.target.files[0], photoIndex)
     .then((avatarUrl) => {
+      logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
       profile.image = []
       profile.image.push({
         '@type': 'ImageObject',
@@ -307,10 +309,10 @@ class EditProfilePage extends Component {
     const profile = this.state.profile
     const identityIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[identityIndex]
-    const ownerAddress = identity.ownerAddress
+    const identityAddress = identity.ownerAddress
     const username = identity.username
 
-    this.props.refreshSocialProofVerifications(profile, ownerAddress, username)
+    this.props.refreshSocialProofVerifications(identityIndex, identityAddress, username, profile)
   }
 
   createNewAccount(service, identifier) {
@@ -435,7 +437,7 @@ class EditProfilePage extends Component {
                   <div className="col-12 text-center">
                     <input
                       type="file"
-                      ref={ref => this.photoUpload = ref}
+                      ref={(ref) => { this.photoUpload = ref }}
                       onChange={this.uploadProfilePhoto}
                       style={{ display: 'none' }}
                     />

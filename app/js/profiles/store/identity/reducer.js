@@ -2,20 +2,27 @@ import * as types from './types'
 import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 
 const initialState = {
-  current: 0,
   default: 0,
   localIdentities: [],
-  namesOwned: [],
-  createProfileError: null,
+  publicIdentities: {},
   nameTransfers: [],
-  zoneFileUpdates: []
+  zoneFileUpdates: [],
+  createProfileError: null
 }
 
 function IdentityReducer(state = initialState, action) {
   switch (action.type) {
-    case types.UPDATE_CURRENT:
+    case types.UPDATE_PUBLIC_IDENTITY:
       return Object.assign({}, state, {
-        current: action.index
+        publicIdentities: Object.assign({}, state.publicIdentities, {
+          [action.username]: {
+            username: action.username,
+            ownerAddress: action.ownerAddress,
+            zoneFile: action.zoneFile,
+            profile: JSON.parse(JSON.stringify(action.profile)),
+            verifications: JSON.parse(JSON.stringify(action.verifications))
+          }
+        })
       })
     case types.SET_DEFAULT:
       return Object.assign({}, state, {
@@ -46,7 +53,8 @@ function IdentityReducer(state = initialState, action) {
     }
     case types.UPDATE_SOCIAL_PROOF_VERIFICATIONS: {
       const newLocalIdentities = state.localIdentities.slice()
-      newLocalIdentities[action.index].verifications = action.verifications
+      newLocalIdentities[action.index].verifications =
+      JSON.parse(JSON.stringify(action.verifications))
       return Object.assign({}, state, {
         localIdentities: newLocalIdentities
       })
