@@ -140,7 +140,7 @@ class EditProfilePage extends Component {
     const verifications = identity.verifications
 
     this.props.updateProfile(this.props.routeParams.index, newProfile, verifications)
-    if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
+    if (this.hasUsername() && this.props.api.storageConnected) {
       logger.trace('saveProfile: Preparing to upload profile')
       const ownerAddress = this.props.localIdentities[profileIndex].ownerAddress
       const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
@@ -297,7 +297,7 @@ class EditProfilePage extends Component {
       }
     } else if (event.target.name === 'proofUrl') {
 
-      if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
+      if (this.hasUsername() && this.props.api.storageConnected) {
         this.refreshProofs()
       }
 
