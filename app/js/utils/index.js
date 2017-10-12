@@ -11,7 +11,8 @@ export {
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode,
   findAddressIndex,
-  decryptBitcoinPrivateKey
+  decryptBitcoinPrivateKey,
+  calculateTrustLevel
 } from './account-utils'
 
 export {

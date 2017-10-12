@@ -27,7 +27,7 @@ class ProfilesApp extends Component {
 
   render() {
     return (
-      <div className="app-wrap-profiles">
+      <div>
         <Navbar activeTab="avatar" />
           {this.props.children}
       </div>

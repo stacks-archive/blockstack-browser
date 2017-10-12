@@ -12,6 +12,7 @@ import {
 } from '../../../utils/index'
 
 import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
+import { calculateTrustLevel } from '../../../utils/account-utils'
 import { AccountActions } from '../../../account/store/account'
 
 import log4js from 'log4js'
@@ -65,21 +66,23 @@ function updateOwnedIdentities(localIdentities, namesOwned) {
   }
 }
 
-function updateProfile(domainName, profile, verifications, zoneFile) {
+function updateProfile(domainName, profile, verifications, trustLevel, zoneFile) {
   return {
     type: types.UPDATE_PROFILE,
     domainName,
     profile,
     zoneFile,
-    verifications
+    verifications,
+    trustLevel
   }
 }
 
-function updateSocialProofVerifications(domainName, verifications) {
+function updateSocialProofVerifications(domainName, verifications, trustLevel) {
   return {
     type: types.UPDATE_SOCIAL_PROOF_VERIFICATIONS,
     domainName,
     verifications,
+    trustLevel,
   }
 }
 
@@ -281,11 +284,13 @@ function refreshIdentities(api, addresses, localIdentities, namesOwned) {
                       resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                         j++
                         if (profile) {
-                          dispatch(updateProfile(domainName, profile, [], zoneFile))
+                          dispatch(updateProfile(domainName, profile, [], 0, zoneFile))
                           let verifications = []
+                          let trustLevel = 0
                           validateProofs(profile, ownerAddress, domainName).then((proofs) => {
                             verifications = proofs
-                            dispatch(updateProfile(domainName, profile, verifications, zoneFile))
+                            trustLevel = calculateTrustLevel(verifications)
+                            dispatch(updateProfile(domainName, profile, verifications, trustLevel, zoneFile))
                           }).catch((error) => {
                             logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
                           })
@@ -331,17 +336,19 @@ function refreshSocialProofVerifications(profile, ownerAddress, domainName) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       let verifications = []
+      let trustLevel = 0
       // let fqdn = null
       // if (ownerAddress !== domainName) {
       //   fqdn = domainName
       // }
       validateProofs(profile, ownerAddress, domainName).then((proofs) => {
         verifications = proofs
-        dispatch(updateSocialProofVerifications(domainName, verifications))
+        trustLevel = calculateTrustLevel(verifications)
+        dispatch(updateSocialProofVerifications(domainName, verifications, trustLevel))
         resolve()
       }).catch((error) => {
         logger.error(`fetchCurrentIdentity: ${domainName} validateProofs: error`, error)
-        dispatch(updateSocialProofVerifications(domainName, []))
+        dispatch(updateSocialProofVerifications(domainName, [], trustLevel))
         resolve()
       })
     })

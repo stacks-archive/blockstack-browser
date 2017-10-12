@@ -134,8 +134,9 @@ class EditProfilePage extends Component {
     const profileIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[profileIndex]
     const verifications = identity.verifications
+    const trustLevel = identity.trustLevel
 
-    this.props.updateProfile(this.props.routeParams.index, newProfile, verifications)
+    this.props.updateProfile(this.props.routeParams.index, newProfile, verifications, trustLevel)
     if (this.hasUsername() && this.props.api.dropboxAccessToken !== null) {
       logger.trace('saveProfile: Preparing to upload profile')
       const ownerAddress = this.props.localIdentities[profileIndex].ownerAddress

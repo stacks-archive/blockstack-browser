@@ -6,6 +6,7 @@ const initialState = {
     domainName: null,
     profile: null,
     verifications: null,
+    trustLevel: null,
     zoneFile: null
   },
   default: null,
@@ -55,7 +56,8 @@ function IdentityReducer(state = initialState, action) {
           [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
             profile: action.profile,
             zoneFile: action.zoneFile,
-            verifications: action.verifications
+            verifications: action.verifications,
+            trustLevel: action.trustLevel
           })
         })
       })
@@ -63,7 +65,8 @@ function IdentityReducer(state = initialState, action) {
       return Object.assign({}, state, {
         localIdentities: Object.assign({}, state.localIdentities, {
           [action.domainName]: Object.assign({}, state.localIdentities[action.domainName], {
-            verifications: action.verifications
+            verifications: action.verifications,
+            trustLevel: action.trustLevel
           })
         })
       })
