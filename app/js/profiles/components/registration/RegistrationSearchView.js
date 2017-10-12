@@ -148,7 +148,7 @@ class RegistrationSearchView extends Component {
   render() {
     const searchingUsername = this.state.searchingUsername
     const availableNames = this.props.availability.names
-    const index = this.props.routeParams.index
+    const index = parseInt(this.props.routeParams.index, 10)
     const showSearchResults = this.state.showSearchResults
     return (
       <div style={{ textAlign: 'center' }}>
