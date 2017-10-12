@@ -130,6 +130,20 @@ class App extends Component {
     }
   }
 
+  getTrustLevel() {
+    const defaultIdentityName = this.props.defaultIdentity
+    const identity = this.props.localIdentities[defaultIdentityName]
+    return identity.trustLevel
+  }
+
+  shouldShowTrustLevelFooter() {
+    const trustLevel = this.getTrustLevel()
+    if (trustLevel < MAX_TRUST_LEVEL) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   closeModal() {
     this.setState({ modalIsOpen: false })
@@ -140,24 +154,6 @@ class App extends Component {
     this.props.isCoreRunning(this.props.corePingUrl)
     this.props.isCoreApiPasswordValid(this.props.walletPaymentAddressUrl,
       this.props.coreAPIPassword)
-  }
-
-  getTrustLevel() {
-    const defaultIdentityName = this.props.defaultIdentity
-    const identity = this.props.localIdentities[defaultIdentityName]
-    return identity.trustLevel
-  }
-
-  shouldShowTrustLevelFooter() {
-    let trustLevel = this.getTrustLevel()
-    if (trustLevel < MAX_TRUST_LEVEL)
-      return true
-    else
-      return false
-  }
-
-  onTrustLevelFooterClick() {
-
   }
 
   render() {
@@ -178,7 +174,11 @@ class App extends Component {
           {this.props.children}
         </div>
         {shouldShowTrustLevelFooter &&
-          <TrustLevelFooter trustLevel={trustLevel} maxTrustLevel={MAX_TRUST_LEVEL} link={editProfileLink}/>
+          <TrustLevelFooter 
+            trustLevel={trustLevel} 
+            maxTrustLevel={MAX_TRUST_LEVEL} 
+            link={editProfileLink}
+          />
         }
       </div>
     )
