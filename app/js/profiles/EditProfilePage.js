@@ -138,7 +138,7 @@ class EditProfilePage extends Component {
       openInNewTab(verificationUrl)
     }
   }
-  
+
   onSocialAccountChange(service, identifier) {
     const profile = this.state.profile
 
@@ -262,7 +262,7 @@ class EditProfilePage extends Component {
     const identityIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[identityIndex]
     const verifications = identity.verifications
-    const identityAddress = identity.identityAddress
+    const identityAddress = identity.ownerAddress
 
     this.props.updateProfile(this.props.routeParams.index, newProfile, verifications)
     logger.trace('saveProfile: Preparing to upload profile')

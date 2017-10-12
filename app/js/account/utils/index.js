@@ -17,6 +17,20 @@ function getStorageMethod(api: {dropboxAccessToken: string}) {
   return BLOCKSTACK_INC
 }
 
+function checkIdentityInputs(identityIndex: number, identityAddress: string) {
+  if (!identityIndex && identityIndex !== 0) {
+    const message = 'checkIdentityInputs: No identity index provided'
+    logger.error(message)
+    throw new Error(message)
+  }
+
+  if (!identityAddress) {
+    const message = 'checkIdentityInputs: No identity address provided'
+    logger.error(message)
+    throw new Error(message)
+  }
+}
+
 export function uploadPhoto(api: {dropboxAccessToken: string, gaiaHubConfig: GaiaHubConfig},
   identityIndex: number, identityAddress: string, photoFile: string, photoIndex: number) {
   const storageMethod = getStorageMethod(api)
@@ -32,6 +46,8 @@ export function uploadPhoto(api: {dropboxAccessToken: string, gaiaHubConfig: Gai
 export function uploadProfile(api: {dropboxAccessToken: string, gaiaHubConfig: GaiaHubConfig },
   identityIndex: number, identityAddress: string, signedProfileTokenData: string,
   firstUpload: boolean = false) {
+  checkIdentityInputs(identityIndex, identityAddress)
+
   const storageMethod = getStorageMethod(api)
 
   switch (storageMethod) {
