@@ -103,7 +103,7 @@ describe('Registration Store: Async Actions', () => {
       })
 
       return store.dispatch(RegistrationActions.registerName(mockAPI,
-        'satoshi.id', BitcoinKeyPairs.test1.address, keypair, paymentUncompressedPrivateKey))
+        'satoshi.id', 0, BitcoinKeyPairs.test1.address, keypair, paymentUncompressedPrivateKey))
       .then(() => {
         const expectedActions = [
           { type: 'PROFILE_UPLOADING' },
@@ -161,7 +161,7 @@ describe('Registration Store: Async Actions', () => {
       })
 
       return store.dispatch(RegistrationActions.registerName(mockAPI,
-        'satoshi.id', BitcoinKeyPairs.test1.address, keypair))
+        'satoshi.id', 0, BitcoinKeyPairs.test1.address, keypair))
       .then(() => {
         assert(0, 'This promise is supposed to be rejected.')
       })

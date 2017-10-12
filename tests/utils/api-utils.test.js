@@ -68,7 +68,8 @@ describe('api-utils', () => {
 
   describe('setCoreStorageConfig', () => {
     it('should have core initialize storage and not update profile', () => {
-      const expectedBody =  JSON.stringify({ driver_config: { token: 'dropboxtoken' } })
+      const expectedBody =  JSON.stringify({ driver_config:
+        { token: 'dropboxtoken' } })
 
       const response = '{"index_url": "https://www.dropbox.com/s/faws3zg4silbnip/profile.json?dl=1"}'
       const expectedResult = 'OK'
@@ -99,14 +100,14 @@ describe('api-utils', () => {
         address: '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk',
         appsNodeKey: 'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarxXMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f',
         salt: 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e' }
-
+      const dropboxFirstProfileUpload = true
       const api = {
         coreAPIPassword: '999',
-        dropboxAccessToken: 'dropboxtoken',
+        dropboxAccessToken: 'GknmvhqxxHAAAAAAAAADBzQTS9H9DDu4Di95Ol36nAOeAFr_Bd2fr5A1f5rK6rqY',
         hostedDataLocation: 'dropbox'
       }
 
-      const expectedBody =  JSON.stringify({ driver_config: { token: 'dropboxtoken' } })
+      const expectedBody =  JSON.stringify({ driver_config: { token: 'GknmvhqxxHAAAAAAAAADBzQTS9H9DDu4Di95Ol36nAOeAFr_Bd2fr5A1f5rK6rqY' } })
 
       const response = '{"index_url": "https://www.dropbox.com/s/faws3zg4silbnip/profile.json?dl=1"}'
       const expectedResult = null // runs null because this isn't the first upload of the profile
@@ -135,7 +136,8 @@ describe('api-utils', () => {
       })
 
       return setCoreStorageConfig(api,
-        identityAddress, identityIndex, profile, profileSigningKeypair).then((actualResult) => {
+        identityAddress, identityIndex, profile, profileSigningKeypair, dropboxFirstProfileUpload)
+        .then((actualResult) => {
           assert.deepEqual(actualResult, expectedResult)
           core.done() // will throw AssertionError if mock not called
           dropbox.done() // will throw AssertionError if mock not called

@@ -1,6 +1,5 @@
 import * as types from './types'
 import { makeProfileZoneFile } from 'blockstack'
-import { IdentityActions } from  '../identity'
 import { uploadProfile } from '../../../account/utils'
 import {
   signProfileForUpload, authorizationHeaderValue
@@ -87,7 +86,7 @@ function setOwnerKey(setOwnerKeyUrl, requestHeaders, keypair, nameIsSubdomain) {
   })
 }
 
-function registerName(api, domainName, ownerAddress, keypair, paymentKey = null) {
+function registerName(api, domainName, identityIndex, ownerAddress, keypair, paymentKey = null) {
   logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
     logger.debug(`Signing a blank default profile for ${domainName}`)
@@ -95,7 +94,8 @@ function registerName(api, domainName, ownerAddress, keypair, paymentKey = null)
 
     dispatch(profileUploading())
     logger.trace(`Uploading ${domainName} profile...`)
-    return uploadProfile(api, domainName, signedProfileTokenData, true).then((profileUrl) => {
+    return uploadProfile(api, identityIndex, ownerAddress, signedProfileTokenData)
+    .then((profileUrl) => {
       logger.trace(`Uploading ${domainName} profiled succeeded.`)
       const tokenFileUrl = profileUrl
       logger.debug(`tokenFileUrl: ${tokenFileUrl}`)
@@ -175,9 +175,6 @@ function registerName(api, domainName, ownerAddress, keypair, paymentKey = null)
           } else {
             logger.debug(`Successfully submitted registration for ${domainName}`)
             dispatch(registrationSubmitted())
-            const addingUsername = true
-            dispatch(IdentityActions.createNewIdentityFromDomain(domainName,
-              ownerAddress, addingUsername, zoneFile))
           }
         })
         .catch((error) => {

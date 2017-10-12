@@ -66,7 +66,7 @@ describe('Identity Store: Async Actions', () => {
   })
 
   describe('refreshIdentities', () => {
-    it('adds adds owned usernames to identity', () => {
+    it('adds adds owned username to identity', () => {
       // mock core
       const nockCore1 = nock('http://localhost:6270')
       .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')

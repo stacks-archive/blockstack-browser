@@ -4,10 +4,9 @@ import {
 
 const initialState = {
   default: 0,
-  current: 0,
   localIdentities: [],
   nameTransfers: [],
-  namesOwned: [],
+  publicIdentities: {},
   createProfileError: null,
   zoneFileUpdates: []
 }
@@ -24,34 +23,11 @@ describe('Identity Store: IdentityReducer', () => {
       initialState)
   })
 
-  it('should update the current identity to the provided index', () => {
-    const profile = {
-      key: 'value'
-    }
-    const verifications = {
-      verified: true
-    }
-    const index = 2
-    const action = IdentityActions.updateCurrentIdentity(index)
-    const expectedState = {
-      default: 0,
-      current: 2,
-      localIdentities: [],
-      nameTransfers: [],
-      namesOwned: [],
-      createProfileError: null,
-      zoneFileUpdates: []
-    }
-    const actualState = IdentityReducer(undefined, action)
-    assert.deepEqual(actualState, expectedState)
-  })
-
   it('should create a new identity that is unregistered & unverified', () => {
     const index = 0
     const action = IdentityActions.createNewIdentity(index, '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC')
     const expectedState = {
       default: 0,
-      current: 0,
       localIdentities: [
           {
             ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
@@ -68,7 +44,7 @@ describe('Identity Store: IdentityReducer', () => {
           }
         ],
       nameTransfers: [],
-      namesOwned: [],
+      publicIdentities: {},
       createProfileError: null,
       zoneFileUpdates: []
     }
@@ -81,10 +57,9 @@ describe('Identity Store: IdentityReducer', () => {
     const action = IdentityActions.setDefaultIdentity(index)
     const expectedState = {
       default: 8,
-      current: 0,
       localIdentities: [],
       nameTransfers: [],
-      namesOwned: [],
+      publicIdentities: {},
       createProfileError: null,
       zoneFileUpdates: []
     }
@@ -92,13 +67,12 @@ describe('Identity Store: IdentityReducer', () => {
     assert.deepEqual(actualState, expectedState)
   })
 
-  it('should update the profile of the specified name', () => {
+  it('should update the profile of the specified index', () => {
     const profile = {
       key: 'value'
     }
     const testInitialState = {
       default: 0,
-      current: 0,
       localIdentities: [{
         username: null,
         usernameOwned: false,
@@ -110,14 +84,13 @@ describe('Identity Store: IdentityReducer', () => {
         zoneFile: null
       }],
       nameTransfers: [],
-      namesOwned: [],
+      publicIdentities: {},
       zoneFileUpdates: [],
       createProfileError: null
     }
     const action = IdentityActions.updateProfile(0, profile, ['a'], 'test')
     const expectedState = {
       default: 0,
-      current: 0,
       localIdentities: [{
         username: null,
         usernameOwned: false,
@@ -131,7 +104,7 @@ describe('Identity Store: IdentityReducer', () => {
         zoneFile: 'test'
       }],
       nameTransfers: [],
-      namesOwned: [],
+      publicIdentities: {},
       zoneFileUpdates: [],
       createProfileError: null
     }
@@ -142,7 +115,6 @@ describe('Identity Store: IdentityReducer', () => {
   it('should move the identity from owner address key to domain key', () => {
     const initialState = {
       default: 0,
-      current: 0,
       localIdentities: [{
         username: null,
         usernameOwned: false,
@@ -156,14 +128,13 @@ describe('Identity Store: IdentityReducer', () => {
         zoneFile: 'test'
       }],
       nameTransfers: [],
-      namesOwned: [],
+      publicIdentities: {},
       zoneFileUpdates: [],
       createProfileError: null
     }
 
     const expectedState = {
       default: 0,
-      current: 0,
       localIdentities: [{
         username: 'name.id',
         usernameOwned: false,
@@ -177,7 +148,7 @@ describe('Identity Store: IdentityReducer', () => {
         zoneFile: 'test'
       }],
       nameTransfers: [],
-      namesOwned: [],
+      publicIdentities: {},
       zoneFileUpdates: [],
       createProfileError: null
     }
@@ -191,10 +162,9 @@ describe('Identity Store: IdentityReducer', () => {
     const error = 'error'
     const expectedState = {
       default: 0,
-      current: 0,
       localIdentities: [],
       nameTransfers: [],
-      namesOwned: [],
+      publicIdentities: {},
       createProfileError: 'error',
       zoneFileUpdates: []
     }
