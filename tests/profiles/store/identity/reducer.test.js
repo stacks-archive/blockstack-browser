@@ -7,6 +7,7 @@ const initialState = {
   current: {
     domainName: null,
     profile: null,
+    trustLevel: null,
     verifications: null,
     zoneFile: null
   },
@@ -63,6 +64,7 @@ describe('Identity Store: IdentityReducer', () => {
       current: {
         domainName: null,
         profile: null,
+        trustLevel: null,
         verifications: null,
         zoneFile: null
       },
@@ -92,6 +94,7 @@ describe('Identity Store: IdentityReducer', () => {
       current: {
         domainName: null,
         profile: null,
+        trustLevel: null,
         verifications: null,
         zoneFile: null
       },
@@ -122,6 +125,7 @@ describe('Identity Store: IdentityReducer', () => {
       current: {
         domainName: null,
         profile: null,
+        trustLevel: null,
         verifications: null,
         zoneFile: null
       },
@@ -147,12 +151,13 @@ describe('Identity Store: IdentityReducer', () => {
     const profile = {
       key: 'value'
     }
-    const action = IdentityActions.updateProfile('satoshi.id', profile, [], 'test')
+    const action = IdentityActions.updateProfile('satoshi.id', profile, [], 0, 'test')
     const expectedState = {
       default: null,
       current: {
         domainName: null,
         profile: null,
+        trustLevel: null,
         verifications: null,
         zoneFile: null
       },
@@ -161,6 +166,7 @@ describe('Identity Store: IdentityReducer', () => {
           profile: {
             key: 'value'
           },
+          trustLevel: 0,
           verifications: [],
           zoneFile: 'test'
         }
@@ -179,12 +185,13 @@ describe('Identity Store: IdentityReducer', () => {
       key: 'value'
     }
     const zoneFile = 'test'
-    const action = IdentityActions.updateProfile('satoshi.id', profile, [], zoneFile)
+    const action = IdentityActions.updateProfile('satoshi.id', profile, [], 0, zoneFile)
     const expectedState = {
       default: null,
       current: {
         domainName: null,
         profile: null,
+        trustLevel: null,
         verifications: null,
         zoneFile: null
       },
@@ -193,6 +200,7 @@ describe('Identity Store: IdentityReducer', () => {
           profile: {
             key: 'value'
           },
+          trustLevel: 0,
           verifications: [],
           zoneFile: 'test'
         }
@@ -284,6 +292,7 @@ describe('Identity Store: IdentityReducer', () => {
       current: {
         domainName: null,
         profile: null,
+        trustLevel: null,
         verifications: null,
         zoneFile: null
       },
