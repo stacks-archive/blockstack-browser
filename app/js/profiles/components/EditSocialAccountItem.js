@@ -197,26 +197,28 @@ class EditSocialAccountItem extends Component {
             <span className="">
               <i className={`fa fa-fw ${this.getIconClass()}`} />
             </span>
-            { !this.props.placeholder && (
+              {!this.props.placeholder && (
                 <span className="app-account-identifier">
                   {this.getIdentifier()}
                 </span>
               )}
 
-            { !this.props.placeholder && (
+              {!this.props.placeholder && (
                 <span className="app-account-service font-weight-normal">
                   {`@${accountServiceName}`}
                 </span>
               )}
 
-            { this.props.placeholder && (
+              {this.props.placeholder && (
                 <span className="app-account-service font-weight-normal">
                   { this.getPlaceholderText(this.props.service) }
                 </span>
               )}
 
             <span className="float-right">
-              { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
+              {!this.props.verified && <span>+1<i className="fa fa-w fa-star-o" /></span> }
+
+              {this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
                 <i className="fa fa-w fa-chevron-up" />
               }
             </span>
