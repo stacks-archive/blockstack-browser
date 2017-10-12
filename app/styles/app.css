@@ -75,7 +75,8 @@ div.edit-profile-accounts .account.placeholder .form-group input.form-control {c
 .verification-input::-webkit-input-placeholder {color:#fff;}
 
 /* Trust level footer */
-.trust-level-footer-container {position:fixed;left:0;bottom:0;width:100%;background-color:#2e2e2e;color:#fff;padding:25px;font-size:0.85rem;font-weight:700;}
+.trust-level-footer-container {position:fixed;left:0;bottom:0;width:100%;background-color:#2e2e2e;color:#fff;padding:25px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+.trust-level-footer-container a{color:#fff;}
 
 /*div.profile-accounts > ul > li > a:hover,div.profile-accounts > ul > li > button:hover{text-decoration:none;color:#fff;border-radius:4px;background-color:#2c96ff;}*/
 .profile-foot{position:relative;display:block;margin-left:15px;padding-top:50px;color:#949494;}

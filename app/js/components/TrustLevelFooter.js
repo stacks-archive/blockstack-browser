@@ -3,8 +3,9 @@ import { Link } from 'react-router'
 
 class TrustLevelFooter extends Component {
   static propTypes = {
-    trustLevel: PropTypes.number,
-    maxTrustLevel: PropTypes.number,
+    trustLevel: PropTypes.number.isRequired,
+    maxTrustLevel: PropTypes.number.isRequired,
+    link: PropTypes.string.isRequired
   }
 
   render() {
@@ -19,9 +20,11 @@ class TrustLevelFooter extends Component {
     return (
       <footer className="footer">
         <div className="trust-level-footer-container text-center">
-          <span>
-            Increase your trust level {stars(this.props.trustLevel, this.props.maxTrustLevel)} 
-          </span>
+          <Link to={this.props.link}>
+            <span>
+              Increase your trust level {stars(this.props.trustLevel, this.props.maxTrustLevel)} 
+            </span>
+          </Link>
         </div>
       </footer>
     )

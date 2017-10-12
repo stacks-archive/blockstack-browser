@@ -156,9 +156,15 @@ class App extends Component {
       return false
   }
 
+  onTrustLevelFooterClick() {
+
+  }
+
   render() {
+    const defaultIdentityName = this.props.defaultIdentity
     const shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter()
     const trustLevel = this.getTrustLevel()
+    const editProfileLink = `/profiles/${defaultIdentityName}/edit`
 
     return (
       <div className="body-main">
@@ -172,7 +178,7 @@ class App extends Component {
           {this.props.children}
         </div>
         {shouldShowTrustLevelFooter &&
-          <TrustLevelFooter trustLevel={trustLevel} maxTrustLevel={MAX_TRUST_LEVEL} />
+          <TrustLevelFooter trustLevel={trustLevel} maxTrustLevel={MAX_TRUST_LEVEL} link={editProfileLink}/>
         }
       </div>
     )
