@@ -268,6 +268,11 @@ class DefaultProfilePage extends Component {
             <div>This is your owner address.</div>
           </div>
         </ToolTip>
+        <ToolTip id="trustLevel">
+          <div>
+            <div>Increase your trust level by verifying your social proofs.</div>
+          </div>
+        </ToolTip>
         <div>
           <SecondaryNavBar
             leftButtonTitle="Edit"
@@ -323,7 +328,12 @@ class DefaultProfilePage extends Component {
                   <div className="pro-card-trust-level text-center m-t-5 m-b-20">
                     <span className="pro-card-trust-level-badge">
                       {trustLevel >= 3 && <i className="fa fa-check-circle fa-lg" />}
-                      Trust Level: {trustLevel}
+                      Trust Level: {trustLevel} 
+                      {trustLevel <= 1 &&
+                        <span data-tip data-for="trustLevel">
+                          <i className="fa fa-info-circle" />
+                        </span>
+                      }
                     </span>
                   </div>
 
