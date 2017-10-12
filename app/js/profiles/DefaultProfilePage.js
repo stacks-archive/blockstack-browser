@@ -201,6 +201,7 @@ class DefaultProfilePage extends Component {
     const ownerAddress = identity.ownerAddress
 
     const verifications = identity.verifications
+    const trustLevel = identity.trustLevel
     const blockNumber = identity.blockNumber
     const transactionIndex = identity.transactionIndex
 
@@ -317,6 +318,13 @@ class DefaultProfilePage extends Component {
                       {ownerAddress} {identity.canAddUsername && 
                         <span data-tip data-for="domainName">(?)</span>}
                     </small>
+                  </div>
+
+                  <div className="pro-card-trust-level text-center m-t-5 m-b-20">
+                    <span className="pro-card-trust-level-badge">
+                      {trustLevel >= 3 && <i className="fa fa-check-circle fa-lg" />}
+                      Trust Level: {trustLevel}
+                    </span>
                   </div>
 
                   <div className="pro-card-body text-center">

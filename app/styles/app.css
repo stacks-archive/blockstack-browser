@@ -425,6 +425,7 @@ a.card:hover{text-decoration:none;}
 div.pro-avatar img{max-width:58px;}
 .pro-card-name{font-size:1.125rem;font-weight:700;}
 .pro-card-domain-name{font-size:1rem;}
+.pro-card-trust-level-badge{color:#fff;background-color:#2e2e2e;padding:10px 25px;border-radius:20px;font-weight:700}
 .pro-card-body{display:block;margin-bottom:15px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 .list-card{margin-bottom:0;list-style:none;padding:0;color:#19191A;text-decoration:none;}
