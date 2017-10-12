@@ -18,7 +18,6 @@ function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
     defaultIdentity: state.profiles.identity.default,
-    namesOwned: state.profiles.identity.namesOwned,
     createProfileError: state.profiles.identity.createProfileError,
     identityAddresses: state.account.identityAccount.addresses,
     nextUnusedAddressIndex: state.account.identityAccount.addressIndex,
@@ -37,7 +36,6 @@ class AllProfilesPage extends Component {
     defaultIdentity: PropTypes.number.isRequired,
     createNewProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
-    namesOwned: PropTypes.array.isRequired,
     api: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
