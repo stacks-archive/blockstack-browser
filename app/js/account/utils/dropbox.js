@@ -1,3 +1,4 @@
+// @flow
 import Dropbox from 'dropbox'
 import log4js from 'log4js'
 
@@ -13,78 +14,88 @@ export function redirectToConnectToDropbox() {
     `http://localhost:${port}/account/storage`)
 }
 
-function getAvatarPath(domainName, index) {
-  const path = `/${domainName}/avatar-${index}`
+function getAvatarPath(identityIndex: number,
+  identityAddress: string, photoIndex: number): string {
+  const path = `/${identityAddress}/${identityIndex}/avatar-${photoIndex}`
   return path
 }
 
-function getProfilePath(domainName) {
-  const path = `/${domainName}/profile.json`
+function getProfilePath(identityIndex: number,
+  identityAddress: string): string {
+  const path = `/${identityAddress}/${identityIndex}/profile.json`
   return path
 }
 
-function deleteProfile(api, domainName) {
+function deleteProfile(api: {dropboxAccessToken: string}, identityIndex: number,
+  identityAddress: string): Promise<*> {
   const dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
-  const path = getProfilePath(domainName)
+  const path = getProfilePath(identityIndex, identityAddress)
   return dbx.filesDelete({ path })
 }
 
-function uploadProfile(api, domainName, signedProfileTokenData, resolve, reject, firstUpload) {
-  const dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
-  const path = getProfilePath(domainName)
-  dbx.filesUpload({ path, contents: signedProfileTokenData, mode: 'overwrite' })
-  .then((response) => {
-    if (firstUpload === true) { // we can only create shared link once
-      logger.debug('uploadProfile: first upload: creating shared link')
-      dbx.sharingCreateSharedLinkWithSettings({ path: response.path_lower, settings: {} })
-      .then((shareLinkResponse) => {
-        /* Appending dropbox share url with ?dl=1 returns the actual file
-        instead of dropbox sign up page */
-        const profileUrl = `${shareLinkResponse.url.split('=')[0]}=1`
-        resolve(profileUrl)
-      })
-      .catch((error) => {
-        logger.error('uploadProfile: error creating shared link', error)
-        reject(error)
-      })
-    } else {
-      logger.debug('uploadProfile: not first upload - refusing to create shared link')
-      resolve(null)
-    }
-  })
-  .catch((error) => {
-    reject(error)
-  })
-}
-
-
-export function uploadProfileToDropbox(api, domainName,
-  signedProfileTokenData, firstUpload = false) {
+function uploadProfile(api: {dropboxAccessToken: string}, identityIndex: number,
+  identityAddress: string, signedProfileTokenData: string, firstUpload: boolean): Promise<*> {
   return new Promise((resolve, reject) => {
-    if (firstUpload === true) { // We try to delete any existing profile file
-      deleteProfile(api, domainName).then(() => {
-        uploadProfile(api, domainName, signedProfileTokenData, resolve, reject, firstUpload)
-      })
-      .catch(() => {
-        // the file didn't exist
-        uploadProfile(api, domainName, signedProfileTokenData, resolve, reject, firstUpload)
-      })
-    } else {
-      uploadProfile(api, domainName, signedProfileTokenData, resolve, reject, firstUpload)
-    }
+    const dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
+    const path = getProfilePath(identityIndex, identityAddress)
+    return dbx.filesUpload({ path, contents: signedProfileTokenData, mode: 'overwrite' })
+    .then((response) => {
+      if (firstUpload === true) { // we can only create shared link once
+        logger.debug('uploadProfile: first upload: creating shared link')
+        return dbx.sharingCreateSharedLinkWithSettings({ path: response.path_lower, settings: {} })
+        .then((shareLinkResponse) => {
+          logger.debug(`uploadProfile: shared link: ${shareLinkResponse}`)
+          /* Appending dropbox share url with ?dl=1 returns the actual file
+          instead of dropbox sign up page */
+          const profileUrl = `${shareLinkResponse.url.split('=')[0]}=1`
+          resolve(profileUrl)
+        })
+        .catch((error) => {
+          logger.error('uploadProfile: error creating shared link', error)
+          reject(error)
+          return Promise.reject()
+        })
+      } else {
+        logger.debug('uploadProfile: not first upload - we won\'t create shared link')
+        resolve(null)
+        return Promise.reject()
+      }
+    })
+    .catch((error) => {
+      reject(error)
+    })
   })
 }
 
-function deletePhoto(api, domainName, index) {
+
+export function uploadProfileToDropbox(api: {dropboxAccessToken: string},
+  identityIndex: number, identityAddress: string, signedProfileTokenData: string,
+  firstUpload: boolean = false): Promise<*> {
+  if (firstUpload === true) { // We try to delete any existing profile file
+    return deleteProfile(api, identityIndex, identityAddress)
+    .then(() => uploadProfile(api, identityIndex, identityAddress,
+        signedProfileTokenData, firstUpload))
+    // the profile didn't exist
+    .catch(() => uploadProfile(api, identityIndex, identityAddress,
+      signedProfileTokenData, firstUpload))
+  } else {
+    return uploadProfile(api, identityIndex, identityAddress,
+      signedProfileTokenData, firstUpload)
+  }
+}
+
+function deletePhoto(api: {dropboxAccessToken: string}, identityIndex: number,
+  identityAddress: string, photoIndex: number): Promise<*> {
   const dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
-  const path = getAvatarPath(domainName, index)
+  const path = getAvatarPath(identityIndex, identityAddress, photoIndex)
   return dbx.filesDelete({ path })
 }
 
-function uploadPhoto(api, domainName, photoFile, index, resolve, reject) {
+function uploadPhoto(api: {dropboxAccessToken: string}, identityIndex: number,
+  identityAddress: string, photoFile: any, photoIndex: number): Promise<*> {
   const dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
-  const path = getAvatarPath(domainName, index)
-  dbx.filesUpload({ path, contents: photoFile })
+  const path = getAvatarPath(identityIndex, identityAddress, photoIndex)
+  return new Promise((resolve, reject) => dbx.filesUpload({ path, contents: photoFile })
   .then((response) => {
     dbx.sharingCreateSharedLinkWithSettings({ path: response.path_lower, settings: {} })
     .then((shareLinkResponse) => {
@@ -100,24 +111,22 @@ function uploadPhoto(api, domainName, photoFile, index, resolve, reject) {
   })
   .catch((error) => {
     reject(error)
-  })
+  }))
 }
 
-export function uploadPhotoToDropbox(api, domainName, photoFile, index) {
-  return new Promise((resolve, reject) => {
-    // We try to delete any existing photo
-    deletePhoto(api, domainName, index).then(() => {
-      uploadPhoto(api, domainName, photoFile, index, resolve, reject)
-    })
-    .catch(() => {
-      // the file didn't exist
-      uploadPhoto(api, domainName, photoFile, index, resolve, reject)
-    })
-  })
+export function uploadPhotoToDropbox(api: {dropboxAccessToken: string},
+  identityIndex: number, identityAddress: string, photoFile: any,
+  photoIndex: number): Promise<*> {
+  logger.debug(`uploadPhotoToDropbox: id index: ${identityIndex} id address ${identityAddress}`)
+  // We try to delete any existing photo
+  return deletePhoto(api, identityIndex, identityAddress, photoIndex).then(() =>
+     uploadPhoto(api, identityIndex, identityAddress, photoFile, photoIndex))
+  // the file didn't exist
+  .catch(() => uploadPhoto(api, identityIndex, identityAddress, photoFile, photoIndex))
 }
 
 
-export function getDropboxAccessTokenFromHash(hash) {
+export function getDropboxAccessTokenFromHash(hash: string) {
   let tokens = hash.split('access_token=')
   if (tokens.length !== 2) {
     return null
