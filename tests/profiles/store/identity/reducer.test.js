@@ -40,6 +40,7 @@ describe('Identity Store: IdentityReducer', () => {
             usernameOwned: false,
             usernamePending: false,
             verifications: [],
+            trustLevel: 0,
             zoneFile: null
           }
         ],
@@ -88,7 +89,7 @@ describe('Identity Store: IdentityReducer', () => {
       zoneFileUpdates: [],
       createProfileError: null
     }
-    const action = IdentityActions.updateProfile(0, profile, ['a'], 'test')
+    const action = IdentityActions.updateProfile(0, profile, ['a'], 1, 'test')
     const expectedState = {
       default: 0,
       localIdentities: [{
@@ -99,6 +100,7 @@ describe('Identity Store: IdentityReducer', () => {
           key: 'value'
         },
         verifications: ['a'],
+        trustLevel: 1,
         registered: false,
         ownerAddress: '123',
         zoneFile: 'test'

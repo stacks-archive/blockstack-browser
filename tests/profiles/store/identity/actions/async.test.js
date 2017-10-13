@@ -260,6 +260,7 @@ describe('Identity Store: Async Actions', () => {
           },
           "type": "UPDATE_PUBLIC_IDENTITY",
           "verifications": [],
+          trustLevel: 0,
           "zoneFile": "$ORIGIN guylepage.id\n$TTL 3600\n_http._tcp URI 10 1 \"https://blockstack.s3.amazonaws.com/guylepage.id\"\n"
         },
         {
@@ -341,6 +342,7 @@ describe('Identity Store: Async Actions', () => {
               }
             ]
           },
+          trustLevel: 1,
           "type": "UPDATE_PUBLIC_IDENTITY",
           "username": "guylepage.id",
           "verifications": [

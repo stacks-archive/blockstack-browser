@@ -31,9 +31,10 @@ describe('updateProfile', () => {
           key: 'value'
         },
         zoneFile: 'test zone file',
-        verifications: []
+        verifications: [],
+        trustLevel: 1
       }
-      const actualResult = IdentityActions.updateProfile(0, profile, [], 'test zone file')
+      const actualResult = IdentityActions.updateProfile(0, profile, [], 1, 'test zone file')
       assert.deepEqual(actualResult, expectedResult)
     })
   })
