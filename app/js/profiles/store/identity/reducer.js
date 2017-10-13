@@ -20,7 +20,8 @@ function IdentityReducer(state = initialState, action) {
             ownerAddress: action.ownerAddress,
             zoneFile: action.zoneFile,
             profile: JSON.parse(JSON.stringify(action.profile)),
-            verifications: JSON.parse(JSON.stringify(action.verifications))
+            verifications: JSON.parse(JSON.stringify(action.verifications)),
+            trustLevel: action.trustLevel
           }
         })
       })
@@ -36,6 +37,7 @@ function IdentityReducer(state = initialState, action) {
           usernamePending: false,
           profile: DEFAULT_PROFILE,
           verifications: [],
+          trustLevel: 0,
           registered: false,
           ownerAddress: action.ownerAddress,
           zoneFile: null
@@ -56,6 +58,7 @@ function IdentityReducer(state = initialState, action) {
       const newLocalIdentities = state.localIdentities.slice()
       newLocalIdentities[action.index].verifications =
       JSON.parse(JSON.stringify(action.verifications))
+      newLocalIdentities[action.index].trustLevel =action.trustLevel
       return Object.assign({}, state, {
         localIdentities: newLocalIdentities
       })

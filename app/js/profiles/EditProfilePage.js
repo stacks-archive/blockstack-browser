@@ -263,8 +263,9 @@ class EditProfilePage extends Component {
     const identity = this.props.localIdentities[identityIndex]
     const verifications = identity.verifications
     const identityAddress = identity.ownerAddress
+    const trustLevel = identity.trustLevel
 
-    this.props.updateProfile(this.props.routeParams.index, newProfile, verifications)
+    this.props.updateProfile(this.props.routeParams.index, newProfile, verifications, trustLevel)
     logger.trace('saveProfile: Preparing to upload profile')
     logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 

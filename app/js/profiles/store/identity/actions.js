@@ -23,14 +23,15 @@ const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
 function updatePublicIdentity(username: string, ownerAddress: ?string = null,
   zoneFile: ?string = null, profile: ?{} = Object.assign({}, DEFAULT_PROFILE),
-  verifications: Array<*> = []) {
+  verifications: Array<*> = [], trustLevel: number) {
   return {
     type: types.UPDATE_PUBLIC_IDENTITY,
     username,
     ownerAddress,
     zoneFile,
     profile,
-    verifications
+    verifications,
+    trustLevel
   }
 }
 
@@ -77,7 +78,8 @@ function noUsernameOwned(index: number) {
   }
 }
 
-function updateProfile(index: number, profile: any, verifications: Array<any>, trustLevel: number, zoneFile: string) {
+function updateProfile(index: number, profile: any, verifications: Array<any>, 
+  trustLevel: number, zoneFile: string) {
   return {
     type: types.UPDATE_PROFILE,
     index,
@@ -309,13 +311,15 @@ function fetchPublicIdentity(lookupUrl: string, username: string) {
 
         return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
           let verifications = []
+          let trustLevel = 0
           dispatch(updatePublicIdentity(username, ownerAddress, zoneFile, profile,
-            verifications))
+            verifications, trustLevel))
           if (profile) {
             return validateProofs(profile, ownerAddress, username).then((proofs) => {
               verifications = proofs
+              trustLevel = calculateTrustLevel(verifications)
               dispatch(updatePublicIdentity(username, ownerAddress, zoneFile, profile,
-                verifications))
+                verifications, trustLevel))
             }).catch((error) => {
               logger.error(`fetchPublicIdentity: ${username} validateProofs: error`, error)
               return Promise.resolve()

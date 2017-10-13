@@ -124,6 +124,7 @@ class DefaultProfilePage extends Component {
 
     const accounts = person.profile().account || []
     const connections = person.connections() || []
+
     return (
       <div>
         <Modal

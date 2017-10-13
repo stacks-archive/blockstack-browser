@@ -23,7 +23,9 @@ function mapStateToProps(state) {
     coreApiRunning: state.sanity.coreApiRunning,
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    defaultIdentity: state.profiles.identity.default,
+    localIdentities: state.profiles.identity.localIdentities
   }
 }
 
@@ -113,14 +115,21 @@ class App extends Component {
   }
 
   getTrustLevel() {
-    const defaultIdentityName = this.props.defaultIdentity
-    const identity = this.props.localIdentities[defaultIdentityName]
-    return identity.trustLevel
+    const identityIndex = this.props.defaultIdentity
+    const identity = this.props.localIdentities[identityIndex]
+    if (!identity) {
+      return 0
+    } else {
+      return identity.trustLevel
+    }
   }
 
   shouldShowTrustLevelFooter() {
     const trustLevel = this.getTrustLevel()
-    if (trustLevel < MAX_TRUST_LEVEL) {
+    const localIdentities = this.props.localIdentities
+    if (localIdentities.length == 0) {
+      return false
+    } else if (trustLevel < MAX_TRUST_LEVEL) {
       return true
     } else {
       return false
