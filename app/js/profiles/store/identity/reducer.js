@@ -58,7 +58,7 @@ function IdentityReducer(state = initialState, action) {
       const newLocalIdentities = state.localIdentities.slice()
       newLocalIdentities[action.index].verifications =
       JSON.parse(JSON.stringify(action.verifications))
-      newLocalIdentities[action.index].trustLevel =action.trustLevel
+      newLocalIdentities[action.index].trustLevel = action.trustLevel
       return Object.assign({}, state, {
         localIdentities: newLocalIdentities
       })

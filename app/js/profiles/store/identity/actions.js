@@ -23,7 +23,7 @@ const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
 function updatePublicIdentity(username: string, ownerAddress: ?string = null,
   zoneFile: ?string = null, profile: ?{} = Object.assign({}, DEFAULT_PROFILE),
-  verifications: Array<*> = [], trustLevel: number) {
+  verifications: Array<*> = [], trustLevel: ?number = 0) {
   return {
     type: types.UPDATE_PUBLIC_IDENTITY,
     username,
@@ -90,7 +90,8 @@ function updateProfile(index: number, profile: any, verifications: Array<any>,
   }
 }
 
-function updateSocialProofVerifications(index: number, verifications: Array<any>, trustLevel: number) {
+function updateSocialProofVerifications(index: number, verifications: Array<any>,
+  trustLevel: number) {
   return {
     type: types.UPDATE_SOCIAL_PROOF_VERIFICATIONS,
     index,

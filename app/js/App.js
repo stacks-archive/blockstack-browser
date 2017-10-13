@@ -17,15 +17,15 @@ const logger = log4js.getLogger('App.js')
 
 function mapStateToProps(state) {
   return {
+    localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
     api: state.settings.api,
     corePingUrl: state.settings.api.corePingUrl,
     coreApiRunning: state.sanity.coreApiRunning,
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword,
-    defaultIdentity: state.profiles.identity.default,
-    localIdentities: state.profiles.identity.localIdentities
+    coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
 
@@ -40,6 +40,8 @@ function mapDispatchToProps(dispatch) {
 
 class App extends Component {
   static propTypes = {
+    localIdentities: PropTypes.array.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
     children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     api: PropTypes.object.isRequired,
@@ -127,7 +129,7 @@ class App extends Component {
   shouldShowTrustLevelFooter() {
     const trustLevel = this.getTrustLevel()
     const localIdentities = this.props.localIdentities
-    if (localIdentities.length == 0) {
+    if (localIdentities.length === 0) {
       return false
     } else if (trustLevel < MAX_TRUST_LEVEL) {
       return true
