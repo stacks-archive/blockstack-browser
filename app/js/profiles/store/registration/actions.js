@@ -1,6 +1,7 @@
 import * as types from './types'
 import { makeProfileZoneFile } from 'blockstack'
 import { uploadProfile } from '../../../account/utils'
+import { IdentityActions } from '../identity'
 import {
   signProfileForUpload, authorizationHeaderValue
 } from '../../../utils'
@@ -175,6 +176,7 @@ function registerName(api, domainName, identityIndex, ownerAddress, keypair, pay
           } else {
             logger.debug(`Successfully submitted registration for ${domainName}`)
             dispatch(registrationSubmitted())
+            dispatch(IdentityActions.addUsername(identityIndex, domainName))
           }
         })
         .catch((error) => {
