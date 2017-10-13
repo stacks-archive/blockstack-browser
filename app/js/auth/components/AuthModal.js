@@ -42,8 +42,8 @@ class AuthModal extends Component {
     router: PropTypes.object
   }
   static propTypes = {
-    defaultIdentity: PropTypes.string.isRequired,
-    localIdentities: PropTypes.object.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     loadAppManifest: PropTypes.func.isRequired,
     clearSessionToken: PropTypes.func.isRequired,
     getCoreSessionToken: PropTypes.func.isRequired,
@@ -62,7 +62,7 @@ class AuthModal extends Component {
     super(props)
 
     this.state = {
-      currentIdentity: null,
+      currentIdentityIndex: this.props.defaultIdentity,
       authRequest: null,
       appManifest: null,
       coreSessionToken: null,
@@ -88,39 +88,33 @@ class AuthModal extends Component {
   componentWillReceiveProps(nextProps) {
     const storageConnected = this.props.api.storageConnected
     this.setState({
-      storageConnected,
-      currentIdentity: this.state.currentIdentity || nextProps.defaultIdentity || undefined
+      storageConnected
     })
 
     const appDomain = this.state.decodedToken.payload.domain_name
     const localIdentities = nextProps.localIdentities
     const identityKeypairs = nextProps.identityKeypairs
     if (!appDomain || !nextProps.coreSessionTokens[appDomain]) {
+      logger.debug('componentWillReceiveProps: no app domain or no core session token')
       return
     }
 
     logger.trace('componentWillReceiveProps: received coreSessionToken')
     const coreSessionToken = nextProps.coreSessionTokens[appDomain]
     const decodedCoreSessionToken = decodeToken(coreSessionToken)
-    if (!Object.keys(localIdentities).length) {
-      return
-    }
-    // Careful with this.state, as the above this.setState is async. But
-    // there shouldn't be any problem with the above check.
-    // TODO: Side-effects to avoid confusion.
-    const userDomainName = this.state.currentIdentity
+
+    const identityIndex = this.state.currentIdentityIndex
 
     const hasUsername = this.state.hasUsername
     if (hasUsername) {
-      logger.debug(`login(): this profile ${userDomainName} has no username`)
+      logger.debug(`login(): id index ${identityIndex} has no username`)
     }
 
     // Get keypair corresponding to the current user identity
-    const profileSigningKeypair = identityKeypairs
-    .find((keypair) => keypair.address === localIdentities[userDomainName].ownerAddress)
+    const profileSigningKeypair = identityKeypairs[identityIndex]
 
     const blockchainId = decodedCoreSessionToken.payload.blockchain_id
-    const identity = localIdentities[userDomainName]
+    const identity = localIdentities[identityIndex]
     const profile = identity.profile
     const privateKey = profileSigningKeypair.key
     const appsNodeKey = profileSigningKeypair.appsNodeKey
@@ -134,7 +128,7 @@ class AuthModal extends Component {
 
     this.props.clearSessionToken(appDomain)
 
-    logger.trace(`login(): profile ${userDomainName} is logging in`)
+    logger.trace(`login(): id index ${identityIndex} is logging in`)
     redirectUserToApp(this.state.authRequest, authResponse)
   }
 
@@ -145,15 +139,12 @@ class AuthModal extends Component {
   login() {
     this.setState({ processing: true })
     this.props.loginToApp()
-    if (!Object.keys(this.props.localIdentities).length) {
-      return
-    }
     const localIdentities = this.props.localIdentities
-    const userDomainName = this.state.currentIdentity
-    const identity = localIdentities[userDomainName]
+    const identityIndex = this.state.currentIdentityIndex
+    const identity = localIdentities[identityIndex]
     let hasUsername = true
-    if (userDomainName === identity.ownerAddress) {
-      logger.debug(`login(): this profile ${userDomainName} has no username`)
+    if (!identity.username || identity.usernamePending) {
+      logger.debug(`login(): the id ${identity.ownerAddress} has no username`)
       hasUsername = false
     }
 
@@ -162,7 +153,7 @@ class AuthModal extends Component {
     // https://github.com/blockstack/blockstack-browser/issues/864#issuecomment-335035037
 
 
-    const lookupValue = hasUsername ? userDomainName : ''
+    const lookupValue = hasUsername ? identity.useranme : ''
 
 
     // if profile has no name, lookupUrl will be
@@ -196,9 +187,10 @@ class AuthModal extends Component {
           const salt = profileSigningKeypair.salt
           const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
           const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-          const blockchainId = (hasUsername ? userDomainName : null)
+          const blockchainId = (hasUsername ? identity.username : null)
+          this.setState({ hasUsername })
           logger.trace('login(): Calling setCoreStorageConfig()...')
-          setCoreStorageConfig(this.props.api, identityIndex, identityAddress,
+          setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
           identity.profile, profileSigningKeypair)
           .then(() => {
             logger.trace('login(): Core storage successfully configured.')
@@ -214,7 +206,6 @@ class AuthModal extends Component {
     const appManifest = this.props.appManifest
     const appManifestLoading = this.props.appManifestLoading
     const processing = this.state.processing
-
     return (
       <div className="">
         <Modal
@@ -255,23 +246,26 @@ class AuthModal extends Component {
                 />
               </p>
             : null}
-            {Object.keys(this.props.localIdentities).length > 0 ?
+            {this.props.localIdentities.length > 0 ?
               <div>
               {this.state.storageConnected ?
                 <div>
                   <p>Choose a profile to log in with.</p>
                   <select
                     className="form-control profile-select"
-                    onChange={(event) => this.setState({ currentIdentity: event.target.value })}
-                    value={this.state.currentIdentity ? this.state.currentIdentity : ''}
+                    onChange={
+                      (event) => this.setState({
+                        currentIdentityIndex: event.target.value
+                      })}
+                    value={this.state.currentIdentityIndex ? this.state.currentIdentityIndex : 0}
                     disabled={processing}
                   >
-                    {Object.keys(this.props.localIdentities).map((domainName) => (
+                    {this.props.localIdentities.map((identity, identityIndex) => (
                       <option
-                        key={domainName}
-                        value={this.props.localIdentities[domainName].domainName}
+                        key={identityIndex}
+                        value={identityIndex}
                       >
-                        {this.props.localIdentities[domainName].domainName}
+                        {identity.username ? identity.username : identity.ownerAddress}
                       </option>
                     ))}
                   </select>
@@ -307,7 +301,7 @@ class AuthModal extends Component {
             :
               <div>
                 <p>
-                  You need to <Link to="/profiles">create a profile</Link> in order to log in.
+                  You need to <Link to="/profiles">create a Blockstack ID</Link> in order to log in.
                 </p>
               </div>
             }
