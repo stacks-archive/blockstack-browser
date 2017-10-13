@@ -327,8 +327,8 @@ class DefaultProfilePage extends Component {
 
                   <div className="pro-card-trust-level text-center m-t-5 m-b-20">
                     <span className="pro-card-trust-level-badge">
-                      {trustLevel >= 3 && <i className="fa fa-check-circle fa-lg" />}
-                      Trust Level: {trustLevel} 
+                      {trustLevel >= 3 && <i className="fa fa-check-circle" />}
+                      <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
                       {trustLevel <= 1 &&
                         <span data-tip data-for="trustLevel">
                           <i className="fa fa-info-circle" />
