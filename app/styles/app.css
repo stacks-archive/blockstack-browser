@@ -34,6 +34,7 @@ div.profile-accounts > ul > li > a > span.app-account-service {margin-left:10px;
 div.profile-accounts > ul > li.verified > a > span.app-account-service {color:#95CAFF;}
 div.profile-accounts > ul > li.pending > a > span.app-account-service {color:#C7C7C7;}
 
+/* Social accounts edit */
 div.edit-profile-accounts .account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;transition:all 200ms ease-in-out}
 div.edit-profile-accounts .account.verified {color:#fff;background-color:#2c96ff;}
 div.edit-profile-accounts .account.verified.active {color:#fff;background-color:#2c96ff;}
@@ -70,7 +71,6 @@ div.edit-profile-accounts .account.placeholder .form-group input.form-control {c
 .verification-instructions-heading {padding-left:15px;margin-top:1rem;margin-bottom:0.7rem;font-weight:600;}
 .verification-quote {color:#494F56;padding:20px 60px 20px 20px;margin-bottom:1rem;background-color:#fff;border-radius:6px}
 .verification-copy {padding:0;position:absolute;right:45px;margin-top:-30px;}
-.verification-copy-button {width:40px;height:40px;color:#494F56;padding:0;border:0;}
 .form-control.verification-input {color:#000;background-color:rgba(0,0,0,0.4);border:1px solid rgba(0,0,0,0.4);}
 .verification-input::-webkit-input-placeholder {color:#fff;}
 .badge-verification {margin-right:8px;padding:5px 10px;}
@@ -388,6 +388,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
 .btn-verify{font-size:0.65rem;padding:0.375rem 2.125rem;line-height:2rem;color:#fff;background-color:#2c96ff;border:1px solid #fff;}
 .btn-thin{line-height:1.0rem;padding:0px;}
+.btn-clipboard {width:40px;height:40px;color:#494F56;padding:0;border:0;}
 
 /* 13. Forms */
 /* Default forms are "Light forms" for now GL Sep 17, 2017 */
@@ -433,6 +434,7 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-body{display:block;margin-bottom:15px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 .list-card{margin-bottom:0;list-style:none;padding:0;color:#19191A;text-decoration:none;}
+.card-text{padding:20px;}
 /* All-IDs */
 .avatar-sm{margin-right:15px;}
 .card-title{margin-bottom:0;font-size:0.875rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding-right:15px;}

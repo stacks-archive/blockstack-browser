@@ -10,7 +10,7 @@ class CopyToClipBoardButton extends Component {
     return (
       <div className="verification-copy">
         <button 
-          className="verification-copy-button"
+          className="btn-clipboard"
           data-for="tooltip"
           data-event="click"
           data-event-off="mouseout"
