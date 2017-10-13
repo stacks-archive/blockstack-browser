@@ -289,19 +289,8 @@ function fetchPublicIdentity(lookupUrl: string, username: string) {
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
-        let zoneFile
-        let ownerAddress
-
-        if (lookupUrl.search('localhost') >= 0) {
-          zoneFile = responseJson.zonefile
-          ownerAddress = responseJson.address
-        } else if (lookupUrl.search('api.blockstack.com') >= 0) {
-          const userData = responseJson[username]
-          zoneFile = userData.zone_file
-          ownerAddress = userData.owner_address
-        } else {
-          throw new Error('Invalid lookup URL')
-        }
+        const zoneFile = responseJson.zonefile
+        const ownerAddress = responseJson.address
 
         return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
           let verifications = []
@@ -310,10 +299,11 @@ function fetchPublicIdentity(lookupUrl: string, username: string) {
           if (profile) {
             return validateProofs(profile, ownerAddress, username).then((proofs) => {
               verifications = proofs
-              dispatch(updatePublicIdentity(ownerAddress, username,
-                profile, verifications, zoneFile))
+              dispatch(updatePublicIdentity(username, ownerAddress, zoneFile, profile,
+                verifications))
             }).catch((error) => {
               logger.error(`fetchPublicIdentity: ${username} validateProofs: error`, error)
+              return Promise.resolve()
             })
           } else {
             logger.debug('fetchPublicIdentity: no profile')
