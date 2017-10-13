@@ -18,7 +18,7 @@
     "dev-ui": "echo 'Please use dev instead of dev-ui'",
     "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy",
     "flow": "flow",
-    "postinstall": "./node_modules/.bin/flow-typed install --skip"
+    "flow-typed-install": "./node_modules/.bin/flow-typed install --skip"
   },
   "keywords": [
     "blockstack",
