@@ -123,7 +123,6 @@ class DefaultProfilePage extends Component {
 
     const accounts = person.profile().account || []
     const connections = person.connections() || []
-
     return (
       <div>
         <Modal
@@ -142,7 +141,12 @@ class DefaultProfilePage extends Component {
         </Modal>
         <ToolTip id="ownerAddress">
           <div>
-            <div>This is your owner address.</div>
+            <div>This is your identity address.</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="usernamePending">
+          <div>
+            <div>Name registration in progress...</div>
           </div>
         </ToolTip>
         <div>
@@ -183,14 +187,22 @@ class DefaultProfilePage extends Component {
                     :
                       <div className="pro-card-domain-name text-center text-secondary m-t-0">
                         <span>{identity.username}</span>
+                        {identity.usernamePending ?
+                          <i
+                            className="fa fa-fw fa-clock-o fa-lg"
+                            data-tip
+                            data-for="usernamePending"
+                          ></i>
+                          : null}
                       </div>
                   }
                   </div>
 
                   <div className="pro-card-domain-name m-b-10 text-center text-secondary m-t-0">
                     <small>
-                      {identity.ownerAddress} {identity.canAddUsername &&
-                        <span data-tip data-for="domainName">(?)</span>}
+                      <span data-tip data-for="ownerAddress">
+                        {identity.ownerAddress}
+                      </span>
                     </small>
                   </div>
 

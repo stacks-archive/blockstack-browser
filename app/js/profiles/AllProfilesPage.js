@@ -212,7 +212,7 @@ class AllProfilesPage extends Component {
                       <IdentityItem
                         key={index}
                         index={index}
-                        label={identity.username ? identity.username : identity.ownerAddress}
+                        username={identity.username}
                         pending={identity.usernamePending}
                         avatarUrl={person.avatarUrl() || ''}
                         onClick={(event) => {

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react'
-
+import ToolTip from '../../components/ToolTip'
 import Image from '../../components/Image'
 
 class IdentityItem extends Component {
   static propTypes = {
-    label: PropTypes.string.isRequired,
+    username: PropTypes.string,
     avatarUrl: PropTypes.string.isRequired,
     pending: PropTypes.bool.isRequired,
     ownerAddress: PropTypes.string.isRequired,
@@ -28,6 +28,16 @@ class IdentityItem extends Component {
         className="card card-default m-b-35"
         style={{ cursor: 'pointer' }}
       >
+        <ToolTip id="usernamePending">
+          <div>
+            <div>Name registration in progress...</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="ownerAddress">
+          <div>
+            <div>This is your identity address.</div>
+          </div>
+        </ToolTip>
         <div>
           <div className="avatar-sm float-left" style={{ display: 'inline' }}>
             <Image
@@ -39,11 +49,7 @@ class IdentityItem extends Component {
           <div style={{ display: 'inline' }}>
             <ul className="container-fluid list-card">
               <li>
-                <p className="card-title text-secondary">
-                  {this.props.label}
-                </p>
-              </li>
-              <li>
+                <p className="card-title">
                 {this.props.canAddUsername ?
                   <a
                     href="#"
@@ -56,16 +62,33 @@ class IdentityItem extends Component {
                    Add username
                   </a>
                  :
-                  <div>
-                    <p className="card-subtitle">
-                      {this.props.pending ? '(pending)' : '\u00A0'}
-                    </p>
-                  </div>
+                  <span>
+                    {this.props.username}
+                    {this.props.pending ?
+                      <i
+                        className="fa fa-fw fa-clock-o fa-sm text-secondary"
+                        data-tip
+                        data-for="usernamePending"
+                      ></i>
+                      : null}
+                  </span>
                 }
+                </p>
+              </li>
+              <li>
+                <div style={{ marginTop: '6px' }}>
+                  <p className="card-subtitle text-secondary">
+                    <small data-tip data-for="ownerAddress">
+                      {this.props.ownerAddress}
+                    </small>
+                  </p>
+                </div>
               </li>
               <li>
                 {this.props.isDefault ?
-                  <span>Default ID <i className="fa fa-check"></i></span>
+                  <span className="text-secondary">
+                    <small>Default ID <i className="fa fa-check"></i></small>
+                  </span>
                 :
                   <span>&nbsp;</span>
                 }

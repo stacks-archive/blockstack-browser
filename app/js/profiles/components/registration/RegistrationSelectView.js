@@ -54,7 +54,8 @@ class AddUsernameSelectPage extends Component {
     addresses: PropTypes.array.isRequired,
     balances: PropTypes.object.isRequired,
     insightUrl: PropTypes.string.isRequired,
-    refreshBalances: PropTypes.func.isRequired
+    refreshBalances: PropTypes.func.isRequired,
+    addUsername: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -122,6 +123,7 @@ class AddUsernameSelectPage extends Component {
     const index = nextProps.routeParams.index
 
     if (this.state.registrationInProgress && registration.registrationSubmitted) {
+      this.props.addUsername(index, name)
       logger.debug('componentWillReceiveProps: registration submitted! redirecting...')
       this.props.router.push(`/profiles/i/add-username/${index}/submitted/${name}`)
     }
