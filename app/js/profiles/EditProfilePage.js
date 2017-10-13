@@ -270,11 +270,14 @@ class EditProfilePage extends Component {
 
     const signedProfileTokenData = signProfileForUpload(this.state.profile,
       this.props.identityKeypairs[identityIndex])
-
-    uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
-    .catch((err) => {
-      logger.error('saveProfile: profile not uploaded', err)
-    })
+    if (this.props.storageConnected) {
+      uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
+      .catch((err) => {
+        logger.error('saveProfile: profile not uploaded', err)
+      })
+    } else {
+      logger.debug('saveProfile: storage is not connected. Doing nothing.')
+    }
   }
 
   uploadProfilePhoto(e) {
@@ -284,22 +287,26 @@ class EditProfilePage extends Component {
     const profile = this.state.profile
     const photoIndex = 0
     logger.debug('uploadProfilePhoto: trying to upload...')
-    uploadPhoto(this.props.api, identityIndex, ownerAddress, e.target.files[0], photoIndex)
-    .then((avatarUrl) => {
-      logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
-      profile.image = []
-      profile.image.push({
-        '@type': 'ImageObject',
-        name: 'avatar',
-        contentUrl: avatarUrl
+    if (this.props.storageConnected) {
+      uploadPhoto(this.props.api, identityIndex, ownerAddress, e.target.files[0], photoIndex)
+      .then((avatarUrl) => {
+        logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
+        profile.image = []
+        profile.image.push({
+          '@type': 'ImageObject',
+          name: 'avatar',
+          contentUrl: avatarUrl
+        })
+        this.setState({
+          profile
+        })
       })
-      this.setState({
-        profile
+      .catch((error) => {
+        console.error(error)
       })
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+    } else {
+      logger.error('uploadProfilePhoto: storage is not connected. Doing nothing.')
+    }
   }
 
   hasUsername() {
