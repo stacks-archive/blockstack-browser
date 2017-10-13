@@ -395,16 +395,21 @@ class DefaultProfilePage extends Component {
                   <ul>
                     {accounts.map((account) => {
                       let verified = false
-                      if (verifications) {
+                      let pending = false                       
+                      if (verifications.length > 0) {
                         for (let i = 0; i < verifications.length; i++) {
                           const verification = verifications[i]
                           if (verification.service === account.service &&
                             verification.valid === true) {
                             verified = true
+                            pending = false
                             break
                           }
                         }
+                      } else {
+                        pending = true
                       }
+
                       if (account.service === 'pgp' || account.service === 'ssh' 
                         || account.service === 'bitcoin' || account.service === 'ethereum') {
                         return (
@@ -425,6 +430,7 @@ class DefaultProfilePage extends Component {
                             proofUrl={account.proofUrl}
                             listItem
                             verified={verified}
+                            pending={pending}
                           />
                         )
                       }
