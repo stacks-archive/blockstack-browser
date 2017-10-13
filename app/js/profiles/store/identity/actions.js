@@ -233,7 +233,7 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
                     dispatch(updateProfile(index, profile, verifications, zoneFile))
                   })
                   .catch((error) => {
-                    logger.error(`fetchCurrentIdentity: ${nameOwned} validateProofs: error`, error)
+                    logger.error(`refreshIdentities: ${nameOwned} validateProofs: error`, error)
                     return Promise.resolve()
                   })
                 }
