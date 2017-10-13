@@ -118,6 +118,7 @@ class DefaultProfilePage extends Component {
     }
 
     const verifications = identity.verifications
+    const trustLevel = identity.trustLevel
     const blockNumber = identity.blockNumber
     const transactionIndex = identity.transactionIndex
 
@@ -147,6 +148,11 @@ class DefaultProfilePage extends Component {
         <ToolTip id="usernamePending">
           <div>
             <div>Name registration in progress...</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="trustLevel">
+          <div>
+            <div>Increase your trust level by verifying your social proofs.</div>
           </div>
         </ToolTip>
         <div>
@@ -204,6 +210,18 @@ class DefaultProfilePage extends Component {
                         {identity.ownerAddress}
                       </span>
                     </small>
+                  </div>
+
+                  <div className="pro-card-trust-level text-center m-t-5 m-b-20">
+                    <span className="pro-card-trust-level-badge">
+                      {trustLevel >= 3 && <i className="fa fa-check-circle" />}
+                      <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
+                      {trustLevel <= 1 &&
+                        <span data-tip data-for="trustLevel">
+                          <i className="fa fa-info-circle" />
+                        </span>
+                      }
+                    </span>
                   </div>
 
                   <div className="pro-card-body text-center">
@@ -264,17 +282,22 @@ class DefaultProfilePage extends Component {
                   <ul>
                     {accounts.map((account) => {
                       let verified = false
-                      if (verifications) {
+                      let pending = false                       
+                      if (verifications.length > 0) {
                         for (let i = 0; i < verifications.length; i++) {
                           const verification = verifications[i]
                           if (verification.service === account.service &&
                             verification.valid === true) {
                             verified = true
+                            pending = false
                             break
                           }
                         }
+                      } else {
+                        pending = true
                       }
-                      if (account.service === 'pgp' || account.service === 'ssh'
+
+                      if (account.service === 'pgp' || account.service === 'ssh' 
                         || account.service === 'bitcoin' || account.service === 'ethereum') {
                         return (
                           <PGPAccountItem
@@ -294,6 +317,7 @@ class DefaultProfilePage extends Component {
                             proofUrl={account.proofUrl}
                             listItem
                             verified={verified}
+                            pending={pending}
                           />
                         )
                       }

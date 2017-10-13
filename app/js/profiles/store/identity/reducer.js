@@ -47,6 +47,7 @@ function IdentityReducer(state = initialState, action) {
       newLocalIdentities[action.index].profile = action.profile
       newLocalIdentities[action.index].zoneFile = action.zoneFile
       newLocalIdentities[action.index].verifications = action.verifications
+      newLocalIdentities[action.index].trustLevel = action.trustLevel
       return Object.assign({}, state, {
         localIdentities: newLocalIdentities
       })

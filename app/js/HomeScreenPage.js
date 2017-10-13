@@ -4,7 +4,7 @@ import Navbar from './components/Navbar'
 
 const HomeScreenPage = () =>
 (
-  <div className="home-screen-wrap">
+  <div>
     <Navbar
       hideBackToHomeLink
       activeTab="home"

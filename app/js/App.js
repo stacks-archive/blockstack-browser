@@ -6,7 +6,9 @@ import { AccountActions } from './account/store/account'
 import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
 import WelcomeModal from './welcome/WelcomeModal'
+import TrustLevelFooter from './components/TrustLevelFooter'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
+import { MAX_TRUST_LEVEL } from './utils/account-utils'
 import { SanityActions }    from './store/sanity'
 
 import log4js from 'log4js'
@@ -62,6 +64,8 @@ class App extends Component {
 
     this.closeModal = this.closeModal.bind(this)
     this.performSanityChecks = this.performSanityChecks.bind(this)
+    this.getTrustLevel = this.getTrustLevel.bind(this)
+    this.shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter.bind(this)
   }
 
   componentWillMount() {
@@ -108,6 +112,20 @@ class App extends Component {
     })
   }
 
+  getTrustLevel() {
+    const defaultIdentityName = this.props.defaultIdentity
+    const identity = this.props.localIdentities[defaultIdentityName]
+    return identity.trustLevel
+  }
+
+  shouldShowTrustLevelFooter() {
+    const trustLevel = this.getTrustLevel()
+    if (trustLevel < MAX_TRUST_LEVEL) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   closeModal() {
     this.setState({ modalIsOpen: false })
@@ -121,6 +139,11 @@ class App extends Component {
   }
 
   render() {
+    const defaultIdentityName = this.props.defaultIdentity
+    const shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter()
+    const trustLevel = this.getTrustLevel()
+    const editProfileLink = `/profiles/${defaultIdentityName}/edit`
+
     return (
       <div className="body-main">
         <WelcomeModal
@@ -129,7 +152,16 @@ class App extends Component {
           coreConnected={this.state.coreConnected}
           closeModal={this.closeModal}
         />
-        {this.props.children}
+        <div className="wrapper footer-padding">
+          {this.props.children}
+        </div>
+        {shouldShowTrustLevelFooter &&
+          <TrustLevelFooter 
+            trustLevel={trustLevel} 
+            maxTrustLevel={MAX_TRUST_LEVEL} 
+            link={editProfileLink}
+          />
+        }
       </div>
     )
   }

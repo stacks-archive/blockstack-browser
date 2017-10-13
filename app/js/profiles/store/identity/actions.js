@@ -12,6 +12,7 @@ import {
   authorizationHeaderValue
 } from '../../../utils/index'
 import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
+import { calculateTrustLevel } from '../../../utils/account-utils'
 import { AccountActions } from '../../../account/store/account'
 
 import type { Dispatch } from 'redux'
@@ -76,21 +77,23 @@ function noUsernameOwned(index: number) {
   }
 }
 
-function updateProfile(index: number, profile: any, verifications: Array<any>, zoneFile: string) {
+function updateProfile(index: number, profile: any, verifications: Array<any>, trustLevel: number, zoneFile: string) {
   return {
     type: types.UPDATE_PROFILE,
     index,
     profile,
     zoneFile,
-    verifications
+    verifications,
+    trustLevel
   }
 }
 
-function updateSocialProofVerifications(index: number, verifications: Array<any>) {
+function updateSocialProofVerifications(index: number, verifications: Array<any>, trustLevel: number) {
   return {
     type: types.UPDATE_SOCIAL_PROOF_VERIFICATIONS,
     index,
-    verifications
+    verifications,
+    trustLevel
   }
 }
 
@@ -226,11 +229,13 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
               logger.debug(`refreshIdentities: resolving zonefile of ${nameOwned} to profile`)
               return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                 if (profile) {
-                  dispatch(updateProfile(index, profile, [], zoneFile))
+                  dispatch(updateProfile(index, profile, [], 0, zoneFile))
                   let verifications = []
+                  let trustLevel = 0
                   return validateProofs(profile, ownerAddress, nameOwned).then((proofs) => {
                     verifications = proofs
-                    dispatch(updateProfile(index, profile, verifications, zoneFile))
+                    trustLevel = calculateTrustLevel(verifications)
+                    dispatch(updateProfile(index, profile, verifications, trustLevel, zoneFile))
                   })
                   .catch((error) => {
                     logger.error(`refreshIdentities: ${nameOwned} validateProofs: error`, error)
@@ -270,13 +275,15 @@ function refreshSocialProofVerifications(identityIndex: number,
   ownerAddress: string, username: string, profile: {}) {
   return (dispatch: Dispatch<*>): Promise<*> => new Promise((resolve) => {
     let verifications = []
+    let trustLevel = 0
     validateProofs(profile, ownerAddress, username).then((proofs) => {
       verifications = proofs
-      dispatch(updateSocialProofVerifications(identityIndex, verifications))
+      trustLevel = calculateTrustLevel(verifications)
+      dispatch(updateSocialProofVerifications(identityIndex, verifications, trustLevel))
       resolve()
     }).catch((error) => {
       logger.error(`refreshSocialProofVerifications: index ${identityIndex} proofs error`, error)
-      dispatch(updateSocialProofVerifications(identityIndex, []))
+      dispatch(updateSocialProofVerifications(identityIndex, [], trustLevel))
       resolve()
     })
   })

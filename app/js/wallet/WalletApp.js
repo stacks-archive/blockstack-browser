@@ -31,7 +31,7 @@ class WalletApp extends Component {
     const activeTabUrl = `/wallet/${childPath}`
 
     return (
-      <div className="app-wrap-wallet">
+      <div>
         <Navbar activeTab="wallet" />
         <SecondaryNavBar
           leftButtonTitle="Receive"

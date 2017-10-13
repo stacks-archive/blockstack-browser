@@ -189,16 +189,6 @@ class ViewProfilePage extends Component {
                     <div className="pro-card-body text-center">
                       {person.description()}
                     </div>
-                    {/* {person.address() ?
-                      <div className="pro-card-body text-center text-secondary">
-                      {person.address()}
-                      </div>
-                    : null}
-                    {person.birthDate() ?
-                      <div className="pro-card-body text-center">
-                      {person.birthDate()}
-                      </div>
-                    : null} */}
                   </div>
 
                   <div className="text-center">
@@ -227,49 +217,6 @@ class ViewProfilePage extends Component {
               </div>
             </div>
 
-            <div className="container-fluid">
-              {isLocal ?
-                (<div className="row">
-                  {this.hasUsername() &&
-                    (<div className="col text-center">
-                      <Link
-                        to={`/profiles/${domainName}/zone-file`}
-                        className="btn btn-link"
-                      >
-                        Advanced
-                      </Link>
-                    </div>
-                  )}
-                  <div className="col text-center">
-                    {!this.hasUsername() ?
-                      (<button
-                        className="btn btn-link"
-                        disabled
-                        title="Add a username to view publicly."
-                      >
-                        View Publicly
-                      </button>
-                      ) : (
-                      <Link
-                        to={`/profiles/${domainName}`}
-                        className="btn btn-link"
-                      >
-                      View Publicly
-                      </Link>
-                      )}
-                  </div>
-                  <div className="col text-center">
-                    <button
-                      className="btn btn-link" onClick={this.openPasswordPrompt}
-                    >
-                      + Create
-                    </button>
-                  </div>
-                </div>
-                ) : (<div></div>)
-              }
-            </div>
-
             <div className="container-fluid p-0">
               <div className="row m-t-20 no-gutters">
                 <div className="col">
@@ -277,14 +224,21 @@ class ViewProfilePage extends Component {
                     <ul>
                       {accounts.map((account) => {
                         let verified = false
-                        for (let i = 0; i < verifications.length; i++) {
-                          const verification = verifications[i]
-                          if (verification.service === account.service &&
-                            verification.valid === true) {
-                            verified = true
-                            break
+                        let pending = false
+                        if (verifications.length > 0) {
+                          for (let i = 0; i < verifications.length; i++) {
+                            const verification = verifications[i]
+                            if (verification.service === account.service &&
+                              verification.valid === true) {
+                              verified = true
+                              pending = false
+                              break
+                            }
                           }
+                        } else {
+                          pending = true
                         }
+
                         if (account.service === 'pgp' || account.service === 'ssh'
                           || account.service === 'bitcoin' || account.service === 'ethereum') {
                           return (
@@ -305,6 +259,7 @@ class ViewProfilePage extends Component {
                               proofUrl={account.proofUrl}
                               listItem
                               verified={verified}
+                              pending={pending}
                             />
                           )
                         }
