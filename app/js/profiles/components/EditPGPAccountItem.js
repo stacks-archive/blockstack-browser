@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import { debounce } from 'lodash'
 import { PGPActions } from '../store/pgp'
 import InputGroup from '../../components/InputGroup'
 
@@ -36,6 +37,7 @@ class EditPGPAccountItem extends Component {
     super(props)
 
     this.state = {
+      identifier: props.identifier,
       collapsed: true,
       modalIsOpen: false
     }
@@ -49,6 +51,10 @@ class EditPGPAccountItem extends Component {
     this.handleClick = this.handleClick.bind(this)
     this.onIdentifierChange = this.onIdentifierChange.bind(this)
     this.onIdentifierBlur = this.onIdentifierBlur.bind(this)
+
+    this.debouncedOnChange = debounce(() => {
+      this.props.onChange(this.props.service, this.state.identifier)
+    }, 1500)
   }
 
   componentWillMount() {
@@ -97,8 +103,14 @@ class EditPGPAccountItem extends Component {
   }
 
   onIdentifierChange(event) {
+    console.log('here')
+    let identifier = event.target.value
+    this.setState({
+      identifier: identifier
+    })
+
     if (this.props.onChange) {
-      this.props.onChange(this.props.service, event)
+      this.debouncedOnChange()
     }
   }
 
@@ -117,7 +129,7 @@ class EditPGPAccountItem extends Component {
   }
 
   getIdentifier() {
-    let identifier = this.props.identifier
+    let identifier = this.state.identifier
     if (identifier.length >= 40) {
       identifier = identifier.slice(0, 40) + '...'
     }
@@ -131,7 +143,7 @@ class EditPGPAccountItem extends Component {
   }
 
   render() {
-    const identifier = this.props.identifier
+    const identifier = this.state.identifier
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const pgpPublicKeys = this.props.pgpPublicKeys
     let loading = false
@@ -223,7 +235,7 @@ class EditPGPAccountItem extends Component {
                   <InputGroup 
                     name="identifier" 
                     label={identifierType} 
-                    data={this.props}
+                    data={this.state}
                     stopClickPropagation={true} 
                     onChange={this.onIdentifierChange} 
                     onBlur={this.onIdentifierBlur} />
