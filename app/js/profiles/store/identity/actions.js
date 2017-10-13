@@ -194,8 +194,8 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
   nameLookupUrl: string}, ownerAddresses: Array<string>) {
   return (dispatch: Dispatch<*>): Promise<*> => {
     logger.trace('refreshIdentities')
-    const promises: Array<Promise<*>> = []
-    ownerAddresses.forEach((address, index) => {
+
+    const promises: Array<Promise<*>> = ownerAddresses.map((address, index) => {
       const promise: Promise<*> = new Promise((resolve) => {
         const url = api.bitcoinAddressLookupUrl.replace('{address}', address)
         logger.debug(`refreshIdentities: fetching ${url}`)
@@ -206,7 +206,7 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
           if (responseJson.names.length === 0) {
             logger.debug(`refreshIdentities: ${address} owns no names`)
             resolve()
-            return
+            return Promise.resolve()
           } else {
             if (responseJson.names.length === 1) {
               logger.debug(`refreshIdentities: ${address} has 1 name}`)
@@ -218,44 +218,51 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
             logger.debug(`refreshIdentities: Preparing to resolve profile for ${nameOwned}`)
             const lookupUrl = api.nameLookupUrl.replace('{name}', nameOwned)
             logger.debug(`refreshIdentities: fetching: ${lookupUrl}`)
-            fetch(lookupUrl).then((response) => response.text())
+            return fetch(lookupUrl).then((response) => response.text())
             .then((responseText) => JSON.parse(responseText))
             .then((lookupResponseJson) => {
               const zoneFile = lookupResponseJson.zonefile
               const ownerAddress = lookupResponseJson.address
               logger.debug(`refreshIdentities: resolving zonefile of ${nameOwned} to profile`)
-              resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
+              return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                 if (profile) {
                   dispatch(updateProfile(index, profile, [], zoneFile))
                   let verifications = []
-                  validateProofs(profile, ownerAddress, nameOwned).then((proofs) => {
+                  return validateProofs(profile, ownerAddress, nameOwned).then((proofs) => {
                     verifications = proofs
                     dispatch(updateProfile(index, profile, verifications, zoneFile))
-                  }).catch((error) => {
+                  })
+                  .catch((error) => {
                     logger.error(`fetchCurrentIdentity: ${nameOwned} validateProofs: error`, error)
+                    return Promise.resolve()
                   })
                 }
                 resolve()
+                return Promise.resolve()
               })
               .catch((error) => {
                 logger.error(`refreshIdentities: resolveZoneFileToProfile for ${nameOwned} error`,
                   error)
                 resolve()
+                return Promise.resolve()
               })
             })
             .catch((error) => {
               logger.error('refreshIdentities: name lookup: error', error)
               resolve()
+              return Promise.resolve()
             })
           }
         })
         .catch((error) => {
           logger.error('refreshIdentities: addressLookup: error', error)
           resolve()
+          return Promise.resolve()
         })
-        promises.push(promise)
       })
+      return promise
     })
+    console.log(promises)
     return Promise.all(promises)
   }
 }

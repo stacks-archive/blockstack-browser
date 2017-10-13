@@ -66,29 +66,24 @@ describe('Identity Store: Async Actions', () => {
   })
 
   describe('refreshIdentities', () => {
-    it('adds adds owned username to identity', () => {
+    it('adds owned username to identity', (done) => {
       // mock core
-      const nockCore1 = nock('http://localhost:6270')
+      const nockCore = nock('http://localhost:6270')
       .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
       .reply(200, { names: ['guylepage.id'] },
       { 'Content-Type': 'application/json' })
-      http://localhost:6270/v1/names/guylepage.id
-      const nockCore2 = nock('http://localhost:6270')
-      .persist()
-      .get('/v1/names/guylepage.id')
-      .reply(200, NameLookups['guylepage.id'],
-      { 'Content-Type': 'application/json' })
+      // .get('/v1/names/guylepage.id')
+      // .reply(200, NameLookups['guylepage.id'],
+      // { 'Content-Type': 'application/json' })
 
-      const nockAWS = nock('https://blockstack.s3.amazonaws.com')
-      .persist()
-      .get('/guylepage.id')
-      .reply(200, TokenFileLookups['guylepage.id'],
-      { 'Content-Type': 'application/json' })
-
-      const nockFacebook = nock('https://www.facebook.com')
-      .persist()
-      .get('/g3lepage/posts/10154179855498760')
-      .reply(200, 'verifying that guylepage.id is my blockstack id')
+      // const nockAWS = nock('https://blockstack.s3.amazonaws.com')
+      // .get('/guylepage.id')
+      // .reply(200, TokenFileLookups['guylepage.id'],
+      // { 'Content-Type': 'application/json' })
+      //
+      // const nockFacebook = nock('https://www.facebook.com')
+      // .get('/g3lepage/posts/10154179855498760')
+      // .reply(200, 'verifying that guylepage.id is my blockstack id')
 
       const store = mockStore(initialState)
 
@@ -107,40 +102,39 @@ describe('Identity Store: Async Actions', () => {
           "type": "USERNAME_OWNED",
           "username": "guylepage.id"
         }]
+        assert.deepEqual(store.getActions(), expectedActions)
+        // assert(nockCore.isDone(), 'nockCore not fetched')
+        // assert(nockAWS.isDone(), 'nockAWS not fetched')
+        // assert(nockFacebook.isDone(), 'nockFacebook not fetched')
+        done()
+      })
+    })
 
-        assert(nockCore1.isDone(), 'nockCore1 not fetched')
-        assert(nockCore2.isDone(), 'nockCore2 not fetched')
-        assert(nockAWS.isDone(), 'nockAWS not fetched')
-        assert(nockFacebook.isDone(), 'nockFacebook not fetched')
+    it('emits no actions if addresss owns no names', () => {
+      // mock core
+      nock('http://localhost:6270')
+      .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
+      .reply(200, { names: [] },
+      { 'Content-Type': 'application/json' })
+
+      const store = mockStore(initialState)
+
+      const mockAPI = Object.assign({}, DEFAULT_API, {
+
+      })
+
+      const addresses = ['18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6']
+      const localIdentities = {}
+      const namesOwned = []
+
+      return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
+        addresses, localIdentities, namesOwned))
+      .then(() => {
+        const expectedActions = []
         assert.deepEqual(store.getActions(), expectedActions)
       })
     })
-  //
-  //   it('emits no actions if addresss owns no names', () => {
-  //     // mock core
-  //     nock('http://localhost:6270')
-  //     .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
-  //     .reply(200, { names: [] },
-  //     { 'Content-Type': 'application/json' })
-  //
-  //     const store = mockStore(initialState)
-  //
-  //     const mockAPI = Object.assign({}, DEFAULT_API, {
-  //
-  //     })
-  //
-  //     const addresses = ['18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6']
-  //     const localIdentities = {}
-  //     const namesOwned = []
-  //
-  //     return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
-  //       addresses, localIdentities, namesOwned))
-  //     .then(() => {
-  //       const expectedActions = []
-  //       assert.deepEqual(store.getActions(), expectedActions)
-  //     })
-  //   })
-  // })
+  
   //
   // describe('fetchCurrentIdentity', () => {
   //   it('fetches profile & validates proof of given identity', () => {
