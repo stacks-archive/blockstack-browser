@@ -73,6 +73,7 @@ div.edit-profile-accounts .account.placeholder .form-group input.form-control {c
 .verification-copy-button {width:40px;height:40px;color:#494F56;padding:0;border:0;}
 .form-control.verification-input {color:#000;background-color:rgba(0,0,0,0.4);border:1px solid rgba(0,0,0,0.4);}
 .verification-input::-webkit-input-placeholder {color:#fff;}
+.badge-verification {margin-right:8px;padding:5px 10px;}
 
 /* Trust level footer */
 .trust-level-footer-container {position:fixed;left:0;bottom:0;width:100%;background-color:#2e2e2e;color:#fff;padding:25px;font-size:0.85rem;font-weight:700;cursor:pointer;}

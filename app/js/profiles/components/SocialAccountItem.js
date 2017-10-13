@@ -69,10 +69,15 @@ class SocialAccountItem extends Component {
       if (this.props.listItem === true) {
         return (
           <li className={this.props.verified ? "verified" : "pending"}>
-            <ReactTooltip place="top" type="dark" effect="solid" id={`verified-${this.props.service}`} className="text-center">
+            <ReactTooltip 
+              place="top" 
+              type="dark" 
+              effect="solid" 
+              id={`verified-${this.props.service}`} 
+              className="text-center">
               {this.props.verified ? 'Verified' : 'Pending...'}
             </ReactTooltip>
-            <a href={this.getAccountUrl()} data-toggle="tooltip"
+            <a href={this.getAccountUrl()}
               title={webAccountTypes[this.props.service].label}>
               <span className="">
                 <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
@@ -88,9 +93,8 @@ class SocialAccountItem extends Component {
                   <i className="fa fa-fw fa-check-circle fa-lg" />
                 </span>
                 : 
-                <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
-                  <i className="fa fa-fw fa-clock-o fa-lg" />
-                </span>
+                <span className="float-right badge badge-danger badge-verification">Unverified
+                </span> 
               }
             </a>
           </li>
