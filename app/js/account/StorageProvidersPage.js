@@ -38,7 +38,7 @@ class StorageProvidersPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
-    localIdentities: PropTypes.object.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
     storageIsConnected: PropTypes.func.isRequired,
     connectedStorageAtLeastOnce: PropTypes.bool.isRequired,
@@ -86,6 +86,7 @@ class StorageProvidersPage extends Component {
       })
     }
     if (needToConnectGaiaHub) {
+      logger.debug('componentDidMount: trying to connect gaia hub...')
       this.connectSharedService()
     }
 

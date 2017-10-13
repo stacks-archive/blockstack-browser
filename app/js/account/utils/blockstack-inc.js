@@ -50,7 +50,7 @@ export function connectToGaiaHub(gaiaHubUrl: string, challengeSignerHex: string)
   const challengeSigner = new bitcoin.ECPair(
     bigi.fromHex(challengeSignerHex))
   return new Promise((resolve) => {
-    fetch(`connectToGaiaHub: ${gaiaHubUrl}/hub_info`)
+    fetch(`${gaiaHubUrl}/hub_info`)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJSON) => {
