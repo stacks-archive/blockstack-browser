@@ -1,4 +1,4 @@
-// @flow
+// TODO when refactoring this page for new state, re-enable flow type checking
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'

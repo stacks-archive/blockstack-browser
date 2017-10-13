@@ -64,6 +64,8 @@ class ConnectStorageView extends Component {
               <button
                 className="btn btn-primary btn-block m-b-20"
                 onClick={this.props.connectDropbox}
+                disabled
+                title="See Github issue #908"
               >
                 Connect Dropbox
               </button>

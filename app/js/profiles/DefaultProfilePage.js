@@ -5,9 +5,7 @@ import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
 import SecondaryNavBar from '../components/SecondaryNavBar'
-import Alert from '../components/Alert'
 import Image from '../components/Image'
-import InputGroup from '../components/InputGroup'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
 import SocialAccountItem from './components/SocialAccountItem'
@@ -37,18 +35,15 @@ function mapDispatchToProps(dispatch) {
 
 class DefaultProfilePage extends Component {
   static propTypes = {
-    localIdentities: PropTypes.object.isRequired,
-    defaultIdentity: PropTypes.string.isRequired,
+    localIdentities: PropTypes.array.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
     createNewProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
-    namesOwned: PropTypes.array.isRequired,
     api: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
-    setDefaultIdentity: PropTypes.func.isRequired,
-    resetCreateNewProfileError: PropTypes.func.isRequired,
-    createProfileError: PropTypes.string
+    setDefaultIdentity: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -56,18 +51,11 @@ class DefaultProfilePage extends Component {
 
     this.state = {
       localIdentities: this.props.localIdentities,
-      passwordPromptIsOpen: false,
-      processing: false,
-      password: '',
       photoModalIsOpen: false
     }
 
     this.onValueChange = this.onValueChange.bind(this)
-    this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
-    this.createNewProfile = this.createNewProfile.bind(this)
     this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
-    this.openPasswordPrompt = this.openPasswordPrompt.bind(this)
-    this.closePasswordPrompt = this.closePasswordPrompt.bind(this)
     this.onPhotoClick = this.onPhotoClick.bind(this)
     this.openPhotoModal = this.openPhotoModal.bind(this)
     this.closePhotoModal = this.closePhotoModal.bind(this)
@@ -77,9 +65,7 @@ class DefaultProfilePage extends Component {
     logger.trace('componentWillMount')
     this.props.refreshIdentities(
       this.props.api,
-      this.props.identityAddresses,
-      this.props.localIdentities,
-      this.props.namesOwned
+      this.props.identityAddresses
     )
   }
 
@@ -88,22 +74,6 @@ class DefaultProfilePage extends Component {
     this.setState({
       localIdentities: nextProps.localIdentities
     })
-    if (nextProps.createProfileError) {
-      this.setState({
-        processing: false
-      })
-    }
-
-    const currentIdentityCount = Object.keys(this.props.localIdentities).length
-
-    const newIdentityCount = Object.keys(nextProps.localIdentities).length
-    if (currentIdentityCount < newIdentityCount) {
-      this.setState({
-        processing: false,
-        password: ''
-      })
-      this.closePasswordPrompt()
-    }
   }
 
   onValueChange(event) {
@@ -114,26 +84,6 @@ class DefaultProfilePage extends Component {
 
   onPhotoClick(event) {
     this.openPhotoModal(event)
-  }
-
-  setDefaultIdentity(domainName) {
-    this.props.setDefaultIdentity(domainName)
-  }
-
-  createNewProfile(event) {
-    logger.trace('createNewProfile')
-    this.setState({
-      processing: true
-    })
-    event.preventDefault()
-    const encryptedBackupPhrase = this.props.encryptedBackupPhrase
-    const password = this.state.password
-    const nextUnusedAddressIndex = this.props.nextUnusedAddressIndex
-
-    this.props.createNewProfile(
-      encryptedBackupPhrase,
-      password, nextUnusedAddressIndex
-    )
   }
 
   openPhotoModal(event) {
@@ -152,53 +102,20 @@ class DefaultProfilePage extends Component {
     })
   }
 
-  openPasswordPrompt(event) {
-    event.preventDefault()
-    this.setState({
-      processing: false
-    })
-    this.props.resetCreateNewProfileError()
-    this.setState({
-      passwordPromptIsOpen: true
-    })
-  }
-
-  closePasswordPrompt(event) {
-    if (event) {
-      event.preventDefault()
-    }
-    this.setState({
-      passwordPromptIsOpen: false
-    })
-  }
-
   availableIdentityAddresses() {
     return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
   }
 
   render() {
-    const createProfileError = this.props.createProfileError
-    const passwordPromptIsOpen = this.state.passwordPromptIsOpen
-    const defaultIdentityName = this.props.defaultIdentity
-    const identity = this.state.localIdentities[defaultIdentityName]
-
-    // render() sometimes gets called before defaultIdentityName
-    // is updated from ownerAddress to the actual name when adding
-    // a username.
-    if (!identity) {
-      return null
-    }
-
+    const identityIndex = this.props.defaultIdentity
+    const identity = this.state.localIdentities[identityIndex]
     const person = new Person(identity.profile)
 
-    if (identity.ownerAddress === defaultIdentityName) {
-      identity.canAddUsername = true
-    } else {
+    if (identity.username) {
       identity.canAddUsername = false
+    } else {
+      identity.canAddUsername = true
     }
-
-    const domainName = identity.domainName
-    const ownerAddress = identity.ownerAddress
 
     const verifications = identity.verifications
     const blockNumber = identity.blockNumber
@@ -206,48 +123,8 @@ class DefaultProfilePage extends Component {
 
     const accounts = person.profile().account || []
     const connections = person.connections() || []
-
     return (
       <div>
-        <Modal
-          isOpen={passwordPromptIsOpen}
-          onRequestClose={this.closePasswordPrompt}
-          contentLabel="Password Modal"
-          shouldCloseOnOverlayClick
-          style={{ overlay: { zIndex: 10 } }}
-          className="container-fluid"
-        >
-          <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new Blockstack ID</h3>
-            <div>
-              {createProfileError ?
-                <Alert key="1" message="Incorrect password" status="danger" />
-                :
-                null
-              }
-            </div>
-            <InputGroup
-              name="password"
-              type="password"
-              label=""
-              placeholder="Password"
-              data={this.state}
-              onChange={this.onValueChange}
-              required
-            />
-            <button
-              disabled={this.state.processing}
-              className="btn btn-primary btn-block"
-              type="submit"
-            >
-              {this.state.processing ?
-                <span>Creating...</span>
-                :
-                <span>Create new ID</span>
-              }
-            </button>
-          </form>
-        </Modal>
         <Modal
           isOpen={this.state.photoModalIsOpen}
           contentLabel=""
@@ -258,19 +135,24 @@ class DefaultProfilePage extends Component {
         >
           <Image
             src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-            fallbackSrc="/images/avatar.png" className="img-fluid clickable" 
+            fallbackSrc="/images/avatar.png" className="img-fluid clickable"
             onClick={this.closePhotoModal}
           />
         </Modal>
-        <ToolTip id="domainName">
+        <ToolTip id="ownerAddress">
           <div>
-            <div>This is your owner address.</div>
+            <div>This is your identity address.</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="usernamePending">
+          <div>
+            <div>Name registration in progress...</div>
           </div>
         </ToolTip>
         <div>
           <SecondaryNavBar
             leftButtonTitle="Edit"
-            leftButtonLink={`/profiles/${domainName}/edit`}
+            leftButtonLink={`/profiles/${identityIndex}/edit`}
             centerButtonTitle="View"
             centerButtonLink="/profiles"
             isCenterActive
@@ -284,7 +166,7 @@ class DefaultProfilePage extends Component {
                 <div className="avatar-md m-b-20 text-center">
                   <Image
                     src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-                    fallbackSrc="/images/avatar.png" className="rounded-circle clickable" 
+                    fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
                     onClick={this.onPhotoClick}
                   />
                 </div>
@@ -297,25 +179,30 @@ class DefaultProfilePage extends Component {
                     </div>
                   : null}
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  {identity.canAddUsername ?
-                    <div className="text-center">
-                      <Link 
-                        to={`/profiles/i/add-username/${domainName}/search`}
-                        className="btn btn-link active btn-thin"
-                      >
+                  <div className="m-b-20 text-center">
+                    {identity.canAddUsername ?
+                      <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
                        Add a username
                       </Link>
-                    </div>
                     :
-                    <div className="pro-card-domain-name text-center text-secondary m-t-0">
-                      <span>{domainName}</span>
-                    </div>
+                      <div className="pro-card-domain-name text-center text-secondary m-t-0">
+                        <span>{identity.username}</span>
+                        {identity.usernamePending ?
+                          <i
+                            className="fa fa-fw fa-clock-o fa-lg"
+                            data-tip
+                            data-for="usernamePending"
+                          ></i>
+                          : null}
+                      </div>
                   }
+                  </div>
 
                   <div className="pro-card-domain-name m-b-10 text-center text-secondary m-t-0">
                     <small>
-                      {ownerAddress} {identity.canAddUsername && 
-                        <span data-tip data-for="domainName">(?)</span>}
+                      <span data-tip data-for="ownerAddress">
+                        {identity.ownerAddress}
+                      </span>
                     </small>
                   </div>
 
@@ -387,7 +274,7 @@ class DefaultProfilePage extends Component {
                           }
                         }
                       }
-                      if (account.service === 'pgp' || account.service === 'ssh' 
+                      if (account.service === 'pgp' || account.service === 'ssh'
                         || account.service === 'bitcoin' || account.service === 'ethereum') {
                         return (
                           <PGPAccountItem
@@ -416,23 +303,7 @@ class DefaultProfilePage extends Component {
               </div>
             </div>
           </div>
-
-          {/*
-          <div className="container-fluid">
-            {identity.canAddUsername ?
-              <Link
-                to={`/profiles/i/add-username/${domainName}/search`}
-                className="btn btn-link"
-              >
-               Add a username
-              </Link>
-              :
-              null
-            }
-          </div>
-          */}
         </div>
-
       </div>
     )
   }

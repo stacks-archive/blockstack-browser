@@ -1,14 +1,23 @@
+// @flow
 import log4js from 'log4js'
 import bitcoin from 'bitcoinjs-lib'
 import bigi from 'bigi'
 const logger = log4js.getLogger('account/utils/blockstack-inc.js')
 
-function uploadToGaiaHub(hubConfig, name, contents) {
+export type GaiaHubConfig = {
+  address: string,
+  token: string,
+  server: string
+}
+
+function uploadToGaiaHub(hubConfig: GaiaHubConfig, filename: string, contents: any,
+contentType: string = 'application/octet-stream'): Promise<*> {
   return new Promise((resolve) => {
-    fetch(`${hubConfig.server}/store/${hubConfig.address}/${name}`,
+    logger.debug(`uploadToGaiaHub: uploading ${filename} to ${hubConfig.server}`)
+    return fetch(`${hubConfig.server}/store/${hubConfig.address}/${filename}`,
           { method: 'POST',
             headers: {
-              'Content-Type': 'application/octet-stream',
+              'Content-Type': contentType,
               Authorization: `bearer ${hubConfig.token}`
             },
             body: contents })
@@ -20,25 +29,28 @@ function uploadToGaiaHub(hubConfig, name, contents) {
   })
 }
 
-
-export function uploadPhotoToGaiaHub(api, name, photoFile, index) {
+export function uploadPhotoToGaiaHub(api: {gaiaHubConfig: GaiaHubConfig },
+  identityIndex: number, identityAddress: string, photoFile: any, photoIndex: number) {
+  logger.trace('uploadPhotoToGaiaHub')
   const hubConfig = api.gaiaHubConfig
-  const filename = `${name}/avatar-${index}`
+  const filename = `${identityIndex}/avatar-${photoIndex}`
   return uploadToGaiaHub(hubConfig, filename, photoFile)
 }
 
-export function uploadProfileToGaiaHub(api, name, signedProfileTokenData) {
+export function uploadProfileToGaiaHub(api: {gaiaHubConfig: GaiaHubConfig},
+  identityIndex: number, identityAddress: string, signedProfileTokenData: string) {
+  logger.trace('uploadProfileToGaiaHub')
   const hubConfig = api.gaiaHubConfig
-  const filename = `${name}.json`
-  return uploadToGaiaHub(hubConfig, filename, signedProfileTokenData)
+  const filename = `${identityIndex}/profile.json`
+  return uploadToGaiaHub(hubConfig, filename, signedProfileTokenData, 'application/json')
 }
 
-export function connectToGaiaHub(serviceProvider, challengeSignerHex) {
-  logger.debug(`${serviceProvider}/hub_info`)
+export function connectToGaiaHub(gaiaHubUrl: string, challengeSignerHex: string): Promise<*> {
+  logger.debug(`connectToGaiaHub: ${gaiaHubUrl}/hub_info`)
   const challengeSigner = new bitcoin.ECPair(
     bigi.fromHex(challengeSignerHex))
   return new Promise((resolve) => {
-    fetch(`${serviceProvider}/hub_info`)
+    fetch(`${gaiaHubUrl}/hub_info`)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJSON) => {
@@ -49,17 +61,18 @@ export function connectToGaiaHub(serviceProvider, challengeSignerHex) {
               .toDER().toString('hex')
         const publickey = challengeSigner.getPublicKeyBuffer()
               .toString('hex')
-        const token = Buffer(JSON.stringify(
+        const token = new Buffer(JSON.stringify(
           { publickey, signature })).toString('base64')
         const address = challengeSigner.getAddress()
         resolve({ url_prefix: readURL,
                    address,
                    token,
-                   server: serviceProvider }
+                   server: gaiaHubUrl }
                ) }) })
 }
 
 export function redirectToConnectToGaiaHub() {
+  logger.trace('redirectToConnectToGaiaHub')
   const port = location.port === '' ? 80 : location.port
   window.top.location.href = `http://localhost:${port}/account/storage#gaiahub`
 }

@@ -54,14 +54,13 @@ class WelcomeModal extends Component {
     closeModal: PropTypes.func.isRequired,
     updateApi: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
-    emailKeychainBackup: PropTypes.func.isRequired,
     promptedForEmail: PropTypes.bool.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     initializeWallet: PropTypes.func.isRequired,
     emailNotifications: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired,
     identityAddresses: PropTypes.array,
-    createNewIdentityFromDomain: PropTypes.func.isRequired,
+    createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
     setDefaultIdentity: PropTypes.func.isRequired,
     connectedStorageAtLeastOnce: PropTypes.bool.isRequired
   }
@@ -140,13 +139,14 @@ class WelcomeModal extends Component {
         logger.debug('Backup phrase successfully decrypted. Storing identity key.')
         this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
 
-        const ownerAddress = this.props.identityAddresses[0]
+        const firstIdentityIndex = 0
+        const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
 
         // create first profile
-        this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
+        this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
 
         // Set as default profile
-        this.props.setDefaultIdentity(ownerAddress)
+        this.props.setDefaultIdentity(firstIdentityIndex)
         if (this.state.restored) {
           this.setPage(EMAIL_VIEW)
         } else {
@@ -278,12 +278,6 @@ class WelcomeModal extends Component {
     }
     logger.debug('confirmIdentityKeyPhrase: user entered identity phrase matches!')
     this.showNextView()
-  }
-
-  emailKeychainBackup(event) {
-    event.preventDefault()
-    this.props.emailKeychainBackup(this.state.email, this.props.encryptedBackupPhrase)
-    return false
   }
 
   skipEmailBackup(event) {

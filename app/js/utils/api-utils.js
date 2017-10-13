@@ -140,7 +140,13 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
  * const config = { dropbox: { token: '123abc'} }
  */
 export function setCoreStorageConfig(api,
-  blockchainId = null, profile = null, profileSigningKeypair = null) {
+  identityIndex = null, identityAddress = null, profile = null,
+  profileSigningKeypair = null, firstDropboxUpload = false) {
+  logger.debug(`setCoreStorageConfig: ${identityIndex}, ${identityAddress}`)
+  logger.debug(`setCoreStorageConfig: profile passed? ${!!profile}`)
+  logger.debug(`setCoreStorageConfig: profileSigningKeypair passed? ${!!profileSigningKeypair}`)
+  const coreAPIPassword = api.coreAPIPassword
+
   return new Promise((resolve, reject) => {
     var driverName = null;
     var requestBody = null;
@@ -167,14 +173,15 @@ export function setCoreStorageConfig(api,
       headers: {
         'Content-Type': 'application/json',
         'Content-Length': bodyText.length,
-        Authorization: authorizationHeaderValue(api.coreAPIPassword)
+        Authorization: authorizationHeaderValue(coreAPIPassword)
       },
       body: bodyText
     }
-
+    logger.debug(`setCoreStorageConfig: POSTing to ${url}`)
     return fetch(url, options)
     .then((response) => {
-      if (response.status !== 200) {
+      logger.debug(`setCoreStorageConfig: got a response of ${response.status}`)
+      if (!response.ok) {
         throw new Error(response.statusText)
       }
       return response.text()
@@ -182,22 +189,30 @@ export function setCoreStorageConfig(api,
         .then((responseJson) => {
          // expect the index URL (for some drivers, like Dropbox)
           const driverConfigResult = responseJson
-
-          if (driverConfigResult.index_url && profile && blockchainId) {
+          const indexUrl = driverConfigResult.index_url
+          logger.debug(`setCoreStorageConfig: index url? ${!!indexUrl}`)
+          authorizationHeaderValue(coreAPIPassword)
+          if (indexUrl && (identityIndex || identityIndex === 0)
+            && identityAddress
+            && profile && profileSigningKeypair) {
+            logger.debug(`setCoreStorageConfig: storing index url...`)
             // insert it into the profile and replicate it.
             profile = profileInsertStorageRoutingInfo(profile,
-              driverName, driverConfigResult.index_url)
+              driverName, indexUrl)
             const data = signProfileForUpload(profile, profileSigningKeypair)
-
-            return uploadProfile(api, blockchainId, data)
+            logger.debug(`setCoreStorageConfig: uploading profile...`)
+            return uploadProfile(api, identityIndex, identityAddress, data, firstDropboxUpload)
             .then((result) => {
+              logger.debug('setCoreStorageConfig: saved index url')
               // saved!
               resolve(result)
             })
             .catch((error) => {
+              logger.error('setCoreStorageConfig: error saving index url', error)
               reject(error)
             })
           } else {
+            logger.debug(`setCoreStorageConfig: not saving index url`)
             // Some drivers won't return an indexUrl
             // or we'll want to initialize
             resolve('OK')
