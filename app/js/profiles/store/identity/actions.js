@@ -262,7 +262,6 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
       })
       return promise
     })
-    console.log(promises)
     return Promise.all(promises)
   }
 }
