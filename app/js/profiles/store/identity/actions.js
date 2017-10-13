@@ -282,6 +282,14 @@ function refreshSocialProofVerifications(identityIndex: number,
   })
 }
 
+/**
+ * Resolves a Blockstack ID username to zonefile, fetches the profile file,
+ * validates proofs and then stores the results in the identity store in an
+ * object under the key publicIdentities.
+ *
+ * @param  {String} lookupUrl name look up endpoint
+ * @param  {String} username  the username of the Blockstack ID to fetch
+ */
 function fetchPublicIdentity(lookupUrl: string, username: string) {
   return (dispatch: Dispatch<*>): Promise<*> => {
     const url = lookupUrl.replace('{name}', username)
