@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Alert from './components/Alert'
 import InputGroup from './components/InputGroup'
 import { AccountActions } from './account/store/account'
+import { decrypt } from './utils'
 
 import log4js from 'log4js'
 
@@ -13,9 +14,7 @@ const logger = log4js.getLogger('UpdateStatePage.js')
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
-    availability: state.profiles.availability,
-    walletBalance: state.account.coreWallet.balance,
-    balanceUrl: state.settings.api.zeroConfBalanceUrl
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase
   }
 }
 
@@ -26,7 +25,9 @@ function mapDispatchToProps(dispatch) {
 
 class UpdateStatePage extends Component {
   static propTypes = {
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    api: PropTypes.object.isRequired,
+    encryptedBackupPhrase: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -34,6 +35,7 @@ class UpdateStatePage extends Component {
 
     this.state = {
       alert: null,
+      password: '',
       upgradeInProgress: false
     }
 
@@ -67,6 +69,19 @@ class UpdateStatePage extends Component {
     logger.trace('upgradeBlockstackState')
     event.preventDefault()
     this.setState({ upgradeInProgress: true })
+
+    const encryptedBackupPhrase = this.props.encryptedBackupPhrase
+
+    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const password = this.state.password
+    decrypt(dataBuffer, password)
+    .then((backupPhrase) => {
+
+    })
+    .catch((error) => {
+      logger.error('upgradeBlockstackState: invalid password', error)
+      this.updateAlert('danger', 'Wrong password')
+    })
   }
 
   render() {
@@ -105,7 +120,7 @@ class UpdateStatePage extends Component {
                 disabled={this.state.upgradeInProgress}
               >
                 {this.state.upgradeInProgress ?
-                  <span>Upgrading</span>
+                  <span>Upgrading...</span>
                   :
                   <span>Finish</span>
                 }
