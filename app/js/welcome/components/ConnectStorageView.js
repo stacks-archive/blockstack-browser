@@ -34,8 +34,7 @@ class ConnectStorageView extends Component {
             <img
               role="presentation"
               src="/images/blockstack-logo-vertical.svg"
-              className="m-b-20"
-              style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }}
+              className="m-b-20 welcome-modal-icon"
             />
             <div className="m-t-40 modal-body">
               <button
