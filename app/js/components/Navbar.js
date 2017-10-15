@@ -117,6 +117,7 @@ class Navbar extends Component {
                 onMouseOut={this.onHomeNavMouseOut}
               >
                 <img src={this.homeNavIconImage()} alt="Home" />
+                <span>Home</span>
               </Link>
             </li>
             <li className="nav-item">
@@ -127,6 +128,7 @@ class Navbar extends Component {
                 onMouseOut={this.onAvatarNavMouseOut}
               >
                 <img src={this.avatarNavIconImage()} alt="IDs" />
+                <span>Profile</span>
               </Link>
             </li>
             <li className="nav-item">
@@ -136,6 +138,7 @@ class Navbar extends Component {
                 onMouseOut={this.onWalletNavMouseOut}
               >
                 <img src={this.walletNavIconImage()} alt="Wallet" />
+                <span>Wallet</span>
               </Link>
             </li>
             <li className="nav-item">
@@ -145,6 +148,7 @@ class Navbar extends Component {
                 onMouseOut={this.onSettingsNavMouseOut}
               >
                 <img src={this.settingsNavIconImage()} alt="Settings" />
+                <span>Settings</span>
               </Link>
             </li>
           </ul>

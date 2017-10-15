@@ -414,7 +414,7 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 header{padding-top:15px;}
 .navbar{padding:0!important;height:70px;}
 .navbar-expand{width:85%;}
-.nav-item{width:88px;}
+.nav-item{width:88px;text-align:center;text-transform: uppercase;font-family:'Lato',sans-serif;font-size:11px;font-weight:700}
 .nav-link{width:100%;}
 .navbar-expand .navbar-nav .nav-link{padding:12px 13px;}
 .secondary-nav{margin-top:5px;}
