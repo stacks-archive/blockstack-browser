@@ -10,6 +10,7 @@ import TrustLevelFooter from './components/TrustLevelFooter'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
 import { MAX_TRUST_LEVEL } from './utils/account-utils'
 import { SanityActions }    from './store/sanity'
+import { CURRENT_VERSION } from './store/reducers'
 
 import log4js from 'log4js'
 
@@ -25,7 +26,8 @@ function mapStateToProps(state) {
     coreApiRunning: state.sanity.coreApiRunning,
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    stateVersion: state.version.number
   }
 }
 
@@ -52,11 +54,18 @@ class App extends Component {
     isCoreRunning: PropTypes.func.isRequired,
     isCoreApiPasswordValid: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
-    coreAPIPassword: PropTypes.string
+    coreAPIPassword: PropTypes.string,
+    stateVersion: PropTypes.number,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props)
+
+    if (this.props.stateVersion < CURRENT_VERSION) {
+      logger.debug('Old state...need to update!')
+      this.router.push('/update')
+    }
 
     this.state = {
       accountCreated: !!this.props.encryptedBackupPhrase,
@@ -167,9 +176,9 @@ class App extends Component {
           {this.props.children}
         </div>
         {shouldShowTrustLevelFooter &&
-          <TrustLevelFooter 
-            trustLevel={trustLevel} 
-            maxTrustLevel={MAX_TRUST_LEVEL} 
+          <TrustLevelFooter
+            trustLevel={trustLevel}
+            maxTrustLevel={MAX_TRUST_LEVEL}
             link={editProfileLink}
           />
         }

@@ -3,6 +3,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 import App                  from './App'
 import HomeScreenPage        from './HomeScreenPage'
+import UpdateStatePage      from './UpdateStatePage'
 
 import ProfilesApp          from './profiles/ProfilesApp'
 import RegistrationPage      from './profiles/RegistrationPage'
@@ -42,7 +43,7 @@ export default (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
       <IndexRoute component={HomeScreenPage} />
-
+      <Route path="/update" component={UpdateStatePage} />
       <Route path="profiles" component={ProfilesApp}>
         <IndexRoute component={DefaultProfilePage} />
         <Route path="i/all"           component={AllProfilesPage} />
