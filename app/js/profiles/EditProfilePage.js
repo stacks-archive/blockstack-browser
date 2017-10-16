@@ -319,11 +319,14 @@ class EditProfilePage extends Component {
   removeAccount(service) {
     const profile = this.state.profile
     const accounts = profile.account
-    const newAccounts = accounts.filter(account => account.service !== service)
-    profile.account = newAccounts
-    this.setState({ profile })
-    this.saveProfile(profile)
-    this.refreshProofs()
+
+    if (accounts) {
+      const newAccounts = accounts.filter(account => account.service !== service)
+      profile.account = newAccounts
+      this.setState({ profile })
+      this.saveProfile(profile)
+      this.refreshProofs()
+    }
   }
 
   refreshProofs() {
