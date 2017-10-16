@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 const icons = {
@@ -12,9 +13,18 @@ const icons = {
   settingsNavActive: '/images/icon-nav-settings-hover.svg'
 }
 
+function mapStateToProps(state) {
+  return {
+    localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
+  }
+}
+
 class Navbar extends Component {
   static propTypes = {
-    activeTab: PropTypes.string
+    activeTab: PropTypes.string,
+    localIdentities: PropTypes.array.isRequired,
+    defaultIdentity: PropTypes.number.isRequired
   }
 
   constructor(props) {
@@ -27,6 +37,7 @@ class Navbar extends Component {
     this.onAvatarNavMouseOut = this.onAvatarNavMouseOut.bind(this)
     this.onSettingsNavMouseOver = this.onSettingsNavMouseOver.bind(this)
     this.onSettingsNavMouseOut = this.onSettingsNavMouseOut.bind(this)
+    this.getProfileRoute = this.getProfileRoute.bind(this)
 
     this.state = {
       homeTabHover: false,
@@ -105,6 +116,37 @@ class Navbar extends Component {
     }
   }
 
+
+
+  getProfileRoute() {
+
+    console.log(this.props.defaultIdentity)
+    console.log(this.props.localIdentities)
+    // console.log(this.props.localIdentities[this.props.defaultIdentity])
+
+    if (this.props.localIdentities.length > 0 
+          && this.props.defaultIdentity !== null) {
+
+      // const identityIndex = this.props.defaultIdentity
+      // const identity = this.state.localIdentities[identityIndex]
+
+      const identityIndex = this.props.defaultIdentity
+      const identity = this.props.localIdentities[identityIndex]
+      const profile = identity.profile
+      
+      if (!profile.hasOwnProperty('name') 
+        && !profile.hasOwnProperty('description')
+        && !profile.hasOwnProperty('account')
+        && !profile.hasOwnProperty('image')) {
+        return `/profiles/${identityIndex}/edit`
+      } else {
+        return "/profiles"
+      }
+    } else {
+      return "/profiles"
+    }
+  }
+
   render() {
     return (
       <header className="container-fluid no-padding">
@@ -121,7 +163,7 @@ class Navbar extends Component {
             </li>
             <li className="nav-item">
               <Link
-                to="/profiles"
+                to={this.getProfileRoute}
                 className="nav-link"
                 onMouseOver={this.onAvatarNavMouseOver}
                 onMouseOut={this.onAvatarNavMouseOut}
@@ -154,4 +196,5 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar
+// export default Navbar
+export default connect(mapStateToProps, null)(Navbar)
