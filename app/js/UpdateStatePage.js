@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import Alert from './components/Alert'
 import InputGroup from './components/InputGroup'
 import { AccountActions } from './account/store/account'
+import { IdentityActions } from './profiles/store/identity'
 import { decrypt } from './utils'
+import { updateState } from './store/reducers'
 
 import log4js from 'log4js'
 
@@ -14,26 +16,38 @@ const logger = log4js.getLogger('UpdateStatePage.js')
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
+    accountCreated: state.account.accountCreated
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({},
-    AccountActions), dispatch)
+    AccountActions, IdentityActions, { updateState }), dispatch)
 }
 
 class UpdateStatePage extends Component {
   static propTypes = {
     router: PropTypes.object.isRequired,
-    api: PropTypes.object.isRequired,
-    encryptedBackupPhrase: PropTypes.string.isRequired
+    api: PropTypes.object,
+    encryptedBackupPhrase: PropTypes.string,
+    localIdentities: PropTypes.array,
+    defaultIdentity: PropTypes.number,
+    accountCreated: PropTypes.bool,
+    initializeWallet: PropTypes.func.isRequired,
+    identityAddresses: PropTypes.array,
+    createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
+    setDefaultIdentity: PropTypes.func.isRequired,
+    updateState: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
+      api: this.props.api,
       alert: null,
       password: '',
       upgradeInProgress: false
@@ -49,8 +63,26 @@ class UpdateStatePage extends Component {
   }
 
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     logger.trace('componentWillReceiveProps')
+    const upgradeInProgress = this.state.upgradeInProgress
+    const accountCreated  = this.props.accountCreated
+    const nextAccountCreated = nextProps.accountCreated
+    const nextIdentityAddresses = nextProps.identityAddresses
+    if (upgradeInProgress && !accountCreated && nextAccountCreated
+      && nextIdentityAddresses) {
+      logger.debug('componentWillReceiveProps: new account created - time to migrate data')
+      const numberOfIdentities = this.state.numberOfIdentities
+
+      for (let i = 1; i < numberOfIdentities; i++) {
+        logger.debug(`componentWillReceiveProps: identity index: ${i}`)
+        const ownerAddress = nextProps.identityAddresses[i]
+        nextProps.createNewIdentityWithOwnerAddress(i, ownerAddress)
+      }
+    }
+
+    nextProps.setDefaultIdentity(this.state.defaultIdentity)
+    nextProps.router.push('/')
   }
 
   onValueChange(event) {
@@ -69,18 +101,34 @@ class UpdateStatePage extends Component {
     logger.trace('upgradeBlockstackState')
     event.preventDefault()
     this.setState({ upgradeInProgress: true })
+    //
+    // number of identities to generate
+    // default identity
+    // copy api settings
 
     const encryptedBackupPhrase = this.props.encryptedBackupPhrase
 
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     const password = this.state.password
+
     decrypt(dataBuffer, password)
     .then((backupPhrase) => {
-
+      logger.debug('upgradeBlockstackState: correct password!')
+      const numberOfIdentities = this.props.localIdentities.length
+      this.setState({
+        correctPassword: password,
+        encryptedBackupPhrase,
+        backupPhrase,
+        defaultIdentity: this.props.defaultIdentity,
+        numberOfIdentities
+      })
+      this.props.updateState()
+      this.props.initializeWallet(password, backupPhrase, numberOfIdentities)
     })
     .catch((error) => {
       logger.error('upgradeBlockstackState: invalid password', error)
       this.updateAlert('danger', 'Wrong password')
+      this.setState({ upgradeInProgress: false })
     })
   }
 
@@ -101,8 +149,8 @@ class UpdateStatePage extends Component {
             :
             null
           }
-          <h3 className="modal-heading">Finish upgrading Blockstack</h3>
-          <p>Enter your password to finish upgrading Blockstack.</p>
+          <h3 className="modal-heading">Finish updating Blockstack</h3>
+          <p>Enter your password to finish updating Blockstack.</p>
           <form className="modal-form" onSubmit={this.upgradeBlockstackState}>
             <InputGroup
               name="password"

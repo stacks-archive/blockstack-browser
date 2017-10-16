@@ -12,7 +12,13 @@ import { DELETE_ACCOUNT } from '../account/store/account/types'
 //   'settings'
 // ]
 
+export const UPDATE_STATE = 'UPDATE_STATE'
 
+export function updateState() {
+  return {
+    type: UPDATE_STATE
+  }
+}
 /**
  * Incrementing this triggers an upgrade process
  * where the user has to enter their password, critical state is migrated
@@ -40,6 +46,19 @@ const AppReducer = combineReducers({
 
 const RootReducer = (state: any, action: any) => {
   let newState: any = Object.assign({}, state)
+  if (action.type === UPDATE_STATE) {
+    const initialState = AppReducer(undefined, {})
+    newState = Object.assign({}, initialState, {
+      settings: {
+        api: Object.assign({}, state.settings.api)
+      },
+      account: Object.assign({}, initialState.account, {
+        promptedForEmail: state.account.promptedForEmail,
+        viewedRecoveryCode: state.account.viewedRecoveryCode,
+        connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
+      })
+    })
+  }
   if (action.type === DELETE_ACCOUNT) {
     const initialState = AppReducer(undefined, {})
     newState = Object.assign({}, initialState, {

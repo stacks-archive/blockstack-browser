@@ -17,7 +17,8 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/store/account/actions.js')
 
-function createAccount(encryptedBackupPhrase, masterKeychain) {
+function createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate) {
+  logger.debug(`createAccount: identitiesToGenerate: ${identitiesToGenerate}`)
   const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
   const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(masterKeychain)
 
@@ -29,18 +30,18 @@ function createAccount(encryptedBackupPhrase, masterKeychain) {
 
   const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
 
-  const ADDRESSES_TO_GENERATE = 1
   const identityAddresses = []
   const identityKeypairs = []
 
   // We pre-generate a number of identity addresses so that we
   // don't have to prompt the user for the password on each new profile
-  for (let addressIndex = 0; addressIndex < ADDRESSES_TO_GENERATE; addressIndex++) {
+  for (let addressIndex = 0; addressIndex < identitiesToGenerate; addressIndex++) {
     const identityOwnerAddressNode =
     getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
     const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
     identityKeypairs.push(identityKeyPair)
     identityAddresses.push(identityKeyPair.address)
+    logger.debug(`createAccount: identity index: ${addressIndex}`)
   }
 
   return {
@@ -347,7 +348,7 @@ function refreshBalances(insightUrl, addresses, coreAPIPassword) {
   }
 }
 
-function initializeWallet(password, backupPhrase, email = null) {
+function initializeWallet(password, backupPhrase, identitiesToGenerate = 1) {
   return dispatch => {
     let masterKeychain = null
     if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
@@ -362,7 +363,7 @@ function initializeWallet(password, backupPhrase, email = null) {
     return encrypt(new Buffer(backupPhrase), password).then((ciphertextBuffer) => {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
       dispatch(
-        createAccount(encryptedBackupPhrase, masterKeychain, email)
+        createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate)
       )
     })
   }
