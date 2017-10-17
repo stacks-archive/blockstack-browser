@@ -44,6 +44,14 @@ function loggedIntoApp() {
   }
 }
 
+function appMetaDataLoaded(app, appMetaData) {
+  return {
+    type: APP_META_DATA_LOADED,
+    appMetaData
+  }
+}
+
+
 function clearSessionToken(appDomain) {
   return dispatch => {
     dispatch(updateCoreSessionToken(appDomain, null))
@@ -72,6 +80,31 @@ function getCoreSessionToken(coreHost, corePort, coreApiPassword,
   }
 }
 
+function getAppMetaData(app, address) {
+  return dispatch => {
+    const requestHeaders = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+    const options = {
+      method: 'GET',
+      headers: requestHeaders
+    }
+    const params = `app=${encodeURIComponent(app)}&address=${encodeURIComponent(address)}`
+    const appMetaDataUrl = `https://blockstack-portal-emailer.appartisan.com/app_meta_data?${params}`
+    return fetch(appMetaDataUrl, options)
+    .then((response) => {
+      response.json().then(data => {
+        dispatch(appMetaDataLoaded(app, data))
+      })
+    }, () => {
+    }).catch(error => {
+      logger.error('getAppMetaData: error', error)
+    })
+  }
+}
+
+
 function loadAppManifest(authRequest, ownerAddress) {
   return dispatch => {
     dispatch(appManifestLoading())
@@ -81,36 +114,6 @@ function loadAppManifest(authRequest, ownerAddress) {
     }).catch((e) => {
       logger.error('loadAppManifest: error', e)
       dispatch(appManifestLoadingError(e))
-    })
-  }
-}
-
-function appMetaDataLoaded(app, appMetaData) {
-  return {
-    type: APP_META_DATA_LOADED,
-    appMetaData
-  }
-}
-
-function getAppMetaData(app, address) {
-  return dispatch => {
-    const requestHeaders = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-    const options = {
-      method: 'GET',
-      headers: requestHeaders,
-    }
-    const params = `app=${encodeURIComponent(app)}&address=${encodeURIComponent(address)}`
-    const appMetaDataUrl = `https://blockstack-portal-emailer.appartisan.com/app_meta_data?${params}`
-    return fetch(appMetaDataUrl, options)
-    .then((response) => {
-      response.json().then(data =>{
-        dispatch(appMetaDataLoaded(app, data))
-      })
-    }, (error) => {
-    }).catch(error => {
     })
   }
 }
