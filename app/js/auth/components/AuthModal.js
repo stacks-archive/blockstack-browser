@@ -82,7 +82,11 @@ class AuthModal extends Component {
       authRequest,
       decodedToken
     })
-    this.props.loadAppManifest(authRequest)
+    const localIdentities = this.props.localIdentities
+    const identityIndex = this.state.currentIdentityIndex
+    const identity = localIdentities[identityIndex]
+
+    this.props.loadAppManifest(authRequest, identity.ownerAddress)
   }
 
   componentWillReceiveProps(nextProps) {

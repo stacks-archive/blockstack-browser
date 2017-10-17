@@ -25,6 +25,7 @@ class Alert extends Component {
   }
 
   render() {
+    const message = this.props.message
     return (
       <div>
         { this.state.shown ?
@@ -35,10 +36,10 @@ class Alert extends Component {
           { this.props.url ?
 
             <Link to={this.props.url} className="alert-link">
-              <span dangerouslySetInnerHTML={{__html: this.props.message}}></span>
+              <span>{ message }</span>
             </Link>
             :
-            <span dangerouslySetInnerHTML={{__html: this.props.message}}></span>
+            <span>{ message }</span>
           }
         </div>
         : null }
