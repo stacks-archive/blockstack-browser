@@ -413,6 +413,7 @@ class WelcomeModal extends Component {
               {
                 page === 6 ?
                   <ConfirmIdentityKeyView
+                    identityKeyPhrase={this.state.identityKeyPhrase}
                     confirmIdentityKeyPhrase={this.confirmIdentityKeyPhrase}
                     showPreviousView={this.showPreviousView}
                   />
