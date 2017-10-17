@@ -4,10 +4,10 @@ import { getBitcoinAddressNode } from '../../../utils'
 
 
 const initialState = {
-  accountCreated: false,
-  promptedForEmail: false,
-  encryptedBackupPhrase: null,
-  identityAccount: {
+  accountCreated: false, // persist
+  promptedForEmail: false, // persist
+  encryptedBackupPhrase: null, // persist
+  identityAccount: { 
     addresses: [],
     keypairs: []
   },
@@ -25,8 +25,8 @@ const initialState = {
       success: false
     }
   },
-  viewedRecoveryCode: false,
-  connectedStorageAtLeastOnce: false
+  viewedRecoveryCode: false, // persist
+  connectedStorageAtLeastOnce: false // persist
 }
 
 function AccountReducer(state = initialState, action) {

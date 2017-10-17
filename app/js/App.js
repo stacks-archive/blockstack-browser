@@ -10,10 +10,14 @@ import TrustLevelFooter from './components/TrustLevelFooter'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
 import { MAX_TRUST_LEVEL } from './utils/account-utils'
 import { SanityActions }    from './store/sanity'
+import { CURRENT_VERSION } from './store/reducers'
+
 
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('App.js')
+
+const BLOCKSTACK_STATE_VERSION_KEY = 'BLOCKSTACK_STATE_VERSION'
 
 function mapStateToProps(state) {
   return {
@@ -34,7 +38,7 @@ function mapDispatchToProps(dispatch) {
     AccountActions,
     SanityActions,
     SettingsActions,
-    IdentityActions,
+    IdentityActions
   ), dispatch)
 }
 
@@ -52,18 +56,37 @@ class App extends Component {
     isCoreRunning: PropTypes.func.isRequired,
     isCoreApiPasswordValid: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
-    coreAPIPassword: PropTypes.string
+    coreAPIPassword: PropTypes.string,
+    stateVersion: PropTypes.number,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props)
+    let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
+    
+    if (!existingVersion) {
+      logger.debug(`No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`)
+      localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
+      existingVersion = CURRENT_VERSION
+    }
+
+    logger.debug(`EXISTING_VERSION: ${existingVersion}; CURRENT_VERSION:
+      ${CURRENT_VERSION}`)
+
+    let needToUpdate = false
+    if (existingVersion < CURRENT_VERSION) {
+      logger.debug('We need to update state. Need to check if on-boarding is open.')
+      needToUpdate = true
+    }
 
     this.state = {
       accountCreated: !!this.props.encryptedBackupPhrase,
       storageConnected: !!this.props.api.storageConnected,
       coreConnected: !!this.props.api.coreAPIPassword,
       password: '',
-      currentPath: ''
+      currentPath: '',
+      needToUpdate
     }
 
     this.closeModal = this.closeModal.bind(this)
@@ -162,14 +185,16 @@ class App extends Component {
           storageConnected={this.state.storageConnected}
           coreConnected={this.state.coreConnected}
           closeModal={this.closeModal}
+          needToUpdate={this.state.needToUpdate}
+          router={this.props.router}
         />
         <div className="wrapper footer-padding">
           {this.props.children}
         </div>
         {shouldShowTrustLevelFooter &&
-          <TrustLevelFooter 
-            trustLevel={trustLevel} 
-            maxTrustLevel={MAX_TRUST_LEVEL} 
+          <TrustLevelFooter
+            trustLevel={trustLevel}
+            maxTrustLevel={MAX_TRUST_LEVEL}
             link={editProfileLink}
           />
         }
