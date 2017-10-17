@@ -62,7 +62,9 @@ class WelcomeModal extends Component {
     identityAddresses: PropTypes.array,
     createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
     setDefaultIdentity: PropTypes.func.isRequired,
-    connectedStorageAtLeastOnce: PropTypes.bool.isRequired
+    connectedStorageAtLeastOnce: PropTypes.bool.isRequired,
+    needToUpdate: PropTypes.bool.isRequired,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -96,7 +98,8 @@ class WelcomeModal extends Component {
       password: null,
       identityKeyPhrase: null,
       alert: null,
-      restored: false
+      restored: false,
+      needToUpdate: this.props.needToUpdate
     }
 
     this.showLandingView = this.showLandingView.bind(this)
@@ -109,6 +112,12 @@ class WelcomeModal extends Component {
     this.restoreAccount = this.restoreAccount.bind(this)
     this.updateAlert = this.updateAlert.bind(this)
     this.setPage = this.setPage.bind(this)
+    this.isOpen = this.isOpen.bind(this)
+
+    if (!this.isOpen() && this.props.needToUpdate) {
+      logger.debug('On-boarding is not open & we need to update state...')
+      props.router.push('/update')
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -291,11 +300,14 @@ class WelcomeModal extends Component {
     })
   }
 
-  render() {
-    const isOpen = !this.state.accountCreated ||
+  isOpen() {
+    return !this.state.accountCreated ||
       !this.state.coreConnected || !this.props.promptedForEmail ||
       this.state.needToOnboardStorage
+  }
 
+  render() {
+    const isOpen = this.isOpen()
 
     const needToPair = !this.state.coreConnected
 

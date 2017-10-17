@@ -13,10 +13,18 @@ import { DELETE_ACCOUNT } from '../account/store/account/types'
 // ]
 
 export const UPDATE_STATE = 'UPDATE_STATE'
+export const INIT_STATE_VERSION = 'INIT_STATE_VERSION'
 
 export function updateState() {
   return {
     type: UPDATE_STATE
+  }
+}
+
+export function initializeStateVersion() {
+  console.log('initializeStateVersion')
+  return {
+    type: INIT_STATE_VERSION
   }
 }
 /**
@@ -25,23 +33,30 @@ export function updateState() {
  * and other state is regenerated.
  * @type {number}
  */
-const CURRENT_VERSION: number = 1
+export const CURRENT_VERSION: number = 8
 
-const versionInitialState = {
-  number: CURRENT_VERSION
-}
-
-function VersionReducer(state = versionInitialState, action) {
-  return state
-}
+//
+// function VersionReducer(state = {}, action) {
+//   console.log(action)
+//   let newState = Object.assign({}, state)
+//   if (action.type === INIT_STATE_VERSION) {
+//     console.log(`trueeeee ${state.number}`)
+//     if (!state.number) {
+//       console.log('no number!!')
+//       newState = Object.assign({}, state, {
+//         number: parseInt(`${CURRENT_VERSION}`)
+//       })
+//     }
+//   }
+//   return newState
+// }
 
 const AppReducer = combineReducers({
   account: AccountReducer,
   auth: AuthReducer,
   profiles: ProfilesReducer,
   sanity: SanityReducer,
-  settings: SettingsReducer,
-  version: VersionReducer
+  settings: SettingsReducer
 })
 
 const RootReducer = (state: any, action: any) => {
