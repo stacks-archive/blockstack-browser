@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
-import ReactTooltip from 'react-tooltip'
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
@@ -139,12 +138,13 @@ class ViewProfilePage extends Component {
 
     return (
       <div>
+
         {isLocal &&
           <SecondaryNavBar
             leftButtonTitle="Edit"
             leftButtonLink={`/profiles/${domainName}/edit`}
             rightButtonTitle="More"
-            rightButtonLink="/profiles/i/all"
+            rightButtonLink="/profiles/i/all" 
           />
         }
         {person !== null ?
@@ -163,17 +163,6 @@ class ViewProfilePage extends Component {
                 onClick={this.closePhotoModal}
               />
             </Modal>
-            <ReactTooltip
-              place="top" type="dark"
-              effect="solid" id="domainName"
-              className="text-center"
-            >
-              <div>This is your owner address.</div>
-              <div className="text-secondary">You can switch to a more
-                meaningful name by adding an username.
-              </div>
-            </ReactTooltip>
-
             <div className="container-fluid m-t-50">
               <div className="row">
                 <div className="col-12">
@@ -196,33 +185,10 @@ class ViewProfilePage extends Component {
                     <h1 className="pro-card-name text-center">{person.name()}</h1>
                     <div className="pro-card-domain-name m-b-10 text-center text-secondary">
                       {domainName}
-                      {(isLocal && !this.hasUsername()) &&
-                        <span data-tip data-for="domainName">(?)</span>}
-                    </div>
-                    <div className="m-b-20 text-center">
-                      {isLocal && !this.hasUsername() ?
-                        <Link
-                          to={`/profiles/i/add-username/${domainName}/search`}
-                        >
-                         Add a username
-                        </Link>
-                        :
-                        null
-                      }
                     </div>
                     <div className="pro-card-body text-center">
                       {person.description()}
                     </div>
-                    {person.address() ?
-                      <div className="pro-card-body text-center text-secondary">
-                      {person.address()}
-                      </div>
-                    : null}
-                    {person.birthDate() ?
-                      <div className="pro-card-body text-center">
-                      {person.birthDate()}
-                      </div>
-                    : null}
                   </div>
 
                   <div className="text-center">
@@ -251,57 +217,6 @@ class ViewProfilePage extends Component {
               </div>
             </div>
 
-            <div className="container-fluid">
-              {isLocal ?
-                (<div className="row">
-                  {this.hasUsername() &&
-                    (<div className="col text-center">
-                      <Link
-                        to={`/profiles/${domainName}/zone-file`}
-                        className="btn btn-link"
-                      >
-                        Advanced
-                      </Link>
-                    </div>
-                  )}
-                  <div className="col text-center">
-                    {!this.hasUsername() ?
-                      (<button
-                        className="btn btn-link"
-                        disabled
-                        title="Add a username to view publicly."
-                      >
-                        View Publicly
-                      </button>
-                      ) : (
-                      <Link
-                        to={`/profiles/${domainName}`}
-                        className="btn btn-link"
-                      >
-                      View Publicly
-                      </Link>
-                      )}
-                  </div>
-                  <div className="col text-center">
-                    <button
-                      className="btn btn-link" onClick={this.openPasswordPrompt}
-                    >
-                      + Create
-                    </button>
-                  </div>
-                </div>
-                ) : (
-                <div className="row">
-                  <div className="col text-center">
-                    <button className="btn btn-link">
-                      Add Friend
-                    </button>
-                  </div>
-                </div>
-                )
-              }
-            </div>
-
             <div className="container-fluid p-0">
               <div className="row m-t-20 no-gutters">
                 <div className="col">
@@ -309,14 +224,21 @@ class ViewProfilePage extends Component {
                     <ul>
                       {accounts.map((account) => {
                         let verified = false
-                        for (let i = 0; i < verifications.length; i++) {
-                          const verification = verifications[i]
-                          if (verification.service === account.service &&
-                            verification.valid === true) {
-                            verified = true
-                            break
+                        let pending = false
+                        if (verifications.length > 0) {
+                          for (let i = 0; i < verifications.length; i++) {
+                            const verification = verifications[i]
+                            if (verification.service === account.service &&
+                              verification.valid === true) {
+                              verified = true
+                              pending = false
+                              break
+                            }
                           }
+                        } else {
+                          pending = true
                         }
+
                         if (account.service === 'pgp' || account.service === 'ssh'
                           || account.service === 'bitcoin' || account.service === 'ethereum') {
                           return (
@@ -337,6 +259,7 @@ class ViewProfilePage extends Component {
                               proofUrl={account.proofUrl}
                               listItem
                               verified={verified}
+                              pending={pending}
                             />
                           )
                         }

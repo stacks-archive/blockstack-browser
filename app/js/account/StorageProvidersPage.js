@@ -38,7 +38,7 @@ class StorageProvidersPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
-    localIdentities: PropTypes.object.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
     storageIsConnected: PropTypes.func.isRequired,
     connectedStorageAtLeastOnce: PropTypes.bool.isRequired,
@@ -64,7 +64,17 @@ class StorageProvidersPage extends Component {
     if (needToConnectDropbox) {
       const newApi = Object.assign({}, api, { dropboxAccessToken })
       this.props.updateApi(newApi)
-      setCoreStorageConfig(newApi)
+      const identityIndex = 0
+      const identity = this.props.localIdentities[identityIndex]
+      const identityAddress = identity.ownerAddress
+      const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
+      const profile = identity.profile
+
+      // This is okay selecting storage right now is only done during on-boarding
+      const firstDropboxUpload = true
+
+      setCoreStorageConfig(newApi, identityIndex, identityAddress,
+        profile, profileSigningKeypair, firstDropboxUpload)
       .then((indexUrl) => {
         logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
         // TODO add index URL to token file
@@ -76,6 +86,7 @@ class StorageProvidersPage extends Component {
       })
     }
     if (needToConnectGaiaHub) {
+      logger.debug('componentDidMount: trying to connect gaia hub...')
       this.connectSharedService()
     }
 
@@ -117,7 +128,13 @@ class StorageProvidersPage extends Component {
                                      { gaiaHubConfig,
                                        hostedDataLocation: BLOCKSTACK_INC })
         this.props.updateApi(newApi)
-        setCoreStorageConfig(newApi)
+        const identityIndex = 0
+        const identity = this.props.localIdentities[identityIndex]
+        const identityAddress = identity.ownerAddress
+        const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
+        const profile = identity.profile
+        setCoreStorageConfig(newApi, identityIndex, identityAddress,
+          profile, profileSigningKeypair)
         .then((indexUrl) => {
           logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
           // TODO add index URL to token file

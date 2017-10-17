@@ -5,6 +5,7 @@
 
 build/*
 gulp/*
+flow-typed/*
 
 tests/account/*
 tests/fixtures/*
@@ -30,14 +31,15 @@ app/js/utils/*
 
 app/js/profiles/store/*
 app/js/profiles/tabs/*
-app/js/profiles/AllProfiles*
-app/js/profiles/Default*
-app/js/profiles/E*
+app/js/profiles/Ex*
+!app/js/profiles/Default*
 app/js/profiles/Import*
 app/js/profiles/ProfilesApp*
 app/js/profiles/Reg*
 app/js/profiles/Search*
 !app/js/profiles/View
 app/js/profiles/components/*
+!app/js/profiles/components/Ident*
 !app/js/profiles/components/registration*
 !app/js/profiles/store/registration*
+!app/js/profiles/store/identity*

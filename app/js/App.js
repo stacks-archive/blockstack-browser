@@ -6,24 +6,30 @@ import { AccountActions } from './account/store/account'
 import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
 import WelcomeModal from './welcome/WelcomeModal'
+import TrustLevelFooter from './components/TrustLevelFooter'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
+import { MAX_TRUST_LEVEL } from './utils/account-utils'
 import { SanityActions }    from './store/sanity'
+import { CURRENT_VERSION } from './store/reducers'
+
 
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('App.js')
 
+const BLOCKSTACK_STATE_VERSION_KEY = 'BLOCKSTACK_STATE_VERSION'
+
 function mapStateToProps(state) {
   return {
+    localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
     api: state.settings.api,
     corePingUrl: state.settings.api.corePingUrl,
     coreApiRunning: state.sanity.coreApiRunning,
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword,
-    defaultIdentity: state.profiles.identity.default,
-    localIdentities: state.profiles.identity.localIdentities
+    coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
 
@@ -32,12 +38,14 @@ function mapDispatchToProps(dispatch) {
     AccountActions,
     SanityActions,
     SettingsActions,
-    IdentityActions,
+    IdentityActions
   ), dispatch)
 }
 
 class App extends Component {
   static propTypes = {
+    localIdentities: PropTypes.array.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
     children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     api: PropTypes.object.isRequired,
@@ -49,24 +57,42 @@ class App extends Component {
     isCoreApiPasswordValid: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string,
-    localIdentities: PropTypes.object,
-    defaultIdentity: PropTypes.string,
-    setDefaultIdentity: PropTypes.func.isRequired
+    stateVersion: PropTypes.number,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props)
+    let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
+    
+    if (!existingVersion) {
+      logger.debug(`No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`)
+      localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
+      existingVersion = CURRENT_VERSION
+    }
+
+    logger.debug(`EXISTING_VERSION: ${existingVersion}; CURRENT_VERSION:
+      ${CURRENT_VERSION}`)
+
+    let needToUpdate = false
+    if (existingVersion < CURRENT_VERSION) {
+      logger.debug('We need to update state. Need to check if on-boarding is open.')
+      needToUpdate = true
+    }
 
     this.state = {
       accountCreated: !!this.props.encryptedBackupPhrase,
       storageConnected: !!this.props.api.storageConnected,
       coreConnected: !!this.props.api.coreAPIPassword,
       password: '',
-      currentPath: ''
+      currentPath: '',
+      needToUpdate
     }
 
     this.closeModal = this.closeModal.bind(this)
     this.performSanityChecks = this.performSanityChecks.bind(this)
+    this.getTrustLevel = this.getTrustLevel.bind(this)
+    this.shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter.bind(this)
   }
 
   componentWillMount() {
@@ -111,21 +137,29 @@ class App extends Component {
       coreConnected: !!nextProps.api.coreAPIPassword,
       currentPath: nextPath
     })
+  }
 
-    // Only for backward-compatibility purpose.
-    // Since we added a `default` field in state.profiles.identity, if the user
-    // already had localIdentities but doesn't have a default one, we put the
-    // default as his 1st one.
-    // We also reset the default to the 1st one if it no longer exists. This
-    // can happen during account restoration when the user already has a username
-    const localIdentities = Object.keys(nextProps.localIdentities)
-
-    if (localIdentities.length &&
-      (!nextProps.defaultIdentity || localIdentities.indexOf(nextProps.defaultIdentity) < 0)) {
-      nextProps.setDefaultIdentity(nextProps.localIdentities[localIdentities[0]].domainName)
+  getTrustLevel() {
+    const identityIndex = this.props.defaultIdentity
+    const identity = this.props.localIdentities[identityIndex]
+    if (!identity) {
+      return 0
+    } else {
+      return identity.trustLevel
     }
   }
 
+  shouldShowTrustLevelFooter() {
+    const trustLevel = this.getTrustLevel()
+    const localIdentities = this.props.localIdentities
+    if (localIdentities.length === 0) {
+      return false
+    } else if (trustLevel < MAX_TRUST_LEVEL) {
+      return true
+    } else {
+      return false
+    }
+  }
 
   closeModal() {
     this.setState({ modalIsOpen: false })
@@ -139,6 +173,11 @@ class App extends Component {
   }
 
   render() {
+    const defaultIdentityName = this.props.defaultIdentity
+    const shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter()
+    const trustLevel = this.getTrustLevel()
+    const editProfileLink = `/profiles/${defaultIdentityName}/edit`
+
     return (
       <div className="body-main">
         <WelcomeModal
@@ -146,8 +185,19 @@ class App extends Component {
           storageConnected={this.state.storageConnected}
           coreConnected={this.state.coreConnected}
           closeModal={this.closeModal}
+          needToUpdate={this.state.needToUpdate}
+          router={this.props.router}
         />
-        {this.props.children}
+        <div className="wrapper footer-padding">
+          {this.props.children}
+        </div>
+        {shouldShowTrustLevelFooter &&
+          <TrustLevelFooter
+            trustLevel={trustLevel}
+            maxTrustLevel={MAX_TRUST_LEVEL}
+            link={editProfileLink}
+          />
+        }
       </div>
     )
   }

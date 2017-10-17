@@ -20,6 +20,7 @@ function hashCode(string) {
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
+export const MAX_TRUST_LEVEL = 3
 
 export class AppNode {
   constructor(hdNode, appDomain) {
@@ -307,6 +308,21 @@ export function getWebAccountTypes(api) {
     }
   }
   return webAccountTypes
+}
+
+export function calculateTrustLevel(verifications) {
+  if (!verifications || verifications.length < 1) {
+    return 0
+  }
+
+  let trustLevel = 0
+  verifications.forEach(verification => {
+    if (verification.valid && trustLevel < MAX_TRUST_LEVEL) {
+      trustLevel++
+    }
+  })
+
+  return trustLevel
 }
 
 export function findAddressIndex(address, identityAddresses) {

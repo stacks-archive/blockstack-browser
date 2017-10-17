@@ -18,7 +18,6 @@ function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
     defaultIdentity: state.profiles.identity.default,
-    namesOwned: state.profiles.identity.namesOwned,
     createProfileError: state.profiles.identity.createProfileError,
     identityAddresses: state.account.identityAccount.addresses,
     nextUnusedAddressIndex: state.account.identityAccount.addressIndex,
@@ -31,18 +30,17 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
 }
 
-class IdentityPage extends Component {
+class AllProfilesPage extends Component {
   static propTypes = {
-    localIdentities: PropTypes.object.isRequired,
-    defaultIdentity: PropTypes.string.isRequired,
+    localIdentities: PropTypes.array.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
     createNewProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
-    namesOwned: PropTypes.array.isRequired,
     api: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
-    setDefaultIdentity: PropTypes.string.isRequired,
+    setDefaultIdentity: PropTypes.func.isRequired,
     resetCreateNewProfileError: PropTypes.func.isRequired,
     createProfileError: PropTypes.string,
     router: PropTypes.object.isRequired
@@ -58,8 +56,6 @@ class IdentityPage extends Component {
       password: ''
     }
 
-    console.log(props)
-
     this.onValueChange = this.onValueChange.bind(this)
     this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
     this.createNewProfile = this.createNewProfile.bind(this)
@@ -72,10 +68,7 @@ class IdentityPage extends Component {
     logger.trace('componentWillMount')
     this.props.refreshIdentities(
       this.props.api,
-      this.props.identityAddresses,
-      this.props.localIdentities,
-      this.props.namesOwned
-    )
+      this.props.identityAddresses)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -107,8 +100,8 @@ class IdentityPage extends Component {
     })
   }
 
-  setDefaultIdentity(domainName) {
-    this.props.setDefaultIdentity(domainName)
+  setDefaultIdentity(index) {
+    this.props.setDefaultIdentity(index)
   }
 
   createNewProfile(event) {
@@ -207,36 +200,31 @@ class IdentityPage extends Component {
         <div className="m-t-40">
           <div className="container-fluid">
             <ul className="card-wrapper">
-                  {Object.keys(this.state.localIdentities).map((domainName) => {
-                    const identity = this.state.localIdentities[domainName]
+                  {this.state.localIdentities.map((identity, index) => {
                     const person = new Person(identity.profile)
 
-                    if (identity.ownerAddress === domainName) {
-                      identity.canAddUsername = true
-                    } else {
+                    if (identity.username) {
                       identity.canAddUsername = false
-                    }
-
-                    if (identity.domainName) {
-                      return (
-                        <IdentityItem
-                          key={identity.domainName}
-                          label={identity.domainName}
-                          pending={!identity.registered}
-                          avatarUrl={person.avatarUrl() || ''}
-                          onClick={(event) => {
-                            event.preventDefault()
-                            this.setDefaultIdentity(identity.domainName)
-                          }}
-                          ownerAddress={identity.ownerAddress}
-                          canAddUsername={identity.canAddUsername}
-                          isDefault={identity.domainName === this.props.defaultIdentity}
-                          router={this.props.router}
-                        />
-                      )
                     } else {
-                      return null
+                      identity.canAddUsername = true
                     }
+                    return (
+                      <IdentityItem
+                        key={index}
+                        index={index}
+                        username={identity.username}
+                        pending={identity.usernamePending}
+                        avatarUrl={person.avatarUrl() || ''}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          this.setDefaultIdentity(index)
+                        }}
+                        ownerAddress={identity.ownerAddress}
+                        canAddUsername={identity.canAddUsername}
+                        isDefault={index === this.props.defaultIdentity}
+                        router={this.props.router}
+                      />
+                    )
                   })}
             </ul>
           </div>
@@ -257,4 +245,4 @@ class IdentityPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(IdentityPage)
+export default connect(mapStateToProps, mapDispatchToProps)(AllProfilesPage)

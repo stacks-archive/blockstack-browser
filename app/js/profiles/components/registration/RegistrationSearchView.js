@@ -51,7 +51,7 @@ class RegistrationSearchView extends Component {
         }
       }) // ,
       // this.props.api.subdomains)
-
+    console.log(this.props.api)
     const nameSuffixes = Object.keys(availableDomains)
 
     this.state = {
@@ -148,7 +148,7 @@ class RegistrationSearchView extends Component {
   render() {
     const searchingUsername = this.state.searchingUsername
     const availableNames = this.props.availability.names
-    const ownerAddress = this.props.routeParams.index
+    const index = parseInt(this.props.routeParams.index, 10)
     const showSearchResults = this.state.showSearchResults
     return (
       <div style={{ textAlign: 'center' }}>
@@ -166,7 +166,7 @@ class RegistrationSearchView extends Component {
             searchingUsername={searchingUsername}
             nameSuffixes={this.state.nameSuffixes}
             availableNames={availableNames}
-            ownerAddress={ownerAddress}
+            index={index}
           />
         }
       </div>

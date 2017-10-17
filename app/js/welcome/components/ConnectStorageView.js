@@ -34,8 +34,8 @@ class ConnectStorageView extends Component {
             <img
               role="presentation"
               src="/images/blockstack-logo-vertical.svg"
-              className="m-b-20"
-              style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }}
+              className="m-b-20 welcome-modal-icon"
+              style={{ height: '110px' }}
             />
             <div className="m-t-40 modal-body">
               <button
@@ -64,6 +64,8 @@ class ConnectStorageView extends Component {
               <button
                 className="btn btn-primary btn-block m-b-20"
                 onClick={this.props.connectDropbox}
+                disabled
+                title="See Github issue #908"
               >
                 Connect Dropbox
               </button>

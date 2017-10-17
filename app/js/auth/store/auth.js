@@ -6,6 +6,7 @@ const logger = log4js.getLogger('auth/store/auth.js')
 const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING'
 const APP_MANIFEST_LOADING_ERROR = 'APP_MANIFEST_LOADING_ERROR'
 const APP_MANIFEST_LOADED = 'APP_MANIFEST_LOADED'
+const APP_META_DATA_LOADED = 'APP_META_DATA_LOADED'
 const UPDATE_CORE_SESSION = 'UPDATE_CORE_SESSION'
 const LOGGED_IN_TO_APP = 'LOGGED_IN_TO_APP'
 
@@ -43,6 +44,14 @@ function loggedIntoApp() {
   }
 }
 
+function appMetaDataLoaded(app, appMetaData) {
+  return {
+    type: APP_META_DATA_LOADED,
+    appMetaData
+  }
+}
+
+
 function clearSessionToken(appDomain) {
   return dispatch => {
     dispatch(updateCoreSessionToken(appDomain, null))
@@ -71,11 +80,37 @@ function getCoreSessionToken(coreHost, corePort, coreApiPassword,
   }
 }
 
-function loadAppManifest(authRequest) {
+function getAppMetaData(app, address) {
+  return dispatch => {
+    const requestHeaders = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+    const options = {
+      method: 'GET',
+      headers: requestHeaders
+    }
+    const params = `app=${encodeURIComponent(app)}&address=${encodeURIComponent(address)}`
+    const appMetaDataUrl = `https://blockstack-portal-emailer.appartisan.com/app_meta_data?${params}`
+    return fetch(appMetaDataUrl, options)
+    .then((response) => {
+      response.json().then(data => {
+        dispatch(appMetaDataLoaded(app, data))
+      })
+    }, () => {
+    }).catch(error => {
+      logger.error('getAppMetaData: error', error)
+    })
+  }
+}
+
+
+function loadAppManifest(authRequest, ownerAddress) {
   return dispatch => {
     dispatch(appManifestLoading())
     fetchAppManifest(authRequest).then(appManifest => {
       dispatch(appManifestLoaded(appManifest))
+      dispatch(getAppMetaData(appManifest.name, ownerAddress))
     }).catch((e) => {
       logger.error('loadAppManifest: error', e)
       dispatch(appManifestLoadingError(e))
@@ -110,6 +145,10 @@ export function AuthReducer(state = initialState, action) {
         appManifestLoading: false,
         appManifestLoadingError: action.error
       })
+    case APP_META_DATA_LOADED:
+      return Object.assign({}, state, {
+        appMetaData: action.appMetaData
+      })
     case UPDATE_CORE_SESSION:
       return Object.assign({}, state, {
         coreSessionTokens: Object.assign({}, state.coreSessionTokens, {
@@ -129,5 +168,6 @@ export const AuthActions = {
   clearSessionToken,
   getCoreSessionToken,
   loadAppManifest,
+  getAppMetaData,
   loginToApp
 }

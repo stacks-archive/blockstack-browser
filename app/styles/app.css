@@ -5,11 +5,10 @@
 .body-landing{width:100%;height:100%;}
 .body-inner{width:100%;height:100%;}
 .bkg-light{background-color:#FAFAFA;}
-.wrapper{width:100%;}
 .no-padding{padding-right:0;padding-left:0;}
 .bookmarks-temp{padding:0;border-radius:4px;}
-
 .col-12{margin-right:0;}
+.footer-padding{padding-bottom:100px};
 
 /* ID card */
 .idcard{position:relative;border:.0625rem solid rgba(229,229,229,1);border-radius:.25rem;}
@@ -35,37 +34,50 @@ div.profile-accounts > ul > li > a > span.app-account-service {margin-left:10px;
 div.profile-accounts > ul > li.verified > a > span.app-account-service {color:#95CAFF;}
 div.profile-accounts > ul > li.pending > a > span.app-account-service {color:#C7C7C7;}
 
+/* Social accounts edit */
 div.edit-profile-accounts .account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;transition:all 200ms ease-in-out}
-div.edit-profile-accounts .account.verified, div.edit-profile-accounts .account.active {color:#fff;background-color:#2c96ff;}
+div.edit-profile-accounts .account.verified {color:#fff;background-color:#2c96ff;}
+div.edit-profile-accounts .account.verified.active {color:#fff;background-color:#2c96ff;}
+div.edit-profile-accounts .account.active {color:#494F56;background-color:#fff;}
 div.edit-profile-accounts .account.pending {color:#AEAEAE;background-color:#fff;}
 div.edit-profile-accounts .account.collapsed {padding:15px 15px;}
 div.edit-profile-accounts .account {padding:15px 15px 30px 15px;}
 div.edit-profile-accounts .account > span.app-account-identifier {font-weight:600}
 div.edit-profile-accounts .account > span.app-account-service {color:#95CAFF;margin-left:10px;}
 div.edit-profile-accounts .account.verified > span.app-account-service {color:#95CAFF;}
+div.edit-profile-accounts .account.verified.active > span.app-account-service {color:#95CAFF;}
+div.edit-profile-accounts .account.active > span.app-account-service {color:#494F56;}
 div.edit-profile-accounts .account.pending > span.app-account-service {color:#AEAEAE;}
 div.edit-profile-accounts .account .form-group {margin-top:20px;transition:all 200ms ease-in-out}
 div.edit-profile-accounts .account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #4B4B4B;}
-div.edit-profile-accounts .account.verified .form-group input.form-control, div.edit-profile-accounts .account.active .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
+div.edit-profile-accounts .account.verified .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
+div.edit-profile-accounts .account.verified.active .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
+div.edit-profile-accounts .account.active .form-group input.form-control {color:#494F56;background-color:#FAFAFA;border:1px solid #FAFAFA;caret-color: #4B4B4B;}
 div.edit-profile-accounts .account.pending .form-group input.form-control {color:#4B4B4B;background-color:#FAFAFA;border:1px solid #FAFAFA;}
 div.edit-profile-accounts .account.placeholder.collapsed {color:#C7C7C7;background-color:transparent;}
 div.edit-profile-accounts .account.placeholder.collapsed > span.app-account-service {color:#C7C7C7;}
 div.edit-profile-accounts .account.placeholder > span.app-account-service {color:#4B4B4B;}
 div.edit-profile-accounts .account.placeholder {color:#4B4B4B;background-color:#fff;}
-div.edit-profile-accounts .account.placeholder .form-group input.form-control {color:#fff;background-color:#FAFAFA;border:1px solid #FAFAFA;}
+div.edit-profile-accounts .account.placeholder .form-group input.form-control {color:#494F56;background-color:#FAFAFA;border:1px solid #FAFAFA;caret-color: #4B4B4B;}
+
+/* Social account transitions used by ReactCSSTransitionGroup */
 .account-enter {opacity: 0.01;}
-.account-enter.account-enter-active {opacity: 1;transition: all 400ms ease-in}
+.account-enter.account-enter-active {opacity: 1;transition: all 200ms ease-in-out}
 .account-leave {opacity: 1;}
-.account-leave.account-leave-active {opacity: 0.01;transition: all 200ms ease-in}
+.account-leave.account-leave-active {opacity: 0.01;transition: all 200ms ease-in-out}
 
 .verification-instructions-container {cursor:default;}
-.verification-instructions {padding:25px 20px;border:0px solid rgba(255,255,255,0.26);background-color:rgba(255,255,255,0.26);border-radius:6px}
+.verification-instructions {color:#494F56;padding:25px 20px;border:0px solid rgba(255,255,255,0.26);background-color:#FAFAFA;border-radius:6px}
 .verification-instructions-heading {padding-left:15px;margin-top:1rem;margin-bottom:0.7rem;font-weight:600;}
-.verification-quote {padding:20px 60px 20px 20px;margin-bottom:1rem;background-color:#2c96ff;border-radius:6px}
+.verification-quote {color:#494F56;padding:20px 60px 20px 20px;margin-bottom:1rem;background-color:#fff;border-radius:6px}
 .verification-copy {padding:0;position:absolute;right:45px;margin-top:-30px;}
-.verification-copy-button {width:40px;height:40px;color:#fff;padding:0;border:0;}
 .form-control.verification-input {color:#000;background-color:rgba(0,0,0,0.4);border:1px solid rgba(0,0,0,0.4);}
 .verification-input::-webkit-input-placeholder {color:#fff;}
+.badge-verification {margin-right:8px;padding:5px 10px;}
+
+/* Trust level footer */
+.trust-level-footer-container {position:fixed;left:0;bottom:0;width:100%;background-color:#2e2e2e;color:#fff;padding:25px;font-size:0.85rem;font-weight:700;cursor:pointer;}
+.trust-level-footer-container a{color:#fff;text-decoration: none}
 
 /*div.profile-accounts > ul > li > a:hover,div.profile-accounts > ul > li > button:hover{text-decoration:none;color:#fff;border-radius:4px;background-color:#2c96ff;}*/
 .profile-foot{position:relative;display:block;margin-left:15px;padding-top:50px;color:#949494;}
@@ -345,11 +357,7 @@ html,body{min-width:768px;height:100%;background-color:#fff;}
 #app{height:100%;width:100%;}
 body,html,#app,.app-landing,.body-main{min-height:100%;min-width:inherit;color:#484848;}
 body{font-family:'Lato',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased;}
-.app-wrap-profiles{width:100%;min-height:100%;background:#fafafa;background:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);}
-.app-wrap-wallet{width:100%;min-height:100%;background:#FAFAFA;}
-.site-wrapper{display:flex;flex-direction:column;min-height:100%;padding:35px;}
-.home-screen-wrap{width:100%;min-height:100%;background:#FAFAFA;}
-.home-screen{width:100%;min-height:100%;background:#FAFAFA;}
+.wrapper{width:100%;min-height:100%;background:#fafafa;}
 
 
 /* 5. Links */
@@ -379,6 +387,8 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-storage:hover{background-color:#0668BF;}
 .btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
 .btn-verify{font-size:0.65rem;padding:0.375rem 2.125rem;line-height:2rem;color:#fff;background-color:#2c96ff;border:1px solid #fff;}
+.btn-thin{line-height:1.0rem;padding:0px;}
+.btn-clipboard {width:40px;height:40px;color:#494F56;padding:0;border:0;}
 
 /* 13. Forms */
 /* Default forms are "Light forms" for now GL Sep 17, 2017 */
@@ -418,9 +428,13 @@ a.card:hover{text-decoration:none;}
 div.pro-avatar img{max-width:58px;}
 .pro-card-name{font-size:1.125rem;font-weight:700;}
 .pro-card-domain-name{font-size:1rem;}
+.pro-card-trust-level-badge {color:#fff;background-color:#2e2e2e;padding:6px 20px;border-radius:20px;font-weight:700}
+.pro-card-trust-level-badge .fa {margin:0;}
+.pro-card-trust-level {margin-left:10px;margin-right:10px;}
 .pro-card-body{display:block;margin-bottom:15px;font-size:0.9rem;}
 .pro-container{padding-top:1.5rem;}
 .list-card{margin-bottom:0;list-style:none;padding:0;color:#19191A;text-decoration:none;}
+.card-text{padding:20px;}
 /* All-IDs */
 .avatar-sm{margin-right:15px;}
 .card-title{margin-bottom:0;font-size:0.875rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding-right:15px;}
@@ -447,46 +461,6 @@ div.pro-avatar img{max-width:58px;}
 .img-cover {object-fit: cover;}
 div.avatar-sm img{padding:0;width:48px;height:48px;border:1px solid #e1e1e1;}
 div.avatar-md img{padding:0;width:72px;height:72px;border:1px solid #e1e1e1;}
-
-
-/* 36. Status Bars */
-.statusBar-link,.statusBar-link:hover,.statusBar-link:focus,.statusBar-link:active{display:block;padding:2px 12px;color:#e6e6e6;text-align:center;margin-left:8px;margin-right:8px;}
-.statusBar-link:hover{background-color:rgba(148,148,148,0.1);-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;}
-.status-bar{width:100%;height:34px;display:inline-block;font-family:'Lato',sans-serif;font-size:13px;font-weight:400;padding:4px 30px;}
-.status-bar a,.status-bar a:hover,.status-bar a:focus,.status-bar a:active{text-decoration:none;}
-.status-bar-icon{vertical-align:middle;font-size:19px!important;padding-right:8px;margin-top:-2px!important;}
-/* --- Status Bars variants --- */
-.status-bar-light{background-color:#fff;}
-.status-bar-light > a{color:#080809;}
-.status-bar-dark{background-color:#2A2D31;}
-.status-bar-dark > a{color:#e6e6e6;}
-.status-bar-gray{background-color:#F0F0F0;border-bottom:1px solid #E6E6E6;}
-.status-bar-gray > a{color:#080809;}
-.status-bar-transparent-light,.status-bar-transparent-light > a{background-color:rgba(0,0,0,0);color:#e6e6e6;}
-.status-bar-transparent-dark,.status-bar-transparent-dark > a{background-color:rgba(255,255,255,0);color:#080809;}
-.status-inline{display:inline-block;}
-.status-completion{margin-right:15px;vertical-align:top;margin-top:-1px;}
-.status-profile-img{width:22px;height:22px;vertical-align:top;}
-.status-complete-wrap{line-height:0px;}
-.status-complete-object{background-color:red;width:19px;height:19px;font-family:'Source Code Pro',monospace;padding-top:10px;padding-left:6px;color:#fff;}
-.status-complete-dot{padding:10px;vertical-align:middle;}
-div.status-inline.status-balance > p{padding:7px 10px;vertical-align:middle;}
-/* --- Status bar tooltip arrow --- */
-.popover.bottom>.arrow{left:50%;margin-left:-11px;border-top-width:0;border-bottom-color:#fff;top:-11px;}
-.popover>.arrow{border-width:11px;}
-.popover>.arrow,.popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:rgba(0,0,0,0);border-style:solid;}
-*,:after,:before{box-sizing:border-box;}
-div{display:block;}
-.popover{position:absolute;top:0;left:0;z-index:1060;display:none;max-width:276px;padding:1px;letter-spacing:normal;line-break:auto;line-height:1.42857143;text-align:left;text-align:start;text-decoration:none;text-shadow:none;text-transform:none;white-space:normal;word-break:normal;word-spacing:normal;word-wrap:normal;font-size:14px;background-color:#fff;background-clip:padding-box;border:1px solid #fff;border-radius:6px;box-shadow:0 5px 30px rgba(0,0,0,.2);}
-*,:after,:before{box-sizing:border-box;}
-.popover.bottom>.arrow:after{content:" ";top:1px;margin-left:-10px;border-top-width:0;border-bottom-color:#fff;}
-.popover>.arrow:after{border-width:10px;content:"";}
-.popover>.arrow,.popover>.arrow:after{position:absolute;display:block;width:0;height:0;border-color:rgba(0,0,0,0);border-style:solid;}
-*,:after,:before{box-sizing:border-box;}
-.popover-content{padding:25px;}
-.action-item{padding-bottom:10px;margin-top:5px;margin-bottom:15px;font-family:'Lato',sans-serif;}
-.tooltip-link{display:block;padding-top:8px;color:#2C96FF;}
-.tooltip-link:hover,.tooltip-link:focus{display:block;padding-top:8px;color:#2C96FF;}
 
 
 /* 37. Misc */

@@ -54,29 +54,29 @@ class WelcomeModal extends Component {
     closeModal: PropTypes.func.isRequired,
     updateApi: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
-    emailKeychainBackup: PropTypes.func.isRequired,
     promptedForEmail: PropTypes.bool.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     initializeWallet: PropTypes.func.isRequired,
     emailNotifications: PropTypes.func.isRequired,
     skipEmailBackup: PropTypes.func.isRequired,
     identityAddresses: PropTypes.array,
-    createNewIdentityFromDomain: PropTypes.func.isRequired,
+    createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
     setDefaultIdentity: PropTypes.func.isRequired,
-    connectedStorageAtLeastOnce: PropTypes.bool.isRequired
+    connectedStorageAtLeastOnce: PropTypes.bool.isRequired,
+    needToUpdate: PropTypes.bool.isRequired,
+    router: PropTypes.object.isRequired
   }
 
   constructor(props) {
     super(props)
-
     const onboardingExceptStorageComplete = this.props.accountCreated &&
       this.props.coreConnected && this.props.promptedForEmail
 
 
     const storageConnectedDuringOnboarding = this.props.connectedStorageAtLeastOnce
     const needToOnboardStorage = !storageConnectedDuringOnboarding && !this.props.storageConnected
-
-    if (this.props.accountCreated && !onboardingExceptStorageComplete) {
+    const updateInProgress = window.location.pathname === '/update'
+    if (!updateInProgress && this.props.accountCreated && !onboardingExceptStorageComplete) {
       logger.error('User has refreshed browser mid onboarding.')
     }
 
@@ -97,7 +97,9 @@ class WelcomeModal extends Component {
       password: null,
       identityKeyPhrase: null,
       alert: null,
-      restored: false
+      restored: false,
+      needToUpdate: this.props.needToUpdate,
+      updateInProgress
     }
 
     this.showLandingView = this.showLandingView.bind(this)
@@ -110,6 +112,12 @@ class WelcomeModal extends Component {
     this.restoreAccount = this.restoreAccount.bind(this)
     this.updateAlert = this.updateAlert.bind(this)
     this.setPage = this.setPage.bind(this)
+    this.isOpen = this.isOpen.bind(this)
+
+    if (!this.isOpen() && this.props.needToUpdate) {
+      logger.debug('On-boarding is not open & we need to update state...')
+      props.router.push('/update')
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -132,21 +140,23 @@ class WelcomeModal extends Component {
     if (onboardingExceptStorageComplete && needToOnboardStorage) {
       this.setPage(STORAGE_PAGE_VIEW)
     }
-
-    if (nextProps.accountCreated && !this.props.accountCreated) {
+    const updateInProgress = window.location.pathname === '/update'
+    this.setState({ updateInProgress })
+    if (!updateInProgress && nextProps.accountCreated && !this.props.accountCreated) {
       logger.debug('account created - checking for valid password in component state')
       decrypt(new Buffer(this.props.encryptedBackupPhrase, 'hex'), this.state.password)
       .then((identityKeyPhraseBuffer) => {
         logger.debug('Backup phrase successfully decrypted. Storing identity key.')
         this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
 
-        const ownerAddress = this.props.identityAddresses[0]
+        const firstIdentityIndex = 0
+        const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
 
         // create first profile
-        this.props.createNewIdentityFromDomain(ownerAddress, ownerAddress)
+        this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
 
         // Set as default profile
-        this.props.setDefaultIdentity(ownerAddress)
+        this.props.setDefaultIdentity(firstIdentityIndex)
         if (this.state.restored) {
           this.setPage(EMAIL_VIEW)
         } else {
@@ -280,12 +290,6 @@ class WelcomeModal extends Component {
     this.showNextView()
   }
 
-  emailKeychainBackup(event) {
-    event.preventDefault()
-    this.props.emailKeychainBackup(this.state.email, this.props.encryptedBackupPhrase)
-    return false
-  }
-
   skipEmailBackup(event) {
     event.preventDefault()
     this.props.skipEmailBackup()
@@ -297,11 +301,15 @@ class WelcomeModal extends Component {
     })
   }
 
-  render() {
-    const isOpen = !this.state.accountCreated ||
+  isOpen() {
+    const shouldBeOpen = !this.state.accountCreated ||
       !this.state.coreConnected || !this.props.promptedForEmail ||
       this.state.needToOnboardStorage
+    return shouldBeOpen && !this.state.updateInProgress
+  }
 
+  render() {
+    const isOpen = this.isOpen()
 
     const needToPair = !this.state.coreConnected
 

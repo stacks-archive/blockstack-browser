@@ -7,7 +7,7 @@ import { AvailabilityActions } from '../../store/availability'
 import { IdentityActions } from '../../store/identity'
 import { RegistrationActions } from '../../store/registration'
 import { hasNameBeenPreordered, isSubdomain } from '../../../utils/name-utils'
-import { decryptBitcoinPrivateKey, findAddressIndex } from '../../../utils'
+import { decryptBitcoinPrivateKey } from '../../../utils'
 import roundTo from 'round-to'
 import { QRCode } from 'react-qr-svg'
 import Alert from '../../../components/Alert'
@@ -48,7 +48,7 @@ class AddUsernameSelectPage extends Component {
     identityKeypairs: PropTypes.array.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     registration: PropTypes.object.isRequired,
-    localIdentities: PropTypes.object.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     balanceUrl: PropTypes.string.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
     addresses: PropTypes.array.isRequired,
@@ -59,13 +59,13 @@ class AddUsernameSelectPage extends Component {
 
   constructor(props) {
     super(props)
-    const ownerAddress = this.props.routeParams.index
+    const index = this.props.routeParams.index
     const name = this.props.routeParams.name
     const availableNames = this.props.availability.names
     const nameAvailabilityObject = availableNames[name]
     if (!nameAvailabilityObject) {
       logger.error(`componentDidMount: not sure if ${name} is available.`)
-      props.router.push(`/profiles/i/add-username/${ownerAddress}/search`)
+      props.router.push(`/profiles/i/add-username/${index}/search`)
     }
 
     const nameHasBeenPreordered = hasNameBeenPreordered(name, props.localIdentities)
@@ -97,7 +97,7 @@ class AddUsernameSelectPage extends Component {
       }, CHECK_FOR_PAYMENT_INTERVAL)
     }
     this.state = {
-      ownerAddress,
+      index,
       name,
       nameIsSubdomain,
       enoughMoney,
@@ -119,11 +119,11 @@ class AddUsernameSelectPage extends Component {
   componentWillReceiveProps(nextProps) {
     const registration = nextProps.registration
     const name = nextProps.routeParams.name
-    const address = nextProps.routeParams.index
+    const index = nextProps.routeParams.index
 
     if (this.state.registrationInProgress && registration.registrationSubmitted) {
       logger.debug('componentWillReceiveProps: registration submitted! redirecting...')
-      this.props.router.push(`/profiles/i/add-username/${address}/submitted/${name}`)
+      this.props.router.push(`/profiles/i/add-username/${index}/submitted/${name}`)
     }
 
     const availableNames = this.props.availability.names
@@ -168,36 +168,26 @@ class AddUsernameSelectPage extends Component {
     this.setState({
       registrationInProgress: true
     })
-    const ownerAddress = this.props.routeParams.index
+    const index = this.props.routeParams.index
     const name = this.props.routeParams.name
     const nameHasBeenPreordered = hasNameBeenPreordered(name, this.props.localIdentities)
-
+    const identity = this.props.localIdentities[index]
     if (nameHasBeenPreordered) {
       logger.error(`register: Name ${name} has already been preordered`)
     } else {
-      const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
+      logger.debug(`register: Will try to register ${name} for identity ${index}`)
 
-      if (addressIndex !== 0 && !addressIndex) {
-        this.setState({
-          registrationInProgress: false
-        })
-        logger.error(`register: can't find address ${ownerAddress}`)
-        this.updateAlert('danger', 'There is a problem with your account.')
-      }
-
-      logger.debug(`register: ${ownerAddress} index is ${addressIndex}`)
-
-      const address = this.props.identityAddresses[addressIndex]
-
+      const address = this.props.identityAddresses[index]
+      const ownerAddress = identity.ownerAddress
       if (ownerAddress !== address) {
         this.setState({
           registrationInProgress: false
         })
-        logger.error(`register: ${address} @ ${addressIndex} doesn't match owner ${ownerAddress}`)
+        logger.error(`register: ${address} @ ${index} doesn't match owner ${ownerAddress}`)
         this.updateAlert('danger', 'There is a problem with your account.')
       }
 
-      const keypair = this.props.identityKeypairs[addressIndex]
+      const keypair = this.props.identityKeypairs[index]
 
       const nameTokens = name.split('.')
       const nameSuffix = name.split(nameTokens[0])
@@ -207,13 +197,13 @@ class AddUsernameSelectPage extends Component {
       logger.debug(`register: is ${name} a subdomain? ${nameIsSubdomain}`)
 
       if (nameIsSubdomain) {
-        this.props.registerName(this.props.api, name, address, keypair)
+        this.props.registerName(this.props.api, name, index, address, keypair)
       } else {
         const password = this.state.password
         const encryptedBackupPhrase = this.props.encryptedBackupPhrase
         decryptBitcoinPrivateKey(password, encryptedBackupPhrase)
         .then((paymentKey) => {
-          this.props.registerName(this.props.api, name, address, keypair, paymentKey)
+          this.props.registerName(this.props.api, name, index, address, keypair, paymentKey)
         })
         .catch((error) => {
           this.setState({
@@ -239,6 +229,7 @@ class AddUsernameSelectPage extends Component {
     const availableNames = this.props.availability.names
     const nameAvailabilityObject = availableNames[name]
     const nameIsSubdomain = isSubdomain(name)
+    const identityIndex = this.state.index
     let enoughMoney = false
     let price = 0
     if (nameAvailabilityObject) {
@@ -287,7 +278,7 @@ class AddUsernameSelectPage extends Component {
                   null
                   :
                   <Link
-                    to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
+                    to={`/profiles/i/add-username/${identityIndex}/search`}
                     className="btn btn-secondary btn-block"
                   >
                     Back
@@ -333,7 +324,7 @@ class AddUsernameSelectPage extends Component {
                   null
                   :
                   <Link
-                    to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
+                    to={`/profiles/i/add-username/${identityIndex}/search`}
                     className="btn btn-secondary btn-block"
                   >
                     Back
@@ -372,7 +363,7 @@ class AddUsernameSelectPage extends Component {
                   </div>
                 </div>
                 <Link
-                  to={`/profiles/i/add-username/${this.state.ownerAddress}/search`}
+                  to={`/profiles/i/add-username/${identityIndex}/search`}
                   className="btn btn-secondary btn-block"
                 >
                   Back

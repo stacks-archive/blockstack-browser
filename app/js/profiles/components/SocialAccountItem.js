@@ -19,6 +19,7 @@ class SocialAccountItem extends Component {
     identifier: PropTypes.string.isRequired,
     proofUrl: PropTypes.string,
     verified: PropTypes.bool,
+    pending: PropTypes.bool,
     api: PropTypes.object.isRequired
   }
 
@@ -63,15 +64,25 @@ class SocialAccountItem extends Component {
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
-    let webAccountType = webAccountTypes[this.props.service]
+    const webAccountType = webAccountTypes[this.props.service]
+    const verified = this.props.verified
+    const pending = this.props.pending
+
     if (webAccountType) {
       let accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
-          <li className={this.props.verified ? "verified" : "pending"}>
-            <ReactTooltip place="top" type="dark" effect="solid" id={`verified-${this.props.service}`} className="text-center">
-              {this.props.verified ? 'Verified' : 'Pending...'}
-            </ReactTooltip>
+          <li className={verified ? "verified" : "pending"}>  
+            {!pending && 
+              <ReactTooltip 
+                place="top" 
+                type="dark" 
+                effect="solid" 
+                id={`verified-${this.props.service}`} 
+                className="text-center">
+                {verified && 'Verified'}
+              </ReactTooltip>
+            }
             <a href={this.getAccountUrl()} data-toggle="tooltip"
               title={webAccountTypes[this.props.service].label}>
               <span className="">
@@ -83,14 +94,14 @@ class SocialAccountItem extends Component {
               <span className="app-account-service font-weight-normal">
                 {`@${accountServiceName}`}
               </span>
-              {this.props.verified ?
+              {verified ?
                 <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
                   <i className="fa fa-fw fa-check-circle fa-lg" />
                 </span>
                 : 
-                <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
-                  <i className="fa fa-fw fa-clock-o fa-lg" />
-                </span>
+                (pending) ? <span></span> :
+                <span className="float-right badge badge-danger badge-verification">Unverified
+                </span> 
               }
             </a>
           </li>

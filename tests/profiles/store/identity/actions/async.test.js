@@ -20,7 +20,7 @@ const initialState = {
   namesOwned: []
 }
 
-describe('Availability Store: Async Actions', () => {
+describe('Identity Store: Async Actions', () => {
   afterEach(() => {
     nock.cleanAll()
   })
@@ -52,7 +52,7 @@ describe('Availability Store: Async Actions', () => {
           "type": "INCREMENT_IDENTITY_ADDRESS_INDEX"
         },
         {
-          "domainName": "13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ",
+          "index": 0,
           "ownerAddress": "13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ",
           "type": "CREATE_NEW"
         },
@@ -66,28 +66,24 @@ describe('Availability Store: Async Actions', () => {
   })
 
   describe('refreshIdentities', () => {
-    it('adds new identities', () => {
+    it('adds owned username to identity', (done) => {
       // mock core
-      nock('http://localhost:6270')
+      const nockCore = nock('http://localhost:6270')
       .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
       .reply(200, { names: ['guylepage.id'] },
       { 'Content-Type': 'application/json' })
+      // .get('/v1/names/guylepage.id')
+      // .reply(200, NameLookups['guylepage.id'],
+      // { 'Content-Type': 'application/json' })
 
-      nock('http://localhost:6270')
-      .get('/v1/names/guylepage.id')
-      .reply(200, NameLookups['guylepage.id'],
-      { 'Content-Type': 'application/json' })
-
-      nock('https://blockstack.s3.amazonaws.com')
-      .persist()
-      .get('/guylepage.id')
-      .reply(200, TokenFileLookups['guylepage.id'],
-      { 'Content-Type': 'application/json' })
-
-      nock('https://www.facebook.com')
-      .persist()
-      .get('/g3lepage/posts/10154179855498760')
-      .reply(200, 'verifying that guylepage.id is my blockstack id')
+      // const nockAWS = nock('https://blockstack.s3.amazonaws.com')
+      // .get('/guylepage.id')
+      // .reply(200, TokenFileLookups['guylepage.id'],
+      // { 'Content-Type': 'application/json' })
+      //
+      // const nockFacebook = nock('https://www.facebook.com')
+      // .get('/g3lepage/posts/10154179855498760')
+      // .reply(200, 'verifying that guylepage.id is my blockstack id')
 
       const store = mockStore(initialState)
 
@@ -96,117 +92,21 @@ describe('Availability Store: Async Actions', () => {
       })
 
       const addresses = ['18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6']
-      const localIdentities = {}
-      const namesOwned = []
 
       return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
-        addresses, localIdentities, namesOwned))
+        addresses))
       .then(() => {
 
-        const expectedActions = [
-        {
-          "localIdentities": {
-            "guylepage.id": {
-              "domainName": "guylepage.id",
-              "profile": {
-                "@context": "http://schema.org",
-                "@type": "Person"
-              },
-              "registered": true,
-              "verifications": [],
-            }
-          },
-          "namesOwned": [
-            "guylepage.id"
-          ],
-          "type": "UPDATE_IDENTITIES",
-        },
-        {
-          "domainName": "guylepage.id",
-          "profile": {
-            "@type": "Person",
-            "account": [
-              {
-                "@type": "Account",
-                "identifier": "guylepage3",
-                "proofType": "http",
-                "proofUrl": "https://twitter.com/guylepage3/status/750437834532777984",
-                "service": "twitter"
-              },
-              {
-                "@type": "Account",
-                "identifier": "g3lepage",
-                "proofType": "http",
-                "proofUrl": "https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fg3lepage%2Fposts%2F10154179855498760",
-                "service": "facebook"
-              },
-              {
-                "@type": "Account",
-                "identifier": "guylepage3",
-                "proofType": "http",
-                "proofUrl": "https://gist.github.com/guylepage3/48777a21a70d322b0fa4c1fcc53f4477",
-                "service": "github"
-              }
-            ],
-            "accounts": [
-              {
-                "@type": "Account",
-                "identifier": "guylepage3",
-                "proofType": "http",
-                "service": "twitter",
-              },
-              {
-                "@type": "Account",
-                "identifier": "g3lepage",
-                "proofType": "http",
-                "service": "facebook",
-              },
-              {
-                "@type": "Account",
-                "identifier": "guylepage3",
-                "proofType": "http",
-                "service": "github",
-              },
-              {
-                "@type": "Account",
-                "contentUrl": "https://s3.amazonaws.com/pk9/guylepage",
-                "identifier": "1CADC0B8A5020356D985782CF09793B9F9C6DAD1",
-                "role": "key",
-                "service": "pgp"
-              }
-            ],
-            "address": {
-              "@type": "PostalAddress",
-              "addressLocality": "New York, NY"
-            },
-            "description": "@blockstackorg developer. 1st hire, Design Partner @blockstacklabs (YC/USV backed) entrepreneur, blockchain, creative, marketing, surf, triathlon, ironman",
-            "image": [
-              {
-                "@type": "ImageObject",
-                "contentUrl": "https://s3.amazonaws.com/kd4/guylepage",
-                "name": "avatar"
-              },
-              {
-                "@type": "ImageObject",
-                "contentUrl": "https://s3.amazonaws.com/dx3/guylepage",
-                "name": "cover"
-              }
-            ],
-            "name": "Guy Lepage",
-            "website": [
-              {
-                "@type": "WebSite",
-                "url": "http://blockstack.com/team"
-              }
-            ]
-          },
-          zoneFile: "$ORIGIN guylepage.id\n$TTL 3600\n_http._tcp URI 10 1 \"https://blockstack.s3.amazonaws.com/guylepage.id\"\n",
-          "type": "UPDATE_PROFILE",
-          "verifications": []
-        }
-      ]
-
+        const expectedActions = [{
+          "index": 0,
+          "type": "USERNAME_OWNED",
+          "username": "guylepage.id"
+        }]
         assert.deepEqual(store.getActions(), expectedActions)
+        // assert(nockCore.isDone(), 'nockCore not fetched')
+        // assert(nockAWS.isDone(), 'nockAWS not fetched')
+        // assert(nockFacebook.isDone(), 'nockFacebook not fetched')
+        done()
       })
     })
 
@@ -234,10 +134,10 @@ describe('Availability Store: Async Actions', () => {
         assert.deepEqual(store.getActions(), expectedActions)
       })
     })
-  })
 
-  describe('fetchCurrentIdentity', () => {
-    it('fetches profile & validates proof of given identity', () => {
+
+  describe('fetchPublicIdentity', () => {
+    it('fetches profile & validates proof of given identity from the public network', () => {
       // mock core
 
       nock('http://localhost:6270')
@@ -275,11 +175,12 @@ describe('Availability Store: Async Actions', () => {
 
       })
 
-      return store.dispatch(IdentityActions.fetchCurrentIdentity(mockAPI.nameLookupUrl, 'guylepage.id'))
+      return store.dispatch(IdentityActions.fetchPublicIdentity(mockAPI.nameLookupUrl, 'guylepage.id'))
       .then(() => {
         const expectedActions = [
         {
-          "domainName": "guylepage.id",
+          "ownerAddress": "18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6",
+          "username": "guylepage.id",
           "profile": {
             "@type": "Person",
             "account": [
@@ -357,12 +258,13 @@ describe('Availability Store: Async Actions', () => {
               }
             ]
           },
-          "type": "UPDATE_CURRENT",
+          "type": "UPDATE_PUBLIC_IDENTITY",
           "verifications": [],
+          trustLevel: 0,
           "zoneFile": "$ORIGIN guylepage.id\n$TTL 3600\n_http._tcp URI 10 1 \"https://blockstack.s3.amazonaws.com/guylepage.id\"\n"
         },
         {
-          "domainName": "guylepage.id",
+          "ownerAddress": "18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6",
           "profile": {
             "@type": "Person",
             "account": [
@@ -440,7 +342,9 @@ describe('Availability Store: Async Actions', () => {
               }
             ]
           },
-          "type": "UPDATE_CURRENT",
+          trustLevel: 1,
+          "type": "UPDATE_PUBLIC_IDENTITY",
+          "username": "guylepage.id",
           "verifications": [
             {
               "identifier": "guylepage3",
@@ -469,4 +373,5 @@ describe('Availability Store: Async Actions', () => {
       })
     })
   })
+})
 })

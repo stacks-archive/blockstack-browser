@@ -1,6 +1,6 @@
 {
   "name": "blockstack-browser",
-  "version": "0.17.1",
+  "version": "0.18.0",
   "author": "Blockstack PBC <admin@blockstack.com>",
   "description": "The Blockstack browser",
   "license": "MPL-2.0",
@@ -17,7 +17,8 @@
     "dev": "NODE_ENV=development ./node_modules/.bin/gulp dev",
     "dev-ui": "echo 'Please use dev instead of dev-ui'",
     "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy",
-    "flow": "flow"
+    "flow": "flow",
+    "flow-typed-install": "./node_modules/.bin/flow-typed install --skip"
   },
   "keywords": [
     "blockstack",
@@ -70,6 +71,7 @@
     "eslint-plugin-react": "^5.1.1",
     "express": "^4.13.4",
     "fbjs-scripts": "^0.7.1",
+    "flow-typed": "^2.2.0",
     "flow-bin": "^0.56.0",
     "font-awesome": "^4.6.3",
     "gulp": "^3.9.0",
@@ -119,7 +121,7 @@
     "bigi": "^1.4.2",
     "bip39": "^2.2.0",
     "bitcoinjs-lib": "^3.2.0",
-    "blockstack": "0.10.2",
+    "blockstack": "0.11.1",
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0-beta",
     "browser-stdout": "^1.3.0",
