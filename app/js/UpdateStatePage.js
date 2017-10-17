@@ -19,7 +19,8 @@ function mapStateToProps(state) {
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
     localIdentities: state.profiles.identity.localIdentities,
     defaultIdentity: state.profiles.identity.default,
-    accountCreated: state.account.accountCreated
+    accountCreated: state.account.accountCreated,
+    identityAddresses: state.account.identityAccount.addresses
   }
 }
 
@@ -69,20 +70,29 @@ class UpdateStatePage extends Component {
     const accountCreated  = this.props.accountCreated
     const nextAccountCreated = nextProps.accountCreated
     const nextIdentityAddresses = nextProps.identityAddresses
+
+    if (upgradeInProgress && !nextAccountCreated) {
+      const backupPhrase = this.state.backupPhrase
+      logger.debug('componentWillReceiveProps: state cleared. initializing wallet...')
+      this.props.initializeWallet(this.state.password,
+        backupPhrase,
+        this.state.numberOfIdentities)
+    }
+
     if (upgradeInProgress && !accountCreated && nextAccountCreated
       && nextIdentityAddresses) {
       logger.debug('componentWillReceiveProps: new account created - time to migrate data')
       const numberOfIdentities = this.state.numberOfIdentities
 
-      for (let i = 1; i < numberOfIdentities; i++) {
+      for (let i = 0; i < numberOfIdentities; i++) {
         logger.debug(`componentWillReceiveProps: identity index: ${i}`)
         const ownerAddress = nextProps.identityAddresses[i]
         nextProps.createNewIdentityWithOwnerAddress(i, ownerAddress)
       }
-    }
 
-    nextProps.setDefaultIdentity(this.state.defaultIdentity)
-    nextProps.router.push('/')
+      nextProps.setDefaultIdentity(this.state.defaultIdentity)
+      nextProps.router.push('/')
+    }
   }
 
   onValueChange(event) {
@@ -112,7 +122,8 @@ class UpdateStatePage extends Component {
     const password = this.state.password
 
     decrypt(dataBuffer, password)
-    .then((backupPhrase) => {
+    .then((backupPhraseBuffer) => {
+      const backupPhrase = backupPhraseBuffer.toString()
       logger.debug('upgradeBlockstackState: correct password!')
       const numberOfIdentities = this.props.localIdentities.length
       this.setState({
@@ -123,7 +134,6 @@ class UpdateStatePage extends Component {
         numberOfIdentities
       })
       this.props.updateState()
-      this.props.initializeWallet(password, backupPhrase, numberOfIdentities)
     })
     .catch((error) => {
       logger.error('upgradeBlockstackState: invalid password', error)

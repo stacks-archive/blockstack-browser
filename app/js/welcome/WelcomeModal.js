@@ -69,15 +69,14 @@ class WelcomeModal extends Component {
 
   constructor(props) {
     super(props)
-
     const onboardingExceptStorageComplete = this.props.accountCreated &&
       this.props.coreConnected && this.props.promptedForEmail
 
 
     const storageConnectedDuringOnboarding = this.props.connectedStorageAtLeastOnce
     const needToOnboardStorage = !storageConnectedDuringOnboarding && !this.props.storageConnected
-
-    if (this.props.accountCreated && !onboardingExceptStorageComplete) {
+    const updateInProgress = window.location.pathname === '/update'
+    if (!updateInProgress && this.props.accountCreated && !onboardingExceptStorageComplete) {
       logger.error('User has refreshed browser mid onboarding.')
     }
 
@@ -99,7 +98,8 @@ class WelcomeModal extends Component {
       identityKeyPhrase: null,
       alert: null,
       restored: false,
-      needToUpdate: this.props.needToUpdate
+      needToUpdate: this.props.needToUpdate,
+      updateInProgress
     }
 
     this.showLandingView = this.showLandingView.bind(this)
@@ -140,8 +140,9 @@ class WelcomeModal extends Component {
     if (onboardingExceptStorageComplete && needToOnboardStorage) {
       this.setPage(STORAGE_PAGE_VIEW)
     }
-
-    if (nextProps.accountCreated && !this.props.accountCreated) {
+    const updateInProgress = window.location.pathname === '/update'
+    this.setState({ updateInProgress })
+    if (!updateInProgress && nextProps.accountCreated && !this.props.accountCreated) {
       logger.debug('account created - checking for valid password in component state')
       decrypt(new Buffer(this.props.encryptedBackupPhrase, 'hex'), this.state.password)
       .then((identityKeyPhraseBuffer) => {
@@ -301,9 +302,10 @@ class WelcomeModal extends Component {
   }
 
   isOpen() {
-    return !this.state.accountCreated ||
+    const shouldBeOpen = !this.state.accountCreated ||
       !this.state.coreConnected || !this.props.promptedForEmail ||
       this.state.needToOnboardStorage
+    return shouldBeOpen && !this.state.updateInProgress
   }
 
   render() {

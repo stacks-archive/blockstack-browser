@@ -283,7 +283,7 @@ class DefaultProfilePage extends Component {
                   <ul>
                     {accounts.map((account) => {
                       let verified = false
-                      let pending = false                       
+                      let pending = false
                       if (verifications.length > 0) {
                         for (let i = 0; i < verifications.length; i++) {
                           const verification = verifications[i]
@@ -298,7 +298,7 @@ class DefaultProfilePage extends Component {
                         pending = true
                       }
 
-                      if (account.service === 'pgp' || account.service === 'ssh' 
+                      if (account.service === 'pgp' || account.service === 'ssh'
                         || account.service === 'bitcoin' || account.service === 'ethereum') {
                         return (
                           <PGPAccountItem
