@@ -180,7 +180,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func openAccountClick(sender: AnyObject?) {
         os_log("openAccountClick", log: log, type: .debug)
-        openPortal(path: "/account/password")
+        openPortal(path: "/account")
     }
     
     func openPortal(path: String) {
