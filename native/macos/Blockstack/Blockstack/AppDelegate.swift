@@ -209,10 +209,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         menu.addItem(withTitle: "Home", action: #selector(openPortalClick), keyEquivalent: "h")
-        menu.addItem(withTitle: "Profiles", action: #selector(openProfilesClick), keyEquivalent: "p")
-        menu.addItem(withTitle: "Storage", action: #selector(openStorageClick), keyEquivalent: "s")
+        menu.addItem(withTitle: "Identities", action: #selector(openProfilesClick), keyEquivalent: "i")
         menu.addItem(withTitle: "Wallet", action: #selector(openWalletClick), keyEquivalent: "w")
-        menu.addItem(withTitle: "Account", action: #selector(openAccountClick), keyEquivalent: "a")
+        menu.addItem(withTitle: "Settings", action: #selector(openAccountClick), keyEquivalent: "s")
         menu.addItem(NSMenuItem.separator())
 
         if showExpandedMenu {
