@@ -21,8 +21,8 @@ function mapDispatchToProps(dispatch) {
 
 const AppIcon = (props) => (
   <div className="container-fluid app-box-wrap">
-    <Link
-      to={props.launchLink}
+    <a
+      href={props.launchLink}
       className="app-box-container"
     >
       <div className="app-box">
@@ -31,7 +31,7 @@ const AppIcon = (props) => (
           alt={props.displayName}
         />
       </div>
-    </Link>
+    </a>
     <div className="app-text-container">
       <h3>{props.displayName}</h3>
     </div>
