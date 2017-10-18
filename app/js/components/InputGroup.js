@@ -57,6 +57,9 @@ class InputGroup extends Component {
         step = 1
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
+      if (value === null || value === undefined) {
+        value = ''
+      }
     }
     if (this.props.step) {
       step = this.props.step
@@ -112,7 +115,7 @@ class InputGroup extends Component {
               onBlur={this.onBlur}
               onKeyPress={this.onKeyPress} />
             }
-            {this.props.accessoryIcon && 
+            {this.props.accessoryIcon &&
               <span className={this.props.accessoryIconClass}></span>
             }
           </div>
