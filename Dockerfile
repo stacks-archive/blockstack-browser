@@ -11,7 +11,7 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 
 # Install cors-proxy
-RUN npm install -g corsproxy
+RUN npm install -g corsproxy-https
 
 # Alias the cors-proxy
 RUN ln /usr/bin/corsproxy /usr/bin/blockstack-cors-proxy
