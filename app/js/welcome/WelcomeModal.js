@@ -76,6 +76,8 @@ class WelcomeModal extends Component {
     const storageConnectedDuringOnboarding = this.props.connectedStorageAtLeastOnce
     const needToOnboardStorage = !storageConnectedDuringOnboarding && !this.props.storageConnected
     const updateInProgress = window.location.pathname === '/update'
+    const connectingGaia = window.location.pathname === '/account/storage' &&
+                          window.location.hash === '#gaiahub'
     if (!updateInProgress && this.props.accountCreated && !onboardingExceptStorageComplete) {
       logger.error('User has refreshed browser mid onboarding.')
     }
@@ -99,7 +101,8 @@ class WelcomeModal extends Component {
       alert: null,
       restored: false,
       needToUpdate: this.props.needToUpdate,
-      updateInProgress
+      updateInProgress,
+      connectingGaia
     }
 
     this.showLandingView = this.showLandingView.bind(this)
@@ -305,7 +308,7 @@ class WelcomeModal extends Component {
     const shouldBeOpen = !this.state.accountCreated ||
       !this.state.coreConnected || !this.props.promptedForEmail ||
       this.state.needToOnboardStorage
-    return shouldBeOpen && !this.state.updateInProgress
+    return shouldBeOpen && (!this.state.updateInProgress && !this.state.connectingGaia)
   }
 
   render() {
