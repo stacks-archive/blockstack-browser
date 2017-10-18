@@ -2,7 +2,7 @@ import * as types from './types'
 import appList from '../../data/apps'
 
 const initialState = {
-  apps: appList.apps.slice(),
+  apps: [],
   version: appList.version,
   lastUpdated: 0
 }
@@ -13,7 +13,7 @@ function AppsReducer(state = initialState, action) {
       return Object.assign({}, state, {
         apps: action.apps || [],
         version: action.version,
-        lastUpdated: Date.now()
+        lastUpdated: action.lastUpdated
       })
     default:
       return state

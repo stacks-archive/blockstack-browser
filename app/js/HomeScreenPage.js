@@ -9,7 +9,8 @@ import appList from './data/apps'
 function mapStateToProps(state) {
   return {
     apps: state.apps,
-    appListLastUpdated: state.apps.lastUpdated
+    appListLastUpdated: state.apps.lastUpdated,
+    api: state.settings.api
   }
 }
 
@@ -47,18 +48,18 @@ class HomeScreenPage extends Component {
   static propTypes = {
     apps: PropTypes.object.isRequired,
     refreshAppList: PropTypes.func.isRequired,
-    appListLastUpdated: PropTypes.number
+    appListLastUpdated: PropTypes.number,
+    api: PropTypes.object.isRequired
   }
 
   componentWillMount() {
-    if (this.props.appListLastUpdated < (Date.now() - 15000)) {
-      this.props.refreshAppList()
+    // Refresh apps list every 12 hours
+    if (this.props.appListLastUpdated < (Date.now() - 43200000)) {
+      this.props.refreshAppList(this.props.api.browserServerUrl)
     }
   }
 
   render() {
-    console.log('this.props.apps')
-    console.log(this.props.apps)
     return (
       <div>
         <Navbar
