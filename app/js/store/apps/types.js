@@ -1,0 +1,1 @@
+export const UPDATE_APP_LIST = 'UPDATE_APP_LIST'

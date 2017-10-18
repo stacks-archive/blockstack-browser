@@ -34,6 +34,7 @@ const DEFAULT_API = {
       registerUrl: 'http://localhost:7103/register'
     }
   },
+  browserServerUrl: 'https://blockstack-browser-server.appartisan.com',
   hostedDataLocation: DROPBOX,
   coreHost: 'localhost',
   corePort: 6270,
