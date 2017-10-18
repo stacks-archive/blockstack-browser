@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { AccountActions } from './account/store/account'
 import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
+import { AuthActions } from './auth/store/auth'
 import WelcomeModal from './welcome/WelcomeModal'
 import TrustLevelFooter from './components/TrustLevelFooter'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
@@ -29,7 +30,8 @@ function mapStateToProps(state) {
     coreApiRunning: state.sanity.coreApiRunning,
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    instanceIdentifier: state.auth.instanceIdentifier
   }
 }
 
@@ -38,7 +40,8 @@ function mapDispatchToProps(dispatch) {
     AccountActions,
     SanityActions,
     SettingsActions,
-    IdentityActions
+    IdentityActions,
+    AuthActions,
   ), dispatch)
 }
 
@@ -55,6 +58,7 @@ class App extends Component {
     coreApiPasswordValid: PropTypes.bool.isRequired,
     isCoreRunning: PropTypes.func.isRequired,
     isCoreApiPasswordValid: PropTypes.func.isRequired,
+    generateInstanceIdentifier: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string,
     stateVersion: PropTypes.number,
@@ -108,6 +112,10 @@ class App extends Component {
     if (logServerPort !== null) {
       api = Object.assign({}, api, { logServerPort })
       this.props.updateApi(api)
+    }
+
+    if (!this.props.instanceIdentifier) {
+      this.props.generateInstanceIdentifier()
     }
   }
 
