@@ -10,6 +10,7 @@ import { openInNewTab, signProfileForUpload } from '../utils'
 import Modal from 'react-modal'
 import EditSocialAccountItem from './components/EditSocialAccountItem'
 import EditPGPAccountItem from './components/EditPGPAccountItem'
+import { Person } from 'blockstack'
 
 import log4js from 'log4js'
 
@@ -365,7 +366,7 @@ class EditProfilePage extends Component {
     const profileIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[profileIndex]
     const verifications = identity.verifications
-
+    const person = new Person(this.state.profile)
     // render() sometimes gets called before defaultIdentityName
     // is updated from ownerAddress to the actual name when adding
     // a username.
@@ -433,8 +434,7 @@ class EditProfilePage extends Component {
           className="container-fluid text-center"
         >
           <Image
-            src={(this.state.profile.image && this.state.profile.image[0].contentUrl)
-              ? this.state.profile.image[0].contentUrl : '/images/avatar.png'}
+            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
             fallbackSrc="/images/avatar.png"
             className="img-fluid clickable"
             onClick={this.closePhotoModal}
@@ -450,8 +450,7 @@ class EditProfilePage extends Component {
                   <div className="col-12">
                     <div className="avatar-md m-t-50 m-b-10 text-center">
                       <Image
-                        src={(this.state.profile.image && this.state.profile.image[0].contentUrl)
-                          ? this.state.profile.image[0].contentUrl : '/images/avatar.png'}
+                        src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
                         fallbackSrc="/images/avatar.png"
                         className="rounded-circle clickable"
                         onClick={this.onPhotoClick}
