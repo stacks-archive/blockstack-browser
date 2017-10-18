@@ -7,7 +7,6 @@ const logger = log4js.getLogger('auth/store/auth.js')
 const APP_MANIFEST_LOADING = 'APP_MANIFEST_LOADING'
 const APP_MANIFEST_LOADING_ERROR = 'APP_MANIFEST_LOADING_ERROR'
 const APP_MANIFEST_LOADED = 'APP_MANIFEST_LOADED'
-const APP_META_DATA_LOADED = 'APP_META_DATA_LOADED'
 const UPDATE_CORE_SESSION = 'UPDATE_CORE_SESSION'
 const LOGGED_IN_TO_APP = 'LOGGED_IN_TO_APP'
 const UPDATE_INSTANCE_IDENTIFIER = 'UPDATE_INSTANCE_IDENTIFIER'
@@ -43,13 +42,6 @@ function updateCoreSessionToken(appDomain, token) {
 function loggedIntoApp() {
   return {
     type: LOGGED_IN_TO_APP
-  }
-}
-
-function appMetaDataLoaded(app, appMetaData) {
-  return {
-    type: APP_META_DATA_LOADED,
-    appMetaData
   }
 }
 
@@ -104,7 +96,7 @@ function loadAppManifest(authRequest) {
 function generateInstanceIdentifier() {
   logger.trace('Generating new instance identifier')
   return dispatch => {
-    let instanceIdentifier = createHash('sha256').update(randomBytes(256)).digest('hex')
+    const instanceIdentifier = createHash('sha256').update(randomBytes(256)).digest('hex')
     dispatch(updateInstanceIdentifier(instanceIdentifier))
   }
 }
@@ -136,10 +128,6 @@ export function AuthReducer(state = initialState, action) {
         appManifest: null,
         appManifestLoading: false,
         appManifestLoadingError: action.error
-      })
-    case APP_META_DATA_LOADED:
-      return Object.assign({}, state, {
-        appMetaData: action.appMetaData
       })
     case UPDATE_CORE_SESSION:
       return Object.assign({}, state, {

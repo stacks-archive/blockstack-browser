@@ -62,7 +62,8 @@ class App extends Component {
     walletPaymentAddressUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string,
     stateVersion: PropTypes.number,
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    instanceIdentifier: PropTypes.string.isRequired
   }
 
   constructor(props) {

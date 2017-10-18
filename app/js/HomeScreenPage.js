@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import Navbar from './components/Navbar'
 import { AppsActions } from './store/apps'
 import appList from './data/apps'
@@ -11,7 +10,7 @@ function mapStateToProps(state) {
     apps: state.apps,
     appListLastUpdated: state.apps.lastUpdated,
     api: state.settings.api,
-    instanceIdentifier: state.auth.instanceIdentifier,
+    instanceIdentifier: state.auth.instanceIdentifier
   }
 }
 
@@ -55,6 +54,8 @@ class HomeScreenPage extends Component {
   }
 
   componentWillMount() {
+    console.log('this.props.instanceIdentifier')
+    console.log(this.props.instanceIdentifier)
     // Refresh apps list every 12 hours
     if (this.props.appListLastUpdated < (Date.now() - 43200000)) {
       this.props.refreshAppList(this.props.api.browserServerUrl, this.props.instanceIdentifier)
