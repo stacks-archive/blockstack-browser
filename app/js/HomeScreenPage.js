@@ -1,4 +1,3 @@
-// @flow
 import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -9,7 +8,8 @@ import appList from './data/apps'
 
 function mapStateToProps(state) {
   return {
-    apps: state.apps
+    apps: state.apps,
+    appListLastUpdated: state.apps.lastUpdated
   }
 }
 
@@ -17,39 +17,47 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AppsActions), dispatch)
 }
 
-const AppIcon = (props) => {
-  return (
-    <div className="container-fluid app-box-wrap">
-      <Link
-        to={props.launchLink}
-        className="app-box-container"
-      >
-        <div className="app-box">
-          <img
-            src={`/images/${props.iconImage}`}
-            alt={props.displayName}
-          />
-        </div>
-      </Link>
-      <div className="app-text-container">
-        <h3>{props.displayName}</h3>
+const AppIcon = (props) => (
+  <div className="container-fluid app-box-wrap">
+    <Link
+      to={props.launchLink}
+      className="app-box-container"
+    >
+      <div className="app-box">
+        <img
+          src={`/images/${props.iconImage}`}
+          alt={props.displayName}
+        />
       </div>
+    </Link>
+    <div className="app-text-container">
+      <h3>{props.displayName}</h3>
     </div>
-  )
+  </div>
+)
+
+AppIcon.propTypes = {
+  launchLink: PropTypes.string.isRequired,
+  iconImage: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired
 }
 
 class HomeScreenPage extends Component {
 
   static propTypes = {
     apps: PropTypes.object.isRequired,
-    refreshAppList: PropTypes.func.isRequired
+    refreshAppList: PropTypes.func.isRequired,
+    appListLastUpdated: PropTypes.number
   }
 
   componentWillMount() {
-    // this.props.refreshAppList()
+    if (this.props.appListLastUpdated < (Date.now() - 15000)) {
+      this.props.refreshAppList()
+    }
   }
 
   render() {
+    console.log('this.props.apps')
     console.log(this.props.apps)
     return (
       <div>
@@ -62,16 +70,14 @@ class HomeScreenPage extends Component {
             <div className="container app-wrap">
               <div className="app-container no-padding">
 
-                {appList.apps.map(app => {
-                  return (
-                    <AppIcon 
-                      key={app.name}
-                      iconImage={app.appIcon.small} 
-                      displayName={app.displayName} 
-                      launchLink={app.launchLink} 
-                    />
-                  )
-                })}
+                {appList.apps.map((app) => (
+                  <AppIcon 
+                    key={app.name}
+                    iconImage={app.appIcon.small} 
+                    displayName={app.displayName} 
+                    launchLink={app.launchLink} 
+                  />
+                ))}
 
               </div>
             </div>
