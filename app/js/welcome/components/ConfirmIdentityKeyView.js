@@ -44,6 +44,7 @@ class ConfirmIdentityKeyView extends Component {
             data={this.state}
             onChange={this.onValueChange}
             required
+            autoComplete="off"
           />
           <div style={{ marginBottom: '-20px' }}>
             <button

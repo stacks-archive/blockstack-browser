@@ -18,7 +18,8 @@ class InputGroup extends Component {
     onBlur: PropTypes.func,
     stopClickPropagation: PropTypes.bool,
     accessoryIcon: PropTypes.bool,
-    accessoryIconClass: PropTypes.string
+    accessoryIconClass: PropTypes.string,
+    autoComplete: PropTypes.string
   }
 
   constructor(props) {
@@ -55,8 +56,12 @@ class InputGroup extends Component {
         disabled = false,
         required = false,
         step = 1
+    const autoComplete = this.props.autoComplete
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
+      if (value === null || value === undefined) {
+        value = ''
+      }
     }
     if (this.props.step) {
       step = this.props.step
@@ -110,9 +115,11 @@ class InputGroup extends Component {
               value={value}
               onChange={this.props.onChange}
               onBlur={this.onBlur}
-              onKeyPress={this.onKeyPress} />
+              onKeyPress={this.onKeyPress}
+              autoComplete={autoComplete}
+            />
             }
-            {this.props.accessoryIcon && 
+            {this.props.accessoryIcon &&
               <span className={this.props.accessoryIconClass}></span>
             }
           </div>

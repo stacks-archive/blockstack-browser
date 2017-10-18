@@ -1,167 +1,93 @@
-// @flow
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import Navbar from './components/Navbar'
+import { AppsActions } from './store/apps'
+import appList from './data/apps'
 
-const HomeScreenPage = () =>
-(
-  <div>
-    <Navbar
-      hideBackToHomeLink
-      activeTab="home"
-    />
-    <div className="home-screen">
-      <div className="container-fluid app-center">
-        <div className="container app-wrap">
-          <div className="app-container no-padding">
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="http://blockstack-todos.appartisan.com/"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-todo-list@2x.png"
-                    alt="To Do List"
+function mapStateToProps(state) {
+  return {
+    apps: state.apps,
+    appListLastUpdated: state.apps.lastUpdated,
+    api: state.settings.api,
+    instanceIdentifier: state.auth.instanceIdentifier
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Object.assign({}, AppsActions), dispatch)
+}
+
+const AppIcon = (props) => (
+  <div className="container-fluid app-box-wrap">
+    <a
+      href={props.launchLink}
+      className="app-box-container"
+    >
+      <div className="app-box">
+        <img
+          src={`/images/${props.iconImage}`}
+          alt={props.displayName}
+        />
+      </div>
+    </a>
+    <div className="app-text-container">
+      <h3>{props.displayName}</h3>
+    </div>
+  </div>
+)
+
+AppIcon.propTypes = {
+  launchLink: PropTypes.string.isRequired,
+  iconImage: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired
+}
+
+class HomeScreenPage extends Component {
+
+  static propTypes = {
+    apps: PropTypes.object.isRequired,
+    refreshAppList: PropTypes.func.isRequired,
+    appListLastUpdated: PropTypes.number,
+    api: PropTypes.object.isRequired,
+    instanceIdentifier: PropTypes.string
+  }
+
+  componentWillMount() {
+    // Refresh apps list every 12 hours
+    if (this.props.appListLastUpdated < (Date.now() - 43200000)) {
+      this.props.refreshAppList(this.props.api.browserServerUrl, this.props.instanceIdentifier)
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <Navbar
+          hideBackToHomeLink
+          activeTab="home"
+        />
+        <div className="home-screen">
+          <div className="container-fluid app-center">
+            <div className="container app-wrap">
+              <div className="app-container no-padding">
+
+                {appList.apps.map((app) => (
+                  <AppIcon 
+                    key={app.name}
+                    iconImage={app.appIcon.small} 
+                    displayName={app.displayName} 
+                    launchLink={app.launchLink} 
                   />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>To Do List</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="http://www.guildblog.com/"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-guild@2x.png"
-                    alt="Guild"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>Guild</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="http://ongakuryoho.com"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-ongaku-ryoho@2x.png"
-                    alt="Ongaku Ryoho"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>Ongaku Ryoho</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="https://helloblockstack.com"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-hello-blockstack@2x.png"
-                    alt="Hello, Blockstack"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>Hello, Blockstack</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="https://forum.blockstack.org"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-forum@2x.png"
-                    alt="Forum"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>Forum</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="https://casa.cash"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-casa@2x.png"
-                    alt="Casa"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>Casa</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="https://www.openbazaar.org"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-openbazaar@2x.png"
-                    alt="OpenBazaar"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>OpenBazaar</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="https://ntzwrk.org/projects/beacon/"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-beacon@2x.png"
-                    alt="Beacon"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>Beacon</h3>
-              </div>
-            </div>
-            <div className="container-fluid app-box-wrap">
-              <a
-                href="http://www.afiabeta.com/"
-                className="app-box-container"
-              >
-                <div className="app-box">
-                  <img
-                    src="/images/app-icon-afia@2x.png"
-                    alt="Afia"
-                  />
-                </div>
-              </a>
-              <div className="app-text-container">
-                <h3>Afia</h3>
+                ))}
+
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-)
+    )
+  }
+}
 
-export default HomeScreenPage
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreenPage)
