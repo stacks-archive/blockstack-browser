@@ -13,10 +13,11 @@ function updateAppList(apps, version) {
   }
 }
 
-function refreshAppList(browserApiUrl) {
+function refreshAppList(browserApiUrl, instanceIdentifier) {
   return dispatch => {
     logger.trace('refreshAppList')
-    return fetch(`${browserApiUrl}/data`).then((response) => response.text())
+    return fetch(`${browserApiUrl}/data?id=${instanceIdentifier}`)
+    .then((response) => response.text())
     .then((responseText) => JSON.parse(responseText))
     .then((responseJson) => {
       dispatch(updateAppList(responseJson.apps, responseJson.version))
