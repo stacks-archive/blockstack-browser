@@ -157,7 +157,7 @@ class AuthModal extends Component {
     // https://github.com/blockstack/blockstack-browser/issues/864#issuecomment-335035037
 
 
-    const lookupValue = hasUsername ? identity.useranme : ''
+    const lookupValue = hasUsername ? identity.username : ''
 
 
     // if profile has no name, lookupUrl will be
