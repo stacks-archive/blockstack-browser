@@ -54,8 +54,6 @@ class HomeScreenPage extends Component {
   }
 
   componentWillMount() {
-    console.log('this.props.instanceIdentifier')
-    console.log(this.props.instanceIdentifier)
     // Refresh apps list every 12 hours
     if (this.props.appListLastUpdated < (Date.now() - 43200000)) {
       this.props.refreshAppList(this.props.api.browserServerUrl, this.props.instanceIdentifier)
