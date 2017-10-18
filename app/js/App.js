@@ -63,7 +63,7 @@ class App extends Component {
     coreAPIPassword: PropTypes.string,
     stateVersion: PropTypes.number,
     router: PropTypes.object.isRequired,
-    instanceIdentifier: PropTypes.string.isRequired
+    instanceIdentifier: PropTypes.string
   }
 
   constructor(props) {
