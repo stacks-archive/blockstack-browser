@@ -50,6 +50,7 @@ class RestoreView extends Component {
             data={this.state}
             onChange={this.onValueChange}
             required
+            autoComplete="off"
           />
           <InputGroup
             name="password"
