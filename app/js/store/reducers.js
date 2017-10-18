@@ -5,6 +5,7 @@ import { AuthReducer }     from '../auth/store/auth'
 import ProfilesReducer from '../profiles/store/reducers'
 import { SanityReducer } from './sanity'
 import { SettingsReducer } from '../account/store/settings'
+import { AppsReducer } from './apps'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
 
 // export const persistedStatePaths = [
@@ -54,6 +55,7 @@ export const CURRENT_VERSION: number = 9
 const AppReducer = combineReducers({
   account: AccountReducer,
   auth: AuthReducer,
+  apps: AppsReducer,
   profiles: ProfilesReducer,
   sanity: SanityReducer,
   settings: SettingsReducer

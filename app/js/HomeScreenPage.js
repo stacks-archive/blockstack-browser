@@ -4,20 +4,17 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import Navbar from './components/Navbar'
-import { IdentityActions } from './profiles/store/identity'
-import { AccountActions }  from './account/store/account'
+import { AppsActions } from './store/apps'
 import appList from './data/apps'
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.profiles.identity.localIdentities,
-    defaultIdentity: state.profiles.identity.default,
-    api: state.settings.api
+    apps: state.apps
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
+  return bindActionCreators(Object.assign({}, AppsActions), dispatch)
 }
 
 const AppIcon = (props) => {
@@ -43,7 +40,17 @@ const AppIcon = (props) => {
 
 class HomeScreenPage extends Component {
 
+  static propTypes = {
+    apps: PropTypes.object.isRequired,
+    refreshAppList: PropTypes.func.isRequired
+  }
+
+  componentWillMount() {
+    // this.props.refreshAppList()
+  }
+
   render() {
+    console.log(this.props.apps)
     return (
       <div>
         <Navbar
@@ -58,6 +65,7 @@ class HomeScreenPage extends Component {
                 {appList.apps.map(app => {
                   return (
                     <AppIcon 
+                      key={app.name}
                       iconImage={app.appIcon.small} 
                       displayName={app.displayName} 
                       launchLink={app.launchLink} 
