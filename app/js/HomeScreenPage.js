@@ -10,7 +10,7 @@ function mapStateToProps(state) {
     apps: state.apps,
     appListLastUpdated: state.apps.lastUpdated,
     api: state.settings.api,
-    instanceIdentifier: state.auth.instanceIdentifier
+    instanceIdentifier: state.apps.instanceIdentifier
   }
 }
 

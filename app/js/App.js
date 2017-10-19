@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { AccountActions } from './account/store/account'
 import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
-import { AuthActions } from './auth/store/auth'
+import { AppsActions } from './store/apps'
 import WelcomeModal from './welcome/WelcomeModal'
 import TrustLevelFooter from './components/TrustLevelFooter'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
@@ -31,7 +31,7 @@ function mapStateToProps(state) {
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     coreAPIPassword: state.settings.api.coreAPIPassword,
-    instanceIdentifier: state.auth.instanceIdentifier
+    instanceIdentifier: state.apps.instanceIdentifier
   }
 }
 
@@ -41,7 +41,7 @@ function mapDispatchToProps(dispatch) {
     SanityActions,
     SettingsActions,
     IdentityActions,
-    AuthActions,
+    AppsActions
   ), dispatch)
 }
 
