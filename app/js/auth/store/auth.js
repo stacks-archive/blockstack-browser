@@ -83,14 +83,12 @@ function loadAppManifest(authRequest) {
   }
 }
 
-
-
 const initialState = {
   appManifest: null,
   appManifestLoading: false,
   appManifestLoadingError: null,
   coreSessionTokens: {},
-  loggedIntoApp: false,
+  loggedIntoApp: false
 }
 
 export function AuthReducer(state = initialState, action) {
