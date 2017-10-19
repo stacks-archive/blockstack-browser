@@ -84,6 +84,9 @@ const RootReducer = (state: any, action: any) => {
           coreAPIPassword: state.settings.api.coreAPIPassword,
           logServerPort: state.settings.api.logServerPort
         })
+      },
+      apps :{
+        instanceIdentifier: null
       }
     })
   }
