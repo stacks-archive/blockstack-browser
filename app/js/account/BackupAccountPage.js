@@ -1,3 +1,4 @@
+
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -62,11 +63,11 @@ class BackupAccountPage extends Component {
 
     const password = this.state.password
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
-    logger.debug('Trying to decrypt backup phrase...')
+    logger.debug('Trying to decrypt recovery phrase...')
     decrypt(dataBuffer, password)
     .then((plaintextBuffer) => {
-      logger.debug('Backup phrase successfully decrypted')
-      this.updateAlert('success', 'Backup phrase decrypted')
+      logger.debug('Recovery phrase successfully decrypted')
+      this.updateAlert('success', 'Recovery phrase decrypted')
       this.props.displayedRecoveryCode()
       this.setState({
         decryptedBackupPhrase: plaintextBuffer.toString()
@@ -104,14 +105,14 @@ class BackupAccountPage extends Component {
               <div className="col">
                 <p>
                   <i>
-                    Write down the backup phrase below and keep it safe.
+                    Write down the recovery phrase below and keep it safe.
                     Anyone who has it will be able to regain access to your account.
                   </i>
                 </p>
 
                 <div className="card">
                   <div className="card-header">
-                    Backup Phrase
+                    Recovery Phrase
                   </div>
                   <div className="card-block backup-phrase-container">
                     <p className="card-text">
@@ -127,7 +128,7 @@ class BackupAccountPage extends Component {
             <div className="row">
               <div className="col">
                 <p className="container-fluid">
-                  <i>Enter your password to view your backup phrase and backup your account.</i>
+                  <i>Enter your password to view your recovery phrase and backup your account.</i>
                 </p>
                 <InputGroup
                   name="password" label="Password" type="password"
@@ -136,7 +137,7 @@ class BackupAccountPage extends Component {
                 />
                 <div className="container-fluid m-t-40">
                   <button className="btn btn-primary btn-block" onClick={this.decryptBackupPhrase}>
-                    Decrypt Backup Phrase
+                    Decrypt Recovery Phrase
                   </button>
                 </div>
               </div>
