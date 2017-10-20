@@ -179,6 +179,7 @@ class AllProfilesPage extends Component {
               disabled
               className="btn btn-primary btn-block"
               type="submit"
+              title="Creation of additional Blockstack IDs will return in a future update."
             >
               {this.state.processing ?
                 <span>Creating...</span>
