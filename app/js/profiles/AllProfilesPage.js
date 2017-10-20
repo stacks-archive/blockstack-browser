@@ -176,7 +176,7 @@ class AllProfilesPage extends Component {
               required
             />
             <button
-              disabled={this.state.processing}
+              disabled
               className="btn btn-primary btn-block"
               type="submit"
             >
