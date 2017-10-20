@@ -46,7 +46,7 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://updates.blockstack.org/appcast.xml</string>
+	<string>https://updates.blockstack.org/macappcast.xml</string>
 	<key>SUScheduledCheckInterval</key>
 	<integer>3600</integer>
 </dict>
