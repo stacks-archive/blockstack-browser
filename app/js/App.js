@@ -149,6 +149,10 @@ class App extends Component {
     })
   }
 
+  onTrustLevelFooterClick() {
+    this.props.router.push(`/profiles/${this.props.defaultIdentity}/edit`)
+  }
+
   getTrustLevel() {
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
@@ -171,11 +175,6 @@ class App extends Component {
     }
   }
 
-  onTrustLevelFooterClick() {
-    console.log('here')
-    this.props.router.push(`/profiles/${this.props.defaultIdentity}/edit`)
-  }
-
   closeModal() {
     this.setState({ modalIsOpen: false })
   }
@@ -188,10 +187,8 @@ class App extends Component {
   }
 
   render() {
-    const defaultIdentityName = this.props.defaultIdentity
     const shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter()
     const trustLevel = this.getTrustLevel()
-    const editProfileLink = `/profiles/${defaultIdentityName}/edit`
 
     return (
       <div className="body-main">
