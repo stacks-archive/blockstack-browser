@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { AccountActions } from './account/store/account'
 import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
-import { AuthActions } from './auth/store/auth'
+import { AppsActions } from './store/apps'
 import WelcomeModal from './welcome/WelcomeModal'
 import TrustLevelFooter from './components/TrustLevelFooter'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
@@ -31,7 +31,7 @@ function mapStateToProps(state) {
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     coreAPIPassword: state.settings.api.coreAPIPassword,
-    instanceIdentifier: state.auth.instanceIdentifier
+    instanceIdentifier: state.apps.instanceIdentifier
   }
 }
 
@@ -41,7 +41,7 @@ function mapDispatchToProps(dispatch) {
     SanityActions,
     SettingsActions,
     IdentityActions,
-    AuthActions,
+    AppsActions
   ), dispatch)
 }
 
@@ -98,6 +98,7 @@ class App extends Component {
     this.performSanityChecks = this.performSanityChecks.bind(this)
     this.getTrustLevel = this.getTrustLevel.bind(this)
     this.shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter.bind(this)
+    this.onTrustLevelFooterClick = this.onTrustLevelFooterClick.bind(this)
   }
 
   componentWillMount() {
@@ -148,6 +149,10 @@ class App extends Component {
     })
   }
 
+  onTrustLevelFooterClick() {
+    this.props.router.push(`/profiles/${this.props.defaultIdentity}/edit`)
+  }
+
   getTrustLevel() {
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
@@ -182,10 +187,8 @@ class App extends Component {
   }
 
   render() {
-    const defaultIdentityName = this.props.defaultIdentity
     const shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter()
     const trustLevel = this.getTrustLevel()
-    const editProfileLink = `/profiles/${defaultIdentityName}/edit`
 
     return (
       <div className="body-main">
@@ -204,7 +207,7 @@ class App extends Component {
           <TrustLevelFooter
             trustLevel={trustLevel}
             maxTrustLevel={MAX_TRUST_LEVEL}
-            link={editProfileLink}
+            onClick={this.onTrustLevelFooterClick}
           />
         }
       </div>

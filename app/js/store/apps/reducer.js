@@ -4,7 +4,8 @@ import appList from '../../data/apps'
 const initialState = {
   apps: [],
   version: appList.version,
-  lastUpdated: 0
+  lastUpdated: 0,
+  instanceIdentifier: null
 }
 
 function AppsReducer(state = initialState, action) {
@@ -14,6 +15,10 @@ function AppsReducer(state = initialState, action) {
         apps: action.apps || [],
         version: action.version,
         lastUpdated: action.lastUpdated
+      })
+    case types.UPDATE_INSTANCE_IDENTIFIER:
+      return Object.assign({}, state, {
+        instanceIdentifier: action.instanceIdentifier
       })
     default:
       return state

@@ -176,7 +176,6 @@ class AllProfilesPage extends Component {
               required
             />
             <button
-              disabled={this.state.processing}
               className="btn btn-primary btn-block"
               type="submit"
             >
@@ -234,6 +233,8 @@ class AllProfilesPage extends Component {
                 <button
                   className="btn btn-primary"
                   onClick={this.openPasswordPrompt}
+                  disabled
+                  title="Creation of additional Blockstack IDs will return in a future update."
                 >Create new ID
                 </button>
               </div>

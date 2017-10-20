@@ -34,7 +34,7 @@ export function initializeStateVersion() {
  * and other state is regenerated.
  * @type {number}
  */
-export const CURRENT_VERSION: number = 9
+export const CURRENT_VERSION: number = 10
 
 //
 // function VersionReducer(state = {}, action) {
@@ -84,6 +84,9 @@ const RootReducer = (state: any, action: any) => {
           coreAPIPassword: state.settings.api.coreAPIPassword,
           logServerPort: state.settings.api.logServerPort
         })
+      },
+      apps :{
+        instanceIdentifier: null
       }
     })
   }
