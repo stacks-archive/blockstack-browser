@@ -329,7 +329,7 @@
 				TargetAttributes = {
 					46AB7B371E632F08004DACD8 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = CWQ2SUHV2E;
+						DevelopmentTeam = 8AGC2Z4ZX9;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
@@ -727,7 +727,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = CWQ2SUHV2E;
+				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
 				INFOPLIST_FILE = Blockstack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
@@ -744,7 +744,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = CWQ2SUHV2E;
+				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
 				INFOPLIST_FILE = Blockstack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.mac;
