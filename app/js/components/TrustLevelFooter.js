@@ -5,7 +5,7 @@ class TrustLevelFooter extends Component {
   static propTypes = {
     trustLevel: PropTypes.number.isRequired,
     maxTrustLevel: PropTypes.number.isRequired,
-    link: PropTypes.string.isRequired
+    onClick: PropTypes.func.isRequired
   }
 
   render() {
@@ -18,13 +18,13 @@ class TrustLevelFooter extends Component {
     }
 
     return (
-      <footer className="footer">
+      <footer className="footer" onClick={this.props.onClick}>
         <div className="trust-level-footer-container text-center">
-          <Link to={this.props.link}>
+          {/*<Link to={this.props.link}>*/}
             <span>
               Increase your trust level {stars(this.props.trustLevel, this.props.maxTrustLevel)} 
             </span>
-          </Link>
+          {/*</Link>*/}
         </div>
       </footer>
     )

@@ -98,6 +98,7 @@ class App extends Component {
     this.performSanityChecks = this.performSanityChecks.bind(this)
     this.getTrustLevel = this.getTrustLevel.bind(this)
     this.shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter.bind(this)
+    this.onTrustLevelFooterClick = this.onTrustLevelFooterClick.bind(this)
   }
 
   componentWillMount() {
@@ -170,6 +171,11 @@ class App extends Component {
     }
   }
 
+  onTrustLevelFooterClick() {
+    console.log('here')
+    this.props.router.push(`/profiles/${this.props.defaultIdentity}/edit`)
+  }
+
   closeModal() {
     this.setState({ modalIsOpen: false })
   }
@@ -204,7 +210,7 @@ class App extends Component {
           <TrustLevelFooter
             trustLevel={trustLevel}
             maxTrustLevel={MAX_TRUST_LEVEL}
-            link={editProfileLink}
+            onClick={this.onTrustLevelFooterClick}
           />
         }
       </div>
