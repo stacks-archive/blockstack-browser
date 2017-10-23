@@ -7,8 +7,8 @@ import InputGroup from './components/InputGroup'
 import { AccountActions } from './account/store/account'
 import { IdentityActions } from './profiles/store/identity'
 import { decrypt } from './utils'
-import { updateState } from './store/reducers'
-
+import { CURRENT_VERSION, updateState } from './store/reducers'
+import { BLOCKSTACK_STATE_VERSION_KEY } from './App'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('UpdateStatePage.js')
@@ -89,7 +89,9 @@ class UpdateStatePage extends Component {
         const ownerAddress = nextProps.identityAddresses[i]
         nextProps.createNewIdentityWithOwnerAddress(i, ownerAddress)
       }
-
+      logger.debug(`componentWillReceiveProps: Setting new state version to ${CURRENT_VERSION}`)
+      localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
+      
       nextProps.setDefaultIdentity(this.state.defaultIdentity)
       nextProps.router.push('/')
     }
