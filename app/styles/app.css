@@ -412,10 +412,13 @@ input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
 
 /* 16. Navbar */
 header{padding-top:15px;}
-.navbar{padding:0!important;height:70px;}
+.navbar{padding:0!important;height:70px;text-align:center;}
 .navbar-expand{width:85%;}
-.nav-item{width:88px;}
+.nav-item{width:88px;text-align:center;text-transform: uppercase;font-family:'Lato',sans-serif;font-size:11px;font-weight:700}
 .nav-link{width:100%;}
+.nav-link img{margin:auto;}
+.nav-item span {color:#949494;}
+.nav-item span.active {color:#2C96FF;}
 .navbar-expand .navbar-nav .nav-link{padding:12px 13px;}
 .secondary-nav{margin-top:5px;}
 
@@ -548,9 +551,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 /* Small devices (tablets, 768px and up) */
 @media (min-width:768px){
   /* 16. Navbars */
-  .navbar-expand{width:70%;}
-  .navbar-expand .navbar-nav .nav-link{padding:12px 26px;}
-  .navbar-expand .navbar-nav .nav-link > img {width:110%;}
+  .navbar-expand{width:75%;}
 
   /* 21. Cards */
   .pro-card-body{margin-left:auto;margin-right:auto;max-width:300px;}
@@ -579,7 +580,6 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 /* Medium devices (desktops, 975px and up) */
 @media (min-width:992px){
   /* 16. Navbars */
-  .navbar-expand .navbar-nav .nav-link > img {width:115%;}
 
 	.card-list-wrap{min-width:330px;margin-right:30px;margin-right:1.875rem;}
 	.pro-wrap{min-width:905px;}

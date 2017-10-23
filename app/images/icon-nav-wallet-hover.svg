@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="36px" height="46px" viewBox="0 0 36 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 47 (45396) - http://www.bohemiancoding.com/sketch -->
+<svg width="36px" height="42px" viewBox="0 0 36 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
     <title>icon-nav-wallet-hover</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="browser-macOS-40a-profile-d18" transform="translate(-260.000000, -59.000000)">
-            <g id="navbar-352px" transform="translate(58.000000, 47.000000)">
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="browser-macOS-40a-profile-verified-d18" transform="translate(-260.000000, -46.000000)" stroke-width="1.19">
+            <g id="navbar-w352px-top0" transform="translate(58.000000, 34.000000)">
                 <g id="wallet:hover" transform="translate(176.000000, 0.000000)">
-                    <g id="wallet-temporary" transform="translate(35.000000, 26.000000)" stroke="#2C96FF" stroke-width="1.19" stroke-linecap="square">
-                        <path d="M15.0839844,1.62964472 L1.62964472,1.62964472 C0.729266014,1.62964472 0,2.35891074 0,3.25928945 C0,4.15966816 0.729266014,4.88893417 1.62964472,4.88893417 C10.5992045,4.88893417 15.0839844,4.79818919 15.0839844,4.61669922 C15.0839844,3.71175937 15.0839844,2.71607454 15.0839844,1.62964472 Z" id="Shape"></path>
-                        <path d="M17.926092,4.88893417 L1.62964472,4.88893417 C0.729266014,4.88893417 0,4.15966816 0,3.25928945 L0,15.4816249 C0,16.8317855 1.09430643,17.926092 2.44446709,17.926092 L17.926092,17.926092 L17.926092,4.88893417 Z" id="Shape"></path>
-                        <circle id="Oval" cx="13.0371578" cy="11.4075131" r="1.62964472"></circle>
+                    <g id="wallet" transform="translate(26.000000, 12.000000)">
+                        <path d="M24.0839844,15.6296447 L10.6296447,15.6296447 C9.72926601,15.6296447 9,16.3589107 9,17.2592894 C9,18.1596682 9.72926601,18.8889342 10.6296447,18.8889342 C19.5992045,18.8889342 24.0839844,18.7981892 24.0839844,18.6166992 C24.0839844,17.7117594 24.0839844,16.7160745 24.0839844,15.6296447 Z" id="Shape" stroke="#2C96FF"></path>
+                        <path d="M26.926092,18.8889342 L10.6296447,18.8889342 C9.72926601,18.8889342 9,18.1596682 9,17.2592894 L9,29.4816249 C9,30.8317855 10.0943064,31.926092 11.4444671,31.926092 L26.926092,31.926092 L26.926092,18.8889342 Z" id="Shape" stroke="#2C96FF" fill="#2C96FF"></path>
+                        <circle id="Oval" stroke="#FAFAFA" fill="#2C96FF" cx="22.0371578" cy="25.4075131" r="1.62964472"></circle>
                     </g>
-                    <rect id="::after" fill="#2C96FF" x="26" y="56" width="36" height="2"></rect>
                 </g>
             </g>
         </g>
