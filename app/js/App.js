@@ -12,7 +12,7 @@ import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-
 import { MAX_TRUST_LEVEL } from './utils/account-utils'
 import { SanityActions }    from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
-
+import { isWindowsBuild } from './utils/window-utils'
 
 import log4js from 'log4js'
 
@@ -83,6 +83,11 @@ class App extends Component {
     if (existingVersion < CURRENT_VERSION) {
       logger.debug('We need to update state. Need to check if on-boarding is open.')
       needToUpdate = true
+    }
+
+    if (isWindowsBuild() && !this.props.api.coreAPIPassword){
+      logger.debug('Windows build. Pretending to have a valid core connection.')
+      this.props.api.coreAPIPassword = 'WindowsPretendPasswordAPI'
     }
 
     this.state = {

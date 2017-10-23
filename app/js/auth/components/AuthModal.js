@@ -11,6 +11,7 @@ import {
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
 import { setCoreStorageConfig } from '../../utils/api-utils'
+import { isWindowsBuild } from '../../utils/window-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 
@@ -68,7 +69,8 @@ class AuthModal extends Component {
       coreSessionToken: null,
       decodedToken: null,
       storageConnected: this.props.api.storageConnected,
-      processing: false
+      processing: false,
+      windowsBuild: isWindowsBuild()
     }
 
     this.login = this.login.bind(this)
@@ -207,6 +209,29 @@ class AuthModal extends Component {
     const appManifest = this.props.appManifest
     const appManifestLoading = this.props.appManifestLoading
     const processing = this.state.processing
+    if (isWindowsBuild()) {
+      return (
+        <div className="">
+        <Modal
+          isOpen
+          onRequestClose={this.closeModal}
+          contentLabel="This is My Modal"
+          shouldCloseOnOverlayClick
+          style={{ overlay: { zIndex: 10 } }}
+          className="container-fluid"
+          portalClassName="auth-modal"
+        >
+          <h3>Sign In Request</h3>
+            <div>
+              <p>
+                 Authenticating with applications is not supported yet in our Windows build. Feature coming soon!
+              </p>
+            </div>
+        </Modal>
+        </div>
+      )
+    }
+
     return (
       <div className="">
         <Modal

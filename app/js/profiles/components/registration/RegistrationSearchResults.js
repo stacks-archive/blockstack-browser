@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import roundTo from 'round-to'
+import { isWindowsBuild } from '../../../utils/window-utils'
 
 const availabilityHeaderStyle = {
   marginTop: '1em',
@@ -24,6 +25,9 @@ const RegistrationSearchResults = (props) => (
             nameAvailabilityObject.available
           const checkingPrice = nameAvailabilityObject &&
             nameAvailabilityObject.checkingPrice
+
+          const windowsBuild = isWindowsBuild()
+
           let price = 0
           if (nameAvailabilityObject) {
             price = nameAvailabilityObject.price
@@ -78,20 +82,29 @@ const RegistrationSearchResults = (props) => (
                           </div>
                         </div>
                         :
-                        <div className="username-search-result">
-                          <Link
-                            className="btn btn-primary btn-block"
-                            to={`/profiles/i/add-username/${props.index}/select/${name}`}
-                          >
-                            Buy <strong>{name}</strong> for {price} bitcoins
-                          </Link>
-                          <button
-                            onClick={props.showSearchBox}
-                            className="btn btn-secondary btn-block"
-                          >
-                            Back
-                          </button>
-                        </div>
+                        <div>
+                        {windowsBuild ?
+                             <div className="username-search-result">
+                                <strong>{name}</strong> available for {price} bitcoins. <br/>
+                                Buying names is currently unsupported in Windows, however the feature is coming soon!
+                             </div>
+                             :
+                             <div className="username-search-result">
+                                <Link
+                                  className="btn btn-primary btn-block"
+                                  to={`/profiles/i/add-username/${props.index}/select/${name}`}
+                                >
+                                Buy <strong>{name}</strong> for {price} bitcoins
+                                </Link>
+                                <button
+                                   onClick={props.showSearchBox}
+                                   className="btn btn-secondary btn-block"
+                                >
+                                Back
+                               </button>
+                             </div>
+                          }
+                         </div>
                       }
                       </div>
                     }

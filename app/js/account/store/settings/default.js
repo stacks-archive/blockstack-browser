@@ -8,27 +8,30 @@ export const REGTEST_CORE_INSIGHT_API_URL =
 // the user's settings.api state doesn't
 // already have an existing key.
 // To change a value, use a new key.
+
+const DEFAULT_CORE_API_ENDPOINT = 'https://core.blockstack.org'
+
 const DEFAULT_API = {
   apiCustomizationEnabled: true,
-  nameLookupUrl: 'http://localhost:6270/v1/names/{name}',
+  nameLookupUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/names/{name}',
   searchServiceUrl: 'https://core.blockstack.org/v1/search?query={query}',
-  registerUrl: 'http://localhost:6270/v1/names',
-  bitcoinAddressLookupUrl: 'http://localhost:6270/v1/addresses/bitcoin/{address}',
-  zeroConfBalanceUrl: 'http://localhost:6270/v1/wallet/balance/0',
+  registerUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/names',
+  bitcoinAddressLookupUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/addresses/bitcoin/{address}',
+  zeroConfBalanceUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/wallet/balance/0',
   insightUrl: 'https://utxo.blockstack.org/insight-api/addr/{address}',
   broadcastUrl: 'https://utxo.blockstack.org/insight-api/tx/send',
-  priceUrl: 'http://localhost:6270/v1/prices/names/{name}',
+  priceUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/prices/names/{name}',
   networkFeeUrl: 'https://bitcoinfees.21.co/api/v1/fees/recommended',
-  walletPaymentAddressUrl: 'http://localhost:6270/v1/wallet/payment_address',
-  pendingQueuesUrl: 'http://localhost:6270/v1/blockchains/bitcoin/pending',
-  coreWalletWithdrawUrl: 'http://localhost:6270/v1/wallet/balance',
+  walletPaymentAddressUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/wallet/payment_address',
+  pendingQueuesUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/blockchains/bitcoin/pending',
+  coreWalletWithdrawUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/wallet/balance',
   bitcoinAddressUrl: 'https://explorer.blockstack.org/address/{identifier}',
   ethereumAddressUrl: 'https://tradeblock.com/ethereum/account/{identifier}',
   pgpKeyUrl: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on',
   btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
-  corePingUrl: 'http://localhost:6270/v1/node/ping',
-  zoneFileUrl: 'http://localhost:6270/v1/names/{name}/zonefile',
-  nameTransferUrl: 'http://localhost:6270/v1/names/{name}/owner',
+  corePingUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/node/ping',
+  zoneFileUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/names/{name}/zonefile',
+  nameTransferUrl: DEFAULT_CORE_API_ENDPOINT + '/v1/names/{name}/owner',
   subdomains: {
     'foo.id': {
       registerUrl: 'http://localhost:7103/register'

@@ -11,6 +11,7 @@ import { authorizationHeaderValue,
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode,
   getInsightUrl } from '../../../utils'
+import { isWindowsBuild } from '../../../utils/window-utils'
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
@@ -189,6 +190,12 @@ function storageIsConnected() {
 
 function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
+    if (isWindowsBuild()){
+      logger.debug('Mocking core wallet balance in Windows build')
+      dispatch(updateCoreWalletBalance(0))
+      return
+    }
+
     logger.trace('refreshCoreWalletBalance: Beginning refresh...')
     logger.debug(`refreshCoreWalletBalance: addressBalanceUrl: ${addressBalanceUrl}`)
     const headers = { Authorization: authorizationHeaderValue(coreAPIPassword) }
@@ -210,6 +217,12 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
 
 function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
   return dispatch => {
+    if (isWindowsBuild()){
+      logger.debug('Mocking core wallet address in Windows build')
+      dispatch(updateCoreWalletAddress('Not supported in Windows'))
+      return
+    }
+
     const headers = { Authorization: authorizationHeaderValue(coreAPIPassword) }
     fetch(walletPaymentAddressUrl, { headers })
     .then((response) => response.text())
@@ -235,6 +248,12 @@ function resetCoreWithdrawal() {
 function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress,
   coreAPIPassword, amount = null, paymentKey = null) {
   return dispatch => {
+    if (isWindowsBuild()){
+      dispatch(withdrawCoreBalanceError('Core wallet withdrawls not allowed in Windows build'))
+      return
+    }
+
+
     const requestBody = {
       address: recipientAddress,
       min_confs: 0
