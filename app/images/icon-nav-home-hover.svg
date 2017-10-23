@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="36px" height="46px" viewBox="0 0 36 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 47 (45396) - http://www.bohemiancoding.com/sketch -->
+<svg width="36px" height="42px" viewBox="0 0 36 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
     <title>icon-nav-home-hover</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="browser-macOS-40a-profile-d18" transform="translate(-84.000000, -59.000000)">
-            <g id="navbar-352px" transform="translate(58.000000, 47.000000)">
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="browser-macOS-40a-profile-verified-d18" transform="translate(-84.000000, -46.000000)" stroke-width="1.5" stroke="#2C96FF" fill="#2C96FF">
+            <g id="navbar-w352px-top0" transform="translate(58.000000, 34.000000)">
                 <g id="home:hover">
-                    <g id="home-temporary" transform="translate(36.000000, 26.000000)" stroke-linecap="round" stroke-width="1.5" stroke="#2C96FF" stroke-linejoin="round">
+                    <g id="home" transform="translate(36.000000, 26.000000)">
                         <polyline id="Shape" points="0 7 0 18 6.375 18 6.375 13.6784788 10.625 13.6784788 10.625 18 17 18 17 7"></polyline>
                         <polyline id="Shape" points="0 7 8.5 0 17 7"></polyline>
                     </g>
-                    <rect id="::after" fill="#2C96FF" x="26" y="56" width="36" height="2"></rect>
                 </g>
             </g>
         </g>
