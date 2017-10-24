@@ -116,7 +116,7 @@ class App extends Component {
       this.props.updateApi(api)
     }
 
-    if (!this.props.instanceIdentifier) {
+    if (!this.props.instanceIdentifier && this.props.localIdentities.length > 0) {
       this.props.generateInstanceIdentifier()
     }
   }
