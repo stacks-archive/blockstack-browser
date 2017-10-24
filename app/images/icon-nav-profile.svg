@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="42px" viewBox="0 0 36 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-nav-profile</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="browser-macOS-40a-profile-verified-d18" transform="translate(-172.000000, -46.000000)" stroke="#949494" stroke-width="1.19047619">
+            <g id="navbar-w352px-top0" transform="translate(58.000000, 34.000000)">
+                <g id="profile" transform="translate(107.000000, 12.000000)">
+                    <path d="M27.502381,25.9761905 L27.5952381,25.9761905 C31.2113095,25.9761905 34.1428571,28.9077381 34.1428571,32.5238095 L34.1428571,32.5238095 L16.2857143,32.5238095 C16.2857143,28.9077381 19.2166667,25.9761905 22.8333333,25.9761905 L22.9071429,25.9761905" id="Stroke-6053"></path>
+                    <path d="M25.2139881,26.5714286 L25.2139881,26.5714286 C22.5842262,26.5714286 20.4520833,24.4392857 20.4520833,21.8095238 L20.4520833,19.4285714 C20.4520833,16.7988095 22.5842262,14.6666667 25.2139881,14.6666667 L25.2139881,14.6666667 C27.84375,14.6666667 29.9758929,16.7988095 29.9758929,19.4285714 L29.9758929,21.8095238 C29.9758929,24.4392857 27.84375,26.5714286 25.2139881,26.5714286 L25.2139881,26.5714286 Z" id="Stroke-6055"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
