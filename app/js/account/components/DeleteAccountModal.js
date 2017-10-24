@@ -15,7 +15,7 @@ const DeleteAccountModal = (props) => (
     <div className="modal-body">
       <p>
         This will remove your account information from Blockstack.
-        Please save your backup phrase and password
+        Please save your recovery phrase and password
         if you want to retrieve your account in the future.
       </p>
     </div>

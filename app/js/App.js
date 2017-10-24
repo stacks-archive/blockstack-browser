@@ -18,7 +18,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('App.js')
 
-const BLOCKSTACK_STATE_VERSION_KEY = 'BLOCKSTACK_STATE_VERSION'
+export const BLOCKSTACK_STATE_VERSION_KEY = 'BLOCKSTACK_STATE_VERSION'
 
 function mapStateToProps(state) {
   return {
@@ -69,7 +69,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
-    
+
     if (!existingVersion) {
       logger.debug(`No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`)
       localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
@@ -116,7 +116,7 @@ class App extends Component {
       this.props.updateApi(api)
     }
 
-    if (!this.props.instanceIdentifier) {
+    if (!this.props.instanceIdentifier && this.props.localIdentities.length > 0) {
       this.props.generateInstanceIdentifier()
     }
   }

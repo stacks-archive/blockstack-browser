@@ -15,24 +15,28 @@ function updateAppList(apps, version) {
 }
 
 function updateInstanceIdentifier(instanceIdentifier) {
+  const instanceCreationDate = Date.now()
   return {
     type: types.UPDATE_INSTANCE_IDENTIFIER,
-    instanceIdentifier
+    instanceIdentifier,
+    instanceCreationDate
   }
 }
 
-function refreshAppList(browserApiUrl, instanceIdentifier) {
+function refreshAppList(browserApiUrl, instanceIdentifier, instanceCreationDate) {
   return dispatch => {
     logger.trace('refreshAppList')
-    return fetch(`${browserApiUrl}/data?id=${instanceIdentifier}`)
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      dispatch(updateAppList(responseJson.apps, responseJson.version))
-    })
-    .catch((error) => {
-      logger.error('refreshAppList:', error)
-    })
+    if(instanceIdentifier) {
+      return fetch(`${browserApiUrl}/data?id=${instanceIdentifier}&created=${instanceCreationDate}`)
+      .then((response) => response.text())
+      .then((responseText) => JSON.parse(responseText))
+      .then((responseJson) => {
+        dispatch(updateAppList(responseJson.apps, responseJson.version))
+      })
+      .catch((error) => {
+        logger.error('refreshAppList:', error)
+      })
+    }
   }
 }
 
