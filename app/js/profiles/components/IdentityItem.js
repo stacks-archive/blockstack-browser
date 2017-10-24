@@ -113,7 +113,7 @@ class IdentityItem extends Component {
               </li>
             </ul>
             {this.props.canAddUsername ?
-              <div>
+              <div onClick={e => e.stopPropagation()}>
                 <ContextMenuTrigger
                   id={`menu-${this.props.ownerAddress}`}
                   holdToDisplay={0}
