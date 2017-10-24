@@ -529,7 +529,28 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .clickable{cursor:pointer;}
 
 
+.react-contextmenu {
+	min-width: 160px;
+	padding: 5px 5px;
+	margin: 2px 0 0;
+	text-align: left;
+	background-color: #fff;
+	background-clip: padding-box;
+	border-radius: 0;
+	outline: none;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 250ms ease !important;
+	box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
+}
 
+.react-contextmenu-item.react-contextmenu-item--active,
+.react-contextmenu-item.react-contextmenu-item--selected {
+    color: #fff;
+    background-color: #2C96FF;
+    border-color: #2C96FF;
+    text-decoration: none;
+}
 
 
 

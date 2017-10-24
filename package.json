@@ -140,6 +140,7 @@
     "react-addons-css-transition-group": "^15.6.2",
     "react-addons-test-utils": "^15.4.1",
     "react-bootstrap": "^0.28.2",
+    "react-contextmenu": "^2.8.0",
     "react-document-title": "^2.0.1",
     "react-dom": "^15.4.1",
     "react-dropzone": "^3.7.3",
