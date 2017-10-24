@@ -95,7 +95,7 @@ class SocialAccountItem extends Component {
                 {`@${accountServiceName}`}
               </span>
               {verified ?
-                <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
+                <span className="float-right status" data-tip data-for={`verified-${this.props.service}`}>
                   <i className="fa fa-fw fa-check-circle fa-lg" />
                 </span>
                 : 

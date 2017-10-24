@@ -160,9 +160,6 @@ class DefaultProfilePage extends Component {
           <SecondaryNavBar
             leftButtonTitle="Edit"
             leftButtonLink={`/profiles/${identityIndex}/edit`}
-            centerButtonTitle="View"
-            centerButtonLink="/profiles"
-            isCenterActive
             rightButtonTitle="More"
             rightButtonLink="/profiles/i/all"
           />
@@ -170,7 +167,7 @@ class DefaultProfilePage extends Component {
             <div className="row">
               <div className="col-12">
 
-                <div className="avatar-md m-b-20 text-center">
+                <div className="avatar-md m-b-30 text-center">
                   <Image
                     src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
                     fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
@@ -185,8 +182,8 @@ class DefaultProfilePage extends Component {
                       transaction <span>#{transactionIndex}</span>
                     </div>
                   : null}
-                  <h1 className="pro-card-name text-center">{person.name()}</h1>
-                  <div className="m-b-20 text-center">
+                  <div className="pro-card-name text-center">{person.name()}</div>
+                  <div className="text-center">
                     {identity.canAddUsername ?
                       <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
                        Add a username
@@ -205,17 +202,21 @@ class DefaultProfilePage extends Component {
                   }
                   </div>
 
-                  <div className="pro-card-domain-name m-b-10 text-center text-secondary m-t-0">
+                  <div className="pro-card-identity-address m-b-25 text-center text-secondary m-t-0">
                     <small>
                       <span data-tip data-for="ownerAddress">
-                        {identity.ownerAddress}
+                        {`ID-${identity.ownerAddress}`}
                       </span>
                     </small>
                   </div>
 
-                  <div className="pro-card-trust-level text-center m-t-5 m-b-20">
+                  <div className="pro-card-body m-b-35 text-center">
+                    {person.description()}
+                  </div>
+
+                  <div className="pro-card-trust-level text-center m-b-20">
                     <span className="pro-card-trust-level-badge">
-                      {trustLevel >= 3 && <i className="fa fa-check-circle" />}
+                      {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
                       <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
                       {trustLevel <= 1 &&
                         <span data-tip data-for="trustLevel">
@@ -225,9 +226,7 @@ class DefaultProfilePage extends Component {
                     </span>
                   </div>
 
-                  <div className="pro-card-body text-center">
-                    {person.description()}
-                  </div>
+                  {/*}
                   {person.address() ?
                     <div className="pro-card-body text-center text-secondary">
                     {person.address()}
@@ -238,6 +237,7 @@ class DefaultProfilePage extends Component {
                     {person.birthDate()}
                     </div>
                   : null}
+                  */}
                 </div>
 
                 <div className="text-center">
