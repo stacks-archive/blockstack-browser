@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 
 namespace BlockstackBrowser
 {
@@ -12,9 +14,6 @@ namespace BlockstackBrowser
         ContextMenu contextMenu;
         Process browserProxy, corsProxy;
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -23,13 +22,21 @@ namespace BlockstackBrowser
             Application.Run(new Program());
         }
 
+        static void deleteAndUnpackFiles()
+        {
+            if (!Directory.Exists("Resources\\browser-build"))
+                ZipFile.ExtractToDirectory("Resources\\browser-build.zip", "Resources");
+            if (!Directory.Exists("Resources\\corsproxy-https"))
+                ZipFile.ExtractToDirectory("Resources\\corsproxy-https.zip", "Resources");
+        }
+
         public Program()
         {
             container = new System.ComponentModel.Container();
 
             myIcon = new NotifyIcon(container);
             myIcon.Visible = true;
-            myIcon.Icon = new System.Drawing.Icon("blockstack.ico");
+            myIcon.Icon = new System.Drawing.Icon("Resources\\blockstack.ico");
 
             myIcon.BalloonTipText = "Blockstack Browser";
             myIcon.Text = "Blockstack Browser";
@@ -37,17 +44,23 @@ namespace BlockstackBrowser
             contextMenu = new ContextMenu();
 
             MenuItem exitItem = new MenuItem();
-            exitItem.Index = 0;
+            exitItem.Index = 1;
             exitItem.Text = "E&xit";
             exitItem.Click += new System.EventHandler(this.exitRequest);
             MenuItem homeItem = new MenuItem();
+            homeItem.Index = 0;
+            homeItem.Text = "H&ome";
+            homeItem.Click += new System.EventHandler(this.homeOpen);
 
             contextMenu.MenuItems.AddRange(
-                new MenuItem[] { exitItem, homeItem });
+                new MenuItem[] { homeItem, exitItem });
             myIcon.ContextMenu = contextMenu;
+
+            //deleteAndUnpackFiles();
 
             RunBlockstackBrowser();
             RunCORSProxy();
+            this.homeOpen(null, null);
         }
 
         protected override void SetVisibleCore(bool value)
@@ -62,6 +75,11 @@ namespace BlockstackBrowser
         private void exitRequest(object Sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void homeOpen(object Sender, EventArgs e)
+        {
+            Process.Start("http://localhost:8888/");
         }
 
         protected override void Dispose(bool disposing)
@@ -84,22 +102,25 @@ namespace BlockstackBrowser
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            startInfo.FileName = "node.exe";
+            startInfo.FileName = "Resources\\node.exe";
             startInfo.Arguments = command;
             process.StartInfo = startInfo;
             process.Start();
+
+            ChildProcessTracker.AddProcess(process);
+
             return process;
         }
 
         private void RunBlockstackBrowser()
         {
-            String blockstackCommand = "blockstackProxy.js 8888 browser-build";
+            String blockstackCommand = "Resources\\blockstackProxy.js 8888 Resources\\browser-build";
             this.browserProxy = ShellOut(blockstackCommand);
         }
 
         private void RunCORSProxy()
         {
-            String proxyCommand = "corsproxy-https\\node_modules\\corsproxy-https\\bin\\corsproxy";
+            String proxyCommand = "Resources\\corsproxy-https\\node_modules\\corsproxy-https\\bin\\corsproxy";
             this.corsProxy = ShellOut(proxyCommand);
         }
     }
