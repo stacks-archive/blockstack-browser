@@ -12,7 +12,8 @@ class IdentityItem extends Component {
     isDefault: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired
+    index: PropTypes.number.isRequired,
+    windowsBuild: PropTypes.bool
   }
 
   constructor(props) {
@@ -38,6 +39,11 @@ class IdentityItem extends Component {
             <div>This is your identity address.</div>
           </div>
         </ToolTip>
+        <ToolTip id="windowsDisabled">
+          <div>
+            <div>You cannot purchase usernames in the Windows build right now. Feature coming soon!</div>
+          </div>
+        </ToolTip>
         <div>
           <div className="avatar-sm float-left" style={{ display: 'inline' }}>
             <Image
@@ -51,6 +57,15 @@ class IdentityItem extends Component {
               <li>
                 <p className="card-title">
                 {this.props.canAddUsername ?
+                 <div>
+                 {this.props.windowsBuild ?
+                  <span>
+                  Add username
+                  <i className="fa fa-fw fa-exclamation fa-sm text-secondary"
+                  data-tip
+                  data-for="windowsDisabled"></i>
+                  </span>
+                 :
                   <a
                     href="#"
                     onClick={(event) => {
@@ -61,6 +76,8 @@ class IdentityItem extends Component {
                   >
                    Add username
                   </a>
+                 }
+                 </div>
                  :
                   <span>
                     {this.props.username}

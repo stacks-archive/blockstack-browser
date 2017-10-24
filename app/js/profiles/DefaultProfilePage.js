@@ -12,6 +12,8 @@ import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import ToolTip from '../components/ToolTip'
 
+import { isWindowsBuild } from '../utils/window-utils'
+
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/DefaultProfilePage.js')
@@ -110,6 +112,7 @@ class DefaultProfilePage extends Component {
     const identityIndex = this.props.defaultIdentity
     const identity = this.state.localIdentities[identityIndex]
     const person = new Person(identity.profile)
+    const windowsBuild = isWindowsBuild()
 
     if (identity.username) {
       identity.canAddUsername = false
@@ -156,6 +159,11 @@ class DefaultProfilePage extends Component {
             <div>Increase your trust level by verifying your social proofs.</div>
           </div>
         </ToolTip>
+        <ToolTip id="windowsDisabled">
+          <div>
+            <div>You cannot purchase usernames in the Windows build right now. Feature coming soon!</div>
+          </div>
+        </ToolTip>
         <div>
           <SecondaryNavBar
             leftButtonTitle="Edit"
@@ -188,9 +196,20 @@ class DefaultProfilePage extends Component {
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
                   <div className="m-b-20 text-center">
                     {identity.canAddUsername ?
+                     <div>
+                     {windowsBuild ?
+                      <div>
+                      <span
+                      data-tip
+                      data-for="windowsDisabled"
+                      >Add a username</span>
+                      </div>
+                      :
                       <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
                        Add a username
                       </Link>
+                     }
+                     </div>
                     :
                       <div className="pro-card-domain-name text-center text-secondary m-t-0">
                         <span>{identity.username}</span>
@@ -202,7 +221,7 @@ class DefaultProfilePage extends Component {
                           ></i>
                           : null}
                       </div>
-                  }
+                    }
                   </div>
 
                   <div className="pro-card-domain-name m-b-10 text-center text-secondary m-t-0">

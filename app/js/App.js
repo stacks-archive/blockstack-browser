@@ -85,11 +85,6 @@ class App extends Component {
       needToUpdate = true
     }
 
-    if (isWindowsBuild() && !this.props.api.coreAPIPassword){
-      logger.debug('Windows build. Pretending to have a valid core connection.')
-      this.props.api.coreAPIPassword = 'WindowsPretendPasswordAPI'
-    }
-
     this.state = {
       accountCreated: !!this.props.encryptedBackupPhrase,
       storageConnected: !!this.props.api.storageConnected,
@@ -111,8 +106,14 @@ class App extends Component {
     const coreAPIPassword = getCoreAPIPasswordFromURL()
     const logServerPort = getLogServerPortFromURL()
     let api = this.props.api
+
+
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
+      this.props.updateApi(api)
+    } else if (isWindowsBuild()){
+      logger.debug('Windows build. Pretending to have a valid core connection.')
+      api = Object.assign({}, api, { coreAPIPassword : 'WindowsPretendPasswordAPI' })
       this.props.updateApi(api)
     }
 
