@@ -419,6 +419,7 @@ header{padding-top:15px;}
 .nav-link img{margin:auto;}
 .nav-item span {color:#949494;}
 .nav-item span.active {color:#2C96FF;}
+.nav-item span.active span {color:#2C96FF;}
 .navbar-expand .navbar-nav .nav-link{padding:12px 13px;}
 .secondary-nav{margin-top:5px;}
 
