@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockstackBrowser", "BlockstackBrowser\BlockstackBrowser.csproj", "{DCB69DB9-5ABD-458E-889A-4789CE193EAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCB69DB9-5ABD-458E-889A-4789CE193EAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCB69DB9-5ABD-458E-889A-4789CE193EAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCB69DB9-5ABD-458E-889A-4789CE193EAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCB69DB9-5ABD-458E-889A-4789CE193EAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C63FA30B-CC66-4720-B65C-2C40E8ABBE7D}
+	EndGlobalSection
+EndGlobal
