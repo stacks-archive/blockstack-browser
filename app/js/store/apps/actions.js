@@ -15,17 +15,19 @@ function updateAppList(apps, version) {
 }
 
 function updateInstanceIdentifier(instanceIdentifier) {
+  const instanceCreationDate = Date.now()
   return {
     type: types.UPDATE_INSTANCE_IDENTIFIER,
-    instanceIdentifier
+    instanceIdentifier,
+    instanceCreationDate
   }
 }
 
-function refreshAppList(browserApiUrl, instanceIdentifier) {
+function refreshAppList(browserApiUrl, instanceIdentifier, instanceCreationDate) {
   return dispatch => {
     logger.trace('refreshAppList')
     if(instanceIdentifier) {
-      return fetch(`${browserApiUrl}/data?id=${instanceIdentifier}`)
+      return fetch(`${browserApiUrl}/data?id=${instanceIdentifier}&created=${instanceCreationDate}`)
       .then((response) => response.text())
       .then((responseText) => JSON.parse(responseText))
       .then((responseJson) => {
