@@ -106,10 +106,10 @@ class Navbar extends Component {
   }
 
   render() {
-    const homeActive = this.props.activeTab === 'home' || this.state.homeTabHover 
-    const avatarActive = this.props.activeTab === 'avatar' || this.state.avatarTabHover 
-    const walletActive = this.props.activeTab === 'wallet' || this.state.walletTabHover 
-    const settingsActive = this.props.activeTab === 'settings' || this.state.settingsTabHover 
+    const homeActive = this.props.activeTab === 'home' || this.state.homeTabHover
+    const avatarActive = this.props.activeTab === 'avatar' || this.state.avatarTabHover
+    const walletActive = this.props.activeTab === 'wallet' || this.state.walletTabHover
+    const settingsActive = this.props.activeTab === 'settings' || this.state.settingsTabHover
 
     return (
       <header className="container-fluid no-padding">
@@ -117,7 +117,7 @@ class Navbar extends Component {
           <ul className="navbar-nav container-fluid">
             <li className="nav-item">
               <Link
-                to="/" 
+                to="/"
                 className="nav-link"
                 onMouseOver={this.onHomeNavMouseOver}
                 onMouseOut={this.onHomeNavMouseOut}
@@ -135,15 +135,17 @@ class Navbar extends Component {
                 onMouseOver={this.onAvatarNavMouseOver}
                 onMouseOut={this.onAvatarNavMouseOut}
               >
-                <img src={this.avatarNavIconImage()} alt="Profile" />
+                <img src={this.avatarNavIconImage()} alt="IDs" />
                 <span className={`${avatarActive ? 'active' : ''}`}>
-                  Profile
+                  &nbsp;&nbsp;&nbsp;ID<span
+                    style={{ textTransform: 'lowercase' }}
+                  >s</span>&nbsp;&nbsp;&nbsp;
                 </span>
               </Link>
             </li>
             <li className="nav-item">
               <Link
-                to="/wallet/receive" 
+                to="/wallet/receive"
                 className="nav-link"
                 onMouseOver={this.onWalletNavMouseOver}
                 onMouseOut={this.onWalletNavMouseOut}
@@ -156,7 +158,7 @@ class Navbar extends Component {
             </li>
             <li className="nav-item">
               <Link
-                to="/account" 
+                to="/account"
                 className="nav-link"
                 onMouseOver={this.onSettingsNavMouseOver}
                 onMouseOut={this.onSettingsNavMouseOut}
