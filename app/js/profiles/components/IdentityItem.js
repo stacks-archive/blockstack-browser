@@ -17,7 +17,8 @@ class IdentityItem extends Component {
     isDefault: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired
+    index: PropTypes.number.isRequired,
+    profileUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -31,7 +32,8 @@ class IdentityItem extends Component {
     event.stopPropagation()
     logger.trace('transferFromOnenameClick')
     const identityAddress = this.props.ownerAddress
-    const url = `https://onename.com/settings?action=export&address=${identityAddress}`
+    const profileUrl = this.props.profileUrl
+    const url = `https://onename.com/settings?action=export&address=${identityAddress}&url=${profileUrl}`
     logger.debug(`transferFromOnenameClick: Redirecting to ${url}...`)
     const win = window.open(url, '_blank')
     win.focus()
@@ -110,37 +112,41 @@ class IdentityItem extends Component {
                 }
               </li>
             </ul>
-            <ContextMenuTrigger
-              id={`menu-${this.props.ownerAddress}`}
-              holdToDisplay={0}
-            >
-              <div
-                style={{
-                  alignItems: 'center',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  position: 'absolute',
-                  right: '10px',
-                  bottom: '10px',
-                  width: '20px',
-                  height: '20px',
-                  fontSize: '25px',
-                  paddingBottom: '15px',
-                  color: '#AEAEAE'
-                }}
-              >
-              &#8230;
+            {this.props.canAddUsername ?
+              <div>
+                <ContextMenuTrigger
+                  id={`menu-${this.props.ownerAddress}`}
+                  holdToDisplay={0}
+                >
+                  <div
+                    style={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      position: 'absolute',
+                      right: '10px',
+                      bottom: '10px',
+                      width: '20px',
+                      height: '20px',
+                      fontSize: '25px',
+                      paddingBottom: '15px',
+                      color: '#AEAEAE'
+                    }}
+                  >
+                  &#8230;
+                  </div>
+                </ContextMenuTrigger>
+                <ContextMenu id={`menu-${this.props.ownerAddress}`}>
+                  <MenuItem
+                    onClick={this.transferFromOnenameClick}
+                  >
+                    <span className="text-secondary">
+                      Transfer username from Onename to this ID
+                    </span>
+                  </MenuItem>
+                </ContextMenu>
               </div>
-            </ContextMenuTrigger>
-            <ContextMenu id={`menu-${this.props.ownerAddress}`}>
-              <MenuItem
-                onClick={this.transferFromOnenameClick}
-              >
-                <span className="text-secondary">
-                  Transfer username from Onename to this ID
-                </span>
-              </MenuItem>
-            </ContextMenu>
+            : null}
           </div>
         </div>
       </div>
