@@ -209,7 +209,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         menu.addItem(withTitle: "Home", action: #selector(openPortalClick), keyEquivalent: "h")
-        menu.addItem(withTitle: "Identities", action: #selector(openProfilesClick), keyEquivalent: "i")
+        menu.addItem(withTitle: "IDs", action: #selector(openProfilesClick), keyEquivalent: "i")
         menu.addItem(withTitle: "Wallet", action: #selector(openWalletClick), keyEquivalent: "w")
         menu.addItem(withTitle: "Settings", action: #selector(openAccountClick), keyEquivalent: "s")
         menu.addItem(NSMenuItem.separator())

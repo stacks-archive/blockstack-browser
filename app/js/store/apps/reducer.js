@@ -5,7 +5,8 @@ const initialState = {
   apps: [],
   version: appList.version,
   lastUpdated: 0,
-  instanceIdentifier: null
+  instanceIdentifier: null,
+  instanceCreationDate: null
 }
 
 function AppsReducer(state = initialState, action) {
@@ -18,7 +19,8 @@ function AppsReducer(state = initialState, action) {
       })
     case types.UPDATE_INSTANCE_IDENTIFIER:
       return Object.assign({}, state, {
-        instanceIdentifier: action.instanceIdentifier
+        instanceIdentifier: action.instanceIdentifier,
+        instanceCreationDate: action.instanceCreationDate
       })
     default:
       return state

@@ -10,7 +10,8 @@ function mapStateToProps(state) {
     apps: state.apps,
     appListLastUpdated: state.apps.lastUpdated,
     api: state.settings.api,
-    instanceIdentifier: state.apps.instanceIdentifier
+    instanceIdentifier: state.apps.instanceIdentifier,
+    instanceCreationDate: state.apps.instanceCreationDate
   }
 }
 
@@ -50,13 +51,16 @@ class HomeScreenPage extends Component {
     refreshAppList: PropTypes.func.isRequired,
     appListLastUpdated: PropTypes.number,
     api: PropTypes.object.isRequired,
-    instanceIdentifier: PropTypes.string
+    instanceIdentifier: PropTypes.string,
+    instanceCreationDate: PropTypes.number
   }
 
   componentWillMount() {
     // Refresh apps list every 12 hours
-    if (this.props.appListLastUpdated < (Date.now() - 43200000)) {
-      this.props.refreshAppList(this.props.api.browserServerUrl, this.props.instanceIdentifier)
+    if (this.props.appListLastUpdated === undefined 
+      || this.props.appListLastUpdated < (Date.now() - 43200000)) {
+      this.props.refreshAppList(this.props.api.browserServerUrl, this.props.instanceIdentifier,
+        this.props.instanceCreationDate)
     }
   }
 

@@ -71,6 +71,7 @@ class AuthModal extends Component {
       storageConnected: this.props.api.storageConnected,
       processing: false,
       windowsBuild: isWindowsBuild()
+      invalidScopes: false
     }
 
     this.login = this.login.bind(this)
@@ -140,7 +141,10 @@ class AuthModal extends Component {
   }
 
   login() {
-    this.setState({ processing: true })
+    this.setState({
+      processing: true,
+      invalidScopes: false
+    })
     this.props.loginToApp()
     const localIdentities = this.props.localIdentities
     const identityIndex = this.state.currentIdentityIndex
@@ -186,11 +190,23 @@ class AuthModal extends Component {
           .find((keypair) => keypair.address === identity.ownerAddress)
 
           const appDomain = this.state.decodedToken.payload.domain_name
+          const scopes = this.state.decodedToken.payload.scopes
           const appsNodeKey = profileSigningKeypair.appsNodeKey
           const salt = profileSigningKeypair.salt
           const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
           const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
           const blockchainId = (hasUsername ? identity.username : null)
+
+          const scopesJSONString = JSON.stringify(scopes)
+
+          if (scopesJSONString !== '[]' && scopesJSONString !== '["store_write"]') {
+            this.setState({
+              invalidScopes: true
+            })
+            logger.error(`login: App requesting unsupported scopes: ${scopesJSONString}`)
+            return
+          }
+
           this.setState({ hasUsername })
           logger.trace('login(): Calling setCoreStorageConfig()...')
           setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
@@ -209,6 +225,8 @@ class AuthModal extends Component {
     const appManifest = this.props.appManifest
     const appManifestLoading = this.props.appManifestLoading
     const processing = this.state.processing
+    const invalidScopes = this.state.invalidScopes
+
     if (isWindowsBuild()) {
       return (
         <div className="">
@@ -252,7 +270,7 @@ class AuthModal extends Component {
             </div>
             :
             <div>
-          {appManifest === null ?
+          {appManifest === null || invalidScopes ?
             <div>
               <p>
                  Invalid Sign In Request
