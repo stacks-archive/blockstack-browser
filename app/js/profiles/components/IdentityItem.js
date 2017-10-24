@@ -59,7 +59,10 @@ class IdentityItem extends Component {
         </ToolTip>
         <ToolTip id="windowsDisabled">
           <div>
-            <div>You cannot purchase usernames in the Windows build right now. Feature coming soon!</div>
+            <div>
+              You cannot purchase usernames in the Windows build right now.
+              Feature coming soon!
+            </div>
           </div>
         </ToolTip>
         <div>
@@ -75,28 +78,29 @@ class IdentityItem extends Component {
               <li>
                 <p className="card-title">
                 {this.props.canAddUsername ?
-                 <div>
-                 {this.props.windowsBuild ?
-                  <span>
-                  Add username
-                  <i className="fa fa-fw fa-exclamation fa-sm text-secondary"
-                  data-tip
-                  data-for="windowsDisabled"></i>
-                  </span>
-                 :
-                  <a
-                    href="#"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      event.stopPropagation()
-                      this.props.router.push(`/profiles/i/add-username/${this.props.index}/search`)
-                    }}
-                  >
-                   Add username
-                  </a>
-                 }
-                 </div>
-                 :
+                  <div>
+                    {this.props.windowsBuild ?
+                      <span
+                        data-tip
+                        data-for="windowsDisabled"
+                      >
+                        <i>Add username</i>
+                      </span>
+                    :
+                      <a
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          event.stopPropagation()
+                          this.props.router.push(
+                            `/profiles/i/add-username/${this.props.index}/search`)
+                        }}
+                      >
+                        Add username
+                      </a>
+                    }
+                  </div>
+                :
                   <span>
                     {this.props.username}
                     {this.props.pending ?

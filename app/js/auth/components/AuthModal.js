@@ -70,7 +70,7 @@ class AuthModal extends Component {
       decodedToken: null,
       storageConnected: this.props.api.storageConnected,
       processing: false,
-      windowsBuild: isWindowsBuild()
+      windowsBuild: isWindowsBuild(),
       invalidScopes: false
     }
 
@@ -230,22 +230,23 @@ class AuthModal extends Component {
     if (isWindowsBuild()) {
       return (
         <div className="">
-        <Modal
-          isOpen
-          onRequestClose={this.closeModal}
-          contentLabel="This is My Modal"
-          shouldCloseOnOverlayClick
-          style={{ overlay: { zIndex: 10 } }}
-          className="container-fluid"
-          portalClassName="auth-modal"
-        >
-          <h3>Sign In Request</h3>
+          <Modal
+            isOpen
+            onRequestClose={this.closeModal}
+            contentLabel="This is My Modal"
+            shouldCloseOnOverlayClick
+            style={{ overlay: { zIndex: 10 } }}
+            className="container-fluid"
+            portalClassName="auth-modal"
+          >
+            <h3>Sign In Request</h3>
             <div>
               <p>
-                 Authenticating with applications is not supported yet in our Windows build. Feature coming soon!
+               Authenticating with applications is not supported yet in our Windows build.
+               Feature coming soon!
               </p>
             </div>
-        </Modal>
+          </Modal>
         </div>
       )
     }

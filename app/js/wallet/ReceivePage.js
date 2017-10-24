@@ -36,12 +36,13 @@ class ReceivePage extends Component {
 
   render() {
     const address = this.props.addresses[0]
-    if (isWindowsBuild()){
+    if (isWindowsBuild()) {
       return (
         <div>
           <Balance />
           <div className="highlight-wallet text-center">
-            The Bitcoin wallet is not yet supported in our Windows build, but the feature is coming soon!
+            The Bitcoin wallet is not yet supported in our Windows build,
+            but the feature is coming soon!
           </div>
         </div>
       )

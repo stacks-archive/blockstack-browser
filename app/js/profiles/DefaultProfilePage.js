@@ -161,7 +161,10 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <ToolTip id="windowsDisabled">
           <div>
-            <div>You cannot purchase usernames in the Windows build right now. Feature coming soon!</div>
+            <div>
+              You cannot purchase usernames in the Windows
+              build right now. Feature coming soon!
+            </div>
           </div>
         </ToolTip>
         <div>
@@ -196,20 +199,22 @@ class DefaultProfilePage extends Component {
                   <h1 className="pro-card-name text-center">{person.name()}</h1>
                   <div className="m-b-20 text-center">
                     {identity.canAddUsername ?
-                     <div>
-                     {windowsBuild ?
                       <div>
-                      <span
-                      data-tip
-                      data-for="windowsDisabled"
-                      >Add a username</span>
-                      </div>
+                      {windowsBuild ?
+                        <div>
+                          <span
+                            data-tip
+                            data-for="windowsDisabled"
+                          >
+                            <i>Add a username</i>
+                          </span>
+                        </div>
                       :
-                      <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
-                       Add a username
-                      </Link>
+                        <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
+                         Add a username
+                        </Link>
                      }
-                     </div>
+                      </div>
                     :
                       <div className="pro-card-domain-name text-center text-secondary m-t-0">
                         <span>{identity.username}</span>

@@ -111,9 +111,9 @@ class App extends Component {
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
-    } else if (isWindowsBuild()){
+    } else if (isWindowsBuild()) {
       logger.debug('Windows build. Pretending to have a valid core connection.')
-      api = Object.assign({}, api, { coreAPIPassword : 'WindowsPretendPasswordAPI' })
+      api = Object.assign({}, api, { coreAPIPassword: 'WindowsPretendPasswordAPI' })
       this.props.updateApi(api)
     }
 
