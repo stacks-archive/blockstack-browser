@@ -69,7 +69,7 @@ class DeleteAccountPage extends Component {
     logger.trace('deleteAccount')
     const password = this.state.password
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
-    logger.debug('Trying to decrypt backup phrase...')
+    logger.debug('Trying to decrypt recovery phrase...')
     decrypt(dataBuffer, password)
     .then(() => {
       this.setState({ isOpen: true })
