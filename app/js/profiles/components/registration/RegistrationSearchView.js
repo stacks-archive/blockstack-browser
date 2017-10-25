@@ -51,7 +51,6 @@ class RegistrationSearchView extends Component {
         }
       }) // ,
       // this.props.api.subdomains)
-    console.log(this.props.api)
     const nameSuffixes = Object.keys(availableDomains)
 
     this.state = {

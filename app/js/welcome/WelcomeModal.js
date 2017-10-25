@@ -26,8 +26,8 @@ import log4js from 'log4js'
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
 const START_PAGE_VIEW = 0
-const WRITE_DOWN_IDENTITY_PAGE_VIEW = 5
-const EMAIL_VIEW = 7
+const WRITE_DOWN_IDENTITY_PAGE_VIEW = 6
+const EMAIL_VIEW = 3
 const STORAGE_PAGE_VIEW = 8
 
 function mapStateToProps(state) {
@@ -72,6 +72,8 @@ class WelcomeModal extends Component {
     const onboardingExceptStorageComplete = this.props.accountCreated &&
       this.props.coreConnected && this.props.promptedForEmail
 
+    const displayStepAfterEmail = props.coreConnected
+      && props.promptedForEmail && !props.accountCreated
 
     const storageConnectedDuringOnboarding = this.props.connectedStorageAtLeastOnce
     const needToOnboardStorage = !storageConnectedDuringOnboarding && !this.props.storageConnected
@@ -84,7 +86,9 @@ class WelcomeModal extends Component {
 
     let startPageView = START_PAGE_VIEW
 
-    if (onboardingExceptStorageComplete && needToOnboardStorage) {
+    if (displayStepAfterEmail) {
+      startPageView = EMAIL_VIEW + 1
+    } else if (onboardingExceptStorageComplete && needToOnboardStorage) {
       startPageView = STORAGE_PAGE_VIEW
     }
 
@@ -136,20 +140,29 @@ class WelcomeModal extends Component {
     const onboardingExceptStorageComplete = nextProps.accountCreated &&
       nextProps.coreConnected && nextProps.promptedForEmail
 
+    const displayStepAfterEmail = nextProps.coreConnected
+    && nextProps.promptedForEmail && !nextProps.accountCreated
+
+
     this.setState({
       needToOnboardStorage
     })
 
-    if (onboardingExceptStorageComplete && needToOnboardStorage) {
+    if (displayStepAfterEmail && this.page !== EMAIL_VIEW) {
+      logger.debug('componentWillReceiveProps: setting to view after email view')
+      this.setPage(EMAIL_VIEW + 1)
+    } else if (onboardingExceptStorageComplete && needToOnboardStorage) {
+      logger.debug('componentWillReceiveProps: setting storage view')
       this.setPage(STORAGE_PAGE_VIEW)
     }
+
     const updateInProgress = window.location.pathname === '/update'
     this.setState({ updateInProgress })
     if (!updateInProgress && nextProps.accountCreated && !this.props.accountCreated) {
       logger.debug('account created - checking for valid password in component state')
       decrypt(new Buffer(this.props.encryptedBackupPhrase, 'hex'), this.state.password)
       .then((identityKeyPhraseBuffer) => {
-        logger.debug('Backup phrase successfully decrypted. Storing identity key.')
+        logger.debug('Backup phrase successfully decrypted. Storing keychain phrase.')
         this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
 
         const firstIdentityIndex = 0
@@ -161,8 +174,10 @@ class WelcomeModal extends Component {
         // Set as default profile
         this.props.setDefaultIdentity(firstIdentityIndex)
         if (this.state.restored) {
+          logger.debug('componentWillReceiveProps: setting email view during restore')
           this.setPage(EMAIL_VIEW)
         } else {
+          logger.debug('componentWillReceiveProps: setting write down phrase view')
           this.setPage(WRITE_DOWN_IDENTITY_PAGE_VIEW)
         }
       }, () => {
@@ -208,8 +223,8 @@ class WelcomeModal extends Component {
     const { isValid } = isBackupPhraseValid(identityKeyPhrase)
 
     if (!isValid) {
-      logger.error('restoreAccount: invalid backup phrase entered')
-      this.updateAlert('danger', 'The identity key you entered is not valid.')
+      logger.error('restoreAccount: invalid keychain phrase entered')
+      this.updateAlert('danger', 'The keychain phrase you entered is not valid.')
       return
     }
 
@@ -284,18 +299,19 @@ class WelcomeModal extends Component {
 
   confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
     if (this.state.identityKeyPhrase !== enteredIdentityKeyPhrase) {
-      logger.error('confirmIdentityKeyPhrase: user entered identity phrase does not match')
+      logger.error('confirmIdentityKeyPhrase: user entered keychain phrase does not match')
       this.updateAlert('danger',
-      'The identity key you entered does not match! Please make sure you wrote it down correctly.')
+    'The keychain phrase you entered does not match! Please make sure you wrote it down correctly.')
       return
     }
-    logger.debug('confirmIdentityKeyPhrase: user entered identity phrase matches!')
+    logger.debug('confirmIdentityKeyPhrase: user entered keychain phrase matches!')
     this.showNextView()
   }
 
   skipEmailBackup(event) {
     event.preventDefault()
     this.props.skipEmailBackup()
+    this.showNextView()
   }
 
   updateAlert(alertStatus, alertMessage) {
@@ -382,7 +398,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 3 ?
+                page === 4 ?
                   <CreateIdentityView
                     showNextView={this.showNextView}
                   />
@@ -392,7 +408,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 4 ?
+                page === 5 ?
                   <EnterPasswordView
                     verifyPasswordAndCreateAccount={this.verifyPasswordAndCreateAccount}
                   />
@@ -402,7 +418,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 5 ?
+                page === 6 ?
                   <WriteDownKeyView
                     identityKeyPhrase={this.state.identityKeyPhrase}
                     showNextView={this.showNextView}
@@ -414,7 +430,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 6 ?
+                page === 7 ?
                   <ConfirmIdentityKeyView
                     confirmIdentityKeyPhrase={this.confirmIdentityKeyPhrase}
                     showPreviousView={this.showPreviousView}
@@ -425,7 +441,7 @@ class WelcomeModal extends Component {
               </div>
               <div>
               {
-                page === 7 ?
+                page === 3 ?
                   <EnterEmailView
                     emailNotifications={this.props.emailNotifications}
                     skipEmailBackup={this.props.skipEmailBackup}

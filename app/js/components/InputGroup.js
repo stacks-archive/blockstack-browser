@@ -19,7 +19,8 @@ class InputGroup extends Component {
     stopClickPropagation: PropTypes.bool,
     accessoryIcon: PropTypes.bool,
     accessoryIconClass: PropTypes.string,
-    autoComplete: PropTypes.string
+    autoComplete: PropTypes.string,
+    enforcePasswordLength: PropTypes.bool
   }
 
   constructor(props) {
@@ -84,6 +85,8 @@ class InputGroup extends Component {
       labelClass = "form-control-label form-inverse-control-label"
     }
 
+    const enforcePasswordLength = this.props.enforcePasswordLength
+
     return (
       <div className="form-group m-b-11" onClick={this.handleClick}>
         <fieldset>
@@ -103,6 +106,25 @@ class InputGroup extends Component {
               onChange={this.props.onChange}
               rows={this.props.textareaRows || 2} />
             :
+            <div>
+            {type === "password" && enforcePasswordLength ?
+            <input name={this.props.name}
+              disabled={disabled}
+              className={inputClass}
+              type={type}
+              required={required}
+              step={step}
+              placeholder={
+                this.props.placeholder ? this.props.placeholder : this.props.label
+              }
+              value={value}
+              onChange={this.props.onChange}
+              onBlur={this.onBlur}
+              onKeyPress={this.onKeyPress}
+              autoComplete={autoComplete}
+              minLength="8"
+            />
+            :
             <input name={this.props.name}
               disabled={disabled}
               className={inputClass}
@@ -118,6 +140,8 @@ class InputGroup extends Component {
               onKeyPress={this.onKeyPress}
               autoComplete={autoComplete}
             />
+            }
+            </div>
             }
             {this.props.accessoryIcon &&
               <span className={this.props.accessoryIconClass}></span>
