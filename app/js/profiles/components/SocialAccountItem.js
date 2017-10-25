@@ -117,8 +117,7 @@ class SocialAccountItem extends Component {
                 {verified && 'Verified'}
               </ReactTooltip>
             }
-{/*            <a href={this.getAccountUrl()} data-toggle="tooltip"
-              title={webAccountTypes[this.props.service].label}>*/}
+
             <span className="app-account-icon">
               <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
             </span>
@@ -144,12 +143,12 @@ class SocialAccountItem extends Component {
                 <i className="fa fa-fw fa-check-circle fa-lg" />
               </span>
               : 
-              (this.props.placeholder) ? <span></span>
+              (this.props.placeholder) ? 
+              <span className="float-right star">+1<i className="fa fa-w fa-star-o" /></span>
               :
               <span className="float-right badge badge-danger badge-verification">Unverified
               </span>
             }
-            {/*</a>*/}
           </li>
         )
       } else {

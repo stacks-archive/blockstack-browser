@@ -10,6 +10,7 @@ import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
+import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
 
 import log4js from 'log4js'
@@ -119,6 +120,39 @@ class DefaultProfilePage extends Component {
     this.openPhotoModal(event)
   }
 
+  onChangePhotoClick = () => {
+    this.photoUpload.click()
+  }
+
+  uploadProfilePhoto = (e) => {
+    const identityIndex = this.state.index
+    const identity = this.props.localIdentities[identityIndex]
+    const ownerAddress = identity.ownerAddress
+    const profile = this.state.profile
+    const photoIndex = 0
+    logger.debug('uploadProfilePhoto: trying to upload...')
+    if (this.props.storageConnected) {
+      uploadPhoto(this.props.api, identityIndex, ownerAddress, e.target.files[0], photoIndex)
+      .then((avatarUrl) => {
+        logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
+        profile.image = []
+        profile.image.push({
+          '@type': 'ImageObject',
+          name: 'avatar',
+          contentUrl: avatarUrl
+        })
+        this.setState({
+          profile
+        })
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+    } else {
+      logger.error('uploadProfilePhoto: storage is not connected. Doing nothing.')
+    }
+  }
+
   openPhotoModal(event) {
     event.preventDefault()
     this.setState({
@@ -222,6 +256,18 @@ class DefaultProfilePage extends Component {
             onClick={this.closePhotoModal}
           />
         </Modal>
+
+        <Modal
+          isOpen={this.state.photoModalIsOpen}
+          contentLabel=""
+          onRequestClose={this.closePhotoModal}
+          shouldCloseOnOverlayClick={false}
+          style={{ overlay: { zIndex: 10 } }}
+          className="container-fluid text-center"
+        >
+          Social account modal
+        </Modal>
+
         <ToolTip id="ownerAddress">
           <div>
             <div>This is your identity address.</div>
@@ -239,126 +285,160 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <div>
           <SecondaryNavBar
-            leftButtonTitle="Edit"
+            leftButtonTitle={this.state.editMode ? "Save" : "Edit"}
             onLeftButtonClick={this.onEditClick}
-            rightButtonTitle="More"
+            rightButtonTitle={this.state.editMode ? "Cancel" : "More"}
             rightButtonLink="/profiles/i/all"
           />
-          <div className="container-fluid m-t-50">
+          <div className="container-fluid m-t-50 p-0">
             <div className="row">
               <div className="col-12">
 
-                <div className="avatar-md m-b-30 text-center">
+                <div className="avatar-md m-b-0 text-center">
                   <Image
                     src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
                     fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
                     onClick={this.onPhotoClick}
                   />
                 </div>
+              </div>
 
-                <div className="text-center">
-                  {(blockNumber && transactionIndex) ?
-                    <div className="idcard-body dim">
-                      Registered in block <span>#{blockNumber}</span>,<br />
-                      transaction <span>#{transactionIndex}</span>
-                    </div>
-                  : null}
-                  <div className="pro-card-name text-center">{person.name()}</div>
+              {this.state.editMode &&
+              <div className="col-12 text-center">
+                <input
+                  type="file"
+                  ref={(ref) => { this.photoUpload = ref }}
+                  onChange={this.uploadProfilePhoto}
+                  style={{ display: 'none' }}
+                />
+                <button
+                  className="btn btn-link active"
+                  onClick={this.onChangePhotoClick}
+                >
+                    Change Photo
+                </button>
+              </div>
+              }
+
+              {this.state.editMode ? 
+                <div className="col-12">
+                  <InputGroup
+                    name="name"
+                    label="Full Name"
+                    data={this.state.profile}
+                    onChange={this.onChange}
+                  />
+                  <InputGroup
+                    name="description"
+                    label="Short Bio"
+                    data={this.state.profile}
+                    onChange={this.onChange}
+                  />
+                </div>
+              :
+                <div className="col-12">
                   <div className="text-center">
-                    {identity.canAddUsername ?
-                      <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
-                       Add a username
-                      </Link>
-                    :
-                      <div className="pro-card-domain-name text-center text-secondary m-t-0">
-                        <span>{identity.username}</span>
-                        {identity.usernamePending ?
-                          <i
-                            className="fa fa-fw fa-clock-o fa-lg"
-                            data-tip
-                            data-for="usernamePending"
-                          ></i>
-                          : null}
+                    {/* {(blockNumber && transactionIndex) ?
+                      <div className="idcard-body dim">
+                        Registered in block <span>#{blockNumber}</span>,<br />
+                        transaction <span>#{transactionIndex}</span>
                       </div>
-                  }
-                  </div>
-
-                  <div className="pro-card-identity-address m-b-25 text-center text-secondary m-t-0">
-                    <small>
-                      <span data-tip data-for="ownerAddress">
-                        {`ID-${identity.ownerAddress}`}
-                      </span>
-                    </small>
-                  </div>
-
-                  <div className="pro-card-body m-b-35 text-center">
-                    {person.description()}
-                  </div>
-
-                  <div className="pro-card-trust-level text-center m-b-20">
-                    <span className="pro-card-trust-level-badge">
-                      {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
-                      <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
-                      {trustLevel <= 1 &&
-                        <span data-tip data-for="trustLevel">
-                          <i className="fa fa-info-circle" />
-                        </span>
-                      }
-                    </span>
-                  </div>
-
-                  {/*}
-                  {person.address() ?
-                    <div className="pro-card-body text-center text-secondary">
-                    {person.address()}
-                    </div>
-                  : null}
-                  {person.birthDate() ?
-                    <div className="pro-card-body text-center">
-                    {person.birthDate()}
-                    </div>
-                  : null}
-                  */}
-                </div>
-
-                <div className="text-center">
-                  {connections.length ?
-                    <p className="profile-foot">Connections</p>
-                  : null}
-                  {connections.map((connection, index) => {
-                    if (connection.id) {
-                      return (
-                        <Link
-                          to={`/profiles/blockchain/${connection.id}`}
-                          key={index} className="connections"
-                        >
-                          <Image
-                            src={new Person(connection).avatarUrl()}
-                            style={{ width: '40px', height: '40px' }}
-                          />
+                    : null}*/}
+                    <div className="pro-card-name text-center m-t-30">{person.name()}</div>
+                    <div className="text-center">
+                      {identity.canAddUsername ?
+                        <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
+                         Add a username
                         </Link>
-                      )
-                    } else {
-                      return null
+                      :
+                        <div className="pro-card-domain-name text-center text-secondary m-t-0">
+                          <span>{identity.username}</span>
+                          {identity.usernamePending ?
+                            <i
+                              className="fa fa-fw fa-clock-o fa-lg"
+                              data-tip
+                              data-for="usernamePending"
+                            ></i>
+                            : null}
+                        </div>
                     }
-                  })}
+                    </div>
+
+                    <div className="pro-card-identity-address m-b-25 text-center text-secondary m-t-0">
+                      <small>
+                        <span data-tip data-for="ownerAddress">
+                          {`ID-${identity.ownerAddress}`}
+                        </span>
+                      </small>
+                    </div>
+
+                    <div className="pro-card-body text-center">
+                      {person.description()}
+                    </div>
+
+                    {/*}
+                    {person.address() ?
+                      <div className="pro-card-body text-center text-secondary">
+                      {person.address()}
+                      </div>
+                    : null}
+                    {person.birthDate() ?
+                      <div className="pro-card-body text-center">
+                      {person.birthDate()}
+                      </div>
+                    : null}
+                    */}
+                  </div>
+
+                  {/* <div className="text-center">
+                    {connections.length ?
+                      <p className="profile-foot">Connections</p>
+                    : null}
+                    {connections.map((connection, index) => {
+                      if (connection.id) {
+                        return (
+                          <Link
+                            to={`/profiles/blockchain/${connection.id}`}
+                            key={index} className="connections"
+                          >
+                            <Image
+                              src={new Person(connection).avatarUrl()}
+                              style={{ width: '40px', height: '40px' }}
+                            />
+                          </Link>
+                        )
+                      } else {
+                        return null
+                      }
+                    })}
+                  </div>*/}
                 </div>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="col text-center">
-
-              </div>
-              <div className="col text-center">
-
-              </div>
+              }
             </div>
 
           </div>
 
           <div className="container-fluid p-0">
-            <div className="row m-t-20 no-gutters">
+            <div className="row">
+              <div className="col-12">
+
+                <div className="pro-card-trust-level text-center m-t-25 m-b-30">
+                  <span className="pro-card-trust-level-badge">
+                    {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
+                    <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
+                    {trustLevel <= 1 &&
+                      <span data-tip data-for="trustLevel">
+                        <i className="fa fa-info-circle" />
+                      </span>
+                    }
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="container-fluid p-0">
+            <div className="row m-t-30 no-gutters">
               <div className="col">
                 <div className="profile-accounts">
                   <ul>

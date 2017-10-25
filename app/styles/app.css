@@ -33,6 +33,7 @@ div.profile-accounts > ul > li.pending {color:#222222;}
 div.profile-accounts > ul > li > span.app-account-service {color:#C7C7C7;margin-left:10px;}
 div.profile-accounts > ul > li.placeholder {color:#AEAEAE;background-color:transparent;}
 div.profile-accounts > ul > li.placeholder > .app-account-icon {color:#AEAEAE;}
+div.profile-accounts > ul > li.placeholder > .star {margin-right:5px;}
 
 /* Social accounts edit */
 div.edit-profile-accounts .account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;transition:all 200ms ease-in-out}
