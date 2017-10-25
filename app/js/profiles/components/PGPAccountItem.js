@@ -83,10 +83,28 @@ class PGPAccountItem extends Component {
     return identifier
   }
 
+  getPlaceholderText(service) {
+    const webAccountTypes = getWebAccountTypes(this.props.api)
+    const webAccountType = webAccountTypes[this.props.service]
+    let accountServiceName = webAccountType.label
+    if (service === 'pgp' || service === 'ssh') {
+      return (
+        <span className="app-account-service font-weight-normal">
+          Prove your {service.toUpperCase()} key
+        </span>
+      )
+    }
+  }
+
   render() {
     const identifier = this.props.identifier
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const pgpPublicKeys = this.props.pgpPublicKeys
+    const verified = this.props.verified
+    const verifiedClass = verified ? "verified" : "pending"
+    const placeholderClass = this.props.placeholder ? "placeholder" : ""
+    const identifierType = (this.props.service === 'pgp' || this.props.service === 'ssh') ? 'Key' : 'Address'
+
     let loading = false
     let error = false
     let key = null
@@ -104,7 +122,7 @@ class PGPAccountItem extends Component {
 
     if (this.props.listItem === true) {
       return (
-        <li className={this.props.verified ? "verified" : "pending"}>
+        <li className={`clickable ${verifiedClass} ${placeholderClass}`}>
           <Modal
             isOpen={this.state.modalIsOpen}
             contentLabel="PGP Key"
@@ -138,33 +156,36 @@ class PGPAccountItem extends Component {
             {this.props.verified ? 'Verified' : 'Pending...'}
           </ReactTooltip>
           {/*<a href="#" onClick={this.openModal} data-toggle="tooltip"*/}
-          <a href="#" data-toggle="tooltip"
-            title={webAccountTypes[this.props.service].label}>
-            
-            <span className="">
-              <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
+
+          <span className="">
+            <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
+          </span>
+
+          <span className="app-account-identifier">
+            {this.getIdentifier()}
+          </span>
+
+          { !this.props.placeholder && (
+            <span className="app-account-service font-weight-normal">
+              {webAccountTypes[this.props.service].label}
             </span>
+          )}
 
-            <span className="app-account-identifier">
-              {this.getIdentifier()}
+          { this.props.placeholder && (
+            <span className="app-account-service font-weight-normal">
+              Prove your {webAccountTypes[this.props.service].label} {identifierType.toLowerCase()}
+            </span> 
+          )}
+
+          {/*this.props.verified ?
+            <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
+              <i className="fa fa-fw fa-check-circle fa-lg" />
             </span>
-
-            { !this.props.placeholder && (
-                <span className="app-account-service font-weight-normal">
-                  {webAccountTypes[this.props.service].label}
-                </span>
-              )}
-
-            {/*this.props.verified ?
-              <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
-                <i className="fa fa-fw fa-check-circle fa-lg" />
-              </span>
-              : 
-              <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
-                <i className="fa fa-fw fa-clock-o fa-lg" />
-              </span>
-            */}
-          </a>
+            : 
+            <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
+              <i className="fa fa-fw fa-clock-o fa-lg" />
+            </span>
+          */}
         </li>
       )
     } else {

@@ -16,6 +16,19 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/DefaultProfilePage.js')
 
+const accountTypes = [
+  'twitter',
+  'facebook',
+  'linkedIn',
+  'github',
+  'instagram',
+  'hackerNews',
+  'bitcoin',
+  'ethereum',
+  'pgp',
+  'ssh'
+]
+
 function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
@@ -38,7 +51,9 @@ class DefaultProfilePage extends Component {
     localIdentities: PropTypes.array.isRequired,
     defaultIdentity: PropTypes.number.isRequired,
     createNewProfile: PropTypes.func.isRequired,
+    updateProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
+    refreshSocialProofVerifications: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
@@ -49,11 +64,17 @@ class DefaultProfilePage extends Component {
   constructor(props) {
     super(props)
 
+    const identityIndex = this.props.defaultIdentity
+    const identity = this.props.localIdentities[identityIndex]
+
     this.state = {
+      profile: identity.profile,
       localIdentities: this.props.localIdentities,
+      editMode: false,
       photoModalIsOpen: false
     }
 
+    this.onEditClick = this.onEditClick.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
     this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
     this.onPhotoClick = this.onPhotoClick.bind(this)
@@ -74,6 +95,18 @@ class DefaultProfilePage extends Component {
     this.setState({
       localIdentities: nextProps.localIdentities
     })
+  }
+
+  onEditClick(event) {
+    if (this.state.editMode) {
+      this.setState({
+        editMode: false
+      })
+    } else {
+      this.setState({
+        editMode: true
+      })
+    }
   }
 
   onValueChange(event) {
@@ -106,6 +139,28 @@ class DefaultProfilePage extends Component {
     return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
   }
 
+  createNewAccount(service, identifier) {
+    return {
+      '@type': 'Account',
+      placeholder: false,
+      service,
+      identifier,
+      proofType: 'http',
+      proofUrl: ''
+    }
+  }
+
+  createPlaceholderAccount(accountType) {
+    return {
+      '@type': 'Account',
+      placeholder: true,
+      service: accountType,
+      identifier: '',
+      proofType: '',
+      proofURL: ''
+    }
+  }
+
   render() {
     const identityIndex = this.props.defaultIdentity
     const identity = this.state.localIdentities[identityIndex]
@@ -117,12 +172,38 @@ class DefaultProfilePage extends Component {
       identity.canAddUsername = true
     }
 
+    const ownerAddress = identity.ownerAddress
     const verifications = identity.verifications
     const trustLevel = identity.trustLevel
     const blockNumber = identity.blockNumber
     const transactionIndex = identity.transactionIndex
 
-    const accounts = person.profile().account || []
+    const filledAccounts = []
+    const placeholders = []
+
+    if (this.state.profile.hasOwnProperty('account')) {
+      accountTypes.forEach((accountType) => {
+        let hasAccount = false
+        this.state.profile.account.forEach((account) => {
+          if (account.service === accountType) {
+            hasAccount = true
+            account.placeholder = false
+            filledAccounts.push(account)
+          }
+        })
+
+        if (!hasAccount) {
+          placeholders.push(this.createPlaceholderAccount(accountType))
+        }
+      })
+    } else {
+      accountTypes.forEach((accountType) => {
+        placeholders.push(this.createPlaceholderAccount(accountType))
+      })
+    }
+
+    // const accounts = person.profile().account || []
+    const accounts = filledAccounts.concat(placeholders)
     const connections = person.connections() || []
 
     return (
@@ -159,7 +240,7 @@ class DefaultProfilePage extends Component {
         <div>
           <SecondaryNavBar
             leftButtonTitle="Edit"
-            leftButtonLink={`/profiles/${identityIndex}/edit`}
+            onLeftButtonClick={this.onEditClick}
             rightButtonTitle="More"
             rightButtonLink="/profiles/i/all"
           />
@@ -306,6 +387,7 @@ class DefaultProfilePage extends Component {
                             service={account.service}
                             identifier={account.identifier}
                             contentUrl={account.contentUrl}
+                            placeholder={account.placeholder}
                             listItem
                           />
                         )
@@ -318,6 +400,7 @@ class DefaultProfilePage extends Component {
                             proofUrl={account.proofUrl}
                             listItem
                             verified={verified}
+                            placeholder={account.placeholder}
                             pending={pending}
                           />
                         )
@@ -328,6 +411,7 @@ class DefaultProfilePage extends Component {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     )
