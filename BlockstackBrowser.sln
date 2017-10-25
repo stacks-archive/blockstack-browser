@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockstackBrowser", "Blocks
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BlockstackBrowserSetup", "Setup1\Setup1.vdproj", "{95283569-D984-41FF-A8DE-513C8F12BA4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtocolHandler", "ProtocolHandler\ProtocolHandler.csproj", "{6621835C-E2BB-4BB2-8473-842A3A3C3A93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{DCB69DB9-5ABD-458E-889A-4789CE193EAD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95283569-D984-41FF-A8DE-513C8F12BA4D}.Debug|Any CPU.ActiveCfg = Debug
 		{95283569-D984-41FF-A8DE-513C8F12BA4D}.Release|Any CPU.ActiveCfg = Release
+		{6621835C-E2BB-4BB2-8473-842A3A3C3A93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6621835C-E2BB-4BB2-8473-842A3A3C3A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6621835C-E2BB-4BB2-8473-842A3A3C3A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6621835C-E2BB-4BB2-8473-842A3A3C3A93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
