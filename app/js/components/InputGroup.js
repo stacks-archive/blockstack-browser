@@ -103,6 +103,25 @@ class InputGroup extends Component {
               onChange={this.props.onChange}
               rows={this.props.textareaRows || 2} />
             :
+            <div>
+            {type === "password" ?
+            <input name={this.props.name}
+              disabled={disabled}
+              className={inputClass}
+              type={type}
+              required={required}
+              step={step}
+              placeholder={
+                this.props.placeholder ? this.props.placeholder : this.props.label
+              }
+              value={value}
+              onChange={this.props.onChange}
+              onBlur={this.onBlur}
+              onKeyPress={this.onKeyPress}
+              autoComplete={autoComplete}
+              minLength="8"
+            />
+            :
             <input name={this.props.name}
               disabled={disabled}
               className={inputClass}
@@ -118,6 +137,8 @@ class InputGroup extends Component {
               onKeyPress={this.onKeyPress}
               autoComplete={autoComplete}
             />
+            }
+            </div>
             }
             {this.props.accessoryIcon &&
               <span className={this.props.accessoryIconClass}></span>
