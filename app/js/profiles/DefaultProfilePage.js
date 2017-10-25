@@ -327,12 +327,14 @@ class DefaultProfilePage extends Component {
                     label="Full Name"
                     data={this.state.profile}
                     onChange={this.onChange}
+                    centerText={true}
                   />
                   <InputGroup
                     name="description"
                     label="Short Bio"
                     data={this.state.profile}
                     onChange={this.onChange}
+                    centerText={true}
                   />
                 </div>
               :

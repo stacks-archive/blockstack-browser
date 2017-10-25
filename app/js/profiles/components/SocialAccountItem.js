@@ -122,9 +122,11 @@ class SocialAccountItem extends Component {
               <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
             </span>
 
-            <span className="app-account-identifier">
-              {this.getIdentifier()}
-            </span>
+            {!this.props.placeholder && (
+              <span className="app-account-identifier">
+                {this.getIdentifier()}
+              </span>
+            )}
 
             {!this.props.placeholder && (
               <span className="app-account-service font-weight-normal">
