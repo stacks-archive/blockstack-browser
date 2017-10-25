@@ -6,7 +6,7 @@ import { AuthActions } from '../store/auth'
 import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
-  makeAuthResponse, getAuthRequestFromURL, redirectUserToApp
+  makeAuthResponse, getAuthRequestFromURL, redirectUserToApp, makeECPrivateKey
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
@@ -125,8 +125,19 @@ class AuthModal extends Component {
     const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
     // TODO: what if the token is expired?
-    const authResponse = makeAuthResponse(privateKey, profile, blockchainId,
-        coreSessionToken, appPrivateKey)
+    // TODO: use a semver check -- or pass payload version to
+    //        makeAuthResponse
+    let authResponse
+    if (this.state.decodedToken.payload.version === '1.1.0' &&
+        this.state.decodedToken.public_keys.length > 0) {
+      const transitPublicKey = this.state.decodedToken.public_keys[0]
+      authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+                                      coreSessionToken, appPrivateKey,
+                                      transitPublicKey)
+    } else {
+      authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+                                      coreSessionToken, appPrivateKey)
+    }
 
     this.props.clearSessionToken(appDomain)
 
@@ -192,8 +203,11 @@ class AuthModal extends Component {
           const appsNodeKey = profileSigningKeypair.appsNodeKey
           const salt = profileSigningKeypair.salt
           const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-          const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
           const blockchainId = (hasUsername ? identity.username : null)
+
+          // use an ephemeral private key for the core session
+          // core does _not_ use this key, but it does verify it
+          const ephemeralKey = makeECPrivateKey()
 
           const scopesJSONString = JSON.stringify(scopes)
 
@@ -213,7 +227,7 @@ class AuthModal extends Component {
             logger.trace('login(): Core storage successfully configured.')
             logger.trace('login(): Calling getCoreSessionToken()...')
             this.props.getCoreSessionToken(this.props.coreHost,
-                this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
+                this.props.corePort, this.props.coreAPIPassword, ephemeralKey,
                 appDomain, this.state.authRequest, blockchainId)
           })
         })
