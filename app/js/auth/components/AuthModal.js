@@ -129,11 +129,11 @@ class AuthModal extends Component {
     //        makeAuthResponse
     let authResponse
     if (this.state.decodedToken.payload.version === '1.1.0' &&
-        this.state.decodedToken.public_keys.length > 0) {
-      const transitPublicKey = this.state.decodedToken.public_keys[0]
+        this.state.decodedToken.payload.public_keys.length > 0) {
+      const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
       authResponse = makeAuthResponse(privateKey, profile, blockchainId,
                                       coreSessionToken, appPrivateKey,
-                                      transitPublicKey)
+                                      undefined, transitPublicKey)
     } else {
       authResponse = makeAuthResponse(privateKey, profile, blockchainId,
                                       coreSessionToken, appPrivateKey)
@@ -200,11 +200,11 @@ class AuthModal extends Component {
 
           const appDomain = this.state.decodedToken.payload.domain_name
           const scopes = this.state.decodedToken.payload.scopes
+          const appsNodeKey = profileSigningKeypair.appsNodeKey
+          const salt = profileSigningKeypair.salt
+          const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+          const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
           const blockchainId = (hasUsername ? identity.username : null)
-
-          // use an ephemeral private key for the core session
-          // core does _not_ use this key, but it does verify it
-          const ephemeralKey = makeECPrivateKey()
 
           const scopesJSONString = JSON.stringify(scopes)
 
@@ -224,7 +224,7 @@ class AuthModal extends Component {
             logger.trace('login(): Core storage successfully configured.')
             logger.trace('login(): Calling getCoreSessionToken()...')
             this.props.getCoreSessionToken(this.props.coreHost,
-                this.props.corePort, this.props.coreAPIPassword, ephemeralKey,
+                this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
                 appDomain, this.state.authRequest, blockchainId)
           })
         })
