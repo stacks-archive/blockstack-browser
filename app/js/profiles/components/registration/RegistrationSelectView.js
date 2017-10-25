@@ -124,6 +124,11 @@ class AddUsernameSelectPage extends Component {
     if (this.state.registrationInProgress && registration.registrationSubmitted) {
       logger.debug('componentWillReceiveProps: registration submitted! redirecting...')
       this.props.router.push(`/profiles/i/add-username/${index}/submitted/${name}`)
+    } else if (registration.registrationError) {
+      this.setState({
+        registrationInProgress: false
+      })
+      this.updateAlert('danger', registration.registrationError)
     }
 
     const availableNames = this.props.availability.names
@@ -235,7 +240,7 @@ class AddUsernameSelectPage extends Component {
     if (nameAvailabilityObject) {
       price = nameAvailabilityObject.price
     }
-    price = roundTo(price, 3)
+    price = roundTo.up(price, 3)
     const walletBalance = this.props.balances.total
 
     if (nameIsSubdomain || (walletBalance >= price)) {
