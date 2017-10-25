@@ -6,7 +6,7 @@ import { AuthActions } from '../store/auth'
 import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
-  makeAuthResponse, getAuthRequestFromURL, redirectUserToApp, makeECPrivateKey
+  makeAuthResponse, getAuthRequestFromURL, redirectUserToApp
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
