@@ -64,6 +64,7 @@ class EnterPasswordView extends Component {
             data={this.state}
             onChange={this.onValueChange}
             required
+            enforcePasswordLength
           />
           <InputGroup
             name="passwordConfirmation"
@@ -73,6 +74,7 @@ class EnterPasswordView extends Component {
             data={this.state}
             onChange={this.onValueChange}
             required
+            enforcePasswordLength
           />
           <div className="m-t-25 m-b-30">
             <button
