@@ -11,26 +11,27 @@ const DeleteAccountModal = (props) => (
     style={{ overlay: { zIndex: 10 } }}
     shouldCloseOnOverlayClick={false}
   >
-    <h3 className="modal-heading">Are you sure you want to remove your account?</h3>
+    <h3 className="modal-heading">Are you sure you want to remove your keychain from
+    this device?</h3>
     <div className="modal-body">
       <p>
-        This will remove your account information from Blockstack.
-        Please save your recovery phrase and password
-        if you want to retrieve your account in the future.
+        Please make sure have a written copy of your keychain phrase
+        before continuing otherwise you will lose access to this keychain and any
+        money or IDs associated with it.
       </p>
     </div>
     <div className="delete-account-buttons">
+      <button
+        className="btn btn-danger btn-block"
+        onClick={props.deleteAccount}
+      >
+        Remove keychain
+      </button>
       <button
         onClick={props.closeModal}
         className="btn btn-secondary btn-block"
       >
         Cancel
-      </button>
-      <button
-        className="btn btn-danger btn-block"
-        onClick={props.deleteAccount}
-      >
-        Confirm
       </button>
     </div>
   </Modal>

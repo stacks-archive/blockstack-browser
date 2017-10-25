@@ -65,8 +65,8 @@ class BackupAccountPage extends Component {
     logger.debug('Trying to decrypt recovery phrase...')
     decrypt(dataBuffer, password)
     .then((plaintextBuffer) => {
-      logger.debug('Recovery phrase successfully decrypted')
-      this.updateAlert('success', 'Recovery phrase decrypted')
+      logger.debug('Keychain phrase successfully decrypted')
+      this.updateAlert('success', 'Keychain phrase decrypted')
       this.props.displayedRecoveryCode()
       this.setState({
         decryptedBackupPhrase: plaintextBuffer.toString()
@@ -85,7 +85,7 @@ class BackupAccountPage extends Component {
           <div className="row">
             <div className="col">
               <h3>
-                Backup Account
+                Backup Keychain
               </h3>
               {
                 this.state.alerts.map((alert, index) => {
@@ -104,14 +104,14 @@ class BackupAccountPage extends Component {
               <div className="col">
                 <p>
                   <i>
-                    Write down the recovery phrase below and keep it safe.
-                    Anyone who has it will be able to regain access to your account.
+                    Write down the keychain phrase below and keep it safe.
+                    Anyone who has it will be able to access to your keychain.
                   </i>
                 </p>
 
                 <div className="card">
                   <div className="card-header">
-                    Recovery Phrase
+                    Keychain Phrase
                   </div>
                   <div className="card-block backup-phrase-container">
                     <p className="card-text">
@@ -127,7 +127,7 @@ class BackupAccountPage extends Component {
             <div className="row">
               <div className="col">
                 <p className="container-fluid">
-                  <i>Enter your password to view your recovery phrase and backup your account.</i>
+                  <i>Enter your password to view your keychain phrase and write down your keychain phrase.</i>
                 </p>
                 <InputGroup
                   name="password" label="Password" type="password"
@@ -136,7 +136,7 @@ class BackupAccountPage extends Component {
                 />
                 <div className="container-fluid m-t-40">
                   <button className="btn btn-primary btn-block" onClick={this.decryptBackupPhrase}>
-                    Decrypt Recovery Phrase
+                    Display Keychain Phrase
                   </button>
                 </div>
               </div>

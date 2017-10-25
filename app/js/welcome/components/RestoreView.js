@@ -38,15 +38,18 @@ class RestoreView extends Component {
   }
 
   render() {
+    const placeholder1 = 'apple banana orange cherry mango kiwi'
+    const placeholder2 = 'grape watermelon strawberry lemon lime papaya'
+    const placeholder = `${placeholder1}${placeholder2}`
     return (
       <div>
-        <h3 className="modal-heading">Restore your account by typing in your identity key</h3>
+        <h3 className="modal-heading">Restore your keychain by typing in your keychain phrase</h3>
         <form className="modal-form" onSubmit={this.restoreAccountSubmit}>
           <InputGroup
             name="identityKeyPhrase"
             type="text"
-            label="Type your identity key here"
-            placeholder="Identity key"
+            label="Type your keychain phrase here"
+            placeholder={placeholder}
             data={this.state}
             onChange={this.onValueChange}
             required
@@ -75,10 +78,10 @@ class RestoreView extends Component {
               type="submit"
               className="btn btn-primary btn-block m-b-10"
             >
-              Restore account
+              Restore keychain
             </button>
             <a href="#" className="modal-body" onClick={this.props.showLandingView}>
-              Create new account
+              Create a new keychain
             </a>
           </div>
         </form>

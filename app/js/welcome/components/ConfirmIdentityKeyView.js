@@ -29,18 +29,21 @@ class ConfirmIdentityKeyView extends Component {
   }
 
   render() {
+    const placeholder1 = 'apple banana orange cherry mango kiwi'
+    const placeholder2 = 'grape watermelon strawberry lemon lime papaya'
+    const placeholder = `${placeholder1}${placeholder2}`
     return (
       <div>
         <h3 className="modal-heading">
-          Re-enter your identity key to confirm you&#39;ve kept it in a safe place
+          Re-enter your keychain phrase to confirm you&#39;ve kept it in a safe place
         </h3>
-        <p className="modal-body">Type your identity key here:</p>
+        <p className="modal-body">Type your keychain phrase here:</p>
         <form onSubmit={this.confirmIdentityKeyPhraseSubmit}>
           <InputGroup
             name="identityKeyPhrase"
             type="text"
-            label="Identity key"
-            placeholder="Identity key"
+            label="Keychain Phrase"
+            placeholder={placeholder}
             data={this.state}
             onChange={this.onValueChange}
             required

@@ -149,7 +149,7 @@ class WelcomeModal extends Component {
       logger.debug('account created - checking for valid password in component state')
       decrypt(new Buffer(this.props.encryptedBackupPhrase, 'hex'), this.state.password)
       .then((identityKeyPhraseBuffer) => {
-        logger.debug('Backup phrase successfully decrypted. Storing identity key.')
+        logger.debug('Backup phrase successfully decrypted. Storing keychain phrase.')
         this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })
 
         const firstIdentityIndex = 0
@@ -208,8 +208,8 @@ class WelcomeModal extends Component {
     const { isValid } = isBackupPhraseValid(identityKeyPhrase)
 
     if (!isValid) {
-      logger.error('restoreAccount: invalid backup phrase entered')
-      this.updateAlert('danger', 'The identity key you entered is not valid.')
+      logger.error('restoreAccount: invalid keychain phrase entered')
+      this.updateAlert('danger', 'The keychain phrase you entered is not valid.')
       return
     }
 
@@ -284,12 +284,12 @@ class WelcomeModal extends Component {
 
   confirmIdentityKeyPhrase(enteredIdentityKeyPhrase) {
     if (this.state.identityKeyPhrase !== enteredIdentityKeyPhrase) {
-      logger.error('confirmIdentityKeyPhrase: user entered identity phrase does not match')
+      logger.error('confirmIdentityKeyPhrase: user entered keychain phrase does not match')
       this.updateAlert('danger',
-      'The identity key you entered does not match! Please make sure you wrote it down correctly.')
+    'The keychain phrase you entered does not match! Please make sure you wrote it down correctly.')
       return
     }
-    logger.debug('confirmIdentityKeyPhrase: user entered identity phrase matches!')
+    logger.debug('confirmIdentityKeyPhrase: user entered keychain phrase matches!')
     this.showNextView()
   }
 
