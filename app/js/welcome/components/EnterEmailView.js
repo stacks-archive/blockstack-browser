@@ -45,7 +45,7 @@ class EnterEmailView extends Component {
     return (
       <div>
         <h3 className="modal-heading">
-          Enter your email address to get useful notifications regarding your account
+          Enter your email address to get useful notifications about Blockstack
         </h3>
         <p className="modal-body">Type in your email address:</p>
         <form onSubmit={this.saveEmail}>
