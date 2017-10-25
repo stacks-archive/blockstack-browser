@@ -200,9 +200,6 @@ class AuthModal extends Component {
 
           const appDomain = this.state.decodedToken.payload.domain_name
           const scopes = this.state.decodedToken.payload.scopes
-          const appsNodeKey = profileSigningKeypair.appsNodeKey
-          const salt = profileSigningKeypair.salt
-          const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
           const blockchainId = (hasUsername ? identity.username : null)
 
           // use an ephemeral private key for the core session
