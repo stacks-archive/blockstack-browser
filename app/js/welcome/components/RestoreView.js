@@ -40,7 +40,7 @@ class RestoreView extends Component {
   render() {
     const placeholder1 = 'apple banana orange cherry mango kiwi'
     const placeholder2 = 'grape watermelon strawberry lemon lime papaya'
-    const placeholder = `${placeholder1}${placeholder2}`
+    const placeholder = `${placeholder1} ${placeholder2}`
     return (
       <div>
         <h3 className="modal-heading">Restore your keychain by typing in your keychain phrase</h3>
