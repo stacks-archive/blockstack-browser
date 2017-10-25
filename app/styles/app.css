@@ -36,30 +36,35 @@ div.profile-accounts > ul > li.placeholder > .app-account-icon {color:#AEAEAE;}
 div.profile-accounts > ul > li.placeholder > .star {margin-right:5px;}
 
 /* Social accounts edit */
-div.edit-profile-accounts .account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;transition:all 200ms ease-in-out}
-div.edit-profile-accounts .account.verified {color:#fff;background-color:#2c96ff;}
-div.edit-profile-accounts .account.verified.active {color:#fff;background-color:#2c96ff;}
-div.edit-profile-accounts .account.active {color:#494F56;background-color:#fff;}
-div.edit-profile-accounts .account.pending {color:#AEAEAE;background-color:#fff;}
-div.edit-profile-accounts .account.collapsed {padding:15px 15px;}
-div.edit-profile-accounts .account {padding:15px 15px 30px 15px;}
-div.edit-profile-accounts .account > span.app-account-identifier {font-weight:600}
-div.edit-profile-accounts .account > span.app-account-service {color:#95CAFF;margin-left:10px;}
-div.edit-profile-accounts .account.verified > span.app-account-service {color:#95CAFF;}
-div.edit-profile-accounts .account.verified.active > span.app-account-service {color:#95CAFF;}
-div.edit-profile-accounts .account.active > span.app-account-service {color:#494F56;}
-div.edit-profile-accounts .account.pending > span.app-account-service {color:#AEAEAE;}
-div.edit-profile-accounts .account .form-group {margin-top:20px;transition:all 200ms ease-in-out}
-div.edit-profile-accounts .account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #4B4B4B;}
-div.edit-profile-accounts .account.verified .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
-div.edit-profile-accounts .account.verified.active .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
-div.edit-profile-accounts .account.active .form-group input.form-control {color:#494F56;background-color:#FAFAFA;border:1px solid #FAFAFA;caret-color: #4B4B4B;}
-div.edit-profile-accounts .account.pending .form-group input.form-control {color:#4B4B4B;background-color:#FAFAFA;border:1px solid #FAFAFA;}
-div.edit-profile-accounts .account.placeholder.collapsed {color:#C7C7C7;background-color:transparent;}
-div.edit-profile-accounts .account.placeholder.collapsed > span.app-account-service {color:#C7C7C7;}
-div.edit-profile-accounts .account.placeholder > span.app-account-service {color:#4B4B4B;}
-div.edit-profile-accounts .account.placeholder {color:#4B4B4B;background-color:#fff;}
-div.edit-profile-accounts .account.placeholder .form-group input.form-control {color:#494F56;background-color:#FAFAFA;border:1px solid #FAFAFA;caret-color: #4B4B4B;}
+div.social-account {color:#222222;}
+div.social-account .heading {color:#616161;}
+div.social-account .app-account-service {margin-left:10px;}
+
+/*div.social-account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;transition:all 200ms ease-in-out}
+div.social-account.verified {color:#fff;background-color:#2c96ff;}
+div.social-account.verified.active {color:#fff;background-color:#2c96ff;}
+div.social-account.active {color:#494F56;background-color:#fff;}
+div.social-account.pending {color:#AEAEAE;background-color:#fff;}
+div.social-account.collapsed {padding:15px 15px;}
+div.social-account {padding:15px 15px 30px 15px;}
+div.social-account > span.app-account-identifier {font-weight:600}
+div.social-account > span.app-account-service {color:#95CAFF;margin-left:10px;}
+div.social-account.verified > span.app-account-service {color:#95CAFF;}
+div.social-account.verified.active > span.app-account-service {color:#95CAFF;}
+div.social-account.active > span.app-account-service {color:#494F56;}
+div.social-account.pending > span.app-account-service {color:#AEAEAE;}
+div.social-account .form-group {margin-top:20px;transition:all 200ms ease-in-out}
+div.social-account .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #4B4B4B;}
+div.social-account.verified .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
+div.social-account.verified.active .form-group input.form-control {color:#fff;background-color:rgba(255,255,255,0.26);border:1px solid rgba(255,255,255,0.26);caret-color: #fff;}
+div.social-account.active .form-group input.form-control {color:#494F56;background-color:#FAFAFA;border:1px solid #FAFAFA;caret-color: #4B4B4B;}
+div.social-account.pending .form-group input.form-control {color:#4B4B4B;background-color:#FAFAFA;border:1px solid #FAFAFA;}
+div.social-account.placeholder.collapsed {color:#C7C7C7;background-color:transparent;}
+div.social-account.placeholder.collapsed > span.app-account-service {color:#C7C7C7;}
+div.social-account.placeholder > span.app-account-service {color:#4B4B4B;}
+div.social-account.placeholder {color:#4B4B4B;background-color:#fff;}
+div.social-account.placeholder .form-group input.form-control {color:#494F56;background-color:#FAFAFA;border:1px solid #FAFAFA;caret-color: #4B4B4B;}
+*/
 
 /* Social account transitions used by ReactCSSTransitionGroup */
 .account-enter {opacity: 0.01;}
@@ -387,7 +392,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-storage{background-color:#2C96FF;border:1px solid #2C96FF;margin-bottom:-15px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);}
 .btn-storage:hover{background-color:#0668BF;}
 .btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
-.btn-verify{font-size:0.65rem;padding:0.375rem 2.125rem;line-height:2rem;color:#fff;background-color:#2c96ff;border:1px solid #fff;}
+.btn-verify{font-size:0.65rem;padding:0.375rem 2.125rem;line-height:2rem;color:#fff;background-color:#222222;border:1px solid #fff;}
 .btn-thin{line-height:1.0rem;padding:0px;}
 .btn-clipboard {width:40px;height:40px;color:#494F56;padding:0;border:0;}
 
@@ -501,7 +506,7 @@ a.search-result:hover{color:#fff!important;background-color:#2275d7;}
 .dropzone .overlay {margin: 0 0 0 0;padding-top:175px;font-size: 15px;}
 /* Modal */
 div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-image:none;background-repeat:no-repeat;background-position-x:center;background-position-y:center;background-size:cover;background-attachment:fixed;display:flex;align-items:center;justify-content:center;margin-top:0;}
-div.ReactModal__Content.ReactModal__Content--after-open{width:415px;background-color:#FAFAFA;background-color:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);border:1px solid #FAFAFA;padding:3.75rem 42px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;transition:all 300ms ease-in-out;}
+div.ReactModal__Content.ReactModal__Content--after-open{width:415px;background-color:#fff;background-color:-webkit-linear-gradient(top,#fafafa 0%,#f2f2f2 100%);border:1px solid #FAFAFA;padding:3.75rem 42px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.25);-webkit-border-radius:8px;-moz-border-radius:8px;border-radius:8px;transition:all 300ms ease-in-out;}
 .modal-heading{font-size:1.375rem;color:#080809;line-height:1.85rem;margin-bottom:.5rem;text-align:center;}
 .modal-body{color:#080809;line-height:1.125rem;margin-bottom:0.875rem;text-align:center;}
 a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-height:1.125rem;margin:0 auto;text-align:center;}
@@ -515,6 +520,8 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .auth-modal .profile-select{margin-bottom:20px;}
 /* Add Username Modal */
 .add-username-modal div div.ReactModal__Content.ReactModal__Content--after-open{width:615px;margin-top:0;}
+/* Social Proof Verification Modal  */
+.social-account-modal.ReactModal__Content.ReactModal__Content--after-open {width:615px;}
 /* Storage App */
 .storage-sidebar-wrap{position:absolute;float:left;padding:0;padding-top:75px;width:200px;min-height:100%;text-align:center;background:#007be8;background:-moz-linear-gradient(top,#007be8 9%,#0099e8 85%);background:-webkit-linear-gradient(top,#007be8 9%,#0099e8 85%);background:linear-gradient(to bottom,#007be8 9%,#0099e8 85%);}
 .item-sidebar-storage.active,.item-sidebar-storage{font-size:0.75rem;line-height:1.5rem;border:none;background-color:transparent;text-transform:uppercase;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}

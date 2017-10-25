@@ -21,7 +21,8 @@ class SocialAccountItem extends Component {
     verified: PropTypes.bool,
     pending: PropTypes.bool,
     api: PropTypes.object.isRequired,
-    placeholder: PropTypes.bool
+    placeholder: PropTypes.bool,
+    onClick: PropTypes.func
   }
 
   constructor(props) {
@@ -91,6 +92,8 @@ class SocialAccountItem extends Component {
   onClick = (e) => {
     if (!this.props.placeholder) {
       openInNewTab(this.getAccountUrl())
+    } else {
+      this.props.onClick(this.props.service)
     }
   }
 

@@ -12,6 +12,7 @@ import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
+import EditSocialAccountModal from './components/EditSocialAccountModal'
 
 import log4js from 'log4js'
 
@@ -72,7 +73,9 @@ class DefaultProfilePage extends Component {
       profile: identity.profile,
       localIdentities: this.props.localIdentities,
       editMode: false,
-      photoModalIsOpen: false
+      photoModalIsOpen: false,
+      socialAccountModalIsOpen: false,
+      editingSocialAccount: {},
     }
 
     this.onEditClick = this.onEditClick.bind(this)
@@ -106,6 +109,38 @@ class DefaultProfilePage extends Component {
     } else {
       this.setState({
         editMode: true
+      })
+    }
+  }
+
+  onSocialAccountClick = (service) => {
+    if (this.state.socialAccountModalIsOpen) {
+      this.setState({
+        socialAccountModalIsOpen: false,
+        editingSocialAccount: {}
+      })
+    } else {
+      let editingAccount = null
+      this.state.profile.account.forEach((account) => {
+        if (account.service === service) {
+          editingAccount = account
+        }
+      })
+
+      if (!editingAccount) {
+        editingAccount = {
+          '@type': 'Account',
+          placeholder: false,
+          service,
+          identifier: "",
+          proofType: 'http',
+          proofUrl: ''
+        }
+      }
+
+      this.setState({
+        socialAccountModalIsOpen: true,
+        editingSocialAccount: editingAccount
       })
     }
   }
@@ -257,16 +292,13 @@ class DefaultProfilePage extends Component {
           />
         </Modal>
 
-        <Modal
-          isOpen={this.state.photoModalIsOpen}
-          contentLabel=""
-          onRequestClose={this.closePhotoModal}
-          shouldCloseOnOverlayClick={false}
-          style={{ overlay: { zIndex: 10 } }}
-          className="container-fluid text-center"
-        >
-          Social account modal
-        </Modal>
+        <EditSocialAccountModal 
+          isOpen={this.state.socialAccountModalIsOpen}
+          service={this.state.editingSocialAccount.service}
+          identifier={this.state.editingSocialAccount.identifier}
+          proofUrl={this.state.editingSocialAccount.proofUrl}
+          portalClassName="social-account-modal"
+        />
 
         <ToolTip id="ownerAddress">
           <div>
@@ -286,9 +318,10 @@ class DefaultProfilePage extends Component {
         <div>
           <SecondaryNavBar
             leftButtonTitle={this.state.editMode ? "Save" : "Edit"}
-            onLeftButtonClick={this.onEditClick}
+            onLeftButtonClick={this.state.editMode ? this.onEditClick : this.onEditClick}
             rightButtonTitle={this.state.editMode ? "Cancel" : "More"}
-            rightButtonLink="/profiles/i/all"
+            onRightButtonClick={this.state.editMode ? this.onEditClick : null}
+            rightButtonLink={this.state.editMode ? "" : "/profiles/i/all"}
           />
           <div className="container-fluid m-t-50 p-0">
             <div className="row">
@@ -484,6 +517,7 @@ class DefaultProfilePage extends Component {
                             verified={verified}
                             placeholder={account.placeholder}
                             pending={pending}
+                            onClick={this.onSocialAccountClick}
                           />
                         )
                       }
