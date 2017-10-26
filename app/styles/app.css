@@ -399,6 +399,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-verify{font-size:0.65rem;padding:0.375rem 2.125rem;line-height:2rem;color:#fff;background-color:#222222;border:1px solid #fff;}
 .btn-thin{line-height:1.0rem;padding:0px;}
 .btn-clipboard {width:40px;height:40px;color:#494F56;padding:0;border:0;}
+.storage-page button:disabled {cursor: default;}
 
 /* 13. Forms */
 /* Default forms are "Light forms" for now GL Sep 17, 2017 */
