@@ -331,7 +331,6 @@ class DefaultProfilePage extends Component {
     const identityIndex = this.props.defaultIdentity
     if (props.localIdentities[identityIndex]) {
       logger.trace('componentHasNewLocalIdentities: identity found')
-      const newIndex = identityIndex
       const newProfile = props.localIdentities[identityIndex].profile
       const newUsername = props.localIdentities[identityIndex].username
 
