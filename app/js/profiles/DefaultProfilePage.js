@@ -696,17 +696,6 @@ class DefaultProfilePage extends Component {
                     </div>
 
                     <div className="pro-card-body text-center m-b-25">
-<<<<<<< HEAD
-                      {person.description()}
-                      {person.description() && person.description().length > 0 &&
-                        <span className="pro-card-edit">
-                          <i
-                            className="fa fa-fw fa-pencil clickable"
-                            onClick={this.onEditClick}
-                          />
-                        </span>
-                      }
-=======
                       {(person.description() && person.description().length > 0) ? person.description() :
                         <span className="placeholder">Add your bio</span> }
                       <span className="pro-card-edit">
@@ -715,7 +704,6 @@ class DefaultProfilePage extends Component {
                           onClick={this.onEditClick}
                         />
                       </span>
->>>>>>> 4353d36227595040c96add3be7adc1472844ebda
                     </div>
 
                     {/*
