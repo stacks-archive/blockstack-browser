@@ -13,6 +13,8 @@ import PGPAccountItem from './components/PGPAccountItem'
 import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
 import EditSocialAccountModal from './components/EditSocialAccountModal'
+import { uploadProfile, uploadPhoto } from '../account/utils'
+import { openInNewTab, signProfileForUpload } from '../utils'
 
 import log4js from 'log4js'
 
@@ -37,7 +39,9 @@ function mapStateToProps(state) {
     defaultIdentity: state.profiles.identity.default,
     namesOwned: state.profiles.identity.namesOwned,
     createProfileError: state.profiles.identity.createProfileError,
+    identityKeypairs: state.account.identityAccount.keypairs,
     identityAddresses: state.account.identityAccount.addresses,
+    storageConnected: state.settings.api.storageConnected,
     nextUnusedAddressIndex: state.account.identityAccount.addressIndex,
     api: state.settings.api,
     encryptedBackupPhrase: state.account.encryptedBackupPhrase
@@ -121,17 +125,20 @@ class DefaultProfilePage extends Component {
       })
     } else {
       let editingAccount = null
-      this.state.profile.account.forEach((account) => {
-        if (account.service === service) {
-          editingAccount = account
-        }
-      })
+
+      if (this.state.profile.account) {
+        this.state.profile.account.forEach((account) => {
+          if (account.service === service) {
+            editingAccount = account
+          }
+        })
+      }
 
       if (!editingAccount) {
         editingAccount = {
           '@type': 'Account',
           placeholder: false,
-          service,
+          service: service,
           identifier: "",
           proofType: 'http',
           proofUrl: ''
@@ -157,6 +164,107 @@ class DefaultProfilePage extends Component {
 
   onChangePhotoClick = () => {
     this.photoUpload.click()
+  }
+
+  onPostVerificationButtonClick = (event, service, identifier) => {
+    const profileIndex = this.props.defaultIdentity
+    const identity = this.props.localIdentities[profileIndex]
+
+    const verificationText =
+    `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress}`
+    let verificationUrl = ''
+
+    if (service === 'twitter') {
+      verificationUrl = `https://twitter.com/intent/tweet?text=${verificationText}`
+    } else if (service === 'facebook') {
+      verificationUrl = 'https://www.facebook.com/dialog/feed?app_id=258121411364320'
+    } else if (service === 'github') {
+      verificationUrl = 'https://gist.github.com/'
+    } else if (service === 'instagram') {
+      // no op
+    } else if (service === 'linkedIn') {
+      verificationUrl = 'https://www.linkedin.com/feed/'
+      // verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org&title=${verificationText}`
+    } else if (service === 'hackerNews') {
+      verificationUrl = `https://news.ycombinator.com/user?id=${identifier}`
+    }
+
+    if (verificationUrl.length > 0) {
+      openInNewTab(verificationUrl)
+    }
+  }
+
+  onVerifyButtonClick = (service, identifier, proofUrl) => {
+    const profile = this.state.profile
+
+    if (!profile.hasOwnProperty('account')) {
+      profile.account = []
+    }
+
+    if (profile.hasOwnProperty('account')) {
+      let hasAccount = false
+      profile.account.forEach(account => {
+        if (account.service === service) {
+          hasAccount = true
+          account.identifier = identifier
+          account.proofUrl = proofUrl
+          // if (this.shouldAutoGenerateProofUrl(service)) {
+            // account.proofUrl = this.generateProofUrl(service, identifier)
+          // }
+          this.setState({ profile })
+          this.saveProfile(profile)
+          this.refreshProofs()
+        }
+      })
+
+      if (!hasAccount && identifier.length > 0) {
+        const newAccount = this.createNewAccount(service, identifier, proofUrl)
+        // if (this.shouldAutoGenerateProofUrl(service)) {
+        //   newAccount.proofUrl = this.generateProofUrl(service, identifier)
+        // }
+        profile.account.push(newAccount)
+        this.setState({ profile })
+        this.saveProfile(profile)
+        this.refreshProofs()
+      }
+    }
+
+    this.closeSocialAccountModal()
+  }
+
+  saveProfile(newProfile) {
+    logger.trace('saveProfile')
+
+    const identityIndex = this.props.defaultIdentity
+    const identity = this.props.localIdentities[identityIndex]
+    const verifications = identity.verifications
+    const identityAddress = identity.ownerAddress
+    const trustLevel = identity.trustLevel
+
+    this.props.updateProfile(this.props.defaultIdentity, newProfile, verifications, trustLevel)
+    logger.trace('saveProfile: Preparing to upload profile')
+    logger.debug(`saveProfile: signing with key index ${identityIndex}`)
+
+    const signedProfileTokenData = signProfileForUpload(this.state.profile,
+      this.props.identityKeypairs[identityIndex])
+    if (this.props.storageConnected) {
+      uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
+      .catch((err) => {
+        logger.error('saveProfile: profile not uploaded', err)
+      })
+    } else {
+      logger.debug('saveProfile: storage is not connected. Doing nothing.')
+    }
+  }
+
+  refreshProofs() {
+    const profile = this.state.profile
+    const identityIndex = this.props.defaultIdentity
+    const identity = this.props.localIdentities[identityIndex]
+    const identityAddress = identity.ownerAddress
+    const username = identity.username
+
+    this.props.refreshSocialProofVerifications(identityIndex, identityAddress, username, profile)
   }
 
   uploadProfilePhoto = (e) => {
@@ -204,18 +312,24 @@ class DefaultProfilePage extends Component {
     })
   }
 
+  closeSocialAccountModal = (event) => {
+    this.setState({
+      socialAccountModalIsOpen: false
+    })
+  }
+
   availableIdentityAddresses() {
     return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
   }
 
-  createNewAccount(service, identifier) {
+  createNewAccount(service, identifier, proofUrl) {
     return {
       '@type': 'Account',
       placeholder: false,
       service,
       identifier,
       proofType: 'http',
-      proofUrl: ''
+      proofUrl
     }
   }
 
@@ -297,7 +411,9 @@ class DefaultProfilePage extends Component {
           service={this.state.editingSocialAccount.service}
           identifier={this.state.editingSocialAccount.identifier}
           proofUrl={this.state.editingSocialAccount.proofUrl}
-          portalClassName="social-account-modal"
+          onRequestClose={this.closeSocialAccountModal}
+          onPostVerificationButtonClick={this.onPostVerificationButtonClick}
+          onVerifyButtonClick={this.onVerifyButtonClick}
         />
 
         <ToolTip id="ownerAddress">
@@ -425,28 +541,6 @@ class DefaultProfilePage extends Component {
                     */}
                   </div>
 
-                  {/* <div className="text-center">
-                    {connections.length ?
-                      <p className="profile-foot">Connections</p>
-                    : null}
-                    {connections.map((connection, index) => {
-                      if (connection.id) {
-                        return (
-                          <Link
-                            to={`/profiles/blockchain/${connection.id}`}
-                            key={index} className="connections"
-                          >
-                            <Image
-                              src={new Person(connection).avatarUrl()}
-                              style={{ width: '40px', height: '40px' }}
-                            />
-                          </Link>
-                        )
-                      } else {
-                        return null
-                      }
-                    })}
-                  </div>*/}
                 </div>
               }
             </div>

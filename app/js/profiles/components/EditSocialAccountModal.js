@@ -22,7 +22,8 @@ class EditSocialAccountModal extends Component {
     // proofUrl: PropTypes.string,
     // verified: PropTypes.bool,
     api: PropTypes.object.isRequired,
-    // onVerifyButtonClick: PropTypes.func
+    onPostVerificationButtonClick: PropTypes.func,
+    onVerifyButtonClick: PropTypes.func
   }
 
   constructor(props) {
@@ -78,9 +79,9 @@ class EditSocialAccountModal extends Component {
       identifier: identifier
     })
 
-    if (this.props.onChange) {
-      this.debouncedOnChange()
-    }
+    // if (this.props.onChange) {
+    //   this.debouncedOnChange()
+    // }
   }
 
   onIdentifierBlur = (event) => {
@@ -97,9 +98,9 @@ class EditSocialAccountModal extends Component {
       proofUrl: proofUrl
     })
 
-    if (this.props.onProofUrlChange) {
-      this.debouncedOnProofUrlChange()
-    }
+    // if (this.props.onProofUrlChange) {
+    //   this.debouncedOnProofUrlChange()
+    // }
   }
 
   getPlaceholderText = (service) => {
@@ -136,26 +137,26 @@ class EditSocialAccountModal extends Component {
     let webAccountType = webAccountTypes[this.props.service]
     const disabled = this.props.service === 'hackerNews'
 
-    const proofURLInput = () => {
-      if (this.props.service === 'instagram' || this.props.service === 'github'
-          || this.props.service === 'twitter' || this.props.service === 'facebook'
-          || this.props.service === 'linkedIn' || this.props.service === 'hackerNews') {
-        return <InputGroup 
-                  name="proofUrl" 
-                  label="Proof URL" 
-                  data={this.state}
-                  placeholder="Paste Proof URL here"
-                  stopClickPropagation={true} 
-                  onChange={this.onProofUrlChange} 
-                  onBlur={event => this.props.onBlur(event, this.props.service)}
-                  accessoryIcon={this.props.verified}
-                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
-                  disabled={false}
-                />
-      } else {
-        return <div></div>
-      }
-    }
+    // const proofURLInput = () => {
+    //   if (this.props.service === 'instagram' || this.props.service === 'github'
+    //       || this.props.service === 'twitter' || this.props.service === 'facebook'
+    //       || this.props.service === 'linkedIn' || this.props.service === 'hackerNews') {
+    //     return <InputGroup 
+    //               name="proofUrl" 
+    //               label="Proof URL" 
+    //               data={this.state}
+    //               placeholder="Paste Proof URL here"
+    //               stopClickPropagation={true} 
+    //               onChange={this.onProofUrlChange} 
+    //               onBlur={event => this.props.onBlur(event, this.props.service)}
+    //               accessoryIcon={this.props.verified}
+    //               accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+    //               disabled={false}
+    //             />
+    //   } else {
+    //     return <div></div>
+    //   }
+    // }
 
     if (webAccountType) {
       let accountServiceName = webAccountType.label
@@ -163,8 +164,8 @@ class EditSocialAccountModal extends Component {
           <Modal
             isOpen={this.props.isOpen}
             contentLabel=""
-            onRequestClose={this.close}
-            shouldCloseOnOverlayClick={false}
+            onRequestClose={this.props.onRequestClose}
+            shouldCloseOnOverlayClick={true}
             style={{ overlay: { zIndex: 10 } }}
             className="container-fluid social-account-modal"
           >
@@ -176,6 +177,11 @@ class EditSocialAccountModal extends Component {
               </div>
 
               <div>
+                <p>
+                  <span className="font-weight-bold">Step 1: </span> 
+                  Enter your <span className="text-capitalize">{this.props.service}</span> username.
+                </p>
+
                 <InputGroup 
                   key="input-group-identifier"
                   name="identifier" 
@@ -183,7 +189,7 @@ class EditSocialAccountModal extends Component {
                   data={this.state}
                   stopClickPropagation={true} 
                   onChange={this.onIdentifierChange} 
-                  onBlur={this.onIdentifierBlur} />
+                />
 
                 {/*((this.props.verified || this.shouldShowVerificationInstructions())) && 
                   <div key="input-group-proof">
@@ -195,11 +201,20 @@ class EditSocialAccountModal extends Component {
                   service={this.props.service}
                   ownerAddress={this.props.ownerAddress}
                   domainName={this.getIdentifier()}
-                  onVerifyButtonClick={(e) => 
-                    this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)} 
+                  proofUrl={this.state.proofUrl}
+                  onProofUrlChange={this.onProofUrlChange}
+                  onPostVerificationButtonClick={(e) => {
+                    this.props.onPostVerificationButtonClick(e, this.props.service, this.props.identifier)} 
+                  }
                   />
               </div>
             </div>
+            <button 
+              className="btn btn-verify btn-block m-t-15" 
+              onClick={e => this.props.onVerifyButtonClick(this.props.service, 
+                this.state.identifier, this.state.proofUrl)}>
+              Verify
+            </button>
           </Modal>
         )
     } else {
