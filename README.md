@@ -19,7 +19,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 
 ## Developing
 
-Blockstack Portal requires a local instance of Blockstack Core to run. To get started, first install Blockstack Core and then proceed with the installation of Blockstack Portal.
+Blockstack Browser requires a local instance of Blockstack Core to run. To get started, first install Blockstack Core and then proceed with the installation of Blockstack Browser.
 
 ### macOS
 
@@ -46,7 +46,7 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where `<core-api-password>` is a String value you select and `<wallet-password>` is the wallet password you selected previously.
 1. Make sure there's a local Blockstack Core API running by checking `http://localhost:6270/v1/names/blockstack.id` to see if it returns a response.
 
-#### Part 2: Install Blockstack Portal
+#### Part 2: Install Blockstack Browser
 
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
 1. Install node dependencies: `npm install`
@@ -98,12 +98,12 @@ If you'd like to contribute, head to the [contributing guidelines](/CONTRIBUTING
 
 ## Logging
 
-The Portal uses `log4js` for logging. The macOS app uses macOS's unified logging
+The Browser uses `log4js` for logging. The macOS app uses macOS's unified logging
 API, `os_log` for logging.
 
 ### macOS
 
-On macOS, the Portal sends log events to the macOS
+On macOS, the Browser sends log events to the macOS
 app's log server. These are then included in macOS's unified logging API. You
 can view logs by starting `Console.app`.
 
@@ -166,9 +166,9 @@ Along with many Gulp libraries (these can be seen in either `package.json`, or a
 *Note: When running tests, code coverage will be automatically calculated and output to an HTML file using the [Istanbul](https://github.com/gotwarlost/istanbul) library. These files can be seen in the generated `coverage/` directory.*
 
 ## App Development
-### Run the portal in the Blockstack Test Environment
+### Run the browser in the Blockstack Test Environment
 
-When developing apps, the portal can be run in a docker test environment that is backed by the regtest bitcoin network, hence no real money involved. 
+When developing apps, the browser can be run in a docker test environment that is backed by the regtest bitcoin network, hence no real money involved. 
 
 The easiest way to get that setup is through docker containers for the api, the browser and the cors-proxy. There is a  [docker-compose.yaml file](https://github.com/blockstack/blockstack-todos/blob/master/docker-compose.yaml) published in the Blockstack todo app repo that does this. To use it, first [install Docker](https://docs.docker.com/engine/installation/) and stop any running Blockstack applications (blockstack-browser or blockstack api) then:
 
