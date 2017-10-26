@@ -398,6 +398,7 @@ class DefaultProfilePage extends Component {
     const ownerAddress = identity.ownerAddress
     const profile = this.state.profile
     const photoIndex = 0
+
     logger.debug('uploadProfilePhoto: trying to upload...')
     if (this.props.storageConnected) {
       uploadPhoto(this.props.api, identityIndex, ownerAddress, e.target.files[0], photoIndex)
@@ -410,9 +411,14 @@ class DefaultProfilePage extends Component {
           contentUrl: avatarUrl
         })
         this.setState({
-          profile
+          profile,
+          photoModalIsOpen: false
         })
         this.saveProfile(profile)
+        this.props.refreshIdentities(
+          this.props.api,
+          this.props.identityAddresses
+        )
       })
       .catch((error) => {
         console.error(error)
@@ -549,6 +555,14 @@ class DefaultProfilePage extends Component {
             fallbackSrc="/images/avatar.png" className="img-fluid clickable"
             onClick={this.closePhotoModal}
           />
+          <div>
+            <button
+              className="btn btn-link btn-xs"
+              onClick={this.onChangePhotoClick}
+            >
+                Change Photo
+            </button>
+          </div>
         </Modal>
 
         <EditSocialAccountModal
@@ -605,28 +619,17 @@ class DefaultProfilePage extends Component {
                     fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
                     onClick={this.onPhotoClick}
                   />
-                </div>
-              </div>
-
-              {this.state.editMode &&
-                <div className="col-12 text-center m-b-20">
                   <input
                     type="file"
                     ref={(ref) => { this.photoUpload = ref }}
                     onChange={this.uploadProfilePhoto}
                     style={{ display: 'none' }}
                   />
-                  <button
-                    className="btn btn-link btn-xs"
-                    onClick={this.onChangePhotoClick}
-                  >
-                      Change Photo
-                  </button>
                 </div>
-              }
+              </div>
 
               {this.state.editMode ?
-                <div className="col-12">
+                <div className="col-12 m-t-30">
                   <InputGroup
                     name="name"
                     label="Full Name"
