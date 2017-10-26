@@ -32,3 +32,4 @@
 - [ ] Upload Linux launcher (packaging deploys it to azure "https://blockstack.blob.core.windows.net/packaging/blockstack-launcher-vTAG")
 - [ ] Upload Windows installer (packaging deploys it to azure "https://blockstack.blob.core.windows.net/packaging/windows-installer-vTAG.exe")
 - [ ] After verifying tests, push new version to update server.
+- [ ] Update blockstack.org with direct links to install files https://github.com/blockstack/blockstack.org/blob/master/app/js/config.js
