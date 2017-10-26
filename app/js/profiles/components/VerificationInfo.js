@@ -347,28 +347,40 @@ class VerificationInfo extends Component {
               <FacebookVerificationInfo 
                 domainName={this.props.domainName} 
                 verificationMessage={verificationMessage}
-                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick} />
+                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
+                proofUrl={this.props.proofUrl} 
+                onChange={this.props.onProofUrlChange}
+              />
             : null }
 
             { this.props.service === 'linkedIn' ?
               <LinkedInVerificationInfo 
                 domainName={this.props.domainName} 
                 verificationMessage={verificationMessage}
-                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick} />
+                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
+                proofUrl={this.props.proofUrl} 
+                onChange={this.props.onProofUrlChange}
+              />
             : null }
 
             { this.props.service === 'instagram' ?
               <InstagramVerificationInfo 
                 domainName={this.props.domainName} 
                 verificationMessage={verificationMessage}
-                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick} />
+                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
+                proofUrl={this.props.proofUrl} 
+                onChange={this.props.onProofUrlChange}
+              />
             : null }
 
             { this.props.service === 'hackerNews' ?
               <HackerNewsVerificationInfo 
                 domainName={this.props.domainName} 
                 verificationMessage={verificationMessage}
-                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick} />
+                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
+                proofUrl={this.props.proofUrl} 
+                onChange={this.props.onProofUrlChange}
+              />
             : null }
 
             { !this.state.services.hasOwnProperty(this.props.service) ?
