@@ -103,10 +103,9 @@ class DefaultProfilePage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    logger.trace('componentWillReceiveProps')
-    this.setState({
-      localIdentities: nextProps.localIdentities
-    })
+    if (nextProps.localIdentities !== this.props.localIdentities) {
+      this.componentHasNewLocalIdentities(nextProps)
+    }
   }
 
   onEditClick = () => {
@@ -325,6 +324,24 @@ class DefaultProfilePage extends Component {
     }
 
     this.closeAccountModal()
+  }
+
+  componentHasNewLocalIdentities(props) {
+    logger.trace('componentHasNewLocalIdentities')
+    const identityIndex = this.props.defaultIdentity
+    if (props.localIdentities[identityIndex]) {
+      logger.trace('componentHasNewLocalIdentities: identity found')
+      const newIndex = identityIndex
+      const newProfile = props.localIdentities[identityIndex].profile
+      const newUsername = props.localIdentities[identityIndex].username
+
+      this.setState({
+        profile: newProfile,
+        username: newUsername
+      })
+    } else {
+      logger.trace('componentHasNewLocalIdentities: no identity found')
+    }
   }
 
   shouldAutoGenerateProofUrl(service) {
