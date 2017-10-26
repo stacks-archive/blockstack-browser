@@ -188,13 +188,8 @@ class AllProfilesPage extends Component {
           </form>
         </Modal>
         <SecondaryNavBar
-          leftButtonTitle="Edit"
-          leftButtonLink={`/profiles/${this.props.defaultIdentity}/edit`}
-          centerButtonTitle="View"
-          centerButtonLink="/profiles"
-          rightButtonTitle="More"
-          rightButtonLink="/profiles/i/all"
-          isRightActive
+          leftButtonTitle="Back"
+          leftButtonLink="/profiles"
         />
         <div className="m-t-40">
           <div className="container-fluid">

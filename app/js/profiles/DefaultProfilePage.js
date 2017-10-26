@@ -482,8 +482,10 @@ class DefaultProfilePage extends Component {
         <div>
           <SecondaryNavBar
             leftButtonTitle={this.state.editMode ? "Save" : "Edit"}
+            leftIsButton
             onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
             rightButtonTitle={this.state.editMode ? "Cancel" : "More"}
+            rightIsButton={this.state.editMode}
             onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
             rightButtonLink={this.state.editMode ? "" : "/profiles/i/all"}
           />
