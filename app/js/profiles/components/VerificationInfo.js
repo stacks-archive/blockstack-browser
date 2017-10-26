@@ -117,7 +117,8 @@ class GithubVerificationInfo extends Component {
       <div>
         <p>
           <span className="font-weight-bold">Step 2: </span> 
-          Create a public gist with the following text in the body.
+          Copy the text below and click on the create gist button.
+          Then paste the text into the body of the gist and click Create Public Gist.
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
