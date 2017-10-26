@@ -387,6 +387,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-link:focus,.btn-link:hover{color:#2C96FF;text-decoration:none;}
 .btn-link.active{color:#2C96FF;text-decoration:none;}
 .btn-link-secondary{color:#222222;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+.btn-link-mute{color:#949494;}
 .btn-light{background-color:#fff;border-color:#fff;color:#2C96FF;}
 .btn-storage{background-color:#2C96FF;border:1px solid #2C96FF;margin-bottom:-15px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);}
 .btn-storage:hover{background-color:#0668BF;}
@@ -435,7 +436,8 @@ a.card:hover{text-decoration:none;}
 .pro-wrap{font-family:'Lato',sans-serif;max-width:1180px;color:#080809;background-color:#fff;padding:35px;font-weight:300;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
 div.pro-avatar img{max-width:58px;}
-.pro-card-name{font-size:1.125rem;font-weight:500;line-height:1.125rem;}
+.pro-card-name{margin-left:30px;font-size:1.125rem;font-weight:500;line-height:1.125rem;}
+.pro-card-edit{font-size:0.85rem}
 .pro-card-domain-name{font-size:1rem;font-weight:600;}
 .pro-card-identity-address{font-size:0.9rem;line-height:0.9rem;font-weight:600;}
 .pro-card-trust-level-badge {color:#fff;background-color:#2e2e2e;padding:12px 35px;border-radius:3px;}
@@ -563,7 +565,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
   .navbar-expand{width:75%;}
 
   /* 21. Cards */
-  .pro-card-body{margin-left:auto;margin-right:auto;max-width:300px;}
+  .pro-card-body{margin-left:auto;margin-right:auto;max-width:350px;}
 
 	.card-list-wrap{min-width:310px;display:inline-block;padding-left:0;padding-right:0;}
 	.card-list-card{width:310px;}

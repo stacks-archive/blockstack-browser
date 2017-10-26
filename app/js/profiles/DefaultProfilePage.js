@@ -226,9 +226,9 @@ class DefaultProfilePage extends Component {
           hasAccount = true
           account.identifier = identifier
           account.proofUrl = proofUrl
-          // if (this.shouldAutoGenerateProofUrl(service)) {
-            // account.proofUrl = this.generateProofUrl(service, identifier)
-          // }
+          if (this.shouldAutoGenerateProofUrl(service)) {
+            account.proofUrl = this.generateProofUrl(service, identifier)
+          }
           this.setState({ profile })
           this.saveProfile(profile)
           this.refreshProofs()
@@ -237,17 +237,33 @@ class DefaultProfilePage extends Component {
 
       if (!hasAccount && identifier.length > 0) {
         const newAccount = this.createNewAccount(service, identifier, proofUrl)
-        // if (this.shouldAutoGenerateProofUrl(service)) {
-        //   newAccount.proofUrl = this.generateProofUrl(service, identifier)
-        // }
+        if (this.shouldAutoGenerateProofUrl(service)) {
+          newAccount.proofUrl = this.generateProofUrl(service, identifier)
+        }
         profile.account.push(newAccount)
         this.setState({ profile })
         this.saveProfile(profile)
         this.refreshProofs()
       }
+
+      if(hasAccount && identifier.length == 0) {
+        this.removeAccount(service)
+      }
     }
 
     this.closeSocialAccountModal()
+  }
+
+  shouldAutoGenerateProofUrl(service) {
+    return service === 'hackerNews'
+  }
+
+  generateProofUrl(service, identifier) {
+    if (service === 'hackerNews') {
+      return `https://news.ycombinator.com/user?id=${identifier}`
+    }
+
+    return ''
   }
 
   saveProfile(newProfile) {
@@ -362,6 +378,19 @@ class DefaultProfilePage extends Component {
     }
   }
 
+  removeAccount = (service) => {
+    const profile = this.state.profile
+    const accounts = profile.account
+
+    if (accounts) {
+      const newAccounts = accounts.filter(account => account.service !== service)
+      profile.account = newAccounts
+      this.setState({ profile })
+      this.saveProfile(profile)
+      this.refreshProofs()
+    }
+  }
+
   render() {
     const identityIndex = this.props.defaultIdentity
     const identity = this.state.localIdentities[identityIndex]
@@ -472,7 +501,7 @@ class DefaultProfilePage extends Component {
               </div>
 
               {this.state.editMode &&
-              <div className="col-12 text-center">
+              <div className="col-12 text-center m-b-20">
                 <input
                   type="file"
                   ref={(ref) => { this.photoUpload = ref }}
@@ -480,7 +509,7 @@ class DefaultProfilePage extends Component {
                   style={{ display: 'none' }}
                 />
                 <button
-                  className="btn btn-link active"
+                  className="btn btn-link btn-xs"
                   onClick={this.onChangePhotoClick}
                 >
                     Change Photo
@@ -500,6 +529,7 @@ class DefaultProfilePage extends Component {
                   <InputGroup
                     name="description"
                     label="Short Bio"
+                    textarea={true}
                     data={this.state}
                     onChange={this.onValueChange}
                     centerText={true}
@@ -514,10 +544,22 @@ class DefaultProfilePage extends Component {
                         transaction <span>#{transactionIndex}</span>
                       </div>
                     : null}*/}
-                    <div className="pro-card-name text-center m-t-30">{person.name()}</div>
+                    <div className="pro-card-name text-center m-t-30">
+                      {person.name()}
+                      {person.name() && person.name().length > 0 &&
+                        <span className="pro-card-edit">
+                          <i 
+                            className="fa fa-fw fa-pencil clickable" 
+                            onClick={this.onEditClick}
+                          />
+                        </span>
+                      }
+                    </div>
                     <div className="text-center">
                       {identity.canAddUsername ?
-                        <Link to={`/profiles/i/add-username/${identityIndex}/search`}>
+                        <Link 
+                          to={`/profiles/i/add-username/${identityIndex}/search`}
+                          className="btn btn-link btn-link-mute btn-xs">
                          Add a username
                         </Link>
                       :
@@ -542,8 +584,16 @@ class DefaultProfilePage extends Component {
                       </small>
                     </div>
 
-                    <div className="pro-card-body text-center">
+                    <div className="pro-card-body text-center m-b-25">
                       {person.description()}
+                      {person.description() && person.description().length > 0 &&
+                        <span className="pro-card-edit">
+                          <i 
+                            className="fa fa-fw fa-pencil clickable" 
+                            onClick={this.onEditClick}
+                          />
+                        </span>
+                      }
                     </div>
 
                     {/*}
