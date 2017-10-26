@@ -657,7 +657,7 @@ class DefaultProfilePage extends Component {
                     : null}*/}
                     <div className="pro-card-name text-center m-t-30">
                       {(person.name() && person.name().length > 0) ? person.name() :
-                        <span className="placeholder">Add your name</span> }
+                        <span className="placeholder">Add your name</span>}
                       <span className="pro-card-edit">
                         <i
                           className="fa fa-fw fa-pencil clickable"
@@ -699,8 +699,9 @@ class DefaultProfilePage extends Component {
                     </div>
 
                     <div className="pro-card-body text-center m-b-25">
-                      {(person.description() && person.description().length > 0) ? person.description() :
-                        <span className="placeholder">Add your bio</span> }
+                      {(person.description() && person.description().length > 0) ? 
+                        person.description() :
+                        <span className="placeholder">Add your bio</span>}
                       <span className="pro-card-edit">
                         <i
                           className="fa fa-fw fa-pencil clickable"

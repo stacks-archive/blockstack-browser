@@ -81,14 +81,16 @@ class HomeScreenPage extends Component {
                 </p>
                 <div className="app-container no-padding">
                   {appList.apps.map((app) => {
-                    return app.status === 'user_ready' ? (
-                    <AppIcon 
-                      key={app.name}
-                      iconImage={app.appIcon.small} 
-                      displayName={app.displayName} 
-                      launchLink={app.launchLink} 
-                    />
-                    ) : null}
+                    if (app.status === 'user_ready') {
+                      return (<AppIcon 
+                        key={app.name}
+                        iconImage={app.appIcon.small} 
+                        displayName={app.displayName} 
+                        launchLink={app.launchLink} 
+                      />)
+                    } else {
+                      return null
+                    } }
                   )}
                 </div>
               </div>
@@ -99,14 +101,16 @@ class HomeScreenPage extends Component {
                 </p>
                 <div className="app-container no-padding">
                   {appList.apps.map((app) => {
-                    return app.status === 'in_progress' ? (
-                    <AppIcon 
-                      key={app.name}
-                      iconImage={app.appIcon.small} 
-                      displayName={app.displayName} 
-                      launchLink={app.launchLink} 
-                    />
-                    ) : null}
+                    if (app.status === 'in_progress') {
+                      return (<AppIcon 
+                        key={app.name}
+                        iconImage={app.appIcon.small} 
+                        displayName={app.displayName} 
+                        launchLink={app.launchLink} 
+                      />)
+                    } else {
+                      return null
+                    } }
                   )}
                 </div>
               </div>
