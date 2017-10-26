@@ -438,6 +438,7 @@ a.card:hover{text-decoration:none;}
 .pro-actions-wrap{max-width:1180px;padding:0px;}
 div.pro-avatar img{max-width:58px;}
 .pro-card-name{margin-left:30px;font-size:1.125rem;font-weight:500;line-height:1.125rem;}
+.pro-card-name .placeholder{color:#949494;}
 .pro-card-edit{font-size:0.85rem}
 .pro-card-domain-name{font-size:1rem;font-weight:600;}
 .pro-card-identity-address{font-size:0.9rem;line-height:0.9rem;font-weight:600;}
@@ -445,6 +446,7 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-trust-level-badge .fa {margin:0;}
 .pro-card-trust-level {margin-left:10px;margin-right:10px;text-transform:uppercase;font-size:13px;font-weight:700;}
 .pro-card-body{display:block;font-size:0.8rem;font-weight:600}
+.pro-card-body .placeholder{color:#949494;}
 .pro-container{padding-top:1.5rem;}
 .list-card{margin-bottom:0;list-style:none;padding:0;color:#19191A;text-decoration:none;}
 .card-text{padding:20px;}
