@@ -561,7 +561,7 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <ToolTip id="trustLevel">
           <div>
-            <div>Increase your trust level by verifying your social proofs.</div>
+            <div>Increase your trust level by verifying your social accounts.</div>
           </div>
         </ToolTip>
         <div>
