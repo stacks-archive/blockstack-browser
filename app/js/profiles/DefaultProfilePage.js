@@ -82,7 +82,6 @@ class DefaultProfilePage extends Component {
       editingSocialAccount: {},
     }
 
-    this.onEditClick = this.onEditClick.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
     this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
     this.onPhotoClick = this.onPhotoClick.bind(this)
@@ -105,16 +104,35 @@ class DefaultProfilePage extends Component {
     })
   }
 
-  onEditClick(event) {
+  onEditClick = (e) => {
     if (this.state.editMode) {
       this.setState({
         editMode: false
       })
     } else {
+      const profile = this.state.profile
       this.setState({
-        editMode: true
+        editMode: true,
+        name: profile.name,
+        description: profile.description
       })
     }
+  }
+
+  onSaveClick = (e) => {
+    const profile = this.state.profile
+    profile.name = this.state.name
+    profile.description = this.state.description
+    this.saveProfile(profile)
+    this.setState({
+      editMode: false
+    })
+  }
+
+  onCancelClick = (e) => {
+    this.setState({
+      editMode: false
+    })
   }
 
   onSocialAccountClick = (service) => {
@@ -435,9 +453,9 @@ class DefaultProfilePage extends Component {
         <div>
           <SecondaryNavBar
             leftButtonTitle={this.state.editMode ? "Save" : "Edit"}
-            onLeftButtonClick={this.state.editMode ? this.onEditClick : this.onEditClick}
+            onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
             rightButtonTitle={this.state.editMode ? "Cancel" : "More"}
-            onRightButtonClick={this.state.editMode ? this.onEditClick : null}
+            onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
             rightButtonLink={this.state.editMode ? "" : "/profiles/i/all"}
           />
           <div className="container-fluid m-t-50 p-0">
@@ -475,15 +493,15 @@ class DefaultProfilePage extends Component {
                   <InputGroup
                     name="name"
                     label="Full Name"
-                    data={this.state.profile}
-                    onChange={this.onChange}
+                    data={this.state}
+                    onChange={this.onValueChange}
                     centerText={true}
                   />
                   <InputGroup
                     name="description"
                     label="Short Bio"
-                    data={this.state.profile}
-                    onChange={this.onChange}
+                    data={this.state}
+                    onChange={this.onValueChange}
                     centerText={true}
                   />
                 </div>
@@ -605,6 +623,7 @@ class DefaultProfilePage extends Component {
                         return (
                           <SocialAccountItem
                             key={`${account.service}-${account.identifier}`}
+                            editing={this.state.editMode}
                             service={account.service}
                             identifier={account.identifier}
                             proofUrl={account.proofUrl}

@@ -15,6 +15,7 @@ function mapStateToProps(state) {
 class SocialAccountItem extends Component {
   static propTypes = {
     listItem: PropTypes.bool.isRequired,
+    editing: PropTypes.bool.isRequired,
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
     proofUrl: PropTypes.string,
@@ -90,7 +91,7 @@ class SocialAccountItem extends Component {
   }
 
   onClick = (e) => {
-    if (!this.props.placeholder) {
+    if (!this.props.placeholder && !this.props.editing) {
       openInNewTab(this.getAccountUrl())
     } else {
       this.props.onClick(this.props.service)
@@ -128,6 +129,12 @@ class SocialAccountItem extends Component {
             {!this.props.placeholder && (
               <span className="app-account-identifier">
                 {this.getIdentifier()}
+              </span>
+            )}
+
+            {(!this.props.placeholder && this.props.editing) && (
+              <span className="">
+                <i className="fa fa-fw fa-pencil" />
               </span>
             )}
 
