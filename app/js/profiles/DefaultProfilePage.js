@@ -65,7 +65,9 @@ class DefaultProfilePage extends Component {
     identityAddresses: PropTypes.array.isRequired,
     nextUnusedAddressIndex: PropTypes.number.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
-    setDefaultIdentity: PropTypes.func.isRequired
+    setDefaultIdentity: PropTypes.func.isRequired,
+    identityKeypairs: PropTypes.array.isRequired,
+    storageConnected: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -107,7 +109,7 @@ class DefaultProfilePage extends Component {
     })
   }
 
-  onEditClick = (e) => {
+  onEditClick = () => {
     if (this.state.editMode) {
       this.setState({
         editMode: false
@@ -122,7 +124,7 @@ class DefaultProfilePage extends Component {
     }
   }
 
-  onSaveClick = (e) => {
+  onSaveClick = () => {
     const profile = this.state.profile
     profile.name = this.state.name
     profile.description = this.state.description
@@ -132,7 +134,7 @@ class DefaultProfilePage extends Component {
     })
   }
 
-  onCancelClick = (e) => {
+  onCancelClick = () => {
     this.setState({
       editMode: false
     })
@@ -159,8 +161,8 @@ class DefaultProfilePage extends Component {
         editingAccount = {
           '@type': 'Account',
           placeholder: false,
-          service: service,
-          identifier: "",
+          service,
+          identifier: '',
           proofType: 'http',
           proofUrl: ''
         }
@@ -194,14 +196,14 @@ class DefaultProfilePage extends Component {
         editingAccount = {
           '@type': 'Account',
           placeholder: false,
-          service: service,
-          identifier: ""
+          service,
+          identifier: ''
         }
       }
 
       this.setState({
         accountModalIsOpen: true,
-        editingAccount: editingAccount
+        editingAccount
       })
     }
   }
@@ -282,7 +284,7 @@ class DefaultProfilePage extends Component {
         this.refreshProofs()
       }
 
-      if(hasAccount && identifier.length == 0) {
+      if (hasAccount && identifier.length === 0) {
         this.removeAccount(service)
       }
     }
@@ -310,14 +312,14 @@ class DefaultProfilePage extends Component {
       })
 
       if (!hasAccount && identifier.length > 0) {
-        const newAccount = this.createNewAccount(service, identifier, "")
+        const newAccount = this.createNewAccount(service, identifier, '')
         profile.account.push(newAccount)
         this.setState({ profile })
         this.saveProfile(profile)
         this.refreshProofs()
       }
 
-      if(hasAccount && identifier.length == 0) {
+      if (hasAccount && identifier.length === 0) {
         this.removeAccount(service)
       }
     }
@@ -417,13 +419,13 @@ class DefaultProfilePage extends Component {
     })
   }
 
-  closeSocialAccountModal = (event) => {
+  closeSocialAccountModal = () => {
     this.setState({
       socialAccountModalIsOpen: false
     })
   }
 
-  closeAccountModal = (event) => {
+  closeAccountModal = () => {
     this.setState({
       accountModalIsOpen: false
     })
@@ -482,8 +484,8 @@ class DefaultProfilePage extends Component {
     const ownerAddress = identity.ownerAddress
     const verifications = identity.verifications
     const trustLevel = identity.trustLevel
-    const blockNumber = identity.blockNumber
-    const transactionIndex = identity.transactionIndex
+    // const blockNumber = identity.blockNumber
+    // const transactionIndex = identity.transactionIndex
 
     const filledAccounts = []
     const placeholders = []
@@ -511,7 +513,7 @@ class DefaultProfilePage extends Component {
 
     // const accounts = person.profile().account || []
     const accounts = filledAccounts.concat(placeholders)
-    const connections = person.connections() || []
+    // const connections = person.connections() || []
 
     return (
       <div>
@@ -566,13 +568,13 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <div>
           <SecondaryNavBar
-            leftButtonTitle={this.state.editMode ? "Save" : "Edit"}
+            leftButtonTitle={this.state.editMode ? 'Save' : 'Edit'}
             leftIsButton
             onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
-            rightButtonTitle={this.state.editMode ? "Cancel" : "More"}
+            rightButtonTitle={this.state.editMode ? 'Cancel' : 'More'}
             rightIsButton={this.state.editMode}
             onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
-            rightButtonLink={this.state.editMode ? "" : "/profiles/i/all"}
+            rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
           />
           <div className="container-fluid m-t-50 p-0">
             <div className="row">
@@ -588,20 +590,20 @@ class DefaultProfilePage extends Component {
               </div>
 
               {this.state.editMode &&
-              <div className="col-12 text-center m-b-20">
-                <input
-                  type="file"
-                  ref={(ref) => { this.photoUpload = ref }}
-                  onChange={this.uploadProfilePhoto}
-                  style={{ display: 'none' }}
-                />
-                <button
-                  className="btn btn-link btn-xs"
-                  onClick={this.onChangePhotoClick}
-                >
-                    Change Photo
-                </button>
-              </div>
+                <div className="col-12 text-center m-b-20">
+                  <input
+                    type="file"
+                    ref={(ref) => { this.photoUpload = ref }}
+                    onChange={this.uploadProfilePhoto}
+                    style={{ display: 'none' }}
+                  />
+                  <button
+                    className="btn btn-link btn-xs"
+                    onClick={this.onChangePhotoClick}
+                  >
+                      Change Photo
+                  </button>
+                </div>
               }
 
               {this.state.editMode ? 
@@ -611,15 +613,15 @@ class DefaultProfilePage extends Component {
                     label="Full Name"
                     data={this.state}
                     onChange={this.onValueChange}
-                    centerText={true}
+                    centerText
                   />
                   <InputGroup
                     name="description"
                     label="Short Bio"
-                    textarea={true}
+                    textarea
                     data={this.state}
                     onChange={this.onValueChange}
-                    centerText={true}
+                    centerText
                   />
                 </div>
               :
@@ -646,7 +648,8 @@ class DefaultProfilePage extends Component {
                       {identity.canAddUsername ?
                         <Link 
                           to={`/profiles/i/add-username/${identityIndex}/search`}
-                          className="btn btn-link btn-link-mute btn-xs">
+                          className="btn btn-link btn-link-mute btn-xs"
+                        >
                          Add a username
                         </Link>
                       :
@@ -663,7 +666,10 @@ class DefaultProfilePage extends Component {
                     }
                     </div>
 
-                    <div className="pro-card-identity-address m-b-25 text-center text-secondary m-t-0">
+                    <div 
+                      className="pro-card-identity-address m-b-25 text-center 
+                      text-secondary m-t-0"
+                    >
                       <small>
                         <span data-tip data-for="ownerAddress">
                           {`ID-${identity.ownerAddress}`}
@@ -683,7 +689,7 @@ class DefaultProfilePage extends Component {
                       }
                     </div>
 
-                    {/*}
+                    {/*
                     {person.address() ?
                       <div className="pro-card-body text-center text-secondary">
                       {person.address()}
