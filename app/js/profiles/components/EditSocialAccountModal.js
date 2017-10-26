@@ -169,7 +169,7 @@ class EditSocialAccountModal extends Component {
             style={{ overlay: { zIndex: 10 } }}
             className="container-fluid social-account-modal"
           >
-            <div className={`social-account ${verifiedClass}`} 
+            <div className={`profile-account ${verifiedClass}`} 
               onClick={this.handleClick}>
               <div className="heading m-b-30">
                 <i className={`fa fa-fw fa-lg ${this.getIconClass()}`} />

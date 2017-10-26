@@ -36,9 +36,9 @@ div.profile-accounts > ul > li.placeholder > .app-account-icon {color:#AEAEAE;}
 div.profile-accounts > ul > li.placeholder > .star {margin-right:5px;}
 
 /* Social accounts edit */
-div.social-account {color:#222222;}
-div.social-account .heading {color:#616161;}
-div.social-account .app-account-service {margin-left:10px;}
+div.profile-account {color:#222222;}
+div.profile-account .heading {color:#616161;}
+div.profile-account .app-account-service {margin-left:10px;}
 
 /*div.social-account {color:#fff;margin-bottom:1px;background-color:#2c96ff;cursor:pointer;transition:all 200ms ease-in-out}
 div.social-account.verified {color:#fff;background-color:#2c96ff;}
@@ -561,6 +561,8 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width:768px){
+  div.profile-accounts > ul{padding:0px 45px;}
+
   /* 16. Navbars */
   .navbar-expand{width:75%;}
 
