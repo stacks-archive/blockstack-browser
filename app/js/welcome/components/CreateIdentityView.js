@@ -4,7 +4,7 @@ const CreateIdentityView = (props) =>
   (
   <div>
     <h3 className="modal-heading m-t-15 p-b-10">
-      Blockstack has no 3rd parties: an identity key on your device gives you access
+      Blockstack has no 3rd parties: a keychain on your device gives you access
     </h3>
     <img
       role="presentation"

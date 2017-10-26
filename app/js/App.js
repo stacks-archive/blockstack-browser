@@ -7,9 +7,7 @@ import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
 import { AppsActions } from './store/apps'
 import WelcomeModal from './welcome/WelcomeModal'
-import TrustLevelFooter from './components/TrustLevelFooter'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
-import { MAX_TRUST_LEVEL } from './utils/account-utils'
 import { SanityActions }    from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
 import { isWindowsBuild } from './utils/window-utils'
@@ -96,9 +94,6 @@ class App extends Component {
 
     this.closeModal = this.closeModal.bind(this)
     this.performSanityChecks = this.performSanityChecks.bind(this)
-    this.getTrustLevel = this.getTrustLevel.bind(this)
-    this.shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter.bind(this)
-    this.onTrustLevelFooterClick = this.onTrustLevelFooterClick.bind(this)
   }
 
   componentWillMount() {
@@ -155,32 +150,6 @@ class App extends Component {
     })
   }
 
-  onTrustLevelFooterClick() {
-    this.props.router.push(`/profiles/${this.props.defaultIdentity}/edit`)
-  }
-
-  getTrustLevel() {
-    const identityIndex = this.props.defaultIdentity
-    const identity = this.props.localIdentities[identityIndex]
-    if (!identity) {
-      return 0
-    } else {
-      return identity.trustLevel
-    }
-  }
-
-  shouldShowTrustLevelFooter() {
-    const trustLevel = this.getTrustLevel()
-    const localIdentities = this.props.localIdentities
-    if (localIdentities.length === 0) {
-      return false
-    } else if (trustLevel < MAX_TRUST_LEVEL) {
-      return true
-    } else {
-      return false
-    }
-  }
-
   closeModal() {
     this.setState({ modalIsOpen: false })
   }
@@ -193,9 +162,6 @@ class App extends Component {
   }
 
   render() {
-    const shouldShowTrustLevelFooter = this.shouldShowTrustLevelFooter()
-    const trustLevel = this.getTrustLevel()
-
     return (
       <div className="body-main">
         <WelcomeModal
@@ -209,13 +175,6 @@ class App extends Component {
         <div className="wrapper footer-padding">
           {this.props.children}
         </div>
-        {shouldShowTrustLevelFooter &&
-          <TrustLevelFooter
-            trustLevel={trustLevel}
-            maxTrustLevel={MAX_TRUST_LEVEL}
-            onClick={this.onTrustLevelFooterClick}
-          />
-        }
       </div>
     )
   }

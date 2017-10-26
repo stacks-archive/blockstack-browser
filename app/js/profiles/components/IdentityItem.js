@@ -118,7 +118,7 @@ class IdentityItem extends Component {
                 <div style={{ marginTop: '6px' }}>
                   <p className="card-subtitle text-secondary">
                     <small data-tip data-for="ownerAddress">
-                      {this.props.ownerAddress}
+                      ID-{this.props.ownerAddress}
                     </small>
                   </p>
                 </div>

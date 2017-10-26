@@ -164,7 +164,7 @@ class StorageProvidersPage extends Component {
       {hide ?
       null
       :
-        <div className="m-b-100">
+        <div className="m-b-100 storage-page">
           <h3 className="container-fluid m-t-10">
             Storage Providers
           </h3>
@@ -194,6 +194,14 @@ class StorageProvidersPage extends Component {
                 Disconnect default storage (free storage hub provided by Blockstack PBC)
                 </button>
               }
+            </p>
+            <p>
+              <a
+                href="https://github.com/blockstack/gaia/tree/master/hub"
+                className="btn btn-primary btn-storage btn-lg btn-block"
+              >
+              Run your own Gaia storage hub
+              </a>
             </p>
             <p>
               {api.hostedDataLocation !== DROPBOX ?

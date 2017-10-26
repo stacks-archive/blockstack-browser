@@ -16,7 +16,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/components/registration/RegistrationSelectView.js')
 const CHECK_FOR_PAYMENT_INTERVAL = 10000
-
+export const PRICE_BUFFER = 0.0005 // btc
 function mapStateToProps(state) {
   return {
     api: state.settings.api,
@@ -124,6 +124,11 @@ class AddUsernameSelectPage extends Component {
     if (this.state.registrationInProgress && registration.registrationSubmitted) {
       logger.debug('componentWillReceiveProps: registration submitted! redirecting...')
       this.props.router.push(`/profiles/i/add-username/${index}/submitted/${name}`)
+    } else if (registration.registrationError) {
+      this.setState({
+        registrationInProgress: false
+      })
+      this.updateAlert('danger', registration.registrationError)
     }
 
     const availableNames = this.props.availability.names
@@ -235,7 +240,7 @@ class AddUsernameSelectPage extends Component {
     if (nameAvailabilityObject) {
       price = nameAvailabilityObject.price
     }
-    price = roundTo(price, 3)
+    price = roundTo.up(price, 6) + PRICE_BUFFER
     const walletBalance = this.props.balances.total
 
     if (nameIsSubdomain || (walletBalance >= price)) {

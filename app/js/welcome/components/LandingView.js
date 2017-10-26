@@ -23,7 +23,7 @@ const LandingPage = (props) =>
         Get Started
       </button>
       <a href="#" className="modal-body" onClick={props.showRestoreView}>
-        Restore from backup
+        Restore an existing keychain
       </a>
     </div>
   </div>

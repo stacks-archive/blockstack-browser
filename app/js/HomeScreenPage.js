@@ -73,19 +73,48 @@ class HomeScreenPage extends Component {
         />
         <div className="home-screen">
           <div className="container-fluid app-center">
-            <div className="container app-wrap">
-              <div className="app-container no-padding">
+            <div className="container app-wrap text-center">
 
-                {appList.apps.map((app) => (
-                  <AppIcon 
-                    key={app.name}
-                    iconImage={app.appIcon.small} 
-                    displayName={app.displayName} 
-                    launchLink={app.launchLink} 
-                  />
-                ))}
-
+              <div className="app-section m-b-45">
+                <p className="app-section-heading">
+                  User-ready Apps
+                </p>
+                <div className="app-container no-padding">
+                  {appList.apps.map((app) => {
+                    if (app.status === 'user_ready') {
+                      return (<AppIcon 
+                        key={app.name}
+                        iconImage={app.appIcon.small} 
+                        displayName={app.displayName} 
+                        launchLink={app.launchLink} 
+                      />)
+                    } else {
+                      return null
+                    } }
+                  )}
+                </div>
               </div>
+
+              <div className="app-section m-b-45">
+                <p className="app-section-heading">
+                  Apps-in-progress
+                </p>
+                <div className="app-container no-padding">
+                  {appList.apps.map((app) => {
+                    if (app.status === 'in_progress') {
+                      return (<AppIcon 
+                        key={app.name}
+                        iconImage={app.appIcon.small} 
+                        displayName={app.displayName} 
+                        launchLink={app.launchLink} 
+                      />)
+                    } else {
+                      return null
+                    } }
+                  )}
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

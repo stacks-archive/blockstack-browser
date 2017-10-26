@@ -12,7 +12,8 @@ const apps = {
       },
       website: 'http://blockstack-todos.appartisan.com',
       launchLink: 'http://blockstack-todos.appartisan.com',
-      developer: 'Larry Salibra'
+      developer: 'Larry Salibra',
+      status: 'user_ready'
     }, {
       name: 'Guild',
       displayName: 'Guild',
@@ -24,7 +25,8 @@ const apps = {
       },
       website: 'http://www.guildblog.com',
       launchLink: 'http://www.guildblog.com',
-      developer: 'Jay Hwang'
+      developer: 'Jay Hwang',
+      status: 'in_progress'
     }, {
       name: 'Ongaku Ryoho',
       displayName: 'Ongaku Ryoho',
@@ -36,7 +38,8 @@ const apps = {
       },
       website: 'http://www.ongakuryoho.com',
       launchLink: 'http://www.ongakuryoho.com',
-      developer: ''
+      developer: '',
+      status: 'in_progress'
     }, {
       name: 'Hello, Blockstack',
       displayName: 'Hello, Blockstack',
@@ -48,7 +51,8 @@ const apps = {
       },
       website: 'https://www.helloblockstack.com',
       launchLink: 'https://www.helloblockstack.com',
-      developer: 'Blockstack PBC'
+      developer: 'Blockstack PBC',
+      status: 'user_ready'
     }, {
       name: 'Blockstack Forum',
       displayName: 'Forum',
@@ -60,7 +64,8 @@ const apps = {
       },
       website: 'https://forum.blockstack.org',
       launchLink: 'https://forum.blockstack.org',
-      developer: 'Blockstack PBC'
+      developer: 'Blockstack PBC',
+      status: 'user_ready'
     }, {
       name: 'Casa',
       displayName: 'Casa',
@@ -72,19 +77,8 @@ const apps = {
       },
       website: 'https://casa.cash',
       launchLink: 'https://casa.cash',
-      developer: 'Bedkin, Inc.'
-    }, {
-      name: 'OpenBazaar',
-      displayName: 'OpenBazaar',
-      description: 'Free online marketplace.',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-openbazaar-256x256.png',
-        large: 'app-icon-openbazaar-1024x1024.png'
-      },
-      website: 'https://www.openbazaar.org/',
-      launchLink: 'https://www.openbazaar.org/',
-      developer: 'Open Bazaar'
+      developer: 'Bedkin, Inc.',
+      status: 'in_progress'
     }, {
       name: 'Beacon',
       displayName: 'Beacon',
@@ -96,7 +90,8 @@ const apps = {
       },
       website: 'https://ntzwrk.org/projects/beacon/',
       launchLink: 'https://ntzwrk.org/projects/beacon/',
-      developer: 'ntzwrk'
+      developer: 'ntzwrk',
+      status: 'in_progress'
     }, {
       name: 'Afia',
       displayName: 'Afia',
@@ -108,7 +103,8 @@ const apps = {
       },
       website: 'http://www.afiabeta.com/',
       launchLink: 'http://www.afiabeta.com/',
-      developer: 'Afia'
+      developer: 'Afia',
+      status: 'in_progress'
     }, {
       name: 'DotPodcast',
       displayName: 'DotPodcast',
@@ -120,7 +116,8 @@ const apps = {
       },
       website: 'https://dotpodcast.co/',
       launchLink: 'https://dotpodcast.co/',
-      developer: 'DotPodcast'
+      developer: 'DotPodcast',
+      status: 'in_progress'
     }
   ]
 }
