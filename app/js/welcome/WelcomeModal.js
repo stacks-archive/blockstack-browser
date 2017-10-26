@@ -120,6 +120,7 @@ class WelcomeModal extends Component {
     this.updateAlert = this.updateAlert.bind(this)
     this.setPage = this.setPage.bind(this)
     this.isOpen = this.isOpen.bind(this)
+    this.connectGaiaHub = this.connectGaiaHub.bind(this)
 
     if (!this.isOpen() && this.props.needToUpdate) {
       logger.debug('On-boarding is not open & we need to update state...')
@@ -294,6 +295,7 @@ class WelcomeModal extends Component {
 
   connectGaiaHub(event) {
     event.preventDefault()
+    this.props.skipEmailBackup() // need to call this again because state gets deleted before this
     redirectToConnectToGaiaHub()
   }
 
@@ -305,12 +307,6 @@ class WelcomeModal extends Component {
       return
     }
     logger.debug('confirmIdentityKeyPhrase: user entered keychain phrase matches!')
-    this.showNextView()
-  }
-
-  skipEmailBackup(event) {
-    event.preventDefault()
-    this.props.skipEmailBackup()
     this.showNextView()
   }
 
@@ -442,10 +438,7 @@ class WelcomeModal extends Component {
               <div>
               {
                 page === 3 ?
-                  <EnterEmailView
-                    emailNotifications={this.props.emailNotifications}
-                    skipEmailBackup={this.props.skipEmailBackup}
-                  />
+                  <EnterEmailView />
                 :
                 null
               }
