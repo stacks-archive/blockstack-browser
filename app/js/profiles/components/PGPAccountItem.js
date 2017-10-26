@@ -21,12 +21,14 @@ function mapDispatchToProps(dispatch) {
 
 class PGPAccountItem extends Component {
   static propTypes = {
+    editing: PropTypes.bool.isRequired,
     listItem: PropTypes.bool.isRequired,
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
     contentUrl: PropTypes.string,
     loadPGPPublicKey: PropTypes.func.isRequired,
-    pgpPublicKeys: PropTypes.object
+    pgpPublicKeys: PropTypes.object,
+    onClick: PropTypes.func
   }
 
   constructor(props) {
@@ -96,6 +98,14 @@ class PGPAccountItem extends Component {
     }
   }
 
+  onClick = (e) => {
+    if (!this.props.placeholder && !this.props.editing) {
+
+    } else {
+      this.props.onClick(this.props.service)
+    }
+  }
+
   render() {
     const identifier = this.props.identifier
     const webAccountTypes = getWebAccountTypes(this.props.api)
@@ -122,7 +132,7 @@ class PGPAccountItem extends Component {
 
     if (this.props.listItem === true) {
       return (
-        <li className={`clickable ${verifiedClass} ${placeholderClass}`}>
+        <li className={`clickable ${verifiedClass} ${placeholderClass}`} onClick={this.onClick}>
           <Modal
             isOpen={this.state.modalIsOpen}
             contentLabel="PGP Key"
@@ -164,6 +174,12 @@ class PGPAccountItem extends Component {
           {!this.props.placeholder && (
             <span className="app-account-identifier">
               {this.getIdentifier()}
+            </span>
+          )}
+
+          {(!this.props.placeholder && this.props.editing) && (
+            <span className="">
+              <i className="fa fa-fw fa-pencil" />
             </span>
           )}
 

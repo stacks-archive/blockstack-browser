@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import InputGroup from '../../components/InputGroup'
-import VerificationInfo from '../components/VerificationInfo'
 
 import { getWebAccountTypes } from '../../utils'
 
@@ -13,30 +12,26 @@ function mapStateToProps(state) {
   }
 }
 
-class EditSocialAccountModal extends Component {
+class EditAccountModal extends Component {
   static propTypes = {
     isOpen: PropTypes.bool,
     service: PropTypes.string,
     identifier: PropTypes.string,
-    ownerAddress: PropTypes.string,
     api: PropTypes.object.isRequired,
-    onPostVerificationButtonClick: PropTypes.func,
-    onVerifyButtonClick: PropTypes.func
+    onDoneButtonClick: PropTypes.func
   }
 
   constructor(props) {
     super(props)
 
     this.state = {
-      identifier: props.identifier,
-      proofUrl: props.proofUrl,
+      identifier: props.identifier
     }
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      identifier: nextProps.identifier,
-      proofUrl: nextProps.proofUrl,
+      identifier: nextProps.identifier
     })
   }
 
@@ -78,46 +73,50 @@ class EditSocialAccountModal extends Component {
     })
   }
 
-  onProofUrlChange = (event) => {
-    let proofUrl = event.target.value
-    this.setState({
-      proofUrl: proofUrl
-    })
+  getIdentifierType = (service) => {
+    if(service === 'bitcoin' || service === 'ethereum') {
+      return "address"
+    }
+    else if (service === 'pgp' || service === 'ssh') {
+      return "key"
+    }
+    else {
+      return "account"
+    }
   }
 
   getPlaceholderText = (service) => {
     if(service === 'bitcoin' || service === 'ethereum') {
       return (
         <span className="app-account-service font-weight-bold">
-          Prove your <span className="text-capitalize">{service}</span> address
+          Add your <span className="text-capitalize">{service}</span> address
         </span>
       )
     }
     else if (service === 'pgp' || service === 'ssh') {
       return (
         <span className="app-account-service font-weight-bold">
-          Prove your {service.toUpperCase()} key
+          Add your {service.toUpperCase()} key
         </span>
       )
     }
     else {
       return (
         <span className="app-account-service font-weight-bold">
-          Prove your <span className="text-capitalize">{service}</span> account
+          Add your <span className="text-capitalize">{service}</span> account
         </span>
       )
     }
   }
 
-  shouldShowVerificationInstructions = () => {
-    return !this.props.verified && (this.props.identifier.length > 0)
+  capitalize = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     let webAccountType = webAccountTypes[this.props.service]
-    const disabled = this.props.service === 'hackerNews'
 
     // const proofURLInput = () => {
     //   if (this.props.service === 'instagram' || this.props.service === 'github'
@@ -159,37 +158,27 @@ class EditSocialAccountModal extends Component {
               </div>
 
               <div>
-                <p>
-                  <span className="font-weight-bold">Step 1: </span> 
-                  Enter your <span className="text-capitalize">{this.props.service}</span> username.
+{/*                <p>
+                  Enter your <span className="text-capitalize">{this.props.service} </span> 
+                  {this.getIdentifierType(this.props.service)}.
                 </p>
-
+*/}
                 <InputGroup 
                   key="input-group-identifier"
                   name="identifier" 
-                  label="Username" 
+                  label={this.capitalize(this.getIdentifierType(this.props.service))}
                   data={this.state}
                   stopClickPropagation={true} 
                   onChange={this.onIdentifierChange} 
                 />
               
-                <VerificationInfo
-                  service={this.props.service}
-                  ownerAddress={this.props.ownerAddress}
-                  domainName={this.getIdentifier()}
-                  proofUrl={this.state.proofUrl}
-                  onProofUrlChange={this.onProofUrlChange}
-                  onPostVerificationButtonClick={(e) => {
-                    this.props.onPostVerificationButtonClick(e, this.props.service, this.state.identifier)} 
-                  }
-                  />
               </div>
             </div>
             <button 
               className="btn btn-verify btn-block m-t-15" 
-              onClick={e => this.props.onVerifyButtonClick(this.props.service, 
-                this.state.identifier, this.state.proofUrl)}>
-              Verify
+              onClick={e => this.props.onDoneButtonClick(this.props.service, 
+                this.state.identifier)}>
+              Save
             </button>
           </Modal>
         )
@@ -202,4 +191,4 @@ class EditSocialAccountModal extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(EditSocialAccountModal)
+export default connect(mapStateToProps, null)(EditAccountModal)

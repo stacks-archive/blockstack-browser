@@ -13,6 +13,7 @@ import PGPAccountItem from './components/PGPAccountItem'
 import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
 import EditSocialAccountModal from './components/EditSocialAccountModal'
+import EditAccountModal from './components/EditAccountModal'
 import { uploadProfile, uploadPhoto } from '../account/utils'
 import { openInNewTab, signProfileForUpload } from '../utils'
 
@@ -79,7 +80,9 @@ class DefaultProfilePage extends Component {
       editMode: false,
       photoModalIsOpen: false,
       socialAccountModalIsOpen: false,
+      accountModalIsOpen: false,
       editingSocialAccount: {},
+      editingAccount: {}
     }
 
     this.onValueChange = this.onValueChange.bind(this)
@@ -170,6 +173,39 @@ class DefaultProfilePage extends Component {
     }
   }
 
+  onAccountClick = (service) => {
+    if (this.state.socialAccountModalIsOpen) {
+      this.setState({
+        accountModalIsOpen: false,
+        editingAccount: {}
+      })
+    } else {
+      let editingAccount = null
+
+      if (this.state.profile.account) {
+        this.state.profile.account.forEach((account) => {
+          if (account.service === service) {
+            editingAccount = account
+          }
+        })
+      }
+
+      if (!editingAccount) {
+        editingAccount = {
+          '@type': 'Account',
+          placeholder: false,
+          service: service,
+          identifier: ""
+        }
+      }
+
+      this.setState({
+        accountModalIsOpen: true,
+        editingAccount: editingAccount
+      })
+    }
+  }
+
   onValueChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -252,6 +288,41 @@ class DefaultProfilePage extends Component {
     }
 
     this.closeSocialAccountModal()
+  }
+
+  onAccountDoneButtonClick = (service, identifier) => {
+    const profile = this.state.profile
+
+    if (!profile.hasOwnProperty('account')) {
+      profile.account = []
+    }
+
+    if (profile.hasOwnProperty('account')) {
+      let hasAccount = false
+      profile.account.forEach(account => {
+        if (account.service === service) {
+          hasAccount = true
+          account.identifier = identifier
+          this.setState({ profile })
+          this.saveProfile(profile)
+          this.refreshProofs()
+        }
+      })
+
+      if (!hasAccount && identifier.length > 0) {
+        const newAccount = this.createNewAccount(service, identifier, "")
+        profile.account.push(newAccount)
+        this.setState({ profile })
+        this.saveProfile(profile)
+        this.refreshProofs()
+      }
+
+      if(hasAccount && identifier.length == 0) {
+        this.removeAccount(service)
+      }
+    }
+
+    this.closeAccountModal()
   }
 
   shouldAutoGenerateProofUrl(service) {
@@ -349,6 +420,12 @@ class DefaultProfilePage extends Component {
   closeSocialAccountModal = (event) => {
     this.setState({
       socialAccountModalIsOpen: false
+    })
+  }
+
+  closeAccountModal = (event) => {
+    this.setState({
+      accountModalIsOpen: false
     })
   }
 
@@ -462,6 +539,14 @@ class DefaultProfilePage extends Component {
           onRequestClose={this.closeSocialAccountModal}
           onPostVerificationButtonClick={this.onPostVerificationButtonClick}
           onVerifyButtonClick={this.onVerifyButtonClick}
+        />
+
+        <EditAccountModal 
+          isOpen={this.state.accountModalIsOpen}
+          service={this.state.editingAccount.service}
+          identifier={this.state.editingAccount.identifier}
+          onRequestClose={this.closeAccountModal}
+          onDoneButtonClick={this.onAccountDoneButtonClick}
         />
 
         <ToolTip id="ownerAddress">
@@ -664,10 +749,12 @@ class DefaultProfilePage extends Component {
                         return (
                           <PGPAccountItem
                             key={`${account.service}-${account.identifier}`}
+                            editing={this.state.editMode}
                             service={account.service}
                             identifier={account.identifier}
                             contentUrl={account.contentUrl}
                             placeholder={account.placeholder}
+                            onClick={this.onAccountClick}
                             listItem
                           />
                         )
