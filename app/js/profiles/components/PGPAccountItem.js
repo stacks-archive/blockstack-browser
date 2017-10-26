@@ -191,7 +191,7 @@ class PGPAccountItem extends Component {
 
           { this.props.placeholder && (
             <span className="app-account-service font-weight-normal">
-              Prove your {webAccountTypes[this.props.service].label} {identifierType.toLowerCase()}
+              Add your {webAccountTypes[this.props.service].label} {identifierType.toLowerCase()}
             </span> 
           )}
 
