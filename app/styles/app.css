@@ -78,7 +78,7 @@ div.social-account.placeholder .form-group input.form-control {color:#494F56;bac
 
 .verification-instructions-container {cursor:default;}
 .verification-instructions-heading {padding-left:15px;margin-top:1rem;margin-bottom:0.7rem;font-weight:600;}
-.verification-quote {color:#222222;padding:20px 60px 20px 20px;margin-bottom:1rem;background-color:#fafafa;border-radius:6px}
+.verification-quote {color:#222222;padding:20px 60px 20px 20px;margin-bottom:1rem;background-color:#fafafa;border-radius:6px;font-size: smaller;}
 .verification-copy {padding:0;position:relative;left:455px;margin-top:-40px;}
 .form-control.verification-input {color:#000;background-color:rgba(0,0,0,0.4);border:1px solid rgba(0,0,0,0.4);}
 .verification-input::-webkit-input-placeholder {color:#fff;}
