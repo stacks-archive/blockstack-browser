@@ -408,6 +408,7 @@ class DefaultProfilePage extends Component {
 
         <EditSocialAccountModal 
           isOpen={this.state.socialAccountModalIsOpen}
+          ownerAddress={ownerAddress}
           service={this.state.editingSocialAccount.service}
           identifier={this.state.editingSocialAccount.identifier}
           proofUrl={this.state.editingSocialAccount.proofUrl}

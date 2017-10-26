@@ -62,33 +62,42 @@ class TwitterVerificationInfo extends Component {
 
 class FacebookVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string,
-    ownerAddress: PropTypes.string,
+    verificationMessage: PropTypes.string,
+    proofUrl: PropTypes.string,
+    onChange: PropTypes.func,
+    verified: PropTypes.bool,
     onPostVerificationButtonClick: PropTypes.func
   }
 
   render() {
-    const username = this.props.domainName.split('.')[0]
-
-    const verificationMessage = "Verifying that \"{{ username }}.id\" is my Blockstack ID. https://onename.com/{{ username }}"
-      .replace(new RegExp('{{ username }}', 'g'), username)
-    const verificationUrl = "https://www.facebook.com"
-
     return (
       <div>
         <p>
-          1. Post the following text to your Facebook timeline. Make sure your post is public!
+          <span className="font-weight-bold">Step 2: </span> 
+          Post the following text to your Facebook timeline. Make sure your post is public!
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
           <CopyToClipBoardButton />
         </div>
-        <p>
-          2. Copy the post URL and paste it into the proof URL field. 
-        </p>
         <button className="btn btn-verify btn-facebook btn-block" onClick={this.props.onPostVerificationButtonClick}>
-          <i className="fa fa-fw fa-facebook fa-lg" /> Continue with Facebook
+          <i className="fa fa-fw fa-facebook fa-lg" /> Post Verification to Facebook
         </button>
+        <p className="m-t-20">
+          <span className="font-weight-bold">Step 3: </span>
+          Paste the URL of your post. 
+        </p>
+        <InputGroup 
+          name="proofUrl" 
+          label="Proof URL" 
+          data={this.props}
+          placeholder="Paste Proof URL here"
+          stopClickPropagation={true} 
+          onChange={this.props.onChange}
+          accessoryIcon={this.props.verified}
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          disabled={false}
+        />
       </div>
     )
   }
@@ -96,32 +105,42 @@ class FacebookVerificationInfo extends Component {
 
 class GithubVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string,
-    ownerAddress: PropTypes.string
+    verificationMessage: PropTypes.string,
+    proofUrl: PropTypes.string,
+    onChange: PropTypes.func,
+    verified: PropTypes.bool,
+    onPostVerificationButtonClick: PropTypes.func
   }
 
   render() {
-    const username = this.props.domainName.split('.')[0]
-
-    const verificationMessage = "Verifying that \"{{ username }}.id\" is my Blockstack ID. https://onename.com/{{ username }}"
-      .replace(new RegExp('{{ username }}', 'g'), username)
-    const verificationUrl = 'https://gist.github.com/'
-
     return (
       <div>
         <p>
-          1. Create a public gist with the following text.
+          <span className="font-weight-bold">Step 2: </span> 
+          Create a public gist with the following text in the body.
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
           <CopyToClipBoardButton />
         </div>
-        <p>
-          2. Copy the gist URL and paste it into the proof URL field.
-        </p>
         <button className="btn btn-verify btn-github btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-github fa-lg" /> Create Gist
         </button>
+        <p className="m-t-20">
+          <span className="font-weight-bold">Step 3: </span> 
+          Paste the URL of your gist. 
+        </p>
+        <InputGroup 
+          name="proofUrl" 
+          label="Proof URL" 
+          data={this.props}
+          placeholder="Paste Proof URL here"
+          stopClickPropagation={true} 
+          onChange={this.props.onChange}
+          accessoryIcon={this.props.verified}
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          disabled={false}
+        />
       </div>
     )
   }
@@ -129,8 +148,11 @@ class GithubVerificationInfo extends Component {
 
 class LinkedInVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string,
-    ownerAddress: PropTypes.string
+    verificationMessage: PropTypes.string,
+    proofUrl: PropTypes.string,
+    onChange: PropTypes.func,
+    verified: PropTypes.bool,
+    onPostVerificationButtonClick: PropTypes.func
   }
 
   render() {
@@ -139,18 +161,31 @@ class LinkedInVerificationInfo extends Component {
     return (
       <div>
         <p>
-          1. Post the following text on your LinkedIn. Make sure your post is public!
+          <span className="font-weight-bold">Step 2: </span>
+          Post the following text on your LinkedIn. Make sure your post is public!
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
           <CopyToClipBoardButton />
         </div>
-        <p>
-          2. Copy the post URL and paste it into the proof URL field. 
-        </p>
         <button className="btn btn-verify btn-linkedin btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-linkedin fa-lg" /> Post Verification to LinkedIn
         </button>
+        <p className="m-t-20">
+          <span className="font-weight-bold">Step 3: </span>
+          Paste the URL of your post. 
+        </p>
+        <InputGroup 
+          name="proofUrl" 
+          label="Proof URL" 
+          data={this.props}
+          placeholder="Paste Proof URL here"
+          stopClickPropagation={true} 
+          onChange={this.props.onChange}
+          accessoryIcon={this.props.verified}
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          disabled={false}
+        />
       </div>
     )
   }
@@ -158,8 +193,11 @@ class LinkedInVerificationInfo extends Component {
 
 class InstagramVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string,
-    ownerAddress: PropTypes.string
+    verificationMessage: PropTypes.string,
+    proofUrl: PropTypes.string,
+    onChange: PropTypes.func,
+    verified: PropTypes.bool,
+    onPostVerificationButtonClick: PropTypes.func
   }
 
   render() {
@@ -168,15 +206,28 @@ class InstagramVerificationInfo extends Component {
     return (
       <div>
         <p>
-          1. Post a photo to instagram with the following caption.
+          <span className="font-weight-bold">Step 2: </span>
+          Post a photo to Instagram with the following caption.
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
           <CopyToClipBoardButton />
         </div>
         <p>
-          2. Copy the post URL and paste it into the proof URL field.
+          <span className="font-weight-bold">Step 3: </span>
+          Paste the URL of your post. 
         </p>
+        <InputGroup 
+          name="proofUrl" 
+          label="Proof URL" 
+          data={this.props}
+          placeholder="Paste Proof URL here"
+          stopClickPropagation={true} 
+          onChange={this.props.onChange}
+          accessoryIcon={this.props.verified}
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          disabled={false}
+        />
       </div>
     )
   }
@@ -184,15 +235,19 @@ class InstagramVerificationInfo extends Component {
 
 class HackerNewsVerificationInfo extends Component {
   static contextTypes = {
-    domainName: PropTypes.string,
-    ownerAddress: PropTypes.string
+    verificationMessage: PropTypes.string,
+    proofUrl: PropTypes.string,
+    onChange: PropTypes.func,
+    verified: PropTypes.bool,
+    onPostVerificationButtonClick: PropTypes.func
   }
 
   render() {
     return (
       <div>
         <p>
-          1. Copy the text below and add it to the about section in your Hacker News user profile. 
+          <span className="font-weight-bold">Step 2: </span>
+          Copy the text below and add it to the about section in your Hacker News user profile. 
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
@@ -273,14 +328,18 @@ class VerificationInfo extends Component {
                 verificationMessage={verificationMessage}
                 onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
                 proofUrl={this.props.proofUrl} 
-                onChange={this.props.onProofUrlChange} />
+                onChange={this.props.onProofUrlChange} 
+              />
             : null }
 
             { this.props.service === 'github' ?
               <GithubVerificationInfo 
                 domainName={this.props.domainName} 
                 verificationMessage={verificationMessage}
-                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick} />
+                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick} 
+                proofUrl={this.props.proofUrl} 
+                onChange={this.props.onProofUrlChange}
+              />
             : null }
 
             { this.props.service === 'facebook' ?

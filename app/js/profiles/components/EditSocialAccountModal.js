@@ -18,7 +18,7 @@ class EditSocialAccountModal extends Component {
     isOpen: PropTypes.bool,
     service: PropTypes.string,
     identifier: PropTypes.string,
-    // ownerAddress: PropTypes.string.isRequired,
+    ownerAddress: PropTypes.string,
     // proofUrl: PropTypes.string,
     // verified: PropTypes.bool,
     api: PropTypes.object.isRequired,
@@ -190,12 +190,6 @@ class EditSocialAccountModal extends Component {
                   stopClickPropagation={true} 
                   onChange={this.onIdentifierChange} 
                 />
-
-                {/*((this.props.verified || this.shouldShowVerificationInstructions())) && 
-                  <div key="input-group-proof">
-                    {proofURLInput()}
-                  </div>
-                */}
               
                 <VerificationInfo
                   service={this.props.service}
@@ -204,7 +198,7 @@ class EditSocialAccountModal extends Component {
                   proofUrl={this.state.proofUrl}
                   onProofUrlChange={this.onProofUrlChange}
                   onPostVerificationButtonClick={(e) => {
-                    this.props.onPostVerificationButtonClick(e, this.props.service, this.props.identifier)} 
+                    this.props.onPostVerificationButtonClick(e, this.props.service, this.state.identifier)} 
                   }
                   />
               </div>
