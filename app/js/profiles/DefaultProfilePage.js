@@ -677,36 +677,34 @@ class DefaultProfilePage extends Component {
                       </span>
                     </div>
                     <div className="text-center">
-                      {windowsBuild ?
+                      {identity.canAddUsername ?
                         <div className="text-center">
+                          {windowsBuild ?
                             <span
                               data-tip
                               data-for="windowsDisabled"
                             >
                               Add a username
                             </span>
-                        </div>
-                      :
-                        <div className="text-center">
-                          {identity.canAddUsername ?
+                          :
                             <Link
                               to={`/profiles/i/add-username/${identityIndex}/search`}
                               className="btn btn-link btn-link-mute btn-xs"
                             >
                               Add a username
                             </Link>
-                          :
-                            <div className="pro-card-domain-name text-center text-secondary m-t-0">
-                              <span>{identity.username}</span>
-                              {identity.usernamePending ?
-                                <i
-                                  className="fa fa-fw fa-clock-o fa-lg"
-                                  data-tip
-                                  data-for="usernamePending"
-                                ></i>
-                                : null}
-                            </div>
                           }
+                        </div>
+                      :
+                        <div className="pro-card-domain-name text-center text-secondary m-t-0">
+                          <span>{identity.username}</span>
+                          {identity.usernamePending ?
+                            <i
+                              className="fa fa-fw fa-clock-o fa-lg"
+                              data-tip
+                              data-for="usernamePending"
+                            ></i>
+                            : null}
                         </div>
                       }
                     </div>
