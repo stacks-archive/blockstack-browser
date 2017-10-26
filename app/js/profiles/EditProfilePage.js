@@ -10,6 +10,7 @@ import { openInNewTab, signProfileForUpload } from '../utils'
 import Modal from 'react-modal'
 import EditSocialAccountItem from './components/EditSocialAccountItem'
 import EditPGPAccountItem from './components/EditPGPAccountItem'
+import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 import { Person } from 'blockstack'
 
 import log4js from 'log4js'
@@ -115,9 +116,9 @@ class EditProfilePage extends Component {
   onVerifyButtonClick(event, service, identifier) {
     const profileIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[profileIndex]
-
+    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${identity.ownerAddress}`
     const verificationText =
-    `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress}`
+    `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress} ${url}`
     let verificationUrl = ''
 
     if (service === 'twitter') {

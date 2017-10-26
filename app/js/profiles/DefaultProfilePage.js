@@ -16,6 +16,7 @@ import EditSocialAccountModal from './components/EditSocialAccountModal'
 import EditAccountModal from './components/EditAccountModal'
 import { uploadProfile, uploadPhoto } from '../account/utils'
 import { openInNewTab, signProfileForUpload } from '../utils'
+import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'
 
@@ -225,8 +226,9 @@ class DefaultProfilePage extends Component {
     const profileIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[profileIndex]
 
+    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${identity.ownerAddress}`
     const verificationText =
-    `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress}`
+    `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress} ${url}`
     let verificationUrl = ''
 
     if (service === 'twitter') {
@@ -548,7 +550,7 @@ class DefaultProfilePage extends Component {
           />
         </Modal>
 
-        <EditSocialAccountModal 
+        <EditSocialAccountModal
           isOpen={this.state.socialAccountModalIsOpen}
           ownerAddress={ownerAddress}
           service={this.state.editingSocialAccount.service}
@@ -559,7 +561,7 @@ class DefaultProfilePage extends Component {
           onVerifyButtonClick={this.onVerifyButtonClick}
         />
 
-        <EditAccountModal 
+        <EditAccountModal
           isOpen={this.state.accountModalIsOpen}
           service={this.state.editingAccount.service}
           identifier={this.state.editingAccount.identifier}
@@ -622,7 +624,7 @@ class DefaultProfilePage extends Component {
                 </div>
               }
 
-              {this.state.editMode ? 
+              {this.state.editMode ?
                 <div className="col-12">
                   <InputGroup
                     name="name"
@@ -653,8 +655,8 @@ class DefaultProfilePage extends Component {
                       {person.name()}
                       {person.name() && person.name().length > 0 &&
                         <span className="pro-card-edit">
-                          <i 
-                            className="fa fa-fw fa-pencil clickable" 
+                          <i
+                            className="fa fa-fw fa-pencil clickable"
                             onClick={this.onEditClick}
                           />
                         </span>
@@ -662,7 +664,7 @@ class DefaultProfilePage extends Component {
                     </div>
                     <div className="text-center">
                       {identity.canAddUsername ?
-                        <Link 
+                        <Link
                           to={`/profiles/i/add-username/${identityIndex}/search`}
                           className="btn btn-link btn-link-mute btn-xs"
                         >
@@ -682,8 +684,8 @@ class DefaultProfilePage extends Component {
                     }
                     </div>
 
-                    <div 
-                      className="pro-card-identity-address m-b-25 text-center 
+                    <div
+                      className="pro-card-identity-address m-b-25 text-center
                       text-secondary m-t-0"
                     >
                       <small>
@@ -697,8 +699,8 @@ class DefaultProfilePage extends Component {
                       {person.description()}
                       {person.description() && person.description().length > 0 &&
                         <span className="pro-card-edit">
-                          <i 
-                            className="fa fa-fw fa-pencil clickable" 
+                          <i
+                            className="fa fa-fw fa-pencil clickable"
                             onClick={this.onEditClick}
                           />
                         </span>
