@@ -1,4 +1,5 @@
 import { DROPBOX } from '../../../account/utils/index'
+import { isWindowsBuild } from '../../../utils/window-utils'
 
 export const REGTEST_CORE_API_PASSWORD = 'blockstack_integration_test_api_password'
 export const REGTEST_CORE_INSIGHT_API_URL =
@@ -9,7 +10,10 @@ export const REGTEST_CORE_INSIGHT_API_URL =
 // already have an existing key.
 // To change a value, use a new key.
 
-const DEFAULT_CORE_API_ENDPOINT = 'https://core.blockstack.org'
+let DEFAULT_CORE_API_ENDPOINT = 'http://localhost:6270'
+if ( isWindowsBuild() ) {
+  DEFAULT_CORE_API_ENDPOINT = 'https://core.blockstack.org'
+}
 
 const DEFAULT_API = {
   apiCustomizationEnabled: true,
