@@ -684,7 +684,7 @@ class DefaultProfilePage extends Component {
                               data-for="windowsDisabled"
                             >
                               Add a username
-                            </Link>
+                            </span>
                         </div>
                       :
                         <div className="text-center">
