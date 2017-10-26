@@ -391,7 +391,7 @@ class DefaultProfilePage extends Component {
   }
 
   uploadProfilePhoto = (e) => {
-    const identityIndex = this.state.index
+    const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
     const ownerAddress = identity.ownerAddress
     const profile = this.state.profile
@@ -410,6 +410,7 @@ class DefaultProfilePage extends Component {
         this.setState({
           profile
         })
+        this.saveProfile(profile)
       })
       .catch((error) => {
         console.error(error)
