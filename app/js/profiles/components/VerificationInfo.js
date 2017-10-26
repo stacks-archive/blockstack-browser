@@ -4,12 +4,14 @@ import InputGroup from '../../components/InputGroup'
 import { openInNewTab } from '../../utils'
 import ReactTooltip from 'react-tooltip'
 
+export const VERIFICATION_TWEET_LINK_URL_BASE = 'https://explorer.blockstack.org/address/'
+
 class CopyToClipBoardButton extends Component {
 
   render() {
     return (
       <div className="verification-copy">
-        <button 
+        <button
           className="btn-clipboard"
           data-for="tooltip"
           data-event="click"
@@ -35,24 +37,24 @@ class TwitterVerificationInfo extends Component {
       <div>
         <p>
           <span className="font-weight-bold">Step 2: </span>
-          Click the Tweet Verification button to post your proof to Twitter. 
+          Click the Tweet Verification button to post your proof to Twitter.
         </p>
         <button className="btn btn-verify btn-twitter btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-twitter fa-lg" /> Tweet Verification
         </button>
         <p className="m-t-20">
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your tweet. 
+          Paste the URL of your tweet.
         </p>
-        <InputGroup 
-          name="proofUrl" 
-          label="Proof URL" 
+        <InputGroup
+          name="proofUrl"
+          label="Proof URL"
           data={this.props}
           placeholder="Paste Proof URL here"
-          stopClickPropagation={true} 
+          stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
-          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
           disabled={false}
         />
       </div>
@@ -73,7 +75,7 @@ class FacebookVerificationInfo extends Component {
     return (
       <div>
         <p>
-          <span className="font-weight-bold">Step 2: </span> 
+          <span className="font-weight-bold">Step 2: </span>
           Post the following text to your Facebook timeline. Make sure your post is public!
         </p>
         <div className="verification-quote">
@@ -85,17 +87,17 @@ class FacebookVerificationInfo extends Component {
         </button>
         <p className="m-t-20">
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your post. 
+          Paste the URL of your post.
         </p>
-        <InputGroup 
-          name="proofUrl" 
-          label="Proof URL" 
+        <InputGroup
+          name="proofUrl"
+          label="Proof URL"
           data={this.props}
           placeholder="Paste Proof URL here"
-          stopClickPropagation={true} 
+          stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
-          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
           disabled={false}
         />
       </div>
@@ -116,7 +118,7 @@ class GithubVerificationInfo extends Component {
     return (
       <div>
         <p>
-          <span className="font-weight-bold">Step 2: </span> 
+          <span className="font-weight-bold">Step 2: </span>
           Copy the text below and click on the create gist button.
           Then paste the text into the body of the gist and click Create Public Gist.
         </p>
@@ -128,18 +130,18 @@ class GithubVerificationInfo extends Component {
           <i className="fa fa-fw fa-github fa-lg" /> Create Gist
         </button>
         <p className="m-t-20">
-          <span className="font-weight-bold">Step 3: </span> 
-          Paste the URL of your gist. 
+          <span className="font-weight-bold">Step 3: </span>
+          Paste the URL of your gist.
         </p>
-        <InputGroup 
-          name="proofUrl" 
-          label="Proof URL" 
+        <InputGroup
+          name="proofUrl"
+          label="Proof URL"
           data={this.props}
           placeholder="Paste Proof URL here"
-          stopClickPropagation={true} 
+          stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
-          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
           disabled={false}
         />
       </div>
@@ -174,17 +176,17 @@ class LinkedInVerificationInfo extends Component {
         </button>
         <p className="m-t-20">
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your post. 
+          Paste the URL of your post.
         </p>
-        <InputGroup 
-          name="proofUrl" 
-          label="Proof URL" 
+        <InputGroup
+          name="proofUrl"
+          label="Proof URL"
           data={this.props}
           placeholder="Paste Proof URL here"
-          stopClickPropagation={true} 
+          stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
-          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
           disabled={false}
         />
       </div>
@@ -216,17 +218,17 @@ class InstagramVerificationInfo extends Component {
         </div>
         <p>
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your post. 
+          Paste the URL of your post.
         </p>
-        <InputGroup 
-          name="proofUrl" 
-          label="Proof URL" 
+        <InputGroup
+          name="proofUrl"
+          label="Proof URL"
           data={this.props}
           placeholder="Paste Proof URL here"
-          stopClickPropagation={true} 
+          stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
-          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
           disabled={false}
         />
       </div>
@@ -248,7 +250,7 @@ class HackerNewsVerificationInfo extends Component {
       <div>
         <p>
           <span className="font-weight-bold">Step 2: </span>
-          Copy the text below and add it to the about section in your Hacker News user profile. 
+          Copy the text below and add it to the about section in your Hacker News user profile.
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
@@ -292,7 +294,8 @@ class VerificationInfo extends Component {
   }
 
   copy(e) {
-    let verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress}`
+    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${this.props.ownerAddress}`
+    let verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress} ${url}`
     var textField = document.createElement('textarea')
     textField.innerText = verificationMessage
     document.body.appendChild(textField)
@@ -302,7 +305,8 @@ class VerificationInfo extends Component {
   }
 
   render() {
-    const verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress}`
+    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${this.props.ownerAddress}`
+    const verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress} ${url}`
 
     return (
       <div onClick={this.handleClick}>
@@ -310,11 +314,11 @@ class VerificationInfo extends Component {
 {/*          <p className="verification-instructions-heading">
             Verification Instructions
           </p>*/}
-          <ReactTooltip 
-            place="top" 
-            type="dark" 
-            effect="solid" 
-            id="tooltip" 
+          <ReactTooltip
+            place="top"
+            type="dark"
+            effect="solid"
+            id="tooltip"
             delayHide={1000}
             className="text-center"
             scrollHide={true}
@@ -324,61 +328,61 @@ class VerificationInfo extends Component {
           </ReactTooltip>
           <div className="verification-instructions">
             { this.props.service === 'twitter' ?
-              <TwitterVerificationInfo 
-                domainName={this.props.domainName} 
+              <TwitterVerificationInfo
+                domainName={this.props.domainName}
                 verificationMessage={verificationMessage}
                 onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
-                proofUrl={this.props.proofUrl} 
-                onChange={this.props.onProofUrlChange} 
+                proofUrl={this.props.proofUrl}
+                onChange={this.props.onProofUrlChange}
               />
             : null }
 
             { this.props.service === 'github' ?
-              <GithubVerificationInfo 
-                domainName={this.props.domainName} 
+              <GithubVerificationInfo
+                domainName={this.props.domainName}
                 verificationMessage={verificationMessage}
-                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick} 
-                proofUrl={this.props.proofUrl} 
+                onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
+                proofUrl={this.props.proofUrl}
                 onChange={this.props.onProofUrlChange}
               />
             : null }
 
             { this.props.service === 'facebook' ?
-              <FacebookVerificationInfo 
-                domainName={this.props.domainName} 
+              <FacebookVerificationInfo
+                domainName={this.props.domainName}
                 verificationMessage={verificationMessage}
                 onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
-                proofUrl={this.props.proofUrl} 
+                proofUrl={this.props.proofUrl}
                 onChange={this.props.onProofUrlChange}
               />
             : null }
 
             { this.props.service === 'linkedIn' ?
-              <LinkedInVerificationInfo 
-                domainName={this.props.domainName} 
+              <LinkedInVerificationInfo
+                domainName={this.props.domainName}
                 verificationMessage={verificationMessage}
                 onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
-                proofUrl={this.props.proofUrl} 
+                proofUrl={this.props.proofUrl}
                 onChange={this.props.onProofUrlChange}
               />
             : null }
 
             { this.props.service === 'instagram' ?
-              <InstagramVerificationInfo 
-                domainName={this.props.domainName} 
+              <InstagramVerificationInfo
+                domainName={this.props.domainName}
                 verificationMessage={verificationMessage}
                 onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
-                proofUrl={this.props.proofUrl} 
+                proofUrl={this.props.proofUrl}
                 onChange={this.props.onProofUrlChange}
               />
             : null }
 
             { this.props.service === 'hackerNews' ?
-              <HackerNewsVerificationInfo 
-                domainName={this.props.domainName} 
+              <HackerNewsVerificationInfo
+                domainName={this.props.domainName}
                 verificationMessage={verificationMessage}
                 onPostVerificationButtonClick={this.props.onPostVerificationButtonClick}
-                proofUrl={this.props.proofUrl} 
+                proofUrl={this.props.proofUrl}
                 onChange={this.props.onProofUrlChange}
               />
             : null }
