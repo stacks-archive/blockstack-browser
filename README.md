@@ -2,7 +2,9 @@
 
 The Blockstack Browser allows you to explore the Blockstack internet.
 
-![Blockstack Browser screenshot](https://blockstack.org/images/resources/browser-home-screen.png)
+<p align="center">
+  <img src="https://blockstack.org/images/resources/browser-home-screen@2x.png" alt="Blockstack Browser screenshot" width="686" height="306">
+</p>
 
 ## Table of contents
 
