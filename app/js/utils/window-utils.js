@@ -4,5 +4,7 @@ export function openInNewTab(url) {
 }
 
 export function isWindowsBuild() {
-  return true
+
+  const isWindowsBuildCompileFlag = false
+  return isWindowsBuildCompileFlag === true
 }

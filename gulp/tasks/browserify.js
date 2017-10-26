@@ -28,6 +28,7 @@ function buildScript(file, watch) {
     fullPaths: global.isProd ? false : true
   });
 
+
   bundler.require('./node_modules/log4js/lib/appenders/stdout.js', { expose: 'stdout' })
   bundler.require('./node_modules/log4js/lib/appenders/console.js', { expose: 'console' })
   bundler.require('./app/js/utils/log4js/portal-appender.js', { expose: 'portal-appender' })
@@ -38,6 +39,12 @@ function buildScript(file, watch) {
   }
 
   bundler.transform(babelify);
+
+  if (global.isWindows) {
+    gutil.log('Marking as windowsBuild')
+    bundler.transform('browserify-replace', {replace : [ { from: 'isWindowsBuildCompileFlag = false', to: 'isWindowsBuildCompileFlag = true' } ]})
+  }
+
   bundler.transform(debowerify);
 
   function rebundle() {
