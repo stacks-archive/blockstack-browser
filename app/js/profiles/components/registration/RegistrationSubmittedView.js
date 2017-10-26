@@ -3,13 +3,11 @@ import { Link } from 'react-router'
 
 const RegistrationSubmittedView = (props) => (
   <div>
-    <h3 className="modal-heading">Registration submitted!</h3>
+    <h3 className="modal-heading">{props.routeParams.name} registration submitted!</h3>
 
     <div className="modal-body">
-      <p>You username, <strong>{props.routeParams.name}</strong>, should be ready
-      to use within 4 hours.</p>
-      <p>Please <strong>do not</strong> exit Blockstack, disconnect from the internet, or
-      turn your computer off during this time.</p>
+      <p>Please <strong>keep</strong> Blockstack online for the next hour. Your
+      username will be available shortly after.</p>
       <img
         role="presentation"
         src="/images/blockstack-logo-vertical.svg"

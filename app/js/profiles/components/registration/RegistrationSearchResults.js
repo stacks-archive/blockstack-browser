@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 import roundTo from 'round-to'
+import { PRICE_BUFFER } from './RegistrationSelectView'
 
 const availabilityHeaderStyle = {
   marginTop: '1em',
@@ -28,7 +29,7 @@ const RegistrationSearchResults = (props) => (
           if (nameAvailabilityObject) {
             price = nameAvailabilityObject.price
           }
-          price = roundTo.up(price, 6)
+          price = roundTo.up(price, 6) + PRICE_BUFFER
 
           return (
             <div key={nameSuffix}>

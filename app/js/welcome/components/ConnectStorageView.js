@@ -50,7 +50,7 @@ class ConnectStorageView extends Component {
             </div>
           </div>
         :
-          <div>
+          <div className="storage-page">
             <h3 className="modal-heading m-t-15 p-b-20">
               Choose your storage provider
             </h3>

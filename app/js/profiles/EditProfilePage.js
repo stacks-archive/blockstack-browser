@@ -416,6 +416,7 @@ class EditProfilePage extends Component {
         ) : (
         <SecondaryNavBar
           leftButtonTitle="Edit"
+          leftIsButton
           onLeftButtonClick={() => this.backClick()}
           isLeftActive
           centerButtonTitle="View"
