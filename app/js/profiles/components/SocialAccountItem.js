@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import ReactTooltip from 'react-tooltip'
 
-import { getWebAccountTypes } from '../../utils'
+import { openInNewTab, getWebAccountTypes } from '../../utils'
 
 function mapStateToProps(state) {
   return {
@@ -15,12 +15,15 @@ function mapStateToProps(state) {
 class SocialAccountItem extends Component {
   static propTypes = {
     listItem: PropTypes.bool.isRequired,
+    editing: PropTypes.bool.isRequired,
     service: PropTypes.string.isRequired,
     identifier: PropTypes.string.isRequired,
     proofUrl: PropTypes.string,
     verified: PropTypes.bool,
     pending: PropTypes.bool,
-    api: PropTypes.object.isRequired
+    api: PropTypes.object.isRequired,
+    placeholder: PropTypes.bool,
+    onClick: PropTypes.func
   }
 
   constructor(props) {
@@ -29,6 +32,7 @@ class SocialAccountItem extends Component {
     this.getAccountUrl = this.getAccountUrl.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
     this.getIdentifier = this.getIdentifier.bind(this)
+    // this.onClick = this.onClick.bind(this)
   }
 
   getAccountUrl() {
@@ -62,17 +66,51 @@ class SocialAccountItem extends Component {
     return identifier
   }
 
+  getPlaceholderText(service) {
+    if(service === 'bitcoin' || service === 'ethereum') {
+      return (
+        <span className="app-account-service font-weight-normal">
+          Prove your <span className="text-capitalize">{service}</span> address
+        </span>
+      )
+    }
+    else if (service === 'pgp' || service === 'ssh') {
+      return (
+        <span className="app-account-service font-weight-normal">
+          Prove your {service.toUpperCase()} key
+        </span>
+      )
+    }
+    else {
+      return (
+        <span className="app-account-service font-weight-normal">
+          Prove your <span className="text-capitalize">{service}</span> account
+        </span>
+      )
+    }
+  }
+
+  onClick = (e) => {
+    if (!this.props.placeholder && !this.props.editing) {
+      openInNewTab(this.getAccountUrl())
+    } else {
+      this.props.onClick(this.props.service)
+    }
+  }
+
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const webAccountType = webAccountTypes[this.props.service]
     const verified = this.props.verified
     const pending = this.props.pending
+    const verifiedClass = verified ? "verified" : "pending"
+    const placeholderClass = this.props.placeholder ? "placeholder" : ""
 
     if (webAccountType) {
       let accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
-          <li className={verified ? "verified" : "pending"}>  
+          <li className={`clickable ${verifiedClass} ${placeholderClass}`} onClick={this.onClick}>  
             {!pending && 
               <ReactTooltip 
                 place="top" 
@@ -83,27 +121,46 @@ class SocialAccountItem extends Component {
                 {verified && 'Verified'}
               </ReactTooltip>
             }
-            <a href={this.getAccountUrl()} data-toggle="tooltip"
-              title={webAccountTypes[this.props.service].label}>
-              <span className="">
-                <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
-              </span>
+
+            <span className="app-account-icon">
+              <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
+            </span>
+
+            {!this.props.placeholder && (
               <span className="app-account-identifier">
                 {this.getIdentifier()}
               </span>
+            )}
+
+            {(!this.props.placeholder && this.props.editing) && (
+              <span className="">
+                <i className="fa fa-fw fa-pencil" />
+              </span>
+            )}
+
+            {!this.props.placeholder && (
               <span className="app-account-service font-weight-normal">
                 {`@${accountServiceName}`}
               </span>
-              {verified ?
-                <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
-                  <i className="fa fa-fw fa-check-circle fa-lg" />
-                </span>
-                : 
-                (pending) ? <span></span> :
-                <span className="float-right badge badge-danger badge-verification">Unverified
-                </span> 
-              }
-            </a>
+            )}
+
+            {this.props.placeholder && (
+              <span className="app-account-service font-weight-normal">
+                { this.getPlaceholderText(this.props.service) }
+              </span>
+            )}
+
+            {verified ?
+              <span className="float-right status" data-tip data-for={`verified-${this.props.service}`}>
+                <i className="fa fa-fw fa-check-circle fa-lg" />
+              </span>
+              : 
+              (this.props.placeholder) ? 
+              <span className="float-right star">+1<i className="fa fa-w fa-star-o" /></span>
+              :
+              <span className="float-right badge badge-danger badge-verification">Unverified
+              </span>
+            }
           </li>
         )
       } else {

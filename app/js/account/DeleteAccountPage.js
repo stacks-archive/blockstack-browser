@@ -86,7 +86,7 @@ class DeleteAccountPage extends Component {
     return (
       <div className="m-b-100">
         <h3 className="container-fluid m-t-10">
-          Remove Account
+          Remove Keychain
         </h3>
         {
           this.state.alerts.map((alert, index) => (
@@ -96,8 +96,8 @@ class DeleteAccountPage extends Component {
         <div>
           <p className="container-fluid">
             <i>
-              Remove your account from this browser so you can create a new one or
-              restore another account.
+              Remove your keychain from this browser so you can create a new one or
+              restore another keychain.
             </i>
           </p>
           <InputGroup
@@ -108,7 +108,7 @@ class DeleteAccountPage extends Component {
 
           <div className="container-fluid m-t-40">
             <button className="btn btn-danger btn-block" onClick={this.openModal}>
-              Remove Account
+              Remove Keychain
             </button>
           </div>
         </div>

@@ -25,8 +25,8 @@ class AccountMenu extends Component {
     const tabs = [
       { url: '/account/storage', label: 'storage providers' },
       { url: '/account/password', label: 'change password' },
-      { url: '/account/backup', label: 'backup account' },
-      { url: '/account/delete', label: 'remove account' },
+      { url: '/account/backup', label: 'backup keychain' },
+      { url: '/account/delete', label: 'remove keychain' },
       { url: '/account/api', label: 'api settings' }
     ]
 
