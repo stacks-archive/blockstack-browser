@@ -11,6 +11,7 @@ import {
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
 import { setCoreStorageConfig } from '../../utils/api-utils'
+import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes } from '../utils'
 import log4js from 'log4js'
@@ -125,6 +126,21 @@ class AuthModal extends Component {
     const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
     const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
+    const gaiaBucketAddress = nextProps.identityKeypairs[0].address
+    const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
+    let profileUrl = `${profileUrlBase}/${identityIndex}/profile.json`
+
+    if (identity.zoneFile) {
+      profileUrl = getTokenFileUrlFromZoneFile(identity.zoneFile)
+    }
+
+    logger.debug(`profileUrl: ${profileUrl}`)
+
+    const metadata = {
+      email: null,
+      profileUrl
+    }
+
     // TODO: what if the token is expired?
     // TODO: use a semver check -- or pass payload version to
     //        makeAuthResponse
@@ -132,11 +148,14 @@ class AuthModal extends Component {
     if (this.state.decodedToken.payload.version === '1.1.0' &&
         this.state.decodedToken.payload.public_keys.length > 0) {
       const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
+
       authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+                                      metadata,
                                       coreSessionToken, appPrivateKey,
                                       undefined, transitPublicKey)
     } else {
       authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+                                      metadata,
                                       coreSessionToken, appPrivateKey)
     }
 
