@@ -125,8 +125,19 @@ class AuthModal extends Component {
     const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
     // TODO: what if the token is expired?
-    const authResponse = makeAuthResponse(privateKey, profile, blockchainId,
-        coreSessionToken, appPrivateKey)
+    // TODO: use a semver check -- or pass payload version to
+    //        makeAuthResponse
+    let authResponse
+    if (this.state.decodedToken.payload.version === '1.1.0' &&
+        this.state.decodedToken.payload.public_keys.length > 0) {
+      const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
+      authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+                                      coreSessionToken, appPrivateKey,
+                                      undefined, transitPublicKey)
+    } else {
+      authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+                                      coreSessionToken, appPrivateKey)
+    }
 
     this.props.clearSessionToken(appDomain)
 
