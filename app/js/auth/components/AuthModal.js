@@ -12,6 +12,7 @@ import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
 import { setCoreStorageConfig } from '../../utils/api-utils'
 import { HDNode } from 'bitcoinjs-lib'
+import { validateScopes } from '../utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
@@ -208,7 +209,7 @@ class AuthModal extends Component {
 
           const scopesJSONString = JSON.stringify(scopes)
 
-          if (scopesJSONString !== '[]' && scopesJSONString !== '["store_write"]') {
+          if (!validateScopes(scopes)) {
             this.setState({
               invalidScopes: true
             })
