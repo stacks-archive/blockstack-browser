@@ -37,6 +37,9 @@ class SecondaryNavBar extends Component {
     leftButtonLink: PropTypes.string,
     centerButtonLink: PropTypes.string,
     rightButtonLink: PropTypes.string,
+    leftIsButton: PropTypes.bool,
+    centerIsButton: PropTypes.bool,
+    rightIsButton: PropTypes.bool,
     onLeftButtonClick: PropTypes.func,
     onCenterButtonClick: PropTypes.func,
     onRightButtonClick: PropTypes.func,
@@ -51,7 +54,7 @@ class SecondaryNavBar extends Component {
         <div className="row">
           <div className="col">
             {this.props.leftButtonTitle !== undefined && (
-              this.props.onLeftButtonClick !== undefined ?
+              this.props.leftIsButton ?
               <SecondaryNavButton
                 title={this.props.leftButtonTitle}
                 onClick={this.props.onLeftButtonClick}
@@ -67,7 +70,7 @@ class SecondaryNavBar extends Component {
           </div>
           <div className="col text-center">
           {this.props.centerButtonTitle !== undefined && (
-            this.props.onCenterButtonClick !== undefined ?
+            this.props.centerIsButton ?
               <SecondaryNavLink
                 title={this.props.centerButtonTitle}
                 onClick={this.props.onCenterButtonClick}
@@ -85,7 +88,7 @@ class SecondaryNavBar extends Component {
           </div>
           <div className="col">
           {this.props.rightButtonTitle !== undefined && (
-            this.props.onRightButtonClick !== undefined ?
+            this.props.rightIsButton ?
             <SecondaryNavButton
               title={this.props.rightButtonTitle}
               onClick={this.props.onRightButtonClick}

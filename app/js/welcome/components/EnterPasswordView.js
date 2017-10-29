@@ -53,8 +53,8 @@ class EnterPasswordView extends Component {
   render() {
     return (
       <div>
-        <h3 className="modal-heading">Choose a password to protect your identity key</h3>
-        <p>Create a secured identity key by choosing a password</p>
+        <h3 className="modal-heading">Choose a password to protect your keychain</h3>
+        <p>Create a secure keychain by choosing a password</p>
         <form className="modal-form" onSubmit={this.enterPasswordSubmit}>
           <InputGroup
             name="password"
@@ -64,6 +64,7 @@ class EnterPasswordView extends Component {
             data={this.state}
             onChange={this.onValueChange}
             required
+            enforcePasswordLength
           />
           <InputGroup
             name="passwordConfirmation"
@@ -73,6 +74,7 @@ class EnterPasswordView extends Component {
             data={this.state}
             onChange={this.onValueChange}
             required
+            enforcePasswordLength
           />
           <div className="m-t-25 m-b-30">
             <button
@@ -83,7 +85,7 @@ class EnterPasswordView extends Component {
               {this.state.disableContinueButton ?
                 <span>Saving...</span>
                 :
-                <span>Create identity key</span>
+                <span>Create keychain</span>
               }
             </button>
           </div>
