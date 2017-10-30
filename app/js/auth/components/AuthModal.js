@@ -59,7 +59,8 @@ class AuthModal extends Component {
     corePort: PropTypes.number.isRequired,
     appManifest: PropTypes.object,
     appManifestLoading: PropTypes.bool,
-    email: PropTypes.string
+    email: PropTypes.string,
+    noCoreSessionToken: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -74,7 +75,10 @@ class AuthModal extends Component {
       storageConnected: this.props.api.storageConnected,
       processing: false,
       invalidScopes: false,
-      sendEmail: false
+      sendEmail: false,
+      blockchainId: null,
+      noStorage: false,
+      responseSent: false
     }
 
     this.login = this.login.bind(this)
@@ -93,83 +97,105 @@ class AuthModal extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const storageConnected = this.props.api.storageConnected
-    this.setState({
-      storageConnected
-    })
+    if (!this.state.responseSent) {
+      const storageConnected = this.props.api.storageConnected
+      this.setState({
+        storageConnected
+      })
 
-    const appDomain = this.state.decodedToken.payload.domain_name
-    const localIdentities = nextProps.localIdentities
-    const identityKeypairs = nextProps.identityKeypairs
-    if (!appDomain || !nextProps.coreSessionTokens[appDomain]) {
-      logger.debug('componentWillReceiveProps: no app domain or no core session token')
-      return
-    }
+      const appDomain = this.state.decodedToken.payload.domain_name
+      const localIdentities = nextProps.localIdentities
+      const identityKeypairs = nextProps.identityKeypairs
+      if ((!appDomain || !nextProps.coreSessionTokens[appDomain])) {
+        if (this.state.noStorage) {
+          logger.debug('componentWillReceiveProps: no core session token expected')
+        } else {
+          logger.debug('componentWillReceiveProps: no app domain or no core session token')
+          return
+        }
+      }
 
-    logger.trace('componentWillReceiveProps: received coreSessionToken')
-    const coreSessionToken = nextProps.coreSessionTokens[appDomain]
-    const decodedCoreSessionToken = decodeToken(coreSessionToken)
+      logger.trace('componentWillReceiveProps')
 
-    const identityIndex = this.state.currentIdentityIndex
+      const coreSessionToken = nextProps.coreSessionTokens[appDomain]
+      let decodedCoreSessionToken = null
+      if (!this.state.noStorage) {
+        logger.debug('componentWillReceiveProps: received coreSessionToken')
+        decodedCoreSessionToken = decodeToken(coreSessionToken)
+      } else {
+        logger.debug('componentWillReceiveProps: received no coreSessionToken')
+      }
 
-    const hasUsername = this.state.hasUsername
-    if (hasUsername) {
-      logger.debug(`login(): id index ${identityIndex} has no username`)
-    }
+      const identityIndex = this.state.currentIdentityIndex
 
-    // Get keypair corresponding to the current user identity
-    const profileSigningKeypair = identityKeypairs[identityIndex]
+      const hasUsername = this.state.hasUsername
+      if (hasUsername) {
+        logger.debug(`login(): id index ${identityIndex} has no username`)
+      }
 
-    const blockchainId = decodedCoreSessionToken.payload.blockchain_id
-    const identity = localIdentities[identityIndex]
-    const profile = identity.profile
-    const privateKey = profileSigningKeypair.key
-    const appsNodeKey = profileSigningKeypair.appsNodeKey
-    const salt = profileSigningKeypair.salt
-    const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-    const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+      // Get keypair corresponding to the current user identity
+      const profileSigningKeypair = identityKeypairs[identityIndex]
+      const identity = localIdentities[identityIndex]
 
-    const gaiaBucketAddress = nextProps.identityKeypairs[0].address
-    const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
-    let profileUrl = `${profileUrlBase}/${identityIndex}/profile.json`
+      let blockchainId = null
+      if (decodedCoreSessionToken) {
+        blockchainId = decodedCoreSessionToken.payload.blockchain_id
+      } else {
+        blockchainId = this.state.blockchainId
+      }
 
-    if (identity.zoneFile) {
-      profileUrl = getTokenFileUrlFromZoneFile(identity.zoneFile)
-    }
+      const profile = identity.profile
+      const privateKey = profileSigningKeypair.key
+      const appsNodeKey = profileSigningKeypair.appsNodeKey
+      const salt = profileSigningKeypair.salt
+      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+      const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
-    const email = this.props.email
-    const sendEmail = this.state.sendEmail
+      const gaiaBucketAddress = nextProps.identityKeypairs[0].address
+      const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
+      let profileUrl = `${profileUrlBase}/${identityIndex}/profile.json`
 
-    logger.debug(`profileUrl: ${profileUrl}`)
-    logger.debug(`email: ${email}`)
+      if (identity.zoneFile) {
+        profileUrl = getTokenFileUrlFromZoneFile(identity.zoneFile)
+      }
 
-    const metadata = {
-      email: sendEmail ? email : null,
-      profileUrl
-    }
+      const email = this.props.email
+      const sendEmail = this.state.sendEmail
 
-    // TODO: what if the token is expired?
-    // TODO: use a semver check -- or pass payload version to
-    //        makeAuthResponse
-    let authResponse
-    if (this.state.decodedToken.payload.version === '1.1.0' &&
-        this.state.decodedToken.payload.public_keys.length > 0) {
-      const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
+      logger.debug(`profileUrl: ${profileUrl}`)
+      logger.debug(`email: ${email}`)
 
-      authResponse = makeAuthResponse(privateKey, profile, blockchainId,
-                                      metadata,
-                                      coreSessionToken, appPrivateKey,
-                                      undefined, transitPublicKey)
+      const metadata = {
+        email: sendEmail ? email : null,
+        profileUrl
+      }
+
+      // TODO: what if the token is expired?
+      // TODO: use a semver check -- or pass payload version to
+      //        makeAuthResponse
+      let authResponse
+      if (this.state.decodedToken.payload.version === '1.1.0' &&
+          this.state.decodedToken.payload.public_keys.length > 0) {
+        const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
+
+        authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+                                        metadata,
+                                        coreSessionToken, appPrivateKey,
+                                        undefined, transitPublicKey)
+      } else {
+        authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+                                        metadata,
+                                        coreSessionToken, appPrivateKey)
+      }
+
+      this.props.clearSessionToken(appDomain)
+
+      logger.trace(`login(): id index ${identityIndex} is logging in`)
+      this.setState({ responseSent: true })
+      redirectUserToApp(this.state.authRequest, authResponse)
     } else {
-      authResponse = makeAuthResponse(privateKey, profile, blockchainId,
-                                      metadata,
-                                      coreSessionToken, appPrivateKey)
+      logger.error('componentWillReceiveProps: response already sent - doing nothing')
     }
-
-    this.props.clearSessionToken(appDomain)
-
-    logger.trace(`login(): id index ${identityIndex} is logging in`)
-    redirectUserToApp(this.state.authRequest, authResponse)
   }
 
   closeModal() {
@@ -211,6 +237,9 @@ class AuthModal extends Component {
               const nameOwningAddress = responseJSON.address
               if (nameOwningAddress === identity.ownerAddress) {
                 logger.debug('login: name has propagated on the network.')
+                this.setState({
+                  blockchainId: lookupValue
+                })
               } else {
                 logger.debug('login: name is not usable on the network.')
                 hasUsername = false
@@ -247,16 +276,25 @@ class AuthModal extends Component {
             hasUsername,
             sendEmail: !!scopes.includes('email')
           })
-          logger.trace('login(): Calling setCoreStorageConfig()...')
-          setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
-          identity.profile, profileSigningKeypair)
-          .then(() => {
-            logger.trace('login(): Core storage successfully configured.')
-            logger.trace('login(): Calling getCoreSessionToken()...')
-            this.props.getCoreSessionToken(this.props.coreHost,
-                this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
-                appDomain, this.state.authRequest, blockchainId)
-          })
+          const requestingStoreWrite = !!scopes.includes('store_write')
+          if (requestingStoreWrite) {
+            logger.trace('login(): Calling setCoreStorageConfig()...')
+            setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
+            identity.profile, profileSigningKeypair)
+            .then(() => {
+              logger.trace('login(): Core storage successfully configured.')
+              logger.trace('login(): Calling getCoreSessionToken()...')
+              this.props.getCoreSessionToken(this.props.coreHost,
+                  this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
+                  appDomain, this.state.authRequest, blockchainId)
+            })
+          } else {
+            logger.trace('login(): No storage access requested.')
+            this.setState({
+              noStorage: true
+            })
+            this.props.noCoreSessionToken(appDomain)
+          }
         })
   }
 
