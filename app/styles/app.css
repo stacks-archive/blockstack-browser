@@ -393,6 +393,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-link-secondary{color:#222222;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 .btn-link-mute{color:#949494;}
 .btn-light{background-color:#fff;border-color:#fff;color:#2C96FF;}
+.btn-dark{color:#fff;background-color:#222222;}
 .btn-storage{background-color:#2C96FF;border:1px solid #2C96FF;margin-bottom:-15px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);}
 .btn-storage:hover{background-color:#0668BF;}
 .btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
@@ -410,15 +411,15 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .form-control-label{color:#949494;padding-left:15px;margin-bottom:0.375rem;font-weight:600}
 .form-control-label-centered{padding:0;}
 /* Secondary forms */
-.form-container-secondary{padding:35px 15px 50px 15px;background-color:#2C96FF;color:#fff;}
+.form-container-secondary{padding:35px 15px 50px 15px;}
 .form-control-secondary{color:#fff;border:1px solid #fff;}
-input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
+input.form-control-secondary{background-color:#fafafa;border:1px solid #F4F2F4;}
 .form-control-secondary::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;color:#fff;font-weight:400!important;}
 .form-control-secondary:hover::-webkit-input-placeholder{color:#fff;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
 .form-control-secondary:focus::-webkit-input-placeholder{color:#fff;}
-.form-control-secondary:hover{background-color:#80C0FF;color:#fff;border:1px solid #80C0FF;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
+.form-control-secondary:hover{background-color:#fff;color:#fff;border:1px solid #F4F2F4;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
 .form-control-secondary:focus,.form-control-secondary:active{background-color:#fff;color:#484848;border:1px solid #fff;}
-.form-control-label-secondary{color:#95CAFF;margin-bottom:0.375rem;}
+.form-control-label-secondary{margin-bottom:0.375rem;}
 .input-accessory-icon-right{float:right;margin-right:10px;margin-top:-27px;position:relative;z-index:2;}
 .input-accessory-icon{padding-right:40px;}
 
@@ -540,10 +541,10 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .item-sidebar-storage.disabled:hover{color:rgba(255,255,255,0.45);border:none;background-color:rgba(255,255,255,0.05);}
 /* Wallet App */
 .frame-light{background-color:#fff;padding-top:20px;}
-.balance-main{font-family:'Source Code Pro',monospace;font-size:26px;font-weight:700;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
-.balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;color:#95CAFF;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
+.balance-main{font-family:'Source Code Pro',monospace;font-size:26px;font-weight:700;text-align:center;padding-right:15px;padding-left:15px;}
+.balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
 .highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;line-height:1.75rem;padding:0.75rem 0;}
-.highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;color:#fff!important;text-align:center;}
+.highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;text-align:center;}
 .qrcode-wallet{max-width:200px;margin:20px auto 20px auto;padding:20px;background-color:#fff;}
 .clickable{cursor:pointer;}
 
