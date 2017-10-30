@@ -36,7 +36,8 @@ function mapStateToProps(state) {
     promptedForEmail: state.account.promptedForEmail,
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
     identityAddresses: state.account.identityAccount.addresses,
-    connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
+    connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce,
+    email: state.account.email
   }
 }
 
@@ -64,7 +65,8 @@ class WelcomeModal extends Component {
     setDefaultIdentity: PropTypes.func.isRequired,
     connectedStorageAtLeastOnce: PropTypes.bool.isRequired,
     needToUpdate: PropTypes.bool.isRequired,
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    email: PropTypes.string
   }
 
   constructor(props) {
@@ -306,7 +308,7 @@ class WelcomeModal extends Component {
     event.preventDefault()
     // need to call this again because state gets deleted before this
     this.props.emailNotifications(this.state.email, false)
-    
+
     redirectToConnectToGaiaHub()
   }
 

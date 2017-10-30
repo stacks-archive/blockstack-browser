@@ -30,7 +30,8 @@ function mapStateToProps(state) {
     coreHost: state.settings.api.coreHost,
     corePort: state.settings.api.corePort,
     coreAPIPassword: state.settings.api.coreAPIPassword,
-    api: state.settings.api
+    api: state.settings.api,
+    email: state.account.email
   }
 }
 
@@ -57,7 +58,8 @@ class AuthModal extends Component {
     coreHost: PropTypes.string.isRequired,
     corePort: PropTypes.number.isRequired,
     appManifest: PropTypes.object,
-    appManifestLoading: PropTypes.bool
+    appManifestLoading: PropTypes.bool,
+    email: PropTypes.string
   }
 
   constructor(props) {
@@ -71,7 +73,8 @@ class AuthModal extends Component {
       decodedToken: null,
       storageConnected: this.props.api.storageConnected,
       processing: false,
-      invalidScopes: false
+      invalidScopes: false,
+      sendEmail: false
     }
 
     this.login = this.login.bind(this)
@@ -134,10 +137,14 @@ class AuthModal extends Component {
       profileUrl = getTokenFileUrlFromZoneFile(identity.zoneFile)
     }
 
+    const email = this.props.email
+    const sendEmail = this.state.sendEmail
+
     logger.debug(`profileUrl: ${profileUrl}`)
+    logger.debug(`email: ${email}`)
 
     const metadata = {
-      email: null,
+      email: sendEmail ? email : null,
       profileUrl
     }
 
@@ -236,7 +243,10 @@ class AuthModal extends Component {
             return
           }
 
-          this.setState({ hasUsername })
+          this.setState({
+            hasUsername,
+            sendEmail: !!scopes.includes('email')
+          })
           logger.trace('login(): Calling setCoreStorageConfig()...')
           setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
           identity.profile, profileSigningKeypair)
