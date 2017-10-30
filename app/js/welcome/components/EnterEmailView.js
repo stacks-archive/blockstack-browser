@@ -18,11 +18,19 @@ class EnterEmailView extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      identityKeyPhrase: ''
+      email: '',
+      optIn: false
     }
+    this.onToggle = this.onToggle.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
     this.skip = this.skip.bind(this)
     this.saveEmail = this.saveEmail.bind(this)
+  }
+
+  onToggle(event) {
+    this.setState({
+      [event.target.name]: event.target.checked
+    })
   }
 
   onValueChange(event) {
@@ -33,7 +41,7 @@ class EnterEmailView extends Component {
 
   saveEmail(event) {
     event.preventDefault()
-    this.props.emailNotifications(this.state.email)
+    this.props.emailNotifications(this.state.email, this.state.optIn)
   }
 
   skip(event) {
@@ -42,12 +50,12 @@ class EnterEmailView extends Component {
   }
 
   render() {
+    const optIn = this.state.optIn
     return (
       <div>
         <h3 className="modal-heading">
-          Enter your email address to get useful notifications about Blockstack
+          Enter your email address
         </h3>
-        <p className="modal-body">Type in your email address:</p>
         <form onSubmit={this.saveEmail}>
           <InputGroup
             name="email"
@@ -58,6 +66,23 @@ class EnterEmailView extends Component {
             onChange={this.onValueChange}
             required
           />
+          <div className="form-check">
+            <label
+              className="form-check-label"
+              style={{
+                marginBottom: '1em'
+              }}
+            >
+              <input
+                name="optIn"
+                checked={optIn}
+                onChange={this.onToggle}
+                type="checkbox"
+                className="form-check-input"
+              />
+              &nbsp;&nbsp;Join the Blockstack mailing list
+            </label>
+          </div>
           <div style={{ marginBottom: '-20px' }}>
             <button
               type="submit"
@@ -65,9 +90,6 @@ class EnterEmailView extends Component {
             >
               Continue
             </button>
-            <p className="modal-body">
-              <a href="#" className="modal-body" onClick={this.skip}>Skip</a>
-            </p>
           </div>
         </form>
       </div>

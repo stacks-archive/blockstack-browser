@@ -98,7 +98,7 @@ class WelcomeModal extends Component {
       coreConnected: this.props.coreConnected,
       needToOnboardStorage,
       pageOneView: 'create',
-      email: '',
+      email: null,
       page: startPageView,
       password: null,
       identityKeyPhrase: null,
@@ -134,6 +134,15 @@ class WelcomeModal extends Component {
       storageConnected: nextProps.storageConnected,
       coreConnected: nextProps.coreConnected
     })
+
+    // This is a workaround to cache email in
+    // component state so that it can be used the second time
+    // we call promptedForEmail
+    if (nextProps.email) {
+      this.setState({
+        email: nextProps.email
+      })
+    }
 
     const storageConnectedDuringOnboarding = nextProps.connectedStorageAtLeastOnce
     const needToOnboardStorage = !storageConnectedDuringOnboarding && !nextProps.storageConnected
@@ -295,7 +304,9 @@ class WelcomeModal extends Component {
 
   connectGaiaHub(event) {
     event.preventDefault()
-    this.props.skipEmailBackup() // need to call this again because state gets deleted before this
+    // need to call this again because state gets deleted before this
+    this.props.emailNotifications(this.state.email, false)
+    
     redirectToConnectToGaiaHub()
   }
 

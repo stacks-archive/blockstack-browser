@@ -7,7 +7,7 @@ const initialState = {
   accountCreated: false, // persist
   promptedForEmail: false, // persist
   encryptedBackupPhrase: null, // persist
-  identityAccount: { 
+  identityAccount: {
     addresses: [],
     keypairs: []
   },
@@ -135,7 +135,8 @@ function AccountReducer(state = initialState, action) {
       })
     case types.PROMPTED_FOR_EMAIL:
       return Object.assign({}, state, {
-        promptedForEmail: true
+        promptedForEmail: true,
+        email: action.email
       })
     case types.VIEWED_RECOVERY_CODE:
       return Object.assign({}, state, {
