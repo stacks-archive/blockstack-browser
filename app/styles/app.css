@@ -23,6 +23,7 @@
 .id-social > div > ul > li a{line-height:32px;overflow:hidden;height:32px;padding-left:10px;vertical-align:middle;white-space:nowrap;text-overflow:ellipsis;color:rgba(255,255,255,1);}
 i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;font-weight:600;}
 .id-social > div > ul > li a > span{padding-left:5px;}
+.profile-completion{padding:0px 40px;}
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
 .profile-accounts {margin:0;border-top:1px solid #FAFAFA;}
 .profile-accounts .fa-stack .fa {line-height:2rem;}
@@ -174,6 +175,7 @@ a.view-out-link{color:#494f56;}
 /* 38. l. - Spacing */
 /* 38. m. - Text */
 /* 38. n. - Visibility */
+/* 39. o. - Progress Bars */
 
 /* 1. Colors */
 /* Blockstack Label Colors - https://projects.invisionapp.com/boards/HE2VVROFSGB27/ */
@@ -491,6 +493,10 @@ div.avatar-md img{padding:0;width:72px;height:72px;border:1px solid #e1e1e1;}
 .sidebar-list .btn{margin-bottom:5px;}
 .highlight{margin:0rem 0rem 1rem 0rem;padding:1rem;background-color:#eee;}
 .highlight pre{margin-top:0;margin-bottom:0;padding:0;border:0;background-color:transparent;}
+
+/* 39. o. - Progress Bars */
+.progress-blue{background-color:#2c96ff}
+
 /* Home screen */
 .app-box-container{display:block;min-height:1px;text-align:center;}
 .app-box-wrap{width:100px;padding:0;-webkit-transition:all .5s ease-in-out;-o-transition:all .5s ease-in-out;transition:all .5s ease-in-out;}

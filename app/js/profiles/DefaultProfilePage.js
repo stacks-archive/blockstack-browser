@@ -10,6 +10,7 @@ import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
+import ProfileCompletion from './components/ProfileCompletion'
 import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
 import EditSocialAccountModal from './components/EditSocialAccountModal'
@@ -609,6 +610,7 @@ class DefaultProfilePage extends Component {
             onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
             rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
           />
+          <ProfileCompletion completePct={0}/>
           <div className="container-fluid m-t-50 p-0">
             <div className="row">
               <div className="col-12">
