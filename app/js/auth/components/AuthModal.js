@@ -361,8 +361,8 @@ class AuthModal extends Component {
             <h3>Sign In Request</h3>
             <div>
               <p>
-               This application requires using Gaia storage, which is not supported yet in our Windows build.
-               Feature coming soon!
+               This application requires using Gaia storage, which is not supported yet 
+               in our Windows build. Feature coming soon!
               </p>
             </div>
           </Modal>
