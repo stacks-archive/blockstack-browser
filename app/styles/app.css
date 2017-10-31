@@ -495,7 +495,7 @@ div.pro-avatar img{max-width:58px;}
 .pro-card-edit{font-size:0.85rem}
 .pro-card-domain-name{font-size:1rem;font-weight:600;}
 .pro-card-identity-address{font-size:0.9rem;line-height:0.9rem;font-weight:600;}
-.pro-card-trust-level-badge {color:#fff;background-color:#2e2e2e;padding:12px 35px;border-radius:3px;}
+.pro-card-trust-level-badge {color:#fff;background-color:#2e2e2e;padding:6px 20px;border-radius:3px;}
 .pro-card-trust-level-badge .fa {margin:0;}
 .pro-card-trust-level {margin-left:10px;margin-right:10px;text-transform:uppercase;font-size:13px;font-weight:700;}
 .pro-card-body{display:block;font-size:0.8rem;font-weight:600}

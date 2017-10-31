@@ -112,7 +112,10 @@ class Navbar extends Component {
     const settingsActive = this.props.activeTab === 'settings' || this.state.settingsTabHover
 
     return (
-      <header className="container-fluid no-padding bg-white fixed-top" style={{ maxWidth: 'unset' }} >
+      <header 
+        className="container-fluid no-padding bg-white fixed-top" 
+        style={{ maxWidth: 'unset' }} 
+      >
         <nav className="navbar navbar-expand container-lg mx-auto" >
           <ul className="navbar-nav container-fluid">
             <li className="nav-item">
