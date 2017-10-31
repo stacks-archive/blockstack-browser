@@ -552,6 +552,8 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;text-align:center;}
 .qrcode-wallet{max-width:200px;margin:20px auto 20px auto;padding:20px;background-color:#fff;}
 .clickable{cursor:pointer;}
+/* Support button */
+.support-floater{position:fixed;bottom:30px;right:30px;color:#fff;background-color:#18091F;height:50px;width:50px;text-align:center;padding-top:5px;border-radius:25px;font-size:25px;font-weight:700;box-shadow: 4px 4px 35px 0px rgba(0, 0, 0, 0.5)}
 
 
 .react-contextmenu {
