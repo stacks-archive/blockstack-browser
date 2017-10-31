@@ -610,7 +610,7 @@ class DefaultProfilePage extends Component {
             onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
             rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
           />
-          <ProfileCompletion completePct={0}/>
+          <ProfileCompletion completePct={0} />
           <div className="container-fluid m-t-50 p-0">
             <div className="row">
               <div className="col-12">

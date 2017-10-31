@@ -24,6 +24,7 @@
 i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;font-weight:600;}
 .id-social > div > ul > li a > span{padding-left:5px;}
 .profile-completion{padding:0px 40px;}
+.profile-completion-sub{color:#949494;}
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
 .profile-accounts {margin:0;border-top:1px solid #FAFAFA;}
 .profile-accounts .fa-stack .fa {line-height:2rem;}
@@ -175,7 +176,6 @@ a.view-out-link{color:#494f56;}
 /* 38. l. - Spacing */
 /* 38. m. - Text */
 /* 38. n. - Visibility */
-/* 39. o. - Progress Bars */
 
 /* 1. Colors */
 /* Blockstack Label Colors - https://projects.invisionapp.com/boards/HE2VVROFSGB27/ */
@@ -471,7 +471,8 @@ div.pro-avatar img{max-width:58px;}
 .progress-bar{height: 1rem;color: #fff;background-color: #2275d7}
 .progress-bar-animated{-webkit-animation:progress-bar-stripes 1s linear infinite;-o-animation:progress-bar-stripes 1s linear infinite;animation:progress-bar-stripes 1s linear infinite}
 .progress-bar-striped{background-image:-webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);-webkit-background-size: 1rem 1rem;background-size: 1rem 1rem}
-
+.progress-bar-blue{background-color:#2c96ff}
+.progress-bar-zero{color:#222222;margin-left:10px;font-weight:700;}
 
 /* 28. List group */
 .list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
@@ -494,8 +495,6 @@ div.avatar-md img{padding:0;width:72px;height:72px;border:1px solid #e1e1e1;}
 .highlight{margin:0rem 0rem 1rem 0rem;padding:1rem;background-color:#eee;}
 .highlight pre{margin-top:0;margin-bottom:0;padding:0;border:0;background-color:transparent;}
 
-/* 39. o. - Progress Bars */
-.progress-blue{background-color:#2c96ff}
 
 /* Home screen */
 .app-box-container{display:block;min-height:1px;text-align:center;}

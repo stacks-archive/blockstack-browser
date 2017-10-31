@@ -7,9 +7,9 @@ class ProfileCompletion extends Component {
   }
 
   render() {
-
+    const pct = this.props.completePct*100
     return (
-      <div className="container-fluid m-t-50 p-0">
+      <div className="container-fluid m-t-40 p-0">
         <div className="row">
           <div className="col">
             <div className="profile-completion m-b-20">
@@ -18,15 +18,20 @@ class ProfileCompletion extends Component {
               </div>
               <div className="progress">
                 <div 
-                  className="progress-bar progress-blue" 
+                  className="progress-bar progress-bar-blue" 
                   role="progressbar" 
-                  style={{width: `${this.props.completePct*100}%`}} 
-                  aria-valuenow={`${this.props.completePct*100}`}
+                  style={{width: `${pct}%`}} 
+                  aria-valuenow={`${pct}`}
                   aria-valuemin="0" 
                   aria-valuemax="100"
                 >
-                {`${this.props.completePct*100}%`}
+                  <span className={pct === 0 ? 'progress-bar-zero' : ''}>
+                    {`${pct}%`}
+                  </span>
                 </div>
+              </div>
+              <div className="profile-completion-sub m-t-10">
+                Complete your profile by adding a name, photo, short biography and verified social accounts.
               </div>
             </div>
           </div>
