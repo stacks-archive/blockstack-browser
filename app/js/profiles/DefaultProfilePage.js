@@ -235,7 +235,7 @@ class DefaultProfilePage extends Component {
     if (service === 'twitter') {
       verificationUrl = `https://twitter.com/intent/tweet?text=${verificationText}`
     } else if (service === 'facebook') {
-      verificationUrl = 'https://www.facebook.com/dialog/feed?app_id=258121411364320&link=' + url
+      verificationUrl = `https://www.facebook.com/dialog/feed?app_id=258121411364320&link=${url}`
     } else if (service === 'github') {
       verificationUrl = 'https://gist.github.com/'
     } else if (service === 'instagram') {
