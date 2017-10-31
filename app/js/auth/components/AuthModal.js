@@ -90,7 +90,8 @@ class AuthModal extends Component {
       sendEmail: false,
       blockchainId: null,
       noStorage: false,
-      responseSent: false
+      responseSent: false,
+      requestingEmail: false
     }
 
     this.login = this.login.bind(this)
@@ -109,6 +110,12 @@ class AuthModal extends Component {
     && !APP_EMAIL_SCOPE_WHITELIST.includes(appDomain)) {
       logger.error(`componentWillMount: ${appDomain} not in 'email' scope whitelist`)
       invalidScopes = true
+    }
+
+    if (scopes.includes('email')) {
+      this.setState({
+        requestingEmail: true
+      })
     }
 
     this.setState({
@@ -327,6 +334,7 @@ class AuthModal extends Component {
     const appManifestLoading = this.props.appManifestLoading
     const processing = this.state.processing
     const invalidScopes = this.state.invalidScopes
+    const requestingEmail = this.state.requestingEmail
     return (
       <div className="">
         <Modal
@@ -357,6 +365,7 @@ class AuthModal extends Component {
             <div>
               <p>
               The app "{appManifest.name}" wants to access your basic info
+                {requestingEmail ? <span> and email address</span> : null}
               </p>
             {appManifest.hasOwnProperty('icons') ?
               <p>
@@ -371,7 +380,7 @@ class AuthModal extends Component {
               <div>
               {this.state.storageConnected ?
                 <div>
-                  <p>Choose a profile to log in with.</p>
+                  <p>Choose a Blockstack ID to sign in with.</p>
                   <select
                     className="form-control profile-select"
                     onChange={
