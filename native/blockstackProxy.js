@@ -62,7 +62,8 @@ http.createServer(function(request, response) {
 
       response.writeHead(200, {
         "Content-Type": mimeLookup(filename),
-        "X-Frame-Options":	"DENY"
+        "X-Frame-Options":	"DENY",
+        "Cache-Control": "private, max-age=0, no-cache"
      });
       response.write(file, "binary");
       response.end();
