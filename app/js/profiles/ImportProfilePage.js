@@ -61,7 +61,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ImportPage)
 
 /*
   <div>
-    <button className="btn btn-secondary" onClick={this.refreshAddress}>
+    <button className="btn btn-tertiary" onClick={this.refreshAddress}>
       New Address
     </button>
   </div>
