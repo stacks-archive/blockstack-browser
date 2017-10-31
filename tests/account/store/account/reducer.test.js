@@ -3,6 +3,7 @@ import { AccountActions, AccountReducer } from '../../../../app/js/account/store
 const initialState = {
   accountCreated: false,
   promptedForEmail: false,
+  email: null,
   encryptedBackupPhrase: null,
   identityAccount: {
     addresses: [],
