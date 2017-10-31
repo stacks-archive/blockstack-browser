@@ -336,7 +336,17 @@ class AuthModal extends Component {
     const appManifestLoading = this.props.appManifestLoading
     const processing = this.state.processing
     const invalidScopes = this.state.invalidScopes
-    if (isWindowsBuild()) {
+    const decodedToken = this.state.decodedToken
+    const noStorage = (decodedToken
+                       && decodedToken.payload.scopes
+                       && !decodedToken.payload.scopes.includes('store_write'))
+
+    const windowsShortCircuit = (!appManifestLoading
+                                 && appManifest !== null
+                                 && !invalidScopes
+                                 && !noStorage
+                                 && isWindowsBuild())
+    if (windowsShortCircuit) {
       return (
         <div className="">
           <Modal
@@ -351,7 +361,7 @@ class AuthModal extends Component {
             <h3>Sign In Request</h3>
             <div>
               <p>
-               Authenticating with applications is not supported yet in our Windows build.
+               This application requires using Gaia storage, which is not supported yet in our Windows build.
                Feature coming soon!
               </p>
             </div>
