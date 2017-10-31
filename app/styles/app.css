@@ -1,7 +1,7 @@
 /* Styles */
 
 /* Custom styles */
-.body-main{width:100%;height:100%;}
+.body-main{width:100%;height:100%;padding-top: 100px;}
 .body-landing{width:100%;height:100%;}
 .body-inner{width:100%;height:100%;}
 .bkg-light{background-color:#FAFAFA;}
@@ -111,10 +111,19 @@ a.view-out-link{color:#494f56;}
 .fa-green{color:#1d9d74;}
 .app-account-identifier{margin-left:10px;}
 
-/* Guy quick */
+/* Guy to clean up */
 .profile-wrap{max-width: 800px;}
 .profile-wrap-wide{max-width: 1050px;}
 .app-text-container h3{text-align: center;}
+
+
+
+
+/* Waterline -  Note all styles above this line are to be pulled into the
+                framework as soon as possible. No new styling to be added
+                above this waterline.
+                */
+
 
 
 
@@ -124,7 +133,10 @@ a.view-out-link{color:#494f56;}
 
 /*  1. Colors */
 /*  2. Options */
-/*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version we are utilizing the custom spacing rules from blockstack.com. Upon import of blockstack-bootstrap, go through styles and replace with latest spacing rules from b4. */
+/*  3. Spacing - Note: b4 has resolved a lot of spacing issues. for this version
+        we are utilizing the custom spacing rules from blockstack.com. Upon
+        import of blockstack-bootstrap, go through styles and replace with
+        latest spacing rules from b4. */
 /*  4. Body */
 /*  5. Links */
 /*  6. Grid breakpoints */
@@ -176,6 +188,7 @@ a.view-out-link{color:#494f56;}
 /* 38. l. - Spacing */
 /* 38. m. - Text */
 /* 38. n. - Visibility */
+
 
 /* 1. Colors */
 /* Blockstack Label Colors - https://projects.invisionapp.com/boards/HE2VVROFSGB27/ */
@@ -275,8 +288,10 @@ a.view-out-link{color:#494f56;}
 .text-secondary            {color: #949494!important;}
 .text-dark                 {color: #484848!important;}
 
+
 /* 2. Options */
 .col-centered{float:none;margin:0 auto;overflow:none;}
+
 
 /* 3. Spacing */
 /* Custom spacing classes to be removed */
@@ -375,6 +390,20 @@ body{font-family:'Lato',sans-serif;font-size:14px;-webkit-font-smoothing:antiali
 a,a:focus{outline:none; cursor:pointer}
 a {color: #2C96FF;}
 
+
+/*  7. Grid containers */
+/* blockstack.org uses two widths;
+   1. Full container width 960px
+   2. content width 760px
+*/
+.container-xs{max-width:440px;}
+.container-sm{max-width:540px;}
+.container-md{max-width:720px;}
+.container-primary{max-width:760px;}
+.container-lg{max-width:960px;}
+.container-xl{max-width:1140px;}
+
+
 /* 9. Fonts */
 .inverse{font-weight:200;color:#fff;}
 .h5-landing{color:#AEAEAE;font-size:18px;font-weight:400;}
@@ -404,6 +433,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-clipboard {width:40px;height:40px;color:#494F56;padding:0;border:0;}
 .storage-page button:disabled {cursor: default;}
 
+
 /* 13. Forms */
 /* Default forms are "Light forms" for now GL Sep 17, 2017 */
 .form-group{margin-bottom:15px;}
@@ -425,8 +455,9 @@ input.form-control-secondary{background-color:#fafafa;border:1px solid #F4F2F4;}
 .input-accessory-icon-right{float:right;margin-right:10px;margin-top:-27px;position:relative;z-index:2;}
 .input-accessory-icon{padding-right:40px;}
 
+
 /* 16. Navbar */
-header{padding-top:15px;}
+header{padding-bottom:10px;border-bottom:1px solid #F0F0F0;}
 .navbar{padding:0!important;height:70px;text-align:center;}
 .navbar-expand{width:85%;}
 .nav-item{width:88px;text-align:center;text-transform: uppercase;font-family:'Lato',sans-serif;font-size:11px;font-weight:700}
@@ -437,6 +468,7 @@ header{padding-top:15px;}
 .nav-item span.active span {color:#2C96FF;}
 .navbar-expand .navbar-nav .nav-link{padding:12px 13px;}
 .secondary-nav{margin-top:5px;}
+
 
 /* 21. Cards */
 .card-default{background-color:#fff;padding:25px 15px 25px 25px;overflow:hidden;/*width:100%;*/border:1px solid #fff;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);border-radius:0;}
@@ -462,6 +494,7 @@ div.pro-avatar img{max-width:58px;}
 .avatar-sm{margin-right:15px;}
 .card-title{margin-bottom:0;font-size:0.875rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding-right:15px;}
 
+
 /* 26. Alerts */
 .alert .close {line-height: 20px;}
 
@@ -473,6 +506,7 @@ div.pro-avatar img{max-width:58px;}
 .progress-bar-striped{background-image:-webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);-webkit-background-size: 1rem 1rem;background-size: 1rem 1rem}
 .progress-bar-blue{background-color:#2c96ff}
 .progress-bar-zero{color:#222222;margin-left:10px;font-weight:700;}
+
 
 /* 28. List group */
 .list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
@@ -556,28 +590,8 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .support-floater{position:fixed;bottom:30px;right:30px;color:#fff;background-color:#18091F;height:50px;width:50px;text-align:center;padding-top:5px;border-radius:25px;font-size:25px;font-weight:700;box-shadow: 4px 4px 35px 0px rgba(0, 0, 0, 0.5)}
 
 
-.react-contextmenu {
-	min-width: 160px;
-	padding: 5px 5px;
-	margin: 2px 0 0;
-	text-align: left;
-	background-color: #fff;
-	background-clip: padding-box;
-	border-radius: 0;
-	outline: none;
-	opacity: 0;
-	pointer-events: none;
-	transition: opacity 250ms ease !important;
-	box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.08);
-}
-
-.react-contextmenu-item.react-contextmenu-item--active,
-.react-contextmenu-item.react-contextmenu-item--selected {
-    color: #fff;
-    background-color: #2C96FF;
-    border-color: #2C96FF;
-    text-decoration: none;
-}
+.react-contextmenu{min-width:160px;padding:5px 5px;margin:2px 0 0;text-align:left;background-color:#fff;background-clip:padding-box;border-radius:0;outline:none;opacity:0;pointer-events:none;transition:opacity 250ms ease!important;box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
+.react-contextmenu-item.react-contextmenu-item--active,.react-contextmenu-item.react-contextmenu-item--selected{color:#fff;background-color:#2C96FF;border-color:#2C96FF;text-decoration:none;}
 
 
 
@@ -605,7 +619,6 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 
   /* 21. Cards */
   .pro-card-body{margin-left:auto;margin-right:auto;max-width:350px;}
-
 	.card-list-wrap{min-width:310px;display:inline-block;padding-left:0;padding-right:0;}
 	.card-list-card{width:310px;}
 	.card-list-container{max-width:none;padding-right:0;padding-left:0;}
@@ -624,7 +637,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
 	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
   .qrcode-wallet{max-width:225px;}
-  .container-fluid{max-width: 768px;}
+  .container-fluid{max-width: 960px;}
 }
 
 /* Medium devices (desktops, 975px and up) */
