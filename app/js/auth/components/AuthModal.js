@@ -6,7 +6,7 @@ import { AuthActions } from '../store/auth'
 import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
-  makeAuthResponse, getAuthRequestFromURL, redirectUserToApp
+  makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
@@ -390,14 +390,18 @@ class AuthModal extends Component {
                     value={this.state.currentIdentityIndex ? this.state.currentIdentityIndex : 0}
                     disabled={processing}
                   >
-                    {this.props.localIdentities.map((identity, identityIndex) => (
-                      <option
+                    {this.props.localIdentities.map((identity, identityIndex) => {
+                      const profile = new Person(identity.profile)
+                      const displayLabel = profile.name() ?
+                      `${profile.name()}: ID-${identity.ownerAddress}` :
+                      `ID-${identity.ownerAddress}`
+                      return (<option
                         key={identityIndex}
                         value={identityIndex}
                       >
-                        {identity.username ? identity.username : identity.ownerAddress}
+                        {identity.username ? identity.username : displayLabel}
                       </option>
-                    ))}
+                    ) })}
                   </select>
                   <div>
                     <button
