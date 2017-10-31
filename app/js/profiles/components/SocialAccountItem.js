@@ -99,7 +99,6 @@ class SocialAccountItem extends Component {
   }
 
   onVerifiedCheckmarkClick = (e) => {
-    console.log('here')
     e.preventDefault()
     e.stopPropagation()
     openInNewTab(this.props.proofUrl)
