@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
 const SecondaryNavLink = props => {
-  const alignment = (props.align === "right") ? "float-right" : "float-left"
-  const active = props.isActive === true ? "active" : "default"
+  const alignment = (props.align === 'right') ? 'float-right' : 'float-left'
+  const customActiveClass = props.activeClass ? props.activeClass : ''
+  const active = props.isActive === true ? `active ${customActiveClass}` : 'default'
 
   return (
     <Link
@@ -45,12 +46,14 @@ class SecondaryNavBar extends Component {
     onRightButtonClick: PropTypes.func,
     isLeftActive: PropTypes.bool,
     isCenterActive: PropTypes.bool,
-    isRightActive: PropTypes.bool
+    isRightActive: PropTypes.bool,
+    activeClass: PropTypes.string
   }
 
   render() {
+    const activeClass = this.props.activeClass ? this.props.activeClass : ""
     return (
-      <div className="container-fluid secondary-nav">
+      <div className="container-fluid secondary-nav no-padding">
         <div className="row">
           <div className="col">
             {this.props.leftButtonTitle !== undefined && (
@@ -59,13 +62,17 @@ class SecondaryNavBar extends Component {
                 title={this.props.leftButtonTitle}
                 onClick={this.props.onLeftButtonClick}
                 align="left"
-                isActive={this.props.isLeftActive} />
+                isActive={this.props.isLeftActive}
+                activeClass={activeClass}
+               />
               :
               <SecondaryNavLink
                 title={this.props.leftButtonTitle}
                 link={this.props.leftButtonLink}
                 align="left"
-                isActive={this.props.isLeftActive} />
+                isActive={this.props.isLeftActive}
+                activeClass={activeClass}
+               />
               ) }
           </div>
           <div className="col text-center">
@@ -76,6 +83,7 @@ class SecondaryNavBar extends Component {
                 onClick={this.props.onCenterButtonClick}
                 align="right"
                 isActive={this.props.isCenterActive}
+                activeClass={activeClass}
               />
             :
               <SecondaryNavLink
@@ -83,6 +91,7 @@ class SecondaryNavBar extends Component {
                 link={this.props.centerButtonLink}
                 align="right"
                 isActive={this.props.isCenterActive}
+                activeClass={activeClass}
               />
           )}
           </div>
@@ -93,13 +102,17 @@ class SecondaryNavBar extends Component {
               title={this.props.rightButtonTitle}
               onClick={this.props.onRightButtonClick}
               align="right"
-              isActive={this.props.isRightActive} />
+              isActive={this.props.isRightActive} 
+              activeClass={activeClass}
+            />
             :
             <SecondaryNavLink
               title={this.props.rightButtonTitle}
               link={this.props.rightButtonLink}
               align="right"
-              isActive={this.props.isRightActive} />
+              isActive={this.props.isRightActive}
+              activeClass={activeClass} 
+            />
             ) }
           </div>
         </div>

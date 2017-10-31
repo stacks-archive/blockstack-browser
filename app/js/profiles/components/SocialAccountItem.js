@@ -98,6 +98,12 @@ class SocialAccountItem extends Component {
     }
   }
 
+  onVerifiedCheckmarkClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    openInNewTab(this.props.proofUrl)
+  }
+
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const webAccountType = webAccountTypes[this.props.service]
@@ -151,7 +157,12 @@ class SocialAccountItem extends Component {
             )}
 
             {verified ?
-              <span className="float-right status" data-tip data-for={`verified-${this.props.service}`}>
+              <span 
+                className="float-right status" 
+                data-tip 
+                data-for={`verified-${this.props.service}`}
+                onClick={this.onVerifiedCheckmarkClick}
+              >
                 <i className="fa fa-fw fa-check-circle fa-lg" />
               </span>
               : 
