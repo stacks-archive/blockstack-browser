@@ -71,6 +71,13 @@ function getCoreSessionToken(coreHost, corePort, coreApiPassword,
   }
 }
 
+function noCoreSessionToken(appDomain) {
+  return dispatch => {
+    logger.trace('noCoreSessionToken(): dispatched')
+    dispatch(updateCoreSessionToken(appDomain, null))
+  }
+}
+
 function loadAppManifest(authRequest) {
   return dispatch => {
     dispatch(appManifestLoading())
@@ -128,6 +135,7 @@ export function AuthReducer(state = initialState, action) {
 export const AuthActions = {
   clearSessionToken,
   getCoreSessionToken,
+  noCoreSessionToken,
   loadAppManifest,
   loginToApp
 }

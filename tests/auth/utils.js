@@ -21,7 +21,16 @@ describe('auth-utils', () => {
     })
 
     it('should return true for scopes in the whitelist', () => {
-      const scopes = ['store_write']
+      let scopes = ['store_write']
+      assert(validateScopes(scopes))
+
+      scopes = ['email']
+      assert(validateScopes(scopes))
+
+      scopes = ['store_write', 'email']
+      assert(validateScopes(scopes))
+
+      scopes = ['email', 'store_write']
       assert(validateScopes(scopes))
     })
   })
