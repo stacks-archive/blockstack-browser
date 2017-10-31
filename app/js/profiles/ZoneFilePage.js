@@ -234,7 +234,7 @@ class ZoneFilePage extends Component {
                     Broadcast update
                   </button>
                   <button
-                    className="btn btn-sm btn-secondary"
+                    className="btn btn-sm btn-tertiary"
                     onClick={this.reset}
                     disabled={this.state.disabled}
                     title="Reset your edits to the current zone file."
