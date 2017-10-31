@@ -375,6 +375,20 @@ body{font-family:'Lato',sans-serif;font-size:14px;-webkit-font-smoothing:antiali
 a,a:focus{outline:none; cursor:pointer}
 a {color: #2C96FF;}
 
+
+/*  7. Grid containers */
+/* blockstack.org uses two widths;
+   1. Full container width 960px
+   2. content width 760px
+*/
+.container-xs{max-width:440px;}
+.container-sm{max-width:540px;}
+.container-md{max-width:720px;}
+.container-primary{max-width:760px;}
+.container-lg{max-width:960px;}
+.container-xl{max-width:1140px;}
+
+
 /* 9. Fonts */
 .inverse{font-weight:200;color:#fff;}
 .h5-landing{color:#AEAEAE;font-size:18px;font-weight:400;}
