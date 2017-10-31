@@ -12,7 +12,8 @@ export {
   getBitcoinAddressNode,
   findAddressIndex,
   decryptBitcoinPrivateKey,
-  calculateTrustLevel
+  calculateTrustLevel,
+  calculateProfileCompleteness
 } from './account-utils'
 
 export {

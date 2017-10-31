@@ -10,12 +10,13 @@ import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
+import ProfileCompletion from './components/ProfileCompletion'
 import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
 import EditSocialAccountModal from './components/EditSocialAccountModal'
 import EditAccountModal from './components/EditAccountModal'
 import { uploadProfile, uploadPhoto } from '../account/utils'
-import { openInNewTab, signProfileForUpload } from '../utils'
+import { openInNewTab, signProfileForUpload, calculateProfileCompleteness } from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'
@@ -511,6 +512,7 @@ class DefaultProfilePage extends Component {
     const trustLevel = identity.trustLevel
     // const blockNumber = identity.blockNumber
     // const transactionIndex = identity.transactionIndex
+    const profileCompleteness = calculateProfileCompleteness(identity.profile, verifications)
 
     const filledAccounts = []
     const placeholders = []
@@ -609,6 +611,11 @@ class DefaultProfilePage extends Component {
             onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
             rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
           />
+
+          {profileCompleteness < 1 &&
+            <ProfileCompletion completePct={profileCompleteness} />
+          }
+
           <div className="container-fluid m-t-50 p-0">
             <div className="row">
               <div className="col-12">
