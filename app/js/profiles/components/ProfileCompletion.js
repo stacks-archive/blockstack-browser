@@ -9,7 +9,7 @@ class ProfileCompletion extends Component {
   render() {
     const pct = this.props.completePct*100
     return (
-      <div className="container-fluid m-t-40 p-0">
+      <div className="container-fluid m-t-35 p-0">
         <div className="row">
           <div className="col">
             <div className="profile-completion m-b-20">

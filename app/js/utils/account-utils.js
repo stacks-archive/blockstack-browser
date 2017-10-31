@@ -20,7 +20,7 @@ function hashCode(string) {
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
-export const MAX_TRUST_LEVEL = 3
+export const MAX_TRUST_LEVEL = 99
 
 export class AppNode {
   constructor(hdNode, appDomain) {
@@ -323,6 +323,28 @@ export function calculateTrustLevel(verifications) {
   })
 
   return trustLevel
+}
+
+export function calculateProfileCompleteness(profile, verifications) {
+  let complete = 0
+  const totalItems = 5
+  const maxVerificationItems = 2
+
+  if (profile.name && profile.name.length > 0) {
+    complete++
+  }
+
+  if (profile.description && profile.description.length > 0) {
+    complete++
+  }
+
+  if (profile.image && profile.image.length > 0) {
+    complete++
+  }
+
+  complete += Math.min(calculateTrustLevel(verifications), maxVerificationItems)
+
+  return complete / totalItems
 }
 
 export function findAddressIndex(address, identityAddresses) {
