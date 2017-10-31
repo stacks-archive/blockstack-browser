@@ -78,15 +78,12 @@ function noUsernameOwned(index: number) {
   }
 }
 
-function updateProfile(index: number, profile: any, verifications: Array<any>, 
-  trustLevel: number, zoneFile: string) {
+function updateProfile(index: number, profile: any, zoneFile: string) {
   return {
     type: types.UPDATE_PROFILE,
     index,
     profile,
-    zoneFile,
-    verifications,
-    trustLevel
+    zoneFile
   }
 }
 
@@ -232,13 +229,13 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
               logger.debug(`refreshIdentities: resolving zonefile of ${nameOwned} to profile`)
               return resolveZoneFileToProfile(zoneFile, ownerAddress).then((profile) => {
                 if (profile) {
-                  dispatch(updateProfile(index, profile, [], 0, zoneFile))
+                  dispatch(updateProfile(index, profile, zoneFile))
                   let verifications = []
                   let trustLevel = 0
                   return validateProofs(profile, ownerAddress, nameOwned).then((proofs) => {
                     verifications = proofs
                     trustLevel = calculateTrustLevel(verifications)
-                    dispatch(updateProfile(index, profile, verifications, trustLevel, zoneFile))
+                    dispatch(updateSocialProofVerifications(index, verifications, trustLevel))
                   })
                   .catch((error) => {
                     logger.error(`refreshIdentities: ${nameOwned} validateProofs: error`, error)
