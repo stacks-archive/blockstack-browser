@@ -118,9 +118,10 @@ function withdrawCoreBalanceError(error) {
   }
 }
 
-function promptedForEmail() {
+function promptedForEmail(email = null) {
   return {
-    type: types.PROMPTED_FOR_EMAIL
+    type: types.PROMPTED_FOR_EMAIL,
+    email
   }
 }
 
@@ -143,10 +144,10 @@ function displayedRecoveryCode() {
   }
 }
 
-function emailNotifications(email) {
+function emailNotifications(email, optIn) {
   logger.debug(`emailNotifications: ${email}`)
   return dispatch => {
-    dispatch(promptedForEmail())
+    dispatch(promptedForEmail(email))
     const requestHeaders = {
       Accept: 'application/json',
       'Content-Type': 'application/json'
@@ -162,15 +163,20 @@ function emailNotifications(email) {
       body: JSON.stringify(requestBody)
     }
     const emailNotificationsUrl = 'https://blockstack-portal-emailer.appartisan.com/notifications'
-
-    return fetch(emailNotificationsUrl, options)
-    .then(() => {
-      logger.debug(`emailNotifications: registered ${email} for notifications`)
-    }, (error) => {
-      logger.error('emailNotifications: error', error)
-    }).catch(error => {
-      logger.error('emailNotifications: error', error)
-    })
+    if (optIn === true) {
+      logger.debug('emailNotifications: user opted-in')
+      return fetch(emailNotificationsUrl, options)
+      .then(() => {
+        logger.debug(`emailNotifications: registered ${email} for notifications`)
+      }, (error) => {
+        logger.error('emailNotifications: error', error)
+      }).catch(error => {
+        logger.error('emailNotifications: error', error)
+      })
+    } else {
+      logger.debug('emailNotifications: user opted-out')
+      return Promise.resolve()
+    }
   }
 }
 

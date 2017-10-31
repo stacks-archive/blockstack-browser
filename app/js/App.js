@@ -8,9 +8,11 @@ import { SettingsActions } from './account/store/settings'
 import { AppsActions } from './store/apps'
 import WelcomeModal from './welcome/WelcomeModal'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
+import SupportButton from './components/SupportButton'
 import { SanityActions }    from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
 import { isWindowsBuild } from './utils/window-utils'
+import { openInNewTab } from './utils'
 
 import log4js from 'log4js'
 
@@ -150,6 +152,10 @@ class App extends Component {
     })
   }
 
+  onSupportClick = () => {
+    openInNewTab('https://blockstack.zendesk.com/hc/en-us')
+  }
+
   closeModal() {
     this.setState({ modalIsOpen: false })
   }
@@ -175,6 +181,7 @@ class App extends Component {
         <div className="wrapper footer-padding">
           {this.props.children}
         </div>
+        <SupportButton onClick={this.onSupportClick} />
       </div>
     )
   }

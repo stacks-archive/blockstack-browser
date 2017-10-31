@@ -296,6 +296,9 @@ class VerificationInfo extends Component {
   copy(e) {
     const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${this.props.ownerAddress}`
     let verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress} ${url}`
+    if (this.props.service === 'facebook') {
+      verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress}`
+    }
     var textField = document.createElement('textarea')
     textField.innerText = verificationMessage
     document.body.appendChild(textField)
@@ -306,7 +309,11 @@ class VerificationInfo extends Component {
 
   render() {
     const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${this.props.ownerAddress}`
-    const verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress} ${url}`
+    var verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress} ${url}`
+
+    if (this.props.service === 'facebook') {
+      verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress}`
+    }
 
     return (
       <div onClick={this.handleClick}>

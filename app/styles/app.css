@@ -23,6 +23,8 @@
 .id-social > div > ul > li a{line-height:32px;overflow:hidden;height:32px;padding-left:10px;vertical-align:middle;white-space:nowrap;text-overflow:ellipsis;color:rgba(255,255,255,1);}
 i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;font-weight:600;}
 .id-social > div > ul > li a > span{padding-left:5px;}
+.profile-completion{padding:0px 40px;}
+.profile-completion-sub{color:#949494;}
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
 .profile-accounts {margin:0;border-top:1px solid #FAFAFA;}
 .profile-accounts .fa-stack .fa {line-height:2rem;}
@@ -393,6 +395,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-link-secondary{color:#222222;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 .btn-link-mute{color:#949494;}
 .btn-light{background-color:#fff;border-color:#fff;color:#2C96FF;}
+.btn-dark{color:#fff;background-color:#222222;}
 .btn-storage{background-color:#2C96FF;border:1px solid #2C96FF;margin-bottom:-15px;-webkit-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 25px 0px rgba(0,0,0,0.15);}
 .btn-storage:hover{background-color:#0668BF;}
 .btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#8CC3F4;border:1px solid #8CC3F4;}
@@ -410,15 +413,15 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .form-control-label{color:#949494;padding-left:15px;margin-bottom:0.375rem;font-weight:600}
 .form-control-label-centered{padding:0;}
 /* Secondary forms */
-.form-container-secondary{padding:35px 15px 50px 15px;background-color:#2C96FF;color:#fff;}
+.form-container-secondary{padding:35px 15px 50px 15px;}
 .form-control-secondary{color:#fff;border:1px solid #fff;}
-input.form-control-secondary{background-color:#60B0FF;border:1px solid #60B0FF;}
+input.form-control-secondary{background-color:#fafafa;border:1px solid #F4F2F4;}
 .form-control-secondary::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;color:#fff;font-weight:400!important;}
 .form-control-secondary:hover::-webkit-input-placeholder{color:#fff;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
 .form-control-secondary:focus::-webkit-input-placeholder{color:#fff;}
-.form-control-secondary:hover{background-color:#80C0FF;color:#fff;border:1px solid #80C0FF;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
+.form-control-secondary:hover{background-color:#fff;color:#fff;border:1px solid #F4F2F4;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
 .form-control-secondary:focus,.form-control-secondary:active{background-color:#fff;color:#484848;border:1px solid #fff;}
-.form-control-label-secondary{color:#95CAFF;margin-bottom:0.375rem;}
+.form-control-label-secondary{margin-bottom:0.375rem;}
 .input-accessory-icon-right{float:right;margin-right:10px;margin-top:-27px;position:relative;z-index:2;}
 .input-accessory-icon{padding-right:40px;}
 
@@ -468,7 +471,8 @@ div.pro-avatar img{max-width:58px;}
 .progress-bar{height: 1rem;color: #fff;background-color: #2275d7}
 .progress-bar-animated{-webkit-animation:progress-bar-stripes 1s linear infinite;-o-animation:progress-bar-stripes 1s linear infinite;animation:progress-bar-stripes 1s linear infinite}
 .progress-bar-striped{background-image:-webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);-webkit-background-size: 1rem 1rem;background-size: 1rem 1rem}
-
+.progress-bar-blue{background-color:#2c96ff}
+.progress-bar-zero{color:#222222;margin-left:10px;font-weight:700;}
 
 /* 28. List group */
 .list-group-item:last-child,.list-group-item:first-child{border-radius:0;}
@@ -490,6 +494,8 @@ div.avatar-md img{padding:0;width:72px;height:72px;border:1px solid #e1e1e1;}
 .sidebar-list .btn{margin-bottom:5px;}
 .highlight{margin:0rem 0rem 1rem 0rem;padding:1rem;background-color:#eee;}
 .highlight pre{margin-top:0;margin-bottom:0;padding:0;border:0;background-color:transparent;}
+
+
 /* Home screen */
 .app-box-container{display:block;min-height:1px;text-align:center;}
 .app-box-wrap{width:100px;padding:0;-webkit-transition:all .5s ease-in-out;-o-transition:all .5s ease-in-out;transition:all .5s ease-in-out;}
@@ -540,12 +546,14 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .item-sidebar-storage.disabled:hover{color:rgba(255,255,255,0.45);border:none;background-color:rgba(255,255,255,0.05);}
 /* Wallet App */
 .frame-light{background-color:#fff;padding-top:20px;}
-.balance-main{font-family:'Source Code Pro',monospace;font-size:26px;font-weight:700;color:#fff;text-align:center;padding-right:15px;padding-left:15px;}
-.balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;color:#95CAFF;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
+.balance-main{font-family:'Source Code Pro',monospace;font-size:26px;font-weight:700;text-align:center;padding-right:15px;padding-left:15px;}
+.balance-sml{font-family:'Source Code Pro',monospace;font-size:14px;text-align:center;margin-top:-10px;padding-right:15px;padding-left:15px;}
 .highlight-wallet{font-family:'Source Code Pro',monospace;color:#fff;line-height:1.75rem;padding:0.75rem 0;}
-.highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;color:#fff!important;text-align:center;}
+.highlight-wallet > pre > code{font-family:'Source Code Pro',monospace!important;font-size:0.8125rem;text-align:center;}
 .qrcode-wallet{max-width:200px;margin:20px auto 20px auto;padding:20px;background-color:#fff;}
 .clickable{cursor:pointer;}
+/* Support button */
+.support-floater{position:fixed;bottom:30px;right:30px;color:#fff;background-color:#18091F;height:50px;width:50px;text-align:center;padding-top:5px;border-radius:25px;font-size:25px;font-weight:700;box-shadow: 4px 4px 35px 0px rgba(0, 0, 0, 0.5)}
 
 
 .react-contextmenu {

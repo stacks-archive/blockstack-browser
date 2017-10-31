@@ -40,6 +40,7 @@ class WalletApp extends Component {
           rightButtonTitle="Send"
           rightButtonLink="/wallet/send"
           isRightActive={(activeTabUrl === '/wallet/send')}
+          activeClass="active-wallet"
         />
         <div className="container-fluid col-centered form-container-secondary">
           <div>

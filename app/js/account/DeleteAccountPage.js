@@ -3,17 +3,16 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Alert from '../components/Alert'
-import InputGroup from '../components/InputGroup'
 import DeleteAccountModal from './components/DeleteAccountModal'
 import { AccountActions } from './store/account'
-import { decrypt } from '../utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/DeleteAccountPage.js')
 
 function mapStateToProps(state) {
   return {
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase || ''
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    logServerPort: state.settings.api.logServerPort
   }
 }
 
@@ -23,8 +22,8 @@ function mapDispatchToProps(dispatch) {
 
 class DeleteAccountPage extends Component {
   static propTypes = {
-    encryptedBackupPhrase: PropTypes.string.isRequired,
-    deleteAccount: PropTypes.func.isRequired
+    coreAPIPassword: PropTypes.string.isRequired,
+    logServerPort: PropTypes.string
   }
 
   static contextTypes = {
@@ -61,21 +60,15 @@ class DeleteAccountPage extends Component {
   }
 
   deleteAccount() {
-    this.props.deleteAccount()
-    this.closeModal()
+    const coreAPIPassword = this.props.coreAPIPassword
+    const logServerPort = this.props.logServerPort
+    localStorage.clear()
+    window.location = `/#coreAPIPassword=${coreAPIPassword}&logServerPort=${logServerPort}`
   }
 
   openModal() {
     logger.trace('deleteAccount')
-    const password = this.state.password
-    const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
-    logger.debug('Trying to decrypt recovery phrase...')
-    decrypt(dataBuffer, password)
-    .then(() => {
-      this.setState({ isOpen: true })
-    }, () => {
-      this.updateAlert('danger', 'Incorrect password')
-    })
+    this.setState({ isOpen: true })
   }
 
   closeModal() {
@@ -86,7 +79,7 @@ class DeleteAccountPage extends Component {
     return (
       <div className="m-b-100">
         <h3 className="container-fluid m-t-10">
-          Remove Keychain
+          Reset Browser
         </h3>
         {
           this.state.alerts.map((alert, index) => (
@@ -96,19 +89,13 @@ class DeleteAccountPage extends Component {
         <div>
           <p className="container-fluid">
             <i>
-              Remove your keychain from this browser so you can create a new one or
+              Erase your keychain and settings so you can create a new one or
               restore another keychain.
             </i>
           </p>
-          <InputGroup
-            name="password" label="Password" type="password"
-            data={this.state} onChange={this.onValueChange}
-            onReturnKeyPress={this.openModal}
-          />
-
           <div className="container-fluid m-t-40">
             <button className="btn btn-danger btn-block" onClick={this.openModal}>
-              Remove Keychain
+              Reset Browser
             </button>
           </div>
         </div>
