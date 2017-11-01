@@ -1,6 +1,6 @@
 {
   "name": "blockstack-browser",
-  "version": "0.19.2",
+  "version": "0.20.0",
   "author": "Blockstack PBC <admin@blockstack.com>",
   "description": "The Blockstack browser",
   "license": "MPL-2.0",
