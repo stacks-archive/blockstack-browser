@@ -57,7 +57,7 @@ class HomeScreenPage extends Component {
 
   componentWillMount() {
     // Refresh apps list every 12 hours
-    if (this.props.appListLastUpdated === undefined 
+    if (this.props.appListLastUpdated === undefined
       || this.props.appListLastUpdated < (Date.now() - 43200000)) {
       this.props.refreshAppList(this.props.api.browserServerUrl, this.props.instanceIdentifier,
         this.props.instanceCreationDate)
@@ -77,16 +77,30 @@ class HomeScreenPage extends Component {
 
               <div className="app-section m-b-45">
                 <p className="app-section-heading">
+                  Blockstack
+                </p>
+                <div className="app-container no-padding">
+                  <AppIcon
+                    key="token-sale"
+                    iconImage="app-icon-token-sale.png"
+                    displayName="Token Sale"
+                    launchLink="https://blockstack.com/"
+                  />
+                </div>
+              </div>
+
+              <div className="app-section m-b-45">
+                <p className="app-section-heading">
                   User-ready Apps
                 </p>
                 <div className="app-container no-padding">
                   {appList.apps.map((app) => {
                     if (app.status === 'user_ready') {
-                      return (<AppIcon 
+                      return (<AppIcon
                         key={app.name}
-                        iconImage={app.appIcon.small} 
-                        displayName={app.displayName} 
-                        launchLink={app.launchLink} 
+                        iconImage={app.appIcon.small}
+                        displayName={app.displayName}
+                        launchLink={app.launchLink}
                       />)
                     } else {
                       return null
@@ -102,11 +116,11 @@ class HomeScreenPage extends Component {
                 <div className="app-container no-padding">
                   {appList.apps.map((app) => {
                     if (app.status === 'in_progress') {
-                      return (<AppIcon 
+                      return (<AppIcon
                         key={app.name}
-                        iconImage={app.appIcon.small} 
-                        displayName={app.displayName} 
-                        launchLink={app.launchLink} 
+                        iconImage={app.appIcon.small}
+                        displayName={app.displayName}
+                        launchLink={app.launchLink}
                       />)
                     } else {
                       return null
