@@ -436,9 +436,8 @@ class AuthModal extends Component {
             :
                 <div>
                   <p>
-                    You need to
-                    <Link to="/account/storage">connect your storage</Link>
-                    in order to log in.
+                    You need to <Link to="/">
+                    set up Blockstack</Link> in order to sign in.
                   </p>
                 </div>
             }
@@ -446,7 +445,8 @@ class AuthModal extends Component {
             :
               <div>
                 <p>
-                  You need to <Link to="/profiles">create a Blockstack ID</Link> in order to log in.
+                  You need to <Link to="/">
+                  set up Blockstack</Link> in order to sign in.
                 </p>
               </div>
             }
