@@ -8,7 +8,7 @@
 - [ ] make sure `native/macos/build_blockstack_virtualenv.sh` is using desired version of core
 - [ ] tag blockstack-core `cd blockstack-core; git checkout $COMMIT; git tag v0.14.0-browser`
 - [ ] push blockstack-core tag `git push origin --tags`
-- [ ] Exit locally running Blockstack & stop any regtest instances
+- [ ] Exit locally running Blockstack & stop any regtest instances & kill any `npm run dev` instances
 - [ ] `rm -Rvf /tmp/blockstack-venv/`
 - [ ] `npm run mac-release`
 - [ ] Rename .dmg file to `Blockstack-v0.14.0.dmg`

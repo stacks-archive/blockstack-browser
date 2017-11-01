@@ -17,10 +17,10 @@ tests/utils/n*
 
 app/js/account/A*
 app/js/account/B*
-app/js/account/C*
-app/js/account/D*
+app/js/account/Ch*
+app/js/account/Cr*
+
 app/js/account/store/settings*
-app/js/account/components*
 
 app/js/components/*
 !app/js/components/Navbar*

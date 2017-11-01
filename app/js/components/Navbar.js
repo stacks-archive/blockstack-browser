@@ -112,8 +112,11 @@ class Navbar extends Component {
     const settingsActive = this.props.activeTab === 'settings' || this.state.settingsTabHover
 
     return (
-      <header className="container-fluid no-padding">
-        <nav className="navbar navbar-expand container-fluid">
+      <header 
+        className="container-fluid no-padding bg-white fixed-top" 
+        style={{ maxWidth: 'unset' }} 
+      >
+        <nav className="navbar navbar-expand container-lg mx-auto" >
           <ul className="navbar-nav container-fluid">
             <li className="nav-item">
               <Link
@@ -128,7 +131,7 @@ class Navbar extends Component {
                 </span>
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item ml-auto">
               <Link
                 to="/profiles"
                 className="nav-link"

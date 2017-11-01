@@ -73,6 +73,11 @@ class EditSocialAccountModal extends Component {
 
   onIdentifierChange = (event) => {
     let identifier = event.target.value
+
+    if (this.props.service === 'twitter') {
+      identifier = this.normalizeTwitterIdentifier(identifier)
+    }
+
     this.setState({
       identifier: identifier
     })
@@ -106,6 +111,15 @@ class EditSocialAccountModal extends Component {
           Prove your <span className="text-capitalize">{service}</span> account
         </span>
       )
+    }
+  }
+
+  normalizeTwitterIdentifier = (identifier) => {
+    var regex = /^[@]/;
+    if (identifier.match(regex)) {
+      return identifier.replace('@', '')
+    } else {
+      return identifier
     }
   }
 
