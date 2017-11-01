@@ -80,12 +80,6 @@ class HomeScreenPage extends Component {
                   User-ready Apps
                 </p>
                 <div className="app-container no-padding">
-                  <AppIcon
-                    key="token-sale"
-                    iconImage="app-icon-token-sale.png"
-                    displayName="Token Sale"
-                    launchLink="https://blockstack.com/"
-                  />
                   {appList.apps.map((app) => {
                     if (app.status === 'user_ready') {
                       return (<AppIcon
