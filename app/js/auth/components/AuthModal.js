@@ -186,8 +186,11 @@ class AuthModal extends Component {
       const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
       let profileUrl = `${profileUrlBase}/${identityIndex}/profile.json`
 
-      if (identity.zoneFile) {
-        profileUrl = getTokenFileUrlFromZoneFile(identity.zoneFile)
+      if (identity.zoneFile && identity.zoneFile.length > 0) {
+        const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(identity.zoneFile)
+        if (profileUrlFromZonefile !== null && profileUrlFromZonefile !== undefined) {
+          profileUrl = profileUrlFromZonefile
+        }
       }
 
       const email = this.props.email
@@ -205,16 +208,24 @@ class AuthModal extends Component {
       // TODO: use a semver check -- or pass payload version to
       //        makeAuthResponse
       let authResponse
+
+      let profileResponseData
+      if (this.state.decodedToken.payload.do_not_include_profile) {
+        profileResponseData = null
+      } else {
+        profileResponseData = profile
+      }
+
       if (this.state.decodedToken.payload.version === '1.1.0' &&
           this.state.decodedToken.payload.public_keys.length > 0) {
         const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
 
-        authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+        authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
                                         metadata,
                                         coreSessionToken, appPrivateKey,
                                         undefined, transitPublicKey)
       } else {
-        authResponse = makeAuthResponse(privateKey, profile, blockchainId,
+        authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
                                         metadata,
                                         coreSessionToken, appPrivateKey)
       }
