@@ -486,10 +486,10 @@ input.form-control-secondary{background-color:#fafafa;border:1px solid #F4F2F4;}
 
 
 /* 16. Navbar */
-header{padding-bottom:10px;border-bottom:1px solid #F0F0F0;}
+header{padding-bottom:13px;border-bottom:1px solid #F0F0F0;}
 .navbar{padding:0!important;height:70px;text-align:center;}
 .navbar-expand{width:85%;}
-.nav-item{width:88px;text-align:center;text-transform: uppercase;font-family:'Lato',sans-serif;font-size:11px;font-weight:700}
+.nav-item{width:88px;text-align:center;text-transform: uppercase;font-family:'Lato',sans-serif;font-size:12px;font-weight:700}
 .nav-link{width:100%;}
 .nav-link img{margin:auto;}
 .nav-item span {color:#949494;}

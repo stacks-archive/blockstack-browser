@@ -114,7 +114,7 @@ class Navbar extends Component {
     return (
       <header
         className="container-fluid no-padding bg-white fixed-top"
-        style={{ maxWidth: 'unset', zIndex: 9 }} 
+        style={{ maxWidth: 'unset', zIndex: 9 }}
       >
         <nav className="navbar navbar-expand container-lg mx-auto" >
           <ul className="navbar-nav container-fluid">
