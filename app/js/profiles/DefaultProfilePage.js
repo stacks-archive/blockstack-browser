@@ -732,8 +732,8 @@ class DefaultProfilePage extends Component {
             <div className="row">
               <div className="col-12">
 
-                <div className="pro-card-trust-level text-center m-t-25 m-b-30">
-                  <span className="pro-card-trust-level-badge">
+                <div className="container-fluid text-center m-t-25 m-b-40" >
+                  <span className="btn btn-dark btn-pill btn-xs" style={{ boxShadow: 'none' }} >
                     {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
                     <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
                     {trustLevel <= 1 &&
@@ -758,7 +758,7 @@ class DefaultProfilePage extends Component {
           />
 
           <div className="container-fluid p-0">
-            <div className="row m-t-30 no-gutters">
+            <div className="row m-t-50 no-gutters">
               <div className="col">
                 <div className="profile-accounts">
                   <ul>

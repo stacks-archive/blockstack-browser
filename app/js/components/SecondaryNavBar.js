@@ -8,7 +8,7 @@ const SecondaryNavLink = props => {
 
   return (
     <Link
-      className={`btn btn-link btn-block ${alignment} ${active}`}
+      className={`btn btn-outline-dark btn-pill btn-sm ${active}`}
       to={props.link}>
       {props.title}
     </Link>
@@ -21,7 +21,7 @@ const SecondaryNavButton = props => {
 
   return (
     <button
-      className={`btn btn-link btn-block ${alignment} ${active}`}
+      className={`btn btn-outline-dark btn-pill btn-sm ${active}`}
       title={props.title}
       onClick={props.onClick}>
       {props.title}
@@ -55,7 +55,7 @@ class SecondaryNavBar extends Component {
     return (
       <div className="container-xs secondary-nav mx-auto">
         <div className="row">
-          <div className="col">
+          <div className="col text-center">
             {this.props.leftButtonTitle !== undefined && (
               this.props.leftIsButton ?
               <SecondaryNavButton
@@ -95,7 +95,7 @@ class SecondaryNavBar extends Component {
               />
           )}
           </div>
-          <div className="col">
+          <div className="col text-center">
           {this.props.rightButtonTitle !== undefined && (
             this.props.rightIsButton ?
             <SecondaryNavButton

@@ -438,17 +438,19 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 
 .btn-outline-dark:hover, .btn-outline-dark:focus, .btn-outline-dark:active {
   color: #fff;
-  background-color: #2C96FF;
-  border: 1px solid #2C96FF;
+  background-color: #2e2e2e;
+  border: 1px solid #2e2e2e;
   font-weight: 700;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 .btn-outline-alpha-light{color:#fff;background-color:transparent;border:1px solid rgba(255,255,255,0.25);}
 .btn-outline-alpha-light:hover,.btn-outline-alpha-light:focus,.btn-outline-alpha-light:active{color:#212529;background-color:#fff;border:1px solid #fff;font-weight:700;}
 .btn-tertiary{color:#fff;border:1px solid #AEAEAE;font-weight:700;background-color:#AEAEAE;-webkit-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
 .btn-tertiary:hover,.btn-tertiary:focus,.btn-tertiary:active{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#7B7B7B;border: 1px solid #7B7B7B;}
-.btn-dark,.btn-verify{color:#fff;background-color:#222222;}
-.btn-link{color:#222222;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
+.btn-dark,.btn-verify{color:#fff;background-color:#2e2e2e;}
+.btn-link{color:#2e2e2e;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 .btn-link:focus,.btn-link:hover{color:#2C96FF;text-decoration:none;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 .btn-link.active{color:#2C96FF;text-decoration:none;}
 .btn-link-secondary{color:#222222;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
@@ -664,7 +666,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 	div.home-profiles a .btn-home-button{position:absolute;top:75px;left:0px;right:auto;}
 	.item-sidebar-wallet.active,.list-group-item.item-sidebar-wallet{padding-left:6.25rem;padding-right:6.25rem;}
   .qrcode-wallet{max-width:225px;}
-  .container-fluid{max-width: 960px;}
+  .container-fluid{max-width: 720px;}
 }
 
 /* Medium devices (desktops, 975px and up) */
