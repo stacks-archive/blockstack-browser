@@ -25,10 +25,7 @@ const logger = log4js.getLogger('profiles/DefaultProfilePage.js')
 
 const accountTypes = [
   'twitter',
-  'facebook',
-  'linkedIn',
   'github',
-  'instagram',
   'hackerNews',
   'bitcoin',
   'ethereum',
