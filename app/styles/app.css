@@ -11,7 +11,7 @@
 .footer-padding{padding-bottom:100px};
 
 /* Home Screen */
-.home-screen .app-section-heading {font-size:30px;font-weight:bold;}
+.home-screen p.app-section-heading {font-size:25px;font-weight:bold;}
 .home-screen .app-section {background-color:#fafafa;padding-top:20px;border-radius:30px}
 
 /* ID card */

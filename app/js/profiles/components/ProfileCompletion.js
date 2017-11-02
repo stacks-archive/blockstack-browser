@@ -14,15 +14,15 @@ class ProfileCompletion extends Component {
           <div className="col">
             <div className="profile-completion m-b-20">
               <div className="m-b-10">
-                <span className="font-weight-bold">Profile Completion</span>
+                <span className="font-weight-bold">Complete your ID</span>
               </div>
               <div className="progress">
-                <div 
-                  className="progress-bar progress-bar-blue" 
-                  role="progressbar" 
-                  style={{width: `${pct}%`}} 
+                <div
+                  className="progress-bar progress-bar-blue"
+                  role="progressbar"
+                  style={{width: `${pct}%`}}
                   aria-valuenow={`${pct}`}
-                  aria-valuemin="0" 
+                  aria-valuemin="0"
                   aria-valuemax="100"
                 >
                   <span className={pct === 0 ? 'progress-bar-zero' : ''}>
@@ -31,7 +31,7 @@ class ProfileCompletion extends Component {
                 </div>
               </div>
               <div className="profile-completion-sub m-t-10">
-                Complete your profile by adding a name, photo, short biography and verified social accounts.
+                Complete your Blockstack ID by adding a name, photo, short biography and verified social accounts.
               </div>
             </div>
           </div>
