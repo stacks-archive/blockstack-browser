@@ -667,7 +667,7 @@ class DefaultProfilePage extends Component {
                       {identity.canAddUsername ?
                         <Link
                           to={`/profiles/i/add-username/${identityIndex}/search`}
-                          className="btn btn-link btn-link-mute btn-xs"
+                          className="btn btn-outline-dark btn-pill btn-xs m-t-15 m-b-15"
                         >
                          Add a username
                         </Link>
