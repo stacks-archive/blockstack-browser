@@ -602,15 +602,6 @@ class DefaultProfilePage extends Component {
           </div>
         </ToolTip>
         <div>
-          <SecondaryNavBar
-            leftButtonTitle={this.state.editMode ? 'Save' : 'Edit'}
-            leftIsButton
-            onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
-            rightButtonTitle={this.state.editMode ? 'Cancel' : 'More'}
-            rightIsButton={this.state.editMode}
-            onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
-            rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
-          />
 
           {profileCompleteness < 1 &&
             <ProfileCompletion completePct={profileCompleteness} />
@@ -676,7 +667,7 @@ class DefaultProfilePage extends Component {
                       {identity.canAddUsername ?
                         <Link
                           to={`/profiles/i/add-username/${identityIndex}/search`}
-                          className="btn btn-link btn-link-mute btn-xs"
+                          className="btn btn-outline-dark btn-pill btn-xs m-t-15 m-b-15"
                         >
                          Add a username
                         </Link>
@@ -706,7 +697,7 @@ class DefaultProfilePage extends Component {
                     </div>
 
                     <div className="pro-card-body text-center m-b-25">
-                      {(person.description() && person.description().length > 0) ? 
+                      {(person.description() && person.description().length > 0) ?
                         person.description() :
                         <span className="placeholder">Add your bio</span>}
                       <span className="pro-card-edit">
@@ -741,8 +732,8 @@ class DefaultProfilePage extends Component {
             <div className="row">
               <div className="col-12">
 
-                <div className="pro-card-trust-level text-center m-t-25 m-b-30">
-                  <span className="pro-card-trust-level-badge">
+                <div className="container-fluid text-center m-t-25 m-b-40" >
+                  <span className="btn btn-dark btn-pill btn-xs" style={{ boxShadow: 'none' }} >
                     {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
                     <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
                     {trustLevel <= 1 &&
@@ -756,8 +747,18 @@ class DefaultProfilePage extends Component {
             </div>
           </div>
 
+          <SecondaryNavBar
+            leftButtonTitle={this.state.editMode ? 'Save' : 'Edit'}
+            leftIsButton
+            onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
+            rightButtonTitle={this.state.editMode ? 'Cancel' : 'More'}
+            rightIsButton={this.state.editMode}
+            onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
+            rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
+          />
+
           <div className="container-fluid p-0">
-            <div className="row m-t-30 no-gutters">
+            <div className="row m-t-50 no-gutters">
               <div className="col">
                 <div className="profile-accounts">
                   <ul>
