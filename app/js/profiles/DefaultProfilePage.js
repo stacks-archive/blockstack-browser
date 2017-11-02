@@ -602,15 +602,6 @@ class DefaultProfilePage extends Component {
           </div>
         </ToolTip>
         <div>
-          <SecondaryNavBar
-            leftButtonTitle={this.state.editMode ? 'Save' : 'Edit'}
-            leftIsButton
-            onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
-            rightButtonTitle={this.state.editMode ? 'Cancel' : 'More'}
-            rightIsButton={this.state.editMode}
-            onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
-            rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
-          />
 
           {profileCompleteness < 1 &&
             <ProfileCompletion completePct={profileCompleteness} />
@@ -706,7 +697,7 @@ class DefaultProfilePage extends Component {
                     </div>
 
                     <div className="pro-card-body text-center m-b-25">
-                      {(person.description() && person.description().length > 0) ? 
+                      {(person.description() && person.description().length > 0) ?
                         person.description() :
                         <span className="placeholder">Add your bio</span>}
                       <span className="pro-card-edit">
@@ -755,6 +746,16 @@ class DefaultProfilePage extends Component {
               </div>
             </div>
           </div>
+
+          <SecondaryNavBar
+            leftButtonTitle={this.state.editMode ? 'Save' : 'Edit'}
+            leftIsButton
+            onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
+            rightButtonTitle={this.state.editMode ? 'Cancel' : 'More'}
+            rightIsButton={this.state.editMode}
+            onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
+            rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
+          />
 
           <div className="container-fluid p-0">
             <div className="row m-t-30 no-gutters">

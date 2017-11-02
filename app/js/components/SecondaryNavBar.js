@@ -53,7 +53,7 @@ class SecondaryNavBar extends Component {
   render() {
     const activeClass = this.props.activeClass ? this.props.activeClass : ""
     return (
-      <div className="container-fluid secondary-nav no-padding">
+      <div className="container-xs secondary-nav mx-auto">
         <div className="row">
           <div className="col">
             {this.props.leftButtonTitle !== undefined && (
@@ -102,7 +102,7 @@ class SecondaryNavBar extends Component {
               title={this.props.rightButtonTitle}
               onClick={this.props.onRightButtonClick}
               align="right"
-              isActive={this.props.isRightActive} 
+              isActive={this.props.isRightActive}
               activeClass={activeClass}
             />
             :
@@ -111,7 +111,7 @@ class SecondaryNavBar extends Component {
               link={this.props.rightButtonLink}
               align="right"
               isActive={this.props.isRightActive}
-              activeClass={activeClass} 
+              activeClass={activeClass}
             />
             ) }
           </div>
