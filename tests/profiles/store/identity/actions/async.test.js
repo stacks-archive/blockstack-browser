@@ -110,7 +110,7 @@ describe('Identity Store: Async Actions', () => {
       })
     })
 
-    it('emits no actions if addresss owns no names', () => {
+    it('checks default storage for profile if address owns no names', () => {
       // mock core
       nock('http://localhost:6270')
       .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
