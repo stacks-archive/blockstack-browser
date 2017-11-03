@@ -844,11 +844,13 @@ class DefaultProfilePage extends Component {
                       }
                     })}
                   </ul>
-                  {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
-                    <button className="btn btn-link btn-link-mute btn-link-small pl-5" 
-                      onClick={this.onMoreAccountsClick}>More accounts
-                    </button>
-                  }
+                  <div className="text-center">
+                    {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
+                      <button className="btn btn-link btn-link-mute btn-link-small" 
+                        onClick={this.onMoreAccountsClick}>More accounts
+                      </button>
+                    }
+                  </div>
                 </div>
               </div>
             </div>
