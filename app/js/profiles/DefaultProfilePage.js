@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
-import SecondaryNavBar from '../components/SecondaryNavBar'
 import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
@@ -26,14 +25,19 @@ const logger = log4js.getLogger('profiles/DefaultProfilePage.js')
 const accountTypes = [
   'twitter',
   'facebook',
-  'linkedIn',
   'github',
-  'instagram',
   'hackerNews',
   'bitcoin',
   'ethereum',
   'pgp',
-  'ssh'
+  'ssh',
+  'linkedIn',
+  'instagram'
+]
+
+const hiddenAccountTypes = [
+  'linkedIn',
+  'instagram'
 ]
 
 function mapStateToProps(state) {
@@ -86,7 +90,8 @@ class DefaultProfilePage extends Component {
       socialAccountModalIsOpen: false,
       accountModalIsOpen: false,
       editingSocialAccount: {},
-      editingAccount: {}
+      editingAccount: {},
+      showHiddenPlaceholders: false
     }
 
     this.onValueChange = this.onValueChange.bind(this)
@@ -329,6 +334,12 @@ class DefaultProfilePage extends Component {
     this.closeAccountModal()
   }
 
+  onMoreAccountsClick = () => {
+    this.setState({
+      showHiddenPlaceholders: true
+    })
+  }
+
   componentHasNewLocalIdentities(props) {
     logger.trace('componentHasNewLocalIdentities')
     const identityIndex = this.props.defaultIdentity
@@ -516,6 +527,7 @@ class DefaultProfilePage extends Component {
 
     const filledAccounts = []
     const placeholders = []
+    let hiddenAccounts = hiddenAccountTypes
 
     if (this.state.profile.hasOwnProperty('account')) {
       accountTypes.forEach((accountType) => {
@@ -528,18 +540,38 @@ class DefaultProfilePage extends Component {
           }
         })
 
+        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+
+        if (hasAccount && hideAccount) {
+          hiddenAccounts = hiddenAccounts.filter(hiddenAccount => hiddenAccount !== accountType)
+        }
+
         if (!hasAccount) {
-          placeholders.push(this.createPlaceholderAccount(accountType))
+          if (hideAccount) { 
+            if (this.state.showHiddenPlaceholders) {
+              placeholders.push(this.createPlaceholderAccount(accountType))
+            }
+          } else {
+            placeholders.push(this.createPlaceholderAccount(accountType))
+          }
         }
       })
     } else {
       accountTypes.forEach((accountType) => {
-        placeholders.push(this.createPlaceholderAccount(accountType))
+        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+        if (hideAccount) { 
+          if (this.state.showHiddenPlaceholders) {
+            placeholders.push(this.createPlaceholderAccount(accountType))
+          }
+        } else {
+          placeholders.push(this.createPlaceholderAccount(accountType))
+        }
       })
     }
 
     // const accounts = person.profile().account || []
     const accounts = filledAccounts.concat(placeholders)
+    const showMoreAccountsButton = hiddenAccounts.length > 0
     // const connections = person.connections() || []
 
     return (
@@ -602,15 +634,6 @@ class DefaultProfilePage extends Component {
           </div>
         </ToolTip>
         <div>
-          <SecondaryNavBar
-            leftButtonTitle={this.state.editMode ? 'Save' : 'Edit'}
-            leftIsButton
-            onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
-            rightButtonTitle={this.state.editMode ? 'Cancel' : 'More'}
-            rightIsButton={this.state.editMode}
-            onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
-            rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
-          />
 
           {profileCompleteness < 1 &&
             <ProfileCompletion completePct={profileCompleteness} />
@@ -676,7 +699,7 @@ class DefaultProfilePage extends Component {
                       {identity.canAddUsername ?
                         <Link
                           to={`/profiles/i/add-username/${identityIndex}/search`}
-                          className="btn btn-link btn-link-mute btn-xs"
+                          className="btn btn-outline-dark btn-pill btn-xs m-t-15 m-b-15"
                         >
                          Add a username
                         </Link>
@@ -706,7 +729,7 @@ class DefaultProfilePage extends Component {
                     </div>
 
                     <div className="pro-card-body text-center m-b-25">
-                      {(person.description() && person.description().length > 0) ? 
+                      {(person.description() && person.description().length > 0) ?
                         person.description() :
                         <span className="placeholder">Add your bio</span>}
                       <span className="pro-card-edit">
@@ -741,8 +764,8 @@ class DefaultProfilePage extends Component {
             <div className="row">
               <div className="col-12">
 
-                <div className="pro-card-trust-level text-center m-t-25 m-b-30">
-                  <span className="pro-card-trust-level-badge">
+                <div className="container-fluid text-center m-t-25 m-b-40" >
+                  <span className="btn btn-dark btn-pill btn-xs" style={{ boxShadow: 'none' }} >
                     {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
                     <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
                     {trustLevel <= 1 &&
@@ -757,7 +780,39 @@ class DefaultProfilePage extends Component {
           </div>
 
           <div className="container-fluid p-0">
-            <div className="row m-t-30 no-gutters">
+            <div className="row m-t-10 text-center">
+              <div className="col">
+                <button
+                  className="btn btn-outline-dark btn-pill btn-sm ml-5"
+                  title={this.state.editMode ? 'Save' : 'Edit'}
+                  onClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
+                >
+                  {this.state.editMode ? 'Save' : 'Edit'}
+                </button>
+              </div>
+              <div className="col">
+                {this.state.editMode ?
+                  <button
+                    className="btn btn-outline-dark btn-pill btn-sm mr-5"
+                    title="Cancel"
+                    onClick={this.onCancelClick}
+                  >
+                    Cancel
+                  </button> 
+                  :
+                  <Link
+                    className="btn btn-outline-dark btn-pill btn-sm mr-5"
+                    to="/profiles/i/all"
+                  >
+                    More
+                  </Link>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div className="container-fluid p-0">
+            <div className="row m-t-50 no-gutters">
               <div className="col">
                 <div className="profile-accounts">
                   <ul>
@@ -810,6 +865,16 @@ class DefaultProfilePage extends Component {
                       }
                     })}
                   </ul>
+                  <div className="text-center">
+                    {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
+                      <button 
+                        className="btn btn-link btn-link-mute btn-link-small" 
+                        onClick={this.onMoreAccountsClick}
+                      >
+                        More accounts
+                      </button>
+                    }
+                  </div>
                 </div>
               </div>
             </div>

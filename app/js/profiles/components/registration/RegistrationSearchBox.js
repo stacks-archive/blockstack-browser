@@ -45,7 +45,7 @@ const RegistrationSearchBox = (props) =>
 
         <Link
           to="/profiles"
-          className="btn btn-secondary btn-block"
+          className="btn btn-tertiary btn-block"
         >
           Cancel
         </Link>

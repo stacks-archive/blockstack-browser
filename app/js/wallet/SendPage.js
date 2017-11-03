@@ -177,7 +177,7 @@ class SendPage extends Component {
             required
           />
           <div className="m-t-40 m-b-75">
-            <button className="btn btn-dark btn-block" type="submit" disabled={disabled}>
+            <button className="btn btn-primary btn-block" type="submit" disabled={disabled}>
               {disabled ?
                 <span>Sending...</span>
               :

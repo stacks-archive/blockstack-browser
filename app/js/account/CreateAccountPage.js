@@ -102,7 +102,7 @@ class CreateAccountPage extends Component {
                 <div className="form-group">
                   <fieldset>
                     <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
-                      <button className="btn btn-block btn-secondary" onClick={this.createAccount}>
+                      <button className="btn btn-block btn-tertiary" onClick={this.createAccount}>
                         Create Account
                       </button>
                     </div>
