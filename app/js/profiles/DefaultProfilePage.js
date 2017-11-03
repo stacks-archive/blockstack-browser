@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
-import SecondaryNavBar from '../components/SecondaryNavBar'
 import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
@@ -541,14 +540,14 @@ class DefaultProfilePage extends Component {
           }
         })
 
-        const hiddenAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
 
-        if (hasAccount && hiddenAccount) {
+        if (hasAccount && hideAccount) {
           hiddenAccounts = hiddenAccounts.filter(hiddenAccount => hiddenAccount !== accountType)
         }
 
         if (!hasAccount) {
-          if (hiddenAccount) { 
+          if (hideAccount) { 
             if (this.state.showHiddenPlaceholders) {
               placeholders.push(this.createPlaceholderAccount(accountType))
             }
@@ -559,8 +558,8 @@ class DefaultProfilePage extends Component {
       })
     } else {
       accountTypes.forEach((accountType) => {
-        const hiddenAccount = (hiddenAccounts.indexOf(accountType) >= 0)
-        if (hiddenAccount) { 
+        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+        if (hideAccount) { 
           if (this.state.showHiddenPlaceholders) {
             placeholders.push(this.createPlaceholderAccount(accountType))
           }
@@ -784,24 +783,27 @@ class DefaultProfilePage extends Component {
             <div className="row m-t-10 text-center">
               <div className="col">
                 <button
-                  className='btn btn-outline-dark btn-pill btn-sm ml-5'
+                  className="btn btn-outline-dark btn-pill btn-sm ml-5"
                   title={this.state.editMode ? 'Save' : 'Edit'}
-                  onClick={this.state.editMode ? this.onSaveClick : this.onEditClick}>
+                  onClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
+                >
                   {this.state.editMode ? 'Save' : 'Edit'}
                 </button>
               </div>
               <div className="col">
                 {this.state.editMode ?
                   <button
-                    className='btn btn-outline-dark btn-pill btn-sm mr-5'
-                    title='Cancel'
-                    onClick={this.onCancelClick}>
+                    className="btn btn-outline-dark btn-pill btn-sm mr-5"
+                    title="Cancel"
+                    onClick={this.onCancelClick}
+                  >
                     Cancel
                   </button> 
                   :
                   <Link
-                    className='btn btn-outline-dark btn-pill btn-sm mr-5'
-                    to='/profiles/i/all'>
+                    className="btn btn-outline-dark btn-pill btn-sm mr-5"
+                    to="/profiles/i/all"
+                  >
                     More
                   </Link>
                 }
@@ -865,8 +867,11 @@ class DefaultProfilePage extends Component {
                   </ul>
                   <div className="text-center">
                     {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
-                      <button className="btn btn-link btn-link-mute btn-link-small" 
-                        onClick={this.onMoreAccountsClick}>More accounts
+                      <button 
+                        className="btn btn-link btn-link-mute btn-link-small" 
+                        onClick={this.onMoreAccountsClick}
+                      >
+                        More accounts
                       </button>
                     }
                   </div>
