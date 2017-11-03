@@ -284,7 +284,7 @@ class AddUsernameSelectPage extends Component {
                   :
                   <Link
                     to={`/profiles/i/add-username/${identityIndex}/search`}
-                    className="btn btn-secondary btn-block"
+                    className="btn btn-tertiary btn-block"
                   >
                     Back
                   </Link>
@@ -330,7 +330,7 @@ class AddUsernameSelectPage extends Component {
                   :
                   <Link
                     to={`/profiles/i/add-username/${identityIndex}/search`}
-                    className="btn btn-secondary btn-block"
+                    className="btn btn-tertiary btn-block"
                   >
                     Back
                   </Link>
@@ -369,7 +369,7 @@ class AddUsernameSelectPage extends Component {
                 </div>
                 <Link
                   to={`/profiles/i/add-username/${identityIndex}/search`}
-                  className="btn btn-secondary btn-block"
+                  className="btn btn-tertiary btn-block"
                 >
                   Back
                 </Link>

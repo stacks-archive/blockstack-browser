@@ -153,7 +153,7 @@ class App extends Component {
   }
 
   onSupportClick = () => {
-    openInNewTab('https://blockstack.zendesk.com/hc/en-us')
+    openInNewTab('https://forum.blockstack.org/t/frequently-ask-questions/2123')
   }
 
   closeModal() {

@@ -38,7 +38,7 @@ const RegistrationSearchResults = (props) => (
                 <h4>Checking {name}...</h4>
                 <Link
                   to="/profiles"
-                  className="btn btn-secondary btn-block"
+                  className="btn btn-tertiary btn-block"
                 >
                   Cancel
                 </Link>
@@ -58,7 +58,7 @@ const RegistrationSearchResults = (props) => (
                         </Link>
                         <Link
                           to={`/profiles/i/add-username/${this.state.index}/search`}
-                          className="btn btn-secondary btn-block"
+                          className="btn btn-tertiary btn-block"
                         >
                           Cancel
                         </Link>
@@ -88,7 +88,7 @@ const RegistrationSearchResults = (props) => (
                           </Link>
                           <button
                             onClick={props.showSearchBox}
-                            className="btn btn-secondary btn-block"
+                            className="btn btn-tertiary btn-block"
                           >
                             Back
                           </button>
@@ -109,7 +109,7 @@ const RegistrationSearchResults = (props) => (
                     </button>
                     <button
                       onClick={props.showSearchBox}
-                      className="btn btn-secondary btn-block"
+                      className="btn btn-tertiary btn-block"
                     >
                       Back
                     </button>

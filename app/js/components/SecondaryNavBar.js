@@ -8,7 +8,7 @@ const SecondaryNavLink = props => {
 
   return (
     <Link
-      className={`btn btn-link btn-block ${alignment} ${active}`}
+      className={`btn btn-outline-dark btn-pill btn-sm ${active}`}
       to={props.link}>
       {props.title}
     </Link>
@@ -21,7 +21,7 @@ const SecondaryNavButton = props => {
 
   return (
     <button
-      className={`btn btn-link btn-block ${alignment} ${active}`}
+      className={`btn btn-outline-dark btn-pill btn-sm ${active}`}
       title={props.title}
       onClick={props.onClick}>
       {props.title}
@@ -53,9 +53,9 @@ class SecondaryNavBar extends Component {
   render() {
     const activeClass = this.props.activeClass ? this.props.activeClass : ""
     return (
-      <div className="container-fluid secondary-nav no-padding">
+      <div className="container-xs secondary-nav mx-auto">
         <div className="row">
-          <div className="col">
+          <div className="col text-center">
             {this.props.leftButtonTitle !== undefined && (
               this.props.leftIsButton ?
               <SecondaryNavButton
@@ -95,14 +95,14 @@ class SecondaryNavBar extends Component {
               />
           )}
           </div>
-          <div className="col">
+          <div className="col text-center">
           {this.props.rightButtonTitle !== undefined && (
             this.props.rightIsButton ?
             <SecondaryNavButton
               title={this.props.rightButtonTitle}
               onClick={this.props.onRightButtonClick}
               align="right"
-              isActive={this.props.isRightActive} 
+              isActive={this.props.isRightActive}
               activeClass={activeClass}
             />
             :
@@ -111,7 +111,7 @@ class SecondaryNavBar extends Component {
               link={this.props.rightButtonLink}
               align="right"
               isActive={this.props.isRightActive}
-              activeClass={activeClass} 
+              activeClass={activeClass}
             />
             ) }
           </div>

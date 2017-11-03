@@ -28,7 +28,7 @@ const DeleteAccountModal = (props) => (
       </button>
       <button
         onClick={props.closeModal}
-        className="btn btn-secondary btn-block"
+        className="btn btn-tertiary btn-block"
       >
         Cancel
       </button>

@@ -91,11 +91,7 @@ class SocialAccountItem extends Component {
   }
 
   onClick = (e) => {
-    if (!this.props.placeholder && !this.props.editing) {
-      openInNewTab(this.getAccountUrl())
-    } else {
-      this.props.onClick(this.props.service)
-    }
+    this.props.onClick(this.props.service)
   }
 
   onVerifiedCheckmarkClick = (e) => {
