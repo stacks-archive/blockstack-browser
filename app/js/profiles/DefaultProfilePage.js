@@ -26,14 +26,19 @@ const logger = log4js.getLogger('profiles/DefaultProfilePage.js')
 const accountTypes = [
   'twitter',
   'facebook',
-  'linkedIn',
   'github',
-  'instagram',
   'hackerNews',
   'bitcoin',
   'ethereum',
   'pgp',
-  'ssh'
+  'ssh',
+  'linkedIn',
+  'instagram'
+]
+
+const hiddenAccountTypes = [
+  'linkedIn',
+  'instagram'
 ]
 
 function mapStateToProps(state) {
@@ -86,7 +91,8 @@ class DefaultProfilePage extends Component {
       socialAccountModalIsOpen: false,
       accountModalIsOpen: false,
       editingSocialAccount: {},
-      editingAccount: {}
+      editingAccount: {},
+      showHiddenPlaceholders: false
     }
 
     this.onValueChange = this.onValueChange.bind(this)
@@ -329,6 +335,12 @@ class DefaultProfilePage extends Component {
     this.closeAccountModal()
   }
 
+  onMoreAccountsClick = () => {
+    this.setState({
+      showHiddenPlaceholders: true
+    })
+  }
+
   componentHasNewLocalIdentities(props) {
     logger.trace('componentHasNewLocalIdentities')
     const identityIndex = this.props.defaultIdentity
@@ -516,6 +528,7 @@ class DefaultProfilePage extends Component {
 
     const filledAccounts = []
     const placeholders = []
+    let hiddenAccounts = hiddenAccountTypes
 
     if (this.state.profile.hasOwnProperty('account')) {
       accountTypes.forEach((accountType) => {
@@ -528,18 +541,38 @@ class DefaultProfilePage extends Component {
           }
         })
 
+        const hiddenAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+
+        if (hasAccount && hiddenAccount) {
+          hiddenAccounts = hiddenAccounts.filter(hiddenAccount => hiddenAccount !== accountType)
+        }
+
         if (!hasAccount) {
-          placeholders.push(this.createPlaceholderAccount(accountType))
+          if (hiddenAccount) { 
+            if (this.state.showHiddenPlaceholders) {
+              placeholders.push(this.createPlaceholderAccount(accountType))
+            }
+          } else {
+            placeholders.push(this.createPlaceholderAccount(accountType))
+          }
         }
       })
     } else {
       accountTypes.forEach((accountType) => {
-        placeholders.push(this.createPlaceholderAccount(accountType))
+        const hiddenAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+        if (hiddenAccount) { 
+          if (this.state.showHiddenPlaceholders) {
+            placeholders.push(this.createPlaceholderAccount(accountType))
+          }
+        } else {
+          placeholders.push(this.createPlaceholderAccount(accountType))
+        }
       })
     }
 
     // const accounts = person.profile().account || []
     const accounts = filledAccounts.concat(placeholders)
+    const showMoreAccountsButton = hiddenAccounts.length > 0
     // const connections = person.connections() || []
 
     return (
@@ -811,6 +844,11 @@ class DefaultProfilePage extends Component {
                       }
                     })}
                   </ul>
+                  {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
+                    <button className="btn btn-link btn-link-mute btn-link-small pl-5" 
+                      onClick={this.onMoreAccountsClick}>More accounts
+                    </button>
+                  }
                 </div>
               </div>
             </div>

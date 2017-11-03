@@ -460,6 +460,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#AEAEAE;border:1px solid #AEAEAE;}
 .btn-thin{line-height:1.0rem;padding:0px;}
 .btn-clipboard{width:40px;height:40px;color:#494F56;padding:0;border:0;}
+.btn-link-small{font-size:12px;padding:0;}
 .storage-page button:disabled{cursor:default;}
 
 
