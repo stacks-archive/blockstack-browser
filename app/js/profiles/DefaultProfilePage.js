@@ -780,15 +780,34 @@ class DefaultProfilePage extends Component {
             </div>
           </div>
 
-          <SecondaryNavBar
-            leftButtonTitle={this.state.editMode ? 'Save' : 'Edit'}
-            leftIsButton
-            onLeftButtonClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
-            rightButtonTitle={this.state.editMode ? 'Cancel' : 'More'}
-            rightIsButton={this.state.editMode}
-            onRightButtonClick={this.state.editMode ? this.onCancelClick : null}
-            rightButtonLink={this.state.editMode ? '' : '/profiles/i/all'}
-          />
+          <div className="container-fluid p-0">
+            <div className="row m-t-10 text-center">
+              <div className="col">
+                <button
+                  className='btn btn-outline-dark btn-pill btn-sm ml-5'
+                  title={this.state.editMode ? 'Save' : 'Edit'}
+                  onClick={this.state.editMode ? this.onSaveClick : this.onEditClick}>
+                  {this.state.editMode ? 'Save' : 'Edit'}
+                </button>
+              </div>
+              <div className="col">
+                {this.state.editMode ?
+                  <button
+                    className='btn btn-outline-dark btn-pill btn-sm mr-5'
+                    title='Cancel'
+                    onClick={this.onCancelClick}>
+                    Cancel
+                  </button> 
+                  :
+                  <Link
+                    className='btn btn-outline-dark btn-pill btn-sm mr-5'
+                    to='/profiles/i/all'>
+                    More
+                  </Link>
+                }
+              </div>
+            </div>
+          </div>
 
           <div className="container-fluid p-0">
             <div className="row m-t-50 no-gutters">
