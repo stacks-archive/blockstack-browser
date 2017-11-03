@@ -10,7 +10,7 @@ import { getWebAccountTypes } from '../../utils'
 
 const helpPages = {
   twitter: 'https://forum.blockstack.org/t/twitter-verification-process/2143',
-  facebook: 'https://forum.blockstack.org/t/facebook-verification-process/2142/3',
+  facebook: 'https://forum.blockstack.org/t/facebook-verification-process/2142',
   github: 'https://forum.blockstack.org/t/github-verification-process/2145',
   instagram: 'https://forum.blockstack.org/t/instagram-verification-process/2144',
 }
