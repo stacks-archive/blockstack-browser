@@ -4,8 +4,16 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import InputGroup from '../../components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
+import { openInNewTab } from '../../utils'
 
 import { getWebAccountTypes } from '../../utils'
+
+const helpPages = {
+  twitter: 'https://forum.blockstack.org/t/twitter-verification-process/2143',
+  facebook: 'https://forum.blockstack.org/t/facebook-verification-process/2142/3',
+  github: 'https://forum.blockstack.org/t/github-verification-process/2145',
+  instagram: 'https://forum.blockstack.org/t/instagram-verification-process/2144',
+}
 
 function mapStateToProps(state) {
   return {
@@ -127,6 +135,12 @@ class EditSocialAccountModal extends Component {
     return !this.props.verified && (this.props.identifier.length > 0)
   }
 
+  showHelp = () => {
+    if (helpPages.hasOwnProperty(this.props.service)) {
+      openInNewTab(helpPages[this.props.service])
+    }
+  }
+
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
@@ -205,6 +219,11 @@ class EditSocialAccountModal extends Component {
                 this.state.identifier, this.state.proofUrl)}>
               Verify
             </button>
+            <div className="text-center">
+              {helpPages.hasOwnProperty(this.props.service) && 
+                <button className="btn btn-link btn-link-small p-t-10" onClick={this.showHelp}>Need help?</button>
+              }
+            </div>
           </Modal>
         )
     } else {

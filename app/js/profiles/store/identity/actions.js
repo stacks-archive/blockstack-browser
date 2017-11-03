@@ -11,9 +11,11 @@ import {
   getIdentityOwnerAddressNode,
   authorizationHeaderValue
 } from '../../../utils/index'
-import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
+import { DEFAULT_PROFILE,
+  getProfileFromTokens } from '../../../utils/profile-utils'
 import { calculateTrustLevel } from '../../../utils/account-utils'
 import { AccountActions } from '../../../account/store/account'
+
 
 import type { Dispatch } from 'redux'
 
@@ -192,6 +194,9 @@ function createNewProfile(encryptedBackupPhrase: string,
  * Checks each owner address to see if it owns a name, if it owns a name,
  * it resolves the profile and updates the state with the owner address's
  * current name.
+ *
+ * If it doesn't have a name, check default gaia storage for a profile
+ *
  */
 function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
   nameLookupUrl: string}, ownerAddresses: Array<string>) {
@@ -202,14 +207,52 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
       const promise: Promise<*> = new Promise((resolve) => {
         const url = api.bitcoinAddressLookupUrl.replace('{address}', address)
         logger.debug(`refreshIdentities: fetching ${url}`)
-        fetch(url)
+        return fetch(url)
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
           if (responseJson.names.length === 0) {
             logger.debug(`refreshIdentities: ${address} owns no names`)
-            resolve()
-            return Promise.resolve()
+            const gaiaBucketAddress = ownerAddresses[0]
+            const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
+            const profileUrl = `${profileUrlBase}/${index}/profile.json`
+            logger.debug(`refreshIdentities: check default storage for profile: ${profileUrl}`)
+            return fetch(profileUrl)
+            .then(response => {
+              if (response.ok) {
+                response.text()
+                .then(responseText => JSON.parse(responseText))
+                .then((responseJsonProfile) => {
+                  const tokenRecords = responseJsonProfile
+                  const profile = getProfileFromTokens(tokenRecords, address)
+                  if (profile) {
+                    logger.debug(`refreshIdentities: found profile at ${profileUrl}`)
+                    const zoneFile = ''
+                    dispatch(updateProfile(index, profile, zoneFile))
+                    let verifications = []
+                    let trustLevel = 0
+                    logger.debug(`refreshIdentities: validating address proofs for ${address}`)
+                    return validateProofs(profile, address).then((proofs) => {
+                      verifications = proofs
+                      trustLevel = calculateTrustLevel(verifications)
+                      dispatch(updateSocialProofVerifications(index, verifications, trustLevel))
+                    })
+                    .catch((error) => {
+                      logger.error(`refreshIdentities: ${address} validateProofs: error`, error)
+                      return Promise.resolve()
+                    })
+                  } else {
+                    resolve()
+                    return Promise.resolve()
+                  }
+                })
+                return Promise.resolve()
+              } else {
+                logger.debug(`refreshIdentities: nothing found in default storage at ${profileUrl}`)
+                resolve()
+                return Promise.resolve()
+              }
+            })
           } else {
             if (responseJson.names.length === 1) {
               logger.debug(`refreshIdentities: ${address} has 1 name}`)

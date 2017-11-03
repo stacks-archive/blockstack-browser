@@ -460,6 +460,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn.disabled.btn-storage,.btn:disabled.btn-storage{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#AEAEAE;border:1px solid #AEAEAE;}
 .btn-thin{line-height:1.0rem;padding:0px;}
 .btn-clipboard{width:40px;height:40px;color:#494F56;padding:0;border:0;}
+.btn-link-small{font-size:12px;padding:0;}
 .storage-page button:disabled{cursor:default;}
 
 
@@ -617,7 +618,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .clickable{cursor:pointer;}
 /* Support button */
 .support-floater{position:fixed;bottom:30px;right:30px;color:#fff;background-color:#18091F;height:50px;width:50px;text-align:center;padding-top:5px;border-radius:25px;font-size:25px;font-weight:700;box-shadow: 4px 4px 35px 0px rgba(0, 0, 0, 0.5)}
-
+.btn-wallet{width:160px;}
 
 .react-contextmenu{min-width:160px;padding:5px 5px;margin:2px 0 0;text-align:left;background-color:#fff;background-clip:padding-box;border-radius:0;outline:none;opacity:0;pointer-events:none;transition:opacity 250ms ease!important;box-shadow:0px 0px 25px 0px rgba(0,0,0,0.08);}
 .react-contextmenu-item.react-contextmenu-item--active,.react-contextmenu-item.react-contextmenu-item--selected{color:#fff;background-color:#2C96FF;border-color:#2C96FF;text-decoration:none;}

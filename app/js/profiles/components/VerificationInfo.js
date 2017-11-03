@@ -76,7 +76,8 @@ class FacebookVerificationInfo extends Component {
       <div>
         <p>
           <span className="font-weight-bold">Step 2: </span>
-          Post the following text to your Facebook timeline. Make sure your post is public!
+          Copy and post the following text to your Facebook timeline.
+          &nbsp;<strong>Make sure your post is public!</strong>
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
@@ -120,7 +121,8 @@ class GithubVerificationInfo extends Component {
         <p>
           <span className="font-weight-bold">Step 2: </span>
           Copy the text below and click on the create gist button.
-          Then paste the text into the body of the gist and click Create Public Gist.
+          Then paste the text into the body of your new gist and click
+          &nbsp;<strong>Create Public Gist.</strong>
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
