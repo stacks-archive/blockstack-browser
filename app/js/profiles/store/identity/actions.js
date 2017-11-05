@@ -15,6 +15,7 @@ import { DEFAULT_PROFILE,
   getProfileFromTokens } from '../../../utils/profile-utils'
 import { calculateTrustLevel } from '../../../utils/account-utils'
 import { AccountActions } from '../../../account/store/account'
+import { isWindowsBuild } from '../../../utils/window-utils'
 
 
 import type { Dispatch } from 'redux'
@@ -24,16 +25,20 @@ import log4js from 'log4js'
 const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
 
-function validateProofsService(profile: Object, address: string, username : ?string = null){
-  let args = { profile, address }
-  if (username !== null && username !== undefined){
+function validateProofsService(profile: Object, address: string, username : ?string = null) {
+  if (!isWindowsBuild()) {
+    return validateProofs(profile, address, username)
+  }
+
+  const args: {profile : Object, address: string, username?: string } = { profile, address }
+  if (username !== null && username !== undefined) {
     args.username = username
   }
   return fetch('https://proofs.blockstack.org/validate/',
-               { method : 'POST',
-                 headers: { 'Content-Type' : 'application/json' },
-                 body : JSON.stringify(args) })
-    .then( resp => resp.json() )
+               { method: 'POST',
+                 headers: { 'Content-Type': 'application/json' },
+                 body: JSON.stringify(args) })
+    .then(resp => resp.json())
 }
 
 function updatePublicIdentity(username: string, ownerAddress: ?string = null,

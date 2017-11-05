@@ -255,7 +255,8 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress,
   coreAPIPassword, amount = null, paymentKey = null) {
   return dispatch => {
     if (isWindowsBuild()) {
-      dispatch(withdrawCoreBalanceError('Core wallet withdrawls not allowed in the simple webapp build'))
+      dispatch(withdrawCoreBalanceError('Core wallet withdrawls not allowed in' +
+                                        ' the simple webapp build'))
       return
     }
 
