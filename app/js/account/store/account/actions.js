@@ -197,7 +197,7 @@ function storageIsConnected() {
 function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
     if (isWindowsBuild()) {
-      logger.debug('Mocking core wallet balance in Windows build')
+      logger.debug('Mocking core wallet balance in webapp build')
       dispatch(updateCoreWalletBalance(0))
       return
     }
@@ -224,8 +224,8 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
 function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
   return dispatch => {
     if (isWindowsBuild()) {
-      logger.debug('Mocking core wallet address in Windows build')
-      dispatch(updateCoreWalletAddress('Not supported in Windows'))
+      logger.debug('Mocking core wallet address in webapp build')
+      dispatch(updateCoreWalletAddress('Not supported in simple webapp.'))
       return
     }
 
@@ -255,7 +255,7 @@ function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress,
   coreAPIPassword, amount = null, paymentKey = null) {
   return dispatch => {
     if (isWindowsBuild()) {
-      dispatch(withdrawCoreBalanceError('Core wallet withdrawls not allowed in Windows build'))
+      dispatch(withdrawCoreBalanceError('Core wallet withdrawls not allowed in the simple webapp build'))
       return
     }
 

@@ -373,7 +373,7 @@ class AuthModal extends Component {
             <div>
               <p>
                This application requires using Gaia storage, which is not supported yet 
-               in our Windows build. Feature coming soon!
+               in our simple webapp. Feature coming soon!
               </p>
             </div>
           </Modal>

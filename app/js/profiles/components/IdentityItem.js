@@ -60,7 +60,7 @@ class IdentityItem extends Component {
         <ToolTip id="windowsDisabled">
           <div>
             <div>
-              You cannot purchase usernames in the Windows build right now.
+              You cannot purchase usernames in the simple webapp right now.
               Feature coming soon!
             </div>
           </div>

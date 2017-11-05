@@ -23,6 +23,19 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
+
+function validateProofsService(profile: Object, address: string, username : ?string = null){
+  let args = { profile, address }
+  if (username !== null && username !== undefined){
+    args.username = username
+  }
+  return fetch('https://proofs.blockstack.org/validate/',
+               { method : 'POST',
+                 headers: { 'Content-Type' : 'application/json' },
+                 body : JSON.stringify(args) })
+    .then( resp => resp.json() )
+}
+
 function updatePublicIdentity(username: string, ownerAddress: ?string = null,
   zoneFile: ?string = null, profile: ?{} = Object.assign({}, DEFAULT_PROFILE),
   verifications: Array<*> = [], trustLevel: ?number = 0) {
@@ -232,7 +245,7 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
                     let verifications = []
                     let trustLevel = 0
                     logger.debug(`refreshIdentities: validating address proofs for ${address}`)
-                    return validateProofs(profile, address).then((proofs) => {
+                    return validateProofsService(profile, address).then((proofs) => {
                       verifications = proofs
                       trustLevel = calculateTrustLevel(verifications)
                       dispatch(updateSocialProofVerifications(index, verifications, trustLevel))
@@ -275,7 +288,7 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
                   dispatch(updateProfile(index, profile, zoneFile))
                   let verifications = []
                   let trustLevel = 0
-                  return validateProofs(profile, ownerAddress, nameOwned).then((proofs) => {
+                  return validateProofsService(profile, ownerAddress, nameOwned).then((proofs) => {
                     verifications = proofs
                     trustLevel = calculateTrustLevel(verifications)
                     dispatch(updateSocialProofVerifications(index, verifications, trustLevel))
@@ -319,7 +332,7 @@ function refreshSocialProofVerifications(identityIndex: number,
   return (dispatch: Dispatch<*>): Promise<*> => new Promise((resolve) => {
     let verifications = []
     let trustLevel = 0
-    validateProofs(profile, ownerAddress, username).then((proofs) => {
+    validateProofsService(profile, ownerAddress, username).then((proofs) => {
       verifications = proofs
       trustLevel = calculateTrustLevel(verifications)
       dispatch(updateSocialProofVerifications(identityIndex, verifications, trustLevel))
@@ -356,7 +369,7 @@ function fetchPublicIdentity(lookupUrl: string, username: string) {
           dispatch(updatePublicIdentity(username, ownerAddress, zoneFile, profile,
             verifications, trustLevel))
           if (profile) {
-            return validateProofs(profile, ownerAddress, username).then((proofs) => {
+            return validateProofsService(profile, ownerAddress, username).then((proofs) => {
               verifications = proofs
               trustLevel = calculateTrustLevel(verifications)
               dispatch(updatePublicIdentity(username, ownerAddress, zoneFile, profile,

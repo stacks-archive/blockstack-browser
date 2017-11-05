@@ -146,7 +146,7 @@ class SendPage extends Component {
         <div>
           <Balance />
           <div className="text-center">
-            The Bitcoin wallet is not yet supported in our Windows build,
+            The Bitcoin wallet is not yet supported in our simple webapp,
             but the feature is coming soon!
           </div>
         </div>
