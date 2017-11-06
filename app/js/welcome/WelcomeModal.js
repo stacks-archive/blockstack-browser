@@ -14,7 +14,7 @@ import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
 import { PairBrowserView, LandingView,
   NewInternetView, RestoreView, DataControlView, EnterPasswordView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
-  EnterEmailView,
+  EnterEmailView, WebAppWarningView,
   ConnectStorageView } from './components'
 
 
@@ -25,7 +25,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
-const START_PAGE_VIEW = 0
+const START_PAGE_VIEW = 10
 const WRITE_DOWN_IDENTITY_PAGE_VIEW = 6
 const EMAIL_VIEW = 3
 const STORAGE_PAGE_VIEW = 8
@@ -263,6 +263,14 @@ class WelcomeModal extends Component {
     this.setPage(0)
   }
 
+  showWebAppView(event) {
+    event.preventDefault()
+    this.setState({
+      pageOneView: 'newInternet'
+    })
+    this.setPage(10)
+  }
+
   showNewInternetView(event)  {
     event.preventDefault()
     this.setState({
@@ -366,6 +374,13 @@ class WelcomeModal extends Component {
                   :
                   null
                 }
+              </div>
+              <div>
+              {page === 10 ?
+                <WebAppWarningView
+                  showLandingPage={this.showLandingView}
+                />
+              : null}
               </div>
               <div>
               {page === 0 ?
