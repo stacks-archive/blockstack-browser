@@ -16,18 +16,21 @@ const WebAppPage = (props) =>
       }}
     />
     <h3 className="modal-heading p-b-25">
-      This simple app allows you to explore Blockstack.
+      Welcome to the Blockstack Browser.
     </h3>
     <p className="modal-body">
       To experience the full feature set of the decentralized internet, <br />
       download the Blockstack app.
+    </p>
+    <p className="modal-body">
+      Learn more in <a href="https://blockstack.org/blog/browser-public-alpha">this blog post</a>.
     </p>
     <div className="m-t-30 m-b-20 modal-body">
       <a className="btn btn-primary btn-block m-b-10" href="http://blockstack.org/install">
         Download Blockstack
       </a>
       <button className="btn btn-primary btn-block m-b-10" onClick={props.showLandingPage}>
-        Continue with Webapp
+        Continue with Preview
       </button>
     </div>
   </div>
