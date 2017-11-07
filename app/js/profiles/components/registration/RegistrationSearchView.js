@@ -22,7 +22,10 @@ function mapStateToProps(state) {
     api: state.settings.api,
     availability: state.profiles.availability,
     walletBalance: state.account.coreWallet.balance,
-    balanceUrl: state.settings.api.zeroConfBalanceUrl
+    balanceUrl: state.settings.api.zeroConfBalanceUrl,
+    localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
+    identityAddresses: state.account.identityAccount.addresses
   }
 }
 
@@ -39,7 +42,10 @@ class RegistrationSearchView extends Component {
     refreshCoreWalletBalance: PropTypes.func.isRequired,
     walletBalance: PropTypes.number.isRequired,
     routeParams: PropTypes.object.isRequired,
-    balanceUrl: PropTypes.string.isRequired
+    balanceUrl: PropTypes.string.isRequired,
+    localIdentities: PropTypes.array.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
+    identityAddresses: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -95,6 +101,23 @@ class RegistrationSearchView extends Component {
     this.setState({
       username
     })
+  }
+
+  onOnenameTransferClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    logger.trace('transferFromOnenameClick')
+    const identityIndex = this.props.defaultIdentity
+    const identity = this.props.localIdentities[identityIndex]
+    const identityAddress = identity.ownerAddress
+
+    const gaiaBucketAddress = this.props.identityAddresses[0]
+    const profileUrl = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}/${identityIndex}/profile.json`
+
+    const url = `https://onename.com/settings?action=export&address=${identityAddress}&url=${profileUrl}`
+    logger.debug(`transferFromOnenameClick: Redirecting to ${url}...`)
+    const win = window.open(url, '_blank')
+    win.focus()
   }
 
   search(event) {
@@ -157,6 +180,7 @@ class RegistrationSearchView extends Component {
             search={this.search}
             username={this.state.username}
             onChange={this.onChange}
+            onOnenameTransferClick={this.onOnenameTransferClick}
             disabled={!this.state.storageConnected}
           />
           :
