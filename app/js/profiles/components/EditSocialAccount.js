@@ -1,11 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import Modal from 'react-modal'
 import InputGroup from '../../components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
 import { openInNewTab } from '../../utils'
-
 import { getWebAccountTypes } from '../../utils'
 
 const helpPages = {
@@ -21,9 +19,8 @@ function mapStateToProps(state) {
   }
 }
 
-class EditSocialAccountModal extends Component {
+class EditSocialAccount extends Component {
   static propTypes = {
-    isOpen: PropTypes.bool,
     service: PropTypes.string,
     identifier: PropTypes.string,
     ownerAddress: PropTypes.string,
@@ -168,14 +165,7 @@ class EditSocialAccountModal extends Component {
     if (webAccountType) {
       let accountServiceName = webAccountType.label
         return (
-          <Modal
-            isOpen={this.props.isOpen}
-            contentLabel=""
-            onRequestClose={this.props.onRequestClose}
-            shouldCloseOnOverlayClick={true}
-            style={{ overlay: { zIndex: 10 } }}
-            className="container-fluid social-account-modal"
-          >
+          <div>
             <div className={`profile-account ${verifiedClass}`} 
               onClick={this.handleClick}>
               <div className="heading m-b-30">
@@ -222,7 +212,7 @@ class EditSocialAccountModal extends Component {
                 <button className="btn btn-link btn-link-small p-t-10" onClick={this.showHelp}>Need help?</button>
               }
             </div>
-          </Modal>
+          </div>
         )
     } else {
       return (
@@ -233,4 +223,4 @@ class EditSocialAccountModal extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(EditSocialAccountModal)
+export default connect(mapStateToProps, null)(EditSocialAccount)

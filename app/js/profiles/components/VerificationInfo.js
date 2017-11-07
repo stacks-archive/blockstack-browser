@@ -4,6 +4,7 @@ import InputGroup from '../../components/InputGroup'
 import { openInNewTab } from '../../utils'
 import ReactTooltip from 'react-tooltip'
 import Image from '../../components/Image'
+import { isMobile } from '../../utils'
 
 export const VERIFICATION_TWEET_LINK_URL_BASE = 'https://explorer.blockstack.org/address/'
 
@@ -86,8 +87,14 @@ class FacebookVerificationInfo extends Component {
           Paste this text in the message field
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <p>
           <span className="font-weight-bold">Step 4: </span>
@@ -136,8 +143,14 @@ class GithubVerificationInfo extends Component {
           &nbsp;<strong>Create Public Gist.</strong>
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <button className="btn btn-verify btn-github btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-github fa-lg" /> Create Gist
@@ -180,8 +193,14 @@ class LinkedInVerificationInfo extends Component {
           Post the following text on your LinkedIn. Make sure your post is public!
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <button className="btn btn-verify btn-linkedin btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-linkedin fa-lg" /> Post Verification to LinkedIn
@@ -224,8 +243,14 @@ class InstagramVerificationInfo extends Component {
           Post a photo to Instagram with the following caption.
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <p>
           <span className="font-weight-bold">Step 3: </span>
@@ -263,8 +288,14 @@ class HackerNewsVerificationInfo extends Component {
           Copy the text below and add it to the about section in your Hacker News user profile.
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <button className="btn btn-verify btn-twitter btn-block m-b-20" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-hacker-news fa-lg" /> Go to Hacker News Profile
