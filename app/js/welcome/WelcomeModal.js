@@ -25,7 +25,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('welcome/WelcomeModal.js')
 
-const START_PAGE_VIEW = 11
+const START_PAGE_VIEW = 0
 const WRITE_DOWN_IDENTITY_PAGE_VIEW = 6
 const EMAIL_VIEW = 3
 const STORAGE_PAGE_VIEW = 8
@@ -116,8 +116,6 @@ class WelcomeModal extends Component {
     this.showRestoreView = this.showRestoreView.bind(this)
     this.showNextView = this.showNextView.bind(this)
     this.showPreviousView = this.showPreviousView.bind(this)
-    this.showWebAppView = this.showWebAppView.bind(this)
-    this.showDataControlView = this.showDataControlView.bind(this)
     this.verifyPasswordAndCreateAccount = this.verifyPasswordAndCreateAccount.bind(this)
     this.confirmIdentityKeyPhrase = this.confirmIdentityKeyPhrase.bind(this)
     this.restoreAccount = this.restoreAccount.bind(this)
@@ -265,27 +263,11 @@ class WelcomeModal extends Component {
     this.setPage(0)
   }
 
-  showWebAppView(event) {
-    event.preventDefault()
-    this.setState({
-      pageOneView: 'newInternet'
-    })
-    this.setPage(10)
-  }
-
   showNewInternetView(event)  {
     event.preventDefault()
     this.setState({
       pageOneView: 'newInternet',
       page: 1
-    })
-  }
-
-  showDataControlView(event)  {
-    event.preventDefault()
-    this.setState({
-      pageOneView: 'newInternet',
-      page: 2
     })
   }
 
@@ -386,23 +368,9 @@ class WelcomeModal extends Component {
                 }
               </div>
               <div>
-              {page === 11 ?
-                <NewInternetView
-                  showNextView={this.showWebAppView}
-                />
-              : null}
-              </div>
-              <div>
-              {page === 10 ?
-                <WebAppWarningView
-                  showLandingPage={this.showLandingView}
-                />
-              : null}
-              </div>
-              <div>
               {page === 0 ?
                 <LandingView
-                  showNewInternetView={this.showDataControlView}
+                  showNewInternetView={this.showNewInternetView}
                   showRestoreView={this.showRestoreView}
                 />
               : null}
@@ -414,7 +382,7 @@ class WelcomeModal extends Component {
                     {
                         pageOneView === 'newInternet' ?
                           <NewInternetView
-                            showNextView={this.showWebAppView}
+                            showNextView={this.showNextView}
                           />
                         :
                           <RestoreView

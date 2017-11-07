@@ -15,9 +15,13 @@ const LandingPage = (props) =>
         marginTop: '10px'
       }}
     />
-    <h3 className="modal-heading p-b-25">Join the new internet. <br />
-      Use apps that put you in control.
+    <h3 className="modal-heading p-b-25">Welcome to the Blockstack Browser.
     </h3>
+
+    <p className="modal-body">
+      Join the new Internet and <br />
+      use apps that put you in control.
+    </p>
     <div className="m-t-30 m-b-20 modal-body">
       <button className="btn btn-primary btn-block m-b-10" onClick={props.showNewInternetView}>
         Get Started
