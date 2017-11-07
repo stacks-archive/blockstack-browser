@@ -18,7 +18,8 @@ const RegistrationSearchBox = (props) =>
     }
       <p>
         Add a username to your Blockstack ID so you can interact with other
-        people on the decentralized internet. If you have a name you would like to transfer from Onename, 
+        people on the decentralized internet. 
+        If you have a name you would like to transfer from Onename, 
         &nbsp;<a href="" onClick={props.onOnenameTransferClick}>click here</a>.
       </p>
       <form
