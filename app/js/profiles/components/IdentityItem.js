@@ -1,11 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import ToolTip from '../../components/ToolTip'
 import Image from '../../components/Image'
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
-
-import log4js from 'log4js'
-
-const logger = log4js.getLogger('profiles/components/IdentityItem.js')
 
 class IdentityItem extends Component {
   static propTypes = {
@@ -17,7 +12,7 @@ class IdentityItem extends Component {
     isDefault: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
+    index: PropTypes.number.isRequired
   }
 
   constructor(props) {

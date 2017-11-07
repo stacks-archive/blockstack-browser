@@ -65,7 +65,8 @@ RegistrationSearchBox.propTypes = {
   search: PropTypes.func.isRequired,
   username: PropTypes.string,
   onChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool.isRequired
+  disabled: PropTypes.bool.isRequired,
+  onOnenameTransferClick: PropTypes.func.isRequired
 }
 
 export default RegistrationSearchBox
