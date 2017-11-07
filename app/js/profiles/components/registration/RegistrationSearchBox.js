@@ -18,7 +18,8 @@ const RegistrationSearchBox = (props) =>
     }
       <p>
         Add a username to your Blockstack ID so you can interact with other
-        people on the decentralized internet.
+        people on the decentralized internet. If you have a name you would like to transfer from Onename, 
+        &nbsp;<a href="" onClick={props.onOnenameTransferClick}>click here</a>.
       </p>
       <form
         className="container-fluid"
@@ -41,13 +42,6 @@ const RegistrationSearchBox = (props) =>
           disabled={props.disabled}
         >
           Search
-        </button>
-        <button
-          className="btn btn-primary btn-block"
-          disabled={props.disabled}
-          onClick={props.onOnenameTransferClick}
-        >
-          Transfer name from Onename
         </button>
         <Link
           to="/profiles"
