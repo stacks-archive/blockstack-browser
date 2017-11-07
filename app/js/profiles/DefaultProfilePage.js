@@ -15,9 +15,13 @@ import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
 import EditSocialAccount from './components/EditSocialAccount'
 import EditAccount from './components/EditAccount'
-import EditAccountModal from './components/EditAccountModal'
 import { uploadProfile, uploadPhoto } from '../account/utils'
-import { openInNewTab, isMobile, signProfileForUpload, calculateProfileCompleteness } from '../utils'
+import { 
+  openInNewTab, 
+  isMobile, 
+  signProfileForUpload, 
+  calculateProfileCompleteness 
+} from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'
@@ -177,7 +181,7 @@ class DefaultProfilePage extends Component {
       }
 
       if (isMobile()) {
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0)
       }
 
       this.setState({
@@ -188,7 +192,6 @@ class DefaultProfilePage extends Component {
   }
 
   onAccountClick = (service) => {
-    console.log('test')
     if (this.state.accountEditIsOpen) {
       this.setState({
         accountEditIsOpen: false,
@@ -215,7 +218,7 @@ class DefaultProfilePage extends Component {
       }
 
       if (isMobile()) {
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0)
       }
 
       this.setState({
@@ -586,34 +589,10 @@ class DefaultProfilePage extends Component {
     const showMoreAccountsButton = hiddenAccounts.length > 0
     // const connections = person.connections() || []
 
-    return (
-      <div>
-        <Modal
-          isOpen={this.state.photoModalIsOpen}
-          contentLabel=""
-          onRequestClose={this.closePhotoModal}
-          shouldCloseOnOverlayClick
-          style={{ overlay: { zIndex: 10 } }}
-          className="container-fluid text-center"
-        >
-          <Image
-            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-            fallbackSrc="/images/avatar.png" className="img-fluid clickable"
-            onClick={this.closePhotoModal}
-          />
-          <div>
-            <button
-              className="btn btn-link btn-xs"
-              onClick={this.onChangePhotoClick}
-            >
-                Change Photo
-            </button>
-          </div>
-        </Modal>
-
-        {/* Social account edit screen/modal */}
-        {isMobile() ? 
-          (this.state.socialAccountEditIsOpen ? 
+    const socialAccountEdit = () => {
+      if (isMobile()) {
+        return (
+          this.state.socialAccountEditIsOpen ? 
             <div>
               <SecondaryNavBar
                 leftButtonTitle="Back"
@@ -639,13 +618,14 @@ class DefaultProfilePage extends Component {
             </div>
             : 
             <div></div>
-          )
-          :
+        )
+      } else {
+        return (
           <Modal
             isOpen={this.state.socialAccountEditIsOpen}
             contentLabel=""
             onRequestClose={this.closeSocialAccountModal}
-            shouldCloseOnOverlayClick={true}
+            shouldCloseOnOverlayClick
             style={{ overlay: { zIndex: 10 } }}
             className="container-fluid social-account-modal"
           >
@@ -658,11 +638,14 @@ class DefaultProfilePage extends Component {
               onVerifyButtonClick={this.onVerifyButtonClick}
             />
           </Modal>
-        }
+        )
+      }
+    }
 
-      {/* Other account edit screen/modal */}
-        {isMobile() ? 
-          (this.state.accountEditIsOpen ? 
+    const accountEdit = () => {
+      if (isMobile()) {
+        return (
+          this.state.accountEditIsOpen ? 
             <div>
               <SecondaryNavBar
                 leftButtonTitle="Back"
@@ -686,13 +669,14 @@ class DefaultProfilePage extends Component {
             </div>
             : 
             <div></div>
-          )
-          :
+        )
+      } else {
+        return (
           <Modal
             isOpen={this.state.accountEditIsOpen}
             contentLabel=""
             onRequestClose={this.closeAccountModal}
-            shouldCloseOnOverlayClick={true}
+            shouldCloseOnOverlayClick
             style={{ overlay: { zIndex: 10 } }}
             className="container-fluid social-account-modal"
           >
@@ -703,7 +687,37 @@ class DefaultProfilePage extends Component {
               onDoneButtonClick={this.onAccountDoneButtonClick}
             />
           </Modal>
-        }
+        )
+      }
+    }
+
+    return (
+      <div>
+        <Modal
+          isOpen={this.state.photoModalIsOpen}
+          contentLabel=""
+          onRequestClose={this.closePhotoModal}
+          shouldCloseOnOverlayClick
+          style={{ overlay: { zIndex: 10 } }}
+          className="container-fluid text-center"
+        >
+          <Image
+            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+            fallbackSrc="/images/avatar.png" className="img-fluid clickable"
+            onClick={this.closePhotoModal}
+          />
+          <div>
+            <button
+              className="btn btn-link btn-xs"
+              onClick={this.onChangePhotoClick}
+            >
+                Change Photo
+            </button>
+          </div>
+        </Modal>
+
+        {socialAccountEdit()}
+        {accountEdit()}
 
         <ToolTip id="ownerAddress">
           <div>
@@ -722,7 +736,7 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <div>
 
-          { !(isMobile() && 
+          {!(isMobile() && 
             (this.state.socialAccountEditIsOpen || this.state.accountEditIsOpen)) && 
             <div>
               {profileCompleteness < 1 &&
