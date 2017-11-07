@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import InputGroup from '../../components/InputGroup'
+import zxcvbn from 'zxcvbn'
 
 import log4js from 'log4js'
 
@@ -17,21 +18,57 @@ class RestoreView extends Component {
     this.state = {
       identityKeyPhrase: null,
       password: null,
+      pwStrength: null,
       passwordConfirmation: null
     }
     this.onValueChange = this.onValueChange.bind(this)
     this.restoreAccountSubmit = this.restoreAccountSubmit.bind(this)
+    this.displayPasswordStrength = this.displayPasswordStrength.bind(this)
   }
 
   onValueChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     })
+
+    if (event.target.name === "password") {
+      var pw = event.target.value
+      if (pw === '') {
+        this.setState({
+          pwStrength: null
+        })
+      }
+      else {
+        var zxcvbnScore = zxcvbn(pw).score
+        this.setState({
+          pwStrength: zxcvbnScore
+        })
+      }
+    }
+  }
+
+  displayPasswordStrength() {
+    switch (this.state.pwStrength) {
+      case 0:
+      case 1:
+      case 2:
+        return <p className="label-red">The password you entered is too weak</p>
+        break
+      case 3:
+        return <p className="label-amber">The password you entered is average</p>
+        break
+      case 4:
+        return <p className="label-green">The password you entered is strong</p>
+        break
+      default:
+        break
+    }
   }
 
   restoreAccountSubmit(event) {
     event.preventDefault()
     logger.trace('restoreAccountSubmit')
+    if (this.state.pwStrength < 3) return
     this.props.restoreAccount(this.state.identityKeyPhrase,
       this.state.password,
       this.state.passwordConfirmation)
@@ -64,6 +101,7 @@ class RestoreView extends Component {
             onChange={this.onValueChange}
             required
           />
+          {this.displayPasswordStrength()}
           <InputGroup
             name="passwordConfirmation"
             type="password"
@@ -88,6 +126,6 @@ class RestoreView extends Component {
       </div>
     )
   }
- }
+}
 
 export default RestoreView
