@@ -14,7 +14,7 @@ import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
 import { PairBrowserView, LandingView,
   NewInternetView, RestoreView, DataControlView, EnterPasswordView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
-  EnterEmailView, WebAppWarningView,
+  EnterEmailView,
   ConnectStorageView } from './components'
 
 
