@@ -92,12 +92,6 @@ class HomeScreenPage extends Component {
                       return null
                     } }
                   )}
-                  <AppIcon
-                    key="token-sale"
-                    iconImage="app-icon-token-sale.png"
-                    displayName="Token Sale"
-                    launchLink="https://blockstack.com/"
-                  />
                 </div>
               </div>
 
