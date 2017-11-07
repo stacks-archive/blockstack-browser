@@ -82,8 +82,9 @@ class EditSocialAccountModal extends Component {
   onIdentifierChange = (event) => {
     let identifier = event.target.value
 
-    if (this.props.service === 'twitter') {
-      identifier = this.normalizeTwitterIdentifier(identifier)
+    if (this.props.service === 'twitter'
+      || this.props.service === 'instagram') {
+      identifier = this.normalizeIdentifier(identifier)
     }
 
     this.setState({
@@ -122,7 +123,23 @@ class EditSocialAccountModal extends Component {
     }
   }
 
-  normalizeTwitterIdentifier = (identifier) => {
+  getInputAddOn = (service) => {
+    if (service === 'facebook') {
+      return 'facebook.com/'
+    } else if (service === 'twitter') {
+      return '@'
+    } else if (service === 'github') {
+      return 'github.com/'
+    } else if (service === 'instagram') {
+      return '@'
+    } else if (service === 'linkedIn') {
+      return 'linkedin.com/in/'
+    } else {
+      return ''
+    }
+  }
+
+  normalizeIdentifier = (identifier) => {
     var regex = /^[@]/;
     if (identifier.match(regex)) {
       return identifier.replace('@', '')
@@ -146,27 +163,7 @@ class EditSocialAccountModal extends Component {
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     let webAccountType = webAccountTypes[this.props.service]
     const disabled = this.props.service === 'hackerNews'
-
-    // const proofURLInput = () => {
-    //   if (this.props.service === 'instagram' || this.props.service === 'github'
-    //       || this.props.service === 'twitter' || this.props.service === 'facebook'
-    //       || this.props.service === 'linkedIn' || this.props.service === 'hackerNews') {
-    //     return <InputGroup 
-    //               name="proofUrl" 
-    //               label="Proof URL" 
-    //               data={this.state}
-    //               placeholder="Paste Proof URL here"
-    //               stopClickPropagation={true} 
-    //               onChange={this.onProofUrlChange} 
-    //               onBlur={event => this.props.onBlur(event, this.props.service)}
-    //               accessoryIcon={this.props.verified}
-    //               accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
-    //               disabled={false}
-    //             />
-    //   } else {
-    //     return <div></div>
-    //   }
-    // }
+    const inputAddOn = this.getInputAddOn(this.props.service)
 
     if (webAccountType) {
       let accountServiceName = webAccountType.label
@@ -195,10 +192,11 @@ class EditSocialAccountModal extends Component {
                 <InputGroup 
                   key="input-group-identifier"
                   name="identifier" 
-                  label="Username" 
+                  placeholder="Username"
                   data={this.state}
                   stopClickPropagation={true} 
                   onChange={this.onIdentifierChange} 
+                  addOn={inputAddOn}
                 />
               
                 <VerificationInfo

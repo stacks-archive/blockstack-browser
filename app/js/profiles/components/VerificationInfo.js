@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react'
 import InputGroup from '../../components/InputGroup'
 import { openInNewTab } from '../../utils'
 import ReactTooltip from 'react-tooltip'
+import Image from '../../components/Image'
 
 export const VERIFICATION_TWEET_LINK_URL_BASE = 'https://explorer.blockstack.org/address/'
 
@@ -44,13 +45,12 @@ class TwitterVerificationInfo extends Component {
         </button>
         <p className="m-t-20">
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your tweet.
+          Paste the URL of your tweet below.
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -76,25 +76,35 @@ class FacebookVerificationInfo extends Component {
       <div>
         <p>
           <span className="font-weight-bold">Step 2: </span>
-          Copy and post the following text to your Facebook timeline.
-          &nbsp;<strong>Make sure your post is public!</strong>
+        </p>
+        <button className="btn btn-verify btn-facebook btn-block" onClick={this.props.onPostVerificationButtonClick}>
+          <i className="fa fa-fw fa-facebook fa-lg" /> Open A Facebook Share Window
+        </button>
+        <p className="m-t-20">
+          <span className="font-weight-bold">Step 3: </span>
+          Paste this text in the message field
         </p>
         <div className="verification-quote">
           {this.props.verificationMessage}
           <CopyToClipBoardButton />
         </div>
-        <button className="btn btn-verify btn-facebook btn-block" onClick={this.props.onPostVerificationButtonClick}>
-          <i className="fa fa-fw fa-facebook fa-lg" /> Post Verification to Facebook
-        </button>
+        <p>
+          <span className="font-weight-bold">Step 4: </span>
+          Set the post visibility to <strong>public</strong>, then share!
+        </p>
+        <Image
+          src="/images/proof-fb-public.png"
+          fallbackSrc=""
+          className="verification-image"
+        />
         <p className="m-t-20">
-          <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your post.
+          <span className="font-weight-bold">Step 5: </span>
+          Paste the URL of your post below.
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -133,13 +143,12 @@ class GithubVerificationInfo extends Component {
         </button>
         <p className="m-t-20">
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your gist.
+          Paste the URL of your gist below.
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -182,9 +191,8 @@ class LinkedInVerificationInfo extends Component {
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -224,9 +232,8 @@ class InstagramVerificationInfo extends Component {
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
