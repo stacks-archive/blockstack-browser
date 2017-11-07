@@ -1,6 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import ToolTip from '../../components/ToolTip'
 import Image from '../../components/Image'
+import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
+
+import log4js from 'log4js'
+
+const logger = log4js.getLogger('profiles/components/IdentityItem.js')
 
 class IdentityItem extends Component {
   static propTypes = {
@@ -12,12 +17,25 @@ class IdentityItem extends Component {
     isDefault: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired
+    index: PropTypes.number.isRequired,
+    profileUrl: PropTypes.string.isRequired
   }
 
   constructor(props) {
     super(props)
     this.state = {}
+  }
+
+  transferFromOnenameClick = (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    logger.trace('transferFromOnenameClick')
+    const identityAddress = this.props.ownerAddress
+    const profileUrl = this.props.profileUrl
+    const url = `https://onename.com/settings?action=export&address=${identityAddress}&url=${profileUrl}`
+    logger.debug(`transferFromOnenameClick: Redirecting to ${url}...`)
+    const win = window.open(url, '_blank')
+    win.focus()
   }
 
   render() {
@@ -93,6 +111,42 @@ class IdentityItem extends Component {
                 }
               </li>
             </ul>
+
+            {this.props.canAddUsername ?
+              <div onClick={e => e.stopPropagation()}>
+                <ContextMenuTrigger
+                  id={`menu-${this.props.ownerAddress}`}
+                  holdToDisplay={0}
+                >
+                  <div
+                    style={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      position: 'absolute',
+                      right: '10px',
+                      bottom: '10px',
+                      width: '20px',
+                      height: '20px',
+                      fontSize: '25px',
+                      paddingBottom: '15px',
+                      color: '#AEAEAE'
+                    }}
+                  >
+                  &#8230;
+                  </div>
+                </ContextMenuTrigger>
+                <ContextMenu id={`menu-${this.props.ownerAddress}`}>
+                  <MenuItem
+                    onClick={this.transferFromOnenameClick}
+                  >
+                    <span className="text-secondary">
+                      Transfer username from Onename to this ID
+                    </span>
+                  </MenuItem>
+                </ContextMenu>
+              </div>
+            : null}
           </div>
         </div>
       </div>

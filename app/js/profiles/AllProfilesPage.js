@@ -146,6 +146,8 @@ class AllProfilesPage extends Component {
   render() {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
+    const gaiaBucketAddress = this.props.identityAddresses[0]
+    const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
 
     return (
       <div>
@@ -217,6 +219,7 @@ class AllProfilesPage extends Component {
                         canAddUsername={identity.canAddUsername}
                         isDefault={index === this.props.defaultIdentity}
                         router={this.props.router}
+                        profileUrl={`${profileUrlBase}/${index}/profile.json`}
                       />
                     )
                   })}
