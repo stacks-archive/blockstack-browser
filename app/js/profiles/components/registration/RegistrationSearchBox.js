@@ -42,7 +42,13 @@ const RegistrationSearchBox = (props) =>
         >
           Search
         </button>
-
+        <button
+          className="btn btn-primary btn-block"
+          disabled={props.disabled}
+          onClick={props.onOnenameTransferClick}
+        >
+          Transfer name from Onename
+        </button>
         <Link
           to="/profiles"
           className="btn btn-tertiary btn-block"
