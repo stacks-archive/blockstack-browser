@@ -38,7 +38,8 @@ class TwitterVerificationInfo extends Component {
       <div>
         <p>
           <span className="font-weight-bold">Step 2: </span>
-          Click the Tweet Verification button to post your proof to Twitter.
+          Click the Tweet Verification button to post your proof to Twitter.&nbsp;
+          <strong>Your tweet must be public!</strong>
         </p>
         <button className="btn btn-verify btn-twitter btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-twitter fa-lg" /> Tweet Verification
