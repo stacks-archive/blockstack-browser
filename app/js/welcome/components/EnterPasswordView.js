@@ -41,18 +41,15 @@ class EnterPasswordView extends Component {
 
   onValueChange(event) {
     this.setState({
-      [event.target.name]: event.target.value,
+      [event.target.name]: event.target.value
     })
-
-    if (event.target.name === "password") {
-      var pw = event.target.value
-      if (pw === '') {
+    if (event.target.name === 'password') {
+      if (event.target.value === '') {
         this.setState({
           pwStrength: null
         })
-      }
-      else {
-        var zxcvbnScore = zxcvbn(pw).score
+      } else {
+        const zxcvbnScore = zxcvbn(event.target.value).score
         this.setState({
           pwStrength: zxcvbnScore
         })
@@ -75,15 +72,12 @@ class EnterPasswordView extends Component {
       case 1:
       case 2:
         return <p className="label-red">The password you entered is too weak</p>
-        break
       case 3:
         return <p className="label-amber">The password you entered is average</p>
-        break
       case 4:
         return <p className="label-green">The password you entered is strong</p>
-        break
       default:
-        break
+        return null
     }
   }
 
