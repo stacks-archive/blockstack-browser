@@ -11,7 +11,7 @@ import {
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
 import { setCoreStorageConfig } from '../../utils/api-utils'
-import { isCoreEndpointDisabled } from '../../utils/window-utils'
+import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes } from '../utils'
@@ -357,6 +357,13 @@ class AuthModal extends Component {
                               && !noStorage
                               && isCoreEndpointDisabled())
     if (coreShortCircuit) {
+      let appText
+      if (isWindowsBuild()) {
+        appText = 'Windows build'
+      } else {
+        appText = 'webapp'
+      }
+
       return (
         <div className="">
           <Modal
@@ -372,7 +379,7 @@ class AuthModal extends Component {
             <div>
               <p>
                This application requires using Gaia storage, which is not supported yet 
-               in our webapp. Feature coming soon!
+               in our {appText}. Feature coming soon!
               </p>
             </div>
           </Modal>

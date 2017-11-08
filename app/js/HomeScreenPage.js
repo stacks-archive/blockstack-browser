@@ -2,8 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Navbar from './components/Navbar'
+import ToolTip from './components/ToolTip'
 import { AppsActions } from './store/apps'
 import appList from './data/apps'
+import { isWebAppBuild, isCoreEndpointDisabled } from './utils/window-utils'
 
 function mapStateToProps(state) {
   return {
@@ -19,29 +21,69 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AppsActions), dispatch)
 }
 
-const AppIcon = (props) => (
-  <div className="container-fluid app-box-wrap">
-    <a
-      href={props.launchLink}
-      className="app-box-container"
-    >
-      <div className="app-box">
-        <img
-          src={`/images/${props.iconImage}`}
-          alt={props.displayName}
-        />
+const AppIcon = (props) => {
+  const disabledForCore = isCoreEndpointDisabled() && props.storageRequired
+  return (
+    <div className="container-fluid app-box-wrap">
+      <ToolTip id="coreDisabled">
+        <div>
+          <div>
+            This app requires Gaia storage, which is not supported in this build.
+            Feature coming soon!
+          </div>
+        </div>
+      </ToolTip>
+      {disabledForCore ?
+        <div
+          className="app-box"
+          data-tip
+          data-for="coreDisabled"
+        >
+          <img
+            src={`/images/${props.iconImage}`}
+            alt={props.displayName}
+          />
+        </div>
+      :
+        <a
+          href={props.launchLink}
+          className="app-box-container"
+        >
+          <div className="app-box">
+            <img
+              src={`/images/${props.iconImage}`}
+              alt={props.displayName}
+            />
+          </div>
+        </a>
+      }
+      <div className="app-text-container">
+        <h3>{props.displayName}</h3>
       </div>
-    </a>
-    <div className="app-text-container">
-      <h3>{props.displayName}</h3>
     </div>
-  </div>
-)
+  )
+}
+
+const disclaimerWeb = `The Blockstack Tokens are a crypto asset that is currently being 
+                  developed by Blockstack Token LLC, a Delaware limited liability 
+                  company, whose website can be found at www.blockstack.com. The 
+                  website you are currently visiting (browser.blockstack.org) is 
+                  sponsored by Blockstack PBC, an affiliate of Blockstack Token LLC, 
+                  and should not be viewed as an offer or sale of securities.`
+
+const disclaimerApp = `The Blockstack Tokens are a crypto asset that is currently being 
+                  developed by Blockstack Token LLC, a Delaware limited liability 
+                  company, whose website can be found at www.blockstack.com. The 
+                  application you are currently using (The Blockstack Browser) is 
+                  sponsored by Blockstack PBC, an affiliate of Blockstack Token LLC, 
+                  and should not be viewed as an offer or sale of securities.`
+
 
 AppIcon.propTypes = {
   launchLink: PropTypes.string.isRequired,
   iconImage: PropTypes.string.isRequired,
-  displayName: PropTypes.string.isRequired
+  displayName: PropTypes.string.isRequired,
+  storageRequired: PropTypes.bool.isRequired
 }
 
 class HomeScreenPage extends Component {
@@ -87,11 +129,18 @@ class HomeScreenPage extends Component {
                         iconImage={app.appIcon.small}
                         displayName={app.displayName}
                         launchLink={app.launchLink}
+                        storageRequired={!!app.storageRequired}
                       />)
                     } else {
                       return null
                     } }
                   )}
+                  <AppIcon
+                    key="token-sale"
+                    iconImage="app-icon-token-sale.png"
+                    displayName="Token Sale"
+                    launchLink="https://blockstack.com/"
+                  />
                 </div>
               </div>
 
@@ -107,12 +156,19 @@ class HomeScreenPage extends Component {
                         iconImage={app.appIcon.small}
                         displayName={app.displayName}
                         launchLink={app.launchLink}
+                        storageRequired={!!app.storageRequired}
                       />)
                     } else {
                       return null
                     } }
                   )}
                 </div>
+              </div>
+
+              <div className="m-t-70">
+                <p className="small text-muted">
+                  {isWebAppBuild() ? disclaimerWeb : disclaimerApp}
+                </p>
               </div>
 
             </div>

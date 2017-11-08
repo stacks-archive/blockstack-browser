@@ -15,7 +15,7 @@ import { DEFAULT_PROFILE,
   getProfileFromTokens } from '../../../utils/profile-utils'
 import { calculateTrustLevel } from '../../../utils/account-utils'
 import { AccountActions } from '../../../account/store/account'
-import { isCoreEndpointDisabled } from '../../../utils/window-utils'
+import { isWebAppBuild } from '../../../utils/window-utils'
 
 
 import type { Dispatch } from 'redux'
@@ -26,7 +26,7 @@ const logger = log4js.getLogger('profiles/store/identity/actions.js')
 
 
 function validateProofsService(profile: Object, address: string, username : ?string = null) {
-  if (!isCoreEndpointDisabled()) {
+  if (!isWebAppBuild()) {
     return validateProofs(profile, address, username)
   }
 
