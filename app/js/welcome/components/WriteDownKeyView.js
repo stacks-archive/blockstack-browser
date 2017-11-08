@@ -5,7 +5,7 @@ const WriteDownKeyView = (props) =>
   <div>
     <h3 className="modal-heading">Write down your keychain phrase for keychain recovery -
     don’t show it to anyone</h3>
-    <p classname="modal-body m-b-0 m-t-25">We do not store your keychain on our servers. Only your
+    <p className="modal-body m-b-0 m-t-25">We do not store your keychain on our servers. Only your
     computer will hold this key. Keep it safe.</p>
     <p className="modal-body m-b-0 m-t-25">Keychain phrase:</p>
     <p className="modal-body modal-code">{props.identityKeyPhrase}</p>
