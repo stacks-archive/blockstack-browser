@@ -52,7 +52,8 @@ export {
 } from './profile-utils'
 
 export {
-  openInNewTab
+  openInNewTab,
+  isMobile
 } from './window-utils'
 
 export {

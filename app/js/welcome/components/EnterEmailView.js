@@ -90,6 +90,9 @@ class EnterEmailView extends Component {
             >
               Continue
             </button>
+            <p className="modal-body">
+              <a href="#" className="modal-body" onClick={this.skip}>Skip</a>
+            </p>
           </div>
         </form>
       </div>

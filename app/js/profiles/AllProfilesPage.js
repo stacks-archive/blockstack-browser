@@ -146,9 +146,9 @@ class AllProfilesPage extends Component {
   render() {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
-    // https://gaia.blockstack.org/hub/1GBLCrGLATRcLXS8V81RbzyCQPaSv4ATby/0/profile.json
     const gaiaBucketAddress = this.props.identityAddresses[0]
     const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
+
     return (
       <div>
         <Modal

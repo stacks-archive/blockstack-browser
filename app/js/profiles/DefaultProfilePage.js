@@ -7,15 +7,21 @@ import Modal from 'react-modal'
 import Image from '../components/Image'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
+import SecondaryNavBar from '../components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import ProfileCompletion from './components/ProfileCompletion'
 import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
-import EditSocialAccountModal from './components/EditSocialAccountModal'
-import EditAccountModal from './components/EditAccountModal'
+import EditSocialAccount from './components/EditSocialAccount'
+import EditAccount from './components/EditAccount'
 import { uploadProfile, uploadPhoto } from '../account/utils'
-import { openInNewTab, signProfileForUpload, calculateProfileCompleteness } from '../utils'
+import { 
+  openInNewTab, 
+  isMobile, 
+  signProfileForUpload, 
+  calculateProfileCompleteness 
+} from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'
@@ -87,8 +93,8 @@ class DefaultProfilePage extends Component {
       localIdentities: this.props.localIdentities,
       editMode: false,
       photoModalIsOpen: false,
-      socialAccountModalIsOpen: false,
-      accountModalIsOpen: false,
+      socialAccountEditIsOpen: false,
+      accountEditIsOpen: false,
       editingSocialAccount: {},
       editingAccount: {},
       showHiddenPlaceholders: false
@@ -147,9 +153,9 @@ class DefaultProfilePage extends Component {
   }
 
   onSocialAccountClick = (service) => {
-    if (this.state.socialAccountModalIsOpen) {
+    if (this.state.socialAccountEditIsOpen) {
       this.setState({
-        socialAccountModalIsOpen: false,
+        socialAccountEditIsOpen: false,
         editingSocialAccount: {}
       })
     } else {
@@ -174,17 +180,21 @@ class DefaultProfilePage extends Component {
         }
       }
 
+      if (isMobile()) {
+        window.scrollTo(0, 0)
+      }
+
       this.setState({
-        socialAccountModalIsOpen: true,
+        socialAccountEditIsOpen: true,
         editingSocialAccount: editingAccount
       })
     }
   }
 
   onAccountClick = (service) => {
-    if (this.state.socialAccountModalIsOpen) {
+    if (this.state.accountEditIsOpen) {
       this.setState({
-        accountModalIsOpen: false,
+        accountEditIsOpen: false,
         editingAccount: {}
       })
     } else {
@@ -207,8 +217,12 @@ class DefaultProfilePage extends Component {
         }
       }
 
+      if (isMobile()) {
+        window.scrollTo(0, 0)
+      }
+
       this.setState({
-        accountModalIsOpen: true,
+        accountEditIsOpen: true,
         editingAccount
       })
     }
@@ -458,13 +472,13 @@ class DefaultProfilePage extends Component {
 
   closeSocialAccountModal = () => {
     this.setState({
-      socialAccountModalIsOpen: false
+      socialAccountEditIsOpen: false
     })
   }
 
   closeAccountModal = () => {
     this.setState({
-      accountModalIsOpen: false
+      accountEditIsOpen: false
     })
   }
 
@@ -499,6 +513,7 @@ class DefaultProfilePage extends Component {
     const accounts = profile.account
 
     if (accounts) {
+      logger.trace('Removing account')
       const newAccounts = accounts.filter(account => account.service !== service)
       profile.account = newAccounts
       this.setState({ profile })
@@ -574,6 +589,108 @@ class DefaultProfilePage extends Component {
     const showMoreAccountsButton = hiddenAccounts.length > 0
     // const connections = person.connections() || []
 
+    const socialAccountEdit = () => {
+      if (isMobile()) {
+        return (
+          this.state.socialAccountEditIsOpen ? 
+            <div>
+              <SecondaryNavBar
+                leftButtonTitle="Back"
+                leftIsButton
+                onLeftButtonClick={this.closeSocialAccountModal}
+              />
+              <div className="container-fluid m-t-10">
+                <div className="row">
+                  <div className="col-12">
+                    <div className="social-account-edit">
+                      <EditSocialAccount
+                        ownerAddress={ownerAddress}
+                        service={this.state.editingSocialAccount.service}
+                        identifier={this.state.editingSocialAccount.identifier}
+                        proofUrl={this.state.editingSocialAccount.proofUrl}
+                        onPostVerificationButtonClick={this.onPostVerificationButtonClick}
+                        onVerifyButtonClick={this.onVerifyButtonClick}
+                      /> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            : 
+            <div></div>
+        )
+      } else {
+        return (
+          <Modal
+            isOpen={this.state.socialAccountEditIsOpen}
+            contentLabel=""
+            onRequestClose={this.closeSocialAccountModal}
+            shouldCloseOnOverlayClick
+            style={{ overlay: { zIndex: 10 } }}
+            className="container-fluid social-account-modal"
+          >
+            <EditSocialAccount
+              ownerAddress={ownerAddress}
+              service={this.state.editingSocialAccount.service}
+              identifier={this.state.editingSocialAccount.identifier}
+              proofUrl={this.state.editingSocialAccount.proofUrl}
+              onPostVerificationButtonClick={this.onPostVerificationButtonClick}
+              onVerifyButtonClick={this.onVerifyButtonClick}
+            />
+          </Modal>
+        )
+      }
+    }
+
+    const accountEdit = () => {
+      if (isMobile()) {
+        return (
+          this.state.accountEditIsOpen ? 
+            <div>
+              <SecondaryNavBar
+                leftButtonTitle="Back"
+                leftIsButton
+                onLeftButtonClick={this.closeAccountModal}
+              />
+              <div className="container-fluid m-t-10">
+                <div className="row">
+                  <div className="col-12">
+                    <div className="social-account-edit">
+                      <EditAccount
+                        ownerAddress={ownerAddress}
+                        service={this.state.editingAccount.service}
+                        identifier={this.state.editingAccount.identifier}
+                        onDoneButtonClick={this.onAccountDoneButtonClick}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            : 
+            <div></div>
+        )
+      } else {
+        return (
+          <Modal
+            isOpen={this.state.accountEditIsOpen}
+            contentLabel=""
+            onRequestClose={this.closeAccountModal}
+            shouldCloseOnOverlayClick
+            style={{ overlay: { zIndex: 10 } }}
+            className="container-fluid social-account-modal"
+          >
+            <EditAccount
+              ownerAddress={ownerAddress}
+              service={this.state.editingAccount.service}
+              identifier={this.state.editingAccount.identifier}
+              onDoneButtonClick={this.onAccountDoneButtonClick}
+            />
+          </Modal>
+        )
+      }
+    }
+
     return (
       <div>
         <Modal
@@ -599,24 +716,8 @@ class DefaultProfilePage extends Component {
           </div>
         </Modal>
 
-        <EditSocialAccountModal
-          isOpen={this.state.socialAccountModalIsOpen}
-          ownerAddress={ownerAddress}
-          service={this.state.editingSocialAccount.service}
-          identifier={this.state.editingSocialAccount.identifier}
-          proofUrl={this.state.editingSocialAccount.proofUrl}
-          onRequestClose={this.closeSocialAccountModal}
-          onPostVerificationButtonClick={this.onPostVerificationButtonClick}
-          onVerifyButtonClick={this.onVerifyButtonClick}
-        />
-
-        <EditAccountModal
-          isOpen={this.state.accountModalIsOpen}
-          service={this.state.editingAccount.service}
-          identifier={this.state.editingAccount.identifier}
-          onRequestClose={this.closeAccountModal}
-          onDoneButtonClick={this.onAccountDoneButtonClick}
-        />
+        {socialAccountEdit()}
+        {accountEdit()}
 
         <ToolTip id="ownerAddress">
           <div>
@@ -635,250 +736,254 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <div>
 
-          {profileCompleteness < 1 &&
-            <ProfileCompletion completePct={profileCompleteness} />
-          }
-
-          <div className="container-fluid m-t-50 p-0">
-            <div className="row">
-              <div className="col-12">
-
-                <div className="avatar-md m-b-0 text-center">
-                  <Image
-                    src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-                    fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
-                    onClick={this.onPhotoClick}
-                  />
-                  <input
-                    type="file"
-                    ref={(ref) => { this.photoUpload = ref }}
-                    onChange={this.uploadProfilePhoto}
-                    style={{ display: 'none' }}
-                  />
-                </div>
-              </div>
-
-              {this.state.editMode ?
-                <div className="col-12 m-t-30">
-                  <InputGroup
-                    name="name"
-                    label="Full Name"
-                    data={this.state}
-                    onChange={this.onValueChange}
-                    centerText
-                  />
-                  <InputGroup
-                    name="description"
-                    label="Short Bio"
-                    textarea
-                    data={this.state}
-                    onChange={this.onValueChange}
-                    centerText
-                  />
-                </div>
-              :
-                <div className="col-12">
-                  <div className="text-center">
-                    {/* {(blockNumber && transactionIndex) ?
-                      <div className="idcard-body dim">
-                        Registered in block <span>#{blockNumber}</span>,<br />
-                        transaction <span>#{transactionIndex}</span>
-                      </div>
-                    : null}*/}
-                    <div className="pro-card-name text-center m-t-30">
-                      {(person.name() && person.name().length > 0) ? person.name() :
-                        <span className="placeholder">Add your name</span>}
-                      <span className="pro-card-edit">
-                        <i
-                          className="fa fa-fw fa-pencil clickable"
-                          onClick={this.onEditClick}
-                        />
-                      </span>
-                    </div>
-                    <div className="text-center">
-                      {identity.canAddUsername ?
-                        <Link
-                          to={`/profiles/i/add-username/${identityIndex}/search`}
-                          className="btn btn-outline-dark btn-pill btn-xs m-t-15 m-b-15"
-                        >
-                         Add a username
-                        </Link>
-                      :
-                        <div className="pro-card-domain-name text-center text-secondary m-t-0">
-                          <span>{identity.username}</span>
-                          {identity.usernamePending ?
-                            <i
-                              className="fa fa-fw fa-clock-o fa-lg"
-                              data-tip
-                              data-for="usernamePending"
-                            ></i>
-                            : null}
-                        </div>
-                    }
-                    </div>
-
-                    <div
-                      className="pro-card-identity-address m-b-25 text-center
-                      text-secondary m-t-0"
-                    >
-                      <small>
-                        <span data-tip data-for="ownerAddress">
-                          {`ID-${identity.ownerAddress}`}
-                        </span>
-                      </small>
-                    </div>
-
-                    <div className="pro-card-body text-center m-b-25">
-                      {(person.description() && person.description().length > 0) ?
-                        person.description() :
-                        <span className="placeholder">Add your bio</span>}
-                      <span className="pro-card-edit">
-                        <i
-                          className="fa fa-fw fa-pencil clickable"
-                          onClick={this.onEditClick}
-                        />
-                      </span>
-                    </div>
-
-                    {/*
-                    {person.address() ?
-                      <div className="pro-card-body text-center text-secondary">
-                      {person.address()}
-                      </div>
-                    : null}
-                    {person.birthDate() ?
-                      <div className="pro-card-body text-center">
-                      {person.birthDate()}
-                      </div>
-                    : null}
-                    */}
-                  </div>
-
-                </div>
+          {!(isMobile() && 
+            (this.state.socialAccountEditIsOpen || this.state.accountEditIsOpen)) && 
+            <div>
+              {profileCompleteness < 1 &&
+                <ProfileCompletion completePct={profileCompleteness} />
               }
-            </div>
+              <div className="container-fluid m-t-50 p-0">
+                <div className="row">
+                  <div className="col-12">
 
-          </div>
+                    <div className="avatar-md m-b-0 text-center">
+                      <Image
+                        src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+                        fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
+                        onClick={this.onPhotoClick}
+                      />
+                      <input
+                        type="file"
+                        ref={(ref) => { this.photoUpload = ref }}
+                        onChange={this.uploadProfilePhoto}
+                        style={{ display: 'none' }}
+                      />
+                    </div>
+                  </div>
 
-          <div className="container-fluid p-0">
-            <div className="row">
-              <div className="col-12">
+                  {this.state.editMode ?
+                    <div className="col-12 m-t-30">
+                      <InputGroup
+                        name="name"
+                        label="Full Name"
+                        data={this.state}
+                        onChange={this.onValueChange}
+                        centerText
+                      />
+                      <InputGroup
+                        name="description"
+                        label="Short Bio"
+                        textarea
+                        data={this.state}
+                        onChange={this.onValueChange}
+                        centerText
+                      />
+                    </div>
+                  :
+                    <div className="col-12">
+                      <div className="text-center">
+                        {/* {(blockNumber && transactionIndex) ?
+                          <div className="idcard-body dim">
+                            Registered in block <span>#{blockNumber}</span>,<br />
+                            transaction <span>#{transactionIndex}</span>
+                          </div>
+                        : null}*/}
+                        <div className="pro-card-name text-center m-t-30">
+                          {(person.name() && person.name().length > 0) ? person.name() :
+                            <span className="placeholder">Add your name</span>}
+                          <span className="pro-card-edit">
+                            <i
+                              className="fa fa-fw fa-pencil clickable"
+                              onClick={this.onEditClick}
+                            />
+                          </span>
+                        </div>
+                        <div className="text-center">
+                          {identity.canAddUsername ?
+                            <Link
+                              to={`/profiles/i/add-username/${identityIndex}/search`}
+                              className="btn btn-outline-dark btn-pill btn-xs m-t-15 m-b-15"
+                            >
+                             Add a username
+                            </Link>
+                          :
+                            <div className="pro-card-domain-name text-center text-secondary m-t-0">
+                              <span>{identity.username}</span>
+                              {identity.usernamePending ?
+                                <i
+                                  className="fa fa-fw fa-clock-o fa-lg"
+                                  data-tip
+                                  data-for="usernamePending"
+                                ></i>
+                                : null}
+                            </div>
+                        }
+                        </div>
 
-                <div className="container-fluid text-center m-t-25 m-b-40" >
-                  <span className="btn btn-dark btn-pill btn-xs" style={{ boxShadow: 'none' }} >
-                    {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
-                    <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
-                    {trustLevel <= 1 &&
-                      <span data-tip data-for="trustLevel">
-                        <i className="fa fa-info-circle" />
+                        <div
+                          className="pro-card-identity-address m-b-25 text-center
+                          text-secondary m-t-0"
+                        >
+                          <small>
+                            <span data-tip data-for="ownerAddress">
+                              {`ID-${identity.ownerAddress}`}
+                            </span>
+                          </small>
+                        </div>
+
+                        <div className="pro-card-body text-center m-b-25">
+                          {(person.description() && person.description().length > 0) ?
+                            person.description() :
+                            <span className="placeholder">Add your bio</span>}
+                          <span className="pro-card-edit">
+                            <i
+                              className="fa fa-fw fa-pencil clickable"
+                              onClick={this.onEditClick}
+                            />
+                          </span>
+                        </div>
+
+                        {/*
+                        {person.address() ?
+                          <div className="pro-card-body text-center text-secondary">
+                          {person.address()}
+                          </div>
+                        : null}
+                        {person.birthDate() ?
+                          <div className="pro-card-body text-center">
+                          {person.birthDate()}
+                          </div>
+                        : null}
+                        */}
+                      </div>
+
+                    </div>
+                  }
+                </div>
+
+              </div>
+
+              <div className="container-fluid p-0">
+                <div className="row">
+                  <div className="col-12">
+
+                    <div className="container-fluid text-center m-t-25 m-b-40" >
+                      <span className="btn btn-dark btn-pill btn-xs" style={{ boxShadow: 'none' }} >
+                        {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
+                        <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
+                        {trustLevel <= 1 &&
+                          <span data-tip data-for="trustLevel">
+                            <i className="fa fa-info-circle" />
+                          </span>
+                        }
                       </span>
-                    }
-                  </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div className="container-fluid p-0">
-            <div className="row m-t-10 text-center">
-              <div className="col">
-                <button
-                  className="btn btn-outline-dark btn-pill btn-sm ml-5"
-                  title={this.state.editMode ? 'Save' : 'Edit'}
-                  onClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
-                >
-                  {this.state.editMode ? 'Save' : 'Edit'}
-                </button>
-              </div>
-              <div className="col">
-                {this.state.editMode ?
-                  <button
-                    className="btn btn-outline-dark btn-pill btn-sm mr-5"
-                    title="Cancel"
-                    onClick={this.onCancelClick}
-                  >
-                    Cancel
-                  </button> 
-                  :
-                  <Link
-                    className="btn btn-outline-dark btn-pill btn-sm mr-5"
-                    to="/profiles/i/all"
-                  >
-                    More
-                  </Link>
-                }
-              </div>
-            </div>
-          </div>
-
-          <div className="container-fluid p-0">
-            <div className="row m-t-50 no-gutters">
-              <div className="col">
-                <div className="profile-accounts">
-                  <ul>
-                    {accounts.map((account) => {
-                      let verified = false
-                      let pending = false
-                      if (verifications.length > 0) {
-                        for (let i = 0; i < verifications.length; i++) {
-                          const verification = verifications[i]
-                          if (verification.service === account.service &&
-                            verification.valid === true) {
-                            verified = true
-                            pending = false
-                            break
-                          }
-                        }
-                      } else {
-                        pending = true
-                      }
-
-                      if (account.service === 'pgp' || account.service === 'ssh'
-                        || account.service === 'bitcoin' || account.service === 'ethereum') {
-                        return (
-                          <PGPAccountItem
-                            key={`${account.service}-${account.identifier}`}
-                            editing={this.state.editMode}
-                            service={account.service}
-                            identifier={account.identifier}
-                            contentUrl={account.contentUrl}
-                            placeholder={account.placeholder}
-                            onClick={this.onAccountClick}
-                            listItem
-                          />
-                        )
-                      } else {
-                        return (
-                          <SocialAccountItem
-                            key={`${account.service}-${account.identifier}`}
-                            editing={this.state.editMode}
-                            service={account.service}
-                            identifier={account.identifier}
-                            proofUrl={account.proofUrl}
-                            listItem
-                            verified={verified}
-                            placeholder={account.placeholder}
-                            pending={pending}
-                            onClick={this.onSocialAccountClick}
-                          />
-                        )
-                      }
-                    })}
-                  </ul>
-                  <div className="text-center">
-                    {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
-                      <button 
-                        className="btn btn-link btn-link-mute btn-link-small" 
-                        onClick={this.onMoreAccountsClick}
+              <div className="container-fluid p-0">
+                <div className="row m-t-10 text-center">
+                  <div className="col">
+                    <button
+                      className="btn btn-outline-dark btn-pill btn-sm ml-5"
+                      title={this.state.editMode ? 'Save' : 'Edit'}
+                      onClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
+                    >
+                      {this.state.editMode ? 'Save' : 'Edit'}
+                    </button>
+                  </div>
+                  <div className="col">
+                    {this.state.editMode ?
+                      <button
+                        className="btn btn-outline-dark btn-pill btn-sm mr-5"
+                        title="Cancel"
+                        onClick={this.onCancelClick}
                       >
-                        More accounts
-                      </button>
+                        Cancel
+                      </button> 
+                      :
+                      <Link
+                        className="btn btn-outline-dark btn-pill btn-sm mr-5"
+                        to="/profiles/i/all"
+                      >
+                        More
+                      </Link>
                     }
                   </div>
                 </div>
               </div>
+
+              <div className="container-fluid p-0">
+                <div className="row m-t-50 no-gutters">
+                  <div className="col">
+                    <div className="profile-accounts">
+                      <ul>
+                        {accounts.map((account) => {
+                          let verified = false
+                          let pending = false
+                          if (verifications.length > 0) {
+                            for (let i = 0; i < verifications.length; i++) {
+                              const verification = verifications[i]
+                              if (verification.service === account.service &&
+                                verification.valid === true) {
+                                verified = true
+                                pending = false
+                                break
+                              }
+                            }
+                          } else {
+                            pending = true
+                          }
+
+                          if (account.service === 'pgp' || account.service === 'ssh'
+                            || account.service === 'bitcoin' || account.service === 'ethereum') {
+                            return (
+                              <PGPAccountItem
+                                key={`${account.service}-${account.identifier}`}
+                                editing={this.state.editMode}
+                                service={account.service}
+                                identifier={account.identifier}
+                                contentUrl={account.contentUrl}
+                                placeholder={account.placeholder}
+                                onClick={this.onAccountClick}
+                                listItem
+                              />
+                            )
+                          } else {
+                            return (
+                              <SocialAccountItem
+                                key={`${account.service}-${account.identifier}`}
+                                editing={this.state.editMode}
+                                service={account.service}
+                                identifier={account.identifier}
+                                proofUrl={account.proofUrl}
+                                listItem
+                                verified={verified}
+                                placeholder={account.placeholder}
+                                pending={pending}
+                                onClick={this.onSocialAccountClick}
+                              />
+                            )
+                          }
+                        })}
+                      </ul>
+                      <div className="text-center">
+                        {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
+                          <button 
+                            className="btn btn-link btn-link-mute btn-link-small" 
+                            onClick={this.onMoreAccountsClick}
+                          >
+                            More accounts
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+          }
 
         </div>
       </div>

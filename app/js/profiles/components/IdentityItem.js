@@ -24,10 +24,9 @@ class IdentityItem extends Component {
   constructor(props) {
     super(props)
     this.state = {}
-    this.transferFromOnenameClick = this.transferFromOnenameClick.bind(this)
   }
 
-  transferFromOnenameClick(event) {
+  transferFromOnenameClick = (event) => {
     event.preventDefault()
     event.stopPropagation()
     logger.trace('transferFromOnenameClick')
@@ -112,6 +111,7 @@ class IdentityItem extends Component {
                 }
               </li>
             </ul>
+
             {this.props.canAddUsername ?
               <div onClick={e => e.stopPropagation()}>
                 <ContextMenuTrigger

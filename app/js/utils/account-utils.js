@@ -327,8 +327,8 @@ export function calculateTrustLevel(verifications) {
 
 export function calculateProfileCompleteness(profile, verifications) {
   let complete = 0
-  const totalItems = 5
-  const maxVerificationItems = 2
+  const totalItems = 4
+  const maxVerificationItems = 1
 
   if (profile.name && profile.name.length > 0) {
     complete++
