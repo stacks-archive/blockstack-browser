@@ -13,6 +13,7 @@ const apps = {
       website: 'http://blockstack-todos.appartisan.com',
       launchLink: 'http://blockstack-todos.appartisan.com',
       developer: 'Larry Salibra',
+      storageRequired: true,
       status: 'user_ready'
     }, {
       name: 'Guild',
@@ -26,6 +27,7 @@ const apps = {
       website: 'http://www.guildblog.com',
       launchLink: 'http://www.guildblog.com',
       developer: 'Jay Hwang',
+      storageRequired: true,
       status: 'in_progress'
     }, {
       name: 'Ongaku Ryoho',
@@ -39,6 +41,7 @@ const apps = {
       website: 'http://www.ongakuryoho.com',
       launchLink: 'http://www.ongakuryoho.com',
       developer: '',
+      storageRequired: true,
       status: 'in_progress'
     }, {
       name: 'Hello, Blockstack',
