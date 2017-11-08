@@ -740,8 +740,8 @@ class DefaultProfilePage extends Component {
         <ToolTip id="coreDisabled">
           <div>
             <div>
-              You cannot purchase usernames in the webapp
-              right now. Feature coming soon!
+              You cannot purchase usernames in this build.
+              Feature coming soon!
             </div>
           </div>
         </ToolTip>
