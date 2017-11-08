@@ -19,6 +19,7 @@
     "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy",
     "dev-windows": "NODE_ENV=development ./node_modules/.bin/gulp dev-windows",
     "dev-webapp": "NODE_ENV=development ./node_modules/.bin/gulp dev-webapp",
+    "prod-webapp": "NODE_ENV=production ./node_modules/.bin/gulp prod-webapp",
     "flow": "flow",
     "flow-typed-install": "./node_modules/.bin/flow-typed install --skip"
   },
