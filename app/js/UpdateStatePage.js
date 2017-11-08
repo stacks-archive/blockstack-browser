@@ -9,6 +9,7 @@ import { IdentityActions } from './profiles/store/identity'
 import { decrypt } from './utils'
 import { CURRENT_VERSION, updateState } from './store/reducers'
 import { BLOCKSTACK_STATE_VERSION_KEY } from './App'
+import { isWebAppBuild } from './utils/window-utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('UpdateStatePage.js')
@@ -146,6 +147,7 @@ class UpdateStatePage extends Component {
 
   render() {
     const alert = this.state.alert
+    const isWebApp = isWebAppBuild()
     return (
       <Modal
         isOpen
@@ -161,8 +163,19 @@ class UpdateStatePage extends Component {
             :
             null
           }
-          <h3 className="modal-heading">We updated the Blockstack Browser</h3>
-          <p>Please enter your password to complete the update process.</p>
+          <div>
+            {isWebApp ?
+              <div>
+                <h3 className="modal-heading">We updated the Blockstack Browser</h3>
+                <p>Please enter your password to complete the update process.</p>
+              </div>
+            :
+              <div>
+                <h3 className="modal-heading">Finish updating Blockstack</h3>
+                <p>Enter your password to finish updating Blockstack.</p>
+              </div>
+            }
+          </div>
           <form className="modal-form" onSubmit={this.upgradeBlockstackState}>
             <InputGroup
               name="password"

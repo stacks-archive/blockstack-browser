@@ -9,7 +9,7 @@ import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 import { redirectToConnectToDropbox } from '../account/utils/dropbox'
 import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
-
+import { isWebAppBuild } from '../utils/window-utils'
 
 import { PairBrowserView, LandingView,
   NewInternetView, RestoreView, DataControlView, EnterPasswordView,
@@ -372,6 +372,7 @@ class WelcomeModal extends Component {
                 <LandingView
                   showNewInternetView={this.showNewInternetView}
                   showRestoreView={this.showRestoreView}
+                  webAppBuild={isWebAppBuild()}
                 />
               : null}
               </div>
@@ -432,6 +433,7 @@ class WelcomeModal extends Component {
                     identityKeyPhrase={this.state.identityKeyPhrase}
                     showNextView={this.showNextView}
                     showPreviousView={this.showPreviousView}
+                    webAppBuild={isWebAppBuild()}
                   />
                 :
                 null
