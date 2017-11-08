@@ -161,8 +161,8 @@ class UpdateStatePage extends Component {
             :
             null
           }
-          <h3 className="modal-heading">Finish updating Blockstack</h3>
-          <p>Enter your password to finish updating Blockstack.</p>
+          <h3 className="modal-heading">We updated the Blockstack Browser</h3>
+          <p>Please enter your password to complete the update process.</p>
           <form className="modal-form" onSubmit={this.upgradeBlockstackState}>
             <InputGroup
               name="password"
