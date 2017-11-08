@@ -60,7 +60,7 @@ div.profile-account .app-account-service {margin-left:10px;}
 .verification-copy {padding:0;position:relative;}
 .form-control.verification-input {color:#000;background-color:rgba(0,0,0,0.4);border:1px solid rgba(0,0,0,0.4);}
 .verification-input::-webkit-input-placeholder {color:#fff;}
-.verification-image{max-width:380px}
+.verification-image{max-width:330px}
 .badge-verification {font-size:13px;margin-right:8px;padding:6px 15px;background-color:#F44336}
 
 /* Trust level footer */
@@ -426,7 +426,7 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn-outline-alpha-light:hover,.btn-outline-alpha-light:focus,.btn-outline-alpha-light:active{color:#212529;background-color:#fff;border:1px solid #fff;font-weight:700;}
 .btn-tertiary{color:#fff;border:1px solid #AEAEAE;font-weight:700;background-color:#AEAEAE;-webkit-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
 .btn-tertiary:hover,.btn-tertiary:focus,.btn-tertiary:active{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;background-color:#7B7B7B;border: 1px solid #7B7B7B;}
-.btn-dark,.btn-verify{color:#fff;background-color:#2e2e2e;font-size:0.65rem;padding:0.650rem 2.0rem 0.575rem 2.0rem;}
+.btn-dark,.btn-verify{color:#fff;background-color:#2e2e2e;font-size:0.60rem;padding:0.575rem 2.0rem 0.500rem 2.0rem;}
 .btn-link{color:#2e2e2e;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 .btn-link:focus,.btn-link:hover{color:#2C96FF;text-decoration:none;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
 .btn-link.active{color:#2C96FF;text-decoration:none;}
@@ -570,7 +570,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .modal-code{font-family:'Source Code Pro',monospace;color:#616161;font-size:13px;background-color:#E6E6E6;padding:25px;-webkit-border-radius:6px;-moz-border-radius:6px;border-radius:6px;}
 .react-modal-pgp{width:700px!important;}
 /* Welcome Modal */
-.welcome-modal div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:rgba(255,255,255,0.9)!important;}
+.welcome-modal div.ReactModal__Overlay.ReactModal__Overlay--after-open{background-color:rgba(255,255,255,0.7)!important;}
 .welcome-modal-icon {width:200px;height:200px;display:block;margin-right:auto;margin-left:auto}
 /* Auth Modal */
 .auth-modal {text-align: center}

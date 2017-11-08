@@ -11,6 +11,7 @@ import { authorizationHeaderValue,
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode,
   getInsightUrl } from '../../../utils'
+import { isCoreEndpointDisabled } from '../../../utils/window-utils'
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
@@ -161,21 +162,20 @@ function emailNotifications(email, optIn) {
       headers: requestHeaders,
       body: JSON.stringify(requestBody)
     }
-    const emailNotificationsUrl = 'https://blockstack-portal-emailer.appartisan.com/notifications'
+    const emailNotificationsUrl = 'https://blockstack-portal-emailer.appartisan.com/notifications?mailingListOptIn='
+    let url = `${emailNotificationsUrl}false`
     if (optIn === true) {
-      logger.debug('emailNotifications: user opted-in')
-      return fetch(emailNotificationsUrl, options)
-      .then(() => {
-        logger.debug(`emailNotifications: registered ${email} for notifications`)
-      }, (error) => {
-        logger.error('emailNotifications: error', error)
-      }).catch(error => {
-        logger.error('emailNotifications: error', error)
-      })
-    } else {
-      logger.debug('emailNotifications: user opted-out')
-      return Promise.resolve()
+      logger.debug('emailNotifications: user opted-in to mailing list')
+      url = `${emailNotificationsUrl}true`
     }
+    return fetch(url, options)
+    .then(() => {
+      logger.debug(`emailNotifications: registered ${email} for notifications`)
+    }, (error) => {
+      logger.error('emailNotifications: error', error)
+    }).catch(error => {
+      logger.error('emailNotifications: error', error)
+    })
   }
 }
 
@@ -195,6 +195,12 @@ function storageIsConnected() {
 
 function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
+    if (isCoreEndpointDisabled()) {
+      logger.debug('Mocking core wallet balance in webapp build')
+      dispatch(updateCoreWalletBalance(0))
+      return
+    }
+
     logger.trace('refreshCoreWalletBalance: Beginning refresh...')
     logger.debug(`refreshCoreWalletBalance: addressBalanceUrl: ${addressBalanceUrl}`)
     const headers = { Authorization: authorizationHeaderValue(coreAPIPassword) }
@@ -216,6 +222,12 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
 
 function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
   return dispatch => {
+    if (isCoreEndpointDisabled()) {
+      logger.debug('Mocking core wallet address in webapp build')
+      dispatch(updateCoreWalletAddress('Not supported in simple webapp.'))
+      return
+    }
+
     const headers = { Authorization: authorizationHeaderValue(coreAPIPassword) }
     fetch(walletPaymentAddressUrl, { headers })
     .then((response) => response.text())
@@ -241,6 +253,13 @@ function resetCoreWithdrawal() {
 function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress,
   coreAPIPassword, amount = null, paymentKey = null) {
   return dispatch => {
+    if (isCoreEndpointDisabled()) {
+      dispatch(withdrawCoreBalanceError('Core wallet withdrawls not allowed in' +
+                                        ' the simple webapp build'))
+      return
+    }
+
+
     const requestBody = {
       address: recipientAddress,
       min_confs: 0

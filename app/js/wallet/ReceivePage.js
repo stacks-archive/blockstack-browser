@@ -6,6 +6,8 @@ import { QRCode } from 'react-qr-svg'
 import { AccountActions } from '../account/store/account'
 import Balance            from './components/Balance'
 
+import { isCoreEndpointDisabled } from '../utils/window-utils'
+
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
@@ -34,6 +36,18 @@ class ReceivePage extends Component {
 
   render() {
     const address = this.props.addresses[0]
+    if (isCoreEndpointDisabled()) {
+      return (
+        <div>
+          <Balance />
+          <div className="text-center">
+            The Bitcoin wallet is not yet supported in our webapp,
+            but the feature is coming soon!
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div>
         <Balance />

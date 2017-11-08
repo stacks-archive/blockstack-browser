@@ -11,6 +11,7 @@ import {
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
 import { setCoreStorageConfig } from '../../utils/api-utils'
+import { isCoreEndpointDisabled } from '../../utils/window-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes } from '../utils'
@@ -345,6 +346,40 @@ class AuthModal extends Component {
     const appManifestLoading = this.props.appManifestLoading
     const processing = this.state.processing
     const invalidScopes = this.state.invalidScopes
+    const decodedToken = this.state.decodedToken
+    const noStorage = (decodedToken
+                       && decodedToken.payload.scopes
+                       && !decodedToken.payload.scopes.includes('store_write'))
+
+    const coreShortCircuit = (!appManifestLoading
+                              && appManifest !== null
+                              && !invalidScopes
+                              && !noStorage
+                              && isCoreEndpointDisabled())
+    if (coreShortCircuit) {
+      return (
+        <div className="">
+          <Modal
+            isOpen
+            onRequestClose={this.closeModal}
+            contentLabel="This is My Modal"
+            shouldCloseOnOverlayClick
+            style={{ overlay: { zIndex: 10 } }}
+            className="container-fluid"
+            portalClassName="auth-modal"
+          >
+            <h3>Sign In Request</h3>
+            <div>
+              <p>
+               This application requires using Gaia storage, which is not supported yet 
+               in our webapp. Feature coming soon!
+              </p>
+            </div>
+          </Modal>
+        </div>
+      )
+    }
+
     const requestingEmail = this.state.requestingEmail
     return (
       <div className="">

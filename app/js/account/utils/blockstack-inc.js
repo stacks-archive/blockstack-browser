@@ -74,5 +74,6 @@ export function connectToGaiaHub(gaiaHubUrl: string, challengeSignerHex: string)
 export function redirectToConnectToGaiaHub() {
   logger.trace('redirectToConnectToGaiaHub')
   const port = location.port === '' ? 80 : location.port
-  window.top.location.href = `http://localhost:${port}/account/storage#gaiahub`
+  const host = location.hostname
+  window.top.location.href = `http://${host}:${port}/account/storage#gaiahub`
 }

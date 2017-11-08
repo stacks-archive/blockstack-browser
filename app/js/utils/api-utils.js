@@ -7,6 +7,8 @@ const logger = log4js.getLogger('utils/api-utils.js')
 import { uploadProfile, DROPBOX, BLOCKSTACK_INC } from '../account/utils'
 import { signProfileForUpload } from './index'
 
+import { isCoreEndpointDisabled } from './window-utils'
+
 export function getNamesOwned(address, bitcoinAddressLookupUrl, callback) {
   const url = bitcoinAddressLookupUrl.replace('{address}', address)
   fetch(url)
@@ -44,7 +46,14 @@ export function getLogServerPortFromURL() {
 }
 
 export function isCoreApiRunning(corePingUrl) {
+  if (isCoreEndpointDisabled()) {
+    return new Promise((resolve) => {
+      resolve(true)
+    })
+  }
+
   logger.debug(`isCoreApiRunning: ${corePingUrl}`)
+
   return new Promise((resolve) => {
     fetch(corePingUrl, { cache: 'no-store' })
     .then((response) => response.text())
@@ -66,6 +75,12 @@ export function isCoreApiRunning(corePingUrl) {
 }
 
 export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
+  if (isCoreEndpointDisabled()) {
+    return new Promise((resolve) => {
+      resolve(true)
+    })
+  }
+
   logger.debug(`isApiPasswordValid: ${corePasswordProtectedReadUrl}`)
 
   const requestHeaders = {
@@ -142,9 +157,17 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
 export function setCoreStorageConfig(api,
   identityIndex = null, identityAddress = null, profile = null,
   profileSigningKeypair = null, firstDropboxUpload = false) {
+
+  if (isCoreEndpointDisabled()) {
+    return new Promise((resolve, reject) => {
+      resolve('OK')
+    })
+  }
+
   logger.debug(`setCoreStorageConfig: ${identityIndex}, ${identityAddress}`)
   logger.debug(`setCoreStorageConfig: profile passed? ${!!profile}`)
   logger.debug(`setCoreStorageConfig: profileSigningKeypair passed? ${!!profileSigningKeypair}`)
+
   const coreAPIPassword = api.coreAPIPassword
 
   return new Promise((resolve, reject) => {
