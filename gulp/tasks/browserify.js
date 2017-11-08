@@ -45,6 +45,11 @@ function buildScript(file, watch) {
     bundler.transform('browserify-replace', {replace : [ { from: 'isWindowsBuildCompileFlag = false', to: 'isWindowsBuildCompileFlag = true' } ]})
   }
 
+  if (global.isWebApp) {
+    gutil.log('Marking as webapp build')
+    bundler.transform('browserify-replace', {replace : [ { from: 'isWebAppBuildCompileFlag = false', to: 'isWebAppBuildCompileFlag = true' } ]})
+  }
+
   bundler.transform(debowerify);
 
   function rebundle() {

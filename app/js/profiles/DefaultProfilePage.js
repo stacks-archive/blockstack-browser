@@ -24,7 +24,7 @@ import {
 } from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
-import { isWindowsBuild } from '../utils/window-utils'
+import { isCoreEndpointDisabled } from '../utils/window-utils'
 
 import log4js from 'log4js'
 
@@ -528,7 +528,7 @@ class DefaultProfilePage extends Component {
     const identityIndex = this.props.defaultIdentity
     const identity = this.state.localIdentities[identityIndex]
     const person = new Person(identity.profile)
-    const windowsBuild = isWindowsBuild()
+    const coreDisabled = isCoreEndpointDisabled()
 
     if (identity.username) {
       identity.canAddUsername = false
@@ -737,10 +737,10 @@ class DefaultProfilePage extends Component {
             <div>Increase your trust level by verifying your social accounts.</div>
           </div>
         </ToolTip>
-        <ToolTip id="windowsDisabled">
+        <ToolTip id="coreDisabled">
           <div>
             <div>
-              You cannot purchase usernames in the simple webapp
+              You cannot purchase usernames in the webapp
               right now. Feature coming soon!
             </div>
           </div>
@@ -813,10 +813,10 @@ class DefaultProfilePage extends Component {
                         <div className="text-center">
                           {identity.canAddUsername ?
                             <div className="text-center">
-                              {windowsBuild ?
+                              {coreDisabled ?
                                 <span
                                   data-tip
-                                  data-for="windowsDisabled"
+                                  data-for="coreDisabled"
                                 >
                                   Add a username
                                 </span>

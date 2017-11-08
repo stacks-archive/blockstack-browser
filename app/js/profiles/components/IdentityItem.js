@@ -18,7 +18,7 @@ class IdentityItem extends Component {
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    windowsBuild: PropTypes.bool,
+    coreDisabled: PropTypes.bool,
     profileUrl: PropTypes.string.isRequired
   }
 
@@ -56,10 +56,10 @@ class IdentityItem extends Component {
             <div>This is your identity address.</div>
           </div>
         </ToolTip>
-        <ToolTip id="windowsDisabled">
+        <ToolTip id="coreDisabled">
           <div>
             <div>
-              You cannot purchase usernames in the simple webapp right now.
+              You cannot purchase usernames in the webapp right now.
               Feature coming soon!
             </div>
           </div>
@@ -78,10 +78,10 @@ class IdentityItem extends Component {
                 <p className="card-title">
                 {this.props.canAddUsername ?
                   <div>
-                    {this.props.windowsBuild ?
+                    {this.props.coreDisabled ?
                       <span
                         data-tip
-                        data-for="windowsDisabled"
+                        data-for="coreDisabled"
                       >
                         <i>Add username</i>
                       </span>

@@ -11,7 +11,7 @@ import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-
 import SupportButton from './components/SupportButton'
 import { SanityActions }    from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
-import { isWindowsBuild } from './utils/window-utils'
+import { isCoreEndpointDisabled } from './utils/window-utils'
 import { openInNewTab } from './utils'
 
 import log4js from 'log4js'
@@ -108,9 +108,9 @@ class App extends Component {
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
-    } else if (isWindowsBuild()) {
-      logger.debug('Windows build. Pretending to have a valid core connection.')
-      api = Object.assign({}, api, { coreAPIPassword: 'WindowsPretendPasswordAPI' })
+    } else if (isCoreEndpointDisabled()) {
+      logger.debug('Core-less build. Pretending to have a valid core connection.')
+      api = Object.assign({}, api, { coreAPIPassword: 'PretendPasswordAPI' })
       this.props.updateApi(api)
     }
 

@@ -7,7 +7,7 @@ const logger = log4js.getLogger('utils/api-utils.js')
 import { uploadProfile, DROPBOX, BLOCKSTACK_INC } from '../account/utils'
 import { signProfileForUpload } from './index'
 
-import { isWindowsBuild } from './window-utils'
+import { isCoreEndpointDisabled } from './window-utils'
 
 export function getNamesOwned(address, bitcoinAddressLookupUrl, callback) {
   const url = bitcoinAddressLookupUrl.replace('{address}', address)
@@ -46,7 +46,7 @@ export function getLogServerPortFromURL() {
 }
 
 export function isCoreApiRunning(corePingUrl) {
-  if (isWindowsBuild()) {
+  if (isCoreEndpointDisabled()) {
     return new Promise((resolve) => {
       resolve(true)
     })
@@ -75,7 +75,7 @@ export function isCoreApiRunning(corePingUrl) {
 }
 
 export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
-  if (isWindowsBuild()) {
+  if (isCoreEndpointDisabled()) {
     return new Promise((resolve) => {
       resolve(true)
     })
@@ -158,7 +158,7 @@ export function setCoreStorageConfig(api,
   identityIndex = null, identityAddress = null, profile = null,
   profileSigningKeypair = null, firstDropboxUpload = false) {
 
-  if (isWindowsBuild()) {
+  if (isCoreEndpointDisabled()) {
     return new Promise((resolve, reject) => {
       resolve('OK')
     })

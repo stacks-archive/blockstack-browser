@@ -6,7 +6,7 @@ import {
   getBitcoinPrivateKeychain,
   getBitcoinAddressNode
 } from '../utils'
-import { isWindowsBuild } from '../utils/window-utils'
+import { isCoreEndpointDisabled } from '../utils/window-utils'
 import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
@@ -141,12 +141,12 @@ class SendPage extends Component {
 
   render() {
     const disabled = this.state.disabled
-    if (isWindowsBuild()) {
+    if (isCoreEndpointDisabled()) {
       return (
         <div>
           <Balance />
           <div className="text-center">
-            The Bitcoin wallet is not yet supported in our simple webapp,
+            The Bitcoin wallet is not yet supported in our webapp,
             but the feature is coming soon!
           </div>
         </div>

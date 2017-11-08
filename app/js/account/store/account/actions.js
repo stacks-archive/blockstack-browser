@@ -11,7 +11,7 @@ import { authorizationHeaderValue,
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode,
   getInsightUrl } from '../../../utils'
-import { isWindowsBuild } from '../../../utils/window-utils'
+import { isCoreEndpointDisabled } from '../../../utils/window-utils'
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
@@ -196,7 +196,7 @@ function storageIsConnected() {
 
 function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
-    if (isWindowsBuild()) {
+    if (isCoreEndpointDisabled()) {
       logger.debug('Mocking core wallet balance in webapp build')
       dispatch(updateCoreWalletBalance(0))
       return
@@ -223,7 +223,7 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
 
 function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
   return dispatch => {
-    if (isWindowsBuild()) {
+    if (isCoreEndpointDisabled()) {
       logger.debug('Mocking core wallet address in webapp build')
       dispatch(updateCoreWalletAddress('Not supported in simple webapp.'))
       return
@@ -254,7 +254,7 @@ function resetCoreWithdrawal() {
 function withdrawBitcoinFromCoreWallet(coreWalletWithdrawUrl, recipientAddress,
   coreAPIPassword, amount = null, paymentKey = null) {
   return dispatch => {
-    if (isWindowsBuild()) {
+    if (isCoreEndpointDisabled()) {
       dispatch(withdrawCoreBalanceError('Core wallet withdrawls not allowed in' +
                                         ' the simple webapp build'))
       return

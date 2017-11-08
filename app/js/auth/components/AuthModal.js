@@ -11,7 +11,7 @@ import {
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
 import { setCoreStorageConfig } from '../../utils/api-utils'
-import { isWindowsBuild } from '../../utils/window-utils'
+import { isCoreEndpointDisabled } from '../../utils/window-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes } from '../utils'
@@ -87,7 +87,6 @@ class AuthModal extends Component {
       decodedToken: null,
       storageConnected: this.props.api.storageConnected,
       processing: false,
-      windowsBuild: isWindowsBuild(),
       invalidScopes: false,
       sendEmail: false,
       blockchainId: null,
@@ -352,12 +351,12 @@ class AuthModal extends Component {
                        && decodedToken.payload.scopes
                        && !decodedToken.payload.scopes.includes('store_write'))
 
-    const windowsShortCircuit = (!appManifestLoading
-                                 && appManifest !== null
-                                 && !invalidScopes
-                                 && !noStorage
-                                 && isWindowsBuild())
-    if (windowsShortCircuit) {
+    const coreShortCircuit = (!appManifestLoading
+                              && appManifest !== null
+                              && !invalidScopes
+                              && !noStorage
+                              && isCoreEndpointDisabled())
+    if (coreShortCircuit) {
       return (
         <div className="">
           <Modal
@@ -373,7 +372,7 @@ class AuthModal extends Component {
             <div>
               <p>
                This application requires using Gaia storage, which is not supported yet 
-               in our simple webapp. Feature coming soon!
+               in our webapp. Feature coming soon!
               </p>
             </div>
           </Modal>

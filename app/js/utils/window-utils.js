@@ -4,9 +4,17 @@ export function openInNewTab(url) {
 }
 
 export function isWindowsBuild() {
-
   const isWindowsBuildCompileFlag = false
   return isWindowsBuildCompileFlag === true
+}
+
+export function isCoreEndpointDisabled() {
+  return isWindowsBuild() || isWebAppBuild()
+}
+
+export function isWebAppBuild() {
+  const isWebAppBuildCompileFlag = false
+  return isWebAppBuildCompileFlag === true
 }
 
 const mobileWindowWidth = 768
