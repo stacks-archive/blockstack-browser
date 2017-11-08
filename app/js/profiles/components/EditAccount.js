@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import Modal from 'react-modal'
 import InputGroup from '../../components/InputGroup'
 
 import { getWebAccountTypes } from '../../utils'
@@ -12,9 +11,8 @@ function mapStateToProps(state) {
   }
 }
 
-class EditAccountModal extends Component {
+class EditAccount extends Component {
   static propTypes = {
-    isOpen: PropTypes.bool,
     service: PropTypes.string,
     identifier: PropTypes.string,
     api: PropTypes.object.isRequired,
@@ -118,38 +116,10 @@ class EditAccountModal extends Component {
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     let webAccountType = webAccountTypes[this.props.service]
 
-    // const proofURLInput = () => {
-    //   if (this.props.service === 'instagram' || this.props.service === 'github'
-    //       || this.props.service === 'twitter' || this.props.service === 'facebook'
-    //       || this.props.service === 'linkedIn' || this.props.service === 'hackerNews') {
-    //     return <InputGroup 
-    //               name="proofUrl" 
-    //               label="Proof URL" 
-    //               data={this.state}
-    //               placeholder="Paste Proof URL here"
-    //               stopClickPropagation={true} 
-    //               onChange={this.onProofUrlChange} 
-    //               onBlur={event => this.props.onBlur(event, this.props.service)}
-    //               accessoryIcon={this.props.verified}
-    //               accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
-    //               disabled={false}
-    //             />
-    //   } else {
-    //     return <div></div>
-    //   }
-    // }
-
     if (webAccountType) {
       let accountServiceName = webAccountType.label
         return (
-          <Modal
-            isOpen={this.props.isOpen}
-            contentLabel=""
-            onRequestClose={this.props.onRequestClose}
-            shouldCloseOnOverlayClick={true}
-            style={{ overlay: { zIndex: 10 } }}
-            className="container-fluid social-account-modal"
-          >
+          <div>
             <div className={`profile-account ${verifiedClass}`} 
               onClick={this.handleClick}>
               <div className="heading m-b-30">
@@ -158,15 +128,10 @@ class EditAccountModal extends Component {
               </div>
 
               <div>
-{/*                <p>
-                  Enter your <span className="text-capitalize">{this.props.service} </span> 
-                  {this.getIdentifierType(this.props.service)}.
-                </p>
-*/}
                 <InputGroup 
                   key="input-group-identifier"
                   name="identifier" 
-                  label={this.capitalize(this.getIdentifierType(this.props.service))}
+                  placeholder={this.capitalize(this.getIdentifierType(this.props.service))}
                   data={this.state}
                   stopClickPropagation={true} 
                   onChange={this.onIdentifierChange} 
@@ -180,7 +145,7 @@ class EditAccountModal extends Component {
                 this.state.identifier)}>
               Save
             </button>
-          </Modal>
+          </div>
         )
     } else {
       return (
@@ -191,4 +156,4 @@ class EditAccountModal extends Component {
   }
 }
 
-export default connect(mapStateToProps, null)(EditAccountModal)
+export default connect(mapStateToProps, null)(EditAccount)

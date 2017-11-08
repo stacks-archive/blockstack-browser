@@ -99,11 +99,7 @@ class PGPAccountItem extends Component {
   }
 
   onClick = (e) => {
-    if (!this.props.placeholder && !this.props.editing) {
-
-    } else {
-      this.props.onClick(this.props.service)
-    }
+    this.props.onClick(this.props.service)
   }
 
   render() {

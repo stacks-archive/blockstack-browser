@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react'
 import InputGroup from '../../components/InputGroup'
 import { openInNewTab } from '../../utils'
 import ReactTooltip from 'react-tooltip'
+import Image from '../../components/Image'
+import { isMobile } from '../../utils'
 
 export const VERIFICATION_TWEET_LINK_URL_BASE = 'https://explorer.blockstack.org/address/'
 
@@ -37,20 +39,20 @@ class TwitterVerificationInfo extends Component {
       <div>
         <p>
           <span className="font-weight-bold">Step 2: </span>
-          Click the Tweet Verification button to post your proof to Twitter.
+          Click the Tweet Verification button to post your proof to Twitter.&nbsp;
+          <strong>Your tweet must be public!</strong>
         </p>
         <button className="btn btn-verify btn-twitter btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-twitter fa-lg" /> Tweet Verification
         </button>
         <p className="m-t-20">
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your tweet.
+          Paste the URL of your tweet below.
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -76,25 +78,41 @@ class FacebookVerificationInfo extends Component {
       <div>
         <p>
           <span className="font-weight-bold">Step 2: </span>
-          Copy and post the following text to your Facebook timeline.
-          &nbsp;<strong>Make sure your post is public!</strong>
         </p>
-        <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
-        </div>
         <button className="btn btn-verify btn-facebook btn-block" onClick={this.props.onPostVerificationButtonClick}>
-          <i className="fa fa-fw fa-facebook fa-lg" /> Post Verification to Facebook
+          <i className="fa fa-fw fa-facebook fa-lg" /> Open A Facebook Share Window
         </button>
         <p className="m-t-20">
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your post.
+          Paste this text in the message field
+        </p>
+        <div className="verification-quote">
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
+        </div>
+        <p>
+          <span className="font-weight-bold">Step 4: </span>
+          Set the post visibility to <strong>public</strong>, then share!
+        </p>
+        <Image
+          src="/images/proof-fb-public.png"
+          fallbackSrc=""
+          className="verification-image"
+        />
+        <p className="m-t-20">
+          <span className="font-weight-bold">Step 5: </span>
+          Paste the URL of your post below.
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -125,21 +143,26 @@ class GithubVerificationInfo extends Component {
           &nbsp;<strong>Create Public Gist.</strong>
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <button className="btn btn-verify btn-github btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-github fa-lg" /> Create Gist
         </button>
         <p className="m-t-20">
           <span className="font-weight-bold">Step 3: </span>
-          Paste the URL of your gist.
+          Paste the URL of your gist below.
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -170,8 +193,14 @@ class LinkedInVerificationInfo extends Component {
           Post the following text on your LinkedIn. Make sure your post is public!
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <button className="btn btn-verify btn-linkedin btn-block" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-linkedin fa-lg" /> Post Verification to LinkedIn
@@ -182,9 +211,8 @@ class LinkedInVerificationInfo extends Component {
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -215,8 +243,14 @@ class InstagramVerificationInfo extends Component {
           Post a photo to Instagram with the following caption.
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <p>
           <span className="font-weight-bold">Step 3: </span>
@@ -224,9 +258,8 @@ class InstagramVerificationInfo extends Component {
         </p>
         <InputGroup
           name="proofUrl"
-          label="Proof URL"
           data={this.props}
-          placeholder="Paste Proof URL here"
+          placeholder="Paste proof URL here"
           stopClickPropagation={true}
           onChange={this.props.onChange}
           accessoryIcon={this.props.verified}
@@ -255,8 +288,14 @@ class HackerNewsVerificationInfo extends Component {
           Copy the text below and add it to the about section in your Hacker News user profile.
         </p>
         <div className="verification-quote">
-          {this.props.verificationMessage}
-          <CopyToClipBoardButton />
+          <div className="row">
+            <div className="col-11">
+              {this.props.verificationMessage}
+            </div>
+            <div className="col-1">
+              {!isMobile() && <CopyToClipBoardButton />}
+            </div>
+          </div>
         </div>
         <button className="btn btn-verify btn-twitter btn-block m-b-20" onClick={this.props.onPostVerificationButtonClick}>
           <i className="fa fa-fw fa-hacker-news fa-lg" /> Go to Hacker News Profile
