@@ -53,10 +53,11 @@ div.profile-account .app-account-service {margin-left:10px;}
 .account-leave {opacity: 1;}
 .account-leave.account-leave-active {opacity: 0.01;transition: all 200ms ease-in-out}
 
+.social-account-edit{max-width:615px;margin:auto;padding:1rem 0px;}
 .verification-instructions-container {cursor:default;}
 .verification-instructions-heading {padding-left:15px;margin-top:1rem;margin-bottom:0.7rem;font-weight:600;}
 .verification-quote {color:#222222;padding:20px 60px 20px 20px;margin-bottom:1rem;background-color:#fafafa;border-radius:6px;font-size: smaller;}
-.verification-copy {padding:0;position:relative;left:455px;margin-top:-40px;}
+.verification-copy {padding:0;position:relative;}
 .form-control.verification-input {color:#000;background-color:rgba(0,0,0,0.4);border:1px solid rgba(0,0,0,0.4);}
 .verification-input::-webkit-input-placeholder {color:#fff;}
 .verification-image{max-width:380px}
@@ -608,6 +609,7 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 /* Special Home Screen event -- 1 App centering (319px and down) */
 @media (max-width:319px){
 	.app-box-wrap{margin:auto;}
+	.verification-image{max-width:300px}
 }
 
 /* Special Home Screen event -- 1 App centering (319px and down) */
@@ -615,6 +617,11 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 	.app-wrap{width:100%;padding:0;margin-top:1.25rem;}
 	.app-container{padding-left:5px;padding-right:5px;}
 	.app-box-wrap{width:90px;}
+}
+
+@media (max-width:768px) {
+	.verification-image{max-width:320px}
+	.form-control{font-size:16px;}
 }
 
 /* Small devices (tablets, 768px and up) */
