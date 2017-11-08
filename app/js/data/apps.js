@@ -118,6 +118,97 @@ const apps = {
       launchLink: 'https://dotpodcast.co/',
       developer: 'DotPodcast',
       status: 'in_progress'
+    }, {
+      name: 'Postly',
+      displayName: 'Postly',
+      description: 'The best way to share and discover content with friends.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-postly-256x256.png',
+        large: 'app-icon-postly-512x512.png'
+      },
+      website: 'https://www.postly.co/blockstack',
+      launchLink: 'https://www.postly.co/blockstack',
+      developer: 'Postly',
+      status: 'in_progress'
+    }, {
+      name: 'Arenaplay',
+      displayName: 'Arenaplay',
+      description: 'Games where players time is valued.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-arenaplay-256x256.png',
+        large: 'app-icon-arenaplay-512x512.png'
+      },
+      website: 'https://arenaplay.io/start',
+      launchLink: 'https://arenaplay.io/start',
+      developer: 'Arenaplay',
+      status: 'in_progress'
+    }, {
+      name: 'AMGiving',
+      displayName: 'AMGiving',
+      description: 'Creating transparency in charitable giving.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-amgiving-256x256.png',
+        large: 'app-icon-amgiving-512x512.png'
+      },
+      website: 'http://amgiving.io',
+      launchLink: 'http://amgiving.io',
+      developer: 'AMGiving',
+      status: 'in_progress'
+    }, {
+      name: 'Symmitree',
+      displayName: 'Symmitree',
+      description: 'Providing free connectivity to the displaced and deprived.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-symmitree-256x256.png',
+        large: 'app-icon-symmitree-512x512.png'
+      },
+      website: 'http://symmitree.com',
+      launchLink: 'http://symmitree.com',
+      developer: 'Symmitree',
+      status: 'in_progress'
+    }, {
+      name: 'Eder',
+      displayName: 'Eder',
+      description: 'A decentralized stash for your personal data.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-eder-256x256.png',
+        large: 'app-icon-eder-512x512.png'
+      },
+      website: 'http://eder.io',
+      launchLink: 'http://eder.io',
+      developer: 'Eder',
+      status: 'in_progress'
+    }, {
+      name: 'Portfolio Bounty',
+      displayName: 'Portfolio Bounty',
+      description: 'https://tokenportfolio.eventbrite.com.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-portfolio-bounty-256x256.png',
+        large: 'app-icon-portfolio-bounty-512x512.png'
+      },
+      website: 'https://tokenportfolio.eventbrite.com',
+      launchLink: 'https://tokenportfolio.eventbrite.com',
+      developer: 'Portfolio Bounty',
+      status: 'in_progress'
+    }, {
+      name: 'Souq',
+      displayName: 'Souq',
+      description: 'Project Management Platform.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-souq-256x256.png',
+        large: 'app-icon-souq-512x512.png'
+      },
+      website: 'http://beta.cryptocracy.io',
+      launchLink: 'http://beta.cryptocracy.io',
+      developer: 'Souq',
+      status: 'in_progress'
     }
   ]
 }
