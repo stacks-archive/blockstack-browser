@@ -61,7 +61,11 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress) {
     }
 
     if (tokenFileUrl) {
-      proxyFetch(tokenFileUrl)
+      fetch(tokenFileUrl)
+        .catch((error) => {
+          logger.error(`resolveZoneFileToProfile: error fetching token file without CORS proxy`, error)
+          return proxyFetch(tokenFileUrl)
+        })
         .then((response) => response.text())
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {

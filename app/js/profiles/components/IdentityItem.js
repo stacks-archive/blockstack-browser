@@ -18,6 +18,7 @@ class IdentityItem extends Component {
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
+    coreDisabled: PropTypes.bool,
     profileUrl: PropTypes.string.isRequired
   }
 
@@ -55,6 +56,14 @@ class IdentityItem extends Component {
             <div>This is your identity address.</div>
           </div>
         </ToolTip>
+        <ToolTip id="coreDisabled">
+          <div>
+            <div>
+              You cannot purchase usernames in the webapp right now.
+              Feature coming soon!
+            </div>
+          </div>
+        </ToolTip>
         <div>
           <div className="avatar-sm float-left" style={{ display: 'inline' }}>
             <Image
@@ -68,17 +77,29 @@ class IdentityItem extends Component {
               <li>
                 <p className="card-title">
                 {this.props.canAddUsername ?
-                  <a
-                    href="#"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      event.stopPropagation()
-                      this.props.router.push(`/profiles/i/add-username/${this.props.index}/search`)
-                    }}
-                  >
-                   Add username
-                  </a>
-                 :
+                  <div>
+                    {this.props.coreDisabled ?
+                      <span
+                        data-tip
+                        data-for="coreDisabled"
+                      >
+                        <i>Add username</i>
+                      </span>
+                    :
+                      <a
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          event.stopPropagation()
+                          this.props.router.push(
+                            `/profiles/i/add-username/${this.props.index}/search`)
+                        }}
+                      >
+                        Add username
+                      </a>
+                    }
+                  </div>
+                :
                   <span>
                     {this.props.username}
                     {this.props.pending ?

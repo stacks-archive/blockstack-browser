@@ -24,6 +24,8 @@ import {
 } from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
+import { isCoreEndpointDisabled } from '../utils/window-utils'
+
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/DefaultProfilePage.js')
@@ -526,6 +528,7 @@ class DefaultProfilePage extends Component {
     const identityIndex = this.props.defaultIdentity
     const identity = this.state.localIdentities[identityIndex]
     const person = new Person(identity.profile)
+    const coreDisabled = isCoreEndpointDisabled()
 
     if (identity.username) {
       identity.canAddUsername = false
@@ -734,6 +737,14 @@ class DefaultProfilePage extends Component {
             <div>Increase your trust level by verifying your social accounts.</div>
           </div>
         </ToolTip>
+        <ToolTip id="coreDisabled">
+          <div>
+            <div>
+              You cannot purchase usernames in the webapp
+              right now. Feature coming soon!
+            </div>
+          </div>
+        </ToolTip>
         <div>
 
           {!(isMobile() && 
@@ -798,14 +809,26 @@ class DefaultProfilePage extends Component {
                             />
                           </span>
                         </div>
+
                         <div className="text-center">
                           {identity.canAddUsername ?
-                            <Link
-                              to={`/profiles/i/add-username/${identityIndex}/search`}
-                              className="btn btn-outline-dark btn-pill btn-xs m-t-15 m-b-15"
-                            >
-                             Add a username
-                            </Link>
+                            <div className="text-center">
+                              {coreDisabled ?
+                                <span
+                                  data-tip
+                                  data-for="coreDisabled"
+                                >
+                                  Add a username
+                                </span>
+                              :
+                                <Link
+                                  to={`/profiles/i/add-username/${identityIndex}/search`}
+                                  className="btn btn-outline-dark btn-pill btn-xs m-t-15 m-b-15"
+                                >
+                                  Add a username
+                                </Link>
+                              }
+                            </div>
                           :
                             <div className="pro-card-domain-name text-center text-secondary m-t-0">
                               <span>{identity.username}</span>
