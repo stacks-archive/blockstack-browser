@@ -7,7 +7,7 @@ gulp.task('copyIndex', function() {
 
   gulp.src([config.sourceDir + 'index.html',
   config.sourceDir + 'favicon.ico',
-  config.sourceDir + '_redirects']).pipe(gulp.dest(config.buildDir));
+  config.sourceDir + 'netlify.toml']).pipe(gulp.dest(config.buildDir));
 
 
 });
