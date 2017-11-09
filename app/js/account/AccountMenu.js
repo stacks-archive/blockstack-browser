@@ -6,6 +6,8 @@ import { Link } from 'react-router'
 import PageHeader from '../components/PageHeader'
 import Navbar from '../components/Navbar'
 
+import { isWebAppBuild, registerWebProtocolHandler } from '../utils/window-utils'
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
@@ -19,6 +21,12 @@ class AccountMenu extends Component {
     super(props)
 
     this.state = { }
+    this.clickProtocolHandler = this.clickProtocolHandler.bind(this)
+  }
+
+  clickProtocolHandler(event){
+    event.preventDefault()
+    registerWebProtocolHandler()
   }
 
   render() {
@@ -30,16 +38,28 @@ class AccountMenu extends Component {
       { url: '/account/api', label: 'api settings' }
     ]
 
+    if (isWebAppBuild()) {
+      tabs.push( { url: '/account/protocolhandler', label: 'add protocol handler' } )
+    }
+
     return (
       <div>
         <div className="list-group">
           {tabs.map((tab, index) => {
             let className = 'list-group-item item-sidebar-primary'
-            return (
-              <Link key={index} to={tab.url} className={className}>
-                {tab.label}
-              </Link>
-            )
+            if (tab.url === '/account/protocolhandler') {
+              return (
+                <button key={index} className={className} onClick={this.registerWebProtocolHandler}>
+                  {tab.label}
+                </button>
+              )
+            } else {
+              return (
+                <Link key={index} to={tab.url} className={className}>
+                  {tab.label}
+                </Link>
+              )
+            }
           })}
         </div>
       </div>

@@ -14,7 +14,7 @@ import { isWebAppBuild } from '../utils/window-utils'
 import { PairBrowserView, LandingView,
   NewInternetView, RestoreView, DataControlView, EnterPasswordView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
-  EnterEmailView,
+  EnterEmailView, ConnectProtocolHandlerView,
   ConnectStorageView } from './components'
 
 
@@ -114,6 +114,8 @@ class WelcomeModal extends Component {
     this.showLandingView = this.showLandingView.bind(this)
     this.showNewInternetView = this.showNewInternetView.bind(this)
     this.showRestoreView = this.showRestoreView.bind(this)
+    this.showStoragePageView = this.showStoragePageView.bind(this)
+    this.showProtocolHandlerView = this.showProtocolHandlerView.bind(this)
     this.showNextView = this.showNextView.bind(this)
     this.showPreviousView = this.showPreviousView.bind(this)
     this.verifyPasswordAndCreateAccount = this.verifyPasswordAndCreateAccount.bind(this)
@@ -279,6 +281,22 @@ class WelcomeModal extends Component {
     })
   }
 
+  showStoragePageView(event)  {
+    if (event) {
+      event.preventDefault()
+    }
+
+    this.setPage(STORAGE_PAGE_VIEW)
+  }
+
+  showProtocolHandlerView(event)  {
+    if (event) {
+      event.preventDefault()
+    }
+
+    this.setPage(10)
+  }
+
   showNextView(event)  {
     logger.trace('showNextView')
 
@@ -320,7 +338,11 @@ class WelcomeModal extends Component {
       return
     }
     logger.debug('confirmIdentityKeyPhrase: user entered keychain phrase matches!')
-    this.showNextView()
+    if (isWebAppBuild()) {
+      this.showProtocolHandlerView()
+    } else {
+      this.showNextView()
+    }
   }
 
   updateAlert(alertStatus, alertMessage) {
@@ -454,6 +476,16 @@ class WelcomeModal extends Component {
               {
                 page === 3 ?
                   <EnterEmailView />
+                :
+                null
+              }
+              </div>
+              <div>
+              {
+                page === 10 ?
+                  <ConnectProtocolHandlerView
+                    showNextView={this.showStoragePageView}
+                  />
                 :
                 null
               }

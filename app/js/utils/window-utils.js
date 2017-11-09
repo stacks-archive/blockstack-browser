@@ -26,3 +26,11 @@ export function isMobile() {
     return false
   }
 }
+
+export function registerWebProtocolHandler() {
+  window.navigator.registerProtocolHandler(
+    'web+blockstack',
+    `${location.origin}/auth?authRequest=%s`,
+    'Blockstack handler'
+  )
+}
