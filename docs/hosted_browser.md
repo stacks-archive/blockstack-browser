@@ -3,8 +3,10 @@
 * Hosted version of the Blockstack application:
 * https://browser.blockstack.org
 
-The Blockstack Browser is an application which allows a user to create and manage an identity. This 
-identity is used to authenticate and provide user-controlled storage to decentralized web applications.
+The Blockstack Browser is an application which allows a user to create and manage a 
+decentralized Blockstack identity. This identity is used to authenticate and provide
+user-controlled storage to decentralized web applications.
+
 The Blockstack Browser is a gateway to a new decentralized internet.
 
 The user instantiates a private keychain, backed up with a 12-word phrase, and stored in the user's web
