@@ -59,7 +59,7 @@ class IdentityItem extends Component {
         <ToolTip id="coreDisabled">
           <div>
             <div>
-              You cannot purchase usernames in the webapp right now.
+              You cannot purchase usernames in this build.
               Feature coming soon!
             </div>
           </div>

@@ -13,6 +13,7 @@ const apps = {
       website: 'http://blockstack-todos.appartisan.com',
       launchLink: 'http://blockstack-todos.appartisan.com',
       developer: 'Larry Salibra',
+      storageRequired: true,
       status: 'user_ready'
     }, {
       name: 'Guild',
@@ -26,6 +27,7 @@ const apps = {
       website: 'http://www.guildblog.com',
       launchLink: 'http://www.guildblog.com',
       developer: 'Jay Hwang',
+      storageRequired: true,
       status: 'in_progress'
     }, {
       name: 'Ongaku Ryoho',
@@ -39,6 +41,7 @@ const apps = {
       website: 'http://www.ongakuryoho.com',
       launchLink: 'http://www.ongakuryoho.com',
       developer: '',
+      storageRequired: true,
       status: 'in_progress'
     }, {
       name: 'Hello, Blockstack',
@@ -209,6 +212,45 @@ const apps = {
       launchLink: 'http://beta.cryptocracy.io',
       developer: 'Souq',
       status: 'in_progress'
+    }, {
+      name: 'Coinstack A',
+      displayName: 'Coinstack A',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinstack-a-256x256.png',
+        large: 'app-icon-coinstack-a-512x512.png'
+      },
+      website: 'http://www.coinstack.one/',
+      launchLink: 'http://www.coinstack.one/',
+      developer: 'Coinstack A',
+      status: 'user_ready_token'
+    }, {
+      name: 'Coins',
+      displayName: 'Coins',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coins-256x256.png',
+        large: 'app-icon-coins-512x512.png'
+      },
+      website: 'http://use.coinsapp.co/',
+      launchLink: 'http://use.coinsapp.co/',
+      developer: 'Coins',
+      status: 'user_ready_token'
+    }, {
+      name: 'Blockportfolio',
+      displayName: 'Blockportfolio',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-blockportfolio-256x256.png',
+        large: 'app-icon-blockportfolio-512x512.png'
+      },
+      website: 'https://www.blockportfol.io/',
+      launchLink: 'https://www.blockportfol.io/',
+      developer: 'Blockportfolio',
+      status: 'user_ready_token'
     }
   ]
 }
