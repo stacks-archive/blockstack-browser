@@ -187,19 +187,6 @@ const apps = {
       developer: 'Eder',
       status: 'in_progress'
     }, {
-      name: 'Portfolio Bounty',
-      displayName: 'Portfolio Bounty',
-      description: 'https://tokenportfolio.eventbrite.com.',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-portfolio-bounty-256x256.png',
-        large: 'app-icon-portfolio-bounty-512x512.png'
-      },
-      website: 'https://tokenportfolio.eventbrite.com',
-      launchLink: 'https://tokenportfolio.eventbrite.com',
-      developer: 'Portfolio Bounty',
-      status: 'in_progress'
-    }, {
       name: 'Souq',
       displayName: 'Souq',
       description: 'Project Management Platform.',
@@ -212,6 +199,48 @@ const apps = {
       launchLink: 'http://beta.cryptocracy.io',
       developer: 'Souq',
       status: 'in_progress'
+    }, {
+      name: 'Coinstack',
+      displayName: 'Coinstack',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinstack-a-256x256.png',
+        large: 'app-icon-coinstack-a-512x512.png'
+      },
+      website: 'http://coinstack.one/',
+      launchLink: 'http://coinstack.one/',
+      developer: 'Coinstack',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Coins',
+      displayName: 'Coins',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coins-256x256.png',
+        large: 'app-icon-coins-512x512.png'
+      },
+      website: 'http://use.coinsapp.co/',
+      launchLink: 'http://use.coinsapp.co/',
+      developer: 'Coins',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Blockportfolio',
+      displayName: 'Blockportfolio',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-blockportfolio-256x256.png',
+        large: 'app-icon-blockportfolio-512x512.png'
+      },
+      website: 'https://www.blockportfol.io/',
+      launchLink: 'https://www.blockportfol.io/',
+      developer: 'Blockportfolio',
+      status: 'user_ready_token',
+      storageRequired: true
     }
   ]
 }
