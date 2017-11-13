@@ -28,7 +28,7 @@ const AppIcon = (props) => {
       <ToolTip id="coreDisabled">
         <div>
           <div>
-            This app requires Gaia storage, which is not supported in this build.
+            This app requires Gaia storage, which is not supported in the webapp build.
             Feature coming soon!
           </div>
         </div>
