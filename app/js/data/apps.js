@@ -212,8 +212,7 @@ const apps = {
       launchLink: 'http://beta.cryptocracy.io',
       developer: 'Souq',
       status: 'in_progress'
-    }
-    , {
+    }, {
       name: 'Coinstack A',
       displayName: 'Coinstack A',
       description: '',
@@ -226,8 +225,7 @@ const apps = {
       launchLink: 'http://www.coinstack.one/',
       developer: 'Coinstack A',
       status: 'in_progress'
-    }
-    , {
+    }, {
       name: 'Coins',
       displayName: 'Coins',
       description: '',
@@ -240,8 +238,7 @@ const apps = {
       launchLink: 'http://use.coinsapp.co/',
       developer: 'Coins',
       status: 'in_progress'
-    }
-    , {
+    }, {
       name: 'Coinstack B',
       displayName: 'Coinstack B',
       description: '',
