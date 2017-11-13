@@ -1,11 +1,11 @@
 ### The Blockstack Browser
 
-Hosted version of the application:
-https://browser.blockstack.org
+* Hosted version of the Blockstack application:
+* https://browser.blockstack.org
 
-The Blockstack Browser is an application which allows a user to create and manage an identity, 
-used to authenticate and provide user-controlled storage to decentralized web applications. This is a
-gateway to a new decentralized internet.
+The Blockstack Browser is an application which allows a user to create and manage an identity. This 
+identity is used to authenticate and provide user-controlled storage to decentralized web applications.
+The Blockstack Browser is a gateway to a new decentralized internet.
 
 The user instantiates a private keychain, backed up with a 12-word phrase, and stored in the user's web
 browser's localstorage encrypted with a user-provided password. This keychain is a master keychain for
@@ -44,3 +44,19 @@ wallets, this is not so surprising. However, it enables rapid development of man
 of applications in the cryptocurrency space (for example, a simple application wallet for a currency
 of your choice -- Larry Salibra demo'ed a three line receive wallet for Ethereum at the ETC summit: 
 https://twitter.com/larrysalibra/status/929660024988753921)
+
+### Authenticating with Storage Providers
+
+Our user experience currently requires that a user connect to our default storage provider. We host
+that storage service, however the system (called Gaia) can be deployed by anyone (see the `hub` directory in
+github.com/blockstack/gaia). This system allows authorized _writes_ to a connected storage backend, and then
+returns a public URL for servicing reads. By separating the logic for these two paths, we can employ standard
+improvements to the read path (e.g., CDNs), while supporting our own protocol for the write path. The storage
+system allows users to write to paths they own -- for example, my Blockstack profile is stored at:
+
+```
+https://gaia.blockstack.org/hub/15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx/0/profile.json
+```
+
+And my browser can write to this path by signing its request with the public key associated with that
+address (for more details on how an ECDSA public key can become an address, check out: https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
