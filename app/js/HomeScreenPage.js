@@ -146,6 +146,27 @@ class HomeScreenPage extends Component {
 
               <div className="app-section m-b-45">
                 <p className="app-section-heading">
+                  Token Portfolio Apps
+                </p>
+                <div className="app-container no-padding">
+                  {appList.apps.map((app) => {
+                    if (app.status === 'user_ready_token') {
+                      return (<AppIcon
+                        key={app.name}
+                        iconImage={app.appIcon.small}
+                        displayName={app.displayName}
+                        launchLink={app.launchLink}
+                        storageRequired={!!app.storageRequired}
+                      />)
+                    } else {
+                      return null
+                    } }
+                  )}
+                </div>
+              </div>
+
+              <div className="app-section m-b-45">
+                <p className="app-section-heading">
                   Apps-in-progress
                 </p>
                 <div className="app-container no-padding">

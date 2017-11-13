@@ -224,7 +224,7 @@ const apps = {
       website: 'http://www.coinstack.one/',
       launchLink: 'http://www.coinstack.one/',
       developer: 'Coinstack A',
-      status: 'in_progress'
+      status: 'user_ready_token'
     }, {
       name: 'Coins',
       displayName: 'Coins',
@@ -237,20 +237,20 @@ const apps = {
       website: 'http://use.coinsapp.co/',
       launchLink: 'http://use.coinsapp.co/',
       developer: 'Coins',
-      status: 'in_progress'
+      status: 'user_ready_token'
     }, {
-      name: 'Coinstack B',
-      displayName: 'Coinstack B',
+      name: 'Blockportfolio',
+      displayName: 'Blockportfolio',
       description: '',
       version: '1.0.0',
       appIcon: {
-        small: 'app-icon-coinstack-b-256x256.png',
-        large: 'app-icon-coinstack-b-512x512.png'
+        small: 'app-icon-blockportfolio-256x256.png',
+        large: 'app-icon-blockportfolio-512x512.png'
       },
-      website: 'https://heroku-node-coinstackapp.herokuapp.com/',
-      launchLink: 'https://heroku-node-coinstackapp.herokuapp.com/',
-      developer: 'Coinstack B',
-      status: 'in_progress'
+      website: 'https://www.blockportfol.io/',
+      launchLink: 'https://www.blockportfol.io/',
+      developer: 'Blockportfolio',
+      status: 'user_ready_token'
     }
   ]
 }
