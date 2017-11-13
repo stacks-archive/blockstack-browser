@@ -224,7 +224,8 @@ const apps = {
       website: 'http://coinstack.one/',
       launchLink: 'http://coinstack.one/',
       developer: 'Coinstack',
-      status: 'user_ready_token'
+      status: 'user_ready_token',
+      storageRequired: true,
     }, {
       name: 'Coins',
       displayName: 'Coins',
@@ -237,7 +238,8 @@ const apps = {
       website: 'http://use.coinsapp.co/',
       launchLink: 'http://use.coinsapp.co/',
       developer: 'Coins',
-      status: 'user_ready_token'
+      status: 'user_ready_token',
+      storageRequired: true,
     }
   ]
 }
