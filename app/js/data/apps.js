@@ -213,17 +213,17 @@ const apps = {
       developer: 'Souq',
       status: 'in_progress'
     }, {
-      name: 'Coinstack A',
-      displayName: 'Coinstack A',
+      name: 'Coinstack',
+      displayName: 'Coinstack',
       description: '',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-coinstack-a-256x256.png',
         large: 'app-icon-coinstack-a-512x512.png'
       },
-      website: 'http://www.coinstack.one/',
-      launchLink: 'http://www.coinstack.one/',
-      developer: 'Coinstack A',
+      website: 'http://coinstack.one/',
+      launchLink: 'http://coinstack.one/',
+      developer: 'Coinstack',
       status: 'user_ready_token'
     }, {
       name: 'Coins',
@@ -237,19 +237,6 @@ const apps = {
       website: 'http://use.coinsapp.co/',
       launchLink: 'http://use.coinsapp.co/',
       developer: 'Coins',
-      status: 'user_ready_token'
-    }, {
-      name: 'Blockportfolio',
-      displayName: 'Blockportfolio',
-      description: '',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-blockportfolio-256x256.png',
-        large: 'app-icon-blockportfolio-512x512.png'
-      },
-      website: 'https://www.blockportfol.io/',
-      launchLink: 'https://www.blockportfol.io/',
-      developer: 'Blockportfolio',
       status: 'user_ready_token'
     }
   ]
