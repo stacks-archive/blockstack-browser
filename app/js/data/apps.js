@@ -212,7 +212,7 @@ const apps = {
       launchLink: 'http://coinstack.one/',
       developer: 'Coinstack',
       status: 'user_ready_token',
-      storageRequired: true,
+      storageRequired: true
     }, {
       name: 'Coins',
       displayName: 'Coins',
@@ -226,7 +226,7 @@ const apps = {
       launchLink: 'http://use.coinsapp.co/',
       developer: 'Coins',
       status: 'user_ready_token',
-      storageRequired: true,
+      storageRequired: true
     }, {
       name: 'Blockportfolio',
       displayName: 'Blockportfolio',
@@ -240,7 +240,7 @@ const apps = {
       launchLink: 'https://www.blockportfol.io/',
       developer: 'Blockportfolio',
       status: 'user_ready_token',
-      storageRequired: true,
+      storageRequired: true
     }
   ]
 }
