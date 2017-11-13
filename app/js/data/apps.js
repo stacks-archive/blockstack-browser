@@ -213,6 +213,48 @@ const apps = {
       developer: 'Souq',
       status: 'in_progress'
     }
+    , {
+      name: 'Coinstack A',
+      displayName: 'Coinstack A',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinstack-a-256x256.png',
+        large: 'app-icon-coinstack-a-512x512.png'
+      },
+      website: 'http://www.coinstack.one/',
+      launchLink: 'http://www.coinstack.one/',
+      developer: 'Coinstack A',
+      status: 'in_progress'
+    }
+    , {
+      name: 'Coins',
+      displayName: 'Coins',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coins-256x256.png',
+        large: 'app-icon-coins-512x512.png'
+      },
+      website: 'http://use.coinsapp.co/',
+      launchLink: 'http://use.coinsapp.co/',
+      developer: 'Coins',
+      status: 'in_progress'
+    }
+    , {
+      name: 'Coinstack B',
+      displayName: 'Coinstack B',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinstack-b-256x256.png',
+        large: 'app-icon-coinstack-b-512x512.png'
+      },
+      website: 'https://heroku-node-coinstackapp.herokuapp.com/',
+      launchLink: 'https://heroku-node-coinstackapp.herokuapp.com/',
+      developer: 'Coinstack B',
+      status: 'in_progress'
+    }
   ]
 }
 
