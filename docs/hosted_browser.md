@@ -3,7 +3,7 @@
 * Hosted version of the Blockstack application:
 * https://browser.blockstack.org
 
-The Blockstack Browser is an application which allows a user to create and manage a 
+The Blockstack Browser is an application which allows a user to create and manage a
 decentralized Blockstack identity. This identity is used to authenticate and provide
 user-controlled storage to decentralized web applications.
 
@@ -12,8 +12,8 @@ The Blockstack Browser is a gateway to a new decentralized internet.
 The user instantiates a private keychain, backed up with a 12-word phrase, and stored in the user's web
 browser's localstorage encrypted with a user-provided password. This keychain is a master keychain for
 generating identity addresses which can own Blockstack names (a decentralized naming protocol implemented
-on top of a virtual blockchain -- see github.com/blockstack/virtualchain). Names in this system are indexed
-by the Blockstack core (see github.com/blockstack/blockstack-core)
+on top of a virtual blockchain -- see [github.com/blockstack/virtualchain](https://github.com/blockstack/virtualchain)). Names in this system are indexed
+by the Blockstack core (see [github.com/blockstack/blockstack-core](https://github.com/blockstack/blockstack-core))
 
 The Browser supports registering Blockstack names via communication with a local blockstack-core node. Our
 macOS app sets up this system automatically for users. For Windows users and our hosted version of the Browser,
@@ -44,7 +44,7 @@ identity addresses. But in addition, each application that a user signs into als
 key, derived from the user's master key. For people familiar with Bitcoin's hierarchical derivation
 wallets, this is not so surprising. However, it enables rapid development of many different kinds
 of applications in the cryptocurrency space (for example, a simple application wallet for a currency
-of your choice -- Larry Salibra demo'ed a three line receive wallet for Ethereum at the ETC summit: 
+of your choice -- Larry Salibra demo'ed a three line receive wallet for Ethereum at the ETC summit:
 https://twitter.com/larrysalibra/status/929660024988753921)
 
 ### Authenticating with Storage Providers
@@ -62,3 +62,7 @@ https://gaia.blockstack.org/hub/15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx/0/profile.jso
 
 And my browser can write to this path by signing its request with the public key associated with that
 address (for more details on how an ECDSA public key can become an address, check out: https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
+
+We think the [hosted version of the Blockstack Browser](https://browser.blockstack.org) makes it significantly easier for a person to take her first step into the new internet for decentralized apps by allowing her to get started with having to install any software on her computer.
+
+[Try it out](https://browser.blockstack.org) and [let us know what you think](https://twitter.com/blockstack)!
