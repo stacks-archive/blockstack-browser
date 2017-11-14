@@ -1,13 +1,16 @@
 ### The Blockstack Browser
 
+Blockstack is a new internet for decentralized apps. It resuses the transport layer and below of the traditional internet and focuses on decentralizing the application layer (Domain Name System, Public-key Infrastructure, auth protocols, data storage).
+
+The Blockstack network has been operational for years and the best way to experience it is by using the Blockstack Browser. More specifically, there is a hosted version that quickly gives a preview:
+
 * Hosted version of the Blockstack application:
 * https://browser.blockstack.org
 
-The Blockstack Browser is an application which allows a user to create and manage a
-decentralized Blockstack identity. This identity is used to authenticate and provide
-user-controlled storage to decentralized web applications.
+We recommend that everyone should download and install the Blockstack Browser for any serious use outside of a quick preview.
 
-The Blockstack Browser is a gateway to a new decentralized internet.
+You can think of the Blockstack Browser a "gateway" to a new internet for decentralized apps. The Blockstack Browser is an application which allows a user to create and manage a decentralized Blockstack identity. This identity is used to authenticate and provide
+user-controlled storage to decentralized web applications.
 
 The user instantiates a private keychain, backed up with a 12-word phrase, and stored in the user's web
 browser's localstorage encrypted with a user-provided password. This keychain is a master keychain for
@@ -63,6 +66,6 @@ https://gaia.blockstack.org/hub/15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx/0/profile.jso
 And my browser can write to this path by signing its request with the public key associated with that
 address (for more details on how an ECDSA public key can become an address, check out: https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
 
-We think the [hosted version of the Blockstack Browser](https://browser.blockstack.org) makes it significantly easier for a person to take her first step into the new internet for decentralized apps by allowing her to get started with having to install any software on her computer.
+We think the [hosted version of the Blockstack Browser](https://browser.blockstack.org) makes it significantly easier for a person to take her first step into the new internet for decentralized apps by allowing her to get started without having to install any software on her computer.
 
 [Try it out](https://browser.blockstack.org) and [let us know what you think](https://twitter.com/blockstack)!
