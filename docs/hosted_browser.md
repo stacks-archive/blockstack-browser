@@ -1,6 +1,6 @@
 ### The Blockstack Browser
 
-Blockstack is a new internet for decentralized apps. It reuses the transport layer and below of the traditional internet and focuses on decentralizing the application layer (Domain Name System, Public-key Infrastructure, auth protocols, data storage).
+Blockstack is a new internet for decentralized apps. It reuses the transport layer, and below, of the traditional internet and focuses on decentralizing the application layer (Domain Name System, Public-key Infrastructure, auth protocols, data storage).
 
 The Blockstack network has been operational for years and the best way to experience it is by using the Blockstack Browser. More specifically, there is a hosted version that quickly gives a preview:
 
@@ -9,7 +9,7 @@ The Blockstack network has been operational for years and the best way to experi
 
 We recommend that everyone should [download and install the Blockstack Browser](https://blockstack.org/install) for any serious use outside of a quick preview.
 
-You can think of the Blockstack Browser a "gateway" to a new internet for decentralized apps. The Blockstack Browser is an application which allows a user to create and manage a decentralized Blockstack identity. This identity is used to authenticate and provide
+You can think of the Blockstack Browser as a "gateway" to a new internet for decentralized apps. The Blockstack Browser is an application which allows a user to create and manage a decentralized Blockstack identity. This identity is used to authenticate and provide
 user-controlled storage to decentralized web applications.
 
 The user instantiates a private keychain, backed up with a 12-word phrase, and stored in the user's web
