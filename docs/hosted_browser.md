@@ -62,3 +62,7 @@ https://gaia.blockstack.org/hub/15GAGiT2j2F1EzZrvjk3B8vBCfwVEzQaZx/0/profile.jso
 
 And my browser can write to this path by signing its request with the public key associated with that
 address (for more details on how an ECDSA public key can become an address, check out: https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses)
+
+We think the [hosted version of the Blockstack Browser](https://browser.blockstack.org) makes it significantly easier for a person to take her first step into the new internet for decentralized apps by allowing her to get started with having to install any software on her computer.
+
+[Try it out](https://browser.blockstack.org) and [let us know what you think](https://twitter.com/blockstack)!
