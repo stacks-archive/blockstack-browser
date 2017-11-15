@@ -31,7 +31,7 @@ class ProfileCompletion extends Component {
                 </div>
               </div>
               <div className="profile-completion-sub m-t-10">
-                Complete your Blockstack ID by adding a verified social account.
+                Complete your Blockstack ID by adding your name and a verified social account.
               </div>
             </div>
           </div>
