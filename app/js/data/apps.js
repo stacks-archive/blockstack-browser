@@ -200,8 +200,8 @@ const apps = {
       developer: 'Souq',
       status: 'in_progress'
     }, {
-      name: 'Coinstack',
-      displayName: 'Coinstack',
+      name: 'CoinStack',
+      displayName: 'CoinStack',
       description: '',
       version: '1.0.0',
       appIcon: {
@@ -210,7 +210,7 @@ const apps = {
       },
       website: 'http://coinstack.one/',
       launchLink: 'http://coinstack.one/',
-      developer: 'Coinstack',
+      developer: 'CoinStack',
       status: 'user_ready_token',
       storageRequired: true
     }, {
