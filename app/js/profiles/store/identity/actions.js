@@ -18,6 +18,7 @@ import { AccountActions } from '../../../account/store/account'
 import { isWebAppBuild } from '../../../utils/window-utils'
 
 
+
 import type { Dispatch } from 'redux'
 
 import log4js from 'log4js'
@@ -402,7 +403,7 @@ function fetchPublicIdentity(lookupUrl: string, username: string) {
 }
 
 function broadcastZoneFileUpdate(zoneFileUrl: string, coreAPIPassword: string,
-  name: string, keypair: {key: string}, zoneFile: string) {
+  name: string, keypair: {key: string}, zoneFile: string, paymentKey: string) {
   logger.trace('broadcastZoneFileUpdate: entering')
   return (dispatch: Dispatch<*>): Promise<*> => {
     dispatch(broadcastingZoneFileUpdate(name))
@@ -414,6 +415,8 @@ function broadcastZoneFileUpdate(zoneFileUrl: string, coreAPIPassword: string,
     // and https://github.com/blockstack/blockstack-browser/issues/607
     const compressedPublicKeySuffix = '01'
     const coreFormatOwnerKey = `${keypair.key}${compressedPublicKeySuffix}`
+    const key = `${paymentKey}${compressedPublicKeySuffix}`
+
     const url = zoneFileUrl.replace('{name}', name)
     const requestHeaders = {
       Accept: 'application/json',
@@ -423,7 +426,8 @@ function broadcastZoneFileUpdate(zoneFileUrl: string, coreAPIPassword: string,
     const ownerKey = coreFormatOwnerKey
     const requestBody = JSON.stringify({
       owner_key: ownerKey,
-      zonefile: zoneFile
+      zonefile: zoneFile,
+      payment_key: key
     })
     logger.debug(`broadcastZoneFileUpdate: PUT to ${url}`)
     return fetch(url,

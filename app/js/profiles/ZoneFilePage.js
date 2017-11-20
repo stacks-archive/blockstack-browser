@@ -3,9 +3,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import Alert from '../components/Alert'
+import InputGroup from '../components/InputGroup'
+
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
-import { findAddressIndex } from '../utils'
+import { decryptBitcoinPrivateKey } from '../utils'
 import AdvancedSidebar from './components/AdvancedSidebar'
 
 
@@ -19,11 +21,11 @@ function mapStateToProps(state) {
     identityAddresses: state.account.identityAccount.addresses,
     identityKeypairs: state.account.identityAccount.keypairs,
     localIdentities: state.profiles.identity.localIdentities,
-    namesOwned: state.profiles.identity.namesOwned,
     zoneFileUrl: state.settings.api.zoneFileUrl,
-    currentIdentity: state.profiles.identity.current,
+    publicIdentities: state.profiles.identity.publicIdentities,
     coreAPIPassword: state.settings.api.coreAPIPassword,
-    zoneFileUpdates: state.profiles.identity.zoneFileUpdates
+    zoneFileUpdates: state.profiles.identity.zoneFileUpdates,
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase
   }
 }
 
@@ -33,30 +35,42 @@ function mapDispatchToProps(dispatch) {
 
 class ZoneFilePage extends Component {
   static propTypes = {
-    currentIdentity: PropTypes.object.isRequired,
+    publicIdentities: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
-    localIdentities: PropTypes.object.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     nameLookupUrl: PropTypes.string.isRequired,
-    namesOwned: PropTypes.array.isRequired,
-    fetchCurrentIdentity: PropTypes.func.isRequired,
+    fetchPublicIdentity: PropTypes.func.isRequired,
     routeParams: PropTypes.object.isRequired,
     zoneFileUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
     broadcastZoneFileUpdate: PropTypes.func.isRequired,
-    zoneFileUpdates: PropTypes.object.isRequired
+    zoneFileUpdates: PropTypes.array.isRequired,
+    encryptedBackupPhrase: PropTypes.string.isRequired
   }
 
   constructor(props) {
     super(props)
-    const currentIdentity = props.currentIdentity
+    const identityIndex = props.routeParams.index
+    const currentLocalIdentity = props.localIdentities[identityIndex]
+    const username = currentLocalIdentity.username
+    const currentPublicIdentity = props.publicIdentities[username]
+    let zoneFile = null
+    if (currentPublicIdentity) {
+      zoneFile = currentPublicIdentity.zoneFile
+    }
+
     this.state = {
-      zoneFile: currentIdentity.zoneFile,
+      currentLocalIdentity,
+      currentPublicIdentity,
+      username,
+      zoneFile,
       agreed: false,
       alerts: [],
       clickedBroadcast: false,
       disabled: false,
-      edited: false
+      edited: false,
+      password: ''
     }
     this.onToggle = this.onToggle.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
@@ -68,24 +82,28 @@ class ZoneFilePage extends Component {
 
   componentWillMount() {
     logger.trace('componentWillMount')
-    const name = this.props.routeParams.index
-    this.props.fetchCurrentIdentity(
+    this.props.fetchPublicIdentity(
       this.props.nameLookupUrl,
-      name
+      this.state.username
     )
     this.displayAlerts(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     logger.trace('componentWillReceiveProps')
-    const currentIdentity = nextProps.currentIdentity
-    const zoneFile = currentIdentity.zoneFile
-    if (zoneFile && !nextProps.edited) {
-      this.setState({
-        zoneFile
-      })
-    } else {
-      logger.error('componentWillReceiveProps: no zone file!')
+    const currentPublicIdentity = nextProps.publicIdentities[this.state.username]
+    this.setState({
+      currentPublicIdentity
+    })
+    if (currentPublicIdentity) {
+      const zoneFile = currentPublicIdentity.zoneFile
+      if (zoneFile && !nextProps.edited) {
+        this.setState({
+          zoneFile
+        })
+      } else {
+        logger.error('componentWillReceiveProps: no zone file!')
+      }
     }
     this.displayAlerts(nextProps)
   }
@@ -104,8 +122,8 @@ class ZoneFilePage extends Component {
   }
 
   displayAlerts(props) {
-    const name = props.routeParams.index
-    const updateState = props.zoneFileUpdates[name]
+    const identityIndex = props.routeParams.index
+    const updateState = props.zoneFileUpdates[identityIndex]
     if (updateState && this.state.clickedBroadcast) {
       if (updateState.error) {
         this.updateAlert('danger', updateState.error)
@@ -130,11 +148,17 @@ class ZoneFilePage extends Component {
   reset(event) {
     logger.trace('reset')
     event.preventDefault()
+
+    let zoneFile = null
+    if (this.state.currentPublicIdentity) {
+      zoneFile = this.state.currentPublicIdentity.zoneFile
+    }
     this.setState({
       clickedBroadcast: false,
-      zoneFile: this.props.currentIdentity.zoneFile,
+      zoneFile,
       edited: false,
-      alerts: []
+      alerts: [],
+      password: ''
     })
   }
 
@@ -153,99 +177,118 @@ class ZoneFilePage extends Component {
       disabled: true,
       edited: true
     })
-    const name = this.props.routeParams.index
-    const ownerAddress = this.props.localIdentities[name].ownerAddress
-    const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
-    const keypair = this.props.identityKeypairs[addressIndex]
-    logger.debug(`updateZoneFile: using key with index ${addressIndex}`)
-    this.props.broadcastZoneFileUpdate(this.props.zoneFileUrl,
-      this.props.coreAPIPassword, name, keypair, this.state.zoneFile)
+    const username = this.state.username
+    const identityIndex = this.props.routeParams.index
+    const keypair = this.props.identityKeypairs[identityIndex]
+    const password = this.state.password
+    const encryptedBackupPhrase = this.props.encryptedBackupPhrase
+    logger.debug(`updateZoneFile: using key with index ${identityIndex}`)
+    decryptBitcoinPrivateKey(password, encryptedBackupPhrase)
+    .then((paymentKey) => {
+      this.props.broadcastZoneFileUpdate(this.props.zoneFileUrl,
+      this.props.coreAPIPassword, username, keypair, this.state.zoneFile, paymentKey)
+    })
   }
 
   render() {
     const agreed = this.state.agreed
     const zoneFile = this.state.zoneFile
-    const name = this.props.routeParams.index
+    const username = this.state.username
     return (
       <div className="card-list-container profile-content-wrapper">
-        <div>
-          <div className="vertical-split-content">
-            <div className="row">
-              <div className="col-md-3 sidebar-list">
-                <AdvancedSidebar activeTab="zone-file" name={name} />
-              </div>
-              <div className="col-md-7">
-                <Link to={`/profiles/${name}/local`}>&lt; Back </Link>
-                <h1 className="h1-modern">
-                  Update {name} zone file
-                </h1>
-                {
-                  this.state.alerts.map((alert, index) =>
-                     (
-                    <Alert key={index} message={alert.message} status={alert.status} />
+        {username ?
+          <div>
+            <div className="vertical-split-content">
+              <div className="row">
+                <div className="col-md-3 sidebar-list">
+                  <AdvancedSidebar activeTab="zone-file" name={name} />
+                </div>
+                <div className="col-md-7">
+                  <Link to={`/profiles/${name}/local`}>&lt; Back </Link>
+                  <h1 className="h1-modern">
+                    Update {username} zone file
+                  </h1>
+                  {
+                    this.state.alerts.map((alert, index) =>
+                       (
+                      <Alert key={index} message={alert.message} status={alert.status} />
+                      )
                     )
-                  )
-                }
-                <p>
-                Updating your zone file is an advanced feature that can break
-                your Blockstack name and profile. It requires broadcasting a
-                transaction on Bitcoin network and costs Bitcoin.
-                </p>
-                <form
-                  className="form-check"
-                  onSubmit={this.updateZoneFile}
-                  disabled={this.state.disabled}
-                >
-                  <textarea
-                    className="form-control"
-                    name="zoneFile"
-                    value={zoneFile}
-                    onChange={this.onValueChange}
-                    required
-                    rows={5}
+                  }
+                  <p>
+                  Updating your zone file is an advanced feature that can break
+                  your Blockstack name and profile. It requires broadcasting a
+                  transaction on Bitcoin network and costs Bitcoin.
+                  </p>
+                  <form
+                    className="form-check"
+                    onSubmit={this.updateZoneFile}
                     disabled={this.state.disabled}
-                  />
-                  <fieldset>
-                    <label
-                      className="form-check-label"
-                      style={{
-                        fontSize: 'inherit',
-                        marginBottom: '1em',
-                        marginTop: '1em',
-                        textTransform: 'none'
-                      }}
-                    >
-                      <input
-                        name="agreed"
-                        checked={agreed}
-                        onChange={this.onToggle}
-                        type="checkbox"
-                      />
-                      &nbsp;I understand this could break my Blockstack
-                      name and will cost me money.
-                    </label>
-                  </fieldset>
+                  >
+                    <textarea
+                      className="form-control"
+                      name="zoneFile"
+                      value={zoneFile}
+                      onChange={this.onValueChange}
+                      required
+                      rows={5}
+                      disabled={this.state.disabled}
+                    />
+                    <InputGroup
+                      data={this.state}
+                      onChange={this.onValueChange}
+                      name="password"
+                      label="Password"
+                      placeholder="Password"
+                      type="password"
+                      required
+                    />
+                    <fieldset>
+                      <label
+                        className="form-check-label"
+                        style={{
+                          fontSize: 'inherit',
+                          marginBottom: '1em',
+                          marginTop: '1em',
+                          textTransform: 'none'
+                        }}
+                      >
+                        <input
+                          name="agreed"
+                          checked={agreed}
+                          onChange={this.onToggle}
+                          type="checkbox"
+                        />
+                        &nbsp;I understand this could break my Blockstack
+                        name and will cost me money.
+                      </label>
+                    </fieldset>
 
-                  <button
-                    className="btn btn-sm btn-primary"
-                    type="submit"
-                    disabled={!agreed || this.state.disabled}
-                  >
-                    Broadcast update
-                  </button>
-                  <button
-                    className="btn btn-sm btn-tertiary"
-                    onClick={this.reset}
-                    disabled={this.state.disabled}
-                    title="Reset your edits to the current zone file."
-                  >
-                    Reset
-                  </button>
-                </form>
+                    <button
+                      className="btn btn-sm btn-primary"
+                      type="submit"
+                      disabled={!agreed || this.state.disabled}
+                    >
+                      Broadcast update
+                    </button>
+                    <button
+                      className="btn btn-sm btn-tertiary"
+                      onClick={this.reset}
+                      disabled={this.state.disabled}
+                      title="Reset your edits to the current zone file."
+                    >
+                      Reset
+                    </button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        :
+          <div>
+            <h3>You need to have a username to update your zone file.</h3>
+          </div>
+        }
       </div>
     )
   }
