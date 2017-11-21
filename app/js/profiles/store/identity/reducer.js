@@ -3,7 +3,7 @@ import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 
 const initialState = {
   default: 0, // persist
-  localIdentities: [], 
+  localIdentities: [],
   publicIdentities: {},
   nameTransfers: [],
   zoneFileUpdates: [],

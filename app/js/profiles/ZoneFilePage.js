@@ -8,7 +8,6 @@ import InputGroup from '../components/InputGroup'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
 import { decryptBitcoinPrivateKey } from '../utils'
-import AdvancedSidebar from './components/AdvancedSidebar'
 
 
 import log4js from 'log4js'
@@ -45,7 +44,7 @@ class ZoneFilePage extends Component {
     zoneFileUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
     broadcastZoneFileUpdate: PropTypes.func.isRequired,
-    zoneFileUpdates: PropTypes.array.isRequired,
+    zoneFileUpdates: PropTypes.object.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired
   }
 
@@ -200,11 +199,11 @@ class ZoneFilePage extends Component {
           <div>
             <div className="vertical-split-content">
               <div className="row">
-                <div className="col-md-3 sidebar-list">
-                  <AdvancedSidebar activeTab="zone-file" name={name} />
-                </div>
                 <div className="col-md-7">
-                  <Link to={`/profiles/${name}/local`}>&lt; Back </Link>
+                  <Link
+                    to="/profiles/i/all"
+                    className="btn btn-outline-dark btn-pill btn-sm default"
+                  >&lt; Back </Link>
                   <h1 className="h1-modern">
                     Update {username} zone file
                   </h1>
