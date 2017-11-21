@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
 
-const registrationUrl = 'https://www.blockstack.com/register-from-blockstack-browser'
+const registrationUrl = 'https://blockstack.com/register-from-blockstack-browser'
 
 class ProfileCompletion extends Component {
   static propTypes = {
