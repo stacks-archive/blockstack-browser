@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CORS Proxy test</title>
+</head>
+<body>
+  <h1>CORS Proxy test</h1>
+
+  <div id="example-1">
+    <h2>Example 1: try loading /test.json from different host</h2>
+    <pre>var url = 'http://127.0.0.1:<%= testPort %>/test.json'
+var request = new XMLHttpRequest();
+request.addEventListener('load', function () {
+  document.querySelector('#example-1 .result').textContent = 'Success'
+})
+request.addEventListener('error', function () {
+  document.querySelector('#example-1 .result').textContent = 'Error'
+})
+request.open('get', url, true)
+request.setRequestHeader('Content-Type', 'application/json')
+request.send()</pre>
+
+    <p><strong>Result: </strong> <var class="result"></var></p>
+  </div>
+
+  <div id="example-2">
+    <h2>Example 2: try loading /test.json from different host via proxy</h2>
+    <pre>var url = 'http://localhost:<%= proxyPort %>/127.0.0.1:<%= testPort %>/test.json'
+var request = new XMLHttpRequest();
+request.addEventListener('load', function () {
+  document.querySelector('#example-2 .result').textContent = 'Success'
+})
+request.addEventListener('error', function () {
+  document.querySelector('#example-2 .result').textContent = 'Error'
+})
+request.open('get', url, true)
+request.setRequestHeader('Content-Type', 'application/json')
+request.send()</pre>
+
+    <p><strong>Result: </strong> <var class="result"></var></p>
+  </div>
+
+  <script>
+  eval(document.querySelector('#example-1 pre').textContent)
+  eval(document.querySelector('#example-2 pre').textContent)
+  </script>
+</body>
+</html>

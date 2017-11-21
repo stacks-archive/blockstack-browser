@@ -1,0 +1,18 @@
+sudo: false
+language: node_js
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
+node_js:
+  - '6'
+before_install:
+  - npm i -g npm@^3.0.0
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+script: TEST_CLIENT=selenium:firefox npm test
+before_script:
+  - npm prune
+after_success:
+  - npm run semantic-release

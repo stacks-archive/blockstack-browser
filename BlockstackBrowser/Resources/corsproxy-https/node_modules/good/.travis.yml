@@ -1,0 +1,25 @@
+sudo: false
+language: node_js
+node_js:
+    - "0.10"
+    - "0.12"
+    - "4"
+    - "4.0"
+env:
+    - HAPI_VERSION="8"
+    - HAPI_VERSION="9"
+    - HAPI_VERSION="10"
+    - HAPI_VERSION="11"
+install:
+    - npm install
+    - npm install hapi@$HAPI_VERSION
+matrix:
+    exclude:
+    - node_js: "0.10"
+      env: HAPI_VERSION="10"
+    - node_js: "0.12"
+      env: HAPI_VERSION="10"
+    - node_js: "0.10"
+      env: HAPI_VERSION="11"
+    - node_js: "0.12"
+      env: HAPI_VERSION="11"
