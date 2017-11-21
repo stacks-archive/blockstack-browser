@@ -252,7 +252,7 @@ class WelcomeModal extends Component {
       password,
       restored: true
     })
-    this.props.initializeWallet(password, identityKeyPhrase)
+    return this.props.initializeWallet(password, identityKeyPhrase)
   }
 
   showLandingView(event) {
