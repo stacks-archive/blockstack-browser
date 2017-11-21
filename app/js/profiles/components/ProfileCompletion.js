@@ -9,6 +9,7 @@ class ProfileCompletion extends Component {
   }
 
   render() {
+    console.log(this.props.completePct)
     const pct = this.props.completePct*100
     return (
       <div className="container-fluid p-0 m-t-25">
@@ -39,7 +40,7 @@ class ProfileCompletion extends Component {
                 Once complete, you'll be able to register 
                 for the Blockstack Token Sale Voucher Wait List.
               </div>
-              {pct !== 100 ?
+              {pct === 100 ?
                 <a className="btn btn-light-primary btn-block m-t-30 m-b-15" href={registrationUrl}>Login with Blockstack</a>
                 :
                 <a className="btn btn-block disabled btn-primary-disabled m-t-30 m-b-15" href="/">Login with Blockstack</a>

@@ -334,13 +334,13 @@ export function calculateProfileCompleteness(profile, verifications) {
     complete++
   }
 
-  if (profile.description && profile.description.length > 0) {
-    complete++
-  }
+  // if (profile.description && profile.description.length > 0) {
+  //   complete++
+  // }
 
-  if (profile.image && profile.image.length > 0) {
-    complete++
-  }
+  // if (profile.image && profile.image.length > 0) {
+  //   complete++
+  // }
 
   complete += Math.min(calculateTrustLevel(verifications), maxVerificationItems)
 
