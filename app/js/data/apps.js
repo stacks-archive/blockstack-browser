@@ -70,6 +70,19 @@ const apps = {
       developer: 'Blockstack PBC',
       status: 'user_ready'
     }, {
+      name: 'Coinfolio',
+      displayName: 'Coinfolio',
+      description: 'Coinfolio',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinfolio-256x256.png',
+        large: 'app-icon-coinfolio-1024x1024.png'
+      },
+      website: 'http://coinfolio-app.herokuapp.com/',
+      launchLink: 'http://coinfolio-app.herokuapp.com/',
+      developer: 'Coinfolio',
+      status: 'user_ready'
+    }, {
       name: 'Casa',
       displayName: 'Casa',
       description: 'Open source home sharing protocol.',
@@ -187,19 +200,6 @@ const apps = {
       developer: 'Eder',
       status: 'in_progress'
     }, {
-      name: 'Portfolio Bounty',
-      displayName: 'Portfolio Bounty',
-      description: 'https://tokenportfolio.eventbrite.com.',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-portfolio-bounty-256x256.png',
-        large: 'app-icon-portfolio-bounty-512x512.png'
-      },
-      website: 'https://tokenportfolio.eventbrite.com',
-      launchLink: 'https://tokenportfolio.eventbrite.com',
-      developer: 'Portfolio Bounty',
-      status: 'in_progress'
-    }, {
       name: 'Souq',
       displayName: 'Souq',
       description: 'Project Management Platform.',
@@ -213,18 +213,19 @@ const apps = {
       developer: 'Souq',
       status: 'in_progress'
     }, {
-      name: 'Coinstack A',
-      displayName: 'Coinstack A',
+      name: 'CoinStack',
+      displayName: 'CoinStack',
       description: '',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-coinstack-a-256x256.png',
         large: 'app-icon-coinstack-a-512x512.png'
       },
-      website: 'http://www.coinstack.one/',
-      launchLink: 'http://www.coinstack.one/',
-      developer: 'Coinstack A',
-      status: 'user_ready_token'
+      website: 'http://coinstack.one/',
+      launchLink: 'http://coinstack.one/',
+      developer: 'CoinStack',
+      status: 'user_ready_token',
+      storageRequired: true
     }, {
       name: 'Coins',
       displayName: 'Coins',
@@ -237,10 +238,11 @@ const apps = {
       website: 'http://use.coinsapp.co/',
       launchLink: 'http://use.coinsapp.co/',
       developer: 'Coins',
-      status: 'user_ready_token'
+      status: 'user_ready_token',
+      storageRequired: true
     }, {
-      name: 'Blockportfolio',
-      displayName: 'Blockportfolio',
+      name: 'BlockPortfolio',
+      displayName: 'BlockPortfolio',
       description: '',
       version: '1.0.0',
       appIcon: {
@@ -249,8 +251,9 @@ const apps = {
       },
       website: 'https://www.blockportfol.io/',
       launchLink: 'https://www.blockportfol.io/',
-      developer: 'Blockportfolio',
-      status: 'user_ready_token'
+      developer: 'BlockPortfolio',
+      status: 'user_ready_token',
+      storageRequired: true
     }
   ]
 }

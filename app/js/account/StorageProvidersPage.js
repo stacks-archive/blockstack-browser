@@ -103,7 +103,8 @@ class StorageProvidersPage extends Component {
         this.setState({
           hide: true
         })
-        this.props.router.push('/')
+        logger.debug('componentWillReceiveProps: storage connected - redirecting')
+        this.props.router.push('/profiles')
       }
     }
   }

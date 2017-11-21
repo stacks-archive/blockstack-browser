@@ -17,7 +17,8 @@ class RestoreView extends Component {
     this.state = {
       identityKeyPhrase: null,
       password: null,
-      passwordConfirmation: null
+      passwordConfirmation: null,
+      disableRestoreButton: false
     }
     this.onValueChange = this.onValueChange.bind(this)
     this.restoreAccountSubmit = this.restoreAccountSubmit.bind(this)
@@ -32,9 +33,11 @@ class RestoreView extends Component {
   restoreAccountSubmit(event) {
     event.preventDefault()
     logger.trace('restoreAccountSubmit')
+    this.setState({ disableRestoreButton: true })
     this.props.restoreAccount(this.state.identityKeyPhrase,
       this.state.password,
       this.state.passwordConfirmation)
+    .then(null, () => this.setState({ disableRestoreButton: false }))
   }
 
   render() {
@@ -77,8 +80,14 @@ class RestoreView extends Component {
             <button
               type="submit"
               className="btn btn-primary btn-block m-b-10"
+              disabled={this.state.disableRestoreButton}
             >
-              Restore keychain
+              {this.state.disableRestoreButton ?
+                <span>Restoring...</span>
+                :
+                <span>Restore keychain</span>
+              }
+              
             </button>
             <a href="#" className="modal-body" onClick={this.props.showLandingView}>
               Create a new keychain

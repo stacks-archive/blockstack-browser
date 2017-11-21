@@ -327,20 +327,20 @@ export function calculateTrustLevel(verifications) {
 
 export function calculateProfileCompleteness(profile, verifications) {
   let complete = 0
-  const totalItems = 4
+  const totalItems = 2
   const maxVerificationItems = 1
 
   if (profile.name && profile.name.length > 0) {
     complete++
   }
 
-  if (profile.description && profile.description.length > 0) {
-    complete++
-  }
+  // if (profile.description && profile.description.length > 0) {
+  //   complete++
+  // }
 
-  if (profile.image && profile.image.length > 0) {
-    complete++
-  }
+  // if (profile.image && profile.image.length > 0) {
+  //   complete++
+  // }
 
   complete += Math.min(calculateTrustLevel(verifications), maxVerificationItems)
 
