@@ -9,6 +9,7 @@ class ProfileCompletion extends Component {
   }
 
   render() {
+    console.log(this.props.completePct)
     const pct = this.props.completePct*100
     return (
       <div className="container-fluid p-0 m-t-25">
