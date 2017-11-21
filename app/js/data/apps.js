@@ -228,8 +228,8 @@ const apps = {
       status: 'user_ready_token',
       storageRequired: true
     }, {
-      name: 'Blockportfolio',
-      displayName: 'Blockportfolio',
+      name: 'BlockPortfolio',
+      displayName: 'BlockPortfolio',
       description: '',
       version: '1.0.0',
       appIcon: {
@@ -238,7 +238,7 @@ const apps = {
       },
       website: 'https://www.blockportfol.io/',
       launchLink: 'https://www.blockportfol.io/',
-      developer: 'Blockportfolio',
+      developer: 'BlockPortfolio',
       status: 'user_ready_token',
       storageRequired: true
     }
