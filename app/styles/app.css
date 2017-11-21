@@ -14,7 +14,15 @@
 .home-screen p.app-section-heading {font-size:25px;font-weight:bold;}
 .home-screen .app-section {background-color:#fafafa;padding-top:20px;border-radius:30px}
 
-/* ID card */
+
+
+/*
+
+ID card  – (NOTE! This needs to be integrated into the regular "Cards" section)
+// GL - Nov 15
+
+*/
+
 .idcard{position:relative;border:.0625rem solid rgba(229,229,229,1);border-radius:.25rem;}
 .dim{color:#7b7b7b;}
 .id-flex img, .id-flex .dropzone {bottom:0;width:16.25rem;height:371px;-webkit-border-radius:8px;border-radius:8px;object-fit:cover;}
@@ -23,8 +31,10 @@
 .id-social > div > ul > li a{line-height:32px;overflow:hidden;height:32px;padding-left:10px;vertical-align:middle;white-space:nowrap;text-overflow:ellipsis;color:rgba(255,255,255,1);}
 i.fa{display:inline-block;margin-top:3px;margin-right:5px;margin-left:5px;font-weight:600;}
 .id-social > div > ul > li a > span{padding-left:5px;}
-.profile-completion{padding:0px 40px;}
-.profile-completion-sub{color:#949494;}
+.profile-completion{padding:40px 40px;background-color:#2c96ff;color:#fff;border-radius:8px;font-size:16px;}
+.profile-completion-sub{color:#fff;}
+.profile-completion h3 {font-size:26px;font-weight:bold;}
+
 .overlay{position:absolute;width:16.25rem;height:371px;margin:-371px 0 0 0;-webkit-border-radius:8px;border-radius:8px;background-color:rgba(0,0,0,.2);}
 .profile-accounts {margin:0;border-top:1px solid #FAFAFA;}
 .profile-accounts .fa-stack .fa {line-height:2rem;}
@@ -388,7 +398,7 @@ h3{font-family:'Lato',sans-serif;font-size:1.25rem;font-weight:400;}
 
 
 /* 12. Buttons */
-button{outline:none!important;background-color:transparent;font-size:11px;cursor:pointer;}
+button{outline:none!important;background-color:transparent;font-size:12px;cursor:pointer;}
 .btn{font-family:'Lato',sans-serif;padding:0.75rem 2.5rem 0.6875rem 2.5rem;font-size:0.8125rem;font-weight:900;line-height:1.75rem;border-radius:2px;-webkit-border-radius:2px;-moz-border-radius:2px;text-transform:uppercase;letter-spacing:1px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
 .btn:hover,.btn:focus,.btn:active{-webkit-box-shadow:0px 5px 20px 0px rgba(0,0,0,0.25);box-shadow:0px 5px 20px 0px rgba(0,0,0,0.25);}
 .btn-xs{font-size:0.75rem;padding:0.375rem 2.125rem;line-height:1rem;}
@@ -398,14 +408,20 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .btn:focus,.btn:active:focus,.btn.active:focus{outline:none;}
 .btn-primary{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;}
 .btn-primary:hover,.btn-primary:focus,.btn-primary:active{color:#fff;background-color:#2378CC;border:1px solid #2378CC;font-weight:700;}
+.btn-primary-disabled{color:#fff;border:1px solid #95CAFF!important;background-color:#95CAFF!important;}
 .btn-secondary{color:#fff;background-color:#270F34;border:1px solid #270F34;}
 .btn-secondary:hover,.btn-secondary:focus,.btn-secondary:active{color:#fff;background-color:#2C96FF;border:1px solid #2C96FF;font-weight:700;}
 .btn-light{color:#212529;background-color:#fff;border:1px solid #fff;}
 .btn-light:hover,.btn-light:focus,.btn-light:active{color:#fff;background-color:#2C96FF;border:1px solid #2C96FF;font-weight:700;}
+.btn-light-primary{color:#2C96FF;background-color:#fff;border:1px solid #fff;}
+.btn-light-primary:hover,.btn-light-primary:focus,.btn-light-primary:active{color:#fff;background-color:transparent;border:1px solid #fff;font-weight:700;box-shadow:none!important;}
 .btn-outline-secondary{color:#fff;border:1px solid rgba(255,255,255,0.15);font-weight:700;background-color:#270F34;-webkit-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
 .btn-outline-secondary:hover,.btn-outline-primary:focus,.btn-outline-primary:active{color:#270F34!important;border:1px solid rgba(255,255,255,1)!important;font-weight:700;background-color:#fff;outline:none;}
 .btn-outline-light{color:#fff;background-color:transparent;border:1px solid #fff;}
 .btn-outline-light:hover,.btn-outline-light:focus,.btn-outline-light:active{color:#fff;background-color:#2C96FF;border:1px solid #2C96FF;font-weight:700;}
+.btn-inverse{color:#2C96FF;background-color:#fff}
+.btn-inverse-disabled{color:#c2ddfa;background-color:#83baf7;cursor:default}
+.btn-inverse-disabled:hover{box-shadow:none;}
 
 .btn-outline-dark {
   color: #2e2e2e;
@@ -422,6 +438,9 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
   box-shadow: none;
 }
 
+
+.btn-outline-dark{color:#2e2e2e;background-color:transparent;border:1px solid #2e2e2e;}
+.btn-outline-dark:hover,.btn-outline-dark:focus,.btn-outline-dark:active{color:#fff;background-color:#2e2e2e;border:1px solid #2e2e2e;font-weight:700;-webkit-box-shadow:none;box-shadow:none;}
 .btn-outline-alpha-light{color:#fff;background-color:transparent;border:1px solid rgba(255,255,255,0.25);}
 .btn-outline-alpha-light:hover,.btn-outline-alpha-light:focus,.btn-outline-alpha-light:active{color:#212529;background-color:#fff;border:1px solid #fff;font-weight:700;}
 .btn-tertiary{color:#fff;border:1px solid #AEAEAE;font-weight:700;background-color:#AEAEAE;-webkit-transition:all .2s ease-in-out;transition:all .2s ease-in-out;}
@@ -498,6 +517,8 @@ div.pro-avatar img{max-width:58px;}
 .pro-container{padding-top:1.5rem;}
 .list-card{margin-bottom:0;list-style:none;padding:0;color:#19191A;text-decoration:none;}
 .card-text{padding:20px;}
+.profile-completion-sub{color:#fff;}
+.profile-completion{font-size:1rem;background-color:#2C96FF;padding:40px 55px;border-radius:8px;box-shadow:0 5px 24px 0 rgba(0,0,0,0.15);}
 /* All-IDs */
 .avatar-sm{margin-right:15px;}
 .card-title{margin-bottom:0;font-size:0.875rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding-right:15px;}
@@ -508,12 +529,14 @@ div.pro-avatar img{max-width:58px;}
 
 
 /* 27. Progress bars */
-.progress{font-size: .75rem;line-height: 1rem;text-align: center;}
-.progress-bar{height: 1rem;color: #fff;background-color: #2275d7}
+.progress{font-size: .75rem;line-height:1.35rem;height:1.35rem;text-align: center;}
+.progress-white{background-color:#fff}
+.progress-bar{height: 1.35rem;color: #fff;background-color: #2275d7;line-height:1.35rem}
 .progress-bar-animated{-webkit-animation:progress-bar-stripes 1s linear infinite;-o-animation:progress-bar-stripes 1s linear infinite;animation:progress-bar-stripes 1s linear infinite}
 .progress-bar-striped{background-image:-webkit-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: -o-linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);-webkit-background-size: 1rem 1rem;background-size: 1rem 1rem}
 .progress-bar-blue{background-color:#2c96ff}
-.progress-bar-zero{color:#222222;margin-left:10px;font-weight:700;}
+.progress-bar-green{background-color:#31ae27}
+.progress-bar-zero{color:#222222;margin-left:40px;font-weight:700;line-height:1rem;}
 
 
 /* 28. List group */

@@ -750,9 +750,7 @@ class DefaultProfilePage extends Component {
           {!(isMobile() && 
             (this.state.socialAccountEditIsOpen || this.state.accountEditIsOpen)) && 
             <div>
-              {profileCompleteness < 1 &&
-                <ProfileCompletion completePct={profileCompleteness} />
-              }
+              <ProfileCompletion completePct={profileCompleteness} />
               <div className="container-fluid m-t-50 p-0">
                 <div className="row">
                   <div className="col-12">
