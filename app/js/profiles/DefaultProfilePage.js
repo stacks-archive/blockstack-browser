@@ -16,11 +16,11 @@ import ToolTip from '../components/ToolTip'
 import EditSocialAccount from './components/EditSocialAccount'
 import EditAccount from './components/EditAccount'
 import { uploadProfile, uploadPhoto } from '../account/utils'
-import { 
-  openInNewTab, 
-  isMobile, 
-  signProfileForUpload, 
-  calculateProfileCompleteness 
+import {
+  openInNewTab,
+  isMobile,
+  signProfileForUpload,
+  calculateProfileCompleteness
 } from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
@@ -565,7 +565,7 @@ class DefaultProfilePage extends Component {
         }
 
         if (!hasAccount) {
-          if (hideAccount) { 
+          if (hideAccount) {
             if (this.state.showHiddenPlaceholders) {
               placeholders.push(this.createPlaceholderAccount(accountType))
             }
@@ -577,7 +577,7 @@ class DefaultProfilePage extends Component {
     } else {
       accountTypes.forEach((accountType) => {
         const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
-        if (hideAccount) { 
+        if (hideAccount) {
           if (this.state.showHiddenPlaceholders) {
             placeholders.push(this.createPlaceholderAccount(accountType))
           }
@@ -595,7 +595,7 @@ class DefaultProfilePage extends Component {
     const socialAccountEdit = () => {
       if (isMobile()) {
         return (
-          this.state.socialAccountEditIsOpen ? 
+          this.state.socialAccountEditIsOpen ?
             <div>
               <SecondaryNavBar
                 leftButtonTitle="Back"
@@ -613,13 +613,13 @@ class DefaultProfilePage extends Component {
                         proofUrl={this.state.editingSocialAccount.proofUrl}
                         onPostVerificationButtonClick={this.onPostVerificationButtonClick}
                         onVerifyButtonClick={this.onVerifyButtonClick}
-                      /> 
+                      />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            : 
+            :
             <div></div>
         )
       } else {
@@ -648,7 +648,7 @@ class DefaultProfilePage extends Component {
     const accountEdit = () => {
       if (isMobile()) {
         return (
-          this.state.accountEditIsOpen ? 
+          this.state.accountEditIsOpen ?
             <div>
               <SecondaryNavBar
                 leftButtonTitle="Back"
@@ -670,7 +670,7 @@ class DefaultProfilePage extends Component {
                 </div>
               </div>
             </div>
-            : 
+            :
             <div></div>
         )
       } else {
@@ -734,7 +734,7 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <ToolTip id="trustLevel">
           <div>
-            <div>Increase your trust level by verifying your social accounts.</div>
+            <div>Increase your social level by verifying your social accounts.</div>
           </div>
         </ToolTip>
         <ToolTip id="coreDisabled">
@@ -747,8 +747,8 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <div>
 
-          {!(isMobile() && 
-            (this.state.socialAccountEditIsOpen || this.state.accountEditIsOpen)) && 
+          {!(isMobile() &&
+            (this.state.socialAccountEditIsOpen || this.state.accountEditIsOpen)) &&
             <div>
               {profileCompleteness < 1 &&
                 <ProfileCompletion completePct={profileCompleteness} />
@@ -893,7 +893,7 @@ class DefaultProfilePage extends Component {
                     <div className="container-fluid text-center m-t-25 m-b-40" >
                       <span className="btn btn-dark btn-pill btn-xs" style={{ boxShadow: 'none' }} >
                         {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
-                        <span className="pro-card-trust-level">Trust Level: {trustLevel} </span>
+                        <span className="pro-card-trust-level">Social Level: {trustLevel} </span>
                         {trustLevel <= 1 &&
                           <span data-tip data-for="trustLevel">
                             <i className="fa fa-info-circle" />
@@ -924,7 +924,7 @@ class DefaultProfilePage extends Component {
                         onClick={this.onCancelClick}
                       >
                         Cancel
-                      </button> 
+                      </button>
                       :
                       <Link
                         className="btn btn-outline-dark btn-pill btn-sm mr-5"
@@ -993,8 +993,8 @@ class DefaultProfilePage extends Component {
                       </ul>
                       <div className="text-center">
                         {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
-                          <button 
-                            className="btn btn-link btn-link-mute btn-link-small" 
+                          <button
+                            className="btn btn-link btn-link-mute btn-link-small"
                             onClick={this.onMoreAccountsClick}
                           >
                             More accounts
