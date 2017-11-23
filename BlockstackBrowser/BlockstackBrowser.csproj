@@ -81,12 +81,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Content Include="Resources\browser-build\**\*.*" />
+    <Content Include="Resources\build\**\*.*" />
     <Content Include="Resources\corsproxy-https\**\*.*" />
     <Content Include="Resources\node.exe" />
     <Content Include="Resources\blockstack.ico" />
     <Content Include="Resources\blockstackProxy.js" />
-    <Content Include="Resources\protocol_handler.bat" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

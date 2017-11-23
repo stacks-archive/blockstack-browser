@@ -65,13 +65,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E55D7E88D3854CFB94D97B269900EFC4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7425AFE89E563D4606ACDEE105D37C04"
+        "OwnerKey" = "8:_396C1C318770DA838BF49C31318E3FBB"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -83,7 +77,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_396C1C318770DA838BF49C31318E3FBB"
+        "OwnerKey" = "8:_7425AFE89E563D4606ACDEE105D37C04"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E55D7E88D3854CFB94D97B269900EFC4"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -219,11 +219,6 @@
             "AssemblyAsmDisplayName" = "8:System.IO.Compression.FileSystem, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
                 "ScatterAssemblies"
                 {
-                    "_645D62A60A5EEA5BB7A2C841389258F8"
-                    {
-                    "Name" = "8:System.IO.Compression.FileSystem.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.IO.Compression.FileSystem.dll"
             "TargetName" = "8:"
@@ -250,11 +245,6 @@
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_7425AFE89E563D4606ACDEE105D37C04"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
@@ -350,15 +340,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Blockstack Browser"
-        "ProductCode" = "8:{5EB3AE7C-D987-468D-AD25-7B770EAB5F3C}"
-        "PackageCode" = "8:{4CFA5135-BC79-4A54-96DE-C451E7F052AE}"
+        "ProductCode" = "8:{436E5A7F-7E0C-4DC0-B753-AB649972B2F0}"
+        "PackageCode" = "8:{7D754FA6-7013-4B33-BF4D-53B57384A20A}"
         "UpgradeCode" = "8:{8E73C1F1-1A93-48EE-BDA2-D1D30AFE3C7A}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:0.18.3"
+        "ProductVersion" = "8:0.21.3"
         "Manufacturer" = "8:Blockstack"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
