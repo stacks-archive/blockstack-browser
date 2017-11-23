@@ -22,7 +22,7 @@ class TrustLevelFooter extends Component {
         <div className="trust-level-footer-container text-center">
           {/*<Link to={this.props.link}>*/}
             <span>
-              Increase your trust level {stars(this.props.trustLevel, this.props.maxTrustLevel)} 
+              Increase your social level {stars(this.props.trustLevel, this.props.maxTrustLevel)} 
             </span>
           {/*</Link>*/}
         </div>

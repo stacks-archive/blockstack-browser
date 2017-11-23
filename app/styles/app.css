@@ -451,12 +451,12 @@ button{outline:none!important;background-color:transparent;font-size:11px;cursor
 .form-control-label-centered{padding:0;}
 /* Secondary forms */
 .form-container-secondary{padding:35px 15px 50px 15px;}
-.form-control-secondary{color:#fff;border:1px solid #fff;}
+.form-control-secondary{color:#484848;border:1px solid #fff;}
 input.form-control-secondary{background-color:#fafafa;border:1px solid #F4F2F4;}
 .form-control-secondary::-webkit-input-placeholder{text-transform:capitalize;font-size:0.875rem;color:#fff;font-weight:400!important;}
 .form-control-secondary:hover::-webkit-input-placeholder{color:#fff;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
 .form-control-secondary:focus::-webkit-input-placeholder{color:#fff;}
-.form-control-secondary:hover{background-color:#fff;color:#fff;border:1px solid #F4F2F4;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
+.form-control-secondary:hover{background-color:#fff;color:#484848;border:1px solid #F4F2F4;-webkit-transition:all .35s ease-in-out;-moz-transition:all .35s ease-in-out;-ms-transition:all .35s ease-in-out;-o-transition:all .35s ease-in-out;transition:all .35s ease-in-out;}
 .form-control-secondary:focus,.form-control-secondary:active{background-color:#fff;color:#484848;border:1px solid #fff;}
 .form-control-label-secondary{margin-bottom:0.375rem;}
 .input-group-addon{border-radius:0px;border:0;font-size:0.875rem;}

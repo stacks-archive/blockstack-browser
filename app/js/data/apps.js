@@ -82,7 +82,7 @@ const apps = {
       launchLink: 'http://coinfolio-app.herokuapp.com/',
       developer: 'Coinfolio',
       storageRequired: true,
-      status: 'user_ready'
+      status: 'user_ready_token'
     }, {
       name: 'Casa',
       displayName: 'Casa',
