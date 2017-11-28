@@ -10,6 +10,7 @@ import { AccountActions }  from '../account/store/account'
 import SecondaryNavBar from '../components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
+import CustomAccountItem from './components/CustomAccountItem'
 import ProfileCompletion from './components/ProfileCompletion'
 import InputGroup from '../components/InputGroup'
 import ToolTip from '../components/ToolTip'
@@ -44,6 +45,7 @@ const accountTypes = [
 ]
 
 const hiddenAccountTypes = [
+  'custom',
   'linkedIn',
   'instagram'
 ]
@@ -193,7 +195,7 @@ class DefaultProfilePage extends Component {
     }
   }
 
-  onAccountClick = (service) => {
+  onAccountClick = (service, identifier) => {
     if (this.state.accountEditIsOpen) {
       this.setState({
         accountEditIsOpen: false,
@@ -204,7 +206,9 @@ class DefaultProfilePage extends Component {
 
       if (this.state.profile.account) {
         this.state.profile.account.forEach((account) => {
-          if (account.service === service) {
+          if (account.service === 'custom' && account.identifier === identifier) {
+            editingAccount = account
+          } else if (account.service === service && service !== 'custom') {
             editingAccount = account
           }
         })
@@ -297,7 +301,7 @@ class DefaultProfilePage extends Component {
       })
 
       if (!hasAccount && identifier.length > 0) {
-        const newAccount = this.createNewAccount(service, identifier, proofUrl)
+        const newAccount = this.createNewAccount({ service, identifier, proofUrl })
         if (this.shouldAutoGenerateProofUrl(service)) {
           newAccount.proofUrl = this.generateProofUrl(service, identifier)
         }
@@ -315,7 +319,7 @@ class DefaultProfilePage extends Component {
     this.closeSocialAccountModal()
   }
 
-  onAccountDoneButtonClick = (service, identifier) => {
+  onAccountDoneButtonClick = (service, identifier, value) => {
     const profile = this.state.profile
 
     if (!profile.hasOwnProperty('account')) {
@@ -325,7 +329,13 @@ class DefaultProfilePage extends Component {
     if (profile.hasOwnProperty('account')) {
       let hasAccount = false
       profile.account.forEach(account => {
-        if (account.service === service) {
+        if (service === 'custom' && account.identifier === identifier) {
+          hasAccount = true
+          account.value = value
+          this.setState({ profile })
+          this.saveProfile(profile)
+          this.refreshProofs()
+        } else if (account.service === service && service !== 'custom') {
           hasAccount = true
           account.identifier = identifier
           this.setState({ profile })
@@ -335,7 +345,7 @@ class DefaultProfilePage extends Component {
       })
 
       if (!hasAccount && identifier.length > 0) {
-        const newAccount = this.createNewAccount(service, identifier, '')
+        const newAccount = this.createNewAccount({ service, identifier, value, proofURL: '' })
         profile.account.push(newAccount)
         this.setState({ profile })
         this.saveProfile(profile)
@@ -348,6 +358,10 @@ class DefaultProfilePage extends Component {
     }
 
     this.closeAccountModal()
+  }
+
+  onDeleteClick = (index) => {
+    this.removeAccountAtIndex(index)
   }
 
   onMoreAccountsClick = () => {
@@ -488,12 +502,13 @@ class DefaultProfilePage extends Component {
     return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
   }
 
-  createNewAccount(service, identifier, proofUrl) {
+  createNewAccount({ service, identifier, value, proofUrl }) {
     return {
       '@type': 'Account',
       placeholder: false,
       service,
       identifier,
+      value,
       proofType: 'http',
       proofUrl
     }
@@ -507,6 +522,18 @@ class DefaultProfilePage extends Component {
       identifier: '',
       proofType: '',
       proofURL: ''
+    }
+  }
+
+  removeAccountAtIndex = (index) => {
+    const profile = this.state.profile
+    const accounts = profile.account
+
+    if (accounts) {
+      accounts.splice(index, 1)
+      this.setState({ profile })
+      this.saveProfile(profile)
+      this.refreshProofs()
     }
   }
 
@@ -547,36 +574,34 @@ class DefaultProfilePage extends Component {
     const placeholders = []
     let hiddenAccounts = hiddenAccountTypes
 
+    let profileAccounts = []
+
     if (this.state.profile.hasOwnProperty('account')) {
-      accountTypes.forEach((accountType) => {
-        let hasAccount = false
-        this.state.profile.account.forEach((account) => {
-          if (account.service === accountType) {
-            hasAccount = true
-            account.placeholder = false
-            filledAccounts.push(account)
-          }
-        })
+      profileAccounts = this.state.profile.account
+    }
 
-        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+    profileAccounts.forEach((account) => {
+      account.placeholder = false
+      filledAccounts.push(account)
+    })
 
-        if (hasAccount && hideAccount) {
-          hiddenAccounts = hiddenAccounts.filter(hiddenAccount => hiddenAccount !== accountType)
-        }
-
-        if (!hasAccount) {
-          if (hideAccount) { 
-            if (this.state.showHiddenPlaceholders) {
-              placeholders.push(this.createPlaceholderAccount(accountType))
-            }
-          } else {
-            placeholders.push(this.createPlaceholderAccount(accountType))
-          }
+    accountTypes.forEach((accountType) => {
+      let hasAccount = false
+      profileAccounts.forEach((account) => {
+        if (account.service === accountType) {
+          hasAccount = true
+          // account.placeholder = false
+          // filledAccounts.push(account)
         }
       })
-    } else {
-      accountTypes.forEach((accountType) => {
-        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+
+      const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+
+      if (hasAccount && hideAccount) {
+        hiddenAccounts = hiddenAccounts.filter(hiddenAccount => hiddenAccount !== accountType)
+      }
+
+      if (!hasAccount) {
         if (hideAccount) { 
           if (this.state.showHiddenPlaceholders) {
             placeholders.push(this.createPlaceholderAccount(accountType))
@@ -584,7 +609,11 @@ class DefaultProfilePage extends Component {
         } else {
           placeholders.push(this.createPlaceholderAccount(accountType))
         }
-      })
+      }
+    })
+
+    if (this.state.showHiddenPlaceholders) {
+      placeholders.push(this.createPlaceholderAccount('custom'))
     }
 
     // const accounts = person.profile().account || []
@@ -663,6 +692,7 @@ class DefaultProfilePage extends Component {
                         ownerAddress={ownerAddress}
                         service={this.state.editingAccount.service}
                         identifier={this.state.editingAccount.identifier}
+                        value={this.state.editingAccount.value}
                         onDoneButtonClick={this.onAccountDoneButtonClick}
                       />
                     </div>
@@ -687,6 +717,7 @@ class DefaultProfilePage extends Component {
               ownerAddress={ownerAddress}
               service={this.state.editingAccount.service}
               identifier={this.state.editingAccount.identifier}
+              value={this.state.editingAccount.value}
               onDoneButtonClick={this.onAccountDoneButtonClick}
             />
           </Modal>
@@ -942,7 +973,7 @@ class DefaultProfilePage extends Component {
                   <div className="col">
                     <div className="profile-accounts">
                       <ul>
-                        {accounts.map((account) => {
+                        {accounts.map((account, index) => {
                           let verified = false
                           let pending = false
                           if (verifications.length > 0) {
@@ -964,19 +995,36 @@ class DefaultProfilePage extends Component {
                             return (
                               <PGPAccountItem
                                 key={`${account.service}-${account.identifier}`}
+                                index={index}
                                 editing={this.state.editMode}
                                 service={account.service}
                                 identifier={account.identifier}
                                 contentUrl={account.contentUrl}
                                 placeholder={account.placeholder}
                                 onClick={this.onAccountClick}
+                                onDeleteClick={this.onDeleteClick}
                                 listItem
+                              />
+                            )
+                          } else if (account.service === 'custom') {
+                            return (
+                              <CustomAccountItem
+                                key={`${account.service}-${index}`}
+                                index={index}
+                                editing={this.state.editMode}
+                                service={account.service}
+                                identifier={account.identifier}
+                                value={account.value}
+                                placeholder={account.placeholder}
+                                onClick={this.onAccountClick}
+                                onDeleteClick={this.onDeleteClick}
                               />
                             )
                           } else {
                             return (
                               <SocialAccountItem
                                 key={`${account.service}-${account.identifier}`}
+                                index={index}
                                 editing={this.state.editMode}
                                 service={account.service}
                                 identifier={account.identifier}
@@ -986,6 +1034,7 @@ class DefaultProfilePage extends Component {
                                 placeholder={account.placeholder}
                                 pending={pending}
                                 onClick={this.onSocialAccountClick}
+                                onDeleteClick={this.onDeleteClick}
                               />
                             )
                           }

@@ -15,6 +15,7 @@ class EditAccount extends Component {
   static propTypes = {
     service: PropTypes.string,
     identifier: PropTypes.string,
+    value: PropTypes.string,
     api: PropTypes.object.isRequired,
     onDoneButtonClick: PropTypes.func
   }
@@ -23,7 +24,8 @@ class EditAccount extends Component {
     super(props)
 
     this.state = {
-      identifier: props.identifier
+      identifier: props.identifier,
+      value: props.value
     }
   }
 
@@ -48,6 +50,10 @@ class EditAccount extends Component {
   }
 
   getIconClass = () => {
+    if (this.props.service === 'custom') {
+      return 'fa-link'
+    }
+
     const webAccountTypes = getWebAccountTypes(this.props.api)
     let iconClass = ''
     if (webAccountTypes.hasOwnProperty(this.props.service)) {
@@ -71,14 +77,21 @@ class EditAccount extends Component {
     })
   }
 
+  onValueChange = (event) => {
+    let value = event.target.value
+    this.setState({
+      value: value
+    })
+  }
+
   getIdentifierType = (service) => {
     if(service === 'bitcoin' || service === 'ethereum') {
       return "address"
-    }
-    else if (service === 'pgp' || service === 'ssh') {
+    } else if (service === 'pgp' || service === 'ssh' || service === 'custom') {
       return "key"
-    }
-    else {
+    } else if ( service === 'custom') {
+      return "key"
+    } else {
       return "account"
     }
   }
@@ -95,6 +108,13 @@ class EditAccount extends Component {
       return (
         <span className="app-account-service font-weight-bold">
           Add your {service.toUpperCase()} key
+        </span>
+      )
+    }
+    else if (service === 'custom') {
+      return (
+        <span className="app-account-service font-weight-bold">
+          Add your custom account
         </span>
       )
     }
@@ -115,9 +135,10 @@ class EditAccount extends Component {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     let webAccountType = webAccountTypes[this.props.service]
+    const customService = this.props.service === 'custom'
+    const identifierType = this.capitalize(this.getIdentifierType(this.props.service))
 
-    if (webAccountType) {
-      let accountServiceName = webAccountType.label
+    if (webAccountType || customService) {
         return (
           <div>
             <div className={`profile-account ${verifiedClass}`} 
@@ -130,19 +151,34 @@ class EditAccount extends Component {
               <div>
                 <InputGroup 
                   key="input-group-identifier"
+                  label={identifierType}
                   name="identifier" 
-                  placeholder={this.capitalize(this.getIdentifierType(this.props.service))}
+                  placeholder={identifierType}
                   data={this.state}
                   stopClickPropagation={true} 
                   onChange={this.onIdentifierChange} 
                 />
-              
               </div>
+
+              {customService &&
+                <div>
+                  <InputGroup 
+                    key="input-group-value"
+                    label="Value"
+                    name="value" 
+                    placeholder="Value"
+                    data={this.state}
+                    stopClickPropagation={true} 
+                    onChange={this.onValueChange} 
+                  />
+                </div>
+              }
+
             </div>
             <button 
               className="btn btn-verify btn-block m-t-15" 
               onClick={e => this.props.onDoneButtonClick(this.props.service, 
-                this.state.identifier)}>
+                this.state.identifier, this.state.value)}>
               Save
             </button>
           </div>

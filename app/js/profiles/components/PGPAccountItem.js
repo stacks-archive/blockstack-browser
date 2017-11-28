@@ -28,7 +28,8 @@ class PGPAccountItem extends Component {
     contentUrl: PropTypes.string,
     loadPGPPublicKey: PropTypes.func.isRequired,
     pgpPublicKeys: PropTypes.object,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onDeleteClick: PropTypes.func
   }
 
   constructor(props) {
@@ -102,6 +103,11 @@ class PGPAccountItem extends Component {
     this.props.onClick(this.props.service)
   }
 
+  onDeleteClick = (e) => {
+    e.stopPropagation()
+    this.props.onDeleteClick(this.props.index)
+  }
+
   render() {
     const identifier = this.props.identifier
     const webAccountTypes = getWebAccountTypes(this.props.api)
@@ -173,15 +179,15 @@ class PGPAccountItem extends Component {
             </span>
           )}
 
-          {(!this.props.placeholder && this.props.editing) && (
-            <span className="">
-              <i className="fa fa-fw fa-pencil" />
+          {!this.props.placeholder && (
+            <span className="app-account-service font-weight-normal">
+              {webAccountTypes[this.props.service].label}
             </span>
           )}
 
-          { !this.props.placeholder && (
-            <span className="app-account-service font-weight-normal">
-              {webAccountTypes[this.props.service].label}
+          {(!this.props.placeholder && this.props.editing) && (
+            <span className="" onClick={this.onDeleteClick}>
+              <i className="fa fa-fw fa-trash" />
             </span>
           )}
 
