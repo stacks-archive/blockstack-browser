@@ -585,22 +585,7 @@ class DefaultProfilePage extends Component {
       filledAccounts.push(account)
     })
 
-<<<<<<< HEAD
-        if (!hasAccount) {
-          if (hideAccount) {
-            if (this.state.showHiddenPlaceholders) {
-              placeholders.push(this.createPlaceholderAccount(accountType))
-            }
-          } else {
-            placeholders.push(this.createPlaceholderAccount(accountType))
-          }
-        }
-      })
-    } else {
-      accountTypes.forEach((accountType) => {
-        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
-        if (hideAccount) {
-=======
+
     accountTypes.forEach((accountType) => {
       let hasAccount = false
       profileAccounts.forEach((account) => {
@@ -619,7 +604,6 @@ class DefaultProfilePage extends Component {
 
       if (!hasAccount) {
         if (hideAccount) { 
->>>>>>> Light-weight multi-reader storage via custom profile accounts. Improved account delete UX.
           if (this.state.showHiddenPlaceholders) {
             placeholders.push(this.createPlaceholderAccount(accountType))
           }
