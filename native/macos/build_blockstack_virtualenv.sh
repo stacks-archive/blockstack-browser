@@ -37,7 +37,7 @@ PYSCRYPT_NO_LINK_FLAGS="1" LDFLAGS="/usr/local/opt/openssl/lib/libcrypto.a /usr/
 
 echo "Installing blockstack..."
 
-pip install --upgrade blockstack==0.17.0.11
+pip install --upgrade git+https://github.com/blockstack/blockstack-core.git@ef19dd44e7da977f4b4567eff52845b1758f7eb9
 
 echo "Blockstack virtual environment created."
 
