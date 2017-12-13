@@ -207,9 +207,6 @@ class AuthModal extends Component {
       }
 
       // TODO: what if the token is expired?
-      // TODO: use a semver check -- or pass payload version to
-      //        makeAuthResponse
-      let authResponse
 
       let profileResponseData
       if (this.state.decodedToken.payload.do_not_include_profile) {
@@ -230,9 +227,9 @@ class AuthModal extends Component {
         hubUrl = this.props.api.gaiaHubConfig.server
       }
 
-      authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
-                                      metadata, coreSessionToken, appPrivateKey,
-                                      undefined, transitPublicKey, hubUrl)
+      const authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
+                                            metadata, coreSessionToken, appPrivateKey,
+                                            undefined, transitPublicKey, hubUrl)
 
 
       this.props.clearSessionToken(appDomain)
@@ -361,8 +358,8 @@ class AuthModal extends Component {
     const decodedToken = this.state.decodedToken
     const noCoreStorage = (decodedToken
                            && decodedToken.payload.scopes
-                           && ( !decodedToken.payload.scopes.includes('store_write')
-                                || isLaterVersionString(decodedToken.payload.version, '1.2.0')))
+                           && (!decodedToken.payload.scopes.includes('store_write')
+                               || isLaterVersionString(decodedToken.payload.version, '1.2.0')))
 
     const coreShortCircuit = (!appManifestLoading
                               && appManifest !== null
