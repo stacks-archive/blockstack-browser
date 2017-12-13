@@ -15,6 +15,7 @@ import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes } from '../utils'
+import ToolTip from '../../components/ToolTip'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
@@ -92,7 +93,11 @@ class AuthModal extends Component {
       blockchainId: null,
       noStorage: false,
       responseSent: false,
-      requestingEmail: false
+      scopes: {
+        email: false,
+        appIndex: false,
+        storage: false,
+      },
     }
 
     this.login = this.login.bind(this)
@@ -115,7 +120,9 @@ class AuthModal extends Component {
 
     if (scopes.includes('email')) {
       this.setState({
-        requestingEmail: true
+        scopes: {
+          email: true
+        }
       })
     }
 
@@ -387,9 +394,26 @@ class AuthModal extends Component {
       )
     }
 
-    const requestingEmail = this.state.requestingEmail
+    const scopeEmail = this.state.scopes.email
+    const scopeAppIndex = this.state.scopes.appIndex
+    const scopeStorage = this.state.scopes.storage
     return (
       <div className="">
+        <ToolTip id="scope-basic">
+          <div>
+            <div>Your basic info includes your Blockstack ID and profile.</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="scope-profile">
+          <div>
+            <div>The app will add itself to your profile so that other users of the app can discover and interact with you.</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="scope-storage">
+          <div>
+            <div>The app will read and write files to your storage.</div>
+          </div>
+        </ToolTip>
         <Modal
           isOpen
           onRequestClose={this.closeModal}
@@ -416,12 +440,8 @@ class AuthModal extends Component {
             </div>
             :
             <div>
-              <p>
-              The app "{appManifest.name}" wants to access your basic info
-                {requestingEmail ? <span> and email address</span> : null}
-              </p>
             {appManifest.hasOwnProperty('icons') ?
-              <p>
+              <p className="m-t-20 m-b-20">
                 <Image
                   src={appManifest.icons[0].src}
                   style={{ width: '128px', height: '128px' }}
@@ -429,8 +449,29 @@ class AuthModal extends Component {
                 />
               </p>
             : null}
-            {this.props.localIdentities.length > 0 ?
+
+            <p>The app <strong>"{appManifest.name}"</strong> wants to</p>
+            <div>
+              <strong>Read your basic info</strong>
+              <span data-tip data-for="scope-basic"><i className="fa fa-info-circle" /></span>
+            </div>
+            {scopeEmail ? 
               <div>
+                <strong>Read your email address</strong>
+              </div> : null}
+            {scopeAppIndex ? 
+              <div>
+                <strong>Add itself to your profile</strong>
+                <span data-tip data-for="scope-profile"><i className="fa fa-info-circle" /></span>
+              </div> : null}
+            {scopeStorage ? 
+              <div>
+                <strong>Read/write to your storage</strong>
+                <span data-tip data-for="scope-storage"><i className="fa fa-info-circle" /></span>
+              </div> : null}
+
+            {this.props.localIdentities.length > 0 ?
+              <div className="m-t-20">
               {this.state.storageConnected ?
                 <div>
                   <p>Choose a Blockstack ID to sign in with.</p>
