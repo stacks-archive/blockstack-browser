@@ -7,7 +7,7 @@ import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
   makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp,
-  isLaterVersionString
+  isLaterVersion
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
@@ -219,11 +219,11 @@ class AuthModal extends Component {
       let hubUrl = undefined
 
       const requestVersion = this.state.decodedToken.payload.version
-      if (isLaterVersionString(requestVersion, '1.1.0') &&
+      if (isLaterVersion(requestVersion, '1.1.0') &&
           this.state.decodedToken.payload.public_keys.length > 0) {
         transitPublicKey = this.state.decodedToken.payload.public_keys[0]
       }
-      if (isLaterVersionString(requestVersion, '1.2.0')) {
+      if (isLaterVersion(requestVersion, '1.2.0')) {
         hubUrl = this.props.api.gaiaHubConfig.server
       }
 
@@ -305,7 +305,7 @@ class AuthModal extends Component {
           const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
           const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
           const blockchainId = (hasUsername ? identity.username : null)
-          const needsCoreStorage = !isLaterVersionString(
+          const needsCoreStorage = !isLaterVersion(
             this.state.decodedToken.payload.version, '1.2.0')
 
           const scopesJSONString = JSON.stringify(scopes)
@@ -359,7 +359,7 @@ class AuthModal extends Component {
     const noCoreStorage = (decodedToken
                            && decodedToken.payload.scopes
                            && (!decodedToken.payload.scopes.includes('store_write')
-                               || isLaterVersionString(decodedToken.payload.version, '1.2.0')))
+                               || isLaterVersion(decodedToken.payload.version, '1.2.0')))
 
     const coreShortCircuit = (!appManifestLoading
                               && appManifest !== null
