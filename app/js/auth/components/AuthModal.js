@@ -133,8 +133,6 @@ class AuthModal extends Component {
       })
     }
 
-    console.log(scopes)
-
     this.setState({
       authRequest,
       decodedToken,
