@@ -95,8 +95,7 @@ class AuthModal extends Component {
       responseSent: false,
       scopes: {
         email: false,
-        appIndex: false,
-        storage: false,
+        appIndex: false
       },
     }
 
@@ -409,11 +408,6 @@ class AuthModal extends Component {
             <div>The app will add itself to your profile so that other users of the app can discover and interact with you.</div>
           </div>
         </ToolTip>
-        <ToolTip id="scope-storage">
-          <div>
-            <div>The app will read and write files to your storage.</div>
-          </div>
-        </ToolTip>
         <Modal
           isOpen
           onRequestClose={this.closeModal}
@@ -463,11 +457,6 @@ class AuthModal extends Component {
               <div>
                 <strong>Add itself to your profile</strong>
                 <span data-tip data-for="scope-profile"><i className="fa fa-info-circle" /></span>
-              </div> : null}
-            {scopeStorage ? 
-              <div>
-                <strong>Read/write to your storage</strong>
-                <span data-tip data-for="scope-storage"><i className="fa fa-info-circle" /></span>
               </div> : null}
 
             {this.props.localIdentities.length > 0 ?
