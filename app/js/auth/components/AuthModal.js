@@ -125,6 +125,14 @@ class AuthModal extends Component {
       })
     }
 
+    if (scopes.includes('appIndex')) {
+      this.setState({
+        scopes: {
+          appIndex: true
+        }
+      })
+    }
+
     this.setState({
       authRequest,
       decodedToken,
@@ -506,7 +514,7 @@ class AuthModal extends Component {
                   </div>
                 </div>
             :
-                <div>
+                <div className="m-t-20">
                   <p>
                     You need to <Link to="/">
                     set up Blockstack</Link> in order to sign in.
@@ -515,7 +523,7 @@ class AuthModal extends Component {
             }
               </div>
             :
-              <div>
+              <div className="m-t-20">
                 <p>
                   You need to <Link to="/">
                   set up Blockstack</Link> in order to sign in.
