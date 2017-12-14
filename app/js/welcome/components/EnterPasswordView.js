@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import InputGroup from '../../components/InputGroup'
 import { AccountActions } from '../../account/store/account'
+import zxcvbn from 'zxcvbn'
 
 
 import log4js from 'log4js'
@@ -24,10 +25,12 @@ class EnterPasswordView extends Component {
     super(props)
     this.state = {
       password: '',
+      pwStrength: null,
       disableContinueButton: false
     }
     this.onValueChange = this.onValueChange.bind(this)
     this.enterPasswordSubmit = this.enterPasswordSubmit.bind(this)
+    this.displayPasswordStrength = this.displayPasswordStrength.bind(this)
   }
 
   componentDidMount() {
@@ -40,6 +43,18 @@ class EnterPasswordView extends Component {
     this.setState({
       [event.target.name]: event.target.value
     })
+    if (event.target.name === 'password') {
+      if (event.target.value === '') {
+        this.setState({
+          pwStrength: null
+        })
+      } else {
+        const zxcvbnScore = zxcvbn(event.target.value).score
+        this.setState({
+          pwStrength: zxcvbnScore
+        })
+      }
+    }
   }
 
   enterPasswordSubmit(event) {
@@ -47,7 +62,22 @@ class EnterPasswordView extends Component {
     event.preventDefault()
     this.setState({ disableContinueButton: true })
     this.props.verifyPasswordAndCreateAccount(this.state.password, this.state.passwordConfirmation)
-    .then(null, () => this.setState({ disableContinueButton: false }))
+      .then(null, () => this.setState({ disableContinueButton: false }))
+  }
+
+  displayPasswordStrength() {
+    switch (this.state.pwStrength) {
+      case 0:
+      case 1:
+      case 2:
+        return <p className="label-red">The password you entered is very weak</p>
+      case 3:
+        return <p className="label-amber">The password you entered is average</p>
+      case 4:
+        return <p className="label-green">The password you entered is strong</p>
+      default:
+        return null
+    }
   }
 
   render() {
@@ -66,6 +96,7 @@ class EnterPasswordView extends Component {
             required
             enforcePasswordLength
           />
+          {this.displayPasswordStrength()}
           <InputGroup
             name="passwordConfirmation"
             type="password"
@@ -93,6 +124,6 @@ class EnterPasswordView extends Component {
       </div>
     )
   }
- }
+}
 
 export default connect(null, mapDispatchToProps)(EnterPasswordView)

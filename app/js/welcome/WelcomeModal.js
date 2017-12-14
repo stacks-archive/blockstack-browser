@@ -237,14 +237,14 @@ class WelcomeModal extends Component {
     if (!isValid) {
       logger.error('restoreAccount: invalid keychain phrase entered')
       this.updateAlert('danger', 'The keychain phrase you entered is not valid.')
-      return false
+      return Promise.reject()
     }
 
     if (password !== passwordConfirmation) {
       logger.error('restoreAccount: password and confirmation do not match')
       this.updateAlert('danger',
       'The password confirmation does not match the password you entered.')
-      return false
+      return Promise.reject()
     }
 
     this.setState({
