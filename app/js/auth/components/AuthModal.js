@@ -98,7 +98,7 @@ class AuthModal extends Component {
       scopes: {
         email: false,
         appIndex: false
-      },
+      }
     }
 
     this.login = this.login.bind(this)
@@ -229,27 +229,30 @@ class AuthModal extends Component {
           if (storageConnected) {
             uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
             .then(() => {
-              this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, profileUrl)
+              this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
+                profile, profileUrl)
             })
             .catch((err) => {
               logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
             })
           } else {
-            logger.debug('componentWillReceiveProps: add app index, storage is not connected. Doing nothing.')
+            logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
           }
         } else {
-          this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, profileUrl)
+          this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
+            profile, profileUrl)
         }
       } else {
-        this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, profileUrl)
+        this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
+          profile, profileUrl)
       }
-
     } else {
       logger.error('componentWillReceiveProps: response already sent - doing nothing')
     }
   }
 
-  completeAuthResponse = (privateKey, blockchainId, coreSessionToken, appPrivateKey, profileUrl) => {
+  completeAuthResponse = (privateKey, blockchainId, coreSessionToken, 
+    appPrivateKey, profile, profileUrl) => {
     const appDomain = this.state.decodedToken.payload.domain_name
     const email = this.props.email
     const sendEmail = this.state.sendEmail
@@ -443,7 +446,6 @@ class AuthModal extends Component {
 
     const scopeEmail = this.state.scopes.email
     const scopeAppIndex = this.state.scopes.appIndex
-    const scopeStorage = this.state.scopes.storage
     return (
       <div className="">
         <ToolTip id="scope-basic">
@@ -453,7 +455,9 @@ class AuthModal extends Component {
         </ToolTip>
         <ToolTip id="scope-profile">
           <div>
-            <div>The app will add itself to your profile so that other users of the app can discover and interact with you.</div>
+            <div>The app will add itself to your profile so that other users of the app 
+              can discover and interact with you.
+            </div>
           </div>
         </ToolTip>
         <Modal
@@ -492,20 +496,20 @@ class AuthModal extends Component {
               </p>
             : null}
 
-            <p>The app <strong>"{appManifest.name}"</strong> wants to</p>
-            <div>
-              <strong>Read your basic info</strong>
-              <span data-tip data-for="scope-basic"><i className="fa fa-info-circle" /></span>
-            </div>
-            {scopeEmail ? 
+              <p>The app <strong>"{appManifest.name}"</strong> wants to</p>
               <div>
-                <strong>Read your email address</strong>
-              </div> : null}
-            {scopeAppIndex ? 
-              <div>
-                <strong>Appear in your profile</strong>
-                <span data-tip data-for="scope-profile"><i className="fa fa-info-circle" /></span>
-              </div> : null}
+                <strong>Read your basic info</strong>
+                <span data-tip data-for="scope-basic"><i className="fa fa-info-circle" /></span>
+              </div>
+              {scopeEmail ? 
+                <div>
+                  <strong>Read your email address</strong>
+                </div> : null}
+              {scopeAppIndex ? 
+                <div>
+                  <strong>Appear in your profile</strong>
+                  <span data-tip data-for="scope-profile"><i className="fa fa-info-circle" /></span>
+                </div> : null}
 
             {this.props.localIdentities.length > 0 ?
               <div className="m-t-20">
