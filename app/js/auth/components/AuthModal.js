@@ -15,7 +15,7 @@ import { setCoreStorageConfig } from '../../utils/api-utils'
 import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
-import { validateScopes } from '../utils'
+import { validateScopes, appRequestSupportsDirectHub } from '../utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
@@ -223,7 +223,7 @@ class AuthModal extends Component {
           this.state.decodedToken.payload.public_keys.length > 0) {
         transitPublicKey = this.state.decodedToken.payload.public_keys[0]
       }
-      if (isLaterVersion(requestVersion, '1.2.0')) {
+      if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
         hubUrl = this.props.api.gaiaHubConfig.server
       }
 
@@ -305,8 +305,7 @@ class AuthModal extends Component {
           const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
           const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
           const blockchainId = (hasUsername ? identity.username : null)
-          const needsCoreStorage = !isLaterVersion(
-            this.state.decodedToken.payload.version, '1.2.0')
+          const needsCoreStorage = !appRequestSupportsDirectHub(this.state.decodedToken.payload)
 
           const scopesJSONString = JSON.stringify(scopes)
 
@@ -359,7 +358,7 @@ class AuthModal extends Component {
     const noCoreStorage = (decodedToken
                            && decodedToken.payload.scopes
                            && (!decodedToken.payload.scopes.includes('store_write')
-                               || isLaterVersion(decodedToken.payload.version, '1.2.0')))
+                               || appRequestSupportsDirectHub(decodedToken.payload)))
 
     const coreShortCircuit = (!appManifestLoading
                               && appManifest !== null
