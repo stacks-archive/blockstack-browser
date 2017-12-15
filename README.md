@@ -64,7 +64,7 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 ### Windows
 
-*Please note these instructions only apply for Windows 10.*
+*Note: The installation instructions below are for setting up a development environment on Windows 10. If you are using Blockstack for the first time or are looking to try Blockstack out, please go to our [downloads page](https://blockstack.org/install) and install the version there.*
 
 The Blockstack API and the Blockstack Browser run best in Docker. There is a provided CLI to help you build and launch `docker` images if you are not comfortable with `docker`:`launcher`. The CLI will pull down the images from our [Quay image repository](https://quay.io/organization/blockstack).
 
