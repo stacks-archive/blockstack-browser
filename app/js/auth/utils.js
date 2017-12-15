@@ -8,7 +8,7 @@ const logger = log4js.getLogger('auth/components/util.js')
 const VALID_SCOPES = {
   store_write: true,
   email: true,
-  appIndex: true
+  app_index: true
 }
 
 export function validateScopes(scopes: Array<string>): boolean {

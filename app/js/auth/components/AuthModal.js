@@ -17,6 +17,8 @@ import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes } from '../utils'
 import ToolTip from '../../components/ToolTip'
 import log4js from 'log4js'
+import { uploadProfile } from '../../account/utils'
+import { signProfileForUpload } from '../../utils'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
 
@@ -125,7 +127,7 @@ class AuthModal extends Component {
       })
     }
 
-    if (scopes.includes('appIndex')) {
+    if (scopes.includes('app_index')) {
       this.setState({
         scopes: {
           appIndex: true
@@ -208,51 +210,89 @@ class AuthModal extends Component {
         }
       }
 
-      const email = this.props.email
-      const sendEmail = this.state.sendEmail
+      // Add app index file to profile if app_index scope is requested
+      if (this.state.scopes.appIndex) {
+        const identityAddress = identity.ownerAddress
+        const appIndexUrl = `${profileUrlBase}/${identityIndex}/${appDomain}/index.json`
+        
+        let apps = {}
+        if (profile.hasOwnProperty('apps')) {
+          apps = profile.apps
+        }
 
-      logger.debug(`profileUrl: ${profileUrl}`)
-      logger.debug(`email: ${email}`)
+        if (!apps.hasOwnProperty(appDomain)) {
+          apps[appDomain] = appIndexUrl
+          profile.apps = apps
 
-      const metadata = {
-        email: sendEmail ? email : null,
-        profileUrl
-      }
-
-      // TODO: what if the token is expired?
-      // TODO: use a semver check -- or pass payload version to
-      //        makeAuthResponse
-      let authResponse
-
-      let profileResponseData
-      if (this.state.decodedToken.payload.do_not_include_profile) {
-        profileResponseData = null
+          const signedProfileTokenData = signProfileForUpload(profile,
+            nextProps.identityKeypairs[identityIndex])
+          if (storageConnected) {
+            uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
+            .then(() => {
+              this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, profileUrl)
+            })
+            .catch((err) => {
+              logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
+            })
+          } else {
+            logger.debug('componentWillReceiveProps: add app index, storage is not connected. Doing nothing.')
+          }
+        } else {
+          this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, profileUrl)
+        }
       } else {
-        profileResponseData = profile
+        this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, profileUrl)
       }
 
-      if (this.state.decodedToken.payload.version === '1.1.0' &&
-          this.state.decodedToken.payload.public_keys.length > 0) {
-        const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
-
-        authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
-                                        metadata,
-                                        coreSessionToken, appPrivateKey,
-                                        undefined, transitPublicKey)
-      } else {
-        authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
-                                        metadata,
-                                        coreSessionToken, appPrivateKey)
-      }
-
-      this.props.clearSessionToken(appDomain)
-
-      logger.trace(`login(): id index ${identityIndex} is logging in`)
-      this.setState({ responseSent: true })
-      redirectUserToApp(this.state.authRequest, authResponse)
     } else {
       logger.error('componentWillReceiveProps: response already sent - doing nothing')
     }
+  }
+
+  completeAuthResponse = (privateKey, blockchainId, coreSessionToken, appPrivateKey, profileUrl) => {
+    const appDomain = this.state.decodedToken.payload.domain_name
+    const email = this.props.email
+    const sendEmail = this.state.sendEmail
+
+    logger.debug(`profileUrl: ${profileUrl}`)
+    logger.debug(`email: ${email}`)
+
+    const metadata = {
+      email: sendEmail ? email : null,
+      profileUrl
+    }
+
+    // TODO: what if the token is expired?
+    // TODO: use a semver check -- or pass payload version to
+    //        makeAuthResponse
+    let authResponse
+
+    let profileResponseData
+    if (this.state.decodedToken.payload.do_not_include_profile) {
+      profileResponseData = null
+    } else {
+      profileResponseData = profile
+    }
+
+    if (this.state.decodedToken.payload.version === '1.1.0' &&
+        this.state.decodedToken.payload.public_keys.length > 0) {
+      const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
+
+      authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
+                                      metadata,
+                                      coreSessionToken, appPrivateKey,
+                                      undefined, transitPublicKey)
+    } else {
+      authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
+                                      metadata,
+                                      coreSessionToken, appPrivateKey)
+    }
+
+    this.props.clearSessionToken(appDomain)
+
+    logger.trace(`login(): id index ${this.state.currentIdentityIndex} is logging in`)
+    this.setState({ responseSent: true })
+    redirectUserToApp(this.state.authRequest, authResponse)
   }
 
   closeModal() {
@@ -463,7 +503,7 @@ class AuthModal extends Component {
               </div> : null}
             {scopeAppIndex ? 
               <div>
-                <strong>Add itself to your profile</strong>
+                <strong>Appear in your profile</strong>
                 <span data-tip data-for="scope-profile"><i className="fa fa-info-circle" /></span>
               </div> : null}
 
