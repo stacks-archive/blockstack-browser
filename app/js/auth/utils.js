@@ -11,7 +11,8 @@ const VALID_SCOPES = {
   email: true
 }
 
-export function appRequestSupportsDirectHub(requestPayload: {}): boolean {
+export function appRequestSupportsDirectHub(
+  requestPayload: {version: string, supports_hub_url: boolean}): boolean {
   return isLaterVersion(requestPayload.version, '1.2.0') ||
     !!requestPayload.supports_hub_url
 }
