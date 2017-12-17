@@ -34,7 +34,7 @@ export function uploadPhotoToGaiaHub(api: {gaiaHubConfig: GaiaHubConfig },
   logger.trace('uploadPhotoToGaiaHub')
   const hubConfig = api.gaiaHubConfig
   const filename = `${identityIndex}/avatar-${photoIndex}`
-  return uploadToGaiaHub(hubConfig, filename, photoFile)
+  return uploadToGaiaHub(hubConfig, filename, photoFile, photoFile.type)
 }
 
 export function uploadProfileToGaiaHub(api: {gaiaHubConfig: GaiaHubConfig},
