@@ -5,9 +5,13 @@
 <ProjectFile>$(SolutionRoot)\Setup1\Setup1.vdproj</ProjectFile>
 <Configuration>Release|Any Cpu</Configuration>
 </PropertyGroup>
- <Exec>
- Command="&quot;$(devenv)&quot; /Project &quot;$(ProjectFile)&quot; /Rebuild  &quot;$(Configuration)&quot; /Log"
- ContinueOnError="false"
- IgnoreExitCode="false"
- WorkingDirectory="$(MSBuildProjectDirectory)" />
+ <Exec
+  Command="&quot;$(devenv)&quot; /Project &quot;$(ProjectFile)&quot; /Rebuild  &quot;$(Configuration)&quot; /Log"
+  ContinueOnError="false"
+  IgnoreExitCode="false"
+  WorkingDirectory="$(MSBuildProjectDirectory)" />
+</Target>
+
+<Target Name="AfterGet">
+ <CallTarget Targets="DevEnvInstaller">
 </Target>
