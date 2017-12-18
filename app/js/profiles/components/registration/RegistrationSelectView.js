@@ -294,7 +294,7 @@ class AddUsernameSelectPage extends Component {
             :
             <div>
               <h3 className="modal-heading">
-                Enter your password to buy <strong>{name}</strong>
+                Enter your password to register <strong>{name}</strong>
               </h3>
               <div className="text-center">
                 <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
@@ -318,9 +318,9 @@ class AddUsernameSelectPage extends Component {
                     disabled={registrationInProgress}
                   >
                     {registrationInProgress ?
-                      <span>Buying...</span>
+                      <span>Generating transactions...</span>
                       :
-                      <span>Buy</span>
+                      <span>Register</span>
                     }
                   </button>
                 </form>

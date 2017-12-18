@@ -84,7 +84,7 @@ const RegistrationSearchResults = (props) => (
                             className="btn btn-primary btn-block"
                             to={`/profiles/i/add-username/${props.index}/select/${name}`}
                           >
-                            Buy <strong>{name}</strong> for {price} bitcoins
+                            Register <strong>{name}</strong> for {price} bitcoins
                           </Link>
                           <button
                             onClick={props.showSearchBox}
