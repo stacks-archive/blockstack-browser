@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2005
+VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockstackBrowser", "BlockstackBrowser\BlockstackBrowser.csproj", "{DCB69DB9-5ABD-458E-889A-4789CE193EAD}"
 EndProject
@@ -20,7 +20,10 @@ Global
 		{DCB69DB9-5ABD-458E-889A-4789CE193EAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCB69DB9-5ABD-458E-889A-4789CE193EAD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95283569-D984-41FF-A8DE-513C8F12BA4D}.Debug|Any CPU.ActiveCfg = Debug
+		{95283569-D984-41FF-A8DE-513C8F12BA4D}.Debug|Any CPU.Build.0 = Debug
+		{95283569-D984-41FF-A8DE-513C8F12BA4D}.Debug|Any CPU.Deploy.0 = Debug
 		{95283569-D984-41FF-A8DE-513C8F12BA4D}.Release|Any CPU.ActiveCfg = Release
+		{95283569-D984-41FF-A8DE-513C8F12BA4D}.Release|Any CPU.Build.0 = Release
 		{6621835C-E2BB-4BB2-8473-842A3A3C3A93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6621835C-E2BB-4BB2-8473-842A3A3C3A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6621835C-E2BB-4BB2-8473-842A3A3C3A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
