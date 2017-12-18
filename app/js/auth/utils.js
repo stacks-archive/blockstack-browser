@@ -11,10 +11,17 @@ const VALID_SCOPES = {
   email: true
 }
 
-export function appRequestSupportsDirectHub(
-  requestPayload: {version: string, supports_hub_url: boolean}): boolean {
-  return isLaterVersion(requestPayload.version, '1.2.0') ||
-    !!requestPayload.supports_hub_url
+export function appRequestSupportsDirectHub(requestPayload: Object): boolean {
+  let version = '0'
+  let supportsHubUrl = false
+  if (requestPayload.hasOwnProperty('version')) {
+    version = requestPayload.version
+  }
+  if (requestPayload.hasOwnProperty('supports_hub_url')) {
+    supportsHubUrl = requestPayload.supports_hub_url
+  }
+
+  return isLaterVersion(version, '1.2.0') || !!supportsHubUrl
 }
 
 export function validateScopes(scopes: Array<string>): boolean {

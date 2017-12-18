@@ -386,8 +386,17 @@ class AuthModal extends Component {
           >
             <h3>Sign In Request</h3>
             <div>
+              {appManifest.hasOwnProperty('icons') ?
+                <p>
+                  <Image
+                    src={appManifest.icons[0].src}
+                    style={{ width: '128px', height: '128px' }}
+                    fallbackSrc="/images/app-icon-hello-blockstack.png"
+                  />
+                </p>
+              : null}
               <p>
-               This application uses an older Gaia storage library, which is not supported  
+               This application uses an older Gaia storage library, which is not supported
                in our {appText}. Once the application updates its library, you will be
                able to use it.
               </p>
