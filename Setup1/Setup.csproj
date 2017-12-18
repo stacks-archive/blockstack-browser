@@ -1,17 +1,19 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
 <Target Name="DevEnvInstaller">
-<PropertyGroup>
-<DevEnv>C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\devenv.com</DevEnv>
- 
-<ProjectFile>$(SolutionRoot)\Setup1\Setup1.vdproj</ProjectFile>
-<Configuration>Release|Any Cpu</Configuration>
-</PropertyGroup>
+  <PropertyGroup>
+    <ProjectFile>$(MSBuildProjectDirectory)\Setup1.vdproj</ProjectFile>
+    <Configuration>Release|Any Cpu</Configuration>
+  </PropertyGroup>
  <Exec
-  Command="&quot;$(devenv)&quot; /Project &quot;$(ProjectFile)&quot; /Rebuild  &quot;$(Configuration)&quot; /Log"
+  Command="devenv &quot;$(ProjectFile)&quot; /Rebuild  &quot;$(Configuration)&quot; /Log"
   ContinueOnError="false"
   IgnoreExitCode="false"
   WorkingDirectory="$(MSBuildProjectDirectory)" />
 </Target>
 
 <Target Name="AfterGet">
- <CallTarget Targets="DevEnvInstaller">
+ <CallTarget Targets="DevEnvInstaller" />
 </Target>
+
+</Project>
