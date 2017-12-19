@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Blockstack" Language="1033" Version="1.0.0.0" Manufacturer="Blockstack PBC" UpgradeCode="6a46191b-89f1-40a5-8c86-324bdc94ddcf">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="BlockstackSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="HeatResources"/>
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+        <Directory Id="BlockstackPBC" Name="Blockstack">
+          <Directory Id="INSTALLFOLDER" Name="Blockstack Browser">
+            <Directory Id="RESOURCEFOLDER" Name="Resources" />
+          </Directory>
+        </Directory>
+			</Directory>
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="ProductComponent">
+        <File Source="$(var.BlockstackBrowser.TargetPath)" />
+      </Component>
+      <Component Id="ProtocolHandler">
+        <File Source="$(var.ProtocolHandler.TargetPath)" />
+      </Component>
+		</ComponentGroup>
+	</Fragment>
+</Wix>
