@@ -62,6 +62,23 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 *Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
 
 
+### Windows
+
+*Note: The installation instructions below are for setting up a development environment on Windows 10. If you are using Blockstack for the first time or are looking to try Blockstack out, please go to our [downloads page](https://blockstack.org/install) and install the version there.*
+
+The Blockstack API and the Blockstack Browser run best in Docker. There is a provided CLI to help you build and launch `docker` images if you are not comfortable with `docker`:`launcher`. The CLI will pull down the images from our [Quay image repository](https://quay.io/organization/blockstack).
+
+1. Download the [launcher script](https://raw.githubusercontent.com/blockstack/packaging/master/browser-core-docker/launcher) from our packaging repository.
+
+2. In order to use the launcher script, you must have Docker installed and setup on your machine. Our [Windows installer](http://packages.blockstack.com/repositories/windows/) sets up Docker for you and uses the launcher script to start Blockstack Browser automatically. The same Windows installer can be found on the [Installing Blockstack README](https://github.com/blockstack/blockstack-core#installing-blockstack).
+
+3. Run `./launcher pull`. This will fetch the latest docker images from our image repository.
+
+4. Start the Blockstack Core API using `./launcher start`. This will start the Blockstack browser and a paired `blockstack-api` daemon. The first time you run this, it will create a `$HOME/.blockstack` directory to store your Blockstack Core API configuration and wallet. You will also need to create a password to protect these configurations.
+
+5. When you are done, you can clean up your environment: `./launcher stop`
+
+
 ## Building for macOS
 
 1. Make sure you have a working installation of Xcode 9 or higher & valid Mac Developer signing certificate

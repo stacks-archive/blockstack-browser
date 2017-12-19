@@ -29,7 +29,7 @@ class ConnectStorageView extends Component {
         {!showAdvanced ?
           <div>
             <h3 className="modal-heading m-t-15 p-b-20">
-              App data is stored in the storage provider of your choice
+              Your data is stored on the storage provider of your choice.
             </h3>
             <img
               role="presentation"
@@ -45,15 +45,18 @@ class ConnectStorageView extends Component {
                 Use default storage
               </button>
               <a href="#" className="modal-body" onClick={this.toggleView}>
-                Choose another storage provider
+                Preview alternative storage
               </a>
             </div>
           </div>
         :
           <div className="storage-page">
             <h3 className="modal-heading m-t-15 p-b-20">
-              Choose your storage provider
+              Alternative Storage Preview
             </h3>
+            <p className="container-fluid">
+              You control your data. App data is encrypted and stored on the storage provider you choose. Our default storage, Gaia, can be run on your own cloud storage instance.
+            </p>
             <div className="m-t-40">
               <button
                 className="btn btn-primary btn-block m-b-20"
