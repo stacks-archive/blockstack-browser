@@ -70,19 +70,6 @@ const apps = {
       developer: 'Blockstack PBC',
       status: 'user_ready'
     }, {
-      name: 'Coinfolio',
-      displayName: 'Coinfolio',
-      description: 'Coinfolio',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-coinfolio-256x256.png',
-        large: 'app-icon-coinfolio-1024x1024.png'
-      },
-      website: 'http://coinfolio-app.herokuapp.com/',
-      launchLink: 'http://coinfolio-app.herokuapp.com/',
-      developer: 'Coinfolio',
-      status: 'user_ready_token'
-    }, {
       name: 'Casa',
       displayName: 'Casa',
       description: 'Open source home sharing protocol.',
@@ -344,8 +331,8 @@ const apps = {
       description: '',
       version: '1.0.0',
       appIcon: {
-        small: 'app-icon-blockfolio-256x256.png',
-        large: 'app-icon-blockfolio-512x512.png'
+        small: 'app-icon-blockportfolio-256x256.png',
+        large: 'app-icon-blockportfolio-512x512.png'
       },
       website: 'http://www.blockportfol.io/',
       launchLink: 'http://www.blockportfol.io/',
