@@ -255,6 +255,20 @@ const apps = {
       status: 'user_ready_token',
       storageRequired: true
     }, {
+      name: 'CoinStack',
+      displayName: 'CoinStack',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinstack-256x256.png',
+        large: 'app-icon-coinstack-512x512.png'
+      },
+      website: 'http://www.coinstack.one/',
+      launchLink: 'http://www.coinstack.one/',
+      developer: 'Ben Rogmans',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
       name: 'Coinbrella',
       displayName: 'Coinbrella',
       description: '',
@@ -336,20 +350,6 @@ const apps = {
       website: 'http://www.blockportfol.io/',
       launchLink: 'http://www.blockportfol.io/',
       developer: 'Patrick DeVivo',
-      status: 'user_ready_token',
-      storageRequired: true
-    }, {
-      name: 'CoinStack',
-      displayName: 'CoinStack',
-      description: '',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-coinstack-256x256.png',
-        large: 'app-icon-coinstack-512x512.png'
-      },
-      website: 'http://www.coinstack.one/',
-      launchLink: 'http://www.coinstack.one/',
-      developer: 'Ben Rogmans',
       status: 'user_ready_token',
       storageRequired: true
     }, {
