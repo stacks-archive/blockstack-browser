@@ -8,7 +8,7 @@
     <DevCom>C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\devenv.com</DevCom>
   </PropertyGroup>
  <Exec
-  Command="$quot;$(DevCom)$quot; &quot;$(SolutionFile)&quot; /Build  &quot;$(Configuration)&quot; /Project &quot;$(ProjectFile)&quot;  /Log"
+  Command="&quot;$(DevCom)&quot; &quot;$(SolutionFile)&quot; /Build  &quot;$(Configuration)&quot; /Project &quot;$(ProjectFile)&quot;  /Log"
   ContinueOnError="false"
   IgnoreExitCode="false"
   WorkingDirectory="$(MSBuildProjectDirectory)/.." />
