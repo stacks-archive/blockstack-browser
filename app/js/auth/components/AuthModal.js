@@ -226,7 +226,8 @@ class AuthModal extends Component {
             nextProps.identityKeypairs[identityIndex])
             apps[appDomain] = appIndexFileUrl
             profile.apps = apps
-            return uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
+            return uploadProfile(this.props.api, identityIndex, identityAddress, 
+              signedProfileTokenData)
           })
           .then(() => {
             this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
@@ -238,7 +239,6 @@ class AuthModal extends Component {
         } else {
           logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
         }
-
       } else {
         this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
           profile, profileUrl)
