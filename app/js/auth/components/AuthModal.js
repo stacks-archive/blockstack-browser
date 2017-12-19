@@ -6,7 +6,8 @@ import { AuthActions } from '../store/auth'
 import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
-  makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp
+  makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp, 
+  getAppIndexFileUrl
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
@@ -211,37 +212,33 @@ class AuthModal extends Component {
       }
 
       // Add app index file to profile if app_index scope is requested
-      if (this.state.scopes.appIndex) {
-        const identityAddress = identity.ownerAddress
-        const appIndexUrl = `${profileUrlBase}/${identityIndex}/${appDomain}/index.json`
-        
+      if (this.state.scopes.appIndex) {        
         let apps = {}
         if (profile.hasOwnProperty('apps')) {
           apps = profile.apps
         }
 
-        if (!apps.hasOwnProperty(appDomain)) {
-          apps[appDomain] = appIndexUrl
-          profile.apps = apps
-
-          const signedProfileTokenData = signProfileForUpload(profile,
+        if (storageConnected) {
+          getAppIndexFileUrl('https://hub.blockstack.org', appPrivateKey)
+          .then((appIndexFileUrl) => {
+            const identityAddress = identity.ownerAddress
+            const signedProfileTokenData = signProfileForUpload(profile,
             nextProps.identityKeypairs[identityIndex])
-          if (storageConnected) {
-            uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
-            .then(() => {
-              this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
-                profile, profileUrl)
-            })
-            .catch((err) => {
-              logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
-            })
-          } else {
-            logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
-          }
+            apps[appDomain] = appIndexFileUrl
+            profile.apps = apps
+            return uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
+          })
+          .then(() => {
+            this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
+              profile, profileUrl)
+          })
+          .catch((err) => {
+            logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
+          })
         } else {
-          this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
-            profile, profileUrl)
+          logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
         }
+
       } else {
         this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey, 
           profile, profileUrl)
