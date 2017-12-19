@@ -2,14 +2,16 @@
 
 <Target Name="DevEnvInstaller">
   <PropertyGroup>
+    <SolutionFile>$(MSBuildProjectDirectory)\..\BlockstackBrowser.sln</SolutionFile>
     <ProjectFile>$(MSBuildProjectDirectory)\Setup1.vdproj</ProjectFile>
     <Configuration>Release|Any Cpu</Configuration>
+    <DevCom>C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\devenv.com</DevCom>
   </PropertyGroup>
  <Exec
-  Command="devenv &quot;$(ProjectFile)&quot; /Rebuild  &quot;$(Configuration)&quot; /Log"
+  Command="$quot;$(DevCom)$quot; &quot;$(SolutionFile)&quot; /Build  &quot;$(Configuration)&quot; /Project &quot;$(ProjectFile)&quot;  /Log"
   ContinueOnError="false"
   IgnoreExitCode="false"
-  WorkingDirectory="$(MSBuildProjectDirectory)" />
+  WorkingDirectory="$(MSBuildProjectDirectory)/.." />
 </Target>
 
 <Target Name="AfterGet">
