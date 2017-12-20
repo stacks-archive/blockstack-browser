@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>0.21.5</string>
 	<key>CFBundleVersion</key>
-	<string>79</string>
+	<string>80</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>LSBackgroundOnly</key>
