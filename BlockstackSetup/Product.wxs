@@ -11,7 +11,7 @@
 		<MajorUpgrade
             AllowSameVersionUpgrades="yes"
             DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+		<MediaTemplate EmbedCab="yes" />
 
 		<Feature Id="ProductFeature" Title="BlockstackSetup" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
