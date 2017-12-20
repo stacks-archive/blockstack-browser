@@ -63,7 +63,7 @@
 
     <Fragment>
       <DirectoryRef Id="ApplicationProgramsFolder">
-        <Component Id="ApplicationShortcut" Guid="PUT-GUID-HERE">
+        <Component Id="ApplicationShortcut" Guid="*">
           <Shortcut Id="ApplicationStartMenuShortcut" 
                     Name="Blockstack Browser"
                     Description="Browser for the Decentralized Web"
