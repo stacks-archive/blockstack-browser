@@ -4,7 +4,7 @@
              Name="Blockstack Browser"
              Language="1033"
              Version="0.21.5"
-             Manufacturer="Blockstack PBC"
+             Manufacturer="Blockstack"
              UpgradeCode="8E73C1F1-1A93-48EE-BDA2-D1D30AFE3C7A">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
@@ -53,7 +53,6 @@
           <RegistryKey Root="HKCR"
                        Key="blockstack\shell\open\command"
                        Action="createAndRemoveOnUninstall">
-            <RegistryValue Type="integer" Name="SomeIntegerValue" Value="1" KeyPath="yes"/>
             <RegistryValue Type="string" Value="[#ProtocolHandler.exe] &quot;%1&quot;"/>
           </RegistryKey>
         </Component>
@@ -68,7 +67,7 @@
                     Name="Blockstack Browser"
                     Description="Browser for the Decentralized Web"
                     Target="[#BlockstackBrowser.exe]"
-                    WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
+                    WorkingDirectory="INSTALLFOLDER"/>
           <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
           <RegistryValue Root="HKCU" Key="Software\Blockstack\BlockstackBrowser" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
         </Component>
