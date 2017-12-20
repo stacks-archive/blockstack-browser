@@ -38,9 +38,11 @@
 	  </Directory>
 	</Fragment>
 
-    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
-    <UIRef Id="WixUI_InstallDir" />
-
+    <Fragment>
+      <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+      <UIRef Id="WixUI_InstallDir" />
+    </Fragment>
+    
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
           <Component Id="ProductComponent">
@@ -64,7 +66,7 @@
                        Key="blockstack"
                        Action="createAndRemoveOnUninstall">
             <RegistryValue Type="string" Value="URL:blockstack Blockstack Authentication" />
-            <RegistryValue Type="string" Name="URL Protocol" />
+            <RegistryValue Type="string" Name="URL Protocol" Value="" />
           </RegistryKey>
         </Component>
       </DirectoryRef>
