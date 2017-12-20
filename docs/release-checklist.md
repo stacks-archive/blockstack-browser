@@ -1,6 +1,6 @@
 # Browser release checklist
 
-- [ ] `git flow release start 0.14.0` where 0.14.0 is the version of the release
+- [ ] `git flow release start 0.14.0` where 0.14.0 is the version of the release (make sure the version prefix `v` is set for git flow)
 - [ ] `git flow release publish` (optional, shares release branch)
 - [ ] update version in `/package.json`
 - [ ] update version and build number in xcode
