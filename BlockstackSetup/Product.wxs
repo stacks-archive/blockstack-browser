@@ -1,37 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Blockstack" Language="1033" Version="1.0.0.0" Manufacturer="Blockstack PBC" UpgradeCode="6a46191b-89f1-40a5-8c86-324bdc94ddcf">
+	<Product Id="*"
+             Name="Blockstack Browser"
+             Language="1033"
+             Version="0.21.5"
+             Manufacturer="Blockstack PBC"
+             UpgradeCode="8E73C1F1-1A93-48EE-BDA2-D1D30AFE3C7A">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MajorUpgrade
+            AllowSameVersionUpgrades="yes"
+            DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate />
 
 		<Feature Id="ProductFeature" Title="BlockstackSetup" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
-      <ComponentGroupRef Id="HeatResources"/>
+            <ComponentGroupRef Id="HeatResources"/>
 		</Feature>
 	</Product>
 
 	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-        <Directory Id="BlockstackPBC" Name="Blockstack">
-          <Directory Id="INSTALLFOLDER" Name="Blockstack Browser">
-            <Directory Id="RESOURCEFOLDER" Name="Resources" />
+	  <Directory Id="TARGETDIR" Name="SourceDir">
+		<Directory Id="ProgramFilesFolder">
+          <Directory Id="BlockstackPBC" Name="Blockstack">
+            <Directory Id="INSTALLFOLDER" Name="Blockstack Browser">
+              <Directory Id="RESOURCEFOLDER" Name="Resources" />
+            </Directory>
           </Directory>
-        </Directory>
-			</Directory>
 		</Directory>
+	  </Directory>
 	</Fragment>
 
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="ProductComponent">
-        <File Source="$(var.BlockstackBrowser.TargetPath)" />
-      </Component>
-      <Component Id="ProtocolHandler">
-        <File Source="$(var.ProtocolHandler.TargetPath)" />
-      </Component>
+          <Component Id="ProductComponent">
+            <File Source="$(var.BlockstackBrowser.TargetPath)" />
+          </Component>
+          <Component Id="ProtocolHandler">
+            <File Id="ProtocolHandler.exe" Source="$(var.ProtocolHandler.TargetPath)" />
+          </Component>
 		</ComponentGroup>
 	</Fragment>
+
+    <Fragment>
+      <DirectoryRef Id="TARGETDIR">
+        <Component Id="RegistryEntries" Guid="*">
+          <RegistryKey Root="HKCR"
+                       Key="blockstack\shell\open\command"
+                       Action="createAndRemoveOnUninstall">
+            <RegistryValue Type="integer" Name="SomeIntegerValue" Value="1" KeyPath="yes"/>
+            <RegistryValue Type="string" Value="[#ProtocolHandler.exe] &quot;%1&quot;"/>
+          </RegistryKey>
+        </Component>
+      </DirectoryRef>
+    </Fragment>
+
 </Wix>
