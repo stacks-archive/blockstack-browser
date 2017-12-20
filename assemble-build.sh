@@ -9,4 +9,4 @@ npm i
 
 NODE_ENV=production gulp prod-windows
 
-cp -r build ../BlockstackBrowser/Resources/build
+#cp -r build ../BlockstackBrowser/Resources/build
