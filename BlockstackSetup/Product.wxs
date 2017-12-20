@@ -13,6 +13,8 @@
             DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes" />
 
+        <UIRef Id="WixUI_InstallDir" />
+
 		<Feature Id="ProductFeature" Title="BlockstackSetup" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
             <ComponentGroupRef Id="HeatResources"/>
@@ -36,6 +38,9 @@
 	  </Directory>
 	</Fragment>
 
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+    <UIRef Id="WixUI_InstallDir" />
+
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
           <Component Id="ProductComponent">
@@ -54,6 +59,12 @@
                        Key="blockstack\shell\open\command"
                        Action="createAndRemoveOnUninstall">
             <RegistryValue Type="string" Value="[#ProtocolHandler.exe] &quot;%1&quot;"/>
+          </RegistryKey>
+          <RegistryKey Root="HKCR"
+                       Key="blockstack"
+                       Action="createAndRemoveOnUninstall">
+            <RegistryValue Type="string" Value="URL:blockstack Blockstack Authentication" />
+            <RegistryValue Type="string" Name="URL Protocol" />
           </RegistryKey>
         </Component>
       </DirectoryRef>
