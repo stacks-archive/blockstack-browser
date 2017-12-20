@@ -722,7 +722,13 @@ class DefaultProfilePage extends Component {
         {socialAccountEdit()}
         {accountEdit()}
 
-        <ToolTip id="ownerAddress">
+        <ToolTip
+          id="ownerAddress"
+          offset={{
+            bottom: '20',
+            right: '120'
+          }}
+        >
           <div>
             <div>This is your identity address.</div>
           </div>

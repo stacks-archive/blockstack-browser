@@ -329,8 +329,7 @@
 				TargetAttributes = {
 					46AB7B371E632F08004DACD8 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 8AGC2Z4ZX9;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 0;
@@ -351,8 +350,7 @@
 					};
 					628865761F3FFC900008B17F = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 8AGC2Z4ZX9;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
 								enabled = 0;
@@ -725,9 +723,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Blockstack PBC (8AGC2Z4ZX9)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Blockstack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
@@ -743,9 +741,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Blockstack PBC (8AGC2Z4ZX9)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Blockstack/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
@@ -826,9 +824,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Blockstack PBC (8AGC2Z4ZX9)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BlockstackLauncher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.macLauncher;
@@ -843,9 +841,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application: Blockstack PBC (8AGC2Z4ZX9)";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 8AGC2Z4ZX9;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = BlockstackLauncher/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.blockstack.macLauncher;
