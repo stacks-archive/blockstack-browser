@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="WelcomeDlgDescription">
+    IMPORTANT NOTE: We upgraded our Blockstack Setup Wizard on Windows, and
+    previous installs (prior to 0.21.5) may not be detected or removed correctly
+    by this setup. We recommend manually uninstalling the previous version (your keychain
+    state should not reset).
+  </String>
+</WixLocalization>
