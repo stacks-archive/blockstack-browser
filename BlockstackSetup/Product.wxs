@@ -3,7 +3,7 @@
 	<Product Id="*"
              Name="Blockstack Browser"
              Language="1033"
-             Version="0.21.5"
+             Version="0.0.0.0"
              Manufacturer="Blockstack"
              UpgradeCode="8E73C1F1-1A93-48EE-BDA2-D1D30AFE3C7A">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
