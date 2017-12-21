@@ -14,4 +14,4 @@ NODE_ENV=production gulp prod-windows
 
 cp -r build ../BlockstackBrowser/Resources/build
 
-sed -i -e "s/Version=\"0.0.0.0\"/Version=\"$VERSION\"/" BlockstackSetup/Product.wxs
+sed -i -e "s/Version=\"0.0.0.0\"/Version=\"$VERSION\"/" ../BlockstackSetup/Product.wxs
