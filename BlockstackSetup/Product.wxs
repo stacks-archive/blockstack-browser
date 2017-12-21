@@ -10,6 +10,8 @@
 
 		<MajorUpgrade
             AllowSameVersionUpgrades="yes"
+            IgnoreRemoveFailure="no"
+            Schedule="afterInstallInitialize"
             DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes" />
 
@@ -19,16 +21,12 @@
         <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
 
-        <!-- <String Id="WelcomeDlgDescription">
+        <String Id="WelcomeDlgDescription">
         IMPORTANT NOTE: We upgraded our Blockstack Setup Wizard on Windows, and
         previous installs (prior to 0.21.5) may not be detected or removed correctly
         by this setup. We recommend manually uninstalling the previous version (your keychain
         state should not reset).
-        </String> -->
-
-        <InstallExecuteSequence>
-          <RemoveExistingProducts Before="InstallInitialize" />
-        </InstallExecuteSequence>
+        </String>
 
         <WixVariable Id="WixUIDialogBmp" Value="images\windows-installer-side.bmp" />
         <WixVariable Id="WixUIBannerBmp" Value="images\windows-installer-logo.bmp" />

@@ -1,8 +1,12 @@
 #!/bin/bash
 
-rm -rf blockstack-browser
-
 VERSION=0.21.5
+
+if [ "$1" != "" ]; then
+    VERSION=$1
+fi
+
+rm -rf blockstack-browser
 
 git clone https://github.com/blockstack/blockstack-browser
 cd blockstack-browser
