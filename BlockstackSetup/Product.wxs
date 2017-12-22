@@ -6,7 +6,7 @@
              Version="0.0.0.0"
              Manufacturer="Blockstack"
              UpgradeCode="8E73C1F1-1A93-48EE-BDA2-D1D30AFE3C7A">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" />
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade
             AllowSameVersionUpgrades="yes"
@@ -49,7 +49,7 @@
 	<Fragment>
 	  <Directory Id="TARGETDIR" Name="SourceDir">
 		<Directory Id="ProgramFilesFolder">
-          <Directory Id="BlockstackPBC" Name="Blockstack">
+          <Directory Id="BlockstackPBC" Name="Blockstack PBC">
             <Directory Id="INSTALLFOLDER" Name="Blockstack Browser">
               <Directory Id="RESOURCEFOLDER" Name="Resources" />
             </Directory>

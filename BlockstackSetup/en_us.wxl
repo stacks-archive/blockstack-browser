@@ -3,7 +3,7 @@
   <String Id="WelcomeDlgDescription">
     IMPORTANT NOTE:
     
-    Previous installs (prior to 0.21.5) may not be removed correctly by this setup.
+    Previous installs (prior to 0.21.5) may not be removed correctly by this setup, so you may end up with two versions installed.
 
     We recommend manually uninstalling the previous version.
   </String>
