@@ -1,6 +1,7 @@
 // @flow
 
 import log4js from 'log4js'
+import { isLaterVersion } from 'blockstack'
 
 const logger = log4js.getLogger('auth/components/util.js')
 
@@ -8,6 +9,19 @@ const logger = log4js.getLogger('auth/components/util.js')
 const VALID_SCOPES = {
   store_write: true,
   email: true
+}
+
+export function appRequestSupportsDirectHub(requestPayload: Object): boolean {
+  let version = '0'
+  let supportsHubUrl = false
+  if (requestPayload.hasOwnProperty('version')) {
+    version = requestPayload.version
+  }
+  if (requestPayload.hasOwnProperty('supports_hub_url')) {
+    supportsHubUrl = requestPayload.supports_hub_url
+  }
+
+  return isLaterVersion(version, '1.2.0') || !!supportsHubUrl
 }
 
 export function validateScopes(scopes: Array<string>): boolean {
