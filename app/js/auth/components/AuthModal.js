@@ -504,7 +504,7 @@ class AuthModal extends Component {
                 </div> : null}
               {scopeAppIndex ? 
                 <div>
-                  <strong>Appear in your profile</strong>
+                  <strong>Store public data on your behalf</strong>
                   <span data-tip data-for="scope-profile"><i className="fa fa-info-circle" /></span>
                 </div> : null}
 
