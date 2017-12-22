@@ -6,7 +6,7 @@
              Version="0.0.0.0"
              Manufacturer="Blockstack"
              UpgradeCode="8E73C1F1-1A93-48EE-BDA2-D1D30AFE3C7A">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+		<Package InstallerVersion="200" Compressed="yes" />
 
 		<MajorUpgrade
             AllowSameVersionUpgrades="yes"
@@ -20,6 +20,9 @@
 
         <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+        <Property Id="ALLUSERS" Secure="yes" Value="2" />
+        <Property Id="MSIINSTALLPERUSER" Secure="yes" Value="1" />
      
         <WixVariable Id="WixUIDialogBmp" Value="images\windows-installer-side.bmp" />
         <WixVariable Id="WixUIBannerBmp" Value="images\windows-installer-logo.bmp" />
@@ -49,7 +52,7 @@
 	<Fragment>
 	  <Directory Id="TARGETDIR" Name="SourceDir">
 		<Directory Id="ProgramFilesFolder">
-          <Directory Id="BlockstackPBC" Name="Blockstack PBC">
+          <Directory Id="BlockstackPBC" Name="Blockstack">
             <Directory Id="INSTALLFOLDER" Name="Blockstack Browser">
               <Directory Id="RESOURCEFOLDER" Name="Resources" />
             </Directory>
