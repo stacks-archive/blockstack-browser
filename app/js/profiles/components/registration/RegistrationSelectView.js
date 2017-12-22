@@ -103,7 +103,8 @@ class AddUsernameSelectPage extends Component {
       enoughMoney,
       registrationInProgress: false,
       alerts: [],
-      password: ''
+      password: '',
+      acceptedWarning: false
     }
     this.onValueChange = this.onValueChange.bind(this)
     this.register = this.register.bind(this)
@@ -251,6 +252,8 @@ class AddUsernameSelectPage extends Component {
 
     const registrationInProgress = this.state.registrationInProgress
 
+    const acceptedWarning = this.state.acceptedWarning
+
     return (
       <div>
         {this.state.alerts.map((alert, index) =>
@@ -293,49 +296,89 @@ class AddUsernameSelectPage extends Component {
             </div>
             :
             <div>
-              <h3 className="modal-heading">
-                Enter your password to register <strong>{name}</strong>
-              </h3>
-              <div className="text-center">
-                <p>Purchasing <strong>{name}</strong> will spend {price} bitcoins
-                from your wallet.</p>
-              </div>
-              <div>
-                <form onSubmit={this.register}>
-                  <InputGroup
-                    data={this.state}
-                    onChange={this.onValueChange}
-                    name="password"
-                    label="Password"
-                    placeholder="Password"
-                    type="password"
-                    required
-                  />
-                  <button
-                    type="submit"
-                    onClick={this.register}
-                    className="btn btn-primary btn-block"
-                    disabled={registrationInProgress}
-                  >
+              {acceptedWarning ?
+                <div>
+                  <h3 className="modal-heading">
+                    Enter your password to register <strong>{name}</strong>
+                  </h3>
+                  <div className="text-center">
+                    <p>Requesting registration of <strong>{name} </strong>
+                     will spend {price} bitcoins from your wallet.
+                    </p>
+                  </div>
+                  <div>
+                    <form onSubmit={this.register}>
+                      <InputGroup
+                        data={this.state}
+                        onChange={this.onValueChange}
+                        name="password"
+                        label="Password"
+                        placeholder="Password"
+                        type="password"
+                        required
+                      />
+                      <button
+                        type="submit"
+                        onClick={this.register}
+                        className="btn btn-primary btn-block"
+                        disabled={registrationInProgress}
+                      >
+                        {registrationInProgress ?
+                          <span>Generating registration transactions...</span>
+                          :
+                          <span>Request Registration</span>
+                        }
+                      </button>
+                    </form>
+                    <br />
                     {registrationInProgress ?
-                      <span>Generating transactions...</span>
+                      null
                       :
-                      <span>Register</span>
+                      <Link
+                        to={`/profiles/i/add-username/${identityIndex}/search`}
+                        className="btn btn-tertiary btn-block"
+                      >
+                        Back
+                      </Link>
                     }
-                  </button>
-                </form>
-                <br />
-                {registrationInProgress ?
-                  null
-                  :
-                  <Link
-                    to={`/profiles/i/add-username/${identityIndex}/search`}
-                    className="btn btn-tertiary btn-block"
-                  >
-                    Back
-                  </Link>
-                }
-              </div>
+                  </div>
+                </div>
+              :
+                <div>
+                  <h3 className="modal-heading">
+                    Hope nobody beats you to it!
+                  </h3>
+                  <div className="text-center">
+                    <p>You’re about to create a registration
+                      request for <strong>{name}</strong>.</p>
+
+                    <p>A few things:</p>
+                    <ul
+                      style={{
+                        marginLeft: '20px',
+                        marginRight: '20px',
+                        textAlign: 'left'
+                      }}
+                    >
+                      <li>Requesting registration costs money even
+                      if someone else beats you to it.</li>
+                      <li>Registration fees don’t go to Blockstack PBC or anyone else.</li>
+                    </ul>
+                    <button
+                      className="btn btn-primary btn-block"
+                      onClick={() => { this.setState({ acceptedWarning: true }) }}
+                    >
+                    I understand
+                    </button>
+                    <Link
+                      to={`/profiles/i/add-username/${identityIndex}/search`}
+                      className="btn btn-tertiary btn-block"
+                    >
+                      Back
+                    </Link>
+                  </div>
+                </div>
+              }
             </div>
           }
           </div>
