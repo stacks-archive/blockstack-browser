@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
   <String Id="WelcomeDlgDescription">
-    IMPORTANT NOTE:
-    
-    Previous installs (prior to 0.21.5) may not be removed correctly by this setup, so you may end up with two versions installed.
-
-    We recommend manually uninstalling the previous version.
+    Welcome to the Blockstack Installer. This will guide you through installing or updating Blockstack Browser.
   </String>
 </WixLocalization>
