@@ -70,19 +70,6 @@ const apps = {
       developer: 'Blockstack PBC',
       status: 'user_ready'
     }, {
-      name: 'Coinfolio',
-      displayName: 'Coinfolio',
-      description: 'Coinfolio',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-coinfolio-256x256.png',
-        large: 'app-icon-coinfolio-1024x1024.png'
-      },
-      website: 'http://coinfolio-app.herokuapp.com/',
-      launchLink: 'http://coinfolio-app.herokuapp.com/',
-      developer: 'Coinfolio',
-      status: 'user_ready_token'
-    }, {
       name: 'Casa',
       displayName: 'Casa',
       description: 'Open source home sharing protocol.',
@@ -213,20 +200,6 @@ const apps = {
       developer: 'Souq',
       status: 'in_progress'
     }, {
-      name: 'CoinStack',
-      displayName: 'CoinStack',
-      description: '',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-coinstack-a-256x256.png',
-        large: 'app-icon-coinstack-a-512x512.png'
-      },
-      website: 'http://coinstack.one/',
-      launchLink: 'http://coinstack.one/',
-      developer: 'CoinStack',
-      status: 'user_ready_token',
-      storageRequired: true
-    }, {
       name: 'Coins',
       displayName: 'Coins',
       description: '',
@@ -235,9 +208,121 @@ const apps = {
         small: 'app-icon-coins-256x256.png',
         large: 'app-icon-coins-512x512.png'
       },
-      website: 'http://use.coinsapp.co/',
-      launchLink: 'http://use.coinsapp.co/',
-      developer: 'Coins',
+      website: 'http://use.coinsapp.co',
+      launchLink: 'http://use.coinsapp.co',
+      developer: 'Chase Wackerfuss',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Coinfort',
+      displayName: 'Coinfort',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinfort-256x256.png',
+        large: 'app-icon-coinfort-512x512.png'
+      },
+      website: 'http://www.coinfort.io',
+      launchLink: 'http://www.coinfort.io',
+      developer: 'Satraj Bambra',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Cryptagon',
+      displayName: 'Cryptagon',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-cryptagon-256x256.png',
+        large: 'app-icon-cryptagon-512x512.png'
+      },
+      website: 'http://app.cryptagon.io/',
+      launchLink: 'http://app.cryptagon.io/',
+      developer: 'Bernat Fortet Unanue',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'CoinStack',
+      displayName: 'CoinStack',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinstack-256x256.png',
+        large: 'app-icon-coinstack-512x512.png'
+      },
+      website: 'http://www.coinstack.one/',
+      launchLink: 'http://www.coinstack.one/',
+      developer: 'Ben Rogmans',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Coinbrella',
+      displayName: 'Coinbrella',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinbrella-256x256.png',
+        large: 'app-icon-coinbrella-512x512.png'
+      },
+      website: 'http://coinbrella.com/',
+      launchLink: 'http://coinbrella.com/',
+      developer: 'Luciano Leal',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'CoinKitty',
+      displayName: 'CoinKitty',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinkitty-256x256.png',
+        large: 'app-icon-coinkitty-512x512.png'
+      },
+      website: 'http://www.coinkitty.co/',
+      launchLink: 'http://www.coinkitty.co/',
+      developer: 'Vince DePalma',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Coinocle',
+      displayName: 'Coinocle',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinocle-256x256.png',
+        large: 'app-icon-coinocle-512x512.png'
+      },
+      website: 'http://blockstack.coinocle.com',
+      launchLink: 'http://blockstack.coinocle.com',
+      developer: 'Justin Hunter',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'faa.st',
+      displayName: 'faa.st',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-faast-256x256.png',
+        large: 'app-icon-faast-512x512.png'
+      },
+      website: 'http://faa.st/portfolio',
+      launchLink: 'http://faa.st/portfolio',
+      developer: 'Moe Adham',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Coinremix',
+      displayName: 'Coinremix',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coinremix-256x256.png',
+        large: 'app-icon-coinremix-512x512.png'
+      },
+      website: 'http://coinremix.netlify.com/',
+      launchLink: 'http://coinremix.netlify.com/',
+      developer: 'Ben Longstaff',
       status: 'user_ready_token',
       storageRequired: true
     }, {
@@ -249,9 +334,65 @@ const apps = {
         small: 'app-icon-blockportfolio-256x256.png',
         large: 'app-icon-blockportfolio-512x512.png'
       },
-      website: 'https://www.blockportfol.io/',
-      launchLink: 'https://www.blockportfol.io/',
-      developer: 'BlockPortfolio',
+      website: 'http://www.blockportfol.io/',
+      launchLink: 'http://www.blockportfol.io/',
+      developer: 'Patrick DeVivo',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Proem',
+      displayName: 'Proem',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-proem-256x256.png',
+        large: 'app-icon-proem-512x512.png'
+      },
+      website: 'http://proem.io',
+      launchLink: 'http://proem.io',
+      developer: 'Cole Jorissen',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Coindex',
+      displayName: 'Coindex',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-coindex-256x256.png',
+        large: 'app-icon-coindex-512x512.png'
+      },
+      website: 'http://coindexapp.herokuapp.com',
+      launchLink: 'http://coindexapp.herokuapp.com',
+      developer: 'Daniel Shijia Wang',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Lio',
+      displayName: 'Lio',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-lio-256x256.png',
+        large: 'app-icon-lio-512x512.png'
+      },
+      website: 'http://tap-five-lio.herokuapp.com',
+      launchLink: 'http://tap-five-lio.herokuapp.com',
+      developer: 'Alec Richter',
+      status: 'user_ready_token',
+      storageRequired: true
+    }, {
+      name: 'Peachy Portfolio',
+      displayName: 'Peachy Portfolio',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-peachy-256x256.png',
+        large: 'app-icon-peachy-512x512.png'
+      },
+      website: 'http://peachyportfolio.com/',
+      launchLink: 'http://peachyportfolio.com/',
+      developer: 'Brandon Paree',
       status: 'user_ready_token',
       storageRequired: true
     }
