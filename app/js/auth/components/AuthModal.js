@@ -7,7 +7,7 @@ import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
   makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp,
-  getAppIndexFileUrl, isLaterVersion
+  getAppBucketUrl, isLaterVersion
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
@@ -98,7 +98,7 @@ class AuthModal extends Component {
       responseSent: false,
       scopes: {
         email: false,
-        appIndex: false
+        publishData: false
       }
     }
 
@@ -128,10 +128,10 @@ class AuthModal extends Component {
       })
     }
 
-    if (scopes.includes('app_index')) {
+    if (scopes.includes('publish_data')) {
       this.setState({
         scopes: {
-          appIndex: true
+          publishData: true
         }
       })
     }
@@ -211,20 +211,20 @@ class AuthModal extends Component {
         }
       }
 
-      // Add app index file to profile if app_index scope is requested
-      if (this.state.scopes.appIndex) {
+      // Add app storage bucket URL to profile if publish_data scope is requested
+      if (this.state.scopes.publishData) {
         let apps = {}
         if (profile.hasOwnProperty('apps')) {
           apps = profile.apps
         }
 
         if (storageConnected) {
-          getAppIndexFileUrl('https://hub.blockstack.org', appPrivateKey)
-          .then((appIndexFileUrl) => {
+          getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
+          .then((appBucketUrl) => {
             const identityAddress = identity.ownerAddress
             const signedProfileTokenData = signProfileForUpload(profile,
             nextProps.identityKeypairs[identityIndex])
-            apps[appDomain] = appIndexFileUrl
+            apps[appDomain] = appBucketUrl
             profile.apps = apps
             return uploadProfile(this.props.api, identityIndex, identityAddress,
               signedProfileTokenData)
@@ -459,7 +459,7 @@ class AuthModal extends Component {
     }
 
     const scopeEmail = this.state.scopes.email
-    const scopeAppIndex = this.state.scopes.appIndex
+    const scopePublishData = this.state.scopes.publishData
     return (
       <div className="">
         <ToolTip id="scope-basic">
@@ -467,10 +467,10 @@ class AuthModal extends Component {
             <div>Your basic info includes your Blockstack ID and profile.</div>
           </div>
         </ToolTip>
-        <ToolTip id="scope-profile">
+        <ToolTip id="scope-publish">
           <div>
-            <div>The app will add itself to your profile so that other users of the app
-              can discover and interact with you.
+            <div>The app may publish data so that other users of the app can discover 
+            and interact with you.
             </div>
           </div>
         </ToolTip>
@@ -519,10 +519,10 @@ class AuthModal extends Component {
                 <div>
                   <strong>Read your email address</strong>
                 </div> : null}
-              {scopeAppIndex ?
+              {scopePublishData ?
                 <div>
-                  <strong>Store public data on your behalf</strong>
-                  <span data-tip data-for="scope-profile"><i className="fa fa-info-circle" /></span>
+                  <strong>Publish data stored for this app</strong>
+                  <span data-tip data-for="scope-publish"><i className="fa fa-info-circle" /></span>
                 </div> : null}
 
             {this.props.localIdentities.length > 0 ?
