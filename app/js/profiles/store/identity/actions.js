@@ -196,6 +196,9 @@ function createNewProfile(encryptedBackupPhrase: string,
       getIdentityOwnerAddressNode(identityPrivateKeychainNode, index)
       const newIdentityKeypair = deriveIdentityKeyPair(identityOwnerAddressNode)
       logger.debug(`createNewProfile: new identity: ${newIdentityKeypair.address}`)
+      // aaron: the following lines will double increment
+      //  so we get indexes like:
+      // 0, 1, 3, 5, 7, 9, 11 ...
       dispatch(AccountActions.newIdentityAddress(newIdentityKeypair))
       dispatch(AccountActions.usedIdentityAddress())
       const ownerAddress = newIdentityKeypair.address
