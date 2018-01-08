@@ -49,9 +49,6 @@ describe('Identity Store: Async Actions', () => {
           "type": "NEW_IDENTITY_ADDRESS"
         },
         {
-          "type": "INCREMENT_IDENTITY_ADDRESS_INDEX"
-        },
-        {
           "index": 0,
           "ownerAddress": "13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ",
           "type": "CREATE_NEW"
