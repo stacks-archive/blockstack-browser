@@ -200,7 +200,6 @@ function createNewProfile(encryptedBackupPhrase: string,
       //  so we get indexes like:
       // 0, 1, 3, 5, 7, 9, 11 ...
       dispatch(AccountActions.newIdentityAddress(newIdentityKeypair))
-      dispatch(AccountActions.usedIdentityAddress())
       const ownerAddress = newIdentityKeypair.address
       // $FlowFixMe
       dispatch(createNewIdentityWithOwnerAddress(index, ownerAddress))
