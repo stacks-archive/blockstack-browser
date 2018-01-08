@@ -61,7 +61,7 @@ class AuthModal extends Component {
   static propTypes = {
     defaultIdentity: PropTypes.number.isRequired,
     localIdentities: PropTypes.array.isRequired,
-    loadAppManifest: PropTypes.func.isRequired,
+    verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
     clearSessionToken: PropTypes.func.isRequired,
     getCoreSessionToken: PropTypes.func.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
@@ -126,7 +126,7 @@ class AuthModal extends Component {
       invalidScopes
     })
 
-    this.props.loadAppManifest(authRequest)
+    this.props.verifyAuthRequestAndLoadManifest(authRequest)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -436,7 +436,8 @@ class AuthModal extends Component {
             :
             <div>
               <p>
-              The app "{appManifest.name}" wants to access your basic info
+              The app "{appManifest.name}" located at {decodedToken.payload.domain_name}
+              &nbsp;wants to access your basic info
                 {requestingEmail ? <span> and email address</span> : null}
               </p>
             {appManifest.hasOwnProperty('icons') ?
