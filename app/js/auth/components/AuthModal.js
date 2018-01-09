@@ -6,7 +6,8 @@ import { AuthActions } from '../store/auth'
 import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
-  makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp
+  makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp,
+  isLaterVersion
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
@@ -14,7 +15,7 @@ import { setCoreStorageConfig } from '../../utils/api-utils'
 import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
-import { validateScopes } from '../utils'
+import { validateScopes, appRequestSupportsDirectHub } from '../utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
@@ -90,7 +91,7 @@ class AuthModal extends Component {
       invalidScopes: false,
       sendEmail: false,
       blockchainId: null,
-      noStorage: false,
+      noCoreStorage: false,
       responseSent: false,
       requestingEmail: false
     }
@@ -139,7 +140,7 @@ class AuthModal extends Component {
       const localIdentities = nextProps.localIdentities
       const identityKeypairs = nextProps.identityKeypairs
       if ((!appDomain || !nextProps.coreSessionTokens[appDomain])) {
-        if (this.state.noStorage) {
+        if (this.state.noCoreStorage) {
           logger.debug('componentWillReceiveProps: no core session token expected')
         } else {
           logger.debug('componentWillReceiveProps: no app domain or no core session token')
@@ -151,7 +152,7 @@ class AuthModal extends Component {
 
       const coreSessionToken = nextProps.coreSessionTokens[appDomain]
       let decodedCoreSessionToken = null
-      if (!this.state.noStorage) {
+      if (!this.state.noCoreStorage) {
         logger.debug('componentWillReceiveProps: received coreSessionToken')
         decodedCoreSessionToken = decodeToken(coreSessionToken)
       } else {
@@ -206,9 +207,6 @@ class AuthModal extends Component {
       }
 
       // TODO: what if the token is expired?
-      // TODO: use a semver check -- or pass payload version to
-      //        makeAuthResponse
-      let authResponse
 
       let profileResponseData
       if (this.state.decodedToken.payload.do_not_include_profile) {
@@ -217,19 +215,22 @@ class AuthModal extends Component {
         profileResponseData = profile
       }
 
-      if (this.state.decodedToken.payload.version === '1.1.0' &&
-          this.state.decodedToken.payload.public_keys.length > 0) {
-        const transitPublicKey = this.state.decodedToken.payload.public_keys[0]
+      let transitPublicKey = undefined
+      let hubUrl = undefined
 
-        authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
-                                        metadata,
-                                        coreSessionToken, appPrivateKey,
-                                        undefined, transitPublicKey)
-      } else {
-        authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
-                                        metadata,
-                                        coreSessionToken, appPrivateKey)
+      const requestVersion = this.state.decodedToken.payload.version
+      if (isLaterVersion(requestVersion, '1.1.0') &&
+          this.state.decodedToken.payload.public_keys.length > 0) {
+        transitPublicKey = this.state.decodedToken.payload.public_keys[0]
       }
+      if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
+        hubUrl = this.props.api.gaiaHubConfig.server
+      }
+
+      const authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
+                                            metadata, coreSessionToken, appPrivateKey,
+                                            undefined, transitPublicKey, hubUrl)
+
 
       this.props.clearSessionToken(appDomain)
 
@@ -304,6 +305,7 @@ class AuthModal extends Component {
           const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
           const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
           const blockchainId = (hasUsername ? identity.username : null)
+          const needsCoreStorage = !appRequestSupportsDirectHub(this.state.decodedToken.payload)
 
           const scopesJSONString = JSON.stringify(scopes)
 
@@ -320,7 +322,7 @@ class AuthModal extends Component {
             sendEmail: !!scopes.includes('email')
           })
           const requestingStoreWrite = !!scopes.includes('store_write')
-          if (requestingStoreWrite) {
+          if (requestingStoreWrite && needsCoreStorage) {
             logger.trace('login(): Calling setCoreStorageConfig()...')
             setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
             identity.profile, profileSigningKeypair)
@@ -331,10 +333,16 @@ class AuthModal extends Component {
                   this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
                   appDomain, this.state.authRequest, blockchainId)
             })
+          } else if (requestingStoreWrite && !needsCoreStorage) {
+            logger.trace('login(): app can communicate directly with gaiahub, not setting up core.')
+            this.setState({
+              noCoreStorage: true
+            })
+            this.props.noCoreSessionToken(appDomain)
           } else {
             logger.trace('login(): No storage access requested.')
             this.setState({
-              noStorage: true
+              noCoreStorage: true
             })
             this.props.noCoreSessionToken(appDomain)
           }
@@ -347,14 +355,15 @@ class AuthModal extends Component {
     const processing = this.state.processing
     const invalidScopes = this.state.invalidScopes
     const decodedToken = this.state.decodedToken
-    const noStorage = (decodedToken
-                       && decodedToken.payload.scopes
-                       && !decodedToken.payload.scopes.includes('store_write'))
+    const noCoreStorage = (decodedToken
+                           && decodedToken.payload.scopes
+                           && (!decodedToken.payload.scopes.includes('store_write')
+                               || appRequestSupportsDirectHub(decodedToken.payload)))
 
     const coreShortCircuit = (!appManifestLoading
                               && appManifest !== null
                               && !invalidScopes
-                              && !noStorage
+                              && !noCoreStorage
                               && isCoreEndpointDisabled())
     if (coreShortCircuit) {
       let appText
@@ -377,9 +386,19 @@ class AuthModal extends Component {
           >
             <h3>Sign In Request</h3>
             <div>
+              {appManifest.hasOwnProperty('icons') ?
+                <p>
+                  <Image
+                    src={appManifest.icons[0].src}
+                    style={{ width: '128px', height: '128px' }}
+                    fallbackSrc="/images/app-icon-hello-blockstack.png"
+                  />
+                </p>
+              : null}
               <p>
-               This application requires using Gaia storage, which is not supported yet 
-               in our {appText}. Feature coming soon!
+               This application uses an older Gaia storage library, which is not supported
+               in our {appText}. Once the application updates its library, you will be
+               able to use it.
               </p>
             </div>
           </Modal>
