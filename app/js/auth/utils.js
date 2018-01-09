@@ -8,7 +8,8 @@ const logger = log4js.getLogger('auth/components/util.js')
 
 const VALID_SCOPES = {
   store_write: true,
-  email: true
+  email: true,
+  publish_data: true
 }
 
 export function appRequestSupportsDirectHub(requestPayload: Object): boolean {
