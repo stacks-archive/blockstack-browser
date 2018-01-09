@@ -408,7 +408,7 @@ const apps = {
       website: 'http://graphitedocs.com',
       launchLink: 'http://graphitedocs.com',
       developer: 'Justin Hunter',
-      status: 'user_ready_token',
+      status: 'user_ready',
       storageRequired: true
     }
   ]
