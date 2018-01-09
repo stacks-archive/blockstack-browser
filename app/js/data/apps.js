@@ -395,6 +395,21 @@ const apps = {
       developer: 'Brandon Paree',
       status: 'user_ready_token',
       storageRequired: true
+    },
+    {
+      name: 'Graphite',
+      displayName: 'Graphite',
+      description: 'Graphite allows you to write without giving up your privacy.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-graphite-256x256.png',
+        large: 'app-icon-graphite-512x512.png'
+      },
+      website: 'http://graphitedocs.com',
+      launchLink: 'http://graphitedocs.com',
+      developer: 'Justin Hunter',
+      status: 'user_ready',
+      storageRequired: true
     }
   ]
 }
