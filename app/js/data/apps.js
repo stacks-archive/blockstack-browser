@@ -376,8 +376,8 @@ const apps = {
         small: 'app-icon-lio-256x256.png',
         large: 'app-icon-lio-512x512.png'
       },
-      website: 'http://tap-five-lio.herokuapp.com',
-      launchLink: 'http://tap-five-lio.herokuapp.com',
+      website: 'http://lioapp.io',
+      launchLink: 'http://lioapp.io',
       developer: 'Alec Richter',
       status: 'user_ready_token',
       storageRequired: true
