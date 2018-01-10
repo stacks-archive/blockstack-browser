@@ -7,6 +7,7 @@ gulp.task('copyIndex', function() {
 
   gulp.src([config.sourceDir + 'index.html',
   config.sourceDir + 'favicon.ico',
+  config.sourceDir + '_headers',
   config.sourceDir + 'netlify.toml']).pipe(gulp.dest(config.buildDir));
 
 
