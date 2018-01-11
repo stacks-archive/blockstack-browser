@@ -360,7 +360,8 @@ class AddUsernameSelectPage extends Component {
                         textAlign: 'left'
                       }}
                     >
-                      <li>Registrations are a race & there's a small chance someone else will win.</li>
+                      <li>Registrations are a race & there's a small chance someone else will win.
+                      </li>
                       <li>Registration requests have a fee regardless of the outcome.</li>
                       <li>Fees are destroyed on the network and not sent to any company.</li>
                     </ul>
