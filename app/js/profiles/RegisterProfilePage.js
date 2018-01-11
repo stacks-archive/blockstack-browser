@@ -184,7 +184,7 @@ class RegisterPage extends Component {
               this.updateAlert('info', `${domainName} costs ~${roundedUpPrice} btc to register.`)
             } else {
               const shortfall = price - this.props.coreWalletBalance
-              this.updateAlert('danger', `Your wallet doesn't have enough money to buy ${domainName}. Please send at least ${shortfall} more bitcoin to your wallet.`, WALLET_URL)
+              this.updateAlert('danger', `Your wallet doesn't have enough money to register ${domainName}. Please send at least ${shortfall} more bitcoin to your wallet.`, WALLET_URL)
             }
           }
         } else {
