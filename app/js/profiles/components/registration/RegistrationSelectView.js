@@ -346,13 +346,13 @@ class AddUsernameSelectPage extends Component {
               :
                 <div>
                   <h3 className="modal-heading">
-                    Hope nobody beats you to it!
+                    Name Registration Disclaimer
                   </h3>
                   <div className="text-center">
                     <p>You’re about to create a registration
-                      request for <strong>{name}</strong>.</p>
+                      request for <strong>{name}</strong></p>
 
-                    <p>A few things:</p>
+                    <p>Please confirm you understand the following:</p>
                     <ul
                       style={{
                         marginLeft: '20px',
@@ -360,9 +360,9 @@ class AddUsernameSelectPage extends Component {
                         textAlign: 'left'
                       }}
                     >
-                      <li>Requesting registration costs money even
-                      if someone else beats you to it.</li>
-                      <li>Registration fees don’t go to Blockstack PBC or anyone else.</li>
+                      <li>Registrations are a race & there's a small chance someone else will win.</li>
+                      <li>Registration requests have a fee regardless of the outcome.</li>
+                      <li>Fees are destroyed on the network and not sent to any company.</li>
                     </ul>
                     <button
                       className="btn btn-primary btn-block"
