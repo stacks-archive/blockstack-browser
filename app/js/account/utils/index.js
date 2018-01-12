@@ -1,21 +1,17 @@
 // @flow
-import { uploadPhotoToDropbox, uploadProfileToDropbox } from './dropbox'
-import { uploadPhotoToGaiaHub, uploadProfileToGaiaHub } from './blockstack-inc'
-import type { GaiaHubConfig } from './blockstack-inc'
+import { parseZoneFile } from 'zone-file'
+
+import type { GaiaHubConfig } from 'blockstack'
+import { getFullReadUrl, connectToGaiaHub, uploadToGaiaHub } from 'blockstack'
+
+import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
+
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/utils/index.js')
 
 export const BLOCKSTACK_INC = 'gaia-hub'
 export const DROPBOX = 'dropbox'
-
-function getStorageMethod(api: {dropboxAccessToken: string}) {
-  if (api.hostedDataLocation === DROPBOX &&
-    api.dropboxAccessToken.length > 0) {
-    return DROPBOX
-  }
-  return BLOCKSTACK_INC
-}
 
 function checkIdentityInputs(identityIndex: number, identityAddress: string) {
   if (!identityIndex && identityIndex !== 0) {
@@ -31,32 +27,90 @@ function checkIdentityInputs(identityIndex: number, identityAddress: string) {
   }
 }
 
-export function uploadPhoto(api: {dropboxAccessToken: string, gaiaHubConfig: GaiaHubConfig},
-  identityIndex: number, identityAddress: string, photoFile: string, photoIndex: number) {
-  const storageMethod = getStorageMethod(api)
-  logger.debug(`uploadPhoto: id index: ${identityIndex} id address ${identityAddress}`)
-  switch (storageMethod) {
-    case DROPBOX:
-      return uploadPhotoToDropbox(api, identityIndex, identityAddress, photoFile, photoIndex)
-    default:
-      return uploadPhotoToGaiaHub(api, identityIndex, identityAddress, photoFile, photoIndex)
+function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
+  if (identity.zoneFile) {
+    const zoneFileJson = parseZoneFile(identity.zoneFile)
+    return getTokenFileUrlFromZoneFile(zoneFileJson)
+  } else {
+    return getFullReadUrl('profile.json', hubConfig)
   }
 }
 
-export function uploadProfile(api: {dropboxAccessToken: string, gaiaHubConfig: GaiaHubConfig },
-  identityIndex: number, identityAddress: string, signedProfileTokenData: string,
-  firstUpload: boolean = false) {
+// aaron: this should be moved into blockstack.js
+function canWriteUrl(url: string,
+                     hubConfig: GaiaHubConfig): ?string {
+  const readPrefix = `${hubConfig.url_prefix}${hubConfig.address}/`
+  if (url.startsWith(readPrefix)) {
+    return url.substring(readPrefix.length)
+  } else {
+    return null
+  }
+}
+
+function tryUpload(urlToWrite: string, data: string,
+                   hubConfig: GaiaHubConfig, mimeType: ?string = undefined) {
+  const filenameWrite = canWriteUrl(urlToWrite, hubConfig)
+  if (filenameWrite === null) {
+    return null
+  }
+  return uploadToGaiaHub(filenameWrite, data, hubConfig, mimeType)
+}
+
+export function uploadPhoto(
+  api: {dropboxAccessToken: string, gaiaHubConfig: GaiaHubConfig},
+  identity: any,
+  identityIndex: number, identityAddress: string, photoFile: string, photoIndex: number) {
   checkIdentityInputs(identityIndex, identityAddress)
 
-  const storageMethod = getStorageMethod(api)
+  return connectToGaiaHub('')
+    .then((identityHubConfig) => {
+      const globalHubConfig = api.gaiaHubConfig
 
-  switch (storageMethod) {
-    case DROPBOX:
-      return uploadProfileToDropbox(api, identityIndex, identityAddress,
-        signedProfileTokenData, firstUpload)
+      let uploadPrefix = getProfileUploadLocation(identity, identityHubConfig)
+      if (uploadPrefix.endsWith('profile.json')) {
+        uploadPrefix = uploadPrefix.substring(0, uploadPrefix.length - 'profile.json'.length)
+      } else {
+        throw new Error(`Cannot determine photo location based on profile location ${uploadPrefix}`)
+      }
+      const urlToWrite = `${uploadPrefix}/avatar-${photoIndex}`
+      let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, undefined)
+      if (uploadAttempt === null) {
+        uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, undefined)
+      }
 
-    default:
-      return uploadProfileToGaiaHub(api, identityIndex, identityAddress,
-        signedProfileTokenData)
-  }
+      // if still null, we don't know the write gaia-hub-config to write the file.
+      if (uploadAttempt === null) {
+        throw new Error(`Wanted to write to ${urlToWrite} but I don't know how.`)
+      }
+
+      return uploadAttempt
+    })
+}
+
+export function uploadProfile(
+  api: {dropboxAccessToken: string, gaiaHubConfig: GaiaHubConfig },
+  identity: any,
+  identityIndex: number, identityAddress: string, signedProfileTokenData: string) {
+  checkIdentityInputs(identityIndex, identityAddress)
+
+  return connectToGaiaHub('')
+    .then((identityHubConfig) => {
+      const globalHubConfig = api.gaiaHubConfig
+
+      const urlToWrite = getProfileUploadLocation(identity, identityHubConfig)
+
+      let uploadAttempt = tryUpload(urlToWrite, signedProfileTokenData,
+                                    identityHubConfig, 'application/json')
+      if (uploadAttempt === null) {
+        uploadAttempt = tryUpload(urlToWrite, signedProfileTokenData,
+                                  globalHubConfig, 'application/json')
+      }
+
+      // if still null, we don't know the write gaia-hub-config to write the file.
+      if (uploadAttempt === null) {
+        throw new Error(`Wanted to write to ${urlToWrite} but I don't know how.`)
+      }
+
+      return uploadAttempt
+    })
 }
