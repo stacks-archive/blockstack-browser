@@ -264,7 +264,6 @@ class AuthModal extends Component {
     }
 
     let profileResponseData
-    
     if (this.state.decodedToken.payload.do_not_include_profile) {
       profileResponseData = null
     } else {
@@ -274,7 +273,11 @@ class AuthModal extends Component {
     let transitPublicKey = undefined
     let hubUrl = undefined
 
-    const requestVersion = this.state.decodedToken.payload.version
+    let requestVersion = '0'
+    if (this.state.decodedToken.payload.hasOwnProperty('version')) {
+      requestVersion = this.state.decodedToken.payload.version
+    }
+
     if (isLaterVersion(requestVersion, '1.1.0') &&
         this.state.decodedToken.payload.public_keys.length > 0) {
       transitPublicKey = this.state.decodedToken.payload.public_keys[0]
@@ -469,7 +472,7 @@ class AuthModal extends Component {
         </ToolTip>
         <ToolTip id="scope-publish">
           <div>
-            <div>The app may publish data so that other users of the app can discover 
+            <div>The app may publish data so that other users of the app can discover
             and interact with you.
             </div>
           </div>
