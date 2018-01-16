@@ -391,17 +391,17 @@ class DefaultProfilePage extends Component {
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
     const verifications = identity.verifications
-    const identityAddress = identity.ownerAddress
     const trustLevel = identity.trustLevel
 
     this.props.updateProfile(this.props.defaultIdentity, newProfile, verifications, trustLevel)
     logger.trace('saveProfile: Preparing to upload profile')
     logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 
-    const signedProfileTokenData = signProfileForUpload(this.state.profile,
-      this.props.identityKeypairs[identityIndex])
+
+    const identitySigner = this.props.identityKeypairs[identityIndex]
+    const signedProfileTokenData = signProfileForUpload(this.state.profile, identitySigner)
     if (this.props.storageConnected) {
-      uploadProfile(this.props.api, identityIndex, identityAddress, signedProfileTokenData)
+      uploadProfile(this.props.api, identity, identitySigner, signedProfileTokenData)
       .catch((err) => {
         logger.error('saveProfile: profile not uploaded', err)
       })
@@ -423,13 +423,13 @@ class DefaultProfilePage extends Component {
   uploadProfilePhoto = (e) => {
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
-    const ownerAddress = identity.ownerAddress
+    const identitySigner = this.props.identityKeypairs[identityIndex]
     const profile = this.state.profile
     const photoIndex = 0
 
     logger.debug('uploadProfilePhoto: trying to upload...')
     if (this.props.storageConnected) {
-      uploadPhoto(this.props.api, identityIndex, ownerAddress, e.target.files[0], photoIndex)
+      uploadPhoto(this.props.api, identity, identitySigner, e.target.files[0], photoIndex)
       .then((avatarUrl) => {
         logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
         profile.image = []

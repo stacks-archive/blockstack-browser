@@ -128,10 +128,18 @@ describe('Registration Store: Async Actions', () => {
         unsafe: true,
         payment_key: `${paymentUncompressedPrivateKey}01`}
 
+      const mockHubInfoResponse = { "challenge_text":
+                                    "[\"gaiahub\",\"2018\",\"storage.blockstack.org\",\"blockstack_storage_please_sign\"]",
+                                    "read_url_prefix":
+                                    "https://gaia.blockstack.org/hub/" }
+      nock('https://hub.blockstack.org')
+      .get('/hub_info')
+      .reply(200, mockHubInfoResponse)
+
       const mockResponseBody = {"publicURL":`https://gaia.blockstack.org/hub/1GnrEexgXvHCZobXDVdhpto6QPXKthN99n/0/profile.json`}
       // mock gaia hub
       nock('https://hub.blockstack.org')
-      .post(`/store/${BitcoinKeyPairs.test1.address}/0/profile.json`)
+      .post(`/store/${BitcoinKeyPairs.test1.address}/profile.json`)
       .reply(200, mockResponseBody)
 
       const mockGaiaConfig = {
@@ -160,11 +168,12 @@ describe('Registration Store: Async Actions', () => {
 
       const mockAPI = Object.assign({}, DEFAULT_API, {
         hostedDataLocation: 'gaia-hub',
-        gaiaHubConfig: mockGaiaConfig.gaiaHubConfig
+        gaiaHubConfig: mockGaiaConfig.gaiaHubConfig,
+        gaiaHubUrl: 'https://hub.blockstack.org'
       })
 
       return store.dispatch(RegistrationActions.registerName(mockAPI,
-        'satoshi.id', 0, BitcoinKeyPairs.test1.address, keypair, paymentUncompressedPrivateKey))
+        'satoshi.id', {}, 0, BitcoinKeyPairs.test1.address, keypair, paymentUncompressedPrivateKey))
       .then(() => {
         const expectedActions = [
           { type: 'PROFILE_UPLOADING' },
@@ -242,9 +251,17 @@ describe('Registration Store: Async Actions', () => {
       const mockResponseBody = {"publicURL":`https://gaia.blockstack.org/hub/${BitcoinKeyPairs.test1.address}/0/profile.json`}
       // mock gaia hub
       nock('https://hub.blockstack.org')
-      .post(`/store/${BitcoinKeyPairs.test1.address}/0/profile.json`)
+      .post(`/store/${BitcoinKeyPairs.test1.address}/profile.json`)
       .reply(200, mockResponseBody)
 
+
+      const mockHubInfoResponse = { "challenge_text":
+                                    "[\"gaiahub\",\"2018\",\"storage.blockstack.org\",\"blockstack_storage_please_sign\"]",
+                                    "read_url_prefix":
+                                    "https://gaia.blockstack.org/hub/" }
+      nock('https://hub.blockstack.org')
+      .get('/hub_info')
+      .reply(200, mockHubInfoResponse)
 
       const store = mockStore({
         lastNameEntered: 'satoshi.id',
@@ -262,11 +279,12 @@ describe('Registration Store: Async Actions', () => {
 
       const mockAPI = Object.assign({}, DEFAULT_API, {
         hostedDataLocation: 'gaia-hub',
-        gaiaHubConfig: mockGaiaConfig.gaiaHubConfig
+        gaiaHubConfig: mockGaiaConfig.gaiaHubConfig,
+        gaiaHubUrl: 'https://hub.blockstack.org'
       })
 
       return store.dispatch(RegistrationActions.registerName(mockAPI,
-        'satoshi.id', 0, BitcoinKeyPairs.test1.address, keypair))
+        'satoshi.id', {}, 0, BitcoinKeyPairs.test1.address, keypair))
       .then(() => {
         assert(0, 'This promise is supposed to be rejected.')
       })

@@ -87,7 +87,8 @@ function setOwnerKey(setOwnerKeyUrl, requestHeaders, keypair, nameIsSubdomain) {
   })
 }
 
-function registerName(api, domainName, identityIndex, ownerAddress, keypair, paymentKey = null) {
+function registerName(api, domainName, identity, identityIndex,
+                      ownerAddress, keypair, paymentKey = null) {
   logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
     logger.debug(`Signing a blank default profile for ${domainName}`)
@@ -95,7 +96,7 @@ function registerName(api, domainName, identityIndex, ownerAddress, keypair, pay
 
     dispatch(profileUploading())
     logger.trace(`Uploading ${domainName} profile...`)
-    return uploadProfile(api, identityIndex, ownerAddress, signedProfileTokenData)
+    return uploadProfile(api, identity, keypair, signedProfileTokenData)
     .then((profileUrl) => {
       logger.trace(`Uploading ${domainName} profiled succeeded.`)
       const tokenFileUrl = profileUrl

@@ -203,13 +203,15 @@ class AddUsernameSelectPage extends Component {
       logger.debug(`register: is ${name} a subdomain? ${nameIsSubdomain}`)
 
       if (nameIsSubdomain) {
-        this.props.registerName(this.props.api, name, index, address, keypair)
+        this.props.registerName(this.props.api, name, identity,
+                                index, address, keypair)
       } else {
         const password = this.state.password
         const encryptedBackupPhrase = this.props.encryptedBackupPhrase
         decryptBitcoinPrivateKey(password, encryptedBackupPhrase)
         .then((paymentKey) => {
-          this.props.registerName(this.props.api, name, index, address, keypair, paymentKey)
+          this.props.registerName(this.props.api, name, identity,
+                                  index, address, keypair, paymentKey)
         })
         .catch((error) => {
           this.setState({
