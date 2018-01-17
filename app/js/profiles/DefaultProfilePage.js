@@ -390,10 +390,8 @@ class DefaultProfilePage extends Component {
 
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
-    const verifications = identity.verifications
-    const trustLevel = identity.trustLevel
 
-    this.props.updateProfile(this.props.defaultIdentity, newProfile, verifications, trustLevel)
+    this.props.updateProfile(this.props.defaultIdentity, newProfile, identity.zoneFile)
     logger.trace('saveProfile: Preparing to upload profile')
     logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 
