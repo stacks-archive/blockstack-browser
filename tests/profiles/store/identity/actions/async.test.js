@@ -73,9 +73,10 @@ describe('Identity Store: Async Actions', () => {
       .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
       .reply(200, { names: ['guylepage.id'] },
       { 'Content-Type': 'application/json' })
-      // .get('/v1/names/guylepage.id')
-      // .reply(200, NameLookups['guylepage.id'],
-      // { 'Content-Type': 'application/json' })
+
+      nock('http://localhost:6270')
+        .get('/v1/names/guylepage.id')
+        .reply(404, '')
 
       // const nockAWS = nock('https://blockstack.s3.amazonaws.com')
       // .get('/guylepage.id')
@@ -289,8 +290,14 @@ describe('Identity Store: Async Actions', () => {
         "@type": "Person",
         "name":"Second"
       }
+
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/profile.json`)
+        .reply(404, 'Not found')
+
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${dummyAddress}/profile.json`)
+        .times(3)
         .reply(404, 'Not found')
 
       // the _tested_ index is 3, which should map to /2/
@@ -307,6 +314,7 @@ describe('Identity Store: Async Actions', () => {
 
       nock('http://localhost:6270')
       .get(`/v1/addresses/bitcoin/${dummyAddress}`)
+      .times(3)
       .reply(200, { names: [] },
       { 'Content-Type': 'application/json' })
 
@@ -345,6 +353,7 @@ describe('Identity Store: Async Actions', () => {
       // mock core
 
       nock('http://localhost:6270')
+      .persist()
       .get('/v1/names/guylepage.id')
       .reply(200, NameLookups['guylepage.id'],
       { 'Content-Type': 'application/json' })
@@ -365,6 +374,10 @@ describe('Identity Store: Async Actions', () => {
       .reply(200, 'verifying that guylepage.id is my blockstack id')
 
       nock('https://www.facebook.com')
+      .get('/g3lepage/posts/undefined')
+      .reply(404, '')
+
+      nock('https://www.facebook.com')
       .persist()
       .get('/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fg3lepage%2Fposts%2F10154179855498760')
       .reply(200, 'verifying that guylepage.id is my blockstack id')
@@ -372,6 +385,10 @@ describe('Identity Store: Async Actions', () => {
       nock('https://gist.github.com')
       .get('/guylepage3/48777a21a70d322b0fa4c1fcc53f4477')
       .reply(200, 'verifying that guylepage.id is my blockstack id')
+
+      nock('https://gist.github.com')
+      .get('/guylepage3/48777a21a70d322b0fa4c1fcc53f4477/raw')
+      .reply(404, '')
 
       const store = mockStore(initialState)
 

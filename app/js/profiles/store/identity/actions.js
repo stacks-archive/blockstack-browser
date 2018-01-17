@@ -239,6 +239,10 @@ function fetchProfileLocations(gaiaUrlBase: string,
           return recursiveTryFetch(locations.slice(1))
         }
       })
+      .catch(() => {
+        logger.debug(`Error in fetching profile at ${location}... trying others`)
+        return recursiveTryFetch(locations.slice(1))
+      })
   }
 
   const urls = []
