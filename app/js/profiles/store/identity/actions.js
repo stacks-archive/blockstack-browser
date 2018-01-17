@@ -225,15 +225,14 @@ function fetchProfileLocations(gaiaUrlBase: string,
       .then(response => {
         if (response.ok) {
           return response.json()
-            .then(tokenRecords => getProfileFromTokens(tokenRecords, ownerAddress))
+            .then(tokenRecords => getProfileFromTokens(tokenRecords, ownerAddress, false))
             .then(profile => {
-              if (profile) {
-                logger.debug(`Found valid profile at ${location}`)
-                return profile
-              } else {
-                logger.debug(`Failed to verify profile at ${location}... trying others`)
-                return recursiveTryFetch(locations.slice(1))
-              }
+              logger.debug(`Found valid profile at ${location}`)
+              return profile
+            })
+            .catch(() => {
+              logger.debug(`Failed to verify profile at ${location}... trying others`)
+              return recursiveTryFetch(locations.slice(1))
             })
         } else {
           logger.debug(`Failed to find profile at ${location}... trying others`)
@@ -296,14 +295,16 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
                   let verifications = []
                   let trustLevel = 0
                   logger.debug(`refreshIdentities: validating address proofs for ${address}`)
-                  return validateProofsService(profile, address).then((proofs) => {
-                    verifications = proofs
-                    trustLevel = calculateTrustLevel(verifications)
-                    dispatch(updateSocialProofVerifications(index, verifications, trustLevel))
-                  })
+                  return validateProofsService(profile, address)
+                    .then((proofs) => {
+                      verifications = proofs
+                      trustLevel = calculateTrustLevel(verifications)
+                      dispatch(updateSocialProofVerifications(index, verifications, trustLevel))
+                      resolve()
+                    })
                     .catch((error) => {
                       logger.error(`refreshIdentities: ${address} validateProofs: error`, error)
-                      return Promise.resolve()
+                      resolve()
                     })
                 } else {
                   resolve()

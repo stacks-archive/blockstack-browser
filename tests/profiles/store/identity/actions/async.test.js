@@ -4,7 +4,8 @@ import nock from 'nock'
 import { IdentityActions } from '../../../../../app/js/profiles/store/identity'
 import DEFAULT_API from '../../../../../app/js/account/store/settings/default'
 import { NameLookups, TokenFileLookups } from '../../../../fixtures/profiles'
-
+import { DEFAULT_PROFILE, signProfileForUpload } from '../../../../../app/js/utils/profile-utils'
+import { ECPair } from 'bitcoinjs-lib'
 
 
 const middlewares = [thunk]
@@ -135,6 +136,209 @@ describe('Identity Store: Async Actions', () => {
       })
     })
 
+    it('checks default storage for profile if address owns no names, selects first if valid', () => {
+      // mock core
+
+      const keypairs = [{ key: 'a29c3e73dba79ab0f84cb792bafd65ec71f243ebe67a7ebd842ef5cdce3b21eb',
+                          keyID: '03e93ae65d6675061a167c34b8321bef87594468e9b2dd19c05a67a7b4caefa017',
+                          address: '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk',
+                          appsNodeKey: 'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarxXMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f',
+                          salt: 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e' }]
+
+      const address = keypairs[0].address
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${address}/profile.json`)
+        .reply(200, signProfileForUpload(DEFAULT_PROFILE, keypairs[0]))
+
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${address}/0/profile.json`)
+        .reply(200, signProfileForUpload(
+          {
+            "@context": "http://schema.org",
+            "@type": "Person",
+            "name":"Second"
+          },
+          keypairs[0]))
+
+      nock('http://localhost:6270')
+      .get(`/v1/addresses/bitcoin/${address}`)
+      .reply(200, { names: [] },
+      { 'Content-Type': 'application/json' })
+
+      const store = mockStore(initialState)
+
+      const mockAPI = Object.assign({}, DEFAULT_API, {
+
+      })
+
+      const addresses = [address]
+
+      return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
+        addresses))
+      .then(() => {
+        const expectedActions = [
+          {
+            "index": 0,
+            "profile": DEFAULT_PROFILE,
+            "type": "UPDATE_PROFILE",
+            "zoneFile": ""
+          },
+          {
+            "index": 0,
+            "trustLevel": 0,
+            "type": "UPDATE_SOCIAL_PROOF_VERIFICATIONS",
+            "verifications": []
+          }
+        ]
+
+        assert.deepEqual(store.getActions(), expectedActions)
+      })
+    })
+
+    it('checks default storage for profile if address owns no names, ensures first is valid', () => {
+      // mock core
+
+      const keypair = { key: 'a29c3e73dba79ab0f84cb792bafd65ec71f243ebe67a7ebd842ef5cdce3b21eb',
+                        keyID: '03e93ae65d6675061a167c34b8321bef87594468e9b2dd19c05a67a7b4caefa017',
+                        address: '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk',
+                        appsNodeKey: 'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarxXMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f',
+                        salt: 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e' }
+
+      // bad pair:
+      const ecPair = ECPair.makeRandom()
+      const badpair = {
+        address: ecPair.getAddress(),
+        key: ecPair.d.toBuffer(32).toString('hex'),
+        keyID: ecPair.getPublicKeyBuffer().toString('hex')
+      }
+
+      const address = keypair.address
+      const secondProfile = {
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name":"Second"
+      }
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${address}/profile.json`)
+        .reply(200, signProfileForUpload(DEFAULT_PROFILE, badpair))
+
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${address}/0/profile.json`)
+        .reply(200, signProfileForUpload(
+          secondProfile,
+          keypair))
+
+      nock('http://localhost:6270')
+      .get(`/v1/addresses/bitcoin/${address}`)
+      .reply(200, { names: [] },
+      { 'Content-Type': 'application/json' })
+
+      const store = mockStore(initialState)
+
+      const mockAPI = Object.assign({}, DEFAULT_API, {
+
+      })
+
+      const addresses = [address]
+
+      return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
+        addresses))
+      .then(() => {
+        const expectedActions = [
+          {
+            "index": 0,
+            "profile": secondProfile,
+            "type": "UPDATE_PROFILE",
+            "zoneFile": ""
+          },
+          {
+            "index": 0,
+            "trustLevel": 0,
+            "type": "UPDATE_SOCIAL_PROOF_VERIFICATIONS",
+            "verifications": []
+          }
+        ]
+
+        assert.deepEqual(store.getActions(), expectedActions)
+      })
+    })
+
+
+    it('checks default storage for profile if address owns no names, uses 2nd if first not found, and uses correct old index.', () => {
+      // mock core
+
+      const keypair = { key: 'a29c3e73dba79ab0f84cb792bafd65ec71f243ebe67a7ebd842ef5cdce3b21eb',
+                        keyID: '03e93ae65d6675061a167c34b8321bef87594468e9b2dd19c05a67a7b4caefa017',
+                        address: '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk',
+                        appsNodeKey: 'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarxXMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f',
+                        salt: 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e' }
+
+      // bad pair:
+      const ecPair = ECPair.makeRandom()
+      const badpair = {
+        address: ecPair.getAddress(),
+        key: ecPair.d.toBuffer(32).toString('hex'),
+        keyID: ecPair.getPublicKeyBuffer().toString('hex')
+      }
+
+      const dummyAddress = '18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6'
+      const address = keypair.address
+
+      const secondProfile = {
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name":"Second"
+      }
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${address}/profile.json`)
+        .reply(404, 'Not found')
+
+      // the _tested_ index is 3, which should map to /2/
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${dummyAddress}/2/profile.json`)
+        .reply(200, signProfileForUpload(
+          secondProfile,
+          keypair))
+
+      nock('http://localhost:6270')
+      .get(`/v1/addresses/bitcoin/${address}`)
+      .reply(200, { names: [] },
+      { 'Content-Type': 'application/json' })
+
+      nock('http://localhost:6270')
+      .get(`/v1/addresses/bitcoin/${dummyAddress}`)
+      .reply(200, { names: [] },
+      { 'Content-Type': 'application/json' })
+
+      const store = mockStore(initialState)
+
+      const mockAPI = Object.assign({}, DEFAULT_API, {
+
+      })
+
+      const addresses = [dummyAddress, dummyAddress, dummyAddress, address]
+
+      return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
+        addresses))
+      .then(() => {
+        const expectedActions = [
+          {
+            "index": 3,
+            "profile": secondProfile,
+            "type": "UPDATE_PROFILE",
+            "zoneFile": ""
+          },
+          {
+            "index": 3,
+            "trustLevel": 0,
+            "type": "UPDATE_SOCIAL_PROOF_VERIFICATIONS",
+            "verifications": []
+          }
+        ]
+
+        assert.deepEqual(store.getActions(), expectedActions)
+      })
+    })
 
   describe('fetchPublicIdentity', () => {
     it('fetches profile & validates proof of given identity from the public network', () => {
