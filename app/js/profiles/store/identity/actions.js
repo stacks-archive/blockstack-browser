@@ -197,7 +197,6 @@ function createNewProfile(encryptedBackupPhrase: string,
       const newIdentityKeypair = deriveIdentityKeyPair(identityOwnerAddressNode)
       logger.debug(`createNewProfile: new identity: ${newIdentityKeypair.address}`)
       dispatch(AccountActions.newIdentityAddress(newIdentityKeypair))
-      dispatch(AccountActions.usedIdentityAddress())
       const ownerAddress = newIdentityKeypair.address
       // $FlowFixMe
       dispatch(createNewIdentityWithOwnerAddress(index, ownerAddress))
