@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Navbar from './components/Navbar'
 import { AppsActions } from './store/apps'
 import appList from './data/apps'
-import { isWebAppBuild } from './utils/window-utils'
 
 function mapStateToProps(state) {
   return {
@@ -38,21 +37,6 @@ const AppIcon = (props) => (
     </div>
   </div>
 )
-
-const disclaimerWeb = `The Blockstack Tokens are a crypto asset that is currently being 
-                  developed by Blockstack Token LLC, a Delaware limited liability 
-                  company, whose website can be found at www.blockstack.com. The 
-                  website you are currently visiting (browser.blockstack.org) is 
-                  sponsored by Blockstack PBC, an affiliate of Blockstack Token LLC, 
-                  and should not be viewed as an offer or sale of securities.`
-
-const disclaimerApp = `The Blockstack Tokens are a crypto asset that is currently being 
-                  developed by Blockstack Token LLC, a Delaware limited liability 
-                  company, whose website can be found at www.blockstack.com. The 
-                  application you are currently using (The Blockstack Browser) is 
-                  sponsored by Blockstack PBC, an affiliate of Blockstack Token LLC, 
-                  and should not be viewed as an offer or sale of securities.`
-
 
 AppIcon.propTypes = {
   launchLink: PropTypes.string.isRequired,
@@ -110,13 +94,6 @@ class HomeScreenPage extends Component {
                       return null
                     } }
                   )}
-                  <AppIcon
-                    key="token-sale"
-                    iconImage="app-icon-token-sale.png"
-                    displayName="Token Sale"
-                    launchLink="https://blockstack.com/"
-                    storageRequired={false}
-                  />
                 </div>
               </div>
 
@@ -161,13 +138,6 @@ class HomeScreenPage extends Component {
                   )}
                 </div>
               </div>
-
-              <div className="m-t-70">
-                <p className="small text-muted">
-                  {isWebAppBuild() ? disclaimerWeb : disclaimerApp}
-                </p>
-              </div>
-
             </div>
           </div>
         </div>

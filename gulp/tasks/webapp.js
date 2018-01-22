@@ -12,6 +12,6 @@ gulp.task('prod-webapp', ['clean'], function(cb) {
 
   process.env.NODE_ENV = 'production';
 
-  runSequence(['imagemin', 'browserify', 'copyFonts','copyFontAwesomeFonts', 'copyStyles', 'copyIndex', 'copyIcons'], cb);
+  runSequence(['imagemin', 'browserify', 'copyFonts','copyFontAwesomeFonts', 'copyStyles', 'copyIndex', 'copyHeadersNetlify', 'copyIcons'], cb);
 
 });

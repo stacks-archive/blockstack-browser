@@ -7,7 +7,7 @@ import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
   makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp,
-  isLaterVersion
+  getAppBucketUrl, isLaterVersion
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
@@ -16,7 +16,10 @@ import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes, appRequestSupportsDirectHub } from '../utils'
+import ToolTip from '../../components/ToolTip'
 import log4js from 'log4js'
+import { uploadProfile } from '../../account/utils'
+import { signProfileForUpload } from '../../utils'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
 
@@ -93,7 +96,10 @@ class AuthModal extends Component {
       blockchainId: null,
       noCoreStorage: false,
       responseSent: false,
-      requestingEmail: false
+      scopes: {
+        email: false,
+        publishData: false
+      }
     }
 
     this.login = this.login.bind(this)
@@ -116,7 +122,17 @@ class AuthModal extends Component {
 
     if (scopes.includes('email')) {
       this.setState({
-        requestingEmail: true
+        scopes: {
+          email: true
+        }
+      })
+    }
+
+    if (scopes.includes('publish_data')) {
+      this.setState({
+        scopes: {
+          publishData: true
+        }
       })
     }
 
@@ -195,51 +211,90 @@ class AuthModal extends Component {
         }
       }
 
-      const email = this.props.email
-      const sendEmail = this.state.sendEmail
+      // Add app storage bucket URL to profile if publish_data scope is requested
+      if (this.state.scopes.publishData) {
+        let apps = {}
+        if (profile.hasOwnProperty('apps')) {
+          apps = profile.apps
+        }
 
-      logger.debug(`profileUrl: ${profileUrl}`)
-      logger.debug(`email: ${email}`)
-
-      const metadata = {
-        email: sendEmail ? email : null,
-        profileUrl
-      }
-
-      // TODO: what if the token is expired?
-
-      let profileResponseData
-      if (this.state.decodedToken.payload.do_not_include_profile) {
-        profileResponseData = null
+        if (storageConnected) {
+          getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
+          .then((appBucketUrl) => {
+            const identityAddress = identity.ownerAddress
+            const signedProfileTokenData = signProfileForUpload(profile,
+            nextProps.identityKeypairs[identityIndex])
+            apps[appDomain] = appBucketUrl
+            profile.apps = apps
+            return uploadProfile(this.props.api, identityIndex, identityAddress,
+              signedProfileTokenData)
+          })
+          .then(() => {
+            this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
+              profile, profileUrl)
+          })
+          .catch((err) => {
+            logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
+          })
+        } else {
+          logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
+        }
       } else {
-        profileResponseData = profile
+        this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
+          profile, profileUrl)
       }
-
-      let transitPublicKey = undefined
-      let hubUrl = undefined
-
-      const requestVersion = this.state.decodedToken.payload.version
-      if (isLaterVersion(requestVersion, '1.1.0') &&
-          this.state.decodedToken.payload.public_keys.length > 0) {
-        transitPublicKey = this.state.decodedToken.payload.public_keys[0]
-      }
-      if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
-        hubUrl = this.props.api.gaiaHubConfig.server
-      }
-
-      const authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
-                                            metadata, coreSessionToken, appPrivateKey,
-                                            undefined, transitPublicKey, hubUrl)
-
-
-      this.props.clearSessionToken(appDomain)
-
-      logger.trace(`login(): id index ${identityIndex} is logging in`)
-      this.setState({ responseSent: true })
-      redirectUserToApp(this.state.authRequest, authResponse)
     } else {
       logger.error('componentWillReceiveProps: response already sent - doing nothing')
     }
+  }
+
+  completeAuthResponse = (privateKey, blockchainId, coreSessionToken,
+    appPrivateKey, profile, profileUrl) => {
+    const appDomain = this.state.decodedToken.payload.domain_name
+    const email = this.props.email
+    const sendEmail = this.state.sendEmail
+
+    logger.debug(`profileUrl: ${profileUrl}`)
+    logger.debug(`email: ${email}`)
+
+
+    const metadata = {
+      email: sendEmail ? email : null,
+      profileUrl
+    }
+
+    let profileResponseData
+    if (this.state.decodedToken.payload.do_not_include_profile) {
+      profileResponseData = null
+    } else {
+      profileResponseData = profile
+    }
+
+    let transitPublicKey = undefined
+    let hubUrl = undefined
+
+    let requestVersion = '0'
+    if (this.state.decodedToken.payload.hasOwnProperty('version')) {
+      requestVersion = this.state.decodedToken.payload.version
+    }
+
+    if (isLaterVersion(requestVersion, '1.1.0') &&
+        this.state.decodedToken.payload.public_keys.length > 0) {
+      transitPublicKey = this.state.decodedToken.payload.public_keys[0]
+    }
+    if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
+      hubUrl = this.props.api.gaiaHubConfig.server
+    }
+
+    const authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
+                                          metadata, coreSessionToken, appPrivateKey,
+                                          undefined, transitPublicKey, hubUrl)
+
+    this.props.clearSessionToken(appDomain)
+
+    logger.trace(`login(): id index ${this.state.currentIdentityIndex} is logging in`)
+    this.setState({ responseSent: true })
+    redirectUserToApp(this.state.authRequest, authResponse)
   }
 
   closeModal() {
@@ -406,9 +461,22 @@ class AuthModal extends Component {
       )
     }
 
-    const requestingEmail = this.state.requestingEmail
+    const scopeEmail = this.state.scopes.email
+    const scopePublishData = this.state.scopes.publishData
     return (
       <div className="">
+        <ToolTip id="scope-basic">
+          <div>
+            <div>Your basic info includes your Blockstack ID and profile.</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="scope-publish">
+          <div>
+            <div>The app may publish data so that other users of the app can discover
+            and interact with you.
+            </div>
+          </div>
+        </ToolTip>
         <Modal
           isOpen
           onRequestClose={this.closeModal}
@@ -435,13 +503,8 @@ class AuthModal extends Component {
             </div>
             :
             <div>
-              <p>
-              The app "{appManifest.name}" located at {decodedToken.payload.domain_name}
-              &nbsp;wants to access your basic info
-                {requestingEmail ? <span> and email address</span> : null}
-              </p>
             {appManifest.hasOwnProperty('icons') ?
-              <p>
+              <p className="m-t-20 m-b-20">
                 <Image
                   src={appManifest.icons[0].src}
                   style={{ width: '128px', height: '128px' }}
@@ -449,8 +512,25 @@ class AuthModal extends Component {
                 />
               </p>
             : null}
-            {this.props.localIdentities.length > 0 ?
+
+              <p>The app <strong>"{appManifest.name}"</strong> located at
+              {decodedToken.payload.domain_name} wants to</p>
               <div>
+                <strong>Read your basic info</strong>
+                <span data-tip data-for="scope-basic"><i className="fa fa-info-circle" /></span>
+              </div>
+              {scopeEmail ?
+                <div>
+                  <strong>Read your email address</strong>
+                </div> : null}
+              {scopePublishData ?
+                <div>
+                  <strong>Publish data stored for this app</strong>
+                  <span data-tip data-for="scope-publish"><i className="fa fa-info-circle" /></span>
+                </div> : null}
+
+            {this.props.localIdentities.length > 0 ?
+              <div className="m-t-20">
               {this.state.storageConnected ?
                 <div>
                   <p>Choose a Blockstack ID to sign in with.</p>
@@ -496,7 +576,7 @@ class AuthModal extends Component {
                   </div>
                 </div>
             :
-                <div>
+                <div className="m-t-20">
                   <p>
                     You need to <Link to="/">
                     set up Blockstack</Link> in order to sign in.
@@ -505,7 +585,7 @@ class AuthModal extends Component {
             }
               </div>
             :
-              <div>
+              <div className="m-t-20">
                 <p>
                   You need to <Link to="/">
                   set up Blockstack</Link> in order to sign in.
