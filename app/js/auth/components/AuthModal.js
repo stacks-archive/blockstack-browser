@@ -513,8 +513,9 @@ class AuthModal extends Component {
               </p>
             : null}
 
-              <p>The app <strong>"{appManifest.name}"</strong> located at
-              {decodedToken.payload.domain_name} wants to</p>
+              <p>The app <strong>"{appManifest.name}"</strong> located at <br />
+              {decodedToken.payload.domain_name}<br />
+              wants to:</p>
               <div>
                 <strong>Read your basic info</strong>
                 <span data-tip data-for="scope-basic"><i className="fa fa-info-circle" /></span>
