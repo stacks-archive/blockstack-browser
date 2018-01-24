@@ -22,8 +22,13 @@ const initialState = {
 }
 
 describe('Identity Store: Async Actions', () => {
+  beforeEach(() => {
+    nock.disableNetConnect()
+  })
+
   afterEach(() => {
     nock.cleanAll()
+    nock.enableNetConnect()
   })
 
   describe('createNewProfile', () => {
@@ -125,6 +130,14 @@ describe('Identity Store: Async Actions', () => {
       const addresses = ['18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6']
       const localIdentities = {}
       const namesOwned = []
+
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${addresses[0]}/profile.json`)
+        .reply(404)
+
+      nock(`https://gaia.blockstack.org`)
+        .get(`/hub/${addresses[0]}/0/profile.json`)
+        .reply(404)
 
       return store.dispatch(IdentityActions.refreshIdentities(mockAPI,
         addresses, localIdentities, namesOwned))
