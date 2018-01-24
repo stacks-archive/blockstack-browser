@@ -73,7 +73,7 @@ export function verifyTokenRecord(tokenRecord, publicKeyOrAddress) {
   return decodedToken
 }
 
-export function getProfileFromTokens(tokenRecords, publicKeychain) {
+export function getProfileFromTokens(tokenRecords, publicKeychain, silentVerify = true) {
   let profile = {}
 
   tokenRecords.map((tokenRecord) => {
@@ -84,7 +84,11 @@ export function getProfileFromTokens(tokenRecords, publicKeychain) {
       decodedToken = decodeToken(tokenRecord.token)
       decodedToken = verifyTokenRecord(tokenRecord, publicKeychain)
     } catch (error) {
-      console.warn(error)
+      if (!silentVerify) {
+        throw error
+      } else {
+        console.warn(error)
+      }
     }
 
     if (decodedToken !== null) {

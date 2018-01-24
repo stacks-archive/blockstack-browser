@@ -197,7 +197,6 @@ function createNewProfile(encryptedBackupPhrase: string,
       const newIdentityKeypair = deriveIdentityKeyPair(identityOwnerAddressNode)
       logger.debug(`createNewProfile: new identity: ${newIdentityKeypair.address}`)
       dispatch(AccountActions.newIdentityAddress(newIdentityKeypair))
-      dispatch(AccountActions.usedIdentityAddress())
       const ownerAddress = newIdentityKeypair.address
       // $FlowFixMe
       dispatch(createNewIdentityWithOwnerAddress(index, ownerAddress))
@@ -206,6 +205,64 @@ function createNewProfile(encryptedBackupPhrase: string,
       dispatch(createNewProfileError('Your password is incorrect.'))
     })
   }
+}
+
+/**
+ * Try to fetch and verify a profile from the historic set of default locations,
+ * in order of recency. If all of them return 404s, or fail to validate, return null
+ */
+function fetchProfileLocations(gaiaUrlBase: string,
+                               ownerAddress: string,
+                               firstAddress: string,
+                               ownerIndex: number) {
+  function recursiveTryFetch(locations) {
+    if (locations.length === 0) {
+      return Promise.resolve(null)
+    }
+    const location = locations[0]
+    return fetch(location)
+      .then(response => {
+        if (response.ok) {
+          return response.json()
+            .then(tokenRecords => getProfileFromTokens(tokenRecords, ownerAddress, false))
+            .then(profile => {
+              logger.debug(`Found valid profile at ${location}`)
+              return profile
+            })
+            .catch(() => {
+              logger.debug(`Failed to verify profile at ${location}... trying others`)
+              return recursiveTryFetch(locations.slice(1))
+            })
+        } else {
+          logger.debug(`Failed to find profile at ${location}... trying others`)
+          return recursiveTryFetch(locations.slice(1))
+        }
+      })
+      .catch(() => {
+        logger.debug(`Error in fetching profile at ${location}... trying others`)
+        return recursiveTryFetch(locations.slice(1))
+      })
+  }
+
+  const urls = []
+  // the new default
+  urls.push(`${gaiaUrlBase}/${ownerAddress}/profile.json`)
+
+  // the 'indexed' URL --
+  //  this is gaia/:firstAddress/:index/profile.json
+  //  however, the index is _not_ equal to the current index.
+  //  indexes were mapped from
+  //    correct: [0, 1, 3, 5, 7, 9...]
+  //  incorrect: [0, 1, 2, 3, 4, 5...]
+
+  if (ownerIndex < 2) {
+    urls.push(`${gaiaUrlBase}/${firstAddress}/${ownerIndex}/profile.json`)
+  } else if (ownerIndex % 2 === 1) {
+    const buggedIndex = 1 + Math.floor(ownerIndex / 2)
+    urls.push(`${gaiaUrlBase}/${firstAddress}/${buggedIndex}/profile.json`)
+  }
+
+  return recursiveTryFetch(urls)
 }
 
 /**
@@ -230,47 +287,33 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
         .then((responseText) => JSON.parse(responseText))
         .then((responseJson) => {
           if (responseJson.names.length === 0) {
-            logger.debug(`refreshIdentities: ${address} owns no names`)
+            logger.debug(`refreshIdentities: ${address} owns no names, checking default locations.`)
             const gaiaBucketAddress = ownerAddresses[0]
-            const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
-            const profileUrl = `${profileUrlBase}/${index}/profile.json`
-            logger.debug(`refreshIdentities: check default storage for profile: ${profileUrl}`)
-            return fetch(profileUrl)
-            .then(response => {
-              if (response.ok) {
-                response.text()
-                .then(responseText => JSON.parse(responseText))
-                .then((responseJsonProfile) => {
-                  const tokenRecords = responseJsonProfile
-                  const profile = getProfileFromTokens(tokenRecords, address)
-                  if (profile) {
-                    logger.debug(`refreshIdentities: found profile at ${profileUrl}`)
-                    const zoneFile = ''
-                    dispatch(updateProfile(index, profile, zoneFile))
-                    let verifications = []
-                    let trustLevel = 0
-                    logger.debug(`refreshIdentities: validating address proofs for ${address}`)
-                    return validateProofsService(profile, address).then((proofs) => {
+            return fetchProfileLocations('https://gaia.blockstack.org/hub',
+                                         address, gaiaBucketAddress, index)
+              .then(profile => {
+                if (profile) {
+                  const zoneFile = ''
+                  dispatch(updateProfile(index, profile, zoneFile))
+                  let verifications = []
+                  let trustLevel = 0
+                  logger.debug(`refreshIdentities: validating address proofs for ${address}`)
+                  return validateProofsService(profile, address)
+                    .then((proofs) => {
                       verifications = proofs
                       trustLevel = calculateTrustLevel(verifications)
                       dispatch(updateSocialProofVerifications(index, verifications, trustLevel))
+                      resolve()
                     })
                     .catch((error) => {
                       logger.error(`refreshIdentities: ${address} validateProofs: error`, error)
-                      return Promise.resolve()
+                      resolve()
                     })
-                  } else {
-                    resolve()
-                    return Promise.resolve()
-                  }
-                })
-                return Promise.resolve()
-              } else {
-                logger.debug(`refreshIdentities: nothing found in default storage at ${profileUrl}`)
-                resolve()
-                return Promise.resolve()
-              }
-            })
+                } else {
+                  resolve()
+                  return Promise.resolve()
+                }
+              })
           } else {
             if (responseJson.names.length === 1) {
               logger.debug(`refreshIdentities: ${address} has 1 name}`)
