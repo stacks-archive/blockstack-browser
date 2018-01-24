@@ -64,7 +64,7 @@ class AuthModal extends Component {
   static propTypes = {
     defaultIdentity: PropTypes.number.isRequired,
     localIdentities: PropTypes.array.isRequired,
-    loadAppManifest: PropTypes.func.isRequired,
+    verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
     clearSessionToken: PropTypes.func.isRequired,
     getCoreSessionToken: PropTypes.func.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
@@ -142,7 +142,7 @@ class AuthModal extends Component {
       invalidScopes
     })
 
-    this.props.loadAppManifest(authRequest)
+    this.props.verifyAuthRequestAndLoadManifest(authRequest)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -513,7 +513,9 @@ class AuthModal extends Component {
               </p>
             : null}
 
-              <p>The app <strong>"{appManifest.name}"</strong> wants to</p>
+              <p>The app <strong>"{appManifest.name}"</strong> located at <br />
+              {decodedToken.payload.domain_name}<br />
+              wants to:</p>
               <div>
                 <strong>Read your basic info</strong>
                 <span data-tip data-for="scope-basic"><i className="fa fa-info-circle" /></span>
