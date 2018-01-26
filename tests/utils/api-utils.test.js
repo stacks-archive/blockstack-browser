@@ -1,6 +1,5 @@
 import { getCoreAPIPasswordFromURL,
-  getLogServerPortFromURL,
-  setCoreStorageConfig } from '../../app/js/utils/api-utils'
+  getLogServerPortFromURL } from '../../app/js/utils/api-utils'
 
 import { DEFAULT_PROFILE } from '../../app/js/utils/profile-utils'
 

@@ -72,11 +72,11 @@ describe('Settings Store: SettingsReducer', () => {
     const initialState = {
       api: Object.assign({}, DEFAULT_API)
     }
-    initialState.api.s3ApiKey = null
-    assert(initialState.api.s3ApiKey === null)
+    initialState.api.nameLookupUrl = null
+    assert(initialState.api.nameLookupUrl === null)
 
     const state = SettingsReducer(initialState, {})
-    assert(state.api.s3ApiKey === null)
+    assert(state.api.nameLookupUrl === null)
     assert.notDeepEqual(state,
       {
         api: DEFAULT_API
@@ -87,11 +87,11 @@ describe('Settings Store: SettingsReducer', () => {
     const initialState = {
       api: Object.assign({}, DEFAULT_API)
     }
-    initialState.api.dropboxAccessToken = ''
-    assert(initialState.api.dropboxAccessToken === '')
+    initialState.api.nameLookupUrl = ''
+    assert(initialState.api.nameLookupUrl === '')
 
     const state = SettingsReducer(initialState, {})
-    assert(state.api.dropboxAccessToken === '')
+    assert(state.api.nameLookupUrl === '')
     assert.notDeepEqual(state,
       {
         api: DEFAULT_API
