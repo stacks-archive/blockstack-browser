@@ -17,7 +17,6 @@ export {
 } from './account-utils'
 
 export {
-  getNamesOwned,
   getIdentities,
   authorizationHeaderValue
 } from './api-utils'

@@ -28,6 +28,7 @@ app/js/components/*
 app/js/store/*
 app/js/utils/*
 !app/js/utils/account-utils*
+!app/js/utils/api-utils*
 
 app/js/profiles/store/*
 app/js/profiles/tabs/*

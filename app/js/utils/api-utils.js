@@ -4,24 +4,10 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/api-utils.js')
 
-import { uploadProfile, DROPBOX, BLOCKSTACK_INC } from '../account/utils'
+import { uploadProfile, BLOCKSTACK_INC } from '../account/utils'
 import { signProfileForUpload } from './index'
 
 import { isCoreEndpointDisabled } from './window-utils'
-
-export function getNamesOwned(address, bitcoinAddressLookupUrl, callback) {
-  const url = bitcoinAddressLookupUrl.replace('{address}', address)
-  fetch(url)
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      callback([])
-    })
-    .catch((error) => {
-      logger.error('getNamesOwned: error', error)
-      callback([])
-    })
-}
 
 export function authorizationHeaderValue(coreAPIPassword) {
   return `bearer ${coreAPIPassword}`
@@ -157,9 +143,8 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
 export function setCoreStorageConfig(api,
   identityIndex = null, identityAddress = null, profile = null,
   profileSigningKeypair = null, firstDropboxUpload = false) {
-
   if (isCoreEndpointDisabled()) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       resolve('OK')
     })
   }
@@ -171,17 +156,14 @@ export function setCoreStorageConfig(api,
   const coreAPIPassword = api.coreAPIPassword
 
   return new Promise((resolve, reject) => {
-    var driverName = null;
-    var requestBody = null;
+    let driverName = null
+    let requestBody = null
 
-    if (api.hostedDataLocation === DROPBOX) {
-      driverName = 'dropbox'
-      requestBody = { driver_config: { token: api.dropboxAccessToken } }
-    }else if (api.hostedDataLocation === BLOCKSTACK_INC) {
+    if (api.hostedDataLocation === BLOCKSTACK_INC) {
       driverName = 'gaia_hub'
       requestBody = { driver_config: api.gaiaHubConfig }
-    }else{
-      throw new Error('Only support "dropbox" or "blockstack" driver at this time')
+    } else {
+      throw new Error('Only support "blockstack" driver at this time')
     }
 
 
@@ -218,27 +200,30 @@ export function setCoreStorageConfig(api,
           if (indexUrl && (identityIndex || identityIndex === 0)
             && identityAddress
             && profile && profileSigningKeypair) {
-            logger.debug(`setCoreStorageConfig: storing index url...`)
+            logger.debug('setCoreStorageConfig: storing index url...')
             // insert it into the profile and replicate it.
             profile = profileInsertStorageRoutingInfo(profile,
               driverName, indexUrl)
             const data = signProfileForUpload(profile, profileSigningKeypair)
-            logger.debug(`setCoreStorageConfig: uploading profile...`)
+            logger.debug('setCoreStorageConfig: uploading profile...')
             return uploadProfile(api, identityIndex, identityAddress, data, firstDropboxUpload)
             .then((result) => {
               logger.debug('setCoreStorageConfig: saved index url')
               // saved!
               resolve(result)
+              return Promise.resolve(result)
             })
             .catch((error) => {
               logger.error('setCoreStorageConfig: error saving index url', error)
               reject(error)
+              return Promise.reject(error)
             })
           } else {
-            logger.debug(`setCoreStorageConfig: not saving index url`)
+            logger.debug('setCoreStorageConfig: not saving index url')
             // Some drivers won't return an indexUrl
             // or we'll want to initialize
             resolve('OK')
+            return Promise.resolve('OK')
           }
         })
     })

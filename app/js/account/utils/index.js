@@ -7,7 +7,6 @@ import { connectToGaiaHub, uploadToGaiaHub } from 'blockstack'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 
 export const BLOCKSTACK_INC = 'gaia-hub'
-export const DROPBOX = 'dropbox'
 
 function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
   if (identity.zoneFile) {
