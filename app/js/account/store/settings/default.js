@@ -1,4 +1,4 @@
-import { DROPBOX } from '../../../account/utils/index'
+import { BLOCKSTACK_INC } from '../../../account/utils/index'
 import { isCoreEndpointDisabled } from '../../../utils/window-utils'
 
 export const REGTEST_CORE_API_PASSWORD = 'blockstack_integration_test_api_password'
@@ -42,15 +42,11 @@ const DEFAULT_API = {
     }
   },
   browserServerUrl: 'https://blockstack-browser-server.appartisan.com',
-  hostedDataLocation: DROPBOX,
+  hostedDataLocation: BLOCKSTACK_INC,
   coreHost: 'localhost',
   corePort: 6270,
   coreAPIPassword: null,
   logServerPort: '',
-  s3ApiKey: '',
-  s3ApiSecret: '',
-  s3Bucket: '',
-  dropboxAccessToken: null,
   storageConnected: false,
   gaiaHubConfig: null,
   gaiaHubUrl: 'https://hub.blockstack.org',
