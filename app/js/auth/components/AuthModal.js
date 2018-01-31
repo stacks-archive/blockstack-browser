@@ -383,7 +383,7 @@ class AuthModal extends Component {
           if (requestingStoreWrite && needsCoreStorage) {
             logger.trace('login(): Calling setCoreStorageConfig()...')
             setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
-            identity.profile, profileSigningKeypair)
+            identity.profile, profileSigningKeypair, identity)
             .then(() => {
               logger.trace('login(): Core storage successfully configured.')
               logger.trace('login(): Calling getCoreSessionToken()...')

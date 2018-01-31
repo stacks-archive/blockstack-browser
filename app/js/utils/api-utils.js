@@ -142,7 +142,7 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
  */
 export function setCoreStorageConfig(api,
   identityIndex = null, identityAddress = null, profile = null,
-  profileSigningKeypair = null) {
+  profileSigningKeypair = null, identity = null) {
   if (isCoreEndpointDisabled()) {
     return new Promise((resolve) => {
       resolve('OK')
@@ -206,7 +206,7 @@ export function setCoreStorageConfig(api,
               driverName, indexUrl)
             const data = signProfileForUpload(profile, profileSigningKeypair)
             logger.debug('setCoreStorageConfig: uploading profile...')
-            return uploadProfile(api, identityIndex, identityAddress, data)
+            return uploadProfile(api, identity, profileSigningKeypair, data)
             .then((result) => {
               logger.debug('setCoreStorageConfig: saved index url')
               // saved!
