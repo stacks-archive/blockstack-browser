@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CORS Proxy</title>
+    <style>
+      body {
+        font: 1.2em/1.5 Helvetica, Arial;
+        max-width: 60em;
+        margin: 2em auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CORS Proxy</h1>
+
+    <p>
+      To add CORS headers to another URL, set the target URL as the path for the CORS proxy's URL.
+      For example, if you wan to access http://my.domain.com/path/to/resource, and the CORS proxy's
+      URL is http://localhost:1337, the full proxy URL is http://localhost:1337/my.domain.com/path/to/resource.
+    </p>
+
+    <p>
+      You <strong>do not</strong> open http://localhost:1337/my.domain.com/path/to/resource directly in your browser,
+      instead open it through <a href='https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest'>XMLHttpRequest</a>.
+      For example, if you are using jQuery, you can do <code>$.get('http://localhost:1337/my.domain.com/path/to/resource')</code>
+    </p>
+
+    <p>
+      <a href="https://github.com/gr2m/CORS-Proxy">https://github.com/gr2m/CORS-Proxy</a>
+    </p>
+  </body>
+</html>

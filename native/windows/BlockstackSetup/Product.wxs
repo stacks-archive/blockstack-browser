@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*"
+             Name="Blockstack Browser"
+             Language="1033"
+             Version="0.0.0.0"
+             Manufacturer="Blockstack"
+             UpgradeCode="8E73C1F1-1A93-48EE-BDA2-D1D30AFE3C7A">
+		<Package InstallerVersion="200" Compressed="yes" />
+
+		<MajorUpgrade
+            AllowSameVersionUpgrades="yes"
+            IgnoreRemoveFailure="no"
+            Schedule="afterInstallInitialize"
+            DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+
+        <Icon Id="icon.ico" SourceFile="images\blockstack.ico" />
+
+        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
+        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+
+        <Property Id="ALLUSERS" Secure="yes" Value="2" />
+        <Property Id="MSIINSTALLPERUSER" Secure="yes" Value="1" />
+     
+        <WixVariable Id="WixUIDialogBmp" Value="images\windows-installer-side.bmp" />
+        <WixVariable Id="WixUIBannerBmp" Value="images\windows-installer-logo.bmp" />
+
+        <UI>
+          <UIRef Id="WixUI_InstallDir" />
+          <Publish Dialog="WelcomeDlg"
+                   Control="Next"
+                   Event="NewDialog"
+                   Value="InstallDirDlg"
+                   Order="2">1</Publish>
+          <Publish Dialog="InstallDirDlg"
+                   Control="Back"
+                   Event="NewDialog"
+                   Value="WelcomeDlg"
+                   Order="2">1</Publish>
+        </UI>
+
+		<Feature Id="ProductFeature" Title="BlockstackSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+            <ComponentGroupRef Id="HeatResources"/>
+            <ComponentRef Id="ApplicationShortcut"/>
+            <ComponentRef Id="ProtocolRegistryEntries"/>
+		</Feature>
+	</Product>
+
+	<Fragment>
+	  <Directory Id="TARGETDIR" Name="SourceDir">
+		<Directory Id="ProgramFilesFolder">
+          <Directory Id="BlockstackPBC" Name="Blockstack">
+            <Directory Id="INSTALLFOLDER" Name="Blockstack Browser">
+              <Directory Id="RESOURCEFOLDER" Name="Resources" />
+            </Directory>
+          </Directory>
+		</Directory>
+        <Directory Id="ProgramMenuFolder">
+          <Directory Id="ApplicationProgramsFolder" Name="Blockstack"/>
+        </Directory>
+	  </Directory>
+	</Fragment>
+
+    
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+          <Component Id="ProductComponent">
+            <File Id="BlockstackBrowser.exe" Source="$(var.BlockstackBrowser.TargetPath)" />
+          </Component>
+          <Component Id="ProtocolHandler">
+            <File Id="ProtocolHandler.exe" Source="$(var.ProtocolHandler.TargetPath)" />
+          </Component>
+		</ComponentGroup>
+	</Fragment>
+
+    <Fragment>
+      <DirectoryRef Id="TARGETDIR">
+        <Component Id="ProtocolRegistryEntries" Guid="*">
+          <RegistryKey Root="HKCR"
+                       Key="blockstack\shell\open\command"
+                       Action="createAndRemoveOnUninstall">
+            <RegistryValue Type="string" Value="[#ProtocolHandler.exe] &quot;%1&quot;"/>
+          </RegistryKey>
+          <RegistryKey Root="HKCR"
+                       Key="blockstack"
+                       Action="createAndRemoveOnUninstall">
+            <RegistryValue Type="string" Value="URL:blockstack Blockstack Authentication" />
+            <RegistryValue Type="string" Name="URL Protocol" Value="" />
+          </RegistryKey>
+        </Component>
+      </DirectoryRef>
+    </Fragment>
+
+
+    <Fragment>
+      <DirectoryRef Id="ApplicationProgramsFolder">
+        <Component Id="ApplicationShortcut" Guid="*">
+          <Shortcut Id="ApplicationStartMenuShortcut" 
+                    Name="Blockstack Browser"
+                    Description="Browser for the Decentralized Web"
+                    Target="[#BlockstackBrowser.exe]"
+                    WorkingDirectory="INSTALLFOLDER"/>
+          <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall"/>
+          <RegistryValue Root="HKCU" Key="Software\Blockstack\BlockstackBrowser" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        </Component>
+      </DirectoryRef>
+    </Fragment>
+</Wix>
