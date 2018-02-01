@@ -221,12 +221,15 @@ class AuthModal extends Component {
         if (storageConnected) {
           getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
           .then((appBucketUrl) => {
-            const identityAddress = identity.ownerAddress
+            logger.debug(`componentWillReceiveProps: appBucketUrl ${appBucketUrl}`)
+            apps[appDomain] = appBucketUrl
+            logger.debug(`componentWillReceiveProps: new apps array ${JSON.stringify(apps)}`)
+            profile.apps = apps
             const signedProfileTokenData = signProfileForUpload(profile,
             nextProps.identityKeypairs[identityIndex])
-            apps[appDomain] = appBucketUrl
-            profile.apps = apps
-            return uploadProfile(this.props.api, identityIndex, identityAddress,
+            logger.debug('componentWillReceiveProps: uploading updated profile with new apps array')
+            return uploadProfile(this.props.api, identity,
+              nextProps.identityKeypairs[identityIndex],
               signedProfileTokenData)
           })
           .then(() => {
@@ -380,7 +383,7 @@ class AuthModal extends Component {
           if (requestingStoreWrite && needsCoreStorage) {
             logger.trace('login(): Calling setCoreStorageConfig()...')
             setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
-            identity.profile, profileSigningKeypair)
+            identity.profile, profileSigningKeypair, identity)
             .then(() => {
               logger.trace('login(): Core storage successfully configured.')
               logger.trace('login(): Calling getCoreSessionToken()...')

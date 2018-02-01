@@ -92,7 +92,7 @@ class StorageProvidersPage extends Component {
         const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
         const profile = identity.profile
         setCoreStorageConfig(newApi, identityIndex, identityAddress,
-          profile, profileSigningKeypair)
+          profile, profileSigningKeypair, identity)
         .then((indexUrl) => {
           logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
           // TODO add index URL to token file
