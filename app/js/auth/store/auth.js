@@ -1,4 +1,5 @@
-import { getCoreSession, fetchAppManifest } from 'blockstack'
+import { getCoreSession,
+  verifyAuthRequestAndLoadManifest as bskVerifyAuthRequestAndLoadManifest } from 'blockstack'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('auth/store/auth.js')
@@ -78,13 +79,17 @@ function noCoreSessionToken(appDomain) {
   }
 }
 
-function loadAppManifest(authRequest) {
+function verifyAuthRequestAndLoadManifest(authRequest) {
   return dispatch => {
     dispatch(appManifestLoading())
-    fetchAppManifest(authRequest).then(appManifest => {
+    bskVerifyAuthRequestAndLoadManifest(authRequest)
+    .then(appManifest => {
       dispatch(appManifestLoaded(appManifest))
+    }, () => {
+      logger.error('verifyAuthRequestAndLoadManifest: invalid authentication request')
+      dispatch(appManifestLoadingError('Invalid authentication request.'))
     }).catch((e) => {
-      logger.error('loadAppManifest: error', e)
+      logger.error('verifyAuthRequestAndLoadManifest: error', e)
       dispatch(appManifestLoadingError(e))
     })
   }
@@ -136,6 +141,6 @@ export const AuthActions = {
   clearSessionToken,
   getCoreSessionToken,
   noCoreSessionToken,
-  loadAppManifest,
+  verifyAuthRequestAndLoadManifest,
   loginToApp
 }

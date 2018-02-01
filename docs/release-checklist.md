@@ -33,3 +33,6 @@
 - [ ] Upload Windows installer (packaging deploys it to azure "https://blockstack.blob.core.windows.net/packaging/windows-installer-vTAG.exe")
 - [ ] After verifying tests, push new version to update server.
 - [ ] Update blockstack.org with direct links to install files https://github.com/blockstack/blockstack.org/blob/master/app/js/config.js
+- [ ] Create a pull request from master into deploy/browser.blockstack.org https://github.com/blockstack/blockstack-browser/compare/deploy/browser.blockstack.org...master?expand=1
+- [ ] Test netlify deploy preview of pull request from above and add review to pull request. (Performed by a colleague not running this release)
+- [ ] When pull request to deploy/browser.blockstack.org is approved, merge pull request

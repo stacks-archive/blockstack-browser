@@ -228,20 +228,6 @@ const apps = {
       status: 'user_ready_token',
       storageRequired: true
     }, {
-      name: 'Cryptagon',
-      displayName: 'Cryptagon',
-      description: '',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-cryptagon-256x256.png',
-        large: 'app-icon-cryptagon-512x512.png'
-      },
-      website: 'http://app.cryptagon.io/',
-      launchLink: 'http://app.cryptagon.io/',
-      developer: 'Bernat Fortet Unanue',
-      status: 'user_ready_token',
-      storageRequired: true
-    }, {
       name: 'CoinStack',
       displayName: 'CoinStack',
       description: '',

@@ -110,14 +110,17 @@ class AllProfilesPage extends Component {
       processing: true
     })
     event.preventDefault()
-    const encryptedBackupPhrase = this.props.encryptedBackupPhrase
-    const password = this.state.password
-    const nextUnusedAddressIndex = this.props.nextUnusedAddressIndex
 
-    this.props.createNewProfile(
-      encryptedBackupPhrase,
-      password, nextUnusedAddressIndex
-    )
+    if (!this.state.processing) {
+      const encryptedBackupPhrase = this.props.encryptedBackupPhrase
+      const password = this.state.password
+      const nextUnusedAddressIndex = this.props.nextUnusedAddressIndex
+
+      this.props.createNewProfile(
+        encryptedBackupPhrase,
+        password, nextUnusedAddressIndex
+      )
+    }
   }
 
   openPasswordPrompt(event) {
@@ -181,6 +184,7 @@ class AllProfilesPage extends Component {
             <button
               className="btn btn-primary btn-block"
               type="submit"
+              disabled={this.state.processing}
             >
               {this.state.processing ?
                 <span>Creating...</span>

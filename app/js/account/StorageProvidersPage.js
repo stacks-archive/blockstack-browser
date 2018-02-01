@@ -4,9 +4,7 @@ import { connect } from 'react-redux'
 import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
 
-import { DROPBOX, BLOCKSTACK_INC } from './utils/index'
-import { getDropboxAccessTokenFromHash,
-  redirectToConnectToDropbox } from './utils/dropbox'
+import { BLOCKSTACK_INC } from './utils/index'
 
 import { connectToGaiaHub } from './utils/blockstack-inc'
 
@@ -15,7 +13,6 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('storage/StorageProvidersPage.js')
 
-const Dropbox = require('dropbox')
 
 function mapStateToProps(state) {
   return {
@@ -51,47 +48,18 @@ class StorageProvidersPage extends Component {
     this.state = {
       hide: true
     }
-    this.connectDropbox = this.connectDropbox.bind(this)
-    this.disconnectDropbox = this.disconnectDropbox.bind(this)
     this.updateApi = this.updateApi.bind(this)
   }
 
   componentWillMount() {
-    const api = this.props.api
-    const dropboxAccessToken = getDropboxAccessTokenFromHash(window.location.hash)
     const needToConnectGaiaHub = window.location.hash === '#gaiahub'
-    const needToConnectDropbox = dropboxAccessToken != null
-    if (needToConnectDropbox) {
-      const newApi = Object.assign({}, api, { dropboxAccessToken })
-      this.props.updateApi(newApi)
-      const identityIndex = 0
-      const identity = this.props.localIdentities[identityIndex]
-      const identityAddress = identity.ownerAddress
-      const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
-      const profile = identity.profile
-
-      // This is okay selecting storage right now is only done during on-boarding
-      const firstDropboxUpload = true
-
-      setCoreStorageConfig(newApi, identityIndex, identityAddress,
-        profile, profileSigningKeypair, firstDropboxUpload)
-      .then((indexUrl) => {
-        logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
-        // TODO add index URL to token file
-        logger.debug('componentDidMount: storage initialized')
-        const newApi2 = Object.assign({}, newApi, { storageConnected: true })
-        this.props.updateApi(newApi2)
-        this.props.storageIsConnected()
-        logger.debug('componentDidMount: storage configured')
-      })
-    }
     if (needToConnectGaiaHub) {
       logger.debug('componentDidMount: trying to connect gaia hub...')
       this.connectSharedService()
     }
 
     // We can show the page contents since there's not going to be a redirect
-    if (!(needToConnectGaiaHub || needToConnectDropbox)) {
+    if (!(needToConnectGaiaHub)) {
       this.setState({ hide: false })
     }
   }
@@ -109,17 +77,6 @@ class StorageProvidersPage extends Component {
     }
   }
 
-  connectDropbox() {
-    redirectToConnectToDropbox()
-  }
-
-  disconnectDropbox() {
-    const api = this.props.api
-    const dbx = new Dropbox({ accessToken: api.dropboxAccessToken })
-    dbx.authTokenRevoke()
-    this.props.updateApi(Object.assign({}, api, { dropboxAccessToken: null }))
-  }
-
   connectSharedService() {
     const storageProvider = this.props.api.gaiaHubUrl
     const signer = this.props.identityKeypairs[0].key
@@ -135,7 +92,7 @@ class StorageProvidersPage extends Component {
         const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
         const profile = identity.profile
         setCoreStorageConfig(newApi, identityIndex, identityAddress,
-          profile, profileSigningKeypair)
+          profile, profileSigningKeypair, identity)
         .then((indexUrl) => {
           logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
           // TODO add index URL to token file
@@ -203,89 +160,6 @@ class StorageProvidersPage extends Component {
               >
               Run your own Gaia storage hub
               </a>
-            </p>
-            <p>
-              {api.hostedDataLocation !== DROPBOX ?
-                <button
-                  onClick={this.connectDropbox}
-                  className="btn btn-primary btn-storage btn-lg btn-block"
-                  disabled={this.props.storageIsConnected}
-                >
-                Connect Dropbox
-                </button>
-              :
-                <button
-                  onClick={this.disconnectDropbox}
-                  className="btn btn-primary btn-storage btn-lg btn-block"
-                  title="Changing storage service providers will be supported in a future version."
-                  disabled
-                >
-                Disconnect Dropbox
-                </button>
-              }
-            </p>
-            <p>
-              <button
-                disabled
-                className="btn btn-primary btn-storage btn-lg btn-block"
-                title="Coming soon!"
-              >
-                Connect IPFS
-              </button>
-            </p>
-            <p>
-              <button
-                disabled
-                className="btn btn-primary btn-storage btn-lg btn-block"
-                title="Coming soon!"
-              >
-              Connect self-hosted storage
-              </button>
-            </p>
-            <p>
-              <button
-                disabled
-                className="btn btn-primary btn-storage btn-lg btn-block"
-                title="Coming soon!"
-              >
-                Connect Sia
-              </button>
-            </p>
-            <p>
-              <button
-                disabled
-                className="btn btn-primary btn-storage btn-lg btn-block"
-                title="Coming soon!"
-              >
-                Connect Storj
-              </button>
-            </p>
-            <p>
-              <button
-                disabled
-                className="btn btn-primary btn-storage btn-lg btn-block"
-                title="Coming soon!"
-              >
-                Connect Google Drive
-              </button>
-            </p>
-            <p>
-              <button
-                disabled
-                className="btn btn-primary btn-storage btn-lg btn-block"
-                title="Coming soon!"
-              >
-                Connect Amazon Cloud Drive
-              </button>
-            </p>
-            <p>
-              <button
-                disabled
-                className="btn btn-primary btn-storage btn-lg btn-block"
-                title="Coming soon!"
-              >
-              Connect Microsoft OneDrive
-              </button>
             </p>
           </div>
         </div>
