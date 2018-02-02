@@ -19,16 +19,16 @@ describe('Settings Store: Sync Actions', () => {
       actualResult(dispatch)
     })
 
-    it('should preserve core api & dropbox credentials in returned UPDATE_API', () => {
+    it('should preserve core api & gaia hub credentials in returned UPDATE_API', () => {
       const initialApi = {
         lookupUrl: 'https://example.com/v1/lookup',
-        dropboxAccessToken: 'abc',
+        gaiaHubConfig: 'abc',
         coreAPIPassword: 'xyz'
       }
       const expectedResult = {
         type: 'UPDATE_API',
         api: Object.assign({}, DEFAULT_API, {
-          dropboxAccessToken: 'abc',
+          gaiaHubConfig: 'abc',
           coreAPIPassword: 'xyz'
         })
       }
@@ -37,7 +37,7 @@ describe('Settings Store: Sync Actions', () => {
         assert.deepEqual(action, expectedResult)
         assert.notDeepEqual(action.api, initialApi)
         assert.equal(action.api.coreAPIPassword, initialApi.coreAPIPassword)
-        assert.equal(action.api.dropboxAccessToken, initialApi.dropboxAccessToken)
+        assert.equal(action.api.gaiaHubConfig, initialApi.gaiaHubConfig)
       }
       actualResult(dispatch)
     })

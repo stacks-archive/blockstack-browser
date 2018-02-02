@@ -64,7 +64,7 @@ class AuthModal extends Component {
   static propTypes = {
     defaultIdentity: PropTypes.number.isRequired,
     localIdentities: PropTypes.array.isRequired,
-    loadAppManifest: PropTypes.func.isRequired,
+    verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
     clearSessionToken: PropTypes.func.isRequired,
     getCoreSessionToken: PropTypes.func.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
@@ -142,7 +142,7 @@ class AuthModal extends Component {
       invalidScopes
     })
 
-    this.props.loadAppManifest(authRequest)
+    this.props.verifyAuthRequestAndLoadManifest(authRequest)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -221,12 +221,15 @@ class AuthModal extends Component {
         if (storageConnected) {
           getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
           .then((appBucketUrl) => {
-            const identityAddress = identity.ownerAddress
+            logger.debug(`componentWillReceiveProps: appBucketUrl ${appBucketUrl}`)
+            apps[appDomain] = appBucketUrl
+            logger.debug(`componentWillReceiveProps: new apps array ${JSON.stringify(apps)}`)
+            profile.apps = apps
             const signedProfileTokenData = signProfileForUpload(profile,
             nextProps.identityKeypairs[identityIndex])
-            apps[appDomain] = appBucketUrl
-            profile.apps = apps
-            return uploadProfile(this.props.api, identityIndex, identityAddress,
+            logger.debug('componentWillReceiveProps: uploading updated profile with new apps array')
+            return uploadProfile(this.props.api, identity,
+              nextProps.identityKeypairs[identityIndex],
               signedProfileTokenData)
           })
           .then(() => {
@@ -380,7 +383,7 @@ class AuthModal extends Component {
           if (requestingStoreWrite && needsCoreStorage) {
             logger.trace('login(): Calling setCoreStorageConfig()...')
             setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
-            identity.profile, profileSigningKeypair)
+            identity.profile, profileSigningKeypair, identity)
             .then(() => {
               logger.trace('login(): Core storage successfully configured.')
               logger.trace('login(): Calling getCoreSessionToken()...')
@@ -513,7 +516,9 @@ class AuthModal extends Component {
               </p>
             : null}
 
-              <p>The app <strong>"{appManifest.name}"</strong> wants to</p>
+              <p>The app <strong>"{appManifest.name}"</strong> located at <br />
+              {decodedToken.payload.domain_name}<br />
+              wants to:</p>
               <div>
                 <strong>Read your basic info</strong>
                 <span data-tip data-for="scope-basic"><i className="fa fa-info-circle" /></span>

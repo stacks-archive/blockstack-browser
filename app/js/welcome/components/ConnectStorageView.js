@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 
 class ConnectStorageView extends Component {
   static propTypes = {
-    connectDropbox: PropTypes.func.isRequired,
     connectGaiaHub: PropTypes.func.isRequired
   }
 
@@ -60,21 +59,6 @@ class ConnectStorageView extends Component {
                 onClick={this.props.connectGaiaHub}
               >
                 Use default storage
-              </button>
-              <button
-                className="btn btn-primary btn-block m-b-20"
-                onClick={this.props.connectDropbox}
-                disabled
-                title="See Github issue #908"
-              >
-                Connect Dropbox
-              </button>
-              <button
-                className="btn btn-primary btn-block m-b-20"
-                disabled
-                title="Coming soon!"
-              >
-                Connect IPFS
               </button>
               <button
                 className="btn btn-primary btn-block m-b-20"

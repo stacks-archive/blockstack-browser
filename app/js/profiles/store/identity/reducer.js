@@ -35,7 +35,7 @@ function IdentityReducer(state = initialState, action) {
           username: null,
           usernameOwned: false,
           usernamePending: false,
-          profile: DEFAULT_PROFILE,
+          profile: Object.assign({}, DEFAULT_PROFILE),
           verifications: [],
           trustLevel: 0,
           registered: false,

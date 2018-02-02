@@ -7,7 +7,6 @@ import Alert from '../components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
-import { redirectToConnectToDropbox } from '../account/utils/dropbox'
 import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
 import { isWebAppBuild } from '../utils/window-utils'
 
@@ -299,11 +298,6 @@ class WelcomeModal extends Component {
     this.setPage(this.state.page - 1)
   }
 
-  connectDropbox(event) {
-    event.preventDefault()
-    redirectToConnectToDropbox()
-  }
-
   connectGaiaHub(event) {
     event.preventDefault()
     // need to call this again because state gets deleted before this
@@ -463,7 +457,6 @@ class WelcomeModal extends Component {
                 page === 8 ?
                   <ConnectStorageView
                     connectGaiaHub={this.connectGaiaHub}
-                    connectDropbox={this.connectDropbox}
                   />
                 :
                 null

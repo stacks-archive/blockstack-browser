@@ -33,16 +33,11 @@ function refreshBtcPrice(btcPriceUrl) {
 
 function resetApi(api) {
   logger.trace('resetApi')
-  let dropboxAccessToken = api.dropboxAccessToken
   let coreAPIPassword = api.coreAPIPassword
   let gaiaHubConfig = api.gaiaHubConfig
 
   if (gaiaHubConfig === undefined) {
     gaiaHubConfig = null
-  }
-
-  if (dropboxAccessToken === undefined) {
-    dropboxAccessToken = null
   }
 
   if (coreAPIPassword === undefined) {
@@ -51,7 +46,6 @@ function resetApi(api) {
   return dispatch => {
     dispatch(updateApi(Object.assign({}, DEFAULT_API, {
       gaiaHubConfig,
-      dropboxAccessToken,
       coreAPIPassword
     })))
   }
