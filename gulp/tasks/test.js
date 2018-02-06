@@ -37,8 +37,12 @@ gulp.task('test', () => {
   // Ensure that 'sinon' and 'chai' library methods will be
   // available to all tests
   global.sinon = require('sinon');
+  global.enzyme = require('enzyme');
   global.assert = require('chai').assert;
   require('sinon-as-promised');
+
+  var EnzymeAdapter = require('enzyme-adapter-react-15');
+  global.enzyme.configure({ adapter: new EnzymeAdapter() });
 
   return (gjc.createTask({
     src: files,

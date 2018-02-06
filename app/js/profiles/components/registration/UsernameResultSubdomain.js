@@ -5,7 +5,7 @@ const UsernameResultSubdomain = (props) => {
   const {
     name,
     index
-  } = props;
+  } = props
 
   return (
     <div className="username-search-result">
@@ -25,4 +25,4 @@ UsernameResultSubdomain.propTypes = {
   index: PropTypes.number.isRequired
 }
 
-export default UsernameResultSubdomain;
+export default UsernameResultSubdomain

@@ -274,7 +274,7 @@ class AddUsernameSelectPage extends Component {
               <div>
                 <button
                   onClick={this.register}
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-block"
                   disabled={registrationInProgress}
                 >
                   {registrationInProgress ?

@@ -3,32 +3,32 @@ import UsernameResultSubdomain from './UsernameResultSubdomain'
 import UsernameResultDomain from './UsernameResultDomain'
 import roundTo from 'round-to'
 import { PRICE_BUFFER } from './RegistrationSelectView'
-import { Link } from 'react-router'
 
 const UsernameResult = (props) => {
   const {
     name,
     index,
-    availability = {},
+    availability,
     isSubdomain
-  } = props;
-  const {
-    checkingPrice,
-    available,
-    checkingAvailability
-  } = availability;
+  } = props
 
-  let price = availability.price || 0;
+  const {
+    available,
+    checkingPrice,
+    checkingAvailability
+  } = availability || {}
+
+  let price = (availability && availability.price) || 0
   price = roundTo.up(price, 6) + PRICE_BUFFER
 
   const renderChecking = () => (
     <div className="account-check">
       <h4>Checking {name}...</h4>
     </div>
-  );
+  )
 
   const resultTaken = (
-    <div className='username-search-result'>
+    <div className="username-search-result">
       <h4>{name}</h4>
       <button
         className="btn btn-primary btn-block"
@@ -39,22 +39,24 @@ const UsernameResult = (props) => {
     </div>
   )
 
-  const renderResult = () => isSubdomain ? (
+  const renderResult = () => (isSubdomain ? (
     <UsernameResultSubdomain
-      name={ name }
-      index={ index }
+      name={name}
+      index={index}
     />
   ) : (
     <UsernameResultDomain
-      checkingPrice={ checkingPrice }
-      name={ name }
-      price={ price }
-      index={ index }
+      checkingPrice={checkingPrice}
+      name={name}
+      price={price}
+      index={index}
     />
-  )
+  ))
 
-  const renderAvailability = () => (available ? renderResult() : resultTaken);
-  return checkingAvailability ? renderChecking() : renderAvailability();
+  const renderAvailability = () => (available ? renderResult() : resultTaken)
+
+  const isLoading = !availability || checkingAvailability
+  return isLoading ? renderChecking() : renderAvailability()
 }
 UsernameResult.propTypes = {
   name: PropTypes.string.isRequired,
@@ -63,4 +65,4 @@ UsernameResult.propTypes = {
   isSubdomain: PropTypes.bool.isRequired
 }
 
-export default UsernameResult;
+export default UsernameResult

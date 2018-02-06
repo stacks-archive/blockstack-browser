@@ -8,20 +8,20 @@ const RegistrationSearchResults = props => {
     availableNames,
     index,
     showSearchBox
-  } = props;
+  } = props
 
-  const renderSearchResults = props.nameSuffixes.map(suffix => {
-    const name = `${searchingUsername}.${suffix}`;
-    const availability = availableNames[name];
+  const renderSearchResults = nameSuffixes.map(suffix => {
+    const name = `${searchingUsername}.${suffix}`
+    const availability = availableNames[name]
     const isSubdomain = suffix.split('.').length > 1
 
     return (
       <UsernameResult
-        key={ suffix }
-        name={ name }
-        availability={ availability }
-        isSubdomain={ isSubdomain }
-        index={ index }
+        key={suffix}
+        name={name}
+        availability={availability}
+        isSubdomain={isSubdomain}
+        index={index}
       />
     )
   })
@@ -31,7 +31,7 @@ const RegistrationSearchResults = props => {
       <h3 className="modal-heading">Available names</h3>
       <div className="modal-body">
         <div className="username-search-result-list">
-          {props.searchingUsername && renderSearchResults}
+          {searchingUsername && renderSearchResults}
         </div>
 
         <button
@@ -52,4 +52,4 @@ RegistrationSearchResults.propTypes = {
   index: PropTypes.number.isRequired
 }
 
-export default RegistrationSearchResults;
+export default RegistrationSearchResults

@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 
-const UsernameResultSubdomain = (props) => {
+const UsernameResultDomain = (props) => {
   const {
     name,
     index,
     price,
     checkingPrice
-  } = props;
+  } = props
 
   const checking = (
     <div className="progress">
@@ -36,15 +36,18 @@ const UsernameResultSubdomain = (props) => {
   return (
     <div className="username-search-result">
       <h4>{name}</h4>
-      { checkingPrice ? checking : result }
+      {checkingPrice ? checking : result}
     </div>
   )
 }
-UsernameResultSubdomain.propTypes = {
+UsernameResultDomain.propTypes = {
   name: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   price: PropTypes.number.isRequired,
   checkingPrice: PropTypes.bool
 }
+UsernameResultDomain.defaultProps = {
+  checkingPrice: true
+}
 
-export default UsernameResultSubdomain
+export default UsernameResultDomain
