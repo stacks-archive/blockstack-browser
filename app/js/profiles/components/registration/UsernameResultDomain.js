@@ -1,0 +1,50 @@
+import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
+
+const UsernameResultSubdomain = (props) => {
+  const {
+    name,
+    index,
+    price,
+    checkingPrice
+  } = props;
+
+  const checking = (
+    <div className="progress">
+      <div
+        className="progress-bar progress-bar-striped progress-bar-animated"
+        role="progressbar"
+        aria-valuenow="100"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        style={{ width: '100%' }}
+      >
+        Checking price...
+      </div>
+    </div>
+  )
+
+  const result = (
+    <Link
+      className="btn btn-primary btn-block"
+      to={`/profiles/i/add-username/${index}/select/${name}`}
+    >
+      Register <strong>{name}</strong> for {price} bitcoins
+    </Link>
+  )
+
+  return (
+    <div className="username-search-result">
+      <h4>{name}</h4>
+      { checkingPrice ? checking : result }
+    </div>
+  )
+}
+UsernameResultSubdomain.propTypes = {
+  name: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  checkingPrice: PropTypes.bool
+}
+
+export default UsernameResultSubdomain
