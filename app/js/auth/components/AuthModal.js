@@ -547,18 +547,19 @@ class AuthModal extends Component {
                     value={this.state.currentIdentityIndex ? this.state.currentIdentityIndex : 0}
                     disabled={processing}
                   >
-                    {this.props.localIdentities.map((identity, identityIndex) => {
-                      const profile = new Person(identity.profile)
-                      const displayLabel = profile.name() ?
-                      `${profile.name()}: ID-${identity.ownerAddress}` :
-                      `ID-${identity.ownerAddress}`
-                      return (<option
-                        key={identityIndex}
-                        value={identityIndex}
-                      >
-                        {identity.username ? identity.username : displayLabel}
-                      </option>
-                    ) })}
+                    {
+                      this.props.localIdentities.map((identity, identityIndex) => {
+                        const profile = new Person(identity.profile)
+                        const displayLabel = profile.name()
+                          ? `${profile.name()}: ID-${identity.ownerAddress}`
+                          : `ID-${identity.ownerAddress}`
+                        return (
+                          <option key={identityIndex} value={identityIndex}>
+                            {identity.username ? identity.username : displayLabel}
+                          </option>
+                        )
+                      })
+                    }
                   </select>
                   <div>
                     <button

@@ -37,6 +37,7 @@
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
     "react/prop-types": 2,
+    "react/sort-comp": 0,
     "no-duplicate-imports": 0,
     "import/no-duplicates": 2
   },

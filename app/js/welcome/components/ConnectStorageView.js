@@ -25,7 +25,8 @@ class ConnectStorageView extends Component {
     const showAdvanced = this.state.showAdvanced
     return (
       <div>
-        {!showAdvanced ?
+        {!showAdvanced
+          ? (
           <div>
             <h3 className="modal-heading m-t-15 p-b-20">
               App data is stored in the storage provider of your choice
@@ -48,7 +49,7 @@ class ConnectStorageView extends Component {
               </a>
             </div>
           </div>
-        :
+          ) : (
           <div className="storage-page">
             <h3 className="modal-heading m-t-15 p-b-20">
               Choose your storage provider
@@ -74,11 +75,12 @@ class ConnectStorageView extends Component {
               </div>
             </div>
           </div>
-      }
+          )
+        }
       </div>
-   )
+    )
   }
- }
+}
 
 
 export default ConnectStorageView

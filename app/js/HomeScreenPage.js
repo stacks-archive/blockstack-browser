@@ -92,8 +92,8 @@ class HomeScreenPage extends Component {
                       />)
                     } else {
                       return null
-                    } }
-                  )}
+                    }
+                  })}
                 </div>
               </div>
 
@@ -113,8 +113,8 @@ class HomeScreenPage extends Component {
                       />)
                     } else {
                       return null
-                    } }
-                  )}
+                    }
+                  })}
                 </div>
               </div>
 
@@ -134,8 +134,8 @@ class HomeScreenPage extends Component {
                       />)
                     } else {
                       return null
-                    } }
-                  )}
+                    }
+                  })}
                 </div>
               </div>
             </div>

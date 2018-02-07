@@ -16,7 +16,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  let actions = Object.assign(AccountActions, SettingsActions)
+  const actions = Object.assign(AccountActions, SettingsActions)
   return bindActionCreators(actions, dispatch)
 }
 
@@ -71,55 +71,94 @@ class CreateAccountPage extends Component {
   render() {
     return (
       <div className="draggable-page">
-      <div className="container vertical-split-content out-block-wrap">
-        <div className="container-fluid out-block">
-          <div className="row">
-            <div className="centered">
-              <div className="m-b-1">
-                <img className="title-version m-t-1 m-b-1" src="/images/browser-beta-v1-0@2x.png"/>
-              </div>
-            </div>
-            <div>
+        <div className="container vertical-split-content out-block-wrap">
+          <div className="container-fluid out-block">
+            <div className="row">
               <div className="centered">
-                <h3 className="text-xs-center type-inverse m-t-2">create an account</h3>
-              </div>
-              <div className="out-form-group">
-                { this.state.alerts.map(function(alert, index) {
-                  return (
-                    <Alert key={index} message={alert.message} status={alert.status} />
-                  )
-                })}
-                <InputGroup type="text" name="name" label="Name" inverse={true}
-                  placeholder="Name" data={this.state} onChange={this.onValueChange} />
-                <InputGroup type="text" name="company" label="Company" inverse={true}
-                  placeholder="Company" data={this.state} onChange={this.onValueChange} />
-                <InputGroup type="email" name="email" label="Email" inverse={true}
-                  placeholder="Email" data={this.state} onChange={this.onValueChange} />
-                <InputGroup type="password" name="password" label="Password" inverse={true}
-                  placeholder="Password" data={this.state} onChange={this.onValueChange} />
-                <InputGroup type="password" name="password2" label="Password (again)" inverse={true}
-                  placeholder="Password" data={this.state} onChange={this.onValueChange} />
-                <div className="form-group">
-                  <fieldset>
-                    <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
-                      <button className="btn btn-block btn-tertiary" onClick={this.createAccount}>
-                        Create Account
-                      </button>
-                    </div>
-                  </fieldset>
+                <div className="m-b-1">
+                  <img
+                    className="title-version m-t-1 m-b-1"
+                    src="/images/browser-beta-v1-0@2x.png"
+                    role="presentation"
+                  />
                 </div>
               </div>
-            </div>
-            <div>
-              <p className="text-sm inverse text-xs-center">
-                Already have an account?
-                <br />
-                <Link to="/account/restore" className="view-out-link">Restore from backup</Link>
-              </p>
+              <div>
+                <div className="centered">
+                  <h3 className="text-xs-center type-inverse m-t-2">create an account</h3>
+                </div>
+                <div className="out-form-group">
+                  {this.state.alerts.map((alert, index) => (
+                    <Alert key={index} message={alert.message} status={alert.status} />
+                  ))}
+                  <InputGroup
+                    type="text"
+                    name="name"
+                    label="Name"
+                    inverse
+                    placeholder="Name"
+                    data={this.state}
+                    onChange={this.onValueChange}
+                  />
+                  <InputGroup
+                    type="text"
+                    name="company"
+                    label="Company"
+                    inverse
+                    placeholder="Company"
+                    data={this.state}
+                    onChange={this.onValueChange}
+                  />
+                  <InputGroup
+                    type="email"
+                    name="email"
+                    label="Email"
+                    inverse
+                    placeholder="Email"
+                    data={this.state}
+                    onChange={this.onValueChange}
+                  />
+                  <InputGroup
+                    type="password"
+                    name="password"
+                    label="Password"
+                    inverse
+                    placeholder="Password"
+                    data={this.state}
+                    onChange={this.onValueChange}
+                  />
+                  <InputGroup
+                    type="password"
+                    name="password2"
+                    label="Password (again)"
+                    inverse
+                    placeholder="Password"
+                    data={this.state}
+                    onChange={this.onValueChange}
+                  />
+                  <div className="form-group">
+                    <fieldset>
+                      <div className="col-xs-offset-3 col-xs-8 pull-right m-t-11 m-b-5">
+                        <button className="btn btn-block btn-tertiary" onClick={this.createAccount}>
+                          Create Account
+                        </button>
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p className="text-sm inverse text-xs-center">
+                  Already have an account?
+                  <br />
+                  <Link to="/account/restore" className="view-out-link">
+                    Restore from backup
+                  </Link>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     )
   }

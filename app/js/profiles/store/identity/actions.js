@@ -34,10 +34,12 @@ function validateProofsService(profile: Object, address: string, username : ?str
   if (username !== null && username !== undefined) {
     args.username = username
   }
-  return fetch('https://proofs.blockstack.org/validate/',
-               { method: 'POST',
-                 headers: { 'Content-Type': 'application/json' },
-                 body: JSON.stringify(args) })
+  const config = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(args)
+  }
+  return fetch('https://proofs.blockstack.org/validate/', config)
     .then(resp => resp.json())
 }
 

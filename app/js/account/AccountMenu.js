@@ -3,9 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import PageHeader from '../components/PageHeader'
-import Navbar from '../components/Navbar'
-
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
@@ -18,7 +15,7 @@ class AccountMenu extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { }
+    this.state = {}
   }
 
   render() {
@@ -34,7 +31,7 @@ class AccountMenu extends Component {
       <div>
         <div className="list-group">
           {tabs.map((tab, index) => {
-            let className = 'list-group-item item-sidebar-primary'
+            const className = 'list-group-item item-sidebar-primary'
             return (
               <Link key={index} to={tab.url} className={className}>
                 {tab.label}

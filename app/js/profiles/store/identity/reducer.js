@@ -3,7 +3,7 @@ import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 
 const initialState = {
   default: 0, // persist
-  localIdentities: [], 
+  localIdentities: [],
   publicIdentities: {},
   nameTransfers: [],
   zoneFileUpdates: [],
@@ -31,18 +31,20 @@ function IdentityReducer(state = initialState, action) {
       })
     case types.CREATE_NEW:
       return Object.assign({}, state, {
-        localIdentities: [...state.localIdentities, {
-          username: null,
-          usernameOwned: false,
-          usernamePending: false,
-          profile: Object.assign({}, DEFAULT_PROFILE),
-          verifications: [],
-          trustLevel: 0,
-          registered: false,
-          ownerAddress: action.ownerAddress,
-          zoneFile: null
-        }
-      ]
+        localIdentities: [
+          ...state.localIdentities,
+          {
+            username: null,
+            usernameOwned: false,
+            usernamePending: false,
+            profile: Object.assign({}, DEFAULT_PROFILE),
+            verifications: [],
+            trustLevel: 0,
+            registered: false,
+            ownerAddress: action.ownerAddress,
+            zoneFile: null
+          }
+        ]
       })
     case types.UPDATE_PROFILE: {
       const newLocalIdentities = state.localIdentities.slice()

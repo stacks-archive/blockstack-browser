@@ -20,14 +20,15 @@ function updateBtcPrice(price) {
 
 function refreshBtcPrice(btcPriceUrl) {
   return dispatch => {
-    return fetch(btcPriceUrl).then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      dispatch(updateBtcPrice(responseJson.last))
-    })
-    .catch((error) => {
-      logger.error('refreshBtcPrice:', error)
-    })
+    return fetch(btcPriceUrl)
+      .then(response => response.text())
+      .then(responseText => JSON.parse(responseText))
+      .then(responseJson => {
+        dispatch(updateBtcPrice(responseJson.last))
+      })
+      .catch(error => {
+        logger.error('refreshBtcPrice:', error)
+      })
   }
 }
 
@@ -44,10 +45,14 @@ function resetApi(api) {
     coreAPIPassword = null
   }
   return dispatch => {
-    dispatch(updateApi(Object.assign({}, DEFAULT_API, {
-      gaiaHubConfig,
-      coreAPIPassword
-    })))
+    dispatch(
+      updateApi(
+        Object.assign({}, DEFAULT_API, {
+          gaiaHubConfig,
+          coreAPIPassword
+        })
+      )
+    )
   }
 }
 

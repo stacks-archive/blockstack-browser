@@ -51,6 +51,14 @@ class PairBrowserView extends Component {
 
   render() {
     const advancedMode = this.state.advancedMode
+
+    const imgStyle = {
+      maxWidth: '80%',
+      border: '1px solid #f0f0f0',
+      margin: '0 auto',
+      display: 'block'
+    }
+
     return (
       <div>
       {!advancedMode ?
@@ -61,8 +69,7 @@ class PairBrowserView extends Component {
           <img
             alt="Open this page via the Blockstack icon to pair your browser"
             src="/images/mac-open-from-menubar.png"
-            style={{ maxWidth: '80%', border: '1px solid #f0f0f0',
-            margin: '0 auto', display: 'block' }}
+            style={imgStyle}
           />
           <p className="modal-body">
             <a href="#" className="modal-body" onClick={this.toggleAdvancedMode}>Advanced Mode</a>
