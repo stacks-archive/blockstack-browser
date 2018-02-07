@@ -1,10 +1,17 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import UsernameResultSubdomain from './UsernameResultSubdomain'
 import UsernameResultDomain from './UsernameResultDomain'
 import roundTo from 'round-to'
 import { PRICE_BUFFER } from './RegistrationSelectView'
 
-const UsernameResult = (props) => {
+type Props = {
+  name: string,
+  index: number,
+  availability?: Object,
+  isSubdomain: boolean
+}
+
+const UsernameResult = (props: Props) => {
   const {
     name,
     index,
@@ -57,12 +64,6 @@ const UsernameResult = (props) => {
 
   const isLoading = !availability || checkingAvailability
   return isLoading ? renderChecking() : renderAvailability()
-}
-UsernameResult.propTypes = {
-  name: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  availability: PropTypes.object,
-  isSubdomain: PropTypes.bool.isRequired
 }
 
 export default UsernameResult

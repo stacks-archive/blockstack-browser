@@ -1,7 +1,14 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Link } from 'react-router'
 
-const UsernameResultDomain = (props) => {
+type Props = {
+  name: string,
+  index: number,
+  price: number,
+  checkingPrice?: boolean
+}
+
+const UsernameResultDomain = (props: Props) => {
   const {
     name,
     index,
@@ -39,12 +46,6 @@ const UsernameResultDomain = (props) => {
       {checkingPrice ? checking : result}
     </div>
   )
-}
-UsernameResultDomain.propTypes = {
-  name: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
-  checkingPrice: PropTypes.bool
 }
 UsernameResultDomain.defaultProps = {
   checkingPrice: true

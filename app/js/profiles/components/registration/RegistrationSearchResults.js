@@ -1,7 +1,15 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import UsernameResult from './UsernameResult'
 
-const RegistrationSearchResults = props => {
+type Props = {
+  showSearchBox: Function,
+  searchingUsername?: string,
+  nameSuffixes: Array<string>,
+  availableNames: Object,
+  index: number
+}
+
+const RegistrationSearchResults = (props: Props) => {
   const {
     searchingUsername,
     nameSuffixes,
@@ -43,13 +51,6 @@ const RegistrationSearchResults = props => {
       </div>
     </div>
   )
-}
-RegistrationSearchResults.propTypes = {
-  showSearchBox: PropTypes.func.isRequired,
-  searchingUsername: PropTypes.string,
-  nameSuffixes: PropTypes.array.isRequired,
-  availableNames: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired
 }
 
 export default RegistrationSearchResults

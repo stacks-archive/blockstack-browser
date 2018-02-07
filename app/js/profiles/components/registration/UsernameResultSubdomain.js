@@ -1,7 +1,12 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Link } from 'react-router'
 
-const UsernameResultSubdomain = (props) => {
+type Props = {
+  name: string,
+  index: number
+}
+
+const UsernameResultSubdomain = (props: Props) => {
   const {
     name,
     index
@@ -19,10 +24,6 @@ const UsernameResultSubdomain = (props) => {
 
     </div>
   )
-}
-UsernameResultSubdomain.propTypes = {
-  name: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired
 }
 
 export default UsernameResultSubdomain
