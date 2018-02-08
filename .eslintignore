@@ -15,13 +15,6 @@ tests/utils/a*
 tests/utils/e*
 tests/utils/n*
 
-# app/js/account/A*
-# app/js/account/B*
-# app/js/account/Ch*
-# app/js/account/Cr*
-
-# app/js/account/store/settings*
-
 app/js/components/*
 !app/js/components/Navbar*
 
