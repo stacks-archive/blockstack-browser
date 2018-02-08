@@ -41,7 +41,7 @@ gulp.task('test', () => {
   global.assert = require('chai').assert;
   require('sinon-as-promised');
 
-  var EnzymeAdapter = require('enzyme-adapter-react-15');
+  var EnzymeAdapter = require('enzyme-adapter-react-16');
   global.enzyme.configure({ adapter: new EnzymeAdapter() });
 
   return (gjc.createTask({
