@@ -25,7 +25,6 @@ app/js/account/store/settings*
 app/js/components/*
 !app/js/components/Navbar*
 
-app/js/store/*
 app/js/utils/*
 !app/js/utils/account-utils*
 !app/js/utils/api-utils*
