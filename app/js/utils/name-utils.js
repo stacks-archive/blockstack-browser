@@ -1,4 +1,3 @@
-import hasProp from 'hasprop'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/name-utils.js')
@@ -17,24 +16,25 @@ export function isABlockstackAppName(s) {
 
 export function hasNameBeenPreordered(domainName, localIdentities) {
   let nameHasBeenPreordered = false
-  localIdentities.map((identity, index) => {
+  localIdentities.map((identity) => {
     if (identity.username === domainName) {
       nameHasBeenPreordered = true
-      return
     }
+    return null
   })
   return nameHasBeenPreordered
 }
 
 export function isNameAvailable(lookupUrl, domainName) {
+  console.log(domainName)
   return new Promise((resolve, reject) => {
     const url = lookupUrl.replace('{name}', domainName)
     fetch(url)
-      .then((response) => {
-        if(response.ok) {
-            resolve(false)
+      .then(response => {
+        if (response.ok) {
+          resolve(false)
         } else {
-          if(response.status == 404) {
+          if (response.status === 404) {
             resolve(true)
           } else {
             logger.error('isNameAvailable', response)
@@ -42,7 +42,7 @@ export function isNameAvailable(lookupUrl, domainName) {
           }
         }
       })
-      .catch((error) => {
+      .catch(error => {
         logger.error('isNameAvailable', error)
         reject(error)
       })
@@ -83,22 +83,24 @@ export function getNamePrices(priceUrl, domainName) {
 
     const url = `${priceUrl.replace('{name}', domainName)}?single_sig=1`
 
-    fetch(url).then(
-
-    ).then((response) => {
-      if (response.ok) {
-        response.text().then((responseText) => JSON.parse(responseText))
-        .then((responseJson) => {
-          resolve(responseJson)
-        })
-      } else {
-        logger.error('getNamePrices: error parsing price result')
-        reject('Error')
-      }
-    })
-    .catch((error) => {
-      logger.error('getNamePrices: error retrieving price', error)
-      reject(error)
-    })
+    fetch(url)
+      .then()
+      .then(response => {
+        if (response.ok) {
+          response
+            .text()
+            .then(responseText => JSON.parse(responseText))
+            .then(responseJson => {
+              resolve(responseJson)
+            })
+        } else {
+          logger.error('getNamePrices: error parsing price result')
+          reject('Error')
+        }
+      })
+      .catch(error => {
+        logger.error('getNamePrices: error retrieving price', error)
+        reject(error)
+      })
   })
 }

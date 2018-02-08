@@ -8,7 +8,6 @@ const realFetch = fetch
 
 const proxy = 'http://localhost:1337/'
 
-
 function proxyFetch(url, options) {
   console.log(`proxyFetch: ${url}`)
   return new Promise((resolve, reject) => {
@@ -20,13 +19,14 @@ function proxyFetch(url, options) {
       reject(`Loading ${url} failed. Our CORS proxy only supports https requests.`)
     }
 
-    realFetch.call(this, proxy + hostAndPath, options)
-    .then((response) => {
-      resolve(response)
-    })
-    .catch((error) => {
-      reject(error)
-    })
+    realFetch
+      .call(this, proxy + hostAndPath, options)
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
 }
 
@@ -39,14 +39,16 @@ function proxyFetchForSomeHosts(url, options) {
     return realFetch.call(this, url, options)
   }
 
-  if (host.endsWith('amazonaws.com') ||
-       host.endsWith('facebook.com') ||
-       host.endsWith('twitter.com') ||
-       host.endsWith('github.com') ||
-       host.endsWith('instagram.com') ||
-       host.endsWith('linkedin.com') ||
-       host.endsWith('ycombinator.com') ||
-       host.endsWith('bitstamp.net')) {
+  if (
+    host.endsWith('amazonaws.com') ||
+    host.endsWith('facebook.com') ||
+    host.endsWith('twitter.com') ||
+    host.endsWith('github.com') ||
+    host.endsWith('instagram.com') ||
+    host.endsWith('linkedin.com') ||
+    host.endsWith('ycombinator.com') ||
+    host.endsWith('bitstamp.net')
+  ) {
     return proxyFetch(url, options)
   } else {
     return realFetch.call(this, url, options)

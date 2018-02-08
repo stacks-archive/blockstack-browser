@@ -4,6 +4,9 @@
   "plugins": [
     "react"
   ],
+  "globals": {
+    "proxyFetch": true
+  },
   "ecmaFeatures": {
     "jsx": true,
     "modules": true

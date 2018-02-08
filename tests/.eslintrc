@@ -6,6 +6,7 @@
   "globals": {
     "sinon": true,
     "sandbox": true,
-    "assert": true
+    "assert": true,
+    "proxyFetch": true
   }
 }

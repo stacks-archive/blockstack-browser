@@ -1,4 +1,3 @@
-
 import hash from 'hash-handler'
 import log4js from 'log4js'
 
@@ -33,36 +32,36 @@ export function getLogServerPortFromURL() {
 
 export function isCoreApiRunning(corePingUrl) {
   if (isCoreEndpointDisabled()) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       resolve(true)
     })
   }
 
   logger.debug(`isCoreApiRunning: ${corePingUrl}`)
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     fetch(corePingUrl, { cache: 'no-store' })
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      if (responseJson.status === 'alive') {
-        logger.trace('isCoreApiRunning? Yes!')
-        resolve(true)
-      } else {
-        logger.error('isCoreApiRunning? No!')
+      .then(response => response.text())
+      .then(responseText => JSON.parse(responseText))
+      .then(responseJson => {
+        if (responseJson.status === 'alive') {
+          logger.trace('isCoreApiRunning? Yes!')
+          resolve(true)
+        } else {
+          logger.error('isCoreApiRunning? No!')
+          resolve(false)
+        }
+      })
+      .catch(error => {
+        logger.error(`isCoreApiRunning: problem checking ${corePingUrl}`, error)
         resolve(false)
-      }
-    })
-    .catch((error) => {
-      logger.error(`isCoreApiRunning: problem checking ${corePingUrl}`, error)
-      resolve(false)
-    })
+      })
   })
 }
 
 export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
   if (isCoreEndpointDisabled()) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       resolve(true)
     })
   }
@@ -75,7 +74,7 @@ export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword
     Authorization: authorizationHeaderValue(coreApiPassword)
   }
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     if (!coreApiPassword) {
       logger.error('isCoreApiPasswordValid? Password is missing!')
       resolve(false)
@@ -85,23 +84,21 @@ export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword
       cache: 'no-store',
       headers: requestHeaders
     })
-    .then((response) => {
-      if (response.ok) {
-        logger.trace('isCoreApiPasswordValid? Yes!')
-        resolve(true)
-      } else {
-        logger.error('isCoreApiPasswordValid? No!')
+      .then(response => {
+        if (response.ok) {
+          logger.trace('isCoreApiPasswordValid? Yes!')
+          resolve(true)
+        } else {
+          logger.error('isCoreApiPasswordValid? No!')
+          resolve(false)
+        }
+      })
+      .catch(error => {
+        logger.error(`isApiPasswordValid: problem checking ${corePasswordProtectedReadUrl}`, error)
         resolve(false)
-      }
-    })
-    .catch((error) => {
-      logger.error(`isApiPasswordValid: problem checking ${corePasswordProtectedReadUrl}`,
-        error)
-      resolve(false)
-    })
+      })
   })
 }
-
 
 /*
  * Insert storage driver routing information into a profile.
@@ -118,13 +115,13 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
 
   for (let i = 0; i < profile.account.length; i++) {
     if (profile.account[i].identifier === 'storage' && profile.account[i].service === driverName) {
-       // patch this instance
+      // patch this instance
       profile.account[i].contentUrl = indexUrl
       return profile
     }
   }
 
-   // not yet present
+  // not yet present
   const storageAccount = {
     identifier: 'storage',
     service: driverName,
@@ -140,11 +137,16 @@ function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
  * Example:
  * const config = { dropbox: { token: '123abc'} }
  */
-export function setCoreStorageConfig(api,
-  identityIndex = null, identityAddress = null, profile = null,
-  profileSigningKeypair = null, identity = null) {
+export function setCoreStorageConfig(
+  api,
+  identityIndex = null,
+  identityAddress = null,
+  profile = null,
+  profileSigningKeypair = null,
+  identity = null
+) {
   if (isCoreEndpointDisabled()) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       resolve('OK')
     })
   }
@@ -166,7 +168,6 @@ export function setCoreStorageConfig(api,
       throw new Error('Only support "blockstack" driver at this time')
     }
 
-
     const url = `http://localhost:6270/v1/node/drivers/storage/${driverName}?index=1`
     const bodyText = JSON.stringify(requestBody)
 
@@ -184,51 +185,55 @@ export function setCoreStorageConfig(api,
     }
     logger.debug(`setCoreStorageConfig: POSTing to ${url}`)
     return fetch(url, options)
-    .then((response) => {
-      logger.debug(`setCoreStorageConfig: got a response of ${response.status}`)
-      if (!response.ok) {
-        throw new Error(response.statusText)
-      }
-      return response.text()
-        .then((responseText) => JSON.parse(responseText))
-        .then((responseJson) => {
-         // expect the index URL (for some drivers, like Dropbox)
-          const driverConfigResult = responseJson
-          const indexUrl = driverConfigResult.index_url
-          logger.debug(`setCoreStorageConfig: index url? ${!!indexUrl}`)
-          authorizationHeaderValue(coreAPIPassword)
-          if (indexUrl && (identityIndex || identityIndex === 0)
-            && identityAddress
-            && profile && profileSigningKeypair) {
-            logger.debug('setCoreStorageConfig: storing index url...')
-            // insert it into the profile and replicate it.
-            profile = profileInsertStorageRoutingInfo(profile,
-              driverName, indexUrl)
-            const data = signProfileForUpload(profile, profileSigningKeypair)
-            logger.debug('setCoreStorageConfig: uploading profile...')
-            return uploadProfile(api, identity, profileSigningKeypair, data)
-            .then((result) => {
-              logger.debug('setCoreStorageConfig: saved index url')
-              // saved!
-              resolve(result)
-              return Promise.resolve(result)
-            })
-            .catch((error) => {
-              logger.error('setCoreStorageConfig: error saving index url', error)
-              reject(error)
-              return Promise.reject(error)
-            })
-          } else {
-            logger.debug('setCoreStorageConfig: not saving index url')
-            // Some drivers won't return an indexUrl
-            // or we'll want to initialize
-            resolve('OK')
-            return Promise.resolve('OK')
-          }
-        })
-    })
-    .catch((error) => {
-      reject(error)
-    })
+      .then(response => {
+        logger.debug(`setCoreStorageConfig: got a response of ${response.status}`)
+        if (!response.ok) {
+          throw new Error(response.statusText)
+        }
+        return response
+          .text()
+          .then(responseText => JSON.parse(responseText))
+          .then(responseJson => {
+            // expect the index URL (for some drivers, like Dropbox)
+            const driverConfigResult = responseJson
+            const indexUrl = driverConfigResult.index_url
+            logger.debug(`setCoreStorageConfig: index url? ${!!indexUrl}`)
+            authorizationHeaderValue(coreAPIPassword)
+            if (
+              indexUrl &&
+              (identityIndex || identityIndex === 0) &&
+              identityAddress &&
+              profile &&
+              profileSigningKeypair
+            ) {
+              logger.debug('setCoreStorageConfig: storing index url...')
+              // insert it into the profile and replicate it.
+              profile = profileInsertStorageRoutingInfo(profile, driverName, indexUrl)
+              const data = signProfileForUpload(profile, profileSigningKeypair)
+              logger.debug('setCoreStorageConfig: uploading profile...')
+              return uploadProfile(api, identity, profileSigningKeypair, data)
+                .then(result => {
+                  logger.debug('setCoreStorageConfig: saved index url')
+                  // saved!
+                  resolve(result)
+                  return Promise.resolve(result)
+                })
+                .catch(error => {
+                  logger.error('setCoreStorageConfig: error saving index url', error)
+                  reject(error)
+                  return Promise.reject(error)
+                })
+            } else {
+              logger.debug('setCoreStorageConfig: not saving index url')
+              // Some drivers won't return an indexUrl
+              // or we'll want to initialize
+              resolve('OK')
+              return Promise.resolve('OK')
+            }
+          })
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
 }
