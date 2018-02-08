@@ -79,19 +79,15 @@ class DeleteAccountPage extends Component {
   render() {
     return (
       <div className="m-b-100">
-        <h3 className="container-fluid m-t-10">
-          Reset Browser
-        </h3>
-        {
-          this.state.alerts.map((alert, index) => (
-            <Alert key={index} message={alert.message} status={alert.status} />
-          ))
-        }
+        <h3 className="container-fluid m-t-10">Reset Browser</h3>
+        {this.state.alerts.map((alert, index) => (
+          <Alert key={index} message={alert.message} status={alert.status} />
+        ))}
         <div>
           <p className="container-fluid">
             <i>
-              Erase your keychain and settings so you can create a new one or
-              restore another keychain.
+              Erase your keychain and settings so you can create a new one or restore another
+              keychain.
             </i>
           </p>
           <div className="container-fluid m-t-40">
