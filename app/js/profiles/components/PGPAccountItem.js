@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -188,14 +189,14 @@ class PGPAccountItem extends Component {
           { this.props.placeholder && (
             <span className="app-account-service font-weight-normal">
               Add your {webAccountTypes[this.props.service].label} {identifierType.toLowerCase()}
-            </span> 
+            </span>
           )}
 
           {/*this.props.verified ?
             <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
               <i className="fa fa-fw fa-check-circle fa-lg" />
             </span>
-            : 
+            :
             <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
               <i className="fa fa-fw fa-clock-o fa-lg" />
             </span>

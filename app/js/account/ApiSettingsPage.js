@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import RadioGroup from 'react-radio-group'
 
 import InputGroup from '../components/InputGroup'
 import SaveButton from '../components/SaveButton'
@@ -82,71 +82,60 @@ class ApiSettingsPage extends Component {
   render() {
     return (
       <div className="m-b-100">
-        <div>
-          <RadioGroup
-            name="hostedDataLocation"
-            selectedValue={this.state.api.hostedDataLocation}
-            onChange={this.onHostedDataValueChange}>
-            {Radio => (
-              <div>
-                <h3 className="m-t-10" style={{ paddingLeft: '15px' }}>
-                  Blockstack API Options
-                </h3>
+        <h3 className="m-t-10" style={{ paddingLeft: '15px' }}>
+          Blockstack API Options
+        </h3>
 
-                { this.state.api.apiCustomizationEnabled === true ?
-                  <div>
-                    <InputGroup name="coreAPIPassword" label="Blockstack Core API Password"
-                    data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="logServerPort" label="localhost Logging Port"
-                    data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="gaiaHubUrl" label="URL for Gaia Hub Connection"
-                    data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="nameLookupUrl" label="Name Lookup URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="searchUrl" label="Search URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="registerUrl" label="Register URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="bitcoinAddressLookupUrl" label="Address Names URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="zeroConfBalanceUrl" label="Address URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="insightUrl" label="Insight API URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="broadcastUrl" label="Broadcast Transaction URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="networkFeeUrl" label="Network Fee URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="walletPaymentAddressUrl" label="Core node wallet payment address URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="coreWalletWithdrawUrl" label="Core node wallet withdraw URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="pendingQueuesUrl" label="Core node pending queues URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="bitcoinAddressUrl" label="Bitcoin Address URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="ethereumAddressUrl" label="Ethereum Address URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="pgpKeyUrl" label="PGP Key URL"
-                      data={this.state.api} onChange={this.onValueChange} />
-                    <InputGroup name="btcPriceUrl" label="BTCUSD price URL"
-                      data={this.state.api} onChange={this.onValueChange}
-                      onReturnKeyPress={this.resetApi} />
-                  </div>
-                : null }
+        { this.state.api.apiCustomizationEnabled === true ?
+          <div>
+            <InputGroup name="coreAPIPassword" label="Blockstack Core API Password"
+            data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="logServerPort" label="localhost Logging Port"
+            data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="gaiaHubUrl" label="URL for Gaia Hub Connection"
+            data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="nameLookupUrl" label="Name Lookup URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="searchUrl" label="Search URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="registerUrl" label="Register URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="bitcoinAddressLookupUrl" label="Address Names URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="zeroConfBalanceUrl" label="Address URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="insightUrl" label="Insight API URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="broadcastUrl" label="Broadcast Transaction URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="networkFeeUrl" label="Network Fee URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="walletPaymentAddressUrl" label="Core node wallet payment address URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="coreWalletWithdrawUrl" label="Core node wallet withdraw URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="pendingQueuesUrl" label="Core node pending queues URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="bitcoinAddressUrl" label="Bitcoin Address URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="ethereumAddressUrl" label="Ethereum Address URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="pgpKeyUrl" label="PGP Key URL"
+              data={this.state.api} onChange={this.onValueChange} />
+            <InputGroup name="btcPriceUrl" label="BTCUSD price URL"
+              data={this.state.api} onChange={this.onValueChange}
+              onReturnKeyPress={this.resetApi} />
+          </div>
+        : null }
 
-                <div className="form-group">
-                  <SaveButton onSave={this.updateApi} />
-                </div>
-                <p>
-                  <button onClick={this.resetApi} className="btn btn-outline-primary">
-                    Reset API
-                  </button>
-                </p>
-              </div>
-            )}
-          </RadioGroup>
+        <div className="form-group">
+          <SaveButton onSave={this.updateApi} />
         </div>
+        <p>
+          <button onClick={this.resetApi} className="btn btn-outline-primary">
+            Reset API
+          </button>
+        </p>
       </div>
     )
   }
