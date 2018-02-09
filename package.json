@@ -129,6 +129,7 @@
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0-beta",
     "browser-stdout": "^1.3.0",
+    "cors-anywhere": "^0.4.1",
     "currency-formatter": "^1.2.1",
     "ecurve": "^1.0.4",
     "hash-handler": "^1.5.1",
