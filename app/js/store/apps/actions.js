@@ -26,16 +26,18 @@ function updateInstanceIdentifier(instanceIdentifier) {
 function refreshAppList(browserApiUrl, instanceIdentifier, instanceCreationDate) {
   return dispatch => {
     logger.trace('refreshAppList')
-    if(instanceIdentifier) {
+    if (instanceIdentifier) {
       return fetch(`${browserApiUrl}/data?id=${instanceIdentifier}&created=${instanceCreationDate}`)
-      .then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
-        dispatch(updateAppList(responseJson.apps, responseJson.version))
-      })
-      .catch((error) => {
-        logger.error('refreshAppList:', error)
-      })
+        .then(response => response.text())
+        .then(responseText => JSON.parse(responseText))
+        .then(responseJson => {
+          dispatch(updateAppList(responseJson.apps, responseJson.version))
+        })
+        .catch(error => {
+          logger.error('refreshAppList:', error)
+        })
+    } else {
+      return null
     }
   }
 }
@@ -43,7 +45,9 @@ function refreshAppList(browserApiUrl, instanceIdentifier, instanceCreationDate)
 function generateInstanceIdentifier() {
   logger.trace('Generating new instance identifier')
   return dispatch => {
-    const instanceIdentifier = createHash('sha256').update(randomBytes(256)).digest('hex')
+    const instanceIdentifier = createHash('sha256')
+      .update(randomBytes(256))
+      .digest('hex')
     dispatch(updateInstanceIdentifier(instanceIdentifier))
   }
 }
