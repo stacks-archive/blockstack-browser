@@ -399,7 +399,7 @@ const apps = {
     }, {
       name: 'Misthos',
       displayName: 'Misthos',
-      description: 'Misthos enables teams to collaboratively distribute funds in a fair and transparent manner',
+      description: 'Participation based governance and financial management of ventures',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-misthos-256x256.png',
