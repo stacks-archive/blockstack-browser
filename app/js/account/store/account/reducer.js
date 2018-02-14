@@ -2,7 +2,6 @@ import * as types from './types'
 import { HDNode } from 'bitcoinjs-lib'
 import { getBitcoinAddressNode } from '../../../utils'
 
-
 const initialState = {
   accountCreated: false, // persist
   promptedForEmail: false, // persist
@@ -44,9 +43,7 @@ function AccountReducer(state = initialState, action) {
         },
         bitcoinAccount: {
           publicKeychain: action.bitcoinPublicKeychain,
-          addresses: [
-            action.firstBitcoinAddress
-          ],
+          addresses: [action.firstBitcoinAddress],
           addressIndex: 0,
           balances: state.bitcoinAccount.balances
         }
@@ -78,8 +75,10 @@ function AccountReducer(state = initialState, action) {
           publicKeychain: state.bitcoinAccount.publicKeychain,
           addresses: [
             ...state.bitcoinAccount.addresses,
-            getBitcoinAddressNode(HDNode.fromBase58(state.bitcoinAccount.publicKeychain),
-            state.bitcoinAccount.addressIndex + 1).getAddress()
+            getBitcoinAddressNode(
+              HDNode.fromBase58(state.bitcoinAccount.publicKeychain),
+              state.bitcoinAccount.addressIndex + 1
+            ).getAddress()
           ],
           addressIndex: state.bitcoinAccount.addressIndex + 1,
           balances: state.bitcoinAccount.balances
@@ -145,21 +144,15 @@ function AccountReducer(state = initialState, action) {
       })
     case types.INCREMENT_IDENTITY_ADDRESS_INDEX:
       return Object.assign({}, state, {
-        identityAccount: Object.assign({},
-          state.identityAccount,
-          {
-            addressIndex: state.identityAccount.addressIndex + 1
-          })
+        identityAccount: Object.assign({}, state.identityAccount, {
+          addressIndex: state.identityAccount.addressIndex + 1
+        })
       })
     case types.NEW_IDENTITY_ADDRESS:
       return Object.assign({}, state, {
         identityAccount: Object.assign({}, state.identityAccount, {
-          addresses: [
-            ...state.identityAccount.addresses, action.keypair.address
-          ],
-          keypairs: [
-            ...state.identityAccount.keypairs,
-            action.keypair]
+          addresses: [...state.identityAccount.addresses, action.keypair.address],
+          keypairs: [...state.identityAccount.keypairs, action.keypair]
         })
       })
     case types.CONNECTED_STORAGE:
