@@ -30,19 +30,19 @@ const apps = {
       storageRequired: true,
       status: 'in_progress'
     }, {
-      name: 'Ongaku Ryoho',
-      displayName: 'Ongaku Ryoho',
+      name: 'Isotach',
+      displayName: 'Isotach',
       description: 'A music player which connects to your cloud/distributed storage.',
       version: '1.0.0',
       appIcon: {
-        small: 'app-icon-ongaku-ryoho-256x256.png',
-        large: 'app-icon-ongaku-ryoho-1024x1024.png'
+        small: 'app-icon-isotach-256x256.png',
+        large: 'app-icon-isotach-1024x1024.png'
       },
-      website: 'http://www.ongakuryoho.com',
-      launchLink: 'http://www.ongakuryoho.com',
-      developer: '',
+      website: 'https://www.isotach.io',
+      launchLink: 'https://www.isotach.io',
+      developer: 'Steven Vandevelde',
       storageRequired: true,
-      status: 'in_progress'
+      status: 'user_ready'
     }, {
       name: 'Hello, Blockstack',
       displayName: 'Hello, Blockstack',
