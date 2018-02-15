@@ -399,6 +399,7 @@ class EditProfilePage extends Component {
     const accounts = filledAccounts.concat(placeholders)
     const ownerAddress = identity.ownerAddress
     const identityIndex = this.state.index
+
     return (
       <div>
       {this.state.tabName === '' ? (
