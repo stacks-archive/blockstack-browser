@@ -42,7 +42,7 @@ const apps = {
       launchLink: 'https://www.isotach.io',
       developer: 'Steven Vandevelde',
       storageRequired: true,
-      status: 'user_ready'
+      status: 'in_progress'
     }, {
       name: 'Hello, Blockstack',
       displayName: 'Hello, Blockstack',
