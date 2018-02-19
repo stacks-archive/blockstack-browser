@@ -31,6 +31,15 @@ export function getLogServerPortFromURL() {
   return logServerPort
 }
 
+export function getRegTestModeFromURL() {
+  const regTestMode = hash.getInstance().get('regtest')
+  if (!regTestMode || regTestMode === 'off') {
+    return null
+  }
+  hash.getInstance().set('regtest', 'off')
+  return regTestMode
+}
+
 export function isCoreApiRunning(corePingUrl) {
   if (isCoreEndpointDisabled()) {
     return new Promise((resolve) => {

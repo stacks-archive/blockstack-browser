@@ -1,5 +1,5 @@
 import * as types from './types'
-import { makeProfileZoneFile } from 'blockstack'
+import { makeProfileZoneFile, transactions, config, network } from 'blockstack'
 import { uploadProfile } from '../../../account/utils'
 import { IdentityActions } from '../identity'
 import {
@@ -136,58 +136,50 @@ function registerName(api, domainName, identity, identityIndex,
           return Promise.reject('Missing payment key')
         }
 
-        // Core registers with an uncompressed address,
-        // browser expects compressed addresses,
-        // we need to add a suffix to indicate to core
-        // that it should use a compressed addresses
-        // see https://en.bitcoin.it/wiki/Wallet_import_format
-        // and https://github.com/blockstack/blockstack-browser/issues/607
-        const compressedPublicKeySuffix = '01'
-        const key = `${paymentKey}${compressedPublicKeySuffix}`
-
-        registrationRequestBody = JSON.stringify({
-          name: domainName,
-          owner_address: ownerAddress,
-          zonefile: zoneFile,
-          min_confs: 0,
-          unsafe: true,
-          payment_key: key
-        })
       }
+
+      const compressedKey = `${paymentKey}01`
 
       dispatch(registrationSubmitting())
 
       logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
 
-      const setOwnerKeyUrl = `http://${api.coreHost}:${api.corePort}/v1/wallet/keys/owner`
+      if (api.regTestMode) {
+        config.network = network.defaults.LOCAL_REGTEST
+      }
 
+      const myNet = config.network
 
-      return setOwnerKey(setOwnerKeyUrl, requestHeaders, keypair, nameIsSubdomain)
-      .then(() => fetch(registerUrl, {
-        method: 'POST',
-        headers: requestHeaders,
-        body: registrationRequestBody
-      })
-        .then((response) => response.text())
-        .then((responseText) => JSON.parse(responseText))
-        .then((responseJson) => {
-          if (responseJson.error) {
-            logger.error(responseJson.error)
-            dispatch(registrationError(responseJson.error))
-          } else {
-            logger.debug(`Successfully submitted registration for ${domainName}`)
-            dispatch(registrationSubmitted())
-            dispatch(IdentityActions.addUsername(identityIndex, domainName))
-          }
+      const coercedAddress = myNet.coerceAddress(ownerAddress)
+
+      var preorderTx = ''
+      var registerTx = ''
+
+      return transactions.makePreorder(domainName, coercedAddress, compressedKey)
+        .then((rawtx) => {
+          preorderTx = rawtx
+          return rawtx
         })
-        .catch((error) => {
-          logger.error('registerName: error POSTing registration to Core', error)
-          dispatch(registrationError(error))
+        .then((rawtx) => {
+          myNet.modifyUTXOSetFrom(preorderTx)
+          return rawtx
         })
-      ).catch((error) => {
-        logger.error('registerName: error setting owner key', error)
-        dispatch(registrationError(error))
-      })
+        .then(() => transactions.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
+        .then((rawtx) => {
+          registerTx = rawtx
+          return rawtx
+        })
+        .then(() => {
+          return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
+        })
+        .then((resp) => {
+          logger.debug(`Successfully submitted registration for ${domainName}`)
+          dispatch(registrationSubmitted())
+          dispatch(IdentityActions.addUsername(identityIndex, domainName)) 
+        })
+        .catch(error => {
+          logger.error('registerName: error submitting name registration', error)
+        })
     }).catch((error) => {
       logger.error('registerName: error uploading profile', error)
       dispatch(profileUploadError(error))
