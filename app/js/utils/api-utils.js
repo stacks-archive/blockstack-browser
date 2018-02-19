@@ -37,7 +37,7 @@ export function getRegTestModeFromURL() {
     return null
   }
   hash.getInstance().set('regtest', 'off')
-  return regTestMode
+  return regTestMode === "1"
 }
 
 export function isCoreApiRunning(corePingUrl) {

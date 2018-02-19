@@ -145,6 +145,7 @@ function registerName(api, domainName, identity, identityIndex,
       logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
 
       if (api.regTestMode) {
+        logger.trace('Using regtest network')
         config.network = network.defaults.LOCAL_REGTEST
       }
 
@@ -170,6 +171,7 @@ function registerName(api, domainName, identity, identityIndex,
           return rawtx
         })
         .then(() => {
+          logger.debug('Sending registration to transaction broadcast service')
           return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
         })
         .then((resp) => {
