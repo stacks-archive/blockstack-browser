@@ -2,9 +2,7 @@ import * as types from './types'
 import { makeProfileZoneFile, transactions, config, network } from 'blockstack'
 import { uploadProfile } from '../../../account/utils'
 import { IdentityActions } from '../identity'
-import {
-  signProfileForUpload, authorizationHeaderValue
-} from '../../../utils'
+import { signProfileForUpload, authorizationHeaderValue } from '../../../utils'
 import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 import { isSubdomain, getNameSuffix } from '../../../utils/name-utils'
 import log4js from 'log4js'
@@ -57,36 +55,6 @@ function beforeRegister() {
   }
 }
 
-function setOwnerKey(setOwnerKeyUrl, requestHeaders, keypair, nameIsSubdomain) {
-  return new Promise((resolve, reject) => {
-    if (nameIsSubdomain) {
-      logger.debug('setOwnerKey: skipping setting core owner key for subdomain')
-      resolve()
-      return
-    }
-
-    // Core registers with an uncompressed address,
-    // browser expects compressed addresses,
-    // we need to add a suffix to indicate to core
-    // that it should use a compressed addresses
-    // see https://en.bitcoin.it/wiki/Wallet_import_format
-    // and https://github.com/blockstack/blockstack-browser/issues/607
-    const compressedPublicKeySuffix = '01'
-
-    const setOwnerKeyRequestBody = JSON.stringify(`${keypair.key}${compressedPublicKeySuffix}`)
-
-    logger.debug('setOwnerKey: setting core owner key')
-
-    fetch(setOwnerKeyUrl, {
-      method: 'PUT',
-      headers: requestHeaders,
-      body: setOwnerKeyRequestBody
-    })
-    .then(() => resolve())
-    .catch((error) => reject(error))
-  })
-}
-
 function registerName(api, domainName, identity, identityIndex,
                       ownerAddress, keypair, paymentKey = null) {
   logger.trace(`registerName: domainName: ${domainName}`)
@@ -105,12 +73,6 @@ function registerName(api, domainName, identity, identityIndex,
       logger.trace('Making profile zonefile...')
       const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
 
-      const requestHeaders = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: authorizationHeaderValue(api.coreAPIPassword)
-      }
-
       const nameIsSubdomain = isSubdomain(domainName)
       let registerUrl = api.registerUrl
       let nameSuffix = null
@@ -122,13 +84,44 @@ function registerName(api, domainName, identity, identityIndex,
         logger.debug(`registerName: ${domainName} is not a subdomain`)
       }
 
-      let registrationRequestBody = null
-
       if (nameIsSubdomain) {
-        registrationRequestBody = JSON.stringify({
+        const registrationRequestBody = JSON.stringify({
           name: domainName.split('.')[0],
           owner_address: ownerAddress,
           zonefile: zoneFile
+        })
+
+        const requestHeaders = {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: authorizationHeaderValue(api.coreAPIPassword)
+        }
+
+        logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
+
+        dispatch(registrationSubmitting())
+
+        return fetch(registerUrl, {
+          method: 'POST',
+          headers: requestHeaders,
+          body: registrationRequestBody
+        })
+        .then((response) => response.text())
+        .then((responseText) => JSON.parse(responseText))
+        .then((responseJson) => {
+          if (responseJson.error) {
+            logger.error(responseJson.error)
+            dispatch(registrationError(responseJson.error))
+          } else {
+            logger.debug(`Successfully submitted registration for ${domainName}`)
+            dispatch(registrationSubmitted())
+            dispatch(IdentityActions.addUsername(identityIndex, domainName))
+          }
+        })
+        .catch((error) => {
+          logger.error('registerName: error POSTing registration to Core', error)
+          dispatch(registrationError(error))
+          throw error
         })
       } else {
         if (!paymentKey) {
@@ -136,55 +129,61 @@ function registerName(api, domainName, identity, identityIndex,
           return Promise.reject('Missing payment key')
         }
 
+        const compressedKey = `${paymentKey}01`
+
+        dispatch(registrationSubmitting())
+
+        if (api.regTestMode) {
+          logger.trace('Using regtest network')
+          config.network = network.defaults.LOCAL_REGTEST
+        }
+
+        const myNet = config.network
+        const coercedAddress = myNet.coerceAddress(ownerAddress)
+
+        let preorderTx = ''
+        let registerTx = ''
+
+        return transactions.makePreorder(domainName, coercedAddress, compressedKey)
+          .then((rawtx) => {
+            preorderTx = rawtx
+            return rawtx
+          })
+          .then((rawtx) => {
+            myNet.modifyUTXOSetFrom(preorderTx)
+            return rawtx
+          })
+          .then(() => 
+            transactions.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
+          .then((rawtx) => {
+            registerTx = rawtx
+            return rawtx
+          })
+          .then(() => {
+            logger.debug(
+              `Sending registration to transaction broadcaster at ${myNet.broadcastServiceUrl}`)
+            return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
+          })
+          .then((response) => {
+            if (response.status) {
+              logger.debug(`Successfully submitted registration for ${domainName}`)
+              dispatch(registrationSubmitted())
+              dispatch(IdentityActions.addUsername(identityIndex, domainName)) 
+            } else {
+              logger.error(response)
+              dispatch(registrationError(response))
+            }
+          })
+          .catch(error => {
+            logger.error('registerName: error submitting name registration', error)
+            dispatch(registrationError(error))
+            throw new Error('Error submitting name registration')
+          })
       }
-
-      const compressedKey = `${paymentKey}01`
-
-      dispatch(registrationSubmitting())
-
-      logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
-
-      if (api.regTestMode) {
-        logger.trace('Using regtest network')
-        config.network = network.defaults.LOCAL_REGTEST
-      }
-
-      const myNet = config.network
-
-      const coercedAddress = myNet.coerceAddress(ownerAddress)
-
-      var preorderTx = ''
-      var registerTx = ''
-
-      return transactions.makePreorder(domainName, coercedAddress, compressedKey)
-        .then((rawtx) => {
-          preorderTx = rawtx
-          return rawtx
-        })
-        .then((rawtx) => {
-          myNet.modifyUTXOSetFrom(preorderTx)
-          return rawtx
-        })
-        .then(() => transactions.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
-        .then((rawtx) => {
-          registerTx = rawtx
-          return rawtx
-        })
-        .then(() => {
-          logger.debug('Sending registration to transaction broadcast service')
-          return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
-        })
-        .then((resp) => {
-          logger.debug(`Successfully submitted registration for ${domainName}`)
-          dispatch(registrationSubmitted())
-          dispatch(IdentityActions.addUsername(identityIndex, domainName)) 
-        })
-        .catch(error => {
-          logger.error('registerName: error submitting name registration', error)
-        })
     }).catch((error) => {
       logger.error('registerName: error uploading profile', error)
       dispatch(profileUploadError(error))
+      throw error
     })
   }
 }
