@@ -16,25 +16,19 @@ export {
   calculateProfileCompleteness
 } from './account-utils'
 
-export {
-  getIdentities,
-  authorizationHeaderValue
-} from './api-utils'
+export { getIdentities, authorizationHeaderValue } from './api-utils'
 
 export {
-  broadcastTransaction, btcToSatoshis,
-  getNetworkFee, getInsightUrl, satoshisToBtc
+  broadcastTransaction,
+  btcToSatoshis,
+  getNetworkFee,
+  getInsightUrl,
+  satoshisToBtc
 } from './bitcoin-utils'
 
-export {
-  getNumberOfVerifications,
-  compareProfilesByVerifications
-} from './search-utils'
+export { getNumberOfVerifications, compareProfilesByVerifications } from './search-utils'
 
-export {
-  encrypt,
-  decrypt
-} from './encryption-utils'
+export { encrypt, decrypt } from './encryption-utils'
 
 export {
   isABlockstackName,
@@ -44,16 +38,9 @@ export {
   getNamePrices
 } from './name-utils'
 
-export {
-  getProfileFromTokens,
-  signProfileForUpload,
-  verifyToken
-} from './profile-utils'
+export { getProfileFromTokens, signProfileForUpload, verifyToken } from './profile-utils'
 
-export {
-  openInNewTab,
-  isMobile
-} from './window-utils'
+export { openInNewTab, isMobile } from './window-utils'
 
 export {
   makeZoneFileForHostedProfile,

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -92,7 +93,7 @@ class UpdateStatePage extends Component {
       }
       logger.debug(`componentWillReceiveProps: Setting new state version to ${CURRENT_VERSION}`)
       localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
-      
+
       nextProps.setDefaultIdentity(this.state.defaultIdentity)
       nextProps.router.push('/')
     }

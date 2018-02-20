@@ -8,19 +8,11 @@ const realFetch = fetch
 
 const proxy = 'http://localhost:1337/'
 
-
 function proxyFetch(url, options) {
   console.log(`proxyFetch: ${url}`)
   return new Promise((resolve, reject) => {
-    const tokens = url.split('://')
-    const hostAndPath = tokens[1]
-    const scheme = tokens[0]
-
-    // if (scheme !== 'https') {
-    //   reject(`Loading ${url} failed. Our CORS proxy only supports https requests.`)
-    // }
-
-    realFetch.call(this, proxy + url, options)
+    realFetch
+    .call(this, proxy + url, options)
     .then((response) => {
       resolve(response)
     })
@@ -33,7 +25,6 @@ function proxyFetch(url, options) {
 function proxyFetchForSomeHosts(url, options) {
   const tokens = url.split('://')
   const hostAndPath = tokens[1]
-  const scheme = tokens[0]
   const host = hostAndPath.split('/')[0]
   // if (scheme !== 'https') {
   //   return realFetch.call(this, url, options)

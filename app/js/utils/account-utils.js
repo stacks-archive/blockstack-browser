@@ -11,7 +11,7 @@ function hashCode(string) {
   if (string.length === 0) return hash
   for (let i = 0; i < string.length; i++) {
     const character = string.charCodeAt(i)
-    hash = ((hash << 5) - hash) + character
+    hash = (hash << 5) - hash + character
     hash = hash & hash
   }
   return hash & 0x7fffffff
@@ -48,7 +48,10 @@ export class AppsNode {
   }
 
   getAppNode(appDomain) {
-    const hash = crypto.createHash('sha256').update(`${appDomain}${this.salt}`).digest('hex')
+    const hash = crypto
+      .createHash('sha256')
+      .update(`${appDomain}${this.salt}`)
+      .digest('hex')
     const appIndex = hashCode(hash)
     const appNode = this.hdNode.deriveHardened(appIndex)
     return new AppNode(appNode, appDomain)
@@ -129,17 +132,19 @@ export function isBackupPhraseValid(backupPhrase) {
 export function decryptMasterKeychain(password, encryptedBackupPhrase) {
   return new Promise((resolve, reject) => {
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
-    decrypt(dataBuffer, password)
-    .then((plaintextBuffer) => {
-      const backupPhrase = plaintextBuffer.toString()
-      const seed = bip39.mnemonicToSeed(backupPhrase)
-      const masterKeychain = HDNode.fromSeedBuffer(seed)
-      logger.trace('decryptMasterKeychain: decrypted!')
-      resolve(masterKeychain)
-    }, (error) => {
-      logger.error('decryptMasterKeychain: error', error)
-      reject('Incorrect password')
-    })
+    decrypt(dataBuffer, password).then(
+      plaintextBuffer => {
+        const backupPhrase = plaintextBuffer.toString()
+        const seed = bip39.mnemonicToSeed(backupPhrase)
+        const masterKeychain = HDNode.fromSeedBuffer(seed)
+        logger.trace('decryptMasterKeychain: decrypted!')
+        resolve(masterKeychain)
+      },
+      error => {
+        logger.error('decryptMasterKeychain: error', error)
+        reject('Incorrect password')
+      }
+    )
   })
 }
 
@@ -151,17 +156,21 @@ export function getBitcoinPrivateKeychain(masterKeychain) {
   const BITCOIN_COIN_TYPE = 0
   const ACCOUNT_INDEX = 0
 
-  return masterKeychain.deriveHardened(BIP_44_PURPOSE)
-  .deriveHardened(BITCOIN_COIN_TYPE)
-  .deriveHardened(ACCOUNT_INDEX)
+  return masterKeychain
+    .deriveHardened(BIP_44_PURPOSE)
+    .deriveHardened(BITCOIN_COIN_TYPE)
+    .deriveHardened(ACCOUNT_INDEX)
 }
 
 export function getBitcoinPublicKeychain(masterKeychain) {
   return getBitcoinPrivateKeychain(masterKeychain).neutered()
 }
 
-export function getBitcoinAddressNode(bitcoinKeychain,
-  addressIndex = 0, chainType = EXTERNAL_ADDRESS) {
+export function getBitcoinAddressNode(
+  bitcoinKeychain,
+  addressIndex = 0,
+  chainType = EXTERNAL_ADDRESS
+) {
   let chain = null
 
   if (chainType === EXTERNAL_ADDRESS) {
@@ -177,23 +186,23 @@ export function getBitcoinAddressNode(bitcoinKeychain,
 
 export function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
   return new Promise((resolve, reject) =>
-     decryptMasterKeychain(password, encryptedBackupPhrase)
-    .then((masterKeychain) => {
-      const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
-      const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
-      const privateKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
-      resolve(privateKey)
-    })
-    .catch((error) => {
-      reject(error)
-    }))
+    decryptMasterKeychain(password, encryptedBackupPhrase)
+      .then(masterKeychain => {
+        const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
+        const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
+        const privateKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
+        resolve(privateKey)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  )
 }
 
 const IDENTITY_KEYCHAIN = 888
 const BLOCKSTACK_ON_BITCOIN = 0
 export function getIdentityPrivateKeychain(masterKeychain) {
-  return masterKeychain.deriveHardened(IDENTITY_KEYCHAIN)
-  .deriveHardened(BLOCKSTACK_ON_BITCOIN)
+  return masterKeychain.deriveHardened(IDENTITY_KEYCHAIN).deriveHardened(BLOCKSTACK_ON_BITCOIN)
 }
 
 export function getIdentityPublicKeychain(masterKeychain) {
@@ -206,7 +215,10 @@ export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityInd
   }
 
   const publicKeyHex = identityPrivateKeychain.keyPair.getPublicKeyBuffer().toString('hex')
-  const salt = crypto.createHash('sha256').update(publicKeyHex).digest('hex')
+  const salt = crypto
+    .createHash('sha256')
+    .update(publicKeyHex)
+    .digest('hex')
 
   return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex), salt)
 }
@@ -229,81 +241,121 @@ export function deriveIdentityKeyPair(identityOwnerAddressNode) {
 export function getWebAccountTypes(api) {
   const webAccountTypes = {
     twitter: {
-      label: 'Twitter', iconClass: 'fa-twitter', social: true,
+      label: 'Twitter',
+      iconClass: 'fa-twitter',
+      social: true,
       urlTemplate: 'https://twitter.com/{identifier}'
     },
     facebook: {
-      label: 'Facebook', iconClass: 'fa-facebook', social: true,
+      label: 'Facebook',
+      iconClass: 'fa-facebook',
+      social: true,
       urlTemplate: 'https://facebook.com/{identifier}'
     },
     github: {
-      label: 'GitHub', iconClass: 'fa-github-alt', social: true,
+      label: 'GitHub',
+      iconClass: 'fa-github-alt',
+      social: true,
       urlTemplate: 'https://github.com/{identifier}'
     },
     instagram: {
-      label: 'Instagram', iconClass: 'fa-instagram', social: true,
+      label: 'Instagram',
+      iconClass: 'fa-instagram',
+      social: true,
       urlTemplate: 'https://instagram.com/{identifier}'
     },
     linkedIn: {
-      label: 'LinkedIn', iconClass: 'fa-linkedin', social: true,
+      label: 'LinkedIn',
+      iconClass: 'fa-linkedin',
+      social: true,
       urlTemplate: 'https://www.linkedin.com/in/{identifier}'
     },
     tumblr: {
-      label: 'Tumblr', iconClass: 'fa-tumblr', social: true,
+      label: 'Tumblr',
+      iconClass: 'fa-tumblr',
+      social: true,
       urlTemplate: 'http://{identifier}.tumblr.com'
     },
     reddit: {
-      label: 'Reddit', iconClass: 'fa-reddit-alien', social: true,
+      label: 'Reddit',
+      iconClass: 'fa-reddit-alien',
+      social: true,
       urlTemplate: 'https://www.reddit.com/user/{identifier}'
     },
     pinterest: {
-      label: 'Pinterest', iconClass: 'fa-pinterest', social: true,
+      label: 'Pinterest',
+      iconClass: 'fa-pinterest',
+      social: true,
       urlTemplate: 'https://pinterest.com/{identifier}'
     },
     youtube: {
-      label: 'YouTube', iconClass: 'fa-youtube', social: true,
+      label: 'YouTube',
+      iconClass: 'fa-youtube',
+      social: true,
       urlTemplate: 'https://www.youtube.com/channel/{identifier}'
     },
     'google-plus': {
-      label: 'Google+', iconClass: 'fa-google-plus', social: true,
+      label: 'Google+',
+      iconClass: 'fa-google-plus',
+      social: true,
       urlTemplate: 'https://plus.google.com/u/{identifier}'
     },
     angellist: {
-      label: 'AngelList', iconClass: 'fa-angellist', social: true,
+      label: 'AngelList',
+      iconClass: 'fa-angellist',
+      social: true,
       urlTemplate: 'https://angel.co/{identifier}'
     },
     'stack-overflow': {
-      label: 'StackOverflow', iconClass: 'fa-stack-overflow', social: true,
+      label: 'StackOverflow',
+      iconClass: 'fa-stack-overflow',
+      social: true,
       urlTemplate: 'http://stackoverflow.com/users/{identifier}'
     },
     hackerNews: {
-      label: 'Hacker News', iconClass: 'fa-hacker-news', social: true,
+      label: 'Hacker News',
+      iconClass: 'fa-hacker-news',
+      social: true,
       urlTemplate: 'https://news.ycombinator.com/user?id={identifier}'
     },
     openbazaar: {
-      label: 'OpenBazaar', iconClass: 'fa-shopping-cart', social: true,
+      label: 'OpenBazaar',
+      iconClass: 'fa-shopping-cart',
+      social: true,
       urlTemplate: 'ob://{identifier}'
     },
     snapchat: {
-      label: 'Snapchat', iconClass: 'fa-snapchat-ghost', social: true,
+      label: 'Snapchat',
+      iconClass: 'fa-snapchat-ghost',
+      social: true,
       urlTemplate: 'https://snapchat.com/add/{identifier}'
     },
     website: {
-      label: 'Website', iconClass: 'fa-link', social: false,
+      label: 'Website',
+      iconClass: 'fa-link',
+      social: false,
       urlTemplate: '{identifier}'
     },
     ssh: {
-      label: 'SSH', iconClass: 'fa-key', social: false
+      label: 'SSH',
+      iconClass: 'fa-key',
+      social: false
     },
     pgp: {
-      label: 'PGP', iconClass: 'fa-key', social: false
+      label: 'PGP',
+      iconClass: 'fa-key',
+      social: false
     },
     bitcoin: {
-      label: 'Bitcoin', iconClass: 'fa-bitcoin', social: false,
+      label: 'Bitcoin',
+      iconClass: 'fa-bitcoin',
+      social: false,
       urlTemplate: api.bitcoinAddressUrl
     },
     ethereum: {
-      label: 'Ethereum', iconClass: 'fa-key', social: false,
+      label: 'Ethereum',
+      iconClass: 'fa-key',
+      social: false,
       urlTemplate: api.ethereumAddressUrl
     }
   }

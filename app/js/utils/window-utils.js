@@ -8,13 +8,13 @@ export function isWindowsBuild() {
   return isWindowsBuildCompileFlag === true
 }
 
-export function isCoreEndpointDisabled() {
-  return isWindowsBuild() || isWebAppBuild()
-}
-
 export function isWebAppBuild() {
   const isWebAppBuildCompileFlag = false
   return isWebAppBuildCompileFlag === true
+}
+
+export function isCoreEndpointDisabled() {
+  return isWindowsBuild() || isWebAppBuild()
 }
 
 const mobileWindowWidth = 768

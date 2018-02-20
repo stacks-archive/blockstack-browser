@@ -153,7 +153,7 @@ function registerName(api, domainName, identity, identityIndex,
             myNet.modifyUTXOSetFrom(preorderTx)
             return rawtx
           })
-          .then(() => 
+          .then(() =>
             transactions.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
           .then((rawtx) => {
             registerTx = rawtx
@@ -168,7 +168,7 @@ function registerName(api, domainName, identity, identityIndex,
             if (response.status) {
               logger.debug(`Successfully submitted registration for ${domainName}`)
               dispatch(registrationSubmitted())
-              dispatch(IdentityActions.addUsername(identityIndex, domainName)) 
+              dispatch(IdentityActions.addUsername(identityIndex, domainName))
             } else {
               logger.error(response)
               dispatch(registrationError(response))

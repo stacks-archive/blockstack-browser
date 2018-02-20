@@ -1,7 +1,7 @@
 // @flow
 import { combineReducers } from 'redux'
-import { AccountReducer }  from '../account/store/account'
-import { AuthReducer }     from '../auth/store/auth'
+import { AccountReducer } from '../account/store/account'
+import { AuthReducer } from '../auth/store/auth'
 import ProfilesReducer from '../profiles/store/reducers'
 import { SanityReducer } from './sanity'
 import { SettingsReducer } from '../account/store/settings'
@@ -86,7 +86,7 @@ const RootReducer = (state: any, action: any) => {
           regTestMode: state.settings.api.regTestMode
         })
       },
-      apps :{
+      apps: {
         instanceIdentifier: null
       }
     })

@@ -1,10 +1,8 @@
-import React, { Component, PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-
-import PageHeader from '../components/PageHeader'
-import Navbar from '../components/Navbar'
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
@@ -18,7 +16,7 @@ class AccountMenu extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { }
+    this.state = {}
   }
 
   render() {
