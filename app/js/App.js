@@ -15,6 +15,7 @@ import { SanityActions }    from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
 import { openInNewTab } from './utils'
+import Modal from 'react-modal'
 
 import log4js from 'log4js'
 
@@ -106,6 +107,9 @@ class App extends Component {
     const logServerPort = getLogServerPortFromURL()
     const regTestMode = getRegTestModeFromURL()
     let api = this.props.api
+
+    // https://github.com/reactjs/react-modal/issues/133
+    Modal.setAppElement('body')
 
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
