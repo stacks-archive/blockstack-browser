@@ -55,6 +55,86 @@ function beforeRegister() {
   }
 }
 
+function registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFile) {
+  let nameSuffix = null
+  nameSuffix = getNameSuffix(domainName)
+  logger.debug(`registerName: ${domainName} is a subdomain of ${nameSuffix}`)
+  const registerUrl = api.subdomains[nameSuffix].registerUrl
+
+  const registrationRequestBody = JSON.stringify({
+    name: domainName.split('.')[0],
+    owner_address: ownerAddress,
+    zonefile: zoneFile
+  })
+
+  const requestHeaders = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: authorizationHeaderValue(api.coreAPIPassword)
+  }
+
+  logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
+
+  return fetch(registerUrl, {
+    method: 'POST',
+    headers: requestHeaders,
+    body: registrationRequestBody
+  })
+  .then((response) => response.text())
+  .then((responseText) => JSON.parse(responseText))
+}
+
+function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paymentKey, zoneFile) {
+  if (!paymentKey) {
+    logger.error('registerName: payment key not provided for non-subdomain registration')
+    return Promise.reject('Missing payment key')
+  }
+
+  const compressedKey = `${paymentKey}01`
+  const coercedAddress = myNet.coerceAddress(ownerAddress)
+
+  let preorderTx = ''
+  let registerTx = ''
+
+  return safety.addressCanReceiveName(ownerAddress)
+    .then((canReceive) => {
+      if (!canReceive) {
+        return Promise.reject(`Address ${ownerAddress} cannot receive names.`)
+      }
+      return safety.isNameValid(domainName)
+    })
+    .then((nameValid) => {
+      if (!nameValid) {
+        return Promise.reject(`Name ${domainName} is not valid`)
+      }
+      return true
+    })
+    .then(() => tx.makePreorder(domainName, coercedAddress, compressedKey))
+    .then((rawtx) => {
+      preorderTx = rawtx
+      return rawtx
+    })
+    .then((rawtx) => {
+      myNet.modifyUTXOSetFrom(preorderTx)
+      return rawtx
+    })
+    .then(() =>
+      tx.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
+    .then((rawtx) => {
+      registerTx = rawtx
+      return rawtx
+    })
+    .then(() => {
+      // make sure we don't double-spend the register before it is broadcasted.
+      myNet.modifyUTXOSetFrom(registerTx)
+    })
+    .then(() => {
+      logger.debug(
+        `Sending registration to transaction broadcaster at ${myNet.broadcastServiceUrl}`)
+      return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
+    })
+}
+
 function registerName(api, domainName, identity, identityIndex,
                       ownerAddress, keypair, paymentKey = null) {
   logger.trace(`registerName: domainName: ${domainName}`)
@@ -104,7 +184,8 @@ function registerName(api, domainName, identity, identityIndex,
 
         const myNet = config.network
 
-        return registerDomain(myNet, transactions, domainName, identityIndex, ownerAddress, paymentKey, zoneFile)
+        return registerDomain(myNet, transactions, domainName, identityIndex, 
+          ownerAddress, paymentKey, zoneFile)
           .then((response) => {
             if (response.status) {
               logger.debug(`Successfully submitted registration for ${domainName}`)
@@ -127,85 +208,6 @@ function registerName(api, domainName, identity, identityIndex,
       throw error
     })
   }
-}
-
-function registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFile) {
-  let nameSuffix = null
-  nameSuffix = getNameSuffix(domainName)
-  logger.debug(`registerName: ${domainName} is a subdomain of ${nameSuffix}`)
-  let registerUrl = api.subdomains[nameSuffix].registerUrl
-
-  const registrationRequestBody = JSON.stringify({
-    name: domainName.split('.')[0],
-    owner_address: ownerAddress,
-    zonefile: zoneFile
-  })
-
-  const requestHeaders = {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-    Authorization: authorizationHeaderValue(api.coreAPIPassword)
-  }
-
-  logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
-
-  return fetch(registerUrl, {
-    method: 'POST',
-    headers: requestHeaders,
-    body: registrationRequestBody
-  })
-  .then((response) => response.text())
-  .then((responseText) => JSON.parse(responseText))
-}
-
-function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paymentKey, zoneFile) {
-  if (!paymentKey) {
-    logger.error('registerName: payment key not provided for non-subdomain registration')
-    return Promise.reject('Missing payment key')
-  }
-
-  const compressedKey = `${paymentKey}01`
-  const coercedAddress = myNet.coerceAddress(ownerAddress)
-
-  let preorderTx = ''
-  let registerTx = ''
-
-  return safety.addressCanReceiveName(ownerAddress)
-    .then((canReceive) => {
-      if (!canReceive) {
-        return Promise.reject(`Address ${ownerAddress} cannot receive names.`)
-      }
-      return safety.isNameValid(domainName)
-    })
-    .then((nameValid) => {
-      if (!nameValid) {
-        return Promise.reject(`Name ${domainName} is not valid`)
-      }
-    })
-    .then(() => tx.makePreorder(domainName, coercedAddress, compressedKey))
-    .then((rawtx) => {
-      preorderTx = rawtx
-      return rawtx
-    })
-    .then((rawtx) => {
-      myNet.modifyUTXOSetFrom(preorderTx)
-      return rawtx
-    })
-    .then(() =>
-      tx.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
-    .then((rawtx) => {
-      registerTx = rawtx
-      return rawtx
-    })
-    .then(() => {
-      // make sure we don't double-spend the register before it is broadcasted.
-      myNet.modifyUTXOSetFrom(registerTx)
-    })
-    .then(() => {
-      logger.debug(
-        `Sending registration to transaction broadcaster at ${myNet.broadcastServiceUrl}`)
-      return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
-    })
 }
 
 const RegistrationActions = {
