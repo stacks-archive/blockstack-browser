@@ -102,7 +102,7 @@ function registerName(api, domainName, identity, identityIndex,
 
         const myNet = config.network
 
-        return registerDomain(myNet, domainName, identityIndex, ownerAddress, paymentKey, zoneFile)
+        return registerDomain(myNet, transactions, domainName, identityIndex, ownerAddress, paymentKey, zoneFile)
           .then((response) => {
             if (response.status) {
               logger.debug(`Successfully submitted registration for ${domainName}`)
@@ -156,7 +156,7 @@ function registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFil
   .then((responseText) => JSON.parse(responseText))
 }
 
-function registerDomain(myNet, domainName, identityIndex, ownerAddress, paymentKey, zoneFile) {
+function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paymentKey, zoneFile) {
   if (!paymentKey) {
     logger.error('registerName: payment key not provided for non-subdomain registration')
     return Promise.reject('Missing payment key')
@@ -168,7 +168,7 @@ function registerDomain(myNet, domainName, identityIndex, ownerAddress, paymentK
   let preorderTx = ''
   let registerTx = ''
 
-  return transactions.makePreorder(domainName, coercedAddress, compressedKey)
+  return tx.makePreorder(domainName, coercedAddress, compressedKey)
     .then((rawtx) => {
       preorderTx = rawtx
       return rawtx
@@ -178,7 +178,7 @@ function registerDomain(myNet, domainName, identityIndex, ownerAddress, paymentK
       return rawtx
     })
     .then(() =>
-      transactions.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
+      tx.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
     .then((rawtx) => {
       registerTx = rawtx
       return rawtx

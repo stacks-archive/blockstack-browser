@@ -111,7 +111,7 @@
     "request": "^2.79.0",
     "run-sequence": "^1.1.1",
     "selenium-webdriver": "^2.53.2",
-    "sinon": "^1.17.4",
+    "sinon": "^1.17.7",
     "sinon-as-promised": "^4.0.0",
     "source-map-support": "^0.4.0",
     "style-loader": "^0.13.1",
