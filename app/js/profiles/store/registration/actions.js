@@ -1,5 +1,5 @@
 import * as types from './types'
-import { makeProfileZoneFile, transactions, config, network } from 'blockstack'
+import { makeProfileZoneFile, transactions, config, network, safety } from 'blockstack'
 import { uploadProfile } from '../../../account/utils'
 import { IdentityActions } from '../identity'
 import { signProfileForUpload, authorizationHeaderValue } from '../../../utils'
@@ -98,6 +98,8 @@ function registerName(api, domainName, identity, identityIndex,
         if (api.regTestMode) {
           logger.trace('Using regtest network')
           config.network = network.defaults.LOCAL_REGTEST
+          // browser regtest environment uses 6270
+          config.network.blockstackAPIUrl = 'http://localhost:6270'
         }
 
         const myNet = config.network
@@ -168,7 +170,19 @@ function registerDomain(myNet, domainName, identityIndex, ownerAddress, paymentK
   let preorderTx = ''
   let registerTx = ''
 
-  return transactions.makePreorder(domainName, coercedAddress, compressedKey)
+  return safety.addressCanReceiveName(ownerAddress)
+    .then((canReceive) => {
+      if (!canReceive) {
+        return Promise.reject(`Address ${ownerAddress} cannot receive names.`)
+      }
+      return safety.isNameValid(domainName)
+    })
+    .then((nameValid) => {
+      if (!nameValid) {
+        return Promise.reject(`Name ${domainName} is not valid`)
+      }
+    })
+    .then(() => transactions.makePreorder(domainName, coercedAddress, compressedKey))
     .then((rawtx) => {
       preorderTx = rawtx
       return rawtx
@@ -182,6 +196,10 @@ function registerDomain(myNet, domainName, identityIndex, ownerAddress, paymentK
     .then((rawtx) => {
       registerTx = rawtx
       return rawtx
+    })
+    .then(() => {
+      // make sure we don't double-spend the register before it is broadcasted.
+      myNet.modifyUTXOSetFrom(registerTx)
     })
     .then(() => {
       logger.debug(
