@@ -74,96 +74,35 @@ function registerName(api, domainName, identity, identityIndex,
       const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
 
       const nameIsSubdomain = isSubdomain(domainName)
-      let registerUrl = api.registerUrl
-      let nameSuffix = null
-      if (nameIsSubdomain) {
-        nameSuffix = getNameSuffix(domainName)
-        logger.debug(`registerName: ${domainName} is a subdomain of ${nameSuffix}`)
-        registerUrl = api.subdomains[nameSuffix].registerUrl
-      } else {
-        logger.debug(`registerName: ${domainName} is not a subdomain`)
-      }
+
+      dispatch(registrationSubmitting())
 
       if (nameIsSubdomain) {
-        const registrationRequestBody = JSON.stringify({
-          name: domainName.split('.')[0],
-          owner_address: ownerAddress,
-          zonefile: zoneFile
-        })
-
-        const requestHeaders = {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: authorizationHeaderValue(api.coreAPIPassword)
-        }
-
-        logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
-
-        dispatch(registrationSubmitting())
-
-        return fetch(registerUrl, {
-          method: 'POST',
-          headers: requestHeaders,
-          body: registrationRequestBody
-        })
-        .then((response) => response.text())
-        .then((responseText) => JSON.parse(responseText))
-        .then((responseJson) => {
-          if (responseJson.error) {
-            logger.error(responseJson.error)
-            dispatch(registrationError(responseJson.error))
-          } else {
-            logger.debug(`Successfully submitted registration for ${domainName}`)
-            dispatch(registrationSubmitted())
-            dispatch(IdentityActions.addUsername(identityIndex, domainName))
-          }
-        })
-        .catch((error) => {
-          logger.error('registerName: error POSTing registration to Core', error)
-          dispatch(registrationError(error))
-          throw error
-        })
+        return registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFile) 
+          .then((responseJson) => {
+            if (responseJson.error) {
+              logger.error(responseJson.error)
+              dispatch(registrationError(responseJson.error))
+            } else {
+              logger.debug(`Successfully submitted registration for ${domainName}`)
+              dispatch(registrationSubmitted())
+              dispatch(IdentityActions.addUsername(identityIndex, domainName))
+            }
+          })
+          .catch((error) => {
+            logger.error('registerName: error POSTing registration to Core', error)
+            dispatch(registrationError(error))
+            throw error
+          })
       } else {
-        if (!paymentKey) {
-          logger.error('registerName: payment key not provided for non-subdomain registration')
-          return Promise.reject('Missing payment key')
-        }
-
-        const compressedKey = `${paymentKey}01`
-
-        dispatch(registrationSubmitting())
-
         if (api.regTestMode) {
           logger.trace('Using regtest network')
           config.network = network.defaults.LOCAL_REGTEST
         }
 
         const myNet = config.network
-        const coercedAddress = myNet.coerceAddress(ownerAddress)
 
-        let preorderTx = ''
-        let registerTx = ''
-
-        return transactions.makePreorder(domainName, coercedAddress, compressedKey)
-          .then((rawtx) => {
-            preorderTx = rawtx
-            return rawtx
-          })
-          .then((rawtx) => {
-            myNet.modifyUTXOSetFrom(preorderTx)
-            return rawtx
-          })
-          .then(() =>
-            transactions.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
-          .then((rawtx) => {
-            registerTx = rawtx
-            return rawtx
-          })
-          .then(() => {
-            logger.debug(
-              `Sending registration to transaction broadcaster at ${myNet.broadcastServiceUrl}`)
-            return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
-          })
+        return registerDomain(myNet, domainName, identityIndex, ownerAddress, paymentKey, zoneFile)
           .then((response) => {
             if (response.status) {
               logger.debug(`Successfully submitted registration for ${domainName}`)
@@ -188,6 +127,69 @@ function registerName(api, domainName, identity, identityIndex,
   }
 }
 
+function registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFile) {
+  let nameSuffix = null
+  nameSuffix = getNameSuffix(domainName)
+  logger.debug(`registerName: ${domainName} is a subdomain of ${nameSuffix}`)
+  let registerUrl = api.subdomains[nameSuffix].registerUrl
+
+  const registrationRequestBody = JSON.stringify({
+    name: domainName.split('.')[0],
+    owner_address: ownerAddress,
+    zonefile: zoneFile
+  })
+
+  const requestHeaders = {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    Authorization: authorizationHeaderValue(api.coreAPIPassword)
+  }
+
+  logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
+
+  return fetch(registerUrl, {
+    method: 'POST',
+    headers: requestHeaders,
+    body: registrationRequestBody
+  })
+  .then((response) => response.text())
+  .then((responseText) => JSON.parse(responseText))
+}
+
+function registerDomain(myNet, domainName, identityIndex, ownerAddress, paymentKey, zoneFile) {
+  if (!paymentKey) {
+    logger.error('registerName: payment key not provided for non-subdomain registration')
+    return Promise.reject('Missing payment key')
+  }
+
+  const compressedKey = `${paymentKey}01`
+  const coercedAddress = myNet.coerceAddress(ownerAddress)
+
+  let preorderTx = ''
+  let registerTx = ''
+
+  return transactions.makePreorder(domainName, coercedAddress, compressedKey)
+    .then((rawtx) => {
+      preorderTx = rawtx
+      return rawtx
+    })
+    .then((rawtx) => {
+      myNet.modifyUTXOSetFrom(preorderTx)
+      return rawtx
+    })
+    .then(() =>
+      transactions.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
+    .then((rawtx) => {
+      registerTx = rawtx
+      return rawtx
+    })
+    .then(() => {
+      logger.debug(
+        `Sending registration to transaction broadcaster at ${myNet.broadcastServiceUrl}`)
+      return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
+    })
+}
+
 const RegistrationActions = {
   profileUploading,
   profileUploadError,
@@ -196,7 +198,9 @@ const RegistrationActions = {
   registrationBeforeSubmit,
   registrationSubmitting,
   registrationSubmitted,
-  registrationError
+  registrationError,
+  registerSubdomain,
+  registerDomain
 }
 
 export default RegistrationActions
