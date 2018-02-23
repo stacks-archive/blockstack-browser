@@ -42,7 +42,7 @@ const apps = {
       launchLink: 'https://www.isotach.io',
       developer: 'Steven Vandevelde',
       storageRequired: true,
-      status: 'user_ready'
+      status: 'in_progress'
     }, {
       name: 'Hello, Blockstack',
       displayName: 'Hello, Blockstack',
@@ -395,6 +395,20 @@ const apps = {
       launchLink: 'http://graphitedocs.com',
       developer: 'Justin Hunter',
       status: 'user_ready',
+      storageRequired: true
+    }, {
+      name: 'Misthos',
+      displayName: 'Misthos',
+      description: 'Participation based governance and financial management of ventures',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-misthos-256x256.png',
+        large: 'app-icon-misthos-512x512.png'
+      },
+      website: 'https://www.misthos.io',
+      launchLink: 'https://www.misthos.io',
+      developer: 'Justin Carter',
+      status: 'in_progress',
       storageRequired: true
     }
   ]
