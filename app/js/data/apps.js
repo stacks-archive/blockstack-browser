@@ -117,8 +117,8 @@ const apps = {
         small: 'app-icon-dotpodcast-256x256.png',
         large: 'app-icon-dotpodcast-1024x1024.png'
       },
-      website: 'https://dotpodcast.co/',
-      launchLink: 'https://dotpodcast.co/',
+      website: 'http://player.dotpodcast.co',
+      launchLink: 'http://player.dotpodcast.co',
       developer: 'DotPodcast',
       status: 'user_ready'
     }, {
