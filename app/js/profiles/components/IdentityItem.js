@@ -57,14 +57,6 @@ class IdentityItem extends Component {
             <div>This is your identity address.</div>
           </div>
         </ToolTip>
-        <ToolTip id="coreDisabled">
-          <div>
-            <div>
-              You cannot purchase usernames in this build.
-              Feature coming soon!
-            </div>
-          </div>
-        </ToolTip>
         <div>
           <div className="avatar-sm float-left" style={{ display: 'inline' }}>
             <Image
@@ -79,26 +71,17 @@ class IdentityItem extends Component {
                 <p className="card-title">
                 {this.props.canAddUsername ?
                   <div>
-                    {this.props.coreDisabled ?
-                      <span
-                        data-tip
-                        data-for="coreDisabled"
-                      >
-                        <i>Add username</i>
-                      </span>
-                    :
-                      <a
-                        href="#"
-                        onClick={(event) => {
-                          event.preventDefault()
-                          event.stopPropagation()
-                          this.props.router.push(
-                            `/profiles/i/add-username/${this.props.index}/search`)
-                        }}
-                      >
-                        Add username
-                      </a>
-                    }
+                    <a
+                      href="#"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        this.props.router.push(
+                          `/profiles/i/add-username/${this.props.index}/search`)
+                      }}
+                    >
+                      Add username
+                    </a>
                   </div>
                 :
                   <span>
