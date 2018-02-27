@@ -120,7 +120,7 @@ const apps = {
       website: 'https://dotpodcast.co/',
       launchLink: 'https://dotpodcast.co/',
       developer: 'DotPodcast',
-      status: 'in_progress'
+      status: 'user_ready'
     }, {
       name: 'Postly',
       displayName: 'Postly',
