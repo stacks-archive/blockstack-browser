@@ -1,6 +1,8 @@
 import log4js from 'log4js'
-import { REGTEST_CORE_API_PASSWORD,
-  REGTEST_CORE_INSIGHT_API_URL } from '../account/store/settings/default'
+import {
+  REGTEST_CORE_API_PASSWORD,
+  REGTEST_CORE_INSIGHT_API_URL
+} from '../account/store/settings/default'
 const logger = log4js.getLogger('utils/bitcoin-utils.js')
 
 const SATOSHIS_IN_BTC = 100000000
@@ -10,12 +12,12 @@ export function btcToSatoshis(amountInBtc) {
 }
 
 export function satoshisToBtc(amountInSatoshis) {
-  return (1.0 * amountInSatoshis) / SATOSHIS_IN_BTC
+  return 1.0 * amountInSatoshis / SATOSHIS_IN_BTC
 }
 
 export function broadcastTransaction(broadcastTransactionUrl, rawTransaction) {
   return new Promise((resolve, reject) => {
-    const payload =  { rawtx: rawTransaction }
+    const payload = { rawtx: rawTransaction }
 
     fetch(broadcastTransactionUrl, {
       headers: {
@@ -24,40 +26,41 @@ export function broadcastTransaction(broadcastTransactionUrl, rawTransaction) {
       },
       method: 'POST',
       body: JSON.stringify(payload)
-    }).then((response) => response.text())
-      .then((responseText) => JSON.parse(responseText))
-      .then((responseJson) => {
+    })
+      .then(response => response.text())
+      .then(responseText => JSON.parse(responseText))
+      .then(responseJson => {
         resolve(responseJson)
       })
-    .catch((error) => {
-      logger.error('broadcastTransaction: error broadcasting transaction', error)
-      reject(error)
-    })
+      .catch(error => {
+        logger.error('broadcastTransaction: error broadcasting transaction', error)
+        reject(error)
+      })
   })
 }
 
 export function getInsightUrl(insightUrl, address, coreAPIPassword) {
-    console.log(`constant: ${REGTEST_CORE_API_PASSWORD}, parameter: ${coreAPIPassword}`)
-    if (coreAPIPassword === REGTEST_CORE_API_PASSWORD) {
-      logger.debug('getInsightUrl: using regtest mock insight api ')
-      insightUrl = REGTEST_CORE_INSIGHT_API_URL
-    }
-    const url = insightUrl.replace('{address}', address)
-    return url
+  console.log(`constant: ${REGTEST_CORE_API_PASSWORD}, parameter: ${coreAPIPassword}`)
+  if (coreAPIPassword === REGTEST_CORE_API_PASSWORD) {
+    logger.debug('getInsightUrl: using regtest mock insight api ')
+    insightUrl = REGTEST_CORE_INSIGHT_API_URL
+  }
+  const url = insightUrl.replace('{address}', address)
+  return url
 }
 
 export function getNetworkFee(bytes) {
   return new Promise((resolve, reject) => {
     fetch('https://bitcoinfees.21.co/api/v1/fees/recommended')
-    .then((response) => response.text())
-    .then((responseText) => JSON.parse(responseText))
-    .then((responseJson) => {
-      const satoshisPerByte = responseJson.fastestFee
-      const fee = bytes * satoshisPerByte
-      resolve(fee)
-    })
-    .catch((error) => {
-      reject(error)
-    })
+      .then(response => response.text())
+      .then(responseText => JSON.parse(responseText))
+      .then(responseJson => {
+        const satoshisPerByte = responseJson.fastestFee
+        const fee = bytes * satoshisPerByte
+        resolve(fee)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
 }

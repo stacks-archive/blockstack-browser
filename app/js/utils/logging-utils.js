@@ -10,7 +10,7 @@ export function configureLogging(log4js, logServerPort, authorizationHeaderValue
   if (portNumber > 1024 && portNumber <= 65535) {
     remoteLoggingEnabled = true
   }
-  
+
   const CONSOLE_APPENDER = {
     type: 'console',
     layout: {
@@ -27,13 +27,11 @@ export function configureLogging(log4js, logServerPort, authorizationHeaderValue
     authorizationHeaderValue
   }
 
-  const appenders =  {
+  const appenders = {
     production: [
       CONSOLE_APPENDER // TODO: on release remove the console logger from production
     ],
-    development: [
-      CONSOLE_APPENDER
-    ]
+    development: [CONSOLE_APPENDER]
   }
 
   if (remoteLoggingEnabled) {

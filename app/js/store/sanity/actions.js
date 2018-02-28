@@ -33,36 +33,37 @@ function isCoreApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
   logger.debug(`isCoreApiPasswordValid: ${corePasswordProtectedReadUrl}`)
   return dispatch =>
     isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword)
-    .then((valid) => {
-      if (valid) {
-        logger.debug('isCoreApiPasswordValid? Yes!')
-        dispatch(coreApiPasswordIsValid())
-        dispatch(coreIsRunning())
-      } else {
-        logger.debug('isCoreApiPasswordValid? No!')
-        dispatch(coreApiPasswordIsNotValid())
-      }
-    }).catch((error) => {
-      // Promise returned should always resolve even if there is an error
-      logger.error('isCoreApiPasswordValid returned an unexpected error', error)
-    })
+      .then(valid => {
+        if (valid) {
+          logger.debug('isCoreApiPasswordValid? Yes!')
+          dispatch(coreApiPasswordIsValid())
+          dispatch(coreIsRunning())
+        } else {
+          logger.debug('isCoreApiPasswordValid? No!')
+          dispatch(coreApiPasswordIsNotValid())
+        }
+      })
+      .catch(error => {
+        // Promise returned should always resolve even if there is an error
+        logger.error('isCoreApiPasswordValid returned an unexpected error', error)
+      })
 }
 
 function isCoreRunning(corePingUrl) {
   logger.debug(`isCoreRunning: ${corePingUrl}`)
   return dispatch =>
     isCoreApiRunning(corePingUrl)
-    .then((running) => {
-      if (running)  {
-        dispatch(coreIsRunning())
-      } else {
-        dispatch(coreIsNotRunning())
-      }
-    })
-    .catch((error) => {
-      // Promise returned should always resolve even if there is an error
-      logger.error('isCoreApiRunning returned an unexpected error', error)
-    })
+      .then(running => {
+        if (running) {
+          dispatch(coreIsRunning())
+        } else {
+          dispatch(coreIsNotRunning())
+        }
+      })
+      .catch(error => {
+        // Promise returned should always resolve even if there is an error
+        logger.error('isCoreApiRunning returned an unexpected error', error)
+      })
 }
 
 const SanityActions = {

@@ -12,4 +12,3 @@ export function redirectToConnectToGaiaHub() {
 }
 
 export { connectToGaiaHub, GaiaHubConfig }
-

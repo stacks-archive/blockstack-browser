@@ -15,20 +15,8 @@ tests/utils/a*
 tests/utils/e*
 tests/utils/n*
 
-app/js/account/A*
-app/js/account/B*
-app/js/account/Ch*
-app/js/account/Cr*
-
-app/js/account/store/settings*
-
 app/js/components/*
 !app/js/components/Navbar*
-
-app/js/store/*
-app/js/utils/*
-!app/js/utils/account-utils*
-!app/js/utils/api-utils*
 
 app/js/profiles/store/*
 app/js/profiles/tabs/*
