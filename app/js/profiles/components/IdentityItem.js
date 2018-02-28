@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import ToolTip from '../../components/ToolTip'
 import Image from '../../components/Image'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'

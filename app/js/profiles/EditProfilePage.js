@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import InputGroup from '../components/InputGroup'
@@ -398,6 +399,7 @@ class EditProfilePage extends Component {
     const accounts = filledAccounts.concat(placeholders)
     const ownerAddress = identity.ownerAddress
     const identityIndex = this.state.index
+
     return (
       <div>
       {this.state.tabName === '' ? (

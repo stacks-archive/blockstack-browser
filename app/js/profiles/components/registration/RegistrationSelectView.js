@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -270,11 +271,11 @@ class AddUsernameSelectPage extends Component {
               <h3 className="modal-heading">
                 Are you sure you want to register <strong>{name}</strong>?
               </h3>
-              <p><strong>{name}</strong> is a subdomain that is free to register.</p>
+              <p><strong>{name}</strong> is a free username.</p>
               <div>
                 <button
                   onClick={this.register}
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-block"
                   disabled={registrationInProgress}
                 >
                   {registrationInProgress ?

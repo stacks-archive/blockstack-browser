@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -50,10 +51,12 @@ class ChangePasswordPage extends Component {
   updateAlert(alertStatus, alertMessage) {
     logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
-      alerts: [{
-        status: alertStatus,
-        message: alertMessage
-      }]
+      alerts: [
+        {
+          status: alertStatus,
+          message: alertMessage
+        }
+      ]
     })
   }
 
@@ -64,58 +67,63 @@ class ChangePasswordPage extends Component {
     const newPassword2 = this.state.newPassword2
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt recovery phrase...')
-    decrypt(dataBuffer, currentPassword)
-    .then((plaintextBuffer) => {
-      logger.debug('Recovery phrase successfully decrypted')
-      if (newPassword.length < 8) {
-        this.updateAlert('danger', 'New password must be at least 8 characters')
-      } else {
-        if (newPassword !== newPassword2) {
-          this.updateAlert('danger', 'New passwords must match')
+    decrypt(dataBuffer, currentPassword).then(
+      plaintextBuffer => {
+        logger.debug('Recovery phrase successfully decrypted')
+        if (newPassword.length < 8) {
+          this.updateAlert('danger', 'New password must be at least 8 characters')
         } else {
-          logger.debug('Trying to re-encrypt recovery phrase with new password...')
-          encrypt(plaintextBuffer, newPassword)
-          .then((ciphertextBuffer) => {
-            this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
-            this.updateAlert('success', 'Password updated!')
-            this.setState({
-              currentPassword: '',
-              newPassword: '',
-              newPassword2: ''
+          if (newPassword !== newPassword2) {
+            this.updateAlert('danger', 'New passwords must match')
+          } else {
+            logger.debug('Trying to re-encrypt recovery phrase with new password...')
+            encrypt(plaintextBuffer, newPassword).then(ciphertextBuffer => {
+              this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
+              this.updateAlert('success', 'Password updated!')
+              this.setState({
+                currentPassword: '',
+                newPassword: '',
+                newPassword2: ''
+              })
             })
-          })
+          }
         }
+      },
+      () => {
+        logger.error('Invalid password')
+        this.updateAlert('danger', 'Incorrect password')
       }
-    }, (error) => {
-      logger.error('Invalid password')
-      this.updateAlert('danger', 'Incorrect password')
-    })
+    )
   }
 
   render() {
     return (
       <div className="m-b-100">
-        <h3 className="container-fluid m-t-10">
-          Change Password
-        </h3>
-        {
-          this.state.alerts.map((alert, index) => {
-            return (
-              <Alert key={index} message={alert.message} status={alert.status} />
-            )
-          })}
+        <h3 className="container-fluid m-t-10">Change Password</h3>
+        {this.state.alerts.map((alert, index) => (
+          <Alert key={index} message={alert.message} status={alert.status} />
+        ))}
         <div>
           <InputGroup
-            name="currentPassword" label="Current Password" type="password"
-            data={this.state} onChange={this.onValueChange}
+            name="currentPassword"
+            label="Current Password"
+            type="password"
+            data={this.state}
+            onChange={this.onValueChange}
           />
           <InputGroup
-            name="newPassword" label="New Password" type="password"
-            data={this.state} onChange={this.onValueChange}
+            name="newPassword"
+            label="New Password"
+            type="password"
+            data={this.state}
+            onChange={this.onValueChange}
           />
           <InputGroup
-            name="newPassword2" label="New Password" type="password"
-            data={this.state} onChange={this.onValueChange}
+            name="newPassword2"
+            label="New Password"
+            type="password"
+            data={this.state}
+            onChange={this.onValueChange}
             onReturnKeyPress={this.reencryptMnemonic}
           />
           <div className="container-fluid m-t-40">
