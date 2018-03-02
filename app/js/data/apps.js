@@ -30,17 +30,17 @@ const apps = {
       storageRequired: true,
       status: 'in_progress'
     }, {
-      name: 'Ongaku Ryoho',
-      displayName: 'Ongaku Ryoho',
+      name: 'Isotach',
+      displayName: 'Isotach',
       description: 'A music player which connects to your cloud/distributed storage.',
       version: '1.0.0',
       appIcon: {
-        small: 'app-icon-ongaku-ryoho-256x256.png',
-        large: 'app-icon-ongaku-ryoho-1024x1024.png'
+        small: 'app-icon-isotach-256x256.png',
+        large: 'app-icon-isotach-1024x1024.png'
       },
-      website: 'http://www.ongakuryoho.com',
-      launchLink: 'http://www.ongakuryoho.com',
-      developer: '',
+      website: 'https://www.isotach.io',
+      launchLink: 'https://www.isotach.io',
+      developer: 'Steven Vandevelde',
       storageRequired: true,
       status: 'in_progress'
     }, {
@@ -117,10 +117,10 @@ const apps = {
         small: 'app-icon-dotpodcast-256x256.png',
         large: 'app-icon-dotpodcast-1024x1024.png'
       },
-      website: 'https://dotpodcast.co/',
-      launchLink: 'https://dotpodcast.co/',
+      website: 'http://player.dotpodcast.co',
+      launchLink: 'http://player.dotpodcast.co',
       developer: 'DotPodcast',
-      status: 'in_progress'
+      status: 'user_ready'
     }, {
       name: 'Postly',
       displayName: 'Postly',
@@ -395,6 +395,20 @@ const apps = {
       launchLink: 'http://graphitedocs.com',
       developer: 'Justin Hunter',
       status: 'user_ready',
+      storageRequired: true
+    }, {
+      name: 'Misthos',
+      displayName: 'Misthos',
+      description: 'Participation based governance and financial management of ventures',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-misthos-256x256.png',
+        large: 'app-icon-misthos-512x512.png'
+      },
+      website: 'https://www.misthos.io',
+      launchLink: 'https://www.misthos.io',
+      developer: 'Justin Carter',
+      status: 'in_progress',
       storageRequired: true
     }
   ]

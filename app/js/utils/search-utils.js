@@ -1,17 +1,5 @@
 import hasprop from 'hasprop'
 
-export function compareProfilesByVerifications(resultA, resultB) {
-  let numVerificationsA = getNumberOfVerifications(resultA.profile),
-      numVerificationsB = getNumberOfVerifications(resultB.profile)
-  if (numVerificationsA < numVerificationsB) {
-    return 1
-  } else if (numVerificationsA > numVerificationsB) {
-    return -1
-  } else {
-    return 0
-  }
-}
-
 export function getNumberOfVerifications(profile) {
   let numberOfVerifications = 0
   if (hasprop(profile, 'twitter.proof.url')) {
@@ -24,4 +12,17 @@ export function getNumberOfVerifications(profile) {
     numberOfVerifications += 1
   }
   return numberOfVerifications
+}
+
+
+export function compareProfilesByVerifications(resultA, resultB) {
+  const numVerificationsA = getNumberOfVerifications(resultA.profile)
+  const numVerificationsB = getNumberOfVerifications(resultB.profile)
+  if (numVerificationsA < numVerificationsB) {
+    return 1
+  } else if (numVerificationsA > numVerificationsB) {
+    return -1
+  } else {
+    return 0
+  }
 }

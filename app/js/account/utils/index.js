@@ -20,8 +20,7 @@ function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
 }
 
 // aaron-debt: this should be moved into blockstack.js
-function canWriteUrl(url: string,
-                     hubConfig: GaiaHubConfig): ?string {
+function canWriteUrl(url: string, hubConfig: GaiaHubConfig): ?string {
   const readPrefix = `${hubConfig.url_prefix}${hubConfig.address}/`
   if (url.startsWith(readPrefix)) {
     return url.substring(readPrefix.length)
@@ -30,8 +29,12 @@ function canWriteUrl(url: string,
   }
 }
 
-function tryUpload(urlToWrite: string, data: string,
-                   hubConfig: GaiaHubConfig, mimeType: ?string = undefined) {
+function tryUpload(
+  urlToWrite: string,
+  data: string,
+  hubConfig: GaiaHubConfig,
+  mimeType: ?string = undefined
+) {
   const filenameWrite = canWriteUrl(urlToWrite, hubConfig)
   if (filenameWrite === null) {
     return null
@@ -40,56 +43,67 @@ function tryUpload(urlToWrite: string, data: string,
 }
 
 export function uploadPhoto(
-  api: {gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string},
-  identity: any, identityKeyPair: {key: string},
-  photoFile: string, photoIndex: number) {
-  return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key)
-    .then((identityHubConfig) => {
-      const globalHubConfig = api.gaiaHubConfig
+  api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
+  identity: any,
+  identityKeyPair: { key: string },
+  photoFile: string,
+  photoIndex: number
+) {
+  return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
+    const globalHubConfig = api.gaiaHubConfig
 
-      let uploadPrefix = getProfileUploadLocation(identity, identityHubConfig)
-      if (uploadPrefix.endsWith('profile.json')) {
-        uploadPrefix = uploadPrefix.substring(0, uploadPrefix.length - 'profile.json'.length)
-      } else {
-        throw new Error(`Cannot determine photo location based on profile location ${uploadPrefix}`)
-      }
-      const urlToWrite = `${uploadPrefix}/avatar-${photoIndex}`
-      let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, undefined)
-      if (uploadAttempt === null) {
-        uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, undefined)
-      }
+    let uploadPrefix = getProfileUploadLocation(identity, identityHubConfig)
+    if (uploadPrefix.endsWith('profile.json')) {
+      uploadPrefix = uploadPrefix.substring(0, uploadPrefix.length - 'profile.json'.length)
+    } else {
+      throw new Error(`Cannot determine photo location based on profile location ${uploadPrefix}`)
+    }
+    const urlToWrite = `${uploadPrefix}/avatar-${photoIndex}`
+    let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, undefined)
+    if (uploadAttempt === null) {
+      uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, undefined)
+    }
 
-      // if still null, we don't know the write gaia-hub-config to write the file.
-      if (uploadAttempt === null) {
-        throw new Error(`Wanted to write to ${urlToWrite} but I don't know how.`)
-      }
+    // if still null, we don't know the write gaia-hub-config to write the file.
+    if (uploadAttempt === null) {
+      throw new Error(`Wanted to write to ${urlToWrite} but I don't know how.`)
+    }
 
-      return uploadAttempt
-    })
+    return uploadAttempt
+  })
 }
 
 export function uploadProfile(
-  api: {gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string},
-  identity: any, identityKeyPair: {key: string},
-  signedProfileTokenData: string) {
-  return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key)
-    .then((identityHubConfig) => {
-      const globalHubConfig = api.gaiaHubConfig
+  api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
+  identity: any,
+  identityKeyPair: { key: string },
+  signedProfileTokenData: string
+) {
+  return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
+    const globalHubConfig = api.gaiaHubConfig
 
-      const urlToWrite = getProfileUploadLocation(identity, identityHubConfig)
+    const urlToWrite = getProfileUploadLocation(identity, identityHubConfig)
 
-      let uploadAttempt = tryUpload(urlToWrite, signedProfileTokenData,
-                                    identityHubConfig, 'application/json')
-      if (uploadAttempt === null) {
-        uploadAttempt = tryUpload(urlToWrite, signedProfileTokenData,
-                                  globalHubConfig, 'application/json')
-      }
+    let uploadAttempt = tryUpload(
+      urlToWrite,
+      signedProfileTokenData,
+      identityHubConfig,
+      'application/json'
+    )
+    if (uploadAttempt === null) {
+      uploadAttempt = tryUpload(
+        urlToWrite,
+        signedProfileTokenData,
+        globalHubConfig,
+        'application/json'
+      )
+    }
 
-      // if still null, we don't know the write gaia-hub-config to write the file.
-      if (uploadAttempt === null) {
-        throw new Error(`Wanted to write to ${urlToWrite} but I don't know how.`)
-      }
+    // if still null, we don't know the write gaia-hub-config to write the file.
+    if (uploadAttempt === null) {
+      throw new Error(`Wanted to write to ${urlToWrite} but I don't know how.`)
+    }
 
-      return uploadAttempt
-    })
+    return uploadAttempt
+  })
 }
