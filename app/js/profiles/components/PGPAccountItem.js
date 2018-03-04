@@ -69,6 +69,20 @@ class PGPAccountItem extends Component {
     }
   }
 
+  getAccountUrl = () => {
+    const webAccountTypes = getWebAccountTypes(this.props.api)
+    let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
+    if (webAccountTypes.hasOwnProperty(this.props.service)) {
+      if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
+        let urlTemplate = webAccountTypes[this.props.service].urlTemplate
+        if (urlTemplate) {
+          accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
+        }
+      }
+    }
+    return accountUrl
+  }
+
   getIconClass() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     let iconClass = ''
@@ -100,7 +114,11 @@ class PGPAccountItem extends Component {
   }
 
   onClick = (e) => {
-    this.props.onClick(this.props.service)
+    if (this.props.editing === true) { 
+      this.props.onClick(this.props.service)
+    } else {
+      window.open(this.getAccountUrl(), "_blank")
+    }
   }
 
   render() {
