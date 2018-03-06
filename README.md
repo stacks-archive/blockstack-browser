@@ -74,7 +74,8 @@ and refresh the page.
 * **The sign-in page does not load with localhost:3000**:  If you have taken the
   above step and the page still does not load, check your `auth=` query
 parameter.  If it starts with any number of `/` characters, remove them and
-reload the page.
+reload the page.  For example, if your `auth=` query looks like
+`auth=///abcdef...`, then you will need to change it to `auth=abcdef...`.
 
 ### Windows
 
