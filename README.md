@@ -61,6 +61,20 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 *Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
 
+##### Troubleshooting
+
+Common problems and solutions:
+
+* **The sign-in page does not load**:  These instructions run the Browser in development
+  mode, which uses a different port (3000) than the production mode (8888).
+However, existing applications will direct you to `http://localhost:8888` on
+sign-in.  You will need to *manually* edit the URL to change `8888` to `3000`
+and refresh the page.
+
+* **The sign-in page does not load with localhost:3000**:  If you have taken the
+  above step and the page still does not load, check your `auth=` query
+parameter.  If it starts with any number of `/` characters, remove them and
+reload the page.
 
 ### Windows
 
