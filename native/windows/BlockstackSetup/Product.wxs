@@ -80,15 +80,18 @@
       <DirectoryRef Id="TARGETDIR">
         <Component Id="ProtocolRegistryEntries" Guid="*">
           <RegistryKey Root="HKCR"
+                       Key="blockstack"
+                       Action="createAndRemoveOnUninstall">
+            <RegistryValue Type="string" Value="URL:Blockstack Authentication" />
+            <RegistryValue Type="string" Name="URL Protocol" Value="" />
+            <RegistryKey Key="DefaultIcon">
+              <RegistryValue Type="string" Value="BlockstackBrowser.exe" />
+            </RegistryKey>
+          </RegistryKey>
+          <RegistryKey Root="HKCR"
                        Key="blockstack\shell\open\command"
                        Action="createAndRemoveOnUninstall">
             <RegistryValue Type="string" Value="[#ProtocolHandler.exe] &quot;%1&quot;"/>
-          </RegistryKey>
-          <RegistryKey Root="HKCR"
-                       Key="blockstack"
-                       Action="createAndRemoveOnUninstall">
-            <RegistryValue Type="string" Value="URL:blockstack Blockstack Authentication" />
-            <RegistryValue Type="string" Name="URL Protocol" Value="" />
           </RegistryKey>
         </Component>
       </DirectoryRef>
