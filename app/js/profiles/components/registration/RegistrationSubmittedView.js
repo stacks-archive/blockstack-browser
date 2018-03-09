@@ -8,7 +8,6 @@ const RegistrationSubmittedView = (props) => {
       name
     }
   } = props
-  const isSubdomain = name && name.split('.').length > 2
 
   const bodyContent = <p>Your username will be ready in about an hour.</p>
 
