@@ -210,15 +210,15 @@ class AddUsernameSelectPage extends Component {
         const password = this.state.password
         const encryptedBackupPhrase = this.props.encryptedBackupPhrase
         decryptBitcoinPrivateKey(password, encryptedBackupPhrase)
-        .then((paymentKey) => {
+        .then((paymentKey) => 
           this.props.registerName(this.props.api, name, identity,
                                   index, address, keypair, paymentKey)
-        })
+        )
         .catch((error) => {
           this.setState({
             registrationInProgress: false
           })
-          this.updateAlert('danger', error)
+          this.updateAlert('danger', error.message)
         })
       }
     }
