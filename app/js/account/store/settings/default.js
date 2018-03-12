@@ -46,6 +46,7 @@ const DEFAULT_API = {
   corePort: 6270,
   coreAPIPassword: null,
   logServerPort: '',
+  regTestMode: false,
   storageConnected: false,
   gaiaHubConfig: null,
   gaiaHubUrl: 'https://hub.blockstack.org',

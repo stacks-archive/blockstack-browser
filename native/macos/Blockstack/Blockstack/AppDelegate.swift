@@ -188,7 +188,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         os_log("Opening portal with String: %{public}@", log: log, type: .info, portalURLString)
         let portalURLWithSecretString = "\(portalURLString)#coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
         let portalURLWithSecretAndLogPortString = "\(portalURLWithSecretString)&logServerPort=\(logServerPort)"
-        let portalURL = URL(string: portalURLWithSecretAndLogPortString )
+        let portalURLWithSecretLogPortAndRegtest = "\(portalURLWithSecretAndLogPortString)&regtest=\(isRegTestModeEnabled ? 1 : 0)"
+        let portalURL = URL(string: portalURLWithSecretLogPortAndRegtest)
         NSWorkspace.shared().open(portalURL!)
     }
 
