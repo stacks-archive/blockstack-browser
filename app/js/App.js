@@ -8,7 +8,8 @@ import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
 import { AppsActions } from './store/apps'
 import WelcomeModal from './welcome/WelcomeModal'
-import { getCoreAPIPasswordFromURL, getLogServerPortFromURL } from './utils/api-utils'
+import { getCoreAPIPasswordFromURL, getLogServerPortFromURL,
+        getRegTestModeFromURL } from './utils/api-utils'
 import SupportButton from './components/SupportButton'
 import { SanityActions }    from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
@@ -104,11 +105,11 @@ class App extends Component {
     logger.trace('componentWillMount')
     const coreAPIPassword = getCoreAPIPasswordFromURL()
     const logServerPort = getLogServerPortFromURL()
+    const regTestMode = getRegTestModeFromURL()
     let api = this.props.api
 
     // https://github.com/reactjs/react-modal/issues/133
     Modal.setAppElement('body')
-
 
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
@@ -121,6 +122,11 @@ class App extends Component {
 
     if (logServerPort !== null) {
       api = Object.assign({}, api, { logServerPort })
+      this.props.updateApi(api)
+    }
+
+    if (regTestMode !== null) {
+      api = Object.assign({}, api, { regTestMode })
       this.props.updateApi(api)
     }
 

@@ -82,7 +82,8 @@ const RootReducer = (state: any, action: any) => {
       settings: {
         api: Object.assign({}, initialState.settings.api, {
           coreAPIPassword: state.settings.api.coreAPIPassword,
-          logServerPort: state.settings.api.logServerPort
+          logServerPort: state.settings.api.logServerPort,
+          regTestMode: state.settings.api.regTestMode
         })
       },
       apps: {

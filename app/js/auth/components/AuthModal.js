@@ -12,6 +12,7 @@ import {
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
+import { fetchProfileLocations } from '../../utils/profile-utils'
 import { setCoreStorageConfig } from '../../utils/api-utils'
 import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
@@ -201,52 +202,63 @@ class AuthModal extends Component {
       const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
-      const gaiaBucketAddress = nextProps.identityKeypairs[0].address
-      const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
-      let profileUrl = `${profileUrlBase}/${identityIndex}/profile.json`
+      let profileUrlPromise
 
       if (identity.zoneFile && identity.zoneFile.length > 0) {
         const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(identity.zoneFile)
         if (profileUrlFromZonefile !== null && profileUrlFromZonefile !== undefined) {
-          profileUrl = profileUrlFromZonefile
+          profileUrlPromise = Promise.resolve(profileUrlFromZonefile)
         }
       }
 
-      // Add app storage bucket URL to profile if publish_data scope is requested
-      if (this.state.scopes.publishData) {
-        let apps = {}
-        if (profile.hasOwnProperty('apps')) {
-          apps = profile.apps
-        }
+      const gaiaBucketAddress = nextProps.identityKeypairs[0].address
+      const identityAddress = nextProps.identityKeypairs[identityIndex].address
+      const gaiaUrlBase = 'https://gaia.blockstack.org/hub'
 
-        if (storageConnected) {
-          getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
-          .then((appBucketUrl) => {
-            logger.debug(`componentWillReceiveProps: appBucketUrl ${appBucketUrl}`)
-            apps[appDomain] = appBucketUrl
-            logger.debug(`componentWillReceiveProps: new apps array ${JSON.stringify(apps)}`)
-            profile.apps = apps
-            const signedProfileTokenData = signProfileForUpload(profile,
-            nextProps.identityKeypairs[identityIndex])
-            logger.debug('componentWillReceiveProps: uploading updated profile with new apps array')
-            return uploadProfile(this.props.api, identity,
-              nextProps.identityKeypairs[identityIndex],
-              signedProfileTokenData)
-          })
-          .then(() => {
-            this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
-              profile, profileUrl)
-          })
-          .catch((err) => {
-            logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
-          })
+      if (!profileUrlPromise) {
+        profileUrlPromise = fetchProfileLocations(
+          gaiaUrlBase, identityAddress, gaiaBucketAddress, identityIndex)
+          .then(fetchProfileResp => fetchProfileResp.profileUrl)
+      }
+
+      profileUrlPromise.then((profileUrl) => {
+        // Add app storage bucket URL to profile if publish_data scope is requested
+        if (this.state.scopes.publishData) {
+          let apps = {}
+          if (profile.hasOwnProperty('apps')) {
+            apps = profile.apps
+          }
+
+          if (storageConnected) {
+            getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
+              .then((appBucketUrl) => {
+                logger.debug(`componentWillReceiveProps: appBucketUrl ${appBucketUrl}`)
+                apps[appDomain] = appBucketUrl
+                logger.debug(`componentWillReceiveProps: new apps array ${JSON.stringify(apps)}`)
+                profile.apps = apps
+                const signedProfileTokenData = signProfileForUpload(
+                  profile, nextProps.identityKeypairs[identityIndex])
+                logger.debug(
+                  'componentWillReceiveProps: uploading updated profile with new apps array')
+                return uploadProfile(this.props.api, identity,
+                                     nextProps.identityKeypairs[identityIndex],
+                                     signedProfileTokenData)
+              })
+              .then(() => {
+                this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
+                                          profile, profileUrl)
+              })
+              .catch((err) => {
+                logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
+              })
+          } else {
+            logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
+          }
         } else {
-          logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
+          this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
+                                    profile, profileUrl)
         }
-      } else {
-        this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
-          profile, profileUrl)
-      }
+      })
     } else {
       logger.error('componentWillReceiveProps: response already sent - doing nothing')
     }
