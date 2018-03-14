@@ -9,8 +9,16 @@ var http = require("http"),
     path = require("path"),
     url = require("url"),
     fs = require("fs"),
-    port = process.argv[2] || 8888;
+    port = process.argv[2] || 8888,
+    host = process.argv[4] || 'localhost',
     basePath = process.argv[3] || "./browser";
+
+var checkPrefix = function (prefix, candidate) {
+    // .resolve() removes trailing slashes
+    var absPrefix = path.resolve(prefix) + path.sep;
+    var absCandidate = path.resolve(candidate) + path.sep;
+    return absCandidate.substring(0, absPrefix.length) === absPrefix;
+}
 
 
 /*
@@ -44,11 +52,13 @@ http.createServer(function(request, response) {
   var uri = url.parse(request.url).pathname
     , filename = path.join(basePath, uri);
 
+  var attemptedTraversal = !checkPrefix(basePath, filename)
+
   fs.exists(filename, function(exists) {
 
     /* Always load the single page app index.html
     unless another file exists or this is a directory */
-    if(!exists || fs.statSync(filename).isDirectory()) {
+    if(!exists || attemptedTraversal || fs.statSync(filename).isDirectory()) {
       filename = basePath + "/index.html"
     }
 
@@ -69,8 +79,8 @@ http.createServer(function(request, response) {
       response.end();
     });
   });
-}).listen(parseInt(port, 10));
+}).listen(parseInt(port, 10), host);
 
-console.log("Blockstack Browser proxy server running at: http://localhost:" + port);
+console.log("Blockstack Browser proxy server running at: http://" + host + ":" + port);
 console.log("Browser path: " + basePath);
 console.log("Press Control + C to shutdown");
