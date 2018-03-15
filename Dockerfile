@@ -27,6 +27,6 @@ RUN /src/blockstack-browser/node_modules/.bin/gulp prod
 
 # Setup script to run browser
 RUN echo '#!/bin/bash' >> /src/blockstack-browser/blockstack-browser
-RUN echo 'node /src/blockstack-browser/native/blockstackProxy.js 8888 /src/blockstack-browser/build' >> /src/blockstack-browser/blockstack-browser
+RUN echo 'node /src/blockstack-browser/native/blockstackProxy.js 8888 /src/blockstack-browser/build 0.0.0.0' >> /src/blockstack-browser/blockstack-browser
 RUN chmod +x /src/blockstack-browser/blockstack-browser
 RUN ln /src/blockstack-browser/blockstack-browser /usr/bin/blockstack-browser
