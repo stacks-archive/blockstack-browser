@@ -7,16 +7,12 @@ import {
   getBitcoinPrivateKeychain,
   getBitcoinAddressNode
 } from '../utils'
-import { AccountActions } from '../account/store/account'
-
 import { isCoreEndpointDisabled, isWindowsBuild } from '../utils/window-utils'
+import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
 import InputGroupSecondary from '../components/InputGroupSecondary'
 import Balance from './components/Balance'
-import log4js from 'log4js'
-
-const logger = log4js.getLogger('profiles/store/registration/actions.js')
 
 function mapStateToProps(state) {
   return {
@@ -88,20 +84,20 @@ class SendPage extends Component {
     })
     const password = this.state.password
     const encryptedBackupPhrase = this.props.account.encryptedBackupPhrase
-    const amount = this.state.amount
-    const recipientAddress = this.state.recipientAddress
-
     decryptMasterKeychain(password, encryptedBackupPhrase)
     .then((masterKeychain) => {
       const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
       const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
       const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
+      const amount = this.state.amount
+      const recipientAddress = this.state.recipientAddress
+
       this.setState({
         lastAmount: amount
       })
 
       this.props.withdrawBitcoinClientSide(
-        this.props.regTestMode,`${paymentKey}01`, recipientAddress, amount)
+        this.props.regTestMode, `${paymentKey}01`, recipientAddress, amount)
       this.setState({
         amount: '',
         password: '',
