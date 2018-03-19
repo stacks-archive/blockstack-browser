@@ -410,6 +410,34 @@ const apps = {
       developer: 'Justin Carter',
       status: 'in_progress',
       storageRequired: true
+    }, {
+      name: 'Stealthy',
+      displayName: 'Stealthy',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-stealthy-256x256.png',
+        large: 'app-icon-stealthy-512x512.png'
+      },
+      website: 'https://www.stealthy.im/',
+      launchLink: 'https://www.stealthy.im/',
+      developer: 'Prabhaav Bhardwaj',
+      status: 'user_ready_chat',
+      storageRequired: true
+    }, {
+      name: 'Hermes',
+      displayName: 'Hermes',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-hermes-256x256.png',
+        large: 'app-icon-hermes-512x512.png'
+      },
+      website: 'https://www.hihermes.co/index.html',
+      launchLink: 'https://www.hihermes.co/index.html',
+      developer: 'Dan Healy',
+      status: 'user_ready_chat',
+      storageRequired: true
     }
   ]
 }
