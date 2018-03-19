@@ -8,16 +8,8 @@ const RegistrationSubmittedView = (props) => {
       name
     }
   } = props
-  const isSubdomain = name && name.split('.').length > 2
 
-  const bodyContent = isSubdomain ? (
-    <p>Your username will be ready in about an hour.</p>
-  ) : (
-    <p>
-      Please <strong>keep</strong> Blockstack online for the next hour.
-      Your username will be available shortly after.
-    </p>
-  )
+  const bodyContent = <p>Your username will be ready in about an hour.</p>
 
   return (
     <div>
