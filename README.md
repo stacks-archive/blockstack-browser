@@ -59,10 +59,6 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. When prompted in your browser, enter the Core API password you selected in part 1.
 
 
-#### Part 3: Running with local regtest
-1. Run browser regtest environment (see [blockstack-core repo](https://github.com/blockstack/blockstack-core/tree/master/integration_tests#running-interactive-tests-with-docker))
-1. Open URL: `localhost:3000/#coreAPIPassword=blockstack_integration_test_api_password&regtest=1`
-
 *Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
 
 ##### Troubleshooting
