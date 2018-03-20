@@ -7,6 +7,7 @@ import {
   getBitcoinPrivateKeychain,
   getBitcoinAddressNode
 } from '../utils'
+import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
 import InputGroupSecondary from '../components/InputGroupSecondary'
