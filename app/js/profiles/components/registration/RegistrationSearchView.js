@@ -81,8 +81,9 @@ class RegistrationSearchView extends Component {
     this.props.refreshCoreWalletBalance(this.props.balanceUrl,
       this.props.api.coreAPIPassword)
     if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
-      this.updateAlert('danger', 'You have a pending name registration. Starting a new registration' +
-                       ' may interfere with that registration\'s bitcoin transactions.')
+      this.updateAlert(
+        'danger', 'You have a pending name registration. Starting a new registration' +
+          ' may interfere with that registration\'s bitcoin transactions.')
     }
   }
 
@@ -95,8 +96,9 @@ class RegistrationSearchView extends Component {
     })
 
     if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
-      this.updateAlert('danger', 'You have a pending name registration. Starting a new registration' +
-                       ' may interfere with that registration\'s transactions.')
+      this.updateAlert(
+        'danger', 'You have a pending name registration. Starting a new registration' +
+          ' may interfere with that registration\'s transactions.')
     }
 
     const storageConnected = this.props.api.storageConnected
