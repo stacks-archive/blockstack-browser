@@ -7,16 +7,10 @@ import {
   getBitcoinPrivateKeychain,
   getBitcoinAddressNode
 } from '../utils'
-import { AccountActions } from '../account/store/account'
-
-import { transactions, config, network } from 'blockstack'
 
 import Alert from '../components/Alert'
 import InputGroupSecondary from '../components/InputGroupSecondary'
 import Balance from './components/Balance'
-import log4js from 'log4js'
-
-const logger = log4js.getLogger('profiles/store/registration/actions.js')
 
 function mapStateToProps(state) {
   return {
@@ -32,7 +26,9 @@ function mapDispatchToProps(dispatch) {
 class SendPage extends Component {
   static propTypes = {
     account: PropTypes.object.isRequired,
-    regTestMode: PropTypes.bool.isRequired
+    regTestMode: PropTypes.bool.isRequired,
+    resetCoreWithdrawal: PropTypes.func.isRequired,
+    withdrawBitcoinClientSide: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -53,6 +49,7 @@ class SendPage extends Component {
   }
 
   componentWillMount() {
+    this.props.resetCoreWithdrawal()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,7 +57,7 @@ class SendPage extends Component {
   }
 
   componentWillUnmount() {
-    
+    this.props.resetCoreWithdrawal()
   }
 
   onValueChange(event) {
@@ -85,45 +82,26 @@ class SendPage extends Component {
     })
     const password = this.state.password
     const encryptedBackupPhrase = this.props.account.encryptedBackupPhrase
-    const amount = this.state.amount
-    let recipientAddress = this.state.recipientAddress
-
     decryptMasterKeychain(password, encryptedBackupPhrase)
     .then((masterKeychain) => {
       const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
       const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
       const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
+      const amount = this.state.amount
+      const recipientAddress = this.state.recipientAddress
+
       this.setState({
         lastAmount: amount
       })
 
-      if (this.props.regTestMode) {
-        logger.trace('Using regtest network')
-        config.network = network.defaults.LOCAL_REGTEST
-        // browser regtest environment uses 6270
-        config.network.blockstackAPIUrl = 'http://localhost:6270'
-        recipientAddress = config.network.coerceAddress(recipientAddress)
-      }
-      const amountSatoshis = Math.floor(amount * 1e8)
-
-      return transactions.makeBitcoinSpend(
-        recipientAddress, `${paymentKey}01`, amountSatoshis)
-    })
-    .then((transactionHex) => {
-      const myNet = config.network
-      logger.trace(`Broadcast btc spend with tx hex: ${transactionHex}`)
-      return myNet.broadcastTransaction(transactionHex)
-    })
-    .then(() => {
+      this.props.withdrawBitcoinClientSide(
+        this.props.regTestMode, `${paymentKey}01`, recipientAddress, amount)
       this.setState({
         amount: '',
         password: '',
         recipientAddress: '',
-        disabled: false,
         lastAmount: this.state.amount
       })
-      this.updateAlert('success',
-                       `${amount} bitcoins have been sent to ${recipientAddress}`)
     })
     .catch((error) => {
       this.setState({

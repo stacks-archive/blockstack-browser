@@ -14,6 +14,8 @@ import {
   getInsightUrl
 } from '../../../utils'
 import { isCoreEndpointDisabled } from '../../../utils/window-utils'
+import { transactions, config, network } from 'blockstack'
+
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
@@ -255,6 +257,41 @@ function resetCoreWithdrawal() {
   }
 }
 
+function withdrawBitcoinClientSide(
+  regTestMode,
+  paymentKey,
+  recipientAddress,
+  amountBTC
+) {
+  return dispatch => {
+    if (regTestMode) {
+      logger.trace('Using regtest network')
+      config.network = network.defaults.LOCAL_REGTEST
+      // browser regtest environment uses 6270
+      config.network.blockstackAPIUrl = 'http://localhost:6270'
+      recipientAddress = config.network.coerceAddress(recipientAddress)
+    }
+    dispatch(withdrawingCoreBalance(recipientAddress, amountBTC))
+
+    const amountSatoshis = Math.floor(amountBTC * 1e8)
+
+    transactions.makeBitcoinSpend(
+      recipientAddress, paymentKey, amountSatoshis)
+      .then((transactionHex) => {
+        const myNet = config.network
+        logger.trace(`Broadcast btc spend with tx hex: ${transactionHex}`)
+        return myNet.broadcastTransaction(transactionHex)
+      })
+      .then(() => {
+        dispatch(withdrawCoreBalanceSuccess())
+      })
+      .catch((error) => {
+        logger.error('withdrawBitcoinClientSide: error generating and broadcasting', error)
+        dispatch(withdrawCoreBalanceError(error))
+      })
+  }
+}
+
 function withdrawBitcoinFromCoreWallet(
   coreWalletWithdrawUrl,
   recipientAddress,
@@ -440,6 +477,7 @@ const AccountActions = {
   getCoreWalletAddress,
   refreshCoreWalletBalance,
   resetCoreWithdrawal,
+  withdrawBitcoinClientSide,
   withdrawBitcoinFromCoreWallet,
   emailNotifications,
   skipEmailBackup,
