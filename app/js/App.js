@@ -126,6 +126,7 @@ class App extends Component {
     }
 
     if (regTestMode !== null && regTestMode !== api.regTestMode) {
+      logger.info('Regtest mode activating.')
       api = setOrUnsetUrlsToRegTest(api, regTestMode)
       this.props.updateApi(api)
     }

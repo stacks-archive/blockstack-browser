@@ -88,7 +88,7 @@ class SendCorePage extends Component {
       this.setState({
         alerts: []
       })
-      if (!this.state.inRegTestMode) {
+      if (!props.inRegTestMode) {
         this.updateAlert(
           'danger', 'The core wallet is only used in regtest ' +
             'mode. Are you trying to use regtest?')
@@ -107,7 +107,7 @@ class SendCorePage extends Component {
 
   render() {
     const disabled = this.props.account.coreWallet.withdrawal.inProgress ||
-          !this.state.inRegTestMode
+          !this.props.inRegTestMode
     return (
       <div>
         {this.state.alerts.map((alert, index) =>
