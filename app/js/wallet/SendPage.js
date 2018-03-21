@@ -19,6 +19,7 @@ function mapStateToProps(state) {
     account: state.account,
     coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl,
     broadcastTransactionUrl: state.settings.api.broadcastUrl,
+    localIdentities: state.profiles.identity.localIdentities,
     coreAPIPassword: state.settings.api.coreAPIPassword
   }
 }
@@ -61,7 +62,7 @@ class SendPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.displayCoreWalletWithdrawalAlerts(nextProps)
-    if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
+    if (nextProps.localIdentities.map(x => x.usernamePending).includes(true)) {
       this.updateAlert('danger', 'You have a pending name registration. Withdrawing bitcoin' +
                        ' may interfere with that registration\'s bitcoin transactions.')
     }
