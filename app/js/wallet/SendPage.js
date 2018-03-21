@@ -17,7 +17,6 @@ function mapStateToProps(state) {
   return {
     account: state.account,
     regTestMode: state.settings.api.regTestMode,
-    localIdentities: state.profiles.identity.localIdentities
   }
 }
 
