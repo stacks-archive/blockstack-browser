@@ -34,6 +34,7 @@ class SendPage extends Component {
     broadcastTransactionUrl: PropTypes.string.isRequired,
     resetCoreWithdrawal: PropTypes.func.isRequired,
     withdrawBitcoinFromCoreWallet: PropTypes.func.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     coreAPIPassword: PropTypes.string.isRequired
   }
 
@@ -60,6 +61,10 @@ class SendPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.displayCoreWalletWithdrawalAlerts(nextProps)
+    if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
+      this.updateAlert('danger', 'You have a pending name registration. Withdrawing bitcoin' +
+                       ' may interfere with that registration\'s bitcoin transactions.')
+    }
   }
 
   componentWillUnmount() {
