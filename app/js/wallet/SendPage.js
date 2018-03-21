@@ -16,7 +16,7 @@ import Balance from './components/Balance'
 function mapStateToProps(state) {
   return {
     account: state.account,
-    regTestMode: state.settings.api.regTestMode,
+    regTestMode: state.settings.api.regTestMode
   }
 }
 
