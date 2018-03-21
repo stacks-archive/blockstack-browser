@@ -30,8 +30,7 @@ class SendPage extends Component {
     account: PropTypes.object.isRequired,
     regTestMode: PropTypes.bool.isRequired,
     resetCoreWithdrawal: PropTypes.func.isRequired,
-    withdrawBitcoinClientSide: PropTypes.func.isRequired,
-    localIdentities: PropTypes.array.isRequired
+    withdrawBitcoinClientSide: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -53,18 +52,10 @@ class SendPage extends Component {
 
   componentWillMount() {
     this.props.resetCoreWithdrawal()
-    if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
-      this.updateAlert('danger', 'You have a pending name registration. Withdrawing bitcoin' +
-                       ' may interfere with that registration\'s bitcoin transactions.')
-    }
   }
 
   componentWillReceiveProps(nextProps) {
     this.displayCoreWalletWithdrawalAlerts(nextProps)
-    if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
-      this.updateAlert('danger', 'You have a pending name registration. Withdrawing bitcoin' +
-                       ' may interfere with that registration\'s bitcoin transactions.')
-    }
   }
 
   componentWillUnmount() {
