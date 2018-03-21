@@ -19,7 +19,6 @@ class IdentityItem extends Component {
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    coreDisabled: PropTypes.bool,
     profileUrl: PropTypes.string.isRequired
   }
 

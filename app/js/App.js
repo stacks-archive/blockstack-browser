@@ -114,7 +114,7 @@ class App extends Component {
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
-    } else if (isCoreEndpointDisabled()) {
+    } else if (isCoreEndpointDisabled(api.corePingUrl)) {
       logger.debug('Core-less build. Pretending to have a valid core connection.')
       api = Object.assign({}, api, { coreAPIPassword: 'PretendPasswordAPI' })
       this.props.updateApi(api)
@@ -142,17 +142,13 @@ class App extends Component {
       this.performSanityChecks()
     }
 
-    if (this.props.coreApiRunning) {
-      logger.debug('Sanity check: Core API endpoint is running!')
-    } else {
+    if (!this.props.coreApiRunning) {
       // TODO connect to future notification system here
       // alert('Sanity check: Error! Core API is NOT running!')
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 
-    if (this.props.coreApiPasswordValid) {
-      logger.debug('Sanity check: Core API password is valid!')
-    } else {
+    if (!this.props.coreApiPasswordValid) {
       logger.error('Sanity check: Error! Core API password is wrong!')
     }
     this.setState({
@@ -172,7 +168,6 @@ class App extends Component {
   }
 
   performSanityChecks() {
-    logger.trace('performSanityChecks')
     this.props.isCoreRunning(this.props.corePingUrl)
     this.props.isCoreApiPasswordValid(this.props.walletPaymentAddressUrl,
       this.props.coreAPIPassword)

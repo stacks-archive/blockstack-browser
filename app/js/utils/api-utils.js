@@ -83,7 +83,7 @@ export function setOrUnsetUrlsToRegTest(api, regTestMode) {
 }
 
 export function isCoreApiRunning(corePingUrl) {
-  if (isCoreEndpointDisabled()) {
+  if (isCoreEndpointDisabled(corePingUrl)) {
     return new Promise(resolve => {
       resolve(true)
     })
@@ -112,7 +112,7 @@ export function isCoreApiRunning(corePingUrl) {
 }
 
 export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
-  if (isCoreEndpointDisabled()) {
+  if (isCoreEndpointDisabled(corePasswordProtectedReadUrl)) {
     return new Promise(resolve => {
       resolve(true)
     })

@@ -88,8 +88,11 @@ class SendCorePage extends Component {
       this.setState({
         alerts: []
       })
-
-      if (withdrawal.inProgress) {
+      if (!this.state.inRegTestMode) {
+        this.updateAlert(
+          'danger', 'The core wallet is only used in regtest ' +
+            'mode. Are you trying to use regtest?')
+      } else if (withdrawal.inProgress) {
         this.updateAlert('success',
         `Preparing to send your balance to ${withdrawal.recipientAddress}...`)
       } else if (withdrawal.error !== null) {
