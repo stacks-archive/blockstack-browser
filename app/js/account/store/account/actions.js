@@ -281,12 +281,10 @@ function withdrawBitcoinClientSide(
         logger.trace(`Broadcast btc spend with tx hex: ${transactionHex}`)
         return myNet.broadcastTransaction(transactionHex)
       })
-      .then(() => {
-        dispatch(withdrawCoreBalanceSuccess())
-      })
+      .then(() => dispatch(withdrawCoreBalanceSuccess()))
       .catch((error) => {
         logger.error('withdrawBitcoinClientSide: error generating and broadcasting', error)
-        dispatch(withdrawCoreBalanceError(error))
+        return dispatch(withdrawCoreBalanceError(error))
       })
   }
 }
