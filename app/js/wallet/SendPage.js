@@ -187,6 +187,7 @@ class SendPage extends Component {
             type="number"
             required
             step={0.000001}
+            min="0"
           />
           <InputGroupSecondary
             data={this.state}
