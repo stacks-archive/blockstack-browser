@@ -6,6 +6,7 @@ class InputGroupSecondary extends Component {
     label: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     step: PropTypes.number,
+    min: PropTypes.string,
     name: PropTypes.string,
     data: PropTypes.object,
     onChange: PropTypes.func,
@@ -22,12 +23,16 @@ class InputGroupSecondary extends Component {
         type = "text",
         disabled = false,
         required = false,
-        step = 1
+        step = 1,
+        min = ""
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
     }
     if (this.props.step) {
       step = this.props.step
+    }
+    if (this.props.min) {
+      min = this.props.min
     }
     if (this.props.type) {
       type = this.props.type
@@ -72,6 +77,7 @@ class InputGroupSecondary extends Component {
               type={type}
               required={required}
               step={step}
+              min={min}
               placeholder={
                 this.props.placeholder ? this.props.placeholder : this.props.label
               }
