@@ -605,6 +605,27 @@ a.modal-body{color:#949494;font-size:0.8125rem;text-decoration:underline;line-he
 .username-search-result h4 {margin-top: 1em; margin-bottom: 0.5em;}
 
 
+.onboarding {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0 3px 3px #efefef;
+}
+
+.onboarding h3 {
+  text-align: center;
+}
+
+.onboarding-nav {
+  display: flex;
+  width: 100%;
+}
+
+.onboarding-nav__btn {
+  flex: 0 0 50%;
+}
+
+
 /* Media queries */
 
 /* Extra small devices (phones, less than 768px) */

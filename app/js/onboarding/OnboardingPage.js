@@ -1,55 +1,30 @@
-import './utils/proxy-fetch'
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { SettingsActions } from './account/store/settings'
-import { AppsActions } from './store/apps'
-import WelcomeModal from './welcome/WelcomeModal'
-import { getCoreAPIPasswordFromURL, getLogServerPortFromURL,
-        getRegTestModeFromURL } from './utils/api-utils'
-import SupportButton from './components/SupportButton'
-import { SanityActions }    from './store/sanity'
-import { CURRENT_VERSION } from './store/reducers'
-import { isCoreEndpointDisabled } from './utils/window-utils'
-import { openInNewTab } from './utils'
+import Onboarding from './Onboarding'
 import Modal from 'react-modal'
-
 import log4js from 'log4js'
+import { bindActionCreators } from 'redux'
+import { SettingsActions } from '../account/store/settings'
+import { AppsActions } from '../store/apps'
+import { SanityActions } from '../store/sanity'
+import { CURRENT_VERSION } from '../store/reducers'
+import '../utils/proxy-fetch'
+import {
+  getCoreAPIPasswordFromURL,
+  getLogServerPortFromURL,
+  getRegTestModeFromURL
+} from '../utils/api-utils'
+import { isCoreEndpointDisabled } from '../utils/window-utils'
+import { openInNewTab } from '../utils'
 
 const logger = log4js.getLogger('App.js')
-
 export const BLOCKSTACK_STATE_VERSION_KEY = 'BLOCKSTACK_STATE_VERSION'
 
-function mapStateToProps(state) {
-  return {
-    localIdentities: state.profiles.identity.localIdentities,
-    defaultIdentity: state.profiles.identity.default,
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    api: state.settings.api,
-    corePingUrl: state.settings.api.corePingUrl,
-    coreApiRunning: state.sanity.coreApiRunning,
-    coreApiPasswordValid: state.sanity.coreApiPasswordValid,
-    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword,
-    instanceIdentifier: state.apps.instanceIdentifier
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    updateApi: SettingsActions.updateApi,
-    isCoreRunning: SanityActions.isCoreRunning,
-    isCoreApiPasswordValid: SanityActions.isCoreApiPasswordValid,
-    generateInstanceIdentifier: AppsActions.generateInstanceIdentifier
-  }, dispatch)
-}
-
-class App extends Component {
+class OnboardingPage extends Component {
   static propTypes = {
     localIdentities: PropTypes.array.isRequired,
     defaultIdentity: PropTypes.number.isRequired,
-    children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
@@ -69,7 +44,6 @@ class App extends Component {
   constructor(props) {
     super(props)
     let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
-    console.log(this.props)
 
     if (!existingVersion) {
       logger.debug(`No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`)
@@ -179,24 +153,40 @@ class App extends Component {
   render() {
     return (
       <div className="body-main">
-        <div className="wrapper footer-padding">
-          {this.props.children}
-        </div>
-        <SupportButton onClick={this.onSupportClick} />
+        <Onboarding
+          accountCreated={this.state.accountCreated}
+          storageConnected={this.state.storageConnected}
+          coreConnected={this.state.coreConnected}
+          closeModal={this.closeModal}
+          needToUpdate={this.state.needToUpdate}
+          router={this.props.router}
+          onComplete={() => { console.log('ONBOARDING COMPLETED') }}
+        />
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
-
-/*
-{
-  (() => {
-    if (process.env.NODE_ENV !== 'production') {
-      //const DevTools = require('./components/DevTools')
-      //return <DevTools />
-    }
-  })()
+function mapStateToProps(state) {
+  return {
+    localIdentities: state.profiles.identity.localIdentities,
+    defaultIdentity: state.profiles.identity.default,
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    api: state.settings.api,
+    corePingUrl: state.settings.api.corePingUrl,
+    coreApiRunning: state.sanity.coreApiRunning,
+    coreApiPasswordValid: state.sanity.coreApiPasswordValid,
+    walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
+    coreAPIPassword: state.settings.api.coreAPIPassword,
+    instanceIdentifier: state.apps.instanceIdentifier
+  }
 }
-*/
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  updateApi: SettingsActions.updateApi,
+  isCoreRunning: SanityActions.isCoreRunning,
+  isCoreApiPasswordValid: SanityActions.isCoreApiPasswordValid,
+  generateInstanceIdentifier: AppsActions.generateInstanceIdentifier
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnboardingPage)

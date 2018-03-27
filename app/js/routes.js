@@ -37,6 +37,8 @@ import SendCorePage             from './wallet/SendCorePage'
 
 import AuthPage             from './auth/AuthPage'
 
+import OnboardingPage         from './onboarding/OnboardingPage'
+
 import NotFoundPage         from './errors/NotFoundPage'
 
 export default (
@@ -80,6 +82,7 @@ export default (
       </Route>
 
       <Route path="/auth" component={AuthPage} />
+      <Route path="/onboarding" component={OnboardingPage} />
       <Route path="/*" component={NotFoundPage} />
     </Route>
   </Router>
