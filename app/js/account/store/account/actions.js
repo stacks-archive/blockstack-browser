@@ -154,35 +154,26 @@ function emailNotifications(email, optIn) {
   logger.debug(`emailNotifications: ${email}`)
   return dispatch => {
     dispatch(promptedForEmail(email))
-    const requestHeaders = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-
-    const requestBody = {
-      email
-    }
 
     const options = {
       method: 'POST',
-      headers: requestHeaders,
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify({ email }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
     }
-    const emailNotificationsUrl =
-      'https://blockstack-portal-emailer.appartisan.com/notifications?mailingListOptIn='
-    let url = `${emailNotificationsUrl}false`
-    if (optIn === true) {
-      logger.debug('emailNotifications: user opted-in to mailing list')
-      url = `${emailNotificationsUrl}true`
-    }
+
+    const url = `
+      https://blockstack-portal-emailer.appartisan.com/notifications?mailingListOptIn=${optIn ? 'true' : 'false'}
+    `
+
     return fetch(url, options)
       .then(
         () => {
           logger.debug(`emailNotifications: registered ${email} for notifications`)
         },
-        error => {
-          logger.error('emailNotifications: error', error)
-        }
+        error => { logger.error('emailNotifications: error', error) }
       )
       .catch(error => {
         logger.error('emailNotifications: error', error)

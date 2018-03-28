@@ -1,22 +1,31 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Navigation from '../components/Navigation'
-import { Password, Email } from './'
 
-const Username = ({ updateView }) => (
+const Username = ({ previous, next, handleValueChange, email, username }) => (
   <section>
     <h3>
       Username
     </h3>
+    <input
+      type="text"
+      name="username"
+      value={username}
+      onChange={handleValueChange}
+    />
     <Navigation
-      previous={() => updateView(Email)}
-      next={() => updateView(Password)}
+      previous={previous}
+      next={next}
     />
   </section>
 )
 
 Username.propTypes = {
-  updateView: PropTypes.func.isRequired
+  previous: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
+  handleValueChange: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired
 }
 
 export default Username

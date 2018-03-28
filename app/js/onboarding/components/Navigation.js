@@ -1,5 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
+
+const NavBlock = styled.div`
+  display: flex;
+  width: 100%;
+`
+const NavButton = styled.button`
+  flex: 0 0 50%;
+`
 
 const Navigation = props => {
   const {
@@ -10,10 +19,10 @@ const Navigation = props => {
   } = props
 
   return (
-    <div className="onboarding-nav">
-      <button className="onboarding-nav__btn" onClick={previous}>{previousLabel}</button>
-      <button className="onboarding-nav__btn" onClick={next}>{nextLabel}</button>
-    </div>
+    <NavBlock>
+      <NavButton onClick={previous}>{previousLabel}</NavButton>
+      <NavButton onClick={next}>{nextLabel}</NavButton>
+    </NavBlock>
   )
 }
 

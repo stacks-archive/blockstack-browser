@@ -175,6 +175,7 @@
     "redux-thunk": "^2.2.0",
     "reflux": "^5.0.3",
     "round-to": "^2.0.0",
+    "styled-components": "^3.2.3",
     "triplesec": "^3.0.25",
     "zone-file": "^0.2.2",
     "zxcvbn": "^4.4.2"

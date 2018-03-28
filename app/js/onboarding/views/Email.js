@@ -2,17 +2,25 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Username } from './'
 
-const Email = ({ updateView }) => (
+const Email = ({ next, handleValueChange, email }) => (
   <section>
     <h3>
-      Email
+      What is your email?
     </h3>
-    <button onClick={() => updateView(Username)}>Continue</button>
+    <input
+      type="text"
+      name="email"
+      value={email}
+      onChange={handleValueChange}
+    />
+    <button onClick={next}>Continue</button>
   </section>
 )
 
 Email.propTypes = {
-  updateView: PropTypes.func.isRequired
+  next: PropTypes.func.isRequired,
+  handleValueChange: PropTypes.func.isRequired,
+  email: PropTypes.string.isRequired
 }
 
 export default Email

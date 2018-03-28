@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Onboarding from './Onboarding'
-import Modal from 'react-modal'
 import log4js from 'log4js'
 import { bindActionCreators } from 'redux'
 import { SettingsActions } from '../account/store/settings'
@@ -10,12 +9,6 @@ import { AppsActions } from '../store/apps'
 import { SanityActions } from '../store/sanity'
 import { CURRENT_VERSION } from '../store/reducers'
 import '../utils/proxy-fetch'
-import {
-  getCoreAPIPasswordFromURL,
-  getLogServerPortFromURL,
-  getRegTestModeFromURL
-} from '../utils/api-utils'
-import { isCoreEndpointDisabled } from '../utils/window-utils'
 import { openInNewTab } from '../utils'
 
 const logger = log4js.getLogger('App.js')
@@ -61,50 +54,11 @@ class OnboardingPage extends Component {
     }
 
     this.state = {
-      accountCreated: !!this.props.encryptedBackupPhrase,
-      storageConnected: !!this.props.api.storageConnected,
-      coreConnected: !!this.props.api.coreAPIPassword,
-      password: '',
       currentPath: '',
       needToUpdate
     }
 
-    this.closeModal = this.closeModal.bind(this)
     this.performSanityChecks = this.performSanityChecks.bind(this)
-  }
-
-  componentWillMount() {
-    logger.trace('componentWillMount')
-    const coreAPIPassword = getCoreAPIPasswordFromURL()
-    const logServerPort = getLogServerPortFromURL()
-    const regTestMode = getRegTestModeFromURL()
-    let api = this.props.api
-
-    // https://github.com/reactjs/react-modal/issues/133
-    Modal.setAppElement('body')
-
-    if (coreAPIPassword !== null) {
-      api = Object.assign({}, api, { coreAPIPassword })
-      this.props.updateApi(api)
-    } else if (isCoreEndpointDisabled()) {
-      logger.debug('Core-less build. Pretending to have a valid core connection.')
-      api = Object.assign({}, api, { coreAPIPassword: 'PretendPasswordAPI' })
-      this.props.updateApi(api)
-    }
-
-    if (logServerPort !== null) {
-      api = Object.assign({}, api, { logServerPort })
-      this.props.updateApi(api)
-    }
-
-    if (regTestMode !== null) {
-      api = Object.assign({}, api, { regTestMode })
-      this.props.updateApi(api)
-    }
-
-    if (!this.props.instanceIdentifier && this.props.localIdentities.length > 0) {
-      this.props.generateInstanceIdentifier()
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -127,20 +81,14 @@ class OnboardingPage extends Component {
     } else {
       logger.error('Sanity check: Error! Core API password is wrong!')
     }
+
     this.setState({
-      accountCreated: !!nextProps.encryptedBackupPhrase,
-      storageConnected: !!nextProps.api.storageConnected,
-      coreConnected: !!nextProps.api.coreAPIPassword,
       currentPath: nextPath
     })
   }
 
   onSupportClick = () => {
     openInNewTab('https://forum.blockstack.org/t/frequently-ask-questions/2123')
-  }
-
-  closeModal() {
-    this.setState({ modalIsOpen: false })
   }
 
   performSanityChecks() {
@@ -151,16 +99,19 @@ class OnboardingPage extends Component {
   }
 
   render() {
+    const {
+      encryptedBackupPhrase,
+      api: { storageConnected, coreAPIPassword }
+    } = this.props
+
     return (
       <div className="body-main">
         <Onboarding
-          accountCreated={this.state.accountCreated}
-          storageConnected={this.state.storageConnected}
-          coreConnected={this.state.coreConnected}
-          closeModal={this.closeModal}
+          accountCreated={!!encryptedBackupPhrase}
+          storageConnected={!!storageConnected}
+          coreConnected={!!coreAPIPassword}
           needToUpdate={this.state.needToUpdate}
           router={this.props.router}
-          onComplete={() => { console.log('ONBOARDING COMPLETED') }}
         />
       </div>
     )
