@@ -1,42 +1,35 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import PanelShell from './components/PanelShell'
-import {
-  Email,
-  Username,
-  Password,
-  Hooray,
-  Auth,
-  KeyInfo,
-  UnlockKey,
-  Key,
-  KeyConfirm,
-  KeyComplete,
-  RecoveryOptions
-} from './views'
+import { browserHistory } from 'react-router'
+import PanelShell from '../components/PanelShell'
+import ProgressBar from '../components/ProgressBar'
+import Show from '../components/Show'
+import { Email, Username, Password, Hooray } from './views'
 
-const VIEWS = {
-  EMAIL: 'EMAIL',
-  USERNAME: 'USERNAME',
-  PASSWORD: 'PASSWORD',
-  HOORAY: 'HOORAY',
-  AUTH: 'AUTH',
-  KEY_INFO: 'KEY_INFO',
-  UNLOCK_KEY: 'UNLOCK_KEY',
-  KEY: 'KEY',
-  KEY_CONFIRM: 'KEY_CONFIRM',
-  KEY_COMPLETE: 'KEY_COMPLETE',
-  RECOVERY_OPTIONS: 'RECOVERY_OPTIONS'
-}
+const VIEWS = ['EMAIL', 'USERNAME', 'PASSWORD', 'HOORAY']
 
-const Show = ({ children, when }) => when && children
+const SAMPLE_SEED = [
+  'CARROT',
+  'FIGARO',
+  'DESOLATE',
+  'MEANDER',
+  'FUNNY',
+  'LAWNCHAIR',
+  'MEXICO',
+  'SOLSTICE',
+  'CABIN',
+  'BOTTLE',
+  'MARINADE',
+  'FLYING'
+]
 
 export default class Onboarding extends Component {
   state = {
     email: '',
     password: '',
     username: '',
-    view: VIEWS.EMAIL
+    seed: SAMPLE_SEED,
+    view: 0
   }
 
   handleValueChange = key => ({ target }) => {
@@ -50,36 +43,39 @@ export default class Onboarding extends Component {
   render() {
     const { email, password, username, view } = this.state
 
+    const percentProgress = view / VIEWS.length * 100
+
     return (
       <PanelShell>
-        <Show when={view === VIEWS.EMAIL}>
+        <ProgressBar percent={percentProgress} />
+        <Show when={view === 0}>
           <Email
-            next={this.updateView(VIEWS.USERNAME)}
+            next={this.updateView(1)}
             email={email}
             handleValueChange={this.handleValueChange('email')}
           />
         </Show>
-        <Show when={view === VIEWS.USERNAME}>
+        <Show when={view === 1}>
           <Username
-            previous={this.updateView(VIEWS.EMAIL)}
-            next={this.updateView(VIEWS.PASSWORD)}
+            previous={this.updateView(0)}
+            next={this.updateView(2)}
             email={email}
             username={username}
             handleValueChange={this.handleValueChange('username')}
           />
         </Show>
-        <Show when={view === VIEWS.PASSWORD}>
+        <Show when={view === 2}>
           <Password
-            previous={this.updateView(VIEWS.USERNAME)}
-            next={this.updateView(VIEWS.HOORAY)}
+            previous={this.updateView(1)}
+            next={this.updateView(3)}
             password={password}
             handleValueChange={this.handleValueChange('password')}
           />
         </Show>
-        <Show when={view === VIEWS.HOORAY}>
+        <Show when={view === 3}>
           <Hooray
             goToApp={() => {}}
-            goToRecovery={this.updateView(VIEWS.KEY_INFO)}
+            goToRecovery={() => browserHistory.push('/seed')}
             email={email}
             username={username}
           />

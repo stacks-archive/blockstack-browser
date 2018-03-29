@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Username } from './'
 
 const Email = ({ next, handleValueChange, email }) => (
   <section>
