@@ -312,7 +312,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 os_log("Stopping log server...", log: log, type: .debug)
                 portalLogServer?.server.stop()
                 let walletPassword = createOrRetrieveCoreWalletPassword()
-                portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
                 os_log("Restarting log server with new API password", log: self.log, type: .debug)
                 self.portalLogServer = PortalLogServer.init(port: UInt16(self.logServerPort), password: walletPassword)
 
