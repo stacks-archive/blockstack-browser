@@ -142,7 +142,7 @@ export function decryptMasterKeychain(password, encryptedBackupPhrase) {
       },
       error => {
         logger.error('decryptMasterKeychain: error', error)
-        reject('Incorrect password')
+        reject(new Error('Incorrect password'))
       }
     )
   })

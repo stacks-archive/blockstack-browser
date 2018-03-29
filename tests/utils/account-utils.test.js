@@ -3,14 +3,16 @@ import bip39 from 'bip39'
 import {
   getIdentityPrivateKeychain,
   getIdentityOwnerAddressNode,
-  findAddressIndex
+  findAddressIndex,
+  decryptMasterKeychain,
+  encrypt
  } from '../../app/js/utils'
 
 let masterKeychain = null
+const backupPhrase = 'sound idle panel often situate develop unit text design antenna vendor screen opinion balcony share trigger accuse scatter visa uniform brass update opinion media'
 
 describe('account-utils', () => {
   beforeEach(() => {
-    const backupPhrase = 'sound idle panel often situate develop unit text design antenna vendor screen opinion balcony share trigger accuse scatter visa uniform brass update opinion media'
     const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
     masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
   })
@@ -60,6 +62,37 @@ describe('account-utils', () => {
       const actualResult = findAddressIndex(address, identityAddresses)
       const expectedResult = null
       assert.equal(actualResult, expectedResult)
+    })
+  })
+
+  describe('decryptMasterKeychain', () => {
+    let encryptedBackupPhrase = null
+    const password = 'password123'
+
+    beforeEach((done) => {
+      encrypt(new Buffer(backupPhrase), password).then(ciphertextBuffer => {
+        encryptedBackupPhrase = ciphertextBuffer.toString('hex')
+        done()
+      })
+    })
+
+    afterEach(() => {
+      encryptedBackupPhrase = null
+    })
+
+    it('should return the decrypted master keychain', (done) => {
+      decryptMasterKeychain('password123', encryptedBackupPhrase).then((keychain) => {
+        assert.equal(masterKeychain.getIdentifier().toString('hex'), keychain.getIdentifier().toString('hex'))
+        done()
+      })
+    })
+
+    it('should return an error object if something goes wrong', (done) => {
+      decryptMasterKeychain('badpass', encryptedBackupPhrase).catch((err) => {
+        assert.isTrue(err instanceof Error)
+        assert.equal(err.message, 'Incorrect password')
+        done()
+      })
     })
   })
 })
