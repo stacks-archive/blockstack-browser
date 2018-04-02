@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { Link } from 'react-router'
 
-import Navbar from '../components/Navbar'
+import Navbar from '@components/Navbar'
 
 const NotFoundPage = (props) =>
 (

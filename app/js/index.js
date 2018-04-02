@@ -4,7 +4,8 @@ import { Provider }                 from 'react-redux'
 
 import routes                       from './routes'
 import configureDataStore           from './store/configure/index'
-
+import { ThemeProvider } from 'styled-components'
+import theme from '@styled/theme'
 
 import log4js  from 'log4js'
 import { authorizationHeaderValue } from './utils/api-utils'
@@ -39,7 +40,9 @@ if (process.env.NODE_ENV !== 'production') {
 
 render(
   <Provider store={store}>
-    {routes}
+    <ThemeProvider theme={theme}>
+      {routes}
+    </ThemeProvider>
   </Provider>,
   document.getElementById('app')
 )

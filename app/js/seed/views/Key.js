@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Navigation from '../../components/Navigation'
+import Navigation from '@components/Navigation'
 
 const Key = ({ next, previous }) => (
   <section>

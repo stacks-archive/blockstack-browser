@@ -6,12 +6,12 @@ import {
   decryptMasterKeychain,
   getBitcoinPrivateKeychain,
   getBitcoinAddressNode
-} from '../utils'
-import { isCoreEndpointDisabled, isWindowsBuild } from '../utils/window-utils'
+} from '@utils'
+import { isCoreEndpointDisabled, isWindowsBuild } from '@utils/window-utils'
 import { AccountActions } from '../account/store/account'
 
-import Alert from '../components/Alert'
-import InputGroupSecondary from '../components/InputGroupSecondary'
+import Alert from '@components/Alert'
+import InputGroupSecondary from '@components/InputGroupSecondary'
 import Balance from './components/Balance'
 
 function mapStateToProps(state) {

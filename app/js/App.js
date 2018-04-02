@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { SettingsActions } from './account/store/settings'
 import { AppsActions } from './store/apps'
-import WelcomeModal from './welcome/WelcomeModal'
 import { getCoreAPIPasswordFromURL, getLogServerPortFromURL,
         getRegTestModeFromURL } from './utils/api-utils'
 import SupportButton from './components/SupportButton'

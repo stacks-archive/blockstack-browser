@@ -12,8 +12,8 @@ import {
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode,
   getInsightUrl
-} from '../../../utils'
-import { isCoreEndpointDisabled } from '../../../utils/window-utils'
+} from '@utils'
+import { isCoreEndpointDisabled } from '@utils/window-utils'
 import { transactions, config, network } from 'blockstack'
 
 import roundTo from 'round-to'

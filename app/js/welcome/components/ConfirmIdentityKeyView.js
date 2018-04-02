@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import InputGroup from '../../components/InputGroup'
+import InputGroup from '@components/InputGroup'
 
 
 class ConfirmIdentityKeyView extends Component {

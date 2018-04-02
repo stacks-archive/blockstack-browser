@@ -10,18 +10,18 @@ import {
   makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp,
   getAppBucketUrl, isLaterVersion
 } from 'blockstack'
-import Image from '../../components/Image'
-import { AppsNode } from '../../utils/account-utils'
-import { fetchProfileLocations } from '../../utils/profile-utils'
-import { setCoreStorageConfig } from '../../utils/api-utils'
-import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils'
-import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
+import Image from '@components/Image'
+import { AppsNode } from '@utils/account-utils'
+import { fetchProfileLocations } from '@utils/profile-utils'
+import { setCoreStorageConfig } from '@utils/api-utils'
+import { isCoreEndpointDisabled, isWindowsBuild } from '@utils/window-utils'
+import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
-import { validateScopes, appRequestSupportsDirectHub } from '../utils'
-import ToolTip from '../../components/ToolTip'
+import ToolTip from '@components/ToolTip'
 import log4js from 'log4js'
 import { uploadProfile } from '../../account/utils'
-import { signProfileForUpload } from '../../utils'
+import { signProfileForUpload } from '@utils'
+import { validateScopes, appRequestSupportsDirectHub } from '../utils'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
 

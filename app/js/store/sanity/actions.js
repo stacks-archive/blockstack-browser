@@ -1,7 +1,7 @@
 import * as types from './types'
 import log4js from 'log4js'
 
-import { isApiPasswordValid, isCoreApiRunning } from '../../utils/api-utils'
+import { isApiPasswordValid, isCoreApiRunning } from '@utils/api-utils'
 
 const logger = log4js.getLogger('store/sanity/actions.js')
 

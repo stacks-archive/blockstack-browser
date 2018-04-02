@@ -1,9 +1,7 @@
 {
   "extends": "airbnb",
   "parser": "babel-eslint",
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "globals": {
     "proxyFetch": true
   },
@@ -14,7 +12,7 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true,
+    "node": true
   },
   "rules": {
     "comma-dangle": ["error", "never"],
@@ -47,10 +45,13 @@
   "settings": {
     "react": {
       "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
-      "pragma": "React",  // Pragma to use, default to "React"
-      "version": "15.0",// React version, default to the latest React stable release
+      "pragma": "React", // Pragma to use, default to "React"
+      "version": "15.0", // React version, default to the latest React stable release
       "flowVersion": "0.53" // Flow version
     },
-    "propWrapperFunctions": [ "forbidExtraProps" ] // The names of any functions used to wrap the propTypes object, such as `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
+    "import/resolver": {
+      "babel-module": {}
+    },
+    "propWrapperFunctions": ["forbidExtraProps"] // The names of any functions used to wrap the propTypes object, such as `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
   }
 }

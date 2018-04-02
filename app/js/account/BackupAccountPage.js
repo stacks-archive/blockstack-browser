@@ -3,9 +3,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import Alert from '../components/Alert'
-import InputGroup from '../components/InputGroup'
-import { decrypt } from '../utils'
+import Alert from '@components/Alert'
+import InputGroup from '@components/InputGroup'
+import { decrypt } from '@utils'
 import log4js from 'log4js'
 
 import { AccountActions } from './store/account'

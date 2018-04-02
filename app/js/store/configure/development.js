@@ -3,7 +3,7 @@ import persistState from 'redux-localstorage'
 import thunk from 'redux-thunk'
 
 import RootReducer from '../reducers'
-import DevTools from '../../components/DevTools'
+import DevTools from '@components/DevTools'
 
 const finalCreateStore = compose(
   applyMiddleware(thunk),

@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import InputGroup from '../components/InputGroup'
-import SaveButton from '../components/SaveButton'
+import InputGroup from '@components/InputGroup'
+import SaveButton from '@components/SaveButton'
 import { SettingsActions } from './store/settings'
 import log4js from 'log4js'
 

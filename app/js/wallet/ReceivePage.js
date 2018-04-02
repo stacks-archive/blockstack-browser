@@ -7,7 +7,7 @@ import { QRCode } from 'react-qr-svg'
 import { AccountActions } from '../account/store/account'
 import Balance            from './components/Balance'
 
-import { isCoreEndpointDisabled, isWindowsBuild } from '../utils/window-utils'
+import { isCoreEndpointDisabled, isWindowsBuild } from '@utils/window-utils'
 
 function mapStateToProps(state) {
   return {

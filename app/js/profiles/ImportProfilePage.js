@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import PageHeader from '../components/PageHeader'
+import PageHeader from '@components/PageHeader'
 import { AccountActions } from '../account/store/account'
 
 function mapStateToProps(state) {

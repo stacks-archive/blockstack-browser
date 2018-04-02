@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import ToolTip from '../../components/ToolTip'
-import Image from '../../components/Image'
+import ToolTip from '@components/ToolTip'
+import Image from '@components/Image'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
 
 import log4js from 'log4js'

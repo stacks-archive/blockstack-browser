@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import PanelShell from '../components/PanelShell'
-import Show from '../components/Show'
+import PanelShell from '@styled/onboarding/PanelShell'
+import Show from '@components/Show'
 import { KeyInfo, UnlockKey, Key, KeyConfirm, KeyComplete } from './views'
 
 const VIEWS = [
@@ -26,7 +26,7 @@ export default class Seed extends Component {
 
   updateView = view => () => this.setState({ view })
 
-  render () {
+  render() {
     const { password, view } = this.state
 
     return (

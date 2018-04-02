@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { browserHistory } from 'react-router'
-import PanelShell from '../components/PanelShell'
-import ProgressBar from '../components/ProgressBar'
-import Show from '../components/Show'
+import PanelShell from '@styled/onboarding/PanelShell'
+import ProgressBar from '@components/ProgressBar'
+import Show from '@components/Show'
 import { Email, Username, Password, Hooray } from './views'
 
 const VIEWS = ['EMAIL', 'USERNAME', 'PASSWORD', 'HOORAY']

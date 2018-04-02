@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import InputGroup from '../components/InputGroup'
-import PageHeader from '../components/PageHeader'
+import InputGroup from '@components/InputGroup'
+import PageHeader from '@components/PageHeader'
 
 class ExportPage extends Component {
   constructor() {

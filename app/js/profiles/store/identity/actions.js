@@ -10,12 +10,12 @@ import {
   getIdentityPrivateKeychain,
   getIdentityOwnerAddressNode,
   authorizationHeaderValue
-} from '../../../utils/index'
+} from '@utils/index'
 import { DEFAULT_PROFILE,
-  fetchProfileLocations } from '../../../utils/profile-utils'
-import { calculateTrustLevel } from '../../../utils/account-utils'
+  fetchProfileLocations } from '@utils/profile-utils'
+import { calculateTrustLevel } from '@utils/account-utils'
 import { AccountActions } from '../../../account/store/account'
-import { isWebAppBuild } from '../../../utils/window-utils'
+import { isWebAppBuild } from '@utils/window-utils'
 
 
 import type { Dispatch } from 'redux'

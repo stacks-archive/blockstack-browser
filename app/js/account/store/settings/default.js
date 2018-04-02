@@ -1,5 +1,5 @@
 import { BLOCKSTACK_INC } from '../../../account/utils/index'
-import { isCoreEndpointDisabled } from '../../../utils/window-utils'
+import { isCoreEndpointDisabled } from '@utils/window-utils'
 
 export const REGTEST_CORE_API_PASSWORD = 'blockstack_integration_test_api_password'
 export const REGTEST_CORE_INSIGHT_API_URL = 'http://localhost:6270/insight-api/addr/{address}'

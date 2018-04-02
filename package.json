@@ -71,8 +71,9 @@
     "enzyme": "^3.3.0",
     "eslint": "^2.10.2",
     "eslint-config-airbnb": "^9.0.1",
+    "eslint-import-resolver-babel-module": "^4.0.0",
     "eslint-plugin-flowtype": "^2.39.1",
-    "eslint-plugin-import": "^1.8.1",
+    "eslint-plugin-import": "^2.10.0",
     "eslint-plugin-jsx-a11y": "^1.2.2",
     "eslint-plugin-react": "^5.1.1",
     "express": "^4.13.4",
@@ -177,12 +178,13 @@
     "reflux": "^5.0.3",
     "round-to": "^2.0.0",
     "styled-components": "^3.2.3",
+    "styled-system": "^2.2.1",
     "triplesec": "^3.0.25",
     "zone-file": "^0.2.2",
     "zxcvbn": "^4.4.2"
   },
-  "engines": {
-    "node": ">=6 <8",
-    "npm": ">=5"
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
   }
 }

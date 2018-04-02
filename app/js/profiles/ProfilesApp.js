@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-import HomeButton from '../components/HomeButton'
+import HomeButton from '@components/HomeButton'
 import SearchBar from './components/SearchBar'
-import Navbar from '../components/Navbar'
+import Navbar from '@components/Navbar'
 
 
 function mapStateToProps(state) {

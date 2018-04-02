@@ -2,10 +2,9 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import InputGroup from '../../components/InputGroup'
+import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
-import { openInNewTab } from '../../utils'
-import { getWebAccountTypes } from '../../utils'
+import { openInNewTab, getWebAccountTypes } from '@utils'
 
 const helpPages = {
   twitter: 'https://forum.blockstack.org/t/twitter-verification-process/2143',
@@ -167,7 +166,7 @@ class EditSocialAccount extends Component {
       let accountServiceName = webAccountType.label
         return (
           <div>
-            <div className={`profile-account ${verifiedClass}`} 
+            <div className={`profile-account ${verifiedClass}`}
               onClick={this.handleClick}>
               <div className="heading m-b-30">
                 <i className={`fa fa-fw fa-lg ${this.getIconClass()}`} />
@@ -176,20 +175,20 @@ class EditSocialAccount extends Component {
 
               <div>
                 <p>
-                  <span className="font-weight-bold">Step 1: </span> 
+                  <span className="font-weight-bold">Step 1: </span>
                   Enter your <span className="text-capitalize">{this.props.service}</span> username.
                 </p>
 
-                <InputGroup 
+                <InputGroup
                   key="input-group-identifier"
-                  name="identifier" 
+                  name="identifier"
                   placeholder="Username"
                   data={this.state}
-                  stopClickPropagation={true} 
-                  onChange={this.onIdentifierChange} 
+                  stopClickPropagation={true}
+                  onChange={this.onIdentifierChange}
                   addOn={inputAddOn}
                 />
-              
+
                 <VerificationInfo
                   service={this.props.service}
                   ownerAddress={this.props.ownerAddress}
@@ -197,19 +196,19 @@ class EditSocialAccount extends Component {
                   proofUrl={this.state.proofUrl}
                   onProofUrlChange={this.onProofUrlChange}
                   onPostVerificationButtonClick={(e) => {
-                    this.props.onPostVerificationButtonClick(e, this.props.service, this.state.identifier)} 
+                    this.props.onPostVerificationButtonClick(e, this.props.service, this.state.identifier)}
                   }
                   />
               </div>
             </div>
-            <button 
-              className="btn btn-verify btn-block m-t-15" 
-              onClick={e => this.props.onVerifyButtonClick(this.props.service, 
+            <button
+              className="btn btn-verify btn-block m-t-15"
+              onClick={e => this.props.onVerifyButtonClick(this.props.service,
                 this.state.identifier, this.state.proofUrl)}>
               Verify
             </button>
             <div className="text-center">
-              {helpPages.hasOwnProperty(this.props.service) && 
+              {helpPages.hasOwnProperty(this.props.service) &&
                 <button className="btn btn-link btn-link-small p-t-10" onClick={this.showHelp}>Need help?</button>
               }
             </div>

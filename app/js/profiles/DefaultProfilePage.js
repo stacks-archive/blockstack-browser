@@ -5,15 +5,15 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
 import Modal from 'react-modal'
-import Image from '../components/Image'
+import Image from '@components/Image'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
-import SecondaryNavBar from '../components/SecondaryNavBar'
+import SecondaryNavBar from '@components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
 import ProfileCompletion from './components/ProfileCompletion'
-import InputGroup from '../components/InputGroup'
-import ToolTip from '../components/ToolTip'
+import InputGroup from '@components/InputGroup'
+import ToolTip from '@components/ToolTip'
 import EditSocialAccount from './components/EditSocialAccount'
 import EditAccount from './components/EditAccount'
 import { uploadProfile, uploadPhoto } from '../account/utils'
@@ -22,10 +22,10 @@ import {
   isMobile,
   signProfileForUpload,
   calculateProfileCompleteness
-} from '../utils'
+} from '@utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
-import { isCoreEndpointDisabled } from '../utils/window-utils'
+import { isCoreEndpointDisabled } from '@utils/window-utils'
 
 import log4js from 'log4js'
 
