@@ -30,16 +30,16 @@ const apps = {
       storageRequired: true,
       status: 'in_progress'
     }, {
-      name: 'Isotach',
-      displayName: 'Isotach',
+      name: 'Diffuse',
+      displayName: 'Diffuse',
       description: 'A music player which connects to your cloud/distributed storage.',
       version: '1.0.0',
       appIcon: {
-        small: 'app-icon-isotach-256x256.png',
-        large: 'app-icon-isotach-1024x1024.png'
+        small: 'app-icon-diffuse-256x256.png',
+        large: 'app-icon-diffuse-512x512.png'
       },
-      website: 'https://www.isotach.io',
-      launchLink: 'https://www.isotach.io',
+      website: 'https://www.diffuse.sh',
+      launchLink: 'https://www.diffuse.sh',
       developer: 'Steven Vandevelde',
       storageRequired: true,
       status: 'in_progress'
