@@ -1,23 +1,85 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Navigation from '@components/Navigation'
+import { Formik, FastField, Form } from 'formik'
+import { PanelCard } from '@components/PanelShell'
+import { AccountRemoveIcon } from 'mdi-react'
+import { Button } from '@components/styled/Button'
 
-const Username = ({ previous, next, handleValueChange, username }) => (
-  <section>
-    <h3>
-      Username
-    </h3>
-    <input
-      type="text"
-      name="username"
-      value={username}
-      onChange={handleValueChange}
-    />
-    <Navigation
-      previous={previous}
-      next={next}
-    />
-  </section>
+const getUsernameStatus = async (username, sponsoredName = '.personal.id') => {
+  if (!username) {
+    return null
+  }
+  const res = await fetch(
+    `https://core.blockstack.org/v1/names/${username}${sponsoredName}`
+  )
+  const user = await res.json()
+
+  return user.status
+}
+
+const validate = values =>
+  getUsernameStatus(values.username).then(status => {
+    const errors = {}
+    if (status !== 'available') {
+      errors.username =
+        'Sorry, that username has been registered already. Try another.'
+    }
+
+    if (!values.username) {
+      errors.username = 'A username is required'
+    }
+
+    if (Object.keys(errors).length) {
+      throw errors
+    }
+  })
+
+const Username = ({ next, handleValueChange, username, previous }) => (
+  <PanelCard
+    title="Create your Blockstack ID"
+    icon="https://file-byvymyglhi.now.sh/"
+  >
+    <Navigation previous={previous} next={next} />
+    <Fragment>
+      <Formik
+        initialValues={{
+          username
+        }}
+        validate={validate}
+        onSubmit={values => {
+          handleValueChange(values.username)
+          next()
+        }}
+        validateOnBlur={false}
+        validateOnChange={false}
+        render={({ errors, touched }) => (
+          <Form>
+            <label htmlFor="username">Username</label>
+            <PanelCard.InputOverlay text=".blockstack.id">
+              <FastField name="username" type="text" autocomplete="off" />
+            </PanelCard.InputOverlay>
+            {errors.username &&
+              touched.username && (
+                <PanelCard.Error
+                  icon={<AccountRemoveIcon />}
+                  message={errors.username}
+                />
+              )}
+            <Button type="submit" primary>
+              Continue
+            </Button>
+          </Form>
+        )}
+      />
+      <PanelCard.Section pt={3} lineHeight={3}>
+        <p>
+          Your ID for the decentralized internet. We simplify data ownership and
+          give you back control. <a href="#">Learn more.</a>
+        </p>
+      </PanelCard.Section>
+    </Fragment>
+  </PanelCard>
 )
 
 Username.propTypes = {

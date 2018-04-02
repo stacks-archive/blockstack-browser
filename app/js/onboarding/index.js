@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
-import PanelShell from '@styled/onboarding/PanelShell'
+import PanelShell from '@components/PanelShell'
 import ProgressBar from '@components/ProgressBar'
 import Show from '@components/Show'
 import { Email, Username, Password, Hooray } from './views'
@@ -31,9 +31,9 @@ export default class Onboarding extends Component {
     view: 0
   }
 
-  handleValueChange = key => ({ target }) => {
+  handleValueChange = key => value => {
     this.setState({
-      [key]: target.value
+      [key]: value
     })
   }
 
@@ -42,11 +42,9 @@ export default class Onboarding extends Component {
   render() {
     const { email, password, username, view } = this.state
 
-    const percentProgress = view / VIEWS.length * 100
-
     return (
       <PanelShell>
-        <ProgressBar percent={percentProgress} />
+        <ProgressBar current={view} total={VIEWS.length} variant="dots" />
         <Show when={view === 0}>
           <Email
             next={this.updateView(1)}

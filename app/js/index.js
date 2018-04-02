@@ -1,27 +1,32 @@
-import React                        from 'react'
-import { render }                   from 'react-dom'
-import { Provider }                 from 'react-redux'
+import 'babel-polyfill'
 
-import routes                       from './routes'
-import configureDataStore           from './store/configure/index'
+import React from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+
+import routes from './routes'
+import configureDataStore from './store/configure/index'
 import { ThemeProvider } from 'styled-components'
 import theme from '@styled/theme'
 
-import log4js  from 'log4js'
+import log4js from 'log4js'
 import { authorizationHeaderValue } from './utils/api-utils'
 import { configureLogging } from './utils/logging-utils'
-
 
 const store = configureDataStore()
 const state = store.getState()
 const coreAPIPassword = state.settings.api.coreAPIPassword
 const logServerPort = state.settings.api.logServerPort
 
-configureLogging(log4js, logServerPort,
-  authorizationHeaderValue(coreAPIPassword), process.env.NODE_ENV)
+configureLogging(
+  log4js,
+  logServerPort,
+  authorizationHeaderValue(coreAPIPassword),
+  process.env.NODE_ENV
+)
 
-window.addEventListener('error', (event) => {
-  const logger = log4js.getLogger('window.addWindowListener(\'error\')')
+window.addEventListener('error', event => {
+  const logger = log4js.getLogger("window.addWindowListener('error')")
   logger.error(event)
 })
 
@@ -40,9 +45,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 render(
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      {routes}
-    </ThemeProvider>
+    <ThemeProvider theme={theme}>{routes}</ThemeProvider>
   </Provider>,
   document.getElementById('app')
 )

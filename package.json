@@ -138,6 +138,7 @@
     "currency-formatter": "^1.2.1",
     "ecurve": "^1.0.4",
     "enzyme-adapter-react-16": "^1.1.1",
+    "formik": "^1.0.0-alpha.4",
     "hash-handler": "^1.5.1",
     "hasprop": "0.0.4",
     "is-retina": "^1.0.3",
@@ -145,6 +146,7 @@
     "jsontokens": "^0.7.6",
     "lodash": "^4.17.2",
     "log4js": "^1.1.1",
+    "mdi-react": "^3.0.0",
     "prop-types": "^15.6.0",
     "query-string": "^4.2.3",
     "react": "16.2.0",
@@ -180,6 +182,7 @@
     "styled-components": "^3.2.3",
     "styled-system": "^2.2.1",
     "triplesec": "^3.0.25",
+    "yup": "^0.24.1",
     "zone-file": "^0.2.2",
     "zxcvbn": "^4.4.2"
   },

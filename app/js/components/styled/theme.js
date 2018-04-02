@@ -11,10 +11,10 @@ const palettes = {
   primary: {
     blue: '#2C96FF'
   },
-  grey: ['#ffffff', '#F0F0F0', '#fafafa', '#949494', '#18091F', '#080809']
+  grey: ['#ffffff', '#F0F0F0', '#fafafa', '#949494', '#68616b', '#18091F', '#080809']
 }
 
-const colors = {
+export const colors = {
   text: {
     base: palettes.grey[5],
     light: palettes.grey[3]
