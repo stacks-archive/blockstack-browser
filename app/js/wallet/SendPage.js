@@ -17,7 +17,8 @@ import Balance from './components/Balance'
 function mapStateToProps(state) {
   return {
     account: state.account,
-    regTestMode: state.settings.api.regTestMode
+    regTestMode: state.settings.api.regTestMode,
+    localIdentities: state.profiles.identity.localIdentities
   }
 }
 
@@ -29,6 +30,7 @@ class SendPage extends Component {
   static propTypes = {
     account: PropTypes.object.isRequired,
     regTestMode: PropTypes.bool.isRequired,
+    localIdentites: PropTypes.array.isRequired,
     resetCoreWithdrawal: PropTypes.func.isRequired,
     withdrawBitcoinClientSide: PropTypes.func.isRequired
   }
