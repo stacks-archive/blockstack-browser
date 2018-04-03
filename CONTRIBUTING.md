@@ -9,7 +9,7 @@ Following these guidelines helps to communicate that you respect the time of eve
 
 ## Using the issue tracker
 
-The [issue tracker](/issues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following
+The [issue tracker](https://github.com/blockstack/blockstack-browser/issues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests), but please respect the following
 restrictions:
 
 * Please **do not** use the issue tracker for personal support requests.  Please use the [Forum](https://forum.blockstack.org) or [Slack](https://chat.blockstack.org) as they are better places to get help.

@@ -22,7 +22,10 @@ rm -Rfv blockstack-venv
 
 echo "Creating a new virtualenv..."
 
-virtualenv -p /usr/bin/python2.7 blockstack-venv
+virtualenv -p $(which python2.7) blockstack-venv
+
+echo "Updating virtualenv pip to latest version..."                                                                                                                               
+pip install --upgrade pip
 
 echo "Activating virtualenv..."
 
