@@ -369,7 +369,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             corsProxyProcess.terminate()
             os_log("CORS proxy terminated", log: log, type: .default)
-
+            
+            os_log("Goodbye!", log: self.log, type: .default)
+            NSApplication.shared().terminate(self)
         }
     }
 
