@@ -7,7 +7,6 @@ import {
   getBitcoinPrivateKeychain,
   getBitcoinAddressNode
 } from '../utils'
-import { isCoreEndpointDisabled, isWindowsBuild } from '../utils/window-utils'
 import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
@@ -17,9 +16,8 @@ import Balance from './components/Balance'
 function mapStateToProps(state) {
   return {
     account: state.account,
-    coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl,
-    broadcastTransactionUrl: state.settings.api.broadcastUrl,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    regTestMode: state.settings.api.regTestMode,
+    localIdentities: state.profiles.identity.localIdentities
   }
 }
 
@@ -30,11 +28,10 @@ function mapDispatchToProps(dispatch) {
 class SendPage extends Component {
   static propTypes = {
     account: PropTypes.object.isRequired,
-    coreWalletWithdrawUrl: PropTypes.string.isRequired,
-    broadcastTransactionUrl: PropTypes.string.isRequired,
+    regTestMode: PropTypes.bool.isRequired,
+    localIdentites: PropTypes.array.isRequired,
     resetCoreWithdrawal: PropTypes.func.isRequired,
-    withdrawBitcoinFromCoreWallet: PropTypes.func.isRequired,
-    coreAPIPassword: PropTypes.string.isRequired
+    withdrawBitcoinClientSide: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -60,6 +57,10 @@ class SendPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.displayCoreWalletWithdrawalAlerts(nextProps)
+    if (nextProps.localIdentities.map(x => x.usernamePending).includes(true)) {
+      this.updateAlert('danger', 'You have a pending name registration. Withdrawing bitcoin' +
+                       ' may interfere with that registration\'s bitcoin transactions.')
+    }
   }
 
   componentWillUnmount() {
@@ -95,20 +96,21 @@ class SendPage extends Component {
       const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
       const amount = this.state.amount
       const recipientAddress = this.state.recipientAddress
+
       this.setState({
         lastAmount: amount
       })
-      this.props.withdrawBitcoinFromCoreWallet(
-      this.props.coreWalletWithdrawUrl, recipientAddress,
-       this.props.coreAPIPassword, parseFloat(amount), paymentKey)
+
+      this.props.withdrawBitcoinClientSide(
+        this.props.regTestMode, `${paymentKey}01`, recipientAddress, amount)
       this.setState({
         amount: '',
         password: '',
         recipientAddress: '',
         lastAmount: this.state.amount
       })
-    }).
-    catch((error) => {
+    })
+    .catch((error) => {
       this.setState({
         disabled: false
       })
@@ -135,31 +137,13 @@ class SendPage extends Component {
           disabled: false
         })
         this.updateAlert('success',
-        `${amount} bitcoins have been sent to ${withdrawal.recipientAddress}`)
+        `Sent up to ${amount} bitcoins to ${withdrawal.recipientAddress}`)
       }
     }
   }
 
   render() {
     const disabled = this.state.disabled
-    if (isCoreEndpointDisabled()) {
-      let appText
-      if (isWindowsBuild()) {
-        appText = 'Windows build'
-      } else {
-        appText = 'webapp'
-      }
-
-      return (
-        <div>
-          <Balance />
-          <div className="text-center">
-            The Bitcoin wallet is not yet supported in our {appText},
-            but the feature is coming soon!
-          </div>
-        </div>
-      )
-    }
 
     return (
       <div>
@@ -187,6 +171,7 @@ class SendPage extends Component {
             type="number"
             required
             step={0.000001}
+            min="0"
           />
           <InputGroupSecondary
             data={this.state}

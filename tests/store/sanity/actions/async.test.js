@@ -13,7 +13,7 @@ describe('Sanity Store: Async Actions', () => {
 
   describe('isCoreApiPasswordValid', () => {
     it('returns password valid & core running actions if password is valid', () => {
-      nock('http://localhost:6270',
+      nock('https://core.blockstack.org',
         {
           reqheaders: {
             authorization: 'bearer secretdonttell'
@@ -26,7 +26,7 @@ describe('Sanity Store: Async Actions', () => {
       const store = mockStore({
       })
 
-      const corePasswordProtectedReadUrl = 'http://localhost:6270/v1/wallet/payment_address'
+      const corePasswordProtectedReadUrl = 'https://core.blockstack.org/v1/wallet/payment_address'
       const coreApiPassword = 'secretdonttell'
 
       return store.dispatch(
@@ -151,14 +151,14 @@ describe('Sanity Store: Async Actions', () => {
 
   describe('isCoreRunning', () => {
     it('returns true if core node status is alive', () => {
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/node/ping')
       .reply(200, { status: 'alive' }, { 'Content-Type': 'application/json' })
 
       const store = mockStore({
       })
 
-      const corePingUrl = 'http://localhost:6270/v1/node/ping'
+      const corePingUrl = 'https://core.blockstack.org/v1/node/ping'
 
       return store.dispatch(SanityActions.isCoreRunning(corePingUrl))
       .then(() => {

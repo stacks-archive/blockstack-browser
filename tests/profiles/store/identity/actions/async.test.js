@@ -71,12 +71,12 @@ describe('Identity Store: Async Actions', () => {
   describe('refreshIdentities', () => {
     it('adds owned username to identity', (done) => {
       // mock core
-      const nockCore = nock('http://localhost:6270')
+      const nockCore = nock('https://core.blockstack.org')
       .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
       .reply(200, { names: ['guylepage.id'] },
       { 'Content-Type': 'application/json' })
 
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
         .get('/v1/names/guylepage.id')
         .reply(404, '')
 
@@ -116,7 +116,7 @@ describe('Identity Store: Async Actions', () => {
 
     it('checks default storage for profile if address owns no names', () => {
       // mock core
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/addresses/bitcoin/18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6')
       .reply(200, { names: [] },
       { 'Content-Type': 'application/json' })
@@ -171,7 +171,7 @@ describe('Identity Store: Async Actions', () => {
           },
           keypairs[0]))
 
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get(`/v1/addresses/bitcoin/${address}`)
       .reply(200, { names: [] },
       { 'Content-Type': 'application/json' })
@@ -239,7 +239,7 @@ describe('Identity Store: Async Actions', () => {
           secondProfile,
           keypair))
 
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get(`/v1/addresses/bitcoin/${address}`)
       .reply(200, { names: [] },
       { 'Content-Type': 'application/json' })
@@ -317,12 +317,12 @@ describe('Identity Store: Async Actions', () => {
           secondProfile,
           keypair))
 
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get(`/v1/addresses/bitcoin/${address}`)
       .reply(200, { names: [] },
       { 'Content-Type': 'application/json' })
 
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get(`/v1/addresses/bitcoin/${dummyAddress}`)
       .times(3)
       .reply(200, { names: [] },
@@ -362,7 +362,7 @@ describe('Identity Store: Async Actions', () => {
     it('fetches profile & validates proof of given identity from the public network', () => {
       // mock core
 
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .persist()
       .get('/v1/names/guylepage.id')
       .reply(200, NameLookups['guylepage.id'],

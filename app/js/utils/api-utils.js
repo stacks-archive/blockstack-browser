@@ -3,8 +3,9 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/api-utils.js')
 
-import { uploadProfile, BLOCKSTACK_INC } from '../account/utils'
-import { signProfileForUpload } from './index'
+import {
+  DEFAULT_CORE_API_ENDPOINT, REGTEST_CORE_API_ENDPOINT, REGTEST_CORE_API_PASSWORD,
+  DEFAULT_CORE_PHONY_PASSWORD }  from '../account/store/settings/default'
 
 import { isCoreEndpointDisabled } from './window-utils'
 
@@ -39,8 +40,50 @@ export function getRegTestModeFromURL() {
   return regTestMode === '1'
 }
 
+/**
+ * Returns an API object with regTestMode set to the inputted value,
+ *  and URLs all changed to either match DEFAULT_CORE_API_ENDPOINT
+ *  or REGTEST_CORE_API_ENDPOINT respectively.
+ *
+ * This is intended _only_ as a stopgap implementation. Realistically,
+ *  we need a more sophisticated regtest mode, which will restore
+ *  to the correct URLs
+ * @parameter {Object} the previous api object
+ * @parameter {Object} the new value of the regTestMode
+ * @returns {Object} a new api object
+ * @private
+ */
+export function setOrUnsetUrlsToRegTest(api, regTestMode) {
+  let toFindUrl
+  let toSetUrl
+  let coreAPIPassword
+  if (regTestMode) {
+    toFindUrl = DEFAULT_CORE_API_ENDPOINT
+    toSetUrl = REGTEST_CORE_API_ENDPOINT
+    coreAPIPassword = REGTEST_CORE_API_PASSWORD
+  } else {
+    toFindUrl = REGTEST_CORE_API_ENDPOINT
+    toSetUrl = DEFAULT_CORE_API_ENDPOINT
+    coreAPIPassword = DEFAULT_CORE_PHONY_PASSWORD
+  }
+
+  const apiOut = Object.assign({}, api, { regTestMode, coreAPIPassword })
+  Object.keys(apiOut)
+    .forEach(key => {
+      const value = apiOut[key]
+      if (typeof value === 'string' || value instanceof String) {
+        if (value.startsWith(toFindUrl)) {
+          const suffix = value.slice(toFindUrl.length)
+          apiOut[key] = `${toSetUrl}${suffix}`
+        }
+      }
+    })
+
+  return apiOut
+}
+
 export function isCoreApiRunning(corePingUrl) {
-  if (isCoreEndpointDisabled()) {
+  if (isCoreEndpointDisabled(corePingUrl)) {
     return new Promise(resolve => {
       resolve(true)
     })
@@ -69,7 +112,7 @@ export function isCoreApiRunning(corePingUrl) {
 }
 
 export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
-  if (isCoreEndpointDisabled()) {
+  if (isCoreEndpointDisabled(corePasswordProtectedReadUrl)) {
     return new Promise(resolve => {
       resolve(true)
     })
@@ -109,140 +152,12 @@ export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword
   })
 }
 
-/*
- * Insert storage driver routing information into a profile.
- * Existing routing information for this driver will be overwritten.
- *
- * TODO: this method will be rewritten/removed once Core knows about the token file
- *
- * Return the new profile.
- */
-function profileInsertStorageRoutingInfo(profile, driverName, indexUrl) {
-  if (!profile.account) {
-    profile.account = []
-  }
-
-  for (let i = 0; i < profile.account.length; i++) {
-    if (profile.account[i].identifier === 'storage' && profile.account[i].service === driverName) {
-      // patch this instance
-      profile.account[i].contentUrl = indexUrl
-      return profile
-    }
-  }
-
-  // not yet present
-  const storageAccount = {
-    identifier: 'storage',
-    service: driverName,
-    contentUrl: indexUrl
-  }
-
-  profile.account.push(storageAccount)
-  return profile
-}
-
 /* Expects a JavaScript object with a key containing the config for each storage
  * provider
  * Example:
  * const config = { dropbox: { token: '123abc'} }
  */
-export function setCoreStorageConfig(
-  api,
-  identityIndex = null,
-  identityAddress = null,
-  profile = null,
-  profileSigningKeypair = null,
-  identity = null
-) {
-  if (isCoreEndpointDisabled()) {
-    return new Promise(resolve => {
-      resolve('OK')
-    })
-  }
-
-  logger.debug(`setCoreStorageConfig: ${identityIndex}, ${identityAddress}`)
-  logger.debug(`setCoreStorageConfig: profile passed? ${!!profile}`)
-  logger.debug(`setCoreStorageConfig: profileSigningKeypair passed? ${!!profileSigningKeypair}`)
-
-  const coreAPIPassword = api.coreAPIPassword
-
-  return new Promise((resolve, reject) => {
-    let driverName = null
-    let requestBody = null
-
-    if (api.hostedDataLocation === BLOCKSTACK_INC) {
-      driverName = 'gaia_hub'
-      requestBody = { driver_config: api.gaiaHubConfig }
-    } else {
-      throw new Error('Only support "blockstack" driver at this time')
-    }
-
-    const url = `http://localhost:6270/v1/node/drivers/storage/${driverName}?index=1`
-    const bodyText = JSON.stringify(requestBody)
-
-    const options = {
-      method: 'POST',
-      host: 'localhost',
-      port: '6270',
-      path: `/v1/node/drivers/storage/${driverName}?index=1`,
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': bodyText.length,
-        Authorization: authorizationHeaderValue(coreAPIPassword)
-      },
-      body: bodyText
-    }
-    logger.debug(`setCoreStorageConfig: POSTing to ${url}`)
-    return fetch(url, options)
-      .then(response => {
-        logger.debug(`setCoreStorageConfig: got a response of ${response.status}`)
-        if (!response.ok) {
-          throw new Error(response.statusText)
-        }
-        return response
-          .text()
-          .then(responseText => JSON.parse(responseText))
-          .then(responseJson => {
-            // expect the index URL (for some drivers, like Dropbox)
-            const driverConfigResult = responseJson
-            const indexUrl = driverConfigResult.index_url
-            logger.debug(`setCoreStorageConfig: index url? ${!!indexUrl}`)
-            authorizationHeaderValue(coreAPIPassword)
-            if (
-              indexUrl &&
-              (identityIndex || identityIndex === 0) &&
-              identityAddress &&
-              profile &&
-              profileSigningKeypair
-            ) {
-              logger.debug('setCoreStorageConfig: storing index url...')
-              // insert it into the profile and replicate it.
-              profile = profileInsertStorageRoutingInfo(profile, driverName, indexUrl)
-              const data = signProfileForUpload(profile, profileSigningKeypair)
-              logger.debug('setCoreStorageConfig: uploading profile...')
-              return uploadProfile(api, identity, profileSigningKeypair, data)
-                .then(result => {
-                  logger.debug('setCoreStorageConfig: saved index url')
-                  // saved!
-                  resolve(result)
-                  return Promise.resolve(result)
-                })
-                .catch(error => {
-                  logger.error('setCoreStorageConfig: error saving index url', error)
-                  reject(error)
-                  return Promise.reject(error)
-                })
-            } else {
-              logger.debug('setCoreStorageConfig: not saving index url')
-              // Some drivers won't return an indexUrl
-              // or we'll want to initialize
-              resolve('OK')
-              return Promise.resolve('OK')
-            }
-          })
-      })
-      .catch(error => {
-        reject(error)
-      })
-  })
+export function setCoreStorageConfig() {
+  logger.debug('setCoreStorageConfig called in a core-less build')
+  return Promise.resolve('OK')
 }
