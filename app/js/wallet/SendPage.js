@@ -17,10 +17,7 @@ import Balance from './components/Balance'
 function mapStateToProps(state) {
   return {
     account: state.account,
-    coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl,
-    broadcastTransactionUrl: state.settings.api.broadcastUrl,
-    localIdentities: state.profiles.identity.localIdentities,
-    coreAPIPassword: state.settings.api.coreAPIPassword
+    regTestMode: state.settings.api.regTestMode
   }
 }
 
@@ -31,12 +28,9 @@ function mapDispatchToProps(dispatch) {
 class SendPage extends Component {
   static propTypes = {
     account: PropTypes.object.isRequired,
-    coreWalletWithdrawUrl: PropTypes.string.isRequired,
-    broadcastTransactionUrl: PropTypes.string.isRequired,
+    regTestMode: PropTypes.bool.isRequired,
     resetCoreWithdrawal: PropTypes.func.isRequired,
-    withdrawBitcoinFromCoreWallet: PropTypes.func.isRequired,
-    localIdentities: PropTypes.array.isRequired,
-    coreAPIPassword: PropTypes.string.isRequired
+    withdrawBitcoinClientSide: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -101,20 +95,21 @@ class SendPage extends Component {
       const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
       const amount = this.state.amount
       const recipientAddress = this.state.recipientAddress
+
       this.setState({
         lastAmount: amount
       })
-      this.props.withdrawBitcoinFromCoreWallet(
-      this.props.coreWalletWithdrawUrl, recipientAddress,
-       this.props.coreAPIPassword, parseFloat(amount), paymentKey)
+
+      this.props.withdrawBitcoinClientSide(
+        this.props.regTestMode, `${paymentKey}01`, recipientAddress, amount)
       this.setState({
         amount: '',
         password: '',
         recipientAddress: '',
         lastAmount: this.state.amount
       })
-    }).
-    catch((error) => {
+    })
+    .catch((error) => {
       this.setState({
         disabled: false
       })
@@ -193,6 +188,7 @@ class SendPage extends Component {
             type="number"
             required
             step={0.000001}
+            min="0"
           />
           <InputGroupSecondary
             data={this.state}
