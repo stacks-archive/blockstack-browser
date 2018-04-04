@@ -1,17 +1,26 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { PanelCard } from '@components/PanelShell'
+import { Button } from '@components/styled/Button'
 
-const KeyInfo = ({ next }) => (
-  <section>
-    <h3>
-      Key Info
-    </h3>
-    <button onClick={next}>Generate my key</button>
-  </section>
+const KeyDisclaimer = ({ next }) => (
+  <PanelCard>
+    <Fragment>
+      <PanelCard.Section pt={3} lineHeight={3}>
+        <p>
+          We use your email to provide you with recovery options for your ID,
+          nothing else. <a href="#">Learn more.</a>
+        </p>
+      </PanelCard.Section>
+      <PanelCard.Section pt={3}>
+        <Button onClick={next}>I understand, Continue</Button>
+      </PanelCard.Section>
+    </Fragment>
+  </PanelCard>
 )
 
-KeyInfo.propTypes = {
+KeyDisclaimer.propTypes = {
   next: PropTypes.func.isRequired
 }
 
-export default KeyInfo
+export default KeyDisclaimer

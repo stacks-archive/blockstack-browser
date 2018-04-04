@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Index from '@styled/onboarding/index'
 import Show from '@components/Show'
 import { KeyInfo, UnlockKey, Key, KeyConfirm, KeyComplete } from './views'
+import PanelShell from '@components/PanelShell'
 
 const VIEWS = [
   'KEY_INFO',
@@ -30,7 +30,7 @@ export default class Seed extends Component {
     const { password, view } = this.state
 
     return (
-      <Index>
+      <PanelShell>
         <Show when={view === VIEWS[0]}>
           <KeyInfo
             next={this.updateView(VIEWS[1])}
@@ -60,7 +60,7 @@ export default class Seed extends Component {
         <Show when={view === VIEWS[4]}>
           <KeyComplete />
         </Show>
-      </Index>
+      </PanelShell>
     )
   }
 }
