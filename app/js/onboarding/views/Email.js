@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Formik, FastField, Form } from 'formik'
-import { PanelCard } from '@components/PanelShell'
+import { PanelCard, PanelHeader } from '@components/PanelShell'
 import { EmailAlertIcon } from 'mdi-react'
 import Yup from 'yup'
 import { Button } from '@components/styled/Button'
@@ -12,8 +12,10 @@ const validationSchema = Yup.object({
     .required('A recovery email is required.')
 })
 
+const panelHeader = () => <PanelHeader />
+
 const Email = ({ next, handleValueChange, email }) => (
-  <PanelCard>
+  <PanelCard renderHeader={panelHeader}>
     <Fragment>
       <Formik
         initialValues={{

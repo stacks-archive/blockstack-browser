@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Navigation from '@components/Navigation'
 import { Formik, FastField, Form } from 'formik'
-import { PanelCard } from '@components/PanelShell'
+import { PanelCard, PanelHeader } from '@components/PanelShell'
 import { AccountRemoveIcon } from 'mdi-react'
 import { Button } from '@components/styled/Button'
 
@@ -35,11 +35,10 @@ const validate = values =>
     }
   })
 
+const panelHeader = () => <PanelHeader />
+
 const Username = ({ next, handleValueChange, username, previous }) => (
-  <PanelCard
-    title="Create your Blockstack ID"
-    icon="https://file-byvymyglhi.now.sh/"
-  >
+  <PanelCard renderHeader={panelHeader}>
     <Navigation previous={previous} next={next} />
     <Fragment>
       <Formik

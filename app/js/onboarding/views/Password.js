@@ -2,10 +2,12 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Navigation from '@components/Navigation'
 import { Formik, FastField, Form } from 'formik'
-import { PanelCard } from '@components/PanelShell'
+import { PanelCard, PanelHeader } from '@components/PanelShell'
 import { LockOpenIcon } from 'mdi-react'
 import Yup from 'yup'
 import {Button} from '@components/styled/Button'
+
+const panelHeader = () => <PanelHeader />
 
 const validationSchema = Yup.object({
   password: Yup.string()
@@ -17,7 +19,7 @@ const validationSchema = Yup.object({
 })
 
 const Password = ({ next, handleValueChange, password, previous }) => (
-  <PanelCard>
+  <PanelCard renderHeader={panelHeader}>
     <Navigation previous={previous} next={next} />
     <Fragment>
       <Formik

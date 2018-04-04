@@ -44,7 +44,7 @@ export default class Onboarding extends Component {
 
     return (
       <PanelShell>
-        <ProgressBar current={view} total={VIEWS.length} variant="dots" />
+        <ProgressBar current={view} total={VIEWS.length} />
         <Show when={view === 0}>
           <Email
             next={this.updateView(1)}
