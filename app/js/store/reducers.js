@@ -7,6 +7,7 @@ import { SanityReducer } from './sanity'
 import { SettingsReducer } from '../account/store/settings'
 import { AppsReducer } from './apps'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
+import { checkRewriteApiEndpoints } from '../utils/api-utils'
 
 // export const persistedStatePaths = [
 //   'account',
@@ -34,7 +35,7 @@ export function initializeStateVersion() {
  * and other state is regenerated.
  * @type {number}
  */
-export const CURRENT_VERSION: number = 12
+export const CURRENT_VERSION: number = 13
 
 //
 // function VersionReducer(state = {}, action) {
@@ -65,9 +66,11 @@ const RootReducer = (state: any, action: any) => {
   let newState: any = Object.assign({}, state)
   if (action.type === UPDATE_STATE) {
     const initialState = AppReducer(undefined, {})
+    const api = checkRewriteApiEndpoints(state.settings.api)
+
     newState = Object.assign({}, initialState, {
       settings: {
-        api: Object.assign({}, state.settings.api)
+        api: Object.assign({}, api)
       },
       account: Object.assign({}, initialState.account, {
         promptedForEmail: state.account.promptedForEmail,

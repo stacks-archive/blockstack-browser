@@ -8,6 +8,7 @@ import {
   DEFAULT_CORE_PHONY_PASSWORD }  from '../account/store/settings/default'
 
 import { isCoreEndpointDisabled } from './window-utils'
+import { BLOCKSTACK_STATE_VERSION_KEY } from '../App'
 
 export function authorizationHeaderValue(coreAPIPassword) {
   return `bearer ${coreAPIPassword}`
@@ -40,6 +41,22 @@ export function getRegTestModeFromURL() {
   return regTestMode === '1'
 }
 
+function findAndSetApiUrls(api, regTestMode, coreAPIPassword, toFindUrl, toSetUrl) {
+  const apiOut = Object.assign({}, api, { regTestMode, coreAPIPassword })
+  Object.keys(apiOut)
+    .forEach(key => {
+      const value = apiOut[key]
+      if (typeof value === 'string' || value instanceof String) {
+        if (value.startsWith(toFindUrl)) {
+          const suffix = value.slice(toFindUrl.length)
+          apiOut[key] = `${toSetUrl}${suffix}`
+        }
+      }
+    })
+
+  return apiOut
+}
+
 /**
  * Returns an API object with regTestMode set to the inputted value,
  *  and URLs all changed to either match DEFAULT_CORE_API_ENDPOINT
@@ -66,20 +83,33 @@ export function setOrUnsetUrlsToRegTest(api, regTestMode) {
     toSetUrl = DEFAULT_CORE_API_ENDPOINT
     coreAPIPassword = DEFAULT_CORE_PHONY_PASSWORD
   }
+  return findAndSetApiUrls(api, regTestMode, coreAPIPassword, toFindUrl, toSetUrl)
+}
 
-  const apiOut = Object.assign({}, api, { regTestMode, coreAPIPassword })
-  Object.keys(apiOut)
-    .forEach(key => {
-      const value = apiOut[key]
-      if (typeof value === 'string' || value instanceof String) {
-        if (value.startsWith(toFindUrl)) {
-          const suffix = value.slice(toFindUrl.length)
-          apiOut[key] = `${toSetUrl}${suffix}`
-        }
-      }
-    })
+/**
+ * Returns an API object with the URLs for the API endpoints
+ *  reset to the new default if the existing state version is < 13
+ *  (when we migrated away from local core nodes)
+ * @parameter {Object} the previous api object
+ * @returns {Object} a new api object
+ * @private
+ */
+export function checkRewriteApiEndpoints(api) {
+  let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
+  if (!existingVersion) {
+    existingVersion = 0
+  }
 
-  return apiOut
+  if (existingVersion < 13) {
+    // State version 13 is when we migrated away from default localhost:6270
+    const regTestMode = api.regTestMode
+    const toFindUrl = 'http://localhost:6270'
+    const toSetUrl = DEFAULT_CORE_API_ENDPOINT
+    const coreAPIPassword = DEFAULT_CORE_PHONY_PASSWORD
+    return findAndSetApiUrls(api, regTestMode, coreAPIPassword, toFindUrl, toSetUrl)
+  } else {
+    return api
+  }
 }
 
 export function isCoreApiRunning(corePingUrl) {
