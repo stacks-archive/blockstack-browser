@@ -20,7 +20,7 @@ const buttonTypes = ({ primary, secondary, invert }) => {
   if (secondary) {
     return css`
       color: ${colors.grey[4]};
-      border: 1px solid ${colors.grey[3]};
+      border: 1px solid ${colors.grey[1]};
       background-color: transparent;
       ${invert &&
         css`
@@ -50,4 +50,17 @@ const Button = styled.button`
   }
 `
 
-export { Button }
+const Buttons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  ${Button}{
+  margin-bottom: 0;
+  width: auto;
+  }
+  ${Button} + ${Button}{
+  margin-top: 0;
+  }
+`
+
+export { Button, Buttons }

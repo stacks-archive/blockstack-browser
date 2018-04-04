@@ -9,19 +9,23 @@ const PanelShell = ({ children, ...rest }) => (
   </StyledPanel>
 )
 
-const PanelHeader = ({
+const PanelCardHeader = ({
   title = 'Create your Blockstack ID',
-  icon = 'https://file-byvymyglhi.now.sh/'
+  icon = 'https://file-byvymyglhi.now.sh/',
+  p = 3,
+  pt = 5,
+  pb = 3,
+  ...rest
 }) => {
   return (
-    <StyledPanel.Card.Header p={4} pt={5}>
+    <StyledPanel.Card.Header p={p} pt={pt} pb={pb} {...rest}>
       {icon && (
         <StyledPanel.Card.IconWrapper>
           <img src={icon} />
         </StyledPanel.Card.IconWrapper>
       )}
       {title && (
-        <StyledPanel.Card.Title pt={3}>
+        <StyledPanel.Card.Title pt={2}>
           <h3>{title}</h3>
         </StyledPanel.Card.Title>
       )}
@@ -66,16 +70,16 @@ PanelShell.propTypes = {
   icon: PropTypes.node
 }
 
-PanelHeader.propTypes = {
+PanelCardHeader.propTypes = {
   title: PropTypes.node,
   icon: PropTypes.node
 }
 
 PanelCard.propTypes = {
   children: PropTypes.node.isRequired,
-  renderHeader: PropTypes.func
+  header: PropTypes.func
 }
 
 export default PanelShell
 
-export { PanelCard, PanelHeader }
+export { PanelCard, PanelCardHeader }

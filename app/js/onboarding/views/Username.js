@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Navigation from '@components/Navigation'
 import { Formik, FastField, Form } from 'formik'
-import { PanelCard, PanelHeader } from '@components/PanelShell'
+import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { AccountRemoveIcon } from 'mdi-react'
 import { Button } from '@components/styled/Button'
 
@@ -35,7 +35,7 @@ const validate = values =>
     }
   })
 
-const panelHeader = () => <PanelHeader />
+const panelHeader = () => <PanelCardHeader />
 
 const Username = ({ next, handleValueChange, username, previous }) => (
   <PanelCard renderHeader={panelHeader}>

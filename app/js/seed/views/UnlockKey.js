@@ -1,17 +1,69 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import Navigation from '@components/Navigation'
+import { PanelCard, PanelCardHeader } from '@components/PanelShell'
+import { Button } from '@components/styled/Button'
+import { Formik, FastField, Form } from 'formik'
+import { LockOpenIcon } from 'mdi-react'
 
-const UnlockKey = ({ next, previous }) => (
-  <section>
-    <h3>
-      Unlock Key
-    </h3>
-    <Navigation
-      previous={previous}
-      next={next}
-    />
-  </section>
+import Yup from 'yup'
+
+const validationSchema = Yup.object({
+  password: Yup.string()
+})
+
+const UnlockKey = ({ next, previous, handleValueChange }) => (
+  <PanelCard
+    renderHeader={() => (
+      <PanelCardHeader
+        title={'Generate your secret recovery seed'}
+        icon="/images/onboarding/seed-1.png"
+        pt={0}
+      />
+    )}
+  >
+    <Fragment>
+      <PanelCard.Section pt={0} lineHeight={3}>
+        <Formik
+          validationSchema={validationSchema}
+          initialValues={{
+            password: ''
+          }}
+          onSubmit={values => {
+            // handleValueChange(values.password)
+            next()
+          }}
+          validateOnBlur={false}
+          validateOnChange={false}
+          render={({ errors, touched }) => (
+            <Form>
+              <label htmlFor="password">Enter Password</label>
+              <FastField
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Your Password"
+              />
+              {errors.password && touched.password ? (
+                <PanelCard.Error
+                  icon={<LockOpenIcon />}
+                  message={errors.password}
+                />
+              ) : errors.passwordConfirm && touched.passwordConfirm ? (
+                <PanelCard.Error
+                  icon={<LockOpenIcon />}
+                  message={errors.passwordConfirm}
+                />
+              ) : null}
+              <p>The password you used when you created your Blockstack ID.</p>
+              <Button type="submit" primary>
+                Continue
+              </Button>
+            </Form>
+          )}
+        />
+      </PanelCard.Section>
+    </Fragment>
+  </PanelCard>
 )
 
 UnlockKey.propTypes = {

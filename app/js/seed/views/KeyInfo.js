@@ -1,19 +1,32 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { PanelCard } from '@components/PanelShell'
+import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button } from '@components/styled/Button'
 
 const KeyDisclaimer = ({ next }) => (
-  <PanelCard>
+  <PanelCard
+    renderHeader={() => (
+      <PanelCardHeader
+        title={'Generate your secret recovery seed'}
+        icon="/images/onboarding/seed-1.png"
+        pt={0}
+      />
+    )}
+  >
     <Fragment>
-      <PanelCard.Section pt={3} lineHeight={3}>
+      <PanelCard.Section pt={0} lineHeight={3}>
         <p>
-          We use your email to provide you with recovery options for your ID,
-          nothing else. <a href="#">Learn more.</a>
+          Your recovery seed is the primary method to recover or transfer your
+          ID to a new device. Things you'll need:{' '}pen, paper, and a secret hiding place.
         </p>
       </PanelCard.Section>
       <PanelCard.Section pt={3}>
-        <Button onClick={next}>I understand, Continue</Button>
+        <Button onClick={next} primary>
+          I understand, let's get started.
+        </Button>
+        <Button onClick={next} secondary>
+          Remind me later
+        </Button>
       </PanelCard.Section>
     </Fragment>
   </PanelCard>

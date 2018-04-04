@@ -129,6 +129,7 @@ const Header = styled.header`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  background: white;
   ${space};
 `
 const Footer = styled.footer`
@@ -144,6 +145,15 @@ const IconWrapper = styled.div
 const Title = styled.div`
   ${space};
   ${lineHeight};
+  h3 {
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  h6 {
+    padding-top: 5px;
+    opacity: 0.75;
+  }
 `
 
 const Progress = styled.div`
