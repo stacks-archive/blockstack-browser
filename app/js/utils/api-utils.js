@@ -102,11 +102,14 @@ export function checkRewriteApiEndpoints(api) {
 
   if (existingVersion < 13) {
     // State version 13 is when we migrated away from default localhost:6270
+    console.log('Migrating URLs from localhost:6270 to core.blockstack.org')
     const regTestMode = api.regTestMode
     const toFindUrl = 'http://localhost:6270'
     const toSetUrl = DEFAULT_CORE_API_ENDPOINT
     const coreAPIPassword = DEFAULT_CORE_PHONY_PASSWORD
-    return findAndSetApiUrls(api, regTestMode, coreAPIPassword, toFindUrl, toSetUrl)
+    const outApi = findAndSetApiUrls(api, regTestMode, coreAPIPassword, toFindUrl, toSetUrl)
+    console.log(JSON.stringify(outApi))
+    return outApi
   } else {
     return api
   }
