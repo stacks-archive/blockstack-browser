@@ -7,7 +7,7 @@ import { SanityReducer } from './sanity'
 import { SettingsReducer } from '../account/store/settings'
 import { AppsReducer } from './apps'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
-import { checkRewriteApiEndpoints } from '../utils/api-utils'
+import { hasLegacyCoreStateVersion, migrateLegacyCoreEndpoints } from '../utils/api-utils'
 
 // export const persistedStatePaths = [
 //   'account',
@@ -66,7 +66,9 @@ const RootReducer = (state: any, action: any) => {
   let newState: any = Object.assign({}, state)
   if (action.type === UPDATE_STATE) {
     const initialState = AppReducer(undefined, {})
-    const api = checkRewriteApiEndpoints(state.settings.api)
+    const api = hasLegacyCoreStateVersion() ?
+          migrateLegacyCoreEndpoints(state.settings.api) :
+          state.settings.api
 
     newState = Object.assign({}, initialState, {
       settings: {

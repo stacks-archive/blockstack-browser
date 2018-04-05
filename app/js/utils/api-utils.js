@@ -86,33 +86,40 @@ export function setOrUnsetUrlsToRegTest(api, regTestMode) {
   return findAndSetApiUrls(api, regTestMode, coreAPIPassword, toFindUrl, toSetUrl)
 }
 
-/**
- * Returns an API object with the URLs for the API endpoints
- *  reset to the new default if the existing state version is < 13
- *  (when we migrated away from local core nodes)
- * @parameter {Object} the previous api object
- * @returns {Object} a new api object
+/*
+ * Returns true if the current state version is a legacy version
+ *  which relies on localhost:6270 -- this is true if the
+ *  existing state version is < 13 (when we migrated away from shipping a
+ *  local api endpoint)
+ * @returns {boolean}
  * @private
  */
-export function checkRewriteApiEndpoints(api) {
+export function hasLegacyCoreStateVersion() {
   let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
   if (!existingVersion) {
     existingVersion = 0
   }
+  return existingVersion < 13
+}
 
-  if (existingVersion < 13) {
-    // State version 13 is when we migrated away from default localhost:6270
-    console.log('Migrating URLs from localhost:6270 to core.blockstack.org')
-    const regTestMode = api.regTestMode
-    const toFindUrl = 'http://localhost:6270'
-    const toSetUrl = DEFAULT_CORE_API_ENDPOINT
-    const coreAPIPassword = DEFAULT_CORE_PHONY_PASSWORD
-    const outApi = findAndSetApiUrls(api, regTestMode, coreAPIPassword, toFindUrl, toSetUrl)
-    console.log(JSON.stringify(outApi))
-    return outApi
-  } else {
-    return api
-  }
+/**
+ * Migrates an API object from old default URLs to the new
+ *  default. Used in migrating from localhost:6270 default to
+ *  core.blockstack.org (happened at v0.28.0)
+ * @parameter {Object} the previous api object
+ * @returns {Object} a new api object
+ * @private
+ */
+export function migrateLegacyCoreEndpoints(api) {
+  // State version 13 is when we migrated away from default localhost:6270
+  console.log('Migrating URLs from localhost:6270 to core.blockstack.org')
+  const regTestMode = api.regTestMode
+  const toFindUrl = 'http://localhost:6270'
+  const toSetUrl = DEFAULT_CORE_API_ENDPOINT
+  const coreAPIPassword = DEFAULT_CORE_PHONY_PASSWORD
+  const outApi = findAndSetApiUrls(api, regTestMode, coreAPIPassword, toFindUrl, toSetUrl)
+  console.log(JSON.stringify(outApi))
+  return outApi
 }
 
 export function isCoreApiRunning(corePingUrl) {
