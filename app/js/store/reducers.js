@@ -7,7 +7,6 @@ import { SanityReducer } from './sanity'
 import { SettingsReducer } from '../account/store/settings'
 import { AppsReducer } from './apps'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
-import { hasLegacyCoreStateVersion, migrateLegacyCoreEndpoints } from '../utils/api-utils'
 
 // export const persistedStatePaths = [
 //   'account',
@@ -15,11 +14,19 @@ import { hasLegacyCoreStateVersion, migrateLegacyCoreEndpoints } from '../utils/
 // ]
 
 export const UPDATE_STATE = 'UPDATE_STATE'
+export const MIGRATE_API_ENDPOINTS = 'MIGRATE_API_ENDPOINTS'
 export const INIT_STATE_VERSION = 'INIT_STATE_VERSION'
 
 export function updateState() {
   return {
     type: UPDATE_STATE
+  }
+}
+
+export function migrateAPIEndpoints(nextApi: any) {
+  return {
+    type: MIGRATE_API_ENDPOINTS,
+    nextApi
   }
 }
 
@@ -66,13 +73,23 @@ const RootReducer = (state: any, action: any) => {
   let newState: any = Object.assign({}, state)
   if (action.type === UPDATE_STATE) {
     const initialState = AppReducer(undefined, {})
-    const api = hasLegacyCoreStateVersion() ?
-          migrateLegacyCoreEndpoints(state.settings.api) :
-          state.settings.api
+    newState = Object.assign({}, initialState, {
+      settings: {
+        api: Object.assign({}, state.settings.api)
+      },
+      account: Object.assign({}, initialState.account, {
+        promptedForEmail: state.account.promptedForEmail,
+        viewedRecoveryCode: state.account.viewedRecoveryCode,
+        connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
+      })
+    })
+  }
+  if (action.type === MIGRATE_API_ENDPOINTS) {
+    const initialState = AppReducer(undefined, {})
 
     newState = Object.assign({}, initialState, {
       settings: {
-        api: Object.assign({}, api)
+        api: Object.assign({}, action.nextApi)
       },
       account: Object.assign({}, initialState.account, {
         promptedForEmail: state.account.promptedForEmail,
