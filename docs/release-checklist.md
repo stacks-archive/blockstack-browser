@@ -18,15 +18,25 @@
 - [ ] `git push origin master`
 - [ ] `git branch -d master-test`
 - [ ] `git push origin :master-test`
+
 - [ ] tag blockstack/packaging `cd packaging; git checkout master; git tag v0.27.0`
 - [ ] build Linux and Windows installers: `make windows; make linux-launcher`
+- [ ] Enter blockstack/packaging `cd packaging; git checkout master`
+- [ ] build Linux installer: `BUILD_TAG=v0.14.0 make linux-launcher`
+- [ ] Confirm docker images successfully pull: `./dist/linux-launcher/launcher pull`
+- [ ] Update `latest` image for browser on quay: `docker tag quay.io/blockstack/blockstack-browser:v0.23.0 quay.io/blockstack/blockstack-browser:latest`
+- [ ] Update `latest-browser` on quay: `docker tag quay.io/blockstack/blockstack-core:v0.23.0-browser quay.io/blockstack/blockstack-core:latest-browser`
+- [ ] Push docker tags `docker push quay.io/blockstack/blockstack-core:latest-browser`
+- [ ]      ... `docker push quay.io/blockstack/blockstack-browser:latest`
+- [ ] Build Windows installer: https://github.com/kantai/blockstack-windows (Aaron should merge this into blockstack-browser)
+- [ ] Sign Windows installer: `osslsigncode -certs "X509/IntermediateCA.crt" -certs "X509/ssl_certificate.crt" -key sign.key -n "Blockstack Browser" -i "https://blockstack.org"  -t "http://timestamp.verisign.com/scripts/timstamp.dll" -in BlockstackSetup.msi -out blockstack-browser-signed.msi`
 - [ ] Draft a new release on github: https://github.com/blockstack/blockstack-browser/releases/new
 - [ ] Enter the tag (eg. `v0.27.0`) the tag box and as the name of the release.
 - [ ] Enter release notes
 - [ ] Rename files to format `Blockstack-for-<platform>-v0.27.0<.extension>`
 - [ ] Upload the `.dmg` file generated earlier
-- [ ] Upload Linux launcher (packaging deploys it to azure "https://blockstack.blob.core.windows.net/packaging/blockstack-launcher-vTAG")
-- [ ] Upload Windows installer (packaging deploys it to azure "https://blockstack.blob.core.windows.net/packaging/windows-installer-vTAG.exe")
+- [ ] Upload Linux launcher
+- [ ] Upload Windows installer
 - [ ] After verifying tests, push new version to update server.
 - [ ] Update blockstack.org with direct links to install files https://github.com/blockstack/blockstack.org/blob/master/app/js/config.js
 - [ ] Create a pull request from master into deploy/browser.blockstack.org https://github.com/blockstack/blockstack-browser/compare/deploy/browser.blockstack.org...master?expand=1
