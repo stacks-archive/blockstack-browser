@@ -98,30 +98,16 @@ class AuthModal extends Component {
   componentWillMount() {
     const authRequest = getAuthRequestFromURL()
     const decodedToken = decodeToken(authRequest)
-
-    const scopes = decodedToken.payload.scopes
-    const invalidScopes = false
-
-    if (scopes.includes('email')) {
-      this.setState({
-        scopes: {
-          email: true
-        }
-      })
-    }
-
-    if (scopes.includes('publish_data')) {
-      this.setState({
-        scopes: {
-          publishData: true
-        }
-      })
-    }
+    const { scopes } = decodedToken.payload
 
     this.setState({
       authRequest,
       decodedToken,
-      invalidScopes
+      scopes: {
+        ...this.state.scopes,
+        email: scopes.includes('email'),
+        publishData: scopes.includes('publish_data')
+      }
     })
 
     this.props.verifyAuthRequestAndLoadManifest(authRequest)
