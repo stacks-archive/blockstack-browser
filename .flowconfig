@@ -5,6 +5,8 @@
 .*/node_modules/config-chain/*
 .*/node_modules/npmconf/*
 .*/node_modules/immutable/*
+.*/blockstack.js/node_modules/*
+.*/blockstack.js/src/*
 .*/tmp/nexe/*
 
 [include]

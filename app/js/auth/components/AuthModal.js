@@ -13,8 +13,6 @@ import {
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
 import { fetchProfileLocations } from '../../utils/profile-utils'
-import { setCoreStorageConfig } from '../../utils/api-utils'
-import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes, appRequestSupportsDirectHub } from '../utils'
@@ -332,17 +330,8 @@ class AuthModal extends Component {
             }
           }
 
-          // Get keypair corresponding to the current user identity
-          const profileSigningKeypair = this.props.identityKeypairs
-          .find((keypair) => keypair.address === identity.ownerAddress)
-
           const appDomain = this.state.decodedToken.payload.domain_name
           const scopes = this.state.decodedToken.payload.scopes
-          const appsNodeKey = profileSigningKeypair.appsNodeKey
-          const salt = profileSigningKeypair.salt
-          const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-          const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-          const blockchainId = (hasUsername ? identity.username : null)
           const needsCoreStorage = !appRequestSupportsDirectHub(this.state.decodedToken.payload)
 
           const scopesJSONString = JSON.stringify(scopes)
@@ -361,16 +350,11 @@ class AuthModal extends Component {
           })
           const requestingStoreWrite = !!scopes.includes('store_write')
           if (requestingStoreWrite && needsCoreStorage) {
-            logger.trace('login(): Calling setCoreStorageConfig()...')
-            setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
-            identity.profile, profileSigningKeypair, identity)
-            .then(() => {
-              logger.trace('login(): Core storage successfully configured.')
-              logger.trace('login(): Calling getCoreSessionToken()...')
-              this.props.getCoreSessionToken(this.props.coreHost,
-                  this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
-                  appDomain, this.state.authRequest, blockchainId)
+            this.setState({
             })
+            logger.error('Tried logging in with core-enabled-storage,' +
+                         ' but that is no longer supported...')
+            return
           } else if (requestingStoreWrite && !needsCoreStorage) {
             logger.trace('login(): app can communicate directly with gaiahub, not setting up core.')
             this.setState({
@@ -401,16 +385,8 @@ class AuthModal extends Component {
     const coreShortCircuit = (!appManifestLoading
                               && appManifest !== null
                               && !invalidScopes
-                              && !noCoreStorage
-                              && isCoreEndpointDisabled())
+                              && !noCoreStorage)
     if (coreShortCircuit) {
-      let appText
-      if (isWindowsBuild()) {
-        appText = 'Windows build'
-      } else {
-        appText = 'webapp'
-      }
-
       return (
         <div className="">
           <Modal
@@ -434,9 +410,8 @@ class AuthModal extends Component {
                 </p>
               : null}
               <p>
-               This application uses an older Gaia storage library, which is not supported
-               in our {appText}. Once the application updates its library, you will be
-               able to use it.
+               This application uses an older Gaia storage library, which is no longer supported.
+               Once the application updates its library, you will be able to use it.
               </p>
             </div>
           </Modal>

@@ -7,7 +7,6 @@ import {
   getBitcoinPrivateKeychain,
   getBitcoinAddressNode
 } from '../utils'
-import { isCoreEndpointDisabled, isWindowsBuild } from '../utils/window-utils'
 import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
@@ -138,31 +137,13 @@ class SendPage extends Component {
           disabled: false
         })
         this.updateAlert('success',
-        `${amount} bitcoins have been sent to ${withdrawal.recipientAddress}`)
+        `Sent up to ${amount} bitcoins to ${withdrawal.recipientAddress}`)
       }
     }
   }
 
   render() {
     const disabled = this.state.disabled
-    if (isCoreEndpointDisabled()) {
-      let appText
-      if (isWindowsBuild()) {
-        appText = 'Windows build'
-      } else {
-        appText = 'webapp'
-      }
-
-      return (
-        <div>
-          <Balance />
-          <div className="text-center">
-            The Bitcoin wallet is not yet supported in our {appText},
-            but the feature is coming soon!
-          </div>
-        </div>
-      )
-    }
 
     return (
       <div>

@@ -18,11 +18,11 @@ describe('Availability Store: Async Actions', () => {
   describe('checkNameAvailabilityAndPrice', () => {
     it('indicates name is available and costs 0.02118707 btc', () => {
       // mock core
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/names/satoshi.id')
       .reply(404, {}, { 'Content-Type': 'application/json' })
 
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/prices/names/satoshi.id?single_sig=1')
       .reply(200, {
         name_price: {
@@ -85,7 +85,7 @@ describe('Availability Store: Async Actions', () => {
 
     it('indicates subdomain name is available and costs 0 btc', () => {
       // mock core
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/names/satoshi.foo.id')
       .reply(404, {}, { 'Content-Type': 'application/json' })
 
@@ -125,7 +125,7 @@ describe('Availability Store: Async Actions', () => {
 
     it('indicates name is unavailable', () => {
       // mock core
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/names/satoshi.id')
       .reply(200, {}, { 'Content-Type': 'application/json' })
 
@@ -155,11 +155,11 @@ describe('Availability Store: Async Actions', () => {
 
     it('indicates name is available and error checking price', () => {
       // mock core
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/names/satoshi.id')
       .reply(404, {}, { 'Content-Type': 'application/json' })
 
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/prices/names/satoshi.id?single_sig=1')
       .reply(500, 'UTXO provider unavailable')
 
@@ -198,7 +198,7 @@ describe('Availability Store: Async Actions', () => {
 
     it('indicates error checking availability', () => {
       // mock core
-      nock('http://localhost:6270')
+      nock('https://core.blockstack.org')
       .get('/v1/names/satoshi.id')
       .reply(500, 'Broken', { 'Content-Type': 'application/json' })
 
