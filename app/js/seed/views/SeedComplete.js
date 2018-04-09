@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button } from '@components/styled/Button'
 
-const KeyDisclaimer = ({ next }) => (
+const SeedComplete = ({ next }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
@@ -29,8 +29,8 @@ const KeyDisclaimer = ({ next }) => (
   </PanelCard>
 )
 
-KeyDisclaimer.propTypes = {
+SeedComplete.propTypes = {
   next: PropTypes.func.isRequired
 }
 
-export default KeyDisclaimer
+export default SeedComplete

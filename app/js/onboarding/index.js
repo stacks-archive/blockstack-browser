@@ -3,76 +3,122 @@ import { browserHistory } from 'react-router'
 import PanelShell from '@components/PanelShell'
 import ProgressBar from '@components/ProgressBar'
 import Show from '@components/Show'
-import { Email, Username, Password, Hooray } from './views'
+import { AccountCapture, Username, Hooray } from './views'
+import { encrypt } from '@utils/encryption-utils'
+import bip39 from 'bip39'
+import { randomBytes } from 'crypto'
 
-const VIEWS = ['EMAIL', 'USERNAME', 'PASSWORD', 'HOORAY']
+const VIEWS = {
+  ACCOUNT_CAPTURE: 0,
+  USERNAME: 1,
+  HOORAY: 2
+}
 
-const SAMPLE_SEED = [
-  'CARROT',
-  'FIGARO',
-  'DESOLATE',
-  'MEANDER',
-  'FUNNY',
-  'LAWNCHAIR',
-  'MEXICO',
-  'SOLSTICE',
-  'CABIN',
-  'BOTTLE',
-  'MARINADE',
-  'FLYING'
-]
+function sendBackup({ email, password, seed }) {
+  const url = 'http://localhost:5000/backup'
+
+  return encrypt(new Buffer(seed), password)
+    .then((encrypted) => {
+      console.log(encrypted)
+      const encryptedPortalKey = encrypted.toString('hex')
+      const { protocol, hostname, port } = location
+      const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
+      const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedPortalKey}`
+
+      const options = {
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+          seedRecovery
+        }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+
+      return fetch(url, options)
+        .then(
+          () =>    { console.log(`emailNotifications: registered ${email} for notifications`) },
+          error => { console.log('emailNotifications: error', error) }
+        )
+        .catch(
+          error => { console.log('emailNotifications: error', error) }
+        )
+    })
+}
 
 export default class Onboarding extends Component {
   state = {
     email: '',
     password: '',
     username: '',
-    seed: SAMPLE_SEED,
-    view: 0
+    seed: '',
+    view: VIEWS.ACCOUNT_CAPTURE
   }
 
-  handleValueChange = key => value => {
-    this.setState({
-      [key]: value
+  updateValue = (key, value) => {
+    this.setState({ [key]: value })
+  }
+
+  updateView = view => this.setState({ view })
+
+  // given foo@bar.com, returns foo
+  retrieveUsernameFromEmail = (email) => email.match(/^([^@]*)@/)[1]
+
+  submitAccountCapture = () => {
+    const { username, email } = this.state
+    if (username.length < 1) {
+      this.setState({
+        username: this.retrieveUsernameFromEmail(email)
+      })
+    }
+    this.updateView(VIEWS.USERNAME)
+  }
+
+  submitUsername = () => {
+    const { password, email } = this.state
+    const seed = bip39.generateMnemonic(128, randomBytes)
+    console.log(seed)
+    this.setState({ seed })
+    sendBackup({ email, password, seed })
+    this.updateView(VIEWS.HOORAY)
+  }
+
+  goToBackup = () => {
+    browserHistory.push({
+      pathname: '/seed',
+      state: { seed: this.state.seed }
     })
   }
-
-  updateView = view => () => this.setState({ view })
 
   render() {
     const { email, password, username, view } = this.state
 
     return (
       <PanelShell>
-        <ProgressBar current={view} total={VIEWS.length} />
-        <Show when={view === 0}>
-          <Email
-            next={this.updateView(1)}
+        <ProgressBar current={view} total={Object.keys(VIEWS).length} />
+        <Show when={view === VIEWS.ACCOUNT_CAPTURE}>
+          <AccountCapture
+            next={this.submitAccountCapture}
             email={email}
-            handleValueChange={this.handleValueChange('email')}
+            password={password}
+            updateValue={this.updateValue}
           />
         </Show>
-        <Show when={view === 1}>
+        <Show when={view === VIEWS.USERNAME}>
           <Username
-            previous={this.updateView(0)}
-            next={this.updateView(2)}
+            previous={() => this.updateView(VIEWS.ACCOUNT_CAPTURE)}
+            next={this.submitUsername}
             email={email}
             username={username}
-            handleValueChange={this.handleValueChange('username')}
+            updateValue={this.updateValue}
           />
         </Show>
-        <Show when={view === 2}>
-          <Password
-            previous={this.updateView(1)}
-            next={this.updateView(3)}
-            password={password}
-            handleValueChange={this.handleValueChange('password')}
-          />
-        </Show>
-        <Show when={view === 3}>
+        <Show when={view === VIEWS.HOORAY}>
           <Hooray
             goToApp={() => {}}
-            goToRecovery={() => browserHistory.push('/seed')}
+            goToRecovery={this.goToBackup}
             email={email}
             username={username}
           />

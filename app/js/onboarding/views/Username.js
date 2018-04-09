@@ -37,7 +37,7 @@ const validate = values =>
 
 const panelHeader = () => <PanelCardHeader />
 
-const Username = ({ next, handleValueChange, username, previous }) => (
+const Username = ({ next, updateValue, username, previous }) => (
   <PanelCard renderHeader={panelHeader}>
     <Navigation previous={previous} next={next} />
     <Fragment>
@@ -47,7 +47,7 @@ const Username = ({ next, handleValueChange, username, previous }) => (
         }}
         validate={validate}
         onSubmit={values => {
-          handleValueChange(values.username)
+          updateValue(values.username)
           next()
         }}
         validateOnBlur={false}
@@ -58,13 +58,12 @@ const Username = ({ next, handleValueChange, username, previous }) => (
             <PanelCard.InputOverlay text=".blockstack.id">
               <FastField name="username" type="text" autocomplete="off" />
             </PanelCard.InputOverlay>
-            {errors.username &&
-              touched.username && (
-                <PanelCard.Error
-                  icon={<AccountRemoveIcon />}
-                  message={errors.username}
-                />
-              )}
+            {errors.username && touched.username && (
+              <PanelCard.Error
+                icon={<AccountRemoveIcon />}
+                message={errors.username}
+              />
+            )}
             <Button type="submit" primary>
               Continue
             </Button>
@@ -84,7 +83,7 @@ const Username = ({ next, handleValueChange, username, previous }) => (
 Username.propTypes = {
   previous: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
-  handleValueChange: PropTypes.func.isRequired,
+  updateValue: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired
 }

@@ -1,22 +1,21 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
-import { Button, Buttons } from '@components/styled/Button'
+import { Button } from '@components/styled/Button'
 import { Formik, FastField, Form } from 'formik'
 import { LockOpenIcon } from 'mdi-react'
 
 import Yup from 'yup'
 
 const validationSchema = Yup.object({
-  wordFour: Yup.string(),
-  wordSix: Yup.string()
+  password: Yup.string()
 })
 
-const KeyConfirm = ({ next, previous, handleValueChange }) => (
+const SeedDecrypt = ({ next, previous, decryptSeed }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
-        title={'Confirm your recovery seed'}
+        title={'Generate your secret recovery seed'}
         icon="/images/onboarding/seed-1.png"
         pt={0}
       />
@@ -27,40 +26,37 @@ const KeyConfirm = ({ next, previous, handleValueChange }) => (
         <Formik
           validationSchema={validationSchema}
           initialValues={{
-            wordFour: '',
-            wordSix: ''
+            password: ''
           }}
           onSubmit={values => {
-            // handleValueChange(values.password)
-            next()
+            decryptSeed(values.password)
           }}
           validateOnBlur={false}
           validateOnChange={false}
           render={({ errors, touched }) => (
             <Form>
-              <label htmlFor="password">Word #4</label>
-              <FastField name="wordFour" type="text" placeholder="4th word" />
-              <label htmlFor="password">Word #9</label>
-              <FastField name="wordSix" type="text" placeholder="9th word" />
-              {errors.wordFour && touched.wordFour ? (
+              <label htmlFor="password">Enter Password</label>
+              <FastField
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Your Password"
+              />
+              {errors.password && touched.password ? (
                 <PanelCard.Error
                   icon={<LockOpenIcon />}
-                  message={errors.wordFour}
+                  message={errors.password}
                 />
-              ) : errors.wordSix && touched.wordSix ? (
+              ) : errors.passwordConfirm && touched.passwordConfirm ? (
                 <PanelCard.Error
                   icon={<LockOpenIcon />}
-                  message={errors.wordSix}
+                  message={errors.passwordConfirm}
                 />
               ) : null}
-              <Buttons>
-                <Button secondary onClick={previous}>
-                  Back
-                </Button>
-                <Button type="submit" primary>
-                  Continue
-                </Button>
-              </Buttons>
+              <p>The password you used when you created your Blockstack ID.</p>
+              <Button type="submit" primary>
+                Continue
+              </Button>
             </Form>
           )}
         />
@@ -69,9 +65,9 @@ const KeyConfirm = ({ next, previous, handleValueChange }) => (
   </PanelCard>
 )
 
-KeyConfirm.propTypes = {
+SeedDecrypt.propTypes = {
   next: PropTypes.func.isRequired,
   previous: PropTypes.func.isRequired
 }
 
-export default KeyConfirm
+export default SeedDecrypt

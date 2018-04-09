@@ -35,7 +35,7 @@ const Words = styled.div`
   flex-direction: column;
 `
 
-const KeyDisclaimer = ({ next, previous, seed, set }) => {
+const Seed = ({ next, previous, seed, set }) => {
   const multiplier = () => {
     switch (set) {
       case 2:
@@ -66,7 +66,7 @@ const KeyDisclaimer = ({ next, previous, seed, set }) => {
           <Words>
             {seed &&
               seed.map((word, i) => (
-                <Line>
+                <Line key={word}>
                   <Number>#{i + multiplier()}</Number>{' '}
                   <Word>{word.toLowerCase()}</Word>
                 </Line>
@@ -88,9 +88,9 @@ const KeyDisclaimer = ({ next, previous, seed, set }) => {
   )
 }
 
-KeyDisclaimer.propTypes = {
+Seed.propTypes = {
   next: PropTypes.func.isRequired,
   previous: PropTypes.func.isRequired
 }
 
-export default KeyDisclaimer
+export default Seed

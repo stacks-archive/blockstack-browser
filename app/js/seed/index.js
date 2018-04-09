@@ -1,107 +1,128 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Show from '@components/Show'
-import { KeyInfo, UnlockKey, Key, KeyConfirm, KeyComplete } from './views'
+import { SeedInfo, SeedDecrypt, Seed, SeedConfirm, SeedComplete } from './views'
 import PanelShell from '@components/PanelShell'
+import { decrypt } from '@utils/encryption-utils'
 
-const VIEWS = [
-  'KEY_INFO',
-  'UNLOCK_KEY',
-  'KEY-1',
-  'KEY-2',
-  'KEY-3',
-  'KEY_CONFIRM',
-  'KEY_COMPLETE',
-  'RECOVERY_OPTIONS'
-]
-/**
- * Sample seed, we'll get this dynamically from somewhere else
- */
-const SAMPLE_SEED = [
-  'CARROT',
-  'FIGARO',
-  'DESOLATE',
-  'MEANDER',
-  'FUNNY',
-  'LAWNCHAIR',
-  'MEXICO',
-  'SOLSTICE',
-  'CABIN',
-  'BOTTLE',
-  'MARINADE',
-  'FLYING'
-]
-
-const SEED_SETS = {
-  first: [SAMPLE_SEED[0], SAMPLE_SEED[1], SAMPLE_SEED[2], SAMPLE_SEED[3]],
-  second: [SAMPLE_SEED[4], SAMPLE_SEED[5], SAMPLE_SEED[6], SAMPLE_SEED[7]],
-  third: [SAMPLE_SEED[8], SAMPLE_SEED[9], SAMPLE_SEED[10], SAMPLE_SEED[11]]
+const VIEWS = {
+  KEY_INFO: 0,
+  UNLOCK_KEY: 1,
+  KEY_1: 2,
+  KEY_2: 3,
+  KEY_3: 4,
+  KEY_CONFIRM: 5,
+  KEY_COMPLETE: 6,
+  RECOVERY_OPTIONS: 7
 }
 
-export default class Seed extends Component {
+const splitSeed = seed => {
+  // to-do: make this function smarter
+  const x = seed ? seed.split(' ') : []
+  return {
+    first: [x[0], x[1], x[2], x[3]],
+    second: [x[4], x[5], x[6], x[7]],
+    third: [x[8], x[9], x[10], x[11]]
+  }
+}
+
+export default class SeedContainer extends Component {
   state = {
-    password: '',
-    view: VIEWS[0]
+    encryptedSeed: null,
+    seed: null,
+    view: VIEWS.KEY_INFO
   }
 
-  handleValueChange = key => ({ target }) => {
-    this.setState({
-      [key]: target.value
-    })
+  static propTypes = {
+    location: PropTypes.object.isRequired
   }
 
-  updateView = view => () => this.setState({ view })
+  componentWillMount() {
+    const { location } = this.props
+    if (location.query.encrypted) {
+      this.setState({ encryptedSeed: location.query.encrypted })
+    } else if (location.state.seed) {
+      this.setState({
+        seed: location.state.seed
+      })
+    }
+  }
+
+  updateValue = (key, value) => {
+    this.setState({ [key]: value })
+  }
+
+  updateView = view => this.setState({ view })
+
+  decryptSeed = password => {
+    const buffer = new Buffer(this.state.encryptedSeed, 'hex')
+
+    decrypt(buffer, password)
+      .then(result => {
+        this.setState({
+          view: VIEWS.KEY_1,
+          seed: result.toString()
+        })
+      })
+  }
+
+  startBackup = () => {
+    const nextView = this.state.seed ? VIEWS.KEY_1 : VIEWS.UNLOCK_KEY
+    this.updateView(nextView)
+  }
 
   render() {
-    const { password, view } = this.state
-
+    const { password, view, seed } = this.state
+    const seedList = splitSeed(seed)
     return (
       <PanelShell>
-        <Show when={view === VIEWS[0]}>
-          <KeyInfo
-            next={this.updateView(VIEWS[1])}
-            handleValueChange={this.handleValueChange('password')}
+        <Show when={view === VIEWS.KEY_INFO}>
+          <SeedInfo
+            next={
+              () => this.updateView(this.state.seed ? VIEWS.KEY_1 : VIEWS.UNLOCK_KEY)
+            }
           />
         </Show>
-        <Show when={view === VIEWS[1]}>
-          <UnlockKey
-            previous={this.updateView(VIEWS[0])}
-            next={this.updateView(VIEWS[2])}
+        <Show when={view === VIEWS.UNLOCK_KEY}>
+          <SeedDecrypt
+            previous={() => this.updateView(VIEWS.KEY_INFO)}
+            next={() => this.updateView(VIEWS.KEY_1)}
             password={password}
-            handleValueChange={this.handleValueChange('password')}
+            decryptSeed={this.decryptSeed}
           />
         </Show>
-        <Show when={view === VIEWS[2]}>
-          <Key
-            previous={this.updateView(VIEWS[1])}
-            next={this.updateView(VIEWS[3])}
-            seed={SEED_SETS.first}
+        <Show when={view === VIEWS.KEY_1}>
+          <Seed
+            previous={() => this.updateView(VIEWS.KEY_INFO)}
+            next={() => this.updateView(VIEWS.KEY_2)}
+            seed={seedList.first}
             set={1}
           />
         </Show>
-        <Show when={view === VIEWS[3]}>
-          <Key
-            previous={this.updateView(VIEWS[2])}
-            next={this.updateView(VIEWS[4])}
-            seed={SEED_SETS.second}
+        <Show when={view === VIEWS.KEY_2}>
+          <Seed
+            previous={() => this.updateView(VIEWS.KEY_1)}
+            next={() => this.updateView(VIEWS.KEY_3)}
+            seed={seedList.second}
             set={2}
           />
         </Show>
-        <Show when={view === VIEWS[4]}>
-          <Key
-            previous={this.updateView(VIEWS[3])}
-            next={this.updateView(VIEWS[5])}
-            seed={SEED_SETS.third}
+        <Show when={view === VIEWS.KEY_3}>
+          <Seed
+            previous={() => this.updateView(VIEWS.KEY_2)}
+            next={() => this.updateView(VIEWS.KEY_CONFIRM)}
+            seed={seedList.third}
             set={3}
           />
         </Show>
-        <Show when={view === VIEWS[5]}>
-          <KeyConfirm
-            previous={this.updateView(VIEWS[4])}
-            next={this.updateView(VIEWS[6])}
+        <Show when={view === VIEWS.KEY_CONFIRM}>
+          <SeedConfirm
+            previous={() => this.updateView(VIEWS.KEY_3)}
+            next={() => this.updateView(VIEWS.KEY_COMPLETE)}
           />
         </Show>
-        <Show when={view === VIEWS[6]}>
-          <KeyComplete />
+        <Show when={view === VIEWS.KEY_COMPLETE}>
+          <SeedComplete />
         </Show>
       </PanelShell>
     )
