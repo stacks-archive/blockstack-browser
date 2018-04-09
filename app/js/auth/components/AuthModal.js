@@ -25,18 +25,6 @@ import { signProfileForUpload } from '../../utils'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
 
-const APP_EMAIL_SCOPE_WHITELIST = [
-  'https://staging.blockstack.clients.barefootcoders.com',
-  'https://blockstack.com',
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://localhost:3002',
-  'http://localhost:3003',
-  'http://localhost:4000',
-  'http://localhost:5000',
-  'http://localhost:8080'
-]
-
 function mapStateToProps(state) {
   return {
     localIdentities: state.profiles.identity.localIdentities,
@@ -111,37 +99,16 @@ class AuthModal extends Component {
   componentWillMount() {
     const authRequest = getAuthRequestFromURL()
     const decodedToken = decodeToken(authRequest)
-
-    const appDomain = decodedToken.payload.domain_name
-    const scopes = decodedToken.payload.scopes
-    let invalidScopes = false
-
-    if (scopes.includes('email')
-    && !APP_EMAIL_SCOPE_WHITELIST.includes(appDomain)) {
-      logger.error(`componentWillMount: ${appDomain} not in 'email' scope whitelist`)
-      invalidScopes = true
-    }
-
-    if (scopes.includes('email')) {
-      this.setState({
-        scopes: {
-          email: true
-        }
-      })
-    }
-
-    if (scopes.includes('publish_data')) {
-      this.setState({
-        scopes: {
-          publishData: true
-        }
-      })
-    }
+    const { scopes } = decodedToken.payload
 
     this.setState({
       authRequest,
       decodedToken,
-      invalidScopes
+      scopes: {
+        ...this.state.scopes,
+        email: scopes.includes('email'),
+        publishData: scopes.includes('publish_data')
+      }
     })
 
     this.props.verifyAuthRequestAndLoadManifest(authRequest)
