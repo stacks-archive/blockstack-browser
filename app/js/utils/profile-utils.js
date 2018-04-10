@@ -104,6 +104,11 @@ export function getProfileFromTokens(tokenRecords, publicKeychain, silentVerify 
   return profile
 }
 
+export function getDefaultProfileUrl(gaiaUrlBase: string,
+                                     ownerAddress: string) {
+  return `${gaiaUrlBase}/${ownerAddress}/profile.json`
+}
+
 /**
  * Try to fetch and verify a profile from the historic set of default locations,
  * in order of recency. If all of them return 404s, or fail to validate, return null
@@ -143,7 +148,7 @@ export function fetchProfileLocations(gaiaUrlBase: string,
 
   const urls = []
   // the new default
-  urls.push(`${gaiaUrlBase}/${ownerAddress}/profile.json`)
+  urls.push(getDefaultProfileUrl(gaiaUrlBase, ownerAddress))
 
   // the 'indexed' URL --
   //  this is gaia/:firstAddress/:index/profile.json

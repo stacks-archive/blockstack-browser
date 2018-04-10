@@ -10,7 +10,6 @@ import IdentityItem from './components/IdentityItem'
 import InputGroup from '../components/InputGroup'
 import { IdentityActions } from './store/identity'
 import { AccountActions }  from '../account/store/account'
-import { isCoreEndpointDisabled } from '../utils/window-utils'
 
 import log4js from 'log4js'
 
@@ -225,7 +224,6 @@ class AllProfilesPage extends Component {
                         canAddUsername={identity.canAddUsername}
                         isDefault={index === this.props.defaultIdentity}
                         router={this.props.router}
-                        coreDisabled={isCoreEndpointDisabled()}
                         profileUrl={`${profileUrlBase}/${index}/profile.json`}
                       />
                     )
