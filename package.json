@@ -166,6 +166,7 @@
     "react-router": "^3.0.0",
     "react-router-redux": "^4.0.4",
     "react-select": "^1.0.0-rc.2",
+    "react-spring": "^4.0.1",
     "react-tooltip": "^3.3.0",
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",

@@ -24,10 +24,20 @@ const Card = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: absolute;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
   ${space};
   ${color};
   background: white;
-  ${({ variant }) =>
+  ${({ showing }) =>
+    !showing &&
+    css`
+      pointer-events: none;
+    `};
+
+  ${({ variant, showing }) =>
     variant === 'welcome' &&
     css`
       background: ${colors.blue};

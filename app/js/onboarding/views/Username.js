@@ -43,8 +43,8 @@ const panelHeader = () => (
   />
 )
 
-const Username = ({ next, updateValue, username, previous }) => (
-  <PanelCard renderHeader={panelHeader}>
+const Username = ({ next, updateValue, username, previous, ...rest }) => (
+  <PanelCard renderHeader={panelHeader} {...rest}>
     <Navigation previous={previous} next={next} />
     <Fragment>
       <Formik

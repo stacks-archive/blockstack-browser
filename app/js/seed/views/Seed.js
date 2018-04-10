@@ -65,12 +65,15 @@ const Seed = ({ next, previous, seed, set }) => {
         <PanelCard.Section pt={0} lineHeight={3}>
           <Words>
             {seed &&
-              seed.map((word, i) => (
-                <Line key={word}>
-                  <Number>#{i + multiplier()}</Number>{' '}
-                  <Word>{word.toLowerCase()}</Word>
-                </Line>
-              ))}
+              seed.map(
+                (word, i) =>
+                  word && (
+                    <Line key={word}>
+                      <Number>#{i + multiplier()}</Number>{' '}
+                      <Word>{word.toLowerCase()}</Word>
+                    </Line>
+                  )
+              )}
           </Words>
         </PanelCard.Section>
         <PanelCard.Section pt={3}>

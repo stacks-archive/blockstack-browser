@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { browserHistory } from 'react-router'
 import PanelShell from '@components/PanelShell'
 import ProgressBar from '@components/ProgressBar'
@@ -7,7 +7,7 @@ import { AccountCapture, Hooray, Password, Username, Verify } from './views'
 import { encrypt } from '@utils/encryption-utils'
 import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
-
+import { Spring, animated } from 'react-spring'
 const VIEWS = {
   EMAIL: 0,
   VERIFY: 1,
@@ -55,7 +55,7 @@ function sendBackup({ email, password, seed }) {
   })
 }
 
-export default class Onboarding extends Component {
+export default class Onboarding extends React.Component {
   state = {
     email: '',
     password: '',
@@ -71,13 +71,15 @@ export default class Onboarding extends Component {
   updateView = view => this.setState({ view })
 
   // given foo@bar.com, returns foo
-  retrieveUsernameFromEmail = email => email.match(/^([^@]*)@/)[1].replace(/[^\w\s]/gi, '')
+  retrieveUsernameFromEmail = email =>
+    email.match(/^([^@]*)@/)[1].replace(/[^\w\s]/gi, '')
 
   submitEmailForVerification = () => {
     const { username, email } = this.state
     if (username.length < 1) {
       this.setState({
-        username: this.retrieveUsernameFromEmail(email)
+        username: this.retrieveUsernameFromEmail(email),
+        email
       })
     }
     this.updateView(VIEWS.VERIFY)
@@ -102,50 +104,93 @@ export default class Onboarding extends Component {
   render() {
     const { email, password, username, view } = this.state
 
+    const views = [
+      {
+        show: VIEWS.EMAIL,
+        Component: AccountCapture,
+        props: {
+          email,
+          password,
+          username,
+          next: this.submitEmailForVerification,
+          previous: null,
+          updateValue: this.updateValue
+        }
+      },
+      {
+        show: VIEWS.VERIFY,
+        Component: Verify,
+        props: {
+          email,
+          password,
+          username,
+          next: () => this.updateView(VIEWS.PASSWORD),
+          previous: null,
+          updateValue: this.updateValue
+        }
+      },
+      {
+        show: VIEWS.PASSWORD,
+        Component: Password,
+        props: {
+          email,
+          password,
+          username,
+          next: () => this.updateView(VIEWS.USERNAME),
+          previous: null,
+          updateValue: this.updateValue
+        }
+      },
+      {
+        show: VIEWS.USERNAME,
+        Component: Username,
+        props: {
+          email,
+          password,
+          username,
+          next: () => this.submitUsername,
+          previous: () => this.updateView(VIEWS.PASSWORD),
+          updateValue: this.updateValue
+        }
+      },
+      {
+        show: VIEWS.HOORAY,
+        Component: Hooray,
+        props: {
+          email,
+          password,
+          username,
+          goToRecovery: this.goToBackup,
+          goToApp: () => console.log('go to app!'),
+          next: () => this.submitUsername,
+          previous: () => this.updateView(VIEWS.PASSWORD),
+          updateValue: this.updateValue
+        }
+      }
+    ]
+
+    const renderItems = items =>
+      items.map(({ show, props, Component }, i) => (
+        <Show key={i} when={view === show}>
+          <Spring
+            native
+            from={{ opacity: 0 }}
+            to={{ opacity: view === show ? 1 : 0 }}
+            config={{ tension: 2, friction: 3 }}
+          >
+            {styles => (
+              <animated.div style={styles}>
+                <Component {...props} style={styles} showing={view === show} />
+              </animated.div>
+            )}
+          </Spring>
+        </Show>
+      ))
+
     return (
       <PanelShell>
         <ProgressBar current={view} total={Object.keys(VIEWS).length} />
-        <Show when={view === VIEWS.EMAIL}>
-          <AccountCapture
-            next={this.submitEmailForVerification}
-            email={email}
-            password={password}
-            updateValue={this.updateValue}
-          />
-        </Show>
-        <Show when={view === VIEWS.VERIFY}>
-          <Verify
-            next={() => this.updateView(VIEWS.PASSWORD)}
-            email={email}
-            password={password}
-            updateValue={this.updateValue}
-          />
-        </Show>
-        <Show when={view === VIEWS.PASSWORD}>
-          <Password
-            next={() => this.updateView(VIEWS.USERNAME)}
-            email={email}
-            password={password}
-            updateValue={this.updateValue}
-          />
-        </Show>
-        <Show when={view === VIEWS.USERNAME}>
-          <Username
-            previous={() => this.updateView(VIEWS.PASSWORD)}
-            next={this.submitUsername}
-            email={email}
-            username={username}
-            updateValue={this.updateValue}
-          />
-        </Show>
-        <Show when={view === VIEWS.HOORAY}>
-          <Hooray
-            goToApp={() => {}}
-            goToRecovery={this.goToBackup}
-            email={email}
-            username={username}
-          />
-        </Show>
+        {renderItems(views)}
       </PanelShell>
     )
   }

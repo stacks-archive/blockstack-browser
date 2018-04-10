@@ -9,8 +9,8 @@ const panelHeader = () => (
   />
 )
 
-const Verify = ({ email, next }) => (
-  <PanelCard renderHeader={panelHeader} onClick={() => next()}>
+const Verify = ({ email, next, ...rest }) => (
+  <PanelCard renderHeader={panelHeader} onClick={() => next()} {...rest}>
     <PanelCard.Section pt={4} center>
       <p>
         We sent an email to <strong>{email}</strong> for verification. Please
