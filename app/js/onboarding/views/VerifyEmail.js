@@ -9,8 +9,8 @@ const panelHeader = () => (
   />
 )
 
-const Verify = ({ email, next }) => (
-  <PanelCard renderHeader={panelHeader} onClick={() => next()}>
+const Verify = ({ email, resend }) => (
+  <PanelCard renderHeader={panelHeader}>
     <PanelCard.Section pt={4} center>
       <p>
         We sent an email to <strong>{email}</strong> for verification. Please
@@ -20,7 +20,7 @@ const Verify = ({ email, next }) => (
     <PanelCard.Section pt={2} center>
       <p>
         If you can't find the email, please check your spam or{' '}
-        <a href="#">resend verification email.</a>
+        <a onClick={resend}>resend verification email.</a>
       </p>
     </PanelCard.Section>
   </PanelCard>
@@ -28,7 +28,7 @@ const Verify = ({ email, next }) => (
 
 Verify.propTypes = {
   email: PropTypes.string,
-  next: PropTypes.func
+  resend: PropTypes.func
 }
 
 export default Verify

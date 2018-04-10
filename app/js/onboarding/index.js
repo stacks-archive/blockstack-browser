@@ -3,56 +3,91 @@ import { browserHistory } from 'react-router'
 import PanelShell from '@components/PanelShell'
 import ProgressBar from '@components/ProgressBar'
 import Show from '@components/Show'
-import { AccountCapture, Hooray, Password, Username, Verify } from './views'
+import { Email, Verify, Verified, Password, Username, Hooray } from './views'
 import { encrypt } from '@utils/encryption-utils'
 import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
 
 const VIEWS = {
   EMAIL: 0,
-  VERIFY: 1,
-  PASSWORD: 2,
-  USERNAME: 3,
-  HOORAY: 4
+  EMAIL_VERIFY: 1,
+  EMAIL_VERIFIED: 2,
+  PASSWORD: 3,
+  USERNAME: 4,
+  HOORAY: 5
 }
 
-function sendBackup({ email, password, seed }) {
-  const url = 'http://localhost:5000/backup'
+const encryptSeedWithPassword = (password, seed) => (
+  encrypt(new Buffer(seed), password)
+    .then(encrypted => encrypted.toString('hex'))
+)
 
-  return encrypt(new Buffer(seed), password).then(encrypted => {
-    console.log(encrypted)
-    const encryptedPortalKey = encrypted.toString('hex')
-    const { protocol, hostname, port } = location
-    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedPortalKey}`
+const cacheEncryptedSeed = (username, encryptedSeed) => {
+  let updated = []
+  const cachedSeeds = localStorage.getItem('encryptedSeeds')
 
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-        seedRecovery
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
+  if (cachedSeeds) { updated = [...JSON.parse(cachedSeeds)] }
+  updated.push({ username, encryptedSeed })
+
+  localStorage.setItem('encryptedSeeds', JSON.stringify(updated))
+}
+
+function verifyEmail(email) {
+  const url = 'https://obscure-retreat-87934.herokuapp.com/verify'
+
+  const { protocol, hostname, port } = location
+  const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
+  const emailVerificationLink = `${thisUrl}/onboarding?verified=${email}`
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      email,
+      emailVerificationLink
+    }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
     }
+  }
 
-    return fetch(url, options)
-      .then(
-        () => {
-          console.log(
-            `emailNotifications: registered ${email} for notifications`
-          )
-        },
-        error => {
-          console.log('emailNotifications: error', error)
-        }
-      )
-      .catch(error => {
-        console.log('emailNotifications: error', error)
-      })
-  })
+  return fetch(url, options)
+    .then(
+      () => { console.log(`emailNotifications: sent ${email} an email verification`) },
+      error => { console.log('emailNotifications: error', error) }
+    )
+    .catch(
+      error => { console.log('emailNotifications: error', error) }
+    )
+}
+
+function sendBackup(email, encryptedSeed) {
+  const url = 'https://obscure-retreat-87934.herokuapp.com/backup'
+
+  const { protocol, hostname, port } = location
+  const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
+  const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedSeed}`
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      email,
+      seedRecovery
+    }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+
+  return fetch(url, options)
+    .then(
+      () => { console.log(`emailNotifications: registered ${email} for notifications`) },
+      error => { console.log('emailNotifications: error', error) }
+    )
+    .catch(
+      error => { console.log('emailNotifications: error', error) }
+    )
 }
 
 export default class Onboarding extends Component {
@@ -64,6 +99,14 @@ export default class Onboarding extends Component {
     view: VIEWS.EMAIL
   }
 
+  componentWillMount() {
+    const { location } = this.props
+    if (location.query.verified) {
+      this.setState({ email: location.query.verified })
+      this.updateView(VIEWS.EMAIL_VERIFIED)
+    }
+  }
+
   updateValue = (key, value) => {
     this.setState({ [key]: value })
   }
@@ -71,24 +114,30 @@ export default class Onboarding extends Component {
   updateView = view => this.setState({ view })
 
   // given foo@bar.com, returns foo
-  retrieveUsernameFromEmail = email => email.match(/^([^@]*)@/)[1].replace(/[^\w\s]/gi, '')
+  retrieveUsernameFromEmail = (email) => email.match(/^([^@]*)@/)[1]
 
-  submitEmailForVerification = () => {
+  submitPassword = () => {
     const { username, email } = this.state
     if (username.length < 1) {
       this.setState({
         username: this.retrieveUsernameFromEmail(email)
       })
     }
-    this.updateView(VIEWS.VERIFY)
+    this.updateView(VIEWS.USERNAME)
   }
 
   submitUsername = () => {
-    const { password, email } = this.state
+    const { password, email, username } = this.state
     const seed = bip39.generateMnemonic(128, randomBytes)
-    console.log(seed)
+
     this.setState({ seed })
-    sendBackup({ email, password, seed })
+
+    encryptSeedWithPassword(password, seed)
+      .then(encryptedSeed => {
+        sendBackup(email, encryptedSeed)
+        cacheEncryptedSeed(username, encryptedSeed)
+      })
+
     this.updateView(VIEWS.HOORAY)
   }
 
@@ -99,6 +148,11 @@ export default class Onboarding extends Component {
     })
   }
 
+  submitEmailForVerification = () => {
+    verifyEmail(this.state.email)
+    this.updateView(VIEWS.EMAIL_VERIFY)
+  }
+
   render() {
     const { email, password, username, view } = this.state
 
@@ -106,24 +160,26 @@ export default class Onboarding extends Component {
       <PanelShell>
         <ProgressBar current={view} total={Object.keys(VIEWS).length} />
         <Show when={view === VIEWS.EMAIL}>
-          <AccountCapture
+          <Email
             next={this.submitEmailForVerification}
             email={email}
-            password={password}
             updateValue={this.updateValue}
           />
         </Show>
-        <Show when={view === VIEWS.VERIFY}>
+        <Show when={view === VIEWS.EMAIL_VERIFY}>
           <Verify
-            next={() => this.updateView(VIEWS.PASSWORD)}
             email={email}
-            password={password}
-            updateValue={this.updateValue}
+            resend={this.submitEmailForVerification}
+          />
+        </Show>
+        <Show when={view === VIEWS.EMAIL_VERIFIED}>
+          <Verified
+            next={() => this.updateView(VIEWS.PASSWORD)}
           />
         </Show>
         <Show when={view === VIEWS.PASSWORD}>
           <Password
-            next={() => this.updateView(VIEWS.USERNAME)}
+            next={this.submitPassword}
             email={email}
             password={password}
             updateValue={this.updateValue}

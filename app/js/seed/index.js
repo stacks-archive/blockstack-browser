@@ -26,6 +26,14 @@ const splitSeed = seed => {
   }
 }
 
+const getCachedEncryptedSeed = () => {
+  const cached = localStorage.getItem('encryptedSeeds')
+
+  // TO DO: this should check against the currently logged in username.
+  // Right now, this logic simply picks the first seed in the object.
+  return cached ? JSON.parse(cached)[0].encryptedSeed : null
+}
+
 export default class SeedContainer extends Component {
   state = {
     encryptedSeed: null,
@@ -39,12 +47,16 @@ export default class SeedContainer extends Component {
 
   componentWillMount() {
     const { location } = this.props
+    const cached = getCachedEncryptedSeed()
+    console.log(location)
     if (location.query.encrypted) {
       this.setState({ encryptedSeed: location.query.encrypted })
-    } else if (location.state.seed) {
+    } else if (location.state && location.state.seed) {
       this.setState({
         seed: location.state.seed
       })
+    } else if (cached) {
+      this.setState({ encryptedSeed: cached })
     }
   }
 
