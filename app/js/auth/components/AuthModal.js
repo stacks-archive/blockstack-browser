@@ -12,7 +12,7 @@ import {
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
-import { fetchProfileLocations } from '../../utils/profile-utils'
+import { fetchProfileLocations, getDefaultProfileUrl } from '../../utils/profile-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes, appRequestSupportsDirectHub } from '../utils'
@@ -183,7 +183,13 @@ class AuthModal extends Component {
       if (!profileUrlPromise) {
         profileUrlPromise = fetchProfileLocations(
           gaiaUrlBase, identityAddress, gaiaBucketAddress, identityIndex)
-          .then(fetchProfileResp => fetchProfileResp.profileUrl)
+          .then(fetchProfileResp => {
+            if (fetchProfileResp && fetchProfileResp.profileUrl) {
+              return fetchProfileResp.profileUrl
+            } else {
+              return getDefaultProfileUrl(gaiaUrlBase, identityAddress)
+            }
+          })
       }
 
       profileUrlPromise.then((profileUrl) => {
