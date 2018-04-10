@@ -14,11 +14,19 @@ import { DELETE_ACCOUNT } from '../account/store/account/types'
 // ]
 
 export const UPDATE_STATE = 'UPDATE_STATE'
+export const MIGRATE_API_ENDPOINTS = 'MIGRATE_API_ENDPOINTS'
 export const INIT_STATE_VERSION = 'INIT_STATE_VERSION'
 
 export function updateState() {
   return {
     type: UPDATE_STATE
+  }
+}
+
+export function migrateAPIEndpoints(nextApi: any) {
+  return {
+    type: MIGRATE_API_ENDPOINTS,
+    nextApi
   }
 }
 
@@ -34,7 +42,7 @@ export function initializeStateVersion() {
  * and other state is regenerated.
  * @type {number}
  */
-export const CURRENT_VERSION: number = 12
+export const CURRENT_VERSION: number = 13
 
 //
 // function VersionReducer(state = {}, action) {
@@ -68,6 +76,20 @@ const RootReducer = (state: any, action: any) => {
     newState = Object.assign({}, initialState, {
       settings: {
         api: Object.assign({}, state.settings.api)
+      },
+      account: Object.assign({}, initialState.account, {
+        promptedForEmail: state.account.promptedForEmail,
+        viewedRecoveryCode: state.account.viewedRecoveryCode,
+        connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
+      })
+    })
+  }
+  if (action.type === MIGRATE_API_ENDPOINTS) {
+    const initialState = AppReducer(undefined, {})
+
+    newState = Object.assign({}, initialState, {
+      settings: {
+        api: Object.assign({}, action.nextApi)
       },
       account: Object.assign({}, initialState.account, {
         promptedForEmail: state.account.promptedForEmail,
