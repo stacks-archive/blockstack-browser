@@ -10,8 +10,8 @@ const panelHeader = () => (
   />
 )
 
-const Verified = ({ next }) => (
-  <PanelCard renderHeader={panelHeader}>
+const Verified = ({ next, ...rest }) => (
+  <PanelCard renderHeader={panelHeader} {...rest}>
     <PanelCard.Section pt={4} center>
       <p>
         Let{"'"}s finish up your account now.
