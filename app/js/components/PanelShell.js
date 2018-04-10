@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import StyledPanel from '@styled/onboarding'
+
+import { SyncIcon } from 'mdi-react'
 
 const PanelShell = ({ children, ...rest }) => (
   <StyledPanel {...rest} bg="grey.2">
@@ -12,16 +13,25 @@ const PanelShell = ({ children, ...rest }) => (
 const PanelCardHeader = ({
   title = 'Create your Blockstack ID',
   icon = 'https://file-byvymyglhi.now.sh/',
+  appIcon,
+  variant,
   p = 3,
   pt = 5,
   pb = 3,
   ...rest
 }) => {
+  const AppIcon = appIcon && (
+    <StyledPanel.Card.IconWrapper appConnect>
+      {variant !== 'small' && <img src={icon} />}
+      {variant !== 'small' && <SyncIcon />}
+      {appIcon && <img src={appIcon} />}
+    </StyledPanel.Card.IconWrapper>
+  )
   return (
-    <StyledPanel.Card.Header p={p} pt={pt} pb={pb} {...rest}>
+    <StyledPanel.Card.Header p={p} pt={pt} pb={pb} variant={variant} {...rest}>
       {icon && (
         <StyledPanel.Card.IconWrapper>
-          <img src={icon} />
+          {appIcon ? AppIcon : <img src={icon} />}
         </StyledPanel.Card.IconWrapper>
       )}
       {title && (

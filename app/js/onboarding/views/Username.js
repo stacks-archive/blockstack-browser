@@ -35,7 +35,13 @@ const validate = values =>
     }
   })
 
-const panelHeader = () => <PanelCardHeader />
+const panelHeader = () => (
+  <PanelCardHeader
+    appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
+    variant="small"
+    title="Choose a username"
+  />
+)
 
 const Username = ({ next, updateValue, username, previous }) => (
   <PanelCard renderHeader={panelHeader}>
@@ -47,7 +53,7 @@ const Username = ({ next, updateValue, username, previous }) => (
         }}
         validate={validate}
         onSubmit={values => {
-          updateValue(values.username)
+          updateValue('username', values.username)
           next()
         }}
         validateOnBlur={false}
@@ -56,14 +62,15 @@ const Username = ({ next, updateValue, username, previous }) => (
           <Form>
             <label htmlFor="username">Username</label>
             <PanelCard.InputOverlay text=".blockstack.id">
-              <FastField name="username" type="text" autocomplete="off" />
+              <FastField name="username" type="text" autoComplete="off" />
             </PanelCard.InputOverlay>
-            {errors.username && touched.username && (
-              <PanelCard.Error
-                icon={<AccountRemoveIcon />}
-                message={errors.username}
-              />
-            )}
+            {errors.username &&
+              touched.username && (
+                <PanelCard.Error
+                  icon={<AccountRemoveIcon />}
+                  message={errors.username}
+                />
+              )}
             <Button type="submit" primary>
               Continue
             </Button>

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { space, lineHeight, color } from 'styled-system'
+import { darken } from 'polished'
+import { color, lineHeight, space } from 'styled-system'
 import { colors } from '@components/styled/theme'
 
 const Panel = styled.div`
@@ -25,7 +26,7 @@ const Card = styled.div`
   flex-direction: column;
   ${space};
   ${color};
-
+  background: white;
   ${({ variant }) =>
     variant === 'welcome' &&
     css`
@@ -106,12 +107,13 @@ const Content = styled.div`
     input {
       display: block;
       width: 100%;
-      padding: 20px;
-      border: 1px solid ${colors.grey[1]};
+      padding: 15px;
+      border: 1px solid ${darken(0.05, colors.grey[1])};
       margin-bottom: 20px;
       outline: none;
+      border-radius: 4px;
       border-bottom-width: 2px;
-      border-bottom-color: ${colors.grey[1]};
+      border-bottom-color: ${darken(0.08, colors.grey[1])};
       &:focus {
         border-bottom-color: ${colors.blue};
       }
@@ -123,15 +125,6 @@ const Content = styled.div`
   }
 `
 
-const Header = styled.header`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  background: white;
-  ${space};
-`
 const Footer = styled.footer`
   display: flex;
   flex-direction: column;
@@ -140,7 +133,25 @@ const Footer = styled.footer`
   flex-shrink: 0;
 `
 
-const IconWrapper = styled.div
+const IconWrapper = styled.div`
+  ${({ appConnect }) =>
+    appConnect &&
+    css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 20px;
+      svg {
+        * {
+          fill: rgba(0, 0, 0, 0.5);
+        }
+      }
+      img {
+        margin: 5px;
+        max-width: 48px;
+      }
+    `};
+`
 
 const Title = styled.div`
   ${space};
@@ -205,7 +216,7 @@ const InputOverlay = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
-  padding: 20px;
+  padding: 15px;
   top: 0;
   left: 0;
   pointer-events: none;
@@ -249,9 +260,33 @@ const Icon = styled.div`
   }
 `
 
+const Header = styled.header`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: white;
+  border-bottom: 1px solid ${darken(0.05, colors.grey[1])};
+  ${space};
+  ${({ variant }) =>
+    variant === 'small' &&
+    css`
+      flex-direction: row;
+      ${IconWrapper} {
+        flex-grow: 0;
+        max-width: 48px;
+        padding-right: 5px;
+        img {
+          max-width: 28px;
+        }
+      }
+    `};
+`
+
 Panel.Card = Card
 Panel.Card.Title = Title
-Panel.Card.IconWrapper = Title
+Panel.Card.IconWrapper = IconWrapper
 Panel.Card.Header = Header
 Panel.Card.Content = Content
 Panel.Card.InputOverlay = InputOverlay

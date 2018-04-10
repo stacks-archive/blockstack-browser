@@ -1,15 +1,12 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Formik, FastField, Form } from 'formik'
+import { FastField, Form, Formik } from 'formik'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
-import { EmailAlertIcon, LockOpenIcon } from 'mdi-react'
+import { LockOpenIcon } from 'mdi-react'
 import Yup from 'yup'
 import { Button } from '@components/styled/Button'
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email('Your email address seems invalid.')
-    .required('A recovery email is required.'),
   password: Yup.string()
     .min(8, 'Your password is too short.')
     .required('A passsword is required.'),
@@ -18,13 +15,19 @@ const validationSchema = Yup.object({
     .required('Please confirm your password.')
 })
 
-const panelHeader = () => <PanelCardHeader />
+const panelHeader = () => (
+  <PanelCardHeader
+    appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
+    variant="small"
+    title="Create a password"
+  />
+)
 
-const AccountCapture = ({ next, updateValue, email, password }) => (
+const Password = ({ next, updateValue, password }) => (
   <PanelCard renderHeader={panelHeader}>
     <Fragment>
       <Formik
-        initialValues={{ email, password }}
+        initialValues={{ password }}
         validationSchema={validationSchema}
         onSubmit={values => {
           updateValue('email', values.email)
@@ -35,13 +38,6 @@ const AccountCapture = ({ next, updateValue, email, password }) => (
         validateOnChange={false}
         render={({ errors, touched }) => (
           <Form>
-            <label htmlFor="email">Email</label>
-            <FastField
-              name="email"
-              type="email"
-              placeholder="Recovery Email"
-              autoComplete="off"
-            />
             <label htmlFor="password">
               Password <em>(8 characters minimum)</em>
             </label>
@@ -57,12 +53,6 @@ const AccountCapture = ({ next, updateValue, email, password }) => (
               autoComplete="new-password"
               placeholder="Confirm Password"
             />
-            {errors.email && touched.email && (
-              <PanelCard.Error
-                icon={<EmailAlertIcon />}
-                message={errors.email}
-              />
-            )}
             {errors.password && touched.password ? (
               <PanelCard.Error
                 icon={<LockOpenIcon />}
@@ -82,30 +72,18 @@ const AccountCapture = ({ next, updateValue, email, password }) => (
       />
       <PanelCard.Section pt={3} lineHeight={3}>
         <p>
-          We use your email to provide you with recovery options for your ID,
-          nothing else. <a href="#">Learn more.</a>
-        </p>
-      </PanelCard.Section>
-      <PanelCard.Section pt={3} lineHeight={3}>
-        <p>
           This password will be used as part of the encryption of your ID.{' '}
           <a href="#">Learn more.</a>
-        </p>
-      </PanelCard.Section>
-      <PanelCard.Section pt={3}>
-        <p>
-          <a href="#">Already have a Blockstack ID?</a>
         </p>
       </PanelCard.Section>
     </Fragment>
   </PanelCard>
 )
 
-AccountCapture.propTypes = {
+Password.propTypes = {
   next: PropTypes.func.isRequired,
   updateValue: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
   password: PropTypes.string.isRequired
 }
 
-export default AccountCapture
+export default Password

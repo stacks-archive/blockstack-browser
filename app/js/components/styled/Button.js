@@ -15,6 +15,8 @@ const buttonTypes = ({ primary, secondary, invert }) => {
           border: 1px solid #ffffff;
           background-color: #ffffff;
         `};
+        box-shadow: 4px 2px 10px rgba(44,150,255, .4);
+
     `
   }
   if (secondary) {
@@ -40,10 +42,11 @@ const Button = styled.button`
   font-size: 1rem;
   font-weight: 900;
   line-height: 1.75rem;
-  border-radius: 2px;
+  border-radius: 10px;
   user-select: none;
   transition: all 0.2s ease-in-out;
   width: 100%;
+  
   ${buttonTypes};
   &:not(:first-of-type) {
     margin-top: 20px;
