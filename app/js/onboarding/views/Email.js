@@ -14,8 +14,8 @@ const validationSchema = Yup.object({
 
 const panelHeader = () => <PanelCardHeader appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png" />
 
-const Email = ({ next, updateValue, email }) => (
-  <PanelCard renderHeader={panelHeader}>
+const Email = ({ next, updateValue, email, ...rest }) => (
+  <PanelCard renderHeader={panelHeader} {...rest}>
     <Formik
       initialValues={{ email }}
       validationSchema={validationSchema}
@@ -63,7 +63,7 @@ const Email = ({ next, updateValue, email }) => (
 Email.propTypes = {
   next: PropTypes.func.isRequired,
   updateValue: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired
 }
 
 export default Email

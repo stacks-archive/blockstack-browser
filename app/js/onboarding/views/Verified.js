@@ -11,7 +11,7 @@ const panelHeader = () => (
 )
 
 const Verified = ({ next }) => (
-  <PanelCard renderHeader={panelHeader} onClick={() => next()}>
+  <PanelCard renderHeader={panelHeader}>
     <PanelCard.Section pt={4} center>
       <p>
         Let{"'"}s finish up your account now.

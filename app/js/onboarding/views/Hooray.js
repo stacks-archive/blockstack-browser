@@ -60,8 +60,8 @@ const UserID = styled.h4`
   text-overflow: ellipsis;
 `
 
-const Hooray = ({ goToApp, goToRecovery, username }) => (
-  <PanelCard variant="welcome">
+const Hooray = ({ goToApp, goToRecovery, username, ...rest }) => (
+  <PanelCard variant="welcome" {...rest}>
     <PanelCard.Section pt={5} center>
       <UserCard>
         <UserCardAvatar>

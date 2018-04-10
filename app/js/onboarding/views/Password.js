@@ -23,14 +23,13 @@ const panelHeader = () => (
   />
 )
 
-const Password = ({ next, updateValue, password }) => (
-  <PanelCard renderHeader={panelHeader}>
+const Password = ({ next, updateValue, password, ...rest }) => (
+  <PanelCard renderHeader={panelHeader} {...rest}>
     <Fragment>
       <Formik
         initialValues={{ password }}
         validationSchema={validationSchema}
         onSubmit={values => {
-          updateValue('email', values.email)
           updateValue('password', values.password)
           next()
         }}

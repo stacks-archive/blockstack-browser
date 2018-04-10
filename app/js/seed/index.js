@@ -51,7 +51,7 @@ export default class SeedContainer extends Component {
     console.log(location)
     if (location.query.encrypted) {
       this.setState({ encryptedSeed: location.query.encrypted })
-    } else if (location.state && location.state.seed) {
+    } else if (location && location.state && location.state.seed) {
       this.setState({
         seed: location.state.seed
       })
@@ -69,13 +69,12 @@ export default class SeedContainer extends Component {
   decryptSeed = password => {
     const buffer = new Buffer(this.state.encryptedSeed, 'hex')
 
-    decrypt(buffer, password)
-      .then(result => {
-        this.setState({
-          view: VIEWS.KEY_1,
-          seed: result.toString()
-        })
+    decrypt(buffer, password).then(result => {
+      this.setState({
+        view: VIEWS.KEY_1,
+        seed: result.toString()
       })
+    })
   }
 
   startBackup = () => {
@@ -90,8 +89,8 @@ export default class SeedContainer extends Component {
       <PanelShell>
         <Show when={view === VIEWS.KEY_INFO}>
           <SeedInfo
-            next={
-              () => this.updateView(this.state.seed ? VIEWS.KEY_1 : VIEWS.UNLOCK_KEY)
+            next={() =>
+              this.updateView(this.state.seed ? VIEWS.KEY_1 : VIEWS.UNLOCK_KEY)
             }
           />
         </Show>
