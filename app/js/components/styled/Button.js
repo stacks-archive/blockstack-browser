@@ -1,12 +1,12 @@
 import React from 'react'
-import { space, color } from 'styled-system'
+import { color, space } from 'styled-system'
 import styled, { css } from 'styled-components'
 import { colors } from '@components/styled/theme'
 
 const buttonTypes = ({ primary, secondary, invert }) => {
   if (primary) {
     return css`
-      color: #fff;
+      color: #ffffff;
       border: 1px solid #2c96ff;
       background-color: #2c96ff;
       ${invert &&
@@ -15,8 +15,7 @@ const buttonTypes = ({ primary, secondary, invert }) => {
           border: 1px solid #ffffff;
           background-color: #ffffff;
         `};
-        box-shadow: 4px 2px 10px rgba(44,150,255, .4);
-
+      box-shadow: 4px 2px 10px rgba(44, 150, 255, 0.4);
     `
   }
   if (secondary) {
@@ -46,24 +45,29 @@ const Button = styled.button`
   user-select: none;
   transition: all 0.2s ease-in-out;
   width: 100%;
-  
+
   ${buttonTypes};
   &:not(:first-of-type) {
     margin-top: 20px;
   }
 `
 
+const ButtonLink = Button.withComponent('a')
+
 const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ${Button}{
-  margin-bottom: 0;
-  width: auto;
+  ${Button}, ${ButtonLink}{
+    margin-bottom: 0;
+    width: auto;
   }
-  ${Button} + ${Button}{
-  margin-top: 0;
+  ${Button} + ${Button},
+  ${ButtonLink} + ${ButtonLink},
+  ${ButtonLink} + ${Button},
+  ${Button} + ${ButtonLink}{
+    margin-top: 0;
   }
 `
 
-export { Button, Buttons }
+export { Button, ButtonLink, Buttons }

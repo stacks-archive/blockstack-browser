@@ -1,8 +1,27 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import StyledPanel from '@styled/onboarding'
-
+import Show from '@components/Show'
 import { SyncIcon } from 'mdi-react'
+import { Spring, animated } from 'react-spring'
+
+    const renderItems = (items, view) =>
+      items.map(({ show, props, Component }, i) => (
+        <Show key={i} when={view === show}>
+          <Spring
+            native
+            from={{ opacity: 0 }}
+            to={{ opacity: view === show ? 1 : 0 }}
+            config={{ tension: 2, friction: 3 }}
+          >
+            {styles => (
+              <animated.div style={styles}>
+                <Component {...props} style={styles} showing={view === show} />
+              </animated.div>
+            )}
+          </Spring>
+        </Show>
+      ))
 
 const PanelShell = ({ children, ...rest }) => (
   <StyledPanel {...rest} bg="grey.2">
@@ -92,4 +111,4 @@ PanelCard.propTypes = {
 
 export default PanelShell
 
-export { PanelCard, PanelCardHeader }
+export { PanelCard, PanelCardHeader, renderItems }

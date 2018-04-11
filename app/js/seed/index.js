@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Show from '@components/Show'
 import { SeedInfo, SeedDecrypt, Seed, SeedConfirm, SeedComplete } from './views'
-import PanelShell from '@components/PanelShell'
+import PanelShell, { renderItems } from '@components/PanelShell'
 import { decrypt } from '@utils/encryption-utils'
 
 const VIEWS = {
@@ -38,7 +37,7 @@ export default class SeedContainer extends Component {
   state = {
     encryptedSeed: null,
     seed: null,
-    view: VIEWS.KEY_INFO
+    view: 0
   }
 
   static propTypes = {
@@ -48,15 +47,20 @@ export default class SeedContainer extends Component {
   componentWillMount() {
     const { location } = this.props
     const cached = getCachedEncryptedSeed()
-    console.log(location)
-    if (location.query.encrypted) {
-      this.setState({ encryptedSeed: location.query.encrypted })
+    if (location && location.query && location.query.encrypted) {
+      if (this.state.encryptedSeed !== location.query.encrypted) {
+        this.setState({ encryptedSeed: location.query.encrypted })
+      }
     } else if (location && location.state && location.state.seed) {
-      this.setState({
-        seed: location.state.seed
-      })
+      if (this.state.seed !== location.state.seed) {
+        this.setState({
+          seed: location.state.seed
+        })
+      }
     } else if (cached) {
-      this.setState({ encryptedSeed: cached })
+      if (this.state.encryptedSeed !== cached) {
+        this.setState({ encryptedSeed: cached })
+      }
     }
   }
 
@@ -64,16 +68,22 @@ export default class SeedContainer extends Component {
     this.setState({ [key]: value })
   }
 
-  updateView = view => this.setState({ view })
+  updateView = view => {
+    if (this.state.view !== view) {
+      this.setState({ view })
+    }
+  }
 
   decryptSeed = password => {
     const buffer = new Buffer(this.state.encryptedSeed, 'hex')
 
     decrypt(buffer, password).then(result => {
-      this.setState({
-        view: VIEWS.KEY_1,
-        seed: result.toString()
-      })
+      if (this.state.seed !== result.toString()) {
+        this.setState({
+          view: VIEWS.KEY_1,
+          seed: result.toString()
+        })
+      }
     })
   }
 
@@ -85,57 +95,69 @@ export default class SeedContainer extends Component {
   render() {
     const { password, view, seed } = this.state
     const seedList = splitSeed(seed)
-    return (
-      <PanelShell>
-        <Show when={view === VIEWS.KEY_INFO}>
-          <SeedInfo
-            next={() =>
-              this.updateView(this.state.seed ? VIEWS.KEY_1 : VIEWS.UNLOCK_KEY)
-            }
-          />
-        </Show>
-        <Show when={view === VIEWS.UNLOCK_KEY}>
-          <SeedDecrypt
-            previous={() => this.updateView(VIEWS.KEY_INFO)}
-            next={() => this.updateView(VIEWS.KEY_1)}
-            password={password}
-            decryptSeed={this.decryptSeed}
-          />
-        </Show>
-        <Show when={view === VIEWS.KEY_1}>
-          <Seed
-            previous={() => this.updateView(VIEWS.KEY_INFO)}
-            next={() => this.updateView(VIEWS.KEY_2)}
-            seed={seedList.first}
-            set={1}
-          />
-        </Show>
-        <Show when={view === VIEWS.KEY_2}>
-          <Seed
-            previous={() => this.updateView(VIEWS.KEY_1)}
-            next={() => this.updateView(VIEWS.KEY_3)}
-            seed={seedList.second}
-            set={2}
-          />
-        </Show>
-        <Show when={view === VIEWS.KEY_3}>
-          <Seed
-            previous={() => this.updateView(VIEWS.KEY_2)}
-            next={() => this.updateView(VIEWS.KEY_CONFIRM)}
-            seed={seedList.third}
-            set={3}
-          />
-        </Show>
-        <Show when={view === VIEWS.KEY_CONFIRM}>
-          <SeedConfirm
-            previous={() => this.updateView(VIEWS.KEY_3)}
-            next={() => this.updateView(VIEWS.KEY_COMPLETE)}
-          />
-        </Show>
-        <Show when={view === VIEWS.KEY_COMPLETE}>
-          <SeedComplete />
-        </Show>
-      </PanelShell>
-    )
+
+    const views = [
+      {
+        show: VIEWS.KEY_INFO,
+        Component: SeedInfo,
+        props: {
+          next: () =>
+            this.updateView(this.state.seed ? VIEWS.KEY_1 : VIEWS.UNLOCK_KEY)
+        }
+      },
+      {
+        show: VIEWS.UNLOCK_KEY,
+        Component: SeedDecrypt,
+        props: {
+          previous: () => this.updateView(VIEWS.KEY_INFO),
+          next: () => this.updateView(VIEWS.KEY_1),
+          password,
+          decryptSeed: p => this.decryptSeed(p)
+        }
+      },
+      {
+        show: VIEWS.KEY_1,
+        Component: Seed,
+        props: {
+          previous: () => this.updateView(VIEWS.KEY_INFO),
+          next: () => this.updateView(VIEWS.KEY_2),
+          password,
+          seed: seedList.first,
+          set: 1
+        }
+      },
+      {
+        show: VIEWS.KEY_2,
+        Component: Seed,
+        props: {
+          previous: () => this.updateView(VIEWS.KEY_1),
+          next: () => this.updateView(VIEWS.KEY_3),
+          password,
+          seed: seedList.second,
+          set: 2
+        }
+      },
+      {
+        show: VIEWS.KEY_3,
+        Component: Seed,
+        props: {
+          previous: () => this.updateView(VIEWS.KEY_2),
+          next: () => this.updateView(VIEWS.KEY_CONFIRM),
+          password,
+          seed: seedList.third,
+          set: 3
+        }
+      },
+      {
+        show: VIEWS.KEY_CONFIRM,
+        Component: SeedConfirm,
+        props: {
+          previous: () => this.updateView(VIEWS.KEY_3),
+          next: () => this.updateView(VIEWS.KEY_COMPLETE)
+        }
+      },
+      { show: VIEWS.KEY_COMPLETE, Component: SeedComplete, props: null }
+    ]
+    return <PanelShell>{renderItems(views, view)}</PanelShell>
   }
 }

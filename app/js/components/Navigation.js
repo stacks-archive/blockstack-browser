@@ -10,6 +10,10 @@ const NavBlock = styled.div`
   top: 20px;
   left: 20px;
   z-index: 100;
+  @media (min-width: 800px) {
+    top: -46px;
+    left: -10px;
+  }
 `
 const NavButton = styled.button`
   border: none;

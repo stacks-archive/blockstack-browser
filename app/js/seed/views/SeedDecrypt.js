@@ -11,7 +11,7 @@ const validationSchema = Yup.object({
   password: Yup.string()
 })
 
-const SeedDecrypt = ({ next, previous, decryptSeed }) => (
+const SeedDecrypt = ({ decryptSeed, ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
@@ -20,6 +20,7 @@ const SeedDecrypt = ({ next, previous, decryptSeed }) => (
         pt={0}
       />
     )}
+    {...rest}
   >
     <Fragment>
       <PanelCard.Section pt={0} lineHeight={3}>
@@ -66,8 +67,7 @@ const SeedDecrypt = ({ next, previous, decryptSeed }) => (
 )
 
 SeedDecrypt.propTypes = {
-  next: PropTypes.func.isRequired,
-  previous: PropTypes.func.isRequired
+  decryptSeed: PropTypes.func.isRequired
 }
 
 export default SeedDecrypt

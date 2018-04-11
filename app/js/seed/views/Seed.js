@@ -35,7 +35,7 @@ const Words = styled.div`
   flex-direction: column;
 `
 
-const Seed = ({ next, previous, seed, set }) => {
+const Seed = ({ next, previous, seed, set, ...rest }) => {
   const multiplier = () => {
     switch (set) {
       case 2:
@@ -60,6 +60,7 @@ const Seed = ({ next, previous, seed, set }) => {
           pt={0}
         />
       )}
+      {...rest}
     >
       <Fragment>
         <PanelCard.Section pt={0} lineHeight={3}>

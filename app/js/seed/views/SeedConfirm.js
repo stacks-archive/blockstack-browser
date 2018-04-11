@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
-import { Button, Buttons } from '@components/styled/Button'
+import { Button, Buttons, ButtonLink } from '@components/styled/Button'
 import { Formik, FastField, Form } from 'formik'
 import { LockOpenIcon } from 'mdi-react'
 
@@ -12,7 +12,7 @@ const validationSchema = Yup.object({
   wordSix: Yup.string()
 })
 
-const SeedConfirm = ({ next, previous, handleValueChange }) => (
+const SeedConfirm = ({ next, previous, ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
@@ -21,6 +21,7 @@ const SeedConfirm = ({ next, previous, handleValueChange }) => (
         pt={0}
       />
     )}
+    {...rest}
   >
     <Fragment>
       <PanelCard.Section pt={0} lineHeight={3}>
@@ -31,7 +32,6 @@ const SeedConfirm = ({ next, previous, handleValueChange }) => (
             wordSix: ''
           }}
           onSubmit={values => {
-            // handleValueChange(values.password)
             next()
           }}
           validateOnBlur={false}
@@ -54,9 +54,9 @@ const SeedConfirm = ({ next, previous, handleValueChange }) => (
                 />
               ) : null}
               <Buttons>
-                <Button secondary onClick={previous}>
+                <ButtonLink secondary onClick={previous}>
                   Back
-                </Button>
+                </ButtonLink>
                 <Button type="submit" primary>
                   Continue
                 </Button>

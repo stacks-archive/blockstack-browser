@@ -4,6 +4,8 @@ import { darken } from 'polished'
 import { color, lineHeight, space } from 'styled-system'
 import { colors } from '@components/styled/theme'
 
+const mobileCardWidth = 400
+
 const Panel = styled.div`
   height: 100vh;
   width: 100%;
@@ -16,6 +18,11 @@ const Panel = styled.div`
   ${space};
   ${color};
   z-index: 5;
+  @media (min-width: 800px) {
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+  }
 `
 
 const Card = styled.div`
@@ -31,6 +38,19 @@ const Card = styled.div`
   ${space};
   ${color};
   background: white;
+
+  @media (min-width: 800px) {
+    max-width: ${mobileCardWidth}px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.05);
+    left: calc(50% - ${mobileCardWidth / 2}px);
+    border: 1px solid ${darken(0.05, colors.grey[1])};
+    max-height: 80vh;
+    top: 60px;
+    min-height: 500px;
+    border-radius: 4px;
+  }
   ${({ showing }) =>
     !showing &&
     css`
@@ -187,6 +207,10 @@ const Progress = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  @media (min-width: 800px) {
+    align-items: center;
+    justify-content: center;
+  }
 `
 const Dot = styled.div`
   width: 10px;
@@ -276,9 +300,11 @@ const Header = styled.header`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: white;
   border-bottom: 1px solid ${darken(0.05, colors.grey[1])};
   ${space};
+  @media (min-width: 800px) {
+    padding-top: 18px;
+  }
   ${({ variant }) =>
     variant === 'small' &&
     css`

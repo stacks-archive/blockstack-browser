@@ -1,13 +1,11 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
-import PanelShell from '@components/PanelShell'
+import PanelShell, { renderItems } from '@components/PanelShell'
 import ProgressBar from '@components/ProgressBar'
-import Show from '@components/Show'
 import { Email, Verify, Verified, Password, Username, Hooray } from './views'
 import { encrypt } from '@utils/encryption-utils'
 import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
-import { Spring, animated } from 'react-spring'
 const VIEWS = {
   EMAIL: 0,
   EMAIL_VERIFY: 1,
@@ -17,16 +15,18 @@ const VIEWS = {
   HOORAY: 5
 }
 
-const encryptSeedWithPassword = (password, seed) => (
-  encrypt(new Buffer(seed), password)
-    .then(encrypted => encrypted.toString('hex'))
-)
+const encryptSeedWithPassword = (password, seed) =>
+  encrypt(new Buffer(seed), password).then(encrypted =>
+    encrypted.toString('hex')
+  )
 
 const cacheEncryptedSeed = (username, encryptedSeed) => {
   let updated = []
   const cachedSeeds = localStorage.getItem('encryptedSeeds')
 
-  if (cachedSeeds) { updated = [...JSON.parse(cachedSeeds)] }
+  if (cachedSeeds) {
+    updated = [...JSON.parse(cachedSeeds)]
+  }
   updated.push({ username, encryptedSeed })
 
   localStorage.setItem('encryptedSeeds', JSON.stringify(updated))
@@ -53,12 +53,16 @@ function verifyEmail(email) {
 
   return fetch(url, options)
     .then(
-      () => { console.log(`emailNotifications: sent ${email} an email verification`) },
-      error => { console.log('emailNotifications: error', error) }
+      () => {
+        console.log(`emailNotifications: sent ${email} an email verification`)
+      },
+      error => {
+        console.log('emailNotifications: error', error)
+      }
     )
-    .catch(
-      error => { console.log('emailNotifications: error', error) }
-    )
+    .catch(error => {
+      console.log('emailNotifications: error', error)
+    })
 }
 
 function sendBackup(email, encryptedSeed) {
@@ -82,12 +86,16 @@ function sendBackup(email, encryptedSeed) {
 
   return fetch(url, options)
     .then(
-      () => { console.log(`emailNotifications: registered ${email} for notifications`) },
-      error => { console.log('emailNotifications: error', error) }
+      () => {
+        console.log(`emailNotifications: registered ${email} for notifications`)
+      },
+      error => {
+        console.log('emailNotifications: error', error)
+      }
     )
-    .catch(
-      error => { console.log('emailNotifications: error', error) }
-    )
+    .catch(error => {
+      console.log('emailNotifications: error', error)
+    })
 }
 
 export default class Onboarding extends React.Component {
@@ -134,11 +142,10 @@ export default class Onboarding extends React.Component {
 
     this.setState({ seed })
 
-    encryptSeedWithPassword(password, seed)
-      .then(encryptedSeed => {
-        sendBackup(email, encryptedSeed)
-        cacheEncryptedSeed(username, encryptedSeed)
-      })
+    encryptSeedWithPassword(password, seed).then(encryptedSeed => {
+      sendBackup(email, encryptedSeed)
+      cacheEncryptedSeed(username, encryptedSeed)
+    })
 
     this.updateView(VIEWS.HOORAY)
   }
@@ -173,7 +180,8 @@ export default class Onboarding extends React.Component {
         Component: Verify,
         props: {
           email,
-          resend: this.submitEmailForVerification
+          resend: this.submitEmailForVerification,
+          next: () => this.updateView(VIEWS.PASSWORD)
         }
       },
       {
@@ -215,28 +223,10 @@ export default class Onboarding extends React.Component {
       }
     ]
 
-    const renderItems = items =>
-      items.map(({ show, props, Component }, i) => (
-        <Show key={i} when={view === show}>
-          <Spring
-            native
-            from={{ opacity: 0 }}
-            to={{ opacity: view === show ? 1 : 0 }}
-            config={{ tension: 2, friction: 3 }}
-          >
-            {styles => (
-              <animated.div style={styles}>
-                <Component {...props} style={styles} showing={view === show} />
-              </animated.div>
-            )}
-          </Spring>
-        </Show>
-      ))
-
     return (
       <PanelShell>
         <ProgressBar current={view} total={Object.keys(VIEWS).length} />
-        {renderItems(views)}
+        {renderItems(views, view)}
       </PanelShell>
     )
   }

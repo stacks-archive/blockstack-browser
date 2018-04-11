@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button } from '@components/styled/Button'
 
-const SeedInfo = ({ next }) => (
+const SeedInfo = ({ next, ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
@@ -12,12 +12,14 @@ const SeedInfo = ({ next }) => (
         pt={0}
       />
     )}
+    {...rest}
   >
     <Fragment>
       <PanelCard.Section pt={0} lineHeight={3}>
         <p>
           Your recovery seed is the primary method to recover or transfer your
-          ID to a new device. Things you'll need:{' '}pen, paper, and a secret hiding place.
+          ID to a new device. If anyone has your recovery seed, they will have
+          full access to your IDs.
         </p>
       </PanelCard.Section>
       <PanelCard.Section pt={3}>

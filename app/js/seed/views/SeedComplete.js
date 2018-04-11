@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button } from '@components/styled/Button'
 
-const SeedComplete = ({ next }) => (
+const SeedComplete = ({ next, ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
@@ -12,6 +12,7 @@ const SeedComplete = ({ next }) => (
         pt={0}
       />
     )}
+    {...rest}
   >
     <Fragment>
       <PanelCard.Section pt={3} lineHeight={3}>
