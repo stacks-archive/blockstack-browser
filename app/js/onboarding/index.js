@@ -1,5 +1,6 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
+import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
 import ProgressBar from '@components/ProgressBar'
 import { Email, Verify, Verified, Password, Username, Hooray } from './views'
@@ -98,7 +99,7 @@ function sendBackup(email, encryptedSeed) {
     })
 }
 
-export default class Onboarding extends React.Component {
+class Onboarding extends React.Component {
   state = {
     email: '',
     password: '',
@@ -231,3 +232,9 @@ export default class Onboarding extends React.Component {
     )
   }
 }
+
+Onboarding.propTypes = {
+  location: PropTypes.object
+}
+
+export default Onboarding

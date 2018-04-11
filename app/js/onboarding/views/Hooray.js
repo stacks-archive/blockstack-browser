@@ -19,6 +19,7 @@ const UserCard = styled.div`
 const UserCardDetails = styled.div`
   padding-left: 20px;
   max-width: calc(100% - 48px);
+  width: 100%;
 `
 
 const UserCardAvatar = styled.div`
