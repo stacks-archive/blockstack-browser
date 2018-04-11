@@ -122,6 +122,7 @@ export default class SeedContainer extends Component {
           previous: () => this.updateView(VIEWS.KEY_INFO),
           next: () => this.updateView(VIEWS.KEY_2),
           password,
+          completeSeed: seed,
           seed: seedList.first,
           set: 1
         }
@@ -133,6 +134,7 @@ export default class SeedContainer extends Component {
           previous: () => this.updateView(VIEWS.KEY_1),
           next: () => this.updateView(VIEWS.KEY_3),
           password,
+          completeSeed: seed,
           seed: seedList.second,
           set: 2
         }
@@ -144,6 +146,7 @@ export default class SeedContainer extends Component {
           previous: () => this.updateView(VIEWS.KEY_2),
           next: () => this.updateView(VIEWS.KEY_CONFIRM),
           password,
+          completeSeed: seed,
           seed: seedList.third,
           set: 3
         }

@@ -3,7 +3,7 @@ import { color, space } from 'styled-system'
 import styled, { css } from 'styled-components'
 import { colors } from '@components/styled/theme'
 
-const buttonTypes = ({ primary, secondary, invert }) => {
+const buttonTypes = ({ primary, secondary, invert, small }) => {
   if (primary) {
     return css`
       color: #ffffff;
@@ -16,6 +16,12 @@ const buttonTypes = ({ primary, secondary, invert }) => {
           background-color: #ffffff;
         `};
       box-shadow: 4px 2px 10px rgba(44, 150, 255, 0.4);
+
+      ${small &&
+        css`
+          padding: 5px;
+          font-size: 12px;
+        `};
     `
   }
   if (secondary) {
@@ -28,6 +34,12 @@ const buttonTypes = ({ primary, secondary, invert }) => {
           color: #ffffff;
           border: 1px solid #ffffff;
           background-color: transparent;
+        `};
+      ${small &&
+        css`
+          padding: 0;
+          border: none;
+          font-size: 12px;
         `};
     `
   }
@@ -58,6 +70,8 @@ const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+    ${space};
+
   ${Button}, ${ButtonLink}{
     margin-bottom: 0;
     width: auto;
@@ -68,6 +82,12 @@ const Buttons = styled.div`
   ${Button} + ${ButtonLink}{
     margin-top: 0;
   }
+        ${({ center }) =>
+          center &&
+          css`
+            justify-content: center;
+          `};
+  
 `
 
 export { Button, ButtonLink, Buttons }
