@@ -2,6 +2,7 @@ import React from 'react'
 import { color, space } from 'styled-system'
 import styled, { css } from 'styled-components'
 import { colors } from '@components/styled/theme'
+import { darken } from 'polished'
 
 const buttonTypes = ({ primary, secondary, invert, small }) => {
   if (primary) {
@@ -27,7 +28,7 @@ const buttonTypes = ({ primary, secondary, invert, small }) => {
   if (secondary) {
     return css`
       color: ${colors.grey[4]};
-      border: 1px solid ${colors.grey[1]};
+      border: 1px solid ${darken(0.09, colors.grey[1])};
       background-color: transparent;
       ${invert &&
         css`

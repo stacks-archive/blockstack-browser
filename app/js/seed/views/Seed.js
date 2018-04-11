@@ -79,14 +79,13 @@ class Seed extends React.Component {
       <PanelCard
         renderHeader={() => (
           <PanelCardHeader
-            icon="/images/onboarding/seed-1.png"
             title={
               <span>
                 Your secret recovery seed.<br />
                 <h6>Write down all words, in order.</h6>
               </span>
             }
-            pt={0}
+            pt={4}
           />
         )}
         {...rest}

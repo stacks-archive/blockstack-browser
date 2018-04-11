@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FastField, Form, Formik } from 'formik'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { EmailAlertIcon } from 'mdi-react'
+import { FastField, Form, Formik } from 'formik'
 import Yup from 'yup'
+import { Link } from 'react-router'
 import { Button } from '@components/styled/Button'
 
 const validationSchema = Yup.object({
@@ -12,7 +13,9 @@ const validationSchema = Yup.object({
     .required('A recovery email is required.')
 })
 
-const panelHeader = () => <PanelCardHeader appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png" />
+const panelHeader = () => (
+  <PanelCardHeader appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png" />
+)
 
 const Email = ({ next, updateValue, email, ...rest }) => (
   <PanelCard renderHeader={panelHeader} {...rest}>
@@ -28,11 +31,7 @@ const Email = ({ next, updateValue, email, ...rest }) => (
       render={({ errors, touched }) => (
         <Form>
           <label htmlFor="email">Email</label>
-          <FastField
-            name="email"
-            type="email"
-            placeholder="Recovery Email"
-          />
+          <FastField name="email" type="email" placeholder="Recovery Email" />
           {errors.email &&
             touched.email && (
               <PanelCard.Error
@@ -54,7 +53,9 @@ const Email = ({ next, updateValue, email, ...rest }) => (
     </PanelCard.Section>
     <PanelCard.Section pt={3}>
       <p>
-        <a href="#">Already have a Blockstack ID?</a>
+        <Link to="/sign-in">
+          <a href="#">Already have a Blockstack ID?</a>
+        </Link>
       </p>
     </PanelCard.Section>
   </PanelCard>

@@ -18,6 +18,9 @@ const Panel = styled.div`
   ${space};
   ${color};
   z-index: 5;
+  a {
+    text-decoration: none !important;
+  }
   @media (min-width: 800px) {
     padding: 20px;
     align-items: center;
@@ -37,7 +40,8 @@ const Card = styled.div`
   left: 0;
   ${space};
   ${color};
-  background: white;
+  background: rgba(0, 0, 0, 0.025);
+  overflow: hidden;
 
   @media (min-width: 800px) {
     max-width: ${mobileCardWidth}px;
@@ -301,6 +305,7 @@ const Header = styled.header`
   justify-content: center;
   flex-shrink: 0;
   border-bottom: 1px solid ${darken(0.05, colors.grey[1])};
+  background:white;
   ${space};
   @media (min-width: 800px) {
     padding-top: 18px;
