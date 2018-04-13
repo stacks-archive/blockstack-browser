@@ -208,7 +208,7 @@ const apps = {
         small: 'app-icon-coins-256x256.png',
         large: 'app-icon-coins-512x512.png'
       },
-      website: 'https://use.coinsapp.co',
+      website: 'https://coinsapp.co',
       launchLink: 'https://use.coinsapp.co',
       developer: 'Thomas Osmonson',
       status: 'user_ready_token',
