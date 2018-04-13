@@ -202,15 +202,15 @@ const apps = {
     }, {
       name: 'Coins',
       displayName: 'Coins',
-      description: '',
+      description: 'Beautiful, decentralized portfolio & coin tracking.',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-coins-256x256.png',
         large: 'app-icon-coins-512x512.png'
       },
-      website: 'http://use.coinsapp.co',
-      launchLink: 'http://use.coinsapp.co',
-      developer: 'Chase Wackerfuss',
+      website: 'https://use.coinsapp.co',
+      launchLink: 'https://use.coinsapp.co',
+      developer: 'Thomas Osmonson',
       status: 'user_ready_token',
       storageRequired: true
     }, {
