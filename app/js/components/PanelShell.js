@@ -4,24 +4,25 @@ import StyledPanel from '@styled/onboarding'
 import Show from '@components/Show'
 import { SyncIcon } from 'mdi-react'
 import { Spring, animated } from 'react-spring'
+import Spinner from '@components/styled/Spinner'
 
-    const renderItems = (items, view) =>
-      items.map(({ show, props, Component }, i) => (
-        <Show key={i} when={view === show}>
-          <Spring
-            native
-            from={{ opacity: 0 }}
-            to={{ opacity: view === show ? 1 : 0 }}
-            config={{ tension: 2, friction: 3 }}
-          >
-            {styles => (
-              <animated.div style={styles}>
-                <Component {...props} style={styles} showing={view === show} />
-              </animated.div>
-            )}
-          </Spring>
-        </Show>
-      ))
+const renderItems = (items, view) =>
+  items.map(({ show, props, Component }, i) => (
+    <Show key={i} when={view === show}>
+      <Spring
+        native
+        from={{ opacity: 0 }}
+        to={{ opacity: view === show ? 1 : 0 }}
+        config={{ tension: 2, friction: 3 }}
+      >
+        {styles => (
+          <animated.div style={styles}>
+            <Component {...props} style={styles} showing={view === show} />
+          </animated.div>
+        )}
+      </Spring>
+    </Show>
+  ))
 
 const PanelShell = ({ children, ...rest }) => (
   <StyledPanel {...rest} bg="grey.2">
@@ -76,9 +77,18 @@ const PanelCard = ({
   )
 }
 
-PanelCard.Section = StyledPanel.Card.Section
-PanelCard.InputOverlay = ({ text, children, ...rest }) => (
-  <StyledPanel.Card.Section>
+PanelCard.InputOverlay = ({
+  text,
+  children,
+  icon: { component: Icon, show },
+  ...rest
+}) => (
+  <StyledPanel.Card.Section inputIcon={show}>
+    {Icon && (
+      <StyledPanel.Card.InputIcon show={show}>
+        <Icon color="green" />
+      </StyledPanel.Card.InputIcon>
+    )}
     {children}
     <StyledPanel.Card.InputOverlay>{text}</StyledPanel.Card.InputOverlay>
   </StyledPanel.Card.Section>
@@ -92,6 +102,47 @@ PanelCard.Error = ({ icon, message }) => (
     <p>{message}</p>
   </StyledPanel.Card.ErrorMessage>
 )
+
+PanelCard.Section = StyledPanel.Card.Section
+PanelCard.Loading = ({ show, message }) =>
+  show && (
+    <Spring
+      from={{
+        opacity: 0
+      }}
+      to={{
+        opacity: 1
+      }}
+    >
+      {styles => (
+        <StyledPanel.Loading style={styles}>
+          <Spinner />
+          {message && (
+            <Spring
+              native
+              from={{
+                top: 20
+              }}
+              to={{
+                top: 0
+              }}
+            >
+              {textStyles => (
+                <animated.h5
+                  style={{
+                    paddingTop: '20px',
+                    ...textStyles
+                  }}
+                >
+                  {message}
+                </animated.h5>
+              )}
+            </Spring>
+          )}
+        </StyledPanel.Loading>
+      )}
+    </Spring>
+  )
 
 PanelShell.propTypes = {
   children: PropTypes.node.isRequired,

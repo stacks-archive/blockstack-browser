@@ -17,17 +17,25 @@ const SeedInfo = ({ next, ...rest }) => (
     <Fragment>
       <PanelCard.Section pt={0} lineHeight={3}>
         <p>
-          Your recovery seed is the primary method to recover or transfer your
-          ID to a new device. If anyone has your recovery seed, they will have
-          full access to your IDs.
+          Saving your secret recovery key is a reliable way to recover your
+          Blockstack ID.
+        </p>
+        <p>
+          Save your secret recovery key a secret place (we suggest writing it on
+          paper). Blockstack IDs are fully decentralized, which means anyone who
+          has the secret recovery key effectively owns the ID.
+        </p>
+        <p>
+          Your account is secure, but you need to write down your secret
+          recovery key.
         </p>
       </PanelCard.Section>
       <PanelCard.Section pt={3}>
         <Button onClick={next} primary>
-          I understand, let's get started.
+          View secret recovery key
         </Button>
         <Button onClick={next} secondary>
-          Remind me later
+          Do this later
         </Button>
       </PanelCard.Section>
     </Fragment>

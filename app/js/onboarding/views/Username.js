@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Navigation from '@components/Navigation'
 import { FastField, Form, Formik } from 'formik'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
-import { AccountRemoveIcon } from 'mdi-react'
+import { AccountRemoveIcon, CheckIcon } from 'mdi-react'
 import { Button } from '@components/styled/Button'
 
 const getUsernameStatus = async (username, sponsoredName = '.personal.id') => {
@@ -11,7 +11,7 @@ const getUsernameStatus = async (username, sponsoredName = '.personal.id') => {
     return null
   }
   const res = await fetch(
-    `https://core.blockstack.org/v1/names/${username}${sponsoredName}`
+    `https://core.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
   )
   const user = await res.json()
 
@@ -30,7 +30,8 @@ class Username extends React.Component {
   state = {
     search: 'initial',
     username: this.props.username || '',
-    confirm: 'has-not'
+    confirm: 'has-not',
+    isProcessing: false
   }
 
   validate = values => {
@@ -48,7 +49,7 @@ class Username extends React.Component {
       }
       return getUsernameStatus(values.username).then(status => {
         const errors = {}
-        if (status !== 'available') {
+        if (status !== 'available' || !status) {
           if (this.state.search !== 'taken') {
             this.setState({
               search: 'taken'
@@ -83,6 +84,7 @@ class Username extends React.Component {
         } else if (
           status === 'available' &&
           this.state.username === values.username &&
+          this.state.search !== 'initial' &&
           this.state.confirm === 'has-seen'
         ) {
           this.setState({
@@ -95,20 +97,35 @@ class Username extends React.Component {
     }
   }
 
+  processRegistration = async (username, next) => {
+    if (!this.state.isProcessing) {
+      this.setState({
+        isProcessing: true
+      })
+      return setTimeout(() => next(), 2150)
+    } else {
+      return null
+    }
+  }
+
   render() {
-    const {next, updateValue, username, previous, ...rest} = this.props
+    const { next, updateValue, username, previous, ...rest } = this.props
 
     return (
-      <PanelCard renderHeader={ panelHeader } { ...rest }>
-        <Navigation previous={ previous } next={ next }/>
-        { username && (
+      <PanelCard renderHeader={panelHeader} {...rest}>
+        <PanelCard.Loading
+          show={this.state.isProcessing}
+          message="Processing registration..."
+        />
+        <Navigation previous={previous} next={next} />
+        {username && (
           <Fragment>
             <Formik
-              initialValues={ {
+              initialValues={{
                 username
-              } }
-              validate={ this.validate }
-              onSubmit={ values => {
+              }}
+              validate={this.validate}
+              onSubmit={async values => {
                 if (
                   this.state.search !== 'available' ||
                   this.state.username !== values.username
@@ -122,40 +139,43 @@ class Username extends React.Component {
                 ) {
                   // Process name registration here
                   updateValue('username', values.username)
-                  next()
+                  await this.processRegistration(values.username, next)
                 }
-              } }
-              validateOnChange={ false }
-              validateOnBlur={ false }
-              render={ ({errors, touched}) => (
+              }}
+              validateOnChange={false}
+              validateOnBlur={false}
+              render={({ errors, touched }) => (
                 <Form>
                   <label htmlFor="username">Username</label>
-                  <PanelCard.InputOverlay text=".blockstack.id">
-                    <FastField name="username" type="text" autoComplete="off"/>
+                  <PanelCard.InputOverlay
+                    text=".blockstack.id"
+                    icon={{
+                      component: CheckIcon,
+                      show: this.state.search === 'available'
+                    }}
+                  >
+                    <FastField name="username" type="text" autoComplete="off" />
                   </PanelCard.InputOverlay>
-                  { errors.username &&
-                  touched.username && (
-                    <PanelCard.Error
-                      icon={ <AccountRemoveIcon/> }
-                      message={ errors.username }
-                    />
-                  ) }
+                  {errors.username &&
+                    touched.username && (
+                      <PanelCard.Error
+                        icon={<AccountRemoveIcon />}
+                        message={errors.username}
+                      />
+                    )}
                   <Button type="submit" primary>
-                    { this.state.search === 'available'
-                      ? `${this.state.username} is Available! Continue →`
-                      : 'Search' }
+                    {this.state.search === 'available'
+                      ? `Continue →`
+                      : 'Check availability'}
                   </Button>
                 </Form>
-              ) }
+              )}
             />
-            <PanelCard.Section pt={ 3 } lineHeight={ 3 }>
-              <p>
-                Your ID for the decentralized internet. We simplify data
-                ownership and give you back control. <a href="#">Learn more.</a>
-              </p>
+            <PanelCard.Section pt={3} lineHeight={3}>
+              <p>Your unique, public identity for  any Blockstack&nbsp;app.</p>
             </PanelCard.Section>
           </Fragment>
-        ) }
+        )}
       </PanelCard>
     )
   }

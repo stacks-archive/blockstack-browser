@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
-import ProgressBar from '@components/ProgressBar'
-import { Options, MagicLink, EnterSeed } from './views'
+import { EnterSeed, MagicLink, Options } from './views'
 
 const VIEWS = {
   INDEX: 0,
@@ -36,15 +35,16 @@ class Onboarding extends React.Component {
         props: {
           options: [
             {
-              title: 'Magic Link & Password',
+              title: 'Magic Link',
               description:
-                'Sign in via the Magic Link that was emailed to you during sign up.',
+                'You’ll need your password (the password you entered when the link was created).',
               action: () => this.updateView(VIEWS.MAGIC_LINK)
             },
             {
-              title: 'Sign in with 12 word Seed',
+              title: 'Secret Recovery Key',
               description:
-                'Forgot your password? Sign in by entering your 12 word seed phrase.',
+                'You’ll need your Secret Recovery Key (the 12 words' +
+                ' you wrote down on paper and then saved in a secret place).',
               action: () => this.updateView(VIEWS.ENTER_SEED)
             }
           ]

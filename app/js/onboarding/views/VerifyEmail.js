@@ -13,14 +13,16 @@ const Verify = ({ email, resend, next, ...rest }) => (
   <PanelCard renderHeader={panelHeader} {...rest} onClick={() => next()}>
     <PanelCard.Section center>
       <p>
-        We sent an email to <strong>{email}</strong> for verification. Please
-        check your inbox to continue setting up your account.
+        We sent an email to <strong>{email}</strong> to confirm delivery. Please
+        check your inbox and follow the link to continue.
       </p>
     </PanelCard.Section>
     <PanelCard.Section pt={2} center>
       <p>
         If you can't find the email, please check your spam or{' '}
-        <a href="#" onClick={resend}>resend verification email.</a>
+        <a href="#" onClick={resend}>
+          resend verification email.
+        </a>
       </p>
     </PanelCard.Section>
   </PanelCard>

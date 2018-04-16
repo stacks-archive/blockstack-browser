@@ -40,7 +40,7 @@ const Card = styled.div`
   left: 0;
   ${space};
   ${color};
-  background: rgba(0, 0, 0, 0.025);
+  background: white;
   overflow: hidden;
 
   @media (min-width: 800px) {
@@ -97,6 +97,13 @@ const Section = styled.div`
       justify-content: center;
       text-align: center;
     `};
+  ${({ inputIcon }) =>
+    inputIcon &&
+    css`
+      input {
+        padding-left: 46px !important;
+      }
+    `};
 `
 const Content = styled.div`
   flex-grow: 1;
@@ -148,6 +155,7 @@ const Content = styled.div`
       border-radius: 4px;
       border-bottom-width: 2px;
       border-bottom-color: ${darken(0.08, colors.grey[1])};
+      transition: all 0.15s ease-in-out;
       &:focus {
         border-bottom-color: ${colors.blue};
       }
@@ -304,8 +312,7 @@ const Header = styled.header`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-bottom: 1px solid ${darken(0.05, colors.grey[1])};
-  background:white;
+  background: white;
   ${space};
   @media (min-width: 800px) {
     padding-top: 18px;
@@ -325,16 +332,51 @@ const Header = styled.header`
     `};
 `
 
+const InputIcon = styled.div`
+  position: absolute;
+  top: 13px;
+  transition: all 0.15s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+  left: 5px;
+
+  ${({ show }) =>
+    show &&
+    css`
+      left: 14px;
+      opacity: 1;
+    `};
+`
+
+const Loading = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 9999;
+  & > * {
+    position: relative;
+  }
+`
+
 Panel.Card = Card
 Panel.Card.Title = Title
 Panel.Card.IconWrapper = IconWrapper
 Panel.Card.Header = Header
 Panel.Card.Content = Content
 Panel.Card.InputOverlay = InputOverlay
+Panel.Card.InputIcon = InputIcon
 Panel.Card.Section = Section
 Panel.Card.ErrorMessage = ErrorMessage
 Panel.Card.ErrorMessage.Icon = Icon
 Panel.Progress = Progress
 Panel.Progress.Dot = Dot
+Panel.Loading = Loading
 
 export default Panel

@@ -62,7 +62,7 @@ const UserID = styled.h4`
 `
 
 const Hooray = ({ goToApp, goToRecovery, username, ...rest }) => (
-  <PanelCard variant="welcome" {...rest}>
+  <PanelCard {...rest}>
     <PanelCard.Section pt={5} center>
       <UserCard>
         <UserCardAvatar>
@@ -77,18 +77,17 @@ const Hooray = ({ goToApp, goToRecovery, username, ...rest }) => (
       </UserCard>
     </PanelCard.Section>
     <PanelCard.Section pt={4} center>
-      <Button primary invert onClick={() => goToApp()}>
+      <Button primary onClick={() => goToApp()}>
         Continue to Stealthy.im
       </Button>
-      <Button secondary invert onClick={() => goToRecovery()}>
-        Write down recovery seed
+      <Button secondary onClick={() => goToRecovery()}>
+        Write down secret recovery key
       </Button>
     </PanelCard.Section>
     <PanelCard.Section pt={4} center>
       <p>
-        Your ID is ready. You need to record your secret recovery
-        seed&mdash;you'll need it to login to Blockstack on new devices, or to
-        recover your ID. <a href="#">Learn more.</a>
+        Your ID is ready. You need to record your secret recovery key—you’ll
+        need it to add Blockstack to new devices or recover.
       </p>
     </PanelCard.Section>
   </PanelCard>

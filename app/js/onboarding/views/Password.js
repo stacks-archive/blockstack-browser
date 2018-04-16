@@ -69,12 +69,6 @@ const Password = ({ next, updateValue, password, ...rest }) => (
           </Form>
         )}
       />
-      <PanelCard.Section pt={3} lineHeight={3}>
-        <p>
-          This password will be used as part of the encryption of your ID.{' '}
-          <a href="#">Learn more.</a>
-        </p>
-      </PanelCard.Section>
     </Fragment>
   </PanelCard>
 )

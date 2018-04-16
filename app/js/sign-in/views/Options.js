@@ -28,14 +28,11 @@ const Card = styled.div`
 const Options = ({ options, ...rest }) => (
   <PanelCard
     renderHeader={() => (
-      <PanelCardHeader title="Already have a Blockstack ID?" pt={0} />
+      <PanelCardHeader title="Restore your Blockstack ID" pt={0} />
     )}
     {...rest}
   >
     <Fragment>
-      <PanelCard.Section pt={0}>
-        <p>Please select a method below to sign in.</p>
-      </PanelCard.Section>
       <PanelCard.Section pt={2}>
         {options.map((option, i) => (
           <Card key={i} onClick={option.action} p={3}>

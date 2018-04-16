@@ -31,7 +31,7 @@ const Email = ({ next, updateValue, email, ...rest }) => (
       render={({ errors, touched }) => (
         <Form>
           <label htmlFor="email">Email</label>
-          <FastField name="email" type="email" placeholder="Recovery Email" />
+          <FastField name="email" type="email" placeholder="Enter an Email" />
           {errors.email &&
             touched.email && (
               <PanelCard.Error
@@ -47,8 +47,7 @@ const Email = ({ next, updateValue, email, ...rest }) => (
     />
     <PanelCard.Section pt={3} lineHeight={3}>
       <p>
-        We use your email to provide you with recovery options for your ID,
-        nothing else. <a href="#">Learn more.</a>
+        Blockstack gives you control over fundamental digital rights: Identity, data ownership, privacy, and security.
       </p>
     </PanelCard.Section>
     <PanelCard.Section pt={3}>
