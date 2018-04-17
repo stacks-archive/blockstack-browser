@@ -42,7 +42,7 @@ export function decryptKeychain(password, encryptedBackupPhrase) {
     plaintextBuffer => {
       const backupPhrase = plaintextBuffer.toString()
       const seed = bip39.mnemonicToSeed(backupPhrase)
-      const wallet = new BlockstackWallet(seed)
+      const wallet = BlockstackWallet.fromSeedBuffer(seed)
       logger.trace('decryptMasterKeychain: decrypted!')
       return wallet
     })

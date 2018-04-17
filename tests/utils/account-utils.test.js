@@ -14,7 +14,7 @@ const backupPhrase = 'sound idle panel often situate develop unit text design an
 describe('account-utils', () => {
   beforeEach(() => {
     seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-    wallet = new BlockstackWallet(seedBuffer)
+    wallet = BlockstackWallet.fromSeedBuffer(seedBuffer)
   })
 
   afterEach(() => {

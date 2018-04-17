@@ -25,7 +25,7 @@ function createAccount(encryptedBackupPhrase: string, seedBuffer: Buffer,
                        identitiesToGenerate: number) : Object {
   logger.debug(`createAccount: identitiesToGenerate: ${identitiesToGenerate}`)
 
-  const wallet = new BlockstackWallet(seedBuffer)
+  const wallet = BlockstackWallet.fromSeedBuffer(seedBuffer)
 
   const identityPublicKeychain = wallet.getIdentityPublicKeychain()
   const bitcoinPublicKeychain = wallet.getBitcoinPublicKeychain()
