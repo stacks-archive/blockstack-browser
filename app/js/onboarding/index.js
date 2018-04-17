@@ -119,8 +119,8 @@ class Onboarding extends React.Component {
 
   updateURL = view => {
     const historyChange = slug => {
-      if (this.props.location.pathname !== `/onboarding/${slug}`) {
-        return this.props.router.push(`/onboarding/${slug}`, this.state)
+      if (this.props.location.pathname !== `/sign-up/${slug}`) {
+        return this.props.router.push(`/sign-up/${slug}`, this.state)
       } else {
         return null
       }

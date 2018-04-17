@@ -45,9 +45,7 @@ const Options = ({ options, ...rest }) => (
 
       <PanelCard.Section pt={4}>
         <p>
-          <Link to="/onboarding">
-            <a href="#">Don't have a Blockstack ID?</a>
-          </Link>
+          <Link to="/sign-up">Don't have a Blockstack ID?</Link>
         </p>
       </PanelCard.Section>
     </Fragment>

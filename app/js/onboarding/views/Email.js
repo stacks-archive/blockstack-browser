@@ -47,14 +47,13 @@ const Email = ({ next, updateValue, email, ...rest }) => (
     />
     <PanelCard.Section pt={3} lineHeight={3}>
       <p>
-        Blockstack gives you control over fundamental digital rights: Identity, data ownership, privacy, and security.
+        Blockstack gives you control over fundamental digital rights: Identity,
+        data ownership, privacy, and security.
       </p>
     </PanelCard.Section>
     <PanelCard.Section pt={3}>
       <p>
-        <Link to="/sign-in">
-          <a href="#">Already have a Blockstack ID?</a>
-        </Link>
+        <Link to="/sign-in">Already have a Blockstack ID?</Link>
       </p>
     </PanelCard.Section>
   </PanelCard>

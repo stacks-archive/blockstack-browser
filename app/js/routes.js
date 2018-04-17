@@ -90,8 +90,8 @@ export default (
       </Route>
 
       <Route path="/auth" component={AuthPage} />
-      <Route path="/onboarding" component={OnboardingPage} />
-      <Route path="/onboarding/*" component={OnboardingPage} />
+      <Route path="/sign-up" component={OnboardingPage} />
+      <Route path="/sign-up/*" component={OnboardingPage} />
       <Route path="/seed" component={SeedPage} />
       <Route path="/sign-in" component={SignInPage} />
       <Route path="/sign-in/*" component={SignInPage} />
