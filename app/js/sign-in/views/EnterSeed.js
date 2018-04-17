@@ -4,10 +4,11 @@ import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button, ButtonLink, Buttons } from '@components/styled/Button'
 import { FastField, Form, Formik } from 'formik'
 import Yup from 'yup'
+import { TextboxPasswordIcon } from 'mdi-react'
 
 const validationSchema = Yup.object({
   key: Yup.string()
-    .matches(/^ *\w+(?: +\w+){10,}$/, 'This seems to be less than 12 words')
+    .matches(/^ *\w+(?: +\w+){11,}$/, 'This seems to be less than 12 words')
     .required('Please enter your 12 word recovery key')
 })
 
@@ -55,11 +56,14 @@ class Options extends React.Component {
                   <FastField
                     name="key"
                     type="text"
-                    placeholder="12 word seed phrase"
+                    placeholder="12 word recovery key"
                   />
                   {errors.key &&
                     touched.key && (
-                      <PanelCard.Error icon={null} message={errors.key} />
+                      <PanelCard.Error
+                        icon={<TextboxPasswordIcon />}
+                        message={errors.key}
+                      />
                     )}
                   <Buttons>
                     <ButtonLink onClick={() => previous()} secondary>

@@ -7395,9 +7395,9 @@ md5@^2.1.0:
     crypt "~0.0.1"
     is-buffer "~1.1.1"
 
-mdi-react@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/mdi-react/-/mdi-react-3.0.0.tgz#9e16c7f13fc39eb4510153f4762f9613201f2db6"
+mdi-react@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/mdi-react/-/mdi-react-3.1.0.tgz#020ba8e2f509f70a1c47918ee6fee15b773849ba"
 
 media-typer@0.3.0:
   version "0.3.0"
