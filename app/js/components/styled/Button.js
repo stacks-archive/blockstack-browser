@@ -21,8 +21,7 @@ const buttonTypes = ({ primary, secondary, invert, small }) => {
       &:hover {
         @media (min-width: 800px) {
           background-color: ${darken(0.03, 'rgb(44, 150, 255)')};
-          box-shadow: 4px 2px 20px
-            rgba(44, 150, 255, 0.58);
+          box-shadow: 4px 2px 20px rgba(44, 150, 255, 0.58);
         }
       }
 
@@ -56,6 +55,7 @@ const buttonTypes = ({ primary, secondary, invert, small }) => {
           padding: 0;
           border: none;
           font-size: 12px;
+          box-shadow: none;
         `};
     `
   }

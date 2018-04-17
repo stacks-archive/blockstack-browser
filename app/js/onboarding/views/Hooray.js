@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { PanelCard } from '@components/PanelShell'
+import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button } from '@components/styled/Button'
 import { AccountCircleIcon } from 'mdi-react'
 import styled from 'styled-components'
@@ -61,9 +61,16 @@ const UserID = styled.h4`
   text-overflow: ellipsis;
 `
 
+const panelHeader = () => (
+  <PanelCardHeader
+    title="Welcome to Blockstack"
+    appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
+    pt={4}
+  />
+)
 const Hooray = ({ goToApp, goToRecovery, username, ...rest }) => (
-  <PanelCard {...rest}>
-    <PanelCard.Section pt={5} center>
+  <PanelCard {...rest} renderHeader={panelHeader}>
+    <PanelCard.Section pt={2} center>
       <UserCard>
         <UserCardAvatar>
           <div>

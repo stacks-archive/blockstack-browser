@@ -54,6 +54,7 @@ const Card = styled.div`
     top: 60px;
     min-height: 0;
     border-radius: 4px;
+    margin-bottom: 60px;
   }
   ${({ showing }) =>
     !showing &&

@@ -23,7 +23,7 @@ const panelHeader = () => (
     appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
     variant="small"
     title="Choose a username"
-    pt={3}
+    pt={4}
   />
 )
 
