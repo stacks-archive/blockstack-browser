@@ -82,7 +82,8 @@ const Restored = ({
     </PanelCard.Section>
     <PanelCard.Section pt={4} center>
       <p>
-        Your ID has been restored. You can now sign into apps with the account {username}.blockstack.id
+        Your ID has been restored. You can now sign into apps with the account{' '}
+        {username}.blockstack.id
       </p>
     </PanelCard.Section>
     <PanelCard.Section pt={4} pb={4} center>
@@ -94,9 +95,9 @@ const Restored = ({
 )
 
 Restored.propTypes = {
-  goToApp: PropTypes.func.isRequired,
-  goToRecovery: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired
+  goToApp: PropTypes.func,
+  goToRecovery: PropTypes.func,
+  username: PropTypes.string
 }
 
 export default Restored

@@ -73,7 +73,8 @@ class Onboarding extends React.Component {
         show: VIEWS.ENTER_SEED,
         Component: EnterSeed,
         props: {
-          previous: () => this.updateView(VIEWS.INDEX)
+          previous: () => this.updateView(VIEWS.INDEX),
+          next: () => this.updateView(VIEWS.RESTORED)
         }
       },
       {
