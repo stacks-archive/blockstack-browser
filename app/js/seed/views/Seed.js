@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button, Buttons } from '@components/styled/Button'
+import { Transition } from 'react-spring'
 
 import styled from 'styled-components'
 
@@ -18,6 +19,7 @@ const Line = styled.div`
   align-items: center;
   padding-bottom: 28px;
   width: 200px;
+  position: relative;
 `
 
 const Number = styled.div`
@@ -63,7 +65,17 @@ class Seed extends React.Component {
   }
 
   render() {
-    const { next, previous, seed, completeSeed, set, ...rest } = this.props
+    const {
+      next,
+      previous,
+      seed = [],
+      completeSeed = ' ',
+      set,
+      ...rest
+    } = this.props
+    if (!seed || !seed.length || seed === null) {
+      return null
+    }
     const multiplier = () => {
       switch (set) {
         case 2:
@@ -94,16 +106,29 @@ class Seed extends React.Component {
           <HiddenInput id="copy-seed" value={completeSeed} />
           <PanelCard.Section pt={0} lineHeight={3}>
             <Words>
-              {seed &&
-                seed.map(
-                  (word, i) =>
-                    word && (
-                      <Line key={word}>
-                        <Number>#{i + multiplier()}</Number>{' '}
-                        <Word>{word.toLowerCase()}</Word>
-                      </Line>
-                    )
-                )}
+              {seed.length > 1 ? (
+                <Transition
+                  from={{
+                    opacity: 0,
+                    top: 20
+                  }}
+                  leave={{
+                    opacity: 0,
+                    top: 20
+                  }}
+                  enter={{
+                    opacity: 1,
+                    top: 0
+                  }}
+                  keys={seed.map(item => item)}
+                >
+                  {seed.map((item, i) => styles => (
+                    <Line key={item} style={styles}>
+                      <Number>#{i + multiplier()}</Number> <Word>{item}</Word>
+                    </Line>
+                  ))}
+                </Transition>
+              ) : null}
             </Words>
           </PanelCard.Section>
           <PanelCard.Section pt={3}>
@@ -115,7 +140,7 @@ class Seed extends React.Component {
                 Next
               </Button>
             </Buttons>
-            <Buttons center pt={2}>
+            <Buttons center pt={4}>
               <Button onClick={() => this.copySeed()} secondary small>
                 {this.state.copied ? 'Copied!' : 'Copy Entire Seed'}
               </Button>

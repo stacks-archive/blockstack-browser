@@ -5,6 +5,7 @@ import { darken } from 'polished'
 import { colors } from '@components/styled/theme'
 import { space } from 'styled-system'
 import { Link } from 'react-router'
+import { Button, Buttons } from '@components/styled/Button'
 
 const Card = styled.div`
   border-radius: 8px;
@@ -28,19 +29,20 @@ const Card = styled.div`
 const Options = ({ options, ...rest }) => (
   <PanelCard
     renderHeader={() => (
-      <PanelCardHeader title="Restore your Blockstack ID" pt={0} />
+      <PanelCardHeader title="Restore your Blockstack ID" pt={4} />
     )}
     {...rest}
   >
     <Fragment>
-      <PanelCard.Section pt={2}>
-        {options.map((option, i) => (
-          <Card key={i} onClick={option.action} p={3}>
-            <h5>{option.title}</h5>
-            <p>{option.description}</p>
-          </Card>
-        ))}
-      </PanelCard.Section>
+      {options.map((option, i) => (
+        <PanelCard.Section pt={2} key={i}>
+          <Button primary onClick={option.action}>
+            {option.title}
+          </Button>
+          <p style={{ paddingTop: '18px' }}>{option.description}</p>
+        </PanelCard.Section>
+      ))}
+
       <PanelCard.Section pt={4}>
         <p>
           <Link to="/onboarding">

@@ -54,7 +54,7 @@ const SeedDecrypt = ({ decryptSeed, ...rest }) => (
                   message={errors.passwordConfirm}
                 />
               ) : null}
-              <p>The password you used when you created your Blockstack ID.</p>
+              <p>The password you entered when created this Blockstack ID.</p>
               <Button type="submit" primary>
                 Continue
               </Button>

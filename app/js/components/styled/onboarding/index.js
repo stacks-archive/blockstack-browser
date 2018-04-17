@@ -4,7 +4,7 @@ import { darken } from 'polished'
 import { color, lineHeight, space } from 'styled-system'
 import { colors } from '@components/styled/theme'
 
-const mobileCardWidth = 400
+const mobileCardWidth = 420
 
 const Panel = styled.div`
   height: 100vh;
@@ -50,9 +50,9 @@ const Card = styled.div`
     box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.05);
     left: calc(50% - ${mobileCardWidth / 2}px);
     border: 1px solid ${darken(0.05, colors.grey[1])};
-    max-height: 80vh;
+    max-height: none;
     top: 60px;
-    min-height: 500px;
+    min-height: 0;
     border-radius: 4px;
   }
   ${({ showing }) =>
@@ -314,8 +314,10 @@ const Header = styled.header`
   flex-shrink: 0;
   background: white;
   ${space};
-  @media (min-width: 800px) {
-    padding-top: 18px;
+
+  h3 {
+    padding-left: 20px;
+    padding-right: 20px;
   }
   ${({ variant }) =>
     variant === 'small' &&

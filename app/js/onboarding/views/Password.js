@@ -20,6 +20,7 @@ const panelHeader = () => (
     appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
     variant="small"
     title="Create a password"
+    pt={3}
   />
 )
 

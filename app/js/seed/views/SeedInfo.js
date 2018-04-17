@@ -7,7 +7,7 @@ const SeedInfo = ({ next, ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
-        title={'Backup your secret recovery seed'}
+        title="Save your secret recovery key forever"
         icon="/images/onboarding/seed-1.png"
         pt={0}
       />

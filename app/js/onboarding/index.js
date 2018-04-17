@@ -1,10 +1,11 @@
 import React from 'react'
-import { browserHistory } from 'react-router'
+import { browserHistory, withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
 import ProgressBar from '@components/ProgressBar'
 import { Email, Verify, Verified, Password, Username, Hooray } from './views'
 import { encrypt } from '@utils/encryption-utils'
+
 import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
 const VIEWS = {
@@ -114,6 +115,33 @@ class Onboarding extends React.Component {
       this.setState({ email: location.query.verified })
       this.updateView(VIEWS.EMAIL_VERIFIED)
     }
+  }
+
+  updateURL = view => {
+    const historyChange = slug => {
+      if (this.props.location.pathname !== `/onboarding/${slug}`) {
+        return this.props.router.push(`/onboarding/${slug}`, this.state)
+      } else {
+        return null
+      }
+    }
+
+    switch (view) {
+      case VIEWS.EMAIL_VERIFY:
+        return historyChange('verify')
+      case VIEWS.PASSWORD:
+        return historyChange('password')
+      case VIEWS.USERNAME:
+        return historyChange('username')
+      case VIEWS.HOORAY:
+        return historyChange('success')
+      default:
+        return null
+    }
+  }
+
+  componentDidUpdate() {
+    this.updateURL(this.state.view)
   }
 
   updateValue = (key, value) => {
@@ -234,7 +262,8 @@ class Onboarding extends React.Component {
 }
 
 Onboarding.propTypes = {
-  location: PropTypes.object
+  location: PropTypes.object,
+  router: PropTypes.object
 }
 
-export default Onboarding
+export default withRouter(Onboarding)

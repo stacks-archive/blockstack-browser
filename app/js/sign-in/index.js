@@ -1,13 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
-import { EnterSeed, MagicLink, Options } from './views'
+import { EnterSeed, MagicLink, Options, Restore, Restored } from './views'
 
 const VIEWS = {
   INDEX: 0,
   MAGIC_LINK: 1,
   ENTER_SEED: 2,
-  LOCAL_SEED: 3
+  LOCAL_SEED: 3,
+  RESTORE: 4,
+  RESTORED: 5
 }
 
 class Onboarding extends React.Component {
@@ -16,7 +18,16 @@ class Onboarding extends React.Component {
     password: '',
     username: '',
     seed: '',
+    encryptedSeed: '',
     view: VIEWS.INDEX
+  }
+
+  componentWillMount() {
+    const { location } = this.props
+    if (location.query.seed) {
+      this.setState({ encryptedSeed: location.query.seed })
+      this.updateView(VIEWS.RESTORE)
+    }
   }
 
   updateValue = (key, value) => {
@@ -57,11 +68,27 @@ class Onboarding extends React.Component {
           previous: () => this.updateView(VIEWS.INDEX)
         }
       },
+
       {
         show: VIEWS.ENTER_SEED,
         Component: EnterSeed,
         props: {
           previous: () => this.updateView(VIEWS.INDEX)
+        }
+      },
+      {
+        show: VIEWS.RESTORE,
+        Component: Restore,
+        props: {
+          previous: () => this.updateView(VIEWS.INDEX),
+          next: () => this.updateView(VIEWS.RESTORED)
+        }
+      },
+      {
+        show: VIEWS.RESTORED,
+        Component: Restored,
+        props: {
+          next: () => console.log('go to app')
         }
       }
     ]

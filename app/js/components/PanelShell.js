@@ -48,7 +48,7 @@ const PanelCardHeader = ({
     </StyledPanel.Card.IconWrapper>
   )
   return (
-    <StyledPanel.Card.Header p={p} pt={pt} pb={pb} variant={variant} {...rest}>
+    <StyledPanel.Card.Header {...rest} p={p} pt={pt} pb={pb} variant={variant} >
       {icon && (
         <StyledPanel.Card.IconWrapper>
           {appIcon ? AppIcon : <img src={icon} />}

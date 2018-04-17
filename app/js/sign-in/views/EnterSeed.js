@@ -34,7 +34,7 @@ const validationSchema = Yup.object({
 const Options = ({ previous, ...rest }) => (
   <PanelCard
     renderHeader={() => (
-      <PanelCardHeader title="Enter your 12 Word Seed" pt={0} />
+      <PanelCardHeader title="Enter your 12 Word Seed" pt={4} />
     )}
     {...rest}
   >
