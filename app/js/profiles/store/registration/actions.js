@@ -90,7 +90,14 @@ function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paym
     return Promise.reject('Missing payment key')
   }
 
-  const compressedKey = `${paymentKey}01`
+  let compressedKey = paymentKey
+  if (paymentKey.length === 64) {
+    compressedKey = `${paymentKey}01`
+  }
+  if (compressedKey.length !== 66) {
+    return Promise.reject(new Error(`Invalid paymentKey length: ${paymentKey.length}`))
+  }
+
   const coercedAddress = myNet.coerceAddress(ownerAddress)
 
   let preorderTx = ''

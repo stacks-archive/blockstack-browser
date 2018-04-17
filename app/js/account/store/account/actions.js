@@ -1,39 +1,36 @@
-import { HDNode } from 'bitcoinjs-lib'
+/* @flow */
+
 import bip39 from 'bip39'
 import { randomBytes } from 'crypto'
 import {
   authorizationHeaderValue,
   btcToSatoshis,
   satoshisToBtc,
-  deriveIdentityKeyPair,
   encrypt,
-  getIdentityPrivateKeychain,
-  getBitcoinPrivateKeychain,
-  getIdentityOwnerAddressNode,
-  getBitcoinAddressNode,
   getInsightUrl
 } from '../../../utils'
 import { isCoreEndpointDisabled } from '../../../utils/window-utils'
-import { transactions, config, network } from 'blockstack'
+import { transactions, config, network, BlockstackWallet } from 'blockstack'
 
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
 
+import type { Dispatch } from 'redux'
+import type { IdentityKeyPair } from 'blockstack'
+
 const logger = log4js.getLogger('account/store/account/actions.js')
 
-function createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate) {
+function createAccount(encryptedBackupPhrase: string, seedBuffer: Buffer,
+                       identitiesToGenerate: number) : Object {
   logger.debug(`createAccount: identitiesToGenerate: ${identitiesToGenerate}`)
-  const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
-  const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(masterKeychain)
 
-  const identityPublicKeychainNode = identityPrivateKeychainNode.neutered()
-  const identityPublicKeychain = identityPublicKeychainNode.toBase58()
+  const wallet = new BlockstackWallet(seedBuffer)
 
-  const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
-  const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
+  const identityPublicKeychain = wallet.getIdentityPublicKeychain()
+  const bitcoinPublicKeychain = wallet.getBitcoinPublicKeychain()
 
-  const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
+  const firstBitcoinAddress = wallet.getBitcoinAddress(0)
 
   const identityAddresses = []
   const identityKeypairs = []
@@ -41,11 +38,7 @@ function createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenera
   // We pre-generate a number of identity addresses so that we
   // don't have to prompt the user for the password on each new profile
   for (let addressIndex = 0; addressIndex < identitiesToGenerate; addressIndex++) {
-    const identityOwnerAddressNode = getIdentityOwnerAddressNode(
-      identityPrivateKeychainNode,
-      addressIndex
-    )
-    const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
+    const identityKeyPair = wallet.getIdentityKeyPair(addressIndex, true)
     identityKeypairs.push(identityKeyPair)
     identityAddresses.push(identityKeyPair.address)
     logger.debug(`createAccount: identity index: ${addressIndex}`)
@@ -84,7 +77,7 @@ function deleteAccount() {
   }
 }
 
-function updateBackupPhrase(encryptedBackupPhrase) {
+function updateBackupPhrase(encryptedBackupPhrase: string) {
   return {
     type: types.UPDATE_BACKUP_PHRASE,
     encryptedBackupPhrase
@@ -145,14 +138,14 @@ function updateViewedRecoveryCode() {
 
 function displayedRecoveryCode() {
   logger.trace('displayedRecoveryCode')
-  return dispatch => {
+  return (dispatch: Dispatch<*>): void => {
     dispatch(updateViewedRecoveryCode())
   }
 }
 
-function emailNotifications(email, optIn) {
+function emailNotifications(email: string, optIn: boolean) {
   logger.debug(`emailNotifications: ${email}`)
-  return dispatch => {
+  return (dispatch: Dispatch<*>): Promise<*> => {
     dispatch(promptedForEmail(email))
     const requestHeaders = {
       Accept: 'application/json',
@@ -192,20 +185,20 @@ function emailNotifications(email, optIn) {
 
 function skipEmailBackup() {
   logger.trace('skipEmailBackup')
-  return dispatch => {
+  return (dispatch: Dispatch<*>): void => {
     dispatch(promptedForEmail())
   }
 }
 
 function storageIsConnected() {
   logger.trace('storageConnected')
-  return dispatch => {
+  return (dispatch: Dispatch<*>): void => {
     dispatch(connectedStorage())
   }
 }
 
-function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
-  return dispatch => {
+function refreshCoreWalletBalance(addressBalanceUrl: string, coreAPIPassword: string) {
+  return (dispatch: Dispatch<*>): void => {
     if (isCoreEndpointDisabled(addressBalanceUrl)) {
       logger.debug('Mocking core wallet balance in webapp build')
       dispatch(updateCoreWalletBalance(0))
@@ -229,8 +222,8 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   }
 }
 
-function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
-  return dispatch => {
+function getCoreWalletAddress(walletPaymentAddressUrl: string, coreAPIPassword: string) {
+  return (dispatch: Dispatch<*>): void => {
     if (isCoreEndpointDisabled(walletPaymentAddressUrl)) {
       logger.error('Cannot use core wallet if core is disable')
       return
@@ -251,18 +244,18 @@ function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
 }
 
 function resetCoreWithdrawal() {
-  return dispatch => {
+  return (dispatch: Dispatch<*>): void => {
     dispatch(resetCoreBalanceWithdrawal())
   }
 }
 
 function withdrawBitcoinClientSide(
-  regTestMode,
-  paymentKey,
-  recipientAddress,
-  amountBTC
+  regTestMode: boolean,
+  paymentKey: string,
+  recipientAddress: string,
+  amountBTC: number
 ) {
-  return dispatch => {
+  return (dispatch: Dispatch<*>): void => {
     if (regTestMode) {
       logger.trace('Using regtest network')
       config.network = network.defaults.LOCAL_REGTEST
@@ -270,7 +263,7 @@ function withdrawBitcoinClientSide(
       config.network.blockstackAPIUrl = 'http://localhost:6270'
       recipientAddress = config.network.coerceAddress(recipientAddress)
     }
-    dispatch(withdrawingCoreBalance(recipientAddress, amountBTC))
+    dispatch(withdrawingCoreBalance(recipientAddress))
 
     const amountSatoshis = Math.floor(amountBTC * 1e8)
 
@@ -290,13 +283,13 @@ function withdrawBitcoinClientSide(
 }
 
 function withdrawBitcoinFromCoreWallet(
-  coreWalletWithdrawUrl,
-  recipientAddress,
-  coreAPIPassword,
-  amount = null,
-  paymentKey = null
+  coreWalletWithdrawUrl: string,
+  recipientAddress: string,
+  coreAPIPassword: string,
+  amount: ?number = null,
+  paymentKey: ?string = null
 ) {
-  return dispatch => {
+  return (dispatch: Dispatch<*>): void => {
     if (isCoreEndpointDisabled(coreWalletWithdrawUrl)) {
       dispatch(
         withdrawCoreBalanceError(
@@ -306,19 +299,22 @@ function withdrawBitcoinFromCoreWallet(
       return
     }
 
-    const requestBody = {
-      address: recipientAddress,
-      min_confs: 0
-    }
+    const requestBody: { address: string,
+                         min_confs: number,
+                         payment_key?: string,
+                         amount?: number } = {
+                           address: recipientAddress,
+                           min_confs: 0
+                         }
 
     if (amount !== null) {
       const satoshisAmount = btcToSatoshis(amount)
       const roundedSatoshiAmount = roundTo(satoshisAmount, 0)
       logger.debug(`withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} to ${recipientAddress}`)
       requestBody.amount = roundedSatoshiAmount
-      dispatch(withdrawingCoreBalance(recipientAddress, amount))
+      dispatch(withdrawingCoreBalance(recipientAddress))
     } else {
-      dispatch(withdrawingCoreBalance(recipientAddress, 1))
+      dispatch(withdrawingCoreBalance(recipientAddress))
       logger.debug(`withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`)
     }
 
@@ -335,9 +331,15 @@ function withdrawBitcoinFromCoreWallet(
       // that it should use a compressed addresses
       // see https://en.bitcoin.it/wiki/Wallet_import_format
       // and https://github.com/blockstack/blockstack-browser/issues/607
-      const compressedPublicKeySuffix = '01'
-      const key = `${paymentKey}${compressedPublicKeySuffix}`
-      requestBody.payment_key = key
+      if (paymentKey.length === 64) {
+        const compressedPublicKeySuffix = '01'
+        const key = `${paymentKey}${compressedPublicKeySuffix}`
+        requestBody.payment_key = key
+      } else if (paymentKey.length === 66) {
+        requestBody.payment_key = paymentKey
+      } else {
+        throw new Error('Badly formatted payment key')
+      }
       logger.debug('withdrawBitcoinFromCoreWallet: Using provided payment key')
     } else {
       logger.debug('withdrawBitcoinFromCoreWallet: No payment key, using core wallet')
@@ -364,8 +366,8 @@ function withdrawBitcoinFromCoreWallet(
   }
 }
 
-function refreshBalances(insightUrl, addresses, coreAPIPassword) {
-  return dispatch => {
+function refreshBalances(insightUrl: string, addresses: Array<string>, coreAPIPassword: string) {
+  return (dispatch: Dispatch<*>): void => {
     const results = []
     addresses.forEach(address => {
       logger.debug(`refreshBalances: refreshing balances for address ${address}`)
@@ -418,22 +420,21 @@ function refreshBalances(insightUrl, addresses, coreAPIPassword) {
   }
 }
 
-function initializeWallet(password, backupPhrase, identitiesToGenerate = 1) {
-  return dispatch => {
-    let masterKeychain = null
+function initializeWallet(password: string, backupPhrase: string,
+                          identitiesToGenerate: number = 1) {
+  return (dispatch: Dispatch<*>): void => {
+    let seedBuffer
     if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
-      const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-      masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+      seedBuffer = bip39.mnemonicToSeed(backupPhrase)
     } else {
       // Create a new wallet
       const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
       backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
-      const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-      masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+      seedBuffer = bip39.mnemonicToSeed(backupPhrase)
     }
-    return encrypt(new Buffer(backupPhrase), password).then(ciphertextBuffer => {
+    return encrypt(Buffer.from(backupPhrase), password).then(ciphertextBuffer => {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
-      dispatch(createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate))
+      dispatch(createAccount(encryptedBackupPhrase, seedBuffer, identitiesToGenerate))
     })
   }
 }
@@ -444,7 +445,7 @@ function newBitcoinAddress() {
   }
 }
 
-function newIdentityAddress(newIdentityKeypair) {
+function newIdentityAddress(newIdentityKeypair: IdentityKeyPair) {
   return {
     type: types.NEW_IDENTITY_ADDRESS,
     keypair: newIdentityKeypair
@@ -459,7 +460,7 @@ function incrementIdentityAddressIndex() {
 
 function usedIdentityAddress() {
   logger.trace('usedIdentityAddress')
-  return dispatch => {
+  return (dispatch: Dispatch<*>): void => {
     dispatch(incrementIdentityAddressIndex())
   }
 }

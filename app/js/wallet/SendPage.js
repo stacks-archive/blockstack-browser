@@ -2,11 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {
-  decryptMasterKeychain,
-  getBitcoinPrivateKeychain,
-  getBitcoinAddressNode
-} from '../utils'
+import { decryptBitcoinPrivateKey } from '../utils'
 import { AccountActions } from '../account/store/account'
 
 import Alert from '../components/Alert'
@@ -89,34 +85,30 @@ class SendPage extends Component {
     })
     const password = this.state.password
     const encryptedBackupPhrase = this.props.account.encryptedBackupPhrase
-    decryptMasterKeychain(password, encryptedBackupPhrase)
-    .then((masterKeychain) => {
-      const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
-      const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
-      const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
-      const amount = this.state.amount
-      const recipientAddress = this.state.recipientAddress
+    decryptBitcoinPrivateKey(password, encryptedBackupPhrase)
+      .then((paymentKey) => {
+        const amount = this.state.amount
+        const recipientAddress = this.state.recipientAddress
+        this.setState({
+          lastAmount: amount
+        })
 
-      this.setState({
-        lastAmount: amount
+        this.props.withdrawBitcoinClientSide(
+          this.props.regTestMode, paymentKey, recipientAddress, amount)
+        this.setState({
+          amount: '',
+          password: '',
+          recipientAddress: '',
+          lastAmount: this.state.amount
+        })
       })
-
-      this.props.withdrawBitcoinClientSide(
-        this.props.regTestMode, `${paymentKey}01`, recipientAddress, amount)
-      this.setState({
-        amount: '',
-        password: '',
-        recipientAddress: '',
-        lastAmount: this.state.amount
+      .catch((error) => {
+        this.setState({
+          disabled: false
+        })
+        this.updateAlert('danger', error.toString())
+        console.error(error)
       })
-    })
-    .catch((error) => {
-      this.setState({
-        disabled: false
-      })
-      this.updateAlert('danger', error.toString())
-      console.error(error)
-    })
   }
 
   displayCoreWalletWithdrawalAlerts(props) {

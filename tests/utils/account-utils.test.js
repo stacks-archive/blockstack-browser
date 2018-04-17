@@ -1,19 +1,20 @@
 import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import {
-  getIdentityPrivateKeychain,
-  getIdentityOwnerAddressNode,
   findAddressIndex,
-  decryptMasterKeychain,
+  decryptKeychain,
   encrypt
  } from '../../app/js/utils'
 
+import { BlockstackWallet, hexStringToECPair } from 'blockstack'
+
+let seedBuffer = null
 let masterKeychain = null
 const backupPhrase = 'sound idle panel often situate develop unit text design antenna vendor screen opinion balcony share trigger accuse scatter visa uniform brass update opinion media'
 
 describe('account-utils', () => {
   beforeEach(() => {
-    const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+    seedBuffer = bip39.mnemonicToSeed(backupPhrase)
     masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
   })
 
@@ -23,24 +24,25 @@ describe('account-utils', () => {
 
   describe('getIdentityOwnerAddressNode', () => {
     it('should generate app key tree', () => {
-      const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+      const wallet = new BlockstackWallet(seedBuffer)
       const addressIndex = 0
-      const identityOwnerAddressNode = getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
       const expectedSalt = 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e'
-      const actualSalt = identityOwnerAddressNode.getSalt()
+      const actualSalt = wallet.getIdentitySalt()
       assert.equal(actualSalt, expectedSalt)
 
       const expectedAddress =  '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk'
-      const actualAddress = identityOwnerAddressNode.getAddress()
+      const identityKeyPair = wallet.getIdentityKeyPair(addressIndex)
+      const actualAddress = identityKeyPair.address
       assert.equal(actualAddress, expectedAddress)
 
-      const appsNode = identityOwnerAddressNode.getAppsNode()
-
       const origin = 'https://amazing.app:443'
-      const appNode = appsNode.getAppNode(origin)
 
       const expectedAppNodeAddress = '1A9NEhnXq5jDp9BRT4DrwadRP5jbBK896X'
-      const actualAppNodeAddress = appNode.getAddress()
+      const appNodeSK = BlockstackWallet.getAppPrivateKey(identityKeyPair.appsNodeKey,
+                                                          wallet.getIdentitySalt(),
+                                                          origin)
+
+      const actualAppNodeAddress = hexStringToECPair(`${appNodeSK}01`).getAddress()
       assert.equal(actualAppNodeAddress, expectedAppNodeAddress)
     })
   })
@@ -65,7 +67,7 @@ describe('account-utils', () => {
     })
   })
 
-  describe('decryptMasterKeychain', () => {
+  describe('decryptKeychain', () => {
     let encryptedBackupPhrase = null
     const password = 'password123'
 
@@ -81,14 +83,15 @@ describe('account-utils', () => {
     })
 
     it('should return the decrypted master keychain', (done) => {
-      decryptMasterKeychain('password123', encryptedBackupPhrase).then((keychain) => {
-        assert.equal(masterKeychain.getIdentifier().toString('hex'), keychain.getIdentifier().toString('hex'))
+      decryptKeychain('password123', encryptedBackupPhrase).then((keychain) => {
+        assert.equal(masterKeychain.getIdentifier().toString('hex'),
+                     keychain.rootNode.getIdentifier().toString('hex'))
         done()
       })
     })
 
     it('should return an error object if something goes wrong', (done) => {
-      decryptMasterKeychain('badpass', encryptedBackupPhrase).catch((err) => {
+      decryptKeychain('badpass', encryptedBackupPhrase).catch((err) => {
         assert.isTrue(err instanceof Error)
         assert.equal(err.message, 'Incorrect password')
         done()

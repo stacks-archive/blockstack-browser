@@ -1,14 +1,10 @@
 // @flow
-import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import * as types from './types'
-import { validateProofs } from 'blockstack'
+import { validateProofs, BlockstackWallet } from 'blockstack'
 import {
   decrypt,
-  deriveIdentityKeyPair,
   resolveZoneFileToProfile,
-  getIdentityPrivateKeychain,
-  getIdentityOwnerAddressNode,
   authorizationHeaderValue
 } from '../../../utils/index'
 import { DEFAULT_PROFILE,
@@ -189,12 +185,9 @@ function createNewProfile(encryptedBackupPhrase: string,
       logger.debug('createNewProfile: Backup phrase successfully decrypted')
       const backupPhrase = plaintextBuffer.toString()
       const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-      const masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
-      const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+      const wallet = new BlockstackWallet(seedBuffer)
       const index = nextUnusedAddressIndex
-      const identityOwnerAddressNode =
-      getIdentityOwnerAddressNode(identityPrivateKeychainNode, index)
-      const newIdentityKeypair = deriveIdentityKeyPair(identityOwnerAddressNode)
+      const newIdentityKeypair = wallet.getIdentityKeyPair(index, true)
       logger.debug(`createNewProfile: new identity: ${newIdentityKeypair.address}`)
       dispatch(AccountActions.newIdentityAddress(newIdentityKeypair))
       const ownerAddress = newIdentityKeypair.address

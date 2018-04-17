@@ -1,109 +1,11 @@
 import bip39 from 'bip39'
 import { decrypt } from './encryption-utils'
-import { HDNode } from 'bitcoinjs-lib'
-import crypto from 'crypto'
+import { BlockstackWallet } from 'blockstack'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('utils/account-utils.js')
 
-function hashCode(string) {
-  let hash = 0
-  if (string.length === 0) return hash
-  for (let i = 0; i < string.length; i++) {
-    const character = string.charCodeAt(i)
-    hash = (hash << 5) - hash + character
-    hash = hash & hash
-  }
-  return hash & 0x7fffffff
-}
-
-const APPS_NODE_INDEX = 0
-const SIGNING_NODE_INDEX = 1
-const ENCRYPTION_NODE_INDEX = 2
 export const MAX_TRUST_LEVEL = 99
-
-export class AppNode {
-  constructor(hdNode, appDomain) {
-    this.hdNode = hdNode
-    this.appDomain = appDomain
-  }
-
-  getAppPrivateKey() {
-    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
-  }
-
-  getAddress() {
-    return this.hdNode.getAddress()
-  }
-}
-
-export class AppsNode {
-  constructor(appsHdNode, salt) {
-    this.hdNode = appsHdNode
-    this.salt = salt
-  }
-
-  getNode() {
-    return this.hdNode
-  }
-
-  getAppNode(appDomain) {
-    const hash = crypto
-      .createHash('sha256')
-      .update(`${appDomain}${this.salt}`)
-      .digest('hex')
-    const appIndex = hashCode(hash)
-    const appNode = this.hdNode.deriveHardened(appIndex)
-    return new AppNode(appNode, appDomain)
-  }
-
-  toBase58() {
-    return this.hdNode.toBase58()
-  }
-
-  getSalt() {
-    return this.salt
-  }
-}
-
-class IdentityAddressOwnerNode {
-  constructor(ownerHdNode, salt) {
-    this.hdNode = ownerHdNode
-    this.salt = salt
-  }
-
-  getNode() {
-    return this.hdNode
-  }
-
-  getSalt() {
-    return this.salt
-  }
-
-  getIdentityKey() {
-    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
-  }
-
-  getIdentityKeyID() {
-    return this.hdNode.keyPair.getPublicKeyBuffer().toString('hex')
-  }
-
-  getAppsNode() {
-    return new AppsNode(this.hdNode.deriveHardened(APPS_NODE_INDEX), this.salt)
-  }
-
-  getAddress() {
-    return this.hdNode.getAddress()
-  }
-
-  getEncryptionNode() {
-    return this.hdNode.deriveHardened(ENCRYPTION_NODE_INDEX)
-  }
-
-  getSigningNode() {
-    return this.hdNode.deriveHardened(SIGNING_NODE_INDEX)
-  }
-}
 
 export function isPasswordValid(password) {
   let isValid = false
@@ -129,113 +31,30 @@ export function isBackupPhraseValid(backupPhrase) {
   return { isValid, error }
 }
 
-export function decryptMasterKeychain(password, encryptedBackupPhrase) {
-  return new Promise((resolve, reject) => {
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
-    decrypt(dataBuffer, password).then(
-      plaintextBuffer => {
-        const backupPhrase = plaintextBuffer.toString()
-        const seed = bip39.mnemonicToSeed(backupPhrase)
-        const masterKeychain = HDNode.fromSeedBuffer(seed)
-        logger.trace('decryptMasterKeychain: decrypted!')
-        resolve(masterKeychain)
-      },
-      error => {
-        logger.error('decryptMasterKeychain: error', error)
-        reject(new Error('Incorrect password'))
-      }
-    )
-  })
-}
-
-const EXTERNAL_ADDRESS = 'EXTERNAL_ADDRESS'
-const CHANGE_ADDRESS = 'CHANGE_ADDRESS'
-
-export function getBitcoinPrivateKeychain(masterKeychain) {
-  const BIP_44_PURPOSE = 44
-  const BITCOIN_COIN_TYPE = 0
-  const ACCOUNT_INDEX = 0
-
-  return masterKeychain
-    .deriveHardened(BIP_44_PURPOSE)
-    .deriveHardened(BITCOIN_COIN_TYPE)
-    .deriveHardened(ACCOUNT_INDEX)
-}
-
-export function getBitcoinPublicKeychain(masterKeychain) {
-  return getBitcoinPrivateKeychain(masterKeychain).neutered()
-}
-
-export function getBitcoinAddressNode(
-  bitcoinKeychain,
-  addressIndex = 0,
-  chainType = EXTERNAL_ADDRESS
-) {
-  let chain = null
-
-  if (chainType === EXTERNAL_ADDRESS) {
-    chain = 0
-  } else if (chainType === CHANGE_ADDRESS) {
-    chain = 1
-  } else {
-    throw new Error('Invalid chain type')
+export function decryptKeychain(password, encryptedBackupPhrase) {
+  let dataBuffer
+  try {
+    dataBuffer = Buffer.from(encryptedBackupPhrase, 'hex')
+  } catch (e) {
+    return Promise.reject(e)
   }
-
-  return bitcoinKeychain.derive(chain).derive(addressIndex)
+  return decrypt(dataBuffer, password).then(
+    plaintextBuffer => {
+      const backupPhrase = plaintextBuffer.toString()
+      const seed = bip39.mnemonicToSeed(backupPhrase)
+      const wallet = new BlockstackWallet(seed)
+      logger.trace('decryptMasterKeychain: decrypted!')
+      return wallet
+    })
+    .catch(error => {
+      logger.error('decryptMasterKeychain: error', error)
+      throw new Error('Incorrect password')
+    })
 }
 
 export function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
-  return new Promise((resolve, reject) =>
-    decryptMasterKeychain(password, encryptedBackupPhrase)
-      .then(masterKeychain => {
-        const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
-        const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
-        const privateKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
-        resolve(privateKey)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  )
-}
-
-const IDENTITY_KEYCHAIN = 888
-const BLOCKSTACK_ON_BITCOIN = 0
-export function getIdentityPrivateKeychain(masterKeychain) {
-  return masterKeychain.deriveHardened(IDENTITY_KEYCHAIN).deriveHardened(BLOCKSTACK_ON_BITCOIN)
-}
-
-export function getIdentityPublicKeychain(masterKeychain) {
-  return getIdentityPrivateKeychain(masterKeychain).neutered()
-}
-
-export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityIndex = 0) {
-  if (identityPrivateKeychain.isNeutered()) {
-    throw new Error('You need the private key to generate identity addresses')
-  }
-
-  const publicKeyHex = identityPrivateKeychain.keyPair.getPublicKeyBuffer().toString('hex')
-  const salt = crypto
-    .createHash('sha256')
-    .update(publicKeyHex)
-    .digest('hex')
-
-  return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex), salt)
-}
-
-export function deriveIdentityKeyPair(identityOwnerAddressNode) {
-  const address = identityOwnerAddressNode.getAddress()
-  const identityKey = identityOwnerAddressNode.getIdentityKey()
-  const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
-  const appsNode = identityOwnerAddressNode.getAppsNode()
-  const keyPair = {
-    key: identityKey,
-    keyID: identityKeyID,
-    address,
-    appsNodeKey: appsNode.toBase58(),
-    salt: appsNode.getSalt()
-  }
-  return keyPair
+  return decryptKeychain(password, encryptedBackupPhrase)
+    .then(wallet => wallet.getBitcoinPrivateKey(0))
 }
 
 export function getWebAccountTypes(api) {

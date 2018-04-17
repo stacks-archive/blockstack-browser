@@ -1,17 +1,8 @@
 export {
-  decryptMasterKeychain,
-  deriveIdentityKeyPair,
-  getBitcoinPrivateKeychain,
-  getBitcoinPublicKeychain,
-  getIdentityPrivateKeychain,
-  getIdentityPublicKeychain,
-  getWebAccountTypes,
-  isPasswordValid,
-  isBackupPhraseValid,
-  getIdentityOwnerAddressNode,
-  getBitcoinAddressNode,
-  findAddressIndex,
+  decryptKeychain,
   decryptBitcoinPrivateKey,
+  getWebAccountTypes,
+  findAddressIndex,
   calculateTrustLevel,
   calculateProfileCompleteness
 } from './account-utils'
@@ -19,9 +10,7 @@ export {
 export { getIdentities, authorizationHeaderValue } from './api-utils'
 
 export {
-  broadcastTransaction,
   btcToSatoshis,
-  getNetworkFee,
   getInsightUrl,
   satoshisToBtc
 } from './bitcoin-utils'

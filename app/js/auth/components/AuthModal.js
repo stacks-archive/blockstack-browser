@@ -8,13 +8,11 @@ import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
   makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp,
-  getAppBucketUrl, isLaterVersion
+  getAppBucketUrl, isLaterVersion, BlockstackWallet
 } from 'blockstack'
 import Image from '../../components/Image'
-import { AppsNode } from '../../utils/account-utils'
 import { fetchProfileLocations, getDefaultProfileUrl } from '../../utils/profile-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
-import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes, appRequestSupportsDirectHub } from '../utils'
 import ToolTip from '../../components/ToolTip'
 import log4js from 'log4js'
@@ -164,8 +162,8 @@ class AuthModal extends Component {
       const privateKey = profileSigningKeypair.key
       const appsNodeKey = profileSigningKeypair.appsNodeKey
       const salt = profileSigningKeypair.salt
-      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-      const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+
+      const appPrivateKey = BlockstackWallet.getAppPrivateKey(appsNodeKey, salt, appDomain)
 
       let profileUrlPromise
 
