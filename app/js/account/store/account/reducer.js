@@ -1,5 +1,4 @@
 import * as types from './types'
-import { HDNode } from 'bitcoinjs-lib'
 import { BlockstackWallet } from 'blockstack'
 
 const initialState = {
@@ -76,7 +75,7 @@ function AccountReducer(state = initialState, action) {
           addresses: [
             ...state.bitcoinAccount.addresses,
             BlockstackWallet.getAddressFromBitcoinKeychain(
-              HDNode.fromBase58(state.bitcoinAccount.publicKeychain),
+              state.bitcoinAccount.publicKeychain,
               state.bitcoinAccount.addressIndex + 1
             )
           ],

@@ -1,4 +1,3 @@
-import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import {
   findAddressIndex,
@@ -9,22 +8,21 @@ import {
 import { BlockstackWallet, hexStringToECPair } from 'blockstack'
 
 let seedBuffer = null
-let masterKeychain = null
+let wallet = null
 const backupPhrase = 'sound idle panel often situate develop unit text design antenna vendor screen opinion balcony share trigger accuse scatter visa uniform brass update opinion media'
 
 describe('account-utils', () => {
   beforeEach(() => {
     seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+    wallet = new BlockstackWallet(seedBuffer)
   })
 
   afterEach(() => {
-    masterKeychain = null
+    wallet = null
   })
 
   describe('getIdentityOwnerAddressNode', () => {
     it('should generate app key tree', () => {
-      const wallet = new BlockstackWallet(seedBuffer)
       const addressIndex = 0
       const expectedSalt = 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e'
       const actualSalt = wallet.getIdentitySalt()
@@ -84,7 +82,7 @@ describe('account-utils', () => {
 
     it('should return the decrypted master keychain', (done) => {
       decryptKeychain('password123', encryptedBackupPhrase).then((keychain) => {
-        assert.equal(masterKeychain.getIdentifier().toString('hex'),
+        assert.equal(wallet.rootNode.getIdentifier().toString('hex'),
                      keychain.rootNode.getIdentifier().toString('hex'))
         done()
       })
