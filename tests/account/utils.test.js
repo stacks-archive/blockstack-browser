@@ -1,14 +1,13 @@
-import {
-  uploadPhoto, uploadProfile
- } from '../../app/js/account/utils'
+import { uploadProfile } from '../../app/js/account/utils'
 import { ECPair } from 'bitcoinjs-lib'
 import { BitcoinKeyPairs } from '../fixtures/bitcoin'
 import nock from 'nock'
 
-const mockHubInfoResponse = { "challenge_text":
-                              "[\"gaiahub\",\"2018\",\"storage.blockstack.org\",\"blockstack_storage_please_sign\"]",
-                              "read_url_prefix":
-                              "https://gaia.blockstack.org/hub/" }
+const mockHubInfoResponse = {
+  // eslint-disable-next-line max-len
+  challenge_text: '["gaiahub","2018","storage.blockstack.org","blockstack_storage_please_sign"]',
+  read_url_prefix: 'https://gaia.blockstack.org/hub/'
+}
 
 const globalAPIConfig = {
   gaiaHubConfig: {
@@ -25,13 +24,12 @@ describe('upload-profile', () => {
     nock('https://hub.blockstack.org')
       .get('/hub_info')
       .reply(200, mockHubInfoResponse)
-
   })
 
-  afterEach(() => {
-  })
+  afterEach(() => {})
 
   describe('uploadProfile', () => {
+    // eslint-disable-next-line max-len
     it('should upload to the zonefile entry location, using the global uploader if necessary', () => {
       const ecPair = ECPair.fromWIF(BitcoinKeyPairs.test1.wif)
       const address = ecPair.getAddress()
@@ -43,12 +41,16 @@ describe('upload-profile', () => {
 
       const hubAddress = globalAPIConfig.gaiaHubConfig.address
 
-      const mockResponseBody = {"publicURL":`https://gaia.blockstack.org/hub/${hubAddress}/foo-profile.json`}
+      const mockResponseBody = {
+        publicURL: `https://gaia.blockstack.org/hub/${hubAddress}/foo-profile.json`
+      }
+
       // mock gaia hub
       nock('https://hub.blockstack.org')
         .post(`/store/${hubAddress}/foo-profile.json`)
         .reply(200, mockResponseBody)
 
+      // eslint-disable-next-line max-len
       const zoneFile = `$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://gaia.blockstack.org/hub/${hubAddress}/foo-profile.json"\n\n`
 
       const identity = { zoneFile }
@@ -68,7 +70,10 @@ describe('upload-profile', () => {
         key
       }
 
-      const mockResponseBody = {"publicURL":`https://gaia.blockstack.org/hub/${address}/profile.json`}
+      const mockResponseBody = {
+        publicURL: `https://gaia.blockstack.org/hub/${address}/profile.json`
+      }
+
       // mock gaia hub
       nock('https://hub.blockstack.org')
         .post(`/store/${address}/profile.json`)
@@ -91,6 +96,7 @@ describe('upload-profile', () => {
         key
       }
 
+      // eslint-disable-next-line max-len
       const zoneFile = `$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://potato.blockstack.org/hub/${address}/foo-profile.json"\n\n`
 
       const identity = { zoneFile }
@@ -100,7 +106,5 @@ describe('upload-profile', () => {
           `https://gaia.blockstack.org/hub/${address}/profile.json`, x))
         .catch(() => assert.fail())
     })
-
   })
-
 })
