@@ -1,29 +1,27 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import { Link } from 'react-router'
+import React from 'react'
 
-class ActionItem extends Component {
-  static propTypes = {
-    action: PropTypes.string.isRequired,
-    destinationUrl: PropTypes.string.isRequired,
-    destinationName: PropTypes.string.isRequired,
-    completed: PropTypes.bool.isRequired
+const ActionItem = props => (
+  <div>
+  {props.completed ? null
+  :
+    <div className="action-item">
+      <div>{props.action}</div>
+      <div><small>{props.detail}</small></div>
+      <a className="tooltip-link" href={props.destinationUrl}>
+       › Go to {props.destinationName}
+      </a>
+    </div>
   }
+  </div>
+)
 
-  render() {
-    return (
-      <div>
-      {this.props.completed ? null
-      :
-        <div className="action-item">
-          <div>{this.props.action}</div>
-          <div><small>{this.props.detail}</small></div>
-          <a className="tooltip-link" href={this.props.destinationUrl}> › Go to {this.props.destinationName}</a>
-        </div>
-      }
-      </div>
-    )
-  }
+ActionItem.propTypes = {
+  action: PropTypes.string.isRequired,
+  destinationUrl: PropTypes.string.isRequired,
+  destinationName: PropTypes.string.isRequired,
+  completed: PropTypes.bool.isRequired,
+  detail: PropTypes.string.isRequired
 }
 
 export default ActionItem
