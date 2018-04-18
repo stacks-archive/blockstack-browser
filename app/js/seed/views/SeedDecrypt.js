@@ -15,8 +15,9 @@ const SeedDecrypt = ({ decryptSeed, ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
-        title={'Generate your secret recovery seed'}
-        icon="/images/onboarding/seed-1.png"
+        h5="Enter your password to decrypt the recovery key for this ID."
+        h2="Decrypt Key"
+        mdi={'TextboxPasswordIcon'}
         pt={0}
       />
     )}

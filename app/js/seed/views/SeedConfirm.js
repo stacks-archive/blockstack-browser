@@ -16,8 +16,9 @@ const SeedConfirm = ({ next, previous, ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
-        title={'Confirm your recovery seed'}
-        icon="/images/onboarding/seed-1.png"
+        h5="Please enter two words from your recovery key."
+        h2="Confirm Your Key"
+        mdi={'TextboxPasswordIcon'}
         pt={0}
       />
     )}
@@ -53,14 +54,16 @@ const SeedConfirm = ({ next, previous, ...rest }) => (
                   message={errors.wordSix}
                 />
               ) : null}
-              <Buttons>
-                <ButtonLink secondary onClick={previous}>
-                  Back
-                </ButtonLink>
-                <Button type="submit" primary>
-                  Continue
-                </Button>
-              </Buttons>
+              <PanelCard.Section pt={3} pb={32}>
+                <Buttons bottom>
+                  <ButtonLink secondary onClick={previous}>
+                    Back
+                  </ButtonLink>
+                  <Button type="submit" primary>
+                    Continue
+                  </Button>
+                </Buttons>
+              </PanelCard.Section>
             </Form>
           )}
         />

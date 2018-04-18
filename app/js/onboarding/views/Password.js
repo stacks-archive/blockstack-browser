@@ -17,10 +17,10 @@ const validationSchema = Yup.object({
 
 const panelHeader = () => (
   <PanelCardHeader
-    appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
-    variant="small"
-    title="Create a password"
-    pt={4}
+    h5="This password will be used to encrypt your recovery key."
+    h2="Create a Password"
+    mdi={'LockIcon'}
+    pt={0}
   />
 )
 

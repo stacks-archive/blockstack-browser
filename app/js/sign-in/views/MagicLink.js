@@ -35,7 +35,12 @@ const Step = styled.div`
 const Options = ({ previous, ...rest }) => (
   <PanelCard
     renderHeader={() => (
-      <PanelCardHeader title="Sign in with Magic Link" pt={4} />
+      <PanelCardHeader
+        h5="Check your email for the link we sent you when you signed up."
+        h2="Restore via Magic Link"
+        mdi={'LinkIcon'}
+        pt={0}
+      />
     )}
     {...rest}
   >

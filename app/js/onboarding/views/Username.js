@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import Navigation from '@components/Navigation'
 import { FastField, Form, Formik } from 'formik'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { AccountRemoveIcon, CheckIcon } from 'mdi-react'
@@ -17,15 +16,6 @@ const getUsernameStatus = async (username, sponsoredName = '.personal.id') => {
 
   return user.status
 }
-
-const panelHeader = () => (
-  <PanelCardHeader
-    appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
-    variant="small"
-    title="Choose a username"
-    pt={4}
-  />
-)
 
 class Username extends React.Component {
   state = {
@@ -112,13 +102,32 @@ class Username extends React.Component {
   render() {
     const { next, updateValue, username, previous, ...rest } = this.props
 
+    const accountIcon = () => {
+      switch (this.state.search) {
+        case 'taken':
+          return 'AccountRemoveIcon'
+        case 'available':
+          return 'AccountCheckIcon'
+        default:
+          return 'AccountIcon'
+      }
+    }
+
+    const panelHeader = () => (
+      <PanelCardHeader
+        h5="This will be your public Blockstack Identity."
+        h2="Create a Username"
+        mdi={accountIcon()}
+        pt={0}
+      />
+    )
+
     return (
       <PanelCard renderHeader={panelHeader} {...rest}>
         <PanelCard.Loading
           show={this.state.isProcessing}
           message="Processing registration..."
         />
-        <Navigation previous={previous} next={next} />
         {username && (
           <Fragment>
             <Formik

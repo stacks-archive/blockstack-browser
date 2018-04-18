@@ -2,16 +2,16 @@ import React from 'react'
 import { color, space } from 'styled-system'
 import styled, { css } from 'styled-components'
 import { colors } from '@components/styled/theme'
-import { darken, rgba, lighten } from 'polished'
+import { darken, rgba } from 'polished'
 
-const buttonTypes = ({ primary, secondary, invert, small }) => {
+const buttonTypes = ({primary, secondary, invert, small}) => {
   if (primary) {
     return css`
       color: #ffffff;
       border: 1px solid #2c96ff;
       background-color: #2c96ff;
       ${invert &&
-        css`
+    css`
           color: #2c96ff;
           border: 1px solid #ffffff;
           background-color: #ffffff;
@@ -26,7 +26,7 @@ const buttonTypes = ({ primary, secondary, invert, small }) => {
       }
 
       ${small &&
-        css`
+    css`
           padding: 5px;
           font-size: 12px;
         `};
@@ -45,13 +45,13 @@ const buttonTypes = ({ primary, secondary, invert, small }) => {
       }
 
       ${invert &&
-        css`
+    css`
           color: #ffffff;
           border: 1px solid #ffffff;
           background-color: transparent;
         `};
       ${small &&
-        css`
+    css`
           padding: 0;
           border: none;
           font-size: 12px;
@@ -93,6 +93,33 @@ const Buttons = styled.div`
   justify-content: space-between;
   align-items: center;
     ${space};
+    
+    ${({bottom}) =>
+  bottom &&
+  css`
+        position: absolute;
+        bottom: ${bottom === true ? 20 : bottom}px;
+        width: calc(100% - 60px);
+      `};
+    
+        ${({column}) =>
+  column &&
+  css`
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            ${Button}, ${ButtonLink} {
+            text-align: center;
+              width: 100% !important;
+            }
+            ${Button} + ${Button}, 
+            ${ButtonLink} + ${ButtonLink}, 
+            ${ButtonLink} + ${Button},
+            ${Button} + ${ButtonLink}{
+            margin-top: 20px !important;
+            }
+          `};
 
   ${Button}, ${ButtonLink}{
     margin-bottom: 0;
@@ -104,9 +131,9 @@ const Buttons = styled.div`
   ${Button} + ${ButtonLink}{
     margin-top: 0;
   }
-        ${({ center }) =>
-          center &&
-          css`
+        ${({center}) =>
+  center &&
+  css`
             justify-content: center;
           `};
   

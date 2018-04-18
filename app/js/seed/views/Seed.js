@@ -2,13 +2,13 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button, Buttons } from '@components/styled/Button'
-import { Transition } from 'react-spring'
+import { Trail, animated } from 'react-spring'
 
 import styled from 'styled-components'
 
 const Word = styled.h5`
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 500;
   padding: 0 10px;
   margin-bottom: 0;
   text-transform: capitalize;
@@ -91,13 +91,10 @@ class Seed extends React.Component {
       <PanelCard
         renderHeader={() => (
           <PanelCardHeader
-            title={
-              <span>
-                Your secret recovery seed.<br />
-                <h6>Write down all words, in order.</h6>
-              </span>
-            }
-            pt={4}
+            h5="Write down all of the words, in order."
+            h2="Your Recovery Key"
+            mdi={'PencilBoxIcon'}
+            pt={0}
           />
         )}
         {...rest}
@@ -107,32 +104,28 @@ class Seed extends React.Component {
           <PanelCard.Section pt={0} lineHeight={3}>
             <Words>
               {seed.length > 1 ? (
-                <Transition
+                <Trail
                   from={{
-                    opacity: 0,
-                    top: 20
+                    opacity: 0
                   }}
-                  leave={{
-                    opacity: 0,
-                    top: 20
-                  }}
-                  enter={{
-                    opacity: 1,
-                    top: 0
+                  to={{
+                    opacity: 1
                   }}
                   keys={seed.map(item => item)}
                 >
                   {seed.map((item, i) => styles => (
-                    <Line key={item} style={styles}>
-                      <Number>#{i + multiplier()}</Number> <Word>{item}</Word>
-                    </Line>
+                    <animated.div key={item} style={styles}>
+                      <Line>
+                        <Number>#{i + multiplier()}</Number> <Word>{item}</Word>
+                      </Line>
+                    </animated.div>
                   ))}
-                </Transition>
+                </Trail>
               ) : null}
             </Words>
           </PanelCard.Section>
-          <PanelCard.Section pt={3}>
-            <Buttons>
+          <PanelCard.Section pt={3} pb={72}>
+            <Buttons bottom>
               <Button onClick={previous} secondary>
                 Back
               </Button>
@@ -140,7 +133,7 @@ class Seed extends React.Component {
                 Next
               </Button>
             </Buttons>
-            <Buttons center pt={4}>
+            <Buttons center pt={4} bottom={90}>
               <Button onClick={() => this.copySeed()} secondary small>
                 {this.state.copied ? 'Copied!' : 'Copy Entire Seed'}
               </Button>

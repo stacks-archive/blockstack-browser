@@ -31,7 +31,12 @@ class Options extends React.Component {
     return (
       <PanelCard
         renderHeader={() => (
-          <PanelCardHeader title="Enter your 12 Word Seed" pt={4} />
+          <PanelCardHeader
+            h5="Enter your 12 word recovery key below."
+            h2="Restore with Key"
+            mdi={'TextboxPasswordIcon'}
+            pt={0}
+          />
         )}
         {...rest}
       >
@@ -52,7 +57,8 @@ class Options extends React.Component {
               validateOnChange={false}
               render={({ errors, touched }) => (
                 <Form>
-                  <label htmlFor="key">Recovery Key</label>
+                 <PanelCard.Section pb={4}>
+                    <label htmlFor="key">Recovery Key</label>
                   <FastField
                     name="key"
                     type="text"
@@ -65,7 +71,8 @@ class Options extends React.Component {
                         message={errors.key}
                       />
                     )}
-                  <Buttons>
+                 </PanelCard.Section>
+                  <Buttons bottom>
                     <ButtonLink onClick={() => previous()} secondary>
                       Go Back
                     </ButtonLink>

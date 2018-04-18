@@ -4,20 +4,20 @@ import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 
 const panelHeader = () => (
   <PanelCardHeader
-    title="Verify your email"
-    appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
+    h5="Check your email for our verification email."
+    h2="Verify Your Email"
+    mdi={'AtIcon'}
+    pt={0}
   />
 )
 
 const Verify = ({ email, resend, next, ...rest }) => (
   <PanelCard renderHeader={panelHeader} {...rest} onClick={() => next()}>
-    <PanelCard.Section center>
+    <PanelCard.Section left>
       <p>
         We sent an email to <strong>{email}</strong> to confirm delivery. Please
         check your inbox and follow the link to continue.
       </p>
-    </PanelCard.Section>
-    <PanelCard.Section pt={2} center>
       <p>
         If you can't find the email, please check your spam or{' '}
         <a href="#" onClick={resend}>

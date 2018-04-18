@@ -254,7 +254,6 @@ class Onboarding extends React.Component {
 
     return (
       <PanelShell>
-        <ProgressBar current={view} total={Object.keys(VIEWS).length} />
         {renderItems(views, view)}
       </PanelShell>
     )

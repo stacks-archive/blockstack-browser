@@ -18,6 +18,10 @@ const Panel = styled.div`
   ${space};
   ${color};
   z-index: 5;
+  * {
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica,
+      Arial, sans-serif;
+  }
   a {
     text-decoration: none !important;
   }
@@ -32,8 +36,6 @@ const Card = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   width: 100%;
-  display: flex;
-  flex-direction: column;
   position: absolute;
   min-height: 100vh;
   top: 0;
@@ -60,6 +62,8 @@ const Card = styled.div`
     !showing &&
     css`
       pointer-events: none;
+      overflow: hidden;
+      max-height: 50vh !important;
     `};
 
   ${({ variant, showing }) =>
@@ -84,10 +88,24 @@ const Card = styled.div`
     `};
 `
 
+const CardWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+`
+
 const Section = styled.div`
   ${lineHeight};
   ${space};
-  position: relative;
+
+  ${({ left }) =>
+    left &&
+    css`
+      text-align: left;
+      p {
+        text-align: left !important;
+      }
+    `};
 
   ${({ center }) =>
     center &&
@@ -195,19 +213,51 @@ const IconWrapper = styled.div`
       }
     `};
 `
-
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  svg {
+    margin-right: 10px;
+    display: block;
+    transform: translateY(-3px);
+  }
+`
 const Title = styled.div`
   ${space};
   ${lineHeight};
   h3 {
     text-align: center;
-    font-weight: 600;
+    font-weight: 300;
+    font-size: 1.85rem;
     line-height: 1.5;
   }
   h6 {
     padding-top: 5px;
     opacity: 0.75;
   }
+  h2 {
+    font-weight: 300;
+    font-size: 1.85rem;
+    line-height: 2.85rem;
+    color: rgba(0, 0, 0, 0.85);
+  }
+  h5 {
+    font-size: 1rem;
+    opacity: 0.5;
+    font-weight: 500;
+    line-height: 1.5rem;
+  }
+  ${({ full }) =>
+    full &&
+    css`
+      width: 100%;
+      padding-top: 20px;
+
+      @media (max-width: 800px) {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    `};
 `
 
 const Progress = styled.div`
@@ -316,14 +366,16 @@ const Header = styled.header`
   background: white;
   ${space};
 
-  h3 {
-    padding-left: 20px;
-    padding-right: 20px;
+  @media (min-width: 800px) {
+    padding-left: 30px;
+    padding-right: 30px;
   }
   ${({ variant }) =>
     variant === 'small' &&
     css`
       flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
       ${IconWrapper} {
         flex-grow: 0;
         max-width: 48px;
@@ -368,8 +420,13 @@ const Loading = styled.div`
   }
 `
 
-Panel.Card = Card
+Panel.Card = props => (
+  <Card {...props}>
+    <CardWrapper {...props}>{props.children}</CardWrapper>
+  </Card>
+)
 Panel.Card.Title = Title
+Panel.Card.Title.Wrapper = TitleWrapper
 Panel.Card.IconWrapper = IconWrapper
 Panel.Card.Header = Header
 Panel.Card.Content = Content

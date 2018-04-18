@@ -29,7 +29,13 @@ const Card = styled.div`
 const Options = ({ options, ...rest }) => (
   <PanelCard
     renderHeader={() => (
-      <PanelCardHeader title="Restore your Blockstack ID" pt={4} />
+      <PanelCardHeader
+        h5="Select from the options below to restore your Blockstack ID on this device."
+        h2="Restore your ID"
+        mdi={'AccountConvertIcon'}
+        pt={0}
+        full
+      />
     )}
     {...rest}
   >

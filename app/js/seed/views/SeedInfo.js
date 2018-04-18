@@ -1,42 +1,42 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
-import { Button } from '@components/styled/Button'
+import { Button, Buttons, ButtonLink } from '@components/styled/Button'
 
 const SeedInfo = ({ next, ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader
-        title="Save your secret recovery key forever"
-        icon="/images/onboarding/seed-1.png"
+        h5="Save your secret recovery key forever"
+        h2="Recovery Key"
+        mdi={'TextboxPasswordIcon'}
         pt={0}
       />
     )}
     {...rest}
   >
     <Fragment>
-      <PanelCard.Section pt={0} lineHeight={3}>
+      <PanelCard.Section pt={0} pb={4} lineHeight={3} left>
         <p>
-          Saving your secret recovery key is a reliable way to recover your
-          Blockstack ID.
+          Your recovery key is the most reliable way to recover your Blockstack
+          ID. It's important to save your recovery key in a safe place (we
+          suggest writing it on paper).
         </p>
         <p>
-          Save your secret recovery key a secret place (we suggest writing it on
-          paper). Blockstack IDs are fully decentralized, which means anyone who
-          has the secret recovery key effectively owns the ID.
-        </p>
-        <p>
-          Your account is secure, but you need to write down your secret
-          recovery key.
+          Blockstack IDs are fully decentralized, which means anyone who has the
+          secret recovery key effectively owns the ID. Please save your recovery
+          key.
         </p>
       </PanelCard.Section>
-      <PanelCard.Section pt={3}>
-        <Button onClick={next} primary>
-          View secret recovery key
-        </Button>
-        <Button onClick={next} secondary>
-          Do this later
-        </Button>
+      <PanelCard.Section pt={3} pb={72}>
+        <Buttons bottom column>
+          <Button onClick={next} primary>
+            View Secret Recovery Key
+          </Button>
+          <ButtonLink href="/" secondary>
+            Do this later
+          </ButtonLink>
+        </Buttons>
       </PanelCard.Section>
     </Fragment>
   </PanelCard>

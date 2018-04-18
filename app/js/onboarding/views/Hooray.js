@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
-import { Button } from '@components/styled/Button'
+import { Button, ButtonLink } from '@components/styled/Button'
 import { AccountCircleIcon } from 'mdi-react'
 import styled from 'styled-components'
 
@@ -84,9 +84,12 @@ const Hooray = ({ goToApp, goToRecovery, username, ...rest }) => (
       </UserCard>
     </PanelCard.Section>
     <PanelCard.Section pt={4} center>
-      <Button primary onClick={() => goToApp()}>
+      <ButtonLink
+        primary
+        href="https://browser.blockstack.org/auth?authRequest=eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJqdGkiOiI1ZWViOWRkZi1mNzVkLTRjODItYTJlNS1hY2QzMmRkNzViYTYiLCJpYXQiOjE1MjQwNzA0MzksImV4cCI6MTUyNDA3NDAzOSwiaXNzIjoiZGlkOmJ0Yy1hZGRyOjExMnNYUUVWRjNOY0phZDVzWHBUMVhpd0s0RVlwRXY5YzUiLCJwdWJsaWNfa2V5cyI6WyIwMzI5ODM3NzQwMTlkZDNkMmRiOTlmMDBlMzczNDg0MzhlNmQwMDhmNjgxYmQ1YTA2ZWVmMjE4MzA2ZWFiZWNmM2UiXSwiZG9tYWluX25hbWUiOiJodHRwczovL3d3dy5zdGVhbHRoeS5pbSIsIm1hbmlmZXN0X3VyaSI6Imh0dHBzOi8vd3d3LnN0ZWFsdGh5LmltL21hbmlmZXN0Lmpzb24iLCJyZWRpcmVjdF91cmkiOiJodHRwczovL3d3dy5zdGVhbHRoeS5pbSIsInZlcnNpb24iOiIxLjEuMCIsImRvX25vdF9pbmNsdWRlX3Byb2ZpbGUiOnRydWUsInN1cHBvcnRzX2h1Yl91cmwiOnRydWUsInNjb3BlcyI6WyJzdG9yZV93cml0ZSIsInB1Ymxpc2hfZGF0YSJdfQ.KW8eDtUNjCk3r6RuPRX8JLeRuDY9ZiwB31Csnv3ogib4r1wtGDfWRN1RQKbyJXAuudI8FsVHEAt3ZNe5EtoGgA#coreAPIPassword=off&logServerPort=off&regtest=off"
+      >
         Continue to Stealthy.im
-      </Button>
+      </ButtonLink>
       <Button secondary onClick={() => goToRecovery()}>
         Write down secret recovery key
       </Button>
