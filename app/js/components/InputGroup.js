@@ -36,7 +36,7 @@ class InputGroup extends Component {
 
   onKeyPress(e) {
     if (this.props.onReturnKeyPress !== undefined) {
-      if(e.key === 'Enter') {
+      if (e.key === 'Enter') {
         this.props.onReturnKeyPress()
       }
     }
@@ -49,17 +49,17 @@ class InputGroup extends Component {
   }
 
   handleClick(e) {
-    if(this.props.stopClickPropagation) {
+    if (this.props.stopClickPropagation) {
       e.stopPropagation()
     }
   }
 
   render() {
-    let value = '',
-        type = "text",
-        disabled = false,
-        required = false,
-        step = 1
+    let value = ''
+    let type = 'text'
+    let disabled = false
+    let required = false
+    let step = 1
     const autoComplete = this.props.autoComplete
     if (this.props.data && this.props.name) {
       value = this.props.data[this.props.name]
@@ -79,18 +79,18 @@ class InputGroup extends Component {
     if (this.props.required) {
       required = this.props.required
     }
-    let inputClass = `form-control ${this.props.centerText ? 'text-center' : ''} 
+    let inputClass = `form-control ${this.props.centerText ? 'text-center' : ''}
       ${this.props.accessoryIcon ? 'input-accessory-icon' : ''}`
     if (this.props.inverse) {
-      inputClass = `form-inverse-control ${this.props.centerText ? 'text-center' : ''} 
+      inputClass = `form-inverse-control ${this.props.centerText ? 'text-center' : ''}
       ${this.props.accessoryIcon ? 'input-accessory-icon' : ''}`
     }
-    let labelClass = this.props.centerText ? "form-control-label form-control-label-centered" 
-      : "form-control-label"
+    let labelClass = this.props.centerText ? 'form-control-label form-control-label-centered'
+      : 'form-control-label'
     if (this.props.inverse) {
-      labelClass = this.props.centerText ? 
-      "form-control-label-centered form-control-label form-inverse-control-label" 
-      : "form-control-label form-inverse-control-label"
+      labelClass = this.props.centerText ?
+      'form-control-label-centered form-control-label form-inverse-control-label'
+      : 'form-control-label form-inverse-control-label'
     }
 
     const enforcePasswordLength = this.props.enforcePasswordLength
@@ -98,64 +98,70 @@ class InputGroup extends Component {
     const label = this.props.label ? this.props.label : ''
 
     return (
-      <div className={`form-group m-b-11 ${this.props.centerText ? 'text-center' : ''}`} 
-        onClick={this.handleClick}>
+      <div
+        className={`form-group m-b-11 ${this.props.centerText ? 'text-center' : ''}`}
+        onClick={this.handleClick}
+      >
         <fieldset>
-          {label.length > 0 && 
+          {label.length > 0 &&
             <label className={`${labelClass}`}>
               {label}
             </label>
           }
           <div className="">
-            { this.props.textarea ?
-              <textarea name={this.props.name}
-              disabled={disabled}
-              className={inputClass}
-              type={type}
-              placeholder={
-                this.props.placeholder ? this.props.placeholder : label
-              }
-              value={value}
-              onChange={this.props.onChange}
-              rows={this.props.textareaRows || 2} />
+            {this.props.textarea ?
+              <textarea
+                name={this.props.name}
+                disabled={disabled}
+                className={inputClass}
+                type={type}
+                placeholder={
+                  this.props.placeholder ? this.props.placeholder : label
+                }
+                value={value}
+                onChange={this.props.onChange}
+                rows={this.props.textareaRows || 2}
+              />
             :
-            <div className={addOn.length > 0 ? 'input-group' : ''}>
-              {addOn.length > 0 && <span className="input-group-addon">{addOn}</span>}          
-              {type === "password" && enforcePasswordLength ?
-              <input name={this.props.name}
-                disabled={disabled}
-                className={inputClass}
-                type={type}
-                required={required}
-                step={step}
-                placeholder={
-                  this.props.placeholder ? this.props.placeholder : label
+              <div className={addOn.length > 0 ? 'input-group' : ''}>
+                {addOn.length > 0 && <span className="input-group-addon">{addOn}</span>}
+                {type === 'password' && enforcePasswordLength ?
+                  <input
+                    name={this.props.name}
+                    disabled={disabled}
+                    className={inputClass}
+                    type={type}
+                    required={required}
+                    step={step}
+                    placeholder={
+                      this.props.placeholder ? this.props.placeholder : label
+                    }
+                    value={value}
+                    onChange={this.props.onChange}
+                    onBlur={this.onBlur}
+                    onKeyPress={this.onKeyPress}
+                    autoComplete={autoComplete}
+                    minLength="8"
+                  />
+                :
+                  <input
+                    name={this.props.name}
+                    disabled={disabled}
+                    className={inputClass}
+                    type={type}
+                    required={required}
+                    step={step}
+                    placeholder={
+                      this.props.placeholder ? this.props.placeholder : label
+                    }
+                    value={value}
+                    onChange={this.props.onChange}
+                    onBlur={this.onBlur}
+                    onKeyPress={this.onKeyPress}
+                    autoComplete={autoComplete}
+                  />
                 }
-                value={value}
-                onChange={this.props.onChange}
-                onBlur={this.onBlur}
-                onKeyPress={this.onKeyPress}
-                autoComplete={autoComplete}
-                minLength="8"
-              />
-              :
-              <input name={this.props.name}
-                disabled={disabled}
-                className={inputClass}
-                type={type}
-                required={required}
-                step={step}
-                placeholder={
-                  this.props.placeholder ? this.props.placeholder : label
-                }
-                value={value}
-                onChange={this.props.onChange}
-                onBlur={this.onBlur}
-                onKeyPress={this.onKeyPress}
-                autoComplete={autoComplete}
-              />
-              }
-            </div>
+              </div>
             }
             {this.props.accessoryIcon &&
               <span className={this.props.accessoryIconClass}></span>
