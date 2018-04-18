@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { PanelCard } from '@components/PanelShell'
-import { Button } from '@components/styled/Button'
+import { PanelCard, PanelCardHeader } from '@components/PanelShell'
+import { ButtonLink } from '@components/styled/Button'
 import { AccountCircleIcon } from 'mdi-react'
 import styled from 'styled-components'
 
@@ -61,13 +61,19 @@ const UserID = styled.h4`
   text-overflow: ellipsis;
 `
 
-const Restored = ({
-  goToBlockstack = () => console.log('goToBlockstack'),
-  username = 'jeff',
-  ...rest
-}) => (
-  <PanelCard {...rest}>
-    <PanelCard.Section pt={4} center>
+const Restored = ({ username = 'jeff', ...rest }) => (
+  <PanelCard
+    {...rest}
+    renderHeader={() => (
+      <PanelCardHeader
+        h5="Your ID is now enabled on this device."
+        h2="Account Restored"
+        mdi={'AccountStarIcon'}
+        pt={0}
+      />
+    )}
+  >
+    <PanelCard.Section pt={3} center>
       <UserCard>
         <UserCardAvatar>
           <div>
@@ -86,10 +92,10 @@ const Restored = ({
         {username}.blockstack.id
       </p>
     </PanelCard.Section>
-    <PanelCard.Section pt={4} pb={4} center>
-      <Button primary onClick={() => goToBlockstack()}>
+    <PanelCard.Section pt={3} pb={3} center>
+      <ButtonLink href="/" primary>
         Go to Blockstack
-      </Button>
+      </ButtonLink>
     </PanelCard.Section>
   </PanelCard>
 )

@@ -4,14 +4,14 @@ import styled, { css } from 'styled-components'
 import { colors } from '@components/styled/theme'
 import { darken, rgba } from 'polished'
 
-const buttonTypes = ({primary, secondary, invert, small}) => {
+const buttonTypes = ({ primary, secondary, invert, small }) => {
   if (primary) {
     return css`
       color: #ffffff;
       border: 1px solid #2c96ff;
       background-color: #2c96ff;
       ${invert &&
-    css`
+        css`
           color: #2c96ff;
           border: 1px solid #ffffff;
           background-color: #ffffff;
@@ -26,7 +26,7 @@ const buttonTypes = ({primary, secondary, invert, small}) => {
       }
 
       ${small &&
-    css`
+        css`
           padding: 5px;
           font-size: 12px;
         `};
@@ -45,13 +45,13 @@ const buttonTypes = ({primary, secondary, invert, small}) => {
       }
 
       ${invert &&
-    css`
+        css`
           color: #ffffff;
           border: 1px solid #ffffff;
           background-color: transparent;
         `};
       ${small &&
-    css`
+        css`
           padding: 0;
           border: none;
           font-size: 12px;
@@ -92,19 +92,20 @@ const Buttons = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
     ${space};
     
-    ${({bottom}) =>
-  bottom &&
-  css`
+    ${({ bottom }) =>
+      bottom &&
+      css`
         position: absolute;
         bottom: ${bottom === true ? 20 : bottom}px;
         width: calc(100% - 60px);
       `};
     
-        ${({column}) =>
-  column &&
-  css`
+        ${({ column }) =>
+          column &&
+          css`
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -131,9 +132,9 @@ const Buttons = styled.div`
   ${Button} + ${ButtonLink}{
     margin-top: 0;
   }
-        ${({center}) =>
-  center &&
-  css`
+        ${({ center }) =>
+          center &&
+          css`
             justify-content: center;
           `};
   

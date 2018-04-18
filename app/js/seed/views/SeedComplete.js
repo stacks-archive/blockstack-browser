@@ -34,7 +34,7 @@ const SeedComplete = ({ next, ...rest }) => (
           <Button onClick={() => console.log('continue to app')} primary>
             Continue to Stealthy
           </Button>
-          <ButtonLink secondary onClick={() => console.log('continue to app')}>
+          <ButtonLink href="/" secondary>
             Go to Blockstack
           </ButtonLink>
         </Buttons>
