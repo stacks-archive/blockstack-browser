@@ -147,51 +147,45 @@ class RegisterPage extends Component {
     } else {
       this.displayPricingAndAvailabilityAlerts(availability)
     }
+
   }
 
   displayRegistrationAlerts(registration) {
-    if (registration.error) {
+    if(registration.error) {
       this.updateAlert('danger', 'There was a problem submitting your registration.')
     } else {
-      if (registration.profileUploading) {
+      if(registration.profileUploading)
         this.updateAlert('info', 'Signing & uploading your profile...')
-      } else if (registration.registrationSubmitting) {
+      else if(registration.registrationSubmitting)
         this.updateAlert('info', 'Submitting your registration to your Blockstack Core node...')
-      } else if (registration.registrationSubmitted) {
-        const msg = 'Congrats! Your name is preordered! ' +
-                    'Registration will automatically ' +
-                    'complete over the next few hours.'
-        this.updateAlert('success', msg)
-      }
+      else if(registration.registrationSubmitted)
+        this.updateAlert('success', 'Congrats! Your name is preordered! Registration will automatically complete over the next few hours.')
     }
   }
 
   displayPricingAndAvailabilityAlerts(availability) {
-    const tld = this.state.tlds[this.state.type]
+    let tld = this.state.tlds[this.state.type]
     const domainName = `${this.state.username}.${tld}`
 
-    if (domainName === availability.lastNameEntered) {
-      if (availability.names[domainName].error) {
+    if(domainName === availability.lastNameEntered) {
+      if(availability.names[domainName].error) {
         const error = availability.names[domainName].error
         console.error(error)
-        const msg = `There was a problem checking on price & availability of ${domainName}`
-        this.updateAlert('danger', msg)
+        this.updateAlert('danger', `There was a problem checking on price & availability of ${domainName}`)
       } else {
-        if (availability.names[domainName].checkingAvailability) {
+        if(availability.names[domainName].checkingAvailability)
           this.updateAlert('info', `Checking if ${domainName} available...`)
-        } else if (availability.names[domainName].available) {
-          if (availability.names[domainName].checkingPrice) {
+        else if(availability.names[domainName].available) {
+          if(availability.names[domainName].checkingPrice) {
             this.updateAlert('info', `${domainName} is available! Checking price...`)
           } else {
             const price = availability.names[domainName].price
-            if (price < this.props.coreWalletBalance) {
+            if(price < this.props.coreWalletBalance) {
               const roundedUpPrice = roundTo.up(price, 3)
               this.updateAlert('info', `${domainName} costs ~${roundedUpPrice} btc to register.`)
             } else {
               const shortfall = price - this.props.coreWalletBalance
-              const msg = `Your wallet doesn't have enough money to register ${domainName}. ` +
-                          `Please send at least ${shortfall} more bitcoin to your wallet.`
-              this.updateAlert('danger', msg, WALLET_URL)
+              this.updateAlert('danger', `Your wallet doesn't have enough money to register ${domainName}. Please send at least ${shortfall} more bitcoin to your wallet.`, WALLET_URL)
             }
           }
         } else {
@@ -202,15 +196,12 @@ class RegisterPage extends Component {
   }
 
   displayZeroBalanceAlert() {
-    const msg = 'You need to deposit at least 0.01 bitcoins before you can ' +
-                'register a username.<br> Click here to go to your wallet or ' +
-                `send bitcoins directly to ${this.props.coreWalletAddress}`
-    this.updateAlert('danger', msg, WALLET_URL)
+    this.updateAlert('danger', `You need to deposit at least 0.01 bitcoins before you can register a username.<br> Click here to go to your wallet or send bitcoins directly to ${this.props.coreWalletAddress}`, WALLET_URL)
   }
 
   displayConnectStorageAlert() {
-    const msg = 'Please go to the Storage app and connect a storage provider.'
-    this.updateAlert('danger', msg, STORAGE_URL)
+    this.updateAlert('danger', 'Please go to the Storage app and connect a storage provider.', STORAGE_URL)
+
   }
 
   onChange(event) {
@@ -237,9 +228,7 @@ class RegisterPage extends Component {
 
       event.persist()
       const _this = this
-      const tld = this.state.tlds[this.state.type]
-      const domainName = `${this.state.username}.${tld}`
-      
+
       this.timer = setTimeout(() => {
         logger.trace('Timer fired')
         if (!isABlockstackName(domainName)) {
@@ -303,6 +292,7 @@ class RegisterPage extends Component {
   }
 
   render() {
+    const tld = this.state.tlds[this.state.type]
     const nameLabel = this.state.nameLabels[this.state.type]
     return (
       <div>
@@ -312,12 +302,13 @@ class RegisterPage extends Component {
           <div className="col-sm-8">
             <h3>Search for your username</h3>
             {
-              this.state.alerts.map((alert, index) => (
-                <Alert
-                  key={index} message={alert.message} status={alert.status} url={alert.url}
-                />
-                )
+              this.state.alerts.map((alert, index) => {
+                return (
+                  <Alert
+                    key={index} message={alert.message} status={alert.status} url={alert.url}
+                  />
               )
+              })
             }
             <p>
               Add a username to save your profile so you can interact with other
