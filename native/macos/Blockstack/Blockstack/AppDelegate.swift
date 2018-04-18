@@ -18,7 +18,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let productionModePortalPort = 8888
     let developmentModePortalPort = 3000
     let corsProxyPort = 1337
-    let coreProxyPort = 6270
     let portalAuthenticationPath = "/auth?authRequest="
 
     var statusItem : NSStatusItem = NSStatusItem()
@@ -34,10 +33,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let keychainServiceName = "blockstack-core-wallet-password"
     let keychainAccountName = "blockstack-core"
 
-    let coreArchive = "blockstack-venv.tar.gz"
-    let coreConfigFileRelativePath = "config/client.ini"
-    let coreVenvDirectory = "blockstack-venv"
-    let extractCoreVenvToPath = "/tmp"
     let portalRunDirectory = "portal"
     let launcherBundleIdentifier = "org.blockstack.macLauncher"
     
@@ -45,7 +40,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let portalProxyProcess = Process()
     let corsProxyProcess = Process()
-    let coreProcess = Process()
 
     let sparkleUpdater = SUUpdater.init(for: Bundle.main)
 
@@ -83,8 +77,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             button.action = #selector(statusItemClick)
         }
 
-        let walletPassword = createOrRetrieveCoreWalletPassword()
-
         // using the wallet password as Core API password is intentional
         startPortalProxy(complete: {
             if !startedAtLogin {
@@ -96,10 +88,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         })
 
         startCorsProxy(complete: {
-            // do nothing on task completion
-        })
-
-        startCoreAPI(walletPassword: walletPassword, complete: {
             // do nothing on task completion
         })
     }
@@ -188,7 +176,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         os_log("Opening portal with String: %{public}@", log: log, type: .info, portalURLString)
         let portalURLWithSecretString = "\(portalURLString)#coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
         let portalURLWithSecretAndLogPortString = "\(portalURLWithSecretString)&logServerPort=\(logServerPort)"
-        let portalURL = URL(string: portalURLWithSecretAndLogPortString )
+        let portalURLWithSecretLogPortAndRegtest = "\(portalURLWithSecretAndLogPortString)&regtest=\(isRegTestModeEnabled ? 1 : 0)"
+        let portalURL = URL(string: portalURLWithSecretLogPortAndRegtest)
         NSWorkspace.shared().open(portalURL!)
     }
 
@@ -217,7 +206,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if showExpandedMenu {
 
             let portalPortMenuItem = NSMenuItem()
-            portalPortMenuItem.title = "Web portal running on port \(portalPort())"
+            portalPortMenuItem.title = "Browser running on port \(portalPort())"
             portalPortMenuItem.isEnabled = false
             menu.addItem(portalPortMenuItem)
 
@@ -226,20 +215,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             corsProxyPortMenuItem.isEnabled = false
             menu.addItem(corsProxyPortMenuItem)
 
-            let corePortMenuItem = NSMenuItem()
-            var title = "Core node running on port \(coreProxyPort)"
-            if(isRegTestModeChanging) {
-                title = "Core node changing regtest mode state..."
-            } else if(isRegTestModeEnabled) {
-                title = "Core node is not running. Please start your regtest core node."
-            }
-            corePortMenuItem.title = title
-            corePortMenuItem.isEnabled = false
-            menu.addItem(corePortMenuItem)
-
             if(isDevModeEnabled) {
                 menu.addItem(NSMenuItem.separator())
-                menu.addItem(withTitle: "Copy Core API password", action: #selector(copyAPIKeyClick), keyEquivalent: "")
+                menu.addItem(withTitle: "Copy Log Server API password", action: #selector(copyAPIKeyClick), keyEquivalent: "")
             }
 
             menu.addItem(NSMenuItem.separator())
@@ -322,24 +300,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             os_log("Stopping log server...", log: log, type: .debug)
             portalLogServer?.server.stop()
             if(!isRegTestModeEnabled) {
-                os_log("Preparing to stop bundled Core API endpoint for reg test mode...", log: log, type: .debug)
-                stopCoreAPI(terminationHandler: {
-                    self.isRegTestModeChanging = false
-                    self.isRegTestModeEnabled = true
-                    os_log("Restarting log server with new API password", log: self.log, type: .debug)
-                    self.portalLogServer = PortalLogServer.init(port: UInt16(self.logServerPort), password: self.createOrRetrieveCoreWalletPassword())
-                })
+                self.isRegTestModeChanging = false
+                self.isRegTestModeEnabled = true
+                os_log("Restarting log server with new API password", log: self.log, type: .debug)
+                self.portalLogServer = PortalLogServer.init(port: UInt16(self.logServerPort), password: self.createOrRetrieveCoreWalletPassword())
             } else {
-                os_log("Exiting reg test mode: restarting bundled Core API endpoint...", log: log, type: .debug)
+                os_log("Exiting reg test mode...", log: log, type: .debug)
+                self.isRegTestModeChanging = false
+                self.isRegTestModeEnabled = false
+                
+                os_log("Stopping log server...", log: log, type: .debug)
+                portalLogServer?.server.stop()
                 let walletPassword = createOrRetrieveCoreWalletPassword()
-                portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
-                startCoreAPI(walletPassword: walletPassword, complete: {
-                    self.isRegTestModeChanging = false
-                    self.isRegTestModeEnabled = false
-                    os_log("Restarting log server with new API password", log: self.log, type: .debug)
-                    self.portalLogServer = PortalLogServer.init(port: UInt16(self.logServerPort), password: self.createOrRetrieveCoreWalletPassword())
+                os_log("Restarting log server with new API password", log: self.log, type: .debug)
+                self.portalLogServer = PortalLogServer.init(port: UInt16(self.logServerPort), password: walletPassword)
 
-                })
             }
         } else {
             os_log("Regtest mode is already changing. Doing nothing.", log: log, type: .debug)
@@ -394,13 +369,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             corsProxyProcess.terminate()
             os_log("CORS proxy terminated", log: log, type: .default)
-
-            stopCoreAPI(terminationHandler: {
-                if(terminate) {
-                    NSApplication.shared().terminate(self)
-                    os_log("Goodbye!", log: self.log, type: .default)
-                }
-            })
+            
+            os_log("Goodbye!", log: self.log, type: .default)
+            NSApplication.shared().terminate(self)
         }
     }
 
@@ -451,120 +422,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         complete()
     }
 
-    /* Blockstack Core */
+   
 
-    func startCoreAPI(walletPassword: String, complete: @escaping () -> Void) {
-        if let archivePath = Bundle.main.path(forResource: coreArchive, ofType: "") {
-            os_log("Blockstack Virtualenv archive path: %{public}@", log: log, type: .info, archivePath)
-
-            os_log("Extract Core venv to: %{public}@", log: log, type: .info, extractCoreVenvToPath)
-            os_log("Blockstack Core config file path: %{public}@", log: log, type: .info, coreConfigPath())
-            os_log("Blockstack Virtualenv Path: %{public}@", log: log, type: .info, coreVenvPath())
-            os_log("Blockstack path: %{public}@", log: log, type: .info, blockstackPath())
-            os_log("Python path: %{public}@", log: log, type: .info, pythonPath())
-
-            let extractProcess = Process()
-            let coreAPISetupProcess = Process()
-            let coreAPIStartProcess = Process()
-
-            do {
-                // see https://github.com/blockstack/blockstack-core/issues/345#issuecomment-288098844
-                os_log("Trying to remove existing config file because format changes between Core upgrades can break things.", log: log, type: .info)
-                try FileManager.default.removeItem(atPath: coreConfigPath())
-            } catch {
-                os_log("Can't remove existing config file. It probably doesn't exist.", log: log, type: .info)
-            }
-
-
-            /* Extract Blockstack Core virtualenv task */
-
-            let extractPipe = loggingPipe()
-            extractProcess.launchPath = "/usr/bin/tar"
-            extractProcess.arguments = ["-xvzf", archivePath, "-C", extractCoreVenvToPath];
-            extractProcess.standardOutput = extractPipe
-            extractProcess.standardError = extractPipe
-            extractProcess.terminationHandler = { process in
-                os_log("Finished extraction!", log: self.log, type: .default)
-                os_log("Setting up Blockstack Core...", log: self.log, type: .default)
-                coreAPISetupProcess.launch()
-            }
-
-
-
-            /* Blockstack Core setup task */
-
-            coreAPISetupProcess.launchPath = pythonPath()
-            coreAPISetupProcess.arguments = [blockstackPath(), "--debug", "-y", "--config", coreConfigPath(), "setup_wallet", "--password", walletPassword, "--api_password", walletPassword]
-
-            let coreAPISetupPipe = loggingPipe()
-            coreAPISetupProcess.standardOutput = coreAPISetupPipe
-            coreAPISetupProcess.standardError = coreAPISetupPipe
-
-            coreAPISetupProcess.terminationHandler = { process in
-                os_log("Finished Blockstack Core setup!", log: self.log, type: .default)
-                os_log("Starting Blockstack Core API endpoint...", log: self.log, type: .default)
-                coreAPIStartProcess.launch()
-            }
-
-
-            /* Blockstack Core API start task */
-
-            coreAPIStartProcess.launchPath = pythonPath()
-            coreAPIStartProcess.arguments = [blockstackPath(), "--debug", "-y", "--config", coreConfigPath(), "api", "start", "--password", walletPassword, "--api_password", walletPassword]
-
-            let coreAPIStartPipe = loggingPipe()
-            coreAPIStartProcess.standardOutput = coreAPIStartPipe
-            coreAPIStartProcess.standardError = coreAPIStartPipe
-
-            coreAPIStartProcess.terminationHandler = { process in
-                os_log("Blockstack Core API started!", log: self.log, type: .default)
-                complete()
-            }
-
-            os_log("Starting Blockstack Core Virtualenv extraction...", log: log, type: .default)
-            extractProcess.launch()
-
-        } else {
-            os_log("Error: Blockstack Core Virtualenv archive file not found!", log: log, type: .error)
-        }
-
-    }
-
-    func stopCoreAPI(terminationHandler:@escaping () -> Void) {
-        os_log("Attempting to stop Blockstack Core API...", log: log, type: .default)
-
-        let coreAPIStopProcess = Process()
-
-        coreAPIStopProcess.launchPath = pythonPath()
-        coreAPIStopProcess.arguments = [blockstackPath(), "--debug", "-y", "--config", coreConfigPath(), "api", "stop"]
-
-        let coreAPIStopPipe = loggingPipe()
-        coreAPIStopProcess.standardOutput = coreAPIStopPipe
-        coreAPIStopProcess.standardError = coreAPIStopPipe
-
-        coreAPIStopProcess.terminationHandler = { process in
-            os_log("Blockstack Core api stopped.", log: self.log, type: .default)
-            terminationHandler()
-        }
-
-        coreAPIStopProcess.launch()
-    }
-
-    func pythonPath() -> String {
-        return coreVenvPath() + "/bin/python2.7"
-    }
-
-    func blockstackPath() -> String {
-        return coreVenvPath() + "/bin/blockstack"
-    }
-
-    func coreVenvPath() -> String {
-        return extractCoreVenvToPath  + "/\(coreVenvDirectory)"
-    }
-
-    func coreConfigPath() -> String {
-        return blockstackDataURL().path + "/\(coreConfigFileRelativePath)"
-    }
 
     func portalRunPath() -> String {
         return blockstackDataURL().path + "/\(portalRunDirectory)"

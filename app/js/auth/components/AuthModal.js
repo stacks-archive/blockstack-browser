@@ -12,8 +12,7 @@ import {
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
-import { setCoreStorageConfig } from '../../utils/api-utils'
-import { isCoreEndpointDisabled, isWindowsBuild } from '../../utils/window-utils'
+import { fetchProfileLocations, getDefaultProfileUrl } from '../../utils/profile-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import { validateScopes, appRequestSupportsDirectHub } from '../utils'
@@ -23,18 +22,6 @@ import { uploadProfile } from '../../account/utils'
 import { signProfileForUpload } from '../../utils'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
-
-const APP_EMAIL_SCOPE_WHITELIST = [
-  'https://staging.blockstack.clients.barefootcoders.com',
-  'https://blockstack.com',
-  'http://localhost:3000',
-  'http://localhost:3001',
-  'http://localhost:3002',
-  'http://localhost:3003',
-  'http://localhost:4000',
-  'http://localhost:5000',
-  'http://localhost:8080'
-]
 
 function mapStateToProps(state) {
   return {
@@ -110,37 +97,16 @@ class AuthModal extends Component {
   componentWillMount() {
     const authRequest = getAuthRequestFromURL()
     const decodedToken = decodeToken(authRequest)
-
-    const appDomain = decodedToken.payload.domain_name
-    const scopes = decodedToken.payload.scopes
-    let invalidScopes = false
-
-    if (scopes.includes('email')
-    && !APP_EMAIL_SCOPE_WHITELIST.includes(appDomain)) {
-      logger.error(`componentWillMount: ${appDomain} not in 'email' scope whitelist`)
-      invalidScopes = true
-    }
-
-    if (scopes.includes('email')) {
-      this.setState({
-        scopes: {
-          email: true
-        }
-      })
-    }
-
-    if (scopes.includes('publish_data')) {
-      this.setState({
-        scopes: {
-          publishData: true
-        }
-      })
-    }
+    const { scopes } = decodedToken.payload
 
     this.setState({
       authRequest,
       decodedToken,
-      invalidScopes
+      scopes: {
+        ...this.state.scopes,
+        email: scopes.includes('email'),
+        publishData: scopes.includes('publish_data')
+      }
     })
 
     this.props.verifyAuthRequestAndLoadManifest(authRequest)
@@ -201,52 +167,69 @@ class AuthModal extends Component {
       const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
-      const gaiaBucketAddress = nextProps.identityKeypairs[0].address
-      const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
-      let profileUrl = `${profileUrlBase}/${identityIndex}/profile.json`
+      let profileUrlPromise
 
       if (identity.zoneFile && identity.zoneFile.length > 0) {
         const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(identity.zoneFile)
         if (profileUrlFromZonefile !== null && profileUrlFromZonefile !== undefined) {
-          profileUrl = profileUrlFromZonefile
+          profileUrlPromise = Promise.resolve(profileUrlFromZonefile)
         }
       }
 
-      // Add app storage bucket URL to profile if publish_data scope is requested
-      if (this.state.scopes.publishData) {
-        let apps = {}
-        if (profile.hasOwnProperty('apps')) {
-          apps = profile.apps
-        }
+      const gaiaBucketAddress = nextProps.identityKeypairs[0].address
+      const identityAddress = nextProps.identityKeypairs[identityIndex].address
+      const gaiaUrlBase = 'https://gaia.blockstack.org/hub'
 
-        if (storageConnected) {
-          getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
-          .then((appBucketUrl) => {
-            logger.debug(`componentWillReceiveProps: appBucketUrl ${appBucketUrl}`)
-            apps[appDomain] = appBucketUrl
-            logger.debug(`componentWillReceiveProps: new apps array ${JSON.stringify(apps)}`)
-            profile.apps = apps
-            const signedProfileTokenData = signProfileForUpload(profile,
-            nextProps.identityKeypairs[identityIndex])
-            logger.debug('componentWillReceiveProps: uploading updated profile with new apps array')
-            return uploadProfile(this.props.api, identity,
-              nextProps.identityKeypairs[identityIndex],
-              signedProfileTokenData)
+      if (!profileUrlPromise) {
+        profileUrlPromise = fetchProfileLocations(
+          gaiaUrlBase, identityAddress, gaiaBucketAddress, identityIndex)
+          .then(fetchProfileResp => {
+            if (fetchProfileResp && fetchProfileResp.profileUrl) {
+              return fetchProfileResp.profileUrl
+            } else {
+              return getDefaultProfileUrl(gaiaUrlBase, identityAddress)
+            }
           })
-          .then(() => {
-            this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
-              profile, profileUrl)
-          })
-          .catch((err) => {
-            logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
-          })
+      }
+
+      profileUrlPromise.then((profileUrl) => {
+        // Add app storage bucket URL to profile if publish_data scope is requested
+        if (this.state.scopes.publishData) {
+          let apps = {}
+          if (profile.hasOwnProperty('apps')) {
+            apps = profile.apps
+          }
+
+          if (storageConnected) {
+            getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
+              .then((appBucketUrl) => {
+                logger.debug(`componentWillReceiveProps: appBucketUrl ${appBucketUrl}`)
+                apps[appDomain] = appBucketUrl
+                logger.debug(`componentWillReceiveProps: new apps array ${JSON.stringify(apps)}`)
+                profile.apps = apps
+                const signedProfileTokenData = signProfileForUpload(
+                  profile, nextProps.identityKeypairs[identityIndex])
+                logger.debug(
+                  'componentWillReceiveProps: uploading updated profile with new apps array')
+                return uploadProfile(this.props.api, identity,
+                                     nextProps.identityKeypairs[identityIndex],
+                                     signedProfileTokenData)
+              })
+              .then(() => {
+                this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
+                                          profile, profileUrl)
+              })
+              .catch((err) => {
+                logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
+              })
+          } else {
+            logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
+          }
         } else {
-          logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
+          this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
+                                    profile, profileUrl)
         }
-      } else {
-        this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
-          profile, profileUrl)
-      }
+      })
     } else {
       logger.error('componentWillReceiveProps: response already sent - doing nothing')
     }
@@ -353,17 +336,8 @@ class AuthModal extends Component {
             }
           }
 
-          // Get keypair corresponding to the current user identity
-          const profileSigningKeypair = this.props.identityKeypairs
-          .find((keypair) => keypair.address === identity.ownerAddress)
-
           const appDomain = this.state.decodedToken.payload.domain_name
           const scopes = this.state.decodedToken.payload.scopes
-          const appsNodeKey = profileSigningKeypair.appsNodeKey
-          const salt = profileSigningKeypair.salt
-          const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-          const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-          const blockchainId = (hasUsername ? identity.username : null)
           const needsCoreStorage = !appRequestSupportsDirectHub(this.state.decodedToken.payload)
 
           const scopesJSONString = JSON.stringify(scopes)
@@ -382,16 +356,11 @@ class AuthModal extends Component {
           })
           const requestingStoreWrite = !!scopes.includes('store_write')
           if (requestingStoreWrite && needsCoreStorage) {
-            logger.trace('login(): Calling setCoreStorageConfig()...')
-            setCoreStorageConfig(this.props.api, identityIndex, identity.ownerAddress,
-            identity.profile, profileSigningKeypair, identity)
-            .then(() => {
-              logger.trace('login(): Core storage successfully configured.')
-              logger.trace('login(): Calling getCoreSessionToken()...')
-              this.props.getCoreSessionToken(this.props.coreHost,
-                  this.props.corePort, this.props.coreAPIPassword, appPrivateKey,
-                  appDomain, this.state.authRequest, blockchainId)
+            this.setState({
             })
+            logger.error('Tried logging in with core-enabled-storage,' +
+                         ' but that is no longer supported...')
+            return
           } else if (requestingStoreWrite && !needsCoreStorage) {
             logger.trace('login(): app can communicate directly with gaiahub, not setting up core.')
             this.setState({
@@ -422,16 +391,8 @@ class AuthModal extends Component {
     const coreShortCircuit = (!appManifestLoading
                               && appManifest !== null
                               && !invalidScopes
-                              && !noCoreStorage
-                              && isCoreEndpointDisabled())
+                              && !noCoreStorage)
     if (coreShortCircuit) {
-      let appText
-      if (isWindowsBuild()) {
-        appText = 'Windows build'
-      } else {
-        appText = 'webapp'
-      }
-
       return (
         <div className="">
           <Modal
@@ -455,9 +416,8 @@ class AuthModal extends Component {
                 </p>
               : null}
               <p>
-               This application uses an older Gaia storage library, which is not supported
-               in our {appText}. Once the application updates its library, you will be
-               able to use it.
+               This application uses an older Gaia storage library, which is no longer supported.
+               Once the application updates its library, you will be able to use it.
               </p>
             </div>
           </Modal>

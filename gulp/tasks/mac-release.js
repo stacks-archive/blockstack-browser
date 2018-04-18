@@ -11,6 +11,6 @@ gulp.task('mac-release', ['clean'], function(cb) {
 
   process.env.NODE_ENV = 'production';
 
-  runSequence('prod','copyBrowserForMac', 'compileBlockstackProxyForMac', 'compileCorsProxyForMac', 'buildBlockstackVenvForMac', 'buildMacReleaseArchive', 'buildMacReleaseExport', 'buildMacReleaseBuildDMG', 'buildMacReleaseSignDMG', cb);
+  runSequence('prod','copyBrowserForMac', 'compileBlockstackProxyForMac', 'compileCorsProxyForMac','buildMacReleaseArchive', 'buildMacReleaseExport', 'buildMacReleaseBuildDMG', 'buildMacReleaseSignDMG', cb);
 
 });

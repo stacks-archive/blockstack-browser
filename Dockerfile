@@ -11,7 +11,10 @@ RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 
 # Install cors-proxy
-RUN npm install -g corsproxy-https
+RUN npm install -g cors-anywhere
+RUN echo '#!/bin/bash' >> /usr/bin/corsproxy
+RUN echo 'node /src/blockstack-browser/corsproxy/corsproxy.js 0 0 0.0.0.0' >> /usr/bin/corsproxy
+RUN chmod +x /usr/bin/corsproxy
 
 # Alias the cors-proxy
 RUN ln /usr/bin/corsproxy /usr/bin/blockstack-cors-proxy
@@ -27,6 +30,6 @@ RUN /src/blockstack-browser/node_modules/.bin/gulp prod
 
 # Setup script to run browser
 RUN echo '#!/bin/bash' >> /src/blockstack-browser/blockstack-browser
-RUN echo 'node /src/blockstack-browser/native/blockstackProxy.js 8888 /src/blockstack-browser/build' >> /src/blockstack-browser/blockstack-browser
+RUN echo 'node /src/blockstack-browser/native/blockstackProxy.js 8888 /src/blockstack-browser/build 0.0.0.0' >> /src/blockstack-browser/blockstack-browser
 RUN chmod +x /src/blockstack-browser/blockstack-browser
 RUN ln /src/blockstack-browser/blockstack-browser /usr/bin/blockstack-browser

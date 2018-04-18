@@ -1,10 +1,14 @@
 [ignore]
+.*/node_modules/styled-components/*
+.*/node_modules/express/*
 .*/node_modules/bigi/*
 .*/node_modules/bower-json/*
 .*/node_modules/config-chain/*
 .*/node_modules/config-chain/*
 .*/node_modules/npmconf/*
 .*/node_modules/immutable/*
+.*/blockstack.js/node_modules/*
+.*/blockstack.js/src/*
 .*/tmp/nexe/*
 
 [include]

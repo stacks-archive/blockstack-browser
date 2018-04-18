@@ -12,7 +12,7 @@ import {
   authorizationHeaderValue
 } from '../../../utils/index'
 import { DEFAULT_PROFILE,
-  getProfileFromTokens } from '../../../utils/profile-utils'
+  fetchProfileLocations } from '../../../utils/profile-utils'
 import { calculateTrustLevel } from '../../../utils/account-utils'
 import { AccountActions } from '../../../account/store/account'
 import { isWebAppBuild } from '../../../utils/window-utils'
@@ -208,64 +208,6 @@ function createNewProfile(encryptedBackupPhrase: string,
 }
 
 /**
- * Try to fetch and verify a profile from the historic set of default locations,
- * in order of recency. If all of them return 404s, or fail to validate, return null
- */
-function fetchProfileLocations(gaiaUrlBase: string,
-                               ownerAddress: string,
-                               firstAddress: string,
-                               ownerIndex: number) {
-  function recursiveTryFetch(locations) {
-    if (locations.length === 0) {
-      return Promise.resolve(null)
-    }
-    const location = locations[0]
-    return fetch(location)
-      .then(response => {
-        if (response.ok) {
-          return response.json()
-            .then(tokenRecords => getProfileFromTokens(tokenRecords, ownerAddress, false))
-            .then(profile => {
-              logger.debug(`Found valid profile at ${location}`)
-              return profile
-            })
-            .catch(() => {
-              logger.debug(`Failed to verify profile at ${location}... trying others`)
-              return recursiveTryFetch(locations.slice(1))
-            })
-        } else {
-          logger.debug(`Failed to find profile at ${location}... trying others`)
-          return recursiveTryFetch(locations.slice(1))
-        }
-      })
-      .catch(() => {
-        logger.debug(`Error in fetching profile at ${location}... trying others`)
-        return recursiveTryFetch(locations.slice(1))
-      })
-  }
-
-  const urls = []
-  // the new default
-  urls.push(`${gaiaUrlBase}/${ownerAddress}/profile.json`)
-
-  // the 'indexed' URL --
-  //  this is gaia/:firstAddress/:index/profile.json
-  //  however, the index is _not_ equal to the current index.
-  //  indexes were mapped from
-  //    correct: [0, 1, 3, 5, 7, 9...]
-  //  incorrect: [0, 1, 2, 3, 4, 5...]
-
-  if (ownerIndex < 2) {
-    urls.push(`${gaiaUrlBase}/${firstAddress}/${ownerIndex}/profile.json`)
-  } else if (ownerIndex % 2 === 1) {
-    const buggedIndex = 1 + Math.floor(ownerIndex / 2)
-    urls.push(`${gaiaUrlBase}/${firstAddress}/${buggedIndex}/profile.json`)
-  }
-
-  return recursiveTryFetch(urls)
-}
-
-/**
  * Checks each owner address to see if it owns a name, if it owns a name,
  * it resolves the profile and updates the state with the owner address's
  * current name.
@@ -291,8 +233,9 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
             const gaiaBucketAddress = ownerAddresses[0]
             return fetchProfileLocations('https://gaia.blockstack.org/hub',
                                          address, gaiaBucketAddress, index)
-              .then(profile => {
-                if (profile) {
+              .then(returnObject => {
+                if (returnObject && returnObject.profile) {
+                  const profile = returnObject.profile
                   const zoneFile = ''
                   dispatch(updateProfile(index, profile, zoneFile))
                   let verifications = []
