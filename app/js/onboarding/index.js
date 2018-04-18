@@ -3,7 +3,7 @@ import { browserHistory, withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
 import ProgressBar from '@components/ProgressBar'
-import { Email, Verify, Verified, Password, Username, Hooray } from './views'
+import { Email, Verify, Password, Username, Hooray } from './views'
 import { encrypt } from '@utils/encryption-utils'
 
 import bip39 from 'bip39'
@@ -11,11 +11,12 @@ import { randomBytes } from 'crypto'
 const VIEWS = {
   EMAIL: 0,
   EMAIL_VERIFY: 1,
-  EMAIL_VERIFIED: 2,
-  PASSWORD: 3,
-  USERNAME: 4,
-  HOORAY: 5
+  PASSWORD: 2,
+  USERNAME: 3,
+  HOORAY: 4
 }
+
+const HEROKU_URL = 'https://obscure-retreat-87934.herokuapp.com'
 
 const encryptSeedWithPassword = (password, seed) =>
   encrypt(new Buffer(seed), password).then(encrypted =>
@@ -35,11 +36,9 @@ const cacheEncryptedSeed = (username, encryptedSeed) => {
 }
 
 function verifyEmail(email) {
-  const url = 'https://obscure-retreat-87934.herokuapp.com/verify'
-
   const { protocol, hostname, port } = location
   const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-  const emailVerificationLink = `${thisUrl}/onboarding?verified=${email}`
+  const emailVerificationLink = `${thisUrl}/sign-up?verified=${email}`
 
   const options = {
     method: 'POST',
@@ -53,7 +52,7 @@ function verifyEmail(email) {
     }
   }
 
-  return fetch(url, options)
+  return fetch(`${HEROKU_URL}/verify`, options)
     .then(
       () => {
         console.log(`emailNotifications: sent ${email} an email verification`)
@@ -67,9 +66,7 @@ function verifyEmail(email) {
     })
 }
 
-function sendBackup(email, encryptedSeed) {
-  const url = 'https://obscure-retreat-87934.herokuapp.com/backup'
-
+function sendRecovery(blockstackId, email, encryptedSeed) {
   const { protocol, hostname, port } = location
   const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
   const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedSeed}`
@@ -78,7 +75,8 @@ function sendBackup(email, encryptedSeed) {
     method: 'POST',
     body: JSON.stringify({
       email,
-      seedRecovery
+      seedRecovery,
+      blockstackId
     }),
     headers: {
       Accept: 'application/json',
@@ -86,10 +84,42 @@ function sendBackup(email, encryptedSeed) {
     }
   }
 
-  return fetch(url, options)
+  return fetch(`${HEROKU_URL}/recovery`, options)
     .then(
       () => {
-        console.log(`emailNotifications: registered ${email} for notifications`)
+        console.log(`emailNotifications: sent ${email} recovery email`)
+      },
+      error => {
+        console.log('emailNotifications: error', error)
+      }
+    )
+    .catch(error => {
+      console.log('emailNotifications: error', error)
+    })
+}
+
+function sendRestore(blockstackId, email, encryptedSeed) {
+  const { protocol, hostname, port } = location
+  const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
+  const restoreLink = `${thisUrl}/sign-in?seed=${encryptedSeed}`
+
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      email,
+      restoreLink,
+      blockstackId
+    }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+
+  return fetch(`${HEROKU_URL}/restore`, options)
+    .then(
+      () => {
+        console.log(`emailNotifications: sent ${email} restore email`)
       },
       error => {
         console.log('emailNotifications: error', error)
@@ -113,7 +143,7 @@ class Onboarding extends React.Component {
     const { location } = this.props
     if (location.query.verified) {
       this.setState({ email: location.query.verified })
-      this.updateView(VIEWS.EMAIL_VERIFIED)
+      this.updateView(VIEWS.PASSWORD)
     }
   }
 
@@ -172,7 +202,8 @@ class Onboarding extends React.Component {
     this.setState({ seed })
 
     encryptSeedWithPassword(password, seed).then(encryptedSeed => {
-      sendBackup(email, encryptedSeed)
+      sendRecovery(username, email, encryptedSeed)
+      sendRestore(username, email, encryptedSeed)
       cacheEncryptedSeed(username, encryptedSeed)
     })
 
@@ -210,13 +241,6 @@ class Onboarding extends React.Component {
         props: {
           email,
           resend: this.submitEmailForVerification,
-          next: () => this.updateView(VIEWS.PASSWORD)
-        }
-      },
-      {
-        show: VIEWS.EMAIL_VERIFIED,
-        Component: Verified,
-        props: {
           next: () => this.updateView(VIEWS.PASSWORD)
         }
       },
