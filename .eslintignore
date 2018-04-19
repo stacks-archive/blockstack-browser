@@ -7,7 +7,6 @@ build/*
 gulp/*
 flow-typed/*
 
-tests/account/*
 tests/fixtures/*
 tests/profiles/*
 tests/store/*
