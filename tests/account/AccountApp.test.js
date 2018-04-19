@@ -4,8 +4,8 @@ import { shallow } from 'enzyme'
 import { AccountApp } from '../../app/js/account/AccountApp'
 
 describe('AccountApp', () => {
-  let props;
-  let wrapper;
+  let props
+  let wrapper
 
   before(() => {
     props = {

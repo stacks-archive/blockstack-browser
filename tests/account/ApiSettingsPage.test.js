@@ -4,8 +4,8 @@ import { shallow } from 'enzyme'
 import { ApiSettingsPage } from '../../app/js/account/ApiSettingsPage'
 
 describe('ApiSettingsPage', () => {
-  let props;
-  let wrapper;
+  let props
+  let wrapper
 
   before(() => {
     props = {

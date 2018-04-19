@@ -4,8 +4,8 @@ import { shallow } from 'enzyme'
 import DeleteAccountModal from '../../../app/js/account/components/DeleteAccountModal'
 
 describe('<DeleteAccountModal />', () => {
-  let props;
-  let wrapper;
+  let props
+  let wrapper
 
   before(() => {
     props = {
@@ -24,6 +24,6 @@ describe('<DeleteAccountModal />', () => {
 
   it('calls deleteAccount prop function', () => {
     wrapper.find('.btn-danger').simulate('click')
-    expect(props.deleteAccount.called).to.be.true
+    return expect(props.deleteAccount.called).to.be.true
   })
 })
