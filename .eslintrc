@@ -1,9 +1,7 @@
 {
   "extends": "airbnb",
   "parser": "babel-eslint",
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "globals": {
     "proxyFetch": true
   },
@@ -14,43 +12,53 @@
   "env": {
     "browser": true,
     "es6": true,
-    "node": true,
+    "node": true
   },
   "rules": {
+    "camelcase": 2,
     "comma-dangle": ["error", "never"],
-    "quotes": [2, "single"],
     "eol-last": 2,
+    "import/no-duplicates": 2,
+    "max-len": [
+      2,
+      100,
+      2,
+      {
+        "ignoreComments": true,
+        "ignorePattern": "^import\\s.+\\sfrom\\s.+;$",
+        "ignoreUrls": true
+      }
+    ],
+    "new-cap": 0,
+    "no-console": 0,
     "no-debugger": 1,
-    "no-mixed-requires": 0,
-    "no-underscore-dangle": 0,
-    "no-multi-spaces": 0,
-    "no-trailing-spaces": 0,
+    "no-duplicate-imports": 0,
+    "no-else-return": 0,
     "no-extra-boolean-cast": 0,
+    "no-mixed-requires": 0,
+    "no-multi-spaces": 0,
+    "no-param-reassign": 0,
+    "no-trailing-spaces": 0,
     "no-undef": 2,
+    "no-underscore-dangle": 0,
     "no-unused-vars": 2,
     "no-var": 2,
-    "no-param-reassign": 0,
-    "no-else-return": 0,
-    "no-console": 0,
     "prefer-const": 2,
-    "new-cap": 0,
-    "camelcase": 2,
-    "semi": [2, "never"],
+    "quotes": [2, "single"],
+    "react/prop-types": 2,
+    "react/react-in-jsx-scope": 2,
+    "react/sort-comp": 0,
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
-    "react/react-in-jsx-scope": 2,
-    "react/prop-types": 2,
-    "react/sort-comp": 0,
-    "no-duplicate-imports": 0,
-    "import/no-duplicates": 2
+    "semi": [2, "never"]
   },
   "settings": {
     "react": {
-      "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
-      "pragma": "React",  // Pragma to use, default to "React"
-      "version": "15.0",// React version, default to the latest React stable release
-      "flowVersion": "0.53" // Flow version
+      "createClass": "createReactClass",
+      "pragma": "React",
+      "version": "15.0",
+      "flowVersion": "0.53"
     },
-    "propWrapperFunctions": [ "forbidExtraProps" ] // The names of any functions used to wrap the propTypes object, such as `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
+    "propWrapperFunctions": ["forbidExtraProps"]
   }
 }

@@ -4,9 +4,7 @@ import DEFAULT_API from '../../../../../app/js/account/store/settings/default'
 describe('Settings Store: Sync Actions', () => {
   describe('resetApi', () => {
     it('should return an action of type UPDATE_API with default API', () => {
-      const initialApi = {
-        lookupUrl: 'https://example.com/v1/lookup'
-      }
+      const initialApi = { lookupUrl: 'https://example.com/v1/lookup' }
       const expectedResult = {
         type: 'UPDATE_API',
         api: Object.assign({}, DEFAULT_API)
@@ -16,6 +14,7 @@ describe('Settings Store: Sync Actions', () => {
         assert.deepEqual(action, expectedResult)
         assert.notDeepEqual(action.api, initialApi)
       }
+
       actualResult(dispatch)
     })
 
@@ -39,15 +38,14 @@ describe('Settings Store: Sync Actions', () => {
         assert.equal(action.api.coreAPIPassword, initialApi.coreAPIPassword)
         assert.equal(action.api.gaiaHubConfig, initialApi.gaiaHubConfig)
       }
+
       actualResult(dispatch)
     })
   })
 
   describe('updateApi', () => {
     it('should return an action of type UPDATE_API with new API', () => {
-      const initialApi = {
-        lookupUrl: 'https://example.com/v1/lookup'
-      }
+      const initialApi = { lookupUrl: 'https://example.com/v1/lookup' }
       const expectedResult = {
         type: 'UPDATE_API',
         api: {
@@ -57,6 +55,7 @@ describe('Settings Store: Sync Actions', () => {
       const actualResult = SettingsActions.updateApi({
         lookupUrl: 'https://example.com/v2/lookup'
       })
+
       assert.deepEqual(actualResult, expectedResult)
       assert.notDeepEqual(actualResult.api, initialApi)
     })
@@ -69,6 +68,7 @@ describe('Settings Store: Sync Actions', () => {
         price: '10000.00'
       }
       const actualResult = SettingsActions.updateBtcPrice('10000.00')
+
       assert.deepEqual(actualResult, expectedResult)
     })
   })
