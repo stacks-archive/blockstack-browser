@@ -20,7 +20,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(SettingsActions, dispatch)
 }
 
-class ApiSettingsPage extends Component {
+export class ApiSettingsPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
