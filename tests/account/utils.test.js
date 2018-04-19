@@ -4,7 +4,6 @@ import { BitcoinKeyPairs } from '../fixtures/bitcoin'
 import nock from 'nock'
 
 const mockHubInfoResponse = {
-  // eslint-disable-next-line max-len
   challenge_text: '["gaiahub","2018","storage.blockstack.org","blockstack_storage_please_sign"]',
   read_url_prefix: 'https://gaia.blockstack.org/hub/'
 }
@@ -29,8 +28,7 @@ describe('upload-profile', () => {
   afterEach(() => {})
 
   describe('uploadProfile', () => {
-    // eslint-disable-next-line max-len
-    it('should upload to the zonefile entry location, using the global uploader if necessary', () => {
+    it('should upload to the zonefile entry, using the global uploader if necessary', () => {
       const ecPair = ECPair.fromWIF(BitcoinKeyPairs.test1.wif)
       const address = ecPair.getAddress()
       const key = ecPair.d.toBuffer(32).toString('hex')
@@ -50,8 +48,8 @@ describe('upload-profile', () => {
         .post(`/store/${hubAddress}/foo-profile.json`)
         .reply(200, mockResponseBody)
 
-      // eslint-disable-next-line max-len
-      const zoneFile = `$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://gaia.blockstack.org/hub/${hubAddress}/foo-profile.json"\n\n`
+      const zoneFile = '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t' +
+            `"https://gaia.blockstack.org/hub/${hubAddress}/foo-profile.json"\n\n`
 
       const identity = { zoneFile }
 
@@ -96,8 +94,8 @@ describe('upload-profile', () => {
         key
       }
 
-      // eslint-disable-next-line max-len
-      const zoneFile = `$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t"https://potato.blockstack.org/hub/${address}/foo-profile.json"\n\n`
+      const zoneFile = '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t' +
+            `"https://potato.blockstack.org/hub/${address}/foo-profile.json"\n\n`
 
       const identity = { zoneFile }
 
