@@ -1,5 +1,10 @@
 import { AccountActions, AccountReducer } from '../../../../app/js/account/store/account'
 
+// eslint-disable-next-line max-len
+const BITCOIN_ACCOUNT_KEYCHAIN = 'xpub6DPVcgkLNGyJ658Zd77XVCtKMAcyNWyGwtzxfzTt2XMhMnc6pkYQXru3BSFHbe4wErGeWtZ8WEVnf74ev7ypn6aFysKGcT3AJ1LrGG2ZDwJ'
+// eslint-disable-next-line max-len
+const IDENTITY_ACCOUNT_KEYCHAIN = 'xpub69qePe4LJAcLtQvdginvTYNoFPzm2kZNzCbwY62X31Grxw85RQVnQ81npSRtEGuGF8x9jQGE2sMTmLn2AA8kXwNdiiqgS74muDeDjivLVwR'
+
 let initialState = {
   accountCreated: false,
   promptedForEmail: false,
@@ -38,12 +43,12 @@ describe('Account Store: AccountReducer', () => {
   it('should calculate the next bitcoin address', () => {
     initialState = {
       identityAccount: {
-        publicKeychain: 'xpub69qePe4LJAcLtQvdginvTYNoFPzm2kZNzCbwY62X31Grxw85RQVnQ81npSRtEGuGF8x9jQGE2sMTmLn2AA8kXwNdiiqgS74muDeDjivLVwR',
+        publicKeychain: IDENTITY_ACCOUNT_KEYCHAIN,
         addresses: ['1D6WztrjTkKkrcGBL1pqfCJFnCbmQtjPh6'],
         addressIndex: 0
       },
       bitcoinAccount: {
-        publicKeychain: 'xpub6DPVcgkLNGyJ658Zd77XVCtKMAcyNWyGwtzxfzTt2XMhMnc6pkYQXru3BSFHbe4wErGeWtZ8WEVnf74ev7ypn6aFysKGcT3AJ1LrGG2ZDwJ',
+        publicKeychain: BITCOIN_ACCOUNT_KEYCHAIN,
         addresses: ['16KyES12ATkeM8DNbdTAWFtAPQFNXsFaB1'],
         balances: { total: 0.0 },
         addressIndex: 0
@@ -54,18 +59,18 @@ describe('Account Store: AccountReducer', () => {
       bitcoinAccount: {
         addressIndex: 1,
         addresses: [
-          "16KyES12ATkeM8DNbdTAWFtAPQFNXsFaB1",
-          "1K2GerUJeysnNYJEB9nZPykPmuAwKpNc9k"
+          '16KyES12ATkeM8DNbdTAWFtAPQFNXsFaB1',
+          '1K2GerUJeysnNYJEB9nZPykPmuAwKpNc9k'
         ],
         balances: {
-          "total": 0
+          total: 0
         },
-        publicKeychain: "xpub6DPVcgkLNGyJ658Zd77XVCtKMAcyNWyGwtzxfzTt2XMhMnc6pkYQXru3BSFHbe4wErGeWtZ8WEVnf74ev7ypn6aFysKGcT3AJ1LrGG2ZDwJ",
+        publicKeychain: BITCOIN_ACCOUNT_KEYCHAIN
       },
       identityAccount: {
         addressIndex: 0,
-        addresses: ["1D6WztrjTkKkrcGBL1pqfCJFnCbmQtjPh6"],
-        publicKeychain: "xpub69qePe4LJAcLtQvdginvTYNoFPzm2kZNzCbwY62X31Grxw85RQVnQ81npSRtEGuGF8x9jQGE2sMTmLn2AA8kXwNdiiqgS74muDeDjivLVwR"
+        addresses: ['1D6WztrjTkKkrcGBL1pqfCJFnCbmQtjPh6'],
+        publicKeychain: IDENTITY_ACCOUNT_KEYCHAIN
       }
     }
 

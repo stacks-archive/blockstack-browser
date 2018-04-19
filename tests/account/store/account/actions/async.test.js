@@ -29,10 +29,10 @@ describe('Account Store: Async Actions', () => {
     it('restores an existing wallet and keychain', () => {
       const store = mockStore({})
       const password = 'password'
-      const backupPhrase = 'sound idle panel often situate develop unit text design antenna vendor screen opinion balcony share trigger accuse scatter visa uniform brass update opinion media'
+      const backupPhrase = 'sound idle panel often situate develop unit text design antenna vendor screen opinion balcony share trigger accuse scatter visa uniform brass update opinion media' // eslint-disable-line max-len
 
-      const bitcoinPublicKeychain = 'xpub6Br2scNTh9Luk2VPebfEvjbWWC5WhvxpxgK8ap2qhYTS4xvZu8Y3G1npmx8DdvwUdCbtNb7qNLyTChKMbY8dThLV5Zvdq9AojQjxrM6gTC8'
-      const identityPublicKeychain = 'xpub6B6tCCb8T5eXUKVYUoppmSi5KhNRboRJUwqHavxdvQTncfmBNFCX4Nq9w8DsfuS6AYPpBYRuS3dcUuyF8mQtwEydAEN3A4Cx6HDy58jpKEb'
+      const bitcoinPublicKeychain = 'xpub6Br2scNTh9Luk2VPebfEvjbWWC5WhvxpxgK8ap2qhYTS4xvZu8Y3G1npmx8DdvwUdCbtNb7qNLyTChKMbY8dThLV5Zvdq9AojQjxrM6gTC8' // eslint-disable-line max-len
+      const identityPublicKeychain = 'xpub6B6tCCb8T5eXUKVYUoppmSi5KhNRboRJUwqHavxdvQTncfmBNFCX4Nq9w8DsfuS6AYPpBYRuS3dcUuyF8mQtwEydAEN3A4Cx6HDy58jpKEb' // eslint-disable-line max-len
       const firstBitcoinAddress = '112FogMTesWmLzkWbtKrSg3p9LK6Lucn4s'
       const identityAddresses = ['1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk']
 
@@ -40,7 +40,7 @@ describe('Account Store: Async Actions', () => {
         key: 'a29c3e73dba79ab0f84cb792bafd65ec71f243ebe67a7ebd842ef5cdce3b21eb',
         keyID: '03e93ae65d6675061a167c34b8321bef87594468e9b2dd19c05a67a7b4caefa017',
         address: '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk',
-        appsNodeKey: 'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarxXMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f',
+        appsNodeKey: 'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarxXMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f', // eslint-disable-line max-len
         salt: 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e'
       }]
 
