@@ -20,10 +20,13 @@
     "eol-last": 2,
     "import/no-duplicates": 2,
     "max-len": [
-      "error",
+      2,
+      100,
+      2,
       {
         "ignoreComments": true,
-        "ignoreStrings": true
+        "ignorePattern": "^import\\s.+\\sfrom\\s.+;$",
+        "ignoreUrls": true
       }
     ],
     "new-cap": 0,
