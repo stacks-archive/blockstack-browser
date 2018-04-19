@@ -4,12 +4,12 @@ import { shallow } from 'enzyme'
 import { AccountMenu } from '../../app/js/account/AccountMenu'
 
 describe('AccountMenu', () => {
-  let props;
-  let wrapper;
+  let props
+  let wrapper
 
   before(() => {
     props = {
-      children: {},
+      children: {}
     }
 
     wrapper = shallow(<AccountMenu {...props} />)
