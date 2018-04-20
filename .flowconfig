@@ -6,6 +6,7 @@
 .*/node_modules/npmconf/*
 .*/node_modules/immutable/*
 .*/tmp/nexe/*
+.*/node_modules/styled-components/.*
 
 [include]
 
