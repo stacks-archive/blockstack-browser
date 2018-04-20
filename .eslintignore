@@ -14,9 +14,6 @@ tests/utils/a*
 tests/utils/e*
 tests/utils/n*
 
-app/js/components/*
-!app/js/components/Navbar*
-
 app/js/profiles/store/*
 app/js/profiles/tabs/*
 !app/js/profiles/Default*
