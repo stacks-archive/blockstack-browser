@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react'
-import PropTypes from 'prop-types'
 import { FastField, Form, Formik } from 'formik'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { LockOpenIcon } from 'mdi-react'
 import Yup from 'yup'
 import { Button } from '@components/styled/Button'
+import PropTypes from 'prop-types'
 
 const validationSchema = Yup.object({
   password: Yup.string()
@@ -36,39 +36,49 @@ const Password = ({ next, updateValue, password, ...rest }) => (
         }}
         validateOnBlur={false}
         validateOnChange={false}
-        render={({ errors, touched }) => (
-          <Form>
-            <label htmlFor="password">
-              Password <em>(8 characters minimum)</em>
-            </label>
-            <FastField
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              placeholder="Password"
-            />
-            <FastField
-              name="passwordConfirm"
-              type="password"
-              autoComplete="new-password"
-              placeholder="Confirm Password"
-            />
-            {errors.password && touched.password ? (
-              <PanelCard.Error
-                icon={<LockOpenIcon />}
-                message={errors.password}
+        render={({ errors, touched }) => {
+          const renderErrorMessages = () => {
+            if (errors.password && touched.password) {
+              return (
+                <PanelCard.Error
+                  icon={<LockOpenIcon />}
+                  message={errors.password}
+                />
+              )
+            } else if (errors.passwordConfirm && touched.passwordConfirm) {
+              return (
+                <PanelCard.Error
+                  icon={<LockOpenIcon />}
+                  message={errors.passwordConfirm}
+                />
+              )
+            }
+            return null
+          }
+          return (
+            <Form>
+              <label htmlFor="password">
+                Password <em>(8 characters minimum)</em>
+              </label>
+              <FastField
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Password"
               />
-            ) : errors.passwordConfirm && touched.passwordConfirm ? (
-              <PanelCard.Error
-                icon={<LockOpenIcon />}
-                message={errors.passwordConfirm}
+              <FastField
+                name="passwordConfirm"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Confirm Password"
               />
-            ) : null}
-            <Button primary type="submit">
-              Continue
-            </Button>
-          </Form>
-        )}
+              {renderErrorMessages()}
+              <Button primary type="submit">
+                Continue
+              </Button>
+            </Form>
+          )
+        }}
       />
     </Fragment>
   </PanelCard>

@@ -12,6 +12,9 @@ const validationSchema = Yup.object({
     .required('Please enter your 12 word recovery key')
 })
 
+const placeholder =
+  'likeness nutria producer rem wedged upstate ossicle paying telega attain laverock planar'
+
 class Options extends React.Component {
   state = {
     restoring: false
@@ -68,15 +71,14 @@ class Options extends React.Component {
                       name="key"
                       component="textarea"
                       type="text"
-                      placeholder="likeness nutria producer rem wedged upstate ossicle paying telega attain laverock planar"
+                      placeholder={placeholder}
                     />
-                    {errors.key &&
-                      touched.key && (
-                        <PanelCard.Error
-                          icon={<TextboxPasswordIcon />}
-                          message={errors.key}
-                        />
-                      )}
+                    {errors.key && touched.key && (
+                      <PanelCard.Error
+                        icon={<TextboxPasswordIcon />}
+                        message={errors.key}
+                      />
+                    )}
                   </PanelCard.Section>
                   <Buttons bottom>
                     <ButtonLink onClick={() => previous()} secondary>

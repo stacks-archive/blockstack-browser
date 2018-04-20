@@ -32,13 +32,12 @@ const Email = ({ next, updateValue, email, ...rest }) => (
         <Form>
           <label htmlFor="email">Email</label>
           <FastField name="email" type="email" placeholder="Enter an Email" />
-          {errors.email &&
-            touched.email && (
-              <PanelCard.Error
-                icon={<EmailAlertIcon />}
-                message={errors.email}
-              />
-            )}
+          {errors.email && touched.email && (
+            <PanelCard.Error
+              icon={<EmailAlertIcon />}
+              message={errors.email}
+            />
+          )}
           <Button primary type="submit">
             Continue
           </Button>

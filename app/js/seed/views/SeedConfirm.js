@@ -32,40 +32,50 @@ const SeedConfirm = ({ next, previous, ...rest }) => (
             wordFour: '',
             wordSix: ''
           }}
-          onSubmit={values => {
+          onSubmit={() => {
             next()
           }}
           validateOnBlur={false}
           validateOnChange={false}
-          render={({ errors, touched }) => (
-            <Form>
-              <label htmlFor="password">Word #4</label>
-              <FastField name="wordFour" type="text" placeholder="4th word" />
-              <label htmlFor="password">Word #9</label>
-              <FastField name="wordSix" type="text" placeholder="9th word" />
-              {errors.wordFour && touched.wordFour ? (
-                <PanelCard.Error
-                  icon={<LockOpenIcon />}
-                  message={errors.wordFour}
-                />
-              ) : errors.wordSix && touched.wordSix ? (
-                <PanelCard.Error
-                  icon={<LockOpenIcon />}
-                  message={errors.wordSix}
-                />
-              ) : null}
-              <PanelCard.Section pt={3} pb={32}>
-                <Buttons bottom>
-                  <ButtonLink secondary onClick={previous}>
-                    Back
-                  </ButtonLink>
-                  <Button type="submit" primary>
-                    Continue
-                  </Button>
-                </Buttons>
-              </PanelCard.Section>
-            </Form>
-          )}
+          render={({ errors, touched }) => {
+            const renderErrorMessages = () => {
+              if (errors.wordFour && touched.wordFour) {
+                return (
+                  <PanelCard.Error
+                    icon={<LockOpenIcon />}
+                    message={errors.wordFour}
+                  />
+                )
+              } else if (errors.wordSix && touched.wordSix) {
+                return (
+                  <PanelCard.Error
+                    icon={<LockOpenIcon />}
+                    message={errors.wordSix}
+                  />
+                )
+              }
+              return null
+            }
+            return (
+              <Form>
+                <label htmlFor="password">Word #4</label>
+                <FastField name="wordFour" type="text" placeholder="4th word" />
+                <label htmlFor="password">Word #9</label>
+                <FastField name="wordSix" type="text" placeholder="9th word" />
+                {renderErrorMessages()}
+                <PanelCard.Section pt={3} pb={32}>
+                  <Buttons bottom>
+                    <ButtonLink secondary onClick={previous}>
+                      Back
+                    </ButtonLink>
+                    <Button type="submit" primary>
+                      Continue
+                    </Button>
+                  </Buttons>
+                </PanelCard.Section>
+              </Form>
+            )
+          }}
         />
       </PanelCard.Section>
     </Fragment>

@@ -49,11 +49,6 @@ const SeedDecrypt = ({ decryptSeed, ...rest }) => (
                   icon={<LockOpenIcon />}
                   message={errors.password}
                 />
-              ) : errors.passwordConfirm && touched.passwordConfirm ? (
-                <PanelCard.Error
-                  icon={<LockOpenIcon />}
-                  message={errors.passwordConfirm}
-                />
               ) : null}
               <p>The password you entered when created this Blockstack ID.</p>
               <Button type="submit" primary>

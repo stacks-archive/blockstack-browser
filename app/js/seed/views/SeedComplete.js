@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button, Buttons, ButtonLink } from '@components/styled/Button'
 
-const SeedComplete = ({ next, ...rest }) => (
+const SeedComplete = ({ ...rest }) => (
   <PanelCard
     renderHeader={() => (
       <PanelCardHeader

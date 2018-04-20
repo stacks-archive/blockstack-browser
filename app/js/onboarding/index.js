@@ -2,7 +2,6 @@ import React from 'react'
 import { browserHistory, withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
-import ProgressBar from '@components/ProgressBar'
 import { Email, Verify, Password, Username, Hooray } from './views'
 import { encrypt } from '@utils/encryption-utils'
 

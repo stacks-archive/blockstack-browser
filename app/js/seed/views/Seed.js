@@ -147,7 +147,10 @@ class Seed extends React.Component {
 
 Seed.propTypes = {
   next: PropTypes.func.isRequired,
-  previous: PropTypes.func.isRequired
+  previous: PropTypes.func.isRequired,
+  seed: PropTypes.array,
+  completeSeed: PropTypes.string,
+  set: PropTypes.number
 }
 
 export default Seed

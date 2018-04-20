@@ -100,7 +100,7 @@ class Username extends React.Component {
   }
 
   render() {
-    const { next, updateValue, username, previous, ...rest } = this.props
+    const { next, updateValue, username, ...rest } = this.props
 
     const accountIcon = () => {
       switch (this.state.search) {
@@ -166,23 +166,22 @@ class Username extends React.Component {
                   >
                     <FastField name="username" type="text" autoComplete="off" />
                   </PanelCard.InputOverlay>
-                  {errors.username &&
-                    touched.username && (
-                      <PanelCard.Error
-                        icon={<AccountRemoveIcon />}
-                        message={errors.username}
-                      />
+                  {errors.username && touched.username && (
+                    <PanelCard.Error
+                      icon={<AccountRemoveIcon />}
+                      message={errors.username}
+                    />
                     )}
                   <Button type="submit" primary>
                     {this.state.search === 'available'
-                      ? `Confirm Username →`
+                      ? 'Confirm Username →'
                       : 'Check availability'}
                   </Button>
                 </Form>
               )}
             />
             <PanelCard.Section pt={3} lineHeight={3}>
-              <p>Your unique, public identity for  any Blockstack&nbsp;app.</p>
+              <p>Your unique, public identity for any Blockstack&nbsp;app.</p>
             </PanelCard.Section>
           </Fragment>
         )}

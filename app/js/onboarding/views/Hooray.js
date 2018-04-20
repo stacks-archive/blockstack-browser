@@ -69,7 +69,7 @@ const panelHeader = () => (
     pt={4}
   />
 )
-const Hooray = ({ goToApp, goToRecovery, username, ...rest }) => (
+const Hooray = ({ goToRecovery, username, ...rest }) => (
   <PanelCard {...rest} renderHeader={panelHeader}>
     <PanelCard.Section pt={2} center>
       <UserCard>

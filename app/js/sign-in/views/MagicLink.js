@@ -1,29 +1,8 @@
 import React, { Fragment } from 'react'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import styled from 'styled-components'
-import { darken } from 'polished'
-import { colors } from '@components/styled/theme'
-import { space } from 'styled-system'
 import { Button, Buttons } from '@components/styled/Button'
-
-const Card = styled.div`
-  border-radius: 8px;
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid ${darken(0.05, colors.grey[1])};
-  background: white;
-  ${space};
-  * {
-    text-align: left !important;
-  }
-  p {
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-
-  & + & {
-    margin-top: 20px;
-  }
-`
+import PropTypes from 'prop-types'
 
 const Step = styled.div`
   img {
@@ -76,6 +55,8 @@ const Options = ({ previous, ...rest }) => (
   </PanelCard>
 )
 
-Options.propTypes = {}
+Options.propTypes = {
+  previous: PropTypes.func.isRequired
+}
 
 export default Options
