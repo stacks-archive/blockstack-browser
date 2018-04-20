@@ -65,7 +65,7 @@ const UserID = styled.h4`
 const panelHeader = () => (
   <PanelCardHeader
     title="Welcome to Blockstack"
-    appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png"
+    appIcon="https://browser.blockstack.org/images/app-icon-stealthy-256x256.png"
     pt={4}
   />
 )

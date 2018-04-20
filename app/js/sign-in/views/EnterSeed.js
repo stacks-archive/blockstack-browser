@@ -45,10 +45,15 @@ class Options extends React.Component {
           message="Restoring your account..."
         />
         <Fragment>
-          <PanelCard.Section pt={2}>
-            Please enter in your 12 word recovery seed.
+          <PanelCard.Section pt={2} left>
+            <p>
+              You’ll need your Secret Recovery Key (the 12 words you wrote down
+              on paper and then saved in a secret place).
+            </p>
+
+            <p>The words must be in order and have spaces between them.</p>
           </PanelCard.Section>
-          <PanelCard.Section pt={4}>
+          <PanelCard.Section pt={3}>
             <Formik
               initialValues={{ key: '' }}
               validationSchema={validationSchema}
@@ -57,21 +62,22 @@ class Options extends React.Component {
               validateOnChange={false}
               render={({ errors, touched }) => (
                 <Form>
-                 <PanelCard.Section pb={4}>
+                  <PanelCard.Section pb={4}>
                     <label htmlFor="key">Recovery Key</label>
-                  <FastField
-                    name="key"
-                    type="text"
-                    placeholder="12 word recovery key"
-                  />
-                  {errors.key &&
-                    touched.key && (
-                      <PanelCard.Error
-                        icon={<TextboxPasswordIcon />}
-                        message={errors.key}
-                      />
-                    )}
-                 </PanelCard.Section>
+                    <FastField
+                      name="key"
+                      component="textarea"
+                      type="text"
+                      placeholder="likeness nutria producer rem wedged upstate ossicle paying telega attain laverock planar"
+                    />
+                    {errors.key &&
+                      touched.key && (
+                        <PanelCard.Error
+                          icon={<TextboxPasswordIcon />}
+                          message={errors.key}
+                        />
+                      )}
+                  </PanelCard.Section>
                   <Buttons bottom>
                     <ButtonLink onClick={() => previous()} secondary>
                       Go Back

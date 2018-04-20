@@ -7,21 +7,19 @@ import { darken, rgba } from 'polished'
 const buttonTypes = ({ primary, secondary, invert, small }) => {
   if (primary) {
     return css`
-      color: #ffffff;
+      color: #ffffff !important;
       border: 1px solid #2c96ff;
       background-color: #2c96ff;
       ${invert &&
         css`
-          color: #2c96ff;
+          color: #2c96ff !important;
           border: 1px solid #ffffff;
           background-color: #ffffff;
         `};
-      box-shadow: 4px 2px 10px rgba(44, 150, 255, 0.4);
-
       &:hover {
         @media (min-width: 800px) {
           background-color: ${darken(0.03, 'rgb(44, 150, 255)')};
-          box-shadow: 4px 2px 20px rgba(44, 150, 255, 0.58);
+          color: white !important;
         }
       }
 
@@ -37,7 +35,6 @@ const buttonTypes = ({ primary, secondary, invert, small }) => {
       color: ${colors.grey[4]};
       border: 1px solid ${darken(0.09, colors.grey[1])};
       background-color: transparent;
-      box-shadow: 2px 2px 18px ${rgba(colors.grey[1], 0.85)};
       &:hover {
         @media (min-width: 800px) {
           box-shadow: 4px 2px 25px ${rgba(colors.grey[1], 1)};
@@ -64,10 +61,9 @@ const buttonTypes = ({ primary, secondary, invert, small }) => {
 const Button = styled.button`
   ${space};
   ${color};
-  font-family: 'Lato', sans-serif;
   padding: 0.75rem 2.5rem 0.6875rem 2.5rem;
   font-size: 1rem;
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1.75rem;
   border-radius: 10px;
   user-select: none;

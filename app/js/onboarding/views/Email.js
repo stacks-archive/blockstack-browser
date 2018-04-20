@@ -14,7 +14,7 @@ const validationSchema = Yup.object({
 })
 
 const panelHeader = () => (
-  <PanelCardHeader appIcon="https://browser.blockstack.org/images/app-icon-dotpodcast-256x256.png" />
+  <PanelCardHeader appIcon="https://browser.blockstack.org/images/app-icon-stealthy-256x256.png" />
 )
 
 const Email = ({ next, updateValue, email, ...rest }) => (

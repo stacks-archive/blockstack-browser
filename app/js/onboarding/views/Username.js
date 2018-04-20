@@ -175,7 +175,7 @@ class Username extends React.Component {
                     )}
                   <Button type="submit" primary>
                     {this.state.search === 'available'
-                      ? `Continue →`
+                      ? `Confirm Username →`
                       : 'Check availability'}
                   </Button>
                 </Form>
