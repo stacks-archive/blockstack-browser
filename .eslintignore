@@ -17,6 +17,7 @@ tests/utils/n*
 
 app/js/components/*
 !app/js/components/Navbar*
+!app/js/components/ActionItem*
 
 app/js/profiles/store/*
 app/js/profiles/tabs/*
