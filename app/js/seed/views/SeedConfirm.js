@@ -59,7 +59,12 @@ const SeedConfirm = ({ next, previous, ...rest }) => (
             return (
               <Form>
                 <label htmlFor="password">Word #4</label>
-                <FastField name="wordFour" type="text" placeholder="4th word" />
+                <FastField
+                  name="wordFour"
+                  type="text"
+                  placeholder="4th word"
+                  autoFocus
+                />
                 <label htmlFor="password">Word #9</label>
                 <FastField name="wordSix" type="text" placeholder="9th word" />
                 {renderErrorMessages()}

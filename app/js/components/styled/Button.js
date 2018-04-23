@@ -4,12 +4,13 @@ import styled, { css } from 'styled-components'
 import { colors } from '@components/styled/theme'
 import { darken, rgba } from 'polished'
 
-const buttonTypes = ({ primary, secondary, invert, small }) => {
+const buttonTypes = ({ primary, secondary, invert, small, disabled }) => {
   if (primary) {
     return css`
       color: #ffffff !important;
       border: 1px solid #2c96ff;
       background-color: #2c96ff;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
       ${invert &&
         css`
           color: #2c96ff !important;
@@ -27,6 +28,13 @@ const buttonTypes = ({ primary, secondary, invert, small }) => {
         css`
           padding: 5px;
           font-size: 12px;
+        `};
+
+      ${disabled &&
+        css`
+          background: rgba(0, 0, 0, 0.25);
+          border-color: rgba(0, 0, 0, 0.15);
+          pointer-events: none;
         `};
     `
   }
@@ -77,6 +85,7 @@ const Button = styled.button`
   }
 
   ${buttonTypes};
+
   &:not(:first-of-type) {
     margin-top: 20px;
   }

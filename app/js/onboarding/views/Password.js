@@ -65,6 +65,7 @@ const Password = ({ next, updateValue, password, ...rest }) => (
                 type="password"
                 autoComplete="new-password"
                 placeholder="Password"
+                autoFocus
               />
               <FastField
                 name="passwordConfirm"

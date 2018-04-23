@@ -63,6 +63,7 @@ const Card = styled.div`
   ${color};
   background: white;
   overflow: hidden;
+  display: flex;
 
   @media (min-width: 800px) {
     max-width: ${mobileCardWidth}px;

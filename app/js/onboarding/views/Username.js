@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { FastField, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { AccountRemoveIcon, CheckIcon } from 'mdi-react'
 import { Button } from '@components/styled/Button'
+import debounce from 'lodash.debounce'
+import Yup from 'yup'
 
 const getUsernameStatus = async (username, sponsoredName = '.personal.id') => {
   if (!username) {
@@ -16,79 +18,43 @@ const getUsernameStatus = async (username, sponsoredName = '.personal.id') => {
 
   return user.status
 }
+const validationSchema = Yup.object({
+  name: Yup.string().required('A username is required.')
+})
 
 class Username extends React.Component {
   state = {
-    search: 'initial',
-    username: this.props.username || '',
-    confirm: 'has-not',
+    status: null,
+    username: '',
     isProcessing: false
   }
 
-  validate = values => {
-    if (
-      this.state.search === 'initial' ||
-      this.state.search === 'taken' ||
-      this.state.username !== values.username ||
-      this.state.confirm === 'has-seen'
-    ) {
-      if (this.state.username !== values.username) {
+  validate = async values => {
+    console.log('validating')
+    const errors = {}
+
+    if (!values.username) {
+      errors.username = 'Required'
+    }
+
+    if (values.username !== this.state.username) {
+      const status = await getUsernameStatus(values.username)
+
+      if (status !== this.state.status) {
         this.setState({
-          username: values.username,
-          search: 'initial'
+          status,
+          username: values.username
         })
       }
-      return getUsernameStatus(values.username).then(status => {
-        const errors = {}
-        if (status !== 'available' || !status) {
-          if (this.state.search !== 'taken') {
-            this.setState({
-              search: 'taken'
-            })
-          }
-          errors.username =
-            'Sorry, that username has been registered already. Try another.'
-        }
-
-        if (!values.username) {
-          if (this.state.search !== 'errors') {
-            this.setState({
-              search: 'errors'
-            })
-          }
-          errors.username = 'A username is required'
-        }
-
-        if (Object.keys(errors).length) {
-          throw errors
-        }
-
-        if (
-          status === 'available' &&
-          this.state.search !== 'available' &&
-          this.state.confirm !== 'has-seen'
-        ) {
-          this.setState({
-            search: status,
-            confirm: 'has-seen'
-          })
-        } else if (
-          status === 'available' &&
-          this.state.username === values.username &&
-          this.state.search !== 'initial' &&
-          this.state.confirm === 'has-seen'
-        ) {
-          this.setState({
-            confirm: 'confirmed'
-          })
-        }
-      })
-    } else {
-      return false
     }
-  }
 
-  processRegistration = async (username, next) => {
+    if (Object.keys(errors).length) {
+      throw errors
+    }
+
+    return null
+  }
+  processRegistration = (username, next) => {
     if (!this.state.isProcessing) {
       this.setState({
         isProcessing: true
@@ -99,17 +65,36 @@ class Username extends React.Component {
     }
   }
 
+  constructor(props) {
+    super(props)
+
+    this.validate = debounce(this.validate, 300)
+  }
+
   render() {
-    const { next, updateValue, username, ...rest } = this.props
+    const { next, updateValue, ...rest } = this.props
+
+    const isRegistered = this.state.status === 'registered_subdomain'
 
     const accountIcon = () => {
-      switch (this.state.search) {
-        case 'taken':
+      switch (this.state.status) {
+        case 'registered_subdomain':
           return 'AccountRemoveIcon'
         case 'available':
           return 'AccountCheckIcon'
         default:
           return 'AccountIcon'
+      }
+    }
+
+    const renderButtonText = () => {
+      switch (this.state.status) {
+        case 'registered_subdomain':
+          return 'Username unavailable'
+        case 'available':
+          return 'Confirm Username →'
+        default:
+          return 'Check Availability'
       }
     }
 
@@ -122,60 +107,70 @@ class Username extends React.Component {
       />
     )
 
+    const renderErrorMessage = (errors, touched) =>
+      errors &&
+      errors.username &&
+      touched &&
+      touched.username && (
+        <PanelCard.Error
+          icon={<AccountRemoveIcon />}
+          message={errors.username}
+        />
+      )
+
     return (
       <PanelCard renderHeader={panelHeader} {...rest}>
         <PanelCard.Loading
           show={this.state.isProcessing}
           message="Processing registration..."
         />
-        {username && (
+        {
           <Fragment>
             <Formik
               initialValues={{
-                username
+                username: this.state.username
               }}
               validate={this.validate}
-              onSubmit={async values => {
+              validationSchema={validationSchema}
+              onSubmit={values => {
                 if (
-                  this.state.search !== 'available' ||
-                  this.state.username !== values.username
+                  this.state.status === 'available' &&
+                  this.state.username === values.username
                 ) {
                   updateValue('username', values.username)
-                }
-                if (
-                  this.state.search === 'available' &&
-                  this.state.username === values.username &&
-                  this.state.confirm === 'confirmed'
-                ) {
-                  // Process name registration here
-                  updateValue('username', values.username)
-                  await this.processRegistration(values.username, next)
+                  this.processRegistration(values.username, next)
                 }
               }}
-              validateOnChange={false}
-              validateOnBlur={false}
-              render={({ errors, touched }) => (
+              render={({
+                errors,
+                touched,
+                handleBlur,
+                handleChange,
+                values
+              }) => (
                 <Form>
+                  {console.log(values, errors, touched)}
                   <label htmlFor="username">Username</label>
                   <PanelCard.InputOverlay
                     text=".blockstack.id"
                     icon={{
                       component: CheckIcon,
-                      show: this.state.search === 'available'
+                      show: this.state.status === 'available'
                     }}
                   >
-                    <FastField name="username" type="text" autoComplete="off" />
-                  </PanelCard.InputOverlay>
-                  {errors.username && touched.username && (
-                    <PanelCard.Error
-                      icon={<AccountRemoveIcon />}
-                      message={errors.username}
+                    <input
+                      type="text"
+                      name="username"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.username}
+                      autoComplete="off"
+                      autoFocus
                     />
-                    )}
-                  <Button type="submit" primary>
-                    {this.state.search === 'available'
-                      ? 'Confirm Username →'
-                      : 'Check availability'}
+                  </PanelCard.InputOverlay>
+                  {renderErrorMessage(errors, touched)}
+                  <Button type="submit" primary disabled={isRegistered}>
+                    {renderButtonText()}
                   </Button>
                 </Form>
               )}
@@ -184,7 +179,7 @@ class Username extends React.Component {
               <p>Your unique, public identity for any Blockstack&nbsp;app.</p>
             </PanelCard.Section>
           </Fragment>
-        )}
+        }
       </PanelCard>
     )
   }
@@ -193,8 +188,7 @@ class Username extends React.Component {
 Username.propTypes = {
   previous: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
-  updateValue: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired
+  updateValue: PropTypes.func.isRequired
 }
 
 export default Username

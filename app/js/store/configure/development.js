@@ -3,11 +3,11 @@ import persistState from 'redux-localstorage'
 import thunk from 'redux-thunk'
 
 import RootReducer from '../reducers'
-import DevTools from '@components/DevTools'
 
-const finalCreateStore = compose(
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+
+const finalCreateStore = composeEnhancers(
   applyMiddleware(thunk),
-  DevTools.instrument({ maxAge: 50 }),
   persistState()
 )(createStore)
 
@@ -16,7 +16,9 @@ export default function configureStore(initialState) {
 
   if (module.hot) {
     /* eslint global-require: 0 */
-    module.hot.accept('../reducers/index', () => store.replaceReducer(require('../reducers')))
+    module.hot.accept('../reducers/index', () =>
+      store.replaceReducer(require('../reducers'))
+    )
   }
 
   return store

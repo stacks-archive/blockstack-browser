@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button, Buttons, ButtonLink } from '@components/styled/Button'
+import {Link} from 'react-router'
 
 const SeedInfo = ({ next, ...rest }) => (
   <PanelCard

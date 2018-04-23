@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
 import { Email, Verify, Password, Username, Hooray } from './views'
 import { encrypt } from '@utils/encryption-utils'
-
 import bip39 from 'bip39'
+
 import { randomBytes } from 'crypto'
 const VIEWS = {
   EMAIL: 0,
@@ -179,15 +179,10 @@ class Onboarding extends React.Component {
 
   updateView = view => this.setState({ view })
 
-  // given foo@bar.com, returns foo
-  retrieveUsernameFromEmail = email =>
-    email.match(/^([^@]*)@/)[1].replace(/[^\w\s]/gi, '')
-
   submitPassword = () => {
     const { username, email } = this.state
     if (username.length < 1) {
       this.setState({
-        username: this.retrieveUsernameFromEmail(email),
         email
       })
     }
@@ -196,6 +191,7 @@ class Onboarding extends React.Component {
 
   submitUsername = () => {
     const { password, email, username } = this.state
+
     const seed = bip39.generateMnemonic(128, randomBytes)
 
     this.setState({ seed })
@@ -275,11 +271,7 @@ class Onboarding extends React.Component {
       }
     ]
 
-    return (
-      <PanelShell>
-        {renderItems(views, view)}
-      </PanelShell>
-    )
+    return <PanelShell>{renderItems(views, view)}</PanelShell>
   }
 }
 

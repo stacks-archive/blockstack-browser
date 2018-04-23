@@ -2,14 +2,15 @@
   "presets": ["flow", "es2015", "stage-0", "react"],
   "plugins": [
     "transform-object-rest-spread",
+    "babel-plugin-styled-components",
     [
       "module-resolver",
       {
         "root": ["./app"],
         "alias": {
-         "@components": "./app/js/components",
-         "@styled": "./app/js/components/styled",
-         "@utils": "./app/js/utils"
+          "@components": "./app/js/components",
+          "@styled": "./app/js/components/styled",
+          "@utils": "./app/js/utils"
         }
       }
     ]

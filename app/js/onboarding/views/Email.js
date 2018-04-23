@@ -31,7 +31,7 @@ const Email = ({ next, updateValue, email, ...rest }) => (
       render={({ errors, touched }) => (
         <Form>
           <label htmlFor="email">Email</label>
-          <FastField name="email" type="email" placeholder="Enter an Email" />
+          <FastField name="email" type="email" placeholder="Enter an Email" autoFocus />
           {errors.email && touched.email && (
             <PanelCard.Error
               icon={<EmailAlertIcon />}
