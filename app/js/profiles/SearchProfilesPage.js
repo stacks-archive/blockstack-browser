@@ -65,17 +65,16 @@ class SearchPage extends Component {
           <ul
             className="list-group"
           >
-            {this.state.searchResults.map((result) => {
-              if (result.profile && result.username) {
-                return (
+            {
+              this.state.searchResults.map((result) => (
+                result.profile && result.username &&
                   <SearchItem
                     key={`${result.username}.id`}
                     domainName={`${result.username}.id`}
                     profile={result.profile}
                   />
-                )
-              }
-            })}
+              ))
+            }
           </ul>
         :
           <div>

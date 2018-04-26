@@ -18,7 +18,7 @@ app/js/profiles/store/*
 app/js/profiles/tabs/*
 !app/js/profiles/Default*
 app/js/profiles/ProfilesApp*
-app/js/profiles/Search*
+app/js/profiles/Reg*
 !app/js/profiles/View
 app/js/profiles/components/*
 !app/js/profiles/components/Ident*
