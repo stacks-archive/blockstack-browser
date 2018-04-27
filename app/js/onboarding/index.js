@@ -9,8 +9,10 @@ import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 import { connectToGaiaHub } from '../account/utils/blockstack-inc'
+import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
+import { hasNameBeenPreordered } from '@utils/name-utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('onboarding/index.js')
@@ -36,13 +38,14 @@ function mapStateToProps(state) {
     identityKeypairs: state.account.identityAccount.keypairs,
     connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce,
     storageConnected: state.settings.api.storageConnected,
-    email: state.account.email
+    email: state.account.email,
+    registration: state.profiles.registration
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({},
-    AccountActions, SettingsActions, IdentityActions),
+    AccountActions, SettingsActions, IdentityActions, RegistrationActions),
     dispatch)
 }
 
@@ -117,7 +120,8 @@ class Onboarding extends React.Component {
     username: '',
     seed: '',
     emailSubmitted: false,
-    view: VIEWS.EMAIL
+    view: VIEWS.EMAIL,
+    usernameRegistrationInProgress: false
   }
 
   componentWillMount() {
@@ -125,6 +129,19 @@ class Onboarding extends React.Component {
     if (location.query.verified) {
       this.setState({ email: location.query.verified })
       this.updateView(VIEWS.PASSWORD)
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { registration } = nextProps
+
+    if (this.state.usernameRegistrationInProgress && registration.registrationSubmitted) {
+      this.updateView(VIEWS.HOORAY)
+    } else if (registration.error) {
+      logger.error(`username registration error: ${registration.error}`)
+      this.setState({
+        usernameRegistrationInProgress: false
+      })
     }
   }
 
@@ -218,12 +235,12 @@ class Onboarding extends React.Component {
       resolve()
     })
     .then(() => {
-        logger.debug('creating new identity')
-        const firstIdentityIndex = 0
-        const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
-        this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
-        this.props.setDefaultIdentity(firstIdentityIndex)
-        return
+      logger.debug('creating new identity')
+      const firstIdentityIndex = 0
+      const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
+      this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
+      this.props.setDefaultIdentity(firstIdentityIndex)
+      return
     })
   }
 
@@ -258,12 +275,24 @@ class Onboarding extends React.Component {
     })
   }
 
-  submitUsername = () => {
-    // const { password, email, username } = this.state
-
-    // TODO: send name registration request
-
-    this.updateView(VIEWS.HOORAY)
+  submitUsername = (username) => {
+    const suffix = '.blockstack.id'
+    username += suffix
+    logger.trace('registerUsername')
+    const nameHasBeenPreordered = hasNameBeenPreordered(username, this.props.localIdentities)
+    if (nameHasBeenPreordered) {
+      logger.error(`registerUsername: username '${username}' has already been preordered`)
+    } else {
+      this.setState({
+        usernameRegistrationInProgress: true
+      })
+      logger.debug(`registerUsername: will try and register username: ${username}`)
+      const address = this.props.identityAddresses[0]
+      const identity = this.props.localIdentities[0]
+      const keypair = this.props.identityKeypairs[0]
+      this.props.registerName(this.props.api, username, identity,
+        0, address, keypair)
+    }
   }
 
   goToBackup = () => {
@@ -323,7 +352,8 @@ class Onboarding extends React.Component {
           username,
           next: this.submitUsername,
           previous: () => this.updateView(VIEWS.PASSWORD),
-          updateValue: this.updateValue
+          updateValue: this.updateValue,
+          isProcessing: this.state.usernameRegistrationInProgress
         }
       },
       {
@@ -354,7 +384,8 @@ Onboarding.propTypes = {
   updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
   identityKeypairs: PropTypes.array.isRequired,
-  storageIsConnected: PropTypes.func.isRequired
+  storageIsConnected: PropTypes.func.isRequired,
+  registerName: PropTypes.func.isRequired
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Onboarding))
