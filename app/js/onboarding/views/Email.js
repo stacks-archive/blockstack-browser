@@ -17,7 +17,7 @@ const panelHeader = () => (
   <PanelCardHeader appIcon="https://browser.blockstack.org/images/app-icon-stealthy-256x256.png" />
 )
 
-const Email = ({ next, updateValue, email, ...rest }) => (
+const Email = ({ next, updateValue, email, submitted, ...rest }) => (
   <PanelCard renderHeader={panelHeader} {...rest}>
     <Formik
       initialValues={{ email }}
@@ -38,7 +38,7 @@ const Email = ({ next, updateValue, email, ...rest }) => (
               message={errors.email}
             />
           )}
-          <Button primary type="submit">
+          <Button primary disabled={submitted} type="submit">
             Continue
           </Button>
         </Form>

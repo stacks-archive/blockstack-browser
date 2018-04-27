@@ -46,37 +46,6 @@ function mapDispatchToProps(dispatch) {
     dispatch)
 }
 
-function verifyEmail(email) {
-  const { protocol, hostname, port } = location
-  const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-  const emailVerificationLink = `${thisUrl}/sign-up?verified=${email}`
-
-  const options = {
-    method: 'POST',
-    body: JSON.stringify({
-      email,
-      emailVerificationLink
-    }),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-  }
-
-  return fetch(`${HEROKU_URL}/verify`, options)
-    .then(
-      () => {
-        console.log(`emailNotifications: sent ${email} an email verification`)
-      },
-      error => {
-        console.log('emailNotifications: error', error)
-      }
-    )
-    .catch(error => {
-      console.log('emailNotifications: error', error)
-    })
-}
-
 function sendRecovery(blockstackId, email, encryptedSeed) {
   const { protocol, hostname, port } = location
   const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
@@ -147,6 +116,7 @@ class Onboarding extends React.Component {
     password: '',
     username: '',
     seed: '',
+    emailSubmitted: false,
     view: VIEWS.EMAIL
   }
 
@@ -191,6 +161,41 @@ class Onboarding extends React.Component {
 
   updateView = view => this.setState({ view })
 
+  verifyEmail(email) {
+    this.setState({ emailSubmitted: true })
+
+    const { protocol, hostname, port } = location
+    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
+    const emailVerificationLink = `${thisUrl}/sign-up?verified=${email}`
+
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        emailVerificationLink
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+
+    return fetch(`${HEROKU_URL}/verify`, options)
+      .then(
+        () => {
+          console.log(`emailNotifications: sent ${email} an email verification`)
+        },
+        error => {
+          this.setState({ emailSubmitted: false })
+          console.log('emailNotifications: error', error)
+        }
+      )
+      .catch(error => {
+        console.log('emailNotifications: error', error)
+        this.setState({ emailSubmitted: false })
+      })
+  }
+
   submitPassword = () => {
     const { username, email } = this.state
     if (username.length < 1) {
@@ -199,16 +204,9 @@ class Onboarding extends React.Component {
       })
     }
 
-    logger.debug('submitPassword: creating account')
+    logger.debug('creating account')
     this.createAccount(this.state.password)
-      .then(() => {
-        logger.debug('submitPassword: creating new identity')
-        const firstIdentityIndex = 0
-        const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
-        this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
-        this.props.setDefaultIdentity(firstIdentityIndex)
-        return this.connectStorage()
-      })
+      .then(() => this.connectStorage())
       .then(() => {
         this.updateView(VIEWS.USERNAME)
       })
@@ -218,6 +216,14 @@ class Onboarding extends React.Component {
     return new Promise(resolve => {
       this.props.initializeWallet(password, null)
       resolve()
+    })
+    .then(() => {
+        logger.debug('creating new identity')
+        const firstIdentityIndex = 0
+        const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
+        this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
+        this.props.setDefaultIdentity(firstIdentityIndex)
+        return
     })
   }
 
@@ -243,13 +249,11 @@ class Onboarding extends React.Component {
         profileSigningKeypair,
         identity
       ).then(indexUrl => {
-        logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
-        // TODO add index URL to token file
-        logger.debug('componentDidMount: storage initialized')
+        logger.debug('connectStorage: storage initialized')
         const newApi2 = Object.assign({}, newApi, { storageConnected: true })
         this.props.updateApi(newApi2)
         this.props.storageIsConnected()
-        logger.debug('connectSharedService: storage configured')
+        logger.debug('connectStorage: storage configured')
       })
     })
   }
@@ -270,12 +274,18 @@ class Onboarding extends React.Component {
   }
 
   submitEmailForVerification = () => {
-    verifyEmail(this.state.email)
-    this.updateView(VIEWS.EMAIL_VERIFY)
+    // Short-circuit email verification
+    this.verifyEmail(this.state.email)
+    .then(() => {
+      this.updateView(VIEWS.PASSWORD)
+    })
+
+    // verifyEmail(this.state.email)
+    // this.updateView(VIEWS.EMAIL_VERIFY)
   }
 
   render() {
-    const { email, password, username, view } = this.state
+    const { email, password, username, emailSubmitted, view } = this.state
 
     const views = [
       {
@@ -284,6 +294,7 @@ class Onboarding extends React.Component {
         props: {
           email,
           next: this.submitEmailForVerification,
+          submitted: emailSubmitted,
           updateValue: this.updateValue
         }
       },
