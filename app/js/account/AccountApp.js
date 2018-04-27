@@ -16,7 +16,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-class AccountApp extends Component {
+export class AccountApp extends Component {
   static propTypes = {
     children: PropTypes.object,
     storageConnected: PropTypes.bool.isRequired,

@@ -2,9 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 
-import PageHeader from '@components/PageHeader'
 import { AccountActions } from '../account/store/account'
 
 function mapStateToProps(state) {
@@ -29,7 +27,7 @@ class ImportPage extends Component {
     this.refreshAddress = this.refreshAddress.bind(this)
   }
 
-  refreshAddress(event) {
+  refreshAddress() {
     this.props.newIdentityAddress()
   }
 

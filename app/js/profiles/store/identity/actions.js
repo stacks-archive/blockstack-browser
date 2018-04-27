@@ -234,8 +234,8 @@ function refreshIdentities(api: {bitcoinAddressLookupUrl: string,
             return fetchProfileLocations('https://gaia.blockstack.org/hub',
                                          address, gaiaBucketAddress, index)
               .then(returnObject => {
-                const profile = returnObject.profile
-                if (profile) {
+                if (returnObject && returnObject.profile) {
+                  const profile = returnObject.profile
                   const zoneFile = ''
                   dispatch(updateProfile(index, profile, zoneFile))
                   let verifications = []

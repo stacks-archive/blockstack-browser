@@ -29,21 +29,24 @@ class Alert extends Component {
     const message = this.props.message
     return (
       <div>
-        { this.state.shown ?
-        <div className={`alert alert-dismissible fade show alert-${this.props.status}`} role="alert">
-          <button className="close" data-dismiss="alert" aria-label="Close" onClick={this.hide}>
-            <span aria-hidden="true">&times;</span>
-          </button>
-          { this.props.url ?
+        {this.state.shown ?
+          <div
+            className={`alert alert-dismissible fade show alert-${this.props.status}`}
+            role="alert"
+          >
+            <button className="close" data-dismiss="alert" aria-label="Close" onClick={this.hide}>
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {this.props.url ?
 
-            <Link to={this.props.url} className="alert-link">
-              <span>{ message }</span>
-            </Link>
-            :
-            <span>{ message }</span>
-          }
-        </div>
-        : null }
+              <Link to={this.props.url} className="alert-link">
+                <span>{message}</span>
+              </Link>
+              :
+              <span>{message}</span>
+            }
+          </div>
+        : null}
       </div>
     )
   }

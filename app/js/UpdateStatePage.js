@@ -8,9 +8,10 @@ import InputGroup from './components/InputGroup'
 import { AccountActions } from './account/store/account'
 import { IdentityActions } from './profiles/store/identity'
 import { decrypt } from './utils'
-import { CURRENT_VERSION, updateState } from './store/reducers'
+import { CURRENT_VERSION, updateState, migrateAPIEndpoints } from './store/reducers'
 import { BLOCKSTACK_STATE_VERSION_KEY } from './App'
 import { isWebAppBuild } from './utils/window-utils'
+import { hasLegacyCoreStateVersion, migrateLegacyCoreEndpoints } from './utils/api-utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('UpdateStatePage.js')
@@ -28,7 +29,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({},
-    AccountActions, IdentityActions, { updateState }), dispatch)
+    AccountActions, IdentityActions, { updateState, migrateAPIEndpoints }), dispatch)
 }
 
 class UpdateStatePage extends Component {
@@ -43,7 +44,8 @@ class UpdateStatePage extends Component {
     identityAddresses: PropTypes.array,
     createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
     setDefaultIdentity: PropTypes.func.isRequired,
-    updateState: PropTypes.func.isRequired
+    updateState: PropTypes.func.isRequired,
+    migrateAPIEndpoints: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -137,6 +139,11 @@ class UpdateStatePage extends Component {
         defaultIdentity: this.props.defaultIdentity,
         numberOfIdentities
       })
+      if (hasLegacyCoreStateVersion()) {
+        const migratedApi = migrateLegacyCoreEndpoints(this.props.api)
+        this.props.migrateAPIEndpoints(migratedApi)
+      }
+
       this.props.updateState()
     })
     .catch((error) => {

@@ -10,7 +10,8 @@ class Image extends Component {
     className: PropTypes.string,
     onLoad: PropTypes.func,
     retinaSupport: PropTypes.bool,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    alt: PropTypes.string
   }
 
   constructor(props) {
@@ -20,9 +21,7 @@ class Image extends Component {
     if (this.props.retinaSupport && isRetina()) {
       src = src.replace('.jpg', '@2x.jpg')
     }
-    this.state = {
-      src: src
-    }
+    this.state = { src }
 
     this.onError = this.onError.bind(this)
   }
@@ -39,7 +38,7 @@ class Image extends Component {
     }
   }
 
-  onError(event) {
+  onError() {
     this.setState({
       src: this.props.fallbackSrc
     })
@@ -47,12 +46,15 @@ class Image extends Component {
 
   render() {
     return (
-      <img src={this.state.src}
+      <img
+        src={this.state.src}
         style={this.props.style}
         className={this.props.className}
         onLoad={this.props.onLoad}
         onError={this.onError}
-        onClick={this.props.onClick} />
+        onClick={this.props.onClick}
+        alt={this.props.alt}
+      />
     )
   }
 }

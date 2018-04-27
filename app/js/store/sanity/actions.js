@@ -1,7 +1,8 @@
 import * as types from './types'
 import log4js from 'log4js'
 
-import { isApiPasswordValid, isCoreApiRunning } from '@utils/api-utils'
+import { isApiPasswordValid, isCoreApiRunning } from '../../utils/api-utils'
+import { isCoreEndpointDisabled } from '../../utils/window-utils'
 
 const logger = log4js.getLogger('store/sanity/actions.js')
 
@@ -30,6 +31,14 @@ function coreIsRunning() {
 }
 
 function isCoreApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
+  if (isCoreEndpointDisabled(corePasswordProtectedReadUrl)) {
+    return dispatch => {
+      dispatch(coreApiPasswordIsValid())
+      dispatch(coreIsRunning())
+      return Promise.resolve()
+    }
+  }
+
   logger.debug(`isCoreApiPasswordValid: ${corePasswordProtectedReadUrl}`)
   return dispatch =>
     isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword)
@@ -50,6 +59,13 @@ function isCoreApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword) {
 }
 
 function isCoreRunning(corePingUrl) {
+  if (isCoreEndpointDisabled(corePingUrl)) {
+    return dispatch => {
+      dispatch(coreIsRunning())
+      return Promise.resolve()
+    }
+  }
+
   logger.debug(`isCoreRunning: ${corePingUrl}`)
   return dispatch =>
     isCoreApiRunning(corePingUrl)

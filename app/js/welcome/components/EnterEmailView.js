@@ -10,10 +10,9 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions), dispatch)
 }
 
-class EnterEmailView extends Component {
+export class EnterEmailView extends Component {
   static propTypes = {
-    emailNotifications: PropTypes.func.isRequired,
-    skipEmailBackup: PropTypes.func.isRequired
+    emailNotifications: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -24,7 +23,6 @@ class EnterEmailView extends Component {
     }
     this.onToggle = this.onToggle.bind(this)
     this.onValueChange = this.onValueChange.bind(this)
-    this.skip = this.skip.bind(this)
     this.saveEmail = this.saveEmail.bind(this)
   }
 
@@ -43,11 +41,6 @@ class EnterEmailView extends Component {
   saveEmail(event) {
     event.preventDefault()
     this.props.emailNotifications(this.state.email, this.state.optIn)
-  }
-
-  skip(event) {
-    event.preventDefault()
-    this.props.skipEmailBackup()
   }
 
   render() {

@@ -30,16 +30,16 @@ const apps = {
       storageRequired: true,
       status: 'in_progress'
     }, {
-      name: 'Isotach',
-      displayName: 'Isotach',
+      name: 'Diffuse',
+      displayName: 'Diffuse',
       description: 'A music player which connects to your cloud/distributed storage.',
       version: '1.0.0',
       appIcon: {
-        small: 'app-icon-isotach-256x256.png',
-        large: 'app-icon-isotach-1024x1024.png'
+        small: 'app-icon-diffuse-256x256.png',
+        large: 'app-icon-diffuse-512x512.png'
       },
-      website: 'https://www.isotach.io',
-      launchLink: 'https://www.isotach.io',
+      website: 'https://www.diffuse.sh',
+      launchLink: 'https://www.diffuse.sh',
       developer: 'Steven Vandevelde',
       storageRequired: true,
       status: 'in_progress'
@@ -202,15 +202,15 @@ const apps = {
     }, {
       name: 'Coins',
       displayName: 'Coins',
-      description: '',
+      description: 'Beautiful, decentralized portfolio & coin tracking.',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-coins-256x256.png',
         large: 'app-icon-coins-512x512.png'
       },
-      website: 'http://use.coinsapp.co',
-      launchLink: 'http://use.coinsapp.co',
-      developer: 'Chase Wackerfuss',
+      website: 'https://coinsapp.co',
+      launchLink: 'https://use.coinsapp.co',
+      developer: 'Thomas Osmonson',
       status: 'user_ready_token',
       storageRequired: true
     }, {

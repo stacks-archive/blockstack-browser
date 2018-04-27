@@ -18,7 +18,6 @@
 		46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B3F1E632F08004DACD8 /* MainMenu.xib */; };
 		46AB7B4C1E632F08004DACD8 /* BlockstackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B4B1E632F08004DACD8 /* BlockstackTests.swift */; };
 		46AB7B571E632F09004DACD8 /* BlockstackUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B561E632F09004DACD8 /* BlockstackUITests.swift */; };
-		46AB7B6B1E643675004DACD8 /* blockstack-venv.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */; };
 		46CA5EA51E81BEDD00CF6E38 /* browser in Resources */ = {isa = PBXBuildFile; fileRef = 46CA5EA41E81BEDC00CF6E38 /* browser */; };
 		6288657A1F3FFC900008B17F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 628865791F3FFC900008B17F /* AppDelegate.swift */; };
 		6288657E1F3FFC900008B17F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6288657D1F3FFC900008B17F /* Assets.xcassets */; };
@@ -77,7 +76,6 @@
 		46AB7B521E632F09004DACD8 /* BlockstackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlockstackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		46AB7B561E632F09004DACD8 /* BlockstackUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockstackUITests.swift; sourceTree = "<group>"; };
 		46AB7B581E632F09004DACD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; name = "blockstack-venv.tar.gz"; path = "Blockstack/blockstack-venv.tar.gz"; sourceTree = "<group>"; };
 		46CA5EA41E81BEDC00CF6E38 /* browser */ = {isa = PBXFileReference; lastKnownFileType = folder; name = browser; path = Blockstack/browser; sourceTree = "<group>"; };
 		56C598B8DFB8E2A47A0332D8 /* Pods-Blockstack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blockstack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Blockstack/Pods-Blockstack.debug.xcconfig"; sourceTree = "<group>"; };
 		6163A5BF738ADBF9E136D47B /* Pods-BlockstackUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockstackUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlockstackUITests/Pods-BlockstackUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -192,7 +190,6 @@
 			children = (
 				467AF8CD1E85398300216B2A /* blockstackProxy */,
 				46CA5EA41E81BEDC00CF6E38 /* browser */,
-				46AB7B691E643675004DACD8 /* blockstack-venv.tar.gz */,
 				467AF8CB1E85397200216B2A /* corsproxy */,
 			);
 			name = Binaries;
@@ -386,7 +383,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				46AB7B3E1E632F08004DACD8 /* Assets.xcassets in Resources */,
-				46AB7B6B1E643675004DACD8 /* blockstack-venv.tar.gz in Resources */,
 				467AF8CE1E85398300216B2A /* blockstackProxy in Resources */,
 				46CA5EA51E81BEDD00CF6E38 /* browser in Resources */,
 				467AF8CC1E85397200216B2A /* corsproxy in Resources */,

@@ -197,7 +197,7 @@ function storageIsConnected() {
 
 function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
   return dispatch => {
-    if (isCoreEndpointDisabled()) {
+    if (isCoreEndpointDisabled(addressBalanceUrl)) {
       logger.debug('Mocking core wallet balance in webapp build')
       dispatch(updateCoreWalletBalance(0))
       return
@@ -222,9 +222,8 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
 
 function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
   return dispatch => {
-    if (isCoreEndpointDisabled()) {
-      logger.debug('Mocking core wallet address in webapp build')
-      dispatch(updateCoreWalletAddress('Not supported in simple webapp.'))
+    if (isCoreEndpointDisabled(walletPaymentAddressUrl)) {
+      logger.error('Cannot use core wallet if core is disable')
       return
     }
 
@@ -289,7 +288,7 @@ function withdrawBitcoinFromCoreWallet(
   paymentKey = null
 ) {
   return dispatch => {
-    if (isCoreEndpointDisabled()) {
+    if (isCoreEndpointDisabled(coreWalletWithdrawUrl)) {
       dispatch(
         withdrawCoreBalanceError(
           'Core wallet withdrawls not allowed in the simple webapp build'

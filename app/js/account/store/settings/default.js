@@ -1,7 +1,7 @@
 import { BLOCKSTACK_INC } from '../../../account/utils/index'
-import { isCoreEndpointDisabled } from '@utils/window-utils'
 
 export const REGTEST_CORE_API_PASSWORD = 'blockstack_integration_test_api_password'
+export const DEFAULT_CORE_PHONY_PASSWORD = 'PretendPasswordAPI'
 export const REGTEST_CORE_INSIGHT_API_URL = 'http://localhost:6270/insight-api/addr/{address}'
 
 // DEFAULT_API values are only used if
@@ -9,10 +9,8 @@ export const REGTEST_CORE_INSIGHT_API_URL = 'http://localhost:6270/insight-api/a
 // already have an existing key.
 // To change a value, use a new key.
 
-let DEFAULT_CORE_API_ENDPOINT = 'http://localhost:6270'
-if (isCoreEndpointDisabled()) {
-  DEFAULT_CORE_API_ENDPOINT = 'https://core.blockstack.org'
-}
+export const DEFAULT_CORE_API_ENDPOINT = 'https://core.blockstack.org'
+export const REGTEST_CORE_API_ENDPOINT = 'http://localhost:6270'
 
 const DEFAULT_API = {
   apiCustomizationEnabled: true,
@@ -31,7 +29,7 @@ const DEFAULT_API = {
   bitcoinAddressUrl: 'https://explorer.blockstack.org/address/{identifier}',
   ethereumAddressUrl: 'https://tradeblock.com/ethereum/account/{identifier}',
   pgpKeyUrl: 'https://pgp.mit.edu/pks/lookup?search={identifier}&op=vindex&fingerprint=on',
-  btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/',
+  btcPriceUrl: 'https://www.bitstamp.net/api/v2/ticker/btcusd/?cors=1',
   corePingUrl: `${DEFAULT_CORE_API_ENDPOINT}/v1/node/ping`,
   zoneFileUrl: `${DEFAULT_CORE_API_ENDPOINT}/v1/names/{name}/zonefile`,
   nameTransferUrl: `${DEFAULT_CORE_API_ENDPOINT}/v1/names/{name}/owner`,
@@ -44,7 +42,7 @@ const DEFAULT_API = {
   hostedDataLocation: BLOCKSTACK_INC,
   coreHost: 'localhost',
   corePort: 6270,
-  coreAPIPassword: null,
+  coreAPIPassword: DEFAULT_CORE_PHONY_PASSWORD,
   logServerPort: '',
   regTestMode: false,
   storageConnected: false,

@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { SettingsActions } from './account/store/settings'
 import { AppsActions } from './store/apps'
-import { getCoreAPIPasswordFromURL, getLogServerPortFromURL,
-        getRegTestModeFromURL } from './utils/api-utils'
+import { getCoreAPIPasswordFromURL, getLogServerPortFromURL, setOrUnsetUrlsToRegTest,
+         getRegTestModeFromURL } from './utils/api-utils'
 import SupportButton from './components/SupportButton'
 import { SanityActions }    from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
@@ -111,7 +111,7 @@ class App extends Component {
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
-    } else if (isCoreEndpointDisabled()) {
+    } else if (isCoreEndpointDisabled(api.corePingUrl)) {
       logger.debug('Core-less build. Pretending to have a valid core connection.')
       api = Object.assign({}, api, { coreAPIPassword: 'PretendPasswordAPI' })
       this.props.updateApi(api)
@@ -122,8 +122,9 @@ class App extends Component {
       this.props.updateApi(api)
     }
 
-    if (regTestMode !== null) {
-      api = Object.assign({}, api, { regTestMode })
+    if (regTestMode !== null && regTestMode !== api.regTestMode) {
+      logger.info('Regtest mode activating.')
+      api = setOrUnsetUrlsToRegTest(api, regTestMode)
       this.props.updateApi(api)
     }
 
@@ -139,17 +140,13 @@ class App extends Component {
       this.performSanityChecks()
     }
 
-    if (this.props.coreApiRunning) {
-      logger.debug('Sanity check: Core API endpoint is running!')
-    } else {
+    if (!this.props.coreApiRunning) {
       // TODO connect to future notification system here
       // alert('Sanity check: Error! Core API is NOT running!')
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 
-    if (this.props.coreApiPasswordValid) {
-      logger.debug('Sanity check: Core API password is valid!')
-    } else {
+    if (!this.props.coreApiPasswordValid) {
       logger.error('Sanity check: Error! Core API password is wrong!')
     }
     this.setState({
@@ -169,7 +166,6 @@ class App extends Component {
   }
 
   performSanityChecks() {
-    logger.trace('performSanityChecks')
     this.props.isCoreRunning(this.props.corePingUrl)
     this.props.isCoreApiPasswordValid(this.props.walletPaymentAddressUrl,
       this.props.coreAPIPassword)

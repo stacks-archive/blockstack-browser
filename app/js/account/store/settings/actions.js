@@ -42,7 +42,7 @@ function resetApi(api) {
   }
 
   if (coreAPIPassword === undefined) {
-    coreAPIPassword = null
+    coreAPIPassword = DEFAULT_API.coreAPIPassword
   }
   return dispatch => {
     dispatch(
