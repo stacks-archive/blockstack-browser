@@ -3,14 +3,11 @@ import { browserHistory, withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
 import { Email, Verify, Password, Username, Hooray } from './views'
-import { encrypt } from '@utils/encryption-utils'
-import { decrypt, isBackupPhraseValid } from '@utils'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
-import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
 import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
@@ -27,23 +24,6 @@ const VIEWS = {
 }
 
 const HEROKU_URL = 'https://obscure-retreat-87934.herokuapp.com'
-
-const encryptSeedWithPassword = (password, seed) =>
-  encrypt(new Buffer(seed), password).then(encrypted =>
-    encrypted.toString('hex')
-  )
-
-const cacheEncryptedSeed = (username, encryptedSeed) => {
-  let updated = []
-  const cachedSeeds = localStorage.getItem('encryptedSeeds')
-
-  if (cachedSeeds) {
-    updated = [...JSON.parse(cachedSeeds)]
-  }
-  updated.push({ username, encryptedSeed })
-
-  localStorage.setItem('encryptedSeeds', JSON.stringify(updated))
-}
 
 function mapStateToProps(state) {
   return {
@@ -235,7 +215,7 @@ class Onboarding extends React.Component {
   }
 
   createAccount(password) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       this.props.initializeWallet(password, null)
       resolve()
     })
@@ -275,7 +255,7 @@ class Onboarding extends React.Component {
   }
 
   submitUsername = () => {
-    const { password, email, username } = this.state
+    // const { password, email, username } = this.state
 
     // TODO: send name registration request
 
@@ -353,8 +333,17 @@ class Onboarding extends React.Component {
 }
 
 Onboarding.propTypes = {
+  api: PropTypes.object.isRequired,
   location: PropTypes.object,
-  router: PropTypes.object
+  router: PropTypes.object,
+  identityAddresses: PropTypes.array,
+  createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
+  setDefaultIdentity: PropTypes.func.isRequired,
+  initializeWallet: PropTypes.func.isRequired,
+  updateApi: PropTypes.func.isRequired,
+  localIdentities: PropTypes.array.isRequired,
+  identityKeypairs: PropTypes.array.isRequired,
+  storageIsConnected: PropTypes.func.isRequired
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Onboarding))
