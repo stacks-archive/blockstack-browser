@@ -4,9 +4,20 @@ import PropTypes from 'prop-types'
 import PanelShell, { renderItems } from '@components/PanelShell'
 import { Email, Verify, Password, Username, Hooray } from './views'
 import { encrypt } from '@utils/encryption-utils'
-import bip39 from 'bip39'
+import { decrypt, isBackupPhraseValid } from '@utils'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { AccountActions } from '../account/store/account'
+import { IdentityActions } from '../profiles/store/identity'
+import { SettingsActions } from '../account/store/settings'
+import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
+import { connectToGaiaHub } from '../account/utils/blockstack-inc'
+import { BLOCKSTACK_INC } from '../account/utils/index'
+import { setCoreStorageConfig } from '@utils/api-utils'
+import log4js from 'log4js'
 
-import { randomBytes } from 'crypto'
+const logger = log4js.getLogger('onboarding/index.js')
+
 const VIEWS = {
   EMAIL: 0,
   EMAIL_VERIFY: 1,
@@ -32,6 +43,27 @@ const cacheEncryptedSeed = (username, encryptedSeed) => {
   updated.push({ username, encryptedSeed })
 
   localStorage.setItem('encryptedSeeds', JSON.stringify(updated))
+}
+
+function mapStateToProps(state) {
+  return {
+    api: state.settings.api,
+    updateApi: PropTypes.func.isRequired,
+    promptedForEmail: state.account.promptedForEmail,
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    localIdentities: state.profiles.identity.localIdentities,
+    identityAddresses: state.account.identityAccount.addresses,
+    identityKeypairs: state.account.identityAccount.keypairs,
+    connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce,
+    storageConnected: state.settings.api.storageConnected,
+    email: state.account.email
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Object.assign({},
+    AccountActions, SettingsActions, IdentityActions),
+    dispatch)
 }
 
 function verifyEmail(email) {
@@ -186,21 +218,66 @@ class Onboarding extends React.Component {
         email
       })
     }
-    this.updateView(VIEWS.USERNAME)
+
+    logger.debug('submitPassword: creating account')
+    this.createAccount(this.state.password)
+      .then(() => {
+        logger.debug('submitPassword: creating new identity')
+        const firstIdentityIndex = 0
+        const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
+        this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
+        this.props.setDefaultIdentity(firstIdentityIndex)
+        return this.connectStorage()
+      })
+      .then(() => {
+        this.updateView(VIEWS.USERNAME)
+      })
+  }
+
+  createAccount(password) {
+    return new Promise((resolve, reject) => {
+      this.props.initializeWallet(password, null)
+      resolve()
+    })
+  }
+
+  connectStorage() {
+    const storageProvider = this.props.api.gaiaHubUrl
+    const signer = this.props.identityKeypairs[0].key
+    return connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
+      const newApi = Object.assign({}, this.props.api, {
+        gaiaHubConfig,
+        hostedDataLocation: BLOCKSTACK_INC
+      })
+      this.props.updateApi(newApi)
+      const identityIndex = 0
+      const identity = this.props.localIdentities[identityIndex]
+      const identityAddress = identity.ownerAddress
+      const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
+      const profile = identity.profile
+      setCoreStorageConfig(
+        newApi,
+        identityIndex,
+        identityAddress,
+        profile,
+        profileSigningKeypair,
+        identity
+      ).then(indexUrl => {
+        logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
+        // TODO add index URL to token file
+        logger.debug('componentDidMount: storage initialized')
+        const newApi2 = Object.assign({}, newApi, { storageConnected: true })
+        this.props.updateApi(newApi2)
+        this.props.storageIsConnected()
+        logger.debug('connectSharedService: storage configured')
+      })
+    })
   }
 
   submitUsername = () => {
     const { password, email, username } = this.state
 
-    const seed = bip39.generateMnemonic(128, randomBytes)
-
-    this.setState({ seed })
-
-    encryptSeedWithPassword(password, seed).then(encryptedSeed => {
-      sendRecovery(username, email, encryptedSeed)
-      sendRestore(username, email, encryptedSeed)
-      cacheEncryptedSeed(username, encryptedSeed)
-    })
+    // TODO: send name registration request
 
     this.updateView(VIEWS.HOORAY)
   }
@@ -280,4 +357,4 @@ Onboarding.propTypes = {
   router: PropTypes.object
 }
 
-export default withRouter(Onboarding)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Onboarding))
