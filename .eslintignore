@@ -15,7 +15,6 @@ tests/utils/e*
 tests/utils/n*
 
 app/js/profiles/store/*
-app/js/profiles/tabs/*
 !app/js/profiles/Default*
 app/js/profiles/ProfilesApp*
 app/js/profiles/Reg*
