@@ -7,7 +7,7 @@ import { Button } from '@components/styled/Button'
 import debounce from 'lodash.debounce'
 import Yup from 'yup'
 
-const getUsernameStatus = async (username, sponsoredName = '.personal.id') => {
+const getUsernameStatus = async (username, sponsoredName = '.blockstack.id') => {
   if (!username) {
     return null
   }
@@ -25,8 +25,7 @@ const validationSchema = Yup.object({
 class Username extends React.Component {
   state = {
     status: null,
-    username: '',
-    isProcessing: false
+    username: ''
   }
 
   validate = async values => {
@@ -54,16 +53,8 @@ class Username extends React.Component {
 
     return null
   }
-  processRegistration = (username, next) => {
-    if (!this.state.isProcessing) {
-      this.setState({
-        isProcessing: true
-      })
-      return setTimeout(() => next(), 2150)
-    } else {
-      return null
-    }
-  }
+
+  processRegistration = (username, next) => next(username)
 
   constructor(props) {
     super(props)
@@ -121,7 +112,7 @@ class Username extends React.Component {
     return (
       <PanelCard renderHeader={panelHeader} {...rest}>
         <PanelCard.Loading
-          show={this.state.isProcessing}
+          show={this.props.isProcessing}
           message="Processing registration..."
         />
         {
@@ -188,7 +179,8 @@ class Username extends React.Component {
 Username.propTypes = {
   previous: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
-  updateValue: PropTypes.func.isRequired
+  updateValue: PropTypes.func.isRequired,
+  isProcessing: PropTypes.bool.isRequired
 }
 
 export default Username
