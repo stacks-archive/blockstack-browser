@@ -424,7 +424,7 @@ function initializeWallet(password, backupPhrase, identitiesToGenerate = 1) {
     }
     return encrypt(new Buffer(backupPhrase), password).then(ciphertextBuffer => {
       const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
-      dispatch(createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate))
+      return dispatch(createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate))
     })
   }
 }

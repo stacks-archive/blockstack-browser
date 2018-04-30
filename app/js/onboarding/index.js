@@ -213,17 +213,14 @@ class Onboarding extends React.Component {
   }
 
   createAccount(password) {
-    return new Promise(resolve => {
-      this.props.initializeWallet(password, null)
-      resolve()
-    })
+    const firstIdentityIndex = 0
+    return this.props.initializeWallet(password, null)
     .then(() => {
-        logger.debug('creating new identity')
-        const firstIdentityIndex = 0
-        const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
-        this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
-        this.props.setDefaultIdentity(firstIdentityIndex)
-        return
+      logger.debug('creating new identity')
+      const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
+      return this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
+    }).then(() => {
+      return this.props.setDefaultIdentity(firstIdentityIndex)
     })
   }
 
