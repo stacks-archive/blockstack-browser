@@ -293,7 +293,7 @@ class Onboarding extends React.Component {
   }
 
   submitUsername = (username) => {
-    const suffix = '.blockstack.id'
+    const suffix = '.personal.id'
     username += suffix
     logger.trace('registerUsername')
     const nameHasBeenPreordered = hasNameBeenPreordered(username, this.props.localIdentities)
