@@ -13,6 +13,7 @@ import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
+import queryString from 'query-string'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('onboarding/index.js')
@@ -115,6 +116,7 @@ function sendRestore(blockstackId, email, encryptedSeed) {
 
 class Onboarding extends React.Component {
   state = {
+    authRequest: '',
     email: '',
     password: '',
     username: '',
@@ -130,6 +132,10 @@ class Onboarding extends React.Component {
       this.setState({ email: location.query.verified })
       this.updateView(VIEWS.PASSWORD)
     }
+  }
+
+  componentDidMount() {
+    this.saveAuthRequest()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -170,6 +176,20 @@ class Onboarding extends React.Component {
 
   componentDidUpdate() {
     this.updateURL(this.state.view)
+  }
+
+  saveAuthRequest() {
+    const queryDict = queryString.parse(this.props.location.search)
+    if (queryDict.redirect !== null && queryDict.redirect !== undefined) {
+      const searchString = queryDict.redirect.replace('/auth', '')
+      var redirectQueryDict = queryString.parse(searchString)
+      if (redirectQueryDict.authRequest !== null && redirectQueryDict.authRequest !== undefined) {
+        const authRequest = redirectQueryDict.authRequest
+        this.setState({
+          authRequest: authRequest
+        })
+      }
+    }
   }
 
   updateValue = (key, value) => {
@@ -292,6 +312,10 @@ class Onboarding extends React.Component {
     }
   }
 
+  redirectToAuth = () => {
+    this.props.router.push(`/auth/?authRequest=${this.state.authRequest}`)
+  }
+
   goToBackup = () => {
     browserHistory.push({
       pathname: '/seed',
@@ -361,7 +385,7 @@ class Onboarding extends React.Component {
           password,
           username,
           goToRecovery: this.goToBackup,
-          goToApp: () => console.log('go to app!')
+          goToApp: () => this.redirectToAuth
         }
       }
     ]
