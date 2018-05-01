@@ -43,6 +43,14 @@ import SignInPage from './sign-in'
 
 import NotFoundPage from './errors/NotFoundPage'
 
+import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
+
+const accountCreated = connectedRouterRedirect({
+  redirectPath: '/sign-up',
+  authenticatedSelector: state => !!state.account.encryptedBackupPhrase,
+  wrapperDisplayName: 'AccountCreated'
+})
+
 export default (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
@@ -89,7 +97,7 @@ export default (
         <Route path="send-core" component={SendCorePage} />
       </Route>
 
-      <Route path="/auth" component={AuthPage} />
+      <Route path="/auth" component={accountCreated(AuthPage)} />
       <Route path="/sign-up" component={OnboardingPage} />
       <Route path="/sign-up/*" component={OnboardingPage} />
       <Route path="/seed" component={SeedPage} />
