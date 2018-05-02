@@ -1,5 +1,6 @@
 import React from 'react'
 import Panel from '@styled/onboarding'
+import PropTypes from 'prop-types'
 
 const ProgressBar = ({ total, current, variant }) => (
   <Panel.Progress>
@@ -12,5 +13,11 @@ const ProgressBar = ({ total, current, variant }) => (
     ))}
   </Panel.Progress>
 )
+
+ProgressBar.propTypes = {
+  total: PropTypes.number,
+  current: PropTypes.number,
+  variant: PropTypes.string
+}
 
 export default ProgressBar
