@@ -62,14 +62,17 @@ const UserID = styled.h4`
   text-overflow: ellipsis;
 `
 
-const panelHeader = (appIconURL) => (
-  <PanelCardHeader
-    title="Welcome to Blockstack"
-    appIcon={appIconURL}
-    pt={4}
-  />
+const panelHeader = appIconURL => (
+  <PanelCardHeader title="Welcome to Blockstack" appIcon={appIconURL} pt={4} />
 )
-const Hooray = ({ goToRecovery, username, finish, appIconURL, appName, ...rest }) => (
+const Hooray = ({
+  goToRecovery,
+  username,
+  finish,
+  appIconURL,
+  appName,
+  ...rest
+}) => (
   <PanelCard {...rest} renderHeader={() => panelHeader(appIconURL)}>
     <PanelCard.Section pt={2} center>
       <UserCard>
@@ -86,11 +89,8 @@ const Hooray = ({ goToRecovery, username, finish, appIconURL, appName, ...rest }
     </PanelCard.Section>
     <PanelCard.Section pt={4} center>
       <Buttons column>
-        <ButtonLink
-          primary
-          onClick={finish}
-        >
-          { appName ? <span>Continue to {appName}</span> : <span>Continue</span> }
+        <ButtonLink primary onClick={finish}>
+          {appName ? <span>Continue to {appName}</span> : <span>Continue</span>}
         </ButtonLink>
         <Button secondary onClick={() => goToRecovery()}>
           Write down secret recovery key
@@ -109,7 +109,10 @@ const Hooray = ({ goToRecovery, username, finish, appIconURL, appName, ...rest }
 Hooray.propTypes = {
   goToApp: PropTypes.func.isRequired,
   goToRecovery: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired
+  username: PropTypes.string.isRequired,
+  finish: PropTypes.func.isRequired,
+  appIconURL: PropTypes.string,
+  appName: PropTypes.string
 }
 
 export default Hooray
