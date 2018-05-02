@@ -39,12 +39,12 @@ class Username extends React.Component {
     if (values.username !== this.state.username) {
       const status = await getUsernameStatus(values.username)
 
-      if (status !== this.state.status) {
+      // if (status !== this.state.status) {
         this.setState({
           status,
           username: values.username
         })
-      }
+      // }
     }
 
     if (Object.keys(errors).length) {
@@ -143,7 +143,7 @@ class Username extends React.Component {
                   {console.log(values, errors, touched)}
                   <label htmlFor="username">Username</label>
                   <PanelCard.InputOverlay
-                    text=".blockstack.id"
+                    text=".personal.id"
                     icon={{
                       component: CheckIcon,
                       show: this.state.status === 'available'
