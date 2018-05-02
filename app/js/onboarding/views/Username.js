@@ -6,20 +6,26 @@ import { AccountRemoveIcon, CheckIcon } from 'mdi-react'
 import { Button } from '@components/styled/Button'
 import debounce from 'lodash.debounce'
 import Yup from 'yup'
+import log4js from 'log4js'
 
-const getUsernameStatus = async (username, sponsoredName = '.blockstack.id') => {
+const logger = log4js.getLogger('onboarding/Username.js')
+
+const getUsernameStatus = async (username, sponsoredName = '.test-personal.id') => {
   if (!username) {
     return null
   }
-  const res = await fetch(
-    `https://core.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
-  )
+  // const url = `https://core.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
+  const url = `https://test-registrar.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
+  const res = await fetch(url)
   const user = await res.json()
-
+  logger.debug('got response', user)
+  if (user.error === 'No such subdomain') {
+    return 'available'
+  }
   return user.status
 }
 const validationSchema = Yup.object({
-  name: Yup.string().required('A username is required.')
+  username: Yup.string().required('A username is required.')
 })
 
 class Username extends React.Component {
@@ -40,10 +46,10 @@ class Username extends React.Component {
       const status = await getUsernameStatus(values.username)
 
       // if (status !== this.state.status) {
-        this.setState({
-          status,
-          username: values.username
-        })
+      this.setState({
+        status,
+        username: values.username
+      })
       // }
     }
 
@@ -143,7 +149,7 @@ class Username extends React.Component {
                   {console.log(values, errors, touched)}
                   <label htmlFor="username">Username</label>
                   <PanelCard.InputOverlay
-                    text=".personal.id"
+                    text=".test-personal.id"
                     icon={{
                       component: CheckIcon,
                       show: this.state.status === 'available'

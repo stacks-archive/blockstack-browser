@@ -136,6 +136,9 @@ class Onboarding extends React.Component {
 
   componentDidMount() {
     this.saveAuthRequest()
+    if (!this.props.api.subdomains['test-personal.id']) {
+      this.props.resetApi(this.props.api)
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -186,7 +189,7 @@ class Onboarding extends React.Component {
       if (redirectQueryDict.authRequest !== null && redirectQueryDict.authRequest !== undefined) {
         const authRequest = redirectQueryDict.authRequest
         this.setState({
-          authRequest: authRequest
+          authRequest
         })
       }
     }
@@ -293,7 +296,8 @@ class Onboarding extends React.Component {
   }
 
   submitUsername = (username) => {
-    const suffix = '.personal.id'
+    console.log('about to submit username')
+    const suffix = '.test-personal.id'
     username += suffix
     logger.trace('registerUsername')
     const nameHasBeenPreordered = hasNameBeenPreordered(username, this.props.localIdentities)
@@ -406,7 +410,8 @@ Onboarding.propTypes = {
   localIdentities: PropTypes.array.isRequired,
   identityKeypairs: PropTypes.array.isRequired,
   storageIsConnected: PropTypes.func.isRequired,
-  registerName: PropTypes.func.isRequired
+  registerName: PropTypes.func.isRequired,
+  resetApi: PropTypes.func.isRequired
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Onboarding))
