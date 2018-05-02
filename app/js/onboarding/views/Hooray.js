@@ -62,15 +62,15 @@ const UserID = styled.h4`
   text-overflow: ellipsis;
 `
 
-const panelHeader = () => (
+const panelHeader = (appIconURL) => (
   <PanelCardHeader
     title="Welcome to Blockstack"
-    appIcon="https://browser.blockstack.org/images/app-icon-stealthy-256x256.png"
+    appIcon={appIconURL}
     pt={4}
   />
 )
-const Hooray = ({ goToRecovery, username, goToApp, ...rest }) => (
-  <PanelCard {...rest} renderHeader={panelHeader}>
+const Hooray = ({ goToRecovery, username, goToApp, appIconURL, appName, ...rest }) => (
+  <PanelCard {...rest} renderHeader={() => panelHeader(appIconURL)}>
     <PanelCard.Section pt={2} center>
       <UserCard>
         <UserCardAvatar>
@@ -90,7 +90,7 @@ const Hooray = ({ goToRecovery, username, goToApp, ...rest }) => (
           primary
           onClick={goToApp}
         >
-          Continue to Stealthy.im
+          Continue to {appName}
         </ButtonLink>
         <Button secondary onClick={() => goToRecovery()}>
           Write down secret recovery key

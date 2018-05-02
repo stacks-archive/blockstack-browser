@@ -352,6 +352,8 @@ class Onboarding extends React.Component {
     const { email, password, username, emailSubmitted, view } = this.state
     const icons = this.state.appManifest ? this.state.appManifest.icons : [] 
     const appIconURL = icons.length > 0 ? icons[0].src : '/images/app-icon-hello-blockstack.png'
+    console.log(this.state.appManifest)
+    const appName = this.state.appManifest ? this.state.appManifest.name : ''
 
     const views = [
       {
@@ -401,6 +403,8 @@ class Onboarding extends React.Component {
           email,
           password,
           username,
+          appIconURL: appIconURL,
+          appName: appName,
           goToRecovery: this.goToBackup,
           goToApp: () => this.redirectToAuth()
         }
