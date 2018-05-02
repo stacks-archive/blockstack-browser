@@ -199,7 +199,7 @@ class Onboarding extends React.Component {
     this.setState({ [key]: value })
   }
 
-  updateView = view => this.setState({ view })
+  updateView = view => this.setState({ view }) 
 
   verifyEmail(email) {
     this.setState({ emailSubmitted: true })
@@ -389,7 +389,7 @@ class Onboarding extends React.Component {
           password,
           username,
           goToRecovery: this.goToBackup,
-          goToApp: () => this.redirectToAuth
+          goToApp: () => this.redirectToAuth()
         }
       }
     ]

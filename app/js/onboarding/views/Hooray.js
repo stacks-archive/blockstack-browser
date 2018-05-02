@@ -69,7 +69,7 @@ const panelHeader = () => (
     pt={4}
   />
 )
-const Hooray = ({ goToRecovery, username, ...rest }) => (
+const Hooray = ({ goToRecovery, username, goToApp, ...rest }) => (
   <PanelCard {...rest} renderHeader={panelHeader}>
     <PanelCard.Section pt={2} center>
       <UserCard>
@@ -88,7 +88,7 @@ const Hooray = ({ goToRecovery, username, ...rest }) => (
       <Buttons column>
         <ButtonLink
           primary
-          href="https://browser.blockstack.org/auth?authRequest=eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NksifQ.eyJqdGkiOiI1ZWViOWRkZi1mNzVkLTRjODItYTJlNS1hY2QzMmRkNzViYTYiLCJpYXQiOjE1MjQwNzA0MzksImV4cCI6MTUyNDA3NDAzOSwiaXNzIjoiZGlkOmJ0Yy1hZGRyOjExMnNYUUVWRjNOY0phZDVzWHBUMVhpd0s0RVlwRXY5YzUiLCJwdWJsaWNfa2V5cyI6WyIwMzI5ODM3NzQwMTlkZDNkMmRiOTlmMDBlMzczNDg0MzhlNmQwMDhmNjgxYmQ1YTA2ZWVmMjE4MzA2ZWFiZWNmM2UiXSwiZG9tYWluX25hbWUiOiJodHRwczovL3d3dy5zdGVhbHRoeS5pbSIsIm1hbmlmZXN0X3VyaSI6Imh0dHBzOi8vd3d3LnN0ZWFsdGh5LmltL21hbmlmZXN0Lmpzb24iLCJyZWRpcmVjdF91cmkiOiJodHRwczovL3d3dy5zdGVhbHRoeS5pbSIsInZlcnNpb24iOiIxLjEuMCIsImRvX25vdF9pbmNsdWRlX3Byb2ZpbGUiOnRydWUsInN1cHBvcnRzX2h1Yl91cmwiOnRydWUsInNjb3BlcyI6WyJzdG9yZV93cml0ZSIsInB1Ymxpc2hfZGF0YSJdfQ.KW8eDtUNjCk3r6RuPRX8JLeRuDY9ZiwB31Csnv3ogib4r1wtGDfWRN1RQKbyJXAuudI8FsVHEAt3ZNe5EtoGgA#coreAPIPassword=off&logServerPort=off&regtest=off"
+          onClick={goToApp}
         >
           Continue to Stealthy.im
         </ButtonLink>
