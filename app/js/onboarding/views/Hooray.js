@@ -90,7 +90,7 @@ const Hooray = ({ goToRecovery, username, finish, appIconURL, appName, ...rest }
           primary
           onClick={finish}
         >
-          { appName ? <span>Continue to {appName}</span> : <span>Continue</span> }
+          {appName ? <span>Continue to {appName}</span> : <span>Continue</span>}
         </ButtonLink>
         <Button secondary onClick={() => goToRecovery()}>
           Write down secret recovery key
@@ -107,9 +107,11 @@ const Hooray = ({ goToRecovery, username, finish, appIconURL, appName, ...rest }
 )
 
 Hooray.propTypes = {
-  goToApp: PropTypes.func.isRequired,
+  finish: PropTypes.func.isRequired,
   goToRecovery: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired
+  username: PropTypes.string.isRequired,
+  appIconURL: PropTypes.string,
+  appName: PropTypes.string
 }
 
 export default Hooray

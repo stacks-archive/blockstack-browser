@@ -62,6 +62,7 @@ Email.propTypes = {
   next: PropTypes.func.isRequired,
   updateValue: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
+  submitted: PropTypes.bool,
   appIconURL: PropTypes.string
 }
 

@@ -385,7 +385,7 @@ class Onboarding extends React.Component {
           next: this.submitEmailForVerification,
           submitted: emailSubmitted,
           updateValue: this.updateValue,
-          appIconURL: appIconURL
+          appIconURL
         }
       },
       {
@@ -424,8 +424,8 @@ class Onboarding extends React.Component {
           email,
           password,
           username,
-          appIconURL: appIconURL,
-          appName: appName,
+          appIconURL,
+          appName,
           goToRecovery: this.goToBackup,
           finish: () => this.finish()
         }
