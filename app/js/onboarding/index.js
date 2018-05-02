@@ -331,8 +331,20 @@ class Onboarding extends React.Component {
     }
   }
 
+  finish = () => {
+    if (this.state.appManifest) {
+      this.redirectToAuth()
+    } else {
+      this.redirectToHome()
+    }
+  }
+
   redirectToAuth = () => {
     this.props.router.push(`/auth/?authRequest=${this.state.authRequest}`)
+  }
+
+  redirectToHome = () => {
+    this.props.router.push('/') 
   }
 
   goToBackup = () => {
@@ -418,7 +430,7 @@ class Onboarding extends React.Component {
           appIconURL: appIconURL,
           appName: appName,
           goToRecovery: this.goToBackup,
-          goToApp: () => this.redirectToAuth()
+          finish: () => this.finish()
         }
       }
     ]

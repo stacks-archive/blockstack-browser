@@ -69,7 +69,7 @@ const panelHeader = (appIconURL) => (
     pt={4}
   />
 )
-const Hooray = ({ goToRecovery, username, goToApp, appIconURL, appName, ...rest }) => (
+const Hooray = ({ goToRecovery, username, finish, appIconURL, appName, ...rest }) => (
   <PanelCard {...rest} renderHeader={() => panelHeader(appIconURL)}>
     <PanelCard.Section pt={2} center>
       <UserCard>
@@ -88,7 +88,7 @@ const Hooray = ({ goToRecovery, username, goToApp, appIconURL, appName, ...rest 
       <Buttons column>
         <ButtonLink
           primary
-          onClick={goToApp}
+          onClick={finish}
         >
           { appName ? <span>Continue to {appName}</span> : <span>Continue</span> }
         </ButtonLink>
