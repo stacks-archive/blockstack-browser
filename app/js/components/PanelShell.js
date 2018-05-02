@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import StyledPanel from '@styled/onboarding'
 import Show from '@components/Show'
-import { SyncIcon } from 'mdi-react'
-import { Spring, animated } from 'react-spring'
+import * as Icons from 'mdi-react'
+import { animated, Spring } from 'react-spring'
 import Spinner from '@components/styled/Spinner'
 
-import * as Icons from 'mdi-react'
+const { SyncIcon } = Icons
 
 const renderItems = (items, view) =>
   items.map(({ show, props, Component }, i) => (
@@ -36,9 +36,9 @@ const PanelCardHeader = ({
 }) => {
   const AppIcon = appIcon && (
     <StyledPanel.Card.IconWrapper appConnect>
-      {variant !== 'small' && <img src={icon} />}
+      {variant !== 'small' && <img src={icon} role="presentation" />}
       {variant !== 'small' && <SyncIcon />}
-      {appIcon && <img src={appIcon} />}
+      {appIcon && <img src={appIcon} role="presentation" />}
     </StyledPanel.Card.IconWrapper>
   )
 
@@ -65,13 +65,14 @@ const PanelCardHeader = ({
         </StyledPanel.Card.Title>
       )
     }
+    return null
   }
   return (
     <StyledPanel.Card.Header {...rest} p={p} pt={pt} pb={pb} variant={variant}>
       {icon && (
         <StyledPanel.Card.IconWrapper>
           {appIcon && AppIcon}
-          {!appIcon && !mdi && <img src={icon} />}
+          {!appIcon && !mdi && <img src={icon} role="presentation" />}
         </StyledPanel.Card.IconWrapper>
       )}
       {renderTitle()}
@@ -84,16 +85,14 @@ const PanelCard = ({
   renderHeader = () => {},
   children,
   ...rest
-}) => {
-  return (
-    <StyledPanel.Card {...rest} variant={variant}>
-      {renderHeader()}
-      <StyledPanel.Card.Content p={4}>{children}</StyledPanel.Card.Content>
-    </StyledPanel.Card>
-  )
-}
+}) => (
+  <StyledPanel.Card {...rest} variant={variant}>
+    {renderHeader()}
+    <StyledPanel.Card.Content p={4}>{children}</StyledPanel.Card.Content>
+  </StyledPanel.Card>
+)
 
-PanelCard.InputOverlay = ({
+const InputOverlay = ({
   text,
   children,
   icon: { component: Icon, show },
@@ -104,6 +103,7 @@ PanelCard.InputOverlay = ({
     style={{
       position: 'relative'
     }}
+    {...rest}
   >
     {Icon && (
       <StyledPanel.Card.InputIcon show={show}>
@@ -115,7 +115,7 @@ PanelCard.InputOverlay = ({
   </StyledPanel.Card.Section>
 )
 
-PanelCard.Error = ({ icon, message }) => (
+const Error = ({ icon, message }) => (
   <StyledPanel.Card.ErrorMessage>
     <StyledPanel.Card.ErrorMessage.Icon>
       {icon}
@@ -124,8 +124,7 @@ PanelCard.Error = ({ icon, message }) => (
   </StyledPanel.Card.ErrorMessage>
 )
 
-PanelCard.Section = StyledPanel.Card.Section
-PanelCard.Loading = ({ show, message }) =>
+const Loading = ({ show, message }) =>
   show && (
     <Spring
       from={{
@@ -165,6 +164,11 @@ PanelCard.Loading = ({ show, message }) =>
     </Spring>
   )
 
+PanelCard.Loading = Loading
+PanelCard.Section = StyledPanel.Card.Section
+PanelCard.InputOverlay = InputOverlay
+PanelCard.Error = Error
+
 PanelShell.propTypes = {
   children: PropTypes.node.isRequired,
   title: PropTypes.node,
@@ -186,7 +190,23 @@ PanelCardHeader.propTypes = {
 
 PanelCard.propTypes = {
   children: PropTypes.node.isRequired,
-  header: PropTypes.func
+  header: PropTypes.func,
+  variant: PropTypes.string,
+  renderHeader: PropTypes.func
+}
+Loading.propTypes = {
+  show: PropTypes.bool,
+  message: PropTypes.node
+}
+Error.propTypes = {
+  icon: PropTypes.node,
+  message: PropTypes.node
+}
+InputOverlay.propTypes = {
+  text: PropTypes.node,
+  children: PropTypes.node,
+  icon: PropTypes.node,
+  rest: PropTypes.object
 }
 
 export default PanelShell
