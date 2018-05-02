@@ -3,8 +3,9 @@ import styled, { css, injectGlobal } from 'styled-components'
 import { darken } from 'polished'
 import { color, lineHeight, space } from 'styled-system'
 import { colors } from '@components/styled/theme'
+import PropTypes from 'prop-types'
 
-injectGlobal`
+const placeholderStyles = () => injectGlobal`
     ::-webkit-input-placeholder {
       /* Chrome/Opera/Safari */
       color: rgba(0, 0, 0, 0.25) !important;
@@ -20,8 +21,7 @@ injectGlobal`
     :-moz-placeholder {
       /* Firefox 18- */
       color: rgba(0, 0, 0, 0.25) !important;
-    }`;
-
+    }`
 
 const mobileCardWidth = 420
 
@@ -86,7 +86,7 @@ const Card = styled.div`
       max-height: 50vh !important;
     `};
 
-  ${({ variant, showing }) =>
+  ${({ variant }) =>
     variant === 'welcome' &&
     css`
       background: ${colors.blue};
@@ -205,14 +205,6 @@ const Content = styled.div`
       width: 100%;
     }
   }
-`
-
-const Footer = styled.footer`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 `
 
 const IconWrapper = styled.div`
@@ -441,11 +433,18 @@ const Loading = styled.div`
   }
 `
 
-Panel.Card = props => (
-  <Card {...props}>
-    <CardWrapper {...props}>{props.children}</CardWrapper>
+const PanelCard = ({ children, ...rest }) => (
+  <Card {...rest}>
+    {placeholderStyles()}
+    <CardWrapper {...rest}>{children}</CardWrapper>
   </Card>
 )
+
+PanelCard.propTypes = {
+  children: PropTypes.node
+}
+
+Panel.Card = PanelCard
 Panel.Card.Title = Title
 Panel.Card.Title.Wrapper = TitleWrapper
 Panel.Card.IconWrapper = IconWrapper
