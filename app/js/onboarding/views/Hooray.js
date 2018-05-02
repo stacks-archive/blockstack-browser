@@ -89,7 +89,10 @@ const Hooray = ({
     </PanelCard.Section>
     <PanelCard.Section pt={4} center>
       <Buttons column>
-        <ButtonLink primary onClick={finish}>
+        <ButtonLink
+          primary
+          onClick={finish}
+        >
           {appName ? <span>Continue to {appName}</span> : <span>Continue</span>}
         </ButtonLink>
         <Button secondary onClick={() => goToRecovery()}>
@@ -107,10 +110,9 @@ const Hooray = ({
 )
 
 Hooray.propTypes = {
-  goToApp: PropTypes.func.isRequired,
+  finish: PropTypes.func.isRequired,
   goToRecovery: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
-  finish: PropTypes.func.isRequired,
   appIconURL: PropTypes.string,
   appName: PropTypes.string
 }
