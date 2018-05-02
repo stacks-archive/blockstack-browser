@@ -53,7 +53,7 @@ const accountCreated = connectedRouterRedirect({
 
 export default (
   <Router history={browserHistory}>
-    <Route path="/" component={App}>
+    <Route path="/" component={accountCreated(App)}>
       <IndexRoute component={HomeScreenPage} />
       <Route path="/update" component={UpdateStatePage} />
       <Route path="profiles" component={ProfilesApp}>
@@ -97,13 +97,13 @@ export default (
         <Route path="send-core" component={SendCorePage} />
       </Route>
 
-      <Route path="/auth" component={accountCreated(AuthPage)} />
-      <Route path="/sign-up" component={OnboardingPage} />
-      <Route path="/sign-up/*" component={OnboardingPage} />
-      <Route path="/seed" component={SeedPage} />
-      <Route path="/sign-in" component={SignInPage} />
-      <Route path="/sign-in/*" component={SignInPage} />
-      <Route path="/*" component={NotFoundPage} />
+      <Route path="/auth" component={AuthPage} />
     </Route>
+    <Route path="/sign-up" component={OnboardingPage} />
+    <Route path="/sign-up/*" component={OnboardingPage} />
+    <Route path="/seed" component={SeedPage} />
+    <Route path="/sign-in" component={SignInPage} />
+    <Route path="/sign-in/*" component={SignInPage} />
+    <Route path="/*" component={NotFoundPage} />
   </Router>
 )
