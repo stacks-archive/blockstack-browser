@@ -1,4 +1,3 @@
-import React from 'react'
 import { color, space } from 'styled-system'
 import styled, { css } from 'styled-components'
 import { colors } from '@components/styled/theme'
@@ -37,8 +36,7 @@ const buttonTypes = ({ primary, secondary, invert, small, disabled }) => {
           pointer-events: none;
         `};
     `
-  }
-  if (secondary) {
+  } else if (secondary) {
     return css`
       color: ${colors.grey[4]};
       border: 1px solid ${darken(0.09, colors.grey[1])};
@@ -63,6 +61,8 @@ const buttonTypes = ({ primary, secondary, invert, small, disabled }) => {
           box-shadow: none;
         `};
     `
+  } else {
+    return null
   }
 }
 
