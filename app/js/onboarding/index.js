@@ -385,7 +385,7 @@ class Onboarding extends React.Component {
           next: this.submitEmailForVerification,
           submitted: emailSubmitted,
           updateValue: this.updateValue,
-          appIconURL,
+          appIconURL
         }
       },
       {
