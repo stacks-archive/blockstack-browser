@@ -341,7 +341,7 @@ class Onboarding extends React.Component {
   }
 
   redirectToHome = () => {
-    this.props.router.push('/') 
+    this.props.router.push('/')
   }
 
   goToBackup = () => {
@@ -357,7 +357,7 @@ class Onboarding extends React.Component {
     const email = this.state.email
     const encryptedBackupPhrase = this.props.encryptedBackupPhrase
     return Promise.all([
-      this.sendRestore(username, email, encryptedBackupPhrase), 
+      this.sendRestore(username, email, encryptedBackupPhrase),
       this.sendRecovery(username, email, encryptedBackupPhrase)
     ])
   }
@@ -372,7 +372,7 @@ class Onboarding extends React.Component {
 
   render() {
     const { email, password, username, emailSubmitted, view } = this.state
-    const icons = this.state.appManifest ? this.state.appManifest.icons : [] 
+    const icons = this.state.appManifest ? this.state.appManifest.icons : []
     const appIconURL = icons.length > 0 ? icons[0].src : ''
     const appName = this.state.appManifest ? this.state.appManifest.name : ''
 
@@ -385,7 +385,7 @@ class Onboarding extends React.Component {
           next: this.submitEmailForVerification,
           submitted: emailSubmitted,
           updateValue: this.updateValue,
-          appIconURL: appIconURL
+          appIconURL,
         }
       },
       {
@@ -424,8 +424,8 @@ class Onboarding extends React.Component {
           email,
           password,
           username,
-          appIconURL: appIconURL,
-          appName: appName,
+          appIconURL,
+          appName,
           goToRecovery: this.goToBackup,
           finish: () => this.finish()
         }
