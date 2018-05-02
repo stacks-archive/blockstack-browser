@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import StyledPanel from '@styled/onboarding'
 import Show from '@components/Show'
@@ -173,7 +173,15 @@ PanelShell.propTypes = {
 
 PanelCardHeader.propTypes = {
   title: PropTypes.node,
-  icon: PropTypes.node
+  icon: PropTypes.node,
+  appIcon: PropTypes.node,
+  variant: PropTypes.node,
+  p: PropTypes.node,
+  pt: PropTypes.node,
+  pb: PropTypes.node,
+  mdi: PropTypes.node,
+  h2: PropTypes.node,
+  h5: PropTypes.node
 }
 
 PanelCard.propTypes = {

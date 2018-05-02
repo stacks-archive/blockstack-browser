@@ -36,7 +36,7 @@ const NavButton = styled.button`
 `
 
 const Navigation = props => {
-  const { previous, next, previousLabel = 'Back', nextLabel = 'Next' } = props
+  const { previous, previousLabel = 'Back' } = props
 
   return (
     <NavBlock>
@@ -50,9 +50,7 @@ const Navigation = props => {
 
 Navigation.propTypes = {
   previous: PropTypes.func.isRequired,
-  next: PropTypes.func.isRequired,
-  previousLabel: PropTypes.string,
-  nextLabel: PropTypes.string
+  previousLabel: PropTypes.string
 }
 
 export default Navigation

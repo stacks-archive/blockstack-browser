@@ -88,7 +88,6 @@ class Onboarding extends React.Component {
       } else {
         this.updateView(VIEWS.HOORAY)
       }
-
     } else if (registration.error) {
       logger.error(`username registration error: ${registration.error}`)
       this.setState({
@@ -128,7 +127,7 @@ class Onboarding extends React.Component {
     const queryDict = queryString.parse(this.props.location.search)
     if (queryDict.redirect !== null && queryDict.redirect !== undefined) {
       const searchString = queryDict.redirect.replace('/auth', '')
-      var redirectQueryDict = queryString.parse(searchString)
+      const redirectQueryDict = queryString.parse(searchString)
       if (redirectQueryDict.authRequest !== null && redirectQueryDict.authRequest !== undefined) {
         const authRequest = redirectQueryDict.authRequest
         verifyAuthRequestAndLoadManifest(authRequest)
@@ -274,9 +273,7 @@ class Onboarding extends React.Component {
       logger.debug('creating new identity')
       const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
       return this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
-    }).then(() => {
-      return this.props.setDefaultIdentity(firstIdentityIndex)
-    })
+    }).then(() => this.props.setDefaultIdentity(firstIdentityIndex))
   }
 
   connectStorage() {
@@ -300,7 +297,7 @@ class Onboarding extends React.Component {
         profile,
         profileSigningKeypair,
         identity
-      ).then(indexUrl => {
+      ).then(() => {
         logger.debug('connectStorage: storage initialized')
         const newApi2 = Object.assign({}, newApi, { storageConnected: true })
         this.props.updateApi(newApi2)
@@ -452,7 +449,8 @@ Onboarding.propTypes = {
   identityKeypairs: PropTypes.array.isRequired,
   storageIsConnected: PropTypes.func.isRequired,
   registerName: PropTypes.func.isRequired,
-  resetApi: PropTypes.func.isRequired
+  resetApi: PropTypes.func.isRequired,
+  encryptedBackupPhrase: PropTypes.string
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Onboarding))
