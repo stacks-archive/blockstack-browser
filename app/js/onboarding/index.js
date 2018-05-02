@@ -51,70 +51,6 @@ function mapDispatchToProps(dispatch) {
     dispatch)
 }
 
-function sendRecovery(blockstackId, email, encryptedSeed) {
-  const { protocol, hostname, port } = location
-  const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-  const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedSeed}`
-
-  const options = {
-    method: 'POST',
-    body: JSON.stringify({
-      email,
-      seedRecovery,
-      blockstackId
-    }),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-  }
-
-  return fetch(`${HEROKU_URL}/recovery`, options)
-    .then(
-      () => {
-        console.log(`emailNotifications: sent ${email} recovery email`)
-      },
-      error => {
-        console.log('emailNotifications: error', error)
-      }
-    )
-    .catch(error => {
-      console.log('emailNotifications: error', error)
-    })
-}
-
-function sendRestore(blockstackId, email, encryptedSeed) {
-  const { protocol, hostname, port } = location
-  const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-  const restoreLink = `${thisUrl}/sign-in?seed=${encryptedSeed}`
-
-  const options = {
-    method: 'POST',
-    body: JSON.stringify({
-      email,
-      restoreLink,
-      blockstackId
-    }),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-  }
-
-  return fetch(`${HEROKU_URL}/restore`, options)
-    .then(
-      () => {
-        console.log(`emailNotifications: sent ${email} restore email`)
-      },
-      error => {
-        console.log('emailNotifications: error', error)
-      }
-    )
-    .catch(error => {
-      console.log('emailNotifications: error', error)
-    })
-}
-
 class Onboarding extends React.Component {
   state = {
     authRequest: '',
@@ -124,6 +60,7 @@ class Onboarding extends React.Component {
     seed: '',
     appManifest: null,
     emailSubmitted: false,
+    emailsSent: false,
     view: VIEWS.EMAIL,
     usernameRegistrationInProgress: false
   }
@@ -145,9 +82,13 @@ class Onboarding extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { registration } = nextProps
-
     if (this.state.usernameRegistrationInProgress && registration.registrationSubmitted) {
-      this.updateView(VIEWS.HOORAY)
+      if (!this.state.emailsSent) {
+        this.sendEmails().then(() => this.updateView(VIEWS.HOORAY))
+      } else {
+        this.updateView(VIEWS.HOORAY)
+      }
+
     } else if (registration.error) {
       logger.error(`username registration error: ${registration.error}`)
       this.setState({
@@ -210,6 +151,70 @@ class Onboarding extends React.Component {
   }
 
   updateView = view => this.setState({ view })
+
+  sendRecovery(blockstackId, email, encryptedSeed) {
+    const { protocol, hostname, port } = location
+    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
+    const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedSeed}`
+
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        seedRecovery,
+        blockstackId
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+
+    return fetch(`${HEROKU_URL}/recovery`, options)
+      .then(
+        () => {
+          console.log(`emailNotifications: sent ${email} recovery email`)
+        },
+        error => {
+          console.log('emailNotifications: error', error)
+        }
+      )
+      .catch(error => {
+        console.log('emailNotifications: error', error)
+      })
+  }
+
+  sendRestore(blockstackId, email, encryptedSeed) {
+    const { protocol, hostname, port } = location
+    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
+    const restoreLink = `${thisUrl}/sign-in?seed=${encryptedSeed}`
+
+    const options = {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        restoreLink,
+        blockstackId
+      }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+
+    return fetch(`${HEROKU_URL}/restore`, options)
+      .then(
+        () => {
+          console.log(`emailNotifications: sent ${email} restore email`)
+        },
+        error => {
+          console.log('emailNotifications: error', error)
+        }
+      )
+      .catch(error => {
+        console.log('emailNotifications: error', error)
+      })
+  }
 
   verifyEmail(email) {
     this.setState({ emailSubmitted: true })
@@ -337,12 +342,20 @@ class Onboarding extends React.Component {
     })
   }
 
+  sendEmails = () => {
+    this.setState({ emailsSent: true })
+    const username = this.state.username
+    const email = this.state.email
+    const encryptedBackupPhrase = this.props.encryptedBackupPhrase
+    return Promise.all([
+      this.sendRestore(username, email, encryptedBackupPhrase), 
+      this.sendRecovery(username, email, encryptedBackupPhrase)
+    ])
+  }
+
   submitEmailForVerification = () => {
-    // Short-circuit email verification
-    this.verifyEmail(this.state.email)
-    .then(() => {
-      this.updateView(VIEWS.PASSWORD)
-    })
+    // Skip email verification
+    this.updateView(VIEWS.PASSWORD)
 
     // verifyEmail(this.state.email)
     // this.updateView(VIEWS.EMAIL_VERIFY)
@@ -352,7 +365,6 @@ class Onboarding extends React.Component {
     const { email, password, username, emailSubmitted, view } = this.state
     const icons = this.state.appManifest ? this.state.appManifest.icons : [] 
     const appIconURL = icons.length > 0 ? icons[0].src : '/images/app-icon-hello-blockstack.png'
-    console.log(this.state.appManifest)
     const appName = this.state.appManifest ? this.state.appManifest.name : ''
 
     const views = [
