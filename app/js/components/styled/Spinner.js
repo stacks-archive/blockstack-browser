@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 const Spinner = ({ size = 50, stroke = 4 }) => (
   <StyledSpinner size={size} viewBox="0 0 50 50">
@@ -46,5 +47,10 @@ const StyledSpinner = styled.svg`
     }
   }
 `
+
+Spinner.propTypes = {
+  size: PropTypes.number,
+  stroke: PropTypes.number
+}
 
 export default Spinner
