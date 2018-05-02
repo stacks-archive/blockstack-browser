@@ -364,7 +364,7 @@ class Onboarding extends React.Component {
   render() {
     const { email, password, username, emailSubmitted, view } = this.state
     const icons = this.state.appManifest ? this.state.appManifest.icons : [] 
-    const appIconURL = icons.length > 0 ? icons[0].src : '/images/app-icon-hello-blockstack.png'
+    const appIconURL = icons.length > 0 ? icons[0].src : ''
     const appName = this.state.appManifest ? this.state.appManifest.name : ''
 
     const views = [

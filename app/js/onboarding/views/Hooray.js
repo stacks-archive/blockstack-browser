@@ -90,7 +90,7 @@ const Hooray = ({ goToRecovery, username, goToApp, appIconURL, appName, ...rest 
           primary
           onClick={goToApp}
         >
-          Continue to {appName}
+          { appName ? <span>Continue to {appName}</span> : <span>Continue</span> }
         </ButtonLink>
         <Button secondary onClick={() => goToRecovery()}>
           Write down secret recovery key
