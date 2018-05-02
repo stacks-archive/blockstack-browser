@@ -13,6 +13,7 @@ import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
+import { verifyAuthRequestAndLoadManifest } from 'blockstack'
 import queryString from 'query-string'
 import log4js from 'log4js'
 
@@ -121,6 +122,7 @@ class Onboarding extends React.Component {
     password: '',
     username: '',
     seed: '',
+    appManifest: null,
     emailSubmitted: false,
     view: VIEWS.EMAIL,
     usernameRegistrationInProgress: false
@@ -135,7 +137,7 @@ class Onboarding extends React.Component {
   }
 
   componentDidMount() {
-    this.saveAuthRequest()
+    this.decodeAndSaveAuthRequest()
     if (!this.props.api.subdomains['test-personal.id']) {
       this.props.resetApi(this.props.api)
     }
@@ -181,15 +183,23 @@ class Onboarding extends React.Component {
     this.updateURL(this.state.view)
   }
 
-  saveAuthRequest() {
+  decodeAndSaveAuthRequest() {
     const queryDict = queryString.parse(this.props.location.search)
     if (queryDict.redirect !== null && queryDict.redirect !== undefined) {
       const searchString = queryDict.redirect.replace('/auth', '')
       var redirectQueryDict = queryString.parse(searchString)
       if (redirectQueryDict.authRequest !== null && redirectQueryDict.authRequest !== undefined) {
         const authRequest = redirectQueryDict.authRequest
-        this.setState({
-          authRequest
+        verifyAuthRequestAndLoadManifest(authRequest)
+        .then(appManifest => {
+          this.setState({
+            authRequest,
+            appManifest
+          })
+        }, () => {
+          logger.error('verifyAuthRequestAndLoadManifest: invalid authentication request')
+        }).catch((e) => {
+          logger.error('verifyAuthRequestAndLoadManifest: error', e)
         })
       }
     }
@@ -199,7 +209,7 @@ class Onboarding extends React.Component {
     this.setState({ [key]: value })
   }
 
-  updateView = view => this.setState({ view }) 
+  updateView = view => this.setState({ view })
 
   verifyEmail(email) {
     this.setState({ emailSubmitted: true })
@@ -340,6 +350,8 @@ class Onboarding extends React.Component {
 
   render() {
     const { email, password, username, emailSubmitted, view } = this.state
+    const icons = this.state.appManifest ? this.state.appManifest.icons : [] 
+    const appIconURL = icons.length > 0 ? icons[0].src : '/images/app-icon-hello-blockstack.png'
 
     const views = [
       {
@@ -349,7 +361,8 @@ class Onboarding extends React.Component {
           email,
           next: this.submitEmailForVerification,
           submitted: emailSubmitted,
-          updateValue: this.updateValue
+          updateValue: this.updateValue,
+          appIconURL: appIconURL
         }
       },
       {

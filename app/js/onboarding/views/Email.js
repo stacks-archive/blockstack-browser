@@ -13,12 +13,12 @@ const validationSchema = Yup.object({
     .required('A recovery email is required.')
 })
 
-const panelHeader = () => (
-  <PanelCardHeader appIcon="https://browser.blockstack.org/images/app-icon-stealthy-256x256.png" />
+const panelHeader = (appIconURL) => (
+  <PanelCardHeader appIcon={appIconURL} />
 )
 
-const Email = ({ next, updateValue, email, submitted, ...rest }) => (
-  <PanelCard renderHeader={panelHeader} {...rest}>
+const Email = ({ next, updateValue, email, submitted, appIconURL, ...rest }) => (
+  <PanelCard renderHeader={() => panelHeader(appIconURL)} {...rest}>
     <Formik
       initialValues={{ email }}
       validationSchema={validationSchema}
@@ -61,7 +61,8 @@ const Email = ({ next, updateValue, email, submitted, ...rest }) => (
 Email.propTypes = {
   next: PropTypes.func.isRequired,
   updateValue: PropTypes.func.isRequired,
-  email: PropTypes.string.isRequired
+  email: PropTypes.string.isRequired,
+  appIconURL: PropTypes.string
 }
 
 export default Email
