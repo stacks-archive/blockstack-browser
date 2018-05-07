@@ -8,7 +8,9 @@ import { LockOpenIcon } from 'mdi-react'
 import Yup from 'yup'
 
 const validationSchema = Yup.object({
-  password: Yup.string()
+  password: Yup.string().required('Please enter your password.'),
+    passwordConfirm: Yup.string()
+    .oneOf([Yup.ref('password')], 'Passwords do not match.')
 })
 
 class RestoreAccount extends React.Component {
@@ -17,19 +19,19 @@ class RestoreAccount extends React.Component {
     seed: null
   }
 
-  restoreAccount = async (password, next) => {
+  restoreAccount = (next) => {
     if (!this.state.restoring) {
       this.setState({
         restoring: true
       })
-      return setTimeout(() => next(), 2150)
+      return next()
     } else {
       return null
     }
   }
 
   render() {
-    const { next, ...rest } = this.props
+    const { next, updateValue, decrypt, ...rest } = this.props
 
     return (
       <PanelCard
@@ -49,32 +51,80 @@ class RestoreAccount extends React.Component {
               initialValues={{
                 password: ''
               }}
-              onSubmit={values => this.restoreAccount(values.password, next)}
+              onSubmit={values => { 
+                updateValue('password', values.password)
+                this.restoreAccount(next)
+              }}
               validateOnBlur={false}
               validateOnChange={false}
-              render={({ errors, touched }) => (
-                <Form>
-                  <label htmlFor="password">Enter Password</label>
-                  <FastField
-                    name="password"
-                    type="password"
-                    autoComplete="new-password"
-                    placeholder="Your Password"
-                  />
-                  {errors.password && touched.password ? (
-                    <PanelCard.Error
-                      icon={<LockOpenIcon />}
-                      message={errors.password}
-                    />
-                  ) : null}
-                  <p>
-                    The password you entered when created this Blockstack ID.
-                  </p>
+              render={({ errors, touched }) => {
+                const renderErrorMessages = () => {
+                  if (errors.password && touched.password) {
+                    return (
+                      <PanelCard.Error
+                        icon={<LockOpenIcon />}
+                        message={errors.password}
+                      />
+                    )
+                  } else if (errors.passwordConfirm && touched.passwordConfirm) {
+                    return (
+                      <PanelCard.Error
+                        icon={<LockOpenIcon />}
+                        message={errors.passwordConfirm}
+                      />
+                    )
+                  }
+                  return null
+                }
+
+                return <Form>
+                  {decrypt ? 
+                    <div>
+                      <label htmlFor="password">Enter Password</label>
+                      <FastField
+                        name="password"
+                        type="password"
+                        autoComplete="new-password"
+                        placeholder="Your Password"
+                      />
+                      {errors.password && touched.password ? (
+                        <PanelCard.Error
+                          icon={<LockOpenIcon />}
+                          message={errors.password}
+                        />
+                      ) : null}
+                      <p>
+                        The password you entered when created this Blockstack ID.
+                      </p>
+                    </div> :
+                    <div>
+                      <label htmlFor="password">Enter Password</label>
+                      <FastField
+                        name="password"
+                        type="password"
+                        autoComplete="new-password"
+                        placeholder="Your Password"
+                      />
+                      <FastField
+                        name="passwordConfirm"
+                        type="password"
+                        autoComplete="new-password"
+                        placeholder="Confirm Password"
+                      />
+                      {errors.password && touched.password ? (
+                        <PanelCard.Error
+                          icon={<LockOpenIcon />}
+                          message={errors.password}
+                        />
+                      ) : null}
+                    </div>
+                  }
+                  {renderErrorMessages()}
                   <Button type="submit" primary>
                     Continue
                   </Button>
                 </Form>
-              )}
+              }}
             />
           </PanelCard.Section>
         </Fragment>

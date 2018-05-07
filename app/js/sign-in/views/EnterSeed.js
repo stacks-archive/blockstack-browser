@@ -8,8 +8,10 @@ import { TextboxPasswordIcon } from 'mdi-react'
 
 const validationSchema = Yup.object({
   key: Yup.string()
-    .matches(/^ *\w+(?: +\w+){11,}$/, 'This seems to be less than 12 words')
-    .required('Please enter your 12 word recovery key')
+        .required('Please enter your 12 word recovery key or encrypted seed.')
+  // key: Yup.string()
+  //   .matches(/^ *\w+(?: +\w+){11,}$/, 'This seems to be less than 12 words')
+  //   .required('Please enter your 12 word recovery key')
 })
 
 const placeholder =
@@ -19,23 +21,14 @@ class Options extends React.Component {
   state = {
     restoring: false
   }
-  restoreAccount = async (key, next) => {
-    if (!this.state.restoring) {
-      this.setState({
-        restoring: true
-      })
-      return setTimeout(() => next(), 2150)
-    } else {
-      return null
-    }
-  }
+
   render() {
-    const { previous, next, ...rest } = this.props
+    const { previous, next, updateValue, ...rest } = this.props
     return (
       <PanelCard
         renderHeader={() => (
           <PanelCardHeader
-            h5="Enter your 12 word recovery key below."
+            h5="Enter your 12 word recovery key or encrypted seed string below."
             h2="Restore with Key"
             mdi={'TextboxPasswordIcon'}
             pt={0}
@@ -50,23 +43,27 @@ class Options extends React.Component {
         <Fragment>
           <PanelCard.Section pt={2} left>
             <p>
-              You’ll need your Secret Recovery Key (the 12 words you wrote down
-              on paper and then saved in a secret place).
+              You'll need your 12 word phrase you wrote down on paper and saved in 
+              a secret place or the encrypted seed string sent to your email.
             </p>
 
-            <p>The words must be in order and have spaces between them.</p>
+            <p>If you are using your 12 word phrase, make sure the words are in order 
+              and have spaces between them.</p>
           </PanelCard.Section>
           <PanelCard.Section pt={3}>
             <Formik
               initialValues={{ key: '' }}
               validationSchema={validationSchema}
-              onSubmit={values => this.restoreAccount(values.key, next)}
+              onSubmit={values => {
+                updateValue('key', values.key)
+                next()
+              }}
               validateOnBlur={false}
               validateOnChange={false}
               render={({ errors, touched }) => (
                 <Form>
                   <PanelCard.Section pb={4}>
-                    <label htmlFor="key">Recovery Key</label>
+                    <label htmlFor="key">Recovery Key or Encrypted Seed</label>
                     <FastField
                       name="key"
                       component="textarea"
@@ -82,7 +79,7 @@ class Options extends React.Component {
                   </PanelCard.Section>
                   <Buttons bottom>
                     <ButtonLink onClick={() => previous()} secondary>
-                      Go Back
+                      Back
                     </ButtonLink>
                     <Button primary type="submit">
                       Continue

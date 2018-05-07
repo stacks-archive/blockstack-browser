@@ -27,7 +27,8 @@ const VIEWS = {
   HOORAY: 4
 }
 
-const HEROKU_URL = 'https://obscure-retreat-87934.herokuapp.com'
+const BROWSER_API = 'https://browser-api.blockstack.org'
+const SUBDOMAIN_SUFFIX = 'test-personal.id'
 
 function mapStateToProps(state) {
   return {
@@ -75,7 +76,7 @@ class Onboarding extends React.Component {
 
   componentDidMount() {
     this.decodeAndSaveAuthRequest()
-    if (!this.props.api.subdomains['test-personal.id']) {
+    if (!this.props.api.subdomains[SUBDOMAIN_SUFFIX]) {
       this.props.resetApi(this.props.api)
     }
   }
@@ -161,7 +162,7 @@ class Onboarding extends React.Component {
       body: JSON.stringify({
         email,
         seedRecovery,
-        blockstackId
+        blockstackId,
       }),
       headers: {
         Accept: 'application/json',
@@ -169,7 +170,7 @@ class Onboarding extends React.Component {
       }
     }
 
-    return fetch(`${HEROKU_URL}/recovery`, options)
+    return fetch(`${BROWSER_API}/recovery`, options)
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} recovery email`)
@@ -193,7 +194,8 @@ class Onboarding extends React.Component {
       body: JSON.stringify({
         email,
         restoreLink,
-        blockstackId
+        blockstackId,
+        encryptedSeed
       }),
       headers: {
         Accept: 'application/json',
@@ -201,7 +203,7 @@ class Onboarding extends React.Component {
       }
     }
 
-    return fetch(`${HEROKU_URL}/restore`, options)
+    return fetch(`${BROWSER_API}/restore`, options)
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} restore email`)
@@ -234,7 +236,7 @@ class Onboarding extends React.Component {
       }
     }
 
-    return fetch(`${HEROKU_URL}/verify`, options)
+    return fetch(`${BROWSER_API}/verify`, options)
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} an email verification`)
@@ -309,7 +311,7 @@ class Onboarding extends React.Component {
 
   submitUsername = (username) => {
     console.log('about to submit username')
-    const suffix = '.test-personal.id'
+    const suffix = `.${SUBDOMAIN_SUFFIX}`
     username += suffix
     logger.trace('registerUsername')
     const nameHasBeenPreordered = hasNameBeenPreordered(username, this.props.localIdentities)
@@ -357,8 +359,8 @@ class Onboarding extends React.Component {
     const email = this.state.email
     const encryptedBackupPhrase = this.props.encryptedBackupPhrase
     return Promise.all([
-      this.sendRestore(username, email, encryptedBackupPhrase),
-      this.sendRecovery(username, email, encryptedBackupPhrase)
+      this.sendRestore(username, email, encryptedBackupPhrase)
+      // this.sendRecovery(username, email, encryptedBackupPhrase)
     ])
   }
 
@@ -426,6 +428,7 @@ class Onboarding extends React.Component {
           username,
           appIconURL,
           appName,
+          subdomainSuffix: SUBDOMAIN_SUFFIX,
           goToRecovery: this.goToBackup,
           finish: () => this.finish()
         }

@@ -71,6 +71,7 @@ const Hooray = ({
   finish,
   appIconURL,
   appName,
+  subdomainSuffix,
   ...rest
 }) => (
   <PanelCard {...rest} renderHeader={() => panelHeader(appIconURL)}>
@@ -83,7 +84,7 @@ const Hooray = ({
         </UserCardAvatar>
         <UserCardDetails>
           <User>{username}</User>
-          <UserID>{username}.blockstack.id</UserID>
+          <UserID>{username}.{subdomainSuffix}</UserID>
         </UserCardDetails>
       </UserCard>
     </PanelCard.Section>
@@ -113,6 +114,7 @@ Hooray.propTypes = {
   finish: PropTypes.func.isRequired,
   goToRecovery: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
+  subdomainSuffix: PropTypes.string.isRequired,
   appIconURL: PropTypes.string,
   appName: PropTypes.string
 }

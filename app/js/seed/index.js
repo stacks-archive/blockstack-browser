@@ -3,6 +3,23 @@ import PropTypes from 'prop-types'
 import { SeedInfo, SeedDecrypt, Seed, SeedConfirm, SeedComplete } from './views'
 import PanelShell, { renderItems } from '@components/PanelShell'
 import { decrypt } from '@utils/encryption-utils'
+import { browserHistory, withRouter } from 'react-router'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { AccountActions } from '../account/store/account'
+import { IdentityActions } from '../profiles/store/identity'
+
+function mapStateToProps(state) {
+  return {
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Object.assign({},
+    AccountActions, IdentityActions),
+    dispatch)
+}
 
 const VIEWS = {
   KEY_INFO: 0,
@@ -25,28 +42,16 @@ const splitSeed = seed => {
   }
 }
 
-const getCachedEncryptedSeed = () => {
-  const cached = localStorage.getItem('encryptedSeeds')
-
-  // TO DO: this should check against the currently logged in username.
-  // Right now, this logic simply picks the first seed in the object.
-  return cached ? JSON.parse(cached)[0].encryptedSeed : null
-}
-
-export default class SeedContainer extends Component {
+class SeedContainer extends Component {
   state = {
     encryptedSeed: null,
     seed: null,
     view: 0
   }
 
-  static propTypes = {
-    location: PropTypes.object.isRequired
-  }
-
   componentWillMount() {
     const { location } = this.props
-    const cached = getCachedEncryptedSeed()
+    const cached = this.getCachedEncryptedSeed()
     if (location && location.query && location.query.encrypted) {
       if (this.state.encryptedSeed !== location.query.encrypted) {
         this.setState({ encryptedSeed: location.query.encrypted })
@@ -72,6 +77,17 @@ export default class SeedContainer extends Component {
     if (this.state.view !== view) {
       this.setState({ view })
     }
+  }
+
+  getCachedEncryptedSeed = () => {
+    const cached = this.props.encryptedBackupPhrase
+    return cached
+    // console.log(cached)
+    // const cached = localStorage.getItem('encryptedSeeds')
+
+    // TO DO: this should check against the currently logged in username.
+    // Right now, this logic simply picks the first seed in the object.
+    // return cached ? JSON.parse(cached)[0].encryptedSeed : null
   }
 
   decryptSeed = password => {
@@ -164,3 +180,10 @@ export default class SeedContainer extends Component {
     return <PanelShell>{renderItems(views, view)}</PanelShell>
   }
 }
+
+SeedContainer.propTypes = {
+  location: PropTypes.object.isRequired,
+  encryptedBackupPhrase: PropTypes.string
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SeedContainer))
