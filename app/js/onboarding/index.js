@@ -162,7 +162,7 @@ class Onboarding extends React.Component {
       body: JSON.stringify({
         email,
         seedRecovery,
-        blockstackId,
+        blockstackId
       }),
       headers: {
         Accept: 'application/json',

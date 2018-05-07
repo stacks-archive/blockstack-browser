@@ -9,7 +9,7 @@ import Yup from 'yup'
 
 const validationSchema = Yup.object({
   password: Yup.string().required('Please enter your password.'),
-    passwordConfirm: Yup.string()
+  passwordConfirm: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords do not match.')
 })
 
@@ -77,7 +77,7 @@ class RestoreAccount extends React.Component {
                   return null
                 }
 
-                return <Form>
+                return (<Form>
                   {decrypt ? 
                     <div>
                       <label htmlFor="password">Enter Password</label>
@@ -123,7 +123,7 @@ class RestoreAccount extends React.Component {
                   <Button type="submit" primary>
                     Continue
                   </Button>
-                </Form>
+                </Form>)
               }}
             />
           </PanelCard.Section>
@@ -135,7 +135,9 @@ class RestoreAccount extends React.Component {
 
 RestoreAccount.propTypes = {
   decryptSeed: PropTypes.func,
-  next: PropTypes.func
+  next: PropTypes.func,
+  updateValue: PropTypes.func,
+  decrypt: PropTypes.bool
 }
 
 export default RestoreAccount

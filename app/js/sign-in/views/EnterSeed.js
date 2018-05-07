@@ -48,7 +48,7 @@ class Options extends React.Component {
             </p>
 
             <p>If you are using your 12 word phrase, make sure the words are in order 
-              and have spaces between them.</p>
+            and have spaces between them.</p>
           </PanelCard.Section>
           <PanelCard.Section pt={3}>
             <Formik
@@ -97,7 +97,8 @@ class Options extends React.Component {
 
 Options.propTypes = {
   previous: PropTypes.func,
-  next: PropTypes.func
+  next: PropTypes.func,
+  updateValue: PropTypes.func
 }
 
 export default Options

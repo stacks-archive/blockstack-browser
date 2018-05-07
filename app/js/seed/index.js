@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { SeedInfo, SeedDecrypt, Seed, SeedConfirm, SeedComplete } from './views'
 import PanelShell, { renderItems } from '@components/PanelShell'
 import { decrypt } from '@utils/encryption-utils'
-import { browserHistory, withRouter } from 'react-router'
+import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
@@ -11,7 +11,7 @@ import { IdentityActions } from '../profiles/store/identity'
 
 function mapStateToProps(state) {
   return {
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+    encryptedBackupPhrase: state.account.encryptedBackupPhrase
   }
 }
 

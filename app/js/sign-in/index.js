@@ -38,7 +38,7 @@ function mapStateToProps(state) {
     connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce,
     storageConnected: state.settings.api.storageConnected,
     email: state.account.email,
-    registration: state.profiles.registration,
+    registration: state.profiles.registration
   }
 }
 
@@ -74,13 +74,9 @@ class SignIn extends React.Component {
 
   updateView = view => this.setState({ view })
 
-  backToSignUp = () => {
-    return browserHistory.push({pathname: '/sign-up'})
-  }
+  backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isSeedEncrypted = key => {
-    return !(key.split(' ').length == 12)
-  }
+  isSeedEncrypted = key => !(key.split(' ').length === 12)
 
   validateRecoveryKey = () => {
     if (this.isSeedEncrypted(this.state.key)) {
@@ -107,12 +103,10 @@ class SignIn extends React.Component {
     }
   }
 
-  restoreAccount = () => {
-    return this.restoreFromSeed()
+  restoreAccount = () => this.restoreFromSeed()
       .then(() => this.createAccount())
       .then(() => this.connectStorage())
       .then(() => this.updateView(VIEWS.RESTORED))
-  }
 
   restoreFromSeed = () => {
     const seed = this.state.seed
@@ -205,7 +199,7 @@ class SignIn extends React.Component {
         props: {
           previous: this.backToSignUp,
           next: this.validateRecoveryKey,
-          updateValue: this.updateValue,
+          updateValue: this.updateValue
         }
       },
       {
