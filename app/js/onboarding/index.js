@@ -27,7 +27,7 @@ const VIEWS = {
   HOORAY: 4
 }
 
-const HEROKU_URL = 'https://obscure-retreat-87934.herokuapp.com'
+const SERVER_URL = 'https://browser-api.blockstack.org'
 
 function mapStateToProps(state) {
   return {
@@ -49,6 +49,34 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({},
     AccountActions, SettingsActions, IdentityActions, RegistrationActions),
     dispatch)
+}
+
+function sendRestore(blockstackId, email, encryptedSeed) {
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      email,
+      encryptedSeed,
+      blockstackId
+    }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  }
+
+  return fetch(`${SERVER_URL}/restore`, options)
+    .then(
+      () => {
+        console.log(`emailNotifications: sent ${email} restore email`)
+      },
+      error => {
+        console.log('emailNotifications: error', error)
+      }
+    )
+    .catch(error => {
+      console.log('emailNotifications: error', error)
+    })
 }
 
 class Onboarding extends React.Component {
@@ -234,7 +262,7 @@ class Onboarding extends React.Component {
       }
     }
 
-    return fetch(`${HEROKU_URL}/verify`, options)
+    return fetch(`${SERVER_URL}/verify`, options)
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} an email verification`)
