@@ -51,34 +51,6 @@ function mapDispatchToProps(dispatch) {
     dispatch)
 }
 
-function sendRestore(blockstackId, email, encryptedSeed) {
-  const options = {
-    method: 'POST',
-    body: JSON.stringify({
-      email,
-      encryptedSeed,
-      blockstackId
-    }),
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-  }
-
-  return fetch(`${SERVER_URL}/restore`, options)
-    .then(
-      () => {
-        console.log(`emailNotifications: sent ${email} restore email`)
-      },
-      error => {
-        console.log('emailNotifications: error', error)
-      }
-    )
-    .catch(error => {
-      console.log('emailNotifications: error', error)
-    })
-}
-
 class Onboarding extends React.Component {
   state = {
     authRequest: '',
@@ -197,7 +169,7 @@ class Onboarding extends React.Component {
       }
     }
 
-    return fetch(`${HEROKU_URL}/recovery`, options)
+    return fetch(`${SERVER_URL}/recovery`, options)
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} recovery email`)
@@ -212,15 +184,11 @@ class Onboarding extends React.Component {
   }
 
   sendRestore(blockstackId, email, encryptedSeed) {
-    const { protocol, hostname, port } = location
-    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const restoreLink = `${thisUrl}/sign-in?seed=${encryptedSeed}`
-
     const options = {
       method: 'POST',
       body: JSON.stringify({
         email,
-        restoreLink,
+        encryptedSeed,
         blockstackId
       }),
       headers: {
@@ -229,7 +197,7 @@ class Onboarding extends React.Component {
       }
     }
 
-    return fetch(`${HEROKU_URL}/restore`, options)
+    return fetch(`${SERVER_URL}/restore`, options)
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} restore email`)
@@ -385,8 +353,8 @@ class Onboarding extends React.Component {
     const email = this.state.email
     const encryptedBackupPhrase = this.props.encryptedBackupPhrase
     return Promise.all([
-      this.sendRestore(username, email, encryptedBackupPhrase),
-      this.sendRecovery(username, email, encryptedBackupPhrase)
+      this.sendRestore(username, email, encryptedBackupPhrase)
+      // this.sendRecovery(username, email, encryptedBackupPhrase)
     ])
   }
 
