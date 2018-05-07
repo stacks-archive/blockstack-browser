@@ -27,8 +27,12 @@ const VIEWS = {
   HOORAY: 4
 }
 
+<<<<<<< HEAD
 const BROWSER_API = 'https://browser-api.blockstack.org'
 const SUBDOMAIN_SUFFIX = 'test-personal.id'
+=======
+const SERVER_URL = 'https://browser-api.blockstack.org'
+>>>>>>> c9ce57aa63b8aed85f322b44a23e7d03bf993b0e
 
 function mapStateToProps(state) {
   return {
@@ -170,7 +174,11 @@ class Onboarding extends React.Component {
       }
     }
 
+<<<<<<< HEAD
     return fetch(`${BROWSER_API}/recovery`, options)
+=======
+    return fetch(`${SERVER_URL}/recovery`, options)
+>>>>>>> c9ce57aa63b8aed85f322b44a23e7d03bf993b0e
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} recovery email`)
@@ -185,17 +193,18 @@ class Onboarding extends React.Component {
   }
 
   sendRestore(blockstackId, email, encryptedSeed) {
-    const { protocol, hostname, port } = location
-    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const restoreLink = `${thisUrl}/sign-in?seed=${encryptedSeed}`
-
     const options = {
       method: 'POST',
       body: JSON.stringify({
         email,
+<<<<<<< HEAD
         restoreLink,
         blockstackId,
         encryptedSeed
+=======
+        encryptedSeed,
+        blockstackId
+>>>>>>> c9ce57aa63b8aed85f322b44a23e7d03bf993b0e
       }),
       headers: {
         Accept: 'application/json',
@@ -203,7 +212,11 @@ class Onboarding extends React.Component {
       }
     }
 
+<<<<<<< HEAD
     return fetch(`${BROWSER_API}/restore`, options)
+=======
+    return fetch(`${SERVER_URL}/restore`, options)
+>>>>>>> c9ce57aa63b8aed85f322b44a23e7d03bf993b0e
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} restore email`)
@@ -236,7 +249,11 @@ class Onboarding extends React.Component {
       }
     }
 
+<<<<<<< HEAD
     return fetch(`${BROWSER_API}/verify`, options)
+=======
+    return fetch(`${SERVER_URL}/verify`, options)
+>>>>>>> c9ce57aa63b8aed85f322b44a23e7d03bf993b0e
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} an email verification`)
