@@ -57,6 +57,8 @@ class SignIn extends React.Component {
     seed: '',
     encryptedSeed: '',
     decrypt: false,
+    restoring: false,
+    restoreError: '',
     view: VIEWS.ENTER_SEED
   }
 
@@ -86,17 +88,27 @@ class SignIn extends React.Component {
       }, () => this.updateView(VIEWS.RESTORE))
     } else {
       this.setState({
-        seed: this.state.key
+        seed: this.state.key,
+        decrypt: false
       }, () => this.updateView(VIEWS.RESTORE))
     }
   }
 
   decryptSeedAndRestore = () => {
+    this.setState({
+      restoring: true
+    })
+
     if (this.state.decrypt) {
       return decrypt(new Buffer(this.state.encryptedSeed, 'hex'), this.state.password)
         .then((decryptedSeedBuffer) => {
           const decryptedSeed = decryptedSeedBuffer.toString()
           this.setState({ seed: decryptedSeed }, this.restoreAccount)
+        }).catch(() => {
+          this.setState({
+            restoring: false,
+            restoreError: 'The password you entered is incorrect.'
+          })
         })
     } else {
       return this.restoreAccount()
@@ -107,6 +119,12 @@ class SignIn extends React.Component {
       .then(() => this.createAccount())
       .then(() => this.connectStorage())
       .then(() => this.updateView(VIEWS.RESTORED))
+      .catch(() => {
+        this.setState({
+          restoring: false,
+          restoreError: 'There was an error restoring your account.'
+        })
+      })
 
   restoreFromSeed = () => {
     const seed = this.state.seed
@@ -114,8 +132,8 @@ class SignIn extends React.Component {
     const { isValid } = isBackupPhraseValid(seed)
 
     if (!isValid) {
-      logger.error('restoreAccount: invalid keychain phrase entered')
-      return Promise.reject()
+      logger.error('restoreAccount: Invalid keychain phrase entered')
+      return Promise.reject('Invalid keychain phrase entered')
     }
 
     return this.props.initializeWallet(this.state.password, seed)
@@ -206,10 +224,12 @@ class SignIn extends React.Component {
         show: VIEWS.RESTORE,
         Component: Restore,
         props: {
-          previous: this.backToSignUp,
+          previous: () => this.updateView(VIEWS.ENTER_SEED),
           next: this.decryptSeedAndRestore,
           updateValue: this.updateValue,
-          decrypt: this.state.decrypt
+          decrypt: this.state.decrypt,
+          restoring: this.state.restoring,
+          restoreError: this.state.restoreError
         }
       },
       {

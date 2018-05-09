@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
-import { Button } from '@components/styled/Button'
+import { Button, ButtonLink, Buttons } from '@components/styled/Button'
 import { Formik, FastField, Form } from 'formik'
 import { LockOpenIcon } from 'mdi-react'
 
@@ -19,11 +19,8 @@ class RestoreAccount extends React.Component {
     seed: null
   }
 
-  restoreAccount = (next) => {
-    if (!this.state.restoring) {
-      this.setState({
-        restoring: true
-      })
+  restoreAccount = (next, restoring) => {
+    if (!restoring) {
       return next()
     } else {
       return null
@@ -31,7 +28,7 @@ class RestoreAccount extends React.Component {
   }
 
   render() {
-    const { next, updateValue, decrypt, ...rest } = this.props
+    const { next, previous, updateValue, decrypt, restoring, restoreError, ...rest } = this.props
 
     return (
       <PanelCard
@@ -41,7 +38,7 @@ class RestoreAccount extends React.Component {
         {...rest}
       >
         <PanelCard.Loading
-          show={this.state.restoring}
+          show={restoring}
           message="Restoring your account..."
         />
         <Fragment>
@@ -49,11 +46,12 @@ class RestoreAccount extends React.Component {
             <Formik
               validationSchema={validationSchema}
               initialValues={{
-                password: ''
+                password: '',
+                passwordConfirm: ''
               }}
               onSubmit={values => { 
                 updateValue('password', values.password)
-                this.restoreAccount(next)
+                this.restoreAccount(next, restoring)
               }}
               validateOnBlur={false}
               validateOnChange={false}
@@ -73,13 +71,20 @@ class RestoreAccount extends React.Component {
                         message={errors.passwordConfirm}
                       />
                     )
+                  } else if (restoreError) {
+                    return (
+                      <PanelCard.Error
+                        icon={<LockOpenIcon />}
+                        message={restoreError}
+                      />
+                    )
                   }
                   return null
                 }
 
                 return (<Form>
                   {decrypt ? 
-                    <div>
+                    <PanelCard.Section pb={4}>
                       <label htmlFor="password">Enter Password</label>
                       <FastField
                         name="password"
@@ -87,17 +92,12 @@ class RestoreAccount extends React.Component {
                         autoComplete="new-password"
                         placeholder="Your Password"
                       />
-                      {errors.password && touched.password ? (
-                        <PanelCard.Error
-                          icon={<LockOpenIcon />}
-                          message={errors.password}
-                        />
-                      ) : null}
+                      {renderErrorMessages()}
                       <p>
                         The password you entered when created this Blockstack ID.
                       </p>
-                    </div> :
-                    <div>
+                    </PanelCard.Section> :
+                    <PanelCard.Section pb={4}>
                       <label htmlFor="password">Enter Password</label>
                       <FastField
                         name="password"
@@ -111,21 +111,20 @@ class RestoreAccount extends React.Component {
                         autoComplete="new-password"
                         placeholder="Confirm Password"
                       />
-                      {errors.password && touched.password ? (
-                        <PanelCard.Error
-                          icon={<LockOpenIcon />}
-                          message={errors.password}
-                        />
-                      ) : null}
+                      {renderErrorMessages()}
                       <p>
                         Choose a password for your account.
                       </p>
-                    </div>
+                    </PanelCard.Section>
                   }
-                  {renderErrorMessages()}
-                  <Button type="submit" primary>
-                    Continue
-                  </Button>
+                  <Buttons bottom>
+                    <ButtonLink onClick={() => previous()} secondary>
+                      Back
+                    </ButtonLink>
+                    <Button primary type="submit">
+                      Continue
+                    </Button>
+                  </Buttons>
                 </Form>)
               }}
             />
@@ -139,8 +138,11 @@ class RestoreAccount extends React.Component {
 RestoreAccount.propTypes = {
   decryptSeed: PropTypes.func,
   next: PropTypes.func,
+  previous: PropTypes.func,
   updateValue: PropTypes.func,
-  decrypt: PropTypes.bool
+  decrypt: PropTypes.bool,
+  restoring: PropTypes.bool,
+  restoreError: PropTypes.string
 }
 
 export default RestoreAccount
