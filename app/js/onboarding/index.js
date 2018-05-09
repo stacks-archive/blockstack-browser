@@ -356,8 +356,8 @@ class Onboarding extends React.Component {
     const email = this.state.email
     const encryptedBackupPhrase = this.props.encryptedBackupPhrase
     return Promise.all([
-      this.sendRestore(username, email, encryptedBackupPhrase)
-      // this.sendRecovery(username, email, encryptedBackupPhrase)
+      this.sendRestore(username, email, encryptedBackupPhrase),
+      this.sendRecovery(username, email, encryptedBackupPhrase)
     ])
   }
 
