@@ -117,6 +117,9 @@ class RestoreAccount extends React.Component {
                           message={errors.password}
                         />
                       ) : null}
+                      <p>
+                        Choose a password for your account.
+                      </p>
                     </div>
                   }
                   {renderErrorMessages()}

@@ -73,7 +73,7 @@ const Restored = ({ username = 'jeff', ...rest }) => (
       />
     )}
   >
-    <PanelCard.Section pt={3} center>
+{/*    <PanelCard.Section pt={3} center>
       <UserCard>
         <UserCardAvatar>
           <div>
@@ -85,11 +85,12 @@ const Restored = ({ username = 'jeff', ...rest }) => (
           <UserID>{username}.blockstack.id</UserID>
         </UserCardDetails>
       </UserCard>
-    </PanelCard.Section>
+    </PanelCard.Section>*/}
     <PanelCard.Section pt={4} center>
       <p>
-        Your ID has been restored. You can now sign into apps with the account{' '}
-        {username}.blockstack.id
+          Your ID has been restored. You can now sign into apps with the account.
+{/*        Your ID has been restored. You can now sign into apps with the account{' '}
+        {username}.blockstack.id*/}
       </p>
     </PanelCard.Section>
     <PanelCard.Section pt={3} pb={3} center>
