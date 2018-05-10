@@ -14,14 +14,10 @@ const getUsernameStatus = async (username, sponsoredName = '.personal.id') => {
   if (!username) {
     return null
   }
-  // const url = `https://core.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
-  const url = `https://registrar.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
+  const url = `https://core.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
   const res = await fetch(url)
   const user = await res.json()
   logger.debug('got response', user)
-  if (user.error === 'No such subdomain') {
-    return 'available'
-  }
   return user.status
 }
 const validationSchema = Yup.object({
