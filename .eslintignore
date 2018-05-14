@@ -20,7 +20,7 @@ app/js/components/*
 
 app/js/profiles/store/*
 app/js/profiles/tabs/*
-app/js/profiles/Ex*
+!app/js/profiles/Ex*
 !app/js/profiles/Default*
 app/js/profiles/Import*
 app/js/profiles/ProfilesApp*
