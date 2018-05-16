@@ -1,5 +1,6 @@
-export { default as Options } from './Options'
-export { default as MagicLink } from './MagicLink'
-export { default as EnterSeed } from './EnterSeed'
-export { default as Restore } from './Restore'
-export { default as Restored } from './Restored'
+import Initial from './_initial'
+import Password from './_password'
+import Restoring from './_restoring'
+import Success from './_success'
+
+export { Initial, Password, Restoring, Success }

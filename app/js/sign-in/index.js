@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { decrypt, isBackupPhraseValid } from '@utils'
-import PanelShell, { renderItems } from '@components/PanelShell'
 import { browserHistory, withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -12,19 +11,20 @@ import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
-import { EnterSeed, MagicLink, Options, Restore, Restored } from './views'
+import { Initial, Password, Restoring, Success } from './views'
 import log4js from 'log4js'
+import { ShellParent } from '@blockstack/ui'
 
 const logger = log4js.getLogger('sign-in/index.js')
 
 const VIEWS = {
-  INDEX: 0,
-  MAGIC_LINK: 1,
-  ENTER_SEED: 2,
-  LOCAL_SEED: 3,
-  RESTORE: 4,
-  RESTORED: 5
+  INITIAL: 0,
+  PASSWORD: 1,
+  RESTORING: 2,
+  SUCCESS: 3
 }
+
+const views = [Initial, Password, Restoring, Success]
 
 function mapStateToProps(state) {
   return {
@@ -43,9 +43,16 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({},
-    AccountActions, SettingsActions, IdentityActions, RegistrationActions),
-    dispatch)
+  return bindActionCreators(
+    Object.assign(
+      {},
+      AccountActions,
+      SettingsActions,
+      IdentityActions,
+      RegistrationActions
+    ),
+    dispatch
+  )
 }
 
 class SignIn extends React.Component {
@@ -59,14 +66,14 @@ class SignIn extends React.Component {
     decrypt: false,
     restoring: false,
     restoreError: '',
-    view: VIEWS.ENTER_SEED
+    view: VIEWS.INITIAL
   }
 
   componentWillMount() {
     const { location } = this.props
     if (location.query.seed) {
       this.setState({ encryptedSeed: location.query.seed })
-      this.updateView(VIEWS.RESTORE)
+      this.updateView(VIEWS.RESTORING)
     }
   }
 
@@ -80,31 +87,46 @@ class SignIn extends React.Component {
 
   isSeedEncrypted = key => !(key.split(' ').length === 12)
 
-  validateRecoveryKey = () => {
-    if (this.isSeedEncrypted(this.state.key)) {
-      this.setState({
-        encryptedSeed: this.state.key,
-        decrypt: true
-      }, () => this.updateView(VIEWS.RESTORE))
+  validateRecoveryKey = key => {
+    if (this.state.key !== key) {
+      this.setState({ key })
+    }
+    if (this.isSeedEncrypted(key)) {
+      this.setState(
+        {
+          encryptedSeed: key,
+          decrypt: true
+        },
+        () => this.updateView(VIEWS.PASSWORD)
+      )
     } else {
-      this.setState({
-        seed: this.state.key,
-        decrypt: false
-      }, () => this.updateView(VIEWS.RESTORE))
+      this.setState(
+        {
+          seed: key,
+          decrypt: false,
+          loading: true
+        },
+        () => this.updateView(VIEWS.RESTORING)
+      )
     }
   }
 
   decryptSeedAndRestore = () => {
     this.setState({
-      restoring: true
+      restoring: true,
+      view: VIEWS.RESTORING
     })
 
     if (this.state.decrypt) {
-      return decrypt(new Buffer(this.state.encryptedSeed, 'hex'), this.state.password)
-        .then((decryptedSeedBuffer) => {
+      return decrypt(
+        new Buffer(this.state.encryptedSeed, 'hex'),
+        this.state.password
+      )
+        .then(decryptedSeedBuffer => {
           const decryptedSeed = decryptedSeedBuffer.toString()
           this.setState({ seed: decryptedSeed }, this.restoreAccount)
-        }).catch(() => {
+        })
+        .catch(() => {
           this.setState({
             restoring: false,
             restoreError: 'The password you entered is incorrect.'
@@ -115,10 +137,11 @@ class SignIn extends React.Component {
     }
   }
 
-  restoreAccount = () => this.restoreFromSeed()
+  restoreAccount = () =>
+    this.restoreFromSeed()
       .then(() => this.createAccount())
       .then(() => this.connectStorage())
-      .then(() => this.updateView(VIEWS.RESTORED))
+      .then(() => this.updateView(VIEWS.SUCCESS))
       .catch(() => {
         this.setState({
           restoring: false,
@@ -143,7 +166,10 @@ class SignIn extends React.Component {
     const firstIdentityIndex = 0
     logger.debug('creating new identity')
     const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
-    this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
+    this.props.createNewIdentityWithOwnerAddress(
+      firstIdentityIndex,
+      ownerAddress
+    )
     return this.props.setDefaultIdentity(firstIdentityIndex)
   }
 
@@ -179,41 +205,11 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { view } = this.state
+    const { view, app } = this.state
 
-    const views = [
+    const viewProps = [
       {
-        show: VIEWS.INDEX,
-        Component: Options,
-        props: {
-          options: [
-            {
-              title: 'Magic Link',
-              description:
-                'You’ll need your password (the password you entered when the link was created).',
-              action: () => this.updateView(VIEWS.MAGIC_LINK)
-            },
-            {
-              title: 'Secret Recovery Key',
-              description:
-                'You’ll need your Secret Recovery Key (the 12 words' +
-                ' you wrote down on paper and then saved in a secret place).',
-              action: () => this.updateView(VIEWS.ENTER_SEED)
-            }
-          ]
-        }
-      },
-      {
-        show: VIEWS.MAGIC_LINK,
-        Component: MagicLink,
-        props: {
-          previous: () => this.backToSignUp()
-        }
-      },
-
-      {
-        show: VIEWS.ENTER_SEED,
-        Component: EnterSeed,
+        show: VIEWS.INITIAL,
         props: {
           previous: this.backToSignUp,
           next: this.validateRecoveryKey,
@@ -221,27 +217,45 @@ class SignIn extends React.Component {
         }
       },
       {
-        show: VIEWS.RESTORE,
-        Component: Restore,
+        show: VIEWS.PASSWORD,
         props: {
-          previous: () => this.updateView(VIEWS.ENTER_SEED),
+          previous: () => this.updateView(VIEWS.INITIAL),
           next: this.decryptSeedAndRestore,
-          updateValue: this.updateValue,
-          decrypt: this.state.decrypt,
-          restoring: this.state.restoring,
-          restoreError: this.state.restoreError
+          updateValue: this.updateValue
         }
       },
       {
-        show: VIEWS.RESTORED,
-        Component: Restored,
+        show: VIEWS.RESTORING,
+        props: {}
+      },
+      {
+        show: VIEWS.SUCCESS,
         props: {
           next: () => this.props.router.push('/')
         }
       }
     ]
 
-    return <PanelShell>{renderItems(views, view)}</PanelShell>
+    const currentViewProps = viewProps.find(v => v.show === view) || {}
+
+    const componentProps = {
+      view,
+      backView: () => this.backView(),
+      decrypt: this.state.decrypt,
+      restoring: this.state.restoring,
+      restoreError: this.state.restoreError,
+      ...currentViewProps.props
+    }
+    return (
+      <ShellParent
+        app={app}
+        views={views}
+        {...componentProps}
+        headerLabel="Sign into Blockstack"
+        invertOnLast
+        backOnLast
+      />
+    )
   }
 }
 
@@ -261,4 +275,3 @@ SignIn.propTypes = {
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))
-

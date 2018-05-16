@@ -1,8 +1,23 @@
 import React from 'react'
-import { browserHistory, withRouter } from 'react-router'
 import PropTypes from 'prop-types'
-import PanelShell, { renderItems } from '@components/PanelShell'
-import { Email, Verify, Password, Username, Hooray } from './views'
+import { browserHistory, withRouter } from 'react-router'
+import {
+  selectConnectedStorageAtLeastOnce,
+  selectEmail,
+  selectEncryptedBackupPhrase,
+  selectIdentityAddresses,
+  selectIdentityKeypairs,
+  selectProptedForEmail
+} from '@common/store/selectors/account'
+import {
+  selectLocalIdentities,
+  selectRegistration
+} from '@common/store/selectors/profiles'
+
+import {
+  selectApi,
+  selectStorageConnected
+} from '@common/store/selectors/settings'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
@@ -17,40 +32,46 @@ import { verifyAuthRequestAndLoadManifest } from 'blockstack'
 import queryString from 'query-string'
 import log4js from 'log4js'
 
+import { ShellParent } from '@blockstack/ui'
+import { Email, Password, Success, Username } from './views'
+
 const logger = log4js.getLogger('onboarding/index.js')
 
+const views = [Email, Password, Username, Success]
 const VIEWS = {
   EMAIL: 0,
-  EMAIL_VERIFY: 1,
-  PASSWORD: 2,
-  USERNAME: 3,
-  HOORAY: 4
+  PASSWORD: 1,
+  USERNAME: 2,
+  HOORAY: 3
 }
 
 const SUBDOMAIN_SUFFIX = 'test-personal.id'
 const SERVER_URL = 'https://browser-api.blockstack.org'
 
-function mapStateToProps(state) {
-  return {
-    api: state.settings.api,
-    updateApi: PropTypes.func.isRequired,
-    promptedForEmail: state.account.promptedForEmail,
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    localIdentities: state.profiles.identity.localIdentities,
-    identityAddresses: state.account.identityAccount.addresses,
-    identityKeypairs: state.account.identityAccount.keypairs,
-    connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce,
-    storageConnected: state.settings.api.storageConnected,
-    email: state.account.email,
-    registration: state.profiles.registration
-  }
-}
+const mapStateToProps = state => ({
+  updateApi: PropTypes.func.isRequired,
+  localIdentities: selectLocalIdentities(state),
+  registration: selectRegistration(state),
+  storageConnected: selectStorageConnected(state),
+  api: selectApi(state),
+  promptedForEmail: selectProptedForEmail(state),
+  encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
+  identityAddresses: selectIdentityAddresses(state),
+  identityKeypairs: selectIdentityKeypairs(state),
+  connectedStorageAtLeastOnce: selectConnectedStorageAtLeastOnce(state),
+  email: selectEmail(state)
+})
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({},
-    AccountActions, SettingsActions, IdentityActions, RegistrationActions),
-    dispatch)
-}
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      ...AccountActions,
+      ...SettingsActions,
+      ...IdentityActions,
+      ...RegistrationActions
+    },
+    dispatch
+  )
 
 class Onboarding extends React.Component {
   state = {
@@ -62,8 +83,116 @@ class Onboarding extends React.Component {
     appManifest: null,
     emailSubmitted: false,
     emailsSent: false,
+    loading: false,
     view: VIEWS.EMAIL,
     usernameRegistrationInProgress: false
+  }
+  updateValue = (key, value) => {
+    this.setState({ [key]: value })
+  }
+  updateView = view => this.setState({ view })
+  backView = (view = this.state.view) => {
+    if (view - 1 >= 0) {
+      return this.setState({
+        view: view - 1
+      })
+    } else {
+      return null
+    }
+  }
+  submitPassword = () => {
+    const { username, email } = this.state
+    if (username.length < 1) {
+      this.setState({
+        email
+      })
+    }
+    this.updateView(VIEWS.USERNAME)
+  }
+  submitUsername = username => {
+    this.setState({
+      loading: true
+    })
+    logger.debug('creating account')
+    this.createAccount(this.state.password)
+      .then(() => this.connectStorage())
+      .then(() => {
+        console.log('about to submit username')
+        const suffix = `.${SUBDOMAIN_SUFFIX}`
+        username += suffix
+        logger.trace('registerUsername')
+        const nameHasBeenPreordered = hasNameBeenPreordered(
+          username,
+          this.props.localIdentities
+        )
+        if (nameHasBeenPreordered) {
+          logger.error(
+            `registerUsername: username '${username}' has already been preordered`
+          )
+        } else {
+          this.setState({
+            usernameRegistrationInProgress: true
+          })
+          logger.debug(
+            `registerUsername: will try and register username: ${username}`
+          )
+          const address = this.props.identityAddresses[0]
+          const identity = this.props.localIdentities[0]
+          const keypair = this.props.identityKeypairs[0]
+          this.props.registerName(
+            this.props.api,
+            username,
+            identity,
+            0,
+            address,
+            keypair
+          )
+        }
+        this.updateView(VIEWS.HOORAY)
+        this.setState({
+          loading: false
+        })
+      })
+  }
+  finish = () => {
+    if (this.state.appManifest) {
+      this.redirectToAuth()
+    } else {
+      this.redirectToHome()
+    }
+  }
+  redirectToAuth = () => {
+    this.props.router.push(`/auth/?authRequest=${this.state.authRequest}`)
+  }
+  redirectToHome = () => {
+    this.props.router.push('/')
+  }
+  goToBackup = () => {
+    browserHistory.push({
+      pathname: '/seed',
+      state: { seed: this.state.seed, password: this.state.password }
+    })
+  }
+  sendEmails = async () => {
+    const { encryptedBackupPhrase } = this.props
+    const { username, email } = this.state
+
+    if (!encryptedBackupPhrase) {
+      console.log('no encryptedBackupPhrase')
+      return null
+    }
+    this.setState({ emailsSent: true })
+    return Promise.all([
+      this.sendRestore(username, email, encryptedBackupPhrase),
+      this.sendRecovery(username, email, encryptedBackupPhrase)
+    ])
+  }
+  submitEmailForVerification = () => {
+    // Skip email verification
+    this.updateView(VIEWS.PASSWORD)
+
+    // verifyEmail(this.state.email)
+    // this.updateView(VIEWS.EMAIL_VERIFY)
   }
 
   componentWillMount() {
@@ -83,8 +212,9 @@ class Onboarding extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { registration } = nextProps
-    if (this.state.usernameRegistrationInProgress && registration.registrationSubmitted) {
-      if (!this.state.emailsSent) {
+    const { usernameRegistrationInProgress, emailsSent } = this.state
+    if (usernameRegistrationInProgress && registration.registrationSubmitted) {
+      if (!emailsSent) {
         this.sendEmails().then(() => this.updateView(VIEWS.HOORAY))
       } else {
         this.updateView(VIEWS.HOORAY)
@@ -97,60 +227,37 @@ class Onboarding extends React.Component {
     }
   }
 
-  updateURL = view => {
-    const historyChange = slug => {
-      if (this.props.location.pathname !== `/sign-up/${slug}`) {
-        return this.props.router.push(`/sign-up/${slug}`, this.state)
-      } else {
-        return null
-      }
-    }
-
-    switch (view) {
-      case VIEWS.EMAIL_VERIFY:
-        return historyChange('verify')
-      case VIEWS.PASSWORD:
-        return historyChange('password')
-      case VIEWS.USERNAME:
-        return historyChange('username')
-      case VIEWS.HOORAY:
-        return historyChange('success')
-      default:
-        return null
-    }
-  }
-
-  componentDidUpdate() {
-    this.updateURL(this.state.view)
-  }
-
   decodeAndSaveAuthRequest() {
     const queryDict = queryString.parse(this.props.location.search)
+
     if (queryDict.redirect !== null && queryDict.redirect !== undefined) {
       const searchString = queryDict.redirect.replace('/auth', '')
       const redirectQueryDict = queryString.parse(searchString)
-      if (redirectQueryDict.authRequest !== null && redirectQueryDict.authRequest !== undefined) {
+      if (
+        redirectQueryDict.authRequest !== null &&
+        redirectQueryDict.authRequest !== undefined
+      ) {
         const authRequest = redirectQueryDict.authRequest
         verifyAuthRequestAndLoadManifest(authRequest)
-        .then(appManifest => {
-          this.setState({
-            authRequest,
-            appManifest
+          .then(
+            appManifest => {
+              this.setState({
+                authRequest,
+                appManifest
+              })
+            },
+            () => {
+              logger.error(
+                'verifyAuthRequestAndLoadManifest: invalid authentication request'
+              )
+            }
+          )
+          .catch(e => {
+            logger.error('verifyAuthRequestAndLoadManifest: error', e)
           })
-        }, () => {
-          logger.error('verifyAuthRequestAndLoadManifest: invalid authentication request')
-        }).catch((e) => {
-          logger.error('verifyAuthRequestAndLoadManifest: error', e)
-        })
       }
     }
   }
-
-  updateValue = (key, value) => {
-    this.setState({ [key]: value })
-  }
-
-  updateView = view => this.setState({ view })
 
   sendRecovery(blockstackId, email, encryptedSeed) {
     const { protocol, hostname, port } = location
@@ -169,7 +276,6 @@ class Onboarding extends React.Component {
         'Content-Type': 'application/json'
       }
     }
-
 
     return fetch(`${SERVER_URL}/recovery`, options)
       .then(
@@ -192,7 +298,6 @@ class Onboarding extends React.Component {
         email,
         encryptedSeed,
         blockstackId
-
       }),
       headers: {
         Accept: 'application/json',
@@ -214,65 +319,25 @@ class Onboarding extends React.Component {
       })
   }
 
-  verifyEmail(email) {
-    this.setState({ emailSubmitted: true })
-
-    const { protocol, hostname, port } = location
-    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const emailVerificationLink = `${thisUrl}/sign-up?verified=${email}`
-
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-        emailVerificationLink
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }
-
-    return fetch(`${SERVER_URL}/verify`, options)
-      .then(
-        () => {
-          console.log(`emailNotifications: sent ${email} an email verification`)
-        },
-        error => {
-          this.setState({ emailSubmitted: false })
-          console.log('emailNotifications: error', error)
-        }
-      )
-      .catch(error => {
-        console.log('emailNotifications: error', error)
-        this.setState({ emailSubmitted: false })
-      })
-  }
-
-  submitPassword = () => {
-    const { username, email } = this.state
-    if (username.length < 1) {
-      this.setState({
-        email
-      })
-    }
-
-    logger.debug('creating account')
-    this.createAccount(this.state.password)
-      .then(() => this.connectStorage())
-      .then(() => {
-        this.updateView(VIEWS.USERNAME)
-      })
-  }
-
   createAccount(password) {
+    const {
+      initializeWallet,
+      identityAddresses,
+      createNewIdentityWithOwnerAddress,
+      setDefaultIdentity
+    } = this.props
+
     const firstIdentityIndex = 0
-    return this.props.initializeWallet(password, null)
-    .then(() => {
-      logger.debug('creating new identity')
-      const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
-      return this.props.createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
-    }).then(() => this.props.setDefaultIdentity(firstIdentityIndex))
+    return initializeWallet(password, null)
+      .then(() => {
+        logger.debug('creating new identity')
+        const ownerAddress = identityAddresses[firstIdentityIndex]
+        return createNewIdentityWithOwnerAddress(
+          firstIdentityIndex,
+          ownerAddress
+        )
+      })
+      .then(() => setDefaultIdentity(firstIdentityIndex))
   }
 
   connectStorage() {
@@ -306,125 +371,57 @@ class Onboarding extends React.Component {
     })
   }
 
-  submitUsername = (username) => {
-    console.log('about to submit username')
-    const suffix = `.${SUBDOMAIN_SUFFIX}`
-    username += suffix
-    logger.trace('registerUsername')
-    const nameHasBeenPreordered = hasNameBeenPreordered(username, this.props.localIdentities)
-    if (nameHasBeenPreordered) {
-      logger.error(`registerUsername: username '${username}' has already been preordered`)
-    } else {
-      this.setState({
-        usernameRegistrationInProgress: true
-      })
-      logger.debug(`registerUsername: will try and register username: ${username}`)
-      const address = this.props.identityAddresses[0]
-      const identity = this.props.localIdentities[0]
-      const keypair = this.props.identityKeypairs[0]
-      this.props.registerName(this.props.api, username, identity,
-        0, address, keypair)
-    }
-  }
-
-  finish = () => {
-    if (this.state.appManifest) {
-      this.redirectToAuth()
-    } else {
-      this.redirectToHome()
-    }
-  }
-
-  redirectToAuth = () => {
-    this.props.router.push(`/auth/?authRequest=${this.state.authRequest}`)
-  }
-
-  redirectToHome = () => {
-    this.props.router.push('/')
-  }
-
-  goToBackup = () => {
-    browserHistory.push({
-      pathname: '/seed',
-      state: { seed: this.state.seed }
-    })
-  }
-
-  sendEmails = () => {
-    this.setState({ emailsSent: true })
-    const username = this.state.username
-    const email = this.state.email
-    const encryptedBackupPhrase = this.props.encryptedBackupPhrase
-    return Promise.all([
-      this.sendRestore(username, email, encryptedBackupPhrase),
-      this.sendRecovery(username, email, encryptedBackupPhrase)
-    ])
-  }
-
-  submitEmailForVerification = () => {
-    // Skip email verification
-    this.updateView(VIEWS.PASSWORD)
-
-    // verifyEmail(this.state.email)
-    // this.updateView(VIEWS.EMAIL_VERIFY)
-  }
-
   render() {
     const { email, password, username, emailSubmitted, view } = this.state
     const icons = this.state.appManifest ? this.state.appManifest.icons : []
     const appIconURL = icons.length > 0 ? icons[0].src : ''
     const appName = this.state.appManifest ? this.state.appManifest.name : ''
 
-    const views = [
+    const app = appName
+      ? {
+          name: appName,
+          icon: appIconURL
+        }
+      : false
+
+    const viewProps = [
       {
         show: VIEWS.EMAIL,
-        Component: Email,
         props: {
           email,
-          next: this.submitEmailForVerification,
+          next: () => this.updateView(VIEWS.PASSWORD),
           submitted: emailSubmitted,
-          updateValue: this.updateValue,
-          appIconURL
-        }
-      },
-      {
-        show: VIEWS.EMAIL_VERIFY,
-        Component: Verify,
-        props: {
-          email,
-          resend: this.submitEmailForVerification,
-          next: () => this.updateView(VIEWS.PASSWORD)
+          updateValue: this.updateValue
         }
       },
       {
         show: VIEWS.PASSWORD,
-        Component: Password,
         props: {
           password,
+          loading: this.state.loading,
           next: this.submitPassword,
           updateValue: this.updateValue
         }
       },
       {
         show: VIEWS.USERNAME,
-        Component: Username,
         props: {
           username,
           next: this.submitUsername,
           previous: () => this.updateView(VIEWS.PASSWORD),
           updateValue: this.updateValue,
-          isProcessing: this.state.usernameRegistrationInProgress
+          isProcessing: this.state.usernameRegistrationInProgress,
+          loading: this.state.loading
         }
       },
       {
         show: VIEWS.HOORAY,
-        Component: Hooray,
         props: {
           email,
           password,
           username,
-          appIconURL,
-          appName,
+          app,
+          id: this.props.identityAddresses[0],
           subdomainSuffix: SUBDOMAIN_SUFFIX,
           goToRecovery: this.goToBackup,
           finish: () => this.finish()
@@ -432,7 +429,28 @@ class Onboarding extends React.Component {
       }
     ]
 
-    return <PanelShell>{renderItems(views, view)}</PanelShell>
+    const currentViewProps = viewProps.find(v => v.show === view) || {}
+
+    const componentProps = {
+      email,
+      password,
+      username,
+      emailSubmitted,
+      view,
+      backView: v => this.backView(v),
+      ...currentViewProps.props
+    }
+
+    return (
+      <ShellParent
+        app={app}
+        views={views}
+        {...componentProps}
+        lastHeaderLabel="Welcome to Blockstack"
+        headerLabel="Create a Blockstack ID"
+        invertOnLast
+      />
+    )
   }
 }
 
@@ -453,4 +471,6 @@ Onboarding.propTypes = {
   encryptedBackupPhrase: PropTypes.string
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Onboarding))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(Onboarding)
+)

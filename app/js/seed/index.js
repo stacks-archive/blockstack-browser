@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { SeedInfo, SeedDecrypt, Seed, SeedConfirm, SeedComplete } from './views'
-import PanelShell, { renderItems } from '@components/PanelShell'
+import { Initial, Password, Seed, SeedConfirm, Success } from './views'
 import { decrypt } from '@utils/encryption-utils'
-import { withRouter } from 'react-router'
+import { withRouter, browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
+import { ShellParent } from '@blockstack/ui'
 
 function mapStateToProps(state) {
   return {
@@ -16,58 +16,47 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({},
-    AccountActions, IdentityActions),
-    dispatch)
+  return bindActionCreators(
+    Object.assign({}, AccountActions, IdentityActions),
+    dispatch
+  )
 }
+
+const views = [Initial, Password, Seed, SeedConfirm, Success]
 
 const VIEWS = {
   KEY_INFO: 0,
   UNLOCK_KEY: 1,
-  KEY_1: 2,
-  KEY_2: 3,
-  KEY_3: 4,
-  KEY_CONFIRM: 5,
-  KEY_COMPLETE: 6,
-  RECOVERY_OPTIONS: 7
-}
-
-const splitSeed = seed => {
-  // to-do: make this function smarter
-  const x = seed ? seed.split(' ') : []
-  return {
-    first: [x[0], x[1], x[2], x[3]],
-    second: [x[4], x[5], x[6], x[7]],
-    third: [x[8], x[9], x[10], x[11]]
-  }
+  SEED: 2,
+  KEY_CONFIRM: 3,
+  KEY_COMPLETE: 4
 }
 
 class SeedContainer extends Component {
-  state = {
-    encryptedSeed: null,
-    seed: null,
-    view: 0
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      encryptedBackupPhrase: props.encryptedBackupPhrase || null,
+      view: 0,
+      verified: false
+    }
   }
 
   componentWillMount() {
-    const { location } = this.props
-    const cached = this.getCachedEncryptedSeed()
-    if (location && location.query && location.query.encrypted) {
-      if (this.state.encryptedSeed !== location.query.encrypted) {
-        this.setState({ encryptedSeed: location.query.encrypted })
+    const cachedSeed = this.getCachedEncryptedSeed()
+    if (cachedSeed.seed) {
+      if (this.state.seed !== cachedSeed.seed) {
+        this.setState({ seed: cachedSeed.seed })
       }
-    } else if (location && location.state && location.state.seed) {
-      if (this.state.seed !== location.state.seed) {
-        this.setState({
-          seed: location.state.seed
-        })
-      }
-    } else if (cached) {
-      if (this.state.encryptedSeed !== cached) {
-        this.setState({ encryptedSeed: cached })
+    } else if (cachedSeed.cached) {
+      if (this.state.encryptedBackupPhrase !== cachedSeed.cached) {
+        this.setState({ encryptedBackupPhrase: cachedSeed.cached })
       }
     }
   }
+
+  setVerified = () => !this.state.verified && this.setState({ verified: true })
 
   updateValue = (key, value) => {
     this.setState({ [key]: value })
@@ -81,103 +70,142 @@ class SeedContainer extends Component {
 
   getCachedEncryptedSeed = () => {
     const cached = this.props.encryptedBackupPhrase
-    return cached
-    // console.log(cached)
-    // const cached = localStorage.getItem('encryptedSeeds')
-
-    // TO DO: this should check against the currently logged in username.
-    // Right now, this logic simply picks the first seed in the object.
-    // return cached ? JSON.parse(cached)[0].encryptedSeed : null
+    const { location } = this.props
+    if (location && location.state && location.state.password) {
+      return {
+        seed: this.decryptSeed(location.state.password.toString()),
+        cached
+      }
+    } else {
+      return {
+        cached
+      }
+    }
   }
 
   decryptSeed = password => {
-    const buffer = new Buffer(this.state.encryptedSeed, 'hex')
+    if (
+      !this.state.encryptedBackupPhrase &&
+      !this.props.encryptedBackupPhrase
+    ) {
+      return null
+    }
+    const buffer = new Buffer(
+      this.state.encryptedBackupPhrase || this.props.encryptedBackupPhrase,
+      'hex'
+    )
 
     decrypt(buffer, password).then(result => {
       if (this.state.seed !== result.toString()) {
         this.setState({
-          view: VIEWS.KEY_1,
           seed: result.toString()
         })
+        return result.toString()
+      } else {
+        return null
       }
     })
   }
 
-  startBackup = () => {
-    const nextView = this.state.seed ? VIEWS.KEY_1 : VIEWS.UNLOCK_KEY
-    this.updateView(nextView)
+  passwordNext = password => {
+    if (!this.state.seed && !this.state.password) {
+      const seed = this.decryptSeed(password)
+      if (seed) {
+        this.updateView(VIEWS.SEED)
+      }
+    }
+  }
+
+  finish = () => {
+    browserHistory.push({
+      pathname: '/',
+      state: {}
+    })
+  }
+
+  backView = () => {
+    switch (this.state.view) {
+      case VIEWS.KEY_INFO:
+        return null
+      case VIEWS.UNLOCK_KEY:
+        return this.updateView(VIEWS.KEY_INFO)
+      case VIEWS.SEED:
+        return this.updateView(VIEWS.KEY_INFO)
+      case VIEWS.KEY_CONFIRM:
+        return this.updateView(VIEWS.SEED)
+      case VIEWS.KEY_COMPLETE:
+        return this.updateView(VIEWS.SEED)
+      default:
+        return null
+    }
   }
 
   render() {
-    const { password, view, seed } = this.state
-    const seedList = splitSeed(seed)
+    const { password, view, seed, app } = this.state
 
-    const views = [
+    const viewProps = [
       {
         show: VIEWS.KEY_INFO,
-        Component: SeedInfo,
         props: {
           next: () =>
-            this.updateView(this.state.seed ? VIEWS.KEY_1 : VIEWS.UNLOCK_KEY)
+            this.updateView(this.state.seed ? VIEWS.SEED : VIEWS.UNLOCK_KEY)
         }
       },
       {
         show: VIEWS.UNLOCK_KEY,
-        Component: SeedDecrypt,
         props: {
           previous: () => this.updateView(VIEWS.KEY_INFO),
-          next: () => this.updateView(VIEWS.KEY_1),
-          password,
-          decryptSeed: p => this.decryptSeed(p)
+          next: p => this.passwordNext(p),
+          password
         }
       },
       {
-        show: VIEWS.KEY_1,
-        Component: Seed,
+        show: VIEWS.SEED,
         props: {
           previous: () => this.updateView(VIEWS.KEY_INFO),
-          next: () => this.updateView(VIEWS.KEY_2),
-          password,
-          completeSeed: seed,
-          seed: seedList.first,
-          set: 1
-        }
-      },
-      {
-        show: VIEWS.KEY_2,
-        Component: Seed,
-        props: {
-          previous: () => this.updateView(VIEWS.KEY_1),
-          next: () => this.updateView(VIEWS.KEY_3),
-          password,
-          completeSeed: seed,
-          seed: seedList.second,
-          set: 2
-        }
-      },
-      {
-        show: VIEWS.KEY_3,
-        Component: Seed,
-        props: {
-          previous: () => this.updateView(VIEWS.KEY_2),
-          next: () => this.updateView(VIEWS.KEY_CONFIRM),
-          password,
-          completeSeed: seed,
-          seed: seedList.third,
-          set: 3
+          next: () =>
+            this.updateView(
+              this.state.verified ? VIEWS.KEY_COMPLETE : VIEWS.KEY_CONFIRM
+            ),
+          seed: seed && seed.split(' ')
         }
       },
       {
         show: VIEWS.KEY_CONFIRM,
-        Component: SeedConfirm,
         props: {
-          previous: () => this.updateView(VIEWS.KEY_3),
-          next: () => this.updateView(VIEWS.KEY_COMPLETE)
+          previous: () => this.updateView(VIEWS.SEED),
+          next: () => this.updateView(VIEWS.KEY_COMPLETE),
+          seed: seed && seed.split(' '),
+          setVerified: () => this.setVerified(),
+          verified: this.state.verified
         }
       },
-      { show: VIEWS.KEY_COMPLETE, Component: SeedComplete, props: null }
+      {
+        show: VIEWS.KEY_COMPLETE,
+        props: {
+          next: () => this.finish()
+        }
+      }
     ]
-    return <PanelShell>{renderItems(views, view)}</PanelShell>
+
+    const currentViewProps = viewProps.find(v => v.show === view) || {}
+
+    const componentProps = {
+      password,
+      view,
+      backView: () => this.backView(),
+      ...currentViewProps.props
+    }
+    return (
+      <ShellParent
+        app={app}
+        views={views}
+        {...componentProps}
+        headerLabel="Secure your account"
+        invertOnLast
+        backOnLast
+      />
+    )
   }
 }
 
@@ -186,4 +214,6 @@ SeedContainer.propTypes = {
   encryptedBackupPhrase: PropTypes.string
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SeedContainer))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(SeedContainer)
+)

@@ -1,6 +1,7 @@
-export { default as SeedInfo } from './SeedInfo'
-export { default as SeedDecrypt } from './SeedDecrypt'
-export { default as Seed } from './Seed'
-export { default as SeedConfirm } from './SeedConfirm'
-export { default as SeedComplete } from './SeedComplete'
-export { default as RecoveryOptions } from './RecoveryOptions'
+import Initial from './_initial'
+import Seed from './_seed'
+import SeedConfirm from './_seedconfirm'
+import Password from './_password'
+import Success from './_success'
+
+export { Initial, Password, Seed, SeedConfirm, Success }
