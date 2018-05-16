@@ -14,10 +14,10 @@ tests/utils/a*
 tests/utils/e*
 tests/utils/n*
 
-app/js/profiles/store/*
+!app/js/profiles/store/*
 !app/js/profiles/Default*
-app/js/profiles/ProfilesApp*
-app/js/profiles/Reg*
+!app/js/profiles/ProfilesApp*
+!app/js/profiles/Reg*
 !app/js/profiles/View
 app/js/profiles/components/EditAccount*
 app/js/profiles/components/EditPGP*
