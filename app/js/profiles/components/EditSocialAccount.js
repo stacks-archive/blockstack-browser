@@ -207,7 +207,7 @@ class EditSocialAccount extends Component {
           </div>
           <button 
             className="btn btn-verify btn-block m-t-15" 
-            onClick={this.props.onVerifyButtonClick(this.props.service, 
+            onClick={() => this.props.onVerifyButtonClick(this.props.service,
               this.state.identifier, this.state.proofUrl)}
           >
             Verify
