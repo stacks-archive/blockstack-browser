@@ -3,52 +3,11 @@ import crypto from 'crypto'
 import triplesec from 'triplesec'
 
 function normalizeMnemonic(mnemonic) {
-  // each word in the bip39 mnemonic corresponds
-  // to an offset in the bip39 dictionary (of 2048 words).
-  // Convert each word into the offset into the dictionary,
-  // and convert the list of indexes into a packed binary string
-  // of hex triples.
-  const words = mnemonic.split(/ +/).filter((word) => word.length > 0)
-  const wordIndexes = []
-  for (let i = 0; i < words.length; i++) {
-    const idx = bip39.wordlists.EN.indexOf(words[i])
-    if (idx < 0) {
-      throw new Error('BIP39 mnemonic has an unrecognized word')
-    }
-    wordIndexes.push(idx)
-  }
-
-  // each word index is between 1 and 2**11, or 3 hex characters
-  // representing a number that is between 0x000 and 0x7ff
-  let normalizedMnemonic = ''
-  for (let i = 0; i < wordIndexes.length; i++) {
-    const hexIdx = `000${wordIndexes[i].toString(16)}`.slice(-3)
-    normalizedMnemonic += hexIdx
-  }
-
-  return normalizedMnemonic
+  return bip39.mnemonicToEntropy(mnemonic).toString('hex')
 } 
 
 function denormalizeMnemonic(normalizedMnemonic) {
-  // given a hex string where each hex triple
-  // is a value between 0 and 2048, convert it
-  // into an english bip39 phrase.
-  // @normalizedMnemonic is a hex string.
-  if (normalizedMnemonic.length % 3 !== 0) {
-    throw new Error('Invalid normalized mnemonic--must have a length that is a multiple of 3')
-  }
-
-  const words = []
-  for (let i = 0; i < normalizedMnemonic.length; i += 3) {
-    const hexSlice = normalizedMnemonic.slice(i, i + 3)
-    const idx = parseInt(hexSlice, 16)
-    if (idx > 2047) {
-      throw new Error('Invalid normalized mnemonic--got an index greater than 2047')
-    }
-    words.push(bip39.wordlists.EN[idx])
-  }
-
-  return words.join(' ')
+  return bip39.entropyToMnemonic(normalizedMnemonic)
 } 
 
 function encryptMnemonic(plaintextBuffer, password) {
