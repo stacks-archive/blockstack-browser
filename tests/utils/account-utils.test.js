@@ -5,6 +5,7 @@ import {
   getIdentityOwnerAddressNode,
   findAddressIndex,
   decryptMasterKeychain,
+  getCorrectAppPrivateKey,
   encrypt
  } from '../../app/js/utils'
 
@@ -19,6 +20,58 @@ describe('account-utils', () => {
 
   afterEach(() => {
     masterKeychain = null
+  })
+
+  describe('test app private keys', () => {
+    it('should correctly generate a legacy app private key', () => {
+      const appsNodeKey = 'xprvA1bXJqMaKqHFnYB3LyLmtJMXgpCKisknF2EuVBrNs6UkvR3U4W2vtdEK9' +
+            'ESFx82YoX6Xi491prYxxbhFDhEjyRTsjdjFkhPPhRQQQbz92Qh'
+      const salt = 'e61f9eb10842fc3e237fba6319947de93fb630df963342914339b96790563a5a'
+
+      const legacyAppSK = 'b21aaf76b684cc1b6bf8c48bcec5df1adb68a7a6970e66c86fc0e86e09b4d244'
+      const newAppSK    = '3168aefff6aa53959a002112821384c41f39f538c0e8727a798bb40beb62ca5e'
+
+      const expectLegacy1 = getCorrectAppPrivateKey(
+        { publishData: true },
+        { apps: { 'https://blockstack-todos.appartisan.com':
+                  'https://gaia.blockstack.org/hub/18Dg8z4zH13HTpMSERjc3iZTQsyzF3373R/' } },
+        appsNodeKey,
+        salt,
+        'https://blockstack-todos.appartisan.com')
+      const expectLegacy2 = getCorrectAppPrivateKey(
+        { publishData: false },
+        {},
+        appsNodeKey,
+        salt,
+        'https://blockstack-todos.appartisan.com')
+      const expectLegacy3 = getCorrectAppPrivateKey(
+        { publishData: true },
+        { apps: { 'https://blockstack-todos.appartisan.com':
+                  'https://gaia.blockstack.org/hub/18Dg8z4zH13HTpMSERjc3iZTQsyzF3373R' } },
+        appsNodeKey,
+        salt,
+        'https://blockstack-todos.appartisan.com')
+      const expectNew1 = getCorrectAppPrivateKey(
+        { publishData: false },
+        {},
+        appsNodeKey,
+        'potato potato',
+        'carrot carrot carrot')
+      const expectNew2 = getCorrectAppPrivateKey(
+        { publishData: true },
+        {}, appsNodeKey, 'potato potato', 'carrot carrot carrot')
+      const expectNew3 = getCorrectAppPrivateKey(
+        { publishData: true },
+        { apps: { 'carrot carrot carrot': 'abc.co/abcd.c/'} },
+        appsNodeKey, 'potato potato', 'carrot carrot carrot')
+
+      assert.equal(expectLegacy1, legacyAppSK)
+      assert.equal(expectLegacy2, legacyAppSK)
+      assert.equal(expectLegacy3, legacyAppSK)
+      assert.equal(expectNew1, newAppSK)
+      assert.equal(expectNew2, newAppSK)
+      assert.equal(expectNew3, newAppSK)
+    })
   })
 
   describe('getIdentityOwnerAddressNode', () => {

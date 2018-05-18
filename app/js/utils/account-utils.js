@@ -3,6 +3,7 @@ import { decrypt } from './encryption-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import crypto from 'crypto'
 import log4js from 'log4js'
+import { BlockstackWallet, publicKeyToAddress, getPublicKeyFromPrivate } from 'blockstack'
 
 const logger = log4js.getLogger('utils/account-utils.js')
 
@@ -20,6 +21,13 @@ function hashCode(string) {
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
+const SINGLE_PLAYER_APP_DOMAIN_LEGACY_LIST = ['https://blockstack-todos.appartisan.com',
+                                              'https://use.coinsapp.co',
+                                              'http://www.coinstack.one',
+                                              'http://www.blockportfol.io',
+                                              'http://lioapp.io',
+                                              'http://coindexapp.herokuapp.com',
+                                              'https://peachyportfolio.com']
 export const MAX_TRUST_LEVEL = 99
 
 export class AppNode {
@@ -406,4 +414,32 @@ export function findAddressIndex(address, identityAddresses) {
     }
   }
   return null
+}
+
+export function getCorrectAppPrivateKey(scopes, profile, appsNodeKey, salt, appDomain) {
+  const appPrivateKey = BlockstackWallet.getAppPrivateKey(appsNodeKey, salt, appDomain)
+  const legacyAppPrivateKey = BlockstackWallet.getLegacyAppPrivateKey(
+    appsNodeKey, salt, appDomain)
+  if (scopes.publishData) {
+    // multiplayer application, let's check if there's a legacy signin.
+    if (!profile || !profile.apps || !profile.apps[appDomain]) {
+      // first login with this app, use normal private key
+      return appPrivateKey
+    }
+    let appBucketUrl = profile.apps[appDomain]
+    if (appBucketUrl.endsWith('/')) {
+      appBucketUrl = appBucketUrl.slice(0, -1)
+    }
+    const legacyAddress = publicKeyToAddress(getPublicKeyFromPrivate(legacyAppPrivateKey))
+    if (appBucketUrl.endsWith(`/${legacyAddress}`)) {
+      return legacyAppPrivateKey
+    }
+    return appPrivateKey
+  } else {
+    if (SINGLE_PLAYER_APP_DOMAIN_LEGACY_LIST.includes(appDomain)) {
+      return legacyAppPrivateKey
+    } else {
+      return appPrivateKey
+    }
+  }
 }

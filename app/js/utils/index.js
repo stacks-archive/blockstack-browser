@@ -1,4 +1,5 @@
 export {
+  getCorrectAppPrivateKey,
   decryptMasterKeychain,
   deriveIdentityKeyPair,
   getBitcoinPrivateKeychain,
