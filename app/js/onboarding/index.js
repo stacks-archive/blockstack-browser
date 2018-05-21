@@ -237,7 +237,10 @@ class Onboarding extends React.Component {
         redirectQueryDict.authRequest !== null &&
         redirectQueryDict.authRequest !== undefined
       ) {
-        const authRequest = redirectQueryDict.authRequest
+        let authRequest = redirectQueryDict.authRequest
+        if (authRequest.includes('#coreAPIPassword')) {
+          authRequest = authRequest.split('#coreAPIPassword')[0]
+        }
         verifyAuthRequestAndLoadManifest(authRequest)
           .then(
             appManifest => {

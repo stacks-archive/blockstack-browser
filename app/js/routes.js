@@ -48,8 +48,7 @@ import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 const accountCreated = connectedRouterRedirect({
   redirectPath: '/sign-up',
   authenticatedSelector: state => !!state.account.encryptedBackupPhrase,
-  wrapperDisplayName: 'AccountCreated',
-  allowRedirectBack: false
+  wrapperDisplayName: 'AccountCreated'
 })
 
 export default (
