@@ -82,6 +82,11 @@ const h3 = styled.h3`
     css`
       color: ${color};
     `};
+  ${({ light }) =>
+    light &&
+    css`
+      color: rgba(39, 15, 52, 0.5);
+    `};
 
   ${paddingStyles};
 

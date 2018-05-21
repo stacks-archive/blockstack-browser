@@ -7,12 +7,19 @@ import { AuthActions } from '../store/auth'
 import { Link } from 'react-router'
 import { decodeToken } from 'jsontokens'
 import {
-  makeAuthResponse, getAuthRequestFromURL, Person, redirectUserToApp,
-  getAppBucketUrl, isLaterVersion
+  makeAuthResponse,
+  getAuthRequestFromURL,
+  Person,
+  redirectUserToApp,
+  getAppBucketUrl,
+  isLaterVersion
 } from 'blockstack'
 import Image from '../../components/Image'
 import { AppsNode } from '../../utils/account-utils'
-import { fetchProfileLocations, getDefaultProfileUrl } from '../../utils/profile-utils'
+import {
+  fetchProfileLocations,
+  getDefaultProfileUrl
+} from '../../utils/profile-utils'
 import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import ToolTip from '@components/ToolTip'
@@ -122,11 +129,15 @@ class AuthModal extends Component {
       const appDomain = this.state.decodedToken.payload.domain_name
       const localIdentities = nextProps.localIdentities
       const identityKeypairs = nextProps.identityKeypairs
-      if ((!appDomain || !nextProps.coreSessionTokens[appDomain])) {
+      if (!appDomain || !nextProps.coreSessionTokens[appDomain]) {
         if (this.state.noCoreStorage) {
-          logger.debug('componentWillReceiveProps: no core session token expected')
+          logger.debug(
+            'componentWillReceiveProps: no core session token expected'
+          )
         } else {
-          logger.debug('componentWillReceiveProps: no app domain or no core session token')
+          logger.debug(
+            'componentWillReceiveProps: no app domain or no core session token'
+          )
           return
         }
       }
@@ -170,8 +181,13 @@ class AuthModal extends Component {
       let profileUrlPromise
 
       if (identity.zoneFile && identity.zoneFile.length > 0) {
-        const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(identity.zoneFile)
-        if (profileUrlFromZonefile !== null && profileUrlFromZonefile !== undefined) {
+        const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(
+          identity.zoneFile
+        )
+        if (
+          profileUrlFromZonefile !== null &&
+          profileUrlFromZonefile !== undefined
+        ) {
           profileUrlPromise = Promise.resolve(profileUrlFromZonefile)
         }
       }
@@ -182,17 +198,20 @@ class AuthModal extends Component {
 
       if (!profileUrlPromise) {
         profileUrlPromise = fetchProfileLocations(
-          gaiaUrlBase, identityAddress, gaiaBucketAddress, identityIndex)
-          .then(fetchProfileResp => {
-            if (fetchProfileResp && fetchProfileResp.profileUrl) {
-              return fetchProfileResp.profileUrl
-            } else {
-              return getDefaultProfileUrl(gaiaUrlBase, identityAddress)
-            }
-          })
+          gaiaUrlBase,
+          identityAddress,
+          gaiaBucketAddress,
+          identityIndex
+        ).then(fetchProfileResp => {
+          if (fetchProfileResp && fetchProfileResp.profileUrl) {
+            return fetchProfileResp.profileUrl
+          } else {
+            return getDefaultProfileUrl(gaiaUrlBase, identityAddress)
+          }
+        })
       }
 
-      profileUrlPromise.then((profileUrl) => {
+      profileUrlPromise.then(profileUrl => {
         // Add app storage bucket URL to profile if publish_data scope is requested
         if (this.state.scopes.publishData) {
           let apps = {}
@@ -202,48 +221,84 @@ class AuthModal extends Component {
 
           if (storageConnected) {
             getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
-              .then((appBucketUrl) => {
-                logger.debug(`componentWillReceiveProps: appBucketUrl ${appBucketUrl}`)
+              .then(appBucketUrl => {
+                logger.debug(
+                  `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
+                )
                 apps[appDomain] = appBucketUrl
-                logger.debug(`componentWillReceiveProps: new apps array ${JSON.stringify(apps)}`)
+                logger.debug(
+                  `componentWillReceiveProps: new apps array ${JSON.stringify(
+                    apps
+                  )}`
+                )
                 profile.apps = apps
                 const signedProfileTokenData = signProfileForUpload(
-                  profile, nextProps.identityKeypairs[identityIndex])
+                  profile,
+                  nextProps.identityKeypairs[identityIndex]
+                )
                 logger.debug(
-                  'componentWillReceiveProps: uploading updated profile with new apps array')
-                return uploadProfile(this.props.api, identity,
-                                     nextProps.identityKeypairs[identityIndex],
-                                     signedProfileTokenData)
+                  'componentWillReceiveProps: uploading updated profile with new apps array'
+                )
+                return uploadProfile(
+                  this.props.api,
+                  identity,
+                  nextProps.identityKeypairs[identityIndex],
+                  signedProfileTokenData
+                )
               })
               .then(() => {
-                this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
-                                          profile, profileUrl)
+                this.completeAuthResponse(
+                  privateKey,
+                  blockchainId,
+                  coreSessionToken,
+                  appPrivateKey,
+                  profile,
+                  profileUrl
+                )
               })
-              .catch((err) => {
-                logger.error('componentWillReceiveProps: add app index profile not uploaded', err)
+              .catch(err => {
+                logger.error(
+                  'componentWillReceiveProps: add app index profile not uploaded',
+                  err
+                )
               })
           } else {
-            logger.debug('componentWillReceiveProps: storage is not connected. Doing nothing.')
+            logger.debug(
+              'componentWillReceiveProps: storage is not connected. Doing nothing.'
+            )
           }
         } else {
-          this.completeAuthResponse(privateKey, blockchainId, coreSessionToken, appPrivateKey,
-                                    profile, profileUrl)
+          this.completeAuthResponse(
+            privateKey,
+            blockchainId,
+            coreSessionToken,
+            appPrivateKey,
+            profile,
+            profileUrl
+          )
         }
       })
     } else {
-      logger.error('componentWillReceiveProps: response already sent - doing nothing')
+      logger.error(
+        'componentWillReceiveProps: response already sent - doing nothing'
+      )
     }
   }
 
-  completeAuthResponse = (privateKey, blockchainId, coreSessionToken,
-    appPrivateKey, profile, profileUrl) => {
+  completeAuthResponse = (
+    privateKey,
+    blockchainId,
+    coreSessionToken,
+    appPrivateKey,
+    profile,
+    profileUrl
+  ) => {
     const appDomain = this.state.decodedToken.payload.domain_name
     const email = this.props.email
     const sendEmail = this.state.sendEmail
 
     logger.debug(`profileUrl: ${profileUrl}`)
     logger.debug(`email: ${email}`)
-
 
     const metadata = {
       email: sendEmail ? email : null,
@@ -265,21 +320,33 @@ class AuthModal extends Component {
       requestVersion = this.state.decodedToken.payload.version
     }
 
-    if (isLaterVersion(requestVersion, '1.1.0') &&
-        this.state.decodedToken.payload.public_keys.length > 0) {
+    if (
+      isLaterVersion(requestVersion, '1.1.0') &&
+      this.state.decodedToken.payload.public_keys.length > 0
+    ) {
       transitPublicKey = this.state.decodedToken.payload.public_keys[0]
     }
     if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
       hubUrl = this.props.api.gaiaHubConfig.server
     }
 
-    const authResponse = makeAuthResponse(privateKey, profileResponseData, blockchainId,
-                                          metadata, coreSessionToken, appPrivateKey,
-                                          undefined, transitPublicKey, hubUrl)
+    const authResponse = makeAuthResponse(
+      privateKey,
+      profileResponseData,
+      blockchainId,
+      metadata,
+      coreSessionToken,
+      appPrivateKey,
+      undefined,
+      transitPublicKey,
+      hubUrl
+    )
 
     this.props.clearSessionToken(appDomain)
 
-    logger.trace(`login(): id index ${this.state.currentIdentityIndex} is logging in`)
+    logger.trace(
+      `login(): id index ${this.state.currentIdentityIndex} is logging in`
+    )
     this.setState({ responseSent: true })
     redirectUserToApp(this.state.authRequest, authResponse)
   }
@@ -303,98 +370,107 @@ class AuthModal extends Component {
       hasUsername = false
     }
 
-    // check to see if username is resolvable until we get name state managament
+    // check to see if username is resolvable until we get name state management
     // fixed in
     // https://github.com/blockstack/blockstack-browser/issues/864#issuecomment-335035037
 
-
     const lookupValue = hasUsername ? identity.username : ''
-
 
     // if profile has no name, lookupUrl will be
     // http://localhost:6270/v1/names/ which returns 401
-    const lookupUrl = this.props.api.nameLookupUrl.replace('{name}', lookupValue)
+    const lookupUrl = this.props.api.nameLookupUrl.replace(
+      '{name}',
+      lookupValue
+    )
     fetch(lookupUrl)
-        .then(response => response.text())
-        .then(responseText => JSON.parse(responseText))
-        .then(responseJSON => {
-          if (hasUsername) {
-            if (responseJSON.hasOwnProperty('address')) {
-              const nameOwningAddress = responseJSON.address
-              if (nameOwningAddress === identity.ownerAddress) {
-                logger.debug('login: name has propagated on the network.')
-                this.setState({
-                  blockchainId: lookupValue
-                })
-              } else {
-                logger.debug('login: name is not usable on the network.')
-                hasUsername = false
-              }
+      .then(response => response.text())
+      .then(responseText => JSON.parse(responseText))
+      .then(responseJSON => {
+        if (hasUsername) {
+          if (responseJSON.hasOwnProperty('address')) {
+            const nameOwningAddress = responseJSON.address
+            if (nameOwningAddress === identity.ownerAddress) {
+              logger.debug('login: name has propagated on the network.')
+              this.setState({
+                blockchainId: lookupValue
+              })
             } else {
-              logger.debug('login: name is not visible on the network.')
+              logger.debug('login: name is not usable on the network.')
               hasUsername = false
             }
-          }
-
-          const appDomain = this.state.decodedToken.payload.domain_name
-          const scopes = this.state.decodedToken.payload.scopes
-          const needsCoreStorage = !appRequestSupportsDirectHub(this.state.decodedToken.payload)
-
-          const scopesJSONString = JSON.stringify(scopes)
-
-          if (!validateScopes(scopes)) {
-            this.setState({
-              invalidScopes: true
-            })
-            logger.error(`login: App requesting unsupported scopes: ${scopesJSONString}`)
-            return
-          }
-
-          this.setState({
-            hasUsername,
-            sendEmail: !!scopes.includes('email')
-          })
-          const requestingStoreWrite = !!scopes.includes('store_write')
-          if (requestingStoreWrite && needsCoreStorage) {
-            this.setState({
-            })
-            logger.error('Tried logging in with core-enabled-storage,' +
-                         ' but that is no longer supported...')
-            return
-          } else if (requestingStoreWrite && !needsCoreStorage) {
-            logger.trace('login(): app can communicate directly with gaiahub, not setting up core.')
-            this.setState({
-              noCoreStorage: true
-            })
-            this.props.noCoreSessionToken(appDomain)
           } else {
-            logger.trace('login(): No storage access requested.')
-            this.setState({
-              noCoreStorage: true
-            })
-            this.props.noCoreSessionToken(appDomain)
+            logger.debug('login: name is not visible on the network.')
+            hasUsername = false
           }
+        }
+
+        const appDomain = this.state.decodedToken.payload.domain_name
+        const scopes = this.state.decodedToken.payload.scopes
+        const needsCoreStorage = !appRequestSupportsDirectHub(
+          this.state.decodedToken.payload
+        )
+
+        const scopesJSONString = JSON.stringify(scopes)
+
+        if (!validateScopes(scopes)) {
+          this.setState({
+            invalidScopes: true
+          })
+          logger.error(
+            `login: App requesting unsupported scopes: ${scopesJSONString}`
+          )
+          return
+        }
+
+        this.setState({
+          hasUsername,
+          sendEmail: !!scopes.includes('email')
         })
+        const requestingStoreWrite = !!scopes.includes('store_write')
+        if (requestingStoreWrite && needsCoreStorage) {
+          this.setState({})
+          logger.error(
+            'Tried logging in with core-enabled-storage,' +
+              ' but that is no longer supported...'
+          )
+          return
+        } else if (requestingStoreWrite && !needsCoreStorage) {
+          logger.trace(
+            'login(): app can communicate directly with gaiahub, not setting up core.'
+          )
+          this.setState({
+            noCoreStorage: true
+          })
+          this.props.noCoreSessionToken(appDomain)
+        } else {
+          logger.trace('login(): No storage access requested.')
+          this.setState({
+            noCoreStorage: true
+          })
+          this.props.noCoreSessionToken(appDomain)
+        }
+      })
   }
 
   render() {
-    const appManifest = this.props.appManifest
-    const appManifestLoading = this.props.appManifestLoading
-    const processing = this.state.processing
-    const invalidScopes = this.state.invalidScopes
-    const decodedToken = this.state.decodedToken
-    const noCoreStorage = (decodedToken
-                           && decodedToken.payload.scopes
-                           && (!decodedToken.payload.scopes.includes('store_write')
-                               || appRequestSupportsDirectHub(decodedToken.payload)))
+    const { appManifest, appManifestLoading } = this.props
 
-    const coreShortCircuit = (!appManifestLoading
-                              && appManifest !== null
-                              && !invalidScopes
-                              && !noCoreStorage)
+    const { processing, invalidScopes, decodedToken } = this.state
+
+    const noCoreStorage =
+      decodedToken &&
+      decodedToken.payload.scopes &&
+      (!decodedToken.payload.scopes.includes('store_write') ||
+        appRequestSupportsDirectHub(decodedToken.payload))
+
+    const coreShortCircuit =
+      !appManifestLoading &&
+      appManifest !== null &&
+      !invalidScopes &&
+      !noCoreStorage
     if (coreShortCircuit) {
       return (
-        <div className="">
+        <div>
           <Modal
             isOpen
             onRequestClose={this.closeModal}
@@ -406,7 +482,7 @@ class AuthModal extends Component {
           >
             <h3>Sign In Request</h3>
             <div>
-              {appManifest.hasOwnProperty('icons') ?
+              {appManifest.hasOwnProperty('icons') ? (
                 <p>
                   <Image
                     src={appManifest.icons[0].src}
@@ -414,10 +490,11 @@ class AuthModal extends Component {
                     fallbackSrc="/images/app-icon-hello-blockstack.png"
                   />
                 </p>
-              : null}
+              ) : null}
               <p>
-               This application uses an older Gaia storage library, which is no longer supported.
-               Once the application updates its library, you will be able to use it.
+                This application uses an older Gaia storage library, which is no
+                longer supported. Once the application updates its library, you
+                will be able to use it.
               </p>
             </div>
           </Modal>
@@ -436,8 +513,9 @@ class AuthModal extends Component {
         </ToolTip>
         <ToolTip id="scope-publish">
           <div>
-            <div>The app may publish data so that other users of the app can discover
-            and interact with you.
+            <div>
+              The app may publish data so that other users of the app can
+              discover and interact with you.
             </div>
           </div>
         </ToolTip>
@@ -451,116 +529,141 @@ class AuthModal extends Component {
           portalClassName="auth-modal"
         >
           <h3>Sign In Request</h3>
-          {appManifestLoading ?
+          {appManifestLoading ? (
             <div>
-              <p>
-                 Loading app details...
-              </p>
+              <p>Loading app details...</p>
             </div>
-            :
+          ) : (
             <div>
-          {appManifest === null || invalidScopes ?
-            <div>
-              <p>
-                 Invalid Sign In Request
-              </p>
-            </div>
-            :
-            <div>
-            {appManifest.hasOwnProperty('icons') ?
-              <p className="m-t-20 m-b-20">
-                <Image
-                  src={appManifest.icons[0].src}
-                  style={{ width: '128px', height: '128px' }}
-                  fallbackSrc="/images/app-icon-hello-blockstack.png"
-                />
-              </p>
-            : null}
-
-              <p>The app <strong>"{appManifest.name}"</strong> located at <br />
-              {decodedToken.payload.domain_name}<br />
-              wants to:</p>
-              <div>
-                <strong>Read your basic info</strong>
-                <span data-tip data-for="scope-basic"><i className="fa fa-info-circle" /></span>
-              </div>
-              {scopeEmail ?
+              {appManifest === null || invalidScopes ? (
                 <div>
-                  <strong>Read your email address</strong>
-                </div> : null}
-              {scopePublishData ?
-                <div>
-                  <strong>Publish data stored for this app</strong>
-                  <span data-tip data-for="scope-publish"><i className="fa fa-info-circle" /></span>
-                </div> : null}
-
-            {this.props.localIdentities.length > 0 ?
-              <div className="m-t-20">
-              {this.state.storageConnected ?
-                <div>
-                  <p>Choose a Blockstack ID to sign in with.</p>
-                  <select
-                    className="form-control profile-select"
-                    onChange={
-                      (event) => this.setState({
-                        currentIdentityIndex: event.target.value
-                      })}
-                    value={this.state.currentIdentityIndex ? this.state.currentIdentityIndex : 0}
-                    disabled={processing}
-                  >
-                    {this.props.localIdentities.map((identity, identityIndex) => {
-                      const profile = new Person(identity.profile)
-                      const displayLabel = profile.name() ?
-                      `${profile.name()}: ID-${identity.ownerAddress}` :
-                      `ID-${identity.ownerAddress}`
-                      return (<option
-                        key={identityIndex}
-                        value={identityIndex}
-                      >
-                        {identity.username ? identity.username : displayLabel}
-                      </option>
-                    ) })}
-                  </select>
-                  <div>
-                    <button
-                      className="btn btn-primary btn-block"
-                      onClick={this.login}
-                      disabled={processing}
-                    >
-                      {processing ? 'Signing in...' : 'Approve'}
-                    </button>
-                    {processing ?
-                      <a href="/" className="btn btn-outline-primary btn-block">
-                        Cancel
-                      </a>
-                    :
-                      <Link to="/" className="btn btn-outline-primary btn-block">
-                        Deny
-                      </Link>
-                  }
-                  </div>
+                  <p>Invalid Sign In Request</p>
                 </div>
-            :
-                <div className="m-t-20">
+              ) : (
+                <div>
+                  {appManifest.hasOwnProperty('icons') ? (
+                    <p className="m-t-20 m-b-20">
+                      <Image
+                        src={appManifest.icons[0].src}
+                        style={{ width: '128px', height: '128px' }}
+                        fallbackSrc="/images/app-icon-hello-blockstack.png"
+                      />
+                    </p>
+                  ) : null}
+
                   <p>
-                    You need to <Link to="/">
-                    set up Blockstack</Link> in order to sign in.
+                    The app <strong>"{appManifest.name}"</strong> located at{' '}
+                    <br />
+                    {decodedToken.payload.domain_name}
+                    <br />
+                    wants to:
                   </p>
+                  <div>
+                    <strong>Read your basic info</strong>
+                    <span data-tip data-for="scope-basic">
+                      <i className="fa fa-info-circle" />
+                    </span>
+                  </div>
+                  {scopeEmail ? (
+                    <div>
+                      <strong>Read your email address</strong>
+                    </div>
+                  ) : null}
+                  {scopePublishData ? (
+                    <div>
+                      <strong>Publish data stored for this app</strong>
+                      <span data-tip data-for="scope-publish">
+                        <i className="fa fa-info-circle" />
+                      </span>
+                    </div>
+                  ) : null}
+
+                  {this.props.localIdentities.length > 0 ? (
+                    <div className="m-t-20">
+                      {this.state.storageConnected ? (
+                        <div>
+                          <p>Choose a Blockstack ID to sign in with.</p>
+                          <select
+                            className="form-control profile-select"
+                            onChange={event =>
+                              this.setState({
+                                currentIdentityIndex: event.target.value
+                              })
+                            }
+                            value={
+                              this.state.currentIdentityIndex
+                                ? this.state.currentIdentityIndex
+                                : 0
+                            }
+                            disabled={processing}
+                          >
+                            {this.props.localIdentities.map(
+                              (identity, identityIndex) => {
+                                const profile = new Person(identity.profile)
+                                const displayLabel = profile.name()
+                                  ? `${profile.name()}: ID-${
+                                      identity.ownerAddress
+                                    }`
+                                  : `ID-${identity.ownerAddress}`
+                                return (
+                                  <option
+                                    key={identityIndex}
+                                    value={identityIndex}
+                                  >
+                                    {identity.username
+                                      ? identity.username
+                                      : displayLabel}
+                                  </option>
+                                )
+                              }
+                            )}
+                          </select>
+                          <div>
+                            <button
+                              className="btn btn-primary btn-block"
+                              onClick={this.login}
+                              disabled={processing}
+                            >
+                              {processing ? 'Signing in...' : 'Approve'}
+                            </button>
+                            {processing ? (
+                              <a
+                                href="/"
+                                className="btn btn-outline-primary btn-block"
+                              >
+                                Cancel
+                              </a>
+                            ) : (
+                              <Link
+                                to="/"
+                                className="btn btn-outline-primary btn-block"
+                              >
+                                Deny
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="m-t-20">
+                          <p>
+                            You need to <Link to="/">set up Blockstack</Link> in
+                            order to sign in.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="m-t-20">
+                      <p>
+                        You need to <Link to="/">set up Blockstack</Link> in
+                        order to sign in.
+                      </p>
+                    </div>
+                  )}
                 </div>
-            }
-              </div>
-            :
-              <div className="m-t-20">
-                <p>
-                  You need to <Link to="/">
-                  set up Blockstack</Link> in order to sign in.
-                </p>
-              </div>
-            }
+              )}
             </div>
-        }
-            </div>
-           }
+          )}
         </Modal>
       </div>
     )

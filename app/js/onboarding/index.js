@@ -18,8 +18,17 @@ import {
   selectApi,
   selectStorageConnected
 } from '@common/store/selectors/settings'
+
+import {
+  selectAppManifest,
+  selectAppManifestLoaded,
+  selectAppManifestLoading,
+  selectAppManifestLoadingError
+} from '@common/store/selectors/auth'
+
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { AuthActions } from '../auth/store/auth'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
@@ -28,7 +37,6 @@ import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
-import { verifyAuthRequestAndLoadManifest } from 'blockstack'
 import queryString from 'query-string'
 import log4js from 'log4js'
 
@@ -59,7 +67,11 @@ const mapStateToProps = state => ({
   identityAddresses: selectIdentityAddresses(state),
   identityKeypairs: selectIdentityKeypairs(state),
   connectedStorageAtLeastOnce: selectConnectedStorageAtLeastOnce(state),
-  email: selectEmail(state)
+  email: selectEmail(state),
+  appManifest: selectAppManifest(state),
+  appManifestLoaded: selectAppManifestLoaded(state),
+  appManifestLoading: selectAppManifestLoading(state),
+  appManifestLoadingError: selectAppManifestLoadingError(state)
 })
 
 const mapDispatchToProps = dispatch =>
@@ -68,7 +80,8 @@ const mapDispatchToProps = dispatch =>
       ...AccountActions,
       ...SettingsActions,
       ...IdentityActions,
-      ...RegistrationActions
+      ...RegistrationActions,
+      ...AuthActions
     },
     dispatch
   )
@@ -197,6 +210,14 @@ class Onboarding extends React.Component {
 
   componentWillMount() {
     const { location } = this.props
+    const queryDict = queryString.parse(location.search)
+    const authRequest = this.checkForAuthRequest(queryDict)
+    if (authRequest && this.state.authRequest !== authRequest) {
+      this.decodeAndSaveAuthRequest()
+      this.setState({
+        authRequest
+      })
+    }
     if (location.query.verified) {
       this.setState({ email: location.query.verified })
       this.updateView(VIEWS.PASSWORD)
@@ -204,7 +225,7 @@ class Onboarding extends React.Component {
   }
 
   componentDidMount() {
-    this.decodeAndSaveAuthRequest()
+    // this.decodeAndSaveAuthRequest()
     if (!this.props.api.subdomains[SUBDOMAIN_SUFFIX]) {
       this.props.resetApi(this.props.api)
     }
@@ -228,8 +249,22 @@ class Onboarding extends React.Component {
   }
 
   decodeAndSaveAuthRequest() {
+    const { verifyAuthRequestAndLoadManifest, appManifestLoading } = this.props
     const queryDict = queryString.parse(this.props.location.search)
 
+    const authRequest = this.checkForAuthRequest(queryDict)
+
+    if (authRequest && !this.state.authRequest)
+      this.setState({
+        authRequest
+      })
+
+    if (authRequest && !appManifestLoading) {
+      verifyAuthRequestAndLoadManifest(authRequest)
+    }
+  }
+
+  checkForAuthRequest = queryDict => {
     if (queryDict.redirect !== null && queryDict.redirect !== undefined) {
       const searchString = queryDict.redirect.replace('/auth', '')
       const redirectQueryDict = queryString.parse(searchString)
@@ -241,25 +276,10 @@ class Onboarding extends React.Component {
         if (authRequest.includes('#coreAPIPassword')) {
           authRequest = authRequest.split('#coreAPIPassword')[0]
         }
-        verifyAuthRequestAndLoadManifest(authRequest)
-          .then(
-            appManifest => {
-              this.setState({
-                authRequest,
-                appManifest
-              })
-            },
-            () => {
-              logger.error(
-                'verifyAuthRequestAndLoadManifest: invalid authentication request'
-              )
-            }
-          )
-          .catch(e => {
-            logger.error('verifyAuthRequestAndLoadManifest: error', e)
-          })
+        return authRequest
       }
     }
+    return null
   }
 
   sendRecovery(blockstackId, email, encryptedSeed) {
@@ -375,12 +395,14 @@ class Onboarding extends React.Component {
   }
 
   render() {
+    const { appManifest } = this.props
     const { email, password, username, emailSubmitted, view } = this.state
-    const icons = this.state.appManifest ? this.state.appManifest.icons : []
-    const appIconURL = icons.length > 0 ? icons[0].src : ''
-    const appName = this.state.appManifest ? this.state.appManifest.name : ''
 
-    const app = appName
+    const icons = appManifest ? appManifest.icons : []
+    const appIconURL = icons.length > 0 ? icons[0].src : null
+    const appName = appManifest ? appManifest.name : undefined
+
+    const app = appManifest
       ? {
           name: appName,
           icon: appIconURL
@@ -461,6 +483,10 @@ Onboarding.propTypes = {
   api: PropTypes.object.isRequired,
   location: PropTypes.object,
   router: PropTypes.object,
+  appManifest: PropTypes.object,
+  appManifestLoading: PropTypes.bool,
+  appManifestLoaded: PropTypes.bool,
+  appManifestLoadingError: PropTypes.node,
   identityAddresses: PropTypes.array,
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
@@ -471,6 +497,7 @@ Onboarding.propTypes = {
   storageIsConnected: PropTypes.func.isRequired,
   registerName: PropTypes.func.isRequired,
   resetApi: PropTypes.func.isRequired,
+  verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
   encryptedBackupPhrase: PropTypes.string
 }
 

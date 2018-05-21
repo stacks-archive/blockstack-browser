@@ -24,7 +24,12 @@ const Success = ({
       children: <React.Fragment>{user.username}</React.Fragment>,
       variant: 'h2',
       subtitle: {
-        children: <React.Fragment>{user.username + user.suffix}</React.Fragment>
+        light: true,
+        children: (
+          <React.Fragment>
+            {user.username}.{user.suffix}
+          </React.Fragment>
+        )
       }
     },
 
@@ -43,7 +48,11 @@ const Success = ({
     actions: {
       items: [
         {
-          label: <React.Fragment>Go to {app.name ? app.name : 'Blockstack'}</React.Fragment>,
+          label: (
+            <React.Fragment>
+              Go to {app.name ? app.name : 'Blockstack'}
+            </React.Fragment>
+          ),
           primary: true,
           onClick: () => finish()
         },
@@ -62,6 +71,7 @@ Success.propTypes = {
   goToRecovery: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
   subdomainSuffix: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
   app: PropTypes.object
 }
 

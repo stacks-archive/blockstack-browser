@@ -8,7 +8,9 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const finalCreateStore = composeEnhancers(
   applyMiddleware(thunk),
-  persistState()
+  persistState(null, {
+    slicer: paths => state => ({ ...state, auth: {} })
+  })
 )(createStore)
 
 export default function configureStore(initialState) {
