@@ -93,6 +93,7 @@ function checkNameAvailabilityAndPrice(api, domainName) {
       } else {
         dispatch(nameUnavailable(domainName))
       }
+      return null
     }).catch((error) => {
       logger.error('checkNameAvailabilityAndPrice: isNameAvailable: error', error)
       dispatch(nameAvailabilityError(domainName, error))
