@@ -14,7 +14,22 @@ import { setCoreStorageConfig } from '@utils/api-utils'
 import { Initial, Password, Restoring, Success } from './views'
 import log4js from 'log4js'
 import { ShellParent } from '@blockstack/ui'
-
+import {
+  selectConnectedStorageAtLeastOnce,
+  selectEmail,
+  selectEncryptedBackupPhrase,
+  selectIdentityAddresses,
+  selectIdentityKeypairs,
+  selectPromptedForEmail
+} from '@common/store/selectors/account'
+import {
+  selectLocalIdentities,
+  selectRegistration
+} from '@common/store/selectors/profiles'
+import {
+  selectApi,
+  selectStorageConnected
+} from '@common/store/selectors/settings'
 const logger = log4js.getLogger('sign-in/index.js')
 
 const VIEWS = {
@@ -28,17 +43,17 @@ const views = [Initial, Password, Restoring, Success]
 
 function mapStateToProps(state) {
   return {
-    api: state.settings.api,
     updateApi: PropTypes.func.isRequired,
-    promptedForEmail: state.account.promptedForEmail,
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase,
-    localIdentities: state.profiles.identity.localIdentities,
-    identityAddresses: state.account.identityAccount.addresses,
-    identityKeypairs: state.account.identityAccount.keypairs,
-    connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce,
-    storageConnected: state.settings.api.storageConnected,
-    email: state.account.email,
-    registration: state.profiles.registration
+    api: selectApi(state),
+    promptedForEmail: selectPromptedForEmail(state),
+    encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
+    localIdentities: selectLocalIdentities(state),
+    identityAddresses: selectIdentityAddresses(state),
+    identityKeypairs: selectIdentityKeypairs(state),
+    connectedStorageAtLeastOnce: selectConnectedStorageAtLeastOnce(state),
+    storageConnected: selectStorageConnected(state),
+    email: selectEmail(state),
+    registration: selectRegistration(state)
   }
 }
 
@@ -150,7 +165,8 @@ class SignIn extends React.Component {
       })
 
   restoreFromSeed = () => {
-    const seed = this.state.seed
+    const { seed, password } = this.state
+    const { initializeWallet } = this.props
 
     const { isValid } = isBackupPhraseValid(seed)
 
@@ -159,7 +175,7 @@ class SignIn extends React.Component {
       return Promise.reject('Invalid keychain phrase entered')
     }
 
-    return this.props.initializeWallet(this.state.password, seed)
+    return initializeWallet(password, seed)
   }
 
   createAccount() {

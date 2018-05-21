@@ -67,12 +67,8 @@ class EmailView extends React.Component {
             split: true,
             items: [
               {
-                label:
-                  this.state.field === 'email'
-                    ? 'Use mobile number'
-                    : 'Use email address',
-                textOnly: true,
-                onClick: () => this.toggleField(this.state)
+                label: ' ',
+                textOnly: true
               },
               {
                 label: 'Next',

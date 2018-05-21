@@ -7,7 +7,7 @@ import {
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,
   selectIdentityKeypairs,
-  selectProptedForEmail
+  selectPromptedForEmail
 } from '@common/store/selectors/account'
 import {
   selectLocalIdentities,
@@ -54,7 +54,7 @@ const mapStateToProps = state => ({
   registration: selectRegistration(state),
   storageConnected: selectStorageConnected(state),
   api: selectApi(state),
-  promptedForEmail: selectProptedForEmail(state),
+  promptedForEmail: selectPromptedForEmail(state),
   encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
   identityAddresses: selectIdentityAddresses(state),
   identityKeypairs: selectIdentityKeypairs(state),

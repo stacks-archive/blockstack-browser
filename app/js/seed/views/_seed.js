@@ -35,7 +35,7 @@ export default ({ next, seed, ...rest }) => {
       split: true,
       items: [
         {
-          label: 'Copy to Clipboard',
+          label: 'Copy 12 Words',
           textOnly: true
         },
         {

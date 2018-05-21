@@ -1,4 +1,4 @@
-const selectProptedForEmail = ({ account }) => account.promptedForEmail
+const selectPromptedForEmail = ({ account }) => account.promptedForEmail
 const selectEncryptedBackupPhrase = ({ account }) => account.encryptedBackupPhrase
 const selectIdentityAddresses = ({ account }) =>
   account.identityAccount.addresses
@@ -8,7 +8,7 @@ const selectConnectedStorageAtLeastOnce = ({ account }) =>
 const selectEmail = ({ account }) => account.email
 
 export {
-  selectProptedForEmail,
+  selectPromptedForEmail,
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,
   selectIdentityKeypairs,
