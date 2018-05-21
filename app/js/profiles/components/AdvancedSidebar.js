@@ -1,14 +1,8 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 
-type Props = {
-  activeTab: string,
-  name: string
-}
-
-const AdvancedSidebar = (props : Props) => {
+const AdvancedSidebar = (props) => {
   const tabs = [
     { urlComponent: 'zone-file', label: 'Update zone file', isActive: false },
     { urlComponent: 'transfer-name', label: 'Transfer name', isActive: false }

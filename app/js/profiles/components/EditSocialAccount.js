@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import { connect } from 'react-redux'
 import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
@@ -10,7 +9,7 @@ const helpPages = {
   twitter: 'https://forum.blockstack.org/t/twitter-verification-process/2143',
   facebook: 'https://forum.blockstack.org/t/facebook-verification-process/2142',
   github: 'https://forum.blockstack.org/t/github-verification-process/2145',
-  instagram: 'https://forum.blockstack.org/t/instagram-verification-process/2144',
+  instagram: 'https://forum.blockstack.org/t/instagram-verification-process/2144'
 }
 
 function mapStateToProps(state) {
@@ -26,7 +25,9 @@ class EditSocialAccount extends Component {
     ownerAddress: PropTypes.string,
     api: PropTypes.object.isRequired,
     onPostVerificationButtonClick: PropTypes.func,
-    onVerifyButtonClick: PropTypes.func
+    onVerifyButtonClick: PropTypes.func,
+    proofUrl: PropTypes.string.isRequired,
+    verified: PropTypes.bool
   }
 
   constructor(props) {
@@ -34,14 +35,14 @@ class EditSocialAccount extends Component {
 
     this.state = {
       identifier: props.identifier,
-      proofUrl: props.proofUrl,
+      proofUrl: props.proofUrl
     }
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       identifier: nextProps.identifier,
-      proofUrl: nextProps.proofUrl,
+      proofUrl: nextProps.proofUrl
     })
   }
 
@@ -50,7 +51,7 @@ class EditSocialAccount extends Component {
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
     if (webAccountTypes.hasOwnProperty(this.props.service)) {
       if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
-        let urlTemplate = webAccountTypes[this.props.service].urlTemplate
+        const urlTemplate = webAccountTypes[this.props.service].urlTemplate
         if (urlTemplate) {
           accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
         }
@@ -71,7 +72,7 @@ class EditSocialAccount extends Component {
   getIdentifier = () => {
     let identifier = this.state.identifier
     if (identifier.length >= 40) {
-      identifier = identifier.slice(0, 40) + '...'
+      identifier = `${identifier.slice(0, 40)}...`
     }
     return identifier
   }
@@ -85,33 +86,31 @@ class EditSocialAccount extends Component {
     }
 
     this.setState({
-      identifier: identifier
+      identifier
     })
   }
 
   onProofUrlChange = (event) => {
-    let proofUrl = event.target.value
+    const proofUrl = event.target.value
     this.setState({
-      proofUrl: proofUrl
+      proofUrl
     })
   }
 
   getPlaceholderText = (service) => {
-    if(service === 'bitcoin' || service === 'ethereum') {
+    if (service === 'bitcoin' || service === 'ethereum') {
       return (
         <span className="app-account-service font-weight-bold">
           Prove your <span className="text-capitalize">{service}</span> address
         </span>
       )
-    }
-    else if (service === 'pgp' || service === 'ssh') {
+    } else if (service === 'pgp' || service === 'ssh') {
       return (
         <span className="app-account-service font-weight-bold">
           Prove your {service.toUpperCase()} key
         </span>
       )
-    }
-    else {
+    } else {
       return (
         <span className="app-account-service font-weight-bold">
           Prove your <span className="text-capitalize">{service}</span> account
@@ -137,7 +136,7 @@ class EditSocialAccount extends Component {
   }
 
   normalizeIdentifier = (identifier) => {
-    var regex = /^[@]/;
+    const regex = /^[@]/
     if (identifier.match(regex)) {
       return identifier.replace('@', '')
     } else {
@@ -145,9 +144,8 @@ class EditSocialAccount extends Component {
     }
   }
 
-  shouldShowVerificationInstructions = () => {
-    return !this.props.verified && (this.props.identifier.length > 0)
-  }
+  shouldShowVerificationInstructions = () => 
+    !this.props.verified && (this.props.identifier.length > 0)
 
   showHelp = () => {
     if (helpPages.hasOwnProperty(this.props.service)) {
@@ -157,63 +155,75 @@ class EditSocialAccount extends Component {
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
-    const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
-    let webAccountType = webAccountTypes[this.props.service]
-    const disabled = this.props.service === 'hackerNews'
+    const collapsedClass = this.state.collapsed ? 'pending' : ''
+    const verifiedClass = this.props.verified ? 'verified' : collapsedClass
+    const webAccountType = webAccountTypes[this.props.service]
     const inputAddOn = this.getInputAddOn(this.props.service)
+    const stopClick = true
 
     if (webAccountType) {
-      let accountServiceName = webAccountType.label
-        return (
-          <div>
-            <div className={`profile-account ${verifiedClass}`}
-              onClick={this.handleClick}>
-              <div className="heading m-b-30">
-                <i className={`fa fa-fw fa-lg ${this.getIconClass()}`} />
-                {this.getPlaceholderText(this.props.service)}
-              </div>
-
-              <div>
-                <p>
-                  <span className="font-weight-bold">Step 1: </span>
-                  Enter your <span className="text-capitalize">{this.props.service}</span> username.
-                </p>
-
-                <InputGroup
-                  key="input-group-identifier"
-                  name="identifier"
-                  placeholder="Username"
-                  data={this.state}
-                  stopClickPropagation={true}
-                  onChange={this.onIdentifierChange}
-                  addOn={inputAddOn}
-                />
-
-                <VerificationInfo
-                  service={this.props.service}
-                  ownerAddress={this.props.ownerAddress}
-                  domainName={this.getIdentifier()}
-                  proofUrl={this.state.proofUrl}
-                  onProofUrlChange={this.onProofUrlChange}
-                  onPostVerificationButtonClick={(e) => {
-                    this.props.onPostVerificationButtonClick(e, this.props.service, this.state.identifier)}
-                  }
-                  />
-              </div>
+      return (
+        <div>
+          <div 
+            className={`profile-account ${verifiedClass}`} 
+            onClick={this.handleClick}
+          >
+            <div className="heading m-b-30">
+              <i className={`fa fa-fw fa-lg ${this.getIconClass()}`} />
+              {this.getPlaceholderText(this.props.service)}
             </div>
-            <button
-              className="btn btn-verify btn-block m-t-15"
-              onClick={e => this.props.onVerifyButtonClick(this.props.service,
-                this.state.identifier, this.state.proofUrl)}>
-              Verify
-            </button>
-            <div className="text-center">
-              {helpPages.hasOwnProperty(this.props.service) &&
-                <button className="btn btn-link btn-link-small p-t-10" onClick={this.showHelp}>Need help?</button>
-              }
+
+            <div>
+              <p>
+                <span className="font-weight-bold">Step 1: </span> 
+                Enter your <span className="text-capitalize">{this.props.service}</span> username.
+              </p>
+
+              <InputGroup 
+                key="input-group-identifier"
+                name="identifier" 
+                placeholder="Username"
+                data={this.state}
+                stopClickPropagation={stopClick} 
+                onChange={this.onIdentifierChange} 
+                addOn={inputAddOn}
+              />
+            
+              <VerificationInfo
+                service={this.props.service}
+                ownerAddress={this.props.ownerAddress}
+                domainName={this.getIdentifier()}
+                proofUrl={this.state.proofUrl}
+                onProofUrlChange={this.onProofUrlChange}
+                onPostVerificationButtonClick={(e) => {
+                  this.props.onPostVerificationButtonClick(
+                    e,
+                    this.props.service,
+                    this.state.identifier
+                  )
+                }}
+              />
             </div>
           </div>
-        )
+          <button 
+            className="btn btn-verify btn-block m-t-15" 
+            onClick={() => this.props.onVerifyButtonClick(this.props.service,
+              this.state.identifier, this.state.proofUrl)}
+          >
+            Verify
+          </button>
+          <div className="text-center">
+            {helpPages.hasOwnProperty(this.props.service) && 
+              <button 
+                className="btn btn-link btn-link-small p-t-10"
+                onClick={this.showHelp}
+              >
+                Need help?
+              </button>
+            }
+          </div>
+        </div>
+      )
     } else {
       return (
         <span>

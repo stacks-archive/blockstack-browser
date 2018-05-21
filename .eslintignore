@@ -14,13 +14,20 @@ tests/utils/a*
 tests/utils/e*
 tests/utils/n*
 
-app/js/profiles/store/*
-app/js/profiles/tabs/*
+!app/js/profiles/store/*
 !app/js/profiles/Default*
-app/js/profiles/ProfilesApp*
-app/js/profiles/Reg*
+!app/js/profiles/ProfilesApp*
+!app/js/profiles/Reg*
 !app/js/profiles/View
-app/js/profiles/components/*
+app/js/profiles/components/EditAccount*
+app/js/profiles/components/EditPGP*
+app/js/profiles/components/EditSocialAccountItem*
+app/js/profiles/components/PGPAccountItem*
+app/js/profiles/components/ProfileCompletion*
+app/js/profiles/components/SearchBar*
+app/js/profiles/components/SearchItem*
+app/js/profiles/components/SocialAccountItem*
+app/js/profiles/components/VerificationInfo*
 !app/js/profiles/components/Ident*
 !app/js/profiles/components/registration*
 !app/js/profiles/store/registration*
