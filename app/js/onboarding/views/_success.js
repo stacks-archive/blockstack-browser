@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const Success = ({
   finish,
-  appName = 'Blockstack',
+  app,
   goToRecovery,
   username,
   subdomainSuffix,
@@ -43,7 +43,7 @@ const Success = ({
     actions: {
       items: [
         {
-          label: <React.Fragment>Go to {appName}</React.Fragment>,
+          label: <React.Fragment>Go to {app.name ? app.name : 'Blockstack'}</React.Fragment>,
           primary: true,
           onClick: () => finish()
         },
@@ -62,8 +62,7 @@ Success.propTypes = {
   goToRecovery: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
   subdomainSuffix: PropTypes.string.isRequired,
-  appIconURL: PropTypes.string,
-  appName: PropTypes.string
+  app: PropTypes.object
 }
 
 export default Success
