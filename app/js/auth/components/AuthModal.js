@@ -305,12 +305,10 @@ class AuthModal extends Component {
       profileUrl
     }
 
-    let profileResponseData
-    if (this.state.decodedToken.payload.do_not_include_profile) {
-      profileResponseData = null
-    } else {
-      profileResponseData = profile
-    }
+    const doNoIncludeProfile = this.state.decodedToken.payload
+      .do_not_include_profile
+
+    const profileResponseData = doNoIncludeProfile ? null : profile
 
     let transitPublicKey = undefined
     let hubUrl = undefined

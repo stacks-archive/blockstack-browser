@@ -168,7 +168,7 @@ class Onboarding extends React.Component {
       })
   }
   finish = () => {
-    if (this.state.appManifest) {
+    if (this.props.appManifest) {
       this.redirectToAuth()
     } else {
       this.redirectToHome()
