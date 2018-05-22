@@ -65,7 +65,7 @@ describe('Identity Store: Async Actions', () => {
       ]
         assert.deepEqual(store.getActions(), expectedActions)
       })
-    })
+    }).timeout(7000)
   })
 
   describe('refreshIdentities', () => {
