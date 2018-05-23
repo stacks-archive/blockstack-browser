@@ -31,7 +31,7 @@ function nameUnavailable(domainName) {
 
 function nameAvailabilityError(domainName, error) {
   return {
-    type: types.NAME_AVAILABILITIY_ERROR,
+    type: types.NAME_AVAILABILITY_ERROR,
     domainName,
     error
   }
