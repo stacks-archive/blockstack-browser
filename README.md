@@ -36,28 +36,15 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Option-click the Blockstack menu bar item and select "Enable Development Mode"
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
 1. Install node dependencies: `npm install`
-1. Click the Blockstack menu bar item and select "Copy Core API password"
 1. Run `npm run dev`
-1. When prompted in your browser, enter the Core API password and click save.
 
 
 ### Linux
-
-#### Part 1: Install & configure Blockstack Core
-
-1. Install [Blockstack Core](https://github.com/blockstack/blockstack-core). Please follow the instructions in Blockstack Core's repository.
-1. Setup the Blockstack Core wallet: `blockstack setup`. You will be prompted to select a wallet password. *Skip this step if you already have a Core wallet*
-1. Start the Blockstack Core API: `blockstack api start --api_password <core-api-password> --password <wallet-password>` where `<core-api-password>` is a String value you select and `<wallet-password>` is the wallet password you selected previously.
-1. Make sure there's a local Blockstack Core API running by checking `http://localhost:6270/v1/names/blockstack.id` to see if it returns a response.
-
-#### Part 2: Install Blockstack Browser
 
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
 1. Install node dependencies: `npm install`
 1. Run `npm run dev-proxy` to start the CORS proxy
 1. Run `npm run dev`
-1. When prompted in your browser, enter the Core API password you selected in part 1.
-
 
 *Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
 
@@ -89,7 +76,7 @@ The Blockstack API and the Blockstack Browser run best in Docker. There is a pro
 
 3. Run `./launcher pull`. This will fetch the latest docker images from our image repository.
 
-4. Start the Blockstack Core API using `./launcher start`. This will start the Blockstack browser and a paired `blockstack-api` daemon. The first time you run this, it will create a `$HOME/.blockstack` directory to store your Blockstack Core API configuration and wallet. You will also need to create a password to protect these configurations.
+4. Start the Blockstack Core API using `./launcher start`
 
 5. When you are done, you can clean up your environment: `./launcher stop`
 
