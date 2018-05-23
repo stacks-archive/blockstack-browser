@@ -30,6 +30,9 @@ import {
   selectApi,
   selectStorageConnected
 } from '@common/store/selectors/settings'
+import { selectAppManifest } from '@common/store/selectors/auth'
+import { formatAppManifest } from '@common'
+
 const logger = log4js.getLogger('sign-in/index.js')
 
 const VIEWS = {
@@ -45,6 +48,7 @@ function mapStateToProps(state) {
   return {
     updateApi: PropTypes.func.isRequired,
     api: selectApi(state),
+    appManifest: selectAppManifest(state),
     promptedForEmail: selectPromptedForEmail(state),
     encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
     localIdentities: selectLocalIdentities(state),
@@ -221,7 +225,7 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { view, app } = this.state
+    const { view } = this.state
 
     const viewProps = [
       {
@@ -264,7 +268,7 @@ class SignIn extends React.Component {
     }
     return (
       <ShellParent
-        app={app}
+        app={formatAppManifest(this.props.appManifest)}
         views={views}
         {...componentProps}
         headerLabel="Sign into Blockstack"

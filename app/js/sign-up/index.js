@@ -39,7 +39,7 @@ import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
-
+import {formatAppManifest} from '@common'
 import { ShellParent } from '@blockstack/ui'
 import { Email, Password, Success, Username } from './views'
 
@@ -129,11 +129,16 @@ class Onboarding extends React.Component {
    * This will create our account and then register a name and connect storage
    */
   submitUsername = username => {
-    this.setState({
-      creatingAccount: 'started',
-      loading: true
-    })
+    this.setState(
+      {
+        creatingAccount: 'started',
+        loading: true
+      },
+      () => this.createIDandRegisterUsername(username)
+    )
+  }
 
+  createIDandRegisterUsername = username => {
     logger.debug('creating account')
     this.createAccount(this.state.password).then(() =>
       this.createIDandSetDefault().then(() => {
@@ -233,11 +238,13 @@ class Onboarding extends React.Component {
       console.log('no encryptedBackupPhrase')
       return null
     }
-    this.setState({ emailsSent: true })
-    return Promise.all([
+
+    await Promise.all([
       this.sendRestore(username, email, encryptedBackupPhrase),
       this.sendRecovery(username, email, encryptedBackupPhrase)
     ])
+
+    return this.setState({ emailsSent: true })
   }
 
   /**
@@ -288,7 +295,7 @@ class Onboarding extends React.Component {
   /**
    * Send Recovery Email
    */
-  sendRecovery(blockstackId, email, encryptedSeed) {
+  async sendRecovery(blockstackId, email, encryptedSeed) {
     const { protocol, hostname, port } = location
     const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
     const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedSeed}`
@@ -323,7 +330,7 @@ class Onboarding extends React.Component {
   /**
    * Send restore email
    */
-  sendRestore(blockstackId, email, encryptedSeed) {
+  async sendRestore(blockstackId, email, encryptedSeed) {
     const options = {
       method: 'POST',
       body: JSON.stringify({
@@ -468,15 +475,13 @@ class Onboarding extends React.Component {
     const { email, password, username, emailSubmitted, view } = this.state
 
     const icons = appManifest ? appManifest.icons : []
-    const appIconURL = icons.length > 0 ? icons[0].src : null
-    const appName = appManifest ? appManifest.name : undefined
+    const appIconURL =
+      icons.length > 0 ? icons[0].src : '/images/app-icon-hello-blockstack.png'
+    const appName = appManifest ? appManifest.name : 'Untitled dApp'
 
-    const app = appManifest
-      ? {
-          name: appName,
-          icon: appIconURL
-        }
-      : false
+
+
+    const app = formatAppManifest(this.props.appManifest)
 
     const viewProps = [
       {

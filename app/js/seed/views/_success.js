@@ -1,7 +1,7 @@
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 
-export default ({ next, app, ...rest }) => {
+export default ({ finish, buttonLabel, ...rest }) => {
   const props = {
     title: {
       children: 'Save your Secret Recovery Key forever'
@@ -26,8 +26,8 @@ export default ({ next, app, ...rest }) => {
     actions: {
       items: [
         {
-          label: 'Continue to Blockstack',
-          onClick: () => next(),
+          label: buttonLabel,
+          onClick: () => finish(),
           primary: true
         }
       ]

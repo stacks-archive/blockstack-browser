@@ -11,12 +11,18 @@ const APP_MANIFEST_LOADING_ERROR = 'auth/APP_MANIFEST_LOADING_ERROR'
 const APP_MANIFEST_LOADED = 'auth/APP_MANIFEST_LOADED'
 const UPDATE_CORE_SESSION = 'auth/UPDATE_CORE_SESSION'
 const LOGGED_IN_TO_APP = 'auth/LOGGED_IN_TO_APP'
+const STORE_AUTH_REQUEST = 'auth/STORE_AUTH_REQUEST'
 
 function appManifestLoading() {
   return {
     type: APP_MANIFEST_LOADING
   }
 }
+
+const storeAuthRequest = authRequest => ({
+  type: STORE_AUTH_REQUEST,
+  authRequest
+})
 
 function appManifestLoadingError(error) {
   return {
@@ -103,6 +109,7 @@ function verifyAuthRequestAndLoadManifest(authRequest) {
     bskVerifyAuthRequestAndLoadManifest(authRequest)
       .then(
         appManifest => {
+          dispatch(storeAuthRequest(authRequest))
           dispatch(appManifestLoaded(appManifest))
         },
         () => {
@@ -127,7 +134,6 @@ export const initialState = {
   coreSessionTokens: {},
   loggedIntoApp: false
 }
-
 
 export function AuthReducer(state = initialState, action) {
   switch (action.type) {
@@ -160,6 +166,11 @@ export function AuthReducer(state = initialState, action) {
           ...state.coreSessionTokens,
           [action.appDomain]: action.token
         }
+      }
+    case STORE_AUTH_REQUEST:
+      return {
+        ...state,
+        authRequest: action.authRequest
       }
     case LOGGED_IN_TO_APP:
       return {
