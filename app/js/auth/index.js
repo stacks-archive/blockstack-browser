@@ -385,14 +385,13 @@ class AuthPage extends React.Component {
     this.context.router.push('/')
   }
 
-  login() {
+  login = (identityIndex = this.state.currentIdentityIndex) => {
     this.setState({
       processing: true,
       invalidScopes: false
     })
     this.props.loginToApp()
     const localIdentities = this.props.localIdentities
-    const identityIndex = this.state.currentIdentityIndex
     const identity = localIdentities[identityIndex]
     let hasUsername = true
     if (!identity.username || identity.usernamePending) {
@@ -497,7 +496,7 @@ class AuthPage extends React.Component {
     const { appManifest, appManifestLoading } = this.props
 
     if (!appManifest || appManifestLoading) {
-      return <React.Fragment>Loading...</React.Fragment>
+      return <React.Fragment> </React.Fragment>
     }
 
     const { processing, invalidScopes, decodedToken } = this.state
@@ -523,8 +522,19 @@ class AuthPage extends React.Component {
       {
         show: VIEWS.AUTH,
         props: {
-          login: () => this.login(),
-          deny: () => console.log('go back to app')
+          permissions: this.state.scopes,
+          login: i => {
+            this.setState(
+              {
+                currentIdentityIndex: i
+              },
+              () => this.login()
+            )
+          },
+          deny: () => console.log('go back to app'),
+          accounts: this.props.localIdentities,
+          processing: this.state.processing,
+          selectedIndex: this.state.currentIdentityIndex
         }
       },
       {
@@ -540,7 +550,7 @@ class AuthPage extends React.Component {
     const componentProps = {
       ...currentViewProps.props,
       app,
-      view: this.state.view
+      view: coreShortCircuit ? VIEWS.LEGACY_GAIA : VIEWS.AUTH
     }
 
     return <ShellParent app={app} views={views} {...componentProps} />

@@ -1,20 +1,18 @@
-import { Button, firstLetter, stringToColor, Type } from '@blockstack/ui';
+import { Button, firstLetter, stringToColor, Type } from '@blockstack/ui'
 import { User } from '@blockstack/ui/components/user'
-import React from 'react';
-import { ChevronRightIcon } from 'mdi-react';
+import React from 'react'
+import { ChevronRightIcon } from 'mdi-react'
 
-
-
-const UserAvatar = ({id, username, size = 46, camera, ...rest}) => (
-  <User.Avatar size={ size } color={ stringToColor(id) }>
-    { firstLetter(username) }
+const UserAvatar = ({ id, username, size = 46, camera, ...rest }) => (
+  <User.Avatar size={size} color={stringToColor(id)} {...rest}>
+    {firstLetter(username)}
   </User.Avatar>
-);
+)
 
-const UserButton = ({username, id, hideID, ...rest}) => (
-  <Button height={ 56 } primary padding="5px">
+const UserButton = ({ username, id, hideID, ...rest }) => (
+  <Button height={56} primary padding="5px" {...rest}>
     <Button.Section>
-      <UserAvatar username={ username } id={ id }/>
+      <UserAvatar username={username} id={id} />
     </Button.Section>
     <Button.Section
       grow
@@ -26,25 +24,29 @@ const UserButton = ({username, id, hideID, ...rest}) => (
       maxWidth="calc(100% - 90px)"
     >
       <Type.p color="rgba(255,255,255,1)">
-        <span style={ {color: 'rgba(255,255,255,1)'} }>
-          { username.substr(0, username.indexOf('.')) }
-        </span>
-        <span style={ {color: 'rgba(255,255,255,0.5'} }>
-          .{ username
-          .split('.')
-          .slice(1)
-          .join('.') }
-        </span>
+        {username.includes('.') ? (
+          <React.Fragment>
+            <span style={{ color: 'rgba(255,255,255,1)' }}>
+              {username.substr(0, username.indexOf('.'))}
+            </span>
+            <span style={{ color: 'rgba(255,255,255,0.5' }}>
+              .{username
+                .split('.')
+                .slice(1)
+                .join('.')}
+            </span>
+          </React.Fragment>
+        ) : (
+          <span style={{ color: 'rgba(255,255,255,1)' }}>{username}</span>
+        )}
       </Type.p>
-      { id &&
-      !hideID && <Type.small color="rgba(255,255,255,0.5)">{ id }</Type.small> }
+      {id &&
+        !hideID && <Type.small color="rgba(255,255,255,0.5)">{id}</Type.small>}
     </Button.Section>
     <Button.Section align="center" justify="center" padding="0 10px 0 10px">
-      <ChevronRightIcon size={ 24 } color="white"/>
+      <ChevronRightIcon size={24} color="white" />
     </Button.Section>
   </Button>
-);
+)
 
-export {
-  UserButton, UserAvatar
-}
+export { UserButton, UserAvatar }
