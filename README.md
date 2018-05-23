@@ -15,6 +15,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 - [Contributing](#contributing)
 - [Logging](#logging)
 - [Tech Stack](#tech-stack)
+- [Maintainer](#maintainer)
 - [Testing](#testing)
 
 ## Releases
@@ -190,6 +191,9 @@ This app uses the latest versions of the following libraries:
 
 Along with many Gulp libraries (these can be seen in either `package.json`, or at the top of each task in `/gulp/tasks/`).
 
+## Maintainer
+
+This repository is maintained by [yukan.id](https://explorer.blockstack.org/name/yukan.id).
 
 ## Testing
 
@@ -204,7 +208,7 @@ Along with many Gulp libraries (these can be seen in either `package.json`, or a
 ## App Development
 ### Run the browser in the Blockstack Test Environment
 
-When developing apps, the browser can be run in a docker test environment that is backed by the regtest bitcoin network, hence no real money involved. 
+When developing apps, the browser can be run in a docker test environment that is backed by the regtest bitcoin network, hence no real money involved.
 
 The easiest way to get that setup is through docker containers for the api, the browser and the cors-proxy. There is a  [docker-compose.yaml file](https://github.com/blockstack/blockstack-todos/blob/master/docker-compose.yaml) published in the Blockstack todo app repo that does this. To use it, first [install Docker](https://docs.docker.com/engine/installation/) and stop any running Blockstack applications (blockstack-browser or blockstack api) then:
 
@@ -212,23 +216,23 @@ The easiest way to get that setup is through docker containers for the api, the 
 $ docker-compose up -d
 ```
 
-This brings up 
-1. a `blockstack-core api` node that is backed 
-   * by a `bitcoind` instance running **regtest** and 
-   * by a [`blockstack-core`](https://github.com/blockstack/blockstack-core) node built from the test chain. 
-   
+This brings up
+1. a `blockstack-core api` node that is backed
+   * by a `bitcoind` instance running **regtest** and
+   * by a [`blockstack-core`](https://github.com/blockstack/blockstack-core) node built from the test chain.
+
    The initialization script generates 50 BTCs for the core wallet.
-1. a blockstack-browser node. It uses bitcoin addresses that are mapped to regtest bitcoin addresses. 
+1. a blockstack-browser node. It uses bitcoin addresses that are mapped to regtest bitcoin addresses.
 1. a [cors-proxy](https://www.npmjs.com/package/corsproxy) to bypass origin policy issues.
 
-The easiest way to work with this setup is in **Incognito mode** in your browser. Once the images have been pulled down and the containers are started you can open http://localhost:8888. 
+The easiest way to work with this setup is in **Incognito mode** in your browser. Once the images have been pulled down and the containers are started you can open http://localhost:8888.
 
 Choose the Advanced Mode setup and enter the API Password as `blockstack_integration_test_api_password`
 
 ### Common Tasks
 * You can send bitcoins from the core wallet to the browser wallet by opening the hidden url [http://localhost:8888/wallet/send-core](http://localhost:8888/wallet/send-core)
 
-* You can inspect the mapped bitcoin addresses from the browser node to the regtest address by looking into the log file of the api node (execute `bash` in the api container and look at /tmp/blockstack-run-scenario.blockstack_integration_tests.scenarios.portal_test_env/client/api_endpoint.log). 
+* You can inspect the mapped bitcoin addresses from the browser node to the regtest address by looking into the log file of the api node (execute `bash` in the api container and look at /tmp/blockstack-run-scenario.blockstack_integration_tests.scenarios.portal_test_env/client/api_endpoint.log).
 
 * You can inspect the api password by looking into the client.ini file of the api node (execute `bash` in the api container and look at /tmp/blockstack-run-scenario.blockstack_integration_tests.scenarios.portal_test_env/client/client.ini)
 
