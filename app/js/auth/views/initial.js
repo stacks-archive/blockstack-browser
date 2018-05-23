@@ -8,32 +8,48 @@ import {
   Button
 } from '@blockstack/ui'
 
-const permissions = ['read your basic info', 'publish data stored for this app']
+const basicInfo = 'read your basic info'
+const readEmail = 'read your email address'
+const publishData = 'publish data stored for this app'
 
-const accounts = [
-  {
-    username: 'gina.blockstack.id',
-    id: '1b6453892473a467d07372d45eb05abc2031647a'
-  },
-  {
-    username: 'thomasosmonson.blockstack.id',
-    id: 'c1dfd96eea8cc2b62785275bca38ac261256e278'
-  }
-]
-
-export default ({ app, ...rest }) => {
+export default ({
+  app,
+  accounts,
+  permissions,
+  processing,
+  selectedIndex,
+  login,
+  ...rest
+}) => {
   if (!app) {
-    return <div>need an app!</div>
-      }
+    return null
+  }
 
-  const Accounts = ({ list }) => (
-    <React.Fragment>
-      {list.length
-        ? list.map((account, i) => <UserButton key={i} {...account} hideID />)
-        : null}
-    </React.Fragment>
-  )
+  const generatePermissionsList = () => {
+    const permarray = [basicInfo]
+    if (permissions.email) {
+      permarray.push(readEmail)
+    }
+    if (permissions.publishData) {
+      permarray.push(publishData)
+    }
+    return permarray
+  }
 
+  const Accounts = ({ list, handleClick }) =>
+    list.length
+      ? list.map((account, i) => (
+          <UserButton
+            key={i}
+            username={account.username || `ID-${account.ownerAddress}`}
+            id={account.ownerAddress}
+            onClick={() => handleClick(i)}
+            loading={processing && i === selectedIndex}
+            placeholder={'Logging in...'}
+            hideID
+          />
+        ))
+      : null
   const PermissionsList = ({ list }) => (
     <React.Fragment>
       {list.map((item, i) => {
@@ -55,6 +71,9 @@ export default ({ app, ...rest }) => {
       })}
     </React.Fragment>
   )
+  /**
+   * TODO: give more details on what these permissions mean
+   */
   const PermissionsContent = ({
     permissions,
     helperMessage = 'What do these permissions mean?'
@@ -64,7 +83,7 @@ export default ({ app, ...rest }) => {
         <strong>"{app && app.name}"</strong> wants to{' '}
         <PermissionsList list={permissions} />.
       </Type.p>
-      <HelperMessage message={helperMessage} />
+      {/*<HelperMessage message={helperMessage} />*/}
     </React.Fragment>
   )
   const props = {
@@ -75,10 +94,10 @@ export default ({ app, ...rest }) => {
       grow: 1,
       children: (
         <React.Fragment>
-          <PermissionsContent permissions={permissions} />
+          <PermissionsContent permissions={generatePermissionsList()} />
           <Buttons column>
-            <Accounts list={accounts} />
-            <Button label="User a different ID" />
+            <Accounts list={accounts} handleClick={login} />
+            <Button label="Use a different ID" to="/sign-up" />
           </Buttons>
         </React.Fragment>
       )
@@ -87,7 +106,7 @@ export default ({ app, ...rest }) => {
       items: [
         {
           label: 'Deny',
-          onClick: () => secondary(),
+          to: '/',
           negative: true
         }
       ]

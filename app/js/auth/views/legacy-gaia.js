@@ -1,8 +1,5 @@
 import React from 'react'
-import {
-  ShellScreen,
-  Type,
-} from '@blockstack/ui'
+import { ShellScreen, Type } from '@blockstack/ui'
 
 export default ({ app, backView, ...rest }) => {
   if (!app) {
@@ -11,7 +8,7 @@ export default ({ app, backView, ...rest }) => {
 
   const props = {
     title: {
-      children: 'Select an ID'
+      children: 'Sorry!'
     },
     content: {
       grow: 1,
@@ -21,6 +18,10 @@ export default ({ app, backView, ...rest }) => {
             This application uses an older Gaia storage library, which is no
             longer supported. Once the application updates its library, you will
             be able to use it.
+          </Type.p>
+          <Type.p>
+            You could try to reach out to the developers of {app.name} and
+            request they update to the latest version of Gaia.
           </Type.p>
         </React.Fragment>
       )
