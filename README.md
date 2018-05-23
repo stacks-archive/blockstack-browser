@@ -36,9 +36,7 @@ Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 1. Option-click the Blockstack menu bar item and select "Enable Development Mode"
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
 1. Install node dependencies: `npm install`
-1. Click the Blockstack menu bar item and select "Copy Core API password"
 1. Run `npm run dev`
-1. When prompted in your browser, enter the Core API password and click save.
 
 
 ### Linux
