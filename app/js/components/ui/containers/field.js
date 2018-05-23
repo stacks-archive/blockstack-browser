@@ -15,6 +15,7 @@ const Field = ({
   mh,
   handleChange,
   handleBlur,
+  onBlur,
   ...rest
 }) => {
   const InputComponent =
@@ -48,7 +49,6 @@ const Field = ({
           autoFocus={autoFocus}
           mh={mh}
           onChange={handleChange}
-          onBlur={handleBlur}
         />
         {ErrorMessage}
         <StyledField.Label for={name}>
