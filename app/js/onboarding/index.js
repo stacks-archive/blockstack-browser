@@ -97,6 +97,7 @@ class Onboarding extends React.Component {
     emailSubmitted: false,
     emailsSent: false,
     loading: false,
+    creatingAccountStatus: 'initial',
     view: VIEWS.EMAIL,
     usernameRegistrationInProgress: false
   }
@@ -122,51 +123,74 @@ class Onboarding extends React.Component {
     }
     this.updateView(VIEWS.USERNAME)
   }
+  /**
+   * Submit Username
+   *
+   * This will create our account and then register a name and connect storage
+   */
   submitUsername = username => {
     this.setState({
+      creatingAccount: 'started',
       loading: true
     })
+
     logger.debug('creating account')
-    this.createAccount(this.state.password)
-      .then(() => this.connectStorage())
-      .then(() => {
-        console.log('about to submit username')
-        const suffix = `.${SUBDOMAIN_SUFFIX}`
-        username += suffix
-        logger.trace('registerUsername')
-        const nameHasBeenPreordered = hasNameBeenPreordered(
-          username,
-          this.props.localIdentities
-        )
-        if (nameHasBeenPreordered) {
-          logger.error(
-            `registerUsername: username '${username}' has already been preordered`
-          )
-        } else {
-          this.setState({
-            usernameRegistrationInProgress: true
-          })
-          logger.debug(
-            `registerUsername: will try and register username: ${username}`
-          )
-          const address = this.props.identityAddresses[0]
-          const identity = this.props.localIdentities[0]
-          const keypair = this.props.identityKeypairs[0]
-          this.props.registerName(
-            this.props.api,
+    this.createAccount(this.state.password).then(() =>
+      this.createIDandSetDefault().then(() => {
+        logger.debug('fire connectStorage')
+        this.connectStorage().then(() => {
+          logger.debug('connectStorage has finished')
+          const suffix = `.${SUBDOMAIN_SUFFIX}`
+          username += suffix
+          console.log('about to submit username', username)
+          logger.trace('registerUsername')
+          const nameHasBeenPreordered = hasNameBeenPreordered(
             username,
-            identity,
-            0,
-            address,
-            keypair
+            this.props.localIdentities
           )
-        }
-        this.updateView(VIEWS.HOORAY)
-        this.setState({
-          loading: false
+          if (nameHasBeenPreordered) {
+            /**
+             * TODO: redirect them back and then have them choose a new name
+             */
+            logger.error(
+              `registerUsername: username '${username}' has already been preordered`
+            )
+          } else {
+            this.setState({
+              usernameRegistrationInProgress: true
+            })
+            logger.debug(
+              `registerUsername: will try and register username: ${username}`
+            )
+
+            /**
+             * This is assuming that there are no accounts, and we're using the first item in the arrays
+             */
+            const identityIndex = 0
+            const address = this.props.identityAddresses[identityIndex]
+            const identity = this.props.localIdentities[identityIndex]
+            const keypair = this.props.identityKeypairs[identityIndex]
+
+            this.props.registerName(
+              this.props.api,
+              username,
+              identity,
+              identityIndex,
+              address,
+              keypair
+            )
+            this.setState({
+              creatingAccountStatus: 'complete'
+            })
+          }
         })
       })
+    )
   }
+  /**
+   * Finish step
+   * this will either send us home or to the app that the user came from
+   */
   finish = () => {
     if (this.props.appManifest) {
       this.redirectToAuth()
@@ -174,18 +198,33 @@ class Onboarding extends React.Component {
       this.redirectToHome()
     }
   }
+  /**
+   * Redirect to Auth Request
+   */
   redirectToAuth = () => {
     this.props.router.push(`/auth/?authRequest=${this.state.authRequest}`)
   }
+  /**
+   * Redirect to home
+   */
   redirectToHome = () => {
     this.props.router.push('/')
   }
+  /**
+   * Go to Backup
+   * This will navigate the user to the seed screen
+   */
   goToBackup = () => {
     browserHistory.push({
       pathname: '/seed',
       state: { seed: this.state.seed, password: this.state.password }
     })
   }
+
+  /**
+   * Send Emails
+   * this will send both emails (restore and recovery)
+   */
   sendEmails = async () => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
@@ -200,54 +239,14 @@ class Onboarding extends React.Component {
       this.sendRecovery(username, email, encryptedBackupPhrase)
     ])
   }
-  submitEmailForVerification = () => {
-    // Skip email verification
-    this.updateView(VIEWS.PASSWORD)
 
-    // verifyEmail(this.state.email)
-    // this.updateView(VIEWS.EMAIL_VERIFY)
-  }
-
-  componentWillMount() {
-    const { location } = this.props
-    const queryDict = queryString.parse(location.search)
-    const authRequest = this.checkForAuthRequest(queryDict)
-    if (authRequest && this.state.authRequest !== authRequest) {
-      this.decodeAndSaveAuthRequest()
-      this.setState({
-        authRequest
-      })
-    }
-    if (location.query.verified) {
-      this.setState({ email: location.query.verified })
-      this.updateView(VIEWS.PASSWORD)
-    }
-  }
-
-  componentDidMount() {
-    // this.decodeAndSaveAuthRequest()
-    if (!this.props.api.subdomains[SUBDOMAIN_SUFFIX]) {
-      this.props.resetApi(this.props.api)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { registration } = nextProps
-    const { usernameRegistrationInProgress, emailsSent } = this.state
-    if (usernameRegistrationInProgress && registration.registrationSubmitted) {
-      if (!emailsSent) {
-        this.sendEmails().then(() => this.updateView(VIEWS.HOORAY))
-      } else {
-        this.updateView(VIEWS.HOORAY)
-      }
-    } else if (registration.error) {
-      logger.error(`username registration error: ${registration.error}`)
-      this.setState({
-        usernameRegistrationInProgress: false
-      })
-    }
-  }
-
+  /**
+   * Decode and save auth request
+   *
+   * this will save the authRequest to component state and then
+   * call the redux action verifyAuthRequestAndLoadManifest
+   * which then verifies it and downloads the app manifest
+   */
   decodeAndSaveAuthRequest() {
     const { verifyAuthRequestAndLoadManifest, appManifestLoading } = this.props
     const queryDict = queryString.parse(this.props.location.search)
@@ -264,6 +263,10 @@ class Onboarding extends React.Component {
     }
   }
 
+  /**
+   * Check for Auth Request
+   * this returns the authRequest query param if one exists
+   */
   checkForAuthRequest = queryDict => {
     if (queryDict.redirect !== null && queryDict.redirect !== undefined) {
       const searchString = queryDict.redirect.replace('/auth', '')
@@ -282,6 +285,9 @@ class Onboarding extends React.Component {
     return null
   }
 
+  /**
+   * Send Recovery Email
+   */
   sendRecovery(blockstackId, email, encryptedSeed) {
     const { protocol, hostname, port } = location
     const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
@@ -314,6 +320,9 @@ class Onboarding extends React.Component {
       })
   }
 
+  /**
+   * Send restore email
+   */
   sendRestore(blockstackId, email, encryptedSeed) {
     const options = {
       method: 'POST',
@@ -342,28 +351,40 @@ class Onboarding extends React.Component {
       })
   }
 
-  createAccount(password) {
+  /**
+   * Create our account
+   * this will initialize our wallet and then create an account for us
+   * see account/actions.js
+   */
+  async createAccount(password) {
+    const { initializeWallet } = this.props
+    return initializeWallet(password, null)
+  }
+
+  /**
+   * Create ID and Set it as default
+   * this function needs to fire after the createAccount function has finished
+   * it will generate a new ID with address and set it as the default ID
+   */
+  async createIDandSetDefault() {
     const {
-      initializeWallet,
       identityAddresses,
       createNewIdentityWithOwnerAddress,
       setDefaultIdentity
     } = this.props
-
     const firstIdentityIndex = 0
-    return initializeWallet(password, null)
-      .then(() => {
-        logger.debug('creating new identity')
-        const ownerAddress = identityAddresses[firstIdentityIndex]
-        return createNewIdentityWithOwnerAddress(
-          firstIdentityIndex,
-          ownerAddress
-        )
-      })
-      .then(() => setDefaultIdentity(firstIdentityIndex))
+    logger.debug('creating new identity')
+    const ownerAddress = identityAddresses[firstIdentityIndex]
+    logger.debug('ownerAddress', ownerAddress)
+    createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
+    logger.debug('settingAsDefault')
+    setDefaultIdentity(firstIdentityIndex)
   }
 
-  connectStorage() {
+  /**
+   * Connect Storage
+   */
+  async connectStorage() {
     const storageProvider = this.props.api.gaiaHubUrl
     const signer = this.props.identityKeypairs[0].key
     return connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
@@ -384,14 +405,62 @@ class Onboarding extends React.Component {
         profile,
         profileSigningKeypair,
         identity
-      ).then(() => {
-        logger.debug('connectStorage: storage initialized')
-        const newApi2 = Object.assign({}, newApi, { storageConnected: true })
-        this.props.updateApi(newApi2)
-        this.props.storageIsConnected()
-        logger.debug('connectStorage: storage configured')
-      })
+      )
+      logger.debug('connectStorage: storage initialized')
+      const newApi2 = Object.assign({}, newApi, { storageConnected: true })
+      this.props.updateApi(newApi2)
+      this.props.storageIsConnected()
+      logger.debug('connectStorage: storage configured')
     })
+  }
+
+  componentDidUpdate(prevProps, prevState, prevContext) {
+    if (
+      this.state.creatingAccountStatus === 'completed' &&
+      this.state.emailsSent &&
+      this.state.view !== VIEWS.HOORAY
+    ) {
+      this.updateView(VIEWS.HOORAY)
+    }
+  }
+
+  componentWillMount() {
+    const { location } = this.props
+    const queryDict = queryString.parse(location.search)
+    const authRequest = this.checkForAuthRequest(queryDict)
+    if (authRequest && this.state.authRequest !== authRequest) {
+      this.decodeAndSaveAuthRequest()
+      this.setState({
+        authRequest
+      })
+    }
+    if (location.query.verified) {
+      this.setState({ email: location.query.verified })
+      this.updateView(VIEWS.PASSWORD)
+    }
+  }
+
+  componentDidMount() {
+    if (!this.props.api.subdomains[SUBDOMAIN_SUFFIX]) {
+      this.props.resetApi(this.props.api)
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { registration } = nextProps
+    const { usernameRegistrationInProgress, emailsSent } = this.state
+    if (usernameRegistrationInProgress && registration.registrationSubmitted) {
+      if (!emailsSent) {
+        this.sendEmails().then(() => this.updateView(VIEWS.HOORAY))
+      } else {
+        this.updateView(VIEWS.HOORAY)
+      }
+    } else if (registration.error) {
+      logger.error(`username registration error: ${registration.error}`)
+      this.setState({
+        usernameRegistrationInProgress: false
+      })
+    }
   }
 
   render() {

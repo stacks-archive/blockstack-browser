@@ -41,6 +41,15 @@ function validateProofsService(profile: Object, address: string, username : ?str
     .then(resp => resp.json())
 }
 
+/**
+ *  username
+ *  ownerAddress
+ *  zoneFile
+ *  profile
+ *  verifications
+ *  trustLevel
+ *
+ */
 function updatePublicIdentity(username: string, ownerAddress: ?string = null,
   zoneFile: ?string = null, profile: ?{} = Object.assign({}, DEFAULT_PROFILE),
   verifications: Array<*> = [], trustLevel: ?number = 0) {

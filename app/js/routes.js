@@ -36,6 +36,7 @@ import SendPage from './wallet/SendPage'
 import SendCorePage from './wallet/SendCorePage'
 
 import AuthPage from './auth/AuthPage'
+import NewAuthPage from './auth/index'
 
 import OnboardingPage from './onboarding'
 import SeedPage from './seed'
@@ -97,7 +98,7 @@ export default (
         <Route path="send-core" component={SendCorePage} />
       </Route>
 
-      <Route path="/auth" component={AuthPage} />
+      <Route path="/auth" component={NewAuthPage} />
       <Route path="/seed" component={SeedPage} />
     </Route>
     <Route path="/sign-up" component={OnboardingPage} />

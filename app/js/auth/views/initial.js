@@ -21,10 +21,10 @@ const accounts = [
   }
 ]
 
-export default ({ primary, app, secondary, animated, ...rest }) => {
+export default ({ app, ...rest }) => {
   if (!app) {
-    return null
-  }
+    return <div>need an app!</div>
+      }
 
   const Accounts = ({ list }) => (
     <React.Fragment>

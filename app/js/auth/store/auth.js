@@ -119,7 +119,7 @@ function verifyAuthRequestAndLoadManifest(authRequest) {
   }
 }
 
-const initialState = {
+export const initialState = {
   appManifest: null,
   appManifestLoaded: false,
   appManifestLoading: false,
@@ -127,6 +127,7 @@ const initialState = {
   coreSessionTokens: {},
   loggedIntoApp: false
 }
+
 
 export function AuthReducer(state = initialState, action) {
   switch (action.type) {

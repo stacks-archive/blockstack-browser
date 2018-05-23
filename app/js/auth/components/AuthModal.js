@@ -27,23 +27,44 @@ import log4js from 'log4js'
 import { uploadProfile } from '../../account/utils'
 import { signProfileForUpload } from '@utils'
 import { validateScopes, appRequestSupportsDirectHub } from '../utils'
+import {
+  selectApi,
+  selectCoreSessionTokens,
+  selectCoreHost,
+  selectCorePort,
+  selectCoreAPIPassword
+} from '@common/store/selectors/settings'
+import {
+  selectAppManifest,
+  selectAppManifestLoading,
+  selectAppManifestLoadingError
+} from '@common/store/selectors/auth'
+import {
+  selectLocalIdentities,
+  selectDefaultIdentity
+} from '@common/store/selectors/profiles'
+
+import {
+  selectIdentityKeypairs,
+  selectEmail
+} from '@common/store/selectors/account'
 
 const logger = log4js.getLogger('auth/components/AuthModal.js')
 
 function mapStateToProps(state) {
   return {
-    localIdentities: state.profiles.identity.localIdentities,
-    defaultIdentity: state.profiles.identity.default,
-    identityKeypairs: state.account.identityAccount.keypairs,
-    appManifest: state.auth.appManifest,
-    appManifestLoading: state.auth.appManifestLoading,
-    appManifestLoadingError: state.auth.appManifestLoadingError,
-    coreSessionTokens: state.auth.coreSessionTokens,
-    coreHost: state.settings.api.coreHost,
-    corePort: state.settings.api.corePort,
-    coreAPIPassword: state.settings.api.coreAPIPassword,
-    api: state.settings.api,
-    email: state.account.email
+    localIdentities: selectLocalIdentities(state),
+    defaultIdentity: selectDefaultIdentity(state),
+    identityKeypairs: selectIdentityKeypairs(state),
+    appManifest: selectAppManifest(state),
+    appManifestLoading: selectAppManifestLoading(state),
+    appManifestLoadingError: selectAppManifestLoadingError(state),
+    coreSessionTokens: selectCoreSessionTokens(state),
+    coreHost: selectCoreHost(state),
+    corePort: selectCorePort(state),
+    coreAPIPassword: selectCoreAPIPassword(state),
+    api: selectApi(state),
+    email: selectEmail(state)
   }
 }
 

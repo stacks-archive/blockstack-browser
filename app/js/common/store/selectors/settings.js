@@ -1,6 +1,17 @@
-const selectApi = ({ settings }) => settings.api
+const selectApi = state => state.settings.api
 
-const selectStorageConnected = ({ settings }) =>
-  settings.api && settings.api.storageConnected
+const selectStorageConnected = state => state.settings.api.storageConnected
 
-export { selectApi, selectStorageConnected }
+const selectCoreHost = state => state.settings.api.coreHost
+
+const selectCorePort = state => state.settings.api.corePort
+
+const selectCoreAPIPassword = state => state.settings.api.coreAPIPassword
+
+export {
+  selectApi,
+  selectStorageConnected,
+  selectCoreHost,
+  selectCorePort,
+  selectCoreAPIPassword
+}
