@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyledField } from '@ui/components/form'
 import { slugify } from '@ui/common'
-import { AlertCircleIcon } from 'mdi-react'
+import { AlertCircleIcon, CheckCircleOutlineIcon } from 'mdi-react'
 
 const Field = ({
   label,
@@ -10,6 +10,7 @@ const Field = ({
   message,
   autoFocus,
   error,
+  positive,
   overlay,
   name = slugify(label),
   mh,
@@ -20,12 +21,21 @@ const Field = ({
 }) => {
   const InputComponent =
     type === 'textarea' ? StyledField.Textarea : StyledField.Input
-  const LabelIcon = error && (
-    <StyledField.Label.Icon>
-      <AlertCircleIcon size={16} />
+
+  const LabelIconComponent = positive ? CheckCircleOutlineIcon : AlertCircleIcon
+  const LabelIcon = (error || positive) && (
+    <StyledField.Label.Icon positive={positive}>
+      <LabelIconComponent size={16} />
     </StyledField.Label.Icon>
   )
-
+  /**
+   * TODO: abstract out qualified message to one component that takes multiple states
+   */
+  const PositiveMessage = positive && (
+    <StyledField.Input.Positive overlay={!!overlay}>
+      {positive}
+    </StyledField.Input.Positive>
+  )
   const ErrorMessage = (
     <StyledField.Input.Error overlay={!!overlay}>
       {error}
@@ -50,8 +60,9 @@ const Field = ({
           mh={mh}
           onChange={handleChange}
         />
+        {PositiveMessage}
         {ErrorMessage}
-        <StyledField.Label for={name}>
+        <StyledField.Label htmlFor={name}>
           {label}
           {LabelIcon}
         </StyledField.Label>

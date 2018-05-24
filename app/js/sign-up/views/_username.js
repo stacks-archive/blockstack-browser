@@ -37,12 +37,20 @@ class UsernameView extends React.Component {
   }
 
   validate = async values => {
-    console.log('validating', values)
+    const noValues = !values.username || values.username === ''
+
+    if (
+      !noValues &&
+      this.state.status === 'available' &&
+      values.username === this.state.username
+    ) {
+      this.setState({ status: 'confirmed' })
+      return null
+    }
     this.setState({
       status: 'validating'
     })
 
-    const noValues = !values.username || values.username === ''
     let errors = {}
 
     if (noValues) {
@@ -54,7 +62,6 @@ class UsernameView extends React.Component {
     }
 
     if (values.username !== this.state.username && !noValues) {
-
       const invalidChars = values.username.match(/\W+/g)
 
       if (invalidChars) {
@@ -71,7 +78,6 @@ class UsernameView extends React.Component {
           username: values.username
         })
       }
-
     }
 
     const isRegistered = !noValues && this.state.status !== 'available'
@@ -96,22 +102,20 @@ class UsernameView extends React.Component {
 
   renderButtonLabel = ({ status }) => {
     switch (status) {
+      case 'confirmed':
+        return 'Loading...'
       case 'available':
-        return 'Register Username'
+        return 'Confirm Username'
       case 'validating':
-        return 'Validating...'
+        return 'Checking...'
+      case 'error':
+        return 'Check Another'
       default:
         return 'Check Availability'
     }
   }
 
   processRegistration = (username, next) => next(username)
-
-  constructor(props) {
-    super(props)
-
-    // this.validate = debounce(this.validate, 300)
-  }
 
   render() {
     const { updateValue, next, loading, ...rest } = this.props
@@ -128,7 +132,7 @@ class UsernameView extends React.Component {
           initialValues: { username: '' },
           onSubmit: values => {
             if (
-              this.state.status === 'available' &&
+              this.state.status === 'confirmed' &&
               this.state.username === values.username
             ) {
               updateValue('username', values.username)
@@ -142,8 +146,15 @@ class UsernameView extends React.Component {
               name: 'username',
               autoFocus: true,
               overlay: defaultSponsoredName,
+              positive:
+                this.state.status === 'available' ||
+                this.state.status === 'confirmed'
+                  ? 'Username Available!'
+                  : undefined,
               error:
-                this.state.status === 'registered_subdomain' && 'Username taken'
+                this.state.status === 'registered_subdomain'
+                  ? 'Username taken'
+                  : undefined
             }
           ],
           actions: {

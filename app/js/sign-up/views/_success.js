@@ -20,7 +20,7 @@ const Success = ({
   const props = {
     headerLabel: 'Welcome to the New Internet',
     title: {
-      icon: <UserAvatar {...user} camera />,
+      icon: <UserAvatar {...user} />,
       children: <React.Fragment>{user.username}</React.Fragment>,
       variant: 'h2',
       subtitle: {

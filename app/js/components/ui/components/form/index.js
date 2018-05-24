@@ -118,6 +118,14 @@ const Group = styled.div`
         background: #f67b7b !important;
       }
     `};
+
+  ${({ positive }) =>
+    positive &&
+    css`
+      ${Bar} {
+        background: mediumseagreen !important;
+      }
+    `};
 `
 const ErrorMessage = styled.div`
   color: #f67b7b;
@@ -151,14 +159,58 @@ const ErrorMessage = styled.div`
   }
   ${trans};
 `
+
+const PositiveMessage = styled.div`
+  color: mediumseagreen;
+  position: absolute;
+  right: 0;
+  font-size: 12px;
+  font-weight: 500;
+  ${Input}:not(:focus) ~ &,
+  ${Textarea}:not(:focus) ~ & {
+    top: 10px;
+    ${({ overlay }) =>
+      overlay &&
+      css`
+        top: -15px;
+      `};
+  }
+  ${Textarea}:not(:focus) ~ & {
+    right: 10px;
+  }
+  ${Input}:focus ~ &,
+  ${Input}:not(:placeholder-shown) ~ &,
+  ${Textarea}:focus ~ &,
+  ${Textarea}:not(:placeholder-shown) ~ & {
+    top: -15px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  ${Textarea}:focus ~ &,
+  ${Textarea}:not(:placeholder-shown) ~ & {
+    top: -22px;
+  }
+  ${trans};
+`
 const LabelIcon = styled.div`
   margin-left: 5px;
+
   svg {
     display: block;
     * {
       fill: #f67b7b;
     }
   }
+  ${({ positive }) =>
+    positive &&
+    css`
+      svg {
+        display: block;
+        * {
+          fill: mediumseagreen !important;
+        }
+      }
+    `};
 `
 
 const StyledField = styled.div.attrs({
@@ -209,5 +261,6 @@ StyledField.Input.Wrapper = InputWrapper
 StyledField.Input.Bar = Bar
 StyledField.Input.Message = HelperMessage
 StyledField.Input.Error = ErrorMessage
+StyledField.Input.Positive = PositiveMessage
 
 export { Form, StyledField }
