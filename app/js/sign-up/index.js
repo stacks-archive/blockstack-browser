@@ -39,7 +39,7 @@ import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
-import {formatAppManifest} from '@common'
+import { formatAppManifest } from '@common'
 import { ShellParent } from '@blockstack/ui'
 import { Email, Password, Success, Username } from './views'
 
@@ -74,6 +74,12 @@ const mapStateToProps = state => ({
   appManifestLoadingError: selectAppManifestLoadingError(state)
 })
 
+const CREATE_ACCOUNT_INITIAL = 'createAccount/initial'
+const CREATE_ACCOUNT_STARTED = 'createAccount/started'
+const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
+const CREATE_ACCOUNT_ERROR = 'createAccount/error'
+const CREATE_ACCOUNT_SUCCESS = 'createAccount/success'
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -97,7 +103,7 @@ class Onboarding extends React.Component {
     emailSubmitted: false,
     emailsSent: false,
     loading: false,
-    creatingAccountStatus: 'initial',
+    creatingAccountStatus: CREATE_ACCOUNT_INITIAL,
     view: VIEWS.EMAIL,
     usernameRegistrationInProgress: false
   }
@@ -125,72 +131,93 @@ class Onboarding extends React.Component {
   }
   /**
    * Submit Username
-   *
    * This will create our account and then register a name and connect storage
    */
   submitUsername = username => {
-    this.setState(
-      {
-        creatingAccount: 'started',
-        loading: true
-      },
-      () => this.createIDandRegisterUsername(username)
+    this.setState({
+      creatingAccountStatus: CREATE_ACCOUNT_STARTED,
+      username,
+      loading: true
+    })
+  }
+
+  /**
+   * This is our main function for creating a new account
+   */
+  createAccount = () => {
+    const { username, password } = this.state
+    if (!username) {
+      throw new Error('Missing a username! How did that happen?')
+    } else if (!password) {
+      throw new Error('Missing a password! How did that happen?')
+    }
+    logger.debug('creating account, createAccount()')
+
+    this.setState({
+      creatingAccountStatus: CREATE_ACCOUNT_IN_PROCESS
+    })
+    // Initialize our wallet
+    this.initializeWallet().then(() =>
+      // Create new ID and owner address and then set to default
+      this.createNewIdAndSetDefault().then(() =>
+        // Connect our default storage
+        this.connectStorage().then(() =>
+          // Finally, register the username
+          this.registerUsername()
+        )
+      )
     )
   }
 
-  createIDandRegisterUsername = username => {
-    logger.debug('creating account')
-    this.createAccount(this.state.password).then(() =>
-      this.createIDandSetDefault().then(() => {
-        logger.debug('fire connectStorage')
-        this.connectStorage().then(() => {
-          logger.debug('connectStorage has finished')
-          const suffix = `.${SUBDOMAIN_SUFFIX}`
-          username += suffix
-          console.log('about to submit username', username)
-          logger.trace('registerUsername')
-          const nameHasBeenPreordered = hasNameBeenPreordered(
-            username,
-            this.props.localIdentities
-          )
-          if (nameHasBeenPreordered) {
-            /**
-             * TODO: redirect them back and then have them choose a new name
-             */
-            logger.error(
-              `registerUsername: username '${username}' has already been preordered`
-            )
-          } else {
-            this.setState({
-              usernameRegistrationInProgress: true
-            })
-            logger.debug(
-              `registerUsername: will try and register username: ${username}`
-            )
-
-            /**
-             * This is assuming that there are no accounts, and we're using the first item in the arrays
-             */
-            const identityIndex = 0
-            const address = this.props.identityAddresses[identityIndex]
-            const identity = this.props.localIdentities[identityIndex]
-            const keypair = this.props.identityKeypairs[identityIndex]
-
-            this.props.registerName(
-              this.props.api,
-              username,
-              identity,
-              identityIndex,
-              address,
-              keypair
-            )
-            this.setState({
-              creatingAccountStatus: 'complete'
-            })
-          }
-        })
-      })
+  /**
+   * Register the username
+   */
+  registerUsername = async () => {
+    console.log('registerUsername()')
+    let username = this.state.username
+    const suffix = `.${SUBDOMAIN_SUFFIX}`
+    username += suffix
+    console.log('about to submit username', username)
+    logger.trace('registerUsername')
+    const nameHasBeenPreordered = hasNameBeenPreordered(
+      username,
+      this.props.localIdentities
     )
+    if (nameHasBeenPreordered) {
+      /**
+       * TODO: redirect them back and then have them choose a new name
+       */
+      logger.error(
+        `registerUsername: username '${username}' has already been preordered`
+      )
+    } else {
+      this.setState({
+        usernameRegistrationInProgress: true
+      })
+      logger.debug(
+        `registerUsername: will try and register username: ${username}`
+      )
+
+      /**
+       * This is assuming that there are no accounts, and we're using the first item in the arrays
+       */
+      const identityIndex = 0
+      const address = this.props.identityAddresses[identityIndex]
+      const identity = this.props.localIdentities[identityIndex]
+      const keypair = this.props.identityKeypairs[identityIndex]
+
+      this.props.registerName(
+        this.props.api,
+        username,
+        identity,
+        identityIndex,
+        address,
+        keypair
+      )
+      this.setState({
+        creatingAccountStatus: CREATE_ACCOUNT_SUCCESS
+      })
+    }
   }
   /**
    * Finish step
@@ -359,21 +386,22 @@ class Onboarding extends React.Component {
   }
 
   /**
-   * Create our account
+   * initialize our wallet
    * this will initialize our wallet and then create an account for us
    * see account/actions.js
    */
-  async createAccount(password) {
+  async initializeWallet() {
+    const { password } = this.state
     const { initializeWallet } = this.props
     return initializeWallet(password, null)
   }
 
   /**
    * Create ID and Set it as default
-   * this function needs to fire after the createAccount function has finished
+   * this function needs to fire after the initializeWallet function has finished
    * it will generate a new ID with address and set it as the default ID
    */
-  async createIDandSetDefault() {
+  async createNewIdAndSetDefault() {
     const {
       identityAddresses,
       createNewIdentityWithOwnerAddress,
@@ -392,6 +420,7 @@ class Onboarding extends React.Component {
    * Connect Storage
    */
   async connectStorage() {
+    logger.debug('fire connectStorage')
     const storageProvider = this.props.api.gaiaHubUrl
     const signer = this.props.identityKeypairs[0].key
     return connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
@@ -418,15 +447,36 @@ class Onboarding extends React.Component {
       this.props.updateApi(newApi2)
       this.props.storageIsConnected()
       logger.debug('connectStorage: storage configured')
+      logger.debug('connectStorage has finished')
     })
   }
 
   componentDidUpdate(prevProps, prevState, prevContext) {
-    if (
-      this.state.creatingAccountStatus === 'completed' &&
-      this.state.emailsSent &&
-      this.state.view !== VIEWS.HOORAY
-    ) {
+    const {
+      creatingAccountStatus,
+      view,
+      emailsSent,
+      loading,
+      username,
+      password
+    } = this.state
+
+    const registrationBegin =
+      creatingAccountStatus === CREATE_ACCOUNT_STARTED &&
+      loading &&
+      username &&
+      password
+
+    const registrationComplete =
+      creatingAccountStatus === CREATE_ACCOUNT_SUCCESS &&
+      emailsSent &&
+      view !== VIEWS.HOORAY
+
+    if (registrationBegin) {
+      setTimeout(() => this.createAccount(), 500)
+    }
+
+    if (registrationComplete) {
       this.updateView(VIEWS.HOORAY)
     }
   }
@@ -478,8 +528,6 @@ class Onboarding extends React.Component {
     const appIconURL =
       icons.length > 0 ? icons[0].src : '/images/app-icon-hello-blockstack.png'
     const appName = appManifest ? appManifest.name : 'Untitled dApp'
-
-
 
     const app = formatAppManifest(this.props.appManifest)
 
