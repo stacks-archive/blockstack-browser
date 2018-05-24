@@ -438,6 +438,20 @@ const apps = {
       developer: 'Dan Healy',
       status: 'user_ready_chat',
       storageRequired: true
+    }, {
+      name: 'PeerChat',
+      displayName: 'PeerChat',
+      description: 'A simple, private, and secure p2p messenger built on social core and Blockstack',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-peerchat-256x256.png',
+        large: 'app-icon-peerchat-512x512.png'
+      },
+      website: 'https://chat.postly.co/',
+      launchLink: 'https://chat.postly.co/',
+      developer: 'Postly',
+      status: 'user_ready_chat',
+      storageRequired: true
     }
   ]
 }
