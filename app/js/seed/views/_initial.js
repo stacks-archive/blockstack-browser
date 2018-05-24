@@ -1,7 +1,7 @@
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 
-const SeedInitial = ({ next, ...rest }) => {
+const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
   const props = {
     headerLabel: 'Secure your account',
     title: {
@@ -29,7 +29,10 @@ const SeedInitial = ({ next, ...rest }) => {
         {
           label: 'View Secret Recovery Key',
           onClick: () => next(),
-          primary: true
+          primary: true,
+          loading,
+          disabled: loading,
+          placeholder
         },
         {
           label: 'Do this later',

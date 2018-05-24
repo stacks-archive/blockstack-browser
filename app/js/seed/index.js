@@ -54,22 +54,13 @@ class SeedContainer extends Component {
     this.state = {
       encryptedBackupPhrase: props.encryptedBackupPhrase || null,
       view: 0,
-      seed: undefined,
+      seed: null,
       loading: false,
-      decrypting: false
-    }
-  }
-
-  componentWillMount() {
-    const cachedSeed = this.getCachedEncryptedSeed()
-    if (cachedSeed.seed) {
-      if (this.state.seed !== cachedSeed.seed) {
-        this.setState({ seed: cachedSeed.seed })
-      }
-    } else if (cachedSeed.cached) {
-      if (this.state.encryptedBackupPhrase !== cachedSeed.cached) {
-        this.setState({ encryptedBackupPhrase: cachedSeed.cached })
-      }
+      decrypting: false,
+      password:
+        props.location && props.location.state && props.location.state.password
+          ? props.location.state.password
+          : null
     }
   }
 
@@ -85,40 +76,37 @@ class SeedContainer extends Component {
       this.setState({ view })
     }
   }
-
-  getCachedEncryptedSeed = () => {
-    const cached = this.props.encryptedBackupPhrase
-    const { location } = this.props
-    if (location && location.state && location.state.password) {
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (prevState.seed && prevState.decrypting) {
       return {
-        seed: this.decryptSeed(location.state.password.toString()),
-        cached
-      }
-    } else {
-      return {
-        cached
+        ...prevState,
+        decrypting: false
       }
     }
+    return prevState
   }
 
-  decryptSeed = password => {
-    if (
-      !this.state.encryptedBackupPhrase &&
-      !this.props.encryptedBackupPhrase
-    ) {
+  decryptSeed = p => {
+    if (!this.props.encryptedBackupPhrase) {
       return null
     }
-    const buffer = new Buffer(
-      this.state.encryptedBackupPhrase || this.props.encryptedBackupPhrase,
-      'hex'
-    )
+    let password = p
+    if (!password) {
+      const { location } = this.props
+      if (location && location.state && location.state.password) {
+        password = location.state.password
+      }
+    }
+    const buffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
 
     return decrypt(buffer, password).then(result => {
       if (this.state.seed !== result.toString()) {
-        this.setState({
-          seed: result.toString()
-        })
-        return result.toString()
+        return this.setState(
+          {
+            seed: result.toString()
+          },
+          () => setTimeout(() => this.updateView(VIEWS.SEED))
+        )
       } else {
         return null
       }
@@ -127,30 +115,55 @@ class SeedContainer extends Component {
 
   passwordNext = password => {
     if (!this.state.seed && !this.state.password) {
-      this.setState({
-        password,
-        loading: true
-      })
+      this.autoDecrypt(password)
     }
   }
 
-  componentDidUpdate(prevProps, prevState, prevContext) {
-    if (
-      !this.state.seed &&
-      this.state.password &&
-      this.state.loading &&
-      !this.state.decrypting
-    ) {
-      this.setState(
+  passwordPassedFromSignUp = () => {
+    const { location } = this.props
+    if (location && location.state && location.state.password) {
+      return location.state.password
+    }
+    return null
+  }
+
+  initialAction = () => {
+    let password = undefined
+    if (this.passwordPassedFromSignUp()) {
+      password = this.passwordPassedFromSignUp()
+    } else if (this.state.password) {
+      password = this.state.password
+    }
+    if (this.state.seed) {
+      return this.updateView(VIEWS.SEED)
+    } else if (!password) {
+      return this.updateView(VIEWS.UNLOCK_KEY)
+    }
+    return this.autoDecrypt()
+  }
+
+  autoDecrypt = (p = undefined) => {
+    let password = p
+    if (this.passwordPassedFromSignUp()) {
+      password = this.passwordPassedFromSignUp()
+    } else if (this.state.password) {
+      password = this.state.password
+    }
+    if (!password) {
+      return null
+    }
+    if (!this.state.seed && password && !this.state.decrypting) {
+      return this.setState(
         {
           decrypting: true
         },
-        () => setTimeout(() => this.decryptSeed(this.state.password), 250)
+        () => setTimeout(() => this.decryptSeed(password), 50)
       )
     }
     if (this.state.seed && this.state.view === VIEWS.UNLOCK_KEY) {
-      setTimeout(() => this.updateView(VIEWS.SEED), 250)
+      return setTimeout(() => this.updateView(VIEWS.SEED), 50)
     }
+    return null
   }
 
   finish = () => {
@@ -195,14 +208,16 @@ class SeedContainer extends Component {
       {
         show: VIEWS.KEY_INFO,
         props: {
-          next: () =>
-            this.updateView(this.state.seed ? VIEWS.SEED : VIEWS.UNLOCK_KEY)
+          loading: this.state.decrypting,
+          placeholder: 'Unlocking Recovery Key...',
+          next: () => this.initialAction()
         }
       },
       {
         show: VIEWS.UNLOCK_KEY,
         props: {
-          loading: this.state.loading,
+          loading: this.state.decrypting,
+          placeholder: 'Unlocking Recovery Key...',
           previous: () => this.updateView(VIEWS.KEY_INFO),
           next: p => this.passwordNext(p),
           password
@@ -271,7 +286,8 @@ SeedContainer.propTypes = {
   appManifest: PropTypes.object,
   encryptedBackupPhrase: PropTypes.string,
   authRequest: PropTypes.string,
-  verified: PropTypes.bool.isRequired
+  verified: PropTypes.bool.isRequired,
+  doVerifyRecoveryCode: PropTypes.func.isRequired
 }
 
 export default withRouter(

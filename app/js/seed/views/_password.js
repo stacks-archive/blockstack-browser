@@ -10,7 +10,7 @@ const validationSchema = Yup.object({
 
 class PasswordView extends React.Component {
   render() {
-    const { updateValue, next, loading, ...rest } = this.props
+    const { next, loading, placeholder, ...rest } = this.props
 
     const props = {
       title: {
@@ -43,7 +43,9 @@ class PasswordView extends React.Component {
                 primary: true,
                 type: 'submit',
                 icon: 'ArrowRightIcon',
-                loading
+                disabled: loading,
+                loading,
+                placeholder
               }
             ]
           }
