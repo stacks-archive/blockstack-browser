@@ -12,6 +12,7 @@ const Input = styled.input`
   outline: none;
   width: 100%;
   color: rgba(39, 16, 51, 0.7);
+  text-transform: lowercase !important;
 `
 
 const Textarea = styled.textarea`
