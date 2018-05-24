@@ -8,10 +8,18 @@ import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { ShellParent } from '@blockstack/ui'
+import { selectEncryptedBackupPhrase } from '@common/store/selectors/account'
+import {
+  selectAppManifest,
+  selectAuthRequest
+} from '@common/store/selectors/auth'
+import { formatAppManifest } from '@common'
 
 function mapStateToProps(state) {
   return {
-    encryptedBackupPhrase: state.account.encryptedBackupPhrase
+    encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
+    appManifest: selectAppManifest(state),
+    authRequest: selectAuthRequest(state)
   }
 }
 
@@ -95,7 +103,7 @@ class SeedContainer extends Component {
       'hex'
     )
 
-    decrypt(buffer, password).then(result => {
+    return decrypt(buffer, password).then(result => {
       if (this.state.seed !== result.toString()) {
         this.setState({
           seed: result.toString()
@@ -117,10 +125,21 @@ class SeedContainer extends Component {
   }
 
   finish = () => {
-    browserHistory.push({
-      pathname: '/',
-      state: {}
-    })
+    if (formatAppManifest(this.props.appManifest) && this.props.authRequest) {
+      return this.redirectToAuth()
+    } else {
+      return browserHistory.push({
+        pathname: '/',
+        state: {}
+      })
+    }
+  }
+
+  /**
+   * Redirect to Auth Request
+   */
+  redirectToAuth = () => {
+    this.props.router.push(`/auth/?authRequest=${this.props.authRequest}`)
   }
 
   backView = () => {
@@ -141,7 +160,7 @@ class SeedContainer extends Component {
   }
 
   render() {
-    const { password, view, seed, app } = this.state
+    const { password, view, seed } = this.state
 
     const viewProps = [
       {
@@ -167,7 +186,7 @@ class SeedContainer extends Component {
             this.updateView(
               this.state.verified ? VIEWS.KEY_COMPLETE : VIEWS.KEY_CONFIRM
             ),
-          seed: seed && seed.split(' ')
+          seed: seed && seed.toString().split(' ')
         }
       },
       {
@@ -175,7 +194,7 @@ class SeedContainer extends Component {
         props: {
           previous: () => this.updateView(VIEWS.SEED),
           next: () => this.updateView(VIEWS.KEY_COMPLETE),
-          seed: seed && seed.split(' '),
+          seed: seed && seed.toString().split(' '),
           setVerified: () => this.setVerified(),
           verified: this.state.verified
         }
@@ -183,7 +202,11 @@ class SeedContainer extends Component {
       {
         show: VIEWS.KEY_COMPLETE,
         props: {
-          next: () => this.finish()
+          finish: () => this.finish(),
+          buttonLabel:
+            formatAppManifest(this.props.appManifest) && this.props.authRequest
+              ? `Go to ${formatAppManifest(this.props.appManifest).name}`
+              : 'Go to Blockstack'
         }
       }
     ]
@@ -196,6 +219,9 @@ class SeedContainer extends Component {
       backView: () => this.backView(),
       ...currentViewProps.props
     }
+
+    const app = formatAppManifest(this.props.appManifest)
+
     return (
       <ShellParent
         app={app}

@@ -58,6 +58,14 @@ export default ({ next, ...rest }) => {
           </Type.p>
         </React.Fragment>
       )
+    },
+    actions: {
+      items: [
+        {
+          label: 'Create a new Blockstack ID',
+          to: '/sign-up'
+        }
+      ]
     }
   }
   return <ShellScreen {...rest} {...props} />

@@ -14,13 +14,14 @@ const selectAppBackgroundColor = ({ auth }) =>
 const selectAppStartUrl = ({ auth }) =>
   auth.appManifest && auth.appManifest.start_url
 const selectAppIcons = ({ auth }) => auth.appManifest && auth.appManifest.icons
-
+const selectAuthRequest = ({ auth }) => auth && auth.authRequest
 export {
   selectAppManifest,
   selectAppManifestLoaded,
   selectAppManifestLoading,
   selectAppManifestLoadingError,
   selectCoreSessionTokens,
+  selectAuthRequest,
   selectLoggedIntoApp,
   selectAppName,
   selectAppDescription,

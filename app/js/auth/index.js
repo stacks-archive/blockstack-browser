@@ -48,6 +48,7 @@ import {
   selectIdentityAddresses,
   selectPublicKeychain
 } from '@common/store/selectors/account'
+import { formatAppManifest } from '@common'
 
 const views = [Initial, LegacyGaia]
 
@@ -513,10 +514,7 @@ class AuthPage extends React.Component {
       !invalidScopes &&
       !noCoreStorage
 
-    const app = {
-      name: appManifest.name,
-      icon: appManifest.icons[0].src
-    }
+    const app = formatAppManifest(this.props.appManifest)
 
     const viewProps = [
       {

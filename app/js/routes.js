@@ -35,10 +35,9 @@ import ReceivePage from './wallet/ReceivePage'
 import SendPage from './wallet/SendPage'
 import SendCorePage from './wallet/SendCorePage'
 
-import AuthPage from './auth/AuthPage'
 import NewAuthPage from './auth/index'
 
-import OnboardingPage from './onboarding'
+import SignUpPage from './sign-up'
 import SeedPage from './seed'
 import SignInPage from './sign-in'
 
@@ -101,8 +100,8 @@ export default (
       <Route path="/auth" component={NewAuthPage} />
       <Route path="/seed" component={SeedPage} />
     </Route>
-    <Route path="/sign-up" component={OnboardingPage} />
-    <Route path="/sign-up/*" component={OnboardingPage} />
+    <Route path="/sign-up" component={SignUpPage} />
+    <Route path="/sign-up/*" component={SignUpPage} />
 
     <Route path="/sign-in" component={SignInPage} />
     <Route path="/sign-in/*" component={SignInPage} />
