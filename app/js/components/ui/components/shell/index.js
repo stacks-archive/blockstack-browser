@@ -68,6 +68,7 @@ const StyledShell = styled.div`
   left: 0;
   width: 100%;
   z-index: 900000;
+  background: white;
   * {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI',
       Roboto, sans-serif;

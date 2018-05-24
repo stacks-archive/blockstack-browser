@@ -26,6 +26,7 @@ const initialState = {
     }
   },
   viewedRecoveryCode: false, // persist
+  recoveryCodeVerified: false,
   connectedStorageAtLeastOnce: false // persist
 }
 
@@ -48,6 +49,11 @@ function AccountReducer(state = initialState, action) {
           balances: state.bitcoinAccount.balances
         }
       })
+    case types.RECOVERY_CODE_VERIFIED:
+      return {
+        ...state,
+        recoveryCodeVerified: true
+      }
     case types.DELETE_ACCOUNT:
       return Object.assign({}, state, {
         accountCreated: false,

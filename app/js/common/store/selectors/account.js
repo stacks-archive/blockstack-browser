@@ -9,6 +9,7 @@ const selectConnectedStorageAtLeastOnce = ({ account }) =>
 const selectEmail = ({ account }) => account.email
 const selectPublicKeychain = ({ account }) =>
   account.identityAccount && account.identityAccount.publicKeychain
+const selectRecoveryCodeVerified = ({account}) => account && account.recoveryCodeVerified
 export {
   selectPromptedForEmail,
   selectEncryptedBackupPhrase,
@@ -16,5 +17,6 @@ export {
   selectIdentityKeypairs,
   selectConnectedStorageAtLeastOnce,
   selectEmail,
-  selectPublicKeychain
+  selectPublicKeychain,
+  selectRecoveryCodeVerified
 }

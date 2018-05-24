@@ -8,7 +8,10 @@ import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { ShellParent } from '@blockstack/ui'
-import { selectEncryptedBackupPhrase } from '@common/store/selectors/account'
+import {
+  selectEncryptedBackupPhrase,
+  selectRecoveryCodeVerified
+} from '@common/store/selectors/account'
 import {
   selectAppManifest,
   selectAuthRequest
@@ -19,13 +22,17 @@ function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
     appManifest: selectAppManifest(state),
-    authRequest: selectAuthRequest(state)
+    authRequest: selectAuthRequest(state),
+    verified: selectRecoveryCodeVerified(state)
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    Object.assign({}, AccountActions, IdentityActions),
+    {
+      ...AccountActions,
+      ...IdentityActions
+    },
     dispatch
   )
 }
@@ -47,7 +54,6 @@ class SeedContainer extends Component {
     this.state = {
       encryptedBackupPhrase: props.encryptedBackupPhrase || null,
       view: 0,
-      verified: false,
       seed: undefined,
       loading: false,
       decrypting: false
@@ -67,7 +73,8 @@ class SeedContainer extends Component {
     }
   }
 
-  setVerified = () => !this.state.verified && this.setState({ verified: true })
+  setVerified = () =>
+    !this.props.verified ? this.props.doVerifyRecoveryCode() : null
 
   updateValue = (key, value) => {
     this.setState({ [key]: value })
@@ -207,7 +214,7 @@ class SeedContainer extends Component {
           previous: () => this.updateView(VIEWS.KEY_INFO),
           next: () =>
             this.updateView(
-              this.state.verified ? VIEWS.KEY_COMPLETE : VIEWS.KEY_CONFIRM
+              this.props.verified ? VIEWS.KEY_COMPLETE : VIEWS.KEY_CONFIRM
             ),
           seed: seed && seed.toString().split(' '),
           seedString: seed && seed.toString()
@@ -220,7 +227,7 @@ class SeedContainer extends Component {
           next: () => this.updateView(VIEWS.KEY_COMPLETE),
           seed: seed && seed.toString().split(' '),
           setVerified: () => this.setVerified(),
-          verified: this.state.verified
+          verified: this.props.verified
         }
       },
       {
@@ -261,7 +268,10 @@ class SeedContainer extends Component {
 
 SeedContainer.propTypes = {
   location: PropTypes.object.isRequired,
-  encryptedBackupPhrase: PropTypes.string
+  appManifest: PropTypes.object,
+  encryptedBackupPhrase: PropTypes.string,
+  authRequest: PropTypes.string,
+  verified: PropTypes.bool.isRequired
 }
 
 export default withRouter(
