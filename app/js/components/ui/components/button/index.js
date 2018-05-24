@@ -245,6 +245,7 @@ const Buttons = styled.div`
     text-decoration: none !important;
   }
   &:first-of-type {
+  
     margin-top: ${spacing.gutter};
   }
   &:not(:first-of-type) {

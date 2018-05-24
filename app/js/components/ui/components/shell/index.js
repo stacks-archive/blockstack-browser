@@ -35,7 +35,11 @@ const AnimatedTitle = styled(animated.div)``
 const Content = styled(animated.div)`
   flex-grow: ${({ grow }) => (grow ? 1 : 0)};
 `
-const Actions = styled(animated.div)``
+const Actions = styled(animated.div)`
+  @media (max-width: 900px) {
+    margin-bottom: 30px;
+  }
+`
 
 const Main = styled(animated.div)`
   flex-grow: 1;
@@ -69,6 +73,11 @@ const StyledShell = styled.div`
   width: 100%;
   z-index: 900000;
   background: white;
+  @media (max-width: 900px) {
+    max-height: 100vh;
+    overflow-y: auto;
+    margin-bottom: 30px;
+  }
   * {
     font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI',
       Roboto, sans-serif;
@@ -134,6 +143,10 @@ const ContentContainer = styled.div`
   display: flex;
   width: 100%;
   padding: ${spacing.gutter};
+
+  @media (max-width: 900px) {
+    padding-bottom: 0;
+  }
   @media (min-width: 900px) {
     padding: calc(${spacing.gutter} * 2);
     max-width: 720px;
@@ -151,7 +164,7 @@ const ContentWrapper = styled.div`
   ${Wrapper} {
     position: relative;
     @media (min-width: 900px) {
-      min-height: 450px;
+      min-height: 500px;
     }
   }
 `
