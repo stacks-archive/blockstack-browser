@@ -146,6 +146,12 @@ class UsernameView extends React.Component {
               name: 'username',
               autoFocus: true,
               overlay: defaultSponsoredName,
+              handleChangeOverride: (e, handleChange) => {
+                handleChange(e)
+                this.setState({
+                  status: null
+                })
+              },
               positive:
                 this.state.status === 'available' ||
                 this.state.status === 'confirmed'

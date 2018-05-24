@@ -15,6 +15,7 @@ const Field = ({
   name = slugify(label),
   mh,
   handleChange,
+  handleChangeOverride,
   handleBlur,
   onBlur,
   ...rest
@@ -46,6 +47,14 @@ const Field = ({
     <StyledField.Input.Overlay>{overlay}</StyledField.Input.Overlay>
   )
 
+  const _handleChange = (e) => {
+    if (handleChangeOverride) {
+      handleChangeOverride(e, handleChange)
+    } else {
+      handleChange(e)
+    }
+  }
+
   return (
     <StyledField.Group error={error} {...rest}>
       <StyledField.Input.Wrapper>
@@ -58,7 +67,7 @@ const Field = ({
           type={type}
           autoFocus={autoFocus}
           mh={mh}
-          onChange={handleChange}
+          onChange={_handleChange}
           lowercase={type !== 'password'}
         />
         {PositiveMessage}
