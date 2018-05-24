@@ -50,7 +50,7 @@ const Success = ({
         {
           label: (
             <React.Fragment>
-              Go to {app.name ? app.name : 'Blockstack'}
+              Go to {app && app.name ? app.name : 'Blockstack'}
             </React.Fragment>
           ),
           primary: true,
