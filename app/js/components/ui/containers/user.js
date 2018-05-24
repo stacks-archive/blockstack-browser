@@ -3,9 +3,23 @@ import { User } from '@blockstack/ui/components/user'
 import React from 'react'
 import { ChevronRightIcon } from 'mdi-react'
 
-const UserAvatar = ({ id, username, size = 46, camera, ...rest }) => (
-  <User.Avatar size={size} color={stringToColor(id)} {...rest}>
+const UserAvatar = ({
+  id,
+  username = '?',
+  size = 46,
+  camera,
+  textSize = 14,
+  ...rest
+}) => (
+  <User.Avatar
+    size={size}
+    color={stringToColor(id)}
+    textSize={textSize}
+    camera={camera}
+    {...rest}
+  >
     {firstLetter(username)}
+    {camera && <User.Avatar.Camera />}
   </User.Avatar>
 )
 

@@ -7,7 +7,7 @@ import { Person } from 'blockstack'
 import Modal from 'react-modal'
 import Image from '@components/Image'
 import { IdentityActions } from './store/identity'
-import { AccountActions }  from '../account/store/account'
+import { AccountActions } from '../account/store/account'
 import SecondaryNavBar from '@components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
@@ -16,6 +16,8 @@ import InputGroup from '@components/InputGroup'
 import ToolTip from '@components/ToolTip'
 import EditSocialAccount from './components/EditSocialAccount'
 import EditAccount from './components/EditAccount'
+import { UserAvatar } from '@blockstack/ui'
+
 import { uploadProfile, uploadPhoto } from '../account/utils'
 import {
   openInNewTab,
@@ -42,10 +44,7 @@ const accountTypes = [
   'instagram'
 ]
 
-const hiddenAccountTypes = [
-  'linkedIn',
-  'instagram'
-]
+const hiddenAccountTypes = ['linkedIn', 'instagram']
 
 function mapStateToProps(state) {
   return {
@@ -63,7 +62,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
+  return bindActionCreators(
+    Object.assign({}, IdentityActions, AccountActions),
+    dispatch
+  )
 }
 
 class DefaultProfilePage extends Component {
@@ -110,10 +112,7 @@ class DefaultProfilePage extends Component {
 
   componentWillMount() {
     logger.trace('componentWillMount')
-    this.props.refreshIdentities(
-      this.props.api,
-      this.props.identityAddresses
-    )
+    this.props.refreshIdentities(this.props.api, this.props.identityAddresses)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -153,7 +152,7 @@ class DefaultProfilePage extends Component {
     })
   }
 
-  onSocialAccountClick = (service) => {
+  onSocialAccountClick = service => {
     if (this.state.socialAccountEditIsOpen) {
       this.setState({
         socialAccountEditIsOpen: false,
@@ -163,7 +162,7 @@ class DefaultProfilePage extends Component {
       let editingAccount = null
 
       if (this.state.profile.account) {
-        this.state.profile.account.forEach((account) => {
+        this.state.profile.account.forEach(account => {
           if (account.service === service) {
             editingAccount = account
           }
@@ -192,7 +191,7 @@ class DefaultProfilePage extends Component {
     }
   }
 
-  onAccountClick = (service) => {
+  onAccountClick = service => {
     if (this.state.accountEditIsOpen) {
       this.setState({
         accountEditIsOpen: false,
@@ -202,7 +201,7 @@ class DefaultProfilePage extends Component {
       let editingAccount = null
 
       if (this.state.profile.account) {
-        this.state.profile.account.forEach((account) => {
+        this.state.profile.account.forEach(account => {
           if (account.service === service) {
             editingAccount = account
           }
@@ -248,8 +247,9 @@ class DefaultProfilePage extends Component {
     const identity = this.props.localIdentities[profileIndex]
 
     const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${identity.ownerAddress}`
-    const verificationText =
-    `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress} ${url}`
+    const verificationText = `Verifying my Blockstack ID is secured with the address ${
+      identity.ownerAddress
+    } ${url}`
     let verificationUrl = ''
 
     if (service === 'twitter') {
@@ -390,16 +390,26 @@ class DefaultProfilePage extends Component {
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
 
-    this.props.updateProfile(this.props.defaultIdentity, newProfile, identity.zoneFile)
+    this.props.updateProfile(
+      this.props.defaultIdentity,
+      newProfile,
+      identity.zoneFile
+    )
     logger.trace('saveProfile: Preparing to upload profile')
     logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 
-
     const identitySigner = this.props.identityKeypairs[identityIndex]
-    const signedProfileTokenData = signProfileForUpload(this.state.profile, identitySigner)
+    const signedProfileTokenData = signProfileForUpload(
+      this.state.profile,
+      identitySigner
+    )
     if (this.props.storageConnected) {
-      uploadProfile(this.props.api, identity, identitySigner, signedProfileTokenData)
-      .catch((err) => {
+      uploadProfile(
+        this.props.api,
+        identity,
+        identitySigner,
+        signedProfileTokenData
+      ).catch(err => {
         logger.error('saveProfile: profile not uploaded', err)
       })
     } else {
@@ -414,10 +424,15 @@ class DefaultProfilePage extends Component {
     const identityAddress = identity.ownerAddress
     const username = identity.username
 
-    this.props.refreshSocialProofVerifications(identityIndex, identityAddress, username, profile)
+    this.props.refreshSocialProofVerifications(
+      identityIndex,
+      identityAddress,
+      username,
+      profile
+    )
   }
 
-  uploadProfilePhoto = (e) => {
+  uploadProfilePhoto = e => {
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
     const identitySigner = this.props.identityKeypairs[identityIndex]
@@ -426,30 +441,38 @@ class DefaultProfilePage extends Component {
 
     logger.debug('uploadProfilePhoto: trying to upload...')
     if (this.props.storageConnected) {
-      uploadPhoto(this.props.api, identity, identitySigner, e.target.files[0], photoIndex)
-      .then((avatarUrl) => {
-        logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
-        profile.image = []
-        profile.image.push({
-          '@type': 'ImageObject',
-          name: 'avatar',
-          contentUrl: avatarUrl
+      uploadPhoto(
+        this.props.api,
+        identity,
+        identitySigner,
+        e.target.files[0],
+        photoIndex
+      )
+        .then(avatarUrl => {
+          logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
+          profile.image = []
+          profile.image.push({
+            '@type': 'ImageObject',
+            name: 'avatar',
+            contentUrl: avatarUrl
+          })
+          this.setState({
+            profile,
+            photoModalIsOpen: false
+          })
+          this.saveProfile(profile)
+          this.props.refreshIdentities(
+            this.props.api,
+            this.props.identityAddresses
+          )
         })
-        this.setState({
-          profile,
-          photoModalIsOpen: false
+        .catch(error => {
+          console.error(error)
         })
-        this.saveProfile(profile)
-        this.props.refreshIdentities(
-          this.props.api,
-          this.props.identityAddresses
-        )
-      })
-      .catch((error) => {
-        console.error(error)
-      })
     } else {
-      logger.error('uploadProfilePhoto: storage is not connected. Doing nothing.')
+      logger.error(
+        'uploadProfilePhoto: storage is not connected. Doing nothing.'
+      )
     }
   }
 
@@ -482,7 +505,10 @@ class DefaultProfilePage extends Component {
   }
 
   availableIdentityAddresses() {
-    return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
+    return (
+      this.props.nextUnusedAddressIndex + 1 <=
+      this.props.identityAddresses.length
+    )
   }
 
   createNewAccount(service, identifier, proofUrl) {
@@ -507,13 +533,15 @@ class DefaultProfilePage extends Component {
     }
   }
 
-  removeAccount = (service) => {
+  removeAccount = service => {
     const profile = this.state.profile
     const accounts = profile.account
 
     if (accounts) {
       logger.trace('Removing account')
-      const newAccounts = accounts.filter(account => account.service !== service)
+      const newAccounts = accounts.filter(
+        account => account.service !== service
+      )
       profile.account = newAccounts
       this.setState({ profile })
       this.saveProfile(profile)
@@ -537,16 +565,19 @@ class DefaultProfilePage extends Component {
     const trustLevel = identity.trustLevel
     // const blockNumber = identity.blockNumber
     // const transactionIndex = identity.transactionIndex
-    const profileCompleteness = calculateProfileCompleteness(identity.profile, verifications)
+    const profileCompleteness = calculateProfileCompleteness(
+      identity.profile,
+      verifications
+    )
 
     const filledAccounts = []
     const placeholders = []
     let hiddenAccounts = hiddenAccountTypes
 
     if (this.state.profile.hasOwnProperty('account')) {
-      accountTypes.forEach((accountType) => {
+      accountTypes.forEach(accountType => {
         let hasAccount = false
-        this.state.profile.account.forEach((account) => {
+        this.state.profile.account.forEach(account => {
           if (account.service === accountType) {
             hasAccount = true
             account.placeholder = false
@@ -554,10 +585,12 @@ class DefaultProfilePage extends Component {
           }
         })
 
-        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+        const hideAccount = hiddenAccounts.indexOf(accountType) >= 0
 
         if (hasAccount && hideAccount) {
-          hiddenAccounts = hiddenAccounts.filter(hiddenAccount => hiddenAccount !== accountType)
+          hiddenAccounts = hiddenAccounts.filter(
+            hiddenAccount => hiddenAccount !== accountType
+          )
         }
 
         if (!hasAccount) {
@@ -571,8 +604,8 @@ class DefaultProfilePage extends Component {
         }
       })
     } else {
-      accountTypes.forEach((accountType) => {
-        const hideAccount = (hiddenAccounts.indexOf(accountType) >= 0)
+      accountTypes.forEach(accountType => {
+        const hideAccount = hiddenAccounts.indexOf(accountType) >= 0
         if (hideAccount) {
           if (this.state.showHiddenPlaceholders) {
             placeholders.push(this.createPlaceholderAccount(accountType))
@@ -590,33 +623,34 @@ class DefaultProfilePage extends Component {
 
     const socialAccountEdit = () => {
       if (isMobile()) {
-        return (
-          this.state.socialAccountEditIsOpen ?
-            <div>
-              <SecondaryNavBar
-                leftButtonTitle="Back"
-                leftIsButton
-                onLeftButtonClick={this.closeSocialAccountModal}
-              />
-              <div className="container-fluid m-t-10">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="social-account-edit">
-                      <EditSocialAccount
-                        ownerAddress={ownerAddress}
-                        service={this.state.editingSocialAccount.service}
-                        identifier={this.state.editingSocialAccount.identifier}
-                        proofUrl={this.state.editingSocialAccount.proofUrl}
-                        onPostVerificationButtonClick={this.onPostVerificationButtonClick}
-                        onVerifyButtonClick={this.onVerifyButtonClick}
-                      />
-                    </div>
+        return this.state.socialAccountEditIsOpen ? (
+          <div>
+            <SecondaryNavBar
+              leftButtonTitle="Back"
+              leftIsButton
+              onLeftButtonClick={this.closeSocialAccountModal}
+            />
+            <div className="container-fluid m-t-10">
+              <div className="row">
+                <div className="col-12">
+                  <div className="social-account-edit">
+                    <EditSocialAccount
+                      ownerAddress={ownerAddress}
+                      service={this.state.editingSocialAccount.service}
+                      identifier={this.state.editingSocialAccount.identifier}
+                      proofUrl={this.state.editingSocialAccount.proofUrl}
+                      onPostVerificationButtonClick={
+                        this.onPostVerificationButtonClick
+                      }
+                      onVerifyButtonClick={this.onVerifyButtonClick}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            :
-            <div></div>
+          </div>
+        ) : (
+          <div />
         )
       } else {
         return (
@@ -643,31 +677,30 @@ class DefaultProfilePage extends Component {
 
     const accountEdit = () => {
       if (isMobile()) {
-        return (
-          this.state.accountEditIsOpen ?
-            <div>
-              <SecondaryNavBar
-                leftButtonTitle="Back"
-                leftIsButton
-                onLeftButtonClick={this.closeAccountModal}
-              />
-              <div className="container-fluid m-t-10">
-                <div className="row">
-                  <div className="col-12">
-                    <div className="social-account-edit">
-                      <EditAccount
-                        ownerAddress={ownerAddress}
-                        service={this.state.editingAccount.service}
-                        identifier={this.state.editingAccount.identifier}
-                        onDoneButtonClick={this.onAccountDoneButtonClick}
-                      />
-                    </div>
+        return this.state.accountEditIsOpen ? (
+          <div>
+            <SecondaryNavBar
+              leftButtonTitle="Back"
+              leftIsButton
+              onLeftButtonClick={this.closeAccountModal}
+            />
+            <div className="container-fluid m-t-10">
+              <div className="row">
+                <div className="col-12">
+                  <div className="social-account-edit">
+                    <EditAccount
+                      ownerAddress={ownerAddress}
+                      service={this.state.editingAccount.service}
+                      identifier={this.state.editingAccount.identifier}
+                      onDoneButtonClick={this.onAccountDoneButtonClick}
+                    />
                   </div>
                 </div>
               </div>
             </div>
-            :
-            <div></div>
+          </div>
+        ) : (
+          <div />
         )
       } else {
         return (
@@ -702,7 +735,8 @@ class DefaultProfilePage extends Component {
         >
           <Image
             src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-            fallbackSrc="/images/avatar.png" className="img-fluid clickable"
+            fallbackSrc="/images/avatar.png"
+            className="img-fluid clickable"
             onClick={this.closePhotoModal}
           />
           <div>
@@ -710,7 +744,7 @@ class DefaultProfilePage extends Component {
               className="btn btn-link btn-xs"
               onClick={this.onChangePhotoClick}
             >
-                Change Photo
+              Change Photo
             </button>
           </div>
         </Modal>
@@ -736,37 +770,62 @@ class DefaultProfilePage extends Component {
         </ToolTip>
         <ToolTip id="trustLevel">
           <div>
-            <div>Increase your social level by verifying your social accounts.</div>
+            <div>
+              Increase your social level by verifying your social accounts.
+            </div>
           </div>
         </ToolTip>
         <div>
-
-          {!(isMobile() &&
-            (this.state.socialAccountEditIsOpen || this.state.accountEditIsOpen)) &&
+          {!(
+            isMobile() &&
+            (this.state.socialAccountEditIsOpen || this.state.accountEditIsOpen)
+          ) && (
             <div>
-              {profileCompleteness < 1 &&
+              {profileCompleteness < 1 && (
                 <ProfileCompletion completePct={profileCompleteness} />
-              }
+              )}
               <div className="container-fluid m-t-50 p-0">
                 <div className="row">
                   <div className="col-12">
-
                     <div className="avatar-md m-b-0 text-center">
-                      <Image
-                        src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-                        fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
-                        onClick={this.onPhotoClick}
-                      />
+                      {person.avatarUrl() ? (
+                        <Image
+                          src={
+                            person.avatarUrl()
+                              ? person.avatarUrl()
+                              : '/images/avatar.png'
+                          }
+                          fallbackSrc="/images/avatar.png"
+                          className="rounded-circle clickable"
+                          onClick={this.onPhotoClick}
+                          style={{
+                            width: '96px',
+                            height: '96px'
+                          }}
+                        />
+                      ) : (
+                        <UserAvatar
+                          id={identity.ownerAddress}
+                          username={identity.username || '?'}
+                          onClick={this.onPhotoClick}
+                          size={96}
+                          textSize={24}
+                          camera
+                          style={{ marginLeft: 'auto', marginRight: 'auto' }}
+                        />
+                      )}
                       <input
                         type="file"
-                        ref={(ref) => { this.photoUpload = ref }}
+                        ref={ref => {
+                          this.photoUpload = ref
+                        }}
                         onChange={this.uploadProfilePhoto}
                         style={{ display: 'none' }}
                       />
                     </div>
                   </div>
 
-                  {this.state.editMode ?
+                  {this.state.editMode ? (
                     <div className="col-12 m-t-30">
                       <InputGroup
                         name="name"
@@ -784,7 +843,7 @@ class DefaultProfilePage extends Component {
                         centerText
                       />
                     </div>
-                  :
+                  ) : (
                     <div className="col-12">
                       <div className="text-center">
                         {/* {(blockNumber && transactionIndex) ?
@@ -794,8 +853,11 @@ class DefaultProfilePage extends Component {
                           </div>
                         : null}*/}
                         <div className="pro-card-name text-center m-t-30">
-                          {(person.name() && person.name().length > 0) ? person.name() :
-                            <span className="placeholder">Add your name</span>}
+                          {person.name() && person.name().length > 0 ? (
+                            person.name()
+                          ) : (
+                            <span className="placeholder">Add your name</span>
+                          )}
                           <span className="pro-card-edit">
                             <i
                               className="fa fa-fw fa-pencil clickable"
@@ -805,7 +867,7 @@ class DefaultProfilePage extends Component {
                         </div>
 
                         <div className="text-center">
-                          {identity.canAddUsername ?
+                          {identity.canAddUsername ? (
                             <div className="text-center">
                               <Link
                                 to={`/profiles/i/add-username/${identityIndex}/search`}
@@ -814,18 +876,18 @@ class DefaultProfilePage extends Component {
                                 Add a username
                               </Link>
                             </div>
-                          :
+                          ) : (
                             <div className="pro-card-domain-name text-center text-secondary m-t-0">
                               <span>{identity.username}</span>
-                              {identity.usernamePending ?
+                              {identity.usernamePending ? (
                                 <i
                                   className="fa fa-fw fa-clock-o fa-lg"
                                   data-tip
                                   data-for="usernamePending"
-                                ></i>
-                                : null}
+                                />
+                              ) : null}
                             </div>
-                        }
+                          )}
                         </div>
 
                         <div
@@ -840,9 +902,12 @@ class DefaultProfilePage extends Component {
                         </div>
 
                         <div className="pro-card-body text-center m-b-25">
-                          {(person.description() && person.description().length > 0) ?
-                            person.description() :
-                            <span className="placeholder">Add your bio</span>}
+                          {person.description() &&
+                          person.description().length > 0 ? (
+                            person.description()
+                          ) : (
+                            <span className="placeholder">Add your bio</span>
+                          )}
                           <span className="pro-card-edit">
                             <i
                               className="fa fa-fw fa-pencil clickable"
@@ -864,26 +929,30 @@ class DefaultProfilePage extends Component {
                         : null}
                         */}
                       </div>
-
                     </div>
-                  }
+                  )}
                 </div>
-
               </div>
 
               <div className="container-fluid p-0">
                 <div className="row">
                   <div className="col-12">
-
-                    <div className="container-fluid text-center m-t-25 m-b-40" >
-                      <span className="btn btn-dark btn-pill btn-xs" style={{ boxShadow: 'none' }} >
-                        {trustLevel >= 3 && <i className="fa fa-lg fa-check-circle" />}
-                        <span className="pro-card-trust-level">Social Level: {trustLevel} </span>
-                        {trustLevel <= 1 &&
+                    <div className="container-fluid text-center m-t-25 m-b-40">
+                      <span
+                        className="btn btn-dark btn-pill btn-xs"
+                        style={{ boxShadow: 'none' }}
+                      >
+                        {trustLevel >= 3 && (
+                          <i className="fa fa-lg fa-check-circle" />
+                        )}
+                        <span className="pro-card-trust-level">
+                          Social Level: {trustLevel}{' '}
+                        </span>
+                        {trustLevel <= 1 && (
                           <span data-tip data-for="trustLevel">
                             <i className="fa fa-info-circle" />
                           </span>
-                        }
+                        )}
                       </span>
                     </div>
                   </div>
@@ -896,13 +965,17 @@ class DefaultProfilePage extends Component {
                     <button
                       className="btn btn-outline-dark btn-pill btn-sm ml-5"
                       title={this.state.editMode ? 'Save' : 'Edit'}
-                      onClick={this.state.editMode ? this.onSaveClick : this.onEditClick}
+                      onClick={
+                        this.state.editMode
+                          ? this.onSaveClick
+                          : this.onEditClick
+                      }
                     >
                       {this.state.editMode ? 'Save' : 'Edit'}
                     </button>
                   </div>
                   <div className="col">
-                    {this.state.editMode ?
+                    {this.state.editMode ? (
                       <button
                         className="btn btn-outline-dark btn-pill btn-sm mr-5"
                         title="Cancel"
@@ -910,14 +983,14 @@ class DefaultProfilePage extends Component {
                       >
                         Cancel
                       </button>
-                      :
+                    ) : (
                       <Link
                         className="btn btn-outline-dark btn-pill btn-sm mr-5"
                         to="/profiles/i/all"
                       >
                         More
                       </Link>
-                    }
+                    )}
                   </div>
                 </div>
               </div>
@@ -927,14 +1000,16 @@ class DefaultProfilePage extends Component {
                   <div className="col">
                     <div className="profile-accounts">
                       <ul>
-                        {accounts.map((account) => {
+                        {accounts.map(account => {
                           let verified = false
                           let pending = false
                           if (verifications.length > 0) {
                             for (let i = 0; i < verifications.length; i++) {
                               const verification = verifications[i]
-                              if (verification.service === account.service &&
-                                verification.valid === true) {
+                              if (
+                                verification.service === account.service &&
+                                verification.valid === true
+                              ) {
                                 verified = true
                                 pending = false
                                 break
@@ -944,8 +1019,12 @@ class DefaultProfilePage extends Component {
                             pending = true
                           }
 
-                          if (account.service === 'pgp' || account.service === 'ssh'
-                            || account.service === 'bitcoin' || account.service === 'ethereum') {
+                          if (
+                            account.service === 'pgp' ||
+                            account.service === 'ssh' ||
+                            account.service === 'bitcoin' ||
+                            account.service === 'ethereum'
+                          ) {
                             return (
                               <PGPAccountItem
                                 key={`${account.service}-${account.identifier}`}
@@ -977,22 +1056,22 @@ class DefaultProfilePage extends Component {
                         })}
                       </ul>
                       <div className="text-center">
-                        {(!this.state.showHiddenPlaceholders && showMoreAccountsButton) &&
-                          <button
-                            className="btn btn-link btn-link-mute btn-link-small"
-                            onClick={this.onMoreAccountsClick}
-                          >
-                            More accounts
-                          </button>
-                        }
+                        {!this.state.showHiddenPlaceholders &&
+                          showMoreAccountsButton && (
+                            <button
+                              className="btn btn-link btn-link-mute btn-link-small"
+                              onClick={this.onMoreAccountsClick}
+                            >
+                              More accounts
+                            </button>
+                          )}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          }
-
+          )}
         </div>
       </div>
     )
