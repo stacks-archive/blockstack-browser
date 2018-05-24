@@ -24,7 +24,8 @@ class SocialAccountItem extends Component {
     pending: PropTypes.bool,
     api: PropTypes.object.isRequired,
     placeholder: PropTypes.bool,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onDeleteClick: PropTypes.func
   }
 
   constructor(props) {
@@ -95,6 +96,11 @@ class SocialAccountItem extends Component {
     this.props.onClick(this.props.service)
   }
 
+  onDeleteClick = (e) => {
+    e.stopPropagation()
+    this.props.onDeleteClick(this.props.index)
+  }
+
   onVerifiedCheckmarkClick = (e) => {
     e.preventDefault()
     e.stopPropagation()
@@ -135,15 +141,15 @@ class SocialAccountItem extends Component {
               </span>
             )}
 
-            {(!this.props.placeholder && this.props.editing) && (
-              <span className="">
-                <i className="fa fa-fw fa-pencil" />
-              </span>
-            )}
-
             {!this.props.placeholder && (
               <span className="app-account-service font-weight-normal">
                 {`@${accountServiceName}`}
+              </span>
+            )}
+
+            {(!this.props.placeholder && this.props.editing) && (
+              <span className="" onClick={this.onDeleteClick}>
+                <i className="fa fa-fw fa-trash" />
               </span>
             )}
 
