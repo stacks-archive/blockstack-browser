@@ -59,6 +59,7 @@ const Field = ({
           autoFocus={autoFocus}
           mh={mh}
           onChange={handleChange}
+          lowercase={type !== 'password'}
         />
         {PositiveMessage}
         {ErrorMessage}

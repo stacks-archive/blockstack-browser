@@ -55,7 +55,13 @@ const Button = ({
 }
 
 const renderButtons = items =>
-  items.map(({ ...buttonProps }, i) => <Button key={i} {...buttonProps} />)
+  items.map(({ ...buttonProps }, i) => (
+    <Button
+      key={i}
+      disabled={buttonProps.label === ' ' || buttonProps.label === ''}
+      {...buttonProps}
+    />
+  ))
 
 const ActionButtons = ({ items, split = false, ...rest }) =>
   items.length ? (
