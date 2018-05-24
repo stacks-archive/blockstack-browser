@@ -72,7 +72,7 @@ class UsernameView extends React.Component {
         throw errors
       } else {
         const status = await getUsernameStatus(values.username)
-
+        errors = {}
         this.setState({
           status,
           username: values.username
