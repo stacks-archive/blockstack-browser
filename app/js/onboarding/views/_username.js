@@ -48,17 +48,27 @@ class UsernameView extends React.Component {
     }
 
     if (values.username !== this.state.username && !noValues) {
-      const status = await getUsernameStatus(values.username)
 
-      this.setState({
-        status,
-        username: values.username
-      })
+      const invalidChars = values.username.match(/\W+/g)
+
+      if (invalidChars) {
+        errors.username = 'Invalid username (a-zA-Z0-9_)'
+        throw errors
+      } else {
+        const status = await getUsernameStatus(values.username)
+
+        this.setState({
+          status,
+          username: values.username
+        })
+      }
+
     }
 
     const isRegistered = !noValues && this.state.status !== 'available'
     if (isRegistered) {
       errors.username = 'Username unavailable'
+      throw errors
     } else {
       errors = {}
     }
@@ -83,7 +93,7 @@ class UsernameView extends React.Component {
   constructor(props) {
     super(props)
 
-    this.validate = debounce(this.validate, 300)
+    // this.validate = debounce(this.validate, 300)
   }
 
   render() {
