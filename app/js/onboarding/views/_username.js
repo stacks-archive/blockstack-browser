@@ -38,11 +38,17 @@ class UsernameView extends React.Component {
 
   validate = async values => {
     console.log('validating', values)
+    this.setState({
+      status: 'validating'
+    })
 
     const noValues = !values.username || values.username === ''
     let errors = {}
 
     if (noValues) {
+      this.setState({
+        status: 'error'
+      })
       errors.username = errorMessage
       throw errors
     }
@@ -52,6 +58,9 @@ class UsernameView extends React.Component {
       const invalidChars = values.username.match(/\W+/g)
 
       if (invalidChars) {
+        this.setState({
+          status: 'error'
+        })
         errors.username = 'Invalid username (a-zA-Z0-9_)'
         throw errors
       } else {
@@ -67,6 +76,9 @@ class UsernameView extends React.Component {
 
     const isRegistered = !noValues && this.state.status !== 'available'
     if (isRegistered) {
+      this.setState({
+        status: 'error'
+      })
       errors.username = 'Username unavailable'
       throw errors
     } else {
@@ -74,6 +86,9 @@ class UsernameView extends React.Component {
     }
 
     if (Object.keys(errors).length) {
+      this.setState({
+        status: 'error'
+      })
       throw errors
     }
     return null
@@ -83,6 +98,8 @@ class UsernameView extends React.Component {
     switch (status) {
       case 'available':
         return 'Register Username'
+      case 'validating':
+        return 'Validating...'
       default:
         return 'Check Availability'
     }
