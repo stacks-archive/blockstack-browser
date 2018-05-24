@@ -47,7 +47,10 @@ class SeedContainer extends Component {
     this.state = {
       encryptedBackupPhrase: props.encryptedBackupPhrase || null,
       view: 0,
-      verified: false
+      verified: false,
+      seed: undefined,
+      loading: false,
+      decrypting: false
     }
   }
 
@@ -117,10 +120,29 @@ class SeedContainer extends Component {
 
   passwordNext = password => {
     if (!this.state.seed && !this.state.password) {
-      const seed = this.decryptSeed(password)
-      if (seed) {
-        this.updateView(VIEWS.SEED)
-      }
+      this.setState({
+        password,
+        loading: true
+      })
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState, prevContext) {
+    if (
+      !this.state.seed &&
+      this.state.password &&
+      this.state.loading &&
+      !this.state.decrypting
+    ) {
+      this.setState(
+        {
+          decrypting: true
+        },
+        () => setTimeout(() => this.decryptSeed(this.state.password), 250)
+      )
+    }
+    if (this.state.seed && this.state.view === VIEWS.UNLOCK_KEY) {
+      setTimeout(() => this.updateView(VIEWS.SEED), 250)
     }
   }
 
@@ -173,6 +195,7 @@ class SeedContainer extends Component {
       {
         show: VIEWS.UNLOCK_KEY,
         props: {
+          loading: this.state.loading,
           previous: () => this.updateView(VIEWS.KEY_INFO),
           next: p => this.passwordNext(p),
           password
@@ -186,7 +209,8 @@ class SeedContainer extends Component {
             this.updateView(
               this.state.verified ? VIEWS.KEY_COMPLETE : VIEWS.KEY_CONFIRM
             ),
-          seed: seed && seed.toString().split(' ')
+          seed: seed && seed.toString().split(' '),
+          seedString: seed && seed.toString()
         }
       },
       {

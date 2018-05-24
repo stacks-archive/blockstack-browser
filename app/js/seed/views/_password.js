@@ -22,10 +22,7 @@ class PasswordView extends React.Component {
         form: {
           validationSchema,
           initialValues: { password: '' },
-          onSubmit: values => {
-            updateValue('password', values.password)
-            next()
-          },
+          onSubmit: values => next(values.password),
           fields: [
             {
               type: 'password',

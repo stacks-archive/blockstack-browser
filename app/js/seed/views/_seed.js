@@ -1,6 +1,6 @@
 import React from 'react'
 import { ShellScreen, Type, Panel, Panels } from '@blockstack/ui'
-
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 const renderWord = (i, word) => (
   <div style={{ display: 'flex', alignItems: 'center', paddingBottom: '15px' }}>
     <Type.h5>#{i + 1}&nbsp;&nbsp;</Type.h5>
@@ -8,44 +8,70 @@ const renderWord = (i, word) => (
   </div>
 )
 
-export default ({ next, seed, ...rest }) => {
-  const props = {
-    title: {
-      children: 'Write down all words',
-      variant: 'h2'
-    },
-    content: {
-      grow: 1,
-      children: (
-        <Panels panels={2}>
-          <Panel>
-            {seed.map(
-              (word, i, arr) => i < arr.length / 2 && renderWord(i, word)
-            )}
-          </Panel>
-          <Panel>
-            {seed.map(
-              (word, i, arr) => i >= arr.length / 2 && renderWord(i, word)
-            )}
-          </Panel>
-        </Panels>
-      )
-    },
-    actions: {
-      split: true,
-      items: [
-        {
-          label: 'Copy 12 Words',
-          textOnly: true
-        },
-        {
-          label: 'Next',
-          primary: true,
-          icon: 'ArrowRightIcon',
-          onClick: () => next()
-        }
-      ]
+class SeedPage extends React.Component {
+  state = {
+    seed: this.props.seedString,
+    copied: false
+  }
+
+  copy() {
+    if (!this.state.copied) {
+      this.setState({ copied: true })
+      setTimeout(() => this.setState({ copied: false }), 2200)
     }
   }
-  return <ShellScreen {...rest} {...props} />
+
+  render() {
+    const { next, seed, ...rest } = this.props
+    const props = {
+      title: {
+        children: 'Write down all words',
+        variant: 'h2'
+      },
+      content: {
+        grow: 1,
+        children: (
+          <Panels panels={2}>
+            <Panel>
+              {seed.map(
+                (word, i, arr) => i < arr.length / 2 && renderWord(i, word)
+              )}
+            </Panel>
+            <Panel>
+              {seed.map(
+                (word, i, arr) => i >= arr.length / 2 && renderWord(i, word)
+              )}
+            </Panel>
+          </Panels>
+        )
+      },
+      actions: {
+        split: true,
+        items: [
+          {
+            label: this.state.copied ? (
+              'Copied!'
+            ) : (
+              <CopyToClipboard
+                text={this.state.seed}
+                onCopy={() => this.copy()}
+              >
+                <span>Copy 12 Words</span>
+              </CopyToClipboard>
+            ),
+            textOnly: true
+          },
+          {
+            label: 'Next',
+            primary: true,
+            icon: 'ArrowRightIcon',
+            onClick: () => next()
+          }
+        ]
+      }
+    }
+    return <ShellScreen {...rest} {...props} />
+  }
 }
+
+export default SeedPage

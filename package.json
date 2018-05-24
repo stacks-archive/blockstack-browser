@@ -36,6 +36,7 @@
     "react-animations": "^1.0.0",
     "react-bootstrap": "^0.28.2",
     "react-contextmenu": "^2.8.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-document-title": "^2.0.1",
     "react-dom": "^16.3.2",
     "react-dropzone": "^3.7.3",
