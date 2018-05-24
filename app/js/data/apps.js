@@ -441,7 +441,7 @@ const apps = {
     }, {
       name: 'PeerChat',
       displayName: 'PeerChat',
-      description: 'A simple, private, and secure p2p messenger built on social core and Blockstack',
+      description: '',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-peerchat-256x256.png',
