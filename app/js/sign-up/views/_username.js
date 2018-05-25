@@ -173,6 +173,7 @@ class UsernameView extends React.Component {
               {
                 label: this.renderButtonLabel(this.state),
                 loading,
+                disabled: loading,
                 primary: true,
                 type: 'submit',
                 icon: 'ArrowRightIcon'

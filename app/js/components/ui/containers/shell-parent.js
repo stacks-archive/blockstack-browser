@@ -93,6 +93,7 @@ class ShellParent extends React.Component {
       invertOnLast,
       lastHeaderLabel,
       backOnLast,
+      disableBackOnView,
       size,
       view,
       ...rest
@@ -123,13 +124,17 @@ class ShellParent extends React.Component {
       !isFirstView && isLastView && !backOnLast
         ? {
             app,
-            label: lastHeaderLabel && isLastView ? lastHeaderLabel : backLabel
+            label: lastHeaderLabel && isLastView ? lastHeaderLabel : backLabel,
+            disableBackOnView,
+            view
           }
         : {
             action:
               isFirstView && !app ? undefined : () => this.props.backView(),
             app,
-            label: backLabel
+            label: backLabel,
+            disableBackOnView,
+            view
           }
 
     const context = this.getContext({
