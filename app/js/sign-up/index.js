@@ -275,19 +275,17 @@ class Onboarding extends React.Component {
     if (!encryptedBackupPhrase) {
       return null
     }
-    if (type === 'recovery') {
-      await this.sendRecovery(username, email, encryptedBackupPhrase)
-    } else if (type === 'restore') {
-      await this.sendRestore(username, email, encryptedBackupPhrase)
-    } else {
-      await this.sendRestore(username, email, encryptedBackupPhrase)
-      await this.sendRecovery(username, email, encryptedBackupPhrase)
-    }
 
     const b64EncryptedBackupPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString('base64')
 
-    await this.sendRestore(username, email, b64EncryptedBackupPhrase)
-    await this.sendRecovery(username, email, b64EncryptedBackupPhrase)
+    if (type === 'recovery') {
+      await this.sendRecovery(username, email, b64EncryptedBackupPhrase)
+    } else if (type === 'restore') {
+      await this.sendRestore(username, email, b64EncryptedBackupPhrase)
+    } else {
+      await this.sendRestore(username, email, b64EncryptedBackupPhrase)
+      await this.sendRecovery(username, email, b64EncryptedBackupPhrase)
+    }
 
     return this.setState({ 
       emailsSending: false,
