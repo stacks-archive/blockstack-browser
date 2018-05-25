@@ -53,7 +53,12 @@ class SeedContainer extends Component {
     super(props)
 
     this.state = {
-      encryptedBackupPhrase: props.encryptedBackupPhrase || null,
+      encryptedBackupPhrase:
+        (props.location &&
+          props.location.query &&
+          props.location.query.encrypted) ||
+        props.encryptedBackupPhrase ||
+        null,
       view: 0,
       seed: null,
       loading: false,
@@ -88,7 +93,10 @@ class SeedContainer extends Component {
   }
 
   decryptSeed = p => {
-    if (!this.props.encryptedBackupPhrase) {
+    const encryptedBackupPhrase =
+      this.state.encryptedBackupPhrase || this.props.encryptedBackupPhrase
+    if (!encryptedBackupPhrase) {
+      console.log('no encryptedBackupPhrase')
       return null
     }
     let password = p
@@ -98,7 +106,8 @@ class SeedContainer extends Component {
         password = location.state.password
       }
     }
-    const buffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
+    console.log('decrypting password')
+    const buffer = new Buffer(encryptedBackupPhrase, 'hex')
 
     return decrypt(buffer, password).then(result => {
       if (this.state.seed !== result.toString()) {
@@ -115,9 +124,15 @@ class SeedContainer extends Component {
   }
 
   passwordNext = password => {
-    if (!this.state.seed && !this.state.password) {
-      this.autoDecrypt(password)
+    if (this.state.seed) {
+      return null
     }
+    return this.setState(
+      {
+        password
+      },
+      () => setTimeout(() => this.autoDecrypt())
+    )
   }
 
   passwordPassedFromSignUp = () => {
@@ -145,9 +160,9 @@ class SeedContainer extends Component {
 
   autoDecrypt = (p = undefined) => {
     let password = p
-    if (this.passwordPassedFromSignUp()) {
+    if (!password && this.passwordPassedFromSignUp()) {
       password = this.passwordPassedFromSignUp()
-    } else if (this.state.password) {
+    } else if (!password && this.state.password) {
       password = this.state.password
     }
     if (!password) {
