@@ -395,11 +395,11 @@ class AuthPage extends React.Component {
     this.props.loginToApp()
     const localIdentities = this.props.localIdentities
     const identity = localIdentities[identityIndex]
-    let hasUsername = true
-    if (!identity.username || identity.usernamePending) {
-      logger.debug(`login(): the id ${identity.ownerAddress} has no username`)
-      hasUsername = false
-    }
+    let hasUsername = identity.username && identity.username.length > 0
+    // if (!identity.username || identity.usernamePending) {
+      // logger.debug(`login(): the id ${identity.ownerAddress} has no username`)
+      // hasUsername = false
+    // }
 
     // check to see if username is resolvable until we get name state management
     // fixed in
