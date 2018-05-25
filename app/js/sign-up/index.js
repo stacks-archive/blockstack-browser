@@ -102,6 +102,7 @@ class Onboarding extends React.Component {
     seed: '',
     appManifest: null,
     emailSubmitted: false,
+    emailsSending: false,
     emailsSent: false,
     loading: false,
     creatingAccountStatus: CREATE_ACCOUNT_INITIAL,
@@ -272,7 +273,10 @@ class Onboarding extends React.Component {
       this.sendRecovery(username, email, encryptedBackupPhrase)
     ])
 
-    return this.setState({ emailsSent: true })
+    return this.setState({ 
+      emailsSending: false,
+      emailsSent: true 
+    })
   }
 
   /**
@@ -506,9 +510,12 @@ class Onboarding extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { registration } = nextProps
-    const { usernameRegistrationInProgress, emailsSent } = this.state
+    const { usernameRegistrationInProgress, emailsSent, emailsSending } = this.state
     if (usernameRegistrationInProgress && registration.registrationSubmitted) {
-      if (!emailsSent) {
+      if (!emailsSent && !emailsSending) {
+        this.setState({
+          emailsSending: true
+        })
         this.sendEmails().then(() => this.updateView(VIEWS.HOORAY))
       } else {
         this.updateView(VIEWS.HOORAY)
