@@ -263,15 +263,16 @@ class Onboarding extends React.Component {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
 
+    /**
+     * TODO: add this as a notification or something the user can see
+     */
     if (!encryptedBackupPhrase) {
       console.log('no encryptedBackupPhrase')
       return null
     }
 
-    await Promise.all([
-      this.sendRestore(username, email, encryptedBackupPhrase),
-      this.sendRecovery(username, email, encryptedBackupPhrase)
-    ])
+    await this.sendRestore(username, email, encryptedBackupPhrase)
+    await this.sendRecovery(username, email, encryptedBackupPhrase)
 
     return this.setState({ 
       emailsSending: false,

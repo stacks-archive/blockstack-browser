@@ -1,5 +1,5 @@
 import React from 'react'
-import { ShellScreen } from '@blockstack/ui'
+import { ShellScreen, Shell } from '@blockstack/ui'
 import Yup from 'yup'
 
 const validationSchema = Yup.object({
@@ -9,8 +9,83 @@ const validationSchema = Yup.object({
 })
 
 class PasswordView extends React.Component {
+  state = {
+    status: 'initial'
+  }
+
+  componentDidUpdate(prevProps, prevState, prevContext) {
+    if (this.state.status !== 'error' && this.props.error) {
+      this.setState({
+        errors: {
+          password: this.props.error
+        },
+        status: 'error'
+      })
+    }
+  }
+
+  validate = values => {
+    console.log('validating')
+    const noValues = !values.password || values.password === ''
+    const tooShort = values.password.length < 8
+
+    this.setState({
+      status: 'validating',
+      errors: undefined
+    })
+
+    let errors = {}
+
+    if (noValues) {
+      errors.password = 'This is required'
+      this.setState({
+        status: 'error',
+        errors
+      })
+      throw errors
+    }
+
+    if (tooShort) {
+      errors.password = 'Password is too short'
+      this.setState({
+        status: 'error',
+        password: values.password,
+        errors
+      })
+
+      throw errors
+    }
+
+    if (Object.keys(errors).length) {
+      this.setState({
+        status: 'error'
+      })
+      throw errors
+    }
+
+    this.setState(
+      {
+        password: values.password,
+        status: 'good-to-go'
+      },
+      () => {
+        this.props.updateValue('password', values.password)
+        this.props.next()
+      }
+    )
+
+    /**
+     * Return null because we have a key and just need a password
+     */
+    if (this.props.key) {
+      this.setState({
+        status: 'good-to-go'
+      })
+    }
+    return null
+  }
   render() {
-    const { updateValue, next, loading, ...rest } = this.props
+    const { updateValue, next, loading, password, ...rest } = this.props
 
     const props = {
       title: {
@@ -20,11 +95,14 @@ class PasswordView extends React.Component {
       content: {
         grow: 0,
         form: {
-          validationSchema,
-          initialValues: { password: '' },
+          errors: this.state.errors,
+          validate: v => this.validate(v),
+          initialValues: { password: password || '' },
           onSubmit: values => {
-            updateValue('password', values.password)
-            next()
+            if (this.state.status === 'good-to-go') {
+              updateValue('password', values.password)
+              next()
+            }
           },
           fields: [
             {
@@ -46,15 +124,28 @@ class PasswordView extends React.Component {
                 primary: true,
                 type: 'submit',
                 icon: 'ArrowRightIcon',
-                loading,
-                disabled: loading
+                loading:
+                  this.props.decrypting ||
+                  loading ||
+                  this.state.status === 'validating',
+                disabled:
+                  this.props.decrypting ||
+                  loading ||
+                  this.state.status === 'validating'
               }
             ]
           }
         }
       }
     }
-    return <ShellScreen {...rest} {...props} />
+    return (
+      <React.Fragment>
+        {this.props.loading ? (
+          <Shell.Loading message="Restoring your account..." />
+        ) : null}
+        <ShellScreen {...rest} {...props} />
+      </React.Fragment>
+    )
   }
 }
 export default PasswordView

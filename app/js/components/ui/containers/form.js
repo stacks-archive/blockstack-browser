@@ -5,7 +5,7 @@ import { Form } from '@components/ui/components/form'
 import { Field } from '@components/ui/containers/field'
 import { Formik, FastField } from 'formik'
 
-const Fields = ({ fields, ...rest }) =>
+const Fields = ({ fields, errors, ...rest }) =>
   fields.map(({ label, name, placeholder, ...fieldProps }, i) => (
     <FastField
       label={label}
@@ -19,9 +19,10 @@ const Fields = ({ fields, ...rest }) =>
           {...fastFieldProps.field}
           {...rest}
           error={
-            fastFieldProps.meta.touched &&
-            fastFieldProps.meta.error &&
-            fastFieldProps.meta.error
+            (fastFieldProps.meta.touched &&
+              fastFieldProps.meta.error &&
+              fastFieldProps.meta.error) ||
+            (errors && errors[name])
           }
         />
       )}

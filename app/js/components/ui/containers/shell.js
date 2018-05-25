@@ -4,6 +4,8 @@ import { StyledShell } from '@ui/components/shell'
 import { ActionButtons } from '@components/ui/containers/button'
 import { FormContainer } from '@components/ui/containers/form'
 import { withShellContext } from '@blockstack/ui/common/withOnboardingState'
+import { Spring } from 'react-spring'
+import { Spinner } from '@components/ui/components/spinner'
 import PropTypes from 'prop-types'
 
 const Shell = ({ children, ...rest }) => {
@@ -46,13 +48,24 @@ Title.propTypes = {
   variant: PropTypes.oneOf(['h1', 'h2'])
 }
 
+const Loading = ({ message = 'Loading...', children, ...rest }) => (
+  <Spring native from={{ opacity: 0 }} to={{ opacity: 1 }}>
+    {styles => (
+      <StyledShell.Loading {...rest} style={styles}>
+        <Spinner />
+        {children || message}
+      </StyledShell.Loading>
+    )}
+  </Spring>
+)
+
 Shell.Title = Title
+Shell.Loading = Loading
 
 Shell.Main = StyledShell.Main
 Shell.Content = StyledShell.Content
 Shell.Wrapper = StyledShell.Wrapper
 Shell.Actions = StyledShell.Actions
-Shell.Loading = StyledShell.Loading
 Shell.Sidebar = StyledShell.Sidebar
 Shell.Content.Container = StyledShell.Content.Container
 

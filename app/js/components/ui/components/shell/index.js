@@ -3,17 +3,17 @@ import { animated } from 'react-spring/dist/react-spring.umd'
 import { spacing } from '@ui/common/constants'
 import { Buttons } from '@components/ui/components/button'
 
-const Loading = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
+const Loading = styled(animated.div)`
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   background: white;
   z-index: 99;
+  width: calc(100% + 60px);
+  left: -30px;
+  height: calc(100% + 53px);
+  top: -30px;
 `
 
 const Header = styled.div``
