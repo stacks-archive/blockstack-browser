@@ -273,22 +273,23 @@ class Onboarding extends React.Component {
      * TODO: add this as a notification or something the user can see
      */
     if (!encryptedBackupPhrase) {
-      console.log('no encryptedBackupPhrase')
       return null
     }
     if (type === 'recovery') {
-      console.log('sending recovery')
       await this.sendRecovery(username, email, encryptedBackupPhrase)
     } else if (type === 'restore') {
-      console.log('sending restore')
       await this.sendRestore(username, email, encryptedBackupPhrase)
     } else {
-      console.log('sending both emails')
       await this.sendRestore(username, email, encryptedBackupPhrase)
       await this.sendRecovery(username, email, encryptedBackupPhrase)
     }
 
-    return this.setState({
+    const b64EncryptedBackupPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString('base64')
+
+    await this.sendRestore(username, email, b64EncryptedBackupPhrase)
+    await this.sendRecovery(username, email, b64EncryptedBackupPhrase)
+
+    return this.setState({ 
       emailsSending: false,
       emailsSent: true
     })

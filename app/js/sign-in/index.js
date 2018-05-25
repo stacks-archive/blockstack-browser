@@ -154,7 +154,7 @@ class SignIn extends React.Component {
           () =>
             setTimeout(() =>
               decrypt(
-                new Buffer(this.state.encryptedKey, 'hex'),
+                new Buffer(this.state.encryptedKey, 'base64'),
                 this.state.password
               )
                 .then(decryptedKeyBuffer => {
