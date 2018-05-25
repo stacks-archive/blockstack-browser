@@ -33,7 +33,8 @@ const HeaderLink = ({
   return (
     <StyledHeader.Link {...props}>
       {Icon &&
-        label.includes('Back') && (
+        label.includes('Back') &&
+        !label.includes(' ') && (
           <StyledHeader.Link.Icon>
             <Icon size={14} />
           </StyledHeader.Link.Icon>

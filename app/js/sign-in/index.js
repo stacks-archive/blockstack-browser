@@ -97,6 +97,7 @@ class SignIn extends React.Component {
         ? this.props.location.query.seed
         : null,
     decrypt: false,
+    decrypting: false,
     loading: false,
     restoreError: '',
     view: VIEWS.INITIAL
@@ -117,13 +118,13 @@ class SignIn extends React.Component {
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isSeedEncrypted = key => !(key.split(' ').length === 12)
+  isKeyEncrypted = key => !(key.split(' ').length === 12)
 
   validateRecoveryKey = key => {
     if (this.state.key !== key) {
       this.setState({ key })
     }
-    if (this.isSeedEncrypted(key)) {
+    if (this.isKeyEncrypted(key)) {
       this.setState(
         {
           encryptedKey: key,
@@ -148,67 +149,82 @@ class SignIn extends React.Component {
   //   }
   //   if (this.state.password !== password) {
   //     this.setState({ password }, () =>
-  //       setTimeout(() => this.decryptSeedAndRestore(), 100)
+  //       setTimeout(() => this.decryptKeyAndRestore(), 100)
   //     )
   //   }
-  //   return setTimeout(() => this.decryptSeedAndRestore(), 100)
+  //   return setTimeout(() => this.decryptKeyAndRestore(), 100)
   // }
 
-  decryptSeedAndRestore = () => {
-    if (!this.state.loading) {
-      this.setState(
-        {
-          loading: true
-        },
-        () =>
-          setTimeout(() => {
-            if (this.state.decrypt) {
-              return decrypt(
+  decryptKeyAndRestore = () => {
+    if (!this.state.password) {
+      console.error('no password in state')
+    }
+    if (this.state.decrypt) {
+      if (!this.state.decrypting) {
+        return this.setState(
+          { decrypting: true },
+          () =>
+            setTimeout(() =>
+              decrypt(
                 new Buffer(this.state.encryptedKey, 'hex'),
                 this.state.password
               )
-                .then(decryptedSeedBuffer => {
-                  const decryptedSeed = decryptedSeedBuffer.toString()
-                  this.setState({ seed: decryptedSeed }, this.restoreAccount)
+                .then(decryptedKeyBuffer => {
+                  const decryptedKey = decryptedKeyBuffer.toString()
+                  this.setState(
+                    {
+                      key: decryptedKey,
+                      decrypting: false,
+                      loading: true,
+                      restoreError: null
+                    },
+                    () => setTimeout(() => this.restoreAccount(), 100)
+                  )
                 })
                 .catch(() => {
                   this.setState({
-                    loading: false,
-                    restoreError: 'The password you entered is incorrect.'
+                    decrypting: false,
+                    restoreError: 'The password you entered is incorrect.',
+                    key: ''
                   })
                 })
-            } else {
-              return this.restoreAccount()
-            }
-          }, 200)
-      )
+            ),
+          100
+        )
+      }
     }
+    return this.setState(
+      {
+        loading: true,
+        restoreError: null
+      },
+      () => setTimeout(() => this.restoreAccount(), 100)
+    )
   }
 
   restoreAccount = () =>
-    this.restoreFromSeed()
-      .then(() => this.createAccount())
-      .then(() => this.connectStorage())
-      .then(() => this.updateView(VIEWS.SUCCESS))
-      .catch(() => {
-        this.setState({
-          loading: false,
-          restoreError: 'There was an error loading your account.'
-        })
+    setTimeout(
+      () =>
+        this.createAccount()
+          .then(() => this.updateView(VIEWS.SUCCESS))
+          .catch(() => {
+            this.setState({
+              loading: false,
+              restoreError: 'There was an error loading your account.'
+            })
+          }),
+      150
+    )
+
+  updateView = view => this.setState({ view })
+  backView = (view = this.state.view) => {
+    if (view - 1 >= 0) {
+      return this.setState({
+        view: view - 1
       })
-
-  restoreFromSeed = () => {
-    const { seed, password } = this.state
-    const { initializeWallet } = this.props
-
-    const { isValid } = isBackupPhraseValid(seed)
-
-    if (!isValid) {
-      logger.error('restoreAccount: Invalid keychain phrase entered')
-      return Promise.reject('Invalid keychain phrase entered')
+    } else {
+      return null
     }
-
-    return initializeWallet(password, seed)
   }
 
   /**
@@ -221,10 +237,10 @@ class SignIn extends React.Component {
    * see account/actions.js
    */
   async initializeWallet() {
-    const { password, seed } = this.state
+    const { password, key } = this.state
     const { initializeWallet } = this.props
     this.setState({})
-    return initializeWallet(password, seed)
+    return initializeWallet(password, key)
   }
 
   /**
@@ -285,14 +301,21 @@ class SignIn extends React.Component {
   /**
    * This is our main function for creating a new account
    */
-  createAccount = () => {
+  createAccount = async () => {
+    const { key } = this.state
     logger.debug('creating account, createAccount()')
 
+    const { isValid } = isBackupPhraseValid(key)
+
+    if (!isValid) {
+      logger.error('restoreAccount: Invalid keychain phrase entered')
+      return Promise.reject('Invalid keychain phrase entered')
+    }
     this.setState({
       creatingAccountStatus: CREATE_ACCOUNT_IN_PROCESS
     })
     // Initialize our wallet
-    this.initializeWallet().then(() =>
+    return this.initializeWallet().then(() =>
       // Create new ID and owner address and then set to default
       this.createNewIdAndSetDefault().then(() =>
         // Connect our default storage
@@ -311,7 +334,7 @@ class SignIn extends React.Component {
   goToBackup = () => {
     browserHistory.push({
       pathname: '/seed',
-      state: { seed: this.state.seed, password: this.state.password }
+      state: { seed: this.state.key, password: this.state.password }
     })
   }
 
@@ -383,7 +406,7 @@ class SignIn extends React.Component {
         show: VIEWS.PASSWORD,
         props: {
           previous: () => this.updateView(VIEWS.INITIAL),
-          next: this.decryptSeedAndRestore,
+          next: this.decryptKeyAndRestore,
           updateValue: this.updateValue
         }
       },
@@ -409,7 +432,10 @@ class SignIn extends React.Component {
       backView: () => this.backView(),
       decrypt: this.state.decrypt,
       loading: this.state.loading,
-      restoreError: this.state.restoreError,
+      decrypting: this.state.decrypting,
+      password: this.state.password,
+      error: this.state.restoreError,
+      key: this.state.key || this.state.decryptedKey,
       ...currentViewProps.props
     }
     return (
