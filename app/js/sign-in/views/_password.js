@@ -46,7 +46,8 @@ class PasswordView extends React.Component {
                 primary: true,
                 type: 'submit',
                 icon: 'ArrowRightIcon',
-                loading
+                loading,
+                disabled: loading
               }
             ]
           }

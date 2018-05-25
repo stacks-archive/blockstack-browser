@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import memoize from 'memoize-one'
 import { Shell } from '@ui/containers/shell'
-import { Logo } from '@blockstack/ui/components/logos'
+import { Logo } from '@blockstack/ui'
 import { Header } from '@ui/containers/headers'
 import { Transition } from 'react-spring/dist/react-spring.umd'
 import { Type } from '@ui/components/typography'
@@ -159,12 +159,11 @@ class ShellParent extends React.Component {
         {size => (
           <ShellContext.Provider value={{ ...context, size }}>
             <Shell {...context} {...size}>
-              <DesktopSidebar />
               <Shell.Content.Container>
                 <Shell.Content.Wrapper>
                   <Header
                     {...headerProps}
-                    invert={size.width < 900 ? invert : undefined}
+                    invert={size.width < 600 ? invert : undefined}
                   />
                   <Shell.Main>
                     {this.renderLoading(this.state.loadingProps)}

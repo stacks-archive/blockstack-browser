@@ -10,6 +10,11 @@ const Shell = ({ children, ...rest }) => {
   return <StyledShell {...rest}>{children}</StyledShell>
 }
 
+const Subtitle = ({ variant = 'h3', ...rest }) => {
+  const SubtitleComponent = Type[variant]
+  return <SubtitleComponent {...rest} />
+}
+
 const Title = ({
   children,
   title,
@@ -22,11 +27,13 @@ const Title = ({
   return (
     <StyledShell.Title {...rest}>
       {icon && <StyledShell.Title.Section>{icon}</StyledShell.Title.Section>}
-      <StyledShell.Title.Section>
+      <StyledShell.Title.Section
+        style={icon && { maxWidth: 'calc(100% - 40px)' }}
+      >
         <StyledShell.Title.Animated>
           <TitleComponent>{children || title}</TitleComponent>
         </StyledShell.Title.Animated>
-        {subtitle && <Type.h3 {...subtitle} />}
+        {subtitle && <Subtitle {...subtitle} />}
       </StyledShell.Title.Section>
     </StyledShell.Title>
   )

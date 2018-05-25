@@ -5813,6 +5813,10 @@ indexof@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/indexof/-/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
 
+inert-polyfill@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/inert-polyfill/-/inert-polyfill-0.2.5.tgz#16fb7280d3acc6b5314ce4b1af3418cb0d273c1e"
+
 inert@^3.0.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/inert/-/inert-3.2.1.tgz#c4965c5e187cef3db2c42872e52e75700876427d"

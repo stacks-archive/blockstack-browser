@@ -1,5 +1,5 @@
 import 'babel-polyfill'
-
+import 'inert-polyfill'
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
@@ -26,7 +26,7 @@ configureLogging(
 )
 
 window.addEventListener('error', event => {
-  const logger = log4js.getLogger('window.addWindowListener(\'error\')')
+  const logger = log4js.getLogger("window.addWindowListener('error')")
   logger.error(event)
 })
 

@@ -84,11 +84,10 @@ const StyledButton = styled.button`
     height &&
     css`
       border-radius: ${height}px;
-      height: ${height}px;
-      max-height: ${height}px;
+      min-height: ${height}px;
+
       ${Section} {
-        height: ${height}px;
-        max-height: ${height}px;
+        min-height: ${height}px;
       }
     `};
 
@@ -203,9 +202,17 @@ const StyledButton = styled.button`
       }
     `};
 
+  &:focus {
+    box-shadow: inset 0 0 0 3px rgba(75, 190, 190, 1);
+    &:before {
+      box-shadow: inset 0 0 0 3px rgba(75, 190, 190, 1);
+    }
+  }
+
   ${({ primary }) =>
     primary &&
     css`
+      border: 0 !important;
       background: linear-gradient(97.35deg, #382c68 0%, #7858a2 173.24%);
       box-shadow: 1px 3px 11px rgba(89, 58, 121, 0.28);
       ${Label} {
@@ -218,14 +225,15 @@ const StyledButton = styled.button`
       &:after {
         background: linear-gradient(109.46deg, #1d1740 0%, #664b8a 171.9%);
       }
-      &:hover {
+      &:hover,
+      &:focus {
         box-shadow: 1px 3px 11px rgba(89, 58, 121, 0.5);
 
         &::before {
-          background: linear-gradient(109.46deg, #504482 0%, #8c66bd 171.9%);
-          opacity: 0.5;
+          opacity: 1;
         }
       }
+
       &:active {
         box-shadow: 1px 1px 4px rgba(89, 58, 121, 0.32);
         transform: translateY(2px);
@@ -245,7 +253,6 @@ const Buttons = styled.div`
     text-decoration: none !important;
   }
   &:first-of-type {
-  
     margin-top: ${spacing.gutter};
   }
   &:not(:first-of-type) {
@@ -310,9 +317,9 @@ const Buttons = styled.div`
     !column &&
     css`
   @media (min-width: 800px) {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    //display: flex;
+    //justify-content: flex-start;
+    //align-items: center;
     ${StyledButton},
     ${StyledButton.Div}{
           white-space: nowrap;
@@ -326,8 +333,7 @@ const Buttons = styled.div`
     ${StyledButton.Div} + ${StyledButton},
     ${StyledButton.Div} + ${StyledButton.Link},
     ${StyledButton.Div} + ${StyledButton.Div}{
-      margin-top: 0;
-      margin-left: ${spacing.base};
+
 
     }
   }

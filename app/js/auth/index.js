@@ -49,6 +49,7 @@ import {
   selectPublicKeychain
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
+import { AppHomeWrapper } from '@components/ui'
 
 const views = [Initial, LegacyGaia]
 
@@ -551,7 +552,12 @@ class AuthPage extends React.Component {
       view: coreShortCircuit ? VIEWS.LEGACY_GAIA : VIEWS.AUTH
     }
 
-    return <ShellParent app={app} views={views} {...componentProps} />
+    return (
+      <React.Fragment>
+        <ShellParent app={app} views={views} {...componentProps} />
+        <AppHomeWrapper />
+      </React.Fragment>
+    )
   }
 }
 

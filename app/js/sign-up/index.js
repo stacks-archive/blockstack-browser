@@ -40,8 +40,9 @@ import { hasNameBeenPreordered } from '@utils/name-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'
-import { ShellParent } from '@blockstack/ui'
+import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import { Email, Password, Success, Username } from './views'
+import HomePage from '../HomeScreenPage'
 
 const logger = log4js.getLogger('onboarding/index.js')
 
@@ -322,7 +323,7 @@ class Onboarding extends React.Component {
   /**
    * Send Recovery Email
    */
-  async sendRecovery(blockstackId, email, encryptedSeed) {
+  sendRecovery(blockstackId, email, encryptedSeed) {
     const { protocol, hostname, port } = location
     const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
     const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedSeed}`
@@ -357,7 +358,7 @@ class Onboarding extends React.Component {
   /**
    * Send restore email
    */
-  async sendRestore(blockstackId, email, encryptedSeed) {
+  sendRestore(blockstackId, email, encryptedSeed) {
     const options = {
       method: 'POST',
       body: JSON.stringify({
@@ -589,14 +590,17 @@ class Onboarding extends React.Component {
     }
 
     return (
-      <ShellParent
-        app={app}
-        views={views}
-        {...componentProps}
-        lastHeaderLabel="Welcome to Blockstack"
-        headerLabel="Create a Blockstack ID"
-        invertOnLast
-      />
+      <React.Fragment>
+        <ShellParent
+          app={app}
+          views={views}
+          {...componentProps}
+          lastHeaderLabel="Welcome to Blockstack"
+          headerLabel="Create a Blockstack ID"
+          invertOnLast
+        />
+        <AppHomeWrapper />
+      </React.Fragment>
     )
   }
 }

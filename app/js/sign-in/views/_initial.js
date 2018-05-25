@@ -24,7 +24,7 @@ export default ({ next, ...rest }) => {
           {
             type: 'textarea',
             name: 'recoveryKey',
-            label: 'Magic Recovery Code or Secret Recovery Key',
+            label: 'Recovery Code/Key',
             mh: 100,
             autoFocus: true
           }

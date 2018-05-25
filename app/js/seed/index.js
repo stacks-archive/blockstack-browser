@@ -17,6 +17,7 @@ import {
   selectAuthRequest
 } from '@common/store/selectors/auth'
 import { formatAppManifest } from '@common'
+import { AppHomeWrapper } from '@components/ui'
 
 function mapStateToProps(state) {
   return {
@@ -269,14 +270,17 @@ class SeedContainer extends Component {
     const app = formatAppManifest(this.props.appManifest)
 
     return (
-      <ShellParent
-        app={app}
-        views={views}
-        {...componentProps}
-        headerLabel="Secure your account"
-        invertOnLast
-        backOnLast
-      />
+      <React.Fragment>
+        <ShellParent
+          app={app}
+          views={views}
+          {...componentProps}
+          headerLabel="Secure your account"
+          invertOnLast
+          backOnLast
+        />
+        <AppHomeWrapper />
+      </React.Fragment>
     )
   }
 }

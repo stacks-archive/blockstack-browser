@@ -35,9 +35,9 @@ const UserButton = ({ username, id, hideID, ...rest }) => (
       align="flex-start"
       justify="center"
       cd
-      maxWidth="calc(100% - 90px)"
+      maxWidth="calc(100% - 102px) !important"
     >
-      <Type.p color="rgba(255,255,255,1)">
+      <Type.p color="rgba(255,255,255,1)" overflow>
         {username.includes('.') ? (
           <React.Fragment>
             <span style={{ color: 'rgba(255,255,255,1)' }}>

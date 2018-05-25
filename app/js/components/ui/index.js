@@ -12,8 +12,10 @@ import { HelperMessage } from '@ui/containers/layout'
 import { UserAvatar, UserButton } from '@ui/containers/user'
 import { Logo } from '@blockstack/ui/components/logos'
 import { FormContainer } from '@components/ui/containers/form'
+import { AppHomeWrapper } from '@components/ui/containers/AppHomeWrapper'
 
 export {
+  AppHomeWrapper,
   Buttons,
   Button,
   Field,

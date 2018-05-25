@@ -97,7 +97,6 @@ export default ({
           <PermissionsContent permissions={generatePermissionsList()} />
           <Buttons column>
             <Accounts list={accounts} handleClick={login} />
-            <Button label="Use a different ID" to="/sign-up" />
           </Buttons>
         </React.Fragment>
       )

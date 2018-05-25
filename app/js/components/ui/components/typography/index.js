@@ -1,18 +1,26 @@
 import styled, { css } from 'styled-components'
 import { spacing } from '@ui/common/constants'
 
-const paddingStyles = css`
+const genericStyles = css`
   ${({ padding }) =>
     padding &&
     css`
       padding: ${padding};
+    `};
+  ${({ overflow }) =>
+    overflow &&
+    css`
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     `};
 `
 
 const Type = styled.div``
 
 const p = styled.p`
-  line-height: 28px;
+  line-height: 24px;
   font-size: 16px;
   color: ${({ color }) => (color ? color : 'rgba(39, 16, 51, 0.7)')};
   padding: 0;
@@ -21,7 +29,7 @@ const p = styled.p`
     font-weight: 500;
     color: ${({ color }) => (color ? color : 'rgba(39, 16, 51, 0.9)')};
   }
-  ${paddingStyles};
+  ${genericStyles};
   & + & {
     margin-top: ${spacing.base};
   }
@@ -32,7 +40,7 @@ const Small = styled.span`
   display: inline-block;
   font-size: 14px;
   color: rgba(39, 15, 52, 0.7);
-  ${paddingStyles};
+  ${genericStyles};
   ${({ color }) =>
     color &&
     css`
@@ -51,7 +59,7 @@ const h1 = styled.h1`
       color: ${color};
     `};
 
-  ${paddingStyles};
+  ${genericStyles};
 
   margin: 0;
 `
@@ -66,7 +74,7 @@ const h2 = styled.h2`
       color: ${color};
     `};
 
-  ${paddingStyles};
+  ${genericStyles};
 
   margin: 0;
 `
@@ -88,7 +96,7 @@ const h3 = styled.h3`
       color: rgba(39, 15, 52, 0.5);
     `};
 
-  ${paddingStyles};
+  ${genericStyles};
 
   margin: 0;
 `
@@ -107,7 +115,26 @@ const h5 = styled.h5`
       color: ${color};
     `};
 
-  ${paddingStyles};
+  ${genericStyles};
+
+  margin: 0;
+`
+
+const h4 = styled.h4`
+  font-style: normal;
+  font-weight: 600;
+  line-height: 23px;
+  font-size: 14px;
+
+  color: rgba(39, 15, 52, 0.85);
+
+  ${({ color }) =>
+    color &&
+    css`
+      color: ${color};
+    `};
+
+  ${genericStyles};
 
   margin: 0;
 `
@@ -117,6 +144,7 @@ Type.small = Small
 Type.h1 = h1
 Type.h2 = h2
 Type.h3 = h3
+Type.h4 = h4
 Type.h5 = h5
 
 export { Type }
