@@ -116,6 +116,9 @@ class PasswordView extends React.Component {
               type: 'password',
               name: 'password',
               label: 'Password',
+              message: decrypt
+                ? 'The password you entered when you created this Blockstack ID.'
+                : 'Please record your password, Blockstack cannot reset this password for you.',
               autoFocus: true
             }
           ],
