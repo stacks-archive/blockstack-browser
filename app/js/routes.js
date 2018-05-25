@@ -98,13 +98,15 @@ export default (
       </Route>
 
       <Route path="/auth" component={NewAuthPage} />
-      <Route path="/seed" component={SeedPage} />
     </Route>
     <Route path="/sign-up" component={SignUpPage} />
     <Route path="/sign-up/*" component={SignUpPage} />
 
     <Route path="/sign-in" component={SignInPage} />
     <Route path="/sign-in/*" component={SignInPage} />
+
+    <Route path="/seed" component={SeedPage} />
+    
     <Route path="/*" component={NotFoundPage} />
   </Router>
 )
