@@ -143,18 +143,6 @@ class SignIn extends React.Component {
     }
   }
 
-  // restoreAccount = password => {
-  //   if (!password) {
-  //     return null
-  //   }
-  //   if (this.state.password !== password) {
-  //     this.setState({ password }, () =>
-  //       setTimeout(() => this.decryptKeyAndRestore(), 100)
-  //     )
-  //   }
-  //   return setTimeout(() => this.decryptKeyAndRestore(), 100)
-  // }
-
   decryptKeyAndRestore = () => {
     if (!this.state.password) {
       console.error('no password in state')
@@ -184,7 +172,7 @@ class SignIn extends React.Component {
                 .catch(() => {
                   this.setState({
                     decrypting: false,
-                    restoreError: 'The password you entered is incorrect.',
+                    restoreError: 'Incorrect code or password',
                     key: ''
                   })
                 })
@@ -345,48 +333,6 @@ class SignIn extends React.Component {
       this.props.router.push('/')
     }
   }
-
-  // createAccount() {
-  //   const firstIdentityIndex = 0
-  //   logger.debug('creating new identity')
-  //   const ownerAddress = this.props.identityAddresses[firstIdentityIndex]
-  //   this.props.createNewIdentityWithOwnerAddress(
-  //     firstIdentityIndex,
-  //     ownerAddress
-  //   )
-  //   return this.props.setDefaultIdentity(firstIdentityIndex)
-  // }
-
-  // connectStorage() {
-  //   const storageProvider = this.props.api.gaiaHubUrl
-  //   const signer = this.props.identityKeypairs[0].key
-  //   return connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
-  //     const newApi = Object.assign({}, this.props.api, {
-  //       gaiaHubConfig,
-  //       hostedDataLocation: BLOCKSTACK_INC
-  //     })
-  //     this.props.updateApi(newApi)
-  //     const identityIndex = 0
-  //     const identity = this.props.localIdentities[identityIndex]
-  //     const identityAddress = identity.ownerAddress
-  //     const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
-  //     const profile = identity.profile
-  //     setCoreStorageConfig(
-  //       newApi,
-  //       identityIndex,
-  //       identityAddress,
-  //       profile,
-  //       profileSigningKeypair,
-  //       identity
-  //     ).then(() => {
-  //       logger.debug('connectStorage: storage initialized')
-  //       const newApi2 = Object.assign({}, newApi, { storageConnected: true })
-  //       this.props.updateApi(newApi2)
-  //       this.props.storageIsConnected()
-  //       logger.debug('connectStorage: storage configured')
-  //     })
-  //   })
-  // }
 
   render() {
     const { view } = this.state

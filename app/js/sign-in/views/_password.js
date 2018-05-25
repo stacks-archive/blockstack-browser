@@ -85,11 +85,18 @@ class PasswordView extends React.Component {
     return null
   }
   render() {
-    const { updateValue, next, loading, password, ...rest } = this.props
+    const {
+      updateValue,
+      next,
+      loading,
+      password,
+      decrypt,
+      ...rest
+    } = this.props
 
     const props = {
       title: {
-        children: 'Enter your password',
+        children: decrypt ? 'Enter your password' : 'Create a password',
         variant: 'h2'
       },
       content: {
@@ -109,6 +116,9 @@ class PasswordView extends React.Component {
               type: 'password',
               name: 'password',
               label: 'Password',
+              message: decrypt
+                ? 'The password you entered when you created this Blockstack ID.'
+                : 'Please record your password, Blockstack cannot reset this password for you.',
               autoFocus: true
             }
           ],

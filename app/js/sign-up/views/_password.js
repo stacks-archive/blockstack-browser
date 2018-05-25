@@ -33,14 +33,14 @@ class PasswordView extends React.Component {
             {
               type: 'password',
               name: 'password',
-              label: 'Password',
+              label: 'New password (8 characters min',
               autoFocus: true
             },
             {
               type: 'password',
               name: 'passwordConfirm',
               label: 'Confirm Password',
-              message: 'Minimum 8 characters.'
+              message: 'Please record your password, Blockstack cannot reset this password for you.'
             }
           ],
           actions: {

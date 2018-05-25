@@ -144,6 +144,7 @@ class UsernameView extends React.Component {
               type: 'text',
               label: 'Username',
               name: 'username',
+              message: 'This will be your unique, public identity for any Blockstack app.',
               autoFocus: true,
               overlay: defaultSponsoredName,
               handleChangeOverride: (e, handleChange) => {
@@ -173,6 +174,7 @@ class UsernameView extends React.Component {
               {
                 label: this.renderButtonLabel(this.state),
                 loading,
+                disabled: loading,
                 primary: true,
                 type: 'submit',
                 icon: 'ArrowRightIcon'

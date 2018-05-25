@@ -49,7 +49,16 @@ HeaderLink.propTypes = {
   label: PropTypes.string,
   icon: PropTypes.node
 }
-const Header = ({ app, action, invert, label, icon, ...rest }) => {
+const Header = ({
+  app,
+  action,
+  invert,
+  label,
+  icon,
+  disableBackOnView,
+  view,
+  ...rest
+}) => {
   const renderBugs = () => {
     if (app) {
       return (
@@ -75,12 +84,13 @@ const Header = ({ app, action, invert, label, icon, ...rest }) => {
   const linkProps = {
     action,
     label,
-    icon
+    icon,
+    disableBackOnView
   }
   return (
     <StyledHeader invert={invert} {...rest}>
       <StyledHeader.Section>
-        <HeaderLink {...linkProps} />
+        {disableBackOnView === view ? null : <HeaderLink {...linkProps} />}
       </StyledHeader.Section>
       <StyledHeader.Section>{renderBugs()}</StyledHeader.Section>
     </StyledHeader>

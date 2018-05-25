@@ -41,17 +41,23 @@ import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'
 import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
-import { Email, Password, Success, Username } from './views'
-import HomePage from '../HomeScreenPage'
+import {
+  Email,
+  Password,
+  Success,
+  Username,
+  RecoveryInformationScreen
+} from './views'
 
 const logger = log4js.getLogger('onboarding/index.js')
 
-const views = [Email, Password, Username, Success]
+const views = [Email, Password, Username, RecoveryInformationScreen, Success]
 const VIEWS = {
   EMAIL: 0,
   PASSWORD: 1,
   USERNAME: 2,
-  HOORAY: 3
+  INFO: 3,
+  HOORAY: 4
 }
 
 const SUBDOMAIN_SUFFIX = 'test-personal.id'
@@ -259,7 +265,7 @@ class Onboarding extends React.Component {
    * Send Emails
    * this will send both emails (restore and recovery)
    */
-  sendEmails = async () => {
+  sendEmails = async (type = 'both') => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
 
@@ -267,8 +273,15 @@ class Onboarding extends React.Component {
      * TODO: add this as a notification or something the user can see
      */
     if (!encryptedBackupPhrase) {
-      console.log('no encryptedBackupPhrase')
       return null
+    }
+    if (type === 'recovery') {
+      await this.sendRecovery(username, email, encryptedBackupPhrase)
+    } else if (type === 'restore') {
+      await this.sendRestore(username, email, encryptedBackupPhrase)
+    } else {
+      await this.sendRestore(username, email, encryptedBackupPhrase)
+      await this.sendRecovery(username, email, encryptedBackupPhrase)
     }
 
     const b64EncryptedBackupPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString('base64')
@@ -278,7 +291,7 @@ class Onboarding extends React.Component {
 
     return this.setState({ 
       emailsSending: false,
-      emailsSent: true 
+      emailsSent: true
     })
   }
 
@@ -478,15 +491,15 @@ class Onboarding extends React.Component {
     const registrationComplete =
       creatingAccountStatus === CREATE_ACCOUNT_SUCCESS &&
       emailsSent &&
-      view !== VIEWS.HOORAY
+      view !== VIEWS.INFO
 
     if (registrationBegin) {
       setTimeout(() => this.createAccount(), 500)
     }
 
-    if (registrationComplete) {
-      this.updateView(VIEWS.HOORAY)
-    }
+    // if (registrationComplete) {
+    //   this.updateView(VIEWS.INFO)
+    // }
   }
 
   componentWillMount() {
@@ -513,15 +526,19 @@ class Onboarding extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const { registration } = nextProps
-    const { usernameRegistrationInProgress, emailsSent, emailsSending } = this.state
+    const {
+      usernameRegistrationInProgress,
+      emailsSent,
+      emailsSending
+    } = this.state
     if (usernameRegistrationInProgress && registration.registrationSubmitted) {
       if (!emailsSent && !emailsSending) {
         this.setState({
           emailsSending: true
         })
-        this.sendEmails().then(() => this.updateView(VIEWS.HOORAY))
+        this.sendEmails().then(() => this.updateView(VIEWS.INFO))
       } else {
-        this.updateView(VIEWS.HOORAY)
+        this.updateView(VIEWS.INFO)
       }
     } else if (registration.error) {
       logger.error(`username registration error: ${registration.error}`)
@@ -573,6 +590,17 @@ class Onboarding extends React.Component {
         }
       },
       {
+        show: VIEWS.INFO,
+        props: {
+          email,
+          password,
+          username,
+          app,
+          sendRecoveryEmail: () => this.sendEmails('restore'),
+          next: () => this.updateView(VIEWS.HOORAY)
+        }
+      },
+      {
         show: VIEWS.HOORAY,
         props: {
           email,
@@ -608,6 +636,7 @@ class Onboarding extends React.Component {
           lastHeaderLabel="Welcome to Blockstack"
           headerLabel="Create a Blockstack ID"
           invertOnLast
+          disableBackOnView={VIEWS.INFO}
         />
         <AppHomeWrapper />
       </React.Fragment>

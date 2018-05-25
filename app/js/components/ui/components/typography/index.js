@@ -35,6 +35,26 @@ const p = styled.p`
   }
 `
 
+const a = styled.a`
+  line-height: 24px;
+  font-size: 16px;
+  color: ${({ color }) => (color ? color : 'rgba(39, 16, 51, 0.7)')};
+  padding: 0;
+  margin: 0;
+  strong {
+    font-weight: 500;
+    color: ${({ color }) => (color ? color : 'rgba(39, 16, 51, 0.9)')};
+  }
+  ${genericStyles};
+  & + & {
+    margin-top: ${spacing.base};
+  }
+  text-decoration: underline !important;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
 const Small = styled.span`
   line-height: 24px;
   display: inline-block;
@@ -140,6 +160,7 @@ const h4 = styled.h4`
 `
 
 Type.p = p
+Type.a = a
 Type.small = Small
 Type.h1 = h1
 Type.h2 = h2
