@@ -159,8 +159,8 @@ class ShellParent extends React.Component {
         {size => (
           <ShellContext.Provider value={{ ...context, size }}>
             <Shell {...context} {...size}>
-              <Shell.Content.Container>
-                <Shell.Content.Wrapper>
+              <Shell.Content.Container {...size}>
+                <Shell.Content.Wrapper {...size}>
                   <Header
                     {...headerProps}
                     invert={size.width < 600 ? invert : undefined}

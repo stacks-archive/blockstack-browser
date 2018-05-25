@@ -102,9 +102,9 @@ const ContentContainer = styled.div`
   position: relative;
 
   @media (max-width: 599px) {
-    min-height: 100vh;
+    max-height: ${({ height }) => (height > 0 ? `${height}px` : '100vh')};
+    min-height: ${({ height }) => (height > 0 ? `${height}px` : '100vh')};
     min-width: 100vw;
-    max-height: 100vh;
     overflow-y: auto;
     padding-bottom: 0;
   }
@@ -183,18 +183,18 @@ const StyledShell = styled.div`
       : css``};
 
   @media (min-width: 600px) {
-    max-height: 100vh;
+    max-height: ${({ height }) => (height > 0 ? `${height}px` : '100vh')};
     overflow-y: auto;
     overflow-x: hidden;
     padding: 60px;
   }
 
-  @media (max-height: 768px) {
+  @media (max-height: 7px) {
     align-items: flex-start;
   }
 
   @media (max-width: 600px) {
-    max-height: 100vh;
+    max-height: ${({ height }) => (height > 0 ? `${height}px` : '100vh')};
     overflow: hidden;
   }
   * {
