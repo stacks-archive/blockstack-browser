@@ -5,7 +5,7 @@ const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
   const props = {
     headerLabel: 'Secure your account',
     title: {
-      children: 'Please save your Secret Recovery Key'
+      children: 'Save your Secret Recovery Key'
     },
     content: {
       grow: 1,
@@ -27,7 +27,7 @@ const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
     actions: {
       items: [
         {
-          label: 'View Secret Recovery Key',
+          label: 'Record Secret Recovery Key',
           onClick: () => next(),
           primary: true,
           loading,

@@ -28,7 +28,9 @@ class PasswordView extends React.Component {
               type: 'password',
               name: 'password',
               label: 'Password',
-              autoFocus: true
+              autoFocus: true,
+              message:
+                'The password you entered when you created this Blockstack ID.'
             }
           ],
           actions: {

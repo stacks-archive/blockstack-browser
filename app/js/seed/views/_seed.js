@@ -26,8 +26,14 @@ class SeedPage extends React.Component {
     const props = {
       title: {
         children: 'Write down all words',
-        variant: 'h2'
+        variant: 'h2',
+        subtitle: {
+          light: true,
+          children: 'Your Secret Recovery Key',
+          padding: '10px 0 0 0'
+        }
       },
+
       content: {
         grow: 1,
         children: (
@@ -46,8 +52,12 @@ class SeedPage extends React.Component {
         )
       },
       actions: {
-        split: true,
         items: [
+          {
+            label: 'I have written down all words',
+            primary: true,
+            onClick: () => next()
+          },
           {
             label: this.state.copied ? (
               'Copied!'
@@ -58,14 +68,7 @@ class SeedPage extends React.Component {
               >
                 <span>Copy 12 Words</span>
               </CopyToClipboard>
-            ),
-            textOnly: true
-          },
-          {
-            label: 'Next',
-            primary: true,
-            icon: 'ArrowRightIcon',
-            onClick: () => next()
+            )
           }
         ]
       }
