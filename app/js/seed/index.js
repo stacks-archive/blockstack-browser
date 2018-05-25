@@ -107,7 +107,7 @@ class SeedContainer extends Component {
       }
     }
     console.log('decrypting password')
-    const buffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const buffer = new Buffer(encryptedBackupPhrase, 'base64')
 
     return decrypt(buffer, password).then(result => {
       if (this.state.seed !== result.toString()) {

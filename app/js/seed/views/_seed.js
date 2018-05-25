@@ -26,7 +26,7 @@ class SeedPage extends React.Component {
     const props = {
       title: {
         children: 'Write down all words',
-        variant: 'h2',
+        variant: 'h1',
         subtitle: {
           light: true,
           children: 'Your Secret Recovery Key',
