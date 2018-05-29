@@ -1,6 +1,7 @@
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Button, firstLetter, stringToColor, Type } from '@blockstack/ui'
 import { User } from '@blockstack/ui/components/user'
-import React from 'react'
 import { ChevronRightIcon } from 'mdi-react'
 
 const UserAvatar = ({
@@ -63,4 +64,16 @@ const UserButton = ({ username, id, hideID, ...rest }) => (
   </Button>
 )
 
+UserAvatar.propTypes = {
+  id: PropTypes.string,
+  username: PropTypes.string,
+  size: PropTypes.number,
+  camera: PropTypes.bool,
+  textSize: PropTypes.number
+}
+UserButton.propTypes = {
+  id: PropTypes.string,
+  username: PropTypes.string,
+  hidID: PropTypes.bool
+}
 export { UserButton, UserAvatar }

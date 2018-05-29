@@ -8,9 +8,7 @@ import { Spring } from 'react-spring'
 import { Spinner } from '@components/ui/components/spinner'
 import PropTypes from 'prop-types'
 
-const Shell = ({ children, ...rest }) => {
-  return <StyledShell {...rest}>{children}</StyledShell>
-}
+const Shell = props => <StyledShell {...props} />
 
 const Subtitle = ({ variant = 'h3', ...rest }) => {
   const SubtitleComponent = Type[variant]
@@ -41,16 +39,9 @@ const Title = ({
   )
 }
 
-Title.propTypes = {
-  children: PropTypes.node,
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-  variant: PropTypes.oneOf(['h1', 'h2'])
-}
-
 const Loading = ({ message = 'Loading...', children, ...rest }) => (
   <Spring native from={{ opacity: 0 }} to={{ opacity: 1 }}>
-    {(styles) => (
+    {styles => (
       <StyledShell.Loading {...rest} style={styles}>
         <Spinner />
         {children || message}
@@ -83,20 +74,8 @@ Content.propTypes = {
   grow: PropTypes.oneOf([0, 1]).isRequired
 }
 
-const ShellScreenContainer = ({
-  title,
-  titleVariation = 'h1',
-  actions,
-  content,
-  loading,
-  setLoadingProps,
-  clearLoadingProps,
-  ...rest
-}) => (
+const ShellScreenContainer = ({ title, actions, content, ...rest }) => (
   <React.Fragment>
-    {loading && loading.children
-      ? setLoadingProps(loading)
-      : clearLoadingProps()}
     <Shell.Wrapper {...rest}>
       <Shell.Title {...title} />
       <Content {...content} />
@@ -114,9 +93,19 @@ ShellScreenContainer.propTypes = {
   title: PropTypes.object,
   loading: PropTypes.object,
   content: PropTypes.object,
-  titleVariant: PropTypes.oneOf(['h1', 'h2'])
+  titleVariation: PropTypes.oneOf(['h1', 'h2'])
 }
 
+Subtitle.propTypes = {
+  variant: PropTypes.string
+}
+Title.propTypes = {
+  children: PropTypes.node,
+  icon: PropTypes.node,
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  subtitle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  variant: PropTypes.oneOf(['h1', 'h2'])
+}
 const ShellScreen = withShellContext(ShellScreenContainer)
 
 export { Shell, ShellScreen }

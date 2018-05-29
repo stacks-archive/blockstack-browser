@@ -30,7 +30,7 @@ const Textarea = styled.textarea`
   border-top-left-radius: 4px;
   box-sizing: border-box;
   resize: vertical;
-  min-height: ${({ mh }) => (mh ? mh + 'px' : '48px')};
+  min-height: ${({ mh }) => (mh ? `${mh}px` : '48px')};
   margin-top: 5px;
   color: rgba(39, 16, 51, 0.7);
 `
