@@ -35,7 +35,7 @@ class ShellParent extends React.Component {
   /**
    * Render a loading component from within a child view
    */
-  renderLoading = props => {
+  renderLoading = (props) => {
     let Components = []
 
     if (props.children) {
@@ -51,7 +51,7 @@ class ShellParent extends React.Component {
         enter={{ opacity: 1 }}
         leave={{ opacity: 0 }}
       >
-        {Components.map((Component, i) => styles => (
+        {Components.map((Component, i) => (styles) => (
           <Component key={i} style={styles} {...props} />
         ))}
       </Transition>
@@ -60,7 +60,7 @@ class ShellParent extends React.Component {
   /**
    * Sets the props that are used in the Loading component
    */
-  setLoadingProps = loadingProps =>
+  setLoadingProps = (loadingProps) =>
     !this.state.loadingProps.children &&
     loadingProps.children &&
     loadingProps.children !== this.state.loadingProps.children
@@ -113,7 +113,7 @@ class ShellParent extends React.Component {
 
     const componentProps = {
       backView: () => this.props.backView(),
-      setLoadingProps: p => this.setLoadingProps(p),
+      setLoadingProps: (p) => this.setLoadingProps(p),
       clearLoadingProps: this.clearLoadingProps,
       app,
       ...size,
@@ -161,7 +161,7 @@ class ShellParent extends React.Component {
 
     return (
       <WindowSize>
-        {size => (
+        {(size) => (
           <ShellContext.Provider value={{ ...context, size }}>
             <Shell {...context} {...size}>
               <Shell.Content.Container {...size}>

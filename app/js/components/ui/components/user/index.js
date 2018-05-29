@@ -52,7 +52,7 @@ const Camera = styled.div`
   background: #010101;
 `
 
-const CameraContainer = props => (
+const CameraContainer = (props) => (
   <Camera {...props}>
     <CameraIcon color="white" size={14} />
   </Camera>

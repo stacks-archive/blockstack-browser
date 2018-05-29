@@ -50,7 +50,7 @@ Title.propTypes = {
 
 const Loading = ({ message = 'Loading...', children, ...rest }) => (
   <Spring native from={{ opacity: 0 }} to={{ opacity: 1 }}>
-    {styles => (
+    {(styles) => (
       <StyledShell.Loading {...rest} style={styles}>
         <Spinner />
         {children || message}

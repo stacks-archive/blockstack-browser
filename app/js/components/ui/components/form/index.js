@@ -225,12 +225,10 @@ const StyledField = styled.div.attrs({
 const Form = styled(FormikForm).attrs({
   autoComplete: 'new-password'
 })`
-
-  ${Group} + ${Group}{
+  ${Group} + ${Group} {
     margin-top: 30px;
   }
   * {
-
     ::-webkit-input-placeholder {
       /* Chrome/Opera/Safari */
       color: transparent !important;
@@ -248,12 +246,12 @@ const Form = styled(FormikForm).attrs({
       color: transparent !important;
     }
   }
-  
+
   & + p,
   & + h1,
   & + h2,
-  & + h3{
-  margin-top: ${spacing.gutter};
+  & + h3 {
+    margin-top: ${spacing.gutter};
   }
 `
 StyledField.Label = Label

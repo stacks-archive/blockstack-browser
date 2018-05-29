@@ -10,7 +10,7 @@ const Fields = ({ fields, errors, ...rest }) =>
     <FastField
       label={label}
       name={name}
-      render={fastFieldProps => (
+      render={(fastFieldProps) => (
         <Field
           key={i}
           label={label}
@@ -81,7 +81,7 @@ const FormContainer = ({
       }
   return (
     <Formik {...props}>
-      {renderProps => <FormWrapper {...renderProps} {...rest} />}
+      {(renderProps) => <FormWrapper {...renderProps} {...rest} />}
     </Formik>
   )
 }

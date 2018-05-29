@@ -1,5 +1,5 @@
-import React from "react";
-import styled, { css } from "styled-components";
+import React from 'react'
+import styled, { css } from 'styled-components'
 
 const Spinner = ({ size = 18, stroke = 4, ...rest }) => (
   <StyledSpinner size={size} viewBox="0 0 50 50" {...rest}>
@@ -12,12 +12,12 @@ const Spinner = ({ size = 18, stroke = 4, ...rest }) => (
       strokeWidth={stroke}
     />
   </StyledSpinner>
-);
+)
 
 const StyledSpinner = styled.svg`
   animation: rotate 2s linear infinite;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
+  width: ${(props) => props.size}px;
+  height: ${(props) => props.size}px;
   display: block;
   ${({ ml }) =>
     ml &&
@@ -25,7 +25,7 @@ const StyledSpinner = styled.svg`
       margin-left: ${ml}px;
     `};
   & .path {
-    stroke: ${props => (props.color ? props.color : "white")};
+    stroke: ${(props) => (props.color ? props.color : 'white')};
     stroke-linecap: round;
     animation: dash 1.5s ease-in-out infinite;
   }
@@ -49,6 +49,6 @@ const StyledSpinner = styled.svg`
       stroke-dashoffset: -124;
     }
   }
-`;
+`
 
-export { Spinner };
+export { Spinner }

@@ -26,7 +26,7 @@ configureLogging(
 )
 
 window.addEventListener('error', event => {
-  const logger = log4js.getLogger("window.addWindowListener('error')")
+  const logger = log4js.getLogger('window.addWindowListener(\'error\')')
   logger.error(event)
 })
 

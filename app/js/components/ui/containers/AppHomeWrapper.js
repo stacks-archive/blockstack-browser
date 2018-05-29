@@ -20,7 +20,7 @@ const StyledAppHomeWrapper = styled.div.attrs({
   }
 `
 
-const AppHomeWrapper = props => (
+const AppHomeWrapper = (props) => (
   <StyledAppHomeWrapper {...props}>
     <div inert="true" htmlInert>
       <HomePage />

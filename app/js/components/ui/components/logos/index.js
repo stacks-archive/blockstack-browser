@@ -8,7 +8,7 @@ const StyledBug = styled.svg`
 `
 
 const logoRatio = 0.118387909
-const getHeight = width => Math.floor(width * logoRatio)
+const getHeight = (width) => Math.floor(width * logoRatio)
 
 const Logo = ({ width = 180, color = 'white', noShadows, ...rest }) => (
   <svg width={width} height={getHeight(width)} viewBox="0 0 397 47" {...rest}>

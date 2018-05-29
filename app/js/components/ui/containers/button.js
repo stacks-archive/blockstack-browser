@@ -15,7 +15,7 @@ const Button = ({
   to,
   ...rest
 }) => {
-  const ButtonComponent = props => {
+  const ButtonComponent = (props) => {
     if (to) {
       return <StyledButton.Link {...props} />
     } else if (type) {
@@ -54,7 +54,7 @@ const Button = ({
   )
 }
 
-const renderButtons = items =>
+const renderButtons = (items) =>
   items.map(({ ...buttonProps }, i) => (
     <Button
       key={i}

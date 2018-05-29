@@ -265,36 +265,36 @@ const Buttons = styled.div`
           justify-content: space-between;
           align-items: center;
           ${StyledButton} + ${StyledButton},
-          ${StyledButton} + ${StyledButton.Div},
-          ${StyledButton} + ${StyledButton.Link},
-          ${StyledButton.Link} + ${StyledButton.Link},
-          ${StyledButton.Link} + ${StyledButton.Div},
-          ${StyledButton.Link} + ${StyledButton},
-          ${StyledButton.Div} + ${StyledButton},
-          ${StyledButton.Div} + ${StyledButton.Link},
-          ${StyledButton.Div} + ${StyledButton.Div}{
+            ${StyledButton} + ${StyledButton.Div},
+            ${StyledButton} + ${StyledButton.Link},
+            ${StyledButton.Link} + ${StyledButton.Link},
+            ${StyledButton.Link} + ${StyledButton.Div},
+            ${StyledButton.Link} + ${StyledButton},
+            ${StyledButton.Div} + ${StyledButton},
+            ${StyledButton.Div} + ${StyledButton.Link},
+            ${StyledButton.Div} + ${StyledButton.Div} {
             margin-left: 15px;
           }
-          
-          ${StyledButton}:not(:last-of-type),
-          ${StyledButton.Link}:not(:last-of-type),
-          ${StyledButton.Div}:not(:last-of-type){
+
+          ${StyledButton}:not (: last-of-type),
+            ${StyledButton.Link}:not(:last-of-type),
+            ${StyledButton.Div}:not(:last-of-type) {
             margin-right: 15px;
           }
         `
       : css`
           ${StyledButton} + ${StyledButton},
-          ${StyledButton} + ${StyledButton.Div},
-          ${StyledButton} + ${StyledButton.Link},
-          ${StyledButton.Link} + ${StyledButton.Link},
-          ${StyledButton.Link} + ${StyledButton.Div},
-          ${StyledButton.Link} + ${StyledButton},
-          ${StyledButton.Div} + ${StyledButton},
-          ${StyledButton.Div} + ${StyledButton.Link},
-          ${StyledButton.Div} + ${StyledButton.Div}{
+            ${StyledButton} + ${StyledButton.Div},
+            ${StyledButton} + ${StyledButton.Link},
+            ${StyledButton.Link} + ${StyledButton.Link},
+            ${StyledButton.Link} + ${StyledButton.Div},
+            ${StyledButton.Link} + ${StyledButton},
+            ${StyledButton.Div} + ${StyledButton},
+            ${StyledButton.Div} + ${StyledButton.Link},
+            ${StyledButton.Div} + ${StyledButton.Div} {
             margin-top: 15px;
           }
-`};
+        `};
 
   ${({ wrap }) =>
     wrap &&
@@ -316,27 +316,24 @@ const Buttons = styled.div`
   ${({ column }) =>
     !column &&
     css`
-  @media (min-width: 800px) {
-    //display: flex;
-    //justify-content: flex-start;
-    //align-items: center;
-    ${StyledButton},
-    ${StyledButton.Div}{
+      @media (min-width: 800px) {
+        //display: flex;
+        //justify-content: flex-start;
+        //align-items: center;
+        ${StyledButton}, ${StyledButton.Div} {
           white-space: nowrap;
-    }
-    ${StyledButton} + ${StyledButton},
-    ${StyledButton} + ${StyledButton.Div},
-    ${StyledButton} + ${StyledButton.Link},
-    ${StyledButton.Link} + ${StyledButton.Link},
-    ${StyledButton.Link} + ${StyledButton.Div},
-    ${StyledButton.Link} + ${StyledButton},
-    ${StyledButton.Div} + ${StyledButton},
-    ${StyledButton.Div} + ${StyledButton.Link},
-    ${StyledButton.Div} + ${StyledButton.Div}{
-
-
-    }
-  }
+        }
+        ${StyledButton} + ${StyledButton},
+          ${StyledButton} + ${StyledButton.Div},
+          ${StyledButton} + ${StyledButton.Link},
+          ${StyledButton.Link} + ${StyledButton.Link},
+          ${StyledButton.Link} + ${StyledButton.Div},
+          ${StyledButton.Link} + ${StyledButton},
+          ${StyledButton.Div} + ${StyledButton},
+          ${StyledButton.Div} + ${StyledButton.Link},
+          ${StyledButton.Div} + ${StyledButton.Div} {
+        }
+      }
     `};
 `
 
