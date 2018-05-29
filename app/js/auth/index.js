@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ShellParent } from '@blockstack/ui'
+import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import { Initial, LegacyGaia } from './views'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -9,7 +9,6 @@ import { decodeToken } from 'jsontokens'
 import {
   makeAuthResponse,
   getAuthRequestFromURL,
-  Person,
   redirectUserToApp,
   getAppBucketUrl,
   isLaterVersion
@@ -49,7 +48,6 @@ import {
   selectPublicKeychain
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
-import { AppHomeWrapper } from '@components/ui'
 
 const views = [Initial, LegacyGaia]
 
@@ -397,8 +395,8 @@ class AuthPage extends React.Component {
     const identity = localIdentities[identityIndex]
     let hasUsername = identity.username && identity.username.length > 0
     // if (!identity.username || identity.usernamePending) {
-      // logger.debug(`login(): the id ${identity.ownerAddress} has no username`)
-      // hasUsername = false
+    // logger.debug(`login(): the id ${identity.ownerAddress} has no username`)
+    // hasUsername = false
     // }
 
     // check to see if username is resolvable until we get name state management
@@ -501,7 +499,7 @@ class AuthPage extends React.Component {
       return <React.Fragment> </React.Fragment>
     }
 
-    const { processing, invalidScopes, decodedToken } = this.state
+    const { invalidScopes, decodedToken } = this.state
 
     const noCoreStorage =
       decodedToken &&
