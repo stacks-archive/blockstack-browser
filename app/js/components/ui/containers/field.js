@@ -16,6 +16,7 @@ const Field = ({
   mh,
   handleChange,
   handleChangeOverride,
+  handleBlur,
   ...rest
 }) => {
   const InputComponent =
@@ -67,6 +68,7 @@ const Field = ({
           mh={mh}
           onChange={_handleChange}
           lowercase={type !== 'password'}
+          onBlur={handleBlur}
         />
         {PositiveMessage}
         {ErrorMessage}

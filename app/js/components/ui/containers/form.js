@@ -36,14 +36,12 @@ const FormWrapper = ({
   touched,
   handleSubmit,
   handleChange,
-  handleBlur
 }) => {
   const fieldProps = {
     errors,
     touched,
     handleSubmit,
-    handleChange,
-    handleBlur
+    handleChange
   }
   return (
     <Form noValidate>
@@ -58,7 +56,7 @@ const FormContainer = ({
   validationSchema,
   onSubmit,
   validate,
-  validateOnBlur = true,
+  validateOnBlur = false,
   validateOnChange = false,
   ...rest
 }) => {

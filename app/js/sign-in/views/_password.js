@@ -23,8 +23,21 @@ class PasswordView extends React.Component {
 
   validate = values => {
     console.log('validating')
+
+    // No value checks for both
     const noValues = !values.password || values.password === ''
+    const noValuesConfirm =
+      !this.props.decrypt &&
+      (!values.passwordConfirm || values.passwordConfirm === '')
+
+    // Too short checks for both
     const tooShort = values.password.length < 8
+    const tooShortConfirm =
+      !this.props.decrypt && values.passwordConfirm.length < 8
+
+    // check if passwords match
+    const passwordsDoNotMatch =
+      !this.props.decrypt && values.password !== values.passwordConfirm
 
     this.setState({
       status: 'validating',
@@ -33,6 +46,9 @@ class PasswordView extends React.Component {
 
     const errors = {}
 
+    /**
+     * No Value checks
+     */
     if (noValues) {
       errors.password = 'This is required'
       this.setState({
@@ -40,8 +56,18 @@ class PasswordView extends React.Component {
         errors
       })
       throw errors
+    } else if (noValuesConfirm) {
+      errors.passwordConfirm = 'This is required'
+      this.setState({
+        status: 'error',
+        errors
+      })
+      throw errors
     }
 
+    /**
+     * Min length checks
+     */
     if (tooShort) {
       errors.password = 'Password is too short'
       this.setState({
@@ -51,8 +77,34 @@ class PasswordView extends React.Component {
       })
 
       throw errors
+    } else if (tooShortConfirm) {
+      errors.passwordConfirm = 'Password is too short'
+      this.setState({
+        status: 'error',
+        passwordConfirm: values.passwordConfirm,
+        errors
+      })
+
+      throw errors
     }
 
+    /**
+     * Check if passwords match (if !this.props.decrypt)
+     */
+    if (passwordsDoNotMatch) {
+      errors.passwordConfirm = 'Passwords do not match'
+      this.setState({
+        status: 'error',
+        password: values.password,
+        errors
+      })
+
+      throw errors
+    }
+
+    /**
+     * Set errors
+     */
     if (Object.keys(errors).length) {
       this.setState({
         status: 'error'
@@ -91,6 +143,28 @@ class PasswordView extends React.Component {
       ...rest
     } = this.props
 
+    const fields = [
+      {
+        type: 'password',
+        name: 'password',
+        label: 'Password',
+        message: decrypt
+          ? 'The password you entered when you created this Blockstack ID.'
+          : null,
+        autoFocus: true
+      }
+    ]
+
+    if (!decrypt) {
+      fields.push({
+        type: 'password',
+        name: 'passwordConfirm',
+        label: 'Confirm Password',
+        message:
+          'Please record your password, Blockstack cannot reset this password for you.'
+      })
+    }
+
     const props = {
       title: {
         children: decrypt ? 'Enter your password' : 'Create a password',
@@ -108,17 +182,7 @@ class PasswordView extends React.Component {
               next()
             }
           },
-          fields: [
-            {
-              type: 'password',
-              name: 'password',
-              label: 'Password',
-              message: decrypt
-                ? 'The password you entered when you created this Blockstack ID.'
-                : 'Please record your password, Blockstack cannot reset this password for you.',
-              autoFocus: true
-            }
-          ],
+          fields,
           actions: {
             split: true,
             items: [
