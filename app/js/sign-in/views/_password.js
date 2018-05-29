@@ -1,19 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { ShellScreen, Shell } from '@blockstack/ui'
-import Yup from 'yup'
-
-const validationSchema = Yup.object({
-  password: Yup.string()
-    .min(8, 'Your password is too short.')
-    .required('A passsword is required.')
-})
 
 class PasswordView extends React.Component {
   state = {
     status: 'initial'
   }
 
-  componentDidUpdate(prevProps, prevState, prevContext) {
+  setError = () => {
     if (this.state.status !== 'error' && this.props.error) {
       this.setState({
         errors: {
@@ -22,6 +16,9 @@ class PasswordView extends React.Component {
         status: 'error'
       })
     }
+  }
+  componentDidUpdate() {
+    this.setError()
   }
 
   validate = values => {
@@ -34,7 +31,7 @@ class PasswordView extends React.Component {
       errors: undefined
     })
 
-    let errors = {}
+    const errors = {}
 
     if (noValues) {
       errors.password = 'This is required'
@@ -157,5 +154,16 @@ class PasswordView extends React.Component {
       </React.Fragment>
     )
   }
+}
+
+PasswordView.propTypes = {
+  updateValue: PropTypes.func,
+  next: PropTypes.func,
+  loading: PropTypes.bool,
+  password: PropTypes.string,
+  decrypt: PropTypes.bool,
+  decrypting: PropTypes.bool,
+  error: PropTypes.any,
+  key: PropTypes.any
 }
 export default PasswordView

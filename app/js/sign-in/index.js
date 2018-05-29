@@ -11,7 +11,7 @@ import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
-import { Initial, Password, Restoring, Success } from './views'
+import { Initial, Password, Success } from './views'
 import log4js from 'log4js'
 import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import {
@@ -44,11 +44,10 @@ const logger = log4js.getLogger('sign-in/index.js')
 const VIEWS = {
   INITIAL: 0,
   PASSWORD: 1,
-  RESTORING: 2,
-  SUCCESS: 3
+  SUCCESS: 2
 }
 
-const views = [Initial, Password, Restoring, Success]
+const views = [Initial, Password, Success]
 
 function mapStateToProps(state) {
   return {
@@ -94,6 +93,7 @@ class SignIn extends React.Component {
         : null,
     decrypt: false,
     decrypting: false,
+    decryptedKey: null,
     loading: false,
     restoreError: '',
     view: VIEWS.INITIAL
@@ -351,10 +351,6 @@ class SignIn extends React.Component {
           next: this.decryptKeyAndRestore,
           updateValue: this.updateValue
         }
-      },
-      {
-        show: VIEWS.RESTORING,
-        props: {}
       },
       {
         show: VIEWS.SUCCESS,

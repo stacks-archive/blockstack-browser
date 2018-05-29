@@ -1057,14 +1057,14 @@ class DefaultProfilePage extends Component {
                       </ul>
                       <div className="text-center">
                         {!this.state.showHiddenPlaceholders &&
-                          showMoreAccountsButton && (
-                            <button
-                              className="btn btn-link btn-link-mute btn-link-small"
-                              onClick={this.onMoreAccountsClick}
-                            >
-                              More accounts
-                            </button>
-                          )}
+                        showMoreAccountsButton ? (
+                          <button
+                            className="btn btn-link btn-link-mute btn-link-small"
+                            onClick={this.onMoreAccountsClick}
+                          >
+                            More accounts
+                          </button>
+                        ) : null}
                       </div>
                     </div>
                   </div>

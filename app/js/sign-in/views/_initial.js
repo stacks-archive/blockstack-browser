@@ -1,5 +1,6 @@
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
+import PropTypes from 'prop-types'
 import Yup from 'yup'
 
 const validationSchema = Yup.object({
@@ -7,7 +8,7 @@ const validationSchema = Yup.object({
     .min(8, 'Your key is too short.')
     .required('This is required.')
 })
-export default ({ next, ...rest }) => {
+const InitialSignInScreen = ({ next, ...rest }) => {
   const props = {
     title: {
       children: 'Restore your Blockstack ID'
@@ -70,3 +71,9 @@ export default ({ next, ...rest }) => {
   }
   return <ShellScreen {...rest} {...props} />
 }
+
+InitialSignInScreen.propTypes = {
+  next: PropTypes.func
+}
+
+export default InitialSignInScreen

@@ -128,6 +128,7 @@ class Success extends React.Component {
 
 Success.propTypes = {
   finish: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
   goToRecovery: PropTypes.func.isRequired,
   username: PropTypes.string.isRequired,
   subdomainSuffix: PropTypes.string.isRequired,
