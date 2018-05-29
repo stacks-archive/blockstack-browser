@@ -60,7 +60,7 @@ const VIEWS = {
   HOORAY: 4
 }
 
-const SUBDOMAIN_SUFFIX = 'test-personal.id'
+const SUBDOMAIN_SUFFIX = 'id.blockstack'
 const SERVER_URL = 'https://browser-api.blockstack.org'
 
 const mapStateToProps = state => ({

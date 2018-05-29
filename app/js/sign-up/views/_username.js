@@ -4,7 +4,7 @@ import { ShellScreen } from '@blockstack/ui'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('onboarding/Username.js')
-const defaultSponsoredName = '.test-personal.id'
+const defaultSponsoredName = '.id.blockstack'
 
 /**
  * Gets the status of submitted username
@@ -16,7 +16,7 @@ const getUsernameStatus = async (
   if (!username) {
     return null
   }
-  const api = 'https://test-registrar.blockstack.org/v1/names/'
+  const api = 'https://registrar.blockstack.org/v1/names/'
   // const url = `https://core.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
   const url = `${api}${username.toLowerCase()}${sponsoredName}`
   const res = await fetch(url)

@@ -37,11 +37,11 @@ const DEFAULT_API = {
     'foo.id': {
       registerUrl: 'http://localhost:7103/register'
     },
-    'personal.id': {
-      registerUrl: 'https://registrar.blockstack.org/register'
-    },
     'test-personal.id': {
       registerUrl: 'https://test-registrar.blockstack.org/register'
+    },
+    'id.blockstack': {
+      registerUrl: 'https://registrar.blockstack.org/register'
     }
   },
   browserServerUrl: 'https://blockstack-browser-server.appartisan.com',
