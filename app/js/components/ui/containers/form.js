@@ -35,7 +35,7 @@ const FormWrapper = ({
   errors,
   touched,
   handleSubmit,
-  handleChange,
+  handleChange
 }) => {
   const fieldProps = {
     errors,
