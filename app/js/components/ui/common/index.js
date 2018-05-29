@@ -27,7 +27,7 @@ const stringToColor = string => {
   }
   for (let i = 0; i < 3; i++) {
     const value = (hash >> (i * 8)) & 0xff
-    color += `00 ${value.toString(16)}`.substr(-2)
+    color += `00${value.toString(16)}`.substr(-2)
   }
 
   return chroma(color)
