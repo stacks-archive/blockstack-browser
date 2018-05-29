@@ -1,5 +1,6 @@
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
+import PropTypes from 'prop-types'
 
 const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
   const props = {
@@ -42,6 +43,12 @@ const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
     }
   }
   return <ShellScreen {...rest} {...props} />
+}
+
+SeedInitial.propTypes = {
+  next: PropTypes.func,
+  loading: PropTypes.bool,
+  placeholder: PropTypes.node
 }
 
 export default SeedInitial

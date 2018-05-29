@@ -1,5 +1,6 @@
 import React from 'react'
 import { ShellScreen, Type, Button, Buttons } from '@blockstack/ui'
+import PropTypes from 'prop-types'
 
 class SeedConfirm extends React.Component {
   state = {
@@ -13,16 +14,23 @@ class SeedConfirm extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState, prevContext) {
+  setVerified = () => {
+    if (!this.state.verified) {
+      this.setState(
+        {
+          verified: true
+        },
+        () => this.props.setVerified()
+      )
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
     if (
       !prevState.verified &&
       this.state[this.state.wordsToConfirm[0]] &&
       this.state[this.state.wordsToConfirm[1]]
     ) {
-      this.props.setVerified()
-      this.setState({
-        verified: true
-      })
+      this.setVerified()
     }
   }
 
@@ -44,10 +52,10 @@ class SeedConfirm extends React.Component {
     }
   }
   render() {
-    const { next, seed, setVerified, verified, ...rest } = this.props
+    const { next, seed, verified, ...rest } = this.props
 
-    const renderWords = (words, action) => {
-      return this.state.randomWords.map(word => (
+    const renderWords = (words, action) =>
+      this.state.randomWords.map(word => (
         <Button
           label={word}
           key={word}
@@ -55,7 +63,6 @@ class SeedConfirm extends React.Component {
           filled={this.state[word]}
         />
       ))
-    }
 
     const props = {
       title: {
@@ -94,6 +101,13 @@ class SeedConfirm extends React.Component {
     }
     return <ShellScreen {...rest} {...props} />
   }
+}
+
+SeedConfirm.propTypes = {
+  next: PropTypes.func,
+  setVerified: PropTypes.func,
+  verified: PropTypes.bool,
+  seed: PropTypes.array
 }
 
 export default SeedConfirm

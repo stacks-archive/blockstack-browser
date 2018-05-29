@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { ShellScreen, Type } from '@blockstack/ui'
 
-export default ({ app, backView, ...rest }) => {
+const LegacyGaiaScreen = ({ app, backView, ...rest }) => {
   if (!app) {
     return null
   }
@@ -37,3 +38,9 @@ export default ({ app, backView, ...rest }) => {
   }
   return <ShellScreen {...rest} {...props} />
 }
+LegacyGaiaScreen.propTypes = {
+  app: PropTypes.object,
+  backView: PropTypes.func
+}
+
+export default LegacyGaiaScreen

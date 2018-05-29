@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { ShellScreen, Type } from '@blockstack/ui'
 
-export default ({ finish, buttonLabel, ...rest }) => {
+const SuccessScreen = ({ finish, buttonLabel, ...rest }) => {
   const props = {
     title: {
       children: 'Save your Secret Recovery Key forever'
@@ -35,3 +36,9 @@ export default ({ finish, buttonLabel, ...rest }) => {
   }
   return <ShellScreen {...rest} {...props} />
 }
+SuccessScreen.propTypes = {
+  finish: PropTypes.func,
+  buttonLabel: PropTypes.node
+}
+
+export default SuccessScreen

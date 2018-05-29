@@ -1,6 +1,8 @@
 import React from 'react'
 import { ShellScreen, Type, Panel, Panels } from '@blockstack/ui'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import PropTypes from 'prop-types'
+
 const renderWord = (i, word) => (
   <div style={{ display: 'flex', alignItems: 'center', paddingBottom: '15px' }}>
     <Type.h5>#{i + 1}&nbsp;&nbsp;</Type.h5>
@@ -76,5 +78,9 @@ class SeedPage extends React.Component {
     return <ShellScreen {...rest} {...props} />
   }
 }
-
+SeedPage.propTypes = {
+  next: PropTypes.func,
+  seedString: PropTypes.string,
+  seed: PropTypes.array
+}
 export default SeedPage
