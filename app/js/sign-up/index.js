@@ -84,7 +84,6 @@ const mapStateToProps = state => ({
 const CREATE_ACCOUNT_INITIAL = 'createAccount/initial'
 const CREATE_ACCOUNT_STARTED = 'createAccount/started'
 const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
-const CREATE_ACCOUNT_ERROR = 'createAccount/error'
 const CREATE_ACCOUNT_SUCCESS = 'createAccount/success'
 
 const mapDispatchToProps = dispatch =>
@@ -276,7 +275,10 @@ class Onboarding extends React.Component {
       return null
     }
 
-    const b64EncryptedBackupPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString('base64')
+    const b64EncryptedBackupPhrase = new Buffer(
+      encryptedBackupPhrase,
+      'hex'
+    ).toString('base64')
 
     if (type === 'recovery') {
       await this.sendRecovery(username, email, b64EncryptedBackupPhrase)
@@ -287,7 +289,7 @@ class Onboarding extends React.Component {
       await this.sendRecovery(username, email, b64EncryptedBackupPhrase)
     }
 
-    return this.setState({ 
+    return this.setState({
       emailsSending: false,
       emailsSent: true
     })
@@ -470,15 +472,8 @@ class Onboarding extends React.Component {
     })
   }
 
-  componentDidUpdate(prevProps, prevState, prevContext) {
-    const {
-      creatingAccountStatus,
-      view,
-      emailsSent,
-      loading,
-      username,
-      password
-    } = this.state
+  componentDidUpdate() {
+    const { creatingAccountStatus, loading, username, password } = this.state
 
     const registrationBegin =
       creatingAccountStatus === CREATE_ACCOUNT_STARTED &&
@@ -486,18 +481,9 @@ class Onboarding extends React.Component {
       username &&
       password
 
-    const registrationComplete =
-      creatingAccountStatus === CREATE_ACCOUNT_SUCCESS &&
-      emailsSent &&
-      view !== VIEWS.INFO
-
     if (registrationBegin) {
       setTimeout(() => this.createAccount(), 500)
     }
-
-    // if (registrationComplete) {
-    //   this.updateView(VIEWS.INFO)
-    // }
   }
 
   componentWillMount() {
@@ -550,12 +536,7 @@ class Onboarding extends React.Component {
     const { appManifest } = this.props
     const { email, password, username, emailSubmitted, view } = this.state
 
-    const icons = appManifest ? appManifest.icons : []
-    const appIconURL =
-      icons.length > 0 ? icons[0].src : '/images/app-icon-hello-blockstack.png'
-    const appName = appManifest ? appManifest.name : 'Untitled dApp'
-
-    const app = formatAppManifest(this.props.appManifest)
+    const app = formatAppManifest(appManifest)
 
     const viewProps = [
       {

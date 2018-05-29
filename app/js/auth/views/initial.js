@@ -1,18 +1,60 @@
 import React from 'react'
-import {
-  Buttons,
-  HelperMessage,
-  ShellScreen,
-  Type,
-  UserButton,
-  Button
-} from '@blockstack/ui'
-
+import PropTypes from 'prop-types'
+import { Buttons, ShellScreen, Type, UserButton } from '@blockstack/ui'
 const basicInfo = 'read your basic info'
 const readEmail = 'read your email address'
 const publishData = 'publish data stored for this app'
 
-export default ({
+const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
+  if (list.length) {
+    return list.map(({ username, ownerAddress, ...account }, i) => (
+      <UserButton
+        key={i}
+        username={username || `ID-${ownerAddress}`}
+        id={ownerAddress}
+        onClick={() => handleClick(i)}
+        loading={processing && i === selectedIndex}
+        placeholder="Logging in..."
+        hideID
+      />
+    ))
+  }
+  return null
+}
+
+const PermissionsList = ({ list }) => (
+  <React.Fragment>
+    {list.map((item, i) => {
+      if (i !== list.length - 1) {
+        return (
+          <React.Fragment key={i}>
+            <strong>{item}</strong>
+            {', '}
+          </React.Fragment>
+        )
+      } else {
+        return (
+          <React.Fragment key={i}>
+            {' '}
+            and <strong>{item}</strong>
+          </React.Fragment>
+        )
+      }
+    })}
+  </React.Fragment>
+)
+/**
+ * TODO: give more details on what these permissions mean
+ */
+const PermissionsContent = ({ permissions, app }) => (
+  <React.Fragment>
+    <Type.p>
+      <strong>"{app && app.name}"</strong> wants to{' '}
+      <PermissionsList list={permissions} />.
+    </Type.p>
+  </React.Fragment>
+)
+const InitialScreen = ({
   app,
   accounts,
   permissions,
@@ -36,56 +78,6 @@ export default ({
     return permarray
   }
 
-  const Accounts = ({ list, handleClick }) =>
-    list.length
-      ? list.map((account, i) => (
-          <UserButton
-            key={i}
-            username={account.username || `ID-${account.ownerAddress}`}
-            id={account.ownerAddress}
-            onClick={() => handleClick(i)}
-            loading={processing && i === selectedIndex}
-            placeholder={'Logging in...'}
-            hideID
-          />
-        ))
-      : null
-  const PermissionsList = ({ list }) => (
-    <React.Fragment>
-      {list.map((item, i) => {
-        if (i !== list.length - 1) {
-          return (
-            <React.Fragment key={i}>
-              <strong>{item}</strong>
-              {', '}
-            </React.Fragment>
-          )
-        } else {
-          return (
-            <React.Fragment key={i}>
-              {' '}
-              and <strong>{item}</strong>
-            </React.Fragment>
-          )
-        }
-      })}
-    </React.Fragment>
-  )
-  /**
-   * TODO: give more details on what these permissions mean
-   */
-  const PermissionsContent = ({
-    permissions,
-    helperMessage = 'What do these permissions mean?'
-  }) => (
-    <React.Fragment>
-      <Type.p>
-        <strong>"{app && app.name}"</strong> wants to{' '}
-        <PermissionsList list={permissions} />.
-      </Type.p>
-      {/*<HelperMessage message={helperMessage} />*/}
-    </React.Fragment>
-  )
   const props = {
     title: {
       children: 'Select an ID'
@@ -94,9 +86,17 @@ export default ({
       grow: 1,
       children: (
         <React.Fragment>
-          <PermissionsContent permissions={generatePermissionsList()} />
+          <PermissionsContent
+            permissions={generatePermissionsList()}
+            app={app}
+          />
           <Buttons column>
-            <Accounts list={accounts} handleClick={login} />
+            <Accounts
+              list={accounts}
+              handleClick={login}
+              processing={processing}
+              selectedIndex={selectedIndex}
+            />
           </Buttons>
         </React.Fragment>
       )
@@ -113,3 +113,27 @@ export default ({
   }
   return <ShellScreen {...rest} {...props} />
 }
+
+InitialScreen.propTypes = {
+  app: PropTypes.object,
+  accounts: PropTypes.array,
+  permissions: PropTypes.array,
+  processing: PropTypes.bool,
+  selectedIndex: PropTypes.number,
+  login: PropTypes.func
+}
+Accounts.proptype = {
+  list: PropTypes.array.isRequired,
+  handleClick: PropTypes.func,
+  processing: PropTypes.bool,
+  selectedIndex: PropTypes.number
+}
+
+PermissionsList.propTypes = {
+  list: PropTypes.array.isRequired
+}
+PermissionsContent.propTypes = {
+  permissions: PropTypes.array.isRequired,
+  app: PropTypes.object
+}
+export default InitialScreen

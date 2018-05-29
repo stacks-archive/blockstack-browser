@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
-import { ShellParent } from '@blockstack/ui'
+import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import {
   selectEncryptedBackupPhrase,
   selectRecoveryCodeVerified
@@ -17,7 +17,6 @@ import {
   selectAuthRequest
 } from '@common/store/selectors/auth'
 import { formatAppManifest } from '@common'
-import { AppHomeWrapper } from '@components/ui'
 
 function mapStateToProps(state) {
   return {
@@ -303,6 +302,7 @@ class SeedContainer extends Component {
 SeedContainer.propTypes = {
   location: PropTypes.object.isRequired,
   appManifest: PropTypes.object,
+  router: PropTypes.object,
   encryptedBackupPhrase: PropTypes.string,
   authRequest: PropTypes.string,
   verified: PropTypes.bool.isRequired,

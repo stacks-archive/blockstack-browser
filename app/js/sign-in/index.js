@@ -37,11 +37,7 @@ import {
 } from '@common/store/selectors/auth'
 import { formatAppManifest } from '@common'
 
-const CREATE_ACCOUNT_INITIAL = 'createAccount/initial'
-const CREATE_ACCOUNT_STARTED = 'createAccount/started'
 const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
-const CREATE_ACCOUNT_ERROR = 'createAccount/error'
-const CREATE_ACCOUNT_SUCCESS = 'createAccount/success'
 
 const logger = log4js.getLogger('sign-in/index.js')
 
