@@ -19,7 +19,7 @@ class RecoverInformationScreen extends React.Component {
   }
 
   render() {
-    const { next, email, sendRecoveryEmail, ...rest } = this.props
+    const { next, email, ...rest } = this.props
     const props = {
       title: {
         children: 'We just sent you recovery information'

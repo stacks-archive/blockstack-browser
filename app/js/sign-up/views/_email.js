@@ -1,6 +1,7 @@
 import React from 'react'
 import { ShellScreen } from '@blockstack/ui'
 import Yup from 'yup'
+import PropTypes from 'prop-types'
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -13,11 +14,6 @@ class EmailView extends React.Component {
     field: 'email'
   }
 
-  toggleField = ({ field }) =>
-    field === 'email'
-      ? this.setState({ field: 'phone' })
-      : this.setState({ field: 'email' })
-
   returnField = ({ field }) =>
     field === 'email'
       ? [
@@ -25,7 +21,8 @@ class EmailView extends React.Component {
             type: 'email',
             name: 'email',
             label: 'Email Address',
-            message: 'Your email is only for delivering recovery instructions. Blockstack does not store emails.',
+            message:
+              'Your email is only for delivering recovery instructions. Blockstack does not store emails.',
             autoFocus: true
           }
         ]
@@ -92,5 +89,9 @@ class EmailView extends React.Component {
     return <ShellScreen {...rest} {...props} />
   }
 }
-
+EmailView.propTypes = {
+  email: PropTypes.string,
+  updateValue: PropTypes.func,
+  next: PropTypes.func
+}
 export default EmailView

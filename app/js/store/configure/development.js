@@ -9,6 +9,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const finalCreateStore = composeEnhancers(
   applyMiddleware(thunk),
   persistState(null, {
+    // eslint-disable-next-line
     slicer: paths => state => ({ ...state, auth: AuthInitialState })
   })
 )(createStore)

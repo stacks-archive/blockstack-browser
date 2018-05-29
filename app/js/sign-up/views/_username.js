@@ -1,12 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { ShellScreen } from '@blockstack/ui'
-import Yup from 'yup'
-
-import debounce from 'lodash.debounce'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('onboarding/Username.js')
-
 const defaultSponsoredName = '.test-personal.id'
 
 /**
@@ -144,7 +141,8 @@ class UsernameView extends React.Component {
               type: 'text',
               label: 'Username',
               name: 'username',
-              message: 'This will be your unique, public identity for any Blockstack app.',
+              message:
+                'This will be your unique, public identity for any Blockstack app.',
               autoFocus: true,
               overlay: defaultSponsoredName,
               handleChangeOverride: (e, handleChange) => {
@@ -186,6 +184,12 @@ class UsernameView extends React.Component {
     }
     return <ShellScreen {...rest} {...props} />
   }
+}
+
+UsernameView.propTypes = {
+  updateValue: PropTypes.func,
+  next: PropTypes.func,
+  loading: PropTypes.bool
 }
 
 export default UsernameView

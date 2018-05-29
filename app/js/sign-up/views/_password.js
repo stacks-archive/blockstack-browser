@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { ShellScreen } from '@blockstack/ui'
 import Yup from 'yup'
 
@@ -11,58 +12,61 @@ const validationSchema = Yup.object({
     .required('Please confirm your password.')
 })
 
-class PasswordView extends React.Component {
-  render() {
-    const { updateValue, next, loading, ...rest } = this.props
-
-    const props = {
-      title: {
-        children: 'Create a password',
-        variant: 'h2'
-      },
-      content: {
-        grow: 0,
-        form: {
-          validationSchema,
-          initialValues: { password: '', passwordConfirm: '' },
-          onSubmit: values => {
-            updateValue('password', values.password)
-            next()
+const PasswordView = ({ updateValue, next, loading, ...rest }) => {
+  const props = {
+    title: {
+      children: 'Create a password',
+      variant: 'h2'
+    },
+    content: {
+      grow: 0,
+      form: {
+        validationSchema,
+        initialValues: { password: '', passwordConfirm: '' },
+        onSubmit: values => {
+          updateValue('password', values.password)
+          next()
+        },
+        fields: [
+          {
+            type: 'password',
+            name: 'password',
+            label: 'New password (8 characters min)',
+            autoFocus: true
           },
-          fields: [
+          {
+            type: 'password',
+            name: 'passwordConfirm',
+            label: 'Confirm Password',
+            message:
+              'Please record your password, Blockstack cannot reset this password for you.'
+          }
+        ],
+        actions: {
+          split: true,
+          items: [
             {
-              type: 'password',
-              name: 'password',
-              label: 'New password (8 characters min)',
-              autoFocus: true
+              label: ' ',
+              textOnly: true
             },
             {
-              type: 'password',
-              name: 'passwordConfirm',
-              label: 'Confirm Password',
-              message: 'Please record your password, Blockstack cannot reset this password for you.'
+              label: 'Next',
+              primary: true,
+              type: 'submit',
+              icon: 'ArrowRightIcon',
+              loading
             }
-          ],
-          actions: {
-            split: true,
-            items: [
-              {
-                label: ' ',
-                textOnly: true
-              },
-              {
-                label: 'Next',
-                primary: true,
-                type: 'submit',
-                icon: 'ArrowRightIcon',
-                loading
-              }
-            ]
-          }
+          ]
         }
       }
     }
-    return <ShellScreen {...rest} {...props} />
   }
+  return <ShellScreen {...rest} {...props} />
+}
+
+PasswordView.propTypes = {
+  updateValue: PropTypes.func,
+  next: PropTypes.func,
+  loading: PropTypes.bool
 }
 export default PasswordView
