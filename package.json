@@ -197,6 +197,7 @@
     "flow": "flow",
     "flow-typed-install": "./node_modules/.bin/flow-typed install --skip",
     "lint": "NODE_ENV=test ./node_modules/.bin/gulp lint",
+    "lint:fix": "NODE_ENV=test eslint --fix",
     "mac": "NODE_ENV=production ./node_modules/.bin/gulp mac",
     "mac-release": "npm run test && npm install --no-save appdmg && NODE_ENV=production ./node_modules/.bin/gulp mac-release",
     "prod-webapp": "NODE_ENV=production ./node_modules/.bin/gulp prod-webapp",

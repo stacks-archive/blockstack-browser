@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 
 const Spinner = ({ size = 18, stroke = 4, ...rest }) => (
@@ -16,8 +17,8 @@ const Spinner = ({ size = 18, stroke = 4, ...rest }) => (
 
 const StyledSpinner = styled.svg`
   animation: rotate 2s linear infinite;
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
   display: block;
   ${({ ml }) =>
     ml &&
@@ -25,7 +26,7 @@ const StyledSpinner = styled.svg`
       margin-left: ${ml}px;
     `};
   & .path {
-    stroke: ${(props) => (props.color ? props.color : 'white')};
+    stroke: ${props => (props.color ? props.color : 'white')};
     stroke-linecap: round;
     animation: dash 1.5s ease-in-out infinite;
   }
@@ -50,5 +51,9 @@ const StyledSpinner = styled.svg`
     }
   }
 `
+Spinner.propTypes = {
+  size: PropTypes.number,
+  stroke: PropTypes.number
+}
 
 export { Spinner }

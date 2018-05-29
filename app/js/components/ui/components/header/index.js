@@ -1,4 +1,3 @@
-import React from 'react'
 import styled, { css } from 'styled-components'
 import { spacing } from '@ui/common/constants'
 import { trans } from '@ui/common'

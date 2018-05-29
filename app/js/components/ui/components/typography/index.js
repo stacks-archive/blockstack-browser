@@ -22,12 +22,12 @@ const Type = styled.div``
 const p = styled.p`
   line-height: 24px;
   font-size: 16px;
-  color: ${({ color }) => (color ? color : 'rgba(39, 16, 51, 0.7)')};
+  color: ${({ color }) => color || 'rgba(39, 16, 51, 0.7)'};
   padding: 0;
   margin: 0;
   strong {
     font-weight: 500;
-    color: ${({ color }) => (color ? color : 'rgba(39, 16, 51, 0.9)')};
+    color: ${({ color }) => color || 'rgba(39, 16, 51, 0.9)'};
   }
   ${genericStyles};
   & + & {
@@ -38,12 +38,12 @@ const p = styled.p`
 const a = styled.a`
   line-height: 24px;
   font-size: 16px;
-  color: ${({ color }) => (color ? color : 'rgba(39, 16, 51, 0.7)')};
+  color: ${({ color }) => color || 'rgba(39, 16, 51, 0.7)'};
   padding: 0;
   margin: 0;
   strong {
     font-weight: 500;
-    color: ${({ color }) => (color ? color : 'rgba(39, 16, 51, 0.9)')};
+    color: ${({ color }) => color || 'rgba(39, 16, 51, 0.9)'};
   }
   ${genericStyles};
   & + & {
