@@ -109,7 +109,7 @@ class SeedContainer extends Component {
     /**
      * TODO: save encrypted backup phrase as base64 not hex in redux store
      */
-    const buffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const buffer = new Buffer(encryptedBackupPhrase, 'base64')
 
     return decrypt(buffer, password).then(result => {
       if (this.state.seed !== result.toString()) {

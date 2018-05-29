@@ -346,7 +346,7 @@ class Onboarding extends React.Component {
   sendRecovery(blockstackId, email, encryptedSeed) {
     const { protocol, hostname, port } = location
     const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedSeed}`
+    const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(encryptedSeed)}`
 
     const options = {
       method: 'POST',
