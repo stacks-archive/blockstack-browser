@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import nock from 'nock'
 import { SettingsActions } from '../../../../../app/js/account/store/settings'
 import btcPrice from '../../../../fixtures/btcprice'
+import { UPDATE_BTC_PRICE } from '../../../../../app/js/account/store/settings/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -25,12 +26,15 @@ describe('Settings Store: Async Actions', () => {
       })
 
       const btcPriceUrl = 'https://www.bitstamp.net/api/v2/ticker/btcusd/'
-      return store.dispatch(SettingsActions.refreshBtcPrice(btcPriceUrl))
+      return store
+        .dispatch(SettingsActions.refreshBtcPrice(btcPriceUrl))
         .then(() => {
-          const expectedActions = [{
-            type: 'UPDATE_BTC_PRICE',
-            price: '1168.98'
-          }]
+          const expectedActions = [
+            {
+              type: UPDATE_BTC_PRICE,
+              price: '1168.98'
+            }
+          ]
 
           assert.deepEqual(store.getActions(), expectedActions)
         })
