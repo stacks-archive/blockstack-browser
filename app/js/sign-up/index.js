@@ -60,7 +60,7 @@ const VIEWS = {
   HOORAY: 4
 }
 
-const SUBDOMAIN_SUFFIX = 'test-personal.id'
+const SUBDOMAIN_SUFFIX = 'id.blockstack'
 const SERVER_URL = 'https://browser-api.blockstack.org'
 
 const mapStateToProps = state => ({
@@ -346,7 +346,7 @@ class Onboarding extends React.Component {
   sendRecovery(blockstackId, email, encryptedSeed) {
     const { protocol, hostname, port } = location
     const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const seedRecovery = `${thisUrl}/seed?encrypted=${encryptedSeed}`
+    const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(encryptedSeed)}`
 
     const options = {
       method: 'POST',
@@ -521,9 +521,10 @@ class Onboarding extends React.Component {
           emailsSending: true
         })
         this.sendEmails().then(() => this.updateView(VIEWS.INFO))
-      } else {
-        this.updateView(VIEWS.INFO)
-      }
+      } 
+      // else {
+      //   this.updateView(VIEWS.INFO)
+      // }
     } else if (registration.error) {
       logger.error(`username registration error: ${registration.error}`)
       this.setState({

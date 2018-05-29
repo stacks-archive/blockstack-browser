@@ -68,7 +68,6 @@ class App extends Component {
   constructor(props) {
     super(props)
     let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
-    console.log(this.props)
 
     if (!existingVersion) {
       logger.debug(`No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`)
