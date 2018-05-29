@@ -157,7 +157,10 @@ function AccountReducer(state = initialState, action) {
     case types.NEW_IDENTITY_ADDRESS:
       return Object.assign({}, state, {
         identityAccount: Object.assign({}, state.identityAccount, {
-          addresses: [...state.identityAccount.addresses, action.keypair.address],
+          addresses: [
+            ...state.identityAccount.addresses,
+            action.keypair.address
+          ],
           keypairs: [...state.identityAccount.keypairs, action.keypair]
         })
       })
@@ -169,5 +172,7 @@ function AccountReducer(state = initialState, action) {
       return state
   }
 }
+
+export { initialState as AccountInitialState }
 
 export default AccountReducer
