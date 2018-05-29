@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Buttons, ShellScreen, Type, UserButton } from '@blockstack/ui'
+import { Buttons, ShellScreen, Type, UserButton, Shell } from '@blockstack/ui'
 const basicInfo = 'read your basic info'
 const readEmail = 'read your email address'
 const publishData = 'publish data stored for this app'
@@ -63,10 +63,6 @@ const InitialScreen = ({
   login,
   ...rest
 }) => {
-  if (!app) {
-    return null
-  }
-
   const generatePermissionsList = () => {
     const permarray = [basicInfo]
     if (permissions.email) {
@@ -84,7 +80,9 @@ const InitialScreen = ({
     },
     content: {
       grow: 1,
-      children: (
+      children: !app ? (
+        <Shell.Loading />
+      ) : (
         <React.Fragment>
           <PermissionsContent
             permissions={generatePermissionsList()}

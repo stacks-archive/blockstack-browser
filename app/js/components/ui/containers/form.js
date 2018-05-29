@@ -10,7 +10,7 @@ const Fields = ({ fields, errors, ...rest }) =>
     <FastField
       label={label}
       name={name}
-      render={(fastFieldProps) => (
+      render={fastFieldProps => (
         <Field
           key={i}
           label={label}
@@ -35,13 +35,16 @@ const FormWrapper = ({
   errors,
   touched,
   handleSubmit,
-  handleChange
+  handleChange,
+  handleBlur
 }) => {
   const fieldProps = {
     errors,
     touched,
     handleSubmit,
-    handleChange
+    handleChange,
+    onBlur: handleBlur,
+    handleBlur
   }
   return (
     <Form noValidate>
@@ -79,7 +82,7 @@ const FormContainer = ({
       }
   return (
     <Formik {...props}>
-      {(renderProps) => <FormWrapper {...renderProps} {...rest} />}
+      {renderProps => <FormWrapper {...renderProps} {...rest} />}
     </Formik>
   )
 }

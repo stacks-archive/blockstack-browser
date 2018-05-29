@@ -4,6 +4,7 @@ import { StyledField } from '@ui/components/form'
 import { slugify } from '@ui/common'
 import { AlertCircleIcon, CheckCircleOutlineIcon } from 'mdi-react'
 
+/* eslint-disable */
 const Field = ({
   label,
   type = 'text',
@@ -16,9 +17,12 @@ const Field = ({
   mh,
   handleChange,
   handleChangeOverride,
-  handleBlur,
+  handleBlur, // these are here to prevent them from being used (fixes form bug double click)
+  onBlur, // these are here to prevent them from being used (fixes form bug double click)
   ...rest
 }) => {
+  /* eslint-enable */
+
   const InputComponent =
     type === 'textarea' ? StyledField.Textarea : StyledField.Input
 
@@ -68,7 +72,6 @@ const Field = ({
           mh={mh}
           onChange={_handleChange}
           lowercase={type !== 'password'}
-          onBlur={handleBlur}
         />
         {PositiveMessage}
         {ErrorMessage}
@@ -85,6 +88,7 @@ const Field = ({
   )
 }
 
+// eslint-enable
 Field.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
