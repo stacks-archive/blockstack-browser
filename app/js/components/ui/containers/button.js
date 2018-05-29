@@ -15,7 +15,7 @@ const Button = ({
   to,
   ...rest
 }) => {
-  const ButtonComponent = (props) => {
+  const ButtonComponent = props => {
     if (to) {
       return <StyledButton.Link {...props} />
     } else if (type) {
@@ -25,10 +25,10 @@ const Button = ({
     }
   }
 
+  const SearchIconBool = icon === 'SearchIcon' ? SearchIcon : null
+
   const IconComponent =
-    icon === 'ArrowRightIcon'
-      ? ArrowRightIcon
-      : icon === 'SearchIcon' ? SearchIcon : null
+    icon === 'ArrowRightIcon' ? ArrowRightIcon : SearchIconBool
 
   const content = loading ? (
     <React.Fragment>
@@ -54,7 +54,7 @@ const Button = ({
   )
 }
 
-const renderButtons = (items) =>
+const renderButtons = items =>
   items.map(({ ...buttonProps }, i) => (
     <Button
       key={i}
@@ -86,7 +86,12 @@ Button.propTypes = {
   secondary: PropTypes.bool,
   textOnly: PropTypes.bool,
   disabled: PropTypes.bool,
-  negative: PropTypes.bool
+  negative: PropTypes.bool,
+  type: PropTypes.string,
+  loading: PropTypes.bool,
+  placeholder: PropTypes.node,
+  icon: PropTypes.node,
+  to: PropTypes.string
 }
 
 export { Button, Buttons, ActionButtons, renderButtons }

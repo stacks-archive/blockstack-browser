@@ -16,9 +16,9 @@ const trans = css`
   transition: 0.08s all ease-in-out;
 `
 
-const firstLetter = (string) => string.charAt(0)
+const firstLetter = string => string.charAt(0)
 
-const stringToColor = (string) => {
+const stringToColor = string => {
   let hash = 0
   let color = '#'
 
@@ -26,8 +26,8 @@ const stringToColor = (string) => {
     hash = string.charCodeAt(i) + ((hash << 5) - hash)
   }
   for (let i = 0; i < 3; i++) {
-    let value = (hash >> (i * 8)) & 0xff
-    color += ('00' + value.toString(16)).substr(-2)
+    const value = (hash >> (i * 8)) & 0xff
+    color += `00 ${value.toString(16)}`.substr(-2)
   }
 
   return chroma(color)

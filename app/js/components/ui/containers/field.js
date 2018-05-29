@@ -16,8 +16,6 @@ const Field = ({
   mh,
   handleChange,
   handleChangeOverride,
-  handleBlur,
-  onBlur,
   ...rest
 }) => {
   const InputComponent =
@@ -47,7 +45,7 @@ const Field = ({
     <StyledField.Input.Overlay>{overlay}</StyledField.Input.Overlay>
   )
 
-  const _handleChange = (e) => {
+  const _handleChange = e => {
     if (handleChangeOverride) {
       handleChangeOverride(e, handleChange)
     } else {
@@ -89,7 +87,16 @@ Field.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
   message: PropTypes.string,
-  autoFocus: PropTypes.bool
+  autoFocus: PropTypes.bool,
+  error: PropTypes.any,
+  positive: PropTypes.bool,
+  overlay: PropTypes.node,
+  name: PropTypes.node,
+  mh: PropTypes.any,
+  handleChange: PropTypes.func,
+  handleChangeOverride: PropTypes.func,
+  handleBlur: PropTypes.func,
+  onBlur: PropTypes.func
 }
 
 export { Field }

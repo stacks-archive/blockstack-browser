@@ -32,13 +32,11 @@ const HeaderLink = ({
     : { ...rest }
   return (
     <StyledHeader.Link {...props}>
-      {Icon &&
-        label.includes('Back') &&
-        !label.includes(' ') && (
-          <StyledHeader.Link.Icon>
-            <Icon size={14} />
-          </StyledHeader.Link.Icon>
-        )}
+      {Icon && label.includes('Back') && !label.includes(' ') ? (
+        <StyledHeader.Link.Icon>
+          <Icon size={14} />
+        </StyledHeader.Link.Icon>
+      ) : null}
       <StyledHeader.Link.Label>{label}</StyledHeader.Link.Label>
     </StyledHeader.Link>
   )
@@ -102,6 +100,8 @@ Header.propTypes = {
   action: PropTypes.func,
   label: PropTypes.string,
   icon: PropTypes.node,
+  disableBackOnView: PropTypes.bool,
+  view: PropTypes.number,
   invert: PropTypes.bool
 }
 

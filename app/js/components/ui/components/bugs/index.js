@@ -38,11 +38,6 @@ const Arrows = styled.div`
   }
 `
 
-const BugContent = styled.div`
-  height: 0;
-  padding-bottom: 100%;
-`
-
 Bug.Container = BugContainer
 Bug.Arrows = Arrows
 

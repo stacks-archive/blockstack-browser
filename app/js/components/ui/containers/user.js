@@ -74,6 +74,6 @@ UserAvatar.propTypes = {
 UserButton.propTypes = {
   id: PropTypes.string,
   username: PropTypes.string,
-  hidID: PropTypes.bool
+  hideID: PropTypes.bool
 }
 export { UserButton, UserAvatar }

@@ -49,6 +49,10 @@ const Loading = ({ message = 'Loading...', children, ...rest }) => (
     )}
   </Spring>
 )
+Loading.propTypes = {
+  message: PropTypes.node,
+  children: PropTypes.node
+}
 
 Shell.Title = Title
 Shell.Loading = Loading
@@ -71,6 +75,8 @@ Content.defaultProps = {
   grow: 1
 }
 Content.propTypes = {
+  children: PropTypes.node,
+  form: PropTypes.object,
   grow: PropTypes.oneOf([0, 1]).isRequired
 }
 
