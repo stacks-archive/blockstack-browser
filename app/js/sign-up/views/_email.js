@@ -22,8 +22,7 @@ class EmailView extends React.Component {
             name: 'email',
             label: 'Email Address',
             message:
-              'Your email is only for delivering recovery instructions. Blockstack does not store emails.',
-            autoFocus: true
+              'Your email is only for delivering recovery instructions. Blockstack does not store emails.'
           }
         ]
       : [
@@ -32,8 +31,7 @@ class EmailView extends React.Component {
             name: 'phone',
             label: 'Mobile Number',
             message:
-              'Your mobile number is needed for critical recovery instructions.',
-            autoFocus: true
+              'Your mobile number is only for delivering recovery instructions. Blockstack does not store this data.'
           }
         ]
 
