@@ -531,7 +531,8 @@ class AuthPage extends React.Component {
           deny: () => console.log('go back to app'),
           accounts: this.props.localIdentities,
           processing: this.state.processing,
-          selectedIndex: this.state.currentIdentityIndex
+          selectedIndex: this.state.currentIdentityIndex,
+          disableBackOnView: 0
         }
       },
       {
