@@ -39,7 +39,6 @@ export function initializeStateVersion() {
  */
 export const CURRENT_VERSION: number = 14
 
-
 const AppReducer = combineReducers({
   account: AccountReducer,
   auth: AuthReducer,
@@ -61,7 +60,6 @@ const RootReducer = (state: any, action: any) => {
           },
           account: {
             ...initialState.account,
-            encryptedBackupPhrase: state.account.encryptedBackupPhrase,
             promptedForEmail: state.account.promptedForEmail,
             viewedRecoveryCode: state.account.viewedRecoveryCode,
             connectedStorageAtLeastOnce:
@@ -79,7 +77,6 @@ const RootReducer = (state: any, action: any) => {
           },
           account: {
             ...initialState.account,
-            encryptedBackupPhrase: state.account.encryptedBackupPhrase,
             promptedForEmail: state.account.promptedForEmail,
             viewedRecoveryCode: state.account.viewedRecoveryCode,
             connectedStorageAtLeastOnce:

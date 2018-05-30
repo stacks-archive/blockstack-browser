@@ -86,7 +86,7 @@ class PasswordView extends React.Component {
         status: 'good-to-go',
         errors: null
       },
-      () => this.props.handleSubmit(this.state.password)
+      () => this.props.handleSubmit(values.password)
     )
     return null
   }

@@ -125,6 +125,10 @@ class UpdatePage extends React.Component {
       api
     } = this.props
 
+    if (!encryptedBackupPhrase) {
+      console.error('No encryptedBackupPhrase, cannot continue')
+      return null
+    }
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     const { password } = this.state
 
