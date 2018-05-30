@@ -100,6 +100,9 @@ class SignIn extends React.Component {
   }
 
   componentWillMount() {
+    if (this.props.encryptedBackupPhrase) {
+      this.props.router.push('/')
+    }
     const { location } = this.props
     if (location.query.seed) {
       this.setState({ encryptedKey: location.query.seed })

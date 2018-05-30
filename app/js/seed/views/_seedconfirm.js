@@ -122,9 +122,11 @@ class SeedConfirm extends React.Component {
   }
 
   validWord = word => {
-    this.setState(state => ({
-      confirmedWords: [...state.confirmedWords, word]
-    }))
+    if (!this.state.confirmedWords.find(stateWord => stateWord === word)) {
+      this.setState(state => ({
+        confirmedWords: [...state.confirmedWords, word]
+      }))
+    }
   }
 
   randomWords = () => {

@@ -160,7 +160,7 @@ ShellParent.propTypes = {
   lastHeaderLabel: PropTypes.node,
   backView: PropTypes.func,
   views: PropTypes.array.isRequired,
-  disableBackOnView: PropTypes.bool,
+  disableBackOnView: PropTypes.number,
   disableBack: PropTypes.bool,
   size: PropTypes.object,
   view: PropTypes.number

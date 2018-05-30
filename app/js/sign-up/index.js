@@ -490,6 +490,9 @@ class Onboarding extends React.Component {
   }
 
   componentWillMount() {
+    if (this.props.encryptedBackupPhrase) {
+      this.props.router.push('/')
+    }
     const { location } = this.props
     const queryDict = queryString.parse(location.search)
     const authRequest = this.checkForAuthRequest(queryDict)
