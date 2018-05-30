@@ -48,66 +48,6 @@ const AppReducer = combineReducers({
   settings: SettingsReducer
 })
 
-// const RootReducer = (state, action) => {
-//   const initialState = AppReducer(undefined, {})
-//   switch (action.type) {
-//     case UPDATE_STATE:
-//       return AppReducer(
-//         {
-//           ...initialState,
-//           settings: {
-//             api: { ...state.settings.api }
-//           },
-//           account: {
-//             ...initialState.account,
-//             promptedForEmail: state.account.promptedForEmail,
-//             viewedRecoveryCode: state.account.viewedRecoveryCode,
-//             connectedStorageAtLeastOnce:
-//               state.account.connectedStorageAtLeastOnce
-//           }
-//         },
-//         action
-//       )
-//     case MIGRATE_API_ENDPOINTS:
-//       return AppReducer(
-//         {
-//           ...initialState,
-//           settings: {
-//             api: { ...action.nextApi }
-//           },
-//           account: {
-//             ...initialState.account,
-//             promptedForEmail: state.account.promptedForEmail,
-//             viewedRecoveryCode: state.account.viewedRecoveryCode,
-//             connectedStorageAtLeastOnce:
-//               state.account.connectedStorageAtLeastOnce
-//           }
-//         },
-//         action
-//       )
-//     case DELETE_ACCOUNT:
-//       return AppReducer(
-//         {
-//           ...initialState,
-//           settings: {
-//             api: {
-//               ...initialState.settings.api,
-//               coreAPIPassword: state.settings.api.coreAPIPassword,
-//               logServerPort: state.settings.api.logServerPort,
-//               regTestMode: state.settings.api.regTestMode
-//             }
-//           },
-//           apps: {
-//             instanceIdentifier: null
-//           }
-//         },
-//         action
-//       )
-//     default:
-//       return AppReducer(state, action)
-//   }
-// }
-
 const RootReducer = (state: any, action: any) => {
   let newState: any = Object.assign({}, state)
   if (action.type === UPDATE_STATE) {

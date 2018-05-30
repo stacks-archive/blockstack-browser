@@ -1,6 +1,8 @@
+import React from 'react'
+
 import 'babel-polyfill'
 import 'inert-polyfill'
-import React from 'react'
+
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
@@ -13,22 +15,11 @@ import log4js from 'log4js'
 import { authorizationHeaderValue } from './utils/api-utils'
 import { configureLogging } from './utils/logging-utils'
 
-const asyncLocalStorage = {
-  setItem: function(key, value) {
-    return Promise.resolve().then(function() {
-      localStorage.setItem(key, value)
-    })
-  },
-  getItem: function(key) {
-    return Promise.resolve().then(function() {
-      return localStorage.getItem(key)
-    })
-  }
-}
+import { asyncLocalStorage } from '@common'
 
 const checkForLegacyReduxData = async () => {
   const data = await asyncLocalStorage.getItem('redux')
-  console.log('localstorage get', JSON.parse(data))
+  console.debug('persted data exists: ', JSON.parse(data))
   if (!data) {
     console.log('no data, continue')
     return null
@@ -54,18 +45,6 @@ const checkForLegacyReduxData = async () => {
 
   return null
 }
-/**
- * For testing only:
- *
- * changing the BLOCKSTACK_STATE_VERSION to anything less than 14 will cause an update
- */
-// const oldState = JSON.parse(localStorage.getItem('redux_old'))
-// const BLOCKSTACK_STATE_VERSION = JSON.parse(
-//   localStorage.getItem('BLOCKSTACK_STATE_VERSION')
-// )
-//
-// // localStorage.setItem('redux', JSON.stringify(oldState))
-// // localStorage.setItem('BLOCKSTACK_STATE_VERSION', 13)
 
 checkForLegacyReduxData().then(legacyStore => {
   console.log('legacystore', legacyStore)
@@ -82,6 +61,7 @@ checkForLegacyReduxData().then(legacyStore => {
   )
 
   window.addEventListener('error', event => {
+    // eslint-disable-next-line
     const logger = log4js.getLogger("window.addWindowListener('error')")
     logger.error(event)
   })

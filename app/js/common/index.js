@@ -11,4 +11,10 @@ const formatAppManifest = manifest => {
   return { name, icon: icons[0].src, ...restOfManifest }
 }
 
-export { formatAppManifest }
+const asyncLocalStorage = {
+  setItem: (key, value) =>
+    Promise.resolve().then(() => localStorage.setItem(key, value)),
+  getItem: key => Promise.resolve().then(() => localStorage.getItem(key))
+}
+
+export { formatAppManifest, asyncLocalStorage }
