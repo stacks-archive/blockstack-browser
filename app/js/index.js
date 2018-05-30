@@ -13,42 +13,62 @@ import log4js from 'log4js'
 import { authorizationHeaderValue } from './utils/api-utils'
 import { configureLogging } from './utils/logging-utils'
 
-const checkForLegacyReduxData = async () => {
-  const reduxPersistedState = JSON.parse(localStorage.getItem('redux'))
-  /**
-   * For testing only:
-   *
-   * changing the BLOCKSTACK_STATE_VERSION to anything less than 14 will cause an update
-   */
-  // const oldState = JSON.parse(localStorage.getItem('redux_old'))
-  // const BLOCKSTACK_STATE_VERSION = JSON.parse(
-  //   localStorage.getItem('BLOCKSTACK_STATE_VERSION')
-  // )
-  //
-  // // localStorage.setItem('redux', JSON.stringify(oldState))
-  // // localStorage.setItem('BLOCKSTACK_STATE_VERSION', 13)
-
-  if (reduxPersistedState) {
-    const { computedStates, currentStateIndex } = reduxPersistedState
-    if (!computedStates) {
-      return null
-    }
-    const lastState = computedStates[currentStateIndex]
-      ? computedStates[currentStateIndex].state
-      : undefined
-
-    if (computedStates && lastState) {
-      localStorage.setItem('redux', JSON.stringify(lastState))
-      localStorage.setItem('redux_old', JSON.stringify(reduxPersistedState))
-      return lastState
-    }
-
-    return null
+const asyncLocalStorage = {
+  setItem: function(key, value) {
+    return Promise.resolve().then(function() {
+      localStorage.setItem(key, value)
+    })
+  },
+  getItem: function(key) {
+    return Promise.resolve().then(function() {
+      return localStorage.getItem(key)
+    })
   }
-  return null
 }
 
+const checkForLegacyReduxData = async () => {
+  const data = await asyncLocalStorage.getItem('redux')
+  console.log('localstorage get', JSON.parse(data))
+  if (!data) {
+    console.log('no data, continue')
+    return null
+  }
+
+  const parsedData = JSON.parse(data)
+  const { computedStates, currentStateIndex } = parsedData
+  if (!computedStates) {
+    console.debug('no computed states')
+    return null
+  }
+  const lastState = computedStates[currentStateIndex]
+    ? computedStates[currentStateIndex].state
+    : undefined
+
+  if (computedStates && lastState) {
+    console.debug('computed states and last state', lastState)
+    await asyncLocalStorage.setItem('redux', JSON.stringify(lastState))
+    await asyncLocalStorage.setItem('redux_old', JSON.stringify(parsedData))
+    console.log('finished, returning object')
+    return lastState
+  }
+
+  return null
+}
+/**
+ * For testing only:
+ *
+ * changing the BLOCKSTACK_STATE_VERSION to anything less than 14 will cause an update
+ */
+// const oldState = JSON.parse(localStorage.getItem('redux_old'))
+// const BLOCKSTACK_STATE_VERSION = JSON.parse(
+//   localStorage.getItem('BLOCKSTACK_STATE_VERSION')
+// )
+//
+// // localStorage.setItem('redux', JSON.stringify(oldState))
+// // localStorage.setItem('BLOCKSTACK_STATE_VERSION', 13)
+
 checkForLegacyReduxData().then(legacyStore => {
+  console.log('legacystore', legacyStore)
   const store = configureDataStore(legacyStore)
   const state = store.getState()
   const coreAPIPassword = state.settings.api.coreAPIPassword
