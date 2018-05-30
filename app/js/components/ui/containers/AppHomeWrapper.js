@@ -12,6 +12,9 @@ const StyledAppHomeWrapper = styled.div.attrs({
   width: 100%;
   left: 0;
   top: 0;
+  @media (max-width: 599px) {
+    display: none;
+  }
   .home-screen {
     padding-top: 100px;
   }
@@ -20,7 +23,7 @@ const StyledAppHomeWrapper = styled.div.attrs({
   }
 `
 
-const AppHomeWrapper = (props) => (
+const AppHomeWrapper = props => (
   <StyledAppHomeWrapper {...props}>
     <div inert="true" htmlInert>
       <HomePage />
