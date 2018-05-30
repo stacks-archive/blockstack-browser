@@ -22,7 +22,7 @@ class EmailView extends React.Component {
             name: 'email',
             label: 'Email Address',
             message:
-              'Your email is only for delivering recovery instructions. Blockstack does not store emails.'
+              'Your email is needed for critical recovery instructions.'
           }
         ]
       : [
