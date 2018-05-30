@@ -54,8 +54,6 @@ const accountCreated = connectedRouterRedirect({
 export default (
   <Router history={browserHistory}>
     <Route path="/" component={accountCreated(App)}>
-      <Route path="/sign-up" component={SignUpPage} />
-      <Route path="/sign-up/*" component={SignUpPage} />
       <IndexRoute component={HomeScreenPage} />
       <Route path="profiles" component={ProfilesApp}>
         <IndexRoute component={DefaultProfilePage} />
@@ -100,6 +98,8 @@ export default (
 
       <Route path="/auth" component={NewAuthPage} />
     </Route>
+    <Route path="/sign-up" component={SignUpPage} />
+    <Route path="/sign-up/*" component={SignUpPage} />
     {/**
      * TODO: move /update back up ^^, had to move it out of the 'app' nested route
      * because when we wipe data, it wants to redirect to /sign-up

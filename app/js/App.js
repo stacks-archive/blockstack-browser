@@ -1,7 +1,7 @@
 import './utils/proxy-fetch'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
+import { browserHistory, withRouter } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { SettingsActions } from './account/store/settings'
@@ -70,6 +70,7 @@ class App extends Component {
     coreAPIPassword: PropTypes.string,
     stateVersion: PropTypes.number,
     router: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
     instanceIdentifier: PropTypes.string
   }
 
@@ -151,7 +152,7 @@ class App extends Component {
     if (this.state.needToUpdate && this.props.location.pathname !== '/update') {
       browserHistory.push({
         pathname: '/update',
-        state: {}
+        search: this.props.location.search
       })
     }
   }
@@ -165,7 +166,6 @@ class App extends Component {
 
     if (!this.props.coreApiRunning) {
       // TODO connect to future notification system here
-      // alert('Sanity check: Error! Core API is NOT running!')
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 
@@ -197,16 +197,17 @@ class App extends Component {
   }
 
   render() {
+    const { children } = this.props
     return (
       <div className="body-main">
-        <div className="wrapper footer-padding">{this.props.children}</div>
+        <div className="wrapper footer-padding">{children}</div>
         <SupportButton onClick={this.onSupportClick} />
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
 
 /*
 {

@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { browserHistory, withRouter } from 'react-router'
+import App from '../App'
 import {
   selectConnectedStorageAtLeastOnce,
   selectEmail,
@@ -346,7 +347,9 @@ class Onboarding extends React.Component {
   sendRecovery(blockstackId, email, encryptedSeed) {
     const { protocol, hostname, port } = location
     const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(encryptedSeed)}`
+    const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(
+      encryptedSeed
+    )}`
 
     const options = {
       method: 'POST',
@@ -521,7 +524,7 @@ class Onboarding extends React.Component {
           emailsSending: true
         })
         this.sendEmails().then(() => this.updateView(VIEWS.INFO))
-      } 
+      }
       // else {
       //   this.updateView(VIEWS.INFO)
       // }
@@ -608,7 +611,7 @@ class Onboarding extends React.Component {
     }
 
     return (
-      <React.Fragment>
+      <App>
         <ShellParent
           app={app}
           views={views}
@@ -619,7 +622,7 @@ class Onboarding extends React.Component {
           disableBackOnView={VIEWS.INFO}
         />
         <AppHomeWrapper />
-      </React.Fragment>
+      </App>
     )
   }
 }

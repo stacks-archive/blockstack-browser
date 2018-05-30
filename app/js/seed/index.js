@@ -17,7 +17,7 @@ import {
   selectAuthRequest
 } from '@common/store/selectors/auth'
 import { formatAppManifest } from '@common'
-
+import App from '../App'
 function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
@@ -293,7 +293,7 @@ class SeedContainer extends Component {
     const app = formatAppManifest(this.props.appManifest)
 
     return (
-      <React.Fragment>
+      <App>
         <ShellParent
           app={app}
           views={views}
@@ -303,7 +303,7 @@ class SeedContainer extends Component {
           backOnLast
         />
         <AppHomeWrapper />
-      </React.Fragment>
+      </App>
     )
   }
 }

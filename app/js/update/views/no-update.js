@@ -4,11 +4,11 @@ import PropTypes from 'prop-types'
 
 class NoUpdate extends React.Component {
   componentDidMount() {
-    setTimeout(() => this.props.goToBlockstack(), 3000)
+    setTimeout(() => this.props.finish(), 3000)
   }
 
   render() {
-    const { goToBlockstack, ...rest } = this.props
+    const { finish, ...rest } = this.props
 
     const props = {
       title: {
@@ -29,9 +29,9 @@ class NoUpdate extends React.Component {
       actions: {
         items: [
           {
-            label: <React.Fragment>Go to Blockstack</React.Fragment>,
+            label: <React.Fragment>Continue</React.Fragment>,
             primary: true,
-            onClick: () => goToBlockstack()
+            onClick: () => finish()
           }
         ]
       }
@@ -41,7 +41,7 @@ class NoUpdate extends React.Component {
 }
 
 NoUpdate.propTypes = {
-  goToBlockstack: PropTypes.func.isRequired,
+  finish: PropTypes.func.isRequired,
   app: PropTypes.object
 }
 

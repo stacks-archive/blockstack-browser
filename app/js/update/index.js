@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { withRouter } from 'react-router'
+import { withRouter, browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
@@ -251,6 +251,25 @@ class UpdatePage extends React.Component {
     })
   }
 
+  finish() {
+    if (this.props.router.location.search) {
+      if (this.props.router.location.search.includes('authRequest')) {
+        browserHistory.push({
+          pathname: '/auth',
+          search: this.props.location.search
+        })
+      }
+      if (this.props.router.location.search.includes('encrypted')) {
+        browserHistory.push({
+          pathname: '/seed',
+          search: this.props.location.search
+        })
+      }
+    } else {
+      this.props.router.push('/')
+    }
+  }
+
   setPassword = password =>
     this.setState({
       password
@@ -278,8 +297,7 @@ class UpdatePage extends React.Component {
 
     const componentProps = {
       view,
-      goToBlockstack: () => this.props.router.push('/'),
-      setPassword: this.setPassword,
+      finish: () => this.finish(),
       loading: this.state.loading,
       password: this.state.password,
       errors: this.state.errors,

@@ -48,6 +48,8 @@ import {
   selectPublicKeychain
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
+import { BLOCKSTACK_STATE_VERSION_KEY } from '../App'
+import { CURRENT_VERSION } from '../store/reducers'
 
 const views = [Initial, LegacyGaia]
 
