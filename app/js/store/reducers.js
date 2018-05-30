@@ -42,7 +42,7 @@ export function initializeStateVersion() {
  * and other state is regenerated.
  * @type {number}
  */
-export const CURRENT_VERSION: number = 13
+export const CURRENT_VERSION: number = 14
 
 //
 // function VersionReducer(state = {}, action) {

@@ -1,14 +1,19 @@
 import './utils/proxy-fetch'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { SettingsActions } from './account/store/settings'
 import { AppsActions } from './store/apps'
-import { getCoreAPIPasswordFromURL, getLogServerPortFromURL, setOrUnsetUrlsToRegTest,
-         getRegTestModeFromURL } from './utils/api-utils'
+import {
+  getCoreAPIPasswordFromURL,
+  getLogServerPortFromURL,
+  setOrUnsetUrlsToRegTest,
+  getRegTestModeFromURL
+} from './utils/api-utils'
 import SupportButton from './components/SupportButton'
-import { SanityActions }    from './store/sanity'
+import { SanityActions } from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
 import { openInNewTab } from './utils'
@@ -36,12 +41,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    updateApi: SettingsActions.updateApi,
-    isCoreRunning: SanityActions.isCoreRunning,
-    isCoreApiPasswordValid: SanityActions.isCoreApiPasswordValid,
-    generateInstanceIdentifier: AppsActions.generateInstanceIdentifier
-  }, dispatch)
+  return bindActionCreators(
+    {
+      updateApi: SettingsActions.updateApi,
+      isCoreRunning: SanityActions.isCoreRunning,
+      isCoreApiPasswordValid: SanityActions.isCoreApiPasswordValid,
+      generateInstanceIdentifier: AppsActions.generateInstanceIdentifier
+    },
+    dispatch
+  )
 }
 
 class App extends Component {
@@ -70,7 +78,9 @@ class App extends Component {
     let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
 
     if (!existingVersion) {
-      logger.debug(`No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`)
+      logger.debug(
+        `No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`
+      )
       localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
       existingVersion = CURRENT_VERSION
     }
@@ -80,7 +90,9 @@ class App extends Component {
 
     let needToUpdate = false
     if (existingVersion < CURRENT_VERSION) {
-      logger.debug('We need to update state. Need to check if on-boarding is open.')
+      logger.debug(
+        'We need to update state. Need to check if on-boarding is open.'
+      )
       needToUpdate = true
     }
 
@@ -111,7 +123,9 @@ class App extends Component {
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
     } else if (isCoreEndpointDisabled(api.corePingUrl)) {
-      logger.debug('Core-less build. Pretending to have a valid core connection.')
+      logger.debug(
+        'Core-less build. Pretending to have a valid core connection.'
+      )
       api = Object.assign({}, api, { coreAPIPassword: 'PretendPasswordAPI' })
       this.props.updateApi(api)
     }
@@ -127,8 +141,18 @@ class App extends Component {
       this.props.updateApi(api)
     }
 
-    if (!this.props.instanceIdentifier && this.props.localIdentities.length > 0) {
+    if (
+      !this.props.instanceIdentifier &&
+      this.props.localIdentities.length > 0
+    ) {
       this.props.generateInstanceIdentifier()
+    }
+
+    if (this.state.needToUpdate && this.props.location.pathname !== '/update') {
+      browserHistory.push({
+        pathname: '/update',
+        state: {}
+      })
     }
   }
 
@@ -166,16 +190,16 @@ class App extends Component {
 
   performSanityChecks() {
     this.props.isCoreRunning(this.props.corePingUrl)
-    this.props.isCoreApiPasswordValid(this.props.walletPaymentAddressUrl,
-      this.props.coreAPIPassword)
+    this.props.isCoreApiPasswordValid(
+      this.props.walletPaymentAddressUrl,
+      this.props.coreAPIPassword
+    )
   }
 
   render() {
     return (
       <div className="body-main">
-        <div className="wrapper footer-padding">
-          {this.props.children}
-        </div>
+        <div className="wrapper footer-padding">{this.props.children}</div>
         <SupportButton onClick={this.onSupportClick} />
       </div>
     )

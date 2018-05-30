@@ -10,7 +10,10 @@ const selectEmail = ({ account }) => account.email
 const selectPublicKeychain = ({ account }) =>
   account.identityAccount && account.identityAccount.publicKeychain
 const selectRecoveryCodeVerified = ({account}) => account && account.recoveryCodeVerified
+const selectAccountCreated = ({account}) => account && account.accountCreated
+
 export {
+  selectAccountCreated,
   selectPromptedForEmail,
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,

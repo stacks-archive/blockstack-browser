@@ -26,7 +26,7 @@ configureLogging(
 )
 
 window.addEventListener('error', event => {
-  const logger = log4js.getLogger('window.addWindowListener(\'error\')')
+  const logger = log4js.getLogger("window.addWindowListener('error')")
   logger.error(event)
 })
 
@@ -43,9 +43,47 @@ if (process.env.NODE_ENV !== 'production') {
   window.React = React
 }
 
-render(
-  <Provider store={store}>
-    <ThemeProvider theme={theme}>{routes}</ThemeProvider>
-  </Provider>,
-  document.getElementById('app')
+const checkForLegacyReduxData = async () => {
+  const reduxPersistedState = JSON.parse(localStorage.getItem('redux'))
+
+  /**
+   * For testing only:
+   *
+   * changing the BLOCKSTACK_STATE_VERSION to anything less than 14 will cause an update
+   */
+  // const oldState = JSON.parse(localStorage.getItem('redux_old'))
+  // const BLOCKSTACK_STATE_VERSION = JSON.parse(
+  //   localStorage.getItem('BLOCKSTACK_STATE_VERSION')
+  // )
+  //
+  // // localStorage.setItem('redux', JSON.stringify(oldState))
+  // // localStorage.setItem('BLOCKSTACK_STATE_VERSION', 13)
+
+  if (reduxPersistedState) {
+    const { computedStates, currentStateIndex } = reduxPersistedState
+    if (!computedStates) {
+      return null
+    }
+    const lastState = computedStates[currentStateIndex]
+      ? computedStates[currentStateIndex].state
+      : undefined
+
+    if (computedStates && lastState) {
+      localStorage.setItem('redux', JSON.stringify(lastState))
+      localStorage.setItem('redux_old', JSON.stringify(reduxPersistedState))
+      return lastState
+    }
+
+    return null
+  }
+  return null
+}
+
+checkForLegacyReduxData().then(() =>
+  render(
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>{routes}</ThemeProvider>
+    </Provider>,
+    document.getElementById('app')
+  )
 )
