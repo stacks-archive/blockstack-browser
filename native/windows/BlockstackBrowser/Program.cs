@@ -120,7 +120,7 @@ namespace BlockstackBrowser
 
         private void RunCORSProxy()
         {
-            String proxyCommand = "Resources\\corsproxy-https\\node_modules\\corsproxy-https\\bin\\corsproxy";
+            String proxyCommand = "Resources\\cors-proxy\\corsproxy.js 0 0 0.0.0.0";
             this.corsProxy = ShellOut(proxyCommand);
         }
     }
