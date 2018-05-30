@@ -8,11 +8,6 @@ import { SettingsReducer } from '../account/store/settings'
 import { AppsReducer } from './apps'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
 
-// export const persistedStatePaths = [
-//   'account',
-//   'settings'
-// ]
-
 export const UPDATE_STATE = 'UPDATE_STATE'
 export const MIGRATE_API_ENDPOINTS = 'MIGRATE_API_ENDPOINTS'
 export const INIT_STATE_VERSION = 'INIT_STATE_VERSION'
@@ -44,21 +39,6 @@ export function initializeStateVersion() {
  */
 export const CURRENT_VERSION: number = 14
 
-//
-// function VersionReducer(state = {}, action) {
-//   console.log(action)
-//   let newState = Object.assign({}, state)
-//   if (action.type === INIT_STATE_VERSION) {
-//     console.log(`trueeeee ${state.number}`)
-//     if (!state.number) {
-//       console.log('no number!!')
-//       newState = Object.assign({}, state, {
-//         number: parseInt(`${CURRENT_VERSION}`)
-//       })
-//     }
-//   }
-//   return newState
-// }
 
 const AppReducer = combineReducers({
   account: AccountReducer,
@@ -70,50 +50,65 @@ const AppReducer = combineReducers({
 })
 
 const RootReducer = (state: any, action: any) => {
-  let newState: any = Object.assign({}, state)
-  if (action.type === UPDATE_STATE) {
-    const initialState = AppReducer(undefined, {})
-    newState = Object.assign({}, initialState, {
-      settings: {
-        api: Object.assign({}, state.settings.api)
-      },
-      account: Object.assign({}, initialState.account, {
-        promptedForEmail: state.account.promptedForEmail,
-        viewedRecoveryCode: state.account.viewedRecoveryCode,
-        connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
-      })
-    })
+  const initialState = AppReducer(undefined, {})
+  switch (action.type) {
+    case UPDATE_STATE:
+      return AppReducer(
+        {
+          ...initialState,
+          settings: {
+            api: { ...state.settings.api }
+          },
+          account: {
+            ...initialState.account,
+            encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+            promptedForEmail: state.account.promptedForEmail,
+            viewedRecoveryCode: state.account.viewedRecoveryCode,
+            connectedStorageAtLeastOnce:
+              state.account.connectedStorageAtLeastOnce
+          }
+        },
+        action
+      )
+    case MIGRATE_API_ENDPOINTS:
+      return AppReducer(
+        {
+          ...initialState,
+          settings: {
+            api: { ...action.nextApi }
+          },
+          account: {
+            ...initialState.account,
+            encryptedBackupPhrase: state.account.encryptedBackupPhrase,
+            promptedForEmail: state.account.promptedForEmail,
+            viewedRecoveryCode: state.account.viewedRecoveryCode,
+            connectedStorageAtLeastOnce:
+              state.account.connectedStorageAtLeastOnce
+          }
+        },
+        action
+      )
+    case DELETE_ACCOUNT:
+      return AppReducer(
+        {
+          ...initialState,
+          settings: {
+            api: {
+              ...initialState.settings.api,
+              coreAPIPassword: state.settings.api.coreAPIPassword,
+              logServerPort: state.settings.api.logServerPort,
+              regTestMode: state.settings.api.regTestMode
+            }
+          },
+          apps: {
+            instanceIdentifier: null
+          }
+        },
+        action
+      )
+    default:
+      return AppReducer(state, action)
   }
-  if (action.type === MIGRATE_API_ENDPOINTS) {
-    const initialState = AppReducer(undefined, {})
-
-    newState = Object.assign({}, initialState, {
-      settings: {
-        api: Object.assign({}, action.nextApi)
-      },
-      account: Object.assign({}, initialState.account, {
-        promptedForEmail: state.account.promptedForEmail,
-        viewedRecoveryCode: state.account.viewedRecoveryCode,
-        connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
-      })
-    })
-  }
-  if (action.type === DELETE_ACCOUNT) {
-    const initialState = AppReducer(undefined, {})
-    newState = Object.assign({}, initialState, {
-      settings: {
-        api: Object.assign({}, initialState.settings.api, {
-          coreAPIPassword: state.settings.api.coreAPIPassword,
-          logServerPort: state.settings.api.logServerPort,
-          regTestMode: state.settings.api.regTestMode
-        })
-      },
-      apps: {
-        instanceIdentifier: null
-      }
-    })
-  }
-  return AppReducer(newState, action)
 }
 
 export default RootReducer

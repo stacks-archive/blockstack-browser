@@ -5,80 +5,256 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
-import { SettingsActions } from '../account/store/settings'
-
-import { RegistrationActions } from '../profiles/store/registration'
-import { Initial } from './views'
-import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
+import { Initial, Success, NoUpdate } from './views'
+import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
 import {
-  selectConnectedStorageAtLeastOnce,
-  selectEmail,
+  selectAccountCreated,
   selectEncryptedBackupPhrase,
-  selectIdentityAddresses,
-  selectIdentityKeypairs,
-  selectPromptedForEmail
+  selectIdentityAddresses
 } from '@common/store/selectors/account'
 import {
-  selectLocalIdentities,
-  selectRegistration,
-  selectDefaultIdentity
+  selectDefaultIdentity,
+  selectLocalIdentities
 } from '@common/store/selectors/profiles'
+import { selectApi } from '@common/store/selectors/settings'
 import {
-  selectApi,
-  selectStorageConnected
-} from '@common/store/selectors/settings'
-import {
-  selectAppManifest,
-  selectAuthRequest
-} from '@common/store/selectors/auth'
+  CURRENT_VERSION,
+  migrateAPIEndpoints,
+  updateState
+} from '../store/reducers'
 import { formatAppManifest } from '@common'
-
+import { BLOCKSTACK_STATE_VERSION_KEY } from '../App'
+import {
+  hasLegacyCoreStateVersion,
+  migrateLegacyCoreEndpoints
+} from '@utils/api-utils'
+import { decrypt } from '@utils'
 const VIEWS = {
   INITIAL: 0,
-  PASSWORD: 1,
-  SUCCESS: 2
+  SUCCESS: 1,
+  NOUPDATE: 2
 }
 
-const views = [Initial]
+const views = [Initial, Success, NoUpdate]
 
-function mapStateToProps(state) {
-  return {
-    updateApi: PropTypes.func.isRequired,
-    api: selectApi(state),
-    appManifest: selectAppManifest(state),
-    authRequest: selectAuthRequest(state),
-    promptedForEmail: selectPromptedForEmail(state),
-    encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
-    localIdentities: selectLocalIdentities(state),
-    identityAddresses: selectIdentityAddresses(state),
-    identityKeypairs: selectIdentityKeypairs(state),
-    connectedStorageAtLeastOnce: selectConnectedStorageAtLeastOnce(state),
-    storageConnected: selectStorageConnected(state),
-    email: selectEmail(state),
-    registration: selectRegistration(state),
-    defaultIdentityIndex: selectDefaultIdentity(state)
-  }
-}
+const mapStateToProps = state => ({
+  api: selectApi(state),
+  encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
+  localIdentities: selectLocalIdentities(state),
+  defaultIdentityIndex: selectDefaultIdentity(state),
+  accountCreated: selectAccountCreated(state),
+  identityAddresses: selectIdentityAddresses(state)
+})
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    Object.assign(
-      {},
-      AccountActions,
-      SettingsActions,
-      IdentityActions,
-      RegistrationActions
-    ),
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      ...AccountActions,
+      ...IdentityActions,
+      updateState,
+      migrateAPIEndpoints
+    },
     dispatch
   )
-}
 
 class UpdatePage extends React.Component {
+  static propTypes = {
+    router: PropTypes.object.isRequired,
+    api: PropTypes.object,
+    encryptedBackupPhrase: PropTypes.string,
+    localIdentities: PropTypes.array,
+    defaultIdentityIndex: PropTypes.number,
+    accountCreated: PropTypes.bool,
+    initializeWallet: PropTypes.func.isRequired,
+    identityAddresses: PropTypes.array,
+    createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
+    setDefaultIdentity: PropTypes.func.isRequired,
+    updateState: PropTypes.func.isRequired,
+    migrateAPIEndpoints: PropTypes.func.isRequired,
+    updateValue: PropTypes.func,
+    next: PropTypes.func,
+    loading: PropTypes.bool,
+    password: PropTypes.string,
+    decrypt: PropTypes.bool,
+    decrypting: PropTypes.bool,
+    error: PropTypes.any,
+    key: PropTypes.any
+  }
   state = {
+    status: 'initial',
+    api: this.props.api,
+    alert: null,
+    password: '',
+    loading: false,
+    upgradeInProgress: false,
+    generatedIDs: null,
+    idsToGenerate: null,
+    accountCreated: false,
     view: 0
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    /**
+     * This will check versions and display the no update view if the user is on the latest version
+     */
+    if (
+      JSON.parse(localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)) ===
+      CURRENT_VERSION
+    ) {
+      this.setState({
+        view: VIEWS.NOUPDATE
+      })
+    }
+  }
+
+  /**
+   * Decrypt key and reset our redux store
+   *
+   * This runs before createAccount
+   * it will check and confirm the password is correct
+   * and then update the state with some props from the current account
+   * and then run createAccount
+   */
+  decryptKeyAndResetState = async () => {
+    console.log('decryptKeyAndResetState')
+
+    const {
+      encryptedBackupPhrase,
+      localIdentities,
+      defaultIdentityIndex,
+      api
+    } = this.props
+
+    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const { password } = this.state
+
+    await decrypt(dataBuffer, password)
+      .then(backupPhraseBuffer => {
+        this.setState(
+          {
+            upgradeInProgress: true
+          },
+          () =>
+            setTimeout(() => {
+              console.debug('decryptKeyAndResetState: correct password!')
+              const backupPhrase = backupPhraseBuffer.toString()
+              const numberOfIdentities =
+                localIdentities.length >= 1 ? localIdentities.length : 1
+              this.setState({
+                encryptedBackupPhrase,
+                backupPhrase,
+                defaultIdentityIndex,
+                numberOfIdentities
+              })
+              if (hasLegacyCoreStateVersion()) {
+                const migratedApi = migrateLegacyCoreEndpoints(api)
+                this.props.migrateAPIEndpoints(migratedApi)
+              }
+              // clear our state
+              this.props.updateState()
+
+              // generate new account and IDs
+              this.createAccount().then(() => this.createNewIds())
+            }, 150)
+        )
+      })
+      .catch(error => {
+        console.error('decryptKeyAndResetState: invalid password', error)
+        this.setState({
+          loading: false,
+          password: null,
+          errors: {
+            password: 'Incorrect Password'
+          },
+          status: 'error'
+        })
+      })
+  }
+
+  /**
+   * Submit
+   * this will run if our form has been validated correctly
+   */
+  handleSubmit = async password => {
+    this.setState(
+      {
+        loading: true,
+        password
+      },
+      () => setTimeout(() => this.decryptKeyAndResetState(), 250)
+    )
+  }
+
+  /**
+   * Create account
+   * this runs first
+   */
+  createAccount = async () => {
+    const { numberOfIdentities, backupPhrase, password } = this.state
+
+    const { initializeWallet } = this.props
+
+    console.debug(
+      'createAccount: state cleared. initializing wallet...',
+      password,
+      backupPhrase,
+      numberOfIdentities
+    )
+    return initializeWallet(password, backupPhrase, numberOfIdentities)
+  }
+
+  /**
+   * Generate our IDs
+   * this runs after createAccount
+   */
+  async createNewIds() {
+    const { identityAddresses, createNewIdentityWithOwnerAddress } = this.props
+    const asyncForEach = async (array, callback) => {
+      for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array)
+      }
+    }
+
+    const generateNids = async () => {
+      await asyncForEach(identityAddresses, async (address, i) => {
+        console.debug(
+          `creating new identity with index: ${i} and ownerAddress: ${address}`
+        )
+        createNewIdentityWithOwnerAddress(i, address)
+      })
+      console.debug('finished generating ids')
+      this.setState(
+        {
+          complete: true
+        },
+        () => setTimeout(() => this.updateStateVersion(), 250)
+      )
+    }
+
+    return generateNids()
+  }
+
+  /**
+   * Update our state version
+   * this is our final step once all of our IDs have been generated,
+   * it sets the new state version and then redirects home
+   */
+  updateStateVersion = async () => {
+    console.debug(
+      `updateStateVersion: Setting new state version to ${CURRENT_VERSION}`
+    )
+    localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
+
+    this.props.setDefaultIdentity(this.state.defaultIdentityIndex)
+    this.setState({
+      view: VIEWS.SUCCESS
+    })
+  }
+
+  setPassword = password =>
+    this.setState({
+      password
+    })
 
   render() {
     const { view } = this.state
@@ -86,19 +262,15 @@ class UpdatePage extends React.Component {
     const viewProps = [
       {
         show: VIEWS.INITIAL,
-        props: {
-          previous: this.backToSignUp,
-          next: this.validateRecoveryKey,
-          updateValue: this.updateValue
-        }
+        props: {}
       },
       {
-        show: VIEWS.PASSWORD,
-        props: {
-          previous: () => this.updateView(VIEWS.INITIAL),
-          next: this.decryptKeyAndRestore,
-          updateValue: this.updateValue
-        }
+        show: VIEWS.SUCCESS,
+        props: {}
+      },
+      {
+        show: VIEWS.NOUPDATE,
+        props: {}
       }
     ]
 
@@ -106,13 +278,13 @@ class UpdatePage extends React.Component {
 
     const componentProps = {
       view,
-      backView: () => this.backView(),
-      decrypt: this.state.decrypt,
+      goToBlockstack: () => this.props.router.push('/'),
+      setPassword: this.setPassword,
       loading: this.state.loading,
-      decrypting: this.state.decrypting,
       password: this.state.password,
-      error: this.state.restoreError,
-      key: this.state.key || this.state.decryptedKey,
+      errors: this.state.errors,
+      handleSubmit: this.handleSubmit,
+      upgradeInProgress: this.state.upgradeInProgress,
       ...currentViewProps.props
     }
     return (
@@ -122,8 +294,9 @@ class UpdatePage extends React.Component {
           views={views}
           {...componentProps}
           headerLabel="Finish updating Blockstack"
-          lastHeaderLabel="Welcome Back"
+          lastHeaderLabel="Update Complete"
           invertOnLast
+          disableBackOnView={1}
         />
         <AppHomeWrapper />
       </React.Fragment>

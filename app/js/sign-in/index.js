@@ -223,7 +223,6 @@ class SignIn extends React.Component {
   async initializeWallet() {
     const { password, key } = this.state
     const { initializeWallet } = this.props
-    this.setState({})
     return initializeWallet(password, key)
   }
 
