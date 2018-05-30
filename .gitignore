@@ -31,4 +31,5 @@ __coverage__
 unused
 
 tmp
-
+.idea
+.swp

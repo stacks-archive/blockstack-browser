@@ -12,8 +12,8 @@ import {
   getIdentityOwnerAddressNode,
   getBitcoinAddressNode,
   getInsightUrl
-} from '../../../utils'
-import { isCoreEndpointDisabled } from '../../../utils/window-utils'
+} from '@utils'
+import { isCoreEndpointDisabled } from '@utils/window-utils'
 import { transactions, config, network } from 'blockstack'
 
 import roundTo from 'round-to'
@@ -22,7 +22,16 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/store/account/actions.js')
 
-function createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate) {
+
+const doVerifyRecoveryCode = () => (dispatch) => dispatch({
+  type: types.RECOVERY_CODE_VERIFIED
+})
+
+function createAccount(
+  encryptedBackupPhrase,
+  masterKeychain,
+  identitiesToGenerate
+) {
   logger.debug(`createAccount: identitiesToGenerate: ${identitiesToGenerate}`)
   const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
   const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(masterKeychain)
@@ -33,14 +42,20 @@ function createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenera
   const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
   const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
 
-  const firstBitcoinAddress = getBitcoinAddressNode(bitcoinPublicKeychainNode).getAddress()
+  const firstBitcoinAddress = getBitcoinAddressNode(
+    bitcoinPublicKeychainNode
+  ).getAddress()
 
   const identityAddresses = []
   const identityKeypairs = []
 
   // We pre-generate a number of identity addresses so that we
   // don't have to prompt the user for the password on each new profile
-  for (let addressIndex = 0; addressIndex < identitiesToGenerate; addressIndex++) {
+  for (
+    let addressIndex = 0;
+    addressIndex < identitiesToGenerate;
+    addressIndex++
+  ) {
     const identityOwnerAddressNode = getIdentityOwnerAddressNode(
       identityPrivateKeychainNode,
       addressIndex
@@ -154,31 +169,28 @@ function emailNotifications(email, optIn) {
   logger.debug(`emailNotifications: ${email}`)
   return dispatch => {
     dispatch(promptedForEmail(email))
-    const requestHeaders = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    }
-
-    const requestBody = {
-      email
-    }
 
     const options = {
       method: 'POST',
-      headers: requestHeaders,
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify({ email }),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
     }
-    const emailNotificationsUrl =
-      'https://blockstack-portal-emailer.appartisan.com/notifications?mailingListOptIn='
-    let url = `${emailNotificationsUrl}false`
-    if (optIn === true) {
-      logger.debug('emailNotifications: user opted-in to mailing list')
-      url = `${emailNotificationsUrl}true`
-    }
+
+    const url = `
+      https://blockstack-portal-emailer.appartisan.com/notifications?mailingListOptIn=${
+        optIn ? 'true' : 'false'
+      }
+    `
+
     return fetch(url, options)
       .then(
         () => {
-          logger.debug(`emailNotifications: registered ${email} for notifications`)
+          logger.debug(
+            `emailNotifications: registered ${email} for notifications`
+          )
         },
         error => {
           logger.error('emailNotifications: error', error)
@@ -213,7 +225,9 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
     }
 
     logger.trace('refreshCoreWalletBalance: Beginning refresh...')
-    logger.debug(`refreshCoreWalletBalance: addressBalanceUrl: ${addressBalanceUrl}`)
+    logger.debug(
+      `refreshCoreWalletBalance: addressBalanceUrl: ${addressBalanceUrl}`
+    )
     const headers = { Authorization: authorizationHeaderValue(coreAPIPassword) }
     fetch(addressBalanceUrl, { headers })
       .then(response => response.text())
@@ -224,7 +238,10 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
         dispatch(updateCoreWalletBalance(balance))
       })
       .catch(error => {
-        logger.error('refreshCoreWalletBalance: error refreshing balance', error)
+        logger.error(
+          'refreshCoreWalletBalance: error refreshing balance',
+          error
+        )
       })
   }
 }
@@ -274,16 +291,19 @@ function withdrawBitcoinClientSide(
 
     const amountSatoshis = Math.floor(amountBTC * 1e8)
 
-    transactions.makeBitcoinSpend(
-      recipientAddress, paymentKey, amountSatoshis)
-      .then((transactionHex) => {
+    transactions
+      .makeBitcoinSpend(recipientAddress, paymentKey, amountSatoshis)
+      .then(transactionHex => {
         const myNet = config.network
         logger.trace(`Broadcast btc spend with tx hex: ${transactionHex}`)
         return myNet.broadcastTransaction(transactionHex)
       })
       .then(() => dispatch(withdrawCoreBalanceSuccess()))
-      .catch((error) => {
-        logger.error('withdrawBitcoinClientSide: error generating and broadcasting', error)
+      .catch(error => {
+        logger.error(
+          'withdrawBitcoinClientSide: error generating and broadcasting',
+          error
+        )
         return dispatch(withdrawCoreBalanceError(error))
       })
   }
@@ -314,12 +334,16 @@ function withdrawBitcoinFromCoreWallet(
     if (amount !== null) {
       const satoshisAmount = btcToSatoshis(amount)
       const roundedSatoshiAmount = roundTo(satoshisAmount, 0)
-      logger.debug(`withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} to ${recipientAddress}`)
+      logger.debug(
+        `withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} to ${recipientAddress}`
+      )
       requestBody.amount = roundedSatoshiAmount
       dispatch(withdrawingCoreBalance(recipientAddress, amount))
     } else {
       dispatch(withdrawingCoreBalance(recipientAddress, 1))
-      logger.debug(`withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`)
+      logger.debug(
+        `withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`
+      )
     }
 
     const requestHeaders = {
@@ -340,7 +364,9 @@ function withdrawBitcoinFromCoreWallet(
       requestBody.payment_key = key
       logger.debug('withdrawBitcoinFromCoreWallet: Using provided payment key')
     } else {
-      logger.debug('withdrawBitcoinFromCoreWallet: No payment key, using core wallet')
+      logger.debug(
+        'withdrawBitcoinFromCoreWallet: No payment key, using core wallet'
+      )
     }
 
     fetch(coreWalletWithdrawUrl, {
@@ -368,7 +394,9 @@ function refreshBalances(insightUrl, addresses, coreAPIPassword) {
   return dispatch => {
     const results = []
     addresses.forEach(address => {
-      logger.debug(`refreshBalances: refreshing balances for address ${address}`)
+      logger.debug(
+        `refreshBalances: refreshing balances for address ${address}`
+      )
       const urlBase = getInsightUrl(insightUrl, address, coreAPIPassword)
       const confirmedBalanceUrl = `${urlBase}/balance`
       const unconfirmedBalanceUrl = `${urlBase}/unconfirmedBalance`
@@ -408,34 +436,44 @@ function refreshBalances(insightUrl, addresses, coreAPIPassword) {
               }
             })
             .catch(error => {
-              logger.error('refreshBalances: error fetching ${address} unconfirmed balance', error)
+              logger.error(
+                'refreshBalances: error fetching ${address} unconfirmed balance',
+                error
+              )
             })
         })
         .catch(error => {
-          logger.error('refreshBalances: error fetching ${address} confirmed balance', error)
+          logger.error(
+            'refreshBalances: error fetching ${address} confirmed balance',
+            error
+          )
         })
     })
   }
 }
 
-function initializeWallet(password, backupPhrase, identitiesToGenerate = 1) {
-  return dispatch => {
-    let masterKeychain = null
-    if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
-      const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-      masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
-    } else {
-      // Create a new wallet
-      const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
-      backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
-      const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-      masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
-    }
-    return encrypt(new Buffer(backupPhrase), password).then(ciphertextBuffer => {
-      const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
-      dispatch(createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate))
-    })
+const initializeWallet = (
+  password,
+  backupPhrase,
+  identitiesToGenerate = 1
+) => dispatch => {
+  let masterKeychain = null
+  if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
+    const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+  } else {
+    // Create a new wallet
+    const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
+    backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
+    const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
   }
+  return encrypt(new Buffer(backupPhrase), password).then(ciphertextBuffer => {
+    const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
+    return dispatch(
+      createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate)
+    )
+  })
 }
 
 function newBitcoinAddress() {
@@ -480,6 +518,7 @@ const AccountActions = {
   skipEmailBackup,
   storageIsConnected,
   updateViewedRecoveryCode,
+  doVerifyRecoveryCode,
   incrementIdentityAddressIndex,
   usedIdentityAddress,
   displayedRecoveryCode,

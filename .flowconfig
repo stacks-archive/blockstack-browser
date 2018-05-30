@@ -10,11 +10,17 @@
 .*/blockstack.js/node_modules/*
 .*/blockstack.js/src/*
 .*/tmp/nexe/*
+.*/node_modules/styled-components/.*
 
 [include]
 
 [libs]
 
 [options]
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=./app
+module.name_mapper='^@components' ->'<PROJECT_ROOT>/app/js/components'
+module.name_mapper='^@styled' ->'<PROJECT_ROOT>/app/js/styled'
+module.name_mapper='^@utils' ->'<PROJECT_ROOT>/app/js/utils'
 
 [lints]

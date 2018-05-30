@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Alert from '../components/Alert'
+import Alert from '@components/Alert'
 import DeleteAccountModal from './components/DeleteAccountModal'
 import { AccountActions } from './store/account'
 import log4js from 'log4js'

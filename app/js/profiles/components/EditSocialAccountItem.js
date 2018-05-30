@@ -6,10 +6,10 @@ import Modal from 'react-modal'
 import { debounce } from 'lodash'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import InputGroup from '../../components/InputGroup'
+import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
 
-import { getWebAccountTypes } from '../../utils'
+import { getWebAccountTypes } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -172,16 +172,16 @@ class EditSocialAccountItem extends Component {
       if (this.props.service === 'instagram' || this.props.service === 'github'
           || this.props.service === 'twitter' || this.props.service === 'facebook'
           || this.props.service === 'linkedIn' || this.props.service === 'hackerNews') {
-        return <InputGroup 
-                  name="proofUrl" 
-                  label="Proof URL" 
+        return <InputGroup
+                  name="proofUrl"
+                  label="Proof URL"
                   data={this.state}
                   placeholder="Paste Proof URL here"
-                  stopClickPropagation={true} 
-                  onChange={this.onProofUrlChange} 
+                  stopClickPropagation={true}
+                  onChange={this.onProofUrlChange}
                   onBlur={event => this.props.onBlur(event, this.props.service)}
                   accessoryIcon={this.props.verified}
-                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
+                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
                   disabled={false}
                 />
       } else {
@@ -193,7 +193,7 @@ class EditSocialAccountItem extends Component {
       let accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
-          <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`} 
+          <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`}
             onClick={this.handleClick}>
             <span className="">
               <i className={`fa fa-fw ${this.getIconClass()}`} />
@@ -219,7 +219,7 @@ class EditSocialAccountItem extends Component {
             <span className="float-right">
               {!this.props.verified && <span>+1<i className="fa fa-w fa-star-o" /></span> }
 
-              {this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
+              {this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> :
                 <i className="fa fa-w fa-chevron-up" />
               }
             </span>
@@ -230,34 +230,34 @@ class EditSocialAccountItem extends Component {
                 transitionEnterTimeout={400}
                 transitionLeaveTimeout={200}>
 
-                {!this.state.collapsed && 
+                {!this.state.collapsed &&
                   (
-                    <InputGroup 
+                    <InputGroup
                       key="input-group-identifier"
-                      name="identifier" 
-                      label="Username" 
+                      name="identifier"
+                      label="Username"
                       data={this.state}
-                      stopClickPropagation={true} 
-                      onChange={this.onIdentifierChange} 
+                      stopClickPropagation={true}
+                      onChange={this.onIdentifierChange}
                       onBlur={this.onIdentifierBlur} />
                   )
                 }
 
-                {((this.props.verified || this.shouldShowVerificationInstructions()) && !this.state.collapsed) && 
+                {((this.props.verified || this.shouldShowVerificationInstructions()) && !this.state.collapsed) &&
                   <div key="input-group-proof">
                     {proofURLInput()}
                   </div>
                 }
-              
-                {(this.shouldShowVerificationInstructions() && !this.state.collapsed) && 
+
+                {(this.shouldShowVerificationInstructions() && !this.state.collapsed) &&
                   (
                     <div>
                       <VerificationInfo
                         service={this.props.service}
                         ownerAddress={this.props.ownerAddress}
                         domainName={this.getIdentifier()}
-                        onVerifyButtonClick={(e) => 
-                          this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)} 
+                        onVerifyButtonClick={(e) =>
+                          this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)}
                         />
                     </div>
                   )

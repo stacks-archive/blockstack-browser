@@ -6,7 +6,7 @@ import { Link } from 'react-router'
 
 import {
   isABlockstackName, isABlockstackIDName, isABlockstackAppName
-} from '../../utils/name-utils'
+} from '@utils/name-utils'
 import { SearchActions } from '../store/search'
 
 function mapStateToProps(state) {
