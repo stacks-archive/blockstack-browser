@@ -2,9 +2,9 @@ import * as types from './types'
 import { makeProfileZoneFile, transactions, config, network, safety } from 'blockstack'
 import { uploadProfile } from '../../../account/utils'
 import { IdentityActions } from '../identity'
-import { signProfileForUpload, authorizationHeaderValue } from '../../../utils'
-import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
-import { isSubdomain, getNameSuffix } from '../../../utils/name-utils'
+import { signProfileForUpload, authorizationHeaderValue } from '@utils'
+import { DEFAULT_PROFILE } from '@utils/profile-utils'
+import { isSubdomain, getNameSuffix } from '@utils/name-utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/store/registration/actions.js')
@@ -158,7 +158,7 @@ function registerName(api, domainName, identity, identityIndex,
       dispatch(registrationSubmitting())
 
       if (nameIsSubdomain) {
-        return registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFile) 
+        return registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFile)
           .then((responseJson) => {
             if (responseJson.error) {
               logger.error(responseJson.error)
@@ -184,7 +184,7 @@ function registerName(api, domainName, identity, identityIndex,
 
         const myNet = config.network
 
-        return registerDomain(myNet, transactions, domainName, identityIndex, 
+        return registerDomain(myNet, transactions, domainName, identityIndex,
           ownerAddress, paymentKey, zoneFile)
           .then((response) => {
             if (response.status) {

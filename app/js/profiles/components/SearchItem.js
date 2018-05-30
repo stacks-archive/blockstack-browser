@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { Person } from 'blockstack'
 
-import Image from '../../components/Image'
+import Image from '@components/Image'
 import SocialAccountItem from './SocialAccountItem'
 
 class SearchItem extends Component {

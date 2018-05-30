@@ -4,7 +4,7 @@ import log4js from 'log4js'
 
 import {
   isNameAvailable, getNamePrices
-} from '../../../utils/index'
+} from '@utils/index'
 
 const logger = log4js.getLogger('profiles/store/availability/actions.js')
 
@@ -31,7 +31,7 @@ function nameUnavailable(domainName) {
 
 function nameAvailabilityError(domainName, error) {
   return {
-    type: types.NAME_AVAILABILITIY_ERROR,
+    type: types.NAME_AVAILABILITY_ERROR,
     domainName,
     error
   }

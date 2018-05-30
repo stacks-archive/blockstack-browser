@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import InputGroup from '../../components/InputGroup'
+import InputGroup from '@components/InputGroup'
 
-import { getWebAccountTypes } from '../../utils'
+import { getWebAccountTypes } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -121,7 +121,7 @@ class EditAccount extends Component {
       let accountServiceName = webAccountType.label
         return (
           <div>
-            <div className={`profile-account ${verifiedClass}`} 
+            <div className={`profile-account ${verifiedClass}`}
               onClick={this.handleClick}>
               <div className="heading m-b-30">
                 <i className={`fa fa-fw fa-lg ${this.getIconClass()}`} />
@@ -129,20 +129,20 @@ class EditAccount extends Component {
               </div>
 
               <div>
-                <InputGroup 
+                <InputGroup
                   key="input-group-identifier"
-                  name="identifier" 
+                  name="identifier"
                   placeholder={this.capitalize(this.getIdentifierType(this.props.service))}
                   data={this.state}
-                  stopClickPropagation={true} 
-                  onChange={this.onIdentifierChange} 
+                  stopClickPropagation={true}
+                  onChange={this.onIdentifierChange}
                 />
-              
+
               </div>
             </div>
-            <button 
-              className="btn btn-verify btn-block m-t-15" 
-              onClick={e => this.props.onDoneButtonClick(this.props.service, 
+            <button
+              className="btn btn-verify btn-block m-t-15"
+              onClick={e => this.props.onDoneButtonClick(this.props.service,
                 this.state.identifier)}>
               Save
             </button>

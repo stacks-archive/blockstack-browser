@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import ReactTooltip from 'react-tooltip'
 
-import { openInNewTab, getWebAccountTypes } from '../../utils'
+import { openInNewTab, getWebAccountTypes } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -113,13 +113,13 @@ class SocialAccountItem extends Component {
       let accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
-          <li className={`clickable ${verifiedClass} ${placeholderClass}`} onClick={this.onClick}>  
-            {!pending && 
-              <ReactTooltip 
-                place="top" 
-                type="dark" 
-                effect="solid" 
-                id={`verified-${this.props.service}`} 
+          <li className={`clickable ${verifiedClass} ${placeholderClass}`} onClick={this.onClick}>
+            {!pending &&
+              <ReactTooltip
+                place="top"
+                type="dark"
+                effect="solid"
+                id={`verified-${this.props.service}`}
                 className="text-center">
                 {verified && 'Verified'}
               </ReactTooltip>
@@ -154,16 +154,16 @@ class SocialAccountItem extends Component {
             )}
 
             {verified ?
-              <span 
-                className="float-right status" 
-                data-tip 
+              <span
+                className="float-right status"
+                data-tip
                 data-for={`verified-${this.props.service}`}
                 onClick={this.onVerifiedCheckmarkClick}
               >
                 <i className="fa fa-fw fa-check-circle fa-lg" />
               </span>
-              : 
-              (this.props.placeholder) ? 
+              :
+              (this.props.placeholder) ?
               <span className="float-right star">+1<i className="fa fa-w fa-star-o" /></span>
               :
               <span className="float-right badge badge-danger badge-verification">Unverified

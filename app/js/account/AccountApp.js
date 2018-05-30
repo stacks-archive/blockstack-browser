@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import SecondaryNavBar from '../components/SecondaryNavBar'
-import Navbar from '../components/Navbar'
+import SecondaryNavBar from '@components/SecondaryNavBar'
+import Navbar from '@components/Navbar'
 
 function mapStateToProps(state) {
   return {
