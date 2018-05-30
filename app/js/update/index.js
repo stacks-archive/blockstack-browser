@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { decrypt, isBackupPhraseValid } from '@utils'
-import { browserHistory, withRouter } from 'react-router'
+import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
@@ -74,7 +73,7 @@ function mapDispatchToProps(dispatch) {
   )
 }
 
-class SignIn extends React.Component {
+class UpdatePage extends React.Component {
   state = {
     view: 0
   }
@@ -132,7 +131,7 @@ class SignIn extends React.Component {
   }
 }
 
-SignIn.propTypes = {
+UpdatePage.propTypes = {
   api: PropTypes.object.isRequired,
   location: PropTypes.object,
   appManifest: PropTypes.object,
@@ -149,4 +148,6 @@ SignIn.propTypes = {
   encryptedBackupPhrase: PropTypes.string
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(UpdatePage)
+)
