@@ -38,7 +38,7 @@ const Content = styled(animated.div)`
 `
 const Actions = styled(animated.div)`
   @media (max-width: 599px) {
-    margin-bottom: 30px;
+    padding-bottom: 30px;
   }
 `
 

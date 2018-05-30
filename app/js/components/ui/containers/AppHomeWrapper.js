@@ -13,7 +13,10 @@ const StyledAppHomeWrapper = styled.div.attrs({
   left: 0;
   top: 0;
   @media (max-width: 599px) {
-    display: none;
+    background: white;
+    .home-screen {
+      display: none;
+    }
   }
   .home-screen {
     padding-top: 100px;
