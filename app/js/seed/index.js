@@ -106,10 +106,16 @@ class SeedContainer extends Component {
       }
     }
     console.log('decrypting password')
-    /**
-     * TODO: save encrypted backup phrase as base64 not hex in redux store
-     */
-    const buffer = new Buffer(encryptedBackupPhrase, 'base64')
+
+    // the encrypted phrase we get in the url is base64 encoded, whereas in redux it is hex encoded
+    const method =
+      this.props.location &&
+      this.props.location.query &&
+      this.props.location.query.encrypted
+        ? 'base64'
+        : 'hex'
+
+    const buffer = new Buffer(encryptedBackupPhrase, method)
 
     return decrypt(buffer, password).then(result => {
       if (this.state.seed !== result.toString()) {
