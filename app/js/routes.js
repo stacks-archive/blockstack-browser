@@ -97,17 +97,17 @@ export default (
       </Route>
 
       <Route path="/auth" component={NewAuthPage} />
-      <Route path="/sign-up" component={SignUpPage} />
-      <Route path="/sign-up/*" component={SignUpPage} />
-      <Route path="/sign-in" component={SignInPage} />
-      <Route path="/sign-in/*" component={SignInPage} />
-      <Route path="/seed" component={SeedPage} />
     </Route>
     {/**
      * TODO: move /update back up ^^, had to move it out of the 'app' nested route
      * because when we wipe data, it wants to redirect to /sign-up
      */}
     <Route path="/update" component={UpdateStatePage} />
+    <Route path="/sign-up" component={SignUpPage} />
+    <Route path="/sign-up/*" component={SignUpPage} />
+    <Route path="/sign-in" component={SignInPage} />
+    <Route path="/sign-in/*" component={SignInPage} />
+    <Route path="/seed" component={SeedPage} />
     <Route path="/*" component={NotFoundPage} />
   </Router>
 )
