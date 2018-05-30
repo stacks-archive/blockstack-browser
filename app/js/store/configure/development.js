@@ -10,7 +10,8 @@ const finalCreateStore = composeEnhancers(
   applyMiddleware(thunk),
   persistState(null, {
     // eslint-disable-next-line
-    slicer: paths => state => ({ ...state, auth: AuthInitialState })
+    slicer: paths => state => ({ ...state, auth: AuthInitialState }),
+    merge: (initial, persisted) => console.log('MERGE', initial, persisted)
   })
 )(createStore)
 
