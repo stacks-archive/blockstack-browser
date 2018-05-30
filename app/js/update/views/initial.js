@@ -6,6 +6,9 @@ import { withRouter } from 'react-router'
 class PasswordView extends React.Component {
   static propTypes = {
     router: PropTypes.object.isRequired,
+    errors: PropTypes.object,
+    loading: PropTypes.bool,
+    upgradeInProgress: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired
   }
   state = {

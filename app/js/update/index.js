@@ -132,7 +132,7 @@ class UpdatePage extends React.Component {
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     const { password } = this.state
 
-    await decrypt(dataBuffer, password)
+    return decrypt(dataBuffer, password)
       .then(backupPhraseBuffer => {
         this.setState(
           {

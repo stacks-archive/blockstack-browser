@@ -74,6 +74,7 @@ class ShellParent extends React.Component {
       lastHeaderLabel,
       backOnLast,
       disableBackOnView,
+      disableBack,
       size,
       view,
       ...rest
@@ -107,6 +108,7 @@ class ShellParent extends React.Component {
             app,
             label: lastHeaderLabel && isLastView ? lastHeaderLabel : backLabel,
             disableBackOnView,
+            disable: disableBack,
             view
           }
         : {
@@ -115,6 +117,7 @@ class ShellParent extends React.Component {
             app,
             label: backLabel,
             disableBackOnView,
+            disable: disableBack,
             view
           }
 
@@ -158,6 +161,7 @@ ShellParent.propTypes = {
   backView: PropTypes.func,
   views: PropTypes.array.isRequired,
   disableBackOnView: PropTypes.bool,
+  disableBack: PropTypes.bool,
   size: PropTypes.object,
   view: PropTypes.number
 }

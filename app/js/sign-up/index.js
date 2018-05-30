@@ -620,6 +620,7 @@ class Onboarding extends React.Component {
           headerLabel="Create a Blockstack ID"
           invertOnLast
           disableBackOnView={VIEWS.INFO}
+          disableBack={this.state.loading}
         />
         <AppHomeWrapper />
       </App>

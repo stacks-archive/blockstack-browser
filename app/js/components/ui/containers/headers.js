@@ -54,6 +54,7 @@ const Header = ({
   label,
   icon,
   disableBackOnView,
+  disable,
   view,
   ...rest
 }) => {
@@ -83,7 +84,8 @@ const Header = ({
     action,
     label,
     icon,
-    disableBackOnView
+    disableBackOnView,
+    disable
   }
   return (
     <StyledHeader invert={invert} {...rest}>
@@ -102,6 +104,7 @@ Header.propTypes = {
   icon: PropTypes.node,
   disableBackOnView: PropTypes.bool,
   view: PropTypes.number,
+  disable: PropTypes.bool,
   invert: PropTypes.bool
 }
 

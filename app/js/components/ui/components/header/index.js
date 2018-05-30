@@ -18,6 +18,12 @@ const Link = styled.div`
   outline: none;
   user-select: none;
   opacity: 0.4;
+  ${({ disable }) =>
+    disable &&
+    css`
+      pointer-events: none !important;
+      opacity: 0.4 !important;
+    `};
   &:hover {
     ${({ onClick }) =>
       onClick &&
