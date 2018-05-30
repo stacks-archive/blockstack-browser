@@ -1,7 +1,7 @@
 {
   "name": "blockstack-browser",
   "description": "The Blockstack browser",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "author": "Blockstack PBC <admin@blockstack.com>",
   "dependencies": {
     "base64url": "^2.0.0",
