@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import SecondaryNavBar from '../components/SecondaryNavBar'
-import Navbar from '../components/Navbar'
+import SecondaryNavBar from '@components/SecondaryNavBar'
+import Navbar from '@components/Navbar'
 
 function mapStateToProps(state) {
   return {
@@ -16,7 +16,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-class AccountApp extends Component {
+export class AccountApp extends Component {
   static propTypes = {
     children: PropTypes.object,
     storageConnected: PropTypes.bool.isRequired,

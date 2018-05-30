@@ -1,19 +1,11 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router'
+import React from 'react'
 
-class Completion extends Component {
-  static propTypes = {
-  }
-
-  render() {
-    return (
-      <div class="tooltip tooltip-bottom " role="tooltip">
-        <div class="tooltip-inner">
-          Tooltip on the bottom
-        </div>
-      </div>
-    )
-  }
-}
+const Completion = () => (
+  <div className="tooltip tooltip-bottom" role="tooltip">
+    <div className="tooltip-inner">
+      Tooltip on the bottom
+    </div>
+  </div>
+)
 
 export default Completion

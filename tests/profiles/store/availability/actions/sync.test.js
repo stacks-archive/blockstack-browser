@@ -1,13 +1,24 @@
 import { AvailabilityActions } from '../../../../../app/js/profiles/store/availability'
+import {
+  NAME_AVAILABLE,
+  NAME_UNAVAILABLE,
+  CHECKING_NAME_AVAILABILITY,
+  CHECKING_NAME_PRICE,
+  NAME_PRICE,
+  NAME_PRICE_ERROR,
+  NAME_AVAILABILITY_ERROR
+} from '../../../../../app/js/profiles/store/availability/types'
 
 describe('Availability Store: Sync Actions', () => {
   describe('checkingNameAvailability', () => {
     it('should return an action of type CHECKING_NAME_AVAILABILITY', () => {
       const expectedResult = {
-        type: 'CHECKING_NAME_AVAILABILITY',
+        type: CHECKING_NAME_AVAILABILITY,
         domainName: 'satoshi.id'
       }
-      const actualResult = AvailabilityActions.checkingNameAvailability('satoshi.id')
+      const actualResult = AvailabilityActions.checkingNameAvailability(
+        'satoshi.id'
+      )
       assert.deepEqual(actualResult, expectedResult)
     })
   })
@@ -15,7 +26,7 @@ describe('Availability Store: Sync Actions', () => {
   describe('nameAvailable', () => {
     it('should return an action of type NAME_AVAILABLE', () => {
       const expectedResult = {
-        type: 'NAME_AVAILABLE',
+        type: NAME_AVAILABLE,
         domainName: 'satoshi.id'
       }
       const actualResult = AvailabilityActions.nameAvailable('satoshi.id')
@@ -26,7 +37,7 @@ describe('Availability Store: Sync Actions', () => {
   describe('nameUnavailable', () => {
     it('should return an action of type NAME_UNAVAILABLE', () => {
       const expectedResult = {
-        type: 'NAME_UNAVAILABLE',
+        type: NAME_UNAVAILABLE,
         domainName: 'satoshi.id'
       }
       const actualResult = AvailabilityActions.nameUnavailable('satoshi.id')
@@ -37,11 +48,14 @@ describe('Availability Store: Sync Actions', () => {
   describe('nameAvailabilityError', () => {
     it('should return an action of type NAME_AVAILABILITIY_ERROR', () => {
       const expectedResult = {
-        type: 'NAME_AVAILABILITIY_ERROR',
+        type: NAME_AVAILABILITY_ERROR,
         domainName: 'satoshi.id',
         error: 'Broken!'
       }
-      const actualResult = AvailabilityActions.nameAvailabilityError('satoshi.id', 'Broken!')
+      const actualResult = AvailabilityActions.nameAvailabilityError(
+        'satoshi.id',
+        'Broken!'
+      )
       assert.deepEqual(actualResult, expectedResult)
     })
   })
@@ -49,7 +63,7 @@ describe('Availability Store: Sync Actions', () => {
   describe('checkingNamePrice', () => {
     it('should return an action of type CHECKING_NAME_PRICE', () => {
       const expectedResult = {
-        type: 'CHECKING_NAME_PRICE',
+        type: CHECKING_NAME_PRICE,
         domainName: 'satoshi.id'
       }
       const actualResult = AvailabilityActions.checkingNamePrice('satoshi.id')
@@ -60,7 +74,7 @@ describe('Availability Store: Sync Actions', () => {
   describe('namePrice', () => {
     it('should return an action of type NAME_PRICE', () => {
       const expectedResult = {
-        type: 'NAME_PRICE',
+        type: NAME_PRICE,
         domainName: 'satoshi.id',
         price: 1.23
       }
@@ -72,11 +86,14 @@ describe('Availability Store: Sync Actions', () => {
   describe('namePriceError', () => {
     it('should return an action of type NAME_PRICE_ERROR', () => {
       const expectedResult = {
-        type: 'NAME_PRICE_ERROR',
+        type: NAME_PRICE_ERROR,
         domainName: 'satoshi.id',
         error: 'Broken!'
       }
-      const actualResult = AvailabilityActions.namePriceError('satoshi.id', 'Broken!')
+      const actualResult = AvailabilityActions.namePriceError(
+        'satoshi.id',
+        'Broken!'
+      )
       assert.deepEqual(actualResult, expectedResult)
     })
   })

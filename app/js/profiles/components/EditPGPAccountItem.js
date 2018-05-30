@@ -6,9 +6,9 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { debounce } from 'lodash'
 import { PGPActions } from '../store/pgp'
-import InputGroup from '../../components/InputGroup'
+import InputGroup from '@components/InputGroup'
 
-import { getWebAccountTypes } from '../../utils'
+import { getWebAccountTypes } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -152,7 +152,7 @@ class EditPGPAccountItem extends Component {
     let key = null
 
     const placeholderClass = this.props.placeholder ? "placeholder" : ""
-    const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "") 
+    const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
     const collapsedClass = this.state.collapsed ? "collapsed" : "active"
 
     if(pgpPublicKeys && pgpPublicKeys.hasOwnProperty(identifier)) {
@@ -171,7 +171,7 @@ class EditPGPAccountItem extends Component {
 
     if (this.props.listItem === true) {
       return (
-        <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`} 
+        <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`}
           onClick={this.handleClick} >
           <Modal
             isOpen={this.state.modalIsOpen}
@@ -221,24 +221,24 @@ class EditPGPAccountItem extends Component {
             { this.props.placeholder && (
                 <span className="app-account-service font-weight-normal">
                   Prove your { accountServiceName } {identifierType.toLowerCase()}
-                </span> 
+                </span>
               )}
 
             <span className="float-right">
-              { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
+              { this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> :
                 <i className="fa fa-w fa-chevron-up" />
               }
             </span>
 
-            {!this.state.collapsed && 
+            {!this.state.collapsed &&
               (
                 <div>
-                  <InputGroup 
-                    name="identifier" 
-                    label={identifierType} 
+                  <InputGroup
+                    name="identifier"
+                    label={identifierType}
                     data={this.state}
-                    stopClickPropagation={true} 
-                    onChange={this.onIdentifierChange} 
+                    stopClickPropagation={true}
+                    onChange={this.onIdentifierChange}
                     onBlur={this.onIdentifierBlur} />
                 </div>
               )

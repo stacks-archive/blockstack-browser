@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import InputGroup from '../../components/InputGroup'
-import { openInNewTab } from '../../utils'
+import InputGroup from '@components/InputGroup'
+import { openInNewTab } from '@utils'
 import ReactTooltip from 'react-tooltip'
-import Image from '../../components/Image'
-import { isMobile } from '../../utils'
+import Image from '@components/Image'
+import { isMobile } from '@utils'
 
 export const VERIFICATION_TWEET_LINK_URL_BASE = 'https://explorer.blockstack.org/address/'
 

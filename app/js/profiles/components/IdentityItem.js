@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import ToolTip from '../../components/ToolTip'
-import Image from '../../components/Image'
+import ToolTip from '@components/ToolTip'
+import Image from '@components/Image'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
+import { UserAvatar } from '@blockstack/ui'
 
 import log4js from 'log4js'
 
@@ -27,7 +28,7 @@ class IdentityItem extends Component {
     this.state = {}
   }
 
-  transferFromOnenameClick = (event) => {
+  transferFromOnenameClick = event => {
     event.preventDefault()
     event.stopPropagation()
     logger.trace('transferFromOnenameClick')
@@ -58,42 +59,53 @@ class IdentityItem extends Component {
         </ToolTip>
         <div>
           <div className="avatar-sm float-left" style={{ display: 'inline' }}>
-            <Image
-              src={this.props.avatarUrl}
-              fallbackSrc="/images/avatar.png" className="rounded-circle img-cover"
-              style={{ display: 'inline-block' }}
-            />
+            {this.props.avatarUrl === '' || !this.props.avatarUrl ? (
+              <UserAvatar
+                id={this.props.ownerAddress}
+                username={this.props.username || '?'}
+              />
+            ) : (
+              <Image
+                src={this.props.avatarUrl}
+                fallbackSrc="/images/avatar.png"
+                className="rounded-circle img-cover"
+                style={{ display: 'inline-block' }}
+              />
+            )}
           </div>
           <div style={{ display: 'inline' }}>
             <ul className="container-fluid list-card">
               <li>
                 <p className="card-title">
-                {this.props.canAddUsername ?
-                  <div>
-                    <a
-                      href="#"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        event.stopPropagation()
-                        this.props.router.push(
-                          `/profiles/i/add-username/${this.props.index}/search`)
-                      }}
-                    >
-                      Add username
-                    </a>
-                  </div>
-                :
-                  <span>
-                    {this.props.username}
-                    {this.props.pending ?
-                      <i
-                        className="fa fa-fw fa-clock-o fa-sm text-secondary"
-                        data-tip
-                        data-for="usernamePending"
-                      ></i>
-                      : null}
-                  </span>
-                }
+                  {this.props.canAddUsername ? (
+                    <div>
+                      <a
+                        href="#"
+                        onClick={event => {
+                          event.preventDefault()
+                          event.stopPropagation()
+                          this.props.router.push(
+                            `/profiles/i/add-username/${
+                              this.props.index
+                            }/search`
+                          )
+                        }}
+                      >
+                        Add username
+                      </a>
+                    </div>
+                  ) : (
+                    <span>
+                      {this.props.username}
+                      {this.props.pending ? (
+                        <i
+                          className="fa fa-fw fa-clock-o fa-sm text-secondary"
+                          data-tip
+                          data-for="usernamePending"
+                        />
+                      ) : null}
+                    </span>
+                  )}
                 </p>
               </li>
               <li>
@@ -106,17 +118,19 @@ class IdentityItem extends Component {
                 </div>
               </li>
               <li>
-                {this.props.isDefault ?
+                {this.props.isDefault ? (
                   <span className="text-secondary">
-                    <small>Default ID <i className="fa fa-check"></i></small>
+                    <small>
+                      Default ID <i className="fa fa-check" />
+                    </small>
                   </span>
-                :
+                ) : (
                   <span>&nbsp;</span>
-                }
+                )}
               </li>
             </ul>
 
-            {this.props.canAddUsername ?
+            {this.props.canAddUsername ? (
               <div onClick={e => e.stopPropagation()}>
                 <ContextMenuTrigger
                   id={`menu-${this.props.ownerAddress}`}
@@ -137,20 +151,18 @@ class IdentityItem extends Component {
                       color: '#AEAEAE'
                     }}
                   >
-                  &#8230;
+                    &#8230;
                   </div>
                 </ContextMenuTrigger>
                 <ContextMenu id={`menu-${this.props.ownerAddress}`}>
-                  <MenuItem
-                    onClick={this.transferFromOnenameClick}
-                  >
+                  <MenuItem onClick={this.transferFromOnenameClick}>
                     <span className="text-secondary">
                       Transfer username from Onename to this ID
                     </span>
                   </MenuItem>
                 </ContextMenu>
               </div>
-            : null}
+            ) : null}
           </div>
         </div>
       </div>
