@@ -122,8 +122,18 @@ class PasswordView extends React.Component {
 
     const props = {
       title: {
-        children: 'Enter your password',
-        variant: 'h2'
+        children: 'We have updated the browser.',
+        variant: 'h2',
+        subtitle: {
+          light: true,
+          padding: '15px 0 0 0',
+          children: (
+            <React.Fragment>
+              Please enter your password to migrate your data to the new
+              version.
+            </React.Fragment>
+          )
+        }
       },
       content: {
         grow: 0,

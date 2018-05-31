@@ -77,6 +77,7 @@ class ShellParent extends React.Component {
       disableBack,
       size,
       view,
+      maxHeight,
       ...rest
     } = this.props
 
@@ -130,7 +131,7 @@ class ShellParent extends React.Component {
       <WindowSize>
         {windowSize => (
           <ShellContext.Provider value={{ ...context, size: windowSize }}>
-            <Shell {...context} {...windowSize}>
+            <Shell {...context} {...windowSize} maxHeight={maxHeight}>
               <Shell.Content.Container {...windowSize}>
                 <Shell.Content.Wrapper {...windowSize}>
                   <Header
@@ -162,6 +163,7 @@ ShellParent.propTypes = {
   views: PropTypes.array.isRequired,
   disableBackOnView: PropTypes.number,
   disableBack: PropTypes.bool,
+  maxHeight: PropTypes.bool,
   size: PropTypes.object,
   view: PropTypes.number
 }

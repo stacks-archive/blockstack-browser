@@ -276,18 +276,20 @@ class Onboarding extends React.Component {
       return null
     }
 
+    const fullUsername = `${username}.${SUBDOMAIN_SUFFIX}`
+
     const b64EncryptedBackupPhrase = new Buffer(
       encryptedBackupPhrase,
       'hex'
     ).toString('base64')
 
     if (type === 'recovery') {
-      await this.sendRecovery(username, email, b64EncryptedBackupPhrase)
+      await this.sendRecovery(fullUsername, email, b64EncryptedBackupPhrase)
     } else if (type === 'restore') {
-      await this.sendRestore(username, email, b64EncryptedBackupPhrase)
+      await this.sendRestore(fullUsername, email, b64EncryptedBackupPhrase)
     } else {
-      await this.sendRestore(username, email, b64EncryptedBackupPhrase)
-      await this.sendRecovery(username, email, b64EncryptedBackupPhrase)
+      await this.sendRestore(fullUsername, email, b64EncryptedBackupPhrase)
+      await this.sendRecovery(fullUsername, email, b64EncryptedBackupPhrase)
     }
 
     return this.setState({

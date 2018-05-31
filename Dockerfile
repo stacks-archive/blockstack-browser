@@ -7,7 +7,7 @@ WORKDIR /src/blockstack-browser
 RUN apt-get update && apt-get install -y wget curl apt-utils git
 
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get update && apt-get install -y nodejs
 
 # Install cors-proxy
