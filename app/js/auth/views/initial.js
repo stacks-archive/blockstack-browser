@@ -14,7 +14,8 @@ const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
         id={ownerAddress}
         onClick={() => handleClick(i)}
         loading={processing && i === selectedIndex}
-        placeholder="Logging in..."
+        disabled={processing}
+        placeholder="Signing in..."
         hideID
       />
     ))
@@ -88,7 +89,7 @@ const InitialScreen = ({
             permissions={generatePermissionsList()}
             app={app}
           />
-          <Buttons column>
+          <Buttons column overflow>
             <Accounts
               list={accounts}
               handleClick={login}
