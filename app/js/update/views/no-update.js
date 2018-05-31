@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 class NoUpdate extends React.Component {
   componentDidMount() {
-    setTimeout(() => this.props.finish(), 3000)
+    setTimeout(() => this.props.finish(), 3500)
   }
 
   render() {
@@ -31,7 +31,10 @@ class NoUpdate extends React.Component {
           {
             label: <React.Fragment>Continue</React.Fragment>,
             primary: true,
-            onClick: () => finish()
+            onClick: () => finish(),
+            loading: true,
+            placeholder: 'Redirecting...',
+            disabled: true
           }
         ]
       }

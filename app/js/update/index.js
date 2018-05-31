@@ -22,7 +22,7 @@ import {
   migrateAPIEndpoints,
   updateState
 } from '../store/reducers'
-import { formatAppManifest } from '@common'
+import { asyncLocalStorage, formatAppManifest } from '@common'
 import { BLOCKSTACK_STATE_VERSION_KEY } from '../App'
 import {
   hasLegacyCoreStateVersion,
@@ -104,6 +104,12 @@ class UpdatePage extends React.Component {
       this.setState({
         view: VIEWS.NOUPDATE
       })
+    }
+
+    if (!this.props.encryptedBackupPhrase) {
+      this.updateStateVersionAndResetOldPersistedData().then(() =>
+        this.props.router.push('/sign-up')
+      )
     }
   }
 
@@ -231,7 +237,14 @@ class UpdatePage extends React.Component {
         {
           complete: true
         },
-        () => setTimeout(() => this.updateStateVersion(), 250)
+        () =>
+          setTimeout(
+            () =>
+              this.updateStateVersion().then(() =>
+                this.setDefaultIdentityAndRedirectHome()
+              ),
+            250
+          )
       )
     }
 
@@ -247,8 +260,27 @@ class UpdatePage extends React.Component {
     console.debug(
       `updateStateVersion: Setting new state version to ${CURRENT_VERSION}`
     )
-    localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
+    await asyncLocalStorage.setItem(
+      BLOCKSTACK_STATE_VERSION_KEY,
+      CURRENT_VERSION
+    )
+  }
 
+  updateStateVersionAndResetOldPersistedData = async () => {
+    console.debug(
+      `updateStateVersionAndResetOldPersistedData: Setting new state version to ${CURRENT_VERSION}`
+    )
+    await asyncLocalStorage.setItem(
+      BLOCKSTACK_STATE_VERSION_KEY,
+      CURRENT_VERSION
+    )
+    console.debug(
+      'updateStateVersionAndResetOldPersistedData: removing old persisted data'
+    )
+    await asyncLocalStorage.removeItem('redux')
+  }
+
+  setDefaultIdentityAndRedirectHome = async () => {
     this.props.setDefaultIdentity(this.state.defaultIdentityIndex)
     this.setState({
       view: VIEWS.SUCCESS
@@ -273,11 +305,6 @@ class UpdatePage extends React.Component {
       this.props.router.push('/')
     }
   }
-
-  setPassword = password =>
-    this.setState({
-      password
-    })
 
   render() {
     const { view } = this.state
@@ -307,6 +334,7 @@ class UpdatePage extends React.Component {
       errors: this.state.errors,
       handleSubmit: this.handleSubmit,
       upgradeInProgress: this.state.upgradeInProgress,
+      updateStateVersion: this.updateStateVersion,
       ...currentViewProps.props
     }
     return (
@@ -315,7 +343,7 @@ class UpdatePage extends React.Component {
           app={formatAppManifest(this.props.appManifest)}
           views={views}
           {...componentProps}
-          headerLabel="Finish updating Blockstack"
+          headerLabel="Blockstack Browser"
           lastHeaderLabel="Update Complete"
           invertOnLast
           disableBackOnView={1}
