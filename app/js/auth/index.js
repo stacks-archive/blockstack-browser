@@ -553,7 +553,7 @@ class AuthPage extends React.Component {
 
     return (
       <React.Fragment>
-        <ShellParent app={app} views={views} {...componentProps} />
+        <ShellParent app={app} views={views} {...componentProps} maxHeight />
         <AppHomeWrapper />
       </React.Fragment>
     )

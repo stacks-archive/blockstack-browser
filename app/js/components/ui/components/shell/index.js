@@ -35,6 +35,9 @@ const TitleSection = styled.div`
 const AnimatedTitle = styled(animated.div)``
 const Content = styled(animated.div)`
   flex-grow: ${({ grow }) => (grow ? 1 : 0)};
+  display: flex;
+  flex-direction: column;
+}
 `
 const Actions = styled(animated.div)`
   @media (max-width: 599px) {
@@ -47,6 +50,7 @@ const Main = styled(animated.div)`
   display: flex;
   flex-direction: column;
   position: relative;
+  flex-shrink: 0;
   width: 100%;
 `
 const Wrapper = styled(animated.div)`
@@ -142,6 +146,16 @@ const StyledShell = styled.div`
   z-index: 900000;
   background-color: rgba(240, 240, 240, 0.8);
 
+  ${({ maxHeight }) =>
+    maxHeight &&
+    css`
+      ${ContentContainer} {
+        @media (min-width: 600px) {
+          max-height: calc(100vh - 120px) !important;
+        }
+      }
+    `};
+
   ${({ invert }) =>
     invert
       ? css`
@@ -189,7 +203,7 @@ const StyledShell = styled.div`
     padding: 60px;
   }
 
-  @media (max-height: 7px) {
+  @media (max-height: 700px) {
     align-items: flex-start;
   }
 
