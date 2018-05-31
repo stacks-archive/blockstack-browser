@@ -50,8 +50,11 @@ const Main = styled(animated.div)`
   display: flex;
   flex-direction: column;
   position: relative;
-  flex-shrink: 0;
+
   width: 100%;
+  @media (max-height: 700px) and (max-width: 599px) {
+    flex-shrink: 0;
+  }
 `
 const Wrapper = styled(animated.div)`
   position: absolute;
