@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components'
 import { trans } from '@ui/common'
 import { spacing } from '@ui/common/constants'
 import { Link } from 'react-router'
+import { darken } from 'polished'
 const Label = styled.div`
   font-style: normal;
   font-weight: 400;
@@ -249,6 +250,31 @@ StyledButton.Div = StyledButton.withComponent('div')
 StyledButton.Link = StyledButton.withComponent(Link)
 
 const Buttons = styled.div`
+  ${({ overflow }) =>
+    overflow &&
+    css`
+      overflow-y: auto;
+      max-height: 100%;
+      flex-grow: 1;
+      background: ${darken(0.025, 'whitesmoke')};
+      border-radius: 10px;
+      padding: 20px 10px;
+      &::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      &::-webkit-scrollbar-track {
+        -webkit-box-shadow: none;
+        background: ${darken(0.025, 'whitesmoke')};
+        border-radius: 10px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+        border-radius: 10px;
+      }
+    `};
   * {
     text-decoration: none !important;
   }

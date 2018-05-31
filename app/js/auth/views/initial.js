@@ -14,7 +14,8 @@ const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
         id={ownerAddress}
         onClick={() => handleClick(i)}
         loading={processing && i === selectedIndex}
-        placeholder="Logging in..."
+        disabled={processing}
+        placeholder="Signing in..."
         hideID
       />
     ))
@@ -24,7 +25,12 @@ const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
 
 const PermissionsList = ({ list }) => (
   <React.Fragment>
-    {list.map((item, i) => {
+    {list.length === 1 ?
+      <React.Fragment>
+        <strong>{list[0]}</strong>
+      </React.Fragment>
+      :
+      list.map((item, i) => {
       if (i !== list.length - 1) {
         return (
           <React.Fragment key={i}>
@@ -88,7 +94,7 @@ const InitialScreen = ({
             permissions={generatePermissionsList()}
             app={app}
           />
-          <Buttons column>
+          <Buttons column overflow>
             <Accounts
               list={accounts}
               handleClick={login}
