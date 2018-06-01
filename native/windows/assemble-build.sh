@@ -13,7 +13,7 @@ cp native/blockstackProxy.js native/windows/BlockstackBrowser/Resources/blocksta
 curl https://nodejs.org/dist/latest-v8.x/win-x86/node.exe --output native/windows/BlockstackBrowser/Resources/node.exe
 
 TEMPDIR=$(mktemp -d)
-pushd TEMPDIR
+pushd $TEMPDIR
 npm i cors-anywhere
 popd
 
