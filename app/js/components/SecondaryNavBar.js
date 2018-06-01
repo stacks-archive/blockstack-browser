@@ -1,132 +1,146 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router'
 
 const SecondaryNavLink = props => {
-  const alignment = (props.align === 'right') ? 'float-right' : 'float-left'
   const customActiveClass = props.activeClass ? props.activeClass : ''
   const active = props.isActive === true ? `active ${customActiveClass}` : 'default'
 
   return (
     <Link
       className={`btn btn-outline-dark btn-pill btn-sm ${active} ${props.customButtonClass}`}
-      to={props.link}>
+      to={props.link}
+    >
       {props.title}
     </Link>
   )
 }
 
+SecondaryNavLink.propTypes = {
+  activeClass: PropTypes.string,
+  isActive: PropTypes.boolean,
+  customButtonClass: PropTypes.string,
+  title: PropTypes.string,
+  link: PropTypes.string
+}
+
 const SecondaryNavButton = props => {
-  const alignment = (props.align === "right") ? "float-right" : "float-left"
-  const active = props.isActive === true ? "active" : "default"
+  const active = props.isActive === true ? 'active' : 'default'
 
   return (
     <button
       className={`btn btn-outline-dark btn-pill btn-sm ${active} ${props.customButtonClass}`}
       title={props.title}
-      onClick={props.onClick}>
+      onClick={props.onClick}
+    >
       {props.title}
     </button>
   )
 }
 
-class SecondaryNavBar extends Component {
-  static propTypes = {
-    title: PropTypes.string,
-    leftButtonTitle: PropTypes.string,
-    centerButtonTitle: PropTypes.string,
-    rightButtonTitle: PropTypes.string,
-    leftButtonLink: PropTypes.string,
-    centerButtonLink: PropTypes.string,
-    rightButtonLink: PropTypes.string,
-    leftIsButton: PropTypes.bool,
-    centerIsButton: PropTypes.bool,
-    rightIsButton: PropTypes.bool,
-    onLeftButtonClick: PropTypes.func,
-    onCenterButtonClick: PropTypes.func,
-    onRightButtonClick: PropTypes.func,
-    isLeftActive: PropTypes.bool,
-    isCenterActive: PropTypes.bool,
-    isRightActive: PropTypes.bool,
-    activeClass: PropTypes.string,
-    customButtonClass: PropTypes.string
-  }
+SecondaryNavButton.propTypes = {
+  activeClass: PropTypes.string,
+  isActive: PropTypes.boolean,
+  customButtonClass: PropTypes.string,
+  title: PropTypes.string,
+  onClick: PropTypes.func
+}
 
-  render() {
-    const activeClass = this.props.activeClass ? this.props.activeClass : ""
-    return (
-      <div className="container-fluid secondary-nav mx-auto">
-        <div className="row">
-          <div className="col text-left">
-            {this.props.leftButtonTitle !== undefined && (
-              this.props.leftIsButton ?
+const SecondaryNavBar = props => {
+  const activeClass = props.activeClass ? props.activeClass : ''
+  return (
+    <div className="container-fluid secondary-nav mx-auto">
+      <div className="row">
+        <div className="col text-left">
+          {props.leftButtonTitle !== undefined && (
+            props.leftIsButton ?
               <SecondaryNavButton
-                title={this.props.leftButtonTitle}
-                onClick={this.props.onLeftButtonClick}
+                title={props.leftButtonTitle}
+                onClick={props.onLeftButtonClick}
                 align="left"
-                isActive={this.props.isLeftActive}
+                isActive={props.isLeftActive}
                 activeClass={activeClass}
-                customButtonClass={this.props.customButtonClass}
-               />
-              :
-              <SecondaryNavLink
-                title={this.props.leftButtonTitle}
-                link={this.props.leftButtonLink}
-                align="left"
-                isActive={this.props.isLeftActive}
-                activeClass={activeClass}
-                customButtonClass={this.props.customButtonClass}
-               />
-              ) }
-          </div>
-          <div className="col text-center">
-          {this.props.centerButtonTitle !== undefined && (
-            this.props.centerIsButton ?
-              <SecondaryNavLink
-                title={this.props.centerButtonTitle}
-                onClick={this.props.onCenterButtonClick}
-                align="right"
-                isActive={this.props.isCenterActive}
-                activeClass={activeClass}
-                customButtonClass={this.props.customButtonClass}
+                customButtonClass={props.customButtonClass}
               />
             :
               <SecondaryNavLink
-                title={this.props.centerButtonTitle}
-                link={this.props.centerButtonLink}
-                align="right"
-                isActive={this.props.isCenterActive}
+                title={props.leftButtonTitle}
+                link={props.leftButtonLink}
+                align="left"
+                isActive={props.isLeftActive}
                 activeClass={activeClass}
-                customButtonClass={this.props.customButtonClass}
+                customButtonClass={props.customButtonClass}
               />
-          )}
-          </div>
-          <div className="col text-right">
-          {this.props.rightButtonTitle !== undefined && (
-            this.props.rightIsButton ?
-            <SecondaryNavButton
-              title={this.props.rightButtonTitle}
-              onClick={this.props.onRightButtonClick}
-              align="right"
-              isActive={this.props.isRightActive}
-              activeClass={activeClass}
-              customButtonClass={this.props.customButtonClass}
-            />
-            :
+            )}
+        </div>
+        <div className="col text-center">
+        {props.centerButtonTitle !== undefined && (
+          props.centerIsButton ?
             <SecondaryNavLink
-              title={this.props.rightButtonTitle}
-              link={this.props.rightButtonLink}
+              title={props.centerButtonTitle}
+              onClick={props.onCenterButtonClick}
               align="right"
-              isActive={this.props.isRightActive}
+              isActive={props.isCenterActive}
               activeClass={activeClass}
-              customButtonClass={this.props.customButtonClass}
+              customButtonClass={props.customButtonClass}
             />
-            ) }
-          </div>
+          :
+            <SecondaryNavLink
+              title={props.centerButtonTitle}
+              link={props.centerButtonLink}
+              align="right"
+              isActive={props.isCenterActive}
+              activeClass={activeClass}
+              customButtonClass={props.customButtonClass}
+            />
+        )}
+        </div>
+        <div className="col text-right">
+        {props.rightButtonTitle !== undefined && (
+          props.rightIsButton ?
+            <SecondaryNavButton
+              title={props.rightButtonTitle}
+              onClick={props.onRightButtonClick}
+              align="right"
+              isActive={props.isRightActive}
+              activeClass={activeClass}
+              customButtonClass={props.customButtonClass}
+            />
+          :
+            <SecondaryNavLink
+              title={props.rightButtonTitle}
+              link={props.rightButtonLink}
+              align="right"
+              isActive={props.isRightActive}
+              activeClass={activeClass}
+              customButtonClass={props.customButtonClass}
+            />
+          )}
         </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
+
+SecondaryNavBar.propTypes = {
+  title: PropTypes.string,
+  leftButtonTitle: PropTypes.string,
+  centerButtonTitle: PropTypes.string,
+  rightButtonTitle: PropTypes.string,
+  leftButtonLink: PropTypes.string,
+  centerButtonLink: PropTypes.string,
+  rightButtonLink: PropTypes.string,
+  leftIsButton: PropTypes.bool,
+  centerIsButton: PropTypes.bool,
+  rightIsButton: PropTypes.bool,
+  onLeftButtonClick: PropTypes.func,
+  onCenterButtonClick: PropTypes.func,
+  onRightButtonClick: PropTypes.func,
+  isLeftActive: PropTypes.bool,
+  isCenterActive: PropTypes.bool,
+  isRightActive: PropTypes.bool,
+  activeClass: PropTypes.string,
+  customButtonClass: PropTypes.string
 }
 
 export default SecondaryNavBar

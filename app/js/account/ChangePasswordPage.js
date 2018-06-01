@@ -3,10 +3,10 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Alert from '../components/Alert'
-import InputGroup from '../components/InputGroup'
+import Alert from '@components/Alert'
+import InputGroup from '@components/InputGroup'
 import { AccountActions } from './store/account'
-import { decrypt, encrypt } from '../utils'
+import { decrypt, encrypt } from '@utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/ChangePasswordPage.js')

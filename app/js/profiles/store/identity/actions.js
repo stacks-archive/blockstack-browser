@@ -10,12 +10,12 @@ import {
   getIdentityPrivateKeychain,
   getIdentityOwnerAddressNode,
   authorizationHeaderValue
-} from '../../../utils/index'
+} from '@utils/index'
 import { DEFAULT_PROFILE,
-  fetchProfileLocations } from '../../../utils/profile-utils'
-import { calculateTrustLevel } from '../../../utils/account-utils'
+  fetchProfileLocations } from '@utils/profile-utils'
+import { calculateTrustLevel } from '@utils/account-utils'
 import { AccountActions } from '../../../account/store/account'
-import { isWebAppBuild } from '../../../utils/window-utils'
+import { isWebAppBuild } from '@utils/window-utils'
 
 
 import type { Dispatch } from 'redux'
@@ -41,6 +41,15 @@ function validateProofsService(profile: Object, address: string, username : ?str
     .then(resp => resp.json())
 }
 
+/**
+ *  username
+ *  ownerAddress
+ *  zoneFile
+ *  profile
+ *  verifications
+ *  trustLevel
+ *
+ */
 function updatePublicIdentity(username: string, ownerAddress: ?string = null,
   zoneFile: ?string = null, profile: ?{} = Object.assign({}, DEFAULT_PROFILE),
   verifications: Array<*> = [], trustLevel: ?number = 0) {

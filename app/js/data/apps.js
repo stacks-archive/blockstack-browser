@@ -202,15 +202,15 @@ const apps = {
     }, {
       name: 'Coins',
       displayName: 'Coins',
-      description: '',
+      description: 'Beautiful, decentralized portfolio & coin tracking.',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-coins-256x256.png',
         large: 'app-icon-coins-512x512.png'
       },
-      website: 'http://use.coinsapp.co',
-      launchLink: 'http://use.coinsapp.co',
-      developer: 'Chase Wackerfuss',
+      website: 'https://coinsapp.co',
+      launchLink: 'https://use.coinsapp.co',
+      developer: 'Thomas Osmonson',
       status: 'user_ready_token',
       storageRequired: true
     }, {
@@ -436,6 +436,20 @@ const apps = {
       website: 'https://www.hihermes.co/index.html',
       launchLink: 'https://www.hihermes.co/index.html',
       developer: 'Dan Healy',
+      status: 'user_ready_chat',
+      storageRequired: true
+    }, {
+      name: 'PeerChat',
+      displayName: 'PeerChat',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-peerchat-256x256.png',
+        large: 'app-icon-peerchat-512x512.png'
+      },
+      website: 'https://chat.postly.co/',
+      launchLink: 'https://chat.postly.co/',
+      developer: 'Postly',
       status: 'user_ready_chat',
       storageRequired: true
     }

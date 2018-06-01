@@ -8,7 +8,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({}, dispatch)
 }
 
-class AccountMenu extends Component {
+export class AccountMenu extends Component {
   static propTypes = {
     children: PropTypes.object
   }

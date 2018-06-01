@@ -4,7 +4,7 @@ import { parseZoneFile } from 'zone-file'
 import type { GaiaHubConfig } from 'blockstack'
 import { connectToGaiaHub, uploadToGaiaHub } from 'blockstack'
 
-import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
+import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
 
 export const BLOCKSTACK_INC = 'gaia-hub'
 

@@ -3,10 +3,10 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import Alert from '../components/Alert'
+import Alert from '@components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
-import { findAddressIndex } from '../utils'
+import { findAddressIndex } from '@utils'
 import AdvancedSidebar from './components/AdvancedSidebar'
 
 
