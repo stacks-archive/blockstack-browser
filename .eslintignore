@@ -15,5 +15,4 @@ tests/utils/e*
 tests/utils/n*
 
 app/js/profiles/components/EditAccount*
-app/js/profiles/components/EditPGP*
 app/js/profiles/components/VerificationInfo*
