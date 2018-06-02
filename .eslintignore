@@ -17,5 +17,4 @@ tests/utils/n*
 app/js/profiles/components/EditAccount*
 app/js/profiles/components/EditPGP*
 app/js/profiles/components/EditSocialAccountItem*
-app/js/profiles/components/PGPAccountItem*
 app/js/profiles/components/VerificationInfo*
