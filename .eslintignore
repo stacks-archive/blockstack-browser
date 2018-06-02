@@ -19,6 +19,5 @@ app/js/profiles/components/EditPGP*
 app/js/profiles/components/EditSocialAccountItem*
 app/js/profiles/components/PGPAccountItem*
 app/js/profiles/components/ProfileCompletion*
-app/js/profiles/components/SearchBar*
 app/js/profiles/components/SocialAccountItem*
 app/js/profiles/components/VerificationInfo*
