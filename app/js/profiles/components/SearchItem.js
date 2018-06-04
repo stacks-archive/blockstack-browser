@@ -38,8 +38,9 @@ class SearchItem extends Component {
         <div className="livesearch-name col-md-3">{person.name()}</div>
         <div className="col-md-6">
           {accounts.map((account) => {
+            let socialAccount = ''
             if (account.service && account.identifier) {
-              return (
+              socialAccount = (
                 <SocialAccountItem
                   key={`${account.service}-${account.identifier}`}
                   service={account.service}
@@ -48,9 +49,8 @@ class SearchItem extends Component {
                   listItem={false}
                 />
               )
-            } else {
-              return {}
             }
+            return socialAccount
           })}
         </div>
       </Link>

@@ -92,15 +92,15 @@ class EditPGPAccountItem extends Component {
   }
 
   getPlaceholderText(service) {
+    let placeholder = ''
     if (service === 'pgp' || service === 'ssh') {
-      return (
+      placeholder = (
         <span className="app-account-service font-weight-normal">
           Prove your {service.toUpperCase()} key
         </span>
       )
-    } else {
-      return {}
     }
+    return placeholder
   }
 
   onIdentifierChange(event) {
