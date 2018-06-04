@@ -30,7 +30,7 @@ class PGPAccountItem extends Component {
     pgpPublicKeys: PropTypes.object,
     onClick: PropTypes.func,
     verified: PropTypes.bool,
-    placeholder: PropTypes.string,
+    placeholder: PropTypes.bool,
     api: PropTypes.object.isRequired
   }
 

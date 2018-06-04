@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const ProfileCompletion = () => {
-  const pct = this.props.completePct*100
+const ProfileCompletion = (props) => {
+  const pct = props.completePct*100
   return (
     <div className="container-fluid p-0">
       <div className="row">
