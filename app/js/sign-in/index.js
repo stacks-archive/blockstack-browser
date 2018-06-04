@@ -117,7 +117,7 @@ class SignIn extends React.Component {
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isKeyEncrypted = key => !(key.split(' ').length === 12)
+  isKeyEncrypted = key => !(key.split(' ').length === 12 || key.split(' ').length === 24)
 
   validateRecoveryKey = key => {
     if (this.state.key !== key) {
