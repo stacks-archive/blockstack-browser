@@ -31,7 +31,7 @@ class PGPAccountItem extends Component {
     onClick: PropTypes.func,
     verified: PropTypes.bool,
     placeholder: PropTypes.string,
-    api: PropTypes.string
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
