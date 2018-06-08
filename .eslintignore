@@ -14,5 +14,4 @@ tests/utils/a*
 tests/utils/e*
 tests/utils/n*
 
-app/js/profiles/components/EditAccount*
 app/js/profiles/components/VerificationInfo*
