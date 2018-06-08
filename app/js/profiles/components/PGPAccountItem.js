@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
@@ -29,7 +28,10 @@ class PGPAccountItem extends Component {
     contentUrl: PropTypes.string,
     loadPGPPublicKey: PropTypes.func.isRequired,
     pgpPublicKeys: PropTypes.object,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    verified: PropTypes.bool,
+    placeholder: PropTypes.bool,
+    api: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -81,25 +83,24 @@ class PGPAccountItem extends Component {
   getIdentifier() {
     let identifier = this.props.identifier
     if (identifier.length >= 40) {
-      identifier = identifier.slice(0, 40) + '...'
+      identifier = `${identifier.slice(0, 40)}...`
     }
     return identifier
   }
 
   getPlaceholderText(service) {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    const webAccountType = webAccountTypes[this.props.service]
-    let accountServiceName = webAccountType.label
+    let placeholder = ''
     if (service === 'pgp' || service === 'ssh') {
-      return (
+      placeholder = (
         <span className="app-account-service font-weight-normal">
           Prove your {service.toUpperCase()} key
         </span>
       )
     }
+    return placeholder    
   }
 
-  onClick = (e) => {
+  onClick = () => {
     this.props.onClick(this.props.service)
   }
 
@@ -108,9 +109,10 @@ class PGPAccountItem extends Component {
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const pgpPublicKeys = this.props.pgpPublicKeys
     const verified = this.props.verified
-    const verifiedClass = verified ? "verified" : "pending"
-    const placeholderClass = this.props.placeholder ? "placeholder" : ""
+    const verifiedClass = verified ? 'verified' : 'pending'
+    const placeholderClass = this.props.placeholder ? 'placeholder' : ''
     const identifierType = (this.props.service === 'pgp' || this.props.service === 'ssh') ? 'Key' : 'Address'
+    const closeOnClick = true
 
     let loading = false
     let error = false
@@ -133,27 +135,40 @@ class PGPAccountItem extends Component {
           <Modal
             isOpen={this.state.modalIsOpen}
             contentLabel="PGP Key"
-            shouldCloseOnOverlayClick={true}
+            shouldCloseOnOverlayClick={closeOnClick}
             style={{overlay: {zIndex: 10}}}
-            className="container-fluid react-modal-pgp">
+            className="container-fluid react-modal-pgp"
+          >
             <button onClick={this.closeModal}>close</button>
             <h2>PGP Key</h2>
             <p>Fingerprint: {identifier}</p>
-            <div> { loading
+            <div> {loading
               ?
-              <textarea className="form-control" readOnly="true" rows="10"
-                value="Loading...">
+              <textarea
+                className="form-control"
+                readOnly="true"
+                rows="10"
+                value="Loading..."
+              >
               </textarea>
               :
               <div>
-              { error ?
-                <textarea className="form-control" readOnly="true" rows="10"
-                  value={error}>
+              {error ?
+                <textarea
+                  className="form-control"
+                  readOnly="true"
+                  rows="10"
+                  value={error}
+                >
                 </textarea>
                 :
-            <textarea className="form-control" readOnly="true" rows="10"
-              value={key}>
-            </textarea>
+                <textarea
+                  className="form-control"
+                  readOnly="true"
+                  rows="10"
+                  value={key}
+                >
+                </textarea>
             }
               </div>
             }
@@ -162,7 +177,6 @@ class PGPAccountItem extends Component {
           <ReactTooltip place="top" type="dark" effect="solid" id={`verified-${this.props.service}`} className="text-center">
             {this.props.verified ? 'Verified' : 'Pending...'}
           </ReactTooltip>
-          {/*<a href="#" onClick={this.openModal} data-toggle="tooltip"*/}
 
           <span className="">
             <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
@@ -180,27 +194,17 @@ class PGPAccountItem extends Component {
             </span>
           )}
 
-          { !this.props.placeholder && (
+          {!this.props.placeholder && (
             <span className="app-account-service font-weight-normal">
               {webAccountTypes[this.props.service].label}
             </span>
           )}
 
-          { this.props.placeholder && (
+          {this.props.placeholder && (
             <span className="app-account-service font-weight-normal">
               Add your {webAccountTypes[this.props.service].label} {identifierType.toLowerCase()}
             </span>
           )}
-
-          {/*this.props.verified ?
-            <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
-              <i className="fa fa-fw fa-check-circle fa-lg" />
-            </span>
-            :
-            <span className="float-right" data-tip data-for={`verified-${this.props.service}`}>
-              <i className="fa fa-fw fa-clock-o fa-lg" />
-            </span>
-          */}
         </li>
       )
     } else {
