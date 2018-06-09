@@ -166,8 +166,8 @@ class EditSocialAccountItem extends Component {
     const collapsedClass = this.state.collapsed ? 'collapsed' : 'active'
     const webAccountType = webAccountTypes[this.props.service]
     const stopClick = true
+    const accountServiceName = webAccountType.label
     const services = ['instagram', 'github', 'twitter', 'facebook', 'linkedIn', 'hackerNews']
-
     const proofURLInput = () =>
         (<InputGroup
           name="proofUrl"
@@ -182,99 +182,88 @@ class EditSocialAccountItem extends Component {
           disabled={false}
         />)
 
-    if (webAccountType) {
-      const accountServiceName = webAccountType.label
-      if (this.props.listItem === true) {
-        return (
-          <div
-            className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`}
-            onClick={this.handleClick}
-          >
-            <span className="">
-              <i className={`fa fa-fw ${this.getIconClass()}`} />
-            </span>
-              {!this.props.placeholder && (
-                <span className="app-account-identifier">
-                  {this.getIdentifier()}
-                </span>
-              )}
-
-              {!this.props.placeholder && (
-                <span className="app-account-service font-weight-normal">
-                  {`@${accountServiceName}`}
-                </span>
-              )}
-
-              {this.props.placeholder && (
-                <span className="app-account-service font-weight-normal">
-                  {this.getPlaceholderText(this.props.service)}
-                </span>
-              )}
-
-            <span className="float-right">
-              {!this.props.verified && <span>+1<i className="fa fa-w fa-star-o" /></span>}
-
-              {this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> :
-                <i className="fa fa-w fa-chevron-up" />
-              }
-            </span>
-
-            <div onClick={e => e.stopPropagation()}>
-              <ReactCSSTransitionGroup
-                transitionName="account"
-                transitionEnterTimeout={400}
-                transitionLeaveTimeout={200}
-              >
-
-                {!this.state.collapsed &&
-                  (
-                  <InputGroup
-                    key="input-group-identifier"
-                    name="identifier"
-                    label="Username"
-                    data={this.state}
-                    stopClickPropagation={stopClick}
-                    onChange={this.onIdentifierChange}
-                    onBlur={this.onIdentifierBlur}
-                  />
-                  )
-                }
-
-                {((this.props.verified || this.shouldShowVerificationInstructions()) &&
-                  !this.state.collapsed && services.indexOf(this.props.service) !== -1) &&
-                  <div key="input-group-proof">
-                    {proofURLInput()}
-                  </div>
-                }
-
-                {(this.shouldShowVerificationInstructions() && !this.state.collapsed) &&
-                  (
-                  <div>
-                    <VerificationInfo
-                      service={this.props.service}
-                      ownerAddress={this.props.ownerAddress}
-                      domainName={this.getIdentifier()}
-                      onVerifyButtonClick={(e) =>
-                        this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)}
-                    />
-                  </div>
-                  )
-                }
-              </ReactCSSTransitionGroup>
-            </div>
-          </div>
-        )
-      } else {
-        return (
-          <div></div>
-        )
-      }
-    } else {
-      return (
-        <span>
-        </span>
-      )
+    if (!webAccountType || this.props.listItem !== true) {
+      return <span></span>
     }
+    return (
+      <div
+        className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`}
+        onClick={this.handleClick}
+      >
+        <span className="">
+          <i className={`fa fa-fw ${this.getIconClass()}`} />
+        </span>
+          {!this.props.placeholder && (
+            <span className="app-account-identifier">
+              {this.getIdentifier()}
+            </span>
+          )}
+
+          {!this.props.placeholder && (
+            <span className="app-account-service font-weight-normal">
+              {`@${accountServiceName}`}
+            </span>
+          )}
+
+          {this.props.placeholder && (
+            <span className="app-account-service font-weight-normal">
+              {this.getPlaceholderText(this.props.service)}
+            </span>
+          )}
+
+        <span className="float-right">
+          {!this.props.verified && <span>+1<i className="fa fa-w fa-star-o" /></span>}
+
+          {this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> :
+            <i className="fa fa-w fa-chevron-up" />
+          }
+        </span>
+
+        <div onClick={e => e.stopPropagation()}>
+          <ReactCSSTransitionGroup
+            transitionName="account"
+            transitionEnterTimeout={400}
+            transitionLeaveTimeout={200}
+          >
+
+            {!this.state.collapsed &&
+              (
+              <InputGroup
+                key="input-group-identifier"
+                name="identifier"
+                label="Username"
+                data={this.state}
+                stopClickPropagation={stopClick}
+                onChange={this.onIdentifierChange}
+                onBlur={this.onIdentifierBlur}
+              />
+              )
+            }
+
+            {((this.props.verified || this.shouldShowVerificationInstructions()) &&
+              !this.state.collapsed && services.indexOf(this.props.service) !== -1) &&
+              <div key="input-group-proof">
+                {proofURLInput()}
+              </div>
+            }
+
+            {(this.shouldShowVerificationInstructions() && !this.state.collapsed) &&
+              (
+              <div>
+                <VerificationInfo
+                  service={this.props.service}
+                  ownerAddress={this.props.ownerAddress}
+                  domainName={this.getIdentifier()}
+                  onVerifyButtonClick={(e) =>
+                    this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)}
+                />
+              </div>
+              )
+            }
+          </ReactCSSTransitionGroup>
+        </div>
+      </div>
+    )
   }
 }
 
