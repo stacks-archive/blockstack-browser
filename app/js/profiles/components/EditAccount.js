@@ -84,29 +84,11 @@ class EditAccount extends Component {
     }
   }
 
-  getPlaceholderText = (service) => {
-    if(service === 'bitcoin' || service === 'ethereum') {
-      return (
-        <span className="app-account-service font-weight-bold">
-          Add your <span className="text-capitalize">{service}</span> address
-        </span>
-      )
-    }
-    else if (service === 'pgp' || service === 'ssh') {
-      return (
-        <span className="app-account-service font-weight-bold">
-          Add your {service.toUpperCase()} key
-        </span>
-      )
-    }
-    else {
-      return (
-        <span className="app-account-service font-weight-bold">
-          Add your <span className="text-capitalize">{service}</span> account
-        </span>
-      )
-    }
-  }
+  getPlaceholderText = (service) => (
+    <span className="app-account-service font-weight-bold">
+      Add your <span className="text-capitalize">{service}</span> {this.getIdentifierType(service)}
+    </span>
+  )
 
   capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1)
 
