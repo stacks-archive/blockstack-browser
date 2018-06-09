@@ -166,28 +166,21 @@ class EditSocialAccountItem extends Component {
     const collapsedClass = this.state.collapsed ? 'collapsed' : 'active'
     const webAccountType = webAccountTypes[this.props.service]
     const stopClick = true
+    const services = ['instagram', 'github', 'twitter', 'facebook', 'linkedIn', 'hackerNews']
 
-    const proofURLInput = () => {
-      if (this.props.service === 'instagram' || this.props.service === 'github'
-          || this.props.service === 'twitter' || this.props.service === 'facebook'
-          || this.props.service === 'linkedIn' || this.props.service === 'hackerNews') {
-        return (
-          <InputGroup
-            name="proofUrl"
-            label="Proof URL"
-            data={this.state}
-            placeholder="Paste Proof URL here"
-            stopClickPropagation={stopClick}
-            onChange={this.onProofUrlChange}
-            onBlur={event => this.props.onBlur(event, this.props.service)}
-            accessoryIcon={this.props.verified}
-            accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
-            disabled={false}
-          />)
-      } else {
-        return <div></div>
-      }
-    }
+    const proofURLInput = () =>
+        (<InputGroup
+          name="proofUrl"
+          label="Proof URL"
+          data={this.state}
+          placeholder="Paste Proof URL here"
+          stopClickPropagation={stopClick}
+          onChange={this.onProofUrlChange}
+          onBlur={event => this.props.onBlur(event, this.props.service)}
+          accessoryIcon={this.props.verified}
+          accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
+          disabled={false}
+        />)
 
     if (webAccountType) {
       const accountServiceName = webAccountType.label
@@ -247,7 +240,8 @@ class EditSocialAccountItem extends Component {
                   )
                 }
 
-                {((this.props.verified || this.shouldShowVerificationInstructions()) && !this.state.collapsed) &&
+                {((this.props.verified || this.shouldShowVerificationInstructions()) &&
+                  !this.state.collapsed && services.indexOf(this.props.service) !== -1) &&
                   <div key="input-group-proof">
                     {proofURLInput()}
                   </div>
