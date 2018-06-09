@@ -131,27 +131,18 @@ class EditSocialAccountItem extends Component {
   }
 
   getPlaceholderText(service) {
+    let label = 'account'
     if(service === 'bitcoin' || service === 'ethereum') {
-      return (
-        <span className="app-account-service font-weight-normal">
-          Prove your <span className="text-capitalize">{service}</span> address
-        </span>
-      )
+      label = 'address'
     }
     else if (service === 'pgp' || service === 'ssh') {
-      return (
-        <span className="app-account-service font-weight-normal">
-          Prove your {service.toUpperCase()} key
-        </span>
-      )
+      label = 'key'
     }
-    else {
-      return (
-        <span className="app-account-service font-weight-normal">
-          Prove your <span className="text-capitalize">{service}</span> account
-        </span>
-      )
-    }
+    return (
+      <span className="app-account-service font-weight-normal">
+        Prove your <span className="text-capitalize">{service}</span> {label}
+      </span>
+    )
   }
 
   shouldShowVerificationInstructions() {
