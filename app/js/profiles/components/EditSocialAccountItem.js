@@ -40,7 +40,6 @@ class EditSocialAccountItem extends Component {
       proofUrl: props.proofUrl
     }
 
-    this.getAccountUrl = this.getAccountUrl.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.collapse = this.collapse.bind(this)
     this.onIdentifierChange = this.onIdentifierChange.bind(this)
@@ -55,20 +54,6 @@ class EditSocialAccountItem extends Component {
     this.debouncedOnProofUrlChange = debounce(() => {
       this.props.onProofUrlChange(this.props.service, this.state.proofUrl)
     }, 1000)
-  }
-
-  getAccountUrl() {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
-        const urlTemplate = webAccountTypes[this.props.service].urlTemplate
-        if (urlTemplate) {
-          accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
-        }
-      }
-    }
-    return accountUrl
   }
 
   handleClick() {

@@ -25,27 +25,6 @@ class SocialAccountItem extends Component {
     onClick: PropTypes.func
   }
 
-  constructor(props) {
-    super(props)
-
-    this.getAccountUrl = this.getAccountUrl.bind(this)
-    // this.onClick = this.onClick.bind(this)
-  }
-
-  getAccountUrl() {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
-        const urlTemplate = webAccountTypes[this.props.service].urlTemplate
-        if (urlTemplate) {
-          accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
-        }
-      }
-    }
-    return accountUrl
-  }
-
   getPlaceholderText = (service) => (
     <span className="app-account-service font-weight-normal">
       Add your <span className="text-capitalize">{service}</span> {getIdentifierType(service)}

@@ -46,20 +46,6 @@ class EditSocialAccount extends Component {
     })
   }
 
-  getAccountUrl = () => {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
-        const urlTemplate = webAccountTypes[this.props.service].urlTemplate
-        if (urlTemplate) {
-          accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
-        }
-      }
-    }
-    return accountUrl
-  }
-
   onIdentifierChange = (event) => {
     let identifier = event.target.value
 
