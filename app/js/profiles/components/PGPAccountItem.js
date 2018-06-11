@@ -165,7 +165,7 @@ class PGPAccountItem extends Component {
 
           {!this.props.placeholder && (
             <span className="app-account-identifier">
-              {getIdentifier(this.props.identifier)}
+              {getIdentifier(identifier)}
             </span>
           )}
 
@@ -192,7 +192,7 @@ class PGPAccountItem extends Component {
       return (
         <span>
           <i className={`fa ${getIconClass(this.props.api, this.props.service)}`} />
-          <span>{getIdentifier(this.props.identifier)}</span>
+          <span>{getIdentifier(identifier)}</span>
         </span>
       )
     }
