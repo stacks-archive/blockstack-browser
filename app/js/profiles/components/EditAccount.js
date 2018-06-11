@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import InputGroup from '@components/InputGroup'
 
-import { getWebAccountTypes, getIdentifierType } from '@utils'
+import { getWebAccountTypes, getIconClass, getIdentifierType } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -48,15 +48,6 @@ class EditAccount extends Component {
     return accountUrl
   }
 
-  getIconClass = () => {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let iconClass = ''
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      iconClass = webAccountTypes[this.props.service].iconClass
-    }
-    return iconClass
-  }
-
   getIdentifier = () => {
     let identifier = this.state.identifier
     if (identifier.length >= 40) {
@@ -94,7 +85,7 @@ class EditAccount extends Component {
             onClick={this.handleClick}
           >
             <div className='heading m-b-30'>
-              <i className={`fa fa-fw fa-lg ${this.getIconClass()}`} />
+              <i className={`fa fa-fw fa-lg ${getIconClass(this.props.api, this.props.service)}`} />
               {this.getPlaceholderText(this.props.service)}
             </div>
 

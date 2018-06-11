@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 
-import { openInNewTab, getWebAccountTypes, getIdentifier, getIdentifierType } from '@utils'
+import { openInNewTab, getWebAccountTypes, getIconClass, getIdentifier, getIdentifierType } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -29,7 +29,6 @@ class SocialAccountItem extends Component {
     super(props)
 
     this.getAccountUrl = this.getAccountUrl.bind(this)
-    this.getIconClass = this.getIconClass.bind(this)
     // this.onClick = this.onClick.bind(this)
   }
 
@@ -45,15 +44,6 @@ class SocialAccountItem extends Component {
       }
     }
     return accountUrl
-  }
-
-  getIconClass() {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let iconClass = ''
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      iconClass = webAccountTypes[this.props.service].iconClass
-    }
-    return iconClass
   }
 
   getPlaceholderText = (service) => (
@@ -98,7 +88,7 @@ class SocialAccountItem extends Component {
             }
 
             <span className="app-account-icon">
-              <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
+              <i className={`fa fa-fw ${getIconClass(this.props.api, this.props.service)} fa-lg`} />
             </span>
 
             {!this.props.placeholder && (
@@ -146,7 +136,7 @@ class SocialAccountItem extends Component {
       } else {
         return (
           <span>
-            <i className={`fa ${this.getIconClass()}`} />
+            <i className={`fa ${getIconClass(this.props.api, this.props.service)}`} />
             <span>{getIdentifier(this.props.identifier)}</span>
           </span>
         )

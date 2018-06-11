@@ -7,7 +7,7 @@ import { debounce } from 'lodash'
 import { PGPActions } from '../store/pgp'
 import InputGroup from '@components/InputGroup'
 
-import { getWebAccountTypes, getIdentifier } from '@utils'
+import { getWebAccountTypes, getIconClass, getIdentifier } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -48,7 +48,6 @@ class EditPGPAccountItem extends Component {
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.collapse = this.collapse.bind(this)
-    this.getIconClass = this.getIconClass.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.onIdentifierChange = this.onIdentifierChange.bind(this)
     this.onIdentifierBlur = this.onIdentifierBlur.bind(this)
@@ -79,15 +78,6 @@ class EditPGPAccountItem extends Component {
       const contentUrl = this.props.contentUrl
       this.props.loadPGPPublicKey(contentUrl, this.props.identifier)
     }
-  }
-
-  getIconClass() {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let iconClass = ''
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      iconClass = webAccountTypes[this.props.service].iconClass
-    }
-    return iconClass
   }
 
   getPlaceholderText(service) {
@@ -211,7 +201,7 @@ class EditPGPAccountItem extends Component {
             </div>
           </Modal>
           <span className="">
-            <i className={`fa fa-fw ${this.getIconClass()}`} />
+            <i className={`fa fa-fw ${getIconClass(this.props.api, this.props.service)}`} />
           </span>
 
           {!this.props.placeholder && (
@@ -257,7 +247,7 @@ class EditPGPAccountItem extends Component {
     } else {
       return (
         <span>
-          <i className={`fa ${this.getIconClass()}`} />
+          <i className={`fa ${getIconClass(this.props.api, this.props.service)}`} />
           <span>{getIdentifier(this.props.identifier)}</span>
         </span>
       )

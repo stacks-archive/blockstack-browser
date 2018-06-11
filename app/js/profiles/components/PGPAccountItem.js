@@ -6,7 +6,7 @@ import Modal from 'react-modal'
 import ReactTooltip from 'react-tooltip'
 import { PGPActions } from '../store/pgp'
 
-import { getWebAccountTypes, getIdentifier } from '@utils'
+import { getWebAccountTypes, getIconClass, getIdentifier } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -44,7 +44,6 @@ class PGPAccountItem extends Component {
     this.loadPublicKey = this.loadPublicKey.bind(this)
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
-    this.getIconClass = this.getIconClass.bind(this)
   }
 
   componentWillMount() {
@@ -68,15 +67,6 @@ class PGPAccountItem extends Component {
       const contentUrl = this.props.contentUrl
       this.props.loadPGPPublicKey(contentUrl, this.props.identifier)
     }
-  }
-
-  getIconClass() {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let iconClass = ''
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      iconClass = webAccountTypes[this.props.service].iconClass
-    }
-    return iconClass
   }
 
   getPlaceholderText(service) {
@@ -170,7 +160,7 @@ class PGPAccountItem extends Component {
           </ReactTooltip>
 
           <span className="">
-            <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
+            <i className={`fa fa-fw ${getIconClass(this.props.api, this.props.service)} fa-lg`} />
           </span>
 
           {!this.props.placeholder && (
@@ -201,7 +191,7 @@ class PGPAccountItem extends Component {
     } else {
       return (
         <span>
-          <i className={`fa ${this.getIconClass()}`} />
+          <i className={`fa ${getIconClass(this.props.api, this.props.service)}`} />
           <span>{getIdentifier(this.props.identifier)}</span>
         </span>
       )

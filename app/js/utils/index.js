@@ -3,6 +3,7 @@ export {
   deriveIdentityKeyPair,
   getBitcoinPrivateKeychain,
   getBitcoinPublicKeychain,
+  getIconClass,
   getIdentifier,
   getIdentifierType,
   getIdentityPrivateKeychain,

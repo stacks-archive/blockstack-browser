@@ -7,7 +7,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
 
-import { getWebAccountTypes, getIdentifier, getIdentifierType } from '@utils'
+import { getWebAccountTypes, getIconClass, getIdentifier, getIdentifierType } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -41,7 +41,6 @@ class EditSocialAccountItem extends Component {
     }
 
     this.getAccountUrl = this.getAccountUrl.bind(this)
-    this.getIconClass = this.getIconClass.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.collapse = this.collapse.bind(this)
     this.onIdentifierChange = this.onIdentifierChange.bind(this)
@@ -70,15 +69,6 @@ class EditSocialAccountItem extends Component {
       }
     }
     return accountUrl
-  }
-
-  getIconClass() {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let iconClass = ''
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      iconClass = webAccountTypes[this.props.service].iconClass
-    }
-    return iconClass
   }
 
   handleClick() {
@@ -164,7 +154,7 @@ class EditSocialAccountItem extends Component {
         onClick={this.handleClick}
       >
         <span className="">
-          <i className={`fa fa-fw ${this.getIconClass()}`} />
+          <i className={`fa fa-fw ${getIconClass(this.props.api, this.props.service)}`} />
         </span>
           {!this.props.placeholder && (
             <span className="app-account-identifier">

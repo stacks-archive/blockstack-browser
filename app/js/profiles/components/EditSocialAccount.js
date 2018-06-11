@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
-import { openInNewTab, getWebAccountTypes, getIdentifier, getIdentifierType } from '@utils'
+import { openInNewTab, getWebAccountTypes, getIconClass, getIdentifier, getIdentifierType } from '@utils'
 
 const helpPages = {
   twitter: 'https://forum.blockstack.org/t/twitter-verification-process/2143',
@@ -58,15 +58,6 @@ class EditSocialAccount extends Component {
       }
     }
     return accountUrl
-  }
-
-  getIconClass = () => {
-    const webAccountTypes = getWebAccountTypes(this.props.api)
-    let iconClass = ''
-    if (webAccountTypes.hasOwnProperty(this.props.service)) {
-      iconClass = webAccountTypes[this.props.service].iconClass
-    }
-    return iconClass
   }
 
   onIdentifierChange = (event) => {
@@ -145,7 +136,7 @@ class EditSocialAccount extends Component {
             onClick={this.handleClick}
           >
             <div className="heading m-b-30">
-              <i className={`fa fa-fw fa-lg ${this.getIconClass()}`} />
+              <i className={`fa fa-fw fa-lg ${getIconClass(this.props.api, this.props.service)}`} />
               {this.getPlaceholderText(this.props.service)}
             </div>
 

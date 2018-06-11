@@ -426,3 +426,12 @@ export function getIdentifierType(service) {
     return 'account'
   }
 }
+
+export function getIconClass(api, service) {
+  const webAccountTypes = getWebAccountTypes(api)
+  let iconClass = ''
+  if (webAccountTypes.hasOwnProperty(service)) {
+    iconClass = webAccountTypes[service].iconClass
+  }
+  return iconClass
+}
