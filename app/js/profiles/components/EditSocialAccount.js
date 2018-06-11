@@ -114,75 +114,71 @@ class EditSocialAccount extends Component {
     const inputAddOn = this.getInputAddOn(this.props.service)
     const stopClick = true
 
-    if (webAccountType) {
-      return (
-        <div>
-          <div 
-            className={`profile-account ${verifiedClass}`} 
-            onClick={this.handleClick}
-          >
-            <div className="heading m-b-30">
-              <i className={`fa fa-fw fa-lg ${getIconClass(this.props.api, this.props.service)}`} />
-              {this.getPlaceholderText(this.props.service)}
-            </div>
-
-            <div>
-              <p>
-                <span className="font-weight-bold">Step 1: </span> 
-                Enter your <span className="text-capitalize">{this.props.service}</span> username.
-              </p>
-
-              <InputGroup 
-                key="input-group-identifier"
-                name="identifier" 
-                placeholder="Username"
-                data={this.state}
-                stopClickPropagation={stopClick} 
-                onChange={this.onIdentifierChange} 
-                addOn={inputAddOn}
-              />
-            
-              <VerificationInfo
-                service={this.props.service}
-                ownerAddress={this.props.ownerAddress}
-                domainName={getIdentifier(this.state.identifier)}
-                proofUrl={this.state.proofUrl}
-                onProofUrlChange={this.onProofUrlChange}
-                onPostVerificationButtonClick={(e) => {
-                  this.props.onPostVerificationButtonClick(
-                    e,
-                    this.props.service,
-                    this.state.identifier
-                  )
-                }}
-              />
-            </div>
+    if (!webAccountType) {
+      return <span></span>
+    }
+    return (
+      <div>
+        <div 
+          className={`profile-account ${verifiedClass}`} 
+          onClick={this.handleClick}
+        >
+          <div className="heading m-b-30">
+            <i className={`fa fa-fw fa-lg ${getIconClass(this.props.api, this.props.service)}`} />
+            {this.getPlaceholderText(this.props.service)}
           </div>
-          <button 
-            className="btn btn-verify btn-block m-t-15" 
-            onClick={() => this.props.onVerifyButtonClick(this.props.service,
-              this.state.identifier, this.state.proofUrl)}
-          >
-            Verify
-          </button>
-          <div className="text-center">
-            {helpPages.hasOwnProperty(this.props.service) && 
-              <button 
-                className="btn btn-link btn-link-small p-t-10"
-                onClick={this.showHelp}
-              >
-                Need help?
-              </button>
-            }
+
+          <div>
+            <p>
+              <span className="font-weight-bold">Step 1: </span> 
+              Enter your <span className="text-capitalize">{this.props.service}</span> username.
+            </p>
+
+            <InputGroup 
+              key="input-group-identifier"
+              name="identifier" 
+              placeholder="Username"
+              data={this.state}
+              stopClickPropagation={stopClick} 
+              onChange={this.onIdentifierChange} 
+              addOn={inputAddOn}
+            />
+          
+            <VerificationInfo
+              service={this.props.service}
+              ownerAddress={this.props.ownerAddress}
+              domainName={getIdentifier(this.state.identifier)}
+              proofUrl={this.state.proofUrl}
+              onProofUrlChange={this.onProofUrlChange}
+              onPostVerificationButtonClick={(e) => {
+                this.props.onPostVerificationButtonClick(
+                  e,
+                  this.props.service,
+                  this.state.identifier
+                )
+              }}
+            />
           </div>
         </div>
-      )
-    } else {
-      return (
-        <span>
-        </span>
-      )
-    }
+        <button 
+          className="btn btn-verify btn-block m-t-15" 
+          onClick={() => this.props.onVerifyButtonClick(this.props.service,
+            this.state.identifier, this.state.proofUrl)}
+        >
+          Verify
+        </button>
+        <div className="text-center">
+          {helpPages.hasOwnProperty(this.props.service) && 
+            <button 
+              className="btn btn-link btn-link-small p-t-10"
+              onClick={this.showHelp}
+            >
+              Need help?
+            </button>
+          }
+        </div>
+      </div>
+    )
   }
 }
 

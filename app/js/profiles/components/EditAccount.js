@@ -55,45 +55,41 @@ class EditAccount extends Component {
     const verifiedClass = this.props.verified ? 'verified' : unverifiedClass 
     const webAccountType = webAccountTypes[this.props.service]
 
-    if (webAccountType) {
-      return (
-        <div>
-          <div
-            className={`profile-account ${verifiedClass}`}
-            onClick={this.handleClick}
-          >
-            <div className='heading m-b-30'>
-              <i className={`fa fa-fw fa-lg ${getIconClass(this.props.api, this.props.service)}`} />
-              {this.getPlaceholderText(this.props.service)}
-            </div>
-
-            <div>
-              <InputGroup
-                key='input-group-identifier'
-                name='identifier'
-                placeholder={this.capitalize(getIdentifierType(this.props.service))}
-                data={this.state}
-                stopClickPropagation
-                onChange={this.onIdentifierChange}
-              />
-
-            </div>
-          </div>
-          <button
-            className='btn btn-verify btn-block m-t-15'
-            onClick={() => this.props.onDoneButtonClick(this.props.service, 
-		    this.state.identifier)}
-          >
-            Save
-          </button>
-        </div>
-      )
-    } else {
-      return (
-        <span>
-        </span>
-      )
+    if (!webAccountType) {
+      return <span></span>
     }
+    return (
+      <div>
+        <div
+          className={`profile-account ${verifiedClass}`}
+          onClick={this.handleClick}
+        >
+          <div className='heading m-b-30'>
+            <i className={`fa fa-fw fa-lg ${getIconClass(this.props.api, this.props.service)}`} />
+            {this.getPlaceholderText(this.props.service)}
+          </div>
+
+          <div>
+            <InputGroup
+              key='input-group-identifier'
+              name='identifier'
+              placeholder={this.capitalize(getIdentifierType(this.props.service))}
+              data={this.state}
+              stopClickPropagation
+              onChange={this.onIdentifierChange}
+            />
+
+          </div>
+        </div>
+        <button
+          className='btn btn-verify btn-block m-t-15'
+          onClick={() => this.props.onDoneButtonClick(this.props.service, 
+      this.state.identifier)}
+        >
+          Save
+        </button>
+      </div>
+    )
   }
 }
 

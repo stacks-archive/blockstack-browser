@@ -48,84 +48,71 @@ class SocialAccountItem extends Component {
     const pending = this.props.pending
     const verifiedClass = verified ? 'verified' : 'pending'
     const placeholderClass = this.props.placeholder ? 'placeholder' : ''
+    const accountServiceName = webAccountType.label
 
-    if (webAccountType) {
-      const accountServiceName = webAccountType.label
-      if (this.props.listItem === true) {
-        return (
-          <li className={`clickable ${verifiedClass} ${placeholderClass}`} onClick={this.onClick}>
-            {!pending &&
-              <ReactTooltip
-                place="top"
-                type="dark"
-                effect="solid"
-                id={`verified-${this.props.service}`}
-                className="text-center"
-              >
-                {verified && 'Verified'}
-              </ReactTooltip>
-            }
-
-            <span className="app-account-icon">
-              <i className={`fa fa-fw ${getIconClass(this.props.api, this.props.service)} fa-lg`} />
-            </span>
-
-            {!this.props.placeholder && (
-              <span className="app-account-identifier">
-                {getIdentifier(this.props.identifier)}
-              </span>
-            )}
-
-            {(!this.props.placeholder && this.props.editing) && (
-              <span className="">
-                <i className="fa fa-fw fa-pencil" />
-              </span>
-            )}
-
-            {!this.props.placeholder && (
-              <span className="app-account-service font-weight-normal">
-                {`@${accountServiceName}`}
-              </span>
-            )}
-
-            {this.props.placeholder && (
-              <span className="app-account-service font-weight-normal">
-                {this.getPlaceholderText(this.props.service)}
-              </span>
-            )}
-
-            {verified &&
-              <span
-                className="float-right status"
-                data-tip
-                data-for={`verified-${this.props.service}`}
-                onClick={this.onVerifiedCheckmarkClick}
-              >
-                <i className="fa fa-fw fa-check-circle fa-lg" />
-              </span>
-            }
-            {!verified && 
-              (this.props.placeholder) ?
-              <span className="float-right star">+1<i className="fa fa-w fa-star-o" /></span>
-              :
-              <span className="float-right badge badge-danger badge-verification">Unverified</span>
-            }
-          </li>
-        )
-      } else {
-        return (
-          <span>
-            <i className={`fa ${getIconClass(this.props.api, this.props.service)}`} />
-            <span>{getIdentifier(this.props.identifier)}</span>
-          </span>
-        )
-      }
-    } else {
-      return (
-        <span>
-        </span>
-      )
+    if (!webAccountType || this.props.listItem !== true) {
+      return <span></span>
     }
+    return (
+      <li className={`clickable ${verifiedClass} ${placeholderClass}`} onClick={this.onClick}>
+        {!pending &&
+          <ReactTooltip
+            place="top"
+            type="dark"
+            effect="solid"
+            id={`verified-${this.props.service}`}
+            className="text-center"
+          >
+            {verified && 'Verified'}
+          </ReactTooltip>
+        }
+
+        <span className="app-account-icon">
+          <i className={`fa fa-fw ${getIconClass(this.props.api, this.props.service)} fa-lg`} />
+        </span>
+
+        {!this.props.placeholder && (
+          <span className="app-account-identifier">
+            {getIdentifier(this.props.identifier)}
+          </span>
+        )}
+
+        {(!this.props.placeholder && this.props.editing) && (
+          <span className="">
+            <i className="fa fa-fw fa-pencil" />
+          </span>
+        )}
+
+        {!this.props.placeholder && (
+          <span className="app-account-service font-weight-normal">
+            {`@${accountServiceName}`}
+          </span>
+        )}
+
+        {this.props.placeholder && (
+          <span className="app-account-service font-weight-normal">
+            {this.getPlaceholderText(this.props.service)}
+          </span>
+        )}
+
+        {verified &&
+          <span
+            className="float-right status"
+            data-tip
+            data-for={`verified-${this.props.service}`}
+            onClick={this.onVerifiedCheckmarkClick}
+          >
+            <i className="fa fa-fw fa-check-circle fa-lg" />
+          </span>
+        }
+        {!verified && 
+          (this.props.placeholder) ?
+          <span className="float-right star">+1<i className="fa fa-w fa-star-o" /></span>
+          :
+          <span className="float-right badge badge-danger badge-verification">Unverified</span>
+        }
+      </li>
+    )
   }
 }
 
