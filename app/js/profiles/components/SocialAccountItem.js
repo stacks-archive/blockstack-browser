@@ -27,7 +27,7 @@ class SocialAccountItem extends Component {
 
   getPlaceholderText = (service) => (
     <span className="app-account-service font-weight-normal">
-      Add your <span className="text-capitalize">{service}</span> {getIdentifierType(service)}
+      Prove your <span className="text-capitalize">{service}</span> {getIdentifierType(service)}
     </span>
   )
 
