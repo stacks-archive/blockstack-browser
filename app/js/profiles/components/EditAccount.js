@@ -48,14 +48,6 @@ class EditAccount extends Component {
     return accountUrl
   }
 
-  getIdentifier = () => {
-    let identifier = this.state.identifier
-    if (identifier.length >= 40) {
-      identifier = `${identifier.slice(0, 40)}...`
-    }
-    return identifier
-  }
-
   onIdentifierChange = (event) => {
     const identifier = event.target.value
     this.setState({
