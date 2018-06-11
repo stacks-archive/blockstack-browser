@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import bip39 from 'bip39'
+import { HDNode } from 'bitcoinjs-lib'
 
 import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
@@ -35,7 +37,8 @@ class BackupAccountPage extends Component {
     this.state = {
       decryptedBackupPhrase: null,
       password: '',
-      alerts: []
+      alerts: [],
+      keychain: null
     }
 
     this.onChange = this.onChange.bind(this)
@@ -68,9 +71,12 @@ class BackupAccountPage extends Component {
       plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
         this.updateAlert('success', 'Keychain phrase decrypted')
+        const seed = bip39.mnemonicToSeed(plaintextBuffer.toString())
+        const keychain = HDNode.fromSeedBuffer(seed)
         this.props.displayedRecoveryCode()
         this.setState({
-          decryptedBackupPhrase: plaintextBuffer.toString()
+          decryptedBackupPhrase: plaintextBuffer.toString(),
+          keychain
         })
       },
       () => {
@@ -108,6 +114,13 @@ class BackupAccountPage extends Component {
                   <div className="card-header">Keychain Phrase</div>
                   <div className="card-block backup-phrase-container">
                     <p className="card-text">{this.state.decryptedBackupPhrase}</p>
+                  </div>
+                </div>
+
+                <div className="card m-t-20">
+                  <div className="card-header">Private Key (WIF)</div>
+                  <div className="card-block backup-phrase-container">
+                    <p className="card-text">{this.state.keychain.keyPair.toWIF()}</p>
                   </div>
                 </div>
               </div>
