@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 
-import { openInNewTab, getWebAccountTypes } from '@utils'
+import { openInNewTab, getWebAccountTypes, getIdentifier } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -30,7 +30,6 @@ class SocialAccountItem extends Component {
 
     this.getAccountUrl = this.getAccountUrl.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
-    this.getIdentifier = this.getIdentifier.bind(this)
     // this.onClick = this.onClick.bind(this)
   }
 
@@ -55,14 +54,6 @@ class SocialAccountItem extends Component {
       iconClass = webAccountTypes[this.props.service].iconClass
     }
     return iconClass
-  }
-
-  getIdentifier() {
-    let identifier = this.props.identifier
-    if (identifier.length >= 40) {
-      identifier = `${identifier.slice(0, 40)}...`
-    }
-    return identifier
   }
 
   getPlaceholderText(service) {
@@ -130,7 +121,7 @@ class SocialAccountItem extends Component {
 
             {!this.props.placeholder && (
               <span className="app-account-identifier">
-                {this.getIdentifier()}
+                {getIdentifier(this.props.identifier)}
               </span>
             )}
 
@@ -174,7 +165,7 @@ class SocialAccountItem extends Component {
         return (
           <span>
             <i className={`fa ${this.getIconClass()}`} />
-            <span>{this.getIdentifier()}</span>
+            <span>{getIdentifier(this.props.identifier)}</span>
           </span>
         )
       }

@@ -7,7 +7,7 @@ import { debounce } from 'lodash'
 import { PGPActions } from '../store/pgp'
 import InputGroup from '@components/InputGroup'
 
-import { getWebAccountTypes } from '@utils'
+import { getWebAccountTypes, getIdentifier } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -49,7 +49,6 @@ class EditPGPAccountItem extends Component {
     this.closeModal = this.closeModal.bind(this)
     this.collapse = this.collapse.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
-    this.getIdentifier = this.getIdentifier.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.onIdentifierChange = this.onIdentifierChange.bind(this)
     this.onIdentifierBlur = this.onIdentifierBlur.bind(this)
@@ -126,14 +125,6 @@ class EditPGPAccountItem extends Component {
     this.setState({
       collapsed
     })
-  }
-
-  getIdentifier() {
-    let identifier = this.state.identifier
-    if (identifier.length >= 40) {
-      identifier = `${identifier.slice(0, 40)}...`
-    }
-    return identifier
   }
 
   handleClick() {
@@ -225,7 +216,7 @@ class EditPGPAccountItem extends Component {
 
           {!this.props.placeholder && (
             <span className="app-account-identifier">
-              {this.getIdentifier()}
+              {getIdentifier(this.props.identifier)}
             </span>
           )}
 
@@ -267,7 +258,7 @@ class EditPGPAccountItem extends Component {
       return (
         <span>
           <i className={`fa ${this.getIconClass()}`} />
-          <span>{this.getIdentifier()}</span>
+          <span>{getIdentifier(this.props.identifier)}</span>
         </span>
       )
     }

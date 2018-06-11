@@ -7,7 +7,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
 
-import { getWebAccountTypes } from '@utils'
+import { getWebAccountTypes, getIdentifier } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -42,7 +42,6 @@ class EditSocialAccountItem extends Component {
 
     this.getAccountUrl = this.getAccountUrl.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
-    this.getIdentifier = this.getIdentifier.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.collapse = this.collapse.bind(this)
     this.onIdentifierChange = this.onIdentifierChange.bind(this)
@@ -80,14 +79,6 @@ class EditSocialAccountItem extends Component {
       iconClass = webAccountTypes[this.props.service].iconClass
     }
     return iconClass
-  }
-
-  getIdentifier() {
-    let identifier = this.state.identifier
-    if (identifier.length >= 40) {
-      identifier = `${identifier.slice(0, 40)}...`
-    }
-    return identifier
   }
 
   handleClick() {
@@ -186,7 +177,7 @@ class EditSocialAccountItem extends Component {
         </span>
           {!this.props.placeholder && (
             <span className="app-account-identifier">
-              {this.getIdentifier()}
+              {getIdentifier(this.props.identifier)}
             </span>
           )}
 
@@ -244,7 +235,7 @@ class EditSocialAccountItem extends Component {
                 <VerificationInfo
                   service={this.props.service}
                   ownerAddress={this.props.ownerAddress}
-                  domainName={this.getIdentifier()}
+                  domainName={getIdentifier(this.props.identifier)}
                   onVerifyButtonClick={(e) =>
                     this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)}
                 />

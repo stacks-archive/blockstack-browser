@@ -407,3 +407,10 @@ export function findAddressIndex(address, identityAddresses) {
   }
   return null
 }
+
+export function getIdentifier(identifier) {
+  if (identifier.length >= 40) {
+    identifier = `${identifier.slice(0, 40)}...`
+  }
+  return identifier
+}

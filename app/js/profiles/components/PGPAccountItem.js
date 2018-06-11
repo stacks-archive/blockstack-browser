@@ -6,7 +6,7 @@ import Modal from 'react-modal'
 import ReactTooltip from 'react-tooltip'
 import { PGPActions } from '../store/pgp'
 
-import { getWebAccountTypes } from '@utils'
+import { getWebAccountTypes, getIdentifier } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -45,7 +45,6 @@ class PGPAccountItem extends Component {
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.getIconClass = this.getIconClass.bind(this)
-    this.getIdentifier = this.getIdentifier.bind(this)
   }
 
   componentWillMount() {
@@ -78,14 +77,6 @@ class PGPAccountItem extends Component {
       iconClass = webAccountTypes[this.props.service].iconClass
     }
     return iconClass
-  }
-
-  getIdentifier() {
-    let identifier = this.props.identifier
-    if (identifier.length >= 40) {
-      identifier = `${identifier.slice(0, 40)}...`
-    }
-    return identifier
   }
 
   getPlaceholderText(service) {
@@ -184,7 +175,7 @@ class PGPAccountItem extends Component {
 
           {!this.props.placeholder && (
             <span className="app-account-identifier">
-              {this.getIdentifier()}
+              {getIdentifier(this.props.identifier)}
             </span>
           )}
 
@@ -211,7 +202,7 @@ class PGPAccountItem extends Component {
       return (
         <span>
           <i className={`fa ${this.getIconClass()}`} />
-          <span>{this.getIdentifier()}</span>
+          <span>{getIdentifier(this.props.identifier)}</span>
         </span>
       )
     }
