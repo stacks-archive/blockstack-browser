@@ -24,7 +24,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 
 ## Developing
 
-Blockstack Browser requires a local instance of Blockstack Core to run. To get started, first install Blockstack Core and then proceed with the installation of Blockstack Browser.
+Blockstack Browser requires a local instance of Blockstack Core to run. To get started, first [install Blockstack Core](https://github.com/blockstack/blockstack-core#installing-blockstack-core) and then proceed with the installation of Blockstack Browser.
 
 ### macOS
 
