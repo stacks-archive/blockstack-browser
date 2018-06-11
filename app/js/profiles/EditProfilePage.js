@@ -131,7 +131,6 @@ class EditProfilePage extends Component {
       // no op
     } else if (service === 'linkedIn') {
       verificationUrl = 'https://www.linkedin.com/feed/'
-      // verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org&title=${verificationText}`
     } else if (service === 'hackerNews') {
       verificationUrl = `https://news.ycombinator.com/user?id=${identifier}`
     }
@@ -230,7 +229,6 @@ class EditProfilePage extends Component {
       const newIndex = identityIndex
       const newProfile = props.localIdentities[identityIndex].profile
       const newUsername = props.localIdentities[identityIndex].username
-      // newProfile.verifications = props.localIdentities[profileIndex].verifications
 
       this.setState({
         index: newIndex,

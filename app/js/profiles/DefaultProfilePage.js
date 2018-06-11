@@ -262,7 +262,6 @@ class DefaultProfilePage extends Component {
       // no op
     } else if (service === 'linkedIn') {
       verificationUrl = 'https://www.linkedin.com/feed/'
-      // verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org&title=${verificationText}`
     } else if (service === 'hackerNews') {
       verificationUrl = `https://news.ycombinator.com/user?id=${identifier}`
     }
@@ -563,8 +562,6 @@ class DefaultProfilePage extends Component {
     const ownerAddress = identity.ownerAddress
     const verifications = identity.verifications
     const trustLevel = identity.trustLevel
-    // const blockNumber = identity.blockNumber
-    // const transactionIndex = identity.transactionIndex
     const profileCompleteness = calculateProfileCompleteness(
       identity.profile,
       verifications
@@ -616,10 +613,8 @@ class DefaultProfilePage extends Component {
       })
     }
 
-    // const accounts = person.profile().account || []
     const accounts = filledAccounts.concat(placeholders)
     const showMoreAccountsButton = hiddenAccounts.length > 0
-    // const connections = person.connections() || []
 
     const socialAccountEdit = () => {
       if (isMobile()) {
