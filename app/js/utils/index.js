@@ -4,6 +4,7 @@ export {
   getBitcoinPrivateKeychain,
   getBitcoinPublicKeychain,
   getIdentifier,
+  getIdentifierType,
   getIdentityPrivateKeychain,
   getIdentityPublicKeychain,
   getWebAccountTypes,

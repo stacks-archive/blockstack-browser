@@ -414,3 +414,15 @@ export function getIdentifier(identifier) {
   }
   return identifier
 }
+
+export function getIdentifierType(service) {
+  if(service === 'bitcoin' || service === 'ethereum') {
+    return 'address'
+  }
+  else if (service === 'pgp' || service === 'ssh') {
+    return 'key'
+  }
+  else {
+    return 'account'
+  }
+}

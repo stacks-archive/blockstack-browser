@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
-import { openInNewTab, getWebAccountTypes, getIdentifier } from '@utils'
+import { openInNewTab, getWebAccountTypes, getIdentifier, getIdentifierType } from '@utils'
 
 const helpPages = {
   twitter: 'https://forum.blockstack.org/t/twitter-verification-process/2143',
@@ -89,27 +89,11 @@ class EditSocialAccount extends Component {
     })
   }
 
-  getPlaceholderText = (service) => {
-    if (service === 'bitcoin' || service === 'ethereum') {
-      return (
-        <span className="app-account-service font-weight-bold">
-          Prove your <span className="text-capitalize">{service}</span> address
-        </span>
-      )
-    } else if (service === 'pgp' || service === 'ssh') {
-      return (
-        <span className="app-account-service font-weight-bold">
-          Prove your {service.toUpperCase()} key
-        </span>
-      )
-    } else {
-      return (
-        <span className="app-account-service font-weight-bold">
-          Prove your <span className="text-capitalize">{service}</span> account
-        </span>
-      )
-    }
-  }
+  getPlaceholderText = (service) => (
+    <span className="app-account-service font-weight-bold">
+      Add your <span className="text-capitalize">{service}</span> {getIdentifierType(service)}
+    </span>
+  )
 
   getInputAddOn = (service) => {
     if (service === 'facebook') {

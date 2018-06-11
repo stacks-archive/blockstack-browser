@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 
-import { openInNewTab, getWebAccountTypes, getIdentifier } from '@utils'
+import { openInNewTab, getWebAccountTypes, getIdentifier, getIdentifierType } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -56,29 +56,11 @@ class SocialAccountItem extends Component {
     return iconClass
   }
 
-  getPlaceholderText(service) {
-    if(service === 'bitcoin' || service === 'ethereum') {
-      return (
-        <span className="app-account-service font-weight-normal">
-          Prove your <span className="text-capitalize">{service}</span> address
-        </span>
-      )
-    }
-    else if (service === 'pgp' || service === 'ssh') {
-      return (
-        <span className="app-account-service font-weight-normal">
-          Prove your {service.toUpperCase()} key
-        </span>
-      )
-    }
-    else {
-      return (
-        <span className="app-account-service font-weight-normal">
-          Prove your <span className="text-capitalize">{service}</span> account
-        </span>
-      )
-    }
-  }
+  getPlaceholderText = (service) => (
+    <span className="app-account-service font-weight-normal">
+      Add your <span className="text-capitalize">{service}</span> {getIdentifierType(service)}
+    </span>
+  )
 
   onClick = () => {
     this.props.onClick(this.props.service)

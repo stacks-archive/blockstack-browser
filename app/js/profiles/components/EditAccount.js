@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import InputGroup from '@components/InputGroup'
 
-import { getWebAccountTypes } from '@utils'
+import { getWebAccountTypes, getIdentifierType } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -72,21 +72,9 @@ class EditAccount extends Component {
     })
   }
 
-  getIdentifierType = (service) => {
-    if(service === 'bitcoin' || service === 'ethereum') {
-      return 'address'
-    }
-    else if (service === 'pgp' || service === 'ssh') {
-      return 'key'
-    }
-    else {
-      return 'account'
-    }
-  }
-
   getPlaceholderText = (service) => (
     <span className="app-account-service font-weight-bold">
-      Add your <span className="text-capitalize">{service}</span> {this.getIdentifierType(service)}
+      Add your <span className="text-capitalize">{service}</span> {getIdentifierType(service)}
     </span>
   )
 
@@ -114,7 +102,7 @@ class EditAccount extends Component {
               <InputGroup
                 key='input-group-identifier'
                 name='identifier'
-                placeholder={this.capitalize(this.getIdentifierType(this.props.service))}
+                placeholder={this.capitalize(getIdentifierType(this.props.service))}
                 data={this.state}
                 stopClickPropagation
                 onChange={this.onIdentifierChange}

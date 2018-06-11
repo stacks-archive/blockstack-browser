@@ -7,7 +7,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
 
-import { getWebAccountTypes, getIdentifier } from '@utils'
+import { getWebAccountTypes, getIdentifier, getIdentifierType } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -121,20 +121,11 @@ class EditSocialAccountItem extends Component {
     }
   }
 
-  getPlaceholderText(service) {
-    let label = 'account'
-    if(service === 'bitcoin' || service === 'ethereum') {
-      label = 'address'
-    }
-    else if (service === 'pgp' || service === 'ssh') {
-      label = 'key'
-    }
-    return (
-      <span className="app-account-service font-weight-normal">
-        Prove your <span className="text-capitalize">{service}</span> {label}
-      </span>
-    )
-  }
+  getPlaceholderText = (service) => (
+    <span className="app-account-service font-weight-normal">
+      Add your <span className="text-capitalize">{service}</span> {getIdentifierType(service)}
+    </span>
+  )
 
   shouldShowVerificationInstructions() {
     return !this.props.verified && (this.props.identifier.length > 0)
