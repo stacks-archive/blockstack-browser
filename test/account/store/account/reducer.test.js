@@ -1,8 +1,5 @@
-import {
-  AccountActions,
-  AccountReducer
-} from '../../../../app/js/account/store/account'
-import { AccountInitialState } from '../../../../app/js/account/store/account/reducer'
+import AccountActions from '../../../../app/js/account/store/account/actions'
+import AccountReducer, { AccountInitialState } from '../../../../app/js/account/store/account/reducer'
 
 const BITCOIN_ACCOUNT_KEYCHAIN =
   'xpub6DPVcgkLNGyJ658Zd77XVCtKMAcyNWyGwtzxfzTt2XMhMnc6pkYQXru' +

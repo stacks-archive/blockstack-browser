@@ -23,7 +23,7 @@ export {
   broadcastTransaction,
   btcToSatoshis,
   getNetworkFee,
-  getInsightUrl,
+  getInsightUrls,
   satoshisToBtc
 } from './bitcoin-utils'
 

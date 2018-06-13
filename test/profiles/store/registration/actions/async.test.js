@@ -86,7 +86,7 @@ describe('Registration Store: Async Actions', () => {
           registerTxHash,
           zoneFile
         )
-      }).then(done).catch(done)
+      }, done).then(done).catch(done)
     })
   })
 
