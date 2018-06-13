@@ -13,7 +13,8 @@ export {
   findAddressIndex,
   decryptBitcoinPrivateKey,
   calculateTrustLevel,
-  calculateProfileCompleteness
+  calculateProfileCompleteness,
+  getBlockchainIdentities
 } from './account-utils'
 
 export { getIdentities, authorizationHeaderValue } from './api-utils'
