@@ -47,12 +47,10 @@ const InitialSignInScreen = ({ next, ...rest }) => {
         }
       },
       children: (
-        <React.Fragment>
-          <Type.p>
-            Enter your Magic Recovery Code (we sent it to you when you created your ID) 
-            or Secret Recovery Key (those 12 or 24 words you recorded).
-          </Type.p>
-        </React.Fragment>
+        <Type.p>
+          Enter your Magic Recovery Code (we sent it to you when you created your ID) 
+          or Secret Recovery Key (those 12 or 24 words you recorded).
+        </Type.p>
       )
     },
     actions: {
