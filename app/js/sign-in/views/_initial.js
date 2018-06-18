@@ -52,10 +52,6 @@ const InitialSignInScreen = ({ next, ...rest }) => {
             Enter your Magic Recovery Code (we sent it to you when you created your ID) 
             or Secret Recovery Key (those 12 or 24 words you recorded).
           </Type.p>
-          <Type.p>
-            You’ll also need your password (the password you entered when the 
-            Magic Recovery Code was created).
-          </Type.p>
         </React.Fragment>
       )
     },
