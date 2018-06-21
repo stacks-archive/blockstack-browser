@@ -22,9 +22,19 @@ import {
   selectIdentityKeypairs,
   selectPromptedForEmail
 } from '@common/store/selectors/account'
-import { selectDefaultIdentity, selectLocalIdentities, selectRegistration } from '@common/store/selectors/profiles'
-import { selectApi, selectStorageConnected } from '@common/store/selectors/settings'
-import { selectAppManifest, selectAuthRequest } from '@common/store/selectors/auth'
+import {
+  selectDefaultIdentity,
+  selectLocalIdentities,
+  selectRegistration
+} from '@common/store/selectors/profiles'
+import {
+  selectApi,
+  selectStorageConnected
+} from '@common/store/selectors/settings'
+import {
+  selectAppManifest,
+  selectAuthRequest
+} from '@common/store/selectors/auth'
 import { formatAppManifest } from '@common'
 import App from '../App'
 
@@ -382,14 +392,14 @@ class SignIn extends React.Component {
     return (
       <App>
         <ShellParent
-          app={ formatAppManifest(this.props.appManifest) }
-          views={ views }
-          { ...componentProps }
+          app={formatAppManifest(this.props.appManifest)}
+          views={views}
+          {...componentProps}
           headerLabel="Sign into Blockstack"
           lastHeaderLabel="Welcome Back"
           invertOnLast
         />
-        <AppHomeWrapper/>
+        <AppHomeWrapper />
       </App>
     )
   }
@@ -405,6 +415,7 @@ SignIn.propTypes = {
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
+  refreshIdentities: PropTypes.func.isRequired,
   updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
   identityKeypairs: PropTypes.array.isRequired,
