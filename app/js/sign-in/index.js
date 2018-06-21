@@ -13,7 +13,7 @@ import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import { Initial, Password, Success } from './views'
 import log4js from 'log4js'
-import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
+import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
 import {
   selectConnectedStorageAtLeastOnce,
   selectEmail,
@@ -22,21 +22,12 @@ import {
   selectIdentityKeypairs,
   selectPromptedForEmail
 } from '@common/store/selectors/account'
-import {
-  selectLocalIdentities,
-  selectRegistration,
-  selectDefaultIdentity
-} from '@common/store/selectors/profiles'
-import {
-  selectApi,
-  selectStorageConnected
-} from '@common/store/selectors/settings'
-import {
-  selectAppManifest,
-  selectAuthRequest
-} from '@common/store/selectors/auth'
+import { selectDefaultIdentity, selectLocalIdentities, selectRegistration } from '@common/store/selectors/profiles'
+import { selectApi, selectStorageConnected } from '@common/store/selectors/settings'
+import { selectAppManifest, selectAuthRequest } from '@common/store/selectors/auth'
 import { formatAppManifest } from '@common'
 import App from '../App'
+
 const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
 
 const logger = log4js.getLogger('sign-in/index.js')
@@ -117,7 +108,8 @@ class SignIn extends React.Component {
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isKeyEncrypted = key => !(key.split(' ').length === 12 || key.split(' ').length === 24)
+  isKeyEncrypted = key =>
+    !(key.split(' ').length === 12 || key.split(' ').length === 24)
 
   validateRecoveryKey = key => {
     if (this.state.key !== key) {
@@ -193,6 +185,15 @@ class SignIn extends React.Component {
     setTimeout(
       () =>
         this.createAccount()
+          .then(
+            () => {
+              this.props
+                .refreshIdentities(this.props.api, this.props.identityAddresses)
+                .then(() => console.log('complete!'))
+              console.log('refreshing ids')
+            },
+            err => console.error(err)
+          )
           .then(() => this.updateView(VIEWS.SUCCESS))
           .catch(() => {
             this.setState({
@@ -256,7 +257,7 @@ class SignIn extends React.Component {
     logger.debug('fire connectStorage')
     const storageProvider = this.props.api.gaiaHubUrl
     const signer = this.props.identityKeypairs[0].key
-    return connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
+    await connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
       const newApi = Object.assign({}, this.props.api, {
         gaiaHubConfig,
         hostedDataLocation: BLOCKSTACK_INC
@@ -305,7 +306,7 @@ class SignIn extends React.Component {
       // Create new ID and owner address and then set to default
       this.createNewIdAndSetDefault().then(() =>
         // Connect our default storage
-        this.connectStorage().then(() => console.log('complete'))
+        this.connectStorage().then(() => console.log('account creation done'))
       )
     )
   }
@@ -381,14 +382,14 @@ class SignIn extends React.Component {
     return (
       <App>
         <ShellParent
-          app={formatAppManifest(this.props.appManifest)}
-          views={views}
-          {...componentProps}
+          app={ formatAppManifest(this.props.appManifest) }
+          views={ views }
+          { ...componentProps }
           headerLabel="Sign into Blockstack"
           lastHeaderLabel="Welcome Back"
           invertOnLast
         />
-        <AppHomeWrapper />
+        <AppHomeWrapper/>
       </App>
     )
   }
