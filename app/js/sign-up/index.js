@@ -530,9 +530,6 @@ class Onboarding extends React.Component {
         })
         this.sendEmails().then(() => this.updateView(VIEWS.INFO))
       }
-      // else {
-      //   this.updateView(VIEWS.INFO)
-      // }
     } else if (registration.error) {
       logger.error(`username registration error: ${registration.error}`)
       this.setState({
