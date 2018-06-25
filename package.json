@@ -202,9 +202,5 @@
     "prod-webapp": "NODE_ENV=production ./node_modules/.bin/gulp prod-webapp",
     "test": "NODE_ENV=test npm run lint && npm run flow && ./node_modules/.bin/gulp test",
     "web": "NODE_ENV=production ./node_modules/.bin/gulp prod"
-  },
-  "engines": {
-    "node": ">=8.0.0",
-    "npm": ">=5.6.0"
   }
 }
