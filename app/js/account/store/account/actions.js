@@ -528,7 +528,8 @@ const AccountActions = {
   incrementIdentityAddressIndex,
   usedIdentityAddress,
   displayedRecoveryCode,
-  newIdentityAddress
+  newIdentityAddress,
+  updateEmail
 }
 
 export default AccountActions

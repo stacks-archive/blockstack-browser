@@ -11,7 +11,7 @@ import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
-import { Initial, Password, Success } from './views'
+import { Initial, Password, Success, Email } from './views'
 import log4js from 'log4js'
 import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
 import {
@@ -44,11 +44,12 @@ const logger = log4js.getLogger('sign-in/index.js')
 
 const VIEWS = {
   INITIAL: 0,
-  PASSWORD: 1,
-  SUCCESS: 2
+  EMAIL: 1,
+  PASSWORD: 2,
+  SUCCESS: 3
 }
 
-const views = [Initial, Password, Success]
+const views = [Initial, Email, Password, Success]
 
 function mapStateToProps(state) {
   return {
@@ -86,6 +87,7 @@ class SignIn extends React.Component {
   state = {
     password: '',
     key: '',
+    email: null,
     encryptedKey:
       this.props.location &&
       this.props.location.query &&
@@ -121,7 +123,7 @@ class SignIn extends React.Component {
   isKeyEncrypted = key =>
     !(key.split(' ').length === 12 || key.split(' ').length === 24)
 
-  validateRecoveryKey = key => {
+  validateRecoveryKey = (key, nextView = VIEWS.EMAIL) => {
     if (this.state.key !== key) {
       this.setState({ key })
     }
@@ -131,7 +133,7 @@ class SignIn extends React.Component {
           encryptedKey: key,
           decrypt: true
         },
-        () => setTimeout(() => this.updateView(VIEWS.PASSWORD), 100)
+        () => setTimeout(() => this.updateView(nextView), 100)
       )
     } else {
       this.setState(
@@ -139,7 +141,7 @@ class SignIn extends React.Component {
           seed: key,
           decrypt: false
         },
-        () => setTimeout(() => this.updateView(VIEWS.PASSWORD), 100)
+        () => setTimeout(() => this.updateView(nextView), 100)
       )
     }
   }
@@ -200,7 +202,7 @@ class SignIn extends React.Component {
               this.props
                 .refreshIdentities(this.props.api, this.props.identityAddresses)
                 .then(() => console.log('complete!'))
-              console.log('refreshing ids')
+              this.props.updateEmail(this.state.email)
             },
             err => console.error(err)
           )
@@ -358,9 +360,17 @@ class SignIn extends React.Component {
         }
       },
       {
-        show: VIEWS.PASSWORD,
+        show: VIEWS.EMAIL,
         props: {
           previous: () => this.updateView(VIEWS.INITIAL),
+          next: () => this.updateView(VIEWS.PASSWORD),
+          updateValue: this.updateValue
+        }
+      },
+      {
+        show: VIEWS.PASSWORD,
+        props: {
+          previous: () => this.updateView(VIEWS.EMAIL),
           next: this.decryptKeyAndRestore,
           updateValue: this.updateValue
         }
@@ -415,6 +425,7 @@ SignIn.propTypes = {
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
+  updateEmail: PropTypes.func.isRequired,
   refreshIdentities: PropTypes.func.isRequired,
   updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
