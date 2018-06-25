@@ -408,7 +408,7 @@ const apps = {
       website: 'https://www.misthos.io',
       launchLink: 'https://www.misthos.io',
       developer: 'Justin Carter',
-      status: 'in_progress',
+      status: 'user_ready',
       storageRequired: true
     }, {
       name: 'Stealthy',
