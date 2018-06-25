@@ -22,10 +22,16 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/store/account/actions.js')
 
+const doVerifyRecoveryCode = () => dispatch =>
+  dispatch({
+    type: types.RECOVERY_CODE_VERIFIED
+  })
 
-const doVerifyRecoveryCode = () => (dispatch) => dispatch({
-  type: types.RECOVERY_CODE_VERIFIED
-})
+const updateEmail = email => dispatch =>
+  dispatch({
+    type: types.UPDATE_EMAIL_ADDRESS,
+    email
+  })
 
 function createAccount(
   encryptedBackupPhrase,
