@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { animated } from 'react-spring/dist/react-spring.umd'
+import { animated } from 'react-spring'
 import { spacing } from '@ui/common/constants'
 import { Buttons } from '@components/ui/components/button'
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import memoize from 'memoize-one'
 import { Shell } from '@ui/containers/shell'
 import { Header } from '@ui/containers/headers'
-import { Transition } from 'react-spring/dist/react-spring.umd'
+import { Transition } from 'react-spring'
 import { WindowSize } from 'react-fns'
 const ShellContext = React.createContext()
 

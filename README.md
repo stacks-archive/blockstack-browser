@@ -24,11 +24,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 
 ## Developing
 
-Blockstack Browser requires a local instance of Blockstack Core to run. To get started, first install Blockstack Core and then proceed with the installation of Blockstack Browser.
-
 ### macOS
-
-Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 *Please note these instructions have only been tested on macOS 10.13*
 
@@ -64,23 +60,6 @@ and refresh the page.
 parameter.  If it starts with any number of `/` characters, remove them and
 reload the page.  For example, if your `auth=` query looks like
 `auth=///abcdef...`, then you will need to change it to `auth=abcdef...`.
-
-### Windows
-
-*Note: The installation instructions below are for setting up a development environment on Windows 10. If you are using Blockstack for the first time or are looking to try Blockstack out, please go to our [downloads page](https://blockstack.org/install) and install the version there.*
-
-The Blockstack API and the Blockstack Browser run best in Docker. There is a provided CLI to help you build and launch `docker` images if you are not comfortable with `docker`:`launcher`. The CLI will pull down the images from our [Quay image repository](https://quay.io/organization/blockstack).
-
-1. Download the [launcher script](https://raw.githubusercontent.com/blockstack/packaging/master/browser-core-docker/launcher) from our packaging repository.
-
-2. In order to use the launcher script, you must have Docker installed and setup on your machine. Our [Windows installer](http://packages.blockstack.com/repositories/windows/) sets up Docker for you and uses the launcher script to start Blockstack Browser automatically. The same Windows installer can be found on the [Installing Blockstack README](https://github.com/blockstack/blockstack-core#installing-blockstack).
-
-3. Run `./launcher pull`. This will fetch the latest docker images from our image repository.
-
-4. Start the Blockstack Core API using `./launcher start`
-
-5. When you are done, you can clean up your environment: `./launcher stop`
-
 
 ## Building for macOS
 
