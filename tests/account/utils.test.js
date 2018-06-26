@@ -85,7 +85,7 @@ describe('upload-profile', () => {
         .catch(() => assert.fail())
     })
 
-    it('should error if it cannot write to where the zonefile points', () => {
+    it('should log an error and upload to the default if it cannot write to where the zonefile points', () => {
       const ecPair = ECPair.fromWIF(BitcoinKeyPairs.test1.wif)
       const address = ecPair.getAddress()
       const key = ecPair.d.toBuffer(32).toString('hex')
@@ -93,6 +93,15 @@ describe('upload-profile', () => {
         address,
         key
       }
+
+      const mockResponseBody = {
+        publicURL: `https://gaia.blockstack.org/hub/${address}/profile.json`
+      }
+
+      // mock gaia hub
+      nock('https://hub.blockstack.org')
+        .post(`/store/${address}/profile.json`)
+        .reply(200, mockResponseBody)
 
       const zoneFile = '$ORIGIN satoshi.id\n$TTL 3600\n_http._tcp\tIN\tURI\t10\t1\t' +
             `"https://potato.blockstack.org/hub/${address}/foo-profile.json"\n\n`

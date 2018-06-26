@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import Modal from 'react-modal'
 import ReactTooltip from 'react-tooltip'
 
 import { openInNewTab, getWebAccountTypes } from '@utils'
@@ -41,7 +39,7 @@ class SocialAccountItem extends Component {
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
     if (webAccountTypes.hasOwnProperty(this.props.service)) {
       if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
-        let urlTemplate = webAccountTypes[this.props.service].urlTemplate
+        const urlTemplate = webAccountTypes[this.props.service].urlTemplate
         if (urlTemplate) {
           accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
         }
@@ -62,7 +60,7 @@ class SocialAccountItem extends Component {
   getIdentifier() {
     let identifier = this.props.identifier
     if (identifier.length >= 40) {
-      identifier = identifier.slice(0, 40) + '...'
+      identifier = `${identifier.slice(0, 40)}...`
     }
     return identifier
   }
@@ -91,7 +89,7 @@ class SocialAccountItem extends Component {
     }
   }
 
-  onClick = (e) => {
+  onClick = () => {
     this.props.onClick(this.props.service)
   }
 
@@ -106,11 +104,11 @@ class SocialAccountItem extends Component {
     const webAccountType = webAccountTypes[this.props.service]
     const verified = this.props.verified
     const pending = this.props.pending
-    const verifiedClass = verified ? "verified" : "pending"
-    const placeholderClass = this.props.placeholder ? "placeholder" : ""
+    const verifiedClass = verified ? 'verified' : 'pending'
+    const placeholderClass = this.props.placeholder ? 'placeholder' : ''
 
     if (webAccountType) {
-      let accountServiceName = webAccountType.label
+      const accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
           <li className={`clickable ${verifiedClass} ${placeholderClass}`} onClick={this.onClick}>
@@ -120,7 +118,8 @@ class SocialAccountItem extends Component {
                 type="dark"
                 effect="solid"
                 id={`verified-${this.props.service}`}
-                className="text-center">
+                className="text-center"
+              >
                 {verified && 'Verified'}
               </ReactTooltip>
             }
@@ -149,11 +148,11 @@ class SocialAccountItem extends Component {
 
             {this.props.placeholder && (
               <span className="app-account-service font-weight-normal">
-                { this.getPlaceholderText(this.props.service) }
+                {this.getPlaceholderText(this.props.service)}
               </span>
             )}
 
-            {verified ?
+            {verified &&
               <span
                 className="float-right status"
                 data-tip
@@ -162,12 +161,12 @@ class SocialAccountItem extends Component {
               >
                 <i className="fa fa-fw fa-check-circle fa-lg" />
               </span>
-              :
+            }
+            {!verified && 
               (this.props.placeholder) ?
               <span className="float-right star">+1<i className="fa fa-w fa-star-o" /></span>
               :
-              <span className="float-right badge badge-danger badge-verification">Unverified
-              </span>
+              <span className="float-right badge badge-danger badge-verification">Unverified</span>
             }
           </li>
         )

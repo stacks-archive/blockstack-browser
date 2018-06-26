@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="WelcomeDlgDescription">
+    Welcome to the Blockstack Installer. This will guide you through installing or updating Blockstack Browser.
+  </String>
+</WixLocalization>
