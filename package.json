@@ -105,7 +105,7 @@
     "cors": "^2.8.1",
     "corsproxy": "^1.5.0",
     "corsproxy-https": "^1.5.2",
-    "cross-env": "^1.0.8",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "css-modules-require-hook": "^2.0.2",
     "debowerify": "^1.5.0",
@@ -181,7 +181,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0",
     "webpack": "^4.12.1",
-    "webpack-cli": "^2.0.14",
+    "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.1",
     "webpack-serve": "^1.0.4",
     "webpackbar": "^2.6.1",
@@ -212,7 +212,7 @@
     "url": "https://github.com/blockstack/blockstack-browser.git"
   },
   "scripts": {
-    "dev": "webpack-serve --content",
+    "dev": "webpack-serve",
     "dev-proxy": "NODE_ENV=development ./node_modules/.bin/gulp proxy",
     "dev-ui": "echo 'Please use dev instead of dev-ui'",
     "dev-webapp": "NODE_ENV=development ./node_modules/.bin/gulp dev-webapp",
@@ -224,7 +224,7 @@
     "mac-release": "npm run test && npm install --no-save appdmg && NODE_ENV=production ./node_modules/.bin/gulp mac-release",
     "prod-webapp": "NODE_ENV=production ./node_modules/.bin/gulp prod-webapp",
     "test": "NODE_ENV=test npm run lint && npm run flow && ./node_modules/.bin/gulp test",
-    "build": "NODE_ENV=production webpack",
+    "build": "cross-env NODE_ENV=production webpack",
     "start": "serve dist --single"
   }
 }

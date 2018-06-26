@@ -14,6 +14,9 @@ module.exports = {
   entry: {
     main: ['./app/js/index.js']
   },
+  node: {
+    fs: 'empty'
+  },
   output: {
     filename: '[name].[hash].js',
     path: path.resolve(__dirname, 'dist')
