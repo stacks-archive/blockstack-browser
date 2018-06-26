@@ -107,6 +107,12 @@ class SocialAccountItem extends Component {
     const verifiedClass = verified ? 'verified' : 'pending'
     const placeholderClass = placeholder ? 'placeholder' : ''
 
+    const EditButton = () => (
+      <span className="">
+        <i className="fa fa-fw fa-pencil" />
+      </span>
+    )
+
     if (webAccountType) {
       const accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
@@ -137,12 +143,7 @@ class SocialAccountItem extends Component {
               </span>
             )}
 
-            {!this.props.placeholder &&
-              this.props.editing && (
-                <span className="">
-                  <i className="fa fa-fw fa-pencil" />
-                </span>
-              )}
+            {!this.props.placeholder && this.props.editing && <EditButton />}
 
             {!placeholder && (
               <span className="app-account-service font-weight-normal">
