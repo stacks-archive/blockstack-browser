@@ -107,19 +107,20 @@ module.exports = {
       filename: 'style.[contenthash].css'
     }),
     new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, 'app', 'index.html'),
+      template: path.resolve(__dirname, 'public', 'index.html'),
       filename: path.resolve(__dirname, 'dist', 'index.html')
     })
   ]
 }
 
 module.exports.serve = {
-  content: [__dirname],
+  content: ['app', 'dist'],
   add: (app, middleware, options) => {
     const historyOptions = {
       // ... see: https://github.com/bripkens/connect-history-api-fallback#options
     }
     app.use(convert(history(historyOptions)))
+
     middleware.webpack()
     middleware.content()
   }
