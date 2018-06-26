@@ -8,7 +8,22 @@
       }
     ],
     "@babel/preset-react",
-    "@babel/preset-env"
+    [
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "useBuiltIns": "usage",
+        "targets": {
+          "browsers": [
+            "Chrome >= 60",
+            "Safari >= 10.1",
+            "iOS >= 10.3",
+            "Firefox >= 54",
+            "Edge >= 15"
+          ]
+        }
+      }
+    ]
   ],
   "plugins": [
     "react-hot-loader/babel",

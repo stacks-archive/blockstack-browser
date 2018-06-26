@@ -3,6 +3,11 @@ import React from 'react'
 import 'babel-polyfill'
 import 'inert-polyfill'
 
+import '../styles/bootstrap.min.css'
+import '../styles/fonts.css'
+import '../styles/font-awesome.css'
+import '../styles/app.css'
+
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 

@@ -6,9 +6,11 @@ const history = require('connect-history-api-fallback')
 const convert = require('koa-connect')
 const isProd = process.env.NODE_ENV === 'production'
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-
+const WebpackBar = require('webpackbar')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 module.exports = {
-  mode: 'development',
+  mode: isProd ? 'production' : 'development',
   entry: {
     main: ['./app/js/index.js']
   },
@@ -29,13 +31,13 @@ module.exports = {
         }
       },
       {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000'
+      },
+
+      {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader'
-        ]
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.html$/,
@@ -47,6 +49,19 @@ module.exports = {
         ]
       }
     ]
+  },
+  resolve: {
+    alias: {
+      '@components': './app/js/components',
+      '@common': './app/js/common',
+      '@styled': './app/js/components/styled',
+      '@utils': './app/js/utils',
+      '@blockstack/ui': './app/js/components/ui',
+      '@ui/components': './app/js/components/ui/components',
+      '@ui/containers': './app/js/components/ui/containers',
+      '@ui/common': './app/js/components/ui/common',
+      log4js: './app/js/logger.js'
+    }
   },
   optimization: {
     minimizer: [
@@ -103,13 +118,18 @@ module.exports = {
     }
   },
   plugins: [
+    new CleanWebpackPlugin(['dist']),
+    new WebpackBar({
+      color: '#9E5FC1'
+    }),
     new MiniCssExtractPlugin({
       filename: 'style.[contenthash].css'
     }),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
       filename: path.resolve(__dirname, 'dist', 'index.html')
-    })
+    }),
+    new CopyWebpackPlugin([{ from: 'app/images', to: 'images' }])
   ]
 }
 
