@@ -29,7 +29,7 @@ const AppIcon = (props) => (
     >
       <div className="app-box">
         <img
-          src={`/images/${props.iconImage}`}
+          src={`/build/images/${props.iconImage}`}
           alt={props.displayName}
         />
       </div>
