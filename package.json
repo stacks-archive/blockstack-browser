@@ -106,6 +106,7 @@
     "chai": "^3.5.0",
     "change-case": "^2.3.1",
     "chromedriver": "^2.21.2",
+    "clean-css-loader": "^1.0.1",
     "clean-webpack-plugin": "^0.1.19",
     "co-mocha": "^1.1.2",
     "concurrently": "^2.1.0",
@@ -151,6 +152,7 @@
     "gulp-util": "^3.0.6",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.1.0",
+    "imagemin-webp": "^4.1.0",
     "imagemin-webpack-plugin": "^2.1.5",
     "istanbul": "^0.4.5",
     "jsdom": "^9.2.0",
@@ -184,6 +186,8 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0",
+    "webp-loader": "^0.4.0",
+    "webp-webpack-plugin": "^1.2.6",
     "webpack": "^4.12.1",
     "webpack-cli": "^3.0.8",
     "webpack-serve": "^1.0.4",
@@ -236,9 +240,10 @@
     "mac:buildDebug": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Debug",
     "test": "npm run lint && npm run flow && npm run test:gulp",
     "test:gulp": "cross-env NODE_ENV=test gulp test",
-    "build": "cross-env NODE_ENV=production webpack",
+    "build": "cross-env NODE_ENV=production webpack && npm run images",
     "start": "serve build --single",
     "web": "npm run build",
+    "images": "node utils/webp.js",
     "prod-webapp": "npm run build"
   }
 }

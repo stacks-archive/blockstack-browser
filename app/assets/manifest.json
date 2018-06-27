@@ -1,6 +1,7 @@
 {
   "name": "Blockstack Browser",
-  "start_url": "https://browser.blockstack.org",
+  "short_name": "Blockstack",
+  "start_url": "/index.html",
   "description": "The Blockstack Browser allows you to explore the Blockstack internet.",
   "background_color": "#ffffff",
   "theme_color": "rgb(39, 15, 52)",

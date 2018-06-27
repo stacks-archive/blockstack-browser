@@ -11,7 +11,12 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const workboxPlugin = require('workbox-webpack-plugin')
+const imageminWebp = require('imagemin-webp')
 
+const cssUseList = ['style-loader', 'css-loader']
+if (isProd) {
+  cssUseList.push('clean-css-loader')
+}
 module.exports = {
   mode: isProd ? 'production' : 'development',
   devtool: 'cheap-module-source-map',
@@ -46,7 +51,7 @@ module.exports = {
 
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: cssUseList
       },
       {
         test: /\.html$/,
@@ -78,16 +83,8 @@ module.exports = {
     minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {
-          parse: {
-            // we want uglify-js to parse ecma 8 code. However, we don't want it
-            // to apply any minfication steps that turns valid ecma 5 code
-            // into invalid ecma 5 code. This is why the 'compress' and 'output'
-            // sections only apply transformations that are ecma 5 safe
-            // https://github.com/facebook/create-react-app/pull/4234
-            ecma: 8
-          },
+          ecma: 8,
           compress: {
-            ecma: 5,
             warnings: false,
             // Disabled because of an issue with Uglify breaking seemingly valid code:
             // https://github.com/facebook/create-react-app/issues/2376
@@ -100,7 +97,6 @@ module.exports = {
             reserved: ['BigInteger', 'ECPair', 'Point']
           },
           output: {
-            ecma: 5,
             comments: false,
             // Turned on because emoji and regex is not minified properly using default
             // https://github.com/facebook/create-react-app/issues/2488
@@ -144,9 +140,6 @@ module.exports = {
     }),
     new webpack.HashedModuleIdsPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new MiniCssExtractPlugin({
-      filename: 'style.[contenthash].css'
-    }),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
       filename: path.resolve(__dirname, 'build', 'index.html')
