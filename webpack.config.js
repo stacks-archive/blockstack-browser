@@ -9,6 +9,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WebpackBar = require('webpackbar')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const ImageminPlugin = require('imagemin-webpack-plugin').default
+
 module.exports = {
   mode: isProd ? 'production' : 'development',
   entry: {
@@ -135,7 +137,11 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: 'app/images', to: 'images' },
       { from: 'app/assets' }
-    ])
+    ]),
+    new ImageminPlugin({
+      disable: !isProd, // Disable during development
+      test: /\.(jpe?g|png|gif|svg)$/i
+    })
   ]
 }
 
