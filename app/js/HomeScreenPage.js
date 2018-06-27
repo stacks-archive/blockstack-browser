@@ -1,5 +1,8 @@
-import React from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import Navbar from './components/Navbar'
 import { AppsActions } from './store/apps'
 import appList from './data/apps'
 
@@ -53,7 +56,7 @@ class HomeScreenPage extends Component {
     instanceCreationDate: PropTypes.number
   }
 
-  async componentWillMount() {
+  componentWillMount() {
     // Refresh apps list every 12 hours
     if (
       this.props.appListLastUpdated === undefined ||
