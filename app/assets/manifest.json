@@ -1,11 +1,12 @@
 {
   "name": "Blockstack Browser",
   "short_name": "Blockstack",
-  "start_url": "/index.html",
-  "description": "The Blockstack Browser allows you to explore the Blockstack internet.",
+  "start_url": "/",
+  "description": "Blockstack is a new internet for decentralized apps where users own their data.",
   "background_color": "#ffffff",
   "theme_color": "rgb(39, 15, 52)",
   "display": "standalone",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "/images/app-blockstack.png",
