@@ -21,4 +21,4 @@ jobs:
       # test
       - run: yarn test
       # build
-      - run: yarn build
+      - run: yarn prod-webapp
