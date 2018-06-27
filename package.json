@@ -190,7 +190,7 @@
     "webp-webpack-plugin": "^1.2.6",
     "webpack": "^4.12.1",
     "webpack-cli": "^3.0.8",
-    "webpack-serve": "^1.0.4",
+    "webpack-serve": "^2.0.0-beta.3",
     "webpackbar": "^2.6.1",
     "workbox-webpack-plugin": "^3.3.0",
     "yargs": "^3.27.0"
@@ -219,7 +219,7 @@
     "url": "https://github.com/blockstack/blockstack-browser.git"
   },
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack-serve",
+    "dev": "cross-env NODE_ENV=development webpack-serve --open --log-time",
     "dev-proxy": "cross-env NODE_ENV=development ./node_modules/.bin/gulp proxy",
     "dev-windows": "cross-env NODE_ENV=development ./node_modules/.bin/gulp dev-windows",
     "dev-ui": "echo 'Please use dev instead of dev-ui'",

@@ -16,7 +16,7 @@ export {
   calculateProfileCompleteness
 } from './account-utils'
 
-export { getIdentities, authorizationHeaderValue } from './api-utils'
+export { authorizationHeaderValue } from './api-utils'
 
 export {
   broadcastTransaction,
@@ -43,7 +43,6 @@ export { getProfileFromTokens, signProfileForUpload, verifyToken } from './profi
 export { openInNewTab, isMobile } from './window-utils'
 
 export {
-  makeZoneFileForHostedProfile,
   getTokenFileUrlFromZoneFile,
   resolveZoneFileToProfile
 } from './zone-utils'

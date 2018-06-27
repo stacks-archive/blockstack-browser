@@ -147,8 +147,6 @@ module.exports = {
     new WebpackBar({
       color: '#9E5FC1'
     }),
-    new webpack.HashedModuleIdsPlugin(),
-    new webpack.optimize.AggressiveMergingPlugin(),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
       filename: path.resolve(__dirname, 'build', 'index.html')
