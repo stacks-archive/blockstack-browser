@@ -1,0 +1,30 @@
+{
+  "name": "Blockstack Browser",
+  "start_url": "https://browser.blockstack.org",
+  "description": "The Blockstack Browser allows you to explore the Blockstack internet.",
+  "background_color": "#21242c",
+  "theme_color": "#00f2dc",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/images/app-blockstack.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/app-blockstack.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/app-blockstack.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/app-blockstack.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
