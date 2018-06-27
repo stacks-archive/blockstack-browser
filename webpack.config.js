@@ -19,7 +19,7 @@ module.exports = {
   },
   output: {
     filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'build')
   },
   module: {
     rules: [
@@ -121,7 +121,7 @@ module.exports = {
     }
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(['build']),
     new WebpackBar({
       color: '#9E5FC1'
     }),
@@ -130,14 +130,17 @@ module.exports = {
     }),
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
-      filename: path.resolve(__dirname, 'dist', 'index.html')
+      filename: path.resolve(__dirname, 'build', 'index.html')
     }),
-    new CopyWebpackPlugin([{ from: 'app/images', to: 'images' }])
+    new CopyWebpackPlugin([
+      { from: 'app/images', to: 'images' },
+      { from: 'app/assets' }
+    ])
   ]
 }
 
 module.exports.serve = {
-  content: ['app', 'dist'],
+  content: ['app', 'build'],
   add: (app, middleware, options) => {
     const historyOptions = {
       // ... see: https://github.com/bripkens/connect-history-api-fallback#options

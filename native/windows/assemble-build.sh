@@ -8,7 +8,7 @@ npm i
 
 NODE_ENV=production npm run build
 
-cp -r dist native/windows/BlockstackBrowser/Resources/build
+cp -r build native/windows/BlockstackBrowser/Resources/build
 cp native/blockstackProxy.js native/windows/BlockstackBrowser/Resources/blockstackProxy.js
 curl https://nodejs.org/dist/latest-v8.x/win-x86/node.exe --output native/windows/BlockstackBrowser/Resources/node.exe
 
