@@ -14,7 +14,7 @@ const UserAvatar = ({
 }) => (
   <User.Avatar
     size={size}
-    color={stringToColor(id || 'nothing_defined_default_color')}
+    color={stringToColor(id)}
     textSize={textSize}
     camera={camera}
     {...rest}
