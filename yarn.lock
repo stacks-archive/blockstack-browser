@@ -15540,7 +15540,7 @@ workbox-sw@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/workbox-sw/-/workbox-sw-3.3.0.tgz#1a9fd728951c76b86225b472f9e37088913c9bc4"
 
-workbox-webpack-plugin@^3.0.1:
+workbox-webpack-plugin@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/workbox-webpack-plugin/-/workbox-webpack-plugin-3.3.0.tgz#d0c623139dec897388f115e5b8d5209661db2841"
   dependencies:

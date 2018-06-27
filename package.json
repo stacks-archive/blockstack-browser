@@ -188,7 +188,7 @@
     "webpack-cli": "^3.0.8",
     "webpack-serve": "^1.0.4",
     "webpackbar": "^2.6.1",
-    "workbox-webpack-plugin": "^3.0.1",
+    "workbox-webpack-plugin": "^3.3.0",
     "yargs": "^3.27.0"
   },
   "keywords": [

@@ -10,6 +10,7 @@ const WebpackBar = require('webpackbar')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
+const workboxPlugin = require('workbox-webpack-plugin')
 
 module.exports = {
   mode: isProd ? 'production' : 'development',
@@ -158,6 +159,11 @@ module.exports = {
     new ImageminPlugin({
       disable: !isProd, // Disable during development
       test: /\.(jpe?g|png|gif|svg)$/i
+    }),
+    new workboxPlugin.GenerateSW({
+      swDest: 'sw.js',
+      clientsClaim: true,
+      skipWaiting: true
     })
   ]
 }
