@@ -165,7 +165,8 @@ module.exports = {
     new workboxPlugin.GenerateSW({
       swDest: 'sw.js',
       clientsClaim: true,
-      skipWaiting: true
+      skipWaiting: true,
+      include: [/\.html$/, /\.js$/, /\.webp/]
     })
   ]
 }
