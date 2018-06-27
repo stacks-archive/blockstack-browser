@@ -3,6 +3,11 @@ import React from 'react'
 import 'babel-polyfill'
 import 'inert-polyfill'
 
+import '../styles/bootstrap.min.css'
+import '../styles/fonts.css'
+import '../styles/font-awesome.css'
+import '../styles/app.css'
+
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
@@ -60,6 +65,21 @@ checkForLegacyReduxData().then(legacyStore => {
     process.env.NODE_ENV
   )
 
+  if (process.env.NODE_ENV === 'production') {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then(registration => {
+            console.log('SW registered: ', registration)
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError)
+          })
+      })
+    }
+  }
+
   window.addEventListener('error', event => {
     // eslint-disable-next-line
     const logger = log4js.getLogger("window.addWindowListener('error')")
@@ -85,3 +105,7 @@ checkForLegacyReduxData().then(legacyStore => {
     document.getElementById('app')
   )
 })
+
+if (module.hot) {
+  module.hot.accept()
+}
