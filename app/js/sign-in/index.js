@@ -11,9 +11,9 @@ import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
-import { Initial, Password, Success } from './views'
+import { Initial, Password, Success, Email } from './views'
 import log4js from 'log4js'
-import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
+import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
 import {
   selectConnectedStorageAtLeastOnce,
   selectEmail,
@@ -23,9 +23,9 @@ import {
   selectPromptedForEmail
 } from '@common/store/selectors/account'
 import {
+  selectDefaultIdentity,
   selectLocalIdentities,
-  selectRegistration,
-  selectDefaultIdentity
+  selectRegistration
 } from '@common/store/selectors/profiles'
 import {
   selectApi,
@@ -37,17 +37,19 @@ import {
 } from '@common/store/selectors/auth'
 import { formatAppManifest } from '@common'
 import App from '../App'
+
 const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
 
 const logger = log4js.getLogger('sign-in/index.js')
 
 const VIEWS = {
   INITIAL: 0,
-  PASSWORD: 1,
-  SUCCESS: 2
+  EMAIL: 1,
+  PASSWORD: 2,
+  SUCCESS: 3
 }
 
-const views = [Initial, Password, Success]
+const views = [Initial, Email, Password, Success]
 
 function mapStateToProps(state) {
   return {
@@ -85,6 +87,7 @@ class SignIn extends React.Component {
   state = {
     password: '',
     key: '',
+    email: null,
     encryptedKey:
       this.props.location &&
       this.props.location.query &&
@@ -117,9 +120,10 @@ class SignIn extends React.Component {
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isKeyEncrypted = key => !(key.split(' ').length === 12 || key.split(' ').length === 24)
+  isKeyEncrypted = key =>
+    !(key.split(' ').length === 12 || key.split(' ').length === 24)
 
-  validateRecoveryKey = key => {
+  validateRecoveryKey = (key, nextView = VIEWS.EMAIL) => {
     if (this.state.key !== key) {
       this.setState({ key })
     }
@@ -129,7 +133,7 @@ class SignIn extends React.Component {
           encryptedKey: key,
           decrypt: true
         },
-        () => setTimeout(() => this.updateView(VIEWS.PASSWORD), 100)
+        () => setTimeout(() => this.updateView(nextView), 100)
       )
     } else {
       this.setState(
@@ -137,7 +141,7 @@ class SignIn extends React.Component {
           seed: key,
           decrypt: false
         },
-        () => setTimeout(() => this.updateView(VIEWS.PASSWORD), 100)
+        () => setTimeout(() => this.updateView(nextView), 100)
       )
     }
   }
@@ -193,6 +197,15 @@ class SignIn extends React.Component {
     setTimeout(
       () =>
         this.createAccount()
+          .then(
+            () => {
+              this.props
+                .refreshIdentities(this.props.api, this.props.identityAddresses)
+                .then(() => console.log('complete!'))
+              this.props.updateEmail(this.state.email)
+            },
+            err => console.error(err)
+          )
           .then(() => this.updateView(VIEWS.SUCCESS))
           .catch(() => {
             this.setState({
@@ -256,7 +269,7 @@ class SignIn extends React.Component {
     logger.debug('fire connectStorage')
     const storageProvider = this.props.api.gaiaHubUrl
     const signer = this.props.identityKeypairs[0].key
-    return connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
+    await connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
       const newApi = Object.assign({}, this.props.api, {
         gaiaHubConfig,
         hostedDataLocation: BLOCKSTACK_INC
@@ -305,7 +318,7 @@ class SignIn extends React.Component {
       // Create new ID and owner address and then set to default
       this.createNewIdAndSetDefault().then(() =>
         // Connect our default storage
-        this.connectStorage().then(() => console.log('complete'))
+        this.connectStorage().then(() => console.log('account creation done'))
       )
     )
   }
@@ -347,9 +360,17 @@ class SignIn extends React.Component {
         }
       },
       {
-        show: VIEWS.PASSWORD,
+        show: VIEWS.EMAIL,
         props: {
           previous: () => this.updateView(VIEWS.INITIAL),
+          next: () => this.updateView(VIEWS.PASSWORD),
+          updateValue: this.updateValue
+        }
+      },
+      {
+        show: VIEWS.PASSWORD,
+        props: {
+          previous: () => this.updateView(VIEWS.EMAIL),
           next: this.decryptKeyAndRestore,
           updateValue: this.updateValue
         }
@@ -404,6 +425,8 @@ SignIn.propTypes = {
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
+  updateEmail: PropTypes.func.isRequired,
+  refreshIdentities: PropTypes.func.isRequired,
   updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
   identityKeypairs: PropTypes.array.isRequired,
