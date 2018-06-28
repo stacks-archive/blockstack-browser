@@ -30,16 +30,16 @@ const apps = {
       storageRequired: true,
       status: 'in_progress'
     }, {
-      name: 'Isotach',
-      displayName: 'Isotach',
+      name: 'Diffuse',
+      displayName: 'Diffuse',
       description: 'A music player which connects to your cloud/distributed storage.',
       version: '1.0.0',
       appIcon: {
-        small: 'app-icon-isotach-256x256.png',
-        large: 'app-icon-isotach-1024x1024.png'
+        small: 'app-icon-diffuse-256x256.png',
+        large: 'app-icon-diffuse-512x512.png'
       },
-      website: 'https://www.isotach.io',
-      launchLink: 'https://www.isotach.io',
+      website: 'https://www.diffuse.sh',
+      launchLink: 'https://www.diffuse.sh',
       developer: 'Steven Vandevelde',
       storageRequired: true,
       status: 'in_progress'
@@ -202,15 +202,15 @@ const apps = {
     }, {
       name: 'Coins',
       displayName: 'Coins',
-      description: '',
+      description: 'Beautiful, decentralized portfolio & coin tracking.',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-coins-256x256.png',
         large: 'app-icon-coins-512x512.png'
       },
-      website: 'http://use.coinsapp.co',
-      launchLink: 'http://use.coinsapp.co',
-      developer: 'Chase Wackerfuss',
+      website: 'https://coinsapp.co',
+      launchLink: 'https://use.coinsapp.co',
+      developer: 'Thomas Osmonson',
       status: 'user_ready_token',
       storageRequired: true
     }, {
@@ -408,8 +408,63 @@ const apps = {
       website: 'https://www.misthos.io',
       launchLink: 'https://www.misthos.io',
       developer: 'Justin Carter',
-      status: 'in_progress',
+      status: 'user_ready',
       storageRequired: true
+    }, {
+      name: 'Stealthy',
+      displayName: 'Stealthy',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-stealthy-256x256.png',
+        large: 'app-icon-stealthy-512x512.png'
+      },
+      website: 'https://www.stealthy.im/',
+      launchLink: 'https://www.stealthy.im/',
+      developer: 'Prabhaav Bhardwaj',
+      status: 'user_ready_chat',
+      storageRequired: true
+    }, {
+      name: 'Hermes',
+      displayName: 'Hermes',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-hermes-256x256.png',
+        large: 'app-icon-hermes-512x512.png'
+      },
+      website: 'https://www.hihermes.co/index.html',
+      launchLink: 'https://www.hihermes.co/index.html',
+      developer: 'Dan Healy',
+      status: 'user_ready_chat',
+      storageRequired: true
+    }, {
+      name: 'PeerChat',
+      displayName: 'PeerChat',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-peerchat-256x256.png',
+        large: 'app-icon-peerchat-512x512.png'
+      },
+      website: 'https://chat.postly.co/',
+      launchLink: 'https://chat.postly.co/',
+      developer: 'Postly',
+      status: 'user_ready_chat',
+      storageRequired: true
+    }, {
+      name: 'Travelstack',
+      displayName: 'Travelstack',
+      description: 'Decentralized photo diary and social network for travelers.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-travelstack-256x256.png',
+        large: 'app-icon-travelstack-512x512.png'
+      },
+      website: 'http://www.travelstack.club',
+      launchLink: 'http://www.travelstack.club',
+      developer: 'Tiago Alves',
+      status: 'in_progress'
     }
   ]
 }

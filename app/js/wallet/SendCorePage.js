@@ -5,13 +5,14 @@ import { connect } from 'react-redux'
 
 import { AccountActions } from '../account/store/account'
 
-import Alert from '../components/Alert'
-import InputGroupSecondary from '../components/InputGroupSecondary'
+import Alert from '@components/Alert'
+import InputGroupSecondary from '@components/InputGroupSecondary'
 import CoreBalance from './components/CoreBalance'
 
 function mapStateToProps(state) {
   return {
     account: state.account,
+    inRegTestMode: state.settings.api.regTestMode,
     coreWalletWithdrawUrl: state.settings.api.coreWalletWithdrawUrl,
     broadcastTransactionUrl: state.settings.api.broadcastUrl,
     coreAPIPassword: state.settings.api.coreAPIPassword
@@ -29,7 +30,8 @@ class SendCorePage extends Component {
     broadcastTransactionUrl: PropTypes.string.isRequired,
     resetCoreWithdrawal: PropTypes.func.isRequired,
     withdrawBitcoinFromCoreWallet: PropTypes.func.isRequired,
-    coreAPIPassword: PropTypes.string.isRequired
+    coreAPIPassword: PropTypes.string.isRequired,
+    inRegTestMode: PropTypes.bool.isRequired
   }
 
   constructor(props) {
@@ -86,8 +88,11 @@ class SendCorePage extends Component {
       this.setState({
         alerts: []
       })
-
-      if (withdrawal.inProgress) {
+      if (!props.inRegTestMode) {
+        this.updateAlert(
+          'danger', 'The core wallet is only used in regtest ' +
+            'mode. Are you trying to use regtest?')
+      } else if (withdrawal.inProgress) {
         this.updateAlert('success',
         `Preparing to send your balance to ${withdrawal.recipientAddress}...`)
       } else if (withdrawal.error !== null) {
@@ -101,7 +106,8 @@ class SendCorePage extends Component {
   }
 
   render() {
-    const disabled = this.props.account.coreWallet.withdrawal.inProgress
+    const disabled = this.props.account.coreWallet.withdrawal.inProgress ||
+          !this.props.inRegTestMode
     return (
       <div>
         {this.state.alerts.map((alert, index) =>

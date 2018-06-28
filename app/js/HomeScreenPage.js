@@ -24,6 +24,7 @@ const AppIcon = (props) => (
   <div className="container-fluid app-box-wrap">
     <a
       href={props.launchLink}
+      target="_blank"
       className="app-box-container"
     >
       <div className="app-box">
@@ -84,6 +85,27 @@ class HomeScreenPage extends Component {
                 <div className="app-container no-padding">
                   {appList.apps.map((app) => {
                     if (app.status === 'user_ready') {
+                      return (<AppIcon
+                        key={app.name}
+                        iconImage={app.appIcon.small}
+                        displayName={app.displayName}
+                        launchLink={app.launchLink}
+                        storageRequired={!!app.storageRequired}
+                      />)
+                    } else {
+                      return null
+                    } }
+                  )}
+                </div>
+              </div>
+
+              <div className="app-section m-b-45">
+                <p className="app-section-heading">
+                  Chat Apps
+                </p>
+                <div className="app-container no-padding">
+                  {appList.apps.map((app) => {
+                    if (app.status === 'user_ready_chat') {
                       return (<AppIcon
                         key={app.name}
                         iconImage={app.appIcon.small}

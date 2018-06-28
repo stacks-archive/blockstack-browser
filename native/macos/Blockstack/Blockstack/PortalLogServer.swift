@@ -41,7 +41,7 @@ class PortalLogServer {
             try NSLog("Listening: \(server.listenAddressIPv4!) Port: \(server.port())")
             
         } catch {
-            NSLog("Server failed to start.")
+            NSLog("Server failed to start: \(error)")
         }
     }
     

@@ -1,17 +1,19 @@
 import './utils/proxy-fetch'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { browserHistory, withRouter } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { AccountActions } from './account/store/account'
-import { IdentityActions } from './profiles/store/identity'
 import { SettingsActions } from './account/store/settings'
 import { AppsActions } from './store/apps'
-import WelcomeModal from './welcome/WelcomeModal'
-import { getCoreAPIPasswordFromURL, getLogServerPortFromURL,
-        getRegTestModeFromURL } from './utils/api-utils'
+import {
+  getCoreAPIPasswordFromURL,
+  getLogServerPortFromURL,
+  setOrUnsetUrlsToRegTest,
+  getRegTestModeFromURL
+} from './utils/api-utils'
 import SupportButton from './components/SupportButton'
-import { SanityActions }    from './store/sanity'
+import { SanityActions } from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
 import { openInNewTab } from './utils'
@@ -39,13 +41,15 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({},
-    AccountActions,
-    SanityActions,
-    SettingsActions,
-    IdentityActions,
-    AppsActions
-  ), dispatch)
+  return bindActionCreators(
+    {
+      updateApi: SettingsActions.updateApi,
+      isCoreRunning: SanityActions.isCoreRunning,
+      isCoreApiPasswordValid: SanityActions.isCoreApiPasswordValid,
+      generateInstanceIdentifier: AppsActions.generateInstanceIdentifier
+    },
+    dispatch
+  )
 }
 
 class App extends Component {
@@ -66,6 +70,7 @@ class App extends Component {
     coreAPIPassword: PropTypes.string,
     stateVersion: PropTypes.number,
     router: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
     instanceIdentifier: PropTypes.string
   }
 
@@ -74,7 +79,9 @@ class App extends Component {
     let existingVersion = localStorage.getItem(BLOCKSTACK_STATE_VERSION_KEY)
 
     if (!existingVersion) {
-      logger.debug(`No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`)
+      logger.debug(
+        `No BLOCKSTACK_STATE_VERSION_KEY. Setting to ${CURRENT_VERSION}.`
+      )
       localStorage.setItem(BLOCKSTACK_STATE_VERSION_KEY, CURRENT_VERSION)
       existingVersion = CURRENT_VERSION
     }
@@ -84,7 +91,9 @@ class App extends Component {
 
     let needToUpdate = false
     if (existingVersion < CURRENT_VERSION) {
-      logger.debug('We need to update state. Need to check if on-boarding is open.')
+      logger.debug(
+        'We need to update state. Need to check if on-boarding is open.'
+      )
       needToUpdate = true
     }
 
@@ -114,8 +123,10 @@ class App extends Component {
     if (coreAPIPassword !== null) {
       api = Object.assign({}, api, { coreAPIPassword })
       this.props.updateApi(api)
-    } else if (isCoreEndpointDisabled()) {
-      logger.debug('Core-less build. Pretending to have a valid core connection.')
+    } else if (isCoreEndpointDisabled(api.corePingUrl)) {
+      logger.debug(
+        'Core-less build. Pretending to have a valid core connection.'
+      )
       api = Object.assign({}, api, { coreAPIPassword: 'PretendPasswordAPI' })
       this.props.updateApi(api)
     }
@@ -125,13 +136,24 @@ class App extends Component {
       this.props.updateApi(api)
     }
 
-    if (regTestMode !== null) {
-      api = Object.assign({}, api, { regTestMode })
+    if (regTestMode !== null && regTestMode !== api.regTestMode) {
+      logger.info('Regtest mode activating.')
+      api = setOrUnsetUrlsToRegTest(api, regTestMode)
       this.props.updateApi(api)
     }
 
-    if (!this.props.instanceIdentifier && this.props.localIdentities.length > 0) {
+    if (
+      !this.props.instanceIdentifier &&
+      this.props.localIdentities.length > 0
+    ) {
       this.props.generateInstanceIdentifier()
+    }
+
+    if (this.state.needToUpdate && this.props.location.pathname !== '/update') {
+      browserHistory.push({
+        pathname: '/update',
+        search: this.props.location.search
+      })
     }
   }
 
@@ -142,17 +164,12 @@ class App extends Component {
       this.performSanityChecks()
     }
 
-    if (this.props.coreApiRunning) {
-      logger.debug('Sanity check: Core API endpoint is running!')
-    } else {
+    if (!this.props.coreApiRunning) {
       // TODO connect to future notification system here
-      // alert('Sanity check: Error! Core API is NOT running!')
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 
-    if (this.props.coreApiPasswordValid) {
-      logger.debug('Sanity check: Core API password is valid!')
-    } else {
+    if (!this.props.coreApiPasswordValid) {
       logger.error('Sanity check: Error! Core API password is wrong!')
     }
     this.setState({
@@ -172,33 +189,25 @@ class App extends Component {
   }
 
   performSanityChecks() {
-    logger.trace('performSanityChecks')
     this.props.isCoreRunning(this.props.corePingUrl)
-    this.props.isCoreApiPasswordValid(this.props.walletPaymentAddressUrl,
-      this.props.coreAPIPassword)
+    this.props.isCoreApiPasswordValid(
+      this.props.walletPaymentAddressUrl,
+      this.props.coreAPIPassword
+    )
   }
 
   render() {
+    const { children } = this.props
     return (
       <div className="body-main">
-        <WelcomeModal
-          accountCreated={this.state.accountCreated}
-          storageConnected={this.state.storageConnected}
-          coreConnected={this.state.coreConnected}
-          closeModal={this.closeModal}
-          needToUpdate={this.state.needToUpdate}
-          router={this.props.router}
-        />
-        <div className="wrapper footer-padding">
-          {this.props.children}
-        </div>
+        <div className="wrapper footer-padding">{children}</div>
         <SupportButton onClick={this.onSupportClick} />
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
 
 /*
 {

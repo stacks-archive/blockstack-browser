@@ -7,12 +7,12 @@ import { AccountActions } from '../../../account/store/account'
 import { AvailabilityActions } from '../../store/availability'
 import { IdentityActions } from '../../store/identity'
 import { RegistrationActions } from '../../store/registration'
-import { hasNameBeenPreordered, isSubdomain } from '../../../utils/name-utils'
-import { decryptBitcoinPrivateKey } from '../../../utils'
+import { hasNameBeenPreordered, isSubdomain } from '@utils/name-utils'
+import { decryptBitcoinPrivateKey } from '@utils'
 import roundTo from 'round-to'
 import { QRCode } from 'react-qr-svg'
-import Alert from '../../../components/Alert'
-import InputGroup from '../../../components/InputGroup'
+import Alert from '@components/Alert'
+import InputGroup from '@components/InputGroup'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('profiles/components/registration/RegistrationSelectView.js')
@@ -210,7 +210,7 @@ class AddUsernameSelectPage extends Component {
         const password = this.state.password
         const encryptedBackupPhrase = this.props.encryptedBackupPhrase
         decryptBitcoinPrivateKey(password, encryptedBackupPhrase)
-        .then((paymentKey) => 
+        .then((paymentKey) =>
           this.props.registerName(this.props.api, name, identity,
                                   index, address, keypair, paymentKey)
         )

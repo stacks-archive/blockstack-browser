@@ -10,7 +10,7 @@ import { AccountActions } from '../../../account/store/account'
 import { AvailabilityActions } from '../../store/availability'
 import { IdentityActions } from '../../store/identity'
 import { RegistrationActions } from '../../store/registration'
-import { isABlockstackName } from '../../../utils/name-utils'
+import { isABlockstackName } from '@utils/name-utils'
 
 import log4js from 'log4js'
 
@@ -80,6 +80,11 @@ class RegistrationSearchView extends Component {
     logger.trace('componentDidMount')
     this.props.refreshCoreWalletBalance(this.props.balanceUrl,
       this.props.api.coreAPIPassword)
+    if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
+      this.updateAlert(
+        'danger', 'You have a pending name registration. Starting a new registration' +
+          ' may interfere with that registration\'s transactions.')
+    }
   }
 
 

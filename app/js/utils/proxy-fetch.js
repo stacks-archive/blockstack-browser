@@ -37,8 +37,6 @@ function proxyFetchForSomeHosts(url, options) {
        host.endsWith('instagram.com') ||
        host.endsWith('linkedin.com') ||
        host.endsWith('ycombinator.com') ||
-       host.endsWith('bitstamp.net') ||
-       host.endsWith('blockchain.info') ||
        host.endsWith('localhost:18332')) {
     return proxyFetch(url, options)
   } else {

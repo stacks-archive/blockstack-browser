@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import Alert from '../../../components/Alert'
+import Alert from '@components/Alert'
 import { Link } from 'react-router'
 
 const RegistrationSearchBox = (props) =>

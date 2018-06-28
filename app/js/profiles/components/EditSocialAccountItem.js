@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import { connect } from 'react-redux'
-import Modal from 'react-modal'
 import { debounce } from 'lodash'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-import InputGroup from '../../components/InputGroup'
+import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
 
-import { getWebAccountTypes } from '../../utils'
+import { getWebAccountTypes } from '@utils'
 
 function mapStateToProps(state) {
   return {
@@ -39,7 +37,7 @@ class EditSocialAccountItem extends Component {
     this.state = {
       collapsed: true,
       identifier: props.identifier,
-      proofUrl: props.proofUrl,
+      proofUrl: props.proofUrl
     }
 
     this.getAccountUrl = this.getAccountUrl.bind(this)
@@ -66,7 +64,7 @@ class EditSocialAccountItem extends Component {
     let accountUrl = `http://${this.props.service}.com/${this.props.identifier}`
     if (webAccountTypes.hasOwnProperty(this.props.service)) {
       if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
-        let urlTemplate = webAccountTypes[this.props.service].urlTemplate
+        const urlTemplate = webAccountTypes[this.props.service].urlTemplate
         if (urlTemplate) {
           accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
         }
@@ -87,7 +85,7 @@ class EditSocialAccountItem extends Component {
   getIdentifier() {
     let identifier = this.state.identifier
     if (identifier.length >= 40) {
-      identifier = identifier.slice(0, 40) + '...'
+      identifier = `${identifier.slice(0, 40)}...`
     }
     return identifier
   }
@@ -98,14 +96,14 @@ class EditSocialAccountItem extends Component {
 
   collapse(collapsed = true) {
     this.setState({
-      collapsed: collapsed
+      collapsed
     })
   }
 
   onIdentifierChange(event) {
-    let identifier = event.target.value
+    const identifier = event.target.value
     this.setState({
-      identifier: identifier
+      identifier
     })
 
     if (this.props.onChange) {
@@ -115,16 +113,16 @@ class EditSocialAccountItem extends Component {
 
   onIdentifierBlur(event) {
     this.props.onBlur(event, this.props.service)
-    let identifier = event.target.value
-    if (identifier.length == 0) {
+    const identifier = event.target.value
+    if (identifier.length === 0) {
       this.collapse()
     }
   }
 
   onProofUrlChange(event) {
-    let proofUrl = event.target.value
+    const proofUrl = event.target.value
     this.setState({
-      proofUrl: proofUrl
+      proofUrl
     })
 
     if (this.props.onProofUrlChange) {
@@ -162,39 +160,43 @@ class EditSocialAccountItem extends Component {
 
   render() {
     const webAccountTypes = getWebAccountTypes(this.props.api)
-    const placeholderClass = this.props.placeholder ? "placeholder" : ""
-    const verifiedClass = this.props.verified ? "verified" : (this.state.collapsed ? "pending" : "")
-    const collapsedClass = this.state.collapsed ? "collapsed" : "active"
-    let webAccountType = webAccountTypes[this.props.service]
-    const disabled = this.props.service === 'hackerNews'
+    const placeholderClass = this.props.placeholder ? 'placeholder' : ''
+    const pending = this.state.collapsed ? 'pending' : ''
+    const verifiedClass = this.props.verified ? 'verified' : pending
+    const collapsedClass = this.state.collapsed ? 'collapsed' : 'active'
+    const webAccountType = webAccountTypes[this.props.service]
+    const stopClick = true
 
     const proofURLInput = () => {
       if (this.props.service === 'instagram' || this.props.service === 'github'
           || this.props.service === 'twitter' || this.props.service === 'facebook'
           || this.props.service === 'linkedIn' || this.props.service === 'hackerNews') {
-        return <InputGroup 
-                  name="proofUrl" 
-                  label="Proof URL" 
-                  data={this.state}
-                  placeholder="Paste Proof URL here"
-                  stopClickPropagation={true} 
-                  onChange={this.onProofUrlChange} 
-                  onBlur={event => this.props.onBlur(event, this.props.service)}
-                  accessoryIcon={this.props.verified}
-                  accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right" 
-                  disabled={false}
-                />
+        return (
+          <InputGroup
+            name="proofUrl"
+            label="Proof URL"
+            data={this.state}
+            placeholder="Paste Proof URL here"
+            stopClickPropagation={stopClick}
+            onChange={this.onProofUrlChange}
+            onBlur={event => this.props.onBlur(event, this.props.service)}
+            accessoryIcon={this.props.verified}
+            accessoryIconClass="fa fa-check fa-fw fa-lg input-accessory-icon-right"
+            disabled={false}
+          />)
       } else {
         return <div></div>
       }
     }
 
     if (webAccountType) {
-      let accountServiceName = webAccountType.label
+      const accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
-          <div className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`} 
-            onClick={this.handleClick}>
+          <div
+            className={`account ${placeholderClass} ${verifiedClass} ${collapsedClass}`}
+            onClick={this.handleClick}
+          >
             <span className="">
               <i className={`fa fa-fw ${this.getIconClass()}`} />
             </span>
@@ -212,14 +214,14 @@ class EditSocialAccountItem extends Component {
 
               {this.props.placeholder && (
                 <span className="app-account-service font-weight-normal">
-                  { this.getPlaceholderText(this.props.service) }
+                  {this.getPlaceholderText(this.props.service)}
                 </span>
               )}
 
             <span className="float-right">
-              {!this.props.verified && <span>+1<i className="fa fa-w fa-star-o" /></span> }
+              {!this.props.verified && <span>+1<i className="fa fa-w fa-star-o" /></span>}
 
-              {this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> : 
+              {this.state.collapsed ? <i className="fa fa-w fa-chevron-down" /> :
                 <i className="fa fa-w fa-chevron-up" />
               }
             </span>
@@ -228,38 +230,40 @@ class EditSocialAccountItem extends Component {
               <ReactCSSTransitionGroup
                 transitionName="account"
                 transitionEnterTimeout={400}
-                transitionLeaveTimeout={200}>
+                transitionLeaveTimeout={200}
+              >
 
-                {!this.state.collapsed && 
+                {!this.state.collapsed &&
                   (
-                    <InputGroup 
-                      key="input-group-identifier"
-                      name="identifier" 
-                      label="Username" 
-                      data={this.state}
-                      stopClickPropagation={true} 
-                      onChange={this.onIdentifierChange} 
-                      onBlur={this.onIdentifierBlur} />
+                  <InputGroup
+                    key="input-group-identifier"
+                    name="identifier"
+                    label="Username"
+                    data={this.state}
+                    stopClickPropagation={stopClick}
+                    onChange={this.onIdentifierChange}
+                    onBlur={this.onIdentifierBlur}
+                  />
                   )
                 }
 
-                {((this.props.verified || this.shouldShowVerificationInstructions()) && !this.state.collapsed) && 
+                {((this.props.verified || this.shouldShowVerificationInstructions()) && !this.state.collapsed) &&
                   <div key="input-group-proof">
                     {proofURLInput()}
                   </div>
                 }
-              
-                {(this.shouldShowVerificationInstructions() && !this.state.collapsed) && 
+
+                {(this.shouldShowVerificationInstructions() && !this.state.collapsed) &&
                   (
-                    <div>
-                      <VerificationInfo
-                        service={this.props.service}
-                        ownerAddress={this.props.ownerAddress}
-                        domainName={this.getIdentifier()}
-                        onVerifyButtonClick={(e) => 
-                          this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)} 
-                        />
-                    </div>
+                  <div>
+                    <VerificationInfo
+                      service={this.props.service}
+                      ownerAddress={this.props.ownerAddress}
+                      domainName={this.getIdentifier()}
+                      onVerifyButtonClick={(e) =>
+                        this.props.onVerifyButtonClick(e, this.props.service, this.props.identifier)}
+                    />
+                  </div>
                   )
                 }
               </ReactCSSTransitionGroup>
