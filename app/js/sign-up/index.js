@@ -107,6 +107,7 @@ class Onboarding extends React.Component {
     username: '',
     seed: '',
     appManifest: null,
+    emailConsent: false,
     emailSubmitted: false,
     emailsSending: false,
     emailsSent: false,
@@ -117,6 +118,13 @@ class Onboarding extends React.Component {
   }
   updateValue = (key, value) => {
     this.setState({ [key]: value })
+  }
+
+  toggleConsent = () => {
+    this.setState(state => ({
+      ...state,
+      emailConsent: !state.emailConsent
+    }))
   }
   updateView = view => this.setState({ view })
   backView = (view = this.state.view) => {
@@ -477,6 +485,14 @@ class Onboarding extends React.Component {
     })
   }
 
+  /**
+   * Next function for the recovery info screen
+   */
+  infoNext = () => {
+    this.props.emailNotifications(this.state.email, this.state.emailConsent)
+    this.updateView(VIEWS.HOORAY)
+  }
+
   componentDidUpdate() {
     const { creatingAccountStatus, loading, username, password } = this.state
 
@@ -530,9 +546,6 @@ class Onboarding extends React.Component {
         })
         this.sendEmails().then(() => this.updateView(VIEWS.INFO))
       }
-      // else {
-      //   this.updateView(VIEWS.INFO)
-      // }
     } else if (registration.error) {
       logger.error(`username registration error: ${registration.error}`)
       this.setState({
@@ -585,7 +598,7 @@ class Onboarding extends React.Component {
           username,
           app,
           sendRecoveryEmail: () => this.sendEmails('restore'),
-          next: () => this.updateView(VIEWS.HOORAY)
+          next: () => this.infoNext()
         }
       },
       {
@@ -611,6 +624,8 @@ class Onboarding extends React.Component {
       username,
       emailSubmitted,
       view,
+      toggleConsent: () => this.toggleConsent(),
+      consent: this.state.emailConsent,
       backView: v => this.backView(v),
       ...currentViewProps.props
     }
@@ -645,6 +660,7 @@ Onboarding.propTypes = {
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
+  emailNotifications: PropTypes.func.isRequired,
   updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
   identityKeypairs: PropTypes.array.isRequired,

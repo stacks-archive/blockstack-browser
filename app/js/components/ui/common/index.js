@@ -18,7 +18,7 @@ const trans = css`
 
 const firstLetter = string => string.charAt(0)
 
-const stringToColor = string => {
+const stringToColor = (string = 'undefined_default_color') => {
   let hash = 0
   let color = '#'
 
