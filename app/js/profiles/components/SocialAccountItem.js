@@ -41,7 +41,10 @@ class SocialAccountItem extends Component {
       if (webAccountTypes[this.props.service].hasOwnProperty('urlTemplate')) {
         const urlTemplate = webAccountTypes[this.props.service].urlTemplate
         if (urlTemplate) {
-          accountUrl = urlTemplate.replace('{identifier}', this.props.identifier)
+          accountUrl = urlTemplate.replace(
+            '{identifier}',
+            this.props.identifier
+          )
         }
       }
     }
@@ -66,21 +69,19 @@ class SocialAccountItem extends Component {
   }
 
   getPlaceholderText(service) {
-    if(service === 'bitcoin' || service === 'ethereum') {
+    if (service === 'bitcoin' || service === 'ethereum') {
       return (
         <span className="app-account-service font-weight-normal">
           Prove your <span className="text-capitalize">{service}</span> address
         </span>
       )
-    }
-    else if (service === 'pgp' || service === 'ssh') {
+    } else if (service === 'pgp' || service === 'ssh') {
       return (
         <span className="app-account-service font-weight-normal">
           Prove your {service.toUpperCase()} key
         </span>
       )
-    }
-    else {
+    } else {
       return (
         <span className="app-account-service font-weight-normal">
           Prove your <span className="text-capitalize">{service}</span> account
@@ -93,26 +94,34 @@ class SocialAccountItem extends Component {
     this.props.onClick(this.props.service)
   }
 
-  onVerifiedCheckmarkClick = (e) => {
+  onVerifiedCheckmarkClick = e => {
     e.preventDefault()
     e.stopPropagation()
     openInNewTab(this.props.proofUrl)
   }
 
   render() {
+    const { verified, pending, placeholder } = this.props
     const webAccountTypes = getWebAccountTypes(this.props.api)
     const webAccountType = webAccountTypes[this.props.service]
-    const verified = this.props.verified
-    const pending = this.props.pending
     const verifiedClass = verified ? 'verified' : 'pending'
-    const placeholderClass = this.props.placeholder ? 'placeholder' : ''
+    const placeholderClass = placeholder ? 'placeholder' : ''
+
+    const EditButton = () => (
+      <span className="">
+        <i className="fa fa-fw fa-pencil" />
+      </span>
+    )
 
     if (webAccountType) {
       const accountServiceName = webAccountType.label
       if (this.props.listItem === true) {
         return (
-          <li className={`clickable ${verifiedClass} ${placeholderClass}`} onClick={this.onClick}>
-            {!pending &&
+          <li
+            className={`clickable ${verifiedClass} ${placeholderClass}`}
+            onClick={this.onClick}
+          >
+            {!pending && (
               <ReactTooltip
                 place="top"
                 type="dark"
@@ -122,7 +131,7 @@ class SocialAccountItem extends Component {
               >
                 {verified && 'Verified'}
               </ReactTooltip>
-            }
+            )}
 
             <span className="app-account-icon">
               <i className={`fa fa-fw ${this.getIconClass()} fa-lg`} />
@@ -134,25 +143,21 @@ class SocialAccountItem extends Component {
               </span>
             )}
 
-            {(!this.props.placeholder && this.props.editing) && (
-              <span className="">
-                <i className="fa fa-fw fa-pencil" />
-              </span>
-            )}
+            {!this.props.placeholder && this.props.editing && <EditButton />}
 
-            {!this.props.placeholder && (
+            {!placeholder && (
               <span className="app-account-service font-weight-normal">
                 {`@${accountServiceName}`}
               </span>
             )}
 
-            {this.props.placeholder && (
+            {placeholder && (
               <span className="app-account-service font-weight-normal">
                 {this.getPlaceholderText(this.props.service)}
               </span>
             )}
 
-            {verified &&
+            {verified && (
               <span
                 className="float-right status"
                 data-tip
@@ -161,13 +166,18 @@ class SocialAccountItem extends Component {
               >
                 <i className="fa fa-fw fa-check-circle fa-lg" />
               </span>
-            }
-            {!verified && 
-              (this.props.placeholder) ?
-              <span className="float-right star">+1<i className="fa fa-w fa-star-o" /></span>
-              :
-              <span className="float-right badge badge-danger badge-verification">Unverified</span>
-            }
+            )}
+            {!verified && placeholder ? (
+              <span className="float-right star">
+                +1<i className="fa fa-w fa-star-o" />
+              </span>
+            ) : (
+              !verified && (
+                <span className="float-right badge badge-danger badge-verification">
+                  Unverified
+                </span>
+              )
+            )}
           </li>
         )
       } else {
@@ -179,10 +189,7 @@ class SocialAccountItem extends Component {
         )
       }
     } else {
-      return (
-        <span>
-        </span>
-      )
+      return <span />
     }
   }
 }

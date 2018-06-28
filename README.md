@@ -165,11 +165,10 @@ This repository is maintained by [yukan.id](https://explorer.blockstack.org/name
 
 1. If you haven't already, follow steps 1 & 2 above
 2. If you haven't already run `npm run dev` or `npm run build` at least once, run `npm run build`
-3. Run all tests in the `tests/` directory with the `npm run test` command
-  * A single file can be run by specifing an `-f` flag: `npm run test -f <PATH_TO_TEST_FILE>`
-    * In the `PATH_TO_TEST_FILE`, it is possible to omit the `tests/` prefix, as well as the `.test.js` suffix. They will be automatically added if not detected.
+3. Run all tests in the `test/` directory with the `npm run test` command
+  * A single file can be run by specifing an `-f` flag: `npm run test <PATH_TO_TEST_FILE>`
 
-*Note: When running tests, code coverage will be automatically calculated and output to an HTML file using the [Istanbul](https://github.com/gotwarlost/istanbul) library. These files can be seen in the generated `coverage/` directory.*
+*Note: When running tests, code coverage will be automatically calculated and output to an HTML file using the [Istanbul](https://istanbul.js.org/) library. These files can be seen in the generated `__coverage__/` directory.*
 
 ## App Development
 ### Run the browser in the Blockstack Test Environment

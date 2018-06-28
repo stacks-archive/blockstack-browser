@@ -33,20 +33,12 @@ class Success extends React.Component {
   }
 
   render() {
-    const {
-      next,
-      app,
-      goToRecovery,
-      username = '?',
-      subdomainSuffix,
-      id,
-      ...rest
-    } = this.props
+    const { next, app, goToRecovery, username = '?', id, ...rest } = this.props
 
     const user = {
-      username,
       id,
-      suffix: subdomainSuffix
+      username,
+      name: username.includes('.') ? username.split('.')[0] : null
     }
 
     const props = {
@@ -55,7 +47,7 @@ class Success extends React.Component {
         icon: <UserAvatar {...user} />,
         children: (
           <React.Fragment>
-            {username === '?' ? 'Nameless User' : user.username}
+            {username === '?' ? 'Nameless User' : user.name}
           </React.Fragment>
         ),
         variant: 'h2',
@@ -65,9 +57,7 @@ class Success extends React.Component {
           variant: username === '?' ? 'small' : 'h3',
           children: (
             <React.Fragment>
-              {username === '?'
-                ? `ID-${id}`
-                : `${user.username}.${user.suffix}`}
+              {username === '?' ? `ID-${id}` : user.username}
             </React.Fragment>
           )
         }
