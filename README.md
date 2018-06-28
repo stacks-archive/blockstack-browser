@@ -93,6 +93,12 @@ reload the page.  For example, if your `auth=` query looks like
 1. Run `npm run web`
 
 
+## Building for Linux (dpkg)
+
+1. Install [`fpm`](http://fpm.readthedocs.io/en/latest/)
+1. Run `./native/linux/make_deb.sh`
+1. A `.deb` package will be placed in `./native/linux/dist/`
+
 ## Contributing
 
 We do project-wide sprints every two weeks and we're always looking for more help.
