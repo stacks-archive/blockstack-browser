@@ -21,7 +21,7 @@ describe('encryption-utils', () => {
           assert.equal(plaintextBuffer.toString(), phrase)
         })
       })
-    }).timeout(5000) // encryption & decryption are slow
+    })
   })
 
   describe('decrypt legacy', () => {
@@ -41,5 +41,5 @@ describe('encryption-utils', () => {
           assert.equal(plaintextBuffer.toString(), phrase)
         })
     })
-  }).timeout(5000)
+  })
 })
