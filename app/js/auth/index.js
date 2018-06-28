@@ -252,7 +252,8 @@ class AuthPage extends React.Component {
           }
 
           if (storageConnected) {
-            getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
+            const hubUrl = this.props.api.gaiaHubUrl
+            getAppBucketUrl(hubUrl, appPrivateKey)
               .then(appBucketUrl => {
                 logger.debug(
                   `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
@@ -357,7 +358,7 @@ class AuthPage extends React.Component {
       transitPublicKey = this.state.decodedToken.payload.public_keys[0]
     }
     if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
-      hubUrl = this.props.api.gaiaHubConfig.server
+      hubUrl = this.props.api.gaiaHubUrl
     }
 
     const authResponse = makeAuthResponse(
