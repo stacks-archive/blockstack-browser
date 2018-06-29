@@ -465,6 +465,19 @@ const apps = {
       launchLink: 'http://www.travelstack.club',
       developer: 'Tiago Alves',
       status: 'in_progress'
+    }, {
+      name: 'NoteRiot',
+      displayName: 'NoteRiot',
+      description: 'Simple, flexible note taking.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-noteriot-256x256.png',
+        large: 'app-icon-noteriot-512x512.png'
+      },
+      website: 'https://note.riot.ai',
+      launchLink: 'https://note.riot.ai',
+      developer: 'Dan Trevino',
+      status: 'in_progress'
     }
   ]
 }
