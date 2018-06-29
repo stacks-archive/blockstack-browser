@@ -147,10 +147,23 @@ module.exports = {
       color: '#9E5FC1'
     }),
     new HtmlWebPackPlugin({
+      inject: true,
       template: path.resolve(__dirname, 'public', 'index.html'),
-      filename: path.resolve(__dirname, 'build', 'index.html')
+      filename: path.resolve(__dirname, 'build', 'index.html'),
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      }
     }),
-
+    new webpack.DefinePlugin(JSON.stringify(process.env.NODE_ENV)),
     new LodashModuleReplacementPlugin(),
     new CopyWebpackPlugin([
       { from: 'app/images', to: 'images' },
