@@ -1,12 +1,13 @@
+const isDev = process.env.NODE_ENV !== 'production'
 const logger = {
   configure: () => null,
   info: () => null,
   getLogger: log => ({
-    info: message => console.info(log, message),
-    trace: message => console.trace(log, message),
-    error: message => console.error(log, message),
-    debug: message => console.debug(log, message),
-    log: message => console.log(log, message)
+    info: message => (isDev ? console.info(log, message) : null),
+    trace: message => (isDev ? console.trace(log, message) : null),
+    error: message => (isDev ? console.error(log, message) : null),
+    debug: message => (isDev ? console.debug(log, message) : null),
+    log: message => (isDev ? console.log(log, message) : null)
   })
 }
 

@@ -5,18 +5,16 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const history = require('connect-history-api-fallback')
 const convert = require('koa-connect')
 const isProd = process.env.NODE_ENV === 'production'
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WebpackBar = require('webpackbar')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const workboxPlugin = require('workbox-webpack-plugin')
-const imageminWebp = require('imagemin-webp')
+const ReactLoadablePlugin = require('react-loadable/webpack')
+  .ReactLoadablePlugin
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const cssUseList = ['style-loader', 'css-loader']
-if (isProd) {
-  cssUseList.push('clean-css-loader')
-}
 module.exports = {
   mode: isProd ? 'production' : 'development',
   devtool: isProd ? false : 'cheap-module-source-map',
@@ -80,6 +78,7 @@ module.exports = {
   },
   optimization: {
     minimize: isProd,
+    nodeEnv: isProd ? 'production' : 'development',
     minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {
@@ -135,7 +134,7 @@ module.exports = {
           name: 'commons',
           chunks: 'initial',
           minChunks: 2,
-          test: /[\\/]src[\\/]/,
+          test: /[\\/]app[\\/]/,
           priority: -5,
           reuseExistingChunk: true
         }
@@ -151,6 +150,8 @@ module.exports = {
       template: path.resolve(__dirname, 'public', 'index.html'),
       filename: path.resolve(__dirname, 'build', 'index.html')
     }),
+
+    new LodashModuleReplacementPlugin(),
     new CopyWebpackPlugin([
       { from: 'app/images', to: 'images' },
       { from: 'app/fonts', to: 'fonts' },
@@ -159,6 +160,9 @@ module.exports = {
     new ImageminPlugin({
       disable: !isProd, // Disable during development
       test: /\.(jpe?g|png|gif|svg)$/i
+    }),
+    new ReactLoadablePlugin({
+      filename: './build/react-loadable.json'
     }),
     new workboxPlugin.GenerateSW({
       swDest: 'sw.js',

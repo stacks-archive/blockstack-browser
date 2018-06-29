@@ -4,8 +4,6 @@ import 'babel-polyfill'
 import 'inert-polyfill'
 
 import '../styles/bootstrap.min.css'
-import '../styles/fonts.css'
-import '../styles/font-awesome.css'
 import '../styles/app.css'
 
 import { render } from 'react-dom'
@@ -52,7 +50,6 @@ const checkForLegacyReduxData = async () => {
 }
 
 checkForLegacyReduxData().then(legacyStore => {
-  console.log('legacystore', legacyStore)
   const store = configureDataStore(legacyStore)
   const state = store.getState()
   const coreAPIPassword = state.settings.api.coreAPIPassword

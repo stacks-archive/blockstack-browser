@@ -1,47 +1,217 @@
 import React from 'react'
 import { browserHistory, IndexRoute, Route, Router } from 'react-router'
+import Loadable from 'react-loadable'
+
+const Loading = () => <div>Loading...</div>
 
 import App from './App'
-import HomeScreenPage from './HomeScreenPage'
-import UpdateStatePage from './update'
 
-import ProfilesApp from './profiles/ProfilesApp'
-import RegistrationPage from './profiles/RegistrationPage'
-import RegistrationSearchView from './profiles/components/registration/RegistrationSearchView'
-import RegistrationSelectView from './profiles/components/registration/RegistrationSelectView'
-import RegistrationSubmittedView from './profiles/components/registration/RegistrationSubmittedView'
-import DefaultProfilePage from './profiles/DefaultProfilePage'
-import AllProfilesPage from './profiles/AllProfilesPage'
-import ViewProfilePage from './profiles/ViewProfilePage'
-import EditProfilePage from './profiles/EditProfilePage'
-import RegisterProfilePage from './profiles/RegisterProfilePage'
-import ImportProfilePage from './profiles/ImportProfilePage'
-import ExportProfilePage from './profiles/ExportProfilePage'
-import SearchProfilesPage from './profiles/SearchProfilesPage'
-import TransferNamePage from './profiles/TransferNamePage'
-import ZoneFilePage from './profiles/ZoneFilePage'
+const HomeScreenPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "HomeScreenPage" */ './HomeScreenPage'),
+  loading: Loading,
+  delay: 300
+})
 
-import AccountApp from './account/AccountApp'
-import AccountMenu from './account/AccountMenu'
-import DeleteAccountPage from './account/DeleteAccountPage'
-import BackupAccountPage from './account/BackupAccountPage'
-import ChangePasswordPage from './account/ChangePasswordPage'
-import CreateAccountPage from './account/CreateAccountPage'
-import ApiSettingsPage from './account/ApiSettingsPage'
-import StorageProvidersPage from './account/StorageProvidersPage'
+const ProfilesApp = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "ProfilesApp" */ './profiles/ProfilesApp'),
+  loading: Loading,
+  delay: 300
+})
 
-import WalletApp from './wallet/WalletApp'
-import ReceivePage from './wallet/ReceivePage'
-import SendPage from './wallet/SendPage'
-import SendCorePage from './wallet/SendCorePage'
+const UpdateStatePage = Loadable({
+  loader: () => import(/* webpackChunkName: "UpdateStatePage" */ './update'),
+  loading: Loading,
+  delay: 300
+})
+const RegistrationPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "RegistrationPage" */ './profiles/RegistrationPage'),
+  loading: Loading,
+  delay: 300
+})
+const RegistrationSearchView = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "RegistrationSearchView" */ './profiles/components/registration/RegistrationSearchView'),
+  loading: Loading,
+  delay: 300
+})
 
-import NewAuthPage from './auth/index'
+const RegistrationSelectView = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "RegistrationSelectView" */ './profiles/components/registration/RegistrationSelectView'),
+  loading: Loading,
+  delay: 300
+})
+const RegistrationSubmittedView = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "RegistrationSubmittedView" */ './profiles/components/registration/RegistrationSubmittedView'),
+  loading: Loading,
+  delay: 300
+})
+const DefaultProfilePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "DefaultProfilePage" */ './profiles/DefaultProfilePage'),
+  loading: Loading,
+  delay: 300
+})
+const AllProfilesPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "AllProfilesPage" */ './profiles/AllProfilesPage'),
+  loading: Loading,
+  delay: 300
+})
+const ViewProfilePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "ViewProfilePage" */ './profiles/ViewProfilePage'),
+  loading: Loading,
+  delay: 300
+})
+const EditProfilePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "EditProfilePage" */ './profiles/EditProfilePage'),
+  loading: Loading,
+  delay: 300
+})
+const RegisterProfilePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "RegisterProfilePage" */ './profiles/RegisterProfilePage'),
+  loading: Loading,
+  delay: 300
+})
+const ImportProfilePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "ImportProfilePage" */ './profiles/ImportProfilePage'),
+  loading: Loading,
+  delay: 300
+})
+const ExportProfilePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "ExportProfilePage" */ './profiles/ExportProfilePage'),
+  loading: Loading,
+  delay: 300
+})
+const SearchProfilesPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "SearchProfilesPage" */ './profiles/SearchProfilesPage'),
+  loading: Loading,
+  delay: 300
+})
+const TransferNamePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "TransferNamePage" */ './profiles/TransferNamePage'),
+  loading: Loading,
+  delay: 300
+})
+const ZoneFilePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "ZoneFilePage" */ './profiles/ZoneFilePage'),
+  loading: Loading,
+  delay: 300
+})
 
-import SignUpPage from './sign-up'
-import SeedPage from './seed'
-import SignInPage from './sign-in'
+const AccountApp = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "AccountApp" */ './account/AccountApp'),
+  loading: Loading,
+  delay: 300
+})
+const AccountMenu = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "AccountMenu" */ './account/AccountMenu'),
+  loading: Loading,
+  delay: 300
+})
+const DeleteAccountPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "DeleteAccountPage" */ './account/DeleteAccountPage'),
+  loading: Loading,
+  delay: 300
+})
+const BackupAccountPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "BackupAccountPage" */ './account/BackupAccountPage'),
+  loading: Loading,
+  delay: 300
+})
+const ChangePasswordPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "ChangePasswordPage" */ './account/ChangePasswordPage'),
+  loading: Loading,
+  delay: 300
+})
+const CreateAccountPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "CreateAccountPage" */ './account/CreateAccountPage'),
+  loading: Loading,
+  delay: 300
+})
+const ApiSettingsPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "ApiSettingsPage" */ './account/ApiSettingsPage'),
+  loading: Loading,
+  delay: 300
+})
+const StorageProvidersPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "StorageProvidersPage" */ './account/StorageProvidersPage'),
+  loading: Loading,
+  delay: 300
+})
 
-import NotFoundPage from './errors/NotFoundPage'
+const WalletApp = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "WalletApp" */ './wallet/WalletApp'),
+  loading: Loading,
+  delay: 300
+})
+const ReceivePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "ReceivePage" */ './wallet/ReceivePage'),
+  loading: Loading,
+  delay: 300
+})
+const SendPage = Loadable({
+  loader: () => import(/* webpackChunkName: "SendPage" */ './wallet/SendPage'),
+  loading: Loading,
+  delay: 300
+})
+const SendCorePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "SendCorePage" */ './wallet/SendCorePage'),
+  loading: Loading,
+  delay: 300
+})
+
+const NewAuthPage = Loadable({
+  loader: () => import(/* webpackChunkName: "NewAuthPage" */ './auth/index'),
+  loading: Loading,
+  delay: 300
+})
+
+const SignUpPage = Loadable({
+  loader: () => import(/* webpackChunkName: "SignUpPage" */ './sign-up'),
+  loading: Loading,
+  delay: 300
+})
+const SeedPage = Loadable({
+  loader: () => import(/* webpackChunkName: "SeedPage" */ './seed'),
+  loading: Loading,
+  delay: 300
+})
+const SignInPage = Loadable({
+  loader: () => import(/* webpackChunkName: "SignInPage" */ './sign-in'),
+  loading: Loading,
+  delay: 300
+})
+
+const NotFoundPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "NotFoundPage" */ './errors/NotFoundPage'),
+  loading: Loading,
+  delay: 300
+})
 
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 
