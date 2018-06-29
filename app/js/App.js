@@ -19,7 +19,7 @@ import { isCoreEndpointDisabled } from './utils/window-utils'
 import { openInNewTab } from './utils'
 import Modal from 'react-modal'
 import { hot } from 'react-hot-loader'
-
+import { Navigation } from '@components/ui/containers/navigation'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('App.js')
@@ -201,6 +201,7 @@ class AppContainer extends Component {
     const { children } = this.props
     return (
       <div className="body-main">
+        <Navigation />
         <div className="wrapper footer-padding">{children}</div>
         <SupportButton onClick={this.onSupportClick} />
       </div>

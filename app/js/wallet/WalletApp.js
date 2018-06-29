@@ -33,7 +33,6 @@ class WalletApp extends Component {
 
     return (
       <div>
-        <Navbar activeTab="wallet" />
         <SecondaryNavBar
           leftButtonTitle="Receive"
           leftButtonLink="/wallet/receive"

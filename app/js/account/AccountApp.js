@@ -31,8 +31,8 @@ export class AccountApp extends Component {
   render() {
     return (
       <div>
-        <Navbar activeTab="settings" />
-        {this.props.location.pathname === '/account' || !this.props.storageConnected ? null : (
+        {this.props.location.pathname === '/account' ||
+        !this.props.storageConnected ? null : (
           <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/account" />
         )}
 

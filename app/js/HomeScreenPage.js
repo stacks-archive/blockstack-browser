@@ -2,8 +2,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Navbar from './components/Navbar'
-import { Navigation } from '@components/ui/containers/navigation'
 import { AppsActions } from './store/apps'
 import appList from './data/apps'
 
@@ -74,7 +72,6 @@ class HomeScreenPage extends Component {
   render() {
     return (
       <div>
-        <Navigation />
         <div className="home-screen">
           <div className="container-fluid app-center">
             <div className="container app-wrap text-center">

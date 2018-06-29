@@ -5,10 +5,8 @@ import { connect } from 'react-redux'
 
 import Navbar from '../components/Navbar'
 
-
 function mapStateToProps() {
-  return {
-  }
+  return {}
 }
 
 function mapDispatchToProps(dispatch) {
@@ -27,12 +25,7 @@ class ProfilesApp extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <Navbar activeTab="avatar" />
-          {this.props.children}
-      </div>
-    )
+    return <React.Fragment>{this.props.children}</React.Fragment>
   }
 }
 
