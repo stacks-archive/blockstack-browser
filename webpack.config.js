@@ -5,18 +5,14 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const history = require('connect-history-api-fallback')
 const convert = require('koa-connect')
 const isProd = process.env.NODE_ENV === 'production'
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const WebpackBar = require('webpackbar')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const workboxPlugin = require('workbox-webpack-plugin')
-const imageminWebp = require('imagemin-webp')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const cssUseList = ['style-loader', 'css-loader']
-if (isProd) {
-  cssUseList.push('clean-css-loader')
-}
 module.exports = {
   mode: isProd ? 'production' : 'development',
   devtool: isProd ? false : 'cheap-module-source-map',
@@ -27,8 +23,10 @@ module.exports = {
     fs: 'empty'
   },
   output: {
-    filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'build')
+    filename: 'js/[name].[chunkhash:8].js',
+    chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
+    path: path.resolve(__dirname, 'build/static'),
+    publicPath: '/static'
   },
   module: {
     rules: [
@@ -80,6 +78,7 @@ module.exports = {
   },
   optimization: {
     minimize: isProd,
+    nodeEnv: isProd ? 'production' : 'development',
     minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {
@@ -124,19 +123,15 @@ module.exports = {
       maxInitialRequests: Infinity,
       name: false,
       cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2,
+          reuseExistingChunk: true
+        },
         vendors: {
           name: 'vendors',
           enforce: true,
           test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          reuseExistingChunk: true
-        },
-        commons: {
-          name: 'commons',
-          chunks: 'initial',
-          minChunks: 2,
-          test: /[\\/]src[\\/]/,
-          priority: -5,
           reuseExistingChunk: true
         }
       }
@@ -147,21 +142,36 @@ module.exports = {
     new WebpackBar({
       color: '#9E5FC1'
     }),
-    new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, 'public', 'index.html'),
-      filename: path.resolve(__dirname, 'build', 'index.html')
-    }),
+    new webpack.DefinePlugin(JSON.stringify(process.env.NODE_ENV)),
+    new LodashModuleReplacementPlugin(),
     new CopyWebpackPlugin([
       { from: 'app/images', to: 'images' },
       { from: 'app/fonts', to: 'fonts' },
-      { from: 'app/assets' }
+      { from: 'app/public', to: '../' }
     ]),
     new ImageminPlugin({
       disable: !isProd, // Disable during development
       test: /\.(jpe?g|png|gif|svg)$/i
     }),
+    new HtmlWebPackPlugin({
+      inject: true,
+      template: path.resolve(__dirname, 'app/public', 'index.html'),
+      filename: path.resolve(__dirname, 'build', 'index.html'),
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      }
+    }),
     new workboxPlugin.GenerateSW({
-      swDest: 'sw.js',
+      swDest: '../sw.js',
       clientsClaim: true,
       skipWaiting: true,
       include: [/\.html$/, /\.js$/, /\.webp/]
