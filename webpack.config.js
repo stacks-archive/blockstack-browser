@@ -174,6 +174,9 @@ module.exports = {
       swDest: '../sw.js',
       clientsClaim: true,
       skipWaiting: true,
+      modifyUrlPrefix: {
+        '/': '/static/'
+      },
       include: [/\.html$/, /\.js$/, /\.webp/]
     })
   ]
