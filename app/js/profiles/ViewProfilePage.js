@@ -159,7 +159,7 @@ class ViewProfilePage extends Component {
               className="container-fluid text-center"
             >
               <Image
-                src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+                src={person.avatarUrl() ? person.avatarUrl() : '/static/images/avatar.png'}
                 fallbackSrc="/images/avatar.png" className="img-fluid clickable"
                 onClick={this.closePhotoModal}
               />
@@ -170,7 +170,7 @@ class ViewProfilePage extends Component {
 
                   <div className="avatar-md m-b-20 text-center">
                     <Image
-                      src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+                      src={person.avatarUrl() ? person.avatarUrl() : '/static/images/avatar.png'}
                       fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
                       onClick={this.onPhotoClick}
                     />

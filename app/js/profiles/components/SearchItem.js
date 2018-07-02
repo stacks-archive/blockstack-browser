@@ -29,7 +29,7 @@ class SearchItem extends Component {
         <div className="livesearch-avatar col-md-1">
           <Image
             className="result-img img-circle"
-            src={person.avatarUrl() || '/images/avatar.png'}
+            src={person.avatarUrl() || '/static/images/avatar.png'}
             id={this.props.domainName}
             fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
           />

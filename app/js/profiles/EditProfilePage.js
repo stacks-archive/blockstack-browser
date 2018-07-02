@@ -434,7 +434,7 @@ class EditProfilePage extends Component {
           className="container-fluid text-center"
         >
           <Image
-            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+            src={person.avatarUrl() ? person.avatarUrl() : '/static/images/avatar.png'}
             fallbackSrc="/images/avatar.png"
             className="img-fluid clickable"
             onClick={this.closePhotoModal}
@@ -450,7 +450,7 @@ class EditProfilePage extends Component {
                   <div className="col-12">
                     <div className="avatar-md m-t-50 m-b-10 text-center">
                       <Image
-                        src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+                        src={person.avatarUrl() ? person.avatarUrl() : '/static/images/avatar.png'}
                         fallbackSrc="/images/avatar.png"
                         className="rounded-circle clickable"
                         onClick={this.onPhotoClick}

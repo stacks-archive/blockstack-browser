@@ -27,8 +27,8 @@ const AppIcon = ({ launchLink, iconImage, displayName }) => {
       <a href={launchLink} target="_blank" className="app-box-container">
         <div className="app-box">
           <picture>
-            <source type="image/webp" srcSet={`/images/${webp}`} />
-            <img src={`/images/${iconImage}`} alt={displayName} />
+            <source type="image/webp" srcSet={`/static/images/${webp}`} />
+            <img src={`/static/images/${iconImage}`} alt={displayName} />
           </picture>
         </div>
       </a>

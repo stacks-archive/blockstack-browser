@@ -4,7 +4,7 @@ const formatAppManifest = manifest => {
   }
   const {
     name = 'Untitled dApp',
-    icons = [{ src: '/images/app-icon-hello-blockstack.png' }],
+    icons = [{ src: '/static/images/app-icon-hello-blockstack.png' }],
     ...restOfManifest
   } = manifest
 

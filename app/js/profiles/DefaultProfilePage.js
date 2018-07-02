@@ -734,7 +734,7 @@ class DefaultProfilePage extends Component {
           className="container-fluid text-center"
         >
           <Image
-            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
+            src={person.avatarUrl() ? person.avatarUrl() : '/static/images/avatar.png'}
             fallbackSrc="/images/avatar.png"
             className="img-fluid clickable"
             onClick={this.closePhotoModal}
@@ -793,7 +793,7 @@ class DefaultProfilePage extends Component {
                           src={
                             person.avatarUrl()
                               ? person.avatarUrl()
-                              : '/images/avatar.png'
+                              : '/static/images/avatar.png'
                           }
                           fallbackSrc="/images/avatar.png"
                           className="rounded-circle clickable"

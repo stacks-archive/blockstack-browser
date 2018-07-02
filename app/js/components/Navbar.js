@@ -3,14 +3,14 @@ import React, { Component } from 'react'
 import { Link } from 'react-router'
 
 const icons = {
-  homeNav: '/images/icon-nav-home.svg',
-  homeNavActive: '/images/icon-nav-home-hover.svg',
-  walletNav: '/images/icon-nav-wallet.svg',
-  walletNavActive: '/images/icon-nav-wallet-hover.svg',
-  avatarNav: '/images/icon-nav-profile.svg',
-  avatarNavActive: '/images/icon-nav-profile-hover.svg',
-  settingsNav: '/images/icon-nav-settings.svg',
-  settingsNavActive: '/images/icon-nav-settings-hover.svg'
+  homeNav: '/static/images/icon-nav-home.svg',
+  homeNavActive: '/static/images/icon-nav-home-hover.svg',
+  walletNav: '/static/images/icon-nav-wallet.svg',
+  walletNavActive: '/static/images/icon-nav-wallet-hover.svg',
+  avatarNav: '/static/images/icon-nav-profile.svg',
+  avatarNavActive: '/static/images/icon-nav-profile-hover.svg',
+  settingsNav: '/static/images/icon-nav-settings.svg',
+  settingsNavActive: '/static/images/icon-nav-settings-hover.svg'
 }
 
 class Navbar extends Component {
