@@ -7,13 +7,13 @@ if [ -z "$REPO_DIR" ]; then
    REPO_DIR="."
 fi
 
-pushd $REPO_DIR
+pushd "${REPO_DIR}"
 
-VERSION=$(cat package.json | grep '"version":' | awk '{ print $2 }' | sed -e 's/"//g' | sed -e 's/,//')
+VERSION="$(cat package.json | grep '"version":' | awk '{ print $2 }' | sed -e 's/"//g' | sed -e 's/,//')"
 
 echo "Building version $VERSION"
 
-mkdir -p $BUILD_DIR
+mkdir -p "${BUILD_DIR}"
 
 LIB_PATH=/usr/local/lib/blockstack-browser
 HANDLERPATH="${BUILD_DIR}/usr/share/applications"
@@ -22,27 +22,27 @@ BINPATH="${BUILD_DIR}/usr/local/bin"
 
 DISTPATH="native/linux/dist"
 
-mkdir -p $OUTPATH
-mkdir -p $BINPATH
-mkdir -p $HANDLERPATH
-mkdir -p $DISTPATH
+mkdir -p "${OUTPATH}"
+mkdir -p "${BINPATH}"
+mkdir -p "${HANDLERPATH}"
+mkdir -p "${DISTPATH}"
 
 DISTFILE="${DISTPATH}/blockstack-browser_${VERSION}_all.deb"
 
 npm install
-NODE_ENV=production ./node_modules/.bin/gulp prod-webapp
+NODE_ENV="production ./node_modules/.bin/gulp prod-webapp"
 
-echo "Building $DISTFILE"
+echo "Building ${DISTFILE}"
 
 echo "Copying gulped build"
-cp -r ./build $OUTPATH
-mv $OUTPATH/build $OUTPATH/browser
+cp -r ./build "${OUTPATH}"
+mv "${OUTPATH}/build" "${OUTPATH}/browser"
 
-cp native/blockstackProxy.js $OUTPATH
+cp native/blockstackProxy.js "${OUTPATH}"
 
 MAKE_CORS=0
 
-if [ $MAKE_CORS == "1" ]; then
+if [ $MAKE_CORS = "1" ]; then
     echo "Install the CORS Proxy"
     mkdir -p $OUTPATH/corsproxy/node_modules
     npm install corsproxy-https --prefix $OUTPATH/corsproxy
@@ -51,19 +51,23 @@ fi
 
 echo "Make run scripts"
 
-echo "#!/bin/bash" > $BINPATH/blockstack-browser
-echo "nodejs $LIB_PATH/blockstackProxy.js 8888 $LIB_PATH/browser" >> $BINPATH/blockstack-browser
+cat - > $BINPATH/blockstack-browser <<EOF
+#!/bin/bash
+nodejs "$LIB_PATH/blockstackProxy.js" 8888 "$LIB_PATH/browser"
+EOF
 
 cat - > $BINPATH/blockstack-protocol-handler <<EOF
 #!/bin/bash
-AUTH=\$(echo "\$1" | sed s#blockstack://## | sed s/blockstack://)
+AUTH=\$(echo "\$1" | sed s#/##g | sed s/blockstack:// | sed 's/ //g')
 xdg-open "http://localhost:8888/auth?authRequest=\${AUTH}"
 EOF
 
 
-if [ $MAKE_CORS == "1" ]; then
-    echo "#!/bin/bash" > $BINPATH/blockstack-cors-proxy
-    echo "$LIB_PATH/corsproxy/node_modules/.bin/corsproxy" >> $BINPATH/blockstack-cors-proxy
+if [ $MAKE_CORS = "1" ]; then
+    cat - > $BINPATH/blockstack-cors-proxy <<EOF
+#!/bin/bash
+"$LIB_PATH/corsproxy/node_modules/.bin/corsproxy"
+EOF
     chmod 0555 $BINPATH/blockstack-cors-proxy
 fi
 
