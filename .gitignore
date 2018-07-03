@@ -34,3 +34,4 @@ unused
 tmp
 .idea
 .swp
+yarn.lock

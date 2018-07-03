@@ -134,7 +134,37 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        test: /\.(gif|png|webp|jpe?g|svg)$/i,
+        use: [
+          'file-loader',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              },
+              // optipng.enabled: false will disable optipng
+              optipng: {
+                enabled: false
+              },
+              pngquant: {
+                quality: '65-90',
+                speed: 4
+              },
+              gifsicle: {
+                interlaced: false
+              },
+              // the webp option will enable WEBP
+              webp: {
+                quality: 75
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
         loader: 'url-loader?limit=100000'
       },
 
@@ -164,6 +194,7 @@ module.exports = {
       '@ui/components': './app/js/components/ui/components',
       '@ui/containers': './app/js/components/ui/containers',
       '@ui/common': './app/js/components/ui/common',
+      '@images': './app/images',
       log4js: './app/js/logger.js'
     }
   },

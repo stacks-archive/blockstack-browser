@@ -16,7 +16,8 @@
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",
               "@ui/common": "./app/js/components/ui/common",
-              "log4js": "./app/js/logger.js"
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
             }
           }
         ]
@@ -69,7 +70,8 @@
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",
               "@ui/common": "./app/js/components/ui/common",
-              "log4js": "./app/js/logger.js"
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
             }
           }
         ]
@@ -121,7 +123,8 @@
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",
               "@ui/common": "./app/js/components/ui/common",
-              "log4js": "./app/js/logger.js"
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
             }
           }
         ]
