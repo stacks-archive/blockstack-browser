@@ -106,8 +106,9 @@ module.exports = {
         ]
       },
       {
-        test: /\.(woff|woff2|eot|ttf)$/,
-        loader: 'url-loader?limit=100000'
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000',
+        include: [path.resolve(__dirname, 'app/fonts')]
       },
 
       {
