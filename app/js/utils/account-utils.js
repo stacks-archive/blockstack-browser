@@ -441,6 +441,8 @@ export function getCorrectAppPrivateKey(scopes, profile, appsNodeKey, salt, appD
     } else {
       return appPrivateKey
     }
+  }
+}
 
 export function getBlockchainIdentities(masterKeychain, identitiesToGenerate) {
   const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
