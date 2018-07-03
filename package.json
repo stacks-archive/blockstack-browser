@@ -244,10 +244,9 @@
     "mac:buildDebug": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Debug",
     "test": "npm run lint && npm run flow && npm run test:gulp",
     "test:gulp": "cross-env NODE_ENV=test gulp test",
-    "build": "cross-env NODE_ENV=production webpack && npm run images",
+    "build": "cross-env NODE_ENV=production webpack",
     "start": "serve build --single",
     "web": "npm run build",
-    "images": "node utils/webp.js",
     "prod-webapp": "npm run build"
   }
 }

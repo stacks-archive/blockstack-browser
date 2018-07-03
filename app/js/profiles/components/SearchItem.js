@@ -5,6 +5,7 @@ import { Person } from 'blockstack'
 
 import Image from '@components/Image'
 import SocialAccountItem from './SocialAccountItem'
+import { defaultAvatartImage } from '@components/ui/common/constants'
 
 class SearchItem extends Component {
   static propTypes = {
@@ -29,7 +30,7 @@ class SearchItem extends Component {
         <div className="livesearch-avatar col-md-1">
           <Image
             className="result-img img-circle"
-            src={person.avatarUrl() || '/static/images/avatar.png'}
+            src={person.avatarUrl() || defaultAvatartImage}
             id={this.props.domainName}
             fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
           />
@@ -37,7 +38,7 @@ class SearchItem extends Component {
         <div className="livesearch-id col-md-2">{this.props.domainName}</div>
         <div className="livesearch-name col-md-3">{person.name()}</div>
         <div className="col-md-6">
-          {accounts.map((account) => {
+          {accounts.map(account => {
             let socialAccount = ''
             if (account.service && account.identifier) {
               socialAccount = (

@@ -8,63 +8,10 @@ const WebpackBar = require('webpackbar')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const ImageminPlugin = require('imagemin-webpack-plugin').default
 const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
-
-/**
- * Webpack plugins
- */
-const plugins = [
-  new WebpackBar({
-    color: '#9E5FC1'
-  }),
-  new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-  }),
-  new LodashModuleReplacementPlugin(),
-  new CopyWebpackPlugin([
-    {
-      from: 'app/images',
-      to: path.resolve(__dirname, 'build', 'static', 'images')
-    },
-    {
-      from: 'app/fonts',
-      to: path.resolve(__dirname, 'build', 'static', 'fonts')
-    },
-    { from: 'app/public', to: path.resolve(__dirname, 'build') }
-  ]),
-  new ImageminPlugin({
-    disable: !isProd, // Disable during development
-    test: /\.(jpe?g|png|gif|svg)$/i
-  }),
-  new HtmlWebPackPlugin({
-    inject: true,
-    template: path.resolve(__dirname, 'app/public', 'index.html'),
-    filename: path.resolve(__dirname, 'build', 'index.html'),
-    minify: {
-      removeComments: true,
-      collapseWhitespace: true,
-      removeRedundantAttributes: true,
-      useShortDoctype: true,
-      removeEmptyAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      keepClosingSlash: true,
-      minifyJS: true,
-      minifyCSS: true,
-      minifyURLs: true
-    }
-  }),
-  new workboxPlugin.GenerateSW({
-    swDest: 'sw.js',
-    clientsClaim: true,
-    skipWaiting: true,
-    include: [/\.html$/, /\.js$/, /\.webp/]
-  })
-]
 
 /**
  * Output config
@@ -78,13 +25,10 @@ const output = {
 /**
  * Production changes
  *
- * We clean the build folder only in production
- *
  * We change path/publicPath in prod because having
  * them in dev affects webpack-dev-server
  */
 if (isProd) {
-  plugins.push(new CleanWebpackPlugin(['build']))
   output.path = path.resolve(__dirname, 'build/static')
   output.publicPath = '/static/'
 }
@@ -144,20 +88,18 @@ module.exports = {
                 progressive: true,
                 quality: 65
               },
-              // optipng.enabled: false will disable optipng
               optipng: {
                 enabled: false
               },
               pngquant: {
-                quality: '65-90',
+                quality: '65-70',
                 speed: 4
               },
               gifsicle: {
                 interlaced: false
               },
-              // the webp option will enable WEBP
               webp: {
-                quality: 75
+                quality: 60
               }
             }
           }
@@ -259,5 +201,44 @@ module.exports = {
       }
     }
   },
-  plugins
+  plugins: [
+    new WebpackBar({
+      color: '#9E5FC1',
+      minimal: false
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
+    new LodashModuleReplacementPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: 'app/fonts',
+        to: path.resolve(__dirname, 'build', 'static', 'fonts')
+      },
+      { from: 'app/public', to: path.resolve(__dirname, 'build') }
+    ]),
+    new HtmlWebPackPlugin({
+      inject: true,
+      template: path.resolve(__dirname, 'app/public', 'index.html'),
+      filename: path.resolve(__dirname, 'build', 'index.html'),
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      }
+    }),
+    new workboxPlugin.GenerateSW({
+      swDest: '../sw.js',
+      clientsClaim: true,
+      skipWaiting: true,
+      include: [/\.html$/, /\.js$/, /\.webp/]
+    })
+  ]
 }
