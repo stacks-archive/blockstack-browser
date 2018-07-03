@@ -94,6 +94,7 @@
     "babel-plugin-istanbul": "^4.1.6",
     "babel-plugin-lodash": "^3.3.2",
     "babel-plugin-module-resolver": "^3.1.1",
+    "babel-plugin-rewire": "^1.1.0",
     "babel-plugin-styled-components": "^1.5.1",
     "babel-plugin-transform-imports": "^1.5.0",
     "babel-preset-es2015": "^6.24.1",
@@ -101,6 +102,8 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.3.13",
+    "babel-polyfill": "^6.9.0",
     "babelify": "^7.2.0",
     "brfs": "^1.4.3",
     "browser-sync": "^2.24.5",
@@ -141,7 +144,6 @@
     "gulp-eslint": "^2.0.0",
     "gulp-if": "^2.0.0",
     "gulp-imagemin": "^2.3.0",
-    "gulp-jsx-coverage": "^0.3.5",
     "gulp-mocha": "^2.1.3",
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.2",
@@ -150,7 +152,6 @@
     "gulp-sourcemaps": "^1.9.1",
     "gulp-spawn": "^0.3.0",
     "gulp-streamify": "^1.0.2",
-    "gulp-util": "^3.0.6",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.1.0",
     "image-webpack-loader": "^4.3.1",
@@ -172,6 +173,7 @@
     "node-libs-browser": "^1.0.0",
     "nyc": "^12.0.2",
     "react-hot-loader": "^4.3.3",
+    "postcss": "^5.0.11",
     "react-test-renderer": "16.2.0",
     "redux-mock-store": "^1.2.3",
     "request": "^2.79.0",
@@ -229,6 +231,8 @@
     "dev-ui": "echo 'Please use dev instead of dev-ui'",
     "dev-webapp": "echo 'Please use dev instead of dev-webapp'",
     "flow": "flow",
+    <<<<<<<
+    HEAD
     "flow-typed-install": "cross-env NODE_ENV=test ./node_modules/.bin/flow-typed install --skip",
     "lint": "eslint app/js/**/*.js",
     "mac": "cross-env NODE_ENV=production npm run build && npm run mac:copyBrowser && npm run mac:compileCorsProxy && npm run mac:buildDebug",
@@ -248,5 +252,15 @@
     "start": "serve build --single",
     "web": "npm run build",
     "prod-webapp": "npm run build"
+    =======
+    "flow-typed-install": "./node_modules/.bin/flow-typed install --skip",
+    "lint": "NODE_ENV=test ./node_modules/.bin/gulp lint",
+    "mac": "NODE_ENV=production ./node_modules/.bin/gulp mac",
+    "mac-release": "npm run test && npm install --no-save appdmg && NODE_ENV=production ./node_modules/.bin/gulp mac-release",
+    "prod-webapp": "NODE_ENV=production ./node_modules/.bin/gulp prod-webapp",
+    "test": "npm run lint && npm run flow && NODE_ENV=test nyc mocha",
+    "web": "NODE_ENV=production ./node_modules/.bin/gulp prod"
+    >>>>>>>
+    52d427fea039c6215f1829ad4558e8a67ac6aab5
   }
 }

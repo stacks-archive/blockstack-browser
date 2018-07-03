@@ -30,7 +30,7 @@ describe('Registration Store: Async Actions', () => {
   })
 
   describe('registerDomain', () => {
-    it('generates and sends transactions for name registration', () => {
+    it('generates and sends transactions for name registration', done => {
       const domainName = 'satoshi.id'
       const ownerAddress = '1GnrEexgXvHCZobXDVdhpto6QPXKthN99n'
       const coercedAddress = 'nGnrEexgXvHCZobXDVdhpto6QPXKthN99n'
@@ -55,7 +55,7 @@ describe('Registration Store: Async Actions', () => {
         makeRegister: sinon.stub().resolves(registerTxHash)
       }
 
-      return RegistrationActions.registerDomain(
+      RegistrationActions.registerDomain(
         network,
         transactions,
         domainName,
@@ -86,7 +86,7 @@ describe('Registration Store: Async Actions', () => {
           registerTxHash,
           zoneFile
         )
-      })
+      }, done).then(done).catch(done)
     })
   })
 

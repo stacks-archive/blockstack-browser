@@ -1,0 +1,6 @@
+--require babel-register
+--require test/init.js
+--require assert
+--reporter spec
+--file test/helper.js
+--recursive

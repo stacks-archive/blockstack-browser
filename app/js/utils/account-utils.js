@@ -407,3 +407,46 @@ export function findAddressIndex(address, identityAddresses) {
   }
   return null
 }
+
+export function getBlockchainIdentities(masterKeychain, identitiesToGenerate) {
+  const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+  const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(masterKeychain)
+
+  const identityPublicKeychainNode = identityPrivateKeychainNode.neutered()
+  const identityPublicKeychain = identityPublicKeychainNode.toBase58()
+
+  const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
+  const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
+
+  const firstBitcoinAddress = getBitcoinAddressNode(
+    bitcoinPublicKeychainNode
+  ).getAddress()
+
+  const identityAddresses = []
+  const identityKeypairs = []
+
+  // We pre-generate a number of identity addresses so that we
+  // don't have to prompt the user for the password on each new profile
+  for (
+    let addressIndex = 0;
+    addressIndex < identitiesToGenerate;
+    addressIndex++
+  ) {
+    const identityOwnerAddressNode = getIdentityOwnerAddressNode(
+      identityPrivateKeychainNode,
+      addressIndex
+    )
+    const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
+    identityKeypairs.push(identityKeyPair)
+    identityAddresses.push(identityKeyPair.address)
+    logger.debug(`createAccount: identity index: ${addressIndex}`)
+  }
+
+  return {
+    identityPublicKeychain,
+    bitcoinPublicKeychain,
+    firstBitcoinAddress,
+    identityAddresses,
+    identityKeypairs
+  }
+}
