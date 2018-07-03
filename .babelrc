@@ -1,8 +1,9 @@
 {
   "env": {
     "test": {
-      "presets": ["rewire", "flow", "react", "es2015", "stage-0"],
+      "presets": ["flow", "react", "es2015", "stage-0"],
       "plugins": [
+        "rewire",
         [
           "module-resolver",
           {
