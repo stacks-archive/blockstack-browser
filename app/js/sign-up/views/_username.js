@@ -112,7 +112,10 @@ class UsernameView extends React.Component {
     }
   }
 
-  processRegistration = (username, next) => next(username)
+  processRegistration = (username, next) => {
+    const lowercaseUsername = username.toLowerCase()
+    return next(lowercaseUsername)
+  }
 
   render() {
     const { updateValue, next, loading, ...rest } = this.props
