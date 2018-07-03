@@ -1,6 +1,6 @@
 import * as types from './types'
 import { HDNode } from 'bitcoinjs-lib'
-import { getBitcoinAddressNode } from '../../../utils'
+import { getBitcoinAddressNode } from '@utils'
 
 const initialState = {
   accountCreated: false, // persist
@@ -26,6 +26,7 @@ const initialState = {
     }
   },
   viewedRecoveryCode: false, // persist
+  recoveryCodeVerified: false,
   connectedStorageAtLeastOnce: false // persist
 }
 
@@ -48,6 +49,16 @@ function AccountReducer(state = initialState, action) {
           balances: state.bitcoinAccount.balances
         }
       })
+    case types.UPDATE_EMAIL_ADDRESS:
+      return {
+        ...state,
+        email: action.email
+      }
+    case types.RECOVERY_CODE_VERIFIED:
+      return {
+        ...state,
+        recoveryCodeVerified: true
+      }
     case types.DELETE_ACCOUNT:
       return Object.assign({}, state, {
         accountCreated: false,
@@ -151,7 +162,10 @@ function AccountReducer(state = initialState, action) {
     case types.NEW_IDENTITY_ADDRESS:
       return Object.assign({}, state, {
         identityAccount: Object.assign({}, state.identityAccount, {
-          addresses: [...state.identityAccount.addresses, action.keypair.address],
+          addresses: [
+            ...state.identityAccount.addresses,
+            action.keypair.address
+          ],
           keypairs: [...state.identityAccount.keypairs, action.keypair]
         })
       })
@@ -163,5 +177,7 @@ function AccountReducer(state = initialState, action) {
       return state
   }
 }
+
+export { initialState as AccountInitialState }
 
 export default AccountReducer

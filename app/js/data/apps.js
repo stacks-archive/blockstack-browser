@@ -408,7 +408,7 @@ const apps = {
       website: 'https://www.misthos.io',
       launchLink: 'https://www.misthos.io',
       developer: 'Justin Carter',
-      status: 'in_progress',
+      status: 'user_ready',
       storageRequired: true
     }, {
       name: 'Stealthy',
@@ -438,6 +438,33 @@ const apps = {
       developer: 'Dan Healy',
       status: 'user_ready_chat',
       storageRequired: true
+    }, {
+      name: 'PeerChat',
+      displayName: 'PeerChat',
+      description: '',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-peerchat-256x256.png',
+        large: 'app-icon-peerchat-512x512.png'
+      },
+      website: 'https://chat.postly.co/',
+      launchLink: 'https://chat.postly.co/',
+      developer: 'Postly',
+      status: 'user_ready_chat',
+      storageRequired: true
+    }, {
+      name: 'Travelstack',
+      displayName: 'Travelstack',
+      description: 'Decentralized photo diary and social network for travelers.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-travelstack-256x256.png',
+        large: 'app-icon-travelstack-512x512.png'
+      },
+      website: 'http://www.travelstack.club',
+      launchLink: 'http://www.travelstack.club',
+      developer: 'Tiago Alves',
+      status: 'in_progress'
     }
   ]
 }

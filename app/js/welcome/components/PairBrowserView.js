@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { SettingsActions } from '../../account/store/settings'
-import InputGroup from '../../components/InputGroup'
+import InputGroup from '@components/InputGroup'
 
 function mapStateToProps(state) {
   return {

@@ -25,10 +25,12 @@ bower_components
 # Build files
 build
 __coverage__
+.nyc_output
 
 .elasticbeanstalk/
 
 unused
 
 tmp
-
+.idea
+.swp

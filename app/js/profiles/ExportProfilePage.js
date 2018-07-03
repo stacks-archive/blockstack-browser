@@ -1,7 +1,7 @@
 import React from 'react'
 
-import InputGroup from '../components/InputGroup'
-import PageHeader from '../components/PageHeader'
+import InputGroup from '@components/InputGroup'
+import PageHeader from '@components/PageHeader'
 
 const ExportPage = () => (
   <div className="body-inner body-inner-white">

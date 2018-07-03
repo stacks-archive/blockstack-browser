@@ -1,4 +1,30 @@
 {
   "presets": ["flow", "es2015", "stage-0", "react"],
-  "plugins": ["transform-object-rest-spread"]
+  "plugins": [
+    "transform-object-rest-spread",
+    "babel-plugin-styled-components",
+    [
+      "module-resolver",
+      {
+        "root": ["./app"],
+        "alias": {
+          "@components": "./app/js/components",
+          "@common": "./app/js/common",
+          "@styled": "./app/js/components/styled",
+          "@utils": "./app/js/utils",
+          "@blockstack/ui": "./app/js/components/ui",
+          "@ui/components": "./app/js/components/ui/components",
+          "@ui/containers": "./app/js/components/ui/containers",
+          "@ui/common": "./app/js/components/ui/common"
+        }
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["rewire"],
+      "sourceMaps": "both",
+      "ignore": ["node_modules"]
+    }
+  }
 }

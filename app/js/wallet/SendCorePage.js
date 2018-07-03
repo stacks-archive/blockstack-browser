@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 
 import { AccountActions } from '../account/store/account'
 
-import Alert from '../components/Alert'
-import InputGroupSecondary from '../components/InputGroupSecondary'
+import Alert from '@components/Alert'
+import InputGroupSecondary from '@components/InputGroupSecondary'
 import CoreBalance from './components/CoreBalance'
 
 function mapStateToProps(state) {

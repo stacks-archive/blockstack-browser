@@ -1,25 +1,22 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import Alert from '../components/Alert'
+import Modal from 'react-modal'
+import Alert from '@components/Alert'
+import { isWebAppBuild } from '@utils/window-utils'
+import { decrypt, isBackupPhraseValid } from '@utils'
 
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 import { redirectToConnectToGaiaHub } from '../account/utils/blockstack-inc'
-import { isWebAppBuild } from '../utils/window-utils'
 
 import { PairBrowserView, LandingView,
   NewInternetView, RestoreView, DataControlView, EnterPasswordView,
   CreateIdentityView, WriteDownKeyView, ConfirmIdentityKeyView,
   EnterEmailView,
   ConnectStorageView } from './components'
-
-
-import { decrypt, isBackupPhraseValid } from '../utils'
-
 
 import log4js from 'log4js'
 

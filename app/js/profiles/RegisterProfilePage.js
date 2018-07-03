@@ -3,14 +3,14 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import Alert from '../components/Alert'
+import Alert from '@components/Alert'
 import { AccountActions } from '../account/store/account'
 import { AvailabilityActions } from './store/availability'
 import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
 
-import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
-import { findAddressIndex } from '../utils'
+import { hasNameBeenPreordered, isABlockstackName } from '@utils/name-utils'
+import { findAddressIndex } from '@utils'
 import roundTo from 'round-to'
 
 import log4js from 'log4js'
