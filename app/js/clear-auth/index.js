@@ -7,21 +7,21 @@ export default class ClearAuthPage extends PureComponent {
   }
 
   cancel() {
-    window.close()
+    window.history.back()
   }
 
   render() {
     return (
       <div className="container-fluid">
-        <h3 className="p-t-20">Clear Application Data</h3>
+        <h3 className="p-t-20">Sign Out</h3>
         <p>
           <i>
-            Are you sure you want to do this? It cannot be undone.
+            Erase your keychain and settings so you can create a new one or restore another keychain.
           </i>
         </p>
         <div className="m-t-40">
           <button className="btn btn-danger btn-block" onClick={this.clearData}>
-            Clear Data
+            Confirm
           </button>
         </div>
         <div className="m-t-10">
