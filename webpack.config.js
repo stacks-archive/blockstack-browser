@@ -1,32 +1,123 @@
-const HtmlWebPackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
 const path = require('path')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const history = require('connect-history-api-fallback')
-const convert = require('koa-connect')
-const isProd = process.env.NODE_ENV === 'production'
+const webpack = require('webpack')
+
+/**
+ * Plugins
+ */
 const WebpackBar = require('webpackbar')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
-const cssUseList = ['style-loader', 'css-loader']
+const isProd = process.env.NODE_ENV === 'production'
+
+/**
+ * Webpack plugins
+ */
+const plugins = [
+  new WebpackBar({
+    color: '#9E5FC1'
+  }),
+  new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+  }),
+  new LodashModuleReplacementPlugin(),
+  new CopyWebpackPlugin([
+    {
+      from: 'app/images',
+      to: path.resolve(__dirname, 'build', 'static', 'images')
+    },
+    {
+      from: 'app/fonts',
+      to: path.resolve(__dirname, 'build', 'static', 'fonts')
+    },
+    { from: 'app/public', to: path.resolve(__dirname, 'build') }
+  ]),
+  new ImageminPlugin({
+    disable: !isProd, // Disable during development
+    test: /\.(jpe?g|png|gif|svg)$/i
+  }),
+  new HtmlWebPackPlugin({
+    inject: true,
+    template: path.resolve(__dirname, 'app/public', 'index.html'),
+    filename: path.resolve(__dirname, 'build', 'index.html'),
+    minify: {
+      removeComments: true,
+      collapseWhitespace: true,
+      removeRedundantAttributes: true,
+      useShortDoctype: true,
+      removeEmptyAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      keepClosingSlash: true,
+      minifyJS: true,
+      minifyCSS: true,
+      minifyURLs: true
+    }
+  }),
+  new workboxPlugin.GenerateSW({
+    swDest: 'sw.js',
+    clientsClaim: true,
+    skipWaiting: true,
+    include: [/\.html$/, /\.js$/, /\.webp/]
+  })
+]
+
+/**
+ * Output config
+ */
+const output = {
+  filename: 'js/[name].[hash:8].js',
+  chunkFilename: 'js/[name].[hash:8].chunk.js',
+  path: path.resolve(__dirname, 'build')
+}
+
+/**
+ * Production changes
+ *
+ * We clean the build folder only in production
+ *
+ * We change path/publicPath in prod because having
+ * them in dev affects webpack-dev-server
+ */
+if (isProd) {
+  plugins.push(new CleanWebpackPlugin(['build']))
+  output.path = path.resolve(__dirname, 'build/static')
+  output.publicPath = '/static/'
+}
+
+/**
+ * Our Config Object
+ */
 module.exports = {
   mode: isProd ? 'production' : 'development',
-  devtool: isProd ? false : 'cheap-module-source-map',
+  devtool: !isProd ? 'cheap-module-source-map' : false,
   entry: {
     main: ['./app/js/index.js']
   },
   node: {
     fs: 'empty'
   },
-  output: {
-    filename: 'js/[name].[chunkhash:8].js',
-    chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
-    path: path.resolve(__dirname, 'build/static'),
-    publicPath: '/static'
+  output,
+  devServer: {
+    open: true,
+    historyApiFallback: true,
+    port: 3000,
+    contentBase: path.resolve(__dirname, 'build'),
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000,
+      ignored: /node_modules/
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers':
+        'X-Requested-With, content-type, Authorization'
+    }
   },
   module: {
     rules: [
@@ -49,7 +140,7 @@ module.exports = {
 
       {
         test: /\.css$/,
-        use: cssUseList
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.html$/,
@@ -137,60 +228,5 @@ module.exports = {
       }
     }
   },
-  plugins: [
-    new CleanWebpackPlugin(['build']),
-    new WebpackBar({
-      color: '#9E5FC1'
-    }),
-    new webpack.DefinePlugin(JSON.stringify(process.env.NODE_ENV)),
-    new LodashModuleReplacementPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'app/images', to: 'images' },
-      { from: 'app/fonts', to: 'fonts' },
-      { from: 'app/public', to: '../' }
-    ]),
-    new ImageminPlugin({
-      disable: !isProd, // Disable during development
-      test: /\.(jpe?g|png|gif|svg)$/i
-    }),
-    new HtmlWebPackPlugin({
-      inject: true,
-      template: path.resolve(__dirname, 'app/public', 'index.html'),
-      filename: path.resolve(__dirname, 'build', 'index.html'),
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true
-      }
-    }),
-    new workboxPlugin.GenerateSW({
-      swDest: '../sw.js',
-      clientsClaim: true,
-      skipWaiting: true,
-      modifyUrlPrefix: {
-        '/': '/static/'
-      },
-      include: [/\.html$/, /\.js$/, /\.webp/]
-    })
-  ]
-}
-
-module.exports.serve = {
-  content: ['app', 'build'],
-  add: (app, middleware, options) => {
-    const historyOptions = {
-      // ... see: https://github.com/bripkens/connect-history-api-fallback#options
-    }
-    app.use(convert(history(historyOptions)))
-
-    middleware.webpack()
-    middleware.content()
-  }
+  plugins
 }
