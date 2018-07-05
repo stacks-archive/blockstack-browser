@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react'
+import { withRouter } from 'react-router'
 
-export default class ClearAuthPage extends PureComponent {
-  clearData() {
+class ClearAuthPage extends PureComponent {
+  clearData = () => {
     localStorage.clear()
-    window.location = 'myblockstackapp://?authCleared=1'
+    window.location = `${this.props.location.query.protocol}://?authCleared=1`
   }
 
-  cancel() {
-    window.history.back()
+  cancel = () => {
+    window.location = `${this.props.location.query.protocol}://?authCleared=0`
   }
 
   render() {
@@ -33,3 +34,5 @@ export default class ClearAuthPage extends PureComponent {
     )
   }
 }
+
+export default withRouter(ClearAuthPage)
