@@ -1,9 +1,16 @@
 import styled, { css, keyframes } from 'styled-components'
 import { trans } from '@ui/common'
 import { spacing } from '@ui/common/constants'
-import { shake } from 'react-animations'
 import { Form as FormikForm } from 'formik'
-const shakeAnimation = keyframes`${shake}`
+const shakeAnimation = keyframes`
+  0% { transform: translateX(-10px); }
+  16% { transform: translateX(8px); }
+  33% { transform: translateX(-6px); }
+  50% { transform: translateX(4px); }
+  66% { transform: translateX(-2px); }
+  83% { transform: translateX(1px); }
+  100% { transform: translateX(0); }
+`
 
 const Input = styled.input`
   padding: 10px 0;
@@ -117,7 +124,7 @@ const Group = styled.div`
     error &&
     css`
       ${InputWrapper} {
-        animation: 0.75s ${shakeAnimation} ease-in-out;
+        animation: 0.6s ${shakeAnimation} ease;
       }
       ${Bar} {
         background: #f67b7b !important;

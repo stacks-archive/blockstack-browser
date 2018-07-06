@@ -34,7 +34,6 @@
     "query-string": "^4.2.3",
     "react": "^16.4.0",
     "react-addons-css-transition-group": "^15.6.2",
-    "react-animations": "^1.0.0",
     "react-bootstrap": "^0.28.2",
     "react-contextmenu": "^2.8.0",
     "react-copy-to-clipboard": "^5.0.1",
