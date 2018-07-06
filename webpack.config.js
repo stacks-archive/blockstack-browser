@@ -19,7 +19,8 @@ const isProd = process.env.NODE_ENV === 'production'
 const output = {
   filename: 'js/[name].[hash:8].js',
   chunkFilename: 'js/[name].[hash:8].chunk.js',
-  path: path.resolve(__dirname, 'build')
+  path: path.resolve(__dirname, 'build'),
+  publicPath: '/'
 }
 
 /**
