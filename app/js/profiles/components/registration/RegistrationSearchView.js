@@ -51,13 +51,14 @@ class RegistrationSearchView extends Component {
 
   constructor(props) {
     super(props)
-    const availableDomains = Object.assign({},
-      {
-        id: {
-          registerUrl: this.props.api.registerUrl
-        }
-      }) // ,
-      // this.props.api.subdomains)
+    const availableDomains = {
+      // ...this.props.api.subdomains,
+      // Hardcode which subdomains we allow fow now
+      id: {
+        registerUrl: this.props.api.registerUrl
+      },
+      'id.blockstack': this.props.api.subdomains['id.blockstack']
+    }
     const nameSuffixes = Object.keys(availableDomains)
 
     this.state = {
