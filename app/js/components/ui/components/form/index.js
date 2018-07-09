@@ -6,7 +6,7 @@ import { Form as FormikForm } from 'formik'
 const shakeAnimation = keyframes`${shake}`
 
 const Input = styled.input`
-  padding: 5px 0 15px;
+  padding: 10px 0;
   margin-top: 5px;
   border: none;
   outline: none;
@@ -56,7 +56,7 @@ const Bar = styled.div`
 
 const InputOverlay = styled.div`
   position: absolute;
-  top: 10px;
+  top: 15px;
   color: rgba(39, 15, 52, 0.4);
   right: 0;
   pointer-events: none;
@@ -80,7 +80,7 @@ const Label = styled.label`
   /* default state */
   ${Input}:not(:focus) ~ &,
   ${Textarea}:not(:focus) ~ & {
-    transform: translateY(10px);
+    transform: translateY(15px);
     opacity: 0.4;
   }
 
@@ -95,11 +95,11 @@ const Label = styled.label`
   }
 
   ${Textarea}:not(:focus) ~ & {
-    left: 10px;
+    transform: translateY(10px) translateX(10px);
   }
   ${Textarea}:focus ~ &,
   ${Textarea}:not(:placeholder-shown) ~ & {
-    transform: translateY(-22px) scale(0.85);
+    transform: translateY(-24px) scale(0.85) translateX(0);
   }
 `
 
