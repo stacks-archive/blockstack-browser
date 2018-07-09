@@ -241,7 +241,7 @@
     "mac:release:build:Export": "xcodebuild -archivePath ./native/macos/archive/Blockstack.xcarchive -exportOptionsPlist ./native/macos/Blockstack/export.plist -exportArchive -exportPath ./native/macos/export/",
     "mac:release:build:BuildDMG": "rm -Rf ./native/macos/export/Blockstack.dmg; node ./node_modules/appdmg/bin/appdmg.js ./native/macos/dmg.json ./native/macos/export/Blockstack.dmg",
     "mac:release:build:SignDMG": "codesign --force --sign \"Developer ID Application: Blockstack PBC\" ./native/macos/export/Blockstack.dmg; open ./native/macos/export/",
-    "mac:copyBrowser": "touch build/.gitkeep && cp -R build/**/* native/macos/Blockstack/Blockstack/browser/",
+    "mac:copyBrowser": "touch build/.gitkeep && && mkdir native/macos/Blockstack/Blockstack/browser && cp -R build/**/* native/macos/Blockstack/Blockstack/browser/",
     "mac:compileCorsProxy": "nexe -i corsproxy/corsproxy.js -o native/macos/Blockstack/corsproxy",
     "mac:compileBlockstackProxy": "nexe -i ./native/blockstackProxy.js -o ./native/macos/Blockstack/blockstackProxy",
     "mac:buildDebug": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Debug",
