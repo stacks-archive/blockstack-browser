@@ -79,13 +79,8 @@ class RegistrationSearchView extends Component {
 
   componentDidMount() {
     logger.trace('componentDidMount')
-    this.props.refreshCoreWalletBalance(this.props.balanceUrl,
-      this.props.api.coreAPIPassword)
-    if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
-      this.updateAlert(
-        'danger', 'You have a pending name registration. Starting a new registration' +
-          ' may interfere with that registration\'s transactions.')
-    }
+    const { refreshCoreWalletBalance, balanceUrl, api } = this.props
+    refreshCoreWalletBalance(balanceUrl, api.coreAPIPassword)
   }
 
 
