@@ -4,11 +4,11 @@ import { withRouter } from 'react-router'
 class ClearAuthPage extends PureComponent {
   clearData = () => {
     localStorage.clear()
-    window.location = `${this.props.location.query.protocol}://?authCleared=1`
+    window.location = `${this.props.location.query.redirect_uri}://?authCleared=1`
   }
 
   cancel = () => {
-    window.location = `${this.props.location.query.protocol}://?authCleared=0`
+    window.location = `${this.props.location.query.redirect_uri}://?authCleared=0`
   }
 
   render() {
