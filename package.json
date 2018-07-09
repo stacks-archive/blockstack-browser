@@ -235,7 +235,7 @@
     "flow-typed-install": "cross-env NODE_ENV=test ./node_modules/.bin/flow-typed install --skip",
     "lint": "eslint app/js/**/*.js",
     "mac": "cross-env NODE_ENV=production npm run build && npm run mac:copyBrowser && npm run mac:compileCorsProxy && npm run mac:buildDebug",
-    "mac:release": "npm run test && npm install --no-save appdmg && npm run build && npm run mac:copyBrowser && npm run mac:compileCorsProxy && mac:compileBlockstackProxy && mac:release:build",
+    "mac:release": "npm run test && npm install --no-save appdmg && npm run build && npm run mac:copyBrowser && npm run mac:compileCorsProxy && npm run mac:compileBlockstackProxy && npm run mac:release:build",
     "mac:release:build": "npm run mac:release:build:Archive && npm run mac:release:build:Export && npm run mac:release:build:BuildDMG && npm run mac:release:build:SignDMG",
     "mac:release:build:Archive": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Release -archivePath ./native/macos/archive/Blockstack archive",
     "mac:release:build:Export": "xcodebuild -archivePath ./native/macos/archive/Blockstack.xcarchive -exportOptionsPlist ./native/macos/Blockstack/export.plist -exportArchive -exportPath ./native/macos/export/",
