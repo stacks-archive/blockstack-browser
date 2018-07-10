@@ -157,21 +157,15 @@ export function decryptMasterKeychain(password, encryptedBackupPhrase) {
 }
 
 const EXTERNAL_ADDRESS = 'EXTERNAL_ADDRESS'
-const CHANGE_ADDRESS = 'CHANGE_ADDRESS'
 
 export function getBitcoinPrivateKeychain(masterKeychain) {
-  const BIP_44_PURPOSE = 44
-  const BITCOIN_COIN_TYPE = 0
-  const ACCOUNT_INDEX = 0
-
-  return masterKeychain
-    .deriveHardened(BIP_44_PURPOSE)
-    .deriveHardened(BITCOIN_COIN_TYPE)
-    .deriveHardened(ACCOUNT_INDEX)
+  return new BlockstackWallet(masterKeychain).getBitcoinPrivateKeychain()
 }
 
 export function getBitcoinPublicKeychain(masterKeychain) {
-  return getBitcoinPrivateKeychain(masterKeychain).neutered()
+  return new BlockstackWallet(masterKeychain)
+    .getBitcoinPrivateKeychain()
+    .neutered()
 }
 
 export function getBitcoinAddressNode(
@@ -179,17 +173,9 @@ export function getBitcoinAddressNode(
   addressIndex = 0,
   chainType = EXTERNAL_ADDRESS
 ) {
-  let chain = null
-
-  if (chainType === EXTERNAL_ADDRESS) {
-    chain = 0
-  } else if (chainType === CHANGE_ADDRESS) {
-    chain = 1
-  } else {
-    throw new Error('Invalid chain type')
-  }
-
-  return bitcoinKeychain.derive(chain).derive(addressIndex)
+  return BlockstackWallet.getNodeFromBitcoinKeychain(
+    bitcoinKeychain.toBase58(), addressIndex, chainType
+  )
 }
 
 export function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
