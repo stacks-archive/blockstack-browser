@@ -49,6 +49,11 @@ function AccountReducer(state = initialState, action) {
           balances: state.bitcoinAccount.balances
         }
       })
+    case types.UPDATE_EMAIL_ADDRESS:
+      return {
+        ...state,
+        email: action.email
+      }
     case types.RECOVERY_CODE_VERIFIED:
       return {
         ...state,
