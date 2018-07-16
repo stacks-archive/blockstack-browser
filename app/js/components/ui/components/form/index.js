@@ -56,7 +56,7 @@ const Bar = styled.div`
 
 const InputOverlay = styled.div`
   position: absolute;
-  top: 10px;
+  top: 15px;
   color: rgba(39, 15, 52, 0.4);
   right: 0;
   pointer-events: none;
@@ -64,16 +64,24 @@ const InputOverlay = styled.div`
 `
 
 const Label = styled.label`
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
   display: flex;
   align-items: center;
-  transform: translate3d(0, 0, 0);
   padding-right: 10px;
   line-height: 1.4;
+  transform: translate3d(0, 0, 0);
+  transform-origin: center left;
+  color: rgba(39, 15, 52);
+  ${trans};
+
   /* default state */
   ${Input}:not(:focus) ~ &,
   ${Textarea}:not(:focus) ~ & {
-    top: 10px;
-    color: rgba(39, 15, 52, 0.4);
+    transform: translateY(15px);
+    opacity: 0.4;
   }
 
   /* focus / content state */
@@ -81,24 +89,18 @@ const Label = styled.label`
   ${Input}:not(:placeholder-shown) ~ &,
   ${Textarea}:focus ~ &,
   ${Textarea}:not(:placeholder-shown) ~ & {
-    top: -15px;
-    font-size: 12px;
+    transform: translateY(-17px) scale(0.85);
     font-weight: 500;
-    color: rgba(39, 15, 52, 1);
+    opacity: 1;
   }
 
   ${Textarea}:not(:focus) ~ & {
-    left: 10px !important;
+    transform: translateY(10px) translateX(10px);
   }
   ${Textarea}:focus ~ &,
   ${Textarea}:not(:placeholder-shown) ~ & {
-    top: -22px;
-    left: 0 !important;
+    transform: translateY(-24px) scale(0.85) translateX(0);
   }
-  position: absolute;
-  left: 0;
-  pointer-events: none;
-  ${trans};
 `
 
 const HelperMessage = styled.div`
