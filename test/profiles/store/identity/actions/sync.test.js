@@ -1,6 +1,6 @@
 import { IdentityActions } from '../../../../../app/js/profiles/store/identity'
 import {
-  CREATE_NEW,
+  CREATE_NEW_SUCCESS,
   UPDATE_PROFILE,
   ADD_USERNAME
 } from '../../../../../app/js/profiles/store/identity/types'
@@ -12,9 +12,9 @@ const DEFAULT_PROFILE = {
 
 describe('Identity Store: Sync Actions', () => {
   describe('createNewIdentity', () => {
-    it('should return an action of type CREATE_NEW', () => {
+    it('should return an action of type CREATE_NEW_SUCCESS', () => {
       const expectedResult = {
-        type: CREATE_NEW,
+        type: CREATE_NEW_SUCCESS,
         index: 0,
         ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC'
       }
