@@ -87,7 +87,7 @@ describe('Identity Store: Async Actions', () => {
           ]
           assert.deepEqual(store.getActions(), expectedActions)
         })
-    }).timeout(7000)
+    })
   })
 
   describe('refreshIdentities', () => {
@@ -120,7 +120,7 @@ describe('Identity Store: Async Actions', () => {
 
       const addresses = ['18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6']
 
-      return store
+      store
         .dispatch(IdentityActions.refreshIdentities(mockAPI, addresses))
         .then(() => {
           const expectedActions = [
