@@ -30,8 +30,6 @@ export {
 
 export { getNumberOfVerifications, compareProfilesByVerifications } from './search-utils'
 
-export { encrypt, decrypt } from './encryption-utils'
-
 export {
   isABlockstackName,
   hasNameBeenPreordered,

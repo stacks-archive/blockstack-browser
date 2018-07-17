@@ -1,6 +1,4 @@
 import bip39 from 'bip39'
-import { decrypt } from './encryption-utils'
-import { HDNode } from 'bitcoinjs-lib'
 import crypto from 'crypto'
 import log4js from 'log4js'
 import { BlockstackWallet, publicKeyToAddress, getPublicKeyFromPrivate } from 'blockstack'
@@ -139,20 +137,14 @@ export function isBackupPhraseValid(backupPhrase) {
 
 export function decryptMasterKeychain(password, encryptedBackupPhrase) {
   return new Promise((resolve, reject) => {
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
-    decrypt(dataBuffer, password).then(
-      plaintextBuffer => {
-        const backupPhrase = plaintextBuffer.toString()
-        const seed = bip39.mnemonicToSeed(backupPhrase)
-        const masterKeychain = HDNode.fromSeedBuffer(seed)
-        logger.trace('decryptMasterKeychain: decrypted!')
-        resolve(masterKeychain)
-      },
-      error => {
-        logger.error('decryptMasterKeychain: error', error)
+    BlockstackWallet.fromEncryptedMnemonic(encryptedBackupPhrase, password)
+      .then((wallet) => {
+        resolve(wallet.rootNode)
+      })
+      .catch(err => {
+        logger.error('decryptMasterKeychain: error', err)
         reject(new Error('Incorrect password'))
-      }
-    )
+      })
   })
 }
 
@@ -178,29 +170,17 @@ export function getBitcoinAddressNode(
   )
 }
 
-export function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
-  return new Promise((resolve, reject) =>
-    decryptMasterKeychain(password, encryptedBackupPhrase)
-      .then(masterKeychain => {
-        const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
-        const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
-        const privateKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
-        resolve(privateKey)
-      })
-      .catch(error => {
-        reject(error)
-      })
-  )
+export async function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
+  const wallet = await BlockstackWallet.fromEncryptedMnemonic(encryptedBackupPhrase, password)
+  return wallet.getBitcoinPrivateKey(0)
 }
 
-const IDENTITY_KEYCHAIN = 888
-const BLOCKSTACK_ON_BITCOIN = 0
 export function getIdentityPrivateKeychain(masterKeychain) {
-  return masterKeychain.deriveHardened(IDENTITY_KEYCHAIN).deriveHardened(BLOCKSTACK_ON_BITCOIN)
+  return new BlockstackWallet(masterKeychain).getIdentityPrivateKeychain()
 }
 
 export function getIdentityPublicKeychain(masterKeychain) {
-  return getIdentityPrivateKeychain(masterKeychain).neutered()
+  return new BlockstackWallet(masterKeychain).getIdentityPublicKeychain()
 }
 
 export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityIndex = 0) {

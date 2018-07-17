@@ -2,10 +2,9 @@
 import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import * as types from './types'
-import { validateProofs } from 'blockstack'
+import { validateProofs, decryptMnemonic } from 'blockstack'
 import {
   authorizationHeaderValue,
-  decrypt,
   deriveIdentityKeyPair,
   getIdentityOwnerAddressNode,
   getIdentityPrivateKeychain,
@@ -211,9 +210,8 @@ function createNewProfile(
   return (dispatch: Dispatch<*>): Promise<*> => {
     logger.trace('createNewProfile')
     // Decrypt master keychain
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     logger.debug('createNewProfile: Trying to decrypt backup phrase...')
-    return decrypt(dataBuffer, password).then(
+    return decryptMnemonic(encryptedBackupPhrase, password).then(
       plaintextBuffer => {
         logger.debug('createNewProfile: Backup phrase successfully decrypted')
         const backupPhrase = plaintextBuffer.toString()

@@ -70,7 +70,6 @@
     "round-to": "^2.0.0",
     "styled-components": "^3.2.3",
     "styled-system": "^2.2.1",
-    "triplesec": "^3.0.25",
     "yup": "^0.24.1",
     "zone-file": "^0.2.2",
     "zxcvbn": "^4.4.2"

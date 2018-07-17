@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { withRouter, browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { decryptMnemonic } from 'blockstack'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { Initial, Success, NoUpdate } from './views'
@@ -28,7 +29,6 @@ import {
   hasLegacyCoreStateVersion,
   migrateLegacyCoreEndpoints
 } from '@utils/api-utils'
-import { decrypt } from '@utils'
 const VIEWS = {
   INITIAL: 0,
   SUCCESS: 1,
@@ -135,10 +135,8 @@ class UpdatePage extends React.Component {
       console.error('No encryptedBackupPhrase, cannot continue')
       return null
     }
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
-    const { password } = this.state
 
-    return decrypt(dataBuffer, password)
+    return decryptMnemonic(encryptedBackupPhrase, this.state.password)
       .then(backupPhraseBuffer => {
         this.setState(
           {

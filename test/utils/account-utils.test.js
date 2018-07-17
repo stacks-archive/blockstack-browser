@@ -1,12 +1,12 @@
 import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
+import { BlockstackWallet } from 'blockstack'
 import {
   getIdentityPrivateKeychain,
   getIdentityOwnerAddressNode,
   findAddressIndex,
   decryptMasterKeychain,
-  getCorrectAppPrivateKey,
-  encrypt
+  getCorrectAppPrivateKey
  } from '../../app/js/utils'
 
 let masterKeychain = null
@@ -123,8 +123,8 @@ describe('account-utils', () => {
     const password = 'password123'
 
     beforeEach((done) => {
-      encrypt(new Buffer(backupPhrase), password).then(ciphertextBuffer => {
-        encryptedBackupPhrase = ciphertextBuffer.toString('hex')
+      BlockstackWallet.encryptMnemonic(backupPhrase, password).then(hex => {
+        encryptedBackupPhrase = hex
         done()
       })
     })

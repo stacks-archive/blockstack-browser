@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { decrypt, isBackupPhraseValid } from '@utils'
+import { decryptMnemonic } from 'blockstack'
+import { isBackupPhraseValid } from '@utils'
 import { browserHistory, withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -156,7 +157,7 @@ class SignIn extends React.Component {
           { decrypting: true },
           () =>
             setTimeout(() =>
-              decrypt(
+              decryptMnemonic(
                 new Buffer(this.state.encryptedKey, 'base64'),
                 this.state.password
               )

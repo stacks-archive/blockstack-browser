@@ -1,16 +1,14 @@
 import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
-import { randomBytes } from 'crypto'
 import {
   authorizationHeaderValue,
   btcToSatoshis,
   satoshisToBtc,
-  encrypt,
   getInsightUrls,
   getBlockchainIdentities
 } from '@utils'
 import { isCoreEndpointDisabled } from '@utils/window-utils'
-import { transactions, config, network } from 'blockstack'
+import { transactions, config, network, BlockstackWallet } from 'blockstack'
 
 import roundTo from 'round-to'
 import * as types from './types'
@@ -452,17 +450,17 @@ const initializeWallet = (
     masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
   } else {
     // Create a new wallet
-    const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
-    backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
+    backupPhrase = BlockstackWallet.generateMnemonic()
     const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
     masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
   }
-  return encrypt(new Buffer(backupPhrase), password).then(ciphertextBuffer => {
-    const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
-    return dispatch(
-      createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate)
-    )
-  })
+  return BlockstackWallet.encryptMnemonic(backupPhrase, password)
+    .then(ciphertextBuffer => {
+      const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
+      return dispatch(
+        createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate)
+      )
+    })
 }
 
 function newBitcoinAddress() {
