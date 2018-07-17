@@ -39,14 +39,18 @@ export function broadcastTransaction(broadcastTransactionUrl, rawTransaction) {
   })
 }
 
-export function getInsightUrl(insightUrl, address, coreAPIPassword) {
+export function getInsightUrls(insightUrl, address, coreAPIPassword) {
   console.log(`constant: ${REGTEST_CORE_API_PASSWORD}, parameter: ${coreAPIPassword}`)
   if (coreAPIPassword === REGTEST_CORE_API_PASSWORD) {
-    logger.debug('getInsightUrl: using regtest mock insight api ')
+    logger.debug('getInsightUrls: using regtest mock insight api ')
     insightUrl = REGTEST_CORE_INSIGHT_API_URL
   }
   const url = insightUrl.replace('{address}', address)
-  return url
+  return {
+    base: url,
+    confirmedBalanceUrl: `${url}/balance`,
+    unconfirmedBalanceUrl: `${url}/unconfirmedBalance`
+  }
 }
 
 export function getNetworkFee(bytes) {

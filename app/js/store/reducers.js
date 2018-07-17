@@ -1,6 +1,6 @@
 // @flow
 import { combineReducers } from 'redux'
-import { AccountReducer } from '../account/store/account'
+import AccountReducer from '../account/store/account/reducer'
 import { AuthReducer } from '../auth/store/auth'
 import ProfilesReducer from '../profiles/store/reducers'
 import { SanityReducer } from './sanity'

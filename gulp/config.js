@@ -8,7 +8,7 @@ const config = {
   scripts: {
     src: './app/js/**/*.js',
     dest: './build/js/',
-    test: './tests/**/*.js',
+    test: './test/**/*.js',
     gulp: './gulp/**/*.js'
   },
 
@@ -26,7 +26,7 @@ const config = {
 
   buildDir: './build/',
 
-  testFiles: './tests/**/*.{js,jsx}',
+  testFiles: './test/**/*.{js,jsx}',
 
   assetExtensions: [
     'js',
