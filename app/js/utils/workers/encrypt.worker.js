@@ -1,4 +1,5 @@
 import bip39 from 'bip39'
+import crypto from 'crypto'
 
 function normalizeMnemonic(mnemonic) {
   return bip39.mnemonicToEntropy(mnemonic).toString('hex')
