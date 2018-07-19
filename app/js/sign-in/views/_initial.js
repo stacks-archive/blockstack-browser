@@ -7,7 +7,7 @@ import { validateMnemonic } from 'bip39'
 const validationSchema = Yup.object({
   recoveryKey: Yup.string()
     .required('This is required.')
-    .test('is-valid', 'That’s not a valid recovery key or code', value => {
+    .test('is-valid', 'That’s not a valid recovery code or key', value => {
       // Raw mnemonic phrase
       if (validateMnemonic(value)) {
         return true
