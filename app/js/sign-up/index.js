@@ -573,7 +573,7 @@ class Onboarding extends React.Component {
       {
         show: VIEWS.INITIAL,
         props: {
-          next: () => this.updateView(VIEWS.EMAIL),
+          next: () => this.updateView(VIEWS.EMAIL)
         }
       },
       {
