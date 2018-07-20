@@ -617,7 +617,8 @@ class DefaultProfilePage extends Component {
     }
 
     // const accounts = person.profile().account || []
-    const accounts = filledAccounts.concat(placeholders)
+    function proofCompare(a, b) { return a.service > b.service }
+    const accounts = filledAccounts.sort(proofCompare).concat(placeholders.sort(proofCompare))
     const showMoreAccountsButton = hiddenAccounts.length > 0
     // const connections = person.connections() || []
 
