@@ -48,3 +48,5 @@ export {
   getTokenFileUrlFromZoneFile,
   resolveZoneFileToProfile
 } from './zone-utils'
+
+export { ServerAPI } from './server-utils'
