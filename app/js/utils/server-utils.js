@@ -1,6 +1,6 @@
 // @flow
 import { stringify } from 'query-string'
-// import store from '../store'
+import store from '../store'
 
 // const API_URL = 'https://browser-api.blockstack.org'
 const API_URL = 'http://localhost:2888'
@@ -62,18 +62,23 @@ export const ServerAPI = new ServerAPIClass()
  * @param {object} properties - Serializable list of properties about the event
  */
 export function trackEvent(event: string, properties: object) {
-  // const state = store.getState()
-  //
-  // if (state.settings.api.hasDisabledEventTracking) {
-  //   return
-  // }
+  const state = store.getState()
+
+  if (state.settings.api.hasDisabledEventTracking) {
+    return
+  }
+
+  // Prevent noisy stats from development testing behavior
+  if (process.env.NODE_ENV !== 'production') {
+    console.info(`Stat track fired: '${event}'`)
+    return
+  }
 
   ServerAPI.post('/event', {
     event,
     properties,
-    distinctId: 'hello'//state.settings.api.distinctId
+    distinctId: state.settings.api.distinctEventId
   })
-  console.log('Tracking', event)
 }
 
 /**

@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import DEFAULT_API from './default'
 import * as types from './types'
 
@@ -26,13 +27,17 @@ function SettingsReducer(state = initialState, action) {
           btcPrice: action.price
         })
       })
-    default: {
-      let newState = Object.assign({}, state, {
-        api: state.api
+    case '@@INIT': {
+      // Update with new keys on initial action
+      return addMissingApiKeys({
+        ...state,
+        api: {
+          ...state.api
+        }
       })
-      newState = addMissingApiKeys(newState)
-      return newState
     }
+    default:
+      return state
   }
 }
 

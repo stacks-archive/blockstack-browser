@@ -462,6 +462,7 @@ input.form-control-secondary{background-color:#fafafa;border:1px solid #F4F2F4;}
 .input-group-addon{border-radius:0px;border:0;font-size:0.875rem;}
 .input-accessory-icon-right{float:right;margin-right:10px;margin-top:-27px;position:relative;z-index:2;}
 .input-accessory-icon{padding-right:40px;}
+.form-check-input{margin-right:0.4rem;}
 
 
 /* 16. Navbar */
