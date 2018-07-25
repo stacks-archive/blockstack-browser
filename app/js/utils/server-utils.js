@@ -2,8 +2,8 @@
 import { stringify } from 'query-string'
 import store from '../store'
 
-// const API_URL = 'https://browser-api.blockstack.org'
-const API_URL = 'http://localhost:2888'
+const API_URL = 'https://browser-api.blockstack.org'
+// const API_URL = 'http://localhost:2888'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
