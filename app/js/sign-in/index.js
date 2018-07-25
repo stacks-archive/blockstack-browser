@@ -44,12 +44,12 @@ const logger = log4js.getLogger('sign-in/index.js')
 
 const VIEWS = {
   INITIAL: 0,
-  EMAIL: 1,
-  PASSWORD: 2,
+  PASSWORD: 1,
+  EMAIL: 2,
   SUCCESS: 3
 }
 
-const views = [Initial, Email, Password, Success]
+const views = [Initial, Password, Email, Success]
 
 function mapStateToProps(state) {
   return {
@@ -112,9 +112,12 @@ class SignIn extends React.Component {
     }
   }
 
-  updateValue = (key, value) => {
-    this.setState({ [key]: value })
-  }
+  updateValue = (key, value) =>
+    new Promise(resolve => {
+      this.setState({ [key]: value }, () => {
+        resolve()
+      })
+    })
 
   updateView = view => this.setState({ view })
 
@@ -123,7 +126,7 @@ class SignIn extends React.Component {
   isKeyEncrypted = key =>
     !(key.split(' ').length === 12 || key.split(' ').length === 24)
 
-  validateRecoveryKey = (key, nextView = VIEWS.EMAIL) => {
+  validateRecoveryKey = (key, nextView = VIEWS.PASSWORD) => {
     if (this.state.key !== key) {
       this.setState({ key })
     }
@@ -146,75 +149,65 @@ class SignIn extends React.Component {
     }
   }
 
-  decryptKeyAndRestore = () => {
-    if (!this.state.password) {
-      console.error('no password in state')
+  decryptAndContinue = () => {
+    const { password, decrypting, encryptedKey } = this.state
+
+    if (!password) {
+      this.setState({ restoreError: 'Password is required' })
+      return
     }
-    if (this.state.decrypt) {
-      if (!this.state.decrypting) {
-        return this.setState(
-          { decrypting: true },
-          () =>
-            setTimeout(() =>
-              decrypt(
-                new Buffer(this.state.encryptedKey, 'base64'),
-                this.state.password
-              )
-                .then(decryptedKeyBuffer => {
-                  const decryptedKey = decryptedKeyBuffer.toString()
-                  this.setState(
-                    {
-                      key: decryptedKey,
-                      decrypting: false,
-                      loading: true,
-                      restoreError: null
-                    },
-                    () => setTimeout(() => this.restoreAccount(), 100)
-                  )
-                })
-                .catch(() => {
-                  this.setState({
-                    decrypting: false,
-                    restoreError: 'Incorrect code or password',
-                    key: ''
-                  })
-                })
-            ),
-          100
-        )
-      }
+
+    if (this.state.decrypt && !decrypting) {
+      this.setState({ decrypting: true })
+
+      decrypt(
+        new Buffer(encryptedKey, 'base64'),
+        this.state.password
+      )
+        .then(decryptedKeyBuffer => {
+          const decryptedKey = decryptedKeyBuffer.toString()
+          this.setState({
+            key: decryptedKey,
+            decrypting: false,
+            restoreError: null
+          }, () => {
+            this.updateView(VIEWS.EMAIL)
+          })
+        })
+        .catch(() => {
+          this.setState({
+            decrypting: false,
+            restoreError: 'Incorrect password or invalid recovery code',
+            key: ''
+          })
+        })
     }
-    return this.setState(
-      {
-        loading: true,
-        restoreError: null
-      },
-      () => setTimeout(() => this.restoreAccount(), 100)
-    )
+    else {
+      this.updateView(VIEWS.EMAIL)
+    }
   }
 
-  restoreAccount = () =>
-    setTimeout(
-      () =>
-        this.createAccount()
-          .then(
-            () => {
-              this.props
-                .refreshIdentities(this.props.api, this.props.identityAddresses)
-                .then(() => console.log('complete!'))
-              this.props.updateEmail(this.state.email)
-            },
-            err => console.error(err)
-          )
-          .then(() => this.updateView(VIEWS.SUCCESS))
-          .catch(() => {
-            this.setState({
-              loading: false,
-              restoreError: 'There was an error loading your account.'
-            })
-          }),
-      150
+  restoreAccount = () => {
+    console.log('Restoring account!')
+    const { api, identityAddresses, refreshIdentities, updateEmail } = this.props
+    this.setState({ loading: true })
+    this.createAccount()
+    .then(
+      () => {
+        refreshIdentities(api, identityAddresses)
+        updateEmail(this.state.email)
+      },
+      err => console.error(err)
     )
+    .then(() => this.updateView(VIEWS.SUCCESS))
+    .catch(() => {
+      this.setState({
+        loading: false,
+        restoreError: 'There was an error loading your account.'
+      })
+    })
+  }
+
 
   updateView = view => this.setState({ view })
   backView = (view = this.state.view) => {
@@ -360,18 +353,18 @@ class SignIn extends React.Component {
         }
       },
       {
-        show: VIEWS.EMAIL,
+        show: VIEWS.PASSWORD,
         props: {
           previous: () => this.updateView(VIEWS.INITIAL),
-          next: () => this.updateView(VIEWS.PASSWORD),
+          next: this.decryptAndContinue,
           updateValue: this.updateValue
         }
       },
       {
-        show: VIEWS.PASSWORD,
+        show: VIEWS.EMAIL,
         props: {
-          previous: () => this.updateView(VIEWS.EMAIL),
-          next: this.decryptKeyAndRestore,
+          previous: () => this.updateView(VIEWS.INITIAL),
+          next: this.restoreAccount,
           updateValue: this.updateValue
         }
       },
