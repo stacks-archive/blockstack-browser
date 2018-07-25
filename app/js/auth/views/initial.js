@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Person } from 'blockstack'
 import { Buttons, ShellScreen, Type, UserButton, Shell } from '@blockstack/ui'
 const basicInfo = 'read your basic info'
 const readEmail = 'read your email address'
@@ -7,18 +8,22 @@ const publishData = 'publish data stored for this app'
 
 const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
   if (list.length) {
-    return list.map(({ username, ownerAddress, ...account }, i) => (
-      <UserButton
-        key={i}
-        username={username || `ID-${ownerAddress}`}
-        id={ownerAddress}
-        onClick={() => handleClick(i)}
-        loading={processing && i === selectedIndex}
-        disabled={processing}
-        placeholder="Signing in..."
-        hideID
-      />
-    ))
+    return list.map(({ username, ownerAddress, profile, ...account }, i) => {
+      const person = new Person(profile)
+      return (
+        <UserButton
+          key={i}
+          username={username || `ID-${ownerAddress}`}
+          id={ownerAddress}
+          avatarUrl={person.avatarUrl()}
+          onClick={() => handleClick(i)}
+          loading={processing && i === selectedIndex}
+          disabled={processing}
+          placeholder="Signing in..."
+          hideID
+        />
+      )
+    })
   }
   return null
 }
@@ -126,7 +131,7 @@ InitialScreen.propTypes = {
   selectedIndex: PropTypes.number,
   login: PropTypes.func
 }
-Accounts.proptype = {
+Accounts.propTypes = {
   list: PropTypes.array.isRequired,
   handleClick: PropTypes.func,
   processing: PropTypes.bool,
