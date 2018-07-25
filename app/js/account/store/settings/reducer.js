@@ -1,4 +1,3 @@
-import crypto from 'crypto'
 import DEFAULT_API from './default'
 import * as types from './types'
 

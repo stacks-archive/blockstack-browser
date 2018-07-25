@@ -38,7 +38,7 @@ import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
-import { ServerAPI, trackEventOnce } from '@utils/server-utils';
+import { ServerAPI, trackEventOnce } from '@utils/server-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'

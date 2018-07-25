@@ -1,12 +1,13 @@
 import prodConfigure from './production'
 import devConfigure from './development'
 
-let configure
+let conf
 
 if (process.env.NODE_ENV === 'production') {
-  configure = prodConfigure
+  conf = prodConfigure
 } else {
-  configure = devConfigure
+  conf = devConfigure
 }
 
+const configure = conf
 export default configure
