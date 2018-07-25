@@ -6,6 +6,7 @@ import { Buttons } from '@components/ui/components/button'
 const Loading = styled(animated.div)`
   position: absolute;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: white;

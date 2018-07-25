@@ -67,6 +67,26 @@ class SeedContainer extends Component {
           ? props.location.state.password
           : null
     }
+
+    // Immediately replace browser history with one that has state
+    browserHistory.replace({
+      pathname: this.props.location.pathname,
+      query: this.props.location.query,
+      state: { view: this.state.view }
+    })
+  }
+
+  componentDidMount() {
+    this.popListener = browserHistory.listen(location => {
+      if (location.action === 'POP') {
+        this.updateView(location.state ? location.state.view : VIEWS.KEY_INFO)
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    // Unbinds pop listener
+    this.popListener()
   }
 
   setVerified = () =>
@@ -76,9 +96,16 @@ class SeedContainer extends Component {
     this.setState({ [key]: value })
   }
 
-  updateView = view => {
+  updateView = (view, noPush) => {
     if (this.state.view !== view) {
       this.setState({ view })
+      if (!noPush) {
+        browserHistory.push({
+          pathname: this.props.location.pathname,
+          query: this.props.location.query,
+          state: { view }
+        })
+      }
     }
   }
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -205,24 +232,11 @@ class SeedContainer extends Component {
    * Redirect to Auth Request
    */
   redirectToAuth = () => {
-    this.props.router.push(`/auth/?authRequest=${this.props.authRequest}`)
+    browserHistory.push(`/auth/?authRequest=${this.props.authRequest}`)
   }
 
   backView = () => {
-    switch (this.state.view) {
-      case VIEWS.KEY_INFO:
-        return null
-      case VIEWS.UNLOCK_KEY:
-        return this.updateView(VIEWS.KEY_INFO)
-      case VIEWS.SEED:
-        return this.updateView(VIEWS.KEY_INFO)
-      case VIEWS.KEY_CONFIRM:
-        return this.updateView(VIEWS.SEED)
-      case VIEWS.KEY_COMPLETE:
-        return this.updateView(VIEWS.SEED)
-      default:
-        return null
-    }
+    browserHistory.goBack()
   }
 
   render() {
