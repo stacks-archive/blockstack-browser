@@ -175,6 +175,12 @@ function IdentityReducer(state = initialState, action) {
           })
         })
       })
+    case '@@INIT':
+      // Reset ephemeral state on init
+      return {
+        ...state,
+        isProcessing: false
+      }
     default:
       return state
   }

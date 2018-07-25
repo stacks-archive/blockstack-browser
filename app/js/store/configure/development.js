@@ -10,17 +10,7 @@ const finalCreateStore = composeEnhancers(
   applyMiddleware(thunk),
   persistState(null, {
     // eslint-disable-next-line
-    slicer: paths => state => ({
-      ...state,
-      auth: AuthInitialState,
-      profiles: {
-        ...state.profiles,
-        identity: {
-          ...state.identity,
-          isProcessing: false
-        }
-      }
-    })
+    slicer: paths => state => ({ ...state, auth: AuthInitialState })
   })
 )(createStore)
 
