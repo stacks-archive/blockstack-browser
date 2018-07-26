@@ -4,32 +4,28 @@ import { shallow } from 'enzyme'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import DefaultProfilePage from '../../app/js/profiles/DefaultProfilePage'
+import SocialAccountItem from '../../app/js/profiles/components/SocialAccountItem'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 describe('<DefaultProfilePage />', () => {
-  describe('constructor', () => {
-    it('shows that this test is being run', () => {
-      expect(true).to.equal(true) 
-    })
-  })
   describe('render', () => {  
-    it('finds the social proofs', () => { 
+    it('shows Social Proofs in alphabetical order', () => { 
       const store = mockStore({
         profiles: {
           identity: {
-            localIdentities: {},
-            default: {},
+            localIdentities: [],
+            default: 0,
             namesOwned: {},
             createProfileError: {},
           }
         },
         account: {
           identityAccount: {
-            keypairs: {},
-            addresses: {},
-            addressIndex: {},
+            keypairs: [],
+            addresses: [],
+            addressIndex: 0,
           },
           encryptedBackupPhrase: "",
         },
@@ -39,15 +35,14 @@ describe('<DefaultProfilePage />', () => {
           }
         }
       })
+
       const props = {
-        identity: {}
+          defaultIdentity: 0,
+        localIdentities: [0],  
       }
       const wrapper = shallow(<DefaultProfilePage {...props} store={store}/>)
-      expect(wrapper.find('.profile-accounts').exists()).to.equal(true)
-
-      var ul = wrapper.find('.profile-accounts ul')
-      console.log(ul.toString())
-       
+      wrapper.setState({ accountEditIsOpen: true })
+      console.log(wrapper.debug())
     })
-  })    
+  })
 })
