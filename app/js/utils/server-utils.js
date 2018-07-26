@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:2888'
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 class ServerAPIClass {
-  request(path: string, method: Method, args: Object = {}) {
+  request(path: string, method: Method, args: Object = {}): Promise<any> {
     const headers = new Headers()
     let body
     let query = ''
