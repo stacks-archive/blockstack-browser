@@ -23,7 +23,6 @@ class EmailView extends React.Component {
     const { email, updateValue, next, ...rest } = this.props
 
     const props = {
-      headerLabel: 'Create your Blockstack ID',
       title: {
         children: 'What is your email address?',
         variant: 'h2'
