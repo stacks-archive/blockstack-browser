@@ -2,8 +2,8 @@
 import { stringify } from 'query-string'
 import store from '../store'
 
-// const API_URL = 'https://browser-api.blockstack.org'
-const API_URL = 'http://localhost:2888'
+const API_URL = 'https://browser-api.blockstack.org'
+// const API_URL = 'http://localhost:2888'
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
@@ -69,10 +69,10 @@ export function trackEvent(event: string, properties: Object) {
   }
 
   // Prevent noisy stats from development testing behavior
-  // if (process.env.NODE_ENV !== 'production') {
-  //   console.info(`Stat track fired: '${event}'`)
-  //   return
-  // }
+  if (process.env.NODE_ENV !== 'production') {
+    console.info(`Stat track fired: '${event}'`)
+    return
+  }
 
   ServerAPI.post('/event', {
     event,
