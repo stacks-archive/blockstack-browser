@@ -136,7 +136,13 @@ class Onboarding extends React.Component {
 
   updateView = view => {
     this.setState({ view })
-    trackEventOnce(VIEW_EVENTS[view])
+    this.trackViewEvent(view, this.props.appManifest)
+  }
+
+  trackViewEvent = (view, appManifest) => {
+    trackEventOnce(VIEW_EVENTS[view], {
+      appReferrer: appManifest ? appManifest.name : 'N/A'
+    })
   }
 
   backView = (view = this.state.view) => {
@@ -508,12 +514,19 @@ class Onboarding extends React.Component {
     const { location } = this.props
     const queryDict = queryString.parse(location.search)
     const authRequest = this.checkForAuthRequest(queryDict)
+
     if (authRequest && this.state.authRequest !== authRequest) {
       this.decodeAndSaveAuthRequest()
       this.setState({
         authRequest
       })
     }
+    else {
+      // Only fire track immediately if there's no manifest. Otherwise, fire
+      // track event in componentWillReceiveProps.
+      this.trackViewEvent(this.state.view)
+    }
+
     if (location.query.verified) {
       this.setState({ email: location.query.verified })
       this.updateView(VIEWS.PASSWORD)
@@ -524,8 +537,6 @@ class Onboarding extends React.Component {
     if (!this.props.api.subdomains[SUBDOMAIN_SUFFIX]) {
       this.props.resetApi(this.props.api)
     }
-
-    trackEventOnce(VIEW_EVENTS[this.state.view])
   }
 
   componentWillReceiveProps(nextProps) {
@@ -547,6 +558,11 @@ class Onboarding extends React.Component {
       this.setState({
         usernameRegistrationInProgress: false
       })
+    }
+
+    if (nextProps.appManifest) {
+      // If we were waiting on an appManifest, we haven't tracked yet.
+      this.trackViewEvent(this.state.view, nextProps.appManifest)
     }
   }
 

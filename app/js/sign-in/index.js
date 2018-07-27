@@ -120,7 +120,7 @@ class SignIn extends React.Component {
   }
 
   componentDidMount() {
-    trackEventOnce(VIEW_EVENTS[this.state.view])
+    this.trackViewEvent(this.state.view)
   }
 
   updateValue = (key, value) => {
@@ -227,7 +227,14 @@ class SignIn extends React.Component {
 
   updateView = view => {
     this.setState({ view })
-    trackEventOnce(VIEW_EVENTS[view])
+    this.trackViewEvent(view)
+  }
+
+  trackViewEvent = view => {
+    const { appManifest } = this.props
+    trackEventOnce(VIEW_EVENTS[view], {
+      appReferrer: appManifest ? appManifest.name : 'N/A'
+    })
   }
 
   backView = (view = this.state.view) => {
