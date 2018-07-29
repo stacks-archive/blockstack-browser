@@ -31,11 +31,12 @@ describe('<InputGroup />', () => {
     })
 
     it('names the input tag', () => {
-      expect(wrapper.find('input[name="input-group-test"]'))
+      expect(wrapper.find('input[name="input-group-test"]').exists()).to.equal(true)
     })
 
     it('creates a placeholder', () => {
-      expect(wrapper.find('input[placeholder="Zero Cost Marginal Society"]'))
+      expect(wrapper.find(
+            'input[placeholder="Zero Cost Marginal Society"]').exists()).to.equal(true)
     })
 
     it('creates an accessory icon', () => {
