@@ -155,13 +155,16 @@ class SignIn extends React.Component {
         return this.setState(
           { decrypting: true },
           () =>
-            setTimeout(() =>
+            setTimeout(() => {
+              console.log('state', this.state)
+              console.log(decrypt)
               decrypt(
                 new Buffer(this.state.encryptedKey, 'base64'),
                 this.state.password
               )
                 .then(decryptedKeyBuffer => {
                   const decryptedKey = decryptedKeyBuffer.toString()
+                  console.log('decryptedKey', decryptedKey)
                   this.setState(
                     {
                       key: decryptedKey,
@@ -179,7 +182,7 @@ class SignIn extends React.Component {
                     key: ''
                   })
                 })
-            ),
+            }),
           100
         )
       }

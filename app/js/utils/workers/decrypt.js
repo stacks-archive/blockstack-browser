@@ -70,24 +70,15 @@ function decryptLegacy(dataBuffer, password) {
   })
 }
 
-self.onmessage = async event => {
+export default async function decrypt(hexEncryptedKey, password) {
+  const dataBuffer = Buffer.from(hexEncryptedKey, 'hex')
+  let mnemonic
+
   try {
-    const { encryptedMnemonic, password } = event.data
-    const dataBuffer = Buffer.from(encryptedMnemonic, 'hex')
-    let mnemonic
-
-    try {
-      mnemonic = await decryptMnemonic(dataBuffer, password)
-    } catch(err) {
-      mnemonic = await decryptLegacy(dataBuffer, password)
-    }
-
-    self.postMessage({
-      payload: mnemonic.toString()
-    })
+    mnemonic = await decryptMnemonic(dataBuffer, password)
   } catch(err) {
-    self.postMessage({
-      error: err.toString()
-    })
+    mnemonic = await decryptLegacy(dataBuffer, password)
   }
+
+  return mnemonic.toString()
 }
