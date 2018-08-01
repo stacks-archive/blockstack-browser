@@ -10,6 +10,6 @@ jobs:
           name: Install Dependencies
           command: npm install
       # test
-      - run: npm test
+      - run: npm run test
       # build
-      - run: npm prod-webapp
+      - run: npm run prod-webapp
