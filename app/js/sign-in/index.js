@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { validateMnemonic } from 'bip39'
 import { decrypt, isBackupPhraseValid } from '@utils'
 import { browserHistory, withRouter } from 'react-router'
 import { connect } from 'react-redux'
@@ -120,8 +121,7 @@ class SignIn extends React.Component {
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isKeyEncrypted = key =>
-    !(key.split(' ').length === 12 || key.split(' ').length === 24)
+  isKeyEncrypted = key => !validateMnemonic(key)
 
   validateRecoveryKey = (key, nextView = VIEWS.EMAIL) => {
     if (this.state.key !== key) {
