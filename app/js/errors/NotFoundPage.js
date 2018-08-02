@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import { Link } from 'react-router'
+import App from '../App'
 
 import Navbar from '@components/Navbar'
 
-const NotFoundPage = (props) =>
-(
-  <div className="app-wrap-profiles">
+const NotFoundPage = (props) => (
+  <App>
     <Navbar />
-      {props.children}
+    {props.children}
     <div className="container-fluid m-t-50">
       <div className="row">
         <div className="col-12">
@@ -21,7 +21,7 @@ const NotFoundPage = (props) =>
         </div>
       </div>
     </div>
-  </div>
+  </App>
 )
 
 NotFoundPage.propTypes = {
