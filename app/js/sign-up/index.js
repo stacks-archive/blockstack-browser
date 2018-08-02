@@ -71,6 +71,7 @@ const VIEWS = {
   HOORAY: 5
 }
 const VIEW_EVENTS = {
+  [VIEWS.INITIAL]: 'Onboarding - Initial',
   [VIEWS.EMAIL]: 'Onboarding - Email',
   [VIEWS.PASSWORD]: 'Onboarding - Password',
   [VIEWS.USERNAME]: 'Onboarding - Username',
