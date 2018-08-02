@@ -62,7 +62,7 @@ export function uploadPhoto(
     } else {
       throw new Error(`Cannot determine photo location based on profile location ${uploadPrefix}`)
     }
-    console.log(photoFile)
+
     const photoFilename = `avatar-${photoIndex}`
     const urlToWrite = `${uploadPrefix}/${photoFilename}`
     let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, photoFile.type)
