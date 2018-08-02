@@ -44,6 +44,7 @@ import log4js from 'log4js'
 import { formatAppManifest } from '@common'
 import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import {
+  Initial,
   Email,
   Password,
   Success,
@@ -53,13 +54,21 @@ import {
 
 const logger = log4js.getLogger('onboarding/index.js')
 
-const views = [Email, Password, Username, RecoveryInformationScreen, Success]
+const views = [
+  Initial,
+  Email,
+  Password,
+  Username,
+  RecoveryInformationScreen,
+  Success
+]
 const VIEWS = {
-  EMAIL: 0,
-  PASSWORD: 1,
-  USERNAME: 2,
-  INFO: 3,
-  HOORAY: 4
+  INITIAL: 0,
+  EMAIL: 1,
+  PASSWORD: 2,
+  USERNAME: 3,
+  INFO: 4,
+  HOORAY: 5
 }
 const VIEW_EVENTS = {
   [VIEWS.EMAIL]: 'Onboarding - Email',
@@ -120,7 +129,7 @@ class Onboarding extends React.Component {
     emailsSent: false,
     loading: false,
     creatingAccountStatus: CREATE_ACCOUNT_INITIAL,
-    view: VIEWS.EMAIL,
+    view: VIEWS.INITIAL,
     usernameRegistrationInProgress: false
   }
   updateValue = (key, value) => {
@@ -574,6 +583,12 @@ class Onboarding extends React.Component {
 
     const viewProps = [
       {
+        show: VIEWS.INITIAL,
+        props: {
+          next: () => this.updateView(VIEWS.EMAIL)
+        }
+      },
+      {
         show: VIEWS.EMAIL,
         props: {
           email,
@@ -642,6 +657,10 @@ class Onboarding extends React.Component {
       ...currentViewProps.props
     }
 
+    const headerLabel = view === VIEWS.INITIAL ?
+      'Welcome to Blockstack' :
+      'Create a Blockstack ID'
+
     return (
       <App>
         <ShellParent
@@ -649,7 +668,7 @@ class Onboarding extends React.Component {
           views={views}
           {...componentProps}
           lastHeaderLabel="Welcome to Blockstack"
-          headerLabel="Create a Blockstack ID"
+          headerLabel={headerLabel}
           invertOnLast
           disableBackOnView={VIEWS.INFO}
           disableBack={this.state.loading}

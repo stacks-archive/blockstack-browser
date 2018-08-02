@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.11.2
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      # test
+      - run: npm run test
+      # build
+      - run: npm run prod-webapp

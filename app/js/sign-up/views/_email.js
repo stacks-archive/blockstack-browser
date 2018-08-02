@@ -74,14 +74,6 @@ class EmailView extends React.Component {
             ]
           }
         }
-      },
-      actions: {
-        items: [
-          {
-            label: 'Restore a Blockstack ID',
-            to: '/sign-in'
-          }
-        ]
       }
     }
     return <ShellScreen {...rest} {...props} />

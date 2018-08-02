@@ -48,6 +48,7 @@ import {
   selectPublicKeychain
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
+import Modal from 'react-modal'
 
 const views = [Initial, LegacyGaia]
 
@@ -100,6 +101,7 @@ class AuthPage extends React.Component {
     corePort: PropTypes.number.isRequired,
     appManifest: PropTypes.object,
     appManifestLoading: PropTypes.bool,
+    appManifestLoadingError: PropTypes.string,
     email: PropTypes.string,
     noCoreSessionToken: PropTypes.func.isRequired,
     addresses: PropTypes.array.isRequired,
@@ -493,8 +495,26 @@ class AuthPage extends React.Component {
   }
 
   render() {
-    const { appManifest, appManifestLoading } = this.props
+    const { appManifest, appManifestLoading, appManifestLoadingError } = this.props
 
+    if (appManifestLoadingError) {
+      return (
+        <React.Fragment>
+          <Modal
+            className="container-fluid"
+            shouldCloseOnOverlayClick={false}
+            isOpen
+          >
+            <div className="alert alert-danger">
+              Failed to fetch information about the app requesting
+              authentication. Please contact the app maintainer to resolve the
+              issue.
+            </div>
+          </Modal>
+          <AppHomeWrapper />
+        </React.Fragment>
+      )
+    }
     if (!appManifest || appManifestLoading) {
       return <React.Fragment> </React.Fragment>
     }
