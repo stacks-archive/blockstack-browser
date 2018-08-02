@@ -35,8 +35,7 @@ class EmailView extends React.Component {
           validateOnBlur: false,
           initialValues: { email },
           onSubmit: values => {
-            updateValue('email', values.email)
-            next()
+            updateValue('email', values.email).then(() => next())
           },
           fields: this.returnField(),
           actions: {
