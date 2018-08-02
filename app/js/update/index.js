@@ -343,8 +343,6 @@ class UpdatePage extends React.Component {
           app={formatAppManifest(this.props.appManifest)}
           views={views}
           {...componentProps}
-          headerLabel="Blockstack Browser"
-          lastHeaderLabel="Update Complete"
           invertOnLast
           disableBackOnView={1}
         />

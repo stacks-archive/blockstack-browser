@@ -645,18 +645,12 @@ class Onboarding extends React.Component {
       ...currentViewProps.props
     }
 
-    const headerLabel = view === VIEWS.INITIAL ?
-      'Welcome to Blockstack' :
-      'Create a Blockstack ID'
-
     return (
       <App>
         <ShellParent
           app={app}
           views={views}
           {...componentProps}
-          lastHeaderLabel="Welcome to Blockstack"
-          headerLabel={headerLabel}
           invertOnLast
           disableBackOnView={VIEWS.INFO}
           disableBack={this.state.loading}

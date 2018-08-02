@@ -398,8 +398,6 @@ class SignIn extends React.Component {
           app={formatAppManifest(this.props.appManifest)}
           views={views}
           {...componentProps}
-          headerLabel="Sign into Blockstack"
-          lastHeaderLabel="Welcome Back"
           invertOnLast
         />
         <AppHomeWrapper />

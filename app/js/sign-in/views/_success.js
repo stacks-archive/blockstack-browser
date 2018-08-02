@@ -42,7 +42,6 @@ class Success extends React.Component {
     }
 
     const props = {
-      headerLabel: 'Welcome to the New Internet',
       title: {
         icon: <UserAvatar {...user} />,
         children: (
