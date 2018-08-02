@@ -1,6 +1,13 @@
-/* eslint global-require: 0 */
+import prodConfigure from './production'
+import devConfigure from './development'
+
+let conf
+
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./production')
+  conf = prodConfigure
 } else {
-  module.exports = require('./development')
+  conf = devConfigure
 }
+
+const configure = conf
+export default configure

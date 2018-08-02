@@ -12,6 +12,7 @@ import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
+import { trackEventOnce } from '@utils/server-utils'
 import { Initial, Password, Success, Email } from './views'
 import log4js from 'log4js'
 import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
@@ -48,6 +49,12 @@ const VIEWS = {
   PASSWORD: 1,
   EMAIL: 2,
   SUCCESS: 3
+}
+const VIEW_EVENTS = {
+  [VIEWS.INITIAL]: 'Sign in - Initial',
+  [VIEWS.EMAIL]: 'Sign in - Email',
+  [VIEWS.PASSWORD]: 'Sign in - Password',
+  [VIEWS.SUCCESS]: 'Sign in - Complete'
 }
 
 const views = [Initial, Password, Email, Success]
@@ -113,14 +120,16 @@ class SignIn extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.trackViewEvent(this.state.view)
+  }
+
   updateValue = (key, value) =>
     new Promise(resolve => {
       this.setState({ [key]: value }, () => {
         resolve()
       })
     })
-
-  updateView = view => this.setState({ view })
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
@@ -209,7 +218,18 @@ class SignIn extends React.Component {
   }
 
 
-  updateView = view => this.setState({ view })
+  updateView = view => {
+    this.setState({ view })
+    this.trackViewEvent(view)
+  }
+
+  trackViewEvent = view => {
+    const { appManifest } = this.props
+    trackEventOnce(VIEW_EVENTS[view], {
+      appReferrer: appManifest ? appManifest.name : 'N/A'
+    })
+  }
+
   backView = (view = this.state.view) => {
     if (view - 1 >= 0) {
       return this.setState({

@@ -22,7 +22,7 @@ import {
   migrateAPIEndpoints,
   updateState
 } from '../store/reducers'
-import { asyncLocalStorage, formatAppManifest } from '@common'
+import { formatAppManifest } from '@common'
 import { BLOCKSTACK_STATE_VERSION_KEY } from '../App'
 import {
   hasLegacyCoreStateVersion,
@@ -107,9 +107,8 @@ class UpdatePage extends React.Component {
     }
 
     if (!this.props.encryptedBackupPhrase) {
-      this.updateStateVersionAndResetOldPersistedData().then(() =>
-        this.props.router.push('/sign-up')
-      )
+      this.updateStateVersionAndResetOldPersistedData()
+      this.props.router.push('/sign-up')
     }
   }
 
@@ -237,14 +236,12 @@ class UpdatePage extends React.Component {
         {
           complete: true
         },
-        () =>
-          setTimeout(
-            () =>
-              this.updateStateVersion().then(() =>
-                this.setDefaultIdentityAndRedirectHome()
-              ),
-            250
-          )
+        () => {
+          setTimeout(() => {
+              this.updateStateVersion()
+              this.setDefaultIdentityAndRedirectHome()
+          }, 250)
+        }
       )
     }
 
@@ -256,28 +253,28 @@ class UpdatePage extends React.Component {
    * this is our final step once all of our IDs have been generated,
    * it sets the new state version and then redirects home
    */
-  updateStateVersion = async () => {
+  updateStateVersion = () => {
     console.debug(
       `updateStateVersion: Setting new state version to ${CURRENT_VERSION}`
     )
-    await asyncLocalStorage.setItem(
+    localStorage.setItem(
       BLOCKSTACK_STATE_VERSION_KEY,
       CURRENT_VERSION
     )
   }
 
-  updateStateVersionAndResetOldPersistedData = async () => {
+  updateStateVersionAndResetOldPersistedData = () => {
     console.debug(
       `updateStateVersionAndResetOldPersistedData: Setting new state version to ${CURRENT_VERSION}`
     )
-    await asyncLocalStorage.setItem(
+    localStorage.setItem(
       BLOCKSTACK_STATE_VERSION_KEY,
       CURRENT_VERSION
     )
     console.debug(
       'updateStateVersionAndResetOldPersistedData: removing old persisted data'
     )
-    await asyncLocalStorage.removeItem('redux')
+    localStorage.removeItem('redux')
   }
 
   setDefaultIdentityAndRedirectHome = async () => {

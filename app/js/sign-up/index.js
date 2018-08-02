@@ -38,6 +38,7 @@ import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
+import { ServerAPI, trackEventOnce } from '@utils/server-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'
@@ -69,9 +70,16 @@ const VIEWS = {
   INFO: 4,
   HOORAY: 5
 }
+const VIEW_EVENTS = {
+  [VIEWS.INITIAL]: 'Onboarding - Initial',
+  [VIEWS.EMAIL]: 'Onboarding - Email',
+  [VIEWS.PASSWORD]: 'Onboarding - Password',
+  [VIEWS.USERNAME]: 'Onboarding - Username',
+  [VIEWS.INFO]: 'Onboarding - Info',
+  [VIEWS.HOORAY]: 'Onboarding - Complete'
+}
 
 const SUBDOMAIN_SUFFIX = 'id.blockstack'
-const SERVER_URL = 'https://browser-api.blockstack.org'
 
 const mapStateToProps = state => ({
   updateApi: PropTypes.func.isRequired,
@@ -135,7 +143,18 @@ class Onboarding extends React.Component {
       emailConsent: !state.emailConsent
     }))
   }
-  updateView = view => this.setState({ view })
+
+  updateView = view => {
+    this.setState({ view })
+    this.trackViewEvent(view, this.props.appManifest)
+  }
+
+  trackViewEvent = (view, appManifest) => {
+    trackEventOnce(VIEW_EVENTS[view], {
+      appReferrer: appManifest ? appManifest.name : 'N/A'
+    })
+  }
+
   backView = (view = this.state.view) => {
     if (view - 1 >= 0) {
       return this.setState({
@@ -370,20 +389,11 @@ class Onboarding extends React.Component {
       encryptedSeed
     )}`
 
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-        seedRecovery,
-        blockstackId
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }
-
-    return fetch(`${SERVER_URL}/recovery`, options)
+    return ServerAPI.post('/recovery', {
+      email,
+      seedRecovery,
+      blockstackId
+    })
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} recovery email`)
@@ -401,20 +411,11 @@ class Onboarding extends React.Component {
    * Send restore email
    */
   sendRestore(blockstackId, email, encryptedSeed) {
-    const options = {
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-        encryptedSeed,
-        blockstackId
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
-    }
-
-    return fetch(`${SERVER_URL}/restore`, options)
+    return ServerAPI.post('/restore', {
+      email,
+      encryptedSeed,
+      blockstackId
+    })
       .then(
         () => {
           console.log(`emailNotifications: sent ${email} restore email`)
@@ -523,12 +524,19 @@ class Onboarding extends React.Component {
     const { location } = this.props
     const queryDict = queryString.parse(location.search)
     const authRequest = this.checkForAuthRequest(queryDict)
+
     if (authRequest && this.state.authRequest !== authRequest) {
       this.decodeAndSaveAuthRequest()
       this.setState({
         authRequest
       })
     }
+    else {
+      // Only fire track immediately if there's no manifest. Otherwise, fire
+      // track event in componentWillReceiveProps.
+      this.trackViewEvent(this.state.view)
+    }
+
     if (location.query.verified) {
       this.setState({ email: location.query.verified })
       this.updateView(VIEWS.PASSWORD)
@@ -560,6 +568,11 @@ class Onboarding extends React.Component {
       this.setState({
         usernameRegistrationInProgress: false
       })
+    }
+
+    if (nextProps.appManifest) {
+      // If we were waiting on an appManifest, we haven't tracked yet.
+      this.trackViewEvent(this.state.view, nextProps.appManifest)
     }
   }
 
