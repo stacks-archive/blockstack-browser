@@ -67,14 +67,14 @@ export function uploadPhoto(
     const urlToWrite = `${uploadPrefix}/${photoFilename}`
     let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, photoFile.type)
     if (uploadAttempt === null) {
-      uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, undefined)
+      uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, photoFile.type)
     }
 
     // if still null, we don't know the write gaia-hub-config to write the file.
     if (uploadAttempt === null) {
       logger.error(`Wanted to write to ${urlToWrite} but I don't know how.` +
                    ' Uploading to the default path on the configured hub.')
-      uploadAttempt = uploadToGaiaHub(photoFilename, photoFile, identityHubConfig, undefined)
+      uploadAttempt = uploadToGaiaHub(photoFilename, photoFile, identityHubConfig, photoFile.type)
     }
 
     return uploadAttempt
