@@ -6,6 +6,7 @@ import { FormContainer } from '@components/ui/containers/form'
 import { withShellContext } from '@blockstack/ui/common/withOnboardingState'
 import { Spring } from 'react-spring'
 import { Spinner } from '@components/ui/components/spinner'
+import { colors } from '@components/styled/theme'
 import PropTypes from 'prop-types'
 
 const Shell = props => <StyledShell {...props} />
@@ -43,8 +44,10 @@ const Loading = ({ message = 'Loading...', children, ...rest }) => (
   <Spring native from={{ opacity: 0 }} to={{ opacity: 1 }}>
     {styles => (
       <StyledShell.Loading {...rest} style={styles}>
-        <Spinner />
-        {children || message}
+        <Spinner color={colors.blue} size={42} stroke={3} />
+        <div className="m-t-20">
+          {children || message}
+        </div>
       </StyledShell.Loading>
     )}
   </Spring>

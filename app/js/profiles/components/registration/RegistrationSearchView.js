@@ -51,13 +51,14 @@ class RegistrationSearchView extends Component {
 
   constructor(props) {
     super(props)
-    const availableDomains = Object.assign({},
-      {
-        id: {
-          registerUrl: this.props.api.registerUrl
-        }
-      }) // ,
-      // this.props.api.subdomains)
+    const availableDomains = {
+      // ...this.props.api.subdomains,
+      // Hardcode which subdomains we allow fow now
+      id: {
+        registerUrl: this.props.api.registerUrl
+      },
+      'id.blockstack': this.props.api.subdomains['id.blockstack']
+    }
     const nameSuffixes = Object.keys(availableDomains)
 
     this.state = {
@@ -78,13 +79,8 @@ class RegistrationSearchView extends Component {
 
   componentDidMount() {
     logger.trace('componentDidMount')
-    this.props.refreshCoreWalletBalance(this.props.balanceUrl,
-      this.props.api.coreAPIPassword)
-    if (this.props.localIdentities.map(x => x.usernamePending).includes(true)) {
-      this.updateAlert(
-        'danger', 'You have a pending name registration. Starting a new registration' +
-          ' may interfere with that registration\'s transactions.')
-    }
+    const { refreshCoreWalletBalance, balanceUrl, api } = this.props
+    refreshCoreWalletBalance(balanceUrl, api.coreAPIPassword)
   }
 
 

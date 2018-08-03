@@ -788,32 +788,16 @@ class DefaultProfilePage extends Component {
                 <div className="row">
                   <div className="col-12">
                     <div className="avatar-md m-b-0 text-center">
-                      {person.avatarUrl() ? (
-                        <Image
-                          src={
-                            person.avatarUrl()
-                              ? person.avatarUrl()
-                              : '/images/avatar.png'
-                          }
-                          fallbackSrc="/images/avatar.png"
-                          className="rounded-circle clickable"
-                          onClick={this.onPhotoClick}
-                          style={{
-                            width: '96px',
-                            height: '96px'
-                          }}
-                        />
-                      ) : (
-                        <UserAvatar
-                          id={identity.ownerAddress}
-                          username={identity.username || '?'}
-                          onClick={this.onPhotoClick}
-                          size={96}
-                          textSize={24}
-                          camera
-                          style={{ marginLeft: 'auto', marginRight: 'auto' }}
-                        />
-                      )}
+                      <UserAvatar
+                        id={identity.ownerAddress}
+                        username={identity.username || '?'}
+                        onClick={this.onPhotoClick}
+                        avatarUrl={person.avatarUrl()}
+                        size={96}
+                        textSize={24}
+                        camera
+                        style={{ marginLeft: 'auto', marginRight: 'auto' }}
+                      />
                       <input
                         type="file"
                         ref={ref => {

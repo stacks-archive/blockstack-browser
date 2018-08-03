@@ -10,7 +10,8 @@ import {
 } from '../../../../../app/js/utils/profile-utils'
 import { ECPair } from 'bitcoinjs-lib'
 import {
-  CREATE_NEW,
+  CREATE_NEW_REQUEST,
+  CREATE_NEW_SUCCESS,
   UPDATE_PROFILE,
   UPDATE_SOCIAL_PROOF_VERIFICATIONS,
   USERNAME_OWNED,
@@ -63,6 +64,9 @@ describe('Identity Store: Async Actions', () => {
         .then(() => {
           const expectedActions = [
             {
+              type: CREATE_NEW_REQUEST
+            },
+            {
               keypair: {
                 address: '13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ',
                 appsNodeKey:
@@ -79,7 +83,7 @@ describe('Identity Store: Async Actions', () => {
             {
               index: 0,
               ownerAddress: '13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ',
-              type: CREATE_NEW
+              type: CREATE_NEW_SUCCESS
             },
             {
               type: INCREMENT_IDENTITY_ADDRESS_INDEX
@@ -87,7 +91,7 @@ describe('Identity Store: Async Actions', () => {
           ]
           assert.deepEqual(store.getActions(), expectedActions)
         })
-    }).timeout(7000)
+    })
   })
 
   describe('refreshIdentities', () => {
@@ -120,7 +124,7 @@ describe('Identity Store: Async Actions', () => {
 
       const addresses = ['18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6']
 
-      return store
+      store
         .dispatch(IdentityActions.refreshIdentities(mockAPI, addresses))
         .then(() => {
           const expectedActions = [

@@ -19,5 +19,12 @@
         }
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": ["rewire"],
+      "sourceMaps": "both",
+      "ignore": ["node_modules"]
+    }
+  }
 }

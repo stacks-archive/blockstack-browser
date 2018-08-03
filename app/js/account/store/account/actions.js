@@ -5,13 +5,9 @@ import {
   authorizationHeaderValue,
   btcToSatoshis,
   satoshisToBtc,
-  deriveIdentityKeyPair,
   encrypt,
-  getIdentityPrivateKeychain,
-  getBitcoinPrivateKeychain,
-  getIdentityOwnerAddressNode,
-  getBitcoinAddressNode,
-  getInsightUrl
+  getInsightUrls,
+  getBlockchainIdentities
 } from '@utils'
 import { isCoreEndpointDisabled } from '@utils/window-utils'
 import { transactions, config, network } from 'blockstack'
@@ -39,38 +35,14 @@ function createAccount(
   identitiesToGenerate
 ) {
   logger.debug(`createAccount: identitiesToGenerate: ${identitiesToGenerate}`)
-  const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
-  const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(masterKeychain)
 
-  const identityPublicKeychainNode = identityPrivateKeychainNode.neutered()
-  const identityPublicKeychain = identityPublicKeychainNode.toBase58()
-
-  const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
-  const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
-
-  const firstBitcoinAddress = getBitcoinAddressNode(
-    bitcoinPublicKeychainNode
-  ).getAddress()
-
-  const identityAddresses = []
-  const identityKeypairs = []
-
-  // We pre-generate a number of identity addresses so that we
-  // don't have to prompt the user for the password on each new profile
-  for (
-    let addressIndex = 0;
-    addressIndex < identitiesToGenerate;
-    addressIndex++
-  ) {
-    const identityOwnerAddressNode = getIdentityOwnerAddressNode(
-      identityPrivateKeychainNode,
-      addressIndex
-    )
-    const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
-    identityKeypairs.push(identityKeyPair)
-    identityAddresses.push(identityKeyPair.address)
-    logger.debug(`createAccount: identity index: ${addressIndex}`)
-  }
+  const {
+    identityPublicKeychain,
+    bitcoinPublicKeychain,
+    firstBitcoinAddress,
+    identityAddresses,
+    identityKeypairs
+  } = getBlockchainIdentities(masterKeychain, identitiesToGenerate)
 
   return {
     type: types.CREATE_ACCOUNT,
@@ -227,7 +199,7 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
     if (isCoreEndpointDisabled(addressBalanceUrl)) {
       logger.debug('Mocking core wallet balance in webapp build')
       dispatch(updateCoreWalletBalance(0))
-      return
+      return Promise.resolve()
     }
 
     logger.trace('refreshCoreWalletBalance: Beginning refresh...')
@@ -235,7 +207,7 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
       `refreshCoreWalletBalance: addressBalanceUrl: ${addressBalanceUrl}`
     )
     const headers = { Authorization: authorizationHeaderValue(coreAPIPassword) }
-    fetch(addressBalanceUrl, { headers })
+    return fetch(addressBalanceUrl, { headers })
       .then(response => response.text())
       .then(responseText => JSON.parse(responseText))
       .then(responseJson => {
@@ -256,11 +228,11 @@ function getCoreWalletAddress(walletPaymentAddressUrl, coreAPIPassword) {
   return dispatch => {
     if (isCoreEndpointDisabled(walletPaymentAddressUrl)) {
       logger.error('Cannot use core wallet if core is disable')
-      return
+      return Promise.resolve()
     }
 
     const headers = { Authorization: authorizationHeaderValue(coreAPIPassword) }
-    fetch(walletPaymentAddressUrl, { headers })
+    return fetch(walletPaymentAddressUrl, { headers })
       .then(response => response.text())
       .then(responseText => JSON.parse(responseText))
       .then(responseJson => {
@@ -297,7 +269,7 @@ function withdrawBitcoinClientSide(
 
     const amountSatoshis = Math.floor(amountBTC * 1e8)
 
-    transactions
+    return transactions
       .makeBitcoinSpend(recipientAddress, paymentKey, amountSatoshis)
       .then(transactionHex => {
         const myNet = config.network
@@ -329,7 +301,7 @@ function withdrawBitcoinFromCoreWallet(
           'Core wallet withdrawls not allowed in the simple webapp build'
         )
       )
-      return
+      return Promise.resolve()
     }
 
     const requestBody = {
@@ -375,7 +347,7 @@ function withdrawBitcoinFromCoreWallet(
       )
     }
 
-    fetch(coreWalletWithdrawUrl, {
+    return fetch(coreWalletWithdrawUrl, {
       method: 'POST',
       headers: requestHeaders,
       body: JSON.stringify(requestBody)
@@ -399,61 +371,72 @@ function withdrawBitcoinFromCoreWallet(
 function refreshBalances(insightUrl, addresses, coreAPIPassword) {
   return dispatch => {
     const results = []
-    addresses.forEach(address => {
-      logger.debug(
-        `refreshBalances: refreshing balances for address ${address}`
-      )
-      const urlBase = getInsightUrl(insightUrl, address, coreAPIPassword)
-      const confirmedBalanceUrl = `${urlBase}/balance`
-      const unconfirmedBalanceUrl = `${urlBase}/unconfirmedBalance`
-      fetch(confirmedBalanceUrl)
-        .then(response => response.text())
-        .then(responseText => {
-          const confirmedBalance = parseInt(responseText, 10)
-          fetch(unconfirmedBalanceUrl)
-            .then(response => response.text())
-            .then(balanceResponseText => {
-              const unconfirmedBalance = parseInt(balanceResponseText, 10)
-              results.push({
-                address,
-                balance: satoshisToBtc(unconfirmedBalance + confirmedBalance)
-              })
+    return Promise.all(
+      addresses.map(address => {
+        logger.debug(
+          `refreshBalances: refreshing balances for address ${address}`
+        )
+        const insightUrls = getInsightUrls(insightUrl, address, coreAPIPassword)
+        const confirmedBalanceUrl = insightUrls.confirmedBalanceUrl
+        const unconfirmedBalanceUrl = insightUrls.unconfirmedBalanceUrl
+        return fetch(confirmedBalanceUrl)
+          .then(response => response.text())
+          .then(responseText => {
+            const confirmedBalance = parseInt(responseText, 10)
+            fetch(unconfirmedBalanceUrl)
+              .then(response => response.text())
+              .then(balanceResponseText => {
+                const unconfirmedBalance = parseInt(balanceResponseText, 10)
+                results.push({
+                  address,
+                  balance: satoshisToBtc(unconfirmedBalance + confirmedBalance)
+                })
 
-              if (results.length >= addresses.length) {
-                const balances = {}
-                let total = 0.0
+                if (results.length >= addresses.length) {
+                  const balances = {}
+                  let total = 0.0
 
-                for (let i = 0; i < results.length; i++) {
-                  const thisAddress = results[i].address
-                  if (!balances.hasOwnProperty(thisAddress)) {
-                    const balance = results[i].balance
-                    total = total + balance
-                    balances[address] = balance
-                  } else {
-                    logger.error(
-                      `refreshBalances: Duplicate address ${thisAddress} in addresses array`
-                    )
+                  for (let i = 0; i < results.length; i++) {
+                    const thisAddress = results[i].address
+                    if (!balances.hasOwnProperty(thisAddress)) {
+                      const balance = results[i].balance
+                      total = total + balance
+                      balances[thisAddress] = balance
+                    } else {
+                      logger.error(
+                        `refreshBalances: Duplicate address ${thisAddress} in addresses array`
+                      )
+                    }
                   }
+
+                  balances.total = total
+
+                  dispatch(updateBalances(balances))
                 }
-
-                balances.total = total
-
-                dispatch(updateBalances(balances))
-              }
-            })
-            .catch(error => {
-              logger.error(
-                'refreshBalances: error fetching ${address} unconfirmed balance',
-                error
-              )
-            })
-        })
-        .catch(error => {
-          logger.error(
-            'refreshBalances: error fetching ${address} confirmed balance',
-            error
-          )
-        })
+              })
+              .catch(error => {
+                logger.error(
+                  `refreshBalances: error fetching ${address} unconfirmed balance`,
+                  error
+                )
+              })
+          })
+          .catch(error => {
+            logger.error(
+              `refreshBalances: error fetching ${address} confirmed balance`,
+              error
+            )
+          })
+      })
+    ).then(() => {
+      logger.debug(
+        'refreshBalances: done refreshing balances for all addresses'
+      )
+    }).catch(error => {
+      logger.error(
+        'refreshBalances: error refreshing balances for addresses',
+        error
+      )
     })
   }
 }
