@@ -198,21 +198,24 @@ class SignIn extends React.Component {
 
   restoreAccount = () => {
     console.log('Restoring account!')
-    const { api, identityAddresses, refreshIdentities, updateEmail } = this.props
-    this.setState({ loading: true })
-    this.createAccount()
-    .then(
-      () => {
-        refreshIdentities(api, identityAddresses)
-        updateEmail(this.state.email)
-      },
-      err => console.error(err)
-    )
-    .then(() => this.updateView(VIEWS.SUCCESS))
-    .catch(() => {
-      this.setState({
-        loading: false,
-        restoreError: 'There was an error loading your account.'
+    const { refreshIdentities, updateEmail } = this.props
+    this.setState({
+      loading: true
+    }, () => {
+      this.createAccount()
+      .then(
+        () => {
+          refreshIdentities(this.props.api, this.props.identityAddresses)
+          updateEmail(this.state.email)
+        },
+        err => console.error(err)
+      )
+      .then(() => this.updateView(VIEWS.SUCCESS))
+      .catch(() => {
+        this.setState({
+          loading: false,
+          restoreError: 'There was an error loading your account.'
+        })
       })
     })
   }
