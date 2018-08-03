@@ -6,7 +6,7 @@ import Navbar from '@components/Navbar'
 
 const NotFoundPage = (props) =>
 (
-  <div className="app-wrap-profiles">
+  <div className="body-main">
     <Navbar />
       {props.children}
     <div className="container-fluid m-t-50">
