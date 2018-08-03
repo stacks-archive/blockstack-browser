@@ -39,7 +39,6 @@ class EmailView extends React.Component {
     const { email, updateValue, next, ...rest } = this.props
 
     const props = {
-      headerLabel: 'Create your Blockstack ID',
       title: {
         children:
           this.state.field === 'email'
@@ -74,14 +73,6 @@ class EmailView extends React.Component {
             ]
           }
         }
-      },
-      actions: {
-        items: [
-          {
-            label: 'Restore a Blockstack ID',
-            to: '/sign-in'
-          }
-        ]
       }
     }
     return <ShellScreen {...rest} {...props} />

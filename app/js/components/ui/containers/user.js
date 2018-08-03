@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Button, firstLetter, stringToColor, Type } from '@blockstack/ui'
 import { User } from '@blockstack/ui/components/user'
 import { ChevronRightIcon } from 'mdi-react'
+import Image from '@components/Image'
 
 const UserAvatar = ({
   id,
@@ -10,6 +11,7 @@ const UserAvatar = ({
   size = 46,
   camera,
   textSize = 14,
+  avatarUrl = '',
   ...rest
 }) => (
   <User.Avatar
@@ -19,15 +21,32 @@ const UserAvatar = ({
     camera={camera}
     {...rest}
   >
-    {firstLetter(username)}
+    {avatarUrl ? (
+      <Image
+        src={avatarUrl}
+        fallbackSrc="/images/avatar.png"
+        className="rounded-circle img-cover"
+        style={{
+          display: 'inline-block',
+          width: '100%',
+          height: '100%'
+        }}
+      />
+    ) : (
+      <span>{firstLetter(username)}</span>
+    )}
     {camera && <User.Avatar.Camera />}
   </User.Avatar>
 )
 
-const UserButton = ({ username, id, hideID, ...rest }) => (
+const UserButton = ({ username, id, hideID, avatarUrl, ...rest }) => (
   <Button height={56} primary padding="5px" {...rest}>
     <Button.Section>
-      <UserAvatar username={username} id={id} />
+      <UserAvatar
+        username={username}
+        avatarUrl={avatarUrl}
+        id={id}
+      />
     </Button.Section>
     <Button.Section
       grow
@@ -69,11 +88,13 @@ UserAvatar.propTypes = {
   username: PropTypes.string,
   size: PropTypes.number,
   camera: PropTypes.bool,
-  textSize: PropTypes.number
+  textSize: PropTypes.number,
+  avatarUrl: PropTypes.string
 }
 UserButton.propTypes = {
   id: PropTypes.string,
   username: PropTypes.string,
-  hideID: PropTypes.bool
+  hideID: PropTypes.bool,
+  avatarUrl: PropTypes.string
 }
 export { UserButton, UserAvatar }
