@@ -31,15 +31,18 @@ describe('Settings Store: SettingsReducer', () => {
     assert.deepEqual(SettingsReducer(undefined, {}), { api: DEFAULT_API })
   })
 
-  it('should add missing api urls', () => {
+  it('should add missing api urls on init action', () => {
     const initialState = {
       api: Object.assign({}, DEFAULT_API)
+    }
+    const initAction = {
+      type: '@@INIT'
     }
 
     delete initialState.api.nameLookupUrl
     assert(initialState.api.nameLookupUrl === undefined)
 
-    assert.deepEqual(SettingsReducer(initialState, {}), { api: DEFAULT_API })
+    assert.deepEqual(SettingsReducer(initialState, initAction).api, DEFAULT_API)
   })
 
   it('should not overwrite existing api urls', () => {

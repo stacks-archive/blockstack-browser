@@ -18,6 +18,42 @@
         height: 100%;
         width: 100%;
       }
+
+      noscript {
+        display: flex;
+        position: fixed;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 20px;
+      }
+      noscript h1,
+      noscript p {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      noscript h1 {
+        margin-bottom: 30px;
+        font-size: 32px;
+      }
+      noscript p {
+        font-size: 18px;
+      }
     </style>
+    <noscript>
+      <h1>You Must Enable Javascript to Continue</h1>
+      <p>
+        The Blockstack Browser requires Javascript to be enabled in order to
+        work. If you are not sure why you are seeing this message, or don't know
+        how to enable Javascript, please visit
+        <a href="https://www.enable-javascript.com/" rel="noopener noreferrer" target="_blank">enable-javascript.com</a>
+        to learn more.
+      </p>
+    </noscript>
   </body>
 </html>
