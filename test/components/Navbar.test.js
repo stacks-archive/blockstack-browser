@@ -12,99 +12,48 @@ describe('<Navbar />', () => {
     })
   })
 
-  describe('renders the component with active home tab', () => {
-    const props = {
-      activeTab: 'home'
-    } 
+  const tabDetails = [
+    {
+      name: 'home',
+      activeIcon: '/images/icon-nav-home-hover.svg',
+      regularIcon: '/images/icon-nav-home.svg'}, 
+    {
+      name:'settings',
+      activeIcon: '/images/icon-nav-settings-hover.svg',
+      regularIcon: '/images/icon-nav-settings.svg'}, 
+    {
+      name:'wallet',
+      activeIcon: '/images/icon-nav-wallet-hover.svg',
+      regularIcon: '/images/icon-nav-wallet.svg' }, 
+    {
+      name: 'profile', 
+      prop: 'avatar',
+      activeIcon: '/images/icon-nav-profile-hover.svg',
+      regularIcon: '/images/icon-nav-profile.svg'
+    }]
 
-    const wrapper = shallow(<Navbar {...props} />)
+  tabDetails.forEach((tab) => {
+    describe(
+    `renders the component with active ${tab.name} tab`, () => {
+      const props = {
+        activeTab: tab.prop || tab.name
+      } 
 
-    it('uses the active home tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-home-hover.svg"]').exists()).to.equal(true)
+      const wrapper = shallow(<Navbar {...props} />)
+
+      it(`uses the active ${tab.name} tab icon`, () => {
+        expect(wrapper.find(`img[src="${tab.activeIcon}"]`)
+        .exists()).to.equal(true)
+      })
+
+      const tabs = tabDetails.filter(temp => temp.name !== tab.name)      
+
+      tabs.forEach((innerLoopTab) => {
+        it(`uses the regular ${innerLoopTab.name} tab icon`, () => {
+          expect(wrapper.find(`img[src="${innerLoopTab.regularIcon}"]`)
+          .exists()).to.equal(true)
+        })
+      })
     })
-
-    it('uses the regular settings tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-settings.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the regular wallet tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-wallet.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the regular profile tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-profile.svg"]').exists()).to.equal(true)
-    })
-  })
-
-  describe('renders the component with active settings tab', () => {
-    const props = {
-      activeTab: 'settings'
-    } 
-
-    const wrapper = shallow(<Navbar {...props} />)
-
-    it('uses the regular home tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-home.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the active settings tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-settings-hover.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the regular wallet tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-wallet.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the regular profile tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-profile.svg"]').exists()).to.equal(true)
-    })
-  })
-
-  describe('renders the component with active wallet tab', () => {
-    const props = {
-      activeTab: 'wallet'
-    } 
-
-    const wrapper = shallow(<Navbar {...props} />)
-
-    it('uses the regular home tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-home.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the regular settings tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-settings.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the active wallet tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-wallet-hover.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the regular profile tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-profile.svg"]').exists()).to.equal(true)
-    })
-  })
-
-  describe('renders the component with active profile tab', () => {
-    const props = {
-      activeTab: 'avatar'
-    } 
-
-    const wrapper = shallow(<Navbar {...props} />)
-
-    it('uses the regular home tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-home.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the regular settings tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-settings.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the regular wallet tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-wallet.svg"]').exists()).to.equal(true)
-    })
-
-    it('uses the active profile tab icon', () => {
-      expect(wrapper.find('img[src="/images/icon-nav-profile-hover.svg"]').exists()).to.equal(true)
-    })
-  })
+  }) 
 })
