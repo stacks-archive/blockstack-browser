@@ -16,7 +16,7 @@ describe('<Navigation />', () => {
     })
 
     it('includes the previous label', () => {
-      expect(wrapper.childAt(0).childAt(1).text()).to.contain('Back')
+      expect(wrapper.html()).to.contain('Back')
     })
   })
 
@@ -29,7 +29,7 @@ describe('<Navigation />', () => {
     const wrapper = shallow(<Navigation {...props} />)
 
     it('includes the supplied label', () => {
-      expect(wrapper.childAt(0).childAt(1).text()).to.contain('Previous Page')
+      expect(wrapper.html()).to.contain('Previous Page')
     })
   })
 })
