@@ -1,5 +1,5 @@
 import React from 'react'
-import { ShellScreen } from '@blockstack/ui'
+import { ShellScreen, Shell } from '@blockstack/ui'
 import Yup from 'yup'
 import PropTypes from 'prop-types'
 
@@ -48,19 +48,27 @@ class EmailView extends React.Component {
                 label: 'Next',
                 primary: true,
                 type: 'submit',
-                icon: 'ArrowRightIcon'
+                icon: 'ArrowRightIcon',
+                loading: this.props.loading
               }
             ]
           }
         }
       }
     }
-    return <ShellScreen {...rest} {...props} />
+
+    return (
+      <React.Fragment>
+        {this.props.loading && <Shell.Loading message="Restoring your account..." />}
+        <ShellScreen {...rest} {...props} />
+      </React.Fragment>
+    )
   }
 }
 EmailView.propTypes = {
   email: PropTypes.string,
   updateValue: PropTypes.func,
-  next: PropTypes.func
+  next: PropTypes.func,
+  loading: PropTypes.bool
 }
 export default EmailView

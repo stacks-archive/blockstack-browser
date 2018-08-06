@@ -202,27 +202,29 @@ class SignIn extends React.Component {
     this.setState({
       loading: true
     }, () => {
-      this.createAccount()
-      .then(
-        () => {
-          refreshIdentities(this.props.api, this.props.identityAddresses)
-          updateEmail(this.state.email)
-        },
-        err => console.error(err)
-      )
-      .then(() => this.updateView(VIEWS.SUCCESS))
-      .catch(() => {
-        this.setState({
-          loading: false,
-          restoreError: 'There was an error loading your account.'
+      // Quick setTimeout just to get the loader going before we lock up the
+      // browser with decryption. TODO: Remove this when it's workerized.
+      setTimeout(() => {
+        this.createAccount()
+        .then(() => refreshIdentities(this.props.api, this.props.identityAddresses))
+        .then(() => updateEmail(this.state.email))
+        .then(() => this.updateView(VIEWS.SUCCESS))
+        .catch(() => {
+          this.setState({
+            loading: false,
+            restoreError: 'There was an error loading your account.'
+          })
         })
-      })
+      }, 300)
     })
   }
 
 
   updateView = view => {
-    this.setState({ view })
+    this.setState({
+      view,
+      loading: false
+    })
     this.trackViewEvent(view)
   }
 
