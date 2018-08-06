@@ -60,8 +60,10 @@ const PermissionsList = ({ list }) => (
 const PermissionsContent = ({ permissions, app }) => (
   <React.Fragment>
     <Type.p>
-      <strong>"{app && app.name}"</strong> wants to{' '}
-      <PermissionsList list={permissions} />.
+      "{app && app.name}" ({app.start_url}){' '}
+      wants to{' '}
+      <PermissionsList list={permissions} />.{' '}
+      Select an ID to use:
     </Type.p>
   </React.Fragment>
 )
