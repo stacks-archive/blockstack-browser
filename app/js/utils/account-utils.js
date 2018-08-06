@@ -13,21 +13,6 @@ const SINGLE_PLAYER_APP_DOMAIN_LEGACY_LIST = ['https://blockstack-todos.appartis
                                               'https://peachyportfolio.com']
 export const MAX_TRUST_LEVEL = 99
 
-export class AppNode {
-  constructor(hdNode, appDomain) {
-    this.hdNode = hdNode
-    this.appDomain = appDomain
-  }
-
-  getAppPrivateKey() {
-    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
-  }
-
-  getAddress() {
-    return this.hdNode.getAddress()
-  }
-}
-
 export function isPasswordValid(password) {
   let isValid = false
   let error = null
@@ -50,35 +35,6 @@ export function isBackupPhraseValid(backupPhrase) {
   }
 
   return { isValid, error }
-}
-
-export function decryptMasterKeychain(password, encryptedBackupPhrase) {
-  return new Promise((resolve, reject) => {
-    BlockstackWallet.fromEncryptedMnemonic(encryptedBackupPhrase, password)
-      .then((wallet) => {
-        resolve(wallet.rootNode)
-      })
-      .catch(err => {
-        logger.error('decryptMasterKeychain: error', err)
-        reject(new Error('Incorrect password'))
-      })
-  })
-}
-
-const EXTERNAL_ADDRESS = 'EXTERNAL_ADDRESS'
-
-export function getBitcoinPrivateKeychain(masterKeychain) {
-  return new BlockstackWallet(masterKeychain).getBitcoinPrivateKeychain()
-}
-
-export function getBitcoinAddressNode(
-  bitcoinKeychain,
-  addressIndex = 0,
-  chainType = EXTERNAL_ADDRESS
-) {
-  return BlockstackWallet.getNodeFromBitcoinKeychain(
-    bitcoinKeychain.toBase58(), addressIndex, chainType
-  )
 }
 
 export async function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {

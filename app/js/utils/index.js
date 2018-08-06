@@ -1,13 +1,8 @@
 export {
   getCorrectAppPrivateKey,
-  decryptMasterKeychain,
-  deriveIdentityKeyPair,
-  getBitcoinPrivateKeychain,
   getWebAccountTypes,
   isPasswordValid,
   isBackupPhraseValid,
-  getIdentityOwnerAddressNode,
-  getBitcoinAddressNode,
   findAddressIndex,
   decryptBitcoinPrivateKey,
   calculateTrustLevel,

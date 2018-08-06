@@ -1,10 +1,7 @@
 import bip39 from 'bip39'
 import { BlockstackWallet, publicKeyToAddress, getPublicKeyFromPrivate } from 'blockstack'
 import {
-  getIdentityPrivateKeychain,
-  getIdentityOwnerAddressNode,
   findAddressIndex,
-  decryptMasterKeychain,
   getCorrectAppPrivateKey
  } from '../../app/js/utils'
 
@@ -132,7 +129,7 @@ describe('account-utils', () => {
         done()
       }).catch((err) => {
         console.log(err)
-        assert.false()
+        assert.equal(true, false)
         done()
       })
     })
@@ -142,20 +139,19 @@ describe('account-utils', () => {
     })
 
     it('should return the decrypted master keychain', (done) => {
-      decryptMasterKeychain('password123', encryptedBackupPhrase).then((actualMnemonic) => {
-        const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-        const keychain = BlockstackWallet.fromSeedBuffer(seedBuffer).toBase58()
+      BlockstackWallet.fromEncryptedMnemonic(encryptedBackupPhrase, 'password123').then((wallet) => {
+        const keychain = wallet.toBase58()
         assert.equal(masterKeychain, keychain)
         done()
       }).catch((err) => {
         console.log(err)
-        assert.false()
+        assert.equal(true, false)
         done()
       })
     })
 
     it('should return an error object if something goes wrong', (done) => {
-      decryptMasterKeychain('badpass', encryptedBackupPhrase).catch((err) => {
+      BlockstackWallet.fromEncryptedMnemonic(encryptedBackupPhrase, 'badpass').catch((err) => {
         assert.isTrue(err instanceof Error)
         assert.equal(err.message, 'Incorrect password')
         done()
