@@ -7,7 +7,6 @@ import { encryptMnemonic, decryptMnemonic } from 'blockstack'
 import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
 import { AccountActions } from './store/account'
-import { decrypt, encrypt } from '@utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/ChangePasswordPage.js')

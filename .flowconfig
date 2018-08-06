@@ -9,6 +9,7 @@
 .*/node_modules/immutable/*
 .*/blockstack.js/node_modules/*
 .*/blockstack.js/src/*
+.*/blockstack.js/.git/*
 .*/tmp/nexe/*
 .*/node_modules/styled-components/.*
 

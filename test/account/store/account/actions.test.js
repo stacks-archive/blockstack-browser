@@ -1,7 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { decryptMnemonic } from 'blockstack'
-import { decrypt } from '../../../../app/js/utils/encryption-utils'
 import AccountActions from '../../../../app/js/account/store/account/actions'
 import {
   CREATE_ACCOUNT,

@@ -1,4 +1,3 @@
-import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import {
   authorizationHeaderValue,
@@ -29,7 +28,7 @@ const updateEmail = email => dispatch =>
 
 function createAccount(
   encryptedBackupPhrase,
-  masterKeychain,
+  keychainB58,
   identitiesToGenerate
 ) {
   logger.debug(`createAccount: identitiesToGenerate: ${identitiesToGenerate}`)
@@ -40,7 +39,7 @@ function createAccount(
     firstBitcoinAddress,
     identityAddresses,
     identityKeypairs
-  } = getBlockchainIdentities(masterKeychain, identitiesToGenerate)
+  } = getBlockchainIdentities(keychainB58, identitiesToGenerate)
 
   return {
     type: types.CREATE_ACCOUNT,
@@ -447,12 +446,14 @@ const initializeWallet = (
   let masterKeychain = null
   if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
     const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+    masterKeychain = BlockstackWallet.fromSeedBuffer(seedBuffer)
+      .toBase58()
   } else {
     // Create a new wallet
     backupPhrase = BlockstackWallet.generateMnemonic()
     const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+    masterKeychain = BlockstackWallet.fromSeedBuffer(seedBuffer)
+      .toBase58()
   }
   return BlockstackWallet.encryptMnemonic(backupPhrase, password)
     .then(ciphertextBuffer => {

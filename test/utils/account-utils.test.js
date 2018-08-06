@@ -1,6 +1,5 @@
-import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
-import { BlockstackWallet } from 'blockstack'
+import { BlockstackWallet, publicKeyToAddress, getPublicKeyFromPrivate } from 'blockstack'
 import {
   getIdentityPrivateKeychain,
   getIdentityOwnerAddressNode,
@@ -15,7 +14,8 @@ const backupPhrase = 'sound idle panel often situate develop unit text design an
 describe('account-utils', () => {
   beforeEach(() => {
     const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+    masterKeychain = BlockstackWallet.fromSeedBuffer(seedBuffer)
+      .toBase58()
   })
 
   afterEach(() => {
@@ -76,24 +76,25 @@ describe('account-utils', () => {
 
   describe('getIdentityOwnerAddressNode', () => {
     it('should generate app key tree', () => {
-      const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+      const wallet = BlockstackWallet.fromBase58(masterKeychain)
       const addressIndex = 0
-      const identityOwnerAddressNode = getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
+      const identityKeyPair = wallet.getIdentityKeyPair(addressIndex, true)
       const expectedSalt = 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e'
-      const actualSalt = identityOwnerAddressNode.getSalt()
+      const actualSalt = wallet.getIdentitySalt()
       assert.equal(actualSalt, expectedSalt)
 
       const expectedAddress =  '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk'
-      const actualAddress = identityOwnerAddressNode.getAddress()
+      const actualAddress = identityKeyPair.address
       assert.equal(actualAddress, expectedAddress)
 
-      const appsNode = identityOwnerAddressNode.getAppsNode()
+      const appsNodeKey = identityKeyPair.appsNodeKey
 
       const origin = 'https://amazing.app:443'
-      const appNode = appsNode.getAppNode(origin)
+      const appNodeKey = BlockstackWallet.getLegacyAppPrivateKey(
+        appsNodeKey, identityKeyPair.salt, origin)
 
       const expectedAppNodeAddress = '1A9NEhnXq5jDp9BRT4DrwadRP5jbBK896X'
-      const actualAppNodeAddress = appNode.getAddress()
+      const actualAppNodeAddress = publicKeyToAddress(getPublicKeyFromPrivate(appNodeKey))
       assert.equal(actualAppNodeAddress, expectedAppNodeAddress)
     })
   })
@@ -125,6 +126,13 @@ describe('account-utils', () => {
     beforeEach((done) => {
       BlockstackWallet.encryptMnemonic(backupPhrase, password).then(hex => {
         encryptedBackupPhrase = hex
+        const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+        masterKeychain = BlockstackWallet.fromSeedBuffer(seedBuffer)
+          .toBase58()
+        done()
+      }).catch((err) => {
+        console.log(err)
+        assert.false()
         done()
       })
     })
@@ -134,8 +142,14 @@ describe('account-utils', () => {
     })
 
     it('should return the decrypted master keychain', (done) => {
-      decryptMasterKeychain('password123', encryptedBackupPhrase).then((keychain) => {
-        assert.equal(masterKeychain.getIdentifier().toString('hex'), keychain.getIdentifier().toString('hex'))
+      decryptMasterKeychain('password123', encryptedBackupPhrase).then((actualMnemonic) => {
+        const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+        const keychain = BlockstackWallet.fromSeedBuffer(seedBuffer).toBase58()
+        assert.equal(masterKeychain, keychain)
+        done()
+      }).catch((err) => {
+        console.log(err)
+        assert.false()
         done()
       })
     })

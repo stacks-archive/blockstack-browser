@@ -1,24 +1,9 @@
 import bip39 from 'bip39'
-import crypto from 'crypto'
 import log4js from 'log4js'
 import { BlockstackWallet, publicKeyToAddress, getPublicKeyFromPrivate } from 'blockstack'
 
 const logger = log4js.getLogger('utils/account-utils.js')
 
-function hashCode(string) {
-  let hash = 0
-  if (string.length === 0) return hash
-  for (let i = 0; i < string.length; i++) {
-    const character = string.charCodeAt(i)
-    hash = (hash << 5) - hash + character
-    hash = hash & hash
-  }
-  return hash & 0x7fffffff
-}
-
-const APPS_NODE_INDEX = 0
-const SIGNING_NODE_INDEX = 1
-const ENCRYPTION_NODE_INDEX = 2
 const SINGLE_PLAYER_APP_DOMAIN_LEGACY_LIST = ['https://blockstack-todos.appartisan.com',
                                               'https://use.coinsapp.co',
                                               'http://www.coinstack.one',
@@ -40,74 +25,6 @@ export class AppNode {
 
   getAddress() {
     return this.hdNode.getAddress()
-  }
-}
-
-export class AppsNode {
-  constructor(appsHdNode, salt) {
-    this.hdNode = appsHdNode
-    this.salt = salt
-  }
-
-  getNode() {
-    return this.hdNode
-  }
-
-  getAppNode(appDomain) {
-    const hash = crypto
-      .createHash('sha256')
-      .update(`${appDomain}${this.salt}`)
-      .digest('hex')
-    const appIndex = hashCode(hash)
-    const appNode = this.hdNode.deriveHardened(appIndex)
-    return new AppNode(appNode, appDomain)
-  }
-
-  toBase58() {
-    return this.hdNode.toBase58()
-  }
-
-  getSalt() {
-    return this.salt
-  }
-}
-
-class IdentityAddressOwnerNode {
-  constructor(ownerHdNode, salt) {
-    this.hdNode = ownerHdNode
-    this.salt = salt
-  }
-
-  getNode() {
-    return this.hdNode
-  }
-
-  getSalt() {
-    return this.salt
-  }
-
-  getIdentityKey() {
-    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
-  }
-
-  getIdentityKeyID() {
-    return this.hdNode.keyPair.getPublicKeyBuffer().toString('hex')
-  }
-
-  getAppsNode() {
-    return new AppsNode(this.hdNode.deriveHardened(APPS_NODE_INDEX), this.salt)
-  }
-
-  getAddress() {
-    return this.hdNode.getAddress()
-  }
-
-  getEncryptionNode() {
-    return this.hdNode.deriveHardened(ENCRYPTION_NODE_INDEX)
-  }
-
-  getSigningNode() {
-    return this.hdNode.deriveHardened(SIGNING_NODE_INDEX)
   }
 }
 
@@ -154,12 +71,6 @@ export function getBitcoinPrivateKeychain(masterKeychain) {
   return new BlockstackWallet(masterKeychain).getBitcoinPrivateKeychain()
 }
 
-export function getBitcoinPublicKeychain(masterKeychain) {
-  return new BlockstackWallet(masterKeychain)
-    .getBitcoinPrivateKeychain()
-    .neutered()
-}
-
 export function getBitcoinAddressNode(
   bitcoinKeychain,
   addressIndex = 0,
@@ -173,43 +84,6 @@ export function getBitcoinAddressNode(
 export async function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
   const wallet = await BlockstackWallet.fromEncryptedMnemonic(encryptedBackupPhrase, password)
   return wallet.getBitcoinPrivateKey(0)
-}
-
-export function getIdentityPrivateKeychain(masterKeychain) {
-  return new BlockstackWallet(masterKeychain).getIdentityPrivateKeychain()
-}
-
-export function getIdentityPublicKeychain(masterKeychain) {
-  return new BlockstackWallet(masterKeychain).getIdentityPublicKeychain()
-}
-
-export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityIndex = 0) {
-  if (identityPrivateKeychain.isNeutered()) {
-    throw new Error('You need the private key to generate identity addresses')
-  }
-
-  const publicKeyHex = identityPrivateKeychain.keyPair.getPublicKeyBuffer().toString('hex')
-  const salt = crypto
-    .createHash('sha256')
-    .update(publicKeyHex)
-    .digest('hex')
-
-  return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex), salt)
-}
-
-export function deriveIdentityKeyPair(identityOwnerAddressNode) {
-  const address = identityOwnerAddressNode.getAddress()
-  const identityKey = identityOwnerAddressNode.getIdentityKey()
-  const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
-  const appsNode = identityOwnerAddressNode.getAppsNode()
-  const keyPair = {
-    key: identityKey,
-    keyID: identityKeyID,
-    address,
-    appsNodeKey: appsNode.toBase58(),
-    salt: appsNode.getSalt()
-  }
-  return keyPair
 }
 
 export function getWebAccountTypes(api) {
@@ -410,19 +284,16 @@ export function getCorrectAppPrivateKey(scopes, profile, appsNodeKey, salt, appD
   }
 }
 
-export function getBlockchainIdentities(masterKeychain, identitiesToGenerate) {
-  const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
-  const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(masterKeychain)
+export function getBlockchainIdentities(keychainB58, identitiesToGenerate) {
+  const wallet = BlockstackWallet.fromBase58(keychainB58)
 
-  const identityPublicKeychainNode = identityPrivateKeychainNode.neutered()
+  const identityPublicKeychainNode = wallet.getIdentityPublicKeychain()
   const identityPublicKeychain = identityPublicKeychainNode.toBase58()
 
-  const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
+  const bitcoinPublicKeychainNode = wallet.getBitcoinPublicKeychain()
   const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
 
-  const firstBitcoinAddress = getBitcoinAddressNode(
-    bitcoinPublicKeychainNode
-  ).getAddress()
+  const firstBitcoinAddress = wallet.getBitcoinAddress(0)
 
   const identityAddresses = []
   const identityKeypairs = []
@@ -434,11 +305,7 @@ export function getBlockchainIdentities(masterKeychain, identitiesToGenerate) {
     addressIndex < identitiesToGenerate;
     addressIndex++
   ) {
-    const identityOwnerAddressNode = getIdentityOwnerAddressNode(
-      identityPrivateKeychainNode,
-      addressIndex
-    )
-    const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
+    const identityKeyPair = wallet.getIdentityKeyPair(addressIndex, true)
     identityKeypairs.push(identityKeyPair)
     identityAddresses.push(identityKeyPair.address)
     logger.debug(`createAccount: identity index: ${addressIndex}`)
