@@ -5,6 +5,7 @@ import { BlockstackWallet, publicKeyToAddress, getPublicKeyFromPrivate } from 'b
 const logger = log4js.getLogger('utils/account-utils.js')
 
 const SINGLE_PLAYER_APP_DOMAIN_LEGACY_LIST = ['https://blockstack-todos.appartisan.com',
+                                              'https://note.riot.ai',
                                               'https://use.coinsapp.co',
                                               'http://www.coinstack.one',
                                               'http://www.blockportfol.io',
