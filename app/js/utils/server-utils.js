@@ -33,7 +33,12 @@ class ServerAPIClass {
         headers,
         body
       })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          reject(new Error(`Server responded with status code ${res.status}`))
+        }
+        return res.json()
+      })
       .then(res => {
         if (res.status !== undefined && !res.status) {
           reject(new Error(res.error || 'Request failed'))
