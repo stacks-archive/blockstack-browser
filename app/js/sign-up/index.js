@@ -101,11 +101,6 @@ const mapStateToProps = state => ({
   appManifestLoadingError: selectAppManifestLoadingError(state)
 })
 
-const CREATE_ACCOUNT_INITIAL = 'createAccount/initial'
-const CREATE_ACCOUNT_STARTED = 'createAccount/started'
-const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
-const CREATE_ACCOUNT_SUCCESS = 'createAccount/success'
-
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -134,7 +129,6 @@ class Onboarding extends React.Component {
     recoveryEmailError: null,
     restoreEmailError: null,
     loading: false,
-    creatingAccountStatus: CREATE_ACCOUNT_INITIAL,
     view: VIEWS.INITIAL,
     usernameRegistrationInProgress: false
   }
@@ -184,50 +178,51 @@ class Onboarding extends React.Component {
    */
   submitUsername = username => {
     this.setState({
-      creatingAccountStatus: CREATE_ACCOUNT_STARTED,
       username,
       loading: true
+    }, () => {
+      setTimeout(() => {
+        this.createAccount()
+      }, 500)
     })
   }
 
   /**
    * This is our main function for creating a new account
    */
-  createAccount = () => {
-    const { username, password } = this.state
-    if (!username) {
-      throw new Error('Missing a username! How did that happen?')
-    } else if (!password) {
+  createAccount = async () => {
+    const { password } = this.state
+    if (!password) {
       throw new Error('Missing a password! How did that happen?')
     }
     logger.debug('creating account, createAccount()')
 
-    this.setState({
-      creatingAccountStatus: CREATE_ACCOUNT_IN_PROCESS
-    })
     // Initialize our wallet
-    this.initializeWallet().then(() =>
-      // Create new ID and owner address and then set to default
-      this.createNewIdAndSetDefault().then(() =>
-        // Connect our default storage
-        this.connectStorage().then(() =>
-          // Finally, register the username
-          this.registerUsername()
-        )
-      )
-    )
+    await this.initializeWallet()
+    // Create new ID and owner address and then set to default
+    await this.createNewIdAndSetDefault()
+    // Connect our default storage
+    await this.connectStorage()
+    // Register the username
+    await this.registerUsername()
+    // Send the emails
+    await this.sendEmails()
+
+    this.updateView(VIEWS.INFO)
   }
 
   /**
    * Register the username
    */
   registerUsername = async () => {
-    console.log('registerUsername()')
+    logger.trace('registerUsername')
     let username = this.state.username
+    if (!username) {
+      logger.info('registerUsername: no username set, skipping registration')
+      return Promise.resolve()
+    }
     const suffix = `.${SUBDOMAIN_SUFFIX}`
     username += suffix
-    console.log('about to submit username', username)
-    logger.trace('registerUsername')
     const nameHasBeenPreordered = hasNameBeenPreordered(
       username,
       this.props.localIdentities
@@ -239,6 +234,7 @@ class Onboarding extends React.Component {
       logger.error(
         `registerUsername: username '${username}' has already been preordered`
       )
+      return Promise.resolve()
     } else {
       this.setState({
         usernameRegistrationInProgress: true
@@ -255,7 +251,7 @@ class Onboarding extends React.Component {
       const identity = this.props.localIdentities[identityIndex]
       const keypair = this.props.identityKeypairs[identityIndex]
 
-      this.props.registerName(
+      return this.props.registerName(
         this.props.api,
         username,
         identity,
@@ -263,8 +259,26 @@ class Onboarding extends React.Component {
         address,
         keypair
       )
-      this.setState({
-        creatingAccountStatus: CREATE_ACCOUNT_SUCCESS
+      .catch((err) => {
+        logger.error(`username registration error: ${err}`)
+        this.props.notify({
+          title: `Failed to register ${username}`,
+          message: 'Something went wrong while registering that name. You ' +
+            'can try to register again later from your profile page.',
+          status: 'error',
+          dismissAfter: 0,
+          dismissible: true,
+          closeButton: true,
+          position: 'b'
+        })
+        this.setState({
+          username: ''
+        })
+      })
+      .then(() => {
+        this.setState({
+          usernameRegistrationInProgress: false
+        })
       })
     }
   }
@@ -309,6 +323,7 @@ class Onboarding extends React.Component {
   sendEmails = (type = 'both') => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
+    const id = username ? `${username}.${SUBDOMAIN_SUFFIX}` : undefined
 
     /**
      * TODO: add this as a notification or something the user can see
@@ -317,7 +332,7 @@ class Onboarding extends React.Component {
       return null
     }
 
-    const id = `${username}.${SUBDOMAIN_SUFFIX}`
+
 
     const encodedPhrase = new Buffer(
       encryptedBackupPhrase,
@@ -468,20 +483,6 @@ class Onboarding extends React.Component {
     this.updateView(VIEWS.HOORAY)
   }
 
-  componentDidUpdate() {
-    const { creatingAccountStatus, loading, username, password } = this.state
-
-    const registrationBegin =
-      creatingAccountStatus === CREATE_ACCOUNT_STARTED &&
-      loading &&
-      username &&
-      password
-
-    if (registrationBegin) {
-      setTimeout(() => this.createAccount(), 500)
-    }
-  }
-
   componentWillMount() {
     if (this.props.encryptedBackupPhrase) {
       this.props.router.push('/')
@@ -515,26 +516,6 @@ class Onboarding extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { registration } = nextProps
-    const {
-      usernameRegistrationInProgress,
-      emailsSent,
-      emailsSending
-    } = this.state
-    if (usernameRegistrationInProgress && registration.registrationSubmitted) {
-      if (!emailsSent && !emailsSending) {
-        this.setState({
-          emailsSending: true
-        })
-        this.sendEmails().then(() => this.updateView(VIEWS.INFO))
-      }
-    } else if (registration.error) {
-      logger.error(`username registration error: ${registration.error}`)
-      this.setState({
-        usernameRegistrationInProgress: false
-      })
-    }
-
     if (nextProps.appManifest) {
       // If we were waiting on an appManifest, we haven't tracked yet.
       this.trackViewEvent(this.state.view, nextProps.appManifest)

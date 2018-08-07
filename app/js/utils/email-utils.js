@@ -2,7 +2,7 @@
 import { ServerAPI } from './server-utils'
 
 export function sendRecoveryEmail(
-  email: string, blockstackId: string, encryptedSeed: string
+  email: string, blockstackId?: string, encryptedSeed: string
 ): Promise<any> {
   const { protocol, hostname, port } = location
   const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
@@ -31,7 +31,7 @@ export function sendRecoveryEmail(
 }
 
 export function sendRestoreEmail(
-  email: string, blockstackId: string, encryptedSeed: string
+  email: string, blockstackId?: string, encryptedSeed: string
 ): Promise<any> {
   return ServerAPI.post('/restore', {
     email,
