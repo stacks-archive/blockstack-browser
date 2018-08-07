@@ -168,7 +168,7 @@
     "minimist": "^1.2.0",
     "mocha": "^5.2.0",
     "moment-locales-webpack-plugin": "^1.0.5",
-    "nexe": "^2.0.0-rc.30",
+    "nexe": "1.1.2",
     "nock": "^9.0.13",
     "node-libs-browser": "^1.0.0",
     "nyc": "^12.0.2",
