@@ -211,7 +211,7 @@ class UsernameView extends React.Component {
             split: true,
             items: [
               status === STATUS.FAIL ? {
-                label: 'Skip Registration →',
+                label: 'Skip Username →',
                 textOnly: true,
                 disabled: loading,
                 onClick: (ev) => {

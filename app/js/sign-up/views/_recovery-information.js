@@ -19,8 +19,8 @@ class RecoverInformationScreen extends React.Component {
       body = (
         <React.Fragment>
           <Type.p>
-            We tried to send your <strong>Magic Recovery Code</strong> to {email}
-            but something went wrong. You can{' '}
+            We tried to send your <strong>Magic Recovery Code</strong> to{' '}
+            {email} but something went wrong. You can{' '}
             <Type.a onClick={() => this.sendEmailAgain()}>
               try to resend it
             </Type.a>
