@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import ToolTip from '@components/ToolTip'
-import Image from '@components/Image'
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu'
 import { UserAvatar } from '@blockstack/ui'
 
@@ -59,19 +58,11 @@ class IdentityItem extends Component {
         </ToolTip>
         <div>
           <div className="avatar-sm float-left" style={{ display: 'inline' }}>
-            {this.props.avatarUrl === '' || !this.props.avatarUrl ? (
-              <UserAvatar
-                id={this.props.ownerAddress}
-                username={this.props.username || '?'}
-              />
-            ) : (
-              <Image
-                src={this.props.avatarUrl}
-                fallbackSrc="/images/avatar.png"
-                className="rounded-circle img-cover"
-                style={{ display: 'inline-block' }}
-              />
-            )}
+            <UserAvatar
+              id={this.props.ownerAddress}
+              username={this.props.username || '?'}
+              avatarUrl={this.props.avatarUrl}
+            />
           </div>
           <div style={{ display: 'inline' }}>
             <ul className="container-fluid list-card">

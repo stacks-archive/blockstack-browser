@@ -28,7 +28,7 @@ class SaveButton extends Component {
     return (
       <div>
       {this.state.profileJustSaved ?
-        <button className="btn btn-sm btn-success" disabled>
+        <button className="btn btn-success" disabled>
             Saving...
         </button>
       :

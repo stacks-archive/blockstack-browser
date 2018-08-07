@@ -74,7 +74,7 @@ export class EnterEmailView extends Component {
                 type="checkbox"
                 className="form-check-input"
               />
-              &nbsp;&nbsp;Join the Blockstack mailing list
+              Join the Blockstack mailing list
             </label>
           </div>
           <div style={{ marginBottom: '-20px' }}>
