@@ -18,6 +18,8 @@ import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
 import { openInNewTab } from './utils'
 import Modal from 'react-modal'
+import NotificationsSystem from 'reapop'
+import NotificationsTheme from './vendor/reapop-theme'
 
 import log4js from 'log4js'
 
@@ -202,6 +204,7 @@ class App extends Component {
       <div className="body-main">
         <div className="wrapper footer-padding">{children}</div>
         <SupportButton onClick={this.onSupportClick} />
+        <NotificationsSystem theme={NotificationsTheme} />
       </div>
     )
   }

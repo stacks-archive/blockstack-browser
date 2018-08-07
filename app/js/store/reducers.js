@@ -1,5 +1,6 @@
 // @flow
 import { combineReducers } from 'redux'
+import { reducer as makeNotificationsReducer } from 'reapop'
 import AccountReducer from '../account/store/account/reducer'
 import { AuthReducer } from '../auth/store/auth'
 import ProfilesReducer from '../profiles/store/reducers'
@@ -45,7 +46,8 @@ const AppReducer = combineReducers({
   apps: AppsReducer,
   profiles: ProfilesReducer,
   sanity: SanityReducer,
-  settings: SettingsReducer
+  settings: SettingsReducer,
+  notifications: makeNotificationsReducer()
 })
 
 function reducer(state: any, action: any) {

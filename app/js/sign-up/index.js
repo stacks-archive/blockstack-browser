@@ -38,7 +38,8 @@ import { RegistrationActions } from '../profiles/store/registration'
 import { BLOCKSTACK_INC } from '../account/utils/index'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
-import { ServerAPI, trackEventOnce } from '@utils/server-utils'
+import { trackEventOnce } from '@utils/server-utils'
+import { sendRecoveryEmail, sendRestoreEmail } from '@utils/email-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'
@@ -51,6 +52,7 @@ import {
   Username,
   RecoveryInformationScreen
 } from './views'
+import { notify } from 'reapop'
 
 const logger = log4js.getLogger('onboarding/index.js')
 
@@ -111,7 +113,8 @@ const mapDispatchToProps = dispatch =>
       ...SettingsActions,
       ...IdentityActions,
       ...RegistrationActions,
-      ...AuthActions
+      ...AuthActions,
+      notify
     },
     dispatch
   )
@@ -301,7 +304,7 @@ class Onboarding extends React.Component {
    * Send Emails
    * this will send both emails (restore and recovery)
    */
-  sendEmails = async (type = 'both') => {
+  sendEmails = (type = 'both') => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
 
@@ -312,25 +315,53 @@ class Onboarding extends React.Component {
       return null
     }
 
-    const fullUsername = `${username}.${SUBDOMAIN_SUFFIX}`
+    const id = `${username}.${SUBDOMAIN_SUFFIX}`
 
-    const b64EncryptedBackupPhrase = new Buffer(
+    const encodedPhrase = new Buffer(
       encryptedBackupPhrase,
       'hex'
     ).toString('base64')
 
-    if (type === 'recovery') {
-      await this.sendRecovery(fullUsername, email, b64EncryptedBackupPhrase)
-    } else if (type === 'restore') {
-      await this.sendRestore(fullUsername, email, b64EncryptedBackupPhrase)
-    } else {
-      await this.sendRestore(fullUsername, email, b64EncryptedBackupPhrase)
-      await this.sendRecovery(fullUsername, email, b64EncryptedBackupPhrase)
+    this.setState({
+      emailsSending: true,
+      emailsSent: false
+    })
+
+    let recoveryPromise = Promise.resolve()
+    let restorePromise = Promise.resolve()
+    if (type === 'recovery' || type === 'both') {
+      recoveryPromise = sendRecoveryEmail(email, id, encodedPhrase).catch(() => {
+        this.props.notify({
+          title: 'Recovery email failed to send',
+          message: 'Something went wrong with sending your recovery code. ' +
+            'Please make sure you record your secret key, or you won’t be ' +
+            'able to recover your account.',
+          status: 'warning',
+          dismissible: true,
+          dismissAfter: 0,
+          closeButton: true
+        })
+      })
+    } if (type === 'restore' || type === 'both') {
+      restorePromise = sendRestoreEmail(email, id, encodedPhrase).catch(() => {
+        this.props.notify({
+          title: 'Restore email failed to send',
+          message: 'Something went wrong with sending you restoration ' +
+            'instructions. Please record your secret key, or you may be ' +
+            'unable to recover your account.',
+          status: 'warning',
+          dismissible: true,
+          dismissAfter: 0,
+          closeButton: true
+        })
+      })
     }
 
-    return this.setState({
-      emailsSending: false,
-      emailsSent: true
+    return Promise.all([recoveryPromise, restorePromise]).then(() => {
+      this.setState({
+        emailsSending: false,
+        emailsSent: true
+      })
     })
   }
 
@@ -377,56 +408,6 @@ class Onboarding extends React.Component {
       }
     }
     return null
-  }
-
-  /**
-   * Send Recovery Email
-   */
-  sendRecovery(blockstackId, email, encryptedSeed) {
-    const { protocol, hostname, port } = location
-    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(
-      encryptedSeed
-    )}`
-
-    return ServerAPI.post('/recovery', {
-      email,
-      seedRecovery,
-      blockstackId
-    })
-      .then(
-        () => {
-          console.log(`emailNotifications: sent ${email} recovery email`)
-        },
-        error => {
-          console.log('emailNotifications: error', error)
-        }
-      )
-      .catch(error => {
-        console.log('emailNotifications: error', error)
-      })
-  }
-
-  /**
-   * Send restore email
-   */
-  sendRestore(blockstackId, email, encryptedSeed) {
-    return ServerAPI.post('/restore', {
-      email,
-      encryptedSeed,
-      blockstackId
-    })
-      .then(
-        () => {
-          console.log(`emailNotifications: sent ${email} restore email`)
-        },
-        error => {
-          console.log('emailNotifications: error', error)
-        }
-      )
-      .catch(error => {
-        console.log('emailNotifications: error', error)
-      })
   }
 
   /**
@@ -694,7 +675,8 @@ Onboarding.propTypes = {
   registerName: PropTypes.func.isRequired,
   resetApi: PropTypes.func.isRequired,
   verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
-  encryptedBackupPhrase: PropTypes.string
+  encryptedBackupPhrase: PropTypes.string,
+  notify: PropTypes.func.isRequired
 }
 
 export default withRouter(

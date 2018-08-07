@@ -1,0 +1,516 @@
+@charset "UTF-8";
+/**
+ * TODO: Replace with `reapop-theme-wybo` module along with js once webpack
+ * is the build tool, so that it can handle styles.
+ */
+
+@keyframes top20px-enter {
+  0% {
+    top: -360px;
+    opacity: 0; }
+  100% {
+    top: 0;
+    opacity: 1; } }
+
+@keyframes top20px-leave {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+    max-height: 200px;
+    margin-bottom: 20px; }
+  40% {
+    margin-bottom: 20px;
+    max-height: 200px; }
+  50% {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0; } }
+
+@keyframes bottom20px-enter {
+  0% {
+    bottom: -360px;
+    opacity: 0; }
+  100% {
+    bottom: 0;
+    opacity: 1; } }
+
+@keyframes bottom20px-leave {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+    max-height: 200px;
+    margin-bottom: 20px; }
+  40% {
+    margin-bottom: 20px;
+    max-height: 200px; }
+  50% {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateY(100%);
+    transform: translateY(100%);
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0; } }
+
+@keyframes left20px-enter {
+  0% {
+    left: -360px;
+    opacity: 0; }
+  100% {
+    left: 0;
+    opacity: 1; } }
+
+@keyframes left20px-leave {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+    max-height: 200px;
+    margin-bottom: 20px; }
+  40% {
+    margin-bottom: 20px;
+    max-height: 200px; }
+  50% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateX(-100%);
+    transform: translateX(-100%);
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0; } }
+
+@keyframes right20px-enter {
+  0% {
+    right: -360px;
+    opacity: 0; }
+  100% {
+    right: 0;
+    opacity: 1; } }
+
+@keyframes right20px-leave {
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+    opacity: 1;
+    max-height: 200px;
+    margin-bottom: 20px; }
+  40% {
+    margin-bottom: 20px;
+    max-height: 200px; }
+  50% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0; } }
+
+@keyframes top0-enter {
+  0% {
+    top: -360px;
+    opacity: 0; }
+  100% {
+    top: 0;
+    opacity: 1; } }
+
+@keyframes top0-leave {
+  0% {
+    -webkit-transform: translateY(0%);
+    transform: translateY(0%);
+    opacity: 1;
+    max-height: 200px;
+    margin-bottom: 0; }
+  40% {
+    margin-bottom: 0;
+    max-height: 200px; }
+  50% {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    opacity: 0; }
+  100% {
+    -webkit-transform: translateY(-100%);
+    transform: translateY(-100%);
+    opacity: 0;
+    max-height: 0;
+    margin-bottom: 0; } }
+
+@keyframes rotating {
+  from {
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg); }
+  to {
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg); } }
+
+.notifications-system {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429; }
+
+.notifications-container {
+  position: fixed;
+  z-index: 999999; }
+
+.notifications-container--tc, .notifications-container--tr, .notifications-container--tl, .notifications-container--bc, .notifications-container--br, .notifications-container--bl {
+  width: 360px; }
+  .notifications-container--tc .notification--buttons-1 .notification-button, .notifications-container--tr .notification--buttons-1 .notification-button, .notifications-container--tl .notification--buttons-1 .notification-button, .notifications-container--bc .notification--buttons-1 .notification-button, .notifications-container--br .notification--buttons-1 .notification-button, .notifications-container--bl .notification--buttons-1 .notification-button {
+    height: 100%; }
+  .notifications-container--tc .notification--buttons-2 .notification-button, .notifications-container--tr .notification--buttons-2 .notification-button, .notifications-container--tl .notification--buttons-2 .notification-button, .notifications-container--bc .notification--buttons-2 .notification-button, .notifications-container--br .notification--buttons-2 .notification-button, .notifications-container--bl .notification--buttons-2 .notification-button {
+    height: 50%; }
+  .notifications-container--tc .notification-buttons, .notifications-container--tr .notification-buttons, .notifications-container--tl .notification-buttons, .notifications-container--bc .notification-buttons, .notifications-container--br .notification-buttons, .notifications-container--bl .notification-buttons {
+    flex-direction: column; }
+    .notifications-container--tc .notification-buttons .notification-button, .notifications-container--tr .notification-buttons .notification-button, .notifications-container--tl .notification-buttons .notification-button, .notifications-container--bc .notification-buttons .notification-button, .notifications-container--br .notification-buttons .notification-button, .notifications-container--bl .notification-buttons .notification-button {
+      display: block;
+      width: 100%; }
+      .notifications-container--tc .notification-buttons .notification-button:nth-child(2), .notifications-container--tr .notification-buttons .notification-button:nth-child(2), .notifications-container--tl .notification-buttons .notification-button:nth-child(2), .notifications-container--bc .notification-buttons .notification-button:nth-child(2), .notifications-container--br .notification-buttons .notification-button:nth-child(2), .notifications-container--bl .notification-buttons .notification-button:nth-child(2) {
+        border-top: 1px solid rgba(0, 0, 0, 0.09); }
+
+.notifications-container--b .notification-buttons .notification-buttons, .notifications-container--b .notification--buttons-1 .notification-buttons, .notifications-container--t .notification-buttons .notification-buttons, .notifications-container--t .notification--buttons-1 .notification-buttons {
+  flex-direction: row; }
+
+.notifications-container--t {
+  width: calc(100% - 40px);
+  top: 20px;
+  left: 20px; }
+  .notifications-container--t .notification-wrapper {
+    position: relative;
+    top: 0; }
+    .notifications-container--t .notification-wrapper-enter {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: top20px-enter;
+      animation-name: top20px-enter;
+      -webkit-animation-duration: .4s;
+      animation-duration: .4s; }
+    .notifications-container--t .notification-wrapper-leave {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: top20px-leave;
+      animation-name: top20px-leave;
+      -webkit-animation-duration: .8s;
+      animation-duration: .8s; }
+
+.notifications-container--tc {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%); }
+  .notifications-container--tc .notification-wrapper {
+    position: relative;
+    top: 0; }
+    .notifications-container--tc .notification-wrapper-enter {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: top20px-enter;
+      animation-name: top20px-enter;
+      -webkit-animation-duration: .4s;
+      animation-duration: .4s; }
+    .notifications-container--tc .notification-wrapper-leave {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: top20px-leave;
+      animation-name: top20px-leave;
+      -webkit-animation-duration: .8s;
+      animation-duration: .8s; }
+
+.notifications-container--tr {
+  top: 20px;
+  right: 20px; }
+  .notifications-container--tr .notification-wrapper {
+    position: relative;
+    right: 0; }
+    .notifications-container--tr .notification-wrapper-enter {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: right20px-enter;
+      animation-name: right20px-enter;
+      -webkit-animation-duration: .4s;
+      animation-duration: .4s; }
+    .notifications-container--tr .notification-wrapper-leave {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: right20px-leave;
+      animation-name: right20px-leave;
+      -webkit-animation-duration: .8s;
+      animation-duration: .8s; }
+
+.notifications-container--tl {
+  top: 20px;
+  left: 20px; }
+  .notifications-container--tl .notification-wrapper {
+    position: relative;
+    left: 0; }
+    .notifications-container--tl .notification-wrapper-enter {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: left20px-enter;
+      animation-name: left20px-enter;
+      -webkit-animation-duration: .4s;
+      animation-duration: .4s; }
+    .notifications-container--tl .notification-wrapper-leave {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: left20px-leave;
+      animation-name: left20px-leave;
+      -webkit-animation-duration: .8s;
+      animation-duration: .8s; }
+
+.notifications-container--b {
+  width: calc(100% - 40px);
+  bottom: 0;
+  left: 20px; }
+  .notifications-container--b .notification-wrapper {
+    position: relative;
+    bottom: 0; }
+    .notifications-container--b .notification-wrapper-enter {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: bottom20px-enter;
+      animation-name: bottom20px-enter;
+      -webkit-animation-duration: .4s;
+      animation-duration: .4s; }
+    .notifications-container--b .notification-wrapper-leave {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: bottom20px-leave;
+      animation-name: bottom20px-leave;
+      -webkit-animation-duration: .8s;
+      animation-duration: .8s; }
+
+.notifications-container--bc {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%); }
+  .notifications-container--bc .notification-wrapper {
+    position: relative;
+    bottom: 0; }
+    .notifications-container--bc .notification-wrapper-enter {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: bottom20px-enter;
+      animation-name: bottom20px-enter;
+      -webkit-animation-duration: .4s;
+      animation-duration: .4s; }
+    .notifications-container--bc .notification-wrapper-leave {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: bottom20px-leave;
+      animation-name: bottom20px-leave;
+      -webkit-animation-duration: .8s;
+      animation-duration: .8s; }
+
+.notifications-container--br {
+  bottom: 0;
+  right: 20px; }
+  .notifications-container--br .notification-wrapper {
+    position: relative;
+    right: 0; }
+    .notifications-container--br .notification-wrapper-enter {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: right20px-enter;
+      animation-name: right20px-enter;
+      -webkit-animation-duration: .4s;
+      animation-duration: .4s; }
+    .notifications-container--br .notification-wrapper-leave {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: right20px-leave;
+      animation-name: right20px-leave;
+      -webkit-animation-duration: .8s;
+      animation-duration: .8s; }
+
+.notifications-container--bl {
+  bottom: 0;
+  left: 20px; }
+  .notifications-container--bl .notification-wrapper {
+    position: relative;
+    left: 0; }
+    .notifications-container--bl .notification-wrapper-enter {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: left20px-enter;
+      animation-name: left20px-enter;
+      -webkit-animation-duration: .4s;
+      animation-duration: .4s; }
+    .notifications-container--bl .notification-wrapper-leave {
+      -webkit-animation-fill-mode: forwards;
+      animation-fill-mode: forwards;
+      -webkit-animation-name: left20px-leave;
+      animation-name: left20px-leave;
+      -webkit-animation-duration: .8s;
+      animation-duration: .8s; }
+
+@media (max-width: 767px) {
+  .notifications-container--t {
+    width: 100%;
+    top: 0;
+    left: 0; }
+    .notifications-container--t .notification-wrapper {
+      position: relative;
+      top: 0; }
+      .notifications-container--t .notification-wrapper-enter {
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        -webkit-animation-name: top0-enter;
+        animation-name: top0-enter;
+        -webkit-animation-duration: .4s;
+        animation-duration: .4s; }
+      .notifications-container--t .notification-wrapper-leave {
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        -webkit-animation-name: top0-leave;
+        animation-name: top0-leave;
+        -webkit-animation-duration: .8s;
+        animation-duration: .8s; }
+    .notifications-container--t .notification-wrapper {
+      margin: 0; } }
+
+.notification {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  min-height: 40px;
+  border: none;
+  -webkit-box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.3);
+  z-index: 999; }
+  .notification-wrapper {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px; }
+  .notification-image-container {
+    box-sizing: border-box;
+    padding: 10px 0 10px 15px; }
+  .notification-image {
+    display: inline-block;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    background-size: cover; }
+  .notification-icon {
+    box-sizing: border-box;
+    margin: 10px 0 10px 15px;
+    font-size: 20px !important;
+    align-self: flex-start; }
+  .notification-meta {
+    vertical-align: top;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 20px; }
+  .notification-close-button-container {
+    padding: 10px 15px;
+    box-sizing: border-box; }
+  .notification-close-button {
+    font-size: 14px !important;
+    color: #524c4c;
+    cursor: pointer; }
+    .notification-close-button:before {
+      content: ""; }
+    .notification-close-button:hover {
+      color: #6c6565; }
+  .notification-buttons {
+    display: flex;
+    box-sizing: border-box;
+    vertical-align: top; }
+    .notification-buttons .notification-button {
+      min-height: 40px;
+      box-sizing: border-box;
+      padding: 0;
+      background: none;
+      border: none;
+      border-radius: 0;
+      border-left: 1px solid rgba(0, 0, 0, 0.09);
+      outline: none;
+      text-align: center;
+      color: #524c4c;
+      cursor: pointer; }
+      .notification-buttons .notification-button-text {
+        display: block;
+        height: 25px;
+        padding: 0 15px;
+        min-width: 90px;
+        max-width: 150px;
+        width: auto;
+        white-space: nowrap;
+        overflow: hidden;
+        margin: 0 auto;
+        text-overflow: ellipsis;
+        text-align: center;
+        font-size: 14px;
+        line-height: 25px; }
+      .notification-buttons .notification-button:hover {
+        color: #349ef3; }
+      .notification-buttons .notification-button:active {
+        color: #0e86e6; }
+  .notification-title {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.428571429; }
+  .notification-message {
+    margin: 0; }
+  .notification--dismissible {
+    cursor: pointer; }
+  .notification--default {
+    background-color: #ffffff;
+    border-left: 2px solid #ffffff;
+    color: #524c4c; }
+    .notification--default .notification-icon {
+      display: none; }
+  .notification--success {
+    background-color: #ffffff;
+    border-left: 2px solid #4dc657;
+    color: #524c4c; }
+    .notification--success .notification-icon:before {
+      content: "";
+      color: #4dc657; }
+  .notification--info {
+    background-color: #ffffff;
+    border-left: 2px solid #349ef3;
+    color: #524c4c; }
+    .notification--info .notification-icon:before {
+      content: "";
+      color: #349ef3; }
+  .notification--warning {
+    background-color: #ffffff;
+    border-left: 2px solid #f5aa0a;
+    color: #524c4c; }
+    .notification--warning .notification-icon:before {
+      content: "";
+      color: #f5aa0a; }
+  .notification--error {
+    background-color: #ffffff;
+    border-left: 2px solid #f5311d;
+    color: #524c4c; }
+    .notification--error .notification-icon:before {
+      content: "";
+      color: #f5311d; }
+  .notification--loading {
+    background-color: #ffffff;
+    border-left: 2px solid #349ef3;
+    color: #524c4c; }
+    .notification--loading .notification-icon {
+      -webkit-animation: rotating 2s infinite linear;
+      animation: rotating 2s infinite linear; }
+    .notification--loading .notification-icon:before {
+      content: "";
+      color: #349ef3; }
