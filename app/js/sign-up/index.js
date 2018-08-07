@@ -131,6 +131,8 @@ class Onboarding extends React.Component {
     emailSubmitted: false,
     emailsSending: false,
     emailsSent: false,
+    recoveryEmailError: null,
+    restoreEmailError: null,
     loading: false,
     creatingAccountStatus: CREATE_ACCOUNT_INITIAL,
     view: VIEWS.INITIAL,
@@ -330,31 +332,13 @@ class Onboarding extends React.Component {
     let recoveryPromise = Promise.resolve()
     let restorePromise = Promise.resolve()
     if (type === 'recovery' || type === 'both') {
-      recoveryPromise = sendRecoveryEmail(email, id, encodedPhrase).catch(() => {
-        this.props.notify({
-          title: 'Recovery email failed to send',
-          message: 'Something went wrong with sending your recovery code. ' +
-            'Please make sure you record your secret key, or you won’t be ' +
-            'able to recover your account.',
-          status: 'warning',
-          dismissible: true,
-          dismissAfter: 0,
-          closeButton: true
-        })
-      })
+      recoveryPromise = sendRecoveryEmail(email, id, encodedPhrase)
+        .then(() => this.setState({ recoveryEmailError: null }))
+        .catch((err) => this.setState({ recoveryEmailError: err }))
     } if (type === 'restore' || type === 'both') {
-      restorePromise = sendRestoreEmail(email, id, encodedPhrase).catch(() => {
-        this.props.notify({
-          title: 'Restore email failed to send',
-          message: 'Something went wrong with sending you restoration ' +
-            'instructions. Please record your secret key, or you may be ' +
-            'unable to recover your account.',
-          status: 'warning',
-          dismissible: true,
-          dismissAfter: 0,
-          closeButton: true
-        })
-      })
+      restorePromise = sendRestoreEmail(email, id, encodedPhrase)
+        .then(() => this.setState({ restoreEmailError: null }))
+        .catch((err) => this.setState({ restoreEmailError: err }))
     }
 
     return Promise.all([recoveryPromise, restorePromise]).then(() => {
@@ -606,7 +590,9 @@ class Onboarding extends React.Component {
           password,
           username,
           app,
-          sendRecoveryEmail: () => this.sendEmails('restore'),
+          restoreEmailError: this.state.restoreEmailError,
+          emailsSending: this.state.emailsSending,
+          sendRestoreEmail: () => this.sendEmails('restore'),
           next: () => this.infoNext()
         }
       },

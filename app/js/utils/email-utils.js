@@ -21,10 +21,12 @@ export function sendRecoveryEmail(
       },
       error => {
         console.error('email-utils: error', error)
+        throw error
       }
     )
     .catch(error => {
       console.error('email-utils: error', error)
+      throw error
     })
 }
 
@@ -42,9 +44,11 @@ export function sendRestoreEmail(
       },
       error => {
         console.error('email-utils: error', error)
+        throw error
       }
     )
     .catch(error => {
       console.error('email-utils: error', error)
+      throw error
     })
 }
