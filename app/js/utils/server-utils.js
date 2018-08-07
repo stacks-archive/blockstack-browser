@@ -22,17 +22,27 @@ class ServerAPIClass {
       query = `?${stringify(args)}`
     }
 
-    return fetch(`${API_URL}${path}${query}`, {
-      method,
-      headers,
-      body
-    })
-    .then(res => res.json())
-    .then(res => {
-      if (res.status !== undefined && !res.status) {
-        throw new Error(res.error || 'Request failed')
-      }
-      return res
+    return new Promise((resolve, reject) => {
+      // Max 10 seconds on any request
+      setTimeout(() => {
+        reject(new Error('Request timed out'))
+      }, 10000)
+
+      fetch(`${API_URL}${path}${query}`, {
+        method,
+        headers,
+        body
+      })
+      .then(res => res.json())
+      .then(res => {
+        if (res.status !== undefined && !res.status) {
+          reject(new Error(res.error || 'Request failed'))
+        }
+        else {
+          resolve(res)
+        }
+      })
+      .catch(err => reject(err))
     })
   }
 
