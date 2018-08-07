@@ -1,6 +1,8 @@
 --require babel-register
+--require babel-polyfill
 --require test/init.js
 --require assert
 --reporter spec
 --file test/helper.js
 --recursive
+--timeout 5000

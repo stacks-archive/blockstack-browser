@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { decryptMnemonic } from 'blockstack'
 import { Initial, Password, Seed, SeedConfirm, Success } from './views'
-import { decrypt } from '@utils/encryption-utils'
 import { withRouter, browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -144,7 +144,7 @@ class SeedContainer extends Component {
 
     const buffer = new Buffer(encryptedBackupPhrase, method)
 
-    return decrypt(buffer, password).then(result => {
+    return decryptMnemonic(buffer, password).then(result => {
       if (this.state.seed !== result.toString()) {
         return this.setState(
           {

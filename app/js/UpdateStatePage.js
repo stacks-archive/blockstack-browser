@@ -3,11 +3,11 @@ import React, { Component } from 'react'
 import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { decryptMnemonic } from 'blockstack'
 import Alert from './components/Alert'
 import InputGroup from './components/InputGroup'
 import { AccountActions } from './account/store/account'
 import { IdentityActions } from './profiles/store/identity'
-import { decrypt } from './utils'
 import {
   CURRENT_VERSION,
   updateState,
@@ -138,7 +138,7 @@ class UpdateStatePage extends Component {
 
 
 
-    upgradeBlockstackState(event) {
+  upgradeBlockstackState(event) {
     logger.trace('upgradeBlockstackState')
     event.preventDefault()
     this.setState({ upgradeInProgress: true })
@@ -146,13 +146,10 @@ class UpdateStatePage extends Component {
     // number of identities to generate
     // default identity
     // copy api settings
-
     const { encryptedBackupPhrase } = this.props
+    const { password } = this.state
 
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
-    const password = this.state.password
-
-    decrypt(dataBuffer, password)
+    decryptMnemonic(encryptedBackupPhrase, password)
       .then(backupPhraseBuffer => {
         const backupPhrase = backupPhraseBuffer.toString()
         logger.debug('upgradeBlockstackState: correct password!')

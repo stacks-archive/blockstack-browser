@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { decryptMnemonic } from 'blockstack'
+import { isBackupPhraseValid } from '@utils'
 import { validateMnemonic } from 'bip39'
-import { decrypt, isBackupPhraseValid } from '@utils'
 import { browserHistory, withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -169,7 +170,7 @@ class SignIn extends React.Component {
     if (this.state.decrypt && !decrypting) {
       this.setState({ decrypting: true })
 
-      decrypt(
+      decryptMnemonic(
         new Buffer(encryptedKey, 'base64'),
         this.state.password
       )
@@ -190,8 +191,7 @@ class SignIn extends React.Component {
             key: ''
           })
         })
-    }
-    else {
+    } else {
       this.updateView(VIEWS.EMAIL)
     }
   }

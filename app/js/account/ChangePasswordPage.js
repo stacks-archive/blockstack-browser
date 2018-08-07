@@ -2,11 +2,11 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { encryptMnemonic, decryptMnemonic } from 'blockstack'
 
 import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
 import { AccountActions } from './store/account'
-import { decrypt, encrypt } from '@utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger('account/ChangePasswordPage.js')
@@ -67,7 +67,7 @@ class ChangePasswordPage extends Component {
     const newPassword2 = this.state.newPassword2
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt recovery phrase...')
-    decrypt(dataBuffer, currentPassword).then(
+    decryptMnemonic(dataBuffer, currentPassword).then(
       plaintextBuffer => {
         logger.debug('Recovery phrase successfully decrypted')
         if (newPassword.length < 8) {
@@ -77,7 +77,7 @@ class ChangePasswordPage extends Component {
             this.updateAlert('danger', 'New passwords must match')
           } else {
             logger.debug('Trying to re-encrypt recovery phrase with new password...')
-            encrypt(plaintextBuffer, newPassword).then(ciphertextBuffer => {
+            encryptMnemonic(plaintextBuffer, newPassword).then(ciphertextBuffer => {
               this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
               this.updateAlert('success', 'Password updated!')
               this.setState({

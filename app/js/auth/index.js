@@ -13,13 +13,12 @@ import {
   getAppBucketUrl,
   isLaterVersion
 } from 'blockstack'
-import { AppsNode } from '@utils/account-utils'
+import { getCorrectAppPrivateKey } from '@utils/account-utils'
 import {
   fetchProfileLocations,
   getDefaultProfileUrl
 } from '@utils/profile-utils'
 import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
-import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 import { uploadProfile } from '../account/utils'
 import { signProfileForUpload } from '@utils'
@@ -209,8 +208,9 @@ class AuthPage extends React.Component {
       const privateKey = profileSigningKeypair.key
       const appsNodeKey = profileSigningKeypair.appsNodeKey
       const salt = profileSigningKeypair.salt
-      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-      const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+
+      const appPrivateKey = getCorrectAppPrivateKey(this.state.scopes, profile, appsNodeKey,
+                                                    salt, appDomain)
 
       let profileUrlPromise
 

@@ -1,15 +1,8 @@
 export {
-  decryptMasterKeychain,
-  deriveIdentityKeyPair,
-  getBitcoinPrivateKeychain,
-  getBitcoinPublicKeychain,
-  getIdentityPrivateKeychain,
-  getIdentityPublicKeychain,
+  getCorrectAppPrivateKey,
   getWebAccountTypes,
   isPasswordValid,
   isBackupPhraseValid,
-  getIdentityOwnerAddressNode,
-  getBitcoinAddressNode,
   findAddressIndex,
   decryptBitcoinPrivateKey,
   calculateTrustLevel,
@@ -28,8 +21,6 @@ export {
 } from './bitcoin-utils'
 
 export { getNumberOfVerifications, compareProfilesByVerifications } from './search-utils'
-
-export { encrypt, decrypt } from './encryption-utils'
 
 export {
   isABlockstackName,

@@ -23,7 +23,7 @@
     "inert-polyfill": "^0.2.5",
     "is-retina": "^1.0.3",
     "isomorphic-fetch": "^2.2.1",
-    "jsontokens": "^0.7.6",
+    "jsontokens": "^0.7.8",
     "lodash": "^4.17.2",
     "lodash.debounce": "^4.0.8",
     "log4js": "^1.1.1",
@@ -69,7 +69,6 @@
     "round-to": "^2.0.0",
     "styled-components": "^3.2.3",
     "styled-system": "^2.2.1",
-    "triplesec": "^3.0.25",
     "yup": "^0.24.1",
     "zone-file": "^0.2.2",
     "zxcvbn": "^4.4.2"

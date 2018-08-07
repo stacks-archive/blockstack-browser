@@ -2,12 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {
-  decryptMasterKeychain,
-  getBitcoinPrivateKeychain,
-  getBitcoinAddressNode
-} from '../utils'
-
+import { BlockstackWallet } from 'blockstack'
 import { AccountActions } from '../account/store/account'
 
 import Alert from '@components/Alert'
@@ -90,11 +85,8 @@ class SendPage extends Component {
     })
     const password = this.state.password
     const encryptedBackupPhrase = this.props.account.encryptedBackupPhrase
-    decryptMasterKeychain(password, encryptedBackupPhrase)
-    .then((masterKeychain) => {
-      const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
-      const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
-      const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
+    BlockstackWallet.fromEncryptedMnemonic(encryptedBackupPhrase, password).then((wallet) => {
+      const paymentKey = wallet.getBitcoinPrivateKey(0)
       const amount = this.state.amount
       const recipientAddress = this.state.recipientAddress
 

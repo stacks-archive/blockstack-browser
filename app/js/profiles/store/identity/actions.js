@@ -1,14 +1,9 @@
 // @flow
-import { HDNode } from 'bitcoinjs-lib'
 import bip39 from 'bip39'
 import * as types from './types'
-import { validateProofs } from 'blockstack'
+import { validateProofs, decryptMnemonic, BlockstackWallet } from 'blockstack'
 import {
   authorizationHeaderValue,
-  decrypt,
-  deriveIdentityKeyPair,
-  getIdentityOwnerAddressNode,
-  getIdentityPrivateKeychain,
   resolveZoneFileToProfile
 } from '@utils/index'
 import { DEFAULT_PROFILE, fetchProfileLocations } from '@utils/profile-utils'
@@ -221,25 +216,17 @@ function createNewProfile(
     dispatch({ type: types.CREATE_NEW_REQUEST })
 
     // Decrypt master keychain
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     logger.debug('createNewProfile: Trying to decrypt backup phrase...')
-    return decrypt(dataBuffer, password).then(
+    return decryptMnemonic(encryptedBackupPhrase, password).then(
       plaintextBuffer => {
         logger.debug('createNewProfile: Backup phrase successfully decrypted')
         const backupPhrase = plaintextBuffer.toString()
         const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-        const masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
-        const identityPrivateKeychainNode = getIdentityPrivateKeychain(
-          masterKeychain
-        )
+        const wallet = BlockstackWallet.fromSeedBuffer(seedBuffer)
+
         const index = nextUnusedAddressIndex
-        const identityOwnerAddressNode = getIdentityOwnerAddressNode(
-          identityPrivateKeychainNode,
-          index
-        )
-        const newIdentityKeypair = deriveIdentityKeyPair(
-          identityOwnerAddressNode
-        )
+        const newIdentityKeypair = wallet.getIdentityKeyPair(index, true)
+
         logger.debug(
           `createNewProfile: new identity: ${newIdentityKeypair.address}`
         )

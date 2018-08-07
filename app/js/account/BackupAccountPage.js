@@ -4,10 +4,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import bip39 from 'bip39'
 import { HDNode } from 'bitcoinjs-lib'
+import { decryptMnemonic } from 'blockstack'
 
 import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
-import { decrypt } from '@utils'
 import log4js from 'log4js'
 
 import { AccountActions } from './store/account'
@@ -63,11 +63,8 @@ class BackupAccountPage extends Component {
 
   decryptBackupPhrase() {
     logger.trace('decryptBackupPhrase')
-
-    const password = this.state.password
-    const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
     logger.debug('Trying to decrypt recovery phrase...')
-    decrypt(dataBuffer, password).then(
+    decryptMnemonic(this.props.encryptedBackupPhrase, this.state.password).then(
       plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
         this.updateAlert('success', 'Keychain phrase decrypted')

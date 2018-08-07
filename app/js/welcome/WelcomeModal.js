@@ -3,9 +3,10 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import { decryptMnemonic } from 'blockstack'
 import Alert from '@components/Alert'
 import { isWebAppBuild } from '@utils/window-utils'
-import { decrypt, isBackupPhraseValid } from '@utils'
+import { isBackupPhraseValid } from '@utils'
 
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
@@ -169,7 +170,7 @@ class WelcomeModal extends Component {
     this.setState({ updateInProgress })
     if (!updateInProgress && nextProps.accountCreated && !this.props.accountCreated) {
       logger.debug('account created - checking for valid password in component state')
-      decrypt(new Buffer(this.props.encryptedBackupPhrase, 'hex'), this.state.password)
+      decryptMnemonic(this.props.encryptedBackupPhrase, this.state.password)
       .then((identityKeyPhraseBuffer) => {
         logger.debug('Backup phrase successfully decrypted. Storing keychain phrase.')
         this.setState({ identityKeyPhrase: identityKeyPhraseBuffer.toString() })

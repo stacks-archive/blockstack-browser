@@ -1,6 +1,6 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import { decrypt } from '../../../../app/js/utils/encryption-utils'
+import { decryptMnemonic } from 'blockstack'
 import AccountActions from '../../../../app/js/account/store/account/actions'
 import {
   CREATE_ACCOUNT,
@@ -192,7 +192,7 @@ describe('AccountActions', () => {
           const identityPublicKeychain = actions1[0].identityPublicKeychain
           const bitcoinPublicKeychain = actions1[0].bitcoinPublicKeychain
 
-          return decrypt(
+          return decryptMnemonic(
             new Buffer(encryptedBackupPhrase, 'hex'),
             password
           ).then(plaintextBuffer => {
