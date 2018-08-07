@@ -61,7 +61,7 @@ class ClearAuthPage extends PureComponent {
             {hasAttemptedConfirm ? (
               <span>Press again to confirm</span>
             ) : (
-              <span>Reset my data {countdown > 0 && `(${countdown})`}</span>
+              <span>Reset my device {countdown > 0 && `(${countdown})`}</span>
             )}
 
           </button>
