@@ -8,10 +8,7 @@ import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
-import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
-import { BLOCKSTACK_INC } from '../account/utils/index'
-import { setCoreStorageConfig } from '@utils/api-utils'
 import { trackEventOnce } from '@utils/server-utils'
 import { Initial, Password, Success, Email } from './views'
 import log4js from 'log4js'
@@ -21,7 +18,6 @@ import {
   selectEmail,
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,
-  selectIdentityKeypairs,
   selectPromptedForEmail
 } from '@common/store/selectors/account'
 import {
@@ -61,7 +57,6 @@ const views = [Initial, Password, Email, Success]
 
 function mapStateToProps(state) {
   return {
-    updateApi: PropTypes.func.isRequired,
     api: selectApi(state),
     appManifest: selectAppManifest(state),
     authRequest: selectAuthRequest(state),
@@ -69,7 +64,6 @@ function mapStateToProps(state) {
     encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
     localIdentities: selectLocalIdentities(state),
     identityAddresses: selectIdentityAddresses(state),
-    identityKeypairs: selectIdentityKeypairs(state),
     connectedStorageAtLeastOnce: selectConnectedStorageAtLeastOnce(state),
     storageConnected: selectStorageConnected(state),
     email: selectEmail(state),
@@ -279,41 +273,6 @@ class SignIn extends React.Component {
   }
 
   /**
-   * Connect Storage
-   */
-  async connectStorage() {
-    logger.debug('fire connectStorage')
-    const storageProvider = this.props.api.gaiaHubUrl
-    const signer = this.props.identityKeypairs[0].key
-    await connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
-      const newApi = Object.assign({}, this.props.api, {
-        gaiaHubConfig,
-        hostedDataLocation: BLOCKSTACK_INC
-      })
-      this.props.updateApi(newApi)
-      const identityIndex = 0
-      const identity = this.props.localIdentities[identityIndex]
-      const identityAddress = identity.ownerAddress
-      const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
-      const profile = identity.profile
-      setCoreStorageConfig(
-        newApi,
-        identityIndex,
-        identityAddress,
-        profile,
-        profileSigningKeypair,
-        identity
-      )
-      logger.debug('connectStorage: storage initialized')
-      const newApi2 = Object.assign({}, newApi, { storageConnected: true })
-      this.props.updateApi(newApi2)
-      this.props.storageIsConnected()
-      logger.debug('connectStorage: storage configured')
-      logger.debug('connectStorage has finished')
-    })
-  }
-
-  /**
    * This is our main function for creating a new account
    */
   createAccount = async () => {
@@ -334,7 +293,7 @@ class SignIn extends React.Component {
       // Create new ID and owner address and then set to default
       this.createNewIdAndSetDefault().then(() =>
         // Connect our default storage
-        this.connectStorage().then(() => console.log('account creation done'))
+        this.props.connectStorage().then(() => console.log('account creation done'))
       )
     )
   }
@@ -441,11 +400,9 @@ SignIn.propTypes = {
   initializeWallet: PropTypes.func.isRequired,
   updateEmail: PropTypes.func.isRequired,
   refreshIdentities: PropTypes.func.isRequired,
-  updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
-  identityKeypairs: PropTypes.array.isRequired,
-  storageIsConnected: PropTypes.func.isRequired,
-  encryptedBackupPhrase: PropTypes.string
+  encryptedBackupPhrase: PropTypes.string,
+  connectStorage: PropTypes.func.isRequired
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))
