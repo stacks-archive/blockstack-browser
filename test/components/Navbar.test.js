@@ -1,7 +1,7 @@
 import React from 'react'
 import { expect } from 'chai'
 import { shallow } from 'enzyme'
-import Navbar from '../../app/js/components/Navbar'
+import Navbar, { ICONS } from '../../app/js/components/Navbar'
 
 describe('<Navbar />', () => {
   describe('renders the component', () => {
@@ -15,21 +15,24 @@ describe('<Navbar />', () => {
   const tabDetails = [
     {
       name: 'home',
-      activeIcon: '/images/icon-nav-home-hover.svg',
-      regularIcon: '/images/icon-nav-home.svg'}, 
+      activeIcon: ICONS.homeNavActive,
+      regularIcon: ICONS.homeNav
+    },
     {
       name:'settings',
-      activeIcon: '/images/icon-nav-settings-hover.svg',
-      regularIcon: '/images/icon-nav-settings.svg'}, 
+      activeIcon: ICONS.settingsNavActive,
+      regularIcon: ICONS.settingsNav
+    },
     {
       name:'wallet',
-      activeIcon: '/images/icon-nav-wallet-hover.svg',
-      regularIcon: '/images/icon-nav-wallet.svg' }, 
+      activeIcon: ICONS.walletNavActive,
+      regularIcon: ICONS.walletNav
+    },
     {
-      name: 'profile', 
+      name: 'profile',
       prop: 'avatar',
-      activeIcon: '/images/icon-nav-profile-hover.svg',
-      regularIcon: '/images/icon-nav-profile.svg'
+      activeIcon: ICONS.avatarNavActive,
+      regularIcon: ICONS.avatarNav
     }]
 
   tabDetails.forEach((tab) => {
@@ -37,7 +40,7 @@ describe('<Navbar />', () => {
     `renders the component with active ${tab.name} tab`, () => {
       const props = {
         activeTab: tab.prop || tab.name
-      } 
+      }
 
       const wrapper = shallow(<Navbar {...props} />)
 
@@ -46,7 +49,7 @@ describe('<Navbar />', () => {
         .exists()).to.equal(true)
       })
 
-      const tabs = tabDetails.filter(temp => temp.name !== tab.name)      
+      const tabs = tabDetails.filter(temp => temp.name !== tab.name)
 
       tabs.forEach((innerLoopTab) => {
         it(`uses the regular ${innerLoopTab.name} tab icon`, () => {
@@ -55,5 +58,5 @@ describe('<Navbar />', () => {
         })
       })
     })
-  }) 
+  })
 })
