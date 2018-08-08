@@ -3,6 +3,11 @@ import React from 'react'
 import 'babel-polyfill'
 import 'inert-polyfill'
 
+import '../styles/bootstrap.min.css'
+import '../styles/fonts.css'
+import '../styles/font-awesome.css'
+import '../styles/app.css'
+
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
@@ -39,15 +44,52 @@ window.onerror = (messageOrEvent, source, lineno, colno, error) => {
 
 const logger = log4js.getLogger('index.js')
 
+configureLogging(
+  log4js,
+  logServerPort,
+  authorizationHeaderValue(coreAPIPassword),
+  process.env.NODE_ENV
+)
+
+if (process.env.NODE_ENV === 'production') {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then(registration => {
+          console.log('SW registered: ', registration)
+        })
+        .catch(registrationError => {
+          console.log('SW registration failed: ', registrationError)
+        })
+    })
+  }
+}
+
+window.addEventListener('error', event => {
+  // eslint-disable-next-line
+  const logger = log4js.getLogger("window.addWindowListener('error')")
+  logger.error(event)
+})
+
+window.onerror = (messageOrEvent, source, lineno, colno, error) => {
+  const logger = log4js.getLogger('window.onerror')
+  logger.error(messageOrEvent, error)
+}
+
 if (process.env.NODE_ENV !== 'production') {
   logger.trace('NODE_ENV is not production')
   logger.debug('Enabling React devtools')
   window.React = React
 }
-
 render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>{routes}</ThemeProvider>
   </Provider>,
   document.getElementById('app')
 )
+
+
+if (module.hot) {
+  module.hot.accept()
+}
