@@ -18,6 +18,7 @@ import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
 import { openInNewTab } from './utils'
 import Modal from 'react-modal'
+import { hot } from 'react-hot-loader'
 
 import log4js from 'log4js'
 
@@ -52,7 +53,7 @@ function mapDispatchToProps(dispatch) {
   )
 }
 
-class App extends Component {
+class AppContainer extends Component {
   static propTypes = {
     localIdentities: PropTypes.array.isRequired,
     defaultIdentity: PropTypes.number.isRequired,
@@ -207,15 +208,8 @@ class App extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+const App = withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(AppContainer)
+)
 
-/*
-{
-  (() => {
-    if (process.env.NODE_ENV !== 'production') {
-      //const DevTools = require('./components/DevTools')
-      //return <DevTools />
-    }
-  })()
-}
-*/
+export default hot(module)(App)
