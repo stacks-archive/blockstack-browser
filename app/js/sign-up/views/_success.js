@@ -20,7 +20,7 @@ const Success = ({
   const props = {
     title: {
       icon: <UserAvatar {...user} />,
-      children: <React.Fragment>{user.username || 'No username'}</React.Fragment>,
+      children: <React.Fragment>{user.username || 'Nameless User'}</React.Fragment>,
       variant: 'h2',
       subtitle: {
         light: true,

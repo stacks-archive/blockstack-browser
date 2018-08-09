@@ -262,8 +262,8 @@ class Onboarding extends React.Component {
       .catch((err) => {
         logger.error(`username registration error: ${err}`)
         this.props.notify({
-          title: `Failed to register ${username}`,
-          message: 'Something went wrong while registering that name. You ' +
+          title: `Username Registration Failed`,
+          message: `Something went wrong while registering ${username}. You ` +
             'can try to register again later from your profile page.',
           status: 'error',
           dismissAfter: 0,
