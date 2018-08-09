@@ -57,6 +57,7 @@
     "react-transform-catch-errors": "^1.0.0",
     "react-transform-hmr": "^1.0.1",
     "reapop": "^2.0.0",
+    "reapop-theme-wybo": "^1.0.2",
     "redbox-react": "^1.1.1",
     "redux": "^3.6.0",
     "redux-auth-wrapper": "^2.0.2",
