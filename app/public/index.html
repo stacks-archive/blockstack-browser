@@ -32,7 +32,7 @@
     You need to enable JavaScript to run this app.
 </noscript>
 <div id="loader">
-    Blockstack is loading...
+    <img src="./loading-logo.svg" alt="Blockstack is loading..."/>
 </div>
 <div id="app"></div>
 <style type="text/css">
@@ -49,6 +49,12 @@
         justify-content: center;
         margin: 0;
         padding: 0;
+
+    }
+
+    #loader img {
+        max-width: 100%;
+        display: block;
     }
 
     #loader.hidden {
