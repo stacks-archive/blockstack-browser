@@ -20,7 +20,6 @@
     "enzyme-adapter-react-16": "^1.2.0",
     "formik": "^1.0.0-beta.2",
     "hash-handler": "^1.5.1",
-    "hasprop": "0.0.4",
     "inert-polyfill": "^0.2.5",
     "is-retina": "^1.0.3",
     "isomorphic-fetch": "^2.2.1",
