@@ -70,7 +70,7 @@ function decryptLegacy(dataBuffer, password) {
   })
 }
 
-export default async function decrypt(hexEncryptedKey, password) {
+export async function decrypt(hexEncryptedKey, password) {
   const dataBuffer = Buffer.from(hexEncryptedKey, 'hex')
   let mnemonic
 

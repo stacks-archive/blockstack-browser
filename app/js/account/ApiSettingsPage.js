@@ -33,11 +33,6 @@ export class ApiSettingsPage extends Component {
     this.state = {
       api: this.props.api
     }
-
-    this.onValueChange = this.onValueChange.bind(this)
-    this.updateApi = this.updateApi.bind(this)
-    this.resetApi = this.resetApi.bind(this)
-    this.registerProtocolHandler = this.registerProtocolHandler.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -47,9 +42,9 @@ export class ApiSettingsPage extends Component {
     })
   }
 
-  onValueChange(event) {
+  onValueChange = (event) => {
     logger.trace('onValueChange')
-    const api = this.state.api
+    const api = { ...this.state.api }
     const newValue = event.target.value
     const key = event.target.name
     logger.debug(`onValueChange: key: ${key} newValue: ${newValue}`)
@@ -57,13 +52,22 @@ export class ApiSettingsPage extends Component {
     this.setState({ api })
   }
 
-  updateApi() {
+  onCheckboxChange = (event) => {
+    this.setState({
+      api: {
+        ...this.state.api,
+        [event.target.name]: event.target.checked
+      }
+    })
+  }
+
+  updateApi = () => {
     logger.trace('updateApi')
     const api = this.state.api
     this.props.updateApi(api)
   }
 
-  resetApi() {
+  resetApi = () => {
     logger.trace('resetApi')
     this.props.resetApi(this.props.api)
   }
@@ -194,6 +198,18 @@ export class ApiSettingsPage extends Component {
               onChange={this.onValueChange}
               onReturnKeyPress={this.resetApi}
             />
+            <div className="form-group form-check m-b-11">
+              <label className="form-check-label">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  name="hasDisabledEventTracking"
+                  checked={this.state.api.hasDisabledEventTracking}
+                  onChange={this.onCheckboxChange}
+                />
+                Disable anonymous analytics
+              </label>
+            </div>
           </div>
         ) : null}
 

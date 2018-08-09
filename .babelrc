@@ -27,16 +27,13 @@
     },
     "development": {
       "presets": [
-        "@babel/preset-flow",
+        "babel-preset-flow",
         [
-          "@babel/preset-stage-0",
-          {
-            "decoratorsLegacy": true
-          }
+          "babel-preset-stage-0"
         ],
-        "@babel/preset-react",
+        "babel-preset-react",
         [
-          "@babel/preset-env",
+          "babel-preset-env",
           {
             "modules": false,
             "useBuiltIns": "usage",
@@ -54,9 +51,9 @@
       ],
       "plugins": [
         "react-hot-loader/babel",
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-async-to-generator",
-        "@babel/plugin-transform-react-jsx",
+        "babel-plugin-transform-class-properties",
+        "babel-plugin-transform-async-to-generator",
+        "babel-plugin-transform-react-jsx",
         "babel-plugin-styled-components",
         "lodash",
         [
@@ -81,16 +78,13 @@
     },
     "production": {
       "presets": [
-        "@babel/preset-flow",
+        "babel-preset-flow",
         [
-          "@babel/preset-stage-0",
-          {
-            "decoratorsLegacy": true
-          }
+          "babel-preset-stage-0"
         ],
-        "@babel/preset-react",
+        "babel-preset-react",
         [
-          "@babel/preset-env",
+          "babel-preset-env",
           {
             "modules": false,
             "useBuiltIns": "usage",
@@ -107,9 +101,9 @@
         ]
       ],
       "plugins": [
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-async-to-generator",
-        "@babel/plugin-transform-react-jsx",
+        "babel-plugin-transform-class-properties",
+        "babel-plugin-transform-async-to-generator",
+        "babel-plugin-transform-react-jsx",
         "babel-plugin-styled-components",
         "lodash",
         [

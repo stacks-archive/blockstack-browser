@@ -12,7 +12,6 @@ const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
-const isTest = process.env.NODE_ENV === 'test'
 
 /**
  * Output config
@@ -21,7 +20,8 @@ const output = {
   filename: 'js/[name].[hash:8].js',
   chunkFilename: 'js/[name].[hash:8].chunk.js',
   path: path.resolve(__dirname, 'build'),
-  publicPath: '/'
+  publicPath: '/',
+  globalObject: 'self'
 }
 
 /**

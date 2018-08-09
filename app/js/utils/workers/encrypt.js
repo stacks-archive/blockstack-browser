@@ -37,7 +37,7 @@ function encryptMnemonic(mnemonic, password) {
   })
 }
 
-export default async function encrypt(mnemonic, password) {
+export async function encrypt(mnemonic, password) {
   const encryptedBuffer = await encryptMnemonic(mnemonic, password)
   return encryptedBuffer.toString('hex')
 }

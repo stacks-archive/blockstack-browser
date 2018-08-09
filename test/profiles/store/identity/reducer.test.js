@@ -8,7 +8,8 @@ const initialState = {
   nameTransfers: [],
   publicIdentities: {},
   createProfileError: null,
-  zoneFileUpdates: []
+  zoneFileUpdates: [],
+  isProcessing: false
 }
 
 const DEFAULT_PROFILE = {
@@ -29,25 +30,26 @@ describe('Identity Store: IdentityReducer', () => {
     const expectedState = {
       default: 0,
       localIdentities: [
-          {
-            ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
-            profile: {
-              '@context': 'http://schema.org',
-              '@type': 'Person'
-            },
-            registered: false,
-            username: null,
-            usernameOwned: false,
-            usernamePending: false,
-            verifications: [],
-            trustLevel: 0,
-            zoneFile: null
-          }
-        ],
+        {
+          ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
+          profile: {
+            '@context': 'http://schema.org',
+            '@type': 'Person'
+          },
+          registered: false,
+          username: null,
+          usernameOwned: false,
+          usernamePending: false,
+          verifications: [],
+          trustLevel: 0,
+          zoneFile: null
+        }
+      ],
       nameTransfers: [],
       publicIdentities: {},
       createProfileError: null,
-      zoneFileUpdates: []
+      zoneFileUpdates: [],
+      isProcessing: false
     }
     const actualState = IdentityReducer(undefined, action)
     assert.deepEqual(actualState, expectedState)
@@ -62,7 +64,8 @@ describe('Identity Store: IdentityReducer', () => {
       nameTransfers: [],
       publicIdentities: {},
       createProfileError: null,
-      zoneFileUpdates: []
+      zoneFileUpdates: [],
+      isProcessing: false
     }
     const actualState = IdentityReducer(undefined, action)
     assert.deepEqual(actualState, expectedState)
@@ -86,7 +89,8 @@ describe('Identity Store: IdentityReducer', () => {
       nameTransfers: [],
       publicIdentities: {},
       zoneFileUpdates: [],
-      createProfileError: null
+      createProfileError: null,
+      isProcessing: false
     }
     const action = IdentityActions.updateProfile(0, profile, 'test')
     const expectedState = {
@@ -105,7 +109,8 @@ describe('Identity Store: IdentityReducer', () => {
       nameTransfers: [],
       publicIdentities: {},
       zoneFileUpdates: [],
-      createProfileError: null
+      createProfileError: null,
+      isProcessing: false
     }
     const actualState = IdentityReducer(testInitialState, action)
     assert.deepEqual(actualState, expectedState)
@@ -128,7 +133,8 @@ describe('Identity Store: IdentityReducer', () => {
       nameTransfers: [],
       publicIdentities: {},
       zoneFileUpdates: [],
-      createProfileError: null
+      createProfileError: null,
+      isProcessing: false
     }
 
     const expectedState = {
@@ -147,7 +153,8 @@ describe('Identity Store: IdentityReducer', () => {
       nameTransfers: [],
       publicIdentities: {},
       zoneFileUpdates: [],
-      createProfileError: null
+      createProfileError: null,
+      isProcessing: false
     }
     const action = IdentityActions.addUsername(0, 'name.id')
 
@@ -163,7 +170,8 @@ describe('Identity Store: IdentityReducer', () => {
       nameTransfers: [],
       publicIdentities: {},
       createProfileError: 'error',
-      zoneFileUpdates: []
+      zoneFileUpdates: [],
+      isProcessing: false
     }
     const action = IdentityActions.createNewProfileError(error)
 
