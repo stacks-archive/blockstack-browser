@@ -245,7 +245,7 @@ module.exports = {
       swDest: '../sw.js',
       clientsClaim: true,
       skipWaiting: true,
-      include: [/\.html$/, /\.js$/, /\.webp/]
+      include: [/\.html$/, /\.js$/]
     })
   ]
 }

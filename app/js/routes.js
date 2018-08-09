@@ -5,6 +5,8 @@ import App from './App'
 import ClearAuthPage from './clear-auth'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 
+const LOADABLE_DELAY = 300
+
 const Loading = (props) => {
   if (props.error) {
     return <div>Error! <button onClick={ props.retry }>Retry</button></div>
@@ -24,207 +26,207 @@ const HomeScreenPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "HomeScreenPage" */ './HomeScreenPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 const ProfilesApp = Loadable({
   loader: () =>
     import(/* webpackChunkName: "ProfilesApp" */ './profiles/ProfilesApp'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 const UpdateStatePage = Loadable({
   loader: () => import(/* webpackChunkName: "UpdateStatePage" */ './update'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const RegistrationPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "RegistrationPage" */ './profiles/RegistrationPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const RegistrationSearchView = Loadable({
   loader: () =>
     import(/* webpackChunkName: "RegistrationSearchView" */ './profiles/components/registration/RegistrationSearchView'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 const RegistrationSelectView = Loadable({
   loader: () =>
     import(/* webpackChunkName: "RegistrationSelectView" */ './profiles/components/registration/RegistrationSelectView'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const RegistrationSubmittedView = Loadable({
   loader: () =>
     import(/* webpackChunkName: "RegistrationSubmittedView" */ './profiles/components/registration/RegistrationSubmittedView'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const DefaultProfilePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "DefaultProfilePage" */ './profiles/DefaultProfilePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const AllProfilesPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "AllProfilesPage" */ './profiles/AllProfilesPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const ViewProfilePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "ViewProfilePage" */ './profiles/ViewProfilePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const EditProfilePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "EditProfilePage" */ './profiles/EditProfilePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const RegisterProfilePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "RegisterProfilePage" */ './profiles/RegisterProfilePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const ImportProfilePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "ImportProfilePage" */ './profiles/ImportProfilePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const ExportProfilePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "ExportProfilePage" */ './profiles/ExportProfilePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const SearchProfilesPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "SearchProfilesPage" */ './profiles/SearchProfilesPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const TransferNamePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "TransferNamePage" */ './profiles/TransferNamePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const ZoneFilePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "ZoneFilePage" */ './profiles/ZoneFilePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 const AccountApp = Loadable({
   loader: () =>
     import(/* webpackChunkName: "AccountApp" */ './account/AccountApp'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const AccountMenu = Loadable({
   loader: () =>
     import(/* webpackChunkName: "AccountMenu" */ './account/AccountMenu'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const DeleteAccountPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "DeleteAccountPage" */ './account/DeleteAccountPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const BackupAccountPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "BackupAccountPage" */ './account/BackupAccountPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const ChangePasswordPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "ChangePasswordPage" */ './account/ChangePasswordPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const CreateAccountPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "CreateAccountPage" */ './account/CreateAccountPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const ApiSettingsPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "ApiSettingsPage" */ './account/ApiSettingsPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const StorageProvidersPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "StorageProvidersPage" */ './account/StorageProvidersPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 const WalletApp = Loadable({
   loader: () =>
     import(/* webpackChunkName: "WalletApp" */ './wallet/WalletApp'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const ReceivePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "ReceivePage" */ './wallet/ReceivePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const SendPage = Loadable({
   loader: () => import(/* webpackChunkName: "SendPage" */ './wallet/SendPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const SendCorePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "SendCorePage" */ './wallet/SendCorePage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 const NewAuthPage = Loadable({
   loader: () => import(/* webpackChunkName: "NewAuthPage" */ './auth/index'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 const SignUpPage = Loadable({
   loader: () => import(/* webpackChunkName: "SignUpPage" */ './sign-up'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const SeedPage = Loadable({
   loader: () => import(/* webpackChunkName: "SeedPage" */ './seed'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 const SignInPage = Loadable({
   loader: () => import(/* webpackChunkName: "SignInPage" */ './sign-in'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 const NotFoundPage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "NotFoundPage" */ './errors/NotFoundPage'),
   loading: Loading,
-  delay: 300
+  delay: LOADABLE_DELAY
 })
 
 
