@@ -144,7 +144,6 @@
     "url": "https://github.com/blockstack/blockstack-browser.git"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
     "dev-ui": "echo 'Please use dev instead of dev-ui'",
     "dev-webapp": "echo 'Please use dev instead of dev-webapp'",
@@ -152,20 +151,21 @@
     "flow-typed-install": "cross-env NODE_ENV=test ./node_modules/.bin/flow-typed install --skip",
     "lint": "eslint app/js/**/*.js",
     "mac": "cross-env NODE_ENV=production npm run build && npm run mac:copyBrowser && npm run mac:compileCorsProxy && npm run mac:buildDebug",
-    "mac:buildDebug": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Debug",
-    "mac:compileBlockstackProxy": "nexe -i ./native/blockstackProxy.js -o ./native/macos/Blockstack/blockstackProxy",
-    "mac:compileCorsProxy": "nexe -i corsproxy/corsproxy.js -o native/macos/Blockstack/corsproxy",
-    "mac:copyBrowser": "touch build/.gitkeep && mkdir -p native/macos/Blockstack/Blockstack/browser && cp -R build/**/* native/macos/Blockstack/Blockstack/browser/",
     "mac:release": "npm run test && npm install --no-save appdmg && npm run build && npm run mac:copyBrowser && npm run mac:compileCorsProxy && npm run mac:compileBlockstackProxy && npm run mac:release:build",
     "mac:release:build": "npm run mac:release:build:Archive && npm run mac:release:build:Export && npm run mac:release:build:BuildDMG && npm run mac:release:build:SignDMG",
     "mac:release:build:Archive": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Release -archivePath ./native/macos/archive/Blockstack archive",
-    "mac:release:build:Archive:dev": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Release CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=\"NO\" CODE_SIGN_ENTITLEMENTS=\"\" CODE_SIGNING_ALLOWED=\"NO\" -archivePath ./native/macos/archive/Blockstack archive",
-    "mac:release:build:BuildDMG": "rm -Rf ./native/macos/export/Blockstack.dmg; node ./node_modules/appdmg/bin/appdmg.js ./native/macos/dmg.json ./native/macos/export/Blockstack.dmg",
     "mac:release:build:Export": "xcodebuild -archivePath ./native/macos/archive/Blockstack.xcarchive -exportOptionsPlist ./native/macos/Blockstack/export.plist -exportArchive -exportPath ./native/macos/export/ CODE_SIGNING_REQUIRED=NO",
+    "mac:release:build:BuildDMG": "rm -Rf ./native/macos/export/Blockstack.dmg; node ./node_modules/appdmg/bin/appdmg.js ./native/macos/dmg.json ./native/macos/export/Blockstack.dmg",
     "mac:release:build:SignDMG": "codesign --force --sign \"Developer ID Application: Blockstack PBC\" ./native/macos/export/Blockstack.dmg; open ./native/macos/export/",
-    "prod-webapp": "npm run build",
-    "start": "serve build --single",
+    "mac:release:build:Archive:dev": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Release CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=\"NO\" CODE_SIGN_ENTITLEMENTS=\"\" CODE_SIGNING_ALLOWED=\"NO\" -archivePath ./native/macos/archive/Blockstack archive",
+    "mac:copyBrowser": "touch build/.gitkeep && mkdir -p native/macos/Blockstack/Blockstack/browser && cp -R build/**/* native/macos/Blockstack/Blockstack/browser/",
+    "mac:compileCorsProxy": "nexe -i corsproxy/corsproxy.js -o native/macos/Blockstack/corsproxy",
+    "mac:compileBlockstackProxy": "nexe -i ./native/blockstackProxy.js -o ./native/macos/Blockstack/blockstackProxy",
+    "mac:buildDebug": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Debug",
     "test": "npm run lint && npm run flow && cross-env NODE_ENV=test nyc mocha --require test/importedImagesHelper",
-    "web": "npm run build"
+    "build": "cross-env NODE_ENV=production webpack",
+    "start": "serve build --single",
+    "web": "npm run build",
+    "prod-webapp": "npm run build"
   }
 }
