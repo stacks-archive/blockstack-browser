@@ -7,7 +7,7 @@
 - [ ] commit version changes
 - [ ] Exit locally running Blockstack & stop any regtest instances & kill any `npm run dev` instances
 - [ ] `npm run mac-release`
-- [ ] Rename .dmg file to `Blockstack-v0.27.0.dmg`
+- [ ] Rename .dmg file to `Blockstack-for-macOS-v0.27.0.dmg`
 - [ ] `git flow release finish 0.27.0`
 - [ ] on `develop` branch `git push origin develop`
 - [ ] `git push origin --tags`

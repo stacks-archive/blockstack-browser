@@ -1,32 +1,70 @@
-const HtmlWebPackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
 const path = require('path')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const history = require('connect-history-api-fallback')
-const convert = require('koa-connect')
-const isProd = process.env.NODE_ENV === 'production'
-const WebpackBar = require('webpackbar')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
-const ImageminPlugin = require('imagemin-webpack-plugin').default
-const workboxPlugin = require('workbox-webpack-plugin')
+const webpack = require('webpack')
 const ReactLoadablePlugin = require('react-loadable/webpack')
   .ReactLoadablePlugin
+
+/**
+ * Plugins
+ */
+const WebpackBar = require('webpackbar')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
-const cssUseList = ['style-loader', 'css-loader']
+const isProd = process.env.NODE_ENV === 'production'
+
+/**
+ * Output config
+ */
+const output = {
+  filename: 'js/[name].[hash:8].js',
+  chunkFilename: 'js/[name].[hash:8].chunk.js',
+  path: path.resolve(__dirname, 'build'),
+  publicPath: '/'
+}
+
+/**
+ * Production changes
+ *
+ * We change path/publicPath in prod because having
+ * them in dev affects webpack-dev-server
+ */
+if (isProd) {
+  output.path = path.resolve(__dirname, 'build/static')
+  output.publicPath = '/static/'
+}
+
+/**
+ * Our Config Object
+ */
 module.exports = {
   mode: isProd ? 'production' : 'development',
-  devtool: isProd ? false : 'cheap-module-source-map',
+  devtool: !isProd ? 'cheap-module-source-map' : false,
   entry: {
     main: ['./app/js/index.js']
   },
   node: {
     fs: 'empty'
   },
-  output: {
-    filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'build')
+  output,
+  devServer: {
+    open: true,
+    historyApiFallback: true,
+    port: 3000,
+    contentBase: path.resolve(__dirname, 'build'),
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000,
+      ignored: /node_modules/
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers':
+        'X-Requested-With, content-type, Authorization'
+    }
   },
   module: {
     rules: [
@@ -43,13 +81,42 @@ module.exports = {
         }
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-        loader: 'url-loader?limit=100000'
+        test: /\.(gif|png|webp|jpe?g|svg)$/i,
+        use: [
+          'file-loader',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              },
+              optipng: {
+                enabled: false
+              },
+              pngquant: {
+                quality: '65-70',
+                speed: 4
+              },
+              gifsicle: {
+                interlaced: false
+              },
+              webp: {
+                quality: 60
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        loader: 'url-loader?limit=100000',
+        include: [path.resolve(__dirname, 'app/fonts')]
       },
 
       {
         test: /\.css$/,
-        use: cssUseList
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.html$/,
@@ -73,6 +140,7 @@ module.exports = {
       '@ui/components': './app/js/components/ui/components',
       '@ui/containers': './app/js/components/ui/containers',
       '@ui/common': './app/js/components/ui/common',
+      '@images': './app/images',
       log4js: './app/js/logger.js'
     }
   },
@@ -123,32 +191,39 @@ module.exports = {
       maxInitialRequests: Infinity,
       name: false,
       cacheGroups: {
+        commons: {
+          chunks: 'initial',
+          minChunks: 2,
+          reuseExistingChunk: true
+        },
         vendors: {
           name: 'vendors',
           enforce: true,
           test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          reuseExistingChunk: true
-        },
-        commons: {
-          name: 'commons',
-          chunks: 'initial',
-          minChunks: 2,
-          test: /[\\/]app[\\/]/,
-          priority: -5,
           reuseExistingChunk: true
         }
       }
     }
   },
   plugins: [
-    new CleanWebpackPlugin(['build']),
     new WebpackBar({
-      color: '#9E5FC1'
+      color: '#9E5FC1',
+      minimal: false
     }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
+    new LodashModuleReplacementPlugin(),
+    new CopyWebpackPlugin([
+      {
+        from: 'app/fonts',
+        to: path.resolve(__dirname, 'build', 'static', 'fonts')
+      },
+      { from: 'app/public', to: path.resolve(__dirname, 'build') }
+    ]),
     new HtmlWebPackPlugin({
       inject: true,
-      template: path.resolve(__dirname, 'public', 'index.html'),
+      template: path.resolve(__dirname, 'app/public', 'index.html'),
       filename: path.resolve(__dirname, 'build', 'index.html'),
       minify: {
         removeComments: true,
@@ -163,38 +238,14 @@ module.exports = {
         minifyURLs: true
       }
     }),
-    new webpack.DefinePlugin(JSON.stringify(process.env.NODE_ENV)),
-    new LodashModuleReplacementPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'app/images', to: 'images' },
-      { from: 'app/fonts', to: 'fonts' },
-      { from: 'app/assets' }
-    ]),
-    new ImageminPlugin({
-      disable: !isProd, // Disable during development
-      test: /\.(jpe?g|png|gif|svg)$/i
-    }),
     new ReactLoadablePlugin({
       filename: './build/react-loadable.json'
     }),
     new workboxPlugin.GenerateSW({
-      swDest: 'sw.js',
+      swDest: '../sw.js',
       clientsClaim: true,
       skipWaiting: true,
       include: [/\.html$/, /\.js$/, /\.webp/]
     })
   ]
-}
-
-module.exports.serve = {
-  content: ['app', 'build'],
-  add: (app, middleware, options) => {
-    const historyOptions = {
-      // ... see: https://github.com/bripkens/connect-history-api-fallback#options
-    }
-    app.use(convert(history(historyOptions)))
-
-    middleware.webpack()
-    middleware.content()
-  }
 }

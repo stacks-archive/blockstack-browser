@@ -26,6 +26,7 @@ bower_components
 build
 dist
 __coverage__
+.nyc_output
 
 .elasticbeanstalk/
 
@@ -34,3 +35,4 @@ unused
 tmp
 .idea
 .swp
+yarn.lock

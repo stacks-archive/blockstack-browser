@@ -22,8 +22,6 @@ class PasswordView extends React.Component {
   }
 
   validate = values => {
-    console.log('validating')
-
     // No value checks for both
     const noValues = !values.password || values.password === ''
     const noValuesConfirm =
@@ -112,25 +110,15 @@ class PasswordView extends React.Component {
       throw errors
     }
 
-    this.setState(
-      {
-        password: values.password,
-        status: 'good-to-go'
-      },
-      () => {
-        this.props.updateValue('password', values.password)
-        this.props.next()
-      }
-    )
+    this.props.updateValue('password', values.password)
+    this.setState({
+      password: values.password,
+      status: 'good-to-go'
+    })
+    this.props.updateValue('password', values.password).then(() => {
+      this.props.next()
+    })
 
-    /**
-     * Return null because we have a key and just need a password
-     */
-    if (this.props.key) {
-      this.setState({
-        status: 'good-to-go'
-      })
-    }
     return null
   }
   render() {

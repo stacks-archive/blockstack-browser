@@ -3,11 +3,12 @@ import { DEFAULT_PROFILE } from '@utils/profile-utils'
 
 const initialState = {
   default: 0, // persist
-  localIdentities: [], 
+  localIdentities: [],
   publicIdentities: {},
   nameTransfers: [],
   zoneFileUpdates: [],
-  createProfileError: null
+  createProfileError: null,
+  isProcessing: false
 }
 
 function IdentityReducer(state = initialState, action) {
@@ -29,8 +30,14 @@ function IdentityReducer(state = initialState, action) {
       return Object.assign({}, state, {
         default: action.index
       })
-    case types.CREATE_NEW:
+    case types.CREATE_NEW_REQUEST:
       return Object.assign({}, state, {
+        isProcessing: true
+      })
+    case types.CREATE_NEW_SUCCESS:
+      return Object.assign({}, state, {
+        createProfileError: null,
+        isProcessing: false,
         localIdentities: [...state.localIdentities, {
           username: null,
           usernameOwned: false,
@@ -44,6 +51,17 @@ function IdentityReducer(state = initialState, action) {
         }
       ]
       })
+    case types.CREATE_NEW_ERROR: {
+      return Object.assign({}, state, {
+        isProcessing: false,
+        createProfileError: `${action.error}`
+      })
+    }
+    case types.CREATE_NEW_ERROR_RESET: {
+      return Object.assign({}, state, {
+        createProfileError: null
+      })
+    }
     case types.UPDATE_PROFILE: {
       const newLocalIdentities = state.localIdentities.slice()
       newLocalIdentities[action.index].profile = action.profile
@@ -91,16 +109,6 @@ function IdentityReducer(state = initialState, action) {
       }
       return Object.assign({}, state, {
         localIdentities: newLocalIdentities
-      })
-    }
-    case types.RESET_CREATE_PROFILE_ERROR: {
-      return Object.assign({}, state, {
-        createProfileError: null
-      })
-    }
-    case types.CREATE_PROFILE_ERROR: {
-      return Object.assign({}, state, {
-        createProfileError: `${action.error}`
       })
     }
     case types.BROADCASTING_ZONE_FILE_UPDATE: {
@@ -167,6 +175,12 @@ function IdentityReducer(state = initialState, action) {
           })
         })
       })
+    case '@@INIT':
+      // Reset ephemeral state on init
+      return {
+        ...state,
+        isProcessing: false
+      }
     default:
       return state
   }

@@ -21,14 +21,15 @@ function mapDispatchToProps(dispatch) {
 }
 
 const AppIcon = ({ launchLink, iconImage, displayName }) => {
-  const webp = iconImage.replace('.png', '.webp')
+  /* eslint-disable */
+  const image = require(`../images/${iconImage}`)
+  /* eslint-enable */
   return (
     <div className="container-fluid app-box-wrap">
       <a href={launchLink} target="_blank" className="app-box-container">
         <div className="app-box">
           <picture>
-            <source type="image/webp" srcSet={`/images/${webp}`} />
-            <img src={`/images/${iconImage}`} alt={displayName} />
+            <img src={image} alt={displayName} />
           </picture>
         </div>
       </a>

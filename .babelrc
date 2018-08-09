@@ -3,6 +3,7 @@
     "test": {
       "presets": ["flow", "react", "es2015", "stage-0"],
       "plugins": [
+        "rewire",
         [
           "module-resolver",
           {
@@ -16,7 +17,8 @@
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",
               "@ui/common": "./app/js/components/ui/common",
-              "log4js": "./app/js/logger.js"
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
             }
           }
         ]
@@ -24,16 +26,13 @@
     },
     "development": {
       "presets": [
-        "@babel/preset-flow",
+        "babel-preset-flow",
         [
-          "@babel/preset-stage-0",
-          {
-            "decoratorsLegacy": true
-          }
+          "babel-preset-stage-0"
         ],
-        "@babel/preset-react",
+        "babel-preset-react",
         [
-          "@babel/preset-env",
+          "babel-preset-env",
           {
             "modules": false,
             "useBuiltIns": "usage",
@@ -50,11 +49,10 @@
         ]
       ],
       "plugins": [
-        "react-loadable/babel",
         "react-hot-loader/babel",
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-async-to-generator",
-        "@babel/plugin-transform-react-jsx",
+        "babel-plugin-transform-class-properties",
+        "babel-plugin-transform-async-to-generator",
+        "babel-plugin-transform-react-jsx",
         "babel-plugin-styled-components",
         "lodash",
         [
@@ -70,7 +68,8 @@
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",
               "@ui/common": "./app/js/components/ui/common",
-              "log4js": "./app/js/logger.js"
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
             }
           }
         ]
@@ -78,16 +77,13 @@
     },
     "production": {
       "presets": [
-        "@babel/preset-flow",
+        "babel-preset-flow",
         [
-          "@babel/preset-stage-0",
-          {
-            "decoratorsLegacy": true
-          }
+          "babel-preset-stage-0"
         ],
-        "@babel/preset-react",
+        "babel-preset-react",
         [
-          "@babel/preset-env",
+          "babel-preset-env",
           {
             "modules": false,
             "useBuiltIns": "usage",
@@ -104,10 +100,9 @@
         ]
       ],
       "plugins": [
-        "react-loadable/babel",
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-transform-async-to-generator",
-        "@babel/plugin-transform-react-jsx",
+        "babel-plugin-transform-class-properties",
+        "babel-plugin-transform-async-to-generator",
+        "babel-plugin-transform-react-jsx",
         "babel-plugin-styled-components",
         "lodash",
         [
@@ -123,7 +118,8 @@
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",
               "@ui/common": "./app/js/components/ui/common",
-              "log4js": "./app/js/logger.js"
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
             }
           }
         ]
