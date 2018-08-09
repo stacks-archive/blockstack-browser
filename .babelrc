@@ -18,8 +18,7 @@
               "@ui/containers": "./app/js/components/ui/containers",
               "@ui/common": "./app/js/components/ui/common",
               "log4js": "./app/js/logger.js",
-              "@images": "./app/images",
-              "^workerize-loader!(.*)": "./app/js/utils/\\1"
+              "@images": "./app/images"
             }
           }
         ]

@@ -60,8 +60,7 @@
           "@ui/components": "./app/js/components/ui/components",
           "@ui/containers": "./app/js/components/ui/containers",
           "@ui/common": "./app/js/components/ui/common",
-          "log4js": "./app/js/logger.js",
-          "workerize-loader!*": "*"
+          "log4js": "./app/js/logger.js"
         }
       }
     },
