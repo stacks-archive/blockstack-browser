@@ -126,6 +126,10 @@ module.exports = {
             options: { minimize: true }
           }
         ]
+      },
+      {
+        test: /\.worker\.js$/,
+        use: 'workerize-loader'
       }
     ]
   },

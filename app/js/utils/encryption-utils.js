@@ -1,5 +1,5 @@
-import makeEncryptWorker from 'workerize-loader!./workers/encrypt'
-import makeDecryptWorker from 'workerize-loader!./workers/decrypt'
+import makeEncryptWorker from './workers/encrypt.worker.js'
+import makeDecryptWorker from './workers/decrypt.worker.js'
 
 export function encrypt(plaintextBuffer, password) {
   const mnemonic = plaintextBuffer.toString()

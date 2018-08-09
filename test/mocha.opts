@@ -2,7 +2,7 @@
 --require babel-polyfill
 --require test/init.js
 --require assert
---require test/importedImagesHelper.js
+--require test/require-hacks.js
 --reporter spec
 --file test/helper.js
 --recursive
