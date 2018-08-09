@@ -156,12 +156,11 @@ This app uses the latest versions of the following libraries:
 - [ReactJS](https://github.com/facebook/react)
 - [React Router](https://github.com/rackt/react-router)
 - [RefluxJS](https://github.com/spoike/refluxjs)
-- [Gulp](http://gulpjs.com/)
-- [Browserify](http://browserify.org/)
 - [Redux](https://github.com/reactjs/redux)
 - [Babel](https://github.com/babel/babel)
+- [Webpack](https://github.com/webpack/webpack)
 
-Along with many Gulp libraries (these can be seen in either `package.json`, or at the top of each task in `/gulp/tasks/`).
+And a few other smaller modules (these can be found in `package.json`).
 
 ## Maintainer
 
@@ -169,10 +168,8 @@ This repository is maintained by [yukan.id](https://explorer.blockstack.org/name
 
 ## Testing
 
-1. If you haven't already, follow steps 1 & 2 above
-2. If you haven't already run `npm run dev` or `npm run build` at least once, run `npm run build`
-3. Run all tests in the `test/` directory with the `npm run test` command
-  * A single file can be run by specifing an `-f` flag: `npm run test <PATH_TO_TEST_FILE>`
+Run all tests in the `test/` directory with the `npm run test` command. A single
+file can be run by specifing an `-f` flag: `npm run test <PATH_TO_TEST_FILE>`.
 
 *Note: When running tests, code coverage will be automatically calculated and output to an HTML file using the [Istanbul](https://istanbul.js.org/) library. These files can be seen in the generated `__coverage__/` directory.*
 
