@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 
-/* eslint-disable */
-const icons = {
+/* eslint-disable global-require */
+export const ICONS = {
   homeNav: require('@images/icon-nav-home.svg'),
   homeNavActive: require('@images/icon-nav-home-hover.svg'),
   walletNav: require('@images/icon-nav-wallet.svg'),
@@ -13,7 +13,8 @@ const icons = {
   settingsNav: require('@images/icon-nav-settings.svg'),
   settingsNavActive: require('@images/icon-nav-settings-hover.svg')
 }
-/* eslint-enable */
+/* eslint-enable global-require */
+
 class Navbar extends Component {
   static propTypes = {
     activeTab: PropTypes.string
@@ -72,33 +73,33 @@ class Navbar extends Component {
 
   settingsNavIconImage() {
     if (this.props.activeTab === 'settings' || this.state.settingsTabHover) {
-      return icons.settingsNavActive
+      return ICONS.settingsNavActive
     } else {
-      return icons.settingsNav
+      return ICONS.settingsNav
     }
   }
 
   homeNavIconImage() {
     if (this.props.activeTab === 'home' || this.state.homeTabHover) {
-      return icons.homeNavActive
+      return ICONS.homeNavActive
     } else {
-      return icons.homeNav
+      return ICONS.homeNav
     }
   }
 
   walletNavIconImage() {
     if (this.props.activeTab === 'wallet' || this.state.walletTabHover) {
-      return icons.walletNavActive
+      return ICONS.walletNavActive
     } else {
-      return icons.walletNav
+      return ICONS.walletNav
     }
   }
 
   avatarNavIconImage() {
     if (this.props.activeTab === 'avatar' || this.state.avatarTabHover) {
-      return icons.avatarNavActive
+      return ICONS.avatarNavActive
     } else {
-      return icons.avatarNav
+      return ICONS.avatarNav
     }
   }
 
