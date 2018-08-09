@@ -1,53 +1,11 @@
 import React from 'react'
 import { browserHistory, IndexRoute, Route, Router } from 'react-router'
 import Loadable from 'react-loadable'
+import App from './App'
+import ClearAuthPage from './clear-auth'
+import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 
 const Loading = () => <div>Loading...</div>
-
-import App from './App'
-
-// import HomeScreenPage from './HomeScreenPage'
-// import UpdateStatePage from './update'
-//
-// import ProfilesApp from './profiles/ProfilesApp'
-// import RegistrationPage from './profiles/RegistrationPage'
-// import RegistrationSearchView from './profiles/components/registration/RegistrationSearchView'
-// import RegistrationSelectView from './profiles/components/registration/RegistrationSelectView'
-// import RegistrationSubmittedView from './profiles/components/registration/RegistrationSubmittedView'
-// import DefaultProfilePage from './profiles/DefaultProfilePage'
-// import AllProfilesPage from './profiles/AllProfilesPage'
-// import ViewProfilePage from './profiles/ViewProfilePage'
-// import EditProfilePage from './profiles/EditProfilePage'
-// import RegisterProfilePage from './profiles/RegisterProfilePage'
-// import ImportProfilePage from './profiles/ImportProfilePage'
-// import ExportProfilePage from './profiles/ExportProfilePage'
-// import SearchProfilesPage from './profiles/SearchProfilesPage'
-// import TransferNamePage from './profiles/TransferNamePage'
-// import ZoneFilePage from './profiles/ZoneFilePage'
-//
-// import AccountApp from './account/AccountApp'
-// import AccountMenu from './account/AccountMenu'
-// import DeleteAccountPage from './account/DeleteAccountPage'
-// import BackupAccountPage from './account/BackupAccountPage'
-// import ChangePasswordPage from './account/ChangePasswordPage'
-// import CreateAccountPage from './account/CreateAccountPage'
-// import ApiSettingsPage from './account/ApiSettingsPage'
-// import StorageProvidersPage from './account/StorageProvidersPage'
-//
-// import WalletApp from './wallet/WalletApp'
-// import ReceivePage from './wallet/ReceivePage'
-// import SendPage from './wallet/SendPage'
-// import SendCorePage from './wallet/SendCorePage'
-//
-// import NewAuthPage from './auth'
-import ClearAuthPage from './clear-auth'
-//
-// import SignUpPage from './sign-up'
-// import SeedPage from './seed'
-// import SignInPage from './sign-in'
-//
-// import NotFoundPage from './errors/NotFoundPage'
-import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 
 const HomeScreenPage = Loadable({
   loader: () =>
