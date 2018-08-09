@@ -1,0 +1,5 @@
+redirects = [
+  {from = "/manifest.json", to = "/manifest.json", status = 200},
+  {from = "/favicon.ico", to = "/favicon.ico", status = 200},
+  {from = "/*", to = "/index.html", status = 200}
+]

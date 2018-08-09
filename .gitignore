@@ -24,6 +24,7 @@ bower_components
 
 # Build files
 build
+dist
 __coverage__
 .nyc_output
 
@@ -34,3 +35,4 @@ unused
 tmp
 .idea
 .swp
+yarn.lock

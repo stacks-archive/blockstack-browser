@@ -46,11 +46,23 @@
     "react": {
       "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
       "pragma": "React", // Pragma to use, default to "React"
-      "version": "15.0", // React version, default to the latest React stable release
+      "version": "16.4", // React version, default to the latest React stable release
       "flowVersion": "0.53" // Flow version
     },
     "import/resolver": {
-      "babel-module": {}
+      "babel-module": {
+        "alias": {
+          "@components": "./app/js/components",
+          "@common": "./app/js/common",
+          "@styled": "./app/js/components/styled",
+          "@utils": "./app/js/utils",
+          "@blockstack/ui": "./app/js/components/ui",
+          "@ui/components": "./app/js/components/ui/components",
+          "@ui/containers": "./app/js/components/ui/containers",
+          "@ui/common": "./app/js/components/ui/common",
+          "log4js": "./app/js/logger.js"
+        }
+      }
     },
     "propWrapperFunctions": ["forbidExtraProps"] // The names of any functions used to wrap the propTypes object, such as `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
   }
