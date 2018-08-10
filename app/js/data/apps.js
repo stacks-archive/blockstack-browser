@@ -397,6 +397,21 @@ const apps = {
       launchLink: 'https://note.riot.ai',
       developer: 'Dan Trevino',
       status: 'in_progress'
+    },
+    {
+      name: 'Afari',
+      displayName: 'Afari',
+      description: 'Decentralized social media app',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-afari-256x256.png',
+        large: 'app-icon-afari-512x512.png'
+      },
+      website: 'https://afari.io',
+      launchLink: 'https://app.afari.io',
+      developer: 'Afari Inc.',
+      storageRequired: true,
+      status: 'user_ready'
     }
   ]
 }
