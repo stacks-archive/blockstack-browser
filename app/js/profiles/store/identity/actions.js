@@ -372,6 +372,7 @@ function refreshIdentities(
                                 trustLevel
                               )
                             )
+                            resolve()
                           })
                           .catch(error => {
                             logger.error(

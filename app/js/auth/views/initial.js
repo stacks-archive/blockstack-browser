@@ -54,19 +54,29 @@ const PermissionsList = ({ list }) => (
     })}
   </React.Fragment>
 )
+const cleanAppDomain = (url) => {
+  if (url) {
+    return url.replace(/http(s)?:\/\//i, '')
+  } else {
+    return 'Unknown domain'
+  }
+}
 /**
  * TODO: give more details on what these permissions mean
  */
-const PermissionsContent = ({ permissions, app }) => (
+const PermissionsContent = ({ permissions, app, appDomain }) => (
   <React.Fragment>
     <Type.p>
-      <strong>"{app && app.name}"</strong> wants to{' '}
-      <PermissionsList list={permissions} />.
+      "{app && app.name}" ({cleanAppDomain(appDomain)}){' '}
+      wants to{' '}
+      <PermissionsList list={permissions} />.{' '}
+      Select an ID to use:
     </Type.p>
   </React.Fragment>
 )
 const InitialScreen = ({
   app,
+  appDomain,
   accounts,
   permissions,
   processing,
@@ -98,6 +108,7 @@ const InitialScreen = ({
           <PermissionsContent
             permissions={generatePermissionsList()}
             app={app}
+            appDomain={appDomain}
           />
           <Buttons column overflow>
             <Accounts
@@ -125,6 +136,7 @@ const InitialScreen = ({
 
 InitialScreen.propTypes = {
   app: PropTypes.object,
+  appDomain: PropTypes.string,
   accounts: PropTypes.array,
   permissions: PropTypes.array,
   processing: PropTypes.bool,
@@ -143,6 +155,7 @@ PermissionsList.propTypes = {
 }
 PermissionsContent.propTypes = {
   permissions: PropTypes.array.isRequired,
-  app: PropTypes.object
+  app: PropTypes.object,
+  appDomain: PropTypes.string
 }
 export default InitialScreen
