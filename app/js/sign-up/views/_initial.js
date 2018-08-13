@@ -23,7 +23,7 @@ const InitialScreen = ({ next, ...rest }) => {
           primary: true
         },
         {
-          label: 'Restore a Blockstack ID',
+          label: 'Sign in with an Existing ID',
           to: '/sign-in'
         }
       ]
