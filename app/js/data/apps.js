@@ -13,7 +13,35 @@ const apps = {
       website: 'https://dappywallet.com/',
       launchLink: 'https://app.dappywallet.com/',
       developer: 'BC Net',
-      status: 'user_ready_token'
+      status: 'user_ready_wallet'
+    },
+    {
+      name: 'Dirua',
+      displayName: 'Dirua',
+      description: 'A universal crypto wallet.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-dirua-256x256.png',
+        large: 'app-icon-dirua-512x512.png'
+      },
+      website: 'https://dirua.exchange',
+      launchLink: 'https://dirua.exchange',
+      developer: 'Citrusbyte',
+      status: 'user_ready_wallet'
+    },
+    {
+      name: 'Arctus',
+      displayName: 'Arctus',
+      description: 'Decentralized multicurrency wallet.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-arctus-256x256.png',
+        large: 'app-icon-arctus-512x512.png'
+      },
+      website: 'https://arctus.io',
+      launchLink: 'https://wallet.arctus.io',
+      developer: 'Arctus',
+      status: 'user_ready_wallet'
     },
     {
       name: 'Todo App',
