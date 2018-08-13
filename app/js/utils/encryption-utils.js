@@ -1,18 +1,18 @@
-import bip39 from 'bip39'
+import bip39, { validateMnemonic } from 'bip39'
 import crypto from 'crypto'
 import triplesec from 'triplesec'
 
 function normalizeMnemonic(mnemonic) {
   return bip39.mnemonicToEntropy(mnemonic).toString('hex')
-} 
+}
 
 function denormalizeMnemonic(normalizedMnemonic) {
   return bip39.entropyToMnemonic(normalizedMnemonic)
-} 
+}
 
 function encryptMnemonic(plaintextBuffer, password) {
   return Promise.resolve().then(() => {
-    // must be bip39 mnemonic 
+    // must be bip39 mnemonic
     if (!bip39.validateMnemonic(plaintextBuffer.toString())) {
       throw new Error('Not a valid bip39 nmemonic')
     }
@@ -21,7 +21,7 @@ function encryptMnemonic(plaintextBuffer, password) {
     const plaintextNormalized = Buffer.from(
       normalizeMnemonic(plaintextBuffer.toString()), 'hex')
 
-    // AES-128-CBC with SHA256 HMAC 
+    // AES-128-CBC with SHA256 HMAC
     const salt = crypto.randomBytes(16)
     const keysAndIV = crypto.pbkdf2Sync(password, salt, 100000, 48, 'sha512')
     const encKey = keysAndIV.slice(0, 16)
@@ -64,7 +64,7 @@ function decryptMnemonic(dataBuffer, password) {
     const hmacDigest = hmac.digest()
 
     // hash both hmacSig and hmacDigest so string comparison time
-    // is uncorrelated to the ciphertext 
+    // is uncorrelated to the ciphertext
     const hmacSigHash = crypto.createHash('sha256')
       .update(hmacSig)
       .digest()
@@ -74,7 +74,7 @@ function decryptMnemonic(dataBuffer, password) {
       .update(hmacDigest)
       .digest()
       .toString('hex')
-    
+
     if (hmacSigHash !== hmacDigestHash) {
       // not authentic
       throw new Error('Wrong password (HMAC mismatch)')
@@ -115,3 +115,43 @@ export function decrypt(dataBuffer, password) {
   )
 }
 
+
+
+
+ export const RECOVERY_TYPE = {
+   MNEMONIC: 'mnemonic',
+   ENCRYPTED: 'encrypted'
+ }
+
+ /**
+  * Checks if a recovery option is valid, and attempts to clean it up.
+  * @param {string} input - User input of recovery method
+  * @returns {{ isValid: boolean, cleaned: (string|undefined), type: (string|undefined) }}
+  */
+export function validateAndCleanRecoveryInput(input) {
+  const cleaned = input.trim()
+
+  // Raw mnemonic phrase
+  const cleanedMnemonic = cleaned.toLowerCase().split(/\s|-|_|\./).join(' ')
+
+  if (validateMnemonic(cleanedMnemonic)) {
+    return {
+      isValid: true,
+      type: RECOVERY_TYPE.MNEMONIC,
+      cleaned: cleanedMnemonic
+    }
+  }
+
+  // Base64 encoded encrypted phrase
+  const cleanedEncrypted = cleaned.replace(/\s/gm, '')
+
+  if (/^[a-zA-Z0-9\/]+=$/.test(cleanedEncrypted)) {
+    return {
+      isValid: true,
+      type: RECOVERY_TYPE.ENCRYPTED,
+      cleaned: cleanedEncrypted
+    }
+  }
+
+  return { isValid: false }
+}
