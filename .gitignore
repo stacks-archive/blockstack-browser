@@ -15,6 +15,10 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
+# Integration test output directories
+test/cypress/videos
+test/cypress/screenshots
+
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
