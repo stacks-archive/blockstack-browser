@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta charset="utf-8">
@@ -21,16 +21,44 @@
     <meta name="twitter:title" content="Blockstack Browser"/>
     <meta name="twitter:description"
           content="Blockstack is a new internet for decentralized apps where users own their data."/>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif
+        }
+    </style>
 </head>
 <body>
 <noscript>
     You need to enable JavaScript to run this app.
 </noscript>
+<div id="loader">
+    <img src="./loading-logo.svg" alt="Blockstack is loading..."/>
+</div>
 <div id="app"></div>
 <style type="text/css">
     #app {
         height: 100%;
         width: 100%;
+    }
+
+    #loader {
+        height: calc(100vh - 40px);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        padding: 0;
+
+    }
+
+    #loader img {
+        max-width: 100%;
+        display: block;
+    }
+
+    #loader.hidden {
+        display: none !important;
     }
 </style>
 </body>

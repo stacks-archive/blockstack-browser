@@ -72,18 +72,36 @@ class HomeScreenPage extends Component {
   }
 
   render() {
+    const appSections = [{
+      title: 'User-ready Apps',
+      key: 'user_ready'
+    }, {
+      title: 'Chat Apps',
+      key: 'user_ready_chat'
+    }, {
+      title: 'Wallet Apps',
+      key: 'user_ready_wallet'
+    }, {
+      title: 'Token Portfolio Apps',
+      key: 'user_ready_token'
+    }, {
+      title: 'Apps-in-progress',
+      key: 'in_progress'
+    }]
+
     return (
       <div>
         <Navbar hideBackToHomeLink activeTab="home" />
         <div className="home-screen">
           <div className="container-fluid app-center">
             <div className="container app-wrap text-center">
-              <div className="app-section m-b-45">
-                <p className="app-section-heading">User-ready Apps</p>
-                <div className="app-container no-padding">
-                  {appList.apps.map(app => {
-                    if (app.status === 'user_ready') {
-                      return (
+              {appSections.map((section) => (
+                <div className="app-section m-b-45" key={section.key}>
+                  <p className="app-section-heading">{section.title}</p>
+                  <div className="app-container no-padding">
+                    {appList.apps
+                      .filter(app => app.status === section.key)
+                      .map(app => (
                         <AppIcon
                           key={app.name}
                           iconImage={app.appIcon.small}
@@ -92,75 +110,10 @@ class HomeScreenPage extends Component {
                           storageRequired={!!app.storageRequired}
                         />
                       )
-                    } else {
-                      return null
-                    }
-                  })}
+                    )}
+                  </div>
                 </div>
-              </div>
-
-              <div className="app-section m-b-45">
-                <p className="app-section-heading">Chat Apps</p>
-                <div className="app-container no-padding">
-                  {appList.apps.map(app => {
-                    if (app.status === 'user_ready_chat') {
-                      return (
-                        <AppIcon
-                          key={app.name}
-                          iconImage={app.appIcon.small}
-                          displayName={app.displayName}
-                          launchLink={app.launchLink}
-                          storageRequired={!!app.storageRequired}
-                        />
-                      )
-                    } else {
-                      return null
-                    }
-                  })}
-                </div>
-              </div>
-
-              <div className="app-section m-b-45">
-                <p className="app-section-heading">Token Portfolio Apps</p>
-                <div className="app-container no-padding">
-                  {appList.apps.map(app => {
-                    if (app.status === 'user_ready_token') {
-                      return (
-                        <AppIcon
-                          key={app.name}
-                          iconImage={app.appIcon.small}
-                          displayName={app.displayName}
-                          launchLink={app.launchLink}
-                          storageRequired={!!app.storageRequired}
-                        />
-                      )
-                    } else {
-                      return null
-                    }
-                  })}
-                </div>
-              </div>
-
-              <div className="app-section m-b-45">
-                <p className="app-section-heading">Apps-in-progress</p>
-                <div className="app-container no-padding">
-                  {appList.apps.map(app => {
-                    if (app.status === 'in_progress') {
-                      return (
-                        <AppIcon
-                          key={app.name}
-                          iconImage={app.appIcon.small}
-                          displayName={app.displayName}
-                          launchLink={app.launchLink}
-                          storageRequired={!!app.storageRequired}
-                        />
-                      )
-                    } else {
-                      return null
-                    }
-                  })}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

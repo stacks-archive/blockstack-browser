@@ -33,10 +33,7 @@ import { AuthActions } from '../auth/store/auth'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
-import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
-import { BLOCKSTACK_INC } from '../account/utils/index'
-import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
 import { trackEventOnce } from '@utils/server-utils'
 import { sendRecoveryEmail, sendRestoreEmail } from '@utils/email-utils'
@@ -84,7 +81,6 @@ const VIEW_EVENTS = {
 const SUBDOMAIN_SUFFIX = 'id.blockstack'
 
 const mapStateToProps = state => ({
-  updateApi: PropTypes.func.isRequired,
   localIdentities: selectLocalIdentities(state),
   registration: selectRegistration(state),
   storageConnected: selectStorageConnected(state),
@@ -441,41 +437,6 @@ class Onboarding extends React.Component {
   }
 
   /**
-   * Connect Storage
-   */
-  async connectStorage() {
-    logger.debug('fire connectStorage')
-    const storageProvider = this.props.api.gaiaHubUrl
-    const signer = this.props.identityKeypairs[0].key
-    return connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
-      const newApi = Object.assign({}, this.props.api, {
-        gaiaHubConfig,
-        hostedDataLocation: BLOCKSTACK_INC
-      })
-      this.props.updateApi(newApi)
-      const identityIndex = 0
-      const identity = this.props.localIdentities[identityIndex]
-      const identityAddress = identity.ownerAddress
-      const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
-      const profile = identity.profile
-      setCoreStorageConfig(
-        newApi,
-        identityIndex,
-        identityAddress,
-        profile,
-        profileSigningKeypair,
-        identity
-      )
-      logger.debug('connectStorage: storage initialized')
-      const newApi2 = Object.assign({}, newApi, { storageConnected: true })
-      this.props.updateApi(newApi2)
-      this.props.storageIsConnected()
-      logger.debug('connectStorage: storage configured')
-      logger.debug('connectStorage has finished')
-    })
-  }
-
-  /**
    * Next function for the recovery info screen
    */
   infoNext = () => {
@@ -635,15 +596,17 @@ Onboarding.propTypes = {
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
   emailNotifications: PropTypes.func.isRequired,
-  updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
   identityKeypairs: PropTypes.array.isRequired,
-  storageIsConnected: PropTypes.func.isRequired,
   registerName: PropTypes.func.isRequired,
   resetApi: PropTypes.func.isRequired,
   verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
   encryptedBackupPhrase: PropTypes.string,
+<<<<<<< HEAD
   notify: PropTypes.func.isRequired
+=======
+  connectStorage: PropTypes.func.isRequired
+>>>>>>> develop
 }
 
 export default withRouter(

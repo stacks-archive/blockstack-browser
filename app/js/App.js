@@ -183,6 +183,14 @@ class AppContainer extends Component {
     })
   }
 
+  componentDidMount() {
+    const loader = document.getElementById('loader')
+    if (loader && !loader.classList.contains('hidden')) {
+      loader.classList.add('hidden')
+    }
+  }
+
+
   onSupportClick = () => {
     openInNewTab('https://forum.blockstack.org/t/frequently-ask-questions/2123')
   }

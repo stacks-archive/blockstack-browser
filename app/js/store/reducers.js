@@ -5,7 +5,7 @@ import AccountReducer from '../account/store/account/reducer'
 import { AuthReducer } from '../auth/store/auth'
 import ProfilesReducer from '../profiles/store/reducers'
 import { SanityReducer } from './sanity'
-import { SettingsReducer } from '../account/store/settings'
+import SettingsReducer from '../account/store/settings/reducer'
 import { AppsReducer } from './apps'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
 

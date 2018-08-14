@@ -1,14 +1,12 @@
-import hasprop from 'hasprop'
-
 export function getNumberOfVerifications(profile) {
   let numberOfVerifications = 0
-  if (hasprop(profile, 'twitter.proof.url')) {
+  if (profile && profile.twitter && profile.twitter.proof && profile.twitter.proof.url) {
     numberOfVerifications += 1
   }
-  if (hasprop(profile, 'facebook.proof.url')) {
+  if (profile && profile.facebook && profile.facebook.proof && profile.facebook.proof.url) {
     numberOfVerifications += 1
   }
-  if (hasprop(profile, 'github.proof.url')) {
+  if (profile && profile.github && profile.github.proof && profile.github.proof.url) {
     numberOfVerifications += 1
   }
   return numberOfVerifications
