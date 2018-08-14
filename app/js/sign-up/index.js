@@ -602,11 +602,8 @@ Onboarding.propTypes = {
   resetApi: PropTypes.func.isRequired,
   verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
   encryptedBackupPhrase: PropTypes.string,
-<<<<<<< HEAD
-  notify: PropTypes.func.isRequired
-=======
+  notify: PropTypes.func.isRequired,
   connectStorage: PropTypes.func.isRequired
->>>>>>> develop
 }
 
 export default withRouter(
