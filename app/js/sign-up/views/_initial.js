@@ -23,7 +23,7 @@ const InitialScreen = ({ next, ...rest }) => {
           primary: true
         },
         {
-          label: 'Sign in with an Existing ID',
+          label: 'Sign in with an existing ID',
           to: '/sign-in'
         }
       ]
