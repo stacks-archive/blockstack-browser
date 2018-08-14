@@ -101,6 +101,7 @@
     "jsdom": "^9.2.0",
     "lodash-webpack-plugin": "^0.11.5",
     "mocha": "^5.2.0",
+    "mock-require": "^3.0.2",
     "nexe": "1.1.2",
     "nock": "^9.0.13",
     "node-libs-browser": "^1.0.0",
@@ -118,7 +119,8 @@
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4",
     "webpackbar": "^2.6.1",
-    "workbox-webpack-plugin": "^3.3.0"
+    "workbox-webpack-plugin": "^3.3.0",
+    "workerize-loader": "^1.0.3"
   },
   "keywords": [
     "applications",
@@ -161,7 +163,7 @@
     "mac:compileCorsProxy": "nexe -i corsproxy/corsproxy.js -o native/macos/Blockstack/corsproxy",
     "mac:compileBlockstackProxy": "nexe -i ./native/blockstackProxy.js -o ./native/macos/Blockstack/blockstackProxy",
     "mac:buildDebug": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Debug",
-    "test": "npm run lint && npm run flow && cross-env NODE_ENV=test nyc mocha --require test/importedImagesHelper",
+    "test": "npm run lint && npm run flow && cross-env NODE_ENV=test nyc mocha",
     "build": "cross-env NODE_ENV=production webpack",
     "start": "serve build --single",
     "web": "npm run build",

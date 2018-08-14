@@ -1,12 +1,14 @@
+const isTesting = process.env.NODE_ENV === 'test'
+
 const logger = {
   configure: () => null,
   info: () => null,
   getLogger: log => ({
-    info: message => console.info(log, message),
-    trace: message => console.trace(log, message),
-    error: message => console.error(log, message),
-    debug: message => console.debug(log, message),
-    log: message => console.log(log, message)
+    info: message => !isTesting && console.info(log, message),
+    trace: message => !isTesting && console.trace(log, message),
+    error: message => !isTesting && console.error(log, message),
+    debug: message => !isTesting && console.debug(log, message),
+    log: message => !isTesting && console.log(log, message)
   })
 }
 
