@@ -37,7 +37,8 @@ export default class InitialSignInScreen extends React.PureComponent {
     }
     else {
       this.setState({ scanError: 'Invalid recovery code scanned' })
-      setTimeout(() => {
+      clearTimeout(this.scanErrorTimeout)
+      this.scanErrorTimeout = setTimeout(() => {
         this.setState({ scanError: null })
       }, 3000)
     }
@@ -47,8 +48,22 @@ export default class InitialSignInScreen extends React.PureComponent {
     this.setState({ scanError: err.message })
   }
 
+  startScanning = () => {
+    this.setState({
+      isScanning: true,
+      scanError: null
+    })
+  }
+
   stopScanning = () => {
-    this.setState({ isScanning: false })
+    this.setState({
+      isScanning: false,
+      scanError: null
+    })
+  }
+
+  componentDidUnmount() {
+    clearTimeout(this.scanErrorTimeout)
   }
 
   render() {
@@ -82,7 +97,7 @@ export default class InitialSignInScreen extends React.PureComponent {
               {
                 label: 'Scan',
                 icon: 'QrcodeIcon',
-                onClick: () => this.setState({ isScanning: true })
+                onClick: this.startScanning
               },
               {
                 label: 'Sign In',
