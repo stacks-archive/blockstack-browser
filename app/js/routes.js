@@ -42,13 +42,24 @@ import SignUpPage from './sign-up'
 import SeedPage from './seed'
 import SignInPage from './sign-in'
 
+import ConnectStoragePage from './connect-storage'
+
 import NotFoundPage from './errors/NotFoundPage'
 
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 
 const accountCreated = connectedRouterRedirect({
-  redirectPath: '/sign-up',
-  authenticatedSelector: state => !!state.account.encryptedBackupPhrase,
+  redirectPath: state =>
+    !state.account.encryptedBackupPhrase ?
+      // Not signed in
+      '/sign-up' :
+      // Storage failed to connect
+      '/connect-storage',
+  authenticatedSelector: state =>
+    // Not signed in
+    !!state.account.encryptedBackupPhrase &&
+    // Storage failed to connect
+    !!state.settings.api.storageConnected,
   wrapperDisplayName: 'AccountCreated'
 })
 
@@ -109,6 +120,7 @@ export default (
     <Route path="/sign-in" component={SignInPage} />
     <Route path="/sign-in/*" component={SignInPage} />
     <Route path="/seed" component={SeedPage} />
+    <Route path="/connect-storage" component={ConnectStoragePage} />
     <Route path="/clear-auth" component={ClearAuthPage} />
     <Route path="/*" component={NotFoundPage} />
   </Router>
