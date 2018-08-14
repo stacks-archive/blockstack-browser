@@ -43,7 +43,7 @@ if (isProd) {
  */
 module.exports = {
   mode: isProd ? 'production' : 'development',
-  devtool: !isProd ? 'cheap-module-source-map' : false,
+  devtool: !isProd ? 'cheap-module-source-map' : 'source-map',
   entry: {
     main: ['./app/js/index.js']
   },
