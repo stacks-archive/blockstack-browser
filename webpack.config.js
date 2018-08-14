@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const ReactLoadablePlugin = require('react-loadable/webpack')
   .ReactLoadablePlugin
+const PreloadWebpackPlugin = require('preload-webpack-plugin')
 
 /**
  * Plugins
@@ -244,6 +245,7 @@ module.exports = {
         minifyURLs: true
       }
     }),
+    new PreloadWebpackPlugin(),
     new ReactLoadablePlugin({
       filename: './build/react-loadable.json'
     }),
