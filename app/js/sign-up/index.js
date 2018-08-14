@@ -198,7 +198,7 @@ class Onboarding extends React.Component {
     // Create new ID and owner address and then set to default
     await this.createNewIdAndSetDefault()
     // Connect our default storage
-    await this.connectStorage()
+    await this.props.connectStorage()
     // Register the username
     await this.registerUsername()
     // Send the emails
@@ -259,8 +259,9 @@ class Onboarding extends React.Component {
         logger.error(`username registration error: ${err}`)
         this.props.notify({
           title: 'Username Registration Failed',
-          message: `Something went wrong while registering ${username}. You ` +
-            'can try to register again later from your profile page.',
+          message: `Sorry, something went wrong while registering ${username}. ` +
+            'You can try to register again later from your profile page. Some ' +
+            'apps may be unusable until you do.',
           status: 'error',
           dismissAfter: 0,
           dismissible: true,

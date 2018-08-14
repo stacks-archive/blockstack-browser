@@ -92,7 +92,7 @@ const Field = ({
 Field.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.string,
-  message: PropTypes.string,
+  message: PropTypes.node,
   autoFocus: PropTypes.bool,
   error: PropTypes.any,
   positive: PropTypes.bool,

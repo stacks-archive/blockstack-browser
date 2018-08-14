@@ -161,6 +161,7 @@ class UsernameView extends React.Component {
   render() {
     const { updateValue, next, loading, ...rest } = this.props
     const { status, username } = this.state
+    const canSkip = status === STATUS.FAIL
 
     const props = {
       title: {
@@ -186,8 +187,20 @@ class UsernameView extends React.Component {
               type: 'text',
               label: 'Username',
               name: 'username',
-              message:
-                'This will be your unique, public identity for any Blockstack app.',
+              message: (
+                <React.Fragment>
+                  <p>
+                    This will be your unique, public identity for any Blockstack app.
+                  </p>
+                  {canSkip &&
+                    <p>
+                      If you’re having trouble registering a username, you can skip
+                      this now and try again later from your profile. This may make
+                      some apps unusable until you do.
+                    </p>
+                  }
+                </React.Fragment>
+              ),
               autoFocus: true,
               overlay: defaultSponsoredName,
               handleChangeOverride: (e, handleChange) => {
@@ -210,7 +223,7 @@ class UsernameView extends React.Component {
           actions: {
             split: true,
             items: [
-              status === STATUS.FAIL ? {
+              canSkip ? {
                 label: 'Skip Username →',
                 textOnly: true,
                 disabled: loading,
