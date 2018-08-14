@@ -181,6 +181,14 @@ class AppContainer extends Component {
     })
   }
 
+  componentDidMount() {
+    const loader = document.getElementById('loader')
+    if (loader && !loader.classList.contains('hidden')) {
+      loader.classList.add('hidden')
+    }
+  }
+
+
   onSupportClick = () => {
     openInNewTab('https://forum.blockstack.org/t/frequently-ask-questions/2123')
   }
@@ -201,8 +209,8 @@ class AppContainer extends Component {
     const { children } = this.props
     return (
       <div className="body-main">
-        <div className="wrapper footer-padding">{children}</div>
-        <SupportButton onClick={this.onSupportClick} />
+        <div className="wrapper footer-padding">{ children }</div>
+        <SupportButton onClick={ this.onSupportClick }/>
       </div>
     )
   }

@@ -1,5 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
+const ReactLoadablePlugin = require('react-loadable/webpack')
+  .ReactLoadablePlugin
 
 /**
  * Plugins
@@ -242,11 +244,14 @@ module.exports = {
         minifyURLs: true
       }
     }),
+    new ReactLoadablePlugin({
+      filename: './build/react-loadable.json'
+    }),
     new workboxPlugin.GenerateSW({
       swDest: '../sw.js',
       clientsClaim: true,
       skipWaiting: true,
-      include: [/\.html$/, /\.js$/, /\.webp/]
+      include: [/\.html$/, /\.js$/]
     })
   ]
 }
