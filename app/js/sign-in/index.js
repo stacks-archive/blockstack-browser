@@ -134,22 +134,17 @@ class SignIn extends React.Component {
       this.setState({ key })
     }
     if (this.isKeyEncrypted(key)) {
-      this.setState(
-        {
-          encryptedKey: key,
-          decrypt: true
-        },
-        () => setTimeout(() => this.updateView(nextView), 100)
-      )
+      this.setState({
+        encryptedKey: key,
+        decrypt: true
+      })
     } else {
-      this.setState(
-        {
-          seed: key,
-          decrypt: false
-        },
-        () => setTimeout(() => this.updateView(nextView), 100)
-      )
+      this.setState({
+        seed: key,
+        decrypt: false
+      })
     }
+    this.updateView(nextView)
   }
 
   decryptAndContinue = () => {
