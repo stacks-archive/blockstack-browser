@@ -3,6 +3,7 @@ import { browserHistory, IndexRoute, Route, Router } from 'react-router'
 import Loadable from 'react-loadable'
 import App from './App'
 import ClearAuthPage from './clear-auth'
+import ConnectStoragePage from './connect-storage'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 
 const LOADABLE_DELAY = 300
@@ -231,8 +232,17 @@ const NotFoundPage = Loadable({
 
 
 const accountCreated = connectedRouterRedirect({
-  redirectPath: '/sign-up',
-  authenticatedSelector: state => !!state.account.encryptedBackupPhrase,
+  redirectPath: state =>
+    !state.account.encryptedBackupPhrase ?
+      // Not signed in
+      '/sign-up' :
+      // Storage failed to connect
+      '/connect-storage',
+  authenticatedSelector: state =>
+    // Not signed in
+    !!state.account.encryptedBackupPhrase &&
+    // Storage failed to connect
+    !!state.settings.api.storageConnected,
   wrapperDisplayName: 'AccountCreated'
 })
 
@@ -288,12 +298,13 @@ export default (
     { /**
      * TODO: move /update back up ^^, had to move it out of the 'app' nested route
      * because when we wipe data, it wants to redirect to /sign-up
-     */ }
-    <Route path="/update" component={ UpdateStatePage }/>
-    <Route path="/sign-in" component={ SignInPage }/>
-    <Route path="/sign-in/*" component={ SignInPage }/>
-    <Route path="/seed" component={ SeedPage }/>
-    <Route path="/clear-auth" component={ ClearAuthPage }/>
-    <Route path="/*" component={ NotFoundPage }/>
+     */}
+    <Route path="/update" component={ UpdateStatePage } />
+    <Route path="/sign-in" component={ SignInPage } />
+    <Route path="/sign-in/*" component={ SignInPage } />
+    <Route path="/seed" component={ SeedPage } />
+    <Route path="/connect-storage" component={ ConnectStoragePage } />
+    <Route path="/clear-auth" component={ ClearAuthPage } />
+    <Route path="/*" component={ NotFoundPage } />
   </Router>
 )

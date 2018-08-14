@@ -145,7 +145,7 @@ class AllProfilesPage extends Component {
           className="container-fluid"
         >
           <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new Blockstack ID</h3>
+            <h3 className="modal-heading">Enter your password to add another Blockstack ID</h3>
             <div>
               {createProfileError ?
                 <Alert key="1" message="Incorrect password" status="danger" />
@@ -168,9 +168,9 @@ class AllProfilesPage extends Component {
               disabled={this.props.isProcessing}
             >
               {this.props.isProcessing ?
-                <span>Creating...</span>
+                <span>Processing...</span>
                 :
-                <span>Create new ID</span>
+                <span>Add another ID</span>
               }
             </button>
           </form>
@@ -217,9 +217,16 @@ class AllProfilesPage extends Component {
                 <button
                   className="btn btn-primary"
                   onClick={this.openPasswordPrompt}
-                >Create new ID
+                >
+                  Add another ID
                 </button>
               </div>
+            </div>
+            <div className="row m-t-20">
+              <p className="col form-text text-muted">
+                Have you recovered and are missing IDs? Just add them
+                back by using the "Add another ID" for each ID.
+              </p>
             </div>
           </div>
         </div>

@@ -22,7 +22,8 @@ const output = {
   filename: 'js/[name].[hash:8].js',
   chunkFilename: 'js/[name].[hash:8].chunk.js',
   path: path.resolve(__dirname, 'build'),
-  publicPath: '/'
+  publicPath: '/',
+  globalObject: 'self'
 }
 
 /**
@@ -34,6 +35,7 @@ const output = {
 if (isProd) {
   output.path = path.resolve(__dirname, 'build/static')
   output.publicPath = '/static/'
+  output.globalObject = undefined
 }
 
 /**
@@ -126,6 +128,10 @@ module.exports = {
             options: { minimize: true }
           }
         ]
+      },
+      {
+        test: /\.worker\.js$/,
+        use: 'workerize-loader'
       }
     ]
   },
