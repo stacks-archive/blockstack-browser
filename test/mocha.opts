@@ -4,3 +4,4 @@
 --reporter spec
 --file test/helper.js
 --recursive
+--exclude test/cypress/**
