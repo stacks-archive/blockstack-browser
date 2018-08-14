@@ -22,7 +22,7 @@ const validationSchema = Yup.object({
 const InitialSignInScreen = ({ next, ...rest }) => {
   const props = {
     title: {
-      children: 'Restore your Blockstack ID'
+      children: 'Sign in with an existing ID'
     },
     content: {
       grow: 1,
@@ -49,7 +49,7 @@ const InitialSignInScreen = ({ next, ...rest }) => {
               textOnly: true
             },
             {
-              label: 'Restore',
+              label: 'Sign In',
               primary: true,
               icon: 'ArrowRightIcon',
               type: 'submit'
