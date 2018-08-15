@@ -112,7 +112,7 @@ class AppContainer extends Component {
   }
 
   componentWillMount() {
-    logger.trace('componentWillMount')
+    logger.info('componentWillMount')
     const coreAPIPassword = getCoreAPIPasswordFromURL()
     const logServerPort = getLogServerPortFromURL()
     const regTestMode = getRegTestModeFromURL()

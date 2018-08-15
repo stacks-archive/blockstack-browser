@@ -25,7 +25,7 @@ function updateInstanceIdentifier(instanceIdentifier) {
 
 function refreshAppList(browserApiUrl, instanceIdentifier, instanceCreationDate) {
   return dispatch => {
-    logger.trace('refreshAppList')
+    logger.info('refreshAppList')
     if (instanceIdentifier) {
       return fetch(`${browserApiUrl}/data?id=${instanceIdentifier}&created=${instanceCreationDate}`)
         .then(response => response.text())
@@ -43,7 +43,7 @@ function refreshAppList(browserApiUrl, instanceIdentifier, instanceCreationDate)
 }
 
 function generateInstanceIdentifier() {
-  logger.trace('Generating new instance identifier')
+  logger.info('Generating new instance identifier')
   return dispatch => {
     const instanceIdentifier = createHash('sha256')
       .update(randomBytes(256))

@@ -112,7 +112,7 @@ class DefaultProfilePage extends Component {
   }
 
   componentWillMount() {
-    logger.trace('componentWillMount')
+    logger.info('componentWillMount')
     this.props.refreshIdentities(this.props.api, this.props.identityAddresses)
   }
 
@@ -357,10 +357,10 @@ class DefaultProfilePage extends Component {
   }
 
   componentHasNewLocalIdentities(props) {
-    logger.trace('componentHasNewLocalIdentities')
+    logger.info('componentHasNewLocalIdentities')
     const identityIndex = this.props.defaultIdentity
     if (props.localIdentities[identityIndex]) {
-      logger.trace('componentHasNewLocalIdentities: identity found')
+      logger.info('componentHasNewLocalIdentities: identity found')
       const newProfile = props.localIdentities[identityIndex].profile
       const newUsername = props.localIdentities[identityIndex].username
 
@@ -369,7 +369,7 @@ class DefaultProfilePage extends Component {
         username: newUsername
       })
     } else {
-      logger.trace('componentHasNewLocalIdentities: no identity found')
+      logger.info('componentHasNewLocalIdentities: no identity found')
     }
   }
 
@@ -386,7 +386,7 @@ class DefaultProfilePage extends Component {
   }
 
   saveProfile(newProfile) {
-    logger.trace('saveProfile')
+    logger.info('saveProfile')
 
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
@@ -396,7 +396,7 @@ class DefaultProfilePage extends Component {
       newProfile,
       identity.zoneFile
     )
-    logger.trace('saveProfile: Preparing to upload profile')
+    logger.info('saveProfile: Preparing to upload profile')
     logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 
     const identitySigner = this.props.identityKeypairs[identityIndex]
@@ -539,7 +539,7 @@ class DefaultProfilePage extends Component {
     const accounts = profile.account
 
     if (accounts) {
-      logger.trace('Removing account')
+      logger.info('Removing account')
       const newAccounts = accounts.filter(
         account => account.service !== service
       )

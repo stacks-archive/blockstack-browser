@@ -30,7 +30,7 @@ class IdentityItem extends Component {
   transferFromOnenameClick = event => {
     event.preventDefault()
     event.stopPropagation()
-    logger.trace('transferFromOnenameClick')
+    logger.info('transferFromOnenameClick')
     const identityAddress = this.props.ownerAddress
     const profileUrl = this.props.profileUrl
     const url = `https://onename.com/settings?action=export&address=${identityAddress}&url=${profileUrl}`

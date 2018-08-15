@@ -228,10 +228,10 @@ class EditProfilePage extends Component {
   }
 
   componentHasNewLocalIdentities(props) {
-    logger.trace('componentHasNewLocalIdentities')
+    logger.info('componentHasNewLocalIdentities')
     const identityIndex = this.props.routeParams.index
     if (props.localIdentities[identityIndex]) {
-      logger.trace('componentHasNewLocalIdentities: identity found')
+      logger.info('componentHasNewLocalIdentities: identity found')
       const newIndex = identityIndex
       const newProfile = props.localIdentities[identityIndex].profile
       const newUsername = props.localIdentities[identityIndex].username
@@ -243,7 +243,7 @@ class EditProfilePage extends Component {
         username: newUsername
       })
     } else {
-      logger.trace('componentHasNewLocalIdentities: no identity found')
+      logger.info('componentHasNewLocalIdentities: no identity found')
     }
   }
 
@@ -264,7 +264,7 @@ class EditProfilePage extends Component {
   }
 
   saveProfile(newProfile) {
-    logger.trace('saveProfile')
+    logger.info('saveProfile')
 
     const identityIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[identityIndex]
@@ -274,7 +274,7 @@ class EditProfilePage extends Component {
       newProfile,
       identity.zoneFile
     )
-    logger.trace('saveProfile: Preparing to upload profile')
+    logger.info('saveProfile: Preparing to upload profile')
     logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 
     const identitySigner = this.props.identityKeypairs[identityIndex]

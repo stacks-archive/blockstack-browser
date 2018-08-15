@@ -68,7 +68,7 @@ class ZoneFilePage extends Component {
   }
 
   componentWillMount() {
-    logger.trace('componentWillMount')
+    logger.info('componentWillMount')
     const name = this.props.routeParams.index
     this.props.fetchCurrentIdentity(
       this.props.nameLookupUrl,
@@ -78,7 +78,7 @@ class ZoneFilePage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    logger.trace('componentWillReceiveProps')
+    logger.info('componentWillReceiveProps')
     const currentIdentity = nextProps.currentIdentity
     const zoneFile = currentIdentity.zoneFile
     if (zoneFile && !nextProps.edited) {
@@ -129,7 +129,7 @@ class ZoneFilePage extends Component {
   }
 
   reset(event) {
-    logger.trace('reset')
+    logger.info('reset')
     event.preventDefault()
     this.setState({
       clickedBroadcast: false,
@@ -140,14 +140,14 @@ class ZoneFilePage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
   }
 
   updateZoneFile(event) {
-    logger.trace('updateZoneFile')
+    logger.info('updateZoneFile')
     event.preventDefault()
     this.setState({
       clickedBroadcast: true,

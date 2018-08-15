@@ -27,7 +27,7 @@ function loadedPGPKey(identifier, key) {
 }
 
 function loadPGPPublicKey(contentUrl, identifier) {
-  logger.trace('loadPGPPublicKey')
+  logger.info('loadPGPPublicKey')
   return dispatch => {
     dispatch(loadingPGPKey(identifier))
     return proxyFetch(contentUrl)

@@ -113,7 +113,7 @@ class AddUsernameSelectPage extends Component {
   }
 
   componentDidMount() {
-    logger.trace('componentDidMount')
+    logger.info('componentDidMount')
     this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
           this.props.api.coreAPIPassword)
 
@@ -178,7 +178,7 @@ class AddUsernameSelectPage extends Component {
   }
 
   register(event) {
-    logger.trace('register')
+    logger.info('register')
 
     if (event) {
       event.preventDefault()

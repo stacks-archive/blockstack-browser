@@ -26,7 +26,7 @@ export function appRequestSupportsDirectHub(requestPayload: Object): boolean {
 }
 
 export function validateScopes(scopes: Array<string>): boolean {
-  logger.trace('validateScopes')
+  logger.info('validateScopes')
 
   if (!scopes) {
     logger.error('validateScopes: no scopes provided')

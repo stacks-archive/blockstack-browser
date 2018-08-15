@@ -57,14 +57,14 @@ class BackupAccountPage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
   }
 
   decryptBackupPhrase() {
-    logger.trace('decryptBackupPhrase')
+    logger.info('decryptBackupPhrase')
 
     const password = this.state.password
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')

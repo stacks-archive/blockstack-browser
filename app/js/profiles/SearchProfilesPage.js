@@ -52,7 +52,7 @@ class SearchPage extends Component {
   }
 
   componentHasNewRouteParams(routeParams) {
-    logger.trace('componentHasNewRouteParams')
+    logger.info('componentHasNewRouteParams')
     logger.debug(`Searching for ${routeParams.query}...`)
     this.props.searchIdentities(routeParams.query,
       this.props.api.searchServiceUrl, this.props.api.nameLookupUrl)

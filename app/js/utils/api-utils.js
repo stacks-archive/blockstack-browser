@@ -137,7 +137,7 @@ export function isCoreApiRunning(corePingUrl) {
       .then(responseText => JSON.parse(responseText))
       .then(responseJson => {
         if (responseJson.status === 'alive') {
-          logger.trace('isCoreApiRunning? Yes!')
+          logger.info('isCoreApiRunning? Yes!')
           resolve(true)
         } else {
           logger.error('isCoreApiRunning? No!')
@@ -178,7 +178,7 @@ export function isApiPasswordValid(corePasswordProtectedReadUrl, coreApiPassword
     })
       .then(response => {
         if (response.ok) {
-          logger.trace('isCoreApiPasswordValid? Yes!')
+          logger.info('isCoreApiPasswordValid? Yes!')
           resolve(true)
         } else {
           logger.error('isCoreApiPasswordValid? No!')

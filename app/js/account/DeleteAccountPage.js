@@ -54,7 +54,7 @@ class DeleteAccountPage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
@@ -68,7 +68,7 @@ class DeleteAccountPage extends Component {
   }
 
   openModal() {
-    logger.trace('deleteAccount')
+    logger.info('deleteAccount')
     this.setState({ isOpen: true })
   }
 

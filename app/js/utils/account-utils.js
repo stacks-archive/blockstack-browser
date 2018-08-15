@@ -137,7 +137,7 @@ export function decryptMasterKeychain(password, encryptedBackupPhrase) {
         const backupPhrase = plaintextBuffer.toString()
         const seed = bip39.mnemonicToSeed(backupPhrase)
         const masterKeychain = HDNode.fromSeedBuffer(seed)
-        logger.trace('decryptMasterKeychain: decrypted!')
+        logger.info('decryptMasterKeychain: decrypted!')
         resolve(masterKeychain)
       },
       error => {

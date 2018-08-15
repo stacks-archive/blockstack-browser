@@ -12,7 +12,7 @@ const logger = {
       showLog && console.info(`%c[${path}]:`, prefixStyle, message)
     ),
     trace: message => (
-      showLog && console.info(`%c[${path}]:`, prefixStyle, message)
+      showLog && console.trace(`%c[${path}]:`, prefixStyle, message)
     ),
     error: message => (
       showLog && console.error(`%c[${path}]:`, prefixStyle, message)

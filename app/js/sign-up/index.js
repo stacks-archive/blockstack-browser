@@ -218,7 +218,7 @@ class Onboarding extends React.Component {
     const suffix = `.${SUBDOMAIN_SUFFIX}`
     username += suffix
     console.log('about to submit username', username)
-    logger.trace('registerUsername')
+    logger.info('registerUsername')
     const nameHasBeenPreordered = hasNameBeenPreordered(
       username,
       this.props.localIdentities

@@ -69,11 +69,11 @@ class TransferNamePage extends Component<Props, State> {
   }
 
   componentWillMount() {
-    logger.trace('componentWillMount')
+    logger.info('componentWillMount')
   }
 
   componentWillReceiveProps(nextProps) {
-    logger.trace('componentWillReceiveProps')
+    logger.info('componentWillReceiveProps')
     this.displayAlerts(nextProps)
   }
 
@@ -121,7 +121,7 @@ class TransferNamePage extends Component<Props, State> {
 
   updateAlert: Function
   updateAlert(alertStatus, alertMessage) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
@@ -129,7 +129,7 @@ class TransferNamePage extends Component<Props, State> {
 
   transferName: Function
   transferName(event) {
-    logger.trace('transferName')
+    logger.info('transferName')
     event.preventDefault()
     this.setState(() => ({
       clickedBroadcast: true,

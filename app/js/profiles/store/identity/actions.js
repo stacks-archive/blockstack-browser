@@ -209,15 +209,15 @@ function createNewProfile(
   nextUnusedAddressIndex: number
 ) {
   return (dispatch: Dispatch<*>, getState: () => any): Promise<*> => {
-    logger.trace('createNewProfile')
+    logger.info('createNewProfile')
 
     const state = getState()
     if (state.profiles && state.profiles.identity && state.profiles.identity.isProcessing) {
-      logger.trace('createNewProfile: Early exit because isProcessing')
+      logger.info('createNewProfile: Early exit because isProcessing')
       return Promise.resolve()
     }
 
-    logger.trace('createNewProfile: Dispatch CREATE_NEW_REQUEST')
+    logger.info('createNewProfile: Dispatch CREATE_NEW_REQUEST')
     dispatch({ type: types.CREATE_NEW_REQUEST })
 
     // Decrypt master keychain
@@ -272,7 +272,7 @@ function refreshIdentities(
   ownerAddresses: Array<string>
 ) {
   return (dispatch: Dispatch<*>): Promise<*> => {
-    logger.trace('refreshIdentities')
+    logger.info('refreshIdentities')
 
     const promises: Array<Promise<*>> = ownerAddresses.map((address, index) => {
       const promise: Promise<*> = new Promise(resolve => {
@@ -532,7 +532,7 @@ function broadcastZoneFileUpdate(
   keypair: { key: string },
   zoneFile: string
 ) {
-  logger.trace('broadcastZoneFileUpdate: entering')
+  logger.info('broadcastZoneFileUpdate: entering')
   return (dispatch: Dispatch<*>): Promise<*> => {
     dispatch(broadcastingZoneFileUpdate(name))
     // Core registers with an uncompressed address,
@@ -588,7 +588,7 @@ function broadcastNameTransfer(
   keypair: { key: string },
   newOwnerAddress: string
 ) {
-  logger.trace('broadcastNameTransfer: entering')
+  logger.info('broadcastNameTransfer: entering')
   return (dispatch: Dispatch<*>): Promise<*> => {
     dispatch(broadcastingNameTransfer(name))
     // Core registers with an uncompressed address,

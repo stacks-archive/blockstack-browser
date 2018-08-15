@@ -50,7 +50,7 @@ class ChangePasswordPage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [
         {
@@ -62,7 +62,7 @@ class ChangePasswordPage extends Component {
   }
 
   reencryptMnemonic() {
-    logger.trace('reencryptMnemonic')
+    logger.info('reencryptMnemonic')
     this.setState({
       isProcessing: true,
       alerts: []

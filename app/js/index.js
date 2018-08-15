@@ -79,7 +79,7 @@ window.onerror = (messageOrEvent, source, lineno, colno, error) => {
 }
 
 if (process.env.NODE_ENV !== 'production') {
-  logger.trace('NODE_ENV is not production')
+  logger.info('NODE_ENV is not production')
   logger.debug('Enabling React devtools')
   window.React = React
 }

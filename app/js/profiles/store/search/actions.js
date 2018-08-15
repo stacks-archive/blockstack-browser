@@ -20,7 +20,7 @@ function updateResults(query, results) {
 }
 
 function searchIdentities(query, searchUrl, lookupUrl) {
-  logger.trace(`searchIdentities: query: "${query}" searchUrl: ${searchUrl} ${lookupUrl}`)
+  logger.info(`searchIdentities: query: "${query}" searchUrl: ${searchUrl} ${lookupUrl}`)
   return dispatch => {
     let url
     let username

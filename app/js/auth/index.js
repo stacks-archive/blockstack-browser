@@ -176,7 +176,7 @@ class AuthPage extends React.Component {
         }
       }
 
-      logger.trace('componentWillReceiveProps')
+      logger.info('componentWillReceiveProps')
 
       const coreSessionToken = nextProps.coreSessionTokens[appDomain]
       let decodedCoreSessionToken = null
@@ -377,7 +377,7 @@ class AuthPage extends React.Component {
 
     this.props.clearSessionToken(appDomain)
 
-    logger.trace(
+    logger.info(
       `login(): id index ${this.state.currentIdentityIndex} is logging in`
     )
     this.setState({ responseSent: true })
@@ -467,7 +467,7 @@ class AuthPage extends React.Component {
           )
           return
         } else if (requestingStoreWrite && !needsCoreStorage) {
-          logger.trace(
+          logger.info(
             'login(): app can communicate directly with gaiahub, not setting up core.'
           )
           this.setState({
@@ -475,7 +475,7 @@ class AuthPage extends React.Component {
           })
           this.props.noCoreSessionToken(appDomain)
         } else {
-          logger.trace('login(): No storage access requested.')
+          logger.info('login(): No storage access requested.')
           this.setState({
             noCoreStorage: true
           })

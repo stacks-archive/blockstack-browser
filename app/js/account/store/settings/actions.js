@@ -40,7 +40,7 @@ function refreshBtcPrice(btcPriceUrl) {
 }
 
 function resetApi(api) {
-  logger.trace('resetApi')
+  logger.info('resetApi')
   let coreAPIPassword = api.coreAPIPassword
   let gaiaHubConfig = api.gaiaHubConfig
 
@@ -65,7 +65,7 @@ function resetApi(api) {
 
 function connectStorage() {
   return (dispatch, getState) => {
-    logger.trace('connectStorage')
+    logger.info('connectStorage')
     const state = getState()
     const api = selectApi(state)
     let idKeypairs = selectIdentityKeypairs(state)

@@ -78,14 +78,14 @@ class RegistrationSearchView extends Component {
   }
 
   componentDidMount() {
-    logger.trace('componentDidMount')
+    logger.info('componentDidMount')
     const { refreshCoreWalletBalance, balanceUrl, api } = this.props
     refreshCoreWalletBalance(balanceUrl, api.coreAPIPassword)
   }
 
 
   componentWillReceiveProps() {
-    logger.trace('componentWillReceiveProps')
+    logger.info('componentWillReceiveProps')
     // Clear alerts
     this.setState({
       alerts: []
@@ -108,7 +108,7 @@ class RegistrationSearchView extends Component {
   onOnenameTransferClick = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    logger.trace('transferFromOnenameClick')
+    logger.info('transferFromOnenameClick')
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
     const identityAddress = identity.ownerAddress
@@ -123,7 +123,7 @@ class RegistrationSearchView extends Component {
   }
 
   search(event) {
-    logger.trace('search')
+    logger.info('search')
     const username = this.state.username
     logger.debug(`search: user is searching for ${username}`)
     event.preventDefault()
@@ -144,7 +144,7 @@ class RegistrationSearchView extends Component {
   }
 
   showSearchBox(event) {
-    logger.trace('showSearchBox')
+    logger.info('showSearchBox')
     event.preventDefault()
     this.setState({
       username: '',
@@ -154,7 +154,7 @@ class RegistrationSearchView extends Component {
   }
 
   updateAlert(alertStatus, alertMessage, url = null) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{
         status: alertStatus,
