@@ -80,7 +80,13 @@ function registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFil
     headers: requestHeaders,
     body: registrationRequestBody
   })
-  .then((response) => response.text())
+  .then((response) => {
+    if (!response.ok) {
+      logger.error(`Subdomain registrar responded with status code ${response.status}`)
+      return Promise.reject(new Error('Failed to register username'))
+    }
+    return response.text()
+  })
   .then((responseText) => JSON.parse(responseText))
 }
 
