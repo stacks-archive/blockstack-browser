@@ -38,7 +38,7 @@ import App from '../App'
 
 const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
 
-const logger = log4js.getLogger('sign-in/index.js')
+const logger = log4js.getLogger(__filename)
 
 const VIEWS = {
   INITIAL: 0,

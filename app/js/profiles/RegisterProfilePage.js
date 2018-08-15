@@ -15,7 +15,7 @@ import roundTo from 'round-to'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
+const logger = log4js.getLogger(__filename)
 
 const WALLET_URL = '/wallet/receive'
 const STORAGE_URL = '/account/storage'

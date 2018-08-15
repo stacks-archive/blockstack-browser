@@ -8,7 +8,7 @@ import DeleteAccountModal from './components/DeleteAccountModal'
 import { AccountActions } from './store/account'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/DeleteAccountPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {

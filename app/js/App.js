@@ -22,7 +22,7 @@ import { hot } from 'react-hot-loader'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('App.js')
+const logger = log4js.getLogger(__filename)
 
 export const BLOCKSTACK_STATE_VERSION_KEY = 'BLOCKSTACK_STATE_VERSION'
 

@@ -1,7 +1,7 @@
 import * as types from './types'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/store/pgp/actions.js')
+const logger = log4js.getLogger(__filename)
 
 function loadingPGPKey(identifier) {
   return {

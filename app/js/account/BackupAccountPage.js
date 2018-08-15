@@ -13,7 +13,7 @@ import log4js from 'log4js'
 
 import { AccountActions } from './store/account'
 
-const logger = log4js.getLogger('account/BackupAccountPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {

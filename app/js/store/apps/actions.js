@@ -2,7 +2,7 @@ import * as types from './types'
 import log4js from 'log4js'
 import { randomBytes, createHash } from 'crypto'
 
-const logger = log4js.getLogger('store/apps/actions.js')
+const logger = log4js.getLogger(__filename)
 
 function updateAppList(apps, version) {
   const lastUpdated = Date.now()

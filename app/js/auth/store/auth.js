@@ -4,7 +4,7 @@ import {
 } from 'blockstack'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('auth/store/auth.js')
+const logger = log4js.getLogger(__filename)
 
 const APP_MANIFEST_LOADING = 'auth/APP_MANIFEST_LOADING'
 const APP_MANIFEST_LOADING_ERROR = 'auth/APP_MANIFEST_LOADING_ERROR'

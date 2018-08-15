@@ -1,7 +1,7 @@
 import hash from 'hash-handler'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('utils/api-utils.js')
+const logger = log4js.getLogger(__filename)
 
 import {
   DEFAULT_CORE_API_ENDPOINT, REGTEST_CORE_API_ENDPOINT, REGTEST_CORE_API_PASSWORD,

@@ -16,7 +16,7 @@ import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/store/account/actions.js')
+const logger = log4js.getLogger(__filename)
 
 const doVerifyRecoveryCode = () => dispatch =>
   dispatch({

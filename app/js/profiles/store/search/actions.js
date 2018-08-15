@@ -2,7 +2,7 @@ import * as types from './types'
 import { compareProfilesByVerifications } from '@utils/index'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/store/search/actions.js')
+const logger = log4js.getLogger(__filename)
 
 function updateQuery(query) {
   return {

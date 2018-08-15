@@ -4,7 +4,7 @@ import { HDNode } from 'bitcoinjs-lib'
 import crypto from 'crypto'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('utils/account-utils.js')
+const logger = log4js.getLogger(__filename)
 
 function hashCode(string) {
   let hash = 0

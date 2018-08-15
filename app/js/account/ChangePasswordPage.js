@@ -10,7 +10,7 @@ import { AccountActions } from './store/account'
 import { decrypt, encrypt } from '@utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/ChangePasswordPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {

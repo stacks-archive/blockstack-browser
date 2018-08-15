@@ -48,7 +48,8 @@ module.exports = {
     main: ['./app/js/index.js']
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
+    __filename: true
   },
   output,
   devServer: {

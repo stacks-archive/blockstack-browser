@@ -13,7 +13,7 @@ import { AccountActions }  from '../account/store/account'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/AllProfilesPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {

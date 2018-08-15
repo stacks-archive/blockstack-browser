@@ -21,7 +21,7 @@ import {
 } from './utils/api-utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('UpdateStatePage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {

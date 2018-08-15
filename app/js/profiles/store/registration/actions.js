@@ -7,7 +7,7 @@ import { DEFAULT_PROFILE } from '@utils/profile-utils'
 import { isSubdomain, getNameSuffix } from '@utils/name-utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/store/registration/actions.js')
+const logger = log4js.getLogger(__filename)
 
 
 function profileUploading() {

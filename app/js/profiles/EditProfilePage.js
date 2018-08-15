@@ -16,7 +16,7 @@ import { Person } from 'blockstack'
 import log4js from 'log4js'
 import { defaultAvatartImage } from '@components/ui/common/constants'
 
-const logger = log4js.getLogger('profiles/EditProfilePage.js')
+const logger = log4js.getLogger(__filename)
 
 const accountTypes = [
   'twitter',

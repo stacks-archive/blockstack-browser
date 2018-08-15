@@ -9,7 +9,7 @@ import { BLOCKSTACK_INC } from '../../utils'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import AccountActions from '../account/actions'
 
-const logger = log4js.getLogger('account/store/settings/actions.js')
+const logger = log4js.getLogger(__filename)
 
 function updateApi(api) {
   return {

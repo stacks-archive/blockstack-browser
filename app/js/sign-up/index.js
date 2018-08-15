@@ -49,7 +49,7 @@ import {
   RecoveryInformationScreen
 } from './views'
 
-const logger = log4js.getLogger('onboarding/index.js')
+const logger = log4js.getLogger(__filename)
 
 const views = [
   Initial,

@@ -6,7 +6,7 @@ import { UserAvatar } from '@blockstack/ui'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/components/IdentityItem.js')
+const logger = log4js.getLogger(__filename)
 
 class IdentityItem extends Component {
   static propTypes = {

@@ -30,7 +30,7 @@ configureLogging(
   process.env.NODE_ENV
 )
 
-let logger = log4js.getLogger('index.js')
+let logger = log4js.getLogger(__filename)
 
 
 window.addEventListener('error', event => {

@@ -52,7 +52,7 @@ import Modal from 'react-modal'
 
 const views = [Initial, LegacyGaia]
 
-const logger = log4js.getLogger('auth/components/AuthModal.js')
+const logger = log4js.getLogger(__filename)
 
 const VIEWS = {
   AUTH: 0,
