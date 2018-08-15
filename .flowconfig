@@ -27,3 +27,4 @@ module.name_mapper='^@styled' ->'<PROJECT_ROOT>/app/js/styled'
 module.name_mapper='^@utils' ->'<PROJECT_ROOT>/app/js/utils'
 
 [lints]
+deprecated-call-syntax=off

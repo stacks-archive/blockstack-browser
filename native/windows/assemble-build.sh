@@ -6,7 +6,7 @@ echo "Building Version $VERSION"
 
 npm i
 
-NODE_ENV=production gulp prod-windows
+NODE_ENV=production npm run build
 
 cp -r build native/windows/BlockstackBrowser/Resources/build
 cp native/blockstackProxy.js native/windows/BlockstackBrowser/Resources/blockstackProxy.js

@@ -567,10 +567,12 @@ class AuthPage extends React.Component {
     ]
 
     const currentViewProps = viewProps[0]
+    const appDomain = this.state.decodedToken.payload.domain_name
 
     const componentProps = {
       ...currentViewProps.props,
       app,
+      appDomain,
       view: coreShortCircuit ? VIEWS.LEGACY_GAIA : VIEWS.AUTH
     }
 

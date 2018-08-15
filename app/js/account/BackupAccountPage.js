@@ -6,6 +6,7 @@ import bip39 from 'bip39'
 import { HDNode } from 'bitcoinjs-lib'
 
 import Alert from '@components/Alert'
+import SimpleButton from '@components/SimpleButton'
 import InputGroup from '@components/InputGroup'
 import { decrypt } from '@utils'
 import log4js from 'log4js'
@@ -38,7 +39,8 @@ class BackupAccountPage extends Component {
       decryptedBackupPhrase: null,
       password: '',
       alerts: [],
-      keychain: null
+      keychain: null,
+      isDecrypting: false
     }
 
     this.onChange = this.onChange.bind(this)
@@ -66,6 +68,8 @@ class BackupAccountPage extends Component {
 
     const password = this.state.password
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
+    this.setState({ isDecrypting: true })
+
     logger.debug('Trying to decrypt recovery phrase...')
     decrypt(dataBuffer, password).then(
       plaintextBuffer => {
@@ -75,6 +79,7 @@ class BackupAccountPage extends Component {
         const keychain = HDNode.fromSeedBuffer(seed)
         this.props.displayedRecoveryCode()
         this.setState({
+          isDecrypting: false,
           decryptedBackupPhrase: plaintextBuffer.toString(),
           keychain
         })
@@ -82,24 +87,26 @@ class BackupAccountPage extends Component {
       () => {
         logger.error('Invalid password')
         this.updateAlert('danger', 'Invalid password')
+        this.setState({ isDecrypting: false })
       }
     )
   }
 
   render() {
+    const { alerts, keychain, decryptedBackupPhrase, isDecrypting } = this.state
     return (
       <div>
         <div className="container-fluid">
           <div className="row">
             <div className="col">
               <h3>Backup Keychain</h3>
-              {this.state.alerts.map((alert, index) => (
+              {alerts.map((alert, index) => (
                 <Alert key={index} message={alert.message} status={alert.status} />
               ))}
             </div>
           </div>
         </div>
-        {this.state.decryptedBackupPhrase ? (
+        {decryptedBackupPhrase ? (
           <div className="container-fluid m-b-100">
             <div className="row">
               <div className="col">
@@ -113,14 +120,14 @@ class BackupAccountPage extends Component {
                 <div className="card">
                   <div className="card-header">Keychain Phrase</div>
                   <div className="card-block backup-phrase-container">
-                    <p className="card-text">{this.state.decryptedBackupPhrase}</p>
+                    <p className="card-text">{decryptedBackupPhrase}</p>
                   </div>
                 </div>
 
                 <div className="card m-t-20">
                   <div className="card-header">Private Key (WIF)</div>
                   <div className="card-block backup-phrase-container">
-                    <p className="card-text">{this.state.keychain.keyPair.toWIF()}</p>
+                    <p className="card-text">{keychain.keyPair.toWIF()}</p>
                   </div>
                 </div>
               </div>
@@ -145,9 +152,14 @@ class BackupAccountPage extends Component {
                   onReturnKeyPress={this.decryptBackupPhrase}
                 />
                 <div className="container-fluid m-t-40">
-                  <button className="btn btn-primary btn-block" onClick={this.decryptBackupPhrase}>
+                  <SimpleButton
+                    type="primary"
+                    loading={isDecrypting}
+                    onClick={this.decryptBackupPhrase}
+                    block
+                  >
                     Display Keychain Phrase
-                  </button>
+                  </SimpleButton>
                 </div>
               </div>
             </div>
