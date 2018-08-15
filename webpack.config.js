@@ -242,7 +242,8 @@ module.exports = {
         minifyJS: true,
         minifyCSS: true,
         minifyURLs: true
-      }
+      },
+      chunks: ['main', 'vendors']
     }),
     new ReactLoadablePlugin({
       filename: './build/react-loadable.json'
