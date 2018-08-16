@@ -14,12 +14,8 @@ class ConfirmTransactionModal extends React.Component {
   }
 
   render() {
-    const { isOpen, handleClose, txHex, isBroadcasting, amountInput } = this.props
+    const { isOpen, handleClose, txHex, isBroadcasting } = this.props
     const summary = txHex && summarizeTransactionFromHex(txHex)
-    const amountFloat = parseFloat(amountInput)
-    const fee = summary && amountFloat ? summary.total - amountFloat : 0
-    console.log(summary.total)
-    console.log(amountFloat)
 
     return (
       <Modal
@@ -36,14 +32,7 @@ class ConfirmTransactionModal extends React.Component {
               Are you sure you want to send{' '}
               <strong>{satoshisToBtc(summary.outs[0].satoshis)} BTC</strong>
               {' '}to{' '}
-              <code>{summary.outs[0].address}</code>
-              {!!fee && (
-                <React.Fragment>
-                  {' '}with a transaction fee of{' '}
-                  <strong>{satoshisToBtc(fee).toFixed(8)} BTC</strong>
-                </React.Fragment>
-              )}
-              ?
+              <code>{summary.outs[0].address}</code>?
             </p>
           }
         </div>
@@ -62,7 +51,6 @@ ConfirmTransactionModal.propTypes = {
   // Own props
   isOpen: PropTypes.bool,
   txHex: PropTypes.string,
-  amountInput: PropTypes.string,
   handleClose: PropTypes.func.isRequired,
   // Redux props
   regTestMode: PropTypes.bool,

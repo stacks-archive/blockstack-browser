@@ -114,7 +114,7 @@ class SendPage extends Component {
     if (parseFloat(amount) > balance) {
       this.updateAlert(
         'danger',
-        'Amount exceeds balance. Use "Send all" if you wish to send the maximum amount.'
+        'Amount exceeds balance. Use "Send all" if you’d like to send the maximum amount.'
       )
       return
     }
@@ -208,7 +208,6 @@ class SendPage extends Component {
           isOpen={isConfirming}
           handleClose={this.closeConfirmation}
           txHex={this.props.account.coreWallet.withdrawal.txHex}
-          amountInput={this.state.amount}
         />
       </div>
     )
