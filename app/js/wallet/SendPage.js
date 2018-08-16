@@ -13,6 +13,8 @@ import { AccountActions } from '../account/store/account'
 import Alert from '@components/Alert'
 import InputGroupSecondary from '@components/InputGroupSecondary'
 import Balance from './components/Balance'
+import ConfirmTransactionModal from './components/ConfirmTransactionModal'
+import SimpleButton from '@components/SimpleButton'
 
 function mapStateToProps(state) {
   return {
@@ -32,24 +34,19 @@ class SendPage extends Component {
     regTestMode: PropTypes.bool.isRequired,
     localIdentites: PropTypes.array.isRequired,
     resetCoreWithdrawal: PropTypes.func.isRequired,
-    withdrawBitcoinClientSide: PropTypes.func.isRequired
+    buildBitcoinTransaction: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props)
-    this.withdrawBitcoin = this.withdrawBitcoin.bind(this)
 
     this.state = {
       alerts: [],
       amount: '',
       password: '',
       recipientAddress: '',
-      disabled: false,
-      lastAmount: ''
+      isConfirming: false
     }
-    this.updateAlert = this.updateAlert.bind(this)
-    this.onValueChange = this.onValueChange.bind(this)
-    this.displayCoreWalletWithdrawalAlerts = this.displayCoreWalletWithdrawalAlerts.bind(this)
   }
 
   componentWillMount() {
@@ -57,10 +54,29 @@ class SendPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.displayCoreWalletWithdrawalAlerts(nextProps)
+    console.log('New props', nextProps)
     if (nextProps.localIdentities.map(x => x.usernamePending).includes(true)) {
       this.updateAlert('danger', 'You have a pending name registration. Withdrawing bitcoin' +
                        ' may interfere with that registration\'s bitcoin transactions.')
+    }
+
+    // Handle changes in withdrawal state
+    if (this.props.account.coreWallet) {
+      const thisWithdrawal = this.props.account.coreWallet.withdrawal
+      const nextWithdrawal = nextProps.account.coreWallet.withdrawal
+
+      if (nextWithdrawal.txHex && thisWithdrawal.txHex !== nextWithdrawal.txHex) {
+        this.setState({ isConfirming: true })
+      }
+      else if (nextWithdrawal.error && thisWithdrawal.error !== nextWithdrawal.error) {
+        this.updateAlert('danger', nextWithdrawal.error)
+        this.closeConfirmation()
+      }
+      else if (!thisWithdrawal.success && nextWithdrawal.success) {
+        this.resetCoreWithdrawal()
+        this.closeConfirmation()
+        this.updateAlert('success', 'Your transaction was succesfully broadcasted!')
+      }
     }
   }
 
@@ -68,13 +84,13 @@ class SendPage extends Component {
     this.props.resetCoreWithdrawal()
   }
 
-  onValueChange(event) {
+  onValueChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
-  updateAlert(alertStatus, alertMessage) {
+  updateAlert = (alertStatus, alertMessage) => {
     this.setState({
       alerts: [{
         status: alertStatus,
@@ -83,78 +99,72 @@ class SendPage extends Component {
     })
   }
 
-  withdrawBitcoin(event) {
+  buildTransaction = (event) => {
     event.preventDefault()
+    const { password, amount, recipientAddress } = this.state
+    const { account, regTestMode } = this.props
+    const btcAddress = account.bitcoinAccount.addresses[0]
+    const balance = account.bitcoinAccount.balances[btcAddress]
+
+    if (!password || !amount || !recipientAddress) {
+      this.updateAlert('danger', 'All fields are required')
+      return
+    }
+
+    if (parseFloat(amount) > balance) {
+      this.updateAlert(
+        'danger',
+        'Amount exceeds balance. Use "Send all" if you wish to send the maximum amount.'
+      )
+      return
+    }
+
+    // TODO: Move decrypt logic to action & blockstack.js
     this.setState({
-      disabled: true
+      disabled: true,
+      alerts: []
     })
-    const password = this.state.password
-    const encryptedBackupPhrase = this.props.account.encryptedBackupPhrase
-    decryptMasterKeychain(password, encryptedBackupPhrase)
-    .then((masterKeychain) => {
+    decryptMasterKeychain(password, account.encryptedBackupPhrase)
+    .then(masterKeychain => {
       const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
       const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
       const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
-      const amount = this.state.amount
-      const recipientAddress = this.state.recipientAddress
 
-      this.setState({
-        lastAmount: amount
-      })
-
-      this.props.withdrawBitcoinClientSide(
-        this.props.regTestMode, `${paymentKey}01`, recipientAddress, amount)
-      this.setState({
-        amount: '',
-        password: '',
-        recipientAddress: '',
-        lastAmount: this.state.amount
-      })
-    })
-    .catch((error) => {
-      this.setState({
-        disabled: false
-      })
-      this.updateAlert('danger', error.toString())
-      console.error(error)
+      this.props.buildBitcoinTransaction(
+        regTestMode,
+        `${paymentKey}01`,
+        recipientAddress,
+        amount
+      )
     })
   }
 
-  displayCoreWalletWithdrawalAlerts(props) {
-    if (props.account.hasOwnProperty('coreWallet')) {
-      const withdrawal = props.account.coreWallet.withdrawal
-      const amount = this.state.lastAmount
-      this.setState({
-        alerts: []
-      })
+  closeConfirmation = () => {
+    this.setState({
+      isConfirming: false,
+      disabled: false
+    })
+  }
 
-      if (withdrawal.inProgress) {
-        this.updateAlert('success',
-        `Preparing to send ${amount} bitcoins to ${withdrawal.recipientAddress}...`)
-      } else if (withdrawal.error !== null) {
-        this.updateAlert('danger', withdrawal.error)
-      } else if (withdrawal.success) {
-        this.setState({
-          disabled: false
-        })
-        this.updateAlert('success',
-        `Sent up to ${amount} bitcoins to ${withdrawal.recipientAddress}`)
-      }
-    }
+  setAmountAll = () => {
+    const { bitcoinAccount } = this.props.account
+    const btcAddress = bitcoinAccount.addresses[0]
+    this.setState({ amount: bitcoinAccount.balances[btcAddress].toString() })
   }
 
   render() {
-    const disabled = this.state.disabled
+    const { bitcoinAccount } = this.props.account
+    const { isConfirming, disabled } = this.state
+    const btcAddress = bitcoinAccount.addresses[0]
+    const balance = bitcoinAccount.balances[btcAddress]
 
     return (
       <div>
-        {this.state.alerts.map((alert, index) =>
-           (
-          <Alert key={index} message={alert.message} status={alert.status} />
-          )
-        )}
         <Balance />
-        <form onSubmit={this.withdrawBitcoin}>
+        {this.state.alerts.map(alert =>
+          <Alert key={alert.message} message={alert.message} status={alert.status} />
+        )}
+        <form onSubmit={this.buildTransaction}>
           <InputGroupSecondary
             data={this.state}
             onChange={this.onValueChange}
@@ -171,8 +181,12 @@ class SendPage extends Component {
             placeholder="&nbsp;"
             type="number"
             required
-            step={0.000001}
+            step={1e-8}
             min="0"
+            action={balance ? {
+              text: 'Send all',
+              onClick: this.setAmountAll
+            } : null}
           />
           <InputGroupSecondary
             data={this.state}
@@ -184,15 +198,18 @@ class SendPage extends Component {
             required
           />
           <div className="m-t-40 m-b-75">
-            <button className="btn btn-primary btn-block" type="submit" disabled={disabled}>
-              {disabled ?
-                <span>Sending...</span>
-              :
-                <span>Send</span>
-              }
-            </button>
+            <SimpleButton type="primary" block loading={disabled}>
+              Make transaction
+            </SimpleButton>
           </div>
         </form>
+
+        <ConfirmTransactionModal
+          isOpen={isConfirming}
+          handleClose={this.closeConfirmation}
+          txHex={this.props.account.coreWallet.withdrawal.txHex}
+          amountInput={this.state.amount}
+        />
       </div>
     )
   }

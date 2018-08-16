@@ -41,6 +41,15 @@ const InputGroupSecondary = props => {
       <fieldset>
         <label className={`${labelClass}`}>
           {props.label}
+          {props.action &&
+            <button
+              type="button"
+              className="form-control-label-action"
+              onClick={props.action.onClick}
+            >
+              {props.action.text}
+            </button>
+          }
         </label>
         <div className="">
           {props.textarea ?
@@ -91,7 +100,11 @@ InputGroupSecondary.propTypes = {
   inverse: PropTypes.bool,
   textarea: PropTypes.bool,
   textareaRows: PropTypes.number,
-  required: PropTypes.bool
+  required: PropTypes.bool,
+  action: PropTypes.shape({
+    text: PropTypes.node.isRequired,
+    onClick: PropTypes.func.isRequired
+  })
 }
 
 export default InputGroupSecondary

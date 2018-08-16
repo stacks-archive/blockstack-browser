@@ -1,4 +1,5 @@
 import log4js from 'log4js'
+import { Transaction, address as Address } from 'bitcoinjs-lib'
 import {
   REGTEST_CORE_API_PASSWORD,
   REGTEST_CORE_INSIGHT_API_URL
@@ -67,4 +68,21 @@ export function getNetworkFee(bytes) {
         reject(error)
       })
   })
+}
+
+/**
+ * Constructs a summary of what the user’s sending from a transaction hex
+ * @param {string} txHex - Encoded transaction hex
+ * @return {{ outs: { address: string, satoshis: number }[], total: number }}
+ */
+export function summarizeTransactionFromHex(txHex) {
+  const tx = Transaction.fromHex(txHex)
+  const outs = tx.outs.map(o => ({
+    address: Address.fromOutputScript(o.script),
+    satoshis: o.value
+  }))
+  return {
+    outs,
+    total: outs.reduce((prev, o) => prev + o.satoshis, 0)
+  }
 }
