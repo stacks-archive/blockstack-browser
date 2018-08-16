@@ -16,6 +16,12 @@ import {
   NEW_IDENTITY_ADDRESS,
   WITHDRAW_CORE_BALANCE_ERROR,
   WITHDRAWING_CORE_BALANCE,
+  BUILD_TRANSACTION,
+  BUILD_TRANSACTION_SUCCESS,
+  BUILD_TRANSACTION_ERROR,
+  BROADCAST_TRANSACTION,
+  BROADCAST_TRANSACTION_SUCCESS,
+  BROADCAST_TRANSACTION_ERROR,
   WITHDRAW_CORE_BALANCE_SUCCESS,
   UPDATE_CORE_ADDRESS,
   UPDATE_CORE_BALANCE,
@@ -826,45 +832,37 @@ describe('AccountActions', () => {
     })
   })
 
-  describe('withdrawBitcoinClientSide', () => {
+  describe('buildBitcoinTransaction', () => {
     const paymentKey = 'fakePaymentKey'
     const recipientAddress = 'fakeRecipientAddress'
     const amountBTC = 1
     const amountSatoshis = amountBTC * 1e8
-    const defaultRegTestMode = false
     const configMock = {}
     const networkMock = {
       defaults: {
         LOCAL_REGTEST: {
-          coerceAddress: sinon.stub().returns('coercedRecipientAddress'),
-          broadcastTransaction: sinon.spy()
+          coerceAddress: sinon.stub().returns('coercedRecipientAddress')
         }
       }
     }
-    const callAction = (regTestMode = defaultRegTestMode) =>
-      AccountActions.withdrawBitcoinClientSide(
+    let store
+    let action
+
+    const callAction = (regTestMode = false) =>
+      AccountActions.buildBitcoinTransaction(
         regTestMode,
         paymentKey,
         recipientAddress,
         amountBTC
       )
-    let loggerMock
-    let store
-    let action
 
     beforeEach(() => {
-      loggerMock = {
-        trace: sinon.spy(),
-        error: sinon.spy()
-      }
-      AccountActions.__Rewire__('logger', loggerMock)
       store = mockStore({})
       AccountActions.__Rewire__('config', configMock)
       AccountActions.__Rewire__('network', networkMock)
     })
 
     afterEach(() => {
-      AccountActions.__ResetDependency__('logger')
       AccountActions.__ResetDependency__('config')
       AccountActions.__ResetDependency__('network')
     })
@@ -881,15 +879,6 @@ describe('AccountActions', () => {
         AccountActions.__ResetDependency__('transactions')
       })
 
-      it('logs a trace message', () =>
-        store.dispatch(action)
-          .then(() => {
-            assert.deepEqual(loggerMock.trace.firstCall.args, [
-              'Using regtest network'
-            ])
-          })
-      )
-
       it('sets config.network to LOCAL_REGTEST', () =>
         store.dispatch(action)
           .then(() => {
@@ -905,53 +894,23 @@ describe('AccountActions', () => {
       )
     })
 
-    describe('dispatches withdrawingCoreBalance', () => {
-      beforeEach(() => {
-        AccountActions.__Rewire__('transactions', {
-          makeBitcoinSpend: sinon.stub().rejects(new Error())
-        })
+    it('dispatches buildTransaction', () => {
+      AccountActions.__Rewire__('transactions', {
+        makeBitcoinSpend: sinon.stub().rejects(new Error())
       })
+      action = callAction(false)
 
-      afterEach(() => {
-        AccountActions.__ResetDependency__('transactions')
-      })
-
-      describe('(when no regTestMode)', () => {
-        beforeEach(() => {
-          action = callAction(false)
+      store.dispatch(action)
+        .then(() => {
+          assert.deepEqual(store.getActions()[0], {
+            type: BUILD_TRANSACTION
+          })
         })
 
-        it('with recipientAddress and amountBTC', () =>
-          store.dispatch(action)
-            .then(() => {
-              assert.deepEqual(store.getActions()[0], {
-                type: WITHDRAWING_CORE_BALANCE,
-                recipientAddress
-              })
-            })
-        )
-      })
-
-      describe('(when regTestMode)', () => {
-        beforeEach(() => {
-          configMock.network = networkMock.defaults.LOCAL_REGTEST
-          configMock.network.blockstackAPIUrl = 'http://localhost:6270'
-          action = callAction(true)
-        })
-
-        it('with coerced recipientAddress and amountBTC', () =>
-          store.dispatch(action)
-            .then(() => {
-              assert.deepEqual(store.getActions()[0], {
-                type: WITHDRAWING_CORE_BALANCE,
-                recipientAddress: configMock.network.coerceAddress(recipientAddress)
-              })
-            })
-        )
-      })
+      AccountActions.__ResetDependency__('transactions')
     })
 
-    describe('makes a bitcoin spending transaction', () => {
+    describe('makes a makeBitcoinSpend transaction', () => {
       describe('(when no regTestMode)', () => {
         const makeBitcoinSpendStub = sinon.stub()
           .withArgs(recipientAddress, paymentKey, amountSatoshis)
@@ -1008,7 +967,7 @@ describe('AccountActions', () => {
       })
 
       describe('when failing', () => {
-        const error = new Error()
+        const error = new Error('test error')
         const makeBitcoinSpendStub = sinon.stub()
           .withArgs(recipientAddress, paymentKey, amountSatoshis)
           .rejects(error)
@@ -1023,22 +982,12 @@ describe('AccountActions', () => {
           AccountActions.__ResetDependency__('transactions')
         })
 
-        it('logs an expressive error', () =>
-          store.dispatch(action)
-            .then(() => {
-              assert.deepEqual(loggerMock.error.firstCall.args, [
-                'withdrawBitcoinClientSide: error generating and broadcasting',
-                error
-              ])
-            })
-        )
-
-        it('dispatches withdrawCoreBalanceError with error', () =>
+        it('dispatches buildTransactionError', () =>
           store.dispatch(action)
             .then(() => {
               assert.deepEqual(store.getActions()[1], {
-                type: WITHDRAW_CORE_BALANCE_ERROR,
-                error
+                type: BUILD_TRANSACTION_ERROR,
+                payload: error.message
               })
             })
         )
@@ -1060,32 +1009,7 @@ describe('AccountActions', () => {
           AccountActions.__ResetDependency__('transactions')
         })
 
-        describe('broadcasts the transactionHex', () => {
-          beforeEach(() => {
-            action = callAction(false)
-          })
-
-          it('after logging a trace message with the transactionHex', () =>
-            store.dispatch(action)
-              .then(() => {
-                assert.deepEqual(loggerMock.trace.lastCall.args, [
-                  `Broadcast btc spend with tx hex: ${transactionHex}`
-                ])
-              })
-          )
-
-          it('to the config.network via .broadcastTransaction', () =>
-            store.dispatch(action)
-              .then(() => {
-                assert.deepEqual(
-                  networkMock.defaults.LOCAL_REGTEST.broadcastTransaction.lastCall.args,
-                  [ transactionHex ]
-                )
-              })
-          )
-        })
-
-        describe('dispatches withdrawCoreBalanceSuccess action', () => {
+        describe('dispatches buildTransactionSuccess action', () => {
           beforeEach(() => {
             action = callAction(false)
           })
@@ -1094,7 +1018,142 @@ describe('AccountActions', () => {
             store.dispatch(action)
               .then(() => {
                 assert.deepEqual(store.getActions()[1], {
-                  type: WITHDRAW_CORE_BALANCE_SUCCESS
+                  type: BUILD_TRANSACTION_SUCCESS,
+                  payload: transactionHex
+                })
+              })
+          )
+        })
+      })
+    })
+  })
+
+  describe('broadcastBitcoinTransaction', () => {
+    const fakeTxHex = 'faketxhex'
+    const configMock = {
+      network: {
+        broadcastTransaction: sinon.stub().withArgs(fakeTxHex).resolves(true)
+      }
+    }
+    const networkMock = {
+      defaults: {
+        LOCAL_REGTEST: {
+          broadcastTransaction: sinon.spy()
+        }
+      }
+    }
+    let store
+    let action
+
+    const callAction = (regTestMode = false) =>
+      AccountActions.broadcastBitcoinTransaction(
+        regTestMode,
+        fakeTxHex
+      )
+
+    beforeEach(() => {
+      store = mockStore({})
+      AccountActions.__Rewire__('config', configMock)
+      AccountActions.__Rewire__('network', networkMock)
+    })
+
+    afterEach(() => {
+      AccountActions.__ResetDependency__('config')
+      AccountActions.__ResetDependency__('network')
+    })
+
+    describe('when regTestMode', () => {
+      beforeEach(() => {
+        action = callAction(true)
+      })
+
+      it('sets config.network to LOCAL_REGTEST', () =>
+        store.dispatch(action)
+          .then(() => {
+            assert.equal(configMock.network, networkMock.defaults.LOCAL_REGTEST)
+          })
+      )
+
+      it('sets blockstackAPIUrl to http://localhost:6270', () =>
+        store.dispatch(action)
+          .then(() => {
+            assert.equal(configMock.network.blockstackAPIUrl, 'http://localhost:6270')
+          })
+      )
+    })
+
+    it('dispatches broadcastTransaction', () => {
+      AccountActions.__Rewire__('config', configMock)
+      action = callAction(true)
+
+      store.dispatch(action)
+        .then(() => {
+          assert.deepEqual(store.getActions()[0], {
+            type: BROADCAST_TRANSACTION,
+            payload: fakeTxHex
+          })
+        })
+
+      AccountActions.__ResetDependency__('config')
+    })
+
+    describe('broadcasts the transaction hex', () => {
+      beforeEach(() => {
+        action = callAction(true)
+      })
+
+      it('to the config.network via .broadcastTransaction', () =>
+        store.dispatch(action)
+          .then(() => {
+            assert.deepEqual(
+              networkMock.defaults.LOCAL_REGTEST.broadcastTransaction.lastCall.args,
+              [fakeTxHex]
+            )
+          })
+      )
+
+      describe('when failing', () => {
+        const error = new Error('test error')
+        const broadcastFail = sinon.stub()
+          .withArgs(fakeTxHex)
+          .rejects(error)
+
+        beforeEach(() => {
+          AccountActions.__Rewire__('config', {
+            network: {
+              broadcastTransaction: broadcastFail
+            }
+          })
+          action = callAction(false)
+        })
+
+        afterEach(() => {
+          AccountActions.__ResetDependency__('config')
+        })
+
+        it('dispatches broadcastTransactionError', () =>
+          store.dispatch(action)
+            .then(() => {
+              assert.deepEqual(store.getActions()[1], {
+                type: BROADCAST_TRANSACTION_ERROR,
+                payload: error.message
+              })
+            })
+        )
+      })
+
+      describe('when working', () => {
+        describe('dispatches broadcastTransactionSuccess action', () => {
+          beforeEach(() => {
+            action = callAction(true)
+          })
+
+          it('to signal success', () =>
+            store.dispatch(action)
+              .then(() => {
+                assert.deepEqual(store.getActions()[1], {
+                  type: BROADCAST_TRANSACTION_SUCCESS,
+                  payload: fakeTxHex
                 })
               })
           )

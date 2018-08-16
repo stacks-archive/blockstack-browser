@@ -340,6 +340,9 @@ function broadcastBitcoinTransaction(
       config.network.blockstackAPIUrl = 'http://localhost:6270'
     }
 
+    console.log('--------------------------------')
+    console.log(config.network.broadcastTransaction(txHex))
+    console.log('--------------------------------')
     config.network.broadcastTransaction(txHex)
     .then((res) => {
       logger.info(`Broadcasting bitcoin transaction succesful: ${res}`)
@@ -349,42 +352,6 @@ function broadcastBitcoinTransaction(
       logger.error(`Failed to broadcast bitcoin transaction: ${err}`)
       dispatch(broadcastTransactionError(err.message || err.toString()))
     })
-  }
-}
-
-function withdrawBitcoinClientSide(
-  regTestMode,
-  paymentKey,
-  recipientAddress,
-  amountBTC
-) {
-  return dispatch => {
-    if (regTestMode) {
-      logger.trace('Using regtest network')
-      config.network = network.defaults.LOCAL_REGTEST
-      // browser regtest environment uses 6270
-      config.network.blockstackAPIUrl = 'http://localhost:6270'
-      recipientAddress = config.network.coerceAddress(recipientAddress)
-    }
-    dispatch(withdrawingCoreBalance(recipientAddress, amountBTC))
-
-    const amountSatoshis = Math.floor(amountBTC * 1e8)
-
-    return transactions
-      .makeBitcoinSpend(recipientAddress, paymentKey, amountSatoshis)
-      .then(transactionHex => {
-        const myNet = config.network
-        logger.trace(`Broadcast btc spend with tx hex: ${transactionHex}`)
-        return myNet.broadcastTransaction(transactionHex)
-      })
-      .then(() => dispatch(withdrawCoreBalanceSuccess()))
-      .catch(error => {
-        logger.error(
-          'withdrawBitcoinClientSide: error generating and broadcasting',
-          error
-        )
-        return dispatch(withdrawCoreBalanceError(error))
-      })
   }
 }
 
@@ -604,7 +571,6 @@ const AccountActions = {
   resetCoreWithdrawal,
   buildBitcoinTransaction,
   broadcastBitcoinTransaction,
-  withdrawBitcoinClientSide,
   withdrawBitcoinFromCoreWallet,
   emailNotifications,
   skipEmailBackup,

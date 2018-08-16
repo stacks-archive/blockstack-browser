@@ -28,7 +28,7 @@ class ConfirmTransactionModal extends React.Component {
         </h3>
         <div className="modal-body">
           {summary &&
-            <p style={{ textAlign: 'center' }}>
+            <p>
               Are you sure you want to send{' '}
               <strong>{satoshisToBtc(summary.outs[0].satoshis)} BTC</strong>
               {' '}to{' '}
