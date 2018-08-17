@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import bip39 from 'bip39'
 import { HDNode } from 'bitcoinjs-lib'
+import QRCode from 'qrcode.react'
 
 import Alert from '@components/Alert'
 import SimpleButton from '@components/SimpleButton'
@@ -74,7 +75,7 @@ class BackupAccountPage extends Component {
     decrypt(dataBuffer, password).then(
       plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
-        this.updateAlert('success', 'Keychain phrase decrypted')
+        this.updateAlert('success', 'Secret recovery code decrypted')
         const seed = bip39.mnemonicToSeed(plaintextBuffer.toString())
         const keychain = HDNode.fromSeedBuffer(seed)
         this.props.displayedRecoveryCode()
@@ -94,12 +95,46 @@ class BackupAccountPage extends Component {
 
   render() {
     const { alerts, keychain, decryptedBackupPhrase, isDecrypting } = this.state
+    const b64EncryptedBackupPhrase = new Buffer(
+      this.props.encryptedBackupPhrase,
+      'hex'
+    ).toString('base64')
+
     return (
       <div>
         <div className="container-fluid">
           <div className="row">
             <div className="col">
-              <h3>Backup Keychain</h3>
+              <h3>Magic Recovery Code</h3>
+              <p>
+                <i>
+                  Scan or enter the recovery code with your password to restore
+                  your account or sign in on other devices.
+                </i>
+              </p>
+            </div>
+          </div>
+          <div className="row m-b-50">
+            <div className="col col-sm-4 col-12">
+              <QuickQR data={b64EncryptedBackupPhrase} />
+            </div>
+            <div className="col col-sm-8 col-12">
+              <div className="card">
+                <div className="card-header">Recovery Code</div>
+                <div className="card-block backup-phrase-container">
+                  <p className="card-text">
+                    <code>{b64EncryptedBackupPhrase}</code>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col">
+              <h3>Secret Recovery Key</h3>
               {alerts.map((alert, index) => (
                 <Alert key={index} message={alert.message} status={alert.status} />
               ))}
@@ -112,22 +147,23 @@ class BackupAccountPage extends Component {
               <div className="col">
                 <p>
                   <i>
-                    Write down the keychain phrase below and keep it safe. Anyone who has it will be
-                    able to access to your keychain.
+                    Write down the secret phrase below and keep it safe, or scan
+                    it to recover your account. Anyone who has it will have full
+                    access your Blockstack ID, so keep it safe!
                   </i>
                 </p>
+              </div>
+            </div>
 
+            <div className="row">
+              <div className="col col-sm-4 col-12">
+                <QuickQR data={decryptedBackupPhrase} />
+              </div>
+              <div className="col col-sm-8 col-12">
                 <div className="card">
-                  <div className="card-header">Keychain Phrase</div>
+                  <div className="card-header">Secret Recovery Key</div>
                   <div className="card-block backup-phrase-container">
                     <p className="card-text">{decryptedBackupPhrase}</p>
-                  </div>
-                </div>
-
-                <div className="card m-t-20">
-                  <div className="card-header">Private Key (WIF)</div>
-                  <div className="card-block backup-phrase-container">
-                    <p className="card-text">{keychain.keyPair.toWIF()}</p>
                   </div>
                 </div>
               </div>
@@ -139,8 +175,7 @@ class BackupAccountPage extends Component {
               <div className="col">
                 <p className="container-fluid">
                   <i>
-                    Enter your password to view your keychain phrase and write down your keychain
-                    phrase.
+                    Enter your password to view and backup your secret recovery phrase.
                   </i>
                 </p>
                 <InputGroup
@@ -168,6 +203,25 @@ class BackupAccountPage extends Component {
       </div>
     )
   }
+}
+
+const QuickQR = ({ data }) => (
+  <div
+    className="qr-wrap"
+    style={{
+      maxWidth: 320,
+      padding: 20,
+      margin: '0 auto 20px',
+      borderRadius: 4,
+      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.2)'
+    }}
+  >
+    <QRCode value={data} size="256" style={{ width: '100%' }} />
+  </div>
+)
+
+QuickQR.propTypes = {
+  data: PropTypes.string
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BackupAccountPage)

@@ -280,7 +280,7 @@ class SignIn extends React.Component {
 
     if (!isValid) {
       logger.error('restoreAccount: Invalid keychain phrase entered')
-      return Promise.reject('Invalid keychain phrase entered')
+      return Promise.reject('Invalid recovery phrase entered')
     }
     this.setState({
       creatingAccountStatus: CREATE_ACCOUNT_IN_PROCESS

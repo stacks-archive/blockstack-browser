@@ -86,8 +86,7 @@ class DeleteAccountPage extends Component {
         <div>
           <p className="container-fluid">
             <i>
-              Erase your keychain and settings so you can create a new one or restore another
-              keychain.
+              Erase your local data so you can create a new account or restore another.
             </i>
           </p>
           <div className="container-fluid m-t-40">
