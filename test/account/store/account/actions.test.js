@@ -1030,15 +1030,18 @@ describe('AccountActions', () => {
 
   describe('broadcastBitcoinTransaction', () => {
     const fakeTxHex = 'faketxhex'
+    const fakeError = new Error('fake error')
+    const broadcastSuccess = sinon.stub().withArgs(fakeTxHex).resolves(true)
+    const broadcastFail = sinon.stub().withArgs(fakeTxHex).rejects(fakeError)
     const configMock = {
       network: {
-        broadcastTransaction: sinon.stub().withArgs(fakeTxHex).resolves(true)
+        broadcastTransaction: broadcastFail
       }
     }
     const networkMock = {
       defaults: {
         LOCAL_REGTEST: {
-          broadcastTransaction: sinon.spy()
+          broadcastTransaction: broadcastFail
         }
       }
     }
@@ -1083,8 +1086,10 @@ describe('AccountActions', () => {
     })
 
     it('dispatches broadcastTransaction', () => {
-      AccountActions.__Rewire__('config', configMock)
-      action = callAction(true)
+      AccountActions.__Rewire__('config', {
+        network: { broadcastTransaction: broadcastFail }
+      })
+      action = callAction(false)
 
       store.dispatch(action)
         .then(() => {
@@ -1099,7 +1104,14 @@ describe('AccountActions', () => {
 
     describe('broadcasts the transaction hex', () => {
       beforeEach(() => {
-        action = callAction(true)
+        AccountActions.__Rewire__('config', {
+          network: { broadcastTransaction: broadcastFail }
+        })
+        action = callAction(false)
+      })
+
+      afterEach(() => {
+        AccountActions.__ResetDependency__('config')
       })
 
       it('to the config.network via .broadcastTransaction', () =>
@@ -1113,16 +1125,9 @@ describe('AccountActions', () => {
       )
 
       describe('when failing', () => {
-        const error = new Error('test error')
-        const broadcastFail = sinon.stub()
-          .withArgs(fakeTxHex)
-          .rejects(error)
-
         beforeEach(() => {
           AccountActions.__Rewire__('config', {
-            network: {
-              broadcastTransaction: broadcastFail
-            }
+            network: { broadcastTransaction: broadcastFail }
           })
           action = callAction(false)
         })
@@ -1136,27 +1141,32 @@ describe('AccountActions', () => {
             .then(() => {
               assert.deepEqual(store.getActions()[1], {
                 type: BROADCAST_TRANSACTION_ERROR,
-                payload: error.message
+                payload: fakeError.message
               })
             })
         )
       })
 
       describe('when working', () => {
-        describe('dispatches broadcastTransactionSuccess action', () => {
-          beforeEach(() => {
-            action = callAction(true)
+        beforeEach(() => {
+          AccountActions.__Rewire__('config', {
+            network: { broadcastTransaction: broadcastSuccess }
           })
+          action = callAction(false)
+        })
 
-          it('to signal success', () =>
-            store.dispatch(action)
-              .then(() => {
-                assert.deepEqual(store.getActions()[1], {
-                  type: BROADCAST_TRANSACTION_SUCCESS,
-                  payload: fakeTxHex
-                })
+        afterEach(() => {
+          AccountActions.__ResetDependency__('config')
+        })
+
+        it('dispatches broadcastTransactionSuccess action', () => {
+          store.dispatch(action)
+            .then(() => {
+              assert.deepEqual(store.getActions()[1], {
+                type: BROADCAST_TRANSACTION_SUCCESS,
+                payload: fakeTxHex
               })
-          )
+            })
         })
       })
     })

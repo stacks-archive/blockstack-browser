@@ -91,9 +91,10 @@ function updateBalances(balances) {
   }
 }
 
-function buildTransaction() {
+function buildTransaction(recipientAddress) {
   return {
-    type: types.BUILD_TRANSACTION
+    type: types.BUILD_TRANSACTION,
+    payload: recipientAddress
   }
 }
 
@@ -300,7 +301,7 @@ function buildBitcoinTransaction(
 ) {
   return dispatch => {
     logger.info('Building bitcoin transaction')
-    dispatch(buildTransaction())
+    dispatch(buildTransaction(recipientAddress))
 
     if (regTestMode) {
       logger.info('Changing recipient address to regtest address')
@@ -340,10 +341,7 @@ function broadcastBitcoinTransaction(
       config.network.blockstackAPIUrl = 'http://localhost:6270'
     }
 
-    console.log('--------------------------------')
-    console.log(config.network.broadcastTransaction(txHex))
-    console.log('--------------------------------')
-    config.network.broadcastTransaction(txHex)
+    return config.network.broadcastTransaction(txHex)
     .then((res) => {
       logger.info(`Broadcasting bitcoin transaction succesful: ${res}`)
       dispatch(broadcastTransactionSuccess())

@@ -24,7 +24,7 @@ const initialState = {
       isBroadcasting: false,
       inProgress: false,
       error: null,
-      recipient: null,
+      recipientAddress: null,
       success: false
     }
   },
@@ -115,8 +115,10 @@ function AccountReducer(state = initialState, action) {
             txHex: null,
             isBuilding: true,
             isBroadcasting: false,
+            inProgress: true,
             error: null,
-            success: false
+            success: false,
+            recipientAddress: action.payload
           }
         }
       }
@@ -140,7 +142,8 @@ function AccountReducer(state = initialState, action) {
           withdrawal: {
             ...state.coreWallet.withdrawal,
             error: action.payload,
-            isBuilding: false
+            isBuilding: false,
+            inProgress: false
           }
         }
       }
@@ -149,8 +152,14 @@ function AccountReducer(state = initialState, action) {
         ...state,
         coreWallet: {
           ...state.coreWallet,
-          txHex: action.payload,
-          isBroadcasting: true
+          withdrawal: {
+            ...state.coreWallet.withdrawal,
+            txHex: action.payload,
+            isBroadcasting: true,
+            inProgress: true,
+            error: null,
+            success: false
+          }
         }
       }
     case types.BROADCAST_TRANSACTION_SUCCESS:
@@ -161,6 +170,7 @@ function AccountReducer(state = initialState, action) {
           withdrawal: {
             ...state.coreWallet.withdrawal,
             isBroadcasting: false,
+            inProgress: false,
             success: true
           }
         }
@@ -173,7 +183,7 @@ function AccountReducer(state = initialState, action) {
           withdrawal: {
             ...state.coreWallet.withdrawal,
             isBroadcasting: false,
-            success: false,
+            inProgress: false,
             error: action.payload
           }
         }
@@ -187,6 +197,7 @@ function AccountReducer(state = initialState, action) {
             txHex: null,
             isBuilding: false,
             isBroadcasting: false,
+            inProgress: false,
             error: null,
             success: false
           }
@@ -196,6 +207,9 @@ function AccountReducer(state = initialState, action) {
       return Object.assign({}, state, {
         coreWallet: Object.assign({}, state.coreWallet, {
           withdrawal: {
+            txHex: null,
+            isBuilding: false,
+            isBroadcasting: false,
             inProgress: true,
             error: null,
             success: false,
