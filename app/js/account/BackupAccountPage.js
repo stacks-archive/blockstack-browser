@@ -75,7 +75,6 @@ class BackupAccountPage extends Component {
     decrypt(dataBuffer, password).then(
       plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
-        this.updateAlert('success', 'Secret recovery code decrypted')
         const seed = bip39.mnemonicToSeed(plaintextBuffer.toString())
         const keychain = HDNode.fromSeedBuffer(seed)
         this.props.displayedRecoveryCode()
@@ -134,10 +133,10 @@ class BackupAccountPage extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col">
-              <h3>Secret Recovery Key</h3>
               {alerts.map((alert, index) => (
                 <Alert key={index} message={alert.message} status={alert.status} />
               ))}
+              <h3>Secret Recovery Key</h3>
             </div>
           </div>
         </div>
@@ -163,9 +162,24 @@ class BackupAccountPage extends Component {
                 <div className="card">
                   <div className="card-header">Secret Recovery Key</div>
                   <div className="card-block backup-phrase-container">
-                    <p className="card-text">{decryptedBackupPhrase}</p>
+                    <p className="card-text">
+                      <code>{decryptedBackupPhrase}</code>
+                    </p>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <hr className="m-t-40 m-b-50" />
+
+            <div className="row">
+              <div className="col">
+                <p>
+                  <strong>Info for Developers</strong>
+                </p>
+                <p>
+                  Private Key (WIF) — <code>{keychain.keyPair.toWIF()}</code>
+                </p>
               </div>
             </div>
           </div>
