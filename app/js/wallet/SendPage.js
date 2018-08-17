@@ -54,7 +54,6 @@ class SendPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('New props', nextProps)
     if (nextProps.localIdentities.map(x => x.usernamePending).includes(true)) {
       this.updateAlert('danger', 'You have a pending name registration. Withdrawing bitcoin' +
                        ' may interfere with that registration\'s bitcoin transactions.')
@@ -73,7 +72,6 @@ class SendPage extends Component {
         this.closeConfirmation()
       }
       else if (!thisWithdrawal.success && nextWithdrawal.success) {
-        this.resetCoreWithdrawal()
         this.closeConfirmation()
         this.updateAlert('success', 'Your transaction was succesfully broadcasted!')
       }
