@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { validateMnemonic } from 'bip39'
 import { decrypt, isBackupPhraseValid } from '@utils'
 import { browserHistory, withRouter } from 'react-router'
 import { connect } from 'react-redux'
@@ -7,10 +8,8 @@ import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
-import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
-import { BLOCKSTACK_INC } from '../account/utils/index'
-import { setCoreStorageConfig } from '@utils/api-utils'
+import { trackEventOnce } from '@utils/server-utils'
 import { Initial, Password, Success, Email } from './views'
 import log4js from 'log4js'
 import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
@@ -19,7 +18,6 @@ import {
   selectEmail,
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,
-  selectIdentityKeypairs,
   selectPromptedForEmail
 } from '@common/store/selectors/account'
 import {
@@ -44,16 +42,21 @@ const logger = log4js.getLogger('sign-in/index.js')
 
 const VIEWS = {
   INITIAL: 0,
-  EMAIL: 1,
-  PASSWORD: 2,
+  PASSWORD: 1,
+  EMAIL: 2,
   SUCCESS: 3
 }
+const VIEW_EVENTS = {
+  [VIEWS.INITIAL]: 'Sign in - Initial',
+  [VIEWS.EMAIL]: 'Sign in - Email',
+  [VIEWS.PASSWORD]: 'Sign in - Password',
+  [VIEWS.SUCCESS]: 'Sign in - Complete'
+}
 
-const views = [Initial, Email, Password, Success]
+const views = [Initial, Password, Email, Success]
 
 function mapStateToProps(state) {
   return {
-    updateApi: PropTypes.func.isRequired,
     api: selectApi(state),
     appManifest: selectAppManifest(state),
     authRequest: selectAuthRequest(state),
@@ -61,7 +64,6 @@ function mapStateToProps(state) {
     encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
     localIdentities: selectLocalIdentities(state),
     identityAddresses: selectIdentityAddresses(state),
-    identityKeypairs: selectIdentityKeypairs(state),
     connectedStorageAtLeastOnce: selectConnectedStorageAtLeastOnce(state),
     storageConnected: selectStorageConnected(state),
     email: selectEmail(state),
@@ -112,18 +114,22 @@ class SignIn extends React.Component {
     }
   }
 
-  updateValue = (key, value) => {
-    this.setState({ [key]: value })
+  componentDidMount() {
+    this.trackViewEvent(this.state.view)
   }
 
-  updateView = view => this.setState({ view })
+  updateValue = (key, value) =>
+    new Promise(resolve => {
+      this.setState({ [key]: value }, () => {
+        resolve()
+      })
+    })
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isKeyEncrypted = key =>
-    !(key.split(' ').length === 12 || key.split(' ').length === 24)
+  isKeyEncrypted = key => !validateMnemonic(key)
 
-  validateRecoveryKey = (key, nextView = VIEWS.EMAIL) => {
+  validateRecoveryKey = (key, nextView = VIEWS.PASSWORD) => {
     if (this.state.key !== key) {
       this.setState({ key })
     }
@@ -146,77 +152,83 @@ class SignIn extends React.Component {
     }
   }
 
-  decryptKeyAndRestore = () => {
-    if (!this.state.password) {
-      console.error('no password in state')
+  decryptAndContinue = () => {
+    const { password, decrypting, encryptedKey } = this.state
+
+    if (!password) {
+      this.setState({ restoreError: 'Password is required' })
+      return
     }
-    if (this.state.decrypt) {
-      if (!this.state.decrypting) {
-        return this.setState(
-          { decrypting: true },
-          () =>
-            setTimeout(() =>
-              decrypt(
-                new Buffer(this.state.encryptedKey, 'base64'),
-                this.state.password
-              )
-                .then(decryptedKeyBuffer => {
-                  const decryptedKey = decryptedKeyBuffer.toString()
-                  this.setState(
-                    {
-                      key: decryptedKey,
-                      decrypting: false,
-                      loading: true,
-                      restoreError: null
-                    },
-                    () => setTimeout(() => this.restoreAccount(), 100)
-                  )
-                })
-                .catch(() => {
-                  this.setState({
-                    decrypting: false,
-                    restoreError: 'Incorrect code or password',
-                    key: ''
-                  })
-                })
-            ),
-          100
-        )
-      }
+
+    if (this.state.decrypt && !decrypting) {
+      this.setState({ decrypting: true })
+
+      decrypt(
+        new Buffer(encryptedKey, 'base64'),
+        this.state.password
+      )
+        .then(decryptedKeyBuffer => {
+          const decryptedKey = decryptedKeyBuffer.toString()
+          this.setState({
+            key: decryptedKey,
+            decrypting: false,
+            restoreError: null
+          }, () => {
+            this.updateView(VIEWS.EMAIL)
+          })
+        })
+        .catch(() => {
+          this.setState({
+            decrypting: false,
+            restoreError: 'Incorrect password or invalid recovery code',
+            key: ''
+          })
+        })
     }
-    return this.setState(
-      {
-        loading: true,
-        restoreError: null
-      },
-      () => setTimeout(() => this.restoreAccount(), 100)
-    )
+    else {
+      this.updateView(VIEWS.EMAIL)
+    }
   }
 
-  restoreAccount = () =>
-    setTimeout(
-      () =>
+  restoreAccount = () => {
+    console.log('Restoring account!')
+    const { refreshIdentities, updateEmail } = this.props
+    this.setState({
+      loading: true
+    }, () => {
+      // Quick setTimeout just to get the loader going before we lock up the
+      // browser with decryption. TODO: Remove this when it's workerized.
+      setTimeout(() => {
         this.createAccount()
-          .then(
-            () => {
-              this.props
-                .refreshIdentities(this.props.api, this.props.identityAddresses)
-                .then(() => console.log('complete!'))
-              this.props.updateEmail(this.state.email)
-            },
-            err => console.error(err)
-          )
-          .then(() => this.updateView(VIEWS.SUCCESS))
-          .catch(() => {
-            this.setState({
-              loading: false,
-              restoreError: 'There was an error loading your account.'
-            })
-          }),
-      150
-    )
+        .then(() => refreshIdentities(this.props.api, this.props.identityAddresses))
+        .then(() => updateEmail(this.state.email))
+        .then(() => this.updateView(VIEWS.SUCCESS))
+        .catch(() => {
+          this.setState({
+            loading: false,
+            restoreError: 'There was an error loading your account.'
+          })
+        })
+      }, 300)
+    })
+  }
 
-  updateView = view => this.setState({ view })
+
+  updateView = view => {
+    this.setState({
+      view,
+      loading: false
+    })
+    this.trackViewEvent(view)
+  }
+
+  trackViewEvent = view => {
+    const { appManifest } = this.props
+    trackEventOnce(VIEW_EVENTS[view], {
+      appReferrer: appManifest ? appManifest.name : 'N/A'
+    })
+  }
+
   backView = (view = this.state.view) => {
     if (view - 1 >= 0) {
       return this.setState({
@@ -263,41 +275,6 @@ class SignIn extends React.Component {
   }
 
   /**
-   * Connect Storage
-   */
-  async connectStorage() {
-    logger.debug('fire connectStorage')
-    const storageProvider = this.props.api.gaiaHubUrl
-    const signer = this.props.identityKeypairs[0].key
-    await connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
-      const newApi = Object.assign({}, this.props.api, {
-        gaiaHubConfig,
-        hostedDataLocation: BLOCKSTACK_INC
-      })
-      this.props.updateApi(newApi)
-      const identityIndex = 0
-      const identity = this.props.localIdentities[identityIndex]
-      const identityAddress = identity.ownerAddress
-      const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
-      const profile = identity.profile
-      setCoreStorageConfig(
-        newApi,
-        identityIndex,
-        identityAddress,
-        profile,
-        profileSigningKeypair,
-        identity
-      )
-      logger.debug('connectStorage: storage initialized')
-      const newApi2 = Object.assign({}, newApi, { storageConnected: true })
-      this.props.updateApi(newApi2)
-      this.props.storageIsConnected()
-      logger.debug('connectStorage: storage configured')
-      logger.debug('connectStorage has finished')
-    })
-  }
-
-  /**
    * This is our main function for creating a new account
    */
   createAccount = async () => {
@@ -318,7 +295,7 @@ class SignIn extends React.Component {
       // Create new ID and owner address and then set to default
       this.createNewIdAndSetDefault().then(() =>
         // Connect our default storage
-        this.connectStorage().then(() => console.log('account creation done'))
+        this.props.connectStorage().then(() => console.log('account creation done'))
       )
     )
   }
@@ -360,18 +337,18 @@ class SignIn extends React.Component {
         }
       },
       {
-        show: VIEWS.EMAIL,
+        show: VIEWS.PASSWORD,
         props: {
           previous: () => this.updateView(VIEWS.INITIAL),
-          next: () => this.updateView(VIEWS.PASSWORD),
+          next: this.decryptAndContinue,
           updateValue: this.updateValue
         }
       },
       {
-        show: VIEWS.PASSWORD,
+        show: VIEWS.EMAIL,
         props: {
-          previous: () => this.updateView(VIEWS.EMAIL),
-          next: this.decryptKeyAndRestore,
+          previous: () => this.updateView(VIEWS.INITIAL),
+          next: this.restoreAccount,
           updateValue: this.updateValue
         }
       },
@@ -405,8 +382,6 @@ class SignIn extends React.Component {
           app={formatAppManifest(this.props.appManifest)}
           views={views}
           {...componentProps}
-          headerLabel="Sign into Blockstack"
-          lastHeaderLabel="Welcome Back"
           invertOnLast
         />
         <AppHomeWrapper />
@@ -427,11 +402,9 @@ SignIn.propTypes = {
   initializeWallet: PropTypes.func.isRequired,
   updateEmail: PropTypes.func.isRequired,
   refreshIdentities: PropTypes.func.isRequired,
-  updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
-  identityKeypairs: PropTypes.array.isRequired,
-  storageIsConnected: PropTypes.func.isRequired,
-  encryptedBackupPhrase: PropTypes.string
+  encryptedBackupPhrase: PropTypes.string,
+  connectStorage: PropTypes.func.isRequired
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))

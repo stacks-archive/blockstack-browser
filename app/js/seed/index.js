@@ -312,7 +312,6 @@ class SeedContainer extends Component {
           app={app}
           views={views}
           {...componentProps}
-          headerLabel="Secure your account"
           invertOnLast
           backOnLast
         />

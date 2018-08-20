@@ -28,6 +28,7 @@ import {
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'
+import { defaultAvatartImage } from '@components/ui/common/constants'
 
 const logger = log4js.getLogger('profiles/DefaultProfilePage.js')
 
@@ -737,8 +738,8 @@ class DefaultProfilePage extends Component {
           className="container-fluid text-center"
         >
           <Image
-            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-            fallbackSrc="/images/avatar.png"
+            src={person.avatarUrl() ? person.avatarUrl() : defaultAvatartImage}
+            fallbackSrc={defaultAvatartImage}
             className="img-fluid clickable"
             onClick={this.closePhotoModal}
           />
@@ -796,9 +797,9 @@ class DefaultProfilePage extends Component {
                           src={
                             person.avatarUrl()
                               ? person.avatarUrl()
-                              : '/images/avatar.png'
+                              : defaultAvatartImage
                           }
-                          fallbackSrc="/images/avatar.png"
+                          fallbackSrc={defaultAvatartImage}
                           className="rounded-circle clickable"
                           onClick={this.onPhotoClick}
                           style={{

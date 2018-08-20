@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 import { BLOCKSTACK_INC } from '../../../account/utils/index'
 
 export const REGTEST_CORE_API_PASSWORD = 'blockstack_integration_test_api_password'
@@ -54,7 +55,9 @@ const DEFAULT_API = {
   storageConnected: false,
   gaiaHubConfig: null,
   gaiaHubUrl: 'https://hub.blockstack.org',
-  btcPrice: '1000.00'
+  btcPrice: '1000.00',
+  distinctEventId: crypto.randomBytes(16).toString('hex'),
+  hasDisabledEventTracking: false
 }
 
 export default DEFAULT_API

@@ -2,16 +2,18 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 
-const icons = {
-  homeNav: '/images/icon-nav-home.svg',
-  homeNavActive: '/images/icon-nav-home-hover.svg',
-  walletNav: '/images/icon-nav-wallet.svg',
-  walletNavActive: '/images/icon-nav-wallet-hover.svg',
-  avatarNav: '/images/icon-nav-profile.svg',
-  avatarNavActive: '/images/icon-nav-profile-hover.svg',
-  settingsNav: '/images/icon-nav-settings.svg',
-  settingsNavActive: '/images/icon-nav-settings-hover.svg'
+/* eslint-disable global-require */
+export const ICONS = {
+  homeNav: require('@images/icon-nav-home.svg'),
+  homeNavActive: require('@images/icon-nav-home-hover.svg'),
+  walletNav: require('@images/icon-nav-wallet.svg'),
+  walletNavActive: require('@images/icon-nav-wallet-hover.svg'),
+  avatarNav: require('@images/icon-nav-profile.svg'),
+  avatarNavActive: require('@images/icon-nav-profile-hover.svg'),
+  settingsNav: require('@images/icon-nav-settings.svg'),
+  settingsNavActive: require('@images/icon-nav-settings-hover.svg')
 }
+/* eslint-enable global-require */
 
 class Navbar extends Component {
   static propTypes = {
@@ -69,55 +71,54 @@ class Navbar extends Component {
     this.setState({ settingsTabHover: false })
   }
 
-
   settingsNavIconImage() {
-    if (this.props.activeTab === 'settings'
-      || this.state.settingsTabHover) {
-      return icons.settingsNavActive
+    if (this.props.activeTab === 'settings' || this.state.settingsTabHover) {
+      return ICONS.settingsNavActive
     } else {
-      return icons.settingsNav
+      return ICONS.settingsNav
     }
   }
 
   homeNavIconImage() {
-    if (this.props.activeTab === 'home'
-      || this.state.homeTabHover) {
-      return icons.homeNavActive
+    if (this.props.activeTab === 'home' || this.state.homeTabHover) {
+      return ICONS.homeNavActive
     } else {
-      return icons.homeNav
+      return ICONS.homeNav
     }
   }
 
   walletNavIconImage() {
-    if (this.props.activeTab === 'wallet'
-      || this.state.walletTabHover) {
-      return icons.walletNavActive
+    if (this.props.activeTab === 'wallet' || this.state.walletTabHover) {
+      return ICONS.walletNavActive
     } else {
-      return icons.walletNav
+      return ICONS.walletNav
     }
   }
 
   avatarNavIconImage() {
-    if (this.props.activeTab === 'avatar'
-      || this.state.avatarTabHover) {
-      return icons.avatarNavActive
+    if (this.props.activeTab === 'avatar' || this.state.avatarTabHover) {
+      return ICONS.avatarNavActive
     } else {
-      return icons.avatarNav
+      return ICONS.avatarNav
     }
   }
 
   render() {
-    const homeActive = this.props.activeTab === 'home' || this.state.homeTabHover
-    const avatarActive = this.props.activeTab === 'avatar' || this.state.avatarTabHover
-    const walletActive = this.props.activeTab === 'wallet' || this.state.walletTabHover
-    const settingsActive = this.props.activeTab === 'settings' || this.state.settingsTabHover
+    const homeActive =
+      this.props.activeTab === 'home' || this.state.homeTabHover
+    const avatarActive =
+      this.props.activeTab === 'avatar' || this.state.avatarTabHover
+    const walletActive =
+      this.props.activeTab === 'wallet' || this.state.walletTabHover
+    const settingsActive =
+      this.props.activeTab === 'settings' || this.state.settingsTabHover
 
     return (
       <header
         className="container-fluid no-padding bg-white fixed-top"
         style={{ maxWidth: 'unset', zIndex: 9 }}
       >
-        <nav className="navbar navbar-expand container-lg mx-auto" >
+        <nav className="navbar navbar-expand container-lg mx-auto">
           <ul className="navbar-nav container-fluid">
             <li className="nav-item">
               <Link
@@ -127,9 +128,7 @@ class Navbar extends Component {
                 onMouseOut={this.onHomeNavMouseOut}
               >
                 <img src={this.homeNavIconImage()} alt="Home" />
-                <span className={`${homeActive ? 'active' : ''}`}>
-                  Home
-                </span>
+                <span className={`${homeActive ? 'active' : ''}`}>Home</span>
               </Link>
             </li>
             <li className="nav-item ml-auto">
@@ -143,7 +142,9 @@ class Navbar extends Component {
                 <span className={`${avatarActive ? 'active' : ''}`}>
                   &nbsp;&nbsp;&nbsp;ID<span
                     style={{ textTransform: 'lowercase' }}
-                  >s</span>&nbsp;&nbsp;&nbsp;
+                  >
+                    s
+                  </span>&nbsp;&nbsp;&nbsp;
                 </span>
               </Link>
             </li>

@@ -4,7 +4,7 @@ import AccountReducer from '../account/store/account/reducer'
 import { AuthReducer } from '../auth/store/auth'
 import ProfilesReducer from '../profiles/store/reducers'
 import { SanityReducer } from './sanity'
-import { SettingsReducer } from '../account/store/settings'
+import SettingsReducer from '../account/store/settings/reducer'
 import { AppsReducer } from './apps'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
 
@@ -48,7 +48,7 @@ const AppReducer = combineReducers({
   settings: SettingsReducer
 })
 
-const RootReducer = (state: any, action: any) => {
+function reducer(state: any, action: any) {
   let newState: any = Object.assign({}, state)
   if (action.type === UPDATE_STATE) {
     const initialState = AppReducer(undefined, {})
@@ -95,4 +95,4 @@ const RootReducer = (state: any, action: any) => {
   return AppReducer(newState, action)
 }
 
-export default RootReducer
+export default reducer

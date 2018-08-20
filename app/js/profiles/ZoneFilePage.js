@@ -222,7 +222,7 @@ class ZoneFilePage extends Component {
                         onChange={this.onToggle}
                         type="checkbox"
                       />
-                      &nbsp;I understand this could break my Blockstack
+                      I understand this could break my Blockstack
                       name and will cost me money.
                     </label>
                   </fieldset>

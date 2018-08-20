@@ -69,9 +69,7 @@ class ShellParent extends React.Component {
     const {
       views,
       app,
-      headerLabel,
       invertOnLast,
-      lastHeaderLabel,
       backOnLast,
       disableBackOnView,
       disableBack,
@@ -87,10 +85,8 @@ class ShellParent extends React.Component {
     const invert = invertOnLast && isLastView
 
     const defaultBackLabel = isFirstView ? '' : 'Back'
-    const appBackLabel =
+    const label =
       isFirstView && app ? `Back to ${app.name}` : defaultBackLabel
-
-    const backLabel = isFirstView && headerLabel ? headerLabel : appBackLabel
 
     const Component = views[view]
 
@@ -107,7 +103,7 @@ class ShellParent extends React.Component {
       !isFirstView && isLastView && !backOnLast
         ? {
             app,
-            label: lastHeaderLabel && isLastView ? lastHeaderLabel : backLabel,
+            label,
             disableBackOnView,
             disable: disableBack,
             view
@@ -116,7 +112,7 @@ class ShellParent extends React.Component {
             action:
               isFirstView && !app ? undefined : () => this.props.backView(),
             app,
-            label: backLabel,
+            label,
             disableBackOnView,
             disable: disableBack,
             view
@@ -156,16 +152,14 @@ ShellParent.propTypes = {
   app: PropTypes.object,
   backOnLast: PropTypes.bool,
   desktop: PropTypes.object,
-  headerLabel: PropTypes.node,
   invertOnLast: PropTypes.bool,
-  lastHeaderLabel: PropTypes.node,
   backView: PropTypes.func,
   views: PropTypes.array.isRequired,
   disableBackOnView: PropTypes.number,
   disableBack: PropTypes.bool,
   maxHeight: PropTypes.bool,
   size: PropTypes.object,
-  view: PropTypes.number
+  view: PropTypes.number.isRequired
 }
 export default ShellParent
 

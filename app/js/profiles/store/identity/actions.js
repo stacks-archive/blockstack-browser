@@ -82,7 +82,7 @@ function setDefaultIdentity(index: number) {
 
 function createNewIdentity(index: number, ownerAddress: string) {
   return {
-    type: types.CREATE_NEW,
+    type: types.CREATE_NEW_SUCCESS,
     index,
     ownerAddress
   }
@@ -90,14 +90,14 @@ function createNewIdentity(index: number, ownerAddress: string) {
 
 function createNewProfileError(error: any) {
   return {
-    type: types.CREATE_PROFILE_ERROR,
+    type: types.CREATE_NEW_ERROR,
     error
   }
 }
 
 function resetCreateNewProfileError() {
   return {
-    type: types.RESET_CREATE_PROFILE_ERROR
+    type: types.CREATE_NEW_ERROR_RESET
   }
 }
 
@@ -208,8 +208,18 @@ function createNewProfile(
   password: string,
   nextUnusedAddressIndex: number
 ) {
-  return (dispatch: Dispatch<*>): Promise<*> => {
+  return (dispatch: Dispatch<*>, getState: () => any): Promise<*> => {
     logger.trace('createNewProfile')
+
+    const state = getState()
+    if (state.profiles && state.profiles.identity && state.profiles.identity.isProcessing) {
+      logger.trace('createNewProfile: Early exit because isProcessing')
+      return Promise.resolve()
+    }
+
+    logger.trace('createNewProfile: Dispatch CREATE_NEW_REQUEST')
+    dispatch({ type: types.CREATE_NEW_REQUEST })
+
     // Decrypt master keychain
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     logger.debug('createNewProfile: Trying to decrypt backup phrase...')
@@ -362,6 +372,7 @@ function refreshIdentities(
                                 trustLevel
                               )
                             )
+                            resolve()
                           })
                           .catch(error => {
                             logger.error(

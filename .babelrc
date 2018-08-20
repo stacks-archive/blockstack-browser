@@ -1,30 +1,142 @@
 {
-  "presets": ["flow", "es2015", "stage-0", "react"],
-  "plugins": [
-    "transform-object-rest-spread",
-    "babel-plugin-styled-components",
-    [
-      "module-resolver",
-      {
-        "root": ["./app"],
-        "alias": {
-          "@components": "./app/js/components",
-          "@common": "./app/js/common",
-          "@styled": "./app/js/components/styled",
-          "@utils": "./app/js/utils",
-          "@blockstack/ui": "./app/js/components/ui",
-          "@ui/components": "./app/js/components/ui/components",
-          "@ui/containers": "./app/js/components/ui/containers",
-          "@ui/common": "./app/js/components/ui/common"
-        }
-      }
-    ]
-  ],
   "env": {
     "test": {
-      "plugins": ["rewire"],
-      "sourceMaps": "both",
-      "ignore": ["node_modules"]
+      "presets": [
+        "flow",
+        "react",
+        "es2015",
+        "stage-0"
+      ],
+      "plugins": [
+        "rewire",
+        [
+          "module-resolver",
+          {
+            "root": [
+              "./app"
+            ],
+            "alias": {
+              "@components": "./app/js/components",
+              "@common": "./app/js/common",
+              "@styled": "./app/js/components/styled",
+              "@utils": "./app/js/utils",
+              "@blockstack/ui": "./app/js/components/ui",
+              "@ui/components": "./app/js/components/ui/components",
+              "@ui/containers": "./app/js/components/ui/containers",
+              "@ui/common": "./app/js/components/ui/common",
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
+            }
+          }
+        ]
+      ]
+    },
+    "development": {
+      "presets": [
+        "babel-preset-flow",
+        [
+          "babel-preset-stage-0"
+        ],
+        "babel-preset-react",
+        [
+          "babel-preset-env",
+          {
+            "modules": false,
+            "useBuiltIns": "usage",
+            "targets": {
+              "browsers": [
+                "Chrome >= 60",
+                "Safari >= 10.1",
+                "iOS >= 10.3",
+                "Firefox >= 54",
+                "Edge >= 15"
+              ]
+            }
+          }
+        ]
+      ],
+      "plugins": [
+        "react-hot-loader/babel",
+        "react-loadable/babel",
+        "babel-plugin-transform-class-properties",
+        "babel-plugin-transform-async-to-generator",
+        "babel-plugin-transform-react-jsx",
+        "babel-plugin-styled-components",
+        "lodash",
+        [
+          "module-resolver",
+          {
+            "root": [
+              "./app"
+            ],
+            "alias": {
+              "@components": "./app/js/components",
+              "@common": "./app/js/common",
+              "@styled": "./app/js/components/styled",
+              "@utils": "./app/js/utils",
+              "@blockstack/ui": "./app/js/components/ui",
+              "@ui/components": "./app/js/components/ui/components",
+              "@ui/containers": "./app/js/components/ui/containers",
+              "@ui/common": "./app/js/components/ui/common",
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
+            }
+          }
+        ]
+      ]
+    },
+    "production": {
+      "presets": [
+        "babel-preset-flow",
+        [
+          "babel-preset-stage-0"
+        ],
+        "babel-preset-react",
+        [
+          "babel-preset-env",
+          {
+            "modules": false,
+            "useBuiltIns": "usage",
+            "targets": {
+              "browsers": [
+                "Chrome >= 60",
+                "Safari >= 10.1",
+                "iOS >= 10.3",
+                "Firefox >= 54",
+                "Edge >= 15"
+              ]
+            }
+          }
+        ]
+      ],
+      "plugins": [
+        "react-loadable/babel",
+        "babel-plugin-transform-class-properties",
+        "babel-plugin-transform-async-to-generator",
+        "babel-plugin-transform-react-jsx",
+        "babel-plugin-styled-components",
+        "lodash",
+        [
+          "module-resolver",
+          {
+            "root": [
+              "./app"
+            ],
+            "alias": {
+              "@components": "./app/js/components",
+              "@common": "./app/js/common",
+              "@styled": "./app/js/components/styled",
+              "@utils": "./app/js/utils",
+              "@blockstack/ui": "./app/js/components/ui",
+              "@ui/components": "./app/js/components/ui/components",
+              "@ui/containers": "./app/js/components/ui/containers",
+              "@ui/common": "./app/js/components/ui/common",
+              "log4js": "./app/js/logger.js",
+              "@images": "./app/images"
+            }
+          }
+        ]
+      ]
     }
   }
 }

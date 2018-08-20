@@ -14,6 +14,7 @@ import EditPGPAccountItem from './components/EditPGPAccountItem'
 import { Person } from 'blockstack'
 
 import log4js from 'log4js'
+import { defaultAvatartImage } from '@components/ui/common/constants'
 
 const logger = log4js.getLogger('profiles/EditProfilePage.js')
 
@@ -72,7 +73,9 @@ class EditProfilePage extends Component {
     this.hasUsername = this.hasUsername.bind(this)
     this.onChange = this.onChange.bind(this)
     this.onSocialAccountChange = this.onSocialAccountChange.bind(this)
-    this.onSocialAccountProofUrlChange = this.onSocialAccountProofUrlChange.bind(this)
+    this.onSocialAccountProofUrlChange = this.onSocialAccountProofUrlChange.bind(
+      this
+    )
     this.onSocialAccountBlur = this.onSocialAccountBlur.bind(this)
     this.onSocialAccountDelete = this.onSocialAccountDelete.bind(this)
     this.refreshProofs = this.refreshProofs.bind(this)
@@ -117,14 +120,16 @@ class EditProfilePage extends Component {
     const profileIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[profileIndex]
 
-    const verificationText =
-    `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress}`
+    const verificationText = `Verifying my Blockstack ID is secured with the address ${
+      identity.ownerAddress
+    }`
     let verificationUrl = ''
 
     if (service === 'twitter') {
       verificationUrl = `https://twitter.com/intent/tweet?text=${verificationText}`
     } else if (service === 'facebook') {
-      verificationUrl = 'https://www.facebook.com/dialog/feed?app_id=258121411364320'
+      verificationUrl =
+        'https://www.facebook.com/dialog/feed?app_id=258121411364320'
     } else if (service === 'github') {
       verificationUrl = 'https://gist.github.com/'
     } else if (service === 'instagram') {
@@ -264,15 +269,26 @@ class EditProfilePage extends Component {
     const identityIndex = this.props.routeParams.index
     const identity = this.props.localIdentities[identityIndex]
 
-    this.props.updateProfile(this.props.routeParams.index, newProfile, identity.zoneFile)
+    this.props.updateProfile(
+      this.props.routeParams.index,
+      newProfile,
+      identity.zoneFile
+    )
     logger.trace('saveProfile: Preparing to upload profile')
     logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 
     const identitySigner = this.props.identityKeypairs[identityIndex]
-    const signedProfileTokenData = signProfileForUpload(this.state.profile, identitySigner)
+    const signedProfileTokenData = signProfileForUpload(
+      this.state.profile,
+      identitySigner
+    )
     if (this.props.storageConnected) {
-      uploadProfile(this.props.api, identity, identitySigner, signedProfileTokenData)
-      .catch((err) => {
+      uploadProfile(
+        this.props.api,
+        identity,
+        identitySigner,
+        signedProfileTokenData
+      ).catch(err => {
         logger.error('saveProfile: profile not uploaded', err)
       })
     } else {
@@ -288,24 +304,32 @@ class EditProfilePage extends Component {
     const photoIndex = 0
     logger.debug('uploadProfilePhoto: trying to upload...')
     if (this.props.storageConnected) {
-      uploadPhoto(this.props.api, identity, identitySigner, e.target.files[0], photoIndex)
-      .then((avatarUrl) => {
-        logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
-        profile.image = []
-        profile.image.push({
-          '@type': 'ImageObject',
-          name: 'avatar',
-          contentUrl: avatarUrl
+      uploadPhoto(
+        this.props.api,
+        identity,
+        identitySigner,
+        e.target.files[0],
+        photoIndex
+      )
+        .then(avatarUrl => {
+          logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
+          profile.image = []
+          profile.image.push({
+            '@type': 'ImageObject',
+            name: 'avatar',
+            contentUrl: avatarUrl
+          })
+          this.setState({
+            profile
+          })
         })
-        this.setState({
-          profile
+        .catch(error => {
+          console.error(error)
         })
-      })
-      .catch((error) => {
-        console.error(error)
-      })
     } else {
-      logger.error('uploadProfilePhoto: storage is not connected. Doing nothing.')
+      logger.error(
+        'uploadProfilePhoto: storage is not connected. Doing nothing.'
+      )
     }
   }
 
@@ -320,7 +344,9 @@ class EditProfilePage extends Component {
     const accounts = profile.account
 
     if (accounts) {
-      const newAccounts = accounts.filter(account => account.service !== service)
+      const newAccounts = accounts.filter(
+        account => account.service !== service
+      )
       profile.account = newAccounts
       this.setState({ profile })
       this.saveProfile(profile)
@@ -335,7 +361,12 @@ class EditProfilePage extends Component {
     const identityAddress = identity.ownerAddress
     const username = identity.username
 
-    this.props.refreshSocialProofVerifications(identityIndex, identityAddress, username, profile)
+    this.props.refreshSocialProofVerifications(
+      identityIndex,
+      identityAddress,
+      username,
+      profile
+    )
   }
 
   createNewAccount(service, identifier) {
@@ -376,9 +407,9 @@ class EditProfilePage extends Component {
     const placeholders = []
 
     if (this.state.profile.hasOwnProperty('account')) {
-      accountTypes.forEach((accountType) => {
+      accountTypes.forEach(accountType => {
         let hasAccount = false
-        this.state.profile.account.forEach((account) => {
+        this.state.profile.account.forEach(account => {
           if (account.service === accountType) {
             hasAccount = true
             account.placeholder = false
@@ -391,7 +422,7 @@ class EditProfilePage extends Component {
         }
       })
     } else {
-      accountTypes.forEach((accountType) => {
+      accountTypes.forEach(accountType => {
         placeholders.push(this.createPlaceholderAccount(accountType))
       })
     }
@@ -405,27 +436,27 @@ class EditProfilePage extends Component {
 
     return (
       <div>
-      {this.state.tabName === '' ? (
-        <SecondaryNavBar
-          leftButtonTitle="Edit"
-          leftButtonLink={`/profiles/${identityIndex}/edit`}
-          isLeftActive
-          centerButtonTitle="View"
-          centerButtonLink="/profiles"
-          rightButtonTitle="More"
-          rightButtonLink="/profiles/i/all"
-        />
+        {this.state.tabName === '' ? (
+          <SecondaryNavBar
+            leftButtonTitle="Edit"
+            leftButtonLink={`/profiles/${identityIndex}/edit`}
+            isLeftActive
+            centerButtonTitle="View"
+            centerButtonLink="/profiles"
+            rightButtonTitle="More"
+            rightButtonLink="/profiles/i/all"
+          />
         ) : (
-        <SecondaryNavBar
-          leftButtonTitle="Edit"
-          leftIsButton
-          onLeftButtonClick={() => this.backClick()}
-          isLeftActive
-          centerButtonTitle="View"
-          centerButtonLink="/profiles"
-          rightButtonTitle="More"
-          rightButtonLink="/profiles/i/all"
-        />
+          <SecondaryNavBar
+            leftButtonTitle="Edit"
+            leftIsButton
+            onLeftButtonClick={() => this.backClick()}
+            isLeftActive
+            centerButtonTitle="View"
+            centerButtonLink="/profiles"
+            rightButtonTitle="More"
+            rightButtonLink="/profiles/i/all"
+          />
         )}
 
         <Modal
@@ -437,24 +468,27 @@ class EditProfilePage extends Component {
           className="container-fluid text-center"
         >
           <Image
-            src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-            fallbackSrc="/images/avatar.png"
+            src={person.avatarUrl() ? person.avatarUrl() : defaultAvatartImage}
+            fallbackSrc={defaultAvatartImage}
             className="img-fluid clickable"
             onClick={this.closePhotoModal}
           />
         </Modal>
 
         <div>
-          {this.state.profile ?
+          {this.state.profile ? (
             <div>
               <div className="container-fluid no-padding">
                 <div className="row no-gutters">
-
                   <div className="col-12">
                     <div className="avatar-md m-t-50 m-b-10 text-center">
                       <Image
-                        src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-                        fallbackSrc="/images/avatar.png"
+                        src={
+                          person.avatarUrl()
+                            ? person.avatarUrl()
+                            : defaultAvatartImage
+                        }
+                        fallbackSrc={defaultAvatartImage}
                         className="rounded-circle clickable"
                         onClick={this.onPhotoClick}
                       />
@@ -463,7 +497,9 @@ class EditProfilePage extends Component {
                   <div className="col-12 text-center">
                     <input
                       type="file"
-                      ref={(ref) => { this.photoUpload = ref }}
+                      ref={ref => {
+                        this.photoUpload = ref
+                      }}
                       onChange={this.uploadProfilePhoto}
                       style={{ display: 'none' }}
                     />
@@ -471,7 +507,7 @@ class EditProfilePage extends Component {
                       className="btn btn-link active m-b-30"
                       onClick={this.onChangePhotoClick}
                     >
-                        Change Photo
+                      Change Photo
                     </button>
                   </div>
 
@@ -492,26 +528,31 @@ class EditProfilePage extends Component {
                 </div>
               </div>
 
-
               <div className="container-fluid p-0">
                 <div className="row m-t-20 p-b-45 no-gutters">
                   <div className="col-12">
                     <div className="edit-profile-accounts">
                       {accounts &&
-                        accounts.map((account) => {
+                        accounts.map(account => {
                           let verified = false
                           if (verifications) {
                             for (let i = 0; i < verifications.length; i++) {
                               const verification = verifications[i]
-                              if (verification.service === account.service &&
-                                verification.valid === true) {
+                              if (
+                                verification.service === account.service &&
+                                verification.valid === true
+                              ) {
                                 verified = true
                                 break
                               }
                             }
                           }
-                          if (account.service === 'pgp' || account.service === 'ssh'
-                            || account.service === 'bitcoin' || account.service === 'ethereum') {
+                          if (
+                            account.service === 'pgp' ||
+                            account.service === 'ssh' ||
+                            account.service === 'bitcoin' ||
+                            account.service === 'ethereum'
+                          ) {
                             return (
                               <EditPGPAccountItem
                                 key={`${account.service}`}
@@ -537,31 +578,31 @@ class EditProfilePage extends Component {
                                 verified={verified}
                                 placeholder={account.placeholder}
                                 onChange={this.onSocialAccountChange}
-                                onProofUrlChange={this.onSocialAccountProofUrlChange}
+                                onProofUrlChange={
+                                  this.onSocialAccountProofUrlChange
+                                }
                                 onBlur={this.onSocialAccountBlur}
                                 onVerifyButtonClick={this.onVerifyButtonClick}
                                 onDelete={this.onSocialAccountDelete}
                               />
                             )
                           }
-                        })
-                      }
-
+                        })}
                     </div>
                   </div>
                 </div>
               </div>
-
-
             </div>
-          :
+          ) : (
             <div>
               <h1 className="h1-modern vertical-split-content">
                 Page Not Found
               </h1>
-              <p>You don't own this profile and therefore you cannot edit it.</p>
+              <p>
+                You don't own this profile and therefore you cannot edit it.
+              </p>
             </div>
-          }
+          )}
         </div>
       </div>
     )

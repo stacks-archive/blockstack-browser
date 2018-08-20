@@ -139,8 +139,9 @@ function registerName(api, domainName, identity, identityIndex,
                       ownerAddress, keypair, paymentKey = null) {
   logger.trace(`registerName: domainName: ${domainName}`)
   return dispatch => {
-    logger.debug(`Signing a blank default profile for ${domainName}`)
-    const signedProfileTokenData = signProfileForUpload(DEFAULT_PROFILE, keypair)
+    logger.debug(`Signing a new profile for ${domainName}`)
+    const profile = identity.profile || DEFAULT_PROFILE
+    const signedProfileTokenData = signProfileForUpload(profile, keypair)
 
     dispatch(profileUploading())
     logger.trace(`Uploading ${domainName} profile...`)

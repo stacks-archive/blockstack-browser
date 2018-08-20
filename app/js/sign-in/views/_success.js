@@ -1,6 +1,7 @@
 import React from 'react'
 import { ShellScreen, Type, UserAvatar } from '@blockstack/ui'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router'
 
 const messages = {
   namelessUser: (
@@ -42,7 +43,6 @@ class Success extends React.Component {
     }
 
     const props = {
-      headerLabel: 'Welcome to the New Internet',
       title: {
         icon: <UserAvatar {...user} />,
         children: (
@@ -71,6 +71,10 @@ class Success extends React.Component {
               <Type.p>
                 Welcome back to the New Internet. Your account has successfully
                 been restored on this device.
+              </Type.p>
+              <Type.p>
+                Have additional IDs? You can re-add them from the{' '}
+                <Link to="/profiles/i/all">"More IDs" page</Link>.
               </Type.p>
               {username === '?' ? (
                 <React.Fragment>

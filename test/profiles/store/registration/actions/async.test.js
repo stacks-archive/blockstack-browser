@@ -87,7 +87,7 @@ describe('Registration Store: Async Actions', () => {
           zoneFile
         )
       }, done).then(done).catch(done)
-    })
+    }).timeout(10000)
   })
 
   describe('registerSubdomain', () => {
@@ -124,6 +124,6 @@ describe('Registration Store: Async Actions', () => {
       ).then(response => {
         assert.deepEqual(response, mockResponseBody)
       })
-    })
+    }).timeout(10000)
   })
 })
