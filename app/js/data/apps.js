@@ -1,6 +1,48 @@
 const apps = {
-  version: 20171017,
+  version: 20171018,
   apps: [
+    {
+      name: 'Dappy Wallet',
+      displayName: 'Dappy Wallet',
+      description: 'Non-custodial wallet with decentralised storage.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-dappy-wallet-256x256.png',
+        large: 'app-icon-dappy-wallet-512x512.png'
+      },
+      website: 'https://dappywallet.com/',
+      launchLink: 'https://app.dappywallet.com/',
+      developer: 'BC Net',
+      status: 'user_ready_wallet'
+    },
+    {
+      name: 'Dirua',
+      displayName: 'Dirua',
+      description: 'A universal crypto wallet.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-dirua-256x256.png',
+        large: 'app-icon-dirua-512x512.png'
+      },
+      website: 'https://dirua.exchange',
+      launchLink: 'https://dirua.exchange',
+      developer: 'Citrusbyte',
+      status: 'user_ready_wallet'
+    },
+    {
+      name: 'Arctus',
+      displayName: 'Arctus',
+      description: 'Decentralized multicurrency wallet.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-arctus-256x256.png',
+        large: 'app-icon-arctus-512x512.png'
+      },
+      website: 'https://arctus.io',
+      launchLink: 'https://wallet.arctus.io',
+      developer: 'Arctus',
+      status: 'user_ready_wallet'
+    },
     {
       name: 'Todo App',
       displayName: 'To Do List',
@@ -15,20 +57,6 @@ const apps = {
       developer: 'Larry Salibra',
       storageRequired: true,
       status: 'user_ready'
-    }, {
-      name: 'Guild',
-      displayName: 'Guild',
-      description: 'A blogging app powered by Blockstack.',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-guild-256x256.png',
-        large: 'app-icon-guild-1024x1024.png'
-      },
-      website: 'http://www.guildblog.com',
-      launchLink: 'http://www.guildblog.com',
-      developer: 'Jay Hwang',
-      storageRequired: true,
-      status: 'in_progress'
     }, {
       name: 'Diffuse',
       displayName: 'Diffuse',
@@ -96,19 +124,6 @@ const apps = {
       developer: 'ntzwrk',
       status: 'in_progress'
     }, {
-      name: 'Afia',
-      displayName: 'Afia',
-      description: 'A brand new way to control your health data.',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-afia-256x256.png',
-        large: 'app-icon-afia-1024x1024.png'
-      },
-      website: 'http://www.afiabeta.com/',
-      launchLink: 'http://www.afiabeta.com/',
-      developer: 'Afia',
-      status: 'in_progress'
-    }, {
       name: 'DotPodcast',
       displayName: 'DotPodcast',
       description: 'A software lab for podcasts and blockchains.',
@@ -133,32 +148,6 @@ const apps = {
       website: 'https://www.postly.co/blockstack',
       launchLink: 'https://www.postly.co/blockstack',
       developer: 'Postly',
-      status: 'in_progress'
-    }, {
-      name: 'Arenaplay',
-      displayName: 'Arenaplay',
-      description: 'Games where players time is valued.',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-arenaplay-256x256.png',
-        large: 'app-icon-arenaplay-512x512.png'
-      },
-      website: 'https://arenaplay.io/start',
-      launchLink: 'https://arenaplay.io/start',
-      developer: 'Arenaplay',
-      status: 'in_progress'
-    }, {
-      name: 'AMGiving',
-      displayName: 'AMGiving',
-      description: 'Creating transparency in charitable giving.',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-amgiving-256x256.png',
-        large: 'app-icon-amgiving-512x512.png'
-      },
-      website: 'http://amgiving.io',
-      launchLink: 'http://amgiving.io',
-      developer: 'AMGiving',
       status: 'in_progress'
     }, {
       name: 'Symmitree',
@@ -242,20 +231,6 @@ const apps = {
       status: 'user_ready_token',
       storageRequired: true
     }, {
-      name: 'Coinbrella',
-      displayName: 'Coinbrella',
-      description: '',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-coinbrella-256x256.png',
-        large: 'app-icon-coinbrella-512x512.png'
-      },
-      website: 'http://coinbrella.com/',
-      launchLink: 'http://coinbrella.com/',
-      developer: 'Luciano Leal',
-      status: 'user_ready_token',
-      storageRequired: true
-    }, {
       name: 'CoinKitty',
       displayName: 'CoinKitty',
       description: '',
@@ -267,20 +242,6 @@ const apps = {
       website: 'http://www.coinkitty.co/',
       launchLink: 'http://www.coinkitty.co/',
       developer: 'Vince DePalma',
-      status: 'user_ready_token',
-      storageRequired: true
-    }, {
-      name: 'Coinocle',
-      displayName: 'Coinocle',
-      description: '',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-coinocle-256x256.png',
-        large: 'app-icon-coinocle-512x512.png'
-      },
-      website: 'http://blockstack.coinocle.com',
-      launchLink: 'http://blockstack.coinocle.com',
-      developer: 'Justin Hunter',
       status: 'user_ready_token',
       storageRequired: true
     }, {
@@ -323,20 +284,6 @@ const apps = {
       website: 'http://www.blockportfol.io/',
       launchLink: 'http://www.blockportfol.io/',
       developer: 'Patrick DeVivo',
-      status: 'user_ready_token',
-      storageRequired: true
-    }, {
-      name: 'Proem',
-      displayName: 'Proem',
-      description: '',
-      version: '1.0.0',
-      appIcon: {
-        small: 'app-icon-proem-256x256.png',
-        large: 'app-icon-proem-512x512.png'
-      },
-      website: 'http://proem.io',
-      launchLink: 'http://proem.io',
-      developer: 'Cole Jorissen',
       status: 'user_ready_token',
       storageRequired: true
     }, {
@@ -408,7 +355,7 @@ const apps = {
       website: 'https://www.misthos.io',
       launchLink: 'https://www.misthos.io',
       developer: 'Justin Carter',
-      status: 'in_progress',
+      status: 'user_ready',
       storageRequired: true
     }, {
       name: 'Stealthy',
@@ -452,6 +399,47 @@ const apps = {
       developer: 'Postly',
       status: 'user_ready_chat',
       storageRequired: true
+    }, {
+      name: 'Travelstack',
+      displayName: 'Travelstack',
+      description: 'Decentralized photo diary and social network for travelers.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-travelstack-256x256.png',
+        large: 'app-icon-travelstack-512x512.png'
+      },
+      website: 'http://www.travelstack.club',
+      launchLink: 'http://www.travelstack.club',
+      developer: 'Tiago Alves',
+      status: 'in_progress'
+    }, {
+      name: 'NoteRiot',
+      displayName: 'NoteRiot',
+      description: 'Simple, flexible note taking.',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-noteriot-256x256.png',
+        large: 'app-icon-noteriot-512x512.png'
+      },
+      website: 'https://note.riot.ai',
+      launchLink: 'https://note.riot.ai',
+      developer: 'Dan Trevino',
+      status: 'in_progress'
+    },
+    {
+      name: 'Afari',
+      displayName: 'Afari',
+      description: 'Decentralized social media app',
+      version: '1.0.0',
+      appIcon: {
+        small: 'app-icon-afari-256x256.png',
+        large: 'app-icon-afari-512x512.png'
+      },
+      website: 'https://afari.io',
+      launchLink: 'https://app.afari.io',
+      developer: 'Afari Inc.',
+      storageRequired: true,
+      status: 'user_ready'
     }
   ]
 }

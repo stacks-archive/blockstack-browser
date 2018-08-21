@@ -11,6 +11,7 @@ import Modal from 'react-modal'
 import Image from '@components/Image'
 import { IdentityActions } from './store/identity'
 import { SearchActions } from './store/search'
+import { defaultAvatartImage } from '@components/ui/common/constants'
 
 function mapStateToProps(state) {
   return {
@@ -89,7 +90,10 @@ class ViewProfilePage extends Component {
       const verifications = []
       this.props.updateCurrentIdentity(name, profile, verifications)
     } else if (props.routeParams.name) {
-      this.props.fetchCurrentIdentity(props.nameLookupUrl, props.routeParams.name)
+      this.props.fetchCurrentIdentity(
+        props.nameLookupUrl,
+        props.routeParams.name
+      )
     }
   }
 
@@ -139,16 +143,15 @@ class ViewProfilePage extends Component {
 
     return (
       <div>
-
-        {isLocal &&
+        {isLocal && (
           <SecondaryNavBar
             leftButtonTitle="Edit"
             leftButtonLink={`/profiles/${domainName}/edit`}
             rightButtonTitle="More"
             rightButtonLink="/profiles/i/all"
           />
-        }
-        {person !== null ?
+        )}
+        {person !== null ? (
           <div>
             <Modal
               isOpen={this.state.photoModalIsOpen}
@@ -159,31 +162,40 @@ class ViewProfilePage extends Component {
               className="container-fluid text-center"
             >
               <Image
-                src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-                fallbackSrc="/images/avatar.png" className="img-fluid clickable"
+                src={
+                  person.avatarUrl() ? person.avatarUrl() : defaultAvatartImage
+                }
+                fallbackSrc={defaultAvatartImage}
+                className="img-fluid clickable"
                 onClick={this.closePhotoModal}
               />
             </Modal>
             <div className="container-fluid m-t-50">
               <div className="row">
                 <div className="col-12">
-
                   <div className="avatar-md m-b-20 text-center">
                     <Image
-                      src={person.avatarUrl() ? person.avatarUrl() : '/images/avatar.png'}
-                      fallbackSrc="/images/avatar.png" className="rounded-circle clickable"
+                      src={
+                        person.avatarUrl()
+                          ? person.avatarUrl()
+                          : defaultAvatartImage
+                      }
+                      fallbackSrc={defaultAvatartImage}
+                      className="rounded-circle clickable"
                       onClick={this.onPhotoClick}
                     />
                   </div>
 
                   <div className="text-center">
-                  {(blockNumber && transactionIndex) ?
-                    <div className="idcard-body dim">
-                      Registered in block <span>#{blockNumber}</span>,<br />
-                      transaction <span>#{transactionIndex}</span>
-                    </div>
-                  : null}
-                    <h1 className="pro-card-name text-center">{person.name()}</h1>
+                    {blockNumber && transactionIndex ? (
+                      <div className="idcard-body dim">
+                        Registered in block <span>#{blockNumber}</span>,<br />
+                        transaction <span>#{transactionIndex}</span>
+                      </div>
+                    ) : null}
+                    <h1 className="pro-card-name text-center">
+                      {person.name()}
+                    </h1>
                     <div className="pro-card-domain-name m-b-10 text-center text-secondary">
                       {domainName}
                     </div>
@@ -193,15 +205,16 @@ class ViewProfilePage extends Component {
                   </div>
 
                   <div className="text-center">
-                    {connections.length ?
+                    {connections.length ? (
                       <p className="profile-foot">Connections</p>
-                    : null}
+                    ) : null}
                     {connections.map((connection, index) => {
                       if (connection.id) {
                         return (
                           <Link
                             to={`/profiles/blockchain/${connection.id}`}
-                            key={index} className="connections"
+                            key={index}
+                            className="connections"
                           >
                             <Image
                               src={new Person(connection).avatarUrl()}
@@ -223,14 +236,16 @@ class ViewProfilePage extends Component {
                 <div className="col">
                   <div className="profile-accounts">
                     <ul>
-                      {accounts.map((account) => {
+                      {accounts.map(account => {
                         let verified = false
                         let pending = false
                         if (verifications.length > 0) {
                           for (let i = 0; i < verifications.length; i++) {
                             const verification = verifications[i]
-                            if (verification.service === account.service &&
-                              verification.valid === true) {
+                            if (
+                              verification.service === account.service &&
+                              verification.valid === true
+                            ) {
                               verified = true
                               pending = false
                               break
@@ -240,8 +255,12 @@ class ViewProfilePage extends Component {
                           pending = true
                         }
 
-                        if (account.service === 'pgp' || account.service === 'ssh'
-                          || account.service === 'bitcoin' || account.service === 'ethereum') {
+                        if (
+                          account.service === 'pgp' ||
+                          account.service === 'ssh' ||
+                          account.service === 'bitcoin' ||
+                          account.service === 'ethereum'
+                        ) {
                           return (
                             <PGPAccountItem
                               key={`${account.service}-${account.identifier}`}
@@ -271,22 +290,19 @@ class ViewProfilePage extends Component {
               </div>
             </div>
           </div>
-        :
+        ) : (
           <div className="container-fluid m-t-50">
             <div className="row">
               <div className="col-12">
-                {this.state.isLoading ?
-                  <h4 className="text-center">
-                  </h4>
-                :
-                  <h4 className="text-center">
-                    Profile not found
-                  </h4>
-                }
+                {this.state.isLoading ? (
+                  <h4 className="text-center" />
+                ) : (
+                  <h4 className="text-center">Profile not found</h4>
+                )}
               </div>
             </div>
           </div>
-        }
+        )}
       </div>
     )
   }

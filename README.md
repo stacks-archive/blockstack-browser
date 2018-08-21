@@ -24,11 +24,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 
 ## Developing
 
-Blockstack Browser requires a local instance of Blockstack Core to run. To get started, first install Blockstack Core and then proceed with the installation of Blockstack Browser.
-
 ### macOS
-
-Blockstack for macOS contains a Blockstack Core API endpoint & a CORS proxy.
 
 *Please note these instructions have only been tested on macOS 10.13*
 
@@ -65,23 +61,6 @@ parameter.  If it starts with any number of `/` characters, remove them and
 reload the page.  For example, if your `auth=` query looks like
 `auth=///abcdef...`, then you will need to change it to `auth=abcdef...`.
 
-### Windows
-
-*Note: The installation instructions below are for setting up a development environment on Windows 10. If you are using Blockstack for the first time or are looking to try Blockstack out, please go to our [downloads page](https://blockstack.org/install) and install the version there.*
-
-The Blockstack API and the Blockstack Browser run best in Docker. There is a provided CLI to help you build and launch `docker` images if you are not comfortable with `docker`:`launcher`. The CLI will pull down the images from our [Quay image repository](https://quay.io/organization/blockstack).
-
-1. Download the [launcher script](https://raw.githubusercontent.com/blockstack/packaging/master/browser-core-docker/launcher) from our packaging repository.
-
-2. In order to use the launcher script, you must have Docker installed and setup on your machine. Our [Windows installer](http://packages.blockstack.com/repositories/windows/) sets up Docker for you and uses the launcher script to start Blockstack Browser automatically. The same Windows installer can be found on the [Installing Blockstack README](https://github.com/blockstack/blockstack-core#installing-blockstack).
-
-3. Run `./launcher pull`. This will fetch the latest docker images from our image repository.
-
-4. Start the Blockstack Core API using `./launcher start`
-
-5. When you are done, you can clean up your environment: `./launcher stop`
-
-
 ## Building for macOS
 
 1. Make sure you have a working installation of Xcode 9 or higher & valid Mac Developer signing certificate
@@ -113,6 +92,12 @@ The Blockstack API and the Blockstack Browser run best in Docker. There is a pro
 1. Make sure you've cloned the repo and installed all npm assets (as shown above)
 1. Run `npm run web`
 
+
+## Building for Linux (dpkg)
+
+1. Install [`fpm`](http://fpm.readthedocs.io/en/latest/)
+1. Run `./native/linux/make_deb.sh`
+1. A `.deb` package will be placed in `./native/linux/dist/`
 
 ## Contributing
 
@@ -171,12 +156,11 @@ This app uses the latest versions of the following libraries:
 - [ReactJS](https://github.com/facebook/react)
 - [React Router](https://github.com/rackt/react-router)
 - [RefluxJS](https://github.com/spoike/refluxjs)
-- [Gulp](http://gulpjs.com/)
-- [Browserify](http://browserify.org/)
 - [Redux](https://github.com/reactjs/redux)
 - [Babel](https://github.com/babel/babel)
+- [Webpack](https://github.com/webpack/webpack)
 
-Along with many Gulp libraries (these can be seen in either `package.json`, or at the top of each task in `/gulp/tasks/`).
+And a few other smaller modules (these can be found in `package.json`).
 
 ## Maintainer
 
@@ -184,13 +168,10 @@ This repository is maintained by [yukan.id](https://explorer.blockstack.org/name
 
 ## Testing
 
-1. If you haven't already, follow steps 1 & 2 above
-2. If you haven't already run `npm run dev` or `npm run build` at least once, run `npm run build`
-3. Run all tests in the `tests/` directory with the `npm run test` command
-  * A single file can be run by specifing an `-f` flag: `npm run test -f <PATH_TO_TEST_FILE>`
-    * In the `PATH_TO_TEST_FILE`, it is possible to omit the `tests/` prefix, as well as the `.test.js` suffix. They will be automatically added if not detected.
+Run all tests in the `test/` directory with the `npm run test` command. A single
+file can be run by specifing an `-f` flag: `npm run test <PATH_TO_TEST_FILE>`.
 
-*Note: When running tests, code coverage will be automatically calculated and output to an HTML file using the [Istanbul](https://github.com/gotwarlost/istanbul) library. These files can be seen in the generated `coverage/` directory.*
+*Note: When running tests, code coverage will be automatically calculated and output to an HTML file using the [Istanbul](https://istanbul.js.org/) library. These files can be seen in the generated `__coverage__/` directory.*
 
 ## App Development
 ### Run the browser in the Blockstack Test Environment

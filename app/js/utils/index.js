@@ -13,16 +13,17 @@ export {
   findAddressIndex,
   decryptBitcoinPrivateKey,
   calculateTrustLevel,
-  calculateProfileCompleteness
+  calculateProfileCompleteness,
+  getBlockchainIdentities
 } from './account-utils'
 
-export { getIdentities, authorizationHeaderValue } from './api-utils'
+export { authorizationHeaderValue } from './api-utils'
 
 export {
   broadcastTransaction,
   btcToSatoshis,
   getNetworkFee,
-  getInsightUrl,
+  getInsightUrls,
   satoshisToBtc
 } from './bitcoin-utils'
 
@@ -43,7 +44,6 @@ export { getProfileFromTokens, signProfileForUpload, verifyToken } from './profi
 export { openInNewTab, isMobile } from './window-utils'
 
 export {
-  makeZoneFileForHostedProfile,
   getTokenFileUrlFromZoneFile,
   resolveZoneFileToProfile
 } from './zone-utils'

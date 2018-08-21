@@ -1,0 +1,23 @@
+{
+  "require": [
+    "babel-register"
+  ],
+  "coverageVariable": "__MY_TEST_COVERAGE__",
+  "exclude": [
+    "node_modules",
+    "test",
+    "build",
+    "gulp",
+    "testHelpers"
+  ],
+  "extension": [
+    ".js",
+    ".jsx"
+  ],
+  "reporter": [
+    "text-summary",
+    "html"
+  ],
+  "report-dir": "__coverage__/",
+  "produce-source-map": true
+}

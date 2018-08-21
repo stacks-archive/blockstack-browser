@@ -20,6 +20,7 @@ function mapStateToProps(state) {
     localIdentities: state.profiles.identity.localIdentities,
     defaultIdentity: state.profiles.identity.default,
     createProfileError: state.profiles.identity.createProfileError,
+    isProcessing: state.profiles.identity.isProcessing,
     identityAddresses: state.account.identityAccount.addresses,
     nextUnusedAddressIndex: state.account.identityAccount.addressIndex,
     api: state.settings.api,
@@ -44,7 +45,8 @@ class AllProfilesPage extends Component {
     setDefaultIdentity: PropTypes.func.isRequired,
     resetCreateNewProfileError: PropTypes.func.isRequired,
     createProfileError: PropTypes.string,
-    router: PropTypes.object.isRequired
+    router: PropTypes.object.isRequired,
+    isProcessing: PropTypes.boolean
   }
 
   constructor(props) {
@@ -52,16 +54,8 @@ class AllProfilesPage extends Component {
     this.state = {
       localIdentities: this.props.localIdentities,
       passwordPromptIsOpen: false,
-      processing: false,
       password: ''
     }
-
-    this.onValueChange = this.onValueChange.bind(this)
-    this.setDefaultIdentity = this.setDefaultIdentity.bind(this)
-    this.createNewProfile = this.createNewProfile.bind(this)
-    this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
-    this.openPasswordPrompt = this.openPasswordPrompt.bind(this)
-    this.closePasswordPrompt = this.closePasswordPrompt.bind(this)
   }
 
   componentWillMount() {
@@ -76,42 +70,33 @@ class AllProfilesPage extends Component {
     this.setState({
       localIdentities: nextProps.localIdentities
     })
-    if (nextProps.createProfileError) {
-      this.setState({
-        processing: false
-      })
-    }
 
     const currentIdentityCount = Object.keys(this.props.localIdentities).length
 
     const newIdentityCount = Object.keys(nextProps.localIdentities).length
     if (currentIdentityCount < newIdentityCount) {
       this.setState({
-        processing: false,
         password: ''
       })
       this.closePasswordPrompt()
     }
   }
 
-  onValueChange(event) {
+  onValueChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
-  setDefaultIdentity(index) {
+  setDefaultIdentity = (index) => {
     this.props.setDefaultIdentity(index)
   }
 
-  createNewProfile(event) {
+  createNewProfile = (event) => {
     logger.trace('createNewProfile')
-    this.setState({
-      processing: true
-    })
     event.preventDefault()
 
-    if (!this.state.processing) {
+    if (!this.props.isProcessing) {
       const encryptedBackupPhrase = this.props.encryptedBackupPhrase
       const password = this.state.password
       const nextUnusedAddressIndex = this.props.nextUnusedAddressIndex
@@ -123,18 +108,15 @@ class AllProfilesPage extends Component {
     }
   }
 
-  openPasswordPrompt(event) {
+  openPasswordPrompt = (event) => {
     event.preventDefault()
-    this.setState({
-      processing: false
-    })
     this.props.resetCreateNewProfileError()
     this.setState({
       passwordPromptIsOpen: true
     })
   }
 
-  closePasswordPrompt(event) {
+  closePasswordPrompt = (event) => {
     if (event) {
       event.preventDefault()
     }
@@ -143,9 +125,8 @@ class AllProfilesPage extends Component {
     })
   }
 
-  availableIdentityAddresses() {
-    return this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
-  }
+  availableIdentityAddresses = () =>
+    this.props.nextUnusedAddressIndex + 1 <= this.props.identityAddresses.length
 
   render() {
     const createProfileError = this.props.createProfileError
@@ -164,7 +145,7 @@ class AllProfilesPage extends Component {
           className="container-fluid"
         >
           <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to create a new Blockstack ID</h3>
+            <h3 className="modal-heading">Enter your password to add another Blockstack ID</h3>
             <div>
               {createProfileError ?
                 <Alert key="1" message="Incorrect password" status="danger" />
@@ -184,12 +165,12 @@ class AllProfilesPage extends Component {
             <button
               className="btn btn-primary btn-block"
               type="submit"
-              disabled={this.state.processing}
+              disabled={this.props.isProcessing}
             >
-              {this.state.processing ?
-                <span>Creating...</span>
+              {this.props.isProcessing ?
+                <span>Processing...</span>
                 :
-                <span>Create new ID</span>
+                <span>Add another ID</span>
               }
             </button>
           </form>
@@ -236,9 +217,16 @@ class AllProfilesPage extends Component {
                 <button
                   className="btn btn-primary"
                   onClick={this.openPasswordPrompt}
-                >Create new ID
+                >
+                  Add another ID
                 </button>
               </div>
+            </div>
+            <div className="row m-t-20">
+              <p className="col form-text text-muted">
+                Have you recovered and are missing IDs? Just add them
+                back by using the "Add another ID" for each ID.
+              </p>
             </div>
           </div>
         </div>

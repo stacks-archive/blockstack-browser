@@ -6,7 +6,11 @@ import { connectToGaiaHub, uploadToGaiaHub } from 'blockstack'
 
 import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
 
+import log4js from 'log4js'
+const logger = log4js.getLogger('account/utils/index.js')
+
 export const BLOCKSTACK_INC = 'gaia-hub'
+const DEFAULT_PROFILE_FILE_NAME = 'profile.json'
 
 function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
   if (identity.zoneFile) {
@@ -15,7 +19,7 @@ function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
   } else {
     // aaron-debt: this should call a function in blockstack.js to get
     //   the read url
-    return `${hubConfig.url_prefix}${hubConfig.address}/profile.json`
+    return `${hubConfig.url_prefix}${hubConfig.address}/${DEFAULT_PROFILE_FILE_NAME}`
   }
 }
 
@@ -31,7 +35,7 @@ function canWriteUrl(url: string, hubConfig: GaiaHubConfig): ?string {
 
 function tryUpload(
   urlToWrite: string,
-  data: string,
+  data: any,
   hubConfig: GaiaHubConfig,
   mimeType: ?string = undefined
 ) {
@@ -46,7 +50,7 @@ export function uploadPhoto(
   api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
   identity: any,
   identityKeyPair: { key: string },
-  photoFile: string,
+  photoFile: File,
   photoIndex: number
 ) {
   return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
@@ -58,15 +62,19 @@ export function uploadPhoto(
     } else {
       throw new Error(`Cannot determine photo location based on profile location ${uploadPrefix}`)
     }
-    const urlToWrite = `${uploadPrefix}/avatar-${photoIndex}`
-    let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, undefined)
+
+    const photoFilename = `avatar-${photoIndex}`
+    const urlToWrite = `${uploadPrefix}/${photoFilename}`
+    let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, photoFile.type)
     if (uploadAttempt === null) {
-      uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, undefined)
+      uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, photoFile.type)
     }
 
     // if still null, we don't know the write gaia-hub-config to write the file.
     if (uploadAttempt === null) {
-      throw new Error(`Wanted to write to ${urlToWrite} but I don't know how.`)
+      logger.error(`Wanted to write to ${urlToWrite} but I don't know how.` +
+                   ' Uploading to the default path on the configured hub.')
+      uploadAttempt = uploadToGaiaHub(photoFilename, photoFile, identityHubConfig, photoFile.type)
     }
 
     return uploadAttempt
@@ -101,7 +109,10 @@ export function uploadProfile(
 
     // if still null, we don't know the write gaia-hub-config to write the file.
     if (uploadAttempt === null) {
-      throw new Error(`Wanted to write to ${urlToWrite} but I don't know how.`)
+      logger.error(`Wanted to write to ${urlToWrite} but I don't know how.` +
+                   ' Uploading to the default path on the configured hub.')
+      uploadAttempt = uploadToGaiaHub(DEFAULT_PROFILE_FILE_NAME, signedProfileTokenData,
+                                      identityHubConfig, 'application/json')
     }
 
     return uploadAttempt

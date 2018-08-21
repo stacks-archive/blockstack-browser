@@ -116,6 +116,18 @@ class AddUsernameSelectPage extends Component {
     logger.trace('componentDidMount')
     this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
           this.props.api.coreAPIPassword)
+
+    // Only consider top level domains for showing the alert
+    if (!isSubdomain(this.props.routeParams.name)) {
+      const hasPendingReg = this.props.localIdentities
+        .filter(ident => ident.usernamePending)
+        .reduce((prev, ident) => prev || !isSubdomain(ident.username), false)
+      if (hasPendingReg) {
+        this.updateAlert('danger', 'You have a pending name registration. ' +
+          'Starting a new registration may interfere with that ' +
+          'registration’s transactions.')
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {

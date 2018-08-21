@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AuthActions } from './store/auth'
 import { decodeToken } from 'jsontokens'
+import { parseZoneFile } from 'zone-file'
 import {
   makeAuthResponse,
   getAuthRequestFromURL,
@@ -48,6 +49,7 @@ import {
   selectPublicKeychain
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
+import Modal from 'react-modal'
 
 const views = [Initial, LegacyGaia]
 
@@ -100,6 +102,7 @@ class AuthPage extends React.Component {
     corePort: PropTypes.number.isRequired,
     appManifest: PropTypes.object,
     appManifestLoading: PropTypes.bool,
+    appManifestLoadingError: PropTypes.string,
     email: PropTypes.string,
     noCoreSessionToken: PropTypes.func.isRequired,
     addresses: PropTypes.array.isRequired,
@@ -213,8 +216,9 @@ class AuthPage extends React.Component {
       let profileUrlPromise
 
       if (identity.zoneFile && identity.zoneFile.length > 0) {
+        const zoneFileJson = parseZoneFile(identity.zoneFile)
         const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(
-          identity.zoneFile
+          zoneFileJson
         )
         if (
           profileUrlFromZonefile !== null &&
@@ -252,7 +256,8 @@ class AuthPage extends React.Component {
           }
 
           if (storageConnected) {
-            getAppBucketUrl('https://hub.blockstack.org', appPrivateKey)
+            const hubUrl = this.props.api.gaiaHubUrl
+            getAppBucketUrl(hubUrl, appPrivateKey)
               .then(appBucketUrl => {
                 logger.debug(
                   `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
@@ -357,7 +362,7 @@ class AuthPage extends React.Component {
       transitPublicKey = this.state.decodedToken.payload.public_keys[0]
     }
     if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
-      hubUrl = this.props.api.gaiaHubConfig.server
+      hubUrl = this.props.api.gaiaHubUrl
     }
 
     const authResponse = makeAuthResponse(
@@ -493,8 +498,26 @@ class AuthPage extends React.Component {
   }
 
   render() {
-    const { appManifest, appManifestLoading } = this.props
+    const { appManifest, appManifestLoading, appManifestLoadingError } = this.props
 
+    if (appManifestLoadingError) {
+      return (
+        <React.Fragment>
+          <Modal
+            className="container-fluid"
+            shouldCloseOnOverlayClick={false}
+            isOpen
+          >
+            <div className="alert alert-danger">
+              Failed to fetch information about the app requesting
+              authentication. Please contact the app maintainer to resolve the
+              issue.
+            </div>
+          </Modal>
+          <AppHomeWrapper />
+        </React.Fragment>
+      )
+    }
     if (!appManifest || appManifestLoading) {
       return <React.Fragment> </React.Fragment>
     }
@@ -544,10 +567,12 @@ class AuthPage extends React.Component {
     ]
 
     const currentViewProps = viewProps[0]
+    const appDomain = this.state.decodedToken.payload.domain_name
 
     const componentProps = {
       ...currentViewProps.props,
       app,
+      appDomain,
       view: coreShortCircuit ? VIEWS.LEGACY_GAIA : VIEWS.AUTH
     }
 

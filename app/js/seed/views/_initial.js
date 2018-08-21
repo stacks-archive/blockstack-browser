@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
   const props = {
-    headerLabel: 'Secure your account',
     title: {
       children: 'Please Save your Secret Recovery Key'
     },

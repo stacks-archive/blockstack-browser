@@ -1,7 +1,7 @@
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 import PropTypes from 'prop-types'
-
+import { CheckboxBlankOutlineIcon, CheckboxMarkedOutlineIcon } from 'mdi-react'
 class RecoverInformationScreen extends React.Component {
   state = {
     resend: false
@@ -44,6 +44,26 @@ class RecoverInformationScreen extends React.Component {
                 'Email has been sent again!'
               )}
             </Type.p>
+            <Type.h3 padding="20px 0 10px 0">
+              Would you like to subscribe to receive updates from Blockstack?
+            </Type.h3>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer'
+              }}
+              onClick={() => this.props.toggleConsent()}
+            >
+              {this.props.consent ? (
+                <CheckboxMarkedOutlineIcon color="#504482" />
+              ) : (
+                <CheckboxBlankOutlineIcon color="rgba(39, 16, 51, 0.4)" />
+              )}
+              <Type.p small padding="0 0 0 6px">
+                Yes, add my email to the list.
+              </Type.p>
+            </div>
           </React.Fragment>
         )
       },
@@ -63,7 +83,9 @@ class RecoverInformationScreen extends React.Component {
 
 RecoverInformationScreen.propTypes = {
   next: PropTypes.func.isRequired,
+  toggleConsent: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
+  consent: PropTypes.bool.isRequired,
   sendRecoveryEmail: PropTypes.func.isRequired
 }
 
