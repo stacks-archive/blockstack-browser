@@ -961,7 +961,7 @@ class DefaultProfilePage extends Component {
               </div>
 
               <div className="container-fluid p-0">
-                <div style={{ display: 'flex', justifyContent: 'space-around' }} className="m-t-10">
+                <div className="d-flex justify-content-around m-t-10">
                   <button
                     className="btn btn-outline-dark btn-pill btn-sm ml-5"
                     title={this.state.editMode ? 'Save' : 'Edit'}
