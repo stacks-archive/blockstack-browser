@@ -5,7 +5,7 @@ import ecurve from 'ecurve'
 import { ECPair as ECKeyPair } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('utils/profile-utils.js')
+const logger = log4js.getLogger(__filename)
 
 const secp256k1 = ecurve.getCurveByName('secp256k1')
 

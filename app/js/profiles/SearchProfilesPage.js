@@ -7,7 +7,7 @@ import SearchItem from './components/SearchItem'
 import { SearchActions } from './store/search/index'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/SearchProfilesPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {
@@ -52,7 +52,7 @@ class SearchPage extends Component {
   }
 
   componentHasNewRouteParams(routeParams) {
-    logger.trace('componentHasNewRouteParams')
+    logger.info('componentHasNewRouteParams')
     logger.debug(`Searching for ${routeParams.query}...`)
     this.props.searchIdentities(routeParams.query,
       this.props.api.searchServiceUrl, this.props.api.nameLookupUrl)

@@ -46,7 +46,7 @@ export function configureLogging(log4js, logServerPort, authorizationHeaderValue
     replaceConsole: false
   })
 
-  const logger = log4js.getLogger('utils/logging-utils.js')
+  const logger = log4js.getLogger(__filename)
   logger.info('Logging system enabled')
 
   if (remoteLoggingEnabled) {

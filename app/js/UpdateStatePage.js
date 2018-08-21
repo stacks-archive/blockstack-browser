@@ -21,7 +21,7 @@ import {
 } from './utils/api-utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('UpdateStatePage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {
@@ -76,11 +76,11 @@ class UpdateStatePage extends Component {
   }
 
   componentDidMount() {
-    logger.trace('componentDidMount')
+    logger.info('componentDidMount')
   }
 
   componentWillReceiveProps(nextProps) {
-    logger.trace('componentWillReceiveProps')
+    logger.info('componentWillReceiveProps')
     const upgradeInProgress = this.state.upgradeInProgress
     const accountCreated = this.props.accountCreated
     const nextAccountCreated = nextProps.accountCreated
@@ -139,7 +139,7 @@ class UpdateStatePage extends Component {
 
 
     upgradeBlockstackState(event) {
-    logger.trace('upgradeBlockstackState')
+    logger.info('upgradeBlockstackState')
     event.preventDefault()
     this.setState({ upgradeInProgress: true })
     //
