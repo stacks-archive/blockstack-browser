@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { CameraIcon, CloudUploadIcon, CheckIcon, CloseIcon } from 'mdi-react'
 import { Spinner }  from '@ui/components/spinner'
+import SimpleButton from '@components/SimpleButton'
 import Alert from '@components/Alert'
 import { IdentityActions } from '../store/identity'
 import log4js from 'log4js'
@@ -14,12 +15,25 @@ import * as Styled from './styled/PhotoModal'
 const logger = log4js.getLogger('profiles/components/PhotoModal.js')
 const TAKEN_PHOTO_SIZE = 300
 
+const INITIAL_STATE = {
+  isUploading: false,
+  isTakingPhoto: false,
+  isCameraLoading: false,
+  photoBlob: null,
+  photoError: null
+}
+
 class PhotoModal extends React.PureComponent {
-  state = {
-    isTakingPhoto: false,
-    isCameraLoading: false,
-    photoBlob: null,
-    photoError: null
+  state = { ...INITIAL_STATE }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isOpen !== nextProps.isOpen) {
+      this.setState({ ...INITIAL_STATE })
+
+      if (this.stream && this.stream.getTracks().length) {
+        this.stream.getTracks()[0].stop()
+      }
+    }
   }
 
   selectPhotoFile = () => {
@@ -37,6 +51,7 @@ class PhotoModal extends React.PureComponent {
           facingMode: 'user'
         })
         .then(stream => {
+          this.stream = stream
           this.photoVideo.srcObject = stream
           this.photoVideo.onloadedmetadata = () => {
             this.photoVideo.play()
@@ -47,7 +62,7 @@ class PhotoModal extends React.PureComponent {
           logger.error(`onTakePhotoClick: failed to get webcam: ${err.message}`)
           this.setState({
             isCameraLoading: false,
-            photoError: 'Unable to get camera access'
+            photoError: 'Unable to get camera access, please enable it and refresh.'
           })
         })
       }
@@ -105,7 +120,9 @@ class PhotoModal extends React.PureComponent {
     const identitySigner = this.props.identityKeypairs[identityIndex]
     const photoIndex = 0
 
-    logger.debug('uploadProfilePhoto: trying to upload...')
+    logger.debug('uploadPhoto: trying to upload...')
+    this.setState({ isUploading: true })
+
     if (this.props.storageConnected) {
       uploadPhoto(
         this.props.api,
@@ -115,25 +132,35 @@ class PhotoModal extends React.PureComponent {
         photoIndex
       )
         .then(avatarUrl => {
-          logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
+          logger.debug(`uploadPhoto: uploaded photo: ${avatarUrl}`)
           this.props.onUpload(avatarUrl)
           this.props.refreshIdentities(
             this.props.api,
             this.props.identityAddresses
           )
+          this.setState({ isUploading: false })
         })
         .catch(error => {
-          logger.error(`uploadProfilePhoto: upload failed with error: ${error.message}`)
+          logger.error(`uploadPhoto: upload failed with error: ${error.message}`)
+          this.setState({
+            photoError: `
+              Photo failed to upload. There may have been a connection error,
+              or your photo may be too large.
+            `,
+            isUploading: false
+          })
         })
     } else {
-      logger.error(
-        'uploadProfilePhoto: storage is not connected. Doing nothing.'
-      )
+      logger.error('uploadPhoto: storage is not connected. Doing nothing.')
+      this.setState({
+        photoError: 'Disconnected from storage, cannot upload photo',
+        isUploading: false
+      })
     }
   }
 
   render() {
-    const { isTakingPhoto, isCameraLoading, photoBlob, photoError } = this.state
+    const { isUploading, isTakingPhoto, isCameraLoading, photoBlob, photoError } = this.state
     const iconStyle = {
       position: 'relative',
       top: '-2px',
@@ -147,10 +174,15 @@ class PhotoModal extends React.PureComponent {
         isOpen={this.props.isOpen}
         contentLabel=""
         onRequestClose={this.props.handleClose}
-        shouldCloseOnOverlayClick
         style={{ overlay: { zIndex: 10 } }}
         className="container-fluid text-center"
       >
+        {photoError &&
+          <div className="m-b-10 text-left">
+            <Alert status="danger" message={photoError} />
+          </div>
+        }
+
         {isTakingPhoto ? (
           <Styled.PhotoContainer>
             {/* video and canvas elements don’t work with styled components */}
@@ -185,10 +217,18 @@ class PhotoModal extends React.PureComponent {
             {photoBlob && <Styled.CameraFlash />}
             {photoBlob ? (
               <Styled.PhotoActions>
-                <Styled.PhotoActionButton onClick={this.uploadTakenPhoto} positive>
-                  <CheckIcon />
+                <Styled.PhotoActionButton
+                  onClick={this.uploadTakenPhoto}
+                  disabled={isUploading}
+                  positive
+                >
+                  {isUploading ? <Spinner /> : <CheckIcon />}
                 </Styled.PhotoActionButton>
-                <Styled.PhotoActionButton onClick={this.clearTakenPhoto} negative>
+                <Styled.PhotoActionButton
+                  onClick={this.clearTakenPhoto}
+                  disabled={isUploading}
+                  negative
+                >
                   <CloseIcon />
                 </Styled.PhotoActionButton>
               </Styled.PhotoActions>
@@ -202,35 +242,40 @@ class PhotoModal extends React.PureComponent {
           </Styled.PhotoContainer>
         ) : (
           <React.Fragment>
-            <button className="btn btn-primary btn-block" onClick={this.selectPhotoFile}>
-              Upload a Photo <CloudUploadIcon style={iconStyle} />
-            </button>
-            <button className="btn btn-secondary btn-block" onClick={this.startTakingPhoto}>
+            <SimpleButton
+              type="primary"
+              onClick={this.selectPhotoFile}
+              loading={isUploading}
+              block
+            >
+              Upload a Photo {!isUploading && <CloudUploadIcon style={iconStyle} />}
+            </SimpleButton>
+            <SimpleButton
+              type="secondary"
+              onClick={this.startTakingPhoto}
+              disabled={isUploading}
+              block
+            >
               Take a photo <CameraIcon style={iconStyle} />
-            </button>
+            </SimpleButton>
           </React.Fragment>
         )}
 
-        {photoError &&
-          <div className="m-t-20 m-b-20">
-            <Alert status="danger" message={photoError} />
-          </div>
-        }
-
-        <button
-          style={{ marginBottom: -20 }}
-          className="btn btn-link btn-xs m-t-20"
+        <SimpleButton
+          type="link"
+          size="xs"
+          style={{ marginBottom: -20, marginTop: 20 }}
           onClick={this.props.handleClose}
         >
           Cancel
-        </button>
+        </SimpleButton>
 
         <input
           type="file"
           ref={ref => {
             this.photoUpload = ref
           }}
-          onChange={this.uploadProfilePhoto}
+          onChange={this.uploadFilePhoto}
           style={{ display: 'none' }}
         />
       </Modal>
