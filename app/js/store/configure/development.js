@@ -17,12 +17,12 @@ const finalCreateStore = composeEnhancers(
 export default function configureStore(initialState) {
   const store = finalCreateStore(RootReducer, initialState)
 
-  if (module.hot) {
-    /* eslint global-require: 0 */
-    module.hot.accept('../reducers/index', () =>
-      store.replaceReducer(require('../reducers'))
-    )
-  }
+  // if (module.hot) {
+  //   /* eslint global-require: 0 */
+  //   module.hot.accept('./reducers/index.js', () =>
+  //     store.replaceReducer(require('./reducers.js'))
+  //   )
+  // }
 
   return store
 }

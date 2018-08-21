@@ -35,7 +35,7 @@ function canWriteUrl(url: string, hubConfig: GaiaHubConfig): ?string {
 
 function tryUpload(
   urlToWrite: string,
-  data: string,
+  data: any,
   hubConfig: GaiaHubConfig,
   mimeType: ?string = undefined
 ) {
@@ -50,7 +50,7 @@ export function uploadPhoto(
   api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
   identity: any,
   identityKeyPair: { key: string },
-  photoFile: string,
+  photoFile: File,
   photoIndex: number
 ) {
   return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
@@ -62,18 +62,19 @@ export function uploadPhoto(
     } else {
       throw new Error(`Cannot determine photo location based on profile location ${uploadPrefix}`)
     }
+
     const photoFilename = `avatar-${photoIndex}`
     const urlToWrite = `${uploadPrefix}/${photoFilename}`
-    let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, undefined)
+    let uploadAttempt = tryUpload(urlToWrite, photoFile, identityHubConfig, photoFile.type)
     if (uploadAttempt === null) {
-      uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, undefined)
+      uploadAttempt = tryUpload(urlToWrite, photoFile, globalHubConfig, photoFile.type)
     }
 
     // if still null, we don't know the write gaia-hub-config to write the file.
     if (uploadAttempt === null) {
       logger.error(`Wanted to write to ${urlToWrite} but I don't know how.` +
                    ' Uploading to the default path on the configured hub.')
-      uploadAttempt = uploadToGaiaHub(photoFilename, photoFile, identityHubConfig, undefined)
+      uploadAttempt = uploadToGaiaHub(photoFilename, photoFile, identityHubConfig, photoFile.type)
     }
 
     return uploadAttempt

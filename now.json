@@ -1,0 +1,8 @@
+{
+  "name": "blockstack-browser",
+  "alias": "blockstack-browser.now.sh",
+  "type": "npm",
+  "engines": {
+    "node": "^10"
+  }
+}

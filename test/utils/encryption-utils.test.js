@@ -26,7 +26,7 @@ describe('encryption-utils', () => {
 
   describe('decrypt legacy', () => {
     it('should decrypt legacy encryption', () => {
-      const legacyCiphertext = '1c94d7de0000000304d583f007c71e6e5fef354c046e8c64b1adebd6904dcb' + 
+      const legacyCiphertext = '1c94d7de0000000304d583f007c71e6e5fef354c046e8c64b1adebd6904dcb' +
         '007a1222f07313643873455ab2a3ab3819e99d518cc7d33c18bde02494aa74efc35a8970b2007b2fc715f' +
         '6067cee27f5c92d020b1806b0444994aab80050a6732131d2947a51bacb3952fb9286124b3c2b3196ff7e' +
         'dce66dee0dbd9eb59558e0044bddb3a78f48a66cf8d78bb46bb472bd2d5ec420c831fc384293252459524' +

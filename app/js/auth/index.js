@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AuthActions } from './store/auth'
 import { decodeToken } from 'jsontokens'
+import { parseZoneFile } from 'zone-file'
 import {
   makeAuthResponse,
   getAuthRequestFromURL,
@@ -215,8 +216,9 @@ class AuthPage extends React.Component {
       let profileUrlPromise
 
       if (identity.zoneFile && identity.zoneFile.length > 0) {
+        const zoneFileJson = parseZoneFile(identity.zoneFile)
         const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(
-          identity.zoneFile
+          zoneFileJson
         )
         if (
           profileUrlFromZonefile !== null &&
@@ -565,10 +567,12 @@ class AuthPage extends React.Component {
     ]
 
     const currentViewProps = viewProps[0]
+    const appDomain = this.state.decodedToken.payload.domain_name
 
     const componentProps = {
       ...currentViewProps.props,
       app,
+      appDomain,
       view: coreShortCircuit ? VIEWS.LEGACY_GAIA : VIEWS.AUTH
     }
 
