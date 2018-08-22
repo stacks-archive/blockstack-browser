@@ -43,7 +43,7 @@ export function validateAndCleanRecoveryInput(input) {
   // Base64 encoded encrypted phrase
   const cleanedEncrypted = cleaned.replace(/\s/gm, '')
 
-  if (/^[a-zA-Z0-9\/]+=$/.test(cleanedEncrypted)) {
+  if (/^[a-zA-Z0-9\+\/]+=$/.test(cleanedEncrypted)) {
     return {
       isValid: true,
       type: RECOVERY_TYPE.ENCRYPTED,

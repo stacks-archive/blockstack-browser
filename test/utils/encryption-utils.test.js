@@ -50,8 +50,8 @@ describe('encryption-utils', () => {
 
   describe('validateAndCleanRecoveryInput', () => {
     const mnemonic = 'opera way alley phrase agree rug hip lyrics link outer inch pigeon'
-    const encrypted = 'p8KwuKW3R9amIkHJKCTNpEMBZVJ/QSfgH1TVSRBRF5bXYHkm57DlnSoW' +
-      '0aqkJ27A59ljcR5NkNw2isDiGSeaixCKhbOQHtgmXr2pmqZb7xI='
+    const encrypted = 'XqG2hpkJHS7OPdWt4+T9qlNWgE2Xw99XvE5hVNhO5Lj3/8QpK3WpQ' +
+      '4RwO4EaPKS8ocLIL/6te240qV+5awYvWR8GGtCLLRRxbMeUp5xqyGk='
 
     function assertCleanAndValid(input, cleaned, type) {
       const result = validateAndCleanRecoveryInput(input)
@@ -109,10 +109,10 @@ describe('encryption-utils', () => {
 
     it('Should find an encrypted key with whitespace valid', () => {
       const whitespaceEncrypted = `
-        p8KwuKW3R9amIkHJKCTNpEMBZVJ
-        /QSfgH1TVSRBRF5bXYHkm57DlnS
-        oW0aqkJ27A59ljcR5NkNw2isDiG
-        SeaixCKhbOQHtgmXr2pmqZb7xI=
+        XqG2hpkJHS7OPdWt4+T9qlNWgE2
+        Xw99XvE5hVNhO5Lj3/8QpK3WpQ4
+        RwO4EaPKS8ocLIL/6te240qV+5a
+        wYvWR8GGtCLLRRxbMeUp5xqyGk=
       `
       assertCleanAndValid(whitespaceEncrypted, encrypted, RECOVERY_TYPE.ENCRYPTED)
     })
