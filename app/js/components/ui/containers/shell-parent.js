@@ -159,7 +159,7 @@ ShellParent.propTypes = {
   disableBack: PropTypes.bool,
   maxHeight: PropTypes.bool,
   size: PropTypes.object,
-  view: PropTypes.number
+  view: PropTypes.number.isRequired
 }
 export default ShellParent
 

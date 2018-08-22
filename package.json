@@ -1,7 +1,7 @@
 {
   "name": "blockstack-browser",
   "description": "The Blockstack browser",
-  "version": "0.31.0",
+  "version": "0.32.1",
   "author": "Blockstack PBC <admin@blockstack.com>",
   "dependencies": {
     "bigi": "^1.4.2",
@@ -36,6 +36,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.4.2",
     "react-fns": "^1.4.0",
+    "react-loadable": "^5.5.0",
     "react-modal": "^3.1.12",
     "react-qr-svg": "^2.0.1",
     "react-redux": "^4.4.8",
@@ -54,8 +55,7 @@
     "styled-system": "^2.2.1",
     "triplesec": "^3.0.25",
     "yup": "^0.24.1",
-    "zone-file": "^0.2.2",
-    "zxcvbn": "^4.4.2"
+    "zone-file": "^0.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
@@ -101,6 +101,7 @@
     "jsdom": "^9.2.0",
     "lodash-webpack-plugin": "^0.11.5",
     "mocha": "^5.2.0",
+    "mock-require": "^3.0.2",
     "nexe": "1.1.2",
     "nock": "^9.0.13",
     "node-libs-browser": "^1.0.0",
@@ -118,7 +119,8 @@
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4",
     "webpackbar": "^2.6.1",
-    "workbox-webpack-plugin": "^3.3.0"
+    "workbox-webpack-plugin": "^3.3.0",
+    "workerize-loader": "^1.0.3"
   },
   "keywords": [
     "applications",
@@ -157,11 +159,11 @@
     "mac:release:build:BuildDMG": "rm -Rf ./native/macos/export/Blockstack.dmg; node ./node_modules/appdmg/bin/appdmg.js ./native/macos/dmg.json ./native/macos/export/Blockstack.dmg",
     "mac:release:build:SignDMG": "codesign --force --sign \"Developer ID Application: Blockstack PBC\" ./native/macos/export/Blockstack.dmg; open ./native/macos/export/",
     "mac:release:build:Archive:dev": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Release CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=\"NO\" CODE_SIGN_ENTITLEMENTS=\"\" CODE_SIGNING_ALLOWED=\"NO\" -archivePath ./native/macos/archive/Blockstack archive",
-    "mac:copyBrowser": "touch build/.gitkeep && mkdir -p native/macos/Blockstack/Blockstack/browser && cp -R build/**/* native/macos/Blockstack/Blockstack/browser/",
+    "mac:copyBrowser": "touch build/.gitkeep && mkdir -p native/macos/Blockstack/Blockstack/browser && cp build/index.html native/macos/Blockstack/Blockstack/browser/ && cp build/favicon.ico native/macos/Blockstack/Blockstack/browser/ && cp build/netlify.toml native/macos/Blockstack/Blockstack/browser/ && cp build/_headers native/macos/Blockstack/Blockstack/browser/ && cp -R build/**/* native/macos/Blockstack/Blockstack/browser/",
     "mac:compileCorsProxy": "nexe -i corsproxy/corsproxy.js -o native/macos/Blockstack/corsproxy",
     "mac:compileBlockstackProxy": "nexe -i ./native/blockstackProxy.js -o ./native/macos/Blockstack/blockstackProxy",
     "mac:buildDebug": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Debug",
-    "test": "npm run lint && npm run flow && cross-env NODE_ENV=test nyc mocha --require test/importedImagesHelper",
+    "test": "npm run lint && npm run flow && cross-env NODE_ENV=test nyc mocha",
     "build": "cross-env NODE_ENV=production webpack",
     "start": "serve build --single",
     "web": "npm run build",

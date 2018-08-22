@@ -4,7 +4,6 @@ import 'babel-polyfill'
 import 'inert-polyfill'
 
 import '../styles/bootstrap.min.css'
-import '../styles/fonts.css'
 import '../styles/font-awesome.css'
 import '../styles/app.css'
 
@@ -31,18 +30,20 @@ configureLogging(
   process.env.NODE_ENV
 )
 
+let logger = log4js.getLogger('index.js')
+
+
 window.addEventListener('error', event => {
   // eslint-disable-next-line
-  const logger = log4js.getLogger("window.addWindowListener('error')")
+  logger = log4js.getLogger("window.addWindowListener('error')")
   logger.error(event)
 })
 
 window.onerror = (messageOrEvent, source, lineno, colno, error) => {
-  const logger = log4js.getLogger('window.onerror')
+  logger = log4js.getLogger('window.onerror')
   logger.error(messageOrEvent, error)
 }
 
-const logger = log4js.getLogger('index.js')
 
 configureLogging(
   log4js,
@@ -68,12 +69,12 @@ if (process.env.NODE_ENV === 'production') {
 
 window.addEventListener('error', event => {
   // eslint-disable-next-line
-  const logger = log4js.getLogger("window.addWindowListener('error')")
+  logger = log4js.getLogger("window.addWindowListener('error')")
   logger.error(event)
 })
 
 window.onerror = (messageOrEvent, source, lineno, colno, error) => {
-  const logger = log4js.getLogger('window.onerror')
+  logger = log4js.getLogger('window.onerror')
   logger.error(messageOrEvent, error)
 }
 
