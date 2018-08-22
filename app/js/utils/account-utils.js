@@ -4,7 +4,7 @@ import { HDNode } from 'bitcoinjs-lib'
 import crypto from 'crypto'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('utils/account-utils.js')
+const logger = log4js.getLogger(__filename)
 
 function hashCode(string) {
   let hash = 0
@@ -137,7 +137,7 @@ export function decryptMasterKeychain(password, encryptedBackupPhrase) {
         const backupPhrase = plaintextBuffer.toString()
         const seed = bip39.mnemonicToSeed(backupPhrase)
         const masterKeychain = HDNode.fromSeedBuffer(seed)
-        logger.trace('decryptMasterKeychain: decrypted!')
+        logger.info('decryptMasterKeychain: decrypted!')
         resolve(masterKeychain)
       },
       error => {

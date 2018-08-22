@@ -1,5 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
+const ReactLoadablePlugin = require('react-loadable/webpack')
+  .ReactLoadablePlugin
 
 /**
  * Plugins
@@ -20,7 +22,8 @@ const output = {
   filename: 'js/[name].[hash:8].js',
   chunkFilename: 'js/[name].[hash:8].chunk.js',
   path: path.resolve(__dirname, 'build'),
-  publicPath: '/'
+  publicPath: '/',
+  globalObject: 'self'
 }
 
 /**
@@ -32,6 +35,7 @@ const output = {
 if (isProd) {
   output.path = path.resolve(__dirname, 'build/static')
   output.publicPath = '/static/'
+  output.globalObject = undefined
 }
 
 /**
@@ -39,12 +43,13 @@ if (isProd) {
  */
 module.exports = {
   mode: isProd ? 'production' : 'development',
-  devtool: !isProd ? 'cheap-module-source-map' : false,
+  devtool: !isProd ? 'cheap-module-source-map' : 'source-map',
   entry: {
     main: ['./app/js/index.js']
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
+    __filename: true
   },
   output,
   devServer: {
@@ -124,6 +129,10 @@ module.exports = {
             options: { minimize: true }
           }
         ]
+      },
+      {
+        test: /\.worker\.js$/,
+        use: 'workerize-loader'
       }
     ]
   },
@@ -234,13 +243,17 @@ module.exports = {
         minifyJS: true,
         minifyCSS: true,
         minifyURLs: true
-      }
+      },
+      chunks: ['main', 'vendors']
+    }),
+    new ReactLoadablePlugin({
+      filename: './build/react-loadable.json'
     }),
     new workboxPlugin.GenerateSW({
       swDest: '../sw.js',
       clientsClaim: true,
       skipWaiting: true,
-      include: [/\.html$/, /\.js$/, /\.webp/]
+      include: [/\.html$/, /\.js$/]
     })
   ]
 }

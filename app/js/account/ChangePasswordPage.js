@@ -5,11 +5,12 @@ import { connect } from 'react-redux'
 
 import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
+import SimpleButton from '@components/SimpleButton'
 import { AccountActions } from './store/account'
 import { decrypt, encrypt } from '@utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/ChangePasswordPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {
@@ -49,7 +50,7 @@ class ChangePasswordPage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [
         {
@@ -61,37 +62,47 @@ class ChangePasswordPage extends Component {
   }
 
   reencryptMnemonic() {
-    logger.trace('reencryptMnemonic')
+    logger.info('reencryptMnemonic')
+    this.setState({
+      isProcessing: true,
+      alerts: []
+    })
+
     const currentPassword = this.state.currentPassword
     const newPassword = this.state.newPassword
     const newPassword2 = this.state.newPassword2
     const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
+
+    if (newPassword.length < 8) {
+      this.updateAlert('danger', 'New password must be at least 8 characters')
+      this.setState({ isProcessing: false })
+      return
+    } else if (newPassword !== newPassword2) {
+      this.updateAlert('danger', 'New passwords must match')
+      this.setState({ isProcessing: false })
+      return
+    }
+
     logger.debug('Trying to decrypt recovery phrase...')
     decrypt(dataBuffer, currentPassword).then(
       plaintextBuffer => {
         logger.debug('Recovery phrase successfully decrypted')
-        if (newPassword.length < 8) {
-          this.updateAlert('danger', 'New password must be at least 8 characters')
-        } else {
-          if (newPassword !== newPassword2) {
-            this.updateAlert('danger', 'New passwords must match')
-          } else {
-            logger.debug('Trying to re-encrypt recovery phrase with new password...')
-            encrypt(plaintextBuffer, newPassword).then(ciphertextBuffer => {
-              this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
-              this.updateAlert('success', 'Password updated!')
-              this.setState({
-                currentPassword: '',
-                newPassword: '',
-                newPassword2: ''
-              })
-            })
-          }
-        }
+        logger.debug('Trying to re-encrypt recovery phrase with new password...')
+        encrypt(plaintextBuffer, newPassword).then(ciphertextBuffer => {
+          this.props.updateBackupPhrase(ciphertextBuffer.toString('hex'))
+          this.updateAlert('success', 'Password updated!')
+          this.setState({
+            currentPassword: '',
+            newPassword: '',
+            newPassword2: '',
+            isProcessing: false
+          })
+        })
       },
       () => {
         logger.error('Invalid password')
         this.updateAlert('danger', 'Incorrect password')
+        this.setState({ isProcessing: false })
       }
     )
   }
@@ -127,9 +138,14 @@ class ChangePasswordPage extends Component {
             onReturnKeyPress={this.reencryptMnemonic}
           />
           <div className="container-fluid m-t-40">
-            <button className="btn btn-primary btn-block" onClick={this.reencryptMnemonic}>
+            <SimpleButton
+              type="primary"
+              onClick={this.reencryptMnemonic}
+              loading={this.state.isProcessing}
+              block
+            >
               Update Password
-            </button>
+            </SimpleButton>
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { getProfileFromTokens } from './profile-utils'
 import { parseZoneFile } from 'zone-file'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('utils/zone-utils.js')
+const logger = log4js.getLogger(__filename)
 
 export function getTokenFileUrlFromZoneFile(zoneFileJson) {
   if (!zoneFileJson.hasOwnProperty('uri')) {

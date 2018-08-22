@@ -7,7 +7,7 @@ import { connectToGaiaHub, uploadToGaiaHub } from 'blockstack'
 import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
 
 import log4js from 'log4js'
-const logger = log4js.getLogger('account/utils/index.js')
+const logger = log4js.getLogger(__filename)
 
 export const BLOCKSTACK_INC = 'gaia-hub'
 const DEFAULT_PROFILE_FILE_NAME = 'profile.json'
