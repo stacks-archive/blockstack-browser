@@ -2286,7 +2286,8 @@ a.modal-body {
 }
 
 .btn-wallet {
-    width: 160px;
+    width: 100%;
+    max-width: 160px;
 }
 
 .react-contextmenu {
