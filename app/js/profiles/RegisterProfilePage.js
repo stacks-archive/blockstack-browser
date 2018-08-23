@@ -15,7 +15,7 @@ import roundTo from 'round-to'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/RegisterProfilePage.js')
+const logger = log4js.getLogger(__filename)
 
 const WALLET_URL = '/wallet/receive'
 const STORAGE_URL = '/account/storage'
@@ -105,7 +105,7 @@ class RegisterPage extends Component {
   }
 
   componentDidMount() {
-    logger.trace('componentDidMount')
+    logger.info('componentDidMount')
     this.props.refreshCoreWalletBalance(this.props.addressBalanceUrl,
       this.props.coreAPIPassword)
     logger.debug('getting core wallet address...')
@@ -117,7 +117,7 @@ class RegisterPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    logger.trace('componentWillReceiveProps')
+    logger.info('componentWillReceiveProps')
     // Clear alerts
     this.setState({
       alerts: []
@@ -241,7 +241,7 @@ class RegisterPage extends Component {
       const domainName = `${this.state.username}.${tld}`
       
       this.timer = setTimeout(() => {
-        logger.trace('Timer fired')
+        logger.info('Timer fired')
         if (!isABlockstackName(domainName)) {
           _this.updateAlert('danger', `${domainName} Not valid Blockstack name`)
           return
@@ -253,7 +253,7 @@ class RegisterPage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage, url = null) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{
         status: alertStatus,
@@ -264,7 +264,7 @@ class RegisterPage extends Component {
   }
 
   registerIdentity(event) {
-    logger.trace('registerIdentity')
+    logger.info('registerIdentity')
     event.preventDefault()
 
     const ownerAddress = this.props.routeParams.index

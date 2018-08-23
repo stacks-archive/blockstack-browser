@@ -15,7 +15,7 @@ import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/components/registration/RegistrationSelectView.js')
+const logger = log4js.getLogger(__filename)
 const CHECK_FOR_PAYMENT_INTERVAL = 10000
 export const PRICE_BUFFER = 0.0005 // btc
 function mapStateToProps(state) {
@@ -113,7 +113,7 @@ class AddUsernameSelectPage extends Component {
   }
 
   componentDidMount() {
-    logger.trace('componentDidMount')
+    logger.info('componentDidMount')
     this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
           this.props.api.coreAPIPassword)
 
@@ -178,7 +178,7 @@ class AddUsernameSelectPage extends Component {
   }
 
   register(event) {
-    logger.trace('register')
+    logger.info('register')
 
     if (event) {
       event.preventDefault()

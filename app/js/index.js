@@ -30,7 +30,7 @@ configureLogging(
   process.env.NODE_ENV
 )
 
-let logger = log4js.getLogger('index.js')
+let logger = log4js.getLogger(__filename)
 
 
 window.addEventListener('error', event => {
@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === 'production') {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
-        .register('/sw.js')
+        .register('/static/sw.js')
         .then(registration => {
           console.log('SW registered: ', registration)
         })
@@ -79,7 +79,7 @@ window.onerror = (messageOrEvent, source, lineno, colno, error) => {
 }
 
 if (process.env.NODE_ENV !== 'production') {
-  logger.trace('NODE_ENV is not production')
+  logger.info('NODE_ENV is not production')
   logger.debug('Enabling React devtools')
   window.React = React
 }

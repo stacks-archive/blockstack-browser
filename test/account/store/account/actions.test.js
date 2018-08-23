@@ -276,32 +276,22 @@ describe('AccountActions', () => {
       describe('fetches confirmedBalanceUrl', () => {
         describe('and when failing', () => {
           const error = new Error()
-          const loggerMock = {
-            debug: sinon.spy(),
-            error: sinon.spy()
-          }
 
           beforeEach(() => {
             sinon.stub(global, 'fetch').rejects(error)
-
-            AccountActions.__Rewire__('logger', loggerMock)
             callAction()
           })
 
           afterEach(() => {
             sinon.restore(global, 'fetch')
-            AccountActions.__ResetDependency__('logger')
           })
 
-          it('logs an expressive error', () => {
+          it('it does nothing', () => {
             const store = mockStore({})
 
             return store.dispatch(action)
-              .then(() => {
-                assert.deepEqual(loggerMock.error.firstCall.args, [
-                  `refreshBalances: error fetching ${address} confirmed balance`,
-                  error
-                ])
+              .catch(() => {
+                assert.equal(store.getActions().length, 0)
               })
           })
         })
@@ -329,33 +319,24 @@ describe('AccountActions', () => {
             describe(', then fetches unconfirmedBalanceUrl', () => {
               describe('and when failing', () => {
                 const error = new Error()
-                const loggerMock = {
-                  debug: sinon.spy(),
-                  error: sinon.spy()
-                }
 
                 beforeEach(() => {
                   fetchStub
                     .withArgs(getInsightUrlsResult.unconfirmedBalanceUrl)
                     .rejects(error)
-                  AccountActions.__Rewire__('logger', loggerMock)
                   callAction()
                 })
 
                 afterEach(() => {
                   sinon.restore(global, 'fetch')
-                  AccountActions.__ResetDependency__('logger')
                 })
 
-                it('logs an expressive error', () => {
+                it('it does nothing', () => {
                   const store = mockStore({})
 
                   return store.dispatch(action)
-                    .then(() => {
-                      assert.deepEqual(loggerMock.error.firstCall.args, [
-                        `refreshBalances: error fetching ${address} unconfirmed balance`,
-                        error
-                      ])
+                    .catch(() => {
+                      assert.equal(store.getActions().length, 0)
                     })
                 })
               })
@@ -443,33 +424,13 @@ describe('AccountActions', () => {
 
                       describe('if has duplicate addresses', () => {
                         const duplicateAddresses = ['address1', 'address1', 'address2']
-                        const loggerMock = {
-                          debug: sinon.spy(),
-                          error: sinon.spy()
-                        }
 
                         beforeEach(() => {
-                          AccountActions.__Rewire__('logger', loggerMock)
                           action = AccountActions.refreshBalances(
                             insightUrl,
                             duplicateAddresses,
                             coreAPIPassword
                           )
-                        })
-
-                        afterEach(() => {
-                          AccountActions.__ResetDependency__('logger')
-                        })
-
-                        it('logs an expressive error', () => {
-                          const store = mockStore({})
-
-                          return store.dispatch(action)
-                            .then(() => {
-                              assert.deepEqual(loggerMock.error.firstCall.args, [
-                                `refreshBalances: Duplicate address ${duplicateAddresses[0]} in addresses array`
-                              ])
-                            })
                         })
 
                         it('only takes first occurrence of address into account', () => {
@@ -509,24 +470,16 @@ describe('AccountActions', () => {
   })
 
   describe('getCoreWalletAddress', () => {
-    const loggerMock = {
-      error: sinon.spy()
-    }
     const walletPaymentAddressUrl = 'fakeWalletPaymentAddressUrl'
     const coreAPIPassword = 'fakeCoreAPIPassword'
 
     let action
 
     beforeEach(() => {
-      AccountActions.__Rewire__('logger', loggerMock)
       action = AccountActions.getCoreWalletAddress(
         walletPaymentAddressUrl,
         coreAPIPassword
       )
-    })
-
-    afterEach(() => {
-      AccountActions.__ResetDependency__('logger')
     })
 
     describe('when isCoreEndpointDisabled', () => {
@@ -540,14 +493,11 @@ describe('AccountActions', () => {
         AccountActions.__ResetDependency__('isCoreEndpointDisabled')
       })
 
-      it('logs an expressive error and does nothing', () => {
+      it('it does nothing', () => {
         const store = mockStore({})
 
         return store.dispatch(action)
           .then(() => {
-            assert.deepEqual(loggerMock.error.firstCall.args, [
-              'Cannot use core wallet if core is disable'
-            ])
             assert.equal(store.getActions().length, 0)
           })
       })
@@ -591,15 +541,11 @@ describe('AccountActions', () => {
             fetchStub.rejects(error)
           })
 
-          it('logs an expressive error and does nothing', () => {
+          it('it does nothing', () => {
             const store = mockStore({})
 
             return store.dispatch(action)
               .catch(() => {
-                assert.deepEqual(loggerMock.error.firstCall.args, [
-                  'getCoreWalletAddress: error fetching address',
-                  error
-                ])
                 assert.equal(store.getActions().length, 0)
               })
           })
@@ -632,27 +578,16 @@ describe('AccountActions', () => {
   })
 
   describe('refreshCoreWalletBalance', () => {
-    let loggerMock
     const addressBalanceUrl = 'fakeAddressBalanceUrl'
     const coreAPIPassword = 'fakeCoreAPIPassword'
 
     let action
 
     beforeEach(() => {
-      loggerMock = {
-        debug: sinon.spy(),
-        error: sinon.spy(),
-        trace: sinon.spy()
-      }
-      AccountActions.__Rewire__('logger', loggerMock)
       action = AccountActions.refreshCoreWalletBalance(
         addressBalanceUrl,
         coreAPIPassword
       )
-    })
-
-    afterEach(() => {
-      AccountActions.__ResetDependency__('logger')
     })
 
     describe('when isCoreEndpointDisabled', () => {
@@ -664,17 +599,6 @@ describe('AccountActions', () => {
 
       afterEach(() => {
         AccountActions.__ResetDependency__('isCoreEndpointDisabled')
-      })
-
-      it('logs an expressive debug message', () => {
-        const store = mockStore({})
-
-        return store.dispatch(action)
-          .then(() => {
-            assert.deepEqual(loggerMock.debug.firstCall.args, [
-              'Mocking core wallet balance in webapp build'
-            ])
-          })
       })
 
       it('dispatches updateCoreWalletBalance(0)', () => {
@@ -718,35 +642,6 @@ describe('AccountActions', () => {
         afterEach(() => {
           AccountActions.__ResetDependency__('authorizationHeaderValue')
           sinon.restore(global, 'fetch')
-
-        })
-
-        describe('and even before failing', () => {
-          beforeEach(() => {
-            fetchStub.rejects()
-          })
-
-          it('logs a trace message', () => {
-            const store = mockStore({})
-
-            return store.dispatch(action)
-              .catch(() => {
-                assert.deepEqual(loggerMock.trace.firstCall.args, [
-                  'refreshCoreWalletBalance: Beginning refresh...'
-                ])
-              })
-          })
-
-          it('logs a debug message', () => {
-            const store = mockStore({})
-
-            return store.dispatch(action)
-              .catch(() => {
-                assert.deepEqual(loggerMock.debug.firstCall.args, [
-                  `refreshCoreWalletBalance: addressBalanceUrl: ${addressBalanceUrl}`
-                ])
-              })
-          })
         })
 
         describe('and when failing', () => {
@@ -756,15 +651,11 @@ describe('AccountActions', () => {
             fetchStub.rejects(error)
           })
 
-          it('logs an expressive error and does nothing', () => {
+          it('it does nothing', () => {
             const store = mockStore({})
 
             return store.dispatch(action)
               .catch(() => {
-                assert.deepEqual(loggerMock.error.firstCall.args, [
-                  'refreshCoreWalletBalance: error refreshing balance',
-                  error
-                ])
                 assert.equal(store.getActions().length, 0)
               })
           })
@@ -779,18 +670,7 @@ describe('AccountActions', () => {
           })
 
           describe('parses bitcoin balance from response', () => {
-            it('logs a debug message with bitcoin balance', () => {
-              const store = mockStore({})
-
-              return store.dispatch(action)
-                .catch(() => {
-                  assert.deepEqual(loggerMock.debug.lastCall.args, [
-                    `refreshCoreWalletBalance: balance is ${bitcoin}.`
-                  ])
-                })
-            })
-
-            it('and dispatches updateCoreWalletBalance with address', () => {
+            it('dispatches updateCoreWalletBalance with address', () => {
               const store = mockStore({})
 
               return store.dispatch(action)
@@ -848,23 +728,16 @@ describe('AccountActions', () => {
         recipientAddress,
         amountBTC
       )
-    let loggerMock
     let store
     let action
 
     beforeEach(() => {
-      loggerMock = {
-        trace: sinon.spy(),
-        error: sinon.spy()
-      }
-      AccountActions.__Rewire__('logger', loggerMock)
       store = mockStore({})
       AccountActions.__Rewire__('config', configMock)
       AccountActions.__Rewire__('network', networkMock)
     })
 
     afterEach(() => {
-      AccountActions.__ResetDependency__('logger')
       AccountActions.__ResetDependency__('config')
       AccountActions.__ResetDependency__('network')
     })
@@ -880,15 +753,6 @@ describe('AccountActions', () => {
       afterEach(() => {
         AccountActions.__ResetDependency__('transactions')
       })
-
-      it('logs a trace message', () =>
-        store.dispatch(action)
-          .then(() => {
-            assert.deepEqual(loggerMock.trace.firstCall.args, [
-              'Using regtest network'
-            ])
-          })
-      )
 
       it('sets config.network to LOCAL_REGTEST', () =>
         store.dispatch(action)
@@ -1023,16 +887,6 @@ describe('AccountActions', () => {
           AccountActions.__ResetDependency__('transactions')
         })
 
-        it('logs an expressive error', () =>
-          store.dispatch(action)
-            .then(() => {
-              assert.deepEqual(loggerMock.error.firstCall.args, [
-                'withdrawBitcoinClientSide: error generating and broadcasting',
-                error
-              ])
-            })
-        )
-
         it('dispatches withdrawCoreBalanceError with error', () =>
           store.dispatch(action)
             .then(() => {
@@ -1064,15 +918,6 @@ describe('AccountActions', () => {
           beforeEach(() => {
             action = callAction(false)
           })
-
-          it('after logging a trace message with the transactionHex', () =>
-            store.dispatch(action)
-              .then(() => {
-                assert.deepEqual(loggerMock.trace.lastCall.args, [
-                  `Broadcast btc spend with tx hex: ${transactionHex}`
-                ])
-              })
-          )
 
           it('to the config.network via .broadcastTransaction', () =>
             store.dispatch(action)
@@ -1109,25 +954,14 @@ describe('AccountActions', () => {
     const coreAPIPassword = 'fakeCoreAPIPassword'
     let store
     let action
-    let loggerMock
 
     beforeEach(() => {
       store = mockStore({})
-      loggerMock = {
-        debug: sinon.spy(),
-        error: sinon.spy(),
-        trace: sinon.spy()
-      }
-      AccountActions.__Rewire__('logger', loggerMock)
       action = AccountActions.withdrawBitcoinFromCoreWallet(
         coreWalletWithdrawUrl,
         recipientAddress,
         coreAPIPassword
       )
-    })
-
-    afterEach(() => {
-      AccountActions.__ResetDependency__('logger')
     })
 
     describe('when isCoreEndpointDisabled', () => {
@@ -1216,22 +1050,10 @@ describe('AccountActions', () => {
             )
           })
         })
-
-        it('logs a debug message with recipientAddress', () =>
-          store.dispatch(action)
-            .catch(() => {
-              assert.deepEqual(loggerMock.debug.firstCall.args, [
-                `withdrawBitcoinFromCoreWallet: send all money to ${recipientAddress}`
-              ])
-            })
-        )
       })
 
       describe('when amount is defined', () => {
         const amountBTC = 1
-        const btcToSatoshis = btc => btc * 1e8
-        const roundTo = x => Math.round(x)
-        const roundedSatoshiAmount = roundTo(btcToSatoshis(amountBTC))
 
         beforeEach(() => {
           action = AccountActions.withdrawBitcoinFromCoreWallet(
@@ -1241,15 +1063,6 @@ describe('AccountActions', () => {
             amountBTC
           )
         })
-
-        it('logs a debug message with roundedSatoshiAmount and recipientAddress', () =>
-          store.dispatch(action)
-            .catch(() => {
-              assert.deepEqual(loggerMock.debug.firstCall.args, [
-                `withdrawBitcoinFromCoreWallet: ${roundedSatoshiAmount} to ${recipientAddress}`
-              ])
-            })
-        )
 
         describe('dispatches a withdrawingCoreBalance action', () => {
           it('with type WITHDRAWING_CORE_BALANCE', () =>
@@ -1286,40 +1099,6 @@ describe('AccountActions', () => {
             )
           })
         })
-      })
-
-      describe('when paymentKey is not defined', () => {
-        it('logs a debug message stating No payment key', () =>
-          store.dispatch(action)
-            .catch(() => {
-              assert.deepEqual(loggerMock.debug.secondCall.args, [
-                'withdrawBitcoinFromCoreWallet: No payment key, using core wallet'
-              ])
-            })
-        )
-      })
-
-      describe('when paymentKey is defined', () => {
-        const paymentKey = 'fakePaymentKey'
-
-        beforeEach(() => {
-          action = AccountActions.withdrawBitcoinFromCoreWallet(
-            coreWalletWithdrawUrl,
-            recipientAddress,
-            coreAPIPassword,
-            null,
-            paymentKey
-          )
-        })
-
-        it('logs a debug message stating Using provided payment key', () =>
-          store.dispatch(action)
-            .catch(() => {
-              assert.deepEqual(loggerMock.debug.secondCall.args, [
-                'withdrawBitcoinFromCoreWallet: Using provided payment key'
-              ])
-            })
-        )
       })
 
       describe('fetches coreWalletWithdrawUrl', () => {
@@ -1450,24 +1229,6 @@ describe('AccountActions', () => {
           })
         })
 
-        describe('and when failing', () => {
-          const error = new Error()
-
-          beforeEach(() => {
-            sinon.restore(global, 'fetch')
-            sinon.stub(global, 'fetch').rejects(error)
-          })
-
-          it('logs an expressive error message', () =>
-            store.dispatch(action)
-              .catch(() => assert.deepEqual(loggerMock.error.firstCall.args, [
-                'withdrawBitcoinFromCoreWallet:',
-                error
-              ])
-            )
-          )
-        })
-
         describe('and when working', () => {
           describe('when provided with an erroneous response', () => {
             const errorFromResponse = 'an error'
@@ -1514,12 +1275,8 @@ describe('AccountActions', () => {
     let optIn
     let action
     let store
-    let loggerMock
 
     beforeEach(() => {
-      loggerMock = {
-        debug: sinon.spy()
-      }
       sinon.stub(global, 'fetch').rejects(new Error())
       store = mockStore({})
       action = AccountActions.emailNotifications(
@@ -1531,13 +1288,6 @@ describe('AccountActions', () => {
     afterEach(() => {
       sinon.restore(global, 'fetch')
     })
-
-    it('logs a debug message with email', () =>
-      store.dispatch(action)
-        .catch(() => assert.deepEqual(loggerMock.debug.firstCall.args, [
-          `emailNotifications: ${email}`
-        ]))
-    )
 
     describe('dispatches promptedForEmail action', () => {
       it('with type PROMPTED_FOR_EMAIL', () =>
@@ -1621,14 +1371,6 @@ describe('AccountActions', () => {
           sinon.restore(global, 'fetch')
           sinon.stub(global, 'fetch').rejects(error)
         })
-
-        it('logs an expressive error', () =>
-          store.dispatch(action)
-            .catch(() => assert.deepEqual(loggerMock.error.firstCall.args, [
-              'emailNotifications: error',
-              error
-            ]))
-        )
       })
 
       describe('and when working', () => {
@@ -1636,39 +1378,17 @@ describe('AccountActions', () => {
           sinon.restore(global, 'fetch')
           sinon.stub(global, 'fetch').resolves()
         })
-
-        it('logs a debug message with email', () =>
-          store.dispatch(action)
-            .catch(() => assert.deepEqual(loggerMock.debug.secondCall.args, [
-              `emailNotifications: registered ${email} for notifications`
-            ]))
-        )
       })
     })
   })
 
   describe('skipEmailBackup', () => {
-    let loggerMock
     let store
 
     beforeEach(() => {
-      loggerMock = {
-        trace: sinon.spy()
-      }
-      AccountActions.__Rewire__('logger', loggerMock)
       store = mockStore({})
       store.dispatch(AccountActions.skipEmailBackup())
     })
-
-    afterEach(() =>
-      AccountActions.__ResetDependency__('logger')
-    )
-
-    it('logs a trace message', () =>
-      assert.deepEqual(loggerMock.trace.firstCall.args, [
-        'skipEmailBackup'
-      ])
-    )
 
     it('dispatches action {type: PROMPTED_FOR_EMAIL, email: null}', () =>
       assert.deepEqual(store.getActions()[0], {
@@ -1679,27 +1399,12 @@ describe('AccountActions', () => {
   })
 
   describe('storageIsConnected', () => {
-    let loggerMock
     let store
 
     beforeEach(() => {
-      loggerMock = {
-        trace: sinon.spy()
-      }
-      AccountActions.__Rewire__('logger', loggerMock)
       store = mockStore({})
       store.dispatch(AccountActions.storageIsConnected())
     })
-
-    afterEach(() =>
-      AccountActions.__ResetDependency__('logger')
-    )
-
-    it('logs a trace message', () =>
-      assert.deepEqual(loggerMock.trace.firstCall.args, [
-        'storageConnected'
-      ])
-    )
 
     it('dispatches action {type: CONNECTED_STORAGE}', () =>
       assert.deepEqual(store.getActions()[0], {
@@ -1756,27 +1461,12 @@ describe('AccountActions', () => {
   })
 
   describe('usedIdentityAddress', () => {
-    let loggerMock
     let store
 
     beforeEach(() => {
-      loggerMock = {
-        trace: sinon.spy()
-      }
-      AccountActions.__Rewire__('logger', loggerMock)
       store = mockStore({})
       store.dispatch(AccountActions.usedIdentityAddress())
     })
-
-    afterEach(() =>
-      AccountActions.__ResetDependency__('logger')
-    )
-
-    it('logs a trace message', () =>
-      assert.deepEqual(loggerMock.trace.firstCall.args, [
-        'usedIdentityAddress'
-      ])
-    )
 
     it('dispatches action {type: INCREMENT_IDENTITY_ADDRESS_INDEX}', () =>
       assert.deepEqual(store.getActions()[0], {
@@ -1786,27 +1476,12 @@ describe('AccountActions', () => {
   })
 
   describe('displayedRecoveryCode', () => {
-    let loggerMock
     let store
 
     beforeEach(() => {
-      loggerMock = {
-        trace: sinon.spy()
-      }
-      AccountActions.__Rewire__('logger', loggerMock)
       store = mockStore({})
       store.dispatch(AccountActions.displayedRecoveryCode())
     })
-
-    afterEach(() =>
-      AccountActions.__ResetDependency__('logger')
-    )
-
-    it('logs a trace message', () =>
-      assert.deepEqual(loggerMock.trace.firstCall.args, [
-        'displayedRecoveryCode'
-      ])
-    )
 
     it('dispatches action {type: VIEWED_RECOVERY_CODE}', () =>
       assert.deepEqual(store.getActions()[0], {

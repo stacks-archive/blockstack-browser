@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ShellScreen } from '@blockstack/ui'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('onboarding/Username.js')
+const logger = log4js.getLogger(__filename)
 const defaultSponsoredName = '.id.blockstack'
 
 const STATUS = {

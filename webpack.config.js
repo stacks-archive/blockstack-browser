@@ -48,7 +48,8 @@ module.exports = {
     main: ['./app/js/index.js']
   },
   node: {
-    fs: 'empty'
+    fs: 'empty',
+    __filename: true
   },
   output,
   devServer: {
@@ -242,7 +243,8 @@ module.exports = {
         minifyJS: true,
         minifyCSS: true,
         minifyURLs: true
-      }
+      },
+      chunks: ['main', 'vendors']
     }),
     new ReactLoadablePlugin({
       filename: './build/react-loadable.json'

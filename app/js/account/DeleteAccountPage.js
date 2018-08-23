@@ -8,7 +8,7 @@ import DeleteAccountModal from './components/DeleteAccountModal'
 import { AccountActions } from './store/account'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/DeleteAccountPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {
@@ -54,7 +54,7 @@ class DeleteAccountPage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
@@ -68,7 +68,7 @@ class DeleteAccountPage extends Component {
   }
 
   openModal() {
-    logger.trace('deleteAccount')
+    logger.info('deleteAccount')
     this.setState({ isOpen: true })
   }
 
