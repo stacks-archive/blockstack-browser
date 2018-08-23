@@ -10,7 +10,7 @@ import { AccountActions } from './store/account'
 import { decrypt, encrypt } from '@utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/ChangePasswordPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {
@@ -50,7 +50,7 @@ class ChangePasswordPage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.trace(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
       alerts: [
         {
@@ -62,7 +62,7 @@ class ChangePasswordPage extends Component {
   }
 
   reencryptMnemonic() {
-    logger.trace('reencryptMnemonic')
+    logger.info('reencryptMnemonic')
     this.setState({
       isProcessing: true,
       alerts: []
