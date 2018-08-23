@@ -43,7 +43,7 @@ export function validateAndCleanRecoveryInput(input) {
   // Base64 encoded encrypted phrase
   let cleanedEncrypted = cleaned.replace(/\s/gm, '')
 
-  if (cleanedEncrypted.length === 107 && cleanedEncrypted.indexOf('=') !== 107) {
+  if (cleanedEncrypted.length === 107 && cleanedEncrypted.indexOf('=') !== 106) {
     // Append possibly missing equals sign padding
     cleanedEncrypted = `${cleanedEncrypted}=`
   }
