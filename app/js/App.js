@@ -186,7 +186,6 @@ class AppContainer extends Component {
 
   componentDidMount() {
     const loader = document.getElementById('loader')
-    console.log(loader)
     if (loader && !loader.classList.contains('hidden')) {
       loader.classList.add('hidden')
     }
