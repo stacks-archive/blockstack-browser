@@ -41,9 +41,14 @@ export function validateAndCleanRecoveryInput(input) {
   }
 
   // Base64 encoded encrypted phrase
-  const cleanedEncrypted = cleaned.replace(/\s/gm, '')
+  let cleanedEncrypted = cleaned.replace(/\s/gm, '')
 
-  if (/^[a-zA-Z0-9\+\/]+=$/.test(cleanedEncrypted)) {
+  if (cleanedEncrypted.length === 107 && cleanedEncrypted.indexOf('=') !== 107) {
+    // Append possibly missing equals sign padding
+    cleanedEncrypted = `${cleanedEncrypted}=`
+  }
+
+  if (cleanedEncrypted.length >= 108 && /^[a-zA-Z0-9\+\/]+=$/.test(cleanedEncrypted)) {
     return {
       isValid: true,
       type: RECOVERY_TYPE.ENCRYPTED,

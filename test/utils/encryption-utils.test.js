@@ -117,6 +117,16 @@ describe('encryption-utils', () => {
       assertCleanAndValid(whitespaceEncrypted, encrypted, RECOVERY_TYPE.ENCRYPTED)
     })
 
+    it('Should find an encrypted key missing = valid, and append it for us', () => {
+      const noEqualEncrypted = encrypted.replace('=', '')
+      assertCleanAndValid(noEqualEncrypted, encrypted, RECOVERY_TYPE.ENCRYPTED)
+    })
+
+    it('Should find an encrypted key that’s too short invalid', () => {
+      const shortKey = encrypted.slice(1)
+      assertInvalid(shortKey)
+    })
+
     it('Should find an encrypted key with special characters invalid', () => {
       const invalidCharacter = `!${encrypted}`
       assertInvalid(invalidCharacter)
