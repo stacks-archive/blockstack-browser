@@ -427,7 +427,10 @@ class EditProfilePage extends Component {
       })
     }
 
-    const accounts = filledAccounts.concat(placeholders)
+    function proofCompare(a, b) { 
+        return a.service > b.service ? 1 : -1
+    }
+    const accounts = filledAccounts.sort(proofCompare).concat(placeholders.sort(proofCompare))
     const ownerAddress = identity.ownerAddress
     const identityIndex = this.state.index
 
