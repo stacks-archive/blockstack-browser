@@ -442,19 +442,23 @@ class DefaultProfilePage extends Component {
   }
 
   onPhotoUpload = (url) => {
-    this.closePhotoModal()
-    this.setState({
-      avatarCacheBust: Math.random()
-    })
-    this.saveProfile({
+    const newProfile = {
       ...this.state.profile,
       image: [{
         '@type': 'ImageObject',
         name: 'avatar',
-        // Add some garbage for cache busting
         contentUrl: url
       }]
+    }
+
+    this.setState({
+      // Add some garbage for cache busting since the
+      // photo may have the same URL as before
+      avatarCacheBust: Math.random(),
+      profile: newProfile
     })
+    this.saveProfile(newProfile)
+    this.closePhotoModal()
   }
 
   closeSocialAccountModal = () => {
@@ -496,7 +500,7 @@ class DefaultProfilePage extends Component {
   }
 
   removeAccount = service => {
-    const profile = this.state.profile
+    const profile = { ...this.state.profile }
     const accounts = profile.account
 
     if (accounts) {
