@@ -22,7 +22,7 @@ import { hot } from 'react-hot-loader'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('App.js')
+const logger = log4js.getLogger(__filename)
 
 export const BLOCKSTACK_STATE_VERSION_KEY = 'BLOCKSTACK_STATE_VERSION'
 
@@ -55,9 +55,12 @@ function mapDispatchToProps(dispatch) {
 
 class AppContainer extends Component {
   static propTypes = {
+    // Own props
+    children: PropTypes.element.isRequired,
+    noHeader: PropTypes.bool,
+    // State props
     localIdentities: PropTypes.array.isRequired,
     defaultIdentity: PropTypes.number.isRequired,
-    children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
@@ -112,7 +115,7 @@ class AppContainer extends Component {
   }
 
   componentWillMount() {
-    logger.trace('componentWillMount')
+    logger.info('componentWillMount')
     const coreAPIPassword = getCoreAPIPasswordFromURL()
     const logServerPort = getLogServerPortFromURL()
     const regTestMode = getRegTestModeFromURL()
@@ -206,11 +209,11 @@ class AppContainer extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, noHeader } = this.props
     return (
-      <div className="body-main">
-        <div className="wrapper footer-padding">{ children }</div>
-        <SupportButton onClick={ this.onSupportClick }/>
+      <div className={`body-main ${noHeader ? 'no-header' : ''}`}>
+        <div className="wrapper footer-padding">{children}</div>
+        <SupportButton onClick={this.onSupportClick} />
       </div>
     )
   }

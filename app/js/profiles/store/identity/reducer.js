@@ -63,7 +63,7 @@ function IdentityReducer(state = initialState, action) {
       })
     }
     case types.UPDATE_PROFILE: {
-      const newLocalIdentities = state.localIdentities.slice()
+      const newLocalIdentities = [...state.localIdentities]
       newLocalIdentities[action.index].profile = action.profile
       newLocalIdentities[action.index].zoneFile = action.zoneFile
       return Object.assign({}, state, {

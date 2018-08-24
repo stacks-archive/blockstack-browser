@@ -6,6 +6,7 @@ import qs from 'query-string'
 import { SettingsActions } from '../account/store/settings'
 import { AppHomeWrapper, Shell } from '@blockstack/ui'
 import Modal from 'react-modal'
+import App from '../App'
 
 class ConnectStoragePage extends React.Component {
   state = {
@@ -29,7 +30,7 @@ class ConnectStoragePage extends React.Component {
   render() {
     const { error } = this.state
     return (
-      <React.Fragment>
+      <App>
         <Modal
           className="container-fluid"
           shouldCloseOnOverlayClick={false}
@@ -46,7 +47,7 @@ class ConnectStoragePage extends React.Component {
           )}
         </Modal>
         <AppHomeWrapper />
-      </React.Fragment>
+      </App>
     )
   }
 }

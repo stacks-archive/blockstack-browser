@@ -6,6 +6,9 @@
     height: 100%;
     padding-top: 100px;
 }
+.body-main.no-header {
+  padding-top: 0;
+}
 
 .body-landing {
     width: 100%;
@@ -2300,7 +2303,8 @@ a.modal-body {
 }
 
 .btn-wallet {
-    width: 160px;
+    width: 100%;
+    max-width: 160px;
 }
 
 .react-contextmenu {

@@ -9,7 +9,7 @@ import { BLOCKSTACK_INC } from '../../utils'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import AccountActions from '../account/actions'
 
-const logger = log4js.getLogger('account/store/settings/actions.js')
+const logger = log4js.getLogger(__filename)
 
 function updateApi(api) {
   return {
@@ -40,7 +40,7 @@ function refreshBtcPrice(btcPriceUrl) {
 }
 
 function resetApi(api) {
-  logger.trace('resetApi')
+  logger.info('resetApi')
   let coreAPIPassword = api.coreAPIPassword
   let gaiaHubConfig = api.gaiaHubConfig
 
@@ -65,7 +65,7 @@ function resetApi(api) {
 
 function connectStorage() {
   return (dispatch, getState) => {
-    logger.trace('connectStorage')
+    logger.info('connectStorage')
     const state = getState()
     const api = selectApi(state)
     let idKeypairs = selectIdentityKeypairs(state)

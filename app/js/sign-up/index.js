@@ -49,7 +49,7 @@ import {
   RecoveryInformationScreen
 } from './views'
 
-const logger = log4js.getLogger('onboarding/index.js')
+const logger = log4js.getLogger(__filename)
 
 const views = [
   Initial,
@@ -218,7 +218,7 @@ class Onboarding extends React.Component {
     const suffix = `.${SUBDOMAIN_SUFFIX}`
     username += suffix
     console.log('about to submit username', username)
-    logger.trace('registerUsername')
+    logger.info('registerUsername')
     const nameHasBeenPreordered = hasNameBeenPreordered(
       username,
       this.props.localIdentities

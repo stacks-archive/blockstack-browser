@@ -16,7 +16,7 @@ import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/store/account/actions.js')
+const logger = log4js.getLogger(__filename)
 
 const doVerifyRecoveryCode = () => dispatch =>
   dispatch({
@@ -179,7 +179,7 @@ function updateViewedRecoveryCode() {
 }
 
 function displayedRecoveryCode() {
-  logger.trace('displayedRecoveryCode')
+  logger.info('displayedRecoveryCode')
   return dispatch => {
     dispatch(updateViewedRecoveryCode())
   }
@@ -223,14 +223,14 @@ function emailNotifications(email, optIn) {
 }
 
 function skipEmailBackup() {
-  logger.trace('skipEmailBackup')
+  logger.info('skipEmailBackup')
   return dispatch => {
     dispatch(promptedForEmail())
   }
 }
 
 function storageIsConnected() {
-  logger.trace('storageConnected')
+  logger.info('storageConnected')
   return dispatch => {
     dispatch(connectedStorage())
   }
@@ -244,7 +244,7 @@ function refreshCoreWalletBalance(addressBalanceUrl, coreAPIPassword) {
       return Promise.resolve()
     }
 
-    logger.trace('refreshCoreWalletBalance: Beginning refresh...')
+    logger.info('refreshCoreWalletBalance: Beginning refresh...')
     logger.debug(
       `refreshCoreWalletBalance: addressBalanceUrl: ${addressBalanceUrl}`
     )
@@ -551,7 +551,7 @@ function incrementIdentityAddressIndex() {
 }
 
 function usedIdentityAddress() {
-  logger.trace('usedIdentityAddress')
+  logger.info('usedIdentityAddress')
   return dispatch => {
     dispatch(incrementIdentityAddressIndex())
   }

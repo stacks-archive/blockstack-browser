@@ -4,7 +4,7 @@ import {
   REGTEST_CORE_API_PASSWORD,
   REGTEST_CORE_INSIGHT_API_URL
 } from '../account/store/settings/default'
-const logger = log4js.getLogger('utils/bitcoin-utils.js')
+const logger = log4js.getLogger(__filename)
 
 const SATOSHIS_IN_BTC = 100000000
 

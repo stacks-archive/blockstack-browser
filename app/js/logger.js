@@ -1,15 +1,31 @@
 const isDev = process.env.NODE_ENV === 'development'
 const isDebug = typeof location !== 'undefined' && location.search.includes('debug')
+const showLog = isDev || isDebug
+
+const prefixStyle = 'color: #AAA;'
 
 const logger = {
   configure: () => null,
   info: () => null,
-  getLogger: log => ({
-    info: message => (isDev || isDebug ? console.info(log, message) : null),
-    trace: message => (isDev || isDebug ? console.trace(log, message) : null),
-    error: message => (isDev || isDebug ? console.error(log, message) : null),
-    debug: message => (isDev || isDebug ? console.debug(log, message) : null),
-    log: message => (isDev || isDebug ? console.log(log, message) : null)
+  getLogger: path => ({
+    info: message => (
+      showLog && console.info(`%c[${path}]:`, prefixStyle, message)
+    ),
+    trace: message => (
+      showLog && console.trace(`%c[${path}]:`, prefixStyle, message)
+    ),
+    error: message => (
+      showLog && console.error(`%c[${path}]:`, prefixStyle, message)
+    ),
+    warn: message => (
+      showLog && console.warn(`%c[${path}]:`, prefixStyle, message)
+    ),
+    debug: message => (
+      showLog && console.debug(`%c[${path}]:`, prefixStyle, message)
+    ),
+    log: message => (
+      showLog && console.log(`%c[${path}]:`, prefixStyle, message)
+    )
   })
 }
 
