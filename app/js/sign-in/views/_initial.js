@@ -7,7 +7,7 @@ import { validateAndCleanRecoveryInput } from '@utils/encryption-utils'
 const validationSchema = Yup.object({
   recoveryKey: Yup.string()
     .required('This is required.')
-    .test('is-valid', 'We don’t recognize that recovery key. Are you sure it was copied correctly?', value =>
+    .test('is-valid', 'That’s not a valid recovery code or key', value =>
       validateAndCleanRecoveryInput(value).isValid
     )
 })
