@@ -79,18 +79,6 @@ const AllProfilesPage = Loadable({
   loading: Loading,
   delay: LOADABLE_DELAY
 })
-const ViewProfilePage = Loadable({
-  loader: () =>
-    import(/* webpackChunkName: "ViewProfilePage" */ './profiles/ViewProfilePage'),
-  loading: Loading,
-  delay: LOADABLE_DELAY
-})
-const EditProfilePage = Loadable({
-  loader: () =>
-    import(/* webpackChunkName: "EditProfilePage" */ './profiles/EditProfilePage'),
-  loading: Loading,
-  delay: LOADABLE_DELAY
-})
 const RegisterProfilePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "RegisterProfilePage" */ './profiles/RegisterProfilePage'),
@@ -254,9 +242,6 @@ export default (
         <IndexRoute component={ DefaultProfilePage }/>
         <Route path="i/all" component={ AllProfilesPage }/>
         <Route path="i/search/:query" component={ SearchProfilesPage }/>
-        <Route path=":name" component={ ViewProfilePage }/>
-        <Route path=":index/local" component={ ViewProfilePage }/>
-        <Route path=":index/edit" component={ EditProfilePage }/>
         <Route path=":index/transfer-name" component={ TransferNamePage }/>
         <Route path=":index/zone-file" component={ ZoneFilePage }/>
         <Route path=":index/export" component={ ExportProfilePage }/>

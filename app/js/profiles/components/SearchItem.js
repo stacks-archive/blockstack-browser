@@ -5,7 +5,7 @@ import { Person } from 'blockstack'
 
 import Image from '@components/Image'
 import SocialAccountItem from './SocialAccountItem'
-import { defaultAvatartImage } from '@components/ui/common/constants'
+import { defaultAvatarImage } from '@components/ui/common/constants'
 
 class SearchItem extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ class SearchItem extends Component {
         <div className="livesearch-avatar col-md-1">
           <Image
             className="result-img img-circle"
-            src={person.avatarUrl() || defaultAvatartImage}
+            src={person.avatarUrl() || defaultAvatarImage}
             id={this.props.domainName}
             fallbackSrc="https://s3.amazonaws.com/65m/avatar-placeholder.png"
           />
