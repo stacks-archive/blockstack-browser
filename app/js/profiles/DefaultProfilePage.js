@@ -16,9 +16,10 @@ import InputGroup from '@components/InputGroup'
 import ToolTip from '@components/ToolTip'
 import EditSocialAccount from './components/EditSocialAccount'
 import EditAccount from './components/EditAccount'
+import PhotoModal from './components/PhotoModal'
 import { UserAvatar } from '@blockstack/ui'
 
-import { uploadProfile, uploadPhoto } from '../account/utils'
+import { uploadProfile } from '../account/utils'
 import {
   openInNewTab,
   isMobile,
@@ -28,7 +29,7 @@ import {
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'
-import { defaultAvatartImage } from '@components/ui/common/constants'
+import { defaultAvatarImage } from '@components/ui/common/constants'
 
 const logger = log4js.getLogger(__filename)
 
@@ -101,14 +102,9 @@ class DefaultProfilePage extends Component {
       accountEditIsOpen: false,
       editingSocialAccount: {},
       editingAccount: {},
-      showHiddenPlaceholders: false
+      showHiddenPlaceholders: false,
+      avatarCacheBust: ''
     }
-
-    this.onValueChange = this.onValueChange.bind(this)
-    this.availableIdentityAddresses = this.availableIdentityAddresses.bind(this)
-    this.onPhotoClick = this.onPhotoClick.bind(this)
-    this.openPhotoModal = this.openPhotoModal.bind(this)
-    this.closePhotoModal = this.closePhotoModal.bind(this)
   }
 
   componentWillMount() {
@@ -138,10 +134,12 @@ class DefaultProfilePage extends Component {
   }
 
   onSaveClick = () => {
-    const profile = this.state.profile
-    profile.name = this.state.name
-    profile.description = this.state.description
-    this.saveProfile(profile)
+    const { profile, name, description } = this.state
+    this.saveProfile({
+      ...profile,
+      name,
+      description
+    })
     this.setState({
       editMode: false
     })
@@ -229,18 +227,10 @@ class DefaultProfilePage extends Component {
     }
   }
 
-  onValueChange(event) {
+  onValueChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value
     })
-  }
-
-  onPhotoClick(event) {
-    this.openPhotoModal(event)
-  }
-
-  onChangePhotoClick = () => {
-    this.photoUpload.click()
   }
 
   onPostVerificationButtonClick = (event, service, identifier) => {
@@ -274,7 +264,7 @@ class DefaultProfilePage extends Component {
   }
 
   onVerifyButtonClick = (service, identifier, proofUrl) => {
-    const profile = this.state.profile
+    const profile = { ...this.state.profile }
 
     if (!profile.hasOwnProperty('account')) {
       profile.account = []
@@ -316,7 +306,7 @@ class DefaultProfilePage extends Component {
   }
 
   onAccountDoneButtonClick = (service, identifier) => {
-    const profile = this.state.profile
+    const profile = { ...this.state.profile }
 
     if (!profile.hasOwnProperty('account')) {
       profile.account = []
@@ -433,64 +423,42 @@ class DefaultProfilePage extends Component {
     )
   }
 
-  uploadProfilePhoto = e => {
-    const identityIndex = this.props.defaultIdentity
-    const identity = this.props.localIdentities[identityIndex]
-    const identitySigner = this.props.identityKeypairs[identityIndex]
-    const profile = this.state.profile
-    const photoIndex = 0
-
-    logger.debug('uploadProfilePhoto: trying to upload...')
-    if (this.props.storageConnected) {
-      uploadPhoto(
-        this.props.api,
-        identity,
-        identitySigner,
-        e.target.files[0],
-        photoIndex
-      )
-        .then(avatarUrl => {
-          logger.debug(`uploadProfilePhoto: uploaded photo: ${avatarUrl}`)
-          profile.image = []
-          profile.image.push({
-            '@type': 'ImageObject',
-            name: 'avatar',
-            contentUrl: avatarUrl
-          })
-          this.setState({
-            profile,
-            photoModalIsOpen: false
-          })
-          this.saveProfile(profile)
-          this.props.refreshIdentities(
-            this.props.api,
-            this.props.identityAddresses
-          )
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    } else {
-      logger.error(
-        'uploadProfilePhoto: storage is not connected. Doing nothing.'
-      )
+  openPhotoModal = (event) => {
+    if (event) {
+      event.preventDefault()
     }
-  }
-
-  openPhotoModal(event) {
-    event.preventDefault()
     this.setState({
       photoModalIsOpen: true
     })
   }
 
-  closePhotoModal(event) {
+  closePhotoModal = (event) => {
     if (event) {
       event.preventDefault()
     }
     this.setState({
       photoModalIsOpen: false
     })
+  }
+
+  onPhotoUpload = (url) => {
+    const newProfile = {
+      ...this.state.profile,
+      image: [{
+        '@type': 'ImageObject',
+        name: 'avatar',
+        contentUrl: url
+      }]
+    }
+
+    this.setState({
+      // Add some garbage for cache busting since the
+      // photo may have the same URL as before
+      avatarCacheBust: Math.random(),
+      profile: newProfile
+    })
+    this.saveProfile(newProfile)
+    this.closePhotoModal()
   }
 
   closeSocialAccountModal = () => {
@@ -505,12 +473,9 @@ class DefaultProfilePage extends Component {
     })
   }
 
-  availableIdentityAddresses() {
-    return (
-      this.props.nextUnusedAddressIndex + 1 <=
-      this.props.identityAddresses.length
-    )
-  }
+  availableIdentityAddresses = () =>
+    this.props.nextUnusedAddressIndex + 1 <=
+    this.props.identityAddresses.length
 
   createNewAccount(service, identifier, proofUrl) {
     return {
@@ -535,7 +500,7 @@ class DefaultProfilePage extends Component {
   }
 
   removeAccount = service => {
-    const profile = this.state.profile
+    const profile = { ...this.state.profile }
     const accounts = profile.account
 
     if (accounts) {
@@ -553,7 +518,8 @@ class DefaultProfilePage extends Component {
   render() {
     const identityIndex = this.props.defaultIdentity
     const identity = this.state.localIdentities[identityIndex]
-    const person = new Person(identity.profile)
+    const profile = this.state.profile
+    const person = new Person(profile)
 
     if (identity.username) {
       identity.canAddUsername = false
@@ -567,7 +533,7 @@ class DefaultProfilePage extends Component {
     // const blockNumber = identity.blockNumber
     // const transactionIndex = identity.transactionIndex
     const profileCompleteness = calculateProfileCompleteness(
-      identity.profile,
+      profile,
       verifications
     )
 
@@ -575,10 +541,10 @@ class DefaultProfilePage extends Component {
     const placeholders = []
     let hiddenAccounts = hiddenAccountTypes
 
-    if (this.state.profile.hasOwnProperty('account')) {
+    if (profile.hasOwnProperty('account')) {
       accountTypes.forEach(accountType => {
         let hasAccount = false
-        this.state.profile.account.forEach(account => {
+        profile.account.forEach(account => {
           if (account.service === accountType) {
             hasAccount = true
             account.placeholder = false
@@ -726,29 +692,11 @@ class DefaultProfilePage extends Component {
 
     return (
       <div>
-        <Modal
+        <PhotoModal
           isOpen={this.state.photoModalIsOpen}
-          contentLabel=""
-          onRequestClose={this.closePhotoModal}
-          shouldCloseOnOverlayClick
-          style={{ overlay: { zIndex: 10 } }}
-          className="container-fluid text-center"
-        >
-          <Image
-            src={person.avatarUrl() ? person.avatarUrl() : defaultAvatartImage}
-            fallbackSrc={defaultAvatartImage}
-            className="img-fluid clickable"
-            onClick={this.closePhotoModal}
-          />
-          <div>
-            <button
-              className="btn btn-link btn-xs"
-              onClick={this.onChangePhotoClick}
-            >
-              Change Photo
-            </button>
-          </div>
-        </Modal>
+          handleClose={this.closePhotoModal}
+          onUpload={this.onPhotoUpload}
+        />
 
         {socialAccountEdit()}
         {accountEdit()}
@@ -791,14 +739,10 @@ class DefaultProfilePage extends Component {
                     <div className="avatar-md m-b-0 text-center">
                       {person.avatarUrl() ? (
                         <Image
-                          src={
-                            person.avatarUrl()
-                              ? person.avatarUrl()
-                              : defaultAvatartImage
-                          }
-                          fallbackSrc={defaultAvatartImage}
+                          src={`${person.avatarUrl()}?${this.state.avatarCacheBust}`}
+                          fallbackSrc={defaultAvatarImage}
                           className="rounded-circle clickable"
-                          onClick={this.onPhotoClick}
+                          onClick={this.openPhotoModal}
                           style={{
                             width: '96px',
                             height: '96px'
@@ -808,21 +752,13 @@ class DefaultProfilePage extends Component {
                         <UserAvatar
                           id={identity.ownerAddress}
                           username={identity.username || '?'}
-                          onClick={this.onPhotoClick}
+                          onClick={this.openPhotoModal}
                           size={96}
                           textSize={24}
                           camera
                           style={{ marginLeft: 'auto', marginRight: 'auto' }}
                         />
                       )}
-                      <input
-                        type="file"
-                        ref={ref => {
-                          this.photoUpload = ref
-                        }}
-                        onChange={this.uploadProfilePhoto}
-                        style={{ display: 'none' }}
-                      />
                     </div>
                   </div>
 
@@ -961,38 +897,34 @@ class DefaultProfilePage extends Component {
               </div>
 
               <div className="container-fluid p-0">
-                <div className="row m-t-10 text-center">
-                  <div className="col">
+                <div className="d-flex justify-content-around m-t-10">
+                  <button
+                    className="btn btn-outline-dark btn-pill btn-sm ml-5"
+                    title={this.state.editMode ? 'Save' : 'Edit'}
+                    onClick={
+                      this.state.editMode
+                        ? this.onSaveClick
+                        : this.onEditClick
+                    }
+                  >
+                    {this.state.editMode ? 'Save' : 'Edit'}
+                  </button>
+                  {this.state.editMode ? (
                     <button
-                      className="btn btn-outline-dark btn-pill btn-sm ml-5"
-                      title={this.state.editMode ? 'Save' : 'Edit'}
-                      onClick={
-                        this.state.editMode
-                          ? this.onSaveClick
-                          : this.onEditClick
-                      }
+                      className="btn btn-outline-dark btn-pill btn-sm mr-5"
+                      title="Cancel"
+                      onClick={this.onCancelClick}
                     >
-                      {this.state.editMode ? 'Save' : 'Edit'}
+                      Cancel
                     </button>
-                  </div>
-                  <div className="col">
-                    {this.state.editMode ? (
-                      <button
-                        className="btn btn-outline-dark btn-pill btn-sm mr-5"
-                        title="Cancel"
-                        onClick={this.onCancelClick}
-                      >
-                        Cancel
-                      </button>
-                    ) : (
-                      <Link
-                        className="btn btn-outline-dark btn-pill btn-sm mr-5"
-                        to="/profiles/i/all"
-                      >
-                        More
-                      </Link>
-                    )}
-                  </div>
+                  ) : (
+                    <Link
+                      className="btn btn-outline-dark btn-pill btn-sm mr-5"
+                      to="/profiles/i/all"
+                    >
+                      More
+                    </Link>
+                  )}
                 </div>
               </div>
 

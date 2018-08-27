@@ -50,7 +50,7 @@ export function uploadPhoto(
   api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
   identity: any,
   identityKeyPair: { key: string },
-  photoFile: File,
+  photoFile: File | Blob,
   photoIndex: number
 ) {
   return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {

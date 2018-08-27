@@ -57,9 +57,12 @@ function mapDispatchToProps(dispatch) {
 
 class AppContainer extends Component {
   static propTypes = {
+    // Own props
+    children: PropTypes.element.isRequired,
+    noHeader: PropTypes.bool,
+    // State props
     localIdentities: PropTypes.array.isRequired,
     defaultIdentity: PropTypes.number.isRequired,
-    children: PropTypes.element.isRequired,
     encryptedBackupPhrase: PropTypes.string,
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
@@ -208,9 +211,9 @@ class AppContainer extends Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, noHeader } = this.props
     return (
-      <div className="body-main">
+      <div className={`body-main ${noHeader ? 'no-header' : ''}`}>
         <div className="wrapper footer-padding">{children}</div>
         <SupportButton onClick={this.onSupportClick} />
         <NotificationsSystem theme={NotificationsTheme} />

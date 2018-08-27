@@ -91,6 +91,48 @@ function updateBalances(balances) {
   }
 }
 
+function buildTransaction(recipientAddress) {
+  return {
+    type: types.BUILD_TRANSACTION,
+    payload: recipientAddress
+  }
+}
+
+function buildTransactionSuccess(txHex) {
+  return {
+    type: types.BUILD_TRANSACTION_SUCCESS,
+    payload: txHex
+  }
+}
+
+function buildTransactionError(error) {
+  return {
+    type: types.BUILD_TRANSACTION_ERROR,
+    payload: error
+  }
+}
+
+function broadcastTransaction(txHex) {
+  return {
+    type: types.BROADCAST_TRANSACTION,
+    payload: txHex
+  }
+}
+
+function broadcastTransactionSuccess(txId) {
+  return {
+    type: types.BROADCAST_TRANSACTION_SUCCESS,
+    payload: txId
+  }
+}
+
+function broadcastTransactionError(error) {
+  return {
+    type: types.BROADCAST_TRANSACTION_ERROR,
+    payload: error
+  }
+}
+
 function resetCoreBalanceWithdrawal() {
   return {
     type: types.RESET_CORE_BALANCE_WITHDRAWAL
@@ -251,39 +293,63 @@ function resetCoreWithdrawal() {
   }
 }
 
-function withdrawBitcoinClientSide(
+function buildBitcoinTransaction(
   regTestMode,
   paymentKey,
   recipientAddress,
   amountBTC
 ) {
   return dispatch => {
+    logger.info('Building bitcoin transaction')
+    dispatch(buildTransaction(recipientAddress))
+
     if (regTestMode) {
-      logger.info('Using regtest network')
+      logger.info('Changing recipient address to regtest address')
       config.network = network.defaults.LOCAL_REGTEST
-      // browser regtest environment uses 6270
       config.network.blockstackAPIUrl = 'http://localhost:6270'
       recipientAddress = config.network.coerceAddress(recipientAddress)
     }
-    dispatch(withdrawingCoreBalance(recipientAddress, amountBTC))
-
     const amountSatoshis = Math.floor(amountBTC * 1e8)
 
-    return transactions
-      .makeBitcoinSpend(recipientAddress, paymentKey, amountSatoshis)
-      .then(transactionHex => {
-        const myNet = config.network
-        logger.info(`Broadcast btc spend with tx hex: ${transactionHex}`)
-        return myNet.broadcastTransaction(transactionHex)
-      })
-      .then(() => dispatch(withdrawCoreBalanceSuccess()))
-      .catch(error => {
-        logger.error(
-          'withdrawBitcoinClientSide: error generating and broadcasting',
-          error
-        )
-        return dispatch(withdrawCoreBalanceError(error))
-      })
+    logger.debug(`Building transaction to send ${amountSatoshis} satoshis to ${recipientAddress}`)
+    return transactions.makeBitcoinSpend(
+      recipientAddress, paymentKey, amountSatoshis
+    )
+    .then(txHex => {
+      logger.info('Succesfully built bitcoin transaction')
+      dispatch(buildTransactionSuccess(txHex))
+    })
+    .catch(err => {
+      logger.error(`Failed to build bitcoin transaction: ${err}`)
+      dispatch(buildTransactionError(err.message || err.toString()))
+    })
+  }
+}
+
+function broadcastBitcoinTransaction(
+  regTestMode,
+  txHex
+) {
+  return dispatch => {
+    logger.info('Broadcasting bitcoin transaction')
+    logger.debug('Transaction hex:', txHex)
+    dispatch(broadcastTransaction())
+
+    if (regTestMode) {
+      logger.info('Using regtest network to broadcast transaction')
+      config.network = network.defaults.LOCAL_REGTEST
+      config.network.blockstackAPIUrl = 'http://localhost:6270'
+    }
+
+    return config.network.broadcastTransaction(txHex)
+    .then((res) => {
+      logger.info(`Broadcasting bitcoin transaction succesful: ${res}`)
+      dispatch(broadcastTransactionSuccess())
+    })
+    .catch(err => {
+      logger.error(`Failed to broadcast bitcoin transaction: ${err}`)
+      dispatch(broadcastTransactionError(err.message || err.toString()))
+    })
   }
 }
 
@@ -501,7 +567,8 @@ const AccountActions = {
   getCoreWalletAddress,
   refreshCoreWalletBalance,
   resetCoreWithdrawal,
-  withdrawBitcoinClientSide,
+  buildBitcoinTransaction,
+  broadcastBitcoinTransaction,
   withdrawBitcoinFromCoreWallet,
   emailNotifications,
   skipEmailBackup,

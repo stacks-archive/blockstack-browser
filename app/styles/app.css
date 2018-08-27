@@ -6,6 +6,9 @@
     height: 100%;
     padding-top: 100px;
 }
+.body-main.no-header {
+  padding-top: 0;
+}
 
 .body-landing {
     width: 100%;
@@ -1545,10 +1548,24 @@ button {
 }
 
 .form-control-label {
+    display: block;
     color: #949494;
     padding-left: 15px;
+    padding-right: 15px;
     margin-bottom: 0.375rem;
     font-weight: 600
+}
+
+.form-control-label-action {
+    float: right;
+    color: #2c96ff;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: inherit;
+}
+.form-control-label-action:hover {
+    opacity: 0.8;
 }
 
 .form-control-label-centered {
@@ -2286,7 +2303,8 @@ a.modal-body {
 }
 
 .btn-wallet {
-    width: 160px;
+    width: 100%;
+    max-width: 160px;
 }
 
 .react-contextmenu {
