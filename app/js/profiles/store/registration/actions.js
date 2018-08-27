@@ -177,7 +177,7 @@ function registerName(api, domainName, identity, identityIndex,
             }
           })
           .catch((error) => {
-            logger.error('registerName: error POSTing registration to Core', error)
+            logger.error('registerName: error POSTing registration to registrar', error)
             dispatch(registrationError(error))
             throw error
           })
