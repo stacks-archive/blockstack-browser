@@ -6,12 +6,13 @@ import { DefaultProfilePage } from '../../app/js/profiles/DefaultProfilePage'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-function setup() {
+function setup(accounts = []) {
   const props = {
     localIdentities: [{
       profile: {
         '@context': 'http://schema.org',
-        '@type': 'Person'
+        '@type': 'Person',
+        account: accounts
       },
       ownerAddress: 'onwards and upwards',
       verifications: [],
@@ -39,13 +40,42 @@ function setup() {
   }
 }
 
+function alphabeticalOrdered(accounts) {
+  return accounts.first().props().service <
+    accounts.last().props().service
+}
+
 describe('<DefaultProfilePage />', () => {
-  it('should order placeholder proofs alphabetically', () => {
+  describe('with no filled accounts', () => {
     const { wrapper } = setup()
-    const accounts = wrapper.find('div.profile-accounts ul').children()
-    expect(accounts.first().props().service < 
-      accounts.last().props().service)
-      .to.eq(true)
+    const accounts = wrapper.find( 'div.profile-accounts ul').children()
+    it('should order placeholder proofs alphabetically', () => {
+      expect(alphabeticalOrdered(accounts)).to.eq(true)
+    })
+  })
+
+  describe('with filled accounts', () => {
+    const filledAccounts = [{ service: 'twitter'}, 
+                            { service: 'facebook'},
+                            { service: 'ssh'}]
+    const { wrapper } = setup(filledAccounts)
+    const list = wrapper.find('div.profile-accounts ul')
+    it('should order verified proofs alphabetically', () => {
+      const accounts = list.children('[placeholder=false]')
+      expect(alphabeticalOrdered(accounts)).to.eq(true)
+    })
+
+    it('should order placeholder proofs alphabetically', () => {
+      const accounts = list.children('[placeholder=true]')
+      expect(alphabeticalOrdered(accounts)).to.eq(true)
+    })
+
+    it('should present filled proofs before placeholders',() => {
+      const accounts = list.children()
+      accounts.forEach((account, index) => {
+        expect(account.prop('placeholder')).to.equal(index >= filledAccounts.length)
+      })
+    })
   })
 })
 
