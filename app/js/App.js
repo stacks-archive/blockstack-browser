@@ -18,6 +18,8 @@ import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
 import { openInNewTab } from './utils'
 import Modal from 'react-modal'
+import NotificationsSystem from 'reapop'
+import NotificationsTheme from 'reapop-theme-wybo'
 import { hot } from 'react-hot-loader'
 
 import log4js from 'log4js'
@@ -214,6 +216,7 @@ class AppContainer extends Component {
       <div className={`body-main ${noHeader ? 'no-header' : ''}`}>
         <div className="wrapper footer-padding">{children}</div>
         <SupportButton onClick={this.onSupportClick} />
+        <NotificationsSystem theme={NotificationsTheme} />
       </div>
     )
   }
