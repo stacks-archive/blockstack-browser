@@ -1,6 +1,6 @@
 import React from 'react'
 import { expect } from 'chai'
-import Enzyme, { shallow } from 'enzyme'
+import { shallow } from 'enzyme'
 import ProfileCompletion from '../../../app/js/profiles/components/ProfileCompletion'
 
 describe('<ProfileCompletion />', () => {
