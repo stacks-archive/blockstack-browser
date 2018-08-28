@@ -18,7 +18,7 @@ import EditSocialAccount from './components/EditSocialAccount'
 import EditAccount from './components/EditAccount'
 import PhotoModal from './components/PhotoModal'
 import { UserAvatar } from '@blockstack/ui'
-import url from 'url'
+import nodeUrl from 'url'
 
 import { uploadProfile } from '../account/utils'
 import {
@@ -518,8 +518,8 @@ export class DefaultProfilePage extends Component {
   }
 
   avatarUrlWithCacheBust = (avatarUrl, cacheBust) => {
-    var url_parts = url.parse(avatarUrl, true);
-    var query = url_parts.query;
+    const urlParts = nodeUrl.parse(avatarUrl, true)
+    const query = urlParts.query
     
     if(cacheBust.length === 0) {
       return avatarUrl
