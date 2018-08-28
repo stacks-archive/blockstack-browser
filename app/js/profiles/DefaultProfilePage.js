@@ -70,7 +70,8 @@ function mapDispatchToProps(dispatch) {
   )
 }
 
-class DefaultProfilePage extends Component {
+// Named export to test the Component in isolation
+export class DefaultProfilePage extends Component {
   static propTypes = {
     localIdentities: PropTypes.array.isRequired,
     defaultIdentity: PropTypes.number.isRequired,
@@ -584,7 +585,8 @@ class DefaultProfilePage extends Component {
     }
 
     // const accounts = person.profile().account || []
-    const accounts = filledAccounts.concat(placeholders)
+    function compareNames(a, b) { return a.service > b.service ? 1 : -1 }
+    const accounts = filledAccounts.sort(compareNames).concat(placeholders.sort(compareNames))
     const showMoreAccountsButton = hiddenAccounts.length > 0
     // const connections = person.connections() || []
 
