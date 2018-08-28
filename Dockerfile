@@ -1,10 +1,10 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
 
 # Project directory
 WORKDIR /src/blockstack-browser
 
 # Update apt and install wget
-RUN apt-get update && apt-get install -y wget curl apt-utils git
+RUN apt-get update && apt-get install -y wget curl apt-utils git gnupg
 
 # Install node
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
@@ -18,6 +18,9 @@ RUN chmod +x /usr/bin/corsproxy
 
 # Alias the cors-proxy
 RUN ln /usr/bin/corsproxy /usr/bin/blockstack-cors-proxy
+
+RUN apt-get install -y build-essential
+RUN apt-get install -y libpng-dev
 
 # Copy files into container
 COPY . .
