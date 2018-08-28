@@ -18,7 +18,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(SearchActions, dispatch)
 }
 
-class SearchBar extends Component {
+export class SearchBar extends Component {
   static propTypes = {
     query: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
