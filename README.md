@@ -1,8 +1,4 @@
-<p align="center">
-  <img src="https://blockstack.org/images/resources/browser-home-screen@2x.png" alt="Blockstack Browser screenshot" width="686" height="306">
-</p>
-
-# Blockstack Browser [![CircleCI](https://img.shields.io/circleci/project/blockstack/blockstack-browser/master.svg)](https://circleci.com/gh/blockstack/blockstack-browser/tree/master) [![License](https://img.shields.io/github/license/blockstack/blockstack-browser.svg)](https://github.com/blockstack/blockstack-browser/blob/master/LICENSE.md) [![Slack](https://img.shields.io/badge/join-slack-e32072.svg?style=flat)](http://slack.blockstack.org/)
+# Blockstack Browser [![CircleCI](https://img.shields.io/circleci/project/blockstack/blockstack-browser/master.svg)](https://circleci.com/gh/blockstack/blockstack-browser/tree/master) [![License](https://img.shields.io/github/license/blockstack/blockstack-browser.svg)](https://github.com/blockstack/blockstack-browser/blob/master/LICENSE.md) [![Slack](https://img.shields.io/badge/join-slack-e32072.svg?style=flat)](http://slack.blockstack.org/)[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=MWtUNTJDRjZhSlZVL0tFNDlXYW5FNmppZWtlYW1yYjJOSmpoQ0F2V2FLbz0tLWJlUkNGWWhjYTRrbklieGxvR3RWcEE9PQ==--33f37ccb00c047f430e307128ffd5de25715903e$)](https://www.browserstack.com/automate/public-build/MWtUNTJDRjZhSlZVL0tFNDlXYW5FNmppZWtlYW1yYjJOSmpoQ0F2V2FLbz0tLWJlUkNGWWhjYTRrbklieGxvR3RWcEE9PQ==--33f37ccb00c047f430e307128ffd5de25715903e$)
 
 The Blockstack Browser allows you to explore the Blockstack internet.
 
