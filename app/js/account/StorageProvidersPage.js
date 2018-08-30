@@ -12,7 +12,7 @@ import { connectToGaiaHub } from './utils/blockstack-inc'
 import { setCoreStorageConfig } from '@utils/api-utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('storage/StorageProvidersPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {

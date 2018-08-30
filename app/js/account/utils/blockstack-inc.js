@@ -2,10 +2,10 @@
 import log4js from 'log4js'
 import { connectToGaiaHub, GaiaHubConfig } from 'blockstack'
 
-const logger = log4js.getLogger('account/utils/blockstack-inc.js')
+const logger = log4js.getLogger(__filename)
 
 export function redirectToConnectToGaiaHub() {
-  logger.trace('redirectToConnectToGaiaHub')
+  logger.info('redirectToConnectToGaiaHub')
   const port = location.port === '' ? 80 : location.port
   const host = location.hostname
   window.top.location.href = `http://${host}:${port}/account/storage#gaiahub`

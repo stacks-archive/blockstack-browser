@@ -1,7 +1,7 @@
 const BASE = 15
 const GUTTER = BASE * 2
 /* eslint-disable */
-export const defaultAvatartImage = require('@images/avatar.png')
+export const defaultAvatarImage = require('@images/avatar.png')
 /* eslint-enable */
 
 const base = `${BASE}px`

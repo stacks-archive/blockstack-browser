@@ -13,7 +13,7 @@ import { AccountActions }  from '../account/store/account'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/AllProfilesPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {
@@ -59,14 +59,14 @@ class AllProfilesPage extends Component {
   }
 
   componentWillMount() {
-    logger.trace('componentWillMount')
+    logger.info('componentWillMount')
     this.props.refreshIdentities(
       this.props.api,
       this.props.identityAddresses)
   }
 
   componentWillReceiveProps(nextProps) {
-    logger.trace('componentWillReceiveProps')
+    logger.info('componentWillReceiveProps')
     this.setState({
       localIdentities: nextProps.localIdentities
     })
@@ -93,7 +93,7 @@ class AllProfilesPage extends Component {
   }
 
   createNewProfile = (event) => {
-    logger.trace('createNewProfile')
+    logger.info('createNewProfile')
     event.preventDefault()
 
     if (!this.props.isProcessing) {

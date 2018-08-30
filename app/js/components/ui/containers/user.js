@@ -7,7 +7,7 @@ import Image from '@components/Image'
 
 const UserAvatar = ({
   id,
-  username = '?',
+  username,
   size = 46,
   camera,
   textSize = 14,
@@ -33,7 +33,7 @@ const UserAvatar = ({
         }}
       />
     ) : (
-      <span>{firstLetter(username)}</span>
+      <span>{firstLetter(username || '?')}</span>
     )}
     {camera && <User.Avatar.Camera />}
   </User.Avatar>

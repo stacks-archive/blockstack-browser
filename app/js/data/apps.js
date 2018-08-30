@@ -409,9 +409,10 @@ const apps = {
         large: 'app-icon-travelstack-512x512.png'
       },
       website: 'http://www.travelstack.club',
-      launchLink: 'http://www.travelstack.club',
+      launchLink: 'http://app.travelstack.club',
       developer: 'Tiago Alves',
-      status: 'in_progress'
+      storageRequired: true,
+      status: 'user_ready'
     }, {
       name: 'NoteRiot',
       displayName: 'NoteRiot',
