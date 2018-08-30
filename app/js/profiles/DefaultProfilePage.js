@@ -393,7 +393,7 @@ export class DefaultProfilePage extends Component {
 
     const identitySigner = this.props.identityKeypairs[identityIndex]
     const signedProfileTokenData = signProfileForUpload(
-      this.state.profile,
+      newProfile,
       identitySigner
     )
     if (this.props.storageConnected) {
