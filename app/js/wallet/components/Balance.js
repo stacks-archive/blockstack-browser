@@ -10,7 +10,7 @@ import roundTo from 'round-to'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/wallet/components/Balance.js')
+const logger = log4js.getLogger(__filename)
 
 const UPDATE_BALANCE_INTERVAL = 10000
 

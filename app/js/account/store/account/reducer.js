@@ -19,9 +19,12 @@ const initialState = {
     address: null,
     balance: 0.0,
     withdrawal: {
+      txHex: null,
+      isBuilding: false,
+      isBroadcasting: false,
       inProgress: false,
       error: null,
-      recipient: null,
+      recipientAddress: null,
       success: false
     }
   },
@@ -103,21 +106,110 @@ function AccountReducer(state = initialState, action) {
           balances: action.balances
         }
       })
-    case types.RESET_CORE_BALANCE_WITHDRAWAL:
-      return Object.assign({}, state, {
-        coreWallet: Object.assign({}, state.coreWallet, {
+    case types.BUILD_TRANSACTION:
+      return {
+        ...state,
+        coreWallet: {
+          ...state.coreWallet,
           withdrawal: {
-            inProgress: false,
+            txHex: null,
+            isBuilding: true,
+            isBroadcasting: false,
+            inProgress: true,
             error: null,
             success: false,
-            recipientAddress: null
+            recipientAddress: action.payload
           }
-        })
-      })
+        }
+      }
+    case types.BUILD_TRANSACTION_SUCCESS:
+      return {
+        ...state,
+        coreWallet: {
+          ...state.coreWallet,
+          withdrawal: {
+            ...state.coreWallet.withdrawal,
+            txHex: action.payload,
+            isBuilding: false
+          }
+        }
+      }
+    case types.BUILD_TRANSACTION_ERROR:
+      return {
+        ...state,
+        coreWallet: {
+          ...state.coreWallet,
+          withdrawal: {
+            ...state.coreWallet.withdrawal,
+            error: action.payload,
+            isBuilding: false,
+            inProgress: false
+          }
+        }
+      }
+    case types.BROADCAST_TRANSACTION:
+      return {
+        ...state,
+        coreWallet: {
+          ...state.coreWallet,
+          withdrawal: {
+            ...state.coreWallet.withdrawal,
+            txHex: action.payload,
+            isBroadcasting: true,
+            inProgress: true,
+            error: null,
+            success: false
+          }
+        }
+      }
+    case types.BROADCAST_TRANSACTION_SUCCESS:
+      return {
+        ...state,
+        coreWallet: {
+          ...state.coreWallet,
+          withdrawal: {
+            ...state.coreWallet.withdrawal,
+            isBroadcasting: false,
+            inProgress: false,
+            success: true
+          }
+        }
+      }
+    case types.BROADCAST_TRANSACTION_ERROR:
+      return {
+        ...state,
+        coreWallet: {
+          ...state.coreWallet,
+          withdrawal: {
+            ...state.coreWallet.withdrawal,
+            isBroadcasting: false,
+            inProgress: false,
+            error: action.payload
+          }
+        }
+      }
+    case types.RESET_CORE_BALANCE_WITHDRAWAL:
+      return {
+        ...state,
+        coreWallet: {
+          ...state.coreWallet,
+          withdrawal: {
+            txHex: null,
+            isBuilding: false,
+            isBroadcasting: false,
+            inProgress: false,
+            error: null,
+            success: false
+          }
+        }
+      }
     case types.WITHDRAWING_CORE_BALANCE:
       return Object.assign({}, state, {
         coreWallet: Object.assign({}, state.coreWallet, {
           withdrawal: {
+            txHex: null,
+            isBuilding: false,
+            isBroadcasting: false,
             inProgress: true,
             error: null,
             success: false,

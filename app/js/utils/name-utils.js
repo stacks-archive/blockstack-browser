@@ -1,6 +1,6 @@
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('utils/name-utils.js')
+const logger = log4js.getLogger(__filename)
 
 export function isABlockstackName(s) {
   return /^[a-z0-9_-]+\.[a-z0-9_-]+$/.test(s)
