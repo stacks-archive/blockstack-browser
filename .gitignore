@@ -18,6 +18,7 @@ coverage
 # Integration test output directories
 test/cypress/videos
 test/cypress/screenshots
+cypress
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release

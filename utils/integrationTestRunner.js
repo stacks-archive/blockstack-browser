@@ -6,7 +6,7 @@ const server = http.createServer((request, response) => {
   return handler(request, response, { "public": "build" })
 })
 
-server.listen(5001, () => {
+server.listen(3000, () => {
   console.log('Server running...')
   return cypress.run()
   .then((results) => {
