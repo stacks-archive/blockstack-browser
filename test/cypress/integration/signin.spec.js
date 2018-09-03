@@ -24,7 +24,10 @@ describe('Sign in', () => {
 
     cy.contains('Restoring')
 
-    cy.wait(8000)
+    // Use cy.wait() to allow time for page to load
+    // This should be replaced with a promise
+    // https://stackoverflow.com/questions/47299968/cypress-with-systemjs
+    cy.wait(10000)
     cy.get('h2').contains('temporary_new_testing_id')
 
     cy.get('div').contains('Go to Blockstack').click({force: true})
