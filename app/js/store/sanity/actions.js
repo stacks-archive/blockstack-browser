@@ -4,7 +4,7 @@ import log4js from 'log4js'
 import { isApiPasswordValid, isCoreApiRunning } from '../../utils/api-utils'
 import { isCoreEndpointDisabled } from '../../utils/window-utils'
 
-const logger = log4js.getLogger('store/sanity/actions.js')
+const logger = log4js.getLogger(__filename)
 
 function coreApiPasswordIsNotValid() {
   return {

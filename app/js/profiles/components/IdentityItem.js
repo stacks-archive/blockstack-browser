@@ -6,7 +6,7 @@ import { UserAvatar } from '@blockstack/ui'
 
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/components/IdentityItem.js')
+const logger = log4js.getLogger(__filename)
 
 class IdentityItem extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ class IdentityItem extends Component {
   transferFromOnenameClick = event => {
     event.preventDefault()
     event.stopPropagation()
-    logger.trace('transferFromOnenameClick')
+    logger.info('transferFromOnenameClick')
     const identityAddress = this.props.ownerAddress
     const profileUrl = this.props.profileUrl
     const url = `https://onename.com/settings?action=export&address=${identityAddress}&url=${profileUrl}`

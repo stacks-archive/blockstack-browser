@@ -33,12 +33,10 @@ import { AuthActions } from '../auth/store/auth'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
-import { connectToGaiaHub } from '../account/utils/blockstack-inc'
 import { RegistrationActions } from '../profiles/store/registration'
-import { BLOCKSTACK_INC } from '../account/utils/index'
-import { setCoreStorageConfig } from '@utils/api-utils'
 import { hasNameBeenPreordered } from '@utils/name-utils'
-import { ServerAPI, trackEventOnce } from '@utils/server-utils'
+import { trackEventOnce } from '@utils/server-utils'
+import { sendRecoveryEmail, sendRestoreEmail } from '@utils/email-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'
@@ -51,8 +49,9 @@ import {
   Username,
   RecoveryInformationScreen
 } from './views'
+import { notify } from 'reapop'
 
-const logger = log4js.getLogger('onboarding/index.js')
+const logger = log4js.getLogger(__filename)
 
 const views = [
   Initial,
@@ -82,7 +81,6 @@ const VIEW_EVENTS = {
 const SUBDOMAIN_SUFFIX = 'id.blockstack'
 
 const mapStateToProps = state => ({
-  updateApi: PropTypes.func.isRequired,
   localIdentities: selectLocalIdentities(state),
   registration: selectRegistration(state),
   storageConnected: selectStorageConnected(state),
@@ -99,11 +97,6 @@ const mapStateToProps = state => ({
   appManifestLoadingError: selectAppManifestLoadingError(state)
 })
 
-const CREATE_ACCOUNT_INITIAL = 'createAccount/initial'
-const CREATE_ACCOUNT_STARTED = 'createAccount/started'
-const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
-const CREATE_ACCOUNT_SUCCESS = 'createAccount/success'
-
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
@@ -111,7 +104,8 @@ const mapDispatchToProps = dispatch =>
       ...SettingsActions,
       ...IdentityActions,
       ...RegistrationActions,
-      ...AuthActions
+      ...AuthActions,
+      notify
     },
     dispatch
   )
@@ -128,8 +122,9 @@ class Onboarding extends React.Component {
     emailSubmitted: false,
     emailsSending: false,
     emailsSent: false,
+    recoveryEmailError: null,
+    restoreEmailError: null,
     loading: false,
-    creatingAccountStatus: CREATE_ACCOUNT_INITIAL,
     view: VIEWS.INITIAL,
     usernameRegistrationInProgress: false
   }
@@ -179,50 +174,51 @@ class Onboarding extends React.Component {
    */
   submitUsername = username => {
     this.setState({
-      creatingAccountStatus: CREATE_ACCOUNT_STARTED,
       username,
       loading: true
+    }, () => {
+      setTimeout(() => {
+        this.createAccount()
+      }, 500)
     })
   }
 
   /**
    * This is our main function for creating a new account
    */
-  createAccount = () => {
-    const { username, password } = this.state
-    if (!username) {
-      throw new Error('Missing a username! How did that happen?')
-    } else if (!password) {
+  createAccount = async () => {
+    const { password } = this.state
+    if (!password) {
       throw new Error('Missing a password! How did that happen?')
     }
     logger.debug('creating account, createAccount()')
 
-    this.setState({
-      creatingAccountStatus: CREATE_ACCOUNT_IN_PROCESS
-    })
     // Initialize our wallet
-    this.initializeWallet().then(() =>
-      // Create new ID and owner address and then set to default
-      this.createNewIdAndSetDefault().then(() =>
-        // Connect our default storage
-        this.connectStorage().then(() =>
-          // Finally, register the username
-          this.registerUsername()
-        )
-      )
-    )
+    await this.initializeWallet()
+    // Create new ID and owner address and then set to default
+    await this.createNewIdAndSetDefault()
+    // Connect our default storage
+    await this.props.connectStorage()
+    // Register the username
+    await this.registerUsername()
+    // Send the emails
+    await this.sendEmails()
+
+    this.updateView(VIEWS.INFO)
   }
 
   /**
    * Register the username
    */
   registerUsername = async () => {
-    console.log('registerUsername()')
+    logger.trace('registerUsername')
     let username = this.state.username
+    if (!username) {
+      logger.info('registerUsername: no username set, skipping registration')
+      return Promise.resolve()
+    }
     const suffix = `.${SUBDOMAIN_SUFFIX}`
     username += suffix
-    console.log('about to submit username', username)
-    logger.trace('registerUsername')
     const nameHasBeenPreordered = hasNameBeenPreordered(
       username,
       this.props.localIdentities
@@ -234,6 +230,7 @@ class Onboarding extends React.Component {
       logger.error(
         `registerUsername: username '${username}' has already been preordered`
       )
+      return Promise.resolve()
     } else {
       this.setState({
         usernameRegistrationInProgress: true
@@ -250,7 +247,7 @@ class Onboarding extends React.Component {
       const identity = this.props.localIdentities[identityIndex]
       const keypair = this.props.identityKeypairs[identityIndex]
 
-      this.props.registerName(
+      return this.props.registerName(
         this.props.api,
         username,
         identity,
@@ -258,8 +255,27 @@ class Onboarding extends React.Component {
         address,
         keypair
       )
-      this.setState({
-        creatingAccountStatus: CREATE_ACCOUNT_SUCCESS
+      .catch((err) => {
+        logger.error(`username registration error: ${err}`)
+        this.props.notify({
+          title: 'Username Registration Failed',
+          message: `Sorry, something went wrong while registering ${username}. ` +
+            'You can try to register again later from your profile page. Some ' +
+            'apps may be unusable until you do.',
+          status: 'error',
+          dismissAfter: 0,
+          dismissible: true,
+          closeButton: true,
+          position: 'b'
+        })
+        this.setState({
+          username: ''
+        })
+      })
+      .then(() => {
+        this.setState({
+          usernameRegistrationInProgress: false
+        })
       })
     }
   }
@@ -301,9 +317,10 @@ class Onboarding extends React.Component {
    * Send Emails
    * this will send both emails (restore and recovery)
    */
-  sendEmails = async (type = 'both') => {
+  sendEmails = (type = 'both') => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
+    const id = username ? `${username}.${SUBDOMAIN_SUFFIX}` : undefined
 
     /**
      * TODO: add this as a notification or something the user can see
@@ -312,25 +329,35 @@ class Onboarding extends React.Component {
       return null
     }
 
-    const fullUsername = `${username}.${SUBDOMAIN_SUFFIX}`
 
-    const b64EncryptedBackupPhrase = new Buffer(
+
+    const encodedPhrase = new Buffer(
       encryptedBackupPhrase,
       'hex'
     ).toString('base64')
 
-    if (type === 'recovery') {
-      await this.sendRecovery(fullUsername, email, b64EncryptedBackupPhrase)
-    } else if (type === 'restore') {
-      await this.sendRestore(fullUsername, email, b64EncryptedBackupPhrase)
-    } else {
-      await this.sendRestore(fullUsername, email, b64EncryptedBackupPhrase)
-      await this.sendRecovery(fullUsername, email, b64EncryptedBackupPhrase)
+    this.setState({
+      emailsSending: true,
+      emailsSent: false
+    })
+
+    let recoveryPromise = Promise.resolve()
+    let restorePromise = Promise.resolve()
+    if (type === 'recovery' || type === 'both') {
+      recoveryPromise = sendRecoveryEmail(email, id, encodedPhrase)
+        .then(() => this.setState({ recoveryEmailError: null }))
+        .catch((err) => this.setState({ recoveryEmailError: err }))
+    } if (type === 'restore' || type === 'both') {
+      restorePromise = sendRestoreEmail(email, id, encodedPhrase)
+        .then(() => this.setState({ restoreEmailError: null }))
+        .catch((err) => this.setState({ restoreEmailError: err }))
     }
 
-    return this.setState({
-      emailsSending: false,
-      emailsSent: true
+    return Promise.all([recoveryPromise, restorePromise]).then(() => {
+      this.setState({
+        emailsSending: false,
+        emailsSent: true
+      })
     })
   }
 
@@ -380,56 +407,6 @@ class Onboarding extends React.Component {
   }
 
   /**
-   * Send Recovery Email
-   */
-  sendRecovery(blockstackId, email, encryptedSeed) {
-    const { protocol, hostname, port } = location
-    const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
-    const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(
-      encryptedSeed
-    )}`
-
-    return ServerAPI.post('/recovery', {
-      email,
-      seedRecovery,
-      blockstackId
-    })
-      .then(
-        () => {
-          console.log(`emailNotifications: sent ${email} recovery email`)
-        },
-        error => {
-          console.log('emailNotifications: error', error)
-        }
-      )
-      .catch(error => {
-        console.log('emailNotifications: error', error)
-      })
-  }
-
-  /**
-   * Send restore email
-   */
-  sendRestore(blockstackId, email, encryptedSeed) {
-    return ServerAPI.post('/restore', {
-      email,
-      encryptedSeed,
-      blockstackId
-    })
-      .then(
-        () => {
-          console.log(`emailNotifications: sent ${email} restore email`)
-        },
-        error => {
-          console.log('emailNotifications: error', error)
-        }
-      )
-      .catch(error => {
-        console.log('emailNotifications: error', error)
-      })
-  }
-
-  /**
    * initialize our wallet
    * this will initialize our wallet and then create an account for us
    * see account/actions.js
@@ -461,60 +438,11 @@ class Onboarding extends React.Component {
   }
 
   /**
-   * Connect Storage
-   */
-  async connectStorage() {
-    logger.debug('fire connectStorage')
-    const storageProvider = this.props.api.gaiaHubUrl
-    const signer = this.props.identityKeypairs[0].key
-    return connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
-      const newApi = Object.assign({}, this.props.api, {
-        gaiaHubConfig,
-        hostedDataLocation: BLOCKSTACK_INC
-      })
-      this.props.updateApi(newApi)
-      const identityIndex = 0
-      const identity = this.props.localIdentities[identityIndex]
-      const identityAddress = identity.ownerAddress
-      const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
-      const profile = identity.profile
-      setCoreStorageConfig(
-        newApi,
-        identityIndex,
-        identityAddress,
-        profile,
-        profileSigningKeypair,
-        identity
-      )
-      logger.debug('connectStorage: storage initialized')
-      const newApi2 = Object.assign({}, newApi, { storageConnected: true })
-      this.props.updateApi(newApi2)
-      this.props.storageIsConnected()
-      logger.debug('connectStorage: storage configured')
-      logger.debug('connectStorage has finished')
-    })
-  }
-
-  /**
    * Next function for the recovery info screen
    */
   infoNext = () => {
     this.props.emailNotifications(this.state.email, this.state.emailConsent)
     this.updateView(VIEWS.HOORAY)
-  }
-
-  componentDidUpdate() {
-    const { creatingAccountStatus, loading, username, password } = this.state
-
-    const registrationBegin =
-      creatingAccountStatus === CREATE_ACCOUNT_STARTED &&
-      loading &&
-      username &&
-      password
-
-    if (registrationBegin) {
-      setTimeout(() => this.createAccount(), 500)
-    }
   }
 
   componentWillMount() {
@@ -550,26 +478,6 @@ class Onboarding extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { registration } = nextProps
-    const {
-      usernameRegistrationInProgress,
-      emailsSent,
-      emailsSending
-    } = this.state
-    if (usernameRegistrationInProgress && registration.registrationSubmitted) {
-      if (!emailsSent && !emailsSending) {
-        this.setState({
-          emailsSending: true
-        })
-        this.sendEmails().then(() => this.updateView(VIEWS.INFO))
-      }
-    } else if (registration.error) {
-      logger.error(`username registration error: ${registration.error}`)
-      this.setState({
-        usernameRegistrationInProgress: false
-      })
-    }
-
     if (nextProps.appManifest) {
       // If we were waiting on an appManifest, we haven't tracked yet.
       this.trackViewEvent(this.state.view, nextProps.appManifest)
@@ -625,7 +533,9 @@ class Onboarding extends React.Component {
           password,
           username,
           app,
-          sendRecoveryEmail: () => this.sendEmails('restore'),
+          restoreEmailError: this.state.restoreEmailError,
+          emailsSending: this.state.emailsSending,
+          sendRestoreEmail: () => this.sendEmails('restore'),
           next: () => this.infoNext()
         }
       },
@@ -687,14 +597,14 @@ Onboarding.propTypes = {
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
   emailNotifications: PropTypes.func.isRequired,
-  updateApi: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
   identityKeypairs: PropTypes.array.isRequired,
-  storageIsConnected: PropTypes.func.isRequired,
   registerName: PropTypes.func.isRequired,
   resetApi: PropTypes.func.isRequired,
   verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
-  encryptedBackupPhrase: PropTypes.string
+  encryptedBackupPhrase: PropTypes.string,
+  notify: PropTypes.func.isRequired,
+  connectStorage: PropTypes.func.isRequired
 }
 
 export default withRouter(

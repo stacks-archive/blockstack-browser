@@ -1,8 +1,15 @@
 import DEFAULT_API from './default'
 import * as types from './types'
 import log4js from 'log4js'
+import { selectApi } from '@common/store/selectors/settings'
+import { selectIdentityKeypairs } from '@common/store/selectors/account'
+import { selectLocalIdentities } from '@common/store/selectors/profiles'
+import { connectToGaiaHub } from '../../utils/blockstack-inc'
+import { BLOCKSTACK_INC } from '../../utils'
+import { setCoreStorageConfig } from '@utils/api-utils'
+import AccountActions from '../account/actions'
 
-const logger = log4js.getLogger('account/store/settings/actions.js')
+const logger = log4js.getLogger(__filename)
 
 function updateApi(api) {
   return {
@@ -33,7 +40,7 @@ function refreshBtcPrice(btcPriceUrl) {
 }
 
 function resetApi(api) {
-  logger.trace('resetApi')
+  logger.info('resetApi')
   let coreAPIPassword = api.coreAPIPassword
   let gaiaHubConfig = api.gaiaHubConfig
 
@@ -56,11 +63,57 @@ function resetApi(api) {
   }
 }
 
+function connectStorage() {
+  return (dispatch, getState) => {
+    logger.info('connectStorage')
+    const state = getState()
+    const api = selectApi(state)
+    let idKeypairs = selectIdentityKeypairs(state)
+
+    if (!idKeypairs || !idKeypairs[0] || !idKeypairs[0].key) {
+      logger.warn('connectStorage: no keypairs, bailing out')
+      return Promise.reject()
+    }
+
+    return connectToGaiaHub(api.gaiaHubUrl, idKeypairs[0].key).then(gaiaHubConfig => {
+      const newApi = Object.assign({}, api, {
+        gaiaHubConfig,
+        hostedDataLocation: BLOCKSTACK_INC
+      })
+      dispatch(updateApi(newApi))
+
+      idKeypairs = selectIdentityKeypairs(state)
+      const localIdentities = selectLocalIdentities(state)
+
+      const identityIndex = 0
+      const identity = localIdentities[identityIndex]
+      const identityAddress = identity.ownerAddress
+      const profileSigningKeypair = idKeypairs[identityIndex]
+      const profile = identity.profile
+      setCoreStorageConfig(
+        newApi,
+        identityIndex,
+        identityAddress,
+        profile,
+        profileSigningKeypair,
+        identity
+      )
+      logger.debug('connectStorage: storage initialized')
+
+      const newApi2 = Object.assign({}, newApi, { storageConnected: true })
+      dispatch(updateApi(newApi2))
+      dispatch(AccountActions.storageIsConnected())
+      logger.debug('connectStorage: storage configured')
+    })
+  }
+}
+
 const SettingsActions = {
   refreshBtcPrice,
   resetApi,
   updateApi,
-  updateBtcPrice
+  updateBtcPrice,
+  connectStorage
 }
 
 export default SettingsActions

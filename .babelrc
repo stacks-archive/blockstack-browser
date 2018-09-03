@@ -1,13 +1,20 @@
 {
   "env": {
     "test": {
-      "presets": ["flow", "react", "es2015", "stage-0"],
+      "presets": [
+        "flow",
+        "react",
+        "es2015",
+        "stage-0"
+      ],
       "plugins": [
         "rewire",
         [
           "module-resolver",
           {
-            "root": ["./app"],
+            "root": [
+              "./app"
+            ],
             "alias": {
               "@components": "./app/js/components",
               "@common": "./app/js/common",
@@ -50,6 +57,7 @@
       ],
       "plugins": [
         "react-hot-loader/babel",
+        "react-loadable/babel",
         "babel-plugin-transform-class-properties",
         "babel-plugin-transform-async-to-generator",
         "babel-plugin-transform-react-jsx",
@@ -58,7 +66,9 @@
         [
           "module-resolver",
           {
-            "root": ["./app"],
+            "root": [
+              "./app"
+            ],
             "alias": {
               "@components": "./app/js/components",
               "@common": "./app/js/common",
@@ -100,6 +110,7 @@
         ]
       ],
       "plugins": [
+        "react-loadable/babel",
         "babel-plugin-transform-class-properties",
         "babel-plugin-transform-async-to-generator",
         "babel-plugin-transform-react-jsx",
@@ -108,7 +119,9 @@
         [
           "module-resolver",
           {
-            "root": ["./app"],
+            "root": [
+              "./app"
+            ],
             "alias": {
               "@components": "./app/js/components",
               "@common": "./app/js/common",

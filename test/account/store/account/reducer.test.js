@@ -9,6 +9,12 @@ import {
   UPDATE_BACKUP_PHRASE,
   UPDATE_BALANCES,
   RESET_CORE_BALANCE_WITHDRAWAL,
+  BUILD_TRANSACTION,
+  BUILD_TRANSACTION_SUCCESS,
+  BUILD_TRANSACTION_ERROR,
+  BROADCAST_TRANSACTION,
+  BROADCAST_TRANSACTION_SUCCESS,
+  BROADCAST_TRANSACTION_ERROR,
   WITHDRAWING_CORE_BALANCE,
   WITHDRAW_CORE_BALANCE_SUCCESS,
   WITHDRAW_CORE_BALANCE_ERROR,
@@ -237,6 +243,134 @@ describe('Account Store: AccountReducer', () => {
 
     it('by setting coreWallet.withdrawal.recipientAddress to null', () =>
       assert.equal(actualState.coreWallet.withdrawal.recipientAddress, null)
+    )
+  })
+
+  describe('processes BUILD_TRANSACTION action', () => {
+    const recipientAddress = 'fakeRecipientAddress'
+    const action = {
+      type: BUILD_TRANSACTION,
+      payload: recipientAddress
+    }
+    const actualState = AccountReducer(undefined, action)
+
+    it('by setting coreWallet.withdrawal.isBuilding to true', () =>
+      assert.equal(actualState.coreWallet.withdrawal.isBuilding, true)
+    )
+
+    it('by setting coreWallet.withdrawal.inProgress to true', () =>
+      assert.equal(actualState.coreWallet.withdrawal.inProgress, true)
+    )
+
+    it('by setting coreWallet.withdrawal.error to null', () =>
+      assert.equal(actualState.coreWallet.withdrawal.error, null)
+    )
+
+    it('by setting coreWallet.withdrawal.success to false', () =>
+      assert.equal(actualState.coreWallet.withdrawal.success, false)
+    )
+
+    it('by setting coreWallet.withdrawal.recipientAddress to provided recipientAddress', () =>
+      assert.equal(actualState.coreWallet.withdrawal.recipientAddress, recipientAddress)
+    )
+  })
+
+  describe('processes BUILD_TRANSACTION_SUCCESS action', () => {
+    const txHex = 'deadb33f'
+    const action = {
+      type: BUILD_TRANSACTION_SUCCESS,
+      payload: txHex
+    }
+    const actualState = AccountReducer(undefined, action)
+
+    it('by setting coreWallet.withdrawal.isBuilding to false', () =>
+      assert.equal(actualState.coreWallet.withdrawal.isBuilding, false)
+    )
+
+    it('by setting coreWallet.withdrawal.txHex to provided txHex', () =>
+      assert.equal(actualState.coreWallet.withdrawal.txHex, txHex)
+    )
+  })
+
+  describe('processes BUILD_TRANSACTION_ERROR action', () => {
+    const error = 'oh no'
+    const action = {
+      type: BUILD_TRANSACTION_ERROR,
+      payload: error
+    }
+    const actualState = AccountReducer(undefined, action)
+
+    it('by setting coreWallet.withdrawal.isBuilding to false', () =>
+      assert.equal(actualState.coreWallet.withdrawal.isBuilding, false)
+    )
+
+    it('by setting coreWallet.withdrawal.error to provided error', () =>
+      assert.equal(actualState.coreWallet.withdrawal.error, error)
+    )
+  })
+
+  describe('processes BROADCAST_TRANSACTION action', () => {
+    const txHex = 'deadb33f'
+    const action = {
+      type: BROADCAST_TRANSACTION,
+      payload: txHex
+    }
+    const actualState = AccountReducer(undefined, action)
+
+    it('by setting coreWallet.withdrawal.isBroadcasting to true', () =>
+      assert.equal(actualState.coreWallet.withdrawal.isBroadcasting, true)
+    )
+
+    it('by setting coreWallet.withdrawal.inProgress to true', () =>
+      assert.equal(actualState.coreWallet.withdrawal.inProgress, true)
+    )
+
+    it('by setting coreWallet.withdrawal.error to null', () =>
+      assert.equal(actualState.coreWallet.withdrawal.error, null)
+    )
+
+    it('by setting coreWallet.withdrawal.success to false', () =>
+      assert.equal(actualState.coreWallet.withdrawal.success, false)
+    )
+  })
+
+  describe('processes BROADCAST_TRANSACTION_SUCCESS action', () => {
+    const action = {
+      type: BROADCAST_TRANSACTION_SUCCESS
+    }
+    const actualState = AccountReducer(undefined, action)
+
+    it('by setting coreWallet.withdrawal.isBroadcasting to false', () =>
+      assert.equal(actualState.coreWallet.withdrawal.isBroadcasting, false)
+    )
+
+    it('by setting coreWallet.withdrawal.inProgress to false', () =>
+      assert.equal(actualState.coreWallet.withdrawal.inProgress, false)
+    )
+
+    it('by setting coreWallet.withdrawal.success to true', () =>
+      assert.equal(actualState.coreWallet.withdrawal.success, true)
+    )
+  })
+
+  describe('processes BROADCAST_TRANSACTION_ERROR action', () => {
+    const error = 'oh no'
+    const action = {
+      type: BROADCAST_TRANSACTION_ERROR,
+      payload: error
+    }
+    const actualState = AccountReducer(undefined, action)
+
+    it('by setting coreWallet.withdrawal.isBroadcasting to false', () =>
+      assert.equal(actualState.coreWallet.withdrawal.isBuilding, false)
+    )
+
+    it('by setting coreWallet.withdrawal.inProgress to false', () =>
+      assert.equal(actualState.coreWallet.withdrawal.inProgress, false)
+    )
+
+    it('by setting coreWallet.withdrawal.error to provided error', () =>
+      assert.equal(actualState.coreWallet.withdrawal.error, error)
     )
   })
 

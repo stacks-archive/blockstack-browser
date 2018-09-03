@@ -1,4 +1,9 @@
-import { encrypt, decrypt } from '../../app/js/utils/encryption-utils'
+import {
+  encrypt,
+  decrypt,
+  validateAndCleanRecoveryInput,
+  RECOVERY_TYPE
+} from '../../app/js/utils/encryption-utils'
 
 describe('encryption-utils', () => {
   beforeEach(() => {
@@ -26,7 +31,7 @@ describe('encryption-utils', () => {
 
   describe('decrypt legacy', () => {
     it('should decrypt legacy encryption', () => {
-      const legacyCiphertext = '1c94d7de0000000304d583f007c71e6e5fef354c046e8c64b1adebd6904dcb' + 
+      const legacyCiphertext = '1c94d7de0000000304d583f007c71e6e5fef354c046e8c64b1adebd6904dcb' +
         '007a1222f07313643873455ab2a3ab3819e99d518cc7d33c18bde02494aa74efc35a8970b2007b2fc715f' +
         '6067cee27f5c92d020b1806b0444994aab80050a6732131d2947a51bacb3952fb9286124b3c2b3196ff7e' +
         'dce66dee0dbd9eb59558e0044bddb3a78f48a66cf8d78bb46bb472bd2d5ec420c831fc384293252459524' +
@@ -40,6 +45,91 @@ describe('encryption-utils', () => {
           assert(plaintextBuffer)
           assert.equal(plaintextBuffer.toString(), phrase)
         })
+    })
+  })
+
+  describe('validateAndCleanRecoveryInput', () => {
+    const mnemonic = 'opera way alley phrase agree rug hip lyrics link outer inch pigeon'
+    const encrypted = 'XqG2hpkJHS7OPdWt4+T9qlNWgE2Xw99XvE5hVNhO5Lj3/8QpK3WpQ' +
+      '4RwO4EaPKS8ocLIL/6te240qV+5awYvWR8GGtCLLRRxbMeUp5xqyGk='
+
+    function assertCleanAndValid(input, cleaned, type) {
+      const result = validateAndCleanRecoveryInput(input)
+      assert(result.isValid === true, `result.isValid should be true, is ${result.isValid}`)
+      assert(result.cleaned === cleaned, `result.cleaned should be ${cleaned}, is ${input}`)
+      assert(result.type === type, `result.type should be '${type}'`)
+    }
+
+    function assertInvalid(input) {
+      const result = validateAndCleanRecoveryInput(input)
+      console.log(result)
+      assert(result.isValid === false, `result.isValid should be false, is '${result.isValid}'`)
+    }
+
+    // Mnemonic phrases
+    it('Should find a 12 word mnemonic phrase valid', () => {
+      assertCleanAndValid(mnemonic, mnemonic, RECOVERY_TYPE.MNEMONIC)
+    })
+
+    it('Should clean a dash-delimited mnemonic phrase and find it valid', () => {
+      const dashMnemonic = mnemonic.replace(' ', '-')
+      assertCleanAndValid(dashMnemonic, mnemonic, RECOVERY_TYPE.MNEMONIC)
+    })
+
+    it('Should clean an underscore-delimited mnemonic phrase and find it valid', () => {
+      const dashMnemonic = mnemonic.replace(' ', '_')
+      assertCleanAndValid(dashMnemonic, mnemonic, RECOVERY_TYPE.MNEMONIC)
+    })
+
+    it('Should clean a mnemonic phrase with extra space and find it valid', () => {
+      const whitespaceMnemonic = ` ${mnemonic}
+      `;
+      assertCleanAndValid(whitespaceMnemonic, mnemonic, RECOVERY_TYPE.MNEMONIC)
+    })
+
+    it('Should clean an all caps mnemonic phrase and find it valid', () => {
+      const uppercaseMnemonic = mnemonic.toUpperCase()
+      assertCleanAndValid(uppercaseMnemonic, mnemonic, RECOVERY_TYPE.MNEMONIC)
+    })
+
+    it('Should find a mnemonic that isn’t %3 words long invalid', () => {
+      const shortMnemonic = 'opera way alley phrase agree rug hip lyrics link outer inch'
+      assertInvalid(shortMnemonic)
+    })
+
+    it('Should find a mnemonic that includes incorrect words to be invalid', () => {
+      const wrongWordMnemonic = 'blockstackiscool way alley phrase agree rug hip lyrics link outer inch pigeon'
+      assertInvalid(wrongWordMnemonic)
+    })
+
+    // Encrypted keys
+    it('Should find an encrypted key valid', () => {
+      assertCleanAndValid(encrypted, encrypted, RECOVERY_TYPE.ENCRYPTED)
+    })
+
+    it('Should find an encrypted key with whitespace valid', () => {
+      const whitespaceEncrypted = `
+        XqG2hpkJHS7OPdWt4+T9qlNWgE2
+        Xw99XvE5hVNhO5Lj3/8QpK3WpQ4
+        RwO4EaPKS8ocLIL/6te240qV+5a
+        wYvWR8GGtCLLRRxbMeUp5xqyGk=
+      `
+      assertCleanAndValid(whitespaceEncrypted, encrypted, RECOVERY_TYPE.ENCRYPTED)
+    })
+
+    it('Should find an encrypted key missing = valid, and append it for us', () => {
+      const noEqualEncrypted = encrypted.replace('=', '')
+      assertCleanAndValid(noEqualEncrypted, encrypted, RECOVERY_TYPE.ENCRYPTED)
+    })
+
+    it('Should find an encrypted key that’s too short invalid', () => {
+      const shortKey = encrypted.slice(1)
+      assertInvalid(shortKey)
+    })
+
+    it('Should find an encrypted key with special characters invalid', () => {
+      const invalidCharacter = `!${encrypted}`
+      assertInvalid(invalidCharacter)
     })
   })
 })
