@@ -1,7 +1,7 @@
 {
   "name": "blockstack-browser",
   "description": "The Blockstack browser",
-  "version": "0.32.2",
+  "version": "0.33.0",
   "author": "Blockstack PBC <admin@blockstack.com>",
   "dependencies": {
     "bigi": "^1.4.2",

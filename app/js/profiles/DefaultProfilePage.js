@@ -18,6 +18,7 @@ import EditSocialAccount from './components/EditSocialAccount'
 import EditAccount from './components/EditAccount'
 import PhotoModal from './components/PhotoModal'
 import { UserAvatar } from '@blockstack/ui'
+import nodeUrl from 'url'
 
 import { uploadProfile } from '../account/utils'
 import {
@@ -70,7 +71,8 @@ function mapDispatchToProps(dispatch) {
   )
 }
 
-class DefaultProfilePage extends Component {
+// Named export to test the Component in isolation
+export class DefaultProfilePage extends Component {
   static propTypes = {
     localIdentities: PropTypes.array.isRequired,
     defaultIdentity: PropTypes.number.isRequired,
@@ -391,7 +393,7 @@ class DefaultProfilePage extends Component {
 
     const identitySigner = this.props.identityKeypairs[identityIndex]
     const signedProfileTokenData = signProfileForUpload(
-      this.state.profile,
+      newProfile,
       identitySigner
     )
     if (this.props.storageConnected) {
@@ -515,6 +517,21 @@ class DefaultProfilePage extends Component {
     }
   }
 
+  avatarUrlWithCacheBust = (avatarUrl, cacheBust) => {
+    const urlParts = nodeUrl.parse(avatarUrl, true)
+    const query = urlParts.query
+    
+    if(cacheBust.length === 0) {
+      return avatarUrl
+    }
+
+    if (Object.keys(query).length > 0) {
+      return `${avatarUrl}&${cacheBust}`
+    } else {
+      return `${avatarUrl}?${cacheBust}`
+    }
+  }
+
   render() {
     const identityIndex = this.props.defaultIdentity
     const identity = this.state.localIdentities[identityIndex]
@@ -584,7 +601,8 @@ class DefaultProfilePage extends Component {
     }
 
     // const accounts = person.profile().account || []
-    const accounts = filledAccounts.concat(placeholders)
+    function compareNames(a, b) { return a.service > b.service ? 1 : -1 }
+    const accounts = filledAccounts.sort(compareNames).concat(placeholders.sort(compareNames))
     const showMoreAccountsButton = hiddenAccounts.length > 0
     // const connections = person.connections() || []
 
@@ -739,7 +757,7 @@ class DefaultProfilePage extends Component {
                     <div className="avatar-md m-b-0 text-center">
                       {person.avatarUrl() ? (
                         <Image
-                          src={`${person.avatarUrl()}?${this.state.avatarCacheBust}`}
+                          src={this.avatarUrlWithCacheBust(person.avatarUrl(), this.state.avatarCacheBust)}
                           fallbackSrc={defaultAvatarImage}
                           className="rounded-circle clickable"
                           onClick={this.openPhotoModal}
