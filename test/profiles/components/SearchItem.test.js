@@ -4,14 +4,23 @@ import { shallow } from 'enzyme'
 import SearchItem from '../../../app/js/profiles/components/SearchItem'
 
 describe('<SearchItem />', () => {
-  let props
   let wrapper
-  before(() => {
-    props = {
-      domainName: 'humphrey.id',
-      profile: {}
+  const props = {
+    domainName: 'humphrey.id',
+    profile: {
+      'angellist': {
+        'username': 'humphrey'
+      },
+      'name': {
+        'formatted': 'Humphrey Bogart'
+      },
+      'facebook': {
+        'username': 'humphreyb'
+      }
     }
-
+  }
+  
+  beforeEach(() => {
     wrapper = shallow(<SearchItem {...props} />)
     console.log(wrapper.debug())
   })
@@ -26,5 +35,9 @@ describe('<SearchItem />', () => {
 
   it('displays the domain name', () => {
     expect(wrapper.find('.livesearch-id').text()).to.contain(props.domainName)
+  })
+
+  it('includes SocialAccountItems', () => {
+    expect(wrapper.find('Connect(SocialAccountItem)').length).to.equal(1)
   })
 })
