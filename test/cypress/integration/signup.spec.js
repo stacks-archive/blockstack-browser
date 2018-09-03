@@ -9,7 +9,10 @@ describe('Sign up', () => {
   it('create new Blockstack ID workflow', () => {
     cy.visit('/')
 
-    cy.get('div').contains('Create a new Blockstack ID').click()
+    // The force: true object is needed as sometimes
+    // Cypress reports that the target element is 
+    // invisible (height = 0 and width = 0)
+    cy.get('div').contains('Create a new Blockstack ID').click({force: true})
 
     cy.contains('What is your email address?')
 
