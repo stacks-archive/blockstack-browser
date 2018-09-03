@@ -19,6 +19,7 @@ coverage
 test/cypress/videos
 test/cypress/screenshots
 cypress
+!test/cypress
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
