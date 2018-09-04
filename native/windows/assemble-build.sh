@@ -8,7 +8,13 @@ npm i
 
 NODE_ENV=production npm run build
 
+TEMPDIR=$(mktemp -d)
+pushd $TEMPDIR
+npm i express
+popd
+
 cp -r build native/windows/BlockstackBrowser/Resources/build
+cp -r "$TEMPDIR/node_modules" native/windows/BlockstackBrowser/Resources/
 cp native/blockstackProxy.js native/windows/BlockstackBrowser/Resources/blockstackProxy.js
 curl https://nodejs.org/dist/latest-v8.x/win-x86/node.exe --output native/windows/BlockstackBrowser/Resources/node.exe
 
