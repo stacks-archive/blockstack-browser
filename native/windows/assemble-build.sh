@@ -5,7 +5,7 @@ VERSION=$(cat package.json | grep '"version":' | awk '{ print $2 }' | sed -e 's/
 echo "Building Version $VERSION"
 
 docker pull quay.io/blockstack/blockstack-browser:v$VERSION
-docker run -it quay.io/blockstack/blockstack-browser:v$VERSION --name browser-data /bin/true
+docker run -it --name browser-data quay.io/blockstack/blockstack-browser:v$VERSION /bin/true
 docker cp browser-data:/src/blockstack-browser/build native/windows/BlockstackBrowser/Resources
 
 TEMPDIR=$(mktemp -d)
