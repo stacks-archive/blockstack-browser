@@ -17,13 +17,16 @@ describe('<EditAccount />', () => {
   let isVerifiedArray = [true, false]
   isVerifiedArray.forEach((isVerified) => {
     it(`should have the correct verified class when ${isVerified ? 'verified': 'unverified'}`, () => {
-      props.verified = verified
+      props.verified = isVerified
       wrapper = shallow(<EditAccount {...props} />)
-      expect(wrapper.find('div.profile-account').hasClass('verified')).to.equal(verified)
+      expect(wrapper.find('div.profile-account').hasClass('verified')).to.equal(isVerified)
     })
   })
 
   describe('when there is an account type', () => {
+    beforeEach(() => {
+      wrapper = shallow(<EditAccount {...props} />)
+    })
     it('displays the service name', () => {
       expect(wrapper.find('div.heading').text()).to.contain(props.service)
     })
