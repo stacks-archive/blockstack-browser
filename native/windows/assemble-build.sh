@@ -1,10 +1,11 @@
 #!/bin/bash
+set -e
 
 VERSION=$(cat package.json | grep '"version":' | awk '{ print $2 }' | sed -e 's/"//g' | sed -e 's/,//')
 
 echo "Building Version $VERSION"
 
-docker pull quay.io/blockstack/blockstack-browser:v$VERSION
+docker pull --platform=linux quay.io/blockstack/blockstack-browser:v$VERSION
 
 echo "Dockerfile pulled!"
 
