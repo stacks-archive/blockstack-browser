@@ -114,8 +114,7 @@ namespace BlockstackBrowser
 
         private void RunBlockstackBrowser()
         {
-            String path = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
-            String blockstackCommand = "Resources\\blockstackProxy.js 8888 " + path + "\\Resources\\build";
+            String blockstackCommand = "Resources\\blockstackProxy.js 8888"
             this.browserProxy = ShellOut(blockstackCommand);
         }
 
