@@ -8,16 +8,15 @@ describe('<SearchBar />', () => {
   const props = {
       query: 'search term',
       placeholder: 'Search...',
-      updateQuery: () => {},
+      updateQuery: () => {}
   }
   const context = { 
     router: {
       push: function(newPath) { 
         this.newPath = newPath
-        console.log(newPath)
       },
       getPath: function() { return this.newPath }
-    },
+    }
   }
 
   beforeEach(() => {
@@ -55,14 +54,14 @@ describe('<SearchBar />', () => {
   })
 
   it('correctly creates a new path for a blockstackID', () => {
-    let id = 'blockstack.id'
+    const id = 'blockstack.id'
     makeQuery(id)
     expect(wrapper.context().router.getPath())
       .to.equal(`/profiles/${id}`)
   })
 
   it('correctly creates a new path for a search query', () => {
-    let query = 'a query'
+    const query = 'a query'
     makeQuery(query)
     expect(wrapper.context().router.getPath())
       .to.equal(`/profiles/i/search/${query.replace(' ', '%20')}`)
@@ -78,5 +77,4 @@ describe('<SearchBar />', () => {
       key: 'Enter'
     })
   }
-  
 })

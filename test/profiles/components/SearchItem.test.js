@@ -20,9 +20,8 @@ describe('<SearchItem />', () => {
     }
   }
   
-  beforeEach(() => {
+  before(() => {
     wrapper = shallow(<SearchItem {...props} />)
-    console.log(wrapper.debug())
   })
 
   it('renders the component with a Link tag', () => {
