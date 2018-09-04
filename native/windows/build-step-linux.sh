@@ -7,6 +7,8 @@ echo "Building Version $VERSION"
 
 docker pull quay.io/blockstack/blockstack-browser:v$VERSION
 docker run -i --name browser-data quay.io/blockstack/blockstack-browser:v$VERSION /bin/true
-docker cp browser-data:/src/blockstack-browser/build build
+docker cp browser-data:/src/blockstack-browser/build .
 
 echo "Dockerfile copied!"
+
+echo "$PWD $(ls)"
