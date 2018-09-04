@@ -5,8 +5,17 @@ VERSION=$(cat package.json | grep '"version":' | awk '{ print $2 }' | sed -e 's/
 echo "Building Version $VERSION"
 
 docker pull quay.io/blockstack/blockstack-browser:v$VERSION
-docker run -it --name browser-data quay.io/blockstack/blockstack-browser:v$VERSION /bin/true
+
+echo "Dockerfile pulled!"
+
+docker run -i --name browser-data quay.io/blockstack/blockstack-browser:v$VERSION /bin/true
+
+echo "Dockerfile ran!"
+
 docker cp browser-data:/src/blockstack-browser/build native/windows/BlockstackBrowser/Resources
+
+echo "Dockerfile copied!"
+
 
 TEMPDIR=$(mktemp -d)
 pushd $TEMPDIR
