@@ -114,7 +114,7 @@ namespace BlockstackBrowser
 
         private void RunBlockstackBrowser()
         {
-            String blockstackCommand = "Resources\\blockstackProxy.js 8888"
+            String blockstackCommand = "Resources\\blockstackProxy.js 8888";
             this.browserProxy = ShellOut(blockstackCommand);
         }
 
