@@ -3,6 +3,7 @@ set -e
 
 VERSION=$(cat package.json | grep '"version":' | awk '{ print $2 }' | sed -e 's/"//g' | sed -e 's/,//')
 
+cp -r build native/windows/BlockstackBrowser/Resources
 
 TEMPDIR=$(mktemp -d)
 pushd $TEMPDIR
