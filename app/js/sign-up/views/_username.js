@@ -77,7 +77,7 @@ class UsernameView extends React.Component {
       const MIN_USERNAME_LENGTH = 8
       const validLength = values.username.length >= MIN_USERNAME_LENGTH
 
-      const minLengthErrorMessage = `Username must be at least ${8} characters.`
+      const minLengthErrorMessage = `Must be at least ${8} characters.`
 
       if (!validLength) {
         this.setState({
