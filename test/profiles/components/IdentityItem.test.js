@@ -13,7 +13,7 @@ describe('<IdentityItem />', () => {
         onClick: function() {},
         router: {},
         index: 0,
-        profileUrl: ''
+        profileUrl: 'myProfileUrl'
   }
 
   const itemsThatShouldAlwaysAppear = () => {
@@ -60,6 +60,11 @@ describe('<IdentityItem />', () => {
   }
 
   describe('when allowed to register a username', () => {
+    const mockEvent = {
+      preventDefault: () => { return true },
+      stopPropagation: () => { return true },
+    }
+
     beforeEach(() => {
       props.canAddUsername = true
       wrapper = shallow(<IdentityItem {...props} />)
@@ -71,9 +76,33 @@ describe('<IdentityItem />', () => {
       expect(wrapper.find('ContextMenu').length).to.equal(1)
     })
 
+    it('should process transfer from onename', () => {
+      sinon.stub(window, 'open', () => {
+        return {
+          focus: () => { return true}
+        }
+      })
+      const url = `https://onename.com/settings?action=export&address=${props.ownerAddress}&url=${props.profileUrl}`
+
+      const menuItem = wrapper.find('MenuItem') 
+      menuItem.simulate('click', mockEvent)
+      expect(window.open.calledWith(url, '_blank')).to.equal(true)
+    })
+
     it('should render a link to add username', () => {
       expect(wrapper.find('p.card-title a').text()).to.contain('Add username')
     })
+
+    it('the link should use the correct URL', () => {
+      props.router.push = () => { return true }
+      sinon.stub(props.router, 'push')
+      const url = `/profiles/i/add-username/${props.index}/search`
+    
+      const anchor = wrapper.find('p.card-title a')
+      anchor.simulate('click', mockEvent)
+      expect(props.router.push.calledWith(url)).to.equal(true)
+    })
+
   
     it('should not render a username field', () => {
       expect(wrapper.find('p.card-title span').length).to.equal(0)
