@@ -3,9 +3,6 @@ FROM node:10
 # Project directory
 WORKDIR /src/blockstack-browser
 
-#RUN apt-get install -y build-essential
-#RUN apt-get install -y libpng-dev 
-
 # Copy files into container
 COPY . .
 
