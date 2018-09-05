@@ -459,7 +459,7 @@ function refreshBalances(insightUrl, addresses, coreAPIPassword) {
                 })
 
                 if (results.length >= addresses.length) {
-                  const balances = {}
+                  let balances = {}
                   let total = 0.0
 
                   for (let i = 0; i < results.length; i++) {
