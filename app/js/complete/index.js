@@ -43,11 +43,8 @@ import { formatAppManifest } from '@common'
 import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import {
   Initial,
-  Email,
   Password,
   Success,
-  Username,
-  RecoveryInformationScreen,
   Seed,
   SeedConfirm
 } from './views'
@@ -65,7 +62,7 @@ const views = [
   Seed,
   SeedConfirm,
   Password,
-  Success,
+  Success
 ]
 const VIEWS = {
   INITIAL: 0,
@@ -546,7 +543,7 @@ class Onboarding extends React.Component {
         props: {
           previous: () => this.updateView(VIEWS.INITIAL),
           seed: seedString.split(' '),
-          seedString: seedString,
+          seedString,
           next: () => this.updateView(VIEWS.SEED_CONFIRM)
           // next: () =>
           //   this.updateView(
@@ -559,7 +556,7 @@ class Onboarding extends React.Component {
         props: {
           previous: () => this.updateView(VIEWS.SEED),
           next: () => this.updateView(VIEWS.PASSWORD),
-          seed: seedString.split(' '),
+          seed: seedString.split(' ')
           // setVerified: () => { console.log('set verified') }, //() => this.setVerified(),
           // verified: false //this.props.verified
         }
@@ -585,7 +582,7 @@ class Onboarding extends React.Component {
           goToRecovery: this.goToBackup,
           finish: () => this.finish()
         }
-      },
+      }
     ]
 
     const currentViewProps = viewProps.find(v => v.show === view) || {}
