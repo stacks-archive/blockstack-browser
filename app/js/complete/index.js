@@ -290,7 +290,7 @@ class Onboarding extends React.Component {
    * this will either send us home or to the app that the user came from
    */
   finish = () => {
-    window.location.href = 'http://localhost:8080/feed'
+    window.location.href = 'http://publik.test-blockstack.com/feed'
     // if (this.props.appManifest) {
     //   this.redirectToAuth()
     // } else {
