@@ -218,6 +218,12 @@ const NotFoundPage = Loadable({
   delay: LOADABLE_DELAY
 })
 
+const CompletePage = Loadable({
+  loader: () => import(/* webpackChunkName: "CompletePage" */ './complete'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
+
 
 const accountCreated = connectedRouterRedirect({
   redirectPath: state =>
@@ -280,6 +286,8 @@ export default (
     </Route>
     <Route path="/sign-up" component={ SignUpPage }/>
     <Route path="/sign-up/*" component={ SignUpPage }/>
+    <Route path="/complete" component={ CompletePage }/>
+    <Route path="/complete/*" component={ CompletePage }/>
     { /**
      * TODO: move /update back up ^^, had to move it out of the 'app' nested route
      * because when we wipe data, it wants to redirect to /sign-up
