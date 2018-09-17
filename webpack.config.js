@@ -5,15 +5,21 @@ const webpack = require('webpack')
  */
 const WebpackBar = require('webpackbar')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const ReactLoadablePlugin = require('react-loadable/webpack')
   .ReactLoadablePlugin
+const Stylish = require('webpack-stylish')
+const HSWP = require('hard-source-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 
 const isProd = process.env.NODE_ENV === 'production'
+const isDev = !isProd
+const analyze = !!process.env.ANALYZE
 
 /**
  * Output config
@@ -31,6 +37,7 @@ const output = {
  * Our Config Object
  */
 module.exports = {
+  stats: analyze ? 'normal' : 'none',
   mode: isProd ? 'production' : 'development',
   devtool: !isProd ? 'cheap-module-source-map' : 'source-map',
   entry: {
@@ -138,43 +145,16 @@ module.exports = {
     }
   },
   optimization: {
-    minimize: isProd,
-    nodeEnv: isProd ? 'production' : 'development',
+    nodeEnv: JSON.stringify(process.env.NODE_ENV),
+    minimize: !isDev,
+    concatenateModules: !isDev,
+    namedModules: true,
+    runtimeChunk: !isDev,
     minimizer: [
-      new UglifyJsPlugin({
-        uglifyOptions: {
-          parse: {
-            // we want uglify-js to parse ecma 8 code. However, we don't want it
-            // to apply any minfication steps that turns valid ecma 5 code
-            // into invalid ecma 5 code. This is why the 'compress' and 'output'
-            // sections only apply transformations that are ecma 5 safe
-            // https://github.com/facebook/create-react-app/pull/4234
-            ecma: 8
-          },
-          compress: {
-            ecma: 5,
-            warnings: false,
-            // Disabled because of an issue with Uglify breaking seemingly valid code:
-            // https://github.com/facebook/create-react-app/issues/2376
-            // Pending further investigation:
-            // https://github.com/mishoo/UglifyJS2/issues/2011
-            comparisons: false
-          },
-          mangle: {
-            safari10: true,
-            reserved: ['BigInteger', 'ECPair', 'Point']
-          },
-          output: {
-            ecma: 5,
-            comments: false,
-            // Turned on because emoji and regex is not minified properly using default
-            // https://github.com/facebook/create-react-app/issues/2488
-            ascii_only: true
-          }
-        },
+      new TerserPlugin({
         parallel: true,
-        cache: true,
-        sourceMap: true
+        sourceMap: analyze,
+        cache: true
       })
     ],
     splitChunks: {
@@ -182,23 +162,30 @@ module.exports = {
       minSize: 0,
       maxAsyncRequests: Infinity,
       maxInitialRequests: Infinity,
-      name: false,
+      name: true,
       cacheGroups: {
-        commons: {
-          chunks: 'initial',
-          minChunks: 2,
-          reuseExistingChunk: true
-        },
         vendors: {
           name: 'vendors',
+          chunks: 'initial',
           enforce: true,
           test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          reuseExistingChunk: true
+        },
+        commons: {
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2,
+          test: /[\\/]app[\\/]/,
+          priority: -5,
           reuseExistingChunk: true
         }
       }
     }
   },
   plugins: [
+    new HSWP(),
+    new Stylish(),
     new WebpackBar({
       color: '#9E5FC1',
       minimal: false
@@ -206,6 +193,25 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NamedChunksPlugin((chunk) => {
+      // https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
+      // https://github.com/webpack/webpack/issues/1315#issuecomment-386267369
+      if (chunk.name) {
+        return chunk.name
+      }
+      // eslint-disable-next-line no-underscore-dangle
+      return [...chunk._modules]
+        .map((m) =>
+          path.relative(
+            m.context,
+            m.userRequest.substring(0, m.userRequest.lastIndexOf('.'))
+          )
+        )
+        .join('_')
+    }),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HashedModuleIdsPlugin(),
     new LodashModuleReplacementPlugin(),
     new CopyWebpackPlugin([
       {
@@ -233,12 +239,24 @@ module.exports = {
     }),
     new ReactLoadablePlugin({
       filename: './build/react-loadable.json'
-    }),
-    new workboxPlugin.GenerateSW({
-      swDest: '../sw.js',
-      clientsClaim: true,
-      skipWaiting: true,
-      include: [/\.html$/, /\.js$/]
     })
-  ]
+  ].concat(isProd ? [new workboxPlugin.GenerateSW({
+    swDest: 'static/sw.js',
+    importWorkboxFrom: 'local',
+    skipWaiting: true,
+    clientsClaim: true,
+    runtimeCaching: [
+      {
+        urlPattern: '/',
+        handler: 'networkFirst',
+        options: {
+          cacheableResponse: {
+            statuses: [0, 200]
+          }
+        }
+      }
+    ]
+  })] : [])
+    .concat(analyze ? [new BundleAnalyzerPlugin()] : [])
+
 }
