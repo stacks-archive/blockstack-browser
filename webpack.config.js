@@ -1,8 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const ReactLoadablePlugin = require('react-loadable/webpack')
-  .ReactLoadablePlugin
-
 /**
  * Plugins
  */
@@ -12,6 +9,9 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
+const ReactLoadablePlugin = require('react-loadable/webpack')
+  .ReactLoadablePlugin
+
 
 const isProd = process.env.NODE_ENV === 'production'
 
@@ -19,24 +19,13 @@ const isProd = process.env.NODE_ENV === 'production'
  * Output config
  */
 const output = {
-  filename: 'js/[name].[hash:8].js',
-  chunkFilename: 'js/[name].[hash:8].chunk.js',
+  filename: isProd ? 'static/js/[name].[contenthash:8].js' : 'static/js/[name].js',
+  chunkFilename: isProd ? 'static/js/[name].[contenthash:8].chunk.js' : 'static/js/[name].chunk.js',
   path: path.resolve(__dirname, 'build'),
   publicPath: '/',
   globalObject: 'self'
 }
 
-/**
- * Production changes
- *
- * We change path/publicPath in prod because having
- * them in dev affects webpack-dev-server
- */
-if (isProd) {
-  output.path = path.resolve(__dirname, 'build/static')
-  output.publicPath = '/static/'
-  output.globalObject = undefined
-}
 
 /**
  * Our Config Object
@@ -240,8 +229,7 @@ module.exports = {
         minifyJS: true,
         minifyCSS: true,
         minifyURLs: true
-      },
-      chunks: ['main', 'vendors']
+      }
     }),
     new ReactLoadablePlugin({
       filename: './build/react-loadable.json'
