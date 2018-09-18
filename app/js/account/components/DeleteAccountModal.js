@@ -15,8 +15,9 @@ const DeleteAccountModal = props => (
     <h3 className="modal-heading">Are you sure you want to reset Blockstack Browser?</h3>
     <div className="modal-body">
       <p>
-        Please make sure you have a written copy of your keychain phrase before continuing otherwise
-        you will lose access to this keychain and any money or IDs associated with it.
+        Please make sure you have a written copy of your secret recovery phrase before
+        continuing otherwise you will lose access to this account and any money or IDs
+        associated with it.
       </p>
     </div>
     <div className="delete-account-buttons">

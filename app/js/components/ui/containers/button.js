@@ -2,7 +2,13 @@ import React from 'react'
 import { StyledButton, Buttons } from '@ui/components/button'
 import PropTypes from 'prop-types'
 import { Spinner } from '@ui/components/spinner'
-import { ArrowRightIcon, SearchIcon } from 'mdi-react'
+import { ArrowRightIcon, SearchIcon, QrcodeIcon } from 'mdi-react'
+
+const iconMap = {
+  SearchIcon,
+  ArrowRightIcon,
+  QrcodeIcon
+}
 
 const Button = ({
   label,
@@ -25,10 +31,7 @@ const Button = ({
     }
   }
 
-  const SearchIconBool = icon === 'SearchIcon' ? SearchIcon : null
-
-  const IconComponent =
-    icon === 'ArrowRightIcon' ? ArrowRightIcon : SearchIconBool
+  const IconComponent = iconMap[icon]
 
   const content = loading ? (
     <React.Fragment>
@@ -40,10 +43,13 @@ const Button = ({
   )
 
   const renderIcon = () =>
-    icon &&
+    IconComponent &&
     !loading && (
       <StyledButton.Icon>
-        <IconComponent size={18} color="rgba(75, 190, 190, 1)" />
+        <IconComponent
+          size={18}
+          color={rest.primary ? 'rgba(75, 190, 190, 1)' : 'rgba(0, 0, 0, 0.6)'}
+        />
       </StyledButton.Icon>
     )
   return (
