@@ -6,7 +6,7 @@ import {
   isNameAvailable, getNamePrices
 } from '@utils/index'
 
-const logger = log4js.getLogger('profiles/store/availability/actions.js')
+const logger = log4js.getLogger(__filename)
 
 function checkingNameAvailability(domainName) {
   return {

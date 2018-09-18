@@ -7,7 +7,7 @@ import { DEFAULT_PROFILE } from '@utils/profile-utils'
 import { isSubdomain, getNameSuffix } from '@utils/name-utils'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('profiles/store/registration/actions.js')
+const logger = log4js.getLogger(__filename)
 
 
 function profileUploading() {
@@ -49,7 +49,7 @@ function registrationError(error) {
 }
 
 function beforeRegister() {
-  logger.trace('beforeRegister')
+  logger.info('beforeRegister')
   return dispatch => {
     dispatch(registrationBeforeSubmit())
   }
@@ -73,14 +73,20 @@ function registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFil
     Authorization: authorizationHeaderValue(api.coreAPIPassword)
   }
 
-  logger.trace(`Submitting registration for ${domainName} to ${registerUrl}`)
+  logger.info(`Submitting registration for ${domainName} to ${registerUrl}`)
 
   return fetch(registerUrl, {
     method: 'POST',
     headers: requestHeaders,
     body: registrationRequestBody
   })
-  .then((response) => response.text())
+  .then((response) => {
+    if (!response.ok) {
+      logger.error(`Subdomain registrar responded with status code ${response.status}`)
+      return Promise.reject(new Error('Failed to register username'))
+    }
+    return response.text()
+  })
   .then((responseText) => JSON.parse(responseText))
 }
 
@@ -137,21 +143,21 @@ function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paym
 
 function registerName(api, domainName, identity, identityIndex,
                       ownerAddress, keypair, paymentKey = null) {
-  logger.trace(`registerName: domainName: ${domainName}`)
+  logger.info(`registerName: domainName: ${domainName}`)
   return dispatch => {
     logger.debug(`Signing a new profile for ${domainName}`)
     const profile = identity.profile || DEFAULT_PROFILE
     const signedProfileTokenData = signProfileForUpload(profile, keypair)
 
     dispatch(profileUploading())
-    logger.trace(`Uploading ${domainName} profile...`)
+    logger.info(`Uploading ${domainName} profile...`)
     return uploadProfile(api, identity, keypair, signedProfileTokenData)
     .then((profileUrl) => {
-      logger.trace(`Uploading ${domainName} profiled succeeded.`)
+      logger.info(`Uploading ${domainName} profiled succeeded.`)
       const tokenFileUrl = profileUrl
       logger.debug(`tokenFileUrl: ${tokenFileUrl}`)
 
-      logger.trace('Making profile zonefile...')
+      logger.info('Making profile zonefile...')
       const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
 
       const nameIsSubdomain = isSubdomain(domainName)
@@ -171,13 +177,13 @@ function registerName(api, domainName, identity, identityIndex,
             }
           })
           .catch((error) => {
-            logger.error('registerName: error POSTing registration to Core', error)
+            logger.error('registerName: error POSTing registration to registrar', error)
             dispatch(registrationError(error))
             throw error
           })
       } else {
         if (api.regTestMode) {
-          logger.trace('Using regtest network')
+          logger.info('Using regtest network')
           config.network = network.defaults.LOCAL_REGTEST
           // browser regtest environment uses 6270
           config.network.blockstackAPIUrl = 'http://localhost:6270'

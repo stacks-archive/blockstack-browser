@@ -3,8 +3,17 @@ import PropTypes from 'prop-types'
 import { ShellScreen } from '@blockstack/ui'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('onboarding/Username.js')
+const logger = log4js.getLogger(__filename)
 const defaultSponsoredName = '.id.blockstack'
+
+const STATUS = {
+  CONFIRMED: 'confirmed',
+  AVAILABLE: 'available',
+  VALIDATING: 'validating',
+  ERROR: 'error',
+  FAIL: 'fail',
+  TAKEN: 'registered_subdomain'
+}
 
 /**
  * Gets the status of submitted username
@@ -19,10 +28,15 @@ const getUsernameStatus = async (
   const api = 'https://registrar.blockstack.org/v1/names/'
   // const url = `https://core.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
   const url = `${api}${username.toLowerCase()}${sponsoredName}`
-  const res = await fetch(url)
-  const user = await res.json()
-  logger.debug('got response', user)
-  return user.status
+  try {
+    const res = await fetch(url)
+    const user = await res.json()
+    logger.debug('getUsernameStatus response:', user)
+    return user.status
+  } catch(err) {
+    logger.error('getUsernameStatus error:', err)
+    return STATUS.FAIL
+  }
 }
 
 const errorMessage = 'A username is required.'
@@ -38,21 +52,21 @@ class UsernameView extends React.Component {
 
     if (
       !noValues &&
-      this.state.status === 'available' &&
+      this.state.status === STATUS.AVAILABLE &&
       values.username === this.state.username
     ) {
-      this.setState({ status: 'confirmed' })
+      this.setState({ status: STATUS.CONFIRMED })
       return null
     }
     this.setState({
-      status: 'validating'
+      status: STATUS.VALIDATING
     })
 
     let errors = {}
 
     if (noValues) {
       this.setState({
-        status: 'error'
+        status: STATUS.ERROR
       })
       errors.username = errorMessage
       throw errors
@@ -63,11 +77,11 @@ class UsernameView extends React.Component {
       const MIN_USERNAME_LENGTH = 8
       const validLength = values.username.length >= MIN_USERNAME_LENGTH
 
-      const minLengthErrorMessage = `Username must be at least ${8} characters.`
+      const minLengthErrorMessage = `Must be at least ${8} characters.`
 
       if (!validLength) {
         this.setState({
-          status: 'error'
+          status: STATUS.ERROR
         })
         errors.username = minLengthErrorMessage
         throw errors
@@ -77,12 +91,19 @@ class UsernameView extends React.Component {
 
       if (invalidChars) {
         this.setState({
-          status: 'error'
+          status: STATUS.ERROR
         })
         errors.username = 'Invalid username (a-zA-Z0-9_)'
         throw errors
       } else {
         const status = await getUsernameStatus(values.username)
+
+        if (status === STATUS.FAIL) {
+          this.setState({ status })
+          errors.username = 'Unable to check availability'
+          throw errors
+        }
+
         errors = {}
         this.setState({
           status,
@@ -91,10 +112,10 @@ class UsernameView extends React.Component {
       }
     }
 
-    const isRegistered = !noValues && this.state.status !== 'available'
+    const isRegistered = !noValues && this.state.status !== STATUS.AVAILABLE
     if (isRegistered) {
       this.setState({
-        status: 'error'
+        status: STATUS.ERROR
       })
       errors.username = 'Username unavailable'
       throw errors
@@ -104,7 +125,7 @@ class UsernameView extends React.Component {
 
     if (Object.keys(errors).length) {
       this.setState({
-        status: 'error'
+        status: STATUS.ERROR
       })
       throw errors
     }
@@ -113,14 +134,16 @@ class UsernameView extends React.Component {
 
   renderButtonLabel = ({ status }) => {
     switch (status) {
-      case 'confirmed':
+      case STATUS.CONFIRMED:
         return 'Loading...'
-      case 'available':
+      case STATUS.AVAILABLE:
         return 'Confirm Username'
-      case 'validating':
+      case STATUS.VALIDATING:
         return 'Checking...'
-      case 'error':
+      case STATUS.ERROR:
         return 'Check Another'
+      case STATUS.FAIL:
+        return 'Try again'
       default:
         return 'Check Availability'
     }
@@ -131,8 +154,14 @@ class UsernameView extends React.Component {
     return next(lowercaseUsername)
   }
 
+  skip() {
+    this.props.next('')
+  }
+
   render() {
     const { updateValue, next, loading, ...rest } = this.props
+    const { status, username } = this.state
+    const canSkip = status === STATUS.FAIL
 
     const props = {
       title: {
@@ -146,8 +175,8 @@ class UsernameView extends React.Component {
           initialValues: { username: '' },
           onSubmit: values => {
             if (
-              this.state.status === 'confirmed' &&
-              this.state.username === values.username
+              status === STATUS.CONFIRMED &&
+              username === values.username
             ) {
               updateValue('username', values.username)
               this.processRegistration(values.username, next)
@@ -158,8 +187,20 @@ class UsernameView extends React.Component {
               type: 'text',
               label: 'Username',
               name: 'username',
-              message:
-                'This will be your unique, public identity for any Blockstack app.',
+              message: (
+                <React.Fragment>
+                  <p>
+                    This will be your unique, public identity for any Blockstack app.
+                  </p>
+                  {canSkip &&
+                    <p>
+                      If you’re having trouble registering a username, you can skip
+                      this now and try again later from your profile. This may make
+                      some apps unusable until you do.
+                    </p>
+                  }
+                </React.Fragment>
+              ),
               autoFocus: true,
               overlay: defaultSponsoredName,
               handleChangeOverride: (e, handleChange) => {
@@ -169,12 +210,12 @@ class UsernameView extends React.Component {
                 })
               },
               positive:
-                this.state.status === 'available' ||
-                this.state.status === 'confirmed'
+                status === STATUS.AVAILABLE ||
+                status === STATUS.CONFIRMED
                   ? 'Username Available!'
                   : undefined,
               error:
-                this.state.status === 'registered_subdomain'
+                status === STATUS.TAKEN
                   ? 'Username taken'
                   : undefined
             }
@@ -182,7 +223,15 @@ class UsernameView extends React.Component {
           actions: {
             split: true,
             items: [
-              {
+              canSkip ? {
+                label: 'Skip Username →',
+                textOnly: true,
+                disabled: loading,
+                onClick: (ev) => {
+                  ev.preventDefault()
+                  this.skip()
+                }
+              } : {
                 label: ' ',
                 textOnly: true
               },

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import Yup from 'yup'
 import { validateMnemonic } from 'bip39'
 import QrScan from '@components/ui/components/qr-scan'
+import { validateAndCleanRecoveryInput } from '@utils/encryption-utils'
 
 function validateInput(value) {
   // Raw mnemonic phrase
@@ -21,7 +22,7 @@ const validationSchema = Yup.object({
   recoveryKey: Yup.string()
     .required('This is required.')
     .test('is-valid', 'That’s not a valid recovery code or key', value =>
-      validateInput(value)
+      validateAndCleanRecoveryInput(value)
     )
 })
 

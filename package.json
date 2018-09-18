@@ -1,7 +1,7 @@
 {
   "name": "blockstack-browser",
   "description": "The Blockstack browser",
-  "version": "0.32.0",
+  "version": "0.33.2",
   "author": "Blockstack PBC <admin@blockstack.com>",
   "dependencies": {
     "bigi": "^1.4.2",
@@ -45,6 +45,8 @@
     "react-router": "^3.0.0",
     "react-spring": "^5.1.2",
     "react-tooltip": "^3.3.0",
+    "reapop": "^2.0.0",
+    "reapop-theme-wybo": "^1.0.2",
     "redux": "^3.6.0",
     "redux-auth-wrapper": "^2.0.2",
     "redux-devtools": "^3.4.1",

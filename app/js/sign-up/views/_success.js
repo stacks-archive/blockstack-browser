@@ -20,15 +20,20 @@ const Success = ({
   const props = {
     title: {
       icon: <UserAvatar {...user} />,
-      children: <React.Fragment>{user.username}</React.Fragment>,
+      children: <React.Fragment>{user.username || 'Nameless User'}</React.Fragment>,
       variant: 'h2',
       subtitle: {
         light: true,
         children: (
           <React.Fragment>
-            {user.username}.{user.suffix}
+            {user.username ? `${user.username}.${user.suffix}` : `ID-${user.id}`}
           </React.Fragment>
-        )
+        ),
+        style: {
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        }
       }
     },
 

@@ -4,7 +4,7 @@ import {
 } from 'blockstack'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('auth/store/auth.js')
+const logger = log4js.getLogger(__filename)
 
 const APP_MANIFEST_LOADING = 'auth/APP_MANIFEST_LOADING'
 const APP_MANIFEST_LOADING_ERROR = 'auth/APP_MANIFEST_LOADING_ERROR'
@@ -74,7 +74,7 @@ function getCoreSessionToken(
   blockchainId
 ) {
   return dispatch => {
-    logger.trace('getCoreSessionToken(): dispatched')
+    logger.info('getCoreSessionToken(): dispatched')
     const deviceId = '0' // Hard code device id until we support multi-device
     getCoreSession(
       coreHost,
@@ -86,7 +86,7 @@ function getCoreSessionToken(
       deviceId
     ).then(
       coreSessionToken => {
-        logger.trace('getCoreSessionToken: generated a token!')
+        logger.info('getCoreSessionToken: generated a token!')
         dispatch(updateCoreSessionToken(appDomain, coreSessionToken))
       },
       error => {
@@ -98,7 +98,7 @@ function getCoreSessionToken(
 
 function noCoreSessionToken(appDomain) {
   return dispatch => {
-    logger.trace('noCoreSessionToken(): dispatched')
+    logger.info('noCoreSessionToken(): dispatched')
     dispatch(updateCoreSessionToken(appDomain, null))
   }
 }

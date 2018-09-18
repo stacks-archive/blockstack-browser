@@ -28,9 +28,6 @@
     </style>
 </head>
 <body>
-<noscript>
-    You need to enable JavaScript to run this app.
-</noscript>
 <div id="loader">
     <svg width="29" height="28" viewBox="0 0 29 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -39,26 +36,36 @@
     </svg>
 </div>
 <div id="app"></div>
+<noscript>
+  <h1>You Must Enable Javascript to Continue</h1>
+  <p>
+    The Blockstack Browser requires Javascript to be enabled in order to
+    work. If you are not sure why you are seeing this message, or don't know
+    how to enable Javascript, please visit
+    <a href="https://www.enable-javascript.com/" rel="noopener noreferrer" target="_blank">enable-javascript.com</a>
+    to learn more.
+  </p>
+</noscript>
 
 
 <style type="text/css">
-    #app {
-        height: 100%;
-        width: 100%;
-    }
+  #app {
+    height: 100%;
+    width: 100%;
+  }
 
-    @-webkit-keyframes sk-rotatePlane {
+  @-webkit-keyframes sk-rotatePlane {
     0% {
-        transform: perspective(200px) rotateX(0deg) rotateY(0deg);
-        -webkit-transform: perspective(200px) rotateX(0deg) rotateY(0deg);
+      transform: perspective(200px) rotateX(0deg) rotateY(0deg);
+      -webkit-transform: perspective(200px) rotateX(0deg) rotateY(0deg);
     }
     25% {
-        transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
-        -webkit-transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
+      transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
+      -webkit-transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
     }
     50% {
-        transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
-        -webkit-transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
+      transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
+      -webkit-transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
     }
     75% {
       transform: perspective(200px) rotateX(-359.99deg) rotateY(-180deg);
@@ -68,20 +75,20 @@
       transform: perspective(200px) rotateX(-359.99deg) rotateY(-359.99deg);
       -webkit-transform: perspective(200px) rotateX(-359.99deg) rotateY(-359.99deg);
     }
-}
+  }
 
-@keyframes sk-rotatePlane {
+  @keyframes sk-rotatePlane {
     0% {
-        transform: perspective(200px) rotateX(0deg) rotateY(0deg);
-        -webkit-transform: perspective(200px) rotateX(0deg) rotateY(0deg);
+      transform: perspective(200px) rotateX(0deg) rotateY(0deg);
+      -webkit-transform: perspective(200px) rotateX(0deg) rotateY(0deg);
     }
     25% {
-        transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
-        -webkit-transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
+      transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
+      -webkit-transform: perspective(200px) rotateX(-180deg) rotateY(0deg);
     }
     50% {
-        transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
-        -webkit-transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
+      transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
+      -webkit-transform: perspective(200px) rotateX(-180deg) rotateY(-180deg);
     }
     75% {
       transform: perspective(200px) rotateX(-359.99deg) rotateY(-180deg);
@@ -91,41 +98,73 @@
       transform: perspective(200px) rotateX(-359.99deg) rotateY(-359.99deg);
       -webkit-transform: perspective(200px) rotateX(-359.99deg) rotateY(-359.99deg);
     }
-}
+  }
 
+  #loader {
+    background: white;
+    height: calc(100vh);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    left: 0;
+    position: absolute;
+    pointer-events: none;
+    transition: 0.25s all ease-in-out;
+    z-index: 99999999999999;
+    transform: translate3d(0, 0, 0);
+  }
 
+  #loader svg {
+    -webkit-animation: sk-rotatePlane 2.4s infinite ease-in-out;
+    animation: sk-rotatePlane 2.4s infinite ease-in-out;
+    width: 80px !important;
+    height: 80px !important;
+    display: block;
+    will-change: transform;
+  }
 
-    #loader {
-        background: white;
-        height: calc(100vh);
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0;
-        padding: 0;
-        top: 0;
-        left: 0;
-        position: absolute;
-        pointer-events: none;
-        transition: 0.25s all ease-in-out;
-        z-index: 99999999999999;
-        transform: translate3d(0, 0, 0);
+  #loader.hidden {
+    opacity: 0;
+  }
 
-    }
-
-    #loader svg {
-        -webkit-animation: sk-rotatePlane 2.4s infinite ease-in-out;
-        animation: sk-rotatePlane 2.4s infinite ease-in-out;
-        width: 80px !important;
-        height: 80px !important;
-        display: block;
-        will-change: transform;
-    }
-
-    #loader.hidden {
-        opacity: 0;
-    }
+  noscript {
+    display: flex;
+    position: fixed;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    z-index: 99999999999999;
+    background: #FFF;
+  }
+  noscript h1,
+  noscript p {
+    width: 100%;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  noscript h1 {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+  }
+  noscript p {
+    font-size: 1.1rem;
+    line-height: 1.7rem;
+  }
+  noscript a,
+  noscript a:visited {
+    color: #3498db;
+    text-decoration: none;
+  }
 </style>
 </body>
 </html>

@@ -8,7 +8,7 @@ import SaveButton from '@components/SaveButton'
 import { SettingsActions } from './store/settings'
 import log4js from 'log4js'
 
-const logger = log4js.getLogger('account/ApiSettingsPage.js')
+const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {
@@ -36,14 +36,14 @@ export class ApiSettingsPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    logger.trace('componentWillReceiveProps')
+    logger.info('componentWillReceiveProps')
     this.setState({
       api: nextProps.api
     })
   }
 
   onValueChange = (event) => {
-    logger.trace('onValueChange')
+    logger.info('onValueChange')
     const api = { ...this.state.api }
     const newValue = event.target.value
     const key = event.target.name
@@ -62,13 +62,13 @@ export class ApiSettingsPage extends Component {
   }
 
   updateApi = () => {
-    logger.trace('updateApi')
+    logger.info('updateApi')
     const api = this.state.api
     this.props.updateApi(api)
   }
 
   resetApi = () => {
-    logger.trace('resetApi')
+    logger.info('resetApi')
     this.props.resetApi(this.props.api)
   }
 
