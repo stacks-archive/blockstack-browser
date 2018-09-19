@@ -136,16 +136,16 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
     alias: {
-      '@components': './app/js/components',
-      '@common': './app/js/common',
-      '@styled': './app/js/components/styled',
-      '@utils': './app/js/utils',
-      '@blockstack/ui': './app/js/components/ui',
-      '@ui/components': './app/js/components/ui/components',
-      '@ui/containers': './app/js/components/ui/containers',
-      '@ui/common': './app/js/components/ui/common',
-      '@images': './app/images',
-      log4js: './app/js/logger.js'
+      '@components': path.resolve(__dirname, './app/js/components'),
+      '@common': path.resolve(__dirname, './app/js/common'),
+      '@styled': path.resolve(__dirname, './app/js/components/styled'),
+      '@utils': path.resolve(__dirname, './app/js/utils'),
+      '@blockstack/ui': path.resolve(__dirname, './app/js/components/ui'),
+      '@ui/components': path.resolve(__dirname, './app/js/components/ui/components'),
+      '@ui/containers': path.resolve(__dirname, './app/js/components/ui/containers'),
+      '@ui/common': path.resolve(__dirname, './app/js/components/ui/common'),
+      '@images': path.resolve(__dirname, './app/images'),
+      log4js: path.resolve(__dirname, './app/js/logger.js')
     }
   },
   optimization: {

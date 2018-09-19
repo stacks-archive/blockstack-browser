@@ -58,6 +58,13 @@ const Field = ({
     }
   }
 
+  const Label = () => (
+    <StyledField.Label htmlFor={name}>
+      {label}
+      {LabelIcon}
+    </StyledField.Label>
+  )
+
   return (
     <StyledField.Group error={error} {...rest}>
       <StyledField.Input.Wrapper>
@@ -75,10 +82,7 @@ const Field = ({
         />
         {PositiveMessage}
         {ErrorMessage}
-        <StyledField.Label htmlFor={name}>
-          {label}
-          {LabelIcon}
-        </StyledField.Label>
+        <Label />
         <StyledField.Input.Bar />
       </StyledField.Input.Wrapper>
       {message && (

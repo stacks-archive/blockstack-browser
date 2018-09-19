@@ -3,6 +3,8 @@ import { trans } from '@ui/common'
 import { spacing } from '@ui/common/constants'
 import { Link } from 'react-router'
 import { darken } from 'polished'
+import {Flex} from '@components/ui/components/primitives'
+
 const Label = styled.div`
   font-style: normal;
   font-weight: 400;
@@ -16,7 +18,6 @@ const Label = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   text-decoration: none !important;
 `
 
@@ -80,7 +81,7 @@ const IconWrapper = styled.div`
   }
 `
 
-const StyledButton = styled.button`
+const StyledButton = styled(Flex)`
   ${({ height }) =>
     height &&
     css`

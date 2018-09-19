@@ -22,7 +22,7 @@ const Title = styled.div`
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-  margin-bottom: ${spacing.gutter};
+  margin-bottom: 10px;
   display: flex;
 `
 const TitleSection = styled.div`

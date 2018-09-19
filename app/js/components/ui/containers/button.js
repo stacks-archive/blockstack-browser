@@ -3,6 +3,7 @@ import { StyledButton, Buttons } from '@ui/components/button'
 import PropTypes from 'prop-types'
 import { Spinner } from '@ui/components/spinner'
 import { ArrowRightIcon, SearchIcon, QrcodeIcon } from 'mdi-react'
+import {Box} from '@components/ui/components/primitives'
 
 const iconMap = {
   SearchIcon,
@@ -23,11 +24,11 @@ const Button = ({
 }) => {
   const ButtonComponent = props => {
     if (to) {
-      return <StyledButton.Link {...props} />
+      return <StyledButton width={1} is='a' {...props} />
     } else if (type) {
-      return <StyledButton {...props} type={type} />
+      return <StyledButton width={1} is='button' {...props} type={type} />
     } else {
-      return <StyledButton.Div {...props} />
+      return <StyledButton width={1} is='div' {...props} />
     }
   }
 
