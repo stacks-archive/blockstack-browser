@@ -41,10 +41,6 @@ class EmailView extends React.Component {
             split: true,
             items: [
               {
-                label: ' ',
-                textOnly: true
-              },
-              {
                 label: 'Next',
                 primary: true,
                 type: 'submit',

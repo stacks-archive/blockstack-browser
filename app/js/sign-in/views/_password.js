@@ -17,6 +17,7 @@ class PasswordView extends React.Component {
       })
     }
   }
+
   componentDidUpdate() {
     this.setError()
   }
@@ -121,6 +122,7 @@ class PasswordView extends React.Component {
 
     return null
   }
+
   render() {
     const {
       updateValue,
@@ -175,10 +177,6 @@ class PasswordView extends React.Component {
             split: true,
             items: [
               {
-                label: ' ',
-                textOnly: true
-              },
-              {
                 label: 'Next',
                 primary: true,
                 type: 'submit',
@@ -199,10 +197,10 @@ class PasswordView extends React.Component {
     }
     return (
       <React.Fragment>
-        {this.props.loading ? (
-          <Shell.Loading message="Restoring your account..." />
-        ) : null}
-        <ShellScreen {...rest} {...props} />
+        { this.props.loading ? (
+          <Shell.Loading message="Restoring your account..."/>
+        ) : null }
+        <ShellScreen { ...rest } { ...props } />
       </React.Fragment>
     )
   }

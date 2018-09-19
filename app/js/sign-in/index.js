@@ -337,13 +337,10 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { view, key, encryptedKey } = this.state
+    const { view, key = '', encryptedKey = '' } = this.state
     const notEmpty = v => v !== ''
-    const initialValue = notEmpty(key)
-      ? key
-      : notEmpty(encryptedKey)
-        ? encryptedKey
-        : ''
+    const value = (a, b) => (notEmpty(a) ? a : b)
+
     const user = this.props.localIdentities.length
       ? this.props.localIdentities[0]
       : {}
@@ -354,7 +351,7 @@ class SignIn extends React.Component {
           previous: this.backToSignUp,
           next: this.validateRecoveryKey,
           updateValue: this.updateValue,
-          value: initialValue
+          value: value(encryptedKey, key)
         }
       },
       {
