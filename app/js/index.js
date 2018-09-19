@@ -1,6 +1,5 @@
 import React from 'react'
 
-import 'babel-polyfill'
 import 'inert-polyfill'
 
 import '../styles/bootstrap.min.css'
