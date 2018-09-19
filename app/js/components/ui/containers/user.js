@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, firstLetter, stringToColor, Type } from '@blockstack/ui'
 import { User } from '@blockstack/ui/components/user'
-import { ChevronRightIcon } from 'mdi-react'
+import ChevronRightIcon from 'mdi-react/ChevronRightIcon'
 import Image from '@components/Image'
 
 const UserAvatar = ({

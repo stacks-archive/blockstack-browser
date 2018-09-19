@@ -2,7 +2,8 @@ import React from 'react'
 import { StyledButton, Buttons } from '@ui/components/button'
 import PropTypes from 'prop-types'
 import { Spinner } from '@ui/components/spinner'
-import { ArrowRightIcon, SearchIcon } from 'mdi-react'
+import ArrowRightIcon from 'mdi-react/ArrowRightIcon'
+import SearchIcon from 'mdi-react/SearchIcon'
 
 const Button = ({
   label,

@@ -2,11 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import StyledPanel from '@styled/onboarding'
 import Show from '@components/Show'
-import * as Icons from 'mdi-react'
+import SyncIcon from 'mdi-react/SyncIcon'
 import { animated, Spring } from 'react-spring'
 import Spinner from '@components/styled/Spinner'
 
-const { SyncIcon } = Icons
 
 const renderItems = (items, view) =>
   items.map(({ show, props, Component }, i) => (
@@ -51,14 +50,9 @@ const PanelCardHeader = ({
       )
     }
     if (h2) {
-      let Icon = null
-      if (mdi && Icons[mdi]) {
-        Icon = Icons[mdi]
-      }
       return (
         <StyledPanel.Card.Title pt={2} full>
           <StyledPanel.Card.Title.Wrapper>
-            {Icon && <Icon size={'1.75rem'} color="#2c96ff" />}
             <h2>{h2}</h2>
           </StyledPanel.Card.Title.Wrapper>
           {h5 && <h5>{h5}</h5>}
