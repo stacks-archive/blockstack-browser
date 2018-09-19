@@ -271,7 +271,7 @@ function refreshIdentities(
   },
   ownerAddresses: Array<string>
 ) {
-  return (dispatch: Dispatch<*>): Promise<*> => {
+  return async (dispatch: Dispatch<*>): Promise<*> => {
     logger.info('refreshIdentities')
 
     const promises: Array<Promise<*>> = ownerAddresses.map((address, index) => {

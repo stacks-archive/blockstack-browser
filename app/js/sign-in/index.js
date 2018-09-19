@@ -175,7 +175,7 @@ class SignIn extends React.Component {
           }
         )
       } catch (e) {
-        console.log(e)
+        logger.debug(e)
         this.setState({
           decrypting: false,
           restoreError: 'Incorrect password or invalid recovery code',
@@ -188,30 +188,32 @@ class SignIn extends React.Component {
   }
 
   restoreAccount = () => {
-    console.log('Restoring account!')
+    logger.debug('Restoring account!')
     const { refreshIdentities, updateEmail } = this.props
     this.setState(
       {
         loading: true
       },
-      () => {
-        // Quick setTimeout just to get the loader going before we lock up the
-        // browser with decryption. TODO: Remove this when it's workerized.
-        setTimeout(() => {
-          this.createAccount()
-            .then(() =>
-              refreshIdentities(this.props.api, this.props.identityAddresses)
+      () =>
+        requestAnimationFrame(async () => {
+          try {
+            await this.createAccount()
+            await refreshIdentities(
+              this.props.api,
+              this.props.identityAddresses
             )
-            .then(() => updateEmail(this.state.email))
-            .then(() => this.updateView(VIEWS.SUCCESS))
-            .catch(() => {
-              this.setState({
-                loading: false,
-                restoreError: 'There was an error loading your account.'
-              })
+            logger.debug('refreshIdentities complete')
+            updateEmail(this.state.email)
+            logger.debug('updated email')
+            this.updateView(VIEWS.SUCCESS)
+            logger.debug('navigate to success screen')
+          } catch (e) {
+            this.setState({
+              loading: false,
+              restoreError: 'There was an error loading your account.'
             })
-        }, 300)
-      }
+          }
+        })
     )
   }
 
@@ -277,6 +279,8 @@ class SignIn extends React.Component {
 
   /**
    * This is our main function for creating a new account
+   *
+   * key: mnemonic
    */
   createAccount = async () => {
     const { key } = this.state
@@ -285,22 +289,27 @@ class SignIn extends React.Component {
     const { isValid } = isBackupPhraseValid(key)
 
     if (!isValid) {
-      logger.error('restoreAccount: Invalid keychain phrase entered')
+      logger.error('restoreAccount: Invalid mnemonic phrase entered')
       return Promise.reject('Invalid recovery phrase entered')
     }
+
     this.setState({
       creatingAccountStatus: CREATE_ACCOUNT_IN_PROCESS
     })
-    // Initialize our wallet
-    return this.initializeWallet().then(() =>
+
+    try {
+      // Initialize our wallet
+      await this.initializeWallet()
       // Create new ID and owner address and then set to default
-      this.createNewIdAndSetDefault().then(() =>
-        // Connect our default storage
-        this.props
-          .connectStorage()
-          .then(() => console.log('account creation done'))
-      )
-    )
+      await this.createNewIdAndSetDefault()
+      // Connect our default storage
+      await this.props.connectStorage()
+      // Account creation finished
+      logger.debug('account creation done')
+      return Promise.resolve()
+    } catch (e) {
+      return Promise.reject(e)
+    }
   }
 
   /**
