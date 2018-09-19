@@ -400,7 +400,7 @@ class SignIn extends React.Component {
           app={formatAppManifest(this.props.appManifest)}
           views={views}
           {...componentProps}
-          invertOnLast
+          disableBackOnView={VIEWS.length - 1}
         />
         <AppHomeWrapper />
       </App>
