@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { Button, firstLetter, stringToColor, Type } from '@blockstack/ui'
 import { User } from '@blockstack/ui/components/user'
 import { ChevronRightIcon } from 'mdi-react'
+import CheckIcon from 'mdi-react/CheckIcon'
 import Image from '@components/Image'
+import {Flex} from '@components/ui/components/primitives'
 
 const UserAvatar = ({
   id,
@@ -33,7 +35,7 @@ const UserAvatar = ({
         }}
       />
     ) : (
-      <span>{firstLetter(username || '?')}</span>
+      <Flex>{username ? firstLetter(username || '?') : <CheckIcon size={42} color="white" />}</Flex>
     )}
     {camera && <User.Avatar.Camera />}
   </User.Avatar>
