@@ -15,6 +15,7 @@ const Field = ({
   overlay,
   name = slugify(label),
   mh,
+  value,
   handleChange,
   handleChangeOverride,
   handleBlur, // these are here to prevent them from being used (fixes form bug double click)
@@ -76,6 +77,7 @@ const Field = ({
           name={name}
           type={type}
           autoFocus={autoFocus}
+          defaultValue={value}
           mh={mh}
           onChange={_handleChange}
           lowercase={type !== 'password'}

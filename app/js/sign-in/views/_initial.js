@@ -68,7 +68,7 @@ export default class InitialSignInScreen extends React.PureComponent {
   }
 
   render() {
-    const { next, ...rest } = this.props
+    const { next, value, ...rest } = this.props
     const { isScanning, scanError } = this.state
 
     const screen = {
@@ -79,7 +79,7 @@ export default class InitialSignInScreen extends React.PureComponent {
         grow: 1,
         form: {
           validationSchema,
-          initialValues: { recoveryKey: '' },
+          initialValues: { recoveryKey: value },
           onSubmit: values => {
             next(values.recoveryKey)
           },
@@ -143,5 +143,6 @@ export default class InitialSignInScreen extends React.PureComponent {
 }
 
 InitialSignInScreen.propTypes = {
-  next: PropTypes.func
+  next: PropTypes.func,
+  value: PropTypes.string
 }

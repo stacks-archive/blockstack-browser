@@ -95,7 +95,7 @@ class SignIn extends React.Component {
       this.props.location.query &&
       this.props.location.query.seed
         ? this.props.location.query.seed
-        : null,
+        : '',
     decrypt: false,
     decrypting: false,
     decryptedKey: null,
@@ -136,11 +136,13 @@ class SignIn extends React.Component {
     if (this.isKeyEncrypted(key)) {
       this.setState({
         encryptedKey: key,
+        seed: '',
         decrypt: true
       })
     } else {
       this.setState({
         seed: key,
+        encryptedKey: '',
         decrypt: false
       })
     }
@@ -335,7 +337,13 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { view } = this.state
+    const { view, key, encryptedKey } = this.state
+    const notEmpty = v => v !== ''
+    const initialValue = notEmpty(key)
+      ? key
+      : notEmpty(encryptedKey)
+        ? encryptedKey
+        : ''
     const user = this.props.localIdentities.length
       ? this.props.localIdentities[0]
       : {}
@@ -345,7 +353,8 @@ class SignIn extends React.Component {
         props: {
           previous: this.backToSignUp,
           next: this.validateRecoveryKey,
-          updateValue: this.updateValue
+          updateValue: this.updateValue,
+          value: initialValue
         }
       },
       {
