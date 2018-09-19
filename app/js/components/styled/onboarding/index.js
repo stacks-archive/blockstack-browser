@@ -1,27 +1,27 @@
 import React from 'react'
-import styled, { css, injectGlobal } from 'styled-components'
+import styled, { css } from 'styled-components'
 import { darken } from 'polished'
 import { color, lineHeight, space } from 'styled-system'
 import { colors } from '@components/styled/theme'
 import PropTypes from 'prop-types'
 
-const placeholderStyles = () => injectGlobal`
-    ::-webkit-input-placeholder {
-      /* Chrome/Opera/Safari */
-      color: rgba(0, 0, 0, 0.25) !important;
-    }
-    ::-moz-placeholder {
-      /* Firefox 19+ */
-      color: rgba(0, 0, 0, 0.25) !important;
-    }
-    :-ms-input-placeholder {
-      /* IE 10+ */
-      color: rgba(0, 0, 0, 0.25) !important;
-    }
-    :-moz-placeholder {
-      /* Firefox 18- */
-      color: rgba(0, 0, 0, 0.25) !important;
-    }`
+// const placeholderStyles = () => injectGlobal`
+//     ::-webkit-input-placeholder {
+//       /* Chrome/Opera/Safari */
+//       color: rgba(0, 0, 0, 0.25) !important;
+//     }
+//     ::-moz-placeholder {
+//       /* Firefox 19+ */
+//       color: rgba(0, 0, 0, 0.25) !important;
+//     }
+//     :-ms-input-placeholder {
+//       /* IE 10+ */
+//       color: rgba(0, 0, 0, 0.25) !important;
+//     }
+//     :-moz-placeholder {
+//       /* Firefox 18- */
+//       color: rgba(0, 0, 0, 0.25) !important;
+//     }`
 
 const mobileCardWidth = 420
 
@@ -435,7 +435,6 @@ const Loading = styled.div`
 
 const PanelCard = ({ children, ...rest }) => (
   <Card {...rest}>
-    {placeholderStyles()}
     <CardWrapper {...rest}>{children}</CardWrapper>
   </Card>
 )
