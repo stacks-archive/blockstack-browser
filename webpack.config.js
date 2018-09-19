@@ -15,9 +15,6 @@ const ReactLoadablePlugin = require('react-loadable/webpack')
 const Stylish = require('webpack-stylish')
 const HSWP = require('hard-source-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const history = require('connect-history-api-fallback')
-const convert = require('koa-connect')
-const webpackServeWaitpage = require('webpack-serve-waitpage')
 
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !isProd
@@ -35,38 +32,6 @@ const output = {
 }
 
 /**
- * Webpack Serve config
- *
- * We have this as a conditional because the webpack config object does not
- * accept the key 'serve' when building for production.
- */
-const serve = isDev
-  ? {
-    serve: {
-      content: [__dirname],
-      devMiddleware: {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods':
-            'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-          'Access-Control-Allow-Headers':
-            'X-Requested-With, content-type, Authorization'
-        }
-      },
-      add: (app, middleware, options) => {
-        const historyOptions = {}
-        app.use(webpackServeWaitpage(options))
-        /**
-         * Essentially devServer.historyApiFallback = true
-         */
-        app.use(convert(history(historyOptions)))
-      }
-    }
-  }
-  : {}
-
-
-/**
  * Our Config Object
  */
 module.exports = {
@@ -81,7 +46,23 @@ module.exports = {
     __filename: true
   },
   output,
-  ...serve,
+   devServer: {
+    open: true,
+    historyApiFallback: true,
+    port: 3000,
+    contentBase: path.resolve(__dirname, 'build'),
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000,
+      ignored: /node_modules/
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers':
+        'X-Requested-With, content-type, Authorization'
+    }
+  },
   module: {
     rules: [
       {
