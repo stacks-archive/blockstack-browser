@@ -4,7 +4,7 @@ const apps = {
     {
       name: 'Dappy Wallet',
       displayName: 'Dappy Wallet',
-      description: 'Non-custodial wallet with decentralised storage.',
+      description: 'Multicurrency light wallet with decentralized storage.',
       version: '1.0.0',
       appIcon: {
         small: 'app-icon-dappy-wallet-256x256.png',

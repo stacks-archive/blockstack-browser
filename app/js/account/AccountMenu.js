@@ -23,7 +23,7 @@ export class AccountMenu extends Component {
     const tabs = [
       { url: '/account/storage', label: 'storage providers' },
       { url: '/account/password', label: 'change password' },
-      { url: '/account/backup', label: 'backup keychain' },
+      { url: '/account/backup', label: 'backup & restore' },
       { url: '/account/delete', label: 'reset browser' },
       { url: '/account/api', label: 'api settings' }
     ]

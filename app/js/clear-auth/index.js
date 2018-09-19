@@ -44,15 +44,14 @@ class ClearAuthPage extends PureComponent {
         <div className="container-fluid">
           <h3 className="p-t-20">Sign Out</h3>
           <p className="p-t-20 alert alert-warning">
-            <strong>Warning:</strong> This will reset your keychain and settings
-            on this device. You’ll be able to restore your keychain, or create
-            a new one afterwards.
+            <strong>Warning:</strong> This will reset your account on this device.
+            You’ll be able to restore your account, or create a new one afterwards.
             <br />
             <br />
-            If you plan to restore your keychain, <strong>make sure you have
+            If you plan to restore your account, <strong>make sure you have
             recorded your backup information.</strong> You will either need your
-            12 word secret key, or your magic recovery code and password to
-            do so.
+            12 word secret recovery key, or your magic recovery code and password
+            to do so.
           </p>
           <div className="m-t-10">
             <button
@@ -65,7 +64,6 @@ class ClearAuthPage extends PureComponent {
               ) : (
                 <span>Reset my device {countdown > 0 && `(${countdown})`}</span>
               )}
-
             </button>
           </div>
           <div className="m-t-10">

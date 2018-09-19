@@ -134,22 +134,17 @@ class SignIn extends React.Component {
       this.setState({ key })
     }
     if (this.isKeyEncrypted(key)) {
-      this.setState(
-        {
-          encryptedKey: key,
-          decrypt: true
-        },
-        () => setTimeout(() => this.updateView(nextView), 100)
-      )
+      this.setState({
+        encryptedKey: key,
+        decrypt: true
+      })
     } else {
-      this.setState(
-        {
-          seed: key,
-          decrypt: false
-        },
-        () => setTimeout(() => this.updateView(nextView), 100)
-      )
+      this.setState({
+        seed: key,
+        decrypt: false
+      })
     }
+    this.updateView(nextView)
   }
 
   decryptAndContinue = () => {
@@ -285,7 +280,7 @@ class SignIn extends React.Component {
 
     if (!isValid) {
       logger.error('restoreAccount: Invalid keychain phrase entered')
-      return Promise.reject('Invalid keychain phrase entered')
+      return Promise.reject('Invalid recovery phrase entered')
     }
     this.setState({
       creatingAccountStatus: CREATE_ACCOUNT_IN_PROCESS

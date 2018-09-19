@@ -11,7 +11,7 @@ function mapStateToProps(state) {
   }
 }
 
-class EditAccount extends Component {
+export class EditAccount extends Component {
   static propTypes = {
     service: PropTypes.string,
     identifier: PropTypes.string,

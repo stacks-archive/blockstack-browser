@@ -11,7 +11,7 @@ function mapStateToProps(state) {
   }
 }
 
-class SocialAccountItem extends Component {
+export class SocialAccountItem extends Component {
   static propTypes = {
     listItem: PropTypes.bool.isRequired,
     editing: PropTypes.bool.isRequired,

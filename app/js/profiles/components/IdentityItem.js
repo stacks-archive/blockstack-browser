@@ -8,7 +8,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 
-class IdentityItem extends Component {
+export class IdentityItem extends Component {
   static propTypes = {
     username: PropTypes.string,
     avatarUrl: PropTypes.string.isRequired,
