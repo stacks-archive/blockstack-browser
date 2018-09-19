@@ -24,196 +24,196 @@ const Loading = (props) => {
 }
 
 const HomeScreenPage = Loadable({
-  loader: () => import('./HomeScreenPage'),
+  loader: () =>
+    import(/* webpackChunkName: "HomeScreenPage" */ './HomeScreenPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const ProfilesApp = Loadable({
   loader: () =>
-    import('./profiles/ProfilesApp'),
+    import(/* webpackChunkName: "ProfilesApp" */ './profiles/ProfilesApp'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const UpdateStatePage = Loadable({
-  loader: () =>
-    import('./update'),
+  loader: () => import(/* webpackChunkName: "UpdateStatePage" */ './update'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const RegistrationPage = Loadable({
   loader: () =>
-    import('./profiles/RegistrationPage'),
+    import(/* webpackChunkName: "RegistrationPage" */ './profiles/RegistrationPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const RegistrationSearchView = Loadable({
   loader: () =>
-    import('./profiles/components/registration/RegistrationSearchView'),
+    import(/* webpackChunkName: "RegistrationSearchView" */ './profiles/components/registration/RegistrationSearchView'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const RegistrationSelectView = Loadable({
   loader: () =>
-    import('./profiles/components/registration/RegistrationSelectView'),
+    import(/* webpackChunkName: "RegistrationSelectView" */ './profiles/components/registration/RegistrationSelectView'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const RegistrationSubmittedView = Loadable({
   loader: () =>
-    import( './profiles/components/registration/RegistrationSubmittedView'),
+    import(/* webpackChunkName: "RegistrationSubmittedView" */ './profiles/components/registration/RegistrationSubmittedView'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const DefaultProfilePage = Loadable({
   loader: () =>
-    import('./profiles/DefaultProfilePage'),
+    import(/* webpackChunkName: "DefaultProfilePage" */ './profiles/DefaultProfilePage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const AllProfilesPage = Loadable({
   loader: () =>
-    import('./profiles/AllProfilesPage'),
+    import(/* webpackChunkName: "AllProfilesPage" */ './profiles/AllProfilesPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const RegisterProfilePage = Loadable({
   loader: () =>
-    import('./profiles/RegisterProfilePage'),
+    import(/* webpackChunkName: "RegisterProfilePage" */ './profiles/RegisterProfilePage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const ImportProfilePage = Loadable({
   loader: () =>
-    import('./profiles/ImportProfilePage'),
+    import(/* webpackChunkName: "ImportProfilePage" */ './profiles/ImportProfilePage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const ExportProfilePage = Loadable({
   loader: () =>
-    import('./profiles/ExportProfilePage'),
+    import(/* webpackChunkName: "ExportProfilePage" */ './profiles/ExportProfilePage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const SearchProfilesPage = Loadable({
   loader: () =>
-    import( './profiles/SearchProfilesPage'),
+    import(/* webpackChunkName: "SearchProfilesPage" */ './profiles/SearchProfilesPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const TransferNamePage = Loadable({
   loader: () =>
-    import('./profiles/TransferNamePage'),
+    import(/* webpackChunkName: "TransferNamePage" */ './profiles/TransferNamePage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const ZoneFilePage = Loadable({
   loader: () =>
-    import( './profiles/ZoneFilePage'),
+    import(/* webpackChunkName: "ZoneFilePage" */ './profiles/ZoneFilePage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const AccountApp = Loadable({
   loader: () =>
-    import( './account/AccountApp'),
+    import(/* webpackChunkName: "AccountApp" */ './account/AccountApp'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const AccountMenu = Loadable({
   loader: () =>
-    import( './account/AccountMenu'),
+    import(/* webpackChunkName: "AccountMenu" */ './account/AccountMenu'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const DeleteAccountPage = Loadable({
   loader: () =>
-    import( './account/DeleteAccountPage'),
+    import(/* webpackChunkName: "DeleteAccountPage" */ './account/DeleteAccountPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const BackupAccountPage = Loadable({
   loader: () =>
-    import( './account/BackupAccountPage'),
+    import(/* webpackChunkName: "BackupAccountPage" */ './account/BackupAccountPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const ChangePasswordPage = Loadable({
   loader: () =>
-    import( './account/ChangePasswordPage'),
+    import(/* webpackChunkName: "ChangePasswordPage" */ './account/ChangePasswordPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const CreateAccountPage = Loadable({
   loader: () =>
-    import( './account/CreateAccountPage'),
+    import(/* webpackChunkName: "CreateAccountPage" */ './account/CreateAccountPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const ApiSettingsPage = Loadable({
   loader: () =>
-    import('./account/ApiSettingsPage'),
+    import(/* webpackChunkName: "ApiSettingsPage" */ './account/ApiSettingsPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const StorageProvidersPage = Loadable({
   loader: () =>
-    import( './account/StorageProvidersPage'),
+    import(/* webpackChunkName: "StorageProvidersPage" */ './account/StorageProvidersPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const WalletApp = Loadable({
   loader: () =>
-    import('./wallet/WalletApp'),
+    import(/* webpackChunkName: "WalletApp" */ './wallet/WalletApp'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const ReceivePage = Loadable({
   loader: () =>
-    import('./wallet/ReceivePage'),
+    import(/* webpackChunkName: "ReceivePage" */ './wallet/ReceivePage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const SendPage = Loadable({
-  loader: () => import('./wallet/SendPage'),
+  loader: () => import(/* webpackChunkName: "SendPage" */ './wallet/SendPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const SendCorePage = Loadable({
   loader: () =>
-    import('./wallet/SendCorePage'),
+    import(/* webpackChunkName: "SendCorePage" */ './wallet/SendCorePage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const NewAuthPage = Loadable({
-  loader: () => import('./auth/index'),
+  loader: () => import(/* webpackChunkName: "NewAuthPage" */ './auth/index'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const SignUpPage = Loadable({
-  loader: () => import( './sign-up'),
+  loader: () => import(/* webpackChunkName: "SignUpPage" */ './sign-up'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const SeedPage = Loadable({
-  loader: () => import( './seed'),
+  loader: () => import(/* webpackChunkName: "SeedPage" */ './seed'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 const SignInPage = Loadable({
-  loader: () => import( './sign-in'),
+  loader: () => import(/* webpackChunkName: "SignInPage" */ './sign-in'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const NotFoundPage = Loadable({
   loader: () =>
-    import( './errors/NotFoundPage'),
+    import(/* webpackChunkName: "NotFoundPage" */ './errors/NotFoundPage'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
@@ -283,13 +283,13 @@ export default (
     { /**
      * TODO: move /update back up ^^, had to move it out of the 'app' nested route
      * because when we wipe data, it wants to redirect to /sign-up
-     */ }
-    <Route path="/update" component={ UpdateStatePage }/>
-    <Route path="/sign-in" component={ SignInPage }/>
-    <Route path="/sign-in/*" component={ SignInPage }/>
-    <Route path="/seed" component={ SeedPage }/>
-    <Route path="/connect-storage" component={ ConnectStoragePage }/>
-    <Route path="/clear-auth" component={ ClearAuthPage }/>
-    <Route path="/*" component={ NotFoundPage }/>
+     */}
+    <Route path="/update" component={ UpdateStatePage } />
+    <Route path="/sign-in" component={ SignInPage } />
+    <Route path="/sign-in/*" component={ SignInPage } />
+    <Route path="/seed" component={ SeedPage } />
+    <Route path="/connect-storage" component={ ConnectStoragePage } />
+    <Route path="/clear-auth" component={ ClearAuthPage } />
+    <Route path="/*" component={ NotFoundPage } />
   </Router>
 )
