@@ -147,7 +147,7 @@ class SignIn extends React.Component {
     this.updateView(nextView)
   }
 
-  decryptAndContinue = () => {
+  decryptAndContinue = async () => {
     const { password, decrypting, encryptedKey } = this.state
 
     if (!password) {
@@ -158,29 +158,31 @@ class SignIn extends React.Component {
     if (this.state.decrypt && !decrypting) {
       this.setState({ decrypting: true })
 
-      decrypt(
-        new Buffer(encryptedKey, 'base64'),
-        this.state.password
-      )
-        .then(decryptedKeyBuffer => {
-          const decryptedKey = decryptedKeyBuffer.toString()
-          this.setState({
+      try {
+        const decryptedKeyBuffer = await decrypt(
+          new Buffer(encryptedKey, 'base64'),
+          this.state.password
+        )
+        const decryptedKey = decryptedKeyBuffer.toString()
+        this.setState(
+          {
             key: decryptedKey,
             decrypting: false,
             restoreError: null
-          }, () => {
+          },
+          () => {
             this.updateView(VIEWS.EMAIL)
-          })
+          }
+        )
+      } catch (e) {
+        console.log(e)
+        this.setState({
+          decrypting: false,
+          restoreError: 'Incorrect password or invalid recovery code',
+          key: ''
         })
-        .catch(() => {
-          this.setState({
-            decrypting: false,
-            restoreError: 'Incorrect password or invalid recovery code',
-            key: ''
-          })
-        })
-    }
-    else {
+      }
+    } else {
       this.updateView(VIEWS.EMAIL)
     }
   }
@@ -188,26 +190,30 @@ class SignIn extends React.Component {
   restoreAccount = () => {
     console.log('Restoring account!')
     const { refreshIdentities, updateEmail } = this.props
-    this.setState({
-      loading: true
-    }, () => {
-      // Quick setTimeout just to get the loader going before we lock up the
-      // browser with decryption. TODO: Remove this when it's workerized.
-      setTimeout(() => {
-        this.createAccount()
-        .then(() => refreshIdentities(this.props.api, this.props.identityAddresses))
-        .then(() => updateEmail(this.state.email))
-        .then(() => this.updateView(VIEWS.SUCCESS))
-        .catch(() => {
-          this.setState({
-            loading: false,
-            restoreError: 'There was an error loading your account.'
-          })
-        })
-      }, 300)
-    })
+    this.setState(
+      {
+        loading: true
+      },
+      () => {
+        // Quick setTimeout just to get the loader going before we lock up the
+        // browser with decryption. TODO: Remove this when it's workerized.
+        setTimeout(() => {
+          this.createAccount()
+            .then(() =>
+              refreshIdentities(this.props.api, this.props.identityAddresses)
+            )
+            .then(() => updateEmail(this.state.email))
+            .then(() => this.updateView(VIEWS.SUCCESS))
+            .catch(() => {
+              this.setState({
+                loading: false,
+                restoreError: 'There was an error loading your account.'
+              })
+            })
+        }, 300)
+      }
+    )
   }
-
 
   updateView = view => {
     this.setState({
@@ -290,7 +296,9 @@ class SignIn extends React.Component {
       // Create new ID and owner address and then set to default
       this.createNewIdAndSetDefault().then(() =>
         // Connect our default storage
-        this.props.connectStorage().then(() => console.log('account creation done'))
+        this.props
+          .connectStorage()
+          .then(() => console.log('account creation done'))
       )
     )
   }
@@ -402,4 +410,9 @@ SignIn.propTypes = {
   connectStorage: PropTypes.func.isRequired
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SignIn)
+)

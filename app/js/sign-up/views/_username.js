@@ -231,10 +231,7 @@ class UsernameView extends React.Component {
                   ev.preventDefault()
                   this.skip()
                 }
-              } : {
-                label: ' ',
-                textOnly: true
-              },
+              } : null,
               {
                 label: this.renderButtonLabel(this.state),
                 loading,

@@ -46,10 +46,6 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
           split: true,
           items: [
             {
-              label: ' ',
-              textOnly: true
-            },
-            {
               label: 'Next',
               primary: true,
               type: 'submit',
