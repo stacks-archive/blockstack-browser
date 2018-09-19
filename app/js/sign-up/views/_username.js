@@ -33,7 +33,7 @@ const getUsernameStatus = async (
     const user = await res.json()
     logger.debug('getUsernameStatus response:', user)
     return user.status
-  } catch(err) {
+  } catch (err) {
     logger.error('getUsernameStatus error:', err)
     return STATUS.FAIL
   }
@@ -73,7 +73,6 @@ class UsernameView extends React.Component {
     }
 
     if (values.username !== this.state.username && !noValues) {
-
       const MIN_USERNAME_LENGTH = 8
       const validLength = values.username.length >= MIN_USERNAME_LENGTH
 
@@ -174,10 +173,7 @@ class UsernameView extends React.Component {
           validate: v => this.validate(v),
           initialValues: { username: '' },
           onSubmit: values => {
-            if (
-              status === STATUS.CONFIRMED &&
-              username === values.username
-            ) {
+            if (status === STATUS.CONFIRMED && username === values.username) {
               updateValue('username', values.username)
               this.processRegistration(values.username, next)
             }
@@ -190,15 +186,16 @@ class UsernameView extends React.Component {
               message: (
                 <React.Fragment>
                   <p>
-                    This will be your unique, public identity for any Blockstack app.
+                    This will be your unique, public identity for any Blockstack
+                    app.
                   </p>
-                  {canSkip &&
+                  {canSkip && (
                     <p>
-                      If you’re having trouble registering a username, you can skip
-                      this now and try again later from your profile. This may make
-                      some apps unusable until you do.
+                      If you’re having trouble registering a username, you can
+                      skip this now and try again later from your profile. This
+                      may make some apps unusable until you do.
                     </p>
-                  }
+                  )}
                 </React.Fragment>
               ),
               autoFocus: true,
@@ -210,28 +207,15 @@ class UsernameView extends React.Component {
                 })
               },
               positive:
-                status === STATUS.AVAILABLE ||
-                status === STATUS.CONFIRMED
+                status === STATUS.AVAILABLE || status === STATUS.CONFIRMED
                   ? 'Username Available!'
                   : undefined,
-              error:
-                status === STATUS.TAKEN
-                  ? 'Username taken'
-                  : undefined
+              error: status === STATUS.TAKEN ? 'Username taken' : undefined
             }
           ],
           actions: {
             split: true,
             items: [
-              canSkip ? {
-                label: 'Skip Username →',
-                textOnly: true,
-                disabled: loading,
-                onClick: (ev) => {
-                  ev.preventDefault()
-                  this.skip()
-                }
-              } : null,
               {
                 label: this.renderButtonLabel(this.state),
                 loading,
@@ -240,7 +224,21 @@ class UsernameView extends React.Component {
                 type: 'submit',
                 icon: 'ArrowRightIcon'
               }
-            ]
+            ].concat(
+              canSkip
+                ? [
+                    {
+                      label: 'Skip Username →',
+                      textOnly: true,
+                      disabled: loading,
+                      onClick: ev => {
+                        ev.preventDefault()
+                        this.skip()
+                      }
+                    }
+                  ]
+                : []
+            )
           }
         }
       }

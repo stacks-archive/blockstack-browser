@@ -173,14 +173,17 @@ class Onboarding extends React.Component {
    * This will create our account and then register a name and connect storage
    */
   submitUsername = username => {
-    this.setState({
-      username,
-      loading: true
-    }, () => {
-      setTimeout(() => {
-        this.createAccount()
-      }, 500)
-    })
+    this.setState(
+      {
+        username,
+        loading: true
+      },
+      () => {
+        setTimeout(() => {
+          this.createAccount()
+        }, 500)
+      }
+    )
   }
 
   /**
@@ -247,36 +250,38 @@ class Onboarding extends React.Component {
       const identity = this.props.localIdentities[identityIndex]
       const keypair = this.props.identityKeypairs[identityIndex]
 
-      return this.props.registerName(
-        this.props.api,
-        username,
-        identity,
-        identityIndex,
-        address,
-        keypair
-      )
-      .catch((err) => {
-        logger.error(`username registration error: ${err}`)
-        this.props.notify({
-          title: 'Username Registration Failed',
-          message: `Sorry, something went wrong while registering ${username}. ` +
-            'You can try to register again later from your profile page. Some ' +
-            'apps may be unusable until you do.',
-          status: 'error',
-          dismissAfter: 0,
-          dismissible: true,
-          closeButton: true,
-          position: 'b'
+      return this.props
+        .registerName(
+          this.props.api,
+          username,
+          identity,
+          identityIndex,
+          address,
+          keypair
+        )
+        .catch(err => {
+          logger.error(`username registration error: ${err}`)
+          this.props.notify({
+            title: 'Username Registration Failed',
+            message:
+              `Sorry, something went wrong while registering ${username}. ` +
+              'You can try to register again later from your profile page. Some ' +
+              'apps may be unusable until you do.',
+            status: 'error',
+            dismissAfter: 0,
+            dismissible: true,
+            closeButton: true,
+            position: 'b'
+          })
+          this.setState({
+            username: ''
+          })
         })
-        this.setState({
-          username: ''
+        .then(() => {
+          this.setState({
+            usernameRegistrationInProgress: false
+          })
         })
-      })
-      .then(() => {
-        this.setState({
-          usernameRegistrationInProgress: false
-        })
-      })
     }
   }
   /**
@@ -329,12 +334,9 @@ class Onboarding extends React.Component {
       return null
     }
 
-
-
-    const encodedPhrase = new Buffer(
-      encryptedBackupPhrase,
-      'hex'
-    ).toString('base64')
+    const encodedPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString(
+      'base64'
+    )
 
     this.setState({
       emailsSending: true,
@@ -346,11 +348,12 @@ class Onboarding extends React.Component {
     if (type === 'recovery' || type === 'both') {
       recoveryPromise = sendRecoveryEmail(email, id, encodedPhrase)
         .then(() => this.setState({ recoveryEmailError: null }))
-        .catch((err) => this.setState({ recoveryEmailError: err }))
-    } if (type === 'restore' || type === 'both') {
+        .catch(err => this.setState({ recoveryEmailError: err }))
+    }
+    if (type === 'restore' || type === 'both') {
       restorePromise = sendRestoreEmail(email, id, encodedPhrase)
         .then(() => this.setState({ restoreEmailError: null }))
-        .catch((err) => this.setState({ restoreEmailError: err }))
+        .catch(err => this.setState({ restoreEmailError: err }))
     }
 
     return Promise.all([recoveryPromise, restorePromise]).then(() => {
@@ -458,8 +461,7 @@ class Onboarding extends React.Component {
       this.setState({
         authRequest
       })
-    }
-    else {
+    } else {
       // Only fire track immediately if there's no manifest. Otherwise, fire
       // track event in componentWillReceiveProps.
       this.trackViewEvent(this.state.view)
@@ -574,8 +576,7 @@ class Onboarding extends React.Component {
           app={app}
           views={views}
           {...componentProps}
-          invertOnLast
-          disableBackOnView={VIEWS.INFO}
+          disableBackOnView={[VIEWS.INFO, views.length - 1]}
           disableBack={this.state.loading}
         />
         <AppHomeWrapper />
@@ -608,5 +609,8 @@ Onboarding.propTypes = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Onboarding)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Onboarding)
 )

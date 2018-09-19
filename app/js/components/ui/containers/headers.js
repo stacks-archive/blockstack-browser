@@ -2,6 +2,7 @@ import React from 'react'
 import { Bug as StyledBug } from '@ui/components/bugs'
 import { StyledHeader } from '@ui/components/header'
 import { BlockstackBug } from '@ui/components/logos'
+import { isArray } from '@common'
 import { ArrowLeftIcon, ChevronDoubleRightIcon } from 'mdi-react'
 import PropTypes from 'prop-types'
 
@@ -87,10 +88,14 @@ const Header = ({
     disableBackOnView,
     disable
   }
+
+  const disableBack = isArray(disableBackOnView)
+    ? !!disableBackOnView.find(index => index === view)
+    : disableBackOnView === view
   return (
     <StyledHeader invert={invert} {...rest}>
       <StyledHeader.Section>
-        {disableBackOnView === view ? null : <HeaderLink {...linkProps} />}
+        {disableBack ? null : <HeaderLink {...linkProps} />}
       </StyledHeader.Section>
       <StyledHeader.Section>{renderBugs()}</StyledHeader.Section>
     </StyledHeader>

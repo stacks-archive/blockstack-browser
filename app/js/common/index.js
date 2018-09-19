@@ -11,4 +11,7 @@ const formatAppManifest = manifest => {
   return { name, icon: icons[0].src, ...restOfManifest }
 }
 
-export { formatAppManifest }
+const isArray = value =>
+  value && typeof value === 'object' && value.constructor === Array
+
+export { formatAppManifest, isArray }
