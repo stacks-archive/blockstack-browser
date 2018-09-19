@@ -27,8 +27,8 @@ const analyze = !!process.env.ANALYZE
  * Output config
  */
 const output = {
-  filename: isProd ? 'static/js/[name].[contenthash:8].js' : '[name].js',
-  chunkFilename: isProd ? 'static/js/[name].[contenthash:8].chunk.js' : '[name].chunk.js',
+  filename: isProd ? 'static/js/[name].[contenthash].js' : '[name].js',
+  chunkFilename: isProd ? 'static/js/[name].[contenthash].chunk.js' : '[name].chunk.js',
   path: path.resolve(__dirname, 'build'),
   publicPath: '/',
   globalObject: 'self'
@@ -170,7 +170,7 @@ module.exports = {
     minimizer: [
       new TerserPlugin({
         parallel: true,
-        sourceMap: analyze,
+        sourceMap: false,
         cache: true
       })
     ],
@@ -274,6 +274,8 @@ module.exports = {
       }
     ]
   })] : [])
-    .concat(analyze ? [new BundleAnalyzerPlugin()] : [])
+    .concat(analyze ? [new BundleAnalyzerPlugin({
+      generateStatsFile: true
+    })] : [])
 
 }
