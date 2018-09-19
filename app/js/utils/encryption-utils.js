@@ -16,16 +16,16 @@ export function decrypt(dataBuffer, password) {
 }
 
 
- export const RECOVERY_TYPE = {
-   MNEMONIC: 'mnemonic',
-   ENCRYPTED: 'encrypted'
- }
+export const RECOVERY_TYPE = {
+  MNEMONIC: 'mnemonic',
+  ENCRYPTED: 'encrypted'
+}
 
- /**
-  * Checks if a recovery option is valid, and attempts to clean it up.
-  * @param {string} input - User input of recovery method
-  * @returns {{ isValid: boolean, cleaned: (string|undefined), type: (string|undefined) }}
-  */
+/**
+ * Checks if a recovery option is valid, and attempts to clean it up.
+ * @param {string} input - User input of recovery method
+ * @returns {{ isValid: boolean, cleaned: (string|undefined), type: (string|undefined) }}
+ */
 export function validateAndCleanRecoveryInput(input) {
   const cleaned = input.trim()
 

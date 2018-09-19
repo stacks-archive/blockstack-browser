@@ -12,7 +12,7 @@ class TrustLevelFooter extends Component {
     const makeStars = (filled, total) => {
       const stars = []
       for (let i = 0; i < total; i++) {
-        let className = i < filled ? 'fa fa-star' : 'fa fa-star-o'
+        const className = i < filled ? 'fa fa-star' : 'fa fa-star-o'
         stars.push(<i key={i} className={className}></i>)
       }
       return stars
