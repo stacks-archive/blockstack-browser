@@ -5,21 +5,21 @@ import PropTypes from 'prop-types'
 const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
   const props = {
     title: {
-      children: 'Please Save your Secret Recovery Key'
+      children: (
+        <React.Fragment>Save your Secret Recovery&nbsp;Key</React.Fragment>
+      )
     },
     content: {
       grow: 1,
       children: (
         <React.Fragment>
-          <Type.p>
-            Your recovery key is the most reliable way to recover your
-            Blockstack ID. It's important to save your recovery key in a safe
-            place (<em>we suggest writing it on paper</em>).
+          <Type.p pt={2}>
+            Your Secret Recovery Key is the most reliable way to{' '}
+            <strong>access</strong> your Blockstack ID.
           </Type.p>
           <Type.p>
-            <strong>Blockstack IDs are fully decentralized</strong>, which means
-            anyone who has the secret recovery key effectively owns the ID.
-            Please save your recovery key.
+            Blockstack cannot reset your key. Save your key wherever you keep
+            important, secret information.
           </Type.p>
         </React.Fragment>
       )
@@ -33,10 +33,6 @@ const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
           loading,
           disabled: loading,
           placeholder
-        },
-        {
-          label: 'Do this later',
-          to: '/'
         }
       ]
     }

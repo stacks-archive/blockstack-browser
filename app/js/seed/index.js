@@ -248,7 +248,13 @@ class SeedContainer extends Component {
         props: {
           loading: this.state.decrypting,
           placeholder: 'Unlocking Recovery Key...',
-          next: () => this.initialAction()
+          next: () => this.initialAction(),
+          backLabel: 'Cancel',
+          backView: () =>
+            browserHistory.push({
+              pathname: '/',
+              state: {}
+            })
         }
       },
       {
@@ -332,5 +338,8 @@ SeedContainer.propTypes = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(SeedContainer)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SeedContainer)
 )

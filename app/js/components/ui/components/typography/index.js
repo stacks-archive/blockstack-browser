@@ -1,3 +1,4 @@
+import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { spacing } from '@ui/common/constants'
 import { Inline } from '@components/ui/components/primitives'
@@ -17,24 +18,18 @@ const genericStyles = css`
       white-space: nowrap;
     `};
 `
+const Type = Inline
 
-const Type = styled.div``
+const p = props => (
+  <Inline
+    is="p"
+    lineHeight="24px"
+    fontSize="16px"
+    color="rgba(39, 16, 51, 0.7)"
 
-const p = styled(Inline)`
-  line-height: 24px;
-  font-size: 16px;
-  color: ${({ color }) => color || 'rgba(39, 16, 51, 0.7)'};
-  padding: 0;
-  margin: 0;
-  strong {
-    font-weight: 500;
-    color: ${({ color }) => color || 'rgba(39, 16, 51, 0.9)'};
-  }
-  ${genericStyles};
-  & + & {
-    margin-top: ${spacing.base};
-  }
-`
+    {...props}
+  />
+)
 
 const a = styled(Inline)`
   line-height: 24px;
@@ -169,28 +164,28 @@ Type.h3 = h3
 Type.h4 = h4
 Type.h5 = h5
 
-Type.p.defaultProps = {
+p.defaultProps = {
   is: 'p'
 }
-Type.a.defaultProps = {
+a.defaultProps = {
   is: 'a'
 }
-Type.small.defaultProps = {
+Small.defaultProps = {
   is: 'small'
 }
-Type.h1.defaultProps = {
+h1.defaultProps = {
   is: 'h1'
 }
-Type.h2.defaultProps = {
+h2.defaultProps = {
   is: 'h2'
 }
-Type.h3.defaultProps = {
+h3.defaultProps = {
   is: 'h3'
 }
-Type.h4.defaultProps = {
+h4.defaultProps = {
   is: 'h4'
 }
-Type.h5.defaultProps = {
+h5.defaultProps = {
   is: 'h5'
 }
 
