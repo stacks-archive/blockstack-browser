@@ -164,7 +164,7 @@ class UsernameView extends React.Component {
 
     const props = {
       title: {
-        children: 'Register a username',
+        children: 'Create a username',
         variant: 'h2'
       },
       content: {
