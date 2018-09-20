@@ -4,16 +4,16 @@ const logger = log4js.getLogger(__filename)
 
 function checkForLegacyReduxData() {
   const data = localStorage.getItem('redux')
-  logger.debug('peristed data exists: ', JSON.parse(data))
+  logger.debug('Persisted data exists: ', JSON.parse(data))
   if (!data) {
-    logger.log('no data, continue')
+    logger.log('No persisted data')
     return null
   }
 
   const parsedData = JSON.parse(data)
   const { computedStates, currentStateIndex } = parsedData
   if (!computedStates) {
-    logger.debug('no computed states')
+    logger.debug('No computed states')
     return null
   }
   const lastState = computedStates[currentStateIndex]
@@ -21,10 +21,10 @@ function checkForLegacyReduxData() {
     : undefined
 
   if (computedStates && lastState) {
-    logger.debug('computed states and last state', lastState)
+    logger.debug('Computed states exists. lastState: ', lastState)
     localStorage.setItem('redux', JSON.stringify(lastState))
     localStorage.setItem('redux_old', JSON.stringify(parsedData))
-    logger.log('finished, returning object')
+    logger.log('Finished, returning lastState')
     return lastState
   }
 
