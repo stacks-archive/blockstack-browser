@@ -1,4 +1,3 @@
-import { validateMnemonic } from 'bip39'
 import makeEncryptWorker from './workers/encrypt.worker.js'
 import makeDecryptWorker from './workers/decrypt.worker.js'
 
@@ -25,7 +24,7 @@ export const RECOVERY_TYPE = {
  * @param {string} input - User input of recovery method
  * @returns {{ isValid: boolean, cleaned: (string|undefined), type: (string|undefined) }}
  */
-export function validateAndCleanRecoveryInput(input) {
+export async function validateAndCleanRecoveryInput(input) {
   const cleaned = input.trim()
 
   // Raw mnemonic phrase
@@ -34,7 +33,8 @@ export function validateAndCleanRecoveryInput(input) {
     .split(/\s|-|_|\./)
     .join(' ')
 
-  if (validateMnemonic(cleanedMnemonic)) {
+  const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
+  if (bip39.validateMnemonic(cleanedMnemonic)) {
     return {
       isValid: true,
       type: RECOVERY_TYPE.MNEMONIC,

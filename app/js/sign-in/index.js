@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { validateMnemonic } from 'bip39'
 import { decrypt, isBackupPhraseValid } from '@utils'
 import { browserHistory, withRouter } from 'react-router'
 import { connect } from 'react-redux'
@@ -127,13 +126,16 @@ class SignIn extends React.Component {
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isKeyEncrypted = key => !validateMnemonic(key)
+  isKeyEncrypted = key =>
+    import(/* webpackChunkName: 'bip39' */ 'bip39').then(
+      bip39 => !bip39.validateMnemonic(key)
+    )
 
-  validateRecoveryKey = (key, nextView = VIEWS.PASSWORD) => {
+  validateRecoveryKey = async (key, nextView = VIEWS.PASSWORD) => {
     if (this.state.key !== key) {
       this.setState({ key })
     }
-    if (this.isKeyEncrypted(key)) {
+    if (await this.isKeyEncrypted(key)) {
       this.setState({
         encryptedKey: key,
         seed: '',
@@ -256,6 +258,7 @@ class SignIn extends React.Component {
   async initializeWallet() {
     const { password, key } = this.state
     const { initializeWallet } = this.props
+    console.log('initializeWallet')
     return initializeWallet(password, key)
   }
 
@@ -288,9 +291,9 @@ class SignIn extends React.Component {
     const { key } = this.state
     logger.debug('creating account, createAccount()')
 
-    const { isValid } = isBackupPhraseValid(key)
+    const state = await isBackupPhraseValid(key)
 
-    if (!isValid) {
+    if (!state.isValid) {
       logger.error('restoreAccount: Invalid mnemonic phrase entered')
       return Promise.reject('Invalid recovery phrase entered')
     }

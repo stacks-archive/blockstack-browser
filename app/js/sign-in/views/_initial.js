@@ -2,26 +2,26 @@ import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 import PropTypes from 'prop-types'
 import Yup from 'yup'
-import { validateMnemonic } from 'bip39'
 import QrScan from '@components/ui/components/qr-scan'
 import { validateAndCleanRecoveryInput } from '@utils/encryption-utils'
 
-function validateInput(value) {
-  // Raw mnemonic phrase
-  if (validateMnemonic(value)) {
-    return true
-  }
-  // Base64 encoded encrypted phrase
-  if (/[a-zA-Z0-9+/]=$/.test(value)) {
-    return true
-  }
-  return false
-}
+const validateInput = async value =>
+  import(/* webpackChunkName: 'bip39' */ 'bip39').then(bip39 => {
+    {
+      // Raw mnemonic phrase
+      if (bip39.validateMnemonic(value)) {
+        console.log('valid mnemonic')
+        return true
+      }
+      // Base64 encoded encrypted phrase
+      return /[a-zA-Z0-9+/]=$/.test(value)
+    }
+  })
 
 const validationSchema = Yup.object({
   recoveryKey: Yup.string()
     .required('This is required.')
-    .test('is-valid', 'That’s not a valid recovery code or key', value =>
+    .test('is-valid', 'That’s not a valid recovery code or key', async value =>
       validateAndCleanRecoveryInput(value)
     )
 })
@@ -32,8 +32,9 @@ export default class InitialSignInScreen extends React.PureComponent {
     scanError: null
   }
 
-  handleScan = data => {
-    if (validateInput(data)) {
+  handleScan = async data => {
+    const valid = await validateInput(data)
+    if (valid) {
       this.props.next(data)
     } else {
       this.setState({ scanError: 'Invalid recovery code scanned' })
@@ -111,7 +112,8 @@ export default class InitialSignInScreen extends React.PureComponent {
         children: (
           <React.Fragment>
             <Type.p>
-              Your Magic Recovery Code and Secret Recovery Key&nbsp;were emailed when you first created your Blockstack&nbsp;ID.
+              Your Magic Recovery Code and Secret Recovery Key&nbsp;were emailed
+              when you first created your Blockstack&nbsp;ID.
             </Type.p>
             {isScanning && (
               <QrScan

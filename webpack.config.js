@@ -77,6 +77,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
+            comments: true,
             compact: true,
             babelrc: true,
             cacheDirectory: true
@@ -193,7 +194,7 @@ module.exports = {
       minSize: 0,
       maxAsyncRequests: Infinity,
       maxInitialRequests: Infinity,
-      name: false,
+      name: true,
       cacheGroups: {
         commons: {
           chunks: 'initial',

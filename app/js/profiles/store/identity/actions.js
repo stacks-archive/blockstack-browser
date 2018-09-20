@@ -1,6 +1,5 @@
 // @flow
 import { HDNode } from 'bitcoinjs-lib'
-import bip39 from 'bip39'
 import * as types from './types'
 import { validateProofs } from 'blockstack'
 import {
@@ -208,11 +207,15 @@ function createNewProfile(
   password: string,
   nextUnusedAddressIndex: number
 ) {
-  return (dispatch: Dispatch<*>, getState: () => any): Promise<*> => {
+  return async (dispatch: Dispatch<*>, getState: () => any): Promise<*> => {
     logger.info('createNewProfile')
 
     const state = getState()
-    if (state.profiles && state.profiles.identity && state.profiles.identity.isProcessing) {
+    if (
+      state.profiles &&
+      state.profiles.identity &&
+      state.profiles.identity.isProcessing
+    ) {
       logger.info('createNewProfile: Early exit because isProcessing')
       return Promise.resolve()
     }
@@ -224,8 +227,9 @@ function createNewProfile(
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     logger.debug('createNewProfile: Trying to decrypt backup phrase...')
     return decrypt(dataBuffer, password).then(
-      plaintextBuffer => {
+      async plaintextBuffer => {
         logger.debug('createNewProfile: Backup phrase successfully decrypted')
+        const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
         const backupPhrase = plaintextBuffer.toString()
         const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
         const masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
