@@ -84,7 +84,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: 'static/images/[name][hash].[ext]'
+              name: 'static/images/[name].[ext]'
             }
           },
           {
