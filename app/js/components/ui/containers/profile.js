@@ -5,7 +5,11 @@ import { Type } from '@components/ui/components/typography'
 
 export const Title = ({ user, ...p }) => (
   <Box {...p}>
-    <Type.h2>{user.username || 'Nameless User'}</Type.h2>
+    <Type.h2>
+      {user.username && user.username.includes('.')
+        ? user.username.split('.')[0]
+        : user.username}
+    </Type.h2>
   </Box>
 )
 export const Suffix = ({ user, ...p }) => (
