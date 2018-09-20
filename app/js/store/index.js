@@ -1,17 +1,19 @@
 import configureStore from './configure'
+import log4js from 'log4js'
+const logger = log4js.getLogger(__filename)
 
 function checkForLegacyReduxData() {
   const data = localStorage.getItem('redux')
-  console.debug('persted data exists: ', JSON.parse(data))
+  logger.debug('peristed data exists: ', JSON.parse(data))
   if (!data) {
-    console.log('no data, continue')
+    logger.log('no data, continue')
     return null
   }
 
   const parsedData = JSON.parse(data)
   const { computedStates, currentStateIndex } = parsedData
   if (!computedStates) {
-    console.debug('no computed states')
+    logger.debug('no computed states')
     return null
   }
   const lastState = computedStates[currentStateIndex]
@@ -19,10 +21,10 @@ function checkForLegacyReduxData() {
     : undefined
 
   if (computedStates && lastState) {
-    console.debug('computed states and last state', lastState)
+    logger.debug('computed states and last state', lastState)
     localStorage.setItem('redux', JSON.stringify(lastState))
     localStorage.setItem('redux_old', JSON.stringify(parsedData))
-    console.log('finished, returning object')
+    logger.log('finished, returning object')
     return lastState
   }
 
@@ -30,7 +32,7 @@ function checkForLegacyReduxData() {
 }
 
 const legacyStore = checkForLegacyReduxData()
-console.log('legacystore', legacyStore)
+logger.log('legacystore', legacyStore)
 const store = configureStore(legacyStore)
 
 export default store
