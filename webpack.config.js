@@ -10,14 +10,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const ReactLoadablePlugin = require('react-loadable/webpack')
-  .ReactLoadablePlugin
 const Stylish = require('webpack-stylish')
-const HSWP = require('hard-source-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const history = require('connect-history-api-fallback')
-const convert = require('koa-connect')
-const webpackServeWaitpage = require('webpack-serve-waitpage')
 
 const isProd = process.env.NODE_ENV === 'production'
 const isDev = !isProd
@@ -28,43 +22,13 @@ const analyze = !!process.env.ANALYZE
  */
 const output = {
   filename: isProd ? 'static/js/[name].[contenthash].js' : '[name].js',
-  chunkFilename: isProd ? 'static/js/[name].[contenthash].chunk.js' : '[name].chunk.js',
+  chunkFilename: isProd
+    ? 'static/js/[name].[contenthash].chunk.js'
+    : '[name].chunk.js',
   path: path.resolve(__dirname, 'build'),
   publicPath: '/',
   globalObject: 'self'
 }
-
-/**
- * Webpack Serve config
- *
- * We have this as a conditional because the webpack config object does not
- * accept the key 'serve' when building for production.
- */
-const serve = isDev
-  ? {
-    serve: {
-      content: [__dirname],
-      devMiddleware: {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods':
-            'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-          'Access-Control-Allow-Headers':
-            'X-Requested-With, content-type, Authorization'
-        }
-      },
-      add: (app, middleware, options) => {
-        const historyOptions = {}
-        app.use(webpackServeWaitpage(options))
-        /**
-         * Essentially devServer.historyApiFallback = true
-         */
-        app.use(convert(history(historyOptions)))
-      }
-    }
-  }
-  : {}
-
 
 /**
  * Our Config Object
@@ -74,14 +38,30 @@ module.exports = {
   mode: isProd ? 'production' : 'development',
   devtool: !isProd ? 'cheap-module-source-map' : 'source-map',
   entry: {
-    main: ['./app/js/index.js']
+    main: [path.resolve(__dirname, 'app/js/index.js')]
   },
   node: {
     fs: 'empty',
     __filename: true
   },
   output,
-  ...serve,
+  devServer: {
+    open: true,
+    historyApiFallback: true,
+    port: 3000,
+    contentBase: path.resolve(__dirname, 'build'),
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000,
+      ignored: /node_modules/
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers':
+        'X-Requested-With, content-type, Authorization'
+    }
+  },
   module: {
     rules: [
       {
@@ -98,8 +78,14 @@ module.exports = {
       },
       {
         test: /\.(gif|png|webp|jpe?g|svg)$/i,
+        exclude: [path.resolve(__dirname, 'app/fonts')],
         use: [
-          'file-loader',
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'static/images/[name].[ext]'
+            }
+          },
           {
             loader: 'image-webpack-loader',
             options: {
@@ -124,7 +110,10 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         loader: 'url-loader?limit=100000',
-        include: [path.resolve(__dirname, 'app/fonts')]
+        include: [path.resolve(__dirname, 'app/fonts')],
+        options: {
+          name: 'static/fonts/[name][hash].[ext]'
+        }
       },
 
       {
@@ -142,23 +131,34 @@ module.exports = {
       },
       {
         test: /\.worker\.js$/,
-        use: 'workerize-loader'
+        use: {
+          loader: 'workerize-loader',
+          options: {
+            name: 'static/js/[hash].[ext]'
+          }
+        }
       }
     ]
   },
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
     alias: {
-      '@components': './app/js/components',
-      '@common': './app/js/common',
-      '@styled': './app/js/components/styled',
-      '@utils': './app/js/utils',
-      '@blockstack/ui': './app/js/components/ui',
-      '@ui/components': './app/js/components/ui/components',
-      '@ui/containers': './app/js/components/ui/containers',
-      '@ui/common': './app/js/components/ui/common',
-      '@images': './app/images',
-      log4js: './app/js/logger.js'
+      '@components': path.resolve(__dirname, 'app/js/components'),
+      '@common': path.resolve(__dirname, 'app/js/common'),
+      '@styled': path.resolve(__dirname, 'app/js/components/styled'),
+      '@utils': path.resolve(__dirname, 'app/js/utils'),
+      '@blockstack/ui': path.resolve(__dirname, 'app/js/components/ui'),
+      '@ui/components': path.resolve(
+        __dirname,
+        'app/js/components/ui/components'
+      ),
+      '@ui/containers': path.resolve(
+        __dirname,
+        'app/js/components/ui/containers'
+      ),
+      '@ui/common': path.resolve(__dirname, 'app/js/components/ui/common'),
+      '@images': path.resolve(__dirname, 'app/images'),
+      log4js: path.resolve(__dirname, 'app/js/logger.js')
     }
   },
   optimization: {
@@ -171,7 +171,14 @@ module.exports = {
       new TerserPlugin({
         parallel: true,
         sourceMap: false,
-        cache: true
+        cache: true,
+        exclude: /[\\/]node_modules[\\/]/,
+        terserOptions: {
+          mangle: {
+            // https://github.com/bitcoinjs/bitcoinjs-lib/issues/998
+            reserved: ['BigInteger', 'ECPair', 'Point']
+          }
+        }
       })
     ],
     splitChunks: {
@@ -201,7 +208,6 @@ module.exports = {
     }
   },
   plugins: [
-    new HSWP(),
     new Stylish(),
     new WebpackBar({
       color: '#9E5FC1',
@@ -211,7 +217,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.NamedChunksPlugin((chunk) => {
+    new webpack.NamedChunksPlugin(chunk => {
       // https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
       // https://github.com/webpack/webpack/issues/1315#issuecomment-386267369
       if (chunk.name) {
@@ -219,7 +225,7 @@ module.exports = {
       }
       // eslint-disable-next-line no-underscore-dangle
       return [...chunk._modules]
-        .map((m) =>
+        .map(m =>
           path.relative(
             m.context,
             m.userRequest.substring(0, m.userRequest.lastIndexOf('.'))
@@ -253,29 +259,32 @@ module.exports = {
         minifyCSS: true,
         minifyURLs: true
       }
-    }),
-    new ReactLoadablePlugin({
-      filename: './build/react-loadable.json'
     })
-  ].concat(isProd ? [new workboxPlugin.GenerateSW({
-    swDest: 'static/sw.js',
-    importWorkboxFrom: 'local',
-    skipWaiting: true,
-    clientsClaim: true,
-    runtimeCaching: [
-      {
-        urlPattern: '/',
-        handler: 'networkFirst',
-        options: {
-          cacheableResponse: {
-            statuses: [0, 200]
-          }
-        }
-      }
-    ]
-  })] : [])
-    .concat(analyze ? [new BundleAnalyzerPlugin({
-      generateStatsFile: true
-    })] : [])
-
+  ]
+    .concat(
+      isProd
+        ? [
+            new workboxPlugin.GenerateSW({
+              swDest: 'static/js/sw.js',
+              precacheManifestFilename:
+                'static/js/wb-manifest.[manifestHash].js',
+              importWorkboxFrom: 'local',
+              skipWaiting: true,
+              clientsClaim: true,
+              runtimeCaching: [
+                {
+                  urlPattern: '/',
+                  handler: 'networkFirst',
+                  options: {
+                    cacheableResponse: {
+                      statuses: [0, 200]
+                    }
+                  }
+                }
+              ]
+            })
+          ]
+        : []
+    )
+    .concat(analyze ? [new BundleAnalyzerPlugin()] : [])
 }
