@@ -23,7 +23,7 @@ const InitialScreen = ({ next, ...rest }) => {
     actions: {
       items: [
         {
-          label: 'Create a new Blockstack ID',
+          label: 'Create new ID',
           onClick: () => next(),
           primary: true
         },
