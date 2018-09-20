@@ -176,6 +176,6 @@
     "build:analyze": "cross-env ANALYZE=true npm run build",
     "start": "serve build --single",
     "web": "npm run build",
-    "prod-webapp": "npm run build"
+    "prod-webapp": "npm run clean && cross-env NODE_ENV=production WEBAPP=true webpack"
   }
 }

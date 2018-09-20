@@ -14,6 +14,7 @@ const Stylish = require('webpack-stylish')
 const TerserPlugin = require('terser-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
+const isWebapp = process.env.WEBAPP
 const isDev = !isProd
 const analyze = !!process.env.ANALYZE
 
@@ -262,7 +263,7 @@ module.exports = {
     })
   ]
     .concat(
-      isProd
+      isProd && isWebapp
         ? [
             new workboxPlugin.GenerateSW({
               swDest: 'static/js/sw.js',
