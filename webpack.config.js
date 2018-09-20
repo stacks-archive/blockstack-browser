@@ -10,8 +10,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const ReactLoadablePlugin = require('react-loadable/webpack')
-  .ReactLoadablePlugin
 const Stylish = require('webpack-stylish')
 const HSWP = require('hard-source-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
@@ -41,7 +39,7 @@ module.exports = {
   mode: isProd ? 'production' : 'development',
   devtool: !isProd ? 'cheap-module-source-map' : 'source-map',
   entry: {
-    main: ['./app/js/index.js']
+    main: [path.resolve(__dirname, 'app/js/index.js')]
   },
   node: {
     fs: 'empty',
@@ -86,7 +84,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: 'static/images/[name][hash].[ext]'
+              name: 'static/images/[name].[ext]'
             }
           },
           {
@@ -146,16 +144,22 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
     alias: {
-      '@components': './app/js/components',
-      '@common': './app/js/common',
-      '@styled': './app/js/components/styled',
-      '@utils': './app/js/utils',
-      '@blockstack/ui': './app/js/components/ui',
-      '@ui/components': './app/js/components/ui/components',
-      '@ui/containers': './app/js/components/ui/containers',
-      '@ui/common': './app/js/components/ui/common',
-      '@images': './app/images',
-      log4js: './app/js/logger.js'
+      '@components': path.resolve(__dirname, 'app/js/components'),
+      '@common': path.resolve(__dirname, 'app/js/common'),
+      '@styled': path.resolve(__dirname, 'app/js/components/styled'),
+      '@utils': path.resolve(__dirname, 'app/js/utils'),
+      '@blockstack/ui': path.resolve(__dirname, 'app/js/components/ui'),
+      '@ui/components': path.resolve(
+        __dirname,
+        'app/js/components/ui/components'
+      ),
+      '@ui/containers': path.resolve(
+        __dirname,
+        'app/js/components/ui/containers'
+      ),
+      '@ui/common': path.resolve(__dirname, 'app/js/components/ui/common'),
+      '@images': path.resolve(__dirname, 'app/images'),
+      log4js: path.resolve(__dirname, 'app/js/logger.js')
     }
   },
   optimization: {
@@ -250,9 +254,6 @@ module.exports = {
         minifyCSS: true,
         minifyURLs: true
       }
-    }),
-    new ReactLoadablePlugin({
-      filename: './build/react-loadable.json'
     })
   ]
     .concat(
