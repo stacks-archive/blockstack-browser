@@ -1,7 +1,8 @@
 import React from 'react'
 import { ShellScreen, Type, Shell } from '@blockstack/ui'
 import PropTypes from 'prop-types'
-import { CheckboxBlankOutlineIcon, CheckboxMarkedOutlineIcon } from 'mdi-react'
+import CheckboxBlankOutlineIcon from 'mdi-react/CheckboxBlankOutlineIcon'
+import CheckboxMarkedOutlineIcon from 'mdi-react/CheckboxMarkedOutlineIcon'
 class RecoverInformationScreen extends React.Component {
   sendEmailAgain = () => {
     if (!this.props.emailsSending) {

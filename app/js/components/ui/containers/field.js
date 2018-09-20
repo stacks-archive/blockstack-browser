@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyledField } from '@ui/components/form'
 import { slugify } from '@ui/common'
-import { AlertCircleIcon, CheckCircleOutlineIcon } from 'mdi-react'
+import AlertCircleIcon  from 'mdi-react/AlertCircleIcon'
+import CheckCircleOutlineIcon from 'mdi-react/CheckCircleOutlineIcon'
 
 /* eslint-disable */
 const Field = ({

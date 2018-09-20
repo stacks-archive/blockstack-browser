@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { PanelCard, PanelCardHeader } from '@components/PanelShell'
 import { Button } from '@components/styled/Button'
 import { Formik, FastField, Form } from 'formik'
-import { LockOpenIcon } from 'mdi-react'
+import LockOpenIcon from 'mdi-react/LockOpenIcon'
 
 import Yup from 'yup'
 
