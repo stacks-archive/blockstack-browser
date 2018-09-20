@@ -11,7 +11,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const workboxPlugin = require('workbox-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const Stylish = require('webpack-stylish')
-const HSWP = require('hard-source-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -173,6 +172,7 @@ module.exports = {
         parallel: true,
         sourceMap: analyze,
         cache: true,
+        exclude: /[\\/]node_modules[\\/]/,
         terserOptions: {
           mangle: {
             // https://github.com/bitcoinjs/bitcoinjs-lib/issues/998
@@ -208,7 +208,6 @@ module.exports = {
     }
   },
   plugins: [
-    new HSWP(),
     new Stylish(),
     new WebpackBar({
       color: '#9E5FC1',
