@@ -172,7 +172,13 @@ module.exports = {
       new TerserPlugin({
         parallel: true,
         sourceMap: analyze,
-        cache: true
+        cache: true,
+        terserOptions: {
+          mangle: {
+            // https://github.com/bitcoinjs/bitcoinjs-lib/issues/998
+            reserved: ['BigInteger', 'ECPair', 'Point']
+          }
+        }
       })
     ],
     splitChunks: {
