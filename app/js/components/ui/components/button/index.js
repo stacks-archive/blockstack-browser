@@ -250,7 +250,7 @@ const StyledButton = styled(Flex)`
 StyledButton.Div = StyledButton.withComponent('div')
 StyledButton.Link = StyledButton.withComponent(Link)
 
-const Buttons = styled.div`
+const Buttons = styled(Flex)`
   ${({ overflow }) =>
     overflow &&
     css`

@@ -1,6 +1,7 @@
 import React from 'react'
 import { ShellScreen, Type, Button, Buttons } from '@blockstack/ui'
 import PropTypes from 'prop-types'
+import { Box, Inline, Flex } from '@components/ui/components/primitives'
 
 function getRandomInt(min, max, exclude) {
   min = Math.ceil(min)
@@ -145,42 +146,51 @@ class SeedConfirm extends React.Component {
     }
     const renderWords = (words, action) =>
       this.state.randomWords.map(word => (
-        <Button
-          label={word}
+        <Box
+          width="calc(33.33333% - 10px)"
           key={word}
           onClick={() => action(word)}
-          filled={this.state.words[word]}
-        />
+          bg={this.state.words[word] ? 'whitesmoke' : 'transparent'}
+          border="1px solid rgba(39, 16, 51, 0.2)"
+          px={3}
+          py={2}
+          mb={3}
+          textAlign="center"
+          mr='10px'
+          borderRadius='30px'
+          fontSize="16px"
+        >
+          <Inline>{word}</Inline>
+        </Box>
       ))
 
     const props = {
       title: {
         children: (
-          <React.Fragment>Verify your Secret Recovery&nbsp;Key</React.Fragment>
+          <React.Fragment>
+            Select words #{this.state.indexesToConfirm[0] + 1} and #
+            {this.state.indexesToConfirm[1] + 1}
+          </React.Fragment>
         ),
         variant: 'h2'
       },
       content: {
         grow: 1,
         children: (
-          <React.Fragment>
-            <Type.h3>
-              Select words #{this.state.indexesToConfirm[0] + 1} and #{this
-                .state.indexesToConfirm[1] + 1}
-            </Type.h3>
-            <Buttons wrap>
+          <Box pt={3}>
+            <Type.small>
+              Blockstack cannot recover your key. We need to confirm you have
+              saved it.
+            </Type.small>
+            <Flex pt={4} flexWrap="wrap">
               {renderWords(seed, w => this.handleWordClick(w))}
-            </Buttons>
-          </React.Fragment>
+            </Flex>
+          </Box>
         )
       },
       actions: {
         split: true,
         items: [
-          {
-            label: ' ',
-            textOnly: true
-          },
           {
             label: this.state.error ? 'Try Again' : 'Confirm',
             primary: true,
