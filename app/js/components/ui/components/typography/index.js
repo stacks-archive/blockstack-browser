@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components'
 import { spacing } from '@ui/common/constants'
+import { Inline } from '@components/ui/components/primitives'
 
 const genericStyles = css`
   ${({ padding }) =>
@@ -19,7 +20,7 @@ const genericStyles = css`
 
 const Type = styled.div``
 
-const p = styled.p`
+const p = styled(Inline)`
   line-height: 24px;
   font-size: 16px;
   color: ${({ color }) => color || 'rgba(39, 16, 51, 0.7)'};
@@ -35,7 +36,7 @@ const p = styled.p`
   }
 `
 
-const a = styled.a`
+const a = styled(Inline)`
   line-height: 24px;
   font-size: 16px;
   color: ${({ color }) => color || 'rgba(39, 16, 51, 0.7)'};
@@ -55,7 +56,7 @@ const a = styled.a`
   }
 `
 
-const Small = styled.span`
+const Small = styled(Inline)`
   line-height: 24px;
   display: inline-block;
   font-size: 14px;
@@ -68,7 +69,7 @@ const Small = styled.span`
     `};
 `
 
-const h1 = styled.h1`
+const h1 = styled(Inline)`
   font-weight: 300;
   line-height: 38px;
   font-size: 28px;
@@ -83,7 +84,7 @@ const h1 = styled.h1`
 
   margin: 0;
 `
-const h2 = styled.h2`
+const h2 = styled(Inline)`
   font-weight: 300;
   line-height: 34px;
   font-size: 24px;
@@ -99,7 +100,7 @@ const h2 = styled.h2`
   margin: 0;
 `
 
-const h3 = styled.h3`
+const h3 = styled(Inline)`
   font-style: normal;
   font-weight: normal;
   line-height: 24px;
@@ -120,7 +121,7 @@ const h3 = styled.h3`
 
   margin: 0;
 `
-const h5 = styled.h5`
+const h5 = styled(Inline)`
   font-style: normal;
   font-weight: 500;
   line-height: 23px;
@@ -140,7 +141,7 @@ const h5 = styled.h5`
   margin: 0;
 `
 
-const h4 = styled.h4`
+const h4 = styled(Inline)`
   font-style: normal;
   font-weight: 600;
   line-height: 23px;
@@ -167,5 +168,30 @@ Type.h2 = h2
 Type.h3 = h3
 Type.h4 = h4
 Type.h5 = h5
+
+Type.p.defaultProps = {
+  is: 'p'
+}
+Type.a.defaultProps = {
+  is: 'a'
+}
+Type.small.defaultProps = {
+  is: 'small'
+}
+Type.h1.defaultProps = {
+  is: 'h1'
+}
+Type.h2.defaultProps = {
+  is: 'h2'
+}
+Type.h3.defaultProps = {
+  is: 'h3'
+}
+Type.h4.defaultProps = {
+  is: 'h4'
+}
+Type.h5.defaultProps = {
+  is: 'h5'
+}
 
 export { Type }

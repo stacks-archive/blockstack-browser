@@ -1,17 +1,23 @@
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
+import { Flex } from '@components/ui/components/primitives'
 import PropTypes from 'prop-types'
 const InitialScreen = ({ next, ...rest }) => {
   const props = {
-    title: {
-      children: 'Create your Blockstack ID'
-    },
     content: {
       grow: 1,
       children: (
-        <Type.p>
-          Completely censorship free, private, and secure. One login for 100s of apps. Powered by blockchain.
-        </Type.p>
+        <Flex
+          style={{ flexGrow: 1 }}
+          justifyContent="center"
+          flexDirection="column"
+        >
+          <Type.h1 pb={3}>Create your Blockstack ID</Type.h1>
+          <Type.p>
+            Completely censorship free, private, and secure. One login for 100s
+            of apps. Powered by blockchain.
+          </Type.p>
+        </Flex>
       )
     },
     actions: {
