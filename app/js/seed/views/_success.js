@@ -1,27 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { ShellScreen, Type } from '@blockstack/ui'
+import {Box} from '@components/ui/components/primitives'
 
 const SuccessScreen = ({ finish, buttonLabel, ...rest }) => {
   const props = {
     title: {
-      children: 'Save your Secret Recovery Key forever'
+      children: <React.Fragment>Save your Secret Recovery&nbsp;Key</React.Fragment>
     },
     content: {
       grow: 1,
       children: (
-        <React.Fragment>
+        <Box pt={3}>
           <Type.p>
-            Your secret recovery key is the most reliable way to recover your
-            ID. It is important to save this key in a safe place (we suggest
-            writing it on paper).
+            Your Secret Recovery Key is the most reliable way to access your
+            Blockstack ID.
           </Type.p>
           <Type.p>
-            Blockstack IDs are decentralized, meaning, anyone who has the secret
-            recovery key effectively owns this ID. Please save your recovery
-            key!
+            Blockstack cannot reset your key. Save your key wherever you keep
+            important, secret information.
           </Type.p>
-        </React.Fragment>
+        </Box>
       )
     },
     actions: {

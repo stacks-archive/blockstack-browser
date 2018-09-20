@@ -14,8 +14,8 @@ const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
       children: (
         <React.Fragment>
           <Type.p pt={2}>
-            Your Secret Recovery Key is the most reliable way to{' '}
-            <strong>access</strong> your Blockstack ID.
+            Your Secret Recovery Key is the most reliable way to access your
+            Blockstack ID.
           </Type.p>
           <Type.p>
             Blockstack cannot reset your key. Save your key wherever you keep

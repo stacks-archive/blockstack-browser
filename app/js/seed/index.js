@@ -314,13 +314,7 @@ class SeedContainer extends Component {
 
     return (
       <App>
-        <ShellParent
-          app={app}
-          views={views}
-          {...componentProps}
-          invertOnLast
-          backOnLast
-        />
+        <ShellParent app={app} views={views} {...componentProps} backOnLast />
         <AppHomeWrapper />
       </App>
     )
