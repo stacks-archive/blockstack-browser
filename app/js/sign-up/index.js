@@ -576,7 +576,7 @@ class Onboarding extends React.Component {
           app={app}
           views={views}
           {...componentProps}
-          disableBackOnView={[VIEWS.INFO, views.length - 1]}
+          disableBackOnView={[0, VIEWS.INFO, views.length - 1]}
           disableBack={this.state.loading}
         />
         <AppHomeWrapper />

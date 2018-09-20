@@ -30,13 +30,12 @@ export default class InitialSignInScreen extends React.PureComponent {
   state = {
     isScanning: false,
     scanError: null
-  };
+  }
 
-  handleScan = (data) => {
+  handleScan = data => {
     if (validateInput(data)) {
       this.props.next(data)
-    }
-    else {
+    } else {
       this.setState({ scanError: 'Invalid recovery code scanned' })
       clearTimeout(this.scanErrorTimeout)
       this.scanErrorTimeout = setTimeout(() => {
@@ -45,7 +44,7 @@ export default class InitialSignInScreen extends React.PureComponent {
     }
   }
 
-  handleScanError = (err) => {
+  handleScanError = err => {
     this.setState({ scanError: err.message })
   }
 
@@ -73,7 +72,7 @@ export default class InitialSignInScreen extends React.PureComponent {
 
     const screen = {
       title: {
-        children: 'Sign in with an existing ID'
+        children: 'Enter Secret Recovery Key or Magic Recovery Code'
       },
       content: {
         grow: 1,
@@ -112,29 +111,28 @@ export default class InitialSignInScreen extends React.PureComponent {
         children: (
           <React.Fragment>
             <Type.p>
-              Enter your Magic Recovery Code. This code was sent to you when you
-              created your ID. Alternatively, you can supply your Secret Recovery
-              Key. This key is a sequence of words you recorded, for example,
-              "rabbit pink ..."
+              Your Magic Recovery Code and Secret Recovery Key&nbsp;were emailed when you first created your Blockstack&nbsp;ID.
             </Type.p>
-            {isScanning &&
+            {isScanning && (
               <QrScan
                 onScan={this.handleScan}
                 onError={this.handleScanError}
                 handleClose={this.stopScanning}
                 error={scanError}
               />
-            }
+            )}
           </React.Fragment>
         )
       },
       actions: {
-        items: isScanning ? [] : [
-          {
-            label: 'Create a new Blockstack ID',
-            to: '/sign-up'
-          }
-        ]
+        items: isScanning
+          ? []
+          : [
+              {
+                label: 'Create a new Blockstack ID',
+                to: '/sign-up'
+              }
+            ]
       }
     }
 

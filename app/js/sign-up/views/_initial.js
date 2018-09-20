@@ -10,8 +10,7 @@ const InitialScreen = ({ next, ...rest }) => {
       grow: 1,
       children: (
         <Type.p>
-          Blockstack ID gives you control over your fundamental digital rights:
-          Identity, data ownership, privacy, and security.
+          Completely censorship free, private, and secure. One login for 100s of apps. Powered by blockchain.
         </Type.p>
       )
     },
