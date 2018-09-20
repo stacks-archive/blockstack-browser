@@ -14,7 +14,7 @@ const Stylish = require('webpack-stylish')
 const TerserPlugin = require('terser-webpack-plugin')
 
 const isProd = process.env.NODE_ENV === 'production'
-const isWebapp = process.env.WEBAPP
+const isWebapp = process.env.WEBAPP === 'true'
 const isDev = !isProd
 const analyze = !!process.env.ANALYZE
 
@@ -215,7 +215,8 @@ module.exports = {
       minimal: false
     }),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.WEBAPP': JSON.stringify(isWebapp)
     }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedChunksPlugin(chunk => {
@@ -263,7 +264,7 @@ module.exports = {
     })
   ]
     .concat(
-      isProd && isWebapp
+      isProd
         ? [
             new workboxPlugin.GenerateSW({
               swDest: 'static/js/sw.js',
