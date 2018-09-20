@@ -25,7 +25,9 @@ const analyze = !!process.env.ANALYZE
  */
 const output = {
   filename: isProd ? 'static/js/[name].[contenthash:8].js' : '[name].js',
-  chunkFilename: isProd ? 'static/js/[name].[contenthash:8].chunk.js' : '[name].chunk.js',
+  chunkFilename: isProd
+    ? 'static/js/[name].[contenthash:8].chunk.js'
+    : '[name].chunk.js',
   path: path.resolve(__dirname, 'build'),
   publicPath: '/',
   globalObject: 'self'
@@ -46,7 +48,7 @@ module.exports = {
     __filename: true
   },
   output,
-   devServer: {
+  devServer: {
     open: true,
     historyApiFallback: true,
     port: 3000,
@@ -79,8 +81,14 @@ module.exports = {
       },
       {
         test: /\.(gif|png|webp|jpe?g|svg)$/i,
+        exclude: [path.resolve(__dirname, 'app/fonts')],
         use: [
-          'file-loader',
+          {
+            loader: 'file-loader',
+            options: {
+              name: 'static/images/[name][hash].[ext]'
+            }
+          },
           {
             loader: 'image-webpack-loader',
             options: {
@@ -105,7 +113,10 @@ module.exports = {
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         loader: 'url-loader?limit=100000',
-        include: [path.resolve(__dirname, 'app/fonts')]
+        include: [path.resolve(__dirname, 'app/fonts')],
+        options: {
+          name: 'static/fonts/[name][hash].[ext]'
+        }
       },
 
       {
@@ -123,7 +134,12 @@ module.exports = {
       },
       {
         test: /\.worker\.js$/,
-        use: 'workerize-loader'
+        use: {
+          loader: 'workerize-loader',
+          options: {
+            name: 'static/js/[name][hash].[ext]'
+          }
+        }
       }
     ]
   },
@@ -192,7 +208,7 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
     }),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.NamedChunksPlugin((chunk) => {
+    new webpack.NamedChunksPlugin(chunk => {
       // https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
       // https://github.com/webpack/webpack/issues/1315#issuecomment-386267369
       if (chunk.name) {
@@ -200,7 +216,7 @@ module.exports = {
       }
       // eslint-disable-next-line no-underscore-dangle
       return [...chunk._modules]
-        .map((m) =>
+        .map(m =>
           path.relative(
             m.context,
             m.userRequest.substring(0, m.userRequest.lastIndexOf('.'))
@@ -238,23 +254,31 @@ module.exports = {
     new ReactLoadablePlugin({
       filename: './build/react-loadable.json'
     })
-  ].concat(isProd ? [new workboxPlugin.GenerateSW({
-    swDest: 'static/sw.js',
-    importWorkboxFrom: 'local',
-    skipWaiting: true,
-    clientsClaim: true,
-    runtimeCaching: [
-      {
-        urlPattern: '/',
-        handler: 'networkFirst',
-        options: {
-          cacheableResponse: {
-            statuses: [0, 200]
-          }
-        }
-      }
-    ]
-  })] : [])
+  ]
+    .concat(
+      isProd
+        ? [
+            new workboxPlugin.GenerateSW({
+              swDest: 'static/js/sw.js',
+              precacheManifestFilename:
+                'static/js/wb-manifest.[manifestHash].js',
+              importWorkboxFrom: 'local',
+              skipWaiting: true,
+              clientsClaim: true,
+              runtimeCaching: [
+                {
+                  urlPattern: '/',
+                  handler: 'networkFirst',
+                  options: {
+                    cacheableResponse: {
+                      statuses: [0, 200]
+                    }
+                  }
+                }
+              ]
+            })
+          ]
+        : []
+    )
     .concat(analyze ? [new BundleAnalyzerPlugin()] : [])
-
 }
