@@ -1,17 +1,12 @@
 import React from 'react'
-import { ShellScreen, Type, Panel, Panels } from '@blockstack/ui'
+import { ShellScreen, Type } from '@blockstack/ui'
+import { Box, Flex } from '@components/ui/components/primitives'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import PropTypes from 'prop-types'
+import ContentCopyIcon from 'mdi-react/ContentCopyIcon'
 
 const renderWord = (i, word, condition = true) =>
-  condition && (
-    <div
-      style={{ display: 'flex', alignItems: 'center', paddingBottom: '15px' }}
-    >
-      <Type.h5>#{i + 1}&nbsp;&nbsp;</Type.h5>
-      <Type.h2 key={word}>{word}</Type.h2>
-    </div>
-  )
+  condition && <React.Fragment key={word}>{`${word} `}</React.Fragment>
 
 class SeedPage extends React.Component {
   state = {
@@ -30,50 +25,45 @@ class SeedPage extends React.Component {
     const { next, seed, ...rest } = this.props
     const props = {
       title: {
-        children: 'Write down all words',
-        variant: 'h1',
-        subtitle: {
-          light: true,
-          children: 'Your Secret Recovery Key',
-          padding: '10px 0 0 0'
-        }
+        children: 'Save all words',
+        variant: 'h1'
       },
 
       content: {
         grow: 1,
         children: (
-          <Panels panels={2}>
-            <Panel>
-              {seed.map(
-                (word, i) => renderWord(i, word, i % 2 === 0)
-              )}
-            </Panel>
-            <Panel>
-              {seed.map(
-                (word, i) => renderWord(i, word, i % 2 !== 0)
-              )}
-            </Panel>
-          </Panels>
+          <Box mt={3}>
+            <Type.small>Your Secret Recovery Key</Type.small>
+            <Box bg="whitesmoke" p={3} mt={2} borderRadius="6px 6px 0 0">
+              <Type fontSize={3}>
+                {seed.map((word, i) => renderWord(i, word, true))}
+              </Type>
+            </Box>
+            <CopyToClipboard text={this.state.seed} onCopy={() => this.copy()}>
+              <Flex
+                bg="whitesmoke"
+                p={3}
+                mt={1}
+                alignItems="center"
+                borderRadius="0 0 6px 6px"
+              >
+                <Box pr={1}>
+                  <ContentCopyIcon color="rgba(0,0,0,0.25)" size={'1rem'} />
+                </Box>
+                <Type.small>
+                  {this.state.copied ? 'Copied' : 'Copy all words'}
+                </Type.small>
+              </Flex>
+            </CopyToClipboard>
+          </Box>
         )
       },
       actions: {
         items: [
           {
-            label: 'I have written down all words',
+            label: 'Continue',
             primary: true,
             onClick: () => next()
-          },
-          {
-            label: this.state.copied ? (
-              'Copied!'
-            ) : (
-              <CopyToClipboard
-                text={this.state.seed}
-                onCopy={() => this.copy()}
-              >
-                <span>Copy 12 Words</span>
-              </CopyToClipboard>
-            )
           }
         ]
       }
