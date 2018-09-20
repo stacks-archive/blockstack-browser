@@ -1,5 +1,5 @@
 import React from 'react'
-import { ShellScreen } from '@blockstack/ui'
+import { ShellScreen, Type } from '@blockstack/ui'
 import Yup from 'yup'
 import PropTypes from 'prop-types'
 
@@ -14,24 +14,25 @@ class EmailView extends React.Component {
     field: 'email'
   }
 
+  message = () =>
+    this.state.field === 'email'
+      ? 'Your email is needed for backup and recovery options.'
+      : 'Your mobile number is needed for backup and recovery options.'
+
   returnField = ({ field }) =>
     field === 'email'
       ? [
           {
             type: 'email',
             name: 'email',
-            label: 'Email Address',
-            message:
-              'Your email is needed for critical recovery instructions.'
+            label: 'Email Address'
           }
         ]
       : [
           {
             type: 'tel',
             name: 'phone',
-            label: 'Mobile Number',
-            message:
-              'Your mobile number is only for delivering recovery instructions. Blockstack does not store this data.'
+            label: 'Mobile Number'
           }
         ]
 
@@ -42,7 +43,7 @@ class EmailView extends React.Component {
       title: {
         children:
           this.state.field === 'email'
-            ? 'What is your email address?'
+            ? 'What is your email?'
             : 'What is your mobile number?',
         variant: 'h2'
       },
@@ -68,7 +69,8 @@ class EmailView extends React.Component {
               }
             ]
           }
-        }
+        },
+        children: <Type.p>{this.message()}</Type.p>
       }
     }
     return <ShellScreen {...rest} {...props} />
