@@ -135,7 +135,7 @@ module.exports = {
         use: {
           loader: 'workerize-loader',
           options: {
-            name: 'static/js/[name][hash].[ext]'
+            name: 'static/js/[hash].[ext]'
           }
         }
       }
