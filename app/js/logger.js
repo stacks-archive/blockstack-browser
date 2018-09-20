@@ -1,6 +1,9 @@
 const isDev = process.env.NODE_ENV === 'development'
+const isTesting = process.env.NODE_ENV === 'test'
 const localDebug =
-  typeof window !== 'undefined' && window.localStorage.getItem('debug')
+  !isTesting &&
+  typeof window !== 'undefined' &&
+  window.localStorage.getItem('debug')
 const isDebug =
   localDebug ||
   (typeof location !== 'undefined' && location.search.includes('debug'))

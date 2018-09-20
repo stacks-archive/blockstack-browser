@@ -156,7 +156,7 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --hot",
     "dev-ui": "echo 'Please use dev instead of dev-ui'",
     "dev-webapp": "echo 'Please use dev instead of dev-webapp'",
-    "flow": "flow",
+    "flow": "cross-env NODE_ENV=test flow",
     "flow-typed-install": "cross-env NODE_ENV=test ./node_modules/.bin/flow-typed install --skip",
     "lint": "eslint app/js/**/*.js",
     "mac": "cross-env NODE_ENV=production npm run build && npm run mac:copyBrowser && npm run mac:compileCorsProxy && npm run mac:buildDebug",
