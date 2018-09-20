@@ -32,7 +32,6 @@ configureLogging(
 
 let logger = log4js.getLogger(__filename)
 
-
 window.addEventListener('error', event => {
   // eslint-disable-next-line
   logger = log4js.getLogger("window.addWindowListener('error')")
@@ -44,7 +43,6 @@ window.onerror = (messageOrEvent, source, lineno, colno, error) => {
   logger.error(messageOrEvent, error)
 }
 
-
 configureLogging(
   log4js,
   logServerPort,
@@ -52,17 +50,17 @@ configureLogging(
   process.env.NODE_ENV
 )
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' && process.env.WEBAPP) {
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/static/sw.js')
-        .then(registration => {
-          console.log('SW registered: ', registration)
-        })
-        .catch(registrationError => {
-          console.log('SW registration failed: ', registrationError)
-        })
+    window.addEventListener('load', async () => {
+      try {
+        const registration = await navigator.serviceWorker.register(
+          '/static/js/sw.js'
+        )
+        logger.log('SW registered: ', registration)
+      } catch (registrationError) {
+        logger.log('SW registration failed: ', registrationError)
+      }
     })
   }
 }
@@ -89,7 +87,6 @@ render(
   </Provider>,
   document.getElementById('app')
 )
-
 
 if (module.hot) {
   module.hot.accept()

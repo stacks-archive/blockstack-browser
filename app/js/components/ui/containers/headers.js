@@ -3,7 +3,8 @@ import { Bug as StyledBug } from '@ui/components/bugs'
 import { StyledHeader } from '@ui/components/header'
 import { BlockstackBug } from '@ui/components/logos'
 import { isArray } from '@common'
-import { ArrowLeftIcon, ChevronDoubleRightIcon } from 'mdi-react'
+import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
+import ChevronDoubleRightIcon from 'mdi-react/ChevronDoubleRightIcon'
 import PropTypes from 'prop-types'
 
 const Bug = ({ children, size = 48, ...rest }) => (

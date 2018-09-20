@@ -2,8 +2,10 @@ import React from 'react'
 import { StyledButton, Buttons } from '@ui/components/button'
 import PropTypes from 'prop-types'
 import { Spinner } from '@ui/components/spinner'
-import { ArrowRightIcon, SearchIcon, QrcodeIcon } from 'mdi-react'
 import { Link } from 'react-router'
+import ArrowRightIcon from 'mdi-react/ArrowRightIcon'
+import QrcodeIcon from 'mdi-react/QrcodeIcon'
+import SearchIcon from 'mdi-react/SearchIcon'
 
 const iconMap = {
   SearchIcon,

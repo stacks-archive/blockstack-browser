@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { CameraIcon } from 'mdi-react'
+import CameraIcon from 'mdi-react/CameraIcon'
 
 const User = styled.div``
 
