@@ -158,7 +158,13 @@ class UsernameView extends React.Component {
   }
 
   render() {
-    const { updateValue, next, loading, ...rest } = this.props
+    const {
+      updateValue,
+      next,
+      loading,
+      username: cachedUsername = '',
+      ...rest
+    } = this.props
     const { status, username } = this.state
     const canSkip = status === STATUS.FAIL
 
@@ -171,7 +177,7 @@ class UsernameView extends React.Component {
         grow: 0,
         form: {
           validate: v => this.validate(v),
-          initialValues: { username: '' },
+          initialValues: { username: cachedUsername },
           onSubmit: values => {
             if (status === STATUS.CONFIRMED && username === values.username) {
               updateValue('username', values.username)
@@ -250,6 +256,7 @@ class UsernameView extends React.Component {
 UsernameView.propTypes = {
   updateValue: PropTypes.func,
   next: PropTypes.func,
+  username: PropTypes.string,
   loading: PropTypes.bool
 }
 
