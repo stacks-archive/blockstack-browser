@@ -1,6 +1,8 @@
 import makeEncryptWorker from './workers/encrypt.worker.js'
 import makeDecryptWorker from './workers/decrypt.worker.js'
-
+import bip39 from 'bip39'
+import log4js from 'log4js'
+const logger = log4js.getLogger(__filename)
 export async function encrypt(plaintextBuffer, password) {
   const mnemonic = plaintextBuffer.toString()
   const encryptWorker = makeEncryptWorker()
@@ -24,8 +26,10 @@ export const RECOVERY_TYPE = {
  * @param {string} input - User input of recovery method
  * @returns {{ isValid: boolean, cleaned: (string|undefined), type: (string|undefined) }}
  */
-export async function validateAndCleanRecoveryInput(input) {
+export function validateAndCleanRecoveryInput(input) {
+  logger.debug('Validate and clean recovery input')
   const cleaned = input.trim()
+  logger.debug('cleaned: ', cleaned)
 
   // Raw mnemonic phrase
   const cleanedMnemonic = cleaned
@@ -33,7 +37,6 @@ export async function validateAndCleanRecoveryInput(input) {
     .split(/\s|-|_|\./)
     .join(' ')
 
-  const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
   if (bip39.validateMnemonic(cleanedMnemonic)) {
     return {
       isValid: true,
@@ -41,6 +44,7 @@ export async function validateAndCleanRecoveryInput(input) {
       cleaned: cleanedMnemonic
     }
   }
+  logger.debug('Is not a valid mnemonic.')
 
   // Base64 encoded encrypted phrase
   let cleanedEncrypted = cleaned.replace(/\s/gm, '')
@@ -50,6 +54,8 @@ export async function validateAndCleanRecoveryInput(input) {
     cleanedEncrypted.indexOf('=') !== 106
   ) {
     // Append possibly missing equals sign padding
+    logger.debug('Encrypted Phrase needs an `=` at the end.')
+
     cleanedEncrypted = `${cleanedEncrypted}=`
   }
 
@@ -57,12 +63,14 @@ export async function validateAndCleanRecoveryInput(input) {
     cleanedEncrypted.length >= 108 &&
     /^[a-zA-Z0-9\+\/]+=$/.test(cleanedEncrypted)
   ) {
+    logger.debug('Valid encrypted phrase!')
     return {
       isValid: true,
       type: RECOVERY_TYPE.ENCRYPTED,
       cleaned: cleanedEncrypted
     }
   }
+  logger.debug('Is not a valid phrase!')
 
   return { isValid: false }
 }

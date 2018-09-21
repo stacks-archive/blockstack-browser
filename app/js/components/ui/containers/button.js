@@ -63,19 +63,28 @@ const Button = ({
   )
 }
 
-const renderButtons = items =>
-  items.map(({ ...buttonProps }, i) => (
-    <Button
-      key={i}
-      disabled={buttonProps.label === ' ' || buttonProps.label === ''}
-      {...buttonProps}
-    />
-  ))
+const renderButtons = (items, split) =>
+  items.map(({ ...buttonProps }, i) => {
+    const margin = split ? { mt: '0 !important' } : {}
+    const marginLeft = split && i !== 0  ? { ml: 3 } : { ml: 0 }
+    const props = {
+      ...margin,
+      ...marginLeft
+    }
+    return (
+      <Button
+        key={i}
+        disabled={buttonProps.label === ' ' || buttonProps.label === ''}
+        {...buttonProps}
+        {...props}
+      />
+    )
+  })
 
 const ActionButtons = ({ items, split = false, ...rest }) =>
   items.length ? (
-    <Buttons split={split} {...rest}>
-      {renderButtons(items)}
+    <Buttons flexDirection={split ? 'row' : 'column'} {...rest}>
+      {renderButtons(items, split)}
     </Buttons>
   ) : null
 

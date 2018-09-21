@@ -1,19 +1,23 @@
 import crypto from 'crypto'
+import bip39 from 'bip39'
+import log4js from 'log4js'
+const logger = log4js.getLogger(__filename)
 
 async function normalizeMnemonic(mnemonic) {
-  const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
   return bip39.mnemonicToEntropy(mnemonic).toString('hex')
 }
 
 async function encryptMnemonic(mnemonic, password) {
   // must be bip39 mnemonic
-  const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
   if (!bip39.validateMnemonic(mnemonic)) {
     throw new Error('Not a valid bip39 nmemonic')
   }
 
   // normalize plaintext to fixed length byte string
-  const plaintextNormalized = Buffer.from(await normalizeMnemonic(mnemonic), 'hex')
+  const plaintextNormalized = Buffer.from(
+    await normalizeMnemonic(mnemonic),
+    'hex'
+  )
 
   // AES-128-CBC with SHA256 HMAC
   const salt = crypto.randomBytes(16)
@@ -36,7 +40,7 @@ async function encryptMnemonic(mnemonic, password) {
 }
 
 export async function encrypt(mnemonic, password) {
-  console.log('encryptWorker')
+  logger.debug('Encrypting from worker', mnemonic, password)
   const encryptedBuffer = await encryptMnemonic(mnemonic, password)
   return encryptedBuffer.toString('hex')
 }

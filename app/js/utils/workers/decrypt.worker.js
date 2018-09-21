@@ -1,14 +1,13 @@
 import crypto from 'crypto'
 import triplesec from 'triplesec'
-
+import bip39 from 'bip39'
+import log4js from 'log4js'
+const logger = log4js.getLogger(__filename)
 async function denormalizeMnemonic(normalizedMnemonic) {
-  const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
   return bip39.entropyToMnemonic(normalizedMnemonic)
 }
 
 async function decryptMnemonic(dataBuffer, password) {
-  const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
-
   const salt = dataBuffer.slice(0, 16)
   const hmacSig = dataBuffer.slice(16, 48) // 32 bytes
   const cipherText = dataBuffer.slice(48)
@@ -73,6 +72,7 @@ function decryptLegacy(dataBuffer, password) {
 }
 
 export async function decrypt(hexEncryptedKey, password) {
+  logger.debug('Decrypting from worker!')
   const dataBuffer = Buffer.from(hexEncryptedKey, 'hex')
   let mnemonic
 

@@ -21,8 +21,10 @@ const validateInput = async value =>
 const validationSchema = Yup.object({
   recoveryKey: Yup.string()
     .required('This is required.')
-    .test('is-valid', 'That’s not a valid recovery code or key', async value =>
-      validateAndCleanRecoveryInput(value)
+    .test(
+      'is-valid',
+      'That’s not a valid recovery code or key',
+      value => validateAndCleanRecoveryInput(value).isValid
     )
 })
 

@@ -22,7 +22,7 @@ const analyze = !!process.env.ANALYZE
  * Output config
  */
 const output = {
-  filename: isProd ? 'static/js/[name].[contenthash:8].js' : '[name].js',
+  filename: isProd ? 'static/js/[contenthash:8].[hash].js' : '[name].js',
   chunkFilename: isProd
     ? 'static/js/[name].[contenthash:8].chunk.js'
     : '[name].chunk.js',
@@ -134,10 +134,7 @@ module.exports = {
       {
         test: /\.worker\.js$/,
         use: {
-          loader: 'workerize-loader',
-          options: {
-            name: 'static/js/[hash].[ext]'
-          }
+          loader: 'workerize-loader'
         }
       }
     ]
