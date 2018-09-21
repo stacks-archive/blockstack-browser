@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ShellScreen } from '@blockstack/ui'
+import { ShellScreen, Type } from '@blockstack/ui'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
@@ -175,6 +175,20 @@ class UsernameView extends React.Component {
       },
       content: {
         grow: 0,
+        children: (
+          <React.Fragment>
+            <Type.small pt={3}>
+              This will be your unique, public identity for any Blockstack&nbsp;app.
+            </Type.small>
+            {canSkip && (
+              <Type.small pt={3}>
+                If you’re having trouble registering a username, you can skip
+                this now and try again later from your profile. This may make
+                some apps unusable until you do.
+              </Type.small>
+            )}
+          </React.Fragment>
+        ),
         form: {
           validate: v => this.validate(v),
           initialValues: { username: cachedUsername },
@@ -189,21 +203,6 @@ class UsernameView extends React.Component {
               type: 'text',
               label: 'Username',
               name: 'username',
-              message: (
-                <React.Fragment>
-                  <p>
-                    This will be your unique, public identity for any Blockstack
-                    app.
-                  </p>
-                  {canSkip && (
-                    <p>
-                      If you’re having trouble registering a username, you can
-                      skip this now and try again later from your profile. This
-                      may make some apps unusable until you do.
-                    </p>
-                  )}
-                </React.Fragment>
-              ),
               autoFocus: true,
               overlay: defaultSponsoredName,
               handleChangeOverride: (e, handleChange) => {
