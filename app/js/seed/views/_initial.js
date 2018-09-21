@@ -27,7 +27,7 @@ const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
     actions: {
       items: [
         {
-          label: 'Record Secret Recovery Key',
+          label: 'Secret Recovery Key',
           onClick: () => next(),
           primary: true,
           loading,
