@@ -38,7 +38,7 @@ class EmailView extends React.Component {
         ]
 
   render() {
-    const { email, updateValue, next, ...rest } = this.props
+    const { email, updateValue, next, loading, ...rest } = this.props
 
     const props = {
       title: {
@@ -66,6 +66,8 @@ class EmailView extends React.Component {
                 label: 'Next',
                 primary: true,
                 type: 'submit',
+                loading,
+                disabled: loading,
                 icon: 'ArrowRightIcon'
               }
             ]

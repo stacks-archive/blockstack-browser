@@ -528,7 +528,8 @@ class Onboarding extends React.Component {
           email,
           next: () => this.submitEmail(),
           submitted: emailSubmitted,
-          updateValue: this.updateValue
+          updateValue: this.updateValue,
+          loading: this.state.emailsSending
         }
       },
       {

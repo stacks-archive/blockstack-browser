@@ -8,6 +8,7 @@ import { Spring } from 'react-spring'
 import { Spinner } from '@ui/components/spinner'
 import { colors } from '@components/styled/theme'
 import PropTypes from 'prop-types'
+import { Flex, Box } from '@components/ui/components/primitives'
 
 const Shell = props => <StyledShell {...props} />
 
@@ -40,18 +41,34 @@ const Title = ({
   )
 }
 
-const Loading = ({ message = 'Loading...', children, ...rest }) => (
-  <Spring native from={{ opacity: 0 }} to={{ opacity: 1 }}>
-    {styles => (
-      <StyledShell.Loading {...rest} style={styles}>
-        <Spinner color={colors.blue} size={42} stroke={3} />
-        <div className="m-t-20">
-          {children || message}
-        </div>
-      </StyledShell.Loading>
-    )}
-  </Spring>
-)
+const Loading = ({ message = 'Loading...', children, ...rest }) => {
+  const Content = () => (
+    <Box>
+      {children || (
+        <Type fontSize="16px" pt={3} fontWeight={500}>
+          {message}
+        </Type>
+      )}
+    </Box>
+  )
+  return (
+    <Spring native from={{ opacity: 0 }} to={{ opacity: 1 }}>
+      {styles => (
+        <StyledShell.Loading {...rest} style={styles}>
+          <Flex
+            pt={3}
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Spinner color={colors.blue} size={42} stroke={3} />
+            <Content />
+          </Flex>
+        </StyledShell.Loading>
+      )}
+    </Spring>
+  )
+}
 Loading.propTypes = {
   message: PropTypes.node,
   children: PropTypes.node

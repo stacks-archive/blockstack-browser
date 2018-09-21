@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ShellScreen } from '@blockstack/ui'
+import { ShellScreen, Shell } from '@blockstack/ui'
 import Yup from 'yup'
 
 const validationSchema = Yup.object({
@@ -32,9 +32,11 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
             type: 'password',
             name: 'password',
             label: 'New password (8 characters min)',
+            disabled: loading,
             autoFocus: true
           },
           {
+            disabled: loading,
             type: 'password',
             name: 'passwordConfirm',
             label: 'Confirm Password',
@@ -58,7 +60,14 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
       }
     }
   }
-  return <ShellScreen {...rest} {...props} />
+  return (
+    <React.Fragment>
+      {loading ? (
+        <Shell.Loading message="Creating your Blockstack ID..." />
+      ) : null}
+      <ShellScreen {...rest} {...props} />
+    </React.Fragment>
+  )
 }
 
 PasswordView.propTypes = {

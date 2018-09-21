@@ -14,8 +14,8 @@ const Loading = styled(animated.div)`
   z-index: 99;
   width: calc(100% + 60px);
   left: -30px;
-  height: calc(100% + 53px);
-  top: -30px;
+  height: calc(100% + 98px);
+  top: -80px;
 `
 
 const Header = styled.div``
