@@ -505,6 +505,7 @@ class Onboarding extends React.Component {
       {
         show: VIEWS.USERNAME,
         props: {
+          backLabel: 'Cancel',
           username,
           next: this.submitUsername,
           previous: () => this.updateView(VIEWS.PASSWORD),

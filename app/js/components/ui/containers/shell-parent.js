@@ -85,7 +85,8 @@ class ShellParent extends React.Component {
 
     const invert = invertOnLast && isLastView
 
-    const defaultBackLabel = isFirstView ? backLabel : 'Back'
+    const internalBackLabel = backLabel !== '' ? backLabel : 'Back'
+    const defaultBackLabel = isFirstView ? backLabel : internalBackLabel
     const label = isFirstView && app ? `Back to ${app.name}` : defaultBackLabel
 
     const Component = views[view]
