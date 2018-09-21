@@ -53,19 +53,24 @@ import { notify } from 'reapop'
 
 const logger = log4js.getLogger(__filename)
 
+/**
+ * View Order
+ *
+ * To adjust the sequence of views, change their index here
+ */
 const views = [
   Initial,
-  Email,
-  Password,
   Username,
+  Password,
+  Email,
   RecoveryInformationScreen,
   Success
 ]
 const VIEWS = {
   INITIAL: 0,
-  EMAIL: 1,
+  USERNAME: 1,
   PASSWORD: 2,
-  USERNAME: 3,
+  EMAIL: 3,
   INFO: 4,
   HOORAY: 5
 }
@@ -159,14 +164,15 @@ class Onboarding extends React.Component {
       return null
     }
   }
-  submitPassword = () => {
-    const { username, email } = this.state
-    if (username.length < 1) {
-      this.setState({
-        email
-      })
-    }
-    this.updateView(VIEWS.USERNAME)
+  /**
+   * Submit our password
+   */
+  submitPassword = async () => {
+    this.setState({
+      loading: true
+    })
+    await this.createAccount()
+    this.updateView(VIEWS.EMAIL)
   }
   /**
    * Submit Username
@@ -175,14 +181,9 @@ class Onboarding extends React.Component {
   submitUsername = username => {
     this.setState(
       {
-        username,
-        loading: true
+        username
       },
-      () => {
-        setTimeout(() => {
-          this.createAccount()
-        }, 500)
-      }
+      () => this.updateView(VIEWS.PASSWORD)
     )
   }
 
@@ -204,10 +205,6 @@ class Onboarding extends React.Component {
     await this.props.connectStorage()
     // Register the username
     await this.registerUsername()
-    // Send the emails
-    await this.sendEmails()
-
-    this.updateView(VIEWS.INFO)
   }
 
   /**
@@ -473,6 +470,12 @@ class Onboarding extends React.Component {
     }
   }
 
+  submitEmail = async () => {
+    // Send the emails
+    await this.sendEmails()
+    this.updateView(VIEWS.INFO)
+  }
+
   componentDidMount() {
     if (!this.props.api.subdomains[SUBDOMAIN_SUFFIX]) {
       this.props.resetApi(this.props.api)
@@ -496,16 +499,18 @@ class Onboarding extends React.Component {
       {
         show: VIEWS.INITIAL,
         props: {
-          next: () => this.updateView(VIEWS.EMAIL)
+          next: () => this.updateView(VIEWS.USERNAME)
         }
       },
       {
-        show: VIEWS.EMAIL,
+        show: VIEWS.USERNAME,
         props: {
-          email,
-          next: () => this.updateView(VIEWS.PASSWORD),
-          submitted: emailSubmitted,
-          updateValue: this.updateValue
+          username,
+          next: this.submitUsername,
+          previous: () => this.updateView(VIEWS.PASSWORD),
+          updateValue: this.updateValue,
+          isProcessing: this.state.usernameRegistrationInProgress,
+          loading: this.state.loading
         }
       },
       {
@@ -518,14 +523,12 @@ class Onboarding extends React.Component {
         }
       },
       {
-        show: VIEWS.USERNAME,
+        show: VIEWS.EMAIL,
         props: {
-          username,
-          next: this.submitUsername,
-          previous: () => this.updateView(VIEWS.PASSWORD),
-          updateValue: this.updateValue,
-          isProcessing: this.state.usernameRegistrationInProgress,
-          loading: this.state.loading
+          email,
+          next: () => this.submitEmail(),
+          submitted: emailSubmitted,
+          updateValue: this.updateValue
         }
       },
       {

@@ -136,7 +136,7 @@ class UsernameView extends React.Component {
       case STATUS.CONFIRMED:
         return 'Loading...'
       case STATUS.AVAILABLE:
-        return 'Confirm Username'
+        return 'Continue'
       case STATUS.VALIDATING:
         return 'Checking...'
       case STATUS.ERROR:

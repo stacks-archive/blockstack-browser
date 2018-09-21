@@ -48,9 +48,10 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
             {
               label: 'Next',
               primary: true,
+              loading,
+              disabled: loading,
               type: 'submit',
-              icon: 'ArrowRightIcon',
-              loading
+              icon: 'ArrowRightIcon'
             }
           ]
         }
