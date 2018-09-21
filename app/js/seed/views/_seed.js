@@ -4,6 +4,7 @@ import { Box, Flex } from '@components/ui/components/primitives'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import PropTypes from 'prop-types'
 import ContentCopyIcon from 'mdi-react/ContentCopyIcon'
+import { Hover } from 'react-powerplug'
 
 const renderWord = (i, word, condition = true) =>
   condition && <React.Fragment key={word}>{`${word} `}</React.Fragment>
@@ -39,25 +40,36 @@ class SeedPage extends React.Component {
                 {seed.map((word, i) => renderWord(i, word, true))}
               </Type>
             </Box>
-            <CopyToClipboard text={this.state.seed} onCopy={() => this.copy()}>
-              <Flex
-                bg="whitesmoke"
-                p={3}
-                mt={1}
-                alignItems="center"
-                borderRadius="0 0 6px 6px"
-                style={{
-                  cursor: 'pointer'
-                }}
-              >
-                <Box pr={1}>
-                  <ContentCopyIcon color="rgba(0,0,0,0.25)" size={'1rem'} />
-                </Box>
-                <Type.small>
-                  {this.state.copied ? 'Copied' : 'Copy all words'}
-                </Type.small>
-              </Flex>
-            </CopyToClipboard>
+            <Hover>
+              {({ hovered, bind }) => (
+                <CopyToClipboard
+                  text={this.state.seed}
+                  onCopy={() => this.copy()}
+                >
+                  <Flex
+                    bg="whitesmoke"
+                    p={3}
+                    mt={1}
+                    alignItems="center"
+                    borderRadius="0 0 6px 6px"
+                    style={{
+                      cursor: 'pointer'
+                    }}
+                    {...bind}
+                  >
+                    <Box pr={1} style={{transform: 'translateY(2px)'}}>
+                      <ContentCopyIcon
+                        color={`rgba(0,0,0,${hovered ? 1 : 0.25})`}
+                        size={'1rem'}
+                      />
+                    </Box>
+                    <Type.small color={`rgba(0,0,0,${hovered ? 1 : 0.5})`}>
+                      {this.state.copied ? 'Copied to clipboard!' : 'Copy all words'}
+                    </Type.small>
+                  </Flex>
+                </CopyToClipboard>
+              )}
+            </Hover>
           </Box>
         )
       },
