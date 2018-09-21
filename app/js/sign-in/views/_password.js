@@ -197,10 +197,10 @@ class PasswordView extends React.Component {
     }
     return (
       <React.Fragment>
-        { this.props.loading ? (
-          <Shell.Loading message="Restoring your account..."/>
-        ) : null }
-        <ShellScreen { ...rest } { ...props } />
+        {this.props.loading ? (
+          <Shell.Loading message="Restoring your Blockstack ID..." />
+        ) : null}
+        <ShellScreen {...rest} {...props} />
       </React.Fragment>
     )
   }
