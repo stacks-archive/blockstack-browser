@@ -351,7 +351,8 @@ class SignIn extends React.Component {
       {
         show: VIEWS.INITIAL,
         props: {
-          previous: this.backToSignUp,
+          backView: this.backToSignUp,
+          backLabel: 'Cancel',
           next: this.validateRecoveryKey,
           updateValue: this.updateValue,
           value: value(encryptedKey, key)

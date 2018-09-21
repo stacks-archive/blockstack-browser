@@ -127,16 +127,6 @@ export default class InitialSignInScreen extends React.PureComponent {
             )}
           </React.Fragment>
         )
-      },
-      actions: {
-        items: isScanning
-          ? []
-          : [
-              {
-                label: 'Create a new Blockstack ID',
-                to: '/sign-up'
-              }
-            ]
       }
     }
 
