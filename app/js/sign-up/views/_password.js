@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ShellScreen, Shell } from '@blockstack/ui'
+import { ShellScreen, Type, Shell } from '@blockstack/ui'
 import Yup from 'yup'
 
 const validationSchema = Yup.object({
   password: Yup.string()
-    .min(8, 'Your password is too short.')
+    .min(8, 'Too short. 8 characters minimum.')
     .required('A passsword is required.'),
   passwordConfirm: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords do not match.')
@@ -20,6 +20,12 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
     },
     content: {
       grow: 0,
+      children: (
+        <Type.small pt={3}>
+          8 characters minimum. Please record your password, Blockstack cannot
+          reset this password for you.
+        </Type.small>
+      ),
       form: {
         validationSchema,
         initialValues: { password: '', passwordConfirm: '' },
@@ -31,7 +37,7 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
           {
             type: 'password',
             name: 'password',
-            label: 'New password (8 characters min)',
+            label: 'New password',
             disabled: loading,
             autoFocus: true
           },
@@ -39,16 +45,14 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
             disabled: loading,
             type: 'password',
             name: 'passwordConfirm',
-            label: 'Confirm Password',
-            message:
-              'Please record your password, Blockstack cannot reset this password for you.'
+            label: 'Confirm Password'
           }
         ],
         actions: {
           split: true,
           items: [
             {
-              label: 'Next',
+              label: 'Register ID',
               primary: true,
               loading,
               disabled: loading,
