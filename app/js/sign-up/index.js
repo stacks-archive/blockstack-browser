@@ -473,7 +473,7 @@ class Onboarding extends React.Component {
   submitEmail = async () => {
     // Send the emails
     await this.sendEmails()
-    this.updateView(VIEWS.INFO)
+    this.updateView(VIEWS.HOORAY)
   }
 
   componentDidMount() {
@@ -579,7 +579,7 @@ class Onboarding extends React.Component {
           app={app}
           views={views}
           {...componentProps}
-          disableBackOnView={[0, VIEWS.INFO, views.length - 1]}
+          disableBackOnView={[0, VIEWS.INFO, VIEWS.EMAIL, views.length - 1]}
           disableBack={this.state.loading}
         />
         <AppHomeWrapper />

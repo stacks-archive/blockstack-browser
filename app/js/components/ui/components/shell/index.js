@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components'
 import { animated } from 'react-spring'
 import { spacing } from '@ui/common/constants'
 import { Buttons } from '@components/ui/components/button'
+import { Flex } from '@components/ui/components/primitives'
 
 const Loading = styled(animated.div)`
   position: absolute;
@@ -18,12 +19,11 @@ const Loading = styled(animated.div)`
 `
 
 const Header = styled.div``
-const Title = styled.div`
+const Title = styled(Flex)`
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
   margin-bottom: 10px;
-  display: flex;
 `
 const TitleSection = styled.div`
   display: flex;

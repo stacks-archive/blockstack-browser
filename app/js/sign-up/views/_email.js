@@ -2,6 +2,7 @@ import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 import Yup from 'yup'
 import PropTypes from 'prop-types'
+import { Box } from '@components/ui/components/primitives'
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -16,7 +17,7 @@ class EmailView extends React.Component {
 
   message = () =>
     this.state.field === 'email'
-      ? 'Your email is needed for backup and recovery options.'
+      ? 'Your email is needed for backup and recovery options. We do not store this.'
       : 'Your mobile number is needed for backup and recovery options.'
 
   returnField = ({ field }) =>
