@@ -143,7 +143,8 @@ const StyledShell = styled.div`
   align-items: center;
   justify-content: center;
   flex-grow: 1;
-  min-height: ${({ height }) => (height > 0 ? `${height}px` : '100vh')};
+  min-height: ${({ width, height }) =>
+    height > 0 && width <= 599 ? `${height}px` : '100vh'};
   top: 0;
   left: 0;
   width: 100%;
