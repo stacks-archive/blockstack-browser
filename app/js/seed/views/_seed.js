@@ -46,6 +46,9 @@ class SeedPage extends React.Component {
                 mt={1}
                 alignItems="center"
                 borderRadius="0 0 6px 6px"
+                style={{
+                  cursor: 'pointer'
+                }}
               >
                 <Box pr={1}>
                   <ContentCopyIcon color="rgba(0,0,0,0.25)" size={'1rem'} />
