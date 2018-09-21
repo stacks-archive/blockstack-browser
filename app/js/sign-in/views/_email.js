@@ -55,7 +55,7 @@ class EmailView extends React.Component {
 
     return (
       <React.Fragment>
-        {this.props.loading && <Shell.Loading message="Restoring your account..." />}
+        {this.props.loading && <Shell.Loading message="Restoring your Blockstack ID..." />}
         <ShellScreen {...rest} {...props} />
       </React.Fragment>
     )
