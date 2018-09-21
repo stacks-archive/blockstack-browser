@@ -37,7 +37,7 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
           {
             type: 'password',
             name: 'password',
-            label: 'New password',
+            label: 'New password  (8 characters min)',
             disabled: loading,
             autoFocus: true
           },

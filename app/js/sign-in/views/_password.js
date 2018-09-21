@@ -143,7 +143,7 @@ class PasswordView extends React.Component {
       {
         type: 'password',
         name: 'password',
-        label: 'Password',
+        label: !decrypt ? 'New Password (8 characters min)' : 'Password',
         autoFocus: true
       }
     ]
