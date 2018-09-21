@@ -9,6 +9,53 @@ import { Hover } from 'react-powerplug'
 const renderWord = (i, word, condition = true) =>
   condition && <React.Fragment key={word}>{`${word} `}</React.Fragment>
 
+const WordBox = ({ seed, ...p }) => (
+  <Box bg="whitesmoke" p={3} mt={2} borderRadius="6px 6px 0 0" {...p}>
+    <Type fontSize={3}>{seed.map((word, i) => renderWord(i, word, true))}</Type>
+  </Box>
+)
+
+const CopyButton = p => (
+  <Flex
+    bg="whitesmoke"
+    p={3}
+    mt={1}
+    alignItems="center"
+    borderRadius="0 0 6px 6px"
+    style={{
+      cursor: 'pointer'
+    }}
+    {...p}
+  />
+)
+
+const CopyIcon = ({ hovered, ...p }) => (
+  <Box pr={1} style={{ transform: 'translateY(2px)' }} {...p}>
+    <ContentCopyIcon
+      color={`rgba(0,0,0,${hovered ? 1 : 0.25})`}
+      size={'1rem'}
+    />
+  </Box>
+)
+
+const CopyText = ({ copied, hovered, ...p }) => (
+  <Type.small color={`rgba(0,0,0,${hovered ? 1 : 0.5})`}>
+    {copied ? 'Copied to clipboard!' : 'Copy all words'}
+  </Type.small>
+)
+
+const CopyAction = ({ seed, copy, copied, ...p }) => (
+  <Hover>
+    {({ hovered, bind }) => (
+      <CopyToClipboard text={seed} onCopy={() => copy()}>
+        <CopyButton {...bind}>
+          <CopyIcon hovered={hovered} />
+          <CopyText hovered={hovered} copied={copied} />
+        </CopyButton>
+      </CopyToClipboard>
+    )}
+  </Hover>
+)
 class SeedPage extends React.Component {
   state = {
     seed: this.props.seedString,
@@ -35,41 +82,12 @@ class SeedPage extends React.Component {
         children: (
           <Box mt={3}>
             <Type.small>Your Secret Recovery Key</Type.small>
-            <Box bg="whitesmoke" p={3} mt={2} borderRadius="6px 6px 0 0">
-              <Type fontSize={3}>
-                {seed.map((word, i) => renderWord(i, word, true))}
-              </Type>
-            </Box>
-            <Hover>
-              {({ hovered, bind }) => (
-                <CopyToClipboard
-                  text={this.state.seed}
-                  onCopy={() => this.copy()}
-                >
-                  <Flex
-                    bg="whitesmoke"
-                    p={3}
-                    mt={1}
-                    alignItems="center"
-                    borderRadius="0 0 6px 6px"
-                    style={{
-                      cursor: 'pointer'
-                    }}
-                    {...bind}
-                  >
-                    <Box pr={1} style={{transform: 'translateY(2px)'}}>
-                      <ContentCopyIcon
-                        color={`rgba(0,0,0,${hovered ? 1 : 0.25})`}
-                        size={'1rem'}
-                      />
-                    </Box>
-                    <Type.small color={`rgba(0,0,0,${hovered ? 1 : 0.5})`}>
-                      {this.state.copied ? 'Copied to clipboard!' : 'Copy all words'}
-                    </Type.small>
-                  </Flex>
-                </CopyToClipboard>
-              )}
-            </Hover>
+            <WordBox seed={seed} />
+            <CopyAction
+              copied={this.state.copied}
+              copy={this.copy}
+              seed={seed}
+            />
           </Box>
         )
       },

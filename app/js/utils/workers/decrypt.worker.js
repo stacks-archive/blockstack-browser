@@ -2,6 +2,7 @@ import crypto from 'crypto'
 import triplesec from 'triplesec'
 import bip39 from 'bip39'
 import log4js from 'log4js'
+
 const logger = log4js.getLogger(__filename)
 async function denormalizeMnemonic(normalizedMnemonic) {
   return bip39.entropyToMnemonic(normalizedMnemonic)
@@ -79,8 +80,16 @@ export async function decrypt(hexEncryptedKey, password) {
   try {
     mnemonic = await decryptMnemonic(dataBuffer, password)
   } catch (err) {
-    mnemonic = await decryptLegacy(dataBuffer, password)
-  }
+    logger.error('Could not decrypt.', err)
 
+    try {
+      logger.debug('Trying to decrypt with legacy function.')
+      mnemonic = await decryptLegacy(dataBuffer, password)
+    } catch (e) {
+      mnemonic = null
+      logger.error('Could not decrypt again, most likely wrong password.')
+      throw Error('Wrong Password.')
+    }
+  }
   return mnemonic.toString()
 }

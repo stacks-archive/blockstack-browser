@@ -18,6 +18,10 @@ import {
 } from '@common/store/selectors/auth'
 import { formatAppManifest } from '@common'
 import App from '../App'
+import log4js from 'log4js'
+
+const logger = log4js.getLogger(__filename)
+
 function mapStateToProps(state) {
   return {
     encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
@@ -62,6 +66,7 @@ class SeedContainer extends Component {
       seed: null,
       loading: false,
       decrypting: false,
+      errors: null,
       password:
         props.location && props.location.state && props.location.state.password
           ? props.location.state.password
@@ -108,6 +113,7 @@ class SeedContainer extends Component {
       }
     }
   }
+
   static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.seed && prevState.decrypting) {
       return {
@@ -118,11 +124,11 @@ class SeedContainer extends Component {
     return prevState
   }
 
-  decryptSeed = p => {
+  decryptSeed = async p => {
     const encryptedBackupPhrase =
       this.state.encryptedBackupPhrase || this.props.encryptedBackupPhrase
     if (!encryptedBackupPhrase) {
-      console.log('no encryptedBackupPhrase')
+      logger.log('no encryptedBackupPhrase')
       return null
     }
     let password = p
@@ -132,7 +138,7 @@ class SeedContainer extends Component {
         password = location.state.password
       }
     }
-    console.log('decrypting password')
+    logger.log('decrypting password')
 
     // the encrypted phrase we get in the url is base64 encoded, whereas in redux it is hex encoded
     const method =
@@ -144,7 +150,8 @@ class SeedContainer extends Component {
 
     const buffer = new Buffer(encryptedBackupPhrase, method)
 
-    return decrypt(buffer, password).then(result => {
+    try {
+      const result = await decrypt(buffer, password)
       if (this.state.seed !== result.toString()) {
         return this.setState(
           {
@@ -155,16 +162,27 @@ class SeedContainer extends Component {
       } else {
         return null
       }
-    })
+    } catch (e) {
+      logger.error(e.message)
+      this.setState({
+        errors: {
+          password: e.message
+        },
+        decrypting: false
+      })
+      return null
+    }
   }
 
   passwordNext = password => {
     if (this.state.seed) {
       return null
     }
+
     return this.setState(
       {
-        password
+        password,
+        errors: null
       },
       () => setTimeout(() => this.autoDecrypt())
     )
@@ -264,6 +282,7 @@ class SeedContainer extends Component {
           placeholder: 'Unlocking Recovery Key...',
           previous: () => this.updateView(VIEWS.KEY_INFO),
           next: p => this.passwordNext(p),
+          errors: this.state.errors,
           password
         }
       },
