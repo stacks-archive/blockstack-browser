@@ -2,6 +2,7 @@ import React from 'react'
 import { ShellScreen, Type, Button, Buttons } from '@blockstack/ui'
 import PropTypes from 'prop-types'
 import { Box, Inline, Flex } from '@components/ui/components/primitives'
+import { Trail, config, animated } from 'react-spring'
 
 function getRandomInt(min, max, exclude) {
   min = Math.ceil(min)
@@ -90,20 +91,33 @@ class SeedConfirm extends React.Component {
         }
       )
     }
+    if (this.state.selectedWords.length === 1) {
+      setTimeout(() => this.handleSubmit(), 250)
+    }
   }
 
   resetState = () => {
-    this.setState({
-      indexesToConfirm: [],
-      wordsToConfirm: [],
-      selectedWords: [],
-      confirmedWords: [],
-      randomWords: [],
-      words: {},
-      verified: false,
-      loading: false,
-      error: true
-    })
+    this.setState(
+      {
+        error: true
+      },
+      () =>
+        setTimeout(
+          () =>
+            this.setState({
+              indexesToConfirm: [],
+              wordsToConfirm: [],
+              selectedWords: [],
+              confirmedWords: [],
+              randomWords: [],
+              words: {},
+              verified: false,
+              loading: false,
+              error: false
+            }),
+          800
+        )
+    )
   }
 
   handleSubmit = () => {
@@ -118,7 +132,7 @@ class SeedConfirm extends React.Component {
             loading: false
           })
         }
-      }, 1500)
+      }, 150)
     )
   }
 
@@ -144,25 +158,47 @@ class SeedConfirm extends React.Component {
     if (!seed || !this.state.randomWords.length) {
       return null
     }
-    const renderWords = (words, action) =>
-      this.state.randomWords.map(word => (
-        <Box
-          width="calc(33.33333% - 10px)"
-          key={word}
-          onClick={() => action(word)}
-          bg={this.state.words[word] ? 'whitesmoke' : 'transparent'}
-          border="1px solid rgba(39, 16, 51, 0.2)"
-          px={3}
-          py={2}
-          mb={3}
-          textAlign="center"
-          mr='10px'
-          borderRadius='30px'
-          fontSize="16px"
-        >
-          <Inline>{word}</Inline>
-        </Box>
-      ))
+    const renderWords = (words, action) => (
+      <Trail
+        native
+        from={{ opacity: 0, y: -2 }}
+        to={{ opacity: 1, y: 0 }}
+        keys={this.state.randomWords}
+        config={config.stiff}
+      >
+        {this.state.randomWords.map(word => ({ opacity, y }) => {
+          const hasError = this.state.error
+          const isSelected = this.state.words[word]
+          const selectedColor = hasError ? '#f67b7b' : 'whitesmoke'
+          const bgColor = isSelected ? selectedColor : 'transparent'
+
+          return (
+            <Box
+              is={animated.div}
+              style={{
+                transition: '0.1s background ease-in-out',
+                opacity,
+                transform: y.interpolate(prop => `translate3d(0,${prop}px,0)`)
+              }}
+              width="calc(33.33333% - 10px)"
+              key={word}
+              onClick={() => action(word)}
+              bg={bgColor}
+              border="1px solid rgba(39, 16, 51, 0.2)"
+              px={3}
+              py={2}
+              mb={3}
+              textAlign="center"
+              mr="10px"
+              borderRadius="30px"
+              fontSize="16px"
+            >
+              <Inline>{word}</Inline>
+            </Box>
+          )
+        })}
+      </Trail>
+    )
 
     const props = {
       title: {
@@ -187,18 +223,6 @@ class SeedConfirm extends React.Component {
             </Flex>
           </Box>
         )
-      },
-      actions: {
-        split: true,
-        items: [
-          {
-            label: this.state.error ? 'Try Again' : 'Confirm',
-            primary: true,
-            disabled: !this.state.selectedWords === 2,
-            loading: this.state.loading,
-            onClick: () => this.handleSubmit()
-          }
-        ]
       }
     }
     return <ShellScreen {...rest} {...props} />

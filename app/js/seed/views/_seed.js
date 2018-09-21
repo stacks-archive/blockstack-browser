@@ -70,7 +70,7 @@ class SeedPage extends React.Component {
   }
 
   render() {
-    const { next, seed, ...rest } = this.props
+    const { next, seed, seedString, ...rest } = this.props
     const props = {
       title: {
         children: 'Save all words',
@@ -85,8 +85,8 @@ class SeedPage extends React.Component {
             <WordBox seed={seed} />
             <CopyAction
               copied={this.state.copied}
-              copy={this.copy}
-              seed={seed}
+              copy={() => this.copy()}
+              seed={seedString}
             />
           </Box>
         )
