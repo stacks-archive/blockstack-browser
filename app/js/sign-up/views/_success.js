@@ -12,15 +12,14 @@ const Success = ({
   id,
   ...rest
 }) => {
-  // const user = subdomainSuffix
-  //   ? {
-  //       username,
-  //       id,
-  //       suffix: subdomainSuffix
-  //     }
-  //   : null
+  const user = subdomainSuffix
+    ? {
+        username,
+        id,
+        suffix: subdomainSuffix
+      }
+    : null
 
-  const user = null
   const props = {
     content: {
       grow: 1,
