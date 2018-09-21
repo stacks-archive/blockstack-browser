@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ShellScreen, Shell } from '@blockstack/ui'
-
+import { ShellScreen, Shell, Type } from '@blockstack/ui'
 class PasswordView extends React.Component {
   state = {
     status: 'initial'
@@ -68,7 +67,7 @@ class PasswordView extends React.Component {
      * Min length checks
      */
     if (tooShort) {
-      errors.password = 'Password is too short'
+      errors.password = 'Too short. 8 characters minimum.'
       this.setState({
         status: 'error',
         password: values.password,
@@ -123,6 +122,13 @@ class PasswordView extends React.Component {
     return null
   }
 
+  message = () => {
+    const { decrypt } = this.props
+    return decrypt
+      ? 'The password you entered when you created this Blockstack ID.'
+      : '8 characters minimum. Please record your password, Blockstack cannot reset this password for you.'
+  }
+
   render() {
     const {
       updateValue,
@@ -138,9 +144,6 @@ class PasswordView extends React.Component {
         type: 'password',
         name: 'password',
         label: 'Password',
-        message: decrypt
-          ? 'The password you entered when you created this Blockstack ID.'
-          : null,
         autoFocus: true
       }
     ]
@@ -149,9 +152,7 @@ class PasswordView extends React.Component {
       fields.push({
         type: 'password',
         name: 'passwordConfirm',
-        label: 'Confirm Password',
-        message:
-          'Please record your password, Blockstack cannot reset this password for you.'
+        label: 'Confirm Password'
       })
     }
 
@@ -162,6 +163,7 @@ class PasswordView extends React.Component {
       },
       content: {
         grow: 0,
+        children: <Type.small pt={3}>{this.message()}</Type.small>,
         form: {
           errors: this.state.errors,
           validate: v => this.validate(v),
