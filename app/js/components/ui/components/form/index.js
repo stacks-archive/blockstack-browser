@@ -143,9 +143,9 @@ const Group = styled.div`
 const ErrorMessage = styled.div`
   color: #f67b7b;
   position: absolute;
-  left: 0;
   font-size: 12px;
   font-weight: 500;
+  left: 0;
   top: -5px !important;
 
   ${Input}:not(:focus) ~ &,
@@ -178,7 +178,8 @@ const ErrorMessage = styled.div`
 const PositiveMessage = styled.div`
   color: mediumseagreen;
   position: absolute;
-  right: 0;
+  left: 0;
+  top: -5px !important;
   font-size: 12px;
   font-weight: 500;
   ${Input}:not(:focus) ~ &,
