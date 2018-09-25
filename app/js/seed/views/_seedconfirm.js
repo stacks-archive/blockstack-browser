@@ -178,7 +178,8 @@ class SeedConfirm extends React.Component {
               style={{
                 transition: '0.1s background ease-in-out',
                 opacity,
-                transform: y.interpolate(prop => `translate3d(0,${prop}px,0)`)
+                transform: y.interpolate(prop => `translate3d(0,${prop}px,0)`),
+                cursor: 'pointer'
               }}
               width="calc(33.33333% - 10px)"
               key={word}
