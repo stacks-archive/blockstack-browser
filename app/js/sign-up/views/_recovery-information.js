@@ -16,19 +16,19 @@ class RecoverInformationScreen extends React.Component {
   render() {
     const { next, email, emailsSending, ...rest } = this.props
 
-      const title = 'Recovery email failed to send'
-      const body = (
-        <React.Fragment>
-          <Type.p>
-            We tried to send your <strong>Magic Recovery Code</strong> to{' '}
-            {email} but something went wrong. You can{' '}
-            <Type.a onClick={() => this.sendEmailAgain()}>
-              try to resend it
-            </Type.a>
-            , or continue and back up your secret recovery key.
-          </Type.p>
-        </React.Fragment>
-      )
+    const title = 'Recovery email failed to send'
+    const body = (
+      <React.Fragment>
+        <Type.p>
+          We tried to send recovery info to {email} but something went wrong.
+          You can{' '}
+          <Type.a onClick={() => this.sendEmailAgain()}>
+            try to resend the email
+          </Type.a>
+          , or manually save your Secret Recovery Key.
+        </Type.p>
+      </React.Fragment>
+    )
 
     const props = {
       title: {
@@ -41,7 +41,7 @@ class RecoverInformationScreen extends React.Component {
       actions: {
         items: [
           {
-            label: 'Continue',
+            label: 'Secret Recover Key',
             onClick: () => next(),
             primary: true
           }
@@ -50,9 +50,9 @@ class RecoverInformationScreen extends React.Component {
     }
     return (
       <React.Fragment>
-        {emailsSending &&
+        {emailsSending && (
           <Shell.Loading message="Resending recovery email..." />
-        }
+        )}
         <ShellScreen {...rest} {...props} />
       </React.Fragment>
     )
