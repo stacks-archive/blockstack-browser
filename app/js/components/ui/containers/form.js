@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { ActionButtons } from '@components/ui/containers/button'
 import { Form } from '@components/ui/components/form'
 import { Field } from '@components/ui/containers/field'
-import { Formik, FastField } from 'formik'
+import { Formik, Field as FormikField } from 'formik'
 
 const Fields = ({ fields, errors, ...rest }) =>
-  fields.map(({ label, name, placeholder, ...fieldProps }, i) => (
-    <FastField
+  fields.map(({ label, name, ...fieldProps }, i) => (
+    <FormikField
       label={label}
       name={name}
       render={fastFieldProps => (
@@ -19,7 +19,8 @@ const Fields = ({ fields, errors, ...rest }) =>
           {...fastFieldProps.field}
           {...rest}
           error={
-            (fastFieldProps.meta.touched &&
+            (console.log(fastFieldProps) || fastFieldProps.meta &&
+              fastFieldProps.meta.touched &&
               fastFieldProps.meta.error &&
               fastFieldProps.meta.error) ||
             (errors && errors[name])

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { StyledField } from '@ui/components/form'
 import { slugify } from '@ui/common'
-import AlertCircleIcon  from 'mdi-react/AlertCircleIcon'
+import AlertCircleIcon from 'mdi-react/AlertCircleIcon'
 import CheckCircleOutlineIcon from 'mdi-react/CheckCircleOutlineIcon'
 
 /* eslint-disable */
@@ -37,20 +37,21 @@ const Field = ({
   /**
    * TODO: abstract out qualified message to one component that takes multiple states
    */
-  const PositiveMessage = positive && (
-    <StyledField.Input.Positive overlay={!!overlay}>
-      {positive}
-    </StyledField.Input.Positive>
-  )
-  const ErrorMessage = (
-    <StyledField.Input.Error overlay={!!overlay}>
-      {error}
-    </StyledField.Input.Error>
-  )
 
-  const Overlay = overlay && (
+  const MessageComponent = error
+    ? StyledField.Input.Error
+    : StyledField.Input.Positive
+
+  const Message = p =>
+    positive || error ? (
+      <MessageComponent overlay={!!overlay} {...p}>
+        {positive || error}
+      </MessageComponent>
+    ) : null
+
+  const Overlay = overlay ? (
     <StyledField.Input.Overlay>{overlay}</StyledField.Input.Overlay>
-  )
+  ) : null
 
   const _handleChange = e => {
     if (handleChangeOverride) {
@@ -83,8 +84,7 @@ const Field = ({
           onChange={_handleChange}
           lowercase={type !== 'password'}
         />
-        {PositiveMessage}
-        {ErrorMessage}
+        <Message />
         <Label />
         <StyledField.Input.Bar />
       </StyledField.Input.Wrapper>
