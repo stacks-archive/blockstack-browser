@@ -1,5 +1,7 @@
 // @flow
 import { ServerAPI } from './server-utils'
+import log4js from 'log4js'
+const logger = log4js.getLogger(__filename)
 
 export function sendRecoveryEmail(
   email: string, blockstackId?: string, encryptedSeed: string
@@ -17,15 +19,15 @@ export function sendRecoveryEmail(
   })
     .then(
       () => {
-        console.log(`email-utils: sent ${email} recovery email`)
+        logger.log(`email-utils: sent ${email} recovery email`)
       },
       error => {
-        console.error('email-utils: error', error)
+        logger.error('email-utils: error', error)
         throw error
       }
     )
     .catch(error => {
-      console.error('email-utils: error', error)
+      logger.error('email-utils: error', error)
       throw error
     })
 }
@@ -40,15 +42,15 @@ export function sendRestoreEmail(
   })
     .then(
       () => {
-        console.log(`email-utils: sent ${email} restore email`)
+        logger.log(`email-utils: sent ${email} restore email`)
       },
       error => {
-        console.error('email-utils: error', error)
+        logger.error('email-utils: error', error)
         throw error
       }
     )
     .catch(error => {
-      console.error('email-utils: error', error)
+      logger.error('email-utils: error', error)
       throw error
     })
 }
