@@ -17,8 +17,8 @@ function getRandomInt(min, max, exclude) {
 
 class SeedConfirm extends React.Component {
   generateNumbers = () => {
-    const firstNumber = getRandomInt(0, 11)
-    const secondNumber = getRandomInt(0, 11, firstNumber)
+    const firstNumber = getRandomInt(0, 2)
+    const secondNumber = getRandomInt(9, 11, firstNumber)
 
     this.setState({
       indexesToConfirm: [firstNumber, secondNumber],
