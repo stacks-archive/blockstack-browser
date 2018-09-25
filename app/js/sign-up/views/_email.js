@@ -31,6 +31,7 @@ class EmailView extends React.Component {
           {
             type: 'email',
             name: 'email',
+            autoFocus: true,
             label: 'Email Address'
           }
         ]
@@ -38,6 +39,7 @@ class EmailView extends React.Component {
           {
             type: 'tel',
             name: 'phone',
+            autoFocus: true,
             label: 'Mobile Number'
           }
         ]
@@ -87,6 +89,7 @@ class EmailView extends React.Component {
 EmailView.propTypes = {
   email: PropTypes.string,
   updateValue: PropTypes.func,
+  loading: PropTypes.bool,
   next: PropTypes.func
 }
 export default EmailView

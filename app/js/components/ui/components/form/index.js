@@ -13,7 +13,9 @@ const shakeAnimation = keyframes`
   100% { transform: translateX(0); }
 `
 
-const Input = styled.input`
+const Input = styled.input.attrs({
+  autofocus: true
+})`
   padding: 10px 0;
   margin-top: 5px;
   border: none;

@@ -6,29 +6,31 @@ import { Field } from '@components/ui/containers/field'
 import { Formik, Field as FormikField } from 'formik'
 
 const Fields = ({ fields, errors, ...rest }) =>
-  fields.map(({ label, name, ...fieldProps }, i) => (
-    <FormikField
-      label={label}
-      name={name}
-      render={fastFieldProps => (
-        <Field
-          key={i}
-          label={label}
-          name={name}
-          {...fieldProps}
-          {...fastFieldProps.field}
-          {...rest}
-          error={
-            (fastFieldProps.meta &&
-              fastFieldProps.meta.touched &&
-              fastFieldProps.meta.error &&
-              fastFieldProps.meta.error) ||
-            (errors && errors[name])
-          }
-        />
-      )}
-    />
-  ))
+  fields.map(({ label, name, ...fieldProps }, i) => {
+    return (
+      <FormikField
+        label={label}
+        name={name}
+        render={fastFieldProps => (
+          <Field
+            key={i}
+            label={label}
+            name={name}
+            {...fieldProps}
+            {...fastFieldProps.field}
+            {...rest}
+            error={
+              (fastFieldProps.meta &&
+                fastFieldProps.meta.touched &&
+                fastFieldProps.meta.error &&
+                fastFieldProps.meta.error) ||
+              (errors && errors[name])
+            }
+          />
+        )}
+      />
+    )
+  })
 
 const FormWrapper = ({
   actions,
