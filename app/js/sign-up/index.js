@@ -353,7 +353,7 @@ class Onboarding extends React.Component {
     }
     if (type === 'restore' || type === 'both') {
       try {
-        restorePromise = sendRestoreEmail(email, id, encodedPhrase)
+        restorePromise = await sendRestoreEmail(email, id, encodedPhrase)
         this.setState({ restoreEmailError: null })
       } catch (err) {
         this.setState({ restoreEmailError: err })
