@@ -149,8 +149,8 @@ const StyledShell = styled.div`
   left: 0;
   width: 100%;
   z-index: 9001;
-  background-color: rgba(240, 240, 240, 0.8);
-
+  background-color: ${({ width }) =>
+    width <= 599 ? 'white' : 'rgba(240, 240, 240, 0.8)'};
   ${({ maxHeight }) =>
     maxHeight &&
     css`
