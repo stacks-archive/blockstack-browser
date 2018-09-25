@@ -319,7 +319,7 @@ class Onboarding extends React.Component {
    * Send Emails
    * this will send both emails (restore and recovery)
    */
-  sendEmails = (type = 'both') => {
+  sendEmails = async (type = 'both') => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
     const id = username ? `${username}.${SUBDOMAIN_SUFFIX}` : undefined
@@ -342,22 +342,28 @@ class Onboarding extends React.Component {
 
     let recoveryPromise = Promise.resolve()
     let restorePromise = Promise.resolve()
+
     if (type === 'recovery' || type === 'both') {
-      recoveryPromise = sendRecoveryEmail(email, id, encodedPhrase)
-        .then(() => this.setState({ recoveryEmailError: null }))
-        .catch(err => this.setState({ recoveryEmailError: err }))
+      try {
+        recoveryPromise = await sendRecoveryEmail(email, id, encodedPhrase)
+        this.setState({ recoveryEmailError: null })
+      } catch (err) {
+        this.setState({ recoveryEmailError: err })
+      }
     }
     if (type === 'restore' || type === 'both') {
-      restorePromise = sendRestoreEmail(email, id, encodedPhrase)
-        .then(() => this.setState({ restoreEmailError: null }))
-        .catch(err => this.setState({ restoreEmailError: err }))
+      try {
+        restorePromise = sendRestoreEmail(email, id, encodedPhrase)
+        this.setState({ restoreEmailError: null })
+      } catch (err) {
+        this.setState({ restoreEmailError: err })
+      }
     }
+    await Promise.all([recoveryPromise, restorePromise])
 
-    return Promise.all([recoveryPromise, restorePromise]).then(() => {
-      this.setState({
-        emailsSending: false,
-        emailsSent: true
-      })
+    this.setState({
+      emailsSending: false,
+      emailsSent: true
     })
   }
 
@@ -441,8 +447,7 @@ class Onboarding extends React.Component {
    * Next function for the recovery info screen
    */
   infoNext = () => {
-    this.props.emailNotifications(this.state.email, this.state.emailConsent)
-    this.updateView(VIEWS.HOORAY)
+    this.goToBackup()
   }
 
   componentWillMount() {
@@ -473,7 +478,14 @@ class Onboarding extends React.Component {
   submitEmail = async () => {
     // Send the emails
     await this.sendEmails()
-    this.updateView(VIEWS.HOORAY)
+    if (this.state.restoreEmailError || this.state.recoveryEmailError) {
+      // if error, force them to record their seed
+      this.updateView(VIEWS.INFO)
+    } else {
+      // register emails sent bool, navigate to final screen
+      this.props.emailNotifications(this.state.email, this.state.emailConsent)
+      this.updateView(VIEWS.HOORAY)
+    }
   }
 
   componentDidMount() {

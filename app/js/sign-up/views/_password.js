@@ -1,3 +1,8 @@
+/**
+ * Create a password
+ *
+ * This screen is the password input to encrypt the new user's seed phrase
+ */
 import React from 'react'
 import PropTypes from 'prop-types'
 import { ShellScreen, Type, Shell } from '@blockstack/ui'

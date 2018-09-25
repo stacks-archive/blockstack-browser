@@ -42,7 +42,7 @@ const UserAvatar = ({
 )
 
 const UserButton = ({ username, id, hideID, avatarUrl, ...rest }) => (
-  <Button height={56} primary padding="5px" {...rest}>
+  <Button height={56} primary padding="5px" labelProps={{width: '100%'}} {...rest}>
     <Button.Section>
       <UserAvatar
         username={username}
@@ -79,7 +79,7 @@ const UserButton = ({ username, id, hideID, avatarUrl, ...rest }) => (
       {id &&
         !hideID && <Type.small color="rgba(255,255,255,0.5)">{id}</Type.small>}
     </Button.Section>
-    <Button.Section align="center" justify="center" padding="0 10px 0 10px">
+    <Button.Section align="center" justify="center" padding="0 10px 0 10px" mr='auto'>
       <ChevronRightIcon size={24} color="white" />
     </Button.Section>
   </Button>

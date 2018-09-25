@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { darken } from 'polished'
 import {Flex} from '@components/ui/components/primitives'
 
-const Label = styled.div`
+const Label = styled(Flex)`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -19,10 +19,10 @@ const Label = styled.div`
   align-items: center;
   justify-content: center;
   text-decoration: none !important;
+ 
 `
 
-const Section = styled.div`
-  display: flex;
+const Section = styled(Flex)`
   align-items: center;
   overflow: hidden;
   flex-shrink: 0;

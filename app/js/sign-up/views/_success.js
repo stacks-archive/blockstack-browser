@@ -1,3 +1,8 @@
+/**
+ * Success screen
+ *
+ * This screen welcomes the new user and shows their username / ID
+ */
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 import PropTypes from 'prop-types'

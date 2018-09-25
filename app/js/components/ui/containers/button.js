@@ -22,6 +22,7 @@ const Button = ({
   placeholder = 'Loading...',
   icon,
   to,
+  labelProps,
   ...rest
 }) => {
   const ButtonComponent = props => {
@@ -57,7 +58,7 @@ const Button = ({
     )
   return (
     <ButtonComponent {...rest} loading={loading} height={height} to={to}>
-      <StyledButton.Label>{content}</StyledButton.Label>
+      <StyledButton.Label {...labelProps}>{content}</StyledButton.Label>
       {renderIcon()}
     </ButtonComponent>
   )
@@ -66,7 +67,7 @@ const Button = ({
 const renderButtons = (items, split) =>
   items.map(({ ...buttonProps }, i) => {
     const margin = split ? { mt: '0 !important' } : {}
-    const marginLeft = split && i !== 0  ? { ml: 3 } : { ml: 0 }
+    const marginLeft = split && i !== 0 ? { ml: 3 } : { ml: 0 }
     const props = {
       ...margin,
       ...marginLeft
@@ -100,6 +101,7 @@ Button.propTypes = {
   children: PropTypes.node,
   height: PropTypes.number,
   btn: PropTypes.bool,
+  labelProps: PropTypes.object,
   primary: PropTypes.bool,
   secondary: PropTypes.bool,
   textOnly: PropTypes.bool,

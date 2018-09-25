@@ -1,3 +1,8 @@
+/**
+ * Initial Screen
+ *
+ * Directs the user to sign up or sign in with an existing ID
+ */
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 import { Flex } from '@components/ui/components/primitives'

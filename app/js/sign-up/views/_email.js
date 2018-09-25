@@ -1,8 +1,13 @@
+/**
+ * Email / Backup ID page
+ *
+ * This screen is our current backup option (email)
+ * This might change to other options outside of just email (eg phone, download, etc)
+ */
 import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 import Yup from 'yup'
 import PropTypes from 'prop-types'
-import { Box } from '@components/ui/components/primitives'
 
 const validationSchema = Yup.object({
   email: Yup.string()
