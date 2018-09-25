@@ -361,7 +361,7 @@ class Onboarding extends React.Component {
     }
     await Promise.all([recoveryPromise, restorePromise])
 
-    this.setState({
+    return this.setState({
       emailsSending: false,
       emailsSent: true
     })
