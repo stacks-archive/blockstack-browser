@@ -22,7 +22,7 @@ class EmailView extends React.Component {
 
   message = () =>
     this.state.field === 'email'
-      ? 'Your email is needed for backup and recovery options. We do not store this.'
+      ? 'Your email is needed for backup and recovery options.'
       : 'Your mobile number is needed for backup and recovery options.'
 
   returnField = ({ field }) =>
