@@ -19,7 +19,7 @@ const Fields = ({ fields, errors, ...rest }) =>
           {...fastFieldProps.field}
           {...rest}
           error={
-            (console.log(fastFieldProps) || fastFieldProps.meta &&
+            (fastFieldProps.meta &&
               fastFieldProps.meta.touched &&
               fastFieldProps.meta.error &&
               fastFieldProps.meta.error) ||
