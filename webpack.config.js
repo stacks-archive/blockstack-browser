@@ -22,9 +22,9 @@ const analyze = !!process.env.ANALYZE
  * Output config
  */
 const output = {
-  filename: isProd ? 'static/js/[name].[contenthash:8].js' : '[name].js',
+  filename: isProd ? 'static/js/[name].[contenthash].js' : '[name].js',
   chunkFilename: isProd
-    ? 'static/js/[name].[contenthash:8].chunk.js'
+    ? 'static/js/[name].[contenthash].chunk.js'
     : '[name].chunk.js',
   path: path.resolve(__dirname, 'build'),
   publicPath: '/',
@@ -171,7 +171,7 @@ module.exports = {
     minimizer: [
       new TerserPlugin({
         parallel: true,
-        sourceMap: analyze,
+        sourceMap: false,
         cache: true,
         exclude: /[\\/]node_modules[\\/]/,
         terserOptions: {
