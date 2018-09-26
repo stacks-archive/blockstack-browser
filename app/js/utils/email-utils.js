@@ -35,10 +35,17 @@ export function sendRecoveryEmail(
 export function sendRestoreEmail(
   email: string, blockstackId?: string, encryptedSeed: string
 ): Promise<any> {
+  const { protocol, hostname, port } = location
+  const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
+  const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(
+    encryptedSeed
+  )}`
+
   return ServerAPI.post('/restore', {
     email,
     encryptedSeed,
-    blockstackId
+    blockstackId,
+    seedRecovery
   })
     .then(
       () => {
