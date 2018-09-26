@@ -27,9 +27,9 @@ export const ProfileScreen = ({ children, user, ...p }) => {
   const avatarUrl =
     user.profile &&
     user.profile.image &&
-    user.profile &&
-    user.profile.image.length &&
-    user.profile.image[0].contentUrl
+    user.profile.image.length ?
+    user.profile.image[0].contentUrl : undefined
+
   return (
     <Flex
       flexDirection="column"
