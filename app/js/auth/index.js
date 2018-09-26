@@ -519,6 +519,7 @@ class AuthPage extends React.Component {
       )
     }
     if (!appManifest || appManifestLoading) {
+      // to have an empty space until loading is complete
       return <> </>
     }
 

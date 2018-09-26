@@ -101,17 +101,15 @@ Content.propTypes = {
 }
 
 const ShellScreenContainer = ({ title, actions, content, ...rest }) => (
-  <>
-    <Shell.Wrapper {...rest}>
-      {title ? <Shell.Title {...title} /> : null}
-      <Content {...content} />
-      {actions ? (
-        <Shell.Actions>
-          <ActionButtons {...actions} />
-        </Shell.Actions>
-      ) : null}
-    </Shell.Wrapper>
-  </>
+  <Shell.Wrapper {...rest}>
+    {title ? <Shell.Title {...title} /> : null}
+    <Content {...content} />
+    {actions ? (
+      <Shell.Actions>
+        <ActionButtons {...actions} />
+      </Shell.Actions>
+    ) : null}
+  </Shell.Wrapper>
 )
 
 ShellScreenContainer.propTypes = {
