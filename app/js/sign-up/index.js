@@ -36,7 +36,7 @@ import { SettingsActions } from '../account/store/settings'
 import { RegistrationActions } from '../profiles/store/registration'
 import { hasNameBeenPreordered } from '@utils/name-utils'
 import { trackEventOnce } from '@utils/server-utils'
-import { sendRecoveryEmail, sendRestoreEmail } from '@utils/email-utils'
+import { sendRestoreEmail as sendEmail } from '@utils/email-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'
@@ -319,7 +319,7 @@ class Onboarding extends React.Component {
    * Send Emails
    * this will send both emails (restore and recovery)
    */
-  sendEmails = async (type = 'both') => {
+  sendEmails = async () => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
     const id = username ? `${username}.${SUBDOMAIN_SUFFIX}` : undefined
@@ -340,26 +340,12 @@ class Onboarding extends React.Component {
       emailsSent: false
     })
 
-    let recoveryPromise = Promise.resolve()
-    let restorePromise = Promise.resolve()
-
-    if (type === 'recovery' || type === 'both') {
-      try {
-        recoveryPromise = await sendRecoveryEmail(email, id, encodedPhrase)
-        this.setState({ recoveryEmailError: null })
-      } catch (err) {
-        this.setState({ recoveryEmailError: err })
-      }
+    try {
+      await sendEmail(email, id, encodedPhrase)
+      this.setState({ recoveryEmailError: null })
+    } catch (err) {
+      this.setState({ recoveryEmailError: err })
     }
-    if (type === 'restore' || type === 'both') {
-      try {
-        restorePromise = await sendRestoreEmail(email, id, encodedPhrase)
-        this.setState({ restoreEmailError: null })
-      } catch (err) {
-        this.setState({ restoreEmailError: err })
-      }
-    }
-    await Promise.all([recoveryPromise, restorePromise])
 
     return this.setState({
       emailsSending: false,
