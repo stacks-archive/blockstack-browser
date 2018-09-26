@@ -204,10 +204,10 @@ class SeedConfirm extends React.Component {
     const props = {
       title: {
         children: (
-          <React.Fragment>
+          <>
             Select words #{this.state.indexesToConfirm[0] + 1} and #
             {this.state.indexesToConfirm[1] + 1}
-          </React.Fragment>
+          </>
         ),
         variant: 'h2'
       },

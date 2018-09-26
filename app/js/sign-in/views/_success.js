@@ -46,9 +46,9 @@ class Success extends React.Component {
         items: [
           {
             label: (
-              <React.Fragment>
+              <>
                 Go to {app && app.name ? app.name : 'Blockstack'}
-              </React.Fragment>
+              </>
             ),
             primary: true,
             onClick: () => next()

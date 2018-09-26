@@ -42,9 +42,9 @@ const Success = ({
       items: [
         {
           label: (
-            <React.Fragment>
+            <>
               Go to {app && app.name ? app.name : 'Blockstack'}
-            </React.Fragment>
+            </>
           ),
           primary: true,
           onClick: () => finish()

@@ -70,12 +70,12 @@ const PasswordView = ({ updateValue, next, loading, ...rest }) => {
     }
   }
   return (
-    <React.Fragment>
+    <>
       {loading ? (
         <Shell.Loading message="Creating your Blockstack ID..." />
       ) : null}
       <ShellScreen {...rest} {...props} />
-    </React.Fragment>
+    </>
   )
 }
 

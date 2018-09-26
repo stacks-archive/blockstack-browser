@@ -61,7 +61,7 @@ const UserButton = ({ username, id, hideID, avatarUrl, ...rest }) => (
     >
       <Type.p color="rgba(255,255,255,1)" overflow>
         {username.includes('.') ? (
-          <React.Fragment>
+          <>
             <span style={{ color: 'rgba(255,255,255,1)' }}>
               {username.substr(0, username.indexOf('.'))}
             </span>
@@ -71,7 +71,7 @@ const UserButton = ({ username, id, hideID, avatarUrl, ...rest }) => (
                 .slice(1)
                 .join('.')}
             </span>
-          </React.Fragment>
+          </>
         ) : (
           <span style={{ color: 'rgba(255,255,255,1)' }}>{username}</span>
         )}

@@ -244,7 +244,7 @@ class PhotoModal extends React.PureComponent {
             )}
           </Styled.PhotoContainer>
         ) : (
-          <React.Fragment>
+          <>
             <SimpleButton
               type="primary"
               onClick={this.selectPhotoFile}
@@ -261,7 +261,7 @@ class PhotoModal extends React.PureComponent {
             >
               Take a photo <CameraIcon style={iconStyle} />
             </SimpleButton>
-          </React.Fragment>
+          </>
         )}
 
         <SimpleButton

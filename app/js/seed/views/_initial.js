@@ -6,13 +6,13 @@ const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
   const props = {
     title: {
       children: (
-        <React.Fragment>Save your Secret Recovery&nbsp;Key</React.Fragment>
+        <>Save your Secret Recovery&nbsp;Key</>
       )
     },
     content: {
       grow: 1,
       children: (
-        <React.Fragment>
+        <>
           <Type.p pt={2}>
             Your Secret Recovery Key is the most reliable way to access your
             Blockstack ID.
@@ -21,7 +21,7 @@ const SeedInitial = ({ next, loading, placeholder, ...rest }) => {
             Blockstack cannot reset your key. Save your key wherever you keep
             important, secret information.
           </Type.p>
-        </React.Fragment>
+        </>
       )
     },
     actions: {

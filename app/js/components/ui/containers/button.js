@@ -38,12 +38,12 @@ const Button = ({
   const IconComponent = iconMap[icon]
 
   const content = loading ? (
-    <React.Fragment>
+    <>
       {placeholder}
       <Spinner ml={10} />
-    </React.Fragment>
+    </>
   ) : (
-    <React.Fragment>{label || children}</React.Fragment>
+    <>{label || children}</>
   )
 
   const renderIcon = () =>

@@ -101,7 +101,7 @@ Content.propTypes = {
 }
 
 const ShellScreenContainer = ({ title, actions, content, ...rest }) => (
-  <React.Fragment>
+  <>
     <Shell.Wrapper {...rest}>
       {title ? <Shell.Title {...title} /> : null}
       <Content {...content} />
@@ -111,7 +111,7 @@ const ShellScreenContainer = ({ title, actions, content, ...rest }) => (
         </Shell.Actions>
       ) : null}
     </Shell.Wrapper>
-  </React.Fragment>
+  </>
 )
 
 ShellScreenContainer.propTypes = {

@@ -41,10 +41,10 @@ export const ProfileScreen = ({ children, user, ...p }) => {
     >
       <UserAvatar textSize={24} size={85} avatarUrl={avatarUrl} {...user} />
       {user && user.username ? (
-        <React.Fragment>
+        <>
           <Title user={user} pt={4} />
           <Suffix user={user} />
-        </React.Fragment>
+        </>
       ) : null}
       <Line />
       <Box textAlign="center">{children}</Box>

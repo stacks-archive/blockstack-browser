@@ -112,7 +112,7 @@ export default class InitialSignInScreen extends React.PureComponent {
           }
         },
         children: (
-          <React.Fragment>
+          <>
             <Type.p>
               Your Magic Recovery Code and Secret Recovery Key&nbsp;were emailed
               when you first created your Blockstack&nbsp;ID.
@@ -125,7 +125,7 @@ export default class InitialSignInScreen extends React.PureComponent {
                 error={scanError}
               />
             )}
-          </React.Fragment>
+          </>
         )
       }
     }

@@ -128,10 +128,10 @@ class PasswordView extends React.Component {
           light: true,
           padding: '15px 0 0 0',
           children: (
-            <React.Fragment>
+            <>
               Please enter your password to migrate your data to the new
               version.
-            </React.Fragment>
+            </>
           )
         }
       },
@@ -164,12 +164,12 @@ class PasswordView extends React.Component {
       }
     }
     return (
-      <React.Fragment>
+      <>
         {this.props.upgradeInProgress ? (
           <Shell.Loading message="Updating Blockstack..." />
         ) : null}
         <ShellScreen {...rest} {...props} />
-      </React.Fragment>
+      </>
     )
   }
 }

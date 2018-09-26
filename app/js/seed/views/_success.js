@@ -6,7 +6,7 @@ import {Box} from '@components/ui/components/primitives'
 const SuccessScreen = ({ finish, buttonLabel, ...rest }) => {
   const props = {
     title: {
-      children: <React.Fragment>Save your Secret Recovery&nbsp;Key</React.Fragment>
+      children: <>Save your Secret Recovery&nbsp;Key</>
     },
     content: {
       grow: 1,

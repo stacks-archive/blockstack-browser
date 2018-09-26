@@ -502,7 +502,7 @@ class AuthPage extends React.Component {
 
     if (appManifestLoadingError) {
       return (
-        <React.Fragment>
+        <>
           <Modal
             className="container-fluid"
             shouldCloseOnOverlayClick={false}
@@ -515,11 +515,11 @@ class AuthPage extends React.Component {
             </div>
           </Modal>
           <AppHomeWrapper />
-        </React.Fragment>
+        </>
       )
     }
     if (!appManifest || appManifestLoading) {
-      return <React.Fragment> </React.Fragment>
+      return <> </>
     }
 
     const { invalidScopes, decodedToken } = this.state
@@ -577,10 +577,10 @@ class AuthPage extends React.Component {
     }
 
     return (
-      <React.Fragment>
+      <>
         <ShellParent app={app} views={views} {...componentProps} maxHeight />
         <AppHomeWrapper />
-      </React.Fragment>
+      </>
     )
   }
 }

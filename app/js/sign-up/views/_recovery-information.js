@@ -18,7 +18,7 @@ class RecoverInformationScreen extends React.Component {
 
     const title = 'Recovery email failed to send'
     const body = (
-      <React.Fragment>
+      <>
         <Type.p>
           We tried to send recovery info to {email} but something went wrong.
           You can{' '}
@@ -27,7 +27,7 @@ class RecoverInformationScreen extends React.Component {
           </Type.a>
           , or manually save your Secret Recovery Key.
         </Type.p>
-      </React.Fragment>
+      </>
     )
 
     const props = {
@@ -49,12 +49,12 @@ class RecoverInformationScreen extends React.Component {
       }
     }
     return (
-      <React.Fragment>
+      <>
         {emailsSending && (
           <Shell.Loading message="Resending recovery email..." />
         )}
         <ShellScreen {...rest} {...props} />
-      </React.Fragment>
+      </>
     )
   }
 }

@@ -176,7 +176,7 @@ class UsernameView extends React.Component {
       content: {
         grow: 0,
         children: (
-          <React.Fragment>
+          <>
             <Type.small pt={3}>
               This will be your unique, public identity for any Blockstack&nbsp;app.
             </Type.small>
@@ -187,7 +187,7 @@ class UsernameView extends React.Component {
                 some apps unusable until you do.
               </Type.small>
             )}
-          </React.Fragment>
+          </>
         ),
         form: {
           validate: v => this.validate(v),
