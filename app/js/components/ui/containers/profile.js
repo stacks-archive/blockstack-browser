@@ -25,6 +25,7 @@ export const Line = p => (
 )
 export const ProfileScreen = ({ children, user, ...p }) => {
   const avatarUrl =
+    user &&
     user.profile &&
     user.profile.image &&
     user.profile.image.length ?
