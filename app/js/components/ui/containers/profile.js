@@ -23,23 +23,31 @@ export const Line = p => (
     <Box width={85} height={'2px'} bg="whitesmoke" />
   </Flex>
 )
-export const ProfileScreen = ({ children, user, ...p }) => (
-  <Flex
-    flexDirection="column"
-    alignItems="center"
-    justifyContent="center"
-    style={{
-      flexGrow: 1
-    }}
-  >
-    <UserAvatar textSize={24} size={85} {...user} />
-    {user && user.username ? (
-      <React.Fragment>
-        <Title user={user} pt={4} />
-        <Suffix user={user} />
-      </React.Fragment>
-    ) : null}
-    <Line />
-    <Box textAlign="center">{children}</Box>
-  </Flex>
-)
+export const ProfileScreen = ({ children, user, ...p }) => {
+  const avatarUrl =
+    user.profile &&
+    user.profile.image &&
+    user.profile &&
+    user.profile.image.length &&
+    user.profile.image[0].contentUrl
+  return (
+    <Flex
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      style={{
+        flexGrow: 1
+      }}
+    >
+      <UserAvatar textSize={24} size={85} avatarUrl={avatarUrl} {...user} />
+      {user && user.username ? (
+        <React.Fragment>
+          <Title user={user} pt={4} />
+          <Suffix user={user} />
+        </React.Fragment>
+      ) : null}
+      <Line />
+      <Box textAlign="center">{children}</Box>
+    </Flex>
+  )
+}

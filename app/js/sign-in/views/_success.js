@@ -15,6 +15,7 @@ class Success extends React.Component {
     const user =
       username !== '?'
         ? {
+            ...this.props.user,
             id,
             username,
             name,

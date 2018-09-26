@@ -379,6 +379,7 @@ class SignIn extends React.Component {
         props: {
           id: user.ownerAddress,
           username: user.username ? user.username : '?',
+          user,
           next: () => this.successNext(),
           goToRecovery: () => this.goToBackup()
         }
