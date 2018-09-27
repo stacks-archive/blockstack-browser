@@ -9,6 +9,7 @@ export const Title = ({ user, ...p }) => (
     alignItems="center"
     justifyContent="center"
     style={{ overflow: 'hidden' }}
+    width="100%"
   >
     <Type.h2
       display="block"
@@ -18,6 +19,7 @@ export const Title = ({ user, ...p }) => (
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis'
       }}
+      width='100%'
       maxWidth={['calc(100% - 60px)', 'calc(100% - 40px)']}
     >
       {user.username && user.username.includes('.')
