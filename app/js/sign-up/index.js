@@ -128,6 +128,7 @@ class Onboarding extends React.Component {
     emailsSending: false,
     emailsSent: false,
     recoveryEmailError: null,
+    recoveryEmailErrorCount: 0,
     restoreEmailError: null,
     loading: false,
     view: VIEWS.INITIAL,
@@ -344,7 +345,10 @@ class Onboarding extends React.Component {
       await sendEmail(email, id, encodedPhrase)
       this.setState({ recoveryEmailError: null })
     } catch (err) {
-      this.setState({ recoveryEmailError: err })
+      this.setState({
+        recoveryEmailError: err,
+        recoveryEmailErrorCount: this.state.recoveryEmailErrorCount + 1
+      })
     }
 
     return this.setState({
@@ -540,6 +544,7 @@ class Onboarding extends React.Component {
           app,
           restoreEmailError: this.state.restoreEmailError,
           emailsSending: this.state.emailsSending,
+          recoveryEmailErrorCount: this.state.recoveryEmailErrorCount,
           sendRestoreEmail: () => this.sendEmails('restore'),
           next: () => this.infoNext()
         }

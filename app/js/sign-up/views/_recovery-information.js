@@ -7,28 +7,36 @@ import React from 'react'
 import { ShellScreen, Type, Shell } from '@blockstack/ui'
 import PropTypes from 'prop-types'
 class RecoverInformationScreen extends React.Component {
-  sendEmailAgain = () => {
-    if (!this.props.emailsSending) {
-      this.props.sendRestoreEmail()
-    }
-  }
-
   render() {
-    const { next, email, emailsSending, ...rest } = this.props
+    const {
+      next,
+      email,
+      emailsSending,
+      recoveryEmailErrorCount,
+      ...rest
+    } = this.props
 
     const title = 'Recovery email failed to send'
-    const body = (
-      <>
-        <Type.p>
-          We tried to send recovery info to {email} but something went wrong.
-          You can{' '}
-          <Type.a onClick={() => this.sendEmailAgain()}>
-            try to resend the email
-          </Type.a>
-          , or manually save your Secret Recovery Key.
-        </Type.p>
-      </>
-    )
+    const body =
+      recoveryEmailErrorCount > 1 ? (
+        <>
+          <Type.p>
+            We tried to send recovery info to {email} but something went wrong.
+            You must manually save your Secret Recovery Key.
+          </Type.p>
+        </>
+      ) : (
+        <>
+          <Type.p>
+            We tried to send recovery info to {email} but something went wrong.
+            You can{' '}
+            <Type.a onClick={() => this.props.backView()}>
+              try to resend the email
+            </Type.a>
+            , or manually save your Secret Recovery Key.
+          </Type.p>
+        </>
+      )
 
     const props = {
       title: {
@@ -41,7 +49,7 @@ class RecoverInformationScreen extends React.Component {
       actions: {
         items: [
           {
-            label: 'Secret Recover Key',
+            label: 'Secret Recovery Key',
             onClick: () => next(),
             primary: true
           }
@@ -63,7 +71,7 @@ RecoverInformationScreen.propTypes = {
   next: PropTypes.func.isRequired,
   toggleConsent: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
-  consent: PropTypes.bool.isRequired,
+  recoveryEmailErrorCount: PropTypes.number.isRequired,
   restoreEmailError: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.instanceOf(Error)
