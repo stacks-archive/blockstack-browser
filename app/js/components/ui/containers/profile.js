@@ -4,13 +4,27 @@ import { UserAvatar } from '@components/ui/containers/user'
 import { Type } from '@components/ui/components/typography'
 
 export const Title = ({ user, ...p }) => (
-  <Box {...p}>
-    <Type.h2>
+  <Flex
+    {...p}
+    alignItems="center"
+    justifyContent="center"
+    style={{ overflow: 'hidden' }}
+  >
+    <Type.h2
+      display="block"
+      style={{
+        textAlign: 'center',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
+      }}
+      maxWidth={['calc(100% - 60px)', 'calc(100% - 40px)']}
+    >
       {user.username && user.username.includes('.')
         ? user.username.split('.')[0]
         : user.username}
     </Type.h2>
-  </Box>
+  </Flex>
 )
 export const Suffix = ({ user, ...p }) => (
   <Box opacity={0.5} {...p}>
@@ -25,11 +39,9 @@ export const Line = p => (
 )
 export const ProfileScreen = ({ children, user, ...p }) => {
   const avatarUrl =
-    user &&
-    user.profile &&
-    user.profile.image &&
-    user.profile.image.length ?
-    user.profile.image[0].contentUrl : undefined
+    user && user.profile && user.profile.image && user.profile.image.length
+      ? user.profile.image[0].contentUrl
+      : undefined
 
   return (
     <Flex
