@@ -2,27 +2,29 @@ import React from 'react'
 import { ShellScreen, Type } from '@blockstack/ui'
 import PropTypes from 'prop-types'
 import Yup from 'yup'
-import { validateMnemonic } from 'bip39'
 import QrScan from '@components/ui/components/qr-scan'
 import { validateAndCleanRecoveryInput } from '@utils/encryption-utils'
 
-function validateInput(value) {
-  // Raw mnemonic phrase
-  if (validateMnemonic(value)) {
-    return true
-  }
-  // Base64 encoded encrypted phrase
-  if (/[a-zA-Z0-9+/]=$/.test(value)) {
-    return true
-  }
-  return false
-}
+const validateInput = async value =>
+  import(/* webpackChunkName: 'bip39' */ 'bip39').then(bip39 => {
+    {
+      // Raw mnemonic phrase
+      if (bip39.validateMnemonic(value)) {
+        console.log('valid mnemonic')
+        return true
+      }
+      // Base64 encoded encrypted phrase
+      return /[a-zA-Z0-9+/]=$/.test(value)
+    }
+  })
 
 const validationSchema = Yup.object({
   recoveryKey: Yup.string()
     .required('This is required.')
-    .test('is-valid', 'That’s not a valid recovery code or key', value =>
-      validateAndCleanRecoveryInput(value)
+    .test(
+      'is-valid',
+      'That’s not a valid recovery code or key',
+      value => validateAndCleanRecoveryInput(value).isValid
     )
 })
 
@@ -30,13 +32,13 @@ export default class InitialSignInScreen extends React.PureComponent {
   state = {
     isScanning: false,
     scanError: null
-  };
+  }
 
-  handleScan = (data) => {
-    if (validateInput(data)) {
+  handleScan = async data => {
+    const valid = await validateInput(data)
+    if (valid) {
       this.props.next(data)
-    }
-    else {
+    } else {
       this.setState({ scanError: 'Invalid recovery code scanned' })
       clearTimeout(this.scanErrorTimeout)
       this.scanErrorTimeout = setTimeout(() => {
@@ -45,7 +47,7 @@ export default class InitialSignInScreen extends React.PureComponent {
     }
   }
 
-  handleScanError = (err) => {
+  handleScanError = err => {
     this.setState({ scanError: err.message })
   }
 
@@ -68,18 +70,18 @@ export default class InitialSignInScreen extends React.PureComponent {
   }
 
   render() {
-    const { next, ...rest } = this.props
+    const { next, value, ...rest } = this.props
     const { isScanning, scanError } = this.state
 
     const screen = {
       title: {
-        children: 'Sign in with an existing ID'
+        children: 'Enter Secret Recovery Key or Magic Recovery Code'
       },
       content: {
         grow: 1,
         form: {
           validationSchema,
-          initialValues: { recoveryKey: '' },
+          initialValues: { recoveryKey: value },
           onSubmit: values => {
             next(values.recoveryKey)
           },
@@ -110,31 +112,21 @@ export default class InitialSignInScreen extends React.PureComponent {
           }
         },
         children: (
-          <React.Fragment>
+          <>
             <Type.p>
-              Enter your Magic Recovery Code. This code was sent to you when you
-              created your ID. Alternatively, you can supply your Secret Recovery
-              Key. This key is a sequence of words you recorded, for example,
-              "rabbit pink ..."
+              Your Magic Recovery Code and Secret Recovery Key&nbsp;were emailed
+              when you first created your Blockstack&nbsp;ID.
             </Type.p>
-            {isScanning &&
+            {isScanning && (
               <QrScan
                 onScan={this.handleScan}
                 onError={this.handleScanError}
                 handleClose={this.stopScanning}
                 error={scanError}
               />
-            }
-          </React.Fragment>
+            )}
+          </>
         )
-      },
-      actions: {
-        items: isScanning ? [] : [
-          {
-            label: 'Create a new Blockstack ID',
-            to: '/sign-up'
-          }
-        ]
       }
     }
 
@@ -143,5 +135,6 @@ export default class InitialSignInScreen extends React.PureComponent {
 }
 
 InitialSignInScreen.propTypes = {
-  next: PropTypes.func
+  next: PropTypes.func,
+  value: PropTypes.string
 }

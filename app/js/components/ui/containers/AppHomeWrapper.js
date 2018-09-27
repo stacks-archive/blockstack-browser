@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import { WindowSize } from 'react-fns'
+
 import HomePage from '../../../HomeScreenPage'
 const StyledAppHomeWrapper = styled.div.attrs({
   inert: true
@@ -27,11 +29,17 @@ const StyledAppHomeWrapper = styled.div.attrs({
 `
 
 const AppHomeWrapper = props => (
-  <StyledAppHomeWrapper {...props}>
-    <div inert="true" htmlInert>
-      <HomePage />
-    </div>
-  </StyledAppHomeWrapper>
+  <WindowSize>
+    {({ width }) =>
+      width > 599 ? (
+        <StyledAppHomeWrapper {...props}>
+          <div inert="true" htmlInert>
+            <HomePage />
+          </div>
+        </StyledAppHomeWrapper>
+      ) : null
+    }
+  </WindowSize>
 )
 
 export { AppHomeWrapper }

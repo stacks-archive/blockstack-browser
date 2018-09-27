@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import bip39 from 'bip39'
+
 import { HDNode } from 'bitcoinjs-lib'
 import QRCode from 'qrcode.react'
 
@@ -58,7 +58,9 @@ class BackupAccountPage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(
+      `updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`
+    )
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
@@ -73,8 +75,9 @@ class BackupAccountPage extends Component {
 
     logger.debug('Trying to decrypt recovery phrase...')
     decrypt(dataBuffer, password).then(
-      plaintextBuffer => {
+      async plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
+        const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
         const seed = bip39.mnemonicToSeed(plaintextBuffer.toString())
         const keychain = HDNode.fromSeedBuffer(seed)
         this.props.displayedRecoveryCode()
@@ -134,7 +137,11 @@ class BackupAccountPage extends Component {
           <div className="row">
             <div className="col">
               {alerts.map((alert, index) => (
-                <Alert key={index} message={alert.message} status={alert.status} />
+                <Alert
+                  key={index}
+                  message={alert.message}
+                  status={alert.status}
+                />
               ))}
               <h3>Secret Recovery Key</h3>
             </div>
@@ -189,7 +196,8 @@ class BackupAccountPage extends Component {
               <div className="col">
                 <p className="container-fluid">
                   <i>
-                    Enter your password to view and backup your secret recovery phrase.
+                    Enter your password to view and backup your secret recovery
+                    phrase.
                   </i>
                 </p>
                 <InputGroup
@@ -238,4 +246,7 @@ QuickQR.propTypes = {
   data: PropTypes.string
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BackupAccountPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BackupAccountPage)

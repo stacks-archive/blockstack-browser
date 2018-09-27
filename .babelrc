@@ -8,6 +8,7 @@
       ],
       "plugins": [
         "rewire",
+        "dynamic-import-node",
         [
           "module-resolver",
           {

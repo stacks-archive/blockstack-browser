@@ -28,14 +28,11 @@ const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
   return null
 }
 
-const PermissionsList = ({ list }) => (
-  <React.Fragment>
-    {list.length === 1 ?
-      <React.Fragment>
-        <strong>{list[0]}</strong>
-      </React.Fragment>
-      :
-      list.map((item, i) => {
+const PermissionsList = ({ list }) =>
+  list.length === 1 ? (
+    <strong>{list[0]}</strong>
+  ) : (
+    list.map((item, i) => {
       if (i !== list.length - 1) {
         return (
           <React.Fragment key={i}>
@@ -51,10 +48,9 @@ const PermissionsList = ({ list }) => (
           </React.Fragment>
         )
       }
-    })}
-  </React.Fragment>
-)
-const cleanAppDomain = (url) => {
+    })
+  )
+const cleanAppDomain = url => {
   if (url) {
     return url.replace(/http(s)?:\/\//i, '')
   } else {
@@ -65,14 +61,10 @@ const cleanAppDomain = (url) => {
  * TODO: give more details on what these permissions mean
  */
 const PermissionsContent = ({ permissions, app, appDomain }) => (
-  <React.Fragment>
-    <Type.p>
-      "{app && app.name}" ({cleanAppDomain(appDomain)}){' '}
-      wants to{' '}
-      <PermissionsList list={permissions} />.{' '}
-      Select an ID to use:
-    </Type.p>
-  </React.Fragment>
+  <Type.p>
+    "{app && app.name}" ({cleanAppDomain(appDomain)}) wants to{' '}
+    <PermissionsList list={permissions} />. Select an ID to use:
+  </Type.p>
 )
 const InitialScreen = ({
   app,
@@ -104,7 +96,7 @@ const InitialScreen = ({
       children: !app ? (
         <Shell.Loading />
       ) : (
-        <React.Fragment>
+        <>
           <PermissionsContent
             permissions={generatePermissionsList()}
             app={app}
@@ -118,7 +110,7 @@ const InitialScreen = ({
               selectedIndex={selectedIndex}
             />
           </Buttons>
-        </React.Fragment>
+        </>
       )
     },
     actions: {

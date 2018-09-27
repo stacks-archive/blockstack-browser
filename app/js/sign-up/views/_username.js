@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ShellScreen } from '@blockstack/ui'
+import { ShellScreen, Type } from '@blockstack/ui'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
@@ -33,7 +33,7 @@ const getUsernameStatus = async (
     const user = await res.json()
     logger.debug('getUsernameStatus response:', user)
     return user.status
-  } catch(err) {
+  } catch (err) {
     logger.error('getUsernameStatus error:', err)
     return STATUS.FAIL
   }
@@ -73,7 +73,6 @@ class UsernameView extends React.Component {
     }
 
     if (values.username !== this.state.username && !noValues) {
-
       const MIN_USERNAME_LENGTH = 8
       const validLength = values.username.length >= MIN_USERNAME_LENGTH
 
@@ -137,7 +136,7 @@ class UsernameView extends React.Component {
       case STATUS.CONFIRMED:
         return 'Loading...'
       case STATUS.AVAILABLE:
-        return 'Confirm Username'
+        return 'Continue'
       case STATUS.VALIDATING:
         return 'Checking...'
       case STATUS.ERROR:
@@ -159,25 +158,42 @@ class UsernameView extends React.Component {
   }
 
   render() {
-    const { updateValue, next, loading, ...rest } = this.props
+    const {
+      updateValue,
+      next,
+      loading,
+      username: cachedUsername = '',
+      ...rest
+    } = this.props
     const { status, username } = this.state
     const canSkip = status === STATUS.FAIL
 
     const props = {
       title: {
-        children: 'Register a username',
+        children: 'Create a username',
         variant: 'h2'
       },
       content: {
         grow: 0,
+        children: (
+          <>
+            <Type.small pt={3}>
+              This will be your unique, public identity for any Blockstack&nbsp;app.
+            </Type.small>
+            {canSkip && (
+              <Type.small pt={3}>
+                If you’re having trouble registering a username, you can skip
+                this now and try again later from your profile. This may make
+                some apps unusable until you do.
+              </Type.small>
+            )}
+          </>
+        ),
         form: {
           validate: v => this.validate(v),
-          initialValues: { username: '' },
+          initialValues: { username: cachedUsername },
           onSubmit: values => {
-            if (
-              status === STATUS.CONFIRMED &&
-              username === values.username
-            ) {
+            if (status === STATUS.CONFIRMED && username === values.username) {
               updateValue('username', values.username)
               this.processRegistration(values.username, next)
             }
@@ -187,20 +203,6 @@ class UsernameView extends React.Component {
               type: 'text',
               label: 'Username',
               name: 'username',
-              message: (
-                <React.Fragment>
-                  <p>
-                    This will be your unique, public identity for any Blockstack app.
-                  </p>
-                  {canSkip &&
-                    <p>
-                      If you’re having trouble registering a username, you can skip
-                      this now and try again later from your profile. This may make
-                      some apps unusable until you do.
-                    </p>
-                  }
-                </React.Fragment>
-              ),
               autoFocus: true,
               overlay: defaultSponsoredName,
               handleChangeOverride: (e, handleChange) => {
@@ -210,31 +212,15 @@ class UsernameView extends React.Component {
                 })
               },
               positive:
-                status === STATUS.AVAILABLE ||
-                status === STATUS.CONFIRMED
+                status === STATUS.AVAILABLE || status === STATUS.CONFIRMED
                   ? 'Username Available!'
                   : undefined,
-              error:
-                status === STATUS.TAKEN
-                  ? 'Username taken'
-                  : undefined
+              error: status === STATUS.TAKEN ? 'Username taken' : undefined
             }
           ],
           actions: {
             split: true,
             items: [
-              canSkip ? {
-                label: 'Skip Username →',
-                textOnly: true,
-                disabled: loading,
-                onClick: (ev) => {
-                  ev.preventDefault()
-                  this.skip()
-                }
-              } : {
-                label: ' ',
-                textOnly: true
-              },
               {
                 label: this.renderButtonLabel(this.state),
                 loading,
@@ -243,7 +229,21 @@ class UsernameView extends React.Component {
                 type: 'submit',
                 icon: 'ArrowRightIcon'
               }
-            ]
+            ].concat(
+              canSkip
+                ? [
+                    {
+                      label: 'Skip Username →',
+                      textOnly: true,
+                      disabled: loading,
+                      onClick: ev => {
+                        ev.preventDefault()
+                        this.skip()
+                      }
+                    }
+                  ]
+                : []
+            )
           }
         }
       }
@@ -255,6 +255,7 @@ class UsernameView extends React.Component {
 UsernameView.propTypes = {
   updateValue: PropTypes.func,
   next: PropTypes.func,
+  username: PropTypes.string,
   loading: PropTypes.bool
 }
 

@@ -1,6 +1,12 @@
+/**
+ * Success screen
+ *
+ * This screen welcomes the new user and shows their username / ID
+ */
 import React from 'react'
-import { ShellScreen, Type, UserAvatar } from '@blockstack/ui'
+import { ShellScreen, Type } from '@blockstack/ui'
 import PropTypes from 'prop-types'
+import { ProfileScreen } from '@components/ui/containers/profile'
 
 const Success = ({
   finish,
@@ -11,58 +17,37 @@ const Success = ({
   id,
   ...rest
 }) => {
-  const user = {
-    username,
-    id,
-    suffix: subdomainSuffix
-  }
+  const user = subdomainSuffix
+    ? {
+        username,
+        id,
+        suffix: subdomainSuffix
+      }
+    : null
 
   const props = {
-    title: {
-      icon: <UserAvatar {...user} />,
-      children: <React.Fragment>{user.username || 'Nameless User'}</React.Fragment>,
-      variant: 'h2',
-      subtitle: {
-        light: true,
-        children: (
-          <React.Fragment>
-            {user.username ? `${user.username}.${user.suffix}` : `ID-${user.id}`}
-          </React.Fragment>
-        ),
-        style: {
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap'
-        }
-      }
-    },
-
     content: {
       grow: 1,
       children: (
-        <React.Fragment>
+        <ProfileScreen user={user}>
           <Type.p>
-            Your ID is ready and secure, but you must record your{' '}
-            <strong>Secret Recovery Key</strong> to add new devices or to
-            recover this account.
+            Your ID is ready and we sent recovery instructions to your email.
+            You can also view your{' '}
+            <Type.a onClick={() => goToRecovery()}>Secret Recovery Key</Type.a>.
           </Type.p>
-        </React.Fragment>
+        </ProfileScreen>
       )
     },
     actions: {
       items: [
         {
           label: (
-            <React.Fragment>
+            <>
               Go to {app && app.name ? app.name : 'Blockstack'}
-            </React.Fragment>
+            </>
           ),
           primary: true,
           onClick: () => finish()
-        },
-        {
-          label: 'View Secret Recovery Key',
-          onClick: () => goToRecovery()
         }
       ]
     }

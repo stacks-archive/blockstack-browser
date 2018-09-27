@@ -1,25 +1,7 @@
 import React from 'react'
-import { ShellScreen, Type, UserAvatar } from '@blockstack/ui'
+import { ShellScreen, Type } from '@blockstack/ui'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router'
-
-const messages = {
-  namelessUser: (
-    <Type.small padding="15px 0 0 0">
-      It looks like your account doesn't have a username, if this is a newer
-      account, it will take a bit of time for your username to propagate
-      throughout the network completely. Or if this is an older account, you
-      might have to register a username.
-    </Type.small>
-  ),
-  recoveryKey: (
-    <Type.small padding="15px 0 0 0">
-      Your Secret Recovery Key is the 12 word phrase that was used to generate
-      your account. If you have not recorded your Secret Recovery Key for this
-      account, we strongly recommended you do now.
-    </Type.small>
-  )
-}
+import { ProfileScreen } from '@components/ui/containers/profile'
 
 class Success extends React.Component {
   state = {
@@ -27,91 +9,49 @@ class Success extends React.Component {
     recoveryKey: false
   }
 
-  toggleMessage = key => {
-    this.setState(state => ({
-      [key]: !state[key]
-    }))
-  }
-
   render() {
     const { next, app, goToRecovery, username = '?', id, ...rest } = this.props
-
-    const user = {
-      id,
-      username,
-      name: username.includes('.') ? username.split('.')[0] : null
-    }
+    const name = username.includes('.') ? username.split('.')[0] : null
+    const user =
+      username !== '?'
+        ? {
+            ...this.props.user,
+            id,
+            username,
+            name,
+            suffix: username.replace(`${name}.`, '')
+          }
+        : null
 
     const props = {
-      title: {
-        icon: <UserAvatar {...user} />,
-        children: (
-          <React.Fragment>
-            {username === '?' ? 'Nameless User' : user.name}
-          </React.Fragment>
-        ),
-        variant: 'h2',
-        subtitle: {
-          light: true,
-          overflow: true,
-          variant: username === '?' ? 'small' : 'h3',
-          children: (
-            <React.Fragment>
-              {username === '?' ? `ID-${id}` : user.username}
-            </React.Fragment>
-          )
-        }
-      },
-
       content: {
         grow: 1,
         children: (
-          <React.Fragment>
-            <React.Fragment>
-              <Type.p>
-                Welcome back to the New Internet. Your account has successfully
-                been restored on this device.
-              </Type.p>
-              <Type.p>
-                Have additional IDs? You can re-add them from the{' '}
-                <Link to="/profiles/i/all">"More IDs" page</Link>.
-              </Type.p>
-              {username === '?' ? (
-                <React.Fragment>
-                  <Type.h4
-                    padding="15px 0 0 0"
-                    onClick={() => this.toggleMessage('namelessUser')}
-                  >
-                    Why is my username 'Nameless&nbsp;User'?
-                  </Type.h4>
-                  {this.state.namelessUser && messages.namelessUser}
-                </React.Fragment>
-              ) : null}
-              <Type.h4
-                padding="15px 0 0 0"
-                onClick={() => this.toggleMessage('recoveryKey')}
-              >
-                What is my secret recovery key?
-              </Type.h4>
-              {this.state.recoveryKey && messages.recoveryKey}
-            </React.Fragment>
-          </React.Fragment>
+          <ProfileScreen user={user}>
+            <Type.p>
+              Your ID has been restored.
+              <br />
+              We recommend you view and save
+              <br />
+              your{' '}
+              <Type.a onClick={() => goToRecovery()}>
+                Secret&nbsp;Recovery&nbsp;Key
+              </Type.a>
+              .
+            </Type.p>
+          </ProfileScreen>
         )
       },
       actions: {
         items: [
           {
             label: (
-              <React.Fragment>
+              <>
                 Go to {app && app.name ? app.name : 'Blockstack'}
-              </React.Fragment>
+              </>
             ),
             primary: true,
             onClick: () => next()
-          },
-          {
-            label: 'View Secret Recovery Key',
-            onClick: () => goToRecovery()
           }
         ]
       }

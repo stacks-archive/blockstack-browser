@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { validateMnemonic } from 'bip39'
 import { decrypt, isBackupPhraseValid } from '@utils'
 import { browserHistory, withRouter } from 'react-router'
 import { connect } from 'react-redux'
@@ -95,7 +94,7 @@ class SignIn extends React.Component {
       this.props.location.query &&
       this.props.location.query.seed
         ? this.props.location.query.seed
-        : null,
+        : '',
     decrypt: false,
     decrypting: false,
     decryptedKey: null,
@@ -127,27 +126,32 @@ class SignIn extends React.Component {
 
   backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
 
-  isKeyEncrypted = key => !validateMnemonic(key)
+  isKeyEncrypted = key =>
+    import(/* webpackChunkName: 'bip39' */ 'bip39').then(
+      bip39 => !bip39.validateMnemonic(key)
+    )
 
-  validateRecoveryKey = (key, nextView = VIEWS.PASSWORD) => {
+  validateRecoveryKey = async (key, nextView = VIEWS.PASSWORD) => {
     if (this.state.key !== key) {
       this.setState({ key })
     }
-    if (this.isKeyEncrypted(key)) {
+    if (await this.isKeyEncrypted(key)) {
       this.setState({
         encryptedKey: key,
+        seed: '',
         decrypt: true
       })
     } else {
       this.setState({
         seed: key,
+        encryptedKey: '',
         decrypt: false
       })
     }
     this.updateView(nextView)
   }
 
-  decryptAndContinue = () => {
+  decryptAndContinue = async () => {
     const { password, decrypting, encryptedKey } = this.state
 
     if (!password) {
@@ -158,56 +162,64 @@ class SignIn extends React.Component {
     if (this.state.decrypt && !decrypting) {
       this.setState({ decrypting: true })
 
-      decrypt(
-        new Buffer(encryptedKey, 'base64'),
-        this.state.password
-      )
-        .then(decryptedKeyBuffer => {
-          const decryptedKey = decryptedKeyBuffer.toString()
-          this.setState({
+      try {
+        const decryptedKeyBuffer = await decrypt(
+          new Buffer(encryptedKey, 'base64'),
+          this.state.password
+        )
+        const decryptedKey = decryptedKeyBuffer.toString()
+        this.setState(
+          {
             key: decryptedKey,
             decrypting: false,
             restoreError: null
-          }, () => {
+          },
+          () => {
             this.updateView(VIEWS.EMAIL)
-          })
+          }
+        )
+      } catch (e) {
+        logger.debug(e)
+        this.setState({
+          decrypting: false,
+          restoreError: 'Incorrect password or invalid recovery code',
+          key: ''
         })
-        .catch(() => {
-          this.setState({
-            decrypting: false,
-            restoreError: 'Incorrect password or invalid recovery code',
-            key: ''
-          })
-        })
-    }
-    else {
+      }
+    } else {
       this.updateView(VIEWS.EMAIL)
     }
   }
 
   restoreAccount = () => {
-    console.log('Restoring account!')
+    logger.debug('Restoring account!')
     const { refreshIdentities, updateEmail } = this.props
-    this.setState({
-      loading: true
-    }, () => {
-      // Quick setTimeout just to get the loader going before we lock up the
-      // browser with decryption. TODO: Remove this when it's workerized.
-      setTimeout(() => {
-        this.createAccount()
-        .then(() => refreshIdentities(this.props.api, this.props.identityAddresses))
-        .then(() => updateEmail(this.state.email))
-        .then(() => this.updateView(VIEWS.SUCCESS))
-        .catch(() => {
-          this.setState({
-            loading: false,
-            restoreError: 'There was an error loading your account.'
-          })
+    this.setState(
+      {
+        loading: true
+      },
+      () =>
+        requestAnimationFrame(async () => {
+          try {
+            await this.createAccount()
+            await refreshIdentities(
+              this.props.api,
+              this.props.identityAddresses
+            )
+            logger.debug('refreshIdentities complete')
+            updateEmail(this.state.email)
+            logger.debug('updated email')
+            this.updateView(VIEWS.SUCCESS)
+            logger.debug('navigate to success screen')
+          } catch (e) {
+            this.setState({
+              loading: false,
+              restoreError: 'There was an error loading your account.'
+            })
+          }
         })
-      }, 300)
-    })
+    )
   }
-
 
   updateView = view => {
     this.setState({
@@ -246,6 +258,7 @@ class SignIn extends React.Component {
   async initializeWallet() {
     const { password, key } = this.state
     const { initializeWallet } = this.props
+    console.log('initializeWallet')
     return initializeWallet(password, key)
   }
 
@@ -271,28 +284,37 @@ class SignIn extends React.Component {
 
   /**
    * This is our main function for creating a new account
+   *
+   * key: mnemonic
    */
   createAccount = async () => {
     const { key } = this.state
     logger.debug('creating account, createAccount()')
 
-    const { isValid } = isBackupPhraseValid(key)
+    const state = await isBackupPhraseValid(key)
 
-    if (!isValid) {
-      logger.error('restoreAccount: Invalid keychain phrase entered')
+    if (!state.isValid) {
+      logger.error('restoreAccount: Invalid mnemonic phrase entered')
       return Promise.reject('Invalid recovery phrase entered')
     }
+
     this.setState({
       creatingAccountStatus: CREATE_ACCOUNT_IN_PROCESS
     })
-    // Initialize our wallet
-    return this.initializeWallet().then(() =>
+
+    try {
+      // Initialize our wallet
+      await this.initializeWallet()
       // Create new ID and owner address and then set to default
-      this.createNewIdAndSetDefault().then(() =>
-        // Connect our default storage
-        this.props.connectStorage().then(() => console.log('account creation done'))
-      )
-    )
+      await this.createNewIdAndSetDefault()
+      // Connect our default storage
+      await this.props.connectStorage()
+      // Account creation finished
+      logger.debug('account creation done')
+      return Promise.resolve()
+    } catch (e) {
+      return Promise.reject(e)
+    }
   }
 
   /**
@@ -318,7 +340,10 @@ class SignIn extends React.Component {
   }
 
   render() {
-    const { view } = this.state
+    const { view, key = '', encryptedKey = '' } = this.state
+    const notEmpty = v => v !== ''
+    const value = (a, b) => (notEmpty(a) ? a : b)
+
     const user = this.props.localIdentities.length
       ? this.props.localIdentities[0]
       : {}
@@ -326,9 +351,11 @@ class SignIn extends React.Component {
       {
         show: VIEWS.INITIAL,
         props: {
-          previous: this.backToSignUp,
+          backView: this.backToSignUp,
+          backLabel: 'Cancel',
           next: this.validateRecoveryKey,
-          updateValue: this.updateValue
+          updateValue: this.updateValue,
+          value: value(encryptedKey, key)
         }
       },
       {
@@ -352,6 +379,7 @@ class SignIn extends React.Component {
         props: {
           id: user.ownerAddress,
           username: user.username ? user.username : '?',
+          user,
           next: () => this.successNext(),
           goToRecovery: () => this.goToBackup()
         }
@@ -377,7 +405,7 @@ class SignIn extends React.Component {
           app={formatAppManifest(this.props.appManifest)}
           views={views}
           {...componentProps}
-          invertOnLast
+          disableBackOnView={views.length - 1}
         />
         <AppHomeWrapper />
       </App>
@@ -402,4 +430,9 @@ SignIn.propTypes = {
   connectStorage: PropTypes.func.isRequired
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignIn))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SignIn)
+)

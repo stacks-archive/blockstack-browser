@@ -71,6 +71,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
+            comments: true,
             compact: true,
             babelrc: true,
             cacheDirectory: true
@@ -133,10 +134,7 @@ module.exports = {
       {
         test: /\.worker\.js$/,
         use: {
-          loader: 'workerize-loader',
-          options: {
-            name: 'static/js/[hash].[ext]'
-          }
+          loader: 'workerize-loader'
         }
       }
     ]

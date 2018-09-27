@@ -1,20 +1,20 @@
-import { validateMnemonic } from 'bip39'
 import makeEncryptWorker from './workers/encrypt.worker.js'
 import makeDecryptWorker from './workers/decrypt.worker.js'
-
-export function encrypt(plaintextBuffer, password) {
+import bip39 from 'bip39'
+import log4js from 'log4js'
+const logger = log4js.getLogger(__filename)
+export async function encrypt(plaintextBuffer, password) {
   const mnemonic = plaintextBuffer.toString()
   const encryptWorker = makeEncryptWorker()
   return encryptWorker.encrypt(mnemonic, password)
 }
 
-export function decrypt(dataBuffer, password) {
+export async function decrypt(dataBuffer, password) {
   const encryptedMnemonic = dataBuffer.toString('hex')
   const decryptWorker = makeDecryptWorker()
-  return decryptWorker.decrypt(encryptedMnemonic, password)
-    .then(mnemonic => Buffer.from(mnemonic))
+  const mnemonic = await decryptWorker.decrypt(encryptedMnemonic, password)
+  return Buffer.from(mnemonic)
 }
-
 
 export const RECOVERY_TYPE = {
   MNEMONIC: 'mnemonic',
@@ -27,34 +27,50 @@ export const RECOVERY_TYPE = {
  * @returns {{ isValid: boolean, cleaned: (string|undefined), type: (string|undefined) }}
  */
 export function validateAndCleanRecoveryInput(input) {
+  logger.debug('Validate and clean recovery input')
   const cleaned = input.trim()
+  logger.debug('cleaned: ', cleaned)
 
   // Raw mnemonic phrase
-  const cleanedMnemonic = cleaned.toLowerCase().split(/\s|-|_|\./).join(' ')
+  const cleanedMnemonic = cleaned
+    .toLowerCase()
+    .split(/\s|-|_|\./)
+    .join(' ')
 
-  if (validateMnemonic(cleanedMnemonic)) {
+  if (bip39.validateMnemonic(cleanedMnemonic)) {
     return {
       isValid: true,
       type: RECOVERY_TYPE.MNEMONIC,
       cleaned: cleanedMnemonic
     }
   }
+  logger.debug('Is not a valid mnemonic.')
 
   // Base64 encoded encrypted phrase
   let cleanedEncrypted = cleaned.replace(/\s/gm, '')
 
-  if (cleanedEncrypted.length === 107 && cleanedEncrypted.indexOf('=') !== 106) {
+  if (
+    cleanedEncrypted.length === 107 &&
+    cleanedEncrypted.indexOf('=') !== 106
+  ) {
     // Append possibly missing equals sign padding
+    logger.debug('Encrypted Phrase needs an `=` at the end.')
+
     cleanedEncrypted = `${cleanedEncrypted}=`
   }
 
-  if (cleanedEncrypted.length >= 108 && /^[a-zA-Z0-9\+\/]+=$/.test(cleanedEncrypted)) {
+  if (
+    cleanedEncrypted.length >= 108 &&
+    /^[a-zA-Z0-9\+\/]+=$/.test(cleanedEncrypted)
+  ) {
+    logger.debug('Valid encrypted phrase!')
     return {
       isValid: true,
       type: RECOVERY_TYPE.ENCRYPTED,
       cleaned: cleanedEncrypted
     }
   }
+  logger.debug('Is not a valid phrase!')
 
   return { isValid: false }
 }

@@ -2,6 +2,7 @@ import styled, { css, keyframes } from 'styled-components'
 import { trans } from '@ui/common'
 import { spacing } from '@ui/common/constants'
 import { Form as FormikForm } from 'formik'
+
 const shakeAnimation = keyframes`
   0% { transform: translateX(-10px); }
   16% { transform: translateX(8px); }
@@ -12,7 +13,9 @@ const shakeAnimation = keyframes`
   100% { transform: translateX(0); }
 `
 
-const Input = styled.input`
+const Input = styled.input.attrs({
+  autofocus: true
+})`
   padding: 10px 0;
   margin-top: 5px;
   border: none;
@@ -96,9 +99,9 @@ const Label = styled.label`
   ${Input}:not(:placeholder-shown) ~ &,
   ${Textarea}:focus ~ &,
   ${Textarea}:not(:placeholder-shown) ~ & {
-    transform: translateY(-17px) scale(0.85);
+    //transform: translateY(-17px) scale(0.85);
     font-weight: 500;
-    opacity: 1;
+    opacity: 0;
   }
 
   ${Textarea}:not(:focus) ~ & {
@@ -120,8 +123,6 @@ const HelperMessage = styled.div`
 `
 const Group = styled.div`
   position: relative;
-  padding-top: 14px;
-
   ${({ error }) =>
     error &&
     css`
@@ -144,9 +145,11 @@ const Group = styled.div`
 const ErrorMessage = styled.div`
   color: #f67b7b;
   position: absolute;
-  right: 0;
   font-size: 12px;
   font-weight: 500;
+  left: 0;
+  top: -5px !important;
+
   ${Input}:not(:focus) ~ &,
   ${Textarea}:not(:focus) ~ & {
     top: 10px;
@@ -177,7 +180,8 @@ const ErrorMessage = styled.div`
 const PositiveMessage = styled.div`
   color: mediumseagreen;
   position: absolute;
-  right: 0;
+  left: 0;
+  top: -5px !important;
   font-size: 12px;
   font-weight: 500;
   ${Input}:not(:focus) ~ &,
@@ -235,7 +239,7 @@ const Form = styled(FormikForm).attrs({
   autoComplete: 'new-password'
 })`
   ${Group} + ${Group} {
-    margin-top: 30px;
+    margin-top: 10px;
   }
   * {
     ::-webkit-input-placeholder {
