@@ -134,7 +134,10 @@ module.exports = {
       {
         test: /\.worker\.js$/,
         use: {
-          loader: 'workerize-loader'
+          loader: 'workerize-loader',
+          options: {
+            name: isProd ? 'static/js/[name].[contenthash]' : '[name]'
+          }
         }
       }
     ]
