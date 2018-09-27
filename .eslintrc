@@ -5,10 +5,6 @@
   "globals": {
     "proxyFetch": true
   },
-  "ecmaFeatures": {
-    "jsx": true,
-    "modules": true
-  },
   "env": {
     "browser": true,
     "es6": true,
@@ -40,7 +36,8 @@
     "react/prop-types": 2,
     "react/sort-comp": 0,
     "no-duplicate-imports": 0,
-    "import/no-duplicates": 2
+    "import/no-duplicates": 2,
+    "no-useless-escape": 0
   },
   "settings": {
     "react": {

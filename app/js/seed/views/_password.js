@@ -9,7 +9,8 @@ const validationSchema = Yup.object({
     .required('A passsword is required.')
 })
 
-const PasswordView = ({ next, loading, placeholder, ...rest }) => {
+const PasswordView = ({ next, loading, placeholder, errors, ...rest }) => {
+  const errorProps = errors ? { errors } : {}
   const props = {
     title: {
       children: 'Enter your password',
@@ -18,6 +19,7 @@ const PasswordView = ({ next, loading, placeholder, ...rest }) => {
     content: {
       grow: 0,
       form: {
+        ...errorProps,
         validationSchema,
         initialValues: { password: '' },
         onSubmit: values => next(values.password),
@@ -34,10 +36,6 @@ const PasswordView = ({ next, loading, placeholder, ...rest }) => {
         actions: {
           split: true,
           items: [
-            {
-              label: ' ',
-              textOnly: true
-            },
             {
               label: 'Next',
               primary: true,

@@ -1,5 +1,5 @@
---require babel-register
---require babel-polyfill
+--require @babel/register
+--require @babel/polyfill
 --require test/init.js
 --require assert
 --require test/require-hacks.js

@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { CameraIcon, CloudUploadIcon, CheckIcon, CloseIcon } from 'mdi-react'
+import CameraIcon from 'mdi-react/CameraIcon'
+import CloudUploadIcon from 'mdi-react/CloudUploadIcon'
+import CheckIcon from 'mdi-react/CheckIcon'
+import CloseIcon from 'mdi-react/CloseIcon'
 import { Spinner }  from '@ui/components/spinner'
 import SimpleButton from '@components/SimpleButton'
 import Alert from '@components/Alert'
@@ -241,7 +244,7 @@ class PhotoModal extends React.PureComponent {
             )}
           </Styled.PhotoContainer>
         ) : (
-          <React.Fragment>
+          <>
             <SimpleButton
               type="primary"
               onClick={this.selectPhotoFile}
@@ -258,7 +261,7 @@ class PhotoModal extends React.PureComponent {
             >
               Take a photo <CameraIcon style={iconStyle} />
             </SimpleButton>
-          </React.Fragment>
+          </>
         )}
 
         <SimpleButton

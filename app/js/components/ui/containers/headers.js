@@ -2,7 +2,9 @@ import React from 'react'
 import { Bug as StyledBug } from '@ui/components/bugs'
 import { StyledHeader } from '@ui/components/header'
 import { BlockstackBug } from '@ui/components/logos'
-import { ArrowLeftIcon, ChevronDoubleRightIcon } from 'mdi-react'
+import { isArray } from '@common'
+import ArrowLeftIcon from 'mdi-react/ArrowLeftIcon'
+import ChevronDoubleRightIcon from 'mdi-react/ChevronDoubleRightIcon'
 import PropTypes from 'prop-types'
 
 const Bug = ({ children, size = 48, ...rest }) => (
@@ -32,7 +34,9 @@ const HeaderLink = ({
     : { ...rest }
   return (
     <StyledHeader.Link {...props}>
-      {Icon && label.includes('Back') && !label.includes(' ') ? (
+      {Icon &&
+      (label.includes('Back') || label.includes('Cancel')) &&
+      !label.includes(' ') ? (
         <StyledHeader.Link.Icon>
           <Icon size={14} />
         </StyledHeader.Link.Icon>
@@ -87,10 +91,14 @@ const Header = ({
     disableBackOnView,
     disable
   }
+
+  const disableBack = isArray(disableBackOnView)
+    ? !!disableBackOnView.find(index => index === view)
+    : disableBackOnView === view
   return (
     <StyledHeader invert={invert} {...rest}>
       <StyledHeader.Section>
-        {disableBackOnView === view ? null : <HeaderLink {...linkProps} />}
+        {disableBack ? null : <HeaderLink {...linkProps} />}
       </StyledHeader.Section>
       <StyledHeader.Section>{renderBugs()}</StyledHeader.Section>
     </StyledHeader>

@@ -1,6 +1,8 @@
 import React from 'react'
 import { ShellScreen, Type, Button, Buttons } from '@blockstack/ui'
 import PropTypes from 'prop-types'
+import { Box, Inline, Flex } from '@components/ui/components/primitives'
+import { Trail, config, animated } from 'react-spring'
 
 function getRandomInt(min, max, exclude) {
   min = Math.ceil(min)
@@ -15,8 +17,8 @@ function getRandomInt(min, max, exclude) {
 
 class SeedConfirm extends React.Component {
   generateNumbers = () => {
-    const firstNumber = getRandomInt(0, 11)
-    const secondNumber = getRandomInt(0, 11, firstNumber)
+    const firstNumber = getRandomInt(0, 2)
+    const secondNumber = getRandomInt(9, 11, firstNumber)
 
     this.setState({
       indexesToConfirm: [firstNumber, secondNumber],
@@ -89,20 +91,33 @@ class SeedConfirm extends React.Component {
         }
       )
     }
+    if (this.state.selectedWords.length === 1) {
+      setTimeout(() => this.handleSubmit(), 250)
+    }
   }
 
   resetState = () => {
-    this.setState({
-      indexesToConfirm: [],
-      wordsToConfirm: [],
-      selectedWords: [],
-      confirmedWords: [],
-      randomWords: [],
-      words: {},
-      verified: false,
-      loading: false,
-      error: true
-    })
+    this.setState(
+      {
+        error: true
+      },
+      () =>
+        setTimeout(
+          () =>
+            this.setState({
+              indexesToConfirm: [],
+              wordsToConfirm: [],
+              selectedWords: [],
+              confirmedWords: [],
+              randomWords: [],
+              words: {},
+              verified: false,
+              loading: false,
+              error: false
+            }),
+          800
+        )
+    )
   }
 
   handleSubmit = () => {
@@ -117,7 +132,7 @@ class SeedConfirm extends React.Component {
             loading: false
           })
         }
-      }, 1500)
+      }, 150)
     )
   }
 
@@ -143,52 +158,72 @@ class SeedConfirm extends React.Component {
     if (!seed || !this.state.randomWords.length) {
       return null
     }
-    const renderWords = (words, action) =>
-      this.state.randomWords.map(word => (
-        <Button
-          label={word}
-          key={word}
-          onClick={() => action(word)}
-          filled={this.state.words[word]}
-        />
-      ))
+    const renderWords = (words, action) => (
+      <Trail
+        native
+        from={{ opacity: 0, y: -2 }}
+        to={{ opacity: 1, y: 0 }}
+        keys={this.state.randomWords}
+        config={config.stiff}
+      >
+        {this.state.randomWords.map(word => ({ opacity, y }) => {
+          const hasError = this.state.error
+          const isSelected = this.state.words[word]
+          const selectedColor = hasError ? '#f67b7b' : 'whitesmoke'
+          const bgColor = isSelected ? selectedColor : 'transparent'
+
+          return (
+            <Box
+              is={animated.div}
+              style={{
+                transition: '0.1s background ease-in-out',
+                opacity,
+                transform: y.interpolate(prop => `translate3d(0,${prop}px,0)`),
+                cursor: 'pointer'
+              }}
+              width="calc(33.33333% - 10px)"
+              key={word}
+              onClick={() => action(word)}
+              bg={bgColor}
+              border="1px solid rgba(39, 16, 51, 0.2)"
+              px={3}
+              py={2}
+              mb={3}
+              textAlign="center"
+              mr="10px"
+              borderRadius="30px"
+              fontSize="16px"
+            >
+              <Inline>{word}</Inline>
+            </Box>
+          )
+        })}
+      </Trail>
+    )
 
     const props = {
       title: {
         children: (
-          <React.Fragment>Verify your Secret Recovery&nbsp;Key</React.Fragment>
+          <>
+            Select words #{this.state.indexesToConfirm[0] + 1} and #
+            {this.state.indexesToConfirm[1] + 1}
+          </>
         ),
         variant: 'h2'
       },
       content: {
         grow: 1,
         children: (
-          <React.Fragment>
-            <Type.h3>
-              Select words #{this.state.indexesToConfirm[0] + 1} and #{this
-                .state.indexesToConfirm[1] + 1}
-            </Type.h3>
-            <Buttons wrap>
+          <Box pt={3}>
+            <Type.small>
+              Blockstack cannot recover your key. We need to confirm you have
+              saved it.
+            </Type.small>
+            <Flex pt={4} flexWrap="wrap">
               {renderWords(seed, w => this.handleWordClick(w))}
-            </Buttons>
-          </React.Fragment>
+            </Flex>
+          </Box>
         )
-      },
-      actions: {
-        split: true,
-        items: [
-          {
-            label: ' ',
-            textOnly: true
-          },
-          {
-            label: this.state.error ? 'Try Again' : 'Confirm',
-            primary: true,
-            disabled: !this.state.selectedWords === 2,
-            loading: this.state.loading,
-            onClick: () => this.handleSubmit()
-          }
-        ]
       }
     }
     return <ShellScreen {...rest} {...props} />

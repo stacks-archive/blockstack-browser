@@ -1,4 +1,3 @@
-import bip39 from 'bip39'
 import { decrypt } from './encryption-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import crypto from 'crypto'
@@ -120,20 +119,22 @@ export function isPasswordValid(password) {
 export function isBackupPhraseValid(backupPhrase) {
   let isValid = true
   let error = null
+  return import(/* webpackChunkName: 'bip39' */ 'bip39').then(bip39 => {
+    if (!bip39.validateMnemonic(backupPhrase)) {
+      isValid = false
+      error = 'Backup phrase is not a valid set of words'
+    }
 
-  if (!bip39.validateMnemonic(backupPhrase)) {
-    isValid = false
-    error = 'Backup phrase is not a valid set of words'
-  }
-
-  return { isValid, error }
+    return { isValid, error }
+  })
 }
 
 export function decryptMasterKeychain(password, encryptedBackupPhrase) {
   return new Promise((resolve, reject) => {
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     decrypt(dataBuffer, password).then(
-      plaintextBuffer => {
+      async plaintextBuffer => {
+        const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
         const backupPhrase = plaintextBuffer.toString()
         const seed = bip39.mnemonicToSeed(backupPhrase)
         const masterKeychain = HDNode.fromSeedBuffer(seed)
@@ -189,8 +190,13 @@ export function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
     decryptMasterKeychain(password, encryptedBackupPhrase)
       .then(masterKeychain => {
         const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
-        const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
-        const privateKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
+        const bitcoinAddressHDNode = getBitcoinAddressNode(
+          bitcoinPrivateKeychain,
+          0
+        )
+        const privateKey = bitcoinAddressHDNode.keyPair.d
+          .toBuffer(32)
+          .toString('hex')
         resolve(privateKey)
       })
       .catch(error => {
@@ -202,25 +208,35 @@ export function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
 const IDENTITY_KEYCHAIN = 888
 const BLOCKSTACK_ON_BITCOIN = 0
 export function getIdentityPrivateKeychain(masterKeychain) {
-  return masterKeychain.deriveHardened(IDENTITY_KEYCHAIN).deriveHardened(BLOCKSTACK_ON_BITCOIN)
+  return masterKeychain
+    .deriveHardened(IDENTITY_KEYCHAIN)
+    .deriveHardened(BLOCKSTACK_ON_BITCOIN)
 }
 
 export function getIdentityPublicKeychain(masterKeychain) {
   return getIdentityPrivateKeychain(masterKeychain).neutered()
 }
 
-export function getIdentityOwnerAddressNode(identityPrivateKeychain, identityIndex = 0) {
+export function getIdentityOwnerAddressNode(
+  identityPrivateKeychain,
+  identityIndex = 0
+) {
   if (identityPrivateKeychain.isNeutered()) {
     throw new Error('You need the private key to generate identity addresses')
   }
 
-  const publicKeyHex = identityPrivateKeychain.keyPair.getPublicKeyBuffer().toString('hex')
+  const publicKeyHex = identityPrivateKeychain.keyPair
+    .getPublicKeyBuffer()
+    .toString('hex')
   const salt = crypto
     .createHash('sha256')
     .update(publicKeyHex)
     .digest('hex')
 
-  return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex), salt)
+  return new IdentityAddressOwnerNode(
+    identityPrivateKeychain.deriveHardened(identityIndex),
+    salt
+  )
 }
 
 export function deriveIdentityKeyPair(identityOwnerAddressNode) {

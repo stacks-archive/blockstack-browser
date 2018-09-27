@@ -14,8 +14,8 @@ class EmailView extends React.Component {
     {
       type: 'email',
       name: 'email',
-      label: 'Email Address',
-      message: 'Your email is needed for critical recovery instructions.'
+      autoFocus: true,
+      label: 'Email Address'
     }
   ]
 
@@ -41,10 +41,6 @@ class EmailView extends React.Component {
             split: true,
             items: [
               {
-                label: ' ',
-                textOnly: true
-              },
-              {
                 label: 'Next',
                 primary: true,
                 type: 'submit',
@@ -58,10 +54,12 @@ class EmailView extends React.Component {
     }
 
     return (
-      <React.Fragment>
-        {this.props.loading && <Shell.Loading message="Restoring your account..." />}
+      <>
+        {this.props.loading && (
+          <Shell.Loading message="Restoring your Blockstack ID..." />
+        )}
         <ShellScreen {...rest} {...props} />
-      </React.Fragment>
+      </>
     )
   }
 }
