@@ -7,15 +7,13 @@ import { validateAndCleanRecoveryInput } from '@utils/encryption-utils'
 
 const validateInput = async value =>
   import(/* webpackChunkName: 'bip39' */ 'bip39').then(bip39 => {
-    {
-      // Raw mnemonic phrase
-      if (bip39.validateMnemonic(value)) {
-        console.log('valid mnemonic')
-        return true
-      }
-      // Base64 encoded encrypted phrase
-      return /[a-zA-Z0-9+/]=$/.test(value)
+    // Raw mnemonic phrase
+    if (bip39.validateMnemonic(value)) {
+      console.log('valid mnemonic')
+      return true
     }
+    // Base64 encoded encrypted phrase
+    return /[a-zA-Z0-9+/]=$/.test(value)
   })
 
 const validationSchema = Yup.object({
@@ -83,7 +81,7 @@ export default class InitialSignInScreen extends React.PureComponent {
           validationSchema,
           initialValues: { recoveryKey: value },
           onSubmit: values => {
-            next(values.recoveryKey)
+            next(validateAndCleanRecoveryInput(values.recoveryKey).cleaned)
           },
           fields: [
             {
