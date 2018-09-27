@@ -74,15 +74,26 @@ class UsernameView extends React.Component {
 
     if (values.username !== this.state.username && !noValues) {
       const MIN_USERNAME_LENGTH = 8
-      const validLength = values.username.length >= MIN_USERNAME_LENGTH
+      const MAX_USERNAME_LENGTH = 38
+      const validMinLength = values.username.length >= MIN_USERNAME_LENGTH
+      const validMaxLength = values.username.length < MAX_USERNAME_LENGTH
 
       const minLengthErrorMessage = `Must be at least ${8} characters.`
+      const maxLengthErrorMessage = 'Username is too long.'
 
-      if (!validLength) {
+      if (!validMinLength) {
         this.setState({
           status: STATUS.ERROR
         })
         errors.username = minLengthErrorMessage
+        throw errors
+      }
+
+      if (!validMaxLength) {
+        this.setState({
+          status: STATUS.ERROR
+        })
+        errors.username = maxLengthErrorMessage
         throw errors
       }
 
@@ -178,7 +189,8 @@ class UsernameView extends React.Component {
         children: (
           <>
             <Type.small pt={3}>
-              This will be your unique, public identity for any Blockstack&nbsp;app.
+              This will be your unique, public identity for any
+              Blockstack&nbsp;app.
             </Type.small>
             {canSkip && (
               <Type.small pt={3}>
