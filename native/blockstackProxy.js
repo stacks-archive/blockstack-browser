@@ -15,6 +15,10 @@ var path = require("path"),
 
 app.use('/static', express.static(basePath+'/static'));
 
+app.get('/manifest.json', function(req, res, next) {
+  res.sendFile(path.join(basePath+'/manifest.json'));
+})
+
 app.get('/*', function(req, res, next) {
   res.sendFile(path.join(basePath+'/index.html'));
 })
