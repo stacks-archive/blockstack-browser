@@ -41,7 +41,7 @@ const Textarea = styled.textarea`
   box-sizing: border-box;
   resize: vertical;
   min-height: ${({ mh }) => (mh ? `${mh}px` : '48px')};
-  margin-top: 5px;
+  margin-top: 15px;
   color: rgba(39, 16, 51, 0.7);
 `
 
@@ -150,9 +150,13 @@ const ErrorMessage = styled.div`
   left: 0;
   top: -5px !important;
 
+  ${Textarea} ~ & {
+    top: -20px !important;
+  }
+
   ${Input}:not(:focus) ~ &,
   ${Textarea}:not(:focus) ~ & {
-    top: 10px;
+    
     ${({ overlay }) =>
       overlay &&
       css`
@@ -184,9 +188,11 @@ const PositiveMessage = styled.div`
   top: -5px !important;
   font-size: 12px;
   font-weight: 500;
+  ${Textarea} ~ & {
+    top: -20px !important;
+  }
   ${Input}:not(:focus) ~ &,
   ${Textarea}:not(:focus) ~ & {
-    top: 10px;
     ${({ overlay }) =>
       overlay &&
       css`
