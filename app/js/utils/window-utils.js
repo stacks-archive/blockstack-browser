@@ -11,7 +11,7 @@ export function isWindowsBuild() {
 }
 
 export function isWebAppBuild() {
-  const isWebAppCompileFlag = ( process.env.NODE_ENV === 'production' && process.env.WEBAPP )
+  const isWebAppCompileFlag = ( process.env.NODE_ENV === 'production' && typeof process.env.WEBAPP !== 'undefined' )
   return isWebAppCompileFlag
 }
 
