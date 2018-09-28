@@ -11,13 +11,15 @@ export function isWindowsBuild() {
 }
 
 export function isWebAppBuild() {
+  const isWebAppHostnameFlag = ( getHostname() === 'browser.blockstack.org' )
+  const isWebAppCompileFlag = ( process.env.NODE_ENV === 'production' || process.env.WEBAPP )
+  return ( isWebAppHostnameFlag || isWebAppCompileFlag )
+}
+
+function getHostname() {
   const URL = document.createElement('a')
   URL.href = window.location.href
-  const hostname = URL.hostname
-
-  const isWebAppHostnameFlag = hostname === 'browser.blockstack.org'
-  const isWebAppCompileFlag = process.env.NODE_ENV === 'production' || process.env.WEBAPP
-  return isWebAppHostnameFlag || isWebAppCompileFlag 
+  return URL.hostname
 }
 
 /**
