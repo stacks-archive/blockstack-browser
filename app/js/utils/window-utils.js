@@ -14,9 +14,10 @@ export function isWebAppBuild() {
   const URL = document.createElement('a')
   URL.href = window.location.href
   const hostname = URL.hostname
-  return hostname === 'browser.blockstack.org'
-  //let isWebAppBuildCompileFlag = false
-  //return isWebAppBuildCompileFlag === true
+
+  const isWebAppHostnameFlag = hostname === 'browser.blockstack.org'
+  const isWebAppCompileFlag = process.env.NODE_ENV === 'production' || process.env.WEBAPP
+  return isWebAppHostnameFlag || isWebAppCompileFlag 
 }
 
 /**
