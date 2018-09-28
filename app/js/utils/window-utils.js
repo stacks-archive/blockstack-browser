@@ -11,8 +11,12 @@ export function isWindowsBuild() {
 }
 
 export function isWebAppBuild() {
-  const isWebAppBuildCompileFlag = false
-  return isWebAppBuildCompileFlag === true
+  const URL = document.createElement('a')
+  URL.href = window.location.href
+  const hostname = URL.hostname
+  return hostname === 'browser.blockstack.org'
+  //let isWebAppBuildCompileFlag = false
+  //return isWebAppBuildCompileFlag === true
 }
 
 /**
