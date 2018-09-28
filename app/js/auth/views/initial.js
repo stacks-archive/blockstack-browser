@@ -20,6 +20,7 @@ const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
           loading={processing && i === selectedIndex}
           disabled={processing}
           placeholder="Signing in..."
+          style={{ transform: 'translate3d(0,0,0)' }}
           hideID
         />
       )
@@ -102,7 +103,7 @@ const InitialScreen = ({
             app={app}
             appDomain={appDomain}
           />
-          <Buttons column overflow>
+          <Buttons flexDirection="column" overflow>
             <Accounts
               list={accounts}
               handleClick={login}
