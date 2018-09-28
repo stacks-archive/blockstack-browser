@@ -114,13 +114,13 @@ namespace BlockstackBrowser
 
         private void RunBlockstackBrowser()
         {
-            String blockstackCommand = "Resources\\blockstackProxy.js 8888 Resources\\build";
+            String blockstackCommand = "Resources\\blockstackProxy.js 8888";
             this.browserProxy = ShellOut(blockstackCommand);
         }
 
         private void RunCORSProxy()
         {
-            String proxyCommand = "Resources\\cors-proxy\\corsproxy.js 0 0 0.0.0.0";
+            String proxyCommand = "Resources\\cors-proxy\\corsproxy.js 0 0 localhost";
             this.corsProxy = ShellOut(proxyCommand);
         }
     }

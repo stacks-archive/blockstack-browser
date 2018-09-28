@@ -18,18 +18,18 @@ class Success extends React.Component {
       content: {
         grow: 1,
         children: (
-          <React.Fragment>
+          <>
             <Type.p>
               You have successfully updated the latest version of the Blockstack
               browser. You will be redirected shortly.
             </Type.p>
-          </React.Fragment>
+          </>
         )
       },
       actions: {
         items: [
           {
-            label: <React.Fragment>Continue</React.Fragment>,
+            label: <>Continue</>,
             primary: true,
             onClick: () => finish(),
             loading: true,

@@ -13,7 +13,11 @@ var path = require("path"),
     host = process.argv[4] || 'localhost',
     basePath = process.argv[3] || "./browser";
 
-app.use('/static', express.static(basePath));
+app.use('/static', express.static(basePath+'/static'));
+
+app.get('/manifest.json', function(req, res, next) {
+  res.sendFile(path.join(basePath+'/manifest.json'));
+})
 
 app.get('/*', function(req, res, next) {
   res.sendFile(path.join(basePath+'/index.html'));

@@ -335,7 +335,7 @@ class UpdatePage extends React.Component {
       ...currentViewProps.props
     }
     return (
-      <React.Fragment>
+      <>
         <ShellParent
           app={formatAppManifest(this.props.appManifest)}
           views={views}
@@ -344,7 +344,7 @@ class UpdatePage extends React.Component {
           disableBackOnView={1}
         />
         <AppHomeWrapper />
-      </React.Fragment>
+      </>
     )
   }
 }

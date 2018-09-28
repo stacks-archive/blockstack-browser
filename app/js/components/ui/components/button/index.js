@@ -3,7 +3,9 @@ import { trans } from '@ui/common'
 import { spacing } from '@ui/common/constants'
 import { Link } from 'react-router'
 import { darken } from 'polished'
-const Label = styled.div`
+import {Flex} from '@components/ui/components/primitives'
+
+const Label = styled(Flex)`
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -16,12 +18,11 @@ const Label = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   text-decoration: none !important;
+ 
 `
 
-const Section = styled.div`
-  display: flex;
+const Section = styled(Flex)`
   align-items: center;
   overflow: hidden;
   flex-shrink: 0;
@@ -80,7 +81,7 @@ const IconWrapper = styled.div`
   }
 `
 
-const StyledButton = styled.button`
+const StyledButton = styled(Flex)`
   ${({ height }) =>
     height &&
     css`
@@ -249,7 +250,7 @@ const StyledButton = styled.button`
 StyledButton.Div = StyledButton.withComponent('div')
 StyledButton.Link = StyledButton.withComponent(Link)
 
-const Buttons = styled.div`
+const Buttons = styled(Flex)`
   ${({ overflow }) =>
     overflow &&
     css`

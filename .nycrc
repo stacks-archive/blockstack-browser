@@ -1,6 +1,6 @@
 {
   "require": [
-    "babel-register"
+    "@babel/register"
   ],
   "coverageVariable": "__MY_TEST_COVERAGE__",
   "exclude": [

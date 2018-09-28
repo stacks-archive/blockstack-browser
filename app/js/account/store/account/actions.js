@@ -1,5 +1,5 @@
 import { HDNode } from 'bitcoinjs-lib'
-import bip39 from 'bip39'
+
 import { randomBytes } from 'crypto'
 import {
   authorizationHeaderValue,
@@ -311,25 +311,23 @@ function buildBitcoinTransaction(
     }
     const amountSatoshis = Math.floor(amountBTC * 1e8)
 
-    logger.debug(`Building transaction to send ${amountSatoshis} satoshis to ${recipientAddress}`)
-    return transactions.makeBitcoinSpend(
-      recipientAddress, paymentKey, amountSatoshis
+    logger.debug(
+      `Building transaction to send ${amountSatoshis} satoshis to ${recipientAddress}`
     )
-    .then(txHex => {
-      logger.info('Succesfully built bitcoin transaction')
-      dispatch(buildTransactionSuccess(txHex))
-    })
-    .catch(err => {
-      logger.error(`Failed to build bitcoin transaction: ${err}`)
-      dispatch(buildTransactionError(err.message || err.toString()))
-    })
+    return transactions
+      .makeBitcoinSpend(recipientAddress, paymentKey, amountSatoshis)
+      .then(txHex => {
+        logger.info('Succesfully built bitcoin transaction')
+        dispatch(buildTransactionSuccess(txHex))
+      })
+      .catch(err => {
+        logger.error(`Failed to build bitcoin transaction: ${err}`)
+        dispatch(buildTransactionError(err.message || err.toString()))
+      })
   }
 }
 
-function broadcastBitcoinTransaction(
-  regTestMode,
-  txHex
-) {
+function broadcastBitcoinTransaction(regTestMode, txHex) {
   return dispatch => {
     logger.info('Broadcasting bitcoin transaction')
     logger.debug('Transaction hex:', txHex)
@@ -341,15 +339,16 @@ function broadcastBitcoinTransaction(
       config.network.blockstackAPIUrl = 'http://localhost:6270'
     }
 
-    return config.network.broadcastTransaction(txHex)
-    .then((res) => {
-      logger.info(`Broadcasting bitcoin transaction succesful: ${res}`)
-      dispatch(broadcastTransactionSuccess())
-    })
-    .catch(err => {
-      logger.error(`Failed to broadcast bitcoin transaction: ${err}`)
-      dispatch(broadcastTransactionError(err.message || err.toString()))
-    })
+    return config.network
+      .broadcastTransaction(txHex)
+      .then(res => {
+        logger.info(`Broadcasting bitcoin transaction succesful: ${res}`)
+        dispatch(broadcastTransactionSuccess())
+      })
+      .catch(err => {
+        logger.error(`Failed to broadcast bitcoin transaction: ${err}`)
+        dispatch(broadcastTransactionError(err.message || err.toString()))
+      })
   }
 }
 
@@ -494,16 +493,18 @@ function refreshBalances(insightUrl, addresses, coreAPIPassword) {
             )
           })
       })
-    ).then(() => {
-      logger.debug(
-        'refreshBalances: done refreshing balances for all addresses'
-      )
-    }).catch(error => {
-      logger.error(
-        'refreshBalances: error refreshing balances for addresses',
-        error
-      )
-    })
+    )
+      .then(() => {
+        logger.debug(
+          'refreshBalances: done refreshing balances for all addresses'
+        )
+      })
+      .catch(error => {
+        logger.error(
+          'refreshBalances: error refreshing balances for addresses',
+          error
+        )
+      })
   }
 }
 
@@ -511,24 +512,29 @@ const initializeWallet = (
   password,
   backupPhrase,
   identitiesToGenerate = 1
-) => dispatch => {
+) => async dispatch => {
+  const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
+  logger.debug('initializeWallet started')
   let masterKeychain = null
   if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
     const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+    logger.debug(`seedBuffer: ${seedBuffer}`)
     masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+    logger.debug(`masterKeychain: ${masterKeychain}`)
   } else {
-    // Create a new wallet
+    logger.debug('Create a new wallet')
     const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
     backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
     const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
     masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
   }
-  return encrypt(new Buffer(backupPhrase), password).then(ciphertextBuffer => {
-    const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
-    return dispatch(
-      createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate)
-    )
-  })
+  const ciphertextBuffer = await encrypt(new Buffer(backupPhrase), password)
+  logger.debug(`ciphertextBuffer: ${ciphertextBuffer}`)
+  const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
+  logger.debug(`encryptedBackupPhrase: ${encryptedBackupPhrase}`)
+  return dispatch(
+    createAccount(encryptedBackupPhrase, masterKeychain, identitiesToGenerate)
+  )
 }
 
 function newBitcoinAddress() {

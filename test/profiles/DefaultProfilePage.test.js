@@ -1,10 +1,7 @@
 import React from 'react'
 import { expect } from 'chai'
-import Enzyme, { mount, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
 import { DefaultProfilePage } from '../../app/js/profiles/DefaultProfilePage'
-
-Enzyme.configure({ adapter: new Adapter() })
 
 function setup(accounts = []) {
   const props = {

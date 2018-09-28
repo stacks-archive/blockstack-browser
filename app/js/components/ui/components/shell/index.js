@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components'
 import { animated } from 'react-spring'
 import { spacing } from '@ui/common/constants'
 import { Buttons } from '@components/ui/components/button'
+import { Flex } from '@components/ui/components/primitives'
 
 const Loading = styled(animated.div)`
   position: absolute;
@@ -13,17 +14,16 @@ const Loading = styled(animated.div)`
   z-index: 99;
   width: calc(100% + 60px);
   left: -30px;
-  height: calc(100% + 53px);
-  top: -30px;
+  height: calc(100% + 98px);
+  top: -80px;
 `
 
 const Header = styled.div``
-const Title = styled.div`
+const Title = styled(Flex)`
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
-  margin-bottom: ${spacing.gutter};
-  display: flex;
+  margin-bottom: 10px;
 `
 const TitleSection = styled.div`
   display: flex;
@@ -143,13 +143,14 @@ const StyledShell = styled.div`
   align-items: center;
   justify-content: center;
   flex-grow: 1;
-  min-height: ${({ height }) => (height > 0 ? `${height}px` : '100vh')};
+  min-height: ${({ width, height }) =>
+    height > 0 && width <= 599 ? `${height}px` : '100vh'};
   top: 0;
   left: 0;
   width: 100%;
   z-index: 9001;
-  background-color: rgba(240, 240, 240, 0.8);
-
+  background-color: ${({ width }) =>
+    width <= 599 ? 'white' : 'rgba(240, 240, 240, 0.8)'};
   ${({ maxHeight }) =>
     maxHeight &&
     css`

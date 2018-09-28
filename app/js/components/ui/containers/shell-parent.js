@@ -76,6 +76,7 @@ class ShellParent extends React.Component {
       size,
       view,
       maxHeight,
+      backLabel = '',
       ...rest
     } = this.props
 
@@ -84,9 +85,9 @@ class ShellParent extends React.Component {
 
     const invert = invertOnLast && isLastView
 
-    const defaultBackLabel = isFirstView ? '' : 'Back'
-    const label =
-      isFirstView && app ? `Back to ${app.name}` : defaultBackLabel
+    const internalBackLabel = backLabel !== '' ? backLabel : 'Back'
+    const defaultBackLabel = isFirstView ? backLabel : internalBackLabel
+    const label = isFirstView && app ? `Back to ${app.name}` : defaultBackLabel
 
     const Component = views[view]
 
@@ -110,7 +111,11 @@ class ShellParent extends React.Component {
           }
         : {
             action:
-              isFirstView && !app ? undefined : () => this.props.backView(),
+              isFirstView && !app
+                ? backLabel === ''
+                  ? undefined
+                  : () => this.props.backView()
+                : () => this.props.backView(),
             app,
             label,
             disableBackOnView,

@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ShellScreen, Shell } from '@blockstack/ui'
-
+import { ShellScreen, Shell, Type } from '@blockstack/ui'
 class PasswordView extends React.Component {
   state = {
     status: 'initial'
@@ -17,6 +16,7 @@ class PasswordView extends React.Component {
       })
     }
   }
+
   componentDidUpdate() {
     this.setError()
   }
@@ -67,7 +67,7 @@ class PasswordView extends React.Component {
      * Min length checks
      */
     if (tooShort) {
-      errors.password = 'Password is too short'
+      errors.password = 'Too short. 8 characters minimum.'
       this.setState({
         status: 'error',
         password: values.password,
@@ -121,6 +121,14 @@ class PasswordView extends React.Component {
 
     return null
   }
+
+  message = () => {
+    const { decrypt } = this.props
+    return decrypt
+      ? 'The password you entered when you created this Blockstack ID.'
+      : '8 characters minimum. Please record your password, Blockstack cannot reset this password for you.'
+  }
+
   render() {
     const {
       updateValue,
@@ -135,10 +143,7 @@ class PasswordView extends React.Component {
       {
         type: 'password',
         name: 'password',
-        label: 'Password',
-        message: decrypt
-          ? 'The password you entered when you created this Blockstack ID.'
-          : null,
+        label: !decrypt ? 'New Password (8 characters min)' : 'Password',
         autoFocus: true
       }
     ]
@@ -147,9 +152,7 @@ class PasswordView extends React.Component {
       fields.push({
         type: 'password',
         name: 'passwordConfirm',
-        label: 'Confirm Password',
-        message:
-          'Please record your password, Blockstack cannot reset this password for you.'
+        label: 'Confirm Password'
       })
     }
 
@@ -160,6 +163,7 @@ class PasswordView extends React.Component {
       },
       content: {
         grow: 0,
+        children: <Type.small pt={3}>{this.message()}</Type.small>,
         form: {
           errors: this.state.errors,
           validate: v => this.validate(v),
@@ -174,10 +178,6 @@ class PasswordView extends React.Component {
           actions: {
             split: true,
             items: [
-              {
-                label: ' ',
-                textOnly: true
-              },
               {
                 label: 'Next',
                 primary: true,
@@ -198,12 +198,12 @@ class PasswordView extends React.Component {
       }
     }
     return (
-      <React.Fragment>
+      <>
         {this.props.loading ? (
-          <Shell.Loading message="Restoring your account..." />
+          <Shell.Loading message="Restoring your Blockstack ID..." />
         ) : null}
         <ShellScreen {...rest} {...props} />
-      </React.Fragment>
+      </>
     )
   }
 }

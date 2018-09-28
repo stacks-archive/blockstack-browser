@@ -14,7 +14,7 @@ const LegacyGaiaScreen = ({ app, backView, ...rest }) => {
     content: {
       grow: 1,
       children: (
-        <React.Fragment>
+        <>
           <Type.p>
             This application uses an older Gaia storage library, which is no
             longer supported. Once the application updates its library, you will
@@ -24,7 +24,7 @@ const LegacyGaiaScreen = ({ app, backView, ...rest }) => {
             You could try to reach out to the developers of {app.name} and
             request they update to the latest version of Gaia.
           </Type.p>
-        </React.Fragment>
+        </>
       )
     },
     actions: {

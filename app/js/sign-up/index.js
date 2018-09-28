@@ -36,7 +36,7 @@ import { SettingsActions } from '../account/store/settings'
 import { RegistrationActions } from '../profiles/store/registration'
 import { hasNameBeenPreordered } from '@utils/name-utils'
 import { trackEventOnce } from '@utils/server-utils'
-import { sendRecoveryEmail, sendRestoreEmail } from '@utils/email-utils'
+import { sendRestoreEmail as sendEmail } from '@utils/email-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'
@@ -53,19 +53,24 @@ import { notify } from 'reapop'
 
 const logger = log4js.getLogger(__filename)
 
+/**
+ * View Order
+ *
+ * To adjust the sequence of views, change their index here
+ */
 const views = [
   Initial,
-  Email,
-  Password,
   Username,
+  Password,
+  Email,
   RecoveryInformationScreen,
   Success
 ]
 const VIEWS = {
   INITIAL: 0,
-  EMAIL: 1,
+  USERNAME: 1,
   PASSWORD: 2,
-  USERNAME: 3,
+  EMAIL: 3,
   INFO: 4,
   HOORAY: 5
 }
@@ -123,6 +128,7 @@ class Onboarding extends React.Component {
     emailsSending: false,
     emailsSent: false,
     recoveryEmailError: null,
+    recoveryEmailErrorCount: 0,
     restoreEmailError: null,
     loading: false,
     view: VIEWS.INITIAL,
@@ -159,28 +165,27 @@ class Onboarding extends React.Component {
       return null
     }
   }
-  submitPassword = () => {
-    const { username, email } = this.state
-    if (username.length < 1) {
-      this.setState({
-        email
-      })
-    }
-    this.updateView(VIEWS.USERNAME)
+  /**
+   * Submit our password
+   */
+  submitPassword = async () => {
+    this.setState({
+      loading: true
+    })
+    await this.createAccount()
+    this.updateView(VIEWS.EMAIL)
   }
   /**
    * Submit Username
    * This will create our account and then register a name and connect storage
    */
   submitUsername = username => {
-    this.setState({
-      username,
-      loading: true
-    }, () => {
-      setTimeout(() => {
-        this.createAccount()
-      }, 500)
-    })
+    this.setState(
+      {
+        username
+      },
+      () => this.updateView(VIEWS.PASSWORD)
+    )
   }
 
   /**
@@ -201,10 +206,6 @@ class Onboarding extends React.Component {
     await this.props.connectStorage()
     // Register the username
     await this.registerUsername()
-    // Send the emails
-    await this.sendEmails()
-
-    this.updateView(VIEWS.INFO)
   }
 
   /**
@@ -247,36 +248,38 @@ class Onboarding extends React.Component {
       const identity = this.props.localIdentities[identityIndex]
       const keypair = this.props.identityKeypairs[identityIndex]
 
-      return this.props.registerName(
-        this.props.api,
-        username,
-        identity,
-        identityIndex,
-        address,
-        keypair
-      )
-      .catch((err) => {
-        logger.error(`username registration error: ${err}`)
-        this.props.notify({
-          title: 'Username Registration Failed',
-          message: `Sorry, something went wrong while registering ${username}. ` +
-            'You can try to register again later from your profile page. Some ' +
-            'apps may be unusable until you do.',
-          status: 'error',
-          dismissAfter: 0,
-          dismissible: true,
-          closeButton: true,
-          position: 'b'
+      return this.props
+        .registerName(
+          this.props.api,
+          username,
+          identity,
+          identityIndex,
+          address,
+          keypair
+        )
+        .catch(err => {
+          logger.error(`username registration error: ${err}`)
+          this.props.notify({
+            title: 'Username Registration Failed',
+            message:
+              `Sorry, something went wrong while registering ${username}. ` +
+              'You can try to register again later from your profile page. Some ' +
+              'apps may be unusable until you do.',
+            status: 'error',
+            dismissAfter: 0,
+            dismissible: true,
+            closeButton: true,
+            position: 'b'
+          })
+          this.setState({
+            username: ''
+          })
         })
-        this.setState({
-          username: ''
+        .then(() => {
+          this.setState({
+            usernameRegistrationInProgress: false
+          })
         })
-      })
-      .then(() => {
-        this.setState({
-          usernameRegistrationInProgress: false
-        })
-      })
     }
   }
   /**
@@ -317,7 +320,7 @@ class Onboarding extends React.Component {
    * Send Emails
    * this will send both emails (restore and recovery)
    */
-  sendEmails = (type = 'both') => {
+  sendEmails = async () => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
     const id = username ? `${username}.${SUBDOMAIN_SUFFIX}` : undefined
@@ -329,35 +332,28 @@ class Onboarding extends React.Component {
       return null
     }
 
-
-
-    const encodedPhrase = new Buffer(
-      encryptedBackupPhrase,
-      'hex'
-    ).toString('base64')
+    const encodedPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString(
+      'base64'
+    )
 
     this.setState({
       emailsSending: true,
       emailsSent: false
     })
 
-    let recoveryPromise = Promise.resolve()
-    let restorePromise = Promise.resolve()
-    if (type === 'recovery' || type === 'both') {
-      recoveryPromise = sendRecoveryEmail(email, id, encodedPhrase)
-        .then(() => this.setState({ recoveryEmailError: null }))
-        .catch((err) => this.setState({ recoveryEmailError: err }))
-    } if (type === 'restore' || type === 'both') {
-      restorePromise = sendRestoreEmail(email, id, encodedPhrase)
-        .then(() => this.setState({ restoreEmailError: null }))
-        .catch((err) => this.setState({ restoreEmailError: err }))
+    try {
+      await sendEmail(email, id, encodedPhrase)
+      this.setState({ recoveryEmailError: null })
+    } catch (err) {
+      this.setState({
+        recoveryEmailError: err,
+        recoveryEmailErrorCount: this.state.recoveryEmailErrorCount + 1
+      })
     }
 
-    return Promise.all([recoveryPromise, restorePromise]).then(() => {
-      this.setState({
-        emailsSending: false,
-        emailsSent: true
-      })
+    return this.setState({
+      emailsSending: false,
+      emailsSent: true
     })
   }
 
@@ -441,8 +437,7 @@ class Onboarding extends React.Component {
    * Next function for the recovery info screen
    */
   infoNext = () => {
-    this.props.emailNotifications(this.state.email, this.state.emailConsent)
-    this.updateView(VIEWS.HOORAY)
+    this.goToBackup()
   }
 
   componentWillMount() {
@@ -458,8 +453,7 @@ class Onboarding extends React.Component {
       this.setState({
         authRequest
       })
-    }
-    else {
+    } else {
       // Only fire track immediately if there's no manifest. Otherwise, fire
       // track event in componentWillReceiveProps.
       this.trackViewEvent(this.state.view)
@@ -468,6 +462,19 @@ class Onboarding extends React.Component {
     if (location.query.verified) {
       this.setState({ email: location.query.verified })
       this.updateView(VIEWS.PASSWORD)
+    }
+  }
+
+  submitEmail = async () => {
+    // Send the emails
+    await this.sendEmails()
+    if (this.state.restoreEmailError || this.state.recoveryEmailError) {
+      // if error, force them to record their seed
+      this.updateView(VIEWS.INFO)
+    } else {
+      // register emails sent bool, navigate to final screen
+      this.props.emailNotifications(this.state.email, this.state.emailConsent)
+      this.updateView(VIEWS.HOORAY)
     }
   }
 
@@ -494,16 +501,19 @@ class Onboarding extends React.Component {
       {
         show: VIEWS.INITIAL,
         props: {
-          next: () => this.updateView(VIEWS.EMAIL)
+          next: () => this.updateView(VIEWS.USERNAME)
         }
       },
       {
-        show: VIEWS.EMAIL,
+        show: VIEWS.USERNAME,
         props: {
-          email,
-          next: () => this.updateView(VIEWS.PASSWORD),
-          submitted: emailSubmitted,
-          updateValue: this.updateValue
+          backLabel: 'Cancel',
+          username,
+          next: this.submitUsername,
+          previous: () => this.updateView(VIEWS.PASSWORD),
+          updateValue: this.updateValue,
+          isProcessing: this.state.usernameRegistrationInProgress,
+          loading: this.state.loading
         }
       },
       {
@@ -516,14 +526,13 @@ class Onboarding extends React.Component {
         }
       },
       {
-        show: VIEWS.USERNAME,
+        show: VIEWS.EMAIL,
         props: {
-          username,
-          next: this.submitUsername,
-          previous: () => this.updateView(VIEWS.PASSWORD),
+          email,
+          next: () => this.submitEmail(),
+          submitted: emailSubmitted,
           updateValue: this.updateValue,
-          isProcessing: this.state.usernameRegistrationInProgress,
-          loading: this.state.loading
+          loading: this.state.emailsSending
         }
       },
       {
@@ -535,6 +544,7 @@ class Onboarding extends React.Component {
           app,
           restoreEmailError: this.state.restoreEmailError,
           emailsSending: this.state.emailsSending,
+          recoveryEmailErrorCount: this.state.recoveryEmailErrorCount,
           sendRestoreEmail: () => this.sendEmails('restore'),
           next: () => this.infoNext()
         }
@@ -574,8 +584,7 @@ class Onboarding extends React.Component {
           app={app}
           views={views}
           {...componentProps}
-          invertOnLast
-          disableBackOnView={VIEWS.INFO}
+          disableBackOnView={[0, VIEWS.INFO, VIEWS.EMAIL, views.length - 1]}
           disableBack={this.state.loading}
         />
         <AppHomeWrapper />
@@ -608,5 +617,8 @@ Onboarding.propTypes = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Onboarding)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Onboarding)
 )

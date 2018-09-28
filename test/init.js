@@ -8,6 +8,7 @@ global.document = jsdom('<!DOCTYPE html><html><body></body></html>', {
 global.window = document.defaultView
 global.navigator = window.navigator
 global.KeyboardEvent = window.KeyboardEvent
+global.location = window.location
 
 // Ensure that 'sinon' and 'chai' library methods will be
 // available to all tests

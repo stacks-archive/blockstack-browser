@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { shallow } from 'enzyme'
 import AdvancedSidebar from '../../../app/js/profiles/components/AdvancedSidebar';
 
-describe('AdvancedSidebar', () => {
+describe('<AdvancedSidebar />', () => {
   let props;
   let wrapper;
 

@@ -64,7 +64,7 @@ function resetApi(api) {
 }
 
 function connectStorage() {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     logger.info('connectStorage')
     const state = getState()
     const api = selectApi(state)

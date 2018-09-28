@@ -1,11 +1,11 @@
 import React from 'react'
-import styled, { css, injectGlobal } from 'styled-components'
+import styled, { css, createGlobalStyle } from 'styled-components'
 import { darken } from 'polished'
 import { color, lineHeight, space } from 'styled-system'
 import { colors } from '@components/styled/theme'
 import PropTypes from 'prop-types'
 
-const placeholderStyles = () => injectGlobal`
+const PlaceholderStyles = createGlobalStyle`
     ::-webkit-input-placeholder {
       /* Chrome/Opera/Safari */
       color: rgba(0, 0, 0, 0.25) !important;
@@ -435,7 +435,7 @@ const Loading = styled.div`
 
 const PanelCard = ({ children, ...rest }) => (
   <Card {...rest}>
-    {placeholderStyles()}
+    <PlaceholderStyles />
     <CardWrapper {...rest}>{children}</CardWrapper>
   </Card>
 )

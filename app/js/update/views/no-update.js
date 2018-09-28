@@ -18,18 +18,18 @@ class NoUpdate extends React.Component {
       content: {
         grow: 1,
         children: (
-          <React.Fragment>
+          <>
             <Type.p>
               You are running the latest version of the Blockstack browser,
               there's nothing to update! You will be redirected shortly.
             </Type.p>
-          </React.Fragment>
+          </>
         )
       },
       actions: {
         items: [
           {
-            label: <React.Fragment>Continue</React.Fragment>,
+            label: <>Continue</>,
             primary: true,
             onClick: () => finish(),
             loading: true,
