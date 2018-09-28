@@ -193,7 +193,6 @@ class AppContainer extends Component {
     }
   }
 
-
   onSupportClick = () => {
     openInNewTab('https://forum.blockstack.org/t/frequently-ask-questions/2123')
   }
@@ -215,7 +214,6 @@ class AppContainer extends Component {
     return (
       <div className={`body-main ${noHeader ? 'no-header' : ''}`}>
         <div className="wrapper footer-padding">{children}</div>
-        <SupportButton onClick={this.onSupportClick} />
         <NotificationsSystem theme={NotificationsTheme} />
       </div>
     )
@@ -223,7 +221,10 @@ class AppContainer extends Component {
 }
 
 const App = withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(AppContainer)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AppContainer)
 )
 
 export default hot(module)(App)
