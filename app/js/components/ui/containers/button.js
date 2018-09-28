@@ -58,7 +58,7 @@ const Button = ({
     )
   return (
     <ButtonComponent {...rest} loading={loading} height={height} to={to}>
-      <StyledButton.Label {...labelProps}>{content}</StyledButton.Label>
+      <StyledButton.Label style={{whiteSpace: 'nowrap'}} {...labelProps}>{content}</StyledButton.Label>
       {renderIcon()}
     </ButtonComponent>
   )

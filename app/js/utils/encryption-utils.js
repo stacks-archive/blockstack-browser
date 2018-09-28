@@ -38,6 +38,7 @@ export function validateAndCleanRecoveryInput(input) {
     .join(' ')
 
   if (bip39.validateMnemonic(cleanedMnemonic)) {
+    logger.debug('This is a valid mnemonic.')
     return {
       isValid: true,
       type: RECOVERY_TYPE.MNEMONIC,
