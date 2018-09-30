@@ -52,6 +52,21 @@ configureLogging(
 if (process.env.NODE_ENV === 'production' && process.env.WEBAPP) {
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
+      // if we have registrations and one is at /sw.js, unregister it.
+      const registrations = await navigator.serviceWorker.getRegistrations()
+      if (registrations && registrations.length) {
+        registrations.forEach(async registration => {
+          if (
+            registration.active &&
+            registration.active.scriptURL &&
+            !registration.active.scriptURL.includes('static')
+          ) {
+            logger.debug('Unregistering legacy service worker')
+            await registration.unregister()
+          }
+        })
+      }
+      // continue to register our service worker
       try {
         const registration = await navigator.serviceWorker.register(
           '/static/js/sw.js'
