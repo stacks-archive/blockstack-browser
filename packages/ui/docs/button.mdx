@@ -1,0 +1,97 @@
+import { Button } from '../src'
+export const name = 'Getting Started'
+
+# Button
+These are our buttons. Important note: links are not buttons. These should typically only be used for actions, and links should be handled with the `<Link />` component.
+
+## Table of Contents 
+- [Standard Buttons](/buttons#standard-buttons) 
+- [Secondary Buttons](/buttons#secondary-buttons)  
+- [Small Buttons](/buttons#small-buttons) 
+- [Inverted Buttons](/buttons#inverted-buttons) 
+- [Icon Buttons](/buttons#icon-buttons) 
+--- 
+
+### Component Props
+
+| Property                  | Default       | Description   |
+| ------------------------- | ------------- | ------------- |
+| outline                   | false         | Change style to outlined
+| invert                    | false         | Invert colors (for use on dark backgrounds)
+| icon                      | null          | Any react component (see [Icons](/icons))
+| loading                   | false         | A bool or node
+| labelProps                | object        | Any [`styled-system`](/system-props) props to apply to the label
+| children                  | n/a           | 
+--- 
+### Default Props
+
+```jsx
+const defaultProps = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    px: 5,
+    height: '48px',
+    borderColor: 'transparent',
+    bg: hovered ? 'blue' : 'blue.dark',
+    color: 'white',
+    border: 2,
+    borderRadius: 50,
+    boxShadow: hovered ? 'button.hover' : 'button',
+    fontWeight: 'semibold',
+    variant: 'default',
+    fontSize: 2
+}
+```
+
+--- 
+### System Props
+This component accepts all `system-props`. To learn more about what props you can use, see [System Props](/system-props).
+
+--- 
+## Examples
+#### Standard Button
+```.jsx
+<Buttons>
+    <Button>My Button</Button>
+</Buttons>
+```
+---
+#### With Icon
+```.jsx
+<Buttons>
+    <Button icon={SendIcon}>Send</Button>
+    <Button icon={SendIcon} outline>Send</Button>
+</Buttons>
+```
+##### [See all Icons](https://materialdesignicons.com/)
+---
+#### Secondary Buttons  
+```.jsx
+<Buttons>
+    <Button outline>My Button</Button>
+</Buttons>
+```
+---
+#### Small Buttons
+```.jsx
+<Buttons>
+    <Button size='small'>Small Button</Button>
+    <Button outline size='small'>Small Button</Button>
+</Buttons>
+```
+---
+#### Inverted Buttons
+```.jsx
+<>
+    <Buttons bg="blue.dark" p={5}>
+        <Button icon={AppsIcon} invert>Dashboard</Button>
+        <Button icon={CloseIcon} outline invert>Close</Button>
+    </Buttons>
+    
+    <Buttons bg="blue.dark" p={5}>
+        <Button invert>My Button</Button>
+        <Button outline invert>My Button</Button>
+    </Buttons>
+</>
+```

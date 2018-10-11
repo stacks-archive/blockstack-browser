@@ -1,0 +1,80 @@
+{
+  "name": "blockstack-ui",
+  "description": "Blockstack UI components built with css-in-js and styled-system.",
+  "version": "0.0.4",
+  "author": "Blockstack Team",
+  "bugs": {
+    "url": "https://github.com/blockstack/blockstack-ui/issues"
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/*.js",
+      "maxSize": "1.5 kB"
+    }
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.1.0",
+    "@babel/core": "^7.1.0",
+    "@babel/plugin-transform-regenerator": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "bundlesize": "^0.17.0",
+    "codecov": "^3.0.0",
+    "codemirror": "^5.40.2",
+    "mdi-react": "^4.4.0",
+    "mdx-go": "^2.0.0-29",
+    "prettier": "^1.14.3",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.2",
+    "react-codemirror2": "^5.1.0",
+    "react-dom": "^16.5.2",
+    "react-live": "^1.11.0",
+    "rimraf": "^2.6.2",
+    "styled-components": "^4.0.0-beta.10"
+  },
+  "homepage": "https://github.com/blockstack/blockstack-ui",
+  "keywords": [
+    "blockstack",
+    "components",
+    "css-in-js",
+    "design-system",
+    "react",
+    "react-component",
+    "styled-components",
+    "ui"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "peerDependencies": {
+    "clean-tag": "^2.0.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "styled-components": "^4.0.0-beta.10",
+    "styled-system": "^3.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blockstack/blockstack-ui.git"
+  },
+  "scripts": {
+    "build": "babel src -d dist",
+    "clean": "rimraf dist",
+    "docs": "mdx-go build docs -d site",
+    "format": "echo '\\033[0;32m'💅 Just use prettier'\\033[0m' && prettier --write ./src/**/**/*.{js,md}",
+    "prepare": "npm run clean && npm run build",
+    "size": "bundlesize",
+    "prepublish": "npm run prepare",
+    "start": "mdx-go docs"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "clean-element": "^1.0.2",
+    "clean-tag": "^2.0.0",
+    "epitath": "^1.0.0-beta.1",
+    "react-powerplug": "^1.0.0-rc.1",
+    "shevyjs": "^1.1.0",
+    "styled-system": "^3.1.6"
+  }
+}
