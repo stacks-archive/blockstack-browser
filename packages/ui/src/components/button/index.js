@@ -13,8 +13,8 @@ const handleSize = ({ size, ...rest }) => {
       ...rest,
       px: 4,
       height: '36px',
-      type: {
-        ...rest.type,
+      typeProps: {
+        ...rest.typeProps,
         fontSize: 1
       }
     }
@@ -81,12 +81,12 @@ const Button = epitath(function*({
     fontWeight: 'semibold',
     variant: 'default',
     fontSize: 2,
-    type: {
+    typeProps: {
       fontSize: 2
     }
   }
 
-  const { type, ...props } = propFn({
+  const { typeProps, ...props } = propFn({
     ...defaultProps,
     hovered: hovered ? 'true' : undefined,
     active: active ? 'true' : undefined,
@@ -107,7 +107,7 @@ const Button = epitath(function*({
   }
 
   const labelProps = {
-    ...type,
+    ...typeProps,
     style: {
       whiteSpace: 'nowrap'
     },
