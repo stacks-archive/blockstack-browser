@@ -31,7 +31,7 @@
     "react-dom": "^16.5.2",
     "react-live": "^1.11.0",
     "rimraf": "^2.6.2",
-    "styled-components": "^4.0.0-beta.10"
+    "styled-components": "^4.0.0"
   },
   "homepage": "https://github.com/blockstack/blockstack-ui",
   "keywords": [
@@ -51,7 +51,8 @@
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "styled-components": "^4.0.0-beta.10",
+    "mdi-react": "^4.4.0",
+    "styled-components": "^4.0.0",
     "styled-system": "^3.1.4"
   },
   "repository": {
@@ -74,7 +75,6 @@
     "clean-tag": "^2.0.0",
     "epitath": "^1.0.0-beta.1",
     "react-powerplug": "^1.0.0-rc.1",
-    "shevyjs": "^1.1.0",
     "styled-system": "^3.1.6"
   }
 }
