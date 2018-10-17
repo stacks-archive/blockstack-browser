@@ -4,63 +4,63 @@ import { Inline } from '../primitives'
 const Body = (p) => <Inline is="div" {...p} />
 Body.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 const P = (p) => <Inline is="p" {...p} />
 P.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 
 const Span = (p) => <Inline is="span" {...p} />
 Span.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 const Ui = (p) => <Inline is="span" {...p} />
 Ui.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 const A = (p) => <Inline is="a" {...p} />
 A.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 
 const Strong = (p) => <Inline is="strong" {...p} />
 Strong.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 const Em = (p) => <Inline is="em" {...p} />
 Em.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 const Ul = (p) => <Inline is="ul" {...p} />
 Ul.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 const Ol = (p) => <Inline is="ol" {...p} />
 Ol.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 const Li = (p) => <Inline is="li" {...p} />
 Li.defaultProps = {
   fontSize: 2,
-  fontFamily: 'ui',
+  fontFamily: 'default',
   lineHeight: 1.25
 }
 const Pre = (p) => <Inline is="pre" {...p} />

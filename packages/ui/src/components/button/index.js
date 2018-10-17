@@ -140,7 +140,7 @@ const Button = epitath(function*({
   )
 })
 
-const Buttons = Flex
+const Buttons = props => <Flex {...props} />
 
 Buttons.defaultProps = {
   justifyContent: 'space-evenly'
