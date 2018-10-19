@@ -38,7 +38,12 @@ const StyledInputWrapper = styled.div`
  *
  * We have two themes: ui + marketing
  */
-const Input = epitath(function*({ variant = 'minimal', style, ...p }) {
+const Input = epitath(function*({
+  variant = 'minimal',
+  disabled,
+  style,
+  ...p
+}) {
   const { focused, bind } = yield <Focus />
   const defaultProps = {
     px: 4,
@@ -78,8 +83,10 @@ const Input = epitath(function*({ variant = 'minimal', style, ...p }) {
         is="input"
         style={{
           ...style,
-          outline: 'none'
+          outline: 'none',
+          pointerEvents: disabled ? 'none' : undefined
         }}
+        disabled={disabled}
         {...props}
         {...bind}
       />

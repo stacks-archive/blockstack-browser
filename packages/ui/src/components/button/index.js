@@ -67,6 +67,7 @@ const Button = epitath(function*({
   const bind = { ...activeBind, ...hoverBind }
 
   const defaultProps = {
+    is: 'button',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -133,14 +134,14 @@ const Button = epitath(function*({
     ) : null
 
   return (
-    <Flex {...buttonProps} is="button">
+    <Flex {...buttonProps}>
       <Type {...labelProps}>{children}</Type>
       <IconComponent {...buttonProps} />
     </Flex>
   )
 })
 
-const Buttons = props => <Flex {...props} />
+const Buttons = (props) => <Flex {...props} />
 
 Buttons.defaultProps = {
   justifyContent: 'space-evenly'
