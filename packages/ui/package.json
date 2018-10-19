@@ -1,7 +1,7 @@
 {
   "name": "blockstack-ui",
   "description": "Blockstack UI components built with css-in-js and styled-system.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "author": "Blockstack Team",
   "bugs": {
     "url": "https://github.com/blockstack/blockstack-ui/issues"
