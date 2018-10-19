@@ -38,7 +38,7 @@ const StyledInputWrapper = styled.div`
  *
  * We have two themes: ui + marketing
  */
-const Input = epitath(function*({ variant = 'minimal', ...p }) {
+const Input = epitath(function*({ variant = 'minimal', style, ...p }) {
   const { focused, bind } = yield <Focus />
   const defaultProps = {
     px: 4,
@@ -77,6 +77,7 @@ const Input = epitath(function*({ variant = 'minimal', ...p }) {
       <Box
         is="input"
         style={{
+          ...style,
           outline: 'none'
         }}
         {...props}
