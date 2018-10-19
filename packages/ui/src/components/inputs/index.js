@@ -63,7 +63,7 @@ const Input = epitath(function*({ variant = 'minimal', ...p }) {
     fontFamily: 'brand',
     color: 'blue',
     width: 1,
-    boxShadow: 'general'
+    boxShadow: focused ? 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px' : 'general'
   }
   const styleProps = variant === 'marketing' ? marketingStyles : uiStyles
 
