@@ -215,11 +215,59 @@ Flex.propTypes = {
   maxHeight: boxPropTypes,
   maxWidth: boxPropTypes,
   minWidth: boxPropTypes,
-  borders: boxPropTypes,
-  justifyContent: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  flexWrap: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  alignItems: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
-  flexDirection: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
+  flexDirection: PropTypes.oneOf([
+    PropTypes.oneOf(['row-reverse', 'row', 'column', 'column-reverse']),
+    PropTypes.arrayOf(
+      PropTypes.oneOf(['row-reverse', 'row', 'column', 'column-reverse'])
+    )
+  ]),
+  alignItems: PropTypes.oneOfType([
+    PropTypes.oneOf([
+      'normal',
+      'stretch',
+      'center',
+      'start',
+      'end',
+      'flex-start',
+      'flex-end',
+      'self-start',
+      'self-end',
+      'baseline',
+      'first baseline',
+      'last baseline',
+      'safe center',
+      'unsafe center',
+      'inherit',
+      'initial',
+      'unset'
+    ]),
+    PropTypes.arrayOf(
+      PropTypes.oneOf([
+        'normal',
+        'stretch',
+        'center',
+        'start',
+        'end',
+        'flex-start',
+        'flex-end',
+        'self-start',
+        'self-end',
+        'baseline',
+        'first baseline',
+        'last baseline',
+        'safe center',
+        'unsafe center',
+        'inherit',
+        'initial',
+        'unset'
+      ])
+    )
+  ]),
+  flexWrap: PropTypes.oneOfType([
+    PropTypes.oneOf(['nowrap', 'wrap', 'wrap-reverse']),
+    PropTypes.arrayOf(PropTypes.oneOf(['nowrap', 'wrap', 'wrap-reverse']))
+  ]),
+  justifyContent: PropTypes.oneOfType([PropTypes.string, PropTypes.array])
 }
 
 Inline.defaultProps = {

@@ -2,6 +2,8 @@ import React from 'react'
 import styled from 'styled-components'
 import { Box } from '../primitives'
 import { theme } from '../../common'
+import { Focus } from 'react-powerplug'
+import epitath from 'epitath'
 
 const { colors } = theme
 
@@ -36,12 +38,14 @@ const StyledInputWrapper = styled.div`
  *
  * We have two themes: ui + marketing
  */
-const Input = ({ variant = 'minimal', ...p }) => {
+const Input = epitath(function*({ variant = 'minimal', ...p }) {
+  const { focused, bind } = yield <Focus />
   const defaultProps = {
     px: 4,
     py: 3,
     height: '48px',
-    fontSize: 2
+    fontSize: 2,
+    boxShadow: focused ? 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px' : undefined
   }
   const uiStyles = {
     borderColor: 'blue.mid',
@@ -76,10 +80,11 @@ const Input = ({ variant = 'minimal', ...p }) => {
           outline: 'none'
         }}
         {...props}
+        {...bind}
       />
     </StyledInputWrapper>
   )
-}
+})
 
 const Textarea = (p) => <Input is="textarea" {...p} />
 
