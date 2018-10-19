@@ -60,6 +60,7 @@ const Button = epitath(function*({
   icon: Icon,
   outline,
   invert,
+  style,
   ...rest
 }) {
   const { active, bind: activeBind } = yield <Active />
@@ -87,7 +88,10 @@ const Button = epitath(function*({
     }
   }
 
-  const { typeProps, ...props } = propFn({
+  const {
+    typeProps: { typeStyle, ...typeProps },
+    ...props
+  } = propFn({
     ...defaultProps,
     hovered: hovered ? 'true' : undefined,
     active: active ? 'true' : undefined,
@@ -100,6 +104,8 @@ const Button = epitath(function*({
     ...props,
     ...bind,
     style: {
+      ...style,
+      textDecoration: 'none',
       cursor: !disabled && hovered ? 'pointer' : undefined,
       transition: '.34s all cubic-bezier(.19,1,.22,1)',
       transform: active ? 'translateY(2px)' : 'none',
@@ -110,6 +116,7 @@ const Button = epitath(function*({
   const labelProps = {
     ...typeProps,
     style: {
+      ...typeStyle,
       whiteSpace: 'nowrap'
     },
     display: 'inline-block'
