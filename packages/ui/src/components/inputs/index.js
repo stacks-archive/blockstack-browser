@@ -39,7 +39,7 @@ const StyledInputWrapper = styled.div`
  * We have two themes: ui + marketing
  */
 const Input = epitath(function*({
-  variant = 'minimal',
+  variant = 'default',
   disabled,
   style,
   ...p
@@ -72,13 +72,14 @@ const Input = epitath(function*({
   }
   const darkStyles = {
     borderColor: 'borders.dark',
+    bg: 'blue.darker',
     border: 1,
     borderRadius: '8px',
     color: 'white',
     width: 1,
     boxShadow: focused
-      ? 'rgba(255, 255, 255, 0.08) 0px 0px 0px 4px'
-      : 'rgba(255, 255, 255, 0) 0px 0px 0px 4px'
+      ? 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px'
+      : 'rgba(16, 112, 202, 0) 0px 0px 0px 4px'
   }
   const styleProps = () => {
     switch (variant) {

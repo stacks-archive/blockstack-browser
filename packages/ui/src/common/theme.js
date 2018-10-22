@@ -4,6 +4,7 @@ const colors = {
     mid: '#C4D8E5', // borders / labels on white
     neutral: '#403F83', // text
     dark: '#211F6D', // large fills
+    darker: '#1A1959', // fills on blue.dark
     accent: '#01FEFE' // cyan / accents / links
   }),
   borders: {
