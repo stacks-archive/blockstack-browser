@@ -1,4 +1,5 @@
-import { Box, Flex, Inline } from './components/primitives'
+import 'regenerator-runtime'
+import { Box, Flex, Inline, Grid } from './components/primitives'
 import { Type } from './components/typography'
 import { Button, Buttons } from './components/button'
 import { Card } from './components/card'
@@ -10,6 +11,7 @@ export {
   Type,
   Box,
   Flex,
+  Grid,
   Inline,
   Button,
   Buttons,

@@ -1,7 +1,7 @@
 {
   "name": "blockstack-ui",
   "description": "Blockstack UI components built with css-in-js and styled-system.",
-  "version": "0.0.12",
+  "version": "0.0.15",
   "author": "Blockstack Team",
   "bugs": {
     "url": "https://github.com/blockstack/blockstack-ui/issues"
@@ -16,8 +16,10 @@
     "@babel/cli": "^7.1.0",
     "@babel/core": "^7.1.0",
     "@babel/plugin-transform-regenerator": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.1.0",
     "babel-core": "^7.0.0-bridge.0",
     "bundlesize": "^0.17.0",
     "codecov": "^3.0.0",
@@ -47,11 +49,8 @@
   "license": "MIT",
   "main": "dist/index.js",
   "peerDependencies": {
-    "clean-tag": "^2.0.0",
-    "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
-    "mdi-react": "^4.4.0",
     "styled-components": "^4.0.0",
     "styled-system": "^3.1.4"
   },
@@ -74,7 +73,9 @@
     "clean-element": "^1.0.2",
     "clean-tag": "^2.0.0",
     "epitath": "^1.0.0-beta.1",
+    "mdi-react": "^4.4.0",
     "react-powerplug": "^1.0.0-rc.1",
+    "regenerator-runtime": "^0.12.1",
     "styled-system": "^3.1.6"
   }
 }
