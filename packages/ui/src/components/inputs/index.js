@@ -46,8 +46,10 @@ const Input = epitath(function*({
 }) {
   const { focused, bind } = yield <Focus />
   const defaultProps = {
-    px: 4,
-    py: 3,
+    pr: 4,
+    pl: 4,
+    pt: 3,
+    pb: 3,
     height: '48px',
     fontSize: 2,
     boxShadow: focused ? 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px' : undefined
@@ -64,7 +66,8 @@ const Input = epitath(function*({
     borderColor: 'blue',
     border: 1,
     borderRadius: '48px',
-    px: 6,
+    pr: 6,
+    pl: 6,
     fontFamily: 'brand',
     color: 'blue',
     width: 1,
