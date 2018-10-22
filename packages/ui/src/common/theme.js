@@ -5,7 +5,11 @@ const colors = {
     neutral: '#403F83', // text
     dark: '#211F6D', // large fills
     accent: '#01FEFE' // cyan / accents / links
-  })
+  }),
+  borders: {
+    dark: '#2F2C88', // borders on dark,
+    light: '#C4D8E5'
+  }
 }
 const breakpoints = ['40em', '52em', '64em']
 const fontSizes = [12, 14, 16, 20, 24, 28, 32, 36, 48, 64, 96, 128]
