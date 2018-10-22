@@ -1,3 +1,4 @@
+import { rgba } from 'polished'
 const colors = {
   blue: Object.assign('#3700FF', {
     light: '#F1F6F9', // canvas
@@ -35,7 +36,11 @@ const shadows = {
     active: '0px 2px 2px rgba(37, 0, 105, 0.42)'
   }),
   card: Object.assign('0px 4px 4px rgba(0, 0, 0, 0.05)', {}),
-  general: Object.assign('0px 4px 4px rgba(0, 0, 0, 0.05)', {})
+  general: Object.assign('0px 4px 4px rgba(0, 0, 0, 0.05)', {}),
+  focused: Object.assign(`${rgba(colors.blue.accent, 0.14)} 0px 0px 0px 4px`, {
+    marketing: 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px',
+    light: `${rgba(colors.blue.dark, 0.14)} 0px 0px 0px 4px`
+  })
 }
 
 export const theme = {

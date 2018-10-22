@@ -85,6 +85,9 @@ const cursor = style({
 const transform = style({
   prop: 'transform'
 })
+const textTransform = style({
+  prop: 'textTransform'
+})
 const transition = style({
   prop: 'transition',
   key: 'transitions'
@@ -103,6 +106,7 @@ const blacklist = [
   'transform',
   'flexGrow',
   'flexShrink',
+  'textTransform',
   'transition'
 ]
 
@@ -111,6 +115,7 @@ const Base = styled(cleanElement(tag))`
   ${flexGrow};
   ${flexShrink};
   ${cursor};
+  ${textTransform};
   ${transform};
   ${transition};
   ${width};

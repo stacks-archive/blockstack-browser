@@ -52,7 +52,7 @@ const Input = epitath(function*({
     pb: 3,
     height: '48px',
     fontSize: 2,
-    boxShadow: focused ? 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px' : undefined
+    boxShadow: focused ? 'focused.light' : undefined
   }
   const defaultStyles = {
     borderColor: 'blue.mid',
@@ -71,7 +71,7 @@ const Input = epitath(function*({
     fontFamily: 'brand',
     color: 'blue',
     width: 1,
-    boxShadow: focused ? 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px' : 'general'
+    boxShadow: focused ? 'focused.marketing' : 'general'
   }
   const darkStyles = {
     borderColor: 'borders.dark',
@@ -80,9 +80,7 @@ const Input = epitath(function*({
     borderRadius: '8px',
     color: 'white',
     width: 1,
-    boxShadow: focused
-      ? 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px'
-      : 'rgba(16, 112, 202, 0) 0px 0px 0px 4px'
+    boxShadow: focused ? 'focused' : undefined
   }
   const styleProps = () => {
     switch (variant) {
