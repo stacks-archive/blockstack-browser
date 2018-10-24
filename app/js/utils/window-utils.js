@@ -11,9 +11,10 @@ export function isWindowsBuild() {
 }
 
 export function isWebAppBuild() {
-  const isWebAppBuildCompileFlag = false
-  return isWebAppBuildCompileFlag === true
+  const isWebAppCompileFlag = ( process.env.NODE_ENV === 'production' && typeof process.env.WEBAPP !== 'undefined' )
+  return isWebAppCompileFlag
 }
+
 
 /**
  * Will determine whether or not we should try to
