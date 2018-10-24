@@ -369,7 +369,7 @@ const apps = {
       website: 'https://www.stealthy.im/',
       launchLink: 'https://www.stealthy.im/',
       developer: 'Prabhaav Bhardwaj',
-      status: 'user_ready_chat',
+      status: 'user_ready',
       storageRequired: true
     }, {
       name: 'Hermes',
