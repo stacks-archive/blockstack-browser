@@ -1,7 +1,7 @@
 {
   "name": "blockstack-ui",
   "description": "Blockstack UI components built with css-in-js and styled-system.",
-  "version": "0.0.19",
+  "version": "0.0.21",
   "author": "Blockstack Team",
   "bugs": {
     "url": "https://github.com/blockstack/blockstack-ui/issues"
@@ -77,6 +77,7 @@
     "polished": "^2.3.0",
     "react-powerplug": "^1.0.0-rc.1",
     "regenerator-runtime": "^0.12.1",
-    "styled-system": "^3.1.6"
+    "styled-system": "^3.1.6",
+    "system-components": "^3.0.1"
   }
 }
