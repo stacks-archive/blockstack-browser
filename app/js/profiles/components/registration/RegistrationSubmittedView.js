@@ -19,7 +19,7 @@ const RegistrationSubmittedView = (props) => {
         {bodyContent}
         <img
           role="presentation"
-          src="/images/blockstack-logo-vertical.svg"
+          src="/static/images/blockstack-logo-vertical.svg"
           className="m-b-20"
           style={{ width: '210px', display: 'block', marginRight: 'auto', marginLeft: 'auto' }}
         />
