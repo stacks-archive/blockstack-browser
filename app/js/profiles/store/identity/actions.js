@@ -394,6 +394,7 @@ function refreshIdentities(
                         `refreshIdentities: resolveZoneFileToProfile for ${nameOwned} error`,
                         error
                       )
+                      dispatch(updateProfile(index, DEFAULT_PROFILE, zoneFile))
                       resolve()
                       return Promise.resolve()
                     })
