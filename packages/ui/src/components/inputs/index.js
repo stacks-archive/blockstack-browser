@@ -74,13 +74,13 @@ const Input = epitath(function*({
     boxShadow: focused ? 'focused.marketing' : 'general'
   }
   const darkStyles = {
-    borderColor: 'borders.dark',
+    borderColor: focused ? 'borders.dark.focus' : 'borders.dark',
     bg: 'blue.darker',
     border: 1,
     borderRadius: '8px',
     color: 'white',
     width: 1,
-    boxShadow: focused ? 'focused' : undefined
+    boxShadow: undefined
   }
   const styleProps = () => {
     switch (variant) {

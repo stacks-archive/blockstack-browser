@@ -7,19 +7,29 @@ import PropTypes from 'prop-types'
 /**
  * Handle our sizes
  */
-const handleSize = ({ size, ...rest }) => {
+const handleSize = ({ size, hovered, bg, ...rest }) => {
   if (size === 'small') {
     return {
       ...rest,
-      px: 4,
-      height: '36px',
+      height: 'auto',
+      py: 1,
+      px: 3,
       typeProps: {
         ...rest.typeProps,
-        fontSize: 1
-      }
+        fontSize: '12px',
+        fontWeight: 500
+      },
+      bg: hovered ? 'blue.light' : bg ? bg : 'transparent',
+      color: 'blue.dark',
+      borderColor: hovered ? 'blue.dark' : 'blue.mid',
+      boxShadow: hovered ? 'general' : 'none',
+      border: '1px solid',
+      flexGrow: [1, 0, 0],
+      ml: [0, 2, 2],
+      mr: [2, 0, 0]
     }
   }
-  return { ...rest }
+  return { ...rest, size, hovered }
 }
 
 /**
@@ -52,7 +62,7 @@ const handleOutline = ({ outline, ...rest }) =>
 const cleanProps = ({ hovered, active, outline, invert, ...rest }) => rest
 
 const propFn = (props) =>
-  cleanProps(handleOutline(handleInvert(handleSize(props))))
+  cleanProps(handleSize(handleOutline(handleInvert(props))))
 
 const Button = epitath(function*({
   children,
@@ -101,8 +111,6 @@ const Button = epitath(function*({
   })
 
   const buttonProps = {
-    ...props,
-    ...bind,
     style: {
       ...style,
       textDecoration: 'none',
@@ -110,7 +118,9 @@ const Button = epitath(function*({
       transition: '.34s all cubic-bezier(.19,1,.22,1)',
       transform: active ? 'translateY(2px)' : 'none',
       outline: 'none'
-    }
+    },
+    ...props,
+    ...bind
   }
 
   const labelProps = {

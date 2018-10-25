@@ -1,4 +1,4 @@
-import { rgba } from 'polished'
+import { rgba, lighten } from 'polished'
 const colors = {
   blue: Object.assign('#3700FF', {
     light: '#F1F6F9', // canvas
@@ -9,7 +9,9 @@ const colors = {
     accent: '#01FEFE' // cyan / accents / links
   }),
   borders: {
-    dark: '#2F2C88', // borders on dark,
+    dark: Object.assign('#2F2C88', {
+      focus: lighten(0.12, '#403F83')
+    }), // borders on dark,
     light: '#C4D8E5'
   }
 }
