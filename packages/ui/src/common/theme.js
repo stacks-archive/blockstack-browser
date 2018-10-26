@@ -15,7 +15,7 @@ const colors = {
     light: '#C4D8E5'
   }
 }
-const breakpoints = ['40em', '52em', '64em']
+const breakpoints = ['40em', '52em', '64em', '72em', '85em']
 const fontSizes = [12, 14, 16, 20, 24, 28, 32, 36, 48, 64, 96, 128]
 const space = [0, 4, 8, 12, 16, 24, 32, 48, 64, 96]
 const lineHeights = [1, 1.125, 1.25, 1.5, 1.75]
