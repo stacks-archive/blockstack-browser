@@ -47,7 +47,9 @@ import {
   Password,
   Success,
   Username,
-  RecoveryInformationScreen
+  RecoveryInformationScreen,
+  GaiaHubSelect,
+  CustomGaiaHub
 } from './views'
 import { notify } from 'reapop'
 
@@ -62,6 +64,8 @@ const views = [
   Initial,
   Username,
   Password,
+  GaiaHubSelect,
+  CustomGaiaHub,
   Email,
   RecoveryInformationScreen,
   Success
@@ -70,15 +74,19 @@ const VIEWS = {
   INITIAL: 0,
   USERNAME: 1,
   PASSWORD: 2,
-  EMAIL: 3,
-  INFO: 4,
-  HOORAY: 5
+  GAIA: 3,
+  CUSTOMHUB: 4,
+  EMAIL: 5,
+  INFO: 6,
+  HOORAY: 7
 }
 const VIEW_EVENTS = {
   [VIEWS.INITIAL]: 'Onboarding - Initial',
   [VIEWS.EMAIL]: 'Onboarding - Email',
   [VIEWS.PASSWORD]: 'Onboarding - Password',
   [VIEWS.USERNAME]: 'Onboarding - Username',
+  [VIEWS.GAIA]: 'Onboarding - Gaia Hub Select',
+  [VIEWS.CUSTOMHUB]: 'Onboarding - Custom Gaia Hub',
   [VIEWS.INFO]: 'Onboarding - Info',
   [VIEWS.HOORAY]: 'Onboarding - Complete'
 }
@@ -169,12 +177,36 @@ class Onboarding extends React.Component {
    * Submit our password
    */
   submitPassword = async () => {
+    // this.setState({
+    //   loading: true
+    // })
+    this.updateView(VIEWS.GAIA)
+    // await this.createAccount()
+    // this.updateView(VIEWS.EMAIL)
+  }
+
+  /**
+   * Set gaia hub
+   */
+  defaultGaiaHub = async () => {
     this.setState({
       loading: true
     })
     await this.createAccount()
     this.updateView(VIEWS.EMAIL)
   }
+
+  /**
+   * Set a custom gaia hub
+   */
+  customGaiaHub = async () => {
+    this.setState({
+      loading: true
+    })
+    await this.createAccount()
+    this.updateView(VIEWS.EMAIL)
+  }
+
   /**
    * Submit Username
    * This will create our account and then register a name and connect storage
@@ -523,6 +555,23 @@ class Onboarding extends React.Component {
           loading: this.state.loading,
           next: this.submitPassword,
           updateValue: this.updateValue
+        }
+      },
+      {
+        show: VIEWS.GAIA,
+        props: {
+          loading: this.state.loading,
+          next: this.defaultGaiaHub,
+          customHub: () => this.updateView(VIEWS.CUSTOMHUB)
+        }
+      },
+      {
+        show: VIEWS.CUSTOMHUB,
+        props: {
+          loading: this.state.loading,
+          hubURL: this.state.hubURL,
+          next: this.customGaiaHub,
+          updateValue: this.updateValue,
         }
       },
       {
