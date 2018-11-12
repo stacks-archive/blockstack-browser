@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import tag from 'clean-tag'
-import cleanElement from 'clean-element'
+import tag from '../clean-tag'
 import {
   space,
   width,
@@ -107,10 +106,12 @@ const blacklist = [
   'flexGrow',
   'flexShrink',
   'textTransform',
-  'transition'
+  'transition',
+  'zIndex',
+  'suppressClassNameWarning'
 ]
 
-const Base = styled(cleanElement(tag))`
+const Base = styled(tag)`
   ${space};
   ${flexGrow};
   ${flexShrink};
@@ -183,16 +184,40 @@ const Base = styled(cleanElement(tag))`
   ${buttonStyle};
 `
 
-const Box = (props) => <Base blacklist={blacklist} {...props} />
-const Flex = (props) => <Base display="flex" blacklist={blacklist} {...props} />
-const Grid = (props) => <Base display="grid" blacklist={blacklist} {...props} />
-const Inline = (props) => (
-  <Base is="span" display="inline-block" blacklist={blacklist} {...props} />
-)
+Base.defaultProps = {
+  suppressClassNameWarning: true,
+  blacklist
+}
+
+const Box = (props) => <Base {...props} />
+const Flex = (props) => <Base {...props} />
+const Grid = (props) => <Base {...props} />
+const Inline = (props) => <Base {...props} />
+
+Box.defaultProps = {
+  suppressClassNameWarning: true,
+  blacklist
+}
+Flex.defaultProps = {
+  suppressClassNameWarning: true,
+  blacklist,
+  display: 'flex'
+}
+Grid.defaultProps = {
+  suppressClassNameWarning: true,
+  blacklist,
+  display: 'flex'
+}
+Inline.defaultProps = {
+  suppressClassNameWarning: true,
+  blacklist,
+  display: 'inline-block',
+  is: 'span'
+}
 
 Box.displayName = 'Box'
 Flex.displayName = 'Flex'
 Grid.displayName = 'Grid'
 Inline.displayName = 'Inline'
 
-export { Box, Flex, Inline, Grid }
+export { Base, Box, Flex, Inline, Grid, blacklist }

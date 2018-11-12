@@ -7,7 +7,7 @@ import epitath from 'epitath'
 
 const { colors } = theme
 
-const StyledInputWrapper = styled.div`
+const StyledInputWrapper = styled(Box)`
   input::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: ${(props) =>
@@ -99,7 +99,7 @@ const Input = epitath(function*({
     ...p
   }
   return (
-    <StyledInputWrapper variant={variant}>
+    <StyledInputWrapper width="100%" variant={variant}>
       <Box
         is="input"
         style={{

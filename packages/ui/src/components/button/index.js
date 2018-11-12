@@ -19,7 +19,7 @@ const handleSize = ({ size, hovered, bg, ...rest }) => {
         fontSize: '12px',
         fontWeight: 500
       },
-      bg: hovered ? 'blue.light' : bg ? bg : 'transparent',
+      bg: hovered ? 'blue.light' : 'transparent',
       color: 'blue.dark',
       borderColor: hovered ? 'blue.dark' : 'blue.mid',
       boxShadow: hovered ? 'general' : 'none',
@@ -29,7 +29,7 @@ const handleSize = ({ size, hovered, bg, ...rest }) => {
       mr: [2, 0, 0]
     }
   }
-  return { ...rest, size, hovered }
+  return { ...rest, size, bg, hovered }
 }
 
 /**
@@ -71,6 +71,7 @@ const Button = epitath(function*({
   outline,
   invert,
   style,
+  bg,
   ...rest
 }) {
   const { active, bind: activeBind } = yield <Active />
@@ -85,7 +86,7 @@ const Button = epitath(function*({
     px: 5,
     height: '48px',
     borderColor: 'transparent',
-    bg: hovered ? 'blue' : 'blue.dark',
+    bg: bg ? bg : hovered ? 'blue' : 'blue.dark',
     color: 'white',
     border: 2,
     borderRadius: 50,
