@@ -128,7 +128,9 @@ const Button = epitath(function*({
     ...typeProps,
     style: {
       ...typeStyle,
-      whiteSpace: 'nowrap'
+      whiteSpace: 'nowrap',
+      pointerEvents: 'none',
+      userSelect: 'none'
     },
     display: 'inline-block'
   }
@@ -140,6 +142,7 @@ const Button = epitath(function*({
         justifyContent="center"
         color={outline ? borderColor : invert ? color : 'blue.accent'}
         pl={2}
+        style={{ pointerEvents: 'none' }}
       >
         <Icon
           color="currentColor"
