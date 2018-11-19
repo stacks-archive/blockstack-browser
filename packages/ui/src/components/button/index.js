@@ -130,7 +130,8 @@ const Button = epitath(function*({
       ...typeStyle,
       whiteSpace: 'nowrap',
       pointerEvents: 'none',
-      userSelect: 'none'
+      userSelect: 'none',
+      transform: 'translateY(-1px)'
     },
     display: 'inline-block'
   }
@@ -155,7 +156,7 @@ const Button = epitath(function*({
     ) : null
 
   return (
-    <Flex {...buttonProps}>
+    <Flex flexShrink={0} {...buttonProps}>
       <Type {...labelProps}>{children}</Type>
       <IconComponent {...buttonProps} />
     </Flex>

@@ -14,6 +14,7 @@ import { Icons } from './icons'
 import { Input, Textarea } from './components/inputs'
 import { Tooltip } from './components/tooltip'
 import { theme } from './common/theme'
+import { Scrollbars } from './components/scrollbars'
 
 export {
   Type,
@@ -30,5 +31,6 @@ export {
   Input,
   Textarea,
   Tooltip,
+  Scrollbars,
   theme
 }

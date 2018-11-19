@@ -8,27 +8,30 @@ import epitath from 'epitath'
 const { colors } = theme
 
 const StyledInputWrapper = styled(Box)`
-  input::placeholder {
+  input::placeholder,
+  textarea::placeholder {
     /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: ${(props) =>
-      props.variant === 'marketing'
+      props.variant === 'marketing' || props.variant === 'dark'
         ? colors.blue.neutral
         : colors.blue.mid} !important;
     opacity: 1; /* Firefox */
   }
 
-  input:-ms-input-placeholder {
+  input:-ms-input-placeholder,
+  textarea:-ms-input-placeholder {
     /* Internet Explorer 10-11 */
     color: ${(props) =>
-      props.variant === 'marketing'
+      props.variant === 'marketing' || props.variant === 'dark'
         ? colors.blue.neutral
         : colors.blue.mid} !important;
   }
 
-  input::-ms-input-placeholder {
+  input::-ms-input-placeholder,
+  textarea::-ms-input-placeholder {
     /* Microsoft Edge */
     color: ${(props) =>
-      props.variant === 'marketing'
+      props.variant === 'marketing' || props.variant === 'dark'
         ? colors.blue.neutral
         : colors.blue.mid} !important;
   }
