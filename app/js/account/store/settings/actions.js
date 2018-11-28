@@ -63,7 +63,7 @@ function resetApi(api) {
   }
 }
 
-function connectStorage() {
+function connectStorage(customGaiaUrl) {
   return async (dispatch, getState) => {
     logger.info('connectStorage')
     const state = getState()
@@ -75,9 +75,12 @@ function connectStorage() {
       return Promise.reject()
     }
 
-    return connectToGaiaHub(api.gaiaHubUrl, idKeypairs[0].key).then(gaiaHubConfig => {
+    const gaiaHubUrl = customGaiaUrl || api.gaiaHubUrl;
+
+    return connectToGaiaHub(gaiaHubUrl, idKeypairs[0].key).then(gaiaHubConfig => {
       const newApi = Object.assign({}, api, {
         gaiaHubConfig,
+        gaiaHubUrl,
         hostedDataLocation: BLOCKSTACK_INC
       })
       dispatch(updateApi(newApi))

@@ -140,7 +140,8 @@ class Onboarding extends React.Component {
     restoreEmailError: null,
     loading: false,
     view: VIEWS.INITIAL,
-    usernameRegistrationInProgress: false
+    usernameRegistrationInProgress: false,
+    hubURL: '',
   }
   updateValue = (key, value) => {
     this.setState({ [key]: value })
@@ -235,7 +236,7 @@ class Onboarding extends React.Component {
     // Create new ID and owner address and then set to default
     await this.createNewIdAndSetDefault()
     // Connect our default storage
-    await this.props.connectStorage()
+    await this.props.connectStorage(this.state.hubURL)
     // Register the username
     await this.registerUsername()
   }
