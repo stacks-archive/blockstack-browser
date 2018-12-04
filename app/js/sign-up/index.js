@@ -49,7 +49,8 @@ import {
   Username,
   RecoveryInformationScreen,
   GaiaHubSelect,
-  CustomGaiaHub
+  CustomGaiaHub,
+  RecommendedGaiaHub
 } from './views'
 import { notify } from 'reapop'
 
@@ -68,13 +69,15 @@ const views = [
   CustomGaiaHub,
   Email,
   RecoveryInformationScreen,
-  Success
+  Success,
+  RecommendedGaiaHub
 ]
 const VIEWS = {
   INITIAL: 0,
   USERNAME: 1,
   PASSWORD: 2,
   GAIA: 3,
+  RECOMMENDED_GAIA_HUB: 8,
   CUSTOMHUB: 4,
   EMAIL: 5,
   INFO: 6,
@@ -85,6 +88,7 @@ const VIEW_EVENTS = {
   [VIEWS.EMAIL]: 'Onboarding - Email',
   [VIEWS.PASSWORD]: 'Onboarding - Password',
   [VIEWS.USERNAME]: 'Onboarding - Username',
+  [VIEWS.RECOMMENDED_GAIA_HUB]: 'Onboarding - Recommended Gaia Hub',
   [VIEWS.GAIA]: 'Onboarding - Gaia Hub Select',
   [VIEWS.CUSTOMHUB]: 'Onboarding - Custom Gaia Hub',
   [VIEWS.INFO]: 'Onboarding - Info',
@@ -142,6 +146,7 @@ class Onboarding extends React.Component {
     view: VIEWS.INITIAL,
     usernameRegistrationInProgress: false,
     hubURL: '',
+    decodedAuthToken: null,
   }
   updateValue = (key, value) => {
     this.setState({ [key]: value })
@@ -178,12 +183,20 @@ class Onboarding extends React.Component {
    * Submit our password
    */
   submitPassword = async () => {
-    // this.setState({
-    //   loading: true
-    // })
-    this.updateView(VIEWS.GAIA)
-    // await this.createAccount()
-    // this.updateView(VIEWS.EMAIL)
+    const { decodedAuthRequest } = this.state;
+    if (decodedAuthRequest && (decodedAuthRequest.solicitGaiaHubUrl || decodedAuthRequest.recommendedGaiaHub)) {
+      if (decodedAuthRequest.recommendedGaiaHubUrl) {
+        this.updateView(VIEWS.RECOMMENDED_GAIA_HUB)
+      } else {
+        this.updateView(VIEWS.GAIA)
+      }
+    } else {
+      this.setState({
+        loading: true
+      })
+      await this.createAccount()
+      this.updateView(VIEWS.EMAIL)
+    }
   }
 
   /**
@@ -203,6 +216,15 @@ class Onboarding extends React.Component {
   customGaiaHub = async () => {
     this.setState({
       loading: true
+    })
+    await this.createAccount()
+    this.updateView(VIEWS.EMAIL)
+  }
+
+  submitRecommendedGaiaHub = async () => {
+    this.setState({
+      loading: true,
+      hubUrl: this.state.decodedAuthToken.recommendedGaiaHubUrl
     })
     await this.createAccount()
     this.updateView(VIEWS.EMAIL)
@@ -413,6 +435,13 @@ class Onboarding extends React.Component {
     }
   }
 
+  getDecodedAuthRequest() {
+    const authRequest = this.props.authRequest || this.state.authRequest
+    if (!authRequest) return null
+    const decodedAuthRequest = decodeToken(authRequest).payload
+    return decodedAuthRequest
+  }
+
   /**
    * Check for Auth Request
    * this returns the authRequest query param if one exists
@@ -522,11 +551,13 @@ class Onboarding extends React.Component {
       // If we were waiting on an appManifest, we haven't tracked yet.
       this.trackViewEvent(this.state.view, nextProps.appManifest)
     }
+    const decodedAuthRequest = this.getDecodedAuthRequest()
+    this.setState({ decodedAuthRequest })
   }
 
   render() {
     const { appManifest } = this.props
-    const { email, password, username, emailSubmitted, view } = this.state
+    const { email, password, username, emailSubmitted, view, decodedAuthRequest } = this.state
 
     const app = formatAppManifest(appManifest)
 
@@ -610,6 +641,17 @@ class Onboarding extends React.Component {
           subdomainSuffix: SUBDOMAIN_SUFFIX,
           goToRecovery: this.goToBackup,
           finish: () => this.finish()
+        }
+      },
+      {
+        show: VIEWS.RECOMMENDED_GAIA_HUB,
+        props: {
+          recommendedGaiaHubUrl: decodedAuthRequest && decodedAuthRequest.recommendedGaiaHubUrl,
+          updateValue: this.updateValue,
+          next: () => this.submitRecommendedGaiaHub,
+          customHub: () => this.updateViews(VIEWS.CUSTOMHUB),
+          defaultHub: this.defaultGaiaHub,
+          app,
         }
       }
     ]

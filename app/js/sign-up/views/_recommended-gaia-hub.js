@@ -9,18 +9,13 @@ import PropTypes from 'prop-types'
 import { Flex } from '@components/ui/components/primitives'
 import StyledOnboarding from '@components/styled/onboarding'
 
-const validationSchema = Yup.object({
-  email: Yup.string()
-    .required('A Gaia Hub URL is required.')
-})
-
-class GaiaView extends React.Component {
+class RecommendedGaiaView extends React.Component {
   state = {
     field: 'hubURL'
   }
 
   render() {
-    const { hubURL, updateValue, next, loading, customHub, ...rest } = this.props
+    const { recommendedGaiaHubUrl, next, app, loading, customHub, defaultHub, ...rest } = this.props
 
     const props = {
       content: {
@@ -31,16 +26,15 @@ class GaiaView extends React.Component {
             justifyContent="center"
             flexDirection="column"
           >
-            <Type.h1 pb={3}>Where would you like to store your data?</Type.h1>
+            <Type.h1 pb={3}>{app.name} recommends you store your data with this provider:</Type.h1>
+            <StyledOnboarding.RecommendedHubPlaceholder>
+              {recommendedGaiaHubUrl}
+            </StyledOnboarding.RecommendedHubPlaceholder>
             <Type.p>
               Blockstack empowers you to own your data by choosing the storage provider of your choice.
             </Type.p>
             <Type.p>
-              All apps you use with your Blockstack ID will store your data with that provider instead of their own servers.
-            </Type.p>
-            <StyledOnboarding.Hr />
-            <Type.p>
-              Would you like to use Blockstack's official provider or a different one?
+              Would you like to use the above provider, Blockstack's official provider, or a different one?
             </Type.p>
             <Type.p>
               <Type.a href="https://github.com/blockstack/gaia" target="_blank">
@@ -53,17 +47,21 @@ class GaiaView extends React.Component {
       actions: {
         items: [
           {
-            label: 'Use Blockstack\'s official provider',
+            label: 'Yes, use recommended provider',
             onClick: () => next(),
             primary: true,
             loading
+          },
+          {
+            label: 'Use Blockstack\'s provider',
+            onClick: () => defaultHub()
           },
           {
             label: 'Use different provider',
             onClick: () => {
               if (!loading) {
                 customHub()
-              } 
+              }
             },
             disabled: loading
           }
@@ -73,8 +71,12 @@ class GaiaView extends React.Component {
     return <ShellScreen {...rest} {...props} />
   }
 }
-GaiaView.propTypes = {
+RecommendedGaiaView.propTypes = {
   loading: PropTypes.bool,
-  next: PropTypes.func
+  next: PropTypes.func,
+  app: PropTypes.object,
+  recommendedGaiaHubUrl: PropTypes.string,
+  customHub: PropTypes.func,
+  defaultHub: PropTypes.func
 }
-export default GaiaView
+export default RecommendedGaiaView

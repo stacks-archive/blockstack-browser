@@ -433,6 +433,20 @@ const Loading = styled.div`
   }
 `
 
+const RecommendedHubPlaceholder = styled.div`
+  background: #ececec;
+  text-align: center;
+  font-weight: 500;
+  padding: 10px;
+  margin-bottom: 2em;
+`
+
+const Hr = styled.hr`
+  border-top: 1px solid #ececec;
+  width: 100%;
+  margin-bottom: 2em;
+`
+
 const PanelCard = ({ children, ...rest }) => (
   <Card {...rest}>
     <PlaceholderStyles />
@@ -458,5 +472,7 @@ Panel.Card.ErrorMessage.Icon = Icon
 Panel.Progress = Progress
 Panel.Progress.Dot = Dot
 Panel.Loading = Loading
+Panel.RecommendedHubPlaceholder = RecommendedHubPlaceholder
+Panel.Hr = Hr
 
 export default Panel

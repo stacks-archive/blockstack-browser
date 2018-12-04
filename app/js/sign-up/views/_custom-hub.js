@@ -20,7 +20,22 @@ class CustomGaiaHub extends React.Component {
     field: 'hubURL'
   }
 
-  message = () => ''
+  message = () => (
+    <Flex
+      style={{ flexGrow: 1 }}
+      justifyContent="center"
+      flexDirection="column"
+    >
+      <Type.p>
+        Interested in setting up your own storage provider?
+      </Type.p>
+      <Type.p>
+        <Type.a href="https://github.com/blockstack/gaia" target="_blank">
+          Learn more Gaia hubs
+        </Type.a>
+      </Type.p>
+    </Flex>
+  )
 
   returnField = ({ field }) =>
     [
@@ -37,7 +52,7 @@ class CustomGaiaHub extends React.Component {
 
     const props = {
       title: {
-        children: 'Enter custom Gaia hub URL',
+        children: 'A different storage provider can be connected to your account with a Gaia URL',
         variant: 'h2'
       },
       content: {
