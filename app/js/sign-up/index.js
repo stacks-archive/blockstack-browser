@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { browserHistory, withRouter } from 'react-router'
+import { decodeToken } from 'jsontokens'
 import App from '../App'
 import {
   selectConnectedStorageAtLeastOnce,
