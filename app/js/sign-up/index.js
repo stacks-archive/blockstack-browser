@@ -147,7 +147,7 @@ class Onboarding extends React.Component {
     view: VIEWS.INITIAL,
     usernameRegistrationInProgress: false,
     hubURL: '',
-    decodedAuthToken: null,
+    decodedAuthToken: null
   }
   updateValue = (key, value) => {
     this.setState({ [key]: value })
@@ -184,7 +184,7 @@ class Onboarding extends React.Component {
    * Submit our password
    */
   submitPassword = async () => {
-    const { decodedAuthRequest } = this.state;
+    const { decodedAuthRequest } = this.state
     if (decodedAuthRequest && (decodedAuthRequest.solicitGaiaHubUrl || decodedAuthRequest.recommendedGaiaHub)) {
       if (decodedAuthRequest.recommendedGaiaHubUrl) {
         this.updateView(VIEWS.RECOMMENDED_GAIA_HUB)
@@ -604,7 +604,7 @@ class Onboarding extends React.Component {
           loading: this.state.loading,
           hubURL: this.state.hubURL,
           next: this.customGaiaHub,
-          updateValue: this.updateValue,
+          updateValue: this.updateValue
         }
       },
       {
@@ -650,9 +650,9 @@ class Onboarding extends React.Component {
           recommendedGaiaHubUrl: decodedAuthRequest && decodedAuthRequest.recommendedGaiaHubUrl,
           updateValue: this.updateValue,
           next: () => this.submitRecommendedGaiaHub,
-          customHub: () => this.updateViews(VIEWS.CUSTOMHUB),
+          customHub: () => this.updateView(VIEWS.CUSTOMHUB),
           defaultHub: this.defaultGaiaHub,
-          app,
+          app
         }
       }
     ]
