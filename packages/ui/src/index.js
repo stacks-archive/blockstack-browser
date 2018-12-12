@@ -15,6 +15,9 @@ import { Input, Textarea } from './components/inputs'
 import { Tooltip } from './components/tooltip'
 import { theme } from './common/theme'
 import { Scrollbars } from './components/scrollbars'
+import { ModalRoot, ModalConsumer, OpenModal, Modal } from './components/modal'
+import { Field, StaticField } from './components/field'
+import { Copy } from './components/copy'
 
 export {
   Type,
@@ -32,5 +35,12 @@ export {
   Textarea,
   Tooltip,
   Scrollbars,
-  theme
+  ModalRoot,
+  ModalConsumer,
+  OpenModal,
+  Modal,
+  theme,
+  Field,
+  StaticField,
+  Copy
 }

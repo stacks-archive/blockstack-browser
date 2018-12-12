@@ -108,7 +108,9 @@ const blacklist = [
   'textTransform',
   'transition',
   'zIndex',
-  'suppressClassNameWarning'
+  'suppressClassNameWarning',
+  'Type',
+  'staticContext'
 ]
 
 const Base = styled(tag)`

@@ -6,7 +6,7 @@ import { Hover } from 'react-powerplug'
 
 export const Container = styled('div')`
   position: fixed;
-  z-index: 1000;
+  z-index: 9999999999999;
   width: 0 auto;
   top: ${(props) => (props.top ? '30px' : 'unset')};
   bottom: ${(props) => (props.top ? 'unset' : '30px')};
