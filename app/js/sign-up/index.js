@@ -226,7 +226,7 @@ class Onboarding extends React.Component {
     const decodedAuthRequest = this.getDecodedAuthRequest()
     this.setState({
       loading: true,
-      hubUrl: decodedAuthRequest.recommendedGaiaHubUrl
+      hubURL: decodedAuthRequest.recommendedGaiaHubUrl
     })
     await this.createAccount()
     this.updateView(VIEWS.EMAIL)

@@ -167,9 +167,19 @@ export function fetchProfileLocations(gaiaUrlBase: string,
   return recursiveTryFetch(urls)
 }
 
-export function signProfileForUpload(profile, keypair) {
+export function signProfileForUpload(profile, keypair, api) {
   const privateKey = keypair.key
   const publicKey = keypair.keyID
+
+  if (api) {
+    profile = {
+      ...profile,
+      api: {
+        gaiaHubConfig: api.gaiaHubConfig,
+        gaiaHubUrl: api.gaiaHubUrl
+      }
+    }
+  }
 
   const token = signProfileToken(profile, privateKey, { publicKey })
   const tokenRecord = wrapProfileToken(token)
