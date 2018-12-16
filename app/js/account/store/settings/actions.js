@@ -75,11 +75,14 @@ function connectStorage(customGaiaUrl) {
       return Promise.reject()
     }
 
-    const gaiaHubUrl = customGaiaUrl || api.gaiaHubUrl;
+    const gaiaHubUrl = customGaiaUrl || api.gaiaHubUrl
 
     return connectToGaiaHub(gaiaHubUrl, idKeypairs[0].key).then(gaiaHubConfig => {
       const newApi = Object.assign({}, api, {
-        gaiaHubConfig,
+        gaiaHubConfig: {
+          ...gaiaHubConfig,
+          url_prefix: gaiaHubConfig.url_prefix.replace(/\/$/, '')
+        },
         gaiaHubUrl,
         hostedDataLocation: BLOCKSTACK_INC
       })
