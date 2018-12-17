@@ -252,28 +252,16 @@ describe('AccountActions', () => {
 
   describe('refreshBalances', () => {
     describe('for each address provided as second param', () => {
-      const insightUrl = 'fakeInsightUrl'
+      const balanceUrl = 'fakeBalanceUrl'
       const address = 'fakeAddresses'
       const addresses = [address]
-      const coreAPIPassword = 'fakeCoreAPIPassword'
-      const getInsightUrlsResult = {
-        base: 'fakeBase',
-        confirmedBalanceUrl: 'fakeBase/balance/c',
-        unconfirmedBalanceUrl: 'fakeBase/balance/u'
-      }
       let action
       const callAction = () => {
         action = AccountActions.refreshBalances(
-          insightUrl,
-          addresses,
-          coreAPIPassword
+          balanceUrl,
+          addresses
         )
       }
-
-      beforeEach(() => {
-        const getInsightUrlsStub = sinon.stub().returns(getInsightUrlsResult)
-        AccountActions.__Rewire__('getInsightUrls', getInsightUrlsStub)
-      })
 
       afterEach(() => {
         AccountActions.__ResetDependency__('getInsightUrls')
@@ -314,7 +302,7 @@ describe('AccountActions', () => {
             beforeEach(() => {
               fetchStub = sinon.stub(global, 'fetch')
               fetchStub
-                .withArgs(getInsightUrlsResult.confirmedBalanceUrl)
+                .withArgs(balanceUrl)
                 .resolves(response)
             })
 
@@ -322,153 +310,55 @@ describe('AccountActions', () => {
               sinon.restore(global, 'fetch')
             })
 
-            describe(', then fetches unconfirmedBalanceUrl', () => {
-              describe('and when failing', () => {
-                const error = new Error()
+            describe('and when done with all addresses', () => {
+              const addresses2 = [
+                'fakeAddress1'
+              ]
+              const fetchedBalances = [
+                199999999,
+              ]
 
-                beforeEach(() => {
-                  fetchStub
-                    .withArgs(getInsightUrlsResult.unconfirmedBalanceUrl)
-                    .rejects(error)
-                  callAction()
-                })
-
-                afterEach(() => {
-                  sinon.restore(global, 'fetch')
-                })
-
-                it('it does nothing', () => {
-                  const store = mockStore({})
-
-                  return store.dispatch(action)
-                    .catch(() => {
-                      assert.equal(store.getActions().length, 0)
-                    })
-                })
+              beforeEach(() => {
+                sinon.restore(global, 'fetch')
+                const fetchStub2 = sinon.stub(global, 'fetch')
+                const fetchStub20 = fetchStub2
+                  .withArgs(`${balanceUrl}${addresses2[0]}`)
+                  fetchStub20.onCall(0).resolves({text: () => `${fetchedBalances[0]}`})
               })
 
-              describe('and when working', () => {
-                describe('retrieves unconfirmedBalance from response', () => {
-                  const unconfirmedBalance = 1
-                  const response2 = {
-                    text: sinon.stub().returns(`${unconfirmedBalance}`)
-                  }
+              afterEach(() => {
+                sinon.restore(global, 'fetch')
+              })
 
-                  beforeEach(() => {
-                    fetchStub
-                      .withArgs(getInsightUrlsResult.unconfirmedBalanceUrl)
-                      .resolves(response2)
-                  })
+              describe('dispatches updateBalances action', () => {
+                const satoshisToBtc = s => s / 100000000
 
-                  afterEach(() => {
-                    sinon.restore(global, 'fetch')
-                  })
+                it('with { addressN: balanceN..., total: }', () => {
+                  const store = mockStore({})
 
-                  describe('and when done with all addresses', () => {
-                    const addresses2 = [
-                      'fakeAddress1',
-                      'fakeAddress2',
-                      'fakeAddress3'
-                    ]
-                    const confirmedBalances = [
-                      199999999,
-                      299999999,
-                      399999999
-                    ]
-                    const unconfirmedBalances = [
-                      1,
-                      2,
-                      3
-                    ]
-
-                    beforeEach(() => {
-                      sinon.restore(global, 'fetch')
-                      const fetchStub2 = sinon.stub(global, 'fetch')
-                      const fetchStub2C = fetchStub2
-                        .withArgs(getInsightUrlsResult.confirmedBalanceUrl)
-                      const fetchStub2U = fetchStub2
-                        .withArgs(getInsightUrlsResult.unconfirmedBalanceUrl)
-                      confirmedBalances.forEach((el, i) =>
-                        fetchStub2C.onCall(i).resolves({text: () => `${el}`})
-                      )
-                      unconfirmedBalances.forEach((el, i) =>
-                        fetchStub2U.onCall(i).resolves({text: () => `${el}`})
-                      )
+                  return store.dispatch(
+                    AccountActions.refreshBalances(
+                      balanceUrl,
+                      addresses2
+                    )
+                  ).then(() => {
+                    const balances = {}
+                    let total = .0
+                    addresses2.forEach((el, i) => {
+                      balances[el] = satoshisToBtc(
+                        fetchedBalances[i])
+                      total += balances[el]
                     })
-
-                    afterEach(() => {
-                      sinon.restore(global, 'fetch')
-                    })
-
-                    describe('dispatches updateBalances action', () => {
-                      const satoshisToBtc = s => s / 100000000
-
-                      it('with { addressN: unconfirmedBalanceN + confirmedBalanceN..., total: }', () => {
-                        const store = mockStore({})
-
-                        return store.dispatch(
-                          AccountActions.refreshBalances(
-                            insightUrl,
-                            addresses2,
-                            coreAPIPassword
-                          )
-                        ).then(() => {
-                          const balances = {}
-                          let total = .0
-                          addresses2.forEach((el, i) => {
-                            balances[el] = satoshisToBtc(
-                              confirmedBalances[i] + unconfirmedBalances[i])
-                            total += balances[el]
-                          })
-                          balances.total = total
-                          assert.deepEqual(store.getActions()[0], {
-                            type: UPDATE_BALANCES,
-                            balances
-                          })
-                        })
-                      })
-
-                      describe('if has duplicate addresses', () => {
-                        const duplicateAddresses = ['address1', 'address1', 'address2']
-
-                        beforeEach(() => {
-                          action = AccountActions.refreshBalances(
-                            insightUrl,
-                            duplicateAddresses,
-                            coreAPIPassword
-                          )
-                        })
-
-                        it('only takes first occurrence of address into account', () => {
-                          const store = mockStore({})
-
-                          return store.dispatch(
-                            AccountActions.refreshBalances(
-                              insightUrl,
-                              duplicateAddresses,
-                              coreAPIPassword
-                            )
-                          ).then(() => {
-                            const balances = {}
-                            balances[duplicateAddresses[0]] = satoshisToBtc(
-                              confirmedBalances[0] + unconfirmedBalances[0])
-                            balances[duplicateAddresses[2]] = satoshisToBtc(
-                              confirmedBalances[2] + unconfirmedBalances[2])
-                            balances.total = balances[duplicateAddresses[0]] +
-                              balances[duplicateAddresses[2]]
-                            assert.deepEqual(store.getActions()[0], {
-                              type: UPDATE_BALANCES,
-                              balances
-                            })
-
-                          })
-                        })
-                      })
+                    balances.total = total
+                    assert.deepEqual(store.getActions()[0], {
+                      type: UPDATE_BALANCES,
+                      balances
                     })
                   })
                 })
               })
             })
+
           })
         })
       })
