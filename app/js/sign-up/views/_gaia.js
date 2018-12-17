@@ -47,6 +47,11 @@ class GaiaView extends React.Component {
                 Learn more about storage with Blockstack
               </Type.a>
             </Type.p>
+            {this.props.customHubError && (
+              <Type.p color="red">
+                {this.props.customHubError}
+              </Type.p>
+            )}
           </Flex>
         )
       },
@@ -75,6 +80,7 @@ class GaiaView extends React.Component {
 }
 GaiaView.propTypes = {
   loading: PropTypes.bool,
-  next: PropTypes.func
+  next: PropTypes.func,
+  customHubError: PropTypes.string
 }
 export default GaiaView

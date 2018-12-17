@@ -147,7 +147,8 @@ class Onboarding extends React.Component {
     view: VIEWS.INITIAL,
     usernameRegistrationInProgress: false,
     hubURL: '',
-    decodedAuthToken: null
+    decodedAuthToken: null,
+    customHubError: null
   }
   updateValue = (key, value) => {
     this.setState({ [key]: value })
@@ -218,8 +219,11 @@ class Onboarding extends React.Component {
     this.setState({
       loading: true
     })
-    await this.createAccount()
-    this.updateView(VIEWS.EMAIL)
+    const success = await this.validateGaiaURL()
+    if (success) {
+      await this.createAccount()
+      this.updateView(VIEWS.EMAIL)
+    }
   }
 
   submitRecommendedGaiaHub = async () => {
@@ -228,8 +232,11 @@ class Onboarding extends React.Component {
       loading: true,
       hubURL: decodedAuthRequest.recommendedGaiaHubUrl
     })
-    await this.createAccount()
-    this.updateView(VIEWS.EMAIL)
+    const success = await this.validateGaiaURL()
+    if (success) {
+      await this.createAccount()
+      this.updateView(VIEWS.EMAIL)
+    }
   }
 
   /**
@@ -412,6 +419,33 @@ class Onboarding extends React.Component {
       emailsSending: false,
       emailsSent: true
     })
+  }
+
+  async validateGaiaURL() {
+    const { hubURL } = this.state
+    if (!/^https:\/\//.test(hubURL)) {
+      this.setState({
+        loading: false,
+        customHubError: 'A Gaia Hub URL must be use SSL.'
+      })
+      return false
+    }
+
+    try {
+      await fetch(`${hubURL}/hub_info`)
+    } catch (error) {
+      this.setState({
+        loading: false,
+        customHubError: 'Your Gaia URL does not appear to be a valid Gaia hub.'
+      })
+      return false
+    }
+
+    this.setState({
+      customHubError: null
+    })
+
+    return true
   }
 
   /**
@@ -605,7 +639,8 @@ class Onboarding extends React.Component {
           loading: this.state.loading,
           hubURL: this.state.hubURL,
           next: this.customGaiaHub,
-          updateValue: this.updateValue
+          updateValue: this.updateValue,
+          customHubError: this.state.customHubError
         }
       },
       {
@@ -654,6 +689,7 @@ class Onboarding extends React.Component {
           customHub: () => this.updateView(VIEWS.CUSTOMHUB),
           defaultHub: this.defaultGaiaHub,
           loading: this.state.loading,
+          customHubError: this.state.customHubError,
           app
         }
       }

@@ -41,6 +41,11 @@ class RecommendedGaiaView extends React.Component {
                 Learn more about storage with Blockstack
               </Type.a>
             </Type.p>
+            {this.props.customHubError && (
+              <Type.p color="red">
+                {this.props.customHubError}
+              </Type.p>
+            )}
           </Flex>
         )
       },
@@ -77,6 +82,7 @@ RecommendedGaiaView.propTypes = {
   app: PropTypes.object,
   recommendedGaiaHubUrl: PropTypes.string,
   customHub: PropTypes.func,
-  defaultHub: PropTypes.func
+  defaultHub: PropTypes.func,
+  customHubError: PropTypes.string
 }
 export default RecommendedGaiaView

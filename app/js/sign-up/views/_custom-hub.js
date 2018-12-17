@@ -26,6 +26,11 @@ class CustomGaiaHub extends React.Component {
       justifyContent="center"
       flexDirection="column"
     >
+      {this.props.customHubError && (
+        <Type.p color="red">
+          {this.props.customHubError}
+        </Type.p>
+      )}
       <Type.p>
         Interested in setting up your own storage provider?
       </Type.p>
@@ -89,6 +94,7 @@ CustomGaiaHub.propTypes = {
   email: PropTypes.string,
   updateValue: PropTypes.func,
   loading: PropTypes.bool,
+  customHubError: PropTypes.string,
   next: PropTypes.func
 }
 export default CustomGaiaHub
