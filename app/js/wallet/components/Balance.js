@@ -49,13 +49,11 @@ class Balance extends Component {
   }
 
   componentDidMount() {
-    this.props.refreshBalances(this.props.btcBalanceUrl, this.props.addresses,
-          this.props.coreAPIPassword)
+    this.props.refreshBalances(this.props.btcBalanceUrl, this.props.addresses)
     this.props.refreshBtcPrice(this.props.btcPriceUrl)
     this.balanceTimer = setInterval(() => {
       logger.debug('balanceTimer: calling refreshBalances...')
-      this.props.refreshBalances(this.props.btcBalanceUrl, this.props.addresses,
-            this.props.coreAPIPassword)
+      this.props.refreshBalances(this.props.btcBalanceUrl, this.props.addresses)
       this.props.refreshBtcPrice(this.props.btcPriceUrl)
     }, UPDATE_BALANCE_INTERVAL)
   }

@@ -433,7 +433,7 @@ function withdrawBitcoinFromCoreWallet(
   }
 }
 
-function refreshBalances(balanceURL, addresses, coreAPIPassword) {
+function refreshBalances(balanceURL, addresses) {
   return dispatch => {
     const results = []
     return Promise.all(
