@@ -12,13 +12,13 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 
-const UPDATE_BALANCE_INTERVAL = 10000
+const UPDATE_BALANCE_INTERVAL = 30000
 
 function mapStateToProps(state) {
   return {
     addresses: state.account.bitcoinAccount.addresses,
     balances: state.account.bitcoinAccount.balances,
-    insightUrl: state.settings.api.insightUrl,
+    btcBalanceUrl: state.settings.api.btcBalanceUrl,
     btcPriceUrl: state.settings.api.btcPriceUrl,
     btcPrice: state.settings.api.btcPrice,
     coreAPIPassword: state.settings.api.coreAPIPassword
@@ -34,7 +34,7 @@ class Balance extends Component {
     addresses: PropTypes.array.isRequired,
     balances: PropTypes.object.isRequired,
     refreshBalances: PropTypes.func.isRequired,
-    insightUrl: PropTypes.string.isRequired,
+    btcBalanceUrl: PropTypes.string.isRequired,
     btcPriceUrl: PropTypes.string.isRequired,
     btcPrice: PropTypes.string.isRequired,
     refreshBtcPrice: PropTypes.func.isRequired,
@@ -49,12 +49,12 @@ class Balance extends Component {
   }
 
   componentDidMount() {
-    this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
+    this.props.refreshBalances(this.props.btcBalanceUrl, this.props.addresses,
           this.props.coreAPIPassword)
     this.props.refreshBtcPrice(this.props.btcPriceUrl)
     this.balanceTimer = setInterval(() => {
       logger.debug('balanceTimer: calling refreshBalances...')
-      this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
+      this.props.refreshBalances(this.props.btcBalanceUrl, this.props.addresses,
             this.props.coreAPIPassword)
       this.props.refreshBtcPrice(this.props.btcPriceUrl)
     }, UPDATE_BALANCE_INTERVAL)

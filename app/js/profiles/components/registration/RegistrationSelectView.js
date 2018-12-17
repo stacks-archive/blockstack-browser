@@ -30,7 +30,7 @@ function mapStateToProps(state) {
     balanceUrl: state.settings.api.zeroConfBalanceUrl,
     encryptedBackupPhrase: state.account.encryptedBackupPhrase,
     balances: state.account.bitcoinAccount.balances,
-    insightUrl: state.settings.api.insightUrl
+    btcBalanceUrl: state.settings.api.btcBalanceUrl
   }
 }
 
@@ -54,7 +54,7 @@ class AddUsernameSelectPage extends Component {
     encryptedBackupPhrase: PropTypes.string.isRequired,
     addresses: PropTypes.array.isRequired,
     balances: PropTypes.object.isRequired,
-    insightUrl: PropTypes.string.isRequired,
+    btcBalanceUrl: PropTypes.string.isRequired,
     refreshBalances: PropTypes.func.isRequired
   }
 
@@ -93,7 +93,7 @@ class AddUsernameSelectPage extends Component {
     if (!enoughMoney) {
       this.paymentTimer = setInterval(() => {
         logger.debug('paymentTimer: calling refreshBalances...')
-        that.props.refreshBalances(that.props.insightUrl, that.props.addresses,
+        that.props.refreshBalances(that.props.btcBalanceUrl, that.props.addresses,
               that.props.api.coreAPIPassword)
       }, CHECK_FOR_PAYMENT_INTERVAL)
     }
@@ -114,7 +114,7 @@ class AddUsernameSelectPage extends Component {
 
   componentDidMount() {
     logger.info('componentDidMount')
-    this.props.refreshBalances(this.props.insightUrl, this.props.addresses,
+    this.props.refreshBalances(this.props.btcBalanceUrl, this.props.addresses,
           this.props.api.coreAPIPassword)
 
     // Only consider top level domains for showing the alert
