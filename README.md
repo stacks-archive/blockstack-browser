@@ -160,7 +160,7 @@ And a few other smaller modules (these can be found in `package.json`).
 
 ## Maintainer
 
-This repository is maintained by [yukan.id](https://explorer.blockstack.org/name/yukan.id).
+This repository is maintained by [hankstoever.id](https://explorer.blockstack.org/name/hankstoever.id).
 
 ## Testing
 
