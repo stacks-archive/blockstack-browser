@@ -271,7 +271,8 @@ class AuthPage extends React.Component {
                 profile.apps = apps
                 const signedProfileTokenData = signProfileForUpload(
                   profile,
-                  nextProps.identityKeypairs[identityIndex]
+                  nextProps.identityKeypairs[identityIndex],
+                  this.props.api
                 )
                 logger.debug(
                   'componentWillReceiveProps: uploading updated profile with new apps array'
