@@ -147,7 +147,7 @@ function registerName(api, domainName, identity, identityIndex,
   return dispatch => {
     logger.debug(`Signing a new profile for ${domainName}`)
     const profile = identity.profile || DEFAULT_PROFILE
-    const signedProfileTokenData = signProfileForUpload(profile, keypair)
+    const signedProfileTokenData = signProfileForUpload(profile, keypair, api)
 
     dispatch(profileUploading())
     logger.info(`Uploading ${domainName} profile...`)

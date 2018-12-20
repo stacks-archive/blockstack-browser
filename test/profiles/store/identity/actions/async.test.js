@@ -221,7 +221,11 @@ describe('Identity Store: Async Actions', () => {
 
       const store = mockStore(initialState)
 
-      const mockAPI = Object.assign({}, DEFAULT_API, {})
+      const mockAPI = Object.assign({}, DEFAULT_API, {
+        gaiaHubConfig: {
+          url_prefix: 'https://gaia.blockstack.org/hub/'
+        }
+      })
 
       const addresses = [address]
 
@@ -288,7 +292,11 @@ describe('Identity Store: Async Actions', () => {
 
       const store = mockStore(initialState)
 
-      const mockAPI = Object.assign({}, DEFAULT_API, {})
+      const mockAPI = Object.assign({}, DEFAULT_API, {
+        gaiaHubConfig: {
+          url_prefix: 'https://gaia.blockstack.org/hub/'
+        }
+      })
 
       const addresses = [address]
 
@@ -369,7 +377,11 @@ describe('Identity Store: Async Actions', () => {
 
       const store = mockStore(initialState)
 
-      const mockAPI = Object.assign({}, DEFAULT_API, {})
+      const mockAPI = Object.assign({}, DEFAULT_API, {
+        gaiaHubConfig: {
+          url_prefix: 'https://gaia.blockstack.org/hub/'
+        }
+      })
 
       const addresses = [dummyAddress, dummyAddress, dummyAddress, address]
 

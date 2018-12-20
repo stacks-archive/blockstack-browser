@@ -106,7 +106,7 @@ export function getProfileFromTokens(tokenRecords, publicKeychain, silentVerify 
 
 export function getDefaultProfileUrl(gaiaUrlBase: string,
                                      ownerAddress: string) {
-  return `${gaiaUrlBase}/${ownerAddress}/profile.json`
+  return `${gaiaUrlBase}${ownerAddress}/profile.json`
 }
 
 /**
@@ -158,18 +158,28 @@ export function fetchProfileLocations(gaiaUrlBase: string,
   //  incorrect: [0, 1, 2, 3, 4, 5...]
 
   if (ownerIndex < 2) {
-    urls.push(`${gaiaUrlBase}/${firstAddress}/${ownerIndex}/profile.json`)
+    urls.push(`${gaiaUrlBase}${firstAddress}/${ownerIndex}/profile.json`)
   } else if (ownerIndex % 2 === 1) {
     const buggedIndex = 1 + Math.floor(ownerIndex / 2)
-    urls.push(`${gaiaUrlBase}/${firstAddress}/${buggedIndex}/profile.json`)
+    urls.push(`${gaiaUrlBase}${firstAddress}/${buggedIndex}/profile.json`)
   }
 
   return recursiveTryFetch(urls)
 }
 
-export function signProfileForUpload(profile, keypair) {
+export function signProfileForUpload(profile, keypair, api) {
   const privateKey = keypair.key
   const publicKey = keypair.keyID
+
+  if (api) {
+    profile = {
+      ...profile,
+      api: {
+        gaiaHubConfig: api.gaiaHubConfig,
+        gaiaHubUrl: api.gaiaHubUrl
+      }
+    }
+  }
 
   const token = signProfileToken(profile, privateKey, { publicKey })
   const tokenRecord = wrapProfileToken(token)
