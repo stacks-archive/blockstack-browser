@@ -8,6 +8,7 @@ import { SanityReducer } from './sanity'
 import SettingsReducer from '../account/store/settings/reducer'
 import { AppsReducer } from './apps'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
+import DEFAULT_API from '../account/store/settings/default'
 
 export const UPDATE_STATE = 'UPDATE_STATE'
 export const MIGRATE_API_ENDPOINTS = 'MIGRATE_API_ENDPOINTS'
@@ -38,7 +39,7 @@ export function initializeStateVersion() {
  * and other state is regenerated.
  * @type {number}
  */
-export const CURRENT_VERSION: number = 14
+export const CURRENT_VERSION: number = 15
 
 const AppReducer = combineReducers({
   account: AccountReducer,
@@ -54,9 +55,18 @@ function reducer(state: any, action: any) {
   let newState: any = Object.assign({}, state)
   if (action.type === UPDATE_STATE) {
     const initialState = AppReducer(undefined, {})
+    
+    const preservedApiSettingsState = {
+      gaiaHubUrl: state.settings.api.gaiaHubUrl,
+      distinctEventId: state.settings.api.distinctEventId,
+      hasDisabledEventTracking: state.settings.api.hasDisabledEventTracking
+    }
+
+    const newApiSettingsState = Object.assign(DEFAULT_API, preservedApiSettingsState)
+
     newState = Object.assign({}, initialState, {
       settings: {
-        api: Object.assign({}, state.settings.api)
+        api: newApiSettingsState
       },
       account: Object.assign({}, initialState.account, {
         promptedForEmail: state.account.promptedForEmail,
