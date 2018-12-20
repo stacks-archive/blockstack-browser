@@ -206,6 +206,14 @@ class SignIn extends React.Component {
               this.props.api,
               this.props.identityAddresses
             )
+            const identity = this.props.localIdentities[0]
+            if (identity && identity.profile && identity.profile.api) {
+              const newApi = {
+                ...this.props.api,
+                ...identity.profile.api
+              }
+              this.props.updateApi(newApi)
+            }
             logger.debug('refreshIdentities complete')
             updateEmail(this.state.email)
             logger.debug('updated email')
@@ -427,7 +435,8 @@ SignIn.propTypes = {
   refreshIdentities: PropTypes.func.isRequired,
   localIdentities: PropTypes.array.isRequired,
   encryptedBackupPhrase: PropTypes.string,
-  connectStorage: PropTypes.func.isRequired
+  connectStorage: PropTypes.func.isRequired,
+  updateApi: PropTypes.func.isRequired
 }
 
 export default withRouter(

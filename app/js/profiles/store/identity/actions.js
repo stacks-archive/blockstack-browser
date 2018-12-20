@@ -271,7 +271,10 @@ function createNewProfile(
 function refreshIdentities(
   api: {
     bitcoinAddressLookupUrl: string,
-    nameLookupUrl: string
+    nameLookupUrl: string,
+    gaiaHubConfig: {
+      url_prefix: string,
+    },
   },
   ownerAddresses: Array<string>
 ) {
@@ -292,7 +295,7 @@ function refreshIdentities(
               )
               const gaiaBucketAddress = ownerAddresses[0]
               return fetchProfileLocations(
-                'https://gaia.blockstack.org/hub',
+                api.gaiaHubConfig.url_prefix,
                 address,
                 gaiaBucketAddress,
                 index
