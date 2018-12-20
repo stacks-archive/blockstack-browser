@@ -231,12 +231,13 @@ class Onboarding extends React.Component {
     this.setState({
       loading: true,
       hubURL: decodedAuthRequest.recommendedGaiaHubUrl
+    }, async () => {
+      const success = await this.validateGaiaURL()
+      if (success) {
+        await this.createAccount()
+        this.updateView(VIEWS.EMAIL)
+      }
     })
-    const success = await this.validateGaiaURL()
-    if (success) {
-      await this.createAccount()
-      this.updateView(VIEWS.EMAIL)
-    }
   }
 
   /**
@@ -426,7 +427,7 @@ class Onboarding extends React.Component {
     if (!/^https:\/\//.test(hubURL)) {
       this.setState({
         loading: false,
-        customHubError: 'A Gaia Hub URL must be use SSL.'
+        customHubError: 'A Gaia Hub URL must use SSL.'
       })
       return false
     }
