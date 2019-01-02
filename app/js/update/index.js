@@ -164,6 +164,10 @@ class UpdatePage extends React.Component {
 
               // generate new account and IDs
               this.createAccount().then(() => this.createNewIds())
+              .then(() => this.props.refreshIdentities(
+                  this.props.api, 
+                  this.props.identityAddresses
+                ))
             }, 150)
         )
       })
