@@ -144,7 +144,7 @@ class PasswordView extends React.Component {
           onSubmit: () => console.log('submit for validation'),
           fields,
           actions: {
-            split: true,
+            split: false,
             items: [
               {
                 label: ' ',
