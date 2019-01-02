@@ -361,6 +361,7 @@ UpdatePage.propTypes = {
   router: PropTypes.object,
   identityAddresses: PropTypes.array,
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
+  refreshIdentities: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
   updateApi: PropTypes.func.isRequired,
