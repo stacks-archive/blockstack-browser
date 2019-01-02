@@ -164,6 +164,10 @@ class UpdatePage extends React.Component {
 
               // generate new account and IDs
               this.createAccount().then(() => this.createNewIds())
+              .then(() => this.props.refreshIdentities(
+                  this.props.api, 
+                  this.props.identityAddresses
+                ))
             }, 150)
         )
       })
@@ -357,6 +361,7 @@ UpdatePage.propTypes = {
   router: PropTypes.object,
   identityAddresses: PropTypes.array,
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
+  refreshIdentities: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
   updateApi: PropTypes.func.isRequired,
