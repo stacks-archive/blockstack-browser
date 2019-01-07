@@ -1,8 +1,8 @@
 // @flow
 import { parseZoneFile } from 'zone-file'
 
-import type { GaiaHubConfig } from 'blockstack'
-import { connectToGaiaHub, uploadToGaiaHub } from 'blockstack'
+import type { GaiaHubConfig } from './blockstack-inc'
+import { connectToGaiaHub, uploadToGaiaHub } from './blockstack-inc'
 
 import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
 
