@@ -171,6 +171,10 @@ export function signProfileForUpload(profile, keypair, api) {
   const privateKey = keypair.key
   const publicKey = keypair.keyID
 
+  if (profile.api) {
+    delete profile.api
+  }
+
   if (api) {
     profile = {
       ...profile,
