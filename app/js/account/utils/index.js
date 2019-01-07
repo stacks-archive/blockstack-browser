@@ -88,8 +88,6 @@ export function uploadProfile(
   signedProfileTokenData: string
 ) {
   return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
-    const globalHubConfig = api.gaiaHubConfig
-
     const urlToWrite = getProfileUploadLocation(identity, identityHubConfig)
 
     let uploadAttempt = tryUpload(
@@ -102,7 +100,7 @@ export function uploadProfile(
       uploadAttempt = tryUpload(
         urlToWrite,
         signedProfileTokenData,
-        globalHubConfig,
+        identityHubConfig,
         'application/json'
       )
     }
