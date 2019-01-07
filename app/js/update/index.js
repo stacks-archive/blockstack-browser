@@ -10,7 +10,8 @@ import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
 import {
   selectAccountCreated,
   selectEncryptedBackupPhrase,
-  selectIdentityAddresses
+  selectIdentityAddresses,
+  selectIdentityKeypairs
 } from '@common/store/selectors/account'
 import {
   selectDefaultIdentity,
@@ -28,7 +29,8 @@ import {
   hasLegacyCoreStateVersion,
   migrateLegacyCoreEndpoints
 } from '@utils/api-utils'
-import { decrypt } from '@utils'
+import { uploadProfile } from '../account/utils'
+import { decrypt, signProfileForUpload } from '@utils'
 const VIEWS = {
   INITIAL: 0,
   SUCCESS: 1,
@@ -43,7 +45,8 @@ const mapStateToProps = state => ({
   localIdentities: selectLocalIdentities(state),
   defaultIdentityIndex: selectDefaultIdentity(state),
   accountCreated: selectAccountCreated(state),
-  identityAddresses: selectIdentityAddresses(state)
+  identityAddresses: selectIdentityAddresses(state),
+  identityKeypairs: selectIdentityKeypairs(state)
 })
 
 const mapDispatchToProps = dispatch =>
@@ -137,51 +140,85 @@ class UpdatePage extends React.Component {
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     const { password } = this.state
 
-    return decrypt(dataBuffer, password)
-      .then(backupPhraseBuffer => {
-        this.setState(
-          {
-            upgradeInProgress: true
-          },
-          () =>
-            setTimeout(() => {
-              console.debug('decryptKeyAndResetState: correct password!')
-              const backupPhrase = backupPhraseBuffer.toString()
-              const numberOfIdentities =
-                localIdentities.length >= 1 ? localIdentities.length : 1
-              this.setState({
-                encryptedBackupPhrase,
-                backupPhrase,
-                defaultIdentityIndex,
-                numberOfIdentities
-              })
-              if (hasLegacyCoreStateVersion()) {
-                const migratedApi = migrateLegacyCoreEndpoints(api)
-                this.props.migrateAPIEndpoints(migratedApi)
-              }
-              // clear our state
-              this.props.updateState()
+    const updateProfileUrls = localIdentities.map((identity, index) =>
+      new Promise(async (resolve, reject) => {
+        try {
+          const signedProfileTokenData = signProfileForUpload(
+            identity.profile,
+            this.props.identityKeypairs[index],
+            this.props.api
+          )
+          console.log('newProfile', signedProfileTokenData)
+          uploadProfile(
+            this.props.api,
+            identity,
+            this.props.identityKeypairs[index],
+            signedProfileTokenData
+          ).then(resolve).catch(reject)
+        } catch (error) {
+          reject(error)
+        }
+        
+      }))
 
-              // generate new account and IDs
-              this.createAccount().then(() => this.createNewIds())
-              .then(() => this.props.refreshIdentities(
-                  this.props.api, 
-                  this.props.identityAddresses
-                ))
-            }, 150)
-        )
-      })
-      .catch(error => {
-        console.error('decryptKeyAndResetState: invalid password', error)
-        this.setState({
-          loading: false,
-          password: null,
-          errors: {
-            password: 'Incorrect Password'
-          },
-          status: 'error'
+    return Promise.all(updateProfileUrls).then(() => {
+      console.log('updated profile URLs')
+      return decrypt(dataBuffer, password)
+        .then(backupPhraseBuffer => {
+          this.setState(
+            {
+              upgradeInProgress: true
+            },
+            () =>
+              setTimeout(() => {
+                console.debug('decryptKeyAndResetState: correct password!')
+                const backupPhrase = backupPhraseBuffer.toString()
+                const numberOfIdentities =
+                  localIdentities.length >= 1 ? localIdentities.length : 1
+                this.setState({
+                  encryptedBackupPhrase,
+                  backupPhrase,
+                  defaultIdentityIndex,
+                  numberOfIdentities
+                })
+                if (hasLegacyCoreStateVersion()) {
+                  const migratedApi = migrateLegacyCoreEndpoints(api)
+                  this.props.migrateAPIEndpoints(migratedApi)
+                }
+                // clear our state
+                this.props.updateState()
+
+                // generate new account and IDs
+                this.createAccount().then(() => this.createNewIds())
+                .then(() => this.props.refreshIdentities(
+                    this.props.api, 
+                    this.props.identityAddresses
+                  ))
+              }, 150)
+          )
         })
+        .catch(error => {
+          console.error('decryptKeyAndResetState: invalid password', error)
+          this.setState({
+            loading: false,
+            password: null,
+            errors: {
+              password: 'Incorrect Password'
+            },
+            status: 'error'
+          })
+        })
+    }).catch(error => {
+      console.error('upgradeBlockstackState: error updating profile', error)
+      this.setState({
+        loading: false,
+        password: null,
+        errors: {
+          password: 'Unable to update profile'
+        },
+        status: 'error'
       })
+    })
   }
 
   /**
