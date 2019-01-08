@@ -148,7 +148,6 @@ class UpdatePage extends React.Component {
             this.props.identityKeypairs[index],
             this.props.api
           )
-          console.log('newProfile', signedProfileTokenData)
           uploadProfile(
             this.props.api,
             identity,
