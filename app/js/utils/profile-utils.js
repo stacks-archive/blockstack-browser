@@ -171,11 +171,19 @@ export function signProfileForUpload(profile, keypair, api) {
   const privateKey = keypair.key
   const publicKey = keypair.keyID
 
+  if (profile.api && profile.api.gaiaHubConfig) {
+    profile.api.gaiaHubConfig = {
+      url_prefix: profile.api.gaiaHubConfig.url_prefix
+    }
+  }
+
   if (api) {
     profile = {
       ...profile,
       api: {
-        gaiaHubConfig: api.gaiaHubConfig,
+        gaiaHubConfig: {
+          url_prefix: api.gaiaHubConfig.url_prefix
+        },
         gaiaHubUrl: api.gaiaHubUrl
       }
     }
