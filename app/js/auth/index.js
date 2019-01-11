@@ -230,7 +230,7 @@ class AuthPage extends React.Component {
 
       const gaiaBucketAddress = nextProps.identityKeypairs[0].address
       const identityAddress = nextProps.identityKeypairs[identityIndex].address
-      const gaiaUrlBase = 'https://gaia.blockstack.org/hub'
+      const gaiaUrlBase = nextProps.api.gaiaHubConfig.url_prefix
 
       if (!profileUrlPromise) {
         profileUrlPromise = fetchProfileLocations(
