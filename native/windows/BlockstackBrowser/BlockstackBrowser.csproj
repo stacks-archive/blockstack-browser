@@ -89,7 +89,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>MKDIR "$(TargetDir)\Resources"
-XCOPY "$(SolutionDir)\BlockstackBrowser\Resources" "$(TargetDir)\Resources" /S /Y</PostBuildEvent>
+    <PostBuildEvent>(ROBOCOPY "$(SolutionDir)\BlockstackBrowser\Resources" "$(TargetDir)\Resources" /mir) ^&amp; IF %ERRORLEVEL% LEQ 1 exit 0</PostBuildEvent>
   </PropertyGroup>
 </Project>

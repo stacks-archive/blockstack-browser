@@ -36,3 +36,12 @@ tmp
 .idea
 .swp
 yarn.lock
+native/windows/.vs/
+native/windows/BlockstackBrowser/bin/
+native/windows/BlockstackBrowser/obj/
+native/windows/ProtocolHandler/bin/
+native/windows/ProtocolHandler/obj/
+native/windows/BlockstackBrowser/Resources/node.exe
+native/windows/BlockstackBrowser/Resources/cors-proxy/corsproxy.js
+native/windows/BlockstackSetup/obj/
+native/windows/BlockstackSetup/bin/
