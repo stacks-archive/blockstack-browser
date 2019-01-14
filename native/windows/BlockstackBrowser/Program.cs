@@ -103,7 +103,7 @@ namespace BlockstackBrowser
                         Thread.Sleep(500);
                     }
                 }
-            }).Start();
+            }){ IsBackground = true }.Start();
         }
 
         void StartProtocolHandlerPipeServer()
