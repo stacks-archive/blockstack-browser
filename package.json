@@ -178,7 +178,7 @@
     "lint": "eslint app/js/**/*.js",
     "win32": "npm run win32:clean && cross-env NODE_ENV=production webpack && npm run win32:copyBrowser && npm run win32:downloadNode && npm run win32:downloadExpress && npm run win32:downloadCorsProxy && npm run win32:copyCorsProxy && npm run win32:setWixVersion && npm run win32:msbuildSolution",
     "win32:copyBrowser": "xcopy build native\\windows\\BlockstackBrowser\\Resources\\build\\* /s/h/e/k/f/c/y",
-    "win32:downloadNode": "powershell -Command 'Invoke-WebRequest https://nodejs.org/dist/latest-v10.x/win-x86/node.exe -OutFile native\\windows\\BlockstackBrowser\\Resources\\node.exe'",
+    "win32:downloadNode": "powershell -Command \"(new-object System.Net.WebClient).DownloadFile('https://nodejs.org/dist/latest-v10.x/win-x86/node.exe', 'native\\windows\\BlockstackBrowser\\Resources\\node.exe')\"",
     "win32:downloadExpress": "npm i --prefix native\\windows\\BlockstackBrowser\\Resources -g express@4",
     "win32:downloadCorsProxy": "npm i --prefix native\\windows\\BlockstackBrowser\\Resources\\cors-proxy -g cors-anywhere@0.4.1",
     "win32:copyCorsProxy": "xcopy corsproxy\\corsproxy.js native\\windows\\BlockstackBrowser\\Resources\\cors-proxy\\* /Y",

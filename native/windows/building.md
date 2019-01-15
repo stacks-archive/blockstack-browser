@@ -1,5 +1,11 @@
 # Overview
 
+# Building on Windows
+
+Run `npm run win32`.
+
+# Using shell script
+
 The shell script `assemble-build.sh` will gather all the components necessary into the
 `Resources/` directory before the installer will build correctly.
 
