@@ -70,7 +70,7 @@ namespace BlockstackBrowser
             contextMenu.Popup += (s, e) =>
             {
                 bool isCtrlClicked = (ModifierKeys & Keys.Control) == Keys.Control;
-                debugItem.Text = (isDebugModeEnabled ? "Disable" : "Enable") + " Debug Mode";
+                debugItem.Text = (isDebugModeEnabled ? "Disable" : "Enable") + " Development Mode";
                 debugItem.Visible = isCtrlClicked;
             };
 
