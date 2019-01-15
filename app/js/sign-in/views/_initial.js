@@ -70,6 +70,25 @@ export default class InitialSignInScreen extends React.PureComponent {
   render() {
     const { next, value, ...rest } = this.props
     const { isScanning, scanError } = this.state
+    const isNative = document.location.search.indexOf('client=ios_secure') !== -1
+
+    const actionItems = [
+      {
+        label: 'Sign In',
+        primary: true,
+        icon: 'ArrowRightIcon',
+        type: 'submit'
+      }
+    ]
+
+    if (!isNative) {
+      actionItems.unshift({
+        label: 'Scan',
+        icon: 'QrcodeIcon',
+        onClick: this.startScanning
+      })
+    }
+
 
     const screen = {
       title: {
@@ -94,14 +113,7 @@ export default class InitialSignInScreen extends React.PureComponent {
           ],
           actions: {
             split: true,
-            items: [
-              {
-                label: 'Sign In',
-                primary: true,
-                icon: 'ArrowRightIcon',
-                type: 'submit'
-              }
-            ]
+            items: actionItems
           }
         },
         children: (
