@@ -1,18 +1,37 @@
-import makeEncryptWorker from './workers/encrypt.worker.js'
-import makeDecryptWorker from './workers/decrypt.worker.js'
 import bip39 from 'bip39'
 import log4js from 'log4js'
+import cryptoCheck from './workers/crypto-check.worker.js'
 const logger = log4js.getLogger(__filename)
+
+async function checkCryptoWorkerSupport() {
+  const result = await cryptoCheck().isCryptoInWorkerSupported() 
+  return result.toString() === 'true'
+}
+
 export async function encrypt(plaintextBuffer, password) {
   const mnemonic = plaintextBuffer.toString()
-  const encryptWorker = makeEncryptWorker()
-  return encryptWorker.encrypt(mnemonic, password)
+  const useWorker = await checkCryptoWorkerSupport()
+  let encryptLib
+  if (useWorker) {
+    const makeEncryptWorker = require('./workers/encrypt.worker.js')
+    encryptLib = makeEncryptWorker()
+  } else {
+    encryptLib = require('./workers/encrypt.main.js')
+  }
+  return encryptLib.encrypt(mnemonic, password)
 }
 
 export async function decrypt(dataBuffer, password) {
   const encryptedMnemonic = dataBuffer.toString('hex')
-  const decryptWorker = makeDecryptWorker()
-  const mnemonic = await decryptWorker.decrypt(encryptedMnemonic, password)
+  const useWorker = await checkCryptoWorkerSupport()
+  let decryptLib
+  if (useWorker) {
+    const makeDecryptWorker = require('./workers/decrypt.worker.js')
+    decryptLib = makeDecryptWorker()
+  } else {
+    decryptLib = require('./workers/decrypt.main.js')
+  }
+  const mnemonic = await decryptLib.decrypt(encryptedMnemonic, password)
   return Buffer.from(mnemonic)
 }
 
