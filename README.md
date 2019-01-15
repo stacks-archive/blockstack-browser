@@ -7,6 +7,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 - [Releases](#releases)
 - [Developing](#developing)
 - [Building for macOS](#building-for-macos)
+- [Building for Windows](#building-for-windows)
 - [Building for the Web](#building-for-the-web)
 - [Contributing](#contributing)
 - [Logging](#logging)
@@ -81,6 +82,24 @@ reload the page.  For example, if your `auth=` query looks like
 1. Click "Export a Developer ID-signed Application"
 1. Choose the development team with the Developer ID you'd like to use to sign the application.
 1. Click "Export" and select the location to which you would like to save the signed build.
+
+
+## Building for Windows
+
+Prerequisites:
+* Wix Toolset v3.11.1 (download and run wix311.exe from https://github.com/wixtoolset/wix3/releases/tag/wix3111rtm)
+* Visual Studio 2017 (https://visualstudio.microsoft.com/downloads/)
+
+Run `npm run win32`.
+
+This will:
+* Run the webpack build.
+* Setup the resources used by msbuild and the WiX msi project.
+* Run msbuild to compile the native app and create the msi installation file.
+
+The output file can be found at `native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi`.
+
+This does not perform any code or installer file signing.
 
 
 ## Building for the Web
