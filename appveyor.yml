@@ -5,6 +5,8 @@ environment:
     secure: S/Mj90+79mE3WTzcInLLI9L5Dpq25dagZUJ4FuVUZH1phPYvveBdDYKBVoL2nCqtlpVMhm22iv/meRCVptVtSg==
 install:
 - cmd: >-
+    appveyor-tools\secure-file -decrypt native\windows\signcertfile.pfx.enc -out signcertfile.pfx -secret %pfx_secret%
+
     powershell -Command "(new-object System.Net.WebClient).DownloadFile('https://github.com/wixtoolset/wix3/releases/download/wix3111rtm/wix311.exe', 'wix311.exe')"
 
     wix311.exe /install /quiet /norestart
@@ -13,8 +15,6 @@ install:
 build_script:
 - cmd: >-
     npm run win32
-
-    appveyor-tools\secure-file -decrypt native\windows\signcertfile.pfx.enc -out signcertfile.pfx -secret %pfx_secret%
 
     copy native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi .\
 
