@@ -96,11 +96,6 @@ export default class InitialSignInScreen extends React.PureComponent {
             split: true,
             items: [
               {
-                label: 'Scan',
-                icon: 'QrcodeIcon',
-                onClick: this.startScanning
-              },
-              {
                 label: 'Sign In',
                 primary: true,
                 icon: 'ArrowRightIcon',
