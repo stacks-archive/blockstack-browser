@@ -89,7 +89,6 @@ export default class InitialSignInScreen extends React.PureComponent {
       })
     }
 
-
     const screen = {
       title: {
         children: 'Enter Secret Recovery Key or Magic Recovery Code'
