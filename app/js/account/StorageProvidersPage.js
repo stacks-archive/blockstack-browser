@@ -159,6 +159,8 @@ class StorageProvidersPage extends Component {
                 <a
                   href="https://github.com/blockstack/gaia/tree/master/hub"
                   className="btn btn-primary btn-storage btn-lg btn-block"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Run your own Gaia storage hub
                 </a>

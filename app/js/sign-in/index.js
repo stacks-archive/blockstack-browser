@@ -124,7 +124,7 @@ class SignIn extends React.Component {
       })
     })
 
-  backToSignUp = () => browserHistory.push({ pathname: '/sign-up' })
+  backToSignUp = () => browserHistory.push(`/sign-up${document.location.search}`)
 
   isKeyEncrypted = key =>
     import(/* webpackChunkName: 'bip39' */ 'bip39').then(
