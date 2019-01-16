@@ -5,6 +5,7 @@ import { Initial, LegacyGaia } from './views'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AuthActions } from './store/auth'
+import { IdentityActions } from '../profiles/store/identity'
 import { decodeToken } from 'jsontokens'
 import { parseZoneFile } from 'zone-file'
 import {
@@ -79,7 +80,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, AuthActions)
+  const actions = Object.assign({}, AuthActions, IdentityActions)
   return bindActionCreators(actions, dispatch)
 }
 
@@ -106,7 +107,8 @@ class AuthPage extends React.Component {
     email: PropTypes.string,
     noCoreSessionToken: PropTypes.func.isRequired,
     addresses: PropTypes.array.isRequired,
-    publicKeychain: PropTypes.string.isRequired
+    publicKeychain: PropTypes.string.isRequired,
+    refreshIdentities: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -120,6 +122,7 @@ class AuthPage extends React.Component {
       decodedToken: null,
       storageConnected: this.props.api.storageConnected,
       processing: false,
+      refreshingIdentities: true,
       invalidScopes: false,
       sendEmail: false,
       blockchainId: null,
@@ -152,6 +155,8 @@ class AuthPage extends React.Component {
     })
 
     this.props.verifyAuthRequestAndLoadManifest(authRequest)
+
+    this.getFreshIdentities()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -321,6 +326,14 @@ class AuthPage extends React.Component {
         'componentWillReceiveProps: response already sent - doing nothing'
       )
     }
+  }
+
+  getFreshIdentities = async () => {
+    await this.props.refreshIdentities(
+      this.props.api,
+      this.props.addresses
+    )
+    this.setState({ refreshingIdentities: false })
   }
 
   completeAuthResponse = (
@@ -556,6 +569,7 @@ class AuthPage extends React.Component {
           deny: () => console.log('go back to app'),
           accounts: this.props.localIdentities,
           processing: this.state.processing,
+          refreshingIdentities: this.state.refreshingIdentities,
           selectedIndex: this.state.currentIdentityIndex,
           disableBackOnView: 0
         }
