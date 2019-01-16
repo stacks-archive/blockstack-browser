@@ -1,0 +1,20 @@
+language: node_js
+os: osx
+osx_image: xcode10.1
+node_js: 10.13.0
+env:
+  global:
+    # GITHUB_TOKEN=[token] for nexe
+    - secure: "rQdbLIRjULe9m/OXJ3au6boSJhKp4urUGHbW24gTZo6XZwmdECwO+T2fva6xXjH0fM7s8pvQiAyKlyhX7aVjfzz+IfT5F549d0Mj1ppH/fVXAq2I25IvUC4oUuuOzdwYduQhCNwFeHYFeqTP2Gre6ebMNJtavgJaUwzkmOLe7+uCfJdG8IBSI83lUdmf/qsDVBlgUxT7GBfSUZ18ZqZAt/Ru+4a4vLgbt1IKWwtJTgdLa1nMTg0rLKHywqm9/2e/VURMTFdhzisPjcmx9QeBBrkXjepxLSfKIaZ0kPDpkXmjoHaGcfj8dO0kNu+QM3gHzGnZQuCqdQOmUFY7mK2YE1g9eI9jArK5oPcWCTl7jPOwcURTyXw3X3uOmkht34xMS62lNmq24qNOhAD6tYgd9+ihw6yLuakV6lPU1dPhH85Amq8rpVfasdOtPhyV2nJO/TTapHafdprEcAXAivxrPrkV0jlo1H2KryMROjo3y1ya9BeVuWgBkA2rYbmltRr4sfNCtCa95V1Qv5p161IpEpUNlzDXZJYbLtpRLnoc4LcdSt6owFCuSaofPwxqyZ5ITGmbSmMObO1GGZb+HdK3AHG03OXBsNxxji57dUsXGexuSrsM9rk0ikXzkhILT4e/WLNokfdCvnETBMXayB1RG8Yvl9JOA27t0IZG69LMGww="
+    # BINTRAY_TOKEN=[token]
+    - secure: "Kw8uPSsOdih7DN7rrccFp7eWX9JMzbfpw4/7hCpiGE+mkaatle6sYChT2wBxCLV97Z9bZx2b7g3TlY9nqm5ZP3KXQIrl6cidtJhtJrxA/Pcpc0JcTV/9Zq8rcuUUoAjO0mJPzq6fFFpA7S1rK6aV+vR9EWx62YTw1rZXLGUPkKvIgoRqqQc4s6sQN9wuHKKFM2IYboEWZlk7eURZK2MB7swmZrZVtoiuagFatPtBUOWZ2yp1QUrnFMuplowFAinadWVopjbnDV8djLg0BVsRfBYhuNp9Sw2k6ghewW8+5pJyA+GAIDmyGAIPjD5irN1VhMZT/0f8t9TO2qZMsh9KuLM8hWmqSgFwn2NWCIy/JVRU8kRI9s1ko/DSj6SBUCEZhGCoXbykyDAjFUA/2VWkxvWwmjwrmnOUfslDuw0mqHdOsDoPC9VPqsCvUz8YZWZwKLut3owwZEvyoIhdwFPFLFqdZlJCISe5EsxYubO2Kh5cV9koVca4c8DLxY6zVkDSsbHNbQnss6VaECkPqrdw2+qryLmVA3P+fReyEssdZP88iuryRq7fLJX7LFix0NfsYcXwl28Hr7yoYDLqJiU9ZW1C4LcSeikD9yJ2+dGnyYCIE8+9/xbHk+k/heb4NuHSuGHqjPZb5qHAfr+gjr3+BuWafu3gPhjXtJ5dc7aRzyA="
+install:
+  - npm install
+cache:
+  directories:
+  - "node_modules"
+  - "~/.nexe"
+script:
+  - npm run mac:release:dev
+  - ditto -c -k --sequesterRsrc --keepParent native/macos/export/Blockstack.app Blockstack.app.zip
+  - DATETIME=$(date -u +"%Y%m%dT%H%M%S") && curl -T Blockstack.app.zip -uzone117x:$BINTRAY_TOKEN -H "X-Bintray-Package:blockstack-browser" -H "X-Bintray-Version:${DATETIME}-${TRAVIS_COMMIT::6}" -H "X-Bintray-Publish:1" https://api.bintray.com/content/zone117x/testing/Blockstack.app-${DATETIME}-${TRAVIS_COMMIT::6}.zip
