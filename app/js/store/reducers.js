@@ -39,7 +39,7 @@ export function initializeStateVersion() {
  * and other state is regenerated.
  * @type {number}
  */
-export const CURRENT_VERSION: number = 18
+export const CURRENT_VERSION: number = 17
 
 const AppReducer = combineReducers({
   account: AccountReducer,
