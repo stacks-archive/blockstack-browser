@@ -144,11 +144,17 @@ class PasswordView extends React.Component {
           onSubmit: () => console.log('submit for validation'),
           fields,
           actions: {
-            split: false,
+            split: true,
+            style: {
+              justifyContent: 'space-between'
+            },
             items: [
               {
-                label: ' ',
-                textOnly: true
+                label: 'Reset Browser',
+                textOnly: true,
+                style: {
+                  width: 'auto'
+                }
               },
               {
                 label: 'Continue',
@@ -156,7 +162,10 @@ class PasswordView extends React.Component {
                 type: 'submit',
                 icon: 'ArrowRightIcon',
                 loading: this.props.loading,
-                disabled: this.props.loading
+                disabled: this.props.loading,
+                style: {
+                  width: 'auto'
+                }
               }
             ]
           }
