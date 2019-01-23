@@ -151,7 +151,7 @@ class PasswordView extends React.Component {
           children: this.state.resetConfirm ? (
             <>
               If you don't remember your password, you can reset the browser and
-              restore with your seed phrase.
+              restore with your Secret Recovery Key or Magic Recovery Code.
             </>
           ) : (
             <>
