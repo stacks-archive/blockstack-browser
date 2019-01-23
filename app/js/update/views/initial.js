@@ -154,7 +154,7 @@ class PasswordView extends React.Component {
     const props = {
       title: {
         children: this.state.resetConfirm
-          ? 'Reset browser?'
+          ? 'Forgot your password?'
           : 'We have updated the browser.',
         variant: 'h2',
         subtitle: {
@@ -162,8 +162,13 @@ class PasswordView extends React.Component {
           padding: '15px 0 0 0',
           children: this.state.resetConfirm ? (
             <>
-              If you don't remember your password, you can reset the browser and
-              restore with your Secret Recovery Key or Magic Recovery Code.
+              You can sign in using your Secret Recovery Key, which is a 12-word
+              phrase originally given to you during registration of your
+              Blockstack ID.
+              <br />
+              <br />
+              If you don't have your Secret Recovery Key, you'll need to
+              register a new Blockstack ID.
             </>
           ) : (
             <>
@@ -188,7 +193,7 @@ class PasswordView extends React.Component {
             },
             items: [
               {
-                label: this.state.resetConfirm ? 'Cancel' : 'Reset Browser',
+                label: this.state.resetConfirm ? 'Cancel' : 'Forgot Password',
                 textOnly: true,
                 onClick: () => this.handleResetConfirm(),
                 style: {

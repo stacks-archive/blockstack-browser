@@ -436,6 +436,7 @@ SignIn.propTypes = {
   router: PropTypes.object,
   identityAddresses: PropTypes.array,
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
+  verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
   updateEmail: PropTypes.func.isRequired,
