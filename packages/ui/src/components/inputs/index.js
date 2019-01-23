@@ -14,7 +14,7 @@ const StyledInputWrapper = styled(Box)`
     color: ${(props) =>
       props.variant === 'marketing' || props.variant === 'dark'
         ? colors.blue.neutral
-        : colors.blue.mid} !important;
+        : colors.blue.medium} !important;
     opacity: 1; /* Firefox */
   }
 
@@ -24,7 +24,7 @@ const StyledInputWrapper = styled(Box)`
     color: ${(props) =>
       props.variant === 'marketing' || props.variant === 'dark'
         ? colors.blue.neutral
-        : colors.blue.mid} !important;
+        : colors.blue.medium} !important;
   }
 
   input::-ms-input-placeholder,
@@ -33,7 +33,7 @@ const StyledInputWrapper = styled(Box)`
     color: ${(props) =>
       props.variant === 'marketing' || props.variant === 'dark'
         ? colors.blue.neutral
-        : colors.blue.mid} !important;
+        : colors.blue.medium} !important;
   }
 `
 /**

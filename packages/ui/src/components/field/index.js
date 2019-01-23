@@ -1,14 +1,14 @@
 import React from 'react'
-import { Flex, Type, Input, Tooltip } from '../../index'
+import { Flex, Type, Input, Tooltip, Box } from '../../index'
 import { Copy } from '../copy'
 import { OpenInNewIcon } from 'mdi-react'
 import { Hover } from 'react-powerplug'
 
-const Link = ({ value, ...rest }) => (
+const Link = ({ value, text = 'View in Explorer', ...rest }) => (
   <Hover>
     {({ hovered, bind }) => (
       <Flex
-        color="hsl(205, 30%, 70%)"
+        color="blue.medium"
         opacity={hovered ? 1 : 0.5}
         target="_blank"
         alignItems="center"
@@ -18,7 +18,7 @@ const Link = ({ value, ...rest }) => (
         {...rest}
         {...bind}
       >
-        <Tooltip text="View in Explorer">
+        <Tooltip text={text}>
           <Flex p={1}>
             <OpenInNewIcon size={20} />
           </Flex>
@@ -28,7 +28,78 @@ const Link = ({ value, ...rest }) => (
   </Hover>
 )
 const Label = ({ ...rest }) => (
-  <Type pb={2} fontWeight={500} fontSize={1} is="label" {...rest} />
+  <Type pb={2} fontWeight={600} fontSize={1} is="label" {...rest} />
+)
+
+const Message = ({ children, ...rest }) => (
+  <Box pb={3} {...rest}>
+    <Type
+      fontSize={1}
+      color="blue.medium" // TODO: allow to be changed
+    >
+      {children}
+    </Type>
+  </Box>
+)
+
+const LabelComponent = ({
+  hint,
+  required,
+  error,
+  label,
+  message,
+  errorProps = {},
+  messageProps = {},
+  labelProps = {},
+  ...rest
+}) => (
+  <>
+    <Flex
+      justifyContent={['flex-start', 'space-between']}
+      alignItems={['flex-start', 'center']}
+      flexDirection={['column', 'row']}
+      width={1}
+      {...rest}
+    >
+      <Label {...labelProps}>
+        {label}
+        {hint ? (
+          <Type
+            pl={1}
+            fontSize={1}
+            fontWeight={400}
+            color="blue.medium" // TODO: allow to be changed
+          >
+            ({hint})
+          </Type>
+        ) : null}
+        {required ? (
+          <Type
+            is="em"
+            pl={1}
+            color="blue.medium" // TODO: allow to be changed
+            fontSize={1}
+            fontWeight={400}
+          >
+            (required)
+          </Type>
+        ) : null}
+      </Label>
+      {error ? (
+        <Type
+          color="#F27D66" // TODO: allow to be changed
+          textAlign="right"
+          pb={2}
+          fontWeight={500}
+          fontSize={0}
+          {...errorProps}
+        >
+          {error}
+        </Type>
+      ) : null}
+    </Flex>
+    {message ? <Message {...messageProps}>{message}</Message> : null}
+  </>
 )
 /**
  * Field
@@ -51,6 +122,9 @@ const Field = ({
   variant,
   link,
   error,
+  required,
+  hint,
+  message,
   ...inputProps
 }) => {
   const disabledProps = disabled
@@ -62,7 +136,8 @@ const Field = ({
 
   const errorProps = error
     ? {
-        borderColor: '#F27D66' // TODO: allow to be changed
+        borderColor: '#F27D66', // TODO: allow to be changed
+        boxShadow: 'focused.error'
       }
     : {}
   return (
@@ -76,22 +151,14 @@ const Field = ({
           flexGrow={1}
           flexShrink={0}
         >
-          <Flex justifyContent="space-between" alignItems="center">
-            <Type pb={2} fontWeight={500} fontSize={1} is="label">
-              {label}
-            </Type>
-            {error ? (
-              <Type
-                color="#F27D66" // TODO: allow to be changed
-                textAlign="right"
-                pb={2}
-                fontWeight={500}
-                fontSize={1}
-              >
-                {error}
-              </Type>
-            ) : null}
-          </Flex>
+          <LabelComponent
+            label={label}
+            error={error}
+            hint={hint}
+            required={required}
+            message={message}
+          />
+
           <Flex position="relative" width="100%">
             {copy && hovered ? (
               <Copy position="absolute" height="100%" value={value} right={0} />
@@ -108,7 +175,7 @@ const Field = ({
                 alignItems="center"
                 top="0"
                 right={0}
-                color="hsl(205, 30%, 70%)" // TODO: allow to be changed
+                color="blue.medium" // TODO: allow to be changed
               >
                 {overlay}
               </Type>
@@ -139,6 +206,8 @@ const Field = ({
 const StaticField = ({ ...rest }) => <Field width={1} disabled copy {...rest} />
 
 Field.Label = Label
+Field.LabelAdvanced = LabelComponent
+Field.Message = Message
 Field.Link = Link
 
 export { Field, Label, StaticField }

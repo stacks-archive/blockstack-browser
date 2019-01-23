@@ -4,6 +4,7 @@ const colors = {
     very_light: 'hsl(202, 40%, 97%)', // canvas
     light: 'hsl(202, 40%, 96%)', // canvas
     mid: 'hsl(202, 40%, 83%)', // borders / labels on white
+    medium: 'hsl(202, 40%, 66%)', // placeholders, helper accents
     neutral: '#403F83', // text
     dark: '#211F6D', // large fills
     darker: '#1A1959', // fills on blue.dark
@@ -44,7 +45,8 @@ const shadows = {
   general: Object.assign('0px 4px 4px rgba(0, 0, 0, 0.05)', {}),
   focused: Object.assign(`${rgba(colors.blue.accent, 0.14)} 0px 0px 0px 4px`, {
     marketing: 'rgba(16, 112, 202, 0.14) 0px 0px 0px 4px',
-    light: `hsl(205,30%,95%) 0 0 0 3px`
+    light: `hsl(205,30%,95%) 0 0 0 3px`,
+    error: `hsla(10,58%,95%, 0.5) 0 0 0 3px`
   })
 }
 
