@@ -25,7 +25,7 @@ class ClearAuthPage extends PureComponent {
   clearData = () => {
     if (this.state.hasAttemptedConfirm) {
       localStorage.clear()
-      window.location = `${this.props.location.query.redirect_uri}://?authCleared=1`
+      window.location = '/?authCleared=1'
     }
     else {
       this.setState({ hasAttemptedConfirm: true })
