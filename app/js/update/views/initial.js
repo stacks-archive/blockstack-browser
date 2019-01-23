@@ -13,7 +13,8 @@ class PasswordView extends React.Component {
   }
   state = {
     status: 'initial',
-    password: ''
+    password: '',
+    resetConfirm: false
   }
 
   setError = () => {
@@ -28,6 +29,24 @@ class PasswordView extends React.Component {
   componentDidUpdate() {
     this.setError()
   }
+
+  handleResetConfirm = () => {
+    if (this.state.resetConfirm) {
+      this.setState({
+        resetConfirm: false
+      })
+    } else {
+      this.setState({
+        resetConfirm: true
+      })
+    }
+  }
+
+  handleResetBrowser = () => {
+    localStorage.clear()
+    window.location = '/sign-in'
+  }
+
   /**
    * Validation
    */
@@ -122,12 +141,19 @@ class PasswordView extends React.Component {
 
     const props = {
       title: {
-        children: 'We have updated the browser.',
+        children: this.state.resetConfirm
+          ? 'Reset browser?'
+          : 'We have updated the browser.',
         variant: 'h2',
         subtitle: {
           light: true,
           padding: '15px 0 0 0',
-          children: (
+          children: this.state.resetConfirm ? (
+            <>
+              If you don't remember your password, you can reset the browser and
+              restore with your seed phrase.
+            </>
+          ) : (
             <>
               Please enter your password to migrate your data to the new
               version.
@@ -142,7 +168,7 @@ class PasswordView extends React.Component {
           validate: v => this.validate(v),
           initialValues: { password: '' },
           onSubmit: () => console.log('submit for validation'),
-          fields,
+          fields: this.state.resetConfirm ? [] : fields,
           actions: {
             split: true,
             style: {
@@ -150,19 +176,23 @@ class PasswordView extends React.Component {
             },
             items: [
               {
-                label: 'Reset Browser',
+                label: this.state.resetConfirm ? 'Cancel' : 'Reset Browser',
                 textOnly: true,
+                onClick: () => this.handleResetConfirm(),
                 style: {
                   width: 'auto'
                 }
               },
               {
-                label: 'Continue',
+                label: this.state.resetConfirm ? 'Reset Browser' : 'Continue',
                 primary: true,
                 type: 'submit',
                 icon: 'ArrowRightIcon',
                 loading: this.props.loading,
                 disabled: this.props.loading,
+                onClick: this.state.resetConfirm
+                  ? () => this.handleResetBrowser()
+                  : undefined,
                 style: {
                   width: 'auto'
                 }
