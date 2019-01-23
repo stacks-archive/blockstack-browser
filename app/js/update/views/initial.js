@@ -193,7 +193,7 @@ class PasswordView extends React.Component {
             },
             items: [
               {
-                label: this.state.resetConfirm ? 'Cancel' : 'Forgot Password',
+                label: this.state.resetConfirm ? 'Cancel' : 'Forgot Password?',
                 textOnly: true,
                 onClick: () => this.handleResetConfirm(),
                 style: {
@@ -201,7 +201,7 @@ class PasswordView extends React.Component {
                 }
               },
               {
-                label: this.state.resetConfirm ? 'Reset Browser' : 'Continue',
+                label: 'Continue',
                 primary: true,
                 type: 'submit',
                 icon: 'ArrowRightIcon',
