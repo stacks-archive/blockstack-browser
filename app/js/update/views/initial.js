@@ -14,7 +14,16 @@ class PasswordView extends React.Component {
   state = {
     status: 'initial',
     password: '',
-    resetConfirm: false
+    resetConfirm: false,
+    authRequest: null
+  }
+
+  componentDidMount() {
+    if (this.props.location.query.authRequest && !this.state.authRequest) {
+      this.setState({
+        authRequest: this.props.location.query.authRequest
+      })
+    }
   }
 
   setError = () => {
@@ -44,7 +53,10 @@ class PasswordView extends React.Component {
 
   handleResetBrowser = () => {
     localStorage.clear()
-    window.location = '/sign-in'
+    const path = this.state.authRequest
+      ? `/sign-in?authRequest=${this.state.authRequest}`
+      : '/sign-in'
+    window.location = path
   }
 
   /**
