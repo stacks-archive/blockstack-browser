@@ -32,13 +32,13 @@ import {
   selectAppManifest,
   selectAuthRequest
 } from '@common/store/selectors/auth'
+import { AuthActions } from '../auth/store/auth'
 import { formatAppManifest } from '@common'
 import App from '../App'
 
 const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
 
 const logger = log4js.getLogger(__filename)
-
 const VIEWS = {
   INITIAL: 0,
   PASSWORD: 1,
@@ -75,6 +75,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     Object.assign(
       {},
+      AuthActions,
       AccountActions,
       SettingsActions,
       IdentityActions,
@@ -100,6 +101,7 @@ class SignIn extends React.Component {
     decryptedKey: null,
     loading: false,
     restoreError: '',
+    authRequest: null,
     view: VIEWS.INITIAL
   }
 
@@ -110,6 +112,10 @@ class SignIn extends React.Component {
     const { location } = this.props
     if (location.query.seed) {
       this.setState({ encryptedKey: location.query.seed })
+    }
+    if (location.query.authRequest) {
+      const authRequest = location.query.authRequest
+      this.props.verifyAuthRequestAndLoadManifest(authRequest)
     }
   }
 
@@ -124,7 +130,8 @@ class SignIn extends React.Component {
       })
     })
 
-  backToSignUp = () => browserHistory.push(`/sign-up${document.location.search}`)
+  backToSignUp = () =>
+    browserHistory.push(`/sign-up${document.location.search}`)
 
   isKeyEncrypted = key =>
     import(/* webpackChunkName: 'bip39' */ 'bip39').then(
@@ -429,6 +436,7 @@ SignIn.propTypes = {
   router: PropTypes.object,
   identityAddresses: PropTypes.array,
   createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
+  verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
   setDefaultIdentity: PropTypes.func.isRequired,
   initializeWallet: PropTypes.func.isRequired,
   updateEmail: PropTypes.func.isRequired,

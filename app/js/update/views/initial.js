@@ -13,7 +13,17 @@ class PasswordView extends React.Component {
   }
   state = {
     status: 'initial',
-    password: ''
+    password: '',
+    resetConfirm: false,
+    authRequest: null
+  }
+
+  componentDidMount() {
+    if (this.props.location.query.authRequest && !this.state.authRequest) {
+      this.setState({
+        authRequest: this.props.location.query.authRequest
+      })
+    }
   }
 
   setError = () => {
@@ -28,6 +38,27 @@ class PasswordView extends React.Component {
   componentDidUpdate() {
     this.setError()
   }
+
+  handleResetConfirm = () => {
+    if (this.state.resetConfirm) {
+      this.setState({
+        resetConfirm: false
+      })
+    } else {
+      this.setState({
+        resetConfirm: true
+      })
+    }
+  }
+
+  handleResetBrowser = () => {
+    localStorage.clear()
+    const path = this.state.authRequest
+      ? `/sign-in?authRequest=${this.state.authRequest}`
+      : '/sign-in'
+    window.location = path
+  }
+
   /**
    * Validation
    */
@@ -122,12 +153,24 @@ class PasswordView extends React.Component {
 
     const props = {
       title: {
-        children: 'We have updated the browser.',
+        children: this.state.resetConfirm
+          ? 'Forgot your password?'
+          : 'We have updated the browser.',
         variant: 'h2',
         subtitle: {
           light: true,
           padding: '15px 0 0 0',
-          children: (
+          children: this.state.resetConfirm ? (
+            <>
+              You can sign in using your Secret Recovery Key, which is a 12-word
+              phrase originally given to you during registration of your
+              Blockstack ID.
+              <br />
+              <br />
+              If you don't have your Secret Recovery Key, you'll need to
+              register a new Blockstack ID.
+            </>
+          ) : (
             <>
               Please enter your password to migrate your data to the new
               version.
@@ -142,13 +185,20 @@ class PasswordView extends React.Component {
           validate: v => this.validate(v),
           initialValues: { password: '' },
           onSubmit: () => console.log('submit for validation'),
-          fields,
+          fields: this.state.resetConfirm ? [] : fields,
           actions: {
-            split: false,
+            split: true,
+            style: {
+              justifyContent: 'space-between'
+            },
             items: [
               {
-                label: ' ',
-                textOnly: true
+                label: this.state.resetConfirm ? 'Cancel' : 'Forgot Password?',
+                textOnly: true,
+                onClick: () => this.handleResetConfirm(),
+                style: {
+                  width: 'auto'
+                }
               },
               {
                 label: 'Continue',
@@ -156,7 +206,13 @@ class PasswordView extends React.Component {
                 type: 'submit',
                 icon: 'ArrowRightIcon',
                 loading: this.props.loading,
-                disabled: this.props.loading
+                disabled: this.props.loading,
+                onClick: this.state.resetConfirm
+                  ? () => this.handleResetBrowser()
+                  : undefined,
+                style: {
+                  width: 'auto'
+                }
               }
             ]
           }
