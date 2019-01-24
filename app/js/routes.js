@@ -10,15 +10,15 @@ const LOADABLE_DELAY = 300
 
 const Loading = (props) => {
   if (props.error) {
-    return <div>Error! <button onClick={ props.retry }>Retry</button></div>
+    return <div>Error! <button onClick={props.retry}>Retry</button></div>
   } else if (props.pastDelay) {
-    return <div style={ {
+    return (<div style={ {
       width: '100%',
       height: '100%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center'
-    } }>Loading...</div>
+    } }>Loading...</div>)
   }
   return null
 }
@@ -235,61 +235,61 @@ const accountCreated = connectedRouterRedirect({
 })
 
 export default (
-  <Router history={ browserHistory }>
-    <Route path="/" component={ accountCreated(App) }>
-      <IndexRoute component={ HomeScreenPage }/>
-      <Route path="profiles" component={ ProfilesApp }>
-        <IndexRoute component={ DefaultProfilePage }/>
-        <Route path="i/all" component={ AllProfilesPage }/>
-        <Route path="i/search/:query" component={ SearchProfilesPage }/>
-        <Route path=":index/transfer-name" component={ TransferNamePage }/>
-        <Route path=":index/zone-file" component={ ZoneFilePage }/>
-        <Route path=":index/export" component={ ExportProfilePage }/>
-        <Route path="i/add-username" component={ RegistrationPage }>
-          <Route path=":index/search" component={ RegistrationSearchView }/>
+  <Router history={browserHistory}>
+    <Route path="/" component={accountCreated(App)}>
+      <IndexRoute component={HomeScreenPage} />
+      <Route path="profiles" component={ProfilesApp}>
+        <IndexRoute component={DefaultProfilePage} />
+        <Route path="i/all" component={AllProfilesPage} />
+        <Route path="i/search/:query" component={SearchProfilesPage} />
+        <Route path=":index/transfer-name" component={TransferNamePage} />
+        <Route path=":index/zone-file" component={ZoneFilePage} />
+        <Route path=":index/export" component={ExportProfilePage} />
+        <Route path="i/add-username" component={RegistrationPage}>
+          <Route path=":index/search" component={RegistrationSearchView} />
           <Route
             path=":index/select/:name"
-            component={ RegistrationSelectView }
+            component={RegistrationSelectView}
           />
           <Route
             path=":index/submitted/:name"
-            component={ RegistrationSubmittedView }
+            component={RegistrationSubmittedView}
           />
         </Route>
-        <Route path="i/register/:index" component={ RegisterProfilePage }/>
-        <Route path="i/import" component={ ImportProfilePage }/>
+        <Route path="i/register/:index" component={RegisterProfilePage} />
+        <Route path="i/import" component={ImportProfilePage} />
       </Route>
 
-      <Route path="account" component={ AccountApp }>
-        <IndexRoute component={ AccountMenu }/>
-        <Route path="delete" component={ DeleteAccountPage }/>
-        <Route path="backup" component={ BackupAccountPage }/>
-        <Route path="password" component={ ChangePasswordPage }/>
-        <Route path="create" component={ CreateAccountPage }/>
-        <Route path="api" component={ ApiSettingsPage }/>
-        <Route path="storage" component={ StorageProvidersPage }/>
+      <Route path="account" component={AccountApp}>
+        <IndexRoute component={AccountMenu} />
+        <Route path="delete" component={DeleteAccountPage} />
+        <Route path="backup" component={BackupAccountPage} />
+        <Route path="password" component={ChangePasswordPage} />
+        <Route path="create" component={CreateAccountPage} />
+        <Route path="api" component={ApiSettingsPage} />
+        <Route path="storage" component={StorageProvidersPage} />
       </Route>
 
-      <Route path="wallet" component={ WalletApp }>
-        <Route path="receive" component={ ReceivePage }/>
-        <Route path="send" component={ SendPage }/>
-        <Route path="send-core" component={ SendCorePage }/>
+      <Route path="wallet" component={WalletApp}>
+        <Route path="receive" component={ReceivePage} />
+        <Route path="send" component={SendPage} />
+        <Route path="send-core" component={SendCorePage} />
       </Route>
 
-      <Route path="/auth" component={ NewAuthPage }/>
+      <Route path="/auth" component={NewAuthPage} />
     </Route>
-    <Route path="/sign-up" component={ SignUpPage }/>
-    <Route path="/sign-up/*" component={ SignUpPage }/>
+    <Route path="/sign-up" component={SignUpPage} />
+    <Route path="/sign-up/*" component={SignUpPage} />
     { /**
      * TODO: move /update back up ^^, had to move it out of the 'app' nested route
      * because when we wipe data, it wants to redirect to /sign-up
      */}
-    <Route path="/update" component={ UpdateStatePage } />
-    <Route path="/sign-in" component={ SignInPage } />
-    <Route path="/sign-in/*" component={ SignInPage } />
-    <Route path="/seed" component={ SeedPage } />
-    <Route path="/connect-storage" component={ ConnectStoragePage } />
-    <Route path="/clear-auth" component={ ClearAuthPage } />
-    <Route path="/*" component={ NotFoundPage } />
+    <Route path="/update" component={UpdateStatePage} />
+    <Route path="/sign-in" component={SignInPage} />
+    <Route path="/sign-in/*" component={SignInPage} />
+    <Route path="/seed" component={SeedPage} />
+    <Route path="/connect-storage" component={ConnectStoragePage} />
+    <Route path="/clear-auth" component={ClearAuthPage} />
+    <Route path="/*" component={NotFoundPage} />
   </Router>
 )
