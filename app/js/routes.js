@@ -228,11 +228,12 @@ const accountCreated = connectedRouterRedirect({
       '/sign-up' :
       // Storage failed to connect
       '/connect-storage',
-  authenticatedSelector: state =>
-    // Not signed in
-    !!state.account.encryptedBackupPhrase &&
+  authenticatedSelector: (state, props) => !!props.location.query.echo || 
+    // No echo param (for protocol check)
+    // No keyphrase
+    (!!state.account.encryptedBackupPhrase &&
     // Storage failed to connect
-    !!state.settings.api.storageConnected,
+    !!state.settings.api.storageConnected),
   wrapperDisplayName: 'AccountCreated'
 })
 
