@@ -8,12 +8,14 @@ import { AuthActions } from './store/auth'
 import { IdentityActions } from '../profiles/store/identity'
 import { decodeToken } from 'jsontokens'
 import { parseZoneFile } from 'zone-file'
+import queryString from 'query-string'
 import {
   makeAuthResponse,
   getAuthRequestFromURL,
   redirectUserToApp,
   getAppBucketUrl,
-  isLaterVersion
+  isLaterVersion,
+  updateQueryStringParameter
 } from 'blockstack'
 import { AppsNode } from '@utils/account-utils'
 import {
@@ -117,6 +119,7 @@ class AuthPage extends React.Component {
     this.state = {
       currentIdentityIndex: this.props.defaultIdentity,
       authRequest: null,
+      echoRequestId: null,
       appManifest: null,
       coreSessionToken: null,
       decodedToken: null,
@@ -140,12 +143,16 @@ class AuthPage extends React.Component {
   }
 
   componentWillMount() {
+    const queryDict = queryString.parse(location.search)
+    const echoRequestId = queryDict.echo
+
     const authRequest = getAuthRequestFromURL()
     const decodedToken = decodeToken(authRequest)
     const { scopes } = decodedToken.payload
 
     this.setState({
       authRequest,
+      echoRequestId,
       decodedToken,
       scopes: {
         ...this.state.scopes,
@@ -159,8 +166,30 @@ class AuthPage extends React.Component {
     this.getFreshIdentities()
   }
 
+  redirectUserToEchoReply() {
+    let redirectURI = this.state.decodedToken.payload.redirect_uri
+    if (redirectURI) {
+      // Get the current localhost authentication url that the app will redirect back to,
+      // and remove the 'echo' param from it.
+      const authContinuationURI = updateQueryStringParameter(window.location.href, 'echo', '')
+      redirectURI = updateQueryStringParameter(redirectURI, 'echoReply', this.state.echoRequestId)
+      redirectURI = updateQueryStringParameter(redirectURI, 'authContinuation', encodeURIComponent(authContinuationURI))
+    } else {
+      throw new Error('Invalid redirect echo reply URI')
+    }
+    this.setState({ responseSent: true })
+    window.location = redirectURI
+  }
+  
   componentWillReceiveProps(nextProps) {
+
     if (!this.state.responseSent) {
+
+      if (this.state.echoRequestId) {
+        this.redirectUserToEchoReply()
+        return
+      }  
+
       const storageConnected = this.props.api.storageConnected
       this.setState({
         storageConnected
