@@ -12,13 +12,15 @@ const Loading = (props) => {
   if (props.error) {
     return <div>Error! <button onClick={props.retry}>Retry</button></div>
   } else if (props.pastDelay) {
-    return (<div style={ {
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    } }>Loading...</div>)
+    return (<div 
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >Loading...</div>)
   }
   return null
 }
