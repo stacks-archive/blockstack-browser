@@ -23,6 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var statusItem : NSStatusItem = NSStatusItem()
 
     var isDevModeEnabled : Bool = false
+    var isBetaModeEnabled : Bool = false
 
     var isRegTestModeEnabled : Bool = false
     var isRegTestModeChanging : Bool = false
@@ -139,7 +140,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func portalBaseUrl() -> String {
-        return "http://localhost:\(portalPort())"
+        if (isBetaModeEnabled) {
+            return "https://develop--reporter-beaver-73821.netlify.com"
+        } 
+        else {
+            return "http://localhost:\(portalPort())"
+        }
     }
 
     func portalPort() -> Int {
@@ -222,20 +228,37 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             menu.addItem(NSMenuItem.separator())
 
-            let devModeStatusMenuItem = NSMenuItem()
-            devModeStatusMenuItem.title = "Development Mode: \(isDevModeEnabled ? "Enabled" : "Disabled")"
-            devModeStatusMenuItem.isEnabled = false
-            menu.addItem(devModeStatusMenuItem)
+            if (!isBetaModeEnabled) {
+                let devModeStatusMenuItem = NSMenuItem()
+                devModeStatusMenuItem.title = "Development Mode: \(isDevModeEnabled ? "Enabled" : "Disabled")"
+                devModeStatusMenuItem.isEnabled = false
+                menu.addItem(devModeStatusMenuItem)
 
-            let devModeMenuItem = NSMenuItem()
-            devModeMenuItem.title = "\(isDevModeEnabled ? "Disable" : "Enable") Development Mode"
+                let devModeMenuItem = NSMenuItem()
+                devModeMenuItem.title = "\(isDevModeEnabled ? "Disable" : "Enable") Development Mode"
 
-            if(!isRegTestModeEnabled && !isRegTestModeChanging) {
-            devModeMenuItem.action = #selector(devModeClick)
-            devModeMenuItem.keyEquivalent = "d"
+                if(!isRegTestModeEnabled && !isRegTestModeChanging) {
+                    devModeMenuItem.action = #selector(devModeClick)
+                    devModeMenuItem.keyEquivalent = "d"
+                }
+
+                menu.addItem(devModeMenuItem)
             }
 
-            menu.addItem(devModeMenuItem)
+            if (!isDevModeEnabled) {
+                let betaModeStatusMenuItem = NSMenuItem()
+                betaModeStatusMenuItem.title = "Beta Mode: \(isBetaModeEnabled ? "Enabled" : "Disabled")"
+                betaModeStatusMenuItem.isEnabled = false
+                menu.addItem(betaModeStatusMenuItem)
+
+                let betaModeMenuItem = NSMenuItem()
+                betaModeMenuItem.title = "\(isBetaModeEnabled ? "Disable" : "Enable") Beta Mode"
+
+                betaModeMenuItem.action = #selector(betaModeClick)
+                betaModeMenuItem.keyEquivalent = "b"
+
+                menu.addItem(betaModeMenuItem)
+            }
 
             menu.addItem(NSMenuItem.separator())
 
@@ -291,6 +314,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func devModeClick(sender: AnyObject?) {
         os_log("devModeClick", log: log, type: .debug)
         isDevModeEnabled = !isDevModeEnabled
+    }
+
+    func betaModeClick(sender: AnyObject?) {
+        os_log("betaModeClick", log: log, type: .debug)
+        isBetaModeEnabled = !isBetaModeEnabled
     }
     
     func regTestModeClick(sender: AnyObject?) {
