@@ -5,14 +5,17 @@ import { Initial, LegacyGaia } from './views'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AuthActions } from './store/auth'
+import { IdentityActions } from '../profiles/store/identity'
 import { decodeToken } from 'jsontokens'
 import { parseZoneFile } from 'zone-file'
+import queryString from 'query-string'
 import {
   makeAuthResponse,
   getAuthRequestFromURL,
   redirectUserToApp,
   getAppBucketUrl,
-  isLaterVersion
+  isLaterVersion,
+  updateQueryStringParameter
 } from 'blockstack'
 import { AppsNode } from '@utils/account-utils'
 import {
@@ -79,7 +82,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, AuthActions)
+  const actions = Object.assign({}, AuthActions, IdentityActions)
   return bindActionCreators(actions, dispatch)
 }
 
@@ -106,7 +109,8 @@ class AuthPage extends React.Component {
     email: PropTypes.string,
     noCoreSessionToken: PropTypes.func.isRequired,
     addresses: PropTypes.array.isRequired,
-    publicKeychain: PropTypes.string.isRequired
+    publicKeychain: PropTypes.string.isRequired,
+    refreshIdentities: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -115,11 +119,13 @@ class AuthPage extends React.Component {
     this.state = {
       currentIdentityIndex: this.props.defaultIdentity,
       authRequest: null,
+      echoRequestId: null,
       appManifest: null,
       coreSessionToken: null,
       decodedToken: null,
       storageConnected: this.props.api.storageConnected,
       processing: false,
+      refreshingIdentities: true,
       invalidScopes: false,
       sendEmail: false,
       blockchainId: null,
@@ -137,12 +143,16 @@ class AuthPage extends React.Component {
   }
 
   componentWillMount() {
+    const queryDict = queryString.parse(location.search)
+    const echoRequestId = queryDict.echo
+
     const authRequest = getAuthRequestFromURL()
     const decodedToken = decodeToken(authRequest)
     const { scopes } = decodedToken.payload
 
     this.setState({
       authRequest,
+      echoRequestId,
       decodedToken,
       scopes: {
         ...this.state.scopes,
@@ -152,10 +162,34 @@ class AuthPage extends React.Component {
     })
 
     this.props.verifyAuthRequestAndLoadManifest(authRequest)
+
+    this.getFreshIdentities()
   }
 
+  redirectUserToEchoReply() {
+    let redirectURI = this.state.decodedToken.payload.redirect_uri
+    if (redirectURI) {
+      // Get the current localhost authentication url that the app will redirect back to,
+      // and remove the 'echo' param from it.
+      const authContinuationURI = updateQueryStringParameter(window.location.href, 'echo', '')
+      redirectURI = updateQueryStringParameter(redirectURI, 'echoReply', this.state.echoRequestId)
+      redirectURI = updateQueryStringParameter(redirectURI, 'authContinuation', encodeURIComponent(authContinuationURI))
+    } else {
+      throw new Error('Invalid redirect echo reply URI')
+    }
+    this.setState({ responseSent: true })
+    window.location = redirectURI
+  }
+  
   componentWillReceiveProps(nextProps) {
+
     if (!this.state.responseSent) {
+
+      if (this.state.echoRequestId) {
+        this.redirectUserToEchoReply()
+        return
+      }  
+
       const storageConnected = this.props.api.storageConnected
       this.setState({
         storageConnected
@@ -230,7 +264,7 @@ class AuthPage extends React.Component {
 
       const gaiaBucketAddress = nextProps.identityKeypairs[0].address
       const identityAddress = nextProps.identityKeypairs[identityIndex].address
-      const gaiaUrlBase = 'https://gaia.blockstack.org/hub'
+      const gaiaUrlBase = nextProps.api.gaiaHubConfig.url_prefix
 
       if (!profileUrlPromise) {
         profileUrlPromise = fetchProfileLocations(
@@ -321,6 +355,14 @@ class AuthPage extends React.Component {
         'componentWillReceiveProps: response already sent - doing nothing'
       )
     }
+  }
+
+  getFreshIdentities = async () => {
+    await this.props.refreshIdentities(
+      this.props.api,
+      this.props.addresses
+    )
+    this.setState({ refreshingIdentities: false })
   }
 
   completeAuthResponse = (
@@ -556,6 +598,7 @@ class AuthPage extends React.Component {
           deny: () => console.log('go back to app'),
           accounts: this.props.localIdentities,
           processing: this.state.processing,
+          refreshingIdentities: this.state.refreshingIdentities,
           selectedIndex: this.state.currentIdentityIndex,
           disableBackOnView: 0
         }

@@ -51,7 +51,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         os_log("applicationDidFinishLaunching: %{public}@", log: log, type: .default, blockstackDataURL().absoluteString)
 
-        portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
+        // portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
 
         // register initial user default values
         registerInitialUserDefaults()
@@ -488,6 +488,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return regTestCoreAPIPassword
         }
         
+        return generatePassword()
+
         let serviceNameData = (keychainServiceName as NSString).utf8String
         let accountNameData = (keychainAccountName as NSString).utf8String
 
