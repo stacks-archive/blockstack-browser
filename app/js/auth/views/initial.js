@@ -6,7 +6,13 @@ const basicInfo = 'read your basic info'
 const readEmail = 'read your email address'
 const publishData = 'publish data stored for this app'
 
-const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
+const Accounts = ({ list, handleClick, processing, refreshingIdentities, selectedIndex }) => {
+  let loadingMessage = null
+  if (processing) {
+    loadingMessage = 'Signing in...'
+  } else if (refreshingIdentities) {
+    loadingMessage = 'Loading...'
+  }
   if (list.length) {
     return list.map(({ username, ownerAddress, profile, ...account }, i) => {
       const person = new Person(profile)
@@ -17,9 +23,9 @@ const Accounts = ({ list, handleClick, processing, selectedIndex }) => {
           id={ownerAddress}
           avatarUrl={person.avatarUrl()}
           onClick={() => handleClick(i)}
-          loading={processing && i === selectedIndex}
-          disabled={processing}
-          placeholder="Signing in..."
+          loading={refreshingIdentities || (processing && i === selectedIndex)}
+          disabled={refreshingIdentities || processing}
+          placeholder={loadingMessage}
           style={{ transform: 'translate3d(0,0,0)' }}
           hideID
         />
@@ -75,6 +81,7 @@ const InitialScreen = ({
   processing,
   selectedIndex,
   login,
+  refreshingIdentities,
   ...rest
 }) => {
   const generatePermissionsList = () => {
@@ -108,6 +115,7 @@ const InitialScreen = ({
               list={accounts}
               handleClick={login}
               processing={processing}
+              refreshingIdentities={refreshingIdentities}
               selectedIndex={selectedIndex}
             />
           </Buttons>
@@ -134,13 +142,15 @@ InitialScreen.propTypes = {
   permissions: PropTypes.array,
   processing: PropTypes.bool,
   selectedIndex: PropTypes.number,
-  login: PropTypes.func
+  login: PropTypes.func,
+  refreshingIdentities: PropTypes.bool
 }
 Accounts.propTypes = {
   list: PropTypes.array.isRequired,
   handleClick: PropTypes.func,
   processing: PropTypes.bool,
-  selectedIndex: PropTypes.number
+  selectedIndex: PropTypes.number,
+  refreshingIdentities: PropTypes.bool
 }
 
 PermissionsList.propTypes = {

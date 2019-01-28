@@ -13,12 +13,12 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
-    <DefineConstants>HarvestPath=..\BlockstackBrowser\Resources</DefineConstants>
+    <DefineConstants>HarvestPath=$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\BlockstackBrowser\Resources'))</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>HarvestPath=..\BlockstackBrowser\Resources</DefineConstants>
+    <DefineConstants>HarvestPath=$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\..\BlockstackBrowser\Resources'))</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Product.wxs" />
