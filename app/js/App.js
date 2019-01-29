@@ -42,13 +42,14 @@ function mapStateToProps(state) {
   }
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       updateApi: SettingsActions.updateApi,
       isCoreRunning: SanityActions.isCoreRunning,
       isCoreApiPasswordValid: SanityActions.isCoreApiPasswordValid,
-      generateInstanceIdentifier: AppsActions.generateInstanceIdentifier
+      generateInstanceIdentifier: AppsActions.generateInstanceIdentifier,
+      doFetchApps: AppsActions.doFetchApps
     },
     dispatch
   )
@@ -71,6 +72,7 @@ class AppContainer extends Component {
     isCoreRunning: PropTypes.func.isRequired,
     isCoreApiPasswordValid: PropTypes.func.isRequired,
     generateInstanceIdentifier: PropTypes.func.isRequired,
+    doFetchApps: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string,
     stateVersion: PropTypes.number,
@@ -160,6 +162,9 @@ class AppContainer extends Component {
         search: this.props.location.search
       })
     }
+
+    // Fetch those apps!
+    this.props.doFetchApps()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -171,6 +176,7 @@ class AppContainer extends Component {
 
     if (!this.props.coreApiRunning) {
       // TODO connect to future notification system here
+      // TODO is this even used anymore?
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 

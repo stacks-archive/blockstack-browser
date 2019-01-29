@@ -1,27 +1,60 @@
-import * as types from './types'
+import {
+  UPDATE_APP_LIST,
+  UPDATE_INSTANCE_IDENTIFIER,
+  FETCH_APPS_ERROR,
+  FETCH_APPS_FINISHED,
+  FETCH_APPS_STARTED
+} from './types'
+
 import appList from '../../data/apps'
 
 const initialState = {
   apps: [],
+  topApps: [],
+  error: null,
+  loading: false,
   version: appList.version,
   lastUpdated: 0,
   instanceIdentifier: null,
   instanceCreationDate: null
 }
 
-function AppsReducer(state = initialState, action) {
-  switch (action.type) {
-    case types.UPDATE_APP_LIST:
-      return Object.assign({}, state, {
-        apps: action.apps || [],
-        version: action.version,
-        lastUpdated: action.lastUpdated
-      })
-    case types.UPDATE_INSTANCE_IDENTIFIER:
-      return Object.assign({}, state, {
-        instanceIdentifier: action.instanceIdentifier,
-        instanceCreationDate: action.instanceCreationDate
-      })
+const AppsReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
+    case FETCH_APPS_STARTED:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      }
+    case FETCH_APPS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: payload
+      }
+    case FETCH_APPS_FINISHED:
+      return {
+        ...state,
+        apps: payload.apps || [],
+        topApps: payload.topApps || [],
+        loading: false,
+        error: null,
+        lastUpdated: Date.now()
+      }
+    case UPDATE_APP_LIST:
+      return {
+        ...state,
+        apps: payload.apps || [],
+        version: payload.version,
+        lastUpdated: payload.lastUpdated
+      }
+    case UPDATE_INSTANCE_IDENTIFIER:
+      return {
+        ...state,
+        instanceIdentifier: payload.instanceIdentifier,
+        instanceCreationDate: payload.instanceCreationDate
+      }
     default:
       return state
   }
