@@ -8,6 +8,35 @@ import { Box, Flex, Type } from 'blockstack-ui'
 import { Hover } from 'react-powerplug'
 import { Spinner } from '@components/ui/components/spinner'
 
+const Loading = ({ ...rest }) => (
+  <Flex
+    flexDirection="column"
+    alignItems="center"
+    width={1}
+    justifyContent="center"
+    p={4}
+    {...rest}
+  >
+    <Box width="48px" mx="auto">
+      <Spinner color="black" size={48} />
+    </Box>
+    <Box py={4} textAlign="center">
+      <Type fontWeight="500" fontSize={2} opacity={0.5}>
+        Fetching apps...
+      </Type>
+    </Box>
+  </Flex>
+)
+
+const Content = ({ topApps, allApps, ...rest }) => (
+  <Box maxWidth={1200} width="100%" mx="auto" p={[1, 2, 4]} {...rest}>
+    <AppsSection title="Top Ranked Apps" apps={topApps} limit={15} />
+    {allApps.map(category => (
+      <AppsSection title={category.label} apps={category.apps} limit={15} />
+    ))}
+  </Box>
+)
+
 const AppsSection = ({ title, apps, limit, category, ...rest }) => {
   let appsList = apps
   if (limit) {
@@ -31,25 +60,16 @@ const AppsSection = ({ title, apps, limit, category, ...rest }) => {
       </Box>
       <Flex justifyContent="center" alignItems="center" flexWrap="wrap">
         {appsList.map(app => (
-          <AppIcon key={app.name} {...app} />
+          <AppItem
+            key={app.name}
+            name={app.name}
+            imgixImageUrl={app.imgixImageUrl}
+            website={app.website}
+          />
         ))}
       </Flex>
     </Box>
   )
-}
-
-function mapStateToProps(state) {
-  return {
-    apps: state.apps,
-    appListLastUpdated: state.apps.lastUpdated,
-    api: state.settings.api,
-    instanceIdentifier: state.apps.instanceIdentifier,
-    instanceCreationDate: state.apps.instanceCreationDate
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AppsActions), dispatch)
 }
 
 const Image = props => (
@@ -62,7 +82,7 @@ const Image = props => (
   />
 )
 
-const AppIcon = ({ website, imgixImageUrl, name }) => {
+const AppItem = ({ website, imgixImageUrl, name }) => {
   return (
     <Hover>
       {({ bind, hovered }) => (
@@ -120,81 +140,62 @@ const AppIcon = ({ website, imgixImageUrl, name }) => {
   )
 }
 
-AppIcon.propTypes = {
-  launchLink: PropTypes.string.isRequired,
-  iconImage: PropTypes.string.isRequired,
-  displayName: PropTypes.string.isRequired,
-  storageRequired: PropTypes.bool.isRequired
-}
-
-class HomeScreenPage extends Component {
-  static propTypes = {
-    apps: PropTypes.object.isRequired,
-    refreshAppList: PropTypes.func.isRequired,
-    appListLastUpdated: PropTypes.number,
-    api: PropTypes.object.isRequired,
-    instanceIdentifier: PropTypes.string,
-    instanceCreationDate: PropTypes.number
-  }
-
-  componentWillMount() {
-    // Refresh apps list every 12 hours
-    if (
-      this.props.appListLastUpdated === undefined ||
-      this.props.appListLastUpdated < Date.now() - 43200000
-    ) {
-      this.props.refreshAppList(
-        this.props.api.browserServerUrl,
-        this.props.instanceIdentifier,
-        this.props.instanceCreationDate
-      )
-    }
-  }
-
-  render() {
-    const loading = this.props.apps.loading && !this.props.apps.topApps.length
-    return (
-      <div>
-        <Navbar hideBackToHomeLink activeTab="home" />
-        <div className="home-screen">
-          {loading ? (
-            <Flex
-              flexDirection="column"
-              alignItems="center"
-              width={1}
-              justifyContent="center"
-              p={4}
-            >
-              <Box width="48px" mx="auto">
-                <Spinner color="black" size={48} />
-              </Box>
-              <Box py={4} textAlign="center">
-                <Type fontWeight="500" fontSize={2} opacity={0.5}>
-                  Fetching apps...
-                </Type>
-              </Box>
-            </Flex>
-          ) : (
-            <Box maxWidth={1200} width="100%" mx="auto" p={[1, 2, 4]}>
-              <AppsSection
-                title="Top Ranked Apps"
-                apps={this.props.apps.topApps}
-                limit={15}
-              />
-              {this.props.apps.appsByCategory.map(category => (
-                <AppsSection
-                  title={category.label}
-                  apps={category.apps}
-                  limit={15}
-                />
-              ))}
-            </Box>
-          )}
-        </div>
+const HomeScreenPage = props => {
+  const loading = props.apps && props.apps.loading && !props.apps.topApps.length
+  return (
+    <div>
+      <Navbar hideBackToHomeLink activeTab="home" />
+      <div className="home-screen">
+        {loading ? (
+          <Loading />
+        ) : (
+          <Content
+            allApps={props.apps.appsByCategory}
+            topApps={props.apps.topApps}
+          />
+        )}
       </div>
-    )
-  }
+    </div>
+  )
 }
+
+Content.propTypes = {
+  topApps: PropTypes.array.isRequired,
+  allApps: PropTypes.array.isRequired
+}
+
+AppsSection.propTypes = {
+  title: PropTypes.string.isRequired,
+  apps: PropTypes.array.isRequired,
+  limit: PropTypes.number.isRequired,
+  category: PropTypes.string.isRequired
+}
+AppItem.propTypes = {
+  website: PropTypes.string.isRequired,
+  imgixImageUrl: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired
+}
+
+HomeScreenPage.propTypes = {
+  apps: PropTypes.object.isRequired,
+  refreshAppList: PropTypes.func.isRequired,
+  doFetchApps: PropTypes.func.isRequired,
+  appListLastUpdated: PropTypes.number,
+  api: PropTypes.object.isRequired,
+  instanceIdentifier: PropTypes.string,
+  instanceCreationDate: PropTypes.number
+}
+
+const mapStateToProps = state => ({
+  apps: state.apps,
+  appListLastUpdated: state.apps.lastUpdated,
+  api: state.settings.api,
+  instanceIdentifier: state.apps.instanceIdentifier,
+  instanceCreationDate: state.apps.instanceCreationDate
+})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ ...AppsActions }, dispatch)
 
 export default connect(
   mapStateToProps,
