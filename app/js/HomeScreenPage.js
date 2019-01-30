@@ -6,6 +6,7 @@ import Navbar from './components/Navbar'
 import { AppsActions } from './store/apps'
 import { Box, Flex, Type } from 'blockstack-ui'
 import { Hover } from 'react-powerplug'
+import { Spinner } from '@components/ui/components/spinner'
 
 const AppsSection = ({ title, apps, limit, category, ...rest }) => {
   let appsList = apps
@@ -151,24 +152,44 @@ class HomeScreenPage extends Component {
   }
 
   render() {
+    const loading = this.props.apps.loading && !this.props.apps.topApps.length
     return (
       <div>
         <Navbar hideBackToHomeLink activeTab="home" />
         <div className="home-screen">
-          <Box maxWidth={1200} mx="auto" p={[1, 2, 4]}>
-            <AppsSection
-              title="Top Ranked Apps"
-              apps={this.props.apps.topApps}
-              limit={15}
-            />
-            {this.props.apps.appsByCategory.map(category => (
+          {loading ? (
+            <Flex
+              flexDirection="column"
+              alignItems="center"
+              width={1}
+              justifyContent="center"
+              p={4}
+            >
+              <Box width="48px" mx="auto">
+                <Spinner color="black" size={48} />
+              </Box>
+              <Box py={4} textAlign="center">
+                <Type fontWeight="500" fontSize={2} opacity={0.5}>
+                  Fetching apps...
+                </Type>
+              </Box>
+            </Flex>
+          ) : (
+            <Box maxWidth={1200} width="100%" mx="auto" p={[1, 2, 4]}>
               <AppsSection
-                title={category.label}
-                apps={category.apps}
+                title="Top Ranked Apps"
+                apps={this.props.apps.topApps}
                 limit={15}
               />
-            ))}
-          </Box>
+              {this.props.apps.appsByCategory.map(category => (
+                <AppsSection
+                  title={category.label}
+                  apps={category.apps}
+                  limit={15}
+                />
+              ))}
+            </Box>
+          )}
         </div>
       </div>
     )
