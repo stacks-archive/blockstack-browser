@@ -64,15 +64,7 @@ const generateInstanceIdentifier = () => {
   }
 }
 
-const fetchAppsList = async () => {}
-
-const fetchAppMiningApps = () => async dispatch => {
-  const response = await fetch(`${API_URL}/api/app-mining-apps`)
-  const { apps } = await response.json()
-  return apps
-}
-
-const doFetchApps = () => async (dispatch, getState) => {
+const doFetchApps = () => async dispatch => {
   dispatch({
     type: types.FETCH_APPS_STARTED
   })
@@ -95,7 +87,6 @@ const doFetchApps = () => async (dispatch, getState) => {
       .filter(app => app.category !== 'Sample Blockstack Apps')
 
     const categories = [...new Set(apps.map(app => app.category))]
-    console.log(categories)
 
     const appsByCategory = categories.map(category => ({
       label: category,
@@ -113,7 +104,6 @@ const doFetchApps = () => async (dispatch, getState) => {
       }
     })
   } catch (e) {
-    console.log(e)
     dispatch({
       type: types.FETCH_APPS_ERROR,
       payload: {
@@ -127,7 +117,6 @@ const AppsActions = {
   updateAppList,
   refreshAppList,
   generateInstanceIdentifier,
-  fetchAppsList,
   doFetchApps
 }
 

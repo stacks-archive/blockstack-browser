@@ -143,9 +143,9 @@ const AppItem = ({ website, imgixImageUrl, name }) => {
 const HomeScreenPage = props => {
   const loading = props.apps && props.apps.loading && !props.apps.topApps.length
   return (
-    <div>
+    <Box>
       <Navbar hideBackToHomeLink activeTab="home" />
-      <div className="home-screen">
+      <Box className="home-screen">
         {loading ? (
           <Loading />
         ) : (
@@ -154,8 +154,8 @@ const HomeScreenPage = props => {
             topApps={props.apps.topApps}
           />
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 
