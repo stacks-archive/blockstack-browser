@@ -4,7 +4,38 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Navbar from './components/Navbar'
 import { AppsActions } from './store/apps'
-import appList from './data/apps'
+import { Box, Flex, Type } from 'blockstack-ui'
+import { Hover } from 'react-powerplug'
+
+const AppsSection = ({ title, apps, limit, category, ...rest }) => {
+  let appsList = apps
+  if (limit) {
+    appsList = appsList.filter((app, i) => i <= limit - 1)
+  }
+  if (category) {
+    appsList = appsList.filter(app => app.category === category)
+  }
+  return (
+    <Box
+      width={1}
+      maxWidth={1100}
+      mx="auto"
+      p={4}
+      mb={4}
+      borderBottom="1px solid rgba(15,15,15,0.1)"
+      {...rest}
+    >
+      <Box textAlign="center">
+        <p className="app-section-heading">{title}</p>
+      </Box>
+      <Flex justifyContent="center" alignItems="center" flexWrap="wrap">
+        {appsList.map(app => (
+          <AppIcon key={app.name} {...app} />
+        ))}
+      </Flex>
+    </Box>
+  )
+}
 
 function mapStateToProps(state) {
   return {
@@ -20,23 +51,71 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AppsActions), dispatch)
 }
 
-const AppIcon = ({ launchLink, iconImage, displayName }) => {
-  /* eslint-disable */
-  const image = require(`../images/${iconImage}`)
-  /* eslint-enable */
+const Image = props => (
+  <Box
+    is="img"
+    borderRadius="15px"
+    boxShadow="0px 0px 35px 0px rgba(0, 0, 0, 0.15)"
+    bg="rgba(44, 150, 255, 0.15)"
+    {...props}
+  />
+)
+
+const AppIcon = ({ website, imgixImageUrl, name }) => {
   return (
-    <div className="container-fluid app-box-wrap">
-      <a href={launchLink} target="_blank" className="app-box-container">
-        <div className="app-box">
-          <picture>
-            <img src={image} alt={displayName} />
-          </picture>
-        </div>
-      </a>
-      <div className="app-text-container">
-        <h3>{displayName}</h3>
-      </div>
-    </div>
+    <Hover>
+      {({ bind, hovered }) => (
+        <Box
+          maxWidth={[80, 100, 100]}
+          width={[1 / 3, 1 / 4, 1 / 4, 1 / 4, 1 / 5]}
+          p={2}
+          m={[2, 3, 4, 4]}
+          transition="0.15s all ease-in-out"
+          transform={hovered ? 'translateY(-5px)' : 'none'}
+          color="blue.dark"
+          {...bind}
+        >
+          <Box
+            maxWidth="100%"
+            width="100%"
+            display="block"
+            is="a"
+            href={website}
+            target="_blank"
+            style={{
+              textDecoration: 'none',
+              color: 'black !important',
+              textOverflow: 'ellipsis'
+            }}
+          >
+            <Image
+              maxWidth="100%"
+              width="100%"
+              display="block"
+              src={imgixImageUrl}
+              alt={name}
+              mb={3}
+            />
+            <Box textAlign="center">
+              <Type
+                is="h3"
+                fontSize={[2]}
+                lineHeight={1.45}
+                color="black !important"
+                style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  maxWidth: '100%'
+                }}
+              >
+                {name}
+              </Type>
+            </Box>
+          </Box>
+        </Box>
+      )}
+    </Hover>
   )
 }
 
@@ -72,54 +151,31 @@ class HomeScreenPage extends Component {
   }
 
   render() {
-    const appSections = [{
-      title: 'User-ready Apps',
-      key: 'user_ready'
-    }, {
-      title: 'Chat Apps',
-      key: 'user_ready_chat'
-    }, {
-      title: 'Wallet Apps',
-      key: 'user_ready_wallet'
-    }, {
-      title: 'Token Portfolio Apps',
-      key: 'user_ready_token'
-    }, {
-      title: 'Apps-in-progress',
-      key: 'in_progress'
-    }]
-
     return (
       <div>
         <Navbar hideBackToHomeLink activeTab="home" />
         <div className="home-screen">
-          <div className="container-fluid app-center">
-            <div className="container app-wrap text-center">
-              {appSections.map((section) => (
-                <div className="app-section m-b-45" key={section.key}>
-                  <p className="app-section-heading">{section.title}</p>
-                  <div className="app-container no-padding">
-                    {appList.apps
-                      .filter(app => app.status === section.key)
-                      .map(app => (
-                        <AppIcon
-                          key={app.name}
-                          iconImage={app.appIcon.small}
-                          displayName={app.displayName}
-                          launchLink={app.launchLink}
-                          storageRequired={!!app.storageRequired}
-                        />
-                      )
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Box maxWidth={1200} mx="auto" p={[1, 2, 4]}>
+            <AppsSection
+              title="Top Ranked Apps"
+              apps={this.props.apps.topApps}
+              limit={15}
+            />
+            {this.props.apps.appsByCategory.map(category => (
+              <AppsSection
+                title={category.label}
+                apps={category.apps}
+                limit={15}
+              />
+            ))}
+          </Box>
         </div>
       </div>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreenPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreenPage)

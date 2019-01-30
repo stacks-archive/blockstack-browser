@@ -11,6 +11,7 @@ import appList from '../../data/apps'
 const initialState = {
   apps: [],
   topApps: [],
+  appsByCategory: [],
   error: null,
   loading: false,
   version: appList.version,
@@ -38,6 +39,7 @@ const AppsReducer = (state = initialState, { type, payload }) => {
         ...state,
         apps: payload.apps || [],
         topApps: payload.topApps || [],
+        appsByCategory: payload.appsByCategory || [],
         loading: false,
         error: null,
         lastUpdated: Date.now()

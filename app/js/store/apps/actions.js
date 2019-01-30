@@ -87,18 +87,29 @@ const doFetchApps = () => async (dispatch, getState) => {
       responses[1].json()
     ])
 
-    const blockstackApps = allApps.apps
+    const apps = allApps.apps
       .filter(
         app =>
           app.authentication === 'Blockstack' || app.storageNetwork === 'Gaia' // only blockstack apps
       )
       .filter(app => app.category !== 'Sample Blockstack Apps')
 
+    const categories = [...new Set(apps.map(app => app.category))]
+    console.log(categories)
+
+    const appsByCategory = categories.map(category => ({
+      label: category,
+      apps: apps.filter(app => app.category === category)
+    }))
+
+    const topApps = appMiningApps.apps.filter(app => app.miningReady)
+
     dispatch({
       type: types.FETCH_APPS_FINISHED,
       payload: {
-        apps: blockstackApps,
-        topApps: appMiningApps.apps
+        apps,
+        topApps,
+        appsByCategory
       }
     })
   } catch (e) {
