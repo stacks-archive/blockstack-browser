@@ -292,7 +292,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         os_log("devModeClick", log: log, type: .debug)
         isDevModeEnabled = !isDevModeEnabled
     }
-    
+
     func regTestModeClick(sender: AnyObject?) {
         os_log("regTestModeClick", log: log, type: .debug)
         if(!isRegTestModeChanging) {
@@ -376,7 +376,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func startPortalProxy(complete: @escaping () -> Void) {
-        let proxyPath = Bundle.main.path(forResource: "blockstackProxy", ofType: "")
+        let nodeBinPath = Bundle.main.path(forResource: "node", ofType: "", inDirectory: "server")
+        let proxyPath = Bundle.main.path(forResource: "blockstackProxy.js", ofType: "", inDirectory: "server")
         let portalPath = Bundle.main.path(forResource: "browser", ofType: "")
 
         os_log("Portal proxy path: %{public}@", log: log, type: .info, proxyPath!)
@@ -397,27 +398,58 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             os_log("Can't copy Portal code to the run path: %{public}@", log: log, type: .error, portalRunPath())
         }
 
+        self.portalProxyProcess.launchPath = nodeBinPath
 
-        self.portalProxyProcess.launchPath = proxyPath
-
-        self.portalProxyProcess.arguments = [String(self.productionModePortalPort), self.portalRunPath()]
+        self.portalProxyProcess.arguments = [proxyPath!, String(self.productionModePortalPort), self.portalRunPath()]
 
         os_log("Starting Blockstack Portal proxy...", log: log, type: .default)
-
+        
+        let stdErrorPipe = Pipe()
+        self.portalProxyProcess.standardError = stdErrorPipe
+        self.portalProxyProcess.terminationHandler = {
+            task in
+            DispatchQueue.main.async(execute: {
+                let errorData = stdErrorPipe.fileHandleForReading.readDataToEndOfFile()
+                let errorString = NSString(data: errorData, encoding: String.Encoding.utf8.rawValue)! as String
+                let alert = NSAlert()
+                alert.messageText = "Blockstack Error: Portal server was terminated"
+                alert.informativeText = errorString
+                alert.alertStyle = NSAlertStyle.warning
+                alert.runModal()
+            })
+        }
+        
         self.portalProxyProcess.launch()
         complete()
 
     }
 
     func startCorsProxy(complete: @escaping () -> Void) {
-        let corsProxyPath = Bundle.main.path(forResource: "corsproxy", ofType: "")
+        let nodeBinPath = Bundle.main.path(forResource: "node", ofType: "", inDirectory: "server")
+        let corsProxyPath = Bundle.main.path(forResource: "corsproxy.js", ofType: "", inDirectory: "server")
 
         os_log("CORS proxy Path: %{public}@", log: log, type: .info, corsProxyPath!)
 
-        corsProxyProcess.launchPath = corsProxyPath
+        corsProxyProcess.arguments = [corsProxyPath!]
+        corsProxyProcess.launchPath = nodeBinPath
 
         os_log("Starting CORS proxy...", log: log, type: .default)
 
+        let stdErrorPipe = Pipe()
+        corsProxyProcess.standardError = stdErrorPipe
+        corsProxyProcess.terminationHandler = {
+            task in
+            DispatchQueue.main.async(execute: {
+                let errorData = stdErrorPipe.fileHandleForReading.readDataToEndOfFile()
+                let errorString = NSString(data: errorData, encoding: String.Encoding.utf8.rawValue)! as String
+                let alert = NSAlert()
+                alert.messageText = "Blockstack Error: CORS proxy was terminated"
+                alert.informativeText = errorString
+                alert.alertStyle = NSAlertStyle.warning
+                alert.runModal()
+            })
+        }
+        
         corsProxyProcess.launch()
         complete()
     }
@@ -455,7 +487,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if(isRegTestModeEnabled && !isRegTestModeChanging) {
             return regTestCoreAPIPassword
         }
-
+        
         return generatePassword()
 
         let serviceNameData = (keychainServiceName as NSString).utf8String
