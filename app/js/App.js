@@ -20,6 +20,8 @@ import Modal from 'react-modal'
 import NotificationsSystem from 'reapop'
 import NotificationsTheme from 'reapop-theme-wybo'
 import { hot } from 'react-hot-loader'
+import { ThemeProvider } from 'styled-components'
+import { Box, theme } from 'blockstack-ui'
 
 import log4js from 'log4js'
 
@@ -217,10 +219,17 @@ class AppContainer extends Component {
   render() {
     const { children, noHeader } = this.props
     return (
-      <div className={`body-main ${noHeader ? 'no-header' : ''}`}>
-        <div className="wrapper footer-padding">{children}</div>
-        <NotificationsSystem theme={NotificationsTheme} />
-      </div>
+      <ThemeProvider theme={theme}>
+        <Box bg="blue.light">
+          <div
+            className={`body-main ${noHeader ? 'no-header' : ''}`}
+            style={{ background: 'transparent' }}
+          >
+            <div className="wrapper footer-padding">{children}</div>
+            <NotificationsSystem theme={NotificationsTheme} />
+          </div>
+        </Box>
+      </ThemeProvider>
     )
   }
 }
