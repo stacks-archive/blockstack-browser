@@ -1,6 +1,7 @@
 
-const { WebDriver, By, until } = require('selenium-webdriver');
-const fs = require('fs').promises;
+const { WebDriver, By, until, WebElement } = require('selenium-webdriver');
+const { promisify } = require('util');
+const fs = require('fs');
 
 /** @type {WebDriver} */
 let driver;
@@ -32,8 +33,34 @@ module.exports = class Util {
     }
   }
 
-  static waitElement(locator, tries = 3) {
-    return Util.retry(() => driver.wait(until.elementLocated(locator)), tries);
+  /**
+   * @param {WebElement} element 
+   */
+  static async scrollIntoView(element) { 
+    await driver.executeScript('arguments[0].scrollIntoView(true);', element);
+  }
+
+  /**
+   * This callback is displayed as a global member.
+   * @callback elementThenCallback
+   * @param {WebElement} element
+   */
+
+  /**
+   * Loops with try/catch around the locator function for specified amount of tries.
+   * @param {elementThenCallback} then
+   * @returns {Promise<WebElement>} 
+   */
+  static async waitElement(locator, then = undefined) {
+    return await Util.retry(async () => {
+      let el = await driver.wait(until.elementLocated(locator));
+      await driver.wait(until.elementIsVisible(el));
+      await Util.scrollIntoView(el);
+      if (then) {
+        await Promise.resolve(then(el));
+      }
+      return el;
+    });
   }
 
   static getRandomInt(min = 1000000000, max = 99999999999) {
@@ -48,7 +75,7 @@ module.exports = class Util {
 
   static async screenshot(filename = 'screenshot.png') {
     const image = await driver.takeScreenshot();
-    await fs.writeFile(filename, image, 'base64');
+    await promisify(fs.writeFile)(filename, image, 'base64');
   }
 
 }
