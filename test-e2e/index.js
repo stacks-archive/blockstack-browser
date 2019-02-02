@@ -8,6 +8,7 @@ const getTestBrowsers = () => {
   if (process.platform === 'darwin') {
     browsers.push('safari')
   }
+  return ['safari'];
   return new Set(browsers);
 };
 
@@ -26,8 +27,9 @@ for (let browser of getTestBrowsers()) {
 
     let driver;
 
-    before(() => {
-      driver = new Builder().forBrowser(browser).build();
+    before(async () => {
+      driver = await new Builder().forBrowser(browser).build();
+      await driver.manage().setTimeouts({implicit: 1000});
     })
 
     step('load initial page', async () => {
@@ -35,17 +37,17 @@ for (let browser of getTestBrowsers()) {
     });
 
     step('load create new ID page', async () => {
-      if (process.env.BLOCKSTACK_REGISTRAR_API_KEY) {
-        await driver.executeScript(`window.BLOCKSTACK_REGISTRAR_API_KEY = "${process.env.BLOCKSTACK_REGISTRAR_API_KEY}"`);
-      } else {
-        console.warn('No BLOCKSTACK_REGISTRAR_API_KEY env var has been set. Username registrations may fail due to IP blocking.')
-      }
-      await driver.findElement(By.xpath('//div[text()="Create new ID"]')).then(el => el.click());
+      //if (process.env.BLOCKSTACK_REGISTRAR_API_KEY) {
+      //  await driver.executeScript(`window.BLOCKSTACK_REGISTRAR_API_KEY = "${process.env.BLOCKSTACK_REGISTRAR_API_KEY}"`);
+      //} else {
+      //  console.warn('No BLOCKSTACK_REGISTRAR_API_KEY env var has been set. Username registrations may fail due to IP blocking.')
+      //}
+      await driver.wait(until.elementLocated(By.xpath('//div[text()="Create new ID"]'))).then(el => el.click());
     });
 
     let randomUsername
     step('enter unique username ', async () => {
-      randomUsername = `e2e_test_${Date.now()/100000|0}_${getRandomInt(100000,999999)}`;
+      randomUsername = `test_e2e_${Date.now()/100000|0}_${getRandomInt(100000,999999)}`;
       await driver.findElement(By.css('input[type="text"][name="username"]')).then(el => el.sendKeys(randomUsername));
       await driver.findElement(By.xpath('//button[contains(., "Check Availability")]')).then(el => el.click());
       await driver.wait(until.elementLocated(By.xpath('//button[contains(., "Continue")]'))).then(el => el.click());
@@ -72,13 +74,11 @@ for (let browser of getTestBrowsers()) {
     let keyWords;
     step('get secret recovery key phrase', async () => {
       // First click redirects the page from /sign-up to /seed but doesn't change the form
-      await driver.findElement(By.xpath('//div[text()="Secret Recovery Key"]/parent::div')).then(el => el.click());
+      await driver.wait(until.elementLocated(By.xpath('//div[text()="Secret Recovery Key"]/parent::div'))).then(el => el.click());
       await driver.wait(until.elementLocated(By.xpath('//div[contains(., "Save your Secret Recovery")]')));
       await driver.findElement(By.xpath('//div[text()="Secret Recovery Key"]/parent::div')).then(el => el.click());
-
       // Get the recovery key phrase
       keyWords = await driver.wait(until.elementLocated(By.xpath('//*[text()="Your Secret Recovery Key"]/following-sibling::*'))).then(el => el.getText());
-      console.log(`PHRASE: ${keyWords}`);
       keyWords = keyWords.trim().split(' ');
       expect(keyWords).lengthOf(12, 'Recovery key phrase should be 12 words');
       await driver.findElement(By.xpath('//div[text()="Continue"]/parent::div')).then(el => el.click());
@@ -86,7 +86,6 @@ for (let browser of getTestBrowsers()) {
 
     step('perform recovery key phrase verification instructions', async () => {
       let selectWords = await driver.wait(until.elementLocated(By.xpath('//*[contains(text(), "Select words #")]'))).then(el => el.getText());
-      console.log(`SELECT WORDS INSTRUCTIONS: ${selectWords}`);
       selectWords = selectWords.match(/#([0-9]+)/g).map(s => keyWords[parseInt(s.slice(1)) - 1]);
       for (let selectWord of selectWords) {
         await driver.findElement(By.xpath(`//div[span[text()="${selectWord}"]]`)).then(el => el.click());
