@@ -48,6 +48,9 @@ for (const testEnvironment of getTestEnvironments()) {
       await waitElement(By.css('input[type="password"][name="password"]'), el => el.sendKeys(randomPassword));
       await waitElement(By.css('input[type="password"][name="passwordConfirm"]'), el => el.sendKeys(randomPassword));
       await waitElement(By.xpath('//button[contains(., "Register ID")]'), el => el.click());
+    });
+
+    step('enter email', async () => {
       await waitElement(By.css('input[type="email"][name="email"]'), el => el.sendKeys(`${randomUsername}@none.test`));
       await waitElement(By.xpath('//button[contains(., "Next")]'), el => el.click());
     });

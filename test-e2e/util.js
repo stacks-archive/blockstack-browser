@@ -18,7 +18,7 @@ module.exports = class Util {
   /**
    * @param {Promise} func
    */
-  static async retry(func, tries = 3) {
+  static async retry(func, tries = 10) {
     for (let i = 0; i < tries; i++) {
       try {
         return await Promise.resolve(func());
