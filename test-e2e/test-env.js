@@ -22,6 +22,7 @@ function* getBrowserstackEnvironments(browserstackAuth) {
           usingServer(BROWSERSTACK_HUB_URL).
           withCapabilities(capability).
           build();
+        await driver.manage().setTimeouts({ implicit: 1000, pageLoad: 10000 });
         return driver;
       }
     };
@@ -42,7 +43,7 @@ function* getLocalBrowserEnvironments() {
         const driver = await new Builder()
           .forBrowser(browser)
           .build();
-        await driver.manage().setTimeouts({ implicit: 1000 });
+        await driver.manage().setTimeouts({ implicit: 1000, pageLoad: 10000 });
         return driver;
       }
     };
