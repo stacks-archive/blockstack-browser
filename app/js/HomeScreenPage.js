@@ -29,8 +29,8 @@ const Loading = ({ ...rest }) => (
 )
 
 const Content = ({ topApps, allApps, ...rest }) => (
-  <Box maxWidth={1200} width="100%" mx="auto" p={[1, 2, 4]} {...rest}>
-    <AppsSection title="Top Ranked Apps" apps={topApps} limit={15} />
+  <Box maxWidth={1280} width="100%" mx="auto" p={[1, 2, 4]} {...rest}>
+    <AppsSection title="Top Ranked Apps" apps={topApps} limit={24} />
     {allApps.map(category => (
       <AppsSection title={category.label} apps={category.apps} limit={15} />
     ))}
@@ -48,7 +48,6 @@ const AppsSection = ({ title, apps, limit, category, ...rest }) => {
   return (
     <Box
       width={1}
-      maxWidth={1100}
       mx="auto"
       p={4}
       mb={4}
@@ -58,13 +57,19 @@ const AppsSection = ({ title, apps, limit, category, ...rest }) => {
       <Box textAlign="center">
         <p className="app-section-heading">{title}</p>
       </Box>
-      <Flex justifyContent="center" alignItems="center" flexWrap="wrap">
+      <Flex
+        pt={4}
+        justifyContent={['space-between', 'center']}
+        alignItems="flex-start"
+        flexWrap="wrap"
+      >
         {appsList.map(app => (
           <AppItem
             key={app.name}
             name={app.name}
             imgixImageUrl={app.imgixImageUrl}
             website={app.website}
+            description={app.description}
           />
         ))}
       </Flex>
@@ -82,58 +87,72 @@ const Image = props => (
   />
 )
 
-const AppItem = ({ website, imgixImageUrl, name }) => {
+const AppItem = ({ website, imgixImageUrl, name, description }) => {
+  const descMaxLength = 55
+  let desc = description.trim()
+
+  if (description[description.length - 1] !== '.') {
+    desc += '.'
+  }
+
+  if (description.length > descMaxLength) {
+    desc = <>{desc.substring(0, descMaxLength).trim()}&#8230;</>
+  }
+
   return (
     <Hover>
       {({ bind, hovered }) => (
         <Box
-          maxWidth={[80, 100, 100]}
-          width={[1 / 3, 1 / 4, 1 / 4, 1 / 4, 1 / 5]}
-          p={2}
-          m={[2, 3, 4, 4]}
+          width={['calc(50% - 10px)', 1 / 3, 1 / 3, 1 / 4]}
+          maxWidth={['160px', 'unset', 'unset', 'unset']}
+          pr={[0, 3, 3, 4]}
+          flexShrink={0}
+          mb={[5]}
           transition="0.15s all ease-in-out"
           transform={hovered ? 'translateY(-5px)' : 'none'}
           color="blue.dark"
           {...bind}
         >
-          <Box
+          <Flex
             maxWidth="100%"
-            width="100%"
-            display="block"
+            width={1}
             is="a"
             href={website}
             target="_blank"
+            alignItems="center"
+            flexDirection={['column', 'row', 'row', 'row']}
+            textAlign={['center', 'left', 'left', 'left']}
             style={{
               textDecoration: 'none',
-              color: 'black !important',
-              textOverflow: 'ellipsis'
+              color: 'black !important'
             }}
           >
             <Image
               maxWidth="100%"
-              width="100%"
+              width="64px"
               display="block"
+              flexShrink="0"
               src={imgixImageUrl}
               alt={name}
-              mb={3}
             />
-            <Box textAlign="center">
-              <Type
-                is="h3"
-                fontSize={[2]}
-                lineHeight={1.45}
-                color="black !important"
-                style={{
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  maxWidth: '100%'
-                }}
-              >
-                {name}
-              </Type>
+            <Box ml={[0, 3, 3, 3]} mt={[3, 0, 0, 0]}>
+              <Box>
+                <Type
+                  is="h3"
+                  fontSize={[2]}
+                  lineHeight={1.45}
+                  fontWeight="600"
+                  color="black !important"
+                  mb={1}
+                >
+                  {name}
+                </Type>
+              </Box>
+              <Box opacity={0.75} color="black !important">
+                {desc}
+              </Box>
             </Box>
-          </Box>
+          </Flex>
         </Box>
       )}
     </Hover>
@@ -173,7 +192,8 @@ AppsSection.propTypes = {
 AppItem.propTypes = {
   website: PropTypes.string.isRequired,
   imgixImageUrl: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
 }
 
 HomeScreenPage.propTypes = {
