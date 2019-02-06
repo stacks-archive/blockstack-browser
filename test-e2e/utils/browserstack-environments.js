@@ -15,14 +15,14 @@ module.exports = [
     'os' : 'Windows',
     'os_version' : '10',
     'resolution' : '1024x768',
-  }, {
+  }/*, {
     'desc': 'Win10-Edge-18.0',
     'browserName' : 'Edge',
     'browser_version' : '18.0',
     'os' : 'Windows',
     'os_version' : '10',
     'resolution' : '1024x768',
-  }, 
+  }*/, 
 
   // macOS
   {
@@ -46,14 +46,7 @@ module.exports = [
     'os' : 'OS X',
     'os_version' : 'Mojave',
     'resolution' : '1024x768',
-  }/*,  Browser bug */ /*{
-    'desc': 'macOS-10.14-Mojave-Opera-12.15',
-    'browserName' : 'Opera',
-    'browser_version' : '12.15',
-    'os' : 'OS X',
-    'os_version' : 'Mojave',
-    'resolution' : '1024x768',
-  }*/,
+  },
 
   // iOS
   {
@@ -63,11 +56,11 @@ module.exports = [
     'realMobile' : 'true',
     'os_version' : '12',
   }, {
-    'desc': 'iOS-10-iPhone-7',
+    'desc': 'iOS-11-iPhone-8',
     'browserName' : 'iPhone',
-    'device' : 'iPhone 7',
+    'device' : 'iPhone 8',
     'realMobile' : 'true',
-    'os_version' : '10',
+    'os_version' : '11'
   },
 
   // Android

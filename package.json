@@ -213,7 +213,7 @@
     "start": "serve build --single",
     "web": "npm run build",
     "prod-webapp": "npm run clean && cross-env NODE_ENV=production WEBAPP=true webpack",
-    "test-e2e": "mocha --opts test-e2e/mocha.opts test-e2e/index.js",
-    "test-e2e-browserstack": "cross-env USE_BROWSERSTACK=true mocha --opts test-e2e/mocha.opts test-e2e/index.js"
+    "test-e2e": "mocha --opts test-e2e/mocha.opts test-e2e",
+    "test-e2e-browserstack": "cross-env USE_BROWSERSTACK=true mocha --opts test-e2e/mocha.opts test-e2e"
   }
 }

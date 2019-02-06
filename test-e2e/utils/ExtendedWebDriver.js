@@ -1,27 +1,34 @@
 const { WebDriver, By, until, WebElement } = require('selenium-webdriver');
 const { promisify } = require('util');
 const fs = require('fs');
+const helpers = require('./helpers');
 
-module.exports = class ExtendedWebDriver extends WebDriver {
+/**
+ * Adds helper methods to a WebDriver instance. 
+ * This includes some fairly typical boilerplate code
+ * for performing try/catch/retry techniques for reducing 
+ * selenium flakiness - see http://lmgtfy.com/?q=selenium+flakiness
+ */
+class ExtendedWebDriver extends WebDriver {
 
   /**
+   * Uses a mixin pattern to merge the methods of a given WebDriver instance with
+   * this class instance. 
    * @param {WebDriver} webDriver
    */
   constructor(driver) {
     super(null, null);
     this.driver = driver;
 
-    const extendedProps = Object.getOwnPropertyNames(ExtendedWebDriver.prototype);
-    const defaultProps = Object.getOwnPropertyNames(WebDriver.prototype);
-    for (const prop of defaultProps) {
-      if (!extendedProps.includes(prop) && typeof driver[prop] === 'function') {
-        Object.defineProperty(this, prop, { value: driver[prop].bind(driver) });
-      }
-    }
+    // Merge functions from the given WebDriver instance into this instance.
+    helpers.mixin(this, driver);
   }
 
   /**
-   * @param {Promise} func
+   * Retries a given function until the given time has elapsed. 
+   * @param {(Promise<any>|(function():any)} func
+   * @param {number} timeout - milliseconds to continue re-trying execution of a failing function.
+   * @param {number} poll - milliseconds to wait before trying a failed function.
    */
   async retry(func, timeout, poll) {
     const startTime = Date.now();
@@ -44,6 +51,47 @@ module.exports = class ExtendedWebDriver extends WebDriver {
     }
     console.error(`Error after timeout period has elapsed.`);
     throw lastErr;
+  }
+
+  async getPlatform() {
+    if (this.platform) {
+      return this.platform;
+    }
+    const session = await this.getSession();
+    const platform = session.getCapabilities().getPlatform();
+    this.platform = platform;
+    return platform;
+  }
+
+  /**
+   * Loops with try/catch around the locator function for specified amount of tries.
+   * @param {!(By|Function)} locator The locator to use.
+   * @param {string} text The string of keys to send
+   * @returns {Promise<WebElement>} 
+   */
+  async sendKeys(locator, text) {
+    const platform = await this.getPlatform();
+    if (platform !== 'iOS') {
+      await this.el(locator, el => el.sendKeys(text));
+    } else { 
+      // Bug on iOS devices with selenium/appium & react
+      // See: https://github.com/facebook/react/issues/11488#issuecomment-347775628
+      const element = await this.el(locator);
+      await this.executeScript(`
+        let input = arguments[0];
+        let lastValue = input.value;
+        input.value = arguments[1];
+        let event = new Event('input', { bubbles: true });
+        // React15 work-around
+        event.simulated = true;
+        // React16 work-around
+        let tracker = input._valueTracker;
+        if (tracker) {
+          tracker.setValue(lastValue);
+        }
+        input.dispatchEvent(event);
+      `, element, text);
+    }
   }
 
   /**
@@ -101,3 +149,5 @@ module.exports = class ExtendedWebDriver extends WebDriver {
     }
   }
 }
+
+module.exports = ExtendedWebDriver;

@@ -1,5 +1,10 @@
 --require mocha-steps
---timeout 60000
+--timeout 100000
 --full-trace
-# --fgrep Win10-Chrome
+--recursive
+--sort
 # --fgrep firefox
+# --fgrep safari
+# --fgrep Win10-Chrome
+# --fgrep Android
+# --fgrep iOS
