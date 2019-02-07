@@ -96,6 +96,7 @@
     "babel-plugin-module-resolver": "^3.1.3",
     "babel-plugin-rewire": "^1.2.0",
     "babel-plugin-styled-components": "^1.10.0",
+    "browserstack-local": "^1.3.7",
     "chai": "^3.5.0",
     "chromedriver": "^2.45.0",
     "copy-webpack-plugin": "^4.5.2",
@@ -214,7 +215,7 @@
     "web": "npm run build",
     "prod-webapp": "npm run clean && cross-env NODE_ENV=production WEBAPP=true webpack",
     "test-e2e": "mocha --opts test-e2e/mocha.opts test-e2e",
-    "test-e2e-browserstack": "cross-env USE_BROWSERSTACK=true npm run test-e2e",
-    "test-e2e-serve": "npm run start & cross-env E2E_BROWSER_HOST=http://localhost:5000 npm run test-e2e"
+    "test-e2e:localBuild": "npm run build && ( ( kill -9 $( lsof -i:5222 -t -sTCP:LISTEN ) || serve -l 5222 build ) & cross-env E2E_BROWSER_HOST=http://localhost:5222 npm run test-e2e )",
+    "test-e2e:browserstack": "cross-env USE_BROWSERSTACK=true npm run test-e2e:localBuild"
   }
 }
