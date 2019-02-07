@@ -76,20 +76,19 @@ class ExtendedWebDriver extends WebDriver {
     } else { 
       // Bug on iOS devices with selenium/appium & react
       // See: https://github.com/facebook/react/issues/11488#issuecomment-347775628
+      // Updated to use less hacky workaround from cypress:
+      // See: https://github.com/cypress-io/cypress/pull/732/files#diff-ed17d49edc10403752ba3d786a7512dbR34
       const element = await this.el(locator);
       await this.executeScript(`
         let input = arguments[0];
-        let lastValue = input.value;
-        input.value = arguments[1];
-        let event = new Event('input', { bubbles: true });
-        // React15 work-around
-        event.simulated = true;
-        // React16 work-around
-        let tracker = input._valueTracker;
-        if (tracker) {
-          tracker.setValue(lastValue);
+        if (input.tagName === "INPUT") {
+          let valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+          valueSetter.call(input, arguments[1]);
+        } else { 
+          let valueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+          valueSetter.call(input, arguments[1]);
         }
-        input.dispatchEvent(event);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
       `, element, text);
     }
   }
@@ -123,6 +122,15 @@ class ExtendedWebDriver extends WebDriver {
       }
       return el;
     }, timeout, poll);
+  }
+
+  /**
+   * Loops with try/catch around the locator and click function for specified amount of tries.
+   * @param {!(By|Function)} locator The locator to use.
+   * @returns {Promise<WebElement>} 
+   */
+  async click(locator, { timeout = 15000, poll = 200, driverWait = 2500 } = {}) {
+    return await this.el(locator, el => el.click(), { timeout, poll, driverWait });
   }
 
   async screenshot(filename = 'screenshot.png') {
