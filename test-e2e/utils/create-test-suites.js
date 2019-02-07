@@ -14,31 +14,38 @@ const helpers = require('./helpers');
 
 const BROWSERSTACK_HUB_URL = 'http://hub-cloud.browserstack.com/wd/hub';
 
-
-// Determine which browser host endpoint to run tests against.
-const browserHostUrl = (() => {
-  const E2E_BROWSER_HOST = 'E2E_BROWSER_HOST';
-  const PROD_HOST = 'https://browser.blockstack.org';
-  const hostUrl = process.env[E2E_BROWSER_HOST] || PROD_HOST;
-  if (!process.env[E2E_BROWSER_HOST]) {
-    console.warn(`Warning: The browser host url was not set via the ${E2E_BROWSER_HOST} env var.. running tests against the production endpoint "${PROD_HOST}"`);
-  } else {
-    console.log(`Running e2e tests against endpoint ${hostUrl}`);
+const config = {
+  browserHostUrl: '',
+  browserStack: { 
+    enabled: false, 
+    user: '', 
+    key: '', 
+    localEnabled: false
   }
-  return hostUrl;
-})();
+};
 
 /**
- * Checks environment vars for BrowserStack usage settings.
+ * Note: This config has to be loaded immediately and synchronously since the config values
+ * are used for generating the Mocha test suites, and Mocha requires tests to be defined 
+ * immediately and synchronously on script load. 
  */
-const browserStackConfig = (() => {
+(function initializeConfig() {
+
+  // Determine which browser host endpoint to run tests against.
+  const E2E_BROWSER_HOST = 'E2E_BROWSER_HOST';
+  const PROD_HOST = 'https://browser.blockstack.org';
+  config.browserHostUrl = process.env[E2E_BROWSER_HOST] || PROD_HOST;
+  if (!process.env[E2E_BROWSER_HOST]) {
+    console.warn(`WARNING: The browser host url was not set via the ${E2E_BROWSER_HOST} env var.. running tests against the production endpoint "${PROD_HOST}"`);
+  } else {
+    console.log(`Running e2e tests against endpoint ${config.browserHostUrl}`);
+  }
+
+  // Check environment vars for BrowserStack usage settings.
   const USE_BROWSERSTACK = 'USE_BROWSERSTACK';
   const BROWSERSTACK_AUTH = 'BROWSERSTACK_AUTH';
-  const config = { 
-    enabled: process.env[USE_BROWSERSTACK] && process.env[USE_BROWSERSTACK] !== 'false', 
-    user: '', key: ''
-  };
-  if (config.enabled) {
+  config.browserStack.enabled = process.env[USE_BROWSERSTACK] && process.env[USE_BROWSERSTACK] !== 'false';
+  if (config.browserStack.enabled) {
     const browserstackAuth = process.env[BROWSERSTACK_AUTH];
     if (!browserstackAuth) {
       const errMsg = `The BrowserStack auth must be set as environment variables. Use the format \`${BROWSERSTACK_AUTH}="user:key"\``;
@@ -46,36 +53,55 @@ const browserStackConfig = (() => {
       throw new Error(errMsg);
     }
     // Auth string formatted as "user:key"
-    [config.user, config.key] = browserstackAuth.trim().split(/:(.+)/);
+    [config.browserStack.user, config.browserStack.key] = browserstackAuth.trim().split(/:(.+)/);
   }
-  return config;
-})();
 
-/**
- * True if the auth-browser host endpoint is set to localhost and BrowserStack testing is enabled.
- * @see {@link https://www.npmjs.com/package/browserstack-local }
- * @see {@link https://www.browserstack.com/local-testing }
- */
-const browserStackLocalEnabled = (() => {
-  const isLocalhost = ['localhost', '127.0.0.1'].includes(url.parse(browserHostUrl).hostname);
-  return isLocalhost && browserStackConfig.enabled;
+  /**
+   * If the auth-browser host endpoint is set to localhost and BrowserStack testing is enabled
+   * then BrowserStack Local must be used.
+   * @see https://www.npmjs.com/package/browserstack-local
+   * @see https://www.browserstack.com/local-testing
+   */
+  if (config.browserStack.enabled) {
+    const parsedUrl = url.parse(config.browserHostUrl);
+    config.browserStack.localEnabled = ['localhost', '127.0.0.1'].includes(parsedUrl.hostname);
+
+    // Check if the host port is the expected port that is supported by BrowserStack Safari environments.
+    const expectedPort = '5757';
+    if (config.browserStack.localEnabled && parsedUrl.port !== expectedPort) {
+      console.warn(`WARNING: BrowserStack Local is enabled but the host port is ${parsedUrl.port} rather than the expected port ${expectedPort}. ` + 
+        `This may cause problems for BrowserStack Safari environments.. for more information see https://www.browserstack.com/question/664`);
+    }
+  }
+
+  /**
+   * If BrowserStack Local is enabled then the host url needs swapped from localhost to bs-local.com
+   * This required due to a technical limitation with BrowserStack's Safari environments.
+   * @see https://www.browserstack.com/question/759
+   */
+  if (config.browserStack.localEnabled) {
+    const parsedUrl = url.parse(config.browserHostUrl);
+    [ parsedUrl.hostname, parsedUrl.host ] = [ 'bs-local.com', undefined ];
+    config.browserHostUrl = url.format(parsedUrl);
+  }
+
 })();
 
 
 let blockStackLocalInstance;
 before(async () => {
   // Check if BrowserStackLocal needs to be initialized before running tests..
-  if (browserStackLocalEnabled) {
+  if (config.browserStack.localEnabled) {
     console.log(`BrowserStack is enabled the test endpoint is localhost, setting up BrowserStack Local..`);
     blockStackLocalInstance = new browserStackLocal();
     return await new Promise((resolve, reject) => {
-      blockStackLocalInstance.start({ key: browserStackConfig.key, force: 'true' }, (error) => {
+      blockStackLocalInstance.start({ key: config.browserStack.key, force: 'true' }, (error) => {
         if (error) {
           console.error(`Error starting BrowserStack Local: ${error}`);
           reject(error)
         } else {
           console.log(`BrowserStack Local started`);
-          resolve(browserHostUrl);
+          resolve();
         }
       });
     });
@@ -116,7 +142,7 @@ function* getBrowserstackEnvironments(user, key) {
       'browserstack.user': user,
       'browserstack.key': key
     });
-    if (browserStackLocalEnabled) {
+    if (config.browserStack.localEnabled) {
       capability['browserstack.local'] = 'true';
     }
     yield {
@@ -188,8 +214,8 @@ function* getLocalSystemBrowserEnvironments() {
  */
 function createTestSuites(title, defineTests) {
 
-  const testEnvironments = browserStackConfig.enabled 
-    ? getBrowserstackEnvironments(browserStackConfig.user, browserStackConfig.key)
+  const testEnvironments = config.browserStack.enabled 
+    ? getBrowserstackEnvironments(config.browserStack.user, config.browserStack.key)
     : getLocalSystemBrowserEnvironments();
 
   for (const testEnvironment of testEnvironments) {
@@ -199,7 +225,7 @@ function createTestSuites(title, defineTests) {
       /** @type {TestInputs} */
       const testInputs = {
         envDesc: testEnvironment.description,
-        browserHostUrl: browserHostUrl,
+        browserHostUrl: config.browserHostUrl,
         driver: {}
       };
 

@@ -215,7 +215,7 @@
     "web": "npm run build",
     "prod-webapp": "npm run clean && cross-env NODE_ENV=production WEBAPP=true webpack",
     "test-e2e": "mocha --opts test-e2e/mocha.opts test-e2e",
-    "test-e2e:localBuild": "npm run build && ( ( kill -9 $( lsof -i:5222 -t -sTCP:LISTEN ) || serve -l 5222 build ) & cross-env E2E_BROWSER_HOST=http://localhost:5222 npm run test-e2e )",
+    "test-e2e:localBuild": "npm run prod-webapp && ( ( kill -9 $( lsof -i:5757 -t -sTCP:LISTEN ) || serve -l 5757 build ) & E2E_BROWSER_HOST=http://localhost:5757 npm run test-e2e )",
     "test-e2e:browserstack": "cross-env USE_BROWSERSTACK=true npm run test-e2e:localBuild"
   }
 }
