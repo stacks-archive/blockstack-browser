@@ -2,13 +2,10 @@ const { By, until } = require('selenium-webdriver');
 const createTestSuites = require('../utils/create-test-suites');
 const SAMPLE_ACCOUNT = require('./sample-account');
 
-// TODO: this needs configurable target a local instance
-let browserUrl = 'https://browser.blockstack.org';
-
-createTestSuites('account recovery via magic recovery code', ({driver}) => {
+createTestSuites('account recovery via magic recovery code', ({driver, browserHostUrl}) => {
 
   step('load initial page', async () => {
-    await driver.get(browserUrl);
+    await driver.get(browserHostUrl);
   });
 
   step('load sign in page', async () => {

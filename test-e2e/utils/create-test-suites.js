@@ -13,6 +13,7 @@ const helpers = require('./helpers');
 /**
  * @typedef {Object} TestInputs
  * @property {ExtendedWebDriver} driver A ready to use WebDriver instance.
+ * @property {string} browserHostUrl The http endpoint hosting the browser.
  * @property {string} envDesc Human-readable name of the operating system & web browser.
  */
 
@@ -39,6 +40,7 @@ function createTestSuites(title, defineTests) {
       /** @type {TestInputs} */
       const testInputs = {
         envDesc: testEnvironment.description,
+        browserHostUrl: process.env['E2E_BROWSER_HOST'] || 'https://browser.blockstack.org',
         driver: {}
       };
 

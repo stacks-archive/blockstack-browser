@@ -5,13 +5,10 @@ const helpers = require('../utils/helpers');
 
 // selenium-webdriver docs: https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver.html
 
-// TODO: this needs configurable target a local instance
-let browserUrl = 'https://browser.blockstack.org';
-
-createTestSuites('account creation', ({driver}) => {
+createTestSuites('account creation', ({driver, browserHostUrl}) => {
 
   step('load initial page', async () => {
-    await driver.get(browserUrl);
+    await driver.get(browserHostUrl);
   });
 
   step('load create new ID page', async () => {

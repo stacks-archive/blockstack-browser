@@ -134,7 +134,7 @@
     "redux-mock-store": "^1.2.3",
     "require-hacker": "^3.0.1",
     "selenium-webdriver": "^4.0.0-alpha.1",
-    "serve": "^10.0.1",
+    "serve": "^10.1.2",
     "shx": "^0.3.2",
     "sinon": "^1.17.7",
     "sinon-as-promised": "^4.0.0",
@@ -214,6 +214,7 @@
     "web": "npm run build",
     "prod-webapp": "npm run clean && cross-env NODE_ENV=production WEBAPP=true webpack",
     "test-e2e": "mocha --opts test-e2e/mocha.opts test-e2e",
-    "test-e2e-browserstack": "cross-env USE_BROWSERSTACK=true mocha --opts test-e2e/mocha.opts test-e2e"
+    "test-e2e-browserstack": "cross-env USE_BROWSERSTACK=true npm run test-e2e",
+    "test-e2e-serve": "npm run start & cross-env E2E_BROWSER_HOST=http://localhost:5000 npm run test-e2e"
   }
 }
