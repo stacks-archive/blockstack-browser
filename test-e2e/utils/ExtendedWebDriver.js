@@ -101,7 +101,6 @@ class ExtendedWebDriver extends WebDriver {
   }
 
   /**
-   * This callback is displayed as a global member.
    * @callback elementThenCallback
    * @param {WebElement} element
    */

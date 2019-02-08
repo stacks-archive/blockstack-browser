@@ -238,7 +238,8 @@ function createTestSuites(title, defineTests) {
 
       afterEach(function () {
         try {
-          if (this.currentTest.state === 'failed' && testInputs.driver) {
+          // If test failed then take a screenshot and save to local temp dir.
+          if (this.currentTest.state === 'failed' && testInputs.driver.screenshot) {
             const errDir = path.resolve(os.tmpdir(), 'selenium-errors');
             if (!fs.existsSync(errDir)) { fs.mkdirSync(errDir, { recursive: true }); }
             const screenshotFile = path.resolve(errDir, `screenshot-${Date.now() / 1000 | 0}-${helpers.getRandomString(6)}.png`);
@@ -253,7 +254,7 @@ function createTestSuites(title, defineTests) {
 
       after(async () => {
         try {
-          if (testInputs.driver) {
+          if (testInputs.driver.quit) {
             await testInputs.driver.quit();
           }
         } catch (err) {

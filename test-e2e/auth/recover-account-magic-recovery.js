@@ -6,6 +6,7 @@ createTestSuites('account recovery via magic recovery code', ({driver, browserHo
 
   step('load initial page', async () => {
     await driver.get(browserHostUrl);
+    await driver.el(By.xpath('//*[contains(.,"Create your Blockstack ID")]'));
   });
 
   step('load sign in page', async () => {

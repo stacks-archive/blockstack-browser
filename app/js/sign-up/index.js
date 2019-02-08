@@ -96,7 +96,9 @@ const VIEW_EVENTS = {
   [VIEWS.HOORAY]: 'Onboarding - Complete'
 }
 
-const SUBDOMAIN_SUFFIX = 'id.blockstack'
+// Allow the front-end (for example Selenium tests or dev console) to override the subdomain suffix.
+const DEFAULT_SUBDOMAIN_SUFFIX = 'id.blockstack'
+const getSubdomainSuffix = () => window.SUBDOMAIN_SUFFIX_OVERRIDE || DEFAULT_SUBDOMAIN_SUFFIX
 
 const mapStateToProps = state => ({
   localIdentities: selectLocalIdentities(state),
@@ -283,7 +285,7 @@ class Onboarding extends React.Component {
       logger.info('registerUsername: no username set, skipping registration')
       return Promise.resolve()
     }
-    const suffix = `.${SUBDOMAIN_SUFFIX}`
+    const suffix = `.${getSubdomainSuffix()}`
     username += suffix
     const nameHasBeenPreordered = hasNameBeenPreordered(
       username,
@@ -388,7 +390,7 @@ class Onboarding extends React.Component {
   sendEmails = async () => {
     const { encryptedBackupPhrase } = this.props
     const { username, email } = this.state
-    const id = username ? `${username}.${SUBDOMAIN_SUFFIX}` : undefined
+    const id = username ? `${username}.${getSubdomainSuffix()}` : undefined
 
     /**
      * TODO: add this as a notification or something the user can see
@@ -578,7 +580,7 @@ class Onboarding extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.api.subdomains[SUBDOMAIN_SUFFIX]) {
+    if (!this.props.api.subdomains[getSubdomainSuffix()]) {
       this.props.resetApi(this.props.api)
     }
   }
@@ -610,6 +612,8 @@ class Onboarding extends React.Component {
         props: {
           backLabel: 'Cancel',
           username,
+          apiUrl: this.props.api.subdomains[getSubdomainSuffix()].apiUrl,
+          sponsoredName: `.${getSubdomainSuffix()}`,
           next: this.submitUsername,
           previous: () => this.updateView(VIEWS.PASSWORD),
           updateValue: this.updateValue,
@@ -676,7 +680,7 @@ class Onboarding extends React.Component {
           username,
           app,
           id: this.props.identityAddresses[0],
-          subdomainSuffix: SUBDOMAIN_SUFFIX,
+          subdomainSuffix: getSubdomainSuffix(),
           goToRecovery: this.goToBackup,
           finish: () => this.finish()
         }

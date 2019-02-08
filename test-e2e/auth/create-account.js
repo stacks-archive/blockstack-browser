@@ -9,14 +9,18 @@ createTestSuites('account creation', ({driver, browserHostUrl}) => {
 
   step('load initial page', async () => {
     await driver.get(browserHostUrl);
+    await driver.el(By.xpath('//*[contains(.,"Create your Blockstack ID")]'));
   });
 
+  if (!process.env['TEST_PRODUCTION_REGISTRAR']) {
+    step('set "test-registrar.blockstack.org" as API endpoint for ID registration', async () => {
+      await driver.retry(async () => {
+        await driver.executeScript(`window.SUBDOMAIN_SUFFIX_OVERRIDE = "test-personal.id";`);
+      }, 10000, 200);
+    });
+  }
+
   step('load create new ID page', async () => {
-    //if (process.env.BLOCKSTACK_REGISTRAR_API_KEY) {
-    //  await driver.executeScript(`window.BLOCKSTACK_REGISTRAR_API_KEY = "${process.env.BLOCKSTACK_REGISTRAR_API_KEY}"`);
-    //} else {
-    //  console.warn('No BLOCKSTACK_REGISTRAR_API_KEY env var has been set. Username registrations may fail due to IP blocking.')
-    //} 
     await driver.click(By.xpath('//div[text()="Create new ID"]'));
   });
 
