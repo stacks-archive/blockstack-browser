@@ -7,8 +7,9 @@ Use `npm run test-e2e:localBuild` to build and host the browser locally, then ru
 
 Use `npm run test-e2e:browserstack` to build and host the browser locally, then run tests against BrowserStack's grid. All major operating systems and browsers are setup and working, including iOS and Android. 
 
-To specify an endpoint and BrowserStack usage, use `npm run test-e2e` with environment variables `E2E_BROWSER_HOST={url}` and `USE_BROWSERSTACK={true|false}`. 
+To specify an endpoint and BrowserStack usage, use `npm run test-e2e` with environment variables `E2E_BROWSER_HOST={url|directory}` and `USE_BROWSERSTACK={true|false}`. 
 
+If `E2E_BROWSER_HOST` is set and is not an `http(s)://` url, it is assumed to be a local file system directory, and a local static web server will be spawned and pointed at the directory. 
 
 Use mocha's `--grep` or `--fgrep` options in `mocha.opt` to target specific test suites and/or web browsers / environments. For example: `--grep secret\skey.*iOS-12-iPhone-XS` or `--fgrep firefox`.
 

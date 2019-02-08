@@ -5,6 +5,8 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const url = require('url');
+const http = require('http');
+const serveHandler = require('serve-handler');
 const browserStackLocal = require('browserstack-local').Local;
 const ExtendedWebDriver = require('./ExtendedWebDriver');
 const browserStackEnvironments = require('./browserstack-environments');
@@ -21,7 +23,8 @@ const config = {
     user: '', 
     key: '', 
     localEnabled: false
-  }
+  },
+  serveDirectory: ''
 };
 
 /**
@@ -37,8 +40,12 @@ const config = {
   config.browserHostUrl = process.env[E2E_BROWSER_HOST] || PROD_HOST;
   if (!process.env[E2E_BROWSER_HOST]) {
     console.warn(`WARNING: The browser host url was not set via the ${E2E_BROWSER_HOST} env var.. running tests against the production endpoint "${PROD_HOST}"`);
-  } else {
+  } else if (config.browserHostUrl.startsWith('http:') || config.browserHostUrl.startsWith('https:')) {
     console.log(`Running e2e tests against endpoint ${config.browserHostUrl}`);
+  } else {
+    config.serveDirectory = path.resolve(config.browserHostUrl);
+    config.browserHostUrl = 'http://localhost:5757';
+    console.log(`Local static web server will be started at ${config.browserHostUrl} for directory ${config.serveDirectory}`);
   }
 
   // Check environment vars for BrowserStack usage settings.
@@ -89,7 +96,28 @@ const config = {
 
 
 let blockStackLocalInstance;
+let staticWebServer;
 before(async () => {
+
+  // Check if a local static web server needs to be started
+  if (config.serveDirectory) {
+    staticWebServer = http.createServer((req, res) => {
+      return serveHandler(req, res, {
+        public: config.serveDirectory
+      })
+    });
+    await new Promise((resolve, reject) => {
+      staticWebServer.unref();
+      staticWebServer.listen(url.parse(config.browserHostUrl).port, error => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
   // Check if BrowserStackLocal needs to be initialized before running tests..
   if (config.browserStack.localEnabled) {
     console.log(`BrowserStack is enabled the test endpoint is localhost, setting up BrowserStack Local..`);
@@ -106,11 +134,28 @@ before(async () => {
       });
     });
   }
+
 });
-after(() => {
+
+after(async () => {
+
+  // Check if a local web server needs to be shutdown
+  if (staticWebServer && staticWebServer.listening) {
+    await new Promise((resolve, reject) => {
+      staticWebServer.close(error => {
+        if (error) {
+          console.error(`Error stopping local static web server: ${error}`);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
   // Check if BrowserStackLocal needs to be disposed off after running tests..
   if (blockStackLocalInstance && blockStackLocalInstance.isRunning()) {
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       blockStackLocalInstance.stop((error) => {
         if (error) {
           console.error(`Error stopping BrowserStack Local: ${error}`);
