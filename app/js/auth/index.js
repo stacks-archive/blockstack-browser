@@ -12,7 +12,8 @@ import {
   getAuthRequestFromURL,
   redirectUserToApp,
   getAppBucketUrl,
-  isLaterVersion
+  isLaterVersion,
+  getPublicKeyFromPrivate
 } from 'blockstack'
 import { AppsNode } from '@utils/account-utils'
 import {
@@ -24,7 +25,11 @@ import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 import { uploadProfile } from '../account/utils'
 import { signProfileForUpload } from '@utils'
-import { validateScopes, appRequestSupportsDirectHub } from './utils'
+import {
+  validateScopes,
+  appRequestSupportsDirectHub,
+  makeGaiaAssociationToken
+} from './utils'
 import {
   selectApi,
   selectCoreHost,
@@ -50,6 +55,7 @@ import {
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
 import Modal from 'react-modal'
+import url from 'url'
 
 const views = [Initial, LegacyGaia]
 
@@ -230,9 +236,10 @@ class AuthPage extends React.Component {
 
       const gaiaBucketAddress = nextProps.identityKeypairs[0].address
       const identityAddress = nextProps.identityKeypairs[identityIndex].address
-      const gaiaUrlBase = 'https://gaia.blockstack.org/hub'
 
       if (!profileUrlPromise) {
+        // use default Gaia hub if we can't tell from the profile where the profile Gaia hub is
+        const gaiaUrlBase = 'https://gaia.blockstack.org/hub'
         profileUrlPromise = fetchProfileLocations(
           gaiaUrlBase,
           identityAddress,
@@ -350,6 +357,8 @@ class AuthPage extends React.Component {
 
     let transitPublicKey = undefined
     let hubUrl = undefined
+    let blockstackAPIUrl = undefined
+    let associationToken = undefined
 
     let requestVersion = '0'
     if (this.state.decodedToken.payload.hasOwnProperty('version')) {
@@ -365,6 +374,13 @@ class AuthPage extends React.Component {
     if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
       hubUrl = this.props.api.gaiaHubUrl
     }
+    if (isLaterVersion(requestVersion, '1.3.0')) {
+      let compressedAppPublicKey = getPublicKeyFromPrivate(appPrivateKey.slice(0,64))
+      let parsedCoreUrl = url.parse(this.props.api.nameLookupUrl)
+
+      blockstackAPIUrl = `${parsedCoreUrl.protocol}//${parsedCoreUrl.host}`
+      associationToken = makeGaiaAssociationToken(privateKey, compressedAppPublicKey)
+    }
 
     const authResponse = makeAuthResponse(
       privateKey,
@@ -375,7 +391,9 @@ class AuthPage extends React.Component {
       appPrivateKey,
       undefined,
       transitPublicKey,
-      hubUrl
+      hubUrl,
+      blockstackAPIUrl,
+      associationToken
     )
 
     this.props.clearSessionToken(appDomain)
@@ -383,6 +401,7 @@ class AuthPage extends React.Component {
     logger.info(
       `login(): id index ${this.state.currentIdentityIndex} is logging in`
     )
+
     this.setState({ responseSent: true })
     redirectUserToApp(this.state.authRequest, authResponse)
   }
