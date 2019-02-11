@@ -1,10 +1,11 @@
 // @flow
 
 import log4js from 'log4js'
-import { isLaterVersion } from 'blockstack'
+import {
+  isLaterVersion
+} from 'blockstack'
 
 const logger = log4js.getLogger(__filename)
-
 
 const VALID_SCOPES = {
   store_write: true,
@@ -48,3 +49,4 @@ export function validateScopes(scopes: Array<string>): boolean {
   }
   return valid
 }
+
