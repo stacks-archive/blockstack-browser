@@ -169,8 +169,8 @@ const HomeScreenPage = props => {
           <Loading />
         ) : (
           <Content
-            allApps={props.apps.appsByCategory}
-            topApps={props.apps.topApps}
+            allApps={!loading && props.apps.appsByCategory}
+            topApps={!loading && props.apps.topApps}
           />
         )}
       </Box>
