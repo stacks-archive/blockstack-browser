@@ -4,9 +4,10 @@ import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import { Initial, LegacyGaia } from './views'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { randomBytes } from 'crypto'
 import { AuthActions } from './store/auth'
 import { IdentityActions } from '../profiles/store/identity'
-import { decodeToken } from 'jsontokens'
+import { decodeToken, TokenSigner } from 'jsontokens'
 import { parseZoneFile } from 'zone-file'
 import queryString from 'query-string'
 import {
@@ -30,8 +31,7 @@ import { uploadProfile } from '../account/utils'
 import { signProfileForUpload } from '@utils'
 import {
   validateScopes,
-  appRequestSupportsDirectHub,
-  makeGaiaAssociationToken
+  appRequestSupportsDirectHub
 } from './utils'
 import {
   selectApi,
@@ -90,6 +90,21 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   const actions = Object.assign({}, AuthActions, IdentityActions)
   return bindActionCreators(actions, dispatch)
+}
+
+function makeGaiaAssociationToken(secretKeyHex: string, childPublicKeyHex: string) {
+  const LIFETIME_SECONDS = 365 * 24 * 3600
+  const signerKeyHex = secretKeyHex.slice(0, 64)
+  const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
+  const salt = randomBytes(16).toString('hex')
+  const payload = { childToAssociate: childPublicKeyHex,
+                    iss: compressedPublicKeyHex,
+                    exp: LIFETIME_SECONDS + (new Date()/1000),
+                    iat: Date.now()/1000,
+                    salt }
+
+  const token = new TokenSigner('ES256K', signerKeyHex).sign(payload)
+  return token
 }
 
 class AuthPage extends React.Component {
