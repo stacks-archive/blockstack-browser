@@ -56,6 +56,7 @@ const DEFAULT_API = {
   storageConnected: false,
   gaiaHubConfig: null,
   gaiaHubUrl: 'https://hub.blockstack.org',
+  profileGaiaHubUrl: 'https://hub.blockstack.org',
   btcPrice: '1000.00',
   distinctEventId: crypto.randomBytes(16).toString('hex'),
   hasDisabledEventTracking: false

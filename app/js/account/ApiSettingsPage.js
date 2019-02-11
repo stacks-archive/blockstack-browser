@@ -103,7 +103,13 @@ export class ApiSettingsPage extends Component {
             />
             <InputGroup
               name="gaiaHubUrl"
-              label="URL for Gaia Hub Connection"
+              label="URL for Application Gaia Hub Connection"
+              data={this.state.api}
+              onChange={this.onValueChange}
+            />
+            <InputGroup
+              name="profileGaiaHubUrl"
+              label="URL for Profile Gaia Hub Connection"
               data={this.state.api}
               onChange={this.onValueChange}
             />
