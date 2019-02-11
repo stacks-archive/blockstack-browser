@@ -2,14 +2,10 @@
 
 import log4js from 'log4js'
 import {
-  isLaterVersion,
-  getPublicKeyFromPrivate
+  isLaterVersion
 } from 'blockstack'
 
 const logger = log4js.getLogger(__filename)
-
-import { randomBytes } from 'crypto'
-import { TokenSigner } from 'jsontokens'
 
 const VALID_SCOPES = {
   store_write: true,
@@ -54,17 +50,3 @@ export function validateScopes(scopes: Array<string>): boolean {
   return valid
 }
 
-export function makeGaiaAssociationToken(secretKeyHex: string, childPublicKeyHex: string) {
-  const LIFETIME_SECONDS = 365 * 24 * 3600
-  const signerKeyHex = secretKeyHex.slice(0, 64)
-  const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
-  const salt = randomBytes(16).toString('hex')
-  const payload = { childToAssociate: childPublicKeyHex,
-                    iss: compressedPublicKeyHex,
-                    exp: LIFETIME_SECONDS + (new Date()/1000),
-                    iat: Date.now()/1000,
-                    salt }
-
-  const token = new TokenSigner('ES256K', signerKeyHex).sign(payload)
-  return token
-}
