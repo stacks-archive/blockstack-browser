@@ -10,6 +10,9 @@
       "name": "Mocha e2e local",
       "cwd": "${workspaceFolder}",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "env": {
+        "E2E_BROWSER_HOST": "./build"
+      },
       "args": [
         "--opts",
         "test-e2e/mocha.opts",
@@ -25,7 +28,8 @@
       "cwd": "${workspaceFolder}",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "env": {
-        "USE_BROWSERSTACK": "true"
+        "USE_BROWSERSTACK": "true",
+        "E2E_BROWSER_HOST": "./build"
       },
       "args": [
         "--opts",
