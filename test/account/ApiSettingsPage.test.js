@@ -23,6 +23,6 @@ describe('ApiSettingsPage', () => {
   })
 
   it('renders all the InputGroup(s)', () => {
-    expect(wrapper.find('InputGroup').length).to.equal(18)
+    expect(wrapper.find('InputGroup').length).to.equal(19)
   })
 })
