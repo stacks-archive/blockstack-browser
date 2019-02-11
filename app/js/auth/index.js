@@ -375,8 +375,8 @@ class AuthPage extends React.Component {
       hubUrl = this.props.api.gaiaHubUrl
     }
     if (isLaterVersion(requestVersion, '1.3.0')) {
-      let compressedAppPublicKey = getPublicKeyFromPrivate(appPrivateKey.slice(0,64))
-      let parsedCoreUrl = url.parse(this.props.api.nameLookupUrl)
+      const compressedAppPublicKey = getPublicKeyFromPrivate(appPrivateKey.slice(0,64))
+      const parsedCoreUrl = url.parse(this.props.api.nameLookupUrl)
 
       blockstackAPIUrl = `${parsedCoreUrl.protocol}//${parsedCoreUrl.host}`
       associationToken = makeGaiaAssociationToken(privateKey, compressedAppPublicKey)

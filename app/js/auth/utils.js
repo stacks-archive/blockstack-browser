@@ -1,13 +1,12 @@
 // @flow
 
 import log4js from 'log4js'
-import { isLaterVersion } from 'blockstack'
-
-const logger = log4js.getLogger(__filename)
-
 import {
+  isLaterVersion,
   getPublicKeyFromPrivate
 } from 'blockstack'
+
+const logger = log4js.getLogger(__filename)
 
 import {
   randomBytes
