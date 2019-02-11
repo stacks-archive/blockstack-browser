@@ -184,7 +184,8 @@ export function signProfileForUpload(profile, keypair, api) {
         gaiaHubConfig: {
           url_prefix: api.gaiaHubConfig.url_prefix
         },
-        gaiaHubUrl: api.gaiaHubUrl
+        gaiaHubUrl: api.gaiaHubUrl,
+        profileGaiaHubUrl: api.profileGaiaHubUrl
       }
     }
   }
