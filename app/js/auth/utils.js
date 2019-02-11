@@ -8,13 +8,8 @@ import {
 
 const logger = log4js.getLogger(__filename)
 
-import {
-  randomBytes
-} from 'crypto'
-
-import {
-  TokenSigner
-} from 'jsontokens'
+import { randomBytes } from 'crypto'
+import { TokenSigner } from 'jsontokens'
 
 const VALID_SCOPES = {
   store_write: true,
