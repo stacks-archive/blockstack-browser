@@ -47,13 +47,13 @@ function tryUpload(
 }
 
 export function uploadPhoto(
-  api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
+  api: { gaiaHubConfig: GaiaHubConfig, profileGaiaHubUrl: string },
   identity: any,
   identityKeyPair: { key: string },
   photoFile: File | Blob,
   photoIndex: number
 ) {
-  return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
+  return connectToGaiaHub(api.profileGaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
     const globalHubConfig = api.gaiaHubConfig
 
     let uploadPrefix = getProfileUploadLocation(identity, identityHubConfig)
@@ -82,12 +82,12 @@ export function uploadPhoto(
 }
 
 export function uploadProfile(
-  api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
+  api: { gaiaHubConfig: GaiaHubConfig, profileGaiaHubUrl: string },
   identity: any,
   identityKeyPair: { key: string },
   signedProfileTokenData: string
 ) {
-  return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
+  return connectToGaiaHub(api.profileGaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
     const urlToWrite = getProfileUploadLocation(identity, identityHubConfig)
 
     let uploadAttempt = tryUpload(
