@@ -16,7 +16,7 @@ import {
   redirectUserToApp,
   getAppBucketUrl,
   isLaterVersion,
-  updateQueryStringParameter
+  updateQueryStringParameter,
   getPublicKeyFromPrivate
 } from 'blockstack'
 import { AppsNode } from '@utils/account-utils'
