@@ -14,18 +14,18 @@ createTestSuites('account recovery via secret key', ({driver, browserHostUrl }) 
   });
 
   step('enter secret recovery key', async () => {
-    await driver.sendKeys(By.css('textarea[name="recoveryKey"]'), SAMPLE_ACCOUNT.SECRET_RECOVERY_KEY);
+    await driver.setText(By.css('textarea[name="recoveryKey"]'), SAMPLE_ACCOUNT.SECRET_RECOVERY_KEY);
     await driver.click(By.css('button[type="submit"]'));
   });
 
   step('create password', async () => {
-    await driver.sendKeys(By.css('input[name="password"]'), SAMPLE_ACCOUNT.PASSWORD);
-    await driver.sendKeys(By.css('input[name="passwordConfirm"]'), SAMPLE_ACCOUNT.PASSWORD);
+    await driver.setText(By.css('input[name="password"]'), SAMPLE_ACCOUNT.PASSWORD);
+    await driver.setText(By.css('input[name="passwordConfirm"]'), SAMPLE_ACCOUNT.PASSWORD);
     await driver.click(By.css('button[type="submit"]'));
   });
 
   step('enter email', async () => {
-    await driver.sendKeys(By.css('input[name="email"]'), SAMPLE_ACCOUNT.EMAIL);
+    await driver.setText(By.css('input[name="email"]'), SAMPLE_ACCOUNT.EMAIL);
     await driver.click(By.css('button[type="submit"]'));
   });
 
@@ -34,11 +34,11 @@ createTestSuites('account recovery via secret key', ({driver, browserHostUrl }) 
       // first check if message is still showing (it may have been quick and already closed)
       await driver.wait(until.elementLocated(By.xpath('//*[contains(text(), "Restoring your Blockstack ID")]')), 2500);
     } catch (err) {
-      console.warn(`Error checking for "Restoring your Blockstack ID" spinner: ${err}`);
+      console.warn(`Ignoring error checking for "Restoring your Blockstack ID" spinner: ${err}`);
     }
     // wait for next page to load
     await driver.el(By.xpath('//*[contains(.,"Go to Blockstack")]'), null,
-      { timeout: 90000, poll: 200, driverWait: 90000 });
+      { timeout: 150000, poll: 200, driverWait: 150000 });
   });
 
   step('load main page as authenticated user', async () => {

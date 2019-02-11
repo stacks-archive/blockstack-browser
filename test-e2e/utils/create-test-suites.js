@@ -1,13 +1,12 @@
 
 const { WebDriver, Builder, By, Key, until } = require('selenium-webdriver');
-const { expect } = require('chai');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const url = require('url');
-const http = require('http');
+const { createServer: createHttpServer, Server: HttpServer } = require('http');
 const serveHandler = require('serve-handler');
-const browserStackLocal = require('browserstack-local').Local;
+const { Local: BrowserStackLocal } = require('browserstack-local');
 const ExtendedWebDriver = require('./ExtendedWebDriver');
 const browserStackEnvironments = require('./browserstack-environments');
 const helpers = require('./helpers');
@@ -95,13 +94,18 @@ const config = {
 })();
 
 
+/** @type {BrowserStackLocal} */
 let blockStackLocalInstance;
+
+/** @type {HttpServer} */
 let staticWebServer;
+
 before(async () => {
 
   // Check if a local static web server needs to be started
   if (config.serveDirectory) {
-    staticWebServer = http.createServer((req, res) => {
+    console.log(`Starting static web server for a directory to host the Browser locally...`)
+    staticWebServer = createHttpServer((req, res) => {
       return serveHandler(req, res, {
         public: config.serveDirectory
       })
@@ -110,8 +114,10 @@ before(async () => {
       staticWebServer.unref();
       staticWebServer.listen(url.parse(config.browserHostUrl).port, error => {
         if (error) {
+          console.error(`Error starting web server: ${error}`);
           reject(error);
         } else {
+          console.log(`Web server started at http://localhost:${staticWebServer.address().port}`);
           resolve();
         }
       });
@@ -121,7 +127,7 @@ before(async () => {
   // Check if BrowserStackLocal needs to be initialized before running tests..
   if (config.browserStack.localEnabled) {
     console.log(`BrowserStack is enabled the test endpoint is localhost, setting up BrowserStack Local..`);
-    blockStackLocalInstance = new browserStackLocal();
+    blockStackLocalInstance = new BrowserStackLocal();
     return await new Promise((resolve, reject) => {
       blockStackLocalInstance.start({ key: config.browserStack.key, force: 'true' }, (error) => {
         if (error) {
@@ -141,28 +147,24 @@ after(async () => {
 
   // Check if a local web server needs to be shutdown
   if (staticWebServer && staticWebServer.listening) {
-    await new Promise((resolve, reject) => {
+    await new Promise((resolve) => {
       staticWebServer.close(error => {
         if (error) {
           console.error(`Error stopping local static web server: ${error}`);
-          reject(error);
-        } else {
-          resolve();
         }
+        resolve();
       });
     });
   }
 
   // Check if BrowserStackLocal needs to be disposed off after running tests..
   if (blockStackLocalInstance && blockStackLocalInstance.isRunning()) {
-    await new Promise((resolve, reject) => {
+    await new Promise((resolve) => {
       blockStackLocalInstance.stop((error) => {
         if (error) {
           console.error(`Error stopping BrowserStack Local: ${error}`);
-          reject(error);
-        } else {
-          resolve();
         }
+        resolve();
       });
     });
   }
@@ -285,9 +287,8 @@ function createTestSuites(title, defineTests) {
         try {
           // If test failed then take a screenshot and save to local temp dir.
           if (this.currentTest.state === 'failed' && testInputs.driver.screenshot) {
-            const errDir = path.resolve(os.tmpdir(), 'selenium-errors');
-            if (!fs.existsSync(errDir)) { fs.mkdirSync(errDir, { recursive: true }); }
-            const screenshotFile = path.resolve(errDir, `screenshot-${Date.now() / 1000 | 0}-${helpers.getRandomString(6)}.png`);
+            let screenshotFile = `screenshot-${Date.now()/1000|0}-${helpers.getRandomString(6)}.png`;
+            screenshotFile = path.resolve(os.tmpdir(), screenshotFile);
             return testInputs.driver.screenshot(screenshotFile).then(() => {
               console.log(`screenshot for failure saved to ${screenshotFile}`);
             }).catch(err => console.warn(`Error trying to create screenshot after test failure: ${err}`));

@@ -1,6 +1,8 @@
 const { WebDriver, By, until, WebElement } = require('selenium-webdriver');
 const { promisify } = require('util');
 const fs = require('fs');
+const os = require('os');
+const path = require('path');
 const helpers = require('./helpers');
 
 /**
@@ -66,20 +68,27 @@ class ExtendedWebDriver extends WebDriver {
   /**
    * Loops with try/catch around the locator function for specified amount of tries.
    * @param {!(By|Function)} locator The locator to use.
-   * @param {string} text The string of keys to send
+   * @param {string} text The string of keys to send.
+   * @param {boolean} validateValue 
+   * If true then the element's value will be checked after a short wait to ensure it was set. 
+   * If validation fails it will attempted one more time. 
    * @returns {Promise<WebElement>} 
    */
-  async sendKeys(locator, text) {
+  async setText(locator, text, validateValue = false) {
     const platform = await this.getPlatform();
+    let element;
     if (platform !== 'iOS') {
-      await this.el(locator, el => el.sendKeys(text));
+      element = await this.el(locator, async (el) => {
+        await el.clear();
+        await el.sendKeys(text); 
+      });
     } else { 
       // Bug on iOS devices with selenium/appium & react
       // See: https://github.com/facebook/react/issues/11488#issuecomment-347775628
       // Updated to use less hacky workaround from cypress:
       // See: https://github.com/cypress-io/cypress/pull/732/files#diff-ed17d49edc10403752ba3d786a7512dbR34
-      const element = await this.el(locator);
-      await this.executeScript(`
+      element = await this.el(locator, async (el) => {
+        await this.executeScript(`
         let input = arguments[0];
         if (input.tagName === "INPUT") {
           let valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
@@ -89,8 +98,33 @@ class ExtendedWebDriver extends WebDriver {
           valueSetter.call(input, arguments[1]);
         }
         input.dispatchEvent(new Event('input', { bubbles: true }));
-      `, element, text);
+      `, el, text);
+      });
     }
+
+    if (validateValue) {
+      try {
+        await this.sleep(200);
+        let actualVal = '';
+        const elCheck = await this.el(locator, async (el) => {
+          actualVal = await this.executeScript(`return arguments[0].value;`, el);
+        });
+        if (actualVal !== text) {
+          console.warn(`setText value validation failed - expected '${text}' but value is '${actualVal}'. Retrying once more...`);
+          try {
+            await elCheck.clear();
+          } catch (error) {
+            console.warn(`Ignoring error trying to clear element value before retrying: ${error}`);
+          }
+          return await this.setText(locator, text);
+        }
+      } catch (error) {
+        console.error(`Error validating setText value: ${error}`);
+        throw error;
+      }
+    }
+
+    return element;
   }
 
   /**
@@ -132,9 +166,30 @@ class ExtendedWebDriver extends WebDriver {
     return await this.el(locator, el => el.click(), { timeout, poll, driverWait });
   }
 
-  async screenshot(filename = 'screenshot.png') {
+  /**
+   * @param {!(By|Function)} locator The locator to use.
+   */
+  async elementExists(locator) {
+    const matches = await this.findElements(locator);
+    return matches.length > 0;
+  }
+
+    /**
+   * @param {!(By|Function)} locator The locator to use.
+   */
+  async elementNotExists(locator) {
+    const matches = await this.findElements(locator);
+    return matches.length > 0;
+  }
+
+  async screenshot(filename = '') {
+    if (!filename) {
+      filename = `screenshot-${Date.now()/1000|0}-${helpers.getRandomString(6)}.png`
+      filename = path.resolve(os.tmpdir(), filename);
+    }
     const image = await this.driver.takeScreenshot();
     await promisify(fs.writeFile)(filename, image, 'base64');
+    return filename;
   }
 
   /**

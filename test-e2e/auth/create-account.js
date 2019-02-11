@@ -27,15 +27,15 @@ createTestSuites('account creation', ({driver, browserHostUrl}) => {
   let randomUsername
   step('enter unique username', async () => {
     randomUsername = `test_e2e_${Date.now() / 100000 | 0}_${helpers.getRandomInt(100000, 999999)}`;
-    await driver.sendKeys(By.css('input[type="text"][name="username"]'), randomUsername);
+    await driver.setText(By.css('input[type="text"][name="username"]'), randomUsername);
     await driver.click(By.xpath('//button[contains(., "Check Availability")]'));
     await driver.click(By.xpath('//button[contains(., "Continue")]'));
   });
 
   step('enter password', async () => {
     const randomPassword = helpers.getRandomString();
-    await driver.sendKeys(By.css('input[type="password"][name="password"]'), randomPassword);
-    await driver.sendKeys(By.css('input[type="password"][name="passwordConfirm"]'), randomPassword);
+    await driver.setText(By.css('input[type="password"][name="password"]'), randomPassword);
+    await driver.setText(By.css('input[type="password"][name="passwordConfirm"]'), randomPassword);
     await driver.click(By.xpath('//button[contains(., "Register ID")]'));
   });
 
@@ -52,7 +52,7 @@ createTestSuites('account creation', ({driver, browserHostUrl}) => {
   });
 
   step('enter email', async () => {
-    await driver.sendKeys(By.css('input[type="email"][name="email"]'), `${randomUsername}@none.test`);
+    await driver.setText(By.css('input[type="email"][name="email"]'), `${randomUsername}@none.test`);
     await driver.click(By.xpath('//button[contains(., "Next")]'));
   });
 

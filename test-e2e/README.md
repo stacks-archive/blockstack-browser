@@ -45,7 +45,7 @@ createTestSuites('account recovery via secret key', ({ driver, browserHostUrl })
   });
 
   step('enter secret recovery key', async () => {
-    await driver.sendKeys(By.css('textarea[name="recoveryKey"]'), SECRET_RECOVERY_KEY);
+    await driver.setText(By.css('textarea[name="recoveryKey"]'), SECRET_RECOVERY_KEY);
     await driver.click(By.css('button[type="submit"]'));
   });
 
