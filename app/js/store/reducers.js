@@ -58,6 +58,7 @@ function reducer(state: any, action: any) {
 
     const preservedApiSettingsState = {
       gaiaHubUrl: state.settings.api.gaiaHubUrl,
+      profileGaiaHubUrl: state.settings.api.profileGaiaHubUrl,
       distinctEventId: state.settings.api.distinctEventId,
       hasDisabledEventTracking: state.settings.api.hasDisabledEventTracking
     }
