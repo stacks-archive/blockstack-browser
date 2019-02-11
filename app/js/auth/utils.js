@@ -55,7 +55,7 @@ export function validateScopes(scopes: Array<string>): boolean {
 }
 
 export function makeGaiaAssociationToken(secretKeyHex: string, childPublicKeyHex: string) {
-  const LIFETIME_SECONDS = 91 * 24 * 3600
+  const LIFETIME_SECONDS = 365 * 24 * 3600
   const signerKeyHex = secretKeyHex.slice(0, 64)
   const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
   const salt = randomBytes(16).toString('hex')
