@@ -29,9 +29,4 @@ workflows:
   build_and_test-e2e:
     jobs:
       - build
-      - test-e2e:
-          filters:
-            branches:
-              only:
-                - develop
-                - master
+      - test-e2e
