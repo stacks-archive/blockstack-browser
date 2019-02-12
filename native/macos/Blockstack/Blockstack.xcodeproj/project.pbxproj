@@ -11,8 +11,6 @@
 		03D84AF47B48C8D13A44AB1F /* Pods_BlockstackUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 151BBEEEC2F6FF783F2FB820 /* Pods_BlockstackUITests.framework */; };
 		4612AE971E87E20600AC866A /* export.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4612AE961E87E20600AC866A /* export.plist */; };
 		464C43A81E9A5B2500533529 /* PortalLogServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464C43A71E9A5B2500533529 /* PortalLogServer.swift */; };
-		467AF8CC1E85397200216B2A /* corsproxy in Resources */ = {isa = PBXBuildFile; fileRef = 467AF8CB1E85397200216B2A /* corsproxy */; };
-		467AF8CE1E85398300216B2A /* blockstackProxy in Resources */ = {isa = PBXBuildFile; fileRef = 467AF8CD1E85398300216B2A /* blockstackProxy */; };
 		46AB7B3C1E632F08004DACD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */; };
 		46AB7B3E1E632F08004DACD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B3D1E632F08004DACD8 /* Assets.xcassets */; };
 		46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46AB7B3F1E632F08004DACD8 /* MainMenu.xib */; };
@@ -24,6 +22,7 @@
 		628865811F3FFC900008B17F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6288657F1F3FFC900008B17F /* Main.storyboard */; };
 		628865861F3FFD2C0008B17F /* BlockstackLauncher.app in Copy Files */ = {isa = PBXBuildFile; fileRef = 628865771F3FFC900008B17F /* BlockstackLauncher.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		62F5E53C1F3F9316003E139B /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F5E53A1F3F92B3003E139B /* ServiceManagement.framework */; };
+		8F4DA57121FBAF380059236E /* server in Resources */ = {isa = PBXBuildFile; fileRef = 8F4DA57021FBAF380059236E /* server */; };
 		F9416162CBC2093412EF41D3 /* Pods_Blockstack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86F85987ACADDDC03CDA8F87 /* Pods_Blockstack.framework */; };
 /* End PBXBuildFile section */
 
@@ -63,8 +62,6 @@
 		253C1468E9D7BB9D0C6ABA2E /* Pods-BlockstackTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockstackTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlockstackTests/Pods-BlockstackTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4612AE961E87E20600AC866A /* export.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = export.plist; path = ../export.plist; sourceTree = "<group>"; };
 		464C43A71E9A5B2500533529 /* PortalLogServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortalLogServer.swift; sourceTree = "<group>"; };
-		467AF8CB1E85397200216B2A /* corsproxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = corsproxy; sourceTree = "<group>"; };
-		467AF8CD1E85398300216B2A /* blockstackProxy */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = blockstackProxy; sourceTree = "<group>"; };
 		46AB7B381E632F08004DACD8 /* Blockstack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blockstack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46AB7B3B1E632F08004DACD8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46AB7B3D1E632F08004DACD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -89,6 +86,7 @@
 		691A869DEA8D7683DE5BE4A0 /* Pods-Blockstack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Blockstack.release.xcconfig"; path = "Pods/Target Support Files/Pods-Blockstack/Pods-Blockstack.release.xcconfig"; sourceTree = "<group>"; };
 		7F565C3ED6B9C73792D704DC /* Pods-BlockstackUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockstackUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlockstackUITests/Pods-BlockstackUITests.release.xcconfig"; sourceTree = "<group>"; };
 		86F85987ACADDDC03CDA8F87 /* Pods_Blockstack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Blockstack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8F4DA57021FBAF380059236E /* server */ = {isa = PBXFileReference; lastKnownFileType = folder; name = server; path = Blockstack/server; sourceTree = "<group>"; };
 		B8C5A3A739A7149580AFBD43 /* Pods-BlockstackTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlockstackTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlockstackTests/Pods-BlockstackTests.release.xcconfig"; sourceTree = "<group>"; };
 		D8DB2C2D533E703048FE31F8 /* Pods_BlockstackTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BlockstackTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -188,9 +186,8 @@
 		46AB7B681E643643004DACD8 /* Binaries */ = {
 			isa = PBXGroup;
 			children = (
-				467AF8CD1E85398300216B2A /* blockstackProxy */,
+				8F4DA57021FBAF380059236E /* server */,
 				46CA5EA41E81BEDC00CF6E38 /* browser */,
-				467AF8CB1E85397200216B2A /* corsproxy */,
 			);
 			name = Binaries;
 			sourceTree = "<group>";
@@ -383,9 +380,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				46AB7B3E1E632F08004DACD8 /* Assets.xcassets in Resources */,
-				467AF8CE1E85398300216B2A /* blockstackProxy in Resources */,
 				46CA5EA51E81BEDD00CF6E38 /* browser in Resources */,
-				467AF8CC1E85397200216B2A /* corsproxy in Resources */,
+				8F4DA57121FBAF380059236E /* server in Resources */,
 				46AB7B411E632F08004DACD8 /* MainMenu.xib in Resources */,
 				4612AE971E87E20600AC866A /* export.plist in Resources */,
 			);

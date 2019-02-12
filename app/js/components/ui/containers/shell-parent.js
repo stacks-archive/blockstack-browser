@@ -87,7 +87,10 @@ class ShellParent extends React.Component {
 
     const internalBackLabel = backLabel !== '' ? backLabel : 'Back'
     const defaultBackLabel = isFirstView ? backLabel : internalBackLabel
-    const label = isFirstView && app ? `Back to ${app.name}` : defaultBackLabel
+    const label =
+      backLabel === '' && isFirstView && app
+        ? ``
+        : defaultBackLabel
 
     const Component = views[view]
 

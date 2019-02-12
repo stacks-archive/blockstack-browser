@@ -8,6 +8,11 @@ import { ShellScreen, Type } from '@blockstack/ui'
 import { Flex } from '@components/ui/components/primitives'
 import PropTypes from 'prop-types'
 const InitialScreen = ({ next, ...rest }) => {
+  // console.log(document.location.href)
+  let client = 'browser'
+  if (document.location.search.indexOf('ios_secure') !== -1) {
+    client = 'ios_secure'
+  }
   const props = {
     content: {
       grow: 1,
@@ -34,7 +39,7 @@ const InitialScreen = ({ next, ...rest }) => {
         },
         {
           label: 'Sign in with an existing ID',
-          to: '/sign-in'
+          to: `/sign-in?client=${client}`
         }
       ]
     }
