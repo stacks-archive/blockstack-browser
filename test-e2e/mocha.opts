@@ -4,6 +4,7 @@
 --recursive
 --sort
 --exclude **/run-parallel.js
+--exclude **/hello-blockstack-app/**
 # --fgrep firefox
 # --fgrep safari
 # --fgrep Win10-Chrome

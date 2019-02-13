@@ -1,5 +1,7 @@
 
 const { WebDriver, Builder, By, Key, until } = require('selenium-webdriver');
+const chromeOptions = require('selenium-webdriver/chrome').Options;
+const firefoxOptions = require('selenium-webdriver/firefox').Options;
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -72,7 +74,10 @@ const config = {
     const parsedUrl = url.parse(config.browserHostUrl);
     config.browserStack.localEnabled = ['localhost', '127.0.0.1'].includes(parsedUrl.hostname);
 
-    // Check if the host port is the expected port that is supported by BrowserStack Safari environments.
+    /** 
+     * Check if the host port is the expected port that is supported by BrowserStack Safari environments.
+     * @see https://www.browserstack.com/question/664
+     */
     const expectedPort = '5757';
     if (config.browserStack.localEnabled && parsedUrl.port !== expectedPort) {
       console.warn(`WARNING: BrowserStack Local is enabled but the host port is ${parsedUrl.port} rather than the expected port ${expectedPort}. ` + 
@@ -91,6 +96,9 @@ const config = {
     config.browserHostUrl = url.format(parsedUrl);
   }
 
+  // Trim trailing url slash(es).
+  config.browserHostUrl = config.browserHostUrl.replace(/\/+$/, "");
+
 })();
 
 
@@ -107,7 +115,8 @@ before(async () => {
     console.log(`Starting static web server for a directory to host the Browser locally...`)
     staticWebServer = createHttpServer((req, res) => {
       return serveHandler(req, res, {
-        public: config.serveDirectory
+        public: config.serveDirectory,
+        rewrites: [{ source: '**', destination: '/index.html' }]
       })
     });
     await new Promise((resolve, reject) => {
@@ -224,12 +233,31 @@ function* getLocalSystemBrowserEnvironments() {
   } else if (process.platform === 'win32') {
     browsers.push('edge');
   }
+
+  // Disable Chrome's protocol handler for `blockstack:` in case the native browser is installed on this machine
+  // https://stackoverflow.com/a/41299296/794962
+  const chromeOpts = new chromeOptions().setUserPreferences({
+    protocol_handler: { excluded_schemes: { 'blockstack': true } }
+  });
+
+ // Disable Firefox's protocol handler for `blockstack:` in case the native browser is installed on this machine
+ // https://stackoverflow.com/a/53154527/794962
+  const firefoxOpts = (() => {
+    const handlers = '{"defaultHandlersVersion":{"en-US":4},"schemes":{"blockstack":{"action":2,"handlers":[{"name":"None","uriTemplate":"#"}]}}}';
+    const tempDir = path.resolve(os.tmpdir(), helpers.getRandomString());
+    fs.mkdirSync(tempDir);
+    fs.writeFileSync(path.resolve(tempDir, 'handlers.json'), handlers);
+    return new firefoxOptions().setProfile(tempDir);
+  })();
+
   for (let browser of new Set(browsers)) {
     yield {
       description: `${process.platform} ${browser}`,
-      createDriver: async () => {
+      createDriver: async () => {        
         const driver = await new Builder()
           .forBrowser(browser)
+          .setChromeOptions(chromeOpts)
+          .setFirefoxOptions(firefoxOpts)
           .build();
         await driver.manage().setTimeouts({ implicit: 1000, pageLoad: 10000 });
         return new ExtendedWebDriver(driver);
