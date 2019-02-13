@@ -35,7 +35,7 @@ const Content = ({ topApps, allApps, ...rest }) => (
       .sort((a, b) => a.label.localeCompare(b.label))
       .map(category => {
         const apps = category.apps.sort((a, b) => a.name.localeCompare(b.name))
-        return <AppsSection title={category.label} apps={apps} limit={15} />
+        return <AppsSection title={category.label} apps={apps} />
       })}
   </Box>
 )
