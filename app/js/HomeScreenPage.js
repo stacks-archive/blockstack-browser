@@ -38,7 +38,7 @@ const Content = ({ topApps, allApps, ...rest }) => (
 )
 
 const AppsSection = ({ title, apps, limit, category, ...rest }) => {
-  let appsList = apps
+  let appsList = apps.filter(app => app.imgixImageUrl)
   if (limit) {
     appsList = appsList.filter((app, i) => i <= limit - 1)
   }
