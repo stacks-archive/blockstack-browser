@@ -148,7 +148,13 @@ const AppItem = ({ website, imgixImageUrl, name, description }) => {
                   {name}
                 </Type>
               </Box>
-              <Box opacity={0.75} color="black !important">
+              <Box
+                opacity={0.75}
+                color="black !important"
+                style={{
+                  hyphens: 'auto'
+                }}
+              >
                 {desc}
               </Box>
             </Box>
