@@ -82,7 +82,7 @@ const Image = props => (
     is="img"
     borderRadius="15px"
     boxShadow="0px 0px 35px 0px rgba(0, 0, 0, 0.15)"
-    bg="rgba(44, 150, 255, 0.15)"
+    bg="white"
     {...props}
   />
 )
