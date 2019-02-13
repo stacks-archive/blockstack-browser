@@ -14,20 +14,26 @@ async function startServer(port = 5000) {
     next()
   }
 
-  const manifest = {
-    "name": "Hello, Blockstack",
-    "start_url": `localhost:${port}`,
-    "description": "A simple demo of Blockstack Auth",
-    "icons": [{
-      "src": `http://localhost:${port}/icon-192x192.png`,
-      "sizes": "192x192",
-      "type": "image/png"
-    }]
-  };
+  function getManifest(req, res) {
+    const host = req.hostname;
+    const manifest = {
+      "name": "Hello, Blockstack",
+      "start_url": `${host}:${port}`,
+      "description": "A simple demo of Blockstack Auth",
+      "icons": [{
+        "src": `http://${host}:${port}/icon-192x192.png`,
+        "sizes": "192x192",
+        "type": "image/png"
+      }]
+    };
+    res.json(manifest)
+  }
+
+
 
   app.use(allowCrossDomain);
   app.use('/', express.static(__dirname), express.static(path.dirname(blockstackDistPath)));
-  app.use('/manifest.json', (req, res) => res.json(manifest));
+  app.use('/manifest.json', getManifest);
   
   const server = await new Promise((resolve, reject) => { 
     const server = app.listen(port, error => {

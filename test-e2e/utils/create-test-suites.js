@@ -16,6 +16,7 @@ const helpers = require('./helpers');
 // selenium-webdriver docs: https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver.html
 
 const BROWSERSTACK_HUB_URL = 'http://hub-cloud.browserstack.com/wd/hub';
+const BROWSERSTACK_LOOPBACK_HOST = 'bs-local.com';
 
 const config = {
   browserHostUrl: '',
@@ -25,7 +26,8 @@ const config = {
     key: '', 
     localEnabled: false
   },
-  serveDirectory: ''
+  serveDirectory: '',
+  loopbackHost: 'localhost'
 };
 
 /**
@@ -92,8 +94,9 @@ const config = {
    */
   if (config.browserStack.localEnabled) {
     const parsedUrl = url.parse(config.browserHostUrl);
-    [ parsedUrl.hostname, parsedUrl.host ] = [ 'bs-local.com', undefined ];
+    [ parsedUrl.hostname, parsedUrl.host ] = [ BROWSERSTACK_LOOPBACK_HOST, undefined ];
     config.browserHostUrl = url.format(parsedUrl);
+    config.loopbackHost = BROWSERSTACK_LOOPBACK_HOST;
   }
 
   // Trim trailing url slash(es).
@@ -301,6 +304,7 @@ function createTestSuites(title, defineTests) {
       const testInputs = {
         envDesc: testEnvironment.description,
         browserHostUrl: config.browserHostUrl,
+        loopbackHost: config.loopbackHost,
         driver: {}
       };
 

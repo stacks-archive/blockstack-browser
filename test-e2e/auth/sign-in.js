@@ -11,9 +11,9 @@ const helloServerPort = 5790;
 // Only gets instantiated when this test suite is ran, and should only be created once.
 let helloServer;
 
-createTestSuites('login to hello-blockstack app', ({driver, browserHostUrl}) => {
+createTestSuites('login to hello-blockstack app', ({driver, browserHostUrl, loopbackHost}) => {
   
-  step('spawn web server for hello-blockstack app', async () => {
+  before('spawn web server for hello-blockstack app', async () => {
     // We only need to initialize this server once, so assign the promise object immediately,
     // so that subsequent executions do not attempt to spawn a new server. 
     helloServer = helloServer || createHelloBlockStackServer(helloServerPort);
@@ -42,7 +42,7 @@ createTestSuites('login to hello-blockstack app', ({driver, browserHostUrl}) => 
   });
 
   step('load page', async () => {
-    await driver.get((await helloServer).url);
+    await driver.get(`http://${loopbackHost}:${helloServerPort}`);
   });
 
   step('set blockstack auth host', async () => {
