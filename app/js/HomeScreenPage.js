@@ -30,7 +30,7 @@ const Loading = ({ ...rest }) => (
 
 const Content = ({ topApps, allApps, ...rest }) => (
   <Box maxWidth={1280} width="100%" mx="auto" p={[1, 2, 4]} {...rest}>
-    <AppsSection title="Top Ranked Apps" apps={topApps} limit={24} />
+    <AppsSection title="Popular Apps" apps={topApps} limit={24} />
     {allApps
       .sort((a, b) => a.label.localeCompare(b.label))
       .map(category => {
