@@ -100,6 +100,7 @@ const Navbar = withRouter(({ location }) => (
     position="fixed"
     top={0}
     width={1}
+    zIndex={999}
   >
     <Wrapper>
       {sections.map((section, i) => (
