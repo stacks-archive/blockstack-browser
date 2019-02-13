@@ -129,7 +129,7 @@ const AppItem = ({ website, imgixImageUrl, name, description }) => {
           >
             <Image
               maxWidth="100%"
-              width="64px"
+              size="64px"
               display="block"
               flexShrink="0"
               src={imgixImageUrl}
