@@ -2,25 +2,33 @@ import React from 'react'
 import { browserHistory, IndexRoute, Route, Router } from 'react-router'
 import Loadable from 'react-loadable'
 import App from './App'
-import ClearAuthPage from './clear-auth'
+import SignOutPage from './sign-out'
 import ConnectStoragePage from './connect-storage'
 import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 
 const LOADABLE_DELAY = 300
 
-const Loading = (props) => {
+const Loading = props => {
   if (props.error) {
-    return <div>Error! <button onClick={props.retry}>Retry</button></div>
+    return (
+      <div>
+        Error! <button onClick={props.retry}>Retry</button>
+      </div>
+    )
   } else if (props.pastDelay) {
-    return (<div 
-      style={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >Loading...</div>)
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        Loading...
+      </div>
+    )
   }
   return null
 }
@@ -220,20 +228,20 @@ const NotFoundPage = Loadable({
   delay: LOADABLE_DELAY
 })
 
-
 const accountCreated = connectedRouterRedirect({
   redirectPath: state =>
-    !state.account.encryptedBackupPhrase ?
-      // Not signed in
-      '/sign-up' :
-      // Storage failed to connect
-      '/connect-storage',
-  authenticatedSelector: (state, props) => !!props.location.query.echo || 
+    !state.account.encryptedBackupPhrase
+      ? // Not signed in
+        '/sign-up'
+      : // Storage failed to connect
+        '/connect-storage',
+  authenticatedSelector: (state, props) =>
+    !!props.location.query.echo ||
     // No echo param (for protocol check)
     // No keyphrase
     (!!state.account.encryptedBackupPhrase &&
-    // Storage failed to connect
-    !!state.settings.api.storageConnected),
+      // Storage failed to connect
+      !!state.settings.api.storageConnected),
   wrapperDisplayName: 'AccountCreated'
 })
 
@@ -283,7 +291,7 @@ export default (
     </Route>
     <Route path="/sign-up" component={SignUpPage} />
     <Route path="/sign-up/*" component={SignUpPage} />
-    { /**
+    {/**
      * TODO: move /update back up ^^, had to move it out of the 'app' nested route
      * because when we wipe data, it wants to redirect to /sign-up
      */}
@@ -292,7 +300,8 @@ export default (
     <Route path="/sign-in/*" component={SignInPage} />
     <Route path="/seed" component={SeedPage} />
     <Route path="/connect-storage" component={ConnectStoragePage} />
-    <Route path="/clear-auth" component={ClearAuthPage} />
+    <Route path="/clear-auth" component={SignOutPage} />
+    <Route path="/sign-out" component={SignOutPage} />
     <Route path="/*" component={NotFoundPage} />
   </Router>
 )
