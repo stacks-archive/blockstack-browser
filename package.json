@@ -114,6 +114,7 @@
     "eslint-plugin-react": "^5.1.1",
     "express": "^4.16.4",
     "file-loader": "^2.0.0",
+    "filenamify": "^2.1.0",
     "flow-bin": "^0.75.0",
     "flow-typed": "^2.5.1",
     "font-awesome": "^4.6.3",

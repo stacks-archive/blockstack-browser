@@ -24,6 +24,8 @@ jobs:
           command: npm install
       # test
       - run: npm run test-e2e:browserstack
+      - store_artifacts:
+          path: /tmp/screenshots
 workflows:
   version: 2
   build_and_test-e2e:

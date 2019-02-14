@@ -6,6 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const url = require('url');
+const filenamify = require('filenamify');
 const { createServer: createHttpServer, Server: HttpServer } = require('http');
 const serveHandler = require('serve-handler');
 const { Local: BrowserStackLocal } = require('browserstack-local');
@@ -113,6 +114,13 @@ const config = {
 
 })();
 
+// Prevent the error message 
+// "MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 exit listeners added. Use emitter.setMaxListeners() to increase limit"
+// We don't care about this..
+// https://github.com/SeleniumHQ/selenium/issues/6812
+// https://github.com/nightwatchjs/nightwatch/issues/408
+process.setMaxListeners(0);
+require('events').EventEmitter.defaultMaxListeners = 1000;
 
 /** @type {BrowserStackLocal} */
 let blockStackLocalInstance;
@@ -351,8 +359,11 @@ function createTestSuites(title, defineTests) {
         try {
           // If test failed then take a screenshot and save to local temp dir.
           if (this.currentTest.state === 'failed' && testInputs.driver.screenshot) {
-            let screenshotFile = `screenshot-${Date.now()/1000|0}-${helpers.getRandomString(6)}.png`;
-            screenshotFile = path.resolve(os.tmpdir(), screenshotFile);
+            let screenshotDir = path.resolve(os.tmpdir(), 'screenshots');
+            fs.mkdirSync(screenshotDir, { recursive: true });
+            let testDesc = filenamify(this.currentTest.titlePath().join('-').replace(/\s+/g, '-'));
+            let screenshotFile = `${testDesc}-${Date.now()/10000|0}-${helpers.getRandomString(5)}.png`;
+            screenshotFile = path.resolve(screenshotDir, screenshotFile);
             return testInputs.driver.screenshot(screenshotFile).then(() => {
               console.log(`screenshot for failure saved to ${screenshotFile}`);
             }).catch(err => console.warn(`Error trying to create screenshot after test failure: ${err}`));
