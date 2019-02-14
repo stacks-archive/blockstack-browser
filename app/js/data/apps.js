@@ -441,6 +441,21 @@ const apps = {
       developer: 'Afari Inc.',
       storageRequired: true,
       status: 'user_ready'
+    },
+    {
+      name: 'SpringRole',
+      displayName: 'SpringRole',
+      description: 'Your Professional Profile on the blockchain',
+      version: '0.9',
+      appIcon: {
+        small: 'app-icon-springrole-256x256.png',
+        large: 'app-icon-springrole-512x512.png'
+      },
+      website: 'https://springrole.com',
+      launchLink: 'https://beta.springrole.com',
+      developer: 'SpringRole Inc.',
+      storageRequired: true,
+      status: 'user_ready'
     }
   ]
 }
