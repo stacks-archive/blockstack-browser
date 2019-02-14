@@ -48,6 +48,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "Default")
 
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        // This must be registered before `applicationDidFinishLaunching` otherwise the event
+        // may not be triggered if Blockstack.app was not already running.
+        let appleEventManager = NSAppleEventManager.shared()
+        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
+    }
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         os_log("applicationDidFinishLaunching: %{public}@", log: log, type: .default, blockstackDataURL().absoluteString)
 
@@ -65,9 +72,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             startedAtLogin = true
             killLauncher()
         }
-        
-        let appleEventManager = NSAppleEventManager.shared()
-        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
 
         statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
 
@@ -129,12 +133,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
+
+        var senderAppUrl : URL? = nil
+        let senderAppName = event.attributeDescriptor(forKeyword: keyAddressAttr)?.stringValue
+        // This `keyOriginalAddressAttr` seems to always match `keyAddressAttr`..
+        // Leaving this here for later debugging if needed.
+        // let senderAppName = event.attributeDescriptor(forKeyword: keyOriginalAddressAttr)?.stringValue
+        
+        if senderAppName != nil {
+            if let senderAppPath = NSWorkspace.shared().fullPath(forApplication: senderAppName!) {
+                senderAppUrl = URL.init(fileURLWithPath: senderAppPath)
+                os_log("Blockstack Auth Request came from app: %{public}@", log: log, type: .info, senderAppPath)
+            } else {
+                os_log("Blockstack Auth Request sender not mapped to an app: %{public}@", log: log, type: .info, senderAppName!)
+            }
+        } else {
+            os_log("Blockstack Auth Request sender not mapped to an app: %{public}@", log: log, type: .info, "keyAddressAttr not provided")
+        }
+        
         let url = (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue) ?? ""
         let authRequest = url.replacingOccurrences(of: "blockstack:", with: "")
         os_log("Blockstack URL: %{public}@", log: log, type: .info, url)
         os_log("Blockstack Auth Request: %{public}@", log: log, type: .debug, authRequest)
 
-        openPortal(path: "\(portalAuthenticationPath)\(authRequest)")
+        openPortal(path: "\(portalAuthenticationPath)\(authRequest)", openWithApplication: senderAppUrl)
 
     }
 
@@ -171,14 +193,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "/account")
     }
     
-    func openPortal(path: String) {
+    func openPortal(path: String, openWithApplication: URL? = nil) {
         let portalURLString = "\(portalBaseUrl())\(path)"
         os_log("Opening portal with String: %{public}@", log: log, type: .info, portalURLString)
         let portalURLWithSecretString = "\(portalURLString)#coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
         let portalURLWithSecretAndLogPortString = "\(portalURLWithSecretString)&logServerPort=\(logServerPort)"
         let portalURLWithSecretLogPortAndRegtest = "\(portalURLWithSecretAndLogPortString)&regtest=\(isRegTestModeEnabled ? 1 : 0)"
         let portalURL = URL(string: portalURLWithSecretLogPortAndRegtest)
-        NSWorkspace.shared().open(portalURL!)
+        
+        if (openWithApplication != nil) {
+            do {
+                try NSWorkspace.shared().open(
+                    [portalURL!],
+                    withApplicationAt: openWithApplication!,
+                    options: .default,
+                    configuration: [:]
+                )
+            } catch {
+                os_log("Error opening URL with app: %{public}@", log: log, type: .error, openWithApplication!.absoluteString)
+                NSWorkspace.shared().open(portalURL!)
+            }
+        } else {
+            NSWorkspace.shared().open(portalURL!)
+        }
+        
     }
 
     func statusItemClick(sender: AnyObject?) {
