@@ -15,6 +15,9 @@ async function startServer(port = 5000) {
   }
 
   function getManifest(req, res) {
+    // manifest.json must be constructed using the http request host
+    // due to technical limitations with BrowserStack's infrastructure 
+    // which require re-routing `localhost` with another hostname. 
     const host = req.hostname;
     const manifest = {
       "name": "Hello, Blockstack",
