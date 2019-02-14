@@ -88,6 +88,15 @@ const config = {
   }
 
   /**
+   * If BrowserStack is enabled, then include their 'fast-selenium.js' script.
+   * @see https://www.browserstack.com/automate/node#add-on
+   * @see https://raw.githubusercontent.com/browserstack/fast-selenium-scripts/master/node/fast-selenium.js
+   */
+  if (config.browserStack.enabled) {
+    require('./fast-selenium');
+  }
+
+  /**
    * If BrowserStack Local is enabled then the host url needs swapped from localhost to bs-local.com
    * This required due to a technical limitation with BrowserStack's Safari environments.
    * @see https://www.browserstack.com/question/759
@@ -186,6 +195,7 @@ after(async () => {
 /**
  * @typedef {Object} TestEnvironment
  * @property {string} description Human-readable name of the operating system & web browser.
+ * @property {string} browserName Lowercase name of web browser (for mobile this can be 'android' or 'iphone').
  * @property {Promise<ExtendedWebDriver>} createDriver Promise that resolves to a ready-to-use WebDriver instance.
  */
 
@@ -206,12 +216,12 @@ function* getBrowserstackEnvironments(user, key) {
     }
     yield {
       description: capability.desc,
+      browserName: capability.browserName.toLowerCase(),
       createDriver: async () => {
-        const driver = await new Builder().
-          usingServer(BROWSERSTACK_HUB_URL).
-          withCapabilities(capability).
-          build();
-        await driver.manage().setTimeouts({ implicit: 1000, pageLoad: 10000 });
+        const driver = await new Builder()
+          .usingServer(BROWSERSTACK_HUB_URL)
+          .withCapabilities(capability)
+          .build();
         return new ExtendedWebDriver(driver);
       }
     };
@@ -239,6 +249,8 @@ function* getLocalSystemBrowserEnvironments() {
 
   // Disable Chrome's protocol handler for `blockstack:` in case the native browser is installed on this machine
   // https://stackoverflow.com/a/41299296/794962
+  // Note: This ability has since been disabled by Chrome, there is no way to hide the prompt.
+  // https://github.com/chromium/chromium/blob/5f0fb8c9021d25d1fadc1ae3706b4790dbcded5a/chrome/browser/external_protocol/external_protocol_handler.cc#L194
   const chromeOpts = new chromeOptions().setUserPreferences({
     protocol_handler: { excluded_schemes: { 'blockstack': true } }
   });
@@ -256,13 +268,13 @@ function* getLocalSystemBrowserEnvironments() {
   for (let browser of new Set(browsers)) {
     yield {
       description: `${process.platform} ${browser}`,
+      browserName: browser.toLowerCase(),
       createDriver: async () => {        
         const driver = await new Builder()
           .forBrowser(browser)
           .setChromeOptions(chromeOpts)
           .setFirefoxOptions(firefoxOpts)
           .build();
-        await driver.manage().setTimeouts({ implicit: 1000, pageLoad: 10000 });
         return new ExtendedWebDriver(driver);
       }
     };
@@ -274,6 +286,9 @@ function* getLocalSystemBrowserEnvironments() {
  * @property {ExtendedWebDriver} driver A ready to use WebDriver instance.
  * @property {string} browserHostUrl The http endpoint hosting the browser.
  * @property {string} envDesc Human-readable name of the operating system & web browser.
+ * @property {string} browserName Lowercase name of web browser (for mobile this can be 'android' or 'iphone').
+ * @property {boolean} browserStackEnabled If testing against BrowserStack is enabled.
+ * @property {string} loopbackHost Typically `localhost`, otherwise set to BrowserStack's loopback domain.
  */
 
 /**
@@ -298,20 +313,37 @@ function createTestSuites(title, defineTests) {
 
   for (const testEnvironment of testEnvironments) {
 
-    describe(`${title} [${testEnvironment.description}]`, () => {
+    describe(`${title} [${testEnvironment.description}]`, function() {
+
+      if (config.browserStack.enabled) {
+        this.retries(1);
+      }
 
       /** @type {TestInputs} */
       const testInputs = {
         envDesc: testEnvironment.description,
+        browserName: testEnvironment.browserName,
         browserHostUrl: config.browserHostUrl,
+        browserStackEnabled: config.browserStack.enabled,
         loopbackHost: config.loopbackHost,
         driver: {}
       };
 
       step('create selenium webdriver', async () => {
-        const driver = await testEnvironment.createDriver();
-        helpers.mixin(testInputs.driver, driver);
-      }).timeout(120000);
+        // BrowserStack sometimes lets webdriver instantiation network requests go into a zombie 
+        // state (no response, no error) after several minutes, causing a Mocha test timeout 
+        // with cascading effects that prevent the `retries` feature from working properly. 
+        // There is no easy way to set a timeout or cancel this webdriver network request, so we 
+        // use a manual Promise race to detect timeout and fail the test. 
+        const createDriver = async () => {
+          const driver = await testEnvironment.createDriver();
+          helpers.mixin(testInputs.driver, driver);
+        };
+        const timeout = new Promise((_, reject) => setTimeout(() => {
+          reject(new Error('Timeout waiting for webdriver instantiation'));
+        }, 60000));
+        await Promise.race([createDriver(), timeout]);
+      });
 
       defineTests(testInputs)
 

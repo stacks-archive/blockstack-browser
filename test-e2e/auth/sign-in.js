@@ -2,6 +2,7 @@ const { WebDriver, Builder, By, Key, until } = require('selenium-webdriver');
 const { expect } = require('chai');
 const createTestSuites = require('../utils/create-test-suites');
 const helpers = require('../utils/helpers');
+const canOpenProtocol = require('../utils/can-open-protocol');
 const sampleAccount = require('./sample-account');
 const createHelloBlockStackServer = require('../hello-blockstack-app/server');
 
@@ -11,7 +12,7 @@ const helloServerPort = 5790;
 // Only gets instantiated when this test suite is ran, and should only be created once.
 let helloServer;
 
-createTestSuites('login to hello-blockstack app', ({driver, browserHostUrl, loopbackHost}) => {
+createTestSuites('login to hello-blockstack app', ({driver, browserHostUrl, loopbackHost, browserName, browserStackEnabled}) => {
   
   before('spawn web server for hello-blockstack app', async () => {
     // We only need to initialize this server once, so assign the promise object immediately,
@@ -19,6 +20,13 @@ createTestSuites('login to hello-blockstack app', ({driver, browserHostUrl, loop
     helloServer = helloServer || createHelloBlockStackServer(helloServerPort);
     await helloServer;
   });
+
+  before('check if supported environment', function () {
+    if (!browserStackEnabled && browserName === 'chrome' && canOpenProtocol()) {
+      console.log('Skipping for Chrome - the native app is installed on this machine and Selenium is incapable of progressing past the open prompt.');
+      this.skip();
+    }
+  })
 
   step('load initial page', async () => {
     await driver.get(browserHostUrl);
