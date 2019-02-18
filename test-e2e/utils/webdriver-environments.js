@@ -76,9 +76,9 @@ function* getLocalSystemBrowserEnvironments() {
   // https://stackoverflow.com/a/41299296/794962
   // Note: This ability has since been disabled by Chrome, there is no way to hide the prompt.
   // https://github.com/chromium/chromium/blob/5f0fb8c9021d25d1fadc1ae3706b4790dbcded5a/chrome/browser/external_protocol/external_protocol_handler.cc#L194
-  const chromeOpts = new chromeOptions().setUserPreferences({
-    protocol_handler: { excluded_schemes: { 'blockstack': true } }
-  });
+  const chromeOpts = new chromeOptions()
+    .setUserPreferences({protocol_handler: { excluded_schemes: { 'blockstack': true } } })
+    .setLoggingPrefs(getLoggingPrefs());
 
  // Disable Firefox's protocol handler for `blockstack:` in case the native browser is installed on this machine
  // https://stackoverflow.com/a/53154527/794962

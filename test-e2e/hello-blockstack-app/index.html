@@ -36,7 +36,7 @@
       document.getElementById('signin-button').addEventListener('click', function (event) {
         event.preventDefault()
         if (window.BLOCKSTACK_HOST) {
-          blockstack.redirectToSignInWithAuthRequest(blockstack.makeAuthRequest(), window.BLOCKSTACK_HOST)
+          blockstack.redirectToSignInWithAuthRequest(undefined, window.BLOCKSTACK_HOST)
         } else {
           blockstack.redirectToSignIn()
         }

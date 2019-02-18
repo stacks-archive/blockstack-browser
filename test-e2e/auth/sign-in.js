@@ -78,6 +78,57 @@ createTestSuites('login to hello-blockstack app', ({driver, browserHostUrl, loop
     await driver.el(By.xpath('//div[contains(.,"Hello, Alice")]'));
   });
 
+  step('validate blockstack user data', async () => {
+    const userData = await driver.executeScript(`
+      return blockstack.loadUserData();
+    `);
+    expect(userData.appPrivateKey).to.have.lengthOf(64);
+    expect(userData.decentralizedID).to.equal("did:btc-addr:1NDsatzAEqrErxkB1osfJXouADgrHXuDs1");
+    expect(userData.hubUrl).to.equal("https://hub.blockstack.org");
+    expect(userData.username).to.equal("test_e2e_recovery.id.blockstack");
+    expect(userData.profile.name).to.equal("Alice Devname");
+    expect(userData.profile.api.gaiaHubUrl).to.equal("https://hub.blockstack.org");
+    expect(userData.profile.api.gaiaHubConfig.url_prefix).to.equal("https://gaia.blockstack.org/hub/");
+  });
+
+  let gaiaFileData;
+
+  step('validate blockstack.putFile(...)', async () => {
+    // Get some random data to write.
+    gaiaFileData = helpers.getRandomString(20);
+
+    // blockstack.putFile(...)
+    const putFileError = await driver.executeAsyncScript(`
+      var cb = arguments[arguments.length - 1];
+      blockstack.putFile("/hello.txt", "${gaiaFileData}").then(() => {
+        cb();
+      }).catch((error) => {
+        cb(error.toString());
+      });
+    `);
+    if (putFileError) {
+      throw new Error(`Error performing "blockstack.putFile(...)": ${putFileError}`);
+    }
+  });
+
+  step('validate blockstack.getFile(...)', async () => {
+    // blockstack.getFile(...)
+    const [ getFileResult, getFileError ] = await driver.executeAsyncScript(`
+      var cb = arguments[arguments.length - 1];
+      blockstack.getFile("/hello.txt").then((fileContents) => {
+        cb([fileContents, null]);
+      }).catch((error) => {
+        cb([null, error.toString()]);
+      });
+    `);
+    if (getFileError) {
+      throw new Error(`Error performing "blockstack.getFile(...)": ${getFileError}`);
+    }
+
+    // Verify file contents.
+    expect(getFileResult).to.equal(gaiaFileData);
+  });
+
 });
 
 
