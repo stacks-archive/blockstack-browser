@@ -1,4 +1,4 @@
-const { WebDriver, Builder, By, Key, until } = require('selenium-webdriver');
+const { WebDriver, Builder, By, Key, until, logging } = require('selenium-webdriver');
 const chromeOptions = require('selenium-webdriver/chrome').Options;
 const firefoxOptions = require('selenium-webdriver/firefox').Options;
 const path = require('path');
@@ -8,6 +8,12 @@ const ExtendedWebDriver = require('./ExtendedWebDriver');
 const browserStackEnvironments = require('./browserstack-environments');
 const helpers = require('./helpers');
 const config = require('./config');
+
+function getLoggingPrefs() {
+  const prefs = new logging.Preferences();
+  prefs.setLevel(logging.Type.BROWSER, logging.Level.ALL);
+  return prefs;
+};
 
 /**
  * @typedef {Object} TestEnvironment
@@ -26,7 +32,8 @@ function* getBrowserstackEnvironments(user, key) {
   for (let capability of browserStackEnvironments) {
     capability = Object.assign(capability, {
       'browserstack.user': user,
-      'browserstack.key': key
+      'browserstack.key': key,
+      'browserstack.console': 'verbose'
     });
     if (config.browserStack.localEnabled) {
       capability['browserstack.local'] = 'true';
@@ -38,6 +45,7 @@ function* getBrowserstackEnvironments(user, key) {
         const driver = await new Builder()
           .usingServer(config.browserStack.hubUrl)
           .withCapabilities(capability)
+          .setLoggingPrefs(getLoggingPrefs())
           .build();
         return new ExtendedWebDriver(driver);
       }
