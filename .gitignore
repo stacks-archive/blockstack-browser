@@ -45,3 +45,6 @@ native/windows/BlockstackBrowser/Resources/node.exe
 native/windows/BlockstackBrowser/Resources/cors-proxy/corsproxy.js
 native/windows/BlockstackSetup/obj/
 native/windows/BlockstackSetup/bin/
+native/macos/Blockstack/Blockstack/server/corsproxy.js
+native/macos/Blockstack/Blockstack/server/blockstackProxy.js
+native/macos/Blockstack/Blockstack/server/node
