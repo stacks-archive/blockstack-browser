@@ -1,5 +1,6 @@
 const path = require('path');
 const url = require('url');
+const helpers = require('./helpers');
 
 const BROWSERSTACK_LOOPBACK_HOST = 'bs-local.com';
 const BROWSERSTACK_HUB_URL = 'http://hub-cloud.browserstack.com/wd/hub';
@@ -11,6 +12,7 @@ const config = {
     user: '', 
     key: '', 
     localEnabled: false,
+    localIdentifier: '',
     hubUrl: ''
   },
   serveDirectory: '',
@@ -63,7 +65,8 @@ const config = {
   if (config.browserStack.enabled) {
     const parsedUrl = url.parse(config.browserHostUrl);
     config.browserStack.localEnabled = ['localhost', '127.0.0.1'].includes(parsedUrl.hostname);
-
+    config.browserStack.localIdentifier = helpers.getRandomString(20);
+    
     /** 
      * Check if the host port is the expected port that is supported by BrowserStack Safari environments.
      * @see https://www.browserstack.com/question/664

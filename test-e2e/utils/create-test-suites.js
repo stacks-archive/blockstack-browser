@@ -19,7 +19,7 @@ const { getSessionConsoleLogs } = require('./browserstack-api');
 
 
 /** @type {BrowserStackLocal} */
-let blockStackLocalInstance;
+let browserStackLocalInstance;
 
 /** @type {HttpServer} */
 let staticWebServer;
@@ -52,9 +52,14 @@ before(async () => {
   // Check if BrowserStackLocal needs to be initialized before running tests..
   if (config.browserStack.localEnabled) {
     console.log(`BrowserStack is enabled the test endpoint is localhost, setting up BrowserStack Local..`);
-    blockStackLocalInstance = new BrowserStackLocal();
+    browserStackLocalInstance = new BrowserStackLocal();
     await new Promise((resolve, reject) => {
-      blockStackLocalInstance.start({ key: config.browserStack.key, force: 'true' }, (error) => {
+      const opts = {
+        key: config.browserStack.key, 
+        force: 'true',
+        localIdentifier: config.browserStack.localIdentifier
+      };
+      browserStackLocalInstance.start(opts, (error) => {
         if (error) {
           console.error(`Error starting BrowserStack Local: ${error}`);
           reject(error)
@@ -83,9 +88,9 @@ after(async () => {
   }
 
   // Check if BrowserStackLocal needs to be disposed off after running tests..
-  if (blockStackLocalInstance && blockStackLocalInstance.isRunning()) {
+  if (browserStackLocalInstance && browserStackLocalInstance.isRunning()) {
     await new Promise((resolve) => {
-      blockStackLocalInstance.stop((error) => {
+      browserStackLocalInstance.stop((error) => {
         if (error) {
           console.error(`Error stopping BrowserStack Local: ${error}`);
         }

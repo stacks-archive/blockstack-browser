@@ -37,6 +37,7 @@ function* getBrowserstackEnvironments(user, key) {
     });
     if (config.browserStack.localEnabled) {
       capability['browserstack.local'] = 'true';
+      capability['browserstack.localIdentifier'] = config.browserStack.localIdentifier;
     }
     yield {
       description: capability.desc,
