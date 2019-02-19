@@ -219,7 +219,7 @@
     "web": "npm run build",
     "prod-webapp": "npm run clean && cross-env NODE_ENV=production WEBAPP=true webpack",
     "test-e2e": "mocha --opts test-e2e/mocha.opts test-e2e",
-    "test-e2e:localBuild": "cross-env NODE_ENV=production WEBAPP=true webpack && E2E_BROWSER_HOST='./build' npm run test-e2e",
+    "test-e2e:localBuild": "cross-env NODE_ENV=production WEBAPP=true DEBUG_LOGGING=true webpack && E2E_BROWSER_HOST='./build' npm run test-e2e",
     "test-e2e:browserstack": "cross-env USE_BROWSERSTACK=true npm run test-e2e:localBuild"
   }
 }
