@@ -61,7 +61,7 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
 
   step('click login button', async () => {
     await driver.click(By.css('#signin-button'));
-    await driver.sleep(1000);
+    await driver.sleep(2000);
     // Failed attempt to close protocol handler prompt on chrome:
     // await driver.actions({ bridge: true }).sendKeys(Key.ESCAPE).perform();
   });

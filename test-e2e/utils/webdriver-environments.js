@@ -1,4 +1,4 @@
-const { WebDriver, Builder, By, Key, until, logging } = require('selenium-webdriver');
+const { WebDriver, Builder, By, Key, until, logging, Capabilities, Capability } = require('selenium-webdriver');
 const chromeOptions = require('selenium-webdriver/chrome').Options;
 const firefoxOptions = require('selenium-webdriver/firefox').Options;
 const path = require('path');
@@ -29,25 +29,39 @@ function getLoggingPrefs() {
  * @yields {TestEnvironment}
  */
 function* getBrowserstackEnvironments(user, key) {
-  for (let capability of browserStackEnvironments) {
-    capability = Object.assign(capability, {
+  for (const env of browserStackEnvironments) {
+    const caps = new Capabilities(env).merge({
       'browserstack.user': user,
       'browserstack.key': key,
       'browserstack.console': 'verbose'
     });
+
+    // Increase the `driver.executeAsyncScript(...)` timeout from zero to something usable.
+    // https://stackoverflow.com/a/31121340/794962
+    const scriptTimeout = 60000;
+    caps.merge({'timeouts': { script: scriptTimeout }}).set(Capability.TIMEOUTS, { script: scriptTimeout });
+
     if (config.browserStack.localEnabled) {
-      capability['browserstack.local'] = 'true';
-      capability['browserstack.localIdentifier'] = config.browserStack.localIdentifier;
+      caps.merge({
+        'browserstack.local': 'true',
+        'browserstack.localIdentifier': config.browserStack.localIdentifier
+      });
     }
+
     yield {
-      description: capability.desc,
-      browserName: capability.browserName.toLowerCase(),
+      description: env.desc,
+      browserName: env.browserName.toLowerCase(),
       createDriver: async () => {
         const driver = await new Builder()
           .usingServer(config.browserStack.hubUrl)
-          .withCapabilities(capability)
+          .withCapabilities(caps)
           .setLoggingPrefs(getLoggingPrefs())
           .build();
+
+        // iOS on BrowserStack seems to ignore script timeouts specified in 
+        // the Capabilities so explicitly set them here. 
+        await driver.manage().setTimeouts({ script: scriptTimeout });
+
         return new ExtendedWebDriver(driver);
       }
     };
@@ -78,8 +92,7 @@ function* getLocalSystemBrowserEnvironments() {
   // Note: This ability has since been disabled by Chrome, there is no way to hide the prompt.
   // https://github.com/chromium/chromium/blob/5f0fb8c9021d25d1fadc1ae3706b4790dbcded5a/chrome/browser/external_protocol/external_protocol_handler.cc#L194
   const chromeOpts = new chromeOptions()
-    .setUserPreferences({protocol_handler: { excluded_schemes: { 'blockstack': true } } })
-    .setLoggingPrefs(getLoggingPrefs());
+    .setUserPreferences({protocol_handler: { excluded_schemes: { 'blockstack': true } } });
 
  // Disable Firefox's protocol handler for `blockstack:` in case the native browser is installed on this machine
  // https://stackoverflow.com/a/53154527/794962
@@ -91,12 +104,20 @@ function* getLocalSystemBrowserEnvironments() {
     return new firefoxOptions().setProfile(tempDir);
   })();
 
+  const caps = new Capabilities().setLoggingPrefs(getLoggingPrefs());
+
+  // Increase the `driver.executeAsyncScript(...)` timeout from zero to something usable.
+  // https://stackoverflow.com/a/31121340/794962
+  const scriptTimeout = 60000;
+  caps.merge({ 'timeouts': { script: scriptTimeout } }).set(Capability.TIMEOUTS, { script: scriptTimeout });
+
   for (let browser of new Set(browsers)) {
     yield {
       description: `${process.platform} ${browser}`,
       browserName: browser.toLowerCase(),
       createDriver: async () => {        
         const driver = await new Builder()
+          .withCapabilities(caps)
           .forBrowser(browser)
           .setChromeOptions(chromeOpts)
           .setFirefoxOptions(firefoxOpts)

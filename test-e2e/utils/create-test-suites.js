@@ -145,7 +145,8 @@ function createTestSuites(title, defineTests) {
         browserHostUrl: config.browserHostUrl,
         browserStackEnabled: config.browserStack.enabled,
         loopbackHost: config.loopbackHost,
-        driver: {}
+        driver: {},
+        driverInitialized: false
       };
 
       // Variables that get populated when a test fails
@@ -164,10 +165,15 @@ function createTestSuites(title, defineTests) {
         const createDriver = async () => {
           const driver = await testEnvironment.createDriver();
           helpers.mixin(testInputs.driver, driver);
+          testInputs.driverInitialized = true;
         };
-        const timeout = new Promise((_, reject) => setTimeout(() => {
-          reject(new Error('Timeout waiting for webdriver instantiation'));
-        }, 60000));
+        const timeout = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            testInputs.driverInitialized 
+              ? resolve() 
+              : reject(new Error('Timeout waiting for webdriver instantiation'));
+          }, 60000).unref(); 
+        });
         await Promise.race([createDriver(), timeout]);
       });
 
@@ -176,7 +182,7 @@ function createTestSuites(title, defineTests) {
       afterEach(function () {
 
         // If test failed then prepare for retrieving debug data (logs, screenshots).
-        if (this.currentTest.state === 'failed' && testInputs.driver.screenshot) {
+        if (this.currentTest.state === 'failed' && testInputs.driverInitialized) {
 
           // Setup temp dir to write debug data, with a filename-safe description of the failed test. 
           const testDesc = this.currentTest.titlePath().join('-').replace(/\s+/g, '-');
@@ -201,7 +207,7 @@ function createTestSuites(title, defineTests) {
             try {
               const screenshotFile = path.resolve(fileDir, `${testFileName}.png`);
               await testInputs.driver.screenshot(screenshotFile);
-              console.log(`screenshot saved to ${screenshotFile}`);
+              console.log(`screenshot saved to "${screenshotFile}"`);
             } catch (error) {
               console.warn(`Error trying to create screenshot after test failure: ${error}`);
             }
@@ -210,7 +216,7 @@ function createTestSuites(title, defineTests) {
               const logData = await testInputs.driver.getBrowserLogs();
               const logFileDir = path.resolve(fileDir, `${testFileName}.selenium.log.txt`);
               fs.writeFileSync(logFileDir, logData);
-              console.log(`selenium logs saved to ${logFileDir}`);
+              console.log(`selenium logs saved to "${logFileDir}"`);
             } catch (error) {
               console.warn(`Selenium log API not supported for this environment: ${error}`);
             }
@@ -222,7 +228,7 @@ function createTestSuites(title, defineTests) {
       after(async () => {
 
         try {
-          if (testInputs.driver.quit) {
+          if (testInputs.driverInitialized) {
             await testInputs.driver.quit();
           }
         } catch (error) {
@@ -238,7 +244,7 @@ function createTestSuites(title, defineTests) {
             const logs = await getSessionConsoleLogs(failedTestInfo.sessionID);
             const logFilePath = path.resolve(failedTestInfo.fileDir, `${failedTestInfo.testFileName}.browserstack.log.txt`);
             fs.writeFileSync(logFilePath, logs);
-            console.log(`BrowserStack log data saved to ${logFilePath}`);
+            console.log(`BrowserStack log data saved to "${logFilePath}"`);
           }
         } catch (error) {
           console.warn(`Error fetching BrowserStack console logs: ${error}`);
