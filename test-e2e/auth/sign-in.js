@@ -60,8 +60,17 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
   });
 
   step('click login button', async () => {
+    const windowHandle = await driver.getWindowHandle();
     await driver.click(By.css('#signin-button'));
-    await driver.sleep(2000);
+    await driver.sleep(1500);
+    if (await driver.elementExists(By.css('#signin-button'))) {
+      // This closes the "Open app?" dialog on Edge. 
+      console.log('Performing window open & switch workaround for closing protocol handler dialog');
+      await driver.executeScript(`window.open("about:config")`);
+      await driver.sleep(1000);
+      await driver.switchTo().window(windowHandle);
+      await driver.sleep(4000);
+    }
     // Failed attempt to close protocol handler prompt on chrome:
     // await driver.actions({ bridge: true }).sendKeys(Key.ESCAPE).perform();
   });
