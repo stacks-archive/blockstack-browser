@@ -12,7 +12,7 @@ const helloServerPort = 5790;
 // Only gets instantiated when this test suite is ran, and should only be created once.
 let helloServer;
 
-createTestSuites('login to hello-blockstack app', ({driver, browserHostUrl, loopbackHost, browserName, browserStackEnabled}) => {
+createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loopbackHost, browserName, browserStackEnabled}) => {
   
   before('spawn web server for hello-blockstack app', async () => {
     // We only need to initialize this server once, so assign the promise object immediately,
