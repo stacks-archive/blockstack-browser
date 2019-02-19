@@ -711,7 +711,7 @@ class Onboarding extends React.Component {
     }
 
     return (
-      <App>
+      <>
         <ShellParent
           app={app}
           views={views}
@@ -719,8 +719,7 @@ class Onboarding extends React.Component {
           disableBackOnView={[0, VIEWS.INFO, VIEWS.EMAIL, views.length - 1]}
           disableBack={this.state.loading}
         />
-        <AppHomeWrapper />
-      </App>
+      </>
     )
   }
 }

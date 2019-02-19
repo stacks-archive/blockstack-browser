@@ -32,14 +32,13 @@ const SignOut = ({ location }) => {
     ...currentViewProps.props
   }
   return (
-    <App>
+    <>
       <ShellParent
         views={views}
         {...componentProps}
         disableBackOnView={views.length - 1}
       />
-      <AppHomeWrapper />
-    </App>
+    </>
   )
 }
 

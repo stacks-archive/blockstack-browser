@@ -415,15 +415,14 @@ class SignIn extends React.Component {
       ...currentViewProps.props
     }
     return (
-      <App>
+      <>
         <ShellParent
           app={formatAppManifest(this.props.appManifest)}
           views={views}
           {...componentProps}
           disableBackOnView={views.length - 1}
         />
-        <AppHomeWrapper />
-      </App>
+      </>
     )
   }
 }

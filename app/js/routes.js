@@ -289,19 +289,21 @@ export default (
 
       <Route path="/auth" component={NewAuthPage} />
     </Route>
-    <Route path="/sign-up" component={SignUpPage} />
-    <Route path="/sign-up/*" component={SignUpPage} />
-    {/**
-     * TODO: move /update back up ^^, had to move it out of the 'app' nested route
-     * because when we wipe data, it wants to redirect to /sign-up
-     */}
-    <Route path="/update" component={UpdateStatePage} />
-    <Route path="/sign-in" component={SignInPage} />
-    <Route path="/sign-in/*" component={SignInPage} />
-    <Route path="/seed" component={SeedPage} />
-    <Route path="/connect-storage" component={ConnectStoragePage} />
-    <Route path="/clear-auth" component={SignOutPage} />
-    <Route path="/sign-out" component={SignOutPage} />
-    <Route path="/*" component={NotFoundPage} />
+    <Route path="/" component={App}>
+      <Route path="/sign-up" component={SignUpPage} />
+      <Route path="/sign-up/*" component={SignUpPage} />
+      {/**
+       * TODO: move /update back up ^^, had to move it out of the 'app' nested route
+       * because when we wipe data, it wants to redirect to /sign-up
+       */}
+      <Route path="/update" component={UpdateStatePage} />
+      <Route path="/sign-in" component={SignInPage} />
+      <Route path="/sign-in/*" component={SignInPage} />
+      <Route path="/seed" component={SeedPage} />
+      <Route path="/connect-storage" component={ConnectStoragePage} />
+      <Route path="/clear-auth" component={SignOutPage} />
+      <Route path="/sign-out" component={SignOutPage} />
+      <Route path="/*" component={NotFoundPage} />
+    </Route>
   </Router>
 )

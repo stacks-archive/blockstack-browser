@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { WindowSize } from 'react-fns'
+import { Box } from 'blockstack-ui'
 
 import HomePage from '../../../HomeScreenPage'
 const StyledAppHomeWrapper = styled.div.attrs({
@@ -34,7 +35,13 @@ const AppHomeWrapper = props => (
       width > 599 ? (
         <StyledAppHomeWrapper {...props}>
           <div inert="true" htmlInert>
-            <HomePage />
+            <Box
+              position="fixed"
+              size={'100%'}
+              zIndex="9999"
+              bg="rgba(240, 240, 240, 0.8)"
+            />
+
           </div>
         </StyledAppHomeWrapper>
       ) : null

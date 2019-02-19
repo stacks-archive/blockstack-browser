@@ -20,6 +20,7 @@ import Modal from 'react-modal'
 import NotificationsSystem from 'reapop'
 import NotificationsTheme from 'reapop-theme-wybo'
 import { hot } from 'react-hot-loader'
+import { AppHomeWrapper } from '@blockstack/ui'
 
 import log4js from 'log4js'
 
