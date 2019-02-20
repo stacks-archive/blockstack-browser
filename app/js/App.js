@@ -15,7 +15,6 @@ import {
 import { SanityActions } from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
-import { openInNewTab } from './utils'
 import Modal from 'react-modal'
 import NotificationsSystem from 'reapop'
 import NotificationsTheme from 'reapop-theme-wybo'
@@ -196,10 +195,6 @@ class AppContainer extends Component {
     if (loader && !loader.classList.contains('hidden')) {
       loader.classList.add('hidden')
     }
-  }
-
-  onSupportClick = () => {
-    openInNewTab('https://forum.blockstack.org/t/frequently-ask-questions/2123')
   }
 
   closeModal() {

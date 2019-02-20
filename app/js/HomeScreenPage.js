@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Navbar from './components/Navbar'
@@ -7,6 +7,7 @@ import { AppsActions } from './store/apps'
 import { Box, Flex, Type } from 'blockstack-ui'
 import { Hover } from 'react-powerplug'
 import { Spinner } from '@components/ui/components/spinner'
+import { trackEventOnce } from '@utils/server-utils'
 
 const Loading = ({ ...rest }) => (
   <Flex
@@ -166,23 +167,40 @@ const AppItem = ({ website, imgixImageUrl, name, description }) => {
   )
 }
 
-const HomeScreenPage = props => {
-  const loading = props.apps && props.apps.loading && !props.apps.topApps.length
-  return (
-    <Box>
-      <Navbar hideBackToHomeLink activeTab="home" />
-      <Box className="home-screen">
-        {loading ? (
-          <Loading />
-        ) : (
-          <Content
-            allApps={!loading && props.apps.appsByCategory}
-            topApps={!loading && props.apps.topApps}
-          />
-        )}
+class HomeScreenPage extends React.Component {
+  state = {
+    tracked: false
+  }
+  handleTrack = () => {
+    if (!this.state.tracked) {
+      trackEventOnce('Browser Data Fetch')
+      this.setState({ tracked: true })
+    }
+  }
+  componentDidMount() {
+    this.handleTrack()
+  }
+  render() {
+    const loading =
+      this.props.apps &&
+      this.props.apps.loading &&
+      !this.props.apps.topApps.length
+    return (
+      <Box>
+        <Navbar hideBackToHomeLink activeTab="home" />
+        <Box className="home-screen">
+          {loading ? (
+            <Loading />
+          ) : (
+            <Content
+              allApps={!loading && this.props.apps.appsByCategory}
+              topApps={!loading && this.props.apps.topApps}
+            />
+          )}
+        </Box>
       </Box>
-    </Box>
-  )
+    )
+  }
 }
 
 Content.propTypes = {
