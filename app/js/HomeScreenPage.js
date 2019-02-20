@@ -60,12 +60,7 @@ const AppsSection = ({ title, apps, limit, category, ...rest }) => {
       <Box textAlign="center">
         <p className="app-section-heading">{title}</p>
       </Box>
-      <Flex
-        pt={4}
-        justifyContent={['space-between', 'center']}
-        alignItems="flex-start"
-        flexWrap="wrap"
-      >
+      <Flex pt={4} flexWrap="wrap" justifyContent={['space-between', 'center']}>
         {appsList.map(app => (
           <AppItem
             key={app.name}
@@ -84,7 +79,7 @@ const Image = props => (
   <Box
     is="img"
     borderRadius="15px"
-    boxShadow="0px 0px 35px 0px rgba(0, 0, 0, 0.15)"
+    boxShadow="1px 0px 18px 0px rgba(0, 0, 0, 0.1)"
     bg="white"
     {...props}
   />
@@ -105,12 +100,14 @@ const AppItem = ({ website, imgixImageUrl, name, description }) => {
   return (
     <Hover>
       {({ bind, hovered }) => (
-        <Box
+        <Flex
           width={['calc(50% - 10px)', 1 / 3, 1 / 3, 1 / 4]}
           maxWidth={['160px', 'unset', 'unset', 'unset']}
           pr={[0, 3, 3, 4]}
+          mb={5}
           flexShrink={0}
-          mb={[5]}
+          flexGrow="1"
+          alignSelf="stretch"
           transition="0.15s all ease-in-out"
           transform={hovered ? 'translateY(-5px)' : 'none'}
           color="blue.dark"
@@ -120,6 +117,7 @@ const AppItem = ({ website, imgixImageUrl, name, description }) => {
             maxWidth="100%"
             width={1}
             is="a"
+            flexGrow={1}
             href={website}
             target="_blank"
             alignItems="center"
@@ -162,7 +160,7 @@ const AppItem = ({ website, imgixImageUrl, name, description }) => {
               </Box>
             </Box>
           </Flex>
-        </Box>
+        </Flex>
       )}
     </Hover>
   )
