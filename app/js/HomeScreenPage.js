@@ -60,7 +60,7 @@ const AppsSection = ({ title, apps, limit, category, ...rest }) => {
       <Box textAlign="center">
         <p className="app-section-heading">{title}</p>
       </Box>
-      <Flex pt={4} flexWrap="wrap" justifyContent={['space-between', 'center']}>
+      <Flex pt={4} flexWrap="wrap" justifyContent={['center', 'space-between']}>
         {appsList.map(app => (
           <AppItem
             key={app.name}
