@@ -3,7 +3,7 @@ import log4js from 'log4js'
 const logger = log4js.getLogger(__filename)
 
 function checkForLegacyReduxData() {
-  if (typeof window === 'undefined') {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
     return null
   }
   const data = localStorage.getItem('redux')
