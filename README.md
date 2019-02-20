@@ -60,21 +60,17 @@ reload the page.  For example, if your `auth=` query looks like
 
 ## Building for macOS
 
-1. Make sure you have a working installation of Xcode 9 or higher & valid Mac Developer signing certificate
-1. Make sure you have an OpenSSL ready for bottling by homebrew by running `brew install openssl --build-bottle`
-1. Make sure you have `hg` installed by running `brew install hg`
-1. Run `npm install nexe -g` to install the "node to native" binary tool globally
-1. Open the Blockstack macOS project in Xcode and configure your code signing development team (You only need to do this once)
-1. Run `npm run mac` to build a debug release signed with your Mac Developer certificate
-
-*Note: You only need to run `nexe` once but the first build will take a while as `nexe` downloads and compiles a source copy of node. Then it creates and copies the needed proxy binaries into place and copies a built version of the browser web app into the source tree.*
+1. Make sure you have a working installation of Xcode >=9 and Node.js >=10.
+1. Run `npm run mac:release:dev` to build an unsigned application bundle. 
+1. The output bundle is located at `native/macos/export/Blockstack.app`.
 
 *Note: This has only been tested on macOS High Sierra 10.13*
 
 ### Building a macOS release for distribution
 
 1. Ensure you have valid Developer ID signing credentials in your Keychain. (See https://developer.apple.com/developer-id/ for more information)
-1. Follow the instructions in the above section for building for macOS.
+1. Open the Blockstack macOS project in Xcode and configure your code signing development team (You only need to do this once)
+1. Make sure you have an OpenSSL ready for bottling by homebrew by running `brew install openssl --build-bottle`
 1. Open the Blockstack macOS project in Xcode.
 1. Select the Product menu and click Archive.
 1. When the archive build completes, the Organizer window will open. Select your new build.
