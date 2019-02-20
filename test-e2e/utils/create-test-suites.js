@@ -1,101 +1,25 @@
 
-const { WebDriver, Builder, By, Key, until } = require('selenium-webdriver');
+const { WebDriver, Builder, By, Key, until, logging } = require('selenium-webdriver');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
 const url = require('url');
+const filenamify = require('filenamify');
 const { createServer: createHttpServer, Server: HttpServer } = require('http');
 const serveHandler = require('serve-handler');
 const { Local: BrowserStackLocal } = require('browserstack-local');
 const ExtendedWebDriver = require('./ExtendedWebDriver');
-const browserStackEnvironments = require('./browserstack-environments');
 const helpers = require('./helpers');
+const config = require('./config');
+const { getTestEnvironments } = require('./webdriver-environments');
+const { getSessionConsoleLogs } = require('./browserstack-api');
+
 
 // selenium-webdriver docs: https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver.html
 
-const BROWSERSTACK_HUB_URL = 'http://hub-cloud.browserstack.com/wd/hub';
-
-const config = {
-  browserHostUrl: '',
-  browserStack: { 
-    enabled: false, 
-    user: '', 
-    key: '', 
-    localEnabled: false
-  },
-  serveDirectory: ''
-};
-
-/**
- * Note: This config has to be loaded immediately and synchronously since the config values
- * are used for generating the Mocha test suites, and Mocha requires tests to be defined 
- * immediately and synchronously on script load. 
- */
-(function initializeConfig() {
-
-  // Determine which browser host endpoint to run tests against.
-  const E2E_BROWSER_HOST = 'E2E_BROWSER_HOST';
-  const PROD_HOST = 'https://browser.blockstack.org';
-  config.browserHostUrl = process.env[E2E_BROWSER_HOST] || PROD_HOST;
-  if (!process.env[E2E_BROWSER_HOST]) {
-    console.warn(`WARNING: The browser host url was not set via the ${E2E_BROWSER_HOST} env var.. running tests against the production endpoint "${PROD_HOST}"`);
-  } else if (config.browserHostUrl.startsWith('http:') || config.browserHostUrl.startsWith('https:')) {
-    console.log(`Running e2e tests against endpoint ${config.browserHostUrl}`);
-  } else {
-    config.serveDirectory = path.resolve(config.browserHostUrl);
-    config.browserHostUrl = 'http://localhost:5757';
-    console.log(`Local static web server will be started at ${config.browserHostUrl} for directory ${config.serveDirectory}`);
-  }
-
-  // Check environment vars for BrowserStack usage settings.
-  const USE_BROWSERSTACK = 'USE_BROWSERSTACK';
-  const BROWSERSTACK_AUTH = 'BROWSERSTACK_AUTH';
-  config.browserStack.enabled = process.env[USE_BROWSERSTACK] && process.env[USE_BROWSERSTACK] !== 'false';
-  if (config.browserStack.enabled) {
-    const browserstackAuth = process.env[BROWSERSTACK_AUTH];
-    if (!browserstackAuth) {
-      const errMsg = `The BrowserStack auth must be set as environment variables. Use the format \`${BROWSERSTACK_AUTH}="user:key"\``;
-      console.error(errMsg);
-      throw new Error(errMsg);
-    }
-    // Auth string formatted as "user:key"
-    [config.browserStack.user, config.browserStack.key] = browserstackAuth.trim().split(/:(.+)/);
-  }
-
-  /**
-   * If the auth-browser host endpoint is set to localhost and BrowserStack testing is enabled
-   * then BrowserStack Local must be used.
-   * @see https://www.npmjs.com/package/browserstack-local
-   * @see https://www.browserstack.com/local-testing
-   */
-  if (config.browserStack.enabled) {
-    const parsedUrl = url.parse(config.browserHostUrl);
-    config.browserStack.localEnabled = ['localhost', '127.0.0.1'].includes(parsedUrl.hostname);
-
-    // Check if the host port is the expected port that is supported by BrowserStack Safari environments.
-    const expectedPort = '5757';
-    if (config.browserStack.localEnabled && parsedUrl.port !== expectedPort) {
-      console.warn(`WARNING: BrowserStack Local is enabled but the host port is ${parsedUrl.port} rather than the expected port ${expectedPort}. ` + 
-        `This may cause problems for BrowserStack Safari environments.. for more information see https://www.browserstack.com/question/664`);
-    }
-  }
-
-  /**
-   * If BrowserStack Local is enabled then the host url needs swapped from localhost to bs-local.com
-   * This required due to a technical limitation with BrowserStack's Safari environments.
-   * @see https://www.browserstack.com/question/759
-   */
-  if (config.browserStack.localEnabled) {
-    const parsedUrl = url.parse(config.browserHostUrl);
-    [ parsedUrl.hostname, parsedUrl.host ] = [ 'bs-local.com', undefined ];
-    config.browserHostUrl = url.format(parsedUrl);
-  }
-
-})();
-
 
 /** @type {BrowserStackLocal} */
-let blockStackLocalInstance;
+let browserStackLocalInstance;
 
 /** @type {HttpServer} */
 let staticWebServer;
@@ -107,7 +31,8 @@ before(async () => {
     console.log(`Starting static web server for a directory to host the Browser locally...`)
     staticWebServer = createHttpServer((req, res) => {
       return serveHandler(req, res, {
-        public: config.serveDirectory
+        public: config.serveDirectory,
+        rewrites: [{ source: '**', destination: '/index.html' }]
       })
     });
     await new Promise((resolve, reject) => {
@@ -127,9 +52,14 @@ before(async () => {
   // Check if BrowserStackLocal needs to be initialized before running tests..
   if (config.browserStack.localEnabled) {
     console.log(`BrowserStack is enabled the test endpoint is localhost, setting up BrowserStack Local..`);
-    blockStackLocalInstance = new BrowserStackLocal();
-    return await new Promise((resolve, reject) => {
-      blockStackLocalInstance.start({ key: config.browserStack.key, force: 'true' }, (error) => {
+    browserStackLocalInstance = new BrowserStackLocal();
+    await new Promise((resolve, reject) => {
+      const opts = {
+        key: config.browserStack.key, 
+        force: 'true',
+        localIdentifier: config.browserStack.localIdentifier
+      };
+      browserStackLocalInstance.start(opts, (error) => {
         if (error) {
           console.error(`Error starting BrowserStack Local: ${error}`);
           reject(error)
@@ -158,9 +88,9 @@ after(async () => {
   }
 
   // Check if BrowserStackLocal needs to be disposed off after running tests..
-  if (blockStackLocalInstance && blockStackLocalInstance.isRunning()) {
+  if (browserStackLocalInstance && browserStackLocalInstance.isRunning()) {
     await new Promise((resolve) => {
-      blockStackLocalInstance.stop((error) => {
+      browserStackLocalInstance.stop((error) => {
         if (error) {
           console.error(`Error stopping BrowserStack Local: ${error}`);
         }
@@ -168,81 +98,19 @@ after(async () => {
       });
     });
   }
+
 });
 
 
-/**
- * @typedef {Object} TestEnvironment
- * @property {string} description Human-readable name of the operating system & web browser.
- * @property {Promise<ExtendedWebDriver>} createDriver Promise that resolves to a ready-to-use WebDriver instance.
- */
-
-/**
- * @generator
- * @param {string} user BrowserStack user credential.
- * @param {string} key BrowserStack key credential.
- * @yields {TestEnvironment}
- */
-function* getBrowserstackEnvironments(user, key) {
-  for (let capability of browserStackEnvironments) {
-    capability = Object.assign(capability, {
-      'browserstack.user': user,
-      'browserstack.key': key
-    });
-    if (config.browserStack.localEnabled) {
-      capability['browserstack.local'] = 'true';
-    }
-    yield {
-      description: capability.desc,
-      createDriver: async () => {
-        const driver = await new Builder().
-          usingServer(BROWSERSTACK_HUB_URL).
-          withCapabilities(capability).
-          build();
-        await driver.manage().setTimeouts({ implicit: 1000, pageLoad: 10000 });
-        return new ExtendedWebDriver(driver);
-      }
-    };
-  }
-}
-
-/**
- * Generates test environments for the local machine. Always includes 'chrome' and 'firefox'.
- * If on macOS then also includes 'safari'. If on Windows then also includes 'edge'. 
- * @generator
- * @yields {TestEnvironment}
- */
-function* getLocalSystemBrowserEnvironments() {
-  const browsers = ['firefox', 'chrome'];
-
-  // Ensure the browser webdriver binaries are added to env path
-  require('chromedriver');
-  require('geckodriver');
-
-  if (process.platform === 'darwin') {
-    browsers.push('safari');
-  } else if (process.platform === 'win32') {
-    browsers.push('edge');
-  }
-  for (let browser of new Set(browsers)) {
-    yield {
-      description: `${process.platform} ${browser}`,
-      createDriver: async () => {
-        const driver = await new Builder()
-          .forBrowser(browser)
-          .build();
-        await driver.manage().setTimeouts({ implicit: 1000, pageLoad: 10000 });
-        return new ExtendedWebDriver(driver);
-      }
-    };
-  }
-}
 
 /**
  * @typedef {Object} TestInputs
  * @property {ExtendedWebDriver} driver A ready to use WebDriver instance.
  * @property {string} browserHostUrl The http endpoint hosting the browser.
  * @property {string} envDesc Human-readable name of the operating system & web browser.
+ * @property {string} browserName Lowercase name of web browser (for mobile this can be 'android' or 'iphone').
+ * @property {boolean} browserStackEnabled If testing against BrowserStack is enabled.
+ * @property {string} loopbackHost Typically `localhost`, otherwise set to BrowserStack's loopback domain.
  */
 
 /**
@@ -261,51 +129,127 @@ function* getLocalSystemBrowserEnvironments() {
  */
 function createTestSuites(title, defineTests) {
 
-  const testEnvironments = config.browserStack.enabled 
-    ? getBrowserstackEnvironments(config.browserStack.user, config.browserStack.key)
-    : getLocalSystemBrowserEnvironments();
-
+  const testEnvironments = getTestEnvironments();
   for (const testEnvironment of testEnvironments) {
 
-    describe(`${title} [${testEnvironment.description}]`, () => {
+    describe(`${title} [${testEnvironment.description}]`, function() {
+
+      if (config.browserStack.enabled) {
+        this.retries(1);
+      }
 
       /** @type {TestInputs} */
       const testInputs = {
         envDesc: testEnvironment.description,
+        browserName: testEnvironment.browserName,
         browserHostUrl: config.browserHostUrl,
-        driver: {}
+        browserStackEnabled: config.browserStack.enabled,
+        loopbackHost: config.loopbackHost,
+        driver: {},
+        driverInitialized: false
+      };
+
+      // Variables that get populated when a test fails
+      const failedTestInfo = {
+        sessionID: '',
+        testFileName: '',
+        fileDir: ''
       };
 
       step('create selenium webdriver', async () => {
-        const driver = await testEnvironment.createDriver();
-        helpers.mixin(testInputs.driver, driver);
-      }).timeout(120000);
+        // BrowserStack sometimes lets webdriver instantiation network requests go into a zombie 
+        // state (no response, no error) after several minutes, causing a Mocha test timeout 
+        // with cascading effects that prevent the `retries` feature from working properly. 
+        // There is no easy way to set a timeout or cancel this webdriver network request, so we 
+        // use a manual Promise race to detect timeout and fail the test. 
+        const createDriver = async () => {
+          const driver = await testEnvironment.createDriver();
+          helpers.mixin(testInputs.driver, driver);
+          testInputs.driverInitialized = true;
+        };
+        const timeout = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            testInputs.driverInitialized 
+              ? resolve() 
+              : reject(new Error('Timeout waiting for webdriver instantiation'));
+          }, 60000).unref(); 
+        });
+        await Promise.race([createDriver(), timeout]);
+      });
 
       defineTests(testInputs)
 
       afterEach(function () {
-        try {
-          // If test failed then take a screenshot and save to local temp dir.
-          if (this.currentTest.state === 'failed' && testInputs.driver.screenshot) {
-            let screenshotFile = `screenshot-${Date.now()/1000|0}-${helpers.getRandomString(6)}.png`;
-            screenshotFile = path.resolve(os.tmpdir(), screenshotFile);
-            return testInputs.driver.screenshot(screenshotFile).then(() => {
-              console.log(`screenshot for failure saved to ${screenshotFile}`);
-            }).catch(err => console.warn(`Error trying to create screenshot after test failure: ${err}`));
-          }
-        } catch (err) {
-          console.warn(`Error trying to create screenshot after test failure: ${err}`);
+
+        // If test failed then prepare for retrieving debug data (logs, screenshots).
+        if (this.currentTest.state === 'failed' && testInputs.driverInitialized) {
+
+          // Setup temp dir to write debug data, with a filename-safe description of the failed test. 
+          const testDesc = this.currentTest.titlePath().join('-').replace(/\s+/g, '-');
+          const testFileName = filenamify(`${testDesc}-${Date.now()/10000|0}-${helpers.getRandomString(5)}`);
+          const fileDir = path.resolve(os.tmpdir(), 'test-errors');
+          fs.mkdirSync(fileDir, { recursive: true });
+          
+          failedTestInfo.testFileName = testFileName;
+          failedTestInfo.fileDir = fileDir;
+
+          return Promise.resolve().then(async function getSessionID() {
+            try {
+              if (config.browserStack.enabled) {
+                // If BrowserStack is enabled, get the sessionID which we need to retrieve the logs
+                // after the session has been closed. 
+                failedTestInfo.sessionID = await testInputs.driver.getSessionID();
+              }
+            } catch (error) {
+              console.warn(`Error trying to get sessionID after test failure: ${error}`);
+            }
+          }).then(async function createScreenshotFile() {
+            try {
+              const screenshotFile = path.resolve(fileDir, `${testFileName}.png`);
+              await testInputs.driver.screenshot(screenshotFile);
+              console.log(`screenshot saved to "${screenshotFile}"`);
+            } catch (error) {
+              console.warn(`Error trying to create screenshot after test failure: ${error}`);
+            }
+          }).then(async function getSeleniumBrowserLogs(){
+            try {
+              const logData = await testInputs.driver.getBrowserLogs();
+              const logFileDir = path.resolve(fileDir, `${testFileName}.selenium.log.txt`);
+              fs.writeFileSync(logFileDir, logData);
+              console.log(`selenium logs saved to "${logFileDir}"`);
+            } catch (error) {
+              console.warn(`Selenium log API not supported for this environment: ${error}`);
+            }
+          });
         }
+
       });
 
       after(async () => {
+
         try {
-          if (testInputs.driver.quit) {
+          if (testInputs.driverInitialized) {
             await testInputs.driver.quit();
           }
-        } catch (err) {
-          console.warn(`Error disposing driver after tests: ${err}`);
+        } catch (error) {
+          console.warn(`Error disposing driver after tests: ${error}`);
         }
+
+        try {
+          if (config.browserStack.enabled && failedTestInfo.sessionID) {
+            // This must be ran after `driver.quit()` since BrowserStack logs are not available 
+            // through their API until after the session has ended. 
+            // Wait for BrowserStack backend to propagate log data before requesting..
+            await helpers.timeout(2500);
+            const logs = await getSessionConsoleLogs(failedTestInfo.sessionID);
+            const logFilePath = path.resolve(failedTestInfo.fileDir, `${failedTestInfo.testFileName}.browserstack.log.txt`);
+            fs.writeFileSync(logFilePath, logs);
+            console.log(`BrowserStack log data saved to "${logFilePath}"`);
+          }
+        } catch (error) {
+          console.warn(`Error fetching BrowserStack console logs: ${error}`);
+        }
+
       });
 
     });

@@ -11,7 +11,17 @@ To specify an endpoint and BrowserStack usage, use `npm run test-e2e` with envir
 
 If `E2E_BROWSER_HOST` is set and is not an `http(s)://` url, it is assumed to be a local file system directory, and a local static web server will be spawned and pointed at the directory. 
 
-Use mocha's `--grep` or `--fgrep` options in `mocha.opt` to target specific test suites and/or web browsers / environments. For example: `--grep secret\skey.*iOS-12-iPhone-XS` or `--fgrep firefox`.
+#### Run specific test suite(s)
+
+Use the environment variable `TEST_E2E_GREP` to target specific test suites and/or web browsers / environments. This uses Mocha's `--grep` feature which supports regex. 
+
+Examples:
+* Run all the tests suite on the iOS platforms:
+  * `TEST_E2E_GREP=iOS npm run test-e2e:browserstack`
+* Run the login test suite on iOS platforms:
+  * `TEST_E2E_GREP=login-to-hello-blockstack-app.*iOS npm run test-e2e:browserstack`
+
+
 
 #### Using BrowserStack
 
