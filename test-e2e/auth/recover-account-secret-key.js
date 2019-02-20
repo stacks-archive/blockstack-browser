@@ -2,7 +2,7 @@ const { By, until } = require('selenium-webdriver');
 const createTestSuites = require('../utils/create-test-suites');
 const SAMPLE_ACCOUNT = require('./sample-account');
 
-createTestSuites('account recovery via secret key', ({driver, browserHostUrl }) => {
+createTestSuites('account-recovery-via-secret-key', ({driver, browserHostUrl }) => {
 
   step('load initial page', async () => {
     await driver.get(browserHostUrl);

@@ -1,6 +1,10 @@
 
 module.exports = class Helpers {
 
+  static timeout(ms) {
+    return new Promise(resolve => setTimeout(() => resolve(), ms));
+  }
+
   static getRandomInt(min = 1000000000, max = 99999999999) {
     return (Math.floor(Math.random() * (max - min)) + min);
   }
