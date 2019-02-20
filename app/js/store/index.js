@@ -3,6 +3,9 @@ import log4js from 'log4js'
 const logger = log4js.getLogger(__filename)
 
 function checkForLegacyReduxData() {
+  if (typeof window === 'undefined') {
+    return null
+  }
   const data = localStorage.getItem('redux')
   logger.debug('Persisted data exists: ', JSON.parse(data))
   if (!data) {
