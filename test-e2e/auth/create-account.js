@@ -113,7 +113,7 @@ createTestSuites('account creation', ({driver, browserHostUrl}) => {
 
   step('load main page as authenticated user', async () => {
     await driver.click(By.xpath('//div[text()="Go to Blockstack"]'));
-    await driver.el(By.xpath('//*[text()="User-ready Apps"]'));
+    await driver.el(By.xpath('//*[text()="Popular Apps"]'));
   });
 
 });
