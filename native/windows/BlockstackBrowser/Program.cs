@@ -3,16 +3,27 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Globalization;
+using System.Threading;
+using System.IO.Pipes;
+using System.Text;
 
 namespace BlockstackBrowser
 {
-    public class Program:Form
+    public class Program : Form
     {
 
         NotifyIcon myIcon;
         System.ComponentModel.Container container;
         ContextMenu contextMenu;
         Process browserProxy, corsProxy;
+
+        const int productionModePortalPort = 8888;
+        const int developmentModePortalPort = 3000;
+        const string BLOCKSTACK_PROTOCOL_HANDLER_PIPE = "BLOCKSTACK_PROTOCOL_HANDLER_PIPE";
+        static string BLOCKSTACK_PROTOCOL_PART = "blockstack:";
+
+        bool isDebugModeEnabled = false;
 
         [STAThread]
         static void Main()
@@ -51,16 +62,92 @@ namespace BlockstackBrowser
             homeItem.Index = 0;
             homeItem.Text = "H&ome";
             homeItem.Click += new System.EventHandler(this.homeOpen);
+            MenuItem debugItem = new MenuItem();
+            debugItem.Index = 2;
+            debugItem.Visible = false;
+            debugItem.Click += (s, e) => isDebugModeEnabled = !isDebugModeEnabled;
+
+            contextMenu.Popup += (s, e) =>
+            {
+                bool isCtrlClicked = (ModifierKeys & Keys.Control) == Keys.Control;
+                debugItem.Text = (isDebugModeEnabled ? "Disable" : "Enable") + " Development Mode";
+                debugItem.Visible = isCtrlClicked;
+            };
 
             contextMenu.MenuItems.AddRange(
-                new MenuItem[] { homeItem, exitItem });
+                new MenuItem[] { homeItem, exitItem, debugItem });
             myIcon.ContextMenu = contextMenu;
 
             //deleteAndUnpackFiles();
-
+            
             RunBlockstackBrowser();
             RunCORSProxy();
+            StartProtocolHandlerListenerThread();
             this.homeOpen(null, null);
+        }
+
+        void StartProtocolHandlerListenerThread()
+        {
+            new Thread(() =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        StartProtocolHandlerPipeServer();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("ERROR: {0}", ex.Message);
+                        // Wait 500ms then restart the pipe server.
+                        Thread.Sleep(500);
+                    }
+                }
+            }){ IsBackground = true }.Start();
+        }
+
+        void StartProtocolHandlerPipeServer()
+        {
+            using (var pipeServer = new NamedPipeServerStream(BLOCKSTACK_PROTOCOL_HANDLER_PIPE, PipeDirection.In, 1))
+            {
+                Console.WriteLine("NamedPipeServerStream object created.");
+
+                while (true)
+                {
+                    // Wait for a ProtocolHandler process instance to connect.
+                    Console.Write("Waiting for client connection...");
+                    pipeServer.WaitForConnection();
+
+                    Console.WriteLine("Client connected.");
+
+                    // Read data from ProtocolHandler process.
+                    var sw = new StreamReader(pipeServer, Encoding.UTF8);
+                    var clientData = sw.ReadToEnd();
+                    ProcessProtocolUriReceived(clientData);
+                    
+                    pipeServer.Disconnect();
+                }
+            }
+        }
+    
+        string GetPortalPort()
+        {
+            if (isDebugModeEnabled)
+            {
+                return developmentModePortalPort.ToString(CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                return productionModePortalPort.ToString(CultureInfo.InvariantCulture);
+            }
+        }
+
+        void ProcessProtocolUriReceived(string data)
+        {
+            string authPart = data.Substring(BLOCKSTACK_PROTOCOL_PART.Length);
+            string port = GetPortalPort();
+            string urlOpen = $"http://localhost:{port}/auth?authRequest=" + authPart;
+            Process.Start(urlOpen);
         }
 
         protected override void SetVisibleCore(bool value)
@@ -79,7 +166,8 @@ namespace BlockstackBrowser
 
         private void homeOpen(object Sender, EventArgs e)
         {
-            Process.Start("http://localhost:8888/");
+            string port = GetPortalPort();
+            Process.Start($"http://localhost:{port}/");
         }
 
         protected override void Dispose(bool disposing)
