@@ -19,6 +19,7 @@ import Modal from 'react-modal'
 import NotificationsSystem from 'reapop'
 import NotificationsTheme from 'reapop-theme-wybo'
 import { hot } from 'react-hot-loader'
+import { selectLastUpdatedApps } from './store/apps/selectors'
 
 import log4js from 'log4js'
 
@@ -37,7 +38,8 @@ function mapStateToProps(state) {
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     coreAPIPassword: state.settings.api.coreAPIPassword,
-    instanceIdentifier: state.apps.instanceIdentifier
+    instanceIdentifier: state.apps.instanceIdentifier,
+    lastUpdatedApps: selectLastUpdatedApps(state)
   }
 }
 
@@ -77,7 +79,8 @@ class AppContainer extends Component {
     stateVersion: PropTypes.number,
     router: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    instanceIdentifier: PropTypes.string
+    instanceIdentifier: PropTypes.string,
+    lastUpdatedApps: PropTypes.number
   }
 
   constructor(props) {
@@ -162,8 +165,13 @@ class AppContainer extends Component {
       })
     }
 
-    // Fetch those apps!
-    this.props.doFetchApps()
+    if (
+      !this.props.lastUpdatedApps ||
+      Date.now() - this.props.lastUpdatedApps > 900000 // 15 min
+    ) {
+      // Fetch those apps if data is state
+      this.props.doFetchApps()
+    }
   }
 
   componentWillReceiveProps(nextProps) {

@@ -69,22 +69,13 @@ const doFetchApps = () => async dispatch => {
     type: types.FETCH_APPS_STARTED
   })
   try {
-    const promises = [
-      fetch(`${API_URL}/api/apps`),
-      fetch(`${API_URL}/api/app-mining-apps`)
-    ]
-    const responses = await Promise.all(promises)
-    const [allApps, appMiningApps] = await Promise.all([
-      responses[0].json(),
-      responses[1].json()
-    ])
+    const res = await fetch(`${API_URL}/api/app-mining-apps`)
 
-    const apps = allApps.apps
-      .filter(
-        app =>
-          app.authentication === 'Blockstack' || app.storageNetwork === 'Gaia' // only blockstack apps
-      )
-      .filter(app => app.category !== 'Sample Blockstack Apps')
+    const allBlockstackApps = await res.json()
+
+    const apps = allBlockstackApps.apps.filter(
+      app => app.category !== 'Sample Blockstack Apps'
+    )
 
     const categories = [...new Set(apps.map(app => app.category))]
 
@@ -93,7 +84,7 @@ const doFetchApps = () => async dispatch => {
       apps: apps.filter(app => app.category === category)
     }))
 
-    const topApps = appMiningApps.apps.filter(app => app.miningReady)
+    const topApps = allBlockstackApps.apps.filter(app => app.miningReady)
 
     dispatch({
       type: types.FETCH_APPS_FINISHED,
