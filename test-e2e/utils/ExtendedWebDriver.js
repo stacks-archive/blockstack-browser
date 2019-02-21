@@ -27,6 +27,25 @@ class ExtendedWebDriver extends WebDriver {
   }
 
   /**
+   * 
+   * @param {string} script A javascript expression that evaluates to a promise.
+   * @param {...any} args
+   * @returns {any} The evaluated promise result, if any.
+   */
+  async executePromise(script, ...args) {
+    const [error, result] = await this.driver.executeAsyncScript(`
+      var callback = arguments[arguments.length - 1];
+      ${script}
+        .then(result => callback([null, result]))
+        .catch(error => callback([error.toString(), null]));
+    `, ...args);
+    if (error) {
+      throw new Error(error);
+    }
+    return result;
+  }
+
+  /**
    * Retries a given function until the given time has elapsed. 
    * @param {(Promise<any>|(function():any)} func
    * @param {number} timeout - milliseconds to continue re-trying execution of a failing function.
