@@ -1,8 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { WindowSize } from 'react-fns'
+import { connect } from 'react-redux'
 
 import HomePage from '../../../HomeScreenPage'
+
 const StyledAppHomeWrapper = styled.div.attrs({
   inert: true
 })`
@@ -28,18 +30,37 @@ const StyledAppHomeWrapper = styled.div.attrs({
   }
 `
 
-const AppHomeWrapper = props => (
-  <WindowSize>
-    {({ width }) =>
-      width > 599 ? (
-        <StyledAppHomeWrapper {...props}>
-          <div inert="true" htmlInert>
-            <HomePage />
-          </div>
-        </StyledAppHomeWrapper>
-      ) : null
-    }
-  </WindowSize>
-)
+const mapStateToProps = state => ({
+  apps: state.apps,
+  appListLastUpdated: state.apps.lastUpdated
+})
+
+const AppHomeWrapper = connect(mapStateToProps)(props => (
+  <>
+    {props.appListLastUpdated ? (
+      <div
+        style={{
+          visibility: 'hidden',
+          position: 'absolute',
+          top: '-999999px',
+          userSelect: 'none',
+          pointerEvents: 'none'
+        }}
+        id="apps-loaded"
+      />
+    ) : null}
+    <WindowSize>
+      {({ width }) =>
+        width > 599 ? (
+          <StyledAppHomeWrapper {...props}>
+            <div inert="true" htmlInert>
+              <HomePage />
+            </div>
+          </StyledAppHomeWrapper>
+        ) : null
+      }
+    </WindowSize>
+  </>
+))
 
 export { AppHomeWrapper }
