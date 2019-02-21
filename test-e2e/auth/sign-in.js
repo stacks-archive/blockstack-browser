@@ -30,11 +30,11 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
 
   step('load initial page', async () => {
     await driver.get(browserHostUrl);
-    await driver.wait(until.elementLocated(By.id('apps-loaded')))
+    await driver.el(By.xpath('//*[contains(.,"Create your Blockstack ID")]'));
   });
 
   step('load app list', async () => {
-    await driver.el(By.xpath('//*[contains(.,"Popular Apps")]'));
+    await driver.waitForElementLocated(By.id('apps-loaded'));
   });
 
   step('fast account recovery via localStorage update', async () => {
@@ -45,12 +45,9 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
     // to restore the account into the blockstack browser session.
     await driver.executeScript(`
       window.localStorage.setItem("BLOCKSTACK_STATE_VERSION", "ignore");
-      const authedReduxObj = JSON.parse(arguments[0]);
-      const localReduxObj = JSON.parse(window.localStorage.getItem("redux"));
-      const mergedReduxState = {
-        ...localReduxObj,
-        ...authedReduxObj
-      };
+      var authedReduxObj = JSON.parse(arguments[0]);
+      var localReduxObj = JSON.parse(window.localStorage.getItem("redux"));
+      var mergedReduxState = Object.assign({}, localReduxObj, authedReduxObj);
       window.localStorage.setItem("redux", JSON.stringify(mergedReduxState));
     `, sampleAccount.LOCAL_STORAGE_DATA);
 
