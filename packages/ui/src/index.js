@@ -18,6 +18,13 @@ import { Scrollbars } from './components/scrollbars'
 import { ModalRoot, ModalConsumer, OpenModal, Modal } from './components/modal'
 import { Field, StaticField } from './components/field'
 import { Copy } from './components/copy'
+import {
+  BlockLogo,
+  BlockstackLogo,
+  BlockstackExplorerLogo,
+  AppMiningLogo,
+  StacksWalletLogo
+} from './components/logos'
 
 export {
   Type,
@@ -42,5 +49,10 @@ export {
   theme,
   Field,
   StaticField,
-  Copy
+  Copy,
+  BlockLogo,
+  BlockstackLogo,
+  BlockstackExplorerLogo,
+  AppMiningLogo,
+  StacksWalletLogo
 }
