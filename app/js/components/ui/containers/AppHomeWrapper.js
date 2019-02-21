@@ -40,11 +40,8 @@ const AppHomeWrapper = connect(mapStateToProps)(props => (
     {props.appListLastUpdated ? (
       <div
         style={{
-          visibility: 'hidden',
           position: 'absolute',
-          top: '-999999px',
-          userSelect: 'none',
-          pointerEvents: 'none'
+          top: '0'
         }}
         id="apps-loaded"
       />
