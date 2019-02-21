@@ -302,16 +302,27 @@ namespace BlockstackBrowser
             }
             else
             {
-                var proc = Process.Start(parentProcessFilePath, urlOpen);
-                new Thread(() =>
+                try
                 {
-                    proc.WaitForExit(1000);
-                    if (proc.HasExited && proc.ExitCode < 0)
+                    var proc = Process.Start(parentProcessFilePath, urlOpen);
+                    new Thread(() =>
                     {
-                        Console.Error.WriteLine($"Bad exit code {proc.ExitCode} from {parentProcessFilePath}");
-                        Process.Start(urlOpen);
-                    }
-                }).Start();
+                        using (proc)
+                        {
+                            proc.WaitForExit(1000);
+                            if (proc.HasExited && proc.ExitCode < 0)
+                            {
+                                Console.Error.WriteLine($"Bad exit code {proc.ExitCode} from {parentProcessFilePath}");
+                                Process.Start(urlOpen);
+                            }
+                        }
+                    }).Start();
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"Error starting process {parentProcessFilePath}: {ex}");
+                    Process.Start(urlOpen);
+                }
             }
         }
 
