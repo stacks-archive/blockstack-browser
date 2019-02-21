@@ -5,7 +5,7 @@ const helpers = require('../utils/helpers');
 
 // selenium-webdriver docs: https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/webdriver.html
 
-createTestSuites('account creation', ({driver, browserHostUrl}) => {
+createTestSuites('account-creation', ({driver, browserHostUrl}) => {
 
   step('load initial page', async () => {
     await driver.get(browserHostUrl);

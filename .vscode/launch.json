@@ -38,6 +38,19 @@
       ],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Mocha e2e run parallel",
+      "cwd": "${workspaceFolder}",
+      "program": "${workspaceFolder}/test-e2e/run-parallel.js",
+      "env": {
+        "USE_BROWSERSTACK": "true",
+        "E2E_BROWSER_HOST": "./build"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
     }
   ]
 }
