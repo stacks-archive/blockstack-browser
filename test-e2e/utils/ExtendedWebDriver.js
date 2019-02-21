@@ -1,4 +1,4 @@
-const { WebDriver, By, until, WebElement } = require('selenium-webdriver');
+const { WebDriver, By, until, WebElement, logging } = require('selenium-webdriver');
 const { promisify } = require('util');
 const fs = require('fs');
 const os = require('os');
@@ -63,6 +63,27 @@ class ExtendedWebDriver extends WebDriver {
     const platform = session.getCapabilities().getPlatform();
     this.platform = platform;
     return platform;
+  }
+
+  async getSessionID() {
+    const session = await this.getSession();
+    return session.getId();
+  }
+
+  /**
+   * This uses Selenium's `manage().logs()` API which is now only supported by Chrome's
+   * WebDriver. Some remote WebDriver services (like BrowserStack) shim support for
+   * this API on their end for some web browsers. Expect this to throw various kinds of 
+   * Errors, or silently failing with an empty result - depending on the environment and browser. 
+   */
+  async getBrowserLogs() {
+    const logEntries = await this.driver.manage().logs().get(logging.Type.BROWSER);
+    if (!logEntries) {
+      throw new Error('Not supported - falsy `logs` object returned');
+    }
+    const logs = logEntries.map(entry => entry.toJSON());
+    const logJson = JSON.stringify(logs, null, 2);
+    return logJson;
   }
 
   /**

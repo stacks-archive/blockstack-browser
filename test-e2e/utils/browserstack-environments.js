@@ -15,14 +15,14 @@ module.exports = [
     'os' : 'Windows',
     'os_version' : '10',
     'resolution' : '1024x768',
-  }/*, {
+  }, {
     'desc': 'Win10-Edge-18.0',
     'browserName' : 'Edge',
     'browser_version' : '18.0',
     'os' : 'Windows',
     'os_version' : '10',
     'resolution' : '1024x768',
-  }*/, 
+  }, 
 
   // macOS
   {
