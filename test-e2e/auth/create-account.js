@@ -68,7 +68,9 @@ createTestSuites('account-creation', ({driver, browserHostUrl}) => {
       // close the alert since it can eclipse the continuation button..
       const el = await driver.click(By.xpath('//*[text()="Username Registration Failed"]/parent::div/following-sibling::div/descendant::span'));
       await driver.wait(until.elementIsNotVisible(el));
-    } catch { }
+    } catch (err) {
+      console.warn(`Error checking for "username registration failed": ${err}`);
+    }
   });
 
   step('acknowledge saving recovery key phrase', async () => {
