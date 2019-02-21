@@ -33,6 +33,10 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
     await driver.wait(until.elementLocated(By.id('apps-loaded')))
   });
 
+  step('load app list', async () => {
+    await driver.el(By.xpath('//*[contains(.,"Popular Apps")]'));
+  });
+
   step('fast account recovery via localStorage update', async () => {
     // This test suite is for testing "sign in with Blockstack" on a 3rd party
     // web app, and we don't care about or want to waste test execution time doing
@@ -40,8 +44,11 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
     // Directly write the sample account localStorage data as a quick and dirty way
     // to restore the account into the blockstack browser session.
     await driver.executeScript(`
-      window.localStorage.setItem('redux', arguments[0]);
       window.localStorage.setItem('BLOCKSTACK_STATE_VERSION', 'ignore');
+      let authedReduxObj = JSON.parse(arguments[0]);
+      let reduxObj = JSON.parse(window.localStorage.getItem('redux'));
+      reduxObj = Object.assign(reduxObj, authedReduxObj);
+      window.localStorage.setItem('redux', JSON.stringify(reduxObj));
     `, sampleAccount.LOCAL_STORAGE_DATA);
 
     // Wait a bit for localStorage writes since some browsers will not flush changes to disk if
@@ -50,7 +57,7 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
   });
 
   step('load page', async () => {
-    await driver.get(`http://${loopbackHost}:${helloServerPort}`);
+    await driver.navigate().to(`http://${loopbackHost}:${helloServerPort}`);
   });
 
   step('set blockstack auth host', async () => {
