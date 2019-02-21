@@ -69,7 +69,7 @@ createTestSuites('account-creation', ({driver, browserHostUrl}) => {
       const el = await driver.click(By.xpath('//*[text()="Username Registration Failed"]/parent::div/following-sibling::div/descendant::span'));
       await driver.wait(until.elementIsNotVisible(el));
     } catch (err) {
-      console.warn(`Error checking for "username registration failed": ${err}`);
+      /* ignore error, this is expected if registration is successful */
     }
   });
 
