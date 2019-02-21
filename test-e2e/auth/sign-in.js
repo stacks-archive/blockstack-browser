@@ -44,11 +44,14 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
     // Directly write the sample account localStorage data as a quick and dirty way
     // to restore the account into the blockstack browser session.
     await driver.executeScript(`
-      window.localStorage.setItem('BLOCKSTACK_STATE_VERSION', 'ignore');
-      let authedReduxObj = JSON.parse(arguments[0]);
-      let reduxObj = JSON.parse(window.localStorage.getItem('redux'));
-      reduxObj = Object.assign(reduxObj, authedReduxObj);
-      window.localStorage.setItem('redux', JSON.stringify(reduxObj));
+      window.localStorage.setItem("BLOCKSTACK_STATE_VERSION", "ignore");
+      const authedReduxObj = JSON.parse(arguments[0]);
+      const localReduxObj = JSON.parse(window.localStorage.getItem("redux"));
+      const mergedReduxState = {
+        ...localReduxObj,
+        ...authedReduxObj
+      };
+      window.localStorage.setItem("redux", JSON.stringify(mergedReduxState));
     `, sampleAccount.LOCAL_STORAGE_DATA);
 
     // Wait a bit for localStorage writes since some browsers will not flush changes to disk if
