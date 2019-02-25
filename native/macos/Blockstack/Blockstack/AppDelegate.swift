@@ -49,10 +49,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let log = OSLog(subsystem: Bundle.main.bundleIdentifier!, category: "Default")
 
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        // This must be registered before `applicationDidFinishLaunching` otherwise the event
+        // may not be triggered if Blockstack.app was not already running.
+        let appleEventManager = NSAppleEventManager.shared()
+        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
+    }
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         os_log("applicationDidFinishLaunching: %{public}@", log: log, type: .default, blockstackDataURL().absoluteString)
 
-        portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
+        // portalLogServer = PortalLogServer.init(port: UInt16(logServerPort), password: self.createOrRetrieveCoreWalletPassword())
 
         // register initial user default values
         registerInitialUserDefaults()
@@ -66,9 +73,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             startedAtLogin = true
             killLauncher()
         }
-        
-        let appleEventManager = NSAppleEventManager.shared()
-        appleEventManager.setEventHandler(self, andSelector: #selector(handleGetURLEvent), forEventClass: UInt32(kInternetEventClass), andEventID: UInt32(kAEGetURL))
 
         statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
 
@@ -130,12 +134,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
+
+        var senderAppUrl : URL? = nil
+        let senderAppName = event.attributeDescriptor(forKeyword: keyAddressAttr)?.stringValue
+        // This `keyOriginalAddressAttr` seems to always match `keyAddressAttr`..
+        // Leaving this here for later debugging if needed.
+        // let senderAppName = event.attributeDescriptor(forKeyword: keyOriginalAddressAttr)?.stringValue
+        
+        if senderAppName != nil {
+            if let senderAppPath = NSWorkspace.shared().fullPath(forApplication: senderAppName!) {
+                senderAppUrl = URL.init(fileURLWithPath: senderAppPath)
+                os_log("Blockstack Auth Request came from app: %{public}@", log: log, type: .info, senderAppPath)
+            } else {
+                os_log("Blockstack Auth Request sender not mapped to an app: %{public}@", log: log, type: .info, senderAppName!)
+            }
+        } else {
+            os_log("Blockstack Auth Request sender not mapped to an app: %{public}@", log: log, type: .info, "keyAddressAttr not provided")
+        }
+        
         let url = (event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue) ?? ""
         let authRequest = url.replacingOccurrences(of: "blockstack:", with: "")
         os_log("Blockstack URL: %{public}@", log: log, type: .info, url)
         os_log("Blockstack Auth Request: %{public}@", log: log, type: .debug, authRequest)
 
-        openPortal(path: "\(portalAuthenticationPath)\(authRequest)")
+        openPortal(path: "\(portalAuthenticationPath)\(authRequest)", openWithApplication: senderAppUrl)
 
     }
 
@@ -177,14 +199,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "/account")
     }
     
-    func openPortal(path: String) {
+    func openPortal(path: String, openWithApplication: URL? = nil) {
         let portalURLString = "\(portalBaseUrl())\(path)"
         os_log("Opening portal with String: %{public}@", log: log, type: .info, portalURLString)
         let portalURLWithSecretString = "\(portalURLString)#coreAPIPassword=\(createOrRetrieveCoreWalletPassword())"
         let portalURLWithSecretAndLogPortString = "\(portalURLWithSecretString)&logServerPort=\(logServerPort)"
         let portalURLWithSecretLogPortAndRegtest = "\(portalURLWithSecretAndLogPortString)&regtest=\(isRegTestModeEnabled ? 1 : 0)"
         let portalURL = URL(string: portalURLWithSecretLogPortAndRegtest)
-        NSWorkspace.shared().open(portalURL!)
+        
+        if (openWithApplication != nil) {
+            do {
+                try NSWorkspace.shared().open(
+                    [portalURL!],
+                    withApplicationAt: openWithApplication!,
+                    options: .default,
+                    configuration: [:]
+                )
+            } catch {
+                os_log("Error opening URL with app: %{public}@", log: log, type: .error, openWithApplication!.absoluteString)
+                NSWorkspace.shared().open(portalURL!)
+            }
+        } else {
+            NSWorkspace.shared().open(portalURL!)
+        }
+        
     }
 
     func statusItemClick(sender: AnyObject?) {
@@ -407,7 +445,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func startPortalProxy(complete: @escaping () -> Void) {
-        let proxyPath = Bundle.main.path(forResource: "blockstackProxy", ofType: "")
+        let nodeBinPath = Bundle.main.path(forResource: "node", ofType: "", inDirectory: "server")
+        let proxyPath = Bundle.main.path(forResource: "blockstackProxy.js", ofType: "", inDirectory: "server")
         let portalPath = Bundle.main.path(forResource: "browser", ofType: "")
 
         os_log("Portal proxy path: %{public}@", log: log, type: .info, proxyPath!)
@@ -428,27 +467,58 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             os_log("Can't copy Portal code to the run path: %{public}@", log: log, type: .error, portalRunPath())
         }
 
+        self.portalProxyProcess.launchPath = nodeBinPath
 
-        self.portalProxyProcess.launchPath = proxyPath
-
-        self.portalProxyProcess.arguments = [String(self.productionModePortalPort), self.portalRunPath()]
+        self.portalProxyProcess.arguments = [proxyPath!, String(self.productionModePortalPort), self.portalRunPath()]
 
         os_log("Starting Blockstack Portal proxy...", log: log, type: .default)
-
+        
+        let stdErrorPipe = Pipe()
+        self.portalProxyProcess.standardError = stdErrorPipe
+        self.portalProxyProcess.terminationHandler = {
+            task in
+            DispatchQueue.main.async(execute: {
+                let errorData = stdErrorPipe.fileHandleForReading.readDataToEndOfFile()
+                let errorString = NSString(data: errorData, encoding: String.Encoding.utf8.rawValue)! as String
+                let alert = NSAlert()
+                alert.messageText = "Blockstack Error: Portal server was terminated"
+                alert.informativeText = errorString
+                alert.alertStyle = NSAlertStyle.warning
+                alert.runModal()
+            })
+        }
+        
         self.portalProxyProcess.launch()
         complete()
 
     }
 
     func startCorsProxy(complete: @escaping () -> Void) {
-        let corsProxyPath = Bundle.main.path(forResource: "corsproxy", ofType: "")
+        let nodeBinPath = Bundle.main.path(forResource: "node", ofType: "", inDirectory: "server")
+        let corsProxyPath = Bundle.main.path(forResource: "corsproxy.js", ofType: "", inDirectory: "server")
 
         os_log("CORS proxy Path: %{public}@", log: log, type: .info, corsProxyPath!)
 
-        corsProxyProcess.launchPath = corsProxyPath
+        corsProxyProcess.arguments = [corsProxyPath!]
+        corsProxyProcess.launchPath = nodeBinPath
 
         os_log("Starting CORS proxy...", log: log, type: .default)
 
+        let stdErrorPipe = Pipe()
+        corsProxyProcess.standardError = stdErrorPipe
+        corsProxyProcess.terminationHandler = {
+            task in
+            DispatchQueue.main.async(execute: {
+                let errorData = stdErrorPipe.fileHandleForReading.readDataToEndOfFile()
+                let errorString = NSString(data: errorData, encoding: String.Encoding.utf8.rawValue)! as String
+                let alert = NSAlert()
+                alert.messageText = "Blockstack Error: CORS proxy was terminated"
+                alert.informativeText = errorString
+                alert.alertStyle = NSAlertStyle.warning
+                alert.runModal()
+            })
+        }
+        
         corsProxyProcess.launch()
         complete()
     }
@@ -486,6 +556,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if(isRegTestModeEnabled && !isRegTestModeChanging) {
             return regTestCoreAPIPassword
         }
+        
+        return generatePassword()
 
         let serviceNameData = (keychainServiceName as NSString).utf8String
         let accountNameData = (keychainAccountName as NSString).utf8String

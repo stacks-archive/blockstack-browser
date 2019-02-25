@@ -55,7 +55,7 @@ function reducer(state: any, action: any) {
   let newState: any = Object.assign({}, state)
   if (action.type === UPDATE_STATE) {
     const initialState = AppReducer(undefined, {})
-    
+
     const preservedApiSettingsState = {
       gaiaHubUrl: state.settings.api.gaiaHubUrl,
       distinctEventId: state.settings.api.distinctEventId,
