@@ -29,10 +29,7 @@ import { uploadProfile } from '../account/utils'
 import { signProfileForUpload } from '@utils'
 import { validateScopes, appRequestSupportsDirectHub } from './utils'
 import {
-  selectApi,
-  selectCoreHost,
-  selectCorePort,
-  selectCoreAPIPassword
+  selectApi
 } from '@common/store/selectors/settings'
 import {
   selectAppManifest,
@@ -48,8 +45,7 @@ import {
 import {
   selectIdentityKeypairs,
   selectEmail,
-  selectIdentityAddresses,
-  selectPublicKeychain
+  selectIdentityAddresses
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
 import Modal from 'react-modal'
@@ -71,13 +67,9 @@ function mapStateToProps(state) {
     appManifestLoading: selectAppManifestLoading(state),
     appManifestLoadingError: selectAppManifestLoadingError(state),
     coreSessionTokens: selectCoreSessionTokens(state),
-    coreHost: selectCoreHost(state),
-    corePort: selectCorePort(state),
-    coreAPIPassword: selectCoreAPIPassword(state),
     api: selectApi(state),
     email: selectEmail(state),
-    addresses: selectIdentityAddresses(state),
-    publicKeychain: selectPublicKeychain(state)
+    addresses: selectIdentityAddresses(state)
   }
 }
 
@@ -95,21 +87,16 @@ export class AuthPage extends React.Component {
     localIdentities: PropTypes.array.isRequired,
     verifyAuthRequestAndLoadManifest: PropTypes.func.isRequired,
     clearSessionToken: PropTypes.func.isRequired,
-    getCoreSessionToken: PropTypes.func.isRequired,
-    coreAPIPassword: PropTypes.string.isRequired,
     coreSessionTokens: PropTypes.object.isRequired,
     loginToApp: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
-    coreHost: PropTypes.string.isRequired,
-    corePort: PropTypes.number.isRequired,
     appManifest: PropTypes.object,
     appManifestLoading: PropTypes.bool,
     appManifestLoadingError: PropTypes.string,
     email: PropTypes.string,
     noCoreSessionToken: PropTypes.func.isRequired,
     addresses: PropTypes.array.isRequired,
-    publicKeychain: PropTypes.string.isRequired,
     refreshIdentities: PropTypes.func.isRequired
   }
 
