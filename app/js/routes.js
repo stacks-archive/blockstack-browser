@@ -12,13 +12,19 @@ const Loading = (props) => {
   if (props.error) {
     return <div>Error! <button onClick={props.retry}>Retry</button></div>
   } else if (props.pastDelay) {
-    return (<div style={ {
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    } }>Loading...</div>)
+    return (
+      <div 
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+      >
+        Loading...
+      </div>
+    )
   }
   return null
 }
@@ -218,6 +224,13 @@ const NotFoundPage = Loadable({
   delay: LOADABLE_DELAY
 })
 
+const GoToBetaPage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "NotFoundPage" */ './go-to-beta'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
+
 
 const accountCreated = connectedRouterRedirect({
   redirectPath: state =>
@@ -290,6 +303,7 @@ export default (
     <Route path="/seed" component={SeedPage} />
     <Route path="/connect-storage" component={ConnectStoragePage} />
     <Route path="/clear-auth" component={ClearAuthPage} />
+    <Route path="/go-to-beta" component={GoToBetaPage} />
     <Route path="/*" component={NotFoundPage} />
   </Router>
 )
