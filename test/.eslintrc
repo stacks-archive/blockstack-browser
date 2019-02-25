@@ -1,8 +1,10 @@
 {
   "env": {
     "jasmine": true,
-    "mocha": true
+    "mocha": true,
+    "jest/globals": true
   },
+  "plugins": ["jest"],
   "globals": {
     "sinon": true,
     "sandbox": true,

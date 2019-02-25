@@ -1,14 +1,15 @@
 {
   "extends": ["airbnb", "prettier"],
   "parser": "babel-eslint",
-  "plugins": ["react"],
+  "plugins": ["react", "jest"],
   "globals": {
     "proxyFetch": true
   },
   "env": {
     "browser": true,
     "es6": true,
-    "node": true
+    "node": true,
+    "jest/globals": true
   },
   "rules": {
     "comma-dangle": ["error", "never"],
