@@ -90,6 +90,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "babel-eslint": "^9.0.0",
+    "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
     "babel-plugin-dynamic-import-node": "^2.1.0",
     "babel-plugin-lodash": "^3.3.2",
@@ -123,6 +124,7 @@
     "html-webpack-plugin": "^3.1.0",
     "image-webpack-loader": "^4.3.1",
     "istanbul": "^0.4.5",
+    "jest": "^24.1.0",
     "jsdom": "^9.2.0",
     "lodash-webpack-plugin": "^0.11.5",
     "mocha": "^5.2.0",
@@ -173,6 +175,20 @@
     "semi": false,
     "singleQuote": true
   },
+  "jest": {
+    "verbose": false,
+    "modulePathIgnorePatterns": [
+      "<rootDir>/tmp"
+    ],
+    "globalSetup": "<rootDir>/test-jest/setup.js",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test-jest/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/test-jest/__mocks__/styleMock.js"
+    },
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/blockstack/blockstack-browser.git"
@@ -220,6 +236,7 @@
     "prod-webapp": "npm run clean && cross-env NODE_ENV=production WEBAPP=true webpack",
     "test-e2e": "cross-env-shell mocha --opts test-e2e/mocha.opts test-e2e --grep=$TEST_E2E_GREP",
     "test-e2e:localBuild": "cross-env NODE_ENV=production WEBAPP=true DEBUG_LOGGING=true webpack && E2E_BROWSER_HOST='./build' npm run test-e2e",
-    "test-e2e:browserstack": "cross-env USE_BROWSERSTACK=true npm run test-e2e:localBuild"
+    "test-e2e:browserstack": "cross-env USE_BROWSERSTACK=true npm run test-e2e:localBuild",
+    "test-jest": "jest test-jest"
   }
 }

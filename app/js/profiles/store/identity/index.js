@@ -1,2 +1,7 @@
-export IdentityActions from './actions'
-export IdentityReducer from './reducer'
+import IdentityActions from './actions'
+import IdentityReducer from './reducer'
+
+export default {
+  IdentityActions,
+  IdentityReducer
+}

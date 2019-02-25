@@ -86,7 +86,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch)
 }
 
-class AuthPage extends React.Component {
+export class AuthPage extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   }
