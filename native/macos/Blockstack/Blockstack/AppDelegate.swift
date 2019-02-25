@@ -141,7 +141,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func portalBaseUrl() -> String {
         if (isBetaModeEnabled) {
-            return "https://develop--reporter-beaver-73821.netlify.com"
+            return "https://beta.browser.blockstack.org"
         } 
         else {
             return "http://localhost:\(portalPort())"
@@ -318,6 +318,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     func betaModeClick(sender: AnyObject?) {
         os_log("betaModeClick", log: log, type: .debug)
+        if (!isBetaModeEnabled) {
+            openPortal(path: "/go-to-beta")
+        }
         isBetaModeEnabled = !isBetaModeEnabled
     }
     
