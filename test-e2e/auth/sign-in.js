@@ -175,9 +175,14 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
 
   step('validate localStorage user data is been cleared', async () => {
     const localStorageSession = await driver.executeScript(`return window.localStorage.getItem('blockstack-session')`);
-    const sessionJson = JSON.parse(localStorageSession);
-    const userData = sessionJson['userData'];
-    expect(userData).to.not.exist;
+    if (localStorageSession) {
+      const sessionJson = JSON.parse(localStorageSession);
+      const userData = sessionJson['userData'];
+      expect(userData).to.not.exist;
+    }
+    else {
+      expect(localStorageSession).to.not.exist;
+    }
   });
 
 });
