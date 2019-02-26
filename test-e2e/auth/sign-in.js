@@ -173,6 +173,13 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
     expect(windowLocation).to.equal(redirectUrl);
   });
 
+  step('validate localStorage user data is been cleared', async () => {
+    const localStorageRedux = await driver.executeScript(`return window.localStorage.getItem('redux')`);
+    const localStorageStateVer = await driver.executeScript(`return window.localStorage.getItem('BLOCKSTACK_STATE_VERSION')`);
+    expect(localStorageRedux).to.not.exist;
+    expect(localStorageStateVer).to.not.exist;
+  });
+
 });
 
 
