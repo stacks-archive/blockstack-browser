@@ -66,7 +66,7 @@ createTestSuites('account-recovery-via-magic-recovery-code', ({driver, browserHo
       }
       throw new Error("not found");
     `);
-    await driver.el(By.xpath('//*[text()="Popular Apps"]'));
+    await driver.el(By.xpath('//*[text()="Top Apps"]'));
   });
 
 });
