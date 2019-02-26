@@ -55,7 +55,7 @@ createTestSuites('account-recovery-via-secret-key', ({driver, browserHostUrl }) 
       throw new Error("not found");
     `);
 
-    await driver.el(By.xpath('//*[text()="User-ready Apps"]'));
+    await driver.el(By.xpath('//*[text()="Top Apps"]'));
   });
 
 });

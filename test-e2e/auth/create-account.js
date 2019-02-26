@@ -68,7 +68,9 @@ createTestSuites('account-creation', ({driver, browserHostUrl}) => {
       // close the alert since it can eclipse the continuation button..
       const el = await driver.click(By.xpath('//*[text()="Username Registration Failed"]/parent::div/following-sibling::div/descendant::span'));
       await driver.wait(until.elementIsNotVisible(el));
-    } catch { }
+    } catch (err) {
+      /* ignore error, this is expected if registration is successful */
+    }
   });
 
   step('acknowledge saving recovery key phrase', async () => {
@@ -113,7 +115,7 @@ createTestSuites('account-creation', ({driver, browserHostUrl}) => {
 
   step('load main page as authenticated user', async () => {
     await driver.click(By.xpath('//div[text()="Go to Blockstack"]'));
-    await driver.el(By.xpath('//*[text()="User-ready Apps"]'));
+    await driver.el(By.xpath('//*[text()="Top Apps"]'));
   });
 
 });

@@ -7,6 +7,7 @@
     "bigi": "^1.4.2",
     "bip39": "^2.2.0",
     "bitcoinjs-lib": "^3.2.0",
+    "blockstack-ui": "^0.0.71",
     "blockstack": "^18.3.0",
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0-beta",

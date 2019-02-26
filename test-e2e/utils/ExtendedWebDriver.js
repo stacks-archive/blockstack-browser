@@ -161,7 +161,7 @@ class ExtendedWebDriver extends WebDriver {
    */
 
   /**
-   * Loops with try/catch around the locator function for specified amount of tries.
+   * Waits until the element is both located and visible, and scrolls the element into view.
    * @param {!(By|Function)} locator The locator to use.
    * @param {elementThenCallback} then
    * @returns {Promise<WebElement>} 
@@ -175,6 +175,18 @@ class ExtendedWebDriver extends WebDriver {
         await Promise.resolve(then(el));
       }
       return el;
+    }, timeout, poll);
+  }
+
+  /**
+   * Waits for the element to be located. 
+   * @param {!(By|Function)} locator The locator to use.
+   * @param {elementThenCallback} then
+   * @returns {Promise<WebElement>} 
+   */
+  async waitForElementLocated(locator, { timeout = 15000, poll = 200, driverWait = 2500 } = {}) {
+    return await this.retry(async () => {
+      return await this.driver.wait(until.elementLocated(locator), driverWait);
     }, timeout, poll);
   }
 

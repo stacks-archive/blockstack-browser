@@ -8,15 +8,15 @@ const createHelloBlockStackServer = require('../hello-blockstack-app/server');
 
 const helloServerPort = 5790;
 
-// A promise that resolves to a running instance of the express server for the hello-blockstack webapp.  
+// A promise that resolves to a running instance of the express server for the hello-blockstack webapp.
 // Only gets instantiated when this test suite is ran, and should only be created once.
 let helloServer;
 
 createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loopbackHost, browserName, browserStackEnabled}) => {
-  
+
   before('spawn web server for hello-blockstack app', async () => {
     // We only need to initialize this server once, so assign the promise object immediately,
-    // so that subsequent executions do not attempt to spawn a new server. 
+    // so that subsequent executions do not attempt to spawn a new server.
     helloServer = helloServer || createHelloBlockStackServer(helloServerPort);
     await helloServer;
   });
@@ -33,15 +33,22 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
     await driver.el(By.xpath('//*[contains(.,"Create your Blockstack ID")]'));
   });
 
+  step('load app list', async () => {
+    await driver.waitForElementLocated(By.id('apps-loaded'));
+  });
+
   step('fast account recovery via localStorage update', async () => {
     // This test suite is for testing "sign in with Blockstack" on a 3rd party
     // web app, and we don't care about or want to waste test execution time doing
-    // account restoration the long way. 
-    // Directly write the sample account localStorage data as a quick and dirty way 
-    // to restore the account into the blockstack browser session. 
+    // account restoration the long way.
+    // Directly write the sample account localStorage data as a quick and dirty way
+    // to restore the account into the blockstack browser session.
     await driver.executeScript(`
-      window.localStorage.setItem('redux', arguments[0]);
-      window.localStorage.setItem('BLOCKSTACK_STATE_VERSION', 'ignore');
+      window.localStorage.setItem("BLOCKSTACK_STATE_VERSION", "ignore");
+      var authedReduxObj = JSON.parse(arguments[0]);
+      var localReduxObj = JSON.parse(window.localStorage.getItem("redux"));
+      var mergedReduxState = Object.assign({}, localReduxObj, authedReduxObj);
+      window.localStorage.setItem("redux", JSON.stringify(mergedReduxState));
     `, sampleAccount.LOCAL_STORAGE_DATA);
 
     // Wait a bit for localStorage writes since some browsers will not flush changes to disk if
@@ -50,7 +57,7 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
   });
 
   step('load page', async () => {
-    await driver.get(`http://${loopbackHost}:${helloServerPort}`);
+    await driver.navigate().to(`http://${loopbackHost}:${helloServerPort}`);
   });
 
   step('set blockstack auth host', async () => {
@@ -64,7 +71,7 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
     await driver.click(By.css('#signin-button'));
     await driver.sleep(1500);
     if (await driver.elementExists(By.css('#signin-button'))) {
-      // This closes the "Open app?" dialog on Edge. 
+      // This closes the "Open app?" dialog on Edge.
       console.log('Performing window open & switch workaround for closing protocol handler dialog');
       await driver.executeScript(`window.open("about:config")`);
       await driver.sleep(1000);
@@ -78,7 +85,7 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
   step('wait for auth page to load', async () => {
     await driver.el(By.xpath('//div[contains(.,"Select an ID")]'));
   });
-  
+
   step('click allow auth button', async () => {
     await driver.click(By.xpath('//span[text()="test_e2e_recovery"]'));
   });
