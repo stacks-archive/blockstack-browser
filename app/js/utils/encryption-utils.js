@@ -73,8 +73,8 @@ export function validateAndCleanRecoveryInput(input) {
   let cleanedEncrypted = cleaned.replace(/\s/gm, '')
 
   if (
-    cleanedEncrypted.length === 107 &&
-    cleanedEncrypted.indexOf('=') !== 106
+    /^[a-zA-Z0-9\+\/]+=?$/.test(cleanedEncrypted) &&
+    cleanedEncrypted.slice(-1) !== '='
   ) {
     // Append possibly missing equals sign padding
     logger.debug('Encrypted Phrase needs an `=` at the end.')
