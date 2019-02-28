@@ -43,7 +43,7 @@ const config = {
   // Check environment vars for BrowserStack usage settings.
   const USE_BROWSERSTACK = 'USE_BROWSERSTACK';
   const BROWSERSTACK_AUTH = 'BROWSERSTACK_AUTH';
-  config.browserStack.enabled = process.env[USE_BROWSERSTACK] && process.env[USE_BROWSERSTACK] !== 'false';
+  config.browserStack.enabled = !helpers.isFalsy(process.env[USE_BROWSERSTACK]);
   if (config.browserStack.enabled) {
     config.browserStack.hubUrl = BROWSERSTACK_HUB_URL;
     const browserstackAuth = process.env[BROWSERSTACK_AUTH];
