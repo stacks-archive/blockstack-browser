@@ -15,12 +15,11 @@ import {
 import { SanityActions } from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
-import { openInNewTab } from './utils'
 import Modal from 'react-modal'
 import NotificationsSystem from 'reapop'
 import NotificationsTheme from 'reapop-theme-wybo'
 import { hot } from 'react-hot-loader'
-import { AppHomeWrapper } from '@blockstack/ui'
+import { selectLastUpdatedApps } from './store/apps/selectors'
 
 import log4js from 'log4js'
 
@@ -39,17 +38,19 @@ function mapStateToProps(state) {
     coreApiPasswordValid: state.sanity.coreApiPasswordValid,
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     coreAPIPassword: state.settings.api.coreAPIPassword,
-    instanceIdentifier: state.apps.instanceIdentifier
+    instanceIdentifier: state.apps.instanceIdentifier,
+    lastUpdatedApps: selectLastUpdatedApps(state)
   }
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       updateApi: SettingsActions.updateApi,
       isCoreRunning: SanityActions.isCoreRunning,
       isCoreApiPasswordValid: SanityActions.isCoreApiPasswordValid,
-      generateInstanceIdentifier: AppsActions.generateInstanceIdentifier
+      generateInstanceIdentifier: AppsActions.generateInstanceIdentifier,
+      doFetchApps: AppsActions.doFetchApps
     },
     dispatch
   )
@@ -72,12 +73,14 @@ class AppContainer extends Component {
     isCoreRunning: PropTypes.func.isRequired,
     isCoreApiPasswordValid: PropTypes.func.isRequired,
     generateInstanceIdentifier: PropTypes.func.isRequired,
+    doFetchApps: PropTypes.func.isRequired,
     walletPaymentAddressUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string,
     stateVersion: PropTypes.number,
     router: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    instanceIdentifier: PropTypes.string
+    instanceIdentifier: PropTypes.string,
+    lastUpdatedApps: PropTypes.number
   }
 
   constructor(props) {
@@ -161,6 +164,14 @@ class AppContainer extends Component {
         search: this.props.location.search
       })
     }
+
+    if (
+      !this.props.lastUpdatedApps ||
+      Date.now() - this.props.lastUpdatedApps > 900000 // 15 min
+    ) {
+      // Fetch those apps if data is state
+      this.props.doFetchApps()
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -172,6 +183,7 @@ class AppContainer extends Component {
 
     if (!this.props.coreApiRunning) {
       // TODO connect to future notification system here
+      // TODO is this even used anymore?
       logger.error('Sanity check: Error! Core API is NOT running!')
     }
 
@@ -191,10 +203,6 @@ class AppContainer extends Component {
     if (loader && !loader.classList.contains('hidden')) {
       loader.classList.add('hidden')
     }
-  }
-
-  onSupportClick = () => {
-    openInNewTab('https://forum.blockstack.org/t/frequently-ask-questions/2123')
   }
 
   closeModal() {

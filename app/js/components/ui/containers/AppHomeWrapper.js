@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { WindowSize } from 'react-fns'
-import { Box } from 'blockstack-ui'
-
+import { connect } from 'react-redux'
 import HomePage from '../../../HomeScreenPage'
+
 const StyledAppHomeWrapper = styled.div.attrs({
   inert: true
 })`
@@ -29,24 +29,34 @@ const StyledAppHomeWrapper = styled.div.attrs({
   }
 `
 
-const AppHomeWrapper = props => (
-  <WindowSize>
-    {({ width }) =>
-      width > 599 ? (
-        <StyledAppHomeWrapper {...props}>
-          <div inert="true" htmlInert>
-            <Box
-              position="fixed"
-              size={'100%'}
-              zIndex="9999"
-              bg="rgba(240, 240, 240, 0.8)"
-            />
+const mapStateToProps = state => ({
+  apps: state.apps,
+  appListLastUpdated: state.apps.lastUpdated
+})
 
-          </div>
-        </StyledAppHomeWrapper>
-      ) : null
-    }
-  </WindowSize>
-)
+const AppHomeWrapper = connect(mapStateToProps)(props => (
+  <>
+    {props.appListLastUpdated ? (
+      <div
+        style={{
+          position: 'absolute',
+          top: '0'
+        }}
+        id="apps-loaded"
+      />
+    ) : null}
+    <WindowSize>
+      {({ width }) =>
+        width > 599 ? (
+          <StyledAppHomeWrapper {...props}>
+            <div inert="true" htmlInert>
+              <HomePage />
+            </div>
+          </StyledAppHomeWrapper>
+        ) : null
+      }
+    </WindowSize>
+  </>
+))
 
 export { AppHomeWrapper }
