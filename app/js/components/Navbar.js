@@ -6,6 +6,7 @@ import SettingsIcon from 'mdi-react/SettingsIcon'
 import { Hover, Focus } from 'react-powerplug'
 import { Box, Flex, Type } from 'blockstack-ui'
 import { Link, withRouter } from 'react-router'
+import PropTypes from 'prop-types'
 
 const sections = [
   [
@@ -123,5 +124,22 @@ const Navbar = withRouter(({ location }) => (
     </Wrapper>
   </Box>
 ))
+
+Icon.propTypes = {
+  component: PropTypes.node
+}
+Label.propTypes = {
+  children: PropTypes.node
+}
+NavItem.propTypes = {
+  label: PropTypes.any,
+  icon: PropTypes.any,
+  path: PropTypes.any,
+  active: PropTypes.any
+}
+
+Navbar.propTypes = {
+  location: PropTypes.object.isRequired
+}
 
 export default Navbar

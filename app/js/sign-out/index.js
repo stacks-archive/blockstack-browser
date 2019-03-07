@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router'
 import Initial from './views/initial'
-import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
-import App from '../App'
+import { ShellParent } from '@blockstack/ui'
 
 const VIEWS = {
   INITIAL: 0

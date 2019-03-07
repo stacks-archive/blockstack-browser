@@ -11,7 +11,7 @@ import { RegistrationActions } from '../profiles/store/registration'
 import { trackEventOnce } from '@utils/server-utils'
 import { Initial, Password, Success, Email } from './views'
 import log4js from 'log4js'
-import { AppHomeWrapper, ShellParent } from '@blockstack/ui'
+import { ShellParent } from '@blockstack/ui'
 import {
   selectConnectedStorageAtLeastOnce,
   selectEmail,
@@ -34,7 +34,6 @@ import {
 } from '@common/store/selectors/auth'
 import { AuthActions } from '../auth/store/auth'
 import { formatAppManifest } from '@common'
-import App from '../App'
 
 const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
 
@@ -168,34 +167,32 @@ class SignIn extends React.Component {
 
     if (this.state.decrypt && !decrypting) {
       setImmediate(() => {
-        this.setState(
-          { decrypting: true },
-          async () => {
-            try {
-              const decryptedKeyBuffer = await decrypt(
-                new Buffer(encryptedKey, 'base64'),
-                this.state.password
-              )
-              const decryptedKey = decryptedKeyBuffer.toString()
-              this.setState(
-                {
-                  key: decryptedKey,
-                  decrypting: false,
-                  restoreError: null
-                },
-                () => {
-                  this.updateView(VIEWS.EMAIL)
-                }
-              )
-            } catch (e) {
-              logger.debug(e)
-              this.setState({
+        this.setState({ decrypting: true }, async () => {
+          try {
+            const decryptedKeyBuffer = await decrypt(
+              new Buffer(encryptedKey, 'base64'),
+              this.state.password
+            )
+            const decryptedKey = decryptedKeyBuffer.toString()
+            this.setState(
+              {
+                key: decryptedKey,
                 decrypting: false,
-                restoreError: 'Incorrect password or invalid recovery code',
-                key: ''
-              })
-            }
-          })
+                restoreError: null
+              },
+              () => {
+                this.updateView(VIEWS.EMAIL)
+              }
+            )
+          } catch (e) {
+            logger.debug(e)
+            this.setState({
+              decrypting: false,
+              restoreError: 'Incorrect password or invalid recovery code',
+              key: ''
+            })
+          }
+        })
       })
     } else {
       this.updateView(VIEWS.EMAIL)

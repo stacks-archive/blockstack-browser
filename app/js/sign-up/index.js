@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { browserHistory, withRouter } from 'react-router'
 import { decodeToken } from 'jsontokens'
-import App from '../App'
 import {
   selectConnectedStorageAtLeastOnce,
   selectEmail,
@@ -41,7 +40,7 @@ import { sendRestoreEmail as sendEmail } from '@utils/email-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
 import { formatAppManifest } from '@common'
-import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
+import { ShellParent } from '@blockstack/ui'
 import {
   Initial,
   Email,
@@ -98,7 +97,8 @@ const VIEW_EVENTS = {
 
 // Allow the front-end (for example Selenium tests or dev console) to override the subdomain suffix.
 const DEFAULT_SUBDOMAIN_SUFFIX = 'id.blockstack'
-const getSubdomainSuffix = () => window.SUBDOMAIN_SUFFIX_OVERRIDE || DEFAULT_SUBDOMAIN_SUFFIX
+const getSubdomainSuffix = () =>
+  window.SUBDOMAIN_SUFFIX_OVERRIDE || DEFAULT_SUBDOMAIN_SUFFIX
 
 const mapStateToProps = state => ({
   localIdentities: selectLocalIdentities(state),
@@ -188,7 +188,11 @@ class Onboarding extends React.Component {
    */
   submitPassword = async () => {
     const decodedAuthRequest = this.getDecodedAuthRequest()
-    if (decodedAuthRequest && (decodedAuthRequest.solicitGaiaHubUrl || decodedAuthRequest.recommendedGaiaHub)) {
+    if (
+      decodedAuthRequest &&
+      (decodedAuthRequest.solicitGaiaHubUrl ||
+        decodedAuthRequest.recommendedGaiaHub)
+    ) {
       if (decodedAuthRequest.recommendedGaiaHubUrl) {
         this.updateView(VIEWS.RECOMMENDED_GAIA_HUB)
       } else {
@@ -230,16 +234,19 @@ class Onboarding extends React.Component {
 
   submitRecommendedGaiaHub = async () => {
     const decodedAuthRequest = this.getDecodedAuthRequest()
-    this.setState({
-      loading: true,
-      hubURL: decodedAuthRequest.recommendedGaiaHubUrl
-    }, async () => {
-      const success = await this.validateGaiaURL()
-      if (success) {
-        await this.createAccount()
-        this.updateView(VIEWS.EMAIL)
+    this.setState(
+      {
+        loading: true,
+        hubURL: decodedAuthRequest.recommendedGaiaHubUrl
+      },
+      async () => {
+        const success = await this.validateGaiaURL()
+        if (success) {
+          await this.createAccount()
+          this.updateView(VIEWS.EMAIL)
+        }
       }
-    })
+    )
   }
 
   /**
@@ -596,7 +603,14 @@ class Onboarding extends React.Component {
 
   render() {
     const { appManifest } = this.props
-    const { email, password, username, emailSubmitted, view, decodedAuthRequest } = this.state
+    const {
+      email,
+      password,
+      username,
+      emailSubmitted,
+      view,
+      decodedAuthRequest
+    } = this.state
 
     const app = formatAppManifest(appManifest)
 
@@ -688,7 +702,8 @@ class Onboarding extends React.Component {
       {
         show: VIEWS.RECOMMENDED_GAIA_HUB,
         props: {
-          recommendedGaiaHubUrl: decodedAuthRequest && decodedAuthRequest.recommendedGaiaHubUrl,
+          recommendedGaiaHubUrl:
+            decodedAuthRequest && decodedAuthRequest.recommendedGaiaHubUrl,
           updateValue: this.updateValue,
           next: () => this.submitRecommendedGaiaHub(),
           customHub: () => this.updateView(VIEWS.CUSTOMHUB),
