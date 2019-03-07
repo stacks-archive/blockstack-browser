@@ -27,6 +27,25 @@ class ExtendedWebDriver extends WebDriver {
   }
 
   /**
+   * 
+   * @param {string} script A javascript expression that evaluates to a promise.
+   * @param {...any} args
+   * @returns {any} The evaluated promise result, if any.
+   */
+  async executePromise(script, ...args) {
+    const [error, result] = await this.driver.executeAsyncScript(`
+      var callback = arguments[arguments.length - 1];
+      ${script}
+        .then(result => callback([null, result]))
+        .catch(error => callback([error.toString(), null]));
+    `, ...args);
+    if (error) {
+      throw new Error(error);
+    }
+    return result;
+  }
+
+  /**
    * Retries a given function until the given time has elapsed. 
    * @param {(Promise<any>|(function():any)} func
    * @param {number} timeout - milliseconds to continue re-trying execution of a failing function.
@@ -161,7 +180,7 @@ class ExtendedWebDriver extends WebDriver {
    */
 
   /**
-   * Loops with try/catch around the locator function for specified amount of tries.
+   * Waits until the element is both located and visible, and scrolls the element into view.
    * @param {!(By|Function)} locator The locator to use.
    * @param {elementThenCallback} then
    * @returns {Promise<WebElement>} 
@@ -175,6 +194,18 @@ class ExtendedWebDriver extends WebDriver {
         await Promise.resolve(then(el));
       }
       return el;
+    }, timeout, poll);
+  }
+
+  /**
+   * Waits for the element to be located. 
+   * @param {!(By|Function)} locator The locator to use.
+   * @param {elementThenCallback} then
+   * @returns {Promise<WebElement>} 
+   */
+  async waitForElementLocated(locator, { timeout = 15000, poll = 200, driverWait = 2500 } = {}) {
+    return await this.retry(async () => {
+      return await this.driver.wait(until.elementLocated(locator), driverWait);
     }, timeout, poll);
   }
 

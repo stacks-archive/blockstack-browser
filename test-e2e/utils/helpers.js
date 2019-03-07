@@ -1,6 +1,10 @@
 
 module.exports = class Helpers {
 
+  static isFalsy(val) {
+    return !val || /^\s*(false|0|off|no)\s*$/i.test(val);
+  }
+
   static timeout(ms) {
     return new Promise(resolve => setTimeout(() => resolve(), ms));
   }
