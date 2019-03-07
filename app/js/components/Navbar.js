@@ -138,8 +138,4 @@ NavItem.propTypes = {
   active: PropTypes.bool
 }
 
-Navbar.propTypes = {
-  location: PropTypes.object.isRequired
-}
-
 export default Navbar
