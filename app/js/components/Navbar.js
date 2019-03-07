@@ -132,10 +132,10 @@ Label.propTypes = {
   children: PropTypes.node
 }
 NavItem.propTypes = {
-  label: PropTypes.any,
-  icon: PropTypes.any,
-  path: PropTypes.any,
-  active: PropTypes.any
+  label: PropTypes.string,
+  icon: PropTypes.node,
+  path: PropTypes.string,
+  active: PropTypes.bool
 }
 
 Navbar.propTypes = {
