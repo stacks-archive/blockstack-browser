@@ -7,29 +7,44 @@ import {
 } from '@common/store/selectors/account'
 import App from '../App'
 
+const BETA_URL = 'https://beta.browser.blockstack.org'
+
 const goToBeta = (encryptedBackupPhrase) => {
   const encodedPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString(
     'base64'
   )
-  const url = `https://beta.browser.blockstack.org/seed?encrypted=${encodeURIComponent(encodedPhrase)}`
+  const url = `${BETA_URL}/seed?encrypted=${encodeURIComponent(encodedPhrase)}`
   window.open(url, '_blank')
+}
+
+function mapStateToProps(state) {
+  return {
+    encryptedBackupPhrase: selectEncryptedBackupPhrase(state)
+  }
 }
 
 const Modal = (_props) => {
   console.log('rendering modal')
   const props = {
     title: {
-      children: 'Are you sure you want to go to Beta mode?',
+      children: 'You\'ve enabled Beta mode',
       variant: 'h2',
       subtitle: {
         light: true,
         padding: '15px 0 0 0',
         children: (
           <>
-            <p>You're about to be sent to beta.browser.blockstack.org</p>
             <p>
-              This site is automatically built using the latest code of the
-              Blockstack Browser, so you may hit bugs.
+              Your local Blockstack Browser will now start redirecting all activity to a 
+              hosted version of the Browser at beta.browser.blockstack.org that runs the latest code on the
+              {' '}
+              <a href="https://github.com/blockstack/blockstack-browser/tree/develop" target="_blank">develop branch</a>
+              .
+            </p>
+            <p>
+              Use it to test the latest code changes, but beware you'll have to sign in with your
+              Blockstack ID again below, and you may encounter bugs. 
+              You can resume usage of your local Browser at any time by disabling beta mode in the menu bar.
             </p>
           </>
         )
@@ -42,17 +57,18 @@ const Modal = (_props) => {
         // validate: v => this.validate(v),
         initialValues: { password: '' },
         fields: [],
-        onSubmit: () => goToBeta(_props.encryptedBackupPhrase),
+        onSubmit: () => window.open(`${BETA_URL}/sign-up`, '_blank'),
         actions: {
           split: false,
           items: [
             {
-              label: 'Continue',
+              label: 'Create new ID',
               primary: true,
-              type: 'submit',
-              icon: 'ArrowRightIcon'
-              // loading: this.props.loading,
-              // disabled: this.props.loading
+              type: 'submit'
+            },
+            {
+              label: 'Sign in with your existing ID',
+              onClick: () => goToBeta(_props.encryptedBackupPhrase)
             }
           ]
         }
@@ -61,18 +77,9 @@ const Modal = (_props) => {
   }
   return (
     <>
-      {/* {this.props.upgradeInProgress ? (
-        <Shell.Loading message="Updating Blockstack..." />
-      ) : null} */}
       <ShellScreen {...props} {..._props} />
     </>
   )
-}
-
-function mapStateToProps(state) {
-  return {
-    encryptedBackupPhrase: selectEncryptedBackupPhrase(state)
-  }
 }
 
 class GoToBeta extends React.Component {

@@ -304,10 +304,7 @@ export default (
     <Route path="/seed" component={SeedPage} />
     <Route path="/connect-storage" component={ConnectStoragePage} />
     <Route path="/clear-auth" component={ClearAuthPage} />
-<<<<<<< HEAD
     <Route path="/go-to-beta" component={GoToBetaPage} />
-=======
->>>>>>> 37f65091ef05065ca7c2f8e2a59ab33241da3dac
     <Route path="/*" component={NotFoundPage} />
   </Router>
 )
