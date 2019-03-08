@@ -70,9 +70,6 @@
           <Component Id="ProductComponent">
             <File Id="BlockstackBrowser.exe" Source="$(var.BlockstackBrowser.TargetPath)" />
           </Component>
-          <Component Id="ProtocolHandler">
-            <File Id="ProtocolHandler.exe" Source="$(var.ProtocolHandler.TargetPath)" />
-          </Component>
 		</ComponentGroup>
 	</Fragment>
 
@@ -91,7 +88,7 @@
           <RegistryKey Root="HKCR"
                        Key="blockstack\shell\open\command"
                        Action="createAndRemoveOnUninstall">
-            <RegistryValue Type="string" Value="[#ProtocolHandler.exe] &quot;%1&quot;"/>
+            <RegistryValue Type="string" Value="[#BlockstackBrowser.exe] &quot;%1&quot;"/>
           </RegistryKey>
         </Component>
       </DirectoryRef>
