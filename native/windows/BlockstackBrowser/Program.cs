@@ -7,11 +7,12 @@ using System.Globalization;
 using System.Threading;
 using System.IO.Pipes;
 using System.Text;
-using System.Windows.Threading;
 using System.Reflection;
 
 namespace BlockstackBrowser
 {
+
+
     public class Program : Form
     {
 
@@ -25,6 +26,8 @@ namespace BlockstackBrowser
         const string BLOCKSTACK_PROTOCOL_HANDLER_PIPE = "BLOCKSTACK_PROTOCOL_HANDLER_PIPE";
         const string BLOCKSTACK_PROTOCOL_PART = "blockstack:";
         const string BLOCKSTACK_APP_INSTANCE_MUTEX = "blockstackAppInstance";
+        const string PIPE_INTENT_PROTOCOL = "protocol";
+        const string PIPE_INTENT_OPEN = "open";
 
         bool isDebugModeEnabled = false;
 
@@ -82,7 +85,7 @@ namespace BlockstackBrowser
                 // Send the main app instance the protocol URI data
                 try
                 {
-                    SendMessageToMainAppInstance(protocolUri);
+                    SendMessageToMainAppInstance(string.Join("|", PIPE_INTENT_PROTOCOL, GetParentProcessFilePath(), protocolUri));
                 }
                 catch (Exception ex)
                 {
@@ -96,7 +99,7 @@ namespace BlockstackBrowser
                 // for example from the start menu, so notify the existing app instance the open-intent. 
                 try
                 {
-                    SendMessageToMainAppInstance("open");
+                    SendMessageToMainAppInstance(PIPE_INTENT_OPEN);
                 }
                 catch (Exception ex)
                 {
@@ -113,6 +116,19 @@ namespace BlockstackBrowser
                 appMutex.ReleaseMutex();
                 appMutex.Dispose();
                 appMutexHasHandle = false;
+            }
+        }
+
+        static string GetParentProcessFilePath()
+        {
+            try
+            {
+                return ParentProcess.GetParentProcessFile();
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine("Error getting parent process: " + ex);
+                return string.Empty;
             }
         }
 
@@ -194,7 +210,7 @@ namespace BlockstackBrowser
           
             if (GetProtocolUriProcessArg(out string protocolUri))
             {
-                ProcessProtocolUriReceived(protocolUri);
+                ProcessProtocolUriReceived(GetParentProcessFilePath(), protocolUri);
             }
             else
             {
@@ -239,13 +255,14 @@ namespace BlockstackBrowser
                     // Read data from ProtocolHandler process.
                     var sw = new StreamReader(pipeServer, Encoding.UTF8);
                     var clientData = sw.ReadToEnd();
-                    if (clientData == "open")
+                    if (clientData == PIPE_INTENT_OPEN)
                     {
                         homeOpen(null, null);
                     }
-                    else if (clientData.StartsWith(BLOCKSTACK_PROTOCOL_PART, StringComparison.InvariantCultureIgnoreCase))
+                    else if (clientData.StartsWith(PIPE_INTENT_PROTOCOL, StringComparison.Ordinal))
                     {
-                        ProcessProtocolUriReceived(clientData);
+                        var msgParts = clientData.Split(new[] { '|' }, 3);
+                        ProcessProtocolUriReceived(msgParts[1], msgParts[2]);
                     }
                     else
                     {
@@ -273,12 +290,40 @@ namespace BlockstackBrowser
             }
         }
 
-        void ProcessProtocolUriReceived(string data)
+        void ProcessProtocolUriReceived(string parentProcessFilePath, string data)
         {
             string authPart = data.Substring(BLOCKSTACK_PROTOCOL_PART.Length);
             string port = GetPortalPort();
             string urlOpen = $"http://localhost:{port}/auth?authRequest=" + authPart;
-            Process.Start(urlOpen);
+
+            if (string.IsNullOrEmpty(parentProcessFilePath) || Path.GetFileName(parentProcessFilePath) == "explorer.exe")
+            {
+                Process.Start(urlOpen);
+            }
+            else
+            {
+                try
+                {
+                    var proc = Process.Start(parentProcessFilePath, urlOpen);
+                    new Thread(() =>
+                    {
+                        using (proc)
+                        {
+                            proc.WaitForExit(1000);
+                            if (proc.HasExited && proc.ExitCode < 0)
+                            {
+                                Console.Error.WriteLine($"Bad exit code {proc.ExitCode} from {parentProcessFilePath}");
+                                Process.Start(urlOpen);
+                            }
+                        }
+                    }).Start();
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"Error starting process {parentProcessFilePath}: {ex}");
+                    Process.Start(urlOpen);
+                }
+            }
         }
 
         protected override void SetVisibleCore(bool value)

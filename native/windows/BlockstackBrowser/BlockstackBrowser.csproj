@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Job.cs" />
+    <Compile Include="ParentProcess.cs" />
     <Compile Include="Program.cs">
       <SubType>Form</SubType>
     </Compile>
