@@ -1,5 +1,5 @@
 import React from 'react'
-import { ShellScreen, Type, Button, Buttons } from '@blockstack/ui'
+import { ShellScreen, Type, Shell } from '@blockstack/ui'
 import PropTypes from 'prop-types'
 import { Box, Inline, Flex } from '@components/ui/components/primitives'
 import { Trail, config, animated } from 'react-spring'
@@ -126,11 +126,11 @@ class SeedConfirm extends React.Component {
         if (this.state.confirmedWords.length !== 2) {
           this.resetState()
         } else {
-          this.props.next()
-          this.props.setVerified()
           this.setState({
             loading: false
           })
+          this.props.next()
+          this.props.setVerified()
         }
       }, 150)
     )
@@ -154,9 +154,14 @@ class SeedConfirm extends React.Component {
     }
   }
   render() {
-    const { seed, ...rest } = this.props
+    const { seed, initializingAccount, ...rest } = this.props
     if (!seed || !this.state.randomWords.length) {
       return null
+    }
+    if (initializingAccount) {
+      return (
+        <Shell.Loading message="Restoring your Blockstack ID..." />
+      )
     }
     const renderWords = (words, action) => (
       <Trail
@@ -234,7 +239,8 @@ SeedConfirm.propTypes = {
   next: PropTypes.func,
   setVerified: PropTypes.func,
   verified: PropTypes.bool,
-  seed: PropTypes.array
+  seed: PropTypes.array,
+  initializingAccount: PropTypes.bool
 }
 
 export default SeedConfirm

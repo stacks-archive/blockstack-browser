@@ -7,15 +7,23 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
+import { SettingsActions } from '../account/store/settings'
 import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import {
   selectEncryptedBackupPhrase,
-  selectRecoveryCodeVerified
+  selectRecoveryCodeVerified,
+  selectIdentityAddresses
 } from '@common/store/selectors/account'
+import {
+  selectLocalIdentities
+} from '@common/store/selectors/profiles'
 import {
   selectAppManifest,
   selectAuthRequest
 } from '@common/store/selectors/auth'
+import {
+  selectApi
+} from '@common/store/selectors/settings'
 import { formatAppManifest } from '@common'
 import App from '../App'
 import log4js from 'log4js'
@@ -24,9 +32,12 @@ const logger = log4js.getLogger(__filename)
 
 function mapStateToProps(state) {
   return {
+    api: selectApi(state),
     encryptedBackupPhrase: selectEncryptedBackupPhrase(state),
     appManifest: selectAppManifest(state),
     authRequest: selectAuthRequest(state),
+    localIdentities: selectLocalIdentities(state),
+    identityAddresses: selectIdentityAddresses(state),
     verified: selectRecoveryCodeVerified(state)
   }
 }
@@ -35,7 +46,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
       ...AccountActions,
-      ...IdentityActions
+      ...IdentityActions,
+      ...SettingsActions
     },
     dispatch
   )
@@ -65,6 +77,7 @@ class SeedContainer extends Component {
       view: 0,
       seed: null,
       loading: false,
+      initializingAccount: false,
       decrypting: false,
       errors: null,
       password:
@@ -235,7 +248,109 @@ class SeedContainer extends Component {
     return null
   }
 
+  restoreAccount = () => {
+    logger.debug('Restoring account!')
+    const { refreshIdentities } = this.props
+    this.setState(
+      {
+        loading: true
+      },
+      () =>
+        requestAnimationFrame(async () => {
+          try {
+            await this.createAccount()
+            await refreshIdentities(
+              this.props.api,
+              this.props.identityAddresses
+            )
+            const identity = this.props.localIdentities[0]
+            if (identity && identity.profile && identity.profile.api) {
+              const newApi = {
+                ...this.props.api,
+                ...identity.profile.api
+              }
+              this.props.updateApi(newApi)
+            }
+            logger.debug('refreshIdentities complete')
+            // updateEmail(this.state.email)
+            logger.debug('updated email')
+            this.updateView(VIEWS.KEY_COMPLETE)
+            logger.debug('navigate to success screen')
+          } catch (e) {
+            console.error(e)
+            this.setState({
+              loading: false,
+              restoreError: 'There was an error loading your account.'
+            })
+          }
+        })
+    )
+  }
+
+  /**
+   * This is our main function for creating a new account
+   *
+   * key: mnemonic
+   */
+  createAccount = async () => {
+    // const { key } = this.state
+    logger.debug('creating account, createAccount()')
+
+    // const state = await isBackupPhraseValid(key)
+
+    // if (!state.isValid) {
+    //   logger.error('restoreAccount: Invalid mnemonic phrase entered')
+    //   return Promise.reject('Invalid recovery phrase entered')
+    // }
+
+    this.setState({
+      initializingAccount: true
+    })
+
+    try {
+      // Initialize our wallet
+      await this.initializeWallet()
+      // Create new ID and owner address and then set to default
+      await this.createNewIdAndSetDefault()
+      // Connect our default storage
+      await this.props.connectStorage()
+      // Account creation finished
+      logger.debug('account creation done')
+      return Promise.resolve()
+    } catch (e) {
+      return Promise.reject(e)
+    }
+  }
+
+  async initializeWallet() {
+    const { password, seed } = this.state
+    const { initializeWallet } = this.props
+    console.log('initializeWallet')
+    return initializeWallet(password, seed)
+  }
+
+  /**
+   * Create ID and Set it as default
+   * this function needs to fire after the initializeWallet function has finished
+   * it will generate a new ID with address and set it as the default ID
+   */
+  async createNewIdAndSetDefault() {
+    const {
+      identityAddresses,
+      createNewIdentityWithOwnerAddress,
+      setDefaultIdentity
+    } = this.props
+    const firstIdentityIndex = 0
+    logger.debug('creating new identity')
+    const ownerAddress = identityAddresses[firstIdentityIndex]
+    logger.debug('ownerAddress', ownerAddress)
+    createNewIdentityWithOwnerAddress(firstIdentityIndex, ownerAddress)
+    logger.debug('settingAsDefault')
+    setDefaultIdentity(firstIdentityIndex)
+  }
+
   finish = () => {
+    console.log('finishing')
     if (formatAppManifest(this.props.appManifest) && this.props.authRequest) {
       return this.redirectToAuth()
     } else {
@@ -302,8 +417,9 @@ class SeedContainer extends Component {
         show: VIEWS.KEY_CONFIRM,
         props: {
           previous: () => this.updateView(VIEWS.SEED),
-          next: () => this.updateView(VIEWS.KEY_COMPLETE),
+          next: () => this.restoreAccount(),
           seed: seed && seed.toString().split(' '),
+          initializingAccount: this.state.initializingAccount,
           setVerified: () => this.setVerified(),
           verified: this.props.verified
         }
@@ -347,6 +463,15 @@ SeedContainer.propTypes = {
   encryptedBackupPhrase: PropTypes.string,
   authRequest: PropTypes.string,
   verified: PropTypes.bool.isRequired,
+  updateApi: PropTypes.func.isRequired,
+  api: PropTypes.object.isRequired,
+  identityAddresses: PropTypes.array,
+  localIdentities: PropTypes.array.isRequired,
+  refreshIdentities: PropTypes.func.isRequired,
+  initializeWallet: PropTypes.func.isRequired,
+  createNewIdentityWithOwnerAddress: PropTypes.func.isRequired,
+  connectStorage: PropTypes.func.isRequired,
+  setDefaultIdentity: PropTypes.func.isRequired,
   doVerifyRecoveryCode: PropTypes.func.isRequired
 }
 
