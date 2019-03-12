@@ -12,7 +12,7 @@ const Initial = ({ next }) => (
       <br />
       dolorest est.
     </Type>
-    <Button onClick={next} mt={4} primary>
+    <Button onClick={next} mt={4} type="primary" maxWidth="300px">
       Continue
     </Button>
   </Box>

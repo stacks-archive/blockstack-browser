@@ -1,5 +1,6 @@
 import React from 'react'
-import { Flex, Box } from 'blockstack-ui'
+import { Flex, Box, Type } from 'blockstack-ui'
+import ArrowBackIcon from 'mdi-react/ArrowBackIcon'
 
 import App from '../App'
 import {
@@ -19,7 +20,8 @@ const VIEWS = {
 
 class Hawk extends React.Component {
   state = {
-    view: VIEWS.INITIAL
+    view: VIEWS.INITIAL,
+    username: ''
   }
 
   updateView(view) {
@@ -33,14 +35,25 @@ class Hawk extends React.Component {
       {
         next: () => this.updateView(VIEWS.NAME)
       },
-      {}
+      {
+        username: this.state.username,
+        updateUsername: (evt) => this.setState({ username: evt.target.value })
+      }
     ]
     const currentViewProps = viewProps[view]
     const View = views[view]
     return (
       <App>
-        <Flex py={[1, 5]} px={[1, 5]}>
-          <Box>
+        <Flex px={[3, 5]} flexWrap="wrap">
+          <Box width={1} style={{ cursor: 'pointer' }}>
+            {view > 0 && (
+              <Box mb={3} onClick={() => this.updateView(view - 1)}>
+                <ArrowBackIcon />
+                <Type ml={2} color="light" fontSize={3} style={{ position: 'relative', top: '-4px' }}>Back</Type>
+              </Box>
+            )}
+          </Box>
+          <Box width={1}>
             <View {...currentViewProps} />
           </Box>
         </Flex>

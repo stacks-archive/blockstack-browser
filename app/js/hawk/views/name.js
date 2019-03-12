@@ -1,11 +1,12 @@
 import React from 'react'
 import { Type, Box } from 'blockstack-ui'
+import PropTypes from 'prop-types'
 
 import { Field } from '@ui/containers/field'
 import { Button } from '@ui/containers/button'
 
-export default () => (
-  <Box>
+const Name = ({ username, updateUsername }) => (
+  <Box width={[1, 1, 1/3]}>
     <Type fontSize={4} display="block">
       Create your Blockstack ID
     </Type>
@@ -15,7 +16,13 @@ export default () => (
       dolorest est.
     </Type>
 
-    <Field mt={4} placeholder="Your Blockstack ID" value="asdf" label="Blockstack ID" />
+    <Field 
+      mt={4}
+      value={username} 
+      handleChange={updateUsername} 
+      label="Blockstack ID" 
+      autoFocus
+    />
 
     <Button mt={4}>
       Continue
@@ -23,3 +30,10 @@ export default () => (
     
   </Box>
 )
+
+Name.propTypes = {
+  username: PropTypes.string.isRequired,
+  updateUsername: PropTypes.func.isRequired
+}
+
+export default Name
