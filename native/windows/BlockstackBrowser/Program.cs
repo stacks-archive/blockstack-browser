@@ -30,6 +30,7 @@ namespace BlockstackBrowser
         const string PIPE_INTENT_OPEN = "open";
 
         bool isDebugModeEnabled = false;
+        bool isBetaModeEnabled = false;
 
         static Mutex appMutex;
         static bool appMutexHasHandle = false;
@@ -157,14 +158,6 @@ namespace BlockstackBrowser
             }
         }
 
-        static void deleteAndUnpackFiles()
-        {
-            if (!Directory.Exists("Resources\\browser-build"))
-                ZipFile.ExtractToDirectory("Resources\\browser-build.zip", "Resources");
-            if (!Directory.Exists("Resources\\corsproxy-https"))
-                ZipFile.ExtractToDirectory("Resources\\corsproxy-https.zip", "Resources");
-        }
-
         public Program()
         {
             container = new System.ComponentModel.Container();
@@ -179,31 +172,39 @@ namespace BlockstackBrowser
             contextMenu = new ContextMenu();
 
             MenuItem exitItem = new MenuItem();
-            exitItem.Index = 1;
             exitItem.Text = "E&xit";
             exitItem.Click += new System.EventHandler(this.exitRequest);
+
             MenuItem homeItem = new MenuItem();
-            homeItem.Index = 0;
             homeItem.Text = "H&ome";
             homeItem.Click += new System.EventHandler(this.homeOpen);
+
+            MenuItem extrasSeparator = new MenuItem("-");
+            extrasSeparator.Visible = false;
+
             MenuItem debugItem = new MenuItem();
-            debugItem.Index = 2;
             debugItem.Visible = false;
             debugItem.Click += (s, e) => isDebugModeEnabled = !isDebugModeEnabled;
+
+            MenuItem betaModeItem = new MenuItem();
+            betaModeItem.Visible = false;
+            betaModeItem.Click += BetaModeItem_Click;
 
             contextMenu.Popup += (s, e) =>
             {
                 bool isCtrlClicked = (ModifierKeys & Keys.Control) == Keys.Control;
                 debugItem.Text = (isDebugModeEnabled ? "Disable" : "Enable") + " Development Mode";
-                debugItem.Visible = isCtrlClicked;
+                betaModeItem.Text = (isBetaModeEnabled ? "Disable" : "Enable") + " Beta Mode";
+                extrasSeparator.Visible = betaModeItem.Visible = debugItem.Visible = isCtrlClicked;
             };
-
+            
             contextMenu.MenuItems.AddRange(
-                new MenuItem[] { homeItem, exitItem, debugItem });
+                new MenuItem[] { homeItem, extrasSeparator, debugItem, betaModeItem, new MenuItem("-"), exitItem });
             myIcon.ContextMenu = contextMenu;
 
-            //deleteAndUnpackFiles();
-            
+            myIcon.DoubleClick += homeOpen;
+            myIcon.MouseClick += TrayIconClick;
+
             RunBlockstackBrowser();
             RunCORSProxy();
             StartProtocolHandlerListenerThread();
@@ -215,6 +216,27 @@ namespace BlockstackBrowser
             else
             {
                 homeOpen(null, null);
+            }
+        }
+
+        private void BetaModeItem_Click(object sender, EventArgs e)
+        {
+            if (!isBetaModeEnabled)
+            {
+                string portalUrl = GetPortalUrl();
+                string goToBetaUrl = $"{portalUrl}go-to-beta";
+                Process.Start(goToBetaUrl);
+            }
+            isBetaModeEnabled = !isBetaModeEnabled;
+        }
+
+        private void TrayIconClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                // https://stackoverflow.com/a/3581311/794962
+                var mi = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+                mi.Invoke(myIcon, null);
             }
         }
 
@@ -290,11 +312,24 @@ namespace BlockstackBrowser
             }
         }
 
+        string GetPortalUrl()
+        {
+            if (isBetaModeEnabled)
+            {
+                return "https://beta.browser.blockstack.org/";
+            }
+            else
+            {
+                string port = GetPortalPort();
+                return $"http://localhost:{port}/";
+            }
+        }
+
         void ProcessProtocolUriReceived(string parentProcessFilePath, string data)
         {
             string authPart = data.Substring(BLOCKSTACK_PROTOCOL_PART.Length);
-            string port = GetPortalPort();
-            string urlOpen = $"http://localhost:{port}/auth?authRequest=" + authPart;
+            string portalUrl = GetPortalUrl();
+            string urlOpen = $"{portalUrl}auth?authRequest=" + authPart;
 
             if (string.IsNullOrEmpty(parentProcessFilePath) || Path.GetFileName(parentProcessFilePath) == "explorer.exe")
             {
@@ -342,8 +377,8 @@ namespace BlockstackBrowser
 
         private void homeOpen(object Sender, EventArgs e)
         {
-            string port = GetPortalPort();
-            Process.Start($"http://localhost:{port}/");
+            string portalUrl = GetPortalUrl();
+            Process.Start(portalUrl);
         }
 
         protected override void Dispose(bool disposing)
