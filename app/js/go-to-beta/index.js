@@ -1,30 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import { AppHomeWrapper, ShellParent, ShellScreen } from '@blockstack/ui'
-import {
-  selectEncryptedBackupPhrase
-} from '@common/store/selectors/account'
 import App from '../App'
 
 const BETA_URL = 'https://beta.browser.blockstack.org'
 
-const goToBeta = (encryptedBackupPhrase) => {
-  const encodedPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString(
-    'base64'
-  )
-  const url = `${BETA_URL}/seed?encrypted=${encodeURIComponent(encodedPhrase)}`
-  window.open(url, '_blank')
-}
-
-function mapStateToProps(state) {
-  return {
-    encryptedBackupPhrase: selectEncryptedBackupPhrase(state)
-  }
-}
-
-const Modal = (_props) => {
-  console.log('rendering modal')
+const Modal = () => {
   const props = {
     title: {
       children: 'You\'ve enabled Beta mode',
@@ -54,21 +34,16 @@ const Modal = (_props) => {
       grow: 0,
       form: {
         errors: [],
-        // validate: v => this.validate(v),
         initialValues: { password: '' },
         fields: [],
-        onSubmit: () => window.open(`${BETA_URL}/sign-up`, '_blank'),
+        onSubmit: () => window.open(BETA_URL, '_blank'),
         actions: {
           split: false,
           items: [
             {
-              label: 'Create new ID',
+              label: 'Create new ID or sign in',
               primary: true,
               type: 'submit'
-            },
-            {
-              label: 'Sign in with your existing ID',
-              onClick: () => goToBeta(_props.encryptedBackupPhrase)
             }
           ]
         }
@@ -77,32 +52,19 @@ const Modal = (_props) => {
   }
   return (
     <>
-      <ShellScreen {...props} {..._props} />
+      <ShellScreen {...props} />
     </>
   )
 }
 
-class GoToBeta extends React.Component {
-  static propTypes = {
-    encryptedBackupPhrase: PropTypes.string.isRequired
-  }
+const GoToBeta = () => (
+  <App>
+    <ShellParent
+      view={0}
+      views={[Modal]}
+    />
+    <AppHomeWrapper />
+  </App>
+)
 
-  onClick() {
-    console.log(this.props)
-  }
-
-  render() {
-    return (
-      <App>
-        <ShellParent
-          encryptedBackupPhrase={this.props.encryptedBackupPhrase}
-          view={0}
-          views={[Modal]}
-        />
-        <AppHomeWrapper />
-      </App>
-    )
-  }
-}
-
-export default connect(mapStateToProps)(GoToBeta)
+export default GoToBeta
