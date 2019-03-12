@@ -231,6 +231,11 @@ const GoToBetaPage = Loadable({
   delay: LOADABLE_DELAY
 })
 
+const HawkOnboarding = Loadable({
+  loader: () => import(/* webpackChunkName: "NotFoundPage" */ './hawk'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
 
 const accountCreated = connectedRouterRedirect({
   redirectPath: state =>
@@ -294,7 +299,7 @@ export default (
     </Route>
     <Route path="/sign-up" component={SignUpPage} />
     <Route path="/sign-up/*" component={SignUpPage} />
-    { /**
+    {/**
      * TODO: move /update back up ^^, had to move it out of the 'app' nested route
      * because when we wipe data, it wants to redirect to /sign-up
      */}
@@ -305,6 +310,7 @@ export default (
     <Route path="/connect-storage" component={ConnectStoragePage} />
     <Route path="/clear-auth" component={ClearAuthPage} />
     <Route path="/go-to-beta" component={GoToBetaPage} />
+    <Route path="/hawk" component={HawkOnboarding} />
     <Route path="/*" component={NotFoundPage} />
   </Router>
 )
