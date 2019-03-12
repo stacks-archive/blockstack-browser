@@ -70,6 +70,7 @@ function reducer(state: any, action: any) {
       },
       account: Object.assign({}, initialState.account, {
         promptedForEmail: state.account.promptedForEmail,
+        email: state.account.email,
         viewedRecoveryCode: state.account.viewedRecoveryCode,
         connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
       })
@@ -84,6 +85,7 @@ function reducer(state: any, action: any) {
       },
       account: Object.assign({}, initialState.account, {
         promptedForEmail: state.account.promptedForEmail,
+        email: state.account.email,
         viewedRecoveryCode: state.account.viewedRecoveryCode,
         connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
       })
