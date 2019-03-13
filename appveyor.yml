@@ -20,9 +20,23 @@ build_script:
 
     copy native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi .\
 
-    IF "%APPVEYOR_REPO_BRANCH%"=="master" ( powershell -Command "& @((Resolve-Path -Path '%ProgramFiles(x86)%\Windows Kits\10\bin\10*\x86\signtool.exe').Path)[0] sign /t http://timestamp.verisign.com/scripts/timstamp.dll /n Blockstack /f signcertfile.pfx BlockstackSetup.msi" )
+    IF "%sign_msi%"=="true" ( powershell -Command "& @((Resolve-Path -Path '%ProgramFiles(x86)%\Windows Kits\10\bin\10*\x86\signtool.exe').Path)[0] sign /t http://timestamp.verisign.com/scripts/timstamp.dll /n Blockstack /f signcertfile.pfx BlockstackSetup.msi" )
 artifacts:
 - path: BlockstackSetup.msi
 cache:
   - node_modules
   - wix311.exe
+
+
+for:
+
+# override settings for `master` and `next` branches to perform signing
+-
+  branches:
+    only:
+      - master
+      - next
+
+  environment:
+    sign_msi: true
+
