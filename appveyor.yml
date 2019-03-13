@@ -15,7 +15,7 @@ install:
 
     npm i
 build_script:
-- cmd: >-
+- ps: >-
     npm run win32
 
     copy native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi .\
