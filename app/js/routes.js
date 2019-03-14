@@ -226,26 +226,46 @@ const NotFoundPage = Loadable({
 
 const GoToBetaPage = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "NotFoundPage" */ './go-to-beta'),
+    import(/* webpackChunkName: "GoToBetaPage" */ './go-to-beta'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const HawkOnboarding = Loadable({
-  loader: () => import(/* webpackChunkName: "NotFoundPage" */ './hawk'),
+  loader: () => import(/* webpackChunkName: "HawkPage" */ './hawk'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const HawkInitial = Loadable({
-  loader: () => import(/* webpackChunkName: "NotFoundPage" */ './hawk/views/initial'),
+  loader: () => import(/* webpackChunkName: "HawkInitial" */ './hawk/views/initial'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
 
 const HawkName = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "NotFoundPage" */ './hawk/views/name'),
+    import(/* webpackChunkName: "HawkName" */ './hawk/views/name'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
+
+const HawkRegistered = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "HawkRegistered" */ './hawk/views/registered'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
+
+const HawkKey = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "HawkKey" */ './hawk/views/key'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
+
+const HawkKeyConfirm = Loadable({
+  loader: () => import(/* webpackChunkName: "HawkKeyConfirm" */ './hawk/views/key-confirm'),
   loading: Loading,
   delay: LOADABLE_DELAY
 })
@@ -326,6 +346,9 @@ export default (
     <Route path="/hawk" component={HawkOnboarding}>
       <IndexRoute component={HawkInitial} />
       <Route path="name" component={HawkName} />
+      <Route path="registered" component={HawkRegistered} />
+      <Route path="key" component={HawkKey} />
+      <Route path="key-confirm" component={HawkKeyConfirm} />
     </Route>
     <Route path="/*" component={NotFoundPage} />
   </Router>
