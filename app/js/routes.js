@@ -237,6 +237,19 @@ const HawkOnboarding = Loadable({
   delay: LOADABLE_DELAY
 })
 
+const HawkInitial = Loadable({
+  loader: () => import(/* webpackChunkName: "NotFoundPage" */ './hawk/views/initial'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
+
+const HawkName = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "NotFoundPage" */ './hawk/views/name'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
+
 const accountCreated = connectedRouterRedirect({
   redirectPath: state =>
     !state.account.encryptedBackupPhrase ?
@@ -310,7 +323,10 @@ export default (
     <Route path="/connect-storage" component={ConnectStoragePage} />
     <Route path="/clear-auth" component={ClearAuthPage} />
     <Route path="/go-to-beta" component={GoToBetaPage} />
-    <Route path="/hawk" component={HawkOnboarding} />
+    <Route path="/hawk" component={HawkOnboarding}>
+      <IndexRoute component={HawkInitial} />
+      <Route path="name" component={HawkName} />
+    </Route>
     <Route path="/*" component={NotFoundPage} />
   </Router>
 )

@@ -7,6 +7,7 @@ import ProfilesReducer from '../profiles/store/reducers'
 import { SanityReducer } from './sanity'
 import SettingsReducer from '../account/store/settings/reducer'
 import { AppsReducer } from './apps'
+import { HawkReducer } from '../hawk/store/hawk'
 import { DELETE_ACCOUNT } from '../account/store/account/types'
 import DEFAULT_API from '../account/store/settings/default'
 
@@ -48,7 +49,8 @@ const AppReducer = combineReducers({
   profiles: ProfilesReducer,
   sanity: SanityReducer,
   settings: SettingsReducer,
-  notifications: makeNotificationsReducer()
+  notifications: makeNotificationsReducer(),
+  hawk: HawkReducer
 })
 
 function reducer(state: any, action: any) {
