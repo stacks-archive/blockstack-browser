@@ -12,9 +12,10 @@ const Name = ({ username, updateUsername }) => {
 
   const buttonClick = () => {
     setLoading(true)
-    setTimeout(() => {
-      browserHistory.push('/hawk/registered')
-    }, 3000)
+    // setTimeout(() => {
+    //   browserHistory.push('/hawk/registered')
+    // }, 3000)
+    browserHistory.push('/hawk/registered')
   }
 
   const buttonProps = {
