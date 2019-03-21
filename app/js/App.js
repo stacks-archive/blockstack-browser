@@ -12,7 +12,6 @@ import {
   setOrUnsetUrlsToRegTest,
   getRegTestModeFromURL
 } from './utils/api-utils'
-import SupportButton from './components/SupportButton'
 import { SanityActions } from './store/sanity'
 import { CURRENT_VERSION } from './store/reducers'
 import { isCoreEndpointDisabled } from './utils/window-utils'
