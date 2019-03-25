@@ -13,7 +13,7 @@ const validateInput = async value =>
       return true
     }
     // Base64 encoded encrypted phrase
-    return /[a-zA-Z0-9+/]=$/.test(value)
+    return /[a-zA-Z0-9+/]=?$/.test(value)
   })
 
 const validationSchema = Yup.object({
