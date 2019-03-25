@@ -18,7 +18,7 @@
 - [ ] Download Windows build from Appveyor 
 - [ ] Rename files to format `Blockstack-for-<platform>-v0.36.0-beta<.extension>`
 - [ ] Upload macOS, Windows builds and the Linux script to the newly created release on GitHub
-- [ ] Create beta forum post for the beta and upload the macOS and Windows builds
+- [ ] Create forum post for the beta and upload the macOS and Windows builds
 - [ ] Announce availability of beta in #pre-releases channel
 
 ## Production release
@@ -40,3 +40,4 @@
 - [ ] Create a pull request from master into deploy/browser.blockstack.org https://github.com/blockstack/blockstack-browser/compare/deploy/browser.blockstack.org...master?expand=1
 - [ ] Test netlify deploy preview of pull request from above and add review to pull request. (Performed by a colleague not running this release)
 - [ ] When pull request to deploy/browser.blockstack.org is approved, merge pull request
+- [ ] Update the beta forum post for production release
