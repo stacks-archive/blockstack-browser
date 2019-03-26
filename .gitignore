@@ -48,3 +48,5 @@ native/windows/BlockstackSetup/bin/
 native/macos/Blockstack/Blockstack/server/corsproxy.js
 native/macos/Blockstack/Blockstack/server/blockstackProxy.js
 native/macos/Blockstack/Blockstack/server/node
+screenshot-failed*
+screenshot.png

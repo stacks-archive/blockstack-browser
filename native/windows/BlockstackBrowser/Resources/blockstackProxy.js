@@ -20,4 +20,4 @@ app.get('/*', function(req, res, next) {
   res.sendFile(path.join(basePath+'/index.html'));
 })
 
-app.listen(port)
+app.listen(port, host);

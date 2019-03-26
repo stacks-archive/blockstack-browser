@@ -39,7 +39,7 @@ export function initializeStateVersion() {
  * and other state is regenerated.
  * @type {number}
  */
-export const CURRENT_VERSION: number = 17
+export const CURRENT_VERSION: number = 18
 
 const AppReducer = combineReducers({
   account: AccountReducer,
@@ -70,6 +70,7 @@ function reducer(state: any, action: any) {
       },
       account: Object.assign({}, initialState.account, {
         promptedForEmail: state.account.promptedForEmail,
+        email: state.account.email,
         viewedRecoveryCode: state.account.viewedRecoveryCode,
         connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
       })
@@ -84,6 +85,7 @@ function reducer(state: any, action: any) {
       },
       account: Object.assign({}, initialState.account, {
         promptedForEmail: state.account.promptedForEmail,
+        email: state.account.email,
         viewedRecoveryCode: state.account.viewedRecoveryCode,
         connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce
       })

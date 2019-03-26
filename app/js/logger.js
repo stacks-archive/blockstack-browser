@@ -1,5 +1,11 @@
 const isDev = process.env.NODE_ENV === 'development'
 const isTesting = process.env.NODE_ENV === 'test'
+
+// Debug logging can be explicitly enabled independent of NODE_ENV, this is useful
+// in cases where we want to use the production webpacking and have debug logs, 
+// for example in end-to-end testing. 
+const isDebugLoggingEnabled = process.env.DEBUG_LOGGING === 'true'
+
 const localDebug =
   !isTesting &&
   typeof window !== 'undefined' &&
@@ -8,7 +14,7 @@ const isDebug =
   localDebug ||
   (typeof location !== 'undefined' && location.search.includes('debug'))
 
-const showLog = isDev || isDebug
+const showLog = isDev || isDebug || isDebugLoggingEnabled
 
 const prefixStyle = 'color: #AAA;'
 
