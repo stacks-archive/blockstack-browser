@@ -188,8 +188,7 @@ class HomeScreenPage extends React.Component {
   render() {
     const loading =
       this.props.apps &&
-      this.props.apps.loading &&
-      !this.props.apps.topApps.length
+      this.props.apps.loading
     return (
       <Box>
         <Navbar hideBackToHomeLink activeTab="home" />
