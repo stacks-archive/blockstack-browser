@@ -10,6 +10,15 @@ For example, if a pull request includes a fix where clicking a button didn't wor
 
 When creating a beta release or pull request, you should include specific QA steps as to how to test your work.
 
+## Test coverage
+
+At the very least, all automated tests should be passing that are triggered from a pull request. The reviewer should also use their judgement to look at the code in this contribution and determine if either:
+
+- existing tests cover this sufficiently
+- new tests should be added
+
+New tests are dependent on the type of code being used. If it is a functional change to 'back-end' code, then unit tests should be written to cover the expected results of that code. If the contribution makes changes to front-end behavior, then end-to-end (E2E) tests should cover any new or changes flows.
+
 ## General functionality
 
 Anytime you review, you should make sure you check out all major functions of the browser to make sure they still function correctly.
