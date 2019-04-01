@@ -5,7 +5,7 @@
 ## Release beta
 - [ ] Update version in `/package.json` to `0.36.0`
 - [ ] In xcode, update version to `0.36.0` and increment the build number (Both for the Blockstack and Blockstack Launcher targets)
-- [ ] Update the Linux script version in `/native/linux/Blockstack-for-Linux.sh` to `TAG=0.36.0`
+- [ ] Update the Linux script version in `/native/linux/Blockstack-for-Linux.sh` to `TAG=v0.36.0`
 - [ ] Commit version changes
 - [ ] Exit locally running Blockstack & stop any regtest instances & kill any `npm run dev` instances
 - [ ] `npm run mac:release`
