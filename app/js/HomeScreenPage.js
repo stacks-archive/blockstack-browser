@@ -139,7 +139,7 @@ const AppItem = ({ website, imgixImageUrl, name, description }) => {
               size="64px"
               display="block"
               flexShrink="0"
-              src={imgixImageUrl}
+              src={`${imgixImageUrl}?auto=format&w=128&q=50`}
               alt={name}
             />
             <Box ml={[0, 3, 3, 3]} mt={[3, 0, 0, 0]}>
@@ -188,7 +188,8 @@ class HomeScreenPage extends React.Component {
   render() {
     const loading =
       this.props.apps &&
-      this.props.apps.loading &&
+      this.props.apps.loading ||
+      !this.props.apps.topApps ||
       !this.props.apps.topApps.length
     return (
       <Box>

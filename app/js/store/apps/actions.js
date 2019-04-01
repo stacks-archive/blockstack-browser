@@ -2,7 +2,7 @@ import * as types from './types'
 import log4js from 'log4js'
 import { randomBytes, createHash } from 'crypto'
 
-const API_URL = 'https://app-co-api.herokuapp.com'
+const API_URL = 'https://api.app.co'
 
 const logger = log4js.getLogger(__filename)
 
@@ -33,8 +33,7 @@ const refreshAppList = (
   browserApiUrl,
   instanceIdentifier,
   instanceCreationDate
-) => {
-  return dispatch => {
+) => dispatch => {
     logger.info('refreshAppList')
     if (instanceIdentifier) {
       return fetch(
@@ -52,7 +51,6 @@ const refreshAppList = (
       return null
     }
   }
-}
 
 const generateInstanceIdentifier = () => {
   logger.info('Generating new instance identifier')
