@@ -1,9 +1,9 @@
 # Browser release checklist
-- [ ] `git flow release start 0.36.0` where 0.36.0 is the version of the release (make sure the version prefix `v` is set for git flow)
+- [ ] `git flow release start v0.36.0` where 0.36.0 is the version of the release (make sure the version prefix `v` is set for git flow)
 - [ ] `git flow release publish` (optional, shares release branch)
 
 ## Release beta
-- [ ] Update version in `/package.json` to `v0.36.0`
+- [ ] Update version in `/package.json` to `0.36.0`
 - [ ] In xcode, update version to `0.36.0` and increment the build number (Both for the Blockstack and Blockstack Launcher targets)
 - [ ] Update the Linux script version in `/native/linux/Blockstack-for-Linux.sh` to `TAG=0.36.0`
 - [ ] Commit version changes
@@ -23,7 +23,7 @@
 
 ## Production release
 - [ ] Make sure your `develop` and `master` branchs are up to date
-- [ ] `git flow release finish 0.36.0`
+- [ ] `git flow release finish v0.36.0`
 - [ ] on `develop` branch `git push origin develop`
 - [ ] `git push origin --tags`
 - [ ] `git checkout master`
