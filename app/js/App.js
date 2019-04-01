@@ -39,12 +39,12 @@ function mapStateToProps(state) {
     walletPaymentAddressUrl: state.settings.api.walletPaymentAddressUrl,
     coreAPIPassword: state.settings.api.coreAPIPassword,
     instanceIdentifier: state.apps.instanceIdentifier,
-    lastUpdatedApps: selectLastUpdatedApps(state)
+    lastUpdatedApps: selectLastUpdatedApps(state),
+    topApps: state.apps.topApps
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return bindActionCreators(
+const mapDispatchToProps = dispatch => bindActionCreators(
     {
       updateApi: SettingsActions.updateApi,
       isCoreRunning: SanityActions.isCoreRunning,
@@ -54,7 +54,6 @@ const mapDispatchToProps = dispatch => {
     },
     dispatch
   )
-}
 
 class AppContainer extends Component {
   static propTypes = {
@@ -80,7 +79,8 @@ class AppContainer extends Component {
     router: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     instanceIdentifier: PropTypes.string,
-    lastUpdatedApps: PropTypes.number
+    lastUpdatedApps: PropTypes.number,
+    topApps: PropTypes.array
   }
 
   constructor(props) {
@@ -166,7 +166,7 @@ class AppContainer extends Component {
     }
 
     if (
-      !this.props.lastUpdatedApps ||
+      !this.props.lastUpdatedApps || !this.props.topApps ||
       Date.now() - this.props.lastUpdatedApps > 900000 // 15 min
     ) {
       // Fetch those apps if data is state
