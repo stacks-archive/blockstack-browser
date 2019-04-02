@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Job.cs" />
+    <Compile Include="ParentProcess.cs" />
     <Compile Include="Program.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,7 +85,6 @@
     <Content Include="Resources\build\**\*.*" />
     <Content Include="Resources\corsproxy-https\**\*.*" />
     <Content Include="Resources\node.exe" />
-    <Content Include="Resources\blockstack.ico" />
     <Content Include="Resources\blockstackProxy.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

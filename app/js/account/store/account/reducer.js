@@ -5,7 +5,7 @@ import { getBitcoinAddressNode } from '@utils'
 const initialState = {
   accountCreated: false, // persist
   promptedForEmail: false, // persist
-  email: null,
+  email: null, // persist
   encryptedBackupPhrase: null, // persist
   identityAccount: {
     addresses: [],

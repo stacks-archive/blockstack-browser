@@ -1,0 +1,17 @@
+--require mocha-steps
+--timeout 180000
+--full-trace
+--recursive
+--sort
+--exclude **/run-parallel.js
+--exclude **/hello-blockstack-app/**
+# --fgrep firefox
+# --fgrep safari
+# --fgrep Win10-Chrome
+# --fgrep Android
+# --fgrep iOS
+# --grep account\srecovery.*firefox
+# --grep secret\skey.*iOS-12-iPhone-XS
+# --grep magic\srecovery
+# --grep secret\skey
+# --grep account\srecovery
