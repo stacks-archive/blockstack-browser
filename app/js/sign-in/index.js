@@ -167,32 +167,36 @@ class SignIn extends React.Component {
     }
 
     if (this.state.decrypt && !decrypting) {
-      this.setState({ decrypting: true })
-
-      try {
-        const decryptedKeyBuffer = await decrypt(
-          new Buffer(encryptedKey, 'base64'),
-          this.state.password
-        )
-        const decryptedKey = decryptedKeyBuffer.toString()
+      setImmediate(() => {
         this.setState(
-          {
-            key: decryptedKey,
-            decrypting: false,
-            restoreError: null
-          },
-          () => {
-            this.updateView(VIEWS.EMAIL)
-          }
-        )
-      } catch (e) {
-        logger.debug(e)
-        this.setState({
-          decrypting: false,
-          restoreError: 'Incorrect password or invalid recovery code',
-          key: ''
-        })
-      }
+          { decrypting: true },
+          async () => {
+            try {
+              const decryptedKeyBuffer = await decrypt(
+                new Buffer(encryptedKey, 'base64'),
+                this.state.password
+              )
+              const decryptedKey = decryptedKeyBuffer.toString()
+              this.setState(
+                {
+                  key: decryptedKey,
+                  decrypting: false,
+                  restoreError: null
+                },
+                () => {
+                  this.updateView(VIEWS.EMAIL)
+                }
+              )
+            } catch (e) {
+              logger.debug(e)
+              this.setState({
+                decrypting: false,
+                restoreError: 'Incorrect password or invalid recovery code',
+                key: ''
+              })
+            }
+          })
+      })
     } else {
       this.updateView(VIEWS.EMAIL)
     }

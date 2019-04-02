@@ -217,7 +217,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.WEBAPP': JSON.stringify(isWebapp)
+      'process.env.WEBAPP': JSON.stringify(isWebapp),
+      'process.env.DEBUG_LOGGING': JSON.stringify(process.env.DEBUG_LOGGING)
     }),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedChunksPlugin(chunk => {
