@@ -11,14 +11,15 @@
 - [ ] `npm run mac:release`
 - [ ] Rename .dmg file to `Blockstack-for-macOS-v0.36.0-beta.dmg`
 - [ ] Tag the release `git tag -a v0.36.0-beta.1`
-- [ ] `git push origin --tags`
+- [ ] `git push origin --follow-tags`
+- [ ] Push changes to the `next` branch to generate signed Windows build on Appveyor
 - [ ] Draft a new release on github: https://github.com/blockstack/blockstack-browser/releases/new
 - [ ] Enter the tag (eg. `v0.36.0-beta.1`) the tag box and as the name of the release.
 - [ ] Enter release notes
 - [ ] Download Windows build from Appveyor 
 - [ ] Rename files to format `Blockstack-for-<platform>-v0.36.0-beta<.extension>`
 - [ ] Upload macOS, Windows builds and the Linux script to the newly created release on GitHub
-- [ ] Create forum post for the beta and upload the macOS and Windows builds
+- [ ] Create forum post with the `Releases` tag for the beta and upload the macOS and Windows builds
 - [ ] Announce availability of beta in #pre-releases channel
 
 ## Production release
