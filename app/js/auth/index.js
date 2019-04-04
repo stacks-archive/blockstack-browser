@@ -171,24 +171,34 @@ class AuthPage extends React.Component {
     if (redirectURI) {
       // Get the current localhost authentication url that the app will redirect back to,
       // and remove the 'echo' param from it.
-      const authContinuationURI = updateQueryStringParameter(window.location.href, 'echo', '')
-      redirectURI = updateQueryStringParameter(redirectURI, 'echoReply', this.state.echoRequestId)
-      redirectURI = updateQueryStringParameter(redirectURI, 'authContinuation', encodeURIComponent(authContinuationURI))
+      const authContinuationURI = updateQueryStringParameter(
+        window.location.href,
+        'echo',
+        ''
+      )
+      redirectURI = updateQueryStringParameter(
+        redirectURI,
+        'echoReply',
+        this.state.echoRequestId
+      )
+      redirectURI = updateQueryStringParameter(
+        redirectURI,
+        'authContinuation',
+        encodeURIComponent(authContinuationURI)
+      )
     } else {
       throw new Error('Invalid redirect echo reply URI')
     }
     this.setState({ responseSent: true })
     window.location = redirectURI
   }
-  
+
   componentWillReceiveProps(nextProps) {
-
     if (!this.state.responseSent) {
-
       if (this.state.echoRequestId) {
         this.redirectUserToEchoReply()
         return
-      }  
+      }
 
       const storageConnected = this.props.api.storageConnected
       this.setState({
@@ -251,9 +261,7 @@ class AuthPage extends React.Component {
 
       if (identity.zoneFile && identity.zoneFile.length > 0) {
         const zoneFileJson = parseZoneFile(identity.zoneFile)
-        const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(
-          zoneFileJson
-        )
+        const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(zoneFileJson)
         if (
           profileUrlFromZonefile !== null &&
           profileUrlFromZonefile !== undefined
@@ -358,10 +366,7 @@ class AuthPage extends React.Component {
   }
 
   getFreshIdentities = async () => {
-    await this.props.refreshIdentities(
-      this.props.api,
-      this.props.addresses
-    )
+    await this.props.refreshIdentities(this.props.api, this.props.addresses)
     this.setState({ refreshingIdentities: false })
   }
 
@@ -541,7 +546,11 @@ class AuthPage extends React.Component {
   }
 
   render() {
-    const { appManifest, appManifestLoading, appManifestLoadingError } = this.props
+    const {
+      appManifest,
+      appManifestLoading,
+      appManifestLoadingError
+    } = this.props
 
     if (appManifestLoadingError) {
       return (
@@ -596,11 +605,18 @@ class AuthPage extends React.Component {
             )
           },
           deny: () => console.log('go back to app'),
+          backLabel: 'Cancel',
+          backView: () => {
+            if (document.referrer === '') {
+              window.close()
+            } else {
+              history.back()
+            }
+          },
           accounts: this.props.localIdentities,
           processing: this.state.processing,
           refreshingIdentities: this.state.refreshingIdentities,
-          selectedIndex: this.state.currentIdentityIndex,
-          disableBackOnView: 0
+          selectedIndex: this.state.currentIdentityIndex
         }
       },
       {
@@ -630,4 +646,7 @@ class AuthPage extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthPage)
