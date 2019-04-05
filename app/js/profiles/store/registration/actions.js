@@ -286,13 +286,13 @@ const registerName = (
         }
       } catch (e) {
         logger.error('registerName: error uploading profile', e)
-        dispatch(profileUploadError(e))
+        dispatch(profileUploadError(e.message))
         throw e
       }
     }
   } catch (e) {
     logger.error('registerName: error', e)
-    dispatch(registrationError(e))
+    dispatch(registrationError(e.message))
   }
 }
 
