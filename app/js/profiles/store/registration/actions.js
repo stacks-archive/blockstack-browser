@@ -16,9 +16,9 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 
-const profileUploading = {
+const profileUploading = () => ({
   type: types.PROFILE_UPLOADING
-}
+})
 
 function profileUploadError(error) {
   return {
@@ -190,7 +190,7 @@ const registerName = (
 
   const profile = identity.profile || DEFAULT_PROFILE
   const signedProfileTokenData = signProfileForUpload(profile, keypair, api)
-  dispatch(profileUploading)
+  dispatch(profileUploading())
   logger.info(`Uploading ${domainName} profile...`)
   try {
     const profileUrl = await uploadProfile(
