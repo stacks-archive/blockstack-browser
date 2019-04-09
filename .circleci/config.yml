@@ -10,8 +10,8 @@ jobs:
           command: |
             if [ "$CIRCLE_REPOSITORY_URL" == "https://github.com/blockstack/blockstack-browser.git" ]; then
               exit 0
-            # else
-              # exit 1
+             else
+              exit 1
             fi
 
   forked-repo:
@@ -24,8 +24,8 @@ jobs:
           command: |
             if [ "$CIRCLE_REPOSITORY_URL" != "https://github.com/blockstack/blockstack-browser.git" ]; then
               exit 0
-            # else
-              # exit 1
+             else
+              exit 1
             fi
 
   build:
