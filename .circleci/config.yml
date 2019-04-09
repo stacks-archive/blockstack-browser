@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Repo Check 1
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" == "https://github.com/tim/tim-repo.git" ]; then
+            if [ "$CIRCLE_REPOSITORY_URL" == "https://github.com/blockstack/blockstack-browser.git" ]; then
               exit 0
             # else
               # exit 1
@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Repo Check 2
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" != "https://github.com/tim/tim-repo.git" ]; then
+            if [ "$CIRCLE_REPOSITORY_URL" != "https://github.com/blockstack/blockstack-browser.git" ]; then
               exit 0
             # else
               # exit 1
