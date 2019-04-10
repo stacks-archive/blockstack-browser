@@ -1,44 +1,44 @@
 # Browser release checklist
-
-- [ ] `git flow release start 0.27.0` where 0.27.0 is the version of the release (make sure the version prefix `v` is set for git flow)
+- [ ] `git flow release start v0.36.0` where 0.36.0 is the version of the release (make sure the version prefix `v` is set for git flow)
 - [ ] `git flow release publish` (optional, shares release branch)
-- [ ] update version in `/package.json`
-- [ ] update version and build number in xcode
-- [ ] commit version changes
+
+## Release beta
+- [ ] Update version in `/package.json` to `0.36.0`
+- [ ] In xcode, update version to `0.36.0` and increment the build number (Both for the Blockstack and Blockstack Launcher targets)
+- [ ] Update the Linux script version in `/native/linux/Blockstack-for-Linux.sh` to `TAG=v0.36.0`
+- [ ] Commit version changes
 - [ ] Exit locally running Blockstack & stop any regtest instances & kill any `npm run dev` instances
-- [ ] `npm run mac-release`
-- [ ] Rename .dmg file to `Blockstack-for-macOS-v0.27.0.dmg`
-- [ ] `git flow release finish 0.27.0`
+- [ ] `npm run mac:release`
+- [ ] Rename .dmg file to `Blockstack-for-macOS-v0.36.0-beta.dmg`
+- [ ] Tag the release `git tag -a v0.36.0-beta.1`
+- [ ] `git push origin --follow-tags`
+- [ ] Push changes to the `next` branch to generate signed Windows build on Appveyor
+- [ ] Draft a new release on github: https://github.com/blockstack/blockstack-browser/releases/new
+- [ ] Enter the tag (eg. `v0.36.0-beta.1`) the tag box and as the name of the release.
+- [ ] Enter release notes
+- [ ] Download Windows build from Appveyor 
+- [ ] Rename files to format `Blockstack-for-<platform>-v0.36.0-beta<.extension>`
+- [ ] Upload macOS, Windows builds and the Linux script to the newly created release on GitHub
+- [ ] Create forum post with the `Releases` tag for the beta and upload the macOS and Windows builds
+- [ ] Announce availability of beta in #pre-releases channel
+
+## Production release
+- [ ] Make sure your `develop` and `master` branchs are up to date
+- [ ] `git flow release finish v0.36.0`
 - [ ] on `develop` branch `git push origin develop`
 - [ ] `git push origin --tags`
 - [ ] `git checkout master`
-- [ ] Create a branch of master so that we give CircleCI a chance to run tests successfully `git checkout -b master-test`
-- [ ] `git push origin master-test`
-- [ ] After CircleCI tests on `master-test` pass, `git checkout master`
 - [ ] `git push origin master`
-- [ ] `git branch -d master-test`
-- [ ] `git push origin :master-test`
-
-- [ ] tag blockstack/packaging `cd packaging; git checkout master; git tag v0.27.0`
-- [ ] build Linux and Windows installers: `make windows; make linux-launcher`
-- [ ] Enter blockstack/packaging `cd packaging; git checkout master`
-- [ ] build Linux installer: `BUILD_TAG=v0.14.0 make linux-launcher`
-- [ ] Confirm docker images successfully pull: `./dist/linux-launcher/launcher pull`
-- [ ] Update `latest` image for browser on quay: `docker tag quay.io/blockstack/blockstack-browser:v0.23.0 quay.io/blockstack/blockstack-browser:latest`
-- [ ] Update `latest-browser` on quay: `docker tag quay.io/blockstack/blockstack-core:v0.23.0-browser quay.io/blockstack/blockstack-core:latest-browser`
-- [ ] Push docker tags `docker push quay.io/blockstack/blockstack-core:latest-browser`
-- [ ]      ... `docker push quay.io/blockstack/blockstack-browser:latest`
-- [ ] Build Windows installer: https://github.com/kantai/blockstack-windows (Aaron should merge this into blockstack-browser)
-- [ ] Sign Windows installer: `osslsigncode -certs "X509/IntermediateCA.crt" -certs "X509/ssl_certificate.crt" -key sign.key -n "Blockstack Browser" -i "https://blockstack.org"  -t "http://timestamp.verisign.com/scripts/timstamp.dll" -in BlockstackSetup.msi -out blockstack-browser-signed.msi`
 - [ ] Draft a new release on github: https://github.com/blockstack/blockstack-browser/releases/new
-- [ ] Enter the tag (eg. `v0.27.0`) the tag box and as the name of the release.
+- [ ] Enter the tag (eg. `v0.36.0`) the tag box and as the name of the release.
 - [ ] Enter release notes
-- [ ] Rename files to format `Blockstack-for-<platform>-v0.27.0<.extension>`
-- [ ] Upload the `.dmg` file generated earlier
-- [ ] Upload Linux launcher
-- [ ] Upload Windows installer
-- [ ] After verifying tests, push new version to update server.
-- [ ] Update blockstack.org with direct links to install files https://github.com/blockstack/blockstack.org/blob/master/app/js/config.js
+- [ ] Rename files to format `Blockstack-for-<platform>-v0.36.0<.extension>`
+- [ ] Upload macOS, Windows builds and the Linux script to the newly created release on GitHub
+- [ ] Open the `/public/macappcast.xml` file on https://github.com/blockstack/updates.blockstack.org
+- [ ] Add the new version at the bottom with release notes and download link
+- [ ] In the `updates.blockstack.org` repo, run `firebase deploy` to push new version to update server
+- [ ] Update `blockstack.org/install` download links
 - [ ] Create a pull request from master into deploy/browser.blockstack.org https://github.com/blockstack/blockstack-browser/compare/deploy/browser.blockstack.org...master?expand=1
 - [ ] Test netlify deploy preview of pull request from above and add review to pull request. (Performed by a colleague not running this release)
 - [ ] When pull request to deploy/browser.blockstack.org is approved, merge pull request
+- [ ] Update the beta forum post for production release

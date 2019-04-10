@@ -37,13 +37,16 @@ const DEFAULT_API = {
   nameTransferUrl: `${DEFAULT_CORE_API_ENDPOINT}/v1/names/{name}/owner`,
   subdomains: {
     'foo.id': {
-      registerUrl: 'http://localhost:7103/register'
+      registerUrl: 'http://localhost:7103/register',
+      apiUrl: 'http://localhost:7103/v1/names'
     },
     'test-personal.id': {
-      registerUrl: 'https://test-registrar.blockstack.org/register'
+      registerUrl: 'https://test-registrar.blockstack.org/register',
+      apiUrl: 'https://test-registrar.blockstack.org/v1/names'
     },
     'id.blockstack': {
-      registerUrl: 'https://registrar.blockstack.org/register'
+      registerUrl: 'https://registrar.blockstack.org/register',
+      apiUrl: 'https://registrar.blockstack.org/v1/names'
     }
   },
   browserServerUrl: 'https://blockstack-browser-server.appartisan.com',

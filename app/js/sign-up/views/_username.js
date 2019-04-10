@@ -4,7 +4,6 @@ import { ShellScreen, Type } from '@blockstack/ui'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
-const defaultSponsoredName = '.id.blockstack'
 
 const STATUS = {
   CONFIRMED: 'confirmed',
@@ -20,14 +19,13 @@ const STATUS = {
  */
 const getUsernameStatus = async (
   username,
-  sponsoredName = defaultSponsoredName
+  sponsoredName,
+  apiUrl
 ) => {
   if (!username) {
     return null
   }
-  const api = 'https://registrar.blockstack.org/v1/names/'
-  // const url = `https://core.blockstack.org/v1/names/${username.toLowerCase()}${sponsoredName}`
-  const url = `${api}${username.toLowerCase()}${sponsoredName}`
+  const url = `${apiUrl}/${username.toLowerCase()}${sponsoredName}`
   try {
     const res = await fetch(url)
     const user = await res.json()
@@ -106,7 +104,7 @@ class UsernameView extends React.Component {
         errors.username = 'Invalid username (a-zA-Z0-9_)'
         throw errors
       } else {
-        const status = await getUsernameStatus(values.username)
+        const status = await getUsernameStatus(values.username, this.props.sponsoredName, this.props.apiUrl)
 
         if (status === STATUS.FAIL) {
           this.setState({ status })
@@ -216,7 +214,7 @@ class UsernameView extends React.Component {
               label: 'Username',
               name: 'username',
               autoFocus: true,
-              overlay: defaultSponsoredName,
+              overlay: this.props.sponsoredName,
               handleChangeOverride: (e, handleChange) => {
                 handleChange(e)
                 this.setState({
@@ -268,6 +266,8 @@ UsernameView.propTypes = {
   updateValue: PropTypes.func,
   next: PropTypes.func,
   username: PropTypes.string,
+  apiUrl: PropTypes.string,
+  sponsoredName: PropTypes.string,
   loading: PropTypes.bool
 }
 

@@ -13,5 +13,6 @@ test/store/*
 test/utils/a*
 test/utils/e*
 test/utils/n*
+test-e2e/*
 
 app/js/profiles/components/VerificationInfo*

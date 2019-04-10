@@ -4,9 +4,10 @@
  * This screen welcomes the new user and shows their username / ID
  */
 import React from 'react'
-import { ShellScreen, Type } from '@blockstack/ui'
+import { ShellScreen, Type, Button } from '@blockstack/ui'
 import PropTypes from 'prop-types'
-import { ProfileScreen } from '@components/ui/containers/profile'
+import { ProfileScreen, Line } from '@components/ui/containers/profile'
+import { Flex, Box } from '@components/ui/components/primitives'
 
 const Success = ({
   finish,
@@ -29,27 +30,25 @@ const Success = ({
     content: {
       grow: 1,
       children: (
-        <ProfileScreen user={user}>
-          <Type.p>
-            Your ID is ready and we sent recovery instructions to your email.
-            You can also view your{' '}
-            <Type.a onClick={() => goToRecovery()}>Secret Recovery Key</Type.a>.
-          </Type.p>
+        <ProfileScreen hideLine user={user}>
+          <Box pt={3} pb={2}>
+            <Button primary onClick={finish}>
+              <>Go to {app && app.name ? app.name : 'Blockstack'}</>
+            </Button>
+          </Box>
+          <Line />
+          <Flex justifyContent="center" alignItems="center">
+            <Type.p>
+              Your ID is ready and we sent recovery instructions to your email.
+              You can also view your{' '}
+              <Type.a onClick={() => goToRecovery()}>
+                Secret Recovery Key
+              </Type.a>
+              .
+            </Type.p>
+          </Flex>
         </ProfileScreen>
       )
-    },
-    actions: {
-      items: [
-        {
-          label: (
-            <>
-              Go to {app && app.name ? app.name : 'Blockstack'}
-            </>
-          ),
-          primary: true,
-          onClick: () => finish()
-        }
-      ]
     }
   }
   return <ShellScreen {...rest} {...props} />
