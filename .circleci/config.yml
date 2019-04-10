@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Repo Check 1
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com/blockstack/blockstack-browser.git" ]; then
+            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
               exit 0
             else
               echo "this is a forked repo hence failing."
@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Repo Check 2
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" != "git@github.com/blockstack/blockstack-browser.git" ]; then
+            if [ "$CIRCLE_REPOSITORY_URL" != "git@github.com:blockstack/blockstack-browser.git" ]; then
               exit 0
             else
               echo "This is not a forked repo, hence the fail."
