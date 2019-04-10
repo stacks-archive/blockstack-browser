@@ -89,16 +89,15 @@ workflows:
   version: 2
   build_and_test-e2e:
     jobs:
+    - build
       - forks_only:
           filters:
             branches:
              # only from canonical repository
              only: /^(?!pull\/).*$/            
-               - build
                - test-e2e-login
                - test-e2e-account-creation
                - test-e2e-account-recovery
-    jobs:
       - canonical_repo_only:
           filters:
             branches:
