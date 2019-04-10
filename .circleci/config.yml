@@ -134,6 +134,8 @@ workflows:
   build_and_test-e2e-account-local:
     jobs:
      - build:
+         - requires:
+             - forked-repo
       - test-e2e-login-local:
           - requires:
               - forked-repo
