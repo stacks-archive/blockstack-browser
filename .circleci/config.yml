@@ -92,8 +92,8 @@ workflows:
       - forks_only:
           filters:
             branches:
-             # only from forks
-             only: /^pull\/.*$/
+             # only from canonical repository
+             only: /^(?!pull\/).*$/            
                - build
                - test-e2e-login
                - test-e2e-account-creation
@@ -102,8 +102,8 @@ workflows:
       - canonical_repo_only:
           filters:
             branches:
-             # only from canonical repository
-             only: /^(?!pull\/).*$/
+             # only from forks
+             only: /^pull\/.*$/
                - build
                - test-e2e-login-local
                - test-e2e-account-creation-local
