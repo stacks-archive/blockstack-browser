@@ -1,5 +1,33 @@
 version: 2
 jobs:
+  my-repo:
+    docker:
+      - image: circleci/python:2.7.13
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: Repo Check 1
+          command: |
+            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com/blockstack/blockstack-browser.git" ]; then
+              exit 0
+            else
+              echo "this is a forked repo hence failing."
+              exit 1
+            fi
+  forked-repo:
+    docker:
+      - image: circleci/python:2.7.13
+    working_directory: ~/repo
+    steps:
+      - run:
+          name: Repo Check 2
+          command: |
+            if [ "$CIRCLE_REPOSITORY_URL" != "git@github.com/blockstack/blockstack-browser.git" ]; then
+              exit 0
+            else
+              echo "This is not a forked repo, hence the fail."
+              exit 1
+            fi
   build:
     docker:
       - image: circleci/node:10.15.1
@@ -49,6 +77,7 @@ jobs:
       - run: npm run test-e2e:browserstack
       - store_artifacts:
           path: /tmp/test-errors
+
   test-e2e-login-local:
     docker:
       - image: circleci/node:10.15.1
@@ -87,23 +116,29 @@ jobs:
           path: /tmp/test-errors
 workflows:
   version: 2
-  build_and_test-e2e:
+  build_and_test-e2e-account:
     jobs:
-    - build
-      - forks_only:
-          filters:
-            branches:
-             # only from canonical repository
-             only: /^(?!pull\/).*$/            
-               - test-e2e-login
-               - test-e2e-account-creation
-               - test-e2e-account-recovery
-      - canonical_repo_only:
-          filters:
-            branches:
-             # only from forks
-             only: /^pull\/.*$/
-               - build
-               - test-e2e-login-local
-               - test-e2e-account-creation-local
-               - test-e2e-account-recovery-local
+      - build:
+          - requires:
+              - my-repo
+      - test-e2e-login:
+          - requires:
+              - my-repo
+      - test-e2e-account-creation:
+          - requires:
+              - my-repo
+      - test-e2e-account-recovery:
+          - requires:
+              - my-repo
+
+  build_and_test-e2e-account-local:
+    jobs:
+      - test-e2e-login-local:
+          - requires:
+              - forked-repo
+      - test-e2e-account-creation-local:
+          - requires:
+              - forked-repo
+      - test-e2e-account-recovery-local:
+          - requires:
+              - forked-repo
