@@ -15,7 +15,6 @@ jobs:
             else
               export TEST_E2E_GREP=login-to-hello-blockstack-app
               npm install && npm run test-e2e:localBuild
-              exit 1
             fi
       - store_artifacts:
           path: /tmp/test-errors
@@ -34,7 +33,6 @@ jobs:
             else
               export TEST_E2E_GREP=account-creation
               npm install && npm run test-e2e:localBuild
-              exit 1
             fi
       - store_artifacts:
           path: /tmp/test-errors
@@ -53,7 +51,6 @@ jobs:
             else
               export TEST_E2E_GREP=account-recovery
               npm install && npm run test-e2e:localBuild
-              exit 1
             fi
       - store_artifacts:
           path: /tmp/test-errors
