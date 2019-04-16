@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Repo Check 1
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:tim/blockstack-browser.git" ]; then
+            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
               export TEST_E2E_GREP=login-to-hello-blockstack-app
               npm install && npm run test-e2e:browserstack
             else
@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Repo Check 2
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:tim/blockstack-browser.git" ]; then
+            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
               export TEST_E2E_GREP=account-creation
               npm install && npm run test-e2e:browserstack
             else
