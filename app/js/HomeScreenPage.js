@@ -1,125 +1,254 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Navbar from './components/Navbar'
 import { AppsActions } from './store/apps'
-import appList from './data/apps'
+import { Box, Flex, Type } from 'blockstack-ui'
+import { Hover } from 'react-powerplug'
+import { Spinner } from '@components/ui/components/spinner'
+import { trackEventOnce } from '@utils/server-utils'
 
-function mapStateToProps(state) {
-  return {
-    apps: state.apps,
-    appListLastUpdated: state.apps.lastUpdated,
-    api: state.settings.api,
-    instanceIdentifier: state.apps.instanceIdentifier,
-    instanceCreationDate: state.apps.instanceCreationDate
+const Loading = ({ ...rest }) => (
+  <Flex
+    flexDirection="column"
+    alignItems="center"
+    width={1}
+    justifyContent="center"
+    p={4}
+    {...rest}
+  >
+    <Box width="48px" mx="auto">
+      <Spinner color="black" size={48} />
+    </Box>
+    <Box py={4} textAlign="center">
+      <Type fontWeight="500" fontSize={2} opacity={0.5}>
+        Fetching apps...
+      </Type>
+    </Box>
+  </Flex>
+)
+
+const Content = ({ topApps, allApps, ...rest }) => {
+  if (!allApps) {
+    return null
   }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AppsActions), dispatch)
-}
-
-const AppIcon = ({ launchLink, iconImage, displayName }) => {
-  /* eslint-disable */
-  const image = require(`../images/${iconImage}`)
-  /* eslint-enable */
   return (
-    <div className="container-fluid app-box-wrap">
-      <a href={launchLink} target="_blank" className="app-box-container">
-        <div className="app-box">
-          <picture>
-            <img src={image} alt={displayName} />
-          </picture>
-        </div>
-      </a>
-      <div className="app-text-container">
-        <h3>{displayName}</h3>
-      </div>
-    </div>
+    <Box maxWidth={1280} width="100%" mx="auto" p={[1, 2, 4]} {...rest}>
+      <AppsSection title="Top Apps" apps={topApps} limit={24} />
+      {allApps
+        .sort((a, b) => a.label.localeCompare(b.label))
+        .map(category => {
+          const apps = category.apps.sort((a, b) => a.name.localeCompare(b.name))
+          return <AppsSection title={category.label} apps={apps} />
+        })}
+    </Box>
   )
 }
 
-AppIcon.propTypes = {
-  launchLink: PropTypes.string.isRequired,
-  iconImage: PropTypes.string.isRequired,
-  displayName: PropTypes.string.isRequired,
-  storageRequired: PropTypes.bool.isRequired
+const AppsSection = ({ title, apps, limit, category, ...rest }) => {
+  let appsList = apps.filter(app => app.imgixImageUrl)
+  if (limit) {
+    appsList = appsList.filter((app, i) => i <= limit - 1)
+  }
+  if (category) {
+    appsList = appsList.filter(app => app.category === category)
+  }
+  return (
+    <Box
+      width={1}
+      mx="auto"
+      p={4}
+      mb={4}
+      borderBottom="1px solid rgba(15,15,15,0.1)"
+      {...rest}
+    >
+      <Box textAlign="center">
+        <p className="app-section-heading">{title}</p>
+      </Box>
+      <Flex pt={4} flexWrap="wrap" justifyContent={['center', 'space-between']}>
+        {appsList.map(app => (
+          <AppItem
+            key={app.name}
+            name={app.name}
+            imgixImageUrl={app.imgixImageUrl}
+            website={app.website}
+            description={app.description}
+          />
+        ))}
+      </Flex>
+    </Box>
+  )
 }
 
-class HomeScreenPage extends Component {
-  static propTypes = {
-    apps: PropTypes.object.isRequired,
-    refreshAppList: PropTypes.func.isRequired,
-    appListLastUpdated: PropTypes.number,
-    api: PropTypes.object.isRequired,
-    instanceIdentifier: PropTypes.string,
-    instanceCreationDate: PropTypes.number
+const Image = props => (
+  <Box
+    is="img"
+    borderRadius="15px"
+    boxShadow="1px 0px 18px 0px rgba(0, 0, 0, 0.1)"
+    bg="white"
+    {...props}
+  />
+)
+
+const AppItem = ({ website, imgixImageUrl, name, description }) => {
+  const descMaxLength = 55
+  let desc = description.trim()
+
+  if (description[description.length - 1] !== '.') {
+    desc += '.'
   }
 
-  componentWillMount() {
-    // Refresh apps list every 12 hours
-    if (
-      this.props.appListLastUpdated === undefined ||
-      this.props.appListLastUpdated < Date.now() - 43200000
-    ) {
-      this.props.refreshAppList(
-        this.props.api.browserServerUrl,
-        this.props.instanceIdentifier,
-        this.props.instanceCreationDate
-      )
+  if (description.length > descMaxLength) {
+    desc = <>{desc.substring(0, descMaxLength).trim()}&#8230;</>
+  }
+
+  return (
+    <Hover>
+      {({ bind, hovered }) => (
+        <Flex
+          width={['calc(50% - 10px)', 1 / 3, 1 / 3, 1 / 4]}
+          maxWidth={['160px', 'unset', 'unset', 'unset']}
+          pr={[0, 3, 3, 4]}
+          mb={5}
+          flexShrink={0}
+          flexGrow="1"
+          alignSelf="stretch"
+          transition="0.15s all ease-in-out"
+          transform={hovered ? 'translateY(-5px)' : 'none'}
+          color="blue.dark"
+          {...bind}
+        >
+          <Flex
+            maxWidth="100%"
+            width={1}
+            is="a"
+            flexGrow={1}
+            href={website}
+            target="_blank"
+            alignItems="center"
+            flexDirection={['column', 'row', 'row', 'row']}
+            textAlign={['center', 'left', 'left', 'left']}
+            style={{
+              textDecoration: 'none',
+              color: 'black !important'
+            }}
+          >
+            <Image
+              maxWidth="100%"
+              size="64px"
+              display="block"
+              flexShrink="0"
+              src={`${imgixImageUrl}?auto=format&w=128&q=50`}
+              alt={name}
+            />
+            <Box ml={[0, 3, 3, 3]} mt={[3, 0, 0, 0]}>
+              <Box>
+                <Type
+                  is="h3"
+                  fontSize={[2]}
+                  lineHeight={1.45}
+                  fontWeight="600"
+                  color="black !important"
+                  mb={1}
+                >
+                  {name}
+                </Type>
+              </Box>
+              <Box
+                opacity={0.75}
+                color="black !important"
+                style={{
+                  hyphens: 'auto'
+                }}
+              >
+                {desc}
+              </Box>
+            </Box>
+          </Flex>
+        </Flex>
+      )}
+    </Hover>
+  )
+}
+
+class HomeScreenPage extends React.Component {
+  state = {
+    tracked: false
+  }
+  handleTrack = () => {
+    if (!this.state.tracked) {
+      trackEventOnce('Browser Data Fetch')
+      this.setState({ tracked: true })
     }
   }
-
+  componentDidMount() {
+    this.handleTrack()
+  }
   render() {
-    const appSections = [{
-      title: 'User-ready Apps',
-      key: 'user_ready'
-    }, {
-      title: 'Chat Apps',
-      key: 'user_ready_chat'
-    }, {
-      title: 'Wallet Apps',
-      key: 'user_ready_wallet'
-    }, {
-      title: 'Token Portfolio Apps',
-      key: 'user_ready_token'
-    }, {
-      title: 'Apps-in-progress',
-      key: 'in_progress'
-    }]
-
+    const loading =
+      this.props.apps &&
+      this.props.apps.loading ||
+      !this.props.apps.topApps ||
+      !this.props.apps.topApps.length
     return (
-      <div>
+      <Box>
         <Navbar hideBackToHomeLink activeTab="home" />
-        <div className="home-screen">
-          <div className="container-fluid app-center">
-            <div className="container app-wrap text-center">
-              {appSections.map((section) => (
-                <div className="app-section m-b-45" key={section.key}>
-                  <p className="app-section-heading">{section.title}</p>
-                  <div className="app-container no-padding">
-                    {appList.apps
-                      .filter(app => app.status === section.key)
-                      .map(app => (
-                        <AppIcon
-                          key={app.name}
-                          iconImage={app.appIcon.small}
-                          displayName={app.displayName}
-                          launchLink={app.launchLink}
-                          storageRequired={!!app.storageRequired}
-                        />
-                      )
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+        <Box className="home-screen">
+          {loading ? (
+            <Loading />
+          ) : (
+            <Content
+              allApps={!loading && this.props.apps.appsByCategory}
+              topApps={!loading && this.props.apps.topApps}
+            />
+          )}
+        </Box>
+      </Box>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreenPage)
+Content.propTypes = {
+  topApps: PropTypes.array.isRequired,
+  allApps: PropTypes.array.isRequired
+}
+
+AppsSection.propTypes = {
+  title: PropTypes.string.isRequired,
+  apps: PropTypes.array.isRequired,
+  limit: PropTypes.number.isRequired,
+  category: PropTypes.string.isRequired
+}
+AppItem.propTypes = {
+  website: PropTypes.string.isRequired,
+  imgixImageUrl: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired
+}
+
+HomeScreenPage.propTypes = {
+  apps: PropTypes.object.isRequired,
+  refreshAppList: PropTypes.func.isRequired,
+  doFetchApps: PropTypes.func.isRequired,
+  appListLastUpdated: PropTypes.number,
+  api: PropTypes.object.isRequired,
+  instanceIdentifier: PropTypes.string,
+  instanceCreationDate: PropTypes.number
+}
+
+const mapStateToProps = state => ({
+  apps: state.apps,
+  appListLastUpdated: state.apps.lastUpdated,
+  api: state.settings.api,
+  instanceIdentifier: state.apps.instanceIdentifier,
+  instanceCreationDate: state.apps.instanceCreationDate
+})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ ...AppsActions }, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreenPage)
