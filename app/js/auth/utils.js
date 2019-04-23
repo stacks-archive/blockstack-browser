@@ -5,7 +5,6 @@ import { isLaterVersion } from 'blockstack'
 
 const logger = log4js.getLogger(__filename)
 
-
 const VALID_SCOPES = {
   store_write: true,
   email: true,
