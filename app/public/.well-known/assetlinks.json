@@ -1,0 +1,18 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "org.blockstack.browser.twa",
+    "sha256_cert_fingerprints":
+    ["89:69:55:95:E3:09:B4:E8:E9:52:4E:E5:CA:C7:6C:30:51:0B:87:5D:17:8C:B7:95:4E:2C:BB:7F:20:D6:F7:06"]
+  }
+},
+{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "org.blockstack.browser.twa",
+    "sha256_cert_fingerprints":
+    ["E6:34:C9:F2:9F:CB:18:1F:E6:C3:7C:40:78:5B:16:EC:13:99:4A:ED:86:E1:01:43:9C:92:7B:E8:A8:C9:12:7F"]
+  }
+}]
