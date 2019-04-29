@@ -1,7 +1,6 @@
 [ignore]
 .*/node_modules/styled-components/*
 .*/node_modules/express/*
-.*/node_modules/bigi/*
 .*/node_modules/bower-json/*
 .*/node_modules/config-chain/*
 .*/node_modules/config-chain/*
