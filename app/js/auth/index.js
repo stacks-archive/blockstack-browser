@@ -25,7 +25,7 @@ import {
   getDefaultProfileUrl
 } from '@utils/profile-utils'
 import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
-import { HDNode } from 'bitcoinjs-lib'
+import * as bip32 from 'bip32'
 import log4js from 'log4js'
 import { uploadProfile } from '../account/utils'
 import { signProfileForUpload } from '@utils'
@@ -265,7 +265,7 @@ class AuthPage extends React.Component {
       const privateKey = profileSigningKeypair.key
       const appsNodeKey = profileSigningKeypair.appsNodeKey
       const salt = profileSigningKeypair.salt
-      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+      const appsNode = new AppsNode(bip32.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
       let profileUrlPromise

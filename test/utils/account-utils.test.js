@@ -1,5 +1,5 @@
-import { HDNode } from 'bitcoinjs-lib'
-import bip39 from 'bip39'
+import * as bip32 from 'bip32'
+import * as bip39 from 'bip39'
 import {
   getIdentityPrivateKeychain,
   getIdentityOwnerAddressNode,
@@ -8,13 +8,14 @@ import {
   encrypt
  } from '../../app/js/utils'
 
+ /** @type {bip32.BIP32} */
 let masterKeychain = null
 const backupPhrase = 'sound idle panel often situate develop unit text design antenna vendor screen opinion balcony share trigger accuse scatter visa uniform brass update opinion media'
 
 describe('account-utils', () => {
-  beforeEach(() => {
-    const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+  beforeEach(async () => {
+    const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
+    masterKeychain = bip32.fromSeed(seedBuffer)
   })
 
   afterEach(() => {
@@ -80,11 +81,9 @@ describe('account-utils', () => {
       encryptedBackupPhrase = null
     })
 
-    it('should return the decrypted master keychain', (done) => {
-      decryptMasterKeychain('password123', encryptedBackupPhrase).then((keychain) => {
-        assert.equal(masterKeychain.getIdentifier().toString('hex'), keychain.getIdentifier().toString('hex'))
-        done()
-      })
+    it('should return the decrypted master keychain', async () => {
+      const keychain = await decryptMasterKeychain('password123', encryptedBackupPhrase);
+      assert.equal(masterKeychain.identifier.toString('hex'), keychain.identifier.toString('hex'))
     })
 
     it('should return an error object if something goes wrong', (done) => {

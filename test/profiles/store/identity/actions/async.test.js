@@ -8,7 +8,7 @@ import {
   DEFAULT_PROFILE,
   signProfileForUpload
 } from '../../../../../app/js/utils/profile-utils'
-import { ECPair } from 'bitcoinjs-lib'
+import { ECPair, address as bjsAddress, crypto } from 'bitcoinjs-lib'
 import {
   CREATE_NEW_REQUEST,
   CREATE_NEW_SUCCESS,
@@ -33,6 +33,10 @@ const initialState = {
   },
   localIdentities: {},
   namesOwned: []
+}
+
+function ecPairToAddress(keyPair) {
+  return bjsAddress.toBase58Check(crypto.hash160(keyPair.publicKey), keyPair.network.pubKeyHash)
 }
 
 describe('Identity Store: Async Actions', () => {
@@ -267,9 +271,9 @@ describe('Identity Store: Async Actions', () => {
       // bad pair:
       const ecPair = ECPair.makeRandom()
       const badpair = {
-        address: ecPair.getAddress(),
-        key: ecPair.d.toBuffer(32).toString('hex'),
-        keyID: ecPair.getPublicKeyBuffer().toString('hex')
+        address: ecPairToAddress(ecPair),
+        key: ecPair.privateKey.toString('hex'),
+        keyID: ecPair.publicKey.toString('hex')
       }
 
       const address = keypair.address
@@ -338,9 +342,9 @@ describe('Identity Store: Async Actions', () => {
       // bad pair:
       const ecPair = ECPair.makeRandom()
       const badpair = {
-        address: ecPair.getAddress(),
-        key: ecPair.d.toBuffer(32).toString('hex'),
-        keyID: ecPair.getPublicKeyBuffer().toString('hex')
+        address: ecPairToAddress(ecPair),
+        key: ecPair.privateKey.toString('hex'),
+        keyID: ecPair.publicKey.toString('hex')
       }
 
       const dummyAddress = '18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6'

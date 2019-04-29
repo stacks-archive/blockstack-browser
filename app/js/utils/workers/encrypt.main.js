@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import bip39 from 'bip39'
+import * as bip39 from 'bip39'
 import log4js from 'log4js'
 const logger = log4js.getLogger(__filename)
 

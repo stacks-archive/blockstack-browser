@@ -1,6 +1,6 @@
 import * as types from './types'
-import { HDNode } from 'bitcoinjs-lib'
-import { getBitcoinAddressNode } from '@utils'
+import * as bip32 from 'bip32'
+import { getBitcoinAddressNode, getAddressFromBIP32Node } from '@utils'
 
 const initialState = {
   accountCreated: false, // persist
@@ -89,10 +89,10 @@ function AccountReducer(state = initialState, action) {
           publicKeychain: state.bitcoinAccount.publicKeychain,
           addresses: [
             ...state.bitcoinAccount.addresses,
-            getBitcoinAddressNode(
-              HDNode.fromBase58(state.bitcoinAccount.publicKeychain),
+            getAddressFromBIP32Node(getBitcoinAddressNode(
+              bip32.fromBase58(state.bitcoinAccount.publicKeychain),
               state.bitcoinAccount.addressIndex + 1
-            ).getAddress()
+            ))
           ],
           addressIndex: state.bitcoinAccount.addressIndex + 1,
           balances: state.bitcoinAccount.balances

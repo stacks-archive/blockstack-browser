@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { HDNode } from 'bitcoinjs-lib'
+import * as bip32 from 'bip32'
 import QRCode from 'qrcode.react'
 
 import Alert from '@components/Alert'
@@ -78,8 +78,8 @@ class BackupAccountPage extends Component {
       async plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
         const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
-        const seed = bip39.mnemonicToSeed(plaintextBuffer.toString())
-        const keychain = HDNode.fromSeedBuffer(seed)
+        const seed = await bip39.mnemonicToSeed(plaintextBuffer.toString())
+        const keychain = bip32.fromSeed(seed)
         this.props.displayedRecoveryCode()
         this.setState({
           isDecrypting: false,

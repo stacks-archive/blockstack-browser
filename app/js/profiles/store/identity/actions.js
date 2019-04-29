@@ -1,5 +1,5 @@
 // @flow
-import { HDNode } from 'bitcoinjs-lib'
+import * as bip32 from 'bip32'
 import * as types from './types'
 import { validateProofs } from 'blockstack'
 import {
@@ -231,8 +231,8 @@ function createNewProfile(
         logger.debug('createNewProfile: Backup phrase successfully decrypted')
         const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
         const backupPhrase = plaintextBuffer.toString()
-        const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
-        const masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+        const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
+        const masterKeychain = bip32.fromSeed(seedBuffer)
         const identityPrivateKeychainNode = getIdentityPrivateKeychain(
           masterKeychain
         )

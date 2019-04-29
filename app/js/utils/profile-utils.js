@@ -1,13 +1,14 @@
 import { signProfileToken, wrapProfileToken } from 'blockstack'
 import { decodeToken, TokenVerifier } from 'jsontokens'
 
-import ecurve from 'ecurve'
-import { ECPair as ECKeyPair } from 'bitcoinjs-lib'
+import { ECPair as ECKeyPair, address as bjsAddress, crypto } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 
-const secp256k1 = ecurve.getCurveByName('secp256k1')
+function ecPairToAddress(keyPair) {
+  return bjsAddress.toBase58Check(crypto.hash160(keyPair.publicKey), keyPair.network.pubKeyHash)
+}
 
 export function verifyToken(token, verifyingKeyOrAddress) {
   const decodedToken = decodeToken(token)
@@ -32,11 +33,10 @@ export function verifyToken(token, verifyingKeyOrAddress) {
   const issuerPublicKey = payload.issuer.publicKey
   const publicKeyBuffer = new Buffer(issuerPublicKey, 'hex')
 
-  const Q = ecurve.Point.decodeFrom(secp256k1, publicKeyBuffer)
-  const compressedKeyPair = new ECKeyPair(null, Q, { compressed: true })
-  const compressedAddress = compressedKeyPair.getAddress()
-  const uncompressedKeyPair = new ECKeyPair(null, Q, { compressed: false })
-  const uncompressedAddress = uncompressedKeyPair.getAddress()
+  const compressedKeyPair = ECKeyPair.fromPublicKey(publicKeyBuffer, {compressed: true})
+  const compressedAddress = ecPairToAddress(compressedKeyPair)
+  const uncompressedKeyPair = ECKeyPair.fromPublicKey(publicKeyBuffer, { compressed: false })
+  const uncompressedAddress = ecPairToAddress(uncompressedKeyPair)
 
   if (verifyingKeyOrAddress === issuerPublicKey) {
     // pass

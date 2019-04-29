@@ -1,4 +1,4 @@
-import bip39 from 'bip39'
+import * as bip39 from 'bip39'
 import log4js from 'log4js'
 import cryptoCheck from './workers/crypto-check.worker.js'
 import makeEncryptWorker from './workers/encrypt.worker.js'

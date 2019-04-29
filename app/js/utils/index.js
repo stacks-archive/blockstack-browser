@@ -5,6 +5,7 @@ export {
   getBitcoinPublicKeychain,
   getIdentityPrivateKeychain,
   getIdentityPublicKeychain,
+  getAddressFromBIP32Node,
   getWebAccountTypes,
   isPasswordValid,
   isBackupPhraseValid,
