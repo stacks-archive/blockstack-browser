@@ -24,10 +24,21 @@ export function getAddressFromBIP32Node(node) {
   return payments.p2pkh({ pubkey: node.publicKey }).address
 }
 
+const PUBLIC_SHARED_APPS_NODE_INDEX = 0
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
 export const MAX_TRUST_LEVEL = 99
+
+/**
+ * @param {bip32.BIP32} appsNode 
+ */
+export function getSharedAppsPrivateKey(appsNode) {
+  const intermediateNode = appsNode.deriveHardened(PUBLIC_SHARED_APPS_NODE_INDEX)
+  // Use only the privateKey from this node from which to create new non-hardened master node 
+  // (the regular BIP32 key hierarchy/chain is halted here). 
+  return intermediateNode.privateKey
+}
 
 export class AppNode {
   /**
@@ -79,6 +90,8 @@ export class AppsNode {
   }
 }
 
+
+
 class IdentityAddressOwnerNode {
   /**
    * @param {bip32.BIP32} ownerHdNode 
@@ -86,6 +99,7 @@ class IdentityAddressOwnerNode {
   constructor(ownerHdNode, salt) {
     this.hdNode = ownerHdNode
     this.salt = salt
+    this.appsNode = new AppsNode(ownerHdNode.deriveHardened(APPS_NODE_INDEX), salt)
   }
 
   getNode() {
@@ -105,7 +119,11 @@ class IdentityAddressOwnerNode {
   }
 
   getAppsNode() {
-    return new AppsNode(this.hdNode.deriveHardened(APPS_NODE_INDEX), this.salt)
+    return this.appsNode
+  }
+
+  getSharedAppsPrivateKey() {
+    return getSharedAppsPrivateKey(this.getAppsNode().hdNode).toString('hex')
   }
 
   getAddress() {
@@ -223,12 +241,19 @@ export function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
 
 const IDENTITY_KEYCHAIN = 888
 const BLOCKSTACK_ON_BITCOIN = 0
+
+/**
+ * @param {bip32.BIP32} masterKeychain 
+ */
 export function getIdentityPrivateKeychain(masterKeychain) {
   return masterKeychain
     .deriveHardened(IDENTITY_KEYCHAIN)
     .deriveHardened(BLOCKSTACK_ON_BITCOIN)
 }
 
+/**
+ * @param {bip32.BIP32} masterKeychain 
+ */
 export function getIdentityPublicKeychain(masterKeychain) {
   return getIdentityPrivateKeychain(masterKeychain).neutered()
 }
@@ -256,15 +281,20 @@ export function getIdentityOwnerAddressNode(
   )
 }
 
+/**
+ * @param {IdentityAddressOwnerNode} identityOwnerAddressNode 
+ */
 export function deriveIdentityKeyPair(identityOwnerAddressNode) {
   const address = identityOwnerAddressNode.getAddress()
   const identityKey = identityOwnerAddressNode.getIdentityKey()
   const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
   const appsNode = identityOwnerAddressNode.getAppsNode()
+  const sharedAppsKey = identityOwnerAddressNode.getSharedAppsPrivateKey()
   const keyPair = {
     key: identityKey,
     keyID: identityKeyID,
     address,
+    sharedAppsKey,
     appsNodeKey: appsNode.toBase58(),
     salt: appsNode.getSalt()
   }

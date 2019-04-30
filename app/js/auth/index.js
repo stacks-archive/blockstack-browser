@@ -4,7 +4,7 @@ import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import { Initial, LegacyGaia } from './views'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { randomBytes } from 'crypto'
+import { randomBytes, createHash } from 'crypto'
 import { AuthActions } from './store/auth'
 import { IdentityActions } from '../profiles/store/identity'
 import { decodeToken, TokenSigner } from 'jsontokens'
@@ -19,12 +19,12 @@ import {
   updateQueryStringParameter,
   getPublicKeyFromPrivate
 } from 'blockstack'
-import { AppsNode } from '@utils/account-utils'
+import { AppsNode } from '../utils/account-utils'
 import {
   fetchProfileLocations,
   getDefaultProfileUrl
 } from '@utils/profile-utils'
-import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
+import { getTokenFileUrlFromZoneFile } from '../utils/zone-utils'
 import * as bip32 from 'bip32'
 import log4js from 'log4js'
 import { uploadProfile } from '../account/utils'
@@ -268,6 +268,14 @@ class AuthPage extends React.Component {
       const appsNode = new AppsNode(bip32.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
+      const sharedAppsKey = Buffer.from(profileSigningKeypair.sharedAppsKey, 'hex')
+      const saltedAppDomainCode = createHash('sha256')
+        .update(appDomain, 'utf8')
+        .update(profileSigningKeypair.keyID, 'hex')
+        .digest()
+      const sharedAppNode = bip32.fromPrivateKey(sharedAppsKey, saltedAppDomainCode).derive(0)
+      const sharedAppPrivateKey = sharedAppNode.privateKey.toString('hex')
+
       let profileUrlPromise
 
       if (identity.zoneFile && identity.zoneFile.length > 0) {
@@ -347,7 +355,8 @@ class AuthPage extends React.Component {
                   coreSessionToken,
                   appPrivateKey,
                   profile,
-                  profileUrl
+                  profileUrl,
+                  sharedAppPrivateKey
                 )
               })
               .catch(err => {
@@ -368,7 +377,8 @@ class AuthPage extends React.Component {
             coreSessionToken,
             appPrivateKey,
             profile,
-            profileUrl
+            profileUrl,
+            sharedAppPrivateKey
           )
         }
       })
@@ -393,7 +403,8 @@ class AuthPage extends React.Component {
     coreSessionToken,
     appPrivateKey,
     profile,
-    profileUrl
+    profileUrl,
+    sharedAppPrivateKey
   ) => {
     const appDomain = this.state.decodedToken.payload.domain_name
     const email = this.props.email
@@ -450,7 +461,8 @@ class AuthPage extends React.Component {
       transitPublicKey,
       hubUrl,
       blockstackAPIUrl,
-      associationToken
+      associationToken,
+      sharedAppPrivateKey
     )
 
     this.props.clearSessionToken(appDomain)

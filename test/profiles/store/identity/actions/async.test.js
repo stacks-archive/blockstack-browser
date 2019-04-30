@@ -73,6 +73,8 @@ describe('Identity Store: Async Actions', () => {
             {
               keypair: {
                 address: '13ssnrZTn4TJzQkwFZHajfeZXrGe6fQtrZ',
+                sharedAppsKey:
+                  'cd7d3655f7a70a2937b6c49747262834f3b26a2bc5a44ec90a8ac42a74d2de49',
                 appsNodeKey:
                   'xprv9zn1Mwu3hGDz9ytK4Pvp6ckfswdeMRngASKEcT9J4f2THGjo2UjyrMocunoohYQW2fMx9Cb21KvooM8pVrbuVVjHuqTJ2Kdru5VKGLR1MZa',
                 key:

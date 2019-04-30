@@ -1,7 +1,8 @@
 import { signProfileToken, wrapProfileToken } from 'blockstack'
 import { decodeToken, TokenVerifier } from 'jsontokens'
+import { getSharedAppsPrivateKey } from './account-utils'
 
-import { ECPair as ECKeyPair, address as bjsAddress, crypto } from 'bitcoinjs-lib'
+import { ECPair as ECKeyPair, address as bjsAddress, crypto, bip32 } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
@@ -187,6 +188,14 @@ export function signProfileForUpload(profile, keypair, api) {
         gaiaHubUrl: api.gaiaHubUrl
       }
     }
+  }
+
+  if (!profile.sharedAppsPublicKey) {
+    const appsNode = bip32.fromBase58(keypair.appsNodeKey)
+    const sharedAppsPrivateKey = getSharedAppsPrivateKey(appsNode)
+    const sharedAppsPublicKey = ECKeyPair.fromPrivateKey(sharedAppsPrivateKey, {compressed: true}).privateKey
+    keypair.sharedAppsKey = sharedAppsPrivateKey.toString('hex')
+    profile.sharedAppsPublicKey = sharedAppsPublicKey.toString('hex')
   }
 
   const token = signProfileToken(profile, privateKey, { publicKey })

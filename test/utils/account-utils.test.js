@@ -1,5 +1,7 @@
 import * as bip32 from 'bip32'
 import * as bip39 from 'bip39'
+import { createHash } from 'crypto'
+import { ECPair } from 'bitcoinjs-lib'
 import {
   getIdentityPrivateKeychain,
   getIdentityOwnerAddressNode,
@@ -44,6 +46,30 @@ describe('account-utils', () => {
       const actualAppNodeAddress = appNode.getAddress()
       assert.equal(actualAppNodeAddress, expectedAppNodeAddress)
     })
+
+    it('should generate public app share key tree', () => {
+      const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain)
+      const addressIndex = 0
+      const identityOwnerAddressNode = getIdentityOwnerAddressNode(identityPrivateKeychainNode, addressIndex)
+      const sharedAppsKey = Buffer.from(identityOwnerAddressNode.getSharedAppsPrivateKey(), 'hex')
+      const expectedSharedAppsKey = 'e38fa11dbf3c1ed815b82a867f20f72f0e8bcfc1a4d7c699ded3fab614563849'
+      assert.equal(sharedAppsKey.toString('hex'), expectedSharedAppsKey)
+
+      const appDomain = 'site.example.com'
+      const saltedAppDomainCode = createHash('sha256')
+        .update(appDomain, 'utf8')
+        .update(identityOwnerAddressNode.getIdentityKeyID(), 'hex')
+        .digest()
+      const sharedAppNode = bip32.fromPrivateKey(sharedAppsKey, saltedAppDomainCode).derive(0)
+
+      const pubKeyTmp = ECPair.fromPrivateKey(sharedAppsKey, {compressed: true}).publicKey
+      const calculated = bip32.fromPublicKey(pubKeyTmp, saltedAppDomainCode).derive(0)
+      const pub1 = calculated.publicKey.toString('hex')
+      const pub2 = sharedAppNode.publicKey.toString('hex')
+      assert.equal(pub1, pub2)
+      
+    })
+
   })
 
   describe('findAddressIndex', () => {

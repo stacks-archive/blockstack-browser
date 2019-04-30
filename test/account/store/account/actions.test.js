@@ -157,6 +157,7 @@ describe('AccountActions', () => {
           keyID:
             '03e93ae65d6675061a167c34b8321bef87594468e9b2dd19c05a67a7b4caefa017',
           address: '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk',
+          sharedAppsKey: 'e38fa11dbf3c1ed815b82a867f20f72f0e8bcfc1a4d7c699ded3fab614563849',
           appsNodeKey:
             'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarx' +
             'XMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f',

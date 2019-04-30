@@ -34,7 +34,8 @@ describe('Identity Store: IdentityReducer', () => {
           ownerAddress: '17jxDTPDx51CTga1Sw3ezGQKYcJysPNeQC',
           profile: {
             '@context': 'http://schema.org',
-            '@type': 'Person'
+            '@type': 'Person',
+            sharedAppsPublicKey: 'e38fa11dbf3c1ed815b82a867f20f72f0e8bcfc1a4d7c699ded3fab614563849'
           },
           registered: false,
           username: null,
