@@ -8,7 +8,7 @@ import { Box, Flex, Type } from 'blockstack-ui'
 import { Link, withRouter } from 'react-router'
 import PropTypes from 'prop-types'
 
-const sections = [
+const navBarData = [
   [
     {
       label: 'Home',
@@ -104,7 +104,7 @@ const Navbar = withRouter(({ location }) => (
     zIndex={999}
   >
     <Wrapper>
-      {sections.map((section, i) => (
+      {navBarData.map((section, i) => (
         <Flex key={i}>
           {section.map(({ label, icon, path, active }) => (
             <NavItem
@@ -139,5 +139,8 @@ NavItem.propTypes = {
 }
 
 Navbar.displayName = 'Navbar'
+NavItem.displayName = 'NavItem'
 
 export default Navbar
+
+export { navBarData, NavItem }
