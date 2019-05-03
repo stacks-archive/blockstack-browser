@@ -138,4 +138,6 @@ NavItem.propTypes = {
   active: PropTypes.bool
 }
 
+Navbar.displayName = 'Navbar'
+
 export default Navbar
