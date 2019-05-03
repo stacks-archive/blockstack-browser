@@ -1,11 +1,16 @@
 import * as types from './types'
+import { CHECKING_NAME_AVAILABILITY } from '../availability/types'
 
-const initialState = {
-
-}
+const initialState = {}
 
 function RegistrationReducer(state = initialState, action) {
   switch (action.type) {
+    // reset error on new name search
+    case CHECKING_NAME_AVAILABILITY:
+      return {
+        ...state,
+        error: null
+      }
     case types.REGISTRATION_BEFORE_SUBMIT:
       return Object.assign({}, state, {
         profileUploading: false,
@@ -18,6 +23,7 @@ function RegistrationReducer(state = initialState, action) {
       return Object.assign({}, state, {
         profileUploading: false,
         registrationSubmitting: true,
+        registrationSubmitted: false,
         error: null,
         preventRegistration: true
       })
@@ -33,7 +39,8 @@ function RegistrationReducer(state = initialState, action) {
       return Object.assign({}, state, {
         registrationSubmitting: false,
         error: action.error,
-        preventRegistration: false
+        preventRegistration: false,
+        registrationSubmitted: false
       })
     case types.PROFILE_UPLOADING:
       return Object.assign({}, state, {

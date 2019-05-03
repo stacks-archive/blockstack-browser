@@ -1,16 +1,13 @@
 import {
-  RegistrationActions, RegistrationReducer
+  RegistrationActions,
+  RegistrationReducer
 } from '../../../../app/js/profiles/store/registration'
 
-const initialState = {
-
-}
+const initialState = {}
 
 describe('Registration Store: RegistrationReducer', () => {
   it('should return the proper initial state', () => {
-    assert.deepEqual(
-      RegistrationReducer(undefined, {}),
-      initialState)
+    assert.deepEqual(RegistrationReducer(undefined, {}), initialState)
   })
 
   describe('Registration Store: RegistrationReducer: successful registration', () => {
@@ -32,7 +29,8 @@ describe('Registration Store: RegistrationReducer', () => {
         preventRegistration: true,
         error: null,
         profileUploading: false,
-        registrationSubmitting: true
+        registrationSubmitting: true,
+        registrationSubmitted: false
       }
       const action = RegistrationActions.registrationSubmitting()
       actualState = RegistrationReducer(actualState, action)
@@ -98,7 +96,8 @@ describe('Registration Store: RegistrationReducer', () => {
         preventRegistration: true,
         error: null,
         profileUploading: false,
-        registrationSubmitting: true
+        registrationSubmitting: true,
+        registrationSubmitted: false
       }
       const action = RegistrationActions.registrationSubmitting()
       actualState = RegistrationReducer(actualState, action)
@@ -110,7 +109,8 @@ describe('Registration Store: RegistrationReducer', () => {
         preventRegistration: false,
         error: 'Core error',
         profileUploading: false,
-        registrationSubmitting: false
+        registrationSubmitting: false,
+        registrationSubmitted: false
       }
       const action = RegistrationActions.registrationError('Core error')
       actualState = RegistrationReducer(actualState, action)
