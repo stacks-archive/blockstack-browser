@@ -81,6 +81,7 @@ const NavItem = ({ label, icon, path, active, ...rest }) => (
               style={{ userSelect: 'none' }}
               is={Link}
               to={path}
+              dataTestId="NavItem"
               {...bind}
               {...focusBind}
             >
