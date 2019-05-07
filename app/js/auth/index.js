@@ -4,9 +4,10 @@ import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import { Initial, LegacyGaia } from './views'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { randomBytes } from 'crypto'
 import { AuthActions } from './store/auth'
 import { IdentityActions } from '../profiles/store/identity'
-import { decodeToken } from 'jsontokens'
+import { decodeToken, TokenSigner } from 'jsontokens'
 import { parseZoneFile } from 'zone-file'
 import queryString from 'query-string'
 import {
@@ -15,7 +16,8 @@ import {
   redirectUserToApp,
   getAppBucketUrl,
   isLaterVersion,
-  updateQueryStringParameter
+  updateQueryStringParameter,
+  getPublicKeyFromPrivate
 } from 'blockstack'
 import { AppsNode } from '@utils/account-utils'
 import {
@@ -27,7 +29,10 @@ import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
 import { uploadProfile } from '../account/utils'
 import { signProfileForUpload } from '@utils'
-import { validateScopes, appRequestSupportsDirectHub } from './utils'
+import {
+  validateScopes,
+  appRequestSupportsDirectHub
+} from './utils'
 import {
   selectApi,
   selectCoreHost,
@@ -53,6 +58,7 @@ import {
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
 import Modal from 'react-modal'
+import url from 'url'
 
 const views = [Initial, LegacyGaia]
 
@@ -84,6 +90,21 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   const actions = Object.assign({}, AuthActions, IdentityActions)
   return bindActionCreators(actions, dispatch)
+}
+
+function makeGaiaAssociationToken(secretKeyHex: string, childPublicKeyHex: string) {
+  const LIFETIME_SECONDS = 365 * 24 * 3600
+  const signerKeyHex = secretKeyHex.slice(0, 64)
+  const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
+  const salt = randomBytes(16).toString('hex')
+  const payload = { childToAssociate: childPublicKeyHex,
+                    iss: compressedPublicKeyHex,
+                    exp: LIFETIME_SECONDS + (new Date()/1000),
+                    iat: Date.now()/1000,
+                    salt }
+
+  const token = new TokenSigner('ES256K', signerKeyHex).sign(payload)
+  return token
 }
 
 class AuthPage extends React.Component {
@@ -171,24 +192,34 @@ class AuthPage extends React.Component {
     if (redirectURI) {
       // Get the current localhost authentication url that the app will redirect back to,
       // and remove the 'echo' param from it.
-      const authContinuationURI = updateQueryStringParameter(window.location.href, 'echo', '')
-      redirectURI = updateQueryStringParameter(redirectURI, 'echoReply', this.state.echoRequestId)
-      redirectURI = updateQueryStringParameter(redirectURI, 'authContinuation', encodeURIComponent(authContinuationURI))
+      const authContinuationURI = updateQueryStringParameter(
+        window.location.href,
+        'echo',
+        ''
+      )
+      redirectURI = updateQueryStringParameter(
+        redirectURI,
+        'echoReply',
+        this.state.echoRequestId
+      )
+      redirectURI = updateQueryStringParameter(
+        redirectURI,
+        'authContinuation',
+        encodeURIComponent(authContinuationURI)
+      )
     } else {
       throw new Error('Invalid redirect echo reply URI')
     }
     this.setState({ responseSent: true })
     window.location = redirectURI
   }
-  
+
   componentWillReceiveProps(nextProps) {
-
     if (!this.state.responseSent) {
-
       if (this.state.echoRequestId) {
         this.redirectUserToEchoReply()
         return
-      }  
+      }
 
       const storageConnected = this.props.api.storageConnected
       this.setState({
@@ -251,9 +282,7 @@ class AuthPage extends React.Component {
 
       if (identity.zoneFile && identity.zoneFile.length > 0) {
         const zoneFileJson = parseZoneFile(identity.zoneFile)
-        const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(
-          zoneFileJson
-        )
+        const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(zoneFileJson)
         if (
           profileUrlFromZonefile !== null &&
           profileUrlFromZonefile !== undefined
@@ -267,6 +296,7 @@ class AuthPage extends React.Component {
       const gaiaUrlBase = nextProps.api.gaiaHubConfig.url_prefix
 
       if (!profileUrlPromise) {
+        // use default Gaia hub if we can't tell from the profile where the profile Gaia hub is
         profileUrlPromise = fetchProfileLocations(
           gaiaUrlBase,
           identityAddress,
@@ -358,10 +388,7 @@ class AuthPage extends React.Component {
   }
 
   getFreshIdentities = async () => {
-    await this.props.refreshIdentities(
-      this.props.api,
-      this.props.addresses
-    )
+    await this.props.refreshIdentities(this.props.api, this.props.addresses)
     this.setState({ refreshingIdentities: false })
   }
 
@@ -392,6 +419,8 @@ class AuthPage extends React.Component {
 
     let transitPublicKey = undefined
     let hubUrl = undefined
+    let blockstackAPIUrl = undefined
+    let associationToken = undefined
 
     let requestVersion = '0'
     if (this.state.decodedToken.payload.hasOwnProperty('version')) {
@@ -407,6 +436,13 @@ class AuthPage extends React.Component {
     if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
       hubUrl = this.props.api.gaiaHubUrl
     }
+    if (isLaterVersion(requestVersion, '1.3.0')) {
+      const compressedAppPublicKey = getPublicKeyFromPrivate(appPrivateKey.slice(0,64))
+      const parsedCoreUrl = url.parse(this.props.api.nameLookupUrl)
+
+      blockstackAPIUrl = `${parsedCoreUrl.protocol}//${parsedCoreUrl.host}`
+      associationToken = makeGaiaAssociationToken(privateKey, compressedAppPublicKey)
+    }
 
     const authResponse = makeAuthResponse(
       privateKey,
@@ -417,7 +453,9 @@ class AuthPage extends React.Component {
       appPrivateKey,
       undefined,
       transitPublicKey,
-      hubUrl
+      hubUrl,
+      blockstackAPIUrl,
+      associationToken
     )
 
     this.props.clearSessionToken(appDomain)
@@ -425,6 +463,7 @@ class AuthPage extends React.Component {
     logger.info(
       `login(): id index ${this.state.currentIdentityIndex} is logging in`
     )
+
     this.setState({ responseSent: true })
     redirectUserToApp(this.state.authRequest, authResponse)
   }
@@ -541,7 +580,11 @@ class AuthPage extends React.Component {
   }
 
   render() {
-    const { appManifest, appManifestLoading, appManifestLoadingError } = this.props
+    const {
+      appManifest,
+      appManifestLoading,
+      appManifestLoadingError
+    } = this.props
 
     if (appManifestLoadingError) {
       return (
@@ -596,11 +639,18 @@ class AuthPage extends React.Component {
             )
           },
           deny: () => console.log('go back to app'),
+          backLabel: 'Cancel',
+          backView: () => {
+            if (document.referrer === '') {
+              window.close()
+            } else {
+              history.back()
+            }
+          },
           accounts: this.props.localIdentities,
           processing: this.state.processing,
           refreshingIdentities: this.state.refreshingIdentities,
-          selectedIndex: this.state.currentIdentityIndex,
-          disableBackOnView: 0
+          selectedIndex: this.state.currentIdentityIndex
         }
       },
       {
@@ -630,4 +680,7 @@ class AuthPage extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuthPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AuthPage)

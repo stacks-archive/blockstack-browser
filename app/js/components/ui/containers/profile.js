@@ -19,7 +19,8 @@ export const Title = ({ user, ...p }) => (
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis'
       }}
-      width='100%'
+      m={0}
+      width="100%"
       maxWidth={['calc(100% - 60px)', 'calc(100% - 40px)']}
     >
       {user.username && user.username.includes('.')
@@ -35,11 +36,11 @@ export const Suffix = ({ user, ...p }) => (
 )
 
 export const Line = p => (
-  <Flex {...p} alignItems="center" justifyContent="center" my={4}>
+  <Flex {...p} alignItems="center" justifyContent="center" my={3}>
     <Box width={85} height={'2px'} bg="whitesmoke" />
   </Flex>
 )
-export const ProfileScreen = ({ children, user, ...p }) => {
+export const ProfileScreen = ({ children, user, hideLine }) => {
   const avatarUrl =
     user && user.profile && user.profile.image && user.profile.image.length
       ? user.profile.image[0].contentUrl
@@ -50,6 +51,7 @@ export const ProfileScreen = ({ children, user, ...p }) => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
+      width={1}
       style={{
         flexGrow: 1
       }}
@@ -57,11 +59,11 @@ export const ProfileScreen = ({ children, user, ...p }) => {
       <UserAvatar textSize={24} size={85} avatarUrl={avatarUrl} {...user} />
       {user && user.username ? (
         <>
-          <Title user={user} pt={4} />
+          <Title user={user} pt={3} />
           <Suffix user={user} />
         </>
       ) : null}
-      <Line />
+      {hideLine ? null : <Line />}
       <Box textAlign="center">{children}</Box>
     </Flex>
   )

@@ -8,14 +8,14 @@ import { connectedRouterRedirect } from 'redux-auth-wrapper/history3/redirect'
 
 const LOADABLE_DELAY = 300
 
-const Loading = props => {
-  if (props.error) {
+const Loading = ({ error, retry, pastDelay }) => {
+  if (error) {
     return (
       <div>
-        Error! <button onClick={props.retry}>Retry</button>
+        Error! <button onClick={retry}>Retry</button>
       </div>
     )
-  } else if (props.pastDelay) {
+  } else if (pastDelay) {
     return (
       <div
         style={{
@@ -228,6 +228,12 @@ const NotFoundPage = Loadable({
   delay: LOADABLE_DELAY
 })
 
+const GoToBetaPage = Loadable({
+  loader: () => import(/* webpackChunkName: "GoToBetaPage" */ './go-to-beta'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
+
 const accountCreated = connectedRouterRedirect({
   redirectPath: state =>
     !state.account.encryptedBackupPhrase
@@ -289,6 +295,7 @@ export default (
 
       <Route path="/auth" component={NewAuthPage} />
     </Route>
+
     <Route path="/" component={App}>
       <Route path="/sign-up" component={SignUpPage} />
       <Route path="/sign-up/*" component={SignUpPage} />
@@ -303,6 +310,7 @@ export default (
       <Route path="/connect-storage" component={ConnectStoragePage} />
       <Route path="/clear-auth" component={SignOutPage} />
       <Route path="/sign-out" component={SignOutPage} />
+      <Route path="/go-to-beta" component={GoToBetaPage} />
       <Route path="/*" component={NotFoundPage} />
     </Route>
   </Router>

@@ -29,17 +29,22 @@ const Loading = ({ ...rest }) => (
   </Flex>
 )
 
-const Content = ({ topApps, allApps, ...rest }) => (
-  <Box maxWidth={1280} width="100%" mx="auto" p={[1, 2, 4]} {...rest}>
-    <AppsSection title="Top Apps" apps={topApps} limit={24} />
-    {allApps
-      .sort((a, b) => a.label.localeCompare(b.label))
-      .map(category => {
-        const apps = category.apps.sort((a, b) => a.name.localeCompare(b.name))
-        return <AppsSection title={category.label} apps={apps} />
-      })}
-  </Box>
-)
+const Content = ({ topApps, allApps, ...rest }) => {
+  if (!allApps) {
+    return null
+  }
+  return (
+    <Box maxWidth={1280} width="100%" mx="auto" p={[1, 2, 4]} {...rest}>
+      <AppsSection title="Top Apps" apps={topApps} limit={24} />
+      {allApps
+        .sort((a, b) => a.label.localeCompare(b.label))
+        .map(category => {
+          const apps = category.apps.sort((a, b) => a.name.localeCompare(b.name))
+          return <AppsSection title={category.label} apps={apps} />
+        })}
+    </Box>
+  )
+}
 
 const AppsSection = ({ title, apps, limit, category, ...rest }) => {
   let appsList = apps.filter(app => app.imgixImageUrl)
@@ -134,7 +139,7 @@ const AppItem = ({ website, imgixImageUrl, name, description }) => {
               size="64px"
               display="block"
               flexShrink="0"
-              src={imgixImageUrl}
+              src={`${imgixImageUrl}?auto=format&w=128&q=50`}
               alt={name}
             />
             <Box ml={[0, 3, 3, 3]} mt={[3, 0, 0, 0]}>
@@ -183,7 +188,8 @@ class HomeScreenPage extends React.Component {
   render() {
     const loading =
       this.props.apps &&
-      this.props.apps.loading &&
+      this.props.apps.loading ||
+      !this.props.apps.topApps ||
       !this.props.apps.topApps.length
     return (
       <Box>
