@@ -14,6 +14,7 @@ import { QRCode } from 'react-qr-svg'
 import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
 import log4js from 'log4js'
+import { Box, Flex } from 'blockstack-ui'
 
 const logger = log4js.getLogger(__filename)
 const CHECK_FOR_PAYMENT_INTERVAL = 10000
@@ -35,9 +36,92 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({},
-    IdentityActions, AccountActions, RegistrationActions, AvailabilityActions), dispatch)
+  return bindActionCreators(
+    Object.assign(
+      {},
+      IdentityActions,
+      AccountActions,
+      RegistrationActions,
+      AvailabilityActions
+    ),
+    dispatch
+  )
 }
+
+const RegisterButton = ({ onClick, disabled, ...rest }) => (
+  <Box {...rest}>
+    <Box
+      is="button"
+      className="btn btn-primary btn-block"
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {disabled ? <span>Registering...</span> : <span>Register</span>}
+    </Box>
+  </Box>
+)
+
+const CloseButton = ({ ...rest }) => (
+  <Box {...rest}>
+    <Link to={`/profiles`} className="btn btn-primary btn-block">
+      <span>Close</span>
+    </Link>
+  </Box>
+)
+
+const SubdomainContent = ({
+  name,
+  loading,
+  identityIndex,
+  doRegister,
+  ...rest
+}) => (
+  <Box textAlign="center" {...rest}>
+    <Box pb={2}>
+      <Box lineHeight="1.5" is="h3">
+        Are you sure you want to register <strong>{name}</strong>?
+      </Box>
+    </Box>
+
+    <Box>
+      <p>
+        <strong>{name}</strong> is a free username.
+      </p>
+    </Box>
+
+    <Box>
+      <RegisterButton pb={2} onClick={doRegister} disabled={loading} />
+      {!loading ? (
+        <Box>
+          <Link
+            to={`/profiles/i/add-username/${identityIndex}/search`}
+            className="btn btn-tertiary btn-block"
+          >
+            Back
+          </Link>
+        </Box>
+      ) : null}
+    </Box>
+  </Box>
+)
+
+const ErrorState = ({ message, ...rest }) => (
+  <Box textAlign="center">
+    <Box pb={4}>
+      <Box m={0} p={0} is="h3">
+        Something went wrong!
+      </Box>
+    </Box>
+    {message && (
+      <Box fontSize="16px" lineHeight="1.5">
+        {message}
+      </Box>
+    )}
+    <Box pt={4}>
+      <CloseButton />
+    </Box>
+  </Box>
+)
 
 class AddUsernameSelectPage extends Component {
   static propTypes = {
@@ -69,12 +153,14 @@ class AddUsernameSelectPage extends Component {
       props.router.push(`/profiles/i/add-username/${index}/search`)
     }
 
-    const nameHasBeenPreordered = hasNameBeenPreordered(name, props.localIdentities)
+    const nameHasBeenPreordered = hasNameBeenPreordered(
+      name,
+      props.localIdentities
+    )
     if (nameHasBeenPreordered) {
       logger.error(`constructor: Name ${name} has already been preordered.`)
       props.router.push('/profiles')
     }
-
 
     const nameIsSubdomain = isSubdomain(name)
     let enoughMoney = false
@@ -85,7 +171,7 @@ class AddUsernameSelectPage extends Component {
     price = roundTo.up(price, 3)
     const walletBalance = this.props.balances.total
 
-    if (nameIsSubdomain || (walletBalance >= price)) {
+    if (nameIsSubdomain || walletBalance >= price) {
       enoughMoney = true
     }
 
@@ -93,7 +179,10 @@ class AddUsernameSelectPage extends Component {
     if (!enoughMoney) {
       this.paymentTimer = setInterval(() => {
         logger.debug('paymentTimer: calling refreshBalances...')
-        that.props.refreshBalances(that.props.btcBalanceUrl, that.props.addresses)
+        that.props.refreshBalances(
+          that.props.btcBalanceUrl,
+          that.props.addresses
+        )
       }, CHECK_FOR_PAYMENT_INTERVAL)
     }
     this.state = {
@@ -106,9 +195,6 @@ class AddUsernameSelectPage extends Component {
       password: '',
       acceptedWarning: false
     }
-    this.onValueChange = this.onValueChange.bind(this)
-    this.register = this.register.bind(this)
-    this.updateAlert = this.updateAlert.bind(this)
   }
 
   componentDidMount() {
@@ -121,9 +207,12 @@ class AddUsernameSelectPage extends Component {
         .filter(ident => ident.usernamePending)
         .reduce((prev, ident) => prev || !isSubdomain(ident.username), false)
       if (hasPendingReg) {
-        this.updateAlert('danger', 'You have a pending name registration. ' +
-          'Starting a new registration may interfere with that ' +
-          'registration’s transactions.')
+        this.updateAlert(
+          'danger',
+          'You have a pending name registration. ' +
+            'Starting a new registration may interfere with that ' +
+            'registration’s transactions.'
+        )
       }
     }
   }
@@ -133,9 +222,16 @@ class AddUsernameSelectPage extends Component {
     const name = nextProps.routeParams.name
     const index = nextProps.routeParams.index
 
-    if (this.state.registrationInProgress && registration.registrationSubmitted) {
-      logger.debug('componentWillReceiveProps: registration submitted! redirecting...')
-      this.props.router.push(`/profiles/i/add-username/${index}/submitted/${name}`)
+    if (
+      this.state.registrationInProgress &&
+      registration.registrationSubmitted
+    ) {
+      logger.debug(
+        'componentWillReceiveProps: registration submitted! redirecting...'
+      )
+      this.props.router.push(
+        `/profiles/i/add-username/${index}/submitted/${name}`
+      )
     } else if (registration.registrationError) {
       this.setState({
         registrationInProgress: false
@@ -154,7 +250,7 @@ class AddUsernameSelectPage extends Component {
     price = roundTo.up(price, 3)
     const walletBalance = this.props.balances.total
 
-    if (nameIsSubdomain || (walletBalance >= price)) {
+    if (nameIsSubdomain || walletBalance >= price) {
       enoughMoney = true
     }
 
@@ -169,248 +265,247 @@ class AddUsernameSelectPage extends Component {
     })
   }
 
-  onValueChange(event) {
+  onValueChange = event =>
     this.setState({
       [event.target.name]: event.target.value
     })
-  }
 
-  register(event) {
+  register = async event => {
     logger.info('register')
-
     if (event) {
       event.preventDefault()
     }
-
     this.setState({
       registrationInProgress: true
     })
-    const index = this.props.routeParams.index
-    const name = this.props.routeParams.name
-    const nameHasBeenPreordered = hasNameBeenPreordered(name, this.props.localIdentities)
-    const identity = this.props.localIdentities[index]
+    const {
+      localIdentities,
+      routeParams,
+      identityAddresses,
+      identityKeypairs,
+      registerName,
+      api
+    } = this.props
+
+    const { index, name } = routeParams
+    const address = identityAddresses[index]
+    const identity = localIdentities[index]
+    const { ownerAddress } = identity
+    const nameHasBeenPreordered = hasNameBeenPreordered(name, localIdentities)
+    const keypair = identityKeypairs[index]
+    const nameTokens = name.split('.')
+    const nameSuffix = name.split(nameTokens[0])
+    const nameIsSubdomain = isSubdomain(name)
+
     if (nameHasBeenPreordered) {
       logger.error(`register: Name ${name} has already been preordered`)
-    } else {
-      logger.debug(`register: Will try to register ${name} for identity ${index}`)
+      return
+    }
+    // has not been preordered
 
-      const address = this.props.identityAddresses[index]
-      const ownerAddress = identity.ownerAddress
-      if (ownerAddress !== address) {
+    logger.debug(`register: Will try to register ${name} for identity ${index}`)
+    if (ownerAddress !== address) {
+      this.setState({
+        registrationInProgress: false
+      })
+      logger.error(
+        `register: ${address} @ ${index} doesn't match owner ${ownerAddress}`
+      )
+      this.updateAlert('danger', 'There is a problem with your account.')
+      return
+    }
+
+    logger.debug(`register: ${name} has name suffix ${nameSuffix}`)
+    logger.debug(`register: is ${name} a subdomain? ${nameIsSubdomain}`)
+
+    if (nameIsSubdomain) {
+      registerName(api, name, identity, index, address, keypair)
+    } else {
+      const { password } = this.state
+      const { encryptedBackupPhrase } = this.props
+      try {
+        const paymentKey = await decryptBitcoinPrivateKey(
+          password,
+          encryptedBackupPhrase
+        )
+        registerName(api, name, identity, index, address, keypair, paymentKey)
+      } catch (error) {
         this.setState({
           registrationInProgress: false
         })
-        logger.error(`register: ${address} @ ${index} doesn't match owner ${ownerAddress}`)
-        this.updateAlert('danger', 'There is a problem with your account.')
-      }
-
-      const keypair = this.props.identityKeypairs[index]
-
-      const nameTokens = name.split('.')
-      const nameSuffix = name.split(nameTokens[0])
-      const nameIsSubdomain = isSubdomain(name)
-
-      logger.debug(`register: ${name} has name suffix ${nameSuffix}`)
-      logger.debug(`register: is ${name} a subdomain? ${nameIsSubdomain}`)
-
-      if (nameIsSubdomain) {
-        this.props.registerName(this.props.api, name, identity,
-                                index, address, keypair)
-      } else {
-        const password = this.state.password
-        const encryptedBackupPhrase = this.props.encryptedBackupPhrase
-        decryptBitcoinPrivateKey(password, encryptedBackupPhrase)
-        .then((paymentKey) =>
-          this.props.registerName(this.props.api, name, identity,
-                                  index, address, keypair, paymentKey)
-        )
-        .catch((error) => {
-          this.setState({
-            registrationInProgress: false
-          })
-          this.updateAlert('danger', error.message)
-        })
+        this.updateAlert('danger', error.message)
       }
     }
   }
 
-  updateAlert(alertStatus, alertMessage) {
+  updateAlert = (alertStatus, alertMessage) =>
     this.setState({
-      alerts: [{
-        status: alertStatus,
-        message: alertMessage
-      }]
+      alerts: [
+        {
+          status: alertStatus,
+          message: alertMessage
+        }
+      ]
     })
-  }
 
   render() {
-    const name = this.props.routeParams.name
-    const availableNames = this.props.availability.names
+    const {
+      routeParams,
+      availability,
+      balances,
+      addresses,
+      registration
+    } = this.props
+
+    const {
+      index: identityIndex,
+      registrationInProgress,
+      acceptedWarning
+    } = this.state
+
+    const { name } = routeParams
+    const { names: availableNames } = availability
     const nameAvailabilityObject = availableNames[name]
     const nameIsSubdomain = isSubdomain(name)
-    const identityIndex = this.state.index
-    let enoughMoney = false
+    const { total: walletBalance } = balances
+    const [walletAddress] = addresses
+
     let price = 0
     if (nameAvailabilityObject) {
       price = nameAvailabilityObject.price
     }
     price = roundTo.up(price, 6) + PRICE_BUFFER
-    const walletBalance = this.props.balances.total
 
-    if (nameIsSubdomain || (walletBalance >= price)) {
-      enoughMoney = true
-    }
+    const enoughMoney = nameIsSubdomain || walletBalance >= price
 
-    const walletAddress = this.props.addresses[0]
-
-    const registrationInProgress = this.state.registrationInProgress
-
-    const acceptedWarning = this.state.acceptedWarning
-
-    return (
-      <div>
-        {this.state.alerts.map((alert, index) =>
-           (
+    return registration.error ? (
+      <ErrorState message={registration.error} />
+    ) : (
+      <Box>
+        {this.state.alerts.map((alert, index) => (
           <Alert key={index} message={alert.message} status={alert.status} />
-          )
-        )}
-        {enoughMoney ?
-          <div>
-          {nameIsSubdomain ?
-            <div className="text-center">
-              <h3 className="modal-heading">
-                Are you sure you want to register <strong>{name}</strong>?
-              </h3>
-              <p><strong>{name}</strong> is a free username.</p>
+        ))}
+        {enoughMoney ? (
+          <Box>
+            {nameIsSubdomain ? (
+              <SubdomainContent
+                loading={registrationInProgress}
+                name={name}
+                identityIndex={identityIndex}
+                doRegister={e => this.register(e)}
+              />
+            ) : (
               <div>
-                <button
-                  onClick={this.register}
-                  className="btn btn-primary btn-block"
-                  disabled={registrationInProgress}
-                >
-                  {registrationInProgress ?
-                    <span>Registering...</span>
-                    :
-                    <span>Register</span>
-                  }
-                </button>
-                <br />
-                {registrationInProgress ?
-                  null
-                  :
-                  <Link
-                    to={`/profiles/i/add-username/${identityIndex}/search`}
-                    className="btn btn-tertiary btn-block"
-                  >
-                    Back
-                  </Link>
-                }
-              </div>
-            </div>
-            :
-            <div>
-              {acceptedWarning ?
-                <div>
-                  <h3 className="modal-heading">
-                    Enter your password to register <strong>{name}</strong>
-                  </h3>
-                  <div className="text-center">
-                    <p>Requesting registration of <strong>{name} </strong>
-                     will spend {price} bitcoins from your wallet.
-                    </p>
-                  </div>
+                {acceptedWarning ? (
                   <div>
-                    <form onSubmit={this.register}>
-                      <InputGroup
-                        data={this.state}
-                        onChange={this.onValueChange}
-                        name="password"
-                        label="Password"
-                        placeholder="Password"
-                        type="password"
-                        required
-                      />
-                      <button
-                        type="submit"
-                        onClick={this.register}
-                        className="btn btn-primary btn-block"
-                        disabled={registrationInProgress}
+                    <h3 className="modal-heading">
+                      Enter your password to register <strong>{name}</strong>
+                    </h3>
+                    <div className="text-center">
+                      <p>
+                        Requesting registration of <strong>{name} </strong>
+                        will spend {price} bitcoins from your wallet.
+                      </p>
+                    </div>
+                    <div>
+                      <form onSubmit={this.register}>
+                        <InputGroup
+                          data={this.state}
+                          onChange={this.onValueChange}
+                          name="password"
+                          label="Password"
+                          placeholder="Password"
+                          type="password"
+                          required
+                        />
+                        <button
+                          type="submit"
+                          onClick={this.register}
+                          className="btn btn-primary btn-block"
+                          disabled={registrationInProgress}
+                        >
+                          {registrationInProgress ? (
+                            <span>Generating registration transactions...</span>
+                          ) : (
+                            <span>Request Registration</span>
+                          )}
+                        </button>
+                      </form>
+                      <br />
+                      {registrationInProgress ? null : (
+                        <Link
+                          to={`/profiles/i/add-username/${identityIndex}/search`}
+                          className="btn btn-tertiary btn-block"
+                        >
+                          Back
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="modal-heading">
+                      Name Registration Disclaimer
+                    </h3>
+                    <div className="text-center">
+                      <p>
+                        You’re about to create a registration request for{' '}
+                        <strong>{name}</strong>
+                      </p>
+
+                      <p>Please confirm you understand the following:</p>
+                      <ul
+                        style={{
+                          marginLeft: '20px',
+                          marginRight: '20px',
+                          textAlign: 'left'
+                        }}
                       >
-                        {registrationInProgress ?
-                          <span>Generating registration transactions...</span>
-                          :
-                          <span>Request Registration</span>
-                        }
+                        <li>
+                          Registrations are a race & there's a small chance
+                          someone else will win.
+                        </li>
+                        <li>
+                          Registration requests have a fee regardless of the
+                          outcome.
+                        </li>
+                        <li>
+                          Fees are destroyed on the network and not sent to any
+                          company.
+                        </li>
+                      </ul>
+                      <button
+                        className="btn btn-primary btn-block"
+                        onClick={() => {
+                          this.setState({ acceptedWarning: true })
+                        }}
+                      >
+                        I understand
                       </button>
-                    </form>
-                    <br />
-                    {registrationInProgress ?
-                      null
-                      :
                       <Link
                         to={`/profiles/i/add-username/${identityIndex}/search`}
                         className="btn btn-tertiary btn-block"
                       >
                         Back
                       </Link>
-                    }
+                    </div>
                   </div>
-                </div>
-              :
-                <div>
-                  <h3 className="modal-heading">
-                    Name Registration Disclaimer
-                  </h3>
-                  <div className="text-center">
-                    <p>You’re about to create a registration
-                      request for <strong>{name}</strong></p>
-
-                    <p>Please confirm you understand the following:</p>
-                    <ul
-                      style={{
-                        marginLeft: '20px',
-                        marginRight: '20px',
-                        textAlign: 'left'
-                      }}
-                    >
-                      <li>Registrations are a race & there's a small chance someone else will win.
-                      </li>
-                      <li>Registration requests have a fee regardless of the outcome.</li>
-                      <li>Fees are destroyed on the network and not sent to any company.</li>
-                    </ul>
-                    <button
-                      className="btn btn-primary btn-block"
-                      onClick={() => { this.setState({ acceptedWarning: true }) }}
-                    >
-                    I understand
-                    </button>
-                    <Link
-                      to={`/profiles/i/add-username/${identityIndex}/search`}
-                      className="btn btn-tertiary btn-block"
-                    >
-                      Back
-                    </Link>
-                  </div>
-                </div>
-              }
-            </div>
-          }
-          </div>
-          :
+                )}
+              </div>
+            )}
+          </Box>
+        ) : (
           <div style={{ textAlign: 'center' }}>
             <h3 className="modal-heading">Buy {name}</h3>
-            <p>Send at least {price} bitcoins to your wallet:<br />
+            <p>
+              Send at least {price} bitcoins to your wallet:
+              <br />
               <strong>{walletAddress}</strong>
             </p>
             <div style={{ textAlign: 'center' }}>
-              {walletAddress ?
-                <QRCode
-                  style={{ width: 256 }}
-                  value={walletAddress}
-                />
-                :
-                null
-              }
+              {walletAddress ? (
+                <QRCode style={{ width: 256 }} value={walletAddress} />
+              ) : null}
               <div>
                 <div className="progress m-t-20 m-b-20">
                   <div
@@ -421,7 +516,7 @@ class AddUsernameSelectPage extends Component {
                     aria-valuemax="100"
                     style={{ width: '100%' }}
                   >
-                  Waiting for payment...
+                    Waiting for payment...
                   </div>
                 </div>
                 <Link
@@ -433,10 +528,13 @@ class AddUsernameSelectPage extends Component {
               </div>
             </div>
           </div>
-        }
-      </div>
+        )}
+      </Box>
     )
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddUsernameSelectPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddUsernameSelectPage)

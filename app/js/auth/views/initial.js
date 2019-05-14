@@ -6,7 +6,13 @@ const basicInfo = 'read your basic info'
 const readEmail = 'read your email address'
 const publishData = 'publish data stored for this app'
 
-const Accounts = ({ list, handleClick, processing, refreshingIdentities, selectedIndex }) => {
+const Accounts = ({
+  list,
+  handleClick,
+  processing,
+  refreshingIdentities,
+  selectedIndex
+}) => {
   let loadingMessage = null
   if (processing) {
     loadingMessage = 'Signing in...'
@@ -121,15 +127,6 @@ const InitialScreen = ({
           </Buttons>
         </>
       )
-    },
-    actions: {
-      items: [
-        {
-          label: 'Deny',
-          to: '/',
-          negative: true
-        }
-      ]
     }
   }
   return <ShellScreen {...rest} {...props} />

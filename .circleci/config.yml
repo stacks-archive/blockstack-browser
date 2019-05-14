@@ -15,43 +15,61 @@ jobs:
       - run: npm run prod-webapp
   test-e2e-login:
     docker:
-      - image: circleci/node:10.15.1
-    environment:
-      TEST_E2E_GREP: login-to-hello-blockstack-app
+      - image: circleci/node:10.15.1-browsers
     working_directory: ~/repo
     steps:
       - checkout
-      - run: npm install
-      - run: npm run test-e2e:browserstack
+      - run:
+          name: Repo Check 1
+          command: |
+            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
+              export TEST_E2E_GREP=login-to-hello-blockstack-app
+              npm install && npm run test-e2e:browserstack
+            else
+              export TEST_E2E_GREP=login-to-hello-blockstack-app
+              npm install && npm run test-e2e:localBuild
+            fi
       - store_artifacts:
           path: /tmp/test-errors
   test-e2e-account-creation:
     docker:
-      - image: circleci/node:10.15.1
-    environment:
-      TEST_E2E_GREP: account-creation
+      - image: circleci/node:10.15.1-browsers
     working_directory: ~/repo
     steps:
       - checkout
-      - run: npm install
-      - run: npm run test-e2e:browserstack
+      - run:
+          name: Repo Check 2
+          command: |
+            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
+              export TEST_E2E_GREP=account-creation
+              npm install && npm run test-e2e:browserstack
+            else
+              export TEST_E2E_GREP=account-creation
+              npm install && npm run test-e2e:localBuild
+            fi
       - store_artifacts:
           path: /tmp/test-errors
   test-e2e-account-recovery:
     docker:
-      - image: circleci/node:10.15.1
-    environment:
-      TEST_E2E_GREP: account-recovery
+      - image: circleci/node:10.15.1-browsers
     working_directory: ~/repo
     steps:
       - checkout
-      - run: npm install
-      - run: npm run test-e2e:browserstack
+      - run:
+          name: Repo Check 3
+          command: |
+            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:tim/blockstack-browser.git" ]; then
+              export TEST_E2E_GREP=account-recovery
+              npm install && npm run test-e2e:browserstack
+            else
+              export TEST_E2E_GREP=account-recovery
+              npm install && npm run test-e2e:localBuild
+            fi
       - store_artifacts:
           path: /tmp/test-errors
 workflows:
   version: 2
-  build_and_test-e2e:
+  build_and_test_e2e_local_or_remote-e2e:
     jobs:
       - build
       - test-e2e-login

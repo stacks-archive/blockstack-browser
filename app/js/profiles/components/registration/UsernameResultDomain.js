@@ -36,7 +36,7 @@ const UsernameResultDomain = (props: Props) => {
       className="btn btn-primary btn-block"
       to={`/profiles/i/add-username/${index}/select/${name}`}
     >
-      Register <strong>{name}</strong> for {price} bitcoins
+      Register for {price} bitcoins
     </Link>
   )
 
