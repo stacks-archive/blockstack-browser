@@ -32,18 +32,20 @@
   </div>
 
   <script>
+    var userSession = new blockstack.UserSession()
+
     document.addEventListener("DOMContentLoaded", function (event) {
       document.getElementById('signin-button').addEventListener('click', function (event) {
         event.preventDefault()
         if (window.BLOCKSTACK_HOST) {
-          blockstack.redirectToSignInWithAuthRequest(undefined, window.BLOCKSTACK_HOST)
+          userSession.redirectToSignInWithAuthRequest(undefined, window.BLOCKSTACK_HOST)
         } else {
-          blockstack.redirectToSignIn()
+          userSession.redirectToSignIn()
         }
       })
       document.getElementById('signout-button').addEventListener('click', function (event) {
         event.preventDefault()
-        blockstack.signUserOut(window.location.href)
+        userSession.signUserOut(window.location.href)
       })
 
       function showProfile(profile) {
@@ -56,11 +58,11 @@
         document.getElementById('section-2').style.display = 'block'
       }
 
-      if (blockstack.isUserSignedIn()) {
-        var profile = blockstack.loadUserData().profile
+      if (userSession.isUserSignedIn()) {
+        var profile = userSession.loadUserData().profile
         showProfile(profile)
-      } else if (blockstack.isSignInPending()) {
-        blockstack.handlePendingSignIn().then(function (userData) {
+      } else if (userSession.isSignInPending()) {
+        userSession.handlePendingSignIn().then(function (userData) {
           window.location = window.location.origin
         })
       }
