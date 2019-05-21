@@ -5,7 +5,7 @@ import { User } from '@blockstack/ui/components/user'
 import CheckIcon from 'mdi-react/CheckIcon'
 import ChevronRightIcon from 'mdi-react/ChevronRightIcon'
 import Image from '@components/Image'
-import { Flex } from '@components/ui/components/primitives'
+import { Flex } from 'blockstack-ui'
 
 const UserAvatar = ({
   id,
@@ -13,7 +13,7 @@ const UserAvatar = ({
   size = 46,
   camera,
   textSize = 14,
-  avatarUrl = '',
+  avatarUrl,
   ...rest
 }) => (
   <User.Avatar
@@ -24,14 +24,14 @@ const UserAvatar = ({
     {...rest}
   >
     {avatarUrl ? (
-      <Image
-        src={avatarUrl}
-        fallbackSrc="/images/avatar.png"
-        className="rounded-circle img-cover"
+      <Flex
+        bg={`url(${avatarUrl}) center center no-repeat`}
+        position="absolute"
+        top="0"
+        left="0"
+        size="100%"
         style={{
-          display: 'inline-block',
-          width: '100%',
-          height: '100%'
+          backgroundSize: 'cover'
         }}
       />
     ) : (
@@ -67,7 +67,12 @@ const UserButton = ({ username, id, hideID, avatarUrl, ...rest }) => (
       cd
       maxWidth="calc(100% - 102px) !important"
     >
-      <Type.p color="rgba(255,255,255,1)" textAlign="left" width="100%" overflow>
+      <Type.p
+        color="rgba(255,255,255,1)"
+        textAlign="left"
+        width="100%"
+        overflow
+      >
         {username.includes('.') ? (
           <>
             <span style={{ color: 'rgba(255,255,255,1)' }}>
@@ -85,8 +90,9 @@ const UserButton = ({ username, id, hideID, avatarUrl, ...rest }) => (
           <span style={{ color: 'rgba(255,255,255,1)' }}>{username}</span>
         )}
       </Type.p>
-      {id &&
-        !hideID && <Type.small color="rgba(255,255,255,0.5)">{id}</Type.small>}
+      {id && !hideID && (
+        <Type.small color="rgba(255,255,255,0.5)">{id}</Type.small>
+      )}
     </Button.Section>
     <Button.Section
       align="center"

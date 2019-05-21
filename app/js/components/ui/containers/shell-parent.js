@@ -5,6 +5,8 @@ import { Shell } from '@ui/containers/shell'
 import { Header } from '@ui/containers/headers'
 import { Transition } from 'react-spring'
 import { WindowSize } from 'react-fns'
+import { AppHomeWrapper } from '@components/ui/containers/AppHomeWrapper'
+
 const ShellContext = React.createContext()
 
 /**
@@ -87,10 +89,7 @@ class ShellParent extends React.Component {
 
     const internalBackLabel = backLabel !== '' ? backLabel : 'Back'
     const defaultBackLabel = isFirstView ? backLabel : internalBackLabel
-    const label =
-      backLabel === '' && isFirstView && app
-        ? ``
-        : defaultBackLabel
+    const label = backLabel === '' && isFirstView && app ? `` : defaultBackLabel
 
     const Component = views[view]
 
@@ -132,26 +131,29 @@ class ShellParent extends React.Component {
     })
 
     return (
-      <WindowSize>
-        {windowSize => (
-          <ShellContext.Provider value={{ ...context, size: windowSize }}>
-            <Shell {...context} {...windowSize} maxHeight={maxHeight}>
-              <Shell.Content.Container {...windowSize}>
-                <Shell.Content.Wrapper {...windowSize}>
-                  <Header
-                    {...headerProps}
-                    invert={windowSize.width < 600 ? invert : undefined}
-                  />
-                  <Shell.Main>
-                    {this.renderLoading(this.state.loadingProps)}
-                    <Component {...componentProps} />
-                  </Shell.Main>
-                </Shell.Content.Wrapper>
-              </Shell.Content.Container>
-            </Shell>
-          </ShellContext.Provider>
-        )}
-      </WindowSize>
+      <>
+        <WindowSize>
+          {windowSize => (
+            <ShellContext.Provider value={{ ...context, size: windowSize }}>
+              <Shell {...context} {...windowSize} maxHeight={maxHeight}>
+                <Shell.Content.Container {...windowSize}>
+                  <Shell.Content.Wrapper {...windowSize}>
+                    <Header
+                      {...headerProps}
+                      invert={windowSize.width < 600 ? invert : undefined}
+                    />
+                    <Shell.Main>
+                      {this.renderLoading(this.state.loadingProps)}
+                      <Component {...componentProps} />
+                    </Shell.Main>
+                  </Shell.Content.Wrapper>
+                </Shell.Content.Container>
+              </Shell>
+            </ShellContext.Provider>
+          )}
+        </WindowSize>
+        <AppHomeWrapper />
+      </>
     )
   }
 }

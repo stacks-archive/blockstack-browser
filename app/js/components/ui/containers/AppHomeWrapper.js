@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { WindowSize } from 'react-fns'
 import { connect } from 'react-redux'
-
 import HomePage from '../../../HomeScreenPage'
 
 const StyledAppHomeWrapper = styled.div.attrs({
