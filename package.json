@@ -133,6 +133,8 @@
     "node-libs-browser": "^1.0.0",
     "nyc": "^14.1.0",
     "p-queue": "^3.0.0",
+    "prettier": "^1.16.4",
+    "react-hot-loader": "^4.6.5",
     "redux-mock-store": "^1.2.3",
     "request": "^2.88.0",
     "require-hacker": "^3.0.1",
