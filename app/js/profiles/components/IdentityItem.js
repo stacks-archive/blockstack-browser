@@ -19,7 +19,9 @@ export class IdentityItem extends Component {
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    profileUrl: PropTypes.string.isRequired
+    profileUrl: PropTypes.string.isRequired,
+    expireBlock: PropTypes.number,
+    currentBlockHeight: PropTypes.number
   }
 
   constructor(props) {
@@ -40,6 +42,29 @@ export class IdentityItem extends Component {
   }
 
   render() {
+    let expireText;
+    if (this.props.expireBlock) {
+      if (this.props.expireBlock > 0) {
+        if (this.props.currentBlockHeight) {
+          if (this.props.expireBlock > this.props.currentBlockHeight) {
+            const expiresInBlocks = this.props.expireBlock - this.props.currentBlockHeight
+            const expiresInDays = Math.floor(expiresInBlocks * 10 / 144)
+            expireText = <>Expires in about {expiresInDays} days</>
+          } else {
+            const expiresInBlocks = this.props.currentBlockHeight - this.props.expireBlock
+            const expiresInDays = Math.floor(expiresInBlocks * 10 / 144)
+            expireText = <>Expired about {expiresInDays} days ago</>
+          }
+        } else {
+          expireText = <>Expires at block {this.props.expireBlock}</>
+        }
+      } else {
+        expireText = <>Does not expire</>
+      }
+    } else {
+      expireText = null
+    }
+
     return (
       <div
         onClick={this.props.onClick}
@@ -86,16 +111,21 @@ export class IdentityItem extends Component {
                       </a>
                     </div>
                   ) : (
-                    <span>
-                      {this.props.username}
-                      {this.props.pending ? (
-                        <i
-                          className="fa fa-fw fa-clock-o fa-sm text-secondary"
-                          data-tip
-                          data-for="usernamePending"
-                        />
-                      ) : null}
-                    </span>
+                    <>
+                      <span>
+                        {this.props.username}
+                        {this.props.pending ? (
+                          <i
+                            className="fa fa-fw fa-clock-o fa-sm text-secondary"
+                            data-tip
+                            data-for="usernamePending"
+                          />
+                        ) : null}
+                      </span>{' '}
+                      <span className="text-secondary">
+                        <small>{expireText}</small>
+                      </span>
+                    </>
                   )}
                 </p>
               </li>
