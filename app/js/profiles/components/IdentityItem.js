@@ -48,11 +48,11 @@ export class IdentityItem extends Component {
         if (this.props.currentBlockHeight) {
           if (this.props.expireBlock > this.props.currentBlockHeight) {
             const expiresInBlocks = this.props.expireBlock - this.props.currentBlockHeight
-            const expiresInDays = Math.floor(expiresInBlocks * 10 / 144)
+            const expiresInDays = Math.floor(expiresInBlocks / 144)
             expireText = <>Expires in about {expiresInDays} days</>
           } else {
             const expiresInBlocks = this.props.currentBlockHeight - this.props.expireBlock
-            const expiresInDays = Math.floor(expiresInBlocks * 10 / 144)
+            const expiresInDays = Math.floor(expiresInBlocks / 144)
             expireText = <>Expired about {expiresInDays} days ago</>
           }
         } else {
