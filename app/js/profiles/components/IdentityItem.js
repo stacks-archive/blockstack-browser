@@ -59,7 +59,7 @@ export class IdentityItem extends Component {
                     event.preventDefault()
                     event.stopPropagation()
                     this.props.router.push(
-                      `/profiles/i/names/${this.props.username}`
+                      `/profiles/${this.props.index}/zone-file`
                     )
                   }}
                 >

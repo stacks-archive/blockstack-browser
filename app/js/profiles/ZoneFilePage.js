@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import Alert from '@components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
 import { findAddressIndex } from '@utils'
 import AdvancedSidebar from './components/AdvancedSidebar'
+import SecondaryNavBar from '@components/SecondaryNavBar'
 
 import log4js from 'log4js'
 
@@ -188,7 +188,7 @@ class ZoneFilePage extends Component {
                 <AdvancedSidebar activeTab="zone-file" name={name} />
               </div>
               <div className="col-md-7">
-                <Link to={'profiles/i/all'}>&lt; Back </Link>
+              <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/profiles/i/all" />
                 <h1 className="h1-modern">Update {username} zone file</h1>
                 {this.state.alerts.map((alert, index) => (
                   <Alert

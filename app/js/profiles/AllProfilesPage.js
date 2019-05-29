@@ -192,7 +192,6 @@ class AllProfilesPage extends Component {
                 } else {
                   identity.canAddUsername = true
                 }
-                console.log(identity)
                 return (
                   <IdentityItem
                     key={index}
