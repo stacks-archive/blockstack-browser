@@ -42,16 +42,38 @@ export class IdentityItem extends Component {
   }
 
   render() {
-    let expireText;
+    let expireText
     if (this.props.expireBlock) {
       if (this.props.expireBlock > 0) {
         if (this.props.currentBlockHeight) {
           if (this.props.expireBlock > this.props.currentBlockHeight) {
-            const expiresInBlocks = this.props.expireBlock - this.props.currentBlockHeight
+            const expiresInBlocks =
+              this.props.expireBlock - this.props.currentBlockHeight
             const expiresInDays = Math.floor(expiresInBlocks / 144)
-            expireText = <>Expires in about {expiresInDays} days</>
+            expireText = (
+              <>
+                Expires in about {expiresInDays} days
+                <a
+                  href="#"
+                  onClick={event => {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    this.props.router.push(
+                      `/profiles/i/names/${this.props.username}`
+                    )
+                  }}
+                >
+                  <i
+                    className="fa fa-fw fa-gear fa-sm text-secondary"
+                    data-tip
+                    data-for="settings"
+                  />
+                </a>
+              </>
+            )
           } else {
-            const expiresInBlocks = this.props.currentBlockHeight - this.props.expireBlock
+            const expiresInBlocks =
+              this.props.currentBlockHeight - this.props.expireBlock
             const expiresInDays = Math.floor(expiresInBlocks / 144)
             expireText = <>Expired about {expiresInDays} days ago</>
           }
@@ -79,6 +101,11 @@ export class IdentityItem extends Component {
         <ToolTip id="ownerAddress">
           <div>
             <div>This is your identity address.</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="settings">
+          <div>
+            <div>Settings for your name</div>
           </div>
         </ToolTip>
         <div>

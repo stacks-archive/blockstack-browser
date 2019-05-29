@@ -77,14 +77,12 @@ class TransferNamePage extends Component<Props, State> {
     this.displayAlerts(nextProps)
   }
 
-  onToggle: Function
   onToggle(event) {
     this.setState({
       [event.target.name]: event.target.checked
     })
   }
 
-  onValueChange: Function
   onValueChange(event) {
     event.persist()
     this.setState(() => ({
@@ -92,9 +90,6 @@ class TransferNamePage extends Component<Props, State> {
     }))
   }
 
-  props: Props
-
-  displayAlerts: Function
   displayAlerts(props) {
     const name = props.routeParams.index
     const transferState = props.nameTransfers[name]
@@ -119,7 +114,6 @@ class TransferNamePage extends Component<Props, State> {
     }
   }
 
-  updateAlert: Function
   updateAlert(alertStatus, alertMessage) {
     logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
@@ -127,7 +121,6 @@ class TransferNamePage extends Component<Props, State> {
     })
   }
 
-  transferName: Function
   transferName(event) {
     logger.info('transferName')
     event.preventDefault()

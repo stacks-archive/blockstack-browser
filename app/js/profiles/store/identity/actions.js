@@ -538,7 +538,7 @@ function fetchPublicIdentity(lookupUrl: string, username: string) {
       })
       .catch(error => {
         dispatch(updatePublicIdentity(username))
-        logger.error(`fetchCurrentIdentity: ${username} lookup error`, error)
+        logger.error(`fetchPublicIdentity: ${username} lookup error`, error)
       })
   }
 }
