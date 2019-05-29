@@ -19,7 +19,6 @@ function mapStateToProps(state) {
     identityAddresses: state.account.identityAccount.addresses,
     identityKeypairs: state.account.identityAccount.keypairs,
     localIdentities: state.profiles.identity.localIdentities,
-    namesOwned: state.profiles.identity.namesOwned,
     zoneFileUrl: state.settings.api.zoneFileUrl,
     coreAPIPassword: state.settings.api.coreAPIPassword,
     zoneFileUpdates: state.profiles.identity.zoneFileUpdates
@@ -37,14 +36,13 @@ class ZoneFilePage extends Component {
   static propTypes = {
     identityAddresses: PropTypes.array.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
-    localIdentities: PropTypes.object.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     nameLookupUrl: PropTypes.string.isRequired,
-    namesOwned: PropTypes.array.isRequired,
     routeParams: PropTypes.object.isRequired,
     zoneFileUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
     broadcastZoneFileUpdate: PropTypes.func.isRequired,
-    zoneFileUpdates: PropTypes.object.isRequired
+    zoneFileUpdates: PropTypes.array.isRequired
   }
 
   constructor(props) {
@@ -188,7 +186,10 @@ class ZoneFilePage extends Component {
                 <AdvancedSidebar activeTab="zone-file" name={name} />
               </div>
               <div className="col-md-7">
-              <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/profiles/i/all" />
+                <SecondaryNavBar
+                  leftButtonTitle="Back"
+                  leftButtonLink="/profiles/i/all"
+                />
                 <h1 className="h1-modern">Update {username} zone file</h1>
                 {this.state.alerts.map((alert, index) => (
                   <Alert

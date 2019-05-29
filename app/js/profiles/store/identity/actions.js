@@ -120,7 +120,7 @@ function updateProfile(
   index: number,
   profile: any,
   zoneFile: string,
-  expireBlock: number
+  expireBlock: ?number
 ) {
   return {
     type: types.UPDATE_PROFILE,
