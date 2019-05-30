@@ -17,7 +17,7 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 const CHECK_FOR_PAYMENT_INTERVAL = 10000
-export const PRICE_BUFFER = 0.0005 // btc
+export const PRICE_BUFFER = 0.001 // btc
 function mapStateToProps(state) {
   return {
     api: state.settings.api,

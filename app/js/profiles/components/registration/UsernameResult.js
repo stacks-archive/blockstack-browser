@@ -26,7 +26,7 @@ const UsernameResult = (props: Props) => {
   } = availability || {}
 
   let price = (availability && availability.price) || 0
-  price = roundTo.up(price, 6) + PRICE_BUFFER
+  price = roundTo.up(price + PRICE_BUFFER, 6)
 
   const renderChecking = () => (
     <div className="account-check">

@@ -83,7 +83,7 @@ function checkNameAvailabilityAndPrice(api, domainName) {
           dispatch(namePrice(domainName, 0))
         } else {
           return getNamePrices(api.priceUrl, domainName).then((prices) => {
-            const price = prices.total_estimated_cost.btc
+            const price = prices.name_price.satoshis * 0.000001
             dispatch(namePrice(domainName, price))
           }).catch((error) => {
             logger.error('checkNameAvailabilityAndPrice: getNamePrices: error', error)
