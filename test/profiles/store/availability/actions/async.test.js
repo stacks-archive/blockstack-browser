@@ -87,7 +87,7 @@ describe('Availability Store: Async Actions', () => {
             {
               type: NAME_PRICE,
               domainName: 'satoshi.id',
-              price: 1.5999999999999999
+              price: 0.016
             }
           ]
           assert.deepEqual(store.getActions(), expectedActions)
