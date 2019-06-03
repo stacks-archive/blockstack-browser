@@ -23,7 +23,7 @@ const DEFAULT_API = {
   insightUrl: 'https://utxo.blockstack.org/insight-api/addr/{address}',
   btcBalanceUrl: 'https://blockchain.info/q/addressbalance/',
   broadcastUrl: 'https://utxo.blockstack.org/insight-api/tx/send',
-  priceUrl: `${DEFAULT_CORE_API_ENDPOINT}/v1/prices/names/{name}`,
+  priceUrl: `${DEFAULT_CORE_API_ENDPOINT}/v2/prices/names/{name}`,
   networkFeeUrl: 'https://bitcoinfees.21.co/api/v1/fees/recommended',
   walletPaymentAddressUrl: `${DEFAULT_CORE_API_ENDPOINT}/v1/wallet/payment_address`,
   pendingQueuesUrl: `${DEFAULT_CORE_API_ENDPOINT}/v1/blockchains/bitcoin/pending`,
