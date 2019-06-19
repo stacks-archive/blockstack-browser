@@ -29,7 +29,7 @@ describe('Availability Store: Async Actions', () => {
         .reply(404, {}, { 'Content-Type': 'application/json' })
 
       nock('https://core.blockstack.org')
-        .get('/v1/prices/names/satoshi.id?single_sig=1')
+        .get('/v2/prices/names/satoshi.id?single_sig=1')
         .reply(
           200,
           {
@@ -87,7 +87,7 @@ describe('Availability Store: Async Actions', () => {
             {
               type: NAME_PRICE,
               domainName: 'satoshi.id',
-              price: 0.02118707
+              price: 0.016
             }
           ]
           assert.deepEqual(store.getActions(), expectedActions)
@@ -174,7 +174,7 @@ describe('Availability Store: Async Actions', () => {
         .reply(404, {}, { 'Content-Type': 'application/json' })
 
       nock('https://core.blockstack.org')
-        .get('/v1/prices/names/satoshi.id?single_sig=1')
+        .get('/v2/prices/names/satoshi.id?single_sig=1')
         .reply(500, 'UTXO provider unavailable')
 
       const store = mockStore({})
