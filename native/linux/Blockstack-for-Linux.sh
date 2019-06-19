@@ -2,7 +2,7 @@
 
 # This script provides a simple interface for folks to use the docker install
 
-TAG=v0.35.4
+TAG=v0.36.3
 if [ "$BLOCKSTACK_TAG" ]; then
    TAG="$BLOCKSTACK_TAG"
 fi
