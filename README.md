@@ -37,8 +37,7 @@ The Blockstack Browser allows you to explore the Blockstack internet.
 
 1. Clone this repo: `git clone https://github.com/blockstack/blockstack-browser.git`
 1. Install node dependencies: `npm install`
-1. Run `npm run dev-proxy` to start the CORS proxy
-1. Run `npm run dev`
+2. Run `npm run dev`
 
 *Note: npm dev runs a BrowserSync process that watches the assets in `/app`, then builds them and places them in `/build`, and in turn serves them up on port 3000. When changes are made to the original files, they are rebuilt and re-synced to the browser frames you have open.*
 
