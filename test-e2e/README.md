@@ -13,12 +13,16 @@ If `E2E_BROWSER_HOST` is set and is not an `http(s)://` url, it is assumed to be
 
 #### Run specific test suite(s)
 
-Use the environment variable `TEST_E2E_GREP` to target specific test suites and/or web browsers / environments. This uses Mocha's `--grep` feature which supports regex. 
+Use the environment variable `TEST_E2E_GREP` to target specific test suites and/or web browsers / environments. This uses [Mocha's `--grep` feature](https://mochajs.org/#-grep-regexp-g-regexp) which supports regex. Test suite all have the naming structure `{description} {web browser / environment}`.
 
 Examples:
-* Run all the tests suite on the iOS platforms:
+* Run all test suites locally on only the Chrome browser:
+  * `TEST_E2E_GREP=chrome npm run test-e2e:localBuild`
+* Run the login test suite locally on only the Chrome browser:
+  * `TEST_E2E_GREP=login-to-hello-blockstack-app.*chrome npm run test-e2e:localBuild`
+* Run all test suites against the remote BrowserStack iOS platforms:
   * `TEST_E2E_GREP=iOS npm run test-e2e:browserstack`
-* Run the login test suite on iOS platforms:
+* Run the login test suite against the remote BrowserStack iOS platforms:
   * `TEST_E2E_GREP=login-to-hello-blockstack-app.*iOS npm run test-e2e:browserstack`
 
 
