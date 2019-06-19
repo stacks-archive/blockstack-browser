@@ -1,20 +1,24 @@
 import * as types from './types'
-import { makeProfileZoneFile, transactions, config, network, safety } from 'blockstack'
+import {
+  makeProfileZoneFile,
+  transactions,
+  config,
+  network,
+  safety
+} from 'blockstack'
 import { uploadProfile } from '../../../account/utils'
 import { IdentityActions } from '../identity'
 import { signProfileForUpload, authorizationHeaderValue } from '@utils'
 import { DEFAULT_PROFILE } from '@utils/profile-utils'
 import { isSubdomain, getNameSuffix } from '@utils/name-utils'
+import { notify } from 'reapop'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 
-
-function profileUploading() {
-  return {
-    type: types.PROFILE_UPLOADING
-  }
-}
+const profileUploading = () => ({
+  type: types.PROFILE_UPLOADING
+})
 
 function profileUploadError(error) {
   return {
@@ -55,10 +59,19 @@ function beforeRegister() {
   }
 }
 
-function registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFile) {
+async function registerSubdomain(
+  api,
+  domainName,
+  identityIndex,
+  ownerAddress,
+  zoneFile
+) {
   let nameSuffix = null
+
   nameSuffix = getNameSuffix(domainName)
+
   logger.debug(`registerName: ${domainName} is a subdomain of ${nameSuffix}`)
+
   const registerUrl = api.subdomains[nameSuffix].registerUrl
 
   const registrationRequestBody = JSON.stringify({
@@ -75,24 +88,41 @@ function registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFil
 
   logger.info(`Submitting registration for ${domainName} to ${registerUrl}`)
 
-  return fetch(registerUrl, {
+  const response = await fetch(registerUrl, {
     method: 'POST',
     headers: requestHeaders,
     body: registrationRequestBody
   })
-  .then((response) => {
-    if (!response.ok) {
-      logger.error(`Subdomain registrar responded with status code ${response.status}`)
-      return Promise.reject(new Error('Failed to register username'))
-    }
-    return response.text()
-  })
-  .then((responseText) => JSON.parse(responseText))
+
+  if (!response.ok) {
+    logger.error(
+      `Subdomain registrar responded with status code ${response.status}`
+    )
+
+    return Promise.reject({
+      error: 'Failed to register username',
+      status: response.status
+    })
+  }
+
+  const responseText = await response.text()
+
+  return JSON.parse(responseText)
 }
 
-function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paymentKey, zoneFile) {
+function registerDomain(
+  myNet,
+  tx,
+  domainName,
+  identityIndex,
+  ownerAddress,
+  paymentKey,
+  zoneFile
+) {
   if (!paymentKey) {
-    logger.error('registerName: payment key not provided for non-subdomain registration')
+    logger.error(
+      'registerName: payment key not provided for non-subdomain registration'
+    )
     return Promise.reject('Missing payment key')
   }
 
@@ -102,31 +132,33 @@ function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paym
   let preorderTx = ''
   let registerTx = ''
 
-  return safety.addressCanReceiveName(ownerAddress)
-    .then((canReceive) => {
+  return safety
+    .addressCanReceiveName(ownerAddress)
+    .then(canReceive => {
       if (!canReceive) {
         return Promise.reject(`Address ${ownerAddress} cannot receive names.`)
       }
       return safety.isNameValid(domainName)
     })
-    .then((nameValid) => {
+    .then(nameValid => {
       if (!nameValid) {
         return Promise.reject(`Name ${domainName} is not valid`)
       }
       return true
     })
     .then(() => tx.makePreorder(domainName, coercedAddress, compressedKey))
-    .then((rawtx) => {
+    .then(rawtx => {
       preorderTx = rawtx
       return rawtx
     })
-    .then((rawtx) => {
+    .then(rawtx => {
       myNet.modifyUTXOSetFrom(preorderTx)
       return rawtx
     })
     .then(() =>
-      tx.makeRegister(domainName, coercedAddress, compressedKey, zoneFile))
-    .then((rawtx) => {
+      tx.makeRegister(domainName, coercedAddress, compressedKey, zoneFile)
+    )
+    .then(rawtx => {
       registerTx = rawtx
       return rawtx
     })
@@ -136,84 +168,131 @@ function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paym
     })
     .then(() => {
       logger.debug(
-        `Sending registration to transaction broadcaster at ${myNet.broadcastServiceUrl}`)
+        `Sending registration to transaction broadcaster at ${
+          myNet.broadcastServiceUrl
+        }`
+      )
       return myNet.broadcastNameRegistration(preorderTx, registerTx, zoneFile)
     })
 }
 
-function registerName(api, domainName, identity, identityIndex,
-                      ownerAddress, keypair, paymentKey = null) {
+const registerName = (
+  api,
+  domainName,
+  identity,
+  identityIndex,
+  ownerAddress,
+  keypair,
+  paymentKey = null
+) => async dispatch => {
   logger.info(`registerName: domainName: ${domainName}`)
-  return dispatch => {
-    logger.debug(`Signing a new profile for ${domainName}`)
-    const profile = identity.profile || DEFAULT_PROFILE
-    const signedProfileTokenData = signProfileForUpload(profile, keypair, api)
+  logger.debug(`Signing a new profile for ${domainName}`)
 
-    dispatch(profileUploading())
-    logger.info(`Uploading ${domainName} profile...`)
-    return uploadProfile(api, identity, keypair, signedProfileTokenData)
-    .then((profileUrl) => {
-      logger.info(`Uploading ${domainName} profiled succeeded.`)
-      const tokenFileUrl = profileUrl
-      logger.debug(`tokenFileUrl: ${tokenFileUrl}`)
+  const profile = identity.profile || DEFAULT_PROFILE
+  const signedProfileTokenData = signProfileForUpload(profile, keypair, api)
+  dispatch(profileUploading())
+  logger.info(`Uploading ${domainName} profile...`)
+  try {
+    const profileUrl = await uploadProfile(
+      api,
+      identity,
+      keypair,
+      signedProfileTokenData
+    )
+    logger.info(`Uploading ${domainName} profiled succeeded.`)
+    const tokenFileUrl = profileUrl
+    logger.debug(`tokenFileUrl: ${tokenFileUrl}`)
+    logger.info('Making profile zonefile...')
+    const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
+    const nameIsSubdomain = isSubdomain(domainName)
+    dispatch(registrationSubmitting())
+    if (nameIsSubdomain) {
+      try {
+        const res = await registerSubdomain(
+          api,
+          domainName,
+          identityIndex,
+          ownerAddress,
+          zoneFile
+        )
 
-      logger.info('Making profile zonefile...')
-      const zoneFile = makeProfileZoneFile(domainName, tokenFileUrl)
-
-      const nameIsSubdomain = isSubdomain(domainName)
-
-      dispatch(registrationSubmitting())
-
-      if (nameIsSubdomain) {
-        return registerSubdomain(api, domainName, identityIndex, ownerAddress, zoneFile)
-          .then((responseJson) => {
-            if (responseJson.error) {
-              logger.error(responseJson.error)
-              dispatch(registrationError(responseJson.error))
-            } else {
-              logger.debug(`Successfully submitted registration for ${domainName}`)
-              dispatch(registrationSubmitted())
-              dispatch(IdentityActions.addUsername(identityIndex, domainName))
-            }
-          })
-          .catch((error) => {
-            logger.error('registerName: error POSTing registration to registrar', error)
-            dispatch(registrationError(error))
-            throw error
-          })
-      } else {
-        if (api.regTestMode) {
-          logger.info('Using regtest network')
-          config.network = network.defaults.LOCAL_REGTEST
-          // browser regtest environment uses 6270
-          config.network.blockstackAPIUrl = 'http://localhost:6270'
+        if (res.error) {
+          logger.error(res.error)
+          let message =
+            `Sorry, something went wrong while registering ${domainName}. ` +
+            'You can try to register again later from your profile page. Some ' +
+            'apps may be unusable until you do.'
+          if (res.status === 409) {
+            message =
+              "Sorry, it looks like we weren't able to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID."
+          }
+          dispatch(registrationError(message))
+          dispatch(
+            notify({
+              title: 'Username Registration Failed',
+              message,
+              status: 'error',
+              dismissAfter: 6000,
+              dismissible: true,
+              closeButton: true,
+              position: 'b'
+            })
+          )
+        } else {
+          logger.debug(`Successfully submitted registration for ${domainName}`)
+          dispatch(registrationSubmitted())
+          dispatch(IdentityActions.addUsername(identityIndex, domainName))
         }
-
-        const myNet = config.network
-
-        return registerDomain(myNet, transactions, domainName, identityIndex,
-          ownerAddress, paymentKey, zoneFile)
-          .then((response) => {
-            if (response.status) {
-              logger.debug(`Successfully submitted registration for ${domainName}`)
-              dispatch(registrationSubmitted())
-              dispatch(IdentityActions.addUsername(identityIndex, domainName))
-            } else {
-              logger.error(response)
-              dispatch(registrationError(response))
-            }
-          })
-          .catch(error => {
-            logger.error('registerName: error submitting name registration', error)
-            dispatch(registrationError(error))
-            throw new Error('Error submitting name registration')
-          })
+      } catch (e) {
+        logger.error('registerName: error POSTing registration to registrar', e)
+        let message =
+          `Sorry, something went wrong while registering ${domainName}. ` +
+          'You can try to register again later from your profile page. Some ' +
+          'apps may be unusable until you do.'
+        if (e.status === 409) {
+          message =
+            "Sorry, it looks like we weren't able to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID."
+        }
+        dispatch(registrationError(message))
+        throw new Error(message)
       }
-    }).catch((error) => {
-      logger.error('registerName: error uploading profile', error)
-      dispatch(profileUploadError(error))
-      throw error
-    })
+    } else {
+      // paid name
+      if (api.regTestMode) {
+        logger.info('Using regtest network')
+        config.network = network.defaults.LOCAL_REGTEST
+        // browser regtest environment uses 6270
+        config.network.blockstackAPIUrl = 'http://localhost:6270'
+      }
+      const myNet = config.network
+
+      try {
+        const response = await registerDomain(
+          myNet,
+          transactions,
+          domainName,
+          identityIndex,
+          ownerAddress,
+          paymentKey,
+          zoneFile
+        )
+        if (response.status && response.status !== 409) {
+          logger.debug(`Successfully submitted registration for ${domainName}`)
+          dispatch(registrationSubmitted())
+          dispatch(IdentityActions.addUsername(identityIndex, domainName))
+        } else {
+          logger.error(response)
+          dispatch(registrationError(response))
+        }
+      } catch (e) {
+        logger.error('registerName: error uploading profile', e)
+        dispatch(profileUploadError(e.message))
+        throw e
+      }
+    }
+  } catch (e) {
+    logger.error('registerName: error', e)
+    dispatch(registrationError(e.message))
   }
 }
 
