@@ -149,6 +149,24 @@ createTestSuites('login-to-hello-blockstack-app', ({driver, browserHostUrl, loop
     expect(getFileResult).to.equal(gaiaFileData);
   });
 
+  step('validate blockstack.listFiles(...)', async () => {
+    const [error, result] = await driver.executeAsyncScript(`
+      var callback = arguments[arguments.length - 1];
+      var files = [];
+      blockstack.listFiles(function(filename) {
+        files.push(filename);
+        return true;
+      })
+        .then(result => callback([null, {files: files, count: result}]))
+        .catch(error => callback([error.toString(), null]));
+    `);
+    if (error) {
+      throw new Error(error);
+    }
+    expect(result.count).to.be.greaterThan(0);
+    expect(result.files).to.include('/hello.txt');
+  });
+
   step('validate blockstack.getUserAppFileUrl(...)', async () => {
     const userAppFileUrl = await driver.executePromise(
       `blockstack.getUserAppFileUrl(arguments[0], arguments[1], arguments[2])`, 

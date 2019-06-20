@@ -19,7 +19,7 @@ const UsernameResultSubdomain = (props: Props) => {
         className="btn btn-primary btn-block"
         to={`/profiles/i/add-username/${index}/select/${name}`}
       >
-        Get <strong>{name}</strong> for free
+        Register for free
       </Link>
 
     </div>

@@ -64,6 +64,10 @@ const Header = ({
 }) => {
   const renderBugs = () => {
     if (app) {
+      const appIcon = app.manifestURI
+        ? new URL(app.icon, app.manifestURI).toString()
+        : app.icon
+
       return (
         <Bugs>
           <BlockstackBug invert={invert} size={28} />
@@ -71,7 +75,7 @@ const Header = ({
             <ChevronDoubleRightIcon color={'rgba(39, 16, 51, 0.2)'} size={18} />
           </StyledBug.Arrows>
           <Bug size={28} title={app.name}>
-            <img src={app.icon} alt={app.name} />
+            <img src={appIcon} alt={app.name} />
           </Bug>
         </Bugs>
       )
