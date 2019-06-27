@@ -11,7 +11,7 @@ import {
 } from '@utils'
 import { isCoreEndpointDisabled } from '@utils/window-utils'
 import { transactions, config, network } from 'blockstack'
-
+import { fetchIdentitySettings } from '../../../account/utils'
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
@@ -547,6 +547,27 @@ function usedIdentityAddress() {
   }
 }
 
+function refreshIdentitySettings(
+  api: { gaiaHubConfig: GaiaHubConfig },
+  ownerAddress: string,
+  identityKeyPair: { key: string }
+) {
+  return dispatch => {
+    fetchIdentitySettings(api, ownerAddress, identityKeyPair)
+    .then((settings) => {
+      dispatch(updateIdentitySettings(identityIndex, settings))
+    })
+  }
+}
+
+function updateIdentitySettings(identityIndex, settings) {
+  return {
+    type: types.UPDATE_IDENTITY_SETTINGS,
+    identityIndex,
+    settings
+  }
+}
+
 const AccountActions = {
   createAccount,
   updateBackupPhrase,
@@ -569,7 +590,8 @@ const AccountActions = {
   usedIdentityAddress,
   displayedRecoveryCode,
   newIdentityAddress,
-  updateEmail
+  updateEmail,
+  refreshIdentitySettings
 }
 
 export default AccountActions

@@ -11,6 +11,8 @@ const initialState = {
     addresses: [],
     keypairs: []
   },
+  identitySettings: {
+  },
   bitcoinAccount: {
     addresses: [],
     balances: { total: 0.0 }
@@ -43,6 +45,7 @@ function AccountReducer(state = initialState, action) {
           publicKeychain: action.identityPublicKeychain,
           addresses: action.identityAddresses,
           keypairs: action.identityKeypairs,
+          settings: {},
           addressIndex: 0
         },
         bitcoinAccount: {
@@ -258,12 +261,21 @@ function AccountReducer(state = initialState, action) {
             ...state.identityAccount.addresses,
             action.keypair.address
           ],
-          keypairs: [...state.identityAccount.keypairs, action.keypair]
+          keypairs: [...state.identityAccount.keypairs, action.keypair],
+          settings: [...state.identityAccount.settings, {}]
         })
       })
     case types.CONNECTED_STORAGE:
       return Object.assign({}, state, {
         connectedStorageAtLeastOnce: true
+      })
+    case types.UPDATE_IDENTITY_SETTINGS:
+      return Object.assign({}, state, {
+        identityAccount: Object.assign({}, state.identityAccount, {
+          settings: state.identityAccount.settings.map(
+            (settingsRow, i) => i === action.identityIndex ? action.newSettings : settingsRow
+          )
+        })
       })
     default:
       return state
