@@ -43,13 +43,16 @@ export class IdentityItem extends Component {
 
   render() {
     let expireText
+    const expiresInBlocks = this.props.expireBlock - this.props.currentBlockHeight
+    const expiresInDays = Math.floor(expiresInBlocks / 144)
+    const expiredBlocks = this.props.currentBlockHeight - this.props.expireBlock
+    const expiredDays = Math.floor(expiredBlocks / 144)
+    const doesNotExpire = this.props.expireBlock <= 0
+
     if (this.props.expireBlock) {
-      if (this.props.expireBlock > 0) {
+      if (!doesNotExpire) {
         if (this.props.currentBlockHeight) {
           if (this.props.expireBlock > this.props.currentBlockHeight) {
-            const expiresInBlocks =
-              this.props.expireBlock - this.props.currentBlockHeight
-            const expiresInDays = Math.floor(expiresInBlocks / 144)
             expireText = (
               <>
                 Expires in about {expiresInDays} days
@@ -72,10 +75,7 @@ export class IdentityItem extends Component {
               </>
             )
           } else {
-            const expiresInBlocks =
-              this.props.currentBlockHeight - this.props.expireBlock
-            const expiresInDays = Math.floor(expiresInBlocks / 144)
-            expireText = <>Expired about {expiresInDays} days ago</>
+            expireText = <>Expired about {expiredDays} days ago</>
           }
         } else {
           expireText = <>Expires at block {this.props.expireBlock}</>
@@ -150,7 +150,25 @@ export class IdentityItem extends Component {
                         ) : null}
                       </span>{' '}
                       <span className="text-secondary">
-                        <small>{expireText}</small>
+                        <small>{expireText}</small>{' '}
+                        {expiresInDays < 30 && !doesNotExpire ? 
+                          <small>
+                            <a
+                              href="#"
+                              onClick={event => {
+                                event.preventDefault()
+                                event.stopPropagation()
+                                this.props.router.push(
+                                  `/profiles/${
+                                    this.props.index
+                                  }/renew`
+                                )
+                              }}
+                            >
+                              Renew
+                            </a>
+                          </small>
+                         : null}
                       </span>
                     </>
                   )}
