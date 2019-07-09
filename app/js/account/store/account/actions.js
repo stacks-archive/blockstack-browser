@@ -549,6 +549,7 @@ function usedIdentityAddress() {
 
 function refreshIdentitySettings(
   api: { gaiaHubConfig: GaiaHubConfig },
+  identityIndex: int,
   ownerAddress: string,
   identityKeyPair: { key: string }
 ) {
@@ -591,7 +592,8 @@ const AccountActions = {
   displayedRecoveryCode,
   newIdentityAddress,
   updateEmail,
-  refreshIdentitySettings
+  refreshIdentitySettings,
+  updateIdentitySettings
 }
 
 export default AccountActions

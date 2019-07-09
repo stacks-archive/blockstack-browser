@@ -9,9 +9,8 @@ const initialState = {
   encryptedBackupPhrase: null, // persist
   identityAccount: {
     addresses: [],
-    keypairs: []
-  },
-  identitySettings: {
+    keypairs: [],
+    settings: []
   },
   bitcoinAccount: {
     addresses: [],
@@ -45,7 +44,7 @@ function AccountReducer(state = initialState, action) {
           publicKeychain: action.identityPublicKeychain,
           addresses: action.identityAddresses,
           keypairs: action.identityKeypairs,
-          settings: {},
+          settings: [{}],
           addressIndex: 0
         },
         bitcoinAccount: {
@@ -273,7 +272,7 @@ function AccountReducer(state = initialState, action) {
       return Object.assign({}, state, {
         identityAccount: Object.assign({}, state.identityAccount, {
           settings: state.identityAccount.settings.map(
-            (settingsRow, i) => i === action.identityIndex ? action.newSettings : settingsRow
+            (settingsRow, i) => i === action.identityIndex ? action.settings : settingsRow
           )
         })
       })
