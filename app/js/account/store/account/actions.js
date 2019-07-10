@@ -41,7 +41,8 @@ function createAccount(
     bitcoinPublicKeychain,
     firstBitcoinAddress,
     identityAddresses,
-    identityKeypairs
+    identityKeypairs,
+    identitySettings
   } = getBlockchainIdentities(masterKeychain, identitiesToGenerate)
 
   return {
@@ -51,7 +52,8 @@ function createAccount(
     bitcoinPublicKeychain,
     firstBitcoinAddress,
     identityAddresses,
-    identityKeypairs
+    identityKeypairs,
+    identitySettings
   }
 }
 

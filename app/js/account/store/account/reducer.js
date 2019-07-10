@@ -44,7 +44,7 @@ function AccountReducer(state = initialState, action) {
           publicKeychain: action.identityPublicKeychain,
           addresses: action.identityAddresses,
           keypairs: action.identityKeypairs,
-          settings: [{}],
+          settings: action.identitySettings,
           addressIndex: 0
         },
         bitcoinAccount: {

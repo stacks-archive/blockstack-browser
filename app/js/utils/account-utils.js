@@ -440,6 +440,7 @@ export function getBlockchainIdentities(masterKeychain, identitiesToGenerate) {
 
   const identityAddresses = []
   const identityKeypairs = []
+  const identitySettings = []
 
   // We pre-generate a number of identity addresses so that we
   // don't have to prompt the user for the password on each new profile
@@ -455,6 +456,7 @@ export function getBlockchainIdentities(masterKeychain, identitiesToGenerate) {
     const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode)
     identityKeypairs.push(identityKeyPair)
     identityAddresses.push(identityKeyPair.address)
+    identitySettings.push({})
     logger.debug(`createAccount: identity index: ${addressIndex}`)
   }
 
@@ -463,6 +465,7 @@ export function getBlockchainIdentities(masterKeychain, identitiesToGenerate) {
     bitcoinPublicKeychain,
     firstBitcoinAddress,
     identityAddresses,
-    identityKeypairs
+    identityKeypairs,
+    identitySettings
   }
 }
