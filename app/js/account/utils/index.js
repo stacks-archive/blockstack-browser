@@ -150,7 +150,15 @@ export function fetchIdentitySettings(
   const hubConfig = api.gaiaHubConfig
   const url = `${hubConfig.url_prefix}${ownerAddress}/${DEFAULT_IDENTITY_SETTINGS_FILE_NAME}`
   return fetch(url)
-    .then(response => response.text())
-    .then(encryptedSettingsData => decryptContent(encryptedSettingsData, { privateKey }))
-    .then(decryptedSettingsData => JSON.parse(decryptedSettingsData))
+    .then(response => {
+      if (response.ok) {
+        return response.text()
+          .then(encryptedSettingsData => decryptContent(encryptedSettingsData, { privateKey }))
+          .then(decryptedSettingsData => JSON.parse(decryptedSettingsData))
+      } else if (response.status == 404) {
+        return {}
+      } else {
+        return Promise.reject('Could not fetch identity settings')
+      }
+    })
 }

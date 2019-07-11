@@ -549,17 +549,54 @@ function usedIdentityAddress() {
   }
 }
 
+function refreshAllIdentitySettings(
+  api: { gaiaHubConfig: GaiaHubConfig },
+  ownerAddresses: Array<string>,
+  identityKeyPairs: Array<object>
+) {
+  return dispatch => {
+    const promises: Array<Promise<*>> = ownerAddresses.map((address, index) => {
+      const promise: Promise<*> = new Promise((resolve, reject) => {
+        const keyPair = identityKeyPairs[index]
+        return fetchIdentitySettings(api, address, keyPair)
+          .then((settings) => {
+            resolve(settings)
+          })
+          .catch(error => reject(error))
+      })
+      return promise
+    })
+
+    return Promise.all(promises)
+      .then(settings => {
+        return dispatch(updateAllIdentitySettings(settings))
+      })
+      .catch((error) => {
+        logger.error(
+          'refreshIdentitySettings: error refreshing identity settings',
+          error
+        )
+        return Promise.reject(error)
+      })
+  }
+}
+
 function refreshIdentitySettings(
   api: { gaiaHubConfig: GaiaHubConfig },
   identityIndex: int,
   ownerAddress: string,
   identityKeyPair: { key: string }
 ) {
-  return dispatch => {
-    fetchIdentitySettings(api, ownerAddress, identityKeyPair)
+  return dispatch => fetchIdentitySettings(api, ownerAddress, identityKeyPair)
     .then((settings) => {
-      dispatch(updateIdentitySettings(identityIndex, settings))
+      return dispatch(updateIdentitySettings(identityIndex, settings))
     })
+}
+
+function updateAllIdentitySettings(settings) {
+  return {
+    type: types.UPDATE_ALL_IDENTITY_SETTINGS,
+    settings
   }
 }
 
@@ -594,7 +631,9 @@ const AccountActions = {
   displayedRecoveryCode,
   newIdentityAddress,
   updateEmail,
+  refreshAllIdentitySettings,
   refreshIdentitySettings,
+  updateAllIdentitySettings,
   updateIdentitySettings
 }
 

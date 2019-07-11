@@ -7,7 +7,7 @@ import { Person } from 'blockstack'
 import Modal from 'react-modal'
 import Image from '@components/Image'
 import { IdentityActions } from './store/identity'
-import { AccountActions } from '../account/store/account'
+import AccountActions from '../account/store/account'
 import SecondaryNavBar from '@components/SecondaryNavBar'
 import SocialAccountItem from './components/SocialAccountItem'
 import PGPAccountItem from './components/PGPAccountItem'
@@ -66,7 +66,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    Object.assign({}, IdentityActions, AccountActions),
+    Object.assign({}, AccountActions, IdentityActions),
     dispatch
   )
 }
@@ -79,6 +79,7 @@ export class DefaultProfilePage extends Component {
     createNewProfile: PropTypes.func.isRequired,
     updateProfile: PropTypes.func.isRequired,
     refreshIdentities: PropTypes.func.isRequired,
+    refreshAllIdentitySettings: PropTypes.func.isRequired,
     refreshSocialProofVerifications: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
@@ -112,6 +113,11 @@ export class DefaultProfilePage extends Component {
   componentWillMount() {
     logger.info('componentWillMount')
     this.props.refreshIdentities(this.props.api, this.props.identityAddresses)
+    this.props.refreshAllIdentitySettings(
+      this.props.api,
+      this.props.identityAddresses,
+      this.props.identityKeypairs
+    )  
   }
 
   componentWillReceiveProps(nextProps) {
