@@ -112,6 +112,13 @@ export class DefaultProfilePage extends Component {
   componentWillMount() {
     logger.info('componentWillMount')
     this.props.refreshIdentities(this.props.api, this.props.identityAddresses)
+    .then(() => {
+      this.props.refreshAllIdentitySettings(
+        this.props.api,
+        this.props.identityAddresses,
+        this.props.identityKeypairs
+      )  
+    })
   }
 
   componentWillReceiveProps(nextProps) {

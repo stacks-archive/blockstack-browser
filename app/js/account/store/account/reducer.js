@@ -268,14 +268,20 @@ function AccountReducer(state = initialState, action) {
       return Object.assign({}, state, {
         connectedStorageAtLeastOnce: true
       })
-    case types.UPDATE_IDENTITY_SETTINGS:
+    case types.UPDATE_ALL_IDENTITY_SETTINGS:
       return Object.assign({}, state, {
         identityAccount: Object.assign({}, state.identityAccount, {
-          settings: state.identityAccount.settings.map(
-            (settingsRow, i) => i === action.identityIndex ? action.settings : settingsRow
-          )
+          settings: action.settings
         })
       })
+      case types.UPDATE_IDENTITY_SETTINGS:
+        return Object.assign({}, state, {
+          identityAccount: Object.assign({}, state.identityAccount, {
+            settings: state.identityAccount.settings.map(
+              (settingsRow, i) => i === action.identityIndex ? action.settings : settingsRow
+            )
+          })
+        })
     default:
       return state
   }
