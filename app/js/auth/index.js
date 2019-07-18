@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { randomBytes } from 'crypto'
 import { AuthActions } from './store/auth'
 import { IdentityActions } from '../profiles/store/identity'
+import { AccountActions } from '../account/store/account'
 import { decodeToken, TokenSigner } from 'jsontokens'
 import { parseZoneFile } from 'zone-file'
 import queryString from 'query-string'
@@ -19,7 +20,10 @@ import {
   updateQueryStringParameter,
   getPublicKeyFromPrivate
 } from 'blockstack'
-import { AppsNode } from '@utils/account-utils'
+import { AppsNode, CollectionsNode } from '@utils/account-utils'
+import { 
+  processCollectionScopes
+} from '@utils/collection-utils'
 import {
   fetchProfileLocations,
   getDefaultProfileUrl
@@ -31,7 +35,8 @@ import { uploadProfile } from '../account/utils'
 import { signProfileForUpload } from '@utils'
 import {
   validateScopes,
-  appRequestSupportsDirectHub
+  appRequestSupportsDirectHub,
+  getCollectionScopes
 } from './utils'
 import {
   selectApi,
@@ -54,6 +59,7 @@ import {
   selectIdentityKeypairs,
   selectEmail,
   selectIdentityAddresses,
+  selectIdentitySettings,
   selectPublicKeychain
 } from '@common/store/selectors/account'
 import { formatAppManifest } from '@common'
@@ -73,6 +79,7 @@ function mapStateToProps(state) {
     localIdentities: selectLocalIdentities(state),
     defaultIdentity: selectDefaultIdentity(state),
     identityKeypairs: selectIdentityKeypairs(state),
+    identitySettings: selectIdentitySettings(state),
     appManifest: selectAppManifest(state),
     appManifestLoading: selectAppManifestLoading(state),
     appManifestLoadingError: selectAppManifestLoadingError(state),
@@ -88,7 +95,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  const actions = Object.assign({}, AuthActions, IdentityActions)
+  const actions = Object.assign({}, AuthActions, IdentityActions, AccountActions)
   return bindActionCreators(actions, dispatch)
 }
 
@@ -178,8 +185,11 @@ class AuthPage extends React.Component {
       scopes: {
         ...this.state.scopes,
         email: scopes.includes('email'),
-        publishData: scopes.includes('publish_data')
-      }
+        publishData: scopes.includes('publish_data'),
+      },
+      collectionScopes: [
+        ...getCollectionScopes(scopes)
+      ]
     })
 
     this.props.verifyAuthRequestAndLoadManifest(authRequest)
@@ -274,9 +284,11 @@ class AuthPage extends React.Component {
       const profile = identity.profile
       const privateKey = profileSigningKeypair.key
       const appsNodeKey = profileSigningKeypair.appsNodeKey
+      const collectionsNodeKey = profileSigningKeypair.collectionsNodeKey
       const salt = profileSigningKeypair.salt
       const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
       const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+      const collectionsNode = new CollectionsNode(HDNode.fromBase58(collectionsNodeKey), salt)
 
       let profileUrlPromise
 
@@ -314,71 +326,46 @@ class AuthPage extends React.Component {
       profileUrlPromise.then(profileUrl => {
         // Add app storage bucket URL to profile if publish_data scope is requested
         if (this.state.scopes.publishData) {
-          let apps = {}
-          if (profile.hasOwnProperty('apps')) {
-            apps = profile.apps
-          }
-
           if (storageConnected) {
-            const hubUrl = this.props.api.gaiaHubUrl
-            getAppBucketUrl(hubUrl, appPrivateKey)
-              .then(appBucketUrl => {
-                logger.debug(
-                  `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
-                )
-                apps[appDomain] = appBucketUrl
-                logger.debug(
-                  `componentWillReceiveProps: new apps array ${JSON.stringify(
-                    apps
-                  )}`
-                )
-                profile.apps = apps
-                const signedProfileTokenData = signProfileForUpload(
-                  profile,
-                  nextProps.identityKeypairs[identityIndex],
-                  this.props.api
-                )
-                logger.debug(
-                  'componentWillReceiveProps: uploading updated profile with new apps array'
-                )
-                return uploadProfile(
-                  this.props.api,
-                  identity,
-                  nextProps.identityKeypairs[identityIndex],
-                  signedProfileTokenData
-                )
-              })
-              .then(() => {
-                this.completeAuthResponse(
-                  privateKey,
-                  blockchainId,
-                  coreSessionToken,
-                  appPrivateKey,
-                  profile,
-                  profileUrl
-                )
-              })
-              .catch(err => {
-                logger.error(
-                  'componentWillReceiveProps: add app index profile not uploaded',
-                  err
-                )
-              })
+            const identityKeyPair = nextProps.identityKeypairs[identityIndex]
+            return this.handlePublishDataScope(
+              this.props.api,
+              profileUrl, 
+              profile, 
+              this.props.api.gaiaHubUrl, 
+              identity,
+              identityKeyPair,
+              appDomain, 
+              appPrivateKey
+            )
           } else {
             logger.debug(
               'componentWillReceiveProps: storage is not connected. Doing nothing.'
             )
           }
         } else {
-          this.completeAuthResponse(
-            privateKey,
-            blockchainId,
-            coreSessionToken,
-            appPrivateKey,
-            profile,
-            profileUrl
-          )
+          return {profileUrl, profile}
         }
+      }).then(({profileUrl, profile}) => {
+        const identitySettings = this.props.identitySettings[identityIndex]   
+        return processCollectionScopes(
+          appPrivateKey, 
+          this.state.collectionScopes, 
+          collectionsNode, 
+          this.props.api.gaiaHubConfig,
+          identitySettings
+        ).then(results => {
+          return {profileUrl, profile} 
+        })
+      }).then(({profileUrl, profile}) => {
+        this.completeAuthResponse(
+          privateKey,
+          blockchainId,
+          coreSessionToken,
+          appPrivateKey,
+          profile,
+          profileUrl
+        )
       })
     } else {
       logger.error(
@@ -389,7 +376,65 @@ class AuthPage extends React.Component {
 
   getFreshIdentities = async () => {
     await this.props.refreshIdentities(this.props.api, this.props.addresses)
+    await this.props.refreshAllIdentitySettings(
+      this.props.api,
+      this.props.addresses,
+      this.props.identityKeypairs
+    )
     this.setState({ refreshingIdentities: false })
+  }
+
+  handlePublishDataScope = (
+    api, 
+    profileUrl, 
+    profile, 
+    gaiaHubUrl, 
+    identity,
+    identityKeyPair, 
+    appDomain, 
+    appPrivateKey
+  ) => {
+    let apps = {}
+    if (profile.hasOwnProperty('apps')) {
+      apps = profile.apps
+    }
+
+    return getAppBucketUrl(gaiaHubUrl, appPrivateKey)
+      .then(appBucketUrl => {
+        logger.debug(
+          `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
+        )
+        apps[appDomain] = appBucketUrl
+        logger.debug(
+          `componentWillReceiveProps: new apps array ${JSON.stringify(
+            apps
+          )}`
+        )
+        profile.apps = apps
+        const signedProfileTokenData = signProfileForUpload(
+          profile,
+          identityKeyPair,
+          api
+        )
+        logger.debug(
+          'componentWillReceiveProps: uploading updated profile with new apps array'
+        )
+        return uploadProfile(
+          api,
+          identity,
+          identityKeyPair,
+          signedProfileTokenData
+        )
+      })
+      .then(() => {
+        return { profileUrl, profile }
+      })
+      .catch(err => {
+        logger.error(
+          'componentWillReceiveProps: add app index profile not uploaded',
+          err
+        )
+      })
   }
 
   completeAuthResponse = (

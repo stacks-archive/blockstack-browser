@@ -11,6 +11,8 @@ const VALID_SCOPES = {
   publish_data: true
 }
 
+const COLLECTION_SCOPE_PREFIX = 'collection.'
+
 export function appRequestSupportsDirectHub(requestPayload: Object): boolean {
   let version = '0'
   let supportsHubUrl = false
@@ -39,11 +41,22 @@ export function validateScopes(scopes: Array<string>): boolean {
   let valid = false
   for (let i = 0; i < scopes.length; i++) {
     const scope = scopes[i]
-    if (VALID_SCOPES[scope] === true) {
+    if (scope.startsWith(COLLECTION_SCOPE_PREFIX)) {
+      valid = true
+    } else if (VALID_SCOPES[scope] === true) {
       valid = true
     } else {
       return false
     }
   }
   return valid
+}
+
+export function getCollectionScopes(scopes: Array<string>): Array<string> {
+  const collectionScopes = scopes.filter(value => value.startsWith(COLLECTION_SCOPE_PREFIX))
+  if (collectionScopes.length > 0) {
+    return collectionScopes.map(value => value.substr(COLLECTION_SCOPE_PREFIX.length))
+  } else {
+    return []
+  }
 }

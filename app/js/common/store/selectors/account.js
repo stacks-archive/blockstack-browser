@@ -4,6 +4,8 @@ const selectEncryptedBackupPhrase = ({ account }) =>
 const selectIdentityAddresses = ({ account }) =>
   account.identityAccount.addresses
 const selectIdentityKeypairs = ({ account }) => account.identityAccount.keypairs
+const selectIdentitySettings = ({ account }) =>
+  account.identityAccount.settings
 const selectConnectedStorageAtLeastOnce = ({ account }) =>
   account.connectedStorageAtLeastOnce
 const selectEmail = ({ account }) => account.email
@@ -18,6 +20,7 @@ export {
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,
   selectIdentityKeypairs,
+  selectIdentitySettings,
   selectConnectedStorageAtLeastOnce,
   selectEmail,
   selectPublicKeychain,

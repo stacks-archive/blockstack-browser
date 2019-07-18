@@ -19,6 +19,8 @@ function hashCode(string) {
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
+const COLLECTIONS_NODE_INDEX = 3
+const COLLECTION_IDENTIFIER_DEFAULT = 'default'
 export const MAX_TRUST_LEVEL = 99
 
 export class AppNode {
@@ -65,6 +67,59 @@ export class AppsNode {
   }
 }
 
+export class CollectionNode {
+  constructor(hdNode) {
+    this.hdNode = hdNode
+  }
+
+  getCollectionPrivateKey() {
+    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
+  }
+
+  getAddress() {
+    return this.hdNode.getAddress()
+  }
+}
+
+export class CollectionsNode {
+  constructor(hdNode, salt) {
+    this.hdNode = hdNode
+    this.salt = salt
+  }
+
+  getNode() {
+    return this.hdNode
+  }
+
+  getCollectionNode(collectionTypeName, collectionIdentifier = COLLECTION_IDENTIFIER_DEFAULT) {
+    const hash = crypto
+      .createHash('sha256')
+      .update(`${collectionTypeName}${collectionIdentifier}${this.salt}`)
+      .digest('hex')
+    const collectionIndex = hashCode(hash)
+    const collectionNode = this.hdNode.deriveHardened(collectionIndex)
+    return new CollectionNode(collectionNode)
+  }
+
+  getCollectionEncryptionNode(collectionTypeName, encryptionIndex, collectionIdentifier = COLLECTION_IDENTIFIER_DEFAULT) {
+    const hash = crypto
+      .createHash('sha256')
+      .update(`${collectionTypeName}${collectionIdentifier}${encryptionIndex}${this.salt}`)
+      .digest('hex')
+    const collectionEncIndex = hashCode(hash)
+    const collectionEncNode = this.hdNode.deriveHardened(collectionEncIndex)
+    return new CollectionNode(collectionEncNode)
+  }
+
+  toBase58() {
+    return this.hdNode.toBase58()
+  }
+
+  getSalt() {
+    return this.salt
+  }
+}
+
 class IdentityAddressOwnerNode {
   constructor(ownerHdNode, salt) {
     this.hdNode = ownerHdNode
@@ -89,6 +144,10 @@ class IdentityAddressOwnerNode {
 
   getAppsNode() {
     return new AppsNode(this.hdNode.deriveHardened(APPS_NODE_INDEX), this.salt)
+  }
+
+  getCollectionsNode() {
+    return new CollectionsNode(this.hdNode.deriveHardened(COLLECTIONS_NODE_INDEX), this.salt)
   }
 
   getAddress() {
@@ -244,11 +303,13 @@ export function deriveIdentityKeyPair(identityOwnerAddressNode) {
   const identityKey = identityOwnerAddressNode.getIdentityKey()
   const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
   const appsNode = identityOwnerAddressNode.getAppsNode()
+  const collectionsNode = identityOwnerAddressNode.getCollectionsNode()
   const keyPair = {
     key: identityKey,
     keyID: identityKeyID,
     address,
     appsNodeKey: appsNode.toBase58(),
+    collectionsNodeKey: collectionsNode.toBase58(),
     salt: appsNode.getSalt()
   }
   return keyPair
