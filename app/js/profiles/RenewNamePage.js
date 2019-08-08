@@ -37,7 +37,7 @@ class RenewNamePage extends Component {
     localIdentities: PropTypes.object.isRequired,
     routeParams: PropTypes.object.isRequired,
     encryptedBackupPhrase: PropTypes.string.isRequired,
-    renewDomain: PropTypes.function.isRequired
+    renewDomain: PropTypes.func.isRequired
   }
 
   constructor(props) {

@@ -156,7 +156,6 @@ const renewDomain = (
     if (!!zoneFile) {
       const sha256 = bitcoin.crypto.sha256(zoneFile)
       const h = (new RIPEMD160()).update(sha256).digest('hex')
-      console.log(h)
       resolve(h);
     } else {
       reject('No zone file provided')
@@ -164,8 +163,10 @@ const renewDomain = (
   })
 
   const txPromise = zonefileHashPromise.then((zfh) => {
+    // Setting empty zonefile hash for now due to the issue with renewals in BTC
+    const emptyZoneFileHash = ''
     return transactions.makeRenewal(
-      name, ownerAddress, compressedOwnerKey, compressedPaymentKey, zoneFile, zfh, false);
+      name, ownerAddress, compressedOwnerKey, compressedPaymentKey, zoneFile, emptyZoneFileHash, false);
   })
 
   if (estimateOnly) {
