@@ -274,14 +274,28 @@ function AccountReducer(state = initialState, action) {
           settings: action.settings
         })
       })
-      case types.UPDATE_IDENTITY_SETTINGS:
-        return Object.assign({}, state, {
-          identityAccount: Object.assign({}, state.identityAccount, {
-            settings: state.identityAccount.settings.map(
-              (settingsRow, i) => i === action.identityIndex ? action.settings : settingsRow
-            )
-          })
+    case types.UPDATE_IDENTITY_SETTINGS:
+      return Object.assign({}, state, {
+        identityAccount: Object.assign({}, state.identityAccount, {
+          settings: state.identityAccount.settings.map(
+            (settingsRow, i) => i === action.identityIndex ? action.settings : settingsRow
+          )
         })
+      })
+    case types.SET_IDENTITY_COLLECTION_SETTINGS:
+      const newIdentitySettings = Object.assign({}, state.identityAccount.settings)
+
+      const identitySettingsAtIndex = newIdentitySettings[action.identityIndex]
+      if (!identitySettingsAtIndex.collections) {
+        identitySettingsAtIndex.collections = {}
+      }
+      identitySettingsAtIndex.collections[action.collectionName] = action.collectionSettings
+
+      return Object.assign({}, state, {
+        identityAccount: Object.assign({}, state.identityAccount, {
+          settings: newIdentitySettings
+        })
+      })
     default:
       return state
   }

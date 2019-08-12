@@ -608,6 +608,15 @@ function updateIdentitySettings(identityIndex, settings) {
   }
 }
 
+function setIdentityCollectionSetting(identityIndex, collectionName, collectionSettings) {
+  return {
+    type: types.SET_IDENTITY_COLLECTION_SETTINGS,
+    identityIndex,
+    collectionName,
+    collectionSettings
+  }
+}
+
 const AccountActions = {
   createAccount,
   updateBackupPhrase,
@@ -634,7 +643,8 @@ const AccountActions = {
   refreshAllIdentitySettings,
   refreshIdentitySettings,
   updateAllIdentitySettings,
-  updateIdentitySettings
+  updateIdentitySettings,
+  setIdentityCollectionSetting
 }
 
 export default AccountActions

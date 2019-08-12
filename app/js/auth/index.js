@@ -31,7 +31,7 @@ import {
 import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
-import { uploadProfile } from '../account/utils'
+import { uploadProfile, uploadIdentitySettings } from '../account/utils'
 import { signProfileForUpload } from '@utils'
 import {
   validateScopes,
@@ -129,6 +129,8 @@ class AuthPage extends React.Component {
     loginToApp: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
+    refreshIdentitySettings: PropTypes.func.isRequired,
+    setIdentityCollectionSetting: PropTypes.func.isRequired,
     coreHost: PropTypes.string.isRequired,
     corePort: PropTypes.number.isRequired,
     appManifest: PropTypes.object,
@@ -138,7 +140,7 @@ class AuthPage extends React.Component {
     noCoreSessionToken: PropTypes.func.isRequired,
     addresses: PropTypes.array.isRequired,
     publicKeychain: PropTypes.string.isRequired,
-    refreshIdentities: PropTypes.func.isRequired
+    refreshIdentities: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -154,6 +156,7 @@ class AuthPage extends React.Component {
       storageConnected: this.props.api.storageConnected,
       processing: false,
       refreshingIdentities: true,
+      identitySettingsChanged: false,
       invalidScopes: false,
       sendEmail: false,
       blockchainId: null,
@@ -230,148 +233,165 @@ class AuthPage extends React.Component {
         this.redirectUserToEchoReply()
         return
       }
-
-      const storageConnected = this.props.api.storageConnected
-      this.setState({
-        storageConnected
-      })
-
-      const appDomain = this.state.decodedToken.payload.domain_name
-      const localIdentities = nextProps.localIdentities
-      const identityKeypairs = nextProps.identityKeypairs
-      if (!appDomain || !nextProps.coreSessionTokens[appDomain]) {
-        if (this.state.noCoreStorage) {
-          logger.debug(
-            'componentWillReceiveProps: no core session token expected'
-          )
-        } else {
-          logger.debug(
-            'componentWillReceiveProps: no app domain or no core session token'
-          )
-          return
-        }
-      }
-
-      logger.info('componentWillReceiveProps')
-
-      const coreSessionToken = nextProps.coreSessionTokens[appDomain]
-      let decodedCoreSessionToken = null
-      if (!this.state.noCoreStorage) {
-        logger.debug('componentWillReceiveProps: received coreSessionToken')
-        decodedCoreSessionToken = decodeToken(coreSessionToken)
-      } else {
-        logger.debug('componentWillReceiveProps: received no coreSessionToken')
-      }
-
-      const identityIndex = this.state.currentIdentityIndex
-
-      const hasUsername = this.state.hasUsername
-      if (hasUsername) {
-        logger.debug(`login(): id index ${identityIndex} has no username`)
-      }
-
-      // Get keypair corresponding to the current user identity
-      const profileSigningKeypair = identityKeypairs[identityIndex]
-      const identity = localIdentities[identityIndex]
-
-      let blockchainId = null
-      if (decodedCoreSessionToken) {
-        blockchainId = decodedCoreSessionToken.payload.blockchain_id
-      } else {
-        blockchainId = this.state.blockchainId
-      }
-
-      const profile = identity.profile
-      const privateKey = profileSigningKeypair.key
-      const appsNodeKey = profileSigningKeypair.appsNodeKey
-      const collectionsNodeKey = profileSigningKeypair.collectionsNodeKey
-      const salt = profileSigningKeypair.salt
-      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-      const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
-      const collectionsNode = new CollectionsNode(HDNode.fromBase58(collectionsNodeKey), salt)
-
-      let profileUrlPromise
-
-      if (identity.zoneFile && identity.zoneFile.length > 0) {
-        const zoneFileJson = parseZoneFile(identity.zoneFile)
-        const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(zoneFileJson)
-        if (
-          profileUrlFromZonefile !== null &&
-          profileUrlFromZonefile !== undefined
-        ) {
-          profileUrlPromise = Promise.resolve(profileUrlFromZonefile)
-        }
-      }
-
-      const gaiaBucketAddress = nextProps.identityKeypairs[0].address
-      const identityAddress = nextProps.identityKeypairs[identityIndex].address
-      const gaiaUrlBase = nextProps.api.gaiaHubConfig.url_prefix
-
-      if (!profileUrlPromise) {
-        // use default Gaia hub if we can't tell from the profile where the profile Gaia hub is
-        profileUrlPromise = fetchProfileLocations(
-          gaiaUrlBase,
-          identityAddress,
-          gaiaBucketAddress,
-          identityIndex
-        ).then(fetchProfileResp => {
-          if (fetchProfileResp && fetchProfileResp.profileUrl) {
-            return fetchProfileResp.profileUrl
-          } else {
-            return getDefaultProfileUrl(gaiaUrlBase, identityAddress)
-          }
-        })
-      }
-
-      profileUrlPromise.then(profileUrl => {
-        // Add app storage bucket URL to profile if publish_data scope is requested
-        if (this.state.scopes.publishData) {
-          if (storageConnected) {
-            const identityKeyPair = nextProps.identityKeypairs[identityIndex]
-            return this.handlePublishDataScope(
-              this.props.api,
-              profileUrl, 
-              profile, 
-              this.props.api.gaiaHubUrl, 
-              identity,
-              identityKeyPair,
-              appDomain, 
-              appPrivateKey
-            )
-          } else {
-            logger.debug(
-              'componentWillReceiveProps: storage is not connected. Doing nothing.'
-            )
-          }
-        } else {
-          return {profileUrl, profile}
-        }
-      }).then(({profileUrl, profile}) => {
-        const identitySettings = this.props.identitySettings[identityIndex]   
-        return processCollectionScopes(
-          appPrivateKey, 
-          this.state.collectionScopes, 
-          collectionsNode, 
-          this.props.api.gaiaHubConfig,
-          identitySettings
-        ).then(results => {
-          return {profileUrl, profile} 
-        })
-      }).then(({profileUrl, profile}) => {
-        this.completeAuthResponse(
-          privateKey,
-          blockchainId,
-          coreSessionToken,
-          appPrivateKey,
-          profile,
-          profileUrl
-        )
-      })
     } else {
       logger.error(
         'componentWillReceiveProps: response already sent - doing nothing'
       )
     }
+  }
+
+  sendAuthResponse = () => {
+    const storageConnected = this.props.api.storageConnected
+    const appDomain = this.state.decodedToken.payload.domain_name
+    const localIdentities = this.props.localIdentities
+    const identityKeypairs = this.props.identityKeypairs
+    if (!appDomain) {
+      logger.debug(
+        'sendAuthResponse(): no app domain'
+      )
+    }
+
+    const identityIndex = this.state.currentIdentityIndex
+
+    const hasUsername = this.state.hasUsername
+    if (hasUsername) {
+      logger.debug(`sendAuthResponse()(): id index ${identityIndex} has no username`)
+    }
+
+    // // Get keypair corresponding to the current user identity
+    const profileSigningKeypair = identityKeypairs[identityIndex]
+    const identity = localIdentities[identityIndex]
+
+    let blockchainId = this.state.blockchainId
+
+    const profile = identity.profile
+    const privateKey = profileSigningKeypair.key
+    const appsNodeKey = profileSigningKeypair.appsNodeKey
+    const collectionsNodeKey = profileSigningKeypair.collectionsNodeKey
+    const salt = profileSigningKeypair.salt
+    const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
+    const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+    const collectionsNode = new CollectionsNode(HDNode.fromBase58(collectionsNodeKey), salt)
+
+    let profileUrlPromise
+
+    if (identity.zoneFile && identity.zoneFile.length > 0) {
+      const zoneFileJson = parseZoneFile(identity.zoneFile)
+      const profileUrlFromZonefile = getTokenFileUrlFromZoneFile(zoneFileJson)
+      if (
+        profileUrlFromZonefile !== null &&
+        profileUrlFromZonefile !== undefined
+      ) {
+        profileUrlPromise = Promise.resolve(profileUrlFromZonefile)
+      }
+    }
+
+    const gaiaBucketAddress = this.props.identityKeypairs[0].address
+    const identityAddress = this.props.identityKeypairs[identityIndex].address
+    const gaiaUrlBase = this.props.api.gaiaHubConfig.url_prefix
+
+    if (!profileUrlPromise) {
+      // use default Gaia hub if we can't tell from the profile where the profile Gaia hub is
+      profileUrlPromise = fetchProfileLocations(
+        gaiaUrlBase,
+        identityAddress,
+        gaiaBucketAddress,
+        identityIndex
+      ).then(fetchProfileResp => {
+        if (fetchProfileResp && fetchProfileResp.profileUrl) {
+          return fetchProfileResp.profileUrl
+        } else {
+          return getDefaultProfileUrl(gaiaUrlBase, identityAddress)
+        }
+      })
+    }
+
+    profileUrlPromise.then(profileUrl => {
+      // Add app storage bucket URL to profile if publish_data scope is requested
+      if (this.state.scopes.publishData) {
+        if (storageConnected) {
+          const identityKeyPair = this.props.identityKeypairs[identityIndex]
+          return this.handlePublishDataScope(
+            this.props.api,
+            profileUrl, 
+            profile, 
+            this.props.api.gaiaHubUrl, 
+            identity,
+            identityKeyPair,
+            appDomain, 
+            appPrivateKey
+          )
+        } else {
+          logger.debug(
+            'sendAuthResponse(): storage is not connected. Doing nothing.'
+          )
+        }
+      } else {
+        return {profileUrl, profile}
+      }
+    }).then(({profileUrl, profile}) => {
+      // Refresh selected account's identity settings
+      return this.props.refreshIdentitySettings(
+        this.props.api,
+        identityIndex,
+        this.props.addresses[identityIndex],
+        this.props.identityKeypairs[identityIndex]
+      ).then(() => 
+        // Generate and write collection Gaia hub config and encryption keys
+        // to app storage bucket before sending auth response
+        processCollectionScopes(
+          appPrivateKey, 
+          this.state.collectionScopes, 
+          collectionsNode, 
+          this.props.api.gaiaHubConfig,
+          this.props.identitySettings[identityIndex],
+          this.updateIdentityCollectionSettings
+        )
+      ).then(results => {
+        if (this.state.identitySettingsChanged) {
+          // Upload identity settings if modified
+          this.uploadIdentitySettings()
+        }
+        return {profileUrl, profile} 
+      })
+    }).then(({profileUrl, profile}) => {
+      // Generate and send the auth response
+      const authResponse = this.generateAuthResponse(
+        privateKey,
+        blockchainId,
+        appPrivateKey,
+        profile,
+        profileUrl
+      )
+
+      logger.info(
+        `sendAuthResponse(): id index ${this.state.currentIdentityIndex} is logging in`
+      )
+        
+      this.setState({ responseSent: true })
+      redirectUserToApp(this.state.authRequest, authResponse)
+    })
+  }
+
+  updateIdentityCollectionSettings = (collectionName, settings) => {
+    this.setState({
+      identitySettingsChanged: true
+    })
+    const identityIndex = this.state.currentIdentityIndex
+    return this.props.setIdentityCollectionSetting(identityIndex, collectionName, settings)
+  }
+
+  uploadIdentitySettings = () => {
+    const identityIndex = this.state.currentIdentityIndex
+    const identitySigner = this.props.identityKeypairs[identityIndex]
+    var newIdentitySettings = this.props.identitySettings[identityIndex]
+
+    // TODO: Make identity settings and profile upload more resistant to corruption/loss
+    return uploadIdentitySettings(
+      this.props.api,
+      identitySigner,
+      JSON.stringify(newIdentitySettings)
+    )
   }
 
   getFreshIdentities = async () => {
@@ -437,10 +457,9 @@ class AuthPage extends React.Component {
       })
   }
 
-  completeAuthResponse = (
+  generateAuthResponse = (
     privateKey,
     blockchainId,
-    coreSessionToken,
     appPrivateKey,
     profile,
     profileUrl
@@ -494,7 +513,7 @@ class AuthPage extends React.Component {
       profileResponseData,
       blockchainId,
       metadata,
-      coreSessionToken,
+      '',
       appPrivateKey,
       undefined,
       transitPublicKey,
@@ -504,13 +523,7 @@ class AuthPage extends React.Component {
     )
 
     this.props.clearSessionToken(appDomain)
-
-    logger.info(
-      `login(): id index ${this.state.currentIdentityIndex} is logging in`
-    )
-
-    this.setState({ responseSent: true })
-    redirectUserToApp(this.state.authRequest, authResponse)
+    return authResponse
   }
 
   closeModal() {
@@ -603,6 +616,7 @@ class AuthPage extends React.Component {
             noCoreStorage: true
           })
           this.props.noCoreSessionToken(appDomain)
+          return this.sendAuthResponse()
         } else {
           logger.info('login(): No storage access requested.')
           this.setState({
