@@ -129,7 +129,9 @@ class AuthPage extends React.Component {
     loginToApp: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
+    identitySettings: PropTypes.array.isRequired,
     refreshIdentitySettings: PropTypes.func.isRequired,
+    refreshAllIdentitySettings: PropTypes.func.isRequired,
     setIdentityCollectionSetting: PropTypes.func.isRequired,
     coreHost: PropTypes.string.isRequired,
     corePort: PropTypes.number.isRequired,
@@ -140,7 +142,7 @@ class AuthPage extends React.Component {
     noCoreSessionToken: PropTypes.func.isRequired,
     addresses: PropTypes.array.isRequired,
     publicKeychain: PropTypes.string.isRequired,
-    refreshIdentities: PropTypes.func.isRequired,
+    refreshIdentities: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -188,7 +190,7 @@ class AuthPage extends React.Component {
       scopes: {
         ...this.state.scopes,
         email: scopes.includes('email'),
-        publishData: scopes.includes('publish_data'),
+        publishData: scopes.includes('publish_data')
       },
       collectionScopes: [
         ...getCollectionScopes(scopes)
@@ -227,7 +229,7 @@ class AuthPage extends React.Component {
     window.location = redirectURI
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps() {
     if (!this.state.responseSent) {
       if (this.state.echoRequestId) {
         this.redirectUserToEchoReply()
@@ -262,7 +264,7 @@ class AuthPage extends React.Component {
     const profileSigningKeypair = identityKeypairs[identityIndex]
     const identity = localIdentities[identityIndex]
 
-    let blockchainId = this.state.blockchainId
+    const blockchainId = this.state.blockchainId
 
     const profile = identity.profile
     const privateKey = profileSigningKeypair.key
@@ -325,13 +327,14 @@ class AuthPage extends React.Component {
           logger.debug(
             'sendAuthResponse(): storage is not connected. Doing nothing.'
           )
+          return false
         }
       } else {
-        return {profileUrl, profile}
+        return profileUrl
       }
-    }).then(({profileUrl, profile}) => {
+    }).then((profileUrl) => 
       // Refresh selected account's identity settings
-      return this.props.refreshIdentitySettings(
+      this.props.refreshIdentitySettings(
         this.props.api,
         identityIndex,
         this.props.addresses[identityIndex],
@@ -347,14 +350,14 @@ class AuthPage extends React.Component {
           this.props.identitySettings[identityIndex],
           this.updateIdentityCollectionSettings
         )
-      ).then(results => {
+      ).then(() => {
         if (this.state.identitySettingsChanged) {
           // Upload identity settings if modified
           this.uploadIdentitySettings()
         }
-        return {profileUrl, profile} 
+        return profileUrl 
       })
-    }).then(({profileUrl, profile}) => {
+    ).then((profileUrl) => {
       // Generate and send the auth response
       const authResponse = this.generateAuthResponse(
         privateKey,
@@ -384,7 +387,7 @@ class AuthPage extends React.Component {
   uploadIdentitySettings = () => {
     const identityIndex = this.state.currentIdentityIndex
     const identitySigner = this.props.identityKeypairs[identityIndex]
-    var newIdentitySettings = this.props.identitySettings[identityIndex]
+    const newIdentitySettings = this.props.identitySettings[identityIndex]
 
     // TODO: Make identity settings and profile upload more resistant to corruption/loss
     return uploadIdentitySettings(
@@ -446,9 +449,7 @@ class AuthPage extends React.Component {
           signedProfileTokenData
         )
       })
-      .then(() => {
-        return { profileUrl, profile }
-      })
+      .then(() => profileUrl)
       .catch(err => {
         logger.error(
           'componentWillReceiveProps: add app index profile not uploaded',
@@ -616,7 +617,7 @@ class AuthPage extends React.Component {
             noCoreStorage: true
           })
           this.props.noCoreSessionToken(appDomain)
-          return this.sendAuthResponse()
+          this.sendAuthResponse()
         } else {
           logger.info('login(): No storage access requested.')
           this.setState({
