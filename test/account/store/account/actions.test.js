@@ -160,6 +160,9 @@ describe('AccountActions', () => {
           appsNodeKey:
             'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarx' +
             'XMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f',
+          collectionsNodeKey: 
+            'xprvA1y4zBndD83nEPDq9NxZFJ4VAN7pjhKdhKLzTpjRBqvRMosxtGiedSmzQNjazwPR' + 
+            'Fb6V1oBu2M8YPhm1SK18YkDxv1yYDG5gZGwrUUkKSvi',
           salt:
             'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e'
         }
