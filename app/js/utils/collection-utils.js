@@ -12,6 +12,9 @@ const DEFAULT_NEW_COLLECTION_SETTING_ARRAY = [{
   encryptionKeyIndex: 0
 }]
 
+const ARCHIVAL_GAIA_AUTH_SCOPE = 'putFileArchivalPrefix'
+const COLLECTION_GAIA_PREFIX = 'collection'
+
 export function getCollectionEncryptionIndex(collectionName, settings, updateIdentityCollectionSettings) {
   if(!settings.collection 
     || !settings.collection[collectionName] 
@@ -41,7 +44,11 @@ export function getCollectionGaiaHubConfigs(scopes, node, gaiaHubUrl) {
   const hubConfigPromises = scopes.map((scope) => {
     const collectionPrivateKey = 
     node.getCollectionNode(scope).getCollectionPrivateKey()
-    return connectToGaiaHub(gaiaHubUrl, collectionPrivateKey)
+    const scopes = [{ 
+      scope: ARCHIVAL_GAIA_AUTH_SCOPE, 
+      domain: COLLECTION_GAIA_PREFIX 
+    }]
+    return connectToGaiaHub(gaiaHubUrl, collectionPrivateKey, "", scopes)
   })
 
   return Promise.all(hubConfigPromises)
