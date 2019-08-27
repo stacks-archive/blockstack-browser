@@ -4,12 +4,10 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
   ],
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
   "plugins": [
     "import",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "jest"
   ],
   "settings": {
     "import/parsers": {
@@ -19,7 +17,7 @@ module.exports = {
   },
   "env": {
     "browser": true,
-    "node": true
+    "jest/globals": true
   },
   "rules": {
     "no-tabs": 0,
@@ -75,12 +73,6 @@ module.exports = {
     "@typescript-eslint/prefer-interface": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-unused-vars": "off",
-
-    // TODO: enable this when reasonable
-    "@typescript-eslint/no-explicit-any": "off",
-
-    // TODO: enable this when reasonable
-    "@typescript-eslint/promise-function-async": "off",
 
     // TODO: enable when this is fixed https://github.com/benmosher/eslint-plugin-import/issues/1282
     "import/named": "off"

@@ -9,7 +9,6 @@
     "outDir": "./lib"
   },
   "include": [
-    "src/**/*",
-    "tests/**/*"
+    "src/**/*"
   ]
 }
