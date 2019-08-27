@@ -6,9 +6,7 @@
     "declaration": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "outDir": "./lib",
-    "skipLibCheck": true,
-    "noEmit": true
+    "outDir": "./lib"
   },
   "include": [
     "src/**/*",
