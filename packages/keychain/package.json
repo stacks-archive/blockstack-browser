@@ -1,0 +1,20 @@
+{
+  "name": "blockstack-keychain",
+  "version": "0.0.1",
+  "description": "A package for managing Blockstack keychains",
+  "main": "index.js",
+  "author": "Hank Stoever",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.2.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-import-resolver-typescript": "^1.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "typescript": "^3.5.3"
+  }
+}
