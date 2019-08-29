@@ -56,7 +56,7 @@ module.exports = {
     "function-paren-newline": 0,
     "no-shadow": "off",
     "no-use-before-define": "off",
-    "max-len": [1, 150]
+    "max-len": [1, 150],
     "@typescript-eslint/indent": [2, 2, {
       "FunctionDeclaration": { "parameters": "first" },
       "FunctionExpression": { "parameters": "first" },
