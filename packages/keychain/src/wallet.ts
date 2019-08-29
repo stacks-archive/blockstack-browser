@@ -1,9 +1,8 @@
 import { generateMnemonic, mnemonicToSeed, validateMnemonic } from 'bip39'
 import { fromSeed, BIP32Interface } from 'bip32'
-import { randomBytes } from 'crypto'
+import { randomBytes } from 'crypto-browserify'
 
 import { encrypt, getBlockchainIdentities, IdentityKeyPair } from './utils'
-import HDNode from './hdnode'
 
 interface ConstructorOptions {
   identityPublicKeychain: string
