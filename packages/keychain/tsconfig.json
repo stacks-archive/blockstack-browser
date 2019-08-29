@@ -6,7 +6,8 @@
     "declaration": true,
     "noImplicitAny": true,
     "sourceMap": true,
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*"
