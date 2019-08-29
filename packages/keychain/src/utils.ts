@@ -42,7 +42,6 @@ async function encryptMnemonic(mnemonic: string, password: string): Promise<Buff
 
 export async function encrypt(plaintextBuffer: Buffer, password: string) {
   const mnemonic = plaintextBuffer.toString()
-  // return encryptLib.encrypt(mnemonic, password)
   const encryptedBuffer = await encryptMnemonic(mnemonic, password)
   return encryptedBuffer.toString('hex')
 }
@@ -167,12 +166,6 @@ export function getBlockchainIdentities(
   const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
   const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
 
-  // HDNode is no longer a part of bitcoinjs-lib
-  // This function is taken from https://github.com/bitcoinjs/bitcoinjs-lib/pull/1073/files#diff-1f03b6ff764c499bfbdf841bf8fc113eR10
-  // const firstBitcoinAddress = getBitcoinAddressNode(
-  //   bitcoinPublicKeychainNode
-  // ).getAddress()
-  // const firstBitcoinAddress = getAddress(bitcoinPublicKeychainNode)
   const firstBitcoinAddress = getAddress(getBitcoinAddressNode(bitcoinPublicKeychainNode))
 
   const identityAddresses = []
@@ -196,9 +189,6 @@ export function getBlockchainIdentities(
     identityAddresses.push(
       identityKeyPair.address
     )
-    // logger.debug(
-    //   `createAccount: identity index: ${addressIndex}`
-    // )
   }
 
   return {
