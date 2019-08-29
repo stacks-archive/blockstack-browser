@@ -6,10 +6,6 @@
   "author": "Hank Stoever",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/plugin-proposal-class-properties": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-typescript": "^7.3.3",
     "@types/bip39": "^2.4.2",
     "@types/create-hmac": "^1.1.0",
     "@types/ecurve": "^1.0.0",
