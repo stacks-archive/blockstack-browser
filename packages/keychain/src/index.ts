@@ -1,3 +1,5 @@
-const demo = (): string => 'hello, world'
+import Wallet from './wallet'
 
-export default demo
+export default {
+  Wallet
+}
