@@ -36,7 +36,8 @@ module.exports = {
     "quotes": [2, "single"],
     "eol-last": 2,
     "no-debugger": 1,
-    "no-mixed-requires": 0,
+    "no-mixed-requires": 1,
+    "@typescript-eslint/no-var-requires": 1,
     "no-underscore-dangle": 0,
     "no-multi-spaces": 0,
     "no-trailing-spaces": 0,
@@ -55,6 +56,7 @@ module.exports = {
     "function-paren-newline": 0,
     "no-shadow": "off",
     "no-use-before-define": "off",
+    "max-len": [1, 150]
     "@typescript-eslint/indent": [2, 2, {
       "FunctionDeclaration": { "parameters": "first" },
       "FunctionExpression": { "parameters": "first" },
