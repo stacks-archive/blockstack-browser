@@ -16,6 +16,7 @@
     "@types/jest": "^24.0.18",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "depcheck": "^0.8.3",
     "eslint": "^6.2.2",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-import-resolver-typescript": "^1.1.1",
@@ -29,7 +30,8 @@
     "build": "tsc",
     "test": "jest",
     "test-watch": "jest --watch",
-    "lint": "eslint src/**/*"
+    "lint": "eslint src/**/*",
+    "depcheck": "depcheck --ignores='@types/*,eslint*,safe-buffer'"
   },
   "dependencies": {
     "bigi": "^1.4.2",
