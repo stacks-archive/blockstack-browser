@@ -166,13 +166,12 @@ const renewDomain = (
     // Setting empty zonefile hash for now due to the issue with renewals in BTC
     const emptyZoneFileHash = ''
     return transactions.makeRenewal(
-      name, ownerAddress, compressedOwnerKey, compressedPaymentKey, zoneFile, emptyZoneFileHash, false);
+      name, ownerAddress, compressedOwnerKey, compressedPaymentKey, null, emptyZoneFileHash, false);
   })
 
   if (estimateOnly) {
     return estimatePromise
   }
-  // return txPromise
   return txPromise.then((tx) => network.broadcastTransaction(tx));
 }
 
