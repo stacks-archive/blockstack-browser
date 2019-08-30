@@ -6,6 +6,9 @@ import {
   isNameAvailable, getNamePrices
 } from '@utils/index'
 
+import { satoshisToBtc } from '@utils/bitcoin-utils'
+
+
 const logger = log4js.getLogger(__filename)
 
 function checkingNameAvailability(domainName) {
@@ -83,7 +86,7 @@ function checkNameAvailabilityAndPrice(api, domainName) {
           dispatch(namePrice(domainName, 0))
         } else {
           return getNamePrices(api.priceUrl, domainName).then((prices) => {
-            const price = prices.total_estimated_cost.btc
+            const price = satoshisToBtc(prices.name_price.satoshis)
             dispatch(namePrice(domainName, price))
           }).catch((error) => {
             logger.error('checkNameAvailabilityAndPrice: getNamePrices: error', error)
