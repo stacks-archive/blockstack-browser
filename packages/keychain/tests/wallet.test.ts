@@ -1,4 +1,5 @@
 import Wallet from '../src/wallet'
+import { decrypt } from '../src/encryption/decrypt'
 
 describe('Restoring a wallet', () => {
   test('restores an existing wallet and keychain', async () => {
@@ -28,10 +29,31 @@ describe('Restoring a wallet', () => {
     ]
 
     const wallet = await Wallet.restore(password, backupPhrase)
-    expect(wallet.bitcoinPublicKeyChain).toEqual(bitcoinPublicKeychain)
+    expect(wallet.bitcoinPublicKeychain).toEqual(bitcoinPublicKeychain)
     expect(wallet.identityPublicKeychain).toEqual(identityPublicKeychain)
     expect(wallet.firstBitcoinAddress).toEqual(firstBitcoinAddress)
     expect(wallet.identityAddresses).toEqual(identityAddresses)
     expect(wallet.identityKeypairs).toEqual(identityKeypairs)
+  })
+
+  test('generates and restores the same wallet', async () => {
+    const password = 'password'
+    const generated = await Wallet.generate(password)
+
+    const encryptedBackupPhrase = generated.encryptedBackupPhrase
+    // const identityPublicKeychain = generated.identityPublicKeychain
+    // const bitcoinPublicKeychain = generated.bitcoinPublicKeychain
+
+    console.log('about to encyrpt');
+    
+    const plainTextBuffer = await decrypt(Buffer.from(encryptedBackupPhrase, "hex"), password);
+    console.log('decrypted');
+    
+
+    const backupPhrase = plainTextBuffer.toString();
+
+    const restored = await Wallet.restore(password, backupPhrase)
+
+    expect(restored.identityPublicKeychain).toEqual(generated.identityPublicKeychain)
   })
 })

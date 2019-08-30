@@ -2,7 +2,8 @@ import { generateMnemonic, mnemonicToSeed, validateMnemonic } from 'bip39'
 import { fromSeed, BIP32Interface } from 'bip32'
 import { randomBytes } from 'crypto-browserify'
 
-import { encrypt, getBlockchainIdentities, IdentityKeyPair } from './utils'
+import { getBlockchainIdentities, IdentityKeyPair } from './utils'
+import { encrypt } from './encryption/encrypt'
 
 interface ConstructorOptions {
   identityPublicKeychain: string
@@ -15,7 +16,7 @@ interface ConstructorOptions {
 
 export default class Wallet {
   encryptedBackupPhrase: string
-  bitcoinPublicKeyChain: string
+  bitcoinPublicKeychain: string
   firstBitcoinAddress: string
   identityKeypairs: IdentityKeyPair[]
   identityAddresses: string[]
@@ -27,11 +28,11 @@ export default class Wallet {
     bitcoinPublicKeychain,
     firstBitcoinAddress,
     identityKeypairs,
-    identityAddresses,
+    identityAddresses
   }: ConstructorOptions) {
     this.encryptedBackupPhrase = encryptedBackupPhrase
     this.identityPublicKeychain = identityPublicKeychain
-    this.bitcoinPublicKeyChain = bitcoinPublicKeychain
+    this.bitcoinPublicKeychain = bitcoinPublicKeychain
     this.firstBitcoinAddress = firstBitcoinAddress
     this.identityKeypairs = identityKeypairs
     this.identityAddresses = identityAddresses
