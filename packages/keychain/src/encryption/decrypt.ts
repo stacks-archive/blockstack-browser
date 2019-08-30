@@ -84,7 +84,7 @@ export async function decryptMain(hexEncryptedKey: string, password: string): Pr
       // logger.debug("Trying to decrypt with legacy function.");
       const mnemonicBuffer = await decryptLegacy(dataBuffer, password)
       // console.log(mnemonic)
-      mnemonic = mnemonicBuffer.toString('hex')
+      mnemonic = mnemonicBuffer.toString()
     } catch (e) {
       // mnemonic = null;
       // logger.error("Could not decrypt again, most likely wrong password.");
@@ -98,5 +98,5 @@ export async function decryptMain(hexEncryptedKey: string, password: string): Pr
 export async function decrypt(dataBuffer: Buffer, password: string) {
   const encryptedMnemonic = dataBuffer.toString('hex')
   const mnemonic = await decryptMain(encryptedMnemonic, password)
-  return Buffer.from(mnemonic, 'hex')
+  return Buffer.from(mnemonic)
 }
