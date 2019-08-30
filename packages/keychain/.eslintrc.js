@@ -57,6 +57,7 @@ module.exports = {
     "no-shadow": "off",
     "no-use-before-define": "off",
     "max-len": [1, 150],
+    "lines-between-class-members": [2, "always", { exceptAfterSingleLine: true }],
     "@typescript-eslint/indent": [2, 2, {
       "FunctionDeclaration": { "parameters": "first" },
       "FunctionExpression": { "parameters": "first" },
