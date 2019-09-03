@@ -1,63 +1,32 @@
 module.exports = {
   "extends": [
-    "airbnb-base",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "import",
-    "@typescript-eslint",
-    "jest"
-  ],
-  "settings": {
-    "import/parsers": {
-      "@typescript-eslint/parser": [".ts"]
-    },
-    "import/resolver": { "typescript": {} }
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": __dirname,
   },
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "env": {
     "browser": true,
-    "jest/globals": true
+    "node": true,
+    "es6": true
   },
   "rules": {
-    "no-tabs": 0,
-    "no-restricted-globals": 0,
-    "import/prefer-default-export": 0,
-    "no-buffer-constructor": 0,
-    "no-mixed-operators": 0,
-    "no-plusplus": 0,
-    "no-bitwise": 0,
-    "prefer-promise-reject-errors": 0,
-    "class-methods-use-this": 0,
-    "import/no-cycle": 0,
-    "prefer-destructuring": 0,
-    "no-prototype-builtins": 0,
-    "comma-dangle": ["error", "never"],
     "quotes": [2, "single"],
     "eol-last": 2,
-    "no-debugger": 1,
-    "no-mixed-requires": 1,
-    "@typescript-eslint/no-var-requires": 1,
-    "no-underscore-dangle": 0,
-    "no-multi-spaces": 0,
-    "no-trailing-spaces": 0,
-    "no-extra-boolean-cast": 0,
-    "no-undef": 2,
+    "no-mixed-requires": 0,
     "no-var": 2,
-    "no-param-reassign": 0,
-    "no-else-return": 0,
-    "no-console": 0,
-    "prefer-const": 2,
-    "new-cap": 0,
-    "semi": [2, "never"],
-    "valid-jsdoc": "off",
-    "object-curly-newline": "off",    
-    "arrow-parens": "off",
-    "function-paren-newline": 0,
-    "no-shadow": "off",
-    "no-use-before-define": "off",
-    "max-len": [1, 150],
-    "lines-between-class-members": [2, "always", { exceptAfterSingleLine: true }],
+    "no-param-reassign": "error",
+    "brace-style": 2,
+    "no-empty": "off",
+    //"max-len": ["error", { "code": 100 }],
     "@typescript-eslint/indent": [2, 2, {
       "FunctionDeclaration": { "parameters": "first" },
       "FunctionExpression": { "parameters": "first" },
@@ -66,18 +35,33 @@ module.exports = {
       "ImportDeclaration": "first",
       "CallExpression": { "arguments": "first" }
     }],
+    "@typescript-eslint/member-delimiter-style": ["error", {
+      "multiline": {
+        "delimiter": "none",
+        "requireLast": true
+      },
+      "singleline": {
+        "delimiter": "semi",
+        "requireLast": true
+      },
+    }],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/array-type": "error",
+    "@typescript-eslint/semi": ["error", "never"],
+    "@typescript-eslint/no-misused-promises": "error",
+    "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/require-await": "error",
+    "@typescript-eslint/promise-function-async": "error",
+    "@typescript-eslint/await-thenable": "error",
+
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-object-literal-type-assertion": "off",
     "@typescript-eslint/explicit-member-accessibility": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/class-name-casing": "off",
     "@typescript-eslint/camelcase": "off",
-    "@typescript-eslint/array-type": "off",
-    "@typescript-eslint/member-delimiter-style": "off",
-    "@typescript-eslint/no-angle-bracket-type-assertion": "off",
-    "@typescript-eslint/prefer-interface": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-unused-vars": "off",
-
-    // TODO: enable when this is fixed https://github.com/benmosher/eslint-plugin-import/issues/1282
-    "import/named": "off"
   }
-}
+};

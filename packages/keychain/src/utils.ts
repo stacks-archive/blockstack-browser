@@ -85,10 +85,10 @@ export function hashCode(string: string) {
 }
 
 export interface IdentityKeyPair {
-  key: string,
-  keyID: string,
-  address: string,
-  appsNodeKey: string,
+  key: string
+  keyID: string
+  address: string
+  appsNodeKey: string
   salt: string
 }
 

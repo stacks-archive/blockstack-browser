@@ -2,3 +2,5 @@
 /lib
 yarn-error.log
 /coverage
+lib-esm
+package-lock.json

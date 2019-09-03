@@ -12,6 +12,9 @@ export default class AppNode {
   }
 
   getAppPrivateKey() {
+    if (!this.hdNode.privateKey) {
+      throw new Error('Node does not have private key')
+    }
     return this.hdNode.privateKey.toString('hex')
   }
 

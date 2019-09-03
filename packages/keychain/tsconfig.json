@@ -1,14 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2017",
     "module": "commonjs",
     "moduleResolution": "node",
     "declaration": true,
+    "outDir": "/lib",
+    "rootDir": "./src",
+    "strict": true,
+    "lib": [
+      "es2017"
+    ],
     "noImplicitAny": true,
-    "sourceMap": true,
-    "outDir": "./lib",
+    "sourceMap": true
   },
   "include": [
-    "src/**/*"
+    "./src/**/*"
   ]
 }
