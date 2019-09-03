@@ -1,10 +1,10 @@
 import { createHmac, pbkdf2Sync, createHash, createDecipheriv } from 'crypto-browserify'
-import triplesec from 'triplesec'
-import bip39 from 'bip39'
+import * as triplesec from 'triplesec'
+import { entropyToMnemonic, validateMnemonic } from 'bip39'
 // import { Buffer } from "buffer/"
 
 async function denormalizeMnemonic(normalizedMnemonic: string) {
-  return bip39.entropyToMnemonic(normalizedMnemonic)
+  return entropyToMnemonic(normalizedMnemonic)
 }
 
 async function decryptMnemonic(dataBuffer: Buffer, password: string) {
@@ -44,7 +44,7 @@ async function decryptMnemonic(dataBuffer: Buffer, password: string) {
   }
 
   const mnemonic = await denormalizeMnemonic(plaintext)
-  if (!bip39.validateMnemonic(mnemonic)) {
+  if (!validateMnemonic(mnemonic)) {
     throw new Error('Wrong password (invalid plaintext)')
   }
 
