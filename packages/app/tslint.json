@@ -1,0 +1,18 @@
+{
+	"defaultSeverity": "error",
+	"extends": [ "tslint:recommended" ],
+	"jsRules": {},
+	"rules": {
+		"arrow-parens": false,
+		"indent": [ true, "tabs", 4 ],
+		"interface-name": false,
+		"jsx-wrap-multiline": false,
+		"max-line-length": [true, {"limit": 120, "ignore-pattern": "^import |^export {(.*?)}|class [a-zA-Z]+ implements |//"}],
+		"member-access": [ true, "no-public" ],
+		"no-empty": [ true, "allow-empty-functions" ],
+		"object-literal-sort-keys": false,
+		"quotemark": [ true, "single", "jsx-double" ],
+		"trailing-comma": [ true, { "multiline": "ignore", "singleline": "never" }]
+	},
+	"rulesDirectory": []
+}

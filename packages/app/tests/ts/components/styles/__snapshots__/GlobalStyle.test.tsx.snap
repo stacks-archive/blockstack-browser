@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing Global Style GlobalStyle Snapshot. 1`] = `
+"
+	body {
+		box-sizing: border-box;
+		display: block;
+		margin: 0;
+	}
+"
+`;
