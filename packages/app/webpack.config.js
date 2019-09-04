@@ -32,6 +32,9 @@ module.exports = {
             { test: /\.(js|ts|tsx)?$/, loader: "awesome-typescript-loader", exclude: /node_modules/ },
         ]
     },
+    devServer: {
+        contentBase: './dist'
+    },
     plugins: [
         new CheckerPlugin(),
         new HtmlWebpackPlugin({
