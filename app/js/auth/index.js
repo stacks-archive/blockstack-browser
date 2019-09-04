@@ -346,7 +346,7 @@ class AuthPage extends React.Component {
           appPrivateKey, 
           this.state.collectionScopes, 
           collectionsNode, 
-          this.props.api.gaiaHubConfig,
+          this.props.api.gaiaHubUrl,
           this.props.identitySettings[identityIndex],
           this.updateIdentityCollectionSettings
         )

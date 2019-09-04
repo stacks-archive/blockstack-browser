@@ -111,7 +111,7 @@ export function processCollectionScopes(
   appPrivateKey,
   collectionScopes,
   collectionsNode,
-  gaiaHubConfig,
+  gaiaHubUrl,
   identitySettings,
   updateIdentityCollectionSettings
 ) {
@@ -123,7 +123,7 @@ export function processCollectionScopes(
       updateIdentityCollectionSettings
     )
   const hubConfigsPromise = 
-    getCollectionGaiaHubConfigs(collectionScopes, collectionsNode, gaiaHubConfig.server)
+    getCollectionGaiaHubConfigs(collectionScopes, collectionsNode, gaiaHubUrl)
   return Promise.all([encryptionKeyPromise, hubConfigsPromise])
     .then(results => {
       const collectionKeys = results[0]
@@ -131,7 +131,7 @@ export function processCollectionScopes(
       return updateAppCollectionKeys(
         collectionScopes,
         appPrivateKey, 
-        gaiaHubConfig.server, 
+        gaiaHubUrl, 
         collectionKeys, 
         collectionHubConfigs
       )
