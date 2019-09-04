@@ -4,7 +4,7 @@
 	"description": "A web browser extension starter - based on Typescript, React, Redux, Styled-Component, Webpack, and more. Runs on Chrome and Firefox.",
 	"main": "index.js",
 	"scripts": {
-		"dev": "cross-env NODE_ENV=development webpack -d",
+		"dev": "cross-env NODE_ENV=development webpack-dev-server -d",
 		"prod": "cross-env NODE_ENV=production webpack -p",
 		"watch": "cross-env NODE_ENV=watch webpack -d",
 		"clean": "rm -rf ./dist",
@@ -17,9 +17,10 @@
 		"react": "^16.8.6",
 		"react-chrome-redux": "^2.0.0-alpha.5",
 		"react-dom": "^16.8.6",
-		"react-redux": "^7.1.0",
-		"redux": "4.0.1",
-		"styled-components": "^4.3.2"
+		"react-redux": "^7.1.1",
+		"redux": "4.0.4",
+		"styled-components": "^4.3.2",
+		"webext-redux": "^2.1.2"
 	},
 	"devDependencies": {
 		"@types/chrome": "^0.0.86",
@@ -27,9 +28,8 @@
 		"@types/node": "^12.6.2",
 		"@types/react": "^16.8.23",
 		"@types/react-dom": "^16.8.4",
-		"@types/react-redux": "^7.1.1",
+		"@types/react-redux": "^7.1.2",
 		"@types/react-test-renderer": "^16.8.2",
-		"@types/redux": "^3.6.0",
 		"@types/styled-components": "4.1.8",
 		"@types/webpack": "^4.4.35",
 		"awesome-typescript-loader": "^5.2.1",
@@ -44,7 +44,8 @@
 		"typescript": "^3.5.3",
 		"webpack": "^4.35.3",
 		"webpack-chrome-extension-reloader": "^1.3.0",
-		"webpack-cli": "^3.3.5"
+		"webpack-cli": "^3.3.5",
+		"webpack-dev-server": "^3.8.0"
 	},
 	"repository": {
 		"type": "git",
