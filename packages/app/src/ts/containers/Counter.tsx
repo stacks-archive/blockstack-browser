@@ -1,46 +1,46 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import styled from 'styled-components';
-import { IAppState } from '../background/store';
-import { decrement, increment } from '../background/store/counter/actions';
-import { ICounter } from '../background/store/counter/reducer';
+import * as React from 'react'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+import styled from 'styled-components'
+import { IAppState } from '../background/store'
+import { decrement, increment } from '../background/store/counter/actions'
+import { ICounter } from '../background/store/counter/reducer'
 
 interface ICounterProps {
-	counter: ICounter;
-	dispatch: Dispatch;
+  counter: ICounter
+  dispatch: Dispatch
 }
 
 class Counter extends React.Component<ICounterProps> {
-	increment = () => {
-		this.props.dispatch(increment());
-	}
-	decrement = () => {
-		this.props.dispatch(decrement());
-	}
+  increment = () => {
+    this.props.dispatch(increment())
+  }
+  decrement = () => {
+    this.props.dispatch(decrement())
+  }
 
-	render() {
-		return (
-			<CounterContainer >
-				<Display>
-					{this.props.counter.clicksMade}
-				</Display>
-				<Controls>
-					<Button onClick={this.increment}>+</Button>
-					<Button onClick={this.decrement}>-</Button>
-				</Controls>
-			</CounterContainer>
-		);
-	}
+  render() {
+    return (
+      <CounterContainer >
+        <Display>
+          {this.props.counter.clicksMade}
+        </Display>
+        <Controls>
+          <Button onClick={this.increment}>+</Button>
+          <Button onClick={this.decrement}>-</Button>
+        </Controls>
+      </CounterContainer>
+    )
+  }
 }
 
 const mapStateToProps = (state: IAppState) => {
-	return {
-		counter: state.counter,
-	};
-};
+  return {
+    counter: state.counter,
+  }
+}
 
-export default connect(mapStateToProps)(Counter);
+export default connect(mapStateToProps)(Counter)
 
 const CounterContainer = styled('div')`
 	display: flex;
@@ -51,19 +51,19 @@ const CounterContainer = styled('div')`
 	padding: 5px;
 	margin: 5px;
 	background-color: ${p => p.theme.backgroundColor};
-`;
+`
 
 const Display = styled('div')`
 	font-size: 48px;
 	justify-self: center;
-`;
+`
 
 const Controls = styled('div')`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
 	min-width: 200px;
-`;
+`
 
 // Thanks to: https://codepen.io/FelipeMarcos/pen/tfhEg?editors=1100
 const Button = styled('button')`
@@ -87,4 +87,4 @@ const Button = styled('button')`
 	&:active {
 		background: #169499;
 	}
-`;
+`

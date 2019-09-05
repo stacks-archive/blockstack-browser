@@ -1,26 +1,26 @@
-import { Reducer} from 'redux';
-import { CounterActions } from './actions';
+import { Reducer} from 'redux'
+import { CounterActions } from './actions'
 
 export interface ICounter {
-	clicksMade: number;
+  clicksMade: number
 }
 
 const initialState: ICounter = {
-	clicksMade: 0
-};
+  clicksMade: 0
+}
 
 const counter: Reducer<ICounter, CounterActions> = (state = initialState, action) => {
-	const { payload } = action;
-	switch (action.type) {
-		case 'INCREMENT':
-			return { ...state, clicksMade: state.clicksMade + (payload || 1) };
+  const { payload } = action
+  switch (action.type) {
+  case 'INCREMENT':
+    return { ...state, clicksMade: state.clicksMade + (payload || 1) }
 
-		case 'DECREMENT':
-			return { ...state, clicksMade: state.clicksMade - (payload || 1) };
+  case 'DECREMENT':
+    return { ...state, clicksMade: state.clicksMade - (payload || 1) }
 
-		default:
-			return state;
-	}
-};
+  default:
+    return state
+  }
+}
 
-export default counter;
+export default counter
