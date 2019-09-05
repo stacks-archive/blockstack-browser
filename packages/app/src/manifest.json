@@ -1,10 +1,12 @@
 {
-	"name": "Web Extension Starter",
+	"name": "Blockstack",
 	"author": "ymdevs",
 	"version": "1.0.0",
-	"description": "A web browser extension starter - based on Typescript, React, Redux, Styled-Component, Webpack, and more. Runs on Chrome and Firefox.",
+	"description": "The Blockstack app is all you need to access the new internet. Access privacy-friendly apps and keep data in your control.",
 	"icons": {
-		"128": "assets/icon-128.png"
+		"128": "assets/logo-128@1x.png",
+		"256": "assets/logo-128@2x.png",
+		"512": "assets/logo-128@3x.png"
 	},
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"permissions": [
@@ -26,8 +28,8 @@
 		"persistent": true
 	},
 	"browser_action": {
-		"default_title": "Web Extension Starter",
-		"default_icon": "assets/icon-48.png",
+		"default_title": "Blockstack",
+		"default_icon": "assets/logo-16@3x.png",
 		"default_popup": "popup.html"
 	},
 	"options_ui": {
