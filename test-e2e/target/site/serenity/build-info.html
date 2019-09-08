@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Serenity Reports</title>
+
+    <link rel="shortcut icon" href="favicon.ico">
+
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<!--[if IE 7]>
+<link rel="stylesheet" href="font-awesome/css/font-awesome-ie7.min.css">
+<![endif]--><!-- JQuery -->
+<script type="text/javascript" src="scripts/jquery-1.11.1.min.js"></script><!-- Bootstrap -->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="bootstrap/js/bootstrap.min.js"></script><link rel="stylesheet" href="css/core.css"/>
+<link rel="stylesheet" href="css/link.css"/>
+<link type="text/css" media="screen" href="css/screen.css" rel="Stylesheet"/><!-- JQuery-UI -->
+<link type="text/css" href="jqueryui/1.11.2-start/jquery-ui.min.css" rel="Stylesheet" />
+<script type="text/javascript" src="jqueryui/1.11.2-start/jquery-ui.min.js"></script><!-- DataTables -->
+<link type="text/css" href="datatables/1.10.4/media/jqueryui/dataTables.jqueryui.css" rel="Stylesheet"/>
+<link type="text/css" href="css/tables.css" rel="stylesheet" />
+
+<script type="text/javascript" src="datatables/1.10.4/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="datatables/1.10.4/media/jqueryui/dataTables.jqueryui.min.js"></script><!-- jQplot -->
+<!--[if IE]>
+<script language="javascript" type="text/javascript" src="excanvas/3/excanvas.compiled.js"></script>
+<![endif]--><link rel="stylesheet" type="text/css" href="jqplot/1.0.8/jquery.jqplot.min.css"/>
+<script type="text/javascript" src="jqplot/1.0.8/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="jqplot/1.0.8/plugins/jqplot.pieRenderer.min.js"></script>
+
+
+    <script class="code" type="text/javascript">$(document).ready(function () {
+        var test_results_plot = $.jqplot('test_results_pie_chart', [
+            [
+                ['Passing', 0],
+                
+                ['Pending', 0],
+                
+                ['Ignored', 0],
+                
+                ['Failing', 0],
+                
+                ['Errors',  0]
+            ]
+        ], {
+
+            gridPadding: {top: 0, bottom: 38, left: 0, right: 0},
+            seriesColors: ['#30cb23',
+                
+                '#a2f2f2',
+                
+                '#eeeadd',
+                
+                '#f8001f',
+                
+                '#fc6e1f'],
+            seriesDefaults: {
+                renderer: $.jqplot.PieRenderer,
+                trendline: { show: false },
+                rendererOptions: { padding: 8, showDataLabels: true }
+            },
+            legend: {
+                show: true,
+                placement: 'outside',
+                rendererOptions: {
+                    numberRows: 2
+                },
+                location: 's',
+                marginTop: '15px'
+            },
+            series: [
+                {label: '0 / 0 tests passed' },
+                {label: '0 / 0 tests pending'},
+                {label: '0 / 0 tests not executed'},
+                {label: '0 / 0 tests failed'},
+                {label: '0 / 0 errors'}
+            ]
+        });
+
+        var weighted_test_results_plot = $.jqplot('weighted_test_results_pie_chart', [
+            [
+                ['Passing', 0],
+                
+                ['Pending', 0],
+                
+                ['Ignored', 0],
+                
+                ['Failing', 0],
+                
+                ['Errors', 0]
+            ]
+        ], {
+
+            gridPadding: {top: 0, bottom: 38, left: 0, right: 0},
+            seriesColors: ['#30cb23',
+                
+                '#a2f2f2',
+                
+                '#eeeadd',
+                
+                '#f8001f',
+                
+                '#fc6e1f'],
+
+            seriesDefaults: {
+                renderer: $.jqplot.PieRenderer,
+                trendline: { show: false },
+                rendererOptions: { padding: 8, showDataLabels: true }
+            },
+            legend: {
+                show: true,
+                placement: 'outside',
+                rendererOptions: {
+                    numberRows: 2
+                },
+                location: 's',
+                marginTop: '15px'
+            },
+            series: [
+                {label: '0 / 0 tests passed (0% of all test steps)' },
+                {label: '0 / 0 tests pending'},
+                {label: '0 / 0 tests not executed'},
+                {label: '0 / 0 tests failed (0% of all test steps)'},
+                {label: '0 / 0 errors (0% of all test steps)'}
+            ]
+        });
+
+        // Results table
+        $('#test-results-table').DataTable({
+            "order": [
+                [ 1, "asc" ]
+            ],
+            "pageLength": 25
+        });
+
+        // Pie charts
+        $('#test-results-tabs').tabs();
+
+        $('#toggleNormalPieChart').click(function () {
+            $("#test_results_pie_chart").toggle();
+        });
+
+        $('#toggleWeightedPieChart').click(function () {
+            $("#weighted_test_results_pie_chart").toggle();
+        });
+
+
+
+    })
+    ;
+    </script>
+</head>
+
+<body class="results-page">
+<div id="topheader">
+    <div id="topbanner">
+        <div id="logo"><a href="index.html"><img src="images/serenity-logo.png" border="0"/></a></div>
+        <div id="projectname-banner" style="float:right">
+            <span class="projectname"></span>
+        </div>
+    </div>
+</div>
+
+<div class="middlecontent">
+
+    <div id="contenttop">
+        <div class="middlebg">
+            <span class="breadcrumbs"><a href="index.html">Home</a> > Environment details</span>
+        </div>
+        <div class="rightbg"></div>
+    </div>
+
+    <div class="clr"></div>
+
+    <!--/* starts second table*/-->
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#"><i class="fa fa-check-square-o"></i> Overall Test Results</a>
+        </li>
+        <li >
+            <a href="capabilities.html"><i class="fa fa-book"></i> Requirements</a>
+        </li>
+        <li >
+            <a href="576946480b52ad056d6f5bddf874399c83582ecf90963cc074a14c70580e7d9f.html"><i class="fa fa-comments-o"></i> Features</a>
+        </li>
+    </ul>
+    <span class="date-and-time"><a href="build-info.html"><i class="fa fa-info-circle"></i></a> Report generated 02-09-2019 02:12</span>
+    <br style="clear:left"/>
+</div>
+    <div class="clr"></div>
+    <div id="beforetable"></div>
+    <div id="results-dashboard">
+        <div class="middlb">
+            <div class="table">
+                <h2>Environment details</h2>
+
+                <table class="table table-striped build-info">
+                    <tr>
+                        <td style="width: 30%">Default Driver</td>
+                        <td>firefox</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 30%">Operating System</td>
+                        <td>Windows 10 version 10.0</td>
+                    </tr>
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div id="beforefooter"></div>
+<div id="bottomfooter">
+    <span class="version">Serenity version UNKNOWN</span>
+</div>
+
+</body>
+</html>

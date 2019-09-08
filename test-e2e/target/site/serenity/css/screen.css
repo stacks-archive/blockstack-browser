@@ -1,0 +1,8 @@
+.dataTables_info, 
+.dataTables_paginate { 
+  padding-top: 0; 
+}
+
+.css_right { 
+  float: right; 
+}

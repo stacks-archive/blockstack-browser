@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Features</title>
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<!--[if IE 7]>
+<link rel="stylesheet" href="font-awesome/css/font-awesome-ie7.min.css">
+<![endif]--><!-- JQuery -->
+<script type="text/javascript" src="scripts/jquery-1.11.1.min.js"></script><!-- Bootstrap -->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="bootstrap/js/bootstrap.min.js"></script><link rel="stylesheet" href="css/core.css"/>
+<link rel="stylesheet" href="css/link.css"/>
+<link type="text/css" media="screen" href="css/screen.css" rel="Stylesheet"/><!-- JQuery-UI -->
+<link type="text/css" href="jqueryui/1.11.2-start/jquery-ui.min.css" rel="Stylesheet" />
+<script type="text/javascript" src="jqueryui/1.11.2-start/jquery-ui.min.js"></script><!-- DataTables -->
+<link type="text/css" href="datatables/1.10.4/media/jqueryui/dataTables.jqueryui.css" rel="Stylesheet"/>
+<link type="text/css" href="css/tables.css" rel="stylesheet" />
+
+<script type="text/javascript" src="datatables/1.10.4/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="datatables/1.10.4/media/jqueryui/dataTables.jqueryui.min.js"></script><!-- jQplot -->
+<!--[if IE]>
+<script language="javascript" type="text/javascript" src="excanvas/3/excanvas.compiled.js"></script>
+<![endif]--><link rel="stylesheet" type="text/css" href="jqplot/1.0.8/jquery.jqplot.min.css"/>
+<script type="text/javascript" src="jqplot/1.0.8/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="jqplot/1.0.8/plugins/jqplot.pieRenderer.min.js"></script>
+
+
+
+    <script class="code" type="text/javascript">$(document).ready(function () {
+        var plot1 = $.jqplot('coverage_pie_chart', [
+            [
+                ['Passing', 0],
+                ['Pending', 0],
+                ['Ignored', 0],
+                ['Failing', 0],
+                ['Errors',  0],
+                ['Compromised',  0],
+                ['Untested',  0],
+            ]
+        ], {
+            gridPadding: {top: 0, bottom: 38, left: 0, right: 0},
+            seriesColors: [
+                '#30cb23',
+                '#a2f2f2',
+                '#eeeadd',
+                '#f8001f',
+                '#fc6e1f',
+                'fuchsia',
+                'darkgrey'],
+            seriesDefaults: {
+                renderer: $.jqplot.PieRenderer,
+                trendline: {show: false},
+                rendererOptions: {padding: 8, showDataLabels: true}
+            },
+            legend: {
+                show: true,
+                placement: 'outside',
+                rendererOptions: {
+                    numberRows: 3
+                },
+                location: 's',
+                marginTop: '15px'
+            },
+            series: [
+                {label: '0 requirements tested successfully'},
+                {label: '0 requirements pending'},
+                {label: '0} requirements skipped'},
+                {label: '0} requirements with failures'},
+                {label: '0} requirements with errors'},
+                {label: '0} requirements compromised'},
+                {label: '0} requirements untested'},
+            ]
+        });
+        // Results table
+        $('#test-results-table').DataTable({
+            "order": [
+                [1, "asc"]
+            ],
+            "pageLength": 100,
+            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+        });
+
+        // Results table
+        $('#req-results-table').DataTable({
+            "order": [
+                [1, "asc"]
+            ],
+            "pageLength": 100,
+            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+        });
+
+        $('#examples-table').DataTable({
+            "order": [
+                [2, "asc"]
+            ],
+            "pageLength": 25
+        });
+        $("#requirements-tabs").tabs();
+        $("#test-tabs").tabs();
+    })
+    ;
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".read-more-link").click(function () {
+                $(this).nextAll("div.read-more-text").toggle();
+                var isrc = $(this).find("img").attr('src');
+                if (isrc == 'images/plus.png') {
+                    $(this).find("img").attr("src", function () {
+                        return "images/minus.png";
+                    });
+                } else {
+                    $(this).find("img").attr("src", function () {
+                        return "images/plus.png";
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+
+<body class="results-page">
+<div id="topheader">
+    <div id="topbanner">
+        <div id="logo"><a href="index.html"><img src="images/serenity-logo.png" border="0"/></a></div>
+        <div id="projectname-banner" style="float:right">
+            <span class="projectname"></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="middlecontent">
+    <div id="contenttop">
+        <div class="middlebg">
+            <span class="breadcrumbs">
+            <a href='index.html'>Home</a> > <a href="capabilities.html">Requirements</a>
+
+
+
+                > <span class="truncate-40">Blockstack</span>
+
+            </span>
+        </div>
+        <div class="rightbg"></div>
+    </div>
+
+    <div class="clr"></div>
+
+    <!--/* starts second table*/-->
+
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li >
+            <a href="index.html"><i class="fa fa-check-square-o"></i> Overall Test Results</a>
+        </li>
+        <li >
+            <a href="capabilities.html"><i class="fa fa-book"></i> Requirements</a>
+        </li>
+        <li class="active">
+            <a href="#"><i class="fa fa-comments-o"></i> Features</a>
+        </li>
+    </ul>
+    <span class="date-and-time"><a href="build-info.html"><i class="fa fa-info-circle"></i></a> Report generated </span>
+    <br style="clear:left"/>
+</div>
+
+    <div class="clr"></div>
+
+    <div id="beforetable"></div>
+    <div id="results-dashboard">
+        <div class="middlb">
+            <div class="table">
+                <div>
+                    <h2><i class="fa fa-book"></i> Feature
+                        :  Blockstack</h2>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div id="bottomfooter">
+    <span class="version">Serenity BDD version UNKNOWN</span>
+</div>
+</body>
+</html>

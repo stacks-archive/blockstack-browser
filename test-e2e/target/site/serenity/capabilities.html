@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Requirements</title>
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+<!--[if IE 7]>
+<link rel="stylesheet" href="font-awesome/css/font-awesome-ie7.min.css">
+<![endif]--><!-- JQuery -->
+<script type="text/javascript" src="scripts/jquery-1.11.1.min.js"></script><!-- Bootstrap -->
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="bootstrap/js/bootstrap.min.js"></script><link rel="stylesheet" href="css/core.css"/>
+<link rel="stylesheet" href="css/link.css"/>
+<link type="text/css" media="screen" href="css/screen.css" rel="Stylesheet"/><!-- JQuery-UI -->
+<link type="text/css" href="jqueryui/1.11.2-start/jquery-ui.min.css" rel="Stylesheet" />
+<script type="text/javascript" src="jqueryui/1.11.2-start/jquery-ui.min.js"></script><!-- DataTables -->
+<link type="text/css" href="datatables/1.10.4/media/jqueryui/dataTables.jqueryui.css" rel="Stylesheet"/>
+<link type="text/css" href="css/tables.css" rel="stylesheet" />
+
+<script type="text/javascript" src="datatables/1.10.4/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="datatables/1.10.4/media/jqueryui/dataTables.jqueryui.min.js"></script><!-- jQplot -->
+<!--[if IE]>
+<script language="javascript" type="text/javascript" src="excanvas/3/excanvas.compiled.js"></script>
+<![endif]--><link rel="stylesheet" type="text/css" href="jqplot/1.0.8/jquery.jqplot.min.css"/>
+<script type="text/javascript" src="jqplot/1.0.8/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="jqplot/1.0.8/plugins/jqplot.pieRenderer.min.js"></script>
+
+
+
+    <script class="code" type="text/javascript">$(document).ready(function () {
+        var plot1 = $.jqplot('coverage_pie_chart', [
+            [
+                ['Passing', 0],
+                ['Pending', 0],
+                ['Ignored', 0],
+                ['Failing', 0],
+                ['Errors',  0],
+                ['Compromised',  0],
+                ['Untested',  2],
+            ]
+        ], {
+            gridPadding: {top: 0, bottom: 38, left: 0, right: 0},
+            seriesColors: [
+                '#30cb23',
+                '#a2f2f2',
+                '#eeeadd',
+                '#f8001f',
+                '#fc6e1f',
+                'fuchsia',
+                'darkgrey'],
+            seriesDefaults: {
+                renderer: $.jqplot.PieRenderer,
+                trendline: {show: false},
+                rendererOptions: {padding: 8, showDataLabels: true}
+            },
+            legend: {
+                show: true,
+                placement: 'outside',
+                rendererOptions: {
+                    numberRows: 3
+                },
+                location: 's',
+                marginTop: '15px'
+            },
+            series: [
+                {label: '0 requirements tested successfully'},
+                {label: '0 requirements pending'},
+                {label: '0} requirements skipped'},
+                {label: '0} requirements with failures'},
+                {label: '0} requirements with errors'},
+                {label: '0} requirements compromised'},
+                {label: '2} requirements untested'},
+            ]
+        });
+        // Results table
+        $('#test-results-table').DataTable({
+            "order": [
+                [1, "asc"]
+            ],
+            "pageLength": 100,
+            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+        });
+
+        // Results table
+        $('#req-results-table').DataTable({
+            "order": [
+                [1, "asc"]
+            ],
+            "pageLength": 100,
+            "lengthMenu": [[50, 100, 200, -1], [50, 100, 200, "All"]]
+        });
+
+        $('#examples-table').DataTable({
+            "order": [
+                [2, "asc"]
+            ],
+            "pageLength": 25
+        });
+        $("#requirements-tabs").tabs();
+        $("#test-tabs").tabs();
+    })
+    ;
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".read-more-link").click(function () {
+                $(this).nextAll("div.read-more-text").toggle();
+                var isrc = $(this).find("img").attr('src');
+                if (isrc == 'images/plus.png') {
+                    $(this).find("img").attr("src", function () {
+                        return "images/minus.png";
+                    });
+                } else {
+                    $(this).find("img").attr("src", function () {
+                        return "images/plus.png";
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+
+<body class="results-page">
+<div id="topheader">
+    <div id="topbanner">
+        <div id="logo"><a href="index.html"><img src="images/serenity-logo.png" border="0"/></a></div>
+        <div id="projectname-banner" style="float:right">
+            <span class="projectname"></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="middlecontent">
+    <div id="contenttop">
+        <div class="middlebg">
+            <span class="breadcrumbs">
+            <a href='index.html'>Home</a> > <a href="capabilities.html">Requirements</a>
+
+
+
+            </span>
+        </div>
+        <div class="rightbg"></div>
+    </div>
+
+    <div class="clr"></div>
+
+    <!--/* starts second table*/-->
+
+<div>
+    <ul class="nav nav-tabs" role="tablist">
+        <li >
+            <a href="index.html"><i class="fa fa-check-square-o"></i> Overall Test Results</a>
+        </li>
+        <li class="active">
+            <a href="#"><i class="fa fa-book"></i> Requirements</a>
+        </li>
+        <li >
+            <a href="576946480b52ad056d6f5bddf874399c83582ecf90963cc074a14c70580e7d9f.html"><i class="fa fa-comments-o"></i> Features</a>
+        </li>
+    </ul>
+    <span class="date-and-time"><a href="build-info.html"><i class="fa fa-info-circle"></i></a> Report generated </span>
+    <br style="clear:left"/>
+</div>
+
+    <div class="clr"></div>
+
+    <div id="beforetable"></div>
+    <div id="results-dashboard">
+        <div class="middlb">
+            <div class="table">
+
+
+                <div id="requirements-summary">
+                    <div id="coverage_pie_chart"
+                         style="margin-top:10px; margin-left:10px; width:250px; height:250px;"></div>
+                    <div id="coverage_summary">
+                        <div>
+                            <h4>Requirements Overview</h4>
+                            <table class="summary-table">
+                                <head>
+                                    <tr>
+                                        <th>Requirement Type</th>
+                                        <th>Total</th>
+                                        <th>Pass&nbsp;<i class="icon-check"></i></th>
+                                        <th>Fail&nbsp;<i class="icon-thumbs-down"></i></th>
+                                        <th>Pending&nbsp;<i class="icon-calendar"></i></th>
+                                        <th>Ignored&nbsp;<i class="icon-ban-circle"></i></th>
+                                            <th>Untested&nbsp;<i class="icon-question"></i></th>
+                                    </tr>
+                                </head>
+                                <body>
+                                    <tr>
+                                        <td class="summary-leading-column"><a
+                                                href="#requirements-tabs">Features</a></td>
+                                        <td>2</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>2</td>
+                                            <td>2</td>
+                                    </tr>
+
+                                <tr>
+                                    <td class="summary-leading-column"><a href="#test-results-table">Acceptance Criteria
+                                        (tests)</a></td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td></td>
+                                </tr>
+                                </body>
+                            </table>
+                        </div>
+
+
+
+
+
+<div>
+    <h4>Test Result Summary</h4>
+    <table class="summary-table">
+        <head>
+            <tr>
+                <th>Test Type</th>
+                <th>Total</th>
+                <th>Pass&nbsp;<i class="icon-check"/> </th>
+                <th>Fail&nbsp;<i class="icon-thumbs-down"/></th>
+                <th>Pending&nbsp;<i class="icon-calendar"/></th>
+                <th>Ignore/Skip&nbsp;<i class="icon-ban-circle"/></th>
+            </tr>
+        </head>
+        <body>
+        <tr>
+            <td class="summary-leading-column">Automated</td>
+            <td>0</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+        </tr>
+        <tr>
+            <td class="summary-leading-column">Manual</td>
+            <td>0</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+        </tr>
+        <tr>
+            <td class="summary-leading-column">Total</td>
+            <td>0</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+            <td>0 (0%)</td>
+        </tr>
+        <tr>
+            <td class="summary-leading-column">Total Duration</td>
+                <td colspan="5">0 seconds</td>
+        </tr>
+        </body>
+    </table>
+</div>
+                    </div>
+                </div>
+                <div class="clr"></div>
+                <div id="requirements-tabs">
+                        <ul>
+                                <li><a href="#tabs-1">
+                                    Features (1)
+                                </a></li>
+                        </ul>
+                        <div id="tabs-1" class="capabilities-table">
+                            <div id="tabs-1" class="capabilities-table">
+
+
+<div id="req_list_tests" class="table">
+    <div class="test-results">
+        <table id="req-results-table">
+            <thead>
+            <tr>
+                <th width="30" class="test-results-heading">&nbsp;</th>
+                <th width="65" class="test-results-heading">ID</th>
+                <th width="525" class="test-results-heading">Feature</th>
+                    <th width="65" class="test-results-heading">Features</th>
+                <th class="test-results-heading" width="75px">Automated<br/>Tests</th>
+                    <th class="test-results-heading" width="75px">Manual<br/>Tests</th>
+
+                <th width="125px" class="test-results-heading">Test Results</th>
+
+                <th width="125px" class="test-results-heading">Working Features</th>
+            </tr>
+            <tbody>
+
+
+
+                <tr class="test-SUCCESS requirementRow">
+                    <td class="requirementRowCell">
+                        <span class="status_icon"><i class='fa fa-square-o pending-icon ' title='PENDING'></i></span>
+                        <span style="display:none">2</span>
+                    </td>
+                    <td class="cardNumber requirementRowCell"></td>
+
+                    <td class="SUCCESS-text requirementRowCell">
+                        <a href="javaScript:void(0)" class="read-more-link">
+                            <img src="images/plus.png" height="16"/></a>
+                        <span class="requirementName"><a
+                                href="710d7475f6d908bed51d2338bfe38589d9a52c150723f9b76b863ff2746b854b.html">Blockstack</a></span>
+
+                        <div class="requirementNarrative read-more-text"></div>
+                    </td>
+
+                        <td class="bluetext requirementRowCell">1</td>
+
+                    <td class="greentext highlighted-value requirementRowCell">0</td>
+<!--
+                    <td class="greentext requirementRowCell">0</td>
+                    <td class="bluetext requirementRowCell">0</td>
+                    <td class="redtext requirementRowCell">0</td>
+                    <td class="lightorangetext requirementRowCell">0</td>
+                    <td class="violettext requirementRowCell">0</td>
+-->
+                        <td class="greentext highlighted-value requirementRowCell">0</td>
+<!--
+                        <td class="greentext requirementRowCell">0</td>
+                        <td class="bluetext requirementRowCell">0</td>
+                        <td class="redtext requirementRowCell">0</td>
+                        <td class="lightorangetext requirementRowCell">0</td>
+                        -->
+
+                    <td width="125px" class="lightgreentext requirementRowCell">
+
+
+<table>
+    <tr>
+        <td width="40px">
+            <div class="small">0%</div>
+        </td>
+        <td width="125px">
+            <div class="percentagebar"
+                 title="  - Total tests: 0
+  - Passing tests: 0 (0%)
+  - Failing tests: 0 (0%)
+  - Tests with errors: 0 (0%)
+  - Compromised tests 0 (0%)
+  - Pending tests: 0 (0%)
+  - Ignored or skipped tests: 0 (0%)"
+                 style="width: 125px;">
+                <div class="pendingbar"
+                     title="  - Total tests: 0
+  - Passing tests: 0 (0%)
+  - Failing tests: 0 (0%)
+  - Tests with errors: 0 (0%)
+  - Compromised tests 0 (0%)
+  - Pending tests: 0 (0%)
+  - Ignored or skipped tests: 0 (0%)"
+                     style="width: 0px;">
+                    <div class="ignoredbar"
+                         style="width: 0px;"
+                         title="  - Total tests: 0
+  - Passing tests: 0 (0%)
+  - Failing tests: 0 (0%)
+  - Tests with errors: 0 (0%)
+  - Compromised tests 0 (0%)
+  - Pending tests: 0 (0%)
+  - Ignored or skipped tests: 0 (0%)">
+                        <div class="compromisedbar"
+                             style="width: 0px;"
+                             title="  - Total tests: 0
+  - Passing tests: 0 (0%)
+  - Failing tests: 0 (0%)
+  - Tests with errors: 0 (0%)
+  - Compromised tests 0 (0%)
+  - Pending tests: 0 (0%)
+  - Ignored or skipped tests: 0 (0%)">
+                            <div class="errorbar"
+                                 style="width: 0px;"
+                                 title="  - Total tests: 0
+  - Passing tests: 0 (0%)
+  - Failing tests: 0 (0%)
+  - Tests with errors: 0 (0%)
+  - Compromised tests 0 (0%)
+  - Pending tests: 0 (0%)
+  - Ignored or skipped tests: 0 (0%)">
+                                <div class="failingbar"
+                                     style="width: 0px;"
+                                     title="  - Total tests: 0
+  - Passing tests: 0 (0%)
+  - Failing tests: 0 (0%)
+  - Tests with errors: 0 (0%)
+  - Compromised tests 0 (0%)
+  - Pending tests: 0 (0%)
+  - Ignored or skipped tests: 0 (0%)">
+                                    <div class="passingbar"
+                                         style="width: 0px;"
+                                         title="  - Total tests: 0
+  - Passing tests: 0 (0%)
+  - Failing tests: 0 (0%)
+  - Tests with errors: 0 (0%)
+  - Compromised tests 0 (0%)
+  - Pending tests: 0 (0%)
+  - Ignored or skipped tests: 0 (0%)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+                    </td>
+
+                    <td width="125px" class="lightgreentext requirementRowCell">
+
+
+<table>
+    <tr>
+        <td width="40px">
+            <div class="small">0%</div>
+        </td>
+        <td width="125px">
+            <div class="percentagebar"
+                 title="Blockstack:
+  - Passing Features: 0 (0%
+  - Features Failing: 0 (0%
+  - Features Failing with errors: 0
+  - Compromised Features: 0
+  - Pending Features: 0
+  - Ignored or skipped Features: 0
+  - Untested Features: 1 (100%"
+                 style="width: 125px;">
+                <div class="pendingbar"
+                     title="Blockstack:
+  - Passing Features: 0 (0%
+  - Features Failing: 0 (0%
+  - Features Failing with errors: 0
+  - Compromised Features: 0
+  - Pending Features: 0
+  - Ignored or skipped Features: 0
+  - Untested Features: 1 (100%"
+                     style="width: 0px;">
+                    <div class="ignoredbar"
+                         style="width: 0px;"
+                         title="Blockstack:
+  - Passing Features: 0 (0%
+  - Features Failing: 0 (0%
+  - Features Failing with errors: 0
+  - Compromised Features: 0
+  - Pending Features: 0
+  - Ignored or skipped Features: 0
+  - Untested Features: 1 (100%">
+                        <div class="compromisedbar"
+                             style="width: 0px;"
+                             title="Blockstack:
+  - Passing Features: 0 (0%
+  - Features Failing: 0 (0%
+  - Features Failing with errors: 0
+  - Compromised Features: 0
+  - Pending Features: 0
+  - Ignored or skipped Features: 0
+  - Untested Features: 1 (100%">
+                            <div class="errorbar"
+                                 style="width: 0px;"
+                                 title="Blockstack:
+  - Passing Features: 0 (0%
+  - Features Failing: 0 (0%
+  - Features Failing with errors: 0
+  - Compromised Features: 0
+  - Pending Features: 0
+  - Ignored or skipped Features: 0
+  - Untested Features: 1 (100%">
+                                <div class="failingbar"
+                                     style="width: 0px;"
+                                     title="Blockstack:
+  - Passing Features: 0 (0%
+  - Features Failing: 0 (0%
+  - Features Failing with errors: 0
+  - Compromised Features: 0
+  - Pending Features: 0
+  - Ignored or skipped Features: 0
+  - Untested Features: 1 (100%">
+                                    <div class="passingbar"
+                                         style="width: 0px;"
+                                         title="Blockstack:
+  - Passing Features: 0 (0%
+  - Features Failing: 0 (0%
+  - Features Failing with errors: 0
+  - Compromised Features: 0
+  - Pending Features: 0
+  - Ignored or skipped Features: 0
+  - Untested Features: 1 (100%">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div id="bottomfooter">
+    <span class="version">Serenity BDD version UNKNOWN</span>
+</div>
+</body>
+</html>
