@@ -31,15 +31,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             components.append("Blockstack")
             
             let newPath = NSString.path(withComponents: components)
-            NSWorkspace.shared().launchApplication(newPath)
+            NSWorkspace.shared.launchApplication(newPath)
         }
         else {
             terminate()
         }
     }
     
-    func terminate() {
-        NSApplication.shared().terminate(self)
+    @objc func terminate() {
+        NSApplication.shared.terminate(self)
     }
     
     func applicationWillTerminate(_ aNotification: Notification) {
