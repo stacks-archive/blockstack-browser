@@ -8,7 +8,7 @@
     "bip39": "^2.2.0",
     "bitcoinjs-lib": "^3.2.0",
     "blockstack-ui": "^0.0.71",
-    "blockstack": "^19.1.0",
+    "blockstack": "^19.3.0",
     "body-parser": "^1.16.1",
     "bootstrap": "^4.0.0-beta",
     "browser-stdout": "^1.3.0",
