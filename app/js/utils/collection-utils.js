@@ -4,6 +4,7 @@ import {
   encryptContent, 
   decryptContent, 
   hexStringToECPair, 
+  getPublicKeyFromPrivate,
   GAIA_HUB_COLLECTION_KEY_FILE_NAME
 } from 'blockstack'
 
@@ -55,11 +56,9 @@ export function getCollectionGaiaHubConfigs(scopes, node, gaiaHubUrl) {
 }
 
 function writeCollectionKeysToAppStorage(appPrivateKey, hubConfig, keyFile) {
-  const compressedAppPrivateKey = `${appPrivateKey}01`
-  const keyPair = hexStringToECPair(compressedAppPrivateKey)
-  const publicKey = keyPair.publicKey.toString('hex')
+  const publicKey = getPublicKeyFromPrivate(appPrivateKey)
   const encryptedKeyFile = encryptContent(JSON.stringify(keyFile), { publicKey })
-
+  
   return uploadToGaiaHub(
     GAIA_HUB_COLLECTION_KEY_FILE_NAME, 
     encryptedKeyFile, 
