@@ -3,7 +3,6 @@ import {
   uploadToGaiaHub, 
   encryptContent, 
   decryptContent, 
-  hexStringToECPair, 
   getPublicKeyFromPrivate,
   GAIA_HUB_COLLECTION_KEY_FILE_NAME
 } from 'blockstack'
