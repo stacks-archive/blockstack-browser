@@ -44,11 +44,11 @@ export function getCollectionGaiaHubConfigs(scopes, node, gaiaHubUrl) {
   const hubConfigPromises = scopes.map((scope) => {
     const collectionPrivateKey = 
     node.getCollectionNode(scope).getCollectionPrivateKey()
-    const scopes = [{ 
+    const gaiaScopes = [{ 
       scope: ARCHIVAL_GAIA_AUTH_SCOPE, 
       domain: COLLECTION_GAIA_PREFIX 
     }]
-    return connectToGaiaHub(gaiaHubUrl, collectionPrivateKey, "", scopes)
+    return connectToGaiaHub(gaiaHubUrl, collectionPrivateKey, '', gaiaScopes)
   })
 
   return Promise.all(hubConfigPromises)

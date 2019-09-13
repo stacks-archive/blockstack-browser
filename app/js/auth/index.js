@@ -129,7 +129,7 @@ class AuthPage extends React.Component {
     loginToApp: PropTypes.func.isRequired,
     api: PropTypes.object.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
-    identitySettings: PropTypes.array.isRequired,
+    identitySettings: PropTypes.object.isRequired,
     refreshIdentitySettings: PropTypes.func.isRequired,
     refreshAllIdentitySettings: PropTypes.func.isRequired,
     setIdentityCollectionSetting: PropTypes.func.isRequired,
