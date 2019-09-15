@@ -1,29 +1,19 @@
 ##Setup
-Install node dependencies: `npm install`
+Install node dependencies in root level and test-e2e folder: `npm install` 
 
 ## Running Tests
 
 These test can be ran using the web browsers on your local machine or using BrowserStack's environments. The tests can be targeting against any provided hosted browser endpoint as well as a locally built & hosted endpoint. 
 
+#### Using production endpoint and local browsers
+Use `npm run test-e2e` to run tests using your local system web browsers and against the production endpoint.
 
-Use `npm run test-e2e:localBuild` to build and host the browser locally, then run tests using your local system web browsers.
-
-Use `npm run test-e2e:browserstack` to build and host the browser locally, then run tests against BrowserStack's grid. All major operating systems and browsers are setup and working, including iOS and Android. 
-
-To specify an endpoint and BrowserStack usage, use `npm run test-e2e` with environment variables `E2E_BROWSER_HOST={url|directory}` and `USE_BROWSERSTACK={true|false}`. 
-
-If `E2E_BROWSER_HOST` is set and is not an `http(s)://` url, it is assumed to be a local file system directory, and a local static web server will be spawned and pointed at the directory. 
+#### Using local static web server and local browsers
+Use `npm run test-e2e:localBuild` to build and host the local static web server, then run tests using your local system web browsers.
 
 #### Using BrowserStack
-
 In order to run tests against BrowserStack, auth credentials must be specified in the environmental variable `BROWSERSTACK_AUTH` with the format `"user:key"`. 
-
 For example `BROWSERSTACK_AUTH="alice1:yUDBktWP1tRdrfq5Lpck"`.
 
-
-#### Running against the production name registrar
-
-By default, the account creation tests will use the `test-registrar.blockstack.org` name registrar with the `.test-personal.id` domain suffix. This is to avoid spamming `.blockstack.id` with test IDs. 
-
-The production name registrar can be enabled by setting the environment variable `TEST_PRODUCTION_REGISTRAR`.
+Use `npm run test-e2e:browserstack` to build and host the browser locally, then run tests against BrowserStack's grid. All major operating systems and browsers are setup and working, including iOS and Android. 
 
