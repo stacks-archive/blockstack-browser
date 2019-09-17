@@ -26,7 +26,8 @@ function setup(accounts = []) {
     encryptedBackupPhrase: 'onwards and upwards',
     setDefaultIdentity: () => {},
     identityKeypairs: [],
-    storageConnected: false
+    storageConnected: false,
+    refreshAllIdentitySettings: () => {}
   }
 
   const wrapper = shallow(<DefaultProfilePage {...props} />)

@@ -4,6 +4,7 @@ import { parseZoneFile } from 'zone-file'
 import type { GaiaHubConfig } from './blockstack-inc'
 import { connectToGaiaHub, uploadToGaiaHub } from './blockstack-inc'
 
+import { encryptContent, decryptContent } from 'blockstack'
 import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
 
 import log4js from 'log4js'
@@ -11,6 +12,7 @@ const logger = log4js.getLogger(__filename)
 
 export const BLOCKSTACK_INC = 'gaia-hub'
 const DEFAULT_PROFILE_FILE_NAME = 'profile.json'
+const DEFAULT_IDENTITY_SETTINGS_FILE_NAME = 'settings.json'
 
 function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
   if (identity.zoneFile) {
@@ -21,6 +23,10 @@ function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
     //   the read url
     return `${hubConfig.url_prefix}${hubConfig.address}/${DEFAULT_PROFILE_FILE_NAME}`
   }
+}
+
+function getSettingsUploadLocation(hubConfig: GaiaHubConfig) {
+  return `${hubConfig.url_prefix}${hubConfig.address}/${DEFAULT_IDENTITY_SETTINGS_FILE_NAME}`
 }
 
 // aaron-debt: this should be moved into blockstack.js
@@ -115,4 +121,44 @@ export function uploadProfile(
 
     return uploadAttempt
   })
+}
+
+export function uploadIdentitySettings(
+  api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string},
+  identityKeyPair: { key: string, keyID: string },
+  settingsData: string
+) {
+  const publicKey = identityKeyPair.keyID
+  const encryptedSettingsData = encryptContent(settingsData, { publicKey })
+  return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
+    const urlToWrite = getSettingsUploadLocation(identityHubConfig)
+    return tryUpload(
+      urlToWrite,
+      encryptedSettingsData,
+      identityHubConfig,
+      'application/json'
+    )
+  })
+}
+
+export function fetchIdentitySettings(
+  api: { gaiaHubConfig: GaiaHubConfig },
+  ownerAddress: string,
+  identityKeyPair: { key: string }
+) {
+  const privateKey = identityKeyPair.key
+  const hubConfig = api.gaiaHubConfig
+  const url = `${hubConfig.url_prefix}${ownerAddress}/${DEFAULT_IDENTITY_SETTINGS_FILE_NAME}`
+  return fetch(url)
+    .then(response => {
+      if (response.ok) {
+        return response.text()
+          .then(encryptedSettingsData => decryptContent(encryptedSettingsData, { privateKey }))
+          .then(decryptedSettingsData => JSON.parse(decryptedSettingsData))
+      } else if (response.status == 404) {
+        return {}
+      } else {
+        return Promise.reject('Could not fetch identity settings')
+      }
+    })
 }

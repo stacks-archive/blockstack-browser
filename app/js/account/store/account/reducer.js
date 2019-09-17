@@ -9,7 +9,8 @@ const initialState = {
   encryptedBackupPhrase: null, // persist
   identityAccount: {
     addresses: [],
-    keypairs: []
+    keypairs: [],
+    settings: []
   },
   bitcoinAccount: {
     addresses: [],
@@ -43,6 +44,7 @@ function AccountReducer(state = initialState, action) {
           publicKeychain: action.identityPublicKeychain,
           addresses: action.identityAddresses,
           keypairs: action.identityKeypairs,
+          settings: action.identitySettings,
           addressIndex: 0
         },
         bitcoinAccount: {
@@ -258,12 +260,41 @@ function AccountReducer(state = initialState, action) {
             ...state.identityAccount.addresses,
             action.keypair.address
           ],
-          keypairs: [...state.identityAccount.keypairs, action.keypair]
+          keypairs: [...state.identityAccount.keypairs, action.keypair],
+          settings: [...state.identityAccount.settings, {}]
         })
       })
     case types.CONNECTED_STORAGE:
       return Object.assign({}, state, {
         connectedStorageAtLeastOnce: true
+      })
+    case types.UPDATE_ALL_IDENTITY_SETTINGS:
+      return Object.assign({}, state, {
+        identityAccount: Object.assign({}, state.identityAccount, {
+          settings: action.settings
+        })
+      })
+    case types.UPDATE_IDENTITY_SETTINGS:
+      return Object.assign({}, state, {
+        identityAccount: Object.assign({}, state.identityAccount, {
+          settings: state.identityAccount.settings.map(
+            (settingsRow, i) => i === action.identityIndex ? action.settings : settingsRow
+          )
+        })
+      })
+    case types.SET_IDENTITY_COLLECTION_SETTINGS:
+      const newIdentitySettings = Object.assign({}, state.identityAccount.settings)
+
+      const identitySettingsAtIndex = newIdentitySettings[action.identityIndex]
+      if (!identitySettingsAtIndex.collections) {
+        identitySettingsAtIndex.collections = {}
+      }
+      identitySettingsAtIndex.collections[action.collectionName] = action.collectionSettings
+
+      return Object.assign({}, state, {
+        identityAccount: Object.assign({}, state.identityAccount, {
+          settings: newIdentitySettings
+        })
       })
     default:
       return state

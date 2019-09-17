@@ -11,7 +11,7 @@ import {
 } from '@utils'
 import { isCoreEndpointDisabled } from '@utils/window-utils'
 import { transactions, config, network } from 'blockstack'
-
+import { fetchIdentitySettings } from '../../../account/utils'
 import roundTo from 'round-to'
 import * as types from './types'
 import log4js from 'log4js'
@@ -41,7 +41,8 @@ function createAccount(
     bitcoinPublicKeychain,
     firstBitcoinAddress,
     identityAddresses,
-    identityKeypairs
+    identityKeypairs,
+    identitySettings
   } = getBlockchainIdentities(masterKeychain, identitiesToGenerate)
 
   return {
@@ -51,7 +52,8 @@ function createAccount(
     bitcoinPublicKeychain,
     firstBitcoinAddress,
     identityAddresses,
-    identityKeypairs
+    identityKeypairs,
+    identitySettings
   }
 }
 
@@ -547,6 +549,74 @@ function usedIdentityAddress() {
   }
 }
 
+function refreshAllIdentitySettings(
+  api: { gaiaHubConfig: GaiaHubConfig },
+  ownerAddresses: Array<string>,
+  identityKeyPairs: Array<object>
+) {
+  return dispatch => {
+    const promises: Array<Promise<*>> = ownerAddresses.map((address, index) => {
+      const promise: Promise<*> = new Promise((resolve, reject) => {
+        const keyPair = identityKeyPairs[index]
+        return fetchIdentitySettings(api, address, keyPair)
+          .then((settings) => {
+            resolve(settings)
+          })
+          .catch(error => reject(error))
+      })
+      return promise
+    })
+
+    return Promise.all(promises)
+      .then(settings => {
+        return dispatch(updateAllIdentitySettings(settings))
+      })
+      .catch((error) => {
+        logger.error(
+          'refreshIdentitySettings: error refreshing identity settings',
+          error
+        )
+        return Promise.reject(error)
+      })
+  }
+}
+
+function refreshIdentitySettings(
+  api: { gaiaHubConfig: GaiaHubConfig },
+  identityIndex: int,
+  ownerAddress: string,
+  identityKeyPair: { key: string }
+) {
+  return dispatch => fetchIdentitySettings(api, ownerAddress, identityKeyPair)
+    .then((settings) => {
+      return dispatch(updateIdentitySettings(identityIndex, settings))
+    })
+}
+
+function updateAllIdentitySettings(settings) {
+  return {
+    type: types.UPDATE_ALL_IDENTITY_SETTINGS,
+    settings
+  }
+}
+
+function updateIdentitySettings(identityIndex, settings) {
+  return {
+    type: types.UPDATE_IDENTITY_SETTINGS,
+    identityIndex,
+    settings
+  }
+}
+
+function setIdentityCollectionSetting(identityIndex, collectionName, collectionSettings) {
+  return {
+    type: types.SET_IDENTITY_COLLECTION_SETTINGS,
+    identityIndex,
+    collectionName,
+    collectionSettings
+  }
+}
+
 const AccountActions = {
   createAccount,
   updateBackupPhrase,
@@ -569,7 +639,12 @@ const AccountActions = {
   usedIdentityAddress,
   displayedRecoveryCode,
   newIdentityAddress,
-  updateEmail
+  updateEmail,
+  refreshAllIdentitySettings,
+  refreshIdentitySettings,
+  updateAllIdentitySettings,
+  updateIdentitySettings,
+  setIdentityCollectionSetting
 }
 
 export default AccountActions
