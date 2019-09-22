@@ -4,7 +4,7 @@
   "scripts": {
     "clean": "rimraf target",
     "serenity:update": "serenity update",
-    "webdriver:update": "webdriver-manager update",
+    "webdriver:update": "webdriver-manager update --versions.chrome=$(google-chrome --version | cut -d ' ' -f 3)",
     "bs-start": "node src/browserstack-local/start-browserstack-local.js",
     "bs-stop": "node src/browserstack-local/stop-browserstack-local.js",
     "protractor": "protractor protractor.conf.js",
@@ -40,5 +40,8 @@
     "tslint": "^5.7.0",
     "typescript": "^2.9.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "nodejs": "0.0.0",
+    "serve-handler": "^6.1.1"
+  }
 }
