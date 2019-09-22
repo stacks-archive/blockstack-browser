@@ -1,182 +1,37 @@
-# version: 2
-# jobs:
-#   build:
-#     docker:
-#       - image: circleci/node:10.15.3-browsers
-#     working_directory: ~/repo
-#     steps:
-#       - checkout
-#       - run:
-#           name: Install Dependencies
-#           command: npm install
-#       # test
-#       - run: npm run test
-#       # build
-#       - run: npm run prod-webapp
-#   test-e2e-login:
-#     docker:
-#       - image: circleci/node:10.15.1-browsers
-#     working_directory: ~/repo
-#     steps:
-#       - checkout
-#       - run:
-#           name: Repo Check 1
-#           command: |
-#             if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
-#               export TEST_E2E_GREP=login-to-hello-blockstack-app
-#               npm install && npm run test-e2e:browserstack
-#             else
-#               export TEST_E2E_GREP=login-to-hello-blockstack-app
-#               npm install && npm run test-e2e:localBuild
-#             fi
-#       - store_artifacts:
-#           path: /tmp/test-errors
-#   test-e2e-account-creation:
-#     docker:
-#       - image: circleci/node:10.15.1-browsers
-#     working_directory: ~/repo
-#     steps:
-#       - checkout
-#       - run:
-#           name: Repo Check 2
-#           command: |
-#             if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
-#               export TEST_E2E_GREP=account-creation
-#               npm install && npm run test-e2e:browserstack
-#             else
-#               export TEST_E2E_GREP=account-creation
-#               npm install && npm run test-e2e:localBuild
-#             fi
-#       - store_artifacts:
-#           path: /tmp/test-errors
-  # test-e2e-account-recovery:
-  #   docker:
-  #     - image: circleci/node:10.15.1-browsers
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Repo Check 3
-  #         command: |
-
-  #           if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:tim/blockstack-browser.git" ]; then
-  #             export TEST_E2E_GREP=account-recovery
-  #             npm install && npm run test-e2e:browserstack
-  #           else
-  #             export TEST_E2E_GREP=account-recovery
-  #             npm install && npm run test-e2e:localBuild
-  #           fi
-  #     - store_artifacts:
-  #         path: /tmp/test-errors
-# workflows:
-#   version: 2
-#   build_and_test_e2e_local_or_remote-e2e:
-#     jobs:
-#       - build
-#       - test-e2e-login
-#       - test-e2e-account-creation
-#       - test-e2e-account-recovery
-
-
-
 version: 2
 jobs:
-  # build:
-  #   docker:
-  #     - image: circleci/node:10.15.1
-  #   working_directory: ~/repo
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: Install Dependencies
-  #         command: npm install
-  #     # test
-  #     # - run: npm run test
-  #     # build
-  #     - run: npm run prod-webapp
-  test-e2e:
+  build:
     docker:
-      - image: circleci/node:10.15.3-browsers
+      - image: circleci/node:10.15.1
     working_directory: ~/repo
     steps:
       - checkout
       - run:
-          name: installing webdriver-manager
-          command: |
-            sudo npm install -g webdriver-manager
-            chromedriver --version
-            sudo webdriver-manager update
-            sudo webdriver-manager update --versions.chrome=77.0.3683.86
-            chromedriver --version
-      - run:
-          name: Installing chrome 75
-          command: |
-      #       # wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-      #       # sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-      #       # sudo apt-get update
-      #       # sudo apt-get install google-chrome-stable
+          name: Install Dependencies
+          command: npm install
+      - run: npm run prod-webapp
 
-
-
-      #       # wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
-      #       # unzip chromedriver_linux64.zip
-      #       # sudo mv chromedriver /usr/bin/chromedriver
-      #       # sudo chown root:root /usr/bin/chromedriver
-      #       # sudo chmod +x /usr/bin/chromedriver
-
-
-            # Versions
-            CHROME_DRIVER_VERSION=`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`
-
-            # # Remove existing downloads and binaries so we can start from scratch.
-            # sudo apt-get remove google-chrome-stable
-            # rm ~/selenium-server-standalone-*.jar
-            # rm ~/chromedriver_linux64.zip
-            # sudo rm /usr/local/bin/chromedriver
-            # sudo rm /usr/local/bin/selenium-server-standalone.jar
-
-            # Install dependencies.
-            sudo apt-get update
-            sudo apt-get install -y unzip openjdk-8-jre-headless xvfb libxi6 libgconf-2-4
-
-            # Install Chrome.
-            sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
-            sudo echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
-            sudo apt-get -y update
-            sudo apt-get -y install google-chrome-stable
-
-            # Install ChromeDriver.
-            wget -N http://chromedriver.storage.googleapis.com/$CHROME_DRIVER_VERSION/chromedriver_linux64.zip -P ~/
-            unzip ~/chromedriver_linux64.zip -d ~/
-            sudo rm ~/chromedriver_linux64.zip
-            sudo mv -f ~/chromedriver /usr/local/bin/chromedriver
-            sudo chown root:root /usr/local/bin/chromedriver
-            sudo chmod 0755 /usr/local/bin/chromedriver
-
-
+  test-e2e:
+    docker:
+      - image: circleci/node:jessie-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
       - run:
           name: Installing dependencies
-          command: |
-            echo "this is the chrome version" $(chrome --version)
-            echo "this is the chromium version" $(chromedriver --version)
-            npm install && cd ./test-e2e && npm install
+          command: npm install && cd ./test-e2e && npm install
       - run:
-          name: Running e2e tests
+          name: Running Tests
           command: |
-            cd ./test-e2e && npm run test-e2e
+            npm run test-e2e
       - run:
           name: Repo Check 2
           command: |
-              LATEST_CHROMEDRIVER_VERSION=`curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE"`
-              curl "https://chromedriver.storage.googleapis.com/${LATEST_CHROMEDRIVER_VERSION}/chromedriver_linux64.zip" -O
-              unzip chromedriver_linux64.zip -d ~/bin
               if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
-                webdriver-manager update --versions.chrome=73.0.3683.86
                 npm install && cd ./test-e2e && npm install
                 npm run test-e2e:browserstack
               else
-                webdriver-manager update --versions.chrome=73.0.3683.86
-                npm install && cd ./test-e2e && npm install
+                npm install
                 npm run test-e2e:localBuild
               fi
       - store_artifacts:
@@ -185,5 +40,5 @@ workflows:
   version: 2
   build_and_test_e2e_local_or_remote-e2e:
     jobs:
-      # - build
+      - build
       - test-e2e
