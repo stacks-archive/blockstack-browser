@@ -1,0 +1,42 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:10.15.1
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      # test
+      - run: npm run test
+      # build
+      - run: npm run prod-webapp
+
+  test-e2e:
+    docker:
+      - image: circleci/node:10.15.1-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+
+      - run:
+          name: Running Tests
+          command: |
+            #if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:timheerdev/browser.git" ]; then
+              npm run test-e2e:browserstack
+            #else
+              #npm run test-e2e:localBuild
+            #fi
+      - store_artifacts:
+          path: test-e2e/target/site/serenity
+workflows:
+  version: 2
+  build_and_test_e2e_local_or_remote-e2e:
+    jobs:
+      - build
+      - test-e2e
