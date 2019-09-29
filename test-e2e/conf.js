@@ -3,7 +3,6 @@ const url = require('url');
 const glob = require('glob');
 const {Local: BrowserStackLocal} = require('browserstack-local');
 const {createServer: createHttpServer, Server: HttpServer} = require('http');
-const serveHandler = require('serve-handler');
 const protractor = require.resolve('protractor');
 
 const nodeModules = protractor.substring(0, protractor.lastIndexOf('node_modules') + 'node_modules'.length);
@@ -14,47 +13,6 @@ const helpers = require('./src/utils/helpers');
 const BROWSERSTACK_LOOPBACK_HOST = 'bs-local.com';
 const BROWSERSTACK_HUB_URL = 'http://hub-cloud.browserstack.com/wd/hub';
 const browserStackEnvironments = require('./src/utils/browserstack-environments');
-
-
-/** @type {HttpServer} */
-let staticWebServer;
-
-const startLocalBuild = async function (serveDirectory, browserHostUrl) {
-  console.log(`Starting static web server for a directory to host the Browser locally...`)
-  staticWebServer = createHttpServer((req, res) => {
-    return serveHandler(req, res, {
-      public: serveDirectory,
-      rewrites: [{source: '**', destination: '/index.html'}]
-    })
-  })
-  await new Promise((resolve, reject) => {
-    staticWebServer.unref();
-    staticWebServer.listen(url.parse(browserHostUrl).port, error => {
-      if (error) {
-        console.error(`Error starting web server: ${error}`);
-        reject(error);
-      } else {
-        console.log(`Web server started at http://localhost:${staticWebServer.address().port}`);
-        resolve();
-      }
-    })
-  })
-};
-
-const stopLocalBuild = async function (serveDirectory, browserHostUrl) {
-  console.log(`Stopping static web server`)
-  // Check if a local web server needs to be shutdown
-  if (staticWebServer && staticWebServer.listening) {
-    await new Promise((resolve) => {
-      staticWebServer.close((error) => {
-        if (error) {
-          console.error(`Error stopping local static web server: ${error}`);
-        }
-        resolve();
-      });
-    });
-  }
-};
 
 const config = {
   params: {
@@ -86,14 +44,9 @@ const config = {
     format: 'pretty',
     compiler: 'ts:ts-node/register'
   },
-  commonCapabilities: {},
   maxSessions: 1,
-
-  onComplete: async function () {
-    await stopLocalBuild();
-  }
+  commonCapabilities:{},
 };
-
 
 /**
  * Note: This config has to be loaded immediately and synchrMochaonously since the config values
@@ -112,9 +65,7 @@ const config = {
     config.params.serveDirectory = path.resolve(config.params.browserHostUrl);
     config.params.browserHostUrl = 'http://localhost:5757';
     console.log(`Local static web server will be started at ${config.params.browserHostUrl} for directory ${config.params.serveDirectory}`);
-    startLocalBuild(config.params.serveDirectory, config.params.browserHostUrl);
   }
-
 
   // Check environment vars for BrowserStack usage settings.
   const USE_BROWSERSTACK = 'USE_BROWSERSTACK';
@@ -193,30 +144,31 @@ const config = {
       'browserstack.debug': 'true',
       'browserstack.localIdentifier': 'blocktack-ui-testing'
     };
-
   }
 
   if (!config.params.browserStack.enabled) {
-    const win32PlatformBrowsers = [{
-      'browserName': 'chrome'
+    const browsers = [{
+      'browserName': 'chrome',
+      'chromeOptions' : {
+        args: [],
+        prefs : {
+          protocol_handler: { excluded_schemes: { 'blockstack': true } }
+        }
+      }
     }, {
       'browserName': 'firefox'
-    }, {
-      'browserName': 'edge'
-    }];
-    const darwinPlatformBrowsers = [{
-      'browserName': 'chrome'
-    }, {
-      'browserName': 'firefox'
-    }, {
-      'browserName': 'safari'
     }];
 
     if (process.platform === 'darwin') {
-      config.multiCapabilities = darwinPlatformBrowsers;
+      browsers.push({
+        'browserName': 'safari'
+      });
     } else if (process.platform === 'win32') {
-      config.multiCapabilities = win32PlatformBrowsers;
+      browsers.push({
+        'browserName': 'edge'
+      });
     }
+    config.multiCapabilities = browsers;
     config.seleniumServerJar = seleniumJar;
   }
 
@@ -243,4 +195,3 @@ process.setMaxListeners(0);
 require('events').EventEmitter.defaultMaxListeners = 1000;
 
 module.exports = config;
-
