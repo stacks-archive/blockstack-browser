@@ -35,7 +35,7 @@ Feature: BlockStack
     Then wait for Restoring your Blockstack ID
     And load main page for authenticated user
 
-   @localhost
+    @localhost
   Scenario:login-to-hello-blockstack-app
     Given load initial page
     And load app list
