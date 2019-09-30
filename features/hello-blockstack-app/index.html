@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Hello, Blockstack!</title>
+  <script src="blockstack.js"></script>
+</head>
+
+<body>
+  <div class="site-wrapper">
+    <div class="site-wrapper-inner">
+      <div class="panel-landing" id="section-1">
+        <h1 class="landing-heading">Hello, Blockstack!</h1>
+        <p class="lead">
+          <a href="#" class="btn btn-primary btn-lg" id="signin-button">
+            Sign In with Blockstack
+          </a>
+        </p>
+      </div>
+      <div class="panel-welcome hide" id="section-2">
+        <div class="avatar-section">
+          <img class="img-rounded avatar" id="avatar-image">
+        </div>
+        <h1>Hello, <span id="heading-name">Anonymous</span>!</h1>
+        <p class="lead">
+          <a href="#" class="btn btn-primary btn-lg" id="signout-button">
+            Logout
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var userSession = new blockstack.UserSession()
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+      document.getElementById('signin-button').addEventListener('click', function (event) {
+        event.preventDefault()
+        if (window.BLOCKSTACK_HOST) {
+          userSession.redirectToSignInWithAuthRequest(undefined, window.BLOCKSTACK_HOST)
+        } else {
+          userSession.redirectToSignIn()
+        }
+      })
+      document.getElementById('signout-button').addEventListener('click', function (event) {
+        event.preventDefault()
+        userSession.signUserOut(window.location.href)
+      })
+
+      function showProfile(profile) {
+        var person = new blockstack.Person(profile)
+        document.getElementById('heading-name').innerHTML = person.name() ? person.name() : "Nameless Person"
+        if (person.avatarUrl()) {
+          document.getElementById('avatar-image').setAttribute('src', person.avatarUrl())
+        }
+        document.getElementById('section-1').style.display = 'none'
+        document.getElementById('section-2').style.display = 'block'
+      }
+
+      if (userSession.isUserSignedIn()) {
+        var profile = userSession.loadUserData().profile
+        showProfile(profile)
+      } else if (userSession.isSignInPending()) {
+        userSession.handlePendingSignIn().then(function (userData) {
+          window.location = window.location.origin
+        })
+      }
+    })
+  </script>
+
+  <style>
+    /* Globals */
+    a,a:focus,a:hover{color:#fff;}
+    html,body{height:100%;background-color:#E91E63;}
+    body{color:#fff;text-align:center;}
+    .hide{display:none;}
+    .landing-heading{font-family:'Source Code Pro',monospace;font-weight:400;}
+
+    /* Buttons */
+    .btn{font-family:'Source Code Pro',monospace;padding:0.5625rem 2.5rem;font-size:0.8125rem;font-weight:400;line-height:1.75rem;border-radius:0!important;-webkit-transition:all .2s ease-in-out;-moz-transition:all .2s ease-in-out;-ms-transition:all .2s ease-in-out;-o-transition:all .2s ease-in-out;transition:all .2s ease-in-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;}
+    .btn-lg{font-size:0.875rem;padding:0.6875rem 3.4375rem;line-height:1.75rem;}
+    .btn:focus,.btn:active:focus,.btn.active:focus{outline:none;}
+    .btn-primary{background-color:#270F34;border:1px solid #270F34;}
+    .btn-primary:hover,.btn-primary:focus,.btn-primary:active{color:#fff;border:1px solid #2C96FF;background-color:#2C96FF;}
+
+    /* Avatar */
+    .avatar{width:100px;height:100px;}
+    .avatar-section{margin-bottom:25px;}
+
+    /* Scaffolding */
+    .site-wrapper{display:table;width:100%;height:100%;min-height:100%;}
+    .site-wrapper-inner{display:table-cell;vertical-align:middle;margin-right:auto;margin-left:auto;width:100%;}
+    .panel-authed{padding:0 0 0 0;}
+
+    /* Home button */
+    .btn-home-hello{position:absolute;font-family:'Source Code Pro',monospace;font-size:11px;font-weight:400;color:rgba(255,255,255,0.85);top:15px;left:15px;padding:3px 20px;background-color:rgba(255,255,255,0.15);border-radius:6px;-webkit-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);-moz-box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);box-shadow:0px 0px 20px 0px rgba(0,0,0,0.15);}
+  </style>
+
+</body>
+
+</html>
