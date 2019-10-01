@@ -1,0 +1,41 @@
+{
+  "name": "@blockstack/waffle-docs",
+  "version": "0.0.1",
+  "dependencies": {
+    "@blockstack/ui": "^1.0.0-alpha.37",
+    "@mdx-js/loader": "1.5.7",
+    "@mdx-js/mdx": "^1.5.7",
+    "@mdx-js/react": "^1.5.7",
+    "@next/mdx": "^9.2.2",
+    "@styled-system/theme-get": "^5.1.2",
+    "formik": "^2.1.4",
+    "mdi-react": "^6.7.0",
+    "next": "9.2.2",
+    "next-seo": "4.4.0",
+    "prism-react-renderer": "^1.0.2",
+    "react-icons": "^3.9.0",
+    "react-live": "^2.2.2",
+    "remark-autolink-headings": "5.2.1",
+    "remark-emoji": "2.0.2",
+    "remark-images": "1.0.0",
+    "remark-slug": "5.1.2",
+    "remark-unwrap-images": "1.0.0",
+    "use-events": "^1.4.1"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.7",
+    "now": "^17.0.4",
+    "prettier": "^1.19.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "styled-components": "^5.0.1"
+  },
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "export": "next export",
+    "now-build": "next build",
+    "start": "next start"
+  }
+}

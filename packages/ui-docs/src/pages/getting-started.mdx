@@ -1,0 +1,50 @@
+# Getting Started
+
+First we need to install `@blockstack/ui` and its various dependencies.
+
+```bash
+yarn add @blockstack/ui styled-components babel-plugin-styled-components
+```
+
+> Please note that you will need to have the [styled-components babel plugin](https://github.com/styled-components/babel-plugin-styled-components) set up in your project in order to use the `css` prop.
+
+Now we need to import our `ThemeProvider` into the app that we're using Blockstack UI with. The ThemeProvider creates a context scope for all of our components to use.
+
+```jsx live=false
+import React from "react";
+import { ThemeProvider } from "@blockstack/ui";
+
+// Use at the root of your app
+<ThemeProvider>{children}</ThemeProvider>;
+```
+
+## Using components
+
+Simply import components by name from the `@blockstack/ui` package, as shown
+below.
+
+```js
+import { Button } from "@blockstack/ui";
+```
+
+## Injecting global styles
+
+Sometimes you may need to apply css reset styles to your page. Blockstack UI exports
+a `CSSReset` that'll remove browser default styles. It's heavily inspired by
+[Tailwind's preflight](https://unpkg.com/tailwindcss@1.1.2/dist/base.css).
+
+```jsx live=false
+const App({ children }) => {
+  return (
+    <ThemeProvider>
+      <CSSReset />
+      {children}
+    </ThemeProvider>
+  );
+}
+```
+
+## Contributing
+
+Please see our [contribution guidelines](/contributing) to learn how you can
+contribute to this project.

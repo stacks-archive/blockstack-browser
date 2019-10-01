@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "name": "blockstack-ui",
+  "builds": [{ "src": "out/**", "use": "@now/static" }],
+  "routes": [
+    { "src": "/", "dest": "out/index.html" },
+    { "src": "/_next/(.+)", "dest": "out/_next/$1" },
+    { "src": "/static/(.+)", "dest": "out/static/$1" },
+    { "src": "/(.+)", "dest": "out/$1.html" }
+  ],
+  "alias": ["waffle.blockstack.sh"]
+}
