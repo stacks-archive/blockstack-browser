@@ -1,3 +1,3 @@
 export = function() {
-    this.setDefaultTimeout(90 * 1000);
+    this.setDefaultTimeout(150 * 1000);
 };
