@@ -1,0 +1,89 @@
+version: 2
+jobs:
+  test-e2e-login:
+    docker:
+      - image: circleci/node:10.15.1-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+
+      - run:
+          name: Running Tests
+          command: |
+            export NODE_OPTIONS=--max_old_space_size=4096
+            export CUCUMBER_TAG='@login'
+            export RANDOM_STRING='testing1'
+            npm run test-e2e:browserstack
+      - store_artifacts:
+          path: test-e2e/target/site/serenity
+
+  test-e2e-account-creation:
+    docker:
+      - image: circleci/node:10.15.1-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+
+      - run:
+          name: Running Tests
+          command: |
+            export NODE_OPTIONS=--max_old_space_size=4096
+            export CUCUMBER_TAG='@accountCreation'
+            export RANDOM_STRING='testing2'
+            npm run test-e2e:browserstack
+      - store_artifacts:
+          path: test-e2e/target/site/serenity
+
+  test-e2e-account-recovery-via-magic-recovery-code:
+    docker:
+      - image: circleci/node:10.15.1-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+
+      - run:
+          name: Running Tests
+          command: |
+            export NODE_OPTIONS=--max_old_space_size=4096
+            export CUCUMBER_TAG='@magicRecovery'
+            export RANDOM_STRING='testing3'
+            npm run test-e2e:browserstack
+      - store_artifacts:
+          path: test-e2e/target/site/serenity
+
+  test-e2e-account-recovery-via-secret-key:
+    docker:
+      - image: circleci/node:10.15.1-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+
+      - run:
+          name: Running Tests
+          command: |
+            export NODE_OPTIONS=--max_old_space_size=4096
+            export CUCUMBER_TAG='@secretRecovery'
+            export RANDOM_STRING='testing4'
+            npm run test-e2e:browserstack
+      - store_artifacts:
+          path: test-e2e/target/site/serenity
+workflows:
+  version: 2
+  build_and_test_e2e_local_or_remote-e2e:
+    jobs:
+      - test-e2e-login
+      - test-e2e-account-creation
+      - test-e2e-account-recovery-via-magic-recovery-code
+      - test-e2e-account-recovery-via-secret-key
