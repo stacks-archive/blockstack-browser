@@ -5,6 +5,10 @@ jobs:
       - image: circleci/node:10.15.1
     working_directory: ~/repo
     steps:
+      - checkout
+      - run:
+          name: Installing dependencies
+          command: pwd
   test-e2e-login:
     docker:
       - image: circleci/node:10.15.1-browsers
