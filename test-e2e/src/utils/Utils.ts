@@ -72,7 +72,7 @@ export class Utils {
    * @param {!(By|Function)} locator The locator to use.
    * @returns {Promise<WebElement>}
    */
-  static async waitForElement(targetElement: ElementFinder, {timeout = 40000, poll = 200, driverWait = 2500} = {}): Promise<ElementFinder> {
+  static async waitForElement(targetElement: ElementFinder, {timeout = 40000, poll = 200, driverWait = 10000} = {}): Promise<ElementFinder> {
     return this.retry(async () => {
       await browser.wait(ExpectedConditions.presenceOf(targetElement), driverWait);
       await browser.wait(ExpectedConditions.visibilityOf(targetElement), driverWait);
@@ -96,7 +96,30 @@ export class Utils {
    */
   static async sendKeys(targetElement: ElementFinder, value: string, {timeout = 15000, poll = 200, driverWait = 2500} = {}): Promise<void> {
     const elm = await Utils.waitForElement(targetElement, {timeout, poll, driverWait});
-    await elm.sendKeys(value);
+    const capabilities = await browser.getCapabilities();
+    const browserName = capabilities.get('browserName');
+    console.log(`CURRENT browserName:${browserName}`);
+    // Bug on iOS devices with selenium/appium & react
+    // See: https://github.com/facebook/react/issues/11488#issuecomment-347775628
+    // Updated to use less hacky workaround from cypress:
+    // See: https://github.com/cypress-io/cypress/pull/732/files#diff-ed17d49edc10403752ba3d786a7512dbR34
+    if (browserName === 'safari') {
+      await browser.executeScript(`
+        let input = arguments[0];
+        if (input.tagName === "INPUT") {
+          let valueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+          valueSetter.call(input, arguments[1]);
+        } else { 
+          let valueSetter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+          valueSetter.call(input, arguments[1]);
+        }
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      `, elm, value);
+      await browser.sleep(500);
+    }
+    else {
+      await elm.sendKeys(value);
+    }
   }
 
   static async waitForElementToDisappear(targetElement: ElementFinder): Promise<void> {

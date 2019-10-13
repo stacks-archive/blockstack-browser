@@ -1,5 +1,5 @@
 module.exports = [
-  // Windows
+  //Windows
   {
     'name': 'Win10-Chrome-71.0',
     'browserName': 'Chrome',
@@ -47,22 +47,25 @@ module.exports = [
     'resolution' : '1024x768',
   },
 
-  // iOS
+   //iOS
    {
      'name': 'iOS-12-iPhone-XS',
      'browserName' : 'iPhone',
      'device' : 'iPhone XS',
      'realMobile' : 'true',
      'os_version' : '12',
-   }, {
-     'name': 'iOS-11-iPhone-8',
-     'browserName' : 'iPhone',
-     'device' : 'iPhone 8',
-     'realMobile' : 'true',
-     'os_version' : '11'
+     'sendKeyStrategy':'oneByOne'
    },
+   //   {
+   //   'name': 'iOS-11-iPhone-8',
+   //   'browserName' : 'iPhone',
+   //   'device' : 'iPhone 8',
+   //   'realMobile' : 'true',
+   //   'os_version' : '11',
+   //   'sendKeyStrategy':'oneByOne'
+   // },
 
-  // Android
+   //Android
   {
     'name': 'Android-9.0-Google-Pixel-3',
     'browserName' : 'android',

@@ -72,7 +72,19 @@ module.exports = function myStepDefinitions() {
   });
 
   this.Given(/^load initial page$/, async () => {
-    await browser.get("https://google.com");
+    try {
+      await browser.get("https://google.com").then(function() {
+        console.log('Naviagate go temp page google.com');
+      }, function(err) {
+        console.error('Error open google.com ' + err);
+        throw err;
+      });
+    }
+    catch(err) {
+      console.log('Trying one more time after sleep 10 seconds ...');
+      browser.sleep(10000)
+      await browser.get("https://google.com")
+    }
     await browser.get(browser.params.browserHostUrl);
     await Utils.waitForElementToDisplayed(element(By.xpath('//*[contains(.,"Create your Blockstack ID")]')));
   });

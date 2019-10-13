@@ -56,8 +56,7 @@ module.exports = function signIn() {
   });
 
   this.Then(/^load app list$/, async () => {
-    browser.sleep(20000);
-    await browser.wait(until.elementLocated(By.id('apps-loaded')), 20000);
+    await browser.wait(until.elementLocated(By.id('apps-loaded')), 40000);
     // await Utils.waitForElement(element(By.id('apps-loaded')));
   });
 
@@ -72,7 +71,15 @@ module.exports = function signIn() {
 
   });
   this.Then(/^load page$/, async () => {
-    await browser.navigate().to(`http://${loopbackHost}:${helloServerPort}`);
+    const capabilities = await browser.getCapabilities();
+    const browserName = capabilities.get('browserName');
+    console.log(`CURRENT browserName:${browserName}`);
+    if (browserName === 'safari') {
+      await browser.navigate().to(`http://${browser.params.loopbackHost}:${helloServerPort}`);
+    }
+    else {
+      await browser.navigate().to(`http://${loopbackHost}:${helloServerPort}`);
+    }
   });
 
   this.Given(/^set blockstack auth host$/, async () => {
