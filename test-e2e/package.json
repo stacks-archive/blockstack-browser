@@ -11,7 +11,7 @@
     "pretest-e2e": "serenity update",
     "report": "serenity run",
     "test-e2e": "failsafe clean serenity:update webdriver:update protractor report",
-    "test-e2e:browserstack": "run-s clean bs-start protractor report bs-stop"
+    "test-e2e:browserstack": "failsafe clean serenity:update bs-start protractor report bs-stop"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
@@ -27,7 +27,6 @@
     "cucumber": "^1.3.3",
     "cypress-serenity-reporter": "^1.0.1",
     "npm-failsafe": "^0.4.1",
-    "npm-run-all": "^4.1.5",
     "open": "^6.4.0",
     "opn-cli": "^3.1.0",
     "protractor": "^5.4.2",
@@ -40,6 +39,5 @@
     "tslint": "^5.7.0",
     "typescript": "^2.9.2",
     "serve-handler": "^6.1.1"
-  },
-  "dependencies": {}
+  }
 }

@@ -32,23 +32,16 @@ module.exports = function MagicAccount() {
   });
 
   this.Then(/^wait for Restoring your Blockstack ID$/, async () => {
-    await Utils.waitForElement(element(By.xpath('//*[contains(text(), "Restoring your Blockstack ID")]')));
+    // await Utils.waitForElement(element(By.xpath('//*[contains(text(), "Restoring your Blockstack ID")]')));
     await Utils.waitForElementToDisappear(element(By.xpath('//*[contains(text(), "Restoring your Blockstack ID")]')));
     // wait for next page to load
     await Utils.waitForElement(element(By.xpath('//*[contains(.,"Go to Blockstack")]')));
   });
 
   this.Then(/^load main page for authenticated user$/, async () => {
-    await browser.executeScript(`
-      var elements = document.getElementsByTagName("div");
-      for (var i = 0; i < elements.length; i++) {
-        if (elements[i].innerText == "Go to Blockstack") {
-          elements[i].click();
-          return;
-        }
-      }
-      throw new Error("not found");
-    `);
+    await Utils.click(element(By.css('div[class^="button__Label"]')));
+    // await Utils.click(element(By.cssContainingText('div[class^="button__Label"]', 'Go to Blockstack')));
+    await browser.sleep(2999);
     await Utils.waitForElement(element(By.xpath('//*[text()="Top Apps"]')));
   });
 };

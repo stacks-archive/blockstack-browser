@@ -20,7 +20,7 @@ module.exports = function signIn() {
   let getFileResult;
   let localStorageSession;
 
-  this.Before({tags: ["@localhost"]}, async () => {
+  this.Before({tags: ["@login"]}, async () => {
     // We only need to initialize this server once, so assign the promise object immediately,
     // so that subsequent executions do not attempt to spawn a new server.
     try {
@@ -32,7 +32,7 @@ module.exports = function signIn() {
 
   });
 
-  this.Before({tags: ["@localhost"]}, async () => {
+  this.Before({tags: ["@login"]}, async () => {
     const capabilities = await browser.getCapabilities();
     const browserName = capabilities.get('browserName');
     if (!browser.params.browserStack.enabled && browserName === 'chrome' && await Canopenprotocol.canOpenProtocol()) {
@@ -41,7 +41,7 @@ module.exports = function signIn() {
     }
   });
 
-  this.After({tags: ["@localhost"]}, async () => {
+  this.After({tags: ["@login"]}, async () => {
     if (helloServer) {
       const helloServerRef = helloServer;
       helloServer = null;
@@ -82,22 +82,26 @@ module.exports = function signIn() {
   });
 
   this.Then(/^click login button$/, async () => {
-    // const windowHandle = await browser.getWindowHandle();
+    const windowHandle = await browser.getWindowHandle();
     await Utils.waitForElement(element(By.css('#signin-button')));
     console.log("signin-button isDisplayed : " + await element(By.css('#signin-button')).isDisplayed());
     console.log("signin-button href: " + await element(By.css('#signin-button')).getAttribute("href"));
     await browser.executeScript("document.getElementById('signin-button').click()");
     await browser.sleep(1500);
-    // await browser.element(By.css('#signin-button')).click();
-    // if (await browser.isElementPresent(By.css('#signin-button'))) {
-    //   // await Utils.click(element(By.css('#signin-button')));
-    //   // This closes the "Open app?" dialog on Edge.
-    //   console.log('Performing window open & switch workaround for closing protocol handler dialog');
-    //   // console.log("about:config");
-    //   await browser.executeScript(`window.open("about:config")`);
-    //   await browser.switchTo().window(windowHandle);
-    //   await browser.sleep(4000);
-    // }
+
+    const isSignInButtonDisplayed = await browser.element(By.css('#signin-button')).isPresent();
+    if (isSignInButtonDisplayed) {
+      const capabilities = await browser.getCapabilities();
+      const browserName = capabilities.get('browserName');
+      if (browserName === 'MicrosoftEdge') {
+        // This closes the "Open app?" dialog on Edge.
+        console.log('Performing window open & switch workaround for closing protocol handler dialog');
+        await browser.executeScript(`window.open("about:config")`);
+        await browser.sleep(1000);
+        await browser.switchTo().window(windowHandle);
+        await browser.sleep(4000);
+      }
+    }
   });
 
   this.Given(/^wait for auth page to load$/, async () => {
@@ -105,6 +109,7 @@ module.exports = function signIn() {
   });
 
   this.Then(/^click allow auth button$/, async () => {
+    await Utils.waitForElementToDisplayed(element(By.xpath('//span[text()="test_e2e_recovery"]')));
     await Utils.click(element(By.xpath('//span[text()="test_e2e_recovery"]')));
     // await element(By.xpath('//span[text()="test_e2e_recovery"]')).click();
   });
@@ -247,6 +252,5 @@ module.exports = function signIn() {
       await expect(localStorageSession).to.not.exist;
     }
   });
-// });
 };
 

@@ -46,9 +46,15 @@ module.exports = function myStepDefinitions() {
   });
 
   this.After(async () => {
-    await browser.manage().deleteAllCookies();
+    try {
+      await browser.manage().deleteAllCookies();
+    } catch (e) {
+      console.log("Cookies are not deleted.");
+    }
+    await browser.get(browser.params.browserHostUrl);
     await browser.executeScript('window.sessionStorage.clear();');
     await browser.executeScript('window.localStorage.clear();');
+
     if (staticWebServer && staticWebServer.listening) {
       console.log(`Stopping static web server`);
       // Check if a local web server needs to be shutdown
@@ -66,8 +72,9 @@ module.exports = function myStepDefinitions() {
   });
 
   this.Given(/^load initial page$/, async () => {
+    await browser.get("https://google.com");
     await browser.get(browser.params.browserHostUrl);
-    await Utils.waitForElement(element(By.xpath('//*[contains(.,"Create your Blockstack ID")]')));
+    await Utils.waitForElementToDisplayed(element(By.xpath('//*[contains(.,"Create your Blockstack ID")]')));
   });
 
   if (!process.env['TEST_PRODUCTION_REGISTRAR']) {
@@ -99,7 +106,8 @@ module.exports = function myStepDefinitions() {
   });
 
   this.Given(/^wait for creating Blockstack ID spinner$/, async () => {
-    await Utils.waitForElement(element(By.xpath('//*[contains(text(), "Creating your Blockstack ID")]')));
+    // await Utils.waitForElement(element(By.xpath('//*[contains(text(), "Creating your Blockstack ID")]')));
+    await browser.sleep(1999);
     await Utils.waitForElementToDisappear(element(By.xpath('//*[contains(text(), "Creating your Blockstack ID")]')));
     await Utils.waitForElement(element(By.xpath('//*[contains(text(), "What is your email")]')));
   });
@@ -132,9 +140,11 @@ module.exports = function myStepDefinitions() {
   this.Then(/^wait for unlocking recovery key$/, async () => {
     try {
       await Utils.waitForElement(element(By.xpath('//*[contains(text(), "Unlocking Recovery Key")]')));
-      await Utils.waitForElement(element(By.xpath('//*[text()="Your Secret Recovery Key"]/following-sibling::*')));
     } catch (err) {
+      console.warn(`Error checking for "Unlocking Recovery Key" spinner: ${err}`);
     }
+    await Utils.waitForElement(element(By.xpath('//*[text()="Your Secret Recovery Key"]/following-sibling::*')),
+      { timeout: 90000, poll: 200, driverWait: 90000 });
   });
   let keyWords;
 

@@ -1,8 +1,6 @@
 const path = require('path');
 const url = require('url');
 const glob = require('glob');
-const {Local: BrowserStackLocal} = require('browserstack-local');
-const {createServer: createHttpServer, Server: HttpServer} = require('http');
 const protractor = require.resolve('protractor');
 
 const nodeModules = protractor.substring(0, protractor.lastIndexOf('node_modules') + 'node_modules'.length);
@@ -29,8 +27,8 @@ const config = {
     loopbackHost: 'localhost'
   },
   // https://github.com/angular/protractor/blob/master/docs/timeouts.md
-  allScriptsTimeout: 110000,
-  getPageTimeout: 30000,
+  allScriptsTimeout: 200000,
+  getPageTimeout: 60000,
   SELENIUM_PROMISE_MANAGER: false,
 
   // Load Serenity/JS
@@ -98,9 +96,10 @@ const config = {
    * @see https://www.browserstack.com/local-testing
    */
   if (config.params.browserStack.enabled) {
+    const RANDOM_STRING = 'RANDOM_STRING';
     const parsedUrl = url.parse(config.params.browserHostUrl);
     config.params.browserStack.localEnabled = ['localhost', '127.0.0.1'].includes(parsedUrl.hostname);
-    config.params.browserStack.localIdentifier = helpers.getRandomString(20);
+    config.params.browserStack.localIdentifier = process.env[RANDOM_STRING];
 
     /**
      * Check if the host port is the expected port that is supported by BrowserStack Safari environments.
@@ -142,19 +141,13 @@ const config = {
       'browserstack.console': 'verbose',
       'browserstack.local': 'true',
       'browserstack.debug': 'true',
-      'browserstack.localIdentifier': 'blocktack-ui-testing'
+      'browserstack.localIdentifier': config.params.browserStack.localIdentifier
     };
   }
 
   if (!config.params.browserStack.enabled) {
     const browsers = [{
-      'browserName': 'chrome',
-      'chromeOptions' : {
-        args: [],
-        prefs : {
-          protocol_handler: { excluded_schemes: { 'blockstack': true } }
-        }
-      }
+      'browserName': 'chrome'
     }, {
       'browserName': 'firefox'
     }];
@@ -181,8 +174,11 @@ const config = {
 
   // Trim trailing url slash(es).
   config.params.browserHostUrl = config.params.browserHostUrl.replace(/\/+$/, '');
+  const CUCUMBER_TAG = 'CUCUMBER_TAG';
+  if (process.env[E2E_BROWSER_HOST]) {
+    config.cucumberOpts.tags = process.env[CUCUMBER_TAG];
+  }
   return config;
-
 })();
 
 

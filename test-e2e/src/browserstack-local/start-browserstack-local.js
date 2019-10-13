@@ -6,10 +6,11 @@ const bsLocal = new browserstack.Local();
  You can also set an environment variable - "BROWSERSTACK_ACCESS_KEY".
   */
 const BROWSERSTACK_AUTH = 'BROWSERSTACK_AUTH';
+const RANDOM_STRING = 'RANDOM_STRING';
 
 const bsLocalArgs = {
   key: process.env[BROWSERSTACK_AUTH].trim().split(/:(.+)/)[1],
-  "local-identifier": "blocktack-ui-testing",
+  "local-identifier": process.env[RANDOM_STRING],
   force: "true",
   verbose: "true",
 };
