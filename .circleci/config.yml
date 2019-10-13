@@ -1,18 +1,5 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/node:10.15.1
-    working_directory: ~/repo
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: npm install
-      # test
-      - run: npm run test
-      # build
-      - run: npm run prod-webapp
   test-e2e-login:
     docker:
       - image: circleci/node:10.15.1-browsers
@@ -20,17 +7,22 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Repo Check 1
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+      - run:
+          name: Addittional step
+          command: pwd
+      - run:
+          name: Running Tests
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:TimHeerDev/browser.git" ]; then
-              export TEST_E2E_GREP=login-to-hello-blockstack-app
-              npm install && npm run test-e2e:browserstack
-            else
-              export TEST_E2E_GREP=login-to-hello-blockstack-app
-              npm install && npm run test-e2e:localBuild
-            fi
+            export NODE_OPTIONS=--max_old_space_size=4096
+            export CUCUMBER_TAG='@login'
+            export RANDOM_STRING='testing1'
+            export BROWSERSTACK_AUTH='tim1191:zPbKnRZwpaLywyydsG2i'
+            npm run test-e2e:browserstack
       - store_artifacts:
-          path: /tmp/test-errors
+          path: test-e2e/target/site/serenity
+
   test-e2e-account-creation:
     docker:
       - image: circleci/node:10.15.1-browsers
@@ -38,40 +30,72 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Repo Check 2
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+
+      - run:
+          name: Running Tests
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:blockstack/blockstack-browser.git" ]; then
-              export TEST_E2E_GREP=account-creation
-              npm install && npm run test-e2e:browserstack
-            else
-              export TEST_E2E_GREP=account-creation
-              npm install && npm run test-e2e:localBuild
-            fi
+            export NODE_OPTIONS=--max_old_space_size=4096
+            export CUCUMBER_TAG='@accountCreation'
+            export RANDOM_STRING='testing2'
+            export BROWSERSTACK_AUTH='tim1191:zPbKnRZwpaLywyydsG2i'
+            npm run test-e2e:browserstack
       - store_artifacts:
-          path: /tmp/test-errors
-  test-e2e-account-recovery:
+          path: test-e2e/target/site/serenity
+
+  test-e2e-account-recovery-via-magic-recovery-code:
     docker:
       - image: circleci/node:10.15.1-browsers
     working_directory: ~/repo
     steps:
       - checkout
       - run:
-          name: Repo Check 3
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+
+      - run:
+          name: Running Tests
           command: |
-            if [ "$CIRCLE_REPOSITORY_URL" == "git@github.com:tim/blockstack-browser.git" ]; then
-              export TEST_E2E_GREP=account-recovery
-              npm install && npm run test-e2e:browserstack
-            else
-              export TEST_E2E_GREP=account-recovery
-              npm install && npm run test-e2e:localBuild
-            fi
+            export NODE_OPTIONS=--max_old_space_size=4096
+            export CUCUMBER_TAG='@magicRecovery'
+            export RANDOM_STRING='testing3'
+            export BROWSERSTACK_AUTH='tim1191:zPbKnRZwpaLywyydsG2i'
+            npm run test-e2e:browserstack
       - store_artifacts:
-          path: /tmp/test-errors
+          path: test-e2e/target/site/serenity
+
+  test-e2e-account-recovery-via-secret-key:
+    docker:
+      - image: circleci/node:10.15.1-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Installing dependencies
+          command: npm install && cd ./test-e2e && npm install
+
+      - run:
+          name: Running Tests
+          command: |
+            export NODE_OPTIONS=--max_old_space_size=4096
+            export CUCUMBER_TAG='@secretRecovery'
+            export RANDOM_STRING='testing4'
+            export BROWSERSTACK_AUTH='tim1191:zPbKnRZwpaLywyydsG2i'
+            npm run test-e2e:browserstack
+      - store_artifacts:
+          path: test-e2e/target/site/serenity
 workflows:
   version: 2
   build_and_test_e2e_local_or_remote-e2e:
     jobs:
-      - build
       - test-e2e-login
-      - test-e2e-account-creation
-      - test-e2e-account-recovery
+      - test-e2e-account-creation:
+          requires:
+            - test-e2e-login
+      - test-e2e-account-recovery-via-magic-recovery-code:
+          requires:
+            - test-e2e-account-creation
+      - test-e2e-account-recovery-via-secret-key:
+          requires:
+            - test-e2e-account-recovery-via-magic-recovery-code
