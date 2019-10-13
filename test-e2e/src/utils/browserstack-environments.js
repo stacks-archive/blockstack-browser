@@ -48,20 +48,20 @@ module.exports = [
   },
 
   // iOS
-  // {
-  //   'name': 'iOS-12-iPhone-XS',
-  //   'browserName' : 'iPhone',
-  //   'device' : 'iPhone XS',
-  //   'realMobile' : 'true',
-  //   'os_version' : '12',
-  // }, {
-  //   'name': 'iOS-11-iPhone-8',
-  //   'browserName' : 'iPhone',
-  //   'device' : 'iPhone 8',
-  //   'realMobile' : 'true',
-  //   'os_version' : '11'
-  // },
-  //
+   {
+     'name': 'iOS-12-iPhone-XS',
+     'browserName' : 'iPhone',
+     'device' : 'iPhone XS',
+     'realMobile' : 'true',
+     'os_version' : '12',
+   }, {
+     'name': 'iOS-11-iPhone-8',
+     'browserName' : 'iPhone',
+     'device' : 'iPhone 8',
+     'realMobile' : 'true',
+     'os_version' : '11'
+   },
+
   // Android
   {
     'name': 'Android-9.0-Google-Pixel-3',
