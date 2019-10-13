@@ -221,3 +221,4 @@
     "test-e2e:localBuild": "cross-env NODE_ENV=production WEBAPP=true DEBUG_LOGGING=true webpack && cross-env E2E_BROWSER_HOST='../build' npm run test-e2e",
     "test-e2e:browserstack": "cross-env NODE_ENV=production WEBAPP=true DEBUG_LOGGING=true webpack && cd ./test-e2e && cross-env E2E_BROWSER_HOST='../build' USE_BROWSERSTACK=true npm run test-e2e:browserstack"
   }
+}
