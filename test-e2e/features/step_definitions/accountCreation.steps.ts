@@ -138,6 +138,7 @@ module.exports = function myStepDefinitions() {
       await Utils.waitForElement(element(By.xpath('//*[text()="Username Registration Failed"]')));
       await Utils.click(element(By.xpath('//*[text()="Username Registration Failed"]/parent::div/following-sibling::div/descendant::span')));
     } catch (err) {
+      console.log(err)
     }
   });
 
@@ -147,6 +148,7 @@ module.exports = function myStepDefinitions() {
       await Utils.waitForElement(element(By.xpath('//div[contains(.,"Save your Secret Recovery")]')));
       await Utils.click(element(By.xpath('//div[text()="Secret Recovery Key"]/parent::div')));
     } catch (err) {
+      console.log(err)
     }
   });
   this.Then(/^wait for unlocking recovery key$/, async () => {
