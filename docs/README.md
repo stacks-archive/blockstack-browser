@@ -1,0 +1,1 @@
+Documentation for the browser can be found online here: https://docs.blockstack.org/browser/browser-introduction.html
