@@ -1,5 +1,5 @@
 import * as types from './types'
-import { DEFAULT_PROFILE } from '@utils/profile-utils'
+import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 
 const initialState = {
   default: 0, // persist

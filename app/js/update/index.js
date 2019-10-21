@@ -12,25 +12,25 @@ import {
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,
   selectIdentityKeypairs
-} from '@common/store/selectors/account'
+} from '../common/store/selectors/account'
 import {
   selectDefaultIdentity,
   selectLocalIdentities
-} from '@common/store/selectors/profiles'
-import { selectApi } from '@common/store/selectors/settings'
+} from '../common/store/selectors/profiles'
+import { selectApi } from '../common/store/selectors/settings'
 import {
   CURRENT_VERSION,
   migrateAPIEndpoints,
   updateState
 } from '../store/reducers'
-import { formatAppManifest } from '@common'
+import { formatAppManifest } from '../common'
 import { BLOCKSTACK_STATE_VERSION_KEY } from '../App'
 import {
   hasLegacyCoreStateVersion,
   migrateLegacyCoreEndpoints
-} from '@utils/api-utils'
+} from '../utils/api-utils'
 import { uploadProfile } from '../account/utils'
-import { decrypt, signProfileForUpload } from '@utils'
+import { decrypt, signProfileForUpload } from '../utils'
 const VIEWS = {
   INITIAL: 0,
   SUCCESS: 1,
@@ -137,7 +137,7 @@ class UpdatePage extends React.Component {
       console.error('No encryptedBackupPhrase, cannot continue')
       return null
     }
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const dataBuffer = Buffer.from(encryptedBackupPhrase, 'hex')
     const { password } = this.state
 
     const updateProfileUrls = localIdentities.map((identity, index) =>

@@ -1,5 +1,5 @@
-// @flow
-import { HDNode } from 'bitcoinjs-lib'
+import { bip32 } from 'bitcoinjs-lib'
+import * as bip39 from 'bip39'
 import * as types from './types'
 import { validateProofs } from 'blockstack'
 import {
@@ -9,28 +9,26 @@ import {
   getIdentityOwnerAddressNode,
   getIdentityPrivateKeychain,
   resolveZoneFileToProfile
-} from '@utils/index'
-import { DEFAULT_PROFILE, fetchProfileLocations } from '@utils/profile-utils'
-import { calculateTrustLevel } from '@utils/account-utils'
+} from '../../../utils'
+import { DEFAULT_PROFILE, fetchProfileLocations } from '../../../utils/profile-utils'
+import { calculateTrustLevel } from '../../../utils/account-utils'
 import AccountActions from '../../../account/store/account/actions'
-import { isWebAppBuild } from '@utils/window-utils'
-
-import type { Dispatch } from 'redux'
+import { isWebAppBuild } from '../../../utils/window-utils'
 
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 
 function validateProofsService(
-  profile: Object,
-  address: string,
-  username: ?string = null
+  profile,
+  address,
+  username = null
 ) {
   if (!isWebAppBuild()) {
     return validateProofs(profile, address, username)
   }
 
-  const args: { profile: Object, address: string, username?: string } = {
+  const args = {
     profile,
     address
   }
@@ -54,12 +52,12 @@ function validateProofsService(
  *
  */
 function updatePublicIdentity(
-  username: string,
-  ownerAddress: ?string = null,
-  zoneFile: ?string = null,
-  profile: ?{} = Object.assign({}, DEFAULT_PROFILE),
-  verifications: Array<*> = [],
-  trustLevel: ?number = 0
+  username,
+  ownerAddress = null,
+  zoneFile = null,
+  profile = Object.assign({}, DEFAULT_PROFILE),
+  verifications = [],
+  trustLevel = 0
 ) {
   return {
     type: types.UPDATE_PUBLIC_IDENTITY,
@@ -72,14 +70,14 @@ function updatePublicIdentity(
   }
 }
 
-function setDefaultIdentity(index: number) {
+function setDefaultIdentity(index) {
   return {
     type: types.SET_DEFAULT,
     index
   }
 }
 
-function createNewIdentity(index: number, ownerAddress: string) {
+function createNewIdentity(index, ownerAddress) {
   return {
     type: types.CREATE_NEW_SUCCESS,
     index,
@@ -87,7 +85,7 @@ function createNewIdentity(index: number, ownerAddress: string) {
   }
 }
 
-function createNewProfileError(error: any) {
+function createNewProfileError(error) {
   return {
     type: types.CREATE_NEW_ERROR,
     error
@@ -100,7 +98,7 @@ function resetCreateNewProfileError() {
   }
 }
 
-function usernameOwned(index: number, username: string) {
+function usernameOwned(index, username) {
   return {
     type: types.USERNAME_OWNED,
     index,
@@ -108,14 +106,14 @@ function usernameOwned(index: number, username: string) {
   }
 }
 
-function noUsernameOwned(index: number) {
+function noUsernameOwned(index) {
   return {
     type: types.NO_USERNAME_OWNED,
     index
   }
 }
 
-function updateProfile(index: number, profile: any, zoneFile: string) {
+function updateProfile(index, profile, zoneFile) {
   return {
     type: types.UPDATE_PROFILE,
     index,
@@ -125,9 +123,9 @@ function updateProfile(index: number, profile: any, zoneFile: string) {
 }
 
 function updateSocialProofVerifications(
-  index: number,
-  verifications: Array<any>,
-  trustLevel: number
+  index,
+  verifications,
+  trustLevel
 ) {
   return {
     type: types.UPDATE_SOCIAL_PROOF_VERIFICATIONS,
@@ -137,7 +135,7 @@ function updateSocialProofVerifications(
   }
 }
 
-function addUsername(index: number, username: string) {
+function addUsername(index, username) {
   return {
     type: types.ADD_USERNAME,
     index,
@@ -145,21 +143,21 @@ function addUsername(index: number, username: string) {
   }
 }
 
-function broadcastingZoneFileUpdate(domainName: string) {
+function broadcastingZoneFileUpdate(domainName) {
   return {
     type: types.BROADCASTING_ZONE_FILE_UPDATE,
     domainName
   }
 }
 
-function broadcastedZoneFileUpdate(domainName: string) {
+function broadcastedZoneFileUpdate(domainName) {
   return {
     type: types.BROADCASTED_ZONE_FILE_UPDATE,
     domainName
   }
 }
 
-function broadcastingZoneFileUpdateError(domainName: string, error: any) {
+function broadcastingZoneFileUpdateError(domainName, error) {
   return {
     type: types.BROADCASTING_ZONE_FILE_UPDATE_ERROR,
     domainName,
@@ -167,21 +165,21 @@ function broadcastingZoneFileUpdateError(domainName: string, error: any) {
   }
 }
 
-function broadcastingNameTransfer(domainName: string) {
+function broadcastingNameTransfer(domainName) {
   return {
     type: types.BROADCASTING_NAME_TRANSFER,
     domainName
   }
 }
 
-function broadcastedNameTransfer(domainName: string) {
+function broadcastedNameTransfer(domainName) {
   return {
     type: types.BROADCASTED_NAME_TRANSFER,
     domainName
   }
 }
 
-function broadcastingNameTransferError(domainName: string, error: any) {
+function broadcastingNameTransferError(domainName, error) {
   return {
     type: types.BROADCASTING_NAME_TRANSFER_ERROR,
     domainName,
@@ -190,24 +188,24 @@ function broadcastingNameTransferError(domainName: string, error: any) {
 }
 
 function createNewIdentityWithOwnerAddress(
-  index: number,
-  ownerAddress: string
+  index,
+  ownerAddress
 ) {
   logger.debug(
     `createNewIdentityWithOwnerAddress: index: ${index} address: ${ownerAddress}`
   )
-  return (dispatch: Dispatch<*>): void => {
+  return (dispatch) => {
     dispatch(createNewIdentity(index, ownerAddress))
     dispatch(AccountActions.usedIdentityAddress())
   }
 }
 
 function createNewProfile(
-  encryptedBackupPhrase: string,
-  password: string,
-  nextUnusedAddressIndex: number
+  encryptedBackupPhrase,
+  password,
+  nextUnusedAddressIndex
 ) {
-  return async (dispatch: Dispatch<*>, getState: () => any): Promise<*> => {
+  return async (dispatch, getState) => {
     logger.info('createNewProfile')
 
     const state = getState()
@@ -224,15 +222,14 @@ function createNewProfile(
     dispatch({ type: types.CREATE_NEW_REQUEST })
 
     // Decrypt master keychain
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const dataBuffer = Buffer.from(encryptedBackupPhrase, 'hex')
     logger.debug('createNewProfile: Trying to decrypt backup phrase...')
     return decrypt(dataBuffer, password).then(
       async plaintextBuffer => {
         logger.debug('createNewProfile: Backup phrase successfully decrypted')
-        const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
         const backupPhrase = plaintextBuffer.toString()
         const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
-        const masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+        const masterKeychain = bip32.fromSeed(seedBuffer)
         const identityPrivateKeychainNode = getIdentityPrivateKeychain(
           masterKeychain
         )
@@ -269,20 +266,14 @@ function createNewProfile(
  *
  */
 function refreshIdentities(
-  api: {
-    bitcoinAddressLookupUrl: string,
-    nameLookupUrl: string,
-    gaiaHubConfig: {
-      url_prefix: string,
-    },
-  },
-  ownerAddresses: Array<string>
+  api,
+  ownerAddresses
 ) {
-  return async (dispatch: Dispatch<*>): Promise<*> => {
+  return async (dispatch) => {
     logger.info('refreshIdentities')
 
-    const promises: Array<Promise<*>> = ownerAddresses.map((address, index) => {
-      const promise: Promise<*> = new Promise(resolve => {
+    const promises = ownerAddresses.map((address, index) => {
+      const promise = new Promise(resolve => {
         const url = api.bitcoinAddressLookupUrl.replace('{address}', address)
         logger.debug(`refreshIdentities: fetching ${url}`)
         return fetch(url)
@@ -422,12 +413,12 @@ function refreshIdentities(
 }
 
 function refreshSocialProofVerifications(
-  identityIndex: number,
-  ownerAddress: string,
-  username: string,
-  profile: {}
+  identityIndex,
+  ownerAddress,
+  username,
+  profile
 ) {
-  return (dispatch: Dispatch<*>): Promise<*> =>
+  return (dispatch) =>
     new Promise(resolve => {
       let verifications = []
       let trustLevel = 0
@@ -465,8 +456,8 @@ function refreshSocialProofVerifications(
  * @param  {String} lookupUrl name look up endpoint
  * @param  {String} username  the username of the Blockstack ID to fetch
  */
-function fetchPublicIdentity(lookupUrl: string, username: string) {
-  return (dispatch: Dispatch<*>): Promise<*> => {
+function fetchPublicIdentity(lookupUrl, username) {
+  return (dispatch) => {
     const url = lookupUrl.replace('{name}', username)
     return fetch(url)
       .then(response => response.text())
@@ -534,14 +525,14 @@ function fetchPublicIdentity(lookupUrl: string, username: string) {
 }
 
 function broadcastZoneFileUpdate(
-  zoneFileUrl: string,
-  coreAPIPassword: string,
-  name: string,
-  keypair: { key: string },
-  zoneFile: string
+  zoneFileUrl,
+  coreAPIPassword,
+  name,
+  keypair,
+  zoneFile
 ) {
   logger.info('broadcastZoneFileUpdate: entering')
-  return (dispatch: Dispatch<*>): Promise<*> => {
+  return (dispatch) => {
     dispatch(broadcastingZoneFileUpdate(name))
     // Core registers with an uncompressed address,
     // browser expects compressed addresses,
@@ -590,14 +581,14 @@ function broadcastZoneFileUpdate(
 }
 
 function broadcastNameTransfer(
-  nameTransferUrl: string,
-  coreAPIPassword: string,
-  name: string,
-  keypair: { key: string },
-  newOwnerAddress: string
+  nameTransferUrl,
+  coreAPIPassword,
+  name,
+  keypair,
+  newOwnerAddress
 ) {
   logger.info('broadcastNameTransfer: entering')
-  return (dispatch: Dispatch<*>): Promise<*> => {
+  return (dispatch) => {
     dispatch(broadcastingNameTransfer(name))
     // Core registers with an uncompressed address,
     // browser expects compressed addresses,

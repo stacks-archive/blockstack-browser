@@ -1,5 +1,5 @@
-import { HDNode } from 'bitcoinjs-lib'
-
+import { bip32 } from 'bitcoinjs-lib'
+import * as bip39 from 'bip39'
 import { randomBytes } from 'crypto'
 import {
   authorizationHeaderValue,
@@ -8,8 +8,8 @@ import {
   encrypt,
   getInsightUrls,
   getBlockchainIdentities
-} from '@utils'
-import { isCoreEndpointDisabled } from '@utils/window-utils'
+} from '../../../utils'
+import { isCoreEndpointDisabled } from '../../../utils/window-utils'
 import { transactions, config, network } from 'blockstack'
 
 import roundTo from 'round-to'
@@ -497,22 +497,21 @@ const initializeWallet = (
   backupPhrase,
   identitiesToGenerate = 1
 ) => async dispatch => {
-  const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
   logger.debug('initializeWallet started')
   let masterKeychain = null
   if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
     const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
     logger.debug(`seedBuffer: ${seedBuffer}`)
-    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+    masterKeychain = bip32.fromSeed(seedBuffer)
     logger.debug(`masterKeychain: ${masterKeychain}`)
   } else {
     logger.debug('Create a new wallet')
     const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
     backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
     const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
-    masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
+    masterKeychain = bip32.fromSeed(seedBuffer)
   }
-  const ciphertextBuffer = await encrypt(new Buffer(backupPhrase), password)
+  const ciphertextBuffer = await encrypt(Buffer.from(backupPhrase), password)
   logger.debug(`ciphertextBuffer: ${ciphertextBuffer}`)
   const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
   logger.debug(`encryptedBackupPhrase: ${encryptedBackupPhrase}`)

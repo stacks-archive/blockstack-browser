@@ -10,7 +10,7 @@ requireHacker.hook('webp', () => 'module.exports = ""')
 requireHacker.hook('css', () => 'module.exports = ""')
 
 // Stub out workers
-const workers = ['encrypt', 'decrypt', 'crypto-check']
+const workers = []
 function makeWorkerFactory(module) {
   return () => module
 }

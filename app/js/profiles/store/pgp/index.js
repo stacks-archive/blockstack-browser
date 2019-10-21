@@ -1,2 +1,2 @@
-export PGPActions from './actions'
-export PGPReducer from './reducer'
+export { default as PGPActions } from './actions'
+export { default as PGPReducer } from './reducer'

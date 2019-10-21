@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import {
   isABlockstackName, isABlockstackIDName
-} from '@utils/name-utils'
+} from '../../utils/name-utils'
 import { SearchActions } from '../store/search'
 
 function mapStateToProps(state) {

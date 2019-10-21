@@ -26,7 +26,7 @@ import {
   isMobile,
   signProfileForUpload,
   calculateProfileCompleteness
-} from '@utils'
+} from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'

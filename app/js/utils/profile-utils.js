@@ -1,64 +1,11 @@
-import { signProfileToken, wrapProfileToken } from 'blockstack'
-import { decodeToken, TokenVerifier } from 'jsontokens'
-
-import ecurve from 'ecurve'
-import { ECPair as ECKeyPair } from 'bitcoinjs-lib'
+import { signProfileToken, wrapProfileToken, verifyProfileToken } from 'blockstack'
+import { decodeToken } from 'jsontokens'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 
-const secp256k1 = ecurve.getCurveByName('secp256k1')
-
 export function verifyToken(token, verifyingKeyOrAddress) {
-  const decodedToken = decodeToken(token)
-  const payload = decodedToken.payload
-
-  if (!payload.hasOwnProperty('subject')) {
-    throw new Error('Token doesn\'t have a subject')
-  }
-  if (!payload.subject.hasOwnProperty('publicKey')) {
-    throw new Error('Token doesn\'t have a subject public key')
-  }
-  if (!payload.hasOwnProperty('issuer')) {
-    throw new Error('Token doesn\'t have an issuer')
-  }
-  if (!payload.issuer.hasOwnProperty('publicKey')) {
-    throw new Error('Token doesn\'t have an issuer public key')
-  }
-  if (!payload.hasOwnProperty('claim')) {
-    throw new Error('Token doesn\'t have a claim')
-  }
-
-  const issuerPublicKey = payload.issuer.publicKey
-  const publicKeyBuffer = new Buffer(issuerPublicKey, 'hex')
-
-  const Q = ecurve.Point.decodeFrom(secp256k1, publicKeyBuffer)
-  const compressedKeyPair = new ECKeyPair(null, Q, { compressed: true })
-  const compressedAddress = compressedKeyPair.getAddress()
-  const uncompressedKeyPair = new ECKeyPair(null, Q, { compressed: false })
-  const uncompressedAddress = uncompressedKeyPair.getAddress()
-
-  if (verifyingKeyOrAddress === issuerPublicKey) {
-    // pass
-  } else if (verifyingKeyOrAddress === compressedAddress) {
-    // pass
-  } else if (verifyingKeyOrAddress === uncompressedAddress) {
-    // pass
-  } else {
-    throw new Error('Token issuer public key does not match the verifying value')
-  }
-
-  const tokenVerifier = new TokenVerifier(decodedToken.header.alg, issuerPublicKey)
-  if (!tokenVerifier) {
-    throw new Error('Invalid token verifier')
-  }
-
-  const tokenVerified = tokenVerifier.verify(token)
-  if (!tokenVerified) {
-    throw new Error('Token verification failed')
-  }
-
-  return decodedToken
+  return verifyProfileToken(token, verifyingKeyOrAddress)
 }
 
 export function verifyTokenRecord(tokenRecord, publicKeyOrAddress) {
@@ -104,8 +51,8 @@ export function getProfileFromTokens(tokenRecords, publicKeychain, silentVerify 
   return profile
 }
 
-export function getDefaultProfileUrl(gaiaUrlBase: string,
-                                     ownerAddress: string) {
+export function getDefaultProfileUrl(gaiaUrlBase,
+                                     ownerAddress) {
   return `${gaiaUrlBase}${ownerAddress}/profile.json`
 }
 
@@ -113,10 +60,10 @@ export function getDefaultProfileUrl(gaiaUrlBase: string,
  * Try to fetch and verify a profile from the historic set of default locations,
  * in order of recency. If all of them return 404s, or fail to validate, return null
  */
-export function fetchProfileLocations(gaiaUrlBase: string,
-                                      ownerAddress: string,
-                                      firstAddress: string,
-                                      ownerIndex: number) {
+export function fetchProfileLocations(gaiaUrlBase,
+                                      ownerAddress,
+                                      firstAddress,
+                                      ownerIndex) {
   function recursiveTryFetch(locations) {
     if (locations.length === 0) {
       return Promise.resolve(null)

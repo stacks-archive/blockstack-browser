@@ -4,9 +4,9 @@ import log4js from 'log4js'
 
 import {
   isNameAvailable, getNamePrices
-} from '@utils/index'
+} from '../../../utils'
 
-import { satoshisToBtc } from '@utils/bitcoin-utils'
+import { satoshisToBtc } from '../../../utils/bitcoin-utils'
 
 
 const logger = log4js.getLogger(__filename)

@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReactTooltip from 'react-tooltip'
 
-import { openInNewTab, getWebAccountTypes } from '@utils'
+import { openInNewTab, getWebAccountTypes } from '../../utils'
 
 function mapStateToProps(state) {
   return {

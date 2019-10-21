@@ -9,23 +9,23 @@ import {
   selectIdentityAddresses,
   selectIdentityKeypairs,
   selectPromptedForEmail
-} from '@common/store/selectors/account'
+} from '../common/store/selectors/account'
 import {
   selectLocalIdentities,
   selectRegistration
-} from '@common/store/selectors/profiles'
+} from '../common/store/selectors/profiles'
 
 import {
   selectApi,
   selectStorageConnected
-} from '@common/store/selectors/settings'
+} from '../common/store/selectors/settings'
 
 import {
   selectAppManifest,
   selectAppManifestLoaded,
   selectAppManifestLoading,
   selectAppManifestLoadingError
-} from '@common/store/selectors/auth'
+} from '../common/store/selectors/auth'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -34,12 +34,12 @@ import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 import { RegistrationActions } from '../profiles/store/registration'
-import { hasNameBeenPreordered } from '@utils/name-utils'
-import { trackEventOnce } from '@utils/server-utils'
-import { sendRestoreEmail as sendEmail } from '@utils/email-utils'
+import { hasNameBeenPreordered } from '../utils/name-utils'
+import { trackEventOnce } from '../utils/server-utils'
+import { sendRestoreEmail as sendEmail } from '../utils/email-utils'
 import queryString from 'query-string'
 import log4js from 'log4js'
-import { formatAppManifest } from '@common'
+import { formatAppManifest } from '../common'
 import { ShellParent } from '@blockstack/ui'
 import {
   Initial,
@@ -406,7 +406,7 @@ class Onboarding extends React.Component {
       return null
     }
 
-    const encodedPhrase = new Buffer(encryptedBackupPhrase, 'hex').toString(
+    const encodedPhrase = Buffer.from(encryptedBackupPhrase, 'hex').toString(
       'base64'
     )
 

@@ -58,7 +58,7 @@ function decryptLegacy(dataBuffer, password) {
   return new Promise((resolve, reject) => {
     triplesec.decrypt(
       {
-        key: new Buffer(password),
+        key: Buffer.from(password),
         data: dataBuffer
       },
       (err, plaintextBuffer) => {

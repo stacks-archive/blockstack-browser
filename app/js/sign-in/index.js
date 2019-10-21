@@ -1,6 +1,7 @@
+import * as bip39 from 'bip39'
 import React from 'react'
 import PropTypes from 'prop-types'
-import { decrypt, isBackupPhraseValid } from '@utils'
+import { decrypt, isBackupPhraseValid } from '../utils'
 import { browserHistory, withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -8,7 +9,7 @@ import { AccountActions } from '../account/store/account'
 import { IdentityActions } from '../profiles/store/identity'
 import { SettingsActions } from '../account/store/settings'
 import { RegistrationActions } from '../profiles/store/registration'
-import { trackEventOnce } from '@utils/server-utils'
+import { trackEventOnce } from '../utils/server-utils'
 import { Initial, Password, Success, Email } from './views'
 import log4js from 'log4js'
 import { ShellParent } from '@blockstack/ui'
@@ -18,22 +19,22 @@ import {
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,
   selectPromptedForEmail
-} from '@common/store/selectors/account'
+} from '../common/store/selectors/account'
 import {
   selectDefaultIdentity,
   selectLocalIdentities,
   selectRegistration
-} from '@common/store/selectors/profiles'
+} from '../common/store/selectors/profiles'
 import {
   selectApi,
   selectStorageConnected
-} from '@common/store/selectors/settings'
+} from '../common/store/selectors/settings'
 import {
   selectAppManifest,
   selectAuthRequest
-} from '@common/store/selectors/auth'
+} from '../common/store/selectors/auth'
 import { AuthActions } from '../auth/store/auth'
-import { formatAppManifest } from '@common'
+import { formatAppManifest } from '../common'
 
 const CREATE_ACCOUNT_IN_PROCESS = 'createAccount/in_process'
 
@@ -132,10 +133,7 @@ class SignIn extends React.Component {
   backToSignUp = () =>
     browserHistory.push(`/sign-up${document.location.search}`)
 
-  isKeyEncrypted = key =>
-    import(/* webpackChunkName: 'bip39' */ 'bip39').then(
-      bip39 => !bip39.validateMnemonic(key)
-    )
+  isKeyEncrypted = key => bip39.validateMnemonic(key)
 
   validateRecoveryKey = async (key, nextView = VIEWS.PASSWORD) => {
     if (this.state.key !== key) {
@@ -170,7 +168,7 @@ class SignIn extends React.Component {
         this.setState({ decrypting: true }, async () => {
           try {
             const decryptedKeyBuffer = await decrypt(
-              new Buffer(encryptedKey, 'base64'),
+              Buffer.from(encryptedKey, 'base64'),
               this.state.password
             )
             const decryptedKey = decryptedKeyBuffer.toString()

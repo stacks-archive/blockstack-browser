@@ -9,6 +9,7 @@ import {
   signProfileForUpload
 } from '../../../../../app/js/utils/profile-utils'
 import { ECPair } from 'bitcoinjs-lib'
+import { ecPairToAddress } from 'blockstack'
 import {
   CREATE_NEW_REQUEST,
   CREATE_NEW_SUCCESS,
@@ -267,9 +268,9 @@ describe('Identity Store: Async Actions', () => {
       // bad pair:
       const ecPair = ECPair.makeRandom()
       const badpair = {
-        address: ecPair.getAddress(),
-        key: ecPair.d.toBuffer(32).toString('hex'),
-        keyID: ecPair.getPublicKeyBuffer().toString('hex')
+        address: ecPairToAddress(ecPair),
+        key: ecPair.privateKey.toString('hex'),
+        keyID: ecPair.publicKey.toString('hex')
       }
 
       const address = keypair.address
@@ -338,9 +339,9 @@ describe('Identity Store: Async Actions', () => {
       // bad pair:
       const ecPair = ECPair.makeRandom()
       const badpair = {
-        address: ecPair.getAddress(),
-        key: ecPair.d.toBuffer(32).toString('hex'),
-        keyID: ecPair.getPublicKeyBuffer().toString('hex')
+        address: ecPairToAddress(ecPair),
+        key: ecPair.privateKey.toString('hex'),
+        keyID: ecPair.publicKey.toString('hex')
       }
 
       const dummyAddress = '18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6'

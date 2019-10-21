@@ -33,7 +33,7 @@
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,
-    "react/prop-types": 2,
+    "react/prop-types": "off",
     "react/sort-comp": 0,
     "no-duplicate-imports": 0,
     "import/no-duplicates": 2,
@@ -43,16 +43,13 @@
     "react": {
       "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
       "pragma": "React", // Pragma to use, default to "React"
-      "version": "16.4", // React version, default to the latest React stable release
-      "flowVersion": "0.53" // Flow version
+      "version": "16.4" // React version, default to the latest React stable release
     },
     "import/resolver": {
       "babel-module": {
         "alias": {
           "@components": "./app/js/components",
-          "@common": "./app/js/common",
           "@styled": "./app/js/components/styled",
-          "@utils": "./app/js/utils",
           "@blockstack/ui": "./app/js/components/ui",
           "@ui/components": "./app/js/components/ui/components",
           "@ui/containers": "./app/js/components/ui/containers",

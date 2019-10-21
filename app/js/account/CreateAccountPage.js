@@ -8,7 +8,7 @@ import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
 import { AccountActions } from './store/account'
 import { SettingsActions } from './store/settings'
-import { isPasswordValid } from '@utils'
+import { isPasswordValid } from '../utils'
 
 function mapStateToProps(state) {
   return {

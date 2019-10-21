@@ -17,18 +17,17 @@ import {
   getAppBucketUrl,
   isLaterVersion,
   updateQueryStringParameter,
-  getPublicKeyFromPrivate
+  getPublicKeyFromPrivate,
+  BlockstackWallet
 } from 'blockstack'
-import { AppsNode } from '@utils/account-utils'
 import {
   fetchProfileLocations,
   getDefaultProfileUrl
-} from '@utils/profile-utils'
-import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
-import { HDNode } from 'bitcoinjs-lib'
+} from '../utils/profile-utils'
+import { getTokenFileUrlFromZoneFile } from '../utils/zone-utils'
 import log4js from 'log4js'
 import { uploadProfile } from '../account/utils'
-import { signProfileForUpload } from '@utils'
+import { signProfileForUpload } from '../utils'
 import {
   validateScopes,
   appRequestSupportsDirectHub
@@ -38,25 +37,25 @@ import {
   selectCoreHost,
   selectCorePort,
   selectCoreAPIPassword
-} from '@common/store/selectors/settings'
+} from '../common/store/selectors/settings'
 import {
   selectAppManifest,
   selectAppManifestLoading,
   selectAppManifestLoadingError,
   selectCoreSessionTokens
-} from '@common/store/selectors/auth'
+} from '../common/store/selectors/auth'
 import {
   selectLocalIdentities,
   selectDefaultIdentity
-} from '@common/store/selectors/profiles'
+} from '../common/store/selectors/profiles'
 
 import {
   selectIdentityKeypairs,
   selectEmail,
   selectIdentityAddresses,
   selectPublicKeychain
-} from '@common/store/selectors/account'
-import { formatAppManifest } from '@common'
+} from '../common/store/selectors/account'
+import { formatAppManifest } from '../common'
 import Modal from 'react-modal'
 import url from 'url'
 
@@ -92,7 +91,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch)
 }
 
-function makeGaiaAssociationToken(secretKeyHex: string, childPublicKeyHex: string) {
+function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
   const LIFETIME_SECONDS = 365 * 24 * 3600
   const signerKeyHex = secretKeyHex.slice(0, 64)
   const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
@@ -275,8 +274,7 @@ class AuthPage extends React.Component {
       const privateKey = profileSigningKeypair.key
       const appsNodeKey = profileSigningKeypair.appsNodeKey
       const salt = profileSigningKeypair.salt
-      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-      const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
+      const appPrivateKey = BlockstackWallet.getAppPrivateKey(appsNodeKey, salt, appDomain)
 
       let profileUrlPromise
 
