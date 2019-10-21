@@ -136,7 +136,7 @@ export function decryptMasterKeychain(password, encryptedBackupPhrase) {
       async plaintextBuffer => {
         const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
         const backupPhrase = plaintextBuffer.toString()
-        const seed = bip39.mnemonicToSeed(backupPhrase)
+        const seed = await bip39.mnemonicToSeed(backupPhrase)
         const masterKeychain = HDNode.fromSeedBuffer(seed)
         logger.info('decryptMasterKeychain: decrypted!')
         resolve(masterKeychain)

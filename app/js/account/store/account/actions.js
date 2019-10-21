@@ -501,7 +501,7 @@ const initializeWallet = (
   logger.debug('initializeWallet started')
   let masterKeychain = null
   if (backupPhrase && bip39.validateMnemonic(backupPhrase)) {
-    const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+    const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
     logger.debug(`seedBuffer: ${seedBuffer}`)
     masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
     logger.debug(`masterKeychain: ${masterKeychain}`)
@@ -509,7 +509,7 @@ const initializeWallet = (
     logger.debug('Create a new wallet')
     const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
     backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
-    const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+    const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
     masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
   }
   const ciphertextBuffer = await encrypt(new Buffer(backupPhrase), password)

@@ -5,7 +5,7 @@
   "author": "Blockstack PBC <admin@blockstack.com>",
   "dependencies": {
     "bigi": "^1.4.2",
-    "bip39": "^2.2.0",
+    "bip39": "^3.0.2",
     "bitcoinjs-lib": "^3.2.0",
     "blockstack-ui": "^0.0.71",
     "blockstack": "^19.3.0",

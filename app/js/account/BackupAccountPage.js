@@ -78,7 +78,7 @@ class BackupAccountPage extends Component {
       async plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
         const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
-        const seed = bip39.mnemonicToSeed(plaintextBuffer.toString())
+        const seed = await bip39.mnemonicToSeed(plaintextBuffer.toString())
         const keychain = HDNode.fromSeedBuffer(seed)
         this.props.displayedRecoveryCode()
         this.setState({

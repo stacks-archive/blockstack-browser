@@ -231,7 +231,7 @@ function createNewProfile(
         logger.debug('createNewProfile: Backup phrase successfully decrypted')
         const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
         const backupPhrase = plaintextBuffer.toString()
-        const seedBuffer = bip39.mnemonicToSeed(backupPhrase)
+        const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
         const masterKeychain = HDNode.fromSeedBuffer(seedBuffer)
         const identityPrivateKeychainNode = getIdentityPrivateKeychain(
           masterKeychain
