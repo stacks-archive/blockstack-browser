@@ -20,6 +20,7 @@
         "BABEL_ENV": "test"
       },
       "console": "integratedTerminal",
+      "outputCapture": "std"
     },
     {
       "type": "node",
