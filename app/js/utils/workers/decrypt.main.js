@@ -5,7 +5,8 @@ import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
 async function denormalizeMnemonic(normalizedMnemonic) {
-  return bip39.entropyToMnemonic(normalizedMnemonic)
+  const result = bip39.entropyToMnemonic(normalizedMnemonic)
+  return Promise.resolve(result)
 }
 
 async function decryptMnemonic(dataBuffer, password) {
@@ -14,7 +15,15 @@ async function decryptMnemonic(dataBuffer, password) {
   const cipherText = dataBuffer.slice(48)
   const hmacPayload = Buffer.concat([salt, cipherText])
 
-  const keysAndIV = crypto.pbkdf2Sync(password, salt, 100000, 48, 'sha512')
+  /** @type {Buffer} */
+  const keysAndIV = await new Promise((resolve, reject) => {
+    crypto.pbkdf2(password, salt, 100000, 48, 'sha512', (err, result) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(result)
+    })
+  })
   const encKey = keysAndIV.slice(0, 16)
   const macKey = keysAndIV.slice(16, 32)
   const iv = keysAndIV.slice(32, 48)

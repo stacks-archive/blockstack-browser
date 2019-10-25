@@ -5,6 +5,33 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "chrome",
+      "request": "launch",
+      "name": "chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}",
+      "sourceMaps": true,
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "webpack-dev-server",
+      "program": "${workspaceFolder}/node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+      "args": [
+          "--config",
+          "${workspaceFolder}/webpack.config.js"
+      ],
+      "sourceMaps": true,
+      "env": {
+        "NODE_ENV": "development",
+        "BABEL_ENV": "development",
+        "DEBUG_LOGGING": "true"
+      },
+      // "smartStep": true,
+      "trace": true,
+      "autoAttachChildProcesses": true
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Unit tests",
@@ -69,6 +96,12 @@
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Webpack+Chrome",
+      "configurations": ["webpack-dev-server", "chrome"]
     }
   ]
 }

@@ -41,6 +41,7 @@ class BackupAccountPage extends Component {
       decryptedBackupPhrase: null,
       password: '',
       alerts: [],
+      /** @type {bip32.BIP32Interface} */
       keychain: null,
       isDecrypting: false
     }
@@ -78,12 +79,13 @@ class BackupAccountPage extends Component {
     decrypt(dataBuffer, password).then(
       async plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
-        const seed = await bip39.mnemonicToSeed(plaintextBuffer.toString())
+        const plaintextString = plaintextBuffer.toString()
+        const seed = await bip39.mnemonicToSeed(plaintextString)
         const keychain = bip32.fromSeed(seed)
         this.props.displayedRecoveryCode()
         this.setState({
           isDecrypting: false,
-          decryptedBackupPhrase: plaintextBuffer.toString(),
+          decryptedBackupPhrase: plaintextString,
           keychain
         })
       },
@@ -185,7 +187,7 @@ class BackupAccountPage extends Component {
                   <strong>Info for Developers</strong>
                 </p>
                 <p>
-                  Private Key (WIF) — <code>{keychain.keyPair.toWIF()}</code>
+                  Private Key (WIF) — <code>{keychain.toWIF()}</code>
                 </p>
               </div>
             </div>

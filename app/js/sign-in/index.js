@@ -133,7 +133,10 @@ class SignIn extends React.Component {
   backToSignUp = () =>
     browserHistory.push(`/sign-up${document.location.search}`)
 
-  isKeyEncrypted = key => bip39.validateMnemonic(key)
+  isKeyEncrypted = (key) => { 
+    const isValidMnemonic = bip39.validateMnemonic(key)
+    return Promise.resolve(!isValidMnemonic)
+  }
 
   validateRecoveryKey = async (key, nextView = VIEWS.PASSWORD) => {
     if (this.state.key !== key) {

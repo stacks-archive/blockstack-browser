@@ -37,7 +37,7 @@ const output = {
 module.exports = {
   stats: analyze ? 'normal' : 'none',
   mode: isProd ? 'production' : 'development',
-  devtool: !isProd ? 'cheap-module-source-map' : 'source-map',
+  devtool: !isProd ? 'source-map' : 'source-map',
   entry: {
     main: [path.resolve(__dirname, 'app/js/index.js')]
   },
@@ -47,15 +47,16 @@ module.exports = {
   },
   output,
   devServer: {
-    open: true,
+    open: false,
+    writeToDisk: true,
     historyApiFallback: true,
     port: 3000,
     contentBase: path.resolve(__dirname, 'build'),
-    watchOptions: {
+    /* watchOptions: {
       aggregateTimeout: 300,
       poll: 1000,
       ignored: /node_modules/
-    },
+    }, */
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
@@ -71,8 +72,8 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            comments: true,
-            compact: true,
+            // comments: true,
+            // compact: true,
             babelrc: true,
             cacheDirectory: true
           }
