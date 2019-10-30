@@ -32,23 +32,28 @@ class WalletApp extends Component {
     const activeTabUrl = `/wallet/${childPath}`
 
     return (
-      <div>
-        <Navbar activeTab="wallet" />
-        <SecondaryNavBar
-          leftButtonTitle="Receive"
-          leftButtonLink="/wallet/receive"
-          isLeftActive={(activeTabUrl === '/wallet/receive')}
-          rightButtonTitle="Send"
-          rightButtonLink="/wallet/send"
-          isRightActive={(activeTabUrl === '/wallet/send')}
-          activeClass="active-wallet"
-          customButtonClass="btn-wallet"
-        />
-        <div className="container-fluid col-centered form-container-secondary">
-          <div>
-            {this.props.children}
-          </div>
-        </div>
+      <div className="container-fluid">
+            <div>
+              <Navbar activeTab="wallet" />
+              <div className="container-fluid col-centered form-container-secondary">
+                    <strong>NOTE:</strong> This wallet only allows you to add Bitcoin (BTC) to purchase additional identities. You cannot use it with Stacks (STX) tokens. To send and purchase STX, use the Stacks Wallet software instead. See <a href="https://docs.blockstack.org/org/wallet-install.html" target="_blank">the documentation for the Stacks Wallet software</a> for more information. 
+              </div>
+              <SecondaryNavBar
+                leftButtonTitle="Receive"
+                leftButtonLink="/wallet/receive"
+                isLeftActive={(activeTabUrl === '/wallet/receive')}
+                rightButtonTitle="Send"
+                rightButtonLink="/wallet/send"
+                isRightActive={(activeTabUrl === '/wallet/send')}
+                activeClass="active-wallet"
+                customButtonClass="btn-wallet"
+              />
+              <div className="container-fluid col-centered form-container-secondary">
+                <div>
+                  {this.props.children}
+                </div>
+              </div>
+            </div>  
       </div>
     )
   }
