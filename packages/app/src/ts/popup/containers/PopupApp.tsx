@@ -13,7 +13,6 @@ interface IPopupApp {
 }
 
 class PopupApp extends React.Component<IPopupApp> {
-
   render() {
     return (
       <ThemeProvider theme={themes[this.props.theme]}>
@@ -37,14 +36,14 @@ const mapStateToProps = (state: IAppState) => {
 export default connect(mapStateToProps)(PopupApp)
 
 const PopupAppContainer = styled('div')`
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	justify-items: center;
-	align-items: center;
-	height: 200px;
-	width: 300px;
-	margin: 10px;
-	background-color: ${p => p.theme.backgroundColor};
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  height: 200px;
+  width: 300px;
+  margin: 10px;
+  background-color: ${p => p.theme.backgroundColor};
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 `

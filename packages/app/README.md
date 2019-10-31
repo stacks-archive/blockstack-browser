@@ -47,5 +47,15 @@ yarn commands will work too if yarn is installed.
 4. Open the newly created folder "**dist**" from the project folder, and choose the "**manifest.json**" file.
 5. Thats it.
 
+### Developing the "Options" page with React hot reloading
+
+Currently, this project does not support React hot module reloading in the extension itself. You can still run `watch` to automatically reload the project, but you'll have to refresh to see your changes.
+
+One option is to run the app with `webpack-dev-server`. This allows you to use the "Options" page like a normal web page, with proper hot reloading. Be aware that this will not share state with the extension, including the popup. To test interactions with the popup, you still need to run the extension itself.
+
+1. Run `yarn dev-server`
+2. Open http://localhost:8080/options.html
+3. Develop as you'd like
+
 ## License
 MIT

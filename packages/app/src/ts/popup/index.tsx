@@ -13,6 +13,7 @@ store.ready().then(() => {
   ReactDOM.render(
     <Provider store={store as any}>
       <PopupApp />
-    </Provider>
-    , document.getElementById('popup-root'))
+    </Provider>,
+    document.getElementById('popup-root')
+  )
 })

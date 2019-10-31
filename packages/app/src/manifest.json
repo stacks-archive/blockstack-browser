@@ -27,13 +27,14 @@
 		],
 		"persistent": true
 	},
+	"web_accessible_resources": ["inpage.js"],
 	"browser_action": {
 		"default_title": "Blockstack",
 		"default_icon": "assets/logo-16@3x.png",
 		"default_popup": "popup.html"
 	},
 	"options_ui": {
-		"page": "options.html",
+		"page": "index.html",
 		"open_in_tab": true
 	},
 	"content_scripts": [
