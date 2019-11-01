@@ -1,10 +1,8 @@
 import React from 'react'
-import { connect, useSelector, useDispatch } from 'react-redux'
-import { bindActionCreators, Dispatch } from 'redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Box, Input, Text, Button } from '@blockstack/ui'
 import { IAppState } from '@store'
 import { doStoreSeed } from '@store/wallet'
-import * as WalletActions from '@store/wallet/actions'
 import { Formik } from 'formik'
 import { selectCurrentWallet, selectSeed } from '@store/wallet/selectors'
 
@@ -43,30 +41,6 @@ const Seed = () => {
       </Formik>
     </Box>
   )
-
-  return (
-    <Box width="100%">
-      {/* <Box width={1}> */}
-      <p>Seed is: {seed}</p>
-      <input type="text" onChange={evt => setSeed(evt.target.value)} value={seed} />
-      <p>
-        <a href="#" onClick={saveSeed}>
-          Save
-        </a>
-      </p>
-      {/* </Box> */}
-    </Box>
-  )
 }
 
-const mapStateToProps = (state: IAppState) => ({
-  seed: state.wallet.seed,
-  wallet: state.wallet.currentWallet
-})
-
-const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators({ ...WalletActions }, dispatch)
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Seed)
+export default Seed
