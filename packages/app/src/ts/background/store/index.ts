@@ -2,7 +2,6 @@ import { combineReducers, createStore, Store, compose, applyMiddleware } from 'r
 import { persistReducer, persistStore } from 'redux-persist'
 import thunk from 'redux-thunk'
 import storage from 'redux-persist/lib/storage'
-import counter, { ICounter } from './counter/reducer'
 import settings, { IAppSettings } from './settings/reducer'
 import { walletReducer, WalletState } from './wallet'
 import { permissionsReducer, PermissionsState } from './permissions'
@@ -19,14 +18,12 @@ declare module 'redux' {
 }
 
 export interface IAppState {
-  counter: ICounter
   settings: IAppSettings
   wallet: WalletState
   permissions: PermissionsState
 }
 
 const reducers = combineReducers<IAppState>({
-  counter,
   settings,
   wallet: walletReducer,
   permissions: permissionsReducer
