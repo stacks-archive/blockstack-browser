@@ -17,7 +17,7 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@blockstack/ui": "^1.0.0-alpha.2",
+		"@blockstack/ui": "^1.0.0-alpha.6",
 		"blockstack-keychain": "file:../keychain",
 		"formik": "^2.0.3",
 		"react": "^16.11.0",

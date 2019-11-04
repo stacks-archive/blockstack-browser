@@ -841,10 +841,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@blockstack/ui@^1.0.0-alpha.2":
-  version "1.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.2.tgz#b3aa20cb0a2200ef21bdb9833b57f70dff0e3f9e"
-  integrity sha512-OMve1QXRrzK48qIBjHeltUvT4q6ZzLq1sgbHuZwxVZ3eDXcFCe0u7dQDEGZkG40aXfyB5JkW4nR78WjOrTzw1Q==
+"@blockstack/ui@^1.0.0-alpha.6":
+  version "1.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.6.tgz#c04711aacde22871368538fbb997eab6086bb393"
+  integrity sha512-uFbZ8m8Rp7rT/qmNIbK20ODTLcyKfaC8XwQqu6Yb2Kn2uSQS/5XZQ/27msF+hjLd57DBFYvTP3abdEZBm3qLjQ==
   dependencies:
     "@styled-system/css" "5.0.23"
     "@types/color" "^3.0.0"
@@ -852,6 +852,7 @@
     "@types/styled-system" "^5.1.2"
     "@types/styled-system__css" "^5.0.4"
     color "3.1.2"
+    csstype "^2.6.7"
     prop-types "^15.7.2"
     react-spring "8.0.27"
     styled-system "5.1.2"
@@ -3017,7 +3018,7 @@ csstype@^2.2.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.6.tgz#c34f8226a94bbb10c32cc0d714afdf942291fc41"
   integrity sha512-RpFbQGUE74iyPgvr46U9t1xoQBM8T4BL8SxrN66Le2xYAPSaDJJKeztV3awugusb3g3G9iL8StmkBBXhcbbXhg==
 
-csstype@^2.6.4, csstype@^2.6.6:
+csstype@^2.6.4, csstype@^2.6.6, csstype@^2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.7.tgz#20b0024c20b6718f4eda3853a1f5a1cce7f5e4a5"
   integrity sha512-9Mcn9sFbGBAdmimWb2gLVDtFJzeKtDGIr76TUqmjZrw9LFXBMSU70lcs+C0/7fyCd6iBDqmksUcCOUIkisPHsQ==
