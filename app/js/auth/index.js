@@ -4,7 +4,7 @@ import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import { Initial, LegacyGaia } from './views'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { randomBytes } from 'crypto'
+import * as crypto from 'crypto'
 import { AuthActions } from './store/auth'
 import { IdentityActions } from '../profiles/store/identity'
 import { decodeToken, TokenSigner } from 'jsontokens'
@@ -95,7 +95,7 @@ function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
   const LIFETIME_SECONDS = 365 * 24 * 3600
   const signerKeyHex = secretKeyHex.slice(0, 64)
   const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
-  const salt = randomBytes(16).toString('hex')
+  const salt = crypto.randomBytes(16).toString('hex')
   const payload = { childToAssociate: childPublicKeyHex,
                     iss: compressedPublicKeyHex,
                     exp: LIFETIME_SECONDS + (new Date()/1000),

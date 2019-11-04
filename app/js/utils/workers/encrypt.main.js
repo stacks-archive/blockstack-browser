@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import * as crypto from 'crypto'
 import * as bip39 from 'bip39'
 import log4js from 'log4js'
 const logger = log4js.getLogger(__filename)
@@ -21,7 +21,15 @@ async function encryptMnemonic(mnemonic, password) {
 
   // AES-128-CBC with SHA256 HMAC
   const salt = crypto.randomBytes(16)
-  const keysAndIV = crypto.pbkdf2Sync(password, salt, 100000, 48, 'sha512')
+  /** @type {Buffer} */
+  const keysAndIV = await new Promise((resolve, reject) => {
+    crypto.pbkdf2(password, salt, 100000, 48, 'sha512', (err, result) => {
+      if (err) {
+        reject(err)
+      }
+      resolve(result)
+    })
+  })
   const encKey = keysAndIV.slice(0, 16)
   const macKey = keysAndIV.slice(16, 32)
   const iv = keysAndIV.slice(32, 48)

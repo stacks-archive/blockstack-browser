@@ -2,7 +2,7 @@ import { decrypt } from './encryption-utils'
 import { bip32 } from 'bitcoinjs-lib'
 import * as bip39 from 'bip39'
 import { BlockstackWallet } from 'blockstack'
-import crypto from 'crypto'
+import * as crypto from 'crypto'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)

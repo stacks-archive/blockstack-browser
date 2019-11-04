@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import * as crypto from 'crypto'
 import triplesec from 'triplesec'
 import * as bip39 from 'bip39'
 import log4js from 'log4js'

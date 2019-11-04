@@ -1,6 +1,6 @@
 import { bip32 } from 'bitcoinjs-lib'
 import * as bip39 from 'bip39'
-import { randomBytes } from 'crypto'
+import * as crypto from 'crypto'
 import {
   authorizationHeaderValue,
   btcToSatoshis,
@@ -507,7 +507,7 @@ const initializeWallet = (
   } else {
     logger.debug('Create a new wallet')
     const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
-    backupPhrase = bip39.generateMnemonic(STRENGTH, randomBytes)
+    backupPhrase = bip39.generateMnemonic(STRENGTH, crypto.randomBytes)
     const seedBuffer = await bip39.mnemonicToSeed(backupPhrase)
     masterKeychain = bip32.fromSeed(seedBuffer)
   }
