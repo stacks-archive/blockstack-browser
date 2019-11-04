@@ -31,17 +31,3 @@ if ((module as any).hot) {
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   store.ready().then(() => buildApp(store))
 }
-
-// const store = new Store({
-//   portName: 'ExPort' // Communication port between the background component and views such as browser tabs.
-// })
-
-// // eslint-disable-next-line @typescript-eslint/no-floating-promises
-// store.ready().then(() => {
-//   ReactDOM.render(
-//     <Provider store={store as any}>
-//       <ActionsApp />
-//     </Provider>,
-//     document.getElementById('actions-root')
-//   )
-// })

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Box, Text, Input, Button } from '@blockstack/ui'
+import { Box, Text, Input, Button, ButtonGroup } from '@blockstack/ui'
 import { doAuthRequest } from '@store/permissions/actions'
 import { openPopup } from '../../actions/utils'
 import { Formik } from 'formik'
@@ -11,6 +11,10 @@ const DevActions = () => {
   const saveAuthRequest = (authRequest: string) => {
     dispatch(doAuthRequest(authRequest))
     openPopup('http://localhost:8080/actions.html')
+  }
+
+  const openBrowserActions = () => {
+    openPopup('http://localhost:8080/popup.html')
   }
 
   return (
@@ -35,6 +39,9 @@ const DevActions = () => {
           </form>
         )}
       </Formik>
+      <ButtonGroup variantColor="purple" my={4}>
+        <Button onClick={openBrowserActions}>Debug Browser Action</Button>
+      </ButtonGroup>
     </Box>
   )
 }

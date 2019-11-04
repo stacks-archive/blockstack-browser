@@ -8,13 +8,11 @@ interface GutterProps extends BoxProps {
 }
 
 const Gutter: React.FC<GutterProps> = ({ base = 6, multiplier, ...rest }: GutterProps) => {
-  const boxes = [];
+  const boxes = []
   for (let index = 0; index < multiplier; index++) {
-    boxes.push(<Box py={base} {...rest} />);
+    boxes.push(<Box py={base} key={`gutter-${index}`} {...rest} />)
   }
-  return (
-    <>{boxes}</>
-  )
+  return <>{boxes}</>
 }
 
 export default Gutter
