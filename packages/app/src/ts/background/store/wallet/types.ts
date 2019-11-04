@@ -1,4 +1,4 @@
-import Wallet from 'blockstack-keychain/lib-esm/wallet'
+import Wallet from '@blockstack/keychain/dist/wallet'
 
 export const RESTORE_WALLET = 'WALLET/RESTORE_WALLET'
 export const IS_RESTORING_WALLET = 'WALLET/IS_RESTORING'

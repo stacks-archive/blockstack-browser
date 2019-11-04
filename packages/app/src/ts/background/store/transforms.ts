@@ -1,4 +1,4 @@
-import Wallet, { ConstructorOptions } from 'blockstack-keychain/lib-esm/wallet'
+import Wallet, { ConstructorOptions } from '@blockstack/keychain/dist/wallet'
 import { createTransform } from 'redux-persist'
 
 interface OutboundState {

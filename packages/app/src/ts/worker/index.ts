@@ -1,4 +1,4 @@
-import Wallet from 'blockstack-keychain/lib-esm/wallet'
+import Wallet from '@blockstack/keychain/dist/wallet'
 
 const ctx: Worker = self as any
 

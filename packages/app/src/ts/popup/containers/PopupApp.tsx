@@ -11,7 +11,7 @@ const PopupApp: React.FC = () => {
         <Flex>
           <Box width="100%" textAlign="center" px={5}>
             <Gutter multiplier={3} />
-            <Text textDisplay="display.large">Welcome to the Blockstack App!</Text>
+            <Text textStyle="display.large">Welcome to the Blockstack App!</Text>
           </Box>
         </Flex>
       </React.Fragment>

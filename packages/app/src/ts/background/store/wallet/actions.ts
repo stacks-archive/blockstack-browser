@@ -1,5 +1,5 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import Wallet from 'blockstack-keychain/lib-esm/wallet'
+import Wallet from '@blockstack/keychain/dist/wallet'
 import { WalletActions, RESTORE_WALLET, IS_RESTORING_WALLET } from './types'
 
 export function didRestoreWallet(wallet: Wallet): WalletActions {

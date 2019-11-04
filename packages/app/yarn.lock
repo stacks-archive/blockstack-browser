@@ -841,6 +841,19 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@blockstack/keychain@^0.1.0-alpha.2":
+  version "0.1.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/@blockstack/keychain/-/keychain-0.1.0-alpha.2.tgz#c39638d9779de21c1c44c9db54a9e288101b6f36"
+  integrity sha512-HB0WzVMgBw0En8cA9ksPtdvL3g+hs5Yv98GMspOMXxTXm6xm9Ch3iv7UK4snLWMkVlMmgd7HUS3Yff/JzS9icw==
+  dependencies:
+    bip32 "^2.0.4"
+    bip39 "^3.0.2"
+    bitcoinjs-lib "^5.1.5"
+    blockstack "^19.3.0"
+    crypto-browserify "^3.12.0"
+    jsontokens "^2.0.2"
+    triplesec "^3.0.25"
+
 "@blockstack/ui@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.6.tgz#c04711aacde22871368538fbb997eab6086bb393"
@@ -2160,17 +2173,6 @@ bitcoinjs-lib@^5.1.2, bitcoinjs-lib@^5.1.5:
     typeforce "^1.11.3"
     varuint-bitcoin "^1.0.4"
     wif "^2.0.1"
-
-"blockstack-keychain@file:../keychain":
-  version "0.0.1"
-  dependencies:
-    bip32 "^2.0.4"
-    bip39 "^3.0.2"
-    bitcoinjs-lib "^5.1.5"
-    blockstack "^19.3.0"
-    crypto-browserify "^3.12.0"
-    jsontokens "^2.0.2"
-    triplesec "^3.0.25"
 
 blockstack@^19.3.0:
   version "19.3.0"
