@@ -39,7 +39,7 @@
 	},
 	"content_scripts": [
 		{
-			"js": ["counter.js"],
+			"js": ["message-bus.js"],
 			"matches": ["*://*/*"]
 		}
 	]
