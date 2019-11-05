@@ -36,7 +36,7 @@ class WalletApp extends Component {
         <div>
           <Navbar activeTab="wallet" />
           <div className="container-fluid col-centered form-container-secondary">
-            <strong>NOTE:</strong> This wallet only allows you to add Bitcoin (BTC) to purchase additional identities. You cannot use it with Stacks (STX) tokens. To send and purchase STX, use the Stacks Wallet software instead. See <a href="https://docs.blockstack.org/org/wallet-install.html" target="_blank">the documentation for the Stacks Wallet software</a> for more information. 
+            <strong>NOTE:</strong> You cannot use this wallet to send and receive Stacks (STX) tokens. Also, you cannot use the Bitcoin (BTC) address on this page to fund STX transactions. This wallet and its address <strong>only</strong> support the purchase of Blockstack identities(IDs). <strong>To create or fund STX transactions, use the Stacks Wallet software.</strong> See <a href="https://docs.blockstack.org/org/wallet-install.html" target="_blank">the Stacks Wallet software documentation</a> for more information. 
           </div>
           <SecondaryNavBar
             leftButtonTitle="Receive"
