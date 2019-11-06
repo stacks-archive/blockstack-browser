@@ -6,7 +6,6 @@ import {
   btcToSatoshis,
   satoshisToBtc,
   encrypt,
-  getInsightUrls,
   getBlockchainIdentities
 } from '../../../utils'
 import { isCoreEndpointDisabled } from '../../../utils/window-utils'
@@ -447,7 +446,7 @@ function refreshBalances(balanceURL, addresses) {
           .then(response => {
             results.push({
               address,
-              balance: satoshisToBtc(parseInt(response))
+              balance: satoshisToBtc(parseInt(response, 10))
             })
 
             if (results.length >= addresses.length) {

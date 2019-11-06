@@ -377,7 +377,7 @@ export class DefaultProfilePage extends Component {
     return ''
   }
 
-  saveProfile(newProfile) {
+  async saveProfile(newProfile) {
     logger.info('saveProfile')
 
     const identityIndex = this.props.defaultIdentity
@@ -392,12 +392,12 @@ export class DefaultProfilePage extends Component {
     logger.debug(`saveProfile: signing with key index ${identityIndex}`)
 
     const identitySigner = this.props.identityKeypairs[identityIndex]
-    const signedProfileTokenData = signProfileForUpload(
+    const signedProfileTokenData = await signProfileForUpload(
       newProfile,
       identitySigner
     )
     if (this.props.storageConnected) {
-      uploadProfile(
+      await uploadProfile(
         this.props.api,
         identity,
         identitySigner,

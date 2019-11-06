@@ -320,7 +320,7 @@ class AuthPage extends React.Component {
           if (storageConnected) {
             const hubUrl = this.props.api.gaiaHubUrl
             getAppBucketUrl(hubUrl, appPrivateKey)
-              .then(appBucketUrl => {
+              .then(async appBucketUrl => {
                 logger.debug(
                   `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
                 )
@@ -331,7 +331,7 @@ class AuthPage extends React.Component {
                   )}`
                 )
                 profile.apps = apps
-                const signedProfileTokenData = signProfileForUpload(
+                const signedProfileTokenData = await signProfileForUpload(
                   profile,
                   nextProps.identityKeypairs[identityIndex],
                   this.props.api

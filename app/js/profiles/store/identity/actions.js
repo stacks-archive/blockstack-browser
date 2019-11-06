@@ -1,5 +1,6 @@
 import { bip32 } from 'bitcoinjs-lib'
 import * as bip39 from 'bip39'
+import * as cheerio from 'cheerio'
 import * as types from './types'
 import { validateProofs } from 'blockstack'
 import {
@@ -25,7 +26,7 @@ function validateProofsService(
   username = null
 ) {
   if (!isWebAppBuild()) {
-    return validateProofs(profile, address, username)
+    return validateProofs(profile, address, cheerio, username)
   }
 
   const args = {

@@ -140,25 +140,21 @@ class UpdatePage extends React.Component {
     const dataBuffer = Buffer.from(encryptedBackupPhrase, 'hex')
     const { password } = this.state
 
-    const updateProfileUrls = localIdentities.map((identity, index) =>
-      new Promise(async (resolve, reject) => {
-        try {
-          const signedProfileTokenData = signProfileForUpload(
-            identity.profile,
-            this.props.identityKeypairs[index],
-            this.props.api
-          )
-          uploadProfile(
-            this.props.api,
-            identity,
-            this.props.identityKeypairs[index],
-            signedProfileTokenData
-          ).then(resolve).catch(reject)
-        } catch (error) {
-          reject(error)
-        }
-        
-      }))
+    const uploadFn = async (identity, index) => {
+      const signedProfileTokenData = await signProfileForUpload(
+        identity.profile,
+        this.props.identityKeypairs[index],
+        this.props.api
+      )
+      await uploadProfile(
+        this.props.api,
+        identity,
+        this.props.identityKeypairs[index],
+        signedProfileTokenData
+      )
+    }
+
+    const updateProfileUrls = localIdentities.map((identity, index) => uploadFn(identity, index))
 
     return Promise.all(updateProfileUrls).then(() => {
       console.log('updated profile URLs')

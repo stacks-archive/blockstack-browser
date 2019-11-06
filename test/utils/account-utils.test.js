@@ -24,12 +24,12 @@ describe('account-utils', () => {
   })
 
   describe('getIdentityOwnerAddressNode', () => {
-    it('should generate app key tree', () => {
+    it('should generate app key tree', async () => {
       const wallet = new blockstack.BlockstackWallet(masterKeychain)
       const addressIndex = 0
-      const identityKeyPair = wallet.getIdentityKeyPair(addressIndex, true)
+      const identityKeyPair = await wallet.getIdentityKeyPair(addressIndex, true)
       const expectedSalt = 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e'
-      const actualSalt = wallet.getIdentitySalt()
+      const actualSalt = await wallet.getIdentitySalt()
       assert.equal(actualSalt, expectedSalt)
 
       const expectedAddress =  '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk'
@@ -39,10 +39,10 @@ describe('account-utils', () => {
       const appsNodeKey = identityKeyPair.appsNodeKey
 
       const origin = 'https://amazing.app:443'
-      const appNodeKey = blockstack.BlockstackWallet.getLegacyAppPrivateKey(appsNodeKey, identityKeyPair.salt, origin)
+      const appNodeKey = await blockstack.BlockstackWallet.getLegacyAppPrivateKey(appsNodeKey, identityKeyPair.salt, origin)
 
       const expectedAppNodeAddress = '1A9NEhnXq5jDp9BRT4DrwadRP5jbBK896X'
-      const actualAppNodeAddress = blockstack.publicKeyToAddress(blockstack.getPublicKeyFromPrivate(appNodeKey))
+      const actualAppNodeAddress = await blockstack.publicKeyToAddress(blockstack.getPublicKeyFromPrivate(appNodeKey))
       assert.equal(actualAppNodeAddress, expectedAppNodeAddress)
     })
   })

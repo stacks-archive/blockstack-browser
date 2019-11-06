@@ -180,7 +180,7 @@ describe('Identity Store: Async Actions', () => {
         })
     })
 
-    it('checks default storage for profile if address owns no names, selects first if valid', () => {
+    it('checks default storage for profile if address owns no names, selects first if valid', async () => {
       // mock core
 
       const keypairs = [
@@ -198,23 +198,23 @@ describe('Identity Store: Async Actions', () => {
       ]
 
       const address = keypairs[0].address
+      const signedProfile1 = await signProfileForUpload(DEFAULT_PROFILE, keypairs[0])
+      const signedProfile2 = await signProfileForUpload(
+        {
+          '@context': 'http://schema.org',
+          '@type': 'Person',
+          name: 'Second'
+        },
+        keypairs[0]
+      )
+
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/profile.json`)
-        .reply(200, signProfileForUpload(DEFAULT_PROFILE, keypairs[0]))
+        .reply(200, signedProfile1)
 
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/0/profile.json`)
-        .reply(
-          200,
-          signProfileForUpload(
-            {
-              '@context': 'http://schema.org',
-              '@type': 'Person',
-              name: 'Second'
-            },
-            keypairs[0]
-          )
-        )
+        .reply(200, signedProfile2)
 
       nock('https://core.blockstack.org')
         .get(`/v1/addresses/bitcoin/${address}`)
@@ -252,7 +252,7 @@ describe('Identity Store: Async Actions', () => {
         })
     })
 
-    it('checks default storage for profile if address owns no names, ensures first is valid', () => {
+    it('checks default storage for profile if address owns no names, ensures first is valid', async () => {
       // mock core
 
       const keypair = {
@@ -268,7 +268,7 @@ describe('Identity Store: Async Actions', () => {
       // bad pair:
       const ecPair = ECPair.makeRandom()
       const badpair = {
-        address: ecPairToAddress(ecPair),
+        address: await ecPairToAddress(ecPair),
         key: ecPair.privateKey.toString('hex'),
         keyID: ecPair.publicKey.toString('hex')
       }
@@ -279,13 +279,16 @@ describe('Identity Store: Async Actions', () => {
         '@type': 'Person',
         name: 'Second'
       }
+      const signedProfile1 = await signProfileForUpload(DEFAULT_PROFILE, badpair)
+      const singedProfile2 = await signProfileForUpload(secondProfile, keypair)
+
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/profile.json`)
-        .reply(200, signProfileForUpload(DEFAULT_PROFILE, badpair))
+        .reply(200, signedProfile1)
 
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/0/profile.json`)
-        .reply(200, signProfileForUpload(secondProfile, keypair))
+        .reply(200, singedProfile2)
 
       nock('https://core.blockstack.org')
         .get(`/v1/addresses/bitcoin/${address}`)
@@ -323,7 +326,7 @@ describe('Identity Store: Async Actions', () => {
         })
     })
 
-    it('checks default storage for profile if address owns no names, uses 2nd if first not found, and uses correct old index.', () => {
+    it('checks default storage for profile if address owns no names, uses 2nd if first not found, and uses correct old index.', async () => {
       // mock core
 
       const keypair = {
@@ -339,7 +342,7 @@ describe('Identity Store: Async Actions', () => {
       // bad pair:
       const ecPair = ECPair.makeRandom()
       const badpair = {
-        address: ecPairToAddress(ecPair),
+        address: await ecPairToAddress(ecPair),
         key: ecPair.privateKey.toString('hex'),
         keyID: ecPair.publicKey.toString('hex')
       }
@@ -353,6 +356,8 @@ describe('Identity Store: Async Actions', () => {
         name: 'Second'
       }
 
+      const signedProfile = await signProfileForUpload(secondProfile, keypair)
+
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/profile.json`)
         .reply(404, 'Not found')
@@ -365,7 +370,7 @@ describe('Identity Store: Async Actions', () => {
       // the _tested_ index is 3, which should map to /2/
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${dummyAddress}/2/profile.json`)
-        .reply(200, signProfileForUpload(secondProfile, keypair))
+        .reply(200, signedProfile)
 
       nock('https://core.blockstack.org')
         .get(`/v1/addresses/bitcoin/${address}`)
