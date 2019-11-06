@@ -1,7 +1,7 @@
 {
   "name": "blockstack-browser",
   "description": "The Blockstack browser",
-  "version": "0.36.3",
+  "version": "0.37.0",
   "author": "Blockstack PBC <admin@blockstack.com>",
   "dependencies": {
     "bip39": "^3.0.2",
@@ -177,7 +177,7 @@
     "lint": "eslint app/js/**/*.js -f codeframe",
     "win32": "npm run win32:clean && cross-env NODE_ENV=production webpack && npm run win32:copyBrowser && npm run win32:downloadNode && npm run win32:downloadExpress && npm run win32:downloadCorsProxy && npm run win32:copyCorsProxy && npm run win32:setWixVersion && npm run win32:msbuildSolution",
     "win32:copyBrowser": "xcopy build native\\windows\\BlockstackBrowser\\Resources\\build\\* /s/h/e/k/f/c/y",
-    "win32:downloadNode": "powershell -Command \"(new-object System.Net.WebClient).DownloadFile('https://nodejs.org/dist/latest-v10.x/win-x86/node.exe', 'native\\windows\\BlockstackBrowser\\Resources\\node.exe')\"",
+    "win32:downloadNode": "powershell -Command \"(new-object System.Net.WebClient).DownloadFile('https://nodejs.org/dist/latest-v12.x/win-x86/node.exe', 'native\\windows\\BlockstackBrowser\\Resources\\node.exe')\"",
     "win32:downloadExpress": "npm i --prefix native\\windows\\BlockstackBrowser\\Resources -g express@4",
     "win32:downloadCorsProxy": "npm i --prefix native\\windows\\BlockstackBrowser\\Resources\\cors-proxy -g cors-anywhere@0.4.1",
     "win32:copyCorsProxy": "xcopy corsproxy\\corsproxy.js native\\windows\\BlockstackBrowser\\Resources\\cors-proxy\\* /Y",
@@ -197,7 +197,7 @@
     "mac:release:build:Archive:dev": "xcodebuild -workspace ./native/macos/Blockstack/Blockstack.xcworkspace -scheme Blockstack -configuration Release CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=\"NO\" CODE_SIGN_ENTITLEMENTS=\"\" CODE_SIGNING_ALLOWED=\"NO\" -archivePath ./native/macos/archive/Blockstack archive",
     "mac:release:clean": "rm -rf ./native/macos/archive/Blockstack.xcarchive ./native/macos/export/Blockstack.app",
     "mac:copyBrowser": "touch build/.gitkeep && rm -Rf native/macos/Blockstack/Blockstack/browser && mkdir -p native/macos/Blockstack/Blockstack/browser && cp -rf build/ native/macos/Blockstack/Blockstack/browser/",
-    "mac:downloadNode": "NODEJS_VER=v10.15.0 && curl https://nodejs.org/dist/$NODEJS_VER/node-$NODEJS_VER-darwin-x64.tar.gz | tar -zxvf - --strip-components=2 -C native/macos/Blockstack/Blockstack/server node-$NODEJS_VER-darwin-x64/bin/node",
+    "mac:downloadNode": "NODEJS_VER=v12.13.0 && curl https://nodejs.org/dist/$NODEJS_VER/node-$NODEJS_VER-darwin-x64.tar.gz | tar -zxvf - --strip-components=2 -C native/macos/Blockstack/Blockstack/server node-$NODEJS_VER-darwin-x64/bin/node",
     "mac:downloadPackages": "npm i --prefix native/macos/Blockstack/Blockstack/server express@4 cors-anywhere@0.4.1",
     "mac:copyCorsProxy": "cp corsproxy/corsproxy.js native/macos/Blockstack/Blockstack/server",
     "mac:copyBlockstackProxy": "cp native/blockstackProxy.js native/macos/Blockstack/Blockstack/server",
