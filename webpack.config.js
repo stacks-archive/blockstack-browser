@@ -72,8 +72,8 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            // comments: true,
-            // compact: true,
+            comments: true,
+            compact: true,
             babelrc: true,
             cacheDirectory: true
           }
@@ -210,6 +210,8 @@ module.exports = {
       'process.env.WEBAPP': JSON.stringify(isWebapp),
       'process.env.DEBUG_LOGGING': JSON.stringify(process.env.DEBUG_LOGGING)
     }),
+    // BIP39 includes ~240KB of non-english json that we don't currently use.
+    new webpack.IgnorePlugin(/\.\/wordlists\/(?!english\.json)/),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedChunksPlugin(chunk => {
       // https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
