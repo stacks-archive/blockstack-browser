@@ -226,7 +226,7 @@ class UpdatePage extends React.Component {
         loading: true,
         password
       },
-      () => setTimeout(() => this.decryptKeyAndResetState(), 250)
+      () => setTimeout(() => this.decryptKeyAndResetState(), 1)
     )
   }
 

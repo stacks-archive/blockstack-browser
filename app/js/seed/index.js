@@ -226,11 +226,11 @@ class SeedContainer extends Component {
         {
           decrypting: true
         },
-        () => setTimeout(() => this.decryptSeed(password), 50)
+        () => setTimeout(() => this.decryptSeed(password), 1)
       )
     }
     if (this.state.seed && this.state.view === VIEWS.UNLOCK_KEY) {
-      return setTimeout(() => this.updateView(VIEWS.SEED), 50)
+      return setTimeout(() => this.updateView(VIEWS.SEED), 1)
     }
     return null
   }
