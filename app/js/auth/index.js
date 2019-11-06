@@ -91,7 +91,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch)
 }
 
-function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
+async function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
   const LIFETIME_SECONDS = 365 * 24 * 3600
   const signerKeyHex = secretKeyHex.slice(0, 64)
   const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
@@ -101,8 +101,8 @@ function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
                     exp: LIFETIME_SECONDS + (new Date()/1000),
                     iat: Date.now()/1000,
                     salt }
-
-  const token = new TokenSigner('ES256K', signerKeyHex).sign(payload)
+  const signer = new TokenSigner('ES256K', signerKeyHex)
+  const token = await signer.sign(payload)
   return token
 }
 
@@ -274,7 +274,6 @@ class AuthPage extends React.Component {
       const privateKey = profileSigningKeypair.key
       const appsNodeKey = profileSigningKeypair.appsNodeKey
       const salt = profileSigningKeypair.salt
-      const appPrivateKey = BlockstackWallet.getAppPrivateKey(appsNodeKey, salt, appDomain)
 
       let profileUrlPromise
 
@@ -309,7 +308,8 @@ class AuthPage extends React.Component {
         })
       }
 
-      profileUrlPromise.then(profileUrl => {
+      profileUrlPromise.then(async profileUrl => {
+        const appPrivateKey = await BlockstackWallet.getLegacyAppPrivateKey(appsNodeKey, salt, appDomain)
         // Add app storage bucket URL to profile if publish_data scope is requested
         if (this.state.scopes.publishData) {
           let apps = {}
@@ -319,7 +319,7 @@ class AuthPage extends React.Component {
 
           if (storageConnected) {
             const hubUrl = this.props.api.gaiaHubUrl
-            getAppBucketUrl(hubUrl, appPrivateKey)
+            await getAppBucketUrl(hubUrl, appPrivateKey)
               .then(async appBucketUrl => {
                 logger.debug(
                   `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
@@ -346,8 +346,7 @@ class AuthPage extends React.Component {
                   signedProfileTokenData
                 )
               })
-              .then(() => {
-                this.completeAuthResponse(
+              .then(() => this.completeAuthResponse(
                   privateKey,
                   blockchainId,
                   coreSessionToken,
@@ -355,7 +354,7 @@ class AuthPage extends React.Component {
                   profile,
                   profileUrl
                 )
-              })
+              )
               .catch(err => {
                 logger.error(
                   'componentWillReceiveProps: add app index profile not uploaded',
@@ -368,7 +367,7 @@ class AuthPage extends React.Component {
             )
           }
         } else {
-          this.completeAuthResponse(
+          await this.completeAuthResponse(
             privateKey,
             blockchainId,
             coreSessionToken,
@@ -390,7 +389,7 @@ class AuthPage extends React.Component {
     this.setState({ refreshingIdentities: false })
   }
 
-  completeAuthResponse = (
+  completeAuthResponse = async (
     privateKey,
     blockchainId,
     coreSessionToken,
@@ -439,10 +438,10 @@ class AuthPage extends React.Component {
       const parsedCoreUrl = url.parse(this.props.api.nameLookupUrl)
 
       blockstackAPIUrl = `${parsedCoreUrl.protocol}//${parsedCoreUrl.host}`
-      associationToken = makeGaiaAssociationToken(privateKey, compressedAppPublicKey)
+      associationToken = await makeGaiaAssociationToken(privateKey, compressedAppPublicKey)
     }
 
-    const authResponse = makeAuthResponse(
+    const authResponse = await makeAuthResponse(
       privateKey,
       profileResponseData,
       blockchainId,
