@@ -68,6 +68,11 @@
           {
             "modules": false,
             "useBuiltIns": "usage",
+            "shippedProposals": true,
+            "corejs": { 
+              "version": 2,
+              "proposals": true 
+            },
             "targets": {
               "browsers": [
                 "Chrome >= 60",
@@ -141,6 +146,11 @@
           {
             "modules": false,
             "useBuiltIns": "usage",
+            "shippedProposals": true,
+            "corejs": { 
+              "version": 2,
+              "proposals": true 
+            },
             "targets": {
               "browsers": [
                 "Chrome >= 60",

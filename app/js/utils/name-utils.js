@@ -38,7 +38,7 @@ export function isNameAvailable(lookupUrl, domainName) {
             resolve(true)
           } else {
             logger.error('isNameAvailable', response)
-            reject('Error')
+            reject(new Error(`${response.status}`))
           }
         }
       })
@@ -77,7 +77,7 @@ export function getNameSuffix(name) {
 export function getNamePrices(priceUrl, domainName) {
   return new Promise((resolve, reject) => {
     if (!isABlockstackName(domainName)) {
-      reject('Not a Blockstack name')
+      reject(new Error('Not a Blockstack name'))
       return
     }
 
@@ -95,7 +95,7 @@ export function getNamePrices(priceUrl, domainName) {
             })
         } else {
           logger.error('getNamePrices: error parsing price result')
-          reject('Error')
+          reject(new Error('error parsing price result'))
         }
       })
       .catch(error => {

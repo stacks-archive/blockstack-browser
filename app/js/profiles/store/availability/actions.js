@@ -90,7 +90,7 @@ function checkNameAvailabilityAndPrice(api, domainName) {
             dispatch(namePrice(domainName, price))
           }).catch((error) => {
             logger.error('checkNameAvailabilityAndPrice: getNamePrices: error', error)
-            dispatch(namePriceError(domainName, error))
+            dispatch(namePriceError(domainName, error.message))
           })
         }
       } else {
@@ -99,7 +99,7 @@ function checkNameAvailabilityAndPrice(api, domainName) {
       return null
     }).catch((error) => {
       logger.error('checkNameAvailabilityAndPrice: isNameAvailable: error', error)
-      dispatch(nameAvailabilityError(domainName, error))
+      dispatch(nameAvailabilityError(domainName, error.message))
     })
   }
 }

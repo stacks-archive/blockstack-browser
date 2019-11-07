@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { AccountActions } from '../account/store/account'
-import { SettingsActions } from '../account/store/settings'
+import { AccountActions } from './store/account'
+import { SettingsActions } from './store/settings'
 
 import { BLOCKSTACK_INC } from './utils/index'
 

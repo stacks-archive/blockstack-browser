@@ -312,7 +312,7 @@ class SignIn extends React.Component {
 
     if (!state.isValid) {
       logger.error('restoreAccount: Invalid mnemonic phrase entered')
-      return Promise.reject('Invalid recovery phrase entered')
+      return Promise.reject(new Error('Invalid recovery phrase entered'))
     }
 
     this.setState({

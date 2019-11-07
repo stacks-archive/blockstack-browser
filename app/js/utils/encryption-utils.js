@@ -1,7 +1,7 @@
 import * as bip39 from 'bip39'
 import log4js from 'log4js'
-import * as encryptMain from './workers/encrypt.main.js'
-import * as decryptMain from './workers/decrypt.main.js'
+import * as encryptMain from './workers/encrypt.main'
+import * as decryptMain from './workers/decrypt.main'
 
 const logger = log4js.getLogger(__filename)
 
