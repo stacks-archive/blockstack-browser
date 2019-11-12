@@ -29,8 +29,13 @@ import {
   hasLegacyCoreStateVersion,
   migrateLegacyCoreEndpoints
 } from '@utils/api-utils'
-import { uploadProfile } from '../account/utils'
+import { uploadProfile, resolveGaiaHubConfigForAddress } from '../account/utils'
 import { decrypt, signProfileForUpload } from '@utils'
+
+import log4js from 'log4js'
+
+const logger = log4js.getLogger(__filename)
+
 const VIEWS = {
   INITIAL: 0,
   SUCCESS: 1,
@@ -124,7 +129,7 @@ class UpdatePage extends React.Component {
    * and then run createAccount
    */
   decryptKeyAndResetState = async () => {
-    console.log('decryptKeyAndResetState')
+    logger.log('decryptKeyAndResetState')
 
     const {
       encryptedBackupPhrase,
@@ -134,34 +139,40 @@ class UpdatePage extends React.Component {
     } = this.props
 
     if (!encryptedBackupPhrase) {
-      console.error('No encryptedBackupPhrase, cannot continue')
+      logger.error('No encryptedBackupPhrase, cannot continue')
       return null
     }
     const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
     const { password } = this.state
 
     const updateProfileUrls = localIdentities.map((identity, index) =>
-      new Promise(async (resolve, reject) => {
-        try {
-          const signedProfileTokenData = signProfileForUpload(
-            identity.profile,
-            this.props.identityKeypairs[index],
-            this.props.api
-          )
-          uploadProfile(
-            this.props.api,
-            identity,
-            this.props.identityKeypairs[index],
-            signedProfileTokenData
-          ).then(resolve).catch(reject)
-        } catch (error) {
-          reject(error)
-        }
-        
+      Promise.resolve().then(() => resolveGaiaHubConfigForAddress(
+        this.props.identityKeypairs[index].address,
+        this.props.identityKeypairs[index].key,
+        this.props.api.bitcoinAddressLookupUrl,
+        this.props.api.nameLookupUrl,
+        localIdentities
+      )).then(gaiaHubConfig => {
+        const gaiaHubUrl = gaiaHubConfig.server
+        const signedProfileTokenData = signProfileForUpload(
+          identity.profile,
+          this.props.identityKeypairs[index],
+          {
+            gaiaHubConfig: {
+              url_prefix: gaiaHubConfig.url_prefix
+            },
+            gaiaHubUrl: gaiaHubConfig.gaiaHubUrl
+          }
+        )
+        logger.debug(`decryptKeyAndResetState: HUB ${gaiaHubUrl}`)
+        return uploadProfile(
+          gaiaHubConfig,
+          identity,
+          signedProfileTokenData)
       }))
 
     return Promise.all(updateProfileUrls).then(() => {
-      console.log('updated profile URLs')
+      logger.log('updated profile URLs')
       return decrypt(dataBuffer, password)
         .then(backupPhraseBuffer => {
           this.setState(
@@ -170,7 +181,7 @@ class UpdatePage extends React.Component {
             },
             () =>
               setTimeout(() => {
-                console.debug('decryptKeyAndResetState: correct password!')
+                logger.debug('decryptKeyAndResetState: correct password!')
                 const backupPhrase = backupPhraseBuffer.toString()
                 const numberOfIdentities =
                   localIdentities.length >= 1 ? localIdentities.length : 1
@@ -197,7 +208,7 @@ class UpdatePage extends React.Component {
           )
         })
         .catch(error => {
-          console.error('decryptKeyAndResetState: invalid password', error)
+          logger.error('decryptKeyAndResetState: invalid password', error)
           this.setState({
             loading: false,
             password: null,
@@ -208,7 +219,7 @@ class UpdatePage extends React.Component {
           })
         })
     }).catch(error => {
-      console.error('upgradeBlockstackState: error updating profile', error)
+      logger.error('upgradeBlockstackState: error updating profile', error)
       this.setState({
         loading: false,
         password: null,
@@ -243,7 +254,7 @@ class UpdatePage extends React.Component {
 
     const { initializeWallet } = this.props
 
-    console.debug(
+    logger.debug(
       'createAccount: state cleared. initializing wallet...',
       password,
       backupPhrase,
@@ -266,12 +277,12 @@ class UpdatePage extends React.Component {
 
     const generateNids = async () => {
       await asyncForEach(identityAddresses, async (address, i) => {
-        console.debug(
+        logger.debug(
           `creating new identity with index: ${i} and ownerAddress: ${address}`
         )
         createNewIdentityWithOwnerAddress(i, address)
       })
-      console.debug('finished generating ids')
+      logger.debug('finished generating ids')
       this.setState(
         {
           complete: true
@@ -294,7 +305,7 @@ class UpdatePage extends React.Component {
    * it sets the new state version and then redirects home
    */
   updateStateVersion = () => {
-    console.debug(
+    logger.debug(
       `updateStateVersion: Setting new state version to ${CURRENT_VERSION}`
     )
     localStorage.setItem(
@@ -304,14 +315,14 @@ class UpdatePage extends React.Component {
   }
 
   updateStateVersionAndResetOldPersistedData = () => {
-    console.debug(
+    logger.debug(
       `updateStateVersionAndResetOldPersistedData: Setting new state version to ${CURRENT_VERSION}`
     )
     localStorage.setItem(
       BLOCKSTACK_STATE_VERSION_KEY,
       CURRENT_VERSION
     )
-    console.debug(
+    logger.debug(
       'updateStateVersionAndResetOldPersistedData: removing old persisted data'
     )
     localStorage.removeItem('redux')

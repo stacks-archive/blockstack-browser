@@ -11,6 +11,7 @@ export function redirectToConnectToGaiaHub() {
   window.top.location.href = `http://${host}:${port}/account/storage#gaiahub`
 }
 
+// TODO: break here to see resulting hubUrl calls
 const connectToGaiaHub = (hubUrl: string, key: string, associationToken?: string) => 
   bsConnectToGaiaHub(hubUrl, key, associationToken)
 

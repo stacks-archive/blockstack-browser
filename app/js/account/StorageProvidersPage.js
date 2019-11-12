@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { AccountActions } from '../account/store/account'
 import { SettingsActions } from '../account/store/settings'
 
-import { BLOCKSTACK_INC } from './utils/index'
+import { BLOCKSTACK_INC, resolveGaiaHubConfigForAddress } from './utils/index'
 
 import { connectToGaiaHub } from './utils/blockstack-inc'
 
@@ -19,6 +19,7 @@ function mapStateToProps(state) {
     api: state.settings.api,
     updateApi: PropTypes.func.isRequired,
     resetApi: PropTypes.func.isRequired,
+    defaultIdentity: state.profiles.identity.default,
     localIdentities: state.profiles.identity.localIdentities,
     identityKeypairs: state.account.identityAccount.keypairs,
     connectedStorageAtLeastOnce: state.account.connectedStorageAtLeastOnce,
@@ -35,6 +36,7 @@ class StorageProvidersPage extends Component {
   static propTypes = {
     api: PropTypes.object.isRequired,
     updateApi: PropTypes.func.isRequired,
+    defaultIdentity: PropTypes.number.isRequired,
     localIdentities: PropTypes.array.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
     storageIsConnected: PropTypes.func.isRequired,
@@ -76,36 +78,40 @@ class StorageProvidersPage extends Component {
     }
   }
 
-  connectSharedService() {
-    const storageProvider = this.props.api.gaiaHubUrl
-    const signer = this.props.identityKeypairs[0].key
-    connectToGaiaHub(storageProvider, signer).then(gaiaHubConfig => {
-      const newApi = Object.assign({}, this.props.api, {
-        gaiaHubConfig,
-        hostedDataLocation: BLOCKSTACK_INC
-      })
-      this.props.updateApi(newApi)
-      const identityIndex = 0
-      const identity = this.props.localIdentities[identityIndex]
-      const identityAddress = identity.ownerAddress
-      const profileSigningKeypair = this.props.identityKeypairs[identityIndex]
-      const profile = identity.profile
-      setCoreStorageConfig(
-        newApi,
-        identityIndex,
-        identityAddress,
-        profile,
-        profileSigningKeypair,
-        identity
-      ).then(indexUrl => {
-        logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
-        // TODO add index URL to token file
-        logger.debug('componentDidMount: storage initialized')
-        const newApi2 = Object.assign({}, newApi, { storageConnected: true })
-        this.props.updateApi(newApi2)
-        this.props.storageIsConnected()
-        logger.debug('connectSharedService: storage configured')
-      })
+  async connectSharedService() {
+    const identityIndex = this.props.defaultIdentity
+    const identityKeypair = this.props.identityKeypairs[identityIndex]
+    const identity = this.props.localIdentities[identityIndex]
+
+    const gaiaHubConfig = await resolveGaiaHubConfigForAddress(
+      identityKeypair.address,
+      identityKeypair.key,
+      this.props.api.bitcoinAddressLookupUrl,
+      this.props.api.nameLookupUrl,
+      this.props.localIdentities
+    )
+    const newApi = Object.assign({}, this.props.api, {
+      gaiaHubConfig,
+      hostedDataLocation: BLOCKSTACK_INC
+    })
+    this.props.updateApi(newApi)
+    const identityAddress = identity.ownerAddress
+    const profile = identity.profile
+    setCoreStorageConfig(
+      newApi,
+      identityIndex,
+      identityAddress,
+      profile,
+      identityKeypair,
+      identity
+    ).then(indexUrl => {
+      logger.debug(`componentDidMount: indexUrl: ${indexUrl}`)
+      // TODO add index URL to token file
+      logger.debug('componentDidMount: storage initialized')
+      const newApi2 = Object.assign({}, newApi, { storageConnected: true })
+      this.props.updateApi(newApi2)
+      this.props.storageIsConnected()
+      logger.debug('connectSharedService: storage configured')
     })
   }
 

@@ -177,6 +177,7 @@ export function signProfileForUpload(profile, keypair, api) {
     }
   }
 
+  // TODO: use profile gaia hub (is this always passed the default api ?)
   if (api) {
     profile = {
       ...profile,

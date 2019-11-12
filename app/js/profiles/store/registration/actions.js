@@ -144,14 +144,16 @@ function registerDomain(myNet, tx, domainName, identityIndex, ownerAddress, paym
 function registerName(api, domainName, identity, identityIndex,
                       ownerAddress, keypair, paymentKey = null) {
   logger.info(`registerName: domainName: ${domainName}`)
-  return dispatch => {
+  return async dispatch => {
     logger.debug(`Signing a new profile for ${domainName}`)
     const profile = identity.profile || DEFAULT_PROFILE
     const signedProfileTokenData = signProfileForUpload(profile, keypair, api)
-
+    // TODO: use resolveGaiaHubConfigForAddress here
+    const gaiaHubUrl = (identity.profile && identity.profile.api && identity.profile.api.gaiaHubUrl) || api.gaiaHubUrl
+    logger.warn(`___registerName HUB: ${gaiaHubUrl}`)
     dispatch(profileUploading())
     logger.info(`Uploading ${domainName} profile...`)
-    return uploadProfile(api, identity, keypair, signedProfileTokenData)
+    return uploadProfile(gaiaHubUrl, identity, keypair, signedProfileTokenData)
     .then((profileUrl) => {
       logger.info(`Uploading ${domainName} profiled succeeded.`)
       const tokenFileUrl = profileUrl

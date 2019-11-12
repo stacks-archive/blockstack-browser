@@ -37,7 +37,7 @@ const output = {
 module.exports = {
   stats: analyze ? 'normal' : 'none',
   mode: isProd ? 'production' : 'development',
-  devtool: !isProd ? 'cheap-module-source-map' : 'source-map',
+  devtool: 'source-map',
   entry: {
     main: [path.resolve(__dirname, 'app/js/index.js')]
   },
@@ -74,7 +74,8 @@ module.exports = {
             comments: true,
             compact: true,
             babelrc: true,
-            cacheDirectory: true
+            cacheDirectory: true,
+            retainLines: true
           }
         }
       },
@@ -145,6 +146,8 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.json', '.jsx'],
     alias: {
+      // TODO: importing modules with this syntax makes the codebase difficult to follow and reason about.
+      //       if the only purpose is to avoid path traversals in the import path, usage of these should be removed.
       '@components': path.resolve(__dirname, 'app/js/components'),
       '@common': path.resolve(__dirname, 'app/js/common'),
       '@styled': path.resolve(__dirname, 'app/js/components/styled'),

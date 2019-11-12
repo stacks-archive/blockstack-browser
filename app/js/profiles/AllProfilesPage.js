@@ -131,8 +131,6 @@ class AllProfilesPage extends Component {
   render() {
     const createProfileError = this.props.createProfileError
     const passwordPromptIsOpen = this.state.passwordPromptIsOpen
-    const gaiaBucketAddress = this.props.identityAddresses[0]
-    const profileUrlBase = `https://gaia.blockstack.org/hub/${gaiaBucketAddress}`
 
     return (
       <div>
@@ -184,7 +182,11 @@ class AllProfilesPage extends Component {
             <ul className="card-wrapper">
                   {this.state.localIdentities.map((identity, index) => {
                     const person = new Person(identity.profile)
-
+                    const gaiaHubPrefix = identity.profile 
+                      && identity.profile.api 
+                      && identity.profile.api.gaiaHubConfig 
+                      && identity.profile.api.gaiaHubConfig.url_prefix
+                    const profileUrl = `${gaiaHubPrefix}${identity.ownerAddress}/profile.json`
                     if (identity.username) {
                       identity.canAddUsername = false
                     } else {
@@ -205,7 +207,7 @@ class AllProfilesPage extends Component {
                         canAddUsername={identity.canAddUsername}
                         isDefault={index === this.props.defaultIdentity}
                         router={this.props.router}
-                        profileUrl={`${profileUrlBase}/${index}/profile.json`}
+                        profileUrl={profileUrl}
                       />
                     )
                   })}

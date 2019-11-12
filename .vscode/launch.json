@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug with Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Mocha e2e local",

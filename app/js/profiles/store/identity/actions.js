@@ -281,6 +281,11 @@ function refreshIdentities(
   return async (dispatch: Dispatch<*>): Promise<*> => {
     logger.info('refreshIdentities')
 
+    // TODO: This will not work with pending name registrations that use a non-default hub
+    // or a hub that does not match the global app state `api.gaiaHubConfig`.
+    // This needs to be passed a cached `localIdentity` / profile which contains
+    // the gaiaHub specified during registration. 
+
     const promises: Array<Promise<*>> = ownerAddresses.map((address, index) => {
       const promise: Promise<*> = new Promise(resolve => {
         const url = api.bitcoinAddressLookupUrl.replace('{address}', address)

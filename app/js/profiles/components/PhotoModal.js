@@ -12,7 +12,7 @@ import SimpleButton from '@components/SimpleButton'
 import Alert from '@components/Alert'
 import { IdentityActions } from '../store/identity'
 import log4js from 'log4js'
-import { uploadPhoto } from '../../account/utils'
+import { uploadPhoto, resolveGaiaHubConfigForAddress } from '../../account/utils'
 import * as Styled from './styled/PhotoModal'
 
 const logger = log4js.getLogger('profiles/components/PhotoModal.js')
@@ -117,7 +117,7 @@ class PhotoModal extends React.PureComponent {
     this.uploadPhoto(ev.target.files[0])
   }
 
-  uploadPhoto = file => {
+  uploadPhoto = async file => {
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
     const identitySigner = this.props.identityKeypairs[identityIndex]
@@ -126,37 +126,48 @@ class PhotoModal extends React.PureComponent {
     logger.debug('uploadPhoto: trying to upload...')
     this.setState({ isUploading: true })
 
-    if (this.props.storageConnected) {
-      uploadPhoto(
-        this.props.api,
+    let gaiaHubConfig
+    try {
+      gaiaHubConfig = await resolveGaiaHubConfigForAddress(
+        identitySigner.address, 
+        identitySigner.key,
+        this.props.api.bitcoinAddressLookupUrl,
+        this.props.api.nameLookupUrl,
+        this.props.localIdentities
+      )
+    } catch (error) {
+      logger.error(`uploadPhoto: resolveGaiaHubConfigForAddress failed with: ${error}`)
+      this.setState({
+        photoError: `
+          Photo failed to upload. There may have been a connection error,
+          or your photo may be too large.
+        `,
+        isUploading: false
+      })
+      return
+    }
+
+    try {
+      const avatarUrl = await uploadPhoto(
+        gaiaHubConfig,
         identity,
-        identitySigner,
         file,
         photoIndex
       )
-        .then(avatarUrl => {
-          logger.debug(`uploadPhoto: uploaded photo: ${avatarUrl}`)
-          this.props.onUpload(avatarUrl)
-          this.props.refreshIdentities(
-            this.props.api,
-            this.props.identityAddresses
-          )
-          this.setState({ isUploading: false })
-        })
-        .catch(error => {
-          logger.error(`uploadPhoto: upload failed with error: ${error.message}`)
-          this.setState({
-            photoError: `
-              Photo failed to upload. There may have been a connection error,
-              or your photo may be too large.
-            `,
-            isUploading: false
-          })
-        })
-    } else {
-      logger.error('uploadPhoto: storage is not connected. Doing nothing.')
+      logger.warn(`uploadPhoto: uploaded photo: ${avatarUrl}`)
+      this.props.onUpload(avatarUrl)
+      this.props.refreshIdentities(
+        this.props.api,
+        this.props.identityAddresses
+      )
+      this.setState({ isUploading: false })
+    } catch (error) {
+      logger.error(`uploadPhoto: upload failed with error: ${error.message}`)
       this.setState({
-        photoError: 'Disconnected from storage, cannot upload photo',
+        photoError: `
+          Photo failed to upload. There may have been a connection error,
+          or your photo may be too large.
+        `,
         isUploading: false
       })
     }

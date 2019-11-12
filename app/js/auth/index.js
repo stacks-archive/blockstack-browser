@@ -27,7 +27,7 @@ import {
 import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
 import { HDNode } from 'bitcoinjs-lib'
 import log4js from 'log4js'
-import { uploadProfile } from '../account/utils'
+import { uploadProfile, connectToGaiaHub } from '../account/utils'
 import { signProfileForUpload } from '@utils'
 import {
   validateScopes,
@@ -283,12 +283,13 @@ class AuthPage extends React.Component {
         }
       }
 
-      const gaiaBucketAddress = nextProps.identityKeypairs[0].address
       const identityAddress = nextProps.identityKeypairs[identityIndex].address
+      const identityKey = nextProps.identityKeypairs[identityIndex].key
       const gaiaUrlBase = nextProps.api.gaiaHubConfig.url_prefix
 
       if (!profileUrlPromise) {
         // use default Gaia hub if we can't tell from the profile where the profile Gaia hub is
+        const gaiaBucketAddress = nextProps.identityKeypairs[0].address
         profileUrlPromise = fetchProfileLocations(
           gaiaUrlBase,
           identityAddress,
@@ -311,8 +312,16 @@ class AuthPage extends React.Component {
             apps = profile.apps
           }
 
-          if (storageConnected) {
-            const hubUrl = this.props.api.gaiaHubUrl
+          // TODO: use account's gaia hub
+          const hubUrl = (profile.api && profile.api.gaiaHubUrl) || this.props.api.gaiaHubUrl
+          logger.debug(`componentWillReceiveProps HUB: ${hubUrl}, PROFILE: ${profileUrl}`)
+          connectToGaiaHub(hubUrl, identityKey).then(hubConfig => {
+            const storageConfig = {
+              gaiaHubUrl: hubUrl,
+              gaiaHubConfig: hubConfig
+            }
+            logger.warn(`___AUTH CONNECTED HUB: ${JSON.stringify(storageConfig)}`)
+
             getAppBucketUrl(hubUrl, appPrivateKey)
               .then(appBucketUrl => {
                 logger.debug(
@@ -328,13 +337,13 @@ class AuthPage extends React.Component {
                 const signedProfileTokenData = signProfileForUpload(
                   profile,
                   nextProps.identityKeypairs[identityIndex],
-                  this.props.api
+                  storageConfig
                 )
                 logger.debug(
                   'componentWillReceiveProps: uploading updated profile with new apps array'
                 )
                 return uploadProfile(
-                  this.props.api,
+                  hubUrl,
                   identity,
                   nextProps.identityKeypairs[identityIndex],
                   signedProfileTokenData
@@ -356,11 +365,7 @@ class AuthPage extends React.Component {
                   err
                 )
               })
-          } else {
-            logger.debug(
-              'componentWillReceiveProps: storage is not connected. Doing nothing.'
-            )
-          }
+            })
         } else {
           this.completeAuthResponse(
             privateKey,
@@ -429,7 +434,9 @@ class AuthPage extends React.Component {
       transitPublicKey = this.state.decodedToken.payload.public_keys[0]
     }
     if (appRequestSupportsDirectHub(this.state.decodedToken.payload)) {
-      hubUrl = this.props.api.gaiaHubUrl
+      // TODO: use account's gaia hub
+      hubUrl = (profile && profile.api && profile.api.gaiaHubUrl) || this.props.api.gaiaHubUrl
+      console.log(`__ HUB completeAuthResponse: ${hubUrl}`)
     }
     if (isLaterVersion(requestVersion, '1.3.0')) {
       const compressedAppPublicKey = getPublicKeyFromPrivate(appPrivateKey.slice(0,64))

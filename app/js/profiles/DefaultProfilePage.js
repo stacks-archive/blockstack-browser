@@ -382,7 +382,9 @@ export class DefaultProfilePage extends Component {
 
     const identityIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[identityIndex]
-
+    // TODO: should this check newProfile for hub??
+    const gaiaHubUrl = (identity.profile && identity.profile.api && identity.profile.api.gaiaHubUrl) || this.props.api.gaiaHubUrl
+    logger.warn(`___saveProfile HUB: ${gaiaHubUrl}`)
     this.props.updateProfile(
       this.props.defaultIdentity,
       newProfile,
@@ -396,18 +398,14 @@ export class DefaultProfilePage extends Component {
       newProfile,
       identitySigner
     )
-    if (this.props.storageConnected) {
-      uploadProfile(
-        this.props.api,
-        identity,
-        identitySigner,
-        signedProfileTokenData
-      ).catch(err => {
-        logger.error('saveProfile: profile not uploaded', err)
-      })
-    } else {
-      logger.debug('saveProfile: storage is not connected. Doing nothing.')
-    }
+    uploadProfile(
+      gaiaHubUrl,
+      identity,
+      identitySigner,
+      signedProfileTokenData
+    ).catch(err => {
+      logger.error('saveProfile: profile not uploaded', err)
+    })
   }
 
   refreshProofs() {
