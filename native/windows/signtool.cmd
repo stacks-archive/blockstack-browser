@@ -1,5 +1,4 @@
 @if not defined _echo echo off
-setlocal enabledelayedexpansion
 
 REM Finds and invokes signtool.exe with the arguments passed to this script.
 

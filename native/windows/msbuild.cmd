@@ -1,5 +1,4 @@
 @if not defined _echo echo off
-setlocal enabledelayedexpansion
 
 REM Finds and invokes msbuild.exe with the arguments passed to this script.
 REM Requires Visual Studio to be installed.
@@ -8,7 +7,7 @@ REM See https://github.com/Microsoft/vswhere for details.
 set vswhere="%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe"
 
 if not exist %vswhere% (
-  echo "vswhere.exe not found. Is Visual Studio 2017 installed?"
+  echo "vswhere.exe not found. Is Visual Studio 2017/2019 installed?"
   exit /b 2
 )
 

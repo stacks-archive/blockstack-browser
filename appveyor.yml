@@ -16,7 +16,6 @@ install:
     npm i
 build_script:
 - cmd: npm run win32
-
 artifacts:
 - path: native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi
 cache:
