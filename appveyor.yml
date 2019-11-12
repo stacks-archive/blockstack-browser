@@ -16,11 +16,9 @@ install:
     npm i
 build_script:
 - cmd: npm run win32
-after_build:
-- cmd: copy native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi .\
 
 artifacts:
-- path: BlockstackSetup.msi
+- path: native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi
 cache:
   - node_modules -> package.json
   - wix311.exe
@@ -35,7 +33,7 @@ for:
       - master
       - next
 
-  build_script:
+  after_build:
   - ps: Write-Host 'signing MSI file'
   - cmd: npm run win32:signMsi
 -
@@ -43,5 +41,5 @@ for:
     except:
       - master
       - next
-  build_script:
+  after_build:
   - ps: Write-Host 'skipping signing MSI file'
