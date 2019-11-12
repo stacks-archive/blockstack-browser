@@ -11,14 +11,19 @@ if not exist %vswhere% (
   exit /b 2
 )
 
-for /f "usebackq delims=" %%i in (`%vswhere% -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe`) do (
-  echo Using msbuild: %%i
-  set msbuild_path=%%i
+for /f "usebackq delims=" %%F in (`%vswhere% -latest -property installationPath`) do (
+  set install_path=%%F
+)
+echo Using VS installation: %install_path%
+
+for /f "usebackq delims=" %%F in (`dir "%install_path%\*MSBuild.exe" /s /b`) do (
+  set msbuild_path=%%F
   goto found_msbuild
 )
 echo MSBuild.exe not found
 exit /b 2
 
 :found_msbuild
+echo using msbuild: %msbuild_path%
 "%msbuild_path%" %*
 exit /b !errorlevel!
