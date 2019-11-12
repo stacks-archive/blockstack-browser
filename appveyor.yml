@@ -7,7 +7,7 @@ environment:
 install:
 - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
 - cmd: >-
-    appveyor-tools\secure-file -decrypt native\windows\signcertfile.pfx.enc -out signcertfile.pfx -secret %pfx_secret%
+    appveyor-tools\secure-file -decrypt native\windows\signcertfile.pfx.enc -out native\windows\signcertfile.pfx -secret %pfx_secret%
 
     IF NOT exist "wix311.exe" ( powershell -Command "(new-object System.Net.WebClient).DownloadFile('https://github.com/wixtoolset/wix3/releases/download/wix3111rtm/wix311.exe', 'wix311.exe')" )
 
@@ -15,10 +15,9 @@ install:
 
     npm i
 build_script:
-- cmd: >-
-    npm run win32
-
-    copy native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi .\
+- cmd: npm run win32
+after_build:
+- cmd: copy native\windows\BlockstackSetup\bin\Release\en-us\BlockstackSetup.msi .\
 
 artifacts:
 - path: BlockstackSetup.msi
@@ -36,14 +35,13 @@ for:
       - master
       - next
 
-  after_build:
+  build_script:
   - ps: Write-Host 'signing MSI file'
-  - ps: (& @((Resolve-Path -Path "${Env:ProgramFiles(x86)}\Windows Kits\10\bin\10*\x86\signtool.exe").Path)[0] sign /t http://timestamp.verisign.com/scripts/timstamp.dll /n Blockstack /f signcertfile.pfx BlockstackSetup.msi)
-
+  - cmd: npm run win32:signMsi
 -
   branches:
     except:
       - master
       - next
-  after_build:
+  build_script:
   - ps: Write-Host 'skipping signing MSI file'
