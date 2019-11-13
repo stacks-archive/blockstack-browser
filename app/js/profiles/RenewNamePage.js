@@ -145,7 +145,8 @@ class RenewNamePage extends Component {
       })
       .catch(error => {
         this.setState({
-          error: error.toString()
+          error: error.toString(),
+          renewalInProgress: false
         })
       })
   }
