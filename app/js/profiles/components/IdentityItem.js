@@ -151,7 +151,7 @@ export class IdentityItem extends Component {
                       </span>{' '}
                       <span className="text-secondary">
                         <small>{expireText}</small>{' '}
-                        {expiresInDays < 60 && !doesNotExpire ? 
+                        {expiresInDays < 600 && !doesNotExpire ? 
                           <small>
                             <a
                               href="#"
