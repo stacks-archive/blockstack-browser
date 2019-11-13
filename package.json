@@ -193,6 +193,7 @@
     "win32:copyCorsProxy": "xcopy corsproxy\\corsproxy.js native\\windows\\BlockstackBrowser\\Resources\\cors-proxy\\* /Y",
     "win32:setWixVersion": "shx sed -i s/Version=\\\"0.0.0.0\\\"/Version=\\\"%npm_package_version%\\\"/ native\\windows\\BlockstackSetup\\Product.wxs",
     "win32:msbuildSolution": "native\\windows\\msbuild native\\windows\\BlockstackBrowser.sln /p:RunWixToolsOutOfProc=true /p:Configuration=Release /p:Platform=x86",
+    "win32:signMsi": "native\\windows\\signtool sign /t http://timestamp.verisign.com/scripts/timstamp.dll /n Blockstack /f native\\windows\\signcertfile.pfx native\\windows\\BlockstackSetup\\bin\\Release\\en-us\\BlockstackSetup.msi",
     "win32:clean": "shx rm -rf build native\\windows\\BlockstackBrowser\\bin native\\windows\\BlockstackSetup\\bin native\\windows\\ProtocolHandler\\bin native\\windows\\BlockstackBrowser\\Resources\\build native\\windows\\BlockstackBrowser\\Resources\\cors-proxy native\\windows\\BlockstackBrowser\\Resources\\node_modules native\\windows\\BlockstackBrowser\\Resources\\node.exe",
     "mac": "cross-env NODE_ENV=production npm run build && npm run mac:downloadNode && npm run mac:downloadPackages && npm run mac:copyCorsProxy && npm run mac:copyBlockstackProxy && npm run mac:buildDebug",
     "mac:release": "npm run test && npm install --no-save appdmg && npm run build && npm run mac:copyBrowser && npm run mac:downloadNode && npm run mac:downloadPackages && npm run mac:copyCorsProxy && npm run mac:copyBlockstackProxy && npm run mac:release:build",
