@@ -24,15 +24,13 @@ export function verifyTokenRecord(tokenRecord, publicKeyOrAddress) {
   return decodedToken
 }
 
-export async function getProfileFromTokens(tokenRecords, publicKeychain, silentVerify = true) {
+export function getProfileFromTokens(tokenRecords, publicKeychain, silentVerify = true) {
   let profile = {}
-
-  const decodeRecord = async (tokenRecord) => {
-    let decodedToken = null
-
+  let decodedToken = null
+  tokenRecords.map(tokenRecord => {
     try {
       decodedToken = decodeToken(tokenRecord.token)
-      decodedToken = await verifyTokenRecord(tokenRecord, publicKeychain)
+      decodedToken = verifyTokenRecord(tokenRecord, publicKeychain)
     } catch (error) {
       if (!silentVerify) {
         throw error
@@ -46,10 +44,7 @@ export async function getProfileFromTokens(tokenRecords, publicKeychain, silentV
     }
 
     return null
-  }
-
-  const tokenDecodes = tokenRecords.map(tokenRecord => decodeRecord(tokenRecord))
-  await Promise.all(tokenDecodes)
+  })
 
   return profile
 }
@@ -117,7 +112,7 @@ export function fetchProfileLocations(gaiaUrlBase,
   return recursiveTryFetch(urls)
 }
 
-export async function signProfileForUpload(profile, keypair, api) {
+export function signProfileForUpload(profile, keypair, api) {
   const privateKey = keypair.key
   const publicKey = keypair.keyID
 
@@ -139,7 +134,7 @@ export async function signProfileForUpload(profile, keypair, api) {
     }
   }
 
-  const token = await signProfileToken(profile, privateKey, { publicKey })
+  const token = signProfileToken(profile, privateKey, { publicKey })
   const tokenRecord = wrapProfileToken(token)
   const tokenRecords = [tokenRecord]
   return JSON.stringify(tokenRecords, null, 2)

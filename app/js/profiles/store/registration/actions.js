@@ -189,7 +189,7 @@ const registerName = (
   logger.debug(`Signing a new profile for ${domainName}`)
 
   const profile = identity.profile || DEFAULT_PROFILE
-  const signedProfileTokenData = await signProfileForUpload(profile, keypair, api)
+  const signedProfileTokenData = signProfileForUpload(profile, keypair, api)
   dispatch(profileUploading())
   logger.info(`Uploading ${domainName} profile...`)
   try {

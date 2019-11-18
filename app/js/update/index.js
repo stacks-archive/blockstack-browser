@@ -141,7 +141,7 @@ class UpdatePage extends React.Component {
     const { password } = this.state
 
     const uploadFn = async (identity, index) => {
-      const signedProfileTokenData = await signProfileForUpload(
+      const signedProfileTokenData = signProfileForUpload(
         identity.profile,
         this.props.identityKeypairs[index],
         this.props.api

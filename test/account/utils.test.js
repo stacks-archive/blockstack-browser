@@ -31,7 +31,7 @@ describe('upload-profile', () => {
   describe('uploadProfile', () => {
     it('should upload to the zonefile entry, using the global uploader if necessary', async () => {
       const ecPair = ECPair.fromWIF(BitcoinKeyPairs.test1.wif)
-      const address = await blockstack.ecPairToAddress(ecPair)
+      const address = blockstack.ecPairToAddress(ecPair)
       const key = ecPair.privateKey.toString('hex')
       const keyPair = {
         address,
@@ -65,7 +65,7 @@ describe('upload-profile', () => {
 
     it('should upload to the default entry location if no zonefile', async () => {
       const ecPair = ECPair.fromWIF(BitcoinKeyPairs.test1.wif)
-      const address = await blockstack.ecPairToAddress(ecPair)
+      const address = blockstack.ecPairToAddress(ecPair)
       const key = ecPair.privateKey.toString('hex')
       const keyPair = {
         address,
@@ -91,7 +91,7 @@ describe('upload-profile', () => {
 
     it('should log an error and upload to the default if it cannot write to where the zonefile points', async () => {
       const ecPair = ECPair.fromWIF(BitcoinKeyPairs.test1.wif)
-      const address = await blockstack.ecPairToAddress(ecPair)
+      const address = blockstack.ecPairToAddress(ecPair)
       const key = ecPair.privateKey.toString('hex')
       const keyPair = {
         address,

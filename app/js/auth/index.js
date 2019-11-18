@@ -91,7 +91,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch)
 }
 
-async function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
+function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
   const LIFETIME_SECONDS = 365 * 24 * 3600
   const signerKeyHex = secretKeyHex.slice(0, 64)
   const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
@@ -101,8 +101,7 @@ async function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
                     exp: LIFETIME_SECONDS + (new Date()/1000),
                     iat: Date.now()/1000,
                     salt }
-  const signer = new TokenSigner('ES256K', signerKeyHex)
-  const token = await signer.sign(payload)
+  const token = new TokenSigner('ES256K', signerKeyHex).sign(payload)
   return token
 }
 
@@ -320,7 +319,7 @@ class AuthPage extends React.Component {
           if (storageConnected) {
             const hubUrl = this.props.api.gaiaHubUrl
             await getAppBucketUrl(hubUrl, appPrivateKey)
-              .then(async appBucketUrl => {
+              .then(appBucketUrl => {
                 logger.debug(
                   `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
                 )
@@ -331,7 +330,7 @@ class AuthPage extends React.Component {
                   )}`
                 )
                 profile.apps = apps
-                const signedProfileTokenData = await signProfileForUpload(
+                const signedProfileTokenData = signProfileForUpload(
                   profile,
                   nextProps.identityKeypairs[identityIndex],
                   this.props.api
@@ -438,7 +437,7 @@ class AuthPage extends React.Component {
       const parsedCoreUrl = url.parse(this.props.api.nameLookupUrl)
 
       blockstackAPIUrl = `${parsedCoreUrl.protocol}//${parsedCoreUrl.host}`
-      associationToken = await makeGaiaAssociationToken(privateKey, compressedAppPublicKey)
+      associationToken = makeGaiaAssociationToken(privateKey, compressedAppPublicKey)
     }
 
     const authResponse = await makeAuthResponse(
