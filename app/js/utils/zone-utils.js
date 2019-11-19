@@ -71,7 +71,7 @@ export function resolveZoneFileToProfile(zoneFile, publicKeyOrAddress) {
         })
         .then(response => response.text())
         .then(responseText => JSON.parse(responseText))
-        .then(async responseJson => {
+        .then(responseJson => {
           const tokenRecords = responseJson
           const profile = getProfileFromTokens(tokenRecords, publicKeyOrAddress)
 
