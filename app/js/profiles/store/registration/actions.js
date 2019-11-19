@@ -8,9 +8,9 @@ import {
 } from 'blockstack'
 import { uploadProfile } from '../../../account/utils'
 import { IdentityActions } from '../identity'
-import { signProfileForUpload, authorizationHeaderValue } from '@utils'
-import { DEFAULT_PROFILE } from '@utils/profile-utils'
-import { isSubdomain, getNameSuffix } from '@utils/name-utils'
+import { signProfileForUpload, authorizationHeaderValue } from '../../../utils'
+import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
+import { isSubdomain, getNameSuffix } from '../../../utils/name-utils'
 import { notify } from 'reapop'
 import log4js from 'log4js'
 

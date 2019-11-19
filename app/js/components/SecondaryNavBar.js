@@ -19,7 +19,7 @@ const SecondaryNavLink = props => {
 
 SecondaryNavLink.propTypes = {
   activeClass: PropTypes.string,
-  isActive: PropTypes.boolean,
+  isActive: PropTypes.bool,
   customButtonClass: PropTypes.string,
   title: PropTypes.string,
   link: PropTypes.string
@@ -41,7 +41,7 @@ const SecondaryNavButton = props => {
 
 SecondaryNavButton.propTypes = {
   activeClass: PropTypes.string,
-  isActive: PropTypes.boolean,
+  isActive: PropTypes.bool,
   customButtonClass: PropTypes.string,
   title: PropTypes.string,
   onClick: PropTypes.func

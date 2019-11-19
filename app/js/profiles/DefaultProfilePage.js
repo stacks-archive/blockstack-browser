@@ -26,7 +26,7 @@ import {
   isMobile,
   signProfileForUpload,
   calculateProfileCompleteness
-} from '@utils'
+} from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'
@@ -377,7 +377,7 @@ export class DefaultProfilePage extends Component {
     return ''
   }
 
-  saveProfile(newProfile) {
+  async saveProfile(newProfile) {
     logger.info('saveProfile')
 
     const identityIndex = this.props.defaultIdentity
@@ -397,7 +397,7 @@ export class DefaultProfilePage extends Component {
       identitySigner
     )
     if (this.props.storageConnected) {
-      uploadProfile(
+      await uploadProfile(
         this.props.api,
         identity,
         identitySigner,

@@ -46,7 +46,7 @@ class AllProfilesPage extends Component {
     resetCreateNewProfileError: PropTypes.func.isRequired,
     createProfileError: PropTypes.string,
     router: PropTypes.object.isRequired,
-    isProcessing: PropTypes.boolean
+    isProcessing: PropTypes.bool
   }
 
   constructor(props) {

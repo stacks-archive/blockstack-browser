@@ -1,11 +1,10 @@
-// @flow
 import { ServerAPI } from './server-utils'
 import log4js from 'log4js'
 const logger = log4js.getLogger(__filename)
 
 export function sendRecoveryEmail(
-  email: string, blockstackId?: string, encryptedSeed: string
-): Promise<any> {
+  email, blockstackId, encryptedSeed
+) {
   const { protocol, hostname, port } = location
   const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
   const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(
@@ -33,8 +32,8 @@ export function sendRecoveryEmail(
 }
 
 export function sendRestoreEmail(
-  email: string, blockstackId?: string, encryptedSeed: string
-): Promise<any> {
+  email, blockstackId, encryptedSeed
+) {
   const { protocol, hostname, port } = location
   const thisUrl = `${protocol}//${hostname}${port && `:${port}`}`
   const seedRecovery = `${thisUrl}/seed?encrypted=${encodeURIComponent(

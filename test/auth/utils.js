@@ -1,4 +1,3 @@
-// @flow
 import assert from 'assert'
 import { validateScopes, appRequestSupportsDirectHub } from '../../app/js/auth/utils'
 

@@ -1,4 +1,3 @@
-// @flow
 
 import log4js from 'log4js'
 import { isLaterVersion } from 'blockstack'
@@ -11,7 +10,11 @@ const VALID_SCOPES = {
   publish_data: true
 }
 
-export function appRequestSupportsDirectHub(requestPayload: Object): boolean {
+/**
+ * @param {Object} requestPayload 
+ * @returns {boolean}
+ */
+export function appRequestSupportsDirectHub(requestPayload) {
   let version = '0'
   let supportsHubUrl = false
   if (requestPayload.hasOwnProperty('version')) {
@@ -24,7 +27,11 @@ export function appRequestSupportsDirectHub(requestPayload: Object): boolean {
   return isLaterVersion(version, '1.2.0') || !!supportsHubUrl
 }
 
-export function validateScopes(scopes: Array<string>): boolean {
+/**
+ * @param {string[]} scopes
+ * @returns {boolean}
+ */
+export function validateScopes(scopes) {
   logger.info('validateScopes')
 
   if (!scopes) {

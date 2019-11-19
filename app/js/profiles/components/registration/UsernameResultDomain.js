@@ -1,14 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-type Props = {
-  name: string,
-  index: number,
-  price: number,
-  checkingPrice?: boolean
-}
-
-const UsernameResultDomain = (props: Props) => {
+const UsernameResultDomain = (props) => {
   const {
     name,
     index,

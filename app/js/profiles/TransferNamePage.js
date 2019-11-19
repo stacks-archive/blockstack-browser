@@ -6,33 +6,12 @@ import { Link } from 'react-router'
 import Alert from '@components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
-import { findAddressIndex } from '@utils'
+import { findAddressIndex } from '../utils'
 import AdvancedSidebar from './components/AdvancedSidebar'
 
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
-
-type Props = {
-  coreAPIPassword: string,
-  routeParams: Object,
-  bar?: string,
-  identityAddresses: Array<string>,
-  identityKeypairs: Object,
-  localIdentities: Object,
-  namesOwned: Array<string>,
-  nameTransfers: Array<mixed>,
-  broadcastNameTransfer: Function,
-  nameTransferUrl: string
-}
-
-type State = {
-  agreed: boolean,
-  alerts: Array<{ status: string, message: string}>,
-  clickedBroadcast: boolean,
-  disabled: boolean,
-  newOwner: string
-}
 
 function mapStateToProps(state) {
   return {
@@ -50,7 +29,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Object.assign({}, AccountActions, IdentityActions), dispatch)
 }
 
-class TransferNamePage extends Component<Props, State> {
+class TransferNamePage extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -77,14 +56,12 @@ class TransferNamePage extends Component<Props, State> {
     this.displayAlerts(nextProps)
   }
 
-  onToggle: Function
   onToggle(event) {
     this.setState({
       [event.target.name]: event.target.checked
     })
   }
 
-  onValueChange: Function
   onValueChange(event) {
     event.persist()
     this.setState(() => ({
@@ -92,9 +69,6 @@ class TransferNamePage extends Component<Props, State> {
     }))
   }
 
-  props: Props
-
-  displayAlerts: Function
   displayAlerts(props) {
     const name = props.routeParams.index
     const transferState = props.nameTransfers[name]
@@ -119,7 +93,6 @@ class TransferNamePage extends Component<Props, State> {
     }
   }
 
-  updateAlert: Function
   updateAlert(alertStatus, alertMessage) {
     logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
     this.setState({
@@ -127,7 +100,6 @@ class TransferNamePage extends Component<Props, State> {
     })
   }
 
-  transferName: Function
   transferName(event) {
     logger.info('transferName')
     event.preventDefault()

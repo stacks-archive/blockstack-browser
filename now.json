@@ -3,6 +3,6 @@
   "alias": "blockstack-browser.now.sh",
   "type": "npm",
   "engines": {
-    "node": "^10"
+    "node": "^12"
   }
 }

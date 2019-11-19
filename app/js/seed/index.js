@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Initial, Password, Seed, SeedConfirm, Success } from './views'
-import { decrypt } from '@utils/encryption-utils'
+import { decrypt } from '../utils/encryption-utils'
 import { withRouter, browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -11,12 +11,12 @@ import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import {
   selectEncryptedBackupPhrase,
   selectRecoveryCodeVerified
-} from '@common/store/selectors/account'
+} from '../common/store/selectors/account'
 import {
   selectAppManifest,
   selectAuthRequest
-} from '@common/store/selectors/auth'
-import { formatAppManifest } from '@common'
+} from '../common/store/selectors/auth'
+import { formatAppManifest } from '../common'
 import App from '../App'
 import log4js from 'log4js'
 
@@ -148,7 +148,7 @@ class SeedContainer extends Component {
         ? 'base64'
         : 'hex'
 
-    const buffer = new Buffer(encryptedBackupPhrase, method)
+    const buffer = Buffer.from(encryptedBackupPhrase, method)
 
     try {
       const result = await decrypt(buffer, password)
@@ -226,11 +226,11 @@ class SeedContainer extends Component {
         {
           decrypting: true
         },
-        () => setTimeout(() => this.decryptSeed(password), 50)
+        () => setTimeout(() => this.decryptSeed(password), 1)
       )
     }
     if (this.state.seed && this.state.view === VIEWS.UNLOCK_KEY) {
-      return setTimeout(() => this.updateView(VIEWS.SEED), 50)
+      return setTimeout(() => this.updateView(VIEWS.SEED), 1)
     }
     return null
   }
