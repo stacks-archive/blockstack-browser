@@ -43,13 +43,12 @@ export function validateScopes(scopes) {
     return true
   }
 
-  let valid = false
+  let valid = true
   for (let i = 0; i < scopes.length; i++) {
     const scope = scopes[i]
-    if (VALID_SCOPES[scope] === true) {
-      valid = true
-    } else {
-      return false
+    const isCollectionScope = scope.indexOf('collection.') === 0
+    if (!isCollectionScope && VALID_SCOPES[scope] !== true) {
+      valid = false
     }
   }
   return valid
