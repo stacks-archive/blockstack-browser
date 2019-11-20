@@ -6,7 +6,7 @@ import { config, ecPairToAddress, hexStringToECPair, transactions } from 'blocks
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
-import { decryptBitcoinPrivateKey, satoshisToBtc } from '@utils'
+import { decryptBitcoinPrivateKey, satoshisToBtc } from '../utils'
 import InputGroup from '@components/InputGroup'
 
 function mapStateToProps(state) {
