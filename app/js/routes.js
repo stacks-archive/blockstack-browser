@@ -113,6 +113,12 @@ const SearchProfilesPage = Loadable({
   loading: Loading,
   delay: LOADABLE_DELAY
 })
+const RenewNamePage = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "RenewNamePage" */ './profiles/RenewNamePage'),
+  loading: Loading,
+  delay: LOADABLE_DELAY
+})
 const TransferNamePage = Loadable({
   loader: () =>
     import(/* webpackChunkName: "TransferNamePage" */ './profiles/TransferNamePage'),
@@ -259,6 +265,7 @@ export default (
         <IndexRoute component={DefaultProfilePage} />
         <Route path="i/all" component={AllProfilesPage} />
         <Route path="i/search/:query" component={SearchProfilesPage} />
+        <Route path=":index/renew" component={RenewNamePage} />
         <Route path=":index/transfer-name" component={TransferNamePage} />
         <Route path=":index/zone-file" component={ZoneFilePage} />
         <Route path=":index/export" component={ExportProfilePage} />

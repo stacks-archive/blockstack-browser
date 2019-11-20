@@ -2,13 +2,12 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import Alert from '@components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
 import { findAddressIndex } from '@utils'
 import AdvancedSidebar from './components/AdvancedSidebar'
-
+import SecondaryNavBar from '@components/SecondaryNavBar'
 
 import log4js from 'log4js'
 
@@ -20,39 +19,39 @@ function mapStateToProps(state) {
     identityAddresses: state.account.identityAccount.addresses,
     identityKeypairs: state.account.identityAccount.keypairs,
     localIdentities: state.profiles.identity.localIdentities,
-    namesOwned: state.profiles.identity.namesOwned,
     zoneFileUrl: state.settings.api.zoneFileUrl,
-    currentIdentity: state.profiles.identity.current,
     coreAPIPassword: state.settings.api.coreAPIPassword,
     zoneFileUpdates: state.profiles.identity.zoneFileUpdates
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AccountActions, IdentityActions), dispatch)
+  return bindActionCreators(
+    Object.assign({}, AccountActions, IdentityActions),
+    dispatch
+  )
 }
 
 class ZoneFilePage extends Component {
   static propTypes = {
-    currentIdentity: PropTypes.object.isRequired,
     identityAddresses: PropTypes.array.isRequired,
     identityKeypairs: PropTypes.array.isRequired,
-    localIdentities: PropTypes.object.isRequired,
+    localIdentities: PropTypes.array.isRequired,
     nameLookupUrl: PropTypes.string.isRequired,
-    namesOwned: PropTypes.array.isRequired,
-    fetchCurrentIdentity: PropTypes.func.isRequired,
     routeParams: PropTypes.object.isRequired,
     zoneFileUrl: PropTypes.string.isRequired,
     coreAPIPassword: PropTypes.string.isRequired,
     broadcastZoneFileUpdate: PropTypes.func.isRequired,
-    zoneFileUpdates: PropTypes.object.isRequired
+    zoneFileUpdates: PropTypes.array.isRequired
   }
 
   constructor(props) {
     super(props)
-    const currentIdentity = props.currentIdentity
+    const name = this.props.routeParams.index
+    const zoneFile = this.props.localIdentities[name].zoneFile
+
     this.state = {
-      zoneFile: currentIdentity.zoneFile,
+      zoneFile,
       agreed: false,
       alerts: [],
       clickedBroadcast: false,
@@ -69,18 +68,13 @@ class ZoneFilePage extends Component {
 
   componentWillMount() {
     logger.info('componentWillMount')
-    const name = this.props.routeParams.index
-    this.props.fetchCurrentIdentity(
-      this.props.nameLookupUrl,
-      name
-    )
     this.displayAlerts(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     logger.info('componentWillReceiveProps')
-    const currentIdentity = nextProps.currentIdentity
-    const zoneFile = currentIdentity.zoneFile
+    const name = this.props.routeParams.index
+    const zoneFile = this.props.localIdentities[name].zoneFile
     if (zoneFile && !nextProps.edited) {
       this.setState({
         zoneFile
@@ -114,7 +108,10 @@ class ZoneFilePage extends Component {
           disabled: false
         })
       } else if (updateState.broadcasting) {
-        this.updateAlert('success', 'Broadcasting zone file update transaction...')
+        this.updateAlert(
+          'success',
+          'Broadcasting zone file update transaction...'
+        )
       } else {
         this.updateAlert('success', 'Broadcasted zone file update transaction.')
         this.setState({
@@ -131,16 +128,20 @@ class ZoneFilePage extends Component {
   reset(event) {
     logger.info('reset')
     event.preventDefault()
+    const name = this.props.routeParams.index
+    const zoneFile = this.props.localIdentities[name].zoneFile
     this.setState({
       clickedBroadcast: false,
-      zoneFile: this.props.currentIdentity.zoneFile,
+      zoneFile,
       edited: false,
       alerts: []
     })
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(
+      `updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`
+    )
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
@@ -156,17 +157,26 @@ class ZoneFilePage extends Component {
     })
     const name = this.props.routeParams.index
     const ownerAddress = this.props.localIdentities[name].ownerAddress
-    const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
+    const addressIndex = findAddressIndex(
+      ownerAddress,
+      this.props.identityAddresses
+    )
     const keypair = this.props.identityKeypairs[addressIndex]
     logger.debug(`updateZoneFile: using key with index ${addressIndex}`)
-    this.props.broadcastZoneFileUpdate(this.props.zoneFileUrl,
-      this.props.coreAPIPassword, name, keypair, this.state.zoneFile)
+    this.props.broadcastZoneFileUpdate(
+      this.props.zoneFileUrl,
+      this.props.coreAPIPassword,
+      name,
+      keypair,
+      this.state.zoneFile
+    )
   }
 
   render() {
     const agreed = this.state.agreed
     const zoneFile = this.state.zoneFile
     const name = this.props.routeParams.index
+    const username = this.props.localIdentities[name].username
     return (
       <div className="card-list-container profile-content-wrapper">
         <div>
@@ -176,21 +186,27 @@ class ZoneFilePage extends Component {
                 <AdvancedSidebar activeTab="zone-file" name={name} />
               </div>
               <div className="col-md-7">
-                <Link to={`/profiles/${name}/local`}>&lt; Back </Link>
-                <h1 className="h1-modern">
-                  Update {name} zone file
-                </h1>
-                {
-                  this.state.alerts.map((alert, index) =>
-                     (
-                    <Alert key={index} message={alert.message} status={alert.status} />
-                    )
-                  )
-                }
+                <SecondaryNavBar
+                  leftButtonTitle="Back"
+                  leftButtonLink="/profiles/i/all"
+                />
+                <h1 className="h1-modern">Update {username} zone file</h1>
+                {this.state.alerts.map((alert, index) => (
+                  <Alert
+                    key={index}
+                    message={alert.message}
+                    status={alert.status}
+                  />
+                ))}
                 <p>
-                Updating your zone file is an advanced feature that can break
-                your Blockstack name and profile. It requires broadcasting a
-                transaction on Bitcoin network and costs Bitcoin.
+                  Transferring the ownership of a name is an advanced
+                  feature. Ownership transfer requires modifying a name's
+                  zone file and broadcasting an update transaction with this
+                  change on the Bitcoin network. Further, transfers can fail
+                  and leave your name in a state where you can no longer use
+                  it. You must pay for the transaction costs in Bitcoin
+                  (BTC) regardless of whether the transaction succeeds or
+                  fails.
                 </p>
                 <form
                   className="form-check"
@@ -222,8 +238,12 @@ class ZoneFilePage extends Component {
                         onChange={this.onToggle}
                         type="checkbox"
                       />
-                      I understand this could break my Blockstack
-                      name and will cost me money.
+                      Yes, I understand I am requesting an ownership
+                      transfer of name {username}. Further, I understand that
+                      the transfer can fail leaving my name unavailable.
+                      Regardless of whether the owner transfer transaction
+                      fails or succeeds, I am required to pay transaction
+                      fees in Bitcoin (BTC).
                     </label>
                   </fieldset>
 
@@ -252,4 +272,7 @@ class ZoneFilePage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ZoneFilePage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ZoneFilePage)

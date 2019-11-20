@@ -37,7 +37,8 @@ describe('Identity Store: Sync Actions', () => {
         profile: {
           key: 'value'
         },
-        zoneFile: 'test zone file'
+        zoneFile: 'test zone file',
+        expireBlock: undefined
       }
       const actualResult = IdentityActions.updateProfile(
         0,

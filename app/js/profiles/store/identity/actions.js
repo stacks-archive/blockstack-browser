@@ -16,6 +16,7 @@ import AccountActions from '../../../account/store/account/actions'
 import { isWebAppBuild } from '@utils/window-utils'
 
 import type { Dispatch } from 'redux'
+import { network } from 'blockstack'
 
 import log4js from 'log4js'
 
@@ -115,12 +116,18 @@ function noUsernameOwned(index: number) {
   }
 }
 
-function updateProfile(index: number, profile: any, zoneFile: string) {
+function updateProfile(
+  index: number,
+  profile: any,
+  zoneFile: string,
+  expireBlock: ?number
+) {
   return {
     type: types.UPDATE_PROFILE,
     index,
     profile,
-    zoneFile
+    zoneFile,
+    expireBlock
   }
 }
 
@@ -273,8 +280,8 @@ function refreshIdentities(
     bitcoinAddressLookupUrl: string,
     nameLookupUrl: string,
     gaiaHubConfig: {
-      url_prefix: string,
-    },
+      url_prefix: string
+    }
   },
   ownerAddresses: Array<string>
 ) {
@@ -355,13 +362,16 @@ function refreshIdentities(
                 .then(lookupResponseJson => {
                   const zoneFile = lookupResponseJson.zonefile
                   const ownerAddress = lookupResponseJson.address
+                  const expireBlock = lookupResponseJson.expire_block || -1
                   logger.debug(
                     `refreshIdentities: resolving zonefile of ${nameOwned} to profile`
                   )
                   return resolveZoneFileToProfile(zoneFile, ownerAddress)
                     .then(profile => {
                       if (profile) {
-                        dispatch(updateProfile(index, profile, zoneFile))
+                        dispatch(
+                          updateProfile(index, profile, zoneFile, expireBlock)
+                        )
                         let verifications = []
                         let trustLevel = 0
                         return validateProofsService(
@@ -528,7 +538,7 @@ function fetchPublicIdentity(lookupUrl: string, username: string) {
       })
       .catch(error => {
         dispatch(updatePublicIdentity(username))
-        logger.error(`fetchCurrentIdentity: ${username} lookup error`, error)
+        logger.error(`fetchPublicIdentity: ${username} lookup error`, error)
       })
   }
 }
