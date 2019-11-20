@@ -2,7 +2,7 @@ import { bip32 } from 'bitcoinjs-lib'
 import * as bip39 from 'bip39'
 import * as cheerio from 'cheerio'
 import * as types from './types'
-import { validateProofs } from 'blockstack'
+import { validateProofs , network } from 'blockstack'
 import {
   authorizationHeaderValue,
   decrypt,
@@ -15,6 +15,9 @@ import { DEFAULT_PROFILE, fetchProfileLocations } from '../../../utils/profile-u
 import { calculateTrustLevel } from '../../../utils/account-utils'
 import AccountActions from '../../../account/store/account/actions'
 import { isWebAppBuild } from '../../../utils/window-utils'
+
+import type { Dispatch } from 'redux'
+
 
 import log4js from 'log4js'
 
@@ -114,12 +117,13 @@ function noUsernameOwned(index) {
   }
 }
 
-function updateProfile(index, profile, zoneFile) {
+function updateProfile(index, profile, zoneFile, expireBlock) {
   return {
     type: types.UPDATE_PROFILE,
     index,
     profile,
-    zoneFile
+    zoneFile,
+    expireBlock
   }
 }
 
@@ -347,13 +351,16 @@ function refreshIdentities(
                 .then(lookupResponseJson => {
                   const zoneFile = lookupResponseJson.zonefile
                   const ownerAddress = lookupResponseJson.address
+                  const expireBlock = lookupResponseJson.expire_block || -1
                   logger.debug(
                     `refreshIdentities: resolving zonefile of ${nameOwned} to profile`
                   )
                   return resolveZoneFileToProfile(zoneFile, ownerAddress)
                     .then(profile => {
                       if (profile) {
-                        dispatch(updateProfile(index, profile, zoneFile))
+                        dispatch(
+                          updateProfile(index, profile, zoneFile, expireBlock)
+                        )
                         let verifications = []
                         let trustLevel = 0
                         return validateProofsService(
@@ -520,7 +527,7 @@ function fetchPublicIdentity(lookupUrl, username) {
       })
       .catch(error => {
         dispatch(updatePublicIdentity(username))
-        logger.error(`fetchCurrentIdentity: ${username} lookup error`, error)
+        logger.error(`fetchPublicIdentity: ${username} lookup error`, error)
       })
   }
 }

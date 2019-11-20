@@ -238,7 +238,8 @@ describe('Identity Store: Async Actions', () => {
               index: 0,
               profile: DEFAULT_PROFILE,
               type: UPDATE_PROFILE,
-              zoneFile: ''
+              zoneFile: '',
+              expireBlock: undefined
             },
             {
               index: 0,
@@ -312,7 +313,8 @@ describe('Identity Store: Async Actions', () => {
               index: 0,
               profile: secondProfile,
               type: UPDATE_PROFILE,
-              zoneFile: ''
+              zoneFile: '',
+              expireBlock: undefined
             },
             {
               index: 0,
@@ -399,7 +401,8 @@ describe('Identity Store: Async Actions', () => {
               index: 3,
               profile: secondProfile,
               type: UPDATE_PROFILE,
-              zoneFile: ''
+              zoneFile: '',
+              expireBlock: undefined
             },
             {
               index: 3,

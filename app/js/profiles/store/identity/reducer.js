@@ -66,6 +66,7 @@ function IdentityReducer(state = initialState, action) {
       const newLocalIdentities = [...state.localIdentities]
       newLocalIdentities[action.index].profile = action.profile
       newLocalIdentities[action.index].zoneFile = action.zoneFile
+      newLocalIdentities[action.index].expireBlock = action.expireBlock
       return Object.assign({}, state, {
         localIdentities: newLocalIdentities
       })

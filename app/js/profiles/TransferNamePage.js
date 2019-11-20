@@ -1,13 +1,14 @@
 // TODO when refactoring this page for new state, re-enable flow type checking
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router'
 import Alert from '@components/Alert'
 import { AccountActions } from '../account/store/account'
 import { IdentityActions } from './store/identity'
 import { findAddressIndex } from '../utils'
 import AdvancedSidebar from './components/AdvancedSidebar'
+import SecondaryNavBar from '@components/SecondaryNavBar'
 
 import log4js from 'log4js'
 
@@ -19,17 +20,30 @@ function mapStateToProps(state) {
     identityAddresses: state.account.identityAccount.addresses,
     identityKeypairs: state.account.identityAccount.keypairs,
     localIdentities: state.profiles.identity.localIdentities,
-    namesOwned: state.profiles.identity.namesOwned,
     nameTransfers: state.profiles.identity.nameTransfers,
     nameTransferUrl: state.settings.api.nameTransferUrl
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, AccountActions, IdentityActions), dispatch)
+  return bindActionCreators(
+    Object.assign({}, AccountActions, IdentityActions),
+    dispatch
+  )
 }
 
 class TransferNamePage extends Component {
+  static propTypes = {
+    coreAPIPassword: PropTypes.string,
+    routeParams: PropTypes.object.isRequired,
+    identityAddresses: PropTypes.array.isRequired,
+    identityKeypairs: PropTypes.array,
+    localIdentities: PropTypes.array.isRequired,
+    nameTransfers: PropTypes.array.isRequired,
+    broadcastNameTransfer: PropTypes.func,
+    nameTransferUrl: PropTypes.string
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -94,7 +108,9 @@ class TransferNamePage extends Component {
   }
 
   updateAlert(alertStatus, alertMessage) {
-    logger.info(`updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`)
+    logger.info(
+      `updateAlert: alertStatus: ${alertStatus}, alertMessage ${alertMessage}`
+    )
     this.setState({
       alerts: [{ status: alertStatus, message: alertMessage }]
     })
@@ -110,18 +126,27 @@ class TransferNamePage extends Component {
 
     const name = this.props.routeParams.index
     const ownerAddress = this.props.localIdentities[name].ownerAddress
-    const addressIndex = findAddressIndex(ownerAddress, this.props.identityAddresses)
+    const addressIndex = findAddressIndex(
+      ownerAddress,
+      this.props.identityAddresses
+    )
     const newOwner = this.state.newOwner
     const keypair = this.props.identityKeypairs[addressIndex]
     const coreAPIPassword = this.props.coreAPIPassword
     logger.debug(`transferName: using key with index ${addressIndex}`)
-    this.props.broadcastNameTransfer(this.props.nameTransferUrl,
-      coreAPIPassword, name, keypair, newOwner)
+    this.props.broadcastNameTransfer(
+      this.props.nameTransferUrl,
+      coreAPIPassword,
+      name,
+      keypair,
+      newOwner
+    )
   }
 
   render() {
     const agreed = this.state.agreed
     const name = this.props.routeParams.index
+    const username = this.props.localIdentities[name].username
     const newOwner = this.state.newOwner
     return (
       <div className="card-list-container profile-content-wrapper">
@@ -132,18 +157,26 @@ class TransferNamePage extends Component {
                 <AdvancedSidebar activeTab="transfer-name" name={name} />
               </div>
               <div className="col-md-7">
-                <Link to={`/profiles/${name}/local`}>&lt; Back </Link>
+                <SecondaryNavBar
+                  leftButtonTitle="Back"
+                  leftButtonLink="/profiles/i/all"
+                />
                 <h1 className="h1-modern">
-                  Transfer ownership of {name}
+                  Transfer ownership of {username}
                 </h1>
-                {
-                  this.state.alerts.map((alert, index) => (
-                    <Alert key={index} message={alert.message} status={alert.status} />
-                    ))
-                }
+                {this.state.alerts.map((alert, index) => (
+                  <Alert
+                    key={index}
+                    message={alert.message}
+                    status={alert.status}
+                  />
+                ))}
                 <p>
-                Transfer ownership is an advanced feature. It requires broadcasting a
-                transaction on Bitcoin network and costs Bitcoin.
+                  Transferring the ownership of a name is an advanced
+                  feature. Ownership transfer requires modifying a name's
+                  zone file and broadcasting an update transaction with this
+                  change on the Bitcoin network. You must pay for the
+                  transaction costs in Bitcoin (BTC).
                 </p>
                 <form
                   className="form-check"
@@ -197,4 +230,7 @@ class TransferNamePage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TransferNamePage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TransferNamePage)

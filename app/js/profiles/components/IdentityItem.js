@@ -19,7 +19,9 @@ export class IdentityItem extends Component {
     onClick: PropTypes.func.isRequired,
     router: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
-    profileUrl: PropTypes.string.isRequired
+    profileUrl: PropTypes.string.isRequired,
+    expireBlock: PropTypes.number,
+    currentBlockHeight: PropTypes.number
   }
 
   constructor(props) {
@@ -40,6 +42,51 @@ export class IdentityItem extends Component {
   }
 
   render() {
+    let expireText
+    const expiresInBlocks = this.props.expireBlock - this.props.currentBlockHeight
+    const expiresInDays = Math.floor(expiresInBlocks / 144)
+    const expiredBlocks = this.props.currentBlockHeight - this.props.expireBlock
+    const expiredDays = Math.floor(expiredBlocks / 144)
+    const doesNotExpire = this.props.expireBlock <= 0
+
+    if (this.props.expireBlock) {
+      if (!doesNotExpire) {
+        if (this.props.currentBlockHeight) {
+          if (this.props.expireBlock > this.props.currentBlockHeight) {
+            expireText = (
+              <>
+                Expires in about {expiresInDays} days
+                <a
+                  href="#"
+                  onClick={event => {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    this.props.router.push(
+                      `/profiles/${this.props.index}/zone-file`
+                    )
+                  }}
+                >
+                  <i
+                    className="fa fa-fw fa-gear fa-sm text-secondary"
+                    data-tip
+                    data-for="settings"
+                  />
+                </a>
+              </>
+            )
+          } else {
+            expireText = <>Expired about {expiredDays} days ago</>
+          }
+        } else {
+          expireText = <>Expires at block {this.props.expireBlock}</>
+        }
+      } else {
+        expireText = <>Does not expire</>
+      }
+    } else {
+      expireText = null
+    }
+
     return (
       <div
         onClick={this.props.onClick}
@@ -54,6 +101,11 @@ export class IdentityItem extends Component {
         <ToolTip id="ownerAddress">
           <div>
             <div>This is your identity address.</div>
+          </div>
+        </ToolTip>
+        <ToolTip id="settings">
+          <div>
+            <div>Settings for your name</div>
           </div>
         </ToolTip>
         <div>
@@ -86,16 +138,39 @@ export class IdentityItem extends Component {
                       </a>
                     </div>
                   ) : (
-                    <span>
-                      {this.props.username}
-                      {this.props.pending ? (
-                        <i
-                          className="fa fa-fw fa-clock-o fa-sm text-secondary"
-                          data-tip
-                          data-for="usernamePending"
-                        />
-                      ) : null}
-                    </span>
+                    <>
+                      <span>
+                        {this.props.username}
+                        {this.props.pending ? (
+                          <i
+                            className="fa fa-fw fa-clock-o fa-sm text-secondary"
+                            data-tip
+                            data-for="usernamePending"
+                          />
+                        ) : null}
+                      </span>{' '}
+                      <span className="text-secondary">
+                        <small>{expireText}</small>{' '}
+                        {expiresInDays < 750 && !doesNotExpire ? 
+                          <small>
+                            <a
+                              href="#"
+                              onClick={event => {
+                                event.preventDefault()
+                                event.stopPropagation()
+                                this.props.router.push(
+                                  `/profiles/${
+                                    this.props.index
+                                  }/renew`
+                                )
+                              }}
+                            >
+                              Renew
+                            </a>
+                          </small>
+                         : null}
+                      </span>
+                    </>
                   )}
                 </p>
               </li>

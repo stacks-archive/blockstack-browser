@@ -2,14 +2,14 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Person } from 'blockstack'
+import { config, Person } from 'blockstack'
 import Modal from 'react-modal'
 import SecondaryNavBar from '@components/SecondaryNavBar'
 import Alert from '@components/Alert'
 import IdentityItem from './components/IdentityItem'
 import InputGroup from '@components/InputGroup'
 import { IdentityActions } from './store/identity'
-import { AccountActions }  from '../account/store/account'
+import { AccountActions } from '../account/store/account'
 
 import log4js from 'log4js'
 
@@ -29,7 +29,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(Object.assign({}, IdentityActions, AccountActions), dispatch)
+  return bindActionCreators(
+    Object.assign({}, IdentityActions, AccountActions),
+    dispatch
+  )
 }
 
 class AllProfilesPage extends Component {
@@ -60,9 +63,10 @@ class AllProfilesPage extends Component {
 
   componentWillMount() {
     logger.info('componentWillMount')
-    this.props.refreshIdentities(
-      this.props.api,
-      this.props.identityAddresses)
+    this.props.refreshIdentities(this.props.api, this.props.identityAddresses)
+    config.network.getBlockHeight().then(currentBlockHeight => {
+      this.setState({ currentBlockHeight })
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -82,17 +86,17 @@ class AllProfilesPage extends Component {
     }
   }
 
-  onValueChange = (event) => {
+  onValueChange = event => {
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
-  setDefaultIdentity = (index) => {
+  setDefaultIdentity = index => {
     this.props.setDefaultIdentity(index)
   }
 
-  createNewProfile = (event) => {
+  createNewProfile = event => {
     logger.info('createNewProfile')
     event.preventDefault()
 
@@ -103,12 +107,13 @@ class AllProfilesPage extends Component {
 
       this.props.createNewProfile(
         encryptedBackupPhrase,
-        password, nextUnusedAddressIndex
+        password,
+        nextUnusedAddressIndex
       )
     }
   }
 
-  openPasswordPrompt = (event) => {
+  openPasswordPrompt = event => {
     event.preventDefault()
     this.props.resetCreateNewProfileError()
     this.setState({
@@ -116,7 +121,7 @@ class AllProfilesPage extends Component {
     })
   }
 
-  closePasswordPrompt = (event) => {
+  closePasswordPrompt = event => {
     if (event) {
       event.preventDefault()
     }
@@ -145,13 +150,17 @@ class AllProfilesPage extends Component {
           className="container-fluid"
         >
           <form onSubmit={this.createNewProfile}>
-            <h3 className="modal-heading">Enter your password to add another Blockstack ID</h3>
+            <h3 className="modal-heading">
+              Enter your password to add another Blockstack ID
+            </h3>
             <div>
-              {createProfileError ?
-                <Alert key="1" message="Incorrect password" status="danger" />
-                :
-                null
-              }
+              {createProfileError ? (
+                <Alert
+                  key="1"
+                  message="Incorrect password"
+                  status="danger"
+                />
+              ) : null}
             </div>
             <InputGroup
               name="password"
@@ -167,11 +176,11 @@ class AllProfilesPage extends Component {
               type="submit"
               disabled={this.props.isProcessing}
             >
-              {this.props.isProcessing ?
+              {this.props.isProcessing ? (
                 <span>Processing...</span>
-                :
+              ) : (
                 <span>Add another ID</span>
-              }
+              )}
             </button>
           </form>
         </Modal>
@@ -182,33 +191,35 @@ class AllProfilesPage extends Component {
         <div className="m-t-40">
           <div className="container-fluid">
             <ul className="card-wrapper">
-                  {this.state.localIdentities.map((identity, index) => {
-                    const person = new Person(identity.profile)
+              {this.state.localIdentities.map((identity, index) => {
+                const person = new Person(identity.profile)
 
-                    if (identity.username) {
-                      identity.canAddUsername = false
-                    } else {
-                      identity.canAddUsername = true
-                    }
-                    return (
-                      <IdentityItem
-                        key={index}
-                        index={index}
-                        username={identity.username}
-                        pending={identity.usernamePending}
-                        avatarUrl={person.avatarUrl() || ''}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          this.setDefaultIdentity(index)
-                        }}
-                        ownerAddress={identity.ownerAddress}
-                        canAddUsername={identity.canAddUsername}
-                        isDefault={index === this.props.defaultIdentity}
-                        router={this.props.router}
-                        profileUrl={`${profileUrlBase}/${index}/profile.json`}
-                      />
-                    )
-                  })}
+                if (identity.username) {
+                  identity.canAddUsername = false
+                } else {
+                  identity.canAddUsername = true
+                }
+                return (
+                  <IdentityItem
+                    key={index}
+                    index={index}
+                    username={identity.username}
+                    pending={identity.usernamePending}
+                    avatarUrl={person.avatarUrl() || ''}
+                    onClick={event => {
+                      event.preventDefault()
+                      this.setDefaultIdentity(index)
+                    }}
+                    ownerAddress={identity.ownerAddress}
+                    canAddUsername={identity.canAddUsername}
+                    expireBlock={identity.expireBlock}
+                    isDefault={index === this.props.defaultIdentity}
+                    router={this.props.router}
+                    profileUrl={`${profileUrlBase}/${index}/profile.json`}
+                    currentBlockHeight={this.state.currentBlockHeight}
+                  />
+                )
+              })}
             </ul>
           </div>
           <div className="container-fluid">
@@ -224,8 +235,9 @@ class AllProfilesPage extends Component {
             </div>
             <div className="row m-t-20">
               <p className="col form-text text-muted">
-                Have you recovered and are missing IDs? Just add them
-                back by using the "Add another ID" for each ID.
+                Are you missing IDs after restoring the browser? Use
+                {' '}<em>Add another ID</em>{' '}
+                for each ID you want to add back.
               </p>
             </div>
           </div>
@@ -235,4 +247,7 @@ class AllProfilesPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllProfilesPage)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AllProfilesPage)
