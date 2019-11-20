@@ -199,9 +199,14 @@ class ZoneFilePage extends Component {
                   />
                 ))}
                 <p>
-                  Updating your zone file is an advanced feature that can break
-                  your Blockstack name and profile. It requires broadcasting a
-                  transaction on Bitcoin network and costs Bitcoin.
+                  Transferring the ownership of a name is an advanced
+                  feature. Ownership transfer requires modifying a name's
+                  zone file and broadcasting an update transaction with this
+                  change on the Bitcoin network. Further, transfers can fail
+                  and leave your name in a state where you can no longer use
+                  it. You must pay for the transaction costs in Bitcoin
+                  (BTC) regardless of whether the transaction succeeds or
+                  fails.
                 </p>
                 <form
                   className="form-check"
@@ -233,8 +238,12 @@ class ZoneFilePage extends Component {
                         onChange={this.onToggle}
                         type="checkbox"
                       />
-                      I understand this could break my Blockstack name and will
-                      cost me money.
+                      Yes, I understand I am requesting an ownership
+                      transfer of name {username}. Further, I understand that
+                      the transfer can fail leaving my name unavailable.
+                      Regardless of whether the owner transfer transaction
+                      fails or succeeds, I am required to pay transaction
+                      fees in Bitcoin (BTC).
                     </label>
                   </fieldset>
 

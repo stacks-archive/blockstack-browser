@@ -181,7 +181,9 @@ class TransferNamePage extends Component<Props, State> {
                   leftButtonTitle="Back"
                   leftButtonLink="/profiles/i/all"
                 />
-                <h1 className="h1-modern">Transfer ownership of {username}</h1>
+                <h1 className="h1-modern">
+                  Transfer ownership of {username}
+                </h1>
                 {this.state.alerts.map((alert, index) => (
                   <Alert
                     key={index}
@@ -190,9 +192,11 @@ class TransferNamePage extends Component<Props, State> {
                   />
                 ))}
                 <p>
-                  Transfer ownership is an advanced feature. It requires
-                  broadcasting a transaction on Bitcoin network and costs
-                  Bitcoin.
+                  Transferring the ownership of a name is an advanced
+                  feature. Ownership transfer requires modifying a name's
+                  zone file and broadcasting an update transaction with this
+                  change on the Bitcoin network. You must pay for the
+                  transaction costs in Bitcoin (BTC).
                 </p>
                 <form
                   className="form-check"

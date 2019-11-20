@@ -288,8 +288,7 @@ const registerName = (
             'You can try to register again later from your profile page. Some ' +
             'apps may be unusable until you do.'
           if (res.status === 409) {
-            message =
-              'Sorry, it looks like we weren\'t able to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID.'
+            message = 'Sorry, it looks like the blockchain failed to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID.'
           }
           dispatch(registrationError(message))
           dispatch(
@@ -316,7 +315,7 @@ const registerName = (
           'apps may be unusable until you do.'
         if (e.status === 409) {
           message =
-            'Sorry, it looks like we weren\'t able to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID.'
+            'Sorry, it looks like the blockchain failed to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID.'
         }
         dispatch(registrationError(message))
         throw new Error(message)

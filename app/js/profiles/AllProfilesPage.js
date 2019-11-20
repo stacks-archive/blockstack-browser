@@ -155,7 +155,11 @@ class AllProfilesPage extends Component {
             </h3>
             <div>
               {createProfileError ? (
-                <Alert key="1" message="Incorrect password" status="danger" />
+                <Alert
+                  key="1"
+                  message="Incorrect password"
+                  status="danger"
+                />
               ) : null}
             </div>
             <InputGroup
@@ -180,7 +184,10 @@ class AllProfilesPage extends Component {
             </button>
           </form>
         </Modal>
-        <SecondaryNavBar leftButtonTitle="Back" leftButtonLink="/profiles" />
+        <SecondaryNavBar
+          leftButtonTitle="Back"
+          leftButtonLink="/profiles"
+        />
         <div className="m-t-40">
           <div className="container-fluid">
             <ul className="card-wrapper">
@@ -228,8 +235,9 @@ class AllProfilesPage extends Component {
             </div>
             <div className="row m-t-20">
               <p className="col form-text text-muted">
-                Have you recovered and are missing IDs? Just add them back by
-                using the "Add another ID" for each ID.
+                Are you missing IDs after restoring the browser? Use
+                {' '}<em>Add another ID</em>{' '}
+                for each ID you want to add back.
               </p>
             </div>
           </div>

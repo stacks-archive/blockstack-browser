@@ -191,19 +191,30 @@ class RenewNamePage extends Component {
                 type="password"
                 required
               />
-              {this.state.error ? <div className="alert alert-danger">{this.state.error}</div> : null}
-              {success && <div className="alert alert-success">
-                <p>{success}</p>
-                <p style={{ marginBottom: 0 }}>Your renewal might take up to two hours to process</p>
-              </div>}
-              {estimate && !success ? <div className="alert alert-success">
-                Renewing your name will cost roughly {satoshisToBtc(estimate)} BTC.
-              </div> : null}
+              {this.state.error ? (
+                <div className="alert alert-danger">{this.state.error}</div>
+              ) : null}
+              {success && (
+                <div className="alert alert-success">
+                  <p>{success}</p>
+                  <p style={{ marginBottom: 0 }}>
+                    Processing your renewal can take up to two hours.
+                  </p>
+                </div>
+              )}
+              {estimate && !success ? (
+                <div className="alert alert-success">
+                  Renewing your name will cost roughly{' '}
+                  {satoshisToBtc(estimate)} BTC.
+                </div>
+              ) : null}
               <button
                 type="submit"
                 onClick={estimate ? this.renew : this.estimateRenewal}
                 className="btn btn-primary btn-block"
-                disabled={renewInProgress || !!success || estimateInProgress}
+                disabled={
+                  renewInProgress || !!success || estimateInProgress
+                }
               >
                 <span>{this.buttonText()}</span>
               </button>
