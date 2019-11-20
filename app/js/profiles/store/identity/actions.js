@@ -2,7 +2,7 @@ import { bip32 } from 'bitcoinjs-lib'
 import * as bip39 from 'bip39'
 import * as cheerio from 'cheerio'
 import * as types from './types'
-import { validateProofs , network } from 'blockstack'
+import { validateProofs } from 'blockstack'
 import {
   authorizationHeaderValue,
   decrypt,
@@ -15,8 +15,6 @@ import { DEFAULT_PROFILE, fetchProfileLocations } from '../../../utils/profile-u
 import { calculateTrustLevel } from '../../../utils/account-utils'
 import AccountActions from '../../../account/store/account/actions'
 import { isWebAppBuild } from '../../../utils/window-utils'
-
-import type { Dispatch } from 'redux'
 
 
 import log4js from 'log4js'
