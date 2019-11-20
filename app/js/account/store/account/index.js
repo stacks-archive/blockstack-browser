@@ -1,2 +1,2 @@
-export AccountActions from './actions'
-export AccountReducer from './reducer'
+export { default as AccountActions } from './actions'
+export { default as AccountReducer } from './reducer'

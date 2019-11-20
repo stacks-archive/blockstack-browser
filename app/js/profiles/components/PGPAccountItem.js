@@ -6,7 +6,7 @@ import Modal from 'react-modal'
 import ReactTooltip from 'react-tooltip'
 import { PGPActions } from '../store/pgp'
 
-import { getWebAccountTypes } from '@utils'
+import { getWebAccountTypes } from '../../utils'
 
 function mapStateToProps(state) {
   return {

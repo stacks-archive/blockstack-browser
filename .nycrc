@@ -16,7 +16,7 @@
   ],
   "reporter": [
     "text-summary",
-    "html"
+    "lcov"
   ],
   "report-dir": "__coverage__/",
   "produce-source-map": true

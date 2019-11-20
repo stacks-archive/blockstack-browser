@@ -16,11 +16,11 @@ describe('encryption-utils', () => {
     it('should encrypt & decrypt the phrase', () => {
       const phrase = 'vivid oxygen neutral wheat find thumb cigar wheel board kiwi portion business'
       const password = 'supersecret'
-      return encrypt(new Buffer(phrase), password)
+      return encrypt(Buffer.from(phrase), password)
       .then((encryptedTextBuffer) => {
         assert(encryptedTextBuffer)
         const encryptedText = encryptedTextBuffer.toString('hex')
-        return decrypt(new Buffer(encryptedText, 'hex'), password)
+        return decrypt(Buffer.from(encryptedText, 'hex'), password)
         .then((plaintextBuffer) => {
           assert(plaintextBuffer)
           assert.equal(plaintextBuffer.toString(), phrase)
@@ -40,7 +40,7 @@ describe('encryption-utils', () => {
         'e54ff7ea7e98a809ddee5ef85f6f259b3a17a8d8dbaac618b80fe266a1e63ec19e476bee9177b51894e'
       const password = 'supersecret'
       const phrase = 'vivid oxygen neutral wheat find thumb cigar wheel board kiwi portion business'
-      return decrypt(new Buffer(legacyCiphertext, 'hex'), password)
+      return decrypt(Buffer.from(legacyCiphertext, 'hex'), password)
         .then((plaintextBuffer) => {
           assert(plaintextBuffer)
           assert.equal(plaintextBuffer.toString(), phrase)

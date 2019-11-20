@@ -10,7 +10,7 @@ import { AccountActions } from '../../../account/store/account'
 import { AvailabilityActions } from '../../store/availability'
 import { IdentityActions } from '../../store/identity'
 import { RegistrationActions } from '../../store/registration'
-import { isABlockstackName } from '@utils/name-utils'
+import { isABlockstackName } from '../../../utils/name-utils'
 
 import log4js from 'log4js'
 

@@ -4,7 +4,7 @@ import Modal from 'react-modal'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { AccountActions } from '../../account/store/account'
-import { summarizeTransactionFromHex, satoshisToBtc } from '@utils/bitcoin-utils'
+import { summarizeTransactionFromHex, satoshisToBtc } from '../../utils/bitcoin-utils'
 import SimpleButton from '@components/SimpleButton'
 
 

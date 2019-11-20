@@ -3,13 +3,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { HDNode } from 'bitcoinjs-lib'
+import { bip32 } from 'bitcoinjs-lib'
+import * as bip39 from 'bip39'
 import QRCode from 'qrcode.react'
 
 import Alert from '@components/Alert'
 import SimpleButton from '@components/SimpleButton'
 import InputGroup from '@components/InputGroup'
-import { decrypt } from '@utils'
+import { decrypt } from '../utils'
 import log4js from 'log4js'
 
 import { AccountActions } from './store/account'
@@ -40,6 +41,7 @@ class BackupAccountPage extends Component {
       decryptedBackupPhrase: null,
       password: '',
       alerts: [],
+      /** @type {bip32.BIP32Interface} */
       keychain: null,
       isDecrypting: false
     }
@@ -70,20 +72,20 @@ class BackupAccountPage extends Component {
     logger.info('decryptBackupPhrase')
 
     const password = this.state.password
-    const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
+    const dataBuffer = Buffer.from(this.props.encryptedBackupPhrase, 'hex')
     this.setState({ isDecrypting: true })
 
     logger.debug('Trying to decrypt recovery phrase...')
     decrypt(dataBuffer, password).then(
       async plaintextBuffer => {
         logger.debug('Keychain phrase successfully decrypted')
-        const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
-        const seed = bip39.mnemonicToSeed(plaintextBuffer.toString())
-        const keychain = HDNode.fromSeedBuffer(seed)
+        const plaintextString = plaintextBuffer.toString()
+        const seed = await bip39.mnemonicToSeed(plaintextString)
+        const keychain = bip32.fromSeed(seed)
         this.props.displayedRecoveryCode()
         this.setState({
           isDecrypting: false,
-          decryptedBackupPhrase: plaintextBuffer.toString(),
+          decryptedBackupPhrase: plaintextString,
           keychain
         })
       },
@@ -97,7 +99,7 @@ class BackupAccountPage extends Component {
 
   render() {
     const { alerts, keychain, decryptedBackupPhrase, isDecrypting } = this.state
-    const b64EncryptedBackupPhrase = new Buffer(
+    const b64EncryptedBackupPhrase = Buffer.from(
       this.props.encryptedBackupPhrase,
       'hex'
     ).toString('base64')
@@ -185,7 +187,7 @@ class BackupAccountPage extends Component {
                   <strong>Info for Developers</strong>
                 </p>
                 <p>
-                  Private Key (WIF) — <code>{keychain.keyPair.toWIF()}</code>
+                  Private Key (WIF) — <code>{keychain.toWIF()}</code>
                 </p>
               </div>
             </div>

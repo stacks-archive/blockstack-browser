@@ -7,7 +7,7 @@ import { AppsActions } from './store/apps'
 import { Box, Flex, Type } from 'blockstack-ui'
 import { Hover } from 'react-powerplug'
 import { Spinner } from '@components/ui/components/spinner'
-import { trackEventOnce } from '@utils/server-utils'
+import { trackEventOnce } from './utils/server-utils'
 
 const Loading = ({ ...rest }) => (
   <Flex

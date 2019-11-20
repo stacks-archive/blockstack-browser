@@ -3,18 +3,18 @@ import { ShellScreen, Type } from '@blockstack/ui'
 import PropTypes from 'prop-types'
 import Yup from 'yup'
 import QrScan from '@components/ui/components/qr-scan'
-import { validateAndCleanRecoveryInput } from '@utils/encryption-utils'
+import { validateAndCleanRecoveryInput } from '../../utils/encryption-utils'
+import * as bip39 from 'bip39'
 
-const validateInput = async value =>
-  import(/* webpackChunkName: 'bip39' */ 'bip39').then(bip39 => {
-    // Raw mnemonic phrase
-    if (bip39.validateMnemonic(value)) {
-      console.log('valid mnemonic')
-      return true
-    }
-    // Base64 encoded encrypted phrase
-    return /[a-zA-Z0-9+/]=?$/.test(value)
-  })
+const validateInput = async value => {
+  // Raw mnemonic phrase
+  if (bip39.validateMnemonic(value)) {
+    console.log('valid mnemonic')
+    return true
+  }
+  // Base64 encoded encrypted phrase
+  return /[a-zA-Z0-9+/]=?$/.test(value)
+}
 
 const validationSchema = Yup.object({
   recoveryKey: Yup.string()

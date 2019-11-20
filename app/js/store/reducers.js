@@ -1,4 +1,3 @@
-// @flow
 import { combineReducers } from 'redux'
 import { reducer as makeNotificationsReducer } from 'reapop'
 import AccountReducer from '../account/store/account/reducer'
@@ -20,7 +19,7 @@ export function updateState() {
   }
 }
 
-export function migrateAPIEndpoints(nextApi: any) {
+export function migrateAPIEndpoints(nextApi) {
   return {
     type: MIGRATE_API_ENDPOINTS,
     nextApi
@@ -39,7 +38,7 @@ export function initializeStateVersion() {
  * and other state is regenerated.
  * @type {number}
  */
-export const CURRENT_VERSION: number = 18
+export const CURRENT_VERSION = 18
 
 const AppReducer = combineReducers({
   account: AccountReducer,
@@ -51,8 +50,8 @@ const AppReducer = combineReducers({
   notifications: makeNotificationsReducer()
 })
 
-function reducer(state: any, action: any) {
-  let newState: any = Object.assign({}, state)
+function reducer(state, action) {
+  let newState = Object.assign({}, state)
   if (action.type === UPDATE_STATE) {
     const initialState = AppReducer(undefined, {})
 

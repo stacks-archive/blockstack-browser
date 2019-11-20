@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
-import { openInNewTab, getWebAccountTypes } from '@utils'
+import { openInNewTab, getWebAccountTypes } from '../../utils'
 
 const helpPages = {
   twitter: 'https://forum.blockstack.org/t/twitter-verification-process/2143',

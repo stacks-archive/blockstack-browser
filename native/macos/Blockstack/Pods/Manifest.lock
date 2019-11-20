@@ -1,15 +1,20 @@
 PODS:
   - Sparkle (1.17.0)
-  - Swifter (1.3.3)
+  - Swifter (1.4.6)
 
 DEPENDENCIES:
   - Sparkle
-  - Swifter
+  - Swifter (~> 1.4.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Sparkle
+    - Swifter
 
 SPEC CHECKSUMS:
   Sparkle: ccfb47699feea7b40b51cf3176f69404e5b1da6c
-  Swifter: 3fef6ec31449a8e3a29cf8551a9fe23485f15bc0
+  Swifter: 2ed278fbf7b16cbe97269eb56d8e8749b1ec4042
 
-PODFILE CHECKSUM: 519fc678b8061ed5120ddd85c444d95362629e12
+PODFILE CHECKSUM: c14e073e88439b8b73dbe585d3842b44511982b8
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.6.1

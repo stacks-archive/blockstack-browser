@@ -4,7 +4,7 @@ import { ShellParent, AppHomeWrapper } from '@blockstack/ui'
 import { Initial, LegacyGaia } from './views'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { randomBytes } from 'crypto'
+import * as crypto from 'crypto'
 import { AuthActions } from './store/auth'
 import { IdentityActions } from '../profiles/store/identity'
 import { decodeToken, TokenSigner } from 'jsontokens'
@@ -17,18 +17,17 @@ import {
   getAppBucketUrl,
   isLaterVersion,
   updateQueryStringParameter,
-  getPublicKeyFromPrivate
+  getPublicKeyFromPrivate,
+  BlockstackWallet
 } from 'blockstack'
-import { AppsNode } from '@utils/account-utils'
 import {
   fetchProfileLocations,
   getDefaultProfileUrl
-} from '@utils/profile-utils'
-import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
-import { HDNode } from 'bitcoinjs-lib'
+} from '../utils/profile-utils'
+import { getTokenFileUrlFromZoneFile } from '../utils/zone-utils'
 import log4js from 'log4js'
 import { uploadProfile } from '../account/utils'
-import { signProfileForUpload } from '@utils'
+import { signProfileForUpload } from '../utils'
 import {
   validateScopes,
   appRequestSupportsDirectHub
@@ -38,25 +37,25 @@ import {
   selectCoreHost,
   selectCorePort,
   selectCoreAPIPassword
-} from '@common/store/selectors/settings'
+} from '../common/store/selectors/settings'
 import {
   selectAppManifest,
   selectAppManifestLoading,
   selectAppManifestLoadingError,
   selectCoreSessionTokens
-} from '@common/store/selectors/auth'
+} from '../common/store/selectors/auth'
 import {
   selectLocalIdentities,
   selectDefaultIdentity
-} from '@common/store/selectors/profiles'
+} from '../common/store/selectors/profiles'
 
 import {
   selectIdentityKeypairs,
   selectEmail,
   selectIdentityAddresses,
   selectPublicKeychain
-} from '@common/store/selectors/account'
-import { formatAppManifest } from '@common'
+} from '../common/store/selectors/account'
+import { formatAppManifest } from '../common'
 import Modal from 'react-modal'
 import url from 'url'
 
@@ -92,17 +91,16 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch)
 }
 
-function makeGaiaAssociationToken(secretKeyHex: string, childPublicKeyHex: string) {
+function makeGaiaAssociationToken(secretKeyHex, childPublicKeyHex) {
   const LIFETIME_SECONDS = 365 * 24 * 3600
   const signerKeyHex = secretKeyHex.slice(0, 64)
   const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex)
-  const salt = randomBytes(16).toString('hex')
+  const salt = crypto.randomBytes(16).toString('hex')
   const payload = { childToAssociate: childPublicKeyHex,
                     iss: compressedPublicKeyHex,
                     exp: LIFETIME_SECONDS + (new Date()/1000),
                     iat: Date.now()/1000,
                     salt }
-
   const token = new TokenSigner('ES256K', signerKeyHex).sign(payload)
   return token
 }
@@ -275,8 +273,6 @@ class AuthPage extends React.Component {
       const privateKey = profileSigningKeypair.key
       const appsNodeKey = profileSigningKeypair.appsNodeKey
       const salt = profileSigningKeypair.salt
-      const appsNode = new AppsNode(HDNode.fromBase58(appsNodeKey), salt)
-      const appPrivateKey = appsNode.getAppNode(appDomain).getAppPrivateKey()
 
       let profileUrlPromise
 
@@ -311,7 +307,8 @@ class AuthPage extends React.Component {
         })
       }
 
-      profileUrlPromise.then(profileUrl => {
+      profileUrlPromise.then(async profileUrl => {
+        const appPrivateKey = await BlockstackWallet.getLegacyAppPrivateKey(appsNodeKey, salt, appDomain)
         // Add app storage bucket URL to profile if publish_data scope is requested
         if (this.state.scopes.publishData) {
           let apps = {}
@@ -321,7 +318,7 @@ class AuthPage extends React.Component {
 
           if (storageConnected) {
             const hubUrl = this.props.api.gaiaHubUrl
-            getAppBucketUrl(hubUrl, appPrivateKey)
+            await getAppBucketUrl(hubUrl, appPrivateKey)
               .then(appBucketUrl => {
                 logger.debug(
                   `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
@@ -348,8 +345,7 @@ class AuthPage extends React.Component {
                   signedProfileTokenData
                 )
               })
-              .then(() => {
-                this.completeAuthResponse(
+              .then(() => this.completeAuthResponse(
                   privateKey,
                   blockchainId,
                   coreSessionToken,
@@ -357,7 +353,7 @@ class AuthPage extends React.Component {
                   profile,
                   profileUrl
                 )
-              })
+              )
               .catch(err => {
                 logger.error(
                   'componentWillReceiveProps: add app index profile not uploaded',
@@ -370,7 +366,7 @@ class AuthPage extends React.Component {
             )
           }
         } else {
-          this.completeAuthResponse(
+          await this.completeAuthResponse(
             privateKey,
             blockchainId,
             coreSessionToken,
@@ -392,7 +388,7 @@ class AuthPage extends React.Component {
     this.setState({ refreshingIdentities: false })
   }
 
-  completeAuthResponse = (
+  completeAuthResponse = async (
     privateKey,
     blockchainId,
     coreSessionToken,
@@ -444,7 +440,7 @@ class AuthPage extends React.Component {
       associationToken = makeGaiaAssociationToken(privateKey, compressedAppPublicKey)
     }
 
-    const authResponse = makeAuthResponse(
+    const authResponse = await makeAuthResponse(
       privateKey,
       profileResponseData,
       blockchainId,

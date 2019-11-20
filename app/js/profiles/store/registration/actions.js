@@ -4,15 +4,19 @@ import {
   transactions,
   config,
   network,
-  safety
+  safety,
+  hexStringToECPair,
+  ecPairToAddress
 } from 'blockstack'
 import { uploadProfile } from '../../../account/utils'
 import { IdentityActions } from '../identity'
-import { signProfileForUpload, authorizationHeaderValue } from '@utils'
-import { DEFAULT_PROFILE } from '@utils/profile-utils'
-import { isSubdomain, getNameSuffix } from '@utils/name-utils'
+import { signProfileForUpload, authorizationHeaderValue } from '../../../utils'
+import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
+import { isSubdomain, getNameSuffix } from '../../../utils/name-utils'
 import { notify } from 'reapop'
 import log4js from 'log4js'
+import bitcoin from 'bitcoinjs-lib'
+import RIPEMD160 from 'ripemd160'
 
 const logger = log4js.getLogger(__filename)
 
@@ -108,6 +112,67 @@ async function registerSubdomain(
   const responseText = await response.text()
 
   return JSON.parse(responseText)
+}
+
+const renewDomain = (
+  name,
+  ownerKey,
+  ownerAddress,
+  paymentKey,
+  zoneFile,
+  estimateOnly = false
+) => async dispatch => {
+  if (!paymentKey) {
+    logger.error(
+      'renewName: payment key not provided for non-subdomain registration'
+    )
+    return Promise.reject('Missing payment key')
+  }
+  const network = config.network
+
+  const compressedPaymentKey = `${paymentKey}01`
+  const compressedOwnerKey = `${ownerKey}01`
+  const coercedAddress = network.coerceAddress(ownerAddress)
+
+  const paymentKeyPair = hexStringToECPair(compressedPaymentKey)
+  const paymentAddress = network.coerceAddress(ecPairToAddress(paymentKeyPair))
+
+  const ownerUTXOsPromise = network.getUTXOs(ownerAddress)
+  const paymentUTXOsPromise = network.getUTXOs(paymentAddress)
+
+  const estimatePromise = Promise.all([
+      ownerUTXOsPromise, paymentUTXOsPromise])
+    .then(([ownerUTXOs, paymentUTXOs]) => {
+        const numOwnerUTXOs = ownerUTXOs.length
+        const numPaymentUTXOs = paymentUTXOs.length
+        return transactions.estimateRenewal(
+          name, network.coerceAddress(ownerAddress), 
+          network.coerceAddress(ownerAddress),
+          network.coerceAddress(paymentAddress), true, 
+          numOwnerUTXOs + numPaymentUTXOs - 1)
+      })
+
+  const zonefileHashPromise = new Promise((resolve, reject) => {
+    if (!!zoneFile) {
+      const sha256 = bitcoin.crypto.sha256(zoneFile)
+      const h = (new RIPEMD160()).update(sha256).digest('hex')
+      resolve(h)
+    } else {
+      reject('No zone file provided')
+    }
+  })
+
+  const txPromise = zonefileHashPromise.then((zfh) => {
+    // Setting empty zonefile hash for now due to the issue with renewals in BTC
+    const emptyZoneFileHash = ''
+    return transactions.makeRenewal(
+      name, ownerAddress, compressedOwnerKey, compressedPaymentKey, null, emptyZoneFileHash, false)
+  })
+
+  if (estimateOnly) {
+    return estimatePromise
+  }
+  return txPromise.then((tx) => network.broadcastTransaction(tx))
 }
 
 function registerDomain(
@@ -223,8 +288,7 @@ const registerName = (
             'You can try to register again later from your profile page. Some ' +
             'apps may be unusable until you do.'
           if (res.status === 409) {
-            message =
-              "Sorry, it looks like we weren't able to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID."
+            message = 'Sorry, it looks like the blockchain failed to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID.'
           }
           dispatch(registrationError(message))
           dispatch(
@@ -251,7 +315,7 @@ const registerName = (
           'apps may be unusable until you do.'
         if (e.status === 409) {
           message =
-            "Sorry, it looks like we weren't able to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID."
+            'Sorry, it looks like the blockchain failed to process your name registration. Please contact us at support@blockstack.org for help. Some apps may be unusable until you register an ID.'
         }
         dispatch(registrationError(message))
         throw new Error(message)
@@ -306,7 +370,8 @@ const RegistrationActions = {
   registrationSubmitted,
   registrationError,
   registerSubdomain,
-  registerDomain
+  registerDomain,
+  renewDomain
 }
 
 export default RegistrationActions

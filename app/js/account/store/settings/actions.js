@@ -1,12 +1,12 @@
 import DEFAULT_API from './default'
 import * as types from './types'
 import log4js from 'log4js'
-import { selectApi } from '@common/store/selectors/settings'
-import { selectIdentityKeypairs } from '@common/store/selectors/account'
-import { selectLocalIdentities } from '@common/store/selectors/profiles'
+import { selectApi } from '../../../common/store/selectors/settings'
+import { selectIdentityKeypairs } from '../../../common/store/selectors/account'
+import { selectLocalIdentities } from '../../../common/store/selectors/profiles'
 import { connectToGaiaHub } from '../../utils/blockstack-inc'
 import { BLOCKSTACK_INC } from '../../utils'
-import { setCoreStorageConfig } from '@utils/api-utils'
+import { setCoreStorageConfig } from '../../../utils/api-utils'
 import AccountActions from '../account/actions'
 
 const logger = log4js.getLogger(__filename)
