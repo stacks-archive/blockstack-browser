@@ -230,7 +230,7 @@ export class DefaultProfilePage extends Component {
     })
   }
 
-  onPostVerificationButtonClick = (event, service, identifier) => {
+  onPostVerificationButtonClick = (event, service) => {
     const profileIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[profileIndex]
 
