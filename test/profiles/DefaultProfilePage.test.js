@@ -53,8 +53,7 @@ describe('<DefaultProfilePage />', () => {
 
   describe('with filled accounts', () => {
     const filledAccounts = [{ service: 'twitter'}, 
-                            { service: 'facebook'},
-                            { service: 'ssh'}]
+                            { service: 'facebook'}]
     const { wrapper } = setup(filledAccounts)
     const list = wrapper.find('div.profile-accounts ul')
     it('should order verified proofs alphabetically', () => {
