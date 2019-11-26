@@ -1,7 +1,7 @@
-import { BIP32Interface } from 'bip32'
-import { address, networks, crypto } from 'bitcoinjs-lib'
-import { createHash } from 'crypto-browserify'
-import IdentityAddressOwnerNode from './nodes/identity-address-owner-node'
+import { BIP32Interface } from 'bitcoinjs-lib'
+import IdentityAddressOwnerNode from '../nodes/identity-address-owner-node'
+import { createSha2Hash } from 'blockstack/lib/encryption/sha2Hash'
+import { publicKeyToAddress } from 'blockstack/lib/keys'
 
 const IDENTITY_KEYCHAIN = 888
 const BLOCKSTACK_ON_BITCOIN = 0
@@ -43,7 +43,7 @@ export function getBitcoinAddressNode(
   return bitcoinKeychain.derive(chain).derive(addressIndex)
 }
 
-export function getIdentityOwnerAddressNode(
+export async function getIdentityOwnerAddressNode(
   identityPrivateKeychain: BIP32Interface,
   identityIndex = 0
 ) {
@@ -51,12 +51,13 @@ export function getIdentityOwnerAddressNode(
     throw new Error('You need the private key to generate identity addresses')
   }
 
-  const publicKeyHex = identityPrivateKeychain
+  const publicKeyHex = Buffer.from(identityPrivateKeychain
     .publicKey
-    .toString('hex')
-  const salt = createHash('sha256')
-    .update(publicKeyHex)
-    .digest('hex')
+    .toString('hex'))
+
+  const sha2Hash = await createSha2Hash()
+  const saltData = await sha2Hash.digest(publicKeyHex, 'sha256')
+  const salt = saltData.toString('hex')
 
   return new IdentityAddressOwnerNode(
     identityPrivateKeychain.deriveHardened(identityIndex),
@@ -64,24 +65,8 @@ export function getIdentityOwnerAddressNode(
   )
 }
 
-// HDNode is no longer a part of bitcoinjs-lib
-// This function is taken from https://github.com/bitcoinjs/bitcoinjs-lib/pull/1073/files#diff-1f03b6ff764c499bfbdf841bf8fc113eR10
-export function getAddress(node: BIP32Interface) {
-  return address.toBase58Check(
-    crypto.hash160(node.publicKey),
-    networks.bitcoin.pubKeyHash
-  )
-}
-
-export function hashCode(string: string) {
-  let hash = 0
-  if (string.length === 0) return hash
-  for (let i = 0; i < string.length; i++) {
-    const character = string.charCodeAt(i)
-    hash = (hash << 5) - hash + character
-    hash &= hash
-  }
-  return hash & 0x7fffffff
+export async function getAddress(node: BIP32Interface) {
+  return publicKeyToAddress(node.publicKey)
 }
 
 export interface IdentityKeyPair {
@@ -92,8 +77,8 @@ export interface IdentityKeyPair {
   salt: string
 }
 
-export function deriveIdentityKeyPair(identityOwnerAddressNode: IdentityAddressOwnerNode): IdentityKeyPair {
-  const address = identityOwnerAddressNode.getAddress()
+export async function deriveIdentityKeyPair(identityOwnerAddressNode: IdentityAddressOwnerNode): Promise<IdentityKeyPair> {
+  const address = await identityOwnerAddressNode.getAddress()
   const identityKey = identityOwnerAddressNode.getIdentityKey()
   const identityKeyID = identityOwnerAddressNode.getIdentityKeyID()
   const appsNode = identityOwnerAddressNode.getAppsNode()
@@ -102,13 +87,13 @@ export function deriveIdentityKeyPair(identityOwnerAddressNode: IdentityAddressO
     keyID: identityKeyID,
     address,
     appsNodeKey: appsNode.toBase58(),
-    salt: appsNode.getSalt()
+    salt: identityOwnerAddressNode.getSalt()
   }
   return keyPair
 }
 
-export function getBlockchainIdentities(
-  masterKeychain: BIP32Interface, 
+export async function getBlockchainIdentities(
+  masterKeychain: BIP32Interface,
   identitiesToGenerate: number) {
   const identityPrivateKeychainNode = getIdentityPrivateKeychain(
     masterKeychain
@@ -123,7 +108,7 @@ export function getBlockchainIdentities(
   const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
   const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
 
-  const firstBitcoinAddress = getAddress(getBitcoinAddressNode(bitcoinPublicKeychainNode))
+  const firstBitcoinAddress = await getAddress(getBitcoinAddressNode(bitcoinPublicKeychainNode))
 
   const identityAddresses = []
   const identityKeypairs = []
@@ -135,11 +120,11 @@ export function getBlockchainIdentities(
     addressIndex < identitiesToGenerate;
     addressIndex++
   ) {
-    const identityOwnerAddressNode = getIdentityOwnerAddressNode(
+    const identityOwnerAddressNode = await getIdentityOwnerAddressNode(
       identityPrivateKeychainNode,
       addressIndex
     )
-    const identityKeyPair = deriveIdentityKeyPair(
+    const identityKeyPair = await deriveIdentityKeyPair(
       identityOwnerAddressNode
     )
     identityKeypairs.push(identityKeyPair)

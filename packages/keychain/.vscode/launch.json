@@ -8,12 +8,12 @@
       "type": "node",
       "request": "launch",
       "name": "Jest",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
       "args": [
-        "--inspect-brk",
-        "${workspaceRoot}/node_modules/.bin/jest",
         "--runInBand",
-        "--coverage", 
-        "false",
+        "--coverage=false", 
+        "--no-cache",
+        "--testTimeout=0",
         "--config",
         "${workspaceRoot}/jest.config.js"
       ]

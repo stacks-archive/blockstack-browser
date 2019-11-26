@@ -1,11 +1,16 @@
 {
-  "name": "blockstack-keychain",
-  "version": "0.0.1",
+  "name": "@blockstack/keychain",
+  "version": "0.1.0-alpha.3",
   "description": "A package for managing Blockstack keychains",
-  "main": "lib/index.js",
-  "module": "lib-esm/index.js",
+  "main": "dist/index.js",
+  "umd:main": "dist/keychain.umd.production.js",
+  "module": "dist/keychain.esm.js",
   "author": "Hank Stoever",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "typings": "dist/index.d.ts",
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^10.14.17",
@@ -13,6 +18,7 @@
     "@typescript-eslint/eslint-plugin": "^2.1.0",
     "@typescript-eslint/parser": "^2.1.0",
     "codecov": "^3.5.0",
+    "cross-env": "^6.0.3",
     "depcheck": "^0.8.3",
     "eslint": "^6.3.0",
     "eslint-plugin-jest": "^22.16.0",
@@ -20,25 +26,34 @@
     "npm-run-all": "^4.1.5",
     "shx": "^0.3.2",
     "ts-jest": "^24.0.2",
+    "tsdx": "^0.11.0",
     "typescript": "^3.6.2"
   },
   "scripts": {
     "clean": "shx rm -rf ./lib*/",
-    "build": "run-s clean build-all",
+    "dev": "cross-env NODE_ENV=development tsdx watch",
+    "build": "cross-env NODE_ENV=production tsdx build --format=cjs,esm,umd",
     "build-all": "run-p build:*",
     "build:cjs": "tsc --outDir ./lib -m commonjs -t es2017",
     "build:esm": "tsc --outDir ./lib-esm -m es6 -t es2017",
+    "build:cjs:watch": "tsc --outDir ./lib -m commonjs -t es2017 --watch",
+    "build:esm:watch": "tsc --outDir ./lib-esm -m es6 -t es2017 --watch",
     "test": "jest",
     "test-watch": "jest --watch --coverage=false",
     "lint": "eslint --ext .ts ./src ./tests -f unix",
     "lint:fix": "eslint --fix --ext .ts ./src ./tests -f unix",
-    "depcheck": "depcheck --ignores='@types/*,eslint*,safe-buffer,codecov,@typescript-eslint/*'"
+    "depcheck": "depcheck --ignores='@types/*,eslint*,safe-buffer,codecov,@typescript-eslint/*'",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
-    "bip32": "^2.0.4",
     "bip39": "^3.0.2",
-    "bitcoinjs-lib": "^5.1.5",
-    "crypto-browserify": "^3.12.0",
-    "triplesec": "^3.0.25"
+    "bitcoinjs-lib": "^5.1.6",
+    "blockstack": "21.0.0-alpha.2",
+    "jsontokens": "^3.0.0-alpha.0",
+    "triplesec": "^3.0.27"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

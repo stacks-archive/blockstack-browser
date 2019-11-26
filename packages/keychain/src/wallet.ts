@@ -1,11 +1,12 @@
-import { generateMnemonic, mnemonicToSeed, validateMnemonic } from 'bip39'
-import { fromSeed, BIP32Interface } from 'bip32'
-import { randomBytes } from 'crypto-browserify'
+import { generateMnemonic, mnemonicToSeed } from 'bip39'
+import { bip32, BIP32Interface } from 'bitcoinjs-lib'
+import { randomBytes } from 'blockstack/lib/encryption/cryptoRandom'
 
 import { getBlockchainIdentities, IdentityKeyPair } from './utils'
-import { encrypt } from './encryption/encrypt'
+import { encrypt} from './encryption/encrypt'
+import Identity from './identity'
 
-interface ConstructorOptions {
+export interface ConstructorOptions {
   identityPublicKeychain: string
   bitcoinPublicKeychain: string
   firstBitcoinAddress: string
@@ -14,13 +15,14 @@ interface ConstructorOptions {
   encryptedBackupPhrase: string
 }
 
-export default class Wallet {
+export class Wallet {
   encryptedBackupPhrase: string
   bitcoinPublicKeychain: string
   firstBitcoinAddress: string
   identityKeypairs: IdentityKeyPair[]
   identityAddresses: string[]
   identityPublicKeychain: string
+  identities: Identity[]
 
   constructor({
     encryptedBackupPhrase,
@@ -36,34 +38,40 @@ export default class Wallet {
     this.firstBitcoinAddress = firstBitcoinAddress
     this.identityKeypairs = identityKeypairs
     this.identityAddresses = identityAddresses
+    const identities: Identity[] = []
+    identityKeypairs.forEach((keyPair, index) => {
+      const address = identityAddresses[index]
+      const identity = new Identity({ keyPair, address })
+      identities.push(identity)
+    })
+    this.identities = identities
   }
 
   static async generate(password: string) {
     const STRENGTH = 128 // 128 bits generates a 12 word mnemonic
     const backupPhrase = generateMnemonic(STRENGTH, randomBytes)
     const seedBuffer = await mnemonicToSeed(backupPhrase)
-    const masterKeychain = fromSeed(seedBuffer)
-    const ciphertextBuffer = await encrypt(Buffer.from(backupPhrase), password)
-    const encryptedBackupPhrase = ciphertextBuffer.toString()
+    const masterKeychain = bip32.fromSeed(seedBuffer)
+    const ciphertextBuffer = await encrypt(backupPhrase, password)
+    const encryptedBackupPhrase = ciphertextBuffer.toString('hex')
     return this.createAccount(encryptedBackupPhrase, masterKeychain)
   }
 
   static async restore(password: string, backupPhrase: string) {
-    if (!validateMnemonic(backupPhrase)) {
-      throw new Error('Invalid mnemonic used to restore wallet')
-    }
+    const encryptedMnemonic = await encrypt(backupPhrase, password)
+    const encryptedMnemonicHex = encryptedMnemonic.toString('hex')
     const seedBuffer = await mnemonicToSeed(backupPhrase)
-    const masterKeychain = fromSeed(seedBuffer)
-    const ciphertextBuffer = await encrypt(Buffer.from(backupPhrase), password)
-    const encryptedBackupPhrase = ciphertextBuffer.toString()
-    return this.createAccount(encryptedBackupPhrase, masterKeychain)
+    const rootNode = bip32.fromSeed(seedBuffer)
+    return this.createAccount(encryptedMnemonicHex, rootNode)
   }
 
-  static createAccount(encryptedBackupPhrase: string, masterKeychain: BIP32Interface, identitiesToGenerate = 1) {
-    const walletAttrs = getBlockchainIdentities(masterKeychain, identitiesToGenerate)
+  static async createAccount(encryptedBackupPhrase: string, masterKeychain: BIP32Interface, identitiesToGenerate = 1) {
+    const walletAttrs = await getBlockchainIdentities(masterKeychain, identitiesToGenerate)
     return new this({
       ...walletAttrs,
       encryptedBackupPhrase
     })
   }
 }
+
+export default Wallet

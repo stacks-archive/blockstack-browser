@@ -13,7 +13,7 @@ describe('decrypt', () => {
     const phrase = 'vivid oxygen neutral wheat find thumb cigar wheel board kiwi portion business'
     const plainTextBuffer = await decrypt(Buffer.from(legacyCiphertext, 'hex'), password)
     expect(plainTextBuffer).not.toBeFalsy()
-    expect(plainTextBuffer.toString()).toEqual(phrase)
+    expect(plainTextBuffer).toEqual(phrase)
     // return decrypt(new Buffer(legacyCiphertext, "hex"), password).then(
     //   plaintextBuffer => {
     //     assert(plaintextBuffer);
