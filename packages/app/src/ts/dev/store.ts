@@ -1,3 +1,3 @@
-import { store } from '../background/store'
+import { store } from '../background/store';
 
-export default store
+export default store;

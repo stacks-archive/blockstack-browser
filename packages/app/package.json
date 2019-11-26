@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@blockstack/keychain": "^0.1.0",
+    "@blockstack/prettier-config": "^0.0.3",
     "@blockstack/ui": "^1.0.0-alpha.6",
     "formik": "^2.0.3",
     "react": "^16.11.0",

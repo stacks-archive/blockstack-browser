@@ -1,23 +1,33 @@
-import React from 'react'
-import { validateMnemonic } from 'bip39'
-import { useSelector, useDispatch } from 'react-redux'
-import { Box, Input, Text, Button, FormControl, FormLabel } from '@blockstack/ui'
-import { IAppState } from '@store'
-import { doStoreSeed, doGenerateWallet } from '@store/wallet'
-import { Formik, FormikErrors } from 'formik'
-import { selectCurrentWallet, selectIsRestoringWallet } from '@store/wallet/selectors'
+import React from 'react';
+import { validateMnemonic } from 'bip39';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  Box,
+  Input,
+  Text,
+  Button,
+  FormControl,
+  FormLabel,
+} from '@blockstack/ui';
+import { IAppState } from '@store';
+import { doStoreSeed, doGenerateWallet } from '@store/wallet';
+import { Formik, FormikErrors } from 'formik';
+import {
+  selectCurrentWallet,
+  selectIsRestoringWallet,
+} from '@store/wallet/selectors';
 
 interface FormValues {
-  seed: string
-  password: string
+  seed: string;
+  password: string;
 }
 
 const Seed = () => {
   const { wallet, restoring } = useSelector((state: IAppState) => ({
     wallet: selectCurrentWallet(state),
-    restoring: selectIsRestoringWallet(state)
-  }))
-  const dispatch = useDispatch()
+    restoring: selectIsRestoringWallet(state),
+  }));
+  const dispatch = useDispatch();
 
   return (
     <Box width="100%">
@@ -29,31 +39,34 @@ const Seed = () => {
       ) : (
         <>
           <Text display="block">Enter your 12-word seed to log in.</Text>
-          <Text>To generate a new wallet, enter a password and leave your seed blank.</Text>
+          <Text>
+            To generate a new wallet, enter a password and leave your seed
+            blank.
+          </Text>
         </>
       )}
       <Formik
         initialValues={{
           seed: '',
-          password: ''
+          password: '',
         }}
         onSubmit={values => {
-          console.log(values)
+          console.log(values);
           if (values.seed) {
-            dispatch(doStoreSeed(values.seed))
+            dispatch(doStoreSeed(values.seed));
           } else {
-            dispatch(doGenerateWallet(values.password))
+            dispatch(doGenerateWallet(values.password));
           }
         }}
         validate={values => {
-          const errors: FormikErrors<FormValues> = {}
+          const errors: FormikErrors<FormValues> = {};
           if (values.seed && !validateMnemonic(values.seed)) {
-            errors.seed = 'The seed phrase you entered is invalid'
+            errors.seed = 'The seed phrase you entered is invalid';
           }
           if (!values.password) {
-            errors.password = 'Required'
+            errors.password = 'Required';
           }
-          return errors
+          return errors;
         }}
       >
         {({ handleSubmit, values, handleChange, errors }) => (
@@ -89,7 +102,7 @@ const Seed = () => {
         )}
       </Formik>
     </Box>
-  )
-}
+  );
+};
 
-export default Seed
+export default Seed;

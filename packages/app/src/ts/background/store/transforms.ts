@@ -1,26 +1,26 @@
-import { Wallet } from '@blockstack/keychain'
-import { createTransform } from 'redux-persist'
+import { Wallet } from '@blockstack/keychain';
+import { createTransform } from 'redux-persist';
 
 interface OutboundState {
-  [key: string]: any
-  currentWallet: null | Wallet
+  [key: string]: any;
+  currentWallet: null | Wallet;
 }
 
 export const WalletTransform = createTransform(
   inboundState => {
-    return { ...inboundState }
+    return { ...inboundState };
   },
   (outboundState: OutboundState) => {
     if (outboundState.currentWallet) {
-      const currentWallet = outboundState.currentWallet
+      const currentWallet = outboundState.currentWallet;
       return {
         ...outboundState,
-        currentWallet: new Wallet(currentWallet)
-      }
+        currentWallet: new Wallet(currentWallet),
+      };
     }
     return {
-      ...outboundState
-    }
+      ...outboundState,
+    };
   },
   { whitelist: ['wallet'] }
-)
+);

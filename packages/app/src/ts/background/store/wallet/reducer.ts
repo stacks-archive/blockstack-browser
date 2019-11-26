@@ -1,11 +1,17 @@
-import { Reducer } from 'redux'
-import { WalletActions, WalletState, RESTORE_WALLET, IS_RESTORING_WALLET, GENERATE_WALLET } from './types'
+import { Reducer } from 'redux';
+import {
+  WalletActions,
+  WalletState,
+  RESTORE_WALLET,
+  IS_RESTORING_WALLET,
+  GENERATE_WALLET,
+} from './types';
 
 const initialState: WalletState = {
   seed: null,
   isRestoringWallet: false,
-  currentWallet: null
-}
+  currentWallet: null,
+};
 
 export const walletReducer: Reducer<WalletState, WalletActions> = (
   state = initialState,
@@ -16,19 +22,19 @@ export const walletReducer: Reducer<WalletState, WalletActions> = (
       return {
         ...state,
         currentWallet: action.payload,
-        isRestoringWallet: false
-      }
+        isRestoringWallet: false,
+      };
     case IS_RESTORING_WALLET:
       return {
         ...state,
-        isRestoringWallet: true
-      }
+        isRestoringWallet: true,
+      };
     case GENERATE_WALLET:
       return {
         ...state,
-        currentWallet: action.payload
-      }
+        currentWallet: action.payload,
+      };
     default:
-      return state
+      return state;
   }
-}
+};

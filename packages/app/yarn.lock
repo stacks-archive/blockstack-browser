@@ -852,6 +852,11 @@
     jsontokens "^3.0.0-alpha.0"
     triplesec "^3.0.27"
 
+"@blockstack/prettier-config@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.3.tgz#2ef0eeb9f06cea73b069ac3d1abdbd9f6ccf97d7"
+  integrity sha512-SmNPAaozcG+41enJHSH/4DL9vg3snNPzLOAeo6WbX4rIPiMygNJVo1hdknDUP8fdn4niwvL/9k746N5yTRThAA==
+
 "@blockstack/ui@^1.0.0-alpha.6":
   version "1.0.0-alpha.6"
   resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.6.tgz#c04711aacde22871368538fbb997eab6086bb393"

@@ -1,8 +1,15 @@
-import { hot } from 'react-hot-loader/root'
-import * as React from 'react'
-import { Flex, ThemeProvider, theme, CSSReset, Stack, Box } from '@blockstack/ui'
-import Seed from './Seed'
-import DevActions from './DevActions'
+import { hot } from 'react-hot-loader/root';
+import * as React from 'react';
+import {
+  Flex,
+  ThemeProvider,
+  theme,
+  CSSReset,
+  Stack,
+  Box,
+} from '@blockstack/ui';
+import Seed from './Seed';
+import DevActions from './DevActions';
 
 const OptionsApp: React.FC = () => {
   return (
@@ -21,7 +28,7 @@ const OptionsApp: React.FC = () => {
         </Flex>
       </React.Fragment>
     </ThemeProvider>
-  )
-}
+  );
+};
 
-export default hot(OptionsApp)
+export default hot(OptionsApp);
