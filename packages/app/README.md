@@ -44,7 +44,7 @@ Then, open [localhost:8080](http://localhost:8080).
 First, build the project:
 
 ~~~bash
-yarn prod
+yarn prod:ext
 ~~~
 
 ### Installing for Chrome/Brave
