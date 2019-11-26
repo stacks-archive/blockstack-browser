@@ -13,11 +13,12 @@
     "lint": "eslint --ext .ts,.tsx ./src/ -f unix",
     "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix",
     "test": "jest",
-    "test:coverage": "jest --collect-coverage"
+    "test:coverage": "jest --collect-coverage",
+    "typecheck": "tsc --noEmit"
   },
   "license": "MIT",
   "dependencies": {
-    "@blockstack/keychain": "^0.1.0-alpha.2",
+    "@blockstack/keychain": "^0.1.0",
     "@blockstack/ui": "^1.0.0-alpha.6",
     "formik": "^2.0.3",
     "react": "^16.11.0",

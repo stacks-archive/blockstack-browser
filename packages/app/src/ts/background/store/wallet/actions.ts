@@ -1,5 +1,5 @@
-import { ThunkAction, ThunkDispatch } from 'redux-thunk'
-import Wallet from '@blockstack/keychain/dist/wallet'
+import { ThunkAction } from 'redux-thunk'
+import { Wallet } from '@blockstack/keychain'
 import { WalletActions, RESTORE_WALLET, IS_RESTORING_WALLET } from './types'
 
 export function didRestoreWallet(wallet: Wallet): WalletActions {
@@ -16,15 +16,9 @@ function isRestoringWallet(): WalletActions {
 }
 
 export function doStoreSeed(seed: string): ThunkAction<void, {}, {}, WalletActions> {
-  return (dispatch: ThunkDispatch<{}, {}, WalletActions>) => {
+  return async dispatch => {
     dispatch(isRestoringWallet())
-    const url = chrome.runtime.getURL ? chrome.runtime.getURL('worker.js') : './worker.js'
-    const worker = new Worker(url)
-    worker.postMessage({ seed, password: 'password' })
-    worker.addEventListener('message', event => {
-      const wallet = new Wallet(event.data)
-      console.log('Worker finished restoring wallet', wallet)
-      dispatch(didRestoreWallet(wallet))
-    })
+    const wallet = await Wallet.restore('password', seed)
+    dispatch(didRestoreWallet(wallet))
   }
 }

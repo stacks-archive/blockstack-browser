@@ -25,6 +25,9 @@ jobs: # a collection of steps
       - run: # run lint
           name: lint
           command: yarn lint
+      - run:
+          name: typecheck
+          command: yarn typecheck
     #   - run:
     #       name: depcheck
     #       command: yarn depcheck

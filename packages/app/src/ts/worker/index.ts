@@ -1,4 +1,4 @@
-import Wallet from '@blockstack/keychain/dist/wallet'
+import { Wallet } from '@blockstack/keychain'
 
 const ctx: Worker = self as any
 

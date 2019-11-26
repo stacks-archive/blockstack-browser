@@ -1,9 +1,9 @@
-import Wallet, { ConstructorOptions } from '@blockstack/keychain/dist/wallet'
+import { Wallet } from '@blockstack/keychain'
 import { createTransform } from 'redux-persist'
 
 interface OutboundState {
   [key: string]: any
-  currentWallet: null | ConstructorOptions
+  currentWallet: null | Wallet
 }
 
 export const WalletTransform = createTransform(
@@ -12,7 +12,7 @@ export const WalletTransform = createTransform(
   },
   (outboundState: OutboundState) => {
     if (outboundState.currentWallet) {
-      const currentWallet: ConstructorOptions = outboundState.currentWallet
+      const currentWallet = outboundState.currentWallet
       return {
         ...outboundState,
         currentWallet: new Wallet(currentWallet)
