@@ -19,7 +19,6 @@ module.exports = {
     background: path.join(sourceRootPath, 'ts', 'background', 'index.ts'),
     options: path.join(sourceRootPath, 'ts', 'options', 'index.tsx'),
     popup: path.join(sourceRootPath, 'ts', 'popup', 'index.tsx'),
-    worker: path.join(sourceRootPath, 'ts', 'worker', 'index.ts'),
     inpage: path.join(sourceRootPath, 'ts', 'inpage', 'index.ts'),
     actions: path.join(sourceRootPath, 'ts', 'actions', 'index.tsx'),
     "message-bus": path.join(sourceRootPath, 'ts', 'content-scripts', 'message-bus.ts'),
@@ -27,9 +26,6 @@ module.exports = {
   output: {
     path: distRootPath,
     filename: '[name].js',
-    // FYI: web workers don't work unless you uncomment this line,
-    // however, keeping this line commented will allow HMR
-    // globalObject: "typeof self !== 'undefined' ? self : this"
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
