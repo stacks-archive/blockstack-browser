@@ -6,7 +6,7 @@ const log = (msg: string) => {
 
 _window.BlockstackApp = {
   auth: (authRequest: string) => {
-    log(`Auth request: ${authRequest}`);
+    log(`Auth request: ${authRequest}`)
     window.postMessage(
       {
         method: 'auth',
