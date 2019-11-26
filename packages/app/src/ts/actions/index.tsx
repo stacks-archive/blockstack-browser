@@ -20,7 +20,7 @@ const buildApp = (store: ReduxStore | Store) => {
   );
 };
 
-if ((module as any).hot) {
+if (EXT_ENV === 'web') {
   const store = DevStore;
   buildApp(store);
 } else {

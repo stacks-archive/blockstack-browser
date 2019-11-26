@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev-server": "cross-env NODE_ENV=development webpack-dev-server -d",
-    "dev": "cross-env NODE_ENV=development webpack -d",
-    "prod": "cross-env NODE_ENV=production webpack -p",
+    "dev": "cross-env NODE_ENV=development EXT_ENV=development webpack -d",
+    "prod:web": "cross-env NODE_ENV=production webpack -p",
+    "prod:ext": "cross-env NODE_ENV=production EXT_ENV=prod webpack-p",
     "watch": "cross-env NODE_ENV=development EXT_ENV=watch webpack -d",
     "clean": "rm -rf ./dist",
     "clean:all": "rm -rf ./dist && rm -rf ./coverage && rm -rf ./node_modules",

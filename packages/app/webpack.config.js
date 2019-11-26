@@ -109,7 +109,8 @@ module.exports = {
     ]),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(nodeEnv),
-      WEB_BROWSER: JSON.stringify(webBrowser)
+      WEB_BROWSER: JSON.stringify(webBrowser),
+      EXT_ENV: JSON.stringify(process.env.EXT_ENV || "web")
     })
   ]
 }
