@@ -1,5 +1,5 @@
 import { Reducer } from 'redux'
-import { WalletActions, WalletState, RESTORE_WALLET, IS_RESTORING_WALLET } from './types'
+import { WalletActions, WalletState, RESTORE_WALLET, IS_RESTORING_WALLET, GENERATE_WALLET } from './types'
 
 const initialState: WalletState = {
   seed: null,
@@ -22,6 +22,11 @@ export const walletReducer: Reducer<WalletState, WalletActions> = (
       return {
         ...state,
         isRestoringWallet: true
+      }
+    case GENERATE_WALLET:
+      return {
+        ...state,
+        currentWallet: action.payload
       }
     default:
       return state
