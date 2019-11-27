@@ -38,7 +38,7 @@ function setup(accounts = []) {
 }
 
 function alphabeticalOrdered(accounts) {
-  return accounts.first().props().service <
+  return accounts.first().props().service <=
     accounts.last().props().service
 }
 
