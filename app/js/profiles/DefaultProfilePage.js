@@ -37,7 +37,6 @@ const logger = log4js.getLogger(__filename)
 const accountTypes = [
   'twitter',
   'facebook',
-  'github',
   'bitcoin',
   'instagram'
 ]
@@ -244,8 +243,6 @@ export class DefaultProfilePage extends Component {
       verificationUrl = `https://twitter.com/intent/tweet?text=${verificationText}`
     } else if (service === 'facebook') {
       verificationUrl = `https://www.facebook.com/dialog/feed?app_id=258121411364320&link=${url}`
-    } else if (service === 'github') {
-      verificationUrl = 'https://gist.github.com/'
     } else if (service === 'instagram') {
       // no op
     }
