@@ -35,10 +35,10 @@ import { defaultAvatarImage } from '@components/ui/common/constants'
 const logger = log4js.getLogger(__filename)
 
 const accountTypes = [
-  'twitter',
-  'facebook',
   'bitcoin',
-  'instagram'
+  'facebook',
+  'instagram',
+  'twitter'
 ]
 
 const hiddenAccountTypes = ['linkedIn', 'instagram']
