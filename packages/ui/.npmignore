@@ -1,3 +1,14 @@
-docs
-site
+node_modules
+tests
+demo
+src
+scripts
+stories
+.storybook
+.env
+.gitignore
+*.log
 .idea
+.rts2_cache_cjs
+.rts2_cache_esm
+.rts2_cache_umd

@@ -1,88 +1,112 @@
 {
-  "name": "blockstack-ui",
-  "description": "Blockstack UI components built with css-in-js and styled-system.",
-  "version": "0.0.73",
-  "author": "Blockstack Team",
-  "bugs": {
-    "url": "https://github.com/blockstack/blockstack-ui/issues"
+  "name": "@blockstack/ui",
+  "description": "Blockstack UI components built using React and styled-components with styled-system.",
+  "version": "1.0.0-alpha.19",
+  "author": "Blockstack <engineering@blockstack.com> (https://blockstack.com/)",
+  "dependencies": {
+    "@styled-system/css": "5.0.23",
+    "@types/color": "^3.0.0",
+    "@types/styled-components": "^4.1.20",
+    "@types/styled-system": "^5.1.3",
+    "@types/styled-system__css": "^5.0.4",
+    "color": "3.1.2",
+    "prop-types": "^15.7.2",
+    "react-spring": "8.0.27",
+    "styled-system": "5.1.2",
+    "use-dark-mode": "2.3.1",
+    "use-events": "^1.4.1"
   },
-  "bundlesize": [
-    {
-      "path": "./dist/*.js",
-      "maxSize": "1.5 kB"
-    }
-  ],
   "devDependencies": {
-    "@babel/cli": "^7.1.0",
-    "@babel/core": "^7.1.0",
-    "@babel/plugin-proposal-class-properties": "^7.1.0",
-    "@babel/plugin-transform-regenerator": "^7.0.0",
-    "@babel/plugin-transform-runtime": "^7.1.0",
-    "@babel/preset-env": "^7.1.0",
-    "@babel/preset-react": "^7.0.0",
-    "@babel/runtime": "^7.1.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "bundlesize": "^0.17.0",
-    "codecov": "^3.0.0",
-    "codemirror": "^5.40.2",
-    "mdi-react": "^4.4.0",
-    "mdx-go": "^2.0.0-29",
-    "prettier": "^1.14.3",
-    "prop-types": "^15.6.2",
-    "react": "^16.5.2",
-    "react-codemirror2": "^5.1.0",
-    "react-dom": "^16.5.2",
-    "react-live": "^1.11.0",
-    "rimraf": "^2.6.2",
-    "styled-components": "^4.0.0"
+    "@babel/cli": "7.7.0",
+    "@babel/core": "7.7.0",
+    "@babel/plugin-proposal-class-properties": "7.7.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.6.2",
+    "@babel/plugin-transform-object-assign": "7.2.0",
+    "@babel/plugin-transform-runtime": "7.6.2",
+    "@babel/preset-env": "7.7.1",
+    "@babel/preset-react": "7.7.0",
+    "@babel/preset-typescript": "^7.7.0",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "babel-plugin-module-resolver": "3.2.0",
+    "babel-plugin-react-remove-properties": "0.3.0",
+    "babel-plugin-transform-react-remove-prop-types": "0.4.24",
+    "bundlesize": "^0.18.0",
+    "cross-env": "6.0.3",
+    "dtslint": "^1.0.3",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "fs-extra": "8.1.0",
+    "glob": "7.1.5",
+    "path": "0.12.7",
+    "prettier": "^1.18.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "rimraf": "3.0.0",
+    "shx": "^0.3.2",
+    "styled-components": "^4.4.1",
+    "ts-node": "^8.4.1",
+    "tsdx": "^0.11.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.2"
   },
-  "homepage": "https://github.com/blockstack/blockstack-ui",
-  "keywords": [
-    "blockstack",
-    "components",
-    "css-in-js",
-    "design-system",
-    "react",
-    "react-component",
-    "styled-components",
-    "ui"
-  ],
+  "homepage": "https://waffle.blockstack.design/",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "license": "MIT",
-  "main": "dist/index.js",
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ],
+    "*.ts": [
+      "tslint -c tslint.json"
+    ],
+    "**/*.+(js|jsx|ts|tsx|d.ts|md|mdx)": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "peerDependencies": {
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "styled-components": "^4.0.3",
-    "styled-system": "^3.1.4"
+    "react": "16.x",
+    "react-dom": "16.x",
+    "styled-components": "4.x",
+    "use-events": "1.4.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/blockstack/blockstack-ui.git"
+  "publishConfig": {
+    "access": "public"
   },
+  "main": "dist/index.js",
+  "umd:main": "dist/ui.umd.production.js",
+  "module": "dist/ui.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": "https://github.com/blockstackpbc/blockstack-ui",
   "scripts": {
-    "build": "babel src -d dist",
-    "clean": "rimraf dist",
-    "docs": "mdx-go build docs -d site",
-    "format": "echo '\\033[0;32m'💅 Just use prettier'\\033[0m' && prettier --write ./src/**/**/*.{js,md}",
-    "prepare": "npm run clean && npm run build",
-    "size": "bundlesize",
-    "prepublish": "npm run prepare",
-    "start": "mdx-go docs"
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
+    "start": "cross-env NODE_ENV=development tsdx watch",
+    "build": "cross-env NODE_ENV=production tsdx build --format=cjs,esm,umd",
+    "format": "npm run prettier -- --write",
+    "lint": "eslint \"src/**/*.+(ts|tsx)\"",
+    "lint:fix": "eslint \"src/**/*.+(ts|tsx)\" --fix",
+    "prebuild": "rimraf dist",
+    "prepublishOnly": "npm run type-check && npm run build",
+    "prettier": "prettier \"**/*.+(js|jsx|ts|tsx|d.ts|md|mdx)\"",
+    "bundlesize": "bundlesize",
+    "validate": "npm run lint && npm run prettier -- --list-different && npm run tslint",
+    "version": "npm run build"
   },
   "sideEffects": false,
-  "dependencies": {
-    "epitath": "^1.0.0-beta.1",
-    "html-tags": "^2.0.0",
-    "immer": "^1.7.4",
-    "mdi-react": "^4.4.0",
-    "polished": "^2.3.0",
-    "react-copy-to-clipboard": "^5.0.1",
-    "react-powerplug": "^1.0.0-rc.1",
-    "react-spring": "^6.1.8",
-    "reakit": "^0.16.0-beta.0",
-    "regenerator-runtime": "^0.12.1",
-    "shortid": "^2.2.14",
-    "styled-system": "^3.1.6",
-    "system-components": "^3.0.1"
-  }
+  "unpkg": "dist/ui.cjs.production.min.js"
 }
