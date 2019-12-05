@@ -32,6 +32,7 @@ export const popupCenter = (
       systemZoom}, top=${top}, left=${left}`
   );
 
-  // Puts focus on the newWindow
-  if (newWindow && window.focus) newWindow.focus();
+  if (newWindow) newWindow.focus();
+
+  return newWindow;
 };

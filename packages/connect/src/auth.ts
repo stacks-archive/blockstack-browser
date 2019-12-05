@@ -1,14 +1,20 @@
 import { UserSession, AppConfig } from 'blockstack';
 import { popupCenter } from './popup';
 
-const dataVaultURL = 'http://localhost:8080/actions.html';
+const dataVaultHost = 'http://localhost:8080';
+const dataVaultURL = new URL(dataVaultHost);
 
 interface AuthOptions {
   redirectTo: string;
   manifestPath: string;
+  finished?: (data: any) => void;
 }
 
-export const authenticate = ({ redirectTo, manifestPath }: AuthOptions) => {
+export const authenticate = ({
+  redirectTo,
+  manifestPath,
+  finished
+}: AuthOptions) => {
   const appConfig = new AppConfig(
     ['store_write', 'publish_data'],
     document.location.href
@@ -23,10 +29,46 @@ export const authenticate = ({ redirectTo, manifestPath }: AuthOptions) => {
   const height = 584;
   const width = 440;
 
-  popupCenter(
-    `${dataVaultURL}?authRequest=${authRequest}`,
+  const popup = popupCenter(
+    `${dataVaultURL.origin}/actions.html?authRequest=${authRequest}`,
     'Continue with Data Vault',
     width,
     height
   );
+
+  setupListener({ popup, authRequest, finished });
+};
+
+interface ListenerParams {
+  popup: Window | null;
+  authRequest: string;
+  finished?: (data: any) => void;
+}
+
+const setupListener = ({ popup, authRequest, finished }: ListenerParams) => {
+  const interval = setInterval(() => {
+    if (popup) {
+      popup.postMessage(
+        {
+          hello: 'world',
+          authRequest
+        },
+        dataVaultURL.origin
+      );
+    }
+  }, 100);
+
+  const receiveMessage = (event: MessageEvent) => {
+    if (event.data.authRequest === authRequest) {
+      console.log(event.data);
+      console.log('finished!');
+      if (finished) {
+        finished(event.data);
+      }
+      window.removeEventListener('message', receiveMessage);
+      clearInterval(interval);
+    }
+  };
+
+  window.addEventListener('message', receiveMessage, false);
 };
