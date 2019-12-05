@@ -5,6 +5,7 @@ const dataVaultHost = 'https://vault.hankstoever.com';
 const dataVaultURL = new URL(dataVaultHost);
 
 interface AuthOptions {
+  // The URL you want the user to be redirected to after authentication.
   redirectTo: string;
   manifestPath: string;
   finished?: (data: any) => void;

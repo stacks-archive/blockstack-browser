@@ -1,27 +1,14 @@
-# TSDX Bootstrap
+# `@blockstack/connect`
 
-This project was bootstrapped with [TSDX](https://github.com/jaredpalmer/tsdx).
+A library for building excellent user experiences with Blockstack.
 
-## Local Development
+## API Methods
 
-Below is a list of commands you will probably find useful.
+### `authenticate`
 
-### `npm start` or `yarn start`
+Call this method to redirect the user to authentication. It will first check for whether the user has the Blockstack extension installed. If not, it'll send them to the hosted version. The authentication flow opens a popup in the center of the screen.
 
-Runs the project in development/watch mode. Your project will be rebuilt upon changes. TSDX has a special logger for you convenience. Error messages are pretty printed and formatted for compatibility VS Code's Problems tab.
-
-<img src="https://user-images.githubusercontent.com/4060187/52168303-574d3a00-26f6-11e9-9f3b-71dbec9ebfcb.gif" width="600" />
-
-Your library will be rebuilt if you make edits.
-
-### `npm run build` or `yarn build`
-
-Bundles the package to the `dist` folder.
-The package is optimized and bundled with Rollup into multiple formats (CommonJS, UMD, and ES Module).
-
-<img src="https://user-images.githubusercontent.com/4060187/52168322-a98e5b00-26f6-11e9-8cf6-222d716b75ef.gif" width="600" />
-
-### `npm test` or `yarn test`
-
-Runs the test watcher (Jest) in an interactive mode.
-By default, runs tests related to files changed since the last commit.
+- `redirectTo`: The path in your app where users go after sign in.
+- `manifestPath`: The path in your app where your manifest.json file can be found
+- `finished`: An optional callback that can be invoked after authentication. This prevents having to do a whole page refresh in a new tab. One argument is passed to this callback, which is an object with `authResponse` included. If included, then the `redirectTo` path is ignored.
+- `vaultUrl`: The URL you'd like to use for authentication. Only necessary when developing the authentication app.
