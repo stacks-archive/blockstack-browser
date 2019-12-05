@@ -1,20 +1,23 @@
 import { UserSession, AppConfig } from 'blockstack';
 import { popupCenter } from './popup';
 
-const dataVaultHost = 'http://localhost:8080';
+const dataVaultHost = 'https://vault.hankstoever.com';
 const dataVaultURL = new URL(dataVaultHost);
 
 interface AuthOptions {
   redirectTo: string;
   manifestPath: string;
   finished?: (data: any) => void;
+  vaultUrl?: string;
 }
 
 export const authenticate = ({
   redirectTo,
   manifestPath,
-  finished
+  finished,
+  vaultUrl
 }: AuthOptions) => {
+  const dataVaultURL = new URL(vaultUrl || dataVaultHost);
   const appConfig = new AppConfig(
     ['store_write', 'publish_data'],
     document.location.href
