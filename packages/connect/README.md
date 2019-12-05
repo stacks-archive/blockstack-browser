@@ -2,9 +2,26 @@
 
 A library for building excellent user experiences with Blockstack.
 
+## Installation
+
+~~~bash
+yarn add @blockstack/connect
+~~~
+
 ## API Methods
 
 ### `authenticate`
+
+~~~javascript
+import { authenticate } from '@blockstack/connect'
+
+authenticate({
+  redirectTo,
+  manifestPath,
+  finished,
+  vaultUrl
+})
+~~~
 
 Call this method to redirect the user to authentication. It will first check for whether the user has the Blockstack extension installed. If not, it'll send them to the hosted version. The authentication flow opens a popup in the center of the screen.
 
