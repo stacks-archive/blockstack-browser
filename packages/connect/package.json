@@ -1,5 +1,5 @@
 {
-  "name": "@blockstack/auth",
+  "name": "@blockstack/connect",
   "version": "0.1.0",
   "license": "MIT",
   "main": "dist/index.js",
@@ -12,7 +12,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
-    "lint": "eslint --ext .ts ./src -f unix"
+    "lint": "eslint --ext .ts ./src -f unix",
+    "prepublishOnly": "yarn build"
   },
   "peerDependencies": {
     "blockstack": "^19"
@@ -35,5 +36,8 @@
     "tsdx": "^0.11.0",
     "tslib": "^1.10.0",
     "typescript": "^3.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
