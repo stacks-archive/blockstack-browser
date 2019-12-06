@@ -10,13 +10,15 @@ interface AuthOptions {
   manifestPath: string;
   finished?: (data: any) => void;
   vaultUrl?: string;
+  sendToSignIn: boolean;
 }
 
 export const authenticate = ({
   redirectTo,
   manifestPath,
   finished,
-  vaultUrl
+  vaultUrl,
+  sendToSignIn = false
 }: AuthOptions) => {
   const dataVaultURL = new URL(vaultUrl || dataVaultHost);
   const appConfig = new AppConfig(
@@ -27,7 +29,13 @@ export const authenticate = ({
   const authRequest = userSession.makeAuthRequest(
     undefined,
     `${document.location.origin}${redirectTo}`,
-    `${document.location.origin}${manifestPath}`
+    `${document.location.origin}${manifestPath}`,
+    undefined,
+    undefined,
+    undefined,
+    {
+      sendToSignIn
+    }
   );
 
   const height = 584;
