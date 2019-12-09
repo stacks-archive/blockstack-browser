@@ -332,10 +332,14 @@ class AuthPage extends React.Component {
                   `componentWillReceiveProps: appBucketUrl ${appBucketUrl}`
                 )
                 apps[appDomain] = appBucketUrl
+                const metaForDomain = {
+                  publicKey: getPublicKeyFromPrivate(appPrivateKey),
+                  storage: appBucketUrl
+                }
                 if (appsMeta.hasOwnProperty(appDomain)) {
-                  appsMeta[appDomain] = { ...appsMeta[appDomain], publicKey: getPublicKeyFromPrivate(appPrivateKey) }
+                  appsMeta[appDomain] = { ...appsMeta[appDomain], ...metaForDomain }
                 } else {
-                  appsMeta[appDomain] = { publicKey: getPublicKeyFromPrivate(appPrivateKey) }
+                  appsMeta[appDomain] = { ...metaForDomain }
                 }
                 logger.debug(
                   `componentWillReceiveProps: new apps array ${JSON.stringify(
