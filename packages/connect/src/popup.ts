@@ -1,36 +1,37 @@
-export const popupCenter = (
-  url: string,
-  title: string,
-  w: number,
-  h: number
-) => {
-  const dualScreenLeft =
-    window.screenLeft !== undefined ? window.screenLeft : window.screenX;
-  const dualScreenTop =
-    window.screenTop !== undefined ? window.screenTop : window.screenY;
+interface PopupOptions {
+  url: string;
+  title: string;
+  w: number;
+  h: number;
+}
 
-  const width = window.innerWidth
-    ? window.innerWidth
-    : document.documentElement.clientWidth
-    ? document.documentElement.clientWidth
-    : screen.width;
-  const height = window.innerHeight
-    ? window.innerHeight
-    : document.documentElement.clientHeight
-    ? document.documentElement.clientHeight
-    : screen.height;
+export const popupCenter = ({ url, title, w, h }: PopupOptions) => {
+  const dualScreenLeft = window.screenLeft || window.screenX;
+  const dualScreenTop = window.screenTop || window.screenY;
+
+  const width =
+    window.innerWidth ||
+    document.documentElement.clientWidth ||
+    window.screen.width;
+  const height =
+    window.innerHeight ||
+    document.documentElement.clientHeight ||
+    window.screen.height;
 
   const systemZoom = width / window.screen.availWidth;
   const left = (width - w) / 2 / systemZoom + dualScreenLeft;
-  console.log(height - h, systemZoom, dualScreenTop);
   const top = (height - h) / 2 / systemZoom + dualScreenTop;
-  const newWindow = window.open(
-    url,
-    title,
-    // 'scrollbars=no, width=' + w / systemZoom + ', height=' + h / systemZoom + ', top=' + top + ', left=' + left
-    `scrollbars=no, width=${w / systemZoom}, height=${h /
-      systemZoom}, top=${top}, left=${left}`
-  );
+  const options = {
+    scrollbars: 'no',
+    width: w / systemZoom,
+    height: h / systemZoom,
+    top: top,
+    left: left
+  };
+  const optionsString = Object.keys(options).map(key => {
+    return `${key}=${options[key as keyof typeof options]}`;
+  });
+  const newWindow = window.open(url, title, optionsString.join(','));
 
   if (newWindow) newWindow.focus();
 
