@@ -13,7 +13,8 @@
     "build": "tsdx build",
     "test": "tsdx test",
     "lint": "eslint --ext .ts ./src -f unix",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "blockstack": "^19"

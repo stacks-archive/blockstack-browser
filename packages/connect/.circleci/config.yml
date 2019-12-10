@@ -1,0 +1,30 @@
+version: 2 # use CircleCI 2.0
+jobs: # a collection of steps
+  build: # runs not using Workflows must have a `build` job as entry point
+    working_directory: ~/connect # directory where steps will run
+    docker: # run the steps with Docker
+      - image: circleci/node:10.16.3
+    steps: # a collection of executable commands
+      - checkout # special step to check out source code to working directory
+      - restore_cache: # special step to restore the dependency cache
+          # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+          key: yarn-packages-{{ checksum "package.json" }}
+      - run:
+          name: Install Dependencies
+          command: yarn install --frozen-lockfile
+      - save_cache: # special step to save the dependency cache
+          key: yarn-packages-{{ checksum "package.json" }}
+          paths:
+            - ./.cache/yarn
+      # - run: # run tests
+      #     name: test
+      #     command: yarn test
+      # - run: # run coverage report
+      #     name: code-coverage
+      #     command: './node_modules/.bin/nyc report --reporter=text-lcov'
+      - run: # run lint
+          name: lint
+          command: yarn lint
+      - run: # run lint
+          name: type check
+          command: yarn typecheck
