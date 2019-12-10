@@ -10,7 +10,11 @@ interface AuthOptions {
   manifestPath: string;
   finished?: (data: any) => void;
   vaultUrl?: string;
-  sendToSignIn: boolean;
+  sendToSignIn?: boolean;
+  appDetails?: {
+    name: string;
+    icon: string;
+  };
 }
 
 export const authenticate = ({
@@ -18,7 +22,8 @@ export const authenticate = ({
   manifestPath,
   finished,
   vaultUrl,
-  sendToSignIn = false
+  sendToSignIn = false,
+  appDetails
 }: AuthOptions) => {
   const dataVaultURL = new URL(vaultUrl || dataVaultHost);
   const appConfig = new AppConfig(
@@ -34,7 +39,8 @@ export const authenticate = ({
     undefined,
     undefined,
     {
-      sendToSignIn
+      sendToSignIn,
+      appDetails
     }
   );
 
