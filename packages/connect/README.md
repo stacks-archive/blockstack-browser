@@ -32,3 +32,4 @@ Call this method to redirect the user to authentication. It will first check for
 - `vaultUrl`: The URL you'd like to use for authentication. Only necessary when developing the authentication app.
 - `sendToSignIn`: defaults to `false`. Whether the user should go straight to the 'sign in' flow.
 - `appDetails`: an optional object which includes `appName: string` and `appIcon: string`. This will speed up the process of loading your app's information during onboarding.
+- `userSession`: Optionally, pass a `UserSession` instance to use for authentication. If it's not passed, `@blockstack/connect` will create one for you.
