@@ -15,8 +15,8 @@ import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 import { isSubdomain, getNameSuffix } from '../../../utils/name-utils'
 import { notify } from 'reapop'
 import log4js from 'log4js'
-import bitcoin from 'bitcoinjs-lib'
-import RIPEMD160 from 'ripemd160'
+import * as crypto from 'crypto'
+import RIPEMD160 from 'ripemd160-min'
 
 const logger = log4js.getLogger(__filename)
 
@@ -154,8 +154,8 @@ const renewDomain = (
 
   const zonefileHashPromise = new Promise((resolve, reject) => {
     if (!!zoneFile) {
-      const sha256 = bitcoin.crypto.sha256(zoneFile)
-      const h = (new RIPEMD160()).update(sha256).digest('hex')
+      const sha256 = crypto.createHash('sha256').update(zoneFile).digest()
+      const h = Buffer.from(new RIPEMD160().update(sha256).digest()).toString('hex')
       resolve(h)
     } else {
       reject('No zone file provided')
