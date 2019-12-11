@@ -39,11 +39,9 @@ export const systemProps = compose(
   colorStyle
 )
 
-const StyledBox = styled.div<BoxProps>`
+export const StyledBox = styled.div<BoxProps>`
   ${systemProps};
   ${extraConfig};
 `
 
-const Box = forwardRef((props: BoxProps, ref: Ref<HTMLDivElement>) => <StyledBox ref={ref} {...props} />)
-
-export { Box, StyledBox }
+export const Box = forwardRef((props: BoxProps, ref: Ref<HTMLDivElement>) => <StyledBox ref={ref} {...props} />)
