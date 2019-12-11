@@ -35,16 +35,10 @@ import { defaultAvatarImage } from '@components/ui/common/constants'
 const logger = log4js.getLogger(__filename)
 
 const accountTypes = [
-  'twitter',
-  'facebook',
-  'github',
-  'hackerNews',
   'bitcoin',
-  'ethereum',
-  'pgp',
-  'ssh',
-  'linkedIn',
-  'instagram'
+  'facebook',
+  'instagram',
+  'twitter'
 ]
 
 const hiddenAccountTypes = ['linkedIn', 'instagram']
@@ -235,7 +229,7 @@ export class DefaultProfilePage extends Component {
     })
   }
 
-  onPostVerificationButtonClick = (event, service, identifier) => {
+  onPostVerificationButtonClick = (event, service) => {
     const profileIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[profileIndex]
 
@@ -249,15 +243,8 @@ export class DefaultProfilePage extends Component {
       verificationUrl = `https://twitter.com/intent/tweet?text=${verificationText}`
     } else if (service === 'facebook') {
       verificationUrl = `https://www.facebook.com/dialog/feed?app_id=258121411364320&link=${url}`
-    } else if (service === 'github') {
-      verificationUrl = 'https://gist.github.com/'
     } else if (service === 'instagram') {
       // no op
-    } else if (service === 'linkedIn') {
-      verificationUrl = 'https://www.linkedin.com/feed/'
-      // verificationUrl = `https://www.linkedin.com/shareArticle?mini=true&url=http://www.blockstack.org&title=${verificationText}`
-    } else if (service === 'hackerNews') {
-      verificationUrl = `https://news.ycombinator.com/user?id=${identifier}`
     }
 
     if (verificationUrl.length > 0) {
@@ -279,9 +266,6 @@ export class DefaultProfilePage extends Component {
           hasAccount = true
           account.identifier = identifier
           account.proofUrl = proofUrl
-          if (this.shouldAutoGenerateProofUrl(service)) {
-            account.proofUrl = this.generateProofUrl(service, identifier)
-          }
           this.setState({ profile })
           this.saveProfile(profile)
           this.refreshProofs()
@@ -290,9 +274,6 @@ export class DefaultProfilePage extends Component {
 
       if (!hasAccount && identifier.length > 0) {
         const newAccount = this.createNewAccount(service, identifier, proofUrl)
-        if (this.shouldAutoGenerateProofUrl(service)) {
-          newAccount.proofUrl = this.generateProofUrl(service, identifier)
-        }
         profile.account.push(newAccount)
         this.setState({ profile })
         this.saveProfile(profile)
@@ -363,18 +344,6 @@ export class DefaultProfilePage extends Component {
     } else {
       logger.info('componentHasNewLocalIdentities: no identity found')
     }
-  }
-
-  shouldAutoGenerateProofUrl(service) {
-    return service === 'hackerNews'
-  }
-
-  generateProofUrl(service, identifier) {
-    if (service === 'hackerNews') {
-      return `https://news.ycombinator.com/user?id=${identifier}`
-    }
-
-    return ''
   }
 
   async saveProfile(newProfile) {
