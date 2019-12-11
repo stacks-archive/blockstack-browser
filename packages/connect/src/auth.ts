@@ -2,13 +2,17 @@ import { UserSession, AppConfig } from 'blockstack';
 import { popupCenter } from './popup';
 
 const dataVaultHost = 'https://vault.hankstoever.com';
-const dataVaultURL = new URL(dataVaultHost);
+
+interface FinishedData {
+  authResponse?: string;
+  userSession?: UserSession;
+}
 
 interface AuthOptions {
   // The URL you want the user to be redirected to after authentication.
   redirectTo: string;
   manifestPath: string;
-  finished?: (data: any) => void;
+  finished?: (data?: FinishedData) => void;
   vaultUrl?: string;
   sendToSignIn?: boolean;
   appDetails?: {
@@ -31,8 +35,9 @@ export const authenticate = ({
     document.location.href
   );
   const userSession = new UserSession({ appConfig });
+  const transitKey = userSession.generateAndStoreTransitKey();
   const authRequest = userSession.makeAuthRequest(
-    undefined,
+    transitKey,
     `${document.location.origin}${redirectTo}`,
     `${document.location.origin}${manifestPath}`,
     undefined,
@@ -54,21 +59,34 @@ export const authenticate = ({
     h: height
   });
 
-  setupListener({ popup, authRequest, finished });
+  setupListener({ popup, authRequest, finished, dataVaultURL, userSession });
 };
+
+interface FinishedEventData {
+  authResponse: string;
+  authRequest: string;
+  source: string;
+}
 
 interface ListenerParams {
   popup: Window | null;
   authRequest: string;
-  finished?: (data: any) => void;
+  finished?: (data?: FinishedData) => void;
+  dataVaultURL: URL;
+  userSession: UserSession;
 }
 
-const setupListener = ({ popup, authRequest, finished }: ListenerParams) => {
+const setupListener = ({
+  popup,
+  authRequest,
+  finished,
+  dataVaultURL,
+  userSession
+}: ListenerParams) => {
   const interval = setInterval(() => {
     if (popup) {
       popup.postMessage(
         {
-          hello: 'world',
           authRequest
         },
         dataVaultURL.origin
@@ -76,17 +94,29 @@ const setupListener = ({ popup, authRequest, finished }: ListenerParams) => {
     }
   }, 100);
 
-  const receiveMessage = (event: MessageEvent) => {
-    if (event.data.authRequest === authRequest) {
-      console.log(event.data);
-      console.log('finished!');
+  const receiveMessage = async (event: MessageEvent) => {
+    const data: FinishedEventData = event.data;
+    if (data.authRequest === authRequest) {
       if (finished) {
-        finished(event.data);
+        const { authResponse } = data;
+        if (userSession.isUserSignedIn()) {
+          userSession.signUserOut();
+        }
+        await userSession.handlePendingSignIn(authResponse);
+        finished({
+          authResponse,
+          userSession
+        });
       }
-      window.removeEventListener('message', receiveMessage);
+      window.removeEventListener('message', receiveMessageCallback);
       clearInterval(interval);
     }
   };
 
-  window.addEventListener('message', receiveMessage, false);
+  const receiveMessageCallback = (event: MessageEvent) => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    receiveMessage(event);
+  };
+
+  window.addEventListener('message', receiveMessageCallback, false);
 };
