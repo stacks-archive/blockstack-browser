@@ -15,6 +15,7 @@ interface AuthOptions {
   finished?: (data?: FinishedData) => void;
   vaultUrl?: string;
   sendToSignIn?: boolean;
+  userSession?: UserSession;
   appDetails?: {
     name: string;
     icon: string;
@@ -27,14 +28,18 @@ export const authenticate = ({
   finished,
   vaultUrl,
   sendToSignIn = false,
+  userSession,
   appDetails
 }: AuthOptions) => {
   const dataVaultURL = new URL(vaultUrl || dataVaultHost);
-  const appConfig = new AppConfig(
-    ['store_write', 'publish_data'],
-    document.location.href
-  );
-  const userSession = new UserSession({ appConfig });
+  if (!userSession) {
+    const appConfig = new AppConfig(
+      ['store_write', 'publish_data'],
+      document.location.href
+    );
+    // eslint-disable-next-line no-param-reassign
+    userSession = new UserSession({ appConfig });
+  }
   const transitKey = userSession.generateAndStoreTransitKey();
   const authRequest = userSession.makeAuthRequest(
     transitKey,
