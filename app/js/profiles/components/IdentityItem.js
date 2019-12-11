@@ -53,27 +53,7 @@ export class IdentityItem extends Component {
       if (!doesNotExpire) {
         if (this.props.currentBlockHeight) {
           if (this.props.expireBlock > this.props.currentBlockHeight) {
-            expireText = (
-              <>
-                Expires in about {expiresInDays} days
-                <a
-                  href="#"
-                  onClick={event => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    this.props.router.push(
-                      `/profiles/${this.props.index}/zone-file`
-                    )
-                  }}
-                >
-                  <i
-                    className="fa fa-fw fa-gear fa-sm text-secondary"
-                    data-tip
-                    data-for="settings"
-                  />
-                </a>
-              </>
-            )
+            expireText = (<>Expires in about {expiresInDays} days</>)
           } else {
             expireText = <>Expired about {expiredDays} days ago</>
           }
