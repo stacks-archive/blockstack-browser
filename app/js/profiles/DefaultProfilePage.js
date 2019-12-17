@@ -35,9 +35,6 @@ import { defaultAvatarImage } from '@components/ui/common/constants'
 const logger = log4js.getLogger(__filename)
 
 const accountTypes = [
-  'bitcoin',
-  'facebook',
-  'instagram',
   'twitter'
 ]
 
@@ -233,10 +230,8 @@ export class DefaultProfilePage extends Component {
     const profileIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[profileIndex]
 
-    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${identity.ownerAddress}`
-    const verificationText = `Verifying my Blockstack ID is secured with the address ${
-      identity.ownerAddress
-    } ${url}`
+    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}`
+    const verificationText = `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress} ${url}`
     let verificationUrl = ''
 
     if (service === 'twitter') {
