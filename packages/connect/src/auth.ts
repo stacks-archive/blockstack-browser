@@ -4,15 +4,15 @@ import { popupCenter } from './popup';
 const dataVaultHost = 'https://vault.hankstoever.com';
 
 interface FinishedData {
-  authResponse?: string;
-  userSession?: UserSession;
+  authResponse: string;
+  userSession: UserSession;
 }
 
 interface AuthOptions {
   // The URL you want the user to be redirected to after authentication.
   redirectTo: string;
   manifestPath: string;
-  finished?: (data?: FinishedData) => void;
+  finished?: (data: FinishedData) => void;
   vaultUrl?: string;
   sendToSignIn?: boolean;
   userSession?: UserSession;
@@ -76,7 +76,7 @@ interface FinishedEventData {
 interface ListenerParams {
   popup: Window | null;
   authRequest: string;
-  finished?: (data?: FinishedData) => void;
+  finished?: (data: FinishedData) => void;
   dataVaultURL: URL;
   userSession: UserSession;
 }
