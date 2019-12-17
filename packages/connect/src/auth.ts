@@ -54,14 +54,8 @@ export const authenticate = ({
     }
   );
 
-  const height = 584;
-  const width = 440;
 
   const popup = popupCenter({
-    url: `${dataVaultURL.origin}/actions.html?authRequest=${authRequest}`,
-    title: 'Continue with Data Vault',
-    w: width,
-    h: height
   });
 
   setupListener({ popup, authRequest, finished, dataVaultURL, userSession });

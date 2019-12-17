@@ -1,11 +1,20 @@
 interface PopupOptions {
   url: string;
-  title: string;
-  w: number;
-  h: number;
+  title?: string;
+  w?: number;
+  h?: number;
 }
 
-export const popupCenter = ({ url, title, w, h }: PopupOptions) => {
+const defaultHeight = 584;
+const defaultWidth = 440;
+const defaultTitle = 'Continue with Data Vault';
+
+export const popupCenter = ({
+  url,
+  title = defaultTitle,
+  w = defaultWidth,
+  h = defaultHeight
+}: PopupOptions) => {
   const dualScreenLeft = window.screenLeft || window.screenX;
   const dualScreenTop = window.screenTop || window.screenY;
 
