@@ -26,6 +26,7 @@
   },
   "prettier": "@blockstack/prettier-config",
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@blockstack/prettier-config": "^0.0.3",
     "@types/jest": "^24.0.23",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
