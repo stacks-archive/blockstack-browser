@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { Box } from '../box'
+import styled from 'styled-components';
+import { Box } from '../box';
 
 const VisuallyHidden = styled(Box)`
   border: 0px;
@@ -11,6 +11,6 @@ const VisuallyHidden = styled(Box)`
   overflow: hidden;
   white-space: nowrap;
   position: absolute;
-`
+`;
 
-export {VisuallyHidden}
+export { VisuallyHidden };

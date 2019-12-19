@@ -1,10 +1,9 @@
-
 const containers = {
   'screen-sm': '640px',
   'screen-md': '768px',
   'screen-lg': '1024px',
-  'screen-xl': '1280px'
-}
+  'screen-xl': '1280px',
+};
 
 export const baseSizes = {
   '0': '0',
@@ -25,8 +24,8 @@ export const baseSizes = {
   '40': '10rem',
   '48': '12rem',
   '56': '14rem',
-  '64': '16rem'
-}
+  '64': '16rem',
+};
 
 //
 // export const baseSizes = {
@@ -53,7 +52,7 @@ export const baseSizes = {
 
 const sizes = {
   ...baseSizes,
-  containers
-}
+  containers,
+};
 
-export default sizes
+export default sizes;

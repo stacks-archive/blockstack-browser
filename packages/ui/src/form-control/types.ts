@@ -1,24 +1,24 @@
-import * as React from 'react'
-import { BoxProps } from '../box'
+import * as React from 'react';
+import { BoxProps } from '../box';
 
 interface IFormControlBase {
   /**
    * Content of the form control.
    */
-  children?: React.ReactNode
+  children?: React.ReactNode;
   /**
    * If `true` set the form control to the invalid state.
    */
-  isInvalid?: boolean
+  isInvalid?: boolean;
   /**
    * If `true` set the form control to be required.
    */
-  isRequired?: boolean
+  isRequired?: boolean;
   /**
    * If `true` set the form control to the disabled state.
    */
-  isDisabled?: boolean
-  isReadOnly?: boolean
+  isDisabled?: boolean;
+  isReadOnly?: boolean;
 }
 
-export type FormControlProps = IFormControlBase & BoxProps
+export type FormControlProps = IFormControlBase & BoxProps;

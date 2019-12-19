@@ -1,14 +1,20 @@
-import React, { Ref, forwardRef } from 'react'
-import { PseudoBox } from '../pseudo-box'
-import { Box } from '../box'
-import { useButtonStyle } from './styles'
-import { Spinner } from '../spinner'
-import { ButtonProps } from './types'
-import { useHover } from 'use-events'
+import React, { Ref, forwardRef } from 'react';
+import { PseudoBox } from '../pseudo-box';
+import { Box } from '../box';
+import { useButtonStyle } from './styles';
+import { Spinner } from '../spinner';
+import { ButtonProps } from './types';
+import { useHover } from 'use-events';
 
-export * from './types'
+export * from './types';
 
-const HoverChange = ({ isHovered, isDisabled }: { isHovered: boolean; isDisabled: boolean }) => (
+const HoverChange = ({
+  isHovered,
+  isDisabled,
+}: {
+  isHovered: boolean;
+  isDisabled: boolean;
+}) => (
   <Box
     borderRadius="6px"
     position="absolute"
@@ -21,7 +27,7 @@ const HoverChange = ({ isHovered, isDisabled }: { isHovered: boolean; isDisabled
     zIndex={1}
     transition="all 250ms"
   />
-)
+);
 
 const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
   (
@@ -45,10 +51,10 @@ const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
       variant,
       mode,
       size,
-      customStyles
-    })
+      customStyles,
+    });
     // @ts-ignore
-    const [hovered, bind] = useHover()
+    const [hovered, bind] = useHover();
 
     return (
       // @ts-ignore
@@ -85,8 +91,8 @@ const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
         </Box>
         <HoverChange isDisabled={isDisabled} isHovered={hovered} />
       </PseudoBox>
-    )
+    );
   }
-)
+);
 
-export { Button }
+export { Button };

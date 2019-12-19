@@ -1,20 +1,20 @@
-import { BoxProps } from '../box'
+import { BoxProps } from '../box';
 
-export type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 export interface SpinnerPropsBase {
   /**
    * The size of the spinner
    */
-  size?: SpinnerSize
+  size?: SpinnerSize;
   /**
    * The color of the empty area in the spinner
    */
-  emptyColor?: string
+  emptyColor?: string;
   /**
    * The color of the spinner
    */
-  color?: string
+  color?: string;
   /**
    * The thickness of the spinner
    * @example
@@ -22,7 +22,7 @@ export interface SpinnerPropsBase {
    * <Spinner thickness="4px"/>
    * ```
    */
-  thickness?: string
+  thickness?: string;
   /**
    * The speed of the spinner.
    * @example
@@ -30,12 +30,12 @@ export interface SpinnerPropsBase {
    * <Spinner speed="0.2s"/>
    * ```
    */
-  speed?: string
+  speed?: string;
   /**
    * For accessibility, it's important to add a fallback loading text.
    * This text will be visible to screen readers.
    */
-  label?: string
+  label?: string;
 }
 
-export type SpinnerProps = BoxProps & SpinnerPropsBase
+export type SpinnerProps = BoxProps & SpinnerPropsBase;

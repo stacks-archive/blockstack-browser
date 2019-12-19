@@ -12,12 +12,12 @@ const defaultStyle = {
     borderLeftColor: 'ink.300',
     borderRightColor: 'ink.300',
     borderTopColor: 'ink.300',
-    borderColor: 'ink.300'
+    borderColor: 'ink.300',
   },
   _disabled: {
     bg: '#f9f9fc',
     cursor: 'not-allowed',
-    pointerEvents: 'none'
+    pointerEvents: 'none',
   },
   _focus: {
     borderBottomColor: 'blue.300',
@@ -25,16 +25,16 @@ const defaultStyle = {
     borderRightColor: 'blue.300',
     borderTopColor: 'blue.300',
     borderColor: 'blue.300',
-    boxShadow: '0 0 0 1px rgba(170, 179, 255, 0.75)'
+    boxShadow: '0 0 0 1px rgba(170, 179, 255, 0.75)',
   },
   _invalid: {
     borderBottomColor: 'red',
     borderLeftColor: 'red',
     borderRightColor: 'red',
     borderTopColor: 'red',
-    borderColor: 'red'
-  }
-}
+    borderColor: 'red',
+  },
+};
 
 const baseProps = {
   display: 'flex',
@@ -43,23 +43,23 @@ const baseProps = {
   transition: 'all 0.2s',
   outline: 'none',
   borderRadius: '6px',
-  p: '14px 16px'
-}
+  p: '14px 16px',
+};
 
 export const inputSizes = {
   default: {
     fontSize: 'body.small',
     height: 12, // 48px
-    lineHeight: 'base'
-  }
-}
+    lineHeight: 'base',
+  },
+};
 
 const useInputStyle = (props: any) => {
   return {
     width: props.isFullWidth ? '100%' : undefined,
     ...baseProps,
-    ...defaultStyle
-  }
-}
+    ...defaultStyle,
+  };
+};
 
-export default useInputStyle
+export default useInputStyle;

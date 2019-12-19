@@ -1,4 +1,4 @@
-import { css } from 'styled-components'
+import { css } from 'styled-components';
 
 const tailwindPreflight = css`
   /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
@@ -434,8 +434,9 @@ const tailwindPreflight = css`
  */
 
   html {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-      'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; /* 1 */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+      'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'; /* 1 */
     line-height: 1.5; /* 2 */
     -webkit-font-smoothing: antialiased;
     -webkit-text-size-adjust: 100%;
@@ -530,7 +531,8 @@ const tailwindPreflight = css`
   code,
   kbd,
   samp {
-    font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    font-family: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+      monospace;
   }
 
   /**
@@ -565,6 +567,6 @@ const tailwindPreflight = css`
     max-width: 100%;
     height: auto;
   }
-`
+`;
 
-export default tailwindPreflight
+export default tailwindPreflight;

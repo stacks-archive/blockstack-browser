@@ -1,90 +1,90 @@
-import { system, Config } from 'styled-system'
+import { system, Config } from 'styled-system';
 
 export const config: Config = {
   roundedTop: {
     properties: ['borderTopLeftRadius', 'borderTopRightRadius'],
-    scale: 'radii'
+    scale: 'radii',
   },
   roundedBottom: {
     properties: ['borderBottomLeftRadius', 'borderBottomRightRadius'],
-    scale: 'radii'
+    scale: 'radii',
   },
   roundedLeft: {
     properties: ['borderTopLeftRadius', 'borderBottomLeftRadius'],
-    scale: 'radii'
+    scale: 'radii',
   },
   roundedRight: {
     properties: ['borderTopRightRadius', 'borderBottomRightRadius'],
-    scale: 'radii'
+    scale: 'radii',
   },
   roundedTopRight: {
     property: 'borderTopRightRadius',
-    scale: 'radii'
+    scale: 'radii',
   },
   roundedTopLeft: {
     property: 'borderTopLeftRadius',
-    scale: 'radii'
+    scale: 'radii',
   },
   roundedBottomRight: {
     property: 'borderBottomRightRadius',
-    scale: 'radii'
+    scale: 'radii',
   },
   roundedBottomLeft: {
     property: 'borderBottomLeftRadius',
-    scale: 'radii'
+    scale: 'radii',
   },
   rounded: {
     property: 'borderRadius',
-    scale: 'radii'
+    scale: 'radii',
   },
   d: {
-    property: 'display'
+    property: 'display',
   },
   w: {
     property: 'width',
-    scale: 'sizes'
+    scale: 'sizes',
   },
   minW: {
     property: 'minWidth',
-    scale: 'sizes'
+    scale: 'sizes',
   },
   maxW: {
     property: 'maxWidth',
-    scale: 'sizes'
+    scale: 'sizes',
   },
   h: {
     property: 'height',
-    scale: 'sizes'
+    scale: 'sizes',
   },
   minH: {
     property: 'minHeight',
-    scale: 'sizes'
+    scale: 'sizes',
   },
   maxH: {
     property: 'maxHeight',
-    scale: 'sizes'
+    scale: 'sizes',
   },
   bgImg: {
-    property: 'backgroundImage'
+    property: 'backgroundImage',
   },
   bgSize: {
-    property: 'backgroundSize'
+    property: 'backgroundSize',
   },
   bgPos: {
-    property: 'backgroundPosition'
+    property: 'backgroundPosition',
   },
   bgRepeat: {
-    property: 'backgroundRepeat'
+    property: 'backgroundRepeat',
   },
   pos: {
-    property: 'position'
+    property: 'position',
   },
   flexDir: {
-    property: 'flexDirection'
+    property: 'flexDirection',
   },
   shadow: {
     property: 'boxShadow',
-    scale: 'shadows'
+    scale: 'shadows',
   },
   textDecoration: true,
   overflowX: true,
@@ -110,55 +110,55 @@ export const config: Config = {
   listStyleImage: true,
   fill: {
     property: 'fill',
-    scale: 'colors'
+    scale: 'colors',
   },
   stroke: {
     property: 'stroke',
-    scale: 'colors'
+    scale: 'colors',
   },
   objectFit: true,
   objectPosition: true,
   backgroundAttachment: true,
-  outline: true
-}
+  outline: true,
+};
 
-config.bgAttachment = config.backgroundAttachment
-config.textDecor = config.textDecoration
-config.listStylePos = config.listStylePosition
-config.listStyleImg = config.listStyleImage
+config.bgAttachment = config.backgroundAttachment;
+config.textDecor = config.textDecoration;
+config.listStylePos = config.listStylePosition;
+config.listStyleImg = config.listStyleImage;
 
-const extraConfig = system(config)
+const extraConfig = system(config);
 
-export default extraConfig
+export default extraConfig;
 
 // Create an issue on @styled-system/css to allow custom alias to be passed to the `css` function
 
 // Transform the custom alias to a format that styled-system CSS supports
 const transformAlias = (prop: string, propValue: any) => {
-  const configKeys = Object.keys(config)
-  const result = {}
+  const configKeys = Object.keys(config);
+  const result = {};
 
   if (configKeys.includes(prop)) {
-    const { properties, property } = config[prop] as any
+    const { properties, property } = config[prop] as any;
     if (properties) {
-      properties.forEach((_cssProp: string) => (result[_cssProp] = propValue))
+      properties.forEach((_cssProp: string) => (result[_cssProp] = propValue));
     }
     if (property) {
-      result[property] = propValue
+      result[property] = propValue;
     }
     if (config[prop] === true) {
-      result[prop] = propValue
+      result[prop] = propValue;
     }
   } else {
-    result[prop] = propValue
+    result[prop] = propValue;
   }
-  return result
-}
+  return result;
+};
 
 export const transformAliasProps = (props: any) => {
-  let result = {}
+  let result = {};
   for (const prop in props) {
-    result = { ...result, ...transformAlias(prop, props[prop]) }
+    result = { ...result, ...transformAlias(prop, props[prop]) };
   }
-  return result
-}
+  return result;
+};

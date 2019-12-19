@@ -1,10 +1,10 @@
-import { Theme as StyledSystemTheme } from 'styled-system'
+import { Theme as StyledSystemTheme } from 'styled-system';
 
 interface CustomTheme {
   opacity?: {
-    [key: string]: string
-  }
-  textStyles?: any
+    [key: string]: string;
+  };
+  textStyles?: any;
 }
 
-export type Theme = StyledSystemTheme & CustomTheme
+export type Theme = StyledSystemTheme & CustomTheme;

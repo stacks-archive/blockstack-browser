@@ -1,4 +1,9 @@
-import { ButtonModes, ButtonSizes, CustomStyles, IButtonStyles } from '../button'
+import {
+  ButtonModes,
+  ButtonSizes,
+  CustomStyles,
+  IButtonStyles,
+} from '../button';
 
 const baseProps = {
   display: 'inline-flex',
@@ -13,29 +18,29 @@ const baseProps = {
   lineHeight: 'shorter',
   outline: 'none',
   border: '1px solid',
-  borderColor: 'transparent'
-}
+  borderColor: 'transparent',
+};
 
 const sizes = {
   lg: {
     height: 12,
     minWidth: 9 * 14,
     fontSize: 'body.small',
-    px: 5
+    px: 5,
   },
   md: {
     height: 8,
     minWidth: 10,
     fontSize: 'body.small',
-    px: 4
+    px: 4,
   },
   sm: {
     height: 6,
     minWidth: 8,
     fontSize: 'caption',
-    px: 3
-  }
-}
+    px: 3,
+  },
+};
 
 const unstyledStyle = {
   userSelect: 'inherit',
@@ -47,8 +52,8 @@ const unstyledStyle = {
   lineHeight: 'inherit',
   m: 0,
   p: 0,
-  textAlign: 'inherit'
-}
+  textAlign: 'inherit',
+};
 
 const linkVariantProps = () => {
   return {
@@ -59,82 +64,88 @@ const linkVariantProps = () => {
     minWidth: 'unset',
     _hover: {
       color: 'blue.hover',
-      textDecoration: 'underline'
+      textDecoration: 'underline',
     },
     _active: {
-      textDecoration: 'underline'
+      textDecoration: 'underline',
     },
     _focus: {
-      textDecoration: 'underline'
+      textDecoration: 'underline',
     },
     _disabled: {
-      color: '#A7A7AD'
-    }
-  }
-}
+      color: '#A7A7AD',
+    },
+  };
+};
 
-const solidVariantProps = ({ mode, customStyles }: { mode: ButtonModes; customStyles: CustomStyles }) => {
+const solidVariantProps = ({
+  mode,
+  customStyles,
+}: {
+  mode: ButtonModes;
+  customStyles: CustomStyles;
+}) => {
   const style = {
     primary: {
       bg: 'blue',
       color: 'white',
       _hover: {
-        cursor: 'pointer'
+        cursor: 'pointer',
       },
       _focus: {
         borderColor: 'blue.300',
-        boxShadow: '0 0 0 3px rgba(170, 179, 255, 0.75)'
+        boxShadow: '0 0 0 3px rgba(170, 179, 255, 0.75)',
       },
       _disabled: {
         bg: 'blue.200',
-        cursor: 'not-allowed'
-      }
+        cursor: 'not-allowed',
+      },
     },
     secondary: {
       bg: 'blue.100',
       color: 'blue',
       _hover: {
-        cursor: 'pointer'
+        cursor: 'pointer',
       },
       _focus: {
         borderColor: 'blue.300',
-        boxShadow: '0 0 0 3px rgba(170, 179, 255, 0.75)'
+        boxShadow: '0 0 0 3px rgba(170, 179, 255, 0.75)',
       },
       _disabled: {
         bg: 'blue.100',
         pointerEvents: 'none',
         cursor: 'not-allowed',
-        color: 'blue.300'
-      }
-    }
-  }
+        color: 'blue.300',
+      },
+    },
+  };
 
   if (customStyles) {
-    return customStyles[mode]
+    return customStyles[mode];
   }
 
-  return style[mode]
-}
+  return style[mode];
+};
 
-const sizeProps = ({ size }: { size: ButtonSizes }) => sizes[size]
+const sizeProps = ({ size }: { size: ButtonSizes }) => sizes[size];
 
 const variantProps = (props: any) => {
   switch (props.variant) {
     case 'solid':
-      return solidVariantProps(props)
+      return solidVariantProps(props);
     case 'link':
-      return linkVariantProps()
+      return linkVariantProps();
     case 'unstyled':
-      return unstyledStyle
+      return unstyledStyle;
     default:
-      return {}
+      return {};
   }
-}
+};
 
 const useButtonStyle = (props: IButtonStyles): any => ({
   ...baseProps,
   ...variantProps(props),
-  ...sizeProps(props)
-})
+  ...sizeProps(props),
+});
 
-export { useButtonStyle }
+export { useButtonStyle };

@@ -1,2 +1,2 @@
-export { theme } from './theme'
-export * from './types'
+export { theme } from './theme';
+export * from './types';

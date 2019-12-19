@@ -1,7 +1,7 @@
-import { createGlobalStyle } from 'styled-components'
-import preflight from './preflight'
-import { theme } from '../theme'
-import typography from '../theme/typography'
+import { createGlobalStyle } from 'styled-components';
+import preflight from './preflight';
+import { theme } from '../theme';
+import typography from '../theme/typography';
 
 // Should type as theme here, however this type
 // has optional properties. Need to enforce type to ensure
@@ -11,17 +11,17 @@ const defaultConfig = (theme: any) => ({
     color: theme.colors.ink[900],
     bg: undefined as any,
     borderColor: '#E5E5EC', // TODO: replace this with theme color
-    placeholderColor: theme.colors.ink[400]
+    placeholderColor: theme.colors.ink[400],
   },
   dark: {
     color: 'white',
     bg: theme.colors.ink[900],
     borderColor: theme.colors.ink[600],
-    placeholderColor: theme.colors.ink[500]
-  }
-})
+    placeholderColor: theme.colors.ink[500],
+  },
+});
 
-const { color, bg, borderColor, placeholderColor } = defaultConfig(theme).light
+const { color, bg, borderColor, placeholderColor } = defaultConfig(theme).light;
 
 const CSSReset = createGlobalStyle`
   ${preflight};
@@ -58,6 +58,6 @@ const CSSReset = createGlobalStyle`
   textarea::placeholder {
     color: ${placeholderColor};
   }
-`
+`;
 
-export { CSSReset }
+export { CSSReset };

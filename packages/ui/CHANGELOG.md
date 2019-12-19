@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0-alpha.21
+
+- Format library with `@blockstack/prettier-config` and enforce with CircleCI
+
+## 1.0.0-alpha.20
+
+- Export more from the library, including types
+
 ## 1.0.0-alpha.19
 
 - Update input border colors.

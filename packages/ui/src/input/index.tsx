@@ -1,12 +1,12 @@
-import React from 'react'
-import { forwardRef } from 'react'
-import { useFormControl } from '../form-control'
-import { PseudoBox } from '../pseudo-box'
-import { InputProps } from './types'
+import React from 'react';
+import { forwardRef } from 'react';
+import { useFormControl } from '../form-control';
+import { PseudoBox } from '../pseudo-box';
+import { InputProps } from './types';
 
-import useInputStyle from './styles'
+import useInputStyle from './styles';
 
-export * from './types'
+export * from './types';
 
 const Input = forwardRef<any, InputProps>((props, ref) => {
   const {
@@ -19,10 +19,10 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
     // isInvalid,
     // isRequired,
     ...rest
-  } = props
+  } = props;
 
-  const inputStyleProps = useInputStyle(props)
-  const formControl = useFormControl(props)
+  const inputStyleProps = useInputStyle(props);
+  const formControl = useFormControl(props);
 
   return (
     <PseudoBox
@@ -41,13 +41,13 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
       {...(inputStyleProps as any)}
       {...rest}
     />
-  )
-})
+  );
+});
 
 Input.defaultProps = {
   as: 'input',
   isFullWidth: true,
-  focusBorderColor: 'blue.300'
-}
+  focusBorderColor: 'blue.300',
+};
 
-export { Input }
+export { Input };
