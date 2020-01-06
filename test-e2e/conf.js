@@ -21,13 +21,14 @@ const config = {
       key: '',
       localEnabled: false,
       localIdentifier: '',
-      hubUrl: ''
+      hubUrl: '',
+      appium_version: '1.14.0'
     },
     serveDirectory: '',
     loopbackHost: 'localhost'
   },
   // https://github.com/angular/protractor/blob/master/docs/timeouts.md
-  allScriptsTimeout: 200000,
+  allScriptsTimeout: 60000,
   getPageTimeout: 60000,
   SELENIUM_PROMISE_MANAGER: false,
 
@@ -41,8 +42,9 @@ const config = {
     require: ['features/**/*.ts'],
     format: 'pretty',
     compiler: 'ts:ts-node/register'
-  },
-  maxSessions: 1,
+},
+  shardTestFiles: true,
+  maxSessions: 2,
   commonCapabilities:{},
 };
 
@@ -146,10 +148,10 @@ const config = {
   }
 
   if (!config.params.browserStack.enabled) {
-    const browsers = [{
-      'browserName': 'chrome'
-    }, {
+    const browsers = [ {
       'browserName': 'firefox'
+    }, {
+        'browserName': 'chrome'
     }];
 
     if (process.platform === 'darwin') {
@@ -190,5 +192,12 @@ const config = {
 process.setMaxListeners(0);
 require('events').EventEmitter.defaultMaxListeners = 1000;
 
-module.exports = config;
 
+//
+// afterLaunch(exitcode) {
+//   return new Promise(function (resolve) {
+//     reporter.afterLaunch(resolve.bind(this, exitcode));
+//   });
+// },
+
+module.exports = config;
