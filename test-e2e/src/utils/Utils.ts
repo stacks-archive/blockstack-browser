@@ -72,7 +72,7 @@ export class Utils {
    * @param {!(By|Function)} locator The locator to use.
    * @returns {Promise<WebElement>}
    */
-  static async waitForElement(targetElement: ElementFinder, {timeout = 40000, poll = 200, driverWait = 10000} = {}): Promise<ElementFinder> {
+  static async waitForElement(targetElement: ElementFinder, {timeout = 40000, poll = 200, driverWait = 20000} = {}): Promise<ElementFinder> {
     return this.retry(async () => {
       await browser.wait(ExpectedConditions.presenceOf(targetElement), driverWait);
       await browser.wait(ExpectedConditions.visibilityOf(targetElement), driverWait);
@@ -146,13 +146,21 @@ export class Utils {
    */
   // tslint:disable-next-line: align
   static async executePromise(script, ...args) {
-    const result = await browser.executeAsyncScript(`
+    try{
+      return browser.executeAsyncScript(`
             var callback = arguments[arguments.length - 1];
             ${script}
             .then(result => callback([result]))
             `, ...args);
+    }
+    catch(e){
+      return  browser.executeAsyncScript(`
+            var callback = arguments[arguments.length - 1];
+            ${script}
+            .then(result => callback([result]))
+            `, ...args);
+    }
     // tslint:disable-next-line: curly
-    return result;
   }
 
   static async waitForElementToDisplayed(targetElement: ElementFinder): Promise<ElementFinder> {
