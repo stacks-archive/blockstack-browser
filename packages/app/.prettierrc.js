@@ -1,4 +1,1 @@
-module.exports = {
-  ...require('@blockstack/prettier-config'),
-  trailingComma: "es5",
-};
+module.exports = require('@blockstack/prettier-config');
