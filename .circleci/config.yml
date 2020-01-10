@@ -8,8 +8,6 @@ jobs:
       - checkout
       - run:
           name: Install Dependencies
-          command: npm install
-      # test
       - run: pwd
   test-e2e-login:
     docker:
