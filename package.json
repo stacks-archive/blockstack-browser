@@ -12,6 +12,8 @@
     "bootstrap": "^4.3.1",
     "browser-stdout": "^1.3.0",
     "cheerio": "^0.22.0",
+    "bigi": "^1.4.2",
+    "chai": "^4.2.0",
     "chroma-js": "^1.3.7",
     "clean-tag": "^2.0.3",
     "core-js": "^2.6.10",
@@ -62,6 +64,7 @@
     "styled-system": "^3.2.1",
     "system-components": "^3.0.3",
     "triplesec": "^3.0.25",
+    "webdriver-manager": "^12.1.7",
     "yup": "^0.24.1",
     "zone-file": "^0.2.2"
   },
@@ -131,7 +134,6 @@
     "redux-mock-store": "^1.5.3",
     "request": "^2.88.0",
     "require-hacker": "^3.0.1",
-    "selenium-webdriver": "^4.0.0-alpha.1",
     "serve": "^10.1.2",
     "serve-handler": "^5.0.8",
     "shx": "^0.3.2",
@@ -211,8 +213,8 @@
     "start": "serve build --single",
     "web": "npm run build",
     "prod-webapp": "npm run clean && cross-env NODE_ENV=production WEBAPP=true webpack",
-    "test-e2e": "cross-env-shell mocha --opts test-e2e/mocha.opts test-e2e --grep=$TEST_E2E_GREP",
-    "test-e2e:localBuild": "cross-env NODE_ENV=production WEBAPP=true DEBUG_LOGGING=true webpack && E2E_BROWSER_HOST='./build' npm run test-e2e",
-    "test-e2e:browserstack": "cross-env USE_BROWSERSTACK=true npm run test-e2e:localBuild"
+    "test-e2e": "cd ./test-e2e && npm run test-e2e",
+    "test-e2e:localBuild": "cross-env NODE_ENV=production WEBAPP=true DEBUG_LOGGING=true webpack && cross-env E2E_BROWSER_HOST='../build' npm run test-e2e",
+    "test-e2e:browserstack": "cross-env NODE_ENV=production WEBAPP=true DEBUG_LOGGING=true webpack && cd ./test-e2e && cross-env E2E_BROWSER_HOST='../build' USE_BROWSERSTACK=true npm run test-e2e:browserstack"
   }
 }
