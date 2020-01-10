@@ -10,7 +10,7 @@ jobs:
           name: Install Dependencies
           command: npm install
       # test
-      - run: npm run test
+      - run: pwd
   test-e2e-login:
     docker:
       - image: circleci/node:10.15.1-browsers
