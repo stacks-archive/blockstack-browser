@@ -1087,6 +1087,11 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
+"@schemastore/web-manifest@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@schemastore/web-manifest/-/web-manifest-0.0.4.tgz#b9c5c8374dc9b920bd0c62fb1c94778584b6e4ab"
+  integrity sha512-TprZUZByVT+ijXaUtTO3enUuS7O8Dx4BPTekQXwCme4x+0i2XFUkwx0u/ni2eBARXSgpCZoIdesI7AxpycRg+A==
+
 "@styled-system/background@^5.1.2":
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/@styled-system/background/-/background-5.1.2.tgz#75c63d06b497ab372b70186c0bf608d62847a2ba"

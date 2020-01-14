@@ -41,6 +41,11 @@ const ActionsApp: React.FC = () => {
       return;
     }
     const gaiaUrl = 'https://hub.blockstack.org';
+
+    if (!manifest.start_url) {
+      throw new Error('Must have `start_url` defined in manifest.json');
+    }
+
     const authResponse = await wallet.identities[0].makeAuthResponse({
       gaiaUrl,
       appDomain: manifest.start_url,
