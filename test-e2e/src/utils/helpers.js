@@ -13,7 +13,7 @@ module.exports = class Helpers {
     return (Math.floor(Math.random() * (max - min)) + min);
   }
 
-  static getRandomString(length = 20) {
+  static getRandomString(length = 20){
     let str = '';
     do { str += Math.random().toString(36).substr(2) } while (str.length < length)
     return str.substr(0, length);

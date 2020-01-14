@@ -1,23 +1,21 @@
 const path = require('path');
 const express = require('express');
 const blockstackDistPath = require.resolve('blockstack/dist/blockstack');
+const  fs = require('fs');
+const app = express();
 
-
-async function startServer(port = 5000) {
-
-  const app = express();
-
+async function startServer(port = 5790) {
   function allowCrossDomain(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next()
+    next();
   }
 
   function getManifest(req, res) {
     // manifest.json must be constructed using the http request host
-    // due to technical limitations with BrowserStack's infrastructure 
-    // which require re-routing `localhost` with another hostname. 
+    // due to technical limitations with BrowserStack's infrastructure
+    // which require re-routing `localhost` with another hostname.
     const host = req.hostname;
     const manifest = {
       "name": "Hello, Blockstack",
@@ -31,14 +29,11 @@ async function startServer(port = 5000) {
     };
     res.json(manifest)
   }
-
-
-
   app.use(allowCrossDomain);
   app.use('/', express.static(__dirname), express.static(path.dirname(blockstackDistPath)));
   app.use('/manifest.json', getManifest);
-  
-  const server = await new Promise((resolve, reject) => { 
+
+  const server = await new Promise((resolve, reject) => {
     const server = app.listen(port, error => {
       if (error) {
         console.error(`Error starting hello-blockstack server: ${error}`);
@@ -56,5 +51,6 @@ async function startServer(port = 5000) {
     url: `http://localhost:${port}`
   }
 }
+startServer();
 
-module.exports = startServer
+module.exports = startServer;
