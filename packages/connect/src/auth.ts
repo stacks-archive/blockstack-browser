@@ -1,7 +1,8 @@
 import { UserSession, AppConfig } from 'blockstack';
+import './types';
 import { popupCenter } from './popup';
 
-const dataVaultHost = 'https://vault.hankstoever.com';
+const defaultVaultURL = 'https://vault.hankstoever.com';
 
 interface FinishedData {
   authResponse: string;
@@ -22,7 +23,7 @@ interface AuthOptions {
   };
 }
 
-export const authenticate = ({
+export const authenticate = async ({
   redirectTo,
   manifestPath,
   finished,
@@ -31,7 +32,6 @@ export const authenticate = ({
   userSession,
   appDetails
 }: AuthOptions) => {
-  const dataVaultURL = new URL(vaultUrl || dataVaultHost);
   if (!userSession) {
     const appConfig = new AppConfig(
       ['store_write', 'publish_data'],
@@ -56,6 +56,9 @@ export const authenticate = ({
       appDetails
     }
   );
+
+  const extensionURL = await window.BlockstackProvider?.getURL();
+  const dataVaultURL = new URL(extensionURL || vaultUrl || defaultVaultURL);
 
   const popup = popupCenter({
     url: `${dataVaultURL.origin}/actions.html?authRequest=${authRequest}`
