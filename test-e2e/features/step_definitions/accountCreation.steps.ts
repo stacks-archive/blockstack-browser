@@ -22,27 +22,6 @@ module.exports = function myStepDefinitions() {
 
   this.Before(async () => {
     await browser.waitForAngularEnabled(false);
-    // if (browser.params.serveDirectory) {
-    //   console.log(`Starting static web server for a directory to host the Browser locally...`)
-    //   staticWebServer = createHttpServer((req, res) => {
-    //     return serveHandler(req, res, {
-    //       public: browser.params.serveDirectory,
-    //       rewrites: [{source: '**', destination: '/index.html'}]
-    //     });
-    //   });
-    //   await new Promise((resolve, reject) => {
-    //     staticWebServer.unref();
-    //     staticWebServer.listen(url.parse(browser.params.browserHostUrl).port, error => {
-    //       if (error) {
-    //         console.error(`Error starting web server: ${error}`);
-    //         reject(error);
-    //       } else {
-    //         console.log(`Web server started at http://localhost:${staticWebServer.address().port}`);
-    //         resolve();
-    //       }
-    //     });
-    //   });
-    // }
   });
 
   this.After(async () => {
