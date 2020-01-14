@@ -7,6 +7,6 @@ export const doAuthRequest = (authRequest: string): PermissionsActions => {
   return {
     type: AUTH_REQUEST,
     authRequest,
-    decodedAuthRequest: payload as DecodedAuthRequest,
+    decodedAuthRequest: (payload as unknown) as DecodedAuthRequest,
   };
 };

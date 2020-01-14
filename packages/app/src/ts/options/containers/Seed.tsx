@@ -1,21 +1,11 @@
 import React from 'react';
 import { validateMnemonic } from 'bip39';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Box,
-  Input,
-  Text,
-  Button,
-  FormControl,
-  FormLabel,
-} from '@blockstack/ui';
+import { Box, Input, Text, Button, FormControl, FormLabel } from '@blockstack/ui';
 import { IAppState } from '@store';
 import { doStoreSeed, doGenerateWallet } from '@store/wallet';
 import { Formik, FormikErrors } from 'formik';
-import {
-  selectCurrentWallet,
-  selectIsRestoringWallet,
-} from '@store/wallet/selectors';
+import { selectCurrentWallet, selectIsRestoringWallet } from '@store/wallet/selectors';
 
 interface FormValues {
   seed: string;
@@ -39,10 +29,7 @@ const Seed = () => {
       ) : (
         <>
           <Text display="block">Enter your 12-word seed to log in.</Text>
-          <Text>
-            To generate a new wallet, enter a password and leave your seed
-            blank.
-          </Text>
+          <Text>To generate a new wallet, enter a password and leave your seed blank.</Text>
         </>
       )}
       <Formik
@@ -53,7 +40,7 @@ const Seed = () => {
         onSubmit={values => {
           console.log(values);
           if (values.seed) {
-            dispatch(doStoreSeed(values.seed));
+            dispatch(doStoreSeed(values.seed, values.password));
           } else {
             dispatch(doGenerateWallet(values.password));
           }

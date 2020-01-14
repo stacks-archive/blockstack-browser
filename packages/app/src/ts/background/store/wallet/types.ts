@@ -24,7 +24,4 @@ export interface WalletState {
   currentWallet: Wallet | null;
 }
 
-export type WalletActions =
-  | StoreSeedAction
-  | IsRestoringWalletAction
-  | GenerateWalletAction;
+export type WalletActions = StoreSeedAction | IsRestoringWalletAction | GenerateWalletAction;

@@ -10,10 +10,7 @@ const initialState: IAppSettings = {
   theme: 'light',
 };
 
-const settings: Reducer<IAppSettings, SettingsActions> = (
-  state = initialState,
-  action
-) => {
+const settings: Reducer<IAppSettings, SettingsActions> = (state = initialState, action) => {
   switch (action.type) {
     case 'DARK_THEME':
       return { ...state, theme: 'dark' };

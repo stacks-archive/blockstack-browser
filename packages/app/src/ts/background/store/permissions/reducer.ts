@@ -6,10 +6,10 @@ const initialState: PermissionsState = {
   decodedAuthRequest: null,
 };
 
-export const permissionsReducer: Reducer<
-  PermissionsState,
-  PermissionsActions
-> = (state = initialState, action: PermissionsActions): PermissionsState => {
+export const permissionsReducer: Reducer<PermissionsState, PermissionsActions> = (
+  state = initialState,
+  action: PermissionsActions
+): PermissionsState => {
   switch (action.type) {
     case AUTH_REQUEST:
       return {

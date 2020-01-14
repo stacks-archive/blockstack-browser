@@ -1,13 +1,6 @@
 import { hot } from 'react-hot-loader/root';
 import * as React from 'react';
-import {
-  Flex,
-  ThemeProvider,
-  theme,
-  CSSReset,
-  Stack,
-  Box,
-} from '@blockstack/ui';
+import { Flex, ThemeProvider, theme, CSSReset, Stack, Box } from '@blockstack/ui';
 import Seed from './Seed';
 import DevActions from './DevActions';
 

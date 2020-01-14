@@ -4,6 +4,11 @@ export interface DecodedAuthRequest {
   manifest_uri: string;
   redirect_uri: string;
   scopes: string[];
+  sendToSignIn: boolean;
+  appDetails?: {
+    name: string;
+    icon: string;
+  };
 }
 
 interface AppManifestIcon {

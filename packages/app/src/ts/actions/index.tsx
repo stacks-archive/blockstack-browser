@@ -6,14 +6,15 @@ import { Store as ReduxStore } from 'redux';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, middlewareComponents } from '../background/store';
-import ActionsApp from './containers/ActionsApp';
+// import ActionsApp from './containers/ActionsApp';
+import OnboardingApp from './containers/Onboarding';
 import DevStore from '../dev/store';
 
 const buildApp = (store: ReduxStore | Store) => {
   ReactDOM.render(
     <Provider store={store as any}>
       <PersistGate loading={null} persistor={persistor}>
-        <ActionsApp />
+        <OnboardingApp />
       </PersistGate>
     </Provider>,
     document.getElementById('actions-root')

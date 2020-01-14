@@ -6,5 +6,4 @@ export const selectCurrentWallet = (state: IAppState) => {
 
 export const selectSeed = (state: IAppState) => state.wallet.seed;
 
-export const selectIsRestoringWallet = (state: IAppState) =>
-  state.wallet.isRestoringWallet;
+export const selectIsRestoringWallet = (state: IAppState) => state.wallet.isRestoringWallet;

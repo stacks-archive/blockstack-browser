@@ -1,11 +1,5 @@
 import { Reducer } from 'redux';
-import {
-  WalletActions,
-  WalletState,
-  RESTORE_WALLET,
-  IS_RESTORING_WALLET,
-  GENERATE_WALLET,
-} from './types';
+import { WalletActions, WalletState, RESTORE_WALLET, IS_RESTORING_WALLET, GENERATE_WALLET } from './types';
 
 const initialState: WalletState = {
   seed: null,
