@@ -2,7 +2,7 @@
   "name": "@blockstack/ui",
   "description": "Blockstack UI components built using React and styled-components with styled-system.",
   "version": "1.0.0-alpha.24",
-  "author": "Blockstack <engineering@blockstack.com> (https://blockstack.com/)",
+  "author": "Blockstack <engineering@blockstack.com> (https://blockstack.org/)",
   "bundlesize": [
     {
       "path": "./dist/**/*.js",
@@ -63,6 +63,9 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.4"
   },
+  "files": [
+    "dist"
+  ],
   "homepage": "https://waffle.blockstack.design/",
   "husky": {
     "hooks": {
@@ -82,6 +85,8 @@
       "git add"
     ]
   },
+  "main": "dist/index.js",
+  "module": "dist/ui.esm.js",
   "peerDependencies": {
     "react": "16.x",
     "react-dom": "16.x",
@@ -91,30 +96,21 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "dist/index.js",
-  "umd:main": "dist/ui.umd.production.js",
-  "module": "dist/ui.esm.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "repository": "https://github.com/blockstackpbc/blockstack-ui",
   "scripts": {
-    "type-check": "tsc --noEmit",
-    "type-check:watch": "npm run type-check -- --watch",
-    "start": "cross-env NODE_ENV=development tsdx watch",
     "build": "cross-env NODE_ENV=production tsdx build --format=cjs,esm,umd",
+    "bundlesize": "bundlesize",
     "format": "npm run prettier -- --write",
-    "lint:formatting": "npm run ",
     "lint": "eslint \"src/**/*.+(ts|tsx)\"",
     "lint:fix": "eslint \"src/**/*.+(ts|tsx)\" --fix",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run type-check && npm run build",
-    "prettier": "prettier \"**/*.+(js|jsx|ts|tsx|d.ts|md|mdx)\"",
-    "bundlesize": "bundlesize",
-    "validate": "npm run lint && npm run prettier -- --list-different && npm run tslint",
-    "version": "npm run build"
+    "start": "cross-env NODE_ENV=development tsdx watch",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch"
   },
   "sideEffects": false,
+  "types": "dist/index.d.ts",
+  "umd:main": "dist/ui.umd.production.js",
   "unpkg": "dist/ui.cjs.production.min.js"
 }
