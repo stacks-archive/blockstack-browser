@@ -72,11 +72,19 @@ const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
         {...styles}
         {...bind}
       >
-        <Box as="span" display="block" position="relative" zIndex={5}>
+        <Box
+          as="span"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          position="relative"
+          zIndex={5}
+        >
           {isLoading && (
             <Spinner
               position={loadingText ? 'relative' : 'absolute'}
-              mr={loadingText ? 2 : 0}
+              mr={loadingText ? 2 : 'unset'}
+              mx={!loadingText ? 'auto' : 'unset'}
               color="currentColor"
               size="sm"
             />
