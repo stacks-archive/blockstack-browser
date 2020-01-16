@@ -27,7 +27,6 @@ jobs:
             export NODE_OPTIONS=--max_old_space_size=4096
             export CUCUMBER_TAG='@login'
             export RANDOM_STRING='testing1'
-            export BROWSERSTACK_AUTH='tim1191:zPbKnRZwpaLywyydsG2i'
             npm run test-e2e:browserstack
       - run:
           name: Save test results
@@ -56,7 +55,6 @@ jobs:
             export NODE_OPTIONS=--max_old_space_size=4096
             export CUCUMBER_TAG='@accountCreation'
             export RANDOM_STRING='testing2'
-            export BROWSERSTACK_AUTH='tim1191:zPbKnRZwpaLywyydsG2i'
             npm run test-e2e:browserstack
       - run:
           name: Save test results
@@ -85,7 +83,6 @@ jobs:
             export NODE_OPTIONS=--max_old_space_size=4096
             export CUCUMBER_TAG='@magicRecovery'
             export RANDOM_STRING='testing3'
-            export BROWSERSTACK_AUTH='tim1191:zPbKnRZwpaLywyydsG2i'
             npm run test-e2e:browserstack
       - run:
           name: Save test results
@@ -114,7 +111,6 @@ jobs:
             export NODE_OPTIONS=--max_old_space_size=4096
             export CUCUMBER_TAG='@secretRecovery'
             export RANDOM_STRING='testing4'
-            export BROWSERSTACK_AUTH='tim1191:zPbKnRZwpaLywyydsG2i'
             npm run test-e2e:browserstack
       - run:
           name: Save test results
