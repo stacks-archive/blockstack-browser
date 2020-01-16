@@ -1,42 +1,23 @@
 import { decrypt } from './encryption-utils'
-import { HDNode } from 'bitcoinjs-lib'
-import crypto from 'crypto'
+import { bip32 } from 'bitcoinjs-lib'
+import * as bip39 from 'bip39'
+import { BlockstackWallet } from 'blockstack'
+import * as crypto from 'crypto'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
-
-function hashCode(string) {
-  let hash = 0
-  if (string.length === 0) return hash
-  for (let i = 0; i < string.length; i++) {
-    const character = string.charCodeAt(i)
-    hash = (hash << 5) - hash + character
-    hash = hash & hash
-  }
-  return hash & 0x7fffffff
-}
 
 const APPS_NODE_INDEX = 0
 const SIGNING_NODE_INDEX = 1
 const ENCRYPTION_NODE_INDEX = 2
 export const MAX_TRUST_LEVEL = 99
 
-export class AppNode {
-  constructor(hdNode, appDomain) {
-    this.hdNode = hdNode
-    this.appDomain = appDomain
-  }
-
-  getAppPrivateKey() {
-    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
-  }
-
-  getAddress() {
-    return this.hdNode.getAddress()
-  }
-}
-
 export class AppsNode {
+
+  /**
+   * @param {bip32.BIP32Interface} appsHdNode 
+   * @param {string} salt 
+   */
   constructor(appsHdNode, salt) {
     this.hdNode = appsHdNode
     this.salt = salt
@@ -44,16 +25,6 @@ export class AppsNode {
 
   getNode() {
     return this.hdNode
-  }
-
-  getAppNode(appDomain) {
-    const hash = crypto
-      .createHash('sha256')
-      .update(`${appDomain}${this.salt}`)
-      .digest('hex')
-    const appIndex = hashCode(hash)
-    const appNode = this.hdNode.deriveHardened(appIndex)
-    return new AppNode(appNode, appDomain)
   }
 
   toBase58() {
@@ -66,6 +37,10 @@ export class AppsNode {
 }
 
 class IdentityAddressOwnerNode {
+    /**
+   * @param {bip32.BIP32Interface} ownerHdNode 
+   * @param {string} salt 
+   */
   constructor(ownerHdNode, salt) {
     this.hdNode = ownerHdNode
     this.salt = salt
@@ -80,11 +55,11 @@ class IdentityAddressOwnerNode {
   }
 
   getIdentityKey() {
-    return this.hdNode.keyPair.d.toBuffer(32).toString('hex')
+    return this.hdNode.privateKey.toString('hex')
   }
 
   getIdentityKeyID() {
-    return this.hdNode.keyPair.getPublicKeyBuffer().toString('hex')
+    return this.hdNode.publicKey.toString('hex')
   }
 
   getAppsNode() {
@@ -92,7 +67,7 @@ class IdentityAddressOwnerNode {
   }
 
   getAddress() {
-    return this.hdNode.getAddress()
+    return BlockstackWallet.getAddressFromBIP32Node(this.hdNode)
   }
 
   getEncryptionNode() {
@@ -119,34 +94,27 @@ export function isPasswordValid(password) {
 export function isBackupPhraseValid(backupPhrase) {
   let isValid = true
   let error = null
-  return import(/* webpackChunkName: 'bip39' */ 'bip39').then(bip39 => {
-    if (!bip39.validateMnemonic(backupPhrase)) {
-      isValid = false
-      error = 'Backup phrase is not a valid set of words'
-    }
+  if (!bip39.validateMnemonic(backupPhrase)) {
+    isValid = false
+    error = 'Backup phrase is not a valid set of words'
+  }
 
-    return { isValid, error }
-  })
+  return { isValid, error }
 }
 
-export function decryptMasterKeychain(password, encryptedBackupPhrase) {
-  return new Promise((resolve, reject) => {
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
-    decrypt(dataBuffer, password).then(
-      async plaintextBuffer => {
-        const bip39 = await import(/* webpackChunkName: 'bip39' */ 'bip39')
-        const backupPhrase = plaintextBuffer.toString()
-        const seed = bip39.mnemonicToSeed(backupPhrase)
-        const masterKeychain = HDNode.fromSeedBuffer(seed)
-        logger.info('decryptMasterKeychain: decrypted!')
-        resolve(masterKeychain)
-      },
-      error => {
-        logger.error('decryptMasterKeychain: error', error)
-        reject(new Error('Incorrect password'))
-      }
-    )
-  })
+export async function decryptMasterKeychain(password, encryptedBackupPhrase) {
+  try {
+    const dataBuffer = Buffer.from(encryptedBackupPhrase, 'hex')
+    const plaintextBuffer = await decrypt(dataBuffer, password)
+    const backupPhrase = plaintextBuffer.toString()
+    const seed = await bip39.mnemonicToSeed(backupPhrase)
+    const masterKeychain = bip32.fromSeed(seed)
+    logger.info('decryptMasterKeychain: decrypted!')
+    return masterKeychain
+  } catch (error) {
+    logger.error('decryptMasterKeychain: error', error)
+    throw new Error('Incorrect password')
+  }
 }
 
 const EXTERNAL_ADDRESS = 'EXTERNAL_ADDRESS'
@@ -167,6 +135,9 @@ export function getBitcoinPublicKeychain(masterKeychain) {
   return getBitcoinPrivateKeychain(masterKeychain).neutered()
 }
 
+/**
+ * @returns {bip32.BIP32Interface}
+ */
 export function getBitcoinAddressNode(
   bitcoinKeychain,
   addressIndex = 0,
@@ -194,9 +165,7 @@ export function decryptBitcoinPrivateKey(password, encryptedBackupPhrase) {
           bitcoinPrivateKeychain,
           0
         )
-        const privateKey = bitcoinAddressHDNode.keyPair.d
-          .toBuffer(32)
-          .toString('hex')
+        const privateKey = bitcoinAddressHDNode.privateKey.toString('hex')
         resolve(privateKey)
       })
       .catch(error => {
@@ -217,6 +186,9 @@ export function getIdentityPublicKeychain(masterKeychain) {
   return getIdentityPrivateKeychain(masterKeychain).neutered()
 }
 
+/**
+ * @param {bip32.BIP32Interface} identityPrivateKeychain 
+ */
 export function getIdentityOwnerAddressNode(
   identityPrivateKeychain,
   identityIndex = 0
@@ -224,10 +196,7 @@ export function getIdentityOwnerAddressNode(
   if (identityPrivateKeychain.isNeutered()) {
     throw new Error('You need the private key to generate identity addresses')
   }
-
-  const publicKeyHex = identityPrivateKeychain.keyPair
-    .getPublicKeyBuffer()
-    .toString('hex')
+  const publicKeyHex = identityPrivateKeychain.publicKey.toString('hex')
   const salt = crypto
     .createHash('sha256')
     .update(publicKeyHex)
@@ -433,10 +402,8 @@ export function getBlockchainIdentities(masterKeychain, identitiesToGenerate) {
 
   const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered()
   const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58()
-
-  const firstBitcoinAddress = getBitcoinAddressNode(
-    bitcoinPublicKeychainNode
-  ).getAddress()
+  const firstBitcoinAddressNode = getBitcoinAddressNode(bitcoinPublicKeychainNode)
+  const firstBitcoinAddress = BlockstackWallet.getAddressFromBIP32Node(firstBitcoinAddressNode)
 
   const identityAddresses = []
   const identityKeypairs = []

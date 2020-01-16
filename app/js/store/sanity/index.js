@@ -1,2 +1,2 @@
-export SanityActions from './actions'
-export SanityReducer from './reducer'
+export { default as SanityActions } from './actions'
+export { default as SanityReducer } from './reducer'

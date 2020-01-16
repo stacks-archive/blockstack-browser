@@ -2,14 +2,14 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { AccountActions } from '../account/store/account'
-import { SettingsActions } from '../account/store/settings'
+import { AccountActions } from './store/account'
+import { SettingsActions } from './store/settings'
 
 import { BLOCKSTACK_INC } from './utils/index'
 
 import { connectToGaiaHub } from './utils/blockstack-inc'
 
-import { setCoreStorageConfig } from '@utils/api-utils'
+import { setCoreStorageConfig } from '../utils/api-utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)

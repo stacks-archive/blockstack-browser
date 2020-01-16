@@ -1,6 +1,6 @@
 import * as types from './types'
 import log4js from 'log4js'
-import { randomBytes, createHash } from 'crypto'
+import * as crypto from 'crypto'
 
 const API_URL = 'https://api.app.co'
 
@@ -55,8 +55,8 @@ const refreshAppList = (
 const generateInstanceIdentifier = () => {
   logger.info('Generating new instance identifier')
   return dispatch => {
-    const instanceIdentifier = createHash('sha256')
-      .update(randomBytes(256))
+    const instanceIdentifier = crypto.createHash('sha256')
+      .update(crypto.randomBytes(256))
       .digest('hex')
     dispatch(updateInstanceIdentifier(instanceIdentifier))
   }

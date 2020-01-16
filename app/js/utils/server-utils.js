@@ -1,14 +1,12 @@
-// @flow
 import { stringify } from 'query-string'
 import store from '../store'
 
 const API_URL = 'https://browser-api.blockstack.org'
 // const API_URL = 'http://localhost:2888'
 
-type Method = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 class ServerAPIClass {
-  request(path: string, method: Method, args: Object = {}): Promise<any> {
+  request(path, method, args = {}) {
     const headers = new Headers()
     let body
     let query = ''
@@ -51,19 +49,19 @@ class ServerAPIClass {
     })
   }
 
-  get(path: string, args: Object) {
+  get(path, args) {
     return this.request(path, 'GET', args)
   }
 
-  post(path: string, args: Object) {
+  post(path, args) {
     return this.request(path, 'POST', args)
   }
 
-  put(path: string, args: Object) {
+  put(path, args) {
     return this.request(path, 'PUT', args)
   }
 
-  delete(path: string, args: Object) {
+  delete(path, args) {
     return this.request(path, 'DELETE', args)
   }
 }
@@ -76,7 +74,7 @@ export const ServerAPI = new ServerAPIClass()
  * @param {string} event - Name of the event
  * @param {object} properties - Serializable list of properties about the event
  */
-export function trackEvent(event: string, properties: Object) {
+export function trackEvent(event, properties) {
   const state = store.getState()
 
   if (state.settings.api.hasDisabledEventTracking) {
@@ -103,7 +101,7 @@ const trackedEvents = {}
  * Track an event once per session. Subsequent track attempts do nothing.
  * @see {@link trackEvent} for more info
  */
-export function trackEventOnce(event: string, properties: Object) {
+export function trackEventOnce(event, properties) {
   if (!trackedEvents[event]) {
     trackEvent(event, properties)
   }

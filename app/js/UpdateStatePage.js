@@ -149,7 +149,7 @@ class UpdateStatePage extends Component {
 
     const { encryptedBackupPhrase } = this.props
 
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const dataBuffer = Buffer.from(encryptedBackupPhrase, 'hex')
     const password = this.state.password
 
     decrypt(dataBuffer, password)

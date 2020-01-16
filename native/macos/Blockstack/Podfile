@@ -8,7 +8,7 @@ target 'Blockstack' do
   # Pods for Blockstack
 
   pod 'Sparkle'
-  pod 'Swifter'
+  pod 'Swifter', '~> 1.4.0'
 
   target 'BlockstackTests' do
     inherit! :search_paths

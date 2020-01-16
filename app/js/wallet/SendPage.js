@@ -126,7 +126,7 @@ class SendPage extends Component {
     .then(masterKeychain => {
       const bitcoinPrivateKeychain = getBitcoinPrivateKeychain(masterKeychain)
       const bitcoinAddressHDNode = getBitcoinAddressNode(bitcoinPrivateKeychain, 0)
-      const paymentKey = bitcoinAddressHDNode.keyPair.d.toBuffer(32).toString('hex')
+      const paymentKey = bitcoinAddressHDNode.privateKey.toString('hex')
 
       this.props.buildBitcoinTransaction(
         regTestMode,

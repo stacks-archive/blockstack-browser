@@ -1,12 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-type Props = {
-  name: string,
-  index: number
-}
-
-const UsernameResultSubdomain = (props: Props) => {
+const UsernameResultSubdomain = (props) => {
   const {
     name,
     index

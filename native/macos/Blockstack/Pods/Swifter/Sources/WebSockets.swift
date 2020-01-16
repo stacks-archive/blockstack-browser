@@ -7,19 +7,28 @@
 
 import Foundation
 
+@available(*, deprecated, message: "Use websocket(text:binary:pong:connected:disconnected:) instead.")
+public func websocket(_ text: @escaping (WebSocketSession, String) -> Void,
+                      _ binary: @escaping (WebSocketSession, [UInt8]) -> Void,
+                      _ pong: @escaping (WebSocketSession, [UInt8]) -> Void) -> ((HttpRequest) -> HttpResponse) {
+    return websocket(text: text, binary: binary, pong: pong)
+}
 
 public func websocket(
-      _ text: ((WebSocketSession, String) -> Void)?,
-    _ binary: ((WebSocketSession, [UInt8]) -> Void)?) -> ((HttpRequest) -> HttpResponse) {
+    text: ((WebSocketSession, String) -> Void)? = nil,
+    binary: ((WebSocketSession, [UInt8]) -> Void)? = nil,
+    pong: ((WebSocketSession, [UInt8]) -> Void)? = nil,
+    connected: ((WebSocketSession) -> Void)? = nil,
+    disconnected: ((WebSocketSession) -> Void)? = nil) -> ((HttpRequest) -> HttpResponse) {
     return { r in
         guard r.hasTokenForHeader("upgrade", token: "websocket") else {
-            return .badRequest(.text("Invalid value of 'Upgrade' header: \(r.headers["upgrade"])"))
+            return .badRequest(.text("Invalid value of 'Upgrade' header: \(r.headers["upgrade"] ?? "unknown")"))
         }
         guard r.hasTokenForHeader("connection", token: "upgrade") else {
-            return .badRequest(.text("Invalid value of 'Connection' header: \(r.headers["connection"])"))
+            return .badRequest(.text("Invalid value of 'Connection' header: \(r.headers["connection"] ?? "unknown")"))
         }
         guard let secWebSocketKey = r.headers["sec-websocket-key"] else {
-            return .badRequest(.text("Invalid value of 'Sec-Websocket-Key' header: \(r.headers["sec-websocket-key"])"))
+            return .badRequest(.text("Invalid value of 'Sec-Websocket-Key' header: \(r.headers["sec-websocket-key"] ?? "unknown")"))
         }
         let protocolSessionClosure: ((Socket) -> Void) = { socket in
             let session = WebSocketSession(socket)
@@ -90,15 +99,24 @@ public func websocket(
                         session.writeFrame(ArraySlice(frame.payload), .pong)
                     }
                 case .pong:
+                    if let handlePong = pong {
+                       handlePong(session, frame.payload)
+                    }
                     break
                 }
             }
             
-            do {
+            func read() throws {
                 while true {
                     let frame = try session.readFrame()
                     try handleOperationCode(frame)
                 }
+            }
+            
+            connected?(session)
+            
+            do {
+                try read()
             } catch let error {
                 switch error {
                 case WebSocketSession.Control.close:
@@ -118,6 +136,8 @@ public func websocket(
                 // If an error occurs, send the close handshake.
                 session.writeCloseFrame()
             }
+            
+            disconnected?(session)
         }
         guard let secWebSocketAccept = String.toBase64((secWebSocketKey + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").sha1()) else {
             return HttpResponse.internalServerError
@@ -142,7 +162,7 @@ public class WebSocketSession: Hashable, Equatable  {
         public var payload = [UInt8]()
     }
 
-    let socket: Socket
+    public let socket: Socket
     
     public init(_ socket: Socket) {
         self.socket = socket
@@ -242,19 +262,19 @@ public class WebSocketSession: Hashable, Equatable  {
         }
         var len = UInt64(sec & 0x7F)
         if len == 0x7E {
-            let b0 = UInt64(try socket.read())
+            let b0 = UInt64(try socket.read()) << 8
             let b1 = UInt64(try socket.read())
-            len = UInt64(littleEndian: b0 << 8 | b1)
+            len = UInt64(littleEndian: b0 | b1)
         } else if len == 0x7F {
-            let b0 = UInt64(try socket.read())
-            let b1 = UInt64(try socket.read())
-            let b2 = UInt64(try socket.read())
-            let b3 = UInt64(try socket.read())
-            let b4 = UInt64(try socket.read())
-            let b5 = UInt64(try socket.read())
-            let b6 = UInt64(try socket.read())
+            let b0 = UInt64(try socket.read()) << 54
+            let b1 = UInt64(try socket.read()) << 48
+            let b2 = UInt64(try socket.read()) << 40
+            let b3 = UInt64(try socket.read()) << 32
+            let b4 = UInt64(try socket.read()) << 24
+            let b5 = UInt64(try socket.read()) << 16
+            let b6 = UInt64(try socket.read()) << 8
             let b7 = UInt64(try socket.read())
-            len = UInt64(littleEndian: b0 << 54 | b1 << 48 | b2 << 40 | b3 << 32 | b4 << 24 | b5 << 16 | b6 << 8 | b7)
+            len = UInt64(littleEndian: b0 | b1 | b2 | b3 | b4 | b5 | b6 | b7)
         }
         let mask = [try socket.read(), try socket.read(), try socket.read(), try socket.read()]
         for i in 0..<len {
@@ -262,11 +282,9 @@ public class WebSocketSession: Hashable, Equatable  {
         }
         return frm
     }
-    
-    public var hashValue: Int {
-        get {
-            return socket.hashValue
-        }
+        
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(socket)
     }
 }
 

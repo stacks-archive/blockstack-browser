@@ -12,25 +12,25 @@ import {
   selectEncryptedBackupPhrase,
   selectIdentityAddresses,
   selectIdentityKeypairs
-} from '@common/store/selectors/account'
+} from '../common/store/selectors/account'
 import {
   selectDefaultIdentity,
   selectLocalIdentities
-} from '@common/store/selectors/profiles'
-import { selectApi } from '@common/store/selectors/settings'
+} from '../common/store/selectors/profiles'
+import { selectApi } from '../common/store/selectors/settings'
 import {
   CURRENT_VERSION,
   migrateAPIEndpoints,
   updateState
 } from '../store/reducers'
-import { formatAppManifest } from '@common'
+import { formatAppManifest } from '../common'
 import { BLOCKSTACK_STATE_VERSION_KEY } from '../App'
 import {
   hasLegacyCoreStateVersion,
   migrateLegacyCoreEndpoints
-} from '@utils/api-utils'
+} from '../utils/api-utils'
 import { uploadProfile } from '../account/utils'
-import { decrypt, signProfileForUpload } from '@utils'
+import { decrypt, signProfileForUpload } from '../utils'
 const VIEWS = {
   INITIAL: 0,
   SUCCESS: 1,
@@ -137,28 +137,24 @@ class UpdatePage extends React.Component {
       console.error('No encryptedBackupPhrase, cannot continue')
       return null
     }
-    const dataBuffer = new Buffer(encryptedBackupPhrase, 'hex')
+    const dataBuffer = Buffer.from(encryptedBackupPhrase, 'hex')
     const { password } = this.state
 
-    const updateProfileUrls = localIdentities.map((identity, index) =>
-      new Promise(async (resolve, reject) => {
-        try {
-          const signedProfileTokenData = signProfileForUpload(
-            identity.profile,
-            this.props.identityKeypairs[index],
-            this.props.api
-          )
-          uploadProfile(
-            this.props.api,
-            identity,
-            this.props.identityKeypairs[index],
-            signedProfileTokenData
-          ).then(resolve).catch(reject)
-        } catch (error) {
-          reject(error)
-        }
-        
-      }))
+    const uploadFn = async (identity, index) => {
+      const signedProfileTokenData = signProfileForUpload(
+        identity.profile,
+        this.props.identityKeypairs[index],
+        this.props.api
+      )
+      await uploadProfile(
+        this.props.api,
+        identity,
+        this.props.identityKeypairs[index],
+        signedProfileTokenData
+      )
+    }
+
+    const updateProfileUrls = localIdentities.map((identity, index) => uploadFn(identity, index))
 
     return Promise.all(updateProfileUrls).then(() => {
       console.log('updated profile URLs')
@@ -230,7 +226,7 @@ class UpdatePage extends React.Component {
         loading: true,
         password
       },
-      () => setTimeout(() => this.decryptKeyAndResetState(), 250)
+      () => setTimeout(() => this.decryptKeyAndResetState(), 1)
     )
   }
 

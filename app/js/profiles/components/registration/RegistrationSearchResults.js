@@ -1,15 +1,9 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import UsernameResult from './UsernameResult'
 
-type Props = {
-  showSearchBox: Function,
-  searchingUsername?: string,
-  nameSuffixes: Array<string>,
-  availableNames: Object,
-  index: number
-}
 
-const RegistrationSearchResults = (props: Props) => {
+const RegistrationSearchResults = (props) => {
   const {
     searchingUsername,
     nameSuffixes,

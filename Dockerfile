@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12
 
 # Project directory
 WORKDIR /src/blockstack-browser
@@ -13,7 +13,7 @@ RUN npm install
 RUN npm run prod-webapp
 
 # Remove node modules
-FROM node:10
+FROM node:12
 WORKDIR /src/blockstack-browser
 
 COPY --from=0 /src/blockstack-browser/build /src/blockstack-browser/build

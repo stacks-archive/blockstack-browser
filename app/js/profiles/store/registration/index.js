@@ -1,2 +1,2 @@
-export RegistrationActions from './actions'
-export RegistrationReducer from './reducer'
+export { default as RegistrationActions } from './actions'
+export { default as RegistrationReducer } from './reducer'

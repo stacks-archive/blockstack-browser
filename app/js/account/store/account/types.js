@@ -1,4 +1,3 @@
-// @flow
 export const CREATE_ACCOUNT = 'account/CREATE_ACCOUNT'
 export const DELETE_ACCOUNT = 'account/DELETE_ACCOUNT'
 export const NEW_IDENTITY_ADDRESS = 'account/NEW_IDENTITY_ADDRESS'

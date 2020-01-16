@@ -1,5 +1,5 @@
 import * as types from './types'
-import { DEFAULT_PROFILE } from '@utils/profile-utils'
+import { DEFAULT_PROFILE } from '../../../utils/profile-utils'
 
 const initialState = {
   default: 0, // persist
@@ -66,6 +66,7 @@ function IdentityReducer(state = initialState, action) {
       const newLocalIdentities = [...state.localIdentities]
       newLocalIdentities[action.index].profile = action.profile
       newLocalIdentities[action.index].zoneFile = action.zoneFile
+      newLocalIdentities[action.index].expireBlock = action.expireBlock
       return Object.assign({}, state, {
         localIdentities: newLocalIdentities
       })

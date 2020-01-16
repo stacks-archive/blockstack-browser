@@ -54,7 +54,7 @@ describe('name-utils', () => {
 
       return isNameAvailable(lookupUrl, domainName)
         .then(() => assert(false))
-        .catch((error) => assert(error === 'Error'))
+        .catch((error) => assert.equal(error.message, '500'))
     })
   })
 
@@ -92,7 +92,7 @@ describe('name-utils', () => {
 
       return getNamePrices(priceUrl, domainName)
         .then(() => assert(false))
-        .catch((error) => assert(error === 'Not a Blockstack name'))
+        .catch((error) => assert.equal(error.message, 'Not a Blockstack name'))
     })
 
     it('should return a promise that resolves with the price of the name', () =>{
@@ -132,7 +132,7 @@ describe('name-utils', () => {
 
       return getNamePrices(priceUrl, domainName)
         .then(() => assert(false))
-        .catch((error) => assert(error === 'Error'))
+        .catch((error) => assert.equal(error.message, 'error parsing price result'))
     })
   })
 })

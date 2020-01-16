@@ -37,7 +37,7 @@ const output = {
 module.exports = {
   stats: analyze ? 'normal' : 'none',
   mode: isProd ? 'production' : 'development',
-  devtool: !isProd ? 'cheap-module-source-map' : 'source-map',
+  devtool: !isProd ? 'source-map' : 'source-map',
   entry: {
     main: [path.resolve(__dirname, 'app/js/index.js')]
   },
@@ -47,15 +47,16 @@ module.exports = {
   },
   output,
   devServer: {
-    open: true,
+    open: false,
+    writeToDisk: true,
     historyApiFallback: true,
     port: 3000,
     contentBase: path.resolve(__dirname, 'build'),
-    watchOptions: {
+    /* watchOptions: {
       aggregateTimeout: 300,
       poll: 1000,
       ignored: /node_modules/
-    },
+    }, */
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
@@ -130,15 +131,6 @@ module.exports = {
             options: { minimize: true }
           }
         ]
-      },
-      {
-        test: /\.worker\.js$/,
-        use: {
-          loader: 'workerize-loader',
-          options: {
-            name: isProd ? 'static/js/[name].[contenthash]' : '[name]'
-          }
-        }
       }
     ]
   },
@@ -146,9 +138,7 @@ module.exports = {
     extensions: ['.js', '.json', '.jsx'],
     alias: {
       '@components': path.resolve(__dirname, 'app/js/components'),
-      '@common': path.resolve(__dirname, 'app/js/common'),
       '@styled': path.resolve(__dirname, 'app/js/components/styled'),
-      '@utils': path.resolve(__dirname, 'app/js/utils'),
       '@blockstack/ui': path.resolve(__dirname, 'app/js/components/ui'),
       '@ui/components': path.resolve(
         __dirname,
@@ -220,6 +210,8 @@ module.exports = {
       'process.env.WEBAPP': JSON.stringify(isWebapp),
       'process.env.DEBUG_LOGGING': JSON.stringify(process.env.DEBUG_LOGGING)
     }),
+    // BIP39 includes ~240KB of non-english json that we don't currently use.
+    new webpack.IgnorePlugin(/\.\/wordlists\/(?!english\.json)/),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.NamedChunksPlugin(chunk => {
       // https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31

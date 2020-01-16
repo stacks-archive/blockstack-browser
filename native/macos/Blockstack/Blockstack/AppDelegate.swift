@@ -74,11 +74,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             killLauncher()
         }
 
-        statusItem = NSStatusBar.system().statusItem(withLength: NSSquareStatusItemLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
 
         if let button = statusItem.button {
-            button.image = NSImage(named: "MenuBar")
-            button.alternateImage = NSImage(named: "MenuBarDark")
+            button.image = NSImage(named: NSImage.Name(rawValue: "MenuBar"))
+            button.alternateImage = NSImage(named: NSImage.Name(rawValue: "MenuBarDark"))
             button.action = #selector(statusItemClick)
         }
 
@@ -133,7 +133,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         DistributedNotificationCenter.default().postNotificationName(Notification.Name("kill"), object: Bundle.main.bundleIdentifier, options: DistributedNotificationCenter.Options.deliverImmediately)
     }
     
-    func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
+    @objc func handleGetURLEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
 
         var senderAppUrl : URL? = nil
         let senderAppName = event.attributeDescriptor(forKeyword: keyAddressAttr)?.stringValue
@@ -142,7 +142,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // let senderAppName = event.attributeDescriptor(forKeyword: keyOriginalAddressAttr)?.stringValue
         
         if senderAppName != nil {
-            if let senderAppPath = NSWorkspace.shared().fullPath(forApplication: senderAppName!) {
+            if let senderAppPath = NSWorkspace.shared.fullPath(forApplication: senderAppName!) {
                 senderAppUrl = URL.init(fileURLWithPath: senderAppPath)
                 os_log("Blockstack Auth Request came from app: %{public}@", log: log, type: .info, senderAppPath)
             } else {
@@ -174,12 +174,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return isDevModeEnabled ? developmentModePortalPort : productionModePortalPort
     }
 
-    func openPortalClick(sender: AnyObject?) {
+    @objc func openPortalClick(sender: AnyObject?) {
         os_log("openPortalClick", log: log, type: .debug)
         openPortal(path: "/")
     }
 
-    func openProfilesClick(sender: AnyObject?) {
+    @objc func openProfilesClick(sender: AnyObject?) {
         os_log("openProfilesClick", log: log, type: .debug)
         openPortal(path: "/profiles")
     }
@@ -189,12 +189,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         openPortal(path: "/account/storage")
     }
 
-    func openWalletClick(sender: AnyObject?) {
+    @objc func openWalletClick(sender: AnyObject?) {
         os_log("openWalletClick", log: log, type: .debug)
         openPortal(path: "/wallet/receive")
     }
 
-    func openAccountClick(sender: AnyObject?) {
+    @objc func openAccountClick(sender: AnyObject?) {
         os_log("openAccountClick", log: log, type: .debug)
         openPortal(path: "/account")
     }
@@ -209,7 +209,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if (openWithApplication != nil) {
             do {
-                try NSWorkspace.shared().open(
+                try NSWorkspace.shared.open(
                     [portalURL!],
                     withApplicationAt: openWithApplication!,
                     options: .default,
@@ -217,22 +217,22 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 )
             } catch {
                 os_log("Error opening URL with app: %{public}@", log: log, type: .error, openWithApplication!.absoluteString)
-                NSWorkspace.shared().open(portalURL!)
+                NSWorkspace.shared.open(portalURL!)
             }
         } else {
-            NSWorkspace.shared().open(portalURL!)
+            NSWorkspace.shared.open(portalURL!)
         }
         
     }
 
-    func statusItemClick(sender: AnyObject?) {
+    @objc func statusItemClick(sender: AnyObject?) {
         os_log("statusItemClick", log: log, type: .debug)
 
         let menu = NSMenu()
 
         var showExpandedMenu = false
 
-        if(NSApp.currentEvent?.modifierFlags.contains(NSEventModifierFlags.option) ?? false) {
+        if(NSApp.currentEvent?.modifierFlags.contains(NSEvent.ModifierFlags.option) ?? false) {
             os_log("Option click", log: log, type: .debug)
             showExpandedMenu = true
         }
@@ -336,25 +336,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem.popUpMenu(menu)
     }
 
-    func copyAPIKeyClick(sender: AnyObject?) {
+    @objc func copyAPIKeyClick(sender: AnyObject?) {
         os_log("copyAPIKeyClick", log: log, type: .debug)
-        let pasteboard = NSPasteboard.general()
-        pasteboard.declareTypes([NSPasteboardTypeString], owner: nil)
+        let pasteboard = NSPasteboard.general
+        pasteboard.declareTypes([NSPasteboard.PasteboardType.string], owner: nil)
         if(isRegTestModeEnabled) {
             os_log("copying regtest core api password", log: log, type: .debug)
-            pasteboard.setString(regTestCoreAPIPassword, forType: NSPasteboardTypeString)
+            pasteboard.setString(regTestCoreAPIPassword, forType: NSPasteboard.PasteboardType.string)
         } else {
             os_log("copying production core api password", log: log, type: .debug)
-            pasteboard.setString(createOrRetrieveCoreWalletPassword(), forType: NSPasteboardTypeString)
+            pasteboard.setString(createOrRetrieveCoreWalletPassword(), forType: NSPasteboard.PasteboardType.string)
         }
     }
 
-    func devModeClick(sender: AnyObject?) {
+    @objc func devModeClick(sender: AnyObject?) {
         os_log("devModeClick", log: log, type: .debug)
         isDevModeEnabled = !isDevModeEnabled
     }
 
-    func betaModeClick(sender: AnyObject?) {
+    @objc func betaModeClick(sender: AnyObject?) {
         os_log("betaModeClick", log: log, type: .debug)
         if (!isBetaModeEnabled) {
             openPortal(path: "/go-to-beta")
@@ -362,7 +362,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         isBetaModeEnabled = !isBetaModeEnabled
     }
     
-    func regTestModeClick(sender: AnyObject?) {
+    @objc func regTestModeClick(sender: AnyObject?) {
         os_log("regTestModeClick", log: log, type: .debug)
         if(!isRegTestModeChanging) {
             isRegTestModeChanging = true
@@ -391,7 +391,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
 
-    func exitClick(sender: AnyObject?) {
+    @objc func exitClick(sender: AnyObject?) {
         os_log("exitClick", log: log, type: .debug)
 
         let alert = NSAlert()
@@ -400,20 +400,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         alert.addButton(withTitle: "Cancel")
         alert.messageText = "Quit Blockstack?"
         alert.informativeText = "You will not be able to access the decentralized internet if you quit Blockstack."
-        alert.alertStyle = NSAlertStyle.warning
+        alert.alertStyle = NSAlert.Style.warning
 
         let startOnLoginCheckbox = NSButton.init(checkboxWithTitle: "Start Blockstack when logging back in", target: self, action: #selector(handleStartOnLogInCheckboxClick))
-        startOnLoginCheckbox.state = isUserDefaultSetToStartOnLogin() ? NSOnState : NSOffState
+        startOnLoginCheckbox.state = isUserDefaultSetToStartOnLogin() ? NSControl.StateValue.on : NSControl.StateValue.on
         alert.accessoryView = startOnLoginCheckbox
         
-        if alert.runModal() == NSAlertFirstButtonReturn {
+        if alert.runModal() == NSApplication.ModalResponse.alertFirstButtonReturn {
             os_log("User decided to exit...", log: log, type: .info)
             shutdown(terminate: true)
         }
     }
     
-    func handleStartOnLogInCheckboxClick(sender: NSButton) {
-        if sender.state == NSOnState {
+    @objc func handleStartOnLogInCheckboxClick(sender: NSButton) {
+        if sender.state == NSControl.StateValue.on {
             os_log("startOnLogInCheckboxClick On", log: log, type: .debug)
             configureStartOnLogIn(enabled: true)
         }
@@ -423,7 +423,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    func checkForUpdatesClick(sender: AnyObject?) {
+    @objc func checkForUpdatesClick(sender: AnyObject?) {
         os_log("checkForUpdatesClick", log: log, type: .debug)
         sparkleUpdater?.checkForUpdates(nil)
     }
@@ -431,7 +431,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func shutdown(terminate: Bool = true) {
         if(!isShutdown) {
             isShutdown = true // prevent shutdown code from running twice
-            NSStatusBar.system().removeStatusItem(statusItem)
+            NSStatusBar.system.removeStatusItem(statusItem)
 
             portalProxyProcess.terminate()
             os_log("Blockstack Portal proxy terminated", log: log, type: .default)
@@ -440,7 +440,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             os_log("CORS proxy terminated", log: log, type: .default)
             
             os_log("Goodbye!", log: self.log, type: .default)
-            NSApplication.shared().terminate(self)
+            NSApplication.shared.terminate(self)
         }
     }
 
@@ -483,7 +483,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 let alert = NSAlert()
                 alert.messageText = "Blockstack Error: Portal server was terminated"
                 alert.informativeText = errorString
-                alert.alertStyle = NSAlertStyle.warning
+                alert.alertStyle = NSAlert.Style.warning
                 alert.runModal()
             })
         }
@@ -514,7 +514,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 let alert = NSAlert()
                 alert.messageText = "Blockstack Error: CORS proxy was terminated"
                 alert.informativeText = errorString
-                alert.alertStyle = NSAlertStyle.warning
+                alert.alertStyle = NSAlert.Style.warning
                 alert.runModal()
             })
         }
@@ -570,7 +570,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let keychains : CFTypeRef? = nil // use the default keychain
 
 
-        let status = SecKeychainFindGenericPassword(keychains, UInt32(strlen(serviceNameData)), serviceNameData, UInt32(strlen(accountNameData)), accountNameData, &passwordLength, &passwordData, &unmanagedItem)
+        let status = SecKeychainFindGenericPassword(keychains, UInt32(strlen(serviceNameData!)), serviceNameData, UInt32(strlen(accountNameData!)), accountNameData, &passwordLength, &passwordData, &unmanagedItem)
         if(status == errSecSuccess) {
             let password = String(NSString(bytes: UnsafeMutableRawPointer(passwordData)!, length: Int(passwordLength), encoding: String.Encoding.utf8.rawValue)!)
             SecKeychainItemFreeContent(nil, passwordData) // free memory
@@ -597,7 +597,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let keychains : SecKeychain? = nil // use the default keychain
 
         os_log("Storing new password in Keychain: service name: %{public} account name: %{public}@", keychainServiceName, keychainAccountName)
-        let status = SecKeychainAddGenericPassword(keychains, UInt32(strlen(serviceNameData)), serviceNameData, UInt32(strlen(accountNameData)), accountNameData, UInt32(strlen(passwordData)), passwordData!, &unmanagedItem)
+        let status = SecKeychainAddGenericPassword(keychains, UInt32(strlen(serviceNameData!)), serviceNameData, UInt32(strlen(accountNameData!)), accountNameData, UInt32(strlen(passwordData!)), passwordData!, &unmanagedItem)
 
         if(status != errSecSuccess) {
             os_log("Problem storing Blockstack Core wallet password to Keychain %{public}@", log: log, type: .error, (SecCopyErrorMessageString(status, nil) as! CVarArg))

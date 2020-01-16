@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { shallow } from 'enzyme'
 import { EditAccount } from '../../../app/js/profiles/components/EditAccount'
 
-import { getWebAccountTypes } from '@utils'
+import { getWebAccountTypes } from '../../../app/js/utils'
 
 describe('<EditAccount />', () => {
   let wrapper

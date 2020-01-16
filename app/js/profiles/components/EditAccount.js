@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import InputGroup from '@components/InputGroup'
 
-import { getWebAccountTypes } from '@utils'
+import { getWebAccountTypes } from '../../utils'
 
 function mapStateToProps(state) {
   return {

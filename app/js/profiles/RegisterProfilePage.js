@@ -9,8 +9,8 @@ import { AvailabilityActions } from './store/availability'
 import { IdentityActions } from './store/identity'
 import { RegistrationActions } from './store/registration'
 
-import { hasNameBeenPreordered, isABlockstackName } from '@utils/name-utils'
-import { findAddressIndex } from '@utils'
+import { hasNameBeenPreordered, isABlockstackName } from '../utils/name-utils'
+import { findAddressIndex } from '../utils'
 import roundTo from 'round-to'
 
 import log4js from 'log4js'

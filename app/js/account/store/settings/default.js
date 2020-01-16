@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import * as crypto from 'crypto'
 import { BLOCKSTACK_INC } from '../../../account/utils/index'
 
 export const REGTEST_CORE_API_PASSWORD = 'blockstack_integration_test_api_password'

@@ -24,6 +24,6 @@ describe('<SaveButton />', () => {
     wrapper.find('.btn-primary').simulate('click')
     expect(wrapper.find('.btn-success').length).to.equal(1)
     expect(wrapper.find('.btn-success').text()).to.contain('Saving...')
-    return expect(wrapper.state('profileJustSaved')).to.equal.true
+    return expect(wrapper.state('profileJustSaved')).true
   })
 })

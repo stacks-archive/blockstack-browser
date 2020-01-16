@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import InputGroup from '@components/InputGroup'
-import { openInNewTab } from '@utils'
+import { openInNewTab } from '../../utils'
 import ReactTooltip from 'react-tooltip'
 import Image from '@components/Image'
-import { isMobile } from '@utils'
+import { isMobile } from '../../utils'
 
-export const VERIFICATION_TWEET_LINK_URL_BASE = 'https://explorer.blockstack.org/address/'
+export const VERIFICATION_TWEET_LINK_URL_BASE = 'https://blockstack.org/try-blockstack'
 
 class CopyToClipBoardButton extends Component {
 
@@ -336,7 +336,7 @@ class VerificationInfo extends Component {
   }
 
   copy(e) {
-    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${this.props.ownerAddress}`
+    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}`
     let verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress} ${url}`
     if (this.props.service === 'facebook') {
       verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress}`
@@ -350,7 +350,7 @@ class VerificationInfo extends Component {
   }
 
   render() {
-    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${this.props.ownerAddress}`
+    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}`
     var verificationMessage = `Verifying my Blockstack ID is secured with the address ${this.props.ownerAddress} ${url}`
 
     if (this.props.service === 'facebook') {

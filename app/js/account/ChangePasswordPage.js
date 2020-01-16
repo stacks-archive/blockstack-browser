@@ -7,7 +7,7 @@ import Alert from '@components/Alert'
 import InputGroup from '@components/InputGroup'
 import SimpleButton from '@components/SimpleButton'
 import { AccountActions } from './store/account'
-import { decrypt, encrypt } from '@utils'
+import { decrypt, encrypt } from '../utils'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger(__filename)
@@ -71,7 +71,7 @@ class ChangePasswordPage extends Component {
     const currentPassword = this.state.currentPassword
     const newPassword = this.state.newPassword
     const newPassword2 = this.state.newPassword2
-    const dataBuffer = new Buffer(this.props.encryptedBackupPhrase, 'hex')
+    const dataBuffer = Buffer.from(this.props.encryptedBackupPhrase, 'hex')
 
     if (newPassword.length < 8) {
       this.updateAlert('danger', 'New password must be at least 8 characters')

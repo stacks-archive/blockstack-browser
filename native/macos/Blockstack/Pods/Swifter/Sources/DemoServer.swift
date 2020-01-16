@@ -36,7 +36,7 @@ public func demoServer(_ publicDir: String) -> HttpServer {
         scopes {
             html {
                 body {
-                    h3 { inner = "Address: \(r.address)" }
+                    h3 { inner = "Address: \(r.address ?? "unknown")" }
                     h3 { inner = "Url: \(r.path)" }
                     h3 { inner = "Method: \(r.method)" }
                     
@@ -95,7 +95,8 @@ public func demoServer(_ publicDir: String) -> HttpServer {
     server.POST["/upload"] = { r in
         var response = ""
         for multipart in r.parseMultiPartFormData() {
-            response += "Name: \(multipart.name) File name: \(multipart.fileName) Size: \(multipart.body.count)<br>"
+            guard let name = multipart.name, let fileName = multipart.fileName else { continue }
+            response += "Name: \(name) File name: \(fileName) Size: \(multipart.body.count)<br>"
         }
         return HttpResponse.ok(.html(response))
     }
@@ -153,8 +154,12 @@ public func demoServer(_ publicDir: String) -> HttpServer {
         return HttpResponse.raw(200, "OK", ["XXX-Custom-Header": "value"], { try $0.write([UInt8]("test".utf8)) })
     }
     
-    server["/redirect"] = { r in
+    server["/redirect/permanently"] = { r in
         return .movedPermanently("http://www.google.com")
+    }
+    
+    server["/redirect/temporarily"] = { r in
+        return .movedTemporarily("http://www.google.com")
     }
 
     server["/long"] = { r in
@@ -175,10 +180,16 @@ public func demoServer(_ publicDir: String) -> HttpServer {
         })
     }
     
-    server["/websocket-echo"] = websocket({ (session, text) in
+    server["/websocket-echo"] = websocket(text: { (session, text) in
         session.writeText(text)
-        }, { (session, binary) in
+    }, binary: { (session, binary) in
         session.writeBinary(binary)
+    }, pong: { (session, pong) in
+        // Got a pong frame
+    }, connected: { (session) in
+        // New client connected
+    }, disconnected: { (session) in
+        // Client disconnected
     })
     
     server.notFoundHandler = { r in
@@ -186,7 +197,7 @@ public func demoServer(_ publicDir: String) -> HttpServer {
     }
     
     server.middleware.append { r in
-        print("Middleware: \(r.address) -> \(r.method) -> \(r.path)")
+        print("Middleware: \(r.address ?? "unknown address") -> \(r.method) -> \(r.path)")
         return nil
     }
     
