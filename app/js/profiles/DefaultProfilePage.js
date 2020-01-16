@@ -26,7 +26,7 @@ import {
   isMobile,
   signProfileForUpload,
   calculateProfileCompleteness
-} from '@utils'
+} from '../utils'
 import { VERIFICATION_TWEET_LINK_URL_BASE } from './components/VerificationInfo'
 
 import log4js from 'log4js'
@@ -35,9 +35,6 @@ import { defaultAvatarImage } from '@components/ui/common/constants'
 const logger = log4js.getLogger(__filename)
 
 const accountTypes = [
-  'bitcoin',
-  'facebook',
-  'instagram',
   'twitter'
 ]
 
@@ -233,10 +230,8 @@ export class DefaultProfilePage extends Component {
     const profileIndex = this.props.defaultIdentity
     const identity = this.props.localIdentities[profileIndex]
 
-    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}${identity.ownerAddress}`
-    const verificationText = `Verifying my Blockstack ID is secured with the address ${
-      identity.ownerAddress
-    } ${url}`
+    const url = `${VERIFICATION_TWEET_LINK_URL_BASE}`
+    const verificationText = `Verifying my Blockstack ID is secured with the address ${identity.ownerAddress} ${url}`
     let verificationUrl = ''
 
     if (service === 'twitter') {
@@ -346,7 +341,7 @@ export class DefaultProfilePage extends Component {
     }
   }
 
-  saveProfile(newProfile) {
+  async saveProfile(newProfile) {
     logger.info('saveProfile')
 
     const identityIndex = this.props.defaultIdentity
@@ -366,7 +361,7 @@ export class DefaultProfilePage extends Component {
       identitySigner
     )
     if (this.props.storageConnected) {
-      uploadProfile(
+      await uploadProfile(
         this.props.api,
         identity,
         identitySigner,

@@ -25,6 +25,7 @@ public enum HttpResponseBody {
     case json(AnyObject)
     case html(String)
     case text(String)
+    case data(Data)
     case custom(Any, (Any) throws -> String)
     
     func content() -> (Int, ((HttpResponseBodyWriter) throws -> Void)?) {
@@ -56,6 +57,10 @@ public enum HttpResponseBody {
                 return (data.count, {
                     try $0.write(data)
                 })
+            case .data(let data):
+                return (data.count, {
+                    try $0.write(data)
+                })
             case .custom(let object, let closure):
                 let serialised = try closure(object)
                 let data = [UInt8](serialised.utf8)
@@ -77,6 +82,7 @@ public enum HttpResponse {
     case switchProtocols([String: String], (Socket) -> Void)
     case ok(HttpResponseBody), created, accepted
     case movedPermanently(String)
+    case movedTemporarily(String)
     case badRequest(HttpResponseBody?), unauthorized, forbidden, notFound
     case internalServerError
     case raw(Int, String, [String:String]?, ((HttpResponseBodyWriter) throws -> Void)? )
@@ -88,6 +94,7 @@ public enum HttpResponse {
         case .created                 : return 201
         case .accepted                : return 202
         case .movedPermanently        : return 301
+        case .movedTemporarily        : return 307
         case .badRequest(_)           : return 400
         case .unauthorized            : return 401
         case .forbidden               : return 403
@@ -104,6 +111,7 @@ public enum HttpResponse {
         case .created                  : return "Created"
         case .accepted                 : return "Accepted"
         case .movedPermanently         : return "Moved Permanently"
+        case .movedTemporarily         : return "Moved Temporarily"
         case .badRequest(_)            : return "Bad Request"
         case .unauthorized             : return "Unauthorized"
         case .forbidden                : return "Forbidden"
@@ -127,6 +135,8 @@ public enum HttpResponse {
             default:break
             }
         case .movedPermanently(let location):
+            headers["Location"] = location
+        case .movedTemporarily(let location):
             headers["Location"] = location
         case .raw(_, _, let rawHeaders, _):
             if let rawHeaders = rawHeaders {

@@ -1,8 +1,10 @@
 {
   "env": {
     "test": {
+      "sourceMaps": "both",
+      "retainLines": true,
+      "compact": false,
       "presets": [
-        "@babel/preset-flow",
         "@babel/preset-react",
         "@babel/preset-env"
       ],
@@ -17,9 +19,7 @@
             ],
             "alias": {
               "@components": "./app/js/components",
-              "@common": "./app/js/common",
               "@styled": "./app/js/components/styled",
-              "@utils": "./app/js/utils",
               "@blockstack/ui": "./app/js/components/ui",
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",
@@ -58,14 +58,21 @@
       ]
     },
     "development": {
+      "sourceMaps": "both",
+      "retainLines": true,
+      "compact": false,
       "presets": [
-        "@babel/preset-flow",
         "@babel/preset-react",
         [
           "@babel/preset-env",
           {
             "modules": false,
             "useBuiltIns": "usage",
+            "shippedProposals": true,
+            "corejs": { 
+              "version": 2,
+              "proposals": true 
+            },
             "targets": {
               "browsers": [
                 "Chrome >= 60",
@@ -94,9 +101,7 @@
             ],
             "alias": {
               "@components": "./app/js/components",
-              "@common": "./app/js/common",
               "@styled": "./app/js/components/styled",
-              "@utils": "./app/js/utils",
               "@blockstack/ui": "./app/js/components/ui",
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",
@@ -135,13 +140,17 @@
     },
     "production": {
       "presets": [
-        "@babel/preset-flow",
         "@babel/preset-react",
         [
           "@babel/preset-env",
           {
             "modules": false,
             "useBuiltIns": "usage",
+            "shippedProposals": true,
+            "corejs": { 
+              "version": 2,
+              "proposals": true 
+            },
             "targets": {
               "browsers": [
                 "Chrome >= 60",
@@ -169,9 +178,7 @@
             ],
             "alias": {
               "@components": "./app/js/components",
-              "@common": "./app/js/common",
               "@styled": "./app/js/components/styled",
-              "@utils": "./app/js/utils",
               "@blockstack/ui": "./app/js/components/ui",
               "@ui/components": "./app/js/components/ui/components",
               "@ui/containers": "./app/js/components/ui/containers",

@@ -9,6 +9,7 @@ import {
   signProfileForUpload
 } from '../../../../../app/js/utils/profile-utils'
 import { ECPair } from 'bitcoinjs-lib'
+import { ecPairToAddress } from 'blockstack'
 import {
   CREATE_NEW_REQUEST,
   CREATE_NEW_SUCCESS,
@@ -197,23 +198,23 @@ describe('Identity Store: Async Actions', () => {
       ]
 
       const address = keypairs[0].address
+      const signedProfile1 = signProfileForUpload(DEFAULT_PROFILE, keypairs[0])
+      const signedProfile2 = signProfileForUpload(
+        {
+          '@context': 'http://schema.org',
+          '@type': 'Person',
+          name: 'Second'
+        },
+        keypairs[0]
+      )
+
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/profile.json`)
-        .reply(200, signProfileForUpload(DEFAULT_PROFILE, keypairs[0]))
+        .reply(200, signedProfile1)
 
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/0/profile.json`)
-        .reply(
-          200,
-          signProfileForUpload(
-            {
-              '@context': 'http://schema.org',
-              '@type': 'Person',
-              name: 'Second'
-            },
-            keypairs[0]
-          )
-        )
+        .reply(200, signedProfile2)
 
       nock('https://core.blockstack.org')
         .get(`/v1/addresses/bitcoin/${address}`)
@@ -237,7 +238,8 @@ describe('Identity Store: Async Actions', () => {
               index: 0,
               profile: DEFAULT_PROFILE,
               type: UPDATE_PROFILE,
-              zoneFile: ''
+              zoneFile: '',
+              expireBlock: undefined
             },
             {
               index: 0,
@@ -267,9 +269,9 @@ describe('Identity Store: Async Actions', () => {
       // bad pair:
       const ecPair = ECPair.makeRandom()
       const badpair = {
-        address: ecPair.getAddress(),
-        key: ecPair.d.toBuffer(32).toString('hex'),
-        keyID: ecPair.getPublicKeyBuffer().toString('hex')
+        address: ecPairToAddress(ecPair),
+        key: ecPair.privateKey.toString('hex'),
+        keyID: ecPair.publicKey.toString('hex')
       }
 
       const address = keypair.address
@@ -278,13 +280,16 @@ describe('Identity Store: Async Actions', () => {
         '@type': 'Person',
         name: 'Second'
       }
+      const signedProfile1 = signProfileForUpload(DEFAULT_PROFILE, badpair)
+      const singedProfile2 = signProfileForUpload(secondProfile, keypair)
+
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/profile.json`)
-        .reply(200, signProfileForUpload(DEFAULT_PROFILE, badpair))
+        .reply(200, signedProfile1)
 
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/0/profile.json`)
-        .reply(200, signProfileForUpload(secondProfile, keypair))
+        .reply(200, singedProfile2)
 
       nock('https://core.blockstack.org')
         .get(`/v1/addresses/bitcoin/${address}`)
@@ -308,7 +313,8 @@ describe('Identity Store: Async Actions', () => {
               index: 0,
               profile: secondProfile,
               type: UPDATE_PROFILE,
-              zoneFile: ''
+              zoneFile: '',
+              expireBlock: undefined
             },
             {
               index: 0,
@@ -338,9 +344,9 @@ describe('Identity Store: Async Actions', () => {
       // bad pair:
       const ecPair = ECPair.makeRandom()
       const badpair = {
-        address: ecPair.getAddress(),
-        key: ecPair.d.toBuffer(32).toString('hex'),
-        keyID: ecPair.getPublicKeyBuffer().toString('hex')
+        address: ecPairToAddress(ecPair),
+        key: ecPair.privateKey.toString('hex'),
+        keyID: ecPair.publicKey.toString('hex')
       }
 
       const dummyAddress = '18AJ31xprVk8u2KqT18NvbmUgkYo9MPYD6'
@@ -351,6 +357,8 @@ describe('Identity Store: Async Actions', () => {
         '@type': 'Person',
         name: 'Second'
       }
+
+      const signedProfile = signProfileForUpload(secondProfile, keypair)
 
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${address}/profile.json`)
@@ -364,7 +372,7 @@ describe('Identity Store: Async Actions', () => {
       // the _tested_ index is 3, which should map to /2/
       nock(`https://gaia.blockstack.org`)
         .get(`/hub/${dummyAddress}/2/profile.json`)
-        .reply(200, signProfileForUpload(secondProfile, keypair))
+        .reply(200, signedProfile)
 
       nock('https://core.blockstack.org')
         .get(`/v1/addresses/bitcoin/${address}`)
@@ -393,7 +401,8 @@ describe('Identity Store: Async Actions', () => {
               index: 3,
               profile: secondProfile,
               type: UPDATE_PROFILE,
-              zoneFile: ''
+              zoneFile: '',
+              expireBlock: undefined
             },
             {
               index: 3,

@@ -7,7 +7,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import InputGroup from '@components/InputGroup'
 import VerificationInfo from '../components/VerificationInfo'
 
-import { getWebAccountTypes } from '@utils'
+import { getWebAccountTypes } from '../../utils'
 
 function mapStateToProps(state) {
   return {

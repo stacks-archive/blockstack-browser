@@ -1,4 +1,4 @@
-import { isWebAppBuild } from '@utils/window-utils'
+import { isWebAppBuild } from '../../app/js/utils/window-utils'
 import { expect } from 'chai'
 
 describe('window-utils', () => {

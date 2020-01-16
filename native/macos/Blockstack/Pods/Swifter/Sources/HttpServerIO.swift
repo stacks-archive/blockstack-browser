@@ -75,25 +75,25 @@ public class HttpServerIO {
         self.state = .starting
         let address = forceIPv4 ? listenAddressIPv4 : listenAddressIPv6
         self.socket = try Socket.tcpSocketForListen(port, forceIPv4, SOMAXCONN, address)
+        self.state = .running
         DispatchQueue.global(qos: priority).async { [weak self] in
-            guard let `self` = self else { return }
-            guard self.operating else { return }
-            while let socket = try? self.socket.acceptClientSocket() {
+            guard let strongSelf = self else { return }
+            guard strongSelf.operating else { return }
+            while let socket = try? strongSelf.socket.acceptClientSocket() {
                 DispatchQueue.global(qos: priority).async { [weak self] in
-                    guard let `self` = self else { return }
-                    guard self.operating else { return }
-                    self.queue.async {
-                        self.sockets.insert(socket)
+                    guard let strongSelf = self else { return }
+                    guard strongSelf.operating else { return }
+                    strongSelf.queue.async {
+                        strongSelf.sockets.insert(socket)
                     }
-                    self.handleConnection(socket)
-                    self.queue.async {
-                        self.sockets.remove(socket)
+                    strongSelf.handleConnection(socket)
+                    strongSelf.queue.async {
+                        strongSelf.sockets.remove(socket)
                     }
                 }
             }
-            self.stop()
+            strongSelf.stop()
         }
-        self.state = .running
     }
 
     public func stop() {
@@ -142,7 +142,7 @@ public class HttpServerIO {
     }
 
     private struct InnerWriteContext: HttpResponseBodyWriter {
-        
+
         let socket: Socket
 
         func write(_ file: String.File) throws {
@@ -169,23 +169,30 @@ public class HttpServerIO {
     private func respond(_ socket: Socket, response: HttpResponse, keepAlive: Bool) throws -> Bool {
         guard self.operating else { return false }
 
-        try socket.writeUTF8("HTTP/1.1 \(response.statusCode()) \(response.reasonPhrase())\r\n")
+        // Some web-socket clients (like Jetfire) expects to have header section in a single packet.
+        // We can't promise that but make sure we invoke "write" only once for response header section.
+        
+        var responseHeader = String()
+
+        responseHeader.append("HTTP/1.1 \(response.statusCode()) \(response.reasonPhrase())\r\n")
 
         let content = response.content()
 
         if content.length >= 0 {
-            try socket.writeUTF8("Content-Length: \(content.length)\r\n")
+            responseHeader.append("Content-Length: \(content.length)\r\n")
         }
 
         if keepAlive && content.length != -1 {
-            try socket.writeUTF8("Connection: keep-alive\r\n")
+            responseHeader.append("Connection: keep-alive\r\n")
         }
 
         for (name, value) in response.headers() {
-            try socket.writeUTF8("\(name): \(value)\r\n")
+            responseHeader.append("\(name): \(value)\r\n")
         }
 
-        try socket.writeUTF8("\r\n")
+        responseHeader.append("\r\n")
+
+        try socket.writeUTF8(responseHeader)
 
         if let writeClosure = content.write {
             let context = InnerWriteContext(socket: socket)

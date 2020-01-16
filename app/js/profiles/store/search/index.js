@@ -1,2 +1,2 @@
-export SearchActions from './actions'
-export SearchReducer from './reducer'
+export { default as SearchActions } from './actions'
+export { default as SearchReducer } from './reducer'

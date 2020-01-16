@@ -84,7 +84,7 @@ describe('Identity Store: IdentityReducer', () => {
         profile: {},
         registered: false,
         ownerAddress: '123',
-        zoneFile: null
+        zoneFile: null,
       }],
       nameTransfers: [],
       publicIdentities: {},
@@ -104,7 +104,8 @@ describe('Identity Store: IdentityReducer', () => {
         },
         registered: false,
         ownerAddress: '123',
-        zoneFile: 'test'
+        zoneFile: 'test',
+        expireBlock: undefined
       }],
       nameTransfers: [],
       publicIdentities: {},

@@ -1,4 +1,3 @@
-// @flow
 import assert from 'assert'
 import { validateScopes, appRequestSupportsDirectHub } from '../../app/js/auth/utils'
 
@@ -16,7 +15,7 @@ describe('auth-utils', () => {
     })
 
     it('should return false for a scope not on whitelist array', () => {
-      const scopes = ['illegal_scope']
+      const scopes = ['illegal_scope', 'store_write']
       assert(!validateScopes(scopes))
     })
 
@@ -31,6 +30,11 @@ describe('auth-utils', () => {
       assert(validateScopes(scopes))
 
       scopes = ['email', 'store_write']
+      assert(validateScopes(scopes))
+    })
+
+    it('should allow colleciton scopes', () => {
+      const scopes = ['store_write', 'collection.contact']
       assert(validateScopes(scopes))
     })
   })

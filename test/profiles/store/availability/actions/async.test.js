@@ -205,7 +205,7 @@ describe('Availability Store: Async Actions', () => {
             {
               type: NAME_PRICE_ERROR,
               domainName: 'satoshi.id',
-              error: 'Error'
+              error: 'error parsing price result'
             }
           ]
           assert.deepEqual(store.getActions(), expectedActions)
@@ -238,7 +238,7 @@ describe('Availability Store: Async Actions', () => {
             {
               type: NAME_AVAILABILITY_ERROR,
               domainName: 'satoshi.id',
-              error: 'Error'
+              error: '500'
             }
           ]
           assert.deepEqual(store.getActions(), expectedActions)

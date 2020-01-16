@@ -11,7 +11,7 @@ npm i express@4
 popd
 
 cp -r "$TEMPDIR/node_modules" native/windows/BlockstackBrowser/Resources/
-curl https://nodejs.org/dist/latest-v8.x/win-x86/node.exe --output native/windows/BlockstackBrowser/Resources/node.exe
+curl https://nodejs.org/dist/latest-v12.x/win-x86/node.exe --output native/windows/BlockstackBrowser/Resources/node.exe
 
 TEMPDIR=$(mktemp -d)
 pushd $TEMPDIR

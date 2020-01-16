@@ -35,7 +35,9 @@ public func shareFilesFromDirectory(_ directoryPath: String, defaults: [String] 
             }
         }
         if let file = try? (directoryPath + String.pathSeparator + fileRelativePath.value).openForReading() {
-            return .raw(200, "OK", [:], { writer in
+            let mimeType = fileRelativePath.value.mimeType();
+            
+            return .raw(200, "OK", ["Content-Type": mimeType], { writer in
                 try? writer.write(file)
                 file.close()
             })
@@ -55,7 +57,8 @@ public func directoryBrowser(_ dir: String) -> ((HttpRequest) -> HttpResponse) {
                 return .notFound
             }
             if try filePath.directory() {
-                let files = try filePath.files()
+                var files = try filePath.files()
+                files.sort(by: {$0.lowercased() < $1.lowercased()})
                 return scopes {
                     html {
                         body {

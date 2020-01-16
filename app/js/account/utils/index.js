@@ -1,10 +1,8 @@
-// @flow
 import { parseZoneFile } from 'zone-file'
 
-import type { GaiaHubConfig } from './blockstack-inc'
 import { connectToGaiaHub, uploadToGaiaHub } from './blockstack-inc'
 
-import { getTokenFileUrlFromZoneFile } from '@utils/zone-utils'
+import { getTokenFileUrlFromZoneFile } from '../../utils/zone-utils'
 
 import log4js from 'log4js'
 const logger = log4js.getLogger(__filename)
@@ -12,7 +10,7 @@ const logger = log4js.getLogger(__filename)
 export const BLOCKSTACK_INC = 'gaia-hub'
 const DEFAULT_PROFILE_FILE_NAME = 'profile.json'
 
-function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
+function getProfileUploadLocation(identity, hubConfig) {
   if (identity.zoneFile) {
     const zoneFileJson = parseZoneFile(identity.zoneFile)
     return getTokenFileUrlFromZoneFile(zoneFileJson)
@@ -24,7 +22,7 @@ function getProfileUploadLocation(identity: any, hubConfig: GaiaHubConfig) {
 }
 
 // aaron-debt: this should be moved into blockstack.js
-function canWriteUrl(url: string, hubConfig: GaiaHubConfig): ?string {
+function canWriteUrl(url, hubConfig) {
   const readPrefix = `${hubConfig.url_prefix}${hubConfig.address}/`
   if (url.startsWith(readPrefix)) {
     return url.substring(readPrefix.length)
@@ -34,10 +32,10 @@ function canWriteUrl(url: string, hubConfig: GaiaHubConfig): ?string {
 }
 
 function tryUpload(
-  urlToWrite: string,
-  data: any,
-  hubConfig: GaiaHubConfig,
-  mimeType: ?string = undefined
+  urlToWrite,
+  data,
+  hubConfig,
+  mimeType = undefined
 ) {
   const filenameWrite = canWriteUrl(urlToWrite, hubConfig)
   if (filenameWrite === null) {
@@ -47,11 +45,11 @@ function tryUpload(
 }
 
 export function uploadPhoto(
-  api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
-  identity: any,
-  identityKeyPair: { key: string },
-  photoFile: File | Blob,
-  photoIndex: number
+  api,
+  identity,
+  identityKeyPair,
+  photoFile,
+  photoIndex
 ) {
   return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
     const globalHubConfig = api.gaiaHubConfig
@@ -82,10 +80,10 @@ export function uploadPhoto(
 }
 
 export function uploadProfile(
-  api: { gaiaHubConfig: GaiaHubConfig, gaiaHubUrl: string },
-  identity: any,
-  identityKeyPair: { key: string },
-  signedProfileTokenData: string
+  api,
+  identity,
+  identityKeyPair,
+  signedProfileTokenData
 ) {
   return connectToGaiaHub(api.gaiaHubUrl, identityKeyPair.key).then(identityHubConfig => {
     const urlToWrite = getProfileUploadLocation(identity, identityHubConfig)

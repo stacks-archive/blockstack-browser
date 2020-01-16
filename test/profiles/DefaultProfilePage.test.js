@@ -61,11 +61,6 @@ describe('<DefaultProfilePage />', () => {
       expect(alphabeticalOrdered(accounts)).to.eq(true)
     })
 
-    it('should order placeholder proofs alphabetically', () => {
-      const accounts = list.children('[placeholder=true]')
-      expect(alphabeticalOrdered(accounts)).to.eq(true)
-    })
-
     it('should present filled proofs before placeholders',() => {
       const accounts = list.children()
       accounts.forEach((account, index) => {

@@ -29,8 +29,8 @@ describe('<IdentityItem />', () => {
       expect(wrapper.find('UserAvatar[username="myUsername"]').length).to.equal(1)
     })
 
-    it('should render two tooltips', () => {
-      expect(wrapper.find('ToolTip').length).to.equal(2)
+    it('should render three tooltips', () => {
+      expect(wrapper.find('ToolTip').length).to.equal(3)
 
       let pendingToolTipWrapper = wrapper.find('ToolTip[id="usernamePending"]')
       expect(pendingToolTipWrapper.length).to.equal(1)
@@ -41,7 +41,13 @@ describe('<IdentityItem />', () => {
       expect(addressToolTipWrapper.length).to.equal(1)
       expect(addressToolTipWrapper.html()).to.contain(
         'This is your identity address.')
-    })
+
+      let settingsToolTipWrapper = wrapper.find('ToolTip[id="settings"]')
+      expect(settingsToolTipWrapper.length).to.equal(1)
+      expect(settingsToolTipWrapper.html()).to.contain(
+        'Settings for your name')
+  
+      })
 
     it('should render the owner address', () => {
       expect(wrapper.find('p.card-subtitle').html()).to.contain(props.ownerAddress)
@@ -127,7 +133,7 @@ describe('<IdentityItem />', () => {
     })
 
     it('should render a username field', () => {
-      expect(wrapper.find('p.card-title span').text()).to.contain(props.username)
+      expect(wrapper.find('p.card-title span').first().text()).to.contain(props.username)
     })
     
     it('should say whether username is pending', () => {

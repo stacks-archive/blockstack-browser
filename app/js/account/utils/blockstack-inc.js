@@ -1,4 +1,3 @@
-// @flow
 import log4js from 'log4js'
 import { connectToGaiaHub as bsConnectToGaiaHub, GaiaHubConfig, uploadToGaiaHub } from 'blockstack'
 
@@ -11,7 +10,12 @@ export function redirectToConnectToGaiaHub() {
   window.top.location.href = `http://${host}:${port}/account/storage#gaiahub`
 }
 
-const connectToGaiaHub = (hubUrl: string, key: string, associationToken?: string) => 
+/**
+ * @param {string} hubUrl 
+ * @param {string} key 
+ * @param {string} associationToken 
+ */
+const connectToGaiaHub = (hubUrl, key, associationToken) => 
   bsConnectToGaiaHub(hubUrl, key, associationToken)
 
 export { connectToGaiaHub, GaiaHubConfig, uploadToGaiaHub }

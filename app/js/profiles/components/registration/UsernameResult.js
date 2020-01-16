@@ -4,14 +4,7 @@ import UsernameResultDomain from './UsernameResultDomain'
 import roundTo from 'round-to'
 import { PRICE_BUFFER } from './RegistrationSelectView'
 
-type Props = {
-  name: string,
-  index: number,
-  availability?: Object,
-  isSubdomain: boolean
-}
-
-const UsernameResult = (props: Props) => {
+const UsernameResult = (props) => {
   const {
     name,
     index,

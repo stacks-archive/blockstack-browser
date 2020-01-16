@@ -1,16 +1,20 @@
-### What is Swift?
-
->Swift is an innovative new programming language for Cocoa and Cocoa Touch. Writing code is interactive and fun, the syntax is concise yet expressive, and apps run lightning-fast. Swift is ready for your next iOS and OS X project — or for addition into your current app — because Swift code works side-by-side with Objective-C.
+![Platform](https://img.shields.io/badge/Platform-Linux%20&%20OSX%20&%20tvOS-4BC51D.svg?style=flat)
+![Swift](https://img.shields.io/badge/Swift-4.x,_5.0-4BC51D.svg?style=flat)
+![Protocols](https://img.shields.io/badge/Protocols-HTTP%201.1%20&%20WebSockets-4BC51D.svg?style=flat)
+[![CocoaPods](https://img.shields.io/cocoapods/v/Swifter.svg?style=flat)](https://cocoapods.org/pods/Swifter)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 ### What is Swifter?
 
-Tiny http server engine written in Swift ( https://developer.apple.com/swift/ ) programming language.
+Tiny http server engine written in [Swift](https://developer.apple.com/swift/) programming language.
 
-![Platform](https://img.shields.io/badge/Platform-Linux%20&%20OSX-4BC51D.svg?style=flat)
-![Swift](https://img.shields.io/badge/Swift-2.2/3.0--dev-4BC51D.svg?style=flat)
-![Protocols](https://img.shields.io/badge/Protocols-HTTP%201.1%20&%20WebSockets-4BC51D.svg?style=flat)
-[![CocoaPods](https://img.shields.io/cocoapods/v/Swifter.svg?style=flat)]()
-[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+### Branches
+`* stable` - lands on CocoaPods and others. Supports the latest non-beta XCode and SPM. Stable.
+
+`* master` - stable branch plus experimental web-framework layer.
+
+`* 2.0   ` - next version of Swifter (async IO). Experimental.
+
 
 ### How to start?
 ```swift
@@ -18,6 +22,16 @@ let server = HttpServer()
 server["/hello"] = { .ok(.html("You asked for \($0)"))  }
 server.start()
 ```
+
+### How to load HTML by string?
+```swift
+let server = HttpServer()
+server[path] = { request in
+    return HttpResponse.ok(.text("<html string>"))
+}
+server.start()
+```
+
 ### How to share files?
 ```swift
 let server = HttpServer()
@@ -47,24 +61,23 @@ server.start()
 ### How to WebSockets ?
 ```swift
 let server = HttpServer()
-server["/websocket-echo"] = websocket({ (session, text) in
+server["/websocket-echo"] = websocket(text: { session, text in
   session.writeText(text)
-}, { (session, binary) in
+}, binary: { session, binary in
   session.writeBinary(binary)
 })
 server.start()
 ```
 ### CocoaPods? Yes.
 ```ruby
-# Use version >= 1.1.0.rc.2 (sudo gem install cocoapods --pre)
 use_frameworks!
-pod 'Swifter', '~> 1.3.3'
+
+pod 'Swifter', '~> 1.4.6'
 ```
 
 ### Carthage? Also yes.
 ```
-# Use version >= 0.18 (https://github.com/Carthage/Carthage/releases/tag/0.18)
-github "glock45/swifter" == 1.3.3
+github "httpswift/swifter" ~> 1.4.6
 ```
 
 ### Swift Package Manager.
@@ -74,8 +87,13 @@ import PackageDescription
 let package = Package(
     name: "MyServer",
     dependencies: [
-        .Package(url: "https://github.com/httpswift/swifter.git", majorVersion: 1)
+        .package(url: "https://github.com/httpswift/swifter.git", .upToNextMajor(from: "1.4.6"))
     ]
 )
+```
+
+### Docker.
+```
+docker run -d -p 9080:9080 -v `pwd`:/Swifter -w /Swifter --name Swifter swift bash -c "swift run"
 ```
 

@@ -1,2 +1,2 @@
-export AppsActions from './actions'
-export AppsReducer from './reducer'
+export { default as AppsActions } from './actions'
+export { default as AppsReducer } from './reducer'

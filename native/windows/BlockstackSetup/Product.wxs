@@ -39,7 +39,18 @@
                    Event="NewDialog"
                    Value="WelcomeDlg"
                    Order="2">1</Publish>
+          <Publish Dialog="ExitDialog" 
+                   Control="Finish" 
+                   Event="DoAction" 
+                   Value="LaunchApplication">NOT Installed</Publish>
         </UI>
+
+        <CustomAction Id="LaunchApplication"                  
+                      Execute="immediate" 
+                      Impersonate="yes"
+                      Return="asyncNoWait"
+                      FileKey="BlockstackBrowser.exe"
+                      ExeCommand="" />
 
 		<Feature Id="ProductFeature" Title="BlockstackSetup" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
