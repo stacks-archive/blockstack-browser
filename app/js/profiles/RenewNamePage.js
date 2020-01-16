@@ -62,7 +62,7 @@ class RenewNamePage extends Component {
 
   estimateRenewal = async (evt) => {
     evt.preventDefault()
-    this.setState({ estimateInProgress: true })
+    this.setState({ estimateInProgress: true, error: null })
     const { network } = config
     const { password } = this.state
     const { encryptedBackupPhrase } = this.props
@@ -79,7 +79,8 @@ class RenewNamePage extends Component {
       )
     } catch (error) {
       this.setState({
-        error: 'Invalid password'
+        error: 'Invalid password',
+        estimateInProgress: false
       })
       return
     }
@@ -130,7 +131,8 @@ class RenewNamePage extends Component {
       ) 
     } catch (error) {
       this.setState({
-        error: 'Invalid password'
+        error: 'Invalid password',
+        renewInProgress: false
       })
       return
     }
@@ -146,7 +148,7 @@ class RenewNamePage extends Component {
       .catch(error => {
         this.setState({
           error: error.toString(),
-          renewalInProgress: false
+          renewInProgress: false
         })
       })
   }
