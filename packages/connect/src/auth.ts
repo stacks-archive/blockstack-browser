@@ -4,20 +4,20 @@ import { popupCenter } from './popup';
 
 const defaultVaultURL = 'https://vault.hankstoever.com';
 
-interface FinishedData {
+export interface FinishedData {
   authResponse: string;
   userSession: UserSession;
 }
 
-interface AuthOptions {
+export interface AuthOptions {
   // The URL you want the user to be redirected to after authentication.
   redirectTo: string;
   manifestPath: string;
-  finished?: (data: FinishedData) => void;
+  finished?: (payload: FinishedData) => void;
   vaultUrl?: string;
   sendToSignIn?: boolean;
   userSession?: UserSession;
-  appDetails?: {
+  appDetails: {
     name: string;
     icon: string;
   };
@@ -30,13 +30,10 @@ export const authenticate = async ({
   vaultUrl,
   sendToSignIn = false,
   userSession,
-  appDetails
+  appDetails,
 }: AuthOptions) => {
   if (!userSession) {
-    const appConfig = new AppConfig(
-      ['store_write', 'publish_data'],
-      document.location.href
-    );
+    const appConfig = new AppConfig(['store_write', 'publish_data'], document.location.href);
     // eslint-disable-next-line no-param-reassign
     userSession = new UserSession({ appConfig });
   }
@@ -53,15 +50,14 @@ export const authenticate = async ({
     undefined,
     {
       sendToSignIn,
-      appDetails
+      appDetails,
     }
   );
 
   const extensionURL = await window.BlockstackProvider?.getURL();
   const dataVaultURL = new URL(extensionURL || vaultUrl || defaultVaultURL);
-
   const popup = popupCenter({
-    url: `${dataVaultURL.origin}/actions.html?authRequest=${authRequest}`
+    url: `${dataVaultURL.origin}/actions.html?authRequest=${authRequest}`,
   });
 
   setupListener({ popup, authRequest, finished, dataVaultURL, userSession });
@@ -76,31 +72,23 @@ interface FinishedEventData {
 interface ListenerParams {
   popup: Window | null;
   authRequest: string;
-  finished?: (data: FinishedData) => void;
+  finished?: (payload: FinishedData) => void;
   dataVaultURL: URL;
   userSession: UserSession;
 }
 
-const setupListener = ({
-  popup,
-  authRequest,
-  finished,
-  dataVaultURL,
-  userSession
-}: ListenerParams) => {
+const setupListener = ({ popup, authRequest, finished, dataVaultURL, userSession }: ListenerParams) => {
   const interval = setInterval(() => {
     if (popup) {
       try {
         popup.postMessage(
           {
-            authRequest
+            authRequest,
           },
           dataVaultURL.origin
         );
       } catch (error) {
-        console.warn(
-          '[Blockstack] Unable to send ping to authentication service'
-        );
+        console.warn('[Blockstack] Unable to send ping to authentication service');
         clearInterval(interval);
       }
     }
@@ -114,7 +102,7 @@ const setupListener = ({
         await userSession.handlePendingSignIn(authResponse);
         finished({
           authResponse,
-          userSession
+          userSession,
         });
       }
       window.removeEventListener('message', receiveMessageCallback);

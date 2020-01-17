@@ -1,0 +1,63 @@
+{
+  "name": "test-app",
+  "version": "0.1.0",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
+    "@blockstack/prettier-config": "^0.0.5",
+    "@blockstack/ui": "^1.0.0-alpha.23",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@typescript-eslint/eslint-plugin": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0",
+    "blockstack": "^19.3.0",
+    "bundlesize": "^0.18.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.17.0",
+    "husky": "^4.0.1",
+    "mdi-react": "^6.5.0",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.0",
+    "styled-components": "^5.0.0",
+    "tsdx": "^0.12.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.4",
+    "use-events": "^1.4.1"
+  },
+  "devDependencies": {
+    "customize-cra": "^0.9.1",
+    "customize-cra-react-refresh": "^1.0.1",
+    "eslint-plugin-import": "^2.20.0",
+    "react-app-rewired": "^2.1.5"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "private": true,
+  "scripts": {
+    "build": "react-app-rewired build",
+    "eject": "react-scripts eject",
+    "start": "react-app-rewired start",
+    "test": "react-app-rewired test --env=jsdom"
+  }
+}

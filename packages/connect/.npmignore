@@ -1,13 +1,13 @@
-*.log
+.idea*.log
 .DS_Store
 node_modules
 .rts2_cache_cjs
 .rts2_cache_esm
 .rts2_cache_umd
 .rts2_cache_system
-dist
 .idea
 test
 pages
 .next
-test-app/node_modules
+test-app
+.circleci

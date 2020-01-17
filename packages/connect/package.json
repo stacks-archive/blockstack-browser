@@ -11,35 +11,55 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
+    "dev": "cd test-app && yarn start",
     "test": "tsdx test",
-    "lint": "eslint --ext .ts ./src -f unix",
+    "lint": "eslint --ext .ts,.tsx ./src/ -f unix",
+    "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix",
     "prepublishOnly": "yarn build",
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "blockstack": "^19"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint"
-    }
+    "blockstack": "^19",
+    "styled-components": "^4.4"
   },
   "prettier": "@blockstack/prettier-config",
   "devDependencies": {
-    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
-    "@blockstack/prettier-config": "^0.0.3",
-    "@types/jest": "^24.0.23",
-    "@typescript-eslint/eslint-plugin": "^2.10.0",
-    "@typescript-eslint/parser": "^2.10.0",
+    "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "@blockstack/prettier-config": "^0.0.5",
+    "@types/jest": "^24.0.25",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
     "blockstack": "^19.3.0",
-    "eslint": "^6.7.2",
-    "husky": "^3.1.0",
+    "bundlesize": "^0.18.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.17.0",
+    "husky": "^4.0.9",
     "prettier": "^1.19.1",
-    "tsdx": "^0.11.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.4"
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "dependencies": {
+    "@blockstack/ui": "^1.0.0-alpha.24",
+    "mdi-react": "^6.5.0",
+    "styled-components": "^5.0.0",
+    "use-events": "^1.4.1"
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/**/*.js",
+      "maxSize": "9 kB"
+    }
+  ],
+  "sideEffects": false
 }
