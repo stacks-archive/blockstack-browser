@@ -58,7 +58,12 @@ module.exports = {
   // globalTeardown: null,
 
   // A set of global variables that need to be available in all test environments
-  // globals: {},
+  globals: {
+    'ts-jest': {
+      // https://huafu.github.io/ts-jest/user/config/diagnostics
+      diagnostics: false,
+    },
+  },
 
   // An array of directory names to be searched recursively up from the requiring module's location
   // moduleDirectories: [
@@ -120,7 +125,9 @@ module.exports = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: 'jsdom',
+  // testEnvironment: 'jsdom',
+
+  preset: 'jest-puppeteer',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -173,4 +180,4 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
-}
+};

@@ -1,27 +1,30 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const CheckerPlugin = require('fork-ts-checker-webpack-plugin')
-const ChromeExtensionReloader = require('webpack-chrome-extension-reloader')
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CheckerPlugin = require('fork-ts-checker-webpack-plugin');
+const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 /* eslint-enable @typescript-eslint/no-var-requires */
 
-const sourceRootPath = path.join(__dirname, 'src')
-const distRootPath = path.join(__dirname, 'dist')
-const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
-const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome'
+const sourceRootPath = path.join(__dirname, 'src');
+const distRootPath = path.join(__dirname, 'dist');
+const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
+const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   entry: {
-    background: path.join(sourceRootPath, 'ts', 'background', 'index.ts'),
-    options: path.join(sourceRootPath, 'ts', 'options', 'index.tsx'),
-    popup: path.join(sourceRootPath, 'ts', 'popup', 'index.tsx'),
-    inpage: path.join(sourceRootPath, 'ts', 'inpage', 'index.ts'),
-    actions: path.join(sourceRootPath, 'ts', 'actions', 'index.tsx'),
-    "message-bus": path.join(sourceRootPath, 'ts', 'content-scripts', 'message-bus.ts'),
+    background: path.join(sourceRootPath, 'extension', 'background.ts'),
+    popup: path.join(sourceRootPath, 'extension', 'index.tsx'),
+    inpage: path.join(sourceRootPath, 'extension', 'inpage.ts'),
+    'message-bus': path.join(sourceRootPath, 'extension', 'content-scripts', 'message-bus.ts'),
+
+    options: path.join(sourceRootPath, 'index.tsx'),
+    actions: path.join(sourceRootPath, 'actions.tsx'),
   },
   output: {
     path: distRootPath,
@@ -29,96 +32,91 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
-    plugins: [
-      new TsconfigPathsPlugin()
-    ],
-    alias: {
-      'react-dom': '@hot-loader/react-dom'
-    }
+    plugins: [new TsconfigPathsPlugin()],
   },
   module: {
     rules: [
-      { 
-        test: /\.(ts|tsx)?$/, 
+      {
+        test: /\.(ts|tsx)?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             cacheDirectory: true,
             babelrc: false,
             presets: [
               [
-                "@babel/preset-env",
-                { targets: { browsers: "last 2 versions" } } // or whatever your project requires
+                '@babel/preset-env',
+                { targets: { browsers: 'last 2 versions' } }, // or whatever your project requires
               ],
-              "@babel/preset-typescript",
-              "@babel/preset-react"
+              '@babel/preset-typescript',
+              '@babel/preset-react',
             ],
             plugins: [
               // plugin-proposal-decorators is only needed if you're using experimental decorators in TypeScript
               // ["@babel/plugin-proposal-decorators", { legacy: true }],
-              ["@babel/plugin-proposal-class-properties", { loose: true }],
-              "react-hot-loader/babel",
-              "@babel/plugin-transform-runtime",
-              "@babel/plugin-proposal-nullish-coalescing-operator",
-              "@babel/plugin-proposal-optional-chaining",
-            ]
-          }
-        }    
-      }
-    ]
+              ['@babel/plugin-proposal-class-properties', { loose: true }],
+              '@babel/plugin-transform-runtime',
+              '@babel/plugin-proposal-nullish-coalescing-operator',
+              '@babel/plugin-proposal-optional-chaining',
+              isDevelopment && require.resolve('react-refresh/babel'),
+            ].filter(Boolean),
+          },
+        },
+      },
+    ],
   },
   devServer: {
     contentBase: './dist',
-    hot: true
   },
-  devtool: false,
+  devtool: 'none',
   watch: false,
   plugins: [
     new CheckerPlugin(),
     new HtmlWebpackPlugin({
-      template: path.join(sourceRootPath, 'html', 'options.html'),
+      template: path.join(sourceRootPath, '../', 'public', 'html', 'options.html'),
       inject: 'body',
       filename: 'index.html',
       title: 'Blockstack',
-      chunks: ['options']
+      chunks: ['options'],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(sourceRootPath, 'html', 'popup.html'),
+      template: path.join(sourceRootPath, '../', 'public', 'html', 'popup.html'),
       inject: 'body',
       filename: 'popup.html',
       title: 'Blockstack',
-      chunks: ['popup']
+      chunks: ['popup'],
     }),
     new HtmlWebpackPlugin({
-      template: path.join(sourceRootPath, 'html', 'actions.html'),
+      template: path.join(sourceRootPath, '../', 'public', 'html', 'actions.html'),
       inject: 'body',
       filename: 'actions.html',
       title: 'Blockstack',
-      chunks: ['actions']
+      chunks: ['actions'],
     }),
     new CopyWebpackPlugin([
       {
-        from: path.join(sourceRootPath, 'assets'),
+        from: path.join(sourceRootPath, '../', 'public', 'assets'),
         to: path.join(distRootPath, 'assets'),
-        test: /\.(jpg|jpeg|png|gif|svg)?$/
+        test: /\.(jpg|jpeg|png|gif|svg)?$/,
       },
       {
         from: path.join(sourceRootPath, 'manifest.json'),
         to: path.join(distRootPath, 'manifest.json'),
-        toType: 'file'
-      }
+        toType: 'file',
+      },
     ]),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(nodeEnv),
       WEB_BROWSER: JSON.stringify(webBrowser),
-      EXT_ENV: JSON.stringify(process.env.EXT_ENV || "web")
-    })
-  ]
-}
+      EXT_ENV: JSON.stringify(process.env.EXT_ENV || 'web'),
+    }),
+    isDevelopment && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
+  ].filter(Boolean),
+};
 
 if (process.env.EXT_ENV === 'watch') {
-  module.exports.watch = true
+  module.exports.watch = true;
   module.exports.plugins.push(
     new ChromeExtensionReloader({
       port: 9128,
@@ -127,12 +125,12 @@ if (process.env.EXT_ENV === 'watch') {
         background: 'background',
         options: 'index',
         popup: 'popup',
-        contentScript: ['message-bus']
-      }
+        contentScript: ['message-bus'],
+      },
     })
-  )
+  );
 }
 
 if (nodeEnv === 'production') {
-  module.exports.plugins.push(new CleanWebpackPlugin({ verbose: true, dry: false }))
+  module.exports.plugins.push(new CleanWebpackPlugin({ verbose: true, dry: false }));
 }

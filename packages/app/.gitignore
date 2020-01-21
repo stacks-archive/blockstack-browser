@@ -1,6 +1,7 @@
 ### Project specifics ###
 dist/
 node_modules/
+tests/screenshots/*
 
 
 
