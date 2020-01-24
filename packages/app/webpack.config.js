@@ -15,6 +15,7 @@ const distRootPath = path.join(__dirname, 'dist');
 const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const segmentKey = process.env.SEGMENT_KEY || '';
 
 module.exports = {
   entry: {
@@ -110,6 +111,7 @@ module.exports = {
       NODE_ENV: JSON.stringify(nodeEnv),
       WEB_BROWSER: JSON.stringify(webBrowser),
       EXT_ENV: JSON.stringify(process.env.EXT_ENV || 'web'),
+      SEGMENT_KEY: JSON.stringify(segmentKey),
     }),
     isDevelopment && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
   ].filter(Boolean),

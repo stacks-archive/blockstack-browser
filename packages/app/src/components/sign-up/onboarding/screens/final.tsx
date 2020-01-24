@@ -2,7 +2,7 @@ import React from 'react';
 import { AppIcon } from '../../app-icon';
 
 import { useSelector } from 'react-redux';
-import { IAppState } from '../../../../store';
+import { AppState } from '../../../../store';
 import { selectAppName } from '../../../../store/onboarding/selectors';
 import { Wallet } from '@blockstack/keychain';
 import { Screen, ScreenBody, ScreenActions } from '../../screen';
@@ -13,7 +13,7 @@ interface FinalProps {
 }
 
 export const Final: React.FC<FinalProps> = props => {
-  const appName = useSelector((state: IAppState) => selectAppName(state));
+  const appName = useSelector((state: AppState) => selectAppName(state));
   return (
     <Screen textAlign="center">
       <AppIcon />

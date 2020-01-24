@@ -1,9 +1,9 @@
-import { IAppState } from '..';
+import { AppState } from '..';
 
-export const selectCurrentWallet = (state: IAppState) => {
+export const selectCurrentWallet = (state: AppState) => {
   return state.wallet.currentWallet;
 };
 
-export const selectSeed = (state: IAppState) => state.wallet.seed;
+export const selectSeed = (state: AppState) => state.wallet.seed;
 
-export const selectIsRestoringWallet = (state: IAppState) => state.wallet.isRestoringWallet;
+export const selectIsRestoringWallet = (state: AppState) => state.wallet.isRestoringWallet;

@@ -7,7 +7,7 @@ import { SeedTextarea } from '../../seed-textarea';
 
 import { doTrack, SECRET_KEY_INTRO_COPIED } from '../../../../common/track';
 
-import { IAppState } from '../../../../store';
+import { AppState } from '../../../../store';
 import { selectSecretKey } from '../../../../store/onboarding/selectors';
 import { ScreenHeader } from '../../header';
 import { Screen, ScreenBody, ScreenActions } from '../../screen';
@@ -17,7 +17,7 @@ interface SecretKeyProps {
 }
 
 export const SecretKey: React.FC<SecretKeyProps> = props => {
-  const { secretKey } = useSelector((state: IAppState) => ({
+  const { secretKey } = useSelector((state: AppState) => ({
     secretKey: selectSecretKey(state),
   }));
   const [copied, setCopiedState] = React.useState(false);

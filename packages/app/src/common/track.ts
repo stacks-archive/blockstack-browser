@@ -38,11 +38,8 @@ const SIGN_IN_FORGOT = 'auth_existing_forgot_secret_key'; // was not specified i
 const SIGN_IN_INCORRECT = 'auth_existing_entered_incorrect_secret_key';
 
 const doTrack = (type: string, payload?: string | object) => {
-  // if (process.browser) {
-  //   console.log('tracking: ', { type, payload });
-  //   window.analytics.track(type, payload);
-  // }
   console.log('Tracking:', { type, payload });
+  window.analytics.track(type, payload);
 };
 
 export {

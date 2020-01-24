@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Input, Text } from '@blockstack/ui';
 import { decrypt } from '@blockstack/keychain';
 import { useSelector, useDispatch } from 'react-redux';
-import { IAppState } from '../../../../store';
+import { AppState } from '../../../../store';
 import { selectMagicRecoveryCode } from '../../../../store/onboarding/selectors';
 import { doTrack, SIGN_IN_CORRECT } from '../../../../common/track';
 import { doStoreSeed } from '../../../../store/wallet/actions';
@@ -20,7 +20,7 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const recoveryCode = useSelector((state: IAppState) => selectMagicRecoveryCode(state) as string);
+  const recoveryCode = useSelector((state: AppState) => selectMagicRecoveryCode(state) as string);
   return (
     <Screen isLoading={loading}>
       <ScreenHeader appIcon />

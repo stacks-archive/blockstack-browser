@@ -64,7 +64,7 @@ module.exports = {
     '@typescript-eslint/class-name-casing': 'off',
     '@typescript-eslint/camelcase': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
-    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/interface-name-prefix': [2],
     'react/jsx-uses-vars': [2],
     'react/jsx-key': [0],
     'react/prop-types': [0],

@@ -1,15 +1,15 @@
-import { IAppState } from '..';
+import { AppState } from '..';
 
-export const selectCurrentScreen = (state: IAppState) => state.onboarding.screen;
+export const selectCurrentScreen = (state: AppState) => state.onboarding.screen;
 
-export const selectSecretKey = (state: IAppState) => state.onboarding.secretKey;
+export const selectSecretKey = (state: AppState) => state.onboarding.secretKey;
 
-export const selectDecodedAuthRequest = (state: IAppState) => state.onboarding.decodedAuthRequest;
+export const selectDecodedAuthRequest = (state: AppState) => state.onboarding.decodedAuthRequest;
 
-export const selectAuthRequest = (state: IAppState) => state.onboarding.authRequest;
+export const selectAuthRequest = (state: AppState) => state.onboarding.authRequest;
 
-export const selectAppName = (state: IAppState) => state.onboarding.appName;
+export const selectAppName = (state: AppState) => state.onboarding.appName;
 
-export const selectAppIcon = (state: IAppState) => state.onboarding.appIcon;
+export const selectAppIcon = (state: AppState) => state.onboarding.appIcon;
 
-export const selectMagicRecoveryCode = (state: IAppState) => state.onboarding.magicRecoveryCode;
+export const selectMagicRecoveryCode = (state: AppState) => state.onboarding.magicRecoveryCode;

@@ -8,13 +8,13 @@ import { WalletTransform } from './transforms';
 import { onboardingReducer } from './onboarding/reducer';
 import { OnboardingState } from './onboarding/types';
 
-export interface IAppState {
+export interface AppState {
   wallet: WalletState;
   permissions: PermissionsState;
   onboarding: OnboardingState;
 }
 
-const reducers = combineReducers<IAppState>({
+const reducers = combineReducers<AppState>({
   wallet: walletReducer,
   permissions: permissionsReducer,
   onboarding: onboardingReducer,
@@ -38,7 +38,7 @@ const middleware = compose(
 
 export const middlewareComponents = [thunk];
 
-export const store: Store<IAppState> = createStore(persistedReducer, undefined, middleware);
+export const store: Store<AppState> = createStore(persistedReducer, undefined, middleware);
 
 export const persistor = persistStore(store);
 

@@ -4,7 +4,7 @@ import { AppIcon } from '../../app-icon';
 import { Link } from '../../../link';
 import { doTrack, CONNECT_SAVED, CONNECT_INCORRECT, CONNECT_BACK } from '../../../../common/track';
 import { useSelector } from 'react-redux';
-import { IAppState } from '../../../../store';
+import { AppState } from '../../../../store';
 import { selectAppName, selectSecretKey } from '../../../../store/onboarding/selectors';
 import { ScreenHeader } from '../../header';
 import { ScreenBody, ScreenActions, ScreenFooter, Screen } from '../../screen';
@@ -21,7 +21,7 @@ interface ConnectProps {
 }
 
 export const Connect: React.FC<ConnectProps> = props => {
-  const { appName, seed } = useSelector((state: IAppState) => ({
+  const { appName, seed } = useSelector((state: AppState) => ({
     appName: selectAppName(state),
     seed: selectSecretKey(state),
   }));

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { Collapse } from '../../collapse';
-import { IAppState } from '../../../../store';
+import { AppState } from '../../../../store';
 
 import { selectAppName } from '../../../../store/onboarding/selectors';
 import { faqs } from '../data';
@@ -17,7 +17,7 @@ interface SaveKeyProps {
 }
 
 export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
-  const appName = useSelector((state: IAppState) => selectAppName(state));
+  const appName = useSelector((state: AppState) => selectAppName(state));
   return (
     <Screen>
       <ScreenHeader appIcon />

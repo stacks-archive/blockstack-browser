@@ -2,7 +2,7 @@ import React from 'react';
 import { validateMnemonic } from 'bip39';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Input, Text, Button, FormControl, FormLabel } from '@blockstack/ui';
-import { IAppState } from '../store';
+import { AppState } from '../store';
 import { doStoreSeed, doGenerateWallet } from '../store/wallet';
 import { Formik, FormikErrors } from 'formik';
 import { selectCurrentWallet, selectIsRestoringWallet } from '../store/wallet/selectors';
@@ -13,7 +13,7 @@ interface FormValues {
 }
 
 const Seed = () => {
-  const { wallet, restoring } = useSelector((state: IAppState) => ({
+  const { wallet, restoring } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state),
     restoring: selectIsRestoringWallet(state),
   }));

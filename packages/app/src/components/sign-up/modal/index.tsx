@@ -49,7 +49,7 @@ const AppIcon: React.FC<AppIconProps> = ({ src, name, ...rest }) => (
   </Box>
 );
 
-interface IModalHeader {
+interface ModalHeader {
   appIcon?: string;
   appName?: string;
   title: string;
@@ -57,7 +57,7 @@ interface IModalHeader {
   hideIcon?: boolean;
 }
 
-const ModalHeader = ({ appIcon, close, title, hideIcon, appName, ...rest }: IModalHeader) => {
+const ModalHeader = ({ appIcon, close, title, hideIcon, appName, ...rest }: ModalHeader) => {
   return (
     <Flex
       p={[4, 5]}

@@ -5,7 +5,7 @@ import { doTrack, SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '../
 import { doChangeScreen, doSetMagicRecoveryCode } from '../../../../store/onboarding/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { ScreenName, DEFAULT_PASSWORD } from '../../../../store/onboarding/types';
-import { IAppState } from '../../../../store';
+import { AppState } from '../../../../store';
 import { selectAppName } from '../../../../store/onboarding/selectors';
 import { doStoreSeed } from '../../../../store/wallet';
 import { ScreenHeader } from '../../header';
@@ -21,7 +21,7 @@ export const SignIn: React.FC<SignInProps> = props => {
   const [seed, setSeed] = useState('');
   const [seedError, setSeedError] = useState<null | string>(null);
   const dispatch = useDispatch();
-  const appName = useSelector((state: IAppState) => selectAppName(state));
+  const appName = useSelector((state: AppState) => selectAppName(state));
 
   return (
     <Screen isLoading={isLoading} textAlign="center">

@@ -27,6 +27,8 @@
     "@blockstack/keychain": "^0.1.2",
     "@blockstack/prettier-config": "^0.0.5",
     "@blockstack/ui": "^1.0.0-alpha.24",
+    "@segment/analytics.js-core": "^3.10.1",
+    "@types/segment-analytics": "^0.0.32",
     "formik": "^2.0.3",
     "mdi-react": "^6.6.0",
     "react": "^16.12.0",
