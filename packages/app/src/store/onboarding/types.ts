@@ -5,7 +5,7 @@ export const SAVE_KEY = 'ONBOARDING/SAVE_KEY';
 export const SAVE_AUTH_REQUEST = 'ONBOARDING/SAVE_AUTH_REQUEST';
 export const SET_MAGIC_RECOVERY_CODE = 'ONBOARDING/SET_MAGIC_RECOVERY_CODE';
 
-export enum Screen {
+export enum ScreenName {
   INTRO = 'screens/INTRO',
   HOW_IT_WORKS = 'screens/HOW_IT_WORKS',
   CREATE = 'screens/CREATE',
@@ -21,7 +21,7 @@ export enum Screen {
 export const DEFAULT_PASSWORD = 'password';
 
 export interface OnboardingState {
-  screen: Screen;
+  screen: ScreenName;
   secretKey?: string;
   authRequest?: string;
   decodedAuthRequest?: DecodedAuthRequest;
@@ -32,7 +32,7 @@ export interface OnboardingState {
 
 interface ChangePageAction {
   type: typeof CHANGE_PAGE;
-  screen: Screen;
+  screen: ScreenName;
 }
 
 interface StoreSecretKey {

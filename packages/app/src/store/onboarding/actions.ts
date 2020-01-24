@@ -1,7 +1,7 @@
 import {
   OnboardingActions,
   CHANGE_PAGE,
-  Screen,
+  ScreenName,
   DEFAULT_PASSWORD,
   SAVE_KEY,
   SAVE_AUTH_REQUEST,
@@ -13,7 +13,7 @@ import { ThunkAction } from 'redux-thunk';
 import { decrypt } from '@blockstack/keychain';
 import { DecodedAuthRequest, AppManifest } from '../../common/dev/types';
 
-export const doChangeScreen = (screen: Screen): OnboardingActions => ({
+export const doChangeScreen = (screen: ScreenName): OnboardingActions => ({
   type: CHANGE_PAGE,
   screen,
 });

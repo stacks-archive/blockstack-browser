@@ -1,9 +1,8 @@
 import React from 'react';
-
 import { Box, Flex, Text } from '@blockstack/ui';
 import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
-
 import { useSelector } from 'react-redux';
+
 import { selectAppIcon } from '../../../store/onboarding/selectors';
 
 import { Logo } from '../../logo';
@@ -34,15 +33,15 @@ const HeaderTitle: React.FC<HeaderTitleProps> = ({ hideIcon = false, title }) =>
   </Flex>
 );
 
-interface OnboardingHeaderProps {
+interface ScreenHeaderProps {
   appIcon?: boolean;
   appName?: string;
   title?: string | JSX.Element;
-  close: () => void;
+  close?: () => void;
   hideIcon?: boolean;
 }
 
-const OnboardingHeader = ({ appIcon, title, hideIcon, appName, ...rest }: OnboardingHeaderProps) => {
+export const ScreenHeader = ({ appIcon, title = 'Data Vault', hideIcon, appName, ...rest }: ScreenHeaderProps) => {
   const icon = useSelector(selectAppIcon);
 
   return (
@@ -68,5 +67,3 @@ const OnboardingHeader = ({ appIcon, title, hideIcon, appName, ...rest }: Onboar
     </Flex>
   );
 };
-
-export { OnboardingHeader };

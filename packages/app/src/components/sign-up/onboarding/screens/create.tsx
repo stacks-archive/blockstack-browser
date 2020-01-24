@@ -1,9 +1,10 @@
 import React from 'react';
-import { Flex, Box, Text, Spinner } from '@blockstack/ui';
-
-import { ScreenTemplate } from '../../screen';
-import { doCreateSecretKey } from '../../../../store/onboarding/actions';
 import { useDispatch } from 'react-redux';
+import { Box, Spinner, Flex, Text } from '@blockstack/ui';
+
+import { doCreateSecretKey } from '../../../../store/onboarding/actions';
+import { ScreenHeader } from '../../header';
+import { Screen, ScreenBody } from '../../screen';
 
 interface MockData {
   title: string;
@@ -17,14 +18,14 @@ const createTimeoutLoop = (setState: (item: MockData) => void, arr: MockData[], 
       if (index === arr.length - 1) {
         onEnd();
       }
-    }, (index + 1) * 2400)
+    }, (index + 1) * 200)
   );
 
 interface CreateProps {
   next: () => void;
 }
 
-const Create: React.FC<CreateProps> = props => {
+export const Create: React.FC<CreateProps> = props => {
   const [state, setState] = React.useState({
     title: 'Creating your Data Vault',
     imageUrl: '',
@@ -62,29 +63,26 @@ const Create: React.FC<CreateProps> = props => {
   }, []);
 
   return (
-    <ScreenTemplate
-      textAlign="center"
-      appIcon
-      before={
-        state.imageUrl === '' ? (
-          undefined
-        ) : (
-          <Box>
-            <Text>Your Data Vault includes:</Text>
-            <Flex mt={6} mx="auto" width="240px" height="152px" justifyContent="center">
-              <img src={state.imageUrl} />
-            </Flex>
-          </Box>
-        )
-      }
-      body={[
-        <Box pt={10} width="100%">
-          <Spinner thickness="3px" size="lg" color="blue" />
-        </Box>,
-      ]}
-      title={state.title}
-    />
+    <Screen textAlign="center">
+      <ScreenHeader appIcon />
+      {state.imageUrl === '' ? (
+        undefined
+      ) : (
+        <Box>
+          <Text>Your Data Vault includes:</Text>
+          <Flex mt={6} mx="auto" width="240px" height="152px" justifyContent="center">
+            <img src={state.imageUrl} />
+          </Flex>
+        </Box>
+      )}
+      <ScreenBody
+        title={state.title}
+        body={[
+          <Box pt={10} width="100%">
+            <Spinner thickness="3px" size="lg" color="blue" />
+          </Box>,
+        ]}
+      />
+    </Screen>
   );
 };
-
-export { Create };

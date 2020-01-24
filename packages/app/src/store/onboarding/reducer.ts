@@ -3,14 +3,14 @@ import {
   OnboardingActions,
   OnboardingState,
   CHANGE_PAGE,
-  Screen,
+  ScreenName,
   SAVE_KEY,
   SAVE_AUTH_REQUEST,
   SET_MAGIC_RECOVERY_CODE,
 } from './types';
 
 const initialState: OnboardingState = {
-  screen: Screen.CREATE,
+  screen: ScreenName.CREATE,
 };
 
 export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
@@ -37,7 +37,7 @@ export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
         appIcon: action.appIcon,
       };
       if (action.decodedAuthRequest.sendToSignIn) {
-        newState.screen = Screen.SIGN_IN;
+        newState.screen = ScreenName.SIGN_IN;
       }
       return newState;
     case SET_MAGIC_RECOVERY_CODE:
