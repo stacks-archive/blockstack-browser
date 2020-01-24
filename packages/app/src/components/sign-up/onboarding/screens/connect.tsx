@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { Flex, Box, Text, Input } from '@blockstack/ui';
 import { AppIcon } from '../../app-icon';
 import { Link } from '../../../link';
-import { doTrack, CONNECT_SAVED, CONNECT_BACK } from '../../../../common/track';
+import { doTrack, CONNECT_SAVED, CONNECT_INCORRECT, CONNECT_BACK } from '../../../../common/track';
 import { useSelector } from 'react-redux';
 import { IAppState } from '../../../../store';
-import { selectAppName } from '../../../../store/onboarding/selectors';
+import { selectAppName, selectSecretKey } from '../../../../store/onboarding/selectors';
 import { ScreenHeader } from '../../header';
 import { ScreenBody, ScreenActions, ScreenFooter, Screen } from '../../screen';
+
+const ErrorText: React.FC = ({ children }) => (
+  <Text textAlign="left" display="block" color="#de0014" mt={2}>
+    {children}
+  </Text>
+);
 
 interface ConnectProps {
   next: () => void;
@@ -15,7 +21,14 @@ interface ConnectProps {
 }
 
 export const Connect: React.FC<ConnectProps> = props => {
-  const appName = useSelector((state: IAppState) => selectAppName(state));
+  const { appName, seed } = useSelector((state: IAppState) => ({
+    appName: selectAppName(state),
+    seed: selectSecretKey(state),
+  }));
+  const [seedInput, setSeedInput] = useState('');
+  const [hasAttemptedContinue, setHasAttemptedContinue] = useState(false);
+  const isSeedPhraseCorrect = seedInput === seed;
+  const error = hasAttemptedContinue && !isSeedPhraseCorrect;
   return (
     <Screen textAlign="center">
       <ScreenHeader appIcon />
@@ -32,7 +45,11 @@ export const Connect: React.FC<ConnectProps> = props => {
               placeholder="12-word Secret Key"
               data-test="textarea-reinput-seed-phrase"
               as="textarea"
+              aria-invalid={error}
+              onChange={({ target }: ChangeEvent<HTMLInputElement>) => setSeedInput(target.value)}
             />
+            {error && seedInput === '' && <ErrorText>You must enter your Secret Key</ErrorText>}
+            {error && seedInput !== '' && <ErrorText>You{"'"}ve entered your 12-word Secret Key incorrectly</ErrorText>}
           </Box>,
         ]}
       />
@@ -41,6 +58,11 @@ export const Connect: React.FC<ConnectProps> = props => {
           label: 'Continue',
           testAttr: 'button-confirm-reenter-seed-phrase',
           onClick: () => {
+            if (seedInput !== seed) {
+              doTrack(CONNECT_INCORRECT);
+              setHasAttemptedContinue(true);
+              return;
+            }
             doTrack(CONNECT_SAVED);
             props.next();
           },

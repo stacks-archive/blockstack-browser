@@ -1,5 +1,6 @@
 import { Wallet } from '@blockstack/keychain';
 import { validateMnemonic, generateMnemonic } from 'bip39';
+import { Page } from 'puppeteer';
 
 import { AuthPageObject } from './page-objects/auth.page';
 import { DemoPageObject } from './page-objects/demo.page';
@@ -48,7 +49,7 @@ describe('Authentication', () => {
 
     //
     // These steps commented out as the flow has changed slightly
-  
+
     // await authPage.waitFor(authPageObject.$buttonConnectFlowFinished);
     // await expect(authPage).toMatch('You’re all set!');
     // await authPage.click(authPageObject.$buttonConnectFlowFinished);
@@ -58,26 +59,43 @@ describe('Authentication', () => {
     const authResponse: string = await page.evaluate(el => el.innerText, authResponseEl);
     expect(authResponse).toBeTruthy();
     done();
-  }, 150_000);
+  }, 60_000);
 
-  // eslint-disable-next-line jest/no-disabled-tests
-  test.skip('that it does not let you proceed when passing an incorrect seed phrase', async done => {
-    const { authPage } = await bootstrapConnectModalPageTest(demoPageObject, authPageObject);
+  describe('Secret Key validation', () => {
+    let authPage: Page;
 
-    await authPage.click(authPageObject.$buttonCopySecretKey);
-    await authPage.waitFor(authPageObject.$buttonHasSavedSeedPhrase);
-    await authPage.click(authPageObject.$buttonHasSavedSeedPhrase);
-    await authPage.waitFor(authPageObject.$buttonConfirmReenterSeedPhrase);
+    async function navigateThroughToSecretKeyPage () {
+      const pages = await bootstrapConnectModalPageTest(demoPageObject, authPageObject);
+      authPage = pages.authPage;
+      await authPage.click(authPageObject.$buttonCopySecretKey);
+      await authPage.waitFor(authPageObject.$buttonHasSavedSeedPhrase);
+      await authPage.click(authPageObject.$buttonHasSavedSeedPhrase);
+      await authPage.waitFor(authPageObject.$buttonConfirmReenterSeedPhrase);
+    }
 
-    const nonsenseRhymingSeed = 'You might encounter some delays, if you forget your seed phrase';
+    beforeEach(async () => await navigateThroughToSecretKeyPage());
 
-    await authPage.type(authPageObject.$textareaSeedPhraseInput, nonsenseRhymingSeed);
-    await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
+    test('it does not let you proceed when entering an incorrect seed phrase', async done => {
+      const nonsenseRhymingSeed = 'You might encounter some delays, if you forget your seed phrase';
 
-    await expect(authPage).not.toMatch('You’re all set!');
+      await authPage.type(authPageObject.$textareaSeedPhraseInput, nonsenseRhymingSeed);
+      await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
 
-    done();
-  }, 150_000);
+      await expect(authPage).toMatch("You've entered your 12-word Secret Key incorrectly");
+      await expect(authPage).not.toMatch('You’re all set!');
+
+      done();
+    }, 60_000);
+
+    test('it does not let you proceed without entering your secret key', async done => {
+      await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
+
+      await expect(authPage).toMatch('You must enter your Secret Key');
+      await expect(authPage).not.toMatch('You’re all set!');
+
+      done();
+    }, 60_000);
+  });
 
   // eslint-disable-next-line jest/no-disabled-tests
   test.skip('signing in with an existing seed phrase', async () => {
@@ -99,5 +117,5 @@ describe('Authentication', () => {
     const appPrivateKey: string = await page.evaluate(el => el.innerText, appPrivateKeyEl);
     expect(appPrivateKey).toBeTruthy();
     expect(appPrivateKey).toEqual(await wallet.identities[0].appPrivateKey(demoPageObject.url));
-  }, 150_000);
+  }, 60_000);
 });
