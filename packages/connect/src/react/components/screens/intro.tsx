@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, BoxProps, Stack } from '@blockstack/ui';
-import { ScreenTemplate } from '../screen';
+import { Box, BoxProps, Stack, Button } from '@blockstack/ui';
+
 import { CheckList } from '../checklist';
 import { Link } from '../link';
 import { AppIcon } from '../app-icon';
@@ -9,6 +9,8 @@ import { useConnect } from '../../hooks/useConnect';
 import { Logo } from '../logo';
 import { useAppDetails } from '../../hooks/useAppDetails';
 import { AppsIcon, EncryptionIcon } from '../vector';
+
+import { Screen, ScreenBody, ScreenActions, ScreenFooter } from '../screen';
 
 const AppElement = ({
   name,
@@ -26,20 +28,19 @@ const AppElement = ({
   </Box>
 );
 
-const Intro = () => {
+export const Intro = () => {
   const { doGoToHowItWorksScreen, doFinishAuth, doStartAuth, isAuthenticating, authOptions } = useConnect();
   const { name, icon } = useAppDetails();
 
   return (
-    <>
-      <ScreenTemplate
-        before={<AppElement mt={5} name={name} icon={icon} />}
-        textAlign="center"
-        noMinHeight
+    <Screen noMinHeight textAlign="center">
+      <AppElement mt={5} name={name} icon={icon} />
+      <ScreenBody
+        fullWidth
         title={`Use ${name} privately and securely with Data Vault`}
         body={[
           'Create your Data Vault to continue.',
-          <Box mx="auto" width="100%" height="1px" bg="#E5E5EC" />,
+          <Box mx="auto" mb={2} width="100%" height="1px" bg="#E5E5EC" />,
           <CheckList
             items={[
               {
@@ -53,10 +54,12 @@ const Intro = () => {
             ]}
           />,
         ]}
-        action={{
-          label: 'Create Data Vault',
-          isLoading: isAuthenticating,
-          onClick: () => {
+      />
+      <ScreenActions>
+        <Button
+          width="100%"
+          isLoading={isAuthenticating}
+          onClick={() => {
             doStartAuth();
             // eslint-disable-next-line @typescript-eslint/no-floating-promises
             authenticate({
@@ -66,40 +69,38 @@ const Intro = () => {
                 doFinishAuth(payload);
               },
             });
-          },
-        }}
-        footer={
-          <>
-            <Stack spacing={4} isInline>
-              <Link
-                onClick={() => {
-                  doStartAuth();
-                  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                  authenticate({
-                    ...authOptions,
-                    finished: payload => {
-                      authOptions.finished && authOptions.finished(payload);
-                      doFinishAuth(payload);
-                    },
-                    sendToSignIn: true,
-                  });
-                }}
-              >
-                Sign in to Data Vault
-              </Link>
-              <Link
-                onClick={() => {
-                  doGoToHowItWorksScreen();
-                }}
-              >
-                How Data Vault works
-              </Link>
-            </Stack>
-          </>
-        }
-      />
-    </>
+          }}
+        >
+          Create Data Vault
+        </Button>
+      </ScreenActions>
+      <ScreenFooter>
+        <Stack spacing={4} mb={6} isInline>
+          <Link
+            onClick={() => {
+              doStartAuth();
+              // eslint-disable-next-line @typescript-eslint/no-floating-promises
+              authenticate({
+                ...authOptions,
+                finished: payload => {
+                  authOptions.finished && authOptions.finished(payload);
+                  doFinishAuth(payload);
+                },
+                sendToSignIn: true,
+              });
+            }}
+          >
+            Sign in to Data Vault
+          </Link>
+          <Link
+            onClick={() => {
+              doGoToHowItWorksScreen();
+            }}
+          >
+            How Data Vault works
+          </Link>
+        </Stack>
+      </ScreenFooter>
+    </Screen>
   );
 };
-
-export { Intro };

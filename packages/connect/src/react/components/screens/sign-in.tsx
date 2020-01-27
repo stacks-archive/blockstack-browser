@@ -1,8 +1,8 @@
 import React from 'react';
 import { Flex, Text } from '@blockstack/ui';
-import { Logo } from '../../logo';
+import { Logo } from '../logo';
 import { useHover } from 'use-events';
-import { useConnect } from '../../../hooks/useConnect';
+import { useConnect } from '../../hooks/useConnect';
 
 const ContinueWithDataVault: React.FC = props => {
   const { authenticate, authOptions } = useConnect();

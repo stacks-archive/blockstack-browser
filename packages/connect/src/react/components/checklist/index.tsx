@@ -21,9 +21,9 @@ const CheckList: React.FC<CheckListProps> = ({ items }) => (
       const { text } = item;
       return (
         <Flex
-          px={5}
-          pb={3}
-          pt={key === 0 ? 0 : 3}
+          px={6}
+          pb={5}
+          pt={key === 0 ? 0 : 5}
           borderBottom={items.length - 1 !== key ? '1px solid' : 'unset'}
           borderColor="inherit"
           align="center"

@@ -3,12 +3,11 @@ import { Text, Box, BoxProps } from '@blockstack/ui';
 import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon';
 
 const Title: React.FC = props => (
-  <Text px={5} width="100%" fontWeight="medium" fontSize={['20px', '24px']} lineHeight={['28px', '32px']} {...props} />
+  <Text width="100%" fontWeight="medium" fontSize={['20px', '24px']} lineHeight={['28px', '32px']} {...props} />
 );
 
 const Pretitle: React.FC = props => (
   <Text
-    px={5}
     pt={5}
     width="100%"
     fontWeight="medium"

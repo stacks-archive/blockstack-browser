@@ -1,9 +1,11 @@
 import React from 'react';
-import { ScreenTemplate } from '../index';
-import { Box, Text, Stack } from '@blockstack/ui';
-import { useAppDetails } from '../../../hooks/useAppDetails';
-import { BlockchainIcon, AppsIcon, EncryptionIcon } from '../../vector';
-import { useConnect } from '../../../hooks/useConnect';
+import { Box, Text, Stack, Button } from '@blockstack/ui';
+
+import { useAppDetails } from '../../hooks/useAppDetails';
+import { BlockchainIcon, AppsIcon, EncryptionIcon } from '../vector';
+import { useConnect } from '../../hooks/useConnect';
+
+import { Screen, ScreenBody, ScreenActions } from '../screen/index';
 
 const howDataVaultWorks = (appName: string) => [
   {
@@ -28,17 +30,17 @@ const howDataVaultWorks = (appName: string) => [
   },
 ];
 
-const HowItWorks: React.FC = () => {
+export const HowItWorks: React.FC = () => {
   const { name } = useAppDetails();
   const { authenticate, authOptions } = useConnect();
 
   return (
-    <>
-      <ScreenTemplate
+    <Screen>
+      <ScreenBody
         pretitle="How it works"
         title={`Data Vault keeps what you do in ${name} private`}
         body={howDataVaultWorks(name).map(({ title, body, icon: Icon }, key) => (
-          <Box px={5} key={key}>
+          <Box px={0} key={key}>
             <Stack spacing={3}>
               {Icon && (
                 <Box size="24px" color="blue" borderRadius="8px">
@@ -50,16 +52,18 @@ const HowItWorks: React.FC = () => {
             </Stack>
           </Box>
         ))}
-        action={{
-          label: 'Create your Data Vault',
-          onClick: () => {
+      />
+      <ScreenActions>
+        <Button
+          width="100%"
+          onClick={() => {
             // eslint-disable-next-line @typescript-eslint/no-floating-promises
             authenticate(authOptions);
-          },
-        }}
-      />
-    </>
+          }}
+        >
+          Create your Data Vault
+        </Button>
+      </ScreenActions>
+    </Screen>
   );
 };
-
-export { HowItWorks };
