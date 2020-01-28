@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
-import { Flex, Box, Text, Input } from '@blockstack/ui';
+import { Flex, Box, Text, Input, Button } from '@blockstack/ui';
+import { ScreenBody, ScreenActions, ScreenFooter, Screen } from '@blockstack/connect';
+
 import { AppIcon } from '../../app-icon';
 import { Link } from '../../../link';
 import { doTrack, CONNECT_SAVED, CONNECT_INCORRECT, CONNECT_BACK } from '../../../../common/track';
@@ -7,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../../../store';
 import { selectAppName, selectSecretKey } from '../../../../store/onboarding/selectors';
 import { ScreenHeader } from '../../header';
-import { ScreenBody, ScreenActions, ScreenFooter, Screen } from '../../screen';
 
 const ErrorText: React.FC = ({ children }) => (
   <Text textAlign="left" display="block" color="#de0014" mt={2}>
@@ -53,11 +54,9 @@ export const Connect: React.FC<ConnectProps> = props => {
           </Box>,
         ]}
       />
-      <ScreenActions
-        action={{
-          label: 'Continue',
-          testAttr: 'button-confirm-reenter-seed-phrase',
-          onClick: () => {
+      <ScreenActions>
+        <Button
+          onClick={() => {
             if (seedInput !== seed) {
               doTrack(CONNECT_INCORRECT);
               setHasAttemptedContinue(true);
@@ -65,9 +64,13 @@ export const Connect: React.FC<ConnectProps> = props => {
             }
             doTrack(CONNECT_SAVED);
             props.next();
-          },
-        }}
-      />
+          }}
+          width="100%"
+          data-test="button-confirm-reenter-seed-phrase"
+        >
+          Continue
+        </Button>
+      </ScreenActions>
       <ScreenFooter>
         <Flex>
           <Text>Didn’t save your Secret Key?</Text>{' '}
@@ -82,7 +85,6 @@ export const Connect: React.FC<ConnectProps> = props => {
             Go Back
           </Link>
         </Flex>
-        <Link>Help</Link>
       </ScreenFooter>
     </Screen>
   );

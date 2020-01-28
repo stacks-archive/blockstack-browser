@@ -47,6 +47,7 @@ export const ScreenHeader = ({ appIcon, title = 'Data Vault', hideIcon, appName,
   return (
     <Flex
       p={[4, 5]}
+      mb={6}
       borderBottom="1px solid"
       borderBottomColor="inherit"
       borderRadius={['unset', '6px 6px 0 0']}

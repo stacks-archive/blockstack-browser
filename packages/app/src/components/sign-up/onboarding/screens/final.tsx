@@ -1,14 +1,14 @@
 import React from 'react';
-import { AppIcon } from '../../app-icon';
-
 import { useSelector } from 'react-redux';
+import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
+
 import { AppState } from '../../../../store';
 import { selectAppName } from '../../../../store/onboarding/selectors';
-import { Wallet } from '@blockstack/keychain';
-import { Screen, ScreenBody, ScreenActions } from '../../screen';
+import { AppIcon } from '../../app-icon';
+import { Button } from '@blockstack/ui';
 
 interface FinalProps {
-  next: (wallet: Wallet) => void;
+  next: () => void;
   back: () => void;
 }
 
@@ -21,13 +21,11 @@ export const Final: React.FC<FinalProps> = props => {
         title={`You’re all set! ${appName} has been connected to your Data Vault`}
         body={[`Everything you do in ${appName} will be private, secure, and only accessible with your Secret Key.`]}
       />
-      <ScreenActions
-        action={{
-          label: 'Done',
-          testAttr: 'button-connect-flow-finished',
-          onClick: props.next,
-        }}
-      />
+      <ScreenActions>
+        <Button width="100%" onClick={() => props.next()} data-test="button-connect-flow-finished">
+          Done
+        </Button>
+      </ScreenActions>
     </Screen>
   );
 };

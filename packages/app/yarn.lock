@@ -846,13 +846,13 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blockstack/connect@^0.3.0-beta.4":
-  version "0.3.0-beta.4"
-  resolved "https://registry.yarnpkg.com/@blockstack/connect/-/connect-0.3.0-beta.4.tgz#3732a72bbea547a26085e04dd9befc456e5e162d"
-  integrity sha512-3/uJxX2GHY5CIPd7ALwLZZyNd61Ka3a79UYiFBVLgwEmOGXQIbMnDrX8wOiENwns29UgyojOyKa9Tp1gBAF2tQ==
+"@blockstack/connect@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@blockstack/connect/-/connect-0.2.0.tgz#6421b7d4d5ea8befcc21d7e8a7b5fda3617a2c0c"
+  integrity sha512-i2hr4N6I9SUaxIxt27tiJbBIRgs6DwuotE7uvcb8RnODg3oZ107VsJWrkYWr1oxcQCwTefGsKmqsfGYn3XopNA==
   dependencies:
     "@blockstack/ui" "^1.0.0-alpha.24"
-    mdi-react "^6.5.0"
+    mdi-react "^6.6.0"
     styled-components "^5.0.0"
     use-events "^1.4.1"
 
@@ -6840,7 +6840,7 @@ md5.js@^1.3.4:
     inherits "^2.0.1"
     safe-buffer "^5.1.2"
 
-mdi-react@^6.5.0, mdi-react@^6.6.0:
+mdi-react@^6.6.0:
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/mdi-react/-/mdi-react-6.6.0.tgz#423d770f956119aa2e4c7e4c121508209c36e5d0"
   integrity sha512-HF+Madrr2bROpLoAJaM5kLA3tevXmvnC3aCO5bb3czu6Tc5OogW3kpgpVAX64CAMVkgzWUd+IjCNKWMbAHdvCA==

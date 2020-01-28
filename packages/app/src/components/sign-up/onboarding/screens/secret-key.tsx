@@ -1,16 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Toast } from '../../toast';
+import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
 
+import { Toast } from '../../toast';
 import { Card } from '../../card';
 import { SeedTextarea } from '../../seed-textarea';
-
 import { doTrack, SECRET_KEY_INTRO_COPIED } from '../../../../common/track';
-
 import { AppState } from '../../../../store';
 import { selectSecretKey } from '../../../../store/onboarding/selectors';
 import { ScreenHeader } from '../../header';
-import { Screen, ScreenBody, ScreenActions } from '../../screen';
+import { Button } from '@blockstack/ui';
 
 interface SecretKeyProps {
   next: () => void;
@@ -43,21 +42,23 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
             </Card>,
           ]}
         />
-        <ScreenActions
-          action={{
-            label: 'Copy Secret Key',
-            testAttr: 'button-copy-secret-key',
-            onClick: () => {
+        <ScreenActions>
+          <Button
+            data-test="button-copy-secret-key"
+            width="100%"
+            isDisabled={copied}
+            onClick={() => {
               doTrack(SECRET_KEY_INTRO_COPIED);
               const input: HTMLInputElement = document.querySelector('.hidden-secret-key') as HTMLInputElement;
               input.select();
               input.setSelectionRange(0, 99999);
               document.execCommand('copy');
               setCopiedState(true);
-            },
-            disabled: copied,
-          }}
-        />
+            }}
+          >
+            Copy Secret Key
+          </Button>
+        </ScreenActions>
       </Screen>
       <Toast show={copied} />
     </>

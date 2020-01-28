@@ -23,7 +23,6 @@ module.exports = {
     popup: path.join(sourceRootPath, 'extension', 'index.tsx'),
     inpage: path.join(sourceRootPath, 'extension', 'inpage.ts'),
     'message-bus': path.join(sourceRootPath, 'extension', 'content-scripts', 'message-bus.ts'),
-
     options: path.join(sourceRootPath, 'index.tsx'),
     actions: path.join(sourceRootPath, 'actions.tsx'),
   },
@@ -34,6 +33,10 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
     plugins: [new TsconfigPathsPlugin()],
+    alias: {
+      react: path.resolve('./node_modules/react'),
+      '@blockstack/ui': path.resolve('./node_modules/@blockstack/ui'),
+    },
   },
   module: {
     rules: [

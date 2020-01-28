@@ -23,7 +23,7 @@
   "prettier": "@blockstack/prettier-config",
   "license": "MIT",
   "dependencies": {
-    "@blockstack/connect": "^0.3.0-beta.4",
+    "@blockstack/connect": "^0.2.0",
     "@blockstack/keychain": "^0.1.2",
     "@blockstack/prettier-config": "^0.0.5",
     "@blockstack/ui": "^1.0.0-alpha.24",

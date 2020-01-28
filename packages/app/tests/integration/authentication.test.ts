@@ -13,7 +13,7 @@ async function bootstrapConnectModalPageTest(demo: DemoPageObject, auth: AuthPag
   const newWindow = await browser.waitForTarget(target => target.url().startsWith(auth.url));
   const authPage = await newWindow.page();
   expect(authPage.url().startsWith(auth.url)).toBeTruthy();
-  await authPage.waitFor(auth.$textareaReadOnlySeedPhrase);
+  await authPage.waitFor(auth.$textareaReadOnlySeedPhrase, { timeout: 15000 });
   return { authPage };
 }
 
@@ -73,7 +73,7 @@ describe('Authentication', () => {
       await authPage.waitFor(authPageObject.$buttonConfirmReenterSeedPhrase);
     }
 
-    beforeEach(async () => await navigateThroughToSecretKeyPage());
+    beforeEach(async () => navigateThroughToSecretKeyPage(), 15_000);
 
     test('it does not let you proceed when entering an incorrect seed phrase', async done => {
       const nonsenseRhymingSeed = 'You might encounter some delays, if you forget your seed phrase';
