@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.25
+
+- Add `textTransform` prop to base BoxProps.
+
 ## 1.0.0-alpha.24
 
 - Update layout for button to center elements.
