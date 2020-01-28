@@ -14,19 +14,17 @@ const assumeTextStyle = (as: string | React.ElementType) => {
       return undefined;
   }
 };
-const Text = forwardRef<any, PseudoBoxProps>(
-  ({ textStyle, as = 'span', ...rest }, ref) => {
-    return (
-      <PseudoBox
-        ref={ref}
-        as={as}
-        whiteSpace="unset"
-        display="inline"
-        textStyle={textStyle || assumeTextStyle(as)}
-        {...rest}
-      />
-    );
-  }
-);
+const Text = forwardRef<any, PseudoBoxProps>(({ textStyle, as = 'span', ...rest }, ref) => {
+  return (
+    <PseudoBox
+      ref={ref}
+      as={as}
+      whiteSpace="unset"
+      display="inline"
+      textStyle={textStyle || assumeTextStyle(as)}
+      {...rest}
+    />
+  );
+});
 
 export { Text };

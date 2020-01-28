@@ -1,9 +1,11 @@
 module.exports = {
+  ignorePatterns: ['test-app/', 'node_modules/'],
   extends: [
-    'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:prettier/recommended',
-    'prettier/@typescript-eslint'
+    'plugin:react/recommended',
+    'prettier/@typescript-eslint',
     // 'plugin:jsx-a11y/recommended'
   ],
   parser: '@typescript-eslint/parser',
@@ -11,13 +13,13 @@ module.exports = {
     ecmaVersion: '2018',
     sourceType: 'module',
     project: './tsconfig.json',
-    tsconfigRootDir: __dirname
+    tsconfigRootDir: __dirname,
   },
   plugins: ['@typescript-eslint', 'react'],
   env: {
     browser: true,
     node: true,
-    es6: true
+    es6: true,
   },
   rules: {
     quotes: [2, 'single', { avoidEscape: true }],
@@ -31,22 +33,22 @@ module.exports = {
       'error',
       {
         multiline: {
-          delimiter: 'none',
-          requireLast: true
+          delimiter: 'semi',
+          requireLast: true,
         },
         singleline: {
           delimiter: 'semi',
-          requireLast: false
-        }
-      }
+          requireLast: false,
+        },
+      },
     ],
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     '@typescript-eslint/array-type': 'error',
-    '@typescript-eslint/semi': ['error', 'never'],
+    // '@typescript-eslint/semi': ['error', 'never'],
     '@typescript-eslint/no-misused-promises': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/require-await': 'error',
-    '@typescript-eslint/promise-function-async': 0,
+    '@typescript-eslint/promise-function-async': 'error',
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
@@ -59,7 +61,8 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
     'react/jsx-uses-vars': [2],
-    'react/prop-types': 0,
-    'react/display-name': 0
-  }
-}
+    'react/jsx-key': [0],
+    'react/prop-types': [0],
+    'react/display-name': [0],
+  },
+};

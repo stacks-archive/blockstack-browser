@@ -1,9 +1,4 @@
-import {
-  ButtonModes,
-  ButtonSizes,
-  CustomStyles,
-  IButtonStyles,
-} from '../button';
+import { ButtonModes, ButtonSizes, CustomStyles, IButtonStyles } from '../button';
 
 const baseProps = {
   display: 'inline-flex',
@@ -78,13 +73,7 @@ const linkVariantProps = () => {
   };
 };
 
-const solidVariantProps = ({
-  mode,
-  customStyles,
-}: {
-  mode: ButtonModes;
-  customStyles: CustomStyles;
-}) => {
+const solidVariantProps = ({ mode, customStyles }: { mode: ButtonModes; customStyles: CustomStyles }) => {
   const style = {
     primary: {
       bg: 'blue',

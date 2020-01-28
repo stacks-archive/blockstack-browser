@@ -31,24 +31,14 @@ const InputAddon = ({ placement = 'left', ...props }: InputAddonProps) => {
     ..._placement[placement],
   };
 
-  return (
-    <Box
-      {...styleProps}
-      {...props}
-      css={{ 'input:focus + &': { zIndex: -1 } }}
-    />
-  );
+  return <Box {...styleProps} {...props} css={{ 'input:focus + &': { zIndex: -1 } }} />;
 };
 
 InputAddon.propTypes = {
   placement: oneOf(['left', 'right']),
 };
 
-const InputLeftAddon = (props: InputAddonProps) => (
-  <InputAddon placement="left" {...props} />
-);
-const InputRightAddon = (props: InputAddonProps) => (
-  <InputAddon placement="right" {...props} />
-);
+const InputLeftAddon = (props: InputAddonProps) => <InputAddon placement="left" {...props} />;
+const InputRightAddon = (props: InputAddonProps) => <InputAddon placement="right" {...props} />;
 
 export { InputAddon, InputLeftAddon, InputRightAddon };

@@ -7,16 +7,7 @@ import { InputElementProps, PositionedInputElementProps } from './types';
 export * from './types';
 
 const InputElement = forwardRef<any, InputElementProps>(
-  (
-    {
-      size = 'default',
-      children,
-      placement = 'left',
-      disablePointerEvents = false,
-      ...props
-    },
-    ref
-  ) => {
+  ({ size = 'default', children, placement = 'left', disablePointerEvents = false, ...props }, ref) => {
     const height = inputSizes[size] && inputSizes[size].height;
     const fontSize = inputSizes[size] && inputSizes[size].fontSize;
 
@@ -44,12 +35,12 @@ const InputElement = forwardRef<any, InputElementProps>(
   }
 );
 
-const InputLeftElement = forwardRef<any, PositionedInputElementProps>(
-  (props, ref) => <InputElement ref={ref} placement="left" {...props} />
-);
+const InputLeftElement = forwardRef<any, PositionedInputElementProps>((props, ref) => (
+  <InputElement ref={ref} placement="left" {...props} />
+));
 
-const InputRightElement = forwardRef<any, PositionedInputElementProps>(
-  (props, ref) => <InputElement ref={ref} placement="right" {...props} />
-);
+const InputRightElement = forwardRef<any, PositionedInputElementProps>((props, ref) => (
+  <InputElement ref={ref} placement="right" {...props} />
+));
 
 export { InputElement, InputLeftElement, InputRightElement };

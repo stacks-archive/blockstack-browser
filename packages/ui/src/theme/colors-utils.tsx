@@ -52,10 +52,7 @@ export const colorEmphasis = (color: string, emphasis: Emphasis) => {
   }
 };
 
-export const generateStripe = ({
-  size = '1rem',
-  color = 'rgba(255, 255, 255, 0.15)',
-}) => css`
+export const generateStripe = ({ size = '1rem', color = 'rgba(255, 255, 255, 0.15)' }) => css`
   background-image: linear-gradient(
     45deg,
     ${color} 25%,

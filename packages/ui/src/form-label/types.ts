@@ -11,6 +11,4 @@ interface LabelPropsBase {
   children?: React.ReactNode;
 }
 
-export type FormLabelProps = LabelPropsBase &
-  BoxProps &
-  React.LabelHTMLAttributes<HTMLLabelElement>;
+export type FormLabelProps = LabelPropsBase & BoxProps & React.LabelHTMLAttributes<HTMLLabelElement>;

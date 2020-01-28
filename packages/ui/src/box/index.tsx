@@ -44,6 +44,4 @@ export const StyledBox = styled.div<BoxProps>`
   ${extraConfig};
 `;
 
-export const Box = forwardRef((props: BoxProps, ref: Ref<HTMLDivElement>) => (
-  <StyledBox ref={ref} {...props} />
-));
+export const Box = forwardRef((props: BoxProps, ref: Ref<HTMLDivElement>) => <StyledBox ref={ref} {...props} />);

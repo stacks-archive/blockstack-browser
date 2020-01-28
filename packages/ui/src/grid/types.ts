@@ -16,6 +16,4 @@ interface GridPropsBase {
   row?: StyledSystem.GridRowProps['gridRow'];
 }
 
-export type GridProps = BoxProps &
-  GridPropsBase &
-  React.RefAttributes<HTMLElement>;
+export type GridProps = BoxProps & GridPropsBase & React.RefAttributes<HTMLElement>;

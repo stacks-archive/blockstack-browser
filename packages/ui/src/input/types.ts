@@ -59,18 +59,9 @@ export interface InputPropsBase<T = HTMLInputElement> {
   textStyle?: string;
 }
 
-type OmittedTypes =
-  | 'size'
-  | 'disabled'
-  | 'required'
-  | 'checked'
-  | 'defaultChecked'
-  | 'readOnly';
+type OmittedTypes = 'size' | 'disabled' | 'required' | 'checked' | 'defaultChecked' | 'readOnly';
 
-type InputHTMLAttributes = Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  OmittedTypes
->;
+type InputHTMLAttributes = Omit<React.InputHTMLAttributes<HTMLInputElement>, OmittedTypes>;
 
 export type InputProps<T = HTMLInputElement> = InputPropsBase<T> &
   PseudoBoxProps &

@@ -4,13 +4,8 @@ import { theme, Theme } from '../theme';
 
 export const ThemeContext = React.createContext(theme);
 
-const ThemeProvider: React.FC<{ theme: Theme; children: any }> = ({
-  theme,
-  children,
-}) => (
-  <StyledComponentsThemeProvider theme={theme}>
-    {children}
-  </StyledComponentsThemeProvider>
+const ThemeProvider: React.FC<{ theme: Theme; children: any }> = ({ theme, children }) => (
+  <StyledComponentsThemeProvider theme={theme}>{children}</StyledComponentsThemeProvider>
 );
 
 ThemeProvider.defaultProps = {

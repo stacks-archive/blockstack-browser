@@ -6,11 +6,7 @@ import { InputLeftElement, InputRightElement } from '../input-element';
 import { useTheme } from '../theme-provider';
 import { InputGroupProps } from './types';
 
-const InputGroup = ({
-  children,
-  size = 'default',
-  ...props
-}: InputGroupProps) => {
+const InputGroup = ({ children, size = 'default', ...props }: InputGroupProps) => {
   const { sizes } = useTheme();
   const height = inputSizes[size] && inputSizes[size].height;
   let pl: string | null = null;

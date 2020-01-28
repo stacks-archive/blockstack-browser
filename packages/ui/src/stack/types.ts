@@ -11,7 +11,7 @@ interface StackPropsBase {
   /**
    * The content of the stack.
    */
-  children?: React.ReactNode;
+  children?: React.ReactNode[] | React.ReactNode;
   /**
    * The space between each stack item
    */

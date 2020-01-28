@@ -80,6 +80,4 @@ export interface IButtonStyles {
   customStyles: CustomStyles;
 }
 
-export type ButtonProps = IButtonPropsBase &
-  PseudoBoxProps &
-  React.RefAttributes<HTMLButtonElement>;
+export type ButtonProps = IButtonPropsBase & PseudoBoxProps & React.RefAttributes<HTMLButtonElement>;
