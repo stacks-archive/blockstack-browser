@@ -41,7 +41,11 @@ export interface ITextAlign {
 }
 
 export interface ITextDecoration {
-  textDecoration?: StyledSystem.ResponsiveValue<CSS.TextDecorationProperty> | CSS.TextDecorationProperty;
+  textDecoration?: StyledSystem.ResponsiveValue<CSS.TextDecorationProperty<any>> | CSS.TextDecorationProperty<any>;
+}
+
+export interface ITextTransform {
+  textTransform?: StyledSystem.ResponsiveValue<CSS.TextTransformProperty> | CSS.TextTransformProperty;
 }
 
 export type TextStyle =
@@ -76,6 +80,7 @@ export type TypographyProps = Omit<
   | 'textStyle'
   | 'whiteSpace'
   | 'textDecoration'
+  | 'textTransform'
 > &
   WhiteSpace;
 
@@ -118,6 +123,7 @@ export type ModifiedStyledSystemProps = TypographyProps &
   IFontWeight &
   ILineHeight &
   ITextDecoration &
+  ITextTransform &
   IOtherProps;
 
 export type BoxHTMLProps = React.RefAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>;
