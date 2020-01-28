@@ -1,17 +1,17 @@
 import React from 'react';
 
-import { Stack } from '@blockstack/ui';
+import { Stack, BoxProps } from '@blockstack/ui';
 import { Title, Body, Pretitle } from '../typography';
 
-interface ScreenBodyProps {
+export interface ScreenBodyProps extends BoxProps {
   title: string;
   pretitle?: string | React.ElementType;
   body?: (string | JSX.Element)[];
   fullWidth?: boolean;
 }
 
-export const ScreenBody: React.FC<ScreenBodyProps> = ({ title, body, pretitle, fullWidth }) => (
-  <Stack spacing={2} mx={fullWidth ? 0 : 6}>
+export const ScreenBody = ({ title, body, pretitle, fullWidth, ...rest }: ScreenBodyProps) => (
+  <Stack spacing={2} mx={fullWidth ? 0 : 6} {...rest}>
     {pretitle && <Pretitle>{pretitle}</Pretitle>}
     <Title>{title}</Title>
     {body && (
