@@ -26,6 +26,7 @@ module.exports = {
     "no-param-reassign": "error",
     "brace-style": 2,
     "no-empty": "off",
+    "quote-props": [2, 'as-needed'],
     //"max-len": ["error", { "code": 100 }],
     "@typescript-eslint/indent": [2, 2, {
       "FunctionDeclaration": { "parameters": "first" },

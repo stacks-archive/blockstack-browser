@@ -1,10 +1,19 @@
 import { TokenSigner } from 'jsontokens'
 import { getPublicKeyFromPrivate } from 'blockstack/lib/keys'
 import { randomBytes } from 'blockstack/lib/encryption/cryptoRandom'
+import { ecPairToAddress, hexStringToECPair } from 'blockstack'
+import { GaiaHubConfig } from 'blockstack/lib/storage/hub'
+
+export const DEFAULT_GAIA_HUB = 'https://gaia.blockstack.org/hub/'
+
+interface HubInfo {
+  challenge_text?: string
+  read_url_prefix: string
+}
 
 export const getHubInfo = async (hubUrl: string) => {
   const response = await fetch(`${hubUrl}/hub_info`)
-  const data = await response.json()
+  const data: HubInfo = await response.json()
   return data
 }
 
@@ -29,4 +38,38 @@ export const makeGaiaAssociationToken = async (secretKeyHex: string, childPublic
   const tokenSigner = new TokenSigner('ES256K', signerKeyHex)
   const token = await tokenSigner.sign(payload)
   return token
+}
+
+interface ConnectToGaiaOptions {
+  hubInfo: HubInfo
+  privateKey: string
+  gaiaHubUrl: string
+}
+
+export const connectToGaiaHubWithConfig = async ({ hubInfo, privateKey, gaiaHubUrl }: ConnectToGaiaOptions): Promise<GaiaHubConfig> => {
+  const readURL = hubInfo.read_url_prefix
+  const token = makeGaiaAuthToken({ hubInfo, privateKey, gaiaHubUrl })
+  const address = await ecPairToAddress(hexStringToECPair(privateKey
+                                    + (privateKey.length === 64 ? '01' : '')))
+  return {
+    url_prefix: readURL,
+    address,
+    token,
+    server: gaiaHubUrl
+  }
+}
+
+const makeGaiaAuthToken = ({ hubInfo, privateKey, gaiaHubUrl }: ConnectToGaiaOptions) => {
+  const challengeText = hubInfo.challenge_text
+  const iss = getPublicKeyFromPrivate(privateKey)
+
+  const salt = randomBytes(16).toString('hex')
+  const payload = {
+    gaiaChallenge: challengeText,
+    gaiaHubUrl,
+    iss,
+    salt
+  }
+  const token = new TokenSigner('ES256K', privateKey).sign(payload)
+  return `v1:${token}`
 }

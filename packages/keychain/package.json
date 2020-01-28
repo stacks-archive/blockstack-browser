@@ -1,17 +1,20 @@
 {
   "name": "@blockstack/keychain",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "A package for managing Blockstack keychains",
-  "main": "dist/index.js",
-  "umd:main": "dist/keychain.umd.production.js",
-  "module": "dist/keychain.esm.js",
+  "main": "./dist/index.js",
+  "umd:main": "./dist/keychain.umd.production.js",
+  "module": "./dist/keychain.esm.js",
   "author": "Hank Stoever",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/keychain.cjs.production.min.js",
   "license": "MIT",
   "files": [
     "dist"
   ],
   "typings": "dist/index.d.ts",
   "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@types/jest": "^24.0.18",
     "@types/node": "^10.14.17",
     "@types/triplesec": "^3.0.0",
@@ -23,11 +26,12 @@
     "eslint": "^6.3.0",
     "eslint-plugin-jest": "^22.16.0",
     "jest": "^24.9.0",
+    "jest-fetch-mock": "^2.1.2",
     "npm-run-all": "^4.1.5",
     "shx": "^0.3.2",
     "ts-jest": "^24.0.2",
     "tsdx": "^0.11.0",
-    "typescript": "^3.6.2"
+    "typescript": "^3.7.3"
   },
   "scripts": {
     "clean": "shx rm -rf ./lib*/",
@@ -39,7 +43,7 @@
     "build:cjs:watch": "tsc --outDir ./lib -m commonjs -t es2017 --watch",
     "build:esm:watch": "tsc --outDir ./lib-esm -m es6 -t es2017 --watch",
     "test": "jest",
-    "test-watch": "jest --watch --coverage=false",
+    "test:watch": "jest --watch --coverage=false",
     "lint": "eslint --ext .ts ./src ./tests -f unix",
     "lint:fix": "eslint --fix --ext .ts ./src ./tests -f unix",
     "depcheck": "depcheck --ignores='@types/*,eslint*,safe-buffer,codecov,@typescript-eslint/*'",
