@@ -1,17 +1,17 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
+import { ScreenHeader } from '@components/connected-screen-header';
+
 import { Button } from '@blockstack/ui';
 
-import { Collapse } from '../../collapse';
-import { AppState } from '../../../../store';
+import { Collapse } from '@components/collapse';
+import { AppState } from '@store';
 
-import { selectAppName } from '../../../../store/onboarding/selectors';
-import { faqs } from '../data';
+import { selectAppName } from '@store/onboarding/selectors';
+import { faqs } from '@components/onboarding/data';
 
-import { doTrack, SECRET_KEY_INSTR_CONFIRMED } from '../../../../common/track';
-
-import { ScreenHeader } from '../../header';
+import { doTrack, SECRET_KEY_INSTR_CONFIRMED } from '@common/track';
 
 interface SaveKeyProps {
   next: () => void;
@@ -21,7 +21,7 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
   const appName = useSelector((state: AppState) => selectAppName(state));
   return (
     <Screen>
-      <ScreenHeader appIcon />
+      <ScreenHeader />
       <ScreenBody
         title="Save your Secret Key"
         body={[

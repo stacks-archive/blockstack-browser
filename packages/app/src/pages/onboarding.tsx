@@ -1,7 +1,6 @@
 import React from 'react';
 import { ThemeProvider, theme, CSSReset } from '@blockstack/ui';
-
-import { Onboarding } from '../components/sign-up/onboarding';
+import { Onboarding } from '@components/onboarding';
 
 export const OnboardingApp: React.FC = () => {
   return (

@@ -1,10 +1,8 @@
 import React from 'react';
-import { Flex, Box, Text } from '@blockstack/ui';
+import { Flex, Box, Text, BoxProps } from '@blockstack/ui';
 import ChevronDownIcon from 'mdi-react/ChevronDownIcon';
 import { useHover } from 'use-events';
-import { doTrack } from '../../../common/track';
-import { BoxProps } from '@blockstack/ui/dist/box';
-// import { doTrack } from '../../../common/track';
+import { doTrack } from '@common/track';
 
 interface TitleProps extends BoxProps {
   isFirst: boolean;

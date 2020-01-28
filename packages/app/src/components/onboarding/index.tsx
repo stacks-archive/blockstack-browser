@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Create, SecretKey, Connect, SaveKey, SignIn } from './screens';
 import { DecryptRecoveryCode } from './screens/decrypt-recovery-code';
-import { doChangeScreen, doSaveAuthRequest } from '../../../store/onboarding/actions';
+import { doChangeScreen, doSaveAuthRequest } from '@store/onboarding/actions';
 import { useSelector, useDispatch } from 'react-redux';
-import { AppState } from '../../../store';
-import { ScreenName } from '../../../store/onboarding/types';
-import { selectCurrentWallet } from '../../../store/wallet/selectors';
-import { selectCurrentScreen, selectDecodedAuthRequest, selectAuthRequest } from '../../../store/onboarding/selectors';
-import { authenticationInit, finalizeAuthResponse } from '../../../common/utils';
+import { AppState } from '@store';
+import { ScreenName } from '@store/onboarding/types';
+import { selectCurrentWallet } from '@store/wallet/selectors';
+import { selectCurrentScreen, selectDecodedAuthRequest, selectAuthRequest } from '@store/onboarding/selectors';
+import { authenticationInit, finalizeAuthResponse } from '@common/utils';
 
 const RenderScreen = ({ ...rest }) => {
   const dispatch = useDispatch();

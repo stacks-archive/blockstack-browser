@@ -1,14 +1,14 @@
 import React, { useState, ChangeEvent } from 'react';
-import { Flex, Box, Text, Input, Button } from '@blockstack/ui';
-import { ScreenBody, ScreenActions, ScreenFooter, Screen } from '@blockstack/connect';
-
-import { AppIcon } from '../../app-icon';
-import { Link } from '../../../link';
-import { doTrack, CONNECT_SAVED, CONNECT_INCORRECT, CONNECT_BACK } from '../../../../common/track';
+import { Flex, Box, Button, Text, Input } from '@blockstack/ui';
+import { AppIcon } from '@components/app-icon';
+import { Link } from '@components/link';
+import { doTrack, CONNECT_SAVED, CONNECT_INCORRECT, CONNECT_BACK } from '@common/track';
 import { useSelector } from 'react-redux';
-import { AppState } from '../../../../store';
-import { selectAppName, selectSecretKey } from '../../../../store/onboarding/selectors';
-import { ScreenHeader } from '../../header';
+import { AppState } from '@store';
+import { selectAppName, selectSecretKey } from '@store/onboarding/selectors';
+
+import { ScreenBody, ScreenActions, ScreenFooter, Screen } from '@blockstack/connect';
+import { ScreenHeader } from '@components/connected-screen-header';
 
 const ErrorText: React.FC = ({ children }) => (
   <Text textAlign="left" display="block" color="#de0014" mt={2}>
@@ -32,7 +32,7 @@ export const Connect: React.FC<ConnectProps> = props => {
   const error = hasAttemptedContinue && !isSeedPhraseCorrect;
   return (
     <Screen textAlign="center">
-      <ScreenHeader appIcon />
+      <ScreenHeader />
       <AppIcon />
       <ScreenBody
         title={`Connect ${appName} to your Data Vault`}

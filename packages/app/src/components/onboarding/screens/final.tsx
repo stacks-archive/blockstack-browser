@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
 
-import { AppState } from '../../../../store';
-import { selectAppName } from '../../../../store/onboarding/selectors';
+import { AppState } from '@store';
+import { selectAppName } from '@store/onboarding/selectors';
+import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
 import { AppIcon } from '../../app-icon';
 import { Button } from '@blockstack/ui';
 

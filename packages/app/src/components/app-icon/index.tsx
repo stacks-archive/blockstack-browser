@@ -1,12 +1,9 @@
 import React from 'react';
 import { Box } from '@blockstack/ui';
-
-import { Image } from '../../image';
-
+import { Image } from '@components/image';
 import { useSelector } from 'react-redux';
-
-import { AppState } from '../../../store';
-import { selectAppName, selectAppIcon } from '../../../store/onboarding/selectors';
+import { AppState } from '@store';
+import { selectAppName, selectAppIcon } from '@store/onboarding/selectors';
 
 const AppIcon: React.FC = ({ ...rest }) => {
   const appIcon = useSelector((state: AppState) => selectAppIcon(state));

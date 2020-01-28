@@ -1,10 +1,9 @@
 import React from 'react';
-import { Box, PseudoBox, Flex, Text } from '@blockstack/ui';
-import { Logo } from '../../logo';
+import { Box, PseudoBox, Flex, Text, BoxProps } from '@blockstack/ui';
+import { Logo } from '../logo';
 import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
-import { Image } from '../../image';
-import { BoxProps } from '@blockstack/ui/dist/box';
+import { Image } from '@components/image';
 
 interface ModalContextTypes {
   isOpen: boolean;

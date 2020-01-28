@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Box, Spinner, Flex, Text } from '@blockstack/ui';
 import { Screen, ScreenBody } from '@blockstack/connect';
+import { ScreenHeader } from '@components/connected-screen-header';
 
-import { doCreateSecretKey } from '../../../../store/onboarding/actions';
-import { ScreenHeader } from '../../header';
+import { doCreateSecretKey } from '@store/onboarding/actions';
 
 interface MockData {
   title: string;
@@ -64,7 +64,7 @@ export const Create: React.FC<CreateProps> = props => {
 
   return (
     <Screen textAlign="center">
-      <ScreenHeader appIcon />
+      <ScreenHeader />
       {state.imageUrl === '' ? (
         undefined
       ) : (

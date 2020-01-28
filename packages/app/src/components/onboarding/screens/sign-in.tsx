@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
+import { ScreenHeader } from '@components/connected-screen-header';
 import { Box, Text, Input, Flex, Button } from '@blockstack/ui';
+import { AppIcon } from '@components/app-icon';
+import { Link } from '@components/link';
 
-import { AppIcon } from '../../app-icon';
-import { doTrack, SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '../../../../common/track';
-import { doChangeScreen, doSetMagicRecoveryCode } from '../../../../store/onboarding/actions';
-import { ScreenName, DEFAULT_PASSWORD } from '../../../../store/onboarding/types';
-import { AppState } from '../../../../store';
-import { selectAppName } from '../../../../store/onboarding/selectors';
-import { doStoreSeed } from '../../../../store/wallet';
-import { ScreenHeader } from '../../header';
-import { Link } from '../../../link';
+import { useDispatch, useSelector } from 'react-redux';
+import { doTrack, SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '@common/track';
+import { doChangeScreen, doSetMagicRecoveryCode } from '@store/onboarding/actions';
+import { ScreenName, DEFAULT_PASSWORD } from '@store/onboarding/types';
+import { AppState } from '@store';
+import { selectAppName } from '@store/onboarding/selectors';
+import { doStoreSeed } from '@store/wallet';
 
 interface SignInProps {
   next: () => void;
@@ -27,7 +27,7 @@ export const SignIn: React.FC<SignInProps> = props => {
 
   return (
     <Screen isLoading={isLoading} textAlign="center">
-      <ScreenHeader appIcon title="Continue with Data Vault" />
+      <ScreenHeader title="Continue with Data Vault" />
       <AppIcon />
       <ScreenBody
         title={`Sign into ${appName}`}

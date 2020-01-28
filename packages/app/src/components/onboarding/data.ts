@@ -1,9 +1,4 @@
-import {
-  SECRET_KEY_FAQ_WHERE,
-  SECRET_KEY_FAQ_LOSE,
-  SECRET_KEY_FAQ_WHEN,
-  SECRET_KEY_FAQ_PASSWORD,
-} from '../../../common/track';
+import { SECRET_KEY_FAQ_WHERE, SECRET_KEY_FAQ_LOSE, SECRET_KEY_FAQ_WHEN, SECRET_KEY_FAQ_PASSWORD } from '@common/track';
 
 const faqs = (appName: string) => {
   return [

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { AppState } from '@store';
+import { selectMagicRecoveryCode } from '@store/onboarding/selectors';
+import { doTrack, SIGN_IN_CORRECT } from '@common/track';
+import { doStoreSeed } from '@store/wallet/actions';
+import { DEFAULT_PASSWORD } from '@store/onboarding/types';
+
 import { Box, Input, Text, Button } from '@blockstack/ui';
 import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
+import { ScreenHeader } from '@components/connected-screen-header';
 import { decrypt } from '@blockstack/keychain';
-
-import { AppState } from '../../../../store';
-import { selectMagicRecoveryCode } from '../../../../store/onboarding/selectors';
-import { doTrack, SIGN_IN_CORRECT } from '../../../../common/track';
-import { doStoreSeed } from '../../../../store/wallet/actions';
-import { DEFAULT_PASSWORD } from '../../../../store/onboarding/types';
-import { ScreenHeader } from '../../header';
 
 interface RecoveryProps {
   next: () => void;
@@ -24,7 +24,7 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
   const recoveryCode = useSelector((state: AppState) => selectMagicRecoveryCode(state) as string);
   return (
     <Screen isLoading={loading}>
-      <ScreenHeader appIcon />
+      <ScreenHeader />
       <ScreenBody
         title="Enter your password"
         body={[
