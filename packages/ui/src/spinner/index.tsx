@@ -65,4 +65,6 @@ const Spinner = forwardRef<any, SpinnerProps>(
   }
 );
 
+Spinner.displayName = "Spinner"
+
 export { Spinner };

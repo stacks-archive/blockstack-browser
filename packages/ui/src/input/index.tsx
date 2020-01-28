@@ -50,4 +50,6 @@ Input.defaultProps = {
   focusBorderColor: 'blue.300',
 };
 
+Input.displayName = 'Input';
+
 export { Input };

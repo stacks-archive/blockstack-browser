@@ -27,4 +27,6 @@ const Text = forwardRef<any, PseudoBoxProps>(({ textStyle, as = 'span', ...rest 
   );
 });
 
+Text.displayName = 'Text';
+
 export { Text };

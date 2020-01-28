@@ -37,4 +37,6 @@ const Stack = forwardRef<any, StackProps>(
   }
 );
 
+Stack.displayName = 'Stack';
+
 export { Stack };

@@ -41,4 +41,6 @@ const Grid = forwardRef<any, GridProps>(
   )
 );
 
+Grid.displayName = 'Grid';
+
 export { Grid };

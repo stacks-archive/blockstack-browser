@@ -98,4 +98,6 @@ const PseudoBox = styled(StyledBox)<PseudoBoxProps>(
   }
 );
 
+PseudoBox.displayName = 'PseudoBox';
+
 export { PseudoBox };

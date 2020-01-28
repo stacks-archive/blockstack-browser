@@ -16,4 +16,6 @@ const Flex = forwardRef<any, FlexProps>(({ align, justify, wrap, direction, ...r
   />
 ));
 
+Flex.displayName = 'Flex';
+
 export { Flex };

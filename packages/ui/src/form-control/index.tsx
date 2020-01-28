@@ -46,4 +46,6 @@ const FormControl = forwardRef<any, FormControlProps>(
   }
 );
 
+FormControl.displayName = "FormControl"
+
 export { FormControl };

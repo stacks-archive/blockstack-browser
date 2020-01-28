@@ -90,7 +90,7 @@
   "peerDependencies": {
     "react": "16.x",
     "react-dom": "16.x",
-    "styled-components": "4.x",
+    "styled-components": "5.x",
     "use-events": "1.4.1"
   },
   "publishConfig": {

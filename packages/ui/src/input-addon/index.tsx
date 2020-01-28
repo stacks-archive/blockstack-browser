@@ -38,6 +38,8 @@ InputAddon.propTypes = {
   placement: oneOf(['left', 'right']),
 };
 
+InputAddon.displayName = 'InputAddon';
+
 const InputLeftAddon = (props: InputAddonProps) => <InputAddon placement="left" {...props} />;
 const InputRightAddon = (props: InputAddonProps) => <InputAddon placement="right" {...props} />;
 
