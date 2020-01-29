@@ -2,6 +2,7 @@ import { BIP32Interface } from 'bitcoinjs-lib'
 import IdentityAddressOwnerNode from '../nodes/identity-address-owner-node'
 import { createSha2Hash } from 'blockstack/lib/encryption/sha2Hash'
 import { publicKeyToAddress } from 'blockstack/lib/keys'
+import Identity from '../identity'
 
 const IDENTITY_KEYCHAIN = 888
 const BLOCKSTACK_ON_BITCOIN = 0
@@ -110,7 +111,7 @@ export async function getBlockchainIdentities(
 
   const firstBitcoinAddress = await getAddress(getBitcoinAddressNode(bitcoinPublicKeychainNode))
 
-  const identityAddresses = []
+  const identityAddresses: string[] = []
   const identityKeypairs = []
 
   // We pre-generate a number of identity addresses so that we
@@ -133,11 +134,19 @@ export async function getBlockchainIdentities(
     )
   }
 
+  const identities: Identity[] = []
+  identityKeypairs.forEach((keyPair, index) => {
+    const address = identityAddresses[index]
+    const identity = new Identity({ keyPair, address })
+    identities.push(identity)
+  })
+
   return {
     identityPublicKeychain,
     bitcoinPublicKeychain,
     firstBitcoinAddress,
     identityAddresses,
-    identityKeypairs
+    identityKeypairs,
+    identities
   }
 }

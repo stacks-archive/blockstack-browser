@@ -13,6 +13,7 @@ export interface ConstructorOptions {
   identityKeypairs: IdentityKeyPair[]
   identityAddresses: string[]
   encryptedBackupPhrase: string
+  identities: Identity[]
 }
 
 export class Wallet {
@@ -30,7 +31,8 @@ export class Wallet {
     bitcoinPublicKeychain,
     firstBitcoinAddress,
     identityKeypairs,
-    identityAddresses
+    identityAddresses,
+    identities
   }: ConstructorOptions) {
     this.encryptedBackupPhrase = encryptedBackupPhrase
     this.identityPublicKeychain = identityPublicKeychain
@@ -38,13 +40,7 @@ export class Wallet {
     this.firstBitcoinAddress = firstBitcoinAddress
     this.identityKeypairs = identityKeypairs
     this.identityAddresses = identityAddresses
-    const identities: Identity[] = []
-    identityKeypairs.forEach((keyPair, index) => {
-      const address = identityAddresses[index]
-      const identity = new Identity({ keyPair, address })
-      identities.push(identity)
-    })
-    this.identities = identities
+    this.identities = identities.map((identity) => new Identity(identity))
   }
 
   static async generate(password: string) {
