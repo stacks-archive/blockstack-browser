@@ -1,5 +1,4 @@
 import React from 'react';
+import { Flex, FlexProps } from '@blockstack/ui';
 
-import { Flex } from '@blockstack/ui';
-
-export const ScreenActions: React.FC = ({ children }) => <Flex p={6}>{children}</Flex>;
+export const ScreenActions = (props: FlexProps) => <Flex px={6} {...props} />;

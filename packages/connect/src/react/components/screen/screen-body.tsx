@@ -11,7 +11,7 @@ export interface ScreenBodyProps extends BoxProps {
 }
 
 export const ScreenBody = ({ title, body, pretitle, fullWidth, ...rest }: ScreenBodyProps) => (
-  <Stack spacing={2} mx={fullWidth ? 0 : 6} {...rest}>
+  <Stack spacing={3} mx={fullWidth ? 0 : 6} {...rest}>
     {pretitle && <Pretitle>{pretitle}</Pretitle>}
     {title && <Title>{title}</Title>}
     {body && (

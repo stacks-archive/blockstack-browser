@@ -24,7 +24,7 @@ const AppElement = ({
     <Box position="absolute" top="-4px" right="-4px">
       <Logo />
     </Box>
-    <AppIcon size="64px" src={icon} alt={name} borderRadius="0" />
+    <AppIcon size="72px" src={icon} alt={name} borderRadius="0" />
   </Box>
 );
 
@@ -39,17 +39,20 @@ export const Intro = () => {
         fullWidth
         title={`Use ${name} privately and securely with Data Vault`}
         body={[
-          'Create your Data Vault to continue.',
-          <Box mx="auto" mb={2} width="100%" height="1px" bg="#E5E5EC" />,
+          <Box mx="auto" width="100%" height="1px" bg="#E5E5EC" />,
           <CheckList
             items={[
               {
+                icon: () => <AppIcon alt={name} src={icon} />,
+                text: `You will use your Data Vault to sign into ${name} privately`,
+              },
+              {
                 icon: EncryptionIcon,
-                text: `Keep everything you do in ${name} private with encryption and blockchain`,
+                text: `Data Vault keeps what you do in ${name} private using encryption and blockchain`,
               },
               {
                 icon: AppsIcon,
-                text: 'Data Vault is easy to set up and free to use with over 300 apps',
+                text: 'Data Vault is free to use with over 300 apps',
               },
             ]}
           />,
@@ -74,7 +77,7 @@ export const Intro = () => {
         </Button>
       </ScreenActions>
       <ScreenFooter>
-        <Stack spacing={4} mb={6} isInline>
+        <Stack spacing={4} isInline>
           <Link
             onClick={() => {
               doStartAuth();

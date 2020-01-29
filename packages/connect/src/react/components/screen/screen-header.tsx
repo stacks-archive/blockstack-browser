@@ -7,12 +7,12 @@ import { AppIcon } from '../app-icon';
 
 interface HeaderTitleProps {
   title?: string | JSX.Element;
-  hideIcon?: boolean;
+  hideLogo?: boolean;
 }
 
-const HeaderTitle: React.FC<HeaderTitleProps> = ({ hideIcon, title }) => (
+const HeaderTitle: React.FC<HeaderTitleProps> = ({ hideLogo, title }) => (
   <Flex align="center">
-    {hideIcon ? null : <Logo mr={2} />}
+    {hideLogo ? null : <Logo mr={2} />}
     <Text fontWeight="bold" fontSize={'12px'}>
       {title}
     </Text>
@@ -27,9 +27,16 @@ export interface ScreenHeaderProps {
   title?: string | JSX.Element;
   close?: () => void;
   hideIcon?: boolean;
+  hideLogo?: boolean;
 }
 
-export const ScreenHeader = ({ appDetails, title = 'Data Vault', hideIcon = false, ...rest }: ScreenHeaderProps) => {
+export const ScreenHeader = ({
+  appDetails,
+  title = 'Data Vault',
+  hideIcon = false,
+  hideLogo = false,
+  ...rest
+}: ScreenHeaderProps) => {
   const { name, icon } = useAppDetails();
 
   let appName = name;
@@ -59,7 +66,7 @@ export const ScreenHeader = ({ appDetails, title = 'Data Vault', hideIcon = fals
             <ChevronRightIcon size={20} />
           </Box>
         ) : null}
-        <HeaderTitle hideIcon={hideIcon} title={title} />
+        <HeaderTitle hideLogo={hideLogo} title={title} />
       </Flex>
     </Flex>
   );

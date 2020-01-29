@@ -15,15 +15,15 @@ interface CheckListProps {
 }
 
 const CheckList: React.FC<CheckListProps> = ({ items }) => (
-  <>
+  <Box>
     {items.map((item, key) => {
       const Icon = item.icon;
       const { text } = item;
       return (
         <Flex
           px={6}
-          pb={5}
-          pt={key === 0 ? 0 : 5}
+          pb={3}
+          pt={key === 0 ? 0 : 3}
           borderBottom={items.length - 1 !== key ? '1px solid' : 'unset'}
           borderColor="inherit"
           align="center"
@@ -37,7 +37,7 @@ const CheckList: React.FC<CheckListProps> = ({ items }) => (
         </Flex>
       );
     })}
-  </>
+  </Box>
 );
 
 export { CheckList };

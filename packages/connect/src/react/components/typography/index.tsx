@@ -2,9 +2,7 @@ import React from 'react';
 import { Text, Box, BoxProps } from '@blockstack/ui';
 import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon';
 
-const Title: React.FC = props => (
-  <Text width="100%" fontWeight="medium" fontSize={['20px', '24px']} lineHeight={['28px', '32px']} {...props} />
-);
+const Title: React.FC = props => <Text width="100%" fontWeight="medium" fontSize="24px" lineHeight="32px" {...props} />;
 
 const Pretitle: React.FC = props => (
   <Text
