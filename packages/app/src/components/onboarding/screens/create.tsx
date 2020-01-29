@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Box, Spinner, Flex, Text } from '@blockstack/ui';
 import { Screen, ScreenBody } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
+import { Title } from '../../typography';
 
 import { doCreateSecretKey } from '@store/onboarding/actions';
+
+interface ExplainerCardProps {
+  title: string;
+  imageUrl: string;
+}
+
+const ExplainerCard = ({ title, imageUrl }: ExplainerCardProps) => (
+  <Flex height="300px" flexDirection="column" justifyContent="space-between">
+    <Box>
+      <Text>{imageUrl ? 'With Stacks:' : ' '}</Text>
+    </Box>
+    <Flex justifyContent="center" alignItems="center" height="180px" mb={imageUrl ? 8 : 0} flexDirection="column">
+      {imageUrl && (
+        <Box flex="1" justifyContent="center">
+          <Flex mx="auto" width="240px" height="152px" justifyContent="center">
+            <img src={imageUrl} />
+          </Flex>
+        </Box>
+      )}
+      <Box pb={imageUrl ? 6 : 0}>
+        <Title>{title}</Title>
+      </Box>
+    </Flex>
+    <Flex width="100%" flexDirection="column" alignItems="center">
+      <Spinner thickness="3px" size="lg" color="blue" />
+    </Flex>
+  </Flex>
+);
 
 interface MockData {
   title: string;
@@ -26,7 +55,7 @@ interface CreateProps {
 }
 
 export const Create: React.FC<CreateProps> = props => {
-  const [state, setState] = React.useState({
+  const [state, setState] = useState({
     title: 'Creating your Data Vault',
     imageUrl: '',
   });
@@ -51,7 +80,7 @@ export const Create: React.FC<CreateProps> = props => {
     },
   ];
 
-  React.useEffect(() => {
+  useEffect(() => {
     // This timeout is important because if the app is navigated to as a sign in, the
     // create page will be rendered momentarily, and we need to cancel these
     // functions if we're on a different screen
@@ -62,26 +91,15 @@ export const Create: React.FC<CreateProps> = props => {
     return () => clearTimeout(timeout);
   }, []);
 
+  const offCenterOffset = '.44';
+
   return (
     <Screen textAlign="center">
       <ScreenHeader />
-      {state.imageUrl === '' ? (
-        undefined
-      ) : (
-        <Box>
-          <Text>Your Data Vault includes:</Text>
-          <Flex mt={6} mx="auto" width="240px" height="152px" justifyContent="center">
-            <img src={state.imageUrl} />
-          </Flex>
-        </Box>
-      )}
       <ScreenBody
-        title={state.title}
-        body={[
-          <Box pt={10} width="100%">
-            <Spinner thickness="3px" size="lg" color="blue" />
-          </Box>,
-        ]}
+        flex={offCenterOffset}
+        justifyContent="center"
+        body={[<ExplainerCard title={state.title} imageUrl={state.imageUrl} />]}
       />
     </Screen>
   );
