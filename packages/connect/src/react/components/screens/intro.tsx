@@ -29,7 +29,7 @@ const AppElement = ({
 );
 
 export const Intro = () => {
-  const { doGoToHowItWorksScreen, doFinishAuth, doStartAuth, isAuthenticating, authOptions } = useConnect();
+  const { doGoToHowItWorksScreen, doFinishAuth, doStartAuth, authOptions } = useConnect();
   const { name, icon } = useAppDetails();
 
   return (
@@ -58,7 +58,6 @@ export const Intro = () => {
       <ScreenActions>
         <Button
           width="100%"
-          isLoading={isAuthenticating}
           onClick={() => {
             doStartAuth();
             // eslint-disable-next-line @typescript-eslint/no-floating-promises

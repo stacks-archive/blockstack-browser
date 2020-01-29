@@ -5,26 +5,44 @@ interface PopupOptions {
   h?: number;
 }
 
-const defaultHeight = 584;
-const defaultWidth = 440;
+// Width 2px wider than in-page dialog.
+// Ensures retina subpixel rounding
+// does not leave slightly blurry underlap
+const defaultWidth = 442;
+const defaultHeight = 635;
 const defaultTitle = 'Continue with Data Vault';
 
+// https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 export const popupCenter = ({ url, title = defaultTitle, w = defaultWidth, h = defaultHeight }: PopupOptions) => {
-  const dualScreenLeft = window.screenLeft || window.screenX;
-  const dualScreenTop = window.screenTop || window.screenY;
+  const win = window;
+  // Safari reports an incorrect browser height
+  const isSafari = (win as any).safari !== undefined;
 
-  const width = window.innerWidth || document.documentElement.clientWidth || window.screen.width;
-  const height = window.innerHeight || document.documentElement.clientHeight || window.screen.height;
+  const browserViewport = {
+    width: win.innerWidth,
+    height: win.innerHeight,
+  };
+  const browserToolbarHeight = win.outerHeight - win.innerHeight;
+  const browserSidepanelWidth = win.outerWidth - win.innerWidth;
 
-  const systemZoom = width / window.screen.availWidth;
-  const left = (width - w) / 2 / systemZoom + dualScreenLeft;
-  const top = (height - h) / 2 / systemZoom + dualScreenTop;
+  // Such as fixed operating system UI
+  const removeUnusableSpaceX = (coord: number) => coord - (win.screen.width - win.screen.availWidth);
+  const removeUnusableSpaceY = (coord: number) => coord - (win.screen.height - win.screen.availHeight);
+
+  const browserPosition = {
+    x: removeUnusableSpaceX(win.screenX),
+    y: removeUnusableSpaceY(win.screenY),
+  };
+
+  const left = browserPosition.x + browserSidepanelWidth + (browserViewport.width - w) / 2;
+  const top = browserPosition.y + browserToolbarHeight + (browserViewport.height - h) / 2 + (isSafari ? 48 : 0);
+
   const options = {
     scrollbars: 'no',
     width: w,
     height: h,
-    top: top,
-    left: left,
+    top,
+    left,
   };
   const optionsString = Object.keys(options).map(key => {
     return `${key}=${options[key as keyof typeof options]}`;
