@@ -1,38 +1,32 @@
 {
   "name": "@blockstack/connect",
-  "version": "0.2.0",
-  "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/auth.esm.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist"
+  "version": "0.3.0",
+  "bundlesize": [
+    {
+      "path": "./dist/**/*.js",
+      "maxSize": "9 kB"
+    }
   ],
-  "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "dev": "cd test-app && yarn start",
-    "test": "tsdx test",
-    "lint": "eslint --ext .ts,.tsx ./src/ -f unix",
-    "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix",
-    "prepublishOnly": "yarn build",
-    "typecheck": "tsc --noEmit"
+  "dependencies": {
+    "@blockstack/ui": "^1.0.0-alpha.27",
+    "mdi-react": "^6.6.0",
+    "styled-components": "^5.0.0",
+    "use-events": "^1.4.1"
   },
-  "peerDependencies": {
-    "blockstack": "^19",
-    "styled-components": "^4.4"
-  },
-  "prettier": "@blockstack/prettier-config",
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+    "@babel/preset-react": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
     "@blockstack/prettier-config": "^0.0.5",
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^25.1.0",
+    "@types/react-dom": "^16.9.5",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
+    "babel-loader": "^8.0.6",
     "blockstack": "^19.3.0",
     "bundlesize": "^0.18.0",
     "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.9.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-flowtype": "^4.6.0",
     "eslint-plugin-import": "^2.20.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
@@ -44,22 +38,37 @@
     "react-dom": "^16.12.0",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/auth.esm.js",
+  "peerDependencies": {
+    "blockstack": "^19",
+    "react-dom": "^16.12.0",
+    "styled-components": "^4.4"
+  },
+  "prettier": "@blockstack/prettier-config",
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@blockstack/ui": "^1.0.0-alpha.27",
-    "mdi-react": "^6.6.0",
-    "styled-components": "^5.0.0",
-    "use-events": "^1.4.1"
+  "scripts": {
+    "build": "tsdx build --format cjs,esm,umd && yarn build:web",
+    "build:web": "NODE_ENV=production webpack",
+    "dev": "cd test-app && yarn start",
+    "lint": "eslint --ext .ts,.tsx ./src/ -f unix",
+    "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix",
+    "prepublishOnly": "yarn build",
+    "start": "tsdx watch",
+    "test": "tsdx test",
+    "typecheck": "tsc --noEmit"
   },
-  "bundlesize": [
-    {
-      "path": "./dist/**/*.js",
-      "maxSize": "9 kB"
-    }
-  ],
-  "sideEffects": false
+  "sideEffects": false,
+  "typings": "dist/index.d.ts",
+  "unpkg": "dist/bundle.js"
 }
