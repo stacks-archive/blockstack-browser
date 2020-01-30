@@ -113,6 +113,7 @@ export async function getBlockchainIdentities(
 
   const identityAddresses: string[] = []
   const identityKeypairs = []
+  const identities: Identity[] = []
 
   // We pre-generate a number of identity addresses so that we
   // don't have to prompt the user for the password on each new profile
@@ -121,25 +122,11 @@ export async function getBlockchainIdentities(
     addressIndex < identitiesToGenerate;
     addressIndex++
   ) {
-    const identityOwnerAddressNode = await getIdentityOwnerAddressNode(
-      identityPrivateKeychainNode,
-      addressIndex
-    )
-    const identityKeyPair = await deriveIdentityKeyPair(
-      identityOwnerAddressNode
-    )
-    identityKeypairs.push(identityKeyPair)
-    identityAddresses.push(
-      identityKeyPair.address
-    )
-  }
-
-  const identities: Identity[] = []
-  identityKeypairs.forEach((keyPair, index) => {
-    const address = identityAddresses[index]
-    const identity = new Identity({ keyPair, address })
+    const identity = await makeIdentity(masterKeychain, addressIndex)
     identities.push(identity)
-  })
+    identityKeypairs.push(identity.keyPair)
+    identityAddresses.push(identity.address)
+  }
 
   return {
     identityPublicKeychain,
@@ -149,4 +136,23 @@ export async function getBlockchainIdentities(
     identityKeypairs,
     identities
   }
+}
+
+export const makeIdentity = async (masterKeychain: BIP32Interface, index: number) => {
+  const identityPrivateKeychainNode = getIdentityPrivateKeychain(
+    masterKeychain
+  )
+  const identityOwnerAddressNode = await getIdentityOwnerAddressNode(
+    identityPrivateKeychainNode,
+    index
+  )
+  const identityKeyPair = await deriveIdentityKeyPair(
+    identityOwnerAddressNode
+  )
+  const identity = new Identity({
+    keyPair: identityKeyPair,
+    address: identityKeyPair.address,
+    usernames: [],
+  })
+  return identity
 }

@@ -2,9 +2,10 @@ import { generateMnemonic, mnemonicToSeed } from 'bip39'
 import { bip32, BIP32Interface } from 'bitcoinjs-lib'
 import { randomBytes } from 'blockstack/lib/encryption/cryptoRandom'
 
-import { getBlockchainIdentities, IdentityKeyPair } from './utils'
+import { getBlockchainIdentities, IdentityKeyPair, makeIdentity } from './utils'
 import { encrypt} from './encryption/encrypt'
 import Identity from './identity'
+import { decrypt } from './encryption/decrypt'
 
 export interface ConstructorOptions {
   identityPublicKeychain: string
@@ -67,6 +68,18 @@ export class Wallet {
       ...walletAttrs,
       encryptedBackupPhrase
     })
+  }
+
+  async createNewIdentity(password: string) {
+    const plainTextBuffer = await decrypt(Buffer.from(this.encryptedBackupPhrase, 'hex'), password)
+    const seed = await mnemonicToSeed(plainTextBuffer)
+    const rootNode = bip32.fromSeed(seed)
+    const index = this.identities.length
+    const identity = await makeIdentity(rootNode, index)
+    this.identities.push(identity)
+    this.identityKeypairs.push(identity.keyPair)
+    this.identityAddresses.push(identity.address)
+    return identity
   }
 }
 
