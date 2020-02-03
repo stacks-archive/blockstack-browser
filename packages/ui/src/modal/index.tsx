@@ -58,9 +58,9 @@ const Modal: React.FC<ModalProps> = ({
       <Flex
         bg="white"
         direction="column"
-        minWidth={['100%', '440px']}
+        minWidth={['100%', '396px']}
         width="100%"
-        maxWidth={['100%', '440px']}
+        maxWidth={['100%', '396px']}
         maxHeight={['100vh', 'calc(100vh - 48px)']}
         borderRadius={['unset', '6px']}
         boxShadow="high"
