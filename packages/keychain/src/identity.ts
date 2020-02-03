@@ -20,7 +20,7 @@ interface RefreshOptions {
   gaiaUrl: string
 }
 
-export default class Identity {
+export class Identity {
   public keyPair: IdentityKeyPair
   public address: string
   public defaultUsername?: string
@@ -131,3 +131,5 @@ export default class Identity {
     }
   }
 }
+
+export default Identity
