@@ -99,6 +99,7 @@ export interface IOtherProps {
   transform?: CSS.TransformProperty | StyledSystem.ResponsiveValue<CSS.TransformProperty>;
   transition?: CSS.TransitionProperty | StyledSystem.ResponsiveValue<CSS.TransitionProperty>;
   boxShadow?: BoxShadow | StyledSystem.ResponsiveValue<BoxShadow>;
+  children?: React.ReactNode[] | React.ReactNode;
 }
 
 export type ShorthandProps = IFlexDirectionShorthandProps & IDisplayShorthandProps;
