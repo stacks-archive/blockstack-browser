@@ -6,7 +6,7 @@ const Title: React.FC = props => <Text width="100%" fontWeight="medium" fontSize
 
 const Pretitle: React.FC = props => (
   <Text
-    pt={5}
+    pt={6}
     width="100%"
     fontWeight="medium"
     fontSize={['11px']}

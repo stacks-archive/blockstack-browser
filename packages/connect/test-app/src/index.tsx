@@ -5,13 +5,14 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { ThemeProvider, theme, CSSReset } from '@blockstack/ui';
 import { Connect } from '../../src/react/components/connect';
+import { AuthOptions } from '../../src/auth';
 
 const icon = `${document.location.href}/messenger-app-icon.png`;
-const authOptions = {
+const authOptions: AuthOptions = {
   manifestPath: '/static/manifest.json',
   redirectTo: '/',
-  finished: () => {
-    console.log('finish');
+  finished: ({ userSession }) => {
+    console.log(userSession.loadUserData());
   },
   vaultUrl: 'http://localhost:8080',
   appDetails: {

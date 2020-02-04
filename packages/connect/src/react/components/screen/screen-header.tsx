@@ -13,7 +13,7 @@ interface HeaderTitleProps {
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ hideLogo, title }) => (
   <Flex align="center">
     {hideLogo ? null : <Logo mr={2} />}
-    <Text fontWeight="bold" fontSize={'12px'}>
+    <Text fontWeight={500} fontSize={'12px'}>
       {title}
     </Text>
   </Flex>
@@ -50,7 +50,7 @@ export const ScreenHeader = ({
   return (
     <Flex
       p={[4, 5]}
-      mb={6}
+      height="56px"
       borderBottom="1px solid"
       borderBottomColor="inherit"
       borderRadius={['unset', '6px 6px 0 0']}

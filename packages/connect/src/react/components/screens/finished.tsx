@@ -1,24 +1,19 @@
 import React from 'react';
 import { Box, BoxProps, Button } from '@blockstack/ui';
 
-import { AppIcon } from '../app-icon';
-
 import { useConnect } from '../../hooks/useConnect';
-import { Logo } from '../logo';
 import { useAppDetails } from '../../hooks/useAppDetails';
 import { Screen, ScreenBody, ScreenActions } from '../screen';
+import { CheckmarkIcon } from '../checkmark';
 
 interface AppElementProps extends BoxProps {
   name: string;
   icon: string;
 }
 
-const AppElement = ({ name, icon, ...rest }: AppElementProps) => (
+const FinishedIcon = ({ ...rest }: AppElementProps) => (
   <Box mx="auto" size="70px" position="relative" {...rest}>
-    <Box position="absolute" top="-4px" right="-4px">
-      <Logo />
-    </Box>
-    <AppIcon size="64px" src={icon} alt={name} borderRadius="0" />
+    <CheckmarkIcon />
   </Box>
 );
 
@@ -28,13 +23,18 @@ export const Finished = () => {
 
   return (
     <Screen textAlign="center" noMinHeight>
-      <AppElement mt={5} name={name} icon={icon} />
+      <FinishedIcon mt={10} name={name} icon={icon} />
       <ScreenBody
         title={`${name} has been connected to your Data Vault`}
-        body={[`Everything you do in ${name} will be private, secure, and only accessible with your Secret Key.`]}
+        mt={4}
+        body={[
+          <Box mt={2}>
+            Everything you do in {name} will be private, secure, and only accessible with your Secret Key.
+          </Box>,
+        ]}
       />
       <ScreenActions>
-        <Button width="100%" onClick={() => doCloseDataVault()}>
+        <Button width="100%" mt={4} onClick={() => doCloseDataVault()}>
           Close
         </Button>
       </ScreenActions>

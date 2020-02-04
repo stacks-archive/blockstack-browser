@@ -19,6 +19,7 @@ const ContinueWithDataVault: React.FC = props => {
       py={3}
       borderRadius="6px"
       boxShadow="mid"
+      height={14}
       transition="250ms all"
       cursor={hovered ? 'pointer' : 'unset'}
       bg={hovered ? 'rgba(0,0,0,0.02)' : 'white'}
@@ -31,7 +32,7 @@ const ContinueWithDataVault: React.FC = props => {
       {...props}
     >
       <Logo mr={2} />
-      <Text>Continue with Data Vault</Text>
+      <Text fontWeight={500}>Continue with Data Vault</Text>
     </Flex>
   );
 };

@@ -9,7 +9,7 @@ interface PopupOptions {
 // Ensures retina subpixel rounding
 // does not leave slightly blurry underlap
 const defaultWidth = 442;
-const defaultHeight = 635;
+const defaultHeight = 532;
 const defaultTitle = 'Continue with Data Vault';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open

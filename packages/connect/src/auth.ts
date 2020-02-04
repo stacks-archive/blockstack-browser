@@ -33,7 +33,7 @@ export const authenticate = async ({
   appDetails,
 }: AuthOptions) => {
   if (!userSession) {
-    const appConfig = new AppConfig(['store_write', 'publish_data'], document.location.href);
+    const appConfig = new AppConfig(['store_write'], document.location.href);
     // eslint-disable-next-line no-param-reassign
     userSession = new UserSession({ appConfig });
   }
@@ -45,7 +45,7 @@ export const authenticate = async ({
     transitKey,
     `${document.location.origin}${redirectTo}`,
     `${document.location.origin}${manifestPath}`,
-    undefined,
+    userSession.appConfig.scopes,
     undefined,
     undefined,
     {

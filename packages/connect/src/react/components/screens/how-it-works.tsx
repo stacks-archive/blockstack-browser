@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Stack, Button } from '@blockstack/ui';
+import { Box, Text, Button } from '@blockstack/ui';
 
 import { useAppDetails } from '../../hooks/useAppDetails';
 import { BlockchainIcon, AppsIcon, EncryptionIcon } from '../vector';
@@ -7,10 +7,7 @@ import { useConnect } from '../../hooks/useConnect';
 
 import { Screen, ScreenBody, ScreenActions } from '../screen/index';
 
-const howDataVaultWorks = (appName: string) => [
-  {
-    body: `Usually, apps store your data on their servers for their own use. Data Vault isolates your encrypted data from use by others so that apps like ${appName} (and even Data Vault) can’t use it.`,
-  },
+const howDataVaultWorks = [
   {
     icon: <EncryptionIcon />,
     title: 'Encryption',
@@ -39,23 +36,32 @@ export const HowItWorks: React.FC = () => {
       <ScreenBody
         pretitle="How it works"
         title={`Data Vault keeps what you do in ${name} private`}
-        body={howDataVaultWorks(name).map(({ title, body, icon: Icon }, key) => (
-          <Box px={0} key={key}>
-            <Stack spacing={3}>
-              {Icon && (
+        body={[
+          <Text mt={2} display="block">
+            Usually, apps store your data on their servers for their own use. Data Vault isolates your encrypted data
+            from use by others so that apps like {name} (and even Data Vault) can’t use it.
+          </Text>,
+          <Box mt={2}>
+            {howDataVaultWorks.map(({ title, body, icon }, key) => (
+              <Box mt={8} key={key}>
                 <Box size="24px" color="blue" borderRadius="8px">
-                  {Icon && Icon}
+                  {icon}
                 </Box>
-              )}
-              {title && <Text fontWeight="semibold">{title}</Text>}
-              <Text pb={2}>{body}</Text>
-            </Stack>
-          </Box>
-        ))}
+                <Text mt={3} display="block" fontWeight="semibold">
+                  {title}
+                </Text>
+                <Text mt={2} display="block">
+                  {body}
+                </Text>
+              </Box>
+            ))}
+          </Box>,
+        ]}
       />
       <ScreenActions>
         <Button
           width="100%"
+          mt={6}
           onClick={() => {
             // eslint-disable-next-line @typescript-eslint/no-floating-promises
             authenticate(authOptions);
