@@ -7,6 +7,7 @@ import { Finished } from '../screens/finished';
 import { HowItWorks } from '../screens/how-it-works';
 import { ContinueWithAuth } from '../screens/sign-in';
 import { useConnect } from '../../hooks/useConnect';
+import { useScrollLock } from '../../hooks/useScrollLock';
 import { States } from '../connect/context';
 
 const CloseIcon = ({ size = 16 }) => (
@@ -99,6 +100,8 @@ const RenderScreen: React.FC = () => {
 
 export const Modal = () => {
   const { isOpen, screen } = useConnect();
+  useScrollLock(isOpen);
+
   return (
     <ThemeProvider theme={theme}>
       <CSSReset />
