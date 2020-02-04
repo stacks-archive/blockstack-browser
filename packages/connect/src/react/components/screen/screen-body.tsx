@@ -7,6 +7,7 @@ export interface ScreenBodyProps extends FlexProps {
   pretitle?: string | React.ElementType;
   body?: (string | JSX.Element)[];
   fullWidth?: boolean;
+  titleProps?: FlexProps;
 }
 
 export const ScreenBody = ({ body, pretitle, fullWidth, ...rest }: Omit<ScreenBodyProps, 'title'>) => {

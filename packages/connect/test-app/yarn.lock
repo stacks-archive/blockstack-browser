@@ -1611,6 +1611,16 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@blockstack/connect@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@blockstack/connect/-/connect-0.3.0.tgz#f300da5cf95268eb39814e507abf652ef37605de"
+  integrity sha512-R9g9NGbcuNz0eBB6/E4xa0/+nGW0ie7+v+lxnkCfPn7LeWwK0SPepSxL4L03C5NyNf07L1hq6/RLkFJGfB/2Zw==
+  dependencies:
+    "@blockstack/ui" "^1.0.0-alpha.27"
+    mdi-react "^6.6.0"
+    styled-components "^5.0.0"
+    use-events "^1.4.1"
+
 "@blockstack/prettier-config@^0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.5.tgz#871bd2a38b5bc9aabb1cefeeba6199cc64098957"
@@ -1625,6 +1635,23 @@
     "@types/color" "^3.0.1"
     "@types/styled-components" "^4.4.2"
     "@types/styled-system" "^5.1.4"
+    "@types/styled-system__css" "^5.0.4"
+    color "3.1.2"
+    prop-types "^15.7.2"
+    react-spring "8.0.27"
+    styled-system "5.1.4"
+    use-dark-mode "2.3.1"
+    use-events "^1.4.1"
+
+"@blockstack/ui@^1.0.0-alpha.27":
+  version "1.0.0-alpha.28"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.28.tgz#577f9b06c93d2dd98bf630ea63a918c107ea236c"
+  integrity sha512-QbJmP7IsCNmjhyluoXiqMHORtQs5gXb1Yz9NB8me8zecEySSX2MDaTGJoaBtysSWsRVS9Qu3N3SJx9as9wn8mw==
+  dependencies:
+    "@styled-system/css" "5.1.4"
+    "@types/color" "^3.0.1"
+    "@types/styled-components" "^4.4.2"
+    "@types/styled-system" "^5.1.5"
     "@types/styled-system__css" "^5.0.4"
     color "3.1.2"
     prop-types "^15.7.2"
@@ -2427,6 +2454,13 @@
   version "5.1.4"
   resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.4.tgz#c273b1ebb9b26cb1bd9282c994fc56c82d0fbfaf"
   integrity sha512-iBtFFmlxBbiTMpoKvRupwg75PeVbf7BBsgTlpcVBBbZyUKrhuU/4jtJQUn/wsSndKfxW0U9T17Geq0GGFWkCZw==
+  dependencies:
+    csstype "^2.6.4"
+
+"@types/styled-system@^5.1.5":
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.6.tgz#4f45612df1f0987a05465dd280b16818e3e27c73"
+  integrity sha512-npB/Fdqc1TH6UwyB9CtsTXkg3zb8jg/WG4LUEQ85cY6oSRgRbytxfsgbgdG+YWQFtbznp3J/4BAdkPB+WsHheA==
   dependencies:
     csstype "^2.6.4"
 
