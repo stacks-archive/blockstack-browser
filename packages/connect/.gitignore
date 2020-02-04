@@ -11,3 +11,4 @@ test
 pages
 .next
 test-app/node_modules
+test-app/.env
