@@ -21,6 +21,7 @@ export interface ConfigApp {
 
 interface ConfigIdentity {
   username?: string
+  address: string
   apps: {
     [origin: string]: ConfigApp
   }
@@ -145,6 +146,7 @@ export class Wallet {
     const newConfig: WalletConfig = {
       identities: this.identities.map(i => ({
         username: i.defaultUsername,
+        address: i.address,
         apps: {}
       }))
     }
@@ -171,6 +173,7 @@ export class Wallet {
       if (!this.walletConfig?.identities[index]) {
         this.walletConfig?.identities.push({
           username: identity.defaultUsername,
+          address: identity.address,
           apps: {}
         })
       }
