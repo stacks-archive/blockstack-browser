@@ -3,6 +3,7 @@ import IdentityAddressOwnerNode from '../nodes/identity-address-owner-node'
 import { createSha2Hash } from 'blockstack/lib/encryption/sha2Hash'
 import { publicKeyToAddress } from 'blockstack/lib/keys'
 import Identity from '../identity'
+import { AssertionError } from 'assert'
 
 const IDENTITY_KEYCHAIN = 888
 const BLOCKSTACK_ON_BITCOIN = 0
@@ -155,4 +156,10 @@ export const makeIdentity = async (masterKeychain: BIP32Interface, index: number
     usernames: [],
   })
   return identity
+}
+
+export function assertIsTruthy<T>(val: any): asserts val is NonNullable<T> {
+  if (!val) {
+    throw new AssertionError({ expected: true, actual: val })
+  }
 }

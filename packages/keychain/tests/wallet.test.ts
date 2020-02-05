@@ -1,5 +1,8 @@
-import Wallet from '../src/wallet'
+import './setup'
+import Wallet, { WalletConfig, ConfigApp } from '../src/wallet'
 import { decrypt } from '../src/encryption/decrypt'
+import { ECPair } from 'bitcoinjs-lib'
+import { decryptContent, encryptContent, getPublicKeyFromPrivate } from 'blockstack'
 
 describe('Restoring a wallet', () => {
   test('restores an existing wallet and keychain', async () => {
@@ -54,4 +57,120 @@ describe('Restoring a wallet', () => {
 
     expect(restored.identityPublicKeychain).toEqual(generated.identityPublicKeychain)
   })
+
+  test('generates a config private key', async () => {
+    const wallet = await Wallet.generate('password')
+    expect(wallet.configPrivateKey).not.toBeFalsy()
+    const node = ECPair.fromPrivateKey(Buffer.from(wallet.configPrivateKey, 'hex'))
+    expect(node.privateKey).not.toBeFalsy()
+  })
+})
+
+test('returns null if no config in gaia', async () => {
+  fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]', latest_auth_version: 'v1' }))
+    .once('', { status: 404 })
+  const wallet = await Wallet.generate('password')
+  const hubConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org')
+  const config = await wallet.fetchConfig(hubConfig)
+  expect(config).toBeFalsy()
+  expect(wallet.walletConfig).toBeFalsy()
+  expect(fetchMock.mock.calls.length).toEqual(2)
+})
+
+test('returns config if present', async () => {
+  const stubConfig: WalletConfig = {
+    identities: [{
+      username: 'hankstoever.id',
+      apps: {
+        'http://localhost:3000': {
+          origin: 'http://localhost:3000',
+          scopes: ['read_write'],
+          name: 'Tester',
+          appIcon: 'http://example.com/icon.png',
+          lastLoginAt: new Date().getTime()
+        }
+      }
+    }]
+  }
+
+  const wallet = await Wallet.generate('password')
+  const publicKey = getPublicKeyFromPrivate(wallet.configPrivateKey)
+  const encrypted = await encryptContent(JSON.stringify(stubConfig), { publicKey })
+
+  fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]', latest_auth_version: 'v1' }))
+    .once(encrypted)
+
+  const hubConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org')
+  const config = await wallet.fetchConfig(hubConfig)
+  expect(config).not.toBeFalsy()
+  if (!config) {
+    throw 'Must have config present'
+  }
+  expect(config.identities.length).toEqual(1)
+  const identity = config.identities[0]
+  expect(identity.apps['http://localhost:3000']).toEqual(stubConfig.identities[0].apps['http://localhost:3000'])  
+})
+
+test('creates a config', async () => {
+  fetchMock.mockClear()
+  fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]', latest_auth_version: 'v1' }))
+    .once('', { status: 404 })
+    .once(JSON.stringify({ publicUrl: 'asdf' }))
+  const wallet = await Wallet.generate('password')
+  const hubConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org')
+  const config = await wallet.getOrCreateConfig(hubConfig)
+  expect(Object.keys(config.identities[0].apps).length).toEqual(0)
+  const { body } = fetchMock.mock.calls[2][1]
+  console.log(body)
+  const decrypted = await decryptContent(body, { privateKey: wallet.configPrivateKey }) as string
+  expect(JSON.parse(decrypted)).toEqual(config)
+})
+
+test('updates wallet config', async () => {
+  fetchMock.mockClear()
+  fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]', latest_auth_version: 'v1' }))
+    .once('', { status: 404 })
+    .once(JSON.stringify({ publicUrl: 'asdf' }))
+    .once(JSON.stringify({ publicUrl: 'asdf' }))
+
+  const wallet = await Wallet.generate('password')
+  const gaiaConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org')
+  await wallet.getOrCreateConfig(gaiaConfig)
+  const app: ConfigApp = {
+    origin: 'http://localhost:5000',
+    scopes: ['read_write'],
+    lastLoginAt: new Date().getTime(),
+    name: 'Tester',
+    appIcon: 'asdf'
+  }
+  await wallet.updateConfigWithAuth({
+    identityIndex: 0,
+    app,
+    gaiaConfig,
+  })
+  expect(fetchMock.mock.calls.length).toEqual(4)
+  const body = JSON.parse(fetchMock.mock.calls[3][1].body)
+  const decrypted = await decryptContent(JSON.stringify(body), { privateKey: wallet.configPrivateKey }) as string
+  const config = JSON.parse(decrypted)
+  expect(config).toEqual(wallet.walletConfig)
+})
+
+test('updates config for reusing id warning', async () => {
+  fetchMock.mockClear()
+  fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]', latest_auth_version: 'v1' }))
+    .once('', { status: 404 })
+    .once(JSON.stringify({ publicUrl: 'asdf' }))
+    .once(JSON.stringify({ publicUrl: 'asdf' }))
+
+  const wallet = await Wallet.generate('password')
+  const gaiaConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org')
+  await wallet.getOrCreateConfig(gaiaConfig)
+  expect(wallet.walletConfig?.hideWarningForReusingIdentity).toBeFalsy()
+  await wallet.updateConfigForReuseWarning({ gaiaConfig })
+  expect(wallet.walletConfig?.hideWarningForReusingIdentity).toBeTruthy()
+  expect(fetchMock.mock.calls.length).toEqual(4)
+  const body = JSON.parse(fetchMock.mock.calls[3][1].body)
+  const decrypted = await decryptContent(JSON.stringify(body), { privateKey: wallet.configPrivateKey }) as string
+  const config = JSON.parse(decrypted)
+  expect(config.hideWarningForReusingIdentity).toBeTruthy()
 })
