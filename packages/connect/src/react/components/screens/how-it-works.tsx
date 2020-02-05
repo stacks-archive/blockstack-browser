@@ -4,6 +4,7 @@ import { Box, Text, Button } from '@blockstack/ui';
 import { useAppDetails } from '../../hooks/useAppDetails';
 import { BlockchainIcon, AppsIcon, EncryptionIcon } from '../vector';
 import { useConnect } from '../../hooks/useConnect';
+import { Title } from '../typography';
 
 import { Screen, ScreenBody, ScreenActions } from '../screen/index';
 
@@ -35,8 +36,8 @@ export const HowItWorks: React.FC = () => {
     <Screen>
       <ScreenBody
         pretitle="How it works"
-        title={`Data Vault keeps what you do in ${name} private`}
         body={[
+          <Title>Data Vault keeps what you do in ${name} private</Title>,
           <Text mt={2} display="block">
             Usually, apps store your data on their servers for their own use. Data Vault isolates your encrypted data
             from use by others so that apps like {name} (and even Data Vault) can’t use it.

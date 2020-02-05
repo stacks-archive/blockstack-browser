@@ -3,6 +3,7 @@ import { Box, BoxProps, Button } from '@blockstack/ui';
 
 import { useConnect } from '../../hooks/useConnect';
 import { useAppDetails } from '../../hooks/useAppDetails';
+import { Title } from '../typography';
 import { Screen, ScreenBody, ScreenActions } from '../screen';
 import { CheckmarkIcon } from '../checkmark';
 
@@ -25,9 +26,9 @@ export const Finished = () => {
     <Screen textAlign="center" noMinHeight>
       <FinishedIcon mt={10} name={name} icon={icon} />
       <ScreenBody
-        title={`${name} has been connected to your Data Vault`}
         mt={4}
         body={[
+          <Title>{name} has been connected to your Data Vault</Title>,
           <Box mt={2}>
             Everything you do in {name} will be private, secure, and only accessible with your Secret Key.
           </Box>,

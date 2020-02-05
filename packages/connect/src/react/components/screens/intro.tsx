@@ -9,7 +9,7 @@ import { useConnect } from '../../hooks/useConnect';
 import { Logo } from '../logo';
 import { useAppDetails } from '../../hooks/useAppDetails';
 import { AppsIcon, EncryptionIcon } from '../vector';
-
+import { Title } from '../typography';
 import { Screen, ScreenBody, ScreenActions, ScreenFooter } from '../screen';
 
 const AppElement = ({
@@ -38,8 +38,8 @@ export const Intro = () => {
       <ScreenBody
         fullWidth
         mt={4}
-        title={`Use ${name} privately and securely with Data Vault`}
         body={[
+          <Title>Use {name} privately and securely with Data Vault</Title>,
           <Box mt={4} mx="auto" width="100%" height="1px" bg="#E5E5EC" />,
           <Box>
             <CheckList
