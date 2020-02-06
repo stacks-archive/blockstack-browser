@@ -1089,10 +1089,10 @@
     use-dark-mode "2.3.1"
     use-events "^1.4.1"
 
-"@blockstack/ui@^1.0.0-alpha.30":
-  version "1.0.0-alpha.30"
-  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.30.tgz#567e7e057cdcb552d0e7693f4c70d5dda77c6fc9"
-  integrity sha512-y6Vm+olu3XgkUtaf5M75uL7+xHfQIJTiYOt5/d6DyzSOWZmeUlMlQe8pneHJwh15ehsU+N9inSQn77fKNSY6Ug==
+"@blockstack/ui@^1.0.0-alpha.31":
+  version "1.0.0-alpha.31"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.31.tgz#7c969b40b77eca18f3cb644ceb54d5543418da47"
+  integrity sha512-FiNEVJKMmNtIqq1KWA85WSkVQiXs9eIs3UTTmtojRsvsRw6DeuLUQrRK00QFtrAd4rWhnK5L6wZBa6wdX9ivXQ==
   dependencies:
     "@styled-system/css" "5.1.4"
     "@types/color" "^3.0.1"
