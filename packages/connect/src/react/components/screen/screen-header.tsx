@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Flex, Text } from '@blockstack/ui';
-import ChevronRightIcon from 'mdi-react/ChevronRightIcon';
+import { Box, Flex, Text, ChevronIcon } from '@blockstack/ui';
 import { useAppDetails } from '../../hooks/useAppDetails';
 import { Logo } from '../logo';
 import { AppIcon } from '../app-icon';
@@ -62,8 +61,8 @@ export const ScreenHeader = ({
       <Flex align="center">
         {!hideIcon ? <AppIcon src={appIcon} alt={appName || 'loading'} /> : null}
         {!hideIcon ? (
-          <Box pr={1} pl={2} color="ink.300">
-            <ChevronRightIcon size={20} />
+          <Box mx={1} color="ink.300">
+            <ChevronIcon direction="right" />
           </Box>
         ) : null}
         <HeaderTitle hideLogo={hideLogo} title={title} />

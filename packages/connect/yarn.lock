@@ -1089,6 +1089,23 @@
     use-dark-mode "2.3.1"
     use-events "^1.4.1"
 
+"@blockstack/ui@^1.0.0-alpha.30":
+  version "1.0.0-alpha.30"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.30.tgz#567e7e057cdcb552d0e7693f4c70d5dda77c6fc9"
+  integrity sha512-y6Vm+olu3XgkUtaf5M75uL7+xHfQIJTiYOt5/d6DyzSOWZmeUlMlQe8pneHJwh15ehsU+N9inSQn77fKNSY6Ug==
+  dependencies:
+    "@styled-system/css" "5.1.4"
+    "@types/color" "^3.0.1"
+    "@types/styled-components" "^4.4.2"
+    "@types/styled-system" "^5.1.5"
+    "@types/styled-system__css" "^5.0.4"
+    color "3.1.2"
+    prop-types "^15.7.2"
+    react-spring "8.0.27"
+    styled-system "5.1.4"
+    use-dark-mode "2.3.1"
+    use-events "^1.4.1"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.3.tgz#099139eaec7ebf07a27c1786a3ff64f39464d2ef"

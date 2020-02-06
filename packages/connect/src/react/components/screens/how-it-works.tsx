@@ -37,7 +37,7 @@ export const HowItWorks: React.FC = () => {
       <ScreenBody
         pretitle="How it works"
         body={[
-          <Title>Data Vault keeps what you do in ${name} private</Title>,
+          <Title>Data Vault keeps what you do in {name} private</Title>,
           <Text mt={2} display="block">
             Usually, apps store your data on their servers for their own use. Data Vault isolates your encrypted data
             from use by others so that apps like {name} (and even Data Vault) can’t use it.

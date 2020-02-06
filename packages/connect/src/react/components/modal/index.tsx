@@ -1,6 +1,5 @@
 import React from 'react';
-import { Modal as BlockstackModal, ThemeProvider, theme, CSSReset, Flex, Box, Text } from '@blockstack/ui';
-import ChevronLeftIcon from 'mdi-react/ChevronLeftIcon';
+import { Modal as BlockstackModal, ThemeProvider, theme, CSSReset, Flex, Box, Text, ChevronIcon } from '@blockstack/ui';
 import { useHover } from 'use-events';
 import { Logo } from '../logo';
 import { Intro } from '../screens/intro';
@@ -48,14 +47,13 @@ const ModalHeaderIconButton = ({ size, ...props }: any) => {
 
   return (
     <Box as="button" cursor={hover ? 'pointer' : 'unset'} {...bind} {...props}>
-      <Icon size={size} />
+      <Icon direction="left" size={size} />
     </Box>
   );
 };
 
 const ModalHeader = ({ title, back, hideIcon, close, ...rest }: ModalHeader) => {
   const { doCloseDataVault, doChangeScreen } = useConnect();
-
   return (
     <Flex
       p={4}
@@ -68,7 +66,7 @@ const ModalHeader = ({ title, back, hideIcon, close, ...rest }: ModalHeader) => 
       borderBottomColor="inherit"
       {...rest}
     >
-      {back ? <ModalHeaderIconButton onClick={() => doChangeScreen(back)} icon={ChevronLeftIcon} size={20} /> : null}
+      {back ? <ModalHeaderIconButton onClick={() => doChangeScreen(back)} icon={ChevronIcon} size={22} /> : null}
       <Flex align="center" mx={back ? 'auto' : 'unset'} transform={back ? 'translateX(-15px)' : 'unset'}>
         <HeaderTitle hideIcon={hideIcon} title={title} />
       </Flex>
@@ -99,7 +97,7 @@ const RenderScreen: React.FC = () => {
   }
 };
 
-const Modal = () => {
+export const Modal = () => {
   const { isOpen, screen } = useConnect();
   return (
     <ThemeProvider theme={theme}>
@@ -119,5 +117,3 @@ const Modal = () => {
     </ThemeProvider>
   );
 };
-
-export { Modal };
