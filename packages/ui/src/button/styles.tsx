@@ -24,17 +24,11 @@ const sizes = {
     px: 5,
   },
   md: {
-    height: 8,
+    height: 10,
     minWidth: 10,
     fontSize: 'body.small',
     px: 4,
-  },
-  sm: {
-    height: 6,
-    minWidth: 8,
-    fontSize: 'caption',
-    px: 3,
-  },
+  }
 };
 
 const unstyledStyle = {

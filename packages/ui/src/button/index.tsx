@@ -23,7 +23,7 @@ const HoverChange = ({ isHovered, isDisabled }: { isHovered: boolean; isDisabled
   />
 );
 
-const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
+export const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
   (
     {
       isDisabled,
@@ -90,5 +90,3 @@ const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
 );
 
 Button.displayName = 'Button';
-
-export { Button };
