@@ -4,8 +4,8 @@ import { Box, BoxProps } from '../box';
 type Direction = 'up' | 'down' | 'left' | 'right';
 
 interface ChevronProps extends BoxProps {
-  direction: Direction;
-  size: number;
+  direction?: Direction;
+  size?: number;
 }
 
 const rotate = (direction: Direction = 'right') => {
