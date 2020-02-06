@@ -12,6 +12,7 @@ export * from './input-element';
 export * from './input-addon';
 export * from './form-label';
 export * from './form-control';
+export * from './icons';
 export * from './modal';
 export * from './spinner';
 export * from './stack';

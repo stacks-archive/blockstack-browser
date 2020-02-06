@@ -1,11 +1,12 @@
 # Changelog
 
+## 1.0.0-alpha.28
+
+- Add `ChevronIcon` component, update `Button`s to align with styleguide.
+
 ## 1.0.0-alpha.25
 
 - Add `displayName` attr to all components that use forwarRef.
-
-## 1.0.0-alpha.25
-
 - Add `textTransform` prop to base BoxProps.
 
 ## 1.0.0-alpha.24
