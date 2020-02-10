@@ -89,6 +89,7 @@ export const Accounts = ({ identities, showAddAccount, next }: AccountsProps) =>
             iconComponent={() => <AccountAvatar username={defaultUsername || address} mr={3} />}
             label={defaultUsername || address}
             key={key}
+            hasAction={!!next}
             onClick={() => {
               if (!next) return;
               next(key);
