@@ -40,7 +40,7 @@ export const Intro = () => {
         fullWidth
         mt={4}
         body={[
-          <Title>{name} guarantees your privacy by encrypting everything</Title>,
+          <Title>{`${name} guarantees your privacy by encrypting everything`}</Title>,
           <Box mt={4} mx="auto" width="100%" height="1px" bg="#E5E5EC" />,
           <Box>
             <CheckList

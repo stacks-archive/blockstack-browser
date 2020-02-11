@@ -12,7 +12,7 @@ interface HeaderTitleProps {
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ hideLogo, title }) => (
   <Flex align="center">
     {hideLogo ? null : <Logo mr={2} />}
-    <Text fontWeight={500} fontSize={'12px'}>
+    <Text fontWeight={500} textStyle={'body.small.medium'} fontSize={'12px'}>
       {title}
     </Text>
   </Flex>
