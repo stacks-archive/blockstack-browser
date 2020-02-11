@@ -16,7 +16,6 @@ export const Screen: React.FC<ScreenBodyProps> = ({ noMinHeight, isLoading, chil
       flexDirection="column"
       minHeight={noMinHeight ? undefined : ['calc(100vh - 57px)', 'unset']}
       style={{ pointerEvents: isLoading ? 'none' : 'unset' }}
-      pb={6}
       {...rest}
     >
       {children}

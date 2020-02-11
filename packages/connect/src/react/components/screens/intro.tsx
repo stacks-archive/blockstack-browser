@@ -56,7 +56,7 @@ const AppElement = ({
   name: string;
   icon: string;
 }) => (
-  <Flex mx="auto" height="70px" position="relative" {...rest}>
+  <Flex mx="auto" position="relative" {...rest}>
     <AppIcon size="64px" mr="6" src={icon} alt={name} borderRadius="0" />
     <Box position="absolute" left="50%" top="50%" ml="-16px" mt="-6px">
       <UnionLine />
@@ -100,6 +100,7 @@ export const Intro = () => {
       />
       <ScreenActions>
         <Button
+          size="md"
           width="100%"
           mt={2}
           onClick={() => {

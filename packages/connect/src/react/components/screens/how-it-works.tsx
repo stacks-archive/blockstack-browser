@@ -62,6 +62,7 @@ export const HowItWorks: React.FC = () => {
       <ScreenActions>
         <Button
           width="100%"
+          size="md"
           mt={6}
           onClick={() => {
             // eslint-disable-next-line @typescript-eslint/no-floating-promises

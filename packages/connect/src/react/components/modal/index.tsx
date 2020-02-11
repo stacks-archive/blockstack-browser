@@ -112,7 +112,9 @@ export const Modal = () => {
         }
         isOpen={isOpen}
       >
-        <RenderScreen />
+        <Box pb={6}>
+          <RenderScreen />
+        </Box>
       </BlockstackModal>
     </ThemeProvider>
   );

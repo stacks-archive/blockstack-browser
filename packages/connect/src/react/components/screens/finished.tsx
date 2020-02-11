@@ -35,7 +35,7 @@ export const Finished = () => {
         ]}
       />
       <ScreenActions>
-        <Button width="100%" mt={4} onClick={() => doCloseDataVault()}>
+        <Button width="100%" mt={4} size="md" onClick={() => doCloseDataVault()}>
           Close
         </Button>
       </ScreenActions>
