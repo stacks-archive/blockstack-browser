@@ -4,6 +4,7 @@ import { createSha2Hash } from 'blockstack/lib/encryption/sha2Hash'
 import { publicKeyToAddress } from 'blockstack/lib/keys'
 import Identity from '../identity'
 import { AssertionError } from 'assert'
+import { Subdomains, registrars } from '../profiles';
 
 const IDENTITY_KEYCHAIN = 888
 const BLOCKSTACK_ON_BITCOIN = 0
@@ -162,4 +163,38 @@ export function assertIsTruthy<T>(val: any): asserts val is NonNullable<T> {
   if (!val) {
     throw new AssertionError({ expected: true, actual: val })
   }
+}
+
+export enum IdentityNameValidityError {
+  MINIMUM_LENGTH = 'error_minimum_length',
+  MAXIMUM_LENGTH = 'error_maximum_length',
+  ILLEGAL_CHARACTER = 'error_illegal_character',
+  UNAVAILABLE = 'error_name_unavailable'
+}
+
+const containsLegalCharacters = (name: string) => /^[a-z0-9_]+$/.test(name)
+
+export const validateIdentityName = (identityName: string): IdentityNameValidityError | null => {
+  const nameLength = identityName.length
+
+  if (nameLength < 8) {
+    return IdentityNameValidityError.MINIMUM_LENGTH
+  }
+
+  if (nameLength > 37) {
+    return IdentityNameValidityError.MAXIMUM_LENGTH
+  }
+
+  if (!containsLegalCharacters(identityName)) {
+    return IdentityNameValidityError.ILLEGAL_CHARACTER
+  }
+
+  return null
+}
+
+export const checkIdentityNameAvailability = async (name: string, subdomain: Subdomains = Subdomains.BLOCKSTACK) => {
+  const url = `${registrars[subdomain].apiUrl}/${name.toLowerCase()}.${subdomain}`
+  const resp = await fetch(url)
+  const data = await resp.json()
+  return data
 }

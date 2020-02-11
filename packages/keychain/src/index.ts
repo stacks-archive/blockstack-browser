@@ -1,4 +1,5 @@
 import Wallet from './wallet'
+export * from './utils'
 export { default as Wallet } from './wallet'
 export { decrypt } from './encryption/decrypt'
 export { encrypt } from './encryption/encrypt'

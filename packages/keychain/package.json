@@ -1,19 +1,38 @@
 {
   "name": "@blockstack/keychain",
-  "version": "0.2.4",
+  "version": "0.2.5-beta.1",
   "description": "A package for managing Blockstack keychains",
   "main": "./dist/index.js",
   "umd:main": "./dist/keychain.umd.production.js",
   "module": "./dist/keychain.esm.js",
   "author": "Hank Stoever",
   "types": "./dist/index.d.ts",
+  "scripts": {
+    "clean": "shx rm -rf ./lib*/",
+    "dev": "cross-env NODE_ENV=development tsdx watch",
+    "build": "cross-env NODE_ENV=production tsdx build --format=cjs,esm,umd",
+    "build-all": "run-p build:*",
+    "build:cjs": "tsc --outDir ./lib -m commonjs -t es2017",
+    "build:esm": "tsc --outDir ./lib-esm -m es6 -t es2017",
+    "build:cjs:watch": "tsc --outDir ./lib -m commonjs -t es2017 --watch",
+    "build:esm:watch": "tsc --outDir ./lib-esm -m es6 -t es2017 --watch",
+    "test": "jest",
+    "test:watch": "jest --watch --coverage=false",
+    "lint": "eslint --ext .ts ./src ./tests -f unix",
+    "lint:fix": "eslint --fix --ext .ts ./src ./tests -f unix",
+    "depcheck": "depcheck --ignores='@types/*,eslint*,safe-buffer,codecov,@typescript-eslint/*'",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "yarn build"
+  },
   "unpkg": "./dist/keychain.cjs.production.min.js",
   "license": "MIT",
   "files": [
     "dist"
   ],
   "typings": "dist/index.d.ts",
+  "prettier": "@blockstack/prettier-config",
   "devDependencies": {
+    "@blockstack/prettier-config": "^0.0.5",
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
     "@types/jest": "^24.0.18",
     "@types/node": "^10.14.17",
@@ -32,23 +51,6 @@
     "ts-jest": "^24.0.2",
     "tsdx": "^0.11.0",
     "typescript": "^3.7.3"
-  },
-  "scripts": {
-    "clean": "shx rm -rf ./lib*/",
-    "dev": "cross-env NODE_ENV=development tsdx watch",
-    "build": "cross-env NODE_ENV=production tsdx build --format=cjs,esm,umd",
-    "build-all": "run-p build:*",
-    "build:cjs": "tsc --outDir ./lib -m commonjs -t es2017",
-    "build:esm": "tsc --outDir ./lib-esm -m es6 -t es2017",
-    "build:cjs:watch": "tsc --outDir ./lib -m commonjs -t es2017 --watch",
-    "build:esm:watch": "tsc --outDir ./lib-esm -m es6 -t es2017 --watch",
-    "test": "jest",
-    "test:watch": "jest --watch --coverage=false",
-    "lint": "eslint --ext .ts ./src ./tests -f unix",
-    "lint:fix": "eslint --fix --ext .ts ./src ./tests -f unix",
-    "depcheck": "depcheck --ignores='@types/*,eslint*,safe-buffer,codecov,@typescript-eslint/*'",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "bip39": "^3.0.2",

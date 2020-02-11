@@ -81,6 +81,7 @@ test('returns config if present', async () => {
   const stubConfig: WalletConfig = {
     identities: [{
       username: 'hankstoever.id',
+      address: '',
       apps: {
         'http://localhost:3000': {
           origin: 'http://localhost:3000',
