@@ -7,12 +7,12 @@ import { doStoreSeed } from '@store/wallet/actions';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
 
 import { Box, Input, Text, Button } from '@blockstack/ui';
-import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
+import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { decrypt } from '@blockstack/keychain';
 
 interface RecoveryProps {
-  next: () => void;
+  next: (identityIndex: number) => void;
 }
 
 export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
@@ -26,8 +26,8 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
     <Screen isLoading={loading}>
       <ScreenHeader />
       <ScreenBody
-        title="Enter your password"
         body={[
+          <Title>Enter your password</Title>,
           'You entered a Magic Recovery Code. Enter the password you set when you first created your Blockstack ID.',
           <Box textAlign="left">
             {/*Validate: track SIGN_IN_INCORRECT*/}
@@ -52,6 +52,7 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
       <ScreenActions>
         <Button
           width="100%"
+          size="md"
           onClick={async () => {
             setLoading(true);
             try {
@@ -59,11 +60,11 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
               const seed = await decrypt(codeBuffer, password);
               await doStoreSeed(seed, DEFAULT_PASSWORD)(dispatch, () => ({}), {});
               doTrack(SIGN_IN_CORRECT);
-              next();
+              next(0);
             } catch (error) {
               setPasswordError('Invalid password.');
+              setLoading(false);
             }
-            setLoading(false);
           }}
         >
           Continue

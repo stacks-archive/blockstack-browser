@@ -2,8 +2,11 @@ import React from 'react';
 import { Box, Text, Input, Button, ButtonGroup } from '@blockstack/ui';
 import { Formik } from 'formik';
 import { openPopup } from '../common/utils';
+import { useDispatch } from 'react-redux';
+import { doSignOut } from '@store/wallet';
 
 const DevActions = () => {
+  const dispatch = useDispatch();
   const saveAuthRequest = (authRequest: string) => {
     openPopup(`/actions.html?authRequest=${encodeURIComponent(authRequest)}`);
   };
@@ -42,6 +45,7 @@ const DevActions = () => {
       </Formik>
       <ButtonGroup variantColor="purple" my={4}>
         <Button onClick={openBrowserActions}>Debug Browser Action</Button>
+        <Button onClick={() => dispatch(doSignOut())}>Log Out</Button>
       </ButtonGroup>
     </Box>
   );

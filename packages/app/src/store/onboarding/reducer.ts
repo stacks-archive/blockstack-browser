@@ -7,10 +7,11 @@ import {
   SAVE_KEY,
   SAVE_AUTH_REQUEST,
   SET_MAGIC_RECOVERY_CODE,
+  SET_USERNAME,
 } from './types';
 
 const initialState: OnboardingState = {
-  screen: ScreenName.CREATE,
+  screen: ScreenName.USERNAME,
 };
 
 export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
@@ -44,6 +45,11 @@ export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
       return {
         ...state,
         magicRecoveryCode: action.magicRecoveryCode,
+      };
+    case SET_USERNAME:
+      return {
+        ...state,
+        username: action.username,
       };
     default:
       return state;

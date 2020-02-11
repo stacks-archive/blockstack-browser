@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { Box, Spinner, Flex, Text } from '@blockstack/ui';
 import { Screen, ScreenBody } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
-import { Title } from '../../typography';
 
 import { doCreateSecretKey } from '@store/onboarding/actions';
 
@@ -26,7 +25,7 @@ const ExplainerCard = ({ title, imageUrl }: ExplainerCardProps) => (
         </Box>
       )}
       <Box pb={imageUrl ? 6 : 0}>
-        <Title>{title}</Title>
+        <Text textStyle="display.small">{title}</Text>
       </Box>
     </Flex>
     <Flex width="100%" flexDirection="column" alignItems="center">
@@ -35,12 +34,11 @@ const ExplainerCard = ({ title, imageUrl }: ExplainerCardProps) => (
   </Flex>
 );
 
-interface MockData {
-  title: string;
-  imageUrl: string;
-}
-
-const createTimeoutLoop = (setState: (item: MockData) => void, arr: MockData[], onEnd: () => void) =>
+const createTimeoutLoop = (
+  setState: (item: ExplainerCardProps) => void,
+  arr: ExplainerCardProps[],
+  onEnd: () => void
+) =>
   arr.forEach((item, index) =>
     setTimeout(() => {
       setState(item);
@@ -49,6 +47,32 @@ const createTimeoutLoop = (setState: (item: MockData) => void, arr: MockData[], 
       }
     }, (index + 1) * 2400)
   );
+
+const explainerData: ExplainerCardProps[] = [
+  {
+    title: 'Private data storage',
+    imageUrl: '/assets/images/icon-delay-private.svg',
+  },
+  {
+    title: 'Always-on encryption',
+    imageUrl: '/assets/images/icon-delay-padlock.svg',
+  },
+  {
+    title: 'Access to 100s of apps',
+    imageUrl: '/assets/images/icon-delay-apps.svg',
+  },
+  {
+    title: 'This will not display',
+    imageUrl: '',
+  },
+];
+
+const preloadImages = (images: { imageUrl: string }[]) => {
+  images.forEach(({ imageUrl }) => {
+    const img = new Image();
+    img.src = imageUrl;
+  });
+};
 
 interface CreateProps {
   next: () => void;
@@ -61,31 +85,16 @@ export const Create: React.FC<CreateProps> = props => {
   });
   const dispatch = useDispatch();
 
-  const mockData: MockData[] = [
-    {
-      title: 'Private data storage',
-      imageUrl: '/assets/images/icon-delay-private.svg',
-    },
-    {
-      title: 'Always-on encryption',
-      imageUrl: '/assets/images/icon-delay-padlock.svg',
-    },
-    {
-      title: 'Access to 100s of apps',
-      imageUrl: '/assets/images/icon-delay-apps.svg',
-    },
-    {
-      title: 'This will not display',
-      imageUrl: '',
-    },
-  ];
+  useEffect(() => {
+    preloadImages(explainerData);
+  }, []);
 
   useEffect(() => {
     // This timeout is important because if the app is navigated to as a sign in, the
     // create page will be rendered momentarily, and we need to cancel these
     // functions if we're on a different screen
     const timeout = setTimeout(() => {
-      createTimeoutLoop(setState, mockData, () => props.next());
+      createTimeoutLoop(setState, explainerData, () => props.next());
       dispatch(doCreateSecretKey());
     }, 200);
     return () => clearTimeout(timeout);

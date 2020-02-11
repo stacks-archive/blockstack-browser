@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
+import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 
-import { Button } from '@blockstack/ui';
+import { Button, Text } from '@blockstack/ui';
 
 import { Collapse } from '@components/collapse';
 import { AppState } from '@store';
@@ -23,15 +23,23 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
     <Screen>
       <ScreenHeader />
       <ScreenBody
-        title="Save your Secret Key"
+        mt={6}
         body={[
-          'Paste your Secret Key wherever you keep critical, private, information such as passwords.',
-          'Once lost, it’s lost forever. So save it somewhere you won’t forget.',
+          <Title>Save your Secret Key</Title>,
+          <Text display="block" mt={2}>
+            Paste your Secret Key wherever you keep critical, private, information such as passwords.
+          </Text>,
+          <Text display="block" mt={5}>
+            {' '}
+            Once lost, it’s lost forever. So save it somewhere you won’t forget.
+          </Text>,
         ]}
       />
       <ScreenActions>
         <Button
           width="100%"
+          size="md"
+          mt={6}
           onClick={() => {
             doTrack(SECRET_KEY_INSTR_CONFIRMED);
             next();
@@ -41,7 +49,7 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
           {"I've saved it"}
         </Button>
       </ScreenActions>
-      <Collapse data={faqs(appName as string)} />
+      <Collapse mt={8} data={faqs(appName as string)} />
     </Screen>
   );
 };

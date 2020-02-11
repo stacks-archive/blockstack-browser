@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box } from '@blockstack/ui';
-import { Image } from '@components/image';
+import { Box, BoxProps } from '@blockstack/ui';
 import { useSelector } from 'react-redux';
+
+import { Image } from '@components/image';
 import { AppState } from '@store';
 import { selectAppName, selectAppIcon } from '@store/onboarding/selectors';
 
-const AppIcon: React.FC = ({ ...rest }) => {
+export const AppIcon = ({ ...rest }: BoxProps) => {
   const appIcon = useSelector((state: AppState) => selectAppIcon(state));
   const appName = useSelector((state: AppState) => selectAppName(state));
   return (
@@ -14,4 +15,3 @@ const AppIcon: React.FC = ({ ...rest }) => {
     </Box>
   );
 };
-export { AppIcon };

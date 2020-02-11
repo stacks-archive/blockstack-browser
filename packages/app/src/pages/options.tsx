@@ -1,26 +1,34 @@
-import * as React from 'react';
-import { Flex, ThemeProvider, theme, CSSReset, Stack, Box } from '@blockstack/ui';
-import { Seed } from '../components/seed';
-import { DevActions } from '../components/dev-actions';
+import React from 'react';
+import { Flex, ThemeProvider, theme, CSSReset } from '@blockstack/ui';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectIdentities } from '@store/wallet/selectors';
+import { AppState } from '../store/index';
+import { LogoWithName } from '@components/logo-with-name';
+import { doSignOut } from '@store/wallet';
+import { SignOut } from '@components/sign-out';
 
-const OptionsApp: React.FC = () => {
+export const OptionsApp = () => {
+  const { identities } = useSelector((state: AppState) => ({
+    identities: selectIdentities(state),
+  }));
+  const dispatch = useDispatch();
+
   return (
     <ThemeProvider theme={theme}>
-      <React.Fragment>
-        <CSSReset />
-        <Flex wrap="wrap" py={5} px={4}>
-          <Stack spacing={8} width="100%">
-            <Box borderWidth="1px" p={5}>
-              <Seed />
-            </Box>
-            <Box borderWidth="1px" p={5}>
-              <DevActions />
-            </Box>
-          </Stack>
+      <CSSReset />
+      <Flex wrap="wrap" py={5} px={4} flexDirection="column" height="100vh">
+        <LogoWithName />
+        <Flex flex={1} mt={10} justifyContent={[null, 'center']}>
+          {identities.length > 0 && (
+            <SignOut
+              identities={identities}
+              signOut={() => {
+                dispatch(doSignOut());
+              }}
+            />
+          )}
         </Flex>
-      </React.Fragment>
+      </Flex>
     </ThemeProvider>
   );
 };
-
-export { OptionsApp };

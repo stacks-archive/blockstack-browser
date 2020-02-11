@@ -13,7 +13,10 @@ async function bootstrapConnectModalPageTest(demo: DemoPageObject, auth: AuthPag
   const newWindow = await browser.waitForTarget(target => target.url().startsWith(auth.url));
   const authPage = await newWindow.page();
   expect(authPage.url().startsWith(auth.url)).toBeTruthy();
-  await authPage.waitFor(auth.$textareaReadOnlySeedPhrase, { timeout: 15000 });
+  await authPage.waitFor(auth.$inputUsername, { timeout: 15000 });
+  authPage.on('console', event => {
+    console.log(event.type(), event.text());
+  });
   return { authPage };
 }
 
@@ -29,6 +32,14 @@ describe('Authentication', () => {
 
   test('creating a successful account', async done => {
     const { authPage } = await bootstrapConnectModalPageTest(demoPageObject, authPageObject);
+
+    const $usernameInputElement = await authPage.$(authPageObject.$inputUsername);
+    if (!$usernameInputElement) {
+      throw 'Could not find username field';
+    }
+    await authPage.click(authPageObject.$buttonUsernameContinue);
+
+    await authPage.waitFor(authPageObject.$textareaReadOnlySeedPhrase);
 
     const $secretKeyEl = await authPage.$(authPageObject.$textareaReadOnlySeedPhrase);
     if (!$secretKeyEl) {
@@ -47,27 +58,27 @@ describe('Authentication', () => {
     await authPage.type(authPageObject.$textareaSeedPhraseInput, secretKey);
     await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
 
-    //
-    // These steps commented out as the flow has changed slightly
-
-    // await authPage.waitFor(authPageObject.$buttonConnectFlowFinished);
-    // await expect(authPage).toMatch('You’re all set!');
-    // await authPage.click(authPageObject.$buttonConnectFlowFinished);
-
     await page.waitFor('#auth-response');
     const authResponseEl = await page.$('#auth-response');
     const authResponse: string = await page.evaluate(el => el.innerText, authResponseEl);
     expect(authResponse).toBeTruthy();
     done();
-  }, 60_000);
+  }, 120_000);
 
   describe('Secret Key validation', () => {
     let authPage: Page;
 
-    async function navigateThroughToSecretKeyPage () {
+    async function navigateThroughToSecretKeyPage() {
       const pages = await bootstrapConnectModalPageTest(demoPageObject, authPageObject);
+
       authPage = pages.authPage;
+
+      await authPage.click(authPageObject.$buttonUsernameContinue);
+      await authPage.screenshot({ path: 'tests/screenshot2.png' });
+      await authPage.waitFor(authPageObject.$textareaReadOnlySeedPhrase);
+      await authPage.screenshot({ path: 'tests/screenshot3.png' });
       await authPage.click(authPageObject.$buttonCopySecretKey);
+      await authPage.screenshot({ path: 'tests/screenshot4.png' });
       await authPage.waitFor(authPageObject.$buttonHasSavedSeedPhrase);
       await authPage.click(authPageObject.$buttonHasSavedSeedPhrase);
       await authPage.waitFor(authPageObject.$buttonConfirmReenterSeedPhrase);
@@ -78,6 +89,7 @@ describe('Authentication', () => {
     test('it does not let you proceed when entering an incorrect seed phrase', async done => {
       const nonsenseRhymingSeed = 'You might encounter some delays, if you forget your seed phrase';
 
+      await authPage.screenshot({ path: 'tests/screenshot.png' });
       await authPage.type(authPageObject.$textareaSeedPhraseInput, nonsenseRhymingSeed);
       await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
 

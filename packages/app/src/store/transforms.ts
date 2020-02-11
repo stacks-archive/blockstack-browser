@@ -13,9 +13,11 @@ export const WalletTransform = createTransform(
   (outboundState: OutboundState) => {
     if (outboundState.currentWallet) {
       const currentWallet = outboundState.currentWallet;
+      const newWallet = new Wallet(currentWallet);
       return {
         ...outboundState,
-        currentWallet: new Wallet(currentWallet),
+        currentWallet: newWallet,
+        identities: [...newWallet.identities],
       };
     }
     return {

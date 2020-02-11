@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
+import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Box, Text, Input, Flex, Button } from '@blockstack/ui';
 import { AppIcon } from '@components/app-icon';
@@ -27,13 +27,14 @@ export const SignIn: React.FC<SignInProps> = props => {
 
   return (
     <Screen isLoading={isLoading} textAlign="center">
-      <ScreenHeader title="Continue with Data Vault" />
-      <AppIcon />
+      <ScreenHeader title="Continue with Data Vault" hideIcon />
+      <AppIcon mt={10} />
       <ScreenBody
-        title={`Sign into ${appName}`}
+        mt={4}
         body={[
-          'Enter your Data Vault’s Secret Key to continue',
-          <Box textAlign="left">
+          <Title>Sign into {appName}</Title>,
+          <Box mt={2}>Enter your Data Vault’s Secret Key to continue</Box>,
+          <Box textAlign="left" mt={6}>
             {/*Validate: track SIGN_IN_INCORRECT*/}
             <Input
               autoFocus
@@ -55,17 +56,18 @@ export const SignIn: React.FC<SignInProps> = props => {
         ]}
       />
       <ScreenActions>
-        <Flex justify="space-between" align="center" width="100%">
+        <Flex justify="space-between" align="center" width="100%" mt={6}>
           <Link
             color="blue"
             onClick={() => {
               doTrack(SIGN_IN_CREATE);
-              dispatch(doChangeScreen(ScreenName.CREATE));
+              dispatch(doChangeScreen(ScreenName.USERNAME));
             }}
           >
-            Create a Data Vault
+            Create a new Data Vault
           </Link>
           <Button
+            size="md"
             onClick={async () => {
               setLoading(true);
               try {

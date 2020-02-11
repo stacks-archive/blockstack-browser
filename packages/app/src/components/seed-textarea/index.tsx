@@ -6,4 +6,5 @@ export const SeedTextarea = styled.textarea`
   &:focus {
     outline: 0;
   }
+  text-align: center;
 `;

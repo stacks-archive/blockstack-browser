@@ -1,4 +1,5 @@
 import { DecodedAuthRequest } from './dev/types';
+import { wordlists } from 'bip39';
 
 export const getAuthRequestParam = () => {
   const { search } = document.location;
@@ -110,4 +111,9 @@ export const popupCenter = (url: string, title: string, w: number, h: number) =>
 
   // Puts focus on the newWindow
   if (newWindow && window.focus) newWindow.focus();
+};
+
+export const getRandomWord = () => {
+  const list = wordlists.EN;
+  return list[Math.floor(Math.random() * list.length)];
 };

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '@store';
 import { selectAppName, selectSecretKey } from '@store/onboarding/selectors';
 
-import { ScreenBody, ScreenActions, ScreenFooter, Screen } from '@blockstack/connect';
+import { ScreenBody, ScreenActions, ScreenFooter, Screen, Title } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 
 const ErrorText: React.FC = ({ children }) => (
@@ -33,17 +33,17 @@ export const Connect: React.FC<ConnectProps> = props => {
   return (
     <Screen textAlign="center">
       <ScreenHeader />
-      <AppIcon />
+      <AppIcon mt={10} />
       <ScreenBody
-        title={`Connect ${appName} to your Data Vault`}
+        mt={4}
         body={[
-          'Enter your Secret Key to continue.',
-          <Box>
+          <Title>Connect {appName} to your Data Vault</Title>,
+          <Box mt={6}>
             {/*Validate, track: CONNECT_INCORRECT */}
             <Input
               autoFocus
               minHeight="80px"
-              placeholder="12-word Secret Key"
+              placeholder="Enter your Secret Key"
               data-test="textarea-reinput-seed-phrase"
               as="textarea"
               aria-invalid={error}
@@ -56,6 +56,7 @@ export const Connect: React.FC<ConnectProps> = props => {
       />
       <ScreenActions>
         <Button
+          size="md"
           onClick={() => {
             if (seedInput !== seed) {
               doTrack(CONNECT_INCORRECT);
@@ -65,13 +66,14 @@ export const Connect: React.FC<ConnectProps> = props => {
             doTrack(CONNECT_SAVED);
             props.next();
           }}
+          mt={6}
           width="100%"
           data-test="button-confirm-reenter-seed-phrase"
         >
           Continue
         </Button>
       </ScreenActions>
-      <ScreenFooter>
+      <ScreenFooter justifyContent="center" mt={6}>
         <Flex>
           <Text>Didn’t save your Secret Key?</Text>{' '}
           <Link
@@ -81,6 +83,7 @@ export const Connect: React.FC<ConnectProps> = props => {
             }}
             pl={1}
             color="blue"
+            fontSize="12px"
           >
             Go Back
           </Link>

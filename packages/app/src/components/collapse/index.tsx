@@ -1,6 +1,5 @@
 import React from 'react';
-import { Flex, Box, Text, BoxProps } from '@blockstack/ui';
-import ChevronDownIcon from 'mdi-react/ChevronDownIcon';
+import { Flex, Box, Text, BoxProps, ChevronIcon } from '@blockstack/ui';
 import { useHover } from 'use-events';
 import { doTrack } from '@common/track';
 
@@ -13,18 +12,19 @@ interface TitleProps extends BoxProps {
 const TitleElement: React.FC<TitleProps> = ({ onClick, isFirst, isOpen, hovered, title }) => (
   <Flex
     align="center"
-    borderBottom="1px solid"
+    borderBottom={!isOpen ? '1px solid' : undefined}
     borderTop={isFirst ? '1px solid' : 'unset'}
     borderColor="#E5E5EC" // this is not currently in the UI lib, asked jasper about it but he was out of office
-    py={3}
+    pt={3}
+    pb={isOpen ? 0 : 3}
     justify="space-between"
     onClick={onClick}
   >
     <Box>
       <Text color={isOpen || hovered ? 'ink' : 'ink.600'}>{title}</Text>
     </Box>
-    <Box color="ink.300" transform={isOpen ? 'rotate(180deg)' : 'none'}>
-      <ChevronDownIcon />
+    <Box color="ink.300">
+      <ChevronIcon direction={isOpen ? 'up' : 'down'} />
     </Box>
   </Flex>
 );
@@ -52,7 +52,7 @@ interface Data {
   icon?: string;
 }
 
-interface CollapseProps {
+interface CollapseProps extends BoxProps {
   data: Data[];
 }
 
@@ -61,11 +61,11 @@ interface CollapseProps {
  * will reveal content onClick, then hide it on any other
  * onClick of an item
  */
-const Collapse: React.FC<CollapseProps> = ({ data, ...rest }) => {
+export const Collapse: React.FC<CollapseProps> = ({ data, ...rest }) => {
   const [open, setOpen] = React.useState<number | null>(null);
   const handleOpen = (key: number) => (key === open ? setOpen(null) : setOpen(key));
   return (
-    <Box px={5} fontSize="14px" {...rest}>
+    <Box px={5} fontSize="12px" {...rest}>
       {/*
           It's important to include the rest of the props
           because in certain cases we want to add/adjust spacing,
@@ -97,5 +97,3 @@ const Collapse: React.FC<CollapseProps> = ({ data, ...rest }) => {
     </Box>
   );
 };
-
-export { Collapse };
