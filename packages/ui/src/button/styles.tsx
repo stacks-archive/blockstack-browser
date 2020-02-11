@@ -20,13 +20,13 @@ const sizes = {
   lg: {
     height: 12,
     minWidth: 9 * 14,
-    fontSize: 'body.small',
+    fontSize: '14px',
     px: 5,
   },
   md: {
     height: 10,
     minWidth: 10,
-    fontSize: 'body.small',
+    fontSize: '14px',
     px: 4,
   }
 };

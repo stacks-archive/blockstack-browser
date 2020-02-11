@@ -5,7 +5,7 @@ import { PseudoBoxProps } from '../pseudo-box/types';
 /**
  * The size of the button
  */
-export type ButtonSizes = 'sm' | 'md' | 'lg';
+export type ButtonSizes = 'md' | 'lg';
 /**
  * The color scheme of the button variant. Use the color keys passed in `theme.colors`.
  */
