@@ -6,14 +6,25 @@ import { ScreenHeader } from '@components/connected-screen-header';
 
 import { useAppDetails } from '@common/hooks/useAppDetails';
 import { useDispatch, useSelector } from 'react-redux';
-import { doSetUsername, doFinishSignIn } from 'store/onboarding/actions';
+import { doSetUsername, doFinishSignIn } from '@store/onboarding/actions';
 import { selectCurrentWallet } from '@store/wallet/selectors';
 import { AppState } from '@store';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
-import { registerSubdomain, Subdomains } from '@blockstack/keychain';
+import { registerSubdomain, Subdomains, IdentityNameValidityError, validateSubdomain } from '@blockstack/keychain';
 import { didGenerateWallet } from '@store/wallet';
+import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl } from '@common/constants';
 import { doTrack, USERNAME_START } from '@common/track';
+
+const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 38 characters.';
+const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
+const identityNameUnavailableError = 'This username is not available';
+const errorTextMap = {
+  [IdentityNameValidityError.MINIMUM_LENGTH]: identityNameLengthError,
+  [IdentityNameValidityError.MAXIMUM_LENGTH]: identityNameLengthError,
+  [IdentityNameValidityError.ILLEGAL_CHARACTER]: identityNameIllegalCharError,
+  [IdentityNameValidityError.UNAVAILABLE]: identityNameUnavailableError,
+};
 
 interface UsernameProps {
   next: () => void;
@@ -31,20 +42,52 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
     doTrack(USERNAME_START);
   }, []);
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState<IdentityNameValidityError | null>(null);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
+  const [checkingAvailability, setCheckingAvailability] = useState(false);
+  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   const handleInput = (evt: React.FormEvent<HTMLInputElement>) => {
-    setError('');
+    setError(null);
     setUsername(evt.currentTarget.value || '');
+  };
+
+  const registerUsername = async () => {
+    setHasAttemptedSubmit(true);
+    setCheckingAvailability(true);
+
+    const validationErrors = await validateSubdomain(username, Subdomains.TEST);
+
+    if (validationErrors !== null) {
+      setError(validationErrors);
+      setCheckingAvailability(false);
+      return;
+    }
+
+    if (!wallet) {
+      dispatch(doSetUsername(username));
+      next();
+      return;
+    }
+    setLoading(true);
+    const identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
+    await registerSubdomain({
+      username,
+      subdomain: Subdomains.TEST,
+      gaiaHubUrl: gaiaUrl,
+      identity,
+    });
+    setCheckingAvailability(false);
+    dispatch(didGenerateWallet(wallet));
+    dispatch(doFinishSignIn({ identityIndex: wallet.identities.length - 1 }));
   };
 
   return (
     <Screen isLoading={loading}>
       <ScreenHeader />
       <ScreenBody
-        mt={4}
+        mt={6}
         body={[
           <Box>
             <Title>Choose a username</Title>
@@ -70,14 +113,17 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
                 autoFocus
                 placeholder="username"
                 value={username}
+                aria-invalid={error !== null}
                 onChange={handleInput}
               />
-              {error && (
-                <Text textAlign="left" textStyle="caption" color="feedback.error">
-                  {error}
-                </Text>
-              )}
             </Box>
+            {error && hasAttemptedSubmit && (
+              <ErrorLabel>
+                <Text textAlign="left" display="block" textStyle="caption" color="feedback.error">
+                  {errorTextMap[error]}
+                </Text>
+              </ErrorLabel>
+            )}
           </Box>,
         ]}
       />
@@ -87,24 +133,8 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
           size="md"
           mt={6}
           data-test="button-username-continue"
-          onClick={async () => {
-            if (wallet) {
-              setLoading(true);
-              const identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
-              await registerSubdomain({
-                username,
-                subdomain: Subdomains.TEST,
-                gaiaHubUrl: gaiaUrl,
-                identity,
-              });
-              dispatch(didGenerateWallet(wallet));
-              dispatch(doFinishSignIn({ identityIndex: wallet.identities.length - 1 }));
-              return;
-            }
-
-            dispatch(doSetUsername(username));
-            next();
-          }}
+          onClick={registerUsername}
+          isLoading={checkingAvailability}
         >
           Continue
         </Button>

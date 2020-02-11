@@ -42,7 +42,7 @@ describe('Authentication', () => {
     }
     await authPage.type(
       authPageObject.$inputUsername,
-      `${getRandomWord()}-${getRandomWord()}-${getRandomWord()}-${getRandomWord()}`
+      `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`
     );
     await authPage.click(authPageObject.$buttonUsernameContinue);
 
@@ -82,7 +82,7 @@ describe('Authentication', () => {
 
       await authPage.type(
         authPageObject.$inputUsername,
-        `${getRandomWord()}-${getRandomWord()}-${getRandomWord()}-${getRandomWord()}`
+        `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`
       );
       await authPage.click(authPageObject.$buttonUsernameContinue);
       await authPage.waitFor(authPageObject.$textareaReadOnlySeedPhrase);
