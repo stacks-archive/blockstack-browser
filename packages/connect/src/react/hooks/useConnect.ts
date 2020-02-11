@@ -10,7 +10,7 @@ const useConnectDispatch = () => {
   return dispatch;
 };
 
-const useConnect = () => {
+export const useConnect = () => {
   const { isOpen, isAuthenticating, authData, screen, authOptions } = useContext(ConnectContext);
   const dispatch = useConnectDispatch();
 
@@ -54,6 +54,18 @@ const useConnect = () => {
     dispatch({ type: States.MODAL_CLOSE });
     setTimeout(doGoToIntroScreen, 250);
   };
+  const doAuth = (options: Partial<AuthOptions> = {}) => {
+    doStartAuth();
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    authenticate({
+      ...authOptions,
+      ...options,
+      finished: payload => {
+        authOptions.finished && authOptions.finished(payload);
+        doFinishAuth(payload);
+      },
+    });
+  };
 
   return {
     isOpen,
@@ -70,8 +82,7 @@ const useConnect = () => {
     doCancelAuth,
     doStartAuth,
     doFinishAuth,
+    doAuth,
     authenticate,
   };
 };
-
-export { useConnect };
