@@ -4,7 +4,6 @@ import { Box, Flex, Input, Text, Button } from '@blockstack/ui';
 import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 
-import { getRandomWord } from '@common/utils';
 import { useAppDetails } from '@common/hooks/useAppDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { doSetUsername, doFinishSignIn } from 'store/onboarding/actions';
@@ -14,8 +13,6 @@ import { DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { registerSubdomain, Subdomains } from '@blockstack/keychain';
 import { didGenerateWallet } from '@store/wallet';
 import { gaiaUrl } from '@common/constants';
-
-const randomUsername = `${getRandomWord()}-${getRandomWord()}-${getRandomWord()}-${getRandomWord()}`;
 
 interface UsernameProps {
   next: () => void;
@@ -31,7 +28,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [username, setUsername] = useState(randomUsername);
+  const [username, setUsername] = useState('');
 
   const handleInput = (evt: React.FormEvent<HTMLInputElement>) => {
     setError('');

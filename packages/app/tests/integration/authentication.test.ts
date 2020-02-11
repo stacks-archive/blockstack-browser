@@ -1,5 +1,5 @@
 import { Wallet } from '@blockstack/keychain';
-import { validateMnemonic, generateMnemonic } from 'bip39';
+import { validateMnemonic, generateMnemonic, wordlists } from 'bip39';
 import { Page } from 'puppeteer';
 
 import { AuthPageObject } from './page-objects/auth.page';
@@ -14,11 +14,14 @@ async function bootstrapConnectModalPageTest(demo: DemoPageObject, auth: AuthPag
   const authPage = await newWindow.page();
   expect(authPage.url().startsWith(auth.url)).toBeTruthy();
   await authPage.waitFor(auth.$inputUsername, { timeout: 15000 });
-  authPage.on('console', event => {
-    console.log(event.type(), event.text());
-  });
   return { authPage };
 }
+
+const getRandomWord = () => {
+  const list = wordlists.EN;
+  const word = list[Math.floor(Math.random() * list.length)];
+  return word;
+};
 
 describe('Authentication', () => {
   let authPageObject: AuthPageObject;
@@ -37,6 +40,10 @@ describe('Authentication', () => {
     if (!$usernameInputElement) {
       throw 'Could not find username field';
     }
+    await authPage.type(
+      authPageObject.$inputUsername,
+      `${getRandomWord()}-${getRandomWord()}-${getRandomWord()}-${getRandomWord()}`
+    );
     await authPage.click(authPageObject.$buttonUsernameContinue);
 
     await authPage.waitFor(authPageObject.$textareaReadOnlySeedPhrase);
@@ -73,12 +80,13 @@ describe('Authentication', () => {
 
       authPage = pages.authPage;
 
+      await authPage.type(
+        authPageObject.$inputUsername,
+        `${getRandomWord()}-${getRandomWord()}-${getRandomWord()}-${getRandomWord()}`
+      );
       await authPage.click(authPageObject.$buttonUsernameContinue);
-      await authPage.screenshot({ path: 'tests/screenshot2.png' });
       await authPage.waitFor(authPageObject.$textareaReadOnlySeedPhrase);
-      await authPage.screenshot({ path: 'tests/screenshot3.png' });
       await authPage.click(authPageObject.$buttonCopySecretKey);
-      await authPage.screenshot({ path: 'tests/screenshot4.png' });
       await authPage.waitFor(authPageObject.$buttonHasSavedSeedPhrase);
       await authPage.click(authPageObject.$buttonHasSavedSeedPhrase);
       await authPage.waitFor(authPageObject.$buttonConfirmReenterSeedPhrase);
@@ -89,7 +97,6 @@ describe('Authentication', () => {
     test('it does not let you proceed when entering an incorrect seed phrase', async done => {
       const nonsenseRhymingSeed = 'You might encounter some delays, if you forget your seed phrase';
 
-      await authPage.screenshot({ path: 'tests/screenshot.png' });
       await authPage.type(authPageObject.$textareaSeedPhraseInput, nonsenseRhymingSeed);
       await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
 
