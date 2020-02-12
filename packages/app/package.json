@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/app",
-  "description": "The Blockstack App is a browser extension for interacting with Blockstack apps.",
+  "description": "The Blockstack App is a web app and browser extension for interacting with Blockstack apps.",
   "scripts": {
     "build:dev": "cross-env NODE_ENV=development EXT_ENV=development webpack --hot --mode development",
     "clean": "rm -rf ./dist",
@@ -106,6 +106,6 @@
   "prettier": "@blockstack/prettier-config",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ymdevs/Web-Extension-Starter.git"
+    "url": "git://github.com/blockstack/blockstack-app.git"
   }
 }

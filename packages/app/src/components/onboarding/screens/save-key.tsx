@@ -20,7 +20,7 @@ interface SaveKeyProps {
 export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
   const appName = useSelector((state: AppState) => selectAppName(state));
   return (
-    <Screen>
+    <Screen pb={0}>
       <ScreenHeader />
       <ScreenBody
         mt={6}
