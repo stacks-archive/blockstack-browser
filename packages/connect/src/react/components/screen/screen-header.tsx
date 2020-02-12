@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, Text, ChevronIcon } from '@blockstack/ui';
-import { useAppDetails } from '../../hooks/useAppDetails';
+import { useAppDetails } from '../../hooks/use-app-details';
 import { Logo } from '../logo';
 import { AppIcon } from '../app-icon';
 

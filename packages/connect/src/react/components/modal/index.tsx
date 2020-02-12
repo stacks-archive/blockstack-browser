@@ -6,8 +6,8 @@ import { Intro } from '../screens/intro';
 import { Finished } from '../screens/finished';
 import { HowItWorks } from '../screens/how-it-works';
 import { ContinueWithAuth } from '../screens/sign-in';
-import { useConnect } from '../../hooks/useConnect';
-import { useScrollLock } from '../../hooks/useScrollLock';
+import { useConnect } from '../../hooks/use-connect';
+import { useScrollLock } from '../../hooks/use-scroll-lock';
 import { States } from '../connect/context';
 
 const CloseIcon = ({ size = 16 }) => (

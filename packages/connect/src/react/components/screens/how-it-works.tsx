@@ -1,10 +1,8 @@
 import React from 'react';
 import { Box, Text, Button } from '@blockstack/ui';
-
-import { useAppDetails } from '../../hooks/useAppDetails';
-import { useConnect } from '../../hooks/useConnect';
+import { useAppDetails } from '../../hooks/use-app-details';
+import { useConnect } from '../../hooks/use-connect';
 import { Title } from '../typography';
-
 import { Screen, ScreenBody, ScreenActions, ScreenFooter } from '../screen/index';
 import { Link } from '../link';
 import { PoweredBy } from '../powered-by';

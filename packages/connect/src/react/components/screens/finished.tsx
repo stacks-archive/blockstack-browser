@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, BoxProps, Button } from '@blockstack/ui';
 
-import { useConnect } from '../../hooks/useConnect';
-import { useAppDetails } from '../../hooks/useAppDetails';
+import { useConnect } from '../../hooks/use-connect';
+import { useAppDetails } from '../../hooks/use-app-details';
 import { Title } from '../typography';
 import { Screen, ScreenBody, ScreenActions } from '../screen';
 import { CheckmarkIcon } from '../checkmark';

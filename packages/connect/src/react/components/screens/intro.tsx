@@ -1,12 +1,11 @@
 import React from 'react';
 import { Flex, Box, BoxProps, Stack, Button } from '@blockstack/ui';
-
 import { CheckList } from '../checklist';
 import { Link } from '../link';
 import { AppIcon } from '../app-icon';
-import { useConnect } from '../../hooks/useConnect';
-import { useAppDetails } from '../../hooks/useAppDetails';
 import { EyeIcon, EncryptionIcon } from '../vector';
+import { useConnect } from '../../hooks/use-connect';
+import { useAppDetails } from '../../hooks/use-app-details';
 import { Title } from '../typography';
 import { Screen, ScreenBody, ScreenActions, ScreenFooter } from '../screen';
 import { UnionLine } from '../icons/union-line';
