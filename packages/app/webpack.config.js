@@ -15,7 +15,7 @@ const distRootPath = path.join(__dirname, 'dist');
 const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
 const isDevelopment = process.env.NODE_ENV !== 'production';
-const segmentKey = process.env.SEGMENT_KEY || '';
+const segmentKey = process.env.SEGMENT_KEY || 'KZVI260WNyXRxGvDvsX4Zz0vhshQlgvE';
 
 module.exports = {
   entry: {
