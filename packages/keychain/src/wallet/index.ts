@@ -123,7 +123,7 @@ export class Wallet {
 
   async fetchConfig(gaiaConfig: GaiaHubConfig): Promise<WalletConfig | null> {
     try {
-      const response = await fetch(`${gaiaConfig.url_prefix}/${gaiaConfig.address}/wallet-config.json`)
+      const response = await fetch(`${gaiaConfig.url_prefix}${gaiaConfig.address}/wallet-config.json`)
       const encrypted = await response.text()
       const configJSON = await decryptContent(encrypted, { privateKey: this.configPrivateKey }) as string
       const config: WalletConfig = JSON.parse(configJSON)
