@@ -13,6 +13,7 @@ import { store } from '@store';
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { ConfigApp } from '@blockstack/keychain/dist/wallet';
 import { Wallet } from '@blockstack/keychain';
+import { gaiaUrl } from '@common/constants';
 
 interface ChooseAccountProps {
   next: (identityIndex: number) => void;
@@ -71,7 +72,6 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
         apps={reusedApps}
         confirm={async (hideWarning: boolean) => {
           if (hideWarning) {
-            const gaiaUrl = 'https://hub.blockstack.org';
             const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
             await wallet.updateConfigForReuseWarning({ gaiaConfig });
           }

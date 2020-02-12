@@ -1,6 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import { Wallet } from '@blockstack/keychain';
 import { WalletActions, RESTORE_WALLET, IS_RESTORING_WALLET, GENERATE_WALLET, SIGN_OUT } from './types';
+import { gaiaUrl } from '@common/constants';
 
 export function didRestoreWallet(wallet: Wallet): WalletActions {
   return {
@@ -32,6 +33,11 @@ export function doStoreSeed(seed: string, password: string): ThunkAction<Promise
   return async dispatch => {
     dispatch(isRestoringWallet());
     const wallet = await Wallet.restore(password, seed);
+    const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
+    const config = await wallet.fetchConfig(gaiaConfig);
+    if (config?.identities[0]?.username) {
+      wallet.identities[0].defaultUsername = config.identities[0].username;
+    }
     dispatch(didRestoreWallet(wallet));
     return wallet;
   };

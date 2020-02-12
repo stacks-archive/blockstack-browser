@@ -13,6 +13,7 @@ import { AppState } from '@store';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { registerSubdomain, Subdomains } from '@blockstack/keychain';
 import { didGenerateWallet } from '@store/wallet';
+import { gaiaUrl } from '@common/constants';
 
 const randomUsername = `${getRandomWord()}-${getRandomWord()}-${getRandomWord()}-${getRandomWord()}`;
 
@@ -91,7 +92,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
               await registerSubdomain({
                 username,
                 subdomain: Subdomains.TEST,
-                gaiaHubUrl: 'https://hub.blockstack.org',
+                gaiaHubUrl: gaiaUrl,
                 identity,
               });
               dispatch(didGenerateWallet(wallet));

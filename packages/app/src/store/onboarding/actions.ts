@@ -17,6 +17,7 @@ import { AppState } from 'store';
 import { selectUsername, selectDecodedAuthRequest, selectAuthRequest, selectAppIcon, selectAppName } from './selectors';
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { finalizeAuthResponse } from '@common/utils';
+import { gaiaUrl } from '@common/constants';
 
 export const doChangeScreen = (screen: ScreenName): OnboardingActions => ({
   type: CHANGE_PAGE,
@@ -44,7 +45,7 @@ export function doCreateSecretKey(): ThunkAction<void, AppState, {}, OnboardingA
     const username = selectUsername(getState());
     await registerSubdomain({
       identity: wallet.identities[0],
-      gaiaHubUrl: 'https://hub.blockstack.org',
+      gaiaHubUrl: gaiaUrl,
       username: username as string,
       subdomain: Subdomains.TEST,
     });
@@ -119,7 +120,6 @@ export function doFinishSignIn(
       console.error('Uh oh! Finished onboarding without auth info.');
       return;
     }
-    const gaiaUrl = 'https://hub.blockstack.org';
     const appURL = new URL(decodedAuthRequest.redirect_uri);
     const currentIdentity = identities[identityIndex];
     await currentIdentity.refresh();
