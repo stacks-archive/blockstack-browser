@@ -4,11 +4,6 @@ const LANDING_SIGN_IN_MODAL_CONTINUE = 'clicked_continue_with_data_vault';
 
 const SUBMIT_ABOUT_YOU = 'submitted_about_you_form';
 const SUBMIT_LOOKING_FOR = 'submitted_preferences_form';
-// SUBMIT_LOOKING_FOR
-// - "looking_for"
-// - "min_age"
-// - "max_age"
-// - "ideal_connection"
 
 const INTRO_CLOSED = 'auth_new_closed_intro';
 const INTRO_CREATE = 'auth_new_created';
