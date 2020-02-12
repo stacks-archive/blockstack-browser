@@ -32,6 +32,11 @@ const SIGN_IN_CREATE = 'auth_existing_create_data_vault'; // was not specified i
 const SIGN_IN_FORGOT = 'auth_existing_forgot_secret_key'; // was not specified in wink app spec
 const SIGN_IN_INCORRECT = 'auth_existing_entered_incorrect_secret_key';
 
+const USERNAME_START = 'auth_username_start';
+const USERNAME_ENTERED = 'auth_username_entered';
+
+const ONBOARDING_SCREEN_CHANGED = 'auth_screen_changed';
+
 const doTrack = (type: string, payload?: string | object) => {
   console.log('Tracking:', { type, payload });
   window.analytics.track(type, payload);
@@ -65,4 +70,7 @@ export {
   SIGN_IN_CORRECT,
   SIGN_IN_FORGOT,
   SIGN_IN_INCORRECT,
+  USERNAME_START,
+  USERNAME_ENTERED,
+  ONBOARDING_SCREEN_CHANGED,
 };
