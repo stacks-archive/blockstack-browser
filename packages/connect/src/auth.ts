@@ -56,8 +56,16 @@ export const authenticate = async ({
 
   const extensionURL = await window.BlockstackProvider?.getURL();
   const dataVaultURL = new URL(extensionURL || vaultUrl || defaultVaultURL);
+  const params = window.location.search
+    .substr(1)
+    .split('&')
+    .filter(param => param.startsWith('utm'))
+    .map(param => param.split('='));
+  const urlParams = new URLSearchParams();
+  params.forEach(([key, value]) => urlParams.set(key, value));
+  urlParams.set('authRequest', authRequest);
   const popup = popupCenter({
-    url: `${dataVaultURL.origin}/actions.html?authRequest=${authRequest}`,
+    url: `${dataVaultURL.origin}/actions.html?${urlParams.toString()}`,
   });
 
   setupListener({ popup, authRequest, finished, dataVaultURL, userSession });
