@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Box, Flex, Input, Text, Button } from '@blockstack/ui';
 import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
@@ -13,6 +13,7 @@ import { DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { registerSubdomain, Subdomains } from '@blockstack/keychain';
 import { didGenerateWallet } from '@store/wallet';
 import { gaiaUrl } from '@common/constants';
+import { doTrack, USERNAME_START } from '@common/track';
 
 interface UsernameProps {
   next: () => void;
@@ -25,6 +26,10 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
   const { wallet } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state),
   }));
+
+  useEffect(() => {
+    doTrack(USERNAME_START);
+  }, []);
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

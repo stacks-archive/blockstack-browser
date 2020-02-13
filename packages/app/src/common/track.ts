@@ -1,15 +1,3 @@
-export const LANDING_SIGN_IN = 'clicked_sign_in_dv';
-export const LANDING_TRY_WINK = 'clicked_try_data_vault';
-export const LANDING_SIGN_IN_MODAL_CONTINUE = 'clicked_continue_with_data_vault';
-
-export const SUBMIT_ABOUT_YOU = 'submitted_about_you_form';
-export const SUBMIT_LOOKING_FOR = 'submitted_preferences_form';
-
-export const INTRO_CLOSED = 'auth_new_closed_intro';
-export const INTRO_CREATE = 'auth_new_created';
-export const INTRO_SIGN_IN = 'auth_new_selected_sign_in_from_intro';
-export const INTRO_HOW_WORKS = 'auth_new_selected_how_it_works_from_intro';
-
 export const SECRET_KEY_INTRO_CLOSED = 'auth_new_closed_secret_key_intro';
 export const SECRET_KEY_INTRO_COPIED = 'auth_new_copied_secret_key';
 
@@ -34,6 +22,13 @@ export const SIGN_IN_INCORRECT = 'auth_existing_entered_incorrect_secret_key';
 
 export const USERNAME_START = 'auth_username_start';
 export const USERNAME_ENTERED = 'auth_username_entered';
+
+export const CHOOSE_ACCOUNT_START = 'auth_choose_account_start';
+export const CHOOSE_ACCOUNT_CHOSEN = 'auth_choose_account_chosen';
+export const CHOOSE_ACCOUNT_REUSE_WARNING = 'auth_choose_account_reuse_warning';
+export const CHOOSE_ACCOUNT_REUSE_WARNING_DISABLED = 'auth_choose_account_reuse_warning_disabled';
+export const CHOOSE_ACCOUNT_REUSE_WARNING_CONTINUE = 'auth_choose_account_reuse_warning_continue';
+export const CHOOSE_ACCOUNT_REUSE_WARNING_BACK = 'auth_choose_account_reuse_warning_back';
 
 export const ONBOARDING_SCREEN_CHANGED = 'auth_screen_changed';
 
