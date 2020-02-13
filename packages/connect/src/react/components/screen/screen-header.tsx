@@ -31,7 +31,7 @@ export interface ScreenHeaderProps {
 
 export const ScreenHeader = ({
   appDetails,
-  title = 'Data Vault',
+  title = 'Secret Key',
   hideIcon = false,
   hideLogo = false,
   ...rest

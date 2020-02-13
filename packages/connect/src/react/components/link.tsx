@@ -6,9 +6,9 @@ interface LinkProps extends BoxProps {
   _hover?: BoxProps;
 }
 
-export const Link: React.FC<LinkProps> = ({ _hover = {}, children, ...rest }) => (
+export const Link: React.FC<LinkProps> = ({ _hover = {}, children, textStyle = 'caption.medium', ...rest }) => (
   <Box {...rest}>
-    <Text _hover={{ textDecoration: 'underline', cursor: 'pointer', ..._hover }} textStyle="caption.medium">
+    <Text _hover={{ textDecoration: 'underline', cursor: 'pointer', ..._hover }} textStyle={textStyle}>
       {children}
     </Text>
   </Box>

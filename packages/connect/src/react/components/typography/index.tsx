@@ -1,7 +1,9 @@
 import React from 'react';
 import { Text } from '@blockstack/ui';
 
-const Title: React.FC = props => <Text width="100%" fontWeight="medium" fontSize="24px" lineHeight="32px" {...props} />;
+const Title: React.FC = props => (
+  <Text width="95%" fontWeight="medium" fontSize="24px" lineHeight="32px" display="inline-block" {...props} />
+);
 
 const Pretitle: React.FC = props => (
   <Text

@@ -10,7 +10,7 @@ interface PopupOptions {
 // does not leave slightly blurry underlap
 const defaultWidth = 442;
 const defaultHeight = 532;
-const defaultTitle = 'Continue with Data Vault';
+const defaultTitle = 'Continue with Secret Key';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 export const popupCenter = ({ url, title = defaultTitle, w = defaultWidth, h = defaultHeight }: PopupOptions) => {

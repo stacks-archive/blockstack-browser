@@ -6,6 +6,8 @@ import { useAppDetails } from '../../hooks/useAppDetails';
 import { Title } from '../typography';
 import { Screen, ScreenBody, ScreenActions } from '../screen';
 import { CheckmarkIcon } from '../checkmark';
+import { PoweredBy } from '../powered-by';
+import { ScreenFooter } from '../screen/screen-footer';
 
 interface AppElementProps extends BoxProps {
   name: string;
@@ -28,7 +30,7 @@ export const Finished = () => {
       <ScreenBody
         mt={4}
         body={[
-          <Title>{name} has been connected to your Data Vault</Title>,
+          <Title>{name} has been connected to your Secret Key</Title>,
           <Box mt={2}>
             Everything you do in {name} will be private, secure, and only accessible with your Secret Key.
           </Box>,
@@ -39,6 +41,9 @@ export const Finished = () => {
           Close
         </Button>
       </ScreenActions>
+      <ScreenFooter>
+        <PoweredBy />
+      </ScreenFooter>
     </Screen>
   );
 };

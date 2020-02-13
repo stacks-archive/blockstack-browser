@@ -2,29 +2,46 @@ import React from 'react';
 import { Box, Text, Button } from '@blockstack/ui';
 
 import { useAppDetails } from '../../hooks/useAppDetails';
-import { BlockchainIcon, AppsIcon, EncryptionIcon } from '../vector';
 import { useConnect } from '../../hooks/useConnect';
 import { Title } from '../typography';
 
-import { Screen, ScreenBody, ScreenActions } from '../screen/index';
+import { Screen, ScreenBody, ScreenActions, ScreenFooter } from '../screen/index';
+import { Link } from '../link';
+import { PoweredBy } from '../powered-by';
 
-const howDataVaultWorks = [
+interface InfoSection {
+  title: string;
+  body: string | JSX.Element;
+}
+
+const howDataVaultWorks: InfoSection[] = [
   {
-    icon: <EncryptionIcon />,
+    title: 'What is Blockstack?',
+    body: (
+      <span>
+        Blockstack is the open-source technology that generates your Secret Key. There&apos;s no company that owns or
+        controls Blockstack, it is independent. Go to{' '}
+        <Link color="blue" display="inline-block" onClick={() => window.open('https://blockstack.org', '_blank')}>
+          blockstack.org
+        </Link>{' '}
+        to learn more.
+      </span>
+    ),
+  },
+  {
     title: 'Encryption',
     body:
-      'Data Vault’s encryption locks your app data into codes that only you can open using a Secret Key that you control. This lock and key keeps everything you do private.',
+      'Encryption is always on. It locks everything you do in Messenger into useless codes. Because of this, Instagram can’t see or track your activity. Your data can only be unlocked with the key that you own. No one else has this key, not even Messenger, so no one else can unlock your data.',
   },
   {
-    icon: <BlockchainIcon />,
-    title: 'Blockchain technology',
+    title: 'What is a Secret Key?',
     body:
-      'The Secret Key to your Data Vault is made using a blockchain. The blockchain ensures that only you have the key and that no one can take it from you. Your data is private, for your own use, and safe from misuse by app creators.',
+      "Your Secret Key unlocks your data. It's created independently from Messenger to make sure that Messenger doesn't have it. An open-source protocol called Blockstack generates your Secret Key when you sign up. Nobody but you will have your Secret Key, to make sure that only you have access to your data.",
   },
   {
-    icon: <AppsIcon />,
-    title: 'Over 300 apps use Data Vault',
-    body: 'Data Vault is free to use with over 300 apps.',
+    title: 'When will I need my Secret Key?',
+    body:
+      'You’ll need your Secret Key to prove it’s you when you use Instagram on a new device, such as a new phone or laptop. After that, your Secret Key will stay active to keep you safe and private in the apps you use on that device.',
   },
 ];
 
@@ -37,17 +54,14 @@ export const HowItWorks: React.FC = () => {
       <ScreenBody
         pretitle="How it works"
         body={[
-          <Title>Data Vault keeps what you do in {name} private</Title>,
+          <Title>{name} keeps everything you do private with Blockstack&apos;s Secret Key technology</Title>,
           <Text mt={2} display="block">
-            Usually, apps store your data on their servers for their own use. Data Vault isolates your encrypted data
-            from use by others so that apps like {name} (and even Data Vault) can’t use it.
+            Normally, apps keep your data for them to use. When you have a Secret Key, you no longer have to trust{' '}
+            {name} with your data because {name} won&apos;t have access.
           </Text>,
           <Box mt={2}>
-            {howDataVaultWorks.map(({ title, body, icon }, key) => (
+            {howDataVaultWorks.map(({ title, body }, key) => (
               <Box mt={8} key={key}>
-                <Box size="24px" color="blue" borderRadius="8px">
-                  {icon}
-                </Box>
                 <Text mt={3} display="block" fontWeight="semibold">
                   {title}
                 </Text>
@@ -61,9 +75,12 @@ export const HowItWorks: React.FC = () => {
       />
       <ScreenActions>
         <Button width="100%" size="md" mt={6} onClick={() => doAuth()}>
-          Create your Data Vault
+          Get Started
         </Button>
       </ScreenActions>
+      <ScreenFooter>
+        <PoweredBy />
+      </ScreenFooter>
     </Screen>
   );
 };

@@ -107,14 +107,12 @@ export const Modal = () => {
           <ModalHeader
             close
             back={screen === States.SCREENS_HOW_IT_WORKS ? States.SCREENS_INTRO : undefined}
-            title={screen === States.SCREENS_SIGN_IN ? 'Sign In' : 'Data Vault'}
+            title={screen === States.SCREENS_SIGN_IN ? 'Sign In' : 'Secret Key'}
           />
         }
         isOpen={isOpen}
       >
-        <Box pb={6}>
-          <RenderScreen />
-        </Box>
+        <RenderScreen />
       </BlockstackModal>
     </ThemeProvider>
   );

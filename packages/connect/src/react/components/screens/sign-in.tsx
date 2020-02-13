@@ -32,7 +32,7 @@ const ContinueWithDataVault: React.FC = props => {
       {...props}
     >
       <Logo mr={2} />
-      <Text fontWeight={500}>Continue with Data Vault</Text>
+      <Text fontWeight={500}>Continue with Secret Key</Text>
     </Flex>
   );
 };

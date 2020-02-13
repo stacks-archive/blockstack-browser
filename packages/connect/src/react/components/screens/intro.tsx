@@ -6,7 +6,7 @@ import { Link } from '../link';
 import { AppIcon } from '../app-icon';
 import { useConnect } from '../../hooks/useConnect';
 import { useAppDetails } from '../../hooks/useAppDetails';
-import { AppsIcon, EncryptionIcon } from '../vector';
+import { EyeIcon, EncryptionIcon } from '../vector';
 import { Title } from '../typography';
 import { Screen, ScreenBody, ScreenActions, ScreenFooter } from '../screen';
 import { UnionLine } from '../icons/union-line';
@@ -40,22 +40,18 @@ export const Intro = () => {
         fullWidth
         mt={4}
         body={[
-          <Title>{name} works with Data Vault to guarantee your privacy</Title>,
+          <Title>{name} guarantees your privacy by encrypting everything</Title>,
           <Box mt={4} mx="auto" width="100%" height="1px" bg="#E5E5EC" />,
           <Box>
             <CheckList
               items={[
                 {
-                  icon: () => <AppIcon alt={name} src={icon} />,
-                  text: `You will use your Data Vault to sign into ${name} privately`,
-                },
-                {
                   icon: EncryptionIcon,
-                  text: `Data Vault keeps what you do in ${name} private using encryption and blockchain`,
+                  text: "You'll get a Secret Key that automatically encrypts everything you do",
                 },
                 {
-                  icon: AppsIcon,
-                  text: 'Data Vault is free to use with over 300 apps',
+                  icon: EyeIcon,
+                  text: `${name} won't be able to see, access, or track your activity`,
                 },
               ]}
             />
@@ -64,13 +60,13 @@ export const Intro = () => {
       />
       <ScreenActions>
         <Button width="100%" size="md" mt={2} onClick={() => doAuth()}>
-          Create Data Vault
+          Get Started
         </Button>
       </ScreenActions>
       <ScreenFooter>
-        <Stack mt={5} spacing={4} isInline>
+        <Stack my={5} spacing={4} isInline>
           <Link color="blue" onClick={() => doAuth({ sendToSignIn: true })}>
-            Sign in to Data Vault
+            I already have a Secret Key
           </Link>
           <Link
             color="blue"
@@ -78,7 +74,7 @@ export const Intro = () => {
               doGoToHowItWorksScreen();
             }}
           >
-            How Data Vault works
+            How it works
           </Link>
         </Stack>
       </ScreenFooter>
