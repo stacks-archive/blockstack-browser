@@ -94,8 +94,8 @@ describe('Authentication', () => {
 
     beforeEach(async () => navigateThroughToSecretKeyPage(), 15_000);
 
-    test('it does not let you proceed when entering an incorrect seed phrase', async done => {
-      const nonsenseRhymingSeed = 'You might encounter some delays, if you forget your seed phrase';
+    test('it does not let you proceed when entering an incorrect Secret Key', async done => {
+      const nonsenseRhymingSeed = 'It does not happen frequently, but dont forget your Secret Key';
 
       await authPage.type(authPageObject.$textareaSeedPhraseInput, nonsenseRhymingSeed);
       await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
@@ -117,7 +117,7 @@ describe('Authentication', () => {
   });
 
   // eslint-disable-next-line jest/no-disabled-tests
-  test.skip('signing in with an existing seed phrase', async () => {
+  test.skip('signing in with an existing Secret Key', async () => {
     const { authPage } = await bootstrapConnectModalPageTest(demoPageObject, authPageObject);
 
     await authPage.waitFor('#onboarding-sign-in');

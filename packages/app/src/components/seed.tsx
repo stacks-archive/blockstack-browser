@@ -48,7 +48,7 @@ const Seed = () => {
         validate={values => {
           const errors: FormikErrors<FormValues> = {};
           if (values.seed && !validateMnemonic(values.seed)) {
-            errors.seed = 'The seed phrase you entered is invalid';
+            errors.seed = 'The Secret Key you entered is invalid';
           }
           if (!values.password) {
             errors.password = 'Required';
@@ -59,7 +59,7 @@ const Seed = () => {
         {({ handleSubmit, values, handleChange, errors }) => (
           <form onSubmit={handleSubmit}>
             <FormControl my={4}>
-              <FormLabel>Seed Phrase</FormLabel>
+              <FormLabel>Secret Key</FormLabel>
               <Input
                 textStyle="body.small"
                 type="text"

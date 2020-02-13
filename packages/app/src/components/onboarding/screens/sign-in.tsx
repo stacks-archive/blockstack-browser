@@ -80,7 +80,7 @@ export const SignIn: React.FC<SignInProps> = props => {
                 doTrack(SIGN_IN_CORRECT);
                 props.next();
               } catch (error) {
-                setSeedError("The seed phrase you've entered is invalid.");
+                setSeedError("The Secret Key you've entered is invalid.");
                 doTrack(SIGN_IN_INCORRECT);
               }
               setLoading(false);
