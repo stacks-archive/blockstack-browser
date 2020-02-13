@@ -43,7 +43,7 @@ const RenderScreen = ({ ...rest }) => {
     />
   );
 
-  const UsernameScreen = () => <Username next={() => dispatch(doChangeScreen(ScreenName.CREATE))} {...rest} />;
+  const UsernameScreen = () => <Username next={() => dispatch(doChangeScreen(ScreenName.GENERATION))} {...rest} />;
 
   switch (screen) {
     // choose account
@@ -60,7 +60,7 @@ const RenderScreen = ({ ...rest }) => {
       return <UsernameScreen />;
 
     // create
-    case ScreenName.CREATE:
+    case ScreenName.GENERATION:
       return <Create next={() => dispatch(doChangeScreen(ScreenName.SECRET_KEY))} {...rest} />;
 
     // Key screens

@@ -18,11 +18,15 @@ import { selectUsername, selectDecodedAuthRequest, selectAuthRequest, selectAppI
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { finalizeAuthResponse } from '@common/utils';
 import { gaiaUrl } from '@common/constants';
+import { pageTrackingNameMap } from './types';
 
-export const doChangeScreen = (screen: ScreenName): OnboardingActions => ({
-  type: CHANGE_PAGE,
-  screen,
-});
+export const doChangeScreen = (screen: ScreenName): OnboardingActions => {
+  window.analytics.page(pageTrackingNameMap[screen]);
+  return {
+    type: CHANGE_PAGE,
+    screen,
+  };
+};
 
 export const doSaveSecretKey = (secretKey: string): OnboardingActions => ({
   type: SAVE_KEY,

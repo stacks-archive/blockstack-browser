@@ -9,7 +9,7 @@ export const SET_USERNAME = 'ONBOARDING/SET_USERNAME';
 export enum ScreenName {
   CHOOSE_ACCOUNT = 'screens/CHOOSE_ACCOUNT',
   USERNAME = 'screens/USERNAME',
-  CREATE = 'screens/CREATE',
+  GENERATION = 'screens/GENERATION',
   SECRET_KEY = 'screens/SECRET_KEY',
   SAVE_KEY = 'screens/SAVE_KEY',
   CONNECT_APP = 'screens/CONNECT_APP',
@@ -17,6 +17,19 @@ export enum ScreenName {
   RECOVERY_CODE = 'screens/RECOVERY_CODE',
   ADD_ACCOUNT = 'screens/ADD_ACCOUNT',
 }
+
+// Nice page names for Mark to see in Mixpanel
+export const pageTrackingNameMap = {
+  [ScreenName.CHOOSE_ACCOUNT]: 'Choose Account',
+  [ScreenName.USERNAME]: 'Username',
+  [ScreenName.GENERATION]: 'Generation',
+  [ScreenName.SECRET_KEY]: 'Copy Secret Key',
+  [ScreenName.SAVE_KEY]: 'Save Secret Key',
+  [ScreenName.CONNECT_APP]: 'Connect App',
+  [ScreenName.SIGN_IN]: 'Sign In',
+  [ScreenName.RECOVERY_CODE]: 'Magic Recovery Code',
+  [ScreenName.ADD_ACCOUNT]: ' Select Username',
+};
 
 // TODO: clarify usage of password for local key encryption
 export const DEFAULT_PASSWORD = 'password';
