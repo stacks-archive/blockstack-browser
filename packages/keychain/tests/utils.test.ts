@@ -1,29 +1,30 @@
-import { IdentityNameValidityError, validateIdentityName, checkIdentityNameAvailability } from '../src/utils';
-import { Subdomains } from '../src';
+import './setup'
+import { IdentityNameValidityError, validateSubdomainFormat, validateSubdomainAvailability, validateSubdomain } from '../src/utils'
+import { Subdomains, registrars } from '../src'
 
-describe(validateIdentityName.name, () => {
+describe(validateSubdomainFormat.name, () => {
   it('returns error state when string less than 8 characters', () => {
-    const result = validateIdentityName('john')
+    const result = validateSubdomainFormat('john')
     expect(result).toEqual(IdentityNameValidityError.MINIMUM_LENGTH)
   })
 
   it('returns error state when string has more than 38 characters', () => {
-    const result = validateIdentityName('pneumonoultramicroscopicsilicovolcanoconiosis')
+    const result = validateSubdomainFormat('pneumonoultramicroscopicsilicovolcanoconiosis')
     expect(result).toEqual(IdentityNameValidityError.MAXIMUM_LENGTH)
   })
 
   it('returns error state when using uppercase chars', () => {
-    const result = validateIdentityName('COOLNAMEBRO')
+    const result = validateSubdomainFormat('COOLNAMEBRO')
     expect(result).toEqual(IdentityNameValidityError.ILLEGAL_CHARACTER)
   })
 
   it('returns error state when using non-underscore symbols', () => {
-    const result = validateIdentityName('kyranj@mie')
+    const result = validateSubdomainFormat('kyranj@mie')
     expect(result).toEqual(IdentityNameValidityError.ILLEGAL_CHARACTER)
   })
 
   it('returns error state when using non-underscore symbols', () => {
-    const result = validateIdentityName('COOLNAMEBRO')
+    const result = validateSubdomainFormat('COOLNAMEBRO')
     expect(result).toEqual(IdentityNameValidityError.ILLEGAL_CHARACTER)
   })
 
@@ -33,10 +34,10 @@ describe(validateIdentityName.name, () => {
     // eslint-disable-next-line 
     // @ts-ignore
     expect(legitIndentity === homoglyph).toEqual(false)
-    const shouldPassResult = validateIdentityName(legitIndentity)
+    const shouldPassResult = validateSubdomainFormat(legitIndentity)
     expect(shouldPassResult).toBeNull()
 
-    const shouldFailResult = validateIdentityName(homoglyph)
+    const shouldFailResult = validateSubdomainFormat(homoglyph)
     expect(shouldFailResult).toEqual(IdentityNameValidityError.ILLEGAL_CHARACTER)
   })
 
@@ -51,13 +52,31 @@ describe(validateIdentityName.name, () => {
       'emotion_trouble_solution_juice',
       '________'
     ]
-    names.forEach(name => expect(validateIdentityName(name)).toBeNull())
+    names.forEach(name => expect(validateSubdomainFormat(name)).toBeNull())
   })
 })
 
-describe(checkIdentityNameAvailability.name, () => {
+describe(validateSubdomainAvailability.name, () => {
   it('fetches the status of a username', async () => {
     fetchMock.once(JSON.stringify({ success: true }))
-    expect(checkIdentityNameAvailability('slkdjfskldjf', Subdomains.BLOCKSTACK)).toEqual({ success: true })
+    const response = await validateSubdomainAvailability('slkdjfskldjf', Subdomains.BLOCKSTACK)
+    expect(response).toEqual({ success: true })
+  })
+
+  test('uses the correct registrar URL', async () => {
+    fetchMock.mockClear()
+    fetchMock.once(JSON.stringify({ success: true }))
+    const response = await validateSubdomainAvailability('slkdjfskldjf', Subdomains.TEST)
+    expect(response).toEqual({ success: true })
+    const url: string = fetchMock.mock.calls[0][0]
+    expect(url.includes(registrars[Subdomains.TEST].apiUrl)).toBeTruthy()
+  })
+})
+
+describe(validateSubdomain.name, () => {
+  test('returns unavailable if status is unavailable', async () => {
+    fetchMock.once(JSON.stringify({ status: 'unavailable' }))
+    const error = await validateSubdomain('asdfasdf')
+    expect(error).toEqual(IdentityNameValidityError.UNAVAILABLE)
   })
 })

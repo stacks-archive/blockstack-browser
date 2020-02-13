@@ -4,7 +4,7 @@ import { createSha2Hash } from 'blockstack/lib/encryption/sha2Hash'
 import { publicKeyToAddress } from 'blockstack/lib/keys'
 import Identity from '../identity'
 import { AssertionError } from 'assert'
-import { Subdomains, registrars } from '../profiles';
+import { Subdomains, registrars } from '../profiles'
 
 const IDENTITY_KEYCHAIN = 888
 const BLOCKSTACK_ON_BITCOIN = 0
@@ -169,12 +169,12 @@ export enum IdentityNameValidityError {
   MINIMUM_LENGTH = 'error_minimum_length',
   MAXIMUM_LENGTH = 'error_maximum_length',
   ILLEGAL_CHARACTER = 'error_illegal_character',
-  UNAVAILABLE = 'error_name_unavailable'
+  UNAVAILABLE = 'error_name_unavailable',
 }
 
 const containsLegalCharacters = (name: string) => /^[a-z0-9_]+$/.test(name)
 
-export const validateIdentityName = (identityName: string): IdentityNameValidityError | null => {
+export const validateSubdomainFormat = (identityName: string): IdentityNameValidityError | null => {
   const nameLength = identityName.length
 
   if (nameLength < 8) {
@@ -192,9 +192,33 @@ export const validateIdentityName = (identityName: string): IdentityNameValidity
   return null
 }
 
-export const checkIdentityNameAvailability = async (name: string, subdomain: Subdomains = Subdomains.BLOCKSTACK) => {
+export const validateSubdomainAvailability = async (name: string, subdomain: Subdomains = Subdomains.BLOCKSTACK) => {
   const url = `${registrars[subdomain].apiUrl}/${name.toLowerCase()}.${subdomain}`
   const resp = await fetch(url)
   const data = await resp.json()
   return data
+}
+
+/**
+ * Validate the format and availability of a subdomain. Will return an error of enum
+ * IdentityNameValidityError if an error is present. If no errors are found, will return null.
+ * @param name the subdomain to be registered
+ * @param subdomain a valid Subdomains enum
+ */
+export const validateSubdomain = async (name: string, subdomain: Subdomains = Subdomains.BLOCKSTACK) => {
+  const error = validateSubdomainFormat(name)
+  if (error) {
+    return error
+  }
+
+  try {
+    const data = await validateSubdomainAvailability(name, subdomain)
+    if (data.status !== 'available') {
+      return IdentityNameValidityError.UNAVAILABLE
+    }
+  } catch (error) {
+    return IdentityNameValidityError.UNAVAILABLE
+  }
+
+  return null
 }
