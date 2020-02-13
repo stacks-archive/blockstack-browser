@@ -37,7 +37,7 @@ export const Connect: React.FC<ConnectProps> = props => {
       <ScreenBody
         mt={4}
         body={[
-          <Title>Connect {appName} to your Data Vault</Title>,
+          <Title>Connect {appName} to your Secret Key</Title>,
           <Box mt={6}>
             {/*Validate, track: CONNECT_INCORRECT */}
             <Input
@@ -51,7 +51,9 @@ export const Connect: React.FC<ConnectProps> = props => {
               style={{ resize: 'none' }}
             />
             {error && seedInput === '' && <ErrorText>You must enter your Secret Key</ErrorText>}
-            {error && seedInput !== '' && <ErrorText>You{"'"}ve entered your 12-word Secret Key incorrectly</ErrorText>}
+            {error && seedInput !== '' && (
+              <ErrorText>You&apos;ve entered your 12-word Secret Key incorrectly</ErrorText>
+            )}
           </Box>,
         ]}
       />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
+import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Box, Text, Input, Flex, Button } from '@blockstack/ui';
 import { AppIcon } from '@components/app-icon';
@@ -27,13 +27,13 @@ export const SignIn: React.FC<SignInProps> = props => {
 
   return (
     <Screen isLoading={isLoading} textAlign="center">
-      <ScreenHeader title="Continue with Data Vault" hideIcon />
+      <ScreenHeader title="Continue with Secret Key" hideIcon />
       <AppIcon mt={10} />
       <ScreenBody
         mt={4}
         body={[
           <Title>Sign into {appName}</Title>,
-          <Box mt={2}>Enter your Data Vault’s Secret Key to continue</Box>,
+          <Box mt={2}>Enter your Secret Key to continue</Box>,
           <Box textAlign="left" mt={6}>
             {/*Validate: track SIGN_IN_INCORRECT*/}
             <Input
@@ -64,7 +64,7 @@ export const SignIn: React.FC<SignInProps> = props => {
               dispatch(doChangeScreen(ScreenName.USERNAME));
             }}
           >
-            Create a new Data Vault
+            Create a Secret Key
           </Link>
           <Button
             size="md"
@@ -90,6 +90,9 @@ export const SignIn: React.FC<SignInProps> = props => {
           </Button>
         </Flex>
       </ScreenActions>
+      <ScreenFooter>
+        <PoweredBy />
+      </ScreenFooter>
     </Screen>
   );
 };

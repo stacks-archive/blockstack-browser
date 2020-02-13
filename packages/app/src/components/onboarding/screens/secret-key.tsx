@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
+import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Button, Text } from '@blockstack/ui';
 
@@ -38,8 +38,8 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
           body={[
             <Title>Your Secret Key</Title>,
             <Text mt={2} display="block">
-              Your Data Vault has a Secret Key: 12 words that unlock it, like the key to your home. Once lost, it’s lost
-              forever. So save it somewhere you won’t forget.
+              Here’s your Secret Key: 12 words that prove it’s you when you want to use Messenger on a new device. Once
+              lost it’s lost forever, so save it somewhere you won’t forget.
             </Text>,
             <Card title="Your Secret Key" mt={6}>
               <SeedTextarea
@@ -72,6 +72,9 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
             Copy Secret Key
           </Button>
         </ScreenActions>
+        <ScreenFooter>
+          <PoweredBy />
+        </ScreenFooter>
       </Screen>
       <Toast show={copied} />
     </>

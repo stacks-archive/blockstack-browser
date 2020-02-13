@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Box, Spinner, Flex, Text } from '@blockstack/ui';
-import { Screen, ScreenBody } from '@blockstack/connect';
+import { Screen, ScreenBody, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 
 import { doCreateSecretKey } from '@store/onboarding/actions';
+import { useAppDetails } from '@common/hooks/useAppDetails';
 
 interface ExplainerCardProps {
   title: string;
@@ -13,9 +14,6 @@ interface ExplainerCardProps {
 
 const ExplainerCard = ({ title, imageUrl }: ExplainerCardProps) => (
   <Flex height="300px" flexDirection="column" justifyContent="space-between">
-    <Box>
-      <Text>{imageUrl ? 'With Stacks:' : ' '}</Text>
-    </Box>
     <Flex justifyContent="center" alignItems="center" height="180px" mb={imageUrl ? 8 : 0} flexDirection="column">
       {imageUrl && (
         <Box flex="1" justifyContent="center">
@@ -48,25 +46,6 @@ const createTimeoutLoop = (
     }, (index + 1) * 2400)
   );
 
-const explainerData: ExplainerCardProps[] = [
-  {
-    title: 'Private data storage',
-    imageUrl: '/assets/images/icon-delay-private.svg',
-  },
-  {
-    title: 'Always-on encryption',
-    imageUrl: '/assets/images/icon-delay-padlock.svg',
-  },
-  {
-    title: 'Access to 100s of apps',
-    imageUrl: '/assets/images/icon-delay-apps.svg',
-  },
-  {
-    title: 'This will not display',
-    imageUrl: '',
-  },
-];
-
 const preloadImages = (images: { imageUrl: string }[]) => {
   images.forEach(({ imageUrl }) => {
     const img = new Image();
@@ -80,10 +59,26 @@ interface CreateProps {
 
 export const Create: React.FC<CreateProps> = props => {
   const [state, setState] = useState({
-    title: 'Creating your Data Vault',
-    imageUrl: '',
+    title: 'Generating your Secret Key...',
+    imageUrl: '/assets/images/icon-delay-key.svg',
   });
+  const { name } = useAppDetails();
   const dispatch = useDispatch();
+
+  const explainerData: ExplainerCardProps[] = [
+    {
+      title: `Everything you do in ${name} is protected with encryption`,
+      imageUrl: '/assets/images/icon-delay-padlock.svg',
+    },
+    {
+      title: `${name} can't see or track your activity`,
+      imageUrl: '/assets/images/icon-delay-private.svg',
+    },
+    {
+      title: 'This will not display',
+      imageUrl: '',
+    },
+  ];
 
   useEffect(() => {
     preloadImages(explainerData);
@@ -110,6 +105,9 @@ export const Create: React.FC<CreateProps> = props => {
         justifyContent="center"
         body={[<ExplainerCard title={state.title} imageUrl={state.imageUrl} />]}
       />
+      <ScreenFooter>
+        <PoweredBy />
+      </ScreenFooter>
     </Screen>
   );
 };

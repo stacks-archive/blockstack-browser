@@ -16,7 +16,7 @@ export const SignOut = ({ identities, signOut }: SignOutPros) => (
     </Text>
     <Accounts identities={identities} />
     <Button onClick={signOut} mt={8} width="100%">
-      Sign out of Data Vault
+      Sign out
     </Button>
     <Text as="small" color="ink.600" textAlign="center" mt={4}>
       This will sign you out on this device. To sign back in, you will have to enter your Secret Key.

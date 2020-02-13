@@ -1,5 +1,5 @@
 import React from 'react';
-import { Screen, ScreenBody, Title } from '@blockstack/connect';
+import { Screen, ScreenBody, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { Box } from '@blockstack/ui';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Accounts } from '@components/accounts';
@@ -79,7 +79,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
         }}
       />
       <Screen textAlign="center">
-        <ScreenHeader hideIcon title="Continue with Data Vault" />
+        <ScreenHeader hideIcon title="Continue with Secret Key" />
         <AppIcon mt={10} size="72px" />
         <ScreenBody
           body={[
@@ -92,6 +92,9 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
             />,
           ]}
         />
+        <ScreenFooter>
+          <PoweredBy />
+        </ScreenFooter>
       </Screen>
     </Box>
   );

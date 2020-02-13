@@ -33,7 +33,7 @@ const Window = ({ children }: WindowProps) => {
 
   React.useEffect(() => {
     const win = window.open('', '', 'width=440,height=584,left=200,top=200') as Window;
-    win.document.title = 'Continue with Data Vault';
+    win.document.title = 'Continue with Secret Key';
     const el = document.createElement('div');
     win.document.body.appendChild(el);
     setState({ win, el });

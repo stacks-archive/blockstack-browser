@@ -26,7 +26,7 @@ const RenderScreen = ({ ...rest }) => {
   const [hasSaved, setHasSaved] = useState(false);
 
   /**
-   * TODO: make this check if logged in to data vault better
+   * TODO: make this check if logged in better
    */
   // React.useEffect(() => {
   //   if (screen !== ScreenName.CHOOSE_ACCOUNT && identities && identities.length) {
