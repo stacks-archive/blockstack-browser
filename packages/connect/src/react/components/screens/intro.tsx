@@ -64,12 +64,13 @@ export const Intro = () => {
         </Button>
       </ScreenActions>
       <ScreenFooter>
-        <Stack my={5} spacing={4} isInline>
-          <Link color="blue" onClick={() => doAuth({ sendToSignIn: true })}>
+        <Stack mb={5} mt={3} spacing={4} isInline>
+          <Link textStyle="caption" color="blue" onClick={() => doAuth({ sendToSignIn: true })}>
             I already have a Secret Key
           </Link>
           <Link
             color="blue"
+            textStyle="caption"
             onClick={() => {
               doGoToHowItWorksScreen();
             }}
