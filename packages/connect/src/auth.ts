@@ -2,7 +2,7 @@ import { UserSession, AppConfig } from 'blockstack';
 import './types';
 import { popupCenter } from './popup';
 
-const defaultVaultURL = 'https://vault.hankstoever.com';
+const defaultVaultURL = 'https://auth.blockstack.org';
 
 export interface FinishedData {
   authResponse: string;
