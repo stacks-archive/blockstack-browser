@@ -2,7 +2,6 @@ import React, { useState, ChangeEvent } from 'react';
 import { Flex, Box, Button, Text, Input } from '@blockstack/ui';
 import { AppIcon } from '@components/app-icon';
 import { Link } from '@components/link';
-import { doTrack, CONNECT_SAVED, CONNECT_INCORRECT, CONNECT_BACK } from '@common/track';
 import { useSelector } from 'react-redux';
 import { AppState } from '@store';
 import { selectAppName, selectSecretKey } from '@store/onboarding/selectors';
@@ -62,11 +61,9 @@ export const Connect: React.FC<ConnectProps> = props => {
           size="md"
           onClick={() => {
             if (seedInput !== seed) {
-              doTrack(CONNECT_INCORRECT);
               setHasAttemptedContinue(true);
               return;
             }
-            doTrack(CONNECT_SAVED);
             props.next();
           }}
           mt={6}
@@ -84,7 +81,6 @@ export const Connect: React.FC<ConnectProps> = props => {
           <Link
             textStyle={'body.small.medium'}
             onClick={() => {
-              doTrack(CONNECT_BACK);
               props.back();
             }}
             pl={1}

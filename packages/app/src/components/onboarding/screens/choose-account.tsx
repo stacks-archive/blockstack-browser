@@ -16,7 +16,6 @@ import { Wallet } from '@blockstack/keychain';
 import { gaiaUrl } from '@common/constants';
 import {
   doTrack,
-  CHOOSE_ACCOUNT_START,
   CHOOSE_ACCOUNT_REUSE_WARNING,
   CHOOSE_ACCOUNT_REUSE_WARNING_CONTINUE,
   CHOOSE_ACCOUNT_REUSE_WARNING_DISABLED,
@@ -37,10 +36,6 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   }));
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
   const [identityIndex, setIdentityIndex] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    doTrack(CHOOSE_ACCOUNT_START);
-  }, []);
 
   const didSelectAccount = ({ identityIndex }: { identityIndex: number }) => {
     const state = store.getState();

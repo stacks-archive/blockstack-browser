@@ -7,7 +7,6 @@ import { Button, Text } from '@blockstack/ui';
 import { Toast } from '@components/toast';
 import { Card } from '@components/card';
 import { SeedTextarea } from '@components/seed-textarea';
-import { doTrack, SECRET_KEY_INTRO_COPIED } from '@common/track';
 import { AppState } from '@store';
 import { selectSecretKey } from '@store/onboarding/selectors';
 
@@ -60,7 +59,6 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
             mt={6}
             isDisabled={copied}
             onClick={() => {
-              doTrack(SECRET_KEY_INTRO_COPIED);
               const input: HTMLInputElement = document.querySelector('.hidden-secret-key') as HTMLInputElement;
               input.select();
               input.setSelectionRange(0, 99999);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Flex, Input, Text, Button } from '@blockstack/ui';
 import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
@@ -14,7 +14,6 @@ import { registerSubdomain, Subdomains, IdentityNameValidityError, validateSubdo
 import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl } from '@common/constants';
-import { doTrack, USERNAME_START } from '@common/track';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 38 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
@@ -37,10 +36,6 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
   const { wallet } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state),
   }));
-
-  useEffect(() => {
-    doTrack(USERNAME_START);
-  }, []);
 
   const [error, setError] = useState<IdentityNameValidityError | null>(null);
   const [loading, setLoading] = useState(false);

@@ -11,8 +11,6 @@ import { AppState } from '@store';
 import { selectAppName } from '@store/onboarding/selectors';
 import { faqs } from '@components/onboarding/data';
 
-import { doTrack, SECRET_KEY_INSTR_CONFIRMED } from '@common/track';
-
 interface SaveKeyProps {
   next: () => void;
 }
@@ -41,7 +39,6 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
           size="md"
           mt={6}
           onClick={() => {
-            doTrack(SECRET_KEY_INSTR_CONFIRMED);
             next();
           }}
           data-test="button-has-saved-seed-phrase"
