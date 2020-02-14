@@ -1,11 +1,11 @@
 import React from 'react';
-import { Text } from '@blockstack/ui';
+import { Text, BoxProps } from '@blockstack/ui';
 
-const Title: React.FC = props => (
-  <Text width="95%" fontWeight="medium" fontSize="24px" lineHeight="32px" display="inline-block" {...props} />
+const Title = (props: BoxProps) => (
+  <Text width="100%" fontWeight="medium" fontSize="24px" lineHeight="32px" display="inline-block" {...props} />
 );
 
-const Pretitle: React.FC = props => (
+const Pretitle = (props: BoxProps) => (
   <Text
     pt={6}
     width="100%"
