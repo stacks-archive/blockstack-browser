@@ -14,7 +14,14 @@ import { ThunkAction } from 'redux-thunk';
 import { decrypt, registerSubdomain, Subdomains } from '@blockstack/keychain';
 import { DecodedAuthRequest, AppManifest } from '../../common/dev/types';
 import { AppState } from 'store';
-import { selectUsername, selectDecodedAuthRequest, selectAuthRequest, selectAppIcon, selectAppName } from './selectors';
+import {
+  selectUsername,
+  selectDecodedAuthRequest,
+  selectAuthRequest,
+  selectAppIcon,
+  selectAppName,
+  selectCurrentScreen,
+} from './selectors';
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { finalizeAuthResponse } from '@common/utils';
 import { gaiaUrl } from '@common/constants';
@@ -87,8 +94,8 @@ const saveAuthRequest = ({
   };
 };
 
-export function doSaveAuthRequest(authRequest: string): ThunkAction<void, {}, {}, OnboardingActions> {
-  return async dispatch => {
+export function doSaveAuthRequest(authRequest: string): ThunkAction<void, AppState, {}, OnboardingActions> {
+  return async (dispatch, getState) => {
     const { payload } = decodeToken(authRequest);
     const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
     let appName = decodedAuthRequest.appDetails?.name;
@@ -106,6 +113,15 @@ export function doSaveAuthRequest(authRequest: string): ThunkAction<void, {}, {}
         appIcon,
       })
     );
+    const state = getState();
+    const screen = selectCurrentScreen(state);
+    const identities = selectIdentities(state);
+    const hasIdentities = identities && identities.length;
+    if ((screen === ScreenName.USERNAME || screen === ScreenName.SIGN_IN) && hasIdentities) {
+      window.analytics.page(pageTrackingNameMap[ScreenName.CHOOSE_ACCOUNT]);
+    } else {
+      window.analytics.page(pageTrackingNameMap[screen]);
+    }
   };
 }
 
