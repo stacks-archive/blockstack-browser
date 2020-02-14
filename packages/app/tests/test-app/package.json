@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@blockstack/connect": "^0.3.3",
+    "@blockstack/connect": "^1.0.0",
     "@blockstack/ui": "^1.0.0-alpha.27",
     "@testing-library/jest-dom": "^5.0.2",
     "@testing-library/react": "^9.3.2",

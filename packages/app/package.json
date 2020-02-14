@@ -21,8 +21,8 @@
   "version": "1.0.0",
   "author": "Blockstack PBC",
   "dependencies": {
-    "@blockstack/connect": "^0.3.6",
-    "@blockstack/keychain": "^0.2.4",
+    "@blockstack/connect": "^1.0.0",
+    "@blockstack/keychain": "^0.2.5",
     "@blockstack/prettier-config": "^0.0.5",
     "@blockstack/ui": "^1.0.0-alpha.31",
     "@segment/analytics.js-core": "^3.10.1",

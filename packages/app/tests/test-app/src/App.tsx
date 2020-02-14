@@ -22,7 +22,7 @@ const App: React.FC = () => {
             authenticate({
               redirectTo: '/',
               manifestPath: '/manifest.json',
-              vaultUrl: 'http://localhost:8080',
+              authOrigin: 'http://localhost:8080',
               finished: ({ authResponse, userSession }) => {
                 setAppPrivateKey(userSession.loadUserData().appPrivateKey);
                 setAuthResponse(authResponse);
