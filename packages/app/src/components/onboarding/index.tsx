@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ChooseAccount, Connect, Create, SaveKey, SecretKey, SignIn, Username } from './screens';
+import React, { useEffect } from 'react';
+import { ChooseAccount, Create, SaveKey, SecretKey, SignIn, Username } from './screens';
 import { DecryptRecoveryCode } from './screens/decrypt-recovery-code';
 import { doChangeScreen, doSaveAuthRequest } from '@store/onboarding/actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,8 +22,6 @@ const RenderScreen = ({ ...rest }) => {
     dispatch(finishSignIn({ identityIndex }));
   };
   const doFinishOnboarding = doFinishSignIn;
-
-  const [hasSaved, setHasSaved] = useState(false);
 
   /**
    * TODO: make this check if logged in better
@@ -65,32 +63,14 @@ const RenderScreen = ({ ...rest }) => {
 
     // Key screens
     case ScreenName.SECRET_KEY:
-      return (
-        <SecretKey
-          next={() => dispatch(doChangeScreen(hasSaved ? ScreenName.CONNECT_APP : ScreenName.SAVE_KEY))}
-          {...rest}
-        />
-      );
+      return <SecretKey next={() => dispatch(doChangeScreen(ScreenName.SAVE_KEY))} {...rest} />;
 
     case ScreenName.SAVE_KEY:
       return (
         <SaveKey
           next={() => {
-            setHasSaved(true);
-            dispatch(doChangeScreen(ScreenName.CONNECT_APP));
-          }}
-          {...rest}
-        />
-      );
-
-    // Connect
-    case ScreenName.CONNECT_APP:
-      return (
-        <Connect
-          next={() => {
             doFinishOnboarding();
           }}
-          back={() => dispatch(doChangeScreen(ScreenName.SECRET_KEY))}
           {...rest}
         />
       );

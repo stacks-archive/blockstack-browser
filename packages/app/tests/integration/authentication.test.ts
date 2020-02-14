@@ -1,6 +1,5 @@
 import { Wallet } from '@blockstack/keychain';
 import { validateMnemonic, generateMnemonic, wordlists } from 'bip39';
-import { Page } from 'puppeteer';
 
 import { AuthPageObject } from './page-objects/auth.page';
 import { DemoPageObject } from './page-objects/demo.page';
@@ -61,60 +60,12 @@ describe('Authentication', () => {
     await authPage.waitFor(authPageObject.$buttonHasSavedSeedPhrase);
     await authPage.click(authPageObject.$buttonHasSavedSeedPhrase);
 
-    await authPage.waitFor(authPageObject.$buttonConfirmReenterSeedPhrase);
-    await authPage.type(authPageObject.$textareaSeedPhraseInput, secretKey);
-    await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
-
     await page.waitFor('#auth-response');
     const authResponseEl = await page.$('#auth-response');
     const authResponse: string = await page.evaluate(el => el.innerText, authResponseEl);
     expect(authResponse).toBeTruthy();
     done();
   }, 120_000);
-
-  describe('Secret Key validation', () => {
-    let authPage: Page;
-
-    async function navigateThroughToSecretKeyPage() {
-      const pages = await bootstrapConnectModalPageTest(demoPageObject, authPageObject);
-
-      authPage = pages.authPage;
-
-      await authPage.type(
-        authPageObject.$inputUsername,
-        `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`
-      );
-      await authPage.click(authPageObject.$buttonUsernameContinue);
-      await authPage.waitFor(authPageObject.$textareaReadOnlySeedPhrase);
-      await authPage.click(authPageObject.$buttonCopySecretKey);
-      await authPage.waitFor(authPageObject.$buttonHasSavedSeedPhrase);
-      await authPage.click(authPageObject.$buttonHasSavedSeedPhrase);
-      await authPage.waitFor(authPageObject.$buttonConfirmReenterSeedPhrase);
-    }
-
-    beforeEach(async () => navigateThroughToSecretKeyPage(), 15_000);
-
-    test('it does not let you proceed when entering an incorrect Secret Key', async done => {
-      const nonsenseRhymingSeed = 'It does not happen frequently, but dont forget your Secret Key';
-
-      await authPage.type(authPageObject.$textareaSeedPhraseInput, nonsenseRhymingSeed);
-      await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
-
-      await expect(authPage).toMatch("You've entered your 12-word Secret Key incorrectly");
-      await expect(authPage).not.toMatch('You’re all set!');
-
-      done();
-    }, 60_000);
-
-    test('it does not let you proceed without entering your secret key', async done => {
-      await authPage.click(authPageObject.$buttonConfirmReenterSeedPhrase);
-
-      await expect(authPage).toMatch('You must enter your Secret Key');
-      await expect(authPage).not.toMatch('You’re all set!');
-
-      done();
-    }, 60_000);
-  });
 
   // eslint-disable-next-line jest/no-disabled-tests
   test.skip('signing in with an existing Secret Key', async () => {

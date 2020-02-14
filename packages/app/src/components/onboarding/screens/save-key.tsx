@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
@@ -17,8 +17,9 @@ interface SaveKeyProps {
 
 export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
   const appName = useSelector((state: AppState) => selectAppName(state));
+  const [loading, setLoading] = useState(false);
   return (
-    <Screen pb={0}>
+    <Screen pb={0} isLoading={loading}>
       <ScreenHeader />
       <ScreenBody
         mt={6}
@@ -39,6 +40,7 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
           size="md"
           mt={6}
           onClick={() => {
+            setLoading(true);
             next();
           }}
           data-test="button-has-saved-seed-phrase"
