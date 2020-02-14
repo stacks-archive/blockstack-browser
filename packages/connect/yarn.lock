@@ -1057,37 +1057,10 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@blockstack/connect@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@blockstack/connect/-/connect-0.3.0.tgz#f300da5cf95268eb39814e507abf652ef37605de"
-  integrity sha512-R9g9NGbcuNz0eBB6/E4xa0/+nGW0ie7+v+lxnkCfPn7LeWwK0SPepSxL4L03C5NyNf07L1hq6/RLkFJGfB/2Zw==
-  dependencies:
-    "@blockstack/ui" "^1.0.0-alpha.27"
-    mdi-react "^6.6.0"
-    styled-components "^5.0.0"
-    use-events "^1.4.1"
-
 "@blockstack/prettier-config@^0.0.5":
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.5.tgz#871bd2a38b5bc9aabb1cefeeba6199cc64098957"
   integrity sha512-A+wfdVwD1Sxd/D3PPJI67Evo7q2fp15hCOFLB5jmzcS1MdN8BQdFm6j51Sti8xLN4qHmuYkicbFBUluGx2h63g==
-
-"@blockstack/ui@^1.0.0-alpha.27":
-  version "1.0.0-alpha.27"
-  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.27.tgz#1471a085b3f68285c0a8d79cb9ee292a40141106"
-  integrity sha512-DCih4GkfEojd8FPY8538BzcGtETWrYpPln8Yv9XKAsFoEeIbgju4rdJufzUnwvbX3P4fApS/z9cIlZ+5meX4bg==
-  dependencies:
-    "@styled-system/css" "5.1.4"
-    "@types/color" "^3.0.1"
-    "@types/styled-components" "^4.4.2"
-    "@types/styled-system" "^5.1.5"
-    "@types/styled-system__css" "^5.0.4"
-    color "3.1.2"
-    prop-types "^15.7.2"
-    react-spring "8.0.27"
-    styled-system "5.1.4"
-    use-dark-mode "2.3.1"
-    use-events "^1.4.1"
 
 "@blockstack/ui@^1.0.0-alpha.31":
   version "1.0.0-alpha.31"
@@ -6268,11 +6241,6 @@ md5.js@^1.3.4:
     hash-base "^3.0.0"
     inherits "^2.0.1"
     safe-buffer "^5.1.2"
-
-mdi-react@^6.6.0:
-  version "6.6.0"
-  resolved "https://registry.yarnpkg.com/mdi-react/-/mdi-react-6.6.0.tgz#423d770f956119aa2e4c7e4c121508209c36e5d0"
-  integrity sha512-HF+Madrr2bROpLoAJaM5kLA3tevXmvnC3aCO5bb3czu6Tc5OogW3kpgpVAX64CAMVkgzWUd+IjCNKWMbAHdvCA==
 
 mem@^4.0.0:
   version "4.3.0"
