@@ -59,7 +59,7 @@ export const Intro = () => {
       />
       <ScreenActions>
         <Button width="100%" size="md" mt={2} onClick={() => doAuth()}>
-          Get Started
+          Get started
         </Button>
       </ScreenActions>
       <ScreenFooter>
