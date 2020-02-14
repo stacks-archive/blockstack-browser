@@ -6,7 +6,7 @@ interface ScreenFooterProps extends BoxProps {}
 
 export const ScreenFooter: React.FC<ScreenFooterProps> = ({ children, ...rest }) => (
   <Flex
-    mx={6}
+    mx={8}
     flex={1}
     fontSize={['12px', '14px']}
     color="ink.600"
