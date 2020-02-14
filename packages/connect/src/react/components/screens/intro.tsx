@@ -34,7 +34,7 @@ export const Intro = () => {
 
   return (
     <Screen noMinHeight textAlign="center">
-      <AppElement mt={8} name={name} icon={icon} />
+      <AppElement mt={6} name={name} icon={icon} />
       <ScreenBody
         fullWidth
         mt={4}

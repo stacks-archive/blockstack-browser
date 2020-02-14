@@ -40,6 +40,7 @@ interface ModalHeader {
   close?: boolean;
   back?: any;
   hideIcon?: boolean;
+  hideTitleElements?: boolean;
 }
 
 const ModalHeaderIconButton = ({ size, ...props }: any) => {
@@ -53,7 +54,7 @@ const ModalHeaderIconButton = ({ size, ...props }: any) => {
   );
 };
 
-const ModalHeader = ({ title, back, hideIcon, close, ...rest }: ModalHeader) => {
+const ModalHeader = ({ title, back, hideIcon, close, hideTitleElements, ...rest }: ModalHeader) => {
   const { doCloseAuth, doChangeScreen } = useConnect();
   return (
     <Flex
@@ -68,9 +69,13 @@ const ModalHeader = ({ title, back, hideIcon, close, ...rest }: ModalHeader) => 
       {...rest}
     >
       {back ? <ModalHeaderIconButton onClick={() => doChangeScreen(back)} icon={ChevronIcon} size={22} /> : null}
-      <Flex align="center" mx={back ? 'auto' : 'unset'} transform={back ? 'translateX(-15px)' : 'unset'}>
-        <HeaderTitle hideIcon={hideIcon} title={title} />
-      </Flex>
+      {!hideTitleElements ? (
+        <Flex align="center" mx={back ? 'auto' : 'unset'} transform={back ? 'translateX(-15px)' : 'unset'}>
+          <HeaderTitle hideIcon={hideIcon} title={title} />
+        </Flex>
+      ) : (
+        <Flex />
+      )}
       {close ? <ModalHeaderIconButton size={16} icon={CloseIcon} onClick={doCloseAuth} /> : null}
     </Flex>
   );
@@ -109,6 +114,7 @@ export const Modal = () => {
         headerComponent={
           <ModalHeader
             close
+            hideTitleElements={screen === States.SCREENS_INTRO}
             back={screen === States.SCREENS_HOW_IT_WORKS ? States.SCREENS_INTRO : undefined}
             title={screen === States.SCREENS_SIGN_IN ? 'Sign In' : 'Secret Key'}
           />
