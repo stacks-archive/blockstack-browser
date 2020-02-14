@@ -4,14 +4,14 @@ import { useConnect, Connect } from './react';
 import { AuthOptions } from './auth';
 
 const Base: React.FC = () => {
-  const { doOpenDataVault } = useConnect();
+  const { doOpenAuth } = useConnect();
 
   useEffect(() => {
     // add a small delay before triggering the modal, to properly allow
     // animations to show
     const delay = 10;
     setTimeout(() => {
-      doOpenDataVault();
+      doOpenAuth();
     }, delay);
   }, []);
 

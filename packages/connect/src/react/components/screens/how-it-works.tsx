@@ -14,7 +14,7 @@ interface InfoSection {
   body: string | JSX.Element;
 }
 
-const howDataVaultWorks: InfoSection[] = [
+const howSecretKeyWorks: InfoSection[] = [
   {
     title: 'What is Blockstack?',
     body: (
@@ -60,7 +60,7 @@ export const HowItWorks: React.FC = () => {
             {name} with your data because {name} won&apos;t have access.
           </Text>,
           <Box mt={2}>
-            {howDataVaultWorks.map(({ title, body }, key) => (
+            {howSecretKeyWorks.map(({ title, body }, key) => (
               <Box mt={8} key={key}>
                 <Text mt={3} display="block" fontWeight="semibold">
                   {title}

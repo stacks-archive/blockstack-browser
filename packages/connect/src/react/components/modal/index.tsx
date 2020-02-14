@@ -5,7 +5,7 @@ import { Logo } from '../logo';
 import { Intro } from '../screens/intro';
 import { Finished } from '../screens/finished';
 import { HowItWorks } from '../screens/how-it-works';
-import { ContinueWithDataVault } from '../screens/sign-in';
+import { ContinueWithAuth } from '../screens/sign-in';
 import { useConnect } from '../../hooks/useConnect';
 import { States } from '../connect/context';
 
@@ -53,7 +53,7 @@ const ModalHeaderIconButton = ({ size, ...props }: any) => {
 };
 
 const ModalHeader = ({ title, back, hideIcon, close, ...rest }: ModalHeader) => {
-  const { doCloseDataVault, doChangeScreen } = useConnect();
+  const { doCloseAuth, doChangeScreen } = useConnect();
   return (
     <Flex
       p={4}
@@ -70,7 +70,7 @@ const ModalHeader = ({ title, back, hideIcon, close, ...rest }: ModalHeader) => 
       <Flex align="center" mx={back ? 'auto' : 'unset'} transform={back ? 'translateX(-15px)' : 'unset'}>
         <HeaderTitle hideIcon={hideIcon} title={title} />
       </Flex>
-      {close ? <ModalHeaderIconButton size={16} icon={CloseIcon} onClick={doCloseDataVault} /> : null}
+      {close ? <ModalHeaderIconButton size={16} icon={CloseIcon} onClick={doCloseAuth} /> : null}
     </Flex>
   );
 };
@@ -87,7 +87,7 @@ const RenderScreen: React.FC = () => {
     case States.SCREENS_SIGN_IN: {
       return (
         <Box width="100%" p={5}>
-          <ContinueWithDataVault />
+          <ContinueWithAuth />
         </Box>
       );
     }

@@ -13,7 +13,7 @@ import { AuthOptions } from '../../../auth';
       finished: ({userSession}) => {
         doFinishSignIn();
       },
-      vaultUrl,
+      authOrigin,
       appDetails: {
         name: 'Wink',
         icon: 'url'

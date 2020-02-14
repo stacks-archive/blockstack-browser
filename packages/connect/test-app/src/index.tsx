@@ -14,7 +14,7 @@ const authOptions: AuthOptions = {
   finished: ({ userSession }) => {
     console.log(userSession.loadUserData());
   },
-  vaultUrl: 'http://localhost:8080',
+  authOrigin: 'http://localhost:8080',
   appDetails: {
     name: 'Testing App',
     icon,

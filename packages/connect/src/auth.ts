@@ -2,7 +2,7 @@ import { UserSession, AppConfig } from 'blockstack';
 import './types';
 import { popupCenter } from './popup';
 
-const defaultVaultURL = 'https://auth.blockstack.org';
+const defaultAuthURL = 'https://auth.blockstack.org';
 
 export interface FinishedData {
   authResponse: string;
@@ -14,7 +14,7 @@ export interface AuthOptions {
   redirectTo: string;
   manifestPath: string;
   finished?: (payload: FinishedData) => void;
-  vaultUrl?: string;
+  authOrigin?: string;
   sendToSignIn?: boolean;
   userSession?: UserSession;
   appDetails: {
@@ -27,7 +27,7 @@ export const authenticate = async ({
   redirectTo,
   manifestPath,
   finished,
-  vaultUrl,
+  authOrigin,
   sendToSignIn = false,
   userSession,
   appDetails,
@@ -55,7 +55,7 @@ export const authenticate = async ({
   );
 
   const extensionURL = await window.BlockstackProvider?.getURL();
-  const dataVaultURL = new URL(extensionURL || vaultUrl || defaultVaultURL);
+  const authURL = new URL(extensionURL || authOrigin || defaultAuthURL);
   const params = window.location.search
     .substr(1)
     .split('&')
@@ -65,10 +65,10 @@ export const authenticate = async ({
   params.forEach(([key, value]) => urlParams.set(key, value));
   urlParams.set('authRequest', authRequest);
   const popup = popupCenter({
-    url: `${dataVaultURL.origin}/actions.html?${urlParams.toString()}`,
+    url: `${authURL.origin}/actions.html?${urlParams.toString()}`,
   });
 
-  setupListener({ popup, authRequest, finished, dataVaultURL, userSession });
+  setupListener({ popup, authRequest, finished, authURL, userSession });
 };
 
 interface FinishedEventData {
@@ -81,11 +81,11 @@ interface ListenerParams {
   popup: Window | null;
   authRequest: string;
   finished?: (payload: FinishedData) => void;
-  dataVaultURL: URL;
+  authURL: URL;
   userSession: UserSession;
 }
 
-const setupListener = ({ popup, authRequest, finished, dataVaultURL, userSession }: ListenerParams) => {
+const setupListener = ({ popup, authRequest, finished, authURL, userSession }: ListenerParams) => {
   const interval = setInterval(() => {
     if (popup) {
       try {
@@ -93,7 +93,7 @@ const setupListener = ({ popup, authRequest, finished, dataVaultURL, userSession
           {
             authRequest,
           },
-          dataVaultURL.origin
+          authURL.origin
         );
       } catch (error) {
         console.warn('[Blockstack] Unable to send ping to authentication service');

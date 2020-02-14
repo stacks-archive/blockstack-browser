@@ -35,7 +35,7 @@ const initialState: State = {
     redirectTo: '',
     manifestPath: '',
     finished: () => null,
-    vaultUrl: undefined,
+    authOrigin: undefined,
     sendToSignIn: false,
     appDetails: {
       name: '',

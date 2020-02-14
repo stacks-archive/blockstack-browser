@@ -4,7 +4,7 @@ import { Logo } from '../logo';
 import { useHover } from 'use-events';
 import { useConnect } from '../../hooks/useConnect';
 
-const ContinueWithDataVault: React.FC = props => {
+const ContinueWithAuth: React.FC = props => {
   const { authenticate, authOptions } = useConnect();
   const [hovered, bind] = useHover();
   return (
@@ -37,4 +37,4 @@ const ContinueWithDataVault: React.FC = props => {
   );
 };
 
-export { ContinueWithDataVault };
+export { ContinueWithAuth };

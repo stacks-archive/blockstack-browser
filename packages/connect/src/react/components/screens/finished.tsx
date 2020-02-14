@@ -21,7 +21,7 @@ const FinishedIcon = ({ ...rest }: AppElementProps) => (
 );
 
 export const Finished = () => {
-  const { doCloseDataVault } = useConnect();
+  const { doCloseAuth } = useConnect();
   const { name, icon } = useAppDetails();
 
   return (
@@ -37,7 +37,7 @@ export const Finished = () => {
         ]}
       />
       <ScreenActions>
-        <Button width="100%" mt={4} size="md" onClick={() => doCloseDataVault()}>
+        <Button width="100%" mt={4} size="md" onClick={() => doCloseAuth()}>
           Close
         </Button>
       </ScreenActions>

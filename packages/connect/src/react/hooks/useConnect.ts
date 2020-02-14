@@ -31,7 +31,7 @@ export const useConnect = () => {
   };
   const doCancelAuth = () => dispatch({ type: States.CANCEL_AUTH });
 
-  const doOpenDataVault = (signIn?: boolean, opts?: Partial<AuthOptions>) => {
+  const doOpenAuth = (signIn?: boolean, opts?: Partial<AuthOptions>) => {
     if (signIn) {
       const options = {
         ...authOptions,
@@ -50,7 +50,7 @@ export const useConnect = () => {
     authOptions && doUpdateAuthOptions(authOptions);
     dispatch({ type: States.MODAL_OPEN });
   };
-  const doCloseDataVault = () => {
+  const doCloseAuth = () => {
     dispatch({ type: States.MODAL_CLOSE });
     setTimeout(doGoToIntroScreen, 250);
   };
@@ -73,8 +73,8 @@ export const useConnect = () => {
     authData,
     authOptions,
     screen,
-    doOpenDataVault,
-    doCloseDataVault,
+    doOpenAuth,
+    doCloseAuth,
     doChangeScreen,
     doGoToIntroScreen,
     doGoToHowItWorksScreen,

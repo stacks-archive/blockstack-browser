@@ -19,7 +19,7 @@ authenticate({
   redirectTo,
   manifestPath,
   finished,
-  vaultUrl,
+  authOrigin,
   sendToSignIn,
 });
 ```
@@ -29,7 +29,7 @@ Call this method to redirect the user to authentication. It will first check for
 - `redirectTo`: The path in your app where users go after sign in.
 - `manifestPath`: The path in your app where your manifest.json file can be found
 - `finished`: An optional callback that can be invoked after authentication. This prevents having to do a whole page refresh in a new tab. One argument is passed to this callback, which is an object with `userSession` included. If included, then the `redirectTo` path is ignored, and the user will be logged in automatically.
-- `vaultUrl`: The URL you'd like to use for authentication. Only necessary when developing the authentication app.
+- `authOrigin`: The URL you'd like to use for authentication. Only necessary when developing the authentication app.
 - `sendToSignIn`: defaults to `false`. Whether the user should go straight to the 'sign in' flow.
 - `appDetails`: an optional object which includes `appName: string` and `appIcon: string`. This will speed up the process of loading your app's information during onboarding.
 - `userSession`: Optionally, pass a `UserSession` instance to use for authentication. If it's not passed, `@blockstack/connect` will create one for you.
