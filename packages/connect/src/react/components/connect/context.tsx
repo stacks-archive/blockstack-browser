@@ -11,7 +11,6 @@ enum States {
   SCREENS_INTRO = 'screens/intro',
   SCREENS_HOW_IT_WORKS = 'screens/how-it-works',
   SCREENS_SIGN_IN = 'screens/sign-in',
-  SCREENS_FINISHED = 'screens/finished',
 }
 
 type Action = { type: string; payload?: any };
@@ -77,12 +76,6 @@ const connectReducer = (state: State, { type, payload }: { type: string; payload
       return {
         ...state,
         screen: States.SCREENS_SIGN_IN,
-      };
-    }
-    case States.SCREENS_FINISHED: {
-      return {
-        ...state,
-        screen: States.SCREENS_FINISHED,
       };
     }
 

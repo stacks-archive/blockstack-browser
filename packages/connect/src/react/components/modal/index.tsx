@@ -3,7 +3,6 @@ import { Modal as BlockstackModal, ThemeProvider, theme, CSSReset, Flex, Box, Te
 import { useHover } from 'use-events';
 import { Logo } from '../logo';
 import { Intro } from '../screens/intro';
-import { Finished } from '../screens/finished';
 import { HowItWorks } from '../screens/how-it-works';
 import { ContinueWithAuth } from '../screens/sign-in';
 import { useConnect } from '../../hooks/use-connect';
@@ -84,9 +83,6 @@ const ModalHeader = ({ title, back, hideIcon, close, hideTitleElements, ...rest 
 const RenderScreen: React.FC = () => {
   const { screen } = useConnect();
   switch (screen) {
-    case States.SCREENS_FINISHED: {
-      return <Finished />;
-    }
     case States.SCREENS_HOW_IT_WORKS: {
       return <HowItWorks />;
     }

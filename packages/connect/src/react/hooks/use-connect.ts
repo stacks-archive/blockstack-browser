@@ -22,12 +22,11 @@ export const useConnect = () => {
   const doGoToIntroScreen = () => doChangeScreen(States.SCREENS_INTRO);
   const doGoToHowItWorksScreen = () => doChangeScreen(States.SCREENS_HOW_IT_WORKS);
   const doGoToSignInScreen = () => doChangeScreen(States.SCREENS_SIGN_IN);
-  const doGoToFinishedScreen = () => doChangeScreen(States.SCREENS_FINISHED);
 
   const doStartAuth = () => dispatch({ type: States.START_AUTH });
   const doFinishAuth = (payload: FinishedData) => {
-    doGoToFinishedScreen();
     dispatch({ type: States.FINISH_AUTH, payload });
+    doCloseAuth();
   };
   const doCancelAuth = () => dispatch({ type: States.CANCEL_AUTH });
 
