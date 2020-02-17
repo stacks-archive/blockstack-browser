@@ -16,7 +16,7 @@ import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl } from '@common/constants';
 
-const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 38 characters.';
+const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
 const identityNameUnavailableError = 'This username is not available';
 const errorTextMap = {
