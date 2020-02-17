@@ -31,6 +31,11 @@ export const SignIn: React.FC<SignInProps> = props => {
   const onSubmit = async () => {
     setLoading(true);
     try {
+      if (seed.trim().length === 0) {
+        setSeedError('Entering your secret key is required.');
+        setLoading(false);
+        return;
+      }
       if (seed.trim().split(' ').length <= 1) {
         dispatch(doSetMagicRecoveryCode(seed.trim()));
         dispatch(doChangeScreen(ScreenName.RECOVERY_CODE));
