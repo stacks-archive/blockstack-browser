@@ -49,7 +49,7 @@ const baseProps = {
 export const inputSizes = {
   default: {
     fontSize: 'body.small',
-    height: 12, // 48px
+    height: '12', // 48px
     lineHeight: 'base',
   },
 };

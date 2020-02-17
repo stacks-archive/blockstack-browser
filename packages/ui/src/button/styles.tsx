@@ -20,15 +20,15 @@ const sizes = {
   lg: {
     height: 12,
     minWidth: 9 * 14,
-    fontSize: '14px',
+    fontSize: '14px !important',
     px: 5,
   },
   md: {
     height: 10,
     minWidth: 10,
-    fontSize: '14px',
+    fontSize: '14px !important',
     px: 4,
-  }
+  },
 };
 
 const unstyledStyle = {
@@ -85,17 +85,20 @@ const solidVariantProps = ({ mode, customStyles }: { mode: ButtonModes; customSt
       },
     },
     secondary: {
-      bg: 'blue.100',
+      bg: 'white',
       color: 'blue',
+      boxShadow: 'mid',
       _hover: {
         cursor: 'pointer',
+        bg: 'white',
+        boxShadow: 'high',
       },
       _focus: {
         borderColor: 'blue.300',
         boxShadow: '0 0 0 3px rgba(170, 179, 255, 0.75)',
       },
       _disabled: {
-        bg: 'blue.100',
+        bg: 'white',
         pointerEvents: 'none',
         cursor: 'not-allowed',
         color: 'blue.300',

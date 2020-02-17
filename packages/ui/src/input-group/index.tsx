@@ -19,9 +19,13 @@ const InputGroup = ({ children, size = 'default', ...props }: InputGroupProps) =
         }
 
         if (child.type === InputLeftElement) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          // @ts-ignore
           pl = sizes[height];
         }
         if (child.type === InputRightElement) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+          // @ts-ignore
           pr = sizes[height];
         }
         if (child.type === Input) {

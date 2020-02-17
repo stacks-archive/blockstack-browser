@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0-alpha.32
+
+- Fixes modal width.
+- Updates button secondary style to match designs.
+- Forces typesize on button text.
+
 ## 1.0.0-alpha.28
 
 - Add `ChevronIcon` component, update `Button`s to align with styleguide.
