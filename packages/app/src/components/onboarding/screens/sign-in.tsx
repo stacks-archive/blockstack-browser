@@ -12,6 +12,7 @@ import { ScreenName, DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { AppState } from '@store';
 import { selectAppName } from '@store/onboarding/selectors';
 import { doStoreSeed } from '@store/wallet';
+import { ErrorLabel } from '@components/error-label';
 
 interface SignInProps {
   next: () => void;
@@ -52,9 +53,11 @@ export const SignIn: React.FC<SignInProps> = props => {
               }}
             />
             {seedError && (
-              <Text textAlign="left" textStyle="caption" color="feedback.error">
-                {seedError}
-              </Text>
+              <ErrorLabel lineHeight="16px">
+                <Text textAlign="left" textStyle="caption" color="feedback.error">
+                  {seedError}
+                </Text>
+              </ErrorLabel>
             )}
           </Box>,
         ]}
@@ -84,7 +87,7 @@ export const SignIn: React.FC<SignInProps> = props => {
                 doTrack(SIGN_IN_CORRECT);
                 props.next();
               } catch (error) {
-                setSeedError("The Secret Key you've entered is invalid.");
+                setSeedError("The Secret Key you've entered is invalid");
                 doTrack(SIGN_IN_INCORRECT);
               }
               setLoading(false);

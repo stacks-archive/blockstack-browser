@@ -1,11 +1,13 @@
 import React from 'react';
-import { Flex, Box } from '@blockstack/ui';
+import { Flex, Box, FlexProps } from '@blockstack/ui';
 
 import { ExclamationMark } from './icons/exclamation-mark';
 
-export const ErrorLabel: React.FC = ({ children }) => (
-  <Flex mt={3}>
-    <Box mr={2} mt={0.5}>
+interface ErrorLabelProps extends FlexProps {}
+
+export const ErrorLabel: React.FC<ErrorLabelProps> = ({ children, ...rest }) => (
+  <Flex mt={3} {...rest}>
+    <Box mr={2} position="relative" top="2px">
       <ExclamationMark />
     </Box>
     <Box mr={5}>{children}</Box>

@@ -11,6 +11,7 @@ import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } fro
 import { ScreenHeader } from '@components/connected-screen-header';
 import { decrypt } from '@blockstack/keychain';
 import useDocumentTitle from '@rehooks/document-title';
+import { ErrorLabel } from '@components/error-label';
 
 interface RecoveryProps {
   next: (identityIndex: number) => void;
@@ -29,34 +30,39 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
     <Screen isLoading={loading}>
       <ScreenHeader />
       <ScreenBody
+        mt={6}
         body={[
           <Title>{title}</Title>,
-          'You entered a Magic Recovery Code. Enter the password you set when you first created your Blockstack ID.',
-          <Box textAlign="left">
-            {/*Validate: track SIGN_IN_INCORRECT*/}
-            <Input
-              autoFocus
-              placeholder="Password"
-              type="password"
-              value={password}
-              spellCheck={false}
-              style={{ resize: 'none' }}
-              onChange={(evt: React.FormEvent<HTMLInputElement>) => {
-                setPasswordError('');
-                setCode(evt.currentTarget.value);
-              }}
-            />
-            {passwordError && (
-              <Text textAlign="left" textStyle="caption" color="feedback.error">
-                {passwordError}
-              </Text>
-            )}
+          <Box mt={2}>
+            You entered a Magic Recovery Code. Enter the password you set when you first created your Blockstack ID.
+            <Box textAlign="left">
+              {/*Validate: track SIGN_IN_INCORRECT*/}
+              <Input
+                mt={5}
+                autoFocus
+                placeholder="Password"
+                type="password"
+                value={password}
+                onChange={(evt: React.FormEvent<HTMLInputElement>) => {
+                  setPasswordError('');
+                  setCode(evt.currentTarget.value);
+                }}
+              />
+              {passwordError && (
+                <ErrorLabel>
+                  <Text textAlign="left" display="block" textStyle="caption" color="feedback.error">
+                    {passwordError}
+                  </Text>
+                </ErrorLabel>
+              )}
+            </Box>
           </Box>,
         ]}
       />
       <ScreenActions>
         <Button
           width="100%"
+          mt={6}
           size="md"
           onClick={async () => {
             setLoading(true);
@@ -67,7 +73,7 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
               doTrack(SIGN_IN_CORRECT);
               next(0);
             } catch (error) {
-              setPasswordError('Invalid password.');
+              setPasswordError('Incorrect password');
               setLoading(false);
             }
           }}
