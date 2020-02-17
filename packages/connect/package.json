@@ -59,7 +59,7 @@
   },
   "scripts": {
     "build": "tsdx build --format cjs,esm,umd && yarn build:web",
-    "build:web": "NODE_ENV=production webpack",
+    "build:web": "NODE_ENV=production webpack --mode=production",
     "dev": "cd test-app && yarn start",
     "lint": "eslint --ext .ts,.tsx ./src/ -f unix",
     "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix",
