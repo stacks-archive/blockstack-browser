@@ -19,6 +19,7 @@ export const PoweredBy: React.FC = () => (
       onClick={() => window.open('https://blockstack.org', '_blank')}
       textStyle="caption"
       alignSelf="flex-end"
+      _hover={{ textDecoration: 'none' }}
     >
       Powered by
       <BlockstackMini />
