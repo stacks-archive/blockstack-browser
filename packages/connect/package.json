@@ -8,7 +8,7 @@
     }
   ],
   "dependencies": {
-    "@blockstack/ui": "^1.0.0-alpha.31",
+    "@blockstack/ui": "^1.0.0-alpha.32",
     "styled-components": "^5.0.0",
     "use-events": "^1.4.1",
     "use-onclickoutside": "^0.3.1"
