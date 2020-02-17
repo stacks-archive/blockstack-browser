@@ -11,7 +11,7 @@ import {
 import { decodeToken } from 'jsontokens';
 import { doGenerateWallet, didGenerateWallet, WalletActions } from '../wallet';
 import { ThunkAction } from 'redux-thunk';
-import { decrypt, registerSubdomain, Subdomains } from '@blockstack/keychain';
+import { decrypt, registerSubdomain } from '@blockstack/keychain';
 import { DecodedAuthRequest, AppManifest } from '../../common/dev/types';
 import { AppState } from 'store';
 import {
@@ -24,7 +24,7 @@ import {
 } from './selectors';
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { finalizeAuthResponse } from '@common/utils';
-import { gaiaUrl } from '@common/constants';
+import { gaiaUrl, Subdomain } from '@common/constants';
 import { pageTrackingNameMap } from './types';
 
 export const doChangeScreen = (screen: ScreenName): OnboardingActions => {
@@ -58,7 +58,7 @@ export function doCreateSecretKey(): ThunkAction<void, AppState, {}, OnboardingA
       identity: wallet.identities[0],
       gaiaHubUrl: gaiaUrl,
       username: username as string,
-      subdomain: Subdomains.TEST,
+      subdomain: Subdomain,
     });
     const secretKey = await decrypt(wallet.encryptedBackupPhrase, DEFAULT_PASSWORD);
     dispatch(didGenerateWallet(wallet));

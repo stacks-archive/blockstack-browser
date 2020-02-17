@@ -11,10 +11,10 @@ import { doSetUsername, doFinishSignIn } from '@store/onboarding/actions';
 import { selectCurrentWallet } from '@store/wallet/selectors';
 import { AppState } from '@store';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
-import { registerSubdomain, Subdomains, IdentityNameValidityError, validateSubdomain } from '@blockstack/keychain';
+import { registerSubdomain, IdentityNameValidityError, validateSubdomain } from '@blockstack/keychain';
 import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
-import { gaiaUrl } from '@common/constants';
+import { gaiaUrl, Subdomain } from '@common/constants';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
@@ -55,7 +55,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
     setHasAttemptedSubmit(true);
     setCheckingAvailability(true);
 
-    const validationErrors = await validateSubdomain(username, Subdomains.TEST);
+    const validationErrors = await validateSubdomain(username, Subdomain);
 
     if (validationErrors !== null) {
       setError(validationErrors);
@@ -72,7 +72,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
     const identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
     await registerSubdomain({
       username,
-      subdomain: Subdomains.TEST,
+      subdomain: Subdomain,
       gaiaHubUrl: gaiaUrl,
       identity,
     });
