@@ -28,8 +28,26 @@ export const SignIn: React.FC<SignInProps> = props => {
   const title = `Sign into ${appName}`;
   useDocumentTitle(title);
 
+  const onSubmit = async () => {
+    setLoading(true);
+    try {
+      if (seed.trim().split(' ').length <= 1) {
+        dispatch(doSetMagicRecoveryCode(seed.trim()));
+        dispatch(doChangeScreen(ScreenName.RECOVERY_CODE));
+        return;
+      }
+      await doStoreSeed(seed, DEFAULT_PASSWORD)(dispatch, () => ({}), {});
+      doTrack(SIGN_IN_CORRECT);
+      props.next();
+    } catch (error) {
+      setSeedError("The Secret Key you've entered is invalid");
+      doTrack(SIGN_IN_INCORRECT);
+    }
+    setLoading(false);
+  };
+
   return (
-    <Screen isLoading={isLoading} textAlign="center">
+    <Screen onSubmit={onSubmit} isLoading={isLoading} textAlign="center">
       <ScreenHeader title="Continue with Secret Key" hideIcon />
       <AppIcon mt={10} />
       <ScreenBody
@@ -75,22 +93,10 @@ export const SignIn: React.FC<SignInProps> = props => {
           </Link>
           <Button
             size="md"
-            onClick={async () => {
-              setLoading(true);
-              try {
-                if (seed.trim().split(' ').length <= 1) {
-                  dispatch(doSetMagicRecoveryCode(seed.trim()));
-                  dispatch(doChangeScreen(ScreenName.RECOVERY_CODE));
-                  return;
-                }
-                await doStoreSeed(seed, DEFAULT_PASSWORD)(dispatch, () => ({}), {});
-                doTrack(SIGN_IN_CORRECT);
-                props.next();
-              } catch (error) {
-                setSeedError("The Secret Key you've entered is invalid");
-                doTrack(SIGN_IN_INCORRECT);
-              }
-              setLoading(false);
+            type="submit"
+            onClick={async event => {
+              event.preventDefault();
+              return onSubmit();
             }}
           >
             Continue

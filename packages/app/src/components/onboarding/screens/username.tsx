@@ -51,7 +51,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
     setUsername(evt.currentTarget.value || '');
   };
 
-  const registerUsername = async () => {
+  const onSubmit = async () => {
     setHasAttemptedSubmit(true);
     setCheckingAvailability(true);
 
@@ -82,7 +82,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
   };
 
   return (
-    <Screen isLoading={loading}>
+    <Screen onSubmit={onSubmit} isLoading={loading}>
       <ScreenHeader />
       <ScreenBody
         mt={6}
@@ -132,7 +132,11 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
           size="md"
           mt={6}
           data-test="button-username-continue"
-          onClick={registerUsername}
+          type="submit"
+          onClick={async event => {
+            event.preventDefault();
+            return onSubmit();
+          }}
           isLoading={checkingAvailability}
         >
           Continue

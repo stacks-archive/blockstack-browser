@@ -26,8 +26,22 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
   const dispatch = useDispatch();
 
   const recoveryCode = useSelector((state: AppState) => selectMagicRecoveryCode(state) as string);
+
+  const onSubmit = async () => {
+    setLoading(true);
+    try {
+      const codeBuffer = Buffer.from(recoveryCode, 'base64');
+      const seed = await decrypt(codeBuffer, password);
+      await doStoreSeed(seed, DEFAULT_PASSWORD)(dispatch, () => ({}), {});
+      doTrack(SIGN_IN_CORRECT);
+      next(0);
+    } catch (error) {
+      setPasswordError('Incorrect password');
+      setLoading(false);
+    }
+  };
   return (
-    <Screen isLoading={loading}>
+    <Screen onSubmit={onSubmit} isLoading={loading}>
       <ScreenHeader />
       <ScreenBody
         mt={6}
@@ -64,19 +78,11 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
           width="100%"
           mt={6}
           size="md"
-          onClick={async () => {
-            setLoading(true);
-            try {
-              const codeBuffer = Buffer.from(recoveryCode, 'base64');
-              const seed = await decrypt(codeBuffer, password);
-              await doStoreSeed(seed, DEFAULT_PASSWORD)(dispatch, () => ({}), {});
-              doTrack(SIGN_IN_CORRECT);
-              next(0);
-            } catch (error) {
-              setPasswordError('Incorrect password');
-              setLoading(false);
-            }
+          onClick={async event => {
+            event.preventDefault();
+            return onSubmit();
           }}
+          type="submit"
         >
           Continue
         </Button>
