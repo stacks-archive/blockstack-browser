@@ -43,7 +43,6 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
   const [error, setError] = useState<IdentityNameValidityError | null>(null);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
-  const [checkingAvailability, setCheckingAvailability] = useState(false);
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
   const handleInput = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -53,13 +52,13 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
 
   const onSubmit = async () => {
     setHasAttemptedSubmit(true);
-    setCheckingAvailability(true);
+    setLoading(true);
 
     const validationErrors = await validateSubdomain(username, Subdomain);
 
     if (validationErrors !== null) {
       setError(validationErrors);
-      setCheckingAvailability(false);
+      setLoading(false);
       return;
     }
 
@@ -68,7 +67,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
       next();
       return;
     }
-    setLoading(true);
+
     const identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
     await registerSubdomain({
       username,
@@ -76,13 +75,12 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
       gaiaHubUrl: gaiaUrl,
       identity,
     });
-    setCheckingAvailability(false);
     dispatch(didGenerateWallet(wallet));
     dispatch(doFinishSignIn({ identityIndex: wallet.identities.length - 1 }));
   };
 
   return (
-    <Screen onSubmit={onSubmit} isLoading={loading}>
+    <Screen onSubmit={onSubmit}>
       <ScreenHeader />
       <ScreenBody
         mt={6}
@@ -137,7 +135,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
             event.preventDefault();
             return onSubmit();
           }}
-          isLoading={checkingAvailability}
+          isLoading={loading}
         >
           Continue
         </Button>

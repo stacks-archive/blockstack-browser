@@ -41,21 +41,18 @@ const RenderScreen = ({ ...rest }) => {
     />
   );
 
-  const UsernameScreen = () => <Username next={() => dispatch(doChangeScreen(ScreenName.GENERATION))} {...rest} />;
+  const usernameNext = () => dispatch(doChangeScreen(ScreenName.GENERATION));
 
   switch (screen) {
-    // choose account
-    // case ScreenName.CHOOSE_ACCOUNT:
-    //   return <ChooseAccount next={() => console.log('testing')} {...rest} />;
     // username
     case ScreenName.USERNAME:
       if (identities && identities.length) {
         return <ChooseScreen />;
       }
-      return <UsernameScreen />;
+      return <Username next={usernameNext} {...rest} />;
 
     case ScreenName.ADD_ACCOUNT:
-      return <UsernameScreen />;
+      return <Username next={usernameNext} {...rest} />;
 
     // create
     case ScreenName.GENERATION:
