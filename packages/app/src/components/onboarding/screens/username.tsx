@@ -10,11 +10,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doSetUsername, doFinishSignIn } from '@store/onboarding/actions';
 import { selectCurrentWallet } from '@store/wallet/selectors';
 import { AppState } from '@store';
-import { DEFAULT_PASSWORD } from '@store/onboarding/types';
-import { registerSubdomain, IdentityNameValidityError, validateSubdomain } from '@blockstack/keychain';
+import { DEFAULT_PASSWORD, ScreenName } from '@store/onboarding/types';
+import {
+  registerSubdomain,
+  IdentityNameValidityError,
+  validateSubdomain,
+  Identity,
+  Wallet,
+} from '@blockstack/keychain';
 import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';
+import { selectCurrentScreen } from '@store/onboarding/selectors';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
@@ -36,8 +43,9 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
   const dispatch = useDispatch();
   const { name } = useAppDetails();
 
-  const { wallet } = useSelector((state: AppState) => ({
-    wallet: selectCurrentWallet(state),
+  const { wallet, screen } = useSelector((state: AppState) => ({
+    wallet: selectCurrentWallet(state) as Wallet,
+    screen: selectCurrentScreen(state),
   }));
 
   const [error, setError] = useState<IdentityNameValidityError | null>(null);
@@ -62,13 +70,24 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
       return;
     }
 
+    let identity: Identity;
+    let identityIndex: number;
+
+    if (screen === ScreenName.USERNAME) {
+      identity = wallet.identities[0];
+      identityIndex = 0;
+    } else {
+      // we're in ScreenName.ADD_ACCOUNT
+      identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
+      identityIndex = wallet.identities.length - 1;
+    }
+
     if (!wallet) {
       dispatch(doSetUsername(username));
       next();
       return;
     }
 
-    const identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
     await registerSubdomain({
       username,
       subdomain: Subdomain,
@@ -76,7 +95,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
       identity,
     });
     dispatch(didGenerateWallet(wallet));
-    dispatch(doFinishSignIn({ identityIndex: wallet.identities.length - 1 }));
+    dispatch(doFinishSignIn({ identityIndex }));
   };
 
   return (

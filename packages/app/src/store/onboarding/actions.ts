@@ -11,11 +11,10 @@ import {
 import { decodeToken } from 'jsontokens';
 import { doGenerateWallet, didGenerateWallet, WalletActions } from '../wallet';
 import { ThunkAction } from 'redux-thunk';
-import { decrypt, registerSubdomain } from '@blockstack/keychain';
+import { decrypt } from '@blockstack/keychain';
 import { DecodedAuthRequest, AppManifest } from '../../common/dev/types';
 import { AppState } from 'store';
 import {
-  selectUsername,
   selectDecodedAuthRequest,
   selectAuthRequest,
   selectAppIcon,
@@ -24,7 +23,7 @@ import {
 } from './selectors';
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { finalizeAuthResponse } from '@common/utils';
-import { gaiaUrl, Subdomain } from '@common/constants';
+import { gaiaUrl } from '@common/constants';
 import { pageTrackingNameMap } from './types';
 
 export const doChangeScreen = (screen: ScreenName): OnboardingActions => {
@@ -51,15 +50,8 @@ export const doSetUsername = (username: string): OnboardingActions => ({
 });
 
 export function doCreateSecretKey(): ThunkAction<void, AppState, {}, OnboardingActions | WalletActions> {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     const wallet = await dispatch(doGenerateWallet(DEFAULT_PASSWORD));
-    const username = selectUsername(getState());
-    await registerSubdomain({
-      identity: wallet.identities[0],
-      gaiaHubUrl: gaiaUrl,
-      username: username as string,
-      subdomain: Subdomain,
-    });
     const secretKey = await decrypt(wallet.encryptedBackupPhrase, DEFAULT_PASSWORD);
     dispatch(didGenerateWallet(wallet));
     dispatch(doSaveSecretKey(secretKey));
@@ -117,8 +109,8 @@ export function doSaveAuthRequest(authRequest: string): ThunkAction<void, AppSta
     const screen = selectCurrentScreen(state);
     const identities = selectIdentities(state);
     const hasIdentities = identities && identities.length;
-    if ((screen === ScreenName.USERNAME || screen === ScreenName.SIGN_IN) && hasIdentities) {
-      window.analytics.page(pageTrackingNameMap[ScreenName.CHOOSE_ACCOUNT]);
+    if ((screen === ScreenName.GENERATION || screen === ScreenName.SIGN_IN) && hasIdentities) {
+      dispatch(doChangeScreen(ScreenName.CHOOSE_ACCOUNT));
     } else {
       window.analytics.page(pageTrackingNameMap[screen]);
     }

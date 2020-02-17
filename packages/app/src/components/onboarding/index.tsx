@@ -5,23 +5,20 @@ import { doChangeScreen, doSaveAuthRequest } from '@store/onboarding/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '@store';
 import { ScreenName } from '@store/onboarding/types';
-import { selectIdentities } from '@store/wallet/selectors';
 import { doFinishSignIn as finishSignIn } from '@store/onboarding/actions';
 import { selectCurrentScreen } from '@store/onboarding/selectors';
 import { authenticationInit } from '@common/utils';
 
 const RenderScreen = ({ ...rest }) => {
   const dispatch = useDispatch();
-  const { screen, identities } = useSelector((state: AppState) => ({
+  const { screen } = useSelector((state: AppState) => ({
     screen: selectCurrentScreen(state),
-    identities: selectIdentities(state),
   }));
 
   // const doFinishSignIn = async (identityIndex = 0, identity?: Identity) => {
   const doFinishSignIn = ({ identityIndex }: { identityIndex: number } = { identityIndex: 0 }) => {
     dispatch(finishSignIn({ identityIndex }));
   };
-  const doFinishOnboarding = doFinishSignIn;
 
   /**
    * TODO: make this check if logged in better
@@ -46,9 +43,6 @@ const RenderScreen = ({ ...rest }) => {
   switch (screen) {
     // username
     case ScreenName.USERNAME:
-      if (identities && identities.length) {
-        return <ChooseScreen />;
-      }
       return <Username next={usernameNext} {...rest} />;
 
     case ScreenName.ADD_ACCOUNT:
@@ -66,7 +60,7 @@ const RenderScreen = ({ ...rest }) => {
       return (
         <SaveKey
           next={() => {
-            doFinishOnboarding();
+            dispatch(doChangeScreen(ScreenName.USERNAME));
           }}
           {...rest}
         />
@@ -74,9 +68,6 @@ const RenderScreen = ({ ...rest }) => {
 
     // Sign In
     case ScreenName.SIGN_IN:
-      if (identities && identities.length) {
-        return <ChooseScreen />;
-      }
       return (
         <SignIn
           next={() => doChangeScreen(ScreenName.CHOOSE_ACCOUNT)}

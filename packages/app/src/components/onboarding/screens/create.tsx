@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Spinner, Flex, Text } from '@blockstack/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import useDocumentTitle from '@rehooks/document-title';
@@ -7,6 +7,8 @@ import { ScreenHeader } from '@components/connected-screen-header';
 
 import { doCreateSecretKey } from '@store/onboarding/actions';
 import { useAppDetails } from '@common/hooks/useAppDetails';
+import { selectCurrentWallet } from '@store/wallet/selectors';
+import { AppState } from '@store';
 
 interface ExplainerCardProps {
   title: string;
@@ -64,6 +66,9 @@ export const Create: React.FC<CreateProps> = props => {
     imageUrl: '/assets/images/icon-delay-key.svg',
   });
   useDocumentTitle(title);
+  const { wallet } = useSelector((state: AppState) => ({
+    wallet: selectCurrentWallet(state),
+  }));
   const { name } = useAppDetails();
   const dispatch = useDispatch();
 
@@ -92,7 +97,12 @@ export const Create: React.FC<CreateProps> = props => {
     // functions if we're on a different screen
     const timeout = setTimeout(() => {
       createTimeoutLoop(setState, explainerData, () => props.next());
-      dispatch(doCreateSecretKey());
+      // We have this check for `wallet`, because this is the
+      // default first screen rendered. We don't want to accidentally create a new
+      // seed if a logged-in user gets into this hook.
+      if (!wallet) {
+        dispatch(doCreateSecretKey());
+      }
     }, 200);
     return () => clearTimeout(timeout);
   }, []);

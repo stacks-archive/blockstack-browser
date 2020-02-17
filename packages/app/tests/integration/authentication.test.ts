@@ -12,7 +12,7 @@ async function bootstrapConnectModalPageTest(demo: DemoPageObject, auth: AuthPag
   const newWindow = await browser.waitForTarget(target => target.url().startsWith(auth.url));
   const authPage = await newWindow.page();
   expect(authPage.url().startsWith(auth.url)).toBeTruthy();
-  await authPage.waitFor(auth.$inputUsername, { timeout: 15000 });
+  await authPage.waitFor(auth.$textareaReadOnlySeedPhrase, { timeout: 15000 });
   return { authPage };
 }
 
@@ -35,16 +35,6 @@ describe('Authentication', () => {
   test('creating a successful account', async done => {
     const { authPage } = await bootstrapConnectModalPageTest(demoPageObject, authPageObject);
 
-    const $usernameInputElement = await authPage.$(authPageObject.$inputUsername);
-    if (!$usernameInputElement) {
-      throw 'Could not find username field';
-    }
-    await authPage.type(
-      authPageObject.$inputUsername,
-      `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`
-    );
-    await authPage.click(authPageObject.$buttonUsernameContinue);
-
     await authPage.waitFor(authPageObject.$textareaReadOnlySeedPhrase);
 
     const $secretKeyEl = await authPage.$(authPageObject.$textareaReadOnlySeedPhrase);
@@ -59,6 +49,16 @@ describe('Authentication', () => {
 
     await authPage.waitFor(authPageObject.$buttonHasSavedSeedPhrase);
     await authPage.click(authPageObject.$buttonHasSavedSeedPhrase);
+
+    const $usernameInputElement = await authPage.$(authPageObject.$inputUsername);
+    if (!$usernameInputElement) {
+      throw 'Could not find username field';
+    }
+    await authPage.type(
+      authPageObject.$inputUsername,
+      `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`
+    );
+    await authPage.click(authPageObject.$buttonUsernameContinue);
 
     await page.waitFor('#auth-response');
     const authResponseEl = await page.$('#auth-response');

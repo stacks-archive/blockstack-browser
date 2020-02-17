@@ -11,7 +11,7 @@ import {
 } from './types';
 
 const initialState: OnboardingState = {
-  screen: ScreenName.USERNAME,
+  screen: ScreenName.GENERATION,
 };
 
 export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
