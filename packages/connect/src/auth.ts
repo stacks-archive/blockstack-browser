@@ -12,7 +12,7 @@ export interface FinishedData {
 export interface AuthOptions {
   // The URL you want the user to be redirected to after authentication.
   redirectTo: string;
-  manifestPath: string;
+  manifestPath?: string;
   finished?: (payload: FinishedData) => void;
   authOrigin?: string;
   sendToSignIn?: boolean;
