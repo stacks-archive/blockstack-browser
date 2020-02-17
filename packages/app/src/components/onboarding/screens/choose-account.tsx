@@ -14,6 +14,7 @@ import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { ConfigApp } from '@blockstack/keychain/dist/wallet';
 import { Wallet } from '@blockstack/keychain';
 import { gaiaUrl } from '@common/constants';
+import useDocumentTitle from '@rehooks/document-title';
 import {
   doTrack,
   CHOOSE_ACCOUNT_REUSE_WARNING,
@@ -29,6 +30,7 @@ interface ChooseAccountProps {
 }
 
 export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
+  useDocumentTitle('Choose account');
   const { appName, identities, wallet } = useSelector((state: AppState) => ({
     appName: selectAppName(state),
     identities: selectIdentities(state),

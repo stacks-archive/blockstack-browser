@@ -1301,6 +1301,13 @@
     react-dev-utils "^9.1.0"
     sockjs-client "^1.4.0"
 
+"@rehooks/document-title@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@rehooks/document-title/-/document-title-1.0.1.tgz#a80f108ec6f8ab6aa65f6a82cde40724fbc6ae2e"
+  integrity sha512-yuVyOahut8UKbm8ajn/cLp8coreq+GIqILRfCJmX6elfKt/TtEs4LXj3Nw0QfauUGrzQZJUwODf8Q/IF2/B8hA==
+  dependencies:
+    react "^16.8.3"
+
 "@schemastore/web-manifest@^0.0.4":
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/@schemastore/web-manifest/-/web-manifest-0.0.4.tgz#b9c5c8374dc9b920bd0c62fb1c94778584b6e4ab"
@@ -8173,7 +8180,7 @@ react-test-renderer@^16.8.6:
     react-is "^16.8.6"
     scheduler "^0.18.0"
 
-react@^16.12.0:
+react@^16.12.0, react@^16.8.3:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==

@@ -10,12 +10,15 @@ import { AppState } from '@store';
 
 import { selectAppName } from '@store/onboarding/selectors';
 import { faqs } from '@components/onboarding/data';
+import useDocumentTitle from '@rehooks/document-title';
 
 interface SaveKeyProps {
   next: () => void;
 }
 
 export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
+  const title = 'Save your Secret Key';
+  useDocumentTitle(title);
   const appName = useSelector((state: AppState) => selectAppName(state));
   const [loading, setLoading] = useState(false);
   return (
@@ -24,7 +27,7 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
       <ScreenBody
         mt={6}
         body={[
-          <Title>Save your Secret Key</Title>,
+          <Title>{title}</Title>,
           <Text display="block" mt={2}>
             Paste your Secret Key wherever you keep critical, private, information such as passwords.
           </Text>,

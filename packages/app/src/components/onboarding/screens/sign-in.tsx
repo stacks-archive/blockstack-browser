@@ -4,7 +4,7 @@ import { ScreenHeader } from '@components/connected-screen-header';
 import { Box, Text, Input, Flex, Button } from '@blockstack/ui';
 import { AppIcon } from '@components/app-icon';
 import { Link } from '@components/link';
-
+import useDocumentTitle from '@rehooks/document-title';
 import { useDispatch, useSelector } from 'react-redux';
 import { doTrack, SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '@common/track';
 import { doChangeScreen, doSetMagicRecoveryCode } from '@store/onboarding/actions';
@@ -24,6 +24,8 @@ export const SignIn: React.FC<SignInProps> = props => {
   const [seedError, setSeedError] = useState<null | string>(null);
   const dispatch = useDispatch();
   const appName = useSelector((state: AppState) => selectAppName(state));
+  const title = `Sign into ${appName}`;
+  useDocumentTitle(title);
 
   return (
     <Screen isLoading={isLoading} textAlign="center">
@@ -32,7 +34,7 @@ export const SignIn: React.FC<SignInProps> = props => {
       <ScreenBody
         mt={4}
         body={[
-          <Title>Sign into {appName}</Title>,
+          <Title>{title}</Title>,
           <Box mt={2}>Enter your Secret Key to continue</Box>,
           <Box textAlign="left" mt={6}>
             {/*Validate: track SIGN_IN_INCORRECT*/}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Box, Spinner, Flex, Text } from '@blockstack/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter } from '@blockstack/connect';
+import useDocumentTitle from '@rehooks/document-title';
 import { ScreenHeader } from '@components/connected-screen-header';
 
 import { doCreateSecretKey } from '@store/onboarding/actions';
@@ -56,12 +57,13 @@ const preloadImages = (images: { imageUrl: string }[]) => {
 interface CreateProps {
   next: () => void;
 }
-
 export const Create: React.FC<CreateProps> = props => {
+  const title = 'Generating your Secret Key...';
   const [state, setState] = useState({
-    title: 'Generating your Secret Key...',
+    title,
     imageUrl: '/assets/images/icon-delay-key.svg',
   });
+  useDocumentTitle(title);
   const { name } = useAppDetails();
   const dispatch = useDispatch();
 
