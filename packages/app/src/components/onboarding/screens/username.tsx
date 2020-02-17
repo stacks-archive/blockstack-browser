@@ -110,6 +110,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
                 paddingRight="100px"
                 autoFocus
                 placeholder="username"
+                spellCheck={false}
                 value={username}
                 aria-invalid={error !== null}
                 onChange={handleInput}
