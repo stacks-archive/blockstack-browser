@@ -14,7 +14,7 @@ import useDocumentTitle from '@rehooks/document-title';
 import { ErrorLabel } from '@components/error-label';
 
 interface RecoveryProps {
-  next: (identityIndex: number) => void;
+  next: () => void;
 }
 
 export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
@@ -34,7 +34,7 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
       const seed = await decrypt(codeBuffer, password);
       await doStoreSeed(seed, DEFAULT_PASSWORD)(dispatch, () => ({}), {});
       doTrack(SIGN_IN_CORRECT);
-      next(0);
+      next();
     } catch (error) {
       setPasswordError('Incorrect password');
       setLoading(false);

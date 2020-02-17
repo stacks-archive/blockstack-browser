@@ -82,7 +82,7 @@ const RenderScreen = ({ ...rest }) => {
       }
       return (
         <SignIn
-          next={() => doFinishSignIn()}
+          next={() => doChangeScreen(ScreenName.CHOOSE_ACCOUNT)}
           back={() => {
             dispatch(doChangeScreen(ScreenName.SECRET_KEY));
           }}
@@ -90,8 +90,11 @@ const RenderScreen = ({ ...rest }) => {
         />
       );
 
+    case ScreenName.CHOOSE_ACCOUNT:
+      return <ChooseScreen />;
+
     case ScreenName.RECOVERY_CODE:
-      return <DecryptRecoveryCode next={(identityIndex: number) => doFinishSignIn({ identityIndex })} />;
+      return <DecryptRecoveryCode next={() => doChangeScreen(ScreenName.CHOOSE_ACCOUNT)} />;
 
     default:
       return null;
