@@ -10,14 +10,19 @@ declare global {
   }
 }
 
-// this is necessary because we may share instances of this file on a page so we store these globally
-window.__useScrollLockInstances = window.__useScrollLockInstances || new Set<{}>();
+let instances: Set<{}> = new Set();
+
+if (typeof window !== 'undefined') {
+  // this is necessary because we may share instances of this file on a page so we store these globally
+  window.__useScrollLockInstances = window.__useScrollLockInstances || new Set<{}>();
+  instances = window.__useScrollLockInstances;
+}
+
 const originalStyle = () => {
   window.__useScrollLockStyle = window.__useScrollLockStyle || window.getComputedStyle(document.body).overflow;
 
   return window.__useScrollLockStyle;
 };
-const instances: Set<{}> = window.__useScrollLockInstances;
 
 const registerInstance = (instance: {}) => {
   if (instances.size === 0) {
