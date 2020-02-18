@@ -945,9 +945,9 @@
     regenerator-runtime "^0.13.2"
 
 "@babel/runtime@^7.3.1":
-  version "7.7.6"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.6.tgz#d18c511121aff1b4f2cd1d452f1bac9601dd830f"
-  integrity sha512-BWAJxpNVa0QlE5gZdWjSxXtemZyZ9RmrmVozxt3NUXeZhVIJ5ANyqmMc0JDrivBZyxUuQvFxlvH4OWWOogGfUw==
+  version "7.8.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.4.tgz#d79f5a2040f7caa24d53e563aad49cbc05581308"
+  integrity sha512-neAp3zt80trRVBI1x0azq6c57aNBqYZH8KhMm3TaB7wEI5Q4A2SHfBHE8w9gOhI/lrqxtEbXZgQIrHP+wvSGwQ==
   dependencies:
     regenerator-runtime "^0.13.2"
 
@@ -1062,10 +1062,10 @@
   resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.5.tgz#871bd2a38b5bc9aabb1cefeeba6199cc64098957"
   integrity sha512-A+wfdVwD1Sxd/D3PPJI67Evo7q2fp15hCOFLB5jmzcS1MdN8BQdFm6j51Sti8xLN4qHmuYkicbFBUluGx2h63g==
 
-"@blockstack/ui@^1.0.0-alpha.32":
-  version "1.0.0-alpha.32"
-  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.32.tgz#ed3bb4a76047a2b92fddeb4d48f94da51cf8d826"
-  integrity sha512-howevrAod/WjZfJxwtj6ErpwuDLOLT8qjK1IBLvNTfuzaDiAswpAdHhVmsbmUGvqKvHeg21vw028HdTPvcRG1w==
+"@blockstack/ui@^1.0.0-alpha.33":
+  version "1.0.0-alpha.33"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.33.tgz#048cf78ee46867399164bca4a4ee8990ffbcb29c"
+  integrity sha512-WLO0atOxhHtMjbAGZl9sN12MjevJd0i/ULhs/X0fYVhqF5ovz6ENtw0ec0TG8Lhpy8J7pWpX/xa5A+jkFNU3Wg==
   dependencies:
     "@styled-system/css" "5.1.5"
     "@types/color" "^3.0.1"
@@ -1078,6 +1078,7 @@
     styled-system "5.1.5"
     use-dark-mode "2.3.1"
     use-events "^1.4.1"
+    use-onclickoutside "^0.3.1"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
@@ -1574,11 +1575,10 @@
     "@types/react" "*"
 
 "@types/react-native@*":
-  version "0.60.25"
-  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.60.25.tgz#65cb0bf5dd0631079215b63525458e4123c1c90e"
-  integrity sha512-827dIVvSTxSH5uTpsJJH7O4wpRuw0rm3yIzRL3a2yKawA0nyhgC1GPKTXHFIn2GfSdXn1Gty2dJ+k6uDZF3MWQ==
+  version "0.61.15"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.61.15.tgz#3b2032a9abd5e37c8a8cb0fc6a724d57811d4dbc"
+  integrity sha512-+lOUYk3yOfpyMy2HcVbR5bZnbExiVahMr3AqWNPh/01N0quH7nBzlou+/rpbvmDXSGwCh3QjWWfEkLNRfvbiiA==
   dependencies:
-    "@types/prop-types" "*"
     "@types/react" "*"
 
 "@types/react@*":
@@ -3396,10 +3396,15 @@ cssstyle@^1.0.0:
   dependencies:
     cssom "0.3.x"
 
-csstype@^2.2.0, csstype@^2.6.4, csstype@^2.6.6:
+csstype@^2.2.0:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.7.tgz#20b0024c20b6718f4eda3853a1f5a1cce7f5e4a5"
   integrity sha512-9Mcn9sFbGBAdmimWb2gLVDtFJzeKtDGIr76TUqmjZrw9LFXBMSU70lcs+C0/7fyCd6iBDqmksUcCOUIkisPHsQ==
+
+csstype@^2.6.4, csstype@^2.6.6:
+  version "2.6.9"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.9.tgz#05141d0cd557a56b8891394c1911c40c8a98d098"
+  integrity sha512-xz39Sb4+OaTsULgUERcCk+TJj8ylkL4aSVDQiX/ksxbELSqwkgt4d4RD7fovIdgJGSuNYqwZEiVjYY5l0ask+Q==
 
 cyclist@^1.0.1:
   version "1.0.1"
@@ -4854,10 +4859,17 @@ hmac-drbg@^1.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
-hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.0.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#101685d3aff3b23ea213163f6e8e12f4f111e19f"
   integrity sha512-wbg3bpgA/ZqWrZuMOeJi8+SKMhr7X9TesL/rXMjTzh0p0JUBo3II8DHboYbuIXWRlttrUFxwcu/5kygrCw8fJw==
+  dependencies:
+    react-is "^16.7.0"
+
+hoist-non-react-statics@^3.3.0:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
+  integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is "^16.7.0"
 
