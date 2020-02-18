@@ -2,7 +2,7 @@ import { UserSession, AppConfig } from 'blockstack';
 import './types';
 import { popupCenter } from './popup';
 
-const defaultAuthURL = 'https://auth.blockstack.org';
+const defaultAuthURL = 'https://app.blockstack.org';
 
 export interface FinishedData {
   authResponse: string;
