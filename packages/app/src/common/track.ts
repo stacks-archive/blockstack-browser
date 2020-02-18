@@ -12,6 +12,7 @@ export const CHOOSE_ACCOUNT_REUSE_WARNING_DISABLED = 'Disable Account Choice War
 export const CHOOSE_ACCOUNT_REUSE_WARNING_CONTINUE = 'Confirm Account Choice';
 export const CHOOSE_ACCOUNT_REUSE_WARNING_BACK = 'Decline Account Choice';
 export const SIGN_IN_CREATE = 'Select Create From Sign In';
+export const USERNAME_REGISTER_FAILED = 'Username Registration Failed';
 
 export const doTrack = (type: string, payload?: string | object) => {
   console.log('Tracking:', { type, payload });

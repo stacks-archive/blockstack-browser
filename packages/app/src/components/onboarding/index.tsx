@@ -8,6 +8,7 @@ import { ScreenName } from '@store/onboarding/types';
 import { doFinishSignIn as finishSignIn } from '@store/onboarding/actions';
 import { selectCurrentScreen } from '@store/onboarding/selectors';
 import { authenticationInit } from '@common/utils';
+import { UsernameRegistryError } from './screens/registery-error';
 
 const RenderScreen = ({ ...rest }) => {
   const dispatch = useDispatch();
@@ -83,6 +84,9 @@ const RenderScreen = ({ ...rest }) => {
 
     case ScreenName.RECOVERY_CODE:
       return <DecryptRecoveryCode next={() => doChangeScreen(ScreenName.CHOOSE_ACCOUNT)} />;
+
+    case ScreenName.REGISTRY_ERROR:
+      return <UsernameRegistryError />;
 
     default:
       return null;

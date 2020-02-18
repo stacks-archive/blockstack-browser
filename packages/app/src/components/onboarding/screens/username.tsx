@@ -7,7 +7,7 @@ import useDocumentTitle from '@rehooks/document-title';
 
 import { useAppDetails } from '@common/hooks/useAppDetails';
 import { useDispatch, useSelector } from 'react-redux';
-import { doSetUsername, doFinishSignIn } from '@store/onboarding/actions';
+import { doSetUsername, doFinishSignIn, doChangeScreen } from '@store/onboarding/actions';
 import { selectCurrentWallet } from '@store/wallet/selectors';
 import { AppState } from '@store';
 import { DEFAULT_PASSWORD, ScreenName } from '@store/onboarding/types';
@@ -22,6 +22,7 @@ import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';
 import { selectCurrentScreen } from '@store/onboarding/selectors';
+import { doTrack, USERNAME_REGISTER_FAILED } from '@common/track';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
@@ -88,14 +89,19 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
       return;
     }
 
-    await registerSubdomain({
-      username,
-      subdomain: Subdomain,
-      gaiaHubUrl: gaiaUrl,
-      identity,
-    });
-    dispatch(didGenerateWallet(wallet));
-    dispatch(doFinishSignIn({ identityIndex }));
+    try {
+      await registerSubdomain({
+        username,
+        subdomain: Subdomain,
+        gaiaHubUrl: gaiaUrl,
+        identity,
+      });
+      dispatch(didGenerateWallet(wallet));
+      dispatch(doFinishSignIn({ identityIndex }));
+    } catch (error) {
+      doTrack(USERNAME_REGISTER_FAILED, { status: error.status });
+      dispatch(doChangeScreen(ScreenName.REGISTRY_ERROR));
+    }
   };
 
   return (

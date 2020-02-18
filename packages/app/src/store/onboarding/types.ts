@@ -16,6 +16,7 @@ export enum ScreenName {
   SIGN_IN = 'screens/SIGN_IN',
   RECOVERY_CODE = 'screens/RECOVERY_CODE',
   ADD_ACCOUNT = 'screens/ADD_ACCOUNT',
+  REGISTRY_ERROR = 'screens/REGISTRY_ERROR',
 }
 
 // Nice page names for Mark to see in Mixpanel
@@ -29,6 +30,7 @@ export const pageTrackingNameMap = {
   [ScreenName.SIGN_IN]: 'Sign In',
   [ScreenName.RECOVERY_CODE]: 'Magic Recovery Code',
   [ScreenName.ADD_ACCOUNT]: ' Select Username',
+  [ScreenName.REGISTRY_ERROR]: 'Username Registry Error',
 };
 
 // TODO: clarify usage of password for local key encryption
