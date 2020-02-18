@@ -3,6 +3,7 @@ import { Box, Flex, Text, ChevronIcon } from '@blockstack/ui';
 import { useAppDetails } from '../../hooks/use-app-details';
 import { Logo } from '../logo';
 import { AppIcon } from '../app-icon';
+import { PX } from '../../common';
 
 interface HeaderTitleProps {
   title?: string | JSX.Element;
@@ -48,7 +49,8 @@ export const ScreenHeader = ({
 
   return (
     <Flex
-      p={[4, 5]}
+      py={[4, 5]}
+      px={PX}
       height="56px"
       borderBottom="1px solid"
       borderBottomColor="inherit"
