@@ -100,7 +100,7 @@ const RenderScreen: React.FC = () => {
 };
 
 export const Modal = () => {
-  const { isOpen, screen } = useConnect();
+  const { isOpen, doCloseAuth, screen } = useConnect();
   useScrollLock(isOpen);
 
   return (
@@ -115,6 +115,7 @@ export const Modal = () => {
             title={screen === States.SCREENS_SIGN_IN ? 'Sign In' : 'Secret Key'}
           />
         }
+        close={doCloseAuth}
         isOpen={isOpen}
       >
         <RenderScreen />
