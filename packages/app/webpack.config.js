@@ -8,6 +8,8 @@ const CheckerPlugin = require('fork-ts-checker-webpack-plugin');
 const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 const sourceRootPath = path.join(__dirname, 'src');
@@ -15,6 +17,7 @@ const distRootPath = path.join(__dirname, 'dist');
 const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
 const isDevelopment = process.env.NODE_ENV !== 'production';
+const analyzeBundle = process.env.ANALYZE === 'true';
 const segmentKey = process.env.SEGMENT_KEY || 'KZVI260WNyXRxGvDvsX4Zz0vhshQlgvE';
 const extEnv = process.env.EXT_ENV || 'web';
 
@@ -84,6 +87,7 @@ module.exports = {
   devtool: getSourceMap(),
   watch: false,
   plugins: [
+    new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
     new CheckerPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(sourceRootPath, '../', 'public', 'html', 'options.html'),
@@ -146,4 +150,7 @@ if (process.env.EXT_ENV === 'watch') {
 
 if (nodeEnv === 'production') {
   module.exports.plugins.push(new CleanWebpackPlugin({ verbose: true, dry: false }));
+}
+if (analyzeBundle) {
+  module.exports.plugins.push(new BundleAnalyzerPlugin());
 }
