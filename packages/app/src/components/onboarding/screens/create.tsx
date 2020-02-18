@@ -35,19 +35,16 @@ const ExplainerCard = ({ title, imageUrl }: ExplainerCardProps) => (
   </Flex>
 );
 
-const createTimeoutLoop = (
-  setState: (item: ExplainerCardProps) => void,
-  arr: ExplainerCardProps[],
-  onEnd: () => void
-) =>
-  arr.forEach((item, index) =>
+const createTimeoutLoop = (setCardIndex: (cardIndex: number) => void, length: number, onEnd: () => void) => {
+  for (let index = 1; index < length; index++) {
     setTimeout(() => {
-      setState(item);
-      if (index === arr.length - 1) {
-        onEnd();
-      }
-    }, (index + 1) * 2400)
-  );
+      setCardIndex(index);
+    }, index * 2400);
+  }
+  setTimeout(() => {
+    onEnd();
+  }, length * 2400);
+};
 
 const preloadImages = (images: { imageUrl: string }[]) => {
   images.forEach(({ imageUrl }) => {
@@ -61,10 +58,7 @@ interface CreateProps {
 }
 export const Create: React.FC<CreateProps> = props => {
   const title = 'Generating your Secret Key...';
-  const [state, setState] = useState({
-    title,
-    imageUrl: '/assets/images/icon-delay-key.svg',
-  });
+  const [cardIndex, setCardIndex] = useState(0);
   useDocumentTitle(title);
   const { wallet } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state),
@@ -74,16 +68,16 @@ export const Create: React.FC<CreateProps> = props => {
 
   const explainerData: ExplainerCardProps[] = [
     {
+      title: 'Generating your Secret Key...',
+      imageUrl: '/assets/images/icon-delay-key.svg',
+    },
+    {
       title: `Everything you do in ${name} is protected with encryption`,
       imageUrl: '/assets/images/icon-delay-padlock.svg',
     },
     {
       title: `${name} can't see or track your activity`,
       imageUrl: '/assets/images/icon-delay-private.svg',
-    },
-    {
-      title: 'This will not display',
-      imageUrl: '',
     },
   ];
 
@@ -96,7 +90,7 @@ export const Create: React.FC<CreateProps> = props => {
     // create page will be rendered momentarily, and we need to cancel these
     // functions if we're on a different screen
     const timeout = setTimeout(() => {
-      createTimeoutLoop(setState, explainerData, () => props.next());
+      createTimeoutLoop(setCardIndex, explainerData.length, () => props.next());
       // We have this check for `wallet`, because this is the
       // default first screen rendered. We don't want to accidentally create a new
       // seed if a logged-in user gets into this hook.
@@ -108,6 +102,7 @@ export const Create: React.FC<CreateProps> = props => {
   }, []);
 
   const offCenterOffset = '.44';
+  const card = explainerData[cardIndex];
 
   return (
     <Screen textAlign="center">
@@ -115,7 +110,7 @@ export const Create: React.FC<CreateProps> = props => {
       <ScreenBody
         flex={offCenterOffset}
         justifyContent="center"
-        body={[<ExplainerCard title={state.title} imageUrl={state.imageUrl} />]}
+        body={[<ExplainerCard title={card.title} imageUrl={card.imageUrl} />]}
       />
       <ScreenFooter>
         <PoweredBy />
