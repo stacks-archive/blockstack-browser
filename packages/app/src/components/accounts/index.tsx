@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Identity } from '@blockstack/keychain';
-
+import { transition } from '@common/constants';
 import { Box, Text, Flex, FlexProps, BoxProps } from '@blockstack/ui';
 import { useHover } from 'use-events';
 import { Image } from '@components/image';
@@ -58,15 +58,16 @@ const AccountItem = ({ label, iconComponent, isFirst, hasAction, ...rest }: Acco
       borderTopColor="inherit"
       align="center"
       cursor={hover && hasAction ? 'pointer' : 'unset'}
+      bg={hover && hasAction ? 'ink.100' : 'white'}
       mt={isFirst ? 5 : 0}
+      px={2}
+      transition={transition}
       {...bind}
       {...rest}
     >
       {iconComponent && iconComponent({ hover })}
       <Box overflow="hidden">
-        <Text textStyle="body.small.medium" textDecoration={hover && hasAction ? 'underline' : 'unset'}>
-          {label}
-        </Text>
+        <Text textStyle="body.small.medium">{label}</Text>
       </Box>
     </Flex>
   );
@@ -101,14 +102,8 @@ export const Accounts = ({ identities, showAddAccount, next }: AccountsProps) =>
         <AccountItem
           onClick={() => dispatch(doChangeScreen(ScreenName.ADD_ACCOUNT))}
           hasAction={!!next}
-          iconComponent={({ hover }) => (
-            <Flex
-              justify="center"
-              width="36px"
-              mr={3}
-              color={hover ? 'ink.400' : 'ink.300'}
-              transition="0.08s all ease-in-out"
-            >
+          iconComponent={() => (
+            <Flex justify="center" width="36px" mr={3} color={'ink.300'} transition="0.08s all ease-in-out">
               <PlusInCircle />
             </Flex>
           )}
