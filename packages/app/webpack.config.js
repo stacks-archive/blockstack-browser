@@ -16,6 +16,14 @@ const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const segmentKey = process.env.SEGMENT_KEY || 'KZVI260WNyXRxGvDvsX4Zz0vhshQlgvE';
+const extEnv = process.env.EXT_ENV || 'web';
+
+const getSourceMap = () => {
+  if (extEnv === 'web') {
+    return nodeEnv === 'production' ? 'eval' : 'cheap-source-map';
+  }
+  return 'none';
+};
 
 module.exports = {
   entry: {
@@ -73,7 +81,7 @@ module.exports = {
   devServer: {
     contentBase: './dist',
   },
-  devtool: 'none',
+  devtool: getSourceMap(),
   watch: false,
   plugins: [
     new CheckerPlugin(),
@@ -113,7 +121,7 @@ module.exports = {
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify(nodeEnv),
       WEB_BROWSER: JSON.stringify(webBrowser),
-      EXT_ENV: JSON.stringify(process.env.EXT_ENV || 'web'),
+      EXT_ENV: JSON.stringify(extEnv),
       SEGMENT_KEY: JSON.stringify(segmentKey),
     }),
     isDevelopment && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
