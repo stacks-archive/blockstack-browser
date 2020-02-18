@@ -65,7 +65,7 @@ export const Collapse: React.FC<CollapseProps> = ({ data, ...rest }) => {
   const [open, setOpen] = React.useState<number | null>(null);
   const handleOpen = (key: number) => (key === open ? setOpen(null) : setOpen(key));
   return (
-    <Box px={5} fontSize="12px" {...rest}>
+    <Box px={6} fontSize="12px" {...rest}>
       {/*
           It's important to include the rest of the props
           because in certain cases we want to add/adjust spacing,
