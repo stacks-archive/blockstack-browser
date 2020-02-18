@@ -4,13 +4,13 @@ import { Flex, Text, Button, FlexProps } from '@blockstack/ui';
 
 import { Accounts } from '@components/accounts';
 
-interface SignOutPros extends FlexProps {
+interface SignOutProps extends FlexProps {
   identities: Identity[];
   signOut: () => void;
   buttonMode?: 'primary' | 'secondary';
 }
 
-export const SignOut = ({ buttonMode = 'primary', identities, signOut, ...rest }: SignOutPros) => (
+export const SignOut = ({ buttonMode = 'primary', identities, signOut, ...rest }: SignOutProps) => (
   <Flex flexDirection="column" maxWidth={[null, '320px']} mt={[null, '6vh', '12vh']} {...rest}>
     <Text as="h1" fontWeight="bold" mb={6} display="block">
       Sign out
