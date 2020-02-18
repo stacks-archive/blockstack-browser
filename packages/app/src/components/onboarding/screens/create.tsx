@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Spinner, Flex, Text } from '@blockstack/ui';
+import { Spinner, Flex, Text } from '@blockstack/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import useDocumentTitle from '@rehooks/document-title';
 import { ScreenHeader } from '@components/connected-screen-header';
@@ -16,18 +16,12 @@ interface ExplainerCardProps {
 }
 
 const ExplainerCard = ({ title, imageUrl }: ExplainerCardProps) => (
-  <Flex height="300px" flexDirection="column" justifyContent="space-between">
-    <Flex justifyContent="center" alignItems="center" height="180px" mb={imageUrl ? 8 : 0} flexDirection="column">
-      {imageUrl && (
-        <Box flex="1" justifyContent="center">
-          <Flex mx="auto" width="240px" height="152px" justifyContent="center">
-            <img src={imageUrl} />
-          </Flex>
-        </Box>
-      )}
-      <Box pb={imageUrl ? 6 : 0}>
-        <Text textStyle="display.small">{title}</Text>
-      </Box>
+  <Flex height="250px" flexDirection="column" justifyContent="space-between">
+    <Flex mx="auto" height="120px" alignItems="flex-start">
+      <img src={imageUrl} />
+    </Flex>
+    <Flex flex={1} mt={3} justifyContent="center">
+      <Text textStyle="display.small">{title}</Text>
     </Flex>
     <Flex width="100%" flexDirection="column" alignItems="center">
       <Spinner thickness="3px" size="lg" color="blue" />
@@ -101,7 +95,7 @@ export const Create: React.FC<CreateProps> = props => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const offCenterOffset = '.44';
+  const offCenterOffset = '3';
   const card = explainerData[cardIndex];
 
   return (
