@@ -97,7 +97,7 @@ export const SignIn: React.FC<SignInProps> = props => {
             Create a Secret Key
           </Link>
           <Button
-            size="md"
+            size="lg"
             type="submit"
             onClick={async event => {
               event.preventDefault();

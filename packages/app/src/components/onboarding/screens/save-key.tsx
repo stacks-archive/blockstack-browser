@@ -40,7 +40,7 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
       <ScreenActions>
         <Button
           width="100%"
-          size="md"
+          size="lg"
           mt={6}
           onClick={() => {
             setLoading(true);

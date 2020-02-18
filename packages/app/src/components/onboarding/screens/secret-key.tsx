@@ -57,7 +57,7 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
         <ScreenActions>
           <Button
             data-test="button-copy-secret-key"
-            size="md"
+            size="lg"
             width="100%"
             mt={6}
             isDisabled={copied}

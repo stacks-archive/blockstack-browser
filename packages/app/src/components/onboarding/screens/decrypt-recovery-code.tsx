@@ -77,7 +77,7 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
         <Button
           width="100%"
           mt={6}
-          size="md"
+          size="lg"
           onClick={async event => {
             event.preventDefault();
             return onSubmit();
