@@ -22,7 +22,7 @@ export const Screen: React.FC<ScreenBodyProps> = ({ noMinHeight, isLoading, chil
       <Flex
         width="100%"
         flexDirection="column"
-        minHeight={noMinHeight ? undefined : ['calc(100vh - 57px)', 'unset']}
+        minHeight={noMinHeight ? undefined : ['100vh', 'unset']}
         flex={1}
         style={{ pointerEvents: isLoading ? 'none' : 'unset' }}
         as={onSubmit ? 'form' : 'main'}
