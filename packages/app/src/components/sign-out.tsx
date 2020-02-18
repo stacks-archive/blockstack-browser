@@ -7,7 +7,7 @@ import { Accounts } from '@components/accounts';
 interface SignOutPros extends FlexProps {
   identities: Identity[];
   signOut: () => void;
-  buttonMode?: 'primary' | 'secondary' | undefined;
+  buttonMode?: 'primary' | 'secondary';
 }
 
 export const SignOut = ({ buttonMode = 'primary', identities, signOut, ...rest }: SignOutPros) => (
