@@ -5,7 +5,7 @@ import { Button, Flex, Box } from '@blockstack/ui';
 const AuthButton: React.FC = () => {
   const { doOpenAuth } = useConnect();
 
-  return <Button mode="secondary" onClick={() => doOpenAuth()}>Get Started</Button>;
+  return <Button onClick={() => doOpenAuth()}>Get Started</Button>;
 };
 
 const App: React.FC = () => {
