@@ -11,7 +11,7 @@ export interface FinishedData {
 
 export interface AuthOptions {
   // The URL you want the user to be redirected to after authentication.
-  redirectTo: string;
+  redirectTo?: string;
   manifestPath?: string;
   finished?: (payload: FinishedData) => void;
   authOrigin?: string;
@@ -24,7 +24,7 @@ export interface AuthOptions {
 }
 
 export const authenticate = async ({
-  redirectTo,
+  redirectTo = '/',
   manifestPath,
   finished,
   authOrigin,
