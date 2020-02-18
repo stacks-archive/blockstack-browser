@@ -95,7 +95,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
       />
       <Screen textAlign="center">
         <ScreenHeader hideIcon title="Continue with Secret Key" />
-        <AppIcon mt={10} size="72px" />
+        <AppIcon mt={10} mb={4} size="72px" />
         <ScreenBody
           body={[
             <Title>Choose an account</Title>,
