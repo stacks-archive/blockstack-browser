@@ -21,10 +21,10 @@
   "version": "1.0.0",
   "author": "Blockstack PBC",
   "dependencies": {
-    "@blockstack/connect": "^1.0.5",
+    "@blockstack/connect": "^1.0.6",
     "@blockstack/keychain": "^0.2.5",
     "@blockstack/prettier-config": "^0.0.5",
-    "@blockstack/ui": "^1.0.0-alpha.33",
+    "@blockstack/ui": "^1.0.0-alpha.34",
     "@rehooks/document-title": "^1.0.1",
     "@segment/analytics.js-core": "^3.10.1",
     "@types/segment-analytics": "^0.0.32",
