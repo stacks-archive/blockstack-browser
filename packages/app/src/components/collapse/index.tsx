@@ -79,7 +79,7 @@ export const Collapse: React.FC<CollapseProps> = ({ data, ...rest }) => {
       {data.map(({ title, body, tracking }, key) => {
         const [hovered, bind] = useHover();
         return (
-          <Box key={key} cursor={hovered ? 'pointer' : undefined} {...bind}>
+          <Box key={key} cursor={hovered ? 'pointer' : undefined} lineHeight="16px" {...bind}>
             <TitleElement
               onClick={() => {
                 tracking && doTrack(tracking);
