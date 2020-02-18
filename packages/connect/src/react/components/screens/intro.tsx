@@ -20,7 +20,7 @@ const AppElement = ({
   icon: string;
 }) => (
   <Flex mx="auto" position="relative" {...rest}>
-    <AppIcon size="64px" mr="6" src={icon} alt={name} borderRadius="0" />
+    <AppIcon size="64px" mr={6} src={icon} alt={name} borderRadius="0" />
     <Box position="absolute" left="50%" top="50%" ml="-16px" mt="-6px">
       <UnionLine />
     </Box>
@@ -62,7 +62,7 @@ export const Intro = () => {
         ]}
       />
       <ScreenActions>
-        <Button width="100%" size="md" mt={2} onClick={() => doAuth()}>
+        <Button width="100%" size="lg" mt={2} onClick={() => doAuth()}>
           Get started
         </Button>
       </ScreenActions>

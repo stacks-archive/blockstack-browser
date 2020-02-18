@@ -70,7 +70,7 @@ export const HowItWorks: React.FC = () => {
         ]}
       />
       <ScreenActions>
-        <Button width="100%" size="md" mt={6} onClick={() => doAuth()}>
+        <Button width="100%" size="lg" mt={6} onClick={() => doAuth()}>
           Get Started
         </Button>
       </ScreenActions>

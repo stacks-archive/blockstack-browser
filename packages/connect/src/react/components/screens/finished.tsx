@@ -37,7 +37,7 @@ export const Finished = () => {
         ]}
       />
       <ScreenActions>
-        <Button width="100%" mt={4} size="md" onClick={() => doCloseAuth()}>
+        <Button width="100%" mt={4} size="lg" onClick={() => doCloseAuth()}>
           Close
         </Button>
       </ScreenActions>
