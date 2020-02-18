@@ -4,7 +4,9 @@
 
 </div>
 
-The Blockstack App is a browser extension for interacting with [Blockstack](https://blockstack.org) apps.
+The Blockstack App is an application for interacting and authenticating with [Blockstack](https://blockstack.org) apps. It can be used as a hosted web app (available at [auth.blockstack.org](https://auth.blockstack.org)) or as a browser extension.
+
+To use this application with your own Blockstack App, we recommend using [Blockstack Connect](https://github.com/blockstack/connect).
 
 Table of Contents:
 
@@ -21,7 +23,7 @@ Table of Contents:
 
 ## Development
 
-Although this app is a browser extension, the best interface for development is as a normal web app. This is because it's faster and easier to develop it as a web app, for reasons like hot module loading, and not having to deal with the browser extensions UI constantly.
+Although this app is usable as a browser extension, the best interface for development is as a normal web app. This is because it's faster and easier to develop it as a web app, for reasons like hot module loading, and not having to deal with the browser extensions UI constantly.
 
 ### Setup
 
@@ -34,7 +36,7 @@ yarn
 ### Run Locally
 
 ~~~bash
-yarn dev-server
+yarn dev
 ~~~
 
 Then, open [localhost:8080](http://localhost:8080).
