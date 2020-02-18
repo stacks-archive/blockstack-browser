@@ -128,6 +128,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
                 paddingRight="100px"
                 autoFocus
                 placeholder="username"
+                fontSize="16px"
                 spellCheck={false}
                 value={username}
                 aria-invalid={error !== null}
