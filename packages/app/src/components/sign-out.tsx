@@ -1,21 +1,22 @@
 import React from 'react';
 import Identity from '@blockstack/keychain/dist/identity';
-import { Flex, Text, Button } from '@blockstack/ui';
+import { Flex, Text, Button, FlexProps } from '@blockstack/ui';
 
 import { Accounts } from '@components/accounts';
 
-interface SignOutPros {
+interface SignOutPros extends FlexProps {
   identities: Identity[];
   signOut: () => void;
+  buttonMode?: string;
 }
 
-export const SignOut = ({ identities, signOut }: SignOutPros) => (
-  <Flex flexDirection="column" maxWidth={[null, '320px']} mt={[null, '6vh', '12vh']}>
+export const SignOut = ({ buttonMode = 'primary', identities, signOut, ...rest }: SignOutPros) => (
+  <Flex flexDirection="column" maxWidth={[null, '320px']} mt={[null, '6vh', '12vh']} {...rest}>
     <Text as="h1" fontWeight="bold" mb={6} display="block">
       Sign out
     </Text>
     <Accounts identities={identities} />
-    <Button onClick={signOut} mt={8} width="100%">
+    <Button mode={buttonMode} onClick={signOut} mt={8} width="100%">
       Sign out
     </Button>
     <Text as="small" color="ink.600" textAlign="center" mt={4}>
