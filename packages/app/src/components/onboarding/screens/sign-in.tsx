@@ -25,7 +25,7 @@ export const SignIn: React.FC<SignInProps> = props => {
   const [seedError, setSeedError] = useState<null | string>(null);
   const dispatch = useDispatch();
   const appName = useSelector((state: AppState) => selectAppName(state));
-  const title = `Sign into ${appName}`;
+  const title = `Sign in to ${appName}`;
   useDocumentTitle(title);
 
   const onSubmit = async () => {
@@ -64,7 +64,7 @@ export const SignIn: React.FC<SignInProps> = props => {
             {/*Validate: track SIGN_IN_INCORRECT*/}
             <Input
               autoFocus
-              minHeight="80px"
+              minHeight="68px"
               placeholder="12-word Secret Key"
               as="textarea"
               value={seed}
