@@ -853,12 +853,12 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blockstack/connect@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@blockstack/connect/-/connect-1.0.4.tgz#5e416f877e6f61b2be532afb79111025fc3f3aa6"
-  integrity sha512-8hS/ZLGvw+CnXbW7FV00Cs+cDxP2Qu9XYpgjVEVEHr5LbcL3EiofKK6nDQ+owl2nLlRWx30fqeWFCdsdgglp9Q==
+"@blockstack/connect@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@blockstack/connect/-/connect-1.0.5.tgz#8da87dee36469791e5b645d7e4189bea7024d1c4"
+  integrity sha512-32bue2JL4yan2DlgakKffUap+elFVqTPxNNtPrFFLnBh1VKF89cGrirHK+2lePdM+zOR+8Iwm1Nhr90dDt9REg==
   dependencies:
-    "@blockstack/ui" "^1.0.0-alpha.32"
+    "@blockstack/ui" "^1.0.0-alpha.33"
     styled-components "^5.0.0"
     use-events "^1.4.1"
     use-onclickoutside "^0.3.1"
@@ -879,10 +879,10 @@
   resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.5.tgz#871bd2a38b5bc9aabb1cefeeba6199cc64098957"
   integrity sha512-A+wfdVwD1Sxd/D3PPJI67Evo7q2fp15hCOFLB5jmzcS1MdN8BQdFm6j51Sti8xLN4qHmuYkicbFBUluGx2h63g==
 
-"@blockstack/ui@^1.0.0-alpha.32":
-  version "1.0.0-alpha.32"
-  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.32.tgz#ed3bb4a76047a2b92fddeb4d48f94da51cf8d826"
-  integrity sha512-howevrAod/WjZfJxwtj6ErpwuDLOLT8qjK1IBLvNTfuzaDiAswpAdHhVmsbmUGvqKvHeg21vw028HdTPvcRG1w==
+"@blockstack/ui@^1.0.0-alpha.33":
+  version "1.0.0-alpha.33"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.33.tgz#048cf78ee46867399164bca4a4ee8990ffbcb29c"
+  integrity sha512-WLO0atOxhHtMjbAGZl9sN12MjevJd0i/ULhs/X0fYVhqF5ovz6ENtw0ec0TG8Lhpy8J7pWpX/xa5A+jkFNU3Wg==
   dependencies:
     "@styled-system/css" "5.1.5"
     "@types/color" "^3.0.1"
@@ -895,6 +895,7 @@
     styled-system "5.1.5"
     use-dark-mode "2.3.1"
     use-events "^1.4.1"
+    use-onclickoutside "^0.3.1"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
