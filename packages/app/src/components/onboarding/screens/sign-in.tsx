@@ -68,6 +68,7 @@ export const SignIn: React.FC<SignInProps> = props => {
               placeholder="12-word Secret Key"
               as="textarea"
               value={seed}
+              autoCapitalize="false"
               spellCheck={false}
               style={{ resize: 'none' }}
               onChange={(evt: React.FormEvent<HTMLInputElement>) => {

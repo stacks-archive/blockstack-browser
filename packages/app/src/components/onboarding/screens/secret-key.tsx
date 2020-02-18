@@ -47,6 +47,7 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
               <SeedTextarea
                 readOnly
                 spellCheck="false"
+                autoCapitalize="false"
                 value={secretKey}
                 className="hidden-secret-key"
                 data-test="textarea-seed-phrase"

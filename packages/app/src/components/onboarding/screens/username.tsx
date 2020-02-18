@@ -124,6 +124,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
               </Flex>
               <Input
                 data-test="input-username"
+                autoCapitalize="false"
                 paddingRight="100px"
                 autoFocus
                 placeholder="username"
