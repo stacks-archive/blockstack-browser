@@ -11,6 +11,8 @@ const shadows = {
   high: '0px 8px 16px rgba(27, 39, 51, 0.08)',
   inner: 'inset 0 2px 4px 0 rgba(0,0,0,0.06)',
   none: 'none',
+  focus: '0 0 0 3px rgba(170, 179, 255, 0.75)',
+  'button.secondary': '0px 1px 2px rgba(0, 0, 0, 0.08), 0px 1px 4px rgba(0, 0, 0, 0.08)',
 };
 
 type Breakpoints = string[] & {
@@ -79,5 +81,7 @@ const theme: Theme = {
   shadows,
   space,
 };
+
+export const transition = 'all .2s cubic-bezier(.215,.61,.355,1)';
 
 export { theme };

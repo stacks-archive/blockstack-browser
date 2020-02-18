@@ -11,6 +11,8 @@ export interface ModalProps extends BoxProps {
   footerComponent?: React.ReactNode;
   headerComponent?: React.ReactNode;
   noAnimation?: boolean;
+  open?: () => void;
+  close?: () => void;
 }
 export interface WrapperComponentProps {
   component?: React.ReactNode;

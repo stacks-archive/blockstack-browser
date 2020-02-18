@@ -2,6 +2,8 @@ import React from 'react';
 import { Box } from '../box';
 import { Flex } from '../flex';
 import { ModalContextTypes, ModalProps, WrapperComponentProps } from './types';
+import useOnClickOutside from 'use-onclickoutside';
+import { transition } from '../theme/theme';
 
 const ModalContext = React.createContext<ModalContextTypes>({
   isOpen: false,
@@ -35,8 +37,12 @@ const Modal: React.FC<ModalProps> = ({
   isOpen = false,
   children,
   noAnimation = false,
+  close,
   ...rest
 }) => {
+  const { doCloseModal } = useModalState();
+  const ref = React.useRef(null);
+  useOnClickOutside(ref, close || doCloseModal);
   return (
     <Flex
       position="fixed"
@@ -65,7 +71,8 @@ const Modal: React.FC<ModalProps> = ({
         borderRadius={['unset', '6px']}
         boxShadow="high"
         transform={isOpen ? 'none' : noAnimation ? 'none' : 'translateY(10px)'}
-        transition={noAnimation ? 'unset' : 'all 0.2s'}
+        transition={noAnimation ? 'unset' : transition}
+        ref={ref}
       >
         <Header component={HeaderComponent} />
         <Flex width="100%" overflowY="auto" flexGrow={1} position="relative">

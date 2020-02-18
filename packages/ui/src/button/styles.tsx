@@ -77,7 +77,7 @@ const solidVariantProps = ({ mode, customStyles }: { mode: ButtonModes; customSt
       },
       _focus: {
         borderColor: 'blue.300',
-        boxShadow: '0 0 0 3px rgba(170, 179, 255, 0.75)',
+        boxShadow: 'focus',
       },
       _disabled: {
         bg: 'blue.200',
@@ -87,15 +87,15 @@ const solidVariantProps = ({ mode, customStyles }: { mode: ButtonModes; customSt
     secondary: {
       bg: 'white',
       color: 'blue',
-      boxShadow: 'mid',
+      boxShadow: 'button.secondary',
       _hover: {
         cursor: 'pointer',
         bg: 'white',
-        boxShadow: 'high',
+        boxShadow: 'button.secondary',
       },
       _focus: {
         borderColor: 'blue.300',
-        boxShadow: '0 0 0 3px rgba(170, 179, 255, 0.75)',
+        boxShadow: 'focus',
       },
       _disabled: {
         bg: 'white',
