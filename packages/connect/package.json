@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/connect",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "bundlesize": [
     {
       "path": "./dist/**/*.js",
@@ -8,7 +8,7 @@
     }
   ],
   "dependencies": {
-    "@blockstack/ui": "^1.0.0-alpha.33",
+    "@blockstack/ui": "^1.0.0-alpha.34",
     "styled-components": "^5.0.0",
     "use-events": "^1.4.1",
     "use-onclickoutside": "^0.3.1"
