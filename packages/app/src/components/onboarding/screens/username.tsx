@@ -133,7 +133,6 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
                 autoCapitalize="false"
                 paddingRight="100px"
                 autoFocus
-                placeholder="username"
                 fontSize="16px"
                 spellCheck={false}
                 value={username}
