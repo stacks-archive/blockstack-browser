@@ -1,7 +1,6 @@
 import { ThunkAction } from 'redux-thunk';
 import { Wallet } from '@blockstack/keychain';
 import { WalletActions, RESTORE_WALLET, IS_RESTORING_WALLET, GENERATE_WALLET, SIGN_OUT } from './types';
-import { gaiaUrl } from '@common/constants';
 
 export function didRestoreWallet(wallet: Wallet): WalletActions {
   return {

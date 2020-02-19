@@ -71,7 +71,7 @@ const RenderScreen = ({ ...rest }) => {
     case ScreenName.SIGN_IN:
       return (
         <SignIn
-          next={() => doChangeScreen(ScreenName.CHOOSE_ACCOUNT)}
+          next={() => dispatch(doChangeScreen(ScreenName.CHOOSE_ACCOUNT))}
           back={() => {
             dispatch(doChangeScreen(ScreenName.SECRET_KEY));
           }}

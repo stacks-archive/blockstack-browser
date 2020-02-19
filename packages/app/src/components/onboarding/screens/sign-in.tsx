@@ -92,7 +92,7 @@ export const SignIn: React.FC<SignInProps> = props => {
             color="blue"
             onClick={() => {
               doTrack(SIGN_IN_CREATE);
-              dispatch(doChangeScreen(ScreenName.USERNAME));
+              dispatch(doChangeScreen(ScreenName.GENERATION));
             }}
           >
             Create a Secret Key
