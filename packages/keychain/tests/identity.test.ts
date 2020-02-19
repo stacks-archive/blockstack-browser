@@ -38,6 +38,8 @@ test('adds to apps in profile if publish_data scope', async () => {
     .once(JSON.stringify({}), { status: 404 }) // profile lookup
     .once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/' }))
     .once(JSON.stringify({}), { status: 404 })
+    .once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/' }))
+    .once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/' }))
     .once(JSON.stringify({}))
   const identity = await getIdentity()
   const appDomain = 'https://banter.pub'
@@ -54,7 +56,7 @@ test('adds to apps in profile if publish_data scope', async () => {
   const decoded = decodeToken(authResponse)
   const { payload } = decoded as Decoded
   expect(payload.profile.apps['https://banter.pub']).not.toBeFalsy()
-  const profile = JSON.parse(fetchMock.mock.calls[5][1].body)
+  const profile = JSON.parse(fetchMock.mock.calls[7][1].body)
   const { apps } = profile[0].decodedToken.payload.claim
   expect(apps[appDomain]).not.toBeFalsy()
   const appPrivateKey = await decryptPrivateKey(transitPrivateKey, payload.private_key)

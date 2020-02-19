@@ -1,3 +1,4 @@
+import './setup'
 import Wallet, { WalletConfig, ConfigApp } from '../src/wallet'
 import { decrypt } from '../src/encryption/decrypt'
 import { ECPair, bip32 } from 'bitcoinjs-lib'
