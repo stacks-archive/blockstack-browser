@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.34
+
+- Fixes ChevronIcon
+
 ## 1.0.0-alpha.32
 
 - Fixes modal width.
