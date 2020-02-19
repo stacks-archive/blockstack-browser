@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-alpha.35
+
+- Fix modal
+
 ## 1.0.0-alpha.34
 
 - Fixes ChevronIcon

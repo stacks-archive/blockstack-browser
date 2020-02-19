@@ -9,13 +9,7 @@ const ModalContext = React.createContext<ModalContextTypes>({
   isOpen: false,
 });
 
-const useModalState = () => React.useContext(ModalContext);
-
-const ModalContent: React.FC = ({ children, ...rest }) => (
-  <Flex width="100%" height="100%" {...rest}>
-    {children}
-  </Flex>
-);
+export const useModalState = () => React.useContext(ModalContext);
 
 const Header = ({ component }: WrapperComponentProps) =>
   component ? (
@@ -31,60 +25,81 @@ const Footer = ({ component }: WrapperComponentProps) =>
     </Box>
   ) : null;
 
-const Modal: React.FC<ModalProps> = ({
+interface ModalUnderlayProps {
+  isOpen?: boolean;
+  noAnimation?: boolean;
+}
+
+const ModalUnderlay = ({ isOpen, noAnimation }: ModalUnderlayProps) => (
+  <Box
+    position="fixed"
+    size="100%"
+    left={0}
+    right={0}
+    top={0}
+    bottom={0}
+    bg={`rgba(0,0,0,${isOpen ? '0.48' : '0'})`}
+    transition={noAnimation ? 'unset' : 'all 0.2s'}
+    zIndex={99999}
+    style={{
+      userSelect: isOpen ? 'unset' : 'none',
+      pointerEvents: isOpen ? 'unset' : 'none',
+    }}
+  />
+);
+
+export const Modal: React.FC<ModalProps> = ({
   footerComponent: FooterComponent = null,
   headerComponent: HeaderComponent = null,
   isOpen = false,
   children,
   noAnimation = false,
   close,
-  ...rest
 }) => {
   const { doCloseModal } = useModalState();
   const ref = React.useRef(null);
   useOnClickOutside(ref, close || doCloseModal);
+
   return (
-    <Flex
-      position="fixed"
-      size="100%"
-      left={0}
-      top={0}
-      align={['flex-end', 'center']}
-      justify="center"
-      bg={`rgba(0,0,0,${isOpen ? '0.48' : '0'})`}
-      opacity={isOpen ? 1 : 0}
-      zIndex={9999999}
-      transition={noAnimation ? 'unset' : 'all 0.2s'}
-      style={{
-        userSelect: isOpen ? 'unset' : 'none',
-        pointerEvents: isOpen ? 'unset' : 'none',
-      }}
-      {...rest}
-    >
-      <Flex
-        bg="white"
-        direction="column"
-        minWidth={['100%', '396px']}
+    <>
+      <ModalUnderlay isOpen={isOpen} noAnimation={noAnimation} />
+      <Box
+        zIndex={999999}
+        position="fixed"
+        bottom={[0, 'unset']}
         width="100%"
-        maxWidth={['100%', '396px']}
-        maxHeight={['100vh', 'calc(100vh - 48px)']}
-        borderRadius={['unset', '6px']}
-        boxShadow="high"
-        transform={isOpen ? 'none' : noAnimation ? 'none' : 'translateY(10px)'}
-        transition={noAnimation ? 'unset' : transition}
-        ref={ref}
+        height={[null, '100%']}
+        maxHeight={['80vh', 'unset']}
+        opacity={isOpen ? 1 : 0}
+        style={{
+          userSelect: isOpen ? 'unset' : 'none',
+          pointerEvents: isOpen ? 'unset' : 'none',
+        }}
       >
-        <Header component={HeaderComponent} />
-        <Flex width="100%" overflowY="auto" flexGrow={1} position="relative">
-          <ModalContent>{children}</ModalContent>
+        <Flex
+          flexDirection="column"
+          position="relative"
+          top={[null, '50%']}
+          transform={[null, 'translateY(-50%)']}
+          bg="white"
+          mx="auto"
+          minWidth={['100%', '396px']}
+          maxWidth={['100%', '396px']}
+          maxHeight="80vh"
+          borderRadius={['unset', '6px']}
+          boxShadow="high"
+          transition={noAnimation ? 'unset' : transition}
+        >
+          <Header component={HeaderComponent} />
+          <Box overflowY="auto">{children}</Box>
+          <Footer component={FooterComponent} />
         </Flex>
-        <Footer component={FooterComponent} />
-      </Flex>
-    </Flex>
+      </Box>
+    </>
   );
 };
 
-const ModalProvider: React.FC = props => {
+export const ModalProvider: React.FC = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const doOpenModal = () => (!isOpen ? setIsOpen(true) : null);
   const doCloseModal = () => (isOpen ? setIsOpen(true) : null);
@@ -101,4 +116,3 @@ const ModalProvider: React.FC = props => {
   );
 };
 
-export { ModalProvider, Modal, useModalState };
