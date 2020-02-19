@@ -221,7 +221,6 @@ export class Wallet {
     const identity = this.walletConfig.identities[identityIndex]
     identity.apps[app.origin] = app
     this.walletConfig.identities[identityIndex] = identity
-    console.log('updating config')
     await this.updateConfig(gaiaConfig)
   }
 
