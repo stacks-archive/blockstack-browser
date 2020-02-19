@@ -9,6 +9,8 @@ const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const TerserPlugin = require('terser-webpack-plugin');
+const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 
 /* eslint-enable @typescript-eslint/no-var-requires */
 
@@ -20,6 +22,23 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const analyzeBundle = process.env.ANALYZE === 'true';
 const segmentKey = process.env.SEGMENT_KEY || 'KZVI260WNyXRxGvDvsX4Zz0vhshQlgvE';
 const extEnv = process.env.EXT_ENV || 'web';
+
+const hmtlProdOpts = !isDevelopment
+  ? {
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+    }
+  : {};
 
 const getSourceMap = () => {
   if (extEnv === 'web') {
@@ -39,14 +58,76 @@ module.exports = {
   },
   output: {
     path: distRootPath,
-    filename: '[name].js',
+    chunkFilename: !isDevelopment ? '[name].[contenthash:8].chunk.js' : isDevelopment && '[name].chunk.js',
+    filename: !isDevelopment ? '[name].[contenthash:8].js' : isDevelopment && '[name].js',
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
     plugins: [new TsconfigPathsPlugin()],
     alias: {
-      react: path.resolve('./node_modules/react'),
+      react: 'preact/compat',
+      'react-dom/test-utils': 'preact/test-utils',
+      'react-dom': 'preact/compat',
       '@blockstack/ui': path.resolve('./node_modules/@blockstack/ui'),
+    },
+  },
+  optimization: {
+    minimize: !isDevelopment,
+    minimizer: [
+      // This is only used in production mode
+      new TerserPlugin({
+        terserOptions: {
+          parse: {
+            // We want terser to parse ecma 8 code. However, we don't want it
+            // to apply any minification steps that turns valid ecma 5 code
+            // into invalid ecma 5 code. This is why the 'compress' and 'output'
+            // sections only apply transformations that are ecma 5 safe
+            // https://github.com/facebook/create-react-app/pull/4234
+            ecma: 8,
+          },
+          compress: {
+            ecma: 5,
+            warnings: false,
+            // Disabled because of an issue with Uglify breaking seemingly valid code:
+            // https://github.com/facebook/create-react-app/issues/2376
+            // Pending further investigation:
+            // https://github.com/mishoo/UglifyJS2/issues/2011
+            comparisons: false,
+            // Disabled because of an issue with Terser breaking valid code:
+            // https://github.com/facebook/create-react-app/issues/5250
+            // Pending further investigation:
+            // https://github.com/terser-js/terser/issues/120
+            inline: 2,
+          },
+          mangle: {
+            safari10: true,
+          },
+          // Added for profiling in devtools
+          keep_classnames: !isDevelopment,
+          keep_fnames: !isDevelopment,
+          output: {
+            ecma: 5,
+            comments: false,
+            // Turned on because emoji and regex is not minified properly using default
+            // https://github.com/facebook/create-react-app/issues/2488
+            ascii_only: true,
+          },
+        },
+        sourceMap: false,
+      }),
+    ],
+    // Automatically split vendor and commons
+    // https://twitter.com/wSokra/status/969633336732905474
+    // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
+    splitChunks: {
+      chunks: 'all',
+      name: 'common',
+    },
+    // Keep the runtime chunk separated to enable long term caching
+    // https://twitter.com/wSokra/status/969679223278505985
+    // https://github.com/facebook/create-react-app/issues/5358
+    runtimeChunk: {
+      name: entrypoint => `runtime-${entrypoint.name}`,
     },
   },
   module: {
@@ -88,27 +169,31 @@ module.exports = {
   watch: false,
   plugins: [
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
+    new webpack.HashedModuleIdsPlugin(),
     new CheckerPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(sourceRootPath, '../', 'public', 'html', 'options.html'),
       inject: 'body',
       filename: 'index.html',
       title: 'Blockstack',
-      chunks: ['options'],
+      chunks: ['options', 'common'],
+      ...hmtlProdOpts,
     }),
     new HtmlWebpackPlugin({
       template: path.join(sourceRootPath, '../', 'public', 'html', 'popup.html'),
       inject: 'body',
       filename: 'popup.html',
       title: 'Blockstack',
-      chunks: ['popup'],
+      chunks: ['popup', 'common'],
+      ...hmtlProdOpts,
     }),
     new HtmlWebpackPlugin({
       template: path.join(sourceRootPath, '../', 'public', 'html', 'actions.html'),
       inject: 'body',
       filename: 'actions.html',
       title: 'Blockstack',
-      chunks: ['actions'],
+      chunks: ['actions', 'common'],
+      ...hmtlProdOpts,
     }),
     new CopyWebpackPlugin([
       {
@@ -128,6 +213,7 @@ module.exports = {
       EXT_ENV: JSON.stringify(extEnv),
       SEGMENT_KEY: JSON.stringify(segmentKey),
     }),
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
     isDevelopment && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
   ].filter(Boolean),
 };
