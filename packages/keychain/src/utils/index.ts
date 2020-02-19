@@ -199,6 +199,27 @@ export const validateSubdomainAvailability = async (name: string, subdomain: Sub
   return data
 }
 
+interface RecursiveMakeIdentitiesOptions {
+  rootNode: BIP32Interface
+  index?: number
+  identities?: Identity[]
+}
+
+/**
+ * Restore identities by recursively making a new identity, and checking if it has a username.
+ * 
+ * As soon as a username is not found for an identity, the recursion stops.
+ */
+export const recursiveRestoreIdentities = async ({ rootNode, index = 1, identities = [] }: RecursiveMakeIdentitiesOptions): Promise<Identity[]> => {
+  const identity = await makeIdentity(rootNode, index)
+  await identity.refresh()
+  if (identity.defaultUsername) {
+    identities.push(identity)
+    return recursiveRestoreIdentities({ rootNode, index: index + 1, identities })
+  }
+  return identities
+}
+
 /**
  * Validate the format and availability of a subdomain. Will return an error of enum
  * IdentityNameValidityError if an error is present. If no errors are found, will return null.

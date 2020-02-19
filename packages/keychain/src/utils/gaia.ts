@@ -5,7 +5,6 @@ import { ecPairToAddress, hexStringToECPair } from 'blockstack'
 import { GaiaHubConfig } from 'blockstack/lib/storage/hub'
 
 export const DEFAULT_GAIA_HUB = 'https://gaia.blockstack.org/hub/'
-export const DEFAULT_GAIA_READ_URL = 'https://hub.blockstack.org'
 
 interface HubInfo {
   challenge_text?: string

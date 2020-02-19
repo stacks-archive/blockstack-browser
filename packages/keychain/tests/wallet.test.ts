@@ -2,7 +2,7 @@ import Wallet, { WalletConfig, ConfigApp } from '../src/wallet'
 import { decrypt } from '../src/encryption/decrypt'
 import { ECPair, bip32 } from 'bitcoinjs-lib'
 import { decryptContent, encryptContent, getPublicKeyFromPrivate } from 'blockstack'
-import { DEFAULT_GAIA_READ_URL } from '../src/utils/gaia'
+import { DEFAULT_GAIA_HUB } from '../src/utils/gaia'
 import { mnemonicToSeed } from 'bip39'
 
 describe('Restoring a wallet', () => {
@@ -203,7 +203,7 @@ test('restoreIdentities', async () => {
   const plainTextBuffer = await decrypt(Buffer.from(wallet.encryptedBackupPhrase, 'hex'), 'password')
   const seed = await mnemonicToSeed(plainTextBuffer)
   const rootNode = bip32.fromSeed(seed)
-  await wallet.restoreIdentities({ gaiaReadURL: DEFAULT_GAIA_READ_URL, rootNode })
+  await wallet.restoreIdentities({ gaiaReadURL: DEFAULT_GAIA_HUB, rootNode })
   expect(wallet.identities.length).toEqual(3)
   expect(wallet.identities[0].defaultUsername).toEqual('hankstoever.id')
   expect(wallet.identities[1].defaultUsername).toEqual('hankstoever2.id')

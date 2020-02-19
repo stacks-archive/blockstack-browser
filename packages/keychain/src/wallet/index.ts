@@ -2,13 +2,13 @@ import { generateMnemonic, mnemonicToSeed } from 'bip39'
 import { bip32, BIP32Interface } from 'bitcoinjs-lib'
 import { randomBytes } from 'blockstack/lib/encryption/cryptoRandom'
 
-import { getBlockchainIdentities, IdentityKeyPair, makeIdentity, assertIsTruthy } from '../utils'
+import { getBlockchainIdentities, IdentityKeyPair, makeIdentity, assertIsTruthy, recursiveRestoreIdentities } from '../utils'
 import { encrypt} from '../encryption/encrypt'
 import Identity from '../identity'
 import { decrypt } from '../encryption/decrypt'
 import { connectToGaiaHub, encryptContent, getPublicKeyFromPrivate, decryptContent } from 'blockstack'
 import { GaiaHubConfig, uploadToGaiaHub } from 'blockstack/lib/storage/hub'
-import { makeReadOnlyGaiaConfig, DEFAULT_GAIA_READ_URL } from '../utils/gaia'
+import { makeReadOnlyGaiaConfig, DEFAULT_GAIA_HUB } from '../utils/gaia'
 
 const CONFIG_INDEX = 45
 
@@ -94,7 +94,7 @@ export class Wallet {
     const seedBuffer = await mnemonicToSeed(backupPhrase)
     const rootNode = bip32.fromSeed(seedBuffer)
     const wallet = await this.createAccount(encryptedMnemonicHex, rootNode)
-    await wallet.restoreIdentities({ rootNode, gaiaReadURL: DEFAULT_GAIA_READ_URL })
+    await wallet.restoreIdentities({ rootNode, gaiaReadURL: DEFAULT_GAIA_HUB })
     return wallet
   }
 
@@ -114,7 +114,7 @@ export class Wallet {
    * First, it will check for a `walletConfig`. If present, then we use that to determine how
    * many identities to generate, and auto-populate their username.
    * 
-   * TODO: If `walletConfig` is empty, then this is being restored from an authenticator that doesn't
+   * If `walletConfig` is empty, then this is being restored from an authenticator that doesn't
    * support `walletConfig`. In that case, we will recursively generate identities, and check for
    * on-chain names.
    * 
@@ -138,6 +138,10 @@ export class Wallet {
       this.identities = identities
       return this
     }
+    await this.identities[0].refresh()
+    const newIdentities = await recursiveRestoreIdentities({ rootNode })
+    this.identities = this.identities.concat(newIdentities)
+    return this
   }
 
   async createNewIdentity(password: string) {

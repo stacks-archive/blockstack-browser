@@ -1,5 +1,8 @@
-import { IdentityNameValidityError, validateSubdomainFormat, validateSubdomainAvailability, validateSubdomain } from '../src/utils'
-import { Subdomains, registrars } from '../src'
+import { IdentityNameValidityError, validateSubdomainFormat, validateSubdomainAvailability, validateSubdomain, recursiveRestoreIdentities } from '../src/utils'
+import { Subdomains, registrars, Wallet, decrypt } from '../src'
+import { mnemonicToSeed } from 'bip39'
+import { bip32 } from 'bitcoinjs-lib'
+import { profileResponse } from './helpers'
 
 describe(validateSubdomainFormat.name, () => {
   it('returns error state when string less than 8 characters', () => {
@@ -77,4 +80,26 @@ describe(validateSubdomain.name, () => {
     const error = await validateSubdomain('asdfasdf')
     expect(error).toEqual(IdentityNameValidityError.UNAVAILABLE)
   })
+})
+
+test('recursively makes identities', async () => {
+  const wallet = await Wallet.generate('password')
+  const plainTextBuffer = await decrypt(Buffer.from(wallet.encryptedBackupPhrase, 'hex'), 'password')
+  const seed = await mnemonicToSeed(plainTextBuffer)
+  const rootNode = bip32.fromSeed(seed)
+
+  fetchMock
+    .once(JSON.stringify({ names: ['myname.id'] }))
+    .once(JSON.stringify(profileResponse))
+    .once(JSON.stringify({ names: ['myname2.id'] }))
+    .once(JSON.stringify(profileResponse))
+    .once(JSON.stringify({ names: ['myname3.id'] }))
+    .once(JSON.stringify(profileResponse))
+    .once(JSON.stringify({ names: [] }))
+    .once(JSON.stringify(profileResponse))
+  const identities = await recursiveRestoreIdentities({ rootNode })
+  expect(identities[0].defaultUsername).toEqual('myname.id')
+  expect(identities[1].defaultUsername).toEqual('myname2.id')
+  expect(identities[2].defaultUsername).toEqual('myname3.id')
+  expect(identities.length).toEqual(3)
 })

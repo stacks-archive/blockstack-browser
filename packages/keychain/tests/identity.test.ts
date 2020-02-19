@@ -1,3 +1,4 @@
+import './setup'
 import { makeECPrivateKey, getPublicKeyFromPrivate } from 'blockstack/lib/keys'
 import { decryptPrivateKey } from 'blockstack/lib/auth/authMessages'
 import { decodeToken } from 'jsontokens'
@@ -32,7 +33,9 @@ test('generates an auth response', async () => {
 
 test('adds to apps in profile if publish_data scope', async () => {
   fetchMock
-    .once(JSON.stringify({}), { status: 404 })
+    .once(JSON.stringify({}), { status: 404 }) // wallet config
+    .once(JSON.stringify({}), { status: 404 }) // username lookup
+    .once(JSON.stringify({}), { status: 404 }) // profile lookup
     .once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/' }))
     .once(JSON.stringify({}), { status: 404 })
     .once(JSON.stringify({}))
@@ -51,7 +54,7 @@ test('adds to apps in profile if publish_data scope', async () => {
   const decoded = decodeToken(authResponse)
   const { payload } = decoded as Decoded
   expect(payload.profile.apps['https://banter.pub']).not.toBeFalsy()
-  const profile = JSON.parse(fetchMock.mock.calls[3][1].body)
+  const profile = JSON.parse(fetchMock.mock.calls[5][1].body)
   const { apps } = profile[0].decodedToken.payload.claim
   expect(apps[appDomain]).not.toBeFalsy()
   const appPrivateKey = await decryptPrivateKey(transitPrivateKey, payload.private_key)
