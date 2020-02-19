@@ -1,4 +1,5 @@
 import { ButtonModes, ButtonSizes, CustomStyles, IButtonStyles } from '../button';
+import { shadows } from '../theme/theme';
 
 const baseProps = {
   display: 'inline-flex',
@@ -77,7 +78,7 @@ const solidVariantProps = ({ mode, customStyles }: { mode: ButtonModes; customSt
       },
       _focus: {
         borderColor: 'blue.300',
-        boxShadow: 'focus',
+        boxShadow: shadows.focus,
       },
       _disabled: {
         bg: 'blue.200',
@@ -87,15 +88,15 @@ const solidVariantProps = ({ mode, customStyles }: { mode: ButtonModes; customSt
     secondary: {
       bg: 'white',
       color: 'blue',
-      boxShadow: 'button.secondary',
+      boxShadow: shadows['button.secondary'],
       _hover: {
         cursor: 'pointer',
         bg: 'white',
-        boxShadow: 'button.secondary',
+        boxShadow: shadows['button.secondary'],
       },
       _focus: {
         borderColor: 'blue.300',
-        boxShadow: 'focus',
+        boxShadow: shadows.focus,
       },
       _disabled: {
         bg: 'white',

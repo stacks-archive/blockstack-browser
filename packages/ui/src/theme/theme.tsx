@@ -5,7 +5,7 @@ import { Theme } from './types';
 
 const space = baseSizes;
 
-const shadows = {
+export const shadows = {
   low: '0px 1px 2px rgba(0, 0, 0, 0.04)',
   mid: '0px 1px 2px rgba(27, 39, 51, 0.04), 0px 4px 8px rgba(27, 39, 51, 0.04)',
   high: '0px 8px 16px rgba(27, 39, 51, 0.08)',
