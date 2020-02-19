@@ -5,6 +5,7 @@ import { ecPairToAddress, hexStringToECPair } from 'blockstack'
 import { GaiaHubConfig } from 'blockstack/lib/storage/hub'
 
 export const DEFAULT_GAIA_HUB = 'https://gaia.blockstack.org/hub/'
+export const DEFAULT_GAIA_READ_URL = 'https://hub.blockstack.org'
 
 interface HubInfo {
   challenge_text?: string
@@ -56,6 +57,25 @@ export const connectToGaiaHubWithConfig = async ({ hubInfo, privateKey, gaiaHubU
     address,
     token,
     server: gaiaHubUrl
+  }
+}
+
+interface ReadOnlyGaiaConfigOptions {
+  readURL: string
+  privateKey: string
+}
+
+/**
+ * When you already know the Gaia read URL, make a Gaia config that doesn't have to fetch `/hub_info`
+ */
+export const makeReadOnlyGaiaConfig = async ({ readURL, privateKey }: ReadOnlyGaiaConfigOptions): Promise<GaiaHubConfig> => {
+  const address = await ecPairToAddress(hexStringToECPair(privateKey
+    + (privateKey.length === 64 ? '01' : '')))
+  return {
+    url_prefix: readURL,
+    address,
+    token: 'not_used',
+    server: 'not_used'
   }
 }
 

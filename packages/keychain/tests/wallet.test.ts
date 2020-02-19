@@ -1,8 +1,9 @@
-import './setup'
 import Wallet, { WalletConfig, ConfigApp } from '../src/wallet'
 import { decrypt } from '../src/encryption/decrypt'
-import { ECPair } from 'bitcoinjs-lib'
+import { ECPair, bip32 } from 'bitcoinjs-lib'
 import { decryptContent, encryptContent, getPublicKeyFromPrivate } from 'blockstack'
+import { DEFAULT_GAIA_READ_URL } from '../src/utils/gaia'
+import { mnemonicToSeed } from 'bip39'
 
 describe('Restoring a wallet', () => {
   test('restores an existing wallet and keychain', async () => {
@@ -113,7 +114,6 @@ test('returns config if present', async () => {
 })
 
 test('creates a config', async () => {
-  fetchMock.mockClear()
   fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]', latest_auth_version: 'v1' }))
     .once('', { status: 404 })
     .once(JSON.stringify({ publicUrl: 'asdf' }))
@@ -122,13 +122,11 @@ test('creates a config', async () => {
   const config = await wallet.getOrCreateConfig(hubConfig)
   expect(Object.keys(config.identities[0].apps).length).toEqual(0)
   const { body } = fetchMock.mock.calls[2][1]
-  console.log(body)
   const decrypted = await decryptContent(body, { privateKey: wallet.configPrivateKey }) as string
   expect(JSON.parse(decrypted)).toEqual(config)
 })
 
 test('updates wallet config', async () => {
-  fetchMock.mockClear()
   fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]', latest_auth_version: 'v1' }))
     .once('', { status: 404 })
     .once(JSON.stringify({ publicUrl: 'asdf' }))
@@ -157,7 +155,6 @@ test('updates wallet config', async () => {
 })
 
 test('updates config for reusing id warning', async () => {
-  fetchMock.mockClear()
   fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]', latest_auth_version: 'v1' }))
     .once('', { status: 404 })
     .once(JSON.stringify({ publicUrl: 'asdf' }))
@@ -174,4 +171,41 @@ test('updates config for reusing id warning', async () => {
   const decrypted = await decryptContent(JSON.stringify(body), { privateKey: wallet.configPrivateKey }) as string
   const config = JSON.parse(decrypted)
   expect(config.hideWarningForReusingIdentity).toBeTruthy()
+})
+
+test('restoreIdentities', async () => {
+  const wallet = await Wallet.generate('password')
+
+  const stubConfig: WalletConfig = {
+    identities: [
+      {
+        username: 'hankstoever.id',
+        address: '',
+        apps: {},
+      },
+      {
+        username: 'hankstoever2.id',
+        address: '',
+        apps: {},
+      },
+      {
+        username: 'hankstoever3.id',
+        address: '',
+        apps: {},
+      }
+    ]
+  }
+
+  const publicKey = getPublicKeyFromPrivate(wallet.configPrivateKey)
+  const encrypted = await encryptContent(JSON.stringify(stubConfig), { publicKey })
+  fetchMock.once(encrypted)
+
+  const plainTextBuffer = await decrypt(Buffer.from(wallet.encryptedBackupPhrase, 'hex'), 'password')
+  const seed = await mnemonicToSeed(plainTextBuffer)
+  const rootNode = bip32.fromSeed(seed)
+  await wallet.restoreIdentities({ gaiaReadURL: DEFAULT_GAIA_READ_URL, rootNode })
+  expect(wallet.identities.length).toEqual(3)
+  expect(wallet.identities[0].defaultUsername).toEqual('hankstoever.id')
+  expect(wallet.identities[1].defaultUsername).toEqual('hankstoever2.id')
+  expect(wallet.identities[2].defaultUsername).toEqual('hankstoever3.id')
 })

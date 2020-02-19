@@ -1,4 +1,3 @@
-import './setup'
 import { makeECPrivateKey, getPublicKeyFromPrivate } from 'blockstack/lib/keys'
 import { decryptPrivateKey } from 'blockstack/lib/auth/authMessages'
 import { decodeToken } from 'jsontokens'
@@ -32,16 +31,16 @@ test('generates an auth response', async () => {
 })
 
 test('adds to apps in profile if publish_data scope', async () => {
-  fetchMock.mock.calls = []
+  fetchMock
+    .once(JSON.stringify({}), { status: 404 })
+    .once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/' }))
+    .once(JSON.stringify({}), { status: 404 })
+    .once(JSON.stringify({}))
   const identity = await getIdentity()
   const appDomain = 'https://banter.pub'
   const gaiaUrl = 'https://hub.blockstack.org'
   const transitPrivateKey = makeECPrivateKey()
   const transitPublicKey = getPublicKeyFromPrivate(transitPrivateKey)
-
-  fetchMock.once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/' }))
-    .once(JSON.stringify({}), { status: 404 })
-    .once(JSON.stringify({}))
 
   const authResponse = await identity.makeAuthResponse({
     appDomain,
@@ -52,7 +51,7 @@ test('adds to apps in profile if publish_data scope', async () => {
   const decoded = decodeToken(authResponse)
   const { payload } = decoded as Decoded
   expect(payload.profile.apps['https://banter.pub']).not.toBeFalsy()
-  const profile = JSON.parse(fetchMock.mock.calls[2][1].body)
+  const profile = JSON.parse(fetchMock.mock.calls[3][1].body)
   const { apps } = profile[0].decodedToken.payload.claim
   expect(apps[appDomain]).not.toBeFalsy()
   const appPrivateKey = await decryptPrivateKey(transitPrivateKey, payload.private_key)

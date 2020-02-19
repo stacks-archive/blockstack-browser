@@ -8,6 +8,7 @@ import Identity from '../identity'
 import { decrypt } from '../encryption/decrypt'
 import { connectToGaiaHub, encryptContent, getPublicKeyFromPrivate, decryptContent } from 'blockstack'
 import { GaiaHubConfig, uploadToGaiaHub } from 'blockstack/lib/storage/hub'
+import { makeReadOnlyGaiaConfig, DEFAULT_GAIA_READ_URL } from '../utils/gaia'
 
 const CONFIG_INDEX = 45
 
@@ -92,17 +93,51 @@ export class Wallet {
     const encryptedMnemonicHex = encryptedMnemonic.toString('hex')
     const seedBuffer = await mnemonicToSeed(backupPhrase)
     const rootNode = bip32.fromSeed(seedBuffer)
-    return this.createAccount(encryptedMnemonicHex, rootNode)
+    const wallet = await this.createAccount(encryptedMnemonicHex, rootNode)
+    await wallet.restoreIdentities({ rootNode, gaiaReadURL: DEFAULT_GAIA_READ_URL })
+    return wallet
   }
 
   static async createAccount(encryptedBackupPhrase: string, masterKeychain: BIP32Interface, identitiesToGenerate = 1) {
     const configPrivateKey = masterKeychain.deriveHardened(CONFIG_INDEX).privateKey?.toString('hex') as string
     const walletAttrs = await getBlockchainIdentities(masterKeychain, identitiesToGenerate)
-    return new this({
+    const wallet = new this({
       ...walletAttrs,
       configPrivateKey,
       encryptedBackupPhrase
     })
+    return wallet
+  }
+
+  /**
+   * Restore all previously used identities. This is meant to be used when 'restoring' a wallet.
+   * First, it will check for a `walletConfig`. If present, then we use that to determine how
+   * many identities to generate, and auto-populate their username.
+   * 
+   * TODO: If `walletConfig` is empty, then this is being restored from an authenticator that doesn't
+   * support `walletConfig`. In that case, we will recursively generate identities, and check for
+   * on-chain names.
+   * 
+   */
+  async restoreIdentities({ rootNode, gaiaReadURL }: { rootNode: bip32.BIP32Interface; gaiaReadURL: string; }) {
+    const gaiaConfig = await makeReadOnlyGaiaConfig({ readURL: gaiaReadURL, privateKey: this.configPrivateKey })
+    await this.fetchConfig(gaiaConfig)
+    if (this.walletConfig) {
+      const getIdentities = this.walletConfig.identities.map(async (identityConfig, index) => {
+        let identity: Identity | null = this.identities[index]
+        if (!identity) {
+          identity = await makeIdentity(rootNode, index)
+        }
+        if (identityConfig.username) {
+          identity.usernames = [identityConfig.username]
+          identity.defaultUsername = identityConfig.username
+        }
+        return identity
+      })
+      const identities = await Promise.all(getIdentities)
+      this.identities = identities
+      return this
+    }
   }
 
   async createNewIdentity(password: string) {

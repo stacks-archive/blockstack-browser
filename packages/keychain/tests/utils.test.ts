@@ -1,4 +1,3 @@
-import './setup'
 import { IdentityNameValidityError, validateSubdomainFormat, validateSubdomainAvailability, validateSubdomain } from '../src/utils'
 import { Subdomains, registrars } from '../src'
 
@@ -64,7 +63,6 @@ describe(validateSubdomainAvailability.name, () => {
   })
 
   test('uses the correct registrar URL', async () => {
-    fetchMock.mockClear()
     fetchMock.once(JSON.stringify({ success: true }))
     const response = await validateSubdomainAvailability('slkdjfskldjf', Subdomains.TEST)
     expect(response).toEqual({ success: true })

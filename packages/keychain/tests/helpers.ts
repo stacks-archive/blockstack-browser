@@ -4,9 +4,13 @@ const defaultSeed = 'sound idle panel often situate develop unit text design ant
   + 'vendor screen opinion balcony share trigger accuse scatter visa uniform brass '
   + 'update opinion media'
 
+export const getWallet = async (seed: string = defaultSeed) => {
+  const wallet = await Wallet.restore('password', seed)
+  return wallet
+}
+
 export const getIdentity = async (seed: string = defaultSeed) => {
-  const password = 'password'
-  const wallet = await Wallet.restore(password, seed)
+  const wallet = await getWallet(seed)
   const [identity] = wallet.identities
   return identity
 }

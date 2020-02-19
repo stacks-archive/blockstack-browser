@@ -1,4 +1,3 @@
-import './setup'
 import { signProfileForUpload, DEFAULT_PROFILE, registerSubdomain, Subdomains, registrars } from '../src/profiles'
 import { getIdentity } from './helpers'
 import { decodeToken, TokenVerifier } from 'jsontokens'
@@ -24,6 +23,7 @@ describe('signProfileForUpload', () => {
 describe('registerSubdomain', () => {
   it('should register a test username', async () => {
     fetchMock
+      .once(JSON.stringify({}), { status: 404 })
       .once(JSON.stringify({ token: 'asdf', address: 'asdf', url_prefix: 'http://example.com', challenge_text: '["gaiahub","0","gaia-0","blockstack_storage_please_sign"]' }))
       .once(JSON.stringify({ publicURL: 'http://gaia.com/profile.json' }))
       .once(JSON.stringify({ success: true }))
@@ -37,8 +37,8 @@ describe('registerSubdomain', () => {
     })
     expect(identity.defaultUsername).toEqual('tester.test-personal.id')
     expect(identity.usernames).toEqual(['tester.test-personal.id'])
-    expect(fetchMock.mock.calls.length).toEqual(3)
-    const [registrarUrl, fetchOpts] = fetchMock.mock.calls[2]
+    expect(fetchMock.mock.calls.length).toEqual(4)
+    const [registrarUrl, fetchOpts] = fetchMock.mock.calls[3]
     expect(registrarUrl).toEqual(registrars[Subdomains.TEST].registerUrl)
     expect(fetchOpts.method).toEqual('POST')
     const zoneFile = makeProfileZoneFile('tester.test-personal.id', 'http://gaia.com/profile.json')
