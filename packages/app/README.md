@@ -4,7 +4,7 @@
 
 </div>
 
-The Blockstack App is an application for interacting and authenticating with [Blockstack](https://blockstack.org) apps. It can be used as a hosted web app (available at [auth.blockstack.org](https://auth.blockstack.org)) or as a browser extension.
+The Blockstack App is an application for interacting and authenticating with [Blockstack](https://blockstack.org) apps. It can be used as a hosted web app (available at [app.blockstack.org](https://app.blockstack.org)) or as a browser extension.
 
 To use this application with your own Blockstack App, we recommend using [Blockstack Connect](https://github.com/blockstack/connect).
 
