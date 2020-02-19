@@ -12,6 +12,11 @@ A library for building excellent user experiences with [Blockstack](https://bloc
   - [In React Apps](#in-react-apps)
   - [In ES6 apps](#in-es6-apps)
   - [Using a hosted version of `@blockstack/connect`](#using-a-hosted-version-of-blockstackconnect)
+  - [Sending users to sign in immediately](#sending-users-to-sign-in-immediately)
+- [Design Guidance](#design-guidance)
+  - [Delay Blockstack onboarding as long as possible](#delay-blockstack-onboarding-as-long-as-possible)
+  - [Provide an easy way in for new users](#provide-an-easy-way-in-for-new-users)
+  - [Provide a quick way for existing users to sign in](#provide-a-quick-way-for-existing-users-to-sign-in)
 - [Local Development](#local-development)
 
 <!-- /TOC -->
@@ -74,7 +79,7 @@ export interface AuthOptions {
 
 ### In React Apps
 
-If you're using `connect` in a React app, then the best option is to include `connect`'s React infrastructure in your React app.
+If you're using `connect` in a React app, then the best option is to include `connect`'s React infrastructure and hooks in your React app.
 
 First, setup the `Connect` provider at the "top-level" of your app - probably next to wherever you would put a Redux provider, for example.
 
@@ -144,6 +149,51 @@ Then, you can use API methods under the `blockstackConnect` global variable:
 const authOptions = { /** See docs above for options */ };
 blockstackConnect.showBlockstackConnect(authOptions);
 ```
+
+### Sending users to sign in immediately
+
+Our design guidance, explained below, encourages your app to have a dedicated "Sign In" call-to-action. This will send them immediately to authenticate, with a screen for entering their Secret Key, if they aren't logged in to the authenticator.
+
+To do so, use the `authenticate` method, and make sure to specify `sendToSignIn: true`.
+
+```javascript
+import { authenticate } from '@blockstack/connect';
+
+const authOptions = {
+  sendToSignIn: true,
+  // your other AuthOptions
+};
+authenticate(authOptions)
+```
+
+Or, if you're using our React hooks, pass `true` as the first argument in `doOpenAuth`.
+
+
+```javascript
+const { doOpenAuth } = useConnect();
+
+doOpenAuth(true);
+```
+
+## Design Guidance
+
+Blockstack is valuable to users, but it can also be a barrier to those unfamiliar with Blockstack. The following guidelines serve to remedy that and help you onboard as many new users as you can. 
+
+### Delay Blockstack onboarding as long as possible
+
+People will often leave apps when things are asked of them before they experience the app. Give them a chance to try your app before you ask them to sign up with Blockstack. For example, a note taking app could let a new user write a couple of notes before prompting them to save their progress.
+
+### Provide an easy way in for new users
+
+Many new users to your app will not be familiar with Blockstack yet and will be hesitant to click a Blockstack-branded button. Provide a generic button for users that are new to your app and Blockstack. Blockstack Connect will introduce new users to Blockstack and recognize existing users.
+
+![Design Guidance Example](./docs/call-to-action-branding.png)
+
+### Provide a quick way for existing users to sign in
+
+You can point users to a specific part of the Blockstack App. For instance, a “Sign in” button on your website can redirect users to the sign in flow of the Blockstack App. If you do this, make sure you also have an option that is explicitly for new users and that points to the sign up flow.
+
+To implement this functionality, check out our section on sending users to sign in immediately.
 
 ## Local Development
 
