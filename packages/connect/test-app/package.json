@@ -17,7 +17,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@blockstack/connect": "^1.0.4",
     "@blockstack/prettier-config": "^0.0.5",
-    "@blockstack/ui": "^1.0.0-alpha.33",
+    "@blockstack/ui": "^1.0.0-alpha.34",
     "@testing-library/jest-dom": "^5.0.2",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^8.0.4",
@@ -49,7 +49,8 @@
     "customize-cra": "^0.9.1",
     "customize-cra-react-refresh": "^1.0.1",
     "eslint-plugin-import": "^2.20.0",
-    "react-app-rewired": "^2.1.5"
+    "react-app-rewired": "^2.1.5",
+    "rollup-plugin-peer-deps-external": "^2.2.2"
   },
   "eslintConfig": {
     "extends": "react-app"

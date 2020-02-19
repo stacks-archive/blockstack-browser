@@ -1626,10 +1626,28 @@
   resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.5.tgz#871bd2a38b5bc9aabb1cefeeba6199cc64098957"
   integrity sha512-A+wfdVwD1Sxd/D3PPJI67Evo7q2fp15hCOFLB5jmzcS1MdN8BQdFm6j51Sti8xLN4qHmuYkicbFBUluGx2h63g==
 
-"@blockstack/ui@^1.0.0-alpha.32", "@blockstack/ui@^1.0.0-alpha.33":
+"@blockstack/ui@^1.0.0-alpha.32":
   version "1.0.0-alpha.33"
   resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.33.tgz#048cf78ee46867399164bca4a4ee8990ffbcb29c"
   integrity sha512-WLO0atOxhHtMjbAGZl9sN12MjevJd0i/ULhs/X0fYVhqF5ovz6ENtw0ec0TG8Lhpy8J7pWpX/xa5A+jkFNU3Wg==
+  dependencies:
+    "@styled-system/css" "5.1.5"
+    "@types/color" "^3.0.1"
+    "@types/styled-components" "^4.4.3"
+    "@types/styled-system" "^5.1.6"
+    "@types/styled-system__css" "^5.0.4"
+    color "3.1.2"
+    prop-types "^15.7.2"
+    react-spring "8.0.27"
+    styled-system "5.1.5"
+    use-dark-mode "2.3.1"
+    use-events "^1.4.1"
+    use-onclickoutside "^0.3.1"
+
+"@blockstack/ui@^1.0.0-alpha.34":
+  version "1.0.0-alpha.34"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.34.tgz#5febea576623ec4f4f0f85812e59f16309da96a0"
+  integrity sha512-cU5skSESyxUfAfd3AKQUihuFDSPfSPdF7mSWGl4941X+i5qnZAXKgUyefX0IXEYTqAlMkUrQ3DV1T6ijqQJYxg==
   dependencies:
     "@styled-system/css" "5.1.5"
     "@types/color" "^3.0.1"
@@ -11479,6 +11497,11 @@ rollup-plugin-babel@^4.3.2:
   dependencies:
     "@babel/helper-module-imports" "^7.0.0"
     rollup-pluginutils "^2.8.1"
+
+rollup-plugin-peer-deps-external@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-peer-deps-external/-/rollup-plugin-peer-deps-external-2.2.2.tgz#506cef67fb68f41cca3ec08ca6ff7936b190f568"
+  integrity sha512-XcHH4UW9exRTAf73d8rk2dw2UgF//cWbilhRI4Ni/n+t0zA1eBtohKyJROn0fxa4/+WZ5R3onAyIDiwRQL+59A==
 
 rollup-plugin-sourcemaps@^0.4.2:
   version "0.4.2"
