@@ -957,6 +957,24 @@
     use-events "^1.4.1"
     use-onclickoutside "^0.3.1"
 
+"@blockstack/ui@^1.0.0-alpha.35":
+  version "1.0.0-alpha.35"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.35.tgz#56920c6f28ffb8aefd1d7caf24bb898e6569703f"
+  integrity sha512-FjZz72652/eTe97wqQt7MpfZG7UknzJBnfeKeOpu1kZohyt14i/FOfBkk1fh0bS+GR/EAutFOzDMohT5GXY69w==
+  dependencies:
+    "@styled-system/css" "5.1.5"
+    "@types/color" "^3.0.1"
+    "@types/styled-components" "^4.4.3"
+    "@types/styled-system" "^5.1.6"
+    "@types/styled-system__css" "^5.0.4"
+    color "3.1.2"
+    prop-types "^15.7.2"
+    react-spring "8.0.27"
+    styled-system "5.1.5"
+    use-dark-mode "2.3.1"
+    use-events "^1.4.1"
+    use-onclickoutside "^0.3.1"
+
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.3.tgz#099139eaec7ebf07a27c1786a3ff64f39464d2ef"
