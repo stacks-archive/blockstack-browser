@@ -3,6 +3,9 @@ module.exports = {
   testEnvironment: 'node',
   coverageDirectory: './coverage/',
   collectCoverage: true,
+  setupFiles: [
+    './tests/global-setup.ts'
+  ],
   setupFilesAfterEnv: [
     './tests/setup.ts'
   ]
