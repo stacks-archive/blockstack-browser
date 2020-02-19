@@ -923,10 +923,10 @@
     use-events "^1.4.1"
     use-onclickoutside "^0.3.1"
 
-"@blockstack/keychain@^0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@blockstack/keychain/-/keychain-0.2.5.tgz#07b97603e4e620fb52686d03d79a9ef3c2c09fcd"
-  integrity sha512-Vh3DTGQhr7CrwTRA/M2VhdiHagQ5+kONnUcv+mCoQGu0UgpjechBHyiypMv2C5iwJj2uDTuo08w4+UQn5E2VGA==
+"@blockstack/keychain@^0.3.0-beta.2":
+  version "0.3.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@blockstack/keychain/-/keychain-0.3.0-beta.2.tgz#dfdc9fb3e46a2f755ab44bf4595959ea6b431c3d"
+  integrity sha512-hNJw9UMjXcX8cq1MY21NkrLOF6h60kY2XyGqpwzvDuroC+HVtG9dsu3KM5ydIEddZOCB8tVw9lMyDsSNkyNsFA==
   dependencies:
     bip39 "^3.0.2"
     bitcoinjs-lib "^5.1.6"

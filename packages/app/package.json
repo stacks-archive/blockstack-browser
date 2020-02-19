@@ -23,7 +23,7 @@
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/connect": "^1.0.6",
-    "@blockstack/keychain": "^0.2.5",
+    "@blockstack/keychain": "^0.3.0-beta.2",
     "@blockstack/prettier-config": "^0.0.5",
     "@blockstack/ui": "^1.0.0-alpha.34",
     "@rehooks/document-title": "^1.0.1",

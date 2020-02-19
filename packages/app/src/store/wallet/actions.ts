@@ -33,11 +33,6 @@ export function doStoreSeed(seed: string, password: string): ThunkAction<Promise
   return async dispatch => {
     dispatch(isRestoringWallet());
     const wallet = await Wallet.restore(password, seed);
-    const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
-    const config = await wallet.fetchConfig(gaiaConfig);
-    if (config?.identities[0]?.username) {
-      wallet.identities[0].defaultUsername = config.identities[0].username;
-    }
     dispatch(didRestoreWallet(wallet));
     return wallet;
   };
