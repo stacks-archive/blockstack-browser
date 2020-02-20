@@ -37,6 +37,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
   const [identityIndex, setIdentityIndex] = React.useState<number | undefined>();
 
+  // TODO: refactor into util, create unit tests
   const didSelectAccount = ({ identityIndex }: { identityIndex: number }) => {
     const state = store.getState();
     const authRequest = selectDecodedAuthRequest(state);
@@ -53,13 +54,19 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
       const url = new URL(authRequest?.redirect_uri);
       const apps = wallet.walletConfig.identities[identityIndex]?.apps;
       if (apps) {
-        const newReusedApps: ConfigApp[] = [];
+        let newReusedApps: ConfigApp[] = [];
+        let hasLoggedInWithThisID = false;
         Object.keys(apps).forEach(origin => {
           const app = apps[origin];
           if (origin !== url.origin && app.scopes.includes('publish_data')) {
             newReusedApps.push(app);
+          } else if (origin === url.origin) {
+            hasLoggedInWithThisID = true;
           }
         });
+        if (hasLoggedInWithThisID) {
+          newReusedApps = [];
+        }
         setReusedApps(newReusedApps);
         if (Object.keys(newReusedApps).length > 0) {
           doTrack(CHOOSE_ACCOUNT_REUSE_WARNING);
