@@ -67,7 +67,9 @@ const AccountItem = ({ label, iconComponent, isFirst, hasAction, ...rest }: Acco
     >
       {iconComponent && iconComponent({ hover })}
       <Box overflow="hidden">
-        <Text textStyle="body.small.medium">{label}</Text>
+        <Text display="inline-block" textAlign="left" textStyle="body.small.medium">
+          {label}
+        </Text>
       </Box>
     </Flex>
   );
