@@ -28,7 +28,7 @@ const howSecretKeyWorks = ({ name }: { name: string }): InfoSection[] => [
   },
   {
     title: 'Encryption',
-    body: `Encryption is always on. It locks everything you do in ${name} into useless codes. Because of this, Instagram can’t see or track your activity. Your data can only be unlocked with the key that you own. No one else has this key, not even ${name}, so no one else can unlock your data`,
+    body: `Encryption is always on. It locks everything you do in ${name} into useless codes. Because of this, ${name} can’t see or track your activity. Your data can only be unlocked with the key that you own. No one else has this key, not even ${name}, so no one else can unlock your data`,
   },
   {
     title: 'What is a Secret Key?',
@@ -36,8 +36,7 @@ const howSecretKeyWorks = ({ name }: { name: string }): InfoSection[] => [
   },
   {
     title: 'When will I need my Secret Key?',
-    body:
-      'You’ll need your Secret Key to prove it’s you when you use Instagram on a new device, such as a new phone or laptop. After that, your Secret Key will stay active to keep you safe and private in the apps you use on that device.',
+    body: `You’ll need your Secret Key to prove it’s you when you use ${name} on a new device, such as a new phone or laptop. After that, your Secret Key will stay active to keep you safe and private in the apps you use on that device.`,
   },
 ];
 
