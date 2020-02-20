@@ -77,7 +77,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
         close={() => {
           setIdentityIndex(undefined);
           doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_BACK);
-          setReusedApps([]);
+          setTimeout(() => setReusedApps([]), 250);
         }}
         showing={reusedApps.length > 0}
         apps={reusedApps}
