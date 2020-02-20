@@ -7,6 +7,7 @@ import {
   SAVE_AUTH_REQUEST,
   SET_MAGIC_RECOVERY_CODE,
   SET_USERNAME,
+  titleNameMap,
 } from './types';
 import { decodeToken } from 'jsontokens';
 import { doGenerateWallet, didGenerateWallet, WalletActions } from '../wallet';
@@ -27,6 +28,7 @@ import { gaiaUrl } from '@common/constants';
 import { pageTrackingNameMap } from './types';
 
 export const doChangeScreen = (screen: ScreenName): OnboardingActions => {
+  document.title = titleNameMap[screen];
   window.analytics.page(pageTrackingNameMap[screen]);
   return {
     type: CHANGE_PAGE,
@@ -112,6 +114,7 @@ export function doSaveAuthRequest(authRequest: string): ThunkAction<void, AppSta
     if ((screen === ScreenName.GENERATION || screen === ScreenName.SIGN_IN) && hasIdentities) {
       dispatch(doChangeScreen(ScreenName.CHOOSE_ACCOUNT));
     } else {
+      document.title = titleNameMap[screen];
       window.analytics.page(pageTrackingNameMap[screen]);
     }
   };

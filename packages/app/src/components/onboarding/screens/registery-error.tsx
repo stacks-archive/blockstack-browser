@@ -1,11 +1,8 @@
 import React from 'react';
 import { Screen, ScreenHeader, ScreenBody, PoweredBy, ScreenFooter, Title } from '@blockstack/connect';
-import useDocumentTitle from '@rehooks/document-title';
 import { Flex, Box, Button } from '@blockstack/ui';
 
 export const UsernameRegistryError: React.FC = () => {
-  useDocumentTitle('Failed to register username');
-
   return (
     <Screen textAlign="center">
       <ScreenHeader title="Secret Key" />

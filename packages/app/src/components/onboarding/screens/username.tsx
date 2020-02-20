@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Box, Flex, Input, Text, Button } from '@blockstack/ui';
 import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
-import useDocumentTitle from '@rehooks/document-title';
 
 import { useAppDetails } from '@common/hooks/useAppDetails';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,7 +39,6 @@ interface UsernameProps {
 
 export const Username: React.FC<UsernameProps> = ({ next }) => {
   const title = 'Choose a username';
-  useDocumentTitle(title);
   const dispatch = useDispatch();
   const { name } = useAppDetails();
 

@@ -10,7 +10,6 @@ import { Box, Input, Text, Button } from '@blockstack/ui';
 import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { decrypt } from '@blockstack/keychain';
-import useDocumentTitle from '@rehooks/document-title';
 import { ErrorLabel } from '@components/error-label';
 
 interface RecoveryProps {
@@ -19,7 +18,6 @@ interface RecoveryProps {
 
 export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
   const title = 'Enter your password';
-  useDocumentTitle(title);
   const [passwordError, setPasswordError] = useState('');
   const [password, setCode] = useState('');
   const [loading, setLoading] = useState(false);

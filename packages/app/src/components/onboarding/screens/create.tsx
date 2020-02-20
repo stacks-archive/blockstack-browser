@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Spinner, Flex, Text } from '@blockstack/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter } from '@blockstack/connect';
-import useDocumentTitle from '@rehooks/document-title';
 import { ScreenHeader } from '@components/connected-screen-header';
 
 import { doCreateSecretKey } from '@store/onboarding/actions';
@@ -51,9 +50,7 @@ interface CreateProps {
   next: () => void;
 }
 export const Create: React.FC<CreateProps> = props => {
-  const title = 'Generating your Secret Key...';
   const [cardIndex, setCardIndex] = useState(0);
-  useDocumentTitle(title);
   const { wallet } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state),
   }));

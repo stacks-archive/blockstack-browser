@@ -9,7 +9,6 @@ import { Card } from '@components/card';
 import { SeedTextarea } from '@components/seed-textarea';
 import { AppState } from '@store';
 import { selectSecretKey } from '@store/onboarding/selectors';
-import useDocumentTitle from '@rehooks/document-title';
 
 interface SecretKeyProps {
   next: () => void;
@@ -17,7 +16,6 @@ interface SecretKeyProps {
 
 export const SecretKey: React.FC<SecretKeyProps> = props => {
   const title = 'Your Secret Key';
-  useDocumentTitle(title);
   const { secretKey } = useSelector((state: AppState) => ({
     secretKey: selectSecretKey(state),
   }));

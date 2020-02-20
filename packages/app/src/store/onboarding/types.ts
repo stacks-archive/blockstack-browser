@@ -33,6 +33,19 @@ export const pageTrackingNameMap = {
   [ScreenName.REGISTRY_ERROR]: 'Username Registry Error',
 };
 
+export const titleNameMap = {
+  [ScreenName.CHOOSE_ACCOUNT]: 'Choose account',
+  [ScreenName.USERNAME]: 'Choose a username',
+  [ScreenName.GENERATION]: 'Generating your Secret Key',
+  [ScreenName.SECRET_KEY]: 'Your Secret Key',
+  [ScreenName.SAVE_KEY]: 'Save your Secret Key',
+  [ScreenName.CONNECT_APP]: 'Connect App',
+  [ScreenName.SIGN_IN]: 'Sign in',
+  [ScreenName.RECOVERY_CODE]: 'Enter your password',
+  [ScreenName.ADD_ACCOUNT]: ' Select Username',
+  [ScreenName.REGISTRY_ERROR]: 'Failed to register username',
+};
+
 // TODO: clarify usage of password for local key encryption
 export const DEFAULT_PASSWORD = 'password';
 
