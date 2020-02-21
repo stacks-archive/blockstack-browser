@@ -1,5 +1,14 @@
 import React from 'react';
-import { Modal as BlockstackModal, ThemeProvider, theme, CSSReset, Flex, Box, Text, ChevronIcon } from '@blockstack/ui';
+import {
+  Modal as BlockstackModal,
+  ThemeProvider,
+  theme,
+  ScopedCSSReset,
+  Flex,
+  Box,
+  Text,
+  ChevronIcon,
+} from '@blockstack/ui';
 import { useHover } from 'use-events';
 import { Logo } from '../logo';
 import { Intro } from '../screens/intro';
@@ -105,21 +114,22 @@ export const Modal = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CSSReset />
-      <BlockstackModal
-        headerComponent={
-          <ModalHeader
-            close
-            hideTitleElements={screen === States.SCREENS_INTRO}
-            back={screen === States.SCREENS_HOW_IT_WORKS ? States.SCREENS_INTRO : undefined}
-            title={screen === States.SCREENS_SIGN_IN ? 'Sign In' : 'Secret Key'}
-          />
-        }
-        close={doCloseAuth}
-        isOpen={isOpen}
-      >
-        <RenderScreen />
-      </BlockstackModal>
+      <ScopedCSSReset>
+        <BlockstackModal
+          headerComponent={
+            <ModalHeader
+              close
+              hideTitleElements={screen === States.SCREENS_INTRO}
+              back={screen === States.SCREENS_HOW_IT_WORKS ? States.SCREENS_INTRO : undefined}
+              title={screen === States.SCREENS_SIGN_IN ? 'Sign In' : 'Secret Key'}
+            />
+          }
+          close={doCloseAuth}
+          isOpen={isOpen}
+        >
+          <RenderScreen />
+        </BlockstackModal>
+      </ScopedCSSReset>
     </ThemeProvider>
   );
 };
