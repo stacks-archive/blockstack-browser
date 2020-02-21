@@ -1012,10 +1012,10 @@
   resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.5.tgz#871bd2a38b5bc9aabb1cefeeba6199cc64098957"
   integrity sha512-A+wfdVwD1Sxd/D3PPJI67Evo7q2fp15hCOFLB5jmzcS1MdN8BQdFm6j51Sti8xLN4qHmuYkicbFBUluGx2h63g==
 
-"@blockstack/ui@^1.0.0-alpha.34":
-  version "1.0.0-alpha.34"
-  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.34.tgz#5febea576623ec4f4f0f85812e59f16309da96a0"
-  integrity sha512-cU5skSESyxUfAfd3AKQUihuFDSPfSPdF7mSWGl4941X+i5qnZAXKgUyefX0IXEYTqAlMkUrQ3DV1T6ijqQJYxg==
+"@blockstack/ui@^1.0.0-alpha.37":
+  version "1.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.37.tgz#0865e92367e366675c7d4e39f77a68a2076077ab"
+  integrity sha512-9wwnPF3y53QHfwdEJoIZyqjLcjNN4Y4Gbv8ccoAucoRsYCGxP9Bm4gb4qk3rS4plkgbhWaMDlFGb1QDhrkzZvA==
   dependencies:
     "@styled-system/css" "5.1.5"
     "@types/color" "^3.0.1"
