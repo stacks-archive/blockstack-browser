@@ -139,7 +139,7 @@ If you aren't using ES6 imports, you can still use `connect`! We package the lib
 First, include the script in your HTML:
 
 ```html
-<script src="https://unpkg.com/@blockstack/connect/dist/bundle.js" />
+<script src="https://unpkg.com/@blockstack/connect" />
 ```
 
 Then, you can use API methods under the `blockstackConnect` global variable:
