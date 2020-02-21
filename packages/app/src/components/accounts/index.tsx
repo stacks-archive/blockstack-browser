@@ -1,41 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Identity } from '@blockstack/keychain';
-import { transition } from '@common/constants';
-import { Box, Text, Flex, FlexProps, BoxProps } from '@blockstack/ui';
-import { useHover } from 'use-events';
-import { Image } from '@components/image';
+import { Text, Flex, FlexProps, Spinner } from '@blockstack/ui';
+
 import { doChangeScreen } from '@store/onboarding/actions';
 import { ScreenName } from '@store/onboarding/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
+import { ListItem } from './list-item';
+import { AccountAvatar } from './account-avatar';
 
-interface AccountAvatarProps extends BoxProps {
-  username: string;
-  avatar?: string;
-}
-
-const AccountAvatar = ({ username, avatar, ...rest }: AccountAvatarProps) => {
-  const firstLetter = username[0];
-  return (
-    <Flex
-      overflow="hidden"
-      flexShrink={0}
-      bg="#007AFF"
-      size="36px"
-      borderRadius="100%"
-      align="center"
-      justify="center"
-      {...rest}
-    >
-      {avatar && <Image src={avatar} alt={username} />}
-      <Box>
-        <Text color="white" textTransform="uppercase" display="block">
-          {firstLetter}
-        </Text>
-      </Box>
-    </Flex>
-  );
-};
+const loadingProps = { color: '#A1A7B3' };
+const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
 
 interface AccountItemProps extends FlexProps {
   label: string;
@@ -43,34 +18,28 @@ interface AccountItemProps extends FlexProps {
   isFirst?: boolean;
   hasAction?: boolean;
   onClick?: () => void;
+  address?: string;
+  selectedAddress?: string | null;
+  loading?: boolean;
 }
 
-const AccountItem = ({ label, iconComponent, isFirst, hasAction, ...rest }: AccountItemProps) => {
-  const [hover, bind] = useHover();
-
+const AccountItem = ({ label, address, selectedAddress, ...rest }: AccountItemProps) => {
+  const loading = address === selectedAddress;
   return (
-    <Flex
-      style={{ textOverflow: 'ellipsis' }}
-      py={3}
-      borderBottom="1px solid"
-      borderBottomColor="inherit"
-      borderTop={isFirst ? '1px solid' : undefined}
-      borderTopColor="inherit"
-      align="center"
-      cursor={hover && hasAction ? 'pointer' : 'unset'}
-      bg={hover && hasAction ? 'ink.100' : 'white'}
-      mt={isFirst ? 5 : 0}
-      px={2}
-      transition={transition}
-      {...bind}
-      {...rest}
-    >
-      {iconComponent && iconComponent({ hover })}
-      <Box overflow="hidden">
-        <Text display="inline-block" textAlign="left" textStyle="body.small.medium">
+    <Flex alignItems="center" {...rest}>
+      <Flex flex={1} overflow="hidden">
+        <Text
+          display="inline-block"
+          textAlign="left"
+          textStyle="body.small.medium"
+          {...getLoadingProps(!!selectedAddress)}
+        >
           {label}
         </Text>
-      </Box>
+      </Flex>
+      <Flex width={4} flexDirection="column" mr={3}>
+        {loading && <Spinner width={4} height={4} {...loadingProps} />}
+      </Flex>
     </Flex>
   );
 };
@@ -83,35 +52,47 @@ interface AccountsProps {
 
 export const Accounts = ({ identities, showAddAccount, next }: AccountsProps) => {
   const dispatch = useDispatch();
+  const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
+
   return (
     <Flex flexDirection="column">
       {identities.map(({ defaultUsername, address }, key) => {
         return (
-          <AccountItem
-            isFirst={key === 0}
-            iconComponent={() => <AccountAvatar username={defaultUsername || address} mr={3} />}
-            label={defaultUsername || address}
+          <ListItem
             key={key}
-            hasAction={!!next}
+            isFirst={key === 0}
+            cursor={selectedAddress ? 'not-allowed' : 'pointer'}
+            iconComponent={() => <AccountAvatar username={defaultUsername || address} mr={3} />}
+            hasAction={!!next && selectedAddress === null}
             onClick={() => {
               if (!next) return;
+              if (selectedAddress) return;
+              setSelectedAddress(address);
               next(key);
             }}
-          />
+          >
+            <AccountItem address={address} selectedAddress={selectedAddress} label={defaultUsername || address} />
+          </ListItem>
         );
       })}
       {showAddAccount && (
-        <AccountItem
-          onClick={() => dispatch(doChangeScreen(ScreenName.ADD_ACCOUNT))}
-          hasAction={!!next}
+        <ListItem
+          onClick={() => {
+            if (selectedAddress) return;
+            dispatch(doChangeScreen(ScreenName.ADD_ACCOUNT));
+          }}
+          cursor={selectedAddress ? 'not-allowed' : 'pointer'}
+          hasAction
           iconComponent={() => (
-            <Flex justify="center" width="36px" mr={3} color={'ink.300'} transition="0.08s all ease-in-out">
+            <Flex justify="center" width="36px" mr={3} color="ink.300" transition="0.08s all ease-in-out">
               <PlusInCircle />
             </Flex>
           )}
-          label="Add a new account"
-          mb={6}
-        />
+        >
+          <Text textStyle="body.small.medium" {...getLoadingProps(!!selectedAddress)}>
+            Add a new account
+          </Text>
+        </ListItem>
       )}
     </Flex>
   );
