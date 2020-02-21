@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/connect",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "bundlesize": [
     {
       "path": "./dist/**/*.js",
