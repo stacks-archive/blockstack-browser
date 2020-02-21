@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0-alpha.37
+
+- Updates modal to fix some regressions
+- Added `ScopedCSSReset` component to wrap around things that need certain resets, such as @blockstack/connect.
+
 ## 1.0.0-alpha.35
 
 - Fix modal
