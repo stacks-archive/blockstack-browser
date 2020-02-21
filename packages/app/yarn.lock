@@ -957,10 +957,10 @@
     use-events "^1.4.1"
     use-onclickoutside "^0.3.1"
 
-"@blockstack/ui@^1.0.0-alpha.35":
-  version "1.0.0-alpha.35"
-  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.35.tgz#56920c6f28ffb8aefd1d7caf24bb898e6569703f"
-  integrity sha512-FjZz72652/eTe97wqQt7MpfZG7UknzJBnfeKeOpu1kZohyt14i/FOfBkk1fh0bS+GR/EAutFOzDMohT5GXY69w==
+"@blockstack/ui@^1.0.0-alpha.37":
+  version "1.0.0-alpha.37"
+  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.0.0-alpha.37.tgz#0865e92367e366675c7d4e39f77a68a2076077ab"
+  integrity sha512-9wwnPF3y53QHfwdEJoIZyqjLcjNN4Y4Gbv8ccoAucoRsYCGxP9Bm4gb4qk3rS4plkgbhWaMDlFGb1QDhrkzZvA==
   dependencies:
     "@styled-system/css" "5.1.5"
     "@types/color" "^3.0.1"
