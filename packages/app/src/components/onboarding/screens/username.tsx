@@ -21,7 +21,13 @@ import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';
 import { selectCurrentScreen } from '@store/onboarding/selectors';
-import { doTrack, USERNAME_REGISTER_FAILED } from '@common/track';
+import {
+  doTrack,
+  USERNAME_REGISTER_FAILED,
+  USERNAME_SUBMITTED,
+  USERNAME_VALIDATION_ERROR,
+  USERNAME_SUBMIT_SUCCESS,
+} from '@common/track';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
@@ -61,9 +67,12 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
     setHasAttemptedSubmit(true);
     setLoading(true);
 
+    doTrack(USERNAME_SUBMITTED);
+
     const validationErrors = await validateSubdomain(username, Subdomain);
 
     if (validationErrors !== null) {
+      doTrack(USERNAME_VALIDATION_ERROR);
       setError(validationErrors);
       setLoading(false);
       return;
@@ -94,6 +103,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
         gaiaHubUrl: gaiaUrl,
         identity,
       });
+      doTrack(USERNAME_SUBMIT_SUCCESS);
       dispatch(didGenerateWallet(wallet));
       dispatch(doFinishSignIn({ identityIndex }));
     } catch (error) {

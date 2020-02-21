@@ -14,6 +14,10 @@ export const CHOOSE_ACCOUNT_REUSE_WARNING_BACK = 'Decline Account Choice';
 export const SIGN_IN_CREATE = 'Select Create From Sign In';
 export const USERNAME_REGISTER_FAILED = 'Username Registration Failed';
 
+export const USERNAME_SUBMITTED = 'Submit Username';
+export const USERNAME_VALIDATION_ERROR = 'Validation Error Username';
+export const USERNAME_SUBMIT_SUCCESS = 'Submit Username Success';
+
 export const doTrack = (type: string, payload?: string | object) => {
   console.log('Tracking:', { type, payload });
   window.analytics.track(type, payload);
