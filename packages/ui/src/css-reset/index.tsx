@@ -1,7 +1,6 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, css } from 'styled-components';
 import preflight from './preflight';
-import { theme } from '../theme';
-import typography from '../theme/typography';
+import { theme } from '../theme/theme';
 
 // Should type as theme here, however this type
 // has optional properties. Need to enforce type to ensure
@@ -23,22 +22,20 @@ const defaultConfig = (theme: any) => ({
 
 const { color, bg, borderColor, placeholderColor } = defaultConfig(theme).light;
 
-const CSSReset = createGlobalStyle`
+const cssReset = css`
   ${preflight};
+
   html {
     line-height: 1.5;
     color: ${color};
     background-color: ${bg};
-    font-family: ${typography.fonts.body};
+    font-family: ${theme && theme.fonts && theme.fonts['body']};
   }
-
-  /**
-  * Allow adding a border to an element by just adding a border-width.
-  */
 
   *,
   *::before,
   *::after {
+    box-sizing: border-box;
     border-width: 0;
     border-style: solid;
     border-color: ${borderColor};
@@ -60,4 +57,30 @@ const CSSReset = createGlobalStyle`
   }
 `;
 
-export { CSSReset };
+const CSSReset = createGlobalStyle`${cssReset}`;
+
+const ScopedCSSReset = styled.div`
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: ${borderColor};
+  }
+
+  input:-ms-input-placeholder,
+  textarea:-ms-input-placeholder {
+    color: ${placeholderColor};
+  }
+
+  input::-ms-input-placeholder,
+  textarea::-ms-input-placeholder {
+    color: ${placeholderColor};
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: ${placeholderColor};
+  }
+`;
+
+export { CSSReset, ScopedCSSReset };
