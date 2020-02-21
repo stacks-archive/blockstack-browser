@@ -99,6 +99,7 @@
   "repository": "https://github.com/blockstackpbc/blockstack-ui",
   "scripts": {
     "build": "cross-env NODE_ENV=production tsdx build --format=cjs,esm,umd",
+    "dev": "tsdx watch --format=cjs,esm,umd",
     "bundlesize": "bundlesize",
     "format": "npm run prettier -- --write",
     "lint": "eslint \"src/**/*.+(ts|tsx)\"",
