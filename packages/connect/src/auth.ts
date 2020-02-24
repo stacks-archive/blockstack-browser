@@ -106,6 +106,7 @@ const setupListener = ({ popup, authRequest, finished, authURL, userSession }: L
     const data: FinishedEventData = event.data;
     if (data.authRequest === authRequest) {
       if (finished) {
+        window.focus();
         const { authResponse } = data;
         await userSession.handlePendingSignIn(authResponse);
         finished({
