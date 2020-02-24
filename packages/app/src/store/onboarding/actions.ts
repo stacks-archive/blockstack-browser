@@ -151,13 +151,12 @@ export function doFinishSignIn(
         name: appName as string,
       },
     });
-    dispatch(didGenerateWallet(wallet));
-    console.log('Updated wallet config', wallet.walletConfig);
     const authResponse = await currentIdentity.makeAuthResponse({
       gaiaUrl,
       appDomain: appURL.origin,
       transitPublicKey: decodedAuthRequest.public_keys[0],
     });
     finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
+    dispatch(didGenerateWallet(wallet));
   };
 }
