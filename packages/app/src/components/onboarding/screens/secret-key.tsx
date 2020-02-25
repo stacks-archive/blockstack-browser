@@ -8,7 +8,7 @@ import { Toast } from '@components/toast';
 import { Card } from '@components/card';
 import { SeedTextarea } from '@components/seed-textarea';
 import { AppState } from '@store';
-import { selectSecretKey } from '@store/onboarding/selectors';
+import { selectSecretKey, selectAppName } from '@store/onboarding/selectors';
 
 interface SecretKeyProps {
   next: () => void;
@@ -16,8 +16,9 @@ interface SecretKeyProps {
 
 export const SecretKey: React.FC<SecretKeyProps> = props => {
   const title = 'Your Secret Key';
-  const { secretKey } = useSelector((state: AppState) => ({
+  const { secretKey, appName } = useSelector((state: AppState) => ({
     secretKey: selectSecretKey(state),
+    appName: selectAppName(state),
   }));
   const [copied, setCopiedState] = React.useState(false);
 
@@ -38,7 +39,7 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
           body={[
             <Title>{title}</Title>,
             <Text mt={2} display="block">
-              Here’s your Secret Key: 12 words that prove it’s you when you want to use Messenger on a new device. Once
+              Here’s your Secret Key: 12 words that prove it’s you when you want to use {appName} on a new device. Once
               lost it’s lost forever, so save it somewhere you won’t forget.
             </Text>,
             <Card title="Your Secret Key" mt={6}>
