@@ -3,5 +3,12 @@
   "private": true,
   "devDependencies": {
     "lerna": "^3.20.2"
+  },
+  "scripts": {
+    "typecheck": "lerna run typecheck",
+    "build:libs": "yarn build:ui && yarn build:keychain && yarn build:connect",
+    "build:ui": "lerna run build --scope @blockstack/ui",
+    "build:keychain": "lerna run build --scope @blockstack/keychain",
+    "build:connect": "lerna run build --scope @blockstack/connect"
   }
 }
