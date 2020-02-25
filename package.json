@@ -2,6 +2,10 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/config-lerna-scopes": "^8.3.4",
+    "husky": "^4.2.3",
     "lerna": "^3.20.2"
   },
   "scripts": {
@@ -10,5 +14,10 @@
     "build:ui": "lerna run build --scope @blockstack/ui",
     "build:keychain": "lerna run build --scope @blockstack/keychain",
     "build:connect": "lerna run build --scope @blockstack/connect"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   }
 }
