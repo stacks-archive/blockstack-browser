@@ -14,7 +14,7 @@ import { doGenerateWallet, didGenerateWallet, WalletActions } from '../wallet';
 import { ThunkAction } from 'redux-thunk';
 import { decrypt } from '@blockstack/keychain';
 import { DecodedAuthRequest, AppManifest } from '../../common/dev/types';
-import { AppState } from 'store';
+import { AppState } from '@store';
 import {
   selectDecodedAuthRequest,
   selectAuthRequest,

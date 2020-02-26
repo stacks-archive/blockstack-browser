@@ -18,14 +18,15 @@ const copyToClipboard = (value: string) => {
   el.style.left = '-9999px';
   document.body.appendChild(el);
 
-  const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+  const curSelection = document.getSelection();
+  const selected = curSelection && curSelection.rangeCount > 0 ? curSelection.getRangeAt(0) : false;
   el.select();
 
   document.execCommand('copy');
   document.body.removeChild(el);
   if (selected) {
-    document.getSelection().removeAllRanges();
-    document.getSelection().addRange(selected);
+    document.getSelection()?.removeAllRanges();
+    document.getSelection()?.addRange(selected);
   }
 };
 

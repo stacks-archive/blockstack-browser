@@ -29,6 +29,7 @@
     "@rehooks/document-title": "^1.0.1",
     "@segment/analytics.js-core": "^3.10.1",
     "@types/segment-analytics": "^0.0.32",
+    "blockstack": "^19.3.0",
     "formik": "^2.1.4",
     "mdi-react": "^6.7.0",
     "preact": "^10.3.2",
@@ -42,6 +43,7 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.0.1",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "use-events": "^1.4.1",
     "use-onclickoutside": "^0.3.1",
     "webext-redux": "^2.1.2"
   },

@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box } from '@blockstack/ui';
-import { BoxProps } from '@blockstack/ui/dist/box';
+import { Box, BoxProps } from '@blockstack/ui';
 
 export const Logo: React.FC<BoxProps> = ({ ...props }) => (
   <Box {...props}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import Identity from '@blockstack/keychain/dist/identity';
+import { Identity } from '@blockstack/keychain';
 import { Flex, Text, Button, FlexProps } from '@blockstack/ui';
 
 import { Accounts } from '@components/accounts';

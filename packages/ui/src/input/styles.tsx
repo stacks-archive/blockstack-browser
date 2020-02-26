@@ -46,7 +46,15 @@ const baseProps = {
   p: '14px 16px',
 };
 
-export const inputSizes = {
+interface InputStyle {
+  [key: string]: any;
+}
+interface InputStyles {
+  default: InputStyle;
+  [key: string]: InputStyle;
+}
+
+export const inputSizes: InputStyles = {
   default: {
     fontSize: 'body.small',
     height: '12', // 48px

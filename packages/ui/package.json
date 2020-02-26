@@ -105,10 +105,10 @@
     "lint": "eslint \"src/**/*.+(ts|tsx)\"",
     "lint:fix": "eslint \"src/**/*.+(ts|tsx)\" --fix",
     "prebuild": "rimraf dist",
-    "prepublishOnly": "npm run type-check && npm run build",
+    "prepublishOnly": "npm run typecheck && npm run build",
     "start": "cross-env NODE_ENV=development tsdx watch",
-    "type-check": "tsc --noEmit",
-    "type-check:watch": "npm run type-check -- --watch"
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "npm run typecheck -- --watch"
   },
   "sideEffects": false,
   "types": "dist/index.d.ts",

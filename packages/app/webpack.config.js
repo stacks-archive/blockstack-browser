@@ -47,6 +47,17 @@ const getSourceMap = () => {
   return 'none';
 };
 
+const aliases =
+  nodeEnv === 'development'
+    ? {
+        react: path.resolve('./node_modules/react'),
+      }
+    : {
+        react: path.resolve('./node_modules/preact/compat'),
+        'react-dom/test-utils': 'preact/test-utils',
+        'react-dom': 'preact/compat',
+      };
+
 module.exports = {
   entry: {
     background: path.join(sourceRootPath, 'extension', 'background.ts'),
@@ -64,12 +75,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
     plugins: [new TsconfigPathsPlugin()],
-    alias: {
-      react: 'preact/compat',
-      'react-dom/test-utils': 'preact/test-utils',
-      'react-dom': 'preact/compat',
-      '@blockstack/ui': path.resolve('./node_modules/@blockstack/ui'),
-    },
+    alias: aliases,
   },
   optimization: {
     minimize: !isDevelopment,

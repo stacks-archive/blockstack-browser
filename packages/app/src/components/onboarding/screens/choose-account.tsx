@@ -11,7 +11,7 @@ import { Drawer } from '@components/drawer';
 import { selectDecodedAuthRequest } from '@store/onboarding/selectors';
 import { store } from '@store';
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
-import { ConfigApp } from '@blockstack/keychain/dist/wallet';
+import { ConfigApp } from '@blockstack/keychain/wallet';
 import { Wallet } from '@blockstack/keychain';
 import { gaiaUrl } from '@common/constants';
 import {

@@ -25,12 +25,12 @@
     "noEmit": false,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "suppressImplicitAnyIndexErrors": false,
     "outDir": "./dist",
     "baseUrl": "./",
     "rootDir": "./src",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "strictNullChecks": false // TODO remove in the future
+    "strictNullChecks": true
   }
 }

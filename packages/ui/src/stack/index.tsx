@@ -7,7 +7,7 @@ export * from './types';
 
 const Stack = forwardRef<any, StackProps>(
   ({ isInline, children, align, justify, spacing = 2, shouldWrapChildren, ...rest }, ref) => {
-    const validChildren = Array.isArray(children) && children.filter(isValidElement);
+    const validChildren = Array.isArray(children) ? children.filter(isValidElement) : [];
 
     return (
       <Flex align={align} justify={justify} flexDir={isInline ? 'row' : 'column'} ref={ref} {...rest}>

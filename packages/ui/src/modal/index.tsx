@@ -114,7 +114,7 @@ export const Modal: React.FC<ModalProps> = ({
       if (event.key === 'Escape') {
         if (close) {
           close();
-        } else {
+        } else if (doCloseModal) {
           doCloseModal();
         }
       }
@@ -134,7 +134,7 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen, close]);
 
-  useOnClickOutside(ref, close || doCloseModal);
+  useOnClickOutside(ref, close || doCloseModal || null);
 
   return (
     <>

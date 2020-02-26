@@ -2,7 +2,11 @@ import React, { createContext, useContext, forwardRef } from 'react';
 import { Box } from '../box';
 import { FormControlProps } from './types';
 
-const FormControlContext = createContext({});
+interface NormalObject {
+  [key: string]: any;
+}
+
+const FormControlContext = createContext<NormalObject>({});
 
 export const useFormControlContext = () => useContext(FormControlContext);
 
@@ -12,7 +16,7 @@ export const useFormControl = (props: any) => {
     return props;
   }
   const keys = Object.keys(context);
-  return keys.reduce((acc, prop) => {
+  return keys.reduce((acc: NormalObject, prop) => {
     /** Giving precedence to `props` over `context` */
     acc[prop] = props[prop];
 
@@ -46,6 +50,6 @@ const FormControl = forwardRef<any, FormControlProps>(
   }
 );
 
-FormControl.displayName = "FormControl"
+FormControl.displayName = 'FormControl';
 
 export { FormControl };

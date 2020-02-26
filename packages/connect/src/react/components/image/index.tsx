@@ -4,10 +4,10 @@ interface ImageProps {
   src?: string;
   alt?: string;
   title?: string;
-  loading?: string;
+  loading?: 'eager' | 'lazy' | undefined;
 }
 
-const Image: React.FC<ImageProps> = ({ ...props }) => {
+const Image: React.FC<ImageProps> = ({ loading: _loading, ...props }) => {
   return (
     <img
       style={{

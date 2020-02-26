@@ -1577,6 +1577,16 @@
     "@types/react-native" "*"
     csstype "^2.2.0"
 
+"@types/styled-components@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-5.0.0.tgz#0ed43d0e6003358f8b1f74304de010de19cbda66"
+  integrity sha512-fnLlZKZfDCySbq0M25wh9nAXRuy2FaHCFHlRl4LkoKJXqk/bbd8FwYPctv6mVnEe6rqs3JLx1COVy3a0Nmrv+w==
+  dependencies:
+    "@types/hoist-non-react-statics" "*"
+    "@types/react" "*"
+    "@types/react-native" "*"
+    csstype "^2.2.0"
+
 "@types/styled-system@^5.1.6":
   version "5.1.7"
   resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.7.tgz#b5aeb6efea499103a497da762516cdf38efd9e02"

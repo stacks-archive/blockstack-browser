@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from 'react';
 import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Box, Text, Input, Flex, Button } from '@blockstack/ui';
@@ -13,6 +13,10 @@ import { AppState } from '@store';
 import { selectAppName } from '@store/onboarding/selectors';
 import { doStoreSeed } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
+
+const textAreaRef = createRef<HTMLTextAreaElement>();
+
+const hasLineReturn = (input: string) => input.includes('\n');
 
 interface SignInProps {
   next: () => void;
@@ -72,9 +76,14 @@ export const SignIn: React.FC<SignInProps> = props => {
               autoCapitalize="false"
               spellCheck={false}
               style={{ resize: 'none' }}
-              onChange={(evt: React.FormEvent<HTMLInputElement>) => {
+              ref={textAreaRef}
+              onChange={async (evt: React.FormEvent<HTMLInputElement>) => {
                 setSeedError(null);
                 setSeed(evt.currentTarget.value);
+                if (hasLineReturn(evt.currentTarget.value)) {
+                  textAreaRef.current?.blur();
+                  await onSubmit();
+                }
               }}
             />
             {seedError && (

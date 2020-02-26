@@ -21,6 +21,7 @@ import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';
 import { selectCurrentScreen } from '@store/onboarding/selectors';
+import { selectSecretKey, selectAppName } from '@store/onboarding/selectors';
 import {
   doTrack,
   USERNAME_REGISTER_FAILED,
@@ -28,6 +29,7 @@ import {
   USERNAME_VALIDATION_ERROR,
   USERNAME_SUBMIT_SUCCESS,
 } from '@common/track';
+import { PasswordManagerHiddenInput, usernameInputId } from '@components/pw-manager-input';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
@@ -44,15 +46,18 @@ interface UsernameProps {
 }
 
 export const Username: React.FC<UsernameProps> = ({ next }) => {
-  const title = 'Choose a username';
   const dispatch = useDispatch();
   const { name } = useAppDetails();
 
-  const { wallet, screen } = useSelector((state: AppState) => ({
+  const { wallet, screen, secretKey, appName } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state) as Wallet,
     screen: selectCurrentScreen(state),
+    secretKey: selectSecretKey(state),
+    appName: selectAppName(state),
   }));
 
+  const titleForPasswordManagers = `${appName} with Blockstack`;
+  document.title = titleForPasswordManagers;
   const [error, setError] = useState<IdentityNameValidityError | null>(null);
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState('');
@@ -114,12 +119,13 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
 
   return (
     <Screen onSubmit={onSubmit}>
+      <PasswordManagerHiddenInput secretKey={secretKey} />
       <ScreenHeader />
       <ScreenBody
         mt={6}
         body={[
           <Box>
-            <Title>{title}</Title>
+            <Title>Choose a username</Title>
             <Text mt={2} display="block">
               This is how people will find you in {name} and other apps you use with your Secret Key.
             </Text>
@@ -137,6 +143,9 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
                 <Text pt={'2px'}>.blockstack.id</Text>
               </Flex>
               <Input
+                id={usernameInputId}
+                name={usernameInputId}
+                autoComplete="username"
                 data-test="input-username"
                 autoCapitalize="false"
                 paddingRight="100px"
@@ -159,18 +168,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
         ]}
       />
       <ScreenActions>
-        <Button
-          width="100%"
-          size="lg"
-          mt={6}
-          data-test="button-username-continue"
-          type="submit"
-          onClick={async event => {
-            event.preventDefault();
-            return onSubmit();
-          }}
-          isLoading={loading}
-        >
+        <Button width="100%" size="lg" mt={6} data-test="button-username-continue" type="submit" isLoading={loading}>
           Continue
         </Button>
       </ScreenActions>

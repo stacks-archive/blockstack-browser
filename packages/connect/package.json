@@ -23,6 +23,7 @@
     "@blockstack/prettier-config": "^0.0.5",
     "@types/jest": "^25.1.0",
     "@types/react-dom": "^16.9.5",
+    "@types/styled-components": "^5.0.0",
     "@typescript-eslint/eslint-plugin": "^2.18.0",
     "@typescript-eslint/parser": "^2.18.0",
     "babel-loader": "^8.0.6",

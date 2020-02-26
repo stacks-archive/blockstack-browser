@@ -29,7 +29,7 @@ const cssReset = css`
     line-height: 1.5;
     color: ${color};
     background-color: ${bg};
-    font-family: ${theme && theme.fonts && theme.fonts['body']};
+    font-family: ${theme && theme.fonts && theme.fonts.body};
   }
 
   *,

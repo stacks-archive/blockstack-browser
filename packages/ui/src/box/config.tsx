@@ -133,10 +133,14 @@ export default extraConfig;
 
 // Create an issue on @styled-system/css to allow custom alias to be passed to the `css` function
 
+interface Result {
+  [key: string]: any;
+}
+
 // Transform the custom alias to a format that styled-system CSS supports
 const transformAlias = (prop: string, propValue: any) => {
   const configKeys = Object.keys(config);
-  const result = {};
+  const result: Result = {};
 
   if (configKeys.includes(prop)) {
     const { properties, property } = config[prop] as any;

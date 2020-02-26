@@ -12,7 +12,12 @@ async function bootstrapConnectModalPageTest(demo: DemoPageObject, auth: AuthPag
   const newWindow = await browser.waitForTarget(target => target.url().startsWith(auth.url));
   const authPage = await newWindow.page();
   expect(authPage.url().startsWith(auth.url)).toBeTruthy();
-  await authPage.waitFor(auth.$textareaReadOnlySeedPhrase, { timeout: 15000 });
+  try {
+    await authPage.waitFor(auth.$textareaReadOnlySeedPhrase, { timeout: 15000 });    
+  } catch (error) {
+    await authPage.screenshot({ path: './tests/screenshot.png' });
+    throw error;
+  }
   return { authPage };
 }
 
