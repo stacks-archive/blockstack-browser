@@ -105,7 +105,11 @@ export class Wallet {
   }
 
   static async createAccount(encryptedBackupPhrase: string, masterKeychain: BIP32Interface, identitiesToGenerate = 1) {
-    const configPrivateKey = masterKeychain.deriveHardened(CONFIG_INDEX).privateKey?.toString('hex');
+    const derivedKey = masterKeychain.deriveHardened(CONFIG_INDEX).privateKey;
+    if (!derivedKey) {
+      throw new TypeError('Unable to derive config key for wallet');
+    }
+    const configPrivateKey = derivedKey.toString('hex');
     const walletAttrs = await getBlockchainIdentities(masterKeychain, identitiesToGenerate);
     const wallet = new this({
       ...walletAttrs,
