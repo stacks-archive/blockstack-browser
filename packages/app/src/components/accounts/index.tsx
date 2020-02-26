@@ -34,7 +34,7 @@ const AccountItem = ({ label, address, selectedAddress, ...rest }: AccountItemPr
           textStyle="body.small.medium"
           {...getLoadingProps(!!selectedAddress)}
         >
-          {label}
+          {label.replace(/\.id\.blockstack$/, '')}
         </Text>
       </Flex>
       <Flex width={4} flexDirection="column" mr={3}>
