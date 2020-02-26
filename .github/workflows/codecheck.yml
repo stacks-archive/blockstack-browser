@@ -27,7 +27,7 @@ jobs:
     - name: Lerna Bootstrap
       run: yarn lerna bootstrap
     - name: Lint
-      run: yarn lerna run lint --parallel
+      run: yarn lint
     - name: Depcheck
       run: yarn lerna run depcheck --parallel
     - name: Typecheck
