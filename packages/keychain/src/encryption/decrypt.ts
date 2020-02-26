@@ -1,5 +1,5 @@
-import { decrypt as triplesecDecrypt } from 'triplesec'
-import { decryptMnemonic } from 'blockstack/lib/encryption/wallet'
+import { decrypt as triplesecDecrypt } from 'triplesec';
+import { decryptMnemonic } from 'blockstack/lib/encryption/wallet';
 
 /**
  * Decrypt an encrypted mnemonic phrase with a password.
@@ -9,6 +9,6 @@ import { decryptMnemonic } from 'blockstack/lib/encryption/wallet'
  * @return the raw mnemonic phrase
  */
 export async function decrypt(dataBuffer: Buffer | string, password: string): Promise<string> {
-  const result = await decryptMnemonic(dataBuffer, password, triplesecDecrypt)
-  return result
+  const result = await decryptMnemonic(dataBuffer, password, triplesecDecrypt);
+  return result;
 }
