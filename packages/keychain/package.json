@@ -32,8 +32,8 @@
   "typings": "dist/index.d.ts",
   "prettier": "@blockstack/prettier-config",
   "devDependencies": {
-    "@blockstack/prettier-config": "^0.0.5",
     "@babel/plugin-proposal-optional-chaining": "^7.7.5",
+    "@blockstack/prettier-config": "^0.0.5",
     "@types/jest": "^24.0.18",
     "@types/node": "^10.14.17",
     "@types/triplesec": "^3.0.0",
