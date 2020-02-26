@@ -2,19 +2,36 @@
   "name": "root",
   "private": true,
   "devDependencies": {
+    "@blockstack/prettier-config": "^0.0.5",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@commitlint/config-lerna-scopes": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^2.21.0",
+    "@typescript-eslint/parser": "^2.21.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-config-react-app": "^5.2.0",
+    "eslint-plugin-flowtype": "^4.6.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.18.3",
     "husky": "^4.2.3",
-    "lerna": "^3.20.2"
+    "lerna": "^3.20.2",
+    "prettier": "^1.19.1",
+    "typescript": "^3.8.2"
   },
   "scripts": {
     "typecheck": "lerna run typecheck",
     "build:libs": "yarn build:ui && yarn build:keychain && yarn build:connect",
     "build:ui": "lerna run build --scope @blockstack/ui",
     "build:keychain": "lerna run build --scope @blockstack/keychain",
-    "build:connect": "lerna run build --scope @blockstack/connect"
+    "build:connect": "lerna run build --scope @blockstack/connect",
+    "lint:eslint": "eslint --ext .ts,.tsx . -f unix",
+    "lint:fix": "eslint --ext .ts,.tsx . -f unix --fix && prettier --write **/*.{ts,tsx} *.js",
+    "lint:prettier": "prettier --check **/*.{ts,tsx} *.js"
   },
+  "prettier": "@blockstack/prettier-config",
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
