@@ -1,3 +1,3 @@
-export function createTestSelector (name: string) {
+export function createTestSelector(name: string) {
   return `[data-test="${name}"]`;
 }

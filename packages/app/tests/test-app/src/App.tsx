@@ -18,7 +18,7 @@ const App: React.FC = () => {
           className="App-link"
           id="auth-action"
           data-test="button-open-connect-modal"
-          onClick={() =>
+          onClick={async () =>
             authenticate({
               redirectTo: '/',
               manifestPath: '/manifest.json',
@@ -39,6 +39,6 @@ const App: React.FC = () => {
       </header>
     </div>
   );
-}
+};
 
 export default App;
