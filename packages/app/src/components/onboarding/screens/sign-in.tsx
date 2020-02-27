@@ -6,7 +6,7 @@ import { AppIcon } from '@components/app-icon';
 import { Link } from '@components/link';
 import useDocumentTitle from '@rehooks/document-title';
 import { useDispatch, useSelector } from 'react-redux';
-import { doTrack, SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '@common/track';
+import { SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '@common/track';
 import { doSetMagicRecoveryCode } from '@store/onboarding/actions';
 import { ScreenName, DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { AppState } from '@store';
@@ -30,7 +30,7 @@ export const SignIn: React.FC<SignInProps> = props => {
   const [seedError, setSeedError] = useState<null | string>(null);
   const dispatch = useDispatch();
   const appName = useSelector((state: AppState) => selectAppName(state));
-  const { doChangeScreen } = useAnalytics();
+  const { doChangeScreen, doTrack } = useAnalytics();
   const title = `Sign in to ${appName}`;
   useDocumentTitle(title);
 

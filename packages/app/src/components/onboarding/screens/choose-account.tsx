@@ -15,13 +15,13 @@ import { ConfigApp } from '@blockstack/keychain/wallet';
 import { Wallet } from '@blockstack/keychain';
 import { gaiaUrl } from '@common/constants';
 import {
-  doTrack,
   CHOOSE_ACCOUNT_REUSE_WARNING,
   CHOOSE_ACCOUNT_REUSE_WARNING_CONTINUE,
   CHOOSE_ACCOUNT_REUSE_WARNING_DISABLED,
   CHOOSE_ACCOUNT_REUSE_WARNING_BACK,
   CHOOSE_ACCOUNT_CHOSEN,
 } from '@common/track';
+import { useAnalytics } from '@common/hooks/use-analytics';
 
 interface ChooseAccountProps {
   next: (identityIndex: number) => void;
@@ -36,6 +36,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   }));
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
   const [identityIndex, setIdentityIndex] = React.useState<number | undefined>();
+  const { doTrack } = useAnalytics();
 
   // TODO: refactor into util, create unit tests
   const didSelectAccount = ({ identityIndex }: { identityIndex: number }) => {

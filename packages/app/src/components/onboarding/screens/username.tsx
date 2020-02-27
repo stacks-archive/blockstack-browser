@@ -23,7 +23,6 @@ import { gaiaUrl, Subdomain } from '@common/constants';
 import { selectCurrentScreen } from '@store/onboarding/selectors';
 import { selectSecretKey, selectAppName } from '@store/onboarding/selectors';
 import {
-  doTrack,
   USERNAME_REGISTER_FAILED,
   USERNAME_SUBMITTED,
   USERNAME_VALIDATION_ERROR,
@@ -49,7 +48,7 @@ interface UsernameProps {
 export const Username: React.FC<UsernameProps> = ({ next }) => {
   const dispatch = useDispatch();
   const { name } = useAppDetails();
-  const { doChangeScreen } = useAnalytics();
+  const { doChangeScreen, doTrack } = useAnalytics();
 
   const { wallet, screen, secretKey, appName } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state) as Wallet,

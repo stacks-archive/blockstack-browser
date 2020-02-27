@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '@store';
 import { selectMagicRecoveryCode } from '@store/onboarding/selectors';
-import { doTrack, SIGN_IN_CORRECT } from '@common/track';
+import { SIGN_IN_CORRECT } from '@common/track';
 import { doStoreSeed } from '@store/wallet/actions';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
 
@@ -11,6 +11,7 @@ import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } fro
 import { ScreenHeader } from '@components/connected-screen-header';
 import { decrypt } from '@blockstack/keychain';
 import { ErrorLabel } from '@components/error-label';
+import { useAnalytics } from '@common/hooks/use-analytics';
 
 interface RecoveryProps {
   next: () => void;
@@ -22,6 +23,7 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
   const [password, setCode] = useState('');
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const { doTrack } = useAnalytics();
 
   const recoveryCode = useSelector((state: AppState) => selectMagicRecoveryCode(state) as string);
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex, Box, Text, BoxProps, ChevronIcon } from '@blockstack/ui';
 import { useHover } from 'use-events';
-import { doTrack } from '@common/track';
+import { useAnalytics } from '@common/hooks/use-analytics';
 
 interface TitleProps extends BoxProps {
   isFirst: boolean;
@@ -63,6 +63,7 @@ interface CollapseProps extends BoxProps {
  */
 export const Collapse: React.FC<CollapseProps> = ({ data, ...rest }) => {
   const [open, setOpen] = React.useState<number | null>(null);
+  const { doTrack } = useAnalytics();
   const handleOpen = (key: number) => (key === open ? setOpen(null) : setOpen(key));
   return (
     <Box px={6} fontSize="12px" {...rest}>
