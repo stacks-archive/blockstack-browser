@@ -6,7 +6,7 @@ import { ScreenHeader } from '@components/connected-screen-header';
 
 import { useAppDetails } from '@common/hooks/useAppDetails';
 import { useDispatch, useSelector } from 'react-redux';
-import { doSetUsername, doFinishSignIn, doChangeScreen } from '@store/onboarding/actions';
+import { doSetUsername, doFinishSignIn } from '@store/onboarding/actions';
 import { selectCurrentWallet } from '@store/wallet/selectors';
 import { AppState } from '@store';
 import { DEFAULT_PASSWORD, ScreenName } from '@store/onboarding/types';
@@ -30,6 +30,7 @@ import {
   USERNAME_SUBMIT_SUCCESS,
 } from '@common/track';
 import { PasswordManagerHiddenInput, usernameInputId } from '@components/pw-manager-input';
+import { useAnalytics } from '@common/hooks/use-analytics';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
@@ -48,6 +49,7 @@ interface UsernameProps {
 export const Username: React.FC<UsernameProps> = ({ next }) => {
   const dispatch = useDispatch();
   const { name } = useAppDetails();
+  const { doChangeScreen } = useAnalytics();
 
   const { wallet, screen, secretKey, appName } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state) as Wallet,

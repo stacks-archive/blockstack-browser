@@ -7,7 +7,6 @@ import {
   SAVE_AUTH_REQUEST,
   SET_MAGIC_RECOVERY_CODE,
   SET_USERNAME,
-  titleNameMap,
 } from './types';
 import { decodeToken } from 'jsontokens';
 import { doGenerateWallet, didGenerateWallet, WalletActions } from '../wallet';
@@ -25,11 +24,9 @@ import {
 import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
 import { finalizeAuthResponse } from '@common/utils';
 import { gaiaUrl } from '@common/constants';
-import { pageTrackingNameMap } from './types';
+import { doTrackScreenChange } from '@common/track';
 
 export const doChangeScreen = (screen: ScreenName): OnboardingActions => {
-  document.title = titleNameMap[screen];
-  window.analytics.page(pageTrackingNameMap[screen]);
   return {
     type: CHANGE_PAGE,
     screen,
@@ -112,10 +109,10 @@ export function doSaveAuthRequest(authRequest: string): ThunkAction<void, AppSta
     const identities = selectIdentities(state);
     const hasIdentities = identities && identities.length;
     if ((screen === ScreenName.GENERATION || screen === ScreenName.SIGN_IN) && hasIdentities) {
+      doTrackScreenChange(ScreenName.CHOOSE_ACCOUNT, decodedAuthRequest);
       dispatch(doChangeScreen(ScreenName.CHOOSE_ACCOUNT));
     } else {
-      document.title = titleNameMap[screen];
-      window.analytics.page(pageTrackingNameMap[screen]);
+      doTrackScreenChange(screen, decodedAuthRequest);
     }
   };
 }

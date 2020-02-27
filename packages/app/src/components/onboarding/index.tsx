@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { ChooseAccount, Create, SaveKey, SecretKey, SignIn, Username } from './screens';
 import { DecryptRecoveryCode } from './screens/decrypt-recovery-code';
-import { doChangeScreen, doSaveAuthRequest } from '@store/onboarding/actions';
+import { doSaveAuthRequest } from '@store/onboarding/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '@store';
 import { ScreenName } from '@store/onboarding/types';
@@ -9,12 +9,14 @@ import { doFinishSignIn as finishSignIn } from '@store/onboarding/actions';
 import { selectCurrentScreen } from '@store/onboarding/selectors';
 import { authenticationInit } from '@common/utils';
 import { UsernameRegistryError } from './screens/registery-error';
+import { useAnalytics } from '@common/hooks/use-analytics';
 
 const RenderScreen = ({ ...rest }) => {
   const dispatch = useDispatch();
   const { screen } = useSelector((state: AppState) => ({
     screen: selectCurrentScreen(state),
   }));
+  const { doChangeScreen } = useAnalytics();
 
   // const doFinishSignIn = async (identityIndex = 0, identity?: Identity) => {
   const doFinishSignIn = ({ identityIndex }: { identityIndex: number } = { identityIndex: 0 }) => {

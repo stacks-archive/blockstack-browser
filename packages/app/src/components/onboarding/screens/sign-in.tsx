@@ -7,12 +7,13 @@ import { Link } from '@components/link';
 import useDocumentTitle from '@rehooks/document-title';
 import { useDispatch, useSelector } from 'react-redux';
 import { doTrack, SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '@common/track';
-import { doChangeScreen, doSetMagicRecoveryCode } from '@store/onboarding/actions';
+import { doSetMagicRecoveryCode } from '@store/onboarding/actions';
 import { ScreenName, DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { AppState } from '@store';
 import { selectAppName } from '@store/onboarding/selectors';
 import { doStoreSeed } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
+import { useAnalytics } from '@common/hooks/use-analytics';
 
 const textAreaRef = createRef<HTMLTextAreaElement>();
 
@@ -29,6 +30,7 @@ export const SignIn: React.FC<SignInProps> = props => {
   const [seedError, setSeedError] = useState<null | string>(null);
   const dispatch = useDispatch();
   const appName = useSelector((state: AppState) => selectAppName(state));
+  const { doChangeScreen } = useAnalytics();
   const title = `Sign in to ${appName}`;
   useDocumentTitle(title);
 
