@@ -7,8 +7,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './store';
 import App from '@components/app';
 import DevStore from './common/dev/store';
+import { setStatsConfig } from '@common/track';
 
 const buildApp = (store: ReduxStore | ReturnType<typeof ExtStore>) => {
+  setStatsConfig();
   ReactDOM.render(
     <Provider store={store as any}>
       <PersistGate loading={null} persistor={persistor}>

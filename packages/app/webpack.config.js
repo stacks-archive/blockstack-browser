@@ -14,13 +14,23 @@ const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 
 /* eslint-enable @typescript-eslint/no-var-requires */
 
+const getSegmentKey = () => {
+  // Netlify sets CONTEXT=production for production releases.
+  // https://docs.netlify.com/site-deploys/overview/#deploy-contexts
+  if (process.env.CONTEXT === 'production') {
+    return 'KZVI260WNyXRxGvDvsX4Zz0vhshQlgvE';
+  }
+  return 'Cs2gImUHsghl4SZD8GB1xyFs23oaNAGa';
+};
+
 const sourceRootPath = path.join(__dirname, 'src');
 const distRootPath = path.join(__dirname, 'dist');
 const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const analyzeBundle = process.env.ANALYZE === 'true';
-const segmentKey = process.env.SEGMENT_KEY || 'KZVI260WNyXRxGvDvsX4Zz0vhshQlgvE';
+const segmentKey = process.env.SEGMENT_KEY || getSegmentKey();
+const statsURL = process.env.STATS_URL || 'https://stats.blockstack.xyz';
 const extEnv = process.env.EXT_ENV || 'web';
 
 const hmtlProdOpts = !isDevelopment
@@ -210,6 +220,7 @@ module.exports = {
       WEB_BROWSER: JSON.stringify(webBrowser),
       EXT_ENV: JSON.stringify(extEnv),
       SEGMENT_KEY: JSON.stringify(segmentKey),
+      STATS_URL: JSON.stringify(statsURL),
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
     isDevelopment && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
