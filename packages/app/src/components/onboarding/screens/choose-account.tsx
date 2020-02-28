@@ -104,7 +104,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
         <AppIcon mt={10} mb={4} size="72px" />
         <ScreenBody
           body={[
-            <Title>Choose an account</Title>,
+            <Title pb={2}>Choose an account</Title>,
             `to use with ${appName}`,
             <Accounts
               identities={identities}
