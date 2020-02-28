@@ -28,7 +28,7 @@
     "suppressImplicitAnyIndexErrors": false,
     "outDir": "./dist",
     "baseUrl": "./",
-    "rootDir": "./src",
+    "rootDir": "../",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "strictNullChecks": true
