@@ -69,9 +69,10 @@
     "access": "public"
   },
   "scripts": {
-    "build": "tsdx build --format cjs,esm,umd && yarn build:web",
-    "build:web": "NODE_ENV=production webpack --mode=production",
-    "build:web:analyze": "NODE_ENV=production ANALYZE=true webpack --mode=production",
+    "build": "yarn build:modules && yarn build:standalone",
+    "build:modules": "tsdx build --format cjs,esm,umd",
+    "build:standalone": "NODE_ENV=production webpack --mode=production",
+    "build:standalone:analyze": "NODE_ENV=production ANALYZE=true webpack --mode=production",
     "dev": "cd test-app && yarn start",
     "lint": "eslint --ext .ts,.tsx ./src/ -f unix",
     "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix",
