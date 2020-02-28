@@ -1,0 +1,109 @@
+name: UX
+on: [push]
+
+jobs:
+  test_keychain:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Set Node Version
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.16.1
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v1
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Install monorepo deps
+      run: yarn
+    - name: Install Keychain dependencies
+      run: yarn
+      working-directory: ./packages/keychain
+    - name: Keychain tests
+      run: yarn lerna run test --scope @blockstack/keychain
+
+  codecheck:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Set Node Version
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.16.1
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - uses: actions/cache@v1
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Monorepo Dependencies
+      run: yarn --frozen-lockfile
+    - name: Lerna Bootstrap
+      run: yarn lerna bootstrap
+    - name: Lint
+      run: yarn lint
+    - name: Depcheck
+      run: yarn lerna run depcheck --parallel
+    - name: Typecheck
+      run: yarn lerna run typecheck --parallel
+
+  publish:
+    needs: [test_keychain, codecheck]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+    - name: Checkout master
+      run: git checkout master
+    - name: Set Node Version
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.16.1
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v1
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Install monorepo deps
+      run: yarn
+    - name: Git status
+      run: git status
+    - name: Install package deps
+      run: yarn lerna exec --parallel "yarn"
+    - name: Git status
+      run: git status
+    - name: Setup .npmrc
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+    - name: Setup git
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+    - name: Lerna Version
+      run: yarn lerna version --conventional-commits --no-push --yes
+    - name: Publish
+      run: yarn lerna publish from-git --conventional-commits --yes
+    - name: Push changes
+      uses: ad-m/github-push-action@fe38f0a
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}

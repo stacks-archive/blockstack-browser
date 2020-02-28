@@ -17,6 +17,7 @@
     "test:coverage": "jest --collect-coverage",
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit",
+    "version": "yarn",
     "watch": "cross-env NODE_ENV=development EXT_ENV=watch webpack -d"
   },
   "version": "1.0.0",

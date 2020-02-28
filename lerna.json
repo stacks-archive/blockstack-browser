@@ -3,5 +3,10 @@
     "packages/*"
   ],
   "version": "independent",
-  "npmClient": "yarn"
+  "npmClient": "yarn",
+  "command": {
+    "version": {
+      "message": "chore(release): publish"
+    }
+  }
 }
