@@ -7,13 +7,12 @@ import { useAppDetails } from './useAppDetails';
 
 export const useAnalytics = () => {
   const authRequest = useSelector(selectDecodedAuthRequest);
-  const { name } = useAppDetails();
+  const { name, url } = useAppDetails();
 
   const getAppDetails = () => {
-    const appURL = authRequest ? new URL(authRequest?.redirect_uri) : null;
     return {
       appName: name,
-      appDomain: appURL?.host,
+      appDomain: url?.host,
     };
   };
 

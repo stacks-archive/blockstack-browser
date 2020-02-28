@@ -15,3 +15,5 @@ export const selectAppIcon = (state: AppState) => state.onboarding.appIcon;
 export const selectMagicRecoveryCode = (state: AppState) => state.onboarding.magicRecoveryCode;
 
 export const selectUsername = (state: AppState) => state.onboarding.username;
+
+export const selectAppURL = (state: AppState) => state.onboarding.appURL;

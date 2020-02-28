@@ -36,6 +36,7 @@ export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
         decodedAuthRequest: action.decodedAuthRequest,
         appName: action.appName,
         appIcon: action.appIcon,
+        appURL: action.appURL,
       };
       if (action.decodedAuthRequest.sendToSignIn) {
         newState.screen = ScreenName.SIGN_IN;

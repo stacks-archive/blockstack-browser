@@ -68,6 +68,7 @@ interface SaveAuthRequestParams {
   appIcon: string;
   decodedAuthRequest: DecodedAuthRequest;
   authRequest: string;
+  appURL: URL;
 }
 
 const saveAuthRequest = ({
@@ -75,6 +76,7 @@ const saveAuthRequest = ({
   appIcon,
   decodedAuthRequest,
   authRequest,
+  appURL,
 }: SaveAuthRequestParams): OnboardingActions => {
   return {
     type: SAVE_AUTH_REQUEST,
@@ -82,6 +84,7 @@ const saveAuthRequest = ({
     appIcon,
     decodedAuthRequest,
     authRequest,
+    appURL,
   };
 };
 
@@ -102,6 +105,7 @@ export function doSaveAuthRequest(authRequest: string): ThunkAction<void, AppSta
         authRequest,
         appName,
         appIcon,
+        appURL: new URL(decodedAuthRequest.redirect_uri),
       })
     );
     const state = getState();

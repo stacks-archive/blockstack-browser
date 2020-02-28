@@ -29,6 +29,7 @@ export interface OnboardingState {
   decodedAuthRequest?: DecodedAuthRequest;
   appName?: string;
   appIcon?: string;
+  appURL?: URL;
   magicRecoveryCode?: string;
   username?: string;
 }
@@ -47,6 +48,7 @@ interface SaveAuthRequest {
   type: typeof SAVE_AUTH_REQUEST;
   appName: string;
   appIcon: string;
+  appURL: URL;
   decodedAuthRequest: DecodedAuthRequest;
   authRequest: string;
 }
