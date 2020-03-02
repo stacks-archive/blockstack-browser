@@ -4,13 +4,23 @@ import { ThemeProvider, theme, Flex, CSSReset, Button, Stack } from '@blockstack
 import { Connect, AuthOptions, useConnect } from '@blockstack/connect';
 
 const icon = `${document.location.href}/assets/messenger-app-icon.png`;
+let authOrigin = 'http://localhost:8080';
+// In order to have deploy previews use the same version of the authenticator,
+// we detect if this is a 'deploy preview' and change the origin to point to the
+// same PR's deploy preview in the authenticator.
+if (document.location.origin.includes('deploy-preview')) {
+  // Our netlify sites are called "authenticator-demo" for this app, and
+  // "stacks-authenticator" for the authenticator.
+  authOrigin = document.location.origin.replace('authenticator-demo', 'stacks-authenticator');
+}
+
 const authOptions: AuthOptions = {
   manifestPath: '/static/manifest.json',
   redirectTo: '/',
   finished: ({ userSession }) => {
     console.log(userSession.loadUserData());
   },
-  authOrigin: 'http://localhost:8080',
+  authOrigin,
   appDetails: {
     name: 'Testing App',
     icon,
