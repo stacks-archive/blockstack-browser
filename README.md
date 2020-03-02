@@ -11,11 +11,10 @@ This monorepo contains a few key packages that the User Experience team at Block
 
 The first time you setup a development environment for this repository, follow these steps:
 
-1. Clone this package. 
-2. Run `yarn` to install top-level dependencies
-3. In the command line, run `yarn lerna bootstrap`
-  a. First, this will install dependencies in all packages
-  b. Second, `lerna` will "link" each interdependent package
-3. Run `yarn build:libs` to build each library package
+1. Clone this package.
+2. Run `yarn bootstrap` to install top-level dependencies
+3. In the command line, run `yarn dev` which will run two apps:
+    - `packages/test-app` which runs at localhost:3000 and implements an example of connect
+    - `packages/app` which is the auth app, running at localhost:8080
 
 For development instructions of specific packages, see the `README` in each package folder.
