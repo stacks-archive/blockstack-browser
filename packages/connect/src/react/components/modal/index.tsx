@@ -36,7 +36,7 @@ interface HeaderTitleProps {
 
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ hideIcon = false, title }) => (
   <Flex align="center">
-    {hideIcon ? null : <Logo mr={2} />}
+    {hideIcon ? null : <Logo mr="tight" />}
     <Text fontWeight={500} fontSize={'12px'}>
       {title}
     </Text>
@@ -74,7 +74,7 @@ const ModalHeader = ({ title, back, hideIcon, close, hideTitleElements, ...rest 
   const { doCloseAuth, doChangeScreen } = useConnect();
   return (
     <Flex
-      p={4}
+      p="base"
       borderRadius={['unset', '6px 6px 0 0']}
       bg="white"
       align="center"
@@ -105,7 +105,7 @@ const RenderScreen: React.FC = () => {
     }
     case States.SCREENS_SIGN_IN: {
       return (
-        <Box width="100%" p={5}>
+        <Box width="100%" p="base-loose">
           <ContinueWithAuth />
         </Box>
       );

@@ -55,17 +55,17 @@ export const HowItWorks: React.FC = () => {
         pretitle="How it works"
         body={[
           <Title>{name} keeps everything you do private with Blockstack&apos;s Secret Key technology</Title>,
-          <Text mt={2} display="block">
+          <Text mt="tight" display="block">
             Normally, apps keep your data for them to use. When you have a Secret Key, you no longer have to trust{' '}
             {name} with your data because {name} won&apos;t have access.
           </Text>,
-          <Box mt={2}>
+          <Box mt="tight">
             {howSecretKeyWorks({ name }).map(({ title, body }, key) => (
-              <Box mt={8} key={key}>
-                <Text mt={3} display="block" fontWeight="semibold">
+              <Box mt="extra-loose" key={key}>
+                <Text mt="base-tight" display="block" fontWeight="semibold">
                   {title}
                 </Text>
-                <Text mt={2} display="block">
+                <Text mt="tight" display="block">
                   {body}
                 </Text>
               </Box>
@@ -74,7 +74,7 @@ export const HowItWorks: React.FC = () => {
         ]}
       />
       <ScreenActions>
-        <Button width="100%" size="lg" mt={6} onClick={() => doAuth()}>
+        <Button width="100%" size="lg" mt="loose" onClick={() => doAuth()}>
           Get Started
         </Button>
       </ScreenActions>

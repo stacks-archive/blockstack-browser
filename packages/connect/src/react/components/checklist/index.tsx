@@ -21,16 +21,16 @@ const CheckList: React.FC<CheckListProps> = ({ items }) => (
       const { text } = item;
       return (
         <Flex
-          px={8}
-          pb={5}
-          pt={5}
+          px="extra-loose"
+          pb="base-loose"
+          pt="base-loose"
           borderBottom={items.length - 1 !== key ? '1px solid' : 'unset'}
           borderColor="inherit"
           align="center"
           textAlign="left"
           key={key}
         >
-          <Box color="blue" alignSelf="stretch" mt={1} mr={4}>
+          <Box color="blue" alignSelf="stretch" mt="extra-tight" mr="base">
             <Icon />
           </Box>
           <Item>{text}</Item>

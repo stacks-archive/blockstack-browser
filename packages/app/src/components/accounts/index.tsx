@@ -25,12 +25,14 @@ interface AccountItemProps extends FlexProps {
 const AccountItem = ({ label, address, selectedAddress, ...rest }: AccountItemProps) => {
   const loading = address === selectedAddress;
   return (
-    <Flex alignItems="center" {...rest}>
-      <Flex flex={1} overflow="hidden">
+    <Flex alignItems="center" maxWidth="100%" {...rest}>
+      <Flex flex={1} maxWidth="100%">
         <Text
-          display="inline-block"
+          display="block"
+          maxWidth="100%"
           textAlign="left"
           textStyle="body.small.medium"
+          style={{ wordBreak: 'break-word' }}
           {...getLoadingProps(!!selectedAddress)}
         >
           {label.replace(/\.id\.blockstack$/, '')}

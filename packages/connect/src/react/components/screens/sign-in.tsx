@@ -15,8 +15,8 @@ const ContinueWithAuth: React.FC = props => {
       justifyContent="center"
       border="1px solid"
       borderColor="inherit"
-      px={6}
-      py={3}
+      px="loose"
+      py="base-tight"
       borderRadius="6px"
       boxShadow="mid"
       height={14}
@@ -31,7 +31,7 @@ const ContinueWithAuth: React.FC = props => {
       {...bind}
       {...props}
     >
-      <Logo mr={2} />
+      <Logo mr="tight" />
       <Text fontWeight={500}>Continue with Secret Key</Text>
     </Flex>
   );

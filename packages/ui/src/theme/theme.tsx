@@ -1,9 +1,9 @@
 import colors from './colors';
-import sizes, { baseSizes } from './sizes';
+import { sizes } from './sizes';
 import typography from './typography';
 import { Theme } from './types';
 
-const space = baseSizes;
+const space = sizes;
 
 export const shadows = {
   low: '0px 1px 2px rgba(0, 0, 0, 0.04)',

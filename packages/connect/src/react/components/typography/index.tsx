@@ -7,7 +7,7 @@ const Title = (props: BoxProps) => (
 
 const Pretitle = (props: BoxProps) => (
   <Text
-    pt={6}
+    pt="loose"
     width="100%"
     fontWeight="medium"
     fontSize={['11px']}

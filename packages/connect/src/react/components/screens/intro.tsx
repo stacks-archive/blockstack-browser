@@ -20,7 +20,7 @@ const AppElement = ({
   icon: string;
 }) => (
   <Flex mx="auto" position="relative" {...rest}>
-    <AppIcon size="64px" mr={6} src={icon} alt={name} borderRadius="0" />
+    <AppIcon size="64px" mr="loose" src={icon} alt={name} borderRadius="0" />
     <Box position="absolute" left="50%" top="50%" ml="-16px" mt="-6px">
       <UnionLine />
     </Box>
@@ -34,17 +34,17 @@ export const Intro = () => {
 
   return (
     <Screen noMinHeight textAlign="center">
-      <AppElement mt={6} name={name} icon={icon} />
+      <AppElement mt="loose" name={name} icon={icon} />
       <ScreenBody
         fullWidth
-        mt={4}
+        mt="base"
         body={[
           <Title
             fontSize="20px"
             lineHeight="28px"
-            px={8}
+            px="extra-loose"
           >{`${name} guarantees your privacy by encrypting everything`}</Title>,
-          <Box mt={4} mx="auto" width="100%" height="1px" bg="#E5E5EC" />,
+          <Box mt="base" mx="auto" width="100%" height="1px" bg="#E5E5EC" />,
           <Box>
             <CheckList
               items={[
@@ -62,12 +62,12 @@ export const Intro = () => {
         ]}
       />
       <ScreenActions>
-        <Button width="100%" size="lg" mt={2} onClick={() => doAuth()}>
+        <Button width="100%" size="lg" mt="tight" onClick={() => doAuth()}>
           Get started
         </Button>
       </ScreenActions>
       <ScreenFooter>
-        <Stack mb={5} mt={3} spacing={4} isInline>
+        <Stack mb="base-loose" mt="base-tight" spacing="base" isInline>
           <Link textStyle="caption" color="blue" onClick={() => doAuth({ sendToSignIn: true })}>
             I already have a Secret Key
           </Link>

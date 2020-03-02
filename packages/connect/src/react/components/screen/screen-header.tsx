@@ -11,7 +11,7 @@ interface HeaderTitleProps {
 
 const HeaderTitle: React.FC<HeaderTitleProps> = ({ hideLogo, title }) => (
   <Flex align="center">
-    {hideLogo ? null : <Logo mr={2} />}
+    {hideLogo ? null : <Logo mr="tight" />}
     <Text fontWeight={500} textStyle={'body.small.medium'} fontSize={'12px'}>
       {title}
     </Text>
@@ -49,7 +49,7 @@ export const ScreenHeader = ({
   return (
     <Flex
       py={[4, 5]}
-      px={4}
+      px="base"
       height="56px"
       borderBottom="1px solid"
       borderBottomColor="inherit"
@@ -62,7 +62,7 @@ export const ScreenHeader = ({
       <Flex align="center">
         {!hideIcon ? <AppIcon src={appIcon} alt={appName || 'loading'} /> : null}
         {!hideIcon ? (
-          <Box mx={1} color="ink.300">
+          <Box mx="extra-tight" color="ink.300">
             <ChevronIcon direction="right" />
           </Box>
         ) : null}

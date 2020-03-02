@@ -28,16 +28,16 @@ export const Finished = () => {
     <Screen textAlign="center" noMinHeight>
       <FinishedIcon mt={10} name={name} icon={icon} />
       <ScreenBody
-        mt={4}
+        mt="base"
         body={[
           <Title>{name} has been connected to your Secret Key</Title>,
-          <Box mt={2}>
+          <Box mt="tight">
             Everything you do in {name} will be private, secure, and only accessible with your Secret Key.
           </Box>,
         ]}
       />
       <ScreenActions>
-        <Button width="100%" mt={4} size="lg" onClick={() => doCloseAuth()}>
+        <Button width="100%" mt="base" size="lg" onClick={() => doCloseAuth()}>
           Close
         </Button>
       </ScreenActions>

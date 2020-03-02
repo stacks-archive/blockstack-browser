@@ -27,9 +27,19 @@ export const baseSizes = {
   '64': '256px',
 };
 
-const sizes = {
-  ...baseSizes,
-  containers,
+export const namedSpacingUnits = {
+  none: baseSizes[0], //0px
+  'extra-tight': baseSizes[1], //4px
+  tight: baseSizes[2], //8px
+  'base-tight': baseSizes[3], //12px
+  base: baseSizes[4], //16px
+  'base-loose': baseSizes[5], //20px
+  loose: baseSizes[6], //24px
+  'extra-loose': baseSizes[8], //32px
 };
 
-export default sizes;
+export const sizes = {
+  ...baseSizes,
+  containers,
+  ...namedSpacingUnits,
+};
