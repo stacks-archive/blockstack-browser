@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { ChooseAccount, Create, SaveKey, SecretKey, SignIn, Username } from './screens';
-import { DecryptRecoveryCode } from './screens/decrypt-recovery-code';
+import { ChooseAccount, Create, SaveKey, SecretKey, SignIn, Username, DecryptRecoveryCode } from './screens';
 import { doSaveAuthRequest } from '@store/onboarding/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '@store';
@@ -85,7 +84,7 @@ const RenderScreen = ({ ...rest }) => {
       return <ChooseScreen />;
 
     case ScreenName.RECOVERY_CODE:
-      return <DecryptRecoveryCode next={() => doChangeScreen(ScreenName.CHOOSE_ACCOUNT)} />;
+      return <DecryptRecoveryCode next={() => dispatch(doChangeScreen(ScreenName.CHOOSE_ACCOUNT))} />;
 
     case ScreenName.REGISTRY_ERROR:
       return <UsernameRegistryError />;
