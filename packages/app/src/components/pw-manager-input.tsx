@@ -1,23 +1,30 @@
 import React from 'react';
 
-export const usernameInputId = 'username';
+interface PasswordManagerHiddenInput {
+  secretKey?: string;
+  appName?: string;
+}
 
-export const PasswordManagerHiddenInput = ({ secretKey }: { secretKey?: string }) => {
+const visuallyHiddenProps = { opacity: 0, position: 'absolute' } as const;
+
+const passwordManagerUsername = (appName?: string) => 'Blockstack Secret Key' + (!!appName && ` ${appName} `);
+
+export const PasswordManagerHiddenInput = ({ secretKey, appName }: PasswordManagerHiddenInput) => {
   if (!secretKey) return null;
   return (
     <>
-      <label style={{ opacity: 0, position: 'absolute' }} aria-hidden htmlFor={usernameInputId}>
-        Username
-      </label>
-      <label style={{ opacity: 0, position: 'absolute' }} aria-hidden>
-        Secret Key
+      <label style={visuallyHiddenProps} htmlFor="username">
         <input
-          id="secret-key"
-          type="password"
-          autoComplete="new-password"
-          defaultValue={secretKey}
-          aria-hidden="true"
+          id="username"
+          name="username"
+          type="text"
+          autoComplete="username"
+          value={passwordManagerUsername(appName)}
         />
+      </label>
+      <label style={visuallyHiddenProps} htmlFor="password">
+        Secret Key
+        <input id="secret-key" type="password" name="password" autoComplete="new-password" defaultValue={secretKey} />
       </label>
     </>
   );

@@ -21,14 +21,13 @@ import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';
 import { selectCurrentScreen } from '@store/onboarding/selectors';
-import { selectSecretKey, selectAppName } from '@store/onboarding/selectors';
+import { selectAppName } from '@store/onboarding/selectors';
 import {
   USERNAME_REGISTER_FAILED,
   USERNAME_SUBMITTED,
   USERNAME_VALIDATION_ERROR,
   USERNAME_SUBMIT_SUCCESS,
 } from '@common/track';
-import { PasswordManagerHiddenInput, usernameInputId } from '@components/pw-manager-input';
 import { useAnalytics } from '@common/hooks/use-analytics';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
@@ -50,10 +49,9 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
   const { name } = useAppDetails();
   const { doChangeScreen, doTrack } = useAnalytics();
 
-  const { wallet, screen, secretKey, appName } = useSelector((state: AppState) => ({
+  const { wallet, screen, appName } = useSelector((state: AppState) => ({
     wallet: selectCurrentWallet(state) as Wallet,
     screen: selectCurrentScreen(state),
-    secretKey: selectSecretKey(state),
     appName: selectAppName(state),
   }));
 
@@ -120,7 +118,6 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
 
   return (
     <Screen onSubmit={onSubmit}>
-      <PasswordManagerHiddenInput secretKey={secretKey} />
       <ScreenHeader />
       <ScreenBody
         mt={6}
@@ -132,8 +129,6 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
             </Text>
             <Box textAlign="left" position="relative" mt={4}>
               <Input
-                id={usernameInputId}
-                name={usernameInputId}
                 autoComplete="username"
                 data-test="input-username"
                 autoCapitalize="false"

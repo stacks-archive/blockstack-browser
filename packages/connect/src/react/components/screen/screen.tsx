@@ -10,7 +10,7 @@ interface ScreenBodyProps extends FlexProps {
 }
 
 export const Screen: React.FC<ScreenBodyProps> = ({ noMinHeight, isLoading, children, onSubmit, ...rest }) => {
-  const fn = onSubmit
+  const handleSubmit = onSubmit
     ? (e: React.FormEvent<HTMLInputElement>) => {
         e.preventDefault();
         onSubmit();
@@ -26,7 +26,7 @@ export const Screen: React.FC<ScreenBodyProps> = ({ noMinHeight, isLoading, chil
         flex={1}
         style={{ pointerEvents: isLoading ? 'none' : 'unset' }}
         as={onSubmit ? 'form' : 'main'}
-        onSubmit={fn}
+        onSubmit={handleSubmit}
         {...rest}
       >
         {children}
