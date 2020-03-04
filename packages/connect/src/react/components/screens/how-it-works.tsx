@@ -19,7 +19,12 @@ const howSecretKeyWorks = ({ name }: { name: string }): InfoSection[] => [
       <span>
         Blockstack is the open-source technology that generates your Secret Key. There&apos;s no company that owns or
         controls Blockstack, it is independent. Go to{' '}
-        <Link color="blue" display="inline-block" onClick={() => window.open('https://blockstack.org', '_blank')}>
+        <Link
+          color="blue"
+          display="inline-block"
+          onClick={() => window.open('https://blockstack.org', '_blank')}
+          fontSize="14px"
+        >
           blockstack.org
         </Link>{' '}
         to learn more.
