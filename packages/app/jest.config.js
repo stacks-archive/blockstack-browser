@@ -129,7 +129,7 @@ module.exports = {
   // The test environment that will be used for testing
   // testEnvironment: 'jsdom',
 
-  preset: 'jest-puppeteer',
+  preset: 'ts-jest',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -155,7 +155,7 @@ module.exports = {
   // testResultsProcessor: null,
 
   // This option allows use of a custom test runner
-  // testRunner: "jasmine2",
+  testRunner: "jest-circus/runner",
 
   // This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
   // testURL: "http://localhost",

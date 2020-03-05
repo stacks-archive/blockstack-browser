@@ -71,7 +71,12 @@ export const Accounts = ({ identities, showAddAccount, next }: AccountsProps) =>
               next(key);
             }}
           >
-            <AccountItem address={address} selectedAddress={selectedAddress} label={defaultUsername || address} />
+            <AccountItem
+              address={address}
+              selectedAddress={selectedAddress}
+              label={defaultUsername || address}
+              data-test={`account-index-${key}`}
+            />
           </ListItem>
         );
       })}

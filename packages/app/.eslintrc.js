@@ -26,7 +26,6 @@ module.exports = {
     page: true,
     browser: true,
     context: true,
-    jestPuppeteer: true,
   },
   rules: {
     quotes: [2, 'single', { avoidEscape: true }],

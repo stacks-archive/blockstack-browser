@@ -4,7 +4,7 @@ jobs:
   test_web:
     working_directory: ~/blockstack-app
     docker:
-      - image: circleci/node:12.16.1-browsers
+      - image: circleci/node:12.16.1
     steps:
       - checkout
       - run:
@@ -21,10 +21,6 @@ jobs:
       - run:
           name: Install package dependencies
           command: yarn lerna bootstrap
-      - run:
-          name: Install test deps
-          working_directory: ./packages/app/tests/test-app/
-          command: yarn
       - save_cache:
           key: yarn-packages-{{ checksum "package.json" }}-{{ checksum "combined-yarn-lock.txt" }}
           paths:
@@ -43,18 +39,17 @@ jobs:
               libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1 \
               libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 \
               ca-certificates fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+      # - run:
+      #     name: Install webkit dependencies
+      #     working_directory: /
+      #     command: sudo apt-get install -yq libwoff1 libopus0 libwebp6 libwebpdemux2 libenchant1c2a libgudev-1.0-0 libsecret-1-0 libhyphen0 libgdk-pixbuf2.0-0 libegl1 libgles2 libevent-2.1-6 libnotify4 libxslt1.1
       - run:
           name: test server
           command: yarn lerna run dev --scope @blockstack/app
           background: true
       - run:
-          name: Create .env file
-          working_directory: ./packages/app/tests/test-app/
-          command: echo "SKIP_PREFLIGHT_CHECK=true" >> .env
-      - run:
           name: Run test app
-          working_directory: ./packages/app/tests/test-app/
-          command: yarn start
+          command: yarn lerna run dev --scope test-app --stream
           background: true
       - run:
           name: test

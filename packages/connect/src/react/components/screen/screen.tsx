@@ -27,6 +27,7 @@ export const Screen: React.FC<ScreenBodyProps> = ({ noMinHeight, isLoading, chil
         style={{ pointerEvents: isLoading ? 'none' : 'unset' }}
         as={onSubmit ? 'form' : 'main'}
         onSubmit={handleSubmit}
+        data-test="screen"
         {...rest}
       >
         {children}

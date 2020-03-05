@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 import { ThemeProvider, theme, Flex, CSSReset, Button, Stack } from '@blockstack/ui';
 import { Connect, AuthOptions, useConnect } from '@blockstack/connect';
@@ -14,36 +14,49 @@ if (document.location.origin.includes('deploy-preview')) {
   authOrigin = document.location.origin.replace('authenticator-demo', 'stacks-authenticator');
 }
 
-const authOptions: AuthOptions = {
-  manifestPath: '/static/manifest.json',
-  redirectTo: '/',
-  finished: ({ userSession }) => {
-    console.log(userSession.loadUserData());
-  },
-  authOrigin,
-  appDetails: {
-    name: 'Testing App',
-    icon,
-  },
-};
-
 const AppContent: React.FC = () => {
-  const { doOpenAuth } = useConnect();
+  const { doOpenAuth, doAuth } = useConnect();
+
   return (
     <Stack isInline>
       <Button onClick={() => doOpenAuth(false)}>Open Connect</Button>
       <Button onClick={() => doOpenAuth(true)}>Sign In</Button>
+      <Button onClick={() => doAuth()} data-test="button-skip-connect">
+        Skip Connect
+      </Button>
     </Stack>
   );
 };
 
-export const App: React.FC = () => (
-  <Connect authOptions={authOptions}>
-    <ThemeProvider theme={theme}>
-      <CSSReset />
-      <Flex direction="column" height="100vh" width="100vw" align="center" justify="center">
-        <AppContent />
-      </Flex>
-    </ThemeProvider>
-  </Connect>
-);
+export const App: React.FC = () => {
+  const [authResponse, setAuthResponse] = React.useState('');
+  const [appPrivateKey, setAppPrivateKey] = React.useState('');
+
+  const authOptions: AuthOptions = {
+    manifestPath: '/static/manifest.json',
+    redirectTo: '/',
+    finished: ({ userSession, authResponse }) => {
+      console.log(userSession.loadUserData());
+      setAppPrivateKey(userSession.loadUserData().appPrivateKey);
+      setAuthResponse(authResponse);
+    },
+    authOrigin,
+    appDetails: {
+      name: 'Testing App',
+      icon,
+    },
+  };
+
+  return (
+    <Connect authOptions={authOptions}>
+      <ThemeProvider theme={theme}>
+        <CSSReset />
+        <Flex direction="column" height="100vh" width="100vw" align="center" justify="center">
+          {authResponse && <input type="hidden" id="auth-response" value={authResponse} />}
+          {appPrivateKey && <input type="hidden" id="app-private-key" value={appPrivateKey} />}
+          <AppContent />
+        </Flex>
+      </ThemeProvider>
+    </Connect>
+  );
+};
