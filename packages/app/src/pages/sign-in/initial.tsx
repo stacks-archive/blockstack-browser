@@ -8,7 +8,7 @@ import useDocumentTitle from '@rehooks/document-title';
 import { useDispatch, useSelector } from 'react-redux';
 import { SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '@common/track';
 import { doSetMagicRecoveryCode } from '@store/onboarding/actions';
-import { ScreenName, DEFAULT_PASSWORD } from '@store/onboarding/types';
+import { ScreenPaths, DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { AppState } from '@store';
 import { selectAppName } from '@store/onboarding/selectors';
 import { doStoreSeed } from '@store/wallet';
@@ -45,7 +45,7 @@ export const SignIn: React.FC<SignInProps> = props => {
       }
       if (parsedKeyInput.split(' ').length <= 1) {
         dispatch(doSetMagicRecoveryCode(parsedKeyInput));
-        dispatch(doChangeScreen(ScreenName.RECOVERY_CODE));
+        doChangeScreen(ScreenPaths.RECOVERY_CODE);
         return;
       }
       await doStoreSeed(parsedKeyInput, DEFAULT_PASSWORD)(dispatch, () => ({}), {});
@@ -104,7 +104,7 @@ export const SignIn: React.FC<SignInProps> = props => {
             color="blue"
             onClick={() => {
               doTrack(SIGN_IN_CREATE);
-              dispatch(doChangeScreen(ScreenName.GENERATION));
+              doChangeScreen(ScreenPaths.GENERATION);
             }}
           >
             Create a Secret Key

@@ -1,34 +1,27 @@
 import React, { useState } from 'react';
 
-import { Box, Input, Text, Button } from '@blockstack/ui';
-import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
+import { Box, Button, Input, Text } from '@blockstack/ui';
+import { PoweredBy, Screen, ScreenActions, ScreenBody, ScreenFooter, Title } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 
 import { useAppDetails } from '@common/hooks/useAppDetails';
-import { useDispatch, useSelector } from 'react-redux';
-import { doSetUsername, doFinishSignIn } from '@store/onboarding/actions';
-import { selectCurrentWallet } from '@store/wallet/selectors';
-import { AppState } from '@store';
-import { DEFAULT_PASSWORD, ScreenName } from '@store/onboarding/types';
-import {
-  registerSubdomain,
-  IdentityNameValidityError,
-  validateSubdomain,
-  Identity,
-  Wallet,
-} from '@blockstack/keychain';
+import { useDispatch } from 'react-redux';
+import { doFinishSignIn, doSetUsername } from '@store/onboarding/actions';
+import { useWallet } from '@common/hooks/use-wallet';
+
+import { DEFAULT_PASSWORD, ScreenPaths } from '@store/onboarding/types';
+import { Identity, IdentityNameValidityError, registerSubdomain, validateSubdomain } from '@blockstack/keychain';
 import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';
-import { selectCurrentScreen } from '@store/onboarding/selectors';
-import { selectAppName } from '@store/onboarding/selectors';
 import {
   USERNAME_REGISTER_FAILED,
+  USERNAME_SUBMIT_SUCCESS,
   USERNAME_SUBMITTED,
   USERNAME_VALIDATION_ERROR,
-  USERNAME_SUBMIT_SUCCESS,
 } from '@common/track';
 import { useAnalytics } from '@common/hooks/use-analytics';
+import { useLocation } from 'react-router-dom';
 
 const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
@@ -45,20 +38,21 @@ interface UsernameProps {
 }
 
 export const Username: React.FC<UsernameProps> = ({ next }) => {
+  const { pathname } = useLocation();
+
+  const { wallet } = useWallet();
   const dispatch = useDispatch();
   const { name } = useAppDetails();
   const { doChangeScreen, doTrack } = useAnalytics();
 
-  const { wallet, screen, appName } = useSelector((state: AppState) => ({
-    wallet: selectCurrentWallet(state) as Wallet,
-    screen: selectCurrentScreen(state),
-    appName: selectAppName(state),
-  }));
-
-  const titleForPasswordManagers = `${appName} with Blockstack`;
-  document.title = titleForPasswordManagers;
+  document.title = `${name} with Blockstack`;
   const [error, setError] = useState<IdentityNameValidityError | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState('initial');
+  const setLoadingStatus = () => setStatus('loading');
+  const setErrorStatus = () => setStatus('error');
+
+  const isLoading = status === 'loading';
+
   const [username, setUsername] = useState('');
   const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
 
@@ -69,7 +63,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
 
   const onSubmit = async () => {
     setHasAttemptedSubmit(true);
-    setLoading(true);
+    setLoadingStatus();
 
     doTrack(USERNAME_SUBMITTED);
 
@@ -78,26 +72,26 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
     if (validationErrors !== null) {
       doTrack(USERNAME_VALIDATION_ERROR);
       setError(validationErrors);
-      setLoading(false);
+      setErrorStatus();
       return;
-    }
-
-    let identity: Identity;
-    let identityIndex: number;
-
-    if (screen === ScreenName.USERNAME) {
-      identity = wallet.identities[0];
-      identityIndex = 0;
-    } else {
-      // we're in ScreenName.ADD_ACCOUNT
-      identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
-      identityIndex = wallet.identities.length - 1;
     }
 
     if (!wallet) {
       dispatch(doSetUsername(username));
       next();
       return;
+    }
+
+    let identity: Identity;
+    let identityIndex: number;
+
+    if (pathname === ScreenPaths.USERNAME) {
+      identity = wallet.identities[0];
+      identityIndex = 0;
+    } else {
+      // we're in ScreenPaths.ADD_ACCOUNT
+      identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
+      identityIndex = wallet.identities.length - 1;
     }
 
     try {
@@ -112,7 +106,7 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
       dispatch(doFinishSignIn({ identityIndex }));
     } catch (error) {
       doTrack(USERNAME_REGISTER_FAILED, { status: error.status });
-      dispatch(doChangeScreen(ScreenName.REGISTRY_ERROR));
+      dispatch(doChangeScreen(ScreenPaths.REGISTRY_ERROR));
     }
   };
 
@@ -152,7 +146,15 @@ export const Username: React.FC<UsernameProps> = ({ next }) => {
         ]}
       />
       <ScreenActions>
-        <Button width="100%" size="lg" mt={6} data-test="button-username-continue" type="submit" isLoading={loading}>
+        <Button
+          width="100%"
+          size="lg"
+          mt={6}
+          data-test="button-username-continue"
+          type="submit"
+          isDisabled={isLoading}
+          isLoading={isLoading}
+        >
           Continue
         </Button>
       </ScreenActions>

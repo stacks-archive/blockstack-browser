@@ -28,10 +28,10 @@ export function doSignOut(): WalletActions {
   };
 }
 
-export function doStoreSeed(seed: string, password: string): ThunkAction<Promise<Wallet>, {}, {}, WalletActions> {
+export function doStoreSeed(secretKey: string, password: string): ThunkAction<Promise<Wallet>, {}, {}, WalletActions> {
   return async dispatch => {
     dispatch(isRestoringWallet());
-    const wallet = await Wallet.restore(password, seed);
+    const wallet = await Wallet.restore(password, secretKey);
     dispatch(didRestoreWallet(wallet));
     return wallet;
   };

@@ -64,8 +64,11 @@ export const authenticate = async ({
   const urlParams = new URLSearchParams();
   params.forEach(([key, value]) => urlParams.set(key, value));
   urlParams.set('authRequest', authRequest);
+
+  const path = sendToSignIn ? 'sign-in' : 'sign-up';
+
   const popup = popupCenter({
-    url: `${authURL.origin}/actions.html?${urlParams.toString()}`,
+    url: `${authURL.origin}/#/${path}?${urlParams.toString()}`,
   });
 
   setupListener({ popup, authRequest, finished, authURL, userSession });

@@ -15,8 +15,8 @@ export class DemoPage {
   profileBtn = '//*[@title="Your Profile"]';
   logoutBtn = '//*[contains(text(),"Log out")]';
   alreadyHaveSecretKeyLink = '//span[text()="I already have a Secret Key"]';
-  openConnectBtn = 'text="Open Connect"';
-  openSignInBtn = 'text="Sign In"';
+  openConnectBtn = createTestSelector('sign-up');
+  openSignInBtn = createTestSelector('sign-in');
 
   page: Page;
 

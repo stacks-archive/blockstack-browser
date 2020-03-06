@@ -24,9 +24,9 @@ interface LogOutAction {
 }
 
 export interface WalletState {
-  seed: string | null;
+  secretKey?: string;
   isRestoringWallet: boolean;
-  currentWallet: Wallet | null;
+  currentWallet?: Wallet;
   identities: Identity[];
 }
 

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Identity } from '@blockstack/keychain';
 import { Text, Flex, FlexProps, Spinner } from '@blockstack/ui';
-import { ScreenName } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/onboarding/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
 import { AccountAvatar } from './account-avatar';
@@ -52,7 +51,6 @@ interface AccountsProps {
 }
 
 export const Accounts = ({ identities, showAddAccount, next }: AccountsProps) => {
-  const dispatch = useDispatch();
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { doChangeScreen } = useAnalytics();
 
@@ -86,7 +84,7 @@ export const Accounts = ({ identities, showAddAccount, next }: AccountsProps) =>
         <ListItem
           onClick={() => {
             if (selectedAddress) return;
-            dispatch(doChangeScreen(ScreenName.ADD_ACCOUNT));
+            doChangeScreen(ScreenPaths.ADD_ACCOUNT);
           }}
           cursor={selectedAddress ? 'not-allowed' : 'pointer'}
           hasAction

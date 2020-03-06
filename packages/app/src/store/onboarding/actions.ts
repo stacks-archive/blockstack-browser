@@ -1,7 +1,8 @@
 import {
   OnboardingActions,
   CHANGE_PAGE,
-  ScreenName,
+  ONBOARDING_PROGRESS,
+  ScreenPaths,
   DEFAULT_PASSWORD,
   SAVE_KEY,
   SAVE_AUTH_REQUEST,
@@ -26,7 +27,13 @@ import { finalizeAuthResponse } from '@common/utils';
 import { gaiaUrl } from '@common/constants';
 import { doTrackScreenChange } from '@common/track';
 
-export const doChangeScreen = (screen: ScreenName): OnboardingActions => {
+export const doSetOnboardingProgress = (status: boolean): OnboardingActions => {
+  return {
+    type: ONBOARDING_PROGRESS,
+    payload: status,
+  };
+};
+export const doChangeScreen = (screen: ScreenPaths): OnboardingActions => {
   return {
     type: CHANGE_PAGE,
     screen,
@@ -94,11 +101,24 @@ export function doSaveAuthRequest(authRequest: string): ThunkAction<void, AppSta
     const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
     let appName = decodedAuthRequest.appDetails?.name;
     let appIcon = decodedAuthRequest.appDetails?.icon;
+
     if (!appName || !appIcon) {
       const appManifest = await loadManifest(decodedAuthRequest);
       appName = appManifest.name;
       appIcon = appManifest.icons[0].src as string;
     }
+
+    const state = getState();
+    const screen = selectCurrentScreen(state);
+    const identities = selectIdentities(state);
+    const hasIdentities = identities && identities.length;
+    if ((screen === ScreenPaths.GENERATION || screen === ScreenPaths.SIGN_IN) && hasIdentities) {
+      doTrackScreenChange(ScreenPaths.CHOOSE_ACCOUNT, decodedAuthRequest);
+      dispatch(doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT));
+    } else {
+      doTrackScreenChange(screen, decodedAuthRequest);
+    }
+
     dispatch(
       saveAuthRequest({
         decodedAuthRequest,
@@ -108,16 +128,6 @@ export function doSaveAuthRequest(authRequest: string): ThunkAction<void, AppSta
         appURL: new URL(decodedAuthRequest.redirect_uri),
       })
     );
-    const state = getState();
-    const screen = selectCurrentScreen(state);
-    const identities = selectIdentities(state);
-    const hasIdentities = identities && identities.length;
-    if ((screen === ScreenName.GENERATION || screen === ScreenName.SIGN_IN) && hasIdentities) {
-      doTrackScreenChange(ScreenName.CHOOSE_ACCOUNT, decodedAuthRequest);
-      dispatch(doChangeScreen(ScreenName.CHOOSE_ACCOUNT));
-    } else {
-      doTrackScreenChange(screen, decodedAuthRequest);
-    }
   };
 }
 
@@ -159,5 +169,6 @@ export function doFinishSignIn(
     });
     finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
     dispatch(didGenerateWallet(wallet));
+    dispatch(doSetOnboardingProgress(false));
   };
 }

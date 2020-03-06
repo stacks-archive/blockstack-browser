@@ -46,5 +46,6 @@
   },
   "workspaces":[
     "packages/*"
-  ]
+  ],
+  "dependencies": {}
 }

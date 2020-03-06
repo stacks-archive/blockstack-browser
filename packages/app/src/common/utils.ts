@@ -2,8 +2,8 @@ import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
 
 export const getAuthRequestParam = () => {
-  const { search } = document.location;
-  const matches = /authRequest=(.*)&?/.exec(search);
+  const { hash } = document.location;
+  const matches = /authRequest=(.*)&?/.exec(hash);
   if (matches && matches.length === 2) {
     return matches[1];
   }

@@ -34,7 +34,7 @@ if (process.env.CI_TEST_DEVICES) {
   environments.push([chromium, devices['Pixel 2']]);
 }
 
-jest.retryTimes(3);
+jest.retryTimes(process.env.CI ? 3 : 1);
 describe.each(environments)('auth scenarios - %o %o', (browserType, deviceType) => {
   let browser: Browser;
   let context: BrowserContext;

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Spinner, Flex, Text } from '@blockstack/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 
-import { doCreateSecretKey } from '@store/onboarding/actions';
+import { doCreateSecretKey, doSetOnboardingProgress } from '@store/onboarding/actions';
 import { useAppDetails } from '@common/hooks/useAppDetails';
-import { selectCurrentWallet } from '@store/wallet/selectors';
-import { AppState } from '@store';
+
+import { useWallet } from '@common/hooks/use-wallet';
 
 interface ExplainerCardProps {
   title: string;
@@ -51,9 +51,7 @@ interface CreateProps {
 }
 export const Create: React.FC<CreateProps> = props => {
   const [cardIndex, setCardIndex] = useState(0);
-  const { wallet } = useSelector((state: AppState) => ({
-    wallet: selectCurrentWallet(state),
-  }));
+  const { wallet, isRestoringWallet } = useWallet();
   const { name } = useAppDetails();
   const dispatch = useDispatch();
 
@@ -85,7 +83,8 @@ export const Create: React.FC<CreateProps> = props => {
       // We have this check for `wallet`, because this is the
       // default first screen rendered. We don't want to accidentally create a new
       // seed if a logged-in user gets into this hook.
-      if (!wallet) {
+      if (!wallet && !isRestoringWallet) {
+        dispatch(doSetOnboardingProgress(true));
         dispatch(doCreateSecretKey());
       }
     }, 200);

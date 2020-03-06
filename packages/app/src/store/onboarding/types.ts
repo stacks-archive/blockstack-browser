@@ -1,5 +1,6 @@
-import { DecodedAuthRequest } from '../../common/dev/types';
+import { DecodedAuthRequest } from '@common/dev/types';
 
+export const ONBOARDING_PROGRESS = 'ONBOARDING/ONBOARDING_PROGRESS';
 export const CHANGE_PAGE = 'ONBOARDING/CHANGE_PAGE';
 export const SAVE_KEY = 'ONBOARDING/SAVE_KEY';
 export const SAVE_AUTH_REQUEST = 'ONBOARDING/SAVE_AUTH_REQUEST';
@@ -19,11 +20,23 @@ export enum ScreenName {
   REGISTRY_ERROR = 'screens/REGISTRY_ERROR',
 }
 
+export enum ScreenPaths {
+  GENERATION = '/sign-up',
+  SECRET_KEY = '/sign-up/secret-key',
+  SAVE_KEY = '/sign-up/save-secret-key',
+  USERNAME = '/sign-up/username',
+  SIGN_IN = '/sign-in',
+  RECOVERY_CODE = '/sign-in/recover',
+  ADD_ACCOUNT = '/sign-in/add-account',
+  CHOOSE_ACCOUNT = '/connect/choose-account',
+  REGISTRY_ERROR = '/username-error',
+}
+
 // TODO: clarify usage of password for local key encryption
 export const DEFAULT_PASSWORD = 'password';
 
 export interface OnboardingState {
-  screen: ScreenName;
+  screen: ScreenPaths;
   secretKey?: string;
   authRequest?: string;
   decodedAuthRequest?: DecodedAuthRequest;
@@ -32,11 +45,17 @@ export interface OnboardingState {
   appURL?: URL;
   magicRecoveryCode?: string;
   username?: string;
+  onboardingInProgress?: boolean;
+}
+
+interface OnboardingProgressAction {
+  type: typeof ONBOARDING_PROGRESS;
+  payload: boolean;
 }
 
 interface ChangePageAction {
   type: typeof CHANGE_PAGE;
-  screen: ScreenName;
+  screen: ScreenPaths;
 }
 
 interface StoreSecretKey {
@@ -64,6 +83,7 @@ interface SetUsername {
 }
 
 export type OnboardingActions =
+  | OnboardingProgressAction
   | ChangePageAction
   | StoreSecretKey
   | SetMagicRecoveryCode

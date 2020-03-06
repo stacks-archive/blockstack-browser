@@ -1,4 +1,4 @@
-import { ScreenName } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/onboarding/types';
 import { DecodedAuthRequest } from './dev/types';
 
 export const SECRET_KEY_FAQ_WHERE = 'View Secret Key FAQ (Where)';
@@ -23,32 +23,30 @@ export const USERNAME_SUBMIT_SUCCESS = 'Submit Username Success';
 
 // Nice page names for Mark to see in Mixpanel
 export const pageTrackingNameMap = {
-  [ScreenName.CHOOSE_ACCOUNT]: 'Choose Account',
-  [ScreenName.USERNAME]: 'Username',
-  [ScreenName.GENERATION]: 'Generation',
-  [ScreenName.SECRET_KEY]: 'Copy Secret Key',
-  [ScreenName.SAVE_KEY]: 'Save Secret Key',
-  [ScreenName.CONNECT_APP]: 'Connect App',
-  [ScreenName.SIGN_IN]: 'Sign In',
-  [ScreenName.RECOVERY_CODE]: 'Magic Recovery Code',
-  [ScreenName.ADD_ACCOUNT]: ' Select Username',
-  [ScreenName.REGISTRY_ERROR]: 'Username Registry Error',
+  [ScreenPaths.CHOOSE_ACCOUNT]: 'Choose Account',
+  [ScreenPaths.USERNAME]: 'Username',
+  [ScreenPaths.GENERATION]: 'Generation',
+  [ScreenPaths.SECRET_KEY]: 'Copy Secret Key',
+  [ScreenPaths.SAVE_KEY]: 'Save Secret Key',
+  [ScreenPaths.SIGN_IN]: 'Sign In',
+  [ScreenPaths.RECOVERY_CODE]: 'Magic Recovery Code',
+  [ScreenPaths.ADD_ACCOUNT]: ' Select Username',
+  [ScreenPaths.REGISTRY_ERROR]: 'Username Registry Error',
 };
 
 export const titleNameMap = {
-  [ScreenName.CHOOSE_ACCOUNT]: 'Choose account',
-  [ScreenName.USERNAME]: 'Choose a username',
-  [ScreenName.GENERATION]: 'Generating your Secret Key',
-  [ScreenName.SECRET_KEY]: 'Your Secret Key',
-  [ScreenName.SAVE_KEY]: 'Save your Secret Key',
-  [ScreenName.CONNECT_APP]: 'Connect App',
-  [ScreenName.SIGN_IN]: 'Sign in',
-  [ScreenName.RECOVERY_CODE]: 'Enter your password',
-  [ScreenName.ADD_ACCOUNT]: ' Select Username',
-  [ScreenName.REGISTRY_ERROR]: 'Failed to register username',
+  [ScreenPaths.CHOOSE_ACCOUNT]: 'Choose account',
+  [ScreenPaths.USERNAME]: 'Choose a username',
+  [ScreenPaths.GENERATION]: 'Generating your Secret Key',
+  [ScreenPaths.SECRET_KEY]: 'Your Secret Key',
+  [ScreenPaths.SAVE_KEY]: 'Save your Secret Key',
+  [ScreenPaths.SIGN_IN]: 'Sign in',
+  [ScreenPaths.RECOVERY_CODE]: 'Enter your password',
+  [ScreenPaths.ADD_ACCOUNT]: ' Select Username',
+  [ScreenPaths.REGISTRY_ERROR]: 'Failed to register username',
 };
 
-export const doTrackScreenChange = (screen: ScreenName, decodedAuthRequest: DecodedAuthRequest | undefined) => {
+export const doTrackScreenChange = (screen: ScreenPaths, decodedAuthRequest: DecodedAuthRequest | undefined) => {
   document.title = titleNameMap[screen];
   const appURL = decodedAuthRequest ? new URL(decodedAuthRequest?.redirect_uri) : null;
   window.analytics.page(pageTrackingNameMap[screen], {

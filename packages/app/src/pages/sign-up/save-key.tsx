@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 
 import { Button, Text } from '@blockstack/ui';
 
 import { Collapse } from '@components/collapse';
-import { AppState } from '@store';
 
-import { selectAppName } from '@store/onboarding/selectors';
-import { faqs } from '@components/onboarding/data';
-import { doChangeScreen } from '@store/onboarding/actions';
-import { ScreenName } from '@store/onboarding/types';
+import { faqs } from '@common/onboarding-data';
+import { ScreenPaths } from '@store/onboarding/types';
+import { useAppDetails } from '@common/hooks/useAppDetails';
+import { useAnalytics } from '@common/hooks/use-analytics';
 
 interface SaveKeyProps {
   next: () => void;
@@ -19,9 +17,9 @@ interface SaveKeyProps {
 
 export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
   const title = 'Save your Secret Key';
-  const appName = useSelector((state: AppState) => selectAppName(state));
+  const { name } = useAppDetails();
+  const { doChangeScreen } = useAnalytics();
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
 
   return (
     <Screen pb={0} isLoading={loading}>
@@ -59,12 +57,12 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
           textAlign="center"
           py={5}
           cursor="pointer"
-          onClick={() => dispatch(doChangeScreen(ScreenName.SECRET_KEY))}
+          onClick={() => doChangeScreen(ScreenPaths.SECRET_KEY)}
         >
           View Secret Key again
         </Text>
       </ScreenActions>
-      <Collapse data={faqs(appName as string)} />
+      <Collapse data={faqs(name as string)} />
     </Screen>
   );
 };

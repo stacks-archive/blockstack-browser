@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ThemeProvider, theme, Flex, CSSReset, Button, Stack } from '@blockstack/ui';
+import { ThemeProvider, Box, theme, Text, Flex, CSSReset, Button, Stack } from '@blockstack/ui';
 import { Connect, AuthOptions, useConnect } from '@blockstack/connect';
 
 const icon = `${document.location.href}/assets/messenger-app-icon.png`;
@@ -14,21 +14,68 @@ if (document.location.origin.includes('deploy-preview')) {
   authOrigin = document.location.origin.replace('authenticator-demo', 'stacks-authenticator');
 }
 
+const Card: React.FC = props => (
+  <Flex
+    border="1px solid"
+    borderRadius="6px"
+    borderColor="inherit"
+    p={6}
+    direction="column"
+    boxShadow="mid"
+    minWidth="420px"
+    {...props}
+  />
+);
+
 const AppContent: React.FC = () => {
   const { doOpenAuth, doAuth } = useConnect();
 
   return (
-    <Stack isInline>
-      <Button onClick={() => doOpenAuth(false)}>Open Connect</Button>
-      <Button onClick={() => doOpenAuth(true)}>Sign In</Button>
-      <Button onClick={() => doAuth()} data-test="button-skip-connect">
-        Skip Connect
-      </Button>
-    </Stack>
+    <Card>
+      <Box textAlign="center" pb={6}>
+        <Text as="h1">Blockstack Connect</Text>
+      </Box>
+      <Flex justify="center">
+        <Stack isInline>
+          <Button onClick={() => doOpenAuth(false)} data-test="sign-up">
+            Sign Up
+          </Button>
+          <Button onClick={() => doOpenAuth(true)} data-test="sign-in">
+            Sign In
+          </Button>
+          <Button onClick={() => doAuth()} data-test="skip-connect">
+            Skip Connect
+          </Button>
+        </Stack>
+      </Flex>
+    </Card>
+  );
+};
+
+interface AppState {
+  [key: string]: any;
+}
+
+const SignedIn = (props: { username: string; handleSignOut: () => void }) => {
+  return (
+    <Card>
+      <Box textAlign="center">
+        <Text as="h1">Welcome back!</Text>
+      </Box>
+      <Box textAlign="center" pt={4}>
+        <Text as="h2">{props.username}</Text>
+      </Box>
+      <Flex mt={6} align="center" justify="center">
+        <Button mx="auto" onClick={props.handleSignOut}>
+          Sign out
+        </Button>
+      </Flex>
+    </Card>
   );
 };
 
 export const App: React.FC = () => {
+  const [state, setState] = React.useState<AppState>({});
   const [authResponse, setAuthResponse] = React.useState('');
   const [appPrivateKey, setAppPrivateKey] = React.useState('');
 
@@ -36,9 +83,11 @@ export const App: React.FC = () => {
     manifestPath: '/static/manifest.json',
     redirectTo: '/',
     finished: ({ userSession, authResponse }) => {
-      console.log(userSession.loadUserData());
+      const userData = userSession.loadUserData();
+      setState(() => userData);
       setAppPrivateKey(userSession.loadUserData().appPrivateKey);
       setAuthResponse(authResponse);
+      console.log(userData);
     },
     authOrigin,
     appDetails: {
@@ -47,14 +96,19 @@ export const App: React.FC = () => {
     },
   };
 
+  const handleSignOut = () => {
+    setState({});
+  };
+  const isSignedIn = (state && state.identityAddress) || undefined;
   return (
     <Connect authOptions={authOptions}>
       <ThemeProvider theme={theme}>
         <CSSReset />
-        <Flex direction="column" height="100vh" width="100vw" align="center" justify="center">
+        <Flex direction="column" height="100vh" width="100vw" align="center" justify="center" bg="whitesmoke">
           {authResponse && <input type="hidden" id="auth-response" value={authResponse} />}
           {appPrivateKey && <input type="hidden" id="app-private-key" value={appPrivateKey} />}
-          <AppContent />
+
+          {!isSignedIn ? <AppContent /> : <SignedIn handleSignOut={handleSignOut} username={state.username} />}
         </Flex>
       </ThemeProvider>
     </Connect>

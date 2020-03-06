@@ -1,7 +1,8 @@
 import React from 'react';
 import { ThemeProvider, theme, CSSReset } from '@blockstack/ui';
 import { createGlobalStyle } from 'styled-components';
-import { Onboarding } from '@components/onboarding';
+import { Routes } from '@components/routes';
+import { HashRouter as Router } from 'react-router-dom';
 
 const GlobalStyles = createGlobalStyle`
 #actions-root{
@@ -11,16 +12,18 @@ width: 100%;
 flex-direction: column;
 }`;
 
-export const OnboardingApp: React.FC = () => {
+export const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <React.Fragment>
         <GlobalStyles />
         <CSSReset />
-        <Onboarding />
+        <Router>
+          <Routes />
+        </Router>
       </React.Fragment>
     </ThemeProvider>
   );
 };
 
-export default OnboardingApp;
+export default App;

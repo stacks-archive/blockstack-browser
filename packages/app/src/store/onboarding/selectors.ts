@@ -17,3 +17,5 @@ export const selectMagicRecoveryCode = (state: AppState) => state.onboarding.mag
 export const selectUsername = (state: AppState) => state.onboarding.username;
 
 export const selectAppURL = (state: AppState) => state.onboarding.appURL;
+
+export const selectOnboardingProgress = (state: AppState) => state.onboarding.onboardingInProgress;

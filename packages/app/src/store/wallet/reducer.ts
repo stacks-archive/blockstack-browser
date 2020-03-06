@@ -2,9 +2,9 @@ import { Reducer } from 'redux';
 import { WalletActions, WalletState, RESTORE_WALLET, IS_RESTORING_WALLET, GENERATE_WALLET, SIGN_OUT } from './types';
 
 const initialState: WalletState = {
-  seed: null,
+  secretKey: undefined,
   isRestoringWallet: false,
-  currentWallet: null,
+  currentWallet: undefined,
   identities: [],
 };
 

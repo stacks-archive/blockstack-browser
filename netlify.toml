@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/actions.html"
+  to = "/#/sign-up?authRequest=:authRequest"
+  force = true
+  query = {authRequest = ":authRequest"}

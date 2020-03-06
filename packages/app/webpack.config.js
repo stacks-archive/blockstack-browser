@@ -64,8 +64,7 @@ module.exports = {
     popup: path.join(sourceRootPath, 'extension', 'index.tsx'),
     inpage: path.join(sourceRootPath, 'extension', 'inpage.ts'),
     'message-bus': path.join(sourceRootPath, 'extension', 'content-scripts', 'message-bus.ts'),
-    options: path.join(sourceRootPath, 'index.tsx'),
-    actions: path.join(sourceRootPath, 'actions.tsx'),
+    index: path.join(sourceRootPath, 'index.tsx'),
   },
   output: {
     path: distRootPath,
@@ -170,6 +169,7 @@ module.exports = {
   },
   devServer: {
     contentBase: './dist',
+    historyApiFallback: true,
   },
   devtool: getSourceMap(),
   watch: false,
@@ -177,14 +177,6 @@ module.exports = {
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
     new webpack.HashedModuleIdsPlugin(),
     new CheckerPlugin(),
-    new HtmlWebpackPlugin({
-      template: path.join(sourceRootPath, '../', 'public', 'html', 'options.html'),
-      inject: 'body',
-      filename: 'index.html',
-      title: 'Blockstack',
-      chunks: ['options', 'common'],
-      ...hmtlProdOpts,
-    }),
     new HtmlWebpackPlugin({
       template: path.join(sourceRootPath, '../', 'public', 'html', 'popup.html'),
       inject: 'body',
@@ -194,11 +186,11 @@ module.exports = {
       ...hmtlProdOpts,
     }),
     new HtmlWebpackPlugin({
-      template: path.join(sourceRootPath, '../', 'public', 'html', 'actions.html'),
+      template: path.join(sourceRootPath, '../', 'public', 'html', 'index.html'),
       inject: 'body',
-      filename: 'actions.html',
+      filename: 'index.html',
       title: 'Blockstack',
-      chunks: ['actions', 'common'],
+      chunks: ['index', 'common'],
       ...hmtlProdOpts,
     }),
     new CopyWebpackPlugin([

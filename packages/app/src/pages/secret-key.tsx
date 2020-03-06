@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+
 import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Button, Text } from '@blockstack/ui';
@@ -7,8 +7,9 @@ import { Button, Text } from '@blockstack/ui';
 import { Toast } from '@components/toast';
 import { Card } from '@components/card';
 import { SeedTextarea } from '@components/seed-textarea';
-import { AppState } from '@store';
-import { selectSecretKey, selectAppName } from '@store/onboarding/selectors';
+
+import { useWallet } from '@common/hooks/use-wallet';
+import { useAppDetails } from '@common/hooks/useAppDetails';
 import { PasswordManagerHiddenInput } from '@components/pw-manager-input';
 
 interface SecretKeyProps {
@@ -17,10 +18,8 @@ interface SecretKeyProps {
 
 export const SecretKey: React.FC<SecretKeyProps> = props => {
   const title = 'Your Secret Key';
-  const { secretKey, appName } = useSelector((state: AppState) => ({
-    secretKey: selectSecretKey(state),
-    appName: selectAppName(state),
-  }));
+  const { secretKey } = useWallet();
+  const { name } = useAppDetails();
   const [copied, setCopiedState] = useState(false);
 
   useEffect(() => {
@@ -41,14 +40,14 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
   return (
     <>
       <Screen onSubmit={handleButtonClick}>
-        <PasswordManagerHiddenInput appName={appName} secretKey={secretKey} />
+        <PasswordManagerHiddenInput appName={name} secretKey={secretKey} />
         <ScreenHeader />
         <ScreenBody
           mt={6}
           body={[
             <Title>{title}</Title>,
             <Text mt={2} display="block">
-              Here’s your Secret Key: 12 words that prove it’s you when you want to use {appName} on a new device. Once
+              Here’s your Secret Key: 12 words that prove it’s you when you want to use {name} on a new device. Once
               lost it’s lost forever, so save it somewhere you won’t forget.
             </Text>,
             <Card title="Your Secret Key" mt={6}>
