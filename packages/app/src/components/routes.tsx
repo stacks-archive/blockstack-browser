@@ -17,7 +17,6 @@ import { authenticationInit } from '@common/utils';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
-
 import { Routes as RoutesDom, Route, Navigate } from 'react-router-dom';
 
 export const Routes: React.FC = () => {
@@ -102,8 +101,9 @@ export const Routes: React.FC = () => {
           />
         }
       />
-      ;{/*Error/Misc*/}
+      {/*Error/Misc*/}
       <Route path="/username-error" element={<UsernameRegistryError />} />
+      <Route path="/settings/secret-key" element={<SecretKey next={() => doChangeScreen(ScreenPaths.HOME)} />} />
     </RoutesDom>
   );
 };

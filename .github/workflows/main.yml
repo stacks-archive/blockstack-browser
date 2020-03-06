@@ -56,7 +56,7 @@ jobs:
     - name: Lint
       run: yarn lint
     - name: Typecheck
-      run: yarn lerna run typecheck --parallel
+      run: yarn typecheck
 
   publish:
     needs: [test_keychain, codecheck]

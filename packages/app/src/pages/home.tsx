@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Flex, Text } from '@blockstack/ui';
+import { Box, PseudoBox, Flex, Text } from '@blockstack/ui';
 import { LogoWithName } from '@components/logo-with-name';
 import { SignOut } from '@components/sign-out';
-
+import { useAnalytics } from '@common/hooks/use-analytics';
 import { useDispatch } from 'react-redux';
+import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { doSignOut } from '@store/wallet';
 
@@ -29,6 +30,17 @@ const SignedOut = () => (
   </Flex>
 );
 
+const SecretKeyButton = () => {
+  const { doChangeScreen } = useAnalytics();
+  return (
+    <PseudoBox _hover={{ cursor: 'pointer' }} onClick={() => doChangeScreen(ScreenPaths.SETTINGS_KEY)}>
+      <Text color="blue" fontWeight={500} textStyle="body.small.medium" fontSize="12px">
+        View Secret Key
+      </Text>
+    </PseudoBox>
+  );
+};
+
 export const Home = () => {
   const dispatch = useDispatch();
   const { identities } = useWallet();
@@ -36,7 +48,10 @@ export const Home = () => {
 
   return (
     <Flex wrap="wrap" py={5} px={4} flexDirection="column" height="100vh">
-      <LogoWithName />
+      <Flex justifyContent="space-between" align="center">
+        <LogoWithName />
+        <SecretKeyButton />
+      </Flex>
       <Flex flex={1} mt={10} justifyContent={[null, 'center']}>
         {isSignedIn ? (
           <SignOut

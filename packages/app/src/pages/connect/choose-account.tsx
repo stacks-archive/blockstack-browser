@@ -1,32 +1,42 @@
 import React from 'react';
-import { Screen, ScreenBody, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
-import { Box } from '@blockstack/ui';
+import { PoweredBy, Screen, ScreenBody, ScreenFooter, Title } from '@blockstack/connect';
+import { Box, PseudoBox, Text } from '@blockstack/ui';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Accounts } from '@components/accounts';
 import { AppIcon } from '@components/app-icon';
 import { useSelector } from 'react-redux';
-import { AppState } from '@store';
-import { selectAppName } from '@store/onboarding/selectors';
+import { AppState, store } from '@store';
+import { selectAppName, selectDecodedAuthRequest } from '@store/onboarding/selectors';
 import { Drawer } from '@components/drawer';
-import { selectDecodedAuthRequest } from '@store/onboarding/selectors';
-import { store } from '@store';
-import { selectIdentities, selectCurrentWallet } from '@store/wallet/selectors';
+import { selectCurrentWallet, selectIdentities } from '@store/wallet/selectors';
 import { ConfigApp } from '@blockstack/keychain/wallet';
 import { Wallet } from '@blockstack/keychain';
 import { gaiaUrl } from '@common/constants';
 import {
+  CHOOSE_ACCOUNT_CHOSEN,
   CHOOSE_ACCOUNT_REUSE_WARNING,
+  CHOOSE_ACCOUNT_REUSE_WARNING_BACK,
   CHOOSE_ACCOUNT_REUSE_WARNING_CONTINUE,
   CHOOSE_ACCOUNT_REUSE_WARNING_DISABLED,
-  CHOOSE_ACCOUNT_REUSE_WARNING_BACK,
-  CHOOSE_ACCOUNT_CHOSEN,
 } from '@common/track';
 import { useAnalytics } from '@common/hooks/use-analytics';
+import { ScreenPaths } from '@store/onboarding/types';
 
 interface ChooseAccountProps {
   next: (identityIndex: number) => void;
   back?: () => void;
 }
+
+const SettingsButton = () => {
+  const { doChangeScreen } = useAnalytics();
+  return (
+    <PseudoBox _hover={{ cursor: 'pointer' }} onClick={() => doChangeScreen(ScreenPaths.HOME)}>
+      <Text color="blue" fontWeight={500} textStyle="body.small.medium" fontSize="12px">
+        Settings
+      </Text>
+    </PseudoBox>
+  );
+};
 
 export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   const { appName, identities, wallet } = useSelector((state: AppState) => ({
@@ -100,7 +110,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
         }}
       />
       <Screen textAlign="center">
-        <ScreenHeader hideIcon title="Continue with Secret Key" />
+        <ScreenHeader hideIcon title="Continue with Secret Key" rightContent={<SettingsButton />} />
         <AppIcon mt={10} mb={4} size="72px" />
         <ScreenBody
           body={[

@@ -25,7 +25,7 @@
     "typescript": "^3.8.2"
   },
   "scripts": {
-    "typecheck": "lerna run typecheck",
+    "typecheck": "lerna run typecheck --parallel",
     "dev": "yarn lerna exec --parallel 'yarn dev' --scope test-app --scope @blockstack/app",
     "bootstrap": "yarn lerna exec --parallel 'yarn'",
     "build:libs": "yarn build:ui && yarn build:keychain && yarn build:connect",

@@ -23,6 +23,7 @@ export enum ScreenName {
 export enum ScreenPaths {
   GENERATION = '/sign-up',
   SECRET_KEY = '/sign-up/secret-key',
+  SETTINGS_KEY = '/settings/secret-key',
   SAVE_KEY = '/sign-up/save-secret-key',
   USERNAME = '/sign-up/username',
   SIGN_IN = '/sign-in',
@@ -30,6 +31,7 @@ export enum ScreenPaths {
   ADD_ACCOUNT = '/sign-in/add-account',
   CHOOSE_ACCOUNT = '/connect/choose-account',
   REGISTRY_ERROR = '/username-error',
+  HOME = '/',
 }
 
 // TODO: clarify usage of password for local key encryption

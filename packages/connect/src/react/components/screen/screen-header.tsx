@@ -24,6 +24,7 @@ export interface ScreenHeaderProps {
     icon: string;
   };
   title?: string | JSX.Element;
+  rightContent?: React.FC | JSX.Element;
   close?: () => void;
   hideIcon?: boolean;
   hideLogo?: boolean;
@@ -34,6 +35,7 @@ export const ScreenHeader = ({
   title = 'Secret Key',
   hideIcon = false,
   hideLogo = false,
+  rightContent,
   ...rest
 }: ScreenHeaderProps) => {
   const { name, icon } = useAppDetails();
@@ -59,14 +61,17 @@ export const ScreenHeader = ({
       justify="space-between"
       {...rest}
     >
-      <Flex align="center">
-        {!hideIcon ? <AppIcon src={appIcon} alt={appName || 'loading'} /> : null}
-        {!hideIcon ? (
-          <Box mx="extra-tight" color="ink.300">
-            <ChevronIcon direction="right" />
-          </Box>
-        ) : null}
-        <HeaderTitle hideLogo={hideLogo} title={title} />
+      <Flex width="100%" align="center" justifyContent="space-between">
+        <Flex align="center">
+          {!hideIcon ? <AppIcon src={appIcon} alt={appName || 'loading'} /> : null}
+          {!hideIcon ? (
+            <Box mx={1} color="ink.300">
+              <ChevronIcon direction="right" />
+            </Box>
+          ) : null}
+          <HeaderTitle hideLogo={hideLogo} title={title} />
+        </Flex>
+        {rightContent ? rightContent : null}
       </Flex>
     </Flex>
   );

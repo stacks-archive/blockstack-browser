@@ -33,6 +33,8 @@ export const pageTrackingNameMap = {
   [ScreenPaths.RECOVERY_CODE]: 'Magic Recovery Code',
   [ScreenPaths.ADD_ACCOUNT]: ' Select Username',
   [ScreenPaths.REGISTRY_ERROR]: 'Username Registry Error',
+  [ScreenPaths.SETTINGS_KEY]: 'Settings: Secret Key',
+  [ScreenPaths.HOME]: 'App Home',
 };
 
 export const titleNameMap = {
@@ -45,28 +47,37 @@ export const titleNameMap = {
   [ScreenPaths.RECOVERY_CODE]: 'Enter your password',
   [ScreenPaths.ADD_ACCOUNT]: ' Select Username',
   [ScreenPaths.REGISTRY_ERROR]: 'Failed to register username',
+  [ScreenPaths.SETTINGS_KEY]: 'View your Secret Key',
+  [ScreenPaths.HOME]: 'Secret Key',
 };
 
 export const doTrackScreenChange = (screen: ScreenPaths, decodedAuthRequest: DecodedAuthRequest | undefined) => {
   document.title = titleNameMap[screen];
   const appURL = decodedAuthRequest ? new URL(decodedAuthRequest?.redirect_uri) : null;
-  page({
-    name: pageTrackingNameMap[screen],
-    appName: decodedAuthRequest?.appDetails?.name,
-    appDomain: appURL?.host,
-  });
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  setTimeout(async () => {
+    await page({
+      name: pageTrackingNameMap[screen],
+      appName: decodedAuthRequest?.appDetails?.name,
+      appDomain: appURL?.host,
+    });
+  }, 1);
 };
 
 export const doTrack = (type: string, payload?: object) => {
   console.log('Tracking:', { type, payload });
-  event({
-    name: type,
-    ...payload,
-  });
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  setTimeout(async () => {
+    await event({
+      name: type,
+      ...payload,
+    });
+  }, 1);
 };
 
 export const setStatsConfig = () => {
   setConfig({
+    useHash: true,
     host: STATS_URL,
     providers: [
       {
