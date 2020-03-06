@@ -10,3 +10,4 @@ dist/
 .rts2_cache_esm/
 .rts2_cache_umd/
 yarn-error.log
+.github/workflows/event.json
