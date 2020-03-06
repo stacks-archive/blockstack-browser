@@ -56,7 +56,15 @@ const ModalHeaderIconButton = ({ size, ...props }: any) => {
   const Icon = props.icon;
 
   return (
-    <Box as="button" border="0" borderColor="transparent" cursor={hover ? 'pointer' : 'unset'} {...bind} {...props}>
+    <Box
+      as="button"
+      border="0"
+      borderColor="transparent"
+      backgroundColor="transparent"
+      cursor={hover ? 'pointer' : 'unset'}
+      {...bind}
+      {...props}
+    >
       <Icon direction="left" size={size} />
     </Box>
   );
