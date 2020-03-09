@@ -55,8 +55,6 @@ jobs:
       run: yarn lerna bootstrap
     - name: Lint
       run: yarn lint
-    - name: Depcheck
-      run: yarn lerna run depcheck --parallel
     - name: Typecheck
       run: yarn lerna run typecheck --parallel
 

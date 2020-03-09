@@ -1,4 +1,4 @@
-import { TokenSigner } from 'jsontokens';
+import { TokenSigner, Json } from 'jsontokens';
 import { getPublicKeyFromPrivate } from 'blockstack/lib/keys';
 import { randomBytes } from 'blockstack/lib/encryption/cryptoRandom';
 import { ecPairToAddress, hexStringToECPair } from 'blockstack';
@@ -22,7 +22,7 @@ export const getHubPrefix = async (hubUrl: string) => {
   return read_url_prefix;
 };
 
-export const makeGaiaAssociationToken = async (secretKeyHex: string, childPublicKeyHex: string): Promise<string> => {
+export const makeGaiaAssociationToken = (secretKeyHex: string, childPublicKeyHex: string): string => {
   const LIFETIME_SECONDS = 365 * 24 * 3600;
   const signerKeyHex = secretKeyHex.slice(0, 64);
   const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex);
@@ -36,7 +36,7 @@ export const makeGaiaAssociationToken = async (secretKeyHex: string, childPublic
   };
 
   const tokenSigner = new TokenSigner('ES256K', signerKeyHex);
-  const token = await tokenSigner.sign(payload);
+  const token = tokenSigner.sign(payload);
   return token;
 };
 
@@ -83,17 +83,26 @@ export const makeReadOnlyGaiaConfig = async ({
   };
 };
 
+interface GaiaAuthPayload {
+  gaiaHubUrl: string;
+  iss: string;
+  salt: string;
+  [key: string]: Json;
+}
+
 const makeGaiaAuthToken = ({ hubInfo, privateKey, gaiaHubUrl }: ConnectToGaiaOptions) => {
   const challengeText = hubInfo.challenge_text;
   const iss = getPublicKeyFromPrivate(privateKey);
 
   const salt = randomBytes(16).toString('hex');
-  const payload = {
-    gaiaChallenge: challengeText,
+  const payload: GaiaAuthPayload = {
     gaiaHubUrl,
     iss,
     salt,
   };
+  if (challengeText) {
+    payload.gaiaChallenge = challengeText;
+  }
   const token = new TokenSigner('ES256K', privateKey).sign(payload);
   return `v1:${token}`;
 };

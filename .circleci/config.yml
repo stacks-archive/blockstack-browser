@@ -8,8 +8,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Combine yarn.lock files to single file
-          command: npx lerna list -p -a | awk -F packages '{printf "\"packages%s/yarn.lock\" ", $2}' | xargs cat > combined-yarn-lock.txt
+          name: Combine package.json files to single file
+          command: npx lerna list -p -a | awk -F packages '{printf "\"packages%s/package.json\" ", $2}' | xargs cat > combined-yarn-lock.txt
       - restore_cache:
           # https://circleci.com/docs/2.0/caching/
           keys:

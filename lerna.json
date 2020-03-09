@@ -8,5 +8,6 @@
     "version": {
       "message": "chore(release): publish"
     }
-  }
+  },
+  "useWorkspaces": true
 }

@@ -27,8 +27,6 @@
     "@blockstack/prettier-config": "^0.0.5",
     "@blockstack/ui": "^1.0.0-alpha.37",
     "@rehooks/document-title": "^1.0.1",
-    "@segment/analytics.js-core": "^3.10.1",
-    "@types/segment-analytics": "^0.0.32",
     "blockstack": "^19.3.0",
     "formik": "^2.1.4",
     "mdi-react": "^6.7.0",

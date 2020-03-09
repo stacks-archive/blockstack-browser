@@ -69,7 +69,7 @@ export class Identity {
     // const appBucketUrl = await getAppBucketUrl(gaiaUrl, appPrivateKey)
 
     const compressedAppPublicKey = getPublicKeyFromPrivate(appPrivateKey.slice(0, 64));
-    const associationToken = await makeGaiaAssociationToken(this.keyPair.key, compressedAppPublicKey);
+    const associationToken = makeGaiaAssociationToken(this.keyPair.key, compressedAppPublicKey);
 
     return makeAuthResponse(
       this.keyPair.key,
