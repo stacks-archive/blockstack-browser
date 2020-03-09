@@ -83,22 +83,14 @@ jobs:
         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-
-    - name: Install monorepo deps
-      run: yarn
-    - name: Git status
-      run: git status
-    - name: Install package deps
-      run: yarn lerna exec --parallel "yarn"
-    - name: Git status
-      run: git status
+    - name: Monorepo Dependencies
+      run: yarn --frozen-lockfile
+    - name: Lerna Bootstrap
+      run: yarn lerna bootstrap
     - name: Setup .npmrc
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-    - name: Setup git
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
     - name: Lerna Version
       run: yarn lerna version --conventional-commits --no-push --yes
     - name: Publish
