@@ -1,6 +1,7 @@
 {
   "name": "test-app",
   "description": "The Blockstack App is a web app and browser extension for interacting with Blockstack apps.",
+  "private": true,
   "scripts": {
     "build:dev": "cross-env NODE_ENV=development EXT_ENV=development webpack --hot --mode development",
     "clean": "rm -rf ./dist",
