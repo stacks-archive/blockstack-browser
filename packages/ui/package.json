@@ -112,6 +112,7 @@
   },
   "sideEffects": false,
   "types": "dist/index.d.ts",
+  "typings": "dist/ui/index.d.ts",
   "umd:main": "dist/ui.umd.production.js",
   "unpkg": "dist/ui.cjs.production.min.js"
 }
