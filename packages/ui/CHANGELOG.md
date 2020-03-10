@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.39](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.0.0-alpha.38...@blockstack/ui@1.0.0-alpha.39) (2020-03-10)
+
+
+### Bug Fixes
+
+* proper typings location in package.json ([b04a009](https://github.com/blockstackpbc/blockstack-ui/commit/b04a009fe4da9eed8973d87297c677d2e1ce1687))
+
+
+
+
+
 # 1.0.0-alpha.38 (2020-03-10)
 
 

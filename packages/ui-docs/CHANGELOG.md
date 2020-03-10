@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/blockstack/ux/compare/@blockstack/waffle-docs@0.1.0...@blockstack/waffle-docs@0.1.1) (2020-03-10)
+
+**Note:** Version bump only for package @blockstack/waffle-docs
+
+
+
+
+
 # 0.1.0 (2020-03-10)
 
 
