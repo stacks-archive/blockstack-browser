@@ -90,6 +90,7 @@ module.exports = {
       react: 'preact/compat',
       'react-dom/test-utils': 'preact/test-utils',
       'react-dom': 'preact/compat',
+      '@blockstack/ui': path.resolve('../ui/src')
     },
   },
   devtool: false,
