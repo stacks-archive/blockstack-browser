@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.0.2...@blockstack/connect@2.1.0) (2020-03-10)
+
+
+### Bug Fixes
+
+* dont require built ui to build connect ([c354be7](https://github.com/blockstack/ux/commit/c354be7bae0937dbcfdbfbb971f1f85a0a6057a9))
+
+
+### Features
+
+* implementation of router ([bd03411](https://github.com/blockstack/ux/commit/bd034112a098868d07e04dc6aba97d15145707d1))
+
+
+
+
+
 ## [2.0.2](https://github.com/blockstack/ux/compare/@blockstack/connect@2.0.1...@blockstack/connect@2.0.2) (2020-03-10)
 
 **Note:** Version bump only for package @blockstack/connect
