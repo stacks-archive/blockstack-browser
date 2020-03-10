@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.1.0...@blockstack/connect@2.2.0) (2020-03-10)
+
+
+### Features
+
+* add ability to view secret key ([440c3e5](https://github.com/blockstack/ux/commit/440c3e5420321e1a3bcfe409cf65b44fe45e1330))
+
+
+
+
+
 # [2.1.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.0.2...@blockstack/connect@2.1.0) (2020-03-10)
 
 

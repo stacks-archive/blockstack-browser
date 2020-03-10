@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.3.0...@blockstack/app@1.4.0) (2020-03-10)
+
+
+### Features
+
+* add ability to view secret key ([440c3e5](https://github.com/blockstack/blockstack-app/commit/440c3e5420321e1a3bcfe409cf65b44fe45e1330))
+
+
+
+
+
 # [1.3.0](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.2.0...@blockstack/app@1.3.0) (2020-03-10)
 
 
