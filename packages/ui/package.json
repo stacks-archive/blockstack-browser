@@ -1,7 +1,7 @@
 {
   "name": "@blockstack/ui",
   "description": "Blockstack UI components built using React and styled-components with styled-system.",
-  "version": "1.0.0-alpha.39",
+  "version": "1.0.0",
   "author": "Blockstack <engineering@blockstack.com> (https://blockstack.org/)",
   "bundlesize": [
     {
@@ -111,8 +111,7 @@
     "typecheck:watch": "npm run typecheck -- --watch"
   },
   "sideEffects": false,
-  "types": "dist/index.d.ts",
-  "typings": "dist/ui/index.d.ts",
+  "typings": "dist/ui/src/index.d.ts",
   "umd:main": "dist/ui.umd.production.js",
   "unpkg": "dist/ui.cjs.production.min.js"
 }
