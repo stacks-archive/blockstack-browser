@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/connect",
-  "version": "1.0.10",
+  "version": "2.0.0",
   "bundlesize": [
     {
       "path": "./dist/**/*.js",
@@ -8,7 +8,7 @@
     }
   ],
   "dependencies": {
-    "@blockstack/ui": "^1.0.0-alpha.37",
+    "@blockstack/ui": "^1.0.0-alpha.38",
     "preact": "^10.3.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

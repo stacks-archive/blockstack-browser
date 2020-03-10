@@ -1,3 +1,26 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 0.3.0-beta.3 (2020-03-10)
+
+
+### Bug Fixes
+
+* **keychain:** fixes TS error when deriving config key ([08f9b18](https://github.com/blockstack/ux/commit/08f9b1827c8588aeb42a5b90fe1bd4d786509474))
+* **wallet:** typo when fetching config ([816e46b](https://github.com/blockstack/ux/commit/816e46b5dc37fa519d4508f647a62f5a85d3177a))
+
+
+### Features
+
+* recursively create identities by looking up username ([d5b20ea](https://github.com/blockstack/ux/commit/d5b20ea4cdb94aa2a92c6096642e9abad467e966))
+* restore identities from walletConfig ([61ae914](https://github.com/blockstack/ux/commit/61ae914247c45b46a7c1ef42805a37d51309fc03))
+
+
+
+
+
 # `@blockstack/keychain` Changelog
 
 ## 0.2.3 - 2020/2/4

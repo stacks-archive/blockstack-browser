@@ -1,3 +1,29 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# 1.0.0-alpha.38 (2020-03-10)
+
+
+### Bug Fixes
+
+* adjust root dir so packages can build correctly ([f99c210](https://github.com/blockstackpbc/blockstack-ui/commit/f99c2109a0068250e0983c65a4c5a4e713ddc0e7))
+* Buttons ([#29](https://github.com/blockstackpbc/blockstack-ui/issues/29)) ([a7e12ce](https://github.com/blockstackpbc/blockstack-ui/commit/a7e12cec949e21e033a6006d8d9be902fda03562))
+* Change default modal size, Fixes blockstack/blockstack-app[#77](https://github.com/blockstackpbc/blockstack-ui/issues/77) ([86a43f8](https://github.com/blockstackpbc/blockstack-ui/commit/86a43f898a5f6cbd354e1c6a7fa03e4d989a527c))
+* Missing 'deg' from chevron transform property ([584f186](https://github.com/blockstackpbc/blockstack-ui/commit/584f186e1cd4f387e70cbba412a2d520ea4799fd))
+* Modal going off-canvas on mobile, Closes blockstack/app[#190](https://github.com/blockstackpbc/blockstack-ui/issues/190) ([1c64d9c](https://github.com/blockstackpbc/blockstack-ui/commit/1c64d9c395d2586423832c593d271886ddbed3be))
+
+
+### Features
+
+* Add a ChevronIcon ([#30](https://github.com/blockstackpbc/blockstack-ui/issues/30)) ([2f929b1](https://github.com/blockstackpbc/blockstack-ui/commit/2f929b10ba6a77ff33ebe8e87fb14283153809d9))
+* add CI, proper connections between packages ([5934829](https://github.com/blockstackpbc/blockstack-ui/commit/5934829a40338ac269b80783912c8dad17af1962))
+
+
+
+
+
 # Changelog
 
 ## 1.0.0-alpha.37
