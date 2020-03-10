@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.0.0-alpha.39...@blockstack/ui@1.0.1) (2020-03-10)
+
+
+### Bug Fixes
+
+* remove alpha/beta versions from ui, keychain ([81dee96](https://github.com/blockstackpbc/blockstack-ui/commit/81dee96113f26fa5609dbe753d503c909b98ec5f))
+
+
+
+
+
 # [1.0.0-alpha.39](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.0.0-alpha.38...@blockstack/ui@1.0.0-alpha.39) (2020-03-10)
 
 
