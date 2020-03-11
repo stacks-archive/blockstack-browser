@@ -8657,6 +8657,13 @@ history@5.0.0-beta.4:
   dependencies:
     "@babel/runtime" "^7.7.6"
 
+history@^5.0.0-beta.4:
+  version "5.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/history/-/history-5.0.0-beta.5.tgz#6ec8661fcec09901ceccc540385ee3ad3d917157"
+  integrity sha512-ahtCDSKtbIUI83WDz2B6dd7sbtEd5bcISD5rFI+Mjd4Y61Niz69ciS4opFxertJVOwgDYPgFmeIXsUNsfdM61w==
+  dependencies:
+    "@babel/runtime" "^7.7.6"
+
 hmac-drbg@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/hmac-drbg/-/hmac-drbg-1.0.1.tgz#d2745701025a6c775a6c545793ed502fc0c649a1"

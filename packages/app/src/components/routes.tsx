@@ -23,7 +23,7 @@ export const Routes: React.FC = () => {
   const dispatch = useDispatch();
   const { doChangeScreen } = useAnalytics();
   const { identities } = useWallet();
-  const { isOnboardingInProgress } = useOnboardingState();
+  const { isOnboardingInProgress, decodedAuthRequest } = useOnboardingState();
   const authRequest = authenticationInit();
 
   useEffect(() => {
@@ -37,20 +37,21 @@ export const Routes: React.FC = () => {
 
   const isSignedIn = !isOnboardingInProgress && identities.length;
 
+  const getSignUpElement = () => {
+    if (isSignedIn) {
+      return <Navigate to={{ pathname: '/', hash: `connect/choose-account?${location.hash.split('?')[1]}` }} />;
+    }
+    if (decodedAuthRequest?.sendToSignIn) {
+      return <Navigate to={{ pathname: '/', hash: `sign-in?${location.hash.split('?')[1]}` }} />;
+    }
+    return <Create next={() => doChangeScreen(ScreenPaths.SECRET_KEY)} />;
+  };
+
   return (
     <RoutesDom>
       <Route path="/" element={<Home />} />
       {/*Sign Up*/}
-      <Route
-        path="/sign-up"
-        element={
-          isSignedIn ? (
-            <Navigate to={{ pathname: '/', hash: `connect/choose-account?${location.hash.split('?')[1]}` }} />
-          ) : (
-            <Create next={() => doChangeScreen(ScreenPaths.SECRET_KEY)} />
-          )
-        }
-      />
+      <Route path="/sign-up" element={getSignUpElement()} />
       <Route path="/sign-up/secret-key" element={<SecretKey next={() => doChangeScreen(ScreenPaths.SAVE_KEY)} />} />
       <Route
         path="/sign-up/save-secret-key"
