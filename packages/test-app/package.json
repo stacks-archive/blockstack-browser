@@ -19,7 +19,7 @@
     "typecheck": "tsc --noEmit",
     "watch": "cross-env NODE_ENV=development EXT_ENV=watch webpack -d"
   },
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/connect": "^2.2.0",

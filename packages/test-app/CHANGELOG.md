@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/blockstack/ux/compare/test-app@1.1.1...test-app@1.1.2) (2020-03-11)
+
+
+### Bug Fixes
+
+* prod test-app not linking to prod authenticator ([d778c0f](https://github.com/blockstack/ux/commit/d778c0fcf2fffb781d4ea9b684660c8b362df31b))
+
+
+
+
+
 ## [1.1.1](https://github.com/blockstack/ux/compare/test-app@1.1.0...test-app@1.1.1) (2020-03-10)
 
 **Note:** Version bump only for package test-app
