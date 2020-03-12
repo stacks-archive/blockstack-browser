@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.1](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.5.0...@blockstack/app@1.5.1) (2020-03-12)
+
+
+### Bug Fixes
+
+* hide icon in ScreenHeader if missing ([75d0682](https://github.com/blockstack/blockstack-app/commit/75d06824fa47aa660772b185723d5882934e3633))
+
+
+
+
+
 # [1.5.0](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.4.1...@blockstack/app@1.5.0) (2020-03-12)
 
 
