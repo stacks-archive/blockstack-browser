@@ -12,5 +12,5 @@ export const ScreenHeader = (props: ScreenHeaderProps) => {
   };
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  return <BaseScreenHeader appDetails={appDetails} {...props} />;
+  return <BaseScreenHeader appDetails={appDetails} hideIcon={props.hideIcon || !icon} {...props} />;
 };
