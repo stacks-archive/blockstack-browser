@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.4.0...@blockstack/app@1.4.1) (2020-03-12)
+
+
+### Bug Fixes
+
+* send to sign-in if sendToSignIn, even if path = sign-up ([b397ff3](https://github.com/blockstack/blockstack-app/commit/b397ff39d6a78cb7ae4a7364b5ba4fcf1ee51163))
+
+
+
+
+
 # [1.4.0](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.3.0...@blockstack/app@1.4.0) (2020-03-10)
 
 
