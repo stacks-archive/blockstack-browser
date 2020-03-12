@@ -10,13 +10,11 @@ import { OnboardingState } from './onboarding/types';
 
 export interface AppState {
   wallet: WalletState;
-  permissions: PermissionsState;
   onboarding: OnboardingState;
 }
 
 const reducers = combineReducers<AppState>({
   wallet: walletReducer,
-  permissions: permissionsReducer,
   onboarding: onboardingReducer,
 });
 
