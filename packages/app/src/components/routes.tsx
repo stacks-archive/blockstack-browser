@@ -23,7 +23,7 @@ export const Routes: React.FC = () => {
   const dispatch = useDispatch();
   const { doChangeScreen } = useAnalytics();
   const { identities } = useWallet();
-  const { isOnboardingInProgress, decodedAuthRequest } = useOnboardingState();
+  const { isOnboardingInProgress, decodedAuthRequest, onboardingPath } = useOnboardingState();
   const authRequest = authenticationInit();
 
   useEffect(() => {
@@ -38,6 +38,9 @@ export const Routes: React.FC = () => {
   const isSignedIn = !isOnboardingInProgress && identities.length;
 
   const getSignUpElement = () => {
+    if (onboardingPath) {
+      return <Navigate to={onboardingPath} />;
+    }
     if (isSignedIn) {
       return <Navigate to={{ pathname: '/', hash: `connect/choose-account?${location.hash.split('?')[1]}` }} />;
     }
@@ -45,6 +48,16 @@ export const Routes: React.FC = () => {
       return <Navigate to={{ pathname: '/', hash: `sign-in?${location.hash.split('?')[1]}` }} />;
     }
     return <Create next={() => doChangeScreen(ScreenPaths.SECRET_KEY)} />;
+  };
+
+  const getUsernameElement = () => {
+    if (onboardingPath) {
+      return <Username />;
+    }
+    if (isSignedIn) {
+      return <Navigate to={'/connect/choose-account'} />;
+    }
+    return <Username />;
   };
 
   return (
@@ -63,16 +76,7 @@ export const Routes: React.FC = () => {
           />
         }
       />
-      <Route
-        path="/sign-up/username"
-        element={
-          isSignedIn ? (
-            <Navigate to={'/connect/choose-account'} />
-          ) : (
-            <Username next={() => doChangeScreen(ScreenPaths.GENERATION)} />
-          )
-        }
-      />
+      <Route path="/sign-up/username" element={getUsernameElement()} />
       {/*Sign In*/}
       <Route
         path="/sign-in"
@@ -91,7 +95,7 @@ export const Routes: React.FC = () => {
         path="/sign-in/recover"
         element={<DecryptRecoveryCode next={() => doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT)} />}
       />
-      <Route path="/sign-in/add-account" element={<Username next={() => doChangeScreen(ScreenPaths.GENERATION)} />} />;
+      <Route path="/sign-in/add-account" element={<Username />} />;
       <Route
         path="/connect/choose-account"
         element={

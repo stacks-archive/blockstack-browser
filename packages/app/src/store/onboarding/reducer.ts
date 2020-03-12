@@ -9,6 +9,7 @@ import {
   ScreenPaths,
   SET_MAGIC_RECOVERY_CODE,
   SET_USERNAME,
+  SET_ONBOARDING_PATH,
 } from './types';
 
 const initialState: OnboardingState = {
@@ -57,6 +58,11 @@ export const onboardingReducer: Reducer<OnboardingState, OnboardingActions> = (
       return {
         ...state,
         onboardingInProgress: action.payload,
+      };
+    case SET_ONBOARDING_PATH:
+      return {
+        ...state,
+        onboardingPath: action.onboardingPath,
       };
     default:
       return state;

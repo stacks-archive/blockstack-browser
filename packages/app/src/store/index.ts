@@ -3,8 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
 import { walletReducer, WalletState } from './wallet';
-import { permissionsReducer, PermissionsState } from './permissions';
-import { WalletTransform } from './transforms';
+import { WalletTransform, OnboardingTransform } from './transforms';
 import { onboardingReducer } from './onboarding/reducer';
 import { OnboardingState } from './onboarding/types';
 
@@ -21,8 +20,7 @@ const reducers = combineReducers<AppState>({
 const persistConfig = {
   storage,
   key: 'blockstack-redux',
-  transforms: [WalletTransform],
-  whitelist: ['settings', 'wallet', 'permissions'],
+  transforms: [WalletTransform, OnboardingTransform],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

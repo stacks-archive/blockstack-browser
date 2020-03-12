@@ -8,6 +8,7 @@ import {
   SAVE_AUTH_REQUEST,
   SET_MAGIC_RECOVERY_CODE,
   SET_USERNAME,
+  SET_ONBOARDING_PATH,
 } from './types';
 import { decodeToken } from 'jsontokens';
 import { doGenerateWallet, didGenerateWallet, WalletActions } from '../wallet';
@@ -53,6 +54,11 @@ export const doSetMagicRecoveryCode = (magicRecoveryCode: string): OnboardingAct
 export const doSetUsername = (username: string): OnboardingActions => ({
   type: SET_USERNAME,
   username,
+});
+
+export const doSetOnboardingPath = (onboardingPath?: ScreenPaths): OnboardingActions => ({
+  type: SET_ONBOARDING_PATH,
+  onboardingPath,
 });
 
 export function doCreateSecretKey(): ThunkAction<void, AppState, {}, OnboardingActions | WalletActions> {
@@ -168,6 +174,7 @@ export function doFinishSignIn(
       transitPublicKey: decodedAuthRequest.public_keys[0],
     });
     finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
+    dispatch(doSetOnboardingPath(undefined));
     dispatch(didGenerateWallet(wallet));
     dispatch(doSetOnboardingProgress(false));
   };

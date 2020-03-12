@@ -26,3 +26,21 @@ export const WalletTransform = createTransform(
   },
   { whitelist: ['wallet'] }
 );
+
+interface InboundOnboardingState {
+  onboardingPath?: string;
+}
+
+/**
+ * For the onboarding reducer, we only want to persist the 'onboarding path'.
+ * This allows users to jump back into the step they left off on, if they close the onboarding window.
+ */
+export const OnboardingTransform = createTransform(
+  (inboundState: InboundOnboardingState) => ({
+    onboardingPath: inboundState.onboardingPath,
+  }),
+  outboundState => {
+    return { ...outboundState };
+  },
+  { whitelist: ['onboarding'] }
+);

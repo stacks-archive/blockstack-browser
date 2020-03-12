@@ -19,3 +19,5 @@ export const selectUsername = (state: AppState) => state.onboarding.username;
 export const selectAppURL = (state: AppState) => state.onboarding.appURL;
 
 export const selectOnboardingProgress = (state: AppState) => state.onboarding.onboardingInProgress;
+
+export const selectOnboardingPath = (state: AppState) => state.onboarding.onboardingPath;

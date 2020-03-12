@@ -7,6 +7,7 @@ import {
   selectMagicRecoveryCode,
   selectOnboardingProgress,
   selectUsername,
+  selectOnboardingPath,
 } from '@store/onboarding/selectors';
 
 export const useOnboardingState = () => {
@@ -17,6 +18,16 @@ export const useOnboardingState = () => {
   const magicRecoveryCode = useSelector(selectMagicRecoveryCode);
   const isOnboardingInProgress = useSelector(selectOnboardingProgress);
   const username = useSelector(selectUsername);
+  const onboardingPath = useSelector(selectOnboardingPath);
 
-  return { secretKey, screen, authRequest, decodedAuthRequest, magicRecoveryCode, isOnboardingInProgress, username };
+  return {
+    secretKey,
+    screen,
+    authRequest,
+    decodedAuthRequest,
+    magicRecoveryCode,
+    isOnboardingInProgress,
+    username,
+    onboardingPath,
+  };
 };

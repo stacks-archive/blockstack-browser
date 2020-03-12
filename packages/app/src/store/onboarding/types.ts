@@ -6,6 +6,7 @@ export const SAVE_KEY = 'ONBOARDING/SAVE_KEY';
 export const SAVE_AUTH_REQUEST = 'ONBOARDING/SAVE_AUTH_REQUEST';
 export const SET_MAGIC_RECOVERY_CODE = 'ONBOARDING/SET_MAGIC_RECOVERY_CODE';
 export const SET_USERNAME = 'ONBOARDING/SET_USERNAME';
+export const SET_ONBOARDING_PATH = 'ONBOARDING/SET_ONBOARDING_PATH';
 
 export enum ScreenName {
   CHOOSE_ACCOUNT = 'screens/CHOOSE_ACCOUNT',
@@ -34,6 +35,8 @@ export enum ScreenPaths {
   HOME = '/',
 }
 
+export const persistedScreens = [ScreenPaths.SECRET_KEY, ScreenPaths.SAVE_KEY, ScreenPaths.USERNAME];
+
 // TODO: clarify usage of password for local key encryption
 export const DEFAULT_PASSWORD = 'password';
 
@@ -48,6 +51,7 @@ export interface OnboardingState {
   magicRecoveryCode?: string;
   username?: string;
   onboardingInProgress?: boolean;
+  onboardingPath?: ScreenPaths;
 }
 
 interface OnboardingProgressAction {
@@ -84,10 +88,16 @@ interface SetUsername {
   username: string;
 }
 
+interface SetOnboardingPath {
+  type: typeof SET_ONBOARDING_PATH;
+  onboardingPath?: ScreenPaths;
+}
+
 export type OnboardingActions =
   | OnboardingProgressAction
   | ChangePageAction
   | StoreSecretKey
   | SetMagicRecoveryCode
   | SaveAuthRequest
+  | SetOnboardingPath
   | SetUsername;
