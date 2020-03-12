@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.5.1...@blockstack/app@1.6.0) (2020-03-12)
+
+
+### Features
+
+* send user back into unfinished onboarding flow ([5ccda3c](https://github.com/blockstack/blockstack-app/commit/5ccda3c278e0caac7b4669a193b8e62209fda543))
+
+
+
+
+
 ## [1.5.1](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.5.0...@blockstack/app@1.5.1) (2020-03-12)
 
 
