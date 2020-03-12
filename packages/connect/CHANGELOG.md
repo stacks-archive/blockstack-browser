@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.2.0...@blockstack/connect@2.3.0) (2020-03-12)
+
+
+### Features
+
+* improve accessibility of connect modal, links ([74352c7](https://github.com/blockstack/ux/commit/74352c74b5894fa2a612a20f00c02d9f8791a5c2))
+
+
+
+
+
 # [2.2.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.1.0...@blockstack/connect@2.2.0) (2020-03-10)
 
 
