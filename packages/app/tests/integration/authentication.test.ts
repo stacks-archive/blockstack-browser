@@ -1,7 +1,7 @@
 import { validateMnemonic, wordlists, generateMnemonic } from 'bip39';
-import { devices, chromium, webkit, firefox } from 'playwright-core';
+import { devices, BrowserContext } from 'playwright-core';
 import { DeviceDescriptor } from 'playwright-core/lib/types';
-import { BrowserContext } from 'playwright-core/lib/browserContext';
+import { chromium, webkit, firefox } from 'playwright';
 import { DemoPage } from './page-objects/demo.page';
 import { randomString, Browser } from './utils';
 import { AuthPage } from './page-objects/auth.page';
