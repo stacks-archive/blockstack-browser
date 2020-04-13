@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BoxProps } from '../box';
 
-interface IFormControlBase {
+interface FormControlBase {
   /**
    * Content of the form control.
    */
@@ -21,4 +21,4 @@ interface IFormControlBase {
   isReadOnly?: boolean;
 }
 
-export type FormControlProps = IFormControlBase & BoxProps;
+export type FormControlProps = FormControlBase & BoxProps;

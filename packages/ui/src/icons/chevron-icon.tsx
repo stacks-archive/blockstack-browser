@@ -6,7 +6,6 @@ type Direction = 'up' | 'down' | 'left' | 'right';
 
 interface ChevronProps extends BoxProps {
   direction?: Direction;
-  size?: number;
 }
 
 const rotate = (direction: Direction = 'right') => {
@@ -24,7 +23,12 @@ const rotate = (direction: Direction = 'right') => {
   }
 };
 
-export const ChevronIcon: React.FC<ChevronProps> = ({ direction, size = '16px', style = {}, ...props }) => (
+export const ChevronIcon: React.FC<ChevronProps> = ({
+  direction,
+  size = '16px',
+  style = {},
+  ...props
+}) => (
   <Svg
     width={size}
     height={size}
@@ -32,6 +36,9 @@ export const ChevronIcon: React.FC<ChevronProps> = ({ direction, size = '16px', 
     style={{ ...style, transform: `rotate(${rotate(direction)}deg)` }}
     {...props}
   >
-    <path fill={props.color || 'currentColor'} d="M4.7 7.367l3.3 3.3 3.3-3.3-.943-.943L8 8.78 5.643 6.424l-.943.943z" />
+    <path
+      fill={props.color || 'currentColor'}
+      d="M4.7 7.367l3.3 3.3 3.3-3.3-.943-.943L8 8.78 5.643 6.424l-.943.943z"
+    />
   </Svg>
 );

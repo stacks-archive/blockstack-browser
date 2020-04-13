@@ -65,7 +65,14 @@ export const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
         {...styles}
         {...bind}
       >
-        <Box as="span" display="flex" alignItems="center" justifyContent="center" position="relative" zIndex={5}>
+        <Box
+          as="span"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          position="relative"
+          zIndex={5}
+        >
           {isLoading && (
             <Spinner
               position={loadingText ? 'relative' : 'absolute'}
@@ -77,13 +84,15 @@ export const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
           )}
           {isLoading
             ? loadingText || (
-                <Box as="span" opacity={0}>
+                <Box ml="base-tight" as="span" opacity={0}>
                   {children}
                 </Box>
               )
             : children}
         </Box>
-        {mode === 'secondary' ? null : <HoverChange isDisabled={isDisabled || false} isHovered={hovered} />}
+        {mode === 'secondary' ? null : (
+          <HoverChange isDisabled={isDisabled || false} isHovered={hovered} />
+        )}
       </PseudoBox>
     );
   }

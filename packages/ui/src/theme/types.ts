@@ -11,3 +11,10 @@ interface CustomTheme {
 }
 
 export type Theme = StyledSystemTheme & CustomTheme;
+
+export type RequiredTheme = Required<Theme>;
+
+export type Responsive<T, ThemeType extends Theme = RequiredTheme> =
+  | T
+  | (T | null)[]
+  | { [key in keyof ThemeType['breakpoints']]?: T };

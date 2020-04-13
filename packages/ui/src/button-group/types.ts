@@ -3,7 +3,7 @@ import * as StyledSystem from 'styled-system';
 import { ButtonSizes, ButtonVariants, ButtonColorVariants } from '../button';
 import { BoxProps } from '../box';
 
-export interface IButtonGroupBase {
+export interface ButtonGroupBase {
   size?: ButtonSizes;
   color?: string;
   variant?: ButtonVariants;
@@ -17,4 +17,4 @@ export interface IButtonGroupBase {
   children?: React.ReactNode;
 }
 
-export type ButtonGroupProps = IButtonGroupBase & BoxProps;
+export type ButtonGroupProps = ButtonGroupBase & BoxProps;

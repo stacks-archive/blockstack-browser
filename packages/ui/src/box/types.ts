@@ -2,10 +2,21 @@ import * as StyledSystem from 'styled-system';
 import * as React from 'react';
 import { Omit } from '../common-types';
 import * as CSS from 'csstype';
+import { SystemStyleObject } from '@styled-system/css';
 
-export type FontSize = 'xs' | 'sm' | 'base' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl';
+export type FontSizeValues =
+  | 'xs'
+  | 'sm'
+  | 'base'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | '3xl'
+  | '4xl'
+  | '5xl'
+  | '6xl';
 
-export type FontWeight =
+export type FontWeightValues =
   | 'hairline'
   | 'thin'
   | 'light'
@@ -16,39 +27,51 @@ export type FontWeight =
   | 'extrabold'
   | 'black';
 
-export interface IFontSize {
-  fontSize?: StyledSystem.ResponsiveValue<FontSize> | StyledSystem.FontSizeProps['fontSize'];
+export interface FontSize {
+  fontSize?: StyledSystem.ResponsiveValue<FontSizeValues> | StyledSystem.FontSizeProps['fontSize'];
 }
 
-export interface IFontWeight {
-  fontWeight?: StyledSystem.ResponsiveValue<FontWeight> | StyledSystem.FontWeightProps['fontWeight'];
+export interface FontWeight {
+  fontWeight?:
+    | StyledSystem.ResponsiveValue<FontWeightValues>
+    | StyledSystem.FontWeightProps['fontWeight'];
 }
 
-export type LineHeight = 'none' | 'shorter' | 'short' | 'normal' | 'tall' | 'taller';
+export type LineHeightValues = 'none' | 'shorter' | 'short' | 'normal' | 'tall' | 'taller';
 
-export interface ILineHeight {
-  lineHeight?: StyledSystem.ResponsiveValue<LineHeight> | StyledSystem.LineHeightProps['lineHeight'];
+export interface LineHeight {
+  lineHeight?:
+    | StyledSystem.ResponsiveValue<LineHeightValues>
+    | StyledSystem.LineHeightProps['lineHeight'];
 }
 
-export type LetterSpacing = 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
+export type LetterSpacingValues = 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
 
-export interface ILetterSpacing {
-  letterSpacing?: StyledSystem.ResponsiveValue<LetterSpacing> | StyledSystem.LetterSpacingProps['letterSpacing'];
+export interface LetterSpacing {
+  letterSpacing?:
+    | StyledSystem.ResponsiveValue<LetterSpacingValues>
+    | StyledSystem.LetterSpacingProps['letterSpacing'];
 }
 
-export interface ITextAlign {
-  textAlign?: StyledSystem.ResponsiveValue<CSS.TextAlignProperty> | StyledSystem.TextAlignProps['textAlign'];
+export interface TextAlign {
+  textAlign?:
+    | StyledSystem.ResponsiveValue<CSS.TextAlignProperty>
+    | StyledSystem.TextAlignProps['textAlign'];
 }
 
-export interface ITextDecoration {
-  textDecoration?: StyledSystem.ResponsiveValue<CSS.TextDecorationProperty<any>> | CSS.TextDecorationProperty<any>;
+export interface TextDecoration {
+  textDecoration?:
+    | StyledSystem.ResponsiveValue<CSS.TextDecorationProperty<any>>
+    | CSS.TextDecorationProperty<any>;
 }
 
-export interface ITextTransform {
-  textTransform?: StyledSystem.ResponsiveValue<CSS.TextTransformProperty> | CSS.TextTransformProperty;
+export interface TextTransform {
+  textTransform?:
+    | StyledSystem.ResponsiveValue<CSS.TextTransformProperty>
+    | CSS.TextTransformProperty;
 }
 
-export type TextStyle =
+export type TextStyleValues =
   | 'display.large'
   | 'display.small'
   | 'body.large.medium'
@@ -58,12 +81,16 @@ export type TextStyle =
   | 'caption'
   | 'caption.medium';
 
-export interface ITextStyle {
-  textStyle?: StyledSystem.ResponsiveValue<TextStyle> | StyledSystem.TextStyleProps['textStyle'];
+export interface TextStyle {
+  textStyle?:
+    | StyledSystem.ResponsiveValue<TextStyleValues>
+    | StyledSystem.TextStyleProps['textStyle'];
 }
 
-export interface IAs {
-  as?: React.ElementType;
+export type AsType = React.ElementType<any>;
+
+export interface As {
+  as?: AsType;
 }
 
 export interface WhiteSpace {
@@ -84,25 +111,26 @@ export type TypographyProps = Omit<
 > &
   WhiteSpace;
 
-export interface IFlexDirectionShorthandProps {
+export interface FlexDirectionShorthandProps {
   flexDir?: StyledSystem.FlexDirectionProps['flexDirection'];
 }
 
-export interface IDisplayShorthandProps {
+export interface DisplayShorthandProps {
   d?: StyledSystem.DisplayProps['display'];
 }
 
 export type BoxShadow = 'low' | 'mid' | 'high' | 'inner' | 'none' | CSS.BoxShadowProperty;
 
-export interface IOtherProps {
+export interface OtherProps {
   cursor?: CSS.CursorProperty | StyledSystem.ResponsiveValue<CSS.CursorProperty>;
   transform?: CSS.TransformProperty | StyledSystem.ResponsiveValue<CSS.TransformProperty>;
   transition?: CSS.TransitionProperty | StyledSystem.ResponsiveValue<CSS.TransitionProperty>;
   boxShadow?: BoxShadow | StyledSystem.ResponsiveValue<BoxShadow>;
   children?: React.ReactNode[] | React.ReactNode;
+  sx?: SystemStyleObject;
 }
 
-export type ShorthandProps = IFlexDirectionShorthandProps & IDisplayShorthandProps;
+export type ShorthandProps = FlexDirectionShorthandProps & DisplayShorthandProps;
 
 export type StyledSystemProps = StyledSystem.LayoutProps &
   StyledSystem.ColorProps &
@@ -117,18 +145,25 @@ export type StyledSystemProps = StyledSystem.LayoutProps &
   StyledSystem.OverflowProps;
 
 export type ModifiedStyledSystemProps = TypographyProps &
-  IFontSize &
-  ILetterSpacing &
-  ITextAlign &
-  ITextStyle &
-  IFontWeight &
-  ILineHeight &
-  ITextDecoration &
-  ITextTransform &
-  IOtherProps;
+  FontSize &
+  LetterSpacing &
+  TextAlign &
+  TextStyle &
+  FontWeight &
+  LineHeight &
+  TextDecoration &
+  TextTransform &
+  OtherProps;
 
-export type BoxHTMLProps = React.RefAttributes<HTMLDivElement> & React.HTMLAttributes<HTMLDivElement>;
+export type BoxHTMLProps = React.RefAttributes<HTMLDivElement> &
+  React.HTMLAttributes<HTMLDivElement>;
 
-export type BoxProps = StyledSystemProps & ModifiedStyledSystemProps & ShorthandProps & IAs & BoxHTMLProps;
+export type BoxProps = StyledSystemProps &
+  ModifiedStyledSystemProps &
+  ShorthandProps &
+  As &
+  BoxHTMLProps;
 
 export type Box = React.FC<BoxProps>;
+
+export type PropsOf<T extends AsType> = React.ComponentPropsWithRef<T>;

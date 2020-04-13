@@ -1,4 +1,4 @@
-import { ButtonModes, ButtonSizes, CustomStyles, IButtonStyles } from '../button';
+import { ButtonModes, ButtonSizes, CustomStyles, ButtonStyles } from './types';
 import { shadows } from '../theme/theme';
 
 const baseProps = {
@@ -68,7 +68,13 @@ const linkVariantProps = () => {
   };
 };
 
-const solidVariantProps = ({ mode, customStyles }: { mode: ButtonModes; customStyles: CustomStyles }) => {
+const solidVariantProps = ({
+  mode,
+  customStyles,
+}: {
+  mode: ButtonModes;
+  customStyles: CustomStyles;
+}) => {
   const style = {
     primary: {
       bg: 'blue',
@@ -129,7 +135,7 @@ const variantProps = (props: any) => {
   }
 };
 
-const useButtonStyle = (props: IButtonStyles): any => ({
+const useButtonStyle = (props: ButtonStyles): any => ({
   ...baseProps,
   ...variantProps(props),
   ...sizeProps(props),
