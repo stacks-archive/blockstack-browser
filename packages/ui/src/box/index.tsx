@@ -1,4 +1,5 @@
 import React, { forwardRef, Ref } from 'react';
+import shouldForwardProp from '@styled-system/should-forward-prop';
 import styled from 'styled-components';
 
 import {
@@ -39,12 +40,18 @@ export const systemProps = compose(
   colorStyle
 );
 
-export const StyledBox = styled.div<BoxProps>`
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+export const StyledBox = styled('div').withConfig({
+  shouldForwardProp,
+})<BoxProps>`
   ${systemProps};
   ${extraConfig};
 `;
 
-const Box = forwardRef((props: BoxProps, ref: Ref<HTMLDivElement>) => <StyledBox ref={ref} {...props} />);
+const Box = forwardRef((props: BoxProps, ref: Ref<HTMLDivElement>) => (
+  <StyledBox ref={ref} {...props} />
+));
 
 Box.displayName = 'Box';
 
