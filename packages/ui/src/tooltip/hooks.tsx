@@ -84,6 +84,10 @@ export interface UseTooltipProps {
    * @default 10 ( = 10px )
    */
   arrowSize?: UsePopperProps['arrowSize'];
+  /**
+   * The label, we check if it changes to refresh the position of the tooltip
+   */
+  label?: string;
 }
 
 export function useTooltip(props: UseTooltipProps = {}) {

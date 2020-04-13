@@ -24,3 +24,5 @@ export * from './tooltip';
 export * from './popper';
 export * from './portal';
 export * from './hooks';
+export * from './highlighter';
+export * from './codebox';
