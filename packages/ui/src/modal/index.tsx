@@ -77,26 +77,29 @@ interface ModalCardContainerProps extends FlexProps {
   isOpen: boolean;
   noAnimation: boolean;
 }
-const ModalCardContainer = React.forwardRef<any, ModalCardContainerProps>(({ noAnimation, isOpen, ...rest }, ref) => (
-  <Flex
-    flexDirection="column"
-    position="relative"
-    bg="white"
-    mx="auto"
-    minWidth={['100%', '396px']}
-    maxWidth={['100%', '396px']}
-    maxHeight={['100%', 'calc(100% - 48px)']}
-    borderRadius={['unset', '6px']}
-    boxShadow="high"
-    transform={noAnimation ? 'translateY(0px)' : isOpen ? 'translateY(0px)' : 'translateY(15px)'}
-    transition={noAnimation ? 'unset' : 'all 0.2s ease-in-out'}
-    style={{
-      willChange: 'transform',
-    }}
-    ref={ref}
-    {...rest}
-  />
-));
+// eslint-disable-next-line react/display-name
+const ModalCardContainer = React.forwardRef<any, ModalCardContainerProps>(
+  ({ noAnimation, isOpen, ...rest }, ref) => (
+    <Flex
+      flexDirection="column"
+      position="relative"
+      bg="white"
+      mx="auto"
+      minWidth={['100%', '396px']}
+      maxWidth={['100%', '396px']}
+      maxHeight={['100%', 'calc(100% - 48px)']}
+      borderRadius={['unset', '6px']}
+      boxShadow="high"
+      transform={noAnimation ? 'translateY(0px)' : isOpen ? 'translateY(0px)' : 'translateY(15px)'}
+      transition={noAnimation ? 'unset' : 'all 0.2s ease-in-out'}
+      style={{
+        willChange: 'transform',
+      }}
+      ref={ref}
+      {...rest}
+    />
+  )
+);
 
 export const Modal: React.FC<ModalProps> = ({
   footerComponent: FooterComponent = null,
