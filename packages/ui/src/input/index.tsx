@@ -8,7 +8,7 @@ import useInputStyle from './styles';
 
 export * from './types';
 
-const Input = forwardRef<any, InputProps>((props, ref) => {
+export const Input = forwardRef<any, InputProps>((props, ref) => {
   const {
     as,
     'aria-label': ariaLabel,
@@ -18,6 +18,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
     // isDisabled,
     // isInvalid,
     // isRequired,
+    style = {},
     ...rest
   } = props;
 
@@ -38,6 +39,7 @@ const Input = forwardRef<any, InputProps>((props, ref) => {
       aria-disabled={formControl.isDisabled}
       aria-describedby={ariaDescribedby}
       textStyle="body.small"
+      style={{ '-webkit-appearance': 'none', ...style }}
       {...(inputStyleProps as any)}
       {...rest}
     />
@@ -51,5 +53,3 @@ Input.defaultProps = {
 };
 
 Input.displayName = 'Input';
-
-export { Input };
