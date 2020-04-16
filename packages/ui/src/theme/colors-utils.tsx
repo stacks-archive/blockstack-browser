@@ -10,15 +10,11 @@ export const addOpacity = (color: string, opacity: number) =>
     .string();
 
 export const addWhite = (color: string, opacity: number) => {
-  return Color(color)
-    .mix(Color('#fff'), opacity)
-    .hex();
+  return Color(color).mix(Color('#fff'), opacity).hex();
 };
 
 export const addBlack = (color: string, opacity: number) =>
-  Color(color)
-    .mix(Color('#000'), opacity)
-    .hex();
+  Color(color).mix(Color('#000'), opacity).hex();
 
 export const isDarkColor = (color: string) => Color(color).isDark();
 

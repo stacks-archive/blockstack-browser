@@ -1,43 +1,49 @@
 import * as React from 'react';
+import { useRef, useCallback, useEffect } from 'react';
+import { Placement } from '@popperjs/core';
+
 import { useDisclosure, useEventListener, useId, useMergeRefs } from '../hooks';
 import { usePopper, UsePopperProps } from '../popper';
-import { Placement } from '@popperjs/core';
 import { callAllHandlers, mergeRefs, Dict } from '../utils';
 import flushable from 'flushable';
 
-let pendingHide: flushable.FlushableOperation;
+let hideOperation: flushable.FlushableOperation;
+let activeId: string | null = null;
 
 function show(fn: (isHidePending: boolean) => void, delay: number) {
-  const isHidePending = pendingHide?.pending();
+  // check if hide has not been executed
+  const isHidePending = hideOperation?.pending();
+
+  // immediately execute hide if it has not been executed
   if (isHidePending) {
-    pendingHide.flush();
+    hideOperation.flush();
   }
-  const pendingShow = flushable(() => fn(isHidePending), isHidePending ? 0 : delay);
-  return pendingShow.cancel;
+
+  // setup the show operation using flushable
+  const showOperation = flushable(() => fn(isHidePending), isHidePending ? 0 : delay);
+
+  // return a function to cancel show() from executing
+  // in the case of multiple tooltips
+  return showOperation.cancel;
 }
 
 function hide(fn: (flushed: boolean) => void, delay: number) {
-  pendingHide = flushable(flushed => fn(flushed), delay);
-  return pendingHide.cancel;
+  // setup the hide operation using flushable
+  hideOperation = flushable(flushed => fn(flushed), delay);
+
+  // return a function to cancel hide() from executing
+  return hideOperation.cancel;
 }
 
 export interface UseTooltipProps {
   /**
    * Delay (in ms) before hiding the tooltip
    * @default 200ms
-   *
-   * Note: This value will not be respected when switching quickly
-   * between two tooltip triggers. We manage that internally and
-   * ensure the other tooltip shows immediately.
    */
   hideDelay?: number;
   /**
    * Delay (in ms) before showing the tooltip
    * @default 200ms
-   *
-   * Note: This value will not be respected when switching quickly
-   * between two tooltip triggers. We manage that internally and
-   * ensure the other tooltip shows immediately.
    */
   showDelay?: number;
   /**
@@ -82,7 +88,7 @@ export interface UseTooltipProps {
 
 export function useTooltip(props: UseTooltipProps = {}) {
   const {
-    showDelay = 100,
+    showDelay = 200,
     hideDelay = 200,
     hideOnClick = true,
     onShow,
@@ -108,67 +114,62 @@ export function useTooltip(props: UseTooltipProps = {}) {
     arrowSize,
   });
 
-  const ref = React.useRef<any>(null);
+  const tooltipId = useId(id, 'tooltip');
 
+  const ref = useRef<any>(null);
   const triggerRef = useMergeRefs(ref, popper.reference.ref);
+  console.log(triggerRef);
+  const flushRef = useRef<Function>();
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const cancelPendingSetStateRef = React.useRef(() => {});
-
-  React.useEffect(() => {
-    return () => cancelPendingSetStateRef.current();
+  useEffect(() => {
+    return () => flushRef.current?.();
   }, []);
 
-  const onScroll = React.useCallback(() => {
-    if (isOpen) {
-      cancelPendingSetStateRef.current();
-      close();
-    }
-  }, [isOpen, close]);
-
-  useEventListener('scroll', onScroll, document, {
-    capture: true,
-    passive: true,
-  });
-
-  const hideImmediately = React.useCallback(() => {
-    cancelPendingSetStateRef.current();
+  const hideImmediately = useCallback(() => {
+    flushRef.current?.();
     close();
   }, [close]);
 
-  const onClick = React.useCallback(() => {
+  const onClick = useCallback(() => {
     if (hideOnClick) {
       hideImmediately();
     }
   }, [hideOnClick, hideImmediately]);
 
-  const onMouseDown = React.useCallback(() => {
+  const onMouseDown = useCallback(() => {
     if (hideOnMouseDown) {
       hideImmediately();
     }
   }, [hideOnMouseDown, hideImmediately]);
 
-  const showTooltip = React.useCallback(() => {
-    cancelPendingSetStateRef.current();
+  const showTooltip = useCallback(() => {
+    flushRef.current?.();
+
+    if (tooltipId !== activeId) {
+      hideImmediately();
+    }
+
+    activeId = tooltipId;
 
     if (!isOpen) {
-      cancelPendingSetStateRef.current = show(() => {
+      flushRef.current = show(() => {
         open();
       }, showDelay);
     }
-  }, [isOpen, showDelay, open]);
+  }, [isOpen, showDelay, open, tooltipId, hideImmediately]);
 
-  const hideTooltip = React.useCallback(() => {
-    cancelPendingSetStateRef.current();
+  const hideTooltip = useCallback(() => {
+    flushRef.current?.();
+    activeId = null;
 
     if (isOpen) {
-      cancelPendingSetStateRef.current = hide(() => {
+      flushRef.current = hide(() => {
         close();
       }, hideDelay);
     }
   }, [isOpen, hideDelay, close]);
 
-  const onMouseOver = React.useCallback(
+  const onMouseOver = useCallback(
     (event: React.MouseEvent) => {
       const isSelf = event.target === (ref.current as HTMLElement);
 
@@ -181,10 +182,8 @@ export function useTooltip(props: UseTooltipProps = {}) {
     [isOpen, showTooltip]
   );
 
-  const tooltipId = useId(id, 'tooltip');
-
   // A11y: Close the tooltip if user presses escape
-  const onKeyDown = React.useCallback(
+  const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (isOpen && event.key === 'Escape') {
         hideImmediately();
@@ -192,7 +191,10 @@ export function useTooltip(props: UseTooltipProps = {}) {
     },
     [isOpen, hideImmediately]
   );
+
   useEventListener('keydown', onKeyDown);
+
+  console.log('popper', popper);
 
   return {
     isOpen,

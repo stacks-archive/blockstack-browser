@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { Placement, Instance, createPopper } from '@popperjs/core';
 
-const isBrowser = typeof window !== 'undefined';
-
-const useSafeLayoutEffect = isBrowser ? React.useLayoutEffect : React.useEffect;
-
 const oppositeDirections = {
   top: 'bottom',
   bottom: 'top',
@@ -31,6 +27,9 @@ export function getArrowStyles(placement: Placement, arrowSize: number): React.C
     transform: 'rotate(45deg)',
   };
 }
+const isBrowser = typeof window !== 'undefined';
+
+const useSafeLayoutEffect = isBrowser ? React.useLayoutEffect : React.useEffect;
 
 export interface UsePopperProps {
   gutter?: number;
@@ -137,10 +136,12 @@ export function usePopper(props: UsePopperProps) {
     };
   }, [originalPlacement, fixed, forceUpdate, flip, offset, preventOverflow]);
 
-  React.useEffect(() => {
-    if (forceUpdate) {
-      popper.current?.forceUpdate();
-    }
+  useSafeLayoutEffect(() => {
+    requestAnimationFrame(() => {
+      if (forceUpdate) {
+        popper.current?.forceUpdate();
+      }
+    });
   }, [forceUpdate]);
 
   const computedArrowStyles: React.CSSProperties = {
@@ -166,4 +167,5 @@ export function usePopper(props: UsePopperProps) {
     place,
   };
 }
+
 export type UsePopperReturn = ReturnType<typeof usePopper>;
