@@ -24,8 +24,8 @@
   "dependencies": {
     "@blockstack/connect": "^2.4.0",
     "@blockstack/keychain": "^0.3.3",
-    "@blockstack/prettier-config": "^0.0.6",
     "@blockstack/ui": "^1.1.1",
+    "@blockstack/prettier-config": "^0.0.6",
     "@rehooks/document-title": "^1.0.1",
     "blockstack": "^21.0.0",
     "formik": "^2.1.4",
