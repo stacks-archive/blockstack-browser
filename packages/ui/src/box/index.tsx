@@ -1,5 +1,5 @@
 import React, { forwardRef, Ref } from 'react';
-import shouldForwardProp from '@styled-system/should-forward-prop';
+import { createShouldForwardProp, props } from '@styled-system/should-forward-prop';
 import styled from 'styled-components';
 import css from '@styled-system/css';
 
@@ -20,7 +20,7 @@ import {
   compose,
 } from 'styled-system';
 
-import extraConfig, { transformAliasProps as tx } from './config';
+import extraConfig, { extraProps, transformAliasProps as tx } from './config';
 import { BoxProps } from './types';
 
 export * from './types';
@@ -41,11 +41,11 @@ export const systemProps = compose(
   colorStyle
 );
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
+const shouldForwardProp = createShouldForwardProp([...props, ...extraProps]);
+
 export const StyledBox = styled('div').withConfig({
-  shouldForwardProp,
-})`
+  shouldForwardProp: prop => shouldForwardProp(prop),
+})<BoxProps>`
   ${systemProps};
   ${extraConfig};
 `;

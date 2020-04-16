@@ -170,3 +170,5 @@ export const transformAliasProps = (props: any) => {
   }
   return result;
 };
+
+export const extraProps = Object.keys(config);

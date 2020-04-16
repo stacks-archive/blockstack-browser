@@ -118,7 +118,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
 
   const ref = useRef<any>(null);
   const triggerRef = useMergeRefs(ref, popper.reference.ref);
-  console.log(triggerRef);
+
   const flushRef = useRef<Function>();
 
   useEffect(() => {
@@ -193,8 +193,6 @@ export function useTooltip(props: UseTooltipProps = {}) {
   );
 
   useEventListener('keydown', onKeyDown);
-
-  console.log('popper', popper);
 
   return {
     isOpen,
