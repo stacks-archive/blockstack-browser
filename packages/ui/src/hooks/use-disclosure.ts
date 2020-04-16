@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { useControllableProp } from './useControllable';
-import { usePrevious } from './usePrevious';
+import { useControllableProp } from './use-controllable';
+import { usePrevious } from './use-previous';
 
 export interface UseDisclosureProps {
   isOpen?: boolean;

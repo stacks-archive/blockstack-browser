@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { isBrowser, FunctionArguments } from '../utils';
-import { useLatestRef } from './useLatestRef';
+import { useLatestRef } from './use-latest-ref';
 
 type AddEventListener = FunctionArguments<typeof document.addEventListener>;
 
