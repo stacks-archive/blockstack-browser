@@ -162,7 +162,11 @@ const transformAlias = (prop: string, propValue: any) => {
 export const transformAliasProps = (props: any) => {
   let result = {};
   for (const prop in props) {
-    result = { ...result, ...transformAlias(prop, props[prop]) };
+    if (typeof props[prop] === 'object' && !Array.isArray(props[prop])) {
+      result = { ...result, [prop]: transformAliasProps(props[prop]) };
+    } else {
+      result = { ...result, ...transformAlias(prop, props[prop]) };
+    }
   }
   return result;
 };

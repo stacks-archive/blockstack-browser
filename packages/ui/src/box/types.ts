@@ -2,7 +2,6 @@ import * as StyledSystem from 'styled-system';
 import * as React from 'react';
 import { Omit } from '../common-types';
 import * as CSS from 'csstype';
-import { SystemStyleObject } from '@styled-system/css';
 
 export type FontSizeValues =
   | 'xs'
@@ -122,12 +121,11 @@ export interface DisplayShorthandProps {
 export type BoxShadow = 'low' | 'mid' | 'high' | 'inner' | 'none' | CSS.BoxShadowProperty;
 
 export interface OtherProps {
+  children?: React.ReactNode[] | React.ReactNode;
   cursor?: CSS.CursorProperty | StyledSystem.ResponsiveValue<CSS.CursorProperty>;
   transform?: CSS.TransformProperty | StyledSystem.ResponsiveValue<CSS.TransformProperty>;
   transition?: CSS.TransitionProperty | StyledSystem.ResponsiveValue<CSS.TransitionProperty>;
   boxShadow?: BoxShadow | StyledSystem.ResponsiveValue<BoxShadow>;
-  children?: React.ReactNode[] | React.ReactNode;
-  sx?: SystemStyleObject;
 }
 
 export type ShorthandProps = FlexDirectionShorthandProps & DisplayShorthandProps;
@@ -158,12 +156,144 @@ export type ModifiedStyledSystemProps = TypographyProps &
 export type BoxHTMLProps = React.RefAttributes<HTMLDivElement> &
   React.HTMLAttributes<HTMLDivElement>;
 
-export type BoxProps = StyledSystemProps &
+export type BoxPropsBase = StyledSystemProps &
   ModifiedStyledSystemProps &
   ShorthandProps &
   As &
   BoxHTMLProps;
 
-export type Box = React.FC<BoxProps>;
+export type Box = React.FC<BoxPropsBase>;
 
 export type PropsOf<T extends AsType> = React.ComponentPropsWithRef<T>;
+
+/**
+ * Remove as from the types accepted in pseudo styles
+ */
+type BoxSystemProps = Omit<BoxPropsBase, 'as'>;
+
+export interface BoxProps extends BoxPropsBase {
+  /**
+   * Styles for CSS selector `&:after`
+   *
+   * NOTE:When using this, ensure the `content` is wrapped in a backtick.
+   * @example
+   * ```jsx
+   * <PseudoBox _after={{content:`""` }}/>
+   * ```
+   */
+  _after?: BoxSystemProps;
+  /**
+   * Styles for CSS selector `&:before`
+   *
+   * NOTE:When using this, ensure the `content` is wrapped in a backtick.
+   * @example
+   * ```jsx
+   * <PseudoBox _before={{content:`""` }}/>
+   * ```
+   */
+  _before?: BoxSystemProps;
+  /**
+   * Styles for CSS selector `&:focus`
+   */
+  _focus?: BoxSystemProps;
+  /**
+   * Styles for CSS selector `&:hover`
+   */
+  _hover?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:active`
+   */
+  _active?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&[aria-pressed=true]`
+   * Typically used to style the current "pressed" state of toggle buttons
+   */
+  _pressed?: BoxSystemProps;
+  /**
+   * Styles to apply when the ARIA attribute `aria-selected` is `true`
+   * - CSS selector `&[aria-selected=true]`
+   */
+  _selected?: BoxSystemProps;
+  /**
+   * Styles to apply when a child of this element has received focus
+   * - CSS Selector `&:focus-within`
+   */
+  _focusWithin?: BoxSystemProps;
+
+  /**
+   * Styles to apply when the ARIA attribute `aria-invalid` is `true`
+   * - CSS selector `&[aria-invalid=true]`
+   */
+  _invalid?: BoxSystemProps;
+  /**
+   * Styles to apply when this element is disabled. The passed styles are applied to these CSS selectors:
+   * - `&[aria-disabled=true]`
+   * - `&:disabled`
+   * - `&:disabled:focus`
+   * - `&:disabled:hover`
+   * - `&:focus[aria-disabled=true]`
+   * - `&:hover[aria-disabled=true]`
+   */
+  _disabled?: BoxSystemProps;
+  /**
+   * Styles to apply when the ARIA attribute `aria-grabbed` is `true`
+   * - CSS selector `&[aria-grabbed=true]`
+   */
+  _grabbed?: BoxSystemProps;
+  /**
+   * Styles to apply when the ARIA attribute `aria-expanded` is `true`
+   * - CSS selector `&[aria-expanded=true]`
+   */
+  _expanded?: BoxSystemProps;
+  /**
+   * Styles to apply when the ARIA attribute `aria-checked` is `true`
+   * - CSS selector `&[aria-checked=true]`
+   */
+  _checked?: BoxSystemProps;
+  /**
+   * Styles to apply when the ARIA attribute `aria-checked` is `mixed`
+   * - CSS selector `&[aria-checked=mixed]`
+   */
+  _mixed?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:nth-child(odd)`
+   */
+  _odd?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:nth-child(even)`
+   */
+  _even?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:visited`
+   */
+  _visited?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:readonly`
+   */
+  _readOnly?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:first-of-type`
+   */
+  _first?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:last-of-type`
+   */
+  _last?: BoxSystemProps;
+  /**
+   * Styles to apply when you hover on a parent that has `role=group`.
+   */
+  _groupHover?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:not(:first-of-type)`
+   */
+  _notFirst?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&:not(:last-of-type)`
+   */
+  _notLast?: BoxSystemProps;
+  /**
+   * Styles for CSS Selector `&::placeholder`.
+   * Useful for inputs
+   */
+  _placeholder?: BoxSystemProps;
+}
