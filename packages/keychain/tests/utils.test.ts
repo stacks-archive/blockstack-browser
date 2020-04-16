@@ -90,7 +90,10 @@ describe(validateSubdomain.name, () => {
 
 test('recursively makes identities', async () => {
   const wallet = await Wallet.generate('password');
-  const plainTextBuffer = await decrypt(Buffer.from(wallet.encryptedBackupPhrase, 'hex'), 'password');
+  const plainTextBuffer = await decrypt(
+    Buffer.from(wallet.encryptedBackupPhrase, 'hex'),
+    'password'
+  );
   const seed = await mnemonicToSeed(plainTextBuffer);
   const rootNode = bip32.fromSeed(seed);
 

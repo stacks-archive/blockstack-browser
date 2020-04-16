@@ -1,4 +1,9 @@
-import { signProfileToken, wrapProfileToken, connectToGaiaHub, makeProfileZoneFile } from 'blockstack';
+import {
+  signProfileToken,
+  wrapProfileToken,
+  connectToGaiaHub,
+  makeProfileZoneFile,
+} from 'blockstack';
 import { IdentityKeyPair } from './utils';
 import Identity from './identity';
 import { uploadToGaiaHub, GaiaHubConfig } from 'blockstack/lib/storage/hub';
@@ -63,9 +68,15 @@ export async function uploadProfile(
   signedProfileTokenData: string,
   gaiaHubConfig?: GaiaHubConfig
 ) {
-  const identityHubConfig = gaiaHubConfig || (await connectToGaiaHub(gaiaHubUrl, identity.keyPair.key));
+  const identityHubConfig =
+    gaiaHubConfig || (await connectToGaiaHub(gaiaHubUrl, identity.keyPair.key));
 
-  return uploadToGaiaHub(DEFAULT_PROFILE_FILE_NAME, signedProfileTokenData, identityHubConfig, 'application/json');
+  return uploadToGaiaHub(
+    DEFAULT_PROFILE_FILE_NAME,
+    signedProfileTokenData,
+    identityHubConfig,
+    'application/json'
+  );
 }
 
 interface SendToRegistrarParams {
@@ -75,7 +86,12 @@ interface SendToRegistrarParams {
   identity: Identity;
 }
 
-const sendUsernameToRegistrar = async ({ username, subdomain, zoneFile, identity }: SendToRegistrarParams) => {
+const sendUsernameToRegistrar = async ({
+  username,
+  subdomain,
+  zoneFile,
+  identity,
+}: SendToRegistrarParams) => {
   const { registerUrl } = registrars[subdomain];
 
   const registrationRequestBody = JSON.stringify({
@@ -118,7 +134,12 @@ interface RegisterParams {
 /**
  * Register a subdomain for a given identity
  */
-export const registerSubdomain = async ({ identity, gaiaHubUrl, username, subdomain }: RegisterParams) => {
+export const registerSubdomain = async ({
+  identity,
+  gaiaHubUrl,
+  username,
+  subdomain,
+}: RegisterParams) => {
   // const profile = identity.profile || DEFAULT_PROFILE
   const profile = DEFAULT_PROFILE;
   const signedProfileTokenData = await signProfileForUpload(profile, identity.keyPair);
@@ -152,7 +173,13 @@ export const signAndUploadProfile = async ({
   await uploadProfile(gaiaHubUrl, identity, signedProfileTokenData, gaiaHubConfig);
 };
 
-export const fetchProfile = async ({ identity, gaiaUrl }: { identity: Identity; gaiaUrl: string }) => {
+export const fetchProfile = async ({
+  identity,
+  gaiaUrl,
+}: {
+  identity: Identity;
+  gaiaUrl: string;
+}) => {
   try {
     const url = await identity.profileUrl(gaiaUrl);
     const res = await fetch(url);

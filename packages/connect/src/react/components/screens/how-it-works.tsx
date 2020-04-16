@@ -17,8 +17,8 @@ const howSecretKeyWorks = ({ name }: { name: string }): InfoSection[] => [
     title: 'What is Blockstack?',
     body: (
       <span>
-        Blockstack is the open-source technology that generates your Secret Key. There&apos;s no company that owns or
-        controls Blockstack, it is independent. Go to{' '}
+        Blockstack is the open-source technology that generates your Secret Key. There&apos;s no
+        company that owns or controls Blockstack, it is independent. Go to{' '}
         <Link
           color="blue"
           display="inline-block"
@@ -54,10 +54,12 @@ export const HowItWorks: React.FC = () => {
       <ScreenBody
         pretitle="How it works"
         body={[
-          <Title>{name} keeps everything you do private with Blockstack&apos;s Secret Key technology</Title>,
+          <Title>
+            {name} keeps everything you do private with Blockstack&apos;s Secret Key technology
+          </Title>,
           <Text mt="tight" display="block">
-            Normally, apps keep your data for them to use. When you have a Secret Key, you no longer have to trust{' '}
-            {name} with your data because {name} won&apos;t have access.
+            Normally, apps keep your data for them to use. When you have a Secret Key, you no longer
+            have to trust {name} with your data because {name} won&apos;t have access.
           </Text>,
           <Box mt="tight">
             {howSecretKeyWorks({ name }).map(({ title, body }, key) => (

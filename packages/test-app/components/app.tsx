@@ -107,11 +107,22 @@ export const App: React.FC = () => {
     <Connect authOptions={authOptions}>
       <ThemeProvider theme={theme}>
         <CSSReset />
-        <Flex direction="column" height="100vh" width="100vw" align="center" justify="center" bg="whitesmoke">
+        <Flex
+          direction="column"
+          height="100vh"
+          width="100vw"
+          align="center"
+          justify="center"
+          bg="whitesmoke"
+        >
           {authResponse && <input type="hidden" id="auth-response" value={authResponse} />}
           {appPrivateKey && <input type="hidden" id="app-private-key" value={appPrivateKey} />}
 
-          {!isSignedIn ? <AppContent /> : <SignedIn handleSignOut={handleSignOut} username={state.username} />}
+          {!isSignedIn ? (
+            <AppContent />
+          ) : (
+            <SignedIn handleSignOut={handleSignOut} username={state.username} />
+          )}
         </Flex>
       </ThemeProvider>
     </Connect>

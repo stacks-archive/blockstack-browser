@@ -32,7 +32,8 @@ export const Finished = () => {
         body={[
           <Title>{name} has been connected to your Secret Key</Title>,
           <Box mt="tight">
-            Everything you do in {name} will be private, secure, and only accessible with your Secret Key.
+            Everything you do in {name} will be private, secure, and only accessible with your
+            Secret Key.
           </Box>,
         ]}
       />

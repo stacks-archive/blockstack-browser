@@ -22,7 +22,9 @@ test('generates an auth response', async () => {
   const authResponse = await identity.makeAuthResponse({ appDomain, gaiaUrl, transitPublicKey });
   const decoded = decodeToken(authResponse);
   const { payload } = decoded as Decoded;
-  expect(payload.profile_url).toEqual(`https://gaia.blockstack.org/hub/${identity.address}/profile.json`);
+  expect(payload.profile_url).toEqual(
+    `https://gaia.blockstack.org/hub/${identity.address}/profile.json`
+  );
   const appPrivateKey = await decryptPrivateKey(transitPrivateKey, payload.private_key);
   const expectedKey = '6f8b6a170f8b2ee57df5ead49b0f4c8acde05f9e1c4c6ef8223d6a42fabfa314';
   expect(appPrivateKey).toEqual(expectedKey);
@@ -58,7 +60,9 @@ test('adds to apps in profile if publish_data scope', async () => {
   expect(apps[appDomain]).not.toBeFalsy();
   const appPrivateKey = await decryptPrivateKey(transitPrivateKey, payload.private_key);
   const challengeSigner = ECPair.fromPrivateKey(Buffer.from(appPrivateKey as string, 'hex'));
-  const expectedDomain = `https://gaia.blockstack.org/hub/${await ecPairToAddress(challengeSigner)}`;
+  const expectedDomain = `https://gaia.blockstack.org/hub/${await ecPairToAddress(
+    challengeSigner
+  )}`;
   expect(apps[appDomain]).toEqual(expectedDomain);
 });
 
@@ -70,7 +74,9 @@ test('generates an app private key', async () => {
 });
 
 test('generates an app private key for a different seed', async () => {
-  const identity = await getIdentity('monster toilet shoe giggle welcome coyote enact glass copy era shed foam');
+  const identity = await getIdentity(
+    'monster toilet shoe giggle welcome coyote enact glass copy era shed foam'
+  );
   const appPrivateKey = await identity.appPrivateKey('https://banter.pub');
   expect(appPrivateKey).toEqual('a7bf3ecf0dd68a23a6621c39780d6cae3776240251a7988fed9ecfda2699ffe8');
 });

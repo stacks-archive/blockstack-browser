@@ -99,7 +99,13 @@ const ConnectContext = createContext<State>(initialState);
 
 const ConnectDispatchContext = createContext<Dispatch | undefined>(undefined);
 
-const ConnectProvider = ({ authOptions, children }: { authOptions: AuthOptions; children: any }) => {
+const ConnectProvider = ({
+  authOptions,
+  children,
+}: {
+  authOptions: AuthOptions;
+  children: any;
+}) => {
   const [state, dispatch] = useReducer(connectReducer, initialState);
 
   return (
@@ -109,4 +115,11 @@ const ConnectProvider = ({ authOptions, children }: { authOptions: AuthOptions; 
   );
 };
 
-export { initialState, connectReducer, ConnectContext, ConnectDispatchContext, ConnectProvider, States };
+export {
+  initialState,
+  connectReducer,
+  ConnectContext,
+  ConnectDispatchContext,
+  ConnectProvider,
+  States,
+};

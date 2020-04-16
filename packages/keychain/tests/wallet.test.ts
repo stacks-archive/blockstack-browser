@@ -129,7 +129,9 @@ test('returns config if present', async () => {
   }
   expect(config.identities.length).toEqual(1);
   const identity = config.identities[0];
-  expect(identity.apps['http://localhost:3000']).toEqual(stubConfig.identities[0].apps['http://localhost:3000']);
+  expect(identity.apps['http://localhost:3000']).toEqual(
+    stubConfig.identities[0].apps['http://localhost:3000']
+  );
 });
 
 test('creates a config', async () => {
@@ -182,7 +184,9 @@ test('updates wallet config', async () => {
   });
   expect(fetchMock.mock.calls.length).toEqual(4);
   const body = JSON.parse(fetchMock.mock.calls[3][1].body);
-  const decrypted = (await decryptContent(JSON.stringify(body), { privateKey: wallet.configPrivateKey })) as string;
+  const decrypted = (await decryptContent(JSON.stringify(body), {
+    privateKey: wallet.configPrivateKey,
+  })) as string;
   const config = JSON.parse(decrypted);
   expect(config).toEqual(wallet.walletConfig);
 });
@@ -208,7 +212,9 @@ test('updates config for reusing id warning', async () => {
   expect(wallet.walletConfig?.hideWarningForReusingIdentity).toBeTruthy();
   expect(fetchMock.mock.calls.length).toEqual(4);
   const body = JSON.parse(fetchMock.mock.calls[3][1].body);
-  const decrypted = (await decryptContent(JSON.stringify(body), { privateKey: wallet.configPrivateKey })) as string;
+  const decrypted = (await decryptContent(JSON.stringify(body), {
+    privateKey: wallet.configPrivateKey,
+  })) as string;
   const config = JSON.parse(decrypted);
   expect(config.hideWarningForReusingIdentity).toBeTruthy();
 });
@@ -240,7 +246,10 @@ test('restoreIdentities', async () => {
   const encrypted = await encryptContent(JSON.stringify(stubConfig), { publicKey });
   fetchMock.once(encrypted);
 
-  const plainTextBuffer = await decrypt(Buffer.from(wallet.encryptedBackupPhrase, 'hex'), 'password');
+  const plainTextBuffer = await decrypt(
+    Buffer.from(wallet.encryptedBackupPhrase, 'hex'),
+    'password'
+  );
   const seed = await mnemonicToSeed(plainTextBuffer);
   const rootNode = bip32.fromSeed(seed);
   await wallet.restoreIdentities({ gaiaReadURL: DEFAULT_GAIA_HUB, rootNode });

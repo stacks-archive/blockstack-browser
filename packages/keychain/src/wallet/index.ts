@@ -12,7 +12,12 @@ import {
 import { encrypt } from '../encryption/encrypt';
 import Identity from '../identity';
 import { decrypt } from '../encryption/decrypt';
-import { connectToGaiaHub, encryptContent, getPublicKeyFromPrivate, decryptContent } from 'blockstack';
+import {
+  connectToGaiaHub,
+  encryptContent,
+  getPublicKeyFromPrivate,
+  decryptContent,
+} from 'blockstack';
 import { GaiaHubConfig, uploadToGaiaHub } from 'blockstack/lib/storage/hub';
 import { makeReadOnlyGaiaConfig, DEFAULT_GAIA_HUB } from '../utils/gaia';
 
@@ -104,7 +109,11 @@ export class Wallet {
     return wallet;
   }
 
-  static async createAccount(encryptedBackupPhrase: string, masterKeychain: BIP32Interface, identitiesToGenerate = 1) {
+  static async createAccount(
+    encryptedBackupPhrase: string,
+    masterKeychain: BIP32Interface,
+    identitiesToGenerate = 1
+  ) {
     const derivedKey = masterKeychain.deriveHardened(CONFIG_INDEX).privateKey;
     if (!derivedKey) {
       throw new TypeError('Unable to derive config key for wallet');
@@ -129,8 +138,17 @@ export class Wallet {
    * on-chain names.
    *
    */
-  async restoreIdentities({ rootNode, gaiaReadURL }: { rootNode: bip32.BIP32Interface; gaiaReadURL: string }) {
-    const gaiaConfig = await makeReadOnlyGaiaConfig({ readURL: gaiaReadURL, privateKey: this.configPrivateKey });
+  async restoreIdentities({
+    rootNode,
+    gaiaReadURL,
+  }: {
+    rootNode: bip32.BIP32Interface;
+    gaiaReadURL: string;
+  }) {
+    const gaiaConfig = await makeReadOnlyGaiaConfig({
+      readURL: gaiaReadURL,
+      privateKey: this.configPrivateKey,
+    });
     await this.fetchConfig(gaiaConfig);
     if (this.walletConfig) {
       const getIdentities = this.walletConfig.identities.map(async (identityConfig, index) => {
@@ -172,9 +190,13 @@ export class Wallet {
 
   async fetchConfig(gaiaConfig: GaiaHubConfig): Promise<WalletConfig | null> {
     try {
-      const response = await fetch(`${gaiaConfig.url_prefix}${gaiaConfig.address}/wallet-config.json`);
+      const response = await fetch(
+        `${gaiaConfig.url_prefix}${gaiaConfig.address}/wallet-config.json`
+      );
       const encrypted = await response.text();
-      const configJSON = (await decryptContent(encrypted, { privateKey: this.configPrivateKey })) as string;
+      const configJSON = (await decryptContent(encrypted, {
+        privateKey: this.configPrivateKey,
+      })) as string;
       const config: WalletConfig = JSON.parse(configJSON);
       this.walletConfig = config;
       return config;

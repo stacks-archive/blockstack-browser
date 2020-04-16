@@ -13,7 +13,12 @@ const defaultHeight = 532;
 const defaultTitle = 'Continue with Secret Key';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open
-export const popupCenter = ({ url, title = defaultTitle, w = defaultWidth, h = defaultHeight }: PopupOptions) => {
+export const popupCenter = ({
+  url,
+  title = defaultTitle,
+  w = defaultWidth,
+  h = defaultHeight,
+}: PopupOptions) => {
   const win = window;
   // Safari reports an incorrect browser height
   const isSafari = (win as any).safari !== undefined;
@@ -26,8 +31,10 @@ export const popupCenter = ({ url, title = defaultTitle, w = defaultWidth, h = d
   const browserSidepanelWidth = win.outerWidth - win.innerWidth;
 
   // Such as fixed operating system UI
-  const removeUnusableSpaceX = (coord: number) => coord - (win.screen.width - win.screen.availWidth);
-  const removeUnusableSpaceY = (coord: number) => coord - (win.screen.height - win.screen.availHeight);
+  const removeUnusableSpaceX = (coord: number) =>
+    coord - (win.screen.width - win.screen.availWidth);
+  const removeUnusableSpaceY = (coord: number) =>
+    coord - (win.screen.height - win.screen.availHeight);
 
   const browserPosition = {
     x: removeUnusableSpaceX(win.screenX),
@@ -35,7 +42,11 @@ export const popupCenter = ({ url, title = defaultTitle, w = defaultWidth, h = d
   };
 
   const left = browserPosition.x + browserSidepanelWidth + (browserViewport.width - w) / 2;
-  const top = browserPosition.y + browserToolbarHeight + (browserViewport.height - h) / 2 + (isSafari ? 48 : 0);
+  const top =
+    browserPosition.y +
+    browserToolbarHeight +
+    (browserViewport.height - h) / 2 +
+    (isSafari ? 48 : 0);
 
   const options = {
     scrollbars: 'no',

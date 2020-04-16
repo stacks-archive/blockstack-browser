@@ -1,5 +1,11 @@
 import './setup';
-import { signProfileForUpload, DEFAULT_PROFILE, registerSubdomain, Subdomains, registrars } from '../src/profiles';
+import {
+  signProfileForUpload,
+  DEFAULT_PROFILE,
+  registerSubdomain,
+  Subdomains,
+  registrars,
+} from '../src/profiles';
 import { getIdentity, getNewIdentity } from './helpers';
 import { decodeToken, TokenVerifier } from 'jsontokens';
 import { makeProfileZoneFile } from 'blockstack';

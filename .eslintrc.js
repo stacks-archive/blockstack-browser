@@ -15,7 +15,7 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  plugins: ['@typescript-eslint', 'react', 'jest'],
+  plugins: ['@typescript-eslint', 'react', 'jest', 'prettier'],
   env: {
     browser: true,
     node: true,

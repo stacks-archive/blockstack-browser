@@ -10,14 +10,14 @@
     }
   ],
   "dependencies": {
-    "@popperjs/core": "^2.3.1",
+    "@popperjs/core": "^2.3.3",
     "@reach/auto-id": "^0.10.0",
     "@styled-system/css": "5.1.5",
     "@types/color": "^3.0.1",
     "@types/flushable": "^1.0.1",
-    "@types/styled-components": "^4.4.3",
+    "@types/styled-components": "^5.1.0",
     "@types/styled-system": "^5.1.6",
-    "@types/styled-system__css": "^5.0.4",
+    "@types/styled-system__css": "^5.0.8",
     "@types/theme-ui": "^0.3.1",
     "color": "3.1.2",
     "flushable": "^1.0.0",

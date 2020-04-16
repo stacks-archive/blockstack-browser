@@ -22,7 +22,10 @@ export const getHubPrefix = async (hubUrl: string) => {
   return read_url_prefix;
 };
 
-export const makeGaiaAssociationToken = (secretKeyHex: string, childPublicKeyHex: string): string => {
+export const makeGaiaAssociationToken = (
+  secretKeyHex: string,
+  childPublicKeyHex: string
+): string => {
   const LIFETIME_SECONDS = 365 * 24 * 3600;
   const signerKeyHex = secretKeyHex.slice(0, 64);
   const compressedPublicKeyHex = getPublicKeyFromPrivate(signerKeyHex);
@@ -53,7 +56,9 @@ export const connectToGaiaHubWithConfig = async ({
 }: ConnectToGaiaOptions): Promise<GaiaHubConfig> => {
   const readURL = hubInfo.read_url_prefix;
   const token = makeGaiaAuthToken({ hubInfo, privateKey, gaiaHubUrl });
-  const address = await ecPairToAddress(hexStringToECPair(privateKey + (privateKey.length === 64 ? '01' : '')));
+  const address = await ecPairToAddress(
+    hexStringToECPair(privateKey + (privateKey.length === 64 ? '01' : ''))
+  );
   return {
     url_prefix: readURL,
     address,
@@ -74,7 +79,9 @@ export const makeReadOnlyGaiaConfig = async ({
   readURL,
   privateKey,
 }: ReadOnlyGaiaConfigOptions): Promise<GaiaHubConfig> => {
-  const address = await ecPairToAddress(hexStringToECPair(privateKey + (privateKey.length === 64 ? '01' : '')));
+  const address = await ecPairToAddress(
+    hexStringToECPair(privateKey + (privateKey.length === 64 ? '01' : ''))
+  );
   return {
     url_prefix: readURL,
     address,

@@ -11,7 +11,12 @@ export interface ScreenBodyProps extends FlexProps {
   titleProps?: FlexProps;
 }
 
-export const ScreenBody = ({ body, pretitle, fullWidth, ...rest }: Omit<ScreenBodyProps, 'title'>) => {
+export const ScreenBody = ({
+  body,
+  pretitle,
+  fullWidth,
+  ...rest
+}: Omit<ScreenBodyProps, 'title'>) => {
   return (
     <Flex mx={fullWidth ? 0 : PX} flexDirection="column" {...rest}>
       {pretitle && <Pretitle>{pretitle}</Pretitle>}

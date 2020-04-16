@@ -84,9 +84,15 @@ const ModalHeader = ({ title, back, hideIcon, close, hideTitleElements, ...rest 
       borderBottomColor="inherit"
       {...rest}
     >
-      {back ? <ModalHeaderIconButton onClick={() => doChangeScreen(back)} icon={ChevronIcon} size={22} /> : null}
+      {back ? (
+        <ModalHeaderIconButton onClick={() => doChangeScreen(back)} icon={ChevronIcon} size={22} />
+      ) : null}
       {!hideTitleElements ? (
-        <Flex align="center" mx={back ? 'auto' : 'unset'} transform={back ? 'translateX(-15px)' : 'unset'}>
+        <Flex
+          align="center"
+          mx={back ? 'auto' : 'unset'}
+          transform={back ? 'translateX(-15px)' : 'unset'}
+        >
           <HeaderTitle hideIcon={hideIcon} title={title} />
         </Flex>
       ) : (

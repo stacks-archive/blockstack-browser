@@ -2,7 +2,14 @@ import React from 'react';
 import { Text, BoxProps } from '@blockstack/ui';
 
 const Title = (props: BoxProps) => (
-  <Text width="100%" fontWeight="medium" fontSize="24px" lineHeight="32px" display="inline-block" {...props} />
+  <Text
+    width="100%"
+    fontWeight="medium"
+    fontSize="24px"
+    lineHeight="32px"
+    display="inline-block"
+    {...props}
+  />
 );
 
 const Pretitle = (props: BoxProps) => (

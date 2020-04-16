@@ -19,7 +19,8 @@ if (typeof window !== 'undefined') {
 }
 
 const originalStyle = () => {
-  window.__useScrollLockStyle = window.__useScrollLockStyle || window.getComputedStyle(document.body).overflow;
+  window.__useScrollLockStyle =
+    window.__useScrollLockStyle || window.getComputedStyle(document.body).overflow;
 
   return window.__useScrollLockStyle;
 };

@@ -8,7 +8,14 @@ const onClick = () => {
 };
 
 export const PoweredBy: React.FC = () => (
-  <Flex fontSize={['12px', '14px']} justifyContent="center" color="ink.600" textAlign="center" width="100%" my="loose">
+  <Flex
+    fontSize={['12px', '14px']}
+    justifyContent="center"
+    color="ink.600"
+    textAlign="center"
+    width="100%"
+    my="loose"
+  >
     <PseudoBox
       textAlign="center"
       onClick={onClick}

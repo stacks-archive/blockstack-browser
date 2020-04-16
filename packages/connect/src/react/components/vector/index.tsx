@@ -9,7 +9,14 @@ const AppsIcon: React.FC = props => (
       d="M13.5697 10.9091H22.2999C23.0625 10.9091 23.5444 10.0897 23.1739 9.42317L18.8088 1.57201C18.4277 0.886573 17.4419 0.886572 17.0608 1.572L12.6957 9.42316C12.3251 10.0897 12.8071 10.9091 13.5697 10.9091Z"
       fill="currentColor"
     />
-    <rect opacity="0.64" y="13.7327" width="10.4348" height="10.2674" rx="5.13369" fill="currentColor" />
+    <rect
+      opacity="0.64"
+      y="13.7327"
+      width="10.4348"
+      height="10.2674"
+      rx="5.13369"
+      fill="currentColor"
+    />
     <path
       opacity="0.4"
       fillRule="evenodd"
