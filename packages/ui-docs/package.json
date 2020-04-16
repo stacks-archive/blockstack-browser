@@ -25,7 +25,7 @@
   "devDependencies": {
     "babel-plugin-styled-components": "^1.10.7",
     "now": "^17.0.4",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "styled-components": "^5.0.1"
