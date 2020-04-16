@@ -27,6 +27,9 @@ export function getArrowStyles(placement: Placement, arrowSize: number): React.C
     transform: 'rotate(45deg)',
   };
 }
+const isBrowser = typeof window !== 'undefined';
+
+const useSafeLayoutEffect = isBrowser ? React.useLayoutEffect : React.useEffect;
 
 const isBrowser = typeof window !== 'undefined';
 
