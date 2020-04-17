@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.6.0...@blockstack/app@1.6.1) (2020-04-17)
+
+
+### Bug Fixes
+
+* profile info not set in authResponse ([9e48475](https://github.com/blockstack/blockstack-app/commit/9e4847544e89dc1c8abcebeda6d34dc2bf8a4c7f))
+
+
+
+
+
 # [1.6.0](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.5.1...@blockstack/app@1.6.0) (2020-03-12)
 
 

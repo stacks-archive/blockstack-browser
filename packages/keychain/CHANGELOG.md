@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.3.1...@blockstack/keychain@0.3.2) (2020-04-17)
+
+
+### Bug Fixes
+
+* profile info not set in authResponse ([9e48475](https://github.com/blockstack/ux/commit/9e4847544e89dc1c8abcebeda6d34dc2bf8a4c7f))
+
+
+
+
+
 ## [0.3.1](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.3.0-beta.3...@blockstack/keychain@0.3.1) (2020-03-10)
 
 
