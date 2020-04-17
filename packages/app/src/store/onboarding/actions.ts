@@ -172,6 +172,7 @@ export function doFinishSignIn(
       gaiaUrl,
       appDomain: appURL.origin,
       transitPublicKey: decodedAuthRequest.public_keys[0],
+      scopes: decodedAuthRequest.scopes,
     });
     finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
     dispatch(doSetOnboardingPath(undefined));
