@@ -32,12 +32,14 @@ export const useAnalytics = () => {
     });
   };
 
-  const doChangeScreen = (path: ScreenPaths) => {
+  const doChangeScreen = (path: ScreenPaths, changeRoute = true) => {
     if (persistedScreens.includes(path)) {
       dispatch(doSetOnboardingPath(path));
     }
     doTrackScreenChange(path, authRequest);
-    return doNavigatePage(path);
+    if (changeRoute) {
+      return doNavigatePage(path);
+    }
   };
 
   return { doTrack, doChangeScreen };
