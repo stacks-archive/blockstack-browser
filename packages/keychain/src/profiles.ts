@@ -156,9 +156,15 @@ export const fetchProfile = async ({ identity, gaiaUrl }: { identity: Identity; 
   try {
     const url = await identity.profileUrl(gaiaUrl);
     const res = await fetch(url);
-    const json = await res.json();
-    const { decodedToken } = json[0];
-    return decodedToken.payload?.claim as Profile;
+    if (res.ok) {
+      const json = await res.json();
+      const { decodedToken } = json[0];
+      return decodedToken.payload?.claim as Profile;
+    }
+    if (res.status === 404) {
+      return null;
+    }
+    throw new Error('Network error when fetching profile');
   } catch (error) {
     return null;
   }
