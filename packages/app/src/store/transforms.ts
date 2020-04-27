@@ -1,5 +1,6 @@
 import { Wallet } from '@blockstack/keychain';
 import { createTransform } from 'redux-persist';
+import { initialState } from '@store/onboarding/reducer';
 
 interface OutboundState {
   [key: string]: any;
@@ -36,9 +37,13 @@ interface InboundOnboardingState {
  * This allows users to jump back into the step they left off on, if they close the onboarding window.
  */
 export const OnboardingTransform = createTransform(
-  (inboundState: InboundOnboardingState) => ({
-    onboardingPath: inboundState.onboardingPath,
-  }),
+  (inboundState: InboundOnboardingState) => {
+    return {
+      onboardingPath: inboundState.onboardingPath,
+      ...initialState,
+      ...inboundState,
+    };
+  },
   outboundState => {
     return { ...outboundState };
   },

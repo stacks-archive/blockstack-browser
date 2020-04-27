@@ -12,7 +12,7 @@ import {
   SET_ONBOARDING_PATH,
 } from './types';
 
-const initialState: OnboardingState = {
+export const initialState: OnboardingState = {
   screen: ScreenPaths.GENERATION,
 };
 
