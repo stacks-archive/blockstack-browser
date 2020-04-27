@@ -51,7 +51,7 @@ export const Home = () => {
     <Flex wrap="wrap" py={5} px={4} flexDirection="column" height="100vh">
       <Flex justifyContent="space-between" align="center">
         <LogoWithName />
-        <SecretKeyButton />
+        {isSignedIn ? <SecretKeyButton /> : null}
       </Flex>
       <Flex flex={1} mt={10} justifyContent={[null, 'center']}>
         {isSignedIn ? (
