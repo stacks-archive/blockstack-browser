@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { doSignOut } from '@store/wallet';
+import { doSetOnboardingPath } from '@store/onboarding/actions';
 
 const SignedOut = () => (
   <Flex flexDirection="column" pb="120px" align="center" justify="center" flexGrow={1}>
@@ -59,6 +60,7 @@ export const Home = () => {
             buttonMode="secondary"
             signOut={() => {
               dispatch(doSignOut());
+              dispatch(doSetOnboardingPath(undefined));
             }}
           />
         ) : (
