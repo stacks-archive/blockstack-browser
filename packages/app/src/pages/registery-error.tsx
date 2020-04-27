@@ -5,7 +5,7 @@ import { ScreenHeader } from '@components/connected-screen-header';
 
 export const UsernameRegistryError: React.FC = () => (
   <Screen textAlign="center">
-    <ScreenHeader title="Secret Key" />
+    <ScreenHeader />
     <ScreenBody
       flex="5"
       justifyContent="center"

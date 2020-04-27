@@ -127,7 +127,7 @@ export const Modal = () => {
           headerComponent={
             <ModalHeader
               close={!(screen === States.SCREENS_HOW_IT_WORKS)}
-              hideTitleElements={screen === States.SCREENS_INTRO}
+              hideTitleElements={true}
               back={screen === States.SCREENS_HOW_IT_WORKS ? States.SCREENS_INTRO : undefined}
               title={screen === States.SCREENS_SIGN_IN ? 'Sign In' : 'Secret Key'}
             />

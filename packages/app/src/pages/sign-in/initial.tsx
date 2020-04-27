@@ -60,7 +60,7 @@ export const SignIn: React.FC<SignInProps> = props => {
 
   return (
     <Screen onSubmit={onSubmit} isLoading={isLoading} textAlign="center">
-      <ScreenHeader title="Continue with Secret Key" hideIcon />
+      <ScreenHeader />
       <AppIcon mt={10} />
       <ScreenBody
         mt={4}

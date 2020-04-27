@@ -1,22 +1,7 @@
 import React from 'react';
-import { Box, Flex, Text, ChevronIcon } from '@blockstack/ui';
+import { Flex, Text } from '@blockstack/ui';
 import { useAppDetails } from '../../hooks/use-app-details';
-import { Logo } from '../logo';
 import { AppIcon } from '../app-icon';
-
-interface HeaderTitleProps {
-  title?: string | JSX.Element;
-  hideLogo?: boolean;
-}
-
-const HeaderTitle: React.FC<HeaderTitleProps> = ({ hideLogo, title }) => (
-  <Flex align="center">
-    {hideLogo ? null : <Logo mr="tight" />}
-    <Text fontWeight={500} textStyle={'body.small.medium'} fontSize={'12px'}>
-      {title}
-    </Text>
-  </Flex>
-);
 
 export interface ScreenHeaderProps {
   appDetails?: {
@@ -32,10 +17,9 @@ export interface ScreenHeaderProps {
 
 export const ScreenHeader = ({
   appDetails,
-  title = 'Secret Key',
-  hideIcon = false,
   hideLogo = false,
   rightContent,
+  title: _title,
   ...rest
 }: ScreenHeaderProps) => {
   const { name, icon } = useAppDetails();
@@ -63,13 +47,10 @@ export const ScreenHeader = ({
     >
       <Flex width="100%" align="center" justifyContent="space-between">
         <Flex align="center">
-          {!hideIcon ? <AppIcon src={appIcon} alt={appName || 'loading'} /> : null}
-          {!hideIcon ? (
-            <Box mx={1} color="ink.300">
-              <ChevronIcon direction="right" />
-            </Box>
-          ) : null}
-          <HeaderTitle hideLogo={hideLogo} title={title} />
+          {hideLogo ? null : <AppIcon src={appIcon} alt={appName || 'loading'} mr="tight" />}
+          <Text fontWeight={500} textStyle={'body.small.medium'} fontSize={'12px'}>
+            {appName}
+          </Text>
         </Flex>
         {rightContent ? rightContent : null}
       </Flex>
