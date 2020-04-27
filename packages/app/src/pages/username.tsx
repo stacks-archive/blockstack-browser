@@ -103,7 +103,7 @@ export const Username: React.FC<UsernameProps> = () => {
       dispatch(doFinishSignIn({ identityIndex }));
     } catch (error) {
       doTrack(USERNAME_REGISTER_FAILED, { status: error.status });
-      dispatch(doChangeScreen(ScreenPaths.REGISTRY_ERROR));
+      doChangeScreen(ScreenPaths.REGISTRY_ERROR);
     }
   };
 

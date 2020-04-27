@@ -1,6 +1,7 @@
 import React from 'react';
-import { Screen, ScreenHeader, ScreenBody, PoweredBy, ScreenFooter, Title } from '@blockstack/connect';
+import { Screen, ScreenBody, PoweredBy, ScreenFooter, Title } from '@blockstack/connect';
 import { Flex, Box, Button } from '@blockstack/ui';
+import { ScreenHeader } from '@components/connected-screen-header';
 
 export const UsernameRegistryError: React.FC = () => (
   <Screen textAlign="center">
