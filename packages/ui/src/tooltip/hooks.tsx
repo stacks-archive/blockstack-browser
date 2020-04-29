@@ -90,7 +90,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
   const {
     showDelay = 200,
     hideDelay = 200,
-    hideOnClick = true,
+    hideOnClick = false,
     onShow,
     onHide,
     hideOnMouseDown,
@@ -99,7 +99,14 @@ export function useTooltip(props: UseTooltipProps = {}) {
     isOpen: isOpenProp,
     defaultIsOpen,
     arrowSize = 10,
+    label: _label,
   } = props;
+
+  const [label, setLabel] = React.useState(_label);
+
+  const labelIsUpToDate = _label === label;
+
+  if (!labelIsUpToDate) setLabel(_label);
 
   const { isOpen, onOpen: open, onClose: close } = useDisclosure({
     isOpen: isOpenProp,
@@ -109,7 +116,7 @@ export function useTooltip(props: UseTooltipProps = {}) {
   });
 
   const popper = usePopper({
-    forceUpdate: isOpen,
+    forceUpdate: isOpen && labelIsUpToDate,
     placement,
     arrowSize,
   });
