@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.3.1...@blockstack/connect@2.4.0) (2020-04-30)
+
+
+### Features
+
+* remove secret key branding, [#334](https://github.com/blockstack/ux/issues/334) ([e57c8bc](https://github.com/blockstack/ux/commit/e57c8bc84540b352078e56f19cada41ba0ef6904))
+
+
+
+
+
 ## [2.3.1](https://github.com/blockstack/ux/compare/@blockstack/connect@2.3.0...@blockstack/connect@2.3.1) (2020-03-12)
 
 **Note:** Version bump only for package @blockstack/connect

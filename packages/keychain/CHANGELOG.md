@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.3](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.3.2...@blockstack/keychain@0.3.3) (2020-04-30)
+
+
+### Bug Fixes
+
+* safer logic when fetching profiles, [#322](https://github.com/blockstack/ux/issues/322) ([e0a67fd](https://github.com/blockstack/ux/commit/e0a67fd745f7556846766b912340438eb41d36f6))
+
+
+
+
+
 ## [0.3.2](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.3.1...@blockstack/keychain@0.3.2) (2020-04-17)
 
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.1.0...@blockstack/ui@1.1.1) (2020-04-30)
+
+
+### Bug Fixes
+
+* chevron size, [#337](https://github.com/blockstackpbc/blockstack-ui/issues/337) ([4927b72](https://github.com/blockstackpbc/blockstack-ui/commit/4927b72220bb50d825dc5d108561d6cd08753517))
+* **ui:** remove safari default inset box shadow ([f1921a7](https://github.com/blockstackpbc/blockstack-ui/commit/f1921a7b109afb6c149e5f67df33ef52867cab96))
+
+
+
+
+
 # [1.1.0](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.0.1...@blockstack/ui@1.1.0) (2020-03-10)
 
 
