@@ -67,9 +67,12 @@ export class Identity {
         profile.apps = {};
       }
       const challengeSigner = ECPair.fromPrivateKey(Buffer.from(appPrivateKey, 'hex'));
-      profile.apps[appDomain] = `${hubInfo.read_url_prefix}${await ecPairToAddress(
-        challengeSigner
-      )}`;
+      const storageUrl = `${hubInfo.read_url_prefix}${await ecPairToAddress(challengeSigner)}`;
+      profile.apps[appDomain] = storageUrl;
+      if (!profile.appsMeta) {
+        profile.appsMeta = {};
+      }
+      profile.appsMeta[appDomain] = { storage: storageUrl, publicKey: this.keyPair.keyID };
       const gaiaHubConfig = await connectToGaiaHubWithConfig({
         hubInfo,
         privateKey: this.keyPair.key,

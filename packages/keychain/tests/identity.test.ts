@@ -56,7 +56,7 @@ test('adds to apps in profile if publish_data scope', async () => {
   const { payload } = decoded as Decoded;
   expect(payload.profile.apps['https://banter.pub']).not.toBeFalsy();
   const profile = JSON.parse(fetchMock.mock.calls[7][1].body);
-  const { apps } = profile[0].decodedToken.payload.claim;
+  const { apps, appsMeta } = profile[0].decodedToken.payload.claim;
   expect(apps[appDomain]).not.toBeFalsy();
   const appPrivateKey = await decryptPrivateKey(transitPrivateKey, payload.private_key);
   const challengeSigner = ECPair.fromPrivateKey(Buffer.from(appPrivateKey as string, 'hex'));
@@ -64,6 +64,9 @@ test('adds to apps in profile if publish_data scope', async () => {
     challengeSigner
   )}`;
   expect(apps[appDomain]).toEqual(expectedDomain);
+  expect(appsMeta[appDomain]).not.toBeFalsy();
+  expect(appsMeta[appDomain].storage).toEqual(expectedDomain);
+  expect(appsMeta[appDomain].publicKey).toEqual(challengeSigner.publicKey.toString('hex'));
 });
 
 test('generates an app private key', async () => {
