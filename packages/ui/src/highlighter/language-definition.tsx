@@ -1,8 +1,4 @@
 // @ts-nocheck
-// prismjs/components/prism-lisp.js
-// this file is here to fix a bug with ssr and prism not loading/refreshing after client hydration
-// todo: convert to ts, and define clarity language
-
 import Prism from 'prismjs';
 
 (function (Prism) {
@@ -19,7 +15,6 @@ import Prism from 'prismjs';
 
   // Patterns in regular expressions
 
-  // Symbol name. See https://www.gnu.org/software/emacs/manual/html_node/elisp/Symbol-Type.html
   // & and : are excluded as they are usually used for special purposes
   const symbol = '[-+*/_~!@$%^=<>{}\\w]+';
   // symbol starting with & used in function arguments
@@ -32,20 +27,29 @@ import Prism from 'prismjs';
 
   const language = {
     // Three or four semicolons are considered a heading.
-    // See https://www.gnu.org/software/emacs/manual/html_node/elisp/Comment-Tips.html
     heading: {
       pattern: /;;;.*/,
       alias: ['comment', 'title'],
     },
     comment: /;.*/,
-    string: {
-      pattern: /"(?:[^"\\]|\\.)*"/,
-      greedy: true,
-      inside: {
-        argument: /[-A-Z]+(?=[.,\s])/,
-        symbol: RegExp('`' + symbol + "'"),
+    string: [
+      {
+        pattern: /"(?:[^"\\]|\\.)*"/,
+        greedy: true,
+        inside: {
+          argument: /[-A-Z]+(?=[.,\s])/,
+          symbol: RegExp('`' + symbol + "'"),
+        },
       },
-    },
+      {
+        pattern: /0x[0-9a-fA-F]*/,
+        greedy: true,
+        inside: {
+          argument: /[-A-Z]+(?=[.,\s])/,
+          symbol: RegExp('`' + symbol + "'"),
+        },
+      },
+    ],
     'quoted-symbol': {
       pattern: RegExp("#?'" + symbol),
       alias: ['variable', 'symbol'],
@@ -62,13 +66,48 @@ import Prism from 'prismjs';
       {
         pattern: RegExp(
           par +
-            '(?:(?:lexical-)?let\\*?|(?:cl-)?letf|if|when|while|unless|cons|cl-loop|and|or|not|cond|setq|error|message|null|require|provide|use-package)' +
+            `(?:or|and|xor|not|begin|let|if|ok|err|unwrap\\!|unwrap-err\\!|unwrap-panic|unwrap-err-panic|match|try\\!|asserts\\!|\
+map-get\\?|var-get|contract-map-get\\?|get|tuple|\
+define-public|define-private|define-constant|define-map|define-data-var|\
+define-fungible-token|define-non-fungible-token|\
+define-read-only)` +
             space
         ),
         lookbehind: true,
       },
       {
-        pattern: RegExp(par + '(?:for|do|collect|return|finally|append|concat|in|by)' + space),
+        pattern: RegExp(par + '(?:is-eq|is-some|is-none|is-ok|is-er)' + space),
+        lookbehind: true,
+      },
+      {
+        pattern: RegExp(
+          par +
+            `(?:var-set|map-set|map-delete|map-insert|\
+ft-transfer\\?|nft-transfer\\?|nft-mint\\?|ft-mint\\?|nft-get-owner\\?|ft-get-balance\\?|\
+contract-call\\?)` +
+            space
+        ),
+        lookbehind: true,
+      },
+      {
+        pattern: RegExp(
+          par +
+            `(?:list|map|filter|fold|len|concat|append|as-max-len\\?|to-int|to-uint|\
+buff|hash160|sha256|sha512|sha512/256|keccak256|true|false|none)` +
+            space
+        ),
+        lookbehind: true,
+      },
+      {
+        pattern: RegExp(
+          par +
+            '(?:as-contract|contract-caller|tx-sender|block-height|at-block|get-block-info\\?)' +
+            space
+        ),
+        lookbehind: true,
+      },
+      {
+        pattern: RegExp(par + '(?:is-eq|is-some|is-none|is-ok|is-err)' + space),
         lookbehind: true,
       },
     ],
@@ -83,15 +122,15 @@ import Prism from 'prismjs';
       alias: 'keyword',
     },
     boolean: {
-      pattern: primitive('(?:t|nil)'),
+      pattern: RegExp(par + '(?:true|false|none)' + space),
       lookbehind: true,
     },
     number: {
-      pattern: primitive('[-+]?\\d+(?:\\.\\d*)?'),
+      pattern: primitive('[-+]?u?\\d+(?:\\.\\d*)?'),
       lookbehind: true,
     },
     defvar: {
-      pattern: RegExp(par + 'def(?:var|const|custom|group)\\s+' + symbol),
+      pattern: RegExp(par + '(?:let)\\s+' + symbol),
       lookbehind: true,
       inside: {
         keyword: /^def[a-z]+/,
@@ -99,7 +138,7 @@ import Prism from 'prismjs';
       },
     },
     defun: {
-      pattern: RegExp(par + '(?:cl-)?(?:defun\\*?|defmacro)\\s+' + symbol + '\\s+\\([\\s\\S]*?\\)'),
+      pattern: RegExp(par + '(?:defun\\*?|defmacro)\\s+' + symbol + '\\s+\\([\\s\\S]*?\\)'),
       lookbehind: true,
       inside: {
         keyword: /^(?:cl-)?def\S+/,
@@ -190,8 +229,5 @@ import Prism from 'prismjs';
   language['defun'].inside.arguments = Prism.util.clone(arglist);
   language['defun'].inside.arguments.inside.sublist = arglist;
 
-  Prism.languages.lisp = language;
-  Prism.languages.elisp = language;
-  Prism.languages.emacs = language;
-  Prism.languages['emacs-lisp'] = language;
+  Prism.languages.clarity = language;
 })(Prism);

@@ -56,6 +56,7 @@ export type GetGrammaticalTokenProps = (
 export type Language =
   | 'markup'
   | 'bash'
+  | 'clarity'
   | 'clike'
   | 'c'
   | 'cpp'

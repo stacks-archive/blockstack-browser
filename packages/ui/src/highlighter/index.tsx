@@ -119,7 +119,7 @@ interface HighlighterProps {
   showLineNumbers?: boolean;
 }
 
-export const Highlighter = ({ code, language = 'lisp', showLineNumbers }: HighlighterProps) => {
+export const Highlighter = ({ code, language = 'clarity', showLineNumbers }: HighlighterProps) => {
   return (
     <Highlight theme={theme} code={code} language={language as any} Prism={Prism as any}>
       {props => <Lines showLineNumbers={showLineNumbers} {...props} />}
