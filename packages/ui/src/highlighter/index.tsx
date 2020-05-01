@@ -3,11 +3,12 @@ import Prism from 'prismjs';
 import Highlight from 'prism-react-renderer';
 import { Box } from '../box';
 import { Flex } from '../flex';
+import { startPad } from '../utils';
 import { useTheme } from '../theme-provider';
 
 import { GrammaticalToken, GetGrammaticalTokenProps, RenderProps, Language } from './types';
 import { theme } from './prism-theme';
-import { startPad } from '../utils';
+import './language-definition';
 
 const lineNumberWidth = 60;
 const getLineNumber = (n: number, length: number) => startPad(n, length.toString().length + 1);
@@ -20,7 +21,7 @@ const Tokens = ({
 }: {
   tokens: GrammaticalToken[];
   getTokenProps: GetGrammaticalTokenProps;
-  showLineNumbers: boolean;
+  showLineNumbers?: boolean;
 }) => {
   const bsTheme = useTheme();
   const pl = `calc(${showLineNumbers ? lineNumberWidth : '0'}px + ${
