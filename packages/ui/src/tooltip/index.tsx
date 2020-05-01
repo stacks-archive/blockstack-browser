@@ -38,6 +38,11 @@ export type TooltipProps = PropsOf<typeof Box> &
 export function Tooltip(props: TooltipProps) {
   const { children, label, shouldWrapChildren, 'aria-label': ariaLabel, hasArrow, ...rest } = props;
 
+  if (!label || label === '') {
+    const child = React.Children.only(children) as React.ReactElement;
+    return React.cloneElement(child, { ...child.props, ...rest });
+  }
+
   const { isOpen, getTriggerProps, getTooltipProps, getArrowProps } = useTooltip(props);
 
   let trigger: React.ReactElement;

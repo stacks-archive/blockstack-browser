@@ -15,13 +15,17 @@ const getLineNumber = (n: number, length: number) => startPad(n, length.toString
 const Tokens = ({
   tokens,
   getTokenProps,
+  showLineNumbers,
   ...rest
 }: {
   tokens: GrammaticalToken[];
   getTokenProps: GetGrammaticalTokenProps;
+  showLineNumbers: boolean;
 }) => {
   const bsTheme = useTheme();
-  const pl = `calc(${lineNumberWidth}px + ${(bsTheme as any).sizes['base'] || '16px'})`;
+  const pl = `calc(${showLineNumbers ? lineNumberWidth : '0'}px + ${
+    (bsTheme as any).sizes['base'] || '16px'
+  })`;
 
   return (
     <Box pl={pl} pr="base" position="relative" zIndex={2} {...rest}>
@@ -78,7 +82,7 @@ const Line = ({
       {...rest}
     >
       {showLineNumbers ? <LineNumber number={index} length={length} /> : null}
-      <Tokens getTokenProps={getTokenProps} tokens={tokens} />
+      <Tokens showLineNumbers={showLineNumbers} getTokenProps={getTokenProps} tokens={tokens} />
     </Flex>
   );
 };
