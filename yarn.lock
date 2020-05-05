@@ -1599,24 +1599,6 @@
   resolved "https://registry.yarnpkg.com/@blockstack/stats/-/stats-0.7.0.tgz#be39d3e76c2a16c1cd1283aa702d1e20b5e04645"
   integrity sha512-AS/UdJH/cJ7K8la3/TbQziEMlRrNI/4VEHSfYUsEzU7Nx892G6qE4uu/XvW9ycS0Jg2/TW2bjTnRijsyecaEJA==
 
-"@blockstack/ui@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@blockstack/ui/-/ui-1.1.1.tgz#c087abe2f8b36234cca1c3bc64d8c741b31effb2"
-  integrity sha512-QtutZnLvFfnftKaX2eTHx0EEaLiOqdJ7QOlqEtshYaXvjhsw9WmDsV6Jc80D2ylEe/wgG3PYsuz9Q3e5HwNhsg==
-  dependencies:
-    "@styled-system/css" "5.1.5"
-    "@types/color" "^3.0.1"
-    "@types/styled-components" "^4.4.3"
-    "@types/styled-system" "^5.1.6"
-    "@types/styled-system__css" "^5.0.4"
-    color "3.1.2"
-    prop-types "^15.7.2"
-    react-spring "8.0.27"
-    styled-system "5.1.5"
-    use-dark-mode "2.3.1"
-    use-events "^1.4.1"
-    use-onclickoutside "^0.3.1"
-
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -3872,16 +3854,6 @@
     "@types/react-native" "*"
     csstype "^2.2.0"
 
-"@types/styled-components@^4.4.3":
-  version "4.4.3"
-  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.4.3.tgz#74dd00ad760845a98890a8539361d8afc32059de"
-  integrity sha512-U0udeNOZBfUkJycmGJwmzun0FBt11rZy08weVQmE2xfUNAbX8AGOEWxWna2d+qAUKxKgMlcG+TZT0+K2FfDcnQ==
-  dependencies:
-    "@types/hoist-non-react-statics" "*"
-    "@types/react" "*"
-    "@types/react-native" "*"
-    csstype "^2.2.0"
-
 "@types/styled-system@^5.1.6":
   version "5.1.9"
   resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.9.tgz#8baac8f6eca9e0bd5768c175ca5ce1f2d6f61ade"
@@ -3889,7 +3861,7 @@
   dependencies:
     csstype "^2.6.9"
 
-"@types/styled-system__css@^5.0.4", "@types/styled-system__css@^5.0.8":
+"@types/styled-system__css@^5.0.8":
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/@types/styled-system__css/-/styled-system__css-5.0.8.tgz#3886fc89e003aadda858349a5cf324fe54b09980"
   integrity sha512-skv+daDje8vWQ8wnqVV0GCzgWVKx4gI9lJpAxWE77s52Ne6k/SCPP8HGE4BFbWDvK+qi5O3p89BGWVOQ1VHjMg==

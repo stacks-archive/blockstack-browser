@@ -66,11 +66,11 @@ import Prism from 'prismjs';
       {
         pattern: RegExp(
           par +
-            `(?:or|and|xor|not|begin|let|if|ok|err|unwrap\\!|unwrap-err\\!|unwrap-panic|unwrap-err-panic|match|try\\!|asserts\\!|\
+            '(?:or|and|xor|not|begin|let|if|ok|err|unwrap\\!|unwrap-err\\!|unwrap-panic|unwrap-err-panic|match|try\\!|asserts\\!|\
 map-get\\?|var-get|contract-map-get\\?|get|tuple|\
 define-public|define-private|define-constant|define-map|define-data-var|\
 define-fungible-token|define-non-fungible-token|\
-define-read-only)` +
+define-read-only)' +
             space
         ),
         lookbehind: true,
@@ -82,9 +82,9 @@ define-read-only)` +
       {
         pattern: RegExp(
           par +
-            `(?:var-set|map-set|map-delete|map-insert|\
+            '(?:var-set|map-set|map-delete|map-insert|\
 ft-transfer\\?|nft-transfer\\?|nft-mint\\?|ft-mint\\?|nft-get-owner\\?|ft-get-balance\\?|\
-contract-call\\?)` +
+contract-call\\?)' +
             space
         ),
         lookbehind: true,
@@ -92,8 +92,8 @@ contract-call\\?)` +
       {
         pattern: RegExp(
           par +
-            `(?:list|map|filter|fold|len|concat|append|as-max-len\\?|to-int|to-uint|\
-buff|hash160|sha256|sha512|sha512/256|keccak256|true|false|none)` +
+            '(?:list|map|filter|fold|len|concat|append|as-max-len\\?|to-int|to-uint|\
+buff|hash160|sha256|sha512|sha512/256|keccak256|true|false|none)' +
             space
         ),
         lookbehind: true,

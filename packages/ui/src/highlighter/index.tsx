@@ -11,7 +11,7 @@ import { theme } from './prism-theme';
 import './language-definition';
 
 const lineNumberWidth = 60;
-const getLineNumber = (n: number, length: number) => startPad(n, length.toString().length + 1);
+const getLineNumber = (n: number, length: number) => startPad(n + 1, length.toString().length);
 
 const Tokens = ({
   tokens,
@@ -119,10 +119,14 @@ interface HighlighterProps {
   showLineNumbers?: boolean;
 }
 
-export const Highlighter = ({ code, language = 'clarity', showLineNumbers }: HighlighterProps) => {
-  return (
-    <Highlight theme={theme} code={code} language={language as any} Prism={Prism as any}>
-      {props => <Lines showLineNumbers={showLineNumbers} {...props} />}
-    </Highlight>
-  );
-};
+export const Highlighter = React.memo(
+  ({ code, language = 'clarity', showLineNumbers }: HighlighterProps) => {
+    return (
+      <Highlight theme={theme} code={code} language={language as any} Prism={Prism as any}>
+        {props => <Lines showLineNumbers={showLineNumbers} {...props} />}
+      </Highlight>
+    );
+  }
+);
+
+Highlighter.displayName = 'Highlighter';
