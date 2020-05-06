@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.4.0...@blockstack/connect@2.6.0) (2020-05-06)
+
+
+### Bug Fixes
+
+* **connect:** dep adjustments ([28cf998](https://github.com/blockstack/ux/commit/28cf998777e66a36e9d9568c05c5f235f7fcb721))
+* shouldForwardProp updates ([a2d3964](https://github.com/blockstack/ux/commit/a2d396459b62a1d11dd816b618e7f7e2edc3fe66))
+
+
+### Features
+
+* codebox and highlighter ([b9056f8](https://github.com/blockstack/ux/commit/b9056f8102eff8d32898201717a3cd3699234561))
+
+
+
+
+
 # [2.4.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.3.1...@blockstack/connect@2.4.0) (2020-04-30)
 
 

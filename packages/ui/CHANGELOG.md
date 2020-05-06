@@ -3,6 +3,43 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.1.1...@blockstack/ui@1.4.0) (2020-05-06)
+
+
+### Bug Fixes
+
+* babel updates, stack refactor ([718226f](https://github.com/blockstackpbc/blockstack-ui/commit/718226f2a96cbad2c0e98efa1d0402180b33403f))
+* babel updates, stack refactor ([5d87592](https://github.com/blockstackpbc/blockstack-ui/commit/5d875924456925bdceb2b74a919faebdefb0e434))
+* better popover functionality, fixes bug ([73a4793](https://github.com/blockstackpbc/blockstack-ui/commit/73a4793bd8e591580f12012a286994c8c39bc307))
+* better popover functionality, fixes bug ([0708235](https://github.com/blockstackpbc/blockstack-ui/commit/07082354e61bbf5039a445da7576c09c3661fae8))
+* change default value hideOnClick, update styles if label changes ([8518dd8](https://github.com/blockstackpbc/blockstack-ui/commit/8518dd85fedc061345cdef0eca24d26a2b73dc10))
+* dupe from rebase ([487fa1b](https://github.com/blockstackpbc/blockstack-ui/commit/487fa1ba920f5b2de3b3d7d974fe628fe9dc644d))
+* include language definition by default ([b2da157](https://github.com/blockstackpbc/blockstack-ui/commit/b2da157d3c739b4466e46a8a3593494bc1c9b7c3))
+* memo component, and fix line numbers ([20c3af0](https://github.com/blockstackpbc/blockstack-ui/commit/20c3af09eab3f302077c48a2141d2d17603d152f))
+* minor tweaks and improvements ([309f22f](https://github.com/blockstackpbc/blockstack-ui/commit/309f22f4ca4a84f7a97ab2db9b4a8dbfc62aef4a))
+* shouldForwardProp updates ([a2d3964](https://github.com/blockstackpbc/blockstack-ui/commit/a2d396459b62a1d11dd816b618e7f7e2edc3fe66))
+* snake-case for hooks ([c0689df](https://github.com/blockstackpbc/blockstack-ui/commit/c0689df960136dd0084ec5b36f5af2eefd787a2a))
+* typings needed for ui package ([23567df](https://github.com/blockstackpbc/blockstack-ui/commit/23567dff36ac85dbd27896106fc844cf5cf19550))
+
+
+### Features
+
+* add hooks and many utils ([183cb3b](https://github.com/blockstackpbc/blockstack-ui/commit/183cb3be611c37e57a787f132c8f1cc7bde5fcf9))
+* add popper component ([ce61e28](https://github.com/blockstackpbc/blockstack-ui/commit/ce61e28f6e3d4544d227ddb14dd5ccdbc9456e64))
+* add popper component ([3a96532](https://github.com/blockstackpbc/blockstack-ui/commit/3a965320d2a31adf2b01a7a12bb1eb33c62e2e97))
+* add portal component ([e8bc22b](https://github.com/blockstackpbc/blockstack-ui/commit/e8bc22bb55c7cc9e46ce8ff3cd71a3e6ba98e86e))
+* codebox and highlighter ([b9056f8](https://github.com/blockstackpbc/blockstack-ui/commit/b9056f8102eff8d32898201717a3cd3699234561))
+* codebox and highlighter ([49e99bf](https://github.com/blockstackpbc/blockstack-ui/commit/49e99bf0d9e670fd5ecc6a1ac9ddbf76779e6f7e))
+* export new components ([2518688](https://github.com/blockstackpbc/blockstack-ui/commit/251868896beadc09630fbcc71a2248534d269ce2))
+* shouldForwardProp on base primitive ([b83bcbf](https://github.com/blockstackpbc/blockstack-ui/commit/b83bcbff13ef06c09757125a63b1cafe9a9a353e))
+* start to remove pseudobox, box updated ([b90a34d](https://github.com/blockstackpbc/blockstack-ui/commit/b90a34db75afb8a3e9a36f052b75c2e64600313b))
+* tooltip component ([f6fbc8f](https://github.com/blockstackpbc/blockstack-ui/commit/f6fbc8fbd810667157f19b971c6f1274e5f9e088))
+* updated language definition ([628fafc](https://github.com/blockstackpbc/blockstack-ui/commit/628fafc9f8e63641122d536090f9d2306260f807))
+
+
+
+
+
 ## [1.1.1](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.1.0...@blockstack/ui@1.1.1) (2020-04-30)
 
 
