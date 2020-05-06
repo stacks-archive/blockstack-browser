@@ -32,6 +32,8 @@
     "build:ui": "lerna run build --scope @blockstack/ui",
     "build:keychain": "lerna run build --scope @blockstack/keychain",
     "build:connect": "lerna run build --scope @blockstack/connect",
+    "build:app": "lerna run prod:web --scope @blockstack/app",
+    "build:test-app": "lerna run prod:web --scope test-app",
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "lint:eslint": "eslint --ext .ts,.tsx . -f unix",
     "lint:fix": "eslint --ext .ts,.tsx . -f unix --fix && prettier --write **/*.{ts,tsx} *.js",
