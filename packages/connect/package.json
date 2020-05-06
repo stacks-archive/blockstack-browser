@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/connect",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "bundlesize": [
     {
       "path": "./dist/**/*.js",
@@ -81,6 +81,6 @@
     "typecheck": "tsc --noEmit"
   },
   "sideEffects": false,
-  "typings": "dist/index.d.ts",
+  "typings": "dist/connect/src/index.d.ts",
   "unpkg": "dist/bundle.js"
 }
