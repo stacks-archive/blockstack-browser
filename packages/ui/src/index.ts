@@ -26,3 +26,4 @@ export * from './portal';
 export * from './hooks';
 export * from './highlighter';
 export * from './codebox';
+export * from './toast';
