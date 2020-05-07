@@ -68,7 +68,6 @@ export const finalizeAuthResponse = ({ decodedAuthRequest, authRequest, authResp
     if (authRequest && event.data.authRequest === authRequest) {
       const source = getEventSourceWindow(event);
       if (source) {
-        didSendMessageBack = true;
         source.postMessage(
           {
             authRequest,
@@ -77,6 +76,7 @@ export const finalizeAuthResponse = ({ decodedAuthRequest, authRequest, authResp
           },
           event.origin
         );
+        didSendMessageBack = true;
       }
     }
   });

@@ -60,7 +60,11 @@ export const popupCenter = ({
   });
   const newWindow = window.open(url, title, optionsString.join(','));
 
-  if (newWindow) newWindow.focus();
+  if (newWindow) {
+    newWindow.focus();
+    return newWindow;
+  }
 
-  return newWindow;
+  // no popup options, just open the auth page
+  return window.open(url);
 };
