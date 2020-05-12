@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ThemeProvider, Box, theme, Text, Flex, CSSReset, Button, Stack } from '@blockstack/ui';
 import { Connect, AuthOptions, useConnect } from '@blockstack/connect';
+import { UserSession, AppConfig } from 'blockstack';
 
 const icon = `${document.location.href}/assets/messenger-app-icon.png`;
 let authOrigin = 'http://localhost:8080';
@@ -81,6 +82,21 @@ export const App: React.FC = () => {
   const [state, setState] = React.useState<AppState>({});
   const [authResponse, setAuthResponse] = React.useState('');
   const [appPrivateKey, setAppPrivateKey] = React.useState('');
+
+  const appConfig = new AppConfig();
+  const userSession = new UserSession({ appConfig });
+
+  const handleRedirectAuth = async () => {
+    if (userSession.isSignInPending()) {
+      const userData = await userSession.handlePendingSignIn();
+      setState(() => userData);
+    }
+  };
+
+  React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    handleRedirectAuth();
+  }, []);
 
   const authOptions: AuthOptions = {
     manifestPath: '/static/manifest.json',
