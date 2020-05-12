@@ -11,6 +11,7 @@ export interface DecodedAuthRequest {
     name: string;
     icon: string;
   };
+  client?: string;
 }
 
 export type AppManifest = JSONSchemaForWebApplicationManifestFiles;
