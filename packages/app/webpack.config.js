@@ -52,7 +52,7 @@ const hmtlProdOpts = !isDevelopment
 
 const getSourceMap = () => {
   if (extEnv === 'web') {
-    return nodeEnv === 'production' ? 'eval' : 'cheap-source-map';
+    return nodeEnv === 'production' ? 'eval' : 'cheap-module-source-map';
   }
   return 'none';
 };
