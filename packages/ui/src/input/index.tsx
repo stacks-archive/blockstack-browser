@@ -39,7 +39,7 @@ export const Input = forwardRef<any, InputProps>((props, ref) => {
       aria-disabled={formControl.isDisabled}
       aria-describedby={ariaDescribedby}
       textStyle="body.small"
-      style={{ '-webkit-appearance': 'none', ...style }}
+      style={{ WebkitAppearance: 'none', ...style }}
       {...(inputStyleProps as any)}
       {...rest}
     />
