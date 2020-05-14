@@ -15,10 +15,6 @@ import Prism from 'prismjs';
 
   // Patterns in regular expressions
 
-  // & and : are excluded as they are usually used for special purposes
-  const symbol = '[-+*/_~!@$%^=<>{}\\w]+';
-  // symbol starting with & used in function arguments
-  const marker = '&' + symbol;
   // Open parenthesis for look-behind
   const par = '(\\()';
   const endpar = '(?=\\))';
@@ -31,36 +27,20 @@ import Prism from 'prismjs';
       pattern: /;;;.*/,
       alias: ['comment', 'title'],
     },
-    comment: /;.*/,
+    comment: /;;.*/,
     string: [
       {
         pattern: /"(?:[^"\\]|\\.)*"/,
         greedy: true,
-        inside: {
-          argument: /[-A-Z]+(?=[.,\s])/,
-          symbol: RegExp('`' + symbol + "'"),
-        },
       },
       {
         pattern: /0x[0-9a-fA-F]*/,
         greedy: true,
-        inside: {
-          argument: /[-A-Z]+(?=[.,\s])/,
-          symbol: RegExp('`' + symbol + "'"),
-        },
       },
     ],
-    'quoted-symbol': {
-      pattern: RegExp("#?'" + symbol),
-      alias: ['variable', 'symbol'],
-    },
-    'lisp-property': {
-      pattern: RegExp(':' + symbol),
-      alias: 'property',
-    },
-    splice: {
-      pattern: RegExp(',@?' + symbol),
-      alias: ['symbol', 'variable'],
+    symbol: {
+      pattern: /'[^()#'\s]+/,
+      greedy: true,
     },
     keyword: [
       {
@@ -111,123 +91,25 @@ buff|hash160|sha256|sha512|sha512/256|keccak256|true|false|none)' +
         lookbehind: true,
       },
     ],
-    declare: {
-      pattern: simple_form('declare'),
-      lookbehind: true,
-      alias: 'keyword',
-    },
-    interactive: {
-      pattern: simple_form('interactive'),
-      lookbehind: true,
-      alias: 'keyword',
-    },
-    boolean: {
-      pattern: RegExp(par + '(?:true|false|none)' + space),
-      lookbehind: true,
-    },
+    boolean: /(?:false|true|none)/,
     number: {
-      pattern: primitive('[-+]?u?\\d+(?:\\.\\d*)?'),
+      pattern: primitive('[-]?u?\\d+'),
       lookbehind: true,
     },
-    defvar: {
-      pattern: RegExp(par + '(?:let)\\s+' + symbol),
-      lookbehind: true,
-      inside: {
-        keyword: /^def[a-z]+/,
-        variable: RegExp(symbol),
-      },
-    },
-    defun: {
-      pattern: RegExp(par + '(?:defun\\*?|defmacro)\\s+' + symbol + '\\s+\\([\\s\\S]*?\\)'),
-      lookbehind: true,
-      inside: {
-        keyword: /^(?:cl-)?def\S+/,
-        // See below, this property needs to be defined later so that it can
-        // reference the language object.
-        arguments: null,
-        function: {
-          pattern: RegExp('(^\\s)' + symbol),
-          lookbehind: true,
-        },
-        punctuation: /[()]/,
-      },
-    },
-    lambda: {
-      pattern: RegExp(par + 'lambda\\s+\\((?:&?' + symbol + '\\s*)*\\)'),
-      lookbehind: true,
-      inside: {
-        keyword: /^lambda/,
-        // See below, this property needs to be defined later so that it can
-        // reference the language object.
-        arguments: null,
-        punctuation: /[()]/,
-      },
-    },
-    car: {
-      pattern: RegExp(par + symbol),
+    address: {
+      pattern: /([\s()])(?:\'[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{28,41})(?=[()\s]|$)/,
       lookbehind: true,
     },
-    punctuation: [
-      // open paren, brackets, and close paren
-      /(?:['`,]?\(|[)\[\]])/,
-      // cons
-      {
-        pattern: /(\s)\.(?=\s)/,
-        lookbehind: true,
-      },
-    ],
+    operator: {
+      pattern: /(\()(?:[-+*\/]|[<>]=?|=>?)(?=[()\s]|$)/,
+      lookbehind: true,
+    },
+    function: {
+      pattern: /(\()[^()'\s]+(?=[()\s]|$)/,
+      lookbehind: true,
+    },
+    punctuation: /[()']/,
   };
-
-  const arg = {
-    'lisp-marker': RegExp(marker),
-    rest: {
-      argument: {
-        pattern: RegExp(symbol),
-        alias: 'variable',
-      },
-      varform: {
-        pattern: RegExp(par + symbol + '\\s+\\S[\\s\\S]*' + endpar),
-        lookbehind: true,
-        inside: {
-          string: language.string,
-          boolean: language.boolean,
-          number: language.number,
-          symbol: language.symbol,
-          punctuation: /[()]/,
-        },
-      },
-    },
-  };
-
-  const forms = '\\S+(?:\\s+\\S+)*';
-
-  const arglist = {
-    pattern: RegExp(par + '[\\s\\S]*' + endpar),
-    lookbehind: true,
-    inside: {
-      'rest-vars': {
-        pattern: RegExp('&(?:rest|body)\\s+' + forms),
-        inside: arg,
-      },
-      'other-marker-vars': {
-        pattern: RegExp('&(?:optional|aux)\\s+' + forms),
-        inside: arg,
-      },
-      keys: {
-        pattern: RegExp('&key\\s+' + forms + '(?:\\s+&allow-other-keys)?'),
-        inside: arg,
-      },
-      argument: {
-        pattern: RegExp(symbol),
-        alias: 'variable',
-      },
-      punctuation: /[()]/,
-    },
-  };
-
-  language['lambda'].inside.arguments = arglist;
-  language['defun'].inside.arguments = Prism.util.clone(arglist);
-  language['defun'].inside.arguments.inside.sublist = arglist;
 
   Prism.languages.clarity = language;
 })(Prism);
