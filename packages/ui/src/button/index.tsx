@@ -76,15 +76,14 @@ export const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
           {isLoading && (
             <Spinner
               position={loadingText ? 'relative' : 'absolute'}
-              mr={loadingText ? 2 : 'unset'}
               mx={!loadingText ? 'auto' : 'unset'}
               color="currentColor"
               size="sm"
             />
           )}
           {isLoading
-            ? loadingText || (
-                <Box ml="base-tight" as="span" opacity={0}>
+            ? <Box ml="tight">{loadingText}</Box> || (
+                <Box ml="tight" as="span" opacity={0}>
                   {children}
                 </Box>
               )

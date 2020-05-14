@@ -1,4 +1,5 @@
 import { BoxProps } from '../box';
+import { FlexProps } from '../flex';
 
 interface IconProps extends Omit<BoxProps, 'color'> {
   color?: {
@@ -40,7 +41,7 @@ export interface ToastProps extends ToastType {
   onClear: (id: string) => void;
 }
 
-export interface ToasterProps {
+export interface ToasterProps extends FlexProps {
   toasts: ToastType[];
   removeToast: (id: string) => void;
 }

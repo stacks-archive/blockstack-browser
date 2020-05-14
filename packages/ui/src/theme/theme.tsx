@@ -82,6 +82,6 @@ const theme: Theme = {
   space,
 };
 
-export const transition = 'all .2s cubic-bezier(.215,.61,.355,1)';
+export const transition = 'all 0.2s cubic-bezier(0.23, 1, 0.32, 1)';
 
 export { theme };

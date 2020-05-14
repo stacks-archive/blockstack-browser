@@ -113,7 +113,7 @@ const Lines = ({
   );
 };
 
-interface HighlighterProps {
+export interface HighlighterProps {
   code: string;
   language?: Language;
   showLineNumbers?: boolean;

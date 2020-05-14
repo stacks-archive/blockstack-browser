@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { Highlighter } from '../highlighter';
+import { Highlighter, HighlighterProps } from '../highlighter';
 import { Box, BoxProps } from '../box';
 
 export const CodeBlock = ({
   code,
   showLineNumbers,
   style = {},
+  language,
   ...rest
-}: { code: string; showLineNumbers?: boolean } & BoxProps) => {
+}: {
+  code: string;
+  showLineNumbers?: boolean;
+  language?: HighlighterProps['language'];
+} & BoxProps) => {
   const [editorCode] = useState(code?.toString().trim());
 
   return (
@@ -25,7 +30,7 @@ export const CodeBlock = ({
         fontSize: '14px',
       }}
     >
-      <Highlighter showLineNumbers={showLineNumbers} code={editorCode} />
+      <Highlighter showLineNumbers={showLineNumbers} code={editorCode} language={language} />
     </Box>
   );
 };

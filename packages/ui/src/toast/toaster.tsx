@@ -1,30 +1,37 @@
 import React, { useCallback } from 'react';
 import { Box } from '../box';
+import { Flex } from '../flex';
 
 import { Toast as ToastComponent } from './toast';
-import { useFlipList } from '../hooks';
 
 import { ToasterProps } from './types';
 
-export const Toaster = ({ toasts, removeToast }: ToasterProps) => {
-  const { itemRef, remove } = useFlipList();
-
+export const Toaster = ({ toasts, removeToast, ...rest }: ToasterProps) => {
   const onClear = useCallback(
     (id: string) => {
-      remove(id, () => {
-        removeToast(id);
-      });
+      removeToast(id);
     },
-    [remove, removeToast]
+    [removeToast]
   );
 
   return (
-    <Box position="fixed" width="100%" bottom={0}>
+    <Flex
+      align="center"
+      justify="flex-end"
+      flexDirection="column"
+      position="fixed"
+      width="100%"
+      height="100vh"
+      bottom={0}
+      zIndex={9999999}
+      style={{ pointerEvents: 'none' }}
+      {...rest}
+    >
       {toasts.map(({ id, ...rest }) => (
         <Box key={id}>
-          <ToastComponent ref={itemRef(id)} id={id} onClear={onClear} {...rest} />
+          <ToastComponent id={id} onClear={onClear} {...rest} />
         </Box>
       ))}
-    </Box>
+    </Flex>
   );
 };
