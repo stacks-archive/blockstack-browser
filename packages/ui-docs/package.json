@@ -12,6 +12,7 @@
     "mdi-react": "^6.7.0",
     "next": "9.2.2",
     "next-seo": "4.4.0",
+    "prettier": "^2.0.5",
     "prism-react-renderer": "^1.0.2",
     "react-icons": "^3.9.0",
     "react-live": "^2.2.2",

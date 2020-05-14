@@ -37,8 +37,6 @@
     "@types/jest": "^25.2.1",
     "@types/node": "^13.11.1",
     "@types/triplesec": "^3.0.0",
-    "@typescript-eslint/eslint-plugin": "^2.28.0",
-    "@typescript-eslint/parser": "^2.28.0",
     "codecov": "^3.5.0",
     "cross-env": "^6.0.3",
     "depcheck": "^0.8.3",
@@ -57,6 +55,7 @@
     "bitcoinjs-lib": "^5.1.6",
     "blockstack": "21.0.0-alpha.2",
     "jsontokens": "^3.0.0",
+    "prettier": "^2.0.5",
     "triplesec": "^3.0.27"
   },
   "publishConfig": {

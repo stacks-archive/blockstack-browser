@@ -20,6 +20,7 @@
     "@types/styled-system__should-forward-prop": "^5.1.1",
     "color": "3.1.2",
     "flushable": "^1.0.0",
+    "prettier": "^2.0.5",
     "prism-react-renderer": "^1.0.2",
     "prismjs": "^1.20.0",
     "prop-types": "^15.7.2",

@@ -24,7 +24,6 @@
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/connect": "^2.6.0",
-    "@blockstack/eslint-config": "^1.0.3",
     "@blockstack/keychain": "^0.3.5",
     "@blockstack/prettier-config": "^0.0.5",
     "@blockstack/stats": "^0.7.0",
@@ -36,6 +35,7 @@
     "history": "^5.0.0-beta.4",
     "mdi-react": "^6.7.0",
     "preact": "^10.4.0",
+    "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-chrome-redux": "^2.0.0-alpha.5",
     "react-dom": "^16.13.1",
