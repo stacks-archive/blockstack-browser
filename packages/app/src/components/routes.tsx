@@ -17,7 +17,7 @@ import { authenticationInit } from '@common/utils';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { useWallet } from '@common/hooks/use-wallet';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
-import { Routes as RoutesDom, Route } from 'react-router-dom';
+import { Routes as RoutesDom, Route, useLocation } from 'react-router-dom';
 import { Navigate } from '@components/navigate';
 
 export const Routes: React.FC = () => {
@@ -26,6 +26,7 @@ export const Routes: React.FC = () => {
   const { identities } = useWallet();
   const { isOnboardingInProgress, decodedAuthRequest, onboardingPath } = useOnboardingState();
   const authRequest = authenticationInit();
+  const { search } = useLocation();
 
   useEffect(() => {
     if (authRequest) {
@@ -45,18 +46,13 @@ export const Routes: React.FC = () => {
     if (isSignedIn) {
       return (
         <Navigate
-          to={{ pathname: '/', hash: `connect/choose-account?${location.hash.split('?')[1]}` }}
+          to={{ pathname: '/', hash: `connect/choose-account?${search}` }}
           screenPath={ScreenPaths.CHOOSE_ACCOUNT}
         />
       );
     }
-    if (decodedAuthRequest?.sendToSignIn) {
-      return (
-        <Navigate
-          to={{ pathname: '/', hash: `sign-in?${location.hash.split('?')[1]}` }}
-          screenPath={ScreenPaths.SIGN_IN}
-        />
-      );
+    if (decodedAuthRequest?.sendToSignIn && search) {
+      return <Navigate to={{ pathname: '/', hash: `sign-in?${search}` }} screenPath={ScreenPaths.SIGN_IN} />;
     }
     return <Create next={() => doChangeScreen(ScreenPaths.SECRET_KEY)} />;
   };
