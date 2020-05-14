@@ -71,7 +71,6 @@ const aliases =
 module.exports = {
   entry: {
     background: path.join(sourceRootPath, 'extension', 'background.ts'),
-    popup: path.join(sourceRootPath, 'extension', 'index.tsx'),
     inpage: path.join(sourceRootPath, 'extension', 'inpage.ts'),
     'message-bus': path.join(sourceRootPath, 'extension', 'content-scripts', 'message-bus.ts'),
     index: path.join(sourceRootPath, 'index.tsx'),
@@ -79,7 +78,12 @@ module.exports = {
   output: {
     path: distRootPath,
     chunkFilename: !isDevelopment ? '[name].[contenthash:8].chunk.js' : isDevelopment && '[name].chunk.js',
-    filename: !isDevelopment ? '[name].[contenthash:8].js' : isDevelopment && '[name].js',
+    filename: () => {
+      if (extEnv === 'prod' || isDevelopment) {
+        return '[name].js';
+      }
+      return '[name].[contenthash:8].js';
+    },
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
@@ -170,7 +174,7 @@ module.exports = {
               '@babel/plugin-transform-runtime',
               '@babel/plugin-proposal-nullish-coalescing-operator',
               '@babel/plugin-proposal-optional-chaining',
-              isDevelopment && require.resolve('react-refresh/babel'),
+              isDevelopment && extEnv === 'web' && require.resolve('react-refresh/babel'),
             ].filter(Boolean),
           },
         },
@@ -187,14 +191,6 @@ module.exports = {
     new webpack.IgnorePlugin(/^\.\/wordlists\/(?!english)/, /bip39\/src$/),
     new webpack.HashedModuleIdsPlugin(),
     new CheckerPlugin(),
-    new HtmlWebpackPlugin({
-      template: path.join(sourceRootPath, '../', 'public', 'html', 'popup.html'),
-      inject: 'body',
-      filename: 'popup.html',
-      title: 'Blockstack',
-      chunks: ['popup', 'common'],
-      ...hmtlProdOpts,
-    }),
     new HtmlWebpackPlugin({
       template: path.join(sourceRootPath, '../', 'public', 'html', 'index.html'),
       inject: 'body',
@@ -223,7 +219,7 @@ module.exports = {
       STATS_URL: JSON.stringify(statsURL),
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
-    isDevelopment && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
+    isDevelopment && extEnv === 'web' && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
   ].filter(Boolean),
 };
 
@@ -236,7 +232,6 @@ if (process.env.EXT_ENV === 'watch') {
       entries: {
         background: 'background',
         options: 'index',
-        popup: 'popup',
         contentScript: ['message-bus'],
       },
     })

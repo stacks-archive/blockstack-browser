@@ -1,5 +1,5 @@
 import { Store, applyMiddleware } from 'webext-redux';
-import { Wallet } from '@blockstack/keychain';
+import { Wallet, Identity } from '@blockstack/keychain';
 import { middlewareComponents } from './';
 
 export function deserializer(payload: any) {
@@ -20,6 +20,11 @@ export function deserializer(payload: any) {
 export function walletDeserializer(key: string, value: any) {
   if (key === 'currentWallet') {
     return new Wallet(value);
+  }
+  if (key === 'identities') {
+    return value.map((identity: any) => {
+      return new Identity(identity);
+    });
   }
   return value;
 }

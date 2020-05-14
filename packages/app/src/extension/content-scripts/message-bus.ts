@@ -9,7 +9,7 @@ window.addEventListener('message', event => {
   if (data.source === 'blockstack-app') {
     const { method } = data;
     if (method === 'getURL') {
-      const url = chrome.runtime.getURL('');
+      const url = chrome.runtime.getURL('index.html');
       const source = getEventSourceWindow(event);
       source?.postMessage(
         {

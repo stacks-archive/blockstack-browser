@@ -7,3 +7,7 @@ wrapStore(store, {
   deserializer: (payload: any) => JSON.parse(payload, walletDeserializer),
   serializer: (payload: any) => JSON.stringify(payload),
 });
+
+chrome.browserAction.onClicked.addListener(() => {
+  chrome.runtime.openOptionsPage();
+});

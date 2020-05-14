@@ -25,11 +25,10 @@
     "scripts": ["background.js"],
     "persistent": true
   },
-  "web_accessible_resources": ["inpage.js"],
+  "web_accessible_resources": ["inpage.js", "index.html"],
   "browser_action": {
     "default_title": "Blockstack",
-    "default_icon": "assets/logo-16@3x.png",
-    "default_popup": "popup.html"
+    "default_icon": "assets/logo-16@3x.png"
   },
   "commands": {
     "_execute_browser_action": {
