@@ -1,7 +1,33 @@
 {
   "name": "root",
   "private": true,
+  "scripts": {
+    "typecheck": "lerna run typecheck --parallel",
+    "dev": "yarn lerna exec --parallel 'yarn dev' --scope test-app --scope @blockstack/app",
+    "bootstrap": "yarn lerna exec --parallel 'yarn'",
+    "build:libs": "yarn build:ui && yarn build:keychain && yarn build:connect",
+    "build:ui": "lerna run build --scope @blockstack/ui",
+    "build:keychain": "lerna run build --scope @blockstack/keychain",
+    "build:connect": "lerna run build --scope @blockstack/connect",
+    "build:app": "lerna run prod:web --scope @blockstack/app",
+    "build:test-app": "lerna run prod:web --scope test-app",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "lint:eslint": "eslint packages/**/*.{ts,tsx}",
+    "lint:fix": "eslint --ext .ts,.tsx . -f unix --fix && prettier --write **/*.{ts,tsx} *.js",
+    "lint:prettier": "prettier --check **/*.{ts,tsx} *.js",
+    "version": "lerna bootstrap"
+  },
+  "prettier": "@blockstack/prettier-config",
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
+    "@blockstack/eslint-config": "^1.0.3",
     "@blockstack/prettier-config": "^0.0.6",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
@@ -21,33 +47,8 @@
     "eslint-plugin-react-hooks": "^3.0.0",
     "husky": "^4.2.3",
     "lerna": "^3.20.2",
-    "prettier": "^2.0.4",
+    "prettier": "^2.0.5",
     "typescript": "^3.8.2"
   },
-  "scripts": {
-    "typecheck": "lerna run typecheck --parallel",
-    "dev": "yarn lerna exec --parallel 'yarn dev' --scope test-app --scope @blockstack/app",
-    "bootstrap": "yarn lerna exec --parallel 'yarn'",
-    "build:libs": "yarn build:ui && yarn build:keychain && yarn build:connect",
-    "build:ui": "lerna run build --scope @blockstack/ui",
-    "build:keychain": "lerna run build --scope @blockstack/keychain",
-    "build:connect": "lerna run build --scope @blockstack/connect",
-    "build:app": "lerna run prod:web --scope @blockstack/app",
-    "build:test-app": "lerna run prod:web --scope test-app",
-    "lint": "yarn lint:eslint && yarn lint:prettier",
-    "lint:eslint": "eslint --ext .ts,.tsx . -f unix",
-    "lint:fix": "eslint --ext .ts,.tsx . -f unix --fix && prettier --write **/*.{ts,tsx} *.js",
-    "lint:prettier": "prettier --check **/*.{ts,tsx} *.js",
-    "version": "lerna bootstrap"
-  },
-  "prettier": "@blockstack/prettier-config",
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {}
 }

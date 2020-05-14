@@ -1,6 +1,26 @@
 {
   "name": "@blockstack/connect",
   "version": "2.6.0",
+  "scripts": {
+    "build": "yarn build:modules && yarn build:standalone",
+    "build:modules": "tsdx build --format cjs,esm,umd",
+    "build:standalone": "NODE_ENV=production webpack --mode=production",
+    "build:standalone:analyze": "NODE_ENV=production ANALYZE=true webpack --mode=production",
+    "dev": "cd ../test-app && yarn start",
+    "lint": "eslint src/**/*.{ts,tsx}",
+    "lint:fix": "eslint src/**/*.{ts,tsx} --fix",
+    "prepublishOnly": "yarn build",
+    "start": "tsdx watch",
+    "test": "tsdx test",
+    "typecheck": "tsc --noEmit"
+  },
+  "prettier": "@blockstack/prettier-config",
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "typings": "dist/connect/src/index.d.ts",
+  "unpkg": "dist/bundle.js",
   "bundlesize": [
     {
       "path": "./dist/**/*.js",
@@ -19,6 +39,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
+    "@blockstack/eslint-config": "^1.0.3",
     "@blockstack/prettier-config": "^0.0.6",
     "@types/jest": "^25.2.1",
     "@types/react-dom": "^16.9.6",
@@ -28,13 +49,6 @@
     "babel-loader": "^8.1.0",
     "blockstack": "^19.3.0",
     "bundlesize": "^0.18.0",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-flowtype": "^4.7.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-react": "^7.18.0",
     "husky": "^4.2.1",
     "prettier": "^2.0.4",
     "react": "^16.13.1",
@@ -62,25 +76,5 @@
     "styled-components": "^5.1.0",
     "use-events": "^1.4.1",
     "use-onclickoutside": "^0.3.1"
-  },
-  "prettier": "@blockstack/prettier-config",
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "build": "yarn build:modules && yarn build:standalone",
-    "build:modules": "tsdx build --format cjs,esm,umd",
-    "build:standalone": "NODE_ENV=production webpack --mode=production",
-    "build:standalone:analyze": "NODE_ENV=production ANALYZE=true webpack --mode=production",
-    "dev": "cd ../test-app && yarn start",
-    "lint": "eslint --ext .ts,.tsx ./src/ -f unix",
-    "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix",
-    "prepublishOnly": "yarn build",
-    "start": "tsdx watch",
-    "test": "tsdx test",
-    "typecheck": "tsc --noEmit"
-  },
-  "sideEffects": false,
-  "typings": "dist/connect/src/index.d.ts",
-  "unpkg": "dist/bundle.js"
+  }
 }

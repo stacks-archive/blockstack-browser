@@ -2,7 +2,7 @@ module.exports = {
   extends: ['@blockstack/eslint-config'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
+    project: './tsconfig.json'
   },
   plugins: ['jest'],
   env: {
@@ -15,8 +15,5 @@ module.exports = {
     page: true,
     browser: true,
     context: true,
-  },
-  rules: {
-    '@typescript-eslint/no-unnecessary-type-assertion': [0],
-  },
+  }
 };

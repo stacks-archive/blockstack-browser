@@ -33,9 +33,7 @@ const errorTextMap = {
   [IdentityNameValidityError.UNAVAILABLE]: identityNameUnavailableError,
 };
 
-interface UsernameProps {}
-
-export const Username: React.FC<UsernameProps> = () => {
+export const Username: React.FC<{}> = () => {
   const { pathname } = useLocation();
 
   const { wallet } = useWallet();

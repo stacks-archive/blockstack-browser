@@ -18,8 +18,8 @@
     "build:esm:watch": "tsc --outDir ./lib-esm -m es6 -t es2017 --watch",
     "test": "jest",
     "test:watch": "jest --watch --coverage=false",
-    "lint": "eslint --ext .ts ./src ./tests -f unix",
-    "lint:fix": "eslint --fix --ext .ts ./src ./tests -f unix",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint --fix src/**/*.ts",
     "depcheck": "depcheck --ignores='@types/*,eslint*,safe-buffer,codecov,@typescript-eslint/*,@blockstack/*'",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "yarn build"

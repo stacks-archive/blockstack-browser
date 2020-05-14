@@ -29,9 +29,9 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
   });
 
   const handleButtonClick = () => {
-    const input: HTMLInputElement = document.querySelector('.hidden-secret-key') as HTMLInputElement;
-    input.select();
-    input.setSelectionRange(0, 99999);
+    const input: HTMLInputElement | null = document.querySelector('.hidden-secret-key');
+    input?.select();
+    input?.setSelectionRange(0, 99999);
     document.execCommand('copy');
     setCopiedState(true);
     document.getSelection()?.empty();

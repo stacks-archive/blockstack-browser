@@ -1,10 +1,21 @@
 module.exports = {
-  ignorePatterns: ['node_modules/'],
   extends: ['@blockstack/eslint-config'],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: '2018',
-    sourceType: 'module',
     project: './tsconfig.json',
-    tsconfigRootDir: __dirname,
+  },
+  plugins: ['react'],
+  env: {
+    browser: true,
+    node: true,
+    es6: true,
+  },
+  globals: {
+    page: true,
+    browser: true,
+    context: true,
+  },
+  rules: {
+    '@typescript-eslint/no-unnecessary-type-assertion': [0],
   },
 };
