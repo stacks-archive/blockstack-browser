@@ -4,7 +4,7 @@ import { Box, BoxProps } from '../box';
 
 export const CloseIcon: React.FC<BoxProps> = props => (
   <Box {...props}>
-    <Svg width="100%" height="unset" viewBox="0 0 10 10">
+    <Svg width="100%" viewBox="0 0 10 10">
       <path
         fillRule="evenodd"
         clipRule="evenodd"

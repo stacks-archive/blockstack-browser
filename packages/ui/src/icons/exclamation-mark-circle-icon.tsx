@@ -3,7 +3,7 @@ import { Box, BoxProps } from '../box';
 
 export const ExclamationMarkCircleIcon: React.FC<BoxProps> = props => (
   <Box {...props}>
-    <svg width="100%" height="unset" viewBox="0 0 16 16" fill="none">
+    <svg width="100%" viewBox="0 0 16 16" fill="none">
       <path
         fillRule="evenodd"
         clipRule="evenodd"
