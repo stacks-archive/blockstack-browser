@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.3.5...@blockstack/keychain@0.4.0) (2020-05-15)
+
+
+### Bug Fixes
+
+* add trailing slash to apps storage url, [#356](https://github.com/blockstack/ux/issues/356) ([024c903](https://github.com/blockstack/ux/commit/024c903724e17678dea205d95fcae01aa946e29e))
+
+
+### Features
+
+* publish public key, [#357](https://github.com/blockstack/ux/issues/357) ([7c0a1bb](https://github.com/blockstack/ux/commit/7c0a1bb0a6966b29a34a62301dace01325ecacb8))
+
+
+
+
+
 ## [0.3.5](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.3.3...@blockstack/keychain@0.3.5) (2020-05-06)
 
 **Note:** Version bump only for package @blockstack/keychain

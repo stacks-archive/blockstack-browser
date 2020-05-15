@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.4.0...@blockstack/ui@1.6.0) (2020-05-15)
+
+
+### Bug Fixes
+
+* **ui:** fix types for codeblock, rename folder ([195ae9b](https://github.com/blockstackpbc/blockstack-ui/commit/195ae9b9c1f594162cfe008fa4cb61dcb5e19b11))
+* **ui:** remove unset from svg elements ([576475c](https://github.com/blockstackpbc/blockstack-ui/commit/576475c64d993db63b6d574c4fd9438c40b4e0db))
+* add popper/core ([19ae807](https://github.com/blockstackpbc/blockstack-ui/commit/19ae807f6db86d66b7809b5a5ca8d137766ef8d0))
+* clarity highlighting-- addresses, funcn call detection, operators ([fd845ae](https://github.com/blockstackpbc/blockstack-ui/commit/fd845ae39256ed6deed1cb2ccdefeb4fb675df88))
+* error thrown using jsx'd style name ([42da3f1](https://github.com/blockstackpbc/blockstack-ui/commit/42da3f1c0c3dc0c8c2a77c9fecdcab9c3ca0c3a2))
+
+
+### Features
+
+* **ui:** add hook -- use-timeout.ts ([37a1014](https://github.com/blockstackpbc/blockstack-ui/commit/37a10146af90a66e3c77fb3788d11a0574893841))
+* **ui:** add icons -- checkmark-circle, close, exclamation-mark-circle ([3b9273d](https://github.com/blockstackpbc/blockstack-ui/commit/3b9273d2f1d790fae7061bdf8af1bd5d0724b33e))
+* **ui:** add toast, useToast ([8fa7266](https://github.com/blockstackpbc/blockstack-ui/commit/8fa72667fc9e15b6f38ce429cecbaad26a8569e2))
+* **ui:** add transition components ([475f2c6](https://github.com/blockstackpbc/blockstack-ui/commit/475f2c61acc4dbacf03839bd9ba74efb6797d86f))
+
+
+
+
+
 # [1.4.0](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.1.1...@blockstack/ui@1.4.0) (2020-05-06)
 
 
