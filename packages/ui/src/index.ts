@@ -25,6 +25,6 @@ export * from './popper';
 export * from './portal';
 export * from './hooks';
 export * from './highlighter';
-export * from './codebox';
+export * from './codeblock';
 export * from './toast';
 export * from './transition';
