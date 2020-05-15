@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { BoxProps } from '../box';
 import { FlexProps } from '../flex';
 
@@ -44,4 +45,13 @@ export interface ToastProps extends ToastType {
 export interface ToasterProps extends FlexProps {
   toasts: ToastType[];
   removeToast: (id: string) => void;
+}
+
+export interface ToastState {
+  toasts: ToastType[];
+}
+export type AddToast = (toast: ToastType) => void;
+
+export interface ToastProviderProps {
+  children: ReactNode;
 }

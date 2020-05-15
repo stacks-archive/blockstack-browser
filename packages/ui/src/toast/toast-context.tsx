@@ -1,20 +1,11 @@
-import React, {
-  useContext,
-  createContext,
-  useReducer,
-  useCallback,
-  ReactNode,
-  useState,
-  useEffect,
-  Fragment,
-} from 'react';
-import { createPortal } from 'react-dom';
+import React, { useContext, createContext, useReducer, useCallback } from 'react';
+
+import { Portal } from '../portal';
 import { Toaster } from './toaster';
-import { ToastType } from './types';
+
+import { ToastType, AddToast, ToastState, ToastProviderProps } from './types';
 
 let toastCounter = 0;
-
-type AddToast = (toast: ToastType) => void;
 
 const ToastControllerContext = createContext<AddToast | null>(null);
 
@@ -22,24 +13,20 @@ const QUEUE_TOAST = 0;
 const REMOVE_TOAST = 1;
 
 type Actions =
-  | { type: typeof QUEUE_TOAST; value: ToastType }
-  | { type: typeof REMOVE_TOAST; value: string };
-
-interface ToastState {
-  toasts: ToastType[];
-}
+  | { type: typeof QUEUE_TOAST; payload: ToastType }
+  | { type: typeof REMOVE_TOAST; payload: string };
 
 function reducer(state: ToastState, action: Actions): ToastState {
   switch (action.type) {
     case QUEUE_TOAST: {
       return {
         ...state,
-        toasts: [...state.toasts, action.value],
+        toasts: [...state.toasts, action.payload],
       };
     }
 
     case REMOVE_TOAST: {
-      const toasts = state.toasts.filter(({ id }) => id !== action.value);
+      const toasts = state.toasts.filter(({ id }) => id !== action.payload);
 
       return {
         ...state,
@@ -50,27 +37,28 @@ function reducer(state: ToastState, action: Actions): ToastState {
 
   return state;
 }
-interface ToastProviderProps {
-  children: ReactNode;
-}
+
 const InternalToastProvider = ({ children }: ToastProviderProps) => {
   const [{ toasts }, dispatch] = useReducer(reducer, {
     toasts: [],
   });
 
   const addToast = useCallback(
-    (props: ToastType) => dispatch({ type: QUEUE_TOAST, value: props }),
+    (props: ToastType) => dispatch({ type: QUEUE_TOAST, payload: props }),
     []
   );
 
-  const removeToast = useCallback((id: string) => dispatch({ type: REMOVE_TOAST, value: id }), []);
+  const removeToast = useCallback(
+    (id: string) => dispatch({ type: REMOVE_TOAST, payload: id }),
+    []
+  );
 
   return (
     <ToastControllerContext.Provider value={addToast}>
       {children}
-      <ToastPortal>
+      <Portal>
         <Toaster toasts={toasts} removeToast={removeToast} />
-      </ToastPortal>
+      </Portal>
     </ToastControllerContext.Provider>
   );
 };
@@ -80,38 +68,10 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
 
   if (currentContext !== null) {
     // Bail early as "ToastProvider" is already setup
-    return <Fragment>{children}</Fragment>;
+    return <>{children}</>;
   }
 
   return <InternalToastProvider>{children}</InternalToastProvider>;
-};
-
-interface ToastPortalProps {
-  children: ReactNode;
-}
-const ToastPortal = ({ children }: ToastPortalProps) => {
-  const [toastElement, setElement] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    const toastContainerId = 'toast-container';
-    let element = document.getElementById(toastContainerId);
-
-    if (!element) {
-      element = document.createElement('div');
-      element.setAttribute('id', toastContainerId);
-      element.setAttribute('class', '');
-
-      document.body.appendChild(element);
-    }
-
-    setElement(element);
-  }, []);
-
-  if (!toastElement) {
-    return null;
-  }
-
-  return createPortal(children, toastElement);
 };
 
 export const useToast = () => {
