@@ -75,5 +75,6 @@
     "styled-components": "^5.1.0",
     "use-events": "^1.4.1",
     "use-onclickoutside": "^0.3.1"
-  }
+  },
+  "gitHead": "4237af0d61b8bfc1cda8889ee6172a4b0cd6cc7b"
 }

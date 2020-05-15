@@ -116,5 +116,6 @@
   "sideEffects": false,
   "typings": "dist/ui/src/index.d.ts",
   "umd:main": "dist/ui.umd.production.js",
-  "unpkg": "dist/ui.cjs.production.min.js"
+  "unpkg": "dist/ui.cjs.production.min.js",
+  "gitHead": "4237af0d61b8bfc1cda8889ee6172a4b0cd6cc7b"
 }
