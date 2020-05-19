@@ -9,8 +9,8 @@ interface SVGProps {
 type SVG = SVGProps & BoxProps;
 
 export const Svg = ({
-  width = 24,
-  height = 24,
+  width = '24px',
+  height = 'auto',
   viewBox = '0 0 24 24',
   fill = 'none',
   ...rest
