@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.6.0...@blockstack/ui@1.6.1) (2020-05-21)
+
+
+### Bug Fixes
+
+* size units for svg component ([ca69c31](https://github.com/blockstackpbc/blockstack-ui/commit/ca69c31fc27afc503031518c176454be4ba94706))
+
+
+
+
+
 # [1.6.0](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.4.0...@blockstack/ui@1.6.0) (2020-05-15)
 
 

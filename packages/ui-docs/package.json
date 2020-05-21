@@ -1,8 +1,8 @@
 {
   "name": "@blockstack/waffle-docs",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "dependencies": {
-    "@blockstack/ui": "^1.6.0",
+    "@blockstack/ui": "^1.6.1",
     "@mdx-js/loader": "1.5.7",
     "@mdx-js/mdx": "^1.5.7",
     "@mdx-js/react": "^1.5.7",
