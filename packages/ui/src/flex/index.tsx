@@ -2,8 +2,6 @@ import React, { forwardRef } from 'react';
 import { Box } from '../box';
 import { FlexProps } from './types';
 
-export * from './types';
-
 const Flex = forwardRef<any, FlexProps>(({ align, justify, wrap, direction, ...rest }, ref) => (
   <Box
     ref={ref}
@@ -18,4 +16,4 @@ const Flex = forwardRef<any, FlexProps>(({ align, justify, wrap, direction, ...r
 
 Flex.displayName = 'Flex';
 
-export { Flex };
+export { Flex, FlexProps };

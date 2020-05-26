@@ -1,10 +1,5 @@
-import { Box, Flex, Grid, useTheme } from "@blockstack/ui";
-import {
-  ColorPalette,
-  ColorPalettes,
-  ColorWrapper,
-  Colors
-} from "@components/color-palette";
+import { Box, Flex, Grid, useTheme } from '@blockstack/ui';
+import { ColorPalette, ColorPalettes, ColorWrapper, Colors } from '@components/color-palette';
 
 # Theme
 
@@ -25,21 +20,21 @@ You can also pass `blue` with no range.
 // theme.js
 export default {
   colors: {
-    transparent: "transparent",
-    current: "currentColor",
-    black: "#000000",
-    white: "#ffffff",
-    blue: Object.assign("#3700ff", {
-      50: "#f2f2ff",
-      100: "#e3e5ff",
-      150: "#D8DAF3",
-      200: "#c5ccff",
-      300: "#aab3ff",
+    transparent: 'transparent',
+    current: 'currentColor',
+    black: '#000000',
+    white: '#ffffff',
+    blue: Object.assign('#3700ff', {
+      50: '#f2f2ff',
+      100: '#e3e5ff',
+      150: '#D8DAF3',
+      200: '#c5ccff',
+      300: '#aab3ff',
       // ...
-      900: "#5548ff"
-    })
+      900: '#5548ff',
+    }),
     // ...
-  }
+  },
 };
 ```
 
@@ -109,7 +104,7 @@ responsive styles.
 ```js
 // theme.js
 export default {
-  breakpoints: ["30em", "48em", "62em", "80em"]
+  breakpoints: ['30em', '48em', '62em', '80em'],
 };
 ```
 
@@ -122,26 +117,26 @@ your project. By default these spacing value can be referenced by the `padding`,
 ```js
 export default {
   space: {
-    "0": "0",
-    px: "1px",
-    "1": "0.25rem",
-    "2": "0.5rem",
-    "3": "0.75rem",
-    "4": "1rem",
-    "5": "1.25rem",
-    "6": "1.5rem",
-    "8": "2rem",
-    "10": "2.5rem",
-    "12": "3rem",
-    "16": "4rem",
-    "20": "5rem",
-    "24": "6rem",
-    "32": "8rem",
-    "40": "10rem",
-    "48": "12rem",
-    "56": "14rem",
-    "64": "16rem"
-  }
+    '0': '0',
+    px: '1px',
+    '1': '0.25rem',
+    '2': '0.5rem',
+    '3': '0.75rem',
+    '4': '1rem',
+    '5': '1.25rem',
+    '6': '1.5rem',
+    '8': '2rem',
+    '10': '2.5rem',
+    '12': '3rem',
+    '16': '4rem',
+    '20': '5rem',
+    '24': '6rem',
+    '32': '8rem',
+    '40': '10rem',
+    '48': '12rem',
+    '56': '14rem',
+    '64': '16rem',
+  },
 };
 ```
 
@@ -184,20 +179,20 @@ build for your project. By default these spacing value can be referenced by the
 export default {
   sizes: {
     ...theme.space,
-    full: "100%",
-    "3xs": "14rem",
-    "2xs": "16rem",
-    xs: "20rem",
-    sm: "24rem",
-    md: "28rem",
-    lg: "32rem",
-    xl: "36rem",
-    "2xl": "42rem",
-    "3xl": "48rem",
-    "4xl": "56rem",
-    "5xl": "64rem",
-    "6xl": "72rem"
-  }
+    full: '100%',
+    '3xs': '14rem',
+    '2xs': '16rem',
+    xs: '20rem',
+    sm: '24rem',
+    md: '28rem',
+    lg: '32rem',
+    xl: '36rem',
+    '2xl': '42rem',
+    '3xl': '48rem',
+    '4xl': '56rem',
+    '5xl': '64rem',
+    '6xl': '72rem',
+  },
 };
 ```
 

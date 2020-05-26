@@ -9,7 +9,7 @@ See below for the various props and aliases you can pass for styling components.
 ### Margin & padding
 
 ```jsx live=false
-import { Box } from "@blockstack/ui";
+import { Box } from '@blockstack/ui';
 
 // m={2} refers to the value of `theme.space[2]`
 <Box m={2}>Tomato</Box>;
@@ -133,7 +133,7 @@ import { Box } from "@blockstack/ui";
 ### Flexbox
 
 ```jsx live=false
-import { Box, Flex } from "@blockstack/ui";
+import { Box, Flex } from '@blockstack/ui';
 
 // verbose
 <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -167,7 +167,7 @@ import { Box, Flex } from "@blockstack/ui";
 ### Grid Layout
 
 ```jsx live=false
-import { Box, Grid } from "@blockstack/ui";
+import { Box, Grid } from '@blockstack/ui';
 
 // verbose
 <Box display="grid" gridGap={2} gridAutoFlow="row dense">
@@ -200,7 +200,7 @@ import { Box, Grid } from "@blockstack/ui";
 ### Background
 
 ```jsx live=false
-import { Box } from "@blockstack/ui";
+import { Box } from '@blockstack/ui';
 
 // verbose
 <Box
@@ -225,7 +225,7 @@ import { Box } from "@blockstack/ui";
 ### Borders
 
 ```jsx live=false
-import { Box } from "@blockstack/ui";
+import { Box } from '@blockstack/ui';
 
 <Box border="1px" borderRadius="6px" borderColor="ink.i00">
   Card
@@ -260,7 +260,7 @@ import { Box } from "@blockstack/ui";
 ### Border Radius
 
 ```jsx live=false
-import { Button } from "@blockstack/ui";
+import { Button } from '@blockstack/ui';
 
 // This button will have no right borderRadius
 <Button roundedRight="0">Button 1</Button>;
@@ -287,7 +287,7 @@ import { Button } from "@blockstack/ui";
 ### Position
 
 ```jsx live=false
-import { Box } from "@blockstack/ui";
+import { Box } from '@blockstack/ui';
 
 // verbose
 <Box position="absolute">Cover</Box>;
@@ -316,17 +316,14 @@ import { Box } from "@blockstack/ui";
 ### Shadow
 
 ```jsx live=false
-import { Box, Text } from "@blockstack/ui";
+import { Box, Text } from '@blockstack/ui';
 
 // text-shadow will be `theme.shadows.low`
 // box-shadow will be `theme.shadows.high`
 <Box textShadow="low" boxShadow="high" />;
 
 // raw CSS values
-<Text
-  textShadow="0px 1px 2px rgba(0, 0, 0, 0.04)"
-  boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08)"
->
+<Text textShadow="0px 1px 2px rgba(0, 0, 0, 0.04)" boxShadow="0px 8px 16px rgba(27, 39, 51, 0.08)">
   Text with shadows
 </Text>;
 ```
@@ -389,7 +386,7 @@ without having to wrap the Button in an `a` component.
 Let's say you wanted the button to take styles from a `Flex` primitive. You'd do the following:
 
 ```jsx
-<Button as={Flex} onClick={() => console.log("button")}>
+<Button as={Flex} onClick={() => console.log('button')}>
   This is now using a Flex as the primary wrapper component.
 </Button>
 ```
@@ -400,17 +397,14 @@ For these reasons, it's recommended only to use the as prop when you cannot achi
 
 ```jsx
 <Flex>
-  <Button onClick={() => console.log("button")}>Some Button</Button>
+  <Button onClick={() => console.log('button')}>Some Button</Button>
 </Flex>
 ```
 
 or
 
 ```jsx
-<Button
-  as={p => <Flex as="button" {...p} />}
-  onClick={() => console.log("button")}
->
+<Button as={p => <Flex as="button" {...p} />} onClick={() => console.log('button')}>
   Button with flex, but as a button html element.
 </Button>
 ```

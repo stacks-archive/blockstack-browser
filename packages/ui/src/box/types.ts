@@ -126,6 +126,10 @@ export interface OtherProps {
   transform?: CSS.TransformProperty | StyledSystem.ResponsiveValue<CSS.TransformProperty>;
   transition?: CSS.TransitionProperty | StyledSystem.ResponsiveValue<CSS.TransitionProperty>;
   boxShadow?: BoxShadow | StyledSystem.ResponsiveValue<BoxShadow>;
+  pointerEvents?:
+    | CSS.PointerEventsProperty
+    | StyledSystem.ResponsiveValue<CSS.PointerEventsProperty>;
+  outline?: CSS.OutlineProperty<any> | StyledSystem.ResponsiveValue<CSS.OutlineProperty<any>>;
 }
 
 export type ShorthandProps = FlexDirectionShorthandProps & DisplayShorthandProps;

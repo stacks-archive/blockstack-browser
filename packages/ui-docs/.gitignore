@@ -9,6 +9,7 @@
 /coverage
 
 # next.js
+.vercel
 /.next/
 /out/
 
@@ -24,3 +25,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.now
+.vercel

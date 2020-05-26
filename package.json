@@ -24,7 +24,7 @@
     }
   },
   "workspaces": [
-    "packages/*"
+    "packages/**"
   ],
   "devDependencies": {
     "@blockstack/eslint-config": "^1.0.4",
@@ -47,5 +47,8 @@
     "prettier": "^2.0.5",
     "typescript": "^3.8.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@babel/preset-env": "^7.10.3",
+    "tsdx": "^0.13.2"
+  }
 }

@@ -3,7 +3,7 @@ import { Box } from '../box';
 import { Input } from '../input';
 import { inputSizes } from '../input/styles';
 import { InputLeftElement, InputRightElement } from '../input-element';
-import { useTheme } from '../theme-provider';
+import { useTheme } from '../hooks';
 import { InputGroupProps } from './types';
 
 const InputGroup = ({ children, size = 'default', ...props }: InputGroupProps) => {

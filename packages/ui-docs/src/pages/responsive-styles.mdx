@@ -13,10 +13,10 @@ you provide array values to add mobile-first responsive styles.
     height="40px"
     bg="ink.400"
     width={[
-      "100%", // base
-      "50%", // 480px upwards
-      "25%", // 768px upwards
-      "15%" // 992px upwards
+      '100%', // base
+      '50%', // 480px upwards
+      '25%', // 768px upwards
+      '15%', // 992px upwards
     ]}
   />
   // responsive font size
@@ -66,7 +66,7 @@ The equivalent of this style if you passed it as an object.
 
 ```js
 // First, create an alias for breakpoints
-const breakpoints = ["30em", "48em", "62em", "80em"];
+const breakpoints = ['30em', '48em', '62em', '80em'];
 // aliases
 breakpoints.sm = breakpoints[0];
 breakpoints.md = breakpoints[1];
@@ -88,8 +88,6 @@ browser to see it in action)**:
 
 ```jsx
 <Box p={4}>
-  <Box color={["blue", "red", "green"]}>
-    This will change color depending on screen size!
-  </Box>
+  <Box color={['blue', 'red', 'green']}>This will change color depending on screen size!</Box>
 </Box>
 ```

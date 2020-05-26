@@ -1,0 +1,37 @@
+name: Deploy ui docs
+on:
+  pull_request:
+    paths: packages/ui-docs/**
+jobs:
+  docs-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Node Version
+      uses: actions/setup-node@v1
+      env:
+        RUNNER_TEMP: /tmp
+      with:
+        node-version: 12.16.1
+    - name: Get yarn cache directory path
+      id: yarn-cache-dir-path
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+    - uses: actions/cache@v1
+      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      with:
+        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+    - name: Monorepo Dependencies
+      run: yarn
+    - name: Lerna Bootstrap
+      run: yarn lerna bootstrap
+    - uses: amondnet/vercel-action@v19
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+        github-token: ${{ secrets.GITHUB_TOKEN }} #Optional
+        vercel-args: '--prod' #Optional
+        vercel-org-id: ${{ secrets.ORG_ID}}  #Required
+        vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
+        working-directory: ./packages/ui-docs

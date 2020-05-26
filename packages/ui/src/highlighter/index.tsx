@@ -4,7 +4,7 @@ import Highlight from 'prism-react-renderer';
 import { Box } from '../box';
 import { Flex } from '../flex';
 import { startPad } from '../utils';
-import { useTheme } from '../theme-provider';
+import { useTheme } from '../hooks';
 
 import { GrammaticalToken, GetGrammaticalTokenProps, RenderProps, Language } from './types';
 import { theme } from './prism-theme';
@@ -65,6 +65,7 @@ const Line = ({
   index,
   length,
   showLineNumbers,
+  hideLineHover,
   ...rest
 }: {
   tokens: GrammaticalToken[];
@@ -72,13 +73,18 @@ const Line = ({
   length: number;
   getTokenProps: GetGrammaticalTokenProps;
   showLineNumbers?: boolean;
+  hideLineHover?: boolean;
 }) => {
   return (
     <Flex
       height="loose"
       align="baseline"
       borderColor="ink.900"
-      _hover={{ bg: ['unset', 'unset', 'ink.900'], borderColor: ['ink.900', 'ink.900', 'ink.600'] }}
+      _hover={
+        hideLineHover
+          ? undefined
+          : { bg: ['unset', 'unset', 'ink.900'], borderColor: ['ink.900', 'ink.900', 'ink.600'] }
+      }
       position="relative"
       {...rest}
     >
@@ -94,7 +100,8 @@ const Lines = ({
   getTokenProps,
   className,
   showLineNumbers,
-}: { showLineNumbers?: boolean } & RenderProps) => {
+  hideLineHover,
+}: { showLineNumbers?: boolean; hideLineHover?: boolean } & RenderProps) => {
   return (
     <Box display="block" className={className}>
       <Box display="block" style={{ fontFamily: 'Fira Code' }}>
@@ -105,6 +112,7 @@ const Lines = ({
             getTokenProps={getTokenProps}
             length={lines.length + 1}
             showLineNumbers={showLineNumbers}
+            hideLineHover={hideLineHover || lines.length < 3}
             {...getLineProps({ line: tokens, key: i })}
           />
         ))}
@@ -117,13 +125,16 @@ export interface HighlighterProps {
   code: string;
   language?: Language;
   showLineNumbers?: boolean;
+  hideLineHover?: boolean;
 }
 
 export const Highlighter = React.memo(
-  ({ code, language = 'clarity', showLineNumbers }: HighlighterProps) => {
+  ({ code, language = 'clarity', showLineNumbers, hideLineHover }: HighlighterProps) => {
     return (
       <Highlight theme={theme} code={code} language={language as any} Prism={Prism as any}>
-        {props => <Lines showLineNumbers={showLineNumbers} {...props} />}
+        {props => (
+          <Lines showLineNumbers={showLineNumbers} hideLineHover={hideLineHover} {...props} />
+        )}
       </Highlight>
     );
   }

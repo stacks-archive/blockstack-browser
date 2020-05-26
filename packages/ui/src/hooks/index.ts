@@ -8,3 +8,4 @@ export * from './use-merge-refs';
 export * from './use-previous';
 export * from './use-safe-layout-effect';
 export * from './use-timeout';
+export * from './use-theme';
