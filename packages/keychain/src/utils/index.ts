@@ -8,19 +8,20 @@ import { Subdomains, registrars } from '../profiles';
 
 const IDENTITY_KEYCHAIN = 888;
 const BLOCKSTACK_ON_BITCOIN = 0;
-export function getIdentityPrivateKeychain(masterKeychain: BIP32Interface) {
-  return masterKeychain.deriveHardened(IDENTITY_KEYCHAIN).deriveHardened(BLOCKSTACK_ON_BITCOIN);
+
+export function getIdentityPrivateKeychain(rootNode: BIP32Interface) {
+  return rootNode.deriveHardened(IDENTITY_KEYCHAIN).deriveHardened(BLOCKSTACK_ON_BITCOIN);
 }
 
 const EXTERNAL_ADDRESS = 'EXTERNAL_ADDRESS';
 const CHANGE_ADDRESS = 'CHANGE_ADDRESS';
 
-export function getBitcoinPrivateKeychain(masterKeychain: BIP32Interface) {
+export function getBitcoinPrivateKeychain(rootNode: BIP32Interface) {
   const BIP_44_PURPOSE = 44;
   const BITCOIN_COIN_TYPE = 0;
   const ACCOUNT_INDEX = 0;
 
-  return masterKeychain
+  return rootNode
     .deriveHardened(BIP_44_PURPOSE)
     .deriveHardened(BITCOIN_COIN_TYPE)
     .deriveHardened(ACCOUNT_INDEX);
@@ -91,11 +92,11 @@ export async function deriveIdentityKeyPair(
 }
 
 export async function getBlockchainIdentities(
-  masterKeychain: BIP32Interface,
+  rootNode: BIP32Interface,
   identitiesToGenerate: number
 ) {
-  const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain);
-  const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(masterKeychain);
+  const identityPrivateKeychainNode = getIdentityPrivateKeychain(rootNode);
+  const bitcoinPrivateKeychainNode = getBitcoinPrivateKeychain(rootNode);
 
   const identityPublicKeychainNode = identityPrivateKeychainNode.neutered();
   const identityPublicKeychain = identityPublicKeychainNode.toBase58();
@@ -112,7 +113,7 @@ export async function getBlockchainIdentities(
   // We pre-generate a number of identity addresses so that we
   // don't have to prompt the user for the password on each new profile
   for (let addressIndex = 0; addressIndex < identitiesToGenerate; addressIndex++) {
-    const identity = await makeIdentity(masterKeychain, addressIndex);
+    const identity = await makeIdentity(rootNode, addressIndex);
     identities.push(identity);
     identityKeypairs.push(identity.keyPair);
     identityAddresses.push(identity.address);
@@ -128,8 +129,8 @@ export async function getBlockchainIdentities(
   };
 }
 
-export const makeIdentity = async (masterKeychain: BIP32Interface, index: number) => {
-  const identityPrivateKeychainNode = getIdentityPrivateKeychain(masterKeychain);
+export const makeIdentity = async (rootNode: BIP32Interface, index: number) => {
+  const identityPrivateKeychainNode = getIdentityPrivateKeychain(rootNode);
   const identityOwnerAddressNode = await getIdentityOwnerAddressNode(
     identityPrivateKeychainNode,
     index

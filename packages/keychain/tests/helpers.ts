@@ -1,4 +1,5 @@
 import Wallet from '../src/wallet';
+import { ChainID } from '@blockstack/stacks-transactions';
 
 const defaultSeed =
   'sound idle panel often situate develop unit text design antenna ' +
@@ -6,7 +7,7 @@ const defaultSeed =
   'update opinion media';
 
 export const getWallet = async (seed: string = defaultSeed) => {
-  const wallet = await Wallet.restore('password', seed);
+  const wallet = await Wallet.restore('password', seed, ChainID.Mainnet);
   return wallet;
 };
 

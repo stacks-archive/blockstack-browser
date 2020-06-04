@@ -5,6 +5,7 @@ import { ECPair, bip32 } from 'bitcoinjs-lib';
 import { decryptContent, encryptContent, getPublicKeyFromPrivate } from 'blockstack';
 import { DEFAULT_GAIA_HUB } from '../src/utils/gaia';
 import { mnemonicToSeed } from 'bip39';
+import { ChainID } from '@blockstack/stacks-transactions';
 
 describe('Restoring a wallet', () => {
   test('restores an existing wallet and keychain', async () => {
@@ -35,7 +36,7 @@ describe('Restoring a wallet', () => {
       },
     ];
 
-    const wallet = await Wallet.restore(password, backupPhrase);
+    const wallet = await Wallet.restore(password, backupPhrase, ChainID.Mainnet);
     expect(wallet.bitcoinPublicKeychain).toEqual(bitcoinPublicKeychain);
     expect(wallet.identityPublicKeychain).toEqual(identityPublicKeychain);
     expect(wallet.firstBitcoinAddress).toEqual(firstBitcoinAddress);
@@ -57,9 +58,18 @@ describe('Restoring a wallet', () => {
 
     const backupPhrase = plainTextBuffer.toString();
 
-    const restored = await Wallet.restore(password, backupPhrase);
+    const restored = await Wallet.restore(password, backupPhrase, ChainID.Mainnet);
 
     expect(restored.identityPublicKeychain).toEqual(generated.identityPublicKeychain);
+  });
+
+  test('generates 24-word seed phrase', async () => {
+    const pass = 'password';
+    const wallet = await Wallet.generateStrong(pass);
+    const encryptedBackupPhrase = wallet.encryptedBackupPhrase;
+    const plainTextBuffer = await decrypt(Buffer.from(encryptedBackupPhrase, 'hex'), pass);
+    const backupPhrase = plainTextBuffer.toString();
+    expect(backupPhrase.split(' ').length).toEqual(24);
   });
 
   test('generates a config private key', async () => {

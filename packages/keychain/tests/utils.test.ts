@@ -1,3 +1,4 @@
+import './setup';
 import {
   IdentityNameValidityError,
   validateSubdomainFormat,
@@ -37,12 +38,12 @@ describe(validateSubdomainFormat.name, () => {
   });
 
   it('returns error state when using sneaky homoglyphs', () => {
-    const legitIndentity = 'kyranjamie';
+    const legitIdentity = 'kyranjamie';
     const homoglyph = 'kyrаnjamie';
     // eslint-disable-next-line
     // @ts-ignore
-    expect(legitIndentity === homoglyph).toEqual(false);
-    const shouldPassResult = validateSubdomainFormat(legitIndentity);
+    expect(legitIdentity === homoglyph).toEqual(false);
+    const shouldPassResult = validateSubdomainFormat(legitIdentity);
     expect(shouldPassResult).toBeNull();
 
     const shouldFailResult = validateSubdomainFormat(homoglyph);

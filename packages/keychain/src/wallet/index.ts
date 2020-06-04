@@ -1,6 +1,6 @@
-import { generateMnemonic, mnemonicToSeed } from 'bip39';
+import { mnemonicToSeed } from 'bip39';
 import { bip32, BIP32Interface } from 'bitcoinjs-lib';
-import { randomBytes } from 'blockstack/lib/encryption/cryptoRandom';
+import { ChainID } from '@blockstack/stacks-transactions';
 
 import {
   getBlockchainIdentities,
@@ -9,7 +9,6 @@ import {
   assertIsTruthy,
   recursiveRestoreIdentities,
 } from '../utils';
-import { encrypt } from '../encryption/encrypt';
 import Identity from '../identity';
 import { decrypt } from '../encryption/decrypt';
 import {
@@ -20,6 +19,12 @@ import {
 } from 'blockstack';
 import { GaiaHubConfig, uploadToGaiaHub } from 'blockstack/lib/storage/hub';
 import { makeReadOnlyGaiaConfig, DEFAULT_GAIA_HUB } from '../utils/gaia';
+import {
+  AllowedKeyEntropyBits,
+  generateMnemonicRootKeychain,
+  deriveRootKeychainFromMnemonic,
+} from '../mnemonic';
+import { deriveStxAddressChain } from '../address-derivation';
 
 const CONFIG_INDEX = 45;
 
@@ -45,6 +50,7 @@ export interface WalletConfig {
 }
 
 export interface ConstructorOptions {
+  chain: ChainID;
   identityPublicKeychain: string;
   bitcoinPublicKeychain: string;
   firstBitcoinAddress: string;
@@ -53,10 +59,12 @@ export interface ConstructorOptions {
   encryptedBackupPhrase: string;
   identities: Identity[];
   configPrivateKey: string;
+  stxAddressKeychain: BIP32Interface;
   walletConfig?: WalletConfig;
 }
 
 export class Wallet {
+  chain: ChainID;
   encryptedBackupPhrase: string;
   bitcoinPublicKeychain: string;
   firstBitcoinAddress: string;
@@ -65,9 +73,11 @@ export class Wallet {
   identityPublicKeychain: string;
   identities: Identity[];
   configPrivateKey: string;
+  stxAddressKeychain: BIP32Interface;
   walletConfig?: WalletConfig;
 
   constructor({
+    chain,
     encryptedBackupPhrase,
     identityPublicKeychain,
     bitcoinPublicKeychain,
@@ -76,8 +86,10 @@ export class Wallet {
     identityAddresses,
     identities,
     configPrivateKey,
+    stxAddressKeychain,
     walletConfig,
   }: ConstructorOptions) {
+    this.chain = chain;
     this.encryptedBackupPhrase = encryptedBackupPhrase;
     this.identityPublicKeychain = identityPublicKeychain;
     this.bitcoinPublicKeychain = bitcoinPublicKeychain;
@@ -86,46 +98,73 @@ export class Wallet {
     this.identityAddresses = identityAddresses;
     this.identities = identities.map(identity => new Identity(identity));
     this.configPrivateKey = configPrivateKey;
+    this.stxAddressKeychain = stxAddressKeychain;
     this.walletConfig = walletConfig;
   }
 
+  static generateFactory(bitsEntropy: AllowedKeyEntropyBits) {
+    return async (password: string, chain: ChainID) => {
+      const { rootNode, encryptedMnemonicPhrase } = await generateMnemonicRootKeychain(
+        password,
+        bitsEntropy
+      );
+      return this.createAccount({
+        encryptedBackupPhrase: encryptedMnemonicPhrase,
+        rootNode,
+        chain,
+      });
+    };
+  }
+
   static async generate(password: string) {
-    const STRENGTH = 128; // 128 bits generates a 12 word mnemonic
-    const backupPhrase = generateMnemonic(STRENGTH, randomBytes);
-    const seedBuffer = await mnemonicToSeed(backupPhrase);
-    const masterKeychain = bip32.fromSeed(seedBuffer);
-    const ciphertextBuffer = await encrypt(backupPhrase, password);
-    const encryptedBackupPhrase = ciphertextBuffer.toString('hex');
-    return this.createAccount(encryptedBackupPhrase, masterKeychain);
+    return await this.generateFactory(128)(password, ChainID.Testnet);
   }
 
-  static async restore(password: string, backupPhrase: string) {
-    const encryptedMnemonic = await encrypt(backupPhrase, password);
-    const encryptedMnemonicHex = encryptedMnemonic.toString('hex');
-    const seedBuffer = await mnemonicToSeed(backupPhrase);
-    const rootNode = bip32.fromSeed(seedBuffer);
-    const wallet = await this.createAccount(encryptedMnemonicHex, rootNode);
-    await wallet.restoreIdentities({ rootNode, gaiaReadURL: DEFAULT_GAIA_HUB });
-    return wallet;
+  static async generateStrong(password: string) {
+    return await this.generateFactory(256)(password, ChainID.Testnet);
   }
 
-  static async createAccount(
-    encryptedBackupPhrase: string,
-    masterKeychain: BIP32Interface,
-    identitiesToGenerate = 1
-  ) {
-    const derivedKey = masterKeychain.deriveHardened(CONFIG_INDEX).privateKey;
-    if (!derivedKey) {
-      throw new TypeError('Unable to derive config key for wallet');
+  static async restore(password: string, seedPhrase: string, chain: ChainID) {
+    const { rootNode, encryptedMnemonicHex } = await deriveRootKeychainFromMnemonic(
+      seedPhrase,
+      password
+    );
+
+    const wallet = await Wallet.createAccount({
+      encryptedBackupPhrase: encryptedMnemonicHex,
+      rootNode,
+      chain,
+    });
+
+    return await wallet.restoreIdentities({ rootNode, gaiaReadURL: DEFAULT_GAIA_HUB });
+  }
+
+  static async createAccount({
+    encryptedBackupPhrase,
+    rootNode,
+    chain = ChainID.Testnet,
+    identitiesToGenerate = 1,
+  }: {
+    encryptedBackupPhrase: string;
+    rootNode: BIP32Interface;
+    chain: ChainID;
+    identitiesToGenerate?: number;
+  }) {
+    const derivedIdentitiesKey = rootNode.deriveHardened(CONFIG_INDEX).privateKey;
+    if (!derivedIdentitiesKey) {
+      throw new TypeError('Unable to derive config key for wallet identities');
     }
-    const configPrivateKey = derivedKey.toString('hex');
-    const walletAttrs = await getBlockchainIdentities(masterKeychain, identitiesToGenerate);
-    const wallet = new this({
+    const configPrivateKey = derivedIdentitiesKey.toString('hex');
+    const { childKey: stxAddressKeychain } = deriveStxAddressChain(chain)(rootNode);
+    const walletAttrs = await getBlockchainIdentities(rootNode, identitiesToGenerate);
+
+    return new Wallet({
       ...walletAttrs,
+      chain,
       configPrivateKey,
+      stxAddressKeychain,
       encryptedBackupPhrase,
     });
-    return wallet;
   }
 
   /**
@@ -201,7 +240,6 @@ export class Wallet {
       this.walletConfig = config;
       return config;
     } catch (error) {
-      // console.error(error)
       return null;
     }
   }
