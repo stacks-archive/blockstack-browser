@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.11](https://github.com/blockstack/ux/compare/test-app@1.1.10...test-app@1.1.11) (2020-06-07)
+
+
+### Bug Fixes
+
+* handle mobile auth ([100faed](https://github.com/blockstack/ux/commit/100faed78db94756f13b5b803283fb2538153781))
+
+
+
+
+
 ## [1.1.10](https://github.com/blockstack/ux/compare/test-app@1.1.9...test-app@1.1.10) (2020-05-21)
 
 **Note:** Version bump only for package test-app

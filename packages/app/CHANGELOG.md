@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.9.1...@blockstack/app@1.9.2) (2020-06-07)
+
+
+### Bug Fixes
+
+* better handling for mobile and blocked popups ([3151863](https://github.com/blockstack/blockstack-app/commit/31518632bf91c6217734c21c1163ae076f22368a))
+
+
+
+
+
 ## [1.9.1](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.9.0...@blockstack/app@1.9.1) (2020-05-21)
 
 **Note:** Version bump only for package @blockstack/app
