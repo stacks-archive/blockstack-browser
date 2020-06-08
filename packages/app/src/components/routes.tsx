@@ -4,7 +4,6 @@ import { Create, SaveKey } from '../pages/sign-up';
 import { SignIn, DecryptRecoveryCode } from '../pages/sign-in';
 
 import { Username } from '../pages/username';
-import { UsernameRegistryError } from '../pages/registery-error';
 import { SecretKey } from '../pages/secret-key';
 
 import { ChooseAccount } from '../pages/connect';
@@ -114,7 +113,6 @@ export const Routes: React.FC = () => {
         }
       />
       {/*Error/Misc*/}
-      <Route path="/username-error" element={<UsernameRegistryError />} />
       <Route path="/settings/secret-key" element={<SecretKey next={() => doChangeScreen(ScreenPaths.HOME)} />} />
     </RoutesDom>
   );
