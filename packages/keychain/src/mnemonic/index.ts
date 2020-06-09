@@ -6,7 +6,17 @@ import { encrypt } from '../encryption/encrypt';
 
 export type AllowedKeyEntropyBits = 128 | 256;
 
-export async function generateMnemonicRootKeychain(
+export async function generateMnemonicRootKeychain(entropy: AllowedKeyEntropyBits) {
+  const plaintextMnemonic = generateBip39Mnemonic(entropy, randomBytes);
+  const seedBuffer = await mnemonicToSeed(plaintextMnemonic);
+  const rootNode = bip32.fromSeed(seedBuffer);
+  return {
+    rootNode,
+    plaintextMnemonic,
+  };
+}
+
+export async function generateEncryptedMnemonicRootKeychain(
   password: string,
   entropy: AllowedKeyEntropyBits
 ) {

@@ -10,6 +10,7 @@ import { Subdomains, registrars, Wallet, decrypt } from '../src';
 import { mnemonicToSeed } from 'bip39';
 import { bip32 } from 'bitcoinjs-lib';
 import { profileResponse } from './helpers';
+import { ChainID } from '@blockstack/stacks-transactions';
 
 describe(validateSubdomainFormat.name, () => {
   it('returns error state when string less than 8 characters', () => {
@@ -90,7 +91,7 @@ describe(validateSubdomain.name, () => {
 });
 
 test('recursively makes identities', async () => {
-  const wallet = await Wallet.generate('password');
+  const wallet = await Wallet.generate('password', ChainID.Testnet);
   const plainTextBuffer = await decrypt(
     Buffer.from(wallet.encryptedBackupPhrase, 'hex'),
     'password'

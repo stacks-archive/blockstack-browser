@@ -4,7 +4,6 @@ module.exports = {
   coverageDirectory: './coverage/',
   collectCoverage: true,
   globals: {
-    fetchMock: true,
     'ts-jest': {
       diagnostics: {
         ignoreCodes: ['TS151001'],

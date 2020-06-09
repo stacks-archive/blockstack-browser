@@ -50,7 +50,7 @@ describe('Restoring a wallet', () => {
 
   test('generates and restores the same wallet', async () => {
     const password = 'password';
-    const generated = await Wallet.generate(password);
+    const generated = await Wallet.generate(password, ChainID.Testnet);
 
     const encryptedBackupPhrase = generated.encryptedBackupPhrase;
 
@@ -65,7 +65,7 @@ describe('Restoring a wallet', () => {
 
   test('generates 24-word seed phrase', async () => {
     const pass = 'password';
-    const wallet = await Wallet.generateStrong(pass);
+    const wallet = await Wallet.generateStrong(pass, ChainID.Testnet);
     const encryptedBackupPhrase = wallet.encryptedBackupPhrase;
     const plainTextBuffer = await decrypt(Buffer.from(encryptedBackupPhrase, 'hex'), pass);
     const backupPhrase = plainTextBuffer.toString();
@@ -73,7 +73,7 @@ describe('Restoring a wallet', () => {
   });
 
   test('generates a config private key', async () => {
-    const wallet = await Wallet.generate('password');
+    const wallet = await Wallet.generate('password', ChainID.Testnet);
     expect(wallet.configPrivateKey).not.toBeFalsy();
     const node = ECPair.fromPrivateKey(Buffer.from(wallet.configPrivateKey, 'hex'));
     expect(node.privateKey).not.toBeFalsy();
@@ -90,7 +90,7 @@ test('returns null if no config in gaia', async () => {
       })
     )
     .once('', { status: 404 });
-  const wallet = await Wallet.generate('password');
+  const wallet = await Wallet.generate('password', ChainID.Testnet);
   const hubConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org');
   const config = await wallet.fetchConfig(hubConfig);
   expect(config).toBeFalsy();
@@ -117,7 +117,7 @@ test('returns config if present', async () => {
     ],
   };
 
-  const wallet = await Wallet.generate('password');
+  const wallet = await Wallet.generate('password', ChainID.Testnet);
   const publicKey = getPublicKeyFromPrivate(wallet.configPrivateKey);
   const encrypted = await encryptContent(JSON.stringify(stubConfig), { publicKey });
 
@@ -155,7 +155,7 @@ test('creates a config', async () => {
     )
     .once('', { status: 404 })
     .once(JSON.stringify({ publicUrl: 'asdf' }));
-  const wallet = await Wallet.generate('password');
+  const wallet = await Wallet.generate('password', ChainID.Testnet);
   const hubConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org');
   const config = await wallet.getOrCreateConfig(hubConfig);
   expect(Object.keys(config.identities[0].apps).length).toEqual(0);
@@ -177,7 +177,7 @@ test('updates wallet config', async () => {
     .once(JSON.stringify({ publicUrl: 'asdf' }))
     .once(JSON.stringify({ publicUrl: 'asdf' }));
 
-  const wallet = await Wallet.generate('password');
+  const wallet = await Wallet.generate('password', ChainID.Testnet);
   const gaiaConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org');
   await wallet.getOrCreateConfig(gaiaConfig);
   const app: ConfigApp = {
@@ -214,7 +214,7 @@ test('updates config for reusing id warning', async () => {
     .once(JSON.stringify({ publicUrl: 'asdf' }))
     .once(JSON.stringify({ publicUrl: 'asdf' }));
 
-  const wallet = await Wallet.generate('password');
+  const wallet = await Wallet.generate('password', ChainID.Testnet);
   const gaiaConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org');
   await wallet.getOrCreateConfig(gaiaConfig);
   expect(wallet.walletConfig?.hideWarningForReusingIdentity).toBeFalsy();
@@ -230,7 +230,7 @@ test('updates config for reusing id warning', async () => {
 });
 
 test('restoreIdentities', async () => {
-  const wallet = await Wallet.generate('password');
+  const wallet = await Wallet.generate('password', ChainID.Testnet);
 
   const stubConfig: WalletConfig = {
     identities: [

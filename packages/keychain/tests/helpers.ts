@@ -18,7 +18,7 @@ export const getIdentity = async (seed: string = defaultSeed) => {
 };
 
 export const getNewIdentity = async () => {
-  const wallet = await Wallet.generate('password');
+  const wallet = await Wallet.generate('password', ChainID.Testnet);
   return wallet.identities[0];
 };
 

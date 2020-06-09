@@ -1,11 +1,14 @@
-import { generateMnemonicRootKeychain, deriveRootKeychainFromMnemonic } from '../../src/mnemonic';
+import {
+  generateEncryptedMnemonicRootKeychain,
+  deriveRootKeychainFromMnemonic,
+} from '../../src/mnemonic';
 import { decrypt } from '../../src/encryption/decrypt';
 
-describe('generateMnemonicKeychain()', () => {
+describe('generateEncryptedMnemonicRootKeychain()', () => {
   test('both 12 and 24 word phrases are returned', async () => {
     const password = '427706da374f435f959283de93652375';
-    const twelveWorder = await generateMnemonicRootKeychain(password, 128);
-    const twentyFourWorder = await generateMnemonicRootKeychain(password, 256);
+    const twelveWorder = await generateEncryptedMnemonicRootKeychain(password, 128);
+    const twentyFourWorder = await generateEncryptedMnemonicRootKeychain(password, 256);
 
     const twelveWordDecrypted = await decrypt(twelveWorder.encryptedMnemonicPhrase, password);
     const twentyFourWordDecrypted = await decrypt(

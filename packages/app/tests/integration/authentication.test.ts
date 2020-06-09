@@ -6,6 +6,7 @@ import { DemoPage } from './page-objects/demo.page';
 import { randomString, Browser } from './utils';
 import { AuthPage } from './page-objects/auth.page';
 import { Wallet } from '@blockstack/keychain';
+import { ChainID } from '@blockstack/stacks-transactions';
 
 const SECRET_KEY = 'invite helmet save lion indicate chuckle world pride afford hard broom draft';
 const WRONG_SECRET_KEY = 'invite helmet save lion indicate chuckle world pride afford hard broom yup';
@@ -234,7 +235,7 @@ describe.each(environments)('auth scenarios - %o %o', (browserType, deviceType) 
     const authPage = auth.page;
 
     const seed = generateMnemonic();
-    const wallet = await Wallet.restore('password', seed);
+    const wallet = await Wallet.restore('password', seed, ChainID.Testnet);
     await auth.loginWithPreviousSecretKey(seed);
     await authPage.click(auth.$firstAccount);
 

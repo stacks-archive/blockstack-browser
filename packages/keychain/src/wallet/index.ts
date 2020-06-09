@@ -21,7 +21,7 @@ import { GaiaHubConfig, uploadToGaiaHub } from 'blockstack/lib/storage/hub';
 import { makeReadOnlyGaiaConfig, DEFAULT_GAIA_HUB } from '../utils/gaia';
 import {
   AllowedKeyEntropyBits,
-  generateMnemonicRootKeychain,
+  generateEncryptedMnemonicRootKeychain,
   deriveRootKeychainFromMnemonic,
 } from '../mnemonic';
 import { deriveStxAddressChain } from '../address-derivation';
@@ -104,7 +104,7 @@ export class Wallet {
 
   static generateFactory(bitsEntropy: AllowedKeyEntropyBits) {
     return async (password: string, chain: ChainID) => {
-      const { rootNode, encryptedMnemonicPhrase } = await generateMnemonicRootKeychain(
+      const { rootNode, encryptedMnemonicPhrase } = await generateEncryptedMnemonicRootKeychain(
         password,
         bitsEntropy
       );
@@ -116,12 +116,12 @@ export class Wallet {
     };
   }
 
-  static async generate(password: string) {
-    return await this.generateFactory(128)(password, ChainID.Testnet);
+  static async generate(password: string, chain: ChainID) {
+    return await this.generateFactory(128)(password, chain);
   }
 
-  static async generateStrong(password: string) {
-    return await this.generateFactory(256)(password, ChainID.Testnet);
+  static async generateStrong(password: string, chain: ChainID) {
+    return await this.generateFactory(256)(password, chain);
   }
 
   static async restore(password: string, seedPhrase: string, chain: ChainID) {
@@ -142,7 +142,7 @@ export class Wallet {
   static async createAccount({
     encryptedBackupPhrase,
     rootNode,
-    chain = ChainID.Testnet,
+    chain,
     identitiesToGenerate = 1,
   }: {
     encryptedBackupPhrase: string;

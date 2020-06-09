@@ -1,5 +1,7 @@
 import Wallet from './wallet';
 export * from './utils';
+export * from './mnemonic';
+export * from './address-derivation';
 export { default as Wallet } from './wallet';
 export { decrypt } from './encryption/decrypt';
 export { encrypt } from './encryption/encrypt';

@@ -26,6 +26,7 @@
     "@blockstack/connect": "^2.7.4",
     "@blockstack/keychain": "^0.4.0",
     "@blockstack/prettier-config": "^0.0.5",
+    "@blockstack/stacks-transactions": "^0.4.6",
     "@blockstack/stats": "^0.7.0",
     "@blockstack/ui": "^1.6.2",
     "@rehooks/document-title": "^1.0.1",
