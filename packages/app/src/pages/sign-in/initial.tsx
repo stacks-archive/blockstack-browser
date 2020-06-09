@@ -8,7 +8,7 @@ import {
   ScreenFooter,
 } from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
-import { Box, Text, Input, Flex, Button } from '@blockstack/ui';
+import { Box, Text, Input, Flex, Button, space } from '@blockstack/ui';
 import { AppIcon } from '@components/app-icon';
 import { Link } from '@components/link';
 import useDocumentTitle from '@rehooks/document-title';
@@ -21,6 +21,7 @@ import { selectAppName } from '@store/onboarding/selectors';
 import { doStoreSeed } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { useAnalytics } from '@common/hooks/use-analytics';
+import { ExtensionButton } from '@components/extension-button';
 
 const textAreaRef = createRef<HTMLTextAreaElement>();
 
@@ -128,7 +129,8 @@ export const SignIn: React.FC<SignInProps> = props => {
           </Button>
         </Flex>
       </ScreenActions>
-      <ScreenFooter>
+      <ScreenFooter flexWrap="wrap" mt={space('base')}>
+        <ExtensionButton my={space('base')} />
         <PoweredBy />
       </ScreenFooter>
     </Screen>
