@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.6.1...@blockstack/ui@1.6.2) (2020-06-10)
+
+
+### Bug Fixes
+
+* remove optional type indicators ([7375775](https://github.com/blockstackpbc/blockstack-ui/commit/7375775669d30f97e8171dcf97e19b568c3850f4))
+
+
+
+
+
 ## [1.6.1](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.6.0...@blockstack/ui@1.6.1) (2020-05-21)
 
 
