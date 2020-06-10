@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 interface Clipboard {
-  value?: string;
-  onCopy?: () => void;
-  hasCopied?: boolean;
+  value: string;
+  onCopy: () => void;
+  hasCopied: boolean;
 }
 
 /**
