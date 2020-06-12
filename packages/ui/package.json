@@ -72,7 +72,7 @@
   "files": [
     "dist"
   ],
-  "homepage": "https://waffle.blockstack.design/",
+  "homepage": "https://waffle.blockstack.sh/",
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
