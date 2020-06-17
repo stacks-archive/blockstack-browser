@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   selectIdentities,
   selectCurrentWallet,
@@ -10,8 +10,10 @@ import { selectSecretKey } from '@store/onboarding/selectors';
 import { decrypt } from '@blockstack/keychain';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { useState, useEffect } from 'react';
+import { doStoreSeed } from '@store/wallet';
 
 export const useWallet = () => {
+  const dispatch = useDispatch();
   const identities = useSelector(selectIdentities);
   const firstIdentity = useSelector(selectFirstIdentity);
   const wallet = useSelector(selectCurrentWallet);
@@ -27,9 +29,20 @@ export const useWallet = () => {
     }
   };
 
+  const updateSTXKeychain = async () => {
+    if (wallet && !wallet.stacksPrivateKey) {
+      const decryptedKey = await decrypt(wallet?.encryptedBackupPhrase, DEFAULT_PASSWORD);
+      dispatch(doStoreSeed(decryptedKey, DEFAULT_PASSWORD));
+    }
+  };
+
   useEffect(() => {
     void fetchSecretKey();
   }, [onboardingSecretKey]);
+
+  useEffect(() => {
+    void updateSTXKeychain();
+  }, []);
 
   return { identities, firstIdentity, wallet, secretKey, isRestoringWallet, isSignedIn };
 };

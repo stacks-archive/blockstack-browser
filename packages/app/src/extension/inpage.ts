@@ -1,4 +1,4 @@
-import { BlockstackProvider } from '@blockstack/connect/types';
+import { BlockstackProvider } from '@blockstack/connect';
 
 interface Response {
   source: 'blockstack-extension';

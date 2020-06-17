@@ -5,9 +5,13 @@
     "moduleResolution": "node",
     "declaration": true,
     "outDir": "/lib",
-    "rootDir": "./src",
     "strict": true,
     "skipLibCheck": true,
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@blockstack/rpc-client": ["../../rpc-client/src"]
+    },
     "lib": [
       "es2017",
       "dom"

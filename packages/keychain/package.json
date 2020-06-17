@@ -38,6 +38,7 @@
     "@babel/compat-data": "^7.10.1",
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@blockstack/prettier-config": "^0.0.6",
+    "@types/bn.js": "^4.11.6",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.10",
     "@types/triplesec": "^3.0.0",
@@ -55,10 +56,12 @@
     "typescript": "^3.7.3"
   },
   "dependencies": {
-    "@blockstack/stacks-transactions": "^0.4.6",
+    "@blockstack/rpc-client": "^0.3.0-alpha.0",
+    "@blockstack/stacks-transactions": "0.5.1",
     "bip39": "^3.0.2",
     "bitcoinjs-lib": "^5.1.6",
-    "blockstack": "21.0.0-alpha.2",
+    "blockstack": "21.0.0",
+    "bn.js": "^5.1.1",
     "c32check": "^1.0.1",
     "jsontokens": "^3.0.0",
     "prettier": "^2.0.5",

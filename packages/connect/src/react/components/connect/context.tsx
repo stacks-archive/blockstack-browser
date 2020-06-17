@@ -1,5 +1,6 @@
 import React, { useReducer, createContext } from 'react';
 import { AuthOptions, FinishedData } from '../../../auth';
+import { UserSession } from 'blockstack/lib';
 
 enum States {
   MODAL_OPEN = 'modal/open',
@@ -23,6 +24,7 @@ type State = {
   screen: string;
   authData?: FinishedData;
   authOptions: AuthOptions;
+  userSession?: UserSession;
 };
 
 const initialState: State = {
@@ -30,6 +32,7 @@ const initialState: State = {
   isAuthenticating: false,
   screen: States.SCREENS_INTRO,
   authData: undefined,
+  userSession: undefined,
   authOptions: {
     redirectTo: '',
     manifestPath: '',

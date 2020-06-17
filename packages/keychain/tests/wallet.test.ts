@@ -33,6 +33,8 @@ describe('Restoring a wallet', () => {
           'xprvA1y4zBndD83n6PWgVH6ivkTpNQ2WU1UGPg9hWa2q8sCANa7YrYMZFHWMhrbpsarx' +
           'XMuQRa4jtaT2YXugwsKrjFgn765tUHu9XjyiDFEjB7f',
         salt: 'c15619adafe7e75a195a1a2b5788ca42e585a3fd181ae2ff009c6089de54ed9e',
+        stxNodeKey:
+          'xprvA1y4zBndD83nNNFWE1UiWpmc9hpPuk8xjPNwb2j341txeJmCHe8VWT7VKS6FcgnCtbuBP2kzyW34ESdJtJ81AQxCbr9cmQsUHHZ8dtyTxCy',
       },
     ];
 
@@ -157,7 +159,7 @@ test('creates a config', async () => {
     .once(JSON.stringify({ publicUrl: 'asdf' }));
   const wallet = await Wallet.generate('password', ChainID.Testnet);
   const hubConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org');
-  const config = await wallet.getOrCreateConfig(hubConfig);
+  const config = await wallet.getOrCreateConfig({ gaiaConfig: hubConfig });
   expect(Object.keys(config.identities[0].apps).length).toEqual(0);
   const { body } = fetchMock.mock.calls[2][1];
   const decrypted = (await decryptContent(body, { privateKey: wallet.configPrivateKey })) as string;
@@ -179,7 +181,7 @@ test('updates wallet config', async () => {
 
   const wallet = await Wallet.generate('password', ChainID.Testnet);
   const gaiaConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org');
-  await wallet.getOrCreateConfig(gaiaConfig);
+  await wallet.getOrCreateConfig({ gaiaConfig });
   const app: ConfigApp = {
     origin: 'http://localhost:5000',
     scopes: ['read_write'],
@@ -216,7 +218,7 @@ test('updates config for reusing id warning', async () => {
 
   const wallet = await Wallet.generate('password', ChainID.Testnet);
   const gaiaConfig = await wallet.createGaiaConfig('https://gaia.blockstack.org');
-  await wallet.getOrCreateConfig(gaiaConfig);
+  await wallet.getOrCreateConfig({ gaiaConfig });
   expect(wallet.walletConfig?.hideWarningForReusingIdentity).toBeFalsy();
   await wallet.updateConfigForReuseWarning({ gaiaConfig });
   expect(wallet.walletConfig?.hideWarningForReusingIdentity).toBeTruthy();

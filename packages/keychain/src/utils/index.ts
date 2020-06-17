@@ -62,7 +62,7 @@ export async function getIdentityOwnerAddressNode(
   return new IdentityAddressOwnerNode(identityPrivateKeychain.deriveHardened(identityIndex), salt);
 }
 
-export async function getAddress(node: BIP32Interface) {
+export function getAddress(node: BIP32Interface) {
   return publicKeyToAddress(node.publicKey);
 }
 
@@ -71,21 +71,24 @@ export interface IdentityKeyPair {
   keyID: string;
   address: string;
   appsNodeKey: string;
+  stxNodeKey: string;
   salt: string;
 }
 
-export async function deriveIdentityKeyPair(
+export function deriveIdentityKeyPair(
   identityOwnerAddressNode: IdentityAddressOwnerNode
-): Promise<IdentityKeyPair> {
-  const address = await identityOwnerAddressNode.getAddress();
+): IdentityKeyPair {
+  const address = identityOwnerAddressNode.getAddress();
   const identityKey = identityOwnerAddressNode.getIdentityKey();
   const identityKeyID = identityOwnerAddressNode.getIdentityKeyID();
   const appsNode = identityOwnerAddressNode.getAppsNode();
+  const stxNode = identityOwnerAddressNode.getSTXNode();
   const keyPair = {
     key: identityKey,
     keyID: identityKeyID,
     address,
     appsNodeKey: appsNode.toBase58(),
+    stxNodeKey: stxNode.toBase58(),
     salt: identityOwnerAddressNode.getSalt(),
   };
   return keyPair;
@@ -104,7 +107,7 @@ export async function getBlockchainIdentities(
   const bitcoinPublicKeychainNode = bitcoinPrivateKeychainNode.neutered();
   const bitcoinPublicKeychain = bitcoinPublicKeychainNode.toBase58();
 
-  const firstBitcoinAddress = await getAddress(getBitcoinAddressNode(bitcoinPublicKeychainNode));
+  const firstBitcoinAddress = getAddress(getBitcoinAddressNode(bitcoinPublicKeychainNode));
 
   const identityAddresses: string[] = [];
   const identityKeypairs = [];
@@ -135,7 +138,7 @@ export const makeIdentity = async (rootNode: BIP32Interface, index: number) => {
     identityPrivateKeychainNode,
     index
   );
-  const identityKeyPair = await deriveIdentityKeyPair(identityOwnerAddressNode);
+  const identityKeyPair = deriveIdentityKeyPair(identityOwnerAddressNode);
   const identity = new Identity({
     keyPair: identityKeyPair,
     address: identityKeyPair.address,

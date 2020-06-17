@@ -51,13 +51,15 @@ export class Identity {
     gaiaUrl,
     transitPublicKey,
     scopes = [],
+    stxAddress,
   }: {
     appDomain: string;
     gaiaUrl: string;
     transitPublicKey: string;
     scopes?: string[];
+    stxAddress?: string;
   }) {
-    const appPrivateKey = await this.appPrivateKey(appDomain);
+    const appPrivateKey = this.appPrivateKey(appDomain);
     const hubInfo = await getHubInfo(gaiaUrl);
     const profileUrl = await this.profileUrl(hubInfo.read_url_prefix);
     const profile =
@@ -67,7 +69,7 @@ export class Identity {
         profile.apps = {};
       }
       const challengeSigner = ECPair.fromPrivateKey(Buffer.from(appPrivateKey, 'hex'));
-      const storageUrl = `${hubInfo.read_url_prefix}${await ecPairToAddress(challengeSigner)}/`;
+      const storageUrl = `${hubInfo.read_url_prefix}${ecPairToAddress(challengeSigner)}/`;
       profile.apps[appDomain] = storageUrl;
       if (!profile.appsMeta) {
         profile.appsMeta = {};
@@ -76,7 +78,7 @@ export class Identity {
         storage: storageUrl,
         publicKey: challengeSigner.publicKey.toString('hex'),
       };
-      const gaiaHubConfig = await connectToGaiaHubWithConfig({
+      const gaiaHubConfig = connectToGaiaHubWithConfig({
         hubInfo,
         privateKey: this.keyPair.key,
         gaiaHubUrl: gaiaUrl,
@@ -90,7 +92,10 @@ export class Identity {
 
     return makeAuthResponse(
       this.keyPair.key,
-      this.profile || {},
+      {
+        ...(this.profile || {}),
+        stxAddress,
+      },
       this.defaultUsername || '',
       {
         profileUrl,
@@ -105,7 +110,7 @@ export class Identity {
     );
   }
 
-  async appPrivateKey(appDomain: string) {
+  appPrivateKey(appDomain: string) {
     const { salt, appsNodeKey } = this.keyPair;
     const appsNode = new IdentityAddressOwnerNode(bip32.fromBase58(appsNodeKey), salt);
     return appsNode.getAppPrivateKey(appDomain);

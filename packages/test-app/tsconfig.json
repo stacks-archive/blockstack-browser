@@ -46,14 +46,16 @@
 			"@store/*": ["store/*"],
 			"@store": ["store/index"],
 			"@dev/*": ["dev/*"],
-			"@components/*": ["components/*"],
+			"@components/*": ["../components/*"],
 			"@containers/*": ["containers/*"],
-			"@common/*": ["common/*"],
+			"@common/*": ["../common/*"],
 			"@blockstack/connect": ["../../connect/src"],
 			"@blockstack/connect/*": ["../../connect/src/*"],
 			"@blockstack/ui": ["../../ui/src"],
 			"@blockstack/keychain": ["../../keychain/src"],
-			"@blockstack/keychain/*": ["../../keychain/src/*"],
+      "@blockstack/keychain/*": ["../../keychain/src/*"],
+      "@cards/*": ["../components/cards/*"],
+      "@blockstack/rpc-client": ["../../rpc-client/src"]
 		},
 		"baseUrl": "src",
 		// "rootDirs": [],                       	/* List of root folders whose combined content represents the structure of the project at runtime. */
@@ -75,6 +77,8 @@
 	},
 	"include": [
 		"./src/**/*",
-		"./tests/**/*"
+    "./tests/**/*",
+    "./components/**/*",
+    "./common/**/*"
 	]
 }

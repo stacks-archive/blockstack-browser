@@ -5,6 +5,8 @@ import { decodeToken } from 'jsontokens';
 import { getIdentity, profileResponse } from './helpers';
 import { ecPairToAddress } from 'blockstack';
 import { ECPair } from 'bitcoinjs-lib';
+import { getAddress } from '../src';
+import { TransactionVersion } from '@blockstack/stacks-transactions';
 
 interface Decoded {
   [key: string]: any;
@@ -60,9 +62,7 @@ test('adds to apps in profile if publish_data scope', async () => {
   expect(apps[appDomain]).not.toBeFalsy();
   const appPrivateKey = await decryptPrivateKey(transitPrivateKey, payload.private_key);
   const challengeSigner = ECPair.fromPrivateKey(Buffer.from(appPrivateKey as string, 'hex'));
-  const expectedDomain = `https://gaia.blockstack.org/hub/${await ecPairToAddress(
-    challengeSigner
-  )}/`;
+  const expectedDomain = `https://gaia.blockstack.org/hub/${ecPairToAddress(challengeSigner)}/`;
   expect(apps[appDomain]).toEqual(expectedDomain);
   expect(appsMeta[appDomain]).not.toBeFalsy();
   expect(appsMeta[appDomain].storage).toEqual(expectedDomain);
@@ -72,7 +72,7 @@ test('adds to apps in profile if publish_data scope', async () => {
 test('generates an app private key', async () => {
   const expectedKey = '6f8b6a170f8b2ee57df5ead49b0f4c8acde05f9e1c4c6ef8223d6a42fabfa314';
   const identity = await getIdentity();
-  const appPrivateKey = await identity.appPrivateKey('https://banter.pub');
+  const appPrivateKey = identity.appPrivateKey('https://banter.pub');
   expect(appPrivateKey).toEqual(expectedKey);
 });
 
@@ -80,7 +80,7 @@ test('generates an app private key for a different seed', async () => {
   const identity = await getIdentity(
     'monster toilet shoe giggle welcome coyote enact glass copy era shed foam'
   );
-  const appPrivateKey = await identity.appPrivateKey('https://banter.pub');
+  const appPrivateKey = identity.appPrivateKey('https://banter.pub');
   expect(appPrivateKey).toEqual('a7bf3ecf0dd68a23a6621c39780d6cae3776240251a7988fed9ecfda2699ffe8');
 });
 

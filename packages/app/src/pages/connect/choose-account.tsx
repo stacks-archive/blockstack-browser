@@ -8,9 +8,7 @@ import { useSelector } from 'react-redux';
 import { AppState, store } from '@store';
 import { selectAppName, selectDecodedAuthRequest } from '@store/onboarding/selectors';
 import { Drawer } from '@components/drawer';
-import { selectCurrentWallet, selectIdentities } from '@store/wallet/selectors';
-import { ConfigApp } from '@blockstack/keychain/wallet';
-import { Wallet } from '@blockstack/keychain';
+import { ConfigApp } from '@blockstack/keychain';
 import { gaiaUrl } from '@common/constants';
 import {
   CHOOSE_ACCOUNT_CHOSEN,
@@ -21,6 +19,8 @@ import {
 } from '@common/track';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
+import { useWallet } from '@common/hooks/use-wallet';
+import { Navigate } from '@components/navigate';
 
 interface ChooseAccountProps {
   next: (identityIndex: number) => void;
@@ -39,14 +39,17 @@ const SettingsButton = () => {
 };
 
 export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
-  const { appName, identities, wallet } = useSelector((state: AppState) => ({
+  const { appName } = useSelector((state: AppState) => ({
     appName: selectAppName(state),
-    identities: selectIdentities(state),
-    wallet: selectCurrentWallet(state) as Wallet,
   }));
+  const { wallet, identities } = useWallet();
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
   const [identityIndex, setIdentityIndex] = React.useState<number | undefined>();
   const { doTrack } = useAnalytics();
+
+  if (!wallet) {
+    return <Navigate to={{ pathname: '/', hash: 'sign-up' }} screenPath={ScreenPaths.GENERATION} />;
+  }
 
   // TODO: refactor into util, create unit tests
   const didSelectAccount = ({ identityIndex }: { identityIndex: number }) => {

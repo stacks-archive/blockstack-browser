@@ -1,8 +1,8 @@
 import { UserSession, AppConfig } from 'blockstack';
 import './types';
-import { popupCenter } from './popup';
+import { popupCenter, setupListener } from './popup';
 
-const defaultAuthURL = 'https://app.blockstack.org';
+export const defaultAuthURL = 'https://app.blockstack.org';
 
 export interface FinishedData {
   authResponse: string;
@@ -86,7 +86,7 @@ export const authenticate = async ({
     skipPopupFallback: !!window.BlockstackProvider,
   });
 
-  setupListener({
+  setupAuthListener({
     popup,
     authRequest,
     onFinish: onFinish || finished,
@@ -111,7 +111,7 @@ interface ListenerParams {
   userSession: UserSession;
 }
 
-const setupListener = ({
+const setupAuthListener = ({
   popup,
   authRequest,
   onFinish,
@@ -119,55 +119,24 @@ const setupListener = ({
   authURL,
   userSession,
 }: ListenerParams) => {
-  let lastPong: number | null = null;
-
-  const interval = setInterval(() => {
-    if (popup) {
-      try {
-        popup.postMessage(
-          {
-            authRequest,
-            method: 'ping',
-          },
-          authURL.origin
-        );
-      } catch (error) {
-        console.warn('[Blockstack] Unable to send ping to authentication service');
-        clearInterval(interval);
+  setupListener<FinishedEventData>({
+    popup,
+    onCancel,
+    onFinish: async (data: FinishedEventData) => {
+      if (data.authRequest === authRequest) {
+        if (onFinish) {
+          const { authResponse } = data;
+          await userSession.handlePendingSignIn(authResponse);
+          onFinish({
+            authResponse,
+            userSession,
+          });
+        }
       }
-    }
-    if (lastPong && new Date().getTime() - lastPong > 200) {
-      onCancel && onCancel();
-      clearInterval(interval);
-    }
-  }, 100);
-
-  const receiveMessage = async (event: MessageEvent) => {
-    const authRequestMatch = event.data.authRequest === authRequest;
-    if (!authRequestMatch) {
-      return;
-    }
-    if (event.data.method === 'pong') {
-      lastPong = new Date().getTime();
-    } else {
-      const data: FinishedEventData = event.data;
-      if (onFinish) {
-        window.focus();
-        const { authResponse } = data;
-        await userSession.handlePendingSignIn(authResponse);
-        onFinish({
-          authResponse,
-          userSession,
-        });
-      }
-      window.removeEventListener('message', receiveMessageCallback);
-      clearInterval(interval);
-    }
-  };
-
-  const receiveMessageCallback = (event: MessageEvent) => {
-    void receiveMessage(event);
-  };
-
-  window.addEventListener('message', receiveMessageCallback, false);
+    },
+    messageParams: {
+      authRequest,
+    },
+    authURL,
+  });
 };

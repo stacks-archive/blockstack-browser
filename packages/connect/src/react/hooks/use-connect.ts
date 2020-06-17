@@ -1,5 +1,11 @@
 import { useContext } from 'react';
 import { authenticate, AuthOptions, FinishedData } from '../../auth';
+import { openContractCall, openContractDeploy, openSTXTransfer } from '../../transactions';
+import {
+  ContractCallOptions,
+  ContractDeployOptions,
+  STXTransferOptions,
+} from '../../transactions/types';
 import { ConnectContext, ConnectDispatchContext, States } from '../components/connect/context';
 
 const useConnectDispatch = () => {
@@ -11,7 +17,9 @@ const useConnectDispatch = () => {
 };
 
 export const useConnect = () => {
-  const { isOpen, isAuthenticating, authData, screen, authOptions } = useContext(ConnectContext);
+  const { isOpen, isAuthenticating, authData, screen, authOptions, userSession } = useContext(
+    ConnectContext
+  );
   const dispatch = useConnectDispatch();
 
   const doUpdateAuthOptions = (payload: Partial<AuthOptions>) => {
@@ -64,12 +72,31 @@ export const useConnect = () => {
     });
   };
 
+  const doContractCall = async (opts: ContractCallOptions) =>
+    openContractCall({
+      ...opts,
+      appDetails: authOptions.appDetails,
+    });
+
+  const doContractDeploy = async (opts: ContractDeployOptions) =>
+    openContractDeploy({
+      ...opts,
+      appDetails: authOptions.appDetails,
+    });
+
+  const doSTXTransfer = async (opts: STXTransferOptions) =>
+    openSTXTransfer({
+      ...opts,
+      appDetails: authOptions.appDetails,
+    });
+
   return {
     isOpen,
     isAuthenticating,
     authData,
     authOptions,
     screen,
+    userSession,
     doOpenAuth,
     doCloseAuth,
     doChangeScreen,
@@ -81,5 +108,8 @@ export const useConnect = () => {
     doFinishAuth,
     doAuth,
     authenticate,
+    doContractCall,
+    doContractDeploy,
+    doSTXTransfer,
   };
 };

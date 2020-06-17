@@ -4,7 +4,7 @@ import { ScreenBody, ScreenActions, Title } from '@blockstack/connect';
 import useOnClickOutside from 'use-onclickoutside';
 
 import { Image } from '@components/image';
-import { ConfigApp } from '@blockstack/keychain/wallet';
+import { ConfigApp } from '@blockstack/keychain';
 
 interface PreviousAppsProps {
   apps: ConfigApp[];

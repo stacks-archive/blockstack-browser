@@ -36,7 +36,6 @@ export const debug = async (page: Page) => {
     CONTROL_D: '\u0004',
     ENTER: '\r',
   };
-
   console.log('\n\n🕵️‍  Code is paused, press enter to resume');
   // Run an infinite promise
   return new Promise(resolve => {

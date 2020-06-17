@@ -41,7 +41,7 @@ export function doStoreSeed(
 ): ThunkAction<Promise<Wallet>, {}, {}, WalletActions> {
   return async dispatch => {
     dispatch(isRestoringWallet());
-    const wallet = await Wallet.restore(password, secretKey, ChainID.Testnet);
+    const wallet = await Wallet.restore(password, secretKey, ChainID.Mainnet);
     dispatch(didRestoreWallet(wallet));
     return wallet;
   };
@@ -52,7 +52,7 @@ export function doGenerateWallet(
 ): ThunkAction<Promise<Wallet>, {}, {}, WalletActions> {
   return async dispatch => {
     dispatch(isRestoringWallet());
-    const wallet = await Wallet.generate(password, ChainID.Testnet);
+    const wallet = await Wallet.generate(password, ChainID.Mainnet);
     dispatch(didGenerateWallet(wallet));
     return wallet;
   };

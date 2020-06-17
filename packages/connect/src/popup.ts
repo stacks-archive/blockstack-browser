@@ -73,3 +73,70 @@ export const popupCenter = ({
   }
   return window.open(url);
 };
+
+interface ListenerParams<FinishedType> {
+  popup: Window | null;
+  messageParams: {
+    [key: string]: any;
+  };
+  onFinish: (payload: FinishedType) => void | Promise<void>;
+  onCancel?: () => void;
+  authURL: URL;
+}
+
+export const setupListener = <T>({
+  popup,
+  messageParams,
+  onFinish,
+  onCancel,
+  authURL,
+}: ListenerParams<T>) => {
+  let lastPong: number | null = null;
+
+  // Send a message to the authenticator popup at a consistent interval. This allows
+  // the authenticator to 'respond'.
+  const pingInterval = 250;
+  const interval = setInterval(() => {
+    if (popup) {
+      try {
+        console.log('about to ping');
+        popup.postMessage(
+          {
+            method: 'ping',
+            ...messageParams,
+          },
+          authURL.origin
+        );
+      } catch (error) {
+        console.warn('[Blockstack] Unable to send ping to authentication service');
+        clearInterval(interval);
+      }
+    } else {
+      console.warn('[Blockstack] Unable to send ping to authentication service - popup closed');
+    }
+    if (lastPong && new Date().getTime() - lastPong > pingInterval * 2) {
+      onCancel && onCancel();
+      clearInterval(interval);
+    }
+  }, pingInterval);
+
+  const receiveMessage = async (event: MessageEvent) => {
+    if (event.data.method === 'pong') {
+      lastPong = new Date().getTime();
+      return;
+    }
+    if (event.data.source === 'blockstack-app') {
+      const data = event.data as T;
+      await onFinish(data);
+      window.focus();
+      window.removeEventListener('message', receiveMessageCallback);
+      clearInterval(interval);
+    }
+  };
+
+  const receiveMessageCallback = (event: MessageEvent) => {
+    void receiveMessage(event);
+  };
+
+  window.addEventListener('message', receiveMessageCallback, false);
+};

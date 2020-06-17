@@ -49,18 +49,19 @@ interface ConnectToGaiaOptions {
   gaiaHubUrl: string;
 }
 
-export const connectToGaiaHubWithConfig = async ({
+export const connectToGaiaHubWithConfig = ({
   hubInfo,
   privateKey,
   gaiaHubUrl,
-}: ConnectToGaiaOptions): Promise<GaiaHubConfig> => {
+}: ConnectToGaiaOptions): GaiaHubConfig => {
   const readURL = hubInfo.read_url_prefix;
   const token = makeGaiaAuthToken({ hubInfo, privateKey, gaiaHubUrl });
-  const address = await ecPairToAddress(
+  const address = ecPairToAddress(
     hexStringToECPair(privateKey + (privateKey.length === 64 ? '01' : ''))
   );
   return {
     url_prefix: readURL,
+    max_file_upload_size_megabytes: 100,
     address,
     token,
     server: gaiaHubUrl,
@@ -75,15 +76,16 @@ interface ReadOnlyGaiaConfigOptions {
 /**
  * When you already know the Gaia read URL, make a Gaia config that doesn't have to fetch `/hub_info`
  */
-export const makeReadOnlyGaiaConfig = async ({
+export const makeReadOnlyGaiaConfig = ({
   readURL,
   privateKey,
-}: ReadOnlyGaiaConfigOptions): Promise<GaiaHubConfig> => {
-  const address = await ecPairToAddress(
+}: ReadOnlyGaiaConfigOptions): GaiaHubConfig => {
+  const address = ecPairToAddress(
     hexStringToECPair(privateKey + (privateKey.length === 64 ? '01' : ''))
   );
   return {
     url_prefix: readURL,
+    max_file_upload_size_megabytes: 100,
     address,
     token: 'not_used',
     server: 'not_used',
@@ -112,4 +114,25 @@ const makeGaiaAuthToken = ({ hubInfo, privateKey, gaiaHubUrl }: ConnectToGaiaOpt
   }
   const token = new TokenSigner('ES256K', privateKey).sign(payload);
   return `v1:${token}`;
+};
+
+export const uploadToGaiaHub = async (
+  filename: string,
+  contents: Blob | Buffer | ArrayBufferView | string,
+  hubConfig: GaiaHubConfig
+): Promise<string> => {
+  const contentType = 'application/json';
+
+  const response = await fetch(`${hubConfig.server}/store/${hubConfig.address}/${filename}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': contentType,
+      Authorization: `bearer ${hubConfig.token}`,
+    },
+    body: contents,
+    referrer: 'no-referrer',
+    referrerPolicy: 'no-referrer',
+  });
+  const { publicURL } = await response.json();
+  return publicURL;
 };

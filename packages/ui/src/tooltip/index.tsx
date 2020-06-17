@@ -63,7 +63,9 @@ export function Tooltip(props: TooltipProps) {
 
   const baseTooltipProps = getTooltipProps(rest);
 
-  const tooltipProps = hasAriaLabel ? omit(baseTooltipProps, ['role', 'id']) : baseTooltipProps;
+  const { style, ...tooltipProps } = hasAriaLabel
+    ? omit(baseTooltipProps, ['role', 'id'])
+    : baseTooltipProps;
 
   const hiddenProps = pick(baseTooltipProps, ['role', 'id']);
 
@@ -82,7 +84,7 @@ export function Tooltip(props: TooltipProps) {
             maxWidth="320px"
             {...tooltipProps}
             style={{
-              ...tooltipProps.style,
+              ...style,
               useSelect: 'none',
             }}
           >

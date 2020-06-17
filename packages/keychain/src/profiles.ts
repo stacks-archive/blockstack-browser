@@ -5,8 +5,9 @@ import {
   makeProfileZoneFile,
 } from 'blockstack';
 import { IdentityKeyPair } from './utils';
+import { uploadToGaiaHub } from './utils/gaia';
 import Identity from './identity';
-import { uploadToGaiaHub, GaiaHubConfig } from 'blockstack/lib/storage/hub';
+import { GaiaHubConfig } from 'blockstack/lib/storage/hub';
 
 const PERSON_TYPE = 'Person';
 const CONTEXT = 'http://schema.org';
@@ -58,11 +59,11 @@ export const registrars = {
   },
 };
 
-export async function signProfileForUpload(profile: any, keypair: IdentityKeyPair) {
+export function signProfileForUpload(profile: Profile, keypair: IdentityKeyPair) {
   const privateKey = keypair.key;
   const publicKey = keypair.keyID;
 
-  const token = await signProfileToken(profile, privateKey, { publicKey });
+  const token = signProfileToken(profile, privateKey, { publicKey });
   const tokenRecord = wrapProfileToken(token);
   const tokenRecords = [tokenRecord];
   return JSON.stringify(tokenRecords, null, 2);
@@ -77,12 +78,12 @@ export async function uploadProfile(
   const identityHubConfig =
     gaiaHubConfig || (await connectToGaiaHub(gaiaHubUrl, identity.keyPair.key));
 
-  return uploadToGaiaHub(
+  const uploadResponse = await uploadToGaiaHub(
     DEFAULT_PROFILE_FILE_NAME,
     signedProfileTokenData,
-    identityHubConfig,
-    'application/json'
+    identityHubConfig
   );
+  return uploadResponse;
 }
 
 interface SendToRegistrarParams {
@@ -146,9 +147,8 @@ export const registerSubdomain = async ({
   username,
   subdomain,
 }: RegisterParams) => {
-  // const profile = identity.profile || DEFAULT_PROFILE
-  const profile = DEFAULT_PROFILE;
-  const signedProfileTokenData = await signProfileForUpload(profile, identity.keyPair);
+  const profile = identity.profile || DEFAULT_PROFILE;
+  const signedProfileTokenData = signProfileForUpload(profile, identity.keyPair);
   const profileUrl = await uploadProfile(gaiaHubUrl, identity, signedProfileTokenData);
   const fullUsername = `${username}.${subdomain}`;
   const zoneFile = makeProfileZoneFile(fullUsername, profileUrl);
@@ -158,7 +158,6 @@ export const registerSubdomain = async ({
     zoneFile,
     identity,
   });
-
   identity.defaultUsername = fullUsername;
   identity.usernames.push(fullUsername);
   return identity;
@@ -175,7 +174,7 @@ export const signAndUploadProfile = async ({
   identity: Identity;
   gaiaHubConfig?: GaiaHubConfig;
 }) => {
-  const signedProfileTokenData = await signProfileForUpload(profile, identity.keyPair);
+  const signedProfileTokenData = signProfileForUpload(profile, identity.keyPair);
   await uploadProfile(gaiaHubUrl, identity, signedProfileTokenData, gaiaHubConfig);
 };
 

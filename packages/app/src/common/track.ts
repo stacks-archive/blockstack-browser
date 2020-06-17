@@ -22,6 +22,10 @@ export const USERNAME_SUBMITTED = 'Submit Username';
 export const USERNAME_VALIDATION_ERROR = 'Validation Error Username';
 export const USERNAME_SUBMIT_SUCCESS = 'Submit Username Success';
 
+export const TRANSACTION_SIGN_START = 'Start Transaction Sign Screen';
+export const TRANSACTION_SIGN_SUBMIT = 'Submit Transaction Sign';
+export const TRANSACTION_SIGN_ERROR = 'Fail Transaction Sign';
+
 // Nice page names for Mark to see in Mixpanel
 export const pageTrackingNameMap = {
   [ScreenPaths.CHOOSE_ACCOUNT]: 'Choose Account',
@@ -53,7 +57,7 @@ export const titleNameMap = {
 
 export const doTrackScreenChange = (
   screen: ScreenPaths,
-  decodedAuthRequest: DecodedAuthRequest | undefined
+  decodedAuthRequest?: DecodedAuthRequest
 ) => {
   if (titleNameMap[screen]) {
     document.title = titleNameMap[screen];

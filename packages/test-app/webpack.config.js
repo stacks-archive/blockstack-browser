@@ -189,11 +189,6 @@ module.exports = {
         to: path.join(distRootPath, 'assets'),
         test: /\.(jpg|jpeg|png|gif|svg)?$/,
       },
-      {
-        from: path.join(sourceRootPath, 'manifest.json'),
-        to: path.join(distRootPath, 'manifest.json'),
-        toType: 'file',
-      },
     ]),
     new webpack.DefinePlugin({
       'process.env.AUTH_ORIGIN': JSON.stringify(process.env.AUTH_ORIGIN),

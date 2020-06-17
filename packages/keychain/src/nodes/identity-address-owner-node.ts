@@ -6,6 +6,7 @@ import { getAddress } from '../utils';
 const APPS_NODE_INDEX = 0;
 const SIGNING_NODE_INDEX = 1;
 const ENCRYPTION_NODE_INDEX = 2;
+const STX_NODE_INDEX = 6;
 
 export default class IdentityAddressOwnerNode {
   hdNode: BIP32Interface;
@@ -40,7 +41,7 @@ export default class IdentityAddressOwnerNode {
     return this.hdNode.deriveHardened(APPS_NODE_INDEX);
   }
 
-  async getAddress() {
+  getAddress() {
     return getAddress(this.hdNode);
   }
 
@@ -52,20 +53,24 @@ export default class IdentityAddressOwnerNode {
     return this.hdNode.deriveHardened(SIGNING_NODE_INDEX);
   }
 
-  async getAppNode(appDomain: string) {
+  getSTXNode() {
+    return this.hdNode.deriveHardened(STX_NODE_INDEX);
+  }
+
+  getAppNode(appDomain: string) {
     return getLegacyAppNode(this.hdNode, this.salt, appDomain);
   }
 
-  async getAppPrivateKey(appDomain: string) {
-    const appNode = await this.getAppNode(appDomain);
+  getAppPrivateKey(appDomain: string) {
+    const appNode = this.getAppNode(appDomain);
     if (!appNode.privateKey) {
       throw new Error('App node does not have private key');
     }
     return appNode.privateKey.toString('hex');
   }
 
-  async getAppAddress(appDomain: string) {
-    const appNode = await this.getAppNode(appDomain);
+  getAppAddress(appDomain: string) {
+    const appNode = this.getAppNode(appDomain);
     return publicKeyToAddress(appNode.publicKey);
   }
 }
