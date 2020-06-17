@@ -19,13 +19,13 @@ const baseProps = {
 
 const sizes = {
   lg: {
-    height: 12,
+    minHeight: 12,
     minWidth: 9 * 14,
     fontSize: '14px !important',
     px: 5,
   },
   md: {
-    height: 10,
+    minHeight: 10,
     minWidth: 10,
     fontSize: '14px !important',
     px: 4,
@@ -109,6 +109,27 @@ const solidVariantProps = ({
         pointerEvents: 'none',
         cursor: 'not-allowed',
         color: 'blue.300',
+      },
+    },
+    alternate: {
+      bg: 'blue.100',
+      color: 'blue',
+      border: '1px solid',
+      borderColor: 'blue.300',
+      boxShadow: null,
+      _hover: {
+        cursor: 'pointer',
+        bg: 'blue.200',
+      },
+      _focus: {
+        borderColor: 'blue.300',
+        boxShadow: shadows.focus,
+      },
+      _disabled: {
+        bg: 'blue.200',
+        cursor: 'not-allowed',
+        color: 'white',
+        border: 'none',
       },
     },
   };

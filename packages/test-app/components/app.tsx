@@ -94,8 +94,7 @@ export const App: React.FC = () => {
   };
 
   React.useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    handleRedirectAuth();
+    void handleRedirectAuth();
   }, []);
 
   const authOptions: AuthOptions = {

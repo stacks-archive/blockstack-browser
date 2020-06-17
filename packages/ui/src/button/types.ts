@@ -17,12 +17,11 @@ export type ButtonVariants = 'outline' | 'unstyled' | 'link' | 'solid';
 /**
  * The mode of the button style to use.
  */
-export type ButtonModes = 'primary' | 'secondary';
+export type ButtonModes = 'primary' | 'secondary' | 'alternate';
 
-export interface CustomStyles {
-  primary: PseudoBoxProps;
-  secondary: PseudoBoxProps;
-}
+export type CustomStyles = {
+  [key in ButtonModes]: PseudoBoxProps;
+};
 
 interface ButtonPropsBase {
   size?: ButtonSizes;

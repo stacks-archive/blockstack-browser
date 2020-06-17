@@ -60,7 +60,7 @@ export const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
         fontWeight="medium"
         position="relative"
         data-active={isActive ? 'true' : undefined}
-        as={'button' || Comp}
+        as={Comp || 'button'}
         {...rest}
         {...styles}
         {...bind}
@@ -89,9 +89,9 @@ export const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
               )
             : children}
         </Box>
-        {mode === 'secondary' ? null : (
+        {mode === 'primary' ? (
           <HoverChange isDisabled={isDisabled || false} isHovered={hovered} />
-        )}
+        ) : null}
       </PseudoBox>
     );
   }
