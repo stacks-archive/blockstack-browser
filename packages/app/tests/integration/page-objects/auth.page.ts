@@ -1,4 +1,4 @@
-import { Page } from 'playwright-core/lib/page';
+import { Page } from 'playwright-core';
 import { createTestSelector, wait, Browser } from '../utils';
 
 export class AuthPage {
@@ -36,7 +36,7 @@ export class AuthPage {
     const authPage = new this(page);
     await page.waitForSelector(createTestSelector('screen'));
     if (signUp) {
-      await page.waitFor(authPage.$textareaReadOnlySeedPhrase, { timeout: 15000 });
+      await page.waitForSelector(authPage.$textareaReadOnlySeedPhrase, { timeout: 15000 });
     }
     return authPage;
   }
@@ -45,7 +45,7 @@ export class AuthPage {
    * Due to flakiness of getting the pop-up page, this has some 'retry' logic
    */
   static async recursiveGetAuthPage(browser: Browser, attempt = 1): Promise<Page> {
-    const page = (await browser.contexts()[0].pages())[1];
+    const page = browser.contexts()[0].pages()[1];
     if (!page) {
       if (attempt > 3) {
         throw new Error('Unable to get auth page popup');
@@ -99,7 +99,7 @@ export class AuthPage {
     await this.page.click(this.continueBtn);
   }
 
-  async chooseAccount(username: string) {
+  chooseAccount(username: string) {
     return this.page.click(`text="${username}"`);
   }
 

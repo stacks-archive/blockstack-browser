@@ -47,7 +47,7 @@ export const Home = () => {
   const isSignedIn = identities.length > 0;
 
   return (
-    <Flex wrap="wrap" py={5} px={4} flexDirection="column" height="100vh">
+    <Flex wrap="wrap" py={5} px={4} flexDirection="column" minHeight="100vh">
       <Flex justifyContent="space-between" align="center">
         <Box />
         {isSignedIn ? <SecretKeyButton /> : null}

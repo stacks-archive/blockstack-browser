@@ -1,7 +1,6 @@
 import { validateMnemonic, wordlists, generateMnemonic } from 'bip39';
-import { devices, BrowserContext } from 'playwright-core';
-import { DeviceDescriptor } from 'playwright-core/lib/types';
-import { chromium, webkit, firefox } from 'playwright';
+import { BrowserContext } from 'playwright-core';
+import { chromium } from 'playwright';
 import { DemoPage } from './page-objects/demo.page';
 import { randomString, Browser } from './utils';
 import { AuthPage } from './page-objects/auth.page';
@@ -24,32 +23,34 @@ const getRandomWord = () => {
   return word;
 };
 
-type BrowserLauncher = typeof chromium | typeof webkit | typeof firefox;
-
-const environments: [BrowserLauncher, DeviceDescriptor | undefined][] = [[chromium, undefined]];
+const environments = [chromium];
+// type BrowserLauncher = typeof chromium | typeof webkit | typeof firefox;
+// const environments: [BrowserLauncher, DeviceDescriptor | undefined][] = [[chromium, undefined]];
 // const environments: [BrowserLauncher, DeviceDescriptor | undefined][] = [[webkit, undefined]];
 
-if (process.env.CI_TEST_DEVICES) {
-  // environments.push([firefox, undefined]);
-  environments.push([webkit, devices['iPhone 11 Pro']]);
-  environments.push([chromium, devices['Pixel 2']]);
-}
+// if (process.env.CI_TEST_DEVICES) {
+//   // environments.push([firefox, undefined]);
+//   environments.push([webkit, devices['iPhone 11 Pro']]);
+//   environments.push([chromium, devices['Pixel 2']]);
+// }
 
 jest.retryTimes(process.env.CI ? 3 : 1);
-describe.each(environments)('auth scenarios - %o %o', (browserType, deviceType) => {
+describe.each(environments)('auth scenarios - %o %o', browserType => {
   let browser: Browser;
   let context: BrowserContext;
   let demoPage: DemoPage;
   beforeEach(async () => {
     browser = await browserType.launch();
-    if (deviceType) {
-      context = await browser.newContext({
-        viewport: deviceType.viewport,
-        userAgent: deviceType.userAgent,
-      });
-    } else {
-      context = await browser.newContext();
-    }
+    console.log('[DEBUG]: Launched puppeteer browser');
+    // if (deviceType) {
+    //   context = await browser.newContext({
+    //     viewport: deviceType.viewport,
+    //     userAgent: deviceType.userAgent,
+    //   });
+    // } else {
+    //   context = await browser.newContext();
+    // }
+    context = await browser.newContext();
     demoPage = await DemoPage.init(context);
   }, 10000);
 
@@ -67,7 +68,7 @@ describe.each(environments)('auth scenarios - %o %o', (browserType, deviceType) 
     const auth = await AuthPage.getAuthPage(browser);
     const authPage = auth.page;
 
-    await authPage.waitFor(auth.$textareaReadOnlySeedPhrase);
+    await authPage.waitForSelector(auth.$textareaReadOnlySeedPhrase);
 
     const $secretKeyEl = await authPage.$(auth.$textareaReadOnlySeedPhrase);
     if (!$secretKeyEl) {
@@ -79,7 +80,7 @@ describe.each(environments)('auth scenarios - %o %o', (browserType, deviceType) 
 
     await authPage.click(auth.$buttonCopySecretKey);
 
-    await authPage.waitFor(auth.$buttonHasSavedSeedPhrase);
+    await authPage.waitForSelector(auth.$buttonHasSavedSeedPhrase);
     await authPage.click(auth.$buttonHasSavedSeedPhrase);
 
     const $usernameInputElement = await authPage.$(auth.$inputUsername);

@@ -1,13 +1,9 @@
-import { CRBrowser } from 'playwright-core/lib/chromium/crBrowser';
-import { WKBrowser } from 'playwright-core/lib/webkit/wkBrowser';
-import { FFBrowser } from 'playwright-core/lib/firefox/ffBrowser';
-import { Page } from 'playwright-core/lib/page';
+export { Browser } from 'playwright-core';
+import { Page } from 'playwright-core';
 
 export function createTestSelector(name: string) {
   return `[data-test="${name}"]`;
 }
-
-export type Browser = CRBrowser | WKBrowser | FFBrowser;
 
 export function randomString(len: number) {
   const charSet = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -40,7 +36,7 @@ export const debug = async (page: Page) => {
     CONTROL_D: '\u0004',
     ENTER: '\r',
   };
-  // eslint-disable-next-line no-console
+
   console.log('\n\n🕵️‍  Code is paused, press enter to resume');
   // Run an infinite promise
   return new Promise(resolve => {
