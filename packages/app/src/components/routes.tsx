@@ -23,7 +23,7 @@ export const Routes: React.FC = () => {
   const dispatch = useDispatch();
   const { doChangeScreen } = useAnalytics();
   const { identities } = useWallet();
-  const { isOnboardingInProgress, decodedAuthRequest, onboardingPath } = useOnboardingState();
+  const { isOnboardingInProgress, onboardingPath } = useOnboardingState();
   const authRequest = authenticationInit();
   const { search } = useLocation();
 
@@ -49,9 +49,6 @@ export const Routes: React.FC = () => {
           screenPath={ScreenPaths.CHOOSE_ACCOUNT}
         />
       );
-    }
-    if (decodedAuthRequest?.sendToSignIn && search) {
-      return <Navigate to={{ pathname: '/', hash: `sign-in?${search}` }} screenPath={ScreenPaths.SIGN_IN} />;
     }
     return <Create next={() => doChangeScreen(ScreenPaths.SECRET_KEY)} />;
   };
