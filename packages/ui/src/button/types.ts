@@ -17,7 +17,7 @@ export type ButtonVariants = 'outline' | 'unstyled' | 'link' | 'solid';
 /**
  * The mode of the button style to use.
  */
-export type ButtonModes = 'primary' | 'secondary' | 'alternate';
+export type ButtonModes = 'primary' | 'secondary' | 'tertiary';
 
 export type CustomStyles = {
   [key in ButtonModes]: PseudoBoxProps;

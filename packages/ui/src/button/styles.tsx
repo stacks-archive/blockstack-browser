@@ -92,26 +92,6 @@ const solidVariantProps = ({
       },
     },
     secondary: {
-      bg: 'white',
-      color: 'blue',
-      boxShadow: shadows['button.secondary'],
-      _hover: {
-        cursor: 'pointer',
-        bg: 'white',
-        boxShadow: shadows['button.secondary'],
-      },
-      _focus: {
-        borderColor: 'blue.300',
-        boxShadow: shadows.focus,
-      },
-      _disabled: {
-        bg: 'white',
-        pointerEvents: 'none',
-        cursor: 'not-allowed',
-        color: 'blue.300',
-      },
-    },
-    alternate: {
       bg: 'blue.100',
       color: 'blue',
       border: '1px solid',
@@ -130,6 +110,26 @@ const solidVariantProps = ({
         cursor: 'not-allowed',
         color: 'white',
         border: 'none',
+      },
+    },
+    tertiary: {
+      bg: 'white',
+      color: 'blue',
+      boxShadow: shadows['button.secondary'],
+      _hover: {
+        cursor: 'pointer',
+        bg: 'white',
+        boxShadow: shadows['button.secondary'],
+      },
+      _focus: {
+        borderColor: 'blue.300',
+        boxShadow: shadows.focus,
+      },
+      _disabled: {
+        bg: 'white',
+        pointerEvents: 'none',
+        cursor: 'not-allowed',
+        color: 'blue.300',
       },
     },
   };
