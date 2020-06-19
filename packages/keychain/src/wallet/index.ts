@@ -279,10 +279,17 @@ export class Wallet {
     app: ConfigApp;
     gaiaConfig: GaiaHubConfig;
   }) {
-    assertIsTruthy<WalletConfig>(this.walletConfig);
+    const { walletConfig } = this;
+    assertIsTruthy<WalletConfig>(walletConfig);
 
     this.identities.forEach((identity, index) => {
-      if (!this.walletConfig?.identities[index]) {
+      const configIdentity = walletConfig.identities[index];
+      if (configIdentity) {
+        configIdentity.apps = configIdentity.apps || {};
+        configIdentity.username = identity.defaultUsername;
+        configIdentity.address = identity.address;
+        walletConfig.identities[index] = configIdentity;
+      } else {
         this.walletConfig?.identities.push({
           username: identity.defaultUsername,
           address: identity.address,
@@ -291,9 +298,11 @@ export class Wallet {
       }
     });
 
-    const identity = this.walletConfig.identities[identityIndex];
+    const identity = walletConfig.identities[identityIndex];
+    identity.apps = identity.apps || {};
     identity.apps[app.origin] = app;
-    this.walletConfig.identities[identityIndex] = identity;
+    walletConfig.identities[identityIndex] = identity;
+    this.walletConfig = walletConfig;
     await this.updateConfig(gaiaConfig);
   }
 
