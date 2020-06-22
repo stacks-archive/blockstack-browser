@@ -20,6 +20,7 @@ export * from './portal';
 export * from './pseudo-box';
 export * from './spinner';
 export * from './stack';
+export * from './svg';
 export * from './text';
 export * from './theme-provider';
 export * from './theme';
