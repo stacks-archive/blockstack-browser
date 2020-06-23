@@ -17,12 +17,21 @@ const StyledBox = styled(Box)`
   animation: ${spin} ${(props: SpinnerProps) => props.speed} linear infinite;
 `;
 
-const sizes = {
-  xs: '0.75rem',
-  sm: '1rem',
-  md: '1.5rem',
-  lg: '2rem',
-  xl: '3rem',
+const getSize = (size: SpinnerSize): string => {
+  switch (size) {
+    case 'xs':
+      return '0.75rem';
+    case 'sm':
+      return '1rem';
+    case 'md':
+      return '1.5rem';
+    case 'lg':
+      return '2rem';
+    case 'xl':
+      return '3rem';
+    default:
+      return size;
+  }
 };
 
 /**
@@ -43,7 +52,7 @@ const Spinner = forwardRef<any, SpinnerProps>(
     },
     ref
   ) => {
-    const _size = (sizes[size] || size) as SpinnerSize;
+    const _size = getSize(size);
 
     return (
       <StyledBox

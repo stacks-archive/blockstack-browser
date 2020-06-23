@@ -33,7 +33,7 @@ export const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
       mode = 'primary',
       variant = 'solid',
       type,
-      size = 'lg',
+      size = 'md',
       isLoading,
       loadingText,
       customStyles,
@@ -78,7 +78,7 @@ export const Button = forwardRef<Ref<HTMLDivElement>, ButtonProps>(
               position={loadingText ? 'relative' : 'absolute'}
               mx={!loadingText ? 'auto' : 'unset'}
               color="currentColor"
-              size="sm"
+              size={size === 'sm' ? 'xs' : 'sm'}
             />
           )}
           {isLoading

@@ -9,3 +9,4 @@ export * from './use-previous';
 export * from './use-safe-layout-effect';
 export * from './use-timeout';
 export * from './use-theme';
+export * from './use-color-mode';

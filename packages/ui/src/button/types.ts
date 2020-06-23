@@ -1,11 +1,10 @@
 import * as React from 'react';
-import * as StyledSystem from 'styled-system';
-import { PseudoBoxProps } from '../pseudo-box';
+import { BoxProps } from '../box';
 
 /**
  * The size of the button
  */
-export type ButtonSizes = 'md' | 'lg';
+export type ButtonSizes = 'sm' | 'md' | 'lg';
 /**
  * The color scheme of the button variant. Use the color keys passed in `theme.colors`.
  */
@@ -20,7 +19,7 @@ export type ButtonVariants = 'outline' | 'unstyled' | 'link' | 'solid';
 export type ButtonModes = 'primary' | 'secondary' | 'tertiary';
 
 export type CustomStyles = {
-  [key in ButtonModes]: PseudoBoxProps;
+  [key in ButtonModes]: BoxProps;
 };
 
 interface ButtonPropsBase {
@@ -55,21 +54,6 @@ interface ButtonPropsBase {
    * The content of the button.
    */
   children: React.ReactNode;
-  /**
-   * If added, the button will show an icon before the button's label.
-   * Use the icon key in `theme.iconPath`
-   */
-  leftIcon?: string;
-  /**
-   * If added, the button will show an icon after the button's label.
-   * Use the icon key in `theme.iconPath`
-   */
-  rightIcon?: string;
-  /**
-   * The space between the button icon and label.
-   * Use the styled-system tokens or add custom values as a string
-   */
-  iconSpacing?: StyledSystem.MarginProps['margin'];
 }
 
 export interface ButtonStyles {
@@ -79,4 +63,4 @@ export interface ButtonStyles {
   customStyles?: CustomStyles;
 }
 
-export type ButtonProps = ButtonPropsBase & PseudoBoxProps & React.RefAttributes<HTMLButtonElement>;
+export type ButtonProps = ButtonPropsBase & BoxProps & React.RefAttributes<HTMLButtonElement>;

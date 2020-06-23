@@ -30,6 +30,12 @@ const sizes = {
     fontSize: '14px !important',
     px: 4,
   },
+  sm: {
+    minHeight: 6,
+    minWidth: 10,
+    fontSize: '11px !important',
+    px: 3,
+  },
 };
 
 const unstyledStyle = {

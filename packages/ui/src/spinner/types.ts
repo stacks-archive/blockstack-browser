@@ -1,6 +1,17 @@
 import { BoxProps } from '../box';
+import { LiteralUnion } from 'type-fest';
 
-export type SpinnerSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+export enum SpinnerSizes {
+  xs = 'xs',
+  sm = 'sm',
+  md = 'md',
+  lg = 'lg',
+  xl = 'xl',
+}
+
+export type NamedSizeLiterals = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+export type SpinnerSize = LiteralUnion<NamedSizeLiterals, string>;
 
 export interface SpinnerPropsBase {
   /**

@@ -80,10 +80,11 @@ export function Tooltip(props: TooltipProps) {
             borderRadius="6px"
             textStyle="caption.medium"
             maxWidth="320px"
+            {...tooltipProps}
             style={{
+              ...tooltipProps.style,
               useSelect: 'none',
             }}
-            {...tooltipProps}
           >
             {label}
             {hasAriaLabel && <VisuallyHidden {...hiddenProps}>{ariaLabel}</VisuallyHidden>}

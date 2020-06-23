@@ -1,3 +1,5 @@
+import { SpacingTypes } from './types';
+
 const containers = {
   'screen-sm': '640px',
   'screen-md': '768px',
@@ -37,6 +39,8 @@ export const namedSpacingUnits = {
   loose: baseSizes[6], //24px
   'extra-loose': baseSizes[8], //32px
 };
+
+export const space = (spacing: SpacingTypes): SpacingTypes => spacing;
 
 export const sizes = {
   ...baseSizes,

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useSafeLayoutEffect } from '@blockstack/ui';
+import { useSafeLayoutEffect } from '../hooks';
 
 const isBrowser = typeof window !== 'undefined';
 

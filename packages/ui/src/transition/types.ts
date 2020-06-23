@@ -19,13 +19,13 @@ export type TransitionStatus =
 
 export interface TransitionProps {
   in?: boolean;
-  addEndListener?: EndHandler;
-  onEnter?: EnterHandler;
-  onEntering?: EnterHandler;
-  onEntered?: EnterHandler;
-  onExit?: ExitHandler;
-  onExiting?: ExitHandler;
-  onExited?: ExitHandler;
+  addEndListener?: EndHandler<any>;
+  onEnter?: EnterHandler<any>;
+  onEntering?: EnterHandler<any>;
+  onEntered?: EnterHandler<any>;
+  onExit?: ExitHandler<any>;
+  onExiting?: ExitHandler<any>;
+  onExited?: ExitHandler<any>;
   unmountOnExit?: boolean;
   timeout?: TProps['timeout'];
   transition?: string;
