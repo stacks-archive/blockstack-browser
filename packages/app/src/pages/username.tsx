@@ -5,7 +5,7 @@ import { PoweredBy, Screen, ScreenActions, ScreenBody, ScreenFooter, Title } fro
 import { ScreenHeader } from '@components/connected-screen-header';
 
 import { useAppDetails } from '@common/hooks/useAppDetails';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '@common/hooks/use-dispatch';
 import { doFinishSignIn, doSetUsername } from '@store/onboarding/actions';
 import { useWallet } from '@common/hooks/use-wallet';
 import { UsernameRegistryError, ErrorReason } from './registery-error';
@@ -99,8 +99,8 @@ export const Username: React.FC<{}> = () => {
         identity,
       });
       doTrack(USERNAME_SUBMIT_SUCCESS);
-      dispatch(didGenerateWallet(wallet));
-      dispatch(doFinishSignIn({ identityIndex }));
+      await dispatch(didGenerateWallet(wallet));
+      await dispatch(doFinishSignIn({ identityIndex }));
     } catch (error) {
       doTrack(USERNAME_REGISTER_FAILED, { status: error.status });
       if (error.status === 409) {

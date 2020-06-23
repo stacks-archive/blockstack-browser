@@ -97,7 +97,7 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     expect(authResponse).toBeTruthy();
   }, 120_000);
 
-  it('creating a successful local account', async () => {
+  it.only('creating a successful local account', async () => {
     await demoPage.openConnect();
     await demoPage.clickConnectGetStarted();
     const authPage = await AuthPage.getAuthPage(browser);
@@ -106,7 +106,6 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     expect(validateMnemonic(secretKey)).toBeTruthy();
     await authPage.clickIHaveSavedIt();
     await authPage.setUserName(`${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`);
-    await authPage.page.click(authPage.$buttonUsernameContinue);
     const authResponse = await demoPage.waitForAuthResponse();
     expect(authResponse).toBeTruthy();
   }, 90000);

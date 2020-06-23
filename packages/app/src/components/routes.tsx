@@ -9,7 +9,7 @@ import { SecretKey } from '../pages/secret-key';
 import { ChooseAccount } from '../pages/connect';
 
 import { doSaveAuthRequest } from '@store/onboarding/actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '@common/hooks/use-dispatch';
 import { ScreenPaths } from '@store/onboarding/types';
 import { doFinishSignIn as finishSignIn } from '@store/onboarding/actions';
 import { authenticationInit } from '@common/utils';

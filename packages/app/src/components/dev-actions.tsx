@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Text, Input, Button, ButtonGroup } from '@blockstack/ui';
 import { Formik } from 'formik';
 import { openPopup } from '../common/utils';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '@common/hooks/use-dispatch';
 import { doSignOut } from '@store/wallet';
 
 const DevActions = () => {

@@ -47,7 +47,7 @@ export class DemoPage {
   }
 
   async waitForAuthResponse() {
-    await this.page.waitForSelector('#auth-response', { state: 'attached', timeout: 5000 });
+    await this.page.waitForSelector('#auth-response', { state: 'attached', timeout: 15000 });
     const authResponseEl = await this.page.$('#auth-response');
     const authResponse = (await this.page.evaluate(el => el?.getAttribute('value'), authResponseEl)) as string;
     return authResponse;

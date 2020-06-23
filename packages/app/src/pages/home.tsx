@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, PseudoBox, Flex, Text } from '@blockstack/ui';
 import { SignOut } from '@components/sign-out';
 import { useAnalytics } from '@common/hooks/use-analytics';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '@common/hooks/use-dispatch';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { doSignOut } from '@store/wallet';
