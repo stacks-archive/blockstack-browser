@@ -57,6 +57,6 @@ yarn prod:ext
 
 ### Installing for Firefox
 1. Go to: [**about:debugging**](about:debugging)
-2. Select: "**Enable add-on debugging**"
+2. Click on "**This Firefox**"
 3. Click on: "**Load Temporary Add-on…**"
 4. Open the newly created folder "**dist**" from the project folder, and choose the "**manifest.json**" file.

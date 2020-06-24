@@ -3,6 +3,7 @@ interface PopupOptions {
   title?: string;
   w?: number;
   h?: number;
+  skipPopupFallback?: boolean;
 }
 
 // Width 2px wider than in-page dialog.
@@ -18,6 +19,7 @@ export const popupCenter = ({
   title = defaultTitle,
   w = defaultWidth,
   h = defaultHeight,
+  skipPopupFallback,
 }: PopupOptions) => {
   const win = window;
   // Safari reports an incorrect browser height
@@ -66,5 +68,8 @@ export const popupCenter = ({
   }
 
   // no popup options, just open the auth page
+  if (skipPopupFallback) {
+    return newWindow;
+  }
   return window.open(url);
 };

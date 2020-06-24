@@ -70,6 +70,9 @@ export const authenticate = async ({
 
   const popup = popupCenter({
     url: `${authURL.origin}/index.html#/${path}?${urlParams.toString()}`,
+    // If the extension is installed, dont worry about popup blocking
+    // Otherwise, firefox will open the popup and a new tab.
+    skipPopupFallback: !!window.BlockstackProvider,
   });
 
   setupListener({ popup, authRequest, finished, authURL, userSession });
