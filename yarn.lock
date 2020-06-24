@@ -1615,18 +1615,6 @@
     eslint-plugin-prettier ">=3.1.3"
     prettier ">=2.0.5"
 
-"@blockstack/keychain@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@blockstack/keychain/-/keychain-0.4.0.tgz#f1eebd757d0c6ffddd3dbfa5b87893eadf4cf990"
-  integrity sha512-ooHnmWafRiKrS3FiETwNYXYmropPj4di1s2OJQZwB/Aj/paQ1gyxJPNYq2sJiD4qjp12UIR6QY4WLPBZTLRMKg==
-  dependencies:
-    bip39 "^3.0.2"
-    bitcoinjs-lib "^5.1.6"
-    blockstack "21.0.0-alpha.2"
-    jsontokens "^3.0.0"
-    prettier "^2.0.5"
-    triplesec "^3.0.27"
-
 "@blockstack/prettier-config@0.0.6", "@blockstack/prettier-config@^0.0.6":
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/@blockstack/prettier-config/-/prettier-config-0.0.6.tgz#8a41cd378ba061b79770987f2a6ad0c92b64bd72"
