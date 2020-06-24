@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.1](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@2.7.0...@blockstack/ui@2.7.1) (2020-06-24)
+
+
+### Bug Fixes
+
+* ui version behind published ([8198ca0](https://github.com/blockstackpbc/blockstack-ui/commit/8198ca050baa5e7294f99f4521aba78cab7635d8))
+
+
+
+
+
 # [2.7.0](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.6.2...@blockstack/ui@2.7.0) (2020-06-24)
 
 

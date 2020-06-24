@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/blockstack/ux/compare/test-app@1.2.0...test-app@1.2.1) (2020-06-24)
+
+
+### Bug Fixes
+
+* ui version behind published ([8198ca0](https://github.com/blockstack/ux/commit/8198ca050baa5e7294f99f4521aba78cab7635d8))
+
+
+
+
+
 # [1.2.0](https://github.com/blockstack/ux/compare/test-app@1.1.12...test-app@1.2.0) (2020-06-24)
 
 

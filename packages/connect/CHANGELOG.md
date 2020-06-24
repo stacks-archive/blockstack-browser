@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.7](https://github.com/blockstack/ux/compare/@blockstack/connect@2.7.6...@blockstack/connect@2.7.7) (2020-06-24)
+
+
+### Bug Fixes
+
+* ui version behind published ([8198ca0](https://github.com/blockstack/ux/commit/8198ca050baa5e7294f99f4521aba78cab7635d8))
+
+
+
+
+
 ## [2.7.6](https://github.com/blockstack/ux/compare/@blockstack/connect@2.7.4...@blockstack/connect@2.7.6) (2020-06-24)
 
 
