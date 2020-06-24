@@ -1,34 +1,45 @@
 import React from 'react';
 import App, { AppContext } from 'next/app';
-import { CSSReset, ThemeProvider, theme } from '@blockstack/ui';
+import { CSSReset, ThemeProvider, theme, ColorModeProvider } from '@blockstack/ui';
 import { MDXProvider } from '@mdx-js/react';
-import { MDXComponents } from '@components/mdx-components';
-import { DocsLayout } from '@components/docs-layout';
+import { MDXComponents } from '@components/mdx';
 import { AppStateProvider } from '@components/app-state';
-import { ColorModeProvider } from '@components/color-modes';
+import { parseCookies } from 'nookies';
+import { MdxOverrides } from '@components/docs-layout';
+import { ProgressBar } from '@components/progress-bar';
+import engine from 'store/src/store-engine';
+import cookieStorage from 'store/storages/cookieStorage';
+import 'typeface-inter';
+import 'typeface-fira-code';
 
-const AppWrapper = ({ children, version }: any) => (
+const COLOR_MODE_COOKIE = 'color_mode';
+
+const cookieSetter = engine.createStore([cookieStorage]);
+
+const handleColorModeChange = (mode: string) => cookieSetter.set(COLOR_MODE_COOKIE, mode);
+
+const AppWrapper = ({ children, colorMode = 'light', version }: any) => (
   <ThemeProvider theme={theme}>
-    <ColorModeProvider>
+    <MdxOverrides />
+    <ColorModeProvider onChange={handleColorModeChange} colorMode={colorMode}>
+      <ProgressBar />
       <MDXProvider components={MDXComponents}>
         <AppStateProvider version={version}>
-          <DocsLayout>
-            <CSSReset />
-            {children}
-          </DocsLayout>
+          <CSSReset />
+          {children}
         </AppStateProvider>
       </MDXProvider>
     </ColorModeProvider>
   </ThemeProvider>
 );
 
-const MyApp = ({ Component, pageProps, ...rest }: any) => {
+const MyApp = ({ Component, pageProps, colorMode, ...rest }: any) => {
   const [version, setVersion] = React.useState(pageProps?.version);
   if (!version && pageProps?.version) {
     setVersion(pageProps?.version);
   }
   return (
-    <AppWrapper version={version}>
+    <AppWrapper colorMode={colorMode} version={version}>
       <Component {...pageProps} />
     </AppWrapper>
   );
@@ -36,6 +47,12 @@ const MyApp = ({ Component, pageProps, ...rest }: any) => {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
+  const cookies = parseCookies(appContext.ctx);
+  let colorMode = undefined;
+
+  if (cookies) {
+    colorMode = cookies[COLOR_MODE_COOKIE] ? JSON.parse(cookies[COLOR_MODE_COOKIE]) : undefined;
+  }
   if (appContext.ctx.res) {
     try {
       const res = await fetch('https://registry.npmjs.org/@blockstack/ui');
@@ -47,13 +64,14 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
           ...appProps.pageProps,
           version,
         },
+        colorMode,
       };
     } catch (e) {
       console.log(e);
     }
   }
 
-  return appProps;
+  return { ...appProps, colorMode };
 };
 
 export default MyApp;

@@ -1,41 +1,23 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAppState } from '@common/hooks/use-app-state';
-import { State } from '@components/app-state/types';
 
-interface ActiveHeadingProps {
-  slug: string;
-}
-type ActiveHeadingReturn = [boolean, (value: any) => void];
+type ActiveHeadingReturn = [boolean, (value: string) => void, string];
 
-export const useActiveHeading = ({ slug }: ActiveHeadingProps): ActiveHeadingReturn => {
+export const useActiveHeading = (_slug: string): ActiveHeadingReturn => {
   const router = useRouter();
-  const state = useAppState();
-  const { setState } = state;
   const { asPath } = router;
+  const { activeSlug, doChangeActiveSlug } = useAppState();
+  const urlHash = asPath?.includes('#') && asPath.split('#')[1];
+  const location = typeof window !== 'undefined' && window.location.href;
 
   useEffect(() => {
-    if (
-      asPath &&
-      asPath.includes('#') &&
-      asPath.split('#')[1] === slug &&
-      state.activeSlug !== slug
-    ) {
-      setState((s: State) => ({ ...s, activeSlug: slug }));
+    if (urlHash && !activeSlug) {
+      doChangeActiveSlug(urlHash);
     }
-    if (asPath && !asPath.includes('#')) {
-      setState((s: State) => ({ ...s, activeSlug: '' }));
-    }
-  }, [asPath]);
+  }, [asPath, urlHash, location]);
 
-  const handleStateUpdate = useCallback(
-    newSlug => setState((s: State) => ({ ...s, activeSlug: newSlug })),
-    [state.activeSlug]
-  );
+  const isActive = _slug === activeSlug;
 
-  const selectActiveSlug = useCallback((state: State) => state && state.activeSlug, []);
-
-  const isActive = selectActiveSlug(state) === slug;
-
-  return [isActive, handleStateUpdate];
+  return [isActive, doChangeActiveSlug, location];
 };

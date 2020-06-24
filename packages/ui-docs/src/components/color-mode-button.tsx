@@ -1,8 +1,7 @@
 import React, { forwardRef, Ref } from 'react';
 import { LinkProps } from '@components/typography';
+import { useColorMode } from '@blockstack/ui';
 import { DarkModeIcon } from '@components/icons/dark-mode';
-
-import { useColorMode } from '@common/hooks/use-color-mode';
 import { LightModeIcon } from '@components/icons/light-mode';
 import { IconButton } from '@components/icon-button';
 

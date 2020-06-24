@@ -17,9 +17,7 @@
     "paths": {
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
-      "@common/*": ["common/*"],
-      "@blockstack/ui": ["../ui"],
-      "@blockstack/ui/*": ["../ui/*"]
+      "@common/*": ["common/*"]
     },
     "baseUrl": "src"
   },

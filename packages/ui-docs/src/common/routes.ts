@@ -10,6 +10,7 @@ export const components = [
   'Box',
   'Button',
   'CodeBlock',
+  'Color modes',
   'CSS Reset',
   'Flex',
   'Grid',
@@ -35,11 +36,19 @@ export const hooks = [
   'useId',
   'useLatestRef',
   'useMergeRefs',
+  'useTheme',
 ];
 
-export const bottomNavLinks = ['Contributing', 'Further reading', 'GitHub'];
+export const bottomNavLinks = ['Contributing', 'Further reading'];
 
-export const routes = [...topNavLinks, ...components, ...bottomNavLinks];
+export const routes = [...topNavLinks, ...components, ...hooks, ...bottomNavLinks];
+
+export const paginationRoutes = {
+  top: topNavLinks,
+  components,
+  hooks,
+  bottom: bottomNavLinks,
+};
 
 export const links = {
   github: 'https://github.com/blockstack/ux',

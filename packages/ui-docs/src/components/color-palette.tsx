@@ -1,10 +1,9 @@
 import React from 'react';
-import { Box, Flex, useTheme } from '@blockstack/ui';
+import { Box, Flex, useTheme, space, colorGet, theme } from '@blockstack/ui';
 import { Text } from '@components/typography';
-import { space } from '@common/utils';
+import { InlineCode } from '@components/mdx';
 
 export const ColorPalette = ({ color, isString = false, name, ...props }: any) => {
-  const theme = useTheme();
   let colorCode = color;
   const [shade, hue] = color.split('.');
 
@@ -18,45 +17,26 @@ export const ColorPalette = ({ color, isString = false, name, ...props }: any) =
 
   if (!colorCode) return null;
 
-  return (
-    <Flex
-      flexWrap={['wrap', 'nowrap', 'nowrap']}
-      p={space('base')}
-      align="center"
-      justify="center"
-      flexDir="column"
-      bg="white"
-      borderRadius="12px"
-      mb={space('base-loose')}
-      boxShadow="mid"
-      _hover={{
-        boxShadow: 'high',
-        cusor: 'pointer',
-      }}
-      {...props}
-    >
-      <Box
-        boxShadow="mid"
-        flexShrink={0}
-        borderRadius="100%"
-        size={['32px', '32px', '64px']}
-        bg={color}
-        mb={space('tight')}
-      />
+  const getColorCode = (col: string) => {
+    if (col.includes('.')) {
+      const key = col.split('.')[0];
+      const number = col.split('.')[1];
+      return theme.colors[key][number];
+    }
+    return theme.colors[col] && theme.colors[col].toString();
+  };
 
-      <Flex flexDirection="column" justify="center" align="center" textAlign="center">
+  return (
+    <Box {...props}>
+      <Flex align="center" justify="center" flexDirection="column" height="128px" bg={colorCode}>
         <Box>
-          <Text color="ink" fontWeight={600} textTransform="capitalize">
-            {name}
-          </Text>
+          <InlineCode>{color}</InlineCode>
         </Box>
         <Box>
-          <Text textTransform="uppercase" textStyle="caption" color="#767A85">
-            {isString ? theme.colors[color] : colorCode}
-          </Text>
+          <InlineCode>{getColorCode(color)}</InlineCode>
         </Box>
       </Flex>
-    </Flex>
+    </Box>
   );
 };
 
@@ -115,12 +95,5 @@ export const Colors = ({ colors = ['blue', 'ink', 'feedback', 'darken'], ...rest
 };
 
 export const ColorWrapper = ({ isOdd, ...rest }: any) => (
-  <Box
-    flexShrink={0}
-    mt={space('extra-loose')}
-    pr={[isOdd ? space('extra-loose') : 0, space('base'), space('extra-loose')]}
-    width={['50%', '25%', '25%']}
-    minWidth="150px"
-    {...rest}
-  />
+  <Box flexShrink={0} mt={space('extra-loose')} width={'50%'} {...rest} />
 );

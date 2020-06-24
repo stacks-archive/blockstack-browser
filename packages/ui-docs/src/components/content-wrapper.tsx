@@ -1,16 +1,13 @@
 import React from 'react';
-import { Flex, FlexProps } from '@blockstack/ui';
-import { space } from '@common/utils';
+import { Flex, FlexProps, space } from '@blockstack/ui';
 
 const ContentWrapper: React.FC<FlexProps> = props => (
   <Flex
-    width="100%"
-    maxWidth="72ch"
+    flexShrink={1}
     px={space('base')}
     pt={space(['base', 'base', 'extra-loose'])}
     mt={space('extra-loose')}
     pb={[4, 4, 6]}
-    mx="auto"
     flexDirection="column"
     {...props}
   />

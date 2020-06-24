@@ -1,8 +1,6 @@
 import React from 'react';
-import { Flex } from '@blockstack/ui';
+import { Box, BoxProps } from '@blockstack/ui';
 
-const Main = (props: any) => (
-  <Flex flexDirection="column" as="main" mx="auto" flexGrow={1} {...props} />
-);
+const Main = (props: BoxProps) => <Box mx="auto" as="main" flexGrow={1} {...props} />;
 
 export { Main };

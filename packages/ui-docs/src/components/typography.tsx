@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Text as BaseText, BoxProps } from '@blockstack/ui';
-import { color } from '@components/color-modes';
+import { Text as BaseText, BoxProps, color } from '@blockstack/ui';
 import { border } from '@common/utils';
 
 export const Text = React.forwardRef((props: BoxProps, ref) => (

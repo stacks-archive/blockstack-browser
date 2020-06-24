@@ -1,6 +1,5 @@
 import React, { forwardRef, Ref } from 'react';
-import { Box } from '@blockstack/ui';
-import { color } from '@components/color-modes';
+import { Box, color } from '@blockstack/ui';
 import { LinkProps } from '@components/typography';
 
 export const IconButton = forwardRef((props: LinkProps, ref: Ref<HTMLDivElement>) => (

@@ -1,4 +1,4 @@
-import { Theme } from '@blockstack/ui';
+import { Theme } from '../theme';
 import {
   ColorModesInterface,
   ColorsStringLiteral,

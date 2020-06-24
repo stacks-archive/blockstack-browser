@@ -1,9 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { LiveProvider, withLive, LiveError, LiveContext, LivePreview } from 'react-live';
-import { Box, CodeBlock as BaseCodeBlock } from '@blockstack/ui';
+import React, { useContext } from 'react';
+import { LiveProvider, LiveContext, LivePreview } from 'react-live';
+import { Box, CodeBlock as BaseCodeBlock, space, color } from '@blockstack/ui';
 import 'prismjs/components/prism-jsx';
 import { CodeEditor } from '@components/code-editor';
 import { Caption } from '@components/typography';
+import 'prismjs/components/prism-tsx';
+import { border } from '@common/utils';
 
 const Error = (props: any) => {
   const { error } = useContext(LiveContext);
@@ -32,28 +34,40 @@ export const liveErrorStyle = {
 };
 
 export const LiveCodePreview = (props: any) => (
-  <Box
-    as={LivePreview}
-    fontFamily="body"
-    borderRadius="6px"
-    p="base"
-    border="1px solid var(--colors-border)"
-    {...props}
-  />
+  <Box fontFamily="body">
+    <Box
+      as={LivePreview}
+      boxShadow="mid"
+      border={border()}
+      borderRadius="6px"
+      p={space('base')}
+      mb={space('base')}
+      {...props}
+    />
+  </Box>
 );
 
-export const JsxEditor = ({ liveProviderProps, editorCode, handleCodeChange, language }) => (
+export const JsxEditor = ({
+  liveProviderProps,
+  editorCode,
+  handleCodeChange,
+  language,
+  ...rest
+}) => (
   <LiveProvider {...liveProviderProps}>
-    <Box mt="base" pl="base">
-      <Caption fontFamily="body">Preview</Caption>
+    <Box mb={space('tight')} mt={space('base')}>
+      <Caption fontWeight={500} pl={space('tight')} fontFamily="body">
+        Preview
+      </Caption>
     </Box>
     <LiveCodePreview />
-    <Box mt="base" tabIndex={-1} position="relative">
-      <Box pl="base">
-        <Caption fontFamily="body">Editable example</Caption>
-      </Box>
-      <CodeEditor value={editorCode} onChange={handleCodeChange} language={language} />
+
+    <Box mb={space('tight')}>
+      <Caption fontWeight={500} pl={space('tight')} fontFamily="body">
+        Editable example
+      </Caption>
     </Box>
+    <CodeEditor value={editorCode} onChange={handleCodeChange} language={language} />
     <Error />
   </LiveProvider>
 );
@@ -68,7 +82,10 @@ export const Preview = ({ liveProviderProps }) => (
 
 export const SimpleCodeBlock = ({ editorCode, language }) => (
   <BaseCodeBlock
-    border="1px solid var(--colors-border)"
+    borderTop={border()}
+    borderBottom={border()}
+    borderLeft={['none', border(), border()]}
+    borderRight={['none', border(), border()]}
     code={editorCode}
     language={language}
     my="base"

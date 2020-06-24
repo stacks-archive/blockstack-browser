@@ -1,13 +1,12 @@
-import { Box, Flex } from '@blockstack/ui';
+import { Box, Flex, FlexProps, color, space, BoxProps } from '@blockstack/ui';
 import { Caption, Text } from '@components/typography';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { routes } from '@common/routes';
-import { slugify, space } from '@common/utils';
+import { routes, paginationRoutes } from '@common/routes';
+import { slugify } from '@common/utils';
 import Link from 'next/link';
 import { useHover } from 'use-events';
 import { ContentWrapper } from '@components/content-wrapper';
-import { color } from '@components/color-modes';
 
 const transition = 'all 0.2s cubic-bezier(0.23, 1, 0.32, 1)';
 
@@ -29,7 +28,7 @@ const Previous = ({ isHovered }: { isHovered: boolean }) => {
 };
 const Next = ({ isHovered }: { isHovered: boolean }) => {
   return (
-    <Flex>
+    <Flex justifyContent="flex-end">
       <Box>
         <Caption>Next</Caption>
       </Box>
@@ -44,13 +43,13 @@ const Next = ({ isHovered }: { isHovered: boolean }) => {
   );
 };
 
-interface PaginationLinkProps {
+interface PaginationLinkProps extends BoxProps {
   slug: string;
   label: string;
   prev?: boolean;
 }
 
-const PaginationLink = ({ slug, label, prev }: PaginationLinkProps) => {
+const PaginationLink = ({ slug, label, prev, ...rest }: PaginationLinkProps) => {
   const [isHovered, bindHover] = useHover();
   return (
     <Link href={`/${slug}`} passHref>
@@ -60,57 +59,108 @@ const PaginationLink = ({ slug, label, prev }: PaginationLinkProps) => {
           color: 'var(--colors-accent)',
         }}
         as="a"
-        textAlign="left"
         py={space('extra-loose')}
         display="block"
+        flexGrow={1}
         {...bindHover}
+        {...rest}
       >
-        <Caption display="block">
+        <Caption textAlign={prev ? 'left' : 'right'} display="block">
           {prev ? <Previous isHovered={isHovered} /> : <Next isHovered={isHovered} />}
         </Caption>
-        <Text display="block" textStyle="display.large" color="currentColor">
+        <Text
+          textAlign={prev ? 'left' : 'right'}
+          display="block"
+          textStyle="display.large"
+          color="currentColor"
+        >
           {label}
         </Text>
       </Box>
     </Link>
   );
 };
-const Pagination = () => {
-  const router = useRouter();
-  const routesAsSlugs = routes.map(r => slugify(r));
-  const _route = router.asPath.replace('/', '');
-  const section = _route.includes('/') ? _route.split('/')[0] : undefined;
-  const __route = _route.includes('/') ? _route.split('/')[1] : _route;
-  const route = __route === '' ? 'getting-started' : __route;
-  const index = routesAsSlugs.indexOf(route);
-  const previous = routes[index - 1];
-  const previousSlug = section
-    ? section + '/' + routesAsSlugs[index - 1]
-    : routesAsSlugs[index - 1];
-  const next = routes[index + 1];
-  const nextSlug = section ? section + '/' + routesAsSlugs[index + 1] : routesAsSlugs[index + 1];
-  return (
-    <ContentWrapper
-      borderTop="1px solid"
-      borderColor={color('border')}
-      flexDirection="row"
-      alignItems="baseline"
-      justify="space-between"
-      pt="unset"
-      pb="unset"
-    >
-      {previous && (
-        <Box textAlign="left">
-          <PaginationLink slug={previousSlug} label={previous} prev />
-        </Box>
-      )}
-      {next && (
-        <Box textAlign="right" ml={!previous ? 'auto' : undefined}>
-          <PaginationLink slug={nextSlug} label={next} />
-        </Box>
-      )}
-    </ContentWrapper>
-  );
+
+const getRouteWithSection = (route: string) => {
+  let section = '';
+  const keys = Object.keys(paginationRoutes);
+  keys.forEach(key => {
+    const routes = paginationRoutes[key].map(r => slugify(r));
+    if (routes.length && routes.find(r => r === route) && key !== 'top' && key !== 'bottom') {
+      section = key + '/';
+    }
+  });
+  return section + route;
 };
 
-export { Pagination };
+const usePagination = () => {
+  const router = useRouter();
+  const [state, setState] = React.useState({
+    previous: undefined,
+    previousSlug: undefined,
+    next: undefined,
+    nextSlug: undefined,
+  });
+  React.useEffect(() => {
+    const routesAsSlugs = routes.map(r => slugify(r));
+    const _route = router.asPath.replace('/', '');
+    const __route = _route.includes('/') ? _route.split('/')[1] : _route;
+    const route = __route === '' ? 'getting-started' : __route;
+    const index = routesAsSlugs.indexOf(route);
+    const previous = routes[index - 1];
+    const previousSlug = getRouteWithSection(routesAsSlugs[index - 1]);
+    const next = routes[index + 1];
+    const nextSlug = getRouteWithSection(routesAsSlugs[index + 1]);
+
+    setState({
+      previous,
+      previousSlug,
+      next,
+      nextSlug,
+    });
+  }, [router.asPath]);
+
+  const { previous, previousSlug, next, nextSlug } = state;
+
+  return [
+    { label: previous, path: previousSlug, condition: !!previous },
+    {
+      label: next,
+      path: nextSlug,
+      condition: !!next,
+    },
+  ];
+};
+
+export const Pagination: React.FC<FlexProps> = props => {
+  const buttons = usePagination();
+  return (
+    <Box maxWidth="100%" {...props}>
+      <ContentWrapper
+        borderTop="1px solid"
+        borderColor={color('border')}
+        flexDirection="row"
+        alignItems="baseline"
+        justify="space-between"
+        pt="unset"
+        pb="unset"
+        width="100%"
+        maxWidth="98ch"
+        mx="auto"
+        px={space('extra-loose')}
+      >
+        {buttons.map((button, index) =>
+          button.condition ? (
+            <PaginationLink
+              textAlign={index === 0 ? 'left' : 'right'}
+              slug={button.path}
+              label={button.label}
+              prev={index === 0}
+              key={index}
+            />
+          ) : null
+        )}
+      </ContentWrapper>
+    </Box>
+  );
+};

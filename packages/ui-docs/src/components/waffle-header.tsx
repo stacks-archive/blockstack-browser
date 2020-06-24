@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex } from '@blockstack/ui';
+import { Flex, space } from '@blockstack/ui';
 import { Text } from '@components/typography';
 import { ContentWrapper } from './content-wrapper';
 import { useAppState } from '@common/hooks/use-app-state';
@@ -13,9 +13,10 @@ export const WaffleHeader = () => {
       minHeight={['unset', 'unset', '300px']}
       bg="ink"
       borderBottom="1px solid var(--colors-border)"
+      pb={space('extra-loose')}
     >
-      <ContentWrapper>
-        <Text color="white" as="h1" display="block" fontSize={[5, 5, 7]}>
+      <ContentWrapper maxWidth="98ch" width="100%" px={space('extra-loose')}>
+        <Text color="white" as="h1" display="block" fontSize="42px">
           Blockstack UI
         </Text>
         <Text pt={1} display="block" as="h2" fontSize={[3, 3, 4]} color="white">

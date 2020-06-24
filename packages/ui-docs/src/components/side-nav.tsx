@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box } from '@blockstack/ui';
-import { slugify } from '@common/utils';
+import { Box, color, space } from '@blockstack/ui';
+import { border, slugify } from '@common/utils';
 import { Text, Caption } from '@components/typography';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -14,7 +14,7 @@ const sections = [
   { links: bottomNavLinks },
 ];
 
-const Wrapper = ({ width = '240px', children, ...rest }: any) => (
+const Wrapper = ({ width = '200px', children, ...rest }: any) => (
   <Box
     position="relative"
     width={width}
@@ -27,12 +27,11 @@ const Wrapper = ({ width = '240px', children, ...rest }: any) => (
   >
     <Box
       position="fixed"
-      borderRight={['unset', '1px solid', '1px solid']}
-      borderColor={['unset', 'var(--colors-border)', 'var(--colors-border)']}
       top={50}
       width={width}
       height="calc(100vh - 50px)"
       overflow="auto"
+      borderRight={['none', border(), border()]}
     >
       {children}
     </Box>
@@ -51,9 +50,10 @@ const LinkItem = React.forwardRef(({ isActive, ...rest }: any, ref) => (
           }
         : null
     }
-    textStyle="body.small"
-    color={isActive ? 'var(--colors-text-title)' : 'var(--colors-text-body)'}
+    color={isActive ? color('accent') : color('text-body')}
     fontWeight={isActive ? 'semibold' : 'normal'}
+    fontSize="14px"
+    lineHeight="18px"
     as="a"
     {...rest}
   />
@@ -68,9 +68,9 @@ const Links = ({ links, prefix = '', ...rest }: any) => {
     const isActive =
       router.pathname.includes(slug) || (router.pathname === '/' && slug === 'getting-started');
     return (
-      <Box px="base" py="extra-tight" key={linkKey} onClick={handleClose} {...rest}>
-        <Link href={`/${prefix + slug}`}>
-          <LinkItem isActive={isActive} href={`/${prefix + slug}`}>
+      <Box width="100%" px="base" py="1px" key={linkKey} onClick={handleClose} {...rest}>
+        <Link href={`/${prefix + slug}`} passHref>
+          <LinkItem width="100%" isActive={isActive} href={`/${prefix + slug}`}>
             {link}
           </LinkItem>
         </Link>
@@ -80,26 +80,15 @@ const Links = ({ links, prefix = '', ...rest }: any) => {
 };
 
 const SectionTitle = ({ children, textStyles, ...rest }: any) => (
-  <Box px={4} pb="tight" {...rest}>
-    <Caption
-      fontWeight="600"
-      fontSize="10px"
-      letterSpacing="1px"
-      textTransform="uppercase"
-      {...textStyles}
-    >
+  <Box px={space('base')} pb={space('extra-tight')} {...rest}>
+    <Caption fontSize="14px" fontWeight="600" color={color('text-title')} {...textStyles}>
       {children}
     </Caption>
   </Box>
 );
 
 const Section = ({ section, isLast, ...rest }: any) => (
-  <Box
-    borderBottom="1px solid"
-    borderColor={isLast ? 'transparent' : 'var(--colors-border)'}
-    py="base"
-    {...rest}
-  >
+  <Box width="100%" pt={space('base')} {...rest}>
     {section.title ? <SectionTitle>{section.title}</SectionTitle> : null}
     <Links prefix={section.prefix} links={section.links} />
   </Box>

@@ -1,9 +1,13 @@
+---
+title: 'Box'
+---
+
 # Box
 
 Box is the base primitive component on top of which all other components
 are built. By default, it renders a `div` element. When building any new
 layout elements or components, you'll almost always go for a `Box` to
-start with. There are some other components that are lumped into the
+start with. There are some other components that are in the same
 category of "primitives": `Flex`, `Grid`, `Text`.
 
 ## Import
@@ -15,9 +19,9 @@ import { Box } from '@blockstack/ui';
 ## Usage
 
 ```jsx
-<Box w="100%" p={4} color="white" bg="salmon">
+<Box w="100%" p={space('base')} color="white" bg="salmon">
   Box is the base element all others are created from.{' '}
-  <Box as="span" bg="white" color="ink.900">
+  <Box as="span" bg="white" color={themeColor('ink.900')}>
     It can also be inline.
   </Box>
 </Box>
@@ -29,19 +33,25 @@ You can use the `as` prop to change which element is rendered. You can pass a st
 
 ```jsx
 <>
-  <Box as="button" rounded="md" bg="salmon" color="white" px={4} h={8}>
+  {/* Box as a button! */}
+  <Box as="button" rounded="md" bg="salmon" color="white" px={space('base')} height={12}>
     Button
   </Box>
+  {/* Box as Flex for recreating a button */}
   <Box
-    mt={5}
-    as={Flex}
-    align="center"
-    justify="center"
     rounded="md"
-    bg="salmon"
+    bg={themeColor('blue')}
+    _hover={{
+      bg: themeColor('blue.hover'),
+      cursor: 'pointer',
+    }}
     color="white"
-    px={4}
-    h={8}
+    px={space('base')}
+    mt={space('base')}
+    height="64px"
+    as={Flex}
+    alignItems="center"
+    justifyContent="center"
   >
     Button
   </Box>

@@ -1,4 +1,6 @@
-import { ButtonView } from '../../components/views';
+---
+title: 'Button'
+---
 
 # Button
 
@@ -22,7 +24,7 @@ import { Button } from '@blockstack/ui';
 Use the `size` prop to change the size of the button. You can set the value to `sm`, `md`, or `lg`. Default value is `md`.
 
 ```jsx
-<ButtonGroup spacing={4}>
+<ButtonGroup spacing={space('base')}>
   <Button size="sm">Button</Button>
   <Button size="md">Button</Button>
   <Button size="lg">Button</Button>
@@ -35,7 +37,7 @@ Use the `mode` prop to change the visual style of the Button. You can set the
 value to `primary`, `secondary`, or `tertiary`.
 
 ```jsx
-<ButtonGroup spacing={4}>
+<ButtonGroup spacing={space('base')}>
   <Button mode="primary">Button</Button>
   <Button mode="secondary">Button</Button>
   <Button mode="tertiary">Button</Button>
@@ -50,7 +52,7 @@ spinner and the loading text. Otherwise, the button will take the width of the
 text label and show only the spinner
 
 ```jsx
-<ButtonGroup spacing={4}>
+<ButtonGroup spacing={space('base')}>
   <Button isLoading variant="solid">
     Email
   </Button>
@@ -67,15 +69,15 @@ text label and show only the spinner
 
 ## Composition
 
-Button composes [PseudoBox](/pseudobox) and all props you pass (variant,
+Button composes [Box](/box) and all props you pass (mode,
 bg, color, etc.) are converted to style props. This means you can override
 any style of the Button via props.
 
 ```jsx
 // The size prop affects the height of the button
 // but I can still override it by passing a custom height
-<Button size="md" height="48px" width="200px" border="2px" borderColor="green">
-  Button
+<Button size="md" height="200px" width="200px">
+  Square Button
 </Button>
 ```
 
@@ -116,10 +118,6 @@ style props to style the button.
   Join Group
 </Box>
 ```
-
-## Experiment
-
-<ButtonView />
 
 ## Props
 
