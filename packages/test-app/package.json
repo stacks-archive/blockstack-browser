@@ -25,7 +25,7 @@
     "@blockstack/connect": "^2.7.6",
     "@blockstack/keychain": "^0.6.0",
     "@blockstack/prettier-config": "^0.0.6",
-    "@blockstack/ui": "^1.6.2",
+    "@blockstack/ui": "^2.7.0",
     "@rehooks/document-title": "^1.0.1",
     "blockstack": "^21.0.0",
     "formik": "^2.1.4",

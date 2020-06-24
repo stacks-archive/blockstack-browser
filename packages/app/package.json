@@ -28,7 +28,7 @@
     "@blockstack/prettier-config": "^0.0.5",
     "@blockstack/stacks-transactions": "^0.4.6",
     "@blockstack/stats": "^0.7.0",
-    "@blockstack/ui": "^1.6.2",
+    "@blockstack/ui": "^2.7.0",
     "@rehooks/document-title": "^1.0.1",
     "@types/react-router-dom": "^5.1.3",
     "blockstack": "^19.3.0",
