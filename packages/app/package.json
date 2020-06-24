@@ -20,11 +20,11 @@
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit"
   },
-  "version": "1.9.3",
+  "version": "1.10.0",
   "author": "Blockstack PBC",
   "dependencies": {
-    "@blockstack/connect": "^2.7.5",
-    "@blockstack/keychain": "^0.5.0",
+    "@blockstack/connect": "^2.7.6",
+    "@blockstack/keychain": "^0.6.0",
     "@blockstack/prettier-config": "^0.0.5",
     "@blockstack/stacks-transactions": "^0.4.6",
     "@blockstack/stats": "^0.7.0",

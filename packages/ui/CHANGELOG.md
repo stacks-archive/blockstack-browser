@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.6.2...@blockstack/ui@2.7.0) (2020-06-24)
+
+
+### Bug Fixes
+
+* export svg from ui ([e7c32e9](https://github.com/blockstackpbc/blockstack-ui/commit/e7c32e93541469d673f8e348c242c05b3ce99de7))
+* update ink style ([a14722a](https://github.com/blockstackpbc/blockstack-ui/commit/a14722a1f3405bf37eb66c5b9303e3871f6a420b))
+* url for ui library ([09119c3](https://github.com/blockstackpbc/blockstack-ui/commit/09119c30fbbebe9cf70fbb6eb911fc41cad5da97))
+
+
+### Features
+
+* add a safe-await helper ([6f94e4d](https://github.com/blockstackpbc/blockstack-ui/commit/6f94e4d68aea6d8cd80f9730e571611f4aa6f698))
+* add alternate button, closes [#397](https://github.com/blockstackpbc/blockstack-ui/issues/397) ([8d248d9](https://github.com/blockstackpbc/blockstack-ui/commit/8d248d9a7d54504149d90454f671ad54e6319eba))
+
+
+
+
+
 ## [1.6.2](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@1.6.1...@blockstack/ui@1.6.2) (2020-06-10)
 
 

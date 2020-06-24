@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.6](https://github.com/blockstack/ux/compare/@blockstack/connect@2.7.4...@blockstack/connect@2.7.6) (2020-06-24)
+
+
+### Bug Fixes
+
+* better readme for firefox install ([cbecc86](https://github.com/blockstack/ux/commit/cbecc86e975a9b758260dbb16e3c29a938717d60))
+* connect version was behind published ([2d7633e](https://github.com/blockstack/ux/commit/2d7633e8b842cf231f10c2ea032de3bcd67258ff))
+* tweaks to get extension working ([e068dce](https://github.com/blockstack/ux/commit/e068dcec1eca8c30375564a748ff3df4f0e8c715))
+
+
+
+
+
 ## [2.7.4](https://github.com/blockstack/ux/compare/@blockstack/connect@2.7.3...@blockstack/connect@2.7.4) (2020-06-10)
 
 **Note:** Version bump only for package @blockstack/connect

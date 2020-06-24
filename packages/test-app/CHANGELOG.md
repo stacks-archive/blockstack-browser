@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/blockstack/ux/compare/test-app@1.1.12...test-app@1.2.0) (2020-06-24)
+
+
+### Bug Fixes
+
+* better readme for firefox install ([cbecc86](https://github.com/blockstack/ux/commit/cbecc86e975a9b758260dbb16e3c29a938717d60))
+* connect version was behind published ([2d7633e](https://github.com/blockstack/ux/commit/2d7633e8b842cf231f10c2ea032de3bcd67258ff))
+* keychain package was behind published version ([acbd4b0](https://github.com/blockstack/ux/commit/acbd4b064db61a60f01ce60ab75f9f2f39456eb8))
+* tweaks to get extension working ([e068dce](https://github.com/blockstack/ux/commit/e068dcec1eca8c30375564a748ff3df4f0e8c715))
+
+
+### Features
+
+* add alternate button, closes [#397](https://github.com/blockstack/ux/issues/397) ([8d248d9](https://github.com/blockstack/ux/commit/8d248d9a7d54504149d90454f671ad54e6319eba))
+
+
+
+
+
 ## [1.1.12](https://github.com/blockstack/ux/compare/test-app@1.1.11...test-app@1.1.12) (2020-06-10)
 
 **Note:** Version bump only for package test-app

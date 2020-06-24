@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.4.0...@blockstack/keychain@0.6.0) (2020-06-24)
+
+
+### Bug Fixes
+
+* attempted fix for [#439](https://github.com/blockstack/ux/issues/439), [#437](https://github.com/blockstack/ux/issues/437) ([d0b31c2](https://github.com/blockstack/ux/commit/d0b31c2239f684e8abd4059503fe8db8f11b0e46))
+* bump keychain version ([de7a816](https://github.com/blockstack/ux/commit/de7a816071facc3fc2c8323961a941d722454e6d))
+* keychain package was behind published version ([acbd4b0](https://github.com/blockstack/ux/commit/acbd4b064db61a60f01ce60ab75f9f2f39456eb8))
+
+
+### Features
+
+* add fn to generate 24-word phrases ([8e6077b](https://github.com/blockstack/ux/commit/8e6077b5f0c54e7f9916615ee72448bfa4b48d1f))
+
+
+
+
+
 # [0.4.0](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.3.5...@blockstack/keychain@0.4.0) (2020-05-15)
 
 
