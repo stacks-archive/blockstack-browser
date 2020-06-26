@@ -6,15 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Set Node Version
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v1.4.2
       with:
         node-version: 12.16.1
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
-    - uses: actions/cache@v1
+    - uses: actions/cache@v2.0.0
       id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -33,16 +33,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Set Node Version
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v1.4.2
       with:
         node-version: 12.16.1
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
 
-    - uses: actions/cache@v1
+    - uses: actions/cache@v2.0.0
       id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -64,17 +64,17 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Checkout master
       run: git checkout master
     - name: Set Node Version
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v1.4.2
       with:
         node-version: 12.16.1
     - name: Get yarn cache directory path
       id: yarn-cache-dir-path
       run: echo "::set-output name=dir::$(yarn cache dir)"
-    - uses: actions/cache@v1
+    - uses: actions/cache@v2.0.0
       id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
       with:
         path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
