@@ -1,0 +1,42 @@
+---
+title: 'Icons'
+github: 'https://github.com/blockstack/ux/tree/master/packages/ui/src/icons'
+---
+
+import { Icons } from '../../components/icons';
+
+# Icons
+
+Icons used within various Blockstack projects.
+
+## Import
+
+```tsx live=false
+import {
+  AppsIcon,
+  BlockchainIcon,
+  BlockstackIcon,
+  CheckmarkCircleIcon,
+  CheckmarkIcon,
+  ChevronIcon,
+  CloseIcon,
+  ConnectLogoIcon,
+  EncryptionIcon,
+  ExclamationMarkCircleIcon,
+  ExclamationMarkIcon,
+  EyeIcon,
+  PadlockIcon,
+  PlusCircleIcon,
+  PrivateIcon,
+  UnionLineIcon,
+} from '@blockstack/ui';
+```
+
+## Previews
+
+<Icons />
+
+## Props
+
+All icons extend the standard set of props from the `BoxProps` type, with the exception of `ChevronIcon` which has an
+additional `direction` prop. Possible values are: `left`, `right`, `up`, or `down`.
