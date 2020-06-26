@@ -137,6 +137,12 @@ const DocsLayout: React.FC<{ headings?: string[] }> = ({ children, headings }) =
                     border: 'none',
                     px: space(['extra-loose', 'extra-loose', 'none', 'none']),
                   },
+                  '& > pre > div[style]': {
+                    px: space(['base-loose', 'base-loose', 'none', 'none']),
+                  },
+                  '& > pre > .code-editor': {
+                    pl: space(['base', 'base', 'none', 'none']),
+                  },
                   '& > pre': {
                     px: space(['none', 'none', 'extra-loose', 'extra-loose']),
                     border: 'none',

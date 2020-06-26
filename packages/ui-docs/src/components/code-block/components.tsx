@@ -7,7 +7,6 @@ import {
   CodeBlock as BaseCodeBlock,
   space,
   useClipboard,
-  color,
   BoxProps,
 } from '@blockstack/ui';
 import 'prismjs/components/prism-jsx';
