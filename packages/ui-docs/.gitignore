@@ -28,3 +28,4 @@ yarn-error.log*
 
 .now
 .vercel
+.mdx-data
