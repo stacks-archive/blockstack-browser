@@ -1,0 +1,29 @@
+---
+title: 'CSS Reset'
+description: 'CSS Reset is an opinionated css normalizer heavily inspired by Tailwinds preflight.'
+github: 'https://github.com/blockstack/ux/tree/master/packages/ui/src/css-reset'
+---
+
+# CSS Reset
+
+CSS Reset is an opinionated css normalizer heavily inspired by [Tailwind's preflight](https://unpkg.com/tailwindcss@1.1.2/dist/base.css),
+which is based off of the ever famous [`normalize.css`](https://github.com/necolas/normalize.css) by Nicolas Gallagher.
+
+## Import
+
+```tsx live=false
+import { CSSReset } from '@blockstack/ui';
+```
+
+## Usage
+
+This component must be used within the theme provider, typically within some kind of `AppWrapper` or within an `_app.tsx` component.
+
+```tsx live=false
+const AppWrapper = ({ children }) => (
+  <ThemeProvider>
+    <CSSReset />
+    {children}
+  </ThemeProvider>
+);
+```

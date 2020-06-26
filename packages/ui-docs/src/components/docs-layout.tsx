@@ -127,6 +127,12 @@ const DocsLayout: React.FC<{ headings?: string[] }> = ({ children, headings }) =
                     pr: space('extra-loose'),
                     pl: '64px ',
                   },
+                  '& > *:not(pre) a > code': {
+                    color: color('accent'),
+                    '&:hover': {
+                      textDecoration: 'underline',
+                    },
+                  },
                   '& > pre > *:not(pre)': {
                     border: 'none',
                     px: space(['extra-loose', 'extra-loose', 'none', 'none']),
