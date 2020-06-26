@@ -1,0 +1,49 @@
+---
+title: 'Highlighter'
+description: 'Highlighter is base component for code highlighting that uses prism for syntax highlighting.'
+github: 'https://github.com/blockstack/ux/tree/master/packages/ui/src/highlighter'
+---
+
+# Highlighter
+
+Highlighter is a base component for code highlighting that uses prism for syntax highlighting. You will typically want to
+use the [`CodeBlock`](/components/codeblock) rather than using this underlying highlighter component.
+
+## Import
+
+```tsx live=false
+import { Highlighter } from '@blockstack/ui';
+```
+
+## Usage
+
+```jsx
+<Box bg="black">
+  <Highlighter
+    code={`(define-map store ((key principal))
+  ((v1 int)
+   (v2 int))
+)
+
+(define-public (get-value (key principal))
+    (match (map-get? store {key: key})
+        entry (ok (get v2 entry))
+        (err 0)))
+
+(define-public (set-value (key principal))
+    (begin
+        (map-set store {key: tx-sender} {v1: 100, v2: 7})
+        (ok true)))`}
+    language="clarity"
+    showLineNumbers
+  />
+</Box>
+```
+
+### Props
+
+| Name              | Type       | Default   | Description                                                                                                                                    |
+| ----------------- | ---------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `code`            | `string`   |           | The source code you want to highlight.                                                                                                         |
+| `language`        | `Language` | `clarity` | The language of the source code. [See type definition.](https://github.com/blockstack/ux/blob/master/packages/ui/src/highlighter/types.ts#L56) |
+| `showLineNumbers` | `boolean`  |           | If `true`, line numbers will be displayed to the left of the source code.                                                                      |
