@@ -1,16 +1,25 @@
 import React, { useContext } from 'react';
 import { LiveProvider, LiveContext, LivePreview } from 'react-live';
-import { Box, CodeBlock as BaseCodeBlock, space, color } from '@blockstack/ui';
+import {
+  Flex,
+  Button,
+  Box,
+  CodeBlock as BaseCodeBlock,
+  space,
+  useClipboard,
+  color,
+  BoxProps,
+} from '@blockstack/ui';
 import 'prismjs/components/prism-jsx';
 import { CodeEditor } from '@components/code-editor';
-import { Caption } from '@components/typography';
+import { Text } from '@components/typography';
 import 'prismjs/components/prism-tsx';
 import { border } from '@common/utils';
 
-const Error = (props: any) => {
+const Error = () => {
   const { error } = useContext(LiveContext);
 
-  return error ? <BaseCodeBlock code={error} /> : null;
+  return error ? <BaseCodeBlock mt={space('base')} code={error} /> : null;
 };
 
 export const liveEditorStyle = {
@@ -47,30 +56,30 @@ export const LiveCodePreview = (props: any) => (
   </Box>
 );
 
-export const JsxEditor = ({
-  liveProviderProps,
-  editorCode,
-  handleCodeChange,
-  language,
-  ...rest
-}) => (
-  <LiveProvider {...liveProviderProps}>
-    <Box mb={space('tight')} mt={space('base')}>
-      <Caption fontWeight={500} pl={space('tight')} fontFamily="body">
-        Preview
-      </Caption>
-    </Box>
-    <LiveCodePreview />
-
-    <Box mb={space('tight')}>
-      <Caption fontWeight={500} pl={space('tight')} fontFamily="body">
-        Editable example
-      </Caption>
-    </Box>
-    <CodeEditor value={editorCode} onChange={handleCodeChange} language={language} />
-    <Error />
-  </LiveProvider>
+const Label = (props: BoxProps) => (
+  <Text fontWeight={500} fontFamily="body" fontSize="12px" {...props} />
 );
+
+export const JsxEditor = ({ liveProviderProps, editorCode, handleCodeChange, language }) => {
+  const { hasCopied, onCopy } = useClipboard(editorCode);
+  return (
+    <LiveProvider {...liveProviderProps}>
+      <Box mb={space('extra-tight')} mt={space('base')}>
+        <Label>Preview</Label>
+      </Box>
+      <LiveCodePreview />
+
+      <Flex justify="space-between" fontFamily="'Inter'" align="flex-end" mb={space('tight')}>
+        <Label>Editable example</Label>
+        <Button onClick={onCopy} size="sm" mode="secondary">
+          {hasCopied ? 'Copied!' : 'Copy example code'}
+        </Button>
+      </Flex>
+      <CodeEditor value={editorCode} onChange={handleCodeChange} language={language} />
+      <Error />
+    </LiveProvider>
+  );
+};
 
 export const Preview = ({ liveProviderProps }) => (
   <Box>
