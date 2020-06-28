@@ -10,19 +10,21 @@ const ModalContext = React.createContext<ModalContextTypes>({
 
 export const useModalState = () => React.useContext(ModalContext);
 
-const Header = ({ component }: WrapperComponentProps) =>
+const Header = React.memo(({ component }: WrapperComponentProps) =>
   component ? (
     <Box borderTopRightRadius="6px" borderTopLeftRadius="6px">
       {component}
     </Box>
-  ) : null;
+  ) : null
+);
 
-const Footer = ({ component }: WrapperComponentProps) =>
+const Footer = React.memo(({ component }: WrapperComponentProps) =>
   component ? (
     <Box borderBottomRightRadius="6px" borderBottomLeftRadius="6px">
       {component}
     </Box>
-  ) : null;
+  ) : null
+);
 
 interface ModalUnderlayProps {
   isOpen?: boolean;
@@ -101,57 +103,59 @@ const ModalCardContainer = React.forwardRef<any, ModalCardContainerProps>(
   )
 );
 
-export const Modal: React.FC<ModalProps> = ({
-  footerComponent: FooterComponent = null,
-  headerComponent: HeaderComponent = null,
-  isOpen = false,
-  children,
-  noAnimation = false,
-  close,
-}) => {
-  const { doCloseModal } = useModalState();
-  const ref = React.useRef(null);
+export const Modal: React.FC<ModalProps> = React.memo(
+  ({
+    footerComponent: FooterComponent = null,
+    headerComponent: HeaderComponent = null,
+    isOpen = false,
+    children,
+    noAnimation = false,
+    close,
+  }) => {
+    const { doCloseModal } = useModalState();
+    const ref = React.useRef(null);
 
-  React.useEffect(() => {
-    const func = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        if (close) {
-          close();
-        } else if (doCloseModal) {
-          doCloseModal();
+    React.useEffect(() => {
+      const func = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          if (close) {
+            close();
+          } else if (doCloseModal) {
+            doCloseModal();
+          }
         }
+      };
+
+      if (isOpen) {
+        typeof window !== 'undefined' &&
+          window?.document?.createElement &&
+          document.addEventListener('keydown', func);
       }
-    };
+      return () => {
+        typeof window !== 'undefined' &&
+          window?.document?.createElement &&
+          document.removeEventListener('keydown', func);
+      };
+    }, [isOpen, close]);
 
-    if (isOpen) {
-      typeof window !== 'undefined' &&
-        window.document &&
-        window.document.createElement &&
-        document.addEventListener('keydown', func);
-    }
-    return () => {
-      typeof window !== 'undefined' &&
-        window.document &&
-        window.document.createElement &&
-        document.removeEventListener('keydown', func);
-    };
-  }, [isOpen, close]);
+    const handler = isOpen ? close || doCloseModal || null : null;
 
-  useOnClickOutside(ref, close || doCloseModal || null);
+    useOnClickOutside(ref, handler);
 
-  return (
-    <>
-      <ModalUnderlay isOpen={isOpen} noAnimation={noAnimation} />
-      <ModalWrapper isOpen={isOpen}>
-        <ModalCardContainer ref={ref} isOpen={isOpen} noAnimation={noAnimation}>
-          <Header component={HeaderComponent} />
-          <Box overflowY="auto">{children}</Box>
-          <Footer component={FooterComponent} />
-        </ModalCardContainer>
-      </ModalWrapper>
-    </>
-  );
-};
+    return (
+      <>
+        <ModalUnderlay isOpen={isOpen} noAnimation={noAnimation} />
+        <ModalWrapper isOpen={isOpen}>
+          <ModalCardContainer ref={ref} isOpen={isOpen} noAnimation={noAnimation}>
+            <Header component={HeaderComponent} />
+            <Box overflowY="auto">{children}</Box>
+            <Footer component={FooterComponent} />
+          </ModalCardContainer>
+        </ModalWrapper>
+      </>
+    );
+  }
+);
 
 export const ModalProvider: React.FC = props => {
   const [isOpen, setIsOpen] = React.useState(false);
