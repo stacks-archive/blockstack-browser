@@ -70,7 +70,7 @@ export const CodeEditor = React.memo((props: CodeEditorProps) => {
       <Box
         className="code-editor"
         bg="ink"
-        borderRadius={['unset', 'unset', '6px', '6px']}
+        borderRadius={['unset', 'unset', '12px', '12px']}
         py="base-tight"
         border="1px solid var(--colors-border)"
         overflowX="auto"

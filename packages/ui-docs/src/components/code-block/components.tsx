@@ -63,7 +63,7 @@ export const JsxEditor = ({ liveProviderProps, editorCode, handleCodeChange, lan
   const { hasCopied, onCopy } = useClipboard(editorCode);
   return (
     <LiveProvider {...liveProviderProps}>
-      <Box mb={space('extra-tight')} mt={space('base')}>
+      <Box mb={space('extra-tight')}>
         <Label>Preview</Label>
       </Box>
       <LiveCodePreview />
@@ -94,8 +94,8 @@ export const SimpleCodeBlock = ({ editorCode, language }) => (
     borderBottom={border()}
     borderLeft={['none', border(), border()]}
     borderRight={['none', border(), border()]}
+    borderRadius={['unset', 'unset', '12px', '12px']}
     code={editorCode}
     language={language}
-    my="base"
   />
 );

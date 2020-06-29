@@ -15,7 +15,8 @@
     "@types/nprogress": "^0.2.0",
     "@types/reach__tooltip": "^0.2.0",
     "mdi-react": "^7.3.0",
-    "next": "^9.4.5-canary.3",
+    "next": "^9.4.5-canary.22",
+    "next-google-fonts": "^1.1.0",
     "next-mdx-enhanced": "^3.0.0",
     "nookies": "^2.3.2",
     "nprogress": "^0.2.0",
@@ -34,8 +35,6 @@
     "remark-slug": "6.0.0",
     "remark-unwrap-images": "2.0.0",
     "store": "^2.0.12",
-    "typeface-fira-code": "^1.1.4",
-    "typeface-inter": "^3.12.0",
     "typescript": "^3.9.5",
     "use-events": "^1.4.1"
   },
@@ -50,9 +49,9 @@
   },
   "private": true,
   "scripts": {
-    "build": "next build && next export -o build",
+    "build": "next telemetry disable && next build && next export -o build",
     "build:analyze": "next telemetry disable && ANALYZE=true next build",
-    "start": "NODE_ENV=production next start",
+    "start": "next telemetry disable && NODE_ENV=production next start",
     "dev": "next dev",
     "export": "next export",
     "lint": "yarn run lint:eslint && yarn run lint:prettier",
@@ -60,6 +59,10 @@
     "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix && prettier --write src/**/*.{ts,tsx} *.js",
     "lint:prettier": "prettier --check \"src/**/*.{ts,tsx,md,mdx}\" *.js *.json",
     "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx,md,mdx}\" *.js *.json"
+  },
+  "resolutions": {
+    "@blockstack/ui": "^2.7.2-beta.2",
+    "preact": "^10.4.4"
   },
   "prettier": "@blockstack/prettier-config"
 }

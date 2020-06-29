@@ -120,6 +120,7 @@ const DocsLayout: React.FC<{ headings?: string[] }> = ({ children, headings }) =
                 px="unset"
                 pt="unset"
                 css={css({
+                  h2: {},
                   '& > *:not(pre):not(ul):not(ol)': {
                     px: space('extra-loose'),
                   },
@@ -131,6 +132,33 @@ const DocsLayout: React.FC<{ headings?: string[] }> = ({ children, headings }) =
                     color: color('accent'),
                     '&:hover': {
                       textDecoration: 'underline',
+                    },
+                  },
+                  pre: {
+                    '& + h2': {
+                      mt: space('base'),
+                    },
+                    '& + h3': {
+                      mt: space('base-tight'),
+                    },
+                  },
+                  'h1, h2, h3, h4, h5, h6': {
+                    '& + pre': {
+                      mt: '0',
+                    },
+                    '& + ul, & + ol': {
+                      mt: '0',
+                    },
+                    '& + blockquote': {
+                      mt: '0',
+                    },
+                  },
+                  blockquote: {
+                    '& + pre': {
+                      mt: '0',
+                    },
+                    '& + h2': {
+                      mt: '0',
                     },
                   },
                   '& > pre > *:not(pre)': {
@@ -147,6 +175,7 @@ const DocsLayout: React.FC<{ headings?: string[] }> = ({ children, headings }) =
                     px: space(['none', 'none', 'extra-loose', 'extra-loose']),
                     border: 'none',
                     boxShadow: 'none',
+                    my: space('extra-loose'),
                   },
                 })}
               >

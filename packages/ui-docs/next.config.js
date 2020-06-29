@@ -41,17 +41,17 @@ module.exports = withBundleAnalyzer(
         const splitChunks = config.optimization && config.optimization.splitChunks;
         if (splitChunks) {
           const cacheGroups = splitChunks.cacheGroups;
-          const preactModules = /[\\/]node_modules[\\/](preact|preact-render-to-string|preact-context-provider)[\\/]/;
+          const test = /[\\/]node_modules[\\/](preact|preact-render-to-string|preact-context-provider)[\\/]/;
           if (cacheGroups.framework) {
             cacheGroups.preact = Object.assign({}, cacheGroups.framework, {
-              test: preactModules,
+              test,
             });
             cacheGroups.commons.name = 'framework';
           } else {
             cacheGroups.preact = {
               name: 'commons',
               chunks: 'all',
-              test: preactModules,
+              test,
             };
           }
         }

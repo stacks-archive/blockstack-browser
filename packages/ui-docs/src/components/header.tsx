@@ -3,7 +3,7 @@ import { Flex, Box, BlockstackIcon, color, space } from '@blockstack/ui';
 import { Link, Text } from '@components/typography';
 import MenuIcon from 'mdi-react/MenuIcon';
 import CloseIcon from 'mdi-react/CloseIcon';
-import { ColorModeButton } from '@components/color-mode-button';
+import { useLockBodyScroll } from '@common/hooks/use-lock-body-scroll';
 import { useMobileMenuState } from '@common/hooks/use-mobile-menu';
 import { SideNav } from './side-nav';
 import GithubIcon from 'mdi-react/GithubIcon';
@@ -42,9 +42,24 @@ const GithubButton = () => (
   </IconButton>
 );
 
-const Header = ({ ...rest }: any) => {
+const MobileSideNav = () => {
   const { isOpen } = useMobileMenuState();
+  useLockBodyScroll(isOpen);
+  return (
+    <SideNav
+      position="fixed"
+      top="50px"
+      maxHeight="calc(100vh - 50px)"
+      width="100%"
+      zIndex={99}
+      bg={color('bg')}
+      display={isOpen ? ['block', 'block', 'none'] : 'none'}
+      border="unset"
+    />
+  );
+};
 
+const Header = ({ ...rest }: any) => {
   return (
     <>
       <Flex
@@ -83,16 +98,7 @@ const Header = ({ ...rest }: any) => {
           <MenuButton />
         </Flex>
       </Flex>
-      <SideNav
-        position="fixed"
-        top="50px"
-        maxHeight="calc(100vh - 50px)"
-        width="100%"
-        zIndex={99}
-        bg={color('bg')}
-        display={isOpen ? ['block', 'block', 'none'] : 'none'}
-        border="unset"
-      />
+      <MobileSideNav />
     </>
   );
 };

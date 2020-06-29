@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, space, BoxProps, color } from '@blockstack/ui';
 import css from '@styled-system/css';
-import CodeBlock from '../code-block';
+import dynamic from 'next/dynamic';
 import {
   Heading,
   Pre,
@@ -12,15 +12,19 @@ import {
   InlineCode,
 } from '@components/mdx/components';
 import { Text } from '@components/typography';
-import { border, onlyText, slugify } from '@common/utils';
+import { border } from '@common/utils';
+
+const CodeBlock = dynamic(() => import('../code-block'));
 
 const BaseHeading: React.FC<BoxProps> = React.memo(props => (
-  <Heading width="100%" mt={space('base-loose')} mb={space('tight')} {...props} />
+  <Heading width="100%" mt={space('base-loose')} {...props} />
 ));
 
 const H1: React.FC<BoxProps> = props => <BaseHeading as="h1" mb={space('base-tight')} {...props} />;
-const H2: React.FC<BoxProps> = props => <BaseHeading as="h2" {...props} />;
-const H3: React.FC<BoxProps> = props => <BaseHeading as="h3" {...props} />;
+const H2: React.FC<BoxProps> = props => (
+  <BaseHeading as="h2" mt={space('extra-loose')} mb={space('base')} {...props} />
+);
+const H3: React.FC<BoxProps> = props => <BaseHeading as="h3" mb={space('base')} {...props} />;
 const H4: React.FC<BoxProps> = props => <BaseHeading as="h4" {...props} />;
 const H5: React.FC<BoxProps> = props => <BaseHeading as="h5" {...props} />;
 const H6: React.FC<BoxProps> = props => <BaseHeading as="h6" {...props} />;
@@ -32,22 +36,22 @@ const Hr: React.FC<BoxProps> = props => (
     borderTopWidth="1px"
     borderColor={color('border')}
     my={space('extra-loose')}
+    mx={space('extra-loose')}
     {...props}
   />
 );
 
 const P: React.FC<BoxProps> = props => <Text display="block" as="p" {...props} />;
 const Ol: React.FC<BoxProps> = props => (
-  <Box pt={space('base')} pl={space('base')} as="ol" {...props} />
+  <Box pl={space('base')} mt={space('base')} mb={space('base-tight')} as="ol" {...props} />
 );
 const Ul: React.FC<BoxProps> = props => (
-  <Box pt={space('base')} pl={space('base-loose')} mb={space('base')} as="ul" {...props} />
+  <Box pl={space('base-loose')} mt={space('base')} mb={space('base-tight')} as="ul" {...props} />
 );
 const Li: React.FC<BoxProps> = props => <Box as="li" pb={space('tight')} {...props} />;
 const BlockQuote: React.FC<BoxProps> = ({ children, ...rest }) => (
-  <Box display="block" mt={space('base-tight')} mb={space('base-loose')} {...rest}>
+  <Box as="blockquote" display="block" my={space('extra-loose')} {...rest}>
     <Box
-      as="blockquote"
       border="1px solid"
       css={css({
         border: border(),

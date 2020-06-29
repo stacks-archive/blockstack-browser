@@ -77,7 +77,7 @@ export const ColorPalettes = ({ color }) => {
 
 export const Colors = ({ colors = ['blue', 'ink', 'feedback', 'darken'], ...rest }: any) => {
   return (
-    <Flex width="100%" flexWrap="wrap" flexDirection={['row']}>
+    <Flex width="100%" flexWrap="wrap" mb={space('base')} flexDirection={['row']}>
       {colors.map((color, index) => {
         return (
           <ColorWrapper key={color} isOdd={Math.abs((index + 1) % 2) === 1}>

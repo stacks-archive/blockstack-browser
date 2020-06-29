@@ -238,7 +238,7 @@ const Hashtag = () => (
 );
 
 export const Heading = ({ as, children, id, ...rest }: FlexProps) => {
-  const [isActive, setActiveSlug, url] = useActiveHeading(id);
+  const [isActive, setActiveSlug] = useActiveHeading(id);
   const [isHovered, bind] = useHover();
 
   const link = `#${id}`;

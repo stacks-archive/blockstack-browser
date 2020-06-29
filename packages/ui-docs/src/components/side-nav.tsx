@@ -32,6 +32,7 @@ const Wrapper = ({ width = '200px', children, ...rest }: any) => (
       height="calc(100vh - 50px)"
       overflow="auto"
       borderRight={['none', border(), border()]}
+      pb={space('base-loose')}
     >
       {children}
     </Box>
@@ -52,9 +53,11 @@ const LinkItem = React.forwardRef(({ isActive, ...rest }: any, ref) => (
     }
     color={isActive ? color('accent') : color('text-body')}
     fontWeight={isActive ? 'semibold' : 'normal'}
-    fontSize="14px"
-    lineHeight="18px"
+    fontSize={['16px', '16px', '14px']}
+    lineHeight="20px"
     as="a"
+    display="block"
+    py={space(['extra-tight', 'extra-tight', 'extra-tight'])}
     {...rest}
   />
 ));

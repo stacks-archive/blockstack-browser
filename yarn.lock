@@ -2819,10 +2819,10 @@
   resolved "https://registry.yarnpkg.com/@next/mdx/-/mdx-9.4.4.tgz#ad1da5ecd2f3ee4b07fdf9a938441efffd58af6b"
   integrity sha512-d1WPPxube7kgQo5JjfiFxPoK+set0OBCNeIJnF8TN176v4SsFNngfB4I5RIxsdXqD7aPzWeFcxCGGGvbzjKa8A==
 
-"@next/react-dev-overlay@9.4.5-canary.17":
-  version "9.4.5-canary.17"
-  resolved "https://registry.yarnpkg.com/@next/react-dev-overlay/-/react-dev-overlay-9.4.5-canary.17.tgz#a8f4662d488488fd4b26ef549bdf0659d62a3ada"
-  integrity sha512-OQck07R/+8vvy4+8JzIrtfBbWulM8winFG+wCNMRKVOe6kGfx87gS17FK8pph6PNL5WW4W++4g6lB/nGRfO6ag==
+"@next/react-dev-overlay@9.4.5-canary.22":
+  version "9.4.5-canary.22"
+  resolved "https://registry.yarnpkg.com/@next/react-dev-overlay/-/react-dev-overlay-9.4.5-canary.22.tgz#e6af22c5f79a3e7829ad9463ce561f78343f7c3d"
+  integrity sha512-lvnpTE1szHckvD8GY0d6pBM3PphpAWXkxc4R7zKj1YsTMFvItEjlwOIQ0qCvhDwXqvTYj0mJDbAs+f3MCJe0Jg==
   dependencies:
     "@babel/code-frame" "7.8.3"
     ally.js "1.4.1"
@@ -2835,10 +2835,10 @@
     stacktrace-parser "0.1.10"
     strip-ansi "6.0.0"
 
-"@next/react-refresh-utils@9.4.5-canary.17":
-  version "9.4.5-canary.17"
-  resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-9.4.5-canary.17.tgz#5ca98bbf7cf656ff683d7f35de9404f637cf69d7"
-  integrity sha512-S1zSBBO5D5exjpA4yH5oe9xmpDVwaeH5iX/swAySMqct/5C0OoHsSvkb+EcBybBDpFZp2iiUFZyx0M0yS4GpLA==
+"@next/react-refresh-utils@9.4.5-canary.22":
+  version "9.4.5-canary.22"
+  resolved "https://registry.yarnpkg.com/@next/react-refresh-utils/-/react-refresh-utils-9.4.5-canary.22.tgz#5038d501238beaf77d5ab2b2f52edc910e192866"
+  integrity sha512-hHHsw2cEMb7U+3XCWiKIE7e7HqvbFE6hdPVhYDziGFt8ygrq9GAHpjxcxCFD5Zo1dfYMhg/WeE0FvDztJuLYpg==
 
 "@nodelib/fs.stat@^1.1.2":
   version "1.1.3"
@@ -12691,10 +12691,10 @@ napi-build-utils@^1.0.1:
   resolved "https://registry.yarnpkg.com/napi-build-utils/-/napi-build-utils-1.0.2.tgz#b1fddc0b2c46e380a0b7a76f984dd47c41a13806"
   integrity sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==
 
-native-url@0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/native-url/-/native-url-0.3.1.tgz#5045c65d0eb4c3ee548d48e3cb50797eec5a3c54"
-  integrity sha512-VL0XRW8nNBdSpxqZCbLJKrLHmIMn82FZ8pJzriJgyBmErjdEtrUX6eZAJbtHjlkMooEWUV+EtJ0D5tOP3+1Piw==
+native-url@0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/native-url/-/native-url-0.3.3.tgz#09300f35416a49f79f6f8ab9e3c05c53c2873666"
+  integrity sha512-EEHLiNEIgcTjctwlREZjUT1vdMlrmug+fr0sQ3hoP9+cO3cyhd5fJ0GTnINcnv9LtXL+NdovWNUMDIfW98l2eA==
   dependencies:
     querystring "^0.2.0"
 
@@ -12712,6 +12712,11 @@ neo-async@2.6.1, neo-async@^2.5.0, neo-async@^2.6.0, neo-async@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
+
+next-google-fonts@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/next-google-fonts/-/next-google-fonts-1.1.0.tgz#845fb024994f219fd3bdf940b0a6890c0e090ce4"
+  integrity sha512-EpgqiJkpb93k+bprZo4HDsS1yCXBS4imyysQOjtDvAt1eUWZUWcXdbevrNte7V43GQrDL1Gkmeg2rut9anlOYw==
 
 next-mdx-enhanced@^3.0.0:
   version "3.0.0"
@@ -12740,10 +12745,10 @@ next-transpile-modules@^3.3.0:
     micromatch "^4.0.2"
     slash "^3.0.0"
 
-next@^9.4.5-canary.3:
-  version "9.4.5-canary.17"
-  resolved "https://registry.yarnpkg.com/next/-/next-9.4.5-canary.17.tgz#94938c9bd4936672a92c930491989b3a316ba4c1"
-  integrity sha512-gcwqtrYb/tErf5DgovcrYWB/4oQdXNbf8Kzk62LbXN1tteIMneusXfyrwbGSps/dzhh9xTT/nVQd6W3qE6wQJA==
+next@^9.4.5-canary.22:
+  version "9.4.5-canary.22"
+  resolved "https://registry.yarnpkg.com/next/-/next-9.4.5-canary.22.tgz#19fccbada8651eeaeaa763cafeaeb8583f755614"
+  integrity sha512-4auk4fGSiSdEsDZueJoBCRMWXNK1NmYhd29NnaseGsdTjNISqEsnzSoVc1bxYW71Nbh/YlD6QnnEgwL5rqH83w==
   dependencies:
     "@ampproject/toolbox-optimizer" "2.5.3"
     "@babel/code-frame" "7.8.3"
@@ -12763,8 +12768,8 @@ next@^9.4.5-canary.3:
     "@babel/preset-typescript" "7.9.0"
     "@babel/runtime" "7.9.6"
     "@babel/types" "7.9.6"
-    "@next/react-dev-overlay" "9.4.5-canary.17"
-    "@next/react-refresh-utils" "9.4.5-canary.17"
+    "@next/react-dev-overlay" "9.4.5-canary.22"
+    "@next/react-refresh-utils" "9.4.5-canary.22"
     babel-plugin-syntax-jsx "6.18.0"
     babel-plugin-transform-define "2.0.0"
     babel-plugin-transform-react-remove-prop-types "0.4.24"
@@ -12777,7 +12782,7 @@ next@^9.4.5-canary.3:
     loader-utils "2.0.0"
     mini-css-extract-plugin "0.8.0"
     mkdirp "0.5.3"
-    native-url "0.3.1"
+    native-url "0.3.3"
     neo-async "2.6.1"
     pnp-webpack-plugin "1.6.4"
     postcss "7.0.29"
@@ -17857,16 +17862,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-
-typeface-fira-code@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/typeface-fira-code/-/typeface-fira-code-1.1.4.tgz#ef36e81c43af0d01a69c15191da416467055d873"
-  integrity sha512-RInwMBx+jPn42hsPAzu6DWyoReLHximaMix5/brUJGPpthPs1QRH6qCXuUrndnLi1dqV551bb+qepudVygFDMQ==
-
-typeface-inter@^3.12.0:
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/typeface-inter/-/typeface-inter-3.12.0.tgz#3cd7cdae730daa73cc01e88fdbe27601dc7c4fd7"
-  integrity sha512-3vKBTKCl6S0OJhMKwmyAOodsfTD3Gxsrj5ReavpQmdZ385ecUr3swfNxiBZ4u594mNfojlqL/zUebavV3A1yCA==
 
 typeforce@^1.11.3, typeforce@^1.11.5:
   version "1.18.0"
