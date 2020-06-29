@@ -77,7 +77,9 @@ module.exports = {
   },
   output: {
     path: distRootPath,
-    chunkFilename: !isDevelopment ? '[name].[contenthash:8].chunk.js' : isDevelopment && '[name].chunk.js',
+    chunkFilename: !isDevelopment
+      ? '[name].[contenthash:8].chunk.js'
+      : isDevelopment && '[name].chunk.js',
     filename: () => {
       if (extEnv === 'prod' || isDevelopment) {
         return '[name].js';
@@ -86,7 +88,7 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.js', '.ts', '.tsx', '.json'],
+    extensions: ['.js', '.ts', '.tsx', '.json', '.d.ts'],
     plugins: [new TsconfigPathsPlugin()],
     alias: aliases,
   },
@@ -233,7 +235,9 @@ module.exports = {
       STATS_URL: JSON.stringify(statsURL),
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
-    isDevelopment && extEnv === 'web' && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
+    isDevelopment &&
+      extEnv === 'web' &&
+      new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
   ].filter(Boolean),
 };
 

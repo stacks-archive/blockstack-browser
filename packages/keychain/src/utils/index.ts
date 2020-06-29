@@ -2,6 +2,8 @@ import { BIP32Interface } from 'bitcoinjs-lib';
 import IdentityAddressOwnerNode from '../nodes/identity-address-owner-node';
 import { createSha2Hash } from 'blockstack/lib/encryption/sha2Hash';
 import { publicKeyToAddress } from 'blockstack/lib/keys';
+import '../types/zone-file';
+import { parseZoneFile } from 'zone-file';
 import Identity from '../identity';
 import { AssertionError } from 'assert';
 import { Subdomains, registrars } from '../profiles';
@@ -240,4 +242,20 @@ export const validateSubdomain = async (
   }
 
   return null;
+};
+
+interface NameInfoResponse {
+  address: string;
+  zonefile: string;
+}
+
+export const getProfileURLFromZoneFile = async (name: string) => {
+  const url = `https://core.blockstack.org/v1/names/${name}`;
+  const res = await fetch(url);
+  if (res.ok) {
+    const nameInfo: NameInfoResponse = await res.json();
+    const zone = parseZoneFile(nameInfo.zonefile);
+    return zone.uri[0].target;
+  }
+  return;
 };

@@ -2,7 +2,7 @@ import './setup';
 import { makeECPrivateKey, getPublicKeyFromPrivate } from 'blockstack/lib/keys';
 import { decryptPrivateKey } from 'blockstack/lib/auth/authMessages';
 import { decodeToken } from 'jsontokens';
-import { getIdentity, profileResponse } from './helpers';
+import { getIdentity, profileResponse, nameInfoResponse } from './helpers';
 import { ecPairToAddress } from 'blockstack';
 import { ECPair } from 'bitcoinjs-lib';
 import { getAddress } from '../src';
@@ -41,6 +41,8 @@ test('adds to apps in profile if publish_data scope', async () => {
     .once(JSON.stringify({}), { status: 404 })
     .once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/' }))
     .once(JSON.stringify({ read_url_prefix: 'https://gaia.blockstack.org/hub/' }))
+    .once(JSON.stringify({}))
+    .once(JSON.stringify({}))
     .once(JSON.stringify({}));
   const identity = await getIdentity();
   const appDomain = 'https://banter.pub';
@@ -92,16 +94,25 @@ test('gets default profile URL', async () => {
   );
 });
 
+test('can get a profile URL from a zone file', async () => {
+  const identity = await getIdentity();
+  fetchMock.once(JSON.stringify(nameInfoResponse));
+  const profileURL = await identity.profileUrl('asdf');
+  return;
+});
+
 describe('refresh', () => {
   test('can fetch names for an identity', async () => {
     const identity = await getIdentity();
 
     fetchMock.once(JSON.stringify({ names: ['myname.id'] }));
+    fetchMock.once(JSON.stringify(nameInfoResponse));
     fetchMock.once(JSON.stringify(profileResponse));
 
     await identity.refresh();
     expect(identity.defaultUsername).toEqual('myname.id');
     expect(identity.usernames).toEqual(['myname.id']);
+    expect(identity.profile).toBeTruthy();
   });
 
   test('can fetch multiple usernames', async () => {

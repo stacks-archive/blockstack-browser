@@ -1673,6 +1673,27 @@
     sha.js "^2.4.11"
     smart-buffer "^4.1.0"
 
+"@blockstack/stacks-transactions@^0.4.6":
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/@blockstack/stacks-transactions/-/stacks-transactions-0.4.6.tgz#b774250fbaadbadf42313a82fbd628b1728cd6ed"
+  integrity sha512-3Hb+v0ZmG5bVZHasfM9KzlwK+2e5r6oKsKk0eRgavLb5bBMQy/cw0YYoUWmt+ipNqDP5ssZgoOA1KKRhoSWvXg==
+  dependencies:
+    "@types/bn.js" "^4.11.6"
+    "@types/elliptic" "^6.4.12"
+    "@types/lodash" "^4.14.149"
+    "@types/randombytes" "^2.0.0"
+    "@types/ripemd160" "^2.0.0"
+    "@types/sha.js" "^2.4.0"
+    bn.js "^4.11.8"
+    c32check "^1.0.1"
+    cross-fetch "^3.0.4"
+    elliptic "^6.5.2"
+    lodash "^4.17.15"
+    randombytes "^2.1.0"
+    ripemd160 "^2.0.2"
+    sha.js "^2.4.11"
+    smart-buffer "^4.1.0"
+
 "@blockstack/stats@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@blockstack/stats/-/stats-0.7.0.tgz#be39d3e76c2a16c1cd1283aa702d1e20b5e04645"
@@ -5429,6 +5450,32 @@ blockstack@21.0.0:
     ripemd160-min "0.0.5"
     schema-inspector "^1.6.8"
     sha.js "^2.4.11"
+    tslib "^1.10.0"
+    uuid "^3.3.3"
+    zone-file "^1.0.0"
+
+blockstack@21.0.0-alpha.2:
+  version "21.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/blockstack/-/blockstack-21.0.0-alpha.2.tgz#1f223387df24b5770d5e7ec4031df52b8014ca11"
+  integrity sha512-I7FQTYU78H/Eok/is0G79dSaQ7tD0DuKGKRCihHDdAKHYGeiTIZyHQ8fyK3NL8yEoRzRoIlCPEefCQgh/no6hg==
+  dependencies:
+    "@types/cheerio" "^0.22.13"
+    "@types/elliptic" "^6.4.10"
+    "@types/node" "^12.7.12"
+    "@types/randombytes" "^2.0.0"
+    ajv "^4.11.5"
+    bip39 "^3.0.2"
+    bitcoinjs-lib "^5.1.6"
+    bn.js "^4.11.8"
+    cross-fetch "^3.0.4"
+    elliptic "^6.5.1"
+    form-data "^2.5.1"
+    jsontokens "3.0.0-alpha.0"
+    query-string "^6.8.3"
+    randombytes "^2.1.0"
+    request "^2.88.0"
+    ripemd160-min "0.0.5"
+    schema-inspector "^1.6.8"
     tslib "^1.10.0"
     uuid "^3.3.3"
     zone-file "^1.0.0"
@@ -11923,6 +11970,18 @@ jsontokens@3.0.0, jsontokens@^3.0.0:
     elliptic "^6.4.1"
     sha.js "^2.4.11"
 
+jsontokens@3.0.0-alpha.0:
+  version "3.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/jsontokens/-/jsontokens-3.0.0-alpha.0.tgz#16d04a2019a6dbe2392e4eeb489ac47ec3d855d7"
+  integrity sha512-+2JdFr2d3XBfamUnETQdv76u3AwBl8jmLp2Hgb/uK5NTys0FpoR5KbIIqv3QrXtjn0uIIPJz9JmhqDAnXd2Nhg==
+  dependencies:
+    "@types/elliptic" "^6.4.9"
+    asn1.js "^5.0.1"
+    base64url "^3.0.1"
+    ecdsa-sig-formatter "^1.0.11"
+    elliptic "^6.4.1"
+    key-encoder "^2.0.3"
+
 jsprim@^1.2.2:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/jsprim/-/jsprim-1.4.1.tgz#313e66bc1e5cc06e438bc1b7499c2e5c56acb6a2"
@@ -11940,6 +11999,16 @@ jsx-ast-utils@^2.2.3, jsx-ast-utils@^2.4.1:
   dependencies:
     array-includes "^3.1.1"
     object.assign "^4.1.0"
+
+key-encoder@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/key-encoder/-/key-encoder-2.0.3.tgz#77073bb48ff1fe2173bb2088b83b91152c8fa4ba"
+  integrity sha512-fgBtpAGIr/Fy5/+ZLQZIPPhsZEcbSlYu/Wu96tNDFNSjSACw5lEIOFeaVdQ/iwrb8oxjlWi6wmWdH76hV6GZjg==
+  dependencies:
+    "@types/elliptic" "^6.4.9"
+    asn1.js "^5.0.1"
+    bn.js "^4.11.8"
+    elliptic "^6.4.1"
 
 killable@^1.0.1:
   version "1.0.1"

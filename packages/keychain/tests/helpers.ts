@@ -65,3 +65,17 @@ export const profileResponse = [
     },
   },
 ];
+
+export const nameInfoResponse = {
+  address: '1J3PUxY5uDShUnHRrMyU6yKtoHEUPhKULs',
+  blockchain: 'bitcoin',
+  expire_block: 599266,
+  grace_period: false,
+  last_txid: '1edfa419f7b83f33e00830bc9409210da6c6d1db60f99eda10c835aa339cad6b',
+  renewal_deadline: 604266,
+  resolver: null,
+  status: 'registered',
+  zonefile:
+    '$ORIGIN muneeb.id\n$TTL 3600\n_http._tcp IN URI 10 1 "https://gaia.blockstack.org/hub/1J3PUxY5uDShUnHRrMyU6yKtoHEUPhKULs/0/profile.json"\n',
+  zonefile_hash: '37aecf837c6ae9bdc9dbd98a268f263dacd00361',
+};

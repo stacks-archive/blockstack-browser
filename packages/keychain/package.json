@@ -65,7 +65,8 @@
     "c32check": "^1.0.1",
     "jsontokens": "^3.0.0",
     "prettier": "^2.0.5",
-    "triplesec": "^3.0.27"
+    "triplesec": "^3.0.27",
+    "zone-file": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"

@@ -9,7 +9,7 @@ import {
 import { Subdomains, registrars, Wallet, decrypt } from '../src';
 import { mnemonicToSeed } from 'bip39';
 import { bip32 } from 'bitcoinjs-lib';
-import { profileResponse } from './helpers';
+import { profileResponse, nameInfoResponse } from './helpers';
 import { ChainID } from '@blockstack/stacks-transactions';
 
 describe(validateSubdomainFormat.name, () => {
@@ -101,12 +101,16 @@ test('recursively makes identities', async () => {
 
   fetchMock
     .once(JSON.stringify({ names: ['myname.id'] }))
+    .once(JSON.stringify(nameInfoResponse))
     .once(JSON.stringify(profileResponse))
     .once(JSON.stringify({ names: ['myname2.id'] }))
+    .once(JSON.stringify(nameInfoResponse))
     .once(JSON.stringify(profileResponse))
     .once(JSON.stringify({ names: ['myname3.id'] }))
+    .once(JSON.stringify(nameInfoResponse))
     .once(JSON.stringify(profileResponse))
     .once(JSON.stringify({ names: [] }))
+    .once('', { status: 404 })
     .once(JSON.stringify(profileResponse));
   const identities = await recursiveRestoreIdentities({ rootNode });
   expect(identities[0].defaultUsername).toEqual('myname.id');

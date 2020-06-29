@@ -1,6 +1,7 @@
 import { bip32, ECPair } from 'bitcoinjs-lib';
 import { getPublicKeyFromPrivate } from 'blockstack/lib/keys';
 import { makeAuthResponse } from 'blockstack/lib/auth/authMessages';
+import { getProfileURLFromZoneFile } from './utils';
 
 import { IdentityKeyPair } from './utils/index';
 import {
@@ -116,9 +117,17 @@ export class Identity {
     return appsNode.getAppPrivateKey(appDomain);
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async profileUrl(gaiaUrl: string) {
-    // future proofing for code that may require network requests to find profile
+  async profileUrl(gaiaUrl: string): Promise<string> {
+    if (this.defaultUsername) {
+      try {
+        const url = await getProfileURLFromZoneFile(this.defaultUsername);
+        if (url) return url;
+      } catch (error) {
+        if (process.env.NODE_ENV !== 'test') {
+          console.warn('Error fetching profile URL from zone file:', error);
+        }
+      }
+    }
     return `${gaiaUrl}${this.address}/profile.json`;
   }
 
@@ -135,10 +144,7 @@ export class Identity {
    */
   async refresh(opts: RefreshOptions = { gaiaUrl: DEFAULT_GAIA_HUB }) {
     try {
-      const [names, profile] = await Promise.all([
-        this.fetchNames(),
-        fetchProfile({ identity: this, gaiaUrl: opts.gaiaUrl }),
-      ]);
+      const names = await this.fetchNames();
       if (names) {
         if (names[0] && !this.defaultUsername) {
           this.defaultUsername = names[0];
@@ -150,6 +156,7 @@ export class Identity {
           }
         });
       }
+      const profile = await fetchProfile({ identity: this, gaiaUrl: opts.gaiaUrl });
       if (profile) {
         this.profile = profile;
       }
