@@ -19,7 +19,7 @@ import { AppState } from '@store';
 import {
   selectDecodedAuthRequest,
   selectAuthRequest,
-  selectAppIcon,
+  selectFullAppIcon,
   selectAppName,
   selectCurrentScreen,
 } from './selectors';
@@ -146,7 +146,7 @@ export function doFinishSignIn(
     const decodedAuthRequest = selectDecodedAuthRequest(state);
     const authRequest = selectAuthRequest(state);
     const wallet = selectCurrentWallet(state);
-    const appIcon = selectAppIcon(state);
+    const appIcon = selectFullAppIcon(state);
     const appName = selectAppName(state);
     if (!decodedAuthRequest || !authRequest || !identities || !wallet) {
       console.error('Uh oh! Finished onboarding without auth info.');

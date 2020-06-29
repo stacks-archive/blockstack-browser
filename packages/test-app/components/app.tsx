@@ -4,7 +4,7 @@ import { ThemeProvider, Box, theme, Text, Flex, CSSReset, Button, Stack } from '
 import { Connect, AuthOptions, useConnect } from '@blockstack/connect';
 import { UserSession, AppConfig } from 'blockstack';
 
-const icon = `${document.location.origin}/assets/messenger-app-icon.png`;
+const icon = `/assets/messenger-app-icon.png`;
 let authOrigin = 'http://localhost:8080';
 // In order to have deploy previews use the same version of the authenticator,
 // we detect if this is a 'deploy preview' and change the origin to point to the
