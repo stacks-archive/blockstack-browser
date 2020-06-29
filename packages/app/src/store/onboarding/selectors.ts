@@ -21,3 +21,19 @@ export const selectAppURL = (state: AppState) => state.onboarding.appURL;
 export const selectOnboardingProgress = (state: AppState) => state.onboarding.onboardingInProgress;
 
 export const selectOnboardingPath = (state: AppState) => state.onboarding.onboardingPath;
+
+/**
+ * Select the fully qualified app icon. This allows developers to pass
+ * a relative icon path in their `appDetails`.
+ */
+export const selectFullAppIcon = (state: AppState) => {
+  let icon = selectAppIcon(state);
+  const authRequest = selectDecodedAuthRequest(state);
+  const absoluteURLPattern = /^https?:\/\//i;
+  if (authRequest?.redirect_uri && icon && !absoluteURLPattern.test(icon)) {
+    const url = new URL(authRequest.redirect_uri);
+    url.pathname = icon;
+    icon = url.toString();
+  }
+  return icon;
+};
