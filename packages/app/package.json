@@ -20,7 +20,7 @@
     "test:watch": "jest --watch",
     "typecheck": "tsc --noEmit"
   },
-  "version": "1.10.1",
+  "version": "1.10.2",
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/connect": "^2.7.7",
