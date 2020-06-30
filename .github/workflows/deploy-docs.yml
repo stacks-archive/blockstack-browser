@@ -1,18 +1,36 @@
-name: Deploy ui docs
+name: Deploy UI Docs
 on:
+  push:
+    branches:
+      - master
   pull_request:
-    paths: packages/ui-docs/**
+    paths:
+      - packages/ui-docs/**
+      - packages/ui/**
+
 jobs:
-  docs-deploy:
+  vercel-deployment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: amondnet/vercel-action@v19.0.1+1
-        id: vercel-action
+        id: vercel-deployment-preview
+        if: github.event_name == 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
+          scope: ${{ secrets.VERCEL_SCOPE }}
+          working-directory: packages/ui-docs
+      - uses: amondnet/vercel-action@v19.0.1+1
+        id: vercel-deployment-production
+        if: github.event_name == 'push'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: '--prod'
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/ui-docs
