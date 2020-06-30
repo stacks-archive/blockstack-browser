@@ -1,7 +1,9 @@
 import { Children, isValidElement, ReactNode, ReactElement, ReactText } from 'react';
 
 import { BorderStyleProperty } from 'csstype';
-import { ColorsStringLiteral, color } from '@blockstack/ui';
+import { color } from '@blockstack/ui';
+import { ColorsStringLiteral } from '@blockstack/ui';
+
 const camelToKebab = (string: string) =>
   string
     .toString()

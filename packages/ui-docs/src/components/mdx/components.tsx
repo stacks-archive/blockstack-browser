@@ -238,13 +238,13 @@ const Hashtag = () => (
 );
 
 export const Heading = ({ as, children, id, ...rest }: FlexProps) => {
-  const [isActive, setActiveSlug] = useActiveHeading(id);
+  const { isActive, doChangeActiveSlug, doChangeSlugInView } = useActiveHeading(id);
   const [isHovered, bind] = useHover();
 
   const link = `#${id}`;
 
   const handleLinkClick = () => {
-    setActiveSlug(id);
+    doChangeActiveSlug(id);
   };
 
   return (

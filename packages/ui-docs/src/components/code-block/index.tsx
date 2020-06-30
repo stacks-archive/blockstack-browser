@@ -3,9 +3,15 @@ import { mdx } from '@mdx-js/react';
 import * as BlockstackUI from '@blockstack/ui';
 import 'prismjs/components/prism-jsx';
 import { JsxEditor, SimpleCodeBlock, Preview } from '@components/code-block/components';
+import { useForceUpdate } from '@blockstack/ui';
 
-const CodeBlock = ({ className, live = true, isManual, render, children, ...props }) => {
+export const CodeBlock = ({ className, live = true, isManual, render, children, ...props }) => {
   const [editorCode, setEditorCode] = useState(children.trim());
+
+  const update = useForceUpdate();
+  React.useEffect(() => {
+    update();
+  }, []);
 
   const language = className && className.replace(/language-/, '');
 

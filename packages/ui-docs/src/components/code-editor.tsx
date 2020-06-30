@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import Editor from 'react-simple-code-editor';
 import { createGlobalStyle } from 'styled-components';

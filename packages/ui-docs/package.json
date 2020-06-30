@@ -2,7 +2,7 @@
   "name": "@blockstack/ui-docs",
   "version": "0.1.9",
   "dependencies": {
-    "@blockstack/ui": "^2.7.2-beta.2",
+    "@blockstack/ui": "2.7.2-beta.2",
     "@mdx-js/loader": "1.6.6",
     "@mdx-js/mdx": "^1.6.6",
     "@mdx-js/react": "^1.6.6",
@@ -29,6 +29,7 @@
     "react-live": "^2.2.2",
     "react-simple-code-editor": "^0.11.0",
     "react-ssr-prepass": "npm:preact-ssr-prepass@^1.0.1",
+    "react-waypoint": "^9.0.3",
     "remark-emoji": "2.1.0",
     "remark-external-links": "^6.1.0",
     "remark-images": "2.0.0",
@@ -61,7 +62,6 @@
     "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx,md,mdx}\" *.js *.json"
   },
   "resolutions": {
-    "@blockstack/ui": "^2.7.2-beta.2",
     "preact": "^10.4.4"
   },
   "prettier": "@blockstack/prettier-config"

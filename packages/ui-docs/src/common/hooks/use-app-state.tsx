@@ -4,6 +4,7 @@ import { State } from '@components/app-state/types';
 
 interface UseAppStateReturn extends State {
   doChangeActiveSlug: (activeSlug: string) => void;
+  doChangeSlugInView: (slugInView: string) => void;
 }
 
 export const useAppState = (): UseAppStateReturn => {
@@ -18,9 +19,19 @@ export const useAppState = (): UseAppStateReturn => {
     []
   );
 
+  const doChangeSlugInView = React.useCallback(
+    (slugInView: string) =>
+      setState((state: State) => ({
+        ...state,
+        slugInView,
+      })),
+    []
+  );
+
   return {
     ...rest,
     doChangeActiveSlug,
+    doChangeSlugInView,
     setState,
   };
 };

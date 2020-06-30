@@ -18,9 +18,9 @@ export const Caption: React.FC<BoxProps> = props => (
   />
 );
 
-export const Title: React.FC<BoxProps> = props => (
-  <Text display="inline-block" color={color('text-title')} {...props} />
-);
+export const Title: React.FC<BoxProps> = React.forwardRef((props, ref) => (
+  <Text ref={ref} display="inline-block" color={color('text-title')} {...props} />
+));
 
 export const SectionTitle: React.FC<BoxProps> = props => (
   <Title lineHeight="28px" fontSize="20px" fontWeight="500" {...props} />

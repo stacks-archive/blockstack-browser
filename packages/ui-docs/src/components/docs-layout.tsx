@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, color, space } from '@blockstack/ui';
+import { Flex, color, space } from '@blockstack/ui';
 import { SideNav } from './side-nav';
 import { Header } from './header';
 import { Main } from './main';
@@ -9,10 +9,8 @@ import { WaffleHeader } from './waffle-header';
 import { ContentWrapper } from './content-wrapper';
 import NotFoundPage from '@pages/404';
 import { createGlobalStyle } from 'styled-components';
-import { slugify } from '@common/utils';
-import { Text } from '@components/typography';
-import { Link } from '@components/mdx';
-import { useActiveHeading } from '@common/hooks/use-active-heading';
+import { TableOfContents } from '@components/toc';
+
 import { css } from '@styled-system/css';
 export const MdxOverrides = createGlobalStyle`
 
@@ -30,54 +28,6 @@ p, ul, ol, table {
   }
 }
 `;
-
-const Item = ({ slug, label }) => {
-  const [isActive, setActiveSlug] = useActiveHeading(slug);
-
-  return (
-    <Box py={space('extra-tight')}>
-      <Link
-        href={`#${slug}`}
-        fontSize="14px"
-        color={isActive ? color('text-title') : color('text-caption')}
-        fontWeight={isActive ? '600' : '400'}
-        onClick={() => setActiveSlug(slug)}
-        textDecoration="none"
-        _hover={{
-          textDecoration: 'underline',
-          color: color('accent'),
-        }}
-        pointerEvents={isActive ? 'none' : 'unset'}
-      >
-        {label}
-      </Link>
-    </Box>
-  );
-};
-
-const TableOfContents = ({ headings }: { headings?: string[] }) => {
-  return (
-    <Box position="relative">
-      <Box
-        mt="50px"
-        flexShrink={0}
-        display={['none', 'none', 'block', 'block']}
-        minWidth={['100%', '200px', '200px']}
-        position="sticky"
-        top="118px"
-      >
-        <Box mb={space('extra-tight')}>
-          <Text fontWeight="bold" fontSize="14px">
-            On this page
-          </Text>
-        </Box>
-        {headings.map((heading, index) => {
-          return index > 0 ? <Item slug={slugify(heading)} label={heading} key={index} /> : null;
-        })}
-      </Box>
-    </Box>
-  );
-};
 
 const DocsLayout: React.FC<{ headings?: string[] }> = ({ children, headings }) => {
   const router = useRouter();
