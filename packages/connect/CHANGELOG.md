@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.8](https://github.com/blockstack/ux/compare/@blockstack/connect@2.7.7...@blockstack/connect@2.7.8) (2020-06-30)
+
+
+### Bug Fixes
+
+* replace Connect README with link to documentation; resolve [#423](https://github.com/blockstack/ux/issues/423) ([ac0d2e9](https://github.com/blockstack/ux/commit/ac0d2e9afc1c9853948a04f6504b80d64f75ddbe))
+
+
+
+
+
 ## [2.7.7](https://github.com/blockstack/ux/compare/@blockstack/connect@2.7.6...@blockstack/connect@2.7.7) (2020-06-24)
 
 

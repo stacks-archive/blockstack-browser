@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.3](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.10.2...@blockstack/app@1.10.3) (2020-06-30)
+
+**Note:** Version bump only for package @blockstack/app
+
+
+
+
+
 ## [1.10.2](https://github.com/blockstack/blockstack-app/compare/@blockstack/app@1.10.1...@blockstack/app@1.10.2) (2020-06-29)
 
 **Note:** Version bump only for package @blockstack/app
