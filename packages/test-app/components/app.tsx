@@ -107,6 +107,9 @@ export const App: React.FC = () => {
       setAuthResponse(authResponse);
       console.log(userData);
     },
+    onCancel: () => {
+      console.log('popup closed!');
+    },
     authOrigin,
     appDetails: {
       name: 'Testing App',

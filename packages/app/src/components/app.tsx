@@ -3,6 +3,7 @@ import { ThemeProvider, theme, CSSReset } from '@blockstack/ui';
 import { createGlobalStyle } from 'styled-components';
 import { Routes } from '@components/routes';
 import { HashRouter as Router } from 'react-router-dom';
+import { useMessagePong } from '@common/hooks/use-message-pong';
 
 const GlobalStyles = createGlobalStyle`
 #actions-root{
@@ -13,6 +14,7 @@ flex-direction: column;
 }`;
 
 export const App: React.FC = () => {
+  useMessagePong();
   return (
     <ThemeProvider theme={theme}>
       <React.Fragment>

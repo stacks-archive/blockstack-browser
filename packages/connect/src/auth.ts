@@ -10,10 +10,20 @@ export interface FinishedData {
 }
 
 export interface AuthOptions {
-  // The URL you want the user to be redirected to after authentication.
+  /** The URL you want the user to be redirected to after authentication. */
   redirectTo?: string;
   manifestPath?: string;
+  /** DEPRECATED: use `onFinish` */
   finished?: (payload: FinishedData) => void;
+  /**
+   * This callback is fired after authentication is finished.
+   * The callback is called with a single object argument, with two keys:
+   * `userSession`: a UserSession object with `userData` included
+   * `authResponse`: the raw `authResponse` string that is returned from authentication
+   * */
+  onFinish?: (payload: FinishedData) => void;
+  /** This callback is fired if the user exits before finishing */
+  onCancel?: () => void;
   authOrigin?: string;
   sendToSignIn?: boolean;
   userSession?: UserSession;
@@ -27,6 +37,8 @@ export const authenticate = async ({
   redirectTo = '/',
   manifestPath,
   finished,
+  onFinish,
+  onCancel,
   authOrigin,
   sendToSignIn = false,
   userSession,
@@ -74,7 +86,14 @@ export const authenticate = async ({
     skipPopupFallback: !!window.BlockstackProvider,
   });
 
-  setupListener({ popup, authRequest, finished, authURL, userSession });
+  setupListener({
+    popup,
+    authRequest,
+    onFinish: onFinish || finished,
+    authURL,
+    userSession,
+    onCancel,
+  });
 };
 
 interface FinishedEventData {
@@ -86,18 +105,29 @@ interface FinishedEventData {
 interface ListenerParams {
   popup: Window | null;
   authRequest: string;
-  finished?: (payload: FinishedData) => void;
+  onFinish?: (payload: FinishedData) => void;
+  onCancel?: () => void;
   authURL: URL;
   userSession: UserSession;
 }
 
-const setupListener = ({ popup, authRequest, finished, authURL, userSession }: ListenerParams) => {
+const setupListener = ({
+  popup,
+  authRequest,
+  onFinish,
+  onCancel,
+  authURL,
+  userSession,
+}: ListenerParams) => {
+  let lastPong: number | null = null;
+
   const interval = setInterval(() => {
     if (popup) {
       try {
         popup.postMessage(
           {
             authRequest,
+            method: 'ping',
           },
           authURL.origin
         );
@@ -106,16 +136,26 @@ const setupListener = ({ popup, authRequest, finished, authURL, userSession }: L
         clearInterval(interval);
       }
     }
+    if (lastPong && new Date().getTime() - lastPong > 200) {
+      onCancel && onCancel();
+      clearInterval(interval);
+    }
   }, 100);
 
   const receiveMessage = async (event: MessageEvent) => {
-    const data: FinishedEventData = event.data;
-    if (data.authRequest === authRequest) {
-      if (finished) {
+    const authRequestMatch = event.data.authRequest === authRequest;
+    if (!authRequestMatch) {
+      return;
+    }
+    if (event.data.method === 'pong') {
+      lastPong = new Date().getTime();
+    } else {
+      const data: FinishedEventData = event.data;
+      if (onFinish) {
         window.focus();
         const { authResponse } = data;
         await userSession.handlePendingSignIn(authResponse);
-        finished({
+        onFinish({
           authResponse,
           userSession,
         });
