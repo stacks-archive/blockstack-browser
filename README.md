@@ -14,8 +14,9 @@ This monorepo contains a few key packages that the User Experience team at Block
 The first time you setup a development environment for this repository, follow these steps:
 
 1. Clone this package.
-2. Run `yarn bootstrap` to install top-level dependencies
-3. In the command line, run `yarn dev` which will run two apps:
+2. Run `yarn` to install dependencies
+3. Run `yarn bootstrap` to link dependencies within this repository
+4. In the command line, run `yarn dev` which will run two apps:
     - `packages/test-app` which runs at localhost:3000 and implements an example of connect
     - `packages/app` which is the auth app, running at localhost:8080
 
