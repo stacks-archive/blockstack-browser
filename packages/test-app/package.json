@@ -19,13 +19,13 @@
     "typecheck": "tsc --noEmit",
     "watch": "cross-env NODE_ENV=development EXT_ENV=watch webpack -d"
   },
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "Blockstack PBC",
   "dependencies": {
-    "@blockstack/connect": "^2.7.8",
+    "@blockstack/connect": "^2.7.9",
     "@blockstack/keychain": "^0.6.0",
     "@blockstack/prettier-config": "^0.0.6",
-    "@blockstack/ui": "^2.7.1",
+    "@blockstack/ui": "^2.7.2",
     "@rehooks/document-title": "^1.0.1",
     "blockstack": "^21.0.0",
     "formik": "^2.1.4",

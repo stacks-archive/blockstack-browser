@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.2](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@2.7.1...@blockstack/ui@2.7.2) (2020-06-30)
+
+
+### Bug Fixes
+
+* perf issue with modal ([3d15fb7](https://github.com/blockstackpbc/blockstack-ui/commit/3d15fb77c746d0d22b1130bf2880b0f9c52bbbdb))
+
+
+
+
+
 ## [2.7.1](https://github.com/blockstackpbc/blockstack-ui/compare/@blockstack/ui@2.7.0...@blockstack/ui@2.7.1) (2020-06-24)
 
 
