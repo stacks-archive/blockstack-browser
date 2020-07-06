@@ -26,6 +26,5 @@ if (EXT_ENV === 'web') {
   buildApp(store);
 } else {
   const store = ExtStore();
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   store.ready().then(() => buildApp(store));
 }

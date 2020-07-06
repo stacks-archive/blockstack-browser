@@ -25,8 +25,7 @@ const ContinueWithAuth: React.FC = props => {
       bg={hovered ? 'rgba(0,0,0,0.02)' : 'white'}
       transform={hovered ? 'translateY(-2px)' : 'none'}
       onClick={() => {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        authenticate({ ...authOptions, sendToSignIn: true });
+        void authenticate({ ...authOptions, sendToSignIn: true });
       }}
       {...bind}
       {...props}

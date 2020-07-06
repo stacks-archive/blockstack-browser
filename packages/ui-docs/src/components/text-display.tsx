@@ -14,7 +14,10 @@ const types = [
 ];
 
 const transformTextStyle = (value: string) =>
-  value.replace(' ', '.').replace(' ', '.').toLowerCase();
+  value
+    .replace(' ', '.')
+    .replace(' ', '.')
+    .toLowerCase();
 
 const Cell = ({ ...rest }: any) => (
   <Box width={1 / 5}>

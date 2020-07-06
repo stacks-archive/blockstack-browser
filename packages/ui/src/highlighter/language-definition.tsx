@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Prism from 'prismjs';
 
-(function (Prism) {
+(function(Prism) {
   // Functions to construct regular expressions
   // simple form
   // e.g. (interactive ... or (interactive)

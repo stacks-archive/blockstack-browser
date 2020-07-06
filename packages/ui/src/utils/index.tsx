@@ -128,7 +128,9 @@ export function mergeRefs<T>(...refs: (ReactRef<T> | undefined)[]) {
 }
 
 export function genId(prefix: string) {
-  return `${prefix}-${Math.random().toString(32).substr(2, 8)}`;
+  return `${prefix}-${Math.random()
+    .toString(32)
+    .substr(2, 8)}`;
 }
 
 export const makeId = (id: string, index: number) => `${id}:${index}`;
@@ -215,7 +217,7 @@ export function error(options: { condition: boolean; message: string }) {
 export type FunctionArguments<T extends Function> = T extends (...args: infer R) => any ? R : never;
 
 export function callAllHandlers<T extends (event: any) => void>(...fns: (T | undefined)[]) {
-  return function (event: FunctionArguments<T>[0]) {
+  return function(event: FunctionArguments<T>[0]) {
     fns.some(fn => {
       fn && fn(event);
       return event && event.defaultPrevented;
@@ -338,11 +340,8 @@ export function split<T extends Dict, K extends keyof T>(object: T, keys: K[]) {
 export function get(obj: any, path: string | number, fallback?: any, index?: number) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   //@ts-ignore
-  // eslint-disable-next-line no-param-reassign
   path = (path?.split?.('.') ?? [path]) as string;
-  // eslint-disable-next-line no-param-reassign
   for (index = 0; index < path.length; index++) {
-    // eslint-disable-next-line no-param-reassign
     obj = obj ? obj[path[index]] : undefined;
   }
   return obj === undefined ? fallback : obj;

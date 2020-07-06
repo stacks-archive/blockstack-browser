@@ -26,9 +26,9 @@ const Tokens = ({
   showLineNumbers?: boolean;
 }) => {
   const bsTheme = useTheme();
-  const pl = `calc(${showLineNumbers ? lineNumberWidth : '0'}px + ${
-    (bsTheme as any).sizes['base'] || '16px'
-  })`;
+  const pl = `calc(${showLineNumbers ? lineNumberWidth : '0'}px + ${(bsTheme as any).sizes[
+    'base'
+  ] || '16px'})`;
 
   return (
     <Box pl={pl} pr="base" position="relative" zIndex={2} {...rest}>

@@ -79,7 +79,7 @@ interface ModalCardContainerProps extends FlexProps {
   isOpen: boolean;
   noAnimation: boolean;
 }
-// eslint-disable-next-line react/display-name
+
 const ModalCardContainer = React.forwardRef<any, ModalCardContainerProps>(
   ({ noAnimation, isOpen, ...rest }, ref) => (
     <Flex
