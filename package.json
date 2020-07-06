@@ -28,7 +28,7 @@
     "packages/**"
   ],
   "devDependencies": {
-    "@blockstack/eslint-config": "^1.0.4",
+    "@blockstack/eslint-config": "^1.0.5",
     "@blockstack/prettier-config": "^0.0.6",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
@@ -51,5 +51,9 @@
   "dependencies": {
     "@babel/preset-env": "^7.10.3",
     "tsdx": "^0.13.2"
+  },
+  "resolutions": {
+    "@blockstack/eslint-config": "^1.0.5",
+    "@blockstack/prettier-config": "^0.0.6"
   }
 }

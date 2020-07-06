@@ -7,7 +7,14 @@ import { doStoreSeed } from '@store/wallet/actions';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
 
 import { Box, Input, Text, Button } from '@blockstack/ui';
-import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
+import {
+  Screen,
+  ScreenBody,
+  ScreenActions,
+  Title,
+  PoweredBy,
+  ScreenFooter,
+} from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { decrypt } from '@blockstack/keychain';
 import { ErrorLabel } from '@components/error-label';
@@ -48,7 +55,8 @@ export const DecryptRecoveryCode: React.FC<RecoveryProps> = ({ next }) => {
         body={[
           <Title>{title}</Title>,
           <Box mt={2}>
-            You entered a Magic Recovery Code. Enter the password you set when you first created your Blockstack ID.
+            You entered a Magic Recovery Code. Enter the password you set when you first created
+            your Blockstack ID.
             <Box textAlign="left">
               {/*Validate: track SIGN_IN_INCORRECT*/}
               <Input

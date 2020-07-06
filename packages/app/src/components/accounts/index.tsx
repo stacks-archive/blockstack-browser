@@ -89,7 +89,13 @@ export const Accounts = ({ identities, showAddAccount, next }: AccountsProps) =>
           cursor={selectedAddress ? 'not-allowed' : 'pointer'}
           hasAction
           iconComponent={() => (
-            <Flex justify="center" width="36px" mr={3} color="ink.300" transition="0.08s all ease-in-out">
+            <Flex
+              justify="center"
+              width="36px"
+              mr={3}
+              color="ink.300"
+              transition="0.08s all ease-in-out"
+            >
               <PlusInCircle />
             </Flex>
           )}

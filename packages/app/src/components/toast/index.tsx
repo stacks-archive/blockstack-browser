@@ -2,7 +2,11 @@ import React from 'react';
 import { Flex, Box, Text } from '@blockstack/ui';
 import { SuccessCheckmark } from '../success-checkmark';
 
-export const Toast = ({ show = false, icon: Icon = SuccessCheckmark, text = 'Copied to clipboard' }) => (
+export const Toast = ({
+  show = false,
+  icon: Icon = SuccessCheckmark,
+  text = 'Copied to clipboard',
+}) => (
   <Flex
     p={6}
     width="100%"

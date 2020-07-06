@@ -33,7 +33,10 @@ const SignedOut = () => (
 const SecretKeyButton = () => {
   const { doChangeScreen } = useAnalytics();
   return (
-    <PseudoBox _hover={{ cursor: 'pointer' }} onClick={() => doChangeScreen(ScreenPaths.SETTINGS_KEY)}>
+    <PseudoBox
+      _hover={{ cursor: 'pointer' }}
+      onClick={() => doChangeScreen(ScreenPaths.SETTINGS_KEY)}
+    >
       <Text color="blue" fontWeight={500} textStyle="body.small.medium" fontSize="12px">
         View Secret Key
       </Text>

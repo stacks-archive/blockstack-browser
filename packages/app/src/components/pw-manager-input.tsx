@@ -7,7 +7,8 @@ interface PasswordManagerHiddenInput {
 
 const visuallyHiddenProps = { opacity: 0, position: 'absolute' } as const;
 
-const passwordManagerUsername = (appName?: string) => 'Blockstack Secret Key' + (!!appName && ` ${appName} `);
+const passwordManagerUsername = (appName?: string) =>
+  'Blockstack Secret Key' + (!!appName && ` ${appName} `);
 
 export const PasswordManagerHiddenInput = ({ secretKey, appName }: PasswordManagerHiddenInput) => {
   if (!secretKey) return null;
@@ -24,7 +25,13 @@ export const PasswordManagerHiddenInput = ({ secretKey, appName }: PasswordManag
       </label>
       <label style={visuallyHiddenProps} htmlFor="password">
         Secret Key
-        <input id="secret-key" type="password" name="password" autoComplete="new-password" defaultValue={secretKey} />
+        <input
+          id="secret-key"
+          type="password"
+          name="password"
+          autoComplete="new-password"
+          defaultValue={secretKey}
+        />
       </label>
     </>
   );

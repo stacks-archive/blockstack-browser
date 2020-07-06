@@ -28,7 +28,11 @@ const ExplainerCard = ({ title, imageUrl }: ExplainerCardProps) => (
   </Flex>
 );
 
-const createTimeoutLoop = (setCardIndex: (cardIndex: number) => void, length: number, onEnd: () => void) => {
+const createTimeoutLoop = (
+  setCardIndex: (cardIndex: number) => void,
+  length: number,
+  onEnd: () => void
+) => {
   for (let index = 1; index < length; index++) {
     setTimeout(() => {
       setCardIndex(index);

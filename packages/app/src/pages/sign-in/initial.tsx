@@ -1,5 +1,12 @@
 import React, { useState, createRef } from 'react';
-import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
+import {
+  Screen,
+  ScreenBody,
+  ScreenActions,
+  Title,
+  PoweredBy,
+  ScreenFooter,
+} from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Box, Text, Input, Flex, Button } from '@blockstack/ui';
 import { AppIcon } from '@components/app-icon';

@@ -29,7 +29,8 @@ export const SaveKey: React.FC<SaveKeyProps> = ({ next }) => {
         body={[
           <Title>{title}</Title>,
           <Text display="block" mt={2}>
-            Paste your Secret Key wherever you keep critical, private, information such as passwords.
+            Paste your Secret Key wherever you keep critical, private, information such as
+            passwords.
           </Text>,
           <Text display="block" mt={5}>
             {' '}

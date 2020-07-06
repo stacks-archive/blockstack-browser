@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-import { Screen, ScreenBody, ScreenActions, Title, PoweredBy, ScreenFooter } from '@blockstack/connect';
+import {
+  Screen,
+  ScreenBody,
+  ScreenActions,
+  Title,
+  PoweredBy,
+  ScreenFooter,
+} from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 import { Button, Text } from '@blockstack/ui';
 
@@ -47,8 +54,8 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
           body={[
             <Title>{title}</Title>,
             <Text mt={2} display="block">
-              Here’s your Secret Key: 12 words that prove it’s you when you want to use {name} on a new device. Once
-              lost it’s lost forever, so save it somewhere you won’t forget.
+              Here’s your Secret Key: 12 words that prove it’s you when you want to use {name} on a
+              new device. Once lost it’s lost forever, so save it somewhere you won’t forget.
             </Text>,
             <Card title="Your Secret Key" mt={6}>
               <SeedTextarea
@@ -63,7 +70,14 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
           ]}
         />
         <ScreenActions>
-          <Button type="submit" data-test="button-copy-secret-key" size="lg" width="100%" mt={6} isDisabled={copied}>
+          <Button
+            type="submit"
+            data-test="button-copy-secret-key"
+            size="lg"
+            width="100%"
+            mt={6}
+            isDisabled={copied}
+          >
             Copy Secret Key
           </Button>
         </ScreenActions>

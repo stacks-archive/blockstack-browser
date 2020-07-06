@@ -7,7 +7,10 @@ interface LogoWithNameProps {
   hideIcon?: boolean;
 }
 
-export const LogoWithName: React.FC<LogoWithNameProps> = ({ title = 'Secret Key', hideIcon = false }) => (
+export const LogoWithName: React.FC<LogoWithNameProps> = ({
+  title = 'Secret Key',
+  hideIcon = false,
+}) => (
   <Flex align="center">
     {hideIcon ? null : <Logo mr={2} />}
     <Text fontWeight="bold" fontSize={'12px'}>

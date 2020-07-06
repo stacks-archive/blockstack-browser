@@ -10,7 +10,10 @@ interface RegisterErrorProps {
   onTryAgain: () => void;
 }
 
-export const UsernameRegistryError: React.FC<RegisterErrorProps> = ({ errorReason, onTryAgain }) => {
+export const UsernameRegistryError: React.FC<RegisterErrorProps> = ({
+  errorReason,
+  onTryAgain,
+}) => {
   const getMessage = () => {
     if (errorReason === 'rateLimited') {
       return 'You’ve tried to register too many usernames on this network. Please try again on a different network.';

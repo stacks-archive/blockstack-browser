@@ -21,7 +21,8 @@ export const SignOut = ({ buttonMode = 'primary', signOut, ...rest }: SignOutPro
         Sign out
       </Button>
       <Text as="small" color="ink.600" textAlign="center" mt={4}>
-        This will sign you out on this device. To sign back in, you will have to enter your Secret Key.
+        This will sign you out on this device. To sign back in, you will have to enter your Secret
+        Key.
       </Text>
     </Flex>
   );

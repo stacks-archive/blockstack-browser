@@ -75,11 +75,12 @@ export const Drawer: React.FC<DrawerProps> = ({ showing, close, apps, confirm })
           <ScreenBody
             body={[
               <Title>
-                You{"'"}re using this account with {apps.length} other app{apps.length > 1 ? 's' : ''}.
+                You{"'"}re using this account with {apps.length} other app
+                {apps.length > 1 ? 's' : ''}.
               </Title>,
               <Text display="block" mt={3}>
-                The apps used by an account is public information. If you want your use of this app to be private,
-                consider choosing a different account or creating a new account.
+                The apps used by an account is public information. If you want your use of this app
+                to be private, consider choosing a different account or creating a new account.
               </Text>,
               <>
                 <Flex mt={4} align="center">

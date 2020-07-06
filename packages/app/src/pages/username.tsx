@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 
 import { Box, Button, Input, Text } from '@blockstack/ui';
-import { PoweredBy, Screen, ScreenActions, ScreenBody, ScreenFooter, Title } from '@blockstack/connect';
+import {
+  PoweredBy,
+  Screen,
+  ScreenActions,
+  ScreenBody,
+  ScreenFooter,
+  Title,
+} from '@blockstack/connect';
 import { ScreenHeader } from '@components/connected-screen-header';
 
 import { useAppDetails } from '@common/hooks/useAppDetails';
@@ -11,7 +18,12 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { UsernameRegistryError, ErrorReason } from './registery-error';
 
 import { DEFAULT_PASSWORD, ScreenPaths } from '@store/onboarding/types';
-import { Identity, IdentityNameValidityError, registerSubdomain, validateSubdomain } from '@blockstack/keychain';
+import {
+  Identity,
+  IdentityNameValidityError,
+  registerSubdomain,
+  validateSubdomain,
+} from '@blockstack/keychain';
 import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';
@@ -24,8 +36,10 @@ import {
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { useLocation } from 'react-router-dom';
 
-const identityNameLengthError = 'Your username should be at least 8 characters, with a maximum of 37 characters.';
-const identityNameIllegalCharError = 'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
+const identityNameLengthError =
+  'Your username should be at least 8 characters, with a maximum of 37 characters.';
+const identityNameIllegalCharError =
+  'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
 const identityNameUnavailableError = 'This username is not available';
 const errorTextMap = {
   [IdentityNameValidityError.MINIMUM_LENGTH]: identityNameLengthError,
@@ -133,7 +147,8 @@ export const Username: React.FC<{}> = () => {
           <Box>
             <Title>Choose a username</Title>
             <Text mt={2} display="block">
-              This is how people will find you in {name} and other apps you use with your Secret Key.
+              This is how people will find you in {name} and other apps you use with your Secret
+              Key.
             </Text>
             <Box textAlign="left" position="relative" mt={4}>
               <Input
