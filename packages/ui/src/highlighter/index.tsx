@@ -10,6 +10,8 @@ import { GrammaticalToken, GetGrammaticalTokenProps, RenderProps, Language } fro
 import { theme } from './prism-theme';
 import './language-definition';
 
+export * from './types';
+
 const lineNumberWidth = 60;
 const getLineNumber = (n: number, length: number) => startPad(n + 1, length.toString().length);
 

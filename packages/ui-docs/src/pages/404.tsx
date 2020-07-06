@@ -67,6 +67,7 @@ const NotFoundPage = () => {
                 as="a"
                 color={color('accent')}
                 href="https://github.com/blockstack/ux"
+                rel="nofollow noopener noreferrer"
                 target="_blank"
               >
                 Want to contribute?

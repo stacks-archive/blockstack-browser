@@ -31,6 +31,7 @@ const GithubButton = () => (
     as="a"
     href="https://github.com/blockstack/ux/tree/master/packages/ui#blockstack-ui"
     target="_blank"
+    rel="nofollow noopener noreferrer"
     title="Find us on GitHub"
     position="relative"
     overflow="hidden"
@@ -90,6 +91,7 @@ const Header = ({ ...rest }: any) => {
             mr={space('base')}
             href="https://www.dropbox.com/sh/5uyhon1dxax4t6t/AABnh34kFRzD2TSck1wE9fmqa?dl=0"
             target="_blank"
+            rel="nofollow noopener noreferrer"
             fontSize="12px"
           >
             Branding Assets
