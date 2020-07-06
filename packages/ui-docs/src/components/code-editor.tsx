@@ -3,7 +3,8 @@ import React from 'react';
 import Editor from 'react-simple-code-editor';
 import { createGlobalStyle } from 'styled-components';
 import { Box, BoxProps, Highlighter } from '@blockstack/ui';
-import { Language } from '@blockstack/ui/src/highlighter/types';
+// TODO: change when new version is published
+import { Language } from '@blockstack/ui/dist/ui/src/highlighter/types';
 
 const TextAreaOverrides = createGlobalStyle`
 .code-editor{
