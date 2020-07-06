@@ -81,7 +81,7 @@ export const CodeEditor = React.memo((props: CodeEditorProps) => {
           textareaId={id}
           // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
           // @ts-ignore
-          language={language as any}
+          language={language}
           onValueChange={updateContent}
           highlight={c => <Highlighter code={c} language={language as any} />}
           style={
