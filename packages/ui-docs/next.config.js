@@ -32,6 +32,9 @@ module.exports = withBundleAnalyzer(
       polyfillsOptimization: true,
       jsconfigPaths: true,
     },
+    env: {
+      FATHOM_ID: 'XHIKWSQD',
+    },
     pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
     webpack: (config, options) => {
       if (!options.isServer) {
