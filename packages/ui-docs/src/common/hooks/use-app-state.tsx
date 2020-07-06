@@ -5,33 +5,31 @@ import { State } from '@components/app-state/types';
 interface UseAppStateReturn extends State {
   doChangeActiveSlug: (activeSlug: string) => void;
   doChangeSlugInView: (slugInView: string) => void;
+  doSetVersion: (version: string) => void;
 }
 
 export const useAppState = (): UseAppStateReturn => {
   const { setState, ...rest } = React.useContext(AppStateContext);
 
-  const doChangeActiveSlug = React.useCallback(
-    (activeSlug: string) =>
+  function setter<T>(key: string) {
+    return (value: T) =>
       setState((state: State) => ({
         ...state,
-        activeSlug,
-      })),
-    []
-  );
+        [key]: value,
+      }));
+  }
 
-  const doChangeSlugInView = React.useCallback(
-    (slugInView: string) =>
-      setState((state: State) => ({
-        ...state,
-        slugInView,
-      })),
-    []
-  );
+  const doSetVersion = setter<string>('version');
+
+  const doChangeActiveSlug = setter<string>('activeSlug');
+
+  const doChangeSlugInView = setter<string>('slugInView');
 
   return {
     ...rest,
     doChangeActiveSlug,
     doChangeSlugInView,
     setState,
+    doSetVersion,
   };
 };

@@ -2,7 +2,7 @@
   "name": "@blockstack/ui-docs",
   "version": "0.2.0",
   "dependencies": {
-    "@blockstack/ui": "2.7.2-beta.2",
+    "@blockstack/ui": "2.7.3",
     "@mdx-js/loader": "1.6.6",
     "@mdx-js/mdx": "^1.6.6",
     "@mdx-js/react": "^1.6.6",
@@ -15,7 +15,7 @@
     "@types/nprogress": "^0.2.0",
     "@types/reach__tooltip": "^0.2.0",
     "mdi-react": "^7.3.0",
-    "next": "^9.4.5-canary.22",
+    "next": "^9.4.4",
     "next-google-fonts": "^1.1.0",
     "next-mdx-enhanced": "^3.0.0",
     "nookies": "^2.3.2",

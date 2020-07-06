@@ -4,7 +4,7 @@ import { Text } from '@components/typography';
 import { ContentWrapper } from './content-wrapper';
 import { useAppState } from '@common/hooks/use-app-state';
 
-export const WaffleHeader = () => {
+export const GettingStartedHeader = () => {
   const { version } = useAppState();
   return (
     <Flex
@@ -22,9 +22,11 @@ export const WaffleHeader = () => {
         <Text pt={1} display="block" as="h2" fontSize={[3, 3, 4]} color="white">
           The Blockstack design system, built with React and styled-system.
         </Text>
-        <Text opacity={0.5} display="block" pt={2} fontFamily="mono" color="white">
-          v{version}
-        </Text>
+        {version !== '' ? (
+          <Text opacity={0.5} display="block" pt={2} fontFamily="mono" color="white">
+            v{version}
+          </Text>
+        ) : null}
       </ContentWrapper>
     </Flex>
   );

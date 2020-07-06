@@ -1,10 +1,8 @@
 import React from 'react';
-import App, { AppContext } from 'next/app';
 import { CSSReset, ThemeProvider, theme, ColorModeProvider } from '@blockstack/ui';
 import { MDXProvider } from '@mdx-js/react';
 import { MDXComponents } from '@components/mdx';
 import { AppStateProvider } from '@components/app-state';
-import { parseCookies } from 'nookies';
 import { MdxOverrides } from '@components/docs-layout';
 import { ProgressBar } from '@components/progress-bar';
 import engine from 'store/src/store-engine';
@@ -45,35 +43,6 @@ const MyApp = ({ Component, pageProps, colorMode, ...rest }: any) => {
       <Component {...pageProps} />
     </AppWrapper>
   );
-};
-
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps = await App.getInitialProps(appContext);
-  const cookies = parseCookies(appContext.ctx);
-  let colorMode = undefined;
-
-  if (cookies) {
-    colorMode = cookies[COLOR_MODE_COOKIE] ? JSON.parse(cookies[COLOR_MODE_COOKIE]) : undefined;
-  }
-  if (appContext.ctx.res) {
-    try {
-      const res = await fetch('https://registry.npmjs.org/@blockstack/ui');
-      const data = await res.json();
-      const version = data['dist-tags'].latest;
-      return {
-        ...appProps,
-        pageProps: {
-          ...appProps.pageProps,
-          version,
-        },
-        colorMode,
-      };
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  return { ...appProps, colorMode };
 };
 
 export default MyApp;

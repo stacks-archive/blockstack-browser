@@ -5,7 +5,7 @@ import { Header } from './header';
 import { Main } from './main';
 import { Footer } from './footer';
 import { useRouter } from 'next/router';
-import { WaffleHeader } from './waffle-header';
+import { GettingStartedHeader } from './getting-started-header';
 import { ContentWrapper } from './content-wrapper';
 import NotFoundPage from '@pages/404';
 import { createGlobalStyle } from 'styled-components';
@@ -52,7 +52,7 @@ const DocsLayout: React.FC<{ headings?: string[] }> = ({ children, headings }) =
         >
           <Main mx="unset" width={'100%'}>
             {router.pathname === '/getting-started' || router.pathname === '/' ? (
-              <WaffleHeader />
+              <GettingStartedHeader />
             ) : null}
             <Flex
               flexDirection={['column', 'column', 'row', 'row']}
