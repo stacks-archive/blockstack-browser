@@ -23,6 +23,7 @@ import {
   AllowedKeyEntropyBits,
   generateEncryptedMnemonicRootKeychain,
   deriveRootKeychainFromMnemonic,
+  encryptMnemonicFormatted,
 } from '../mnemonic';
 import { deriveStxAddressChain } from '../address-derivation';
 
@@ -125,10 +126,8 @@ export class Wallet {
   }
 
   static async restore(password: string, seedPhrase: string, chain: ChainID) {
-    const { rootNode, encryptedMnemonicHex } = await deriveRootKeychainFromMnemonic(
-      seedPhrase,
-      password
-    );
+    const rootNode = await deriveRootKeychainFromMnemonic(seedPhrase);
+    const { encryptedMnemonicHex } = await encryptMnemonicFormatted(seedPhrase, password);
 
     const wallet = await Wallet.createAccount({
       encryptedBackupPhrase: encryptedMnemonicHex,

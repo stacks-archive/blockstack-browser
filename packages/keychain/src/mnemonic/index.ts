@@ -3,6 +3,7 @@ import { randomBytes } from 'blockstack/lib/encryption/cryptoRandom';
 import { bip32 } from 'bitcoinjs-lib';
 
 import { encrypt } from '../encryption/encrypt';
+import { encryptMnemonic } from 'blockstack';
 
 export type AllowedKeyEntropyBits = 128 | 256;
 
@@ -31,14 +32,14 @@ export async function generateEncryptedMnemonicRootKeychain(
   };
 }
 
-export async function deriveRootKeychainFromMnemonic(plaintextMnemonic: string, password: string) {
-  const encryptedMnemonic = await encrypt(plaintextMnemonic, password);
-  const encryptedMnemonicHex = encryptedMnemonic.toString('hex');
+export async function deriveRootKeychainFromMnemonic(plaintextMnemonic: string) {
   const seedBuffer = await mnemonicToSeed(plaintextMnemonic);
   const rootNode = bip32.fromSeed(seedBuffer);
-  return {
-    rootNode,
-    encryptedMnemonic,
-    encryptedMnemonicHex,
-  };
+  return rootNode;
+}
+
+export async function encryptMnemonicFormatted(plaintextMnemonic: string, password: string) {
+  const encryptedMnemonic = await encryptMnemonic(plaintextMnemonic, password);
+  const encryptedMnemonicHex = encryptedMnemonic.toString('hex');
+  return { encryptedMnemonic, encryptedMnemonicHex };
 }

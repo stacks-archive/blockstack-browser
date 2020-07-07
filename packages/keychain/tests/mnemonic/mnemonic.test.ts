@@ -27,7 +27,7 @@ describe('restoreKeychainFromMnemonic()', () => {
     const phrase =
       'eternal army wreck noodle click shock include orchard jungle only middle forget idle pulse give empower iron curtain silent blush blossom chef animal sphere';
 
-    const { rootNode } = await deriveRootKeychainFromMnemonic(phrase, password);
+    const rootNode = await deriveRootKeychainFromMnemonic(phrase);
     expect(rootNode.privateKey?.toString('hex')).toEqual(
       'a1ce135a6a63ba49c9d118bbc5b9f501d6a36feb45f810576781955b9a57d3b2'
     );
