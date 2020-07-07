@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.3.0 (2020-07-07)
+
+
+### Features
+
+* add codesandbox ci ([9e903d7](https://github.com/blockstack/ux/commit/9e903d7141c21503339159255cd06fb6701b1e3b))
+
+
+
+
+
 ## 1.2.4 (2020-06-30)
 
 **Note:** Version bump only for package test-app

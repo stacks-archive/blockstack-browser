@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/connect",
-  "version": "2.7.10",
+  "version": "2.8.0",
   "scripts": {
     "build": "yarn build:modules && yarn build:standalone",
     "build:modules": "tsdx build --format cjs,esm,umd",
@@ -28,7 +28,7 @@
     }
   ],
   "dependencies": {
-    "@blockstack/ui": "^2.7.3",
+    "@blockstack/ui": "^2.8.0",
     "preact": "^10.4.0",
     "prettier": "^2.0.5",
     "styled-components": "^5.1.0",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.8.0 (2020-07-07)
+
+
+### Features
+
+* add codesandbox ci ([9e903d7](https://github.com/blockstack/ux/commit/9e903d7141c21503339159255cd06fb6701b1e3b))
+
+
+
+
+
 ## 2.7.10 (2020-06-30)
 
 **Note:** Version bump only for package @blockstack/connect
