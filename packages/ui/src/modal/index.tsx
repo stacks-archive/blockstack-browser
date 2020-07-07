@@ -111,6 +111,7 @@ export const Modal: React.FC<ModalProps> = React.memo(
     children,
     noAnimation = false,
     close,
+    ...props
   }) => {
     const { doCloseModal } = useModalState();
     const ref = React.useRef(null);
@@ -146,7 +147,7 @@ export const Modal: React.FC<ModalProps> = React.memo(
       <>
         <ModalUnderlay isOpen={isOpen} noAnimation={noAnimation} />
         <ModalWrapper isOpen={isOpen}>
-          <ModalCardContainer ref={ref} isOpen={isOpen} noAnimation={noAnimation}>
+          <ModalCardContainer ref={ref} isOpen={isOpen} noAnimation={noAnimation} {...props}>
             <Header component={HeaderComponent} />
             <Box overflowY="auto">{children}</Box>
             <Footer component={FooterComponent} />
@@ -160,7 +161,7 @@ export const Modal: React.FC<ModalProps> = React.memo(
 export const ModalProvider: React.FC = props => {
   const [isOpen, setIsOpen] = React.useState(false);
   const doOpenModal = () => (!isOpen ? setIsOpen(true) : null);
-  const doCloseModal = () => (isOpen ? setIsOpen(true) : null);
+  const doCloseModal = () => (isOpen ? setIsOpen(false) : null);
   return (
     <ModalContext.Provider
       value={{
