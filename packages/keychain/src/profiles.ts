@@ -158,7 +158,7 @@ export const registerSubdomain = async ({
     zoneFile,
     identity,
   });
-  // eslint-disable-next-line require-atomic-updates
+
   identity.defaultUsername = fullUsername;
   identity.usernames.push(fullUsername);
   return identity;

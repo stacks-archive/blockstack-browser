@@ -28,8 +28,7 @@ export const useWallet = () => {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    fetchSecretKey();
+    void fetchSecretKey();
   }, [onboardingSecretKey]);
 
   return { identities, firstIdentity, wallet, secretKey, isRestoringWallet, isSignedIn };

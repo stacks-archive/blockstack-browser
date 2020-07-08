@@ -34,7 +34,6 @@ export const authenticate = async ({
 }: AuthOptions) => {
   if (!userSession) {
     const appConfig = new AppConfig(['store_write'], document.location.href);
-    // eslint-disable-next-line no-param-reassign
     userSession = new UserSession({ appConfig });
   }
   if (userSession.isUserSignedIn()) {
@@ -127,8 +126,7 @@ const setupListener = ({ popup, authRequest, finished, authURL, userSession }: L
   };
 
   const receiveMessageCallback = (event: MessageEvent) => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    receiveMessage(event);
+    void receiveMessage(event);
   };
 
   window.addEventListener('message', receiveMessageCallback, false);

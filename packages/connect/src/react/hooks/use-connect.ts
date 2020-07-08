@@ -42,8 +42,7 @@ export const useConnect = () => {
         sendToSignIn: true,
       };
       doStartAuth();
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      authenticate(options);
+      void authenticate(options);
       return;
     }
     authOptions && doUpdateAuthOptions(authOptions);
@@ -55,8 +54,7 @@ export const useConnect = () => {
   };
   const doAuth = (options: Partial<AuthOptions> = {}) => {
     doStartAuth();
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    authenticate({
+    void authenticate({
       ...authOptions,
       ...options,
       finished: payload => {
