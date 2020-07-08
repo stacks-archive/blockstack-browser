@@ -209,6 +209,16 @@ module.exports = {
         from: path.join(sourceRootPath, 'manifest.json'),
         to: path.join(distRootPath, 'manifest.json'),
         toType: 'file',
+        transform(content, path) {
+          const tag = '<% DEV_CSR %>';
+          content = content.toString();
+          if (nodeEnv === 'development') {
+            content = content.replace(tag, " 'unsafe-eval'");
+          } else {
+            content = content.replace(tag, '');
+          }
+          return Buffer.from(content);
+        },
       },
     ]),
     new webpack.DefinePlugin({
