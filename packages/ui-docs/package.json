@@ -56,11 +56,11 @@
     "start": "next telemetry disable && NODE_ENV=production next start",
     "dev": "next dev",
     "export": "next export",
-    "lint": "yarn run lint:eslint && yarn run lint:prettier",
-    "lint:eslint": "eslint --ext .ts,.tsx ./src",
-    "lint:fix": "eslint --ext .ts,.tsx ./src/ -f unix --fix && prettier --write src/**/*.{ts,tsx} *.js",
-    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx,md,mdx}\" *.js *.json",
-    "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx,md,mdx}\" *.js *.json"
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "lint:eslint": "eslint \"src/**/*.{ts,tsx}\" -f unix",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" -f unix --fix",
+    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx,md,mdx}\" *.js",
+    "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx,md,mdx}\" *.js"
   },
   "resolutions": {
     "preact": "^10.4.4"

@@ -18,8 +18,11 @@
     "build:esm:watch": "tsc --outDir ./lib-esm -m es6 -t es2017 --watch",
     "test": "jest",
     "test:watch": "jest --watch --coverage=false",
-    "lint": "eslint src/**/*.ts",
-    "lint:fix": "eslint --fix src/**/*.ts",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "lint:eslint": "eslint \"src/**/*.{ts,tsx}\" -f unix",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" -f unix --fix",
+    "lint:prettier": "prettier --check \"src/**/*.{ts,tsx}\" *.js",
+    "lint:prettier:fix": "prettier --write \"src/**/*.{ts,tsx}\" *.js",
     "depcheck": "depcheck --ignores='@types/*,eslint*,safe-buffer,codecov,@typescript-eslint/*,@blockstack/*'",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "yarn build"
