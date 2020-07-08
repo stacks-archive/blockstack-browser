@@ -2,10 +2,12 @@
 
 This monorepo contains a few key packages that the User Experience team at Blockstack maintains:
 
-- [app](./packages/app): An application for authenticating into Blockstack apps. Available as a web app and a browser extension.
-- [connect](./packages/connect): A developer tool for building excellent user experiences in Blockstack apps
-- [ui](./packages/ui): Blockstack's internal design system and React component library
-- [keychain](./packages/keychain): A library for Blockstack identity management
+- [`app`](./packages/app): An application for authenticating into Blockstack apps. Available as a web app and a browser extension.
+- [`@blockstack/connect`](./packages/connect): A developer tool for building excellent user experiences in Blockstack apps
+- [`@blockstack/ui`](./packages/ui): Blockstack's internal design system and React component library
+- [`@blockstack/keychain`](./packages/keychain): A library for Blockstack identity management
+- [`test-app`](./packages/test-app): A simple React app for testing out Connect and the App.
+- [`ui-docs`](./packages/ui-docs): A documentation site for `@blockstack/ui`.
 
 ## Development environment setup
 
