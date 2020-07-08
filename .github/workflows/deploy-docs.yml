@@ -17,7 +17,6 @@ jobs:
         id: vercel-deployment-preview
         if: github.event_name == 'pull_request'
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
@@ -27,10 +26,48 @@ jobs:
         id: vercel-deployment-production
         if: github.event_name == 'push'
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
           vercel-args: '--prod'
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/ui-docs
+      - name: Comment on PR
+        uses: actions/github-script@v2
+        id: comment
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const firstLine = `The Blockstack UI docs have been deployed with Vercel using the code from this PR!`;
+            const { data } = await github.issues.listComments({
+              ...context.repo,
+              issue_number: context.issue.number,
+            });
+            const vercelPreviewURLComment = data.find((comment) =>
+              comment.body.includes(firstLine)
+            );
+            const commentId = vercelPreviewURLComment && vercelPreviewURLComment.id || undefined;
+            const commentBody = `
+            #### Blockstack UI Documentation
+            ${firstLine}
+
+            - [Blockstack UI Docs](${{ steps.vercel-deployment-preview.outputs.preview-url }})
+
+            Built with commit ${context.sha}.
+            `;
+            if(context.issue.number){
+              if (commentId) {
+                await github.issues.updateComment({
+                  ...context.repo,
+                  comment_id: commentId,
+                  body: commentBody,
+                });
+              } else {
+                await github.issues.createComment({
+                  ...context.repo,
+                  issue_number: context.issue.number,
+                  body: commentBody,
+                });
+              }
+            }
