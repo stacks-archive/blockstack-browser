@@ -86,13 +86,11 @@ export const CodeEditor = React.memo((props: CodeEditorProps) => {
           language={language}
           onValueChange={updateContent}
           highlight={c => <Highlighter code={c} language={language} />}
-          style={
-            {
-              ...style,
-              overflowWrap: 'unset',
-              whiteSpace: 'pre !important',
-            } as any
-          }
+          style={{
+            ...style,
+            overflowWrap: 'unset',
+            whiteSpace: 'pre !important' as any,
+          }}
           value={code}
           {...rest}
         />
