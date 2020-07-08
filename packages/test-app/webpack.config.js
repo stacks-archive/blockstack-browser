@@ -196,7 +196,7 @@ module.exports = {
       },
     ]),
     new webpack.DefinePlugin({
-      AUTH_ORIGIN: JSON.stringify(process.env.AUTH_ORIGIN),
+      'process.env.AUTH_ORIGIN': JSON.stringify(process.env.AUTH_ORIGIN),
       NODE_ENV: JSON.stringify(nodeEnv),
       WEB_BROWSER: JSON.stringify(webBrowser),
     }),

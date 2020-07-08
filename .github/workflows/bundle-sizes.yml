@@ -6,28 +6,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set Node Version
-      uses: actions/setup-node@v1.4.2
-      with:
-        node-version: 12.16.1
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
-    - uses: actions/cache@v2.0.0
-      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-      with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
-    - name: Monorepo Dependencies
-      run: yarn
-    - name: Lerna Bootstrap
-      run: yarn lerna bootstrap
-    - uses: preactjs/compressed-size-action@v2
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        build-script: "lerna run build --stream --scope @blockstack/connect"
-        pattern: '**/connect/dist/**/*.js'
-
+      - uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        id: lerna-cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install monorepo deps
+        run: yarn
+        if: steps.lerna-cache.outputs.cache-hit != 'true'
+      - uses: preactjs/compressed-size-action@v2
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          build-script: 'lerna run build --stream --scope @blockstack/connect'
+          pattern: '**/connect/dist/**/*.js'

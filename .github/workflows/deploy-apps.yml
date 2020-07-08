@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-node@v1.4.2
         with:
           node-version: 12.16.1
-      - name: restore lerna
+      - name: Restore lerna cache
         id: lerna-cache
         uses: actions/cache@v2
         with:
@@ -44,12 +44,10 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP }}
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/app/dist
-      - name: preview-url
-        run: echo ${{ steps.vercel-deployment-blockstack-app.outputs.preview-url }}
       - name: Build Blockstack Test App
-        run: yarn prod:web
         env:
-          AUTH_ORIGIN: steps.vercel-deployment-blockstack-app.outputs.preview-url
+          AUTH_ORIGIN: ${{ steps.vercel-deployment-blockstack-app.outputs.preview-url }}
+        run: yarn prod:web
         working-directory: packages/test-app
       - name: Copy Blockstack Test App vercel.json
         uses: canastro/copy-file-action@master
