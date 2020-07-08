@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/keychain",
-  "version": "0.7.5",
+  "version": "0.8.5",
   "description": "A package for managing Blockstack keychains",
   "main": "./dist/index.js",
   "umd:main": "./dist/keychain.umd.production.js",

@@ -1,10 +1,16 @@
-import { ChainID, getAddressFromPrivateKey } from '@blockstack/stacks-transactions';
+import {
+  ChainID,
+  getAddressFromPrivateKey,
+  TransactionVersion,
+} from '@blockstack/stacks-transactions';
 import { BIP32Interface, ECPair } from 'bitcoinjs-lib';
 import { ecPairToHexString } from 'blockstack';
 
+const networkDerivationPath = `m/44'/5757'/0'/0/0`;
+
 export const derivationPaths = {
-  [ChainID.Mainnet]: `m/44'/5757'/0'/0/0`,
-  [ChainID.Testnet]: `m/44'/1'/0'/0/0`,
+  [ChainID.Mainnet]: networkDerivationPath,
+  [ChainID.Testnet]: networkDerivationPath,
 };
 
 export function getDerivationPath(chain: ChainID) {
@@ -19,9 +25,11 @@ export function deriveStxAddressChain(chain: ChainID) {
     }
     const ecPair = ECPair.fromPrivateKey(childKey.privateKey);
     const privateKey = ecPairToHexString(ecPair);
+    const txVersion =
+      chain === ChainID.Mainnet ? TransactionVersion.Mainnet : TransactionVersion.Testnet;
     return {
       childKey,
-      address: getAddressFromPrivateKey(privateKey),
+      address: getAddressFromPrivateKey(privateKey, txVersion),
       privateKey,
     };
   };
