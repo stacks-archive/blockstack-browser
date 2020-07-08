@@ -21,7 +21,8 @@ export const authenticationInit = () => {
 };
 
 export const getEventSourceWindow = (event: MessageEvent) => {
-  const isWindow = !(event.source instanceof MessagePort) && !(event.source instanceof ServiceWorker);
+  const isWindow =
+    !(event.source instanceof MessagePort) && !(event.source instanceof ServiceWorker);
   if (isWindow) {
     return event.source as Window;
   }
@@ -50,7 +51,11 @@ interface FinalizeAuthParams {
  *
  */
 
-export const finalizeAuthResponse = ({ decodedAuthRequest, authRequest, authResponse }: FinalizeAuthParams) => {
+export const finalizeAuthResponse = ({
+  decodedAuthRequest,
+  authRequest,
+  authResponse,
+}: FinalizeAuthParams) => {
   let didSendMessageBack = false;
   setTimeout(() => {
     if (!didSendMessageBack) {

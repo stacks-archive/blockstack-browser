@@ -35,7 +35,11 @@ export enum ScreenPaths {
   HOME = '/',
 }
 
-export const persistedScreens = [ScreenPaths.SECRET_KEY, ScreenPaths.SAVE_KEY, ScreenPaths.USERNAME];
+export const persistedScreens = [
+  ScreenPaths.SECRET_KEY,
+  ScreenPaths.SAVE_KEY,
+  ScreenPaths.USERNAME,
+];
 
 // TODO: clarify usage of password for local key encryption
 export const DEFAULT_PASSWORD = 'password';

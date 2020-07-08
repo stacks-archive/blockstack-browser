@@ -30,4 +30,8 @@ export interface WalletState {
   identities: Identity[];
 }
 
-export type WalletActions = StoreSeedAction | IsRestoringWalletAction | GenerateWalletAction | LogOutAction;
+export type WalletActions =
+  | StoreSeedAction
+  | IsRestoringWalletAction
+  | GenerateWalletAction
+  | LogOutAction;

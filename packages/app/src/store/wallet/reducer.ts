@@ -1,5 +1,12 @@
 import { Reducer } from 'redux';
-import { WalletActions, WalletState, RESTORE_WALLET, IS_RESTORING_WALLET, GENERATE_WALLET, SIGN_OUT } from './types';
+import {
+  WalletActions,
+  WalletState,
+  RESTORE_WALLET,
+  IS_RESTORING_WALLET,
+  GENERATE_WALLET,
+  SIGN_OUT,
+} from './types';
 
 const initialState: WalletState = {
   secretKey: undefined,

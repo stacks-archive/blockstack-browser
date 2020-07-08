@@ -61,7 +61,12 @@ export const doSetOnboardingPath = (onboardingPath?: ScreenPaths): OnboardingAct
   onboardingPath,
 });
 
-export function doCreateSecretKey(): ThunkAction<void, AppState, {}, OnboardingActions | WalletActions> {
+export function doCreateSecretKey(): ThunkAction<
+  void,
+  AppState,
+  {},
+  OnboardingActions | WalletActions
+> {
   return async dispatch => {
     const wallet = await dispatch(doGenerateWallet(DEFAULT_PASSWORD));
     const secretKey = await decrypt(wallet.encryptedBackupPhrase, DEFAULT_PASSWORD);
@@ -101,7 +106,9 @@ const saveAuthRequest = ({
   };
 };
 
-export function doSaveAuthRequest(authRequest: string): ThunkAction<void, AppState, {}, OnboardingActions> {
+export function doSaveAuthRequest(
+  authRequest: string
+): ThunkAction<void, AppState, {}, OnboardingActions> {
   return async (dispatch, getState) => {
     const { payload } = decodeToken(authRequest);
     const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
