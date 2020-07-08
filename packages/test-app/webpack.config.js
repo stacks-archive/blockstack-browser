@@ -61,7 +61,9 @@ module.exports = {
   },
   output: {
     path: distRootPath,
-    chunkFilename: !isDevelopment ? '[name].[contenthash:8].chunk.js' : isDevelopment && '[name].chunk.js',
+    chunkFilename: !isDevelopment
+      ? '[name].[contenthash:8].chunk.js'
+      : isDevelopment && '[name].chunk.js',
     filename: !isDevelopment ? '[name].[contenthash:8].js' : isDevelopment && '[name].js',
   },
   resolve: {
@@ -194,6 +196,7 @@ module.exports = {
       },
     ]),
     new webpack.DefinePlugin({
+      AUTH_ORIGIN: JSON.stringify(process.env.AUTH_ORIGIN),
       NODE_ENV: JSON.stringify(nodeEnv),
       WEB_BROWSER: JSON.stringify(webBrowser),
     }),
