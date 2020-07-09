@@ -31,7 +31,7 @@
     }
   ],
   "dependencies": {
-    "@blockstack/ui": "^2.8.0",
+    "@blockstack/ui": "^2.8.2",
     "preact": "^10.4.0",
     "prettier": "^2.0.5",
     "styled-components": "^5.1.0",
