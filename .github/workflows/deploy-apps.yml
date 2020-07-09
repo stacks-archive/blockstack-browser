@@ -24,7 +24,7 @@ jobs:
             */*/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install monorepo deps
-        run: yarn
+        run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
       - name: Build Blockstack App
         run: yarn prod:web
