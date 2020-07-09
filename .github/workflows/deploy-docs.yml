@@ -7,6 +7,10 @@ on:
     paths:
       - packages/ui-docs/**
       - packages/ui/**
+  release:
+    paths:
+      - packages/ui-docs/**
+      - packages/ui/**
 
 jobs:
   vercel-deployment:
@@ -24,7 +28,7 @@ jobs:
           working-directory: packages/ui-docs
       - uses: amondnet/vercel-action@v19.0.1+1
         id: vercel-deployment-production
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' ||  github.event_name == 'release'
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
