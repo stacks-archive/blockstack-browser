@@ -1,11 +1,12 @@
 import { Theme as StyledSystemTheme } from 'styled-system';
 import { LiteralUnion } from 'type-fest';
+import { TextStylesLiteral } from './typography';
 
 interface CustomTheme {
   opacity?: {
     [key: string]: string;
   };
-  textStyles?: any;
+  textStyles?: TextStylesLiteral;
   fonts: {
     [key: string]: string;
   };

@@ -2,6 +2,7 @@ import * as StyledSystem from 'styled-system';
 import * as React from 'react';
 import { Omit } from '../common-types';
 import * as CSS from 'csstype';
+import { TextStylesLiteral } from '../theme/typography';
 
 export type FontSizeValues =
   | 'xs'
@@ -70,20 +71,8 @@ export interface TextTransform {
     | CSS.TextTransformProperty;
 }
 
-export type TextStyleValues =
-  | 'display.large'
-  | 'display.small'
-  | 'body.large.medium'
-  | 'body.large'
-  | 'body.small.medium'
-  | 'body.small'
-  | 'caption'
-  | 'caption.medium';
-
 export interface TextStyle {
-  textStyle?:
-    | StyledSystem.ResponsiveValue<TextStyleValues>
-    | StyledSystem.TextStyleProps['textStyle'];
+  textStyle?: TextStylesLiteral | StyledSystem.ResponsiveValue<TextStylesLiteral>;
 }
 
 export type AsType = React.ElementType<any>;

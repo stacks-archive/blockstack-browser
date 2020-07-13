@@ -37,55 +37,78 @@ const typography = {
   fontSizes: [12, 14, 16, 20, 24, 28, 32, 36, 48, 64, 96, 128],
 };
 
-const textStyles = {
-  display: {
-    large: {
-      fontWeight: typography.fontWeights.semibold,
-      fontSize: typography.fontSizes[4],
-      lineHeight: typography.lineHeights.shorter, // 1.333
-      letterSpacing: '-0.02em',
-    },
-    small: {
-      fontWeight: typography.fontWeights.medium,
-      fontSize: typography.fontSizes[3],
-      lineHeight: typography.lineHeights.short, // 1.4
-      letterSpacing: '-0.02em',
-    },
-  },
-  body: {
-    large: {
-      fontWeight: typography.fontWeights.normal,
-      fontSize: typography.fontSizes[2],
-      lineHeight: typography.lineHeights.base, // 1.5 (24)
-      letterSpacing: '-0.01em',
-    },
-    small: {
-      fontWeight: typography.fontWeights.normal,
-      fontSize: typography.fontSizes[1],
-      lineHeight: typography.lineHeights.short, // 1.4 (19.6)
-      letterSpacing: '-0.01em',
-    },
-  },
-  caption: {
-    fontSize: typography.fontSizes[0],
-    lineHeight: typography.lineHeights.shorter, // 1.333 (16)
-    letterSpacing: '0.00em',
-  },
+const displayLarge = {
+  fontWeight: typography.fontWeights.semibold,
+  fontSize: typography.fontSizes[4],
+  lineHeight: typography.lineHeights.shorter, // 1.333
+  letterSpacing: '-0.02em',
 };
-(textStyles.body.large as any).medium = {
-  ...textStyles.body.large,
+const displaySmall = {
+  fontWeight: typography.fontWeights.medium,
+  fontSize: typography.fontSizes[3],
+  lineHeight: typography.lineHeights.short, // 1.4
+  letterSpacing: '-0.02em',
+};
+const bodyLarge = {
+  fontWeight: typography.fontWeights.normal,
+  fontSize: typography.fontSizes[2],
+  lineHeight: typography.lineHeights.base, // 1.5 (24)
+  letterSpacing: '-0.01em',
+};
+const bodyLargeMedium = {
+  ...bodyLarge,
   fontWeight: typography.fontWeights.medium,
 };
-(textStyles.body.small as any).medium = {
-  ...textStyles.body.small,
+const bodySmall = {
+  fontWeight: typography.fontWeights.normal,
+  fontSize: typography.fontSizes[1],
+  lineHeight: typography.lineHeights.short, // 1.4 (19.6)
+  letterSpacing: '-0.01em',
+};
+const bodySmallMedium = {
+  ...bodySmall,
   fontWeight: typography.fontWeights.medium,
 };
-(textStyles.caption as any).medium = {
-  ...textStyles.body.small,
+const caption = {
+  fontSize: typography.fontSizes[0],
+  lineHeight: typography.lineHeights.shorter, // 1.333 (16)
+  letterSpacing: '0.00em',
+};
+const captionMedium = {
+  ...bodySmall,
   fontWeight: typography.fontWeights.medium,
 };
 
-export { textStyles };
+export const textStyles = {
+  display: {
+    large: {
+      ...displayLarge,
+      medium: bodyLargeMedium,
+    },
+    small: displaySmall,
+  },
+  body: {
+    large: bodyLarge,
+    small: {
+      ...bodySmall,
+      medium: bodySmallMedium,
+    },
+  },
+  caption: {
+    ...caption,
+    medium: captionMedium,
+  },
+} as const;
+
+export type TextStylesLiteral =
+  | 'display.large'
+  | 'display.small'
+  | 'body.large'
+  | 'body.large.medium'
+  | 'body.small'
+  | 'body.small.medium'
+  | 'caption'
+  | 'caption.medium';
 
 export default {
   ...typography,
