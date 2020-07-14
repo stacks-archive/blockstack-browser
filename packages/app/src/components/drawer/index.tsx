@@ -32,8 +32,14 @@ interface DrawerProps {
 export const Drawer: React.FC<DrawerProps> = ({ showing, close, apps, confirm }) => {
   const ref = React.useRef(null);
   const [checked, setChecked] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
-  useOnClickOutside(ref, () => showing && close());
+  useOnClickOutside(ref, () => {
+    if (showing) {
+      setLoading(false);
+      close();
+    }
+  });
 
   return (
     <Flex
@@ -98,7 +104,14 @@ export const Drawer: React.FC<DrawerProps> = ({ showing, close, apps, confirm })
               <Button mode="secondary" onClick={close} flexGrow={1}>
                 Go back
               </Button>
-              <Button flexGrow={1} onClick={async () => await confirm(checked)}>
+              <Button
+                flexGrow={1}
+                isLoading={loading}
+                onClick={async () => {
+                  setLoading(true);
+                  await confirm(checked);
+                }}
+              >
                 Continue to app
               </Button>
             </Stack>
