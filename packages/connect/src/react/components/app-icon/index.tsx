@@ -9,7 +9,7 @@ interface AppIconProps {
 
 const AppIcon: React.FC<AppIconProps & BoxProps> = ({ src, alt, ...rest }) => (
   <Box borderRadius="6px" overflow="hidden" size="loose" {...rest}>
-    <Image src={src} alt={alt} title={alt} loading="lazy" />
+    <Image src={src} alt={alt} title={alt} loading="lazy" width="100%" maxHeight="100%" />
   </Box>
 );
 

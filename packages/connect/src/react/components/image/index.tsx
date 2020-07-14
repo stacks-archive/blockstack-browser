@@ -1,6 +1,7 @@
 import React from 'react';
+import { BoxProps, Box } from '@blockstack/ui';
 
-interface ImageProps {
+interface ImageProps extends BoxProps {
   src?: string;
   alt?: string;
   title?: string;
@@ -9,7 +10,8 @@ interface ImageProps {
 
 const Image: React.FC<ImageProps> = ({ loading: _loading, ...props }) => {
   return (
-    <img
+    <Box
+      as="img"
       style={{
         maxWidth: '100%',
         display: 'block',
