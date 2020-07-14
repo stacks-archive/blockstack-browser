@@ -122,6 +122,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
             `to use with ${appName}`,
             <Accounts
               identities={identities}
+              identityIndex={identityIndex}
               next={(identityIndex: number) => didSelectAccount({ identityIndex })}
               showAddAccount
             />,

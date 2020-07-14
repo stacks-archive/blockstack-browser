@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Identity } from '@blockstack/keychain';
 import { Text, Flex, FlexProps, Spinner } from '@blockstack/ui';
 import { ScreenPaths } from '@store/onboarding/types';
@@ -46,13 +46,20 @@ const AccountItem = ({ label, address, selectedAddress, ...rest }: AccountItemPr
 
 interface AccountsProps {
   identities: Identity[];
+  identityIndex?: number;
   showAddAccount?: boolean;
   next?: (identityIndex: number) => void;
 }
 
-export const Accounts = ({ identities, showAddAccount, next }: AccountsProps) => {
+export const Accounts = ({ identities, showAddAccount, identityIndex, next }: AccountsProps) => {
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { doChangeScreen } = useAnalytics();
+
+  useEffect(() => {
+    if (typeof identityIndex === 'undefined' && selectedAddress) {
+      setSelectedAddress(null);
+    }
+  }, [identityIndex]);
 
   return (
     <Flex flexDirection="column">
