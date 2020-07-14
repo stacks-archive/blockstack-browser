@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Omit } from '../common-types';
 import * as CSS from 'csstype';
 import { TextStylesLiteral } from '../theme/typography';
+import { SpacingProps } from 'src/theme/types';
 
 export type FontSizeValues =
   | 'xs'
@@ -153,7 +154,8 @@ export type BoxPropsBase = StyledSystemProps &
   ModifiedStyledSystemProps &
   ShorthandProps &
   As &
-  BoxHTMLProps;
+  BoxHTMLProps &
+  SpacingProps;
 
 export type Box = React.FC<BoxPropsBase>;
 

@@ -1,6 +1,6 @@
 import React, { forwardRef, Children, cloneElement, isValidElement } from 'react';
 import { Flex } from '../flex';
-import { Box } from '../box';
+import { Box, SpacingProps } from '../box';
 import { StackProps } from './types';
 
 export * from './types';
@@ -31,7 +31,7 @@ const Stack = forwardRef<any, StackProps>(
 
           if (shouldWrapChildren) {
             return (
-              <Box d="inline-block" {...spacingProps}>
+              <Box d="inline-block" {...(spacingProps as SpacingProps)}>
                 {child}
               </Box>
             );

@@ -1,4 +1,4 @@
-import { SpacingTypes } from './types';
+import type { SpacingTypes } from './types';
 
 const containers = {
   'screen-sm': '640px',
