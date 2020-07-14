@@ -1,7 +1,8 @@
 import React, { forwardRef, Children, cloneElement, isValidElement } from 'react';
 import { Flex } from '../flex';
-import { Box, SpacingProps } from '../box';
+import { Box } from '../box';
 import { StackProps } from './types';
+import { SpacingProps } from '../theme/types';
 
 export * from './types';
 

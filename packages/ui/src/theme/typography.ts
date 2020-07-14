@@ -81,14 +81,14 @@ const captionMedium = {
 
 export const textStyles = {
   display: {
-    large: {
-      ...displayLarge,
-      medium: bodyLargeMedium,
-    },
+    large: displayLarge,
     small: displaySmall,
   },
   body: {
-    large: bodyLarge,
+    large: {
+      ...bodyLarge,
+      medium: bodyLargeMedium,
+    },
     small: {
       ...bodySmall,
       medium: bodySmallMedium,

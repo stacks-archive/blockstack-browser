@@ -1,7 +1,4 @@
-import StyledSystem, {
-  Theme as StyledSystemTheme,
-  MarginProps as SSMarginProps,
-} from 'styled-system';
+import StyledSystem, { Theme as StyledSystemTheme } from 'styled-system';
 import { LiteralUnion } from 'type-fest';
 
 import { TextStylesLiteral } from './typography';

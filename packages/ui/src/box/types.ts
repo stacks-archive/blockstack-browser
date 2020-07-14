@@ -1,9 +1,12 @@
 import * as StyledSystem from 'styled-system';
 import * as React from 'react';
-import { Omit } from '../common-types';
+import { LiteralUnion } from 'type-fest';
 import * as CSS from 'csstype';
-import { TextStylesLiteral } from '../theme/typography';
-import { SpacingProps } from 'src/theme/types';
+
+import { Omit } from '../common-types';
+import typography, { TextStylesLiteral } from '../theme/typography';
+import { SpacingProps } from '../theme/types';
+import { shadows } from '../theme/theme';
 
 export type FontSizeValues =
   | 'xs'
@@ -17,16 +20,7 @@ export type FontSizeValues =
   | '5xl'
   | '6xl';
 
-export type FontWeightValues =
-  | 'hairline'
-  | 'thin'
-  | 'light'
-  | 'normal'
-  | 'medium'
-  | 'semibold'
-  | 'bold'
-  | 'extrabold'
-  | 'black';
+export type FontWeightValues = keyof typeof typography.fontWeights;
 
 export interface FontSize {
   fontSize?: StyledSystem.ResponsiveValue<FontSizeValues> | StyledSystem.FontSizeProps['fontSize'];
@@ -38,7 +32,7 @@ export interface FontWeight {
     | StyledSystem.FontWeightProps['fontWeight'];
 }
 
-export type LineHeightValues = 'none' | 'shorter' | 'short' | 'normal' | 'tall' | 'taller';
+export type LineHeightValues = keyof typeof typography.lineHeights;
 
 export interface LineHeight {
   lineHeight?:
@@ -46,7 +40,7 @@ export interface LineHeight {
     | StyledSystem.LineHeightProps['lineHeight'];
 }
 
-export type LetterSpacingValues = 'tighter' | 'tight' | 'normal' | 'wide' | 'wider' | 'widest';
+export type LetterSpacingValues = keyof typeof typography.letterSpacings;
 
 export interface LetterSpacing {
   letterSpacing?:
@@ -73,7 +67,7 @@ export interface TextTransform {
 }
 
 export interface TextStyle {
-  textStyle?: TextStylesLiteral | StyledSystem.ResponsiveValue<TextStylesLiteral>;
+  textStyle?: StyledSystem.ResponsiveValue<LiteralUnion<TextStylesLiteral, string>>;
 }
 
 export type AsType = React.ElementType<any>;
@@ -108,7 +102,7 @@ export interface DisplayShorthandProps {
   d?: StyledSystem.DisplayProps['display'];
 }
 
-export type BoxShadow = 'low' | 'mid' | 'high' | 'inner' | 'none' | CSS.BoxShadowProperty;
+export type BoxShadow = LiteralUnion<keyof typeof shadows, CSS.BoxShadowProperty>;
 
 export interface OtherProps {
   children?: React.ReactNode[] | React.ReactNode;
