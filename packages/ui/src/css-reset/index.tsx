@@ -81,6 +81,13 @@ const ScopedCSSReset = styled.div`
   textarea::placeholder {
     color: ${placeholderColor};
   }
+
+  body,
+  div,
+  span {
+    text-align: initial;
+    font-family: ${theme && theme.fonts && theme.fonts.body};
+  }
 `;
 
 export { CSSReset, ScopedCSSReset };
