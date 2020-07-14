@@ -162,6 +162,7 @@ export const Username: React.FC<{}> = () => {
                 value={username}
                 aria-invalid={error !== null}
                 onChange={handleInput}
+                autoCorrect="off"
               />
             </Box>
             {error && hasAttemptedSubmit && (
