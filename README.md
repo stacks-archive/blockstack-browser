@@ -2,6 +2,9 @@
 
 The Blockstack Browser allows you to explore the Blockstack internet.
 
+| :warning: IMPORTANT: This project has been deprecated in favor of [the Blockstack App](https://github.com/blockstack/ux/tree/master/packages/app). It will receive only critical updates by Blockstack PBC going forward. |
+| --- |
+
 ## Table of contents
 
 - [Releases](#releases)
