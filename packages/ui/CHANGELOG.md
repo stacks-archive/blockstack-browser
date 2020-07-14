@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.9.5 (2020-07-14)
+
+
+### Bug Fixes
+
+* textStyles not being typed ([2428f69](https://github.com/blockstack/ux/tree/master/packages/ui/commit/2428f69ddc39f20c566f2686a65959b59f52e9aa))
+
+
+
+
+
 ## 2.8.4 (2020-07-09)
 
 **Note:** Version bump only for package @blockstack/ui
