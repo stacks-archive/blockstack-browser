@@ -1,4 +1,5 @@
 export * from './apps-icon';
+export * from './arrow-icon';
 export * from './blockchain-icon';
 export * from './blockstack-icon';
 export * from './checkmark-icon';
@@ -6,7 +7,7 @@ export * from './checkmark-circle-icon';
 export * from './chevron-icon';
 export * from './connect-logo-icon';
 export * from './encryption-icon';
-export * from './exlamation-mark-icon';
+export * from './exclamation-mark-icon';
 export * from './exclamation-mark-circle-icon';
 export * from './eye-icon';
 export * from './padlock-icon';

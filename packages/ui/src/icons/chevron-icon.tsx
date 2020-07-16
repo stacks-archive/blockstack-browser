@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Svg } from '../svg';
 import { BoxProps } from '../box';
-
-type Direction = 'up' | 'down' | 'left' | 'right';
+import { Direction } from './icon-utils';
 
 interface ChevronProps extends BoxProps {
   direction?: Direction;

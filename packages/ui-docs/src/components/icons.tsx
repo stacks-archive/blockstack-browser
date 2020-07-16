@@ -18,50 +18,15 @@ import {
   PlusCircleIcon,
   PrivateIcon,
   UnionLineIcon,
+  ArrowIcon,
   space,
 } from '@blockstack/ui';
 
 import { InlineCode } from '@components/mdx';
 
-type ComponentNamesLiteral =
-  | `AppsIcon`
-  | `BlockchainIcon`
-  | `BlockstackIcon`
-  | `CheckmarkCircleIcon`
-  | `CheckmarkIcon`
-  | `ChevronIcon`
-  | `CloseIcon`
-  | `ConnectLogoIcon`
-  | `EncryptionIcon`
-  | `ExclamationMarkCircleIcon`
-  | `ExclamationMarkIcon`
-  | `EyeIcon`
-  | `PadlockIcon`
-  | `PlusCircleIcon`
-  | `PrivateIcon`
-  | `UnionLineIcon`;
-
-const strings = [
-  `AppsIcon`,
-  `BlockchainIcon`,
-  `BlockstackIcon`,
-  `CheckmarkCircleIcon`,
-  `CheckmarkIcon`,
-  `ChevronIcon`,
-  `CloseIcon`,
-  `ConnectLogoIcon`,
-  `EncryptionIcon`,
-  `ExclamationMarkCircleIcon`,
-  `ExclamationMarkIcon`,
-  `EyeIcon`,
-  `PadlockIcon`,
-  `PlusCircleIcon`,
-  `PrivateIcon`,
-  `UnionLineIcon`,
-];
-
 const Components = {
   AppsIcon,
+  ArrowIcon,
   BlockchainIcon,
   BlockstackIcon,
   CheckmarkCircleIcon,
@@ -78,6 +43,10 @@ const Components = {
   PrivateIcon,
   UnionLineIcon,
 };
+
+export type ComponentNamesLiteral = keyof typeof Components;
+
+const strings = Object.values(Components).map(fn => fn.name);
 
 export const Icons = () => {
   return (
