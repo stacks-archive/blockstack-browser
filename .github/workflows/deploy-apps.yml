@@ -1,9 +1,5 @@
 name: Deploy Blockstack Apps
-on:
-  push:
-    branches:
-      - master
-  pull_request:
+on: [pull_request]
 
 jobs:
   blockstack-app-deployments:
@@ -45,17 +41,6 @@ jobs:
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/app/dist
           github-comment: false
-      - uses: amondnet/vercel-action@v19.0.1+1
-        id: vercel-deployment-app-production
-        if: github.event_name == 'push' ||  github.event_name == 'release'
-        name: Deploy authenticator app to production
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP }}
-          vercel-args: '--prod'
-          scope: ${{ secrets.VERCEL_SCOPE }}
-          working-directory: packages/app/dist
       - name: Build Blockstack Test App
         env:
           AUTH_ORIGIN: ${{ steps.vercel-deployment-blockstack-app.outputs.preview-url }}
@@ -77,17 +62,6 @@ jobs:
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/test-app/dist
           github-comment: false
-      - uses: amondnet/vercel-action@v19.0.1+1
-        id: vercel-deployment-production
-        name: Deploy test app to production
-        if: github.event_name == 'push' ||  github.event_name == 'release'
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-org-id: ${{ secrets.ORG_ID }}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_TEST_APP }}
-          vercel-args: '--prod'
-          scope: ${{ secrets.VERCEL_SCOPE }}
-          working-directory: packages/test-app-dist
       - name: Comment on PR
         uses: actions/github-script@v2
         id: comment

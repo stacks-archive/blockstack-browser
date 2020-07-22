@@ -82,3 +82,65 @@ jobs:
       uses: ad-m/github-push-action@fe38f0a
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy-prod-apps:
+    needs: [publish]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        id: lerna-cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install monorepo deps
+        run: yarn --frozen-lockfile
+        if: steps.lerna-cache.outputs.cache-hit != 'true'
+      - name: Build Blockstack App
+        run: yarn prod:web
+        working-directory: packages/app
+      - name: Copy Blockstack App vercel.json
+        uses: canastro/copy-file-action@master
+        with:
+          source: 'packages/app/vercel.json'
+          target: 'packages/app/dist/vercel.json'
+      - uses: amondnet/vercel-action@v19.0.1+1
+        id: vercel-deployment-app-production
+        if: github.event_name == 'push' ||  github.event_name == 'release'
+        name: Deploy authenticator app to production
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP }}
+          vercel-args: '--prod'
+          scope: ${{ secrets.VERCEL_SCOPE }}
+          working-directory: packages/app/dist
+      - name: Build Blockstack Test App
+        env:
+          AUTH_ORIGIN: https://app.blockstack.org
+        run: yarn prod:web
+        working-directory: packages/test-app
+      - name: Copy Blockstack Test App vercel.json
+        uses: canastro/copy-file-action@master
+        with:
+          source: 'packages/test-app/vercel.json'
+          target: 'packages/test-app/dist/vercel.json'
+      - uses: amondnet/vercel-action@v19.0.1+1
+        id: vercel-deployment-production
+        name: Deploy test app to production
+        if: github.event_name == 'push' ||  github.event_name == 'release'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_TEST_APP }}
+          vercel-args: '--prod'
+          scope: ${{ secrets.VERCEL_SCOPE }}
+          working-directory: packages/test-app-dist
