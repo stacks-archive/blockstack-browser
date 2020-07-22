@@ -143,4 +143,4 @@ jobs:
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_TEST_APP }}
           vercel-args: '--prod'
           scope: ${{ secrets.VERCEL_SCOPE }}
-          working-directory: packages/test-app-dist
+          working-directory: packages/test-app/dist
