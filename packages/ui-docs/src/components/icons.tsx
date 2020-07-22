@@ -46,7 +46,24 @@ const Components = {
 
 export type ComponentNamesLiteral = keyof typeof Components;
 
-const strings = Object.values(Components).map(fn => fn.name);
+const strings: ComponentNamesLiteral[] = [
+  'AppsIcon',
+  'BlockchainIcon',
+  'BlockstackIcon',
+  'CheckmarkCircleIcon',
+  'CheckmarkIcon',
+  'ChevronIcon',
+  'CloseIcon',
+  'ConnectLogoIcon',
+  'EncryptionIcon',
+  'ExclamationMarkCircleIcon',
+  'ExclamationMarkIcon',
+  'EyeIcon',
+  'PadlockIcon',
+  'PlusCircleIcon',
+  'PrivateIcon',
+  'UnionLineIcon',
+];
 
 export const Icons = () => {
   return (
