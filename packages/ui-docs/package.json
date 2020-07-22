@@ -1,8 +1,8 @@
 {
   "name": "@blockstack/ui-docs",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "dependencies": {
-    "@blockstack/ui": "^2.10.8",
+    "@blockstack/ui": "^2.10.9",
     "@mdx-js/loader": "1.6.6",
     "@mdx-js/mdx": "^1.6.6",
     "@mdx-js/react": "^1.6.6",
