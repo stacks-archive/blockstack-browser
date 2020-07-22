@@ -48,6 +48,7 @@ export type ComponentNamesLiteral = keyof typeof Components;
 
 const strings: ComponentNamesLiteral[] = [
   'AppsIcon',
+  'ArrowIcon',
   'BlockchainIcon',
   'BlockstackIcon',
   'CheckmarkCircleIcon',
