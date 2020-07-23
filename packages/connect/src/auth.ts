@@ -1,8 +1,13 @@
 import { UserSession, AppConfig } from 'blockstack';
 import './types';
 import { popupCenter, setupListener } from './popup';
+import { version } from '../package.json';
 
 export const defaultAuthURL = 'https://app.blockstack.org';
+
+if (typeof window !== 'undefined') {
+  (window as any).__CONNECT_VERSION__ = version;
+}
 
 export interface FinishedData {
   authResponse: string;
@@ -62,6 +67,7 @@ export const authenticate = async ({
     {
       sendToSignIn,
       appDetails,
+      connectVersion: version,
     }
   );
 

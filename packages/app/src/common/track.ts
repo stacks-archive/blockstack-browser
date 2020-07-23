@@ -68,6 +68,8 @@ export const doTrackScreenChange = (
     await page({
       name: pageTrackingNameMap[screen],
       appName: decodedAuthRequest?.appDetails?.name,
+      connectVersion: decodedAuthRequest?.connectVersion,
+      version: (window as any).__APP_VERSION__,
       appDomain: appURL?.host,
     });
   }, 1);
