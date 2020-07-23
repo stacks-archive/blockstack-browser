@@ -91,7 +91,7 @@
     ]
   },
   "main": "dist/index.js",
-  "module": "dist/ui.esm.js",
+  "module": "dist/index.esm.js",
   "peerDependencies": {
     "react": "16.x",
     "react-dom": "16.x",
