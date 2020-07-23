@@ -105,6 +105,7 @@ export const Drawer: React.FC<DrawerProps> = ({ showing, close, apps, confirm })
                 Go back
               </Button>
               <Button
+                data-test="confirm-continue-app"
                 flexGrow={1}
                 isLoading={loading}
                 onClick={async () => {

@@ -12,15 +12,20 @@ export class AuthPage {
   $buttonConfirmReenterSeedPhrase = createTestSelector('button-confirm-reenter-seed-phrase');
   $textareaSeedPhraseInput = createTestSelector('textarea-reinput-seed-phrase');
   $buttonConnectFlowFinished = createTestSelector('button-connect-flow-finished');
+  $buttonSignInKeyContinue = createTestSelector('sign-in-key-continue');
+  $signInKeyError = createTestSelector('sign-in-seed-error');
   $firstAccount = createTestSelector('account-index-0');
   onboardingSignIn = '#onboarding-sign-in';
-  eightCharactersErrMsg = 'text="Your username should be at least 8 characters, with a maximum of 37 characters."';
-  lowerCharactersErrMsg = 'text="You can only use lowercase letters (a–z), numbers (0–9), and underscores (_)."';
+  eightCharactersErrMsg =
+    'text="Your username should be at least 8 characters, with a maximum of 37 characters."';
+  lowerCharactersErrMsg =
+    'text="You can only use lowercase letters (a–z), numbers (0–9), and underscores (_)."';
   iHaveSavedIt = 'text="I\'ve saved it"';
   passwordInput = '//input[@type="password"]';
   addNewAccountLink = '//span[text()="Add a new account"]';
   invalidSecretKey = 'text="The Secret Key you\'ve entered is invalid"';
   incorrectPassword = 'text="Incorrect password"';
+  confirmContinue = createTestSelector('confirm-continue-app');
 
   continueBtn = 'text="Continue"';
 
@@ -45,7 +50,8 @@ export class AuthPage {
    * Due to flakiness of getting the pop-up page, this has some 'retry' logic
    */
   static async recursiveGetAuthPage(browser: Browser, attempt = 1): Promise<Page> {
-    const page = browser.contexts()[0].pages()[1];
+    const pages = browser.contexts()[0].pages();
+    const page = pages.find(p => p.url().includes('localhost:8080'));
     if (!page) {
       if (attempt > 3) {
         throw new Error('Unable to get auth page popup');
@@ -91,12 +97,16 @@ export class AuthPage {
 
   async loginWithPreviousSecretKey(secretKey: string) {
     await this.page.type('textarea', secretKey);
-    await this.page.click(this.continueBtn);
+    await this.page.click(this.$buttonSignInKeyContinue);
   }
 
   async setPassword(password: string) {
     await this.page.type(this.passwordInput, password);
     await this.page.click(this.continueBtn);
+  }
+
+  async confirmContinueToApp() {
+    await this.page.click(this.confirmContinue, { force: true });
   }
 
   chooseAccount(username: string) {

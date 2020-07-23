@@ -34,6 +34,9 @@ export const App: React.FC = () => {
     if (userSession.isSignInPending()) {
       const userData = await userSession.handlePendingSignIn();
       setState({ userData });
+      setAppPrivateKey(userData.appPrivateKey);
+    } else if (userSession.isUserSignedIn()) {
+      setAppPrivateKey(userSession.loadUserData().appPrivateKey);
     }
   };
 

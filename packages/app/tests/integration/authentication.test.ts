@@ -1,6 +1,7 @@
 import { validateMnemonic, wordlists, generateMnemonic } from 'bip39';
 import { BrowserContext } from 'playwright-core';
-import { chromium } from 'playwright';
+import { BrowserType, WebKitBrowser } from 'playwright-core/types/types';
+import { webkit, devices, chromium } from 'playwright';
 import { DemoPage } from './page-objects/demo.page';
 import { randomString, Browser } from './utils';
 import { AuthPage } from './page-objects/auth.page';
@@ -8,7 +9,8 @@ import { Wallet } from '@blockstack/keychain';
 import { ChainID } from '@blockstack/stacks-transactions';
 
 const SECRET_KEY = 'invite helmet save lion indicate chuckle world pride afford hard broom draft';
-const WRONG_SECRET_KEY = 'invite helmet save lion indicate chuckle world pride afford hard broom yup';
+const WRONG_SECRET_KEY =
+  'invite helmet save lion indicate chuckle world pride afford hard broom yup';
 const WRONG_MAGIC_RECOVERY_KEY =
   'KDR6O8gKXGmstxj4d2oQqCi806M/Cmrbiatc6g7MkQQLVreRA95IoPtvrI3N230jTTGb2XWT5joRFKPfY/2YlmRz1brxoaDJCNS4z18Iw5Y=';
 const WRONG_PASSWORD = 'sstest202020';
@@ -23,34 +25,33 @@ const getRandomWord = () => {
   return word;
 };
 
-const environments = [chromium];
-// type BrowserLauncher = typeof chromium | typeof webkit | typeof firefox;
-// const environments: [BrowserLauncher, DeviceDescriptor | undefined][] = [[chromium, undefined]];
-// const environments: [BrowserLauncher, DeviceDescriptor | undefined][] = [[webkit, undefined]];
+type Device = typeof devices['iPhone 11 Pro'];
+const environments: [BrowserType<WebKitBrowser>, Device | undefined][] = [[chromium, undefined]];
 
-// if (process.env.CI_TEST_DEVICES) {
-//   // environments.push([firefox, undefined]);
-//   environments.push([webkit, devices['iPhone 11 Pro']]);
-//   environments.push([chromium, devices['Pixel 2']]);
-// }
+if (process.env.CI) {
+  environments.push([webkit, undefined]);
+  environments.push([webkit, devices['iPhone 11 Pro']]);
+  environments.push([chromium, devices['Pixel 2']]);
+  // Playwright has issues with Firefox and multi-page
+  // environments.push([firefox, undefined]);
+}
 
-jest.retryTimes(process.env.CI ? 3 : 1);
-describe.each(environments)('auth scenarios - %o %o', browserType => {
+jest.retryTimes(process.env.CI ? 2 : 1);
+describe.each(environments)('auth scenarios - %s %s', (browserType, deviceType) => {
   let browser: Browser;
   let context: BrowserContext;
   let demoPage: DemoPage;
   beforeEach(async () => {
     browser = await browserType.launch();
     console.log('[DEBUG]: Launched puppeteer browser');
-    // if (deviceType) {
-    //   context = await browser.newContext({
-    //     viewport: deviceType.viewport,
-    //     userAgent: deviceType.userAgent,
-    //   });
-    // } else {
-    //   context = await browser.newContext();
-    // }
-    context = await browser.newContext();
+    if (deviceType) {
+      context = await browser.newContext({
+        viewport: deviceType.viewport,
+        userAgent: deviceType.userAgent,
+      });
+    } else {
+      context = await browser.newContext();
+    }
     demoPage = await DemoPage.init(context);
   }, 10000);
 
@@ -93,11 +94,11 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     );
     await authPage.click(auth.$buttonUsernameContinue);
 
-    const authResponse = await demoPage.waitForAuthResponse();
+    const authResponse = await demoPage.waitForAuthResponse(browser);
     expect(authResponse).toBeTruthy();
   }, 120_000);
 
-  it.only('creating a successful local account', async () => {
+  it('creating a successful local account', async () => {
     await demoPage.openConnect();
     await demoPage.clickConnectGetStarted();
     const authPage = await AuthPage.getAuthPage(browser);
@@ -105,8 +106,10 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     expect(secretKey.split(' ').length).toEqual(SEED_PHRASE_LENGTH);
     expect(validateMnemonic(secretKey)).toBeTruthy();
     await authPage.clickIHaveSavedIt();
-    await authPage.setUserName(`${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`);
-    const authResponse = await demoPage.waitForAuthResponse();
+    await authPage.setUserName(
+      `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`
+    );
+    const authResponse = await demoPage.waitForAuthResponse(browser);
     expect(authResponse).toBeTruthy();
   }, 90000);
 
@@ -177,7 +180,9 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     //TEST6 Name already taken
     await authPage.page.type(authPage.$inputUsername, 'test1234');
     await authPage.page.click(authPage.$buttonUsernameContinue);
-    expect(await authPage.page.waitForSelector('text="This username is not available"')).toBeTruthy();
+    expect(
+      await authPage.page.waitForSelector('text="This username is not available"')
+    ).toBeTruthy();
     await authPage.page.evaluate(() => {
       const el = document.querySelector('[data-test="input-username"]') as HTMLInputElement;
       el.value = '';
@@ -191,7 +196,9 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     const authPage = await AuthPage.getAuthPage(browser, false);
     await authPage.loginWithPreviousSecretKey(SECRET_KEY);
     await authPage.chooseAccount(USERNAME);
-    const authResponse = await demoPage.waitForAuthResponse();
+    await authPage.screenshot('existing-key.png');
+    await authPage.confirmContinueToApp();
+    const authResponse = await demoPage.waitForAuthResponse(browser);
     expect(authResponse).toBeTruthy();
   }, 90000);
 
@@ -201,8 +208,9 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     await demoPage.clickAlreadyHaveSecretKey();
     const authPage = await AuthPage.getAuthPage(browser, false);
     await authPage.loginWithPreviousSecretKey(WRONG_SECRET_KEY);
-    const element = await authPage.page.$(authPage.invalidSecretKey);
+    const element = await authPage.page.waitForSelector(authPage.$signInKeyError);
     expect(element).toBeTruthy();
+    expect(await element.innerText()).toEqual("The Secret Key you've entered is invalid");
   }, 90000);
 
   it('Sign in with the wrong magic recovery code', async () => {
@@ -224,7 +232,8 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     await authPage.loginWithPreviousSecretKey(WRONG_MAGIC_RECOVERY_KEY);
     await authPage.setPassword(CORRECT_PASSWORD);
     await authPage.chooseAccount('thisisit202020');
-    const authResponse = await demoPage.waitForAuthResponse();
+    await authPage.confirmContinueToApp();
+    const authResponse = await demoPage.waitForAuthResponse(browser);
     expect(authResponse).toBeTruthy();
   }, 90000);
 
@@ -239,12 +248,15 @@ describe.each(environments)('auth scenarios - %o %o', browserType => {
     await auth.loginWithPreviousSecretKey(seed);
     await authPage.click(auth.$firstAccount);
 
-    const authResponse = await demoPage.waitForAuthResponse();
+    const authResponse = await demoPage.waitForAuthResponse(browser);
     expect(authResponse).toBeTruthy();
 
     const appPrivateKeyEl = await demoPage.page.$('#app-private-key');
-    const appPrivateKey = (await demoPage.page.evaluate(el => el?.getAttribute('value'), appPrivateKeyEl)) as string;
+    const appPrivateKey = (await demoPage.page.evaluate(
+      el => el?.getAttribute('value'),
+      appPrivateKeyEl
+    )) as string;
     expect(appPrivateKey).toBeTruthy();
-    expect(appPrivateKey).toEqual(await wallet.identities[0].appPrivateKey(DemoPage.url));
+    expect(appPrivateKey).toEqual(wallet.identities[0].appPrivateKey(DemoPage.url));
   }, 60_000);
 });

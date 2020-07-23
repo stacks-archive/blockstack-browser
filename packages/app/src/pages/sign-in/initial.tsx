@@ -99,7 +99,12 @@ export const SignIn: React.FC<SignInProps> = props => {
             />
             {seedError && (
               <ErrorLabel lineHeight="16px">
-                <Text textAlign="left" textStyle="caption" color="feedback.error">
+                <Text
+                  textAlign="left"
+                  textStyle="caption"
+                  color="feedback.error"
+                  data-test="sign-in-seed-error"
+                >
                   {seedError}
                 </Text>
               </ErrorLabel>
@@ -121,6 +126,7 @@ export const SignIn: React.FC<SignInProps> = props => {
           <Button
             size="lg"
             type="submit"
+            data-test="sign-in-key-continue"
             onClick={async event => {
               event.preventDefault();
               return onSubmit();

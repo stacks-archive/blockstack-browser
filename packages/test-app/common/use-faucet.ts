@@ -62,11 +62,16 @@ export const useFaucet = () => {
     const getBalance = async () => {
       if (stxAddress) {
         setLoading(true);
-        const { balance } = await client.fetchAccount(stxAddress);
-        setBalance(balance.toNumber());
-        if (balance.toNumber() === 0) {
-          void submit(stxAddress);
+        try {
+          const { balance } = await client.fetchAccount(stxAddress);
+          setBalance(balance.toNumber());
+          if (balance.toNumber() === 0) {
+            void submit(stxAddress);
+          }
+        } catch (error) {
+          setError('We were unable to connect to the Stacks Blockchain');
         }
+
         setLoading(false);
       }
     };

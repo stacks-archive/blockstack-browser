@@ -1,0 +1,33 @@
+name: Build Extension
+on: [push]
+
+jobs:
+  build-extension:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        id: lerna-cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install monorepo deps
+        run: yarn --frozen-lockfile
+        if: steps.lerna-cache.outputs.cache-hit != 'true'
+      - name: Build Extension
+        run: yarn lerna run prod:ext --stream
+      - name: Zip extension
+        run: zip -r extension.zip ./packages/app/dist
+      - uses: actions/upload-artifact@v2
+        name: Upload Zip artifact
+        with:
+          name: extension.zip
+          path: extension.zip

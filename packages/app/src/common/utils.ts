@@ -1,6 +1,6 @@
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
-import { FinishedTxData } from '@blockstack/connect';
+import { FinishedTxData, shouldUsePopup } from '@blockstack/connect';
 
 export const getAuthRequestParam = () => {
   const { hash } = document.location;
@@ -56,13 +56,17 @@ export const finalizeAuthResponse = ({
   authRequest,
   authResponse,
 }: FinalizeAuthParams) => {
+  const redirect = `${decodedAuthRequest.redirect_uri}?authResponse=${authResponse}`;
+  if (!shouldUsePopup()) {
+    document.location.href = redirect;
+    return;
+  }
   let didSendMessageBack = false;
   setTimeout(() => {
     if (!didSendMessageBack) {
-      const redirect = `${decodedAuthRequest.redirect_uri}?authResponse=${authResponse}`;
       const { client } = decodedAuthRequest;
       if (client === 'ios' || client === 'android') {
-        window.location.href = redirect;
+        document.location.href = redirect;
       } else {
         window.open(redirect);
       }
@@ -85,6 +89,7 @@ export const finalizeAuthResponse = ({
       }
     }
   });
+  return;
 };
 
 export const finalizeTxSignature = (data: FinishedTxData) => {
