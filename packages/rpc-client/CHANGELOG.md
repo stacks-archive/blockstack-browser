@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0-alpha.4 (2020-07-23)
+
+
+### Features
+
+* expose connect, app version ([b90a618](https://github.com/blockstack/ux/commit/b90a618fbeaac0ed998ec5ecd10eda8facdc6e10))
+
+
+
+
+
 # 0.3.0-alpha.3 (2020-07-22)
 
 
