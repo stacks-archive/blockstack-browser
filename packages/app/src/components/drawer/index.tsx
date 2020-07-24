@@ -86,7 +86,9 @@ export const Drawer: React.FC<DrawerProps> = ({ showing, close, apps, confirm })
                       onChange={() => setChecked(!checked)}
                     />
                   </Box>
-                  <label htmlFor="checkbox">Do not show this again</label>
+                  <label htmlFor="checkbox" style={{ cursor: 'pointer' }}>
+                    Do not show this again
+                  </label>
                 </Flex>
               </>,
             ]}
