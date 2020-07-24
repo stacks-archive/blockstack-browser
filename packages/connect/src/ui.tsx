@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useConnect, Connect } from './react';
-import { AuthOptions } from './auth';
+import { AuthOptions, authenticate } from './auth';
 
 const Base: React.FC = () => {
   const { doOpenAuth } = useConnect();
@@ -19,6 +19,9 @@ const Base: React.FC = () => {
 };
 
 export const showBlockstackConnect = (authOptions: AuthOptions) => {
+  if (authOptions.sendToSignIn) {
+    return authenticate(authOptions);
+  }
   const baseDiv = document.createElement('div');
   document.body.appendChild(baseDiv);
   ReactDOM.render(
@@ -27,4 +30,5 @@ export const showBlockstackConnect = (authOptions: AuthOptions) => {
     </Connect>,
     baseDiv
   );
+  return;
 };
