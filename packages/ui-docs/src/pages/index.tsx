@@ -19,7 +19,7 @@ export async function getStaticProps() {
     // we will attempt to re-generate the page:
     // - when a request comes in
     // - at most once every second
-    unstable_revalidate: 1,
+    revalidate: 1,
   };
 }
 

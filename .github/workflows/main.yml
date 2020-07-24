@@ -5,83 +5,83 @@ jobs:
   test_keychain:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Set Node Version
-      uses: actions/setup-node@v1.4.2
-      with:
-        node-version: 12.16.1
-    - name: Restore lerna cache
-      id: lerna-cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          node_modules
-          */*/node_modules
-        key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-    - name: Install monorepo deps
-      run: yarn --frozen-lockfile
-      if: steps.lerna-cache.outputs.cache-hit != 'true'
-    - name: Keychain tests
-      run: yarn lerna run test --scope @blockstack/keychain
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        id: lerna-cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install monorepo deps
+        run: yarn --frozen-lockfile
+        if: steps.lerna-cache.outputs.cache-hit != 'true'
+      - name: Keychain tests
+        run: yarn lerna run test --scope @blockstack/keychain
 
   codecheck:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Set Node Version
-      uses: actions/setup-node@v1.4.2
-      with:
-        node-version: 12.16.1
-    - name: Restore lerna cache
-      id: lerna-cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          node_modules
-          */*/node_modules
-        key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-    - name: Install monorepo deps
-      run: yarn --frozen-lockfile
-      if: steps.lerna-cache.outputs.cache-hit != 'true'
-    - name: Lint
-      run: yarn lint
-    - name: Typecheck
-      run: yarn typecheck
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        id: lerna-cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install monorepo deps
+        run: yarn --frozen-lockfile
+        if: steps.lerna-cache.outputs.cache-hit != 'true'
+      - name: Lint
+        run: yarn lint
+      - name: Typecheck
+        run: yarn typecheck
 
   publish:
     needs: [test_keychain, codecheck]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Checkout master
-      run: git checkout master
-    - name: Set Node Version
-      uses: actions/setup-node@v1.4.2
-      with:
-        node-version: 12.16.1
-    - name: Install monorepo deps (no cache)
-      run: yarn --frozen-lockfile
-      if: steps.lerna-cache.outputs.cache-hit != 'true'
-    - name: Setup .npmrc
-      env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-    - name: Setup git
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-    - name: Lerna Version
-      run: yarn lerna version --conventional-commits --no-push --yes
-    - name: Publish
-      run: yarn lerna publish from-git --conventional-commits --yes
-    - name: Push changes
-      uses: ad-m/github-push-action@fe38f0a
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout master
+        run: git checkout master
+      - name: Set Node Version
+        uses: actions/setup-node@v1.4.2
+        with:
+          node-version: 12.16.1
+      - name: Install monorepo deps (no cache)
+        run: yarn --frozen-lockfile
+        if: steps.lerna-cache.outputs.cache-hit != 'true'
+      - name: Setup .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - name: Setup git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Lerna Version
+        run: yarn lerna version --conventional-commits --no-push --yes
+      - name: Publish
+        run: yarn lerna publish from-git --conventional-commits --yes
+      - name: Push changes
+        uses: ad-m/github-push-action@fe38f0a
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-prod-apps:
     needs: [publish]
@@ -112,7 +112,7 @@ jobs:
         with:
           source: 'packages/app/vercel.json'
           target: 'packages/app/dist/vercel.json'
-      - uses: amondnet/vercel-action@v19.0.1+1
+      - uses: amondnet/vercel-action@v19.0.1+2
         id: vercel-deployment-app-production
         if: github.event_name == 'push' ||  github.event_name == 'release'
         name: Deploy authenticator app to production
@@ -133,7 +133,7 @@ jobs:
         with:
           source: 'packages/test-app/vercel.json'
           target: 'packages/test-app/dist/vercel.json'
-      - uses: amondnet/vercel-action@v19.0.1+1
+      - uses: amondnet/vercel-action@v19.0.1+2
         id: vercel-deployment-production
         name: Deploy test app to production
         if: github.event_name == 'push' ||  github.event_name == 'release'
@@ -144,3 +144,14 @@ jobs:
           vercel-args: '--prod'
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/test-app/dist
+      - uses: amondnet/vercel-action@v19.0.1+2
+        id: vercel-deployment-production
+        if: github.event_name == 'push' ||  github.event_name == 'release'
+        name: Deploy UI documentation to production
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: '--prod'
+          scope: ${{ secrets.VERCEL_SCOPE }}
+          working-directory: packages/ui-docs

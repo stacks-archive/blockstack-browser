@@ -31,7 +31,7 @@ jobs:
           source: 'packages/app/vercel.json'
           target: 'packages/app/dist/vercel.json'
       - name: Deploy Blockstack App with Vercel
-        uses: amondnet/vercel-action@v19.0.1+1
+      - uses: aulneau/vercel-action@v19.0.2+3
         id: vercel-deployment-blockstack-app
         if: github.event_name == 'pull_request'
         with:
@@ -41,6 +41,7 @@ jobs:
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/app/dist
           github-comment: false
+          alias-domains: pr-{{ PR_NUMBER }}.app.stacks.engineering
       - name: Build Blockstack Test App
         env:
           AUTH_ORIGIN: ${{ steps.vercel-deployment-blockstack-app.outputs.preview-url }}
@@ -52,7 +53,7 @@ jobs:
           source: 'packages/test-app/vercel.json'
           target: 'packages/test-app/dist/vercel.json'
       - name: Deploy Blockstack Test App with Vercel
-        uses: amondnet/vercel-action@v19.0.1+1
+        uses: aulneau/vercel-action@v19.0.2+3
         id: vercel-deployment-blockstack-test-app
         if: github.event_name == 'pull_request'
         with:
@@ -62,6 +63,7 @@ jobs:
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/test-app/dist
           github-comment: false
+          alias-domains: pr-{{ PR_NUMBER }}.testnet-demo.stacks.engineering
       - name: Comment on PR
         uses: actions/github-script@v2
         id: comment
@@ -83,7 +85,7 @@ jobs:
             ${firstLine}
 
             - [Blockstack App](${{ steps.vercel-deployment-blockstack-app.outputs.preview-url }})
-            - [Blockstack Test App](${{ steps.vercel-deployment-blockstack-test-app.outputs.preview-url }})
+            - [Blockstack Testnet Demo App](${{ steps.vercel-deployment-blockstack-test-app.outputs.preview-url }})
 
             Built with commit ${context.sha}.
             `;
