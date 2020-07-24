@@ -13,7 +13,7 @@ export const App: React.FC = () => {
   const [authResponse, setAuthResponse] = React.useState('');
   const [appPrivateKey, setAppPrivateKey] = React.useState('');
 
-  const appConfig = new AppConfig(['store_write'], document.location.href);
+  const appConfig = new AppConfig(['store_write', 'publish_data'], document.location.href);
   const userSession = new UserSession({ appConfig });
 
   const signOut = () => {

@@ -74,7 +74,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
           const app = apps[origin];
           if (origin !== url.origin && app.scopes.includes('publish_data')) {
             newReusedApps.push(app);
-          } else if (origin === url.origin) {
+          } else if (origin === url.origin && app.scopes.includes('publish_data')) {
             hasLoggedInWithThisID = true;
           }
         });
