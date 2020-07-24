@@ -1,5 +1,4 @@
 // @ts-nocheck
-import Prism from 'prismjs';
 
 (function (Prism) {
   // Functions to construct regular expressions
@@ -112,4 +111,4 @@ buff|hash160|sha256|sha512|sha512/256|keccak256|true|false|none)' +
   };
 
   Prism.languages.clarity = language;
-})(Prism);
+});

@@ -1,5 +1,4 @@
 import React from 'react';
-import Prism from 'prismjs';
 import Highlight from 'prism-react-renderer';
 import { Box } from '../box';
 import { Flex } from '../flex';
@@ -122,16 +121,30 @@ const Lines = ({
     </Box>
   );
 };
+type PrismToken = {
+  type: string;
+  content: (PrismToken | string)[] | string;
+};
+type PrismGrammar = {
+  [key: string]: any;
+};
+type LanguageDict = { [lang in Language]: PrismGrammar };
+type PrismLib = {
+  languages: LanguageDict;
+  tokenize: (code: string, grammar: PrismGrammar, language: Language) => PrismToken[] | string[];
+  highlight: (code: string, grammar: PrismGrammar, language: Language) => string;
+};
 
 export interface HighlighterProps {
   code: string;
   language?: Language;
   showLineNumbers?: boolean;
   hideLineHover?: boolean;
+  Prism: PrismLib;
 }
 
 export const Highlighter = React.memo(
-  ({ code, language = 'clarity', showLineNumbers, hideLineHover }: HighlighterProps) => {
+  ({ code, language = 'clarity', showLineNumbers, hideLineHover, Prism }: HighlighterProps) => {
     return (
       <Highlight theme={theme} code={code} language={language as any} Prism={Prism as any}>
         {props => (

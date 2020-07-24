@@ -6,7 +6,7 @@ export type CodeBlockProps = HighlighterProps & BoxProps;
 
 export const CodeBlock = React.forwardRef(
   (
-    { code, showLineNumbers, hideLineHover, style = {}, language, ...rest }: CodeBlockProps,
+    { code, showLineNumbers, hideLineHover, style = {}, language, Prism, ...rest }: CodeBlockProps,
     ref: React.Ref<HTMLDivElement>
   ) => (
     <Box
@@ -29,6 +29,7 @@ export const CodeBlock = React.forwardRef(
         code={code.toString().trim()}
         showLineNumbers={showLineNumbers}
         hideLineHover={hideLineHover}
+        Prism={Prism}
       />
     </Box>
   )
