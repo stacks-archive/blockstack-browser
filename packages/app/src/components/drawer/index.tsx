@@ -13,14 +13,7 @@ interface PreviousAppsProps {
 const PreviousApps = ({ apps, ...rest }: PreviousAppsProps) => (
   <Flex mx={6} {...rest}>
     {apps.map((app, key) => (
-      <Box
-        border="2px solid white"
-        size="26px"
-        borderRadius="6px"
-        key={key}
-        transform={key > 0 ? `translateX(-${4 * key}px)` : 'none'}
-        overflow="hidden"
-      >
+      <Box border="2px solid white" size="26px" borderRadius="6px" key={key} overflow="hidden">
         <Image src={app.appIcon} alt={app.name} title={app.name} />
       </Box>
     ))}
