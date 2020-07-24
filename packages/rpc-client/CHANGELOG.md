@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0-alpha.6 (2020-07-24)
+
+
+### Features
+
+* better bundle size with esmodules ([2c7046f](https://github.com/blockstack/ux/commit/2c7046f70d2ea10ffd973a4ea816a760ffc26952))
+
+
+
+
+
 # 0.3.0-alpha.5 (2020-07-24)
 
 
