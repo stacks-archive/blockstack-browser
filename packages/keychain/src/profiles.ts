@@ -71,6 +71,7 @@ export function signProfileForUpload(profile: Profile, keypair: IdentityKeyPair)
 
 export async function uploadProfile(
   gaiaHubUrl: string,
+  filePath: string,
   identity: Identity,
   signedProfileTokenData: string,
   gaiaHubConfig?: GaiaHubConfig
@@ -149,7 +150,12 @@ export const registerSubdomain = async ({
 }: RegisterParams) => {
   const profile = identity.profile || DEFAULT_PROFILE;
   const signedProfileTokenData = signProfileForUpload(profile, identity.keyPair);
-  const profileUrl = await uploadProfile(gaiaHubUrl, identity, signedProfileTokenData);
+  const profileUrl = await uploadProfile(
+    gaiaHubUrl,
+    DEFAULT_PROFILE_FILE_NAME,
+    identity,
+    signedProfileTokenData
+  );
   const fullUsername = `${username}.${subdomain}`;
   const zoneFile = makeProfileZoneFile(fullUsername, profileUrl);
   await sendUsernameToRegistrar({
@@ -166,16 +172,18 @@ export const registerSubdomain = async ({
 export const signAndUploadProfile = async ({
   profile,
   gaiaHubUrl,
+  filePath,
   identity,
   gaiaHubConfig,
 }: {
   profile: Profile;
   gaiaHubUrl: string;
+  filePath: string;
   identity: Identity;
   gaiaHubConfig?: GaiaHubConfig;
 }) => {
   const signedProfileTokenData = signProfileForUpload(profile, identity.keyPair);
-  await uploadProfile(gaiaHubUrl, identity, signedProfileTokenData, gaiaHubConfig);
+  await uploadProfile(gaiaHubUrl, filePath, identity, signedProfileTokenData, gaiaHubConfig);
 };
 
 export const fetchProfile = async ({

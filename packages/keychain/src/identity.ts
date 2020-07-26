@@ -84,7 +84,14 @@ export class Identity {
         privateKey: this.keyPair.key,
         gaiaHubUrl: gaiaUrl,
       });
-      await signAndUploadProfile({ profile, identity: this, gaiaHubUrl: gaiaUrl, gaiaHubConfig });
+      const filePath = new URL(profileUrl).pathname.substr(1);
+      await signAndUploadProfile({
+        profile,
+        identity: this,
+        gaiaHubUrl: gaiaUrl,
+        filePath,
+        gaiaHubConfig,
+      });
     }
     this.profile = profile;
 
