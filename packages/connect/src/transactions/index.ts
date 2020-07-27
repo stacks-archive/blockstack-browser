@@ -63,7 +63,7 @@ const openTransactionPopup = async ({ token, opts }: TransactionPopup) => {
 };
 
 export const makeContractCallToken = async (opts: ContractCallOptions) => {
-  const { contractAddress, functionName, contractName, functionArgs, appDetails } = opts;
+  const { functionArgs, appDetails } = opts;
   const { privateKey, publicKey } = getKeys(opts.userSession);
 
   const args: string[] = functionArgs.map(arg => {
@@ -74,9 +74,7 @@ export const makeContractCallToken = async (opts: ContractCallOptions) => {
   });
 
   const payload: ContractCallPayload = {
-    contractAddress,
-    contractName,
-    functionName,
+    ...opts,
     functionArgs: args,
     txType: TransactionTypes.ContractCall,
     publicKey,
@@ -90,12 +88,11 @@ export const makeContractCallToken = async (opts: ContractCallOptions) => {
 };
 
 export const makeContractDeployToken = async (opts: ContractDeployOptions) => {
-  const { contractName, codeBody, appDetails } = opts;
+  const { appDetails } = opts;
   const { privateKey, publicKey } = getKeys(opts.userSession);
 
   const payload: ContractDeployPayload = {
-    contractName,
-    codeBody,
+    ...opts,
     publicKey,
     txType: TransactionTypes.ContractDeploy,
   };
@@ -108,13 +105,12 @@ export const makeContractDeployToken = async (opts: ContractDeployOptions) => {
 };
 
 export const makeSTXTransferToken = async (opts: STXTransferOptions) => {
-  const { amount, recipient, memo, appDetails } = opts;
+  const { amount, appDetails } = opts;
   const { privateKey, publicKey } = getKeys(opts.userSession);
 
   const payload: STXTransferPayload = {
+    ...opts,
     amount: amount.toString(10),
-    recipient,
-    memo,
     publicKey,
     txType: TransactionTypes.STXTransfer,
   };
