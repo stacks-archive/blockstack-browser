@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/rpc-client",
-  "version": "0.3.0-alpha.7",
+  "version": "0.3.0-alpha.8",
   "license": "MIT",
   "author": "Hank Stoever",
   "main": "dist/index.js",
