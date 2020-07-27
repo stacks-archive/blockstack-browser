@@ -59,14 +59,11 @@ export const registrars = {
   },
 };
 
-export async function signProfileForUpload(
-  profile: Profile,
-  keypair: IdentityKeyPair
-): Promise<string> {
+export function signProfileForUpload(profile: Profile, keypair: IdentityKeyPair): string {
   const privateKey = keypair.key;
   const publicKey = keypair.keyID;
 
-  const token = await signProfileToken(profile, privateKey, { publicKey });
+  const token = signProfileToken(profile, privateKey, { publicKey });
   const tokenRecord = wrapProfileToken(token);
   const tokenRecords = [tokenRecord];
   return JSON.stringify(tokenRecords, null, 2);
@@ -148,7 +145,7 @@ export const registerSubdomain = async ({
   subdomain,
 }: RegisterParams) => {
   const profile = identity.profile || DEFAULT_PROFILE;
-  const signedProfileTokenData = await signProfileForUpload(profile, identity.keyPair);
+  const signedProfileTokenData = signProfileForUpload(profile, identity.keyPair);
   const profileUrl = await uploadProfile(
     gaiaHubUrl,
     DEFAULT_PROFILE_FILE_NAME,
@@ -181,7 +178,7 @@ export const signAndUploadProfile = async ({
   identity: Identity;
   gaiaHubConfig?: GaiaHubConfig;
 }) => {
-  const signedProfileTokenData = await signProfileForUpload(profile, identity.keyPair);
+  const signedProfileTokenData = signProfileForUpload(profile, identity.keyPair);
   await uploadProfile(gaiaHubUrl, filePath, identity, signedProfileTokenData, gaiaHubConfig);
 };
 
