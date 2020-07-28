@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/keychain",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "A package for managing Blockstack keychains",
   "main": "./dist/index.js",
   "umd:main": "./dist/keychain.umd.production.js",
@@ -56,7 +56,7 @@
     "typescript": "^3.7.3"
   },
   "dependencies": {
-    "@blockstack/rpc-client": "^0.3.0-alpha.9",
+    "@blockstack/rpc-client": "^0.3.0-alpha.10",
     "@blockstack/stacks-transactions": "0.5.1",
     "bip39": "^3.0.2",
     "bitcoinjs-lib": "^5.1.6",

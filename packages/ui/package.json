@@ -1,7 +1,7 @@
 {
   "name": "@blockstack/ui",
   "description": "Blockstack UI components built using React and styled-components with styled-system.",
-  "version": "2.12.3",
+  "version": "2.12.4",
   "author": "Blockstack <engineering@blockstack.com> (https://blockstack.org/)",
   "bundlesize": [
     {
