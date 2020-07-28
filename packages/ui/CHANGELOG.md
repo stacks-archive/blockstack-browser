@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.12.3 (2020-07-28)
+
+
+### Bug Fixes
+
+* cursor pointer on dont show this again, fixes [#508](https://github.com/blockstack/ux/tree/master/packages/ui/issues/508) ([fe4dcf4](https://github.com/blockstack/ux/tree/master/packages/ui/commit/fe4dcf418526289685687ad9f4526cd45db85410))
+
+
+
+
+
 ## 2.12.2 (2020-07-27)
 
 
