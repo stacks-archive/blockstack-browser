@@ -7,7 +7,7 @@ import { useTheme } from '../hooks';
 
 import { GrammaticalToken, GetGrammaticalTokenProps, RenderProps, Language } from './types';
 import { theme } from './prism-theme';
-import './language-definition';
+import './clarity';
 
 export * from './types';
 
