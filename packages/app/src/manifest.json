@@ -1,7 +1,7 @@
 {
   "name": "Blockstack",
   "author": "Blockstack",
-  "version": "1.0.0",
+  "version": "1.13.1",
   "description": "The Blockstack app is all you need to access the new internet. Access privacy-friendly apps and keep data in your control.",
   "icons": {
     "128": "assets/logo-128@1x.png",

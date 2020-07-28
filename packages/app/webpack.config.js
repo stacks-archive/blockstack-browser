@@ -11,6 +11,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require('terser-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
+const { version } = require('./package.json');
 
 /* eslint-enable @typescript-eslint/no-var-requires */
 
@@ -216,13 +217,15 @@ module.exports = {
         to: path.join(distRootPath, 'manifest.json'),
         toType: 'file',
         transform(content, path) {
-          const tag = '<% DEV_CSR %>';
+          const csrTag = '<% DEV_CSR %>';
+          const versionTag = '<% VERSION %>';
           content = content.toString();
           if (nodeEnv === 'development') {
-            content = content.replace(tag, " 'unsafe-eval'");
+            content = content.replace(csrTag, " 'unsafe-eval'");
           } else {
-            content = content.replace(tag, '');
+            content = content.replace(csrTag, '');
           }
+          content = content.replace(versionTag, version);
           return Buffer.from(content);
         },
       },
