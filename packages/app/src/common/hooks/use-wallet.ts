@@ -23,7 +23,7 @@ export const useWallet = () => {
   const [secretKey, setSecretKey] = useState(onboardingSecretKey);
 
   const fetchSecretKey = async () => {
-    if (!secretKey && wallet) {
+    if (wallet) {
       const decryptedKey = await decrypt(wallet?.encryptedBackupPhrase, DEFAULT_PASSWORD);
       setSecretKey(decryptedKey);
     }

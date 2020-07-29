@@ -30,6 +30,7 @@ export const WalletTransform = createTransform(
 
 interface InboundOnboardingState {
   onboardingPath?: string;
+  secretKey?: string;
 }
 
 /**
@@ -38,10 +39,11 @@ interface InboundOnboardingState {
  */
 export const OnboardingTransform = createTransform(
   (inboundState: InboundOnboardingState) => {
+    const { secretKey, ...state } = inboundState;
     return {
       onboardingPath: inboundState.onboardingPath,
       ...initialState,
-      ...inboundState,
+      ...state,
     };
   },
   outboundState => {
