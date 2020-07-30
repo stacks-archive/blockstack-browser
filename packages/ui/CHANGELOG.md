@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.12.5 (2020-07-30)
+
+
+### Bug Fixes
+
+* reset text-align within connect modal, fixes [#458](https://github.com/blockstack/ux/tree/master/packages/ui/issues/458) ([aecc700](https://github.com/blockstack/ux/tree/master/packages/ui/commit/aecc70016809c3750d5cde730db4aeaffd52bb98))
+
+
+
+
+
 ## 2.12.4 (2020-07-28)
 
 **Note:** Version bump only for package @blockstack/ui
