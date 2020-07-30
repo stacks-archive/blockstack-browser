@@ -83,7 +83,8 @@ export const SignIn: React.FC<SignInProps> = props => {
               placeholder="12-word Secret Key"
               as="textarea"
               value={seed}
-              autoCapitalize="false"
+              fontSize={'16px'}
+              autoCapitalize="off"
               spellCheck={false}
               style={{ resize: 'none' }}
               ref={textAreaRef}
