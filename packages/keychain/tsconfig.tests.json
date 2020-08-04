@@ -10,10 +10,10 @@
     "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,
     "lib": ["es2017", "dom"],
-    "sourceMap": true,
     "paths": {
       "@blockstack/rpc-client": ["../../rpc-client/src"]
-    }
+    },
+    "sourceMap": true
   },
   "include": ["./src/**/*"]
 }
