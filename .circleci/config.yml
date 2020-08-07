@@ -47,6 +47,9 @@ jobs:
           name: Build extension
           command: yarn lerna run prod:ext && zip -r extension.zip ./packages/app/dist
       - run:
+          name: Build UI
+          command: yarn lerna run build --scope @blockstack/ui
+      - run:
           name: test server
           command: yarn lerna run dev --scope @blockstack/app
           background: true

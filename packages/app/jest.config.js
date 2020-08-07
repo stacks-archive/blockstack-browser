@@ -1,3 +1,21 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { pathsToModuleNameMapper } = require('ts-jest/utils');
+// In the following statement, replace `./tsconfig` with the path to your `tsconfig` file
+// which contains the path mapping (ie the `compilerOptions.paths` option):
+const { compilerOptions } = require('./tsconfig');
+const pathNames = {};
+Object.keys(compilerOptions.paths).forEach(key => {
+  const [path] = compilerOptions.paths[key];
+  if (key.includes('/ui')) {
+    return;
+  }
+  if (path.startsWith('../')) {
+    pathNames[key] = `<rootDir>/${path.slice(3)}`;
+    return;
+  } else {
+    pathNames[key.replace(/\*/g, '(.*)')] = `<rootDir>/src/${path.replace(/\*/g, '$1')}`;
+  }
+});
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
@@ -62,6 +80,7 @@ module.exports = {
     'ts-jest': {
       // https://huafu.github.io/ts-jest/user/config/diagnostics
       diagnostics: false,
+      tsconfig: '<rootDir>/tests/tsconfig.json',
     },
   },
 
@@ -74,9 +93,7 @@ module.exports = {
   moduleFileExtensions: ['js', 'json', 'jsx', 'ts', 'tsx', 'node', 'd.ts'],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
-  moduleNameMapper: {
-    '^@blockstack/keychain': '<rootDir>/../keychain/src',
-  },
+  moduleNameMapper: pathNames,
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -164,7 +181,10 @@ module.exports = {
   // timers: "real",
 
   // A map from regular expressions to paths to transformers
-  transform: { '^.+\\.tsx?$': 'ts-jest' },
+  transform: {
+    '^.+\\.jsx?$': 'babel-jest',
+    '^.+\\.tsx?$': 'ts-jest',
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [

@@ -3,6 +3,7 @@ import {
   StacksTransaction,
   deserializeCV,
 } from '@blockstack/stacks-transactions';
+import { PostCondition } from '@blockstack/stacks-transactions/lib/postcondition';
 import { Wallet } from '@blockstack/keychain';
 import { getRPCClient } from './stacks-utils';
 import {
@@ -14,6 +15,19 @@ import {
 } from '@blockstack/connect';
 import { doTrack, TRANSACTION_SIGN_SUBMIT, TRANSACTION_SIGN_ERROR } from '@common/track';
 import { finalizeTxSignature } from './utils';
+import BigNum from 'bn.js';
+
+const getPostConditions = (postConditions?: PostCondition[]): PostCondition[] | undefined => {
+  return postConditions?.map(postCondition => {
+    if ('amount' in postCondition && postCondition.amount) {
+      return {
+        ...postCondition,
+        amount: new BigNum(postCondition.amount, 16),
+      };
+    }
+    return postCondition;
+  });
+};
 
 export const generateContractCallTx = ({
   txData,
@@ -38,7 +52,7 @@ export const generateContractCallTx = ({
     version,
     nonce,
     postConditionMode: txData.postConditionMode,
-    postConditions: txData.postConditions,
+    postConditions: getPostConditions(txData.postConditions),
   });
 };
 
@@ -60,7 +74,7 @@ export const generateContractDeployTx = ({
     version,
     nonce,
     postConditionMode: txData.postConditionMode,
-    postConditions: txData.postConditions,
+    postConditions: getPostConditions(txData.postConditions),
   });
 };
 
@@ -79,8 +93,6 @@ export const generateSTXTransferTx = ({
     memo,
     amount,
     nonce,
-    postConditionMode: txData.postConditionMode,
-    postConditions: txData.postConditions,
   });
 };
 
