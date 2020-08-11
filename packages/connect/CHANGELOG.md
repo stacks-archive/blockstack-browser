@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.10.5...@blockstack/connect@2.11.0) (2020-08-11)
+
+
+### Features
+
+* add button to get extension ([f0ba354](https://github.com/blockstack/ux/commit/f0ba3545226886f928b01dbf2fb2e3e620ac5bf3))
+
+
+
+
+
 ## 2.10.5 (2020-07-30)
 
 

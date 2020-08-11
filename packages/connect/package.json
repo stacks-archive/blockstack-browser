@@ -1,6 +1,6 @@
 {
   "name": "@blockstack/connect",
-  "version": "2.10.5",
+  "version": "2.11.0",
   "scripts": {
     "build": "yarn build:modules && yarn build:standalone",
     "build:modules": "tsdx build --format cjs,esm,umd",

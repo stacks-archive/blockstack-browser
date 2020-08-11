@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/blockstack/ux/compare/@blockstack/app@1.13.5...@blockstack/app@1.14.0) (2020-08-11)
+
+
+### Bug Fixes
+
+* dont have selected address when canceling reuse, fixes [#454](https://github.com/blockstack/ux/issues/454) ([27f8f61](https://github.com/blockstack/ux/commit/27f8f616549ef9acc1e121f1fda9a40f8a142898))
+* prevent auto-zoom of sign in field, fixes [#510](https://github.com/blockstack/ux/issues/510) ([eea3219](https://github.com/blockstack/ux/commit/eea3219c2de0925b7dd34a5f9fe2e5f6adb0ddc4))
+* show correct secret key on home screen, fixes [#517](https://github.com/blockstack/ux/issues/517) ([e14afcf](https://github.com/blockstack/ux/commit/e14afcf036ef25d45a541005aa9bb88cd218f4ab))
+* show loading when reusing account, fixes [#464](https://github.com/blockstack/ux/issues/464) ([19fbf4e](https://github.com/blockstack/ux/commit/19fbf4efdc5755d26587ca01f225557082d61701))
+
+
+### Features
+
+* add button to get extension ([f0ba354](https://github.com/blockstack/ux/commit/f0ba3545226886f928b01dbf2fb2e3e620ac5bf3))
+
+
+
+
+
 ## 1.13.5 (2020-07-30)
 
 
