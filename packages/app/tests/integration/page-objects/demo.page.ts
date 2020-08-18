@@ -7,14 +7,14 @@ export class DemoPage {
   $openAuthButton = createTestSelector('button-skip-connect');
   authResponse = '#auth-response';
   appPriivateKey = '#app-private-key';
-  getStarted = '//span[text()="Get Started"]';
-  getStartedPopUp = 'css=button>span >> text="Get started"';
+  getStarted = '//span[text()="Get your Secret Key"]';
+  getStartedPopUp = 'css=button>span >> text="Get your Secret Key"';
   skipBtn = 'text="Skip"';
   postTextarea = 'div.DraftEditor-root';
   postBtn = '//span[text()="Post"]';
   profileBtn = '//*[@title="Your Profile"]';
   logoutBtn = '//*[contains(text(),"Log out")]';
-  alreadyHaveSecretKeyLink = '//span[text()="I already have a Secret Key"]';
+  alreadyHaveSecretKeyLink = '//span[text()="Sign in"]';
   openConnectBtn = createTestSelector('sign-up');
   openSignInBtn = createTestSelector('sign-in');
 
@@ -49,7 +49,10 @@ export class DemoPage {
   async waitForAuthResponse() {
     await this.page.waitForSelector('#auth-response', { state: 'attached', timeout: 15000 });
     const authResponseEl = await this.page.$('#auth-response');
-    const authResponse = (await this.page.evaluate(el => el?.getAttribute('value'), authResponseEl)) as string;
+    const authResponse = (await this.page.evaluate(
+      el => el?.getAttribute('value'),
+      authResponseEl
+    )) as string;
     return authResponse;
   }
 

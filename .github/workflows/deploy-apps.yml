@@ -31,7 +31,7 @@ jobs:
           source: 'packages/app/vercel.json'
           target: 'packages/app/dist/vercel.json'
       - name: Deploy Blockstack App with Vercel
-      - uses: aulneau/vercel-action@v19.0.2+3
+        uses: aulneau/vercel-action@v19.0.2+3
         id: vercel-deployment-blockstack-app
         if: github.event_name == 'pull_request'
         with:

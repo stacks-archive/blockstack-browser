@@ -145,7 +145,7 @@ jobs:
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/test-app/dist
       - uses: amondnet/vercel-action@v19.0.1+2
-        id: vercel-deployment-production
+        id: vercel-deployment-production-ui-docs
         if: github.event_name == 'push' ||  github.event_name == 'release'
         name: Deploy UI documentation to production
         with:
