@@ -69,7 +69,7 @@ export const Intro = () => {
       <ScreenFooter>
         <Stack mb="base-loose" mt="base-tight" spacing="base" isInline>
           <Link textStyle="caption" color="blue" onClick={() => doAuth({ sendToSignIn: true })}>
-            I already have a Secret Key
+            Sign in
           </Link>
           <Link
             color="blue"
@@ -79,6 +79,15 @@ export const Intro = () => {
             }}
           >
             How it works
+          </Link>
+          <Link
+            color="blue"
+            textStyle="caption"
+            onClick={() => {
+              window.open('https://www2.blockstack.org/install-extension', '_blank');
+            }}
+          >
+            Install extension
           </Link>
         </Stack>
       </ScreenFooter>
