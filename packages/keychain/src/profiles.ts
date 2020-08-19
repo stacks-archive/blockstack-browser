@@ -69,13 +69,19 @@ export function signProfileForUpload(profile: Profile, keypair: IdentityKeyPair)
   return JSON.stringify(tokenRecords, null, 2);
 }
 
-export async function uploadProfile(
-  gaiaHubUrl: string,
-  filePath: string,
-  identity: Identity,
-  signedProfileTokenData: string,
-  gaiaHubConfig?: GaiaHubConfig
-): Promise<string> {
+export async function uploadProfile({
+  gaiaHubUrl,
+  filePath,
+  identity,
+  signedProfileTokenData,
+  gaiaHubConfig,
+}: {
+  gaiaHubUrl: string;
+  filePath: string;
+  identity: Identity;
+  signedProfileTokenData: string;
+  gaiaHubConfig?: GaiaHubConfig;
+}): Promise<string> {
   const identityHubConfig =
     gaiaHubConfig || (await connectToGaiaHub(gaiaHubUrl, identity.keyPair.key));
 
@@ -146,12 +152,12 @@ export const registerSubdomain = async ({
 }: RegisterParams) => {
   const profile = identity.profile || DEFAULT_PROFILE;
   const signedProfileTokenData = signProfileForUpload(profile, identity.keyPair);
-  const profileUrl = await uploadProfile(
+  const profileUrl = await uploadProfile({
     gaiaHubUrl,
-    DEFAULT_PROFILE_FILE_NAME,
+    filePath: DEFAULT_PROFILE_FILE_NAME,
     identity,
-    signedProfileTokenData
-  );
+    signedProfileTokenData,
+  });
   const fullUsername = `${username}.${subdomain}`;
   const zoneFile = makeProfileZoneFile(fullUsername, profileUrl);
   await sendUsernameToRegistrar({
@@ -179,19 +185,12 @@ export const signAndUploadProfile = async ({
   gaiaHubConfig?: GaiaHubConfig;
 }) => {
   const signedProfileTokenData = signProfileForUpload(profile, identity.keyPair);
-  await uploadProfile(gaiaHubUrl, filePath, identity, signedProfileTokenData, gaiaHubConfig);
+  await uploadProfile({ gaiaHubUrl, filePath, identity, signedProfileTokenData, gaiaHubConfig });
 };
 
-export const fetchProfile = async ({
-  identity,
-  gaiaUrl,
-}: {
-  identity: Identity;
-  gaiaUrl: string;
-}) => {
+export const fetchProfile = async ({ profileUrl }: { profileUrl: string }) => {
   try {
-    const url = await identity.profileUrl(gaiaUrl);
-    const res = await fetch(url);
+    const res = await fetch(profileUrl);
     if (res.ok) {
       const json = await res.json();
       const { decodedToken } = json[0];

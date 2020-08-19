@@ -63,8 +63,7 @@ export class Identity {
     const appPrivateKey = this.appPrivateKey(appDomain);
     const hubInfo = await getHubInfo(gaiaUrl);
     const profileUrl = await this.profileUrl(hubInfo.read_url_prefix);
-    const profile =
-      (await fetchProfile({ identity: this, gaiaUrl: hubInfo.read_url_prefix })) || DEFAULT_PROFILE;
+    const profile = (await fetchProfile({ profileUrl })) || DEFAULT_PROFILE;
     if (scopes.includes('publish_data')) {
       if (!profile.apps) {
         profile.apps = {};
@@ -163,7 +162,8 @@ export class Identity {
           }
         });
       }
-      const profile = await fetchProfile({ identity: this, gaiaUrl: opts.gaiaUrl });
+      const profileUrl = await this.profileUrl(opts.gaiaUrl);
+      const profile = await fetchProfile({ profileUrl });
       if (profile) {
         this.profile = profile;
       }

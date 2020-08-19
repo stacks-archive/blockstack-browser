@@ -96,9 +96,13 @@ test('gets default profile URL', async () => {
 
 test('can get a profile URL from a zone file', async () => {
   const identity = await getIdentity();
+  identity.defaultUsername = 'muneeb.id';
   fetchMock.once(JSON.stringify(nameInfoResponse));
-  const profileURL = await identity.profileUrl('asdf');
-  return;
+  const gaiaUrl = 'https://gaia.blockstack.org/hub/';
+  const profileURL = await identity.profileUrl(gaiaUrl);
+  expect(profileURL).toEqual(
+    'https://gaia.blockstack.org/hub/1J3PUxY5uDShUnHRrMyU6yKtoHEUPhKULs/0/profile.json'
+  );
 });
 
 describe('refresh', () => {
