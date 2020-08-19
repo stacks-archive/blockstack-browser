@@ -14,7 +14,7 @@ export const SignOut = ({ buttonMode = 'primary', signOut, ...rest }: SignOutPro
   return (
     <Flex flexDirection="column" maxWidth={[null, '320px']} mt={[null, '6vh', '12vh']} {...rest}>
       <Text as="h1" fontWeight="bold" mb={6} display="block">
-        Sign out
+        My usernames
       </Text>
       <Accounts identities={identities} />
       <Button mode={buttonMode} onClick={signOut} mt={8} width="100%">
