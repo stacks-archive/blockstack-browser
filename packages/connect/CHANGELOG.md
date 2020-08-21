@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.12.1 (2020-08-21)
+
+**Note:** Version bump only for package @blockstack/connect
+
+
+
+
+
 # [2.12.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.11.0...@blockstack/connect@2.12.0) (2020-08-21)
 
 

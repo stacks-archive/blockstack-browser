@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.12.1 (2020-08-21)
+
+**Note:** Version bump only for package @blockstack/keychain
+
+
+
+
+
 # [0.12.0](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.10.5...@blockstack/keychain@0.12.0) (2020-08-21)
 
 

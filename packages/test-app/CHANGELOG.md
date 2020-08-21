@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.6.1 (2020-08-21)
+
+**Note:** Version bump only for package test-app
+
+
+
+
+
 # [1.6.0](https://github.com/blockstack/ux/compare/test-app@1.5.6...test-app@1.6.0) (2020-08-21)
 
 

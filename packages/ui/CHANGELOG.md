@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.12.7 (2020-08-21)
+
+**Note:** Version bump only for package @blockstack/ui
+
+
+
+
+
 ## [2.12.6](https://github.com/blockstack/ux/tree/master/packages/ui/compare/@blockstack/ui@2.12.5...@blockstack/ui@2.12.6) (2020-08-21)
 
 
