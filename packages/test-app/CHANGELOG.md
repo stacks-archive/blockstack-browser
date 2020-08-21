@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/blockstack/ux/compare/test-app@1.5.6...test-app@1.6.0) (2020-08-21)
+
+
+### Bug Fixes
+
+* keychain version ([e1618f6](https://github.com/blockstack/ux/commit/e1618f61b18490e87760b810766beab38e7ef16f))
+* rpc-client version ([83cf48b](https://github.com/blockstack/ux/commit/83cf48b679fa0938f6550c02472a97400dd009bf))
+* **app:** use BigNum for fungible post condition amount ([633ac80](https://github.com/blockstack/ux/commit/633ac801b9a0f2f17eadd2dd302b8c4c235233de))
+
+
+### Features
+
+* dont use popups in mobile, adds method to handle redirect auth ([450f58b](https://github.com/blockstack/ux/commit/450f58bcb5c3431d6b1ac649d19f319da34d9f7f))
+
+
+
+
+
 ## [1.5.6](https://github.com/blockstack/ux/compare/test-app@1.5.5...test-app@1.5.6) (2020-08-11)
 
 **Note:** Version bump only for package test-app

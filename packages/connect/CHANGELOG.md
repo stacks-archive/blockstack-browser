@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.11.0...@blockstack/connect@2.12.0) (2020-08-21)
+
+
+### Features
+
+* change copy of intro modal CTA, fixes [#466](https://github.com/blockstack/ux/issues/466) ([6b64222](https://github.com/blockstack/ux/commit/6b64222fc31ab5af4b9807ae280101039388b223))
+* dont use popups in mobile, adds method to handle redirect auth ([450f58b](https://github.com/blockstack/ux/commit/450f58bcb5c3431d6b1ac649d19f319da34d9f7f))
+* show 'install extension' on intro, fixes [#469](https://github.com/blockstack/ux/issues/469) ([faa8071](https://github.com/blockstack/ux/commit/faa80714ab7269904ed3388d000eb96b8aab1676))
+
+
+
+
+
 # [2.11.0](https://github.com/blockstack/ux/compare/@blockstack/connect@2.10.5...@blockstack/connect@2.11.0) (2020-08-11)
 
 

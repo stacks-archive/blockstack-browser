@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/blockstack/ux/compare/@blockstack/keychain@0.10.5...@blockstack/keychain@0.12.0) (2020-08-21)
+
+
+### Bug Fixes
+
+* keychain version ([e1618f6](https://github.com/blockstack/ux/commit/e1618f61b18490e87760b810766beab38e7ef16f))
+* rpc-client version ([83cf48b](https://github.com/blockstack/ux/commit/83cf48b679fa0938f6550c02472a97400dd009bf))
+* **app:** use BigNum for fungible post condition amount ([633ac80](https://github.com/blockstack/ux/commit/633ac801b9a0f2f17eadd2dd302b8c4c235233de))
+* **keychain:** use correct filePath, add types for async functions ([7290261](https://github.com/blockstack/ux/commit/7290261a32d4fcea6627f66a76299b38ff7b7eac))
+* **keychain:** use filePath for profile uploading ([04c9385](https://github.com/blockstack/ux/commit/04c938591b82ff10f51b2f61401468d579655ee0))
+* **keychain:** use synchronous profile upload methods ([3b5bd82](https://github.com/blockstack/ux/commit/3b5bd821ccd45511645ce2c8bb648944ed4663c2))
+
+
+### Features
+
+* dont use popups in mobile, adds method to handle redirect auth ([450f58b](https://github.com/blockstack/ux/commit/450f58bcb5c3431d6b1ac649d19f319da34d9f7f))
+
+
+
+
+
 ## 0.10.5 (2020-07-30)
 
 

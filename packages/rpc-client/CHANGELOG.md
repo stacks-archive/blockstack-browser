@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0-alpha.14](https://github.com/blockstack/ux/compare/@blockstack/rpc-client@0.3.0-alpha.11...@blockstack/rpc-client@0.3.0-alpha.14) (2020-08-21)
+
+
+### Bug Fixes
+
+* rpc-client version ([83cf48b](https://github.com/blockstack/ux/commit/83cf48b679fa0938f6550c02472a97400dd009bf))
+* **app:** use BigNum for fungible post condition amount ([633ac80](https://github.com/blockstack/ux/commit/633ac801b9a0f2f17eadd2dd302b8c4c235233de))
+
+
+
+
+
 # 0.3.0-alpha.11 (2020-07-30)
 
 

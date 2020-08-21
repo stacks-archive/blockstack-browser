@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.6](https://github.com/blockstack/ux/tree/master/packages/ui/compare/@blockstack/ui@2.12.5...@blockstack/ui@2.12.6) (2020-08-21)
+
+
+### Bug Fixes
+
+* force prism as external dep ([9ca733f](https://github.com/blockstack/ux/tree/master/packages/ui/commit/9ca733f732b8d9a95ff756ad6c490fff7a021e97))
+* import clarity def ([ea99468](https://github.com/blockstack/ux/tree/master/packages/ui/commit/ea99468334b6fcfa2879cdbff3b332c85497a581))
+
+
+
+
+
 ## 2.12.5 (2020-07-30)
 
 
