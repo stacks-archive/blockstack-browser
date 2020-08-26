@@ -1,5 +1,5 @@
 import React from 'react';
-import { Screen, ScreenBody, ScreenActions } from '@blockstack/connect';
+import { Screen, ScreenBody, ScreenActions } from '@screen';
 import { Button, Text, Box, Flex, FailedIcon } from '@blockstack/ui';
 import { TestnetBanner } from './testnet-banner';
 

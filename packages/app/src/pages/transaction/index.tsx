@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { TransactionPayload, TransactionTypes } from '@blockstack/connect';
 import {
   Screen,
   ScreenBody,
@@ -6,10 +7,8 @@ import {
   Title,
   PoweredBy,
   ScreenFooter,
-  TransactionPayload,
-  TransactionTypes,
-} from '@blockstack/connect';
-import { ScreenHeader } from '@components/connected-screen-header';
+  ScreenHeader,
+} from '@screen';
 import { Button, Box, Text } from '@blockstack/ui';
 import { useLocation } from 'react-router-dom';
 import { decodeToken } from 'jsontokens';

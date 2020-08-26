@@ -14,8 +14,8 @@ import {
   Title,
   PoweredBy,
   ScreenFooter,
-} from '@blockstack/connect';
-import { ScreenHeader } from '@components/connected-screen-header';
+  ScreenHeader,
+} from '@screen';
 import { decrypt } from '@blockstack/keychain';
 import { ErrorLabel } from '@components/error-label';
 import { useAnalytics } from '@common/hooks/use-analytics';

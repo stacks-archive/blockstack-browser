@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { space, Box, Text, Button, Input, Flex } from '@blockstack/ui';
 import { ExplorerLink } from './explorer-link';
-import { useConnect } from '@blockstack/connect';
+import { useConnect } from '@blockstack/connect-react';
 import {
   PostConditionMode,
   standardPrincipalCV,

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Stencil Component Starter</title>
+
+    <script type="module" src="/build/connect-ui.esm.js"></script>
+    <script nomodule src="/build/connect-ui.js"></script>
+    <script type="module">
+      import { showBlockstackConnect } from '/build/index.esm.js'
+
+      const authOptions = {
+        redirectTo: '/',
+        finished: ({ userSession, authResponse }) => {
+          const userData = userSession.loadUserData();
+          // setState(() => userData);
+          // setAppPrivateKey(userSession.loadUserData().appPrivateKey);
+          // setAuthResponse(authResponse);
+          // setState({ userData });
+          console.log(userData);
+        },
+        onCancel: () => {
+          console.log('popup closed!');
+        },
+        authOrigin: 'http://localhost:8080',
+        appDetails: {
+          name: 'Stencil App',
+          icon: 'https://testnet-demo.blockstack.org/assets/messenger-app-icon.png',
+        },
+      };
+      showBlockstackConnect(authOptions)
+    </script>
+    <style>
+      html, body { margin: 0px; }
+    </style>
+  </head>
+  <body>
+    <h1>App Content</h1>
+    <span>asdf</span>
+    <div style="height: 1240px; width: 100px; background-color: blue;"></div>
+  </body>
+</html>

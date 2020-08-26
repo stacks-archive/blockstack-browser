@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Box, Text, Flex, PseudoBox, ChevronIcon, BoxProps } from '@blockstack/ui';
-import { PoweredBy } from '@blockstack/connect';
-import { buildEnterKeyEvent } from '@blockstack/connect';
+import { PoweredBy } from '@screen';
+import { buildEnterKeyEvent } from '@components/link';
 import { ChromeIcon } from '@components/icons/chrome-icon';
 import { FirefoxIcon } from '@components/icons/firefox-icon';
 

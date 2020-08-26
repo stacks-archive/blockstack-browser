@@ -7,8 +7,8 @@ import {
   Title,
   PoweredBy,
   ScreenFooter,
-} from '@blockstack/connect';
-import { ScreenHeader } from '@components/connected-screen-header';
+  ScreenHeader,
+} from '@screen';
 import { Button, Text } from '@blockstack/ui';
 
 import { Toast } from '@components/toast';

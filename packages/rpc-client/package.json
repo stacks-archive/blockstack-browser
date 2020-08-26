@@ -35,7 +35,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@blockstack/stacks-transactions": "0.5.1",
+    "@blockstack/stacks-transactions": "0.7.0",
     "cross-fetch": "^3.0.4"
   }
 }

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Flex, Box, Text } from '@blockstack/ui';
 import { BlockstackIcon } from '@blockstack/ui';
 import { AppContext } from '@common/context';
-import { Link } from '@blockstack/connect';
+import { Link } from '@components/link';
 
 interface HeaderProps {
   signOut: () => void;

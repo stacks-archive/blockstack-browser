@@ -1,15 +1,8 @@
 import React, { useState } from 'react';
 
 import { Box, Button, Input, Text } from '@blockstack/ui';
-import {
-  PoweredBy,
-  Screen,
-  ScreenActions,
-  ScreenBody,
-  ScreenFooter,
-  Title,
-} from '@blockstack/connect';
-import { ScreenHeader } from '@components/connected-screen-header';
+import { PoweredBy, Screen, ScreenActions, ScreenBody, ScreenFooter, ScreenHeader } from '@screen';
+import { Title } from '@components/typography';
 
 import { useAppDetails } from '@common/hooks/useAppDetails';
 import { useDispatch } from '@common/hooks/use-dispatch';
@@ -152,17 +145,17 @@ export const Username: React.FC<{}> = () => {
             </Text>
             <Box textAlign="left" position="relative" mt={4}>
               <Input
-                autoComplete="username"
                 data-test="input-username"
-                autoCapitalize="false"
                 paddingRight="100px"
                 autoFocus
                 fontSize="16px"
-                spellCheck={false}
                 value={username}
                 aria-invalid={error !== null}
                 onChange={handleInput}
                 autoCorrect="off"
+                autoComplete="off"
+                autoCapitalize="off"
+                spellCheck="false"
               />
             </Box>
             {error && hasAttemptedSubmit && (

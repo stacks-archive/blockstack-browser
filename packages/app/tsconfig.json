@@ -27,6 +27,7 @@
       "@components/*": ["components/*"],
       "@containers/*": ["containers/*"],
       "@common/*": ["common/*"],
+      "@screen": ["components/screen/index"],
       "@blockstack/connect": ["../../connect/src"],
       "@blockstack/ui": ["../../ui/src"],
       "@blockstack/keychain": ["../../keychain/src"],

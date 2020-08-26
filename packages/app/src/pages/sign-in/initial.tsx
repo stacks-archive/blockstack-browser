@@ -6,8 +6,8 @@ import {
   Title,
   PoweredBy,
   ScreenFooter,
-} from '@blockstack/connect';
-import { ScreenHeader } from '@components/connected-screen-header';
+  ScreenHeader,
+} from '@screen';
 import { Box, Text, Input, Flex, Button, space } from '@blockstack/ui';
 import { AppIcon } from '@components/app-icon';
 import { Link } from '@components/link';
@@ -47,7 +47,7 @@ export const SignIn: React.FC<SignInProps> = props => {
     const parsedKeyInput = seed.trim();
     try {
       if (parsedKeyInput.length === 0) {
-        setSeedError('Entering your secret key is required.');
+        setSeedError('Entering your Secret Key is required.');
         setLoading(false);
         return;
       }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Screen, ScreenBody, ScreenActions, Title } from '@blockstack/connect';
-import { ScreenHeader } from '@components/connected-screen-header';
+import { Screen, ScreenBody, ScreenActions, Title, ScreenHeader } from '@screen';
 
 import { Button, Text } from '@blockstack/ui';
 

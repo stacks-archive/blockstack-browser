@@ -1,6 +1,6 @@
 import React from 'react';
 import { getAuthOrigin } from '@common/utils';
-import { useConnect } from '@blockstack/connect';
+import { useConnect } from '@blockstack/connect-react';
 import { SampleContracts } from '@common/contracts';
 import { Box, Button, Text } from '@blockstack/ui';
 import { ExplorerLink } from './explorer-link';

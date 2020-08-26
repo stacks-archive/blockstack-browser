@@ -61,10 +61,8 @@ module.exports = {
   },
   output: {
     path: distRootPath,
-    chunkFilename: !isDevelopment
-      ? '[name].[contenthash:8].chunk.js'
-      : isDevelopment && '[name].chunk.js',
-    filename: !isDevelopment ? '[name].[contenthash:8].js' : isDevelopment && '[name].js',
+    chunkFilename: !isDevelopment ? '[name].[contenthash].chunk.js' : '[name].chunk.js',
+    filename: !isDevelopment ? '[name].[contenthash].js' : '[name].js',
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx', '.json'],
@@ -196,6 +194,9 @@ module.exports = {
       WEB_BROWSER: JSON.stringify(webBrowser),
     }),
     new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1,
+    }),
     isDevelopment && new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
   ].filter(Boolean),
 };

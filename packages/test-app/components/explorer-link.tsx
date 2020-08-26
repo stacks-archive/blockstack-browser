@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from '@blockstack/connect';
+import { Link } from '@components/link';
 import { Box } from '@blockstack/ui';
 
 interface LinkProps {

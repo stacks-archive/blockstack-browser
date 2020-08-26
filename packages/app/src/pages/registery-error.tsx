@@ -1,7 +1,6 @@
 import React from 'react';
-import { Screen, ScreenBody, PoweredBy, ScreenFooter } from '@blockstack/connect';
+import { Screen, ScreenBody, PoweredBy, ScreenFooter, ScreenHeader } from '@screen';
 import { Flex, Box, Button, Text } from '@blockstack/ui';
-import { ScreenHeader } from '@components/connected-screen-header';
 
 export type ErrorReason = 'network' | 'rateLimited';
 

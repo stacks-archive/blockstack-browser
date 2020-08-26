@@ -48,7 +48,8 @@
     "husky": "^4.2.3",
     "lerna": "^3.20.2",
     "prettier": "^2.0.5",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "yalc": "^1.0.0-pre.42"
   },
   "dependencies": {
     "@babel/preset-env": "^7.10.3",
@@ -58,6 +59,8 @@
     "@blockstack/eslint-config": "^1.0.5",
     "eslint-plugin-import": "2.21.2",
     "@blockstack/prettier-config": "^0.0.6",
-    "buffer": "5.6.0"
+    "buffer": "5.6.0",
+    "typescript": "3.9.3",
+    "@types/node": "12.7.12"
   }
 }

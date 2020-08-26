@@ -22,6 +22,8 @@ jobs:
       - name: Install monorepo deps
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
+      - name: Build connect-ui
+        run: yarn lerna run build --scope @blockstack/connect-ui
       - name: Build Blockstack App
         run: yarn prod:web
         working-directory: packages/app

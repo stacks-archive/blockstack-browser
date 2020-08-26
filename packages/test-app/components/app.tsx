@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ThemeProvider, theme, Flex, CSSReset } from '@blockstack/ui';
-import { Connect, AuthOptions } from '@blockstack/connect';
+import { Connect } from '@blockstack/connect-react';
+import { AuthOptions } from '@blockstack/connect';
 import { getAuthOrigin } from '@common/utils';
 import { UserSession, AppConfig } from 'blockstack';
 import { defaultState, AppContext, AppState } from '@common/context';

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from '@common/hooks/use-dispatch';
 import { Spinner, Flex, Text } from '@blockstack/ui';
-import { Screen, ScreenBody, PoweredBy, ScreenFooter } from '@blockstack/connect';
-import { ScreenHeader } from '@components/connected-screen-header';
+import { Screen, ScreenBody, PoweredBy, ScreenFooter, ScreenHeader } from '@screen';
 
 import { doCreateSecretKey, doSetOnboardingProgress } from '@store/onboarding/actions';
 import { useAppDetails } from '@common/hooks/useAppDetails';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -23,11 +24,8 @@ module.exports = {
                 { targets: { browsers: 'last 2 versions' } }, // or whatever your project requires
               ],
               '@babel/preset-typescript',
-              '@babel/preset-react',
             ],
             plugins: [
-              // plugin-proposal-decorators is only needed if you're using experimental decorators in TypeScript
-              // ["@babel/plugin-proposal-decorators", { legacy: true }],
               ['@babel/plugin-proposal-class-properties', { loose: true }],
               '@babel/plugin-transform-runtime',
               '@babel/plugin-proposal-nullish-coalescing-operator',
@@ -86,12 +84,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-    alias: {
-      react: 'preact/compat',
-      'react-dom/test-utils': 'preact/test-utils',
-      'react-dom': 'preact/compat',
-      '@blockstack/ui': path.resolve('../ui/src')
-    },
   },
   devtool: false,
   plugins: [

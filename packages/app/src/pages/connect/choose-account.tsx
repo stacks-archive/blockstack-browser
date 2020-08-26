@@ -1,7 +1,7 @@
 import React from 'react';
-import { Screen, ScreenBody, ScreenFooter, Title } from '@blockstack/connect';
+import { Screen, ScreenBody, ScreenFooter, ScreenHeader } from '@screen';
+import { Title } from '@components/typography';
 import { Box, PseudoBox, Text } from '@blockstack/ui';
-import { ScreenHeader } from '@components/connected-screen-header';
 import { Accounts } from '@components/accounts';
 import { AppIcon } from '@components/app-icon';
 import { useSelector } from 'react-redux';

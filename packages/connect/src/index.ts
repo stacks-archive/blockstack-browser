@@ -1,6 +1,5 @@
 export * from './auth';
-export * from './react';
+export * from './transactions';
 export * from './popup';
 export * from './types';
 export * from './ui';
-export * from './transactions';

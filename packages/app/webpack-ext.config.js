@@ -11,6 +11,6 @@ baseWebpack.optimization = {
     maxAsyncRequests: Infinity,
     maxInitialRequests: Infinity,
   },
-}
+};
 
 module.exports = baseWebpack;

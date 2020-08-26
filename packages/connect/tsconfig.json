@@ -1,5 +1,5 @@
 {
-  "include": ["src", "types", "test"],
+  "include": ["src"],
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
@@ -21,11 +21,6 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "baseUrl": "./",
-    "paths": {
-      "@blockstack/ui": ["../ui/src"],
-      "@blockstack/ui/*": ["../ui/src/*"]
-    },
-    "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,

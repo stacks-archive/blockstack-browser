@@ -113,7 +113,14 @@ export const setupListener = <T>({
     } else {
       console.warn('[Blockstack] Unable to send ping to authentication service - popup closed');
     }
-    if (lastPong && new Date().getTime() - lastPong > pingInterval * 2) {
+    // If we haven't received a "pong" recently, then the popup was probably closed
+    // by the user. 750ms has been tested by most browsers. Most respond in less than
+    // 500ms, although Safari can often take around 600-650ms.
+    if (lastPong) {
+      console.log(new Date().getTime() - lastPong);
+    }
+    if (lastPong && new Date().getTime() - lastPong > pingInterval * 8) {
+      console.log('No pong in over 2 seconds. REMOVE ME BEFORE MERGE');
       onCancel && onCancel();
       clearInterval(interval);
     }
