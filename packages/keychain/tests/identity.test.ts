@@ -105,6 +105,27 @@ test('can get a profile URL from a zone file', async () => {
   );
 });
 
+test('gets correct profile write URL', async () => {
+  const identity = await getIdentity();
+  const gaiaUrl = 'https://gaia.blockstack.org/hub/';
+
+  expect(
+    await identity.gaiaReadUrlToWritePath(
+      'https://gaia.blockstack.org/hub/1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk/profile.json',
+      'https://gaia.blockstack.org/hub/',
+      '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk'
+    )
+  ).toEqual('profile.json');
+
+  expect(
+    await identity.gaiaReadUrlToWritePath(
+      'https://gaia.blockstack.org/hub/1J3PUxY5uDShUnHRrMyU6yKtoHEUPhKULs/0/myprofile',
+      'https://gaia.blockstack.org/hub/',
+      '1JeTQ5cQjsD57YGcsVFhwT7iuQUXJR6BSk'
+    )
+  ).toEqual('0/myprofile');
+});
+
 describe('refresh', () => {
   test('can fetch names for an identity', async () => {
     const identity = await getIdentity();

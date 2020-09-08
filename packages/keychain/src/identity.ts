@@ -69,7 +69,8 @@ export class Identity {
         profile.apps = {};
       }
       const challengeSigner = ECPair.fromPrivateKey(Buffer.from(appPrivateKey, 'hex'));
-      const storageUrl = `${hubInfo.read_url_prefix}${ecPairToAddress(challengeSigner)}/`;
+      const address = ecPairToAddress(challengeSigner);
+      const storageUrl = `${hubInfo.read_url_prefix}${address}/`;
       profile.apps[appDomain] = storageUrl;
       if (!profile.appsMeta) {
         profile.appsMeta = {};
@@ -83,7 +84,7 @@ export class Identity {
         privateKey: this.keyPair.key,
         gaiaHubUrl: gaiaUrl,
       });
-      const filePath = new URL(profileUrl).pathname.substr(1);
+      const filePath = this.gaiaReadUrlToWritePath(profileUrl, hubInfo.read_url_prefix, address);
       await signAndUploadProfile({
         profile,
         identity: this,
@@ -135,6 +136,10 @@ export class Identity {
       }
     }
     return `${gaiaUrl}${this.address}/profile.json`;
+  }
+
+  gaiaReadUrlToWritePath(gaiaReadUrl: string, read_url_prefix: string, address: string): string {
+    return gaiaReadUrl.substr(`${read_url_prefix}${address}/`.length);
   }
 
   async fetchNames() {
