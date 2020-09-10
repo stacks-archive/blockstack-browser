@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0-alpha.16 (2020-09-10)
+
+
+### Bug Fixes
+
+* **keychain:** use correct filepath when writing profiles ([fa8098a](https://github.com/blockstack/ux/commit/fa8098ae13973dd5e53303a4b04967a956d8842b))
+
+
+
+
+
 # 0.3.0-alpha.15 (2020-08-21)
 
 **Note:** Version bump only for package @blockstack/rpc-client
