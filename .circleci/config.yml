@@ -58,9 +58,6 @@ jobs:
           name: Lerna bootstrap
           command: $HOME/.yarn/bin/yarn lerna bootstrap
       - run:
-          name: Build Connect UI
-          command: $HOME/.yarn/bin/yarn lerna run build --scope @blockstack/connect-ui
-      - run:
           name: test server
           command: $HOME/.yarn/bin/yarn lerna run dev --scope @blockstack/app
           background: true

@@ -29,7 +29,6 @@
       "@common/*": ["common/*"],
       "@screen": ["components/screen/index"],
       "@blockstack/connect": ["../../connect/src"],
-      "@blockstack/ui": ["../../ui/src"],
       "@blockstack/keychain": ["../../keychain/src"],
       "@blockstack/rpc-client": ["../../rpc-client/src"],
       "@pages/*": ["pages/*"]

@@ -1,6 +1,0 @@
-{
-  "plugins": [
-    "add-react-displayname",
-    "styled-components"
-  ]
-}
