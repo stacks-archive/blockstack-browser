@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.6.3 (2020-09-16)
+
+
+### Bug Fixes
+
+* keychain lib still broken ([1a7fd0c](https://github.com/blockstack/ux/commit/1a7fd0ced01a6ec8bdd31bf84140728e4b1d7e30))
+
+
+
+
+
 ## 1.6.2 (2020-09-10)
 
 
