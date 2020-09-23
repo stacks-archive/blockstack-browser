@@ -51,8 +51,9 @@ const getBrowser = (): Browser | null => {
 
 export const ExtensionButton: FC<BoxProps> = ({ ...rest }) => {
   const browser = getBrowser();
+  const isMobile = window.matchMedia('only screen and (max-width: 760px)').matches;
 
-  if (browser === null) {
+  if (browser === null || isMobile) {
     return <PoweredBy />;
   }
 
