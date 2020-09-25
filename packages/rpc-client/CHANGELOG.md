@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0-alpha.18 (2020-09-25)
+
+
+### Bug Fixes
+
+* add yarn.lock ([24d88d5](https://github.com/blockstack/ux/commit/24d88d5a29d2a4d3d8acee5ce70cd5ecb3c997c4))
+
+
+
+
+
 # 0.3.0-alpha.17 (2020-09-16)
 
 
