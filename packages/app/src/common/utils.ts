@@ -1,6 +1,7 @@
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
 import { FinishedTxData, shouldUsePopup } from '@blockstack/connect';
+import DOMPurify from 'dompurify';
 
 export const getAuthRequestParam = () => {
   const { hash } = document.location;
@@ -56,7 +57,8 @@ export const finalizeAuthResponse = ({
   authRequest,
   authResponse,
 }: FinalizeAuthParams) => {
-  const redirect = `${decodedAuthRequest.redirect_uri}?authResponse=${authResponse}`;
+  const sanitizedUri = DOMPurify.sanitize(decodedAuthRequest.redirect_uri);
+  const redirect = `${sanitizedUri}?authResponse=${authResponse}`;
   if (!shouldUsePopup()) {
     document.location.href = redirect;
     return;
