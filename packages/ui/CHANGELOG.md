@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.12.11 (2020-09-29)
+
+
+### Bug Fixes
+
+* update node api url ([7c71cc7](https://github.com/blockstack/ux/tree/master/packages/ui/commit/7c71cc7fd47cdb5626d618be70c953f3bfb9d7f7))
+
+
+
+
+
 ## 2.12.10 (2020-09-25)
 
 

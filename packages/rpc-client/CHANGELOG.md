@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 0.3.0-alpha.19 (2020-09-29)
+
+
+### Bug Fixes
+
+* update node api url ([7c71cc7](https://github.com/blockstack/ux/commit/7c71cc7fd47cdb5626d618be70c953f3bfb9d7f7))
+
+
+
+
+
 # 0.3.0-alpha.18 (2020-09-25)
 
 
