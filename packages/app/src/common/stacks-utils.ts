@@ -39,7 +39,7 @@ export const getRPCClient = () => {
   const { origin } = location;
   const url = origin.includes('localhost')
     ? 'http://localhost:3999'
-    : 'https://sidecar.staging.blockstack.xyz';
+    : 'https://stacks-node-api.blockstack.org';
   return new RPCClient(url);
 };
 
