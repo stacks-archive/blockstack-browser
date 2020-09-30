@@ -26,7 +26,7 @@ export const Faucet = ({ address: _address = '' }: { address: string }) => {
     if (origin.includes('localhost')) {
       return 'http://localhost:3999';
     }
-    return 'https://sidecar.staging.blockstack.xyz';
+    return 'https://stacks-node-api.blockstack.org';
   };
 
   const waitForBalance = async (currentBalance: number, attempts: number) => {
@@ -53,7 +53,7 @@ export const Faucet = ({ address: _address = '' }: { address: string }) => {
     setTX('');
 
     try {
-      const url = `${getServerURL()}/sidecar/v1/debug/faucet?address=${address}`;
+      const url = `${getServerURL()}/extended/v1/debug/faucet?address=${address}`;
       const res = await fetch(url, {
         method: 'POST',
       });

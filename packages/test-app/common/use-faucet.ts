@@ -38,7 +38,7 @@ export const useFaucet = () => {
       }, 10000);
     };
     try {
-      const url = `${client.url}/sidecar/v1/debug/faucet?address=${stxAddress}`;
+      const url = `${client.url}/extended/v1/debug/faucet?address=${stxAddress}`;
       const res = await fetch(url, {
         method: 'POST',
       });

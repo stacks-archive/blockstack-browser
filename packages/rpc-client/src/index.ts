@@ -133,7 +133,7 @@ export class RPCClient {
   }
 
   async fetchAddressTransactions({ address }: { address: string }) {
-    const url = `${this.url}/sidecar/v1/address/${address}/transactions`;
+    const url = `${this.url}/extended/v1/address/${address}/transactions`;
     const res = await fetch(url);
     const data: TransactionResults = await res.json();
     return data.results;
