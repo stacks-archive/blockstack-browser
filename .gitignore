@@ -13,3 +13,4 @@ yarn-error.log
 .github/workflows/event.json
 .npmrc
 coverage/
+*.zip
