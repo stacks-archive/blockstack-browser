@@ -136,7 +136,6 @@ export const finishTransaction = async ({
   pendingTransaction: TransactionPayload;
 }) => {
   const serialized = tx.serialize();
-  const txRaw = serialized.toString('hex');
   const client = getRPCClient();
   const res = await client.broadcastTX(serialized);
 
@@ -145,7 +144,9 @@ export const finishTransaction = async ({
       txType: pendingTransaction?.txType,
       appName: pendingTransaction?.appDetails?.name,
     });
-    const txId: string = await res.json();
+    const txIdJson: string = await res.json();
+    const txId = `0x${txIdJson}`;
+    const txRaw = `0x${serialized.toString('hex')}`;
     finalizeTxSignature({ txId, txRaw });
   } else {
     const response = await res.json();
