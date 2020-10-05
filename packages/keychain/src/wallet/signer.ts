@@ -90,6 +90,7 @@ export class WalletSigner {
     nonce,
     postConditionMode,
     postConditions,
+    network,
   }: ContractCallOptions) {
     const tx = await makeContractCall({
       contractAddress,
@@ -98,7 +99,7 @@ export class WalletSigner {
       functionArgs,
       senderKey: this.getSTXPrivateKey().toString('hex'),
       nonce: new BN(nonce),
-      network: this.getNetwork(),
+      network: network || this.getNetwork(),
       postConditionMode,
       postConditions,
     });
@@ -111,12 +112,13 @@ export class WalletSigner {
     nonce,
     postConditionMode,
     postConditions,
+    network,
   }: ContractDeployOptions) {
     const tx = await makeContractDeploy({
       contractName,
       codeBody: codeBody,
       senderKey: this.getSTXPrivateKey().toString('hex'),
-      network: this.getNetwork(),
+      network: network || this.getNetwork(),
       nonce: new BN(nonce),
       postConditionMode,
       postConditions,
@@ -131,13 +133,14 @@ export class WalletSigner {
     nonce,
     postConditionMode,
     postConditions,
+    network,
   }: STXTransferOptions) {
     const tx = await makeSTXTokenTransfer({
       recipient,
       amount: new BN(amount),
       memo,
       senderKey: this.getSTXPrivateKey().toString('hex'),
-      network: this.getNetwork(),
+      network: network || this.getNetwork(),
       nonce: new BN(nonce),
       postConditionMode,
       postConditions,
