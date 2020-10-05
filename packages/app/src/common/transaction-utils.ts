@@ -53,6 +53,7 @@ export const generateContractCallTx = ({
     nonce,
     postConditionMode: txData.postConditionMode,
     postConditions: getPostConditions(txData.postConditions),
+    network: txData.network,
   });
 };
 
@@ -75,6 +76,7 @@ export const generateContractDeployTx = ({
     nonce,
     postConditionMode: txData.postConditionMode,
     postConditions: getPostConditions(txData.postConditions),
+    network: txData.network,
   });
 };
 
@@ -93,6 +95,7 @@ export const generateSTXTransferTx = ({
     memo,
     amount,
     nonce,
+    network: txData.network,
   });
 };
 
