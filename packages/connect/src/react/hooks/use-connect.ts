@@ -75,18 +75,21 @@ export const useConnect = () => {
   const doContractCall = async (opts: ContractCallOptions) =>
     openContractCall({
       ...opts,
+      authOrigin: authOptions.authOrigin,
       appDetails: authOptions.appDetails,
     });
 
   const doContractDeploy = async (opts: ContractDeployOptions) =>
     openContractDeploy({
       ...opts,
+      authOrigin: authOptions.authOrigin,
       appDetails: authOptions.appDetails,
     });
 
   const doSTXTransfer = async (opts: STXTransferOptions) =>
     openSTXTransfer({
       ...opts,
+      authOrigin: authOptions.authOrigin,
       appDetails: authOptions.appDetails,
     });
 
