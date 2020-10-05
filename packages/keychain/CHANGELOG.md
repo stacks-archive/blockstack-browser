@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.12.7 (2020-10-05)
+
+
+### Bug Fixes
+
+* **connect:** use authOrigin from authOptions ([e6602a8](https://github.com/blockstack/ux/commit/e6602a8a559158d3ecf92268495176619d1f340e))
+
+
+
+
+
 ## 0.12.6 (2020-10-05)
 
 
