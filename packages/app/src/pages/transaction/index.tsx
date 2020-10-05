@@ -14,7 +14,12 @@ import { Button, Box, Text } from '@blockstack/ui';
 import { useLocation } from 'react-router-dom';
 import { decodeToken } from 'jsontokens';
 import { useWallet } from '@common/hooks/use-wallet';
-import { TransactionVersion, StacksTransaction } from '@blockstack/stacks-transactions';
+import {
+  TransactionVersion,
+  StacksTransaction,
+  StacksMainnet,
+  StacksTestnet,
+} from '@blockstack/stacks-transactions';
 import { TestnetBanner } from '@components/transactions/testnet-banner';
 import { TxError } from '@components/transactions/tx-error';
 import { TabbedCard, Tab } from '@components/tabbed-card';
@@ -95,6 +100,14 @@ export const Transaction: React.FC = () => {
   };
 
   const setupWithState = async (tx: TransactionPayload) => {
+    if (tx.network) {
+      let network =
+        tx.network.version == TransactionVersion.Mainnet
+          ? new StacksMainnet()
+          : new StacksTestnet();
+      Object.assign(network, tx.network);
+      tx.network = network;
+    }
     if (tx.txType === TransactionTypes.ContractCall) {
       const contractSource = await client.fetchContractSource({
         contractName: tx.contractName,
