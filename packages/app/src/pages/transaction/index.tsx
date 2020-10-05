@@ -105,8 +105,7 @@ export const Transaction: React.FC = () => {
         tx.network.version == TransactionVersion.Mainnet
           ? new StacksMainnet()
           : new StacksTestnet();
-      Object.assign(network, tx.network);
-      tx.network = network;
+      tx.network = { ...network, ...tx.network };
     }
     if (tx.txType === TransactionTypes.ContractCall) {
       const contractSource = await client.fetchContractSource({
