@@ -102,7 +102,7 @@ export const Transaction: React.FC = () => {
   const setupWithState = async (tx: TransactionPayload) => {
     if (tx.network) {
       const network =
-        tx.network.version == TransactionVersion.Mainnet
+        tx.network.version === TransactionVersion.Mainnet
           ? new StacksMainnet()
           : new StacksTestnet();
       tx.network = { ...network, ...tx.network };
