@@ -61,14 +61,14 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         y2="16.386"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0.048" stop-color="#FFF44F" />
-        <stop offset="0.111" stop-color="#FFE847" />
-        <stop offset="0.225" stop-color="#FFC830" />
-        <stop offset="0.368" stop-color="#FF980E" />
-        <stop offset="0.401" stop-color="#FF8B16" />
-        <stop offset="0.462" stop-color="#FF672A" />
-        <stop offset="0.534" stop-color="#FF3647" />
-        <stop offset="0.705" stop-color="#E31587" />
+        <stop offset="0.048" stopColor="#FFF44F" />
+        <stop offset="0.111" stopColor="#FFE847" />
+        <stop offset="0.225" stopColor="#FFC830" />
+        <stop offset="0.368" stopColor="#FF980E" />
+        <stop offset="0.401" stopColor="#FF8B16" />
+        <stop offset="0.462" stopColor="#FF672A" />
+        <stop offset="0.534" stopColor="#FF3647" />
+        <stop offset="0.705" stopColor="#E31587" />
       </linearGradient>
       <radialGradient
         id="paint1_radial"
@@ -78,15 +78,15 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(14.7462 2.83123) scale(16.6982 16.6712)"
       >
-        <stop offset="0.129" stop-color="#FFBD4F" />
-        <stop offset="0.186" stop-color="#FFAC31" />
-        <stop offset="0.247" stop-color="#FF9D17" />
-        <stop offset="0.283" stop-color="#FF980E" />
-        <stop offset="0.403" stop-color="#FF563B" />
-        <stop offset="0.467" stop-color="#FF3750" />
-        <stop offset="0.71" stop-color="#F5156C" />
-        <stop offset="0.782" stop-color="#EB0878" />
-        <stop offset="0.86" stop-color="#E50080" />
+        <stop offset="0.129" stopColor="#FFBD4F" />
+        <stop offset="0.186" stopColor="#FFAC31" />
+        <stop offset="0.247" stopColor="#FF9D17" />
+        <stop offset="0.283" stopColor="#FF980E" />
+        <stop offset="0.403" stopColor="#FF563B" />
+        <stop offset="0.467" stopColor="#FF3750" />
+        <stop offset="0.71" stopColor="#F5156C" />
+        <stop offset="0.782" stopColor="#EB0878" />
+        <stop offset="0.86" stopColor="#E50080" />
       </radialGradient>
       <radialGradient
         id="paint2_radial"
@@ -96,11 +96,11 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(8.64449 9.64693) scale(16.6982 16.6712)"
       >
-        <stop offset="0.3" stop-color="#960E18" />
-        <stop offset="0.351" stop-color="#B11927" stop-opacity="0.74" />
-        <stop offset="0.435" stop-color="#DB293D" stop-opacity="0.343" />
-        <stop offset="0.497" stop-color="#F5334B" stop-opacity="0.094" />
-        <stop offset="0.53" stop-color="#FF3750" stop-opacity="0" />
+        <stop offset="0.3" stopColor="#960E18" />
+        <stop offset="0.351" stopColor="#B11927" stopOpacity="0.74" />
+        <stop offset="0.435" stopColor="#DB293D" stopOpacity="0.343" />
+        <stop offset="0.497" stopColor="#F5334B" stopOpacity="0.094" />
+        <stop offset="0.53" stopColor="#FF3750" stopOpacity="0" />
       </radialGradient>
       <radialGradient
         id="paint3_radial"
@@ -110,10 +110,10 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(10.6576 -0.952194) scale(12.0971 12.0776)"
       >
-        <stop offset="0.132" stop-color="#FFF44F" />
-        <stop offset="0.252" stop-color="#FFDC3E" />
-        <stop offset="0.506" stop-color="#FF9D12" />
-        <stop offset="0.526" stop-color="#FF980E" />
+        <stop offset="0.132" stopColor="#FFF44F" />
+        <stop offset="0.252" stopColor="#FFDC3E" />
+        <stop offset="0.506" stopColor="#FF9D12" />
+        <stop offset="0.526" stopColor="#FF980E" />
       </radialGradient>
       <radialGradient
         id="paint4_radial"
@@ -123,10 +123,10 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(6.79737 14.0015) scale(7.95075 7.93791)"
       >
-        <stop offset="0.353" stop-color="#3A8EE6" />
-        <stop offset="0.472" stop-color="#5C79F0" />
-        <stop offset="0.669" stop-color="#9059FF" />
-        <stop offset="1" stop-color="#C139E6" />
+        <stop offset="0.353" stopColor="#3A8EE6" />
+        <stop offset="0.472" stopColor="#5C79F0" />
+        <stop offset="0.669" stopColor="#9059FF" />
+        <stop offset="1" stopColor="#C139E6" />
       </radialGradient>
       <radialGradient
         id="paint5_radial"
@@ -136,10 +136,10 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(9.55682 8.28064) rotate(-13.5704) scale(4.21507 4.9277)"
       >
-        <stop offset="0.206" stop-color="#9059FF" stop-opacity="0" />
-        <stop offset="0.278" stop-color="#8C4FF3" stop-opacity="0.064" />
-        <stop offset="0.747" stop-color="#7716A8" stop-opacity="0.45" />
-        <stop offset="0.975" stop-color="#6E008B" stop-opacity="0.6" />
+        <stop offset="0.206" stopColor="#9059FF" stopOpacity="0" />
+        <stop offset="0.278" stopColor="#8C4FF3" stopOpacity="0.064" />
+        <stop offset="0.747" stopColor="#7716A8" stopOpacity="0.45" />
+        <stop offset="0.975" stopColor="#6E008B" stopOpacity="0.6" />
       </radialGradient>
       <radialGradient
         id="paint6_radial"
@@ -149,12 +149,12 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(8.43366 2.14913) scale(5.71976 5.71053)"
       >
-        <stop stop-color="#FFE226" />
-        <stop offset="0.121" stop-color="#FFDB27" />
-        <stop offset="0.295" stop-color="#FFC82A" />
-        <stop offset="0.502" stop-color="#FFA930" />
-        <stop offset="0.732" stop-color="#FF7E37" />
-        <stop offset="0.792" stop-color="#FF7139" />
+        <stop stopColor="#FFE226" />
+        <stop offset="0.121" stopColor="#FFDB27" />
+        <stop offset="0.295" stopColor="#FFC82A" />
+        <stop offset="0.502" stopColor="#FFA930" />
+        <stop offset="0.732" stopColor="#FF7E37" />
+        <stop offset="0.792" stopColor="#FF7139" />
       </radialGradient>
       <radialGradient
         id="paint7_radial"
@@ -164,11 +164,11 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(12.9294 -1.47307) scale(24.4037 24.3642)"
       >
-        <stop offset="0.113" stop-color="#FFF44F" />
-        <stop offset="0.456" stop-color="#FF980E" />
-        <stop offset="0.622" stop-color="#FF5634" />
-        <stop offset="0.716" stop-color="#FF3647" />
-        <stop offset="0.904" stop-color="#E31587" />
+        <stop offset="0.113" stopColor="#FFF44F" />
+        <stop offset="0.456" stopColor="#FF980E" />
+        <stop offset="0.622" stopColor="#FF5634" />
+        <stop offset="0.716" stopColor="#FF3647" />
+        <stop offset="0.904" stopColor="#E31587" />
       </radialGradient>
       <radialGradient
         id="paint8_radial"
@@ -178,14 +178,14 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(10.8728 -0.118248) rotate(83.9663) scale(17.8575 11.7382)"
       >
-        <stop stop-color="#FFF44F" />
-        <stop offset="0.06" stop-color="#FFE847" />
-        <stop offset="0.168" stop-color="#FFC830" />
-        <stop offset="0.304" stop-color="#FF980E" />
-        <stop offset="0.356" stop-color="#FF8B16" />
-        <stop offset="0.455" stop-color="#FF672A" />
-        <stop offset="0.57" stop-color="#FF3647" />
-        <stop offset="0.737" stop-color="#E31587" />
+        <stop stopColor="#FFF44F" />
+        <stop offset="0.06" stopColor="#FFE847" />
+        <stop offset="0.168" stopColor="#FFC830" />
+        <stop offset="0.304" stopColor="#FF980E" />
+        <stop offset="0.356" stopColor="#FF8B16" />
+        <stop offset="0.455" stopColor="#FF672A" />
+        <stop offset="0.57" stopColor="#FF3647" />
+        <stop offset="0.737" stopColor="#E31587" />
       </radialGradient>
       <radialGradient
         id="paint9_radial"
@@ -195,11 +195,11 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(8.29873 4.26424) scale(15.2356 15.211)"
       >
-        <stop offset="0.137" stop-color="#FFF44F" />
-        <stop offset="0.48" stop-color="#FF980E" />
-        <stop offset="0.592" stop-color="#FF5634" />
-        <stop offset="0.655" stop-color="#FF3647" />
-        <stop offset="0.904" stop-color="#E31587" />
+        <stop offset="0.137" stopColor="#FFF44F" />
+        <stop offset="0.48" stopColor="#FF980E" />
+        <stop offset="0.592" stopColor="#FF5634" />
+        <stop offset="0.655" stopColor="#FF3647" />
+        <stop offset="0.904" stopColor="#E31587" />
       </radialGradient>
       <radialGradient
         id="paint10_radial"
@@ -209,10 +209,10 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         gradientUnits="userSpaceOnUse"
         gradientTransform="translate(12.3208 5.1545) scale(16.6753 16.6483)"
       >
-        <stop offset="0.094" stop-color="#FFF44F" />
-        <stop offset="0.231" stop-color="#FFE141" />
-        <stop offset="0.509" stop-color="#FFAF1E" />
-        <stop offset="0.626" stop-color="#FF980E" />
+        <stop offset="0.094" stopColor="#FFF44F" />
+        <stop offset="0.231" stopColor="#FFE141" />
+        <stop offset="0.509" stopColor="#FFAF1E" />
+        <stop offset="0.626" stopColor="#FF980E" />
       </radialGradient>
       <linearGradient
         id="paint11_linear"
@@ -222,10 +222,10 @@ export const FirefoxIcon: React.FC<BoxProps> = props => (
         y2="14.8018"
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset="0.167" stop-color="#FFF44F" stop-opacity="0.8" />
-        <stop offset="0.266" stop-color="#FFF44F" stop-opacity="0.634" />
-        <stop offset="0.489" stop-color="#FFF44F" stop-opacity="0.217" />
-        <stop offset="0.6" stop-color="#FFF44F" stop-opacity="0" />
+        <stop offset="0.167" stopColor="#FFF44F" stopOpacity="0.8" />
+        <stop offset="0.266" stopColor="#FFF44F" stopOpacity="0.634" />
+        <stop offset="0.489" stopColor="#FFF44F" stopOpacity="0.217" />
+        <stop offset="0.6" stopColor="#FFF44F" stopOpacity="0" />
       </linearGradient>
     </defs>
   </Svg>
