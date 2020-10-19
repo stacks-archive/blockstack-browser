@@ -1,5 +1,5 @@
 {
-  "name": "@blockstack/connect",
+  "name": "@stacks/connect",
   "version": "2.12.7",
   "scripts": {
     "build": "yarn build:modules && yarn build:standalone",
