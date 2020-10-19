@@ -237,7 +237,6 @@ module.exports = {
       SEGMENT_KEY: JSON.stringify(segmentKey),
       STATS_URL: JSON.stringify(statsURL),
     }),
-    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
     isDevelopment &&
       extEnv === 'web' &&
       new ReactRefreshWebpackPlugin({ disableRefreshCheck: true }),
