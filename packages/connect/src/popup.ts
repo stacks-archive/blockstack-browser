@@ -99,7 +99,6 @@ export const setupListener = <T>({
   const interval = setInterval(() => {
     if (popup) {
       try {
-        console.log('about to ping');
         popup.postMessage(
           {
             method: 'ping',

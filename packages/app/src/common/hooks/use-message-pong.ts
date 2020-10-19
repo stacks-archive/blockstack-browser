@@ -6,7 +6,6 @@ import { getEventSourceWindow } from '@common/utils';
 export const useMessagePong = () => {
   const authRequest = useSelector(selectAuthRequest);
   const sendMessage = (event: MessageEvent) => {
-    console.log('internal event', event);
     if (event.data.method === 'ping') {
       const source = getEventSourceWindow(event);
       source?.postMessage(
