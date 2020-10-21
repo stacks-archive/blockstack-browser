@@ -8,7 +8,7 @@
     "256": "assets/logo-128@2x.png",
     "512": "assets/logo-128@3x.png"
   },
-  "content_security_policy": "script-src 'self'<% DEV_CSR %>; object-src 'self'; frame-src 'none'",
+  "content_security_policy": "script-src 'self'<% DEV_CSR %>; object-src 'self'; frame-src 'none';",
   "permissions": [
     "activeTab"
   ],

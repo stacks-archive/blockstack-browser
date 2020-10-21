@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Box, Text } from '@blockstack/ui';
 import { AppContext } from '@common/context';
 import { getAuthOrigin, getRPCClient } from '@common/utils';
 import { useConnect } from '@blockstack/connect';
-import { deserializeCV, IntCV } from '@blockstack/stacks-transactions';
+import { deserializeCV, IntCV, StacksTestnet } from '@blockstack/stacks-transactions';
 import { ExplorerLink } from '@components/explorer-link';
 
 export const CounterActions: React.FC = () => {
@@ -18,6 +18,8 @@ export const CounterActions: React.FC = () => {
     setError('');
     setLoading(true);
     const authOrigin = getAuthOrigin();
+    const network = new StacksTestnet();
+    network.coreApiUrl = 'https://stacks-node-api.blockstack.org';
     await doContractCall({
       authOrigin,
       contractAddress: 'STB44HYPYAT2BB2QE513NSP81HTMYWBJP02HPGK6',

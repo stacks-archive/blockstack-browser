@@ -8,4 +8,4 @@
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
-    Content-Security-Policy = "default-src 'self'; style-src 'unsafe-inline'; object-src 'none'; frame-src 'none';"
+    Content-Security-Policy = "frame-src 'none';"
