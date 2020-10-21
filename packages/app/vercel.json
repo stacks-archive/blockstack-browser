@@ -10,7 +10,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "frame-src 'none';"
+          "value": "script-src 'self'; frame-src 'none';"
         }
       ]
     }
