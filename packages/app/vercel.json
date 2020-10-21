@@ -10,7 +10,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; img-src https://*; style-src 'unsafe-inline'; object-src 'none'; frame-src 'none'; connect-src 'self' stats.blockstack.xyz hub.blockstack.org core.blockstack.org registrar.blockstack.org gaia.blockstack.org;"
+          "value": "default-src 'self'; style-src 'unsafe-inline'; object-src 'none'; frame-src 'none';"
         }
       ]
     }
