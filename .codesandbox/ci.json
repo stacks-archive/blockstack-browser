@@ -1,5 +1,0 @@
-{
-  "buildCommand": "build:ui",
-  "packages": ["packages/ui"],
-  "sandboxes": ["mf0pu"]
-}
