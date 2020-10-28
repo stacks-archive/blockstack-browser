@@ -1,5 +1,5 @@
 import { Store, applyMiddleware } from 'webext-redux';
-import { Wallet, Identity } from '@blockstack/keychain';
+import { Wallet, Identity } from '@stacks/keychain';
 import { middlewareComponents } from './';
 
 export function deserializer(payload: any) {

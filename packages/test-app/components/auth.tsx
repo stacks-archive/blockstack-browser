@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text, Box, space, ButtonGroup } from '@blockstack/ui';
-import { useConnect } from '@blockstack/connect-react';
+import { useConnect } from '@stacks/connect-react';
 
 export const Auth: React.FC = () => {
   const { doOpenAuth } = useConnect();

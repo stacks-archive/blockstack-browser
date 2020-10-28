@@ -12,7 +12,7 @@
     "lib": ["es2017", "dom"],
     "sourceMap": true,
     "paths": {
-      "@blockstack/rpc-client": ["../../rpc-client/src"]
+      "@stacks/rpc-client": ["../../rpc-client/src"]
     }
   },
   "include": ["./src/**/*"]

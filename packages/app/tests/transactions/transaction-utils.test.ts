@@ -1,6 +1,6 @@
 import '../setup';
 import { generateTransaction } from '../../src/common/transaction-utils';
-import { Wallet } from '@blockstack/keychain';
+import { Wallet } from '@stacks/keychain';
 import {
   ChainID,
   PostConditionMode,

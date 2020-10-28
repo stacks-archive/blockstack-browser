@@ -23,7 +23,7 @@ jobs:
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
       - name: Build connect-ui
-        run: yarn lerna run build --scope @blockstack/connect-ui
+        run: yarn lerna run build --scope @stacks/connect-ui
       - name: Build Extension
         run: yarn lerna run prod:ext --stream
       - name: Zip extension

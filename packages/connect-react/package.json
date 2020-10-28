@@ -1,6 +1,6 @@
 {
-  "name": "@blockstack/connect-react",
-  "version": "2.12.1",
+  "name": "@stacks/connect-react",
+  "version": "2.12.4",
   "scripts": {
     "build": "yarn build:modules",
     "build:modules": "tsdx build --format cjs,esm,umd",
@@ -30,7 +30,7 @@
     }
   ],
   "dependencies": {
-    "@blockstack/connect": "2.12.1",
+    "@stacks/connect": "2.12.10",
     "jsontokens": "^3.0.0"
   },
   "devDependencies": {

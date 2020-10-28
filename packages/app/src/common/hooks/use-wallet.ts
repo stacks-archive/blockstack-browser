@@ -7,7 +7,7 @@ import {
   selectIsSignedIn,
 } from '@store/wallet/selectors';
 import { selectSecretKey } from '@store/onboarding/selectors';
-import { decrypt } from '@blockstack/keychain';
+import { decrypt } from '@stacks/keychain';
 import { DEFAULT_PASSWORD } from '@store/onboarding/types';
 import { useState, useEffect } from 'react';
 import { doStoreSeed } from '@store/wallet';

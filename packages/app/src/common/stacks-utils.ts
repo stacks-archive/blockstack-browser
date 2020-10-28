@@ -1,4 +1,4 @@
-import { ContractCallArgument, ContractCallArgumentType } from '@blockstack/connect';
+import { ContractCallArgument, ContractCallArgumentType } from '@stacks/connect';
 import {
   uintCV,
   intCV,
@@ -8,7 +8,7 @@ import {
   standardPrincipalCV,
   bufferCV,
 } from '@blockstack/stacks-transactions';
-import RPCClient from '@blockstack/rpc-client';
+import RPCClient from '@stacks/rpc-client';
 import BigNumber from 'bignumber.js';
 
 export const encodeContractCallArgument = ({ type, value }: ContractCallArgument) => {

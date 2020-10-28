@@ -1,6 +1,6 @@
 {
-  "name": "@blockstack/connect-ui",
-  "version": "2.12.1",
+  "name": "@stacks/connect-ui",
+  "version": "2.12.4",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "module": "dist/custom-elements/index.js",

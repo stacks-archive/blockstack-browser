@@ -9,7 +9,7 @@ import {
   openContractDeploy,
   openSTXTransfer,
   showBlockstackConnect,
-} from '@blockstack/connect';
+} from '@stacks/connect';
 import { ConnectContext, ConnectDispatchContext, States } from '../components/connect/context';
 
 const useConnectDispatch = () => {

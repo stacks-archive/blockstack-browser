@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import { AppState, store } from '@store';
 import { selectAppName, selectDecodedAuthRequest } from '@store/onboarding/selectors';
 import { Drawer } from '@components/drawer';
-import { ConfigApp } from '@blockstack/keychain';
+import { ConfigApp } from '@stacks/keychain';
 import { gaiaUrl } from '@common/constants';
 import { ExtensionButton } from '@components/extension-button';
 import {

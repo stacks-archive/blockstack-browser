@@ -1,5 +1,5 @@
 import React, { useReducer, createContext } from 'react';
-import { AuthOptions, FinishedData } from '@blockstack/connect';
+import { AuthOptions, FinishedData } from '@stacks/connect';
 import { UserSession } from 'blockstack/lib';
 
 enum States {

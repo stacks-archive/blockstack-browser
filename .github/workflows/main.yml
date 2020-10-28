@@ -23,7 +23,7 @@ jobs:
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
       - name: Keychain tests
-        run: yarn lerna run test --scope @blockstack/keychain
+        run: yarn lerna run test --scope @stacks/keychain
 
   codecheck:
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
       - name: Build connect-ui
-        run: yarn lerna run build --scope @blockstack/connect-ui
+        run: yarn lerna run build --scope @stacks/connect-ui
       - name: Lint
         run: yarn lint
       - name: Typecheck
@@ -69,7 +69,7 @@ jobs:
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
       - name: Build connect-ui
-        run: yarn lerna run build --scope @blockstack/connect-ui
+        run: yarn lerna run build --scope @stacks/connect-ui
       - name: Setup .npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -109,7 +109,7 @@ jobs:
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
       - name: Build connect-ui
-        run: yarn lerna run build --scope @blockstack/connect-ui
+        run: yarn lerna run build --scope @stacks/connect-ui
       - name: Build Blockstack App
         run: yarn prod:web
         working-directory: packages/app

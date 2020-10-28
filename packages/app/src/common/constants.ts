@@ -1,4 +1,4 @@
-import { Subdomains } from '@blockstack/keychain';
+import { Subdomains } from '@stacks/keychain';
 
 export const gaiaUrl = 'https://hub.blockstack.org';
 

@@ -3,20 +3,18 @@
   "private": true,
   "scripts": {
     "typecheck": "lerna run typecheck --parallel --no-bail --stream",
-    "dev": "NODE_ENV=development yarn lerna exec --parallel 'yarn dev' --scope test-app --scope @blockstack/app",
+    "dev": "NODE_ENV=development yarn lerna exec --parallel 'yarn dev' --scope test-app --scope @stacks/app",
     "bootstrap": "yarn lerna exec --parallel 'yarn'",
     "build:libs": "yarn build:ui && yarn build:keychain && yarn build:connect",
-    "build:ui": "lerna run build --scope @blockstack/ui",
-    "build:keychain": "lerna run build --scope @blockstack/keychain",
-    "build:connect": "lerna run build --scope @blockstack/connect",
-    "build:app": "lerna run prod:web --scope @blockstack/app",
+    "build:keychain": "lerna run build --scope @stacks/keychain",
+    "build:connect": "lerna run build --scope @stacks/connect",
+    "build:app": "lerna run prod:web --scope @stacks/app",
     "build:test-app": "lerna run prod:web --scope test-app",
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "lint:eslint": "eslint \"packages/**/src/**/*.{ts,tsx}\" -f unix",
     "lint:fix": "eslint \"packages/**/src/**/*.{ts,tsx}\" -f unix --fix",
     "lint:prettier": "prettier --check \"packages/**/src/**/*.{ts,tsx}\" *.js",
-    "lint:prettier:fix": "prettier --write \"packages/**/src/**/*.{ts,tsx}\" *.js",
-    "version": "lerna bootstrap"
+    "lint:prettier:fix": "prettier --write \"packages/**/src/**/*.{ts,tsx}\" *.js"
   },
   "prettier": "@blockstack/prettier-config",
   "husky": {

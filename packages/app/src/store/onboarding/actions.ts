@@ -13,7 +13,7 @@ import {
 import { decodeToken } from 'jsontokens';
 import { doGenerateWallet, didGenerateWallet, WalletActions } from '../wallet';
 import { ThunkAction } from 'redux-thunk';
-import { decrypt } from '@blockstack/keychain';
+import { decrypt } from '@stacks/keychain';
 import { DecodedAuthRequest, AppManifest } from '../../common/dev/types';
 import { AppState } from '@store';
 import {

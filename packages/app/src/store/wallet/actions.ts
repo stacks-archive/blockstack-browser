@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk';
-import { Wallet } from '@blockstack/keychain';
+import { Wallet } from '@stacks/keychain';
 import {
   WalletActions,
   RESTORE_WALLET,

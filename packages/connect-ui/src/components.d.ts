@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { AuthOptions } from "@blockstack/connect/auth";
+import { AuthOptions } from "@stacks/connect/auth";
 export namespace Components {
     interface ConnectModal {
         "authOptions": AuthOptions;

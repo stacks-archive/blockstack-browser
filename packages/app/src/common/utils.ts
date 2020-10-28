@@ -1,6 +1,6 @@
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
-import { FinishedTxData, shouldUsePopup } from '@blockstack/connect';
+import { FinishedTxData, shouldUsePopup } from '@stacks/connect';
 import DOMPurify from 'dompurify';
 
 export const getAuthRequestParam = () => {

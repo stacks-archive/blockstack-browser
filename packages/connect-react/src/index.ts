@@ -1,2 +1,2 @@
 export * from './react';
-export * from '@blockstack/connect';
+export * from '@stacks/connect';

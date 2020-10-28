@@ -1,4 +1,4 @@
-import { Wallet } from '@blockstack/keychain';
+import { Wallet } from '@stacks/keychain';
 import { createTransform } from 'redux-persist';
 import { initialState } from '@store/onboarding/reducer';
 

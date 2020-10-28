@@ -1,4 +1,4 @@
-import { RPCClient } from '@blockstack/rpc-client';
+import { RPCClient } from '@stacks/rpc-client';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 

@@ -10,7 +10,7 @@ import {
   PostCondition,
   StacksNetwork,
 } from '@blockstack/stacks-transactions';
-import RPCClient from '@blockstack/rpc-client';
+import RPCClient from '@stacks/rpc-client';
 import { bip32 } from 'bitcoinjs-lib';
 import { assertIsTruthy } from '../utils';
 import BN from 'bn.js';

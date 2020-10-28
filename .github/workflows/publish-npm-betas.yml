@@ -31,7 +31,7 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
       - name: Get git branch
         id: git-branch
-        run: echo "::set-output name=branch::$(git rev-parse --abbrev-ref HEAD)"
+        run: echo "::set-output name=branch::$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f2 )"
       - name: Get git commit
         id: git-commit
         run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"

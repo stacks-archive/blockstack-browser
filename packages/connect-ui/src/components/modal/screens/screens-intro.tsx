@@ -4,7 +4,7 @@ import { EyeIcon } from '../assets/eye-icon';
 import { state, Screens } from '../../../store';
 import { LinkIcon } from '../assets/link-icon';
 import { PadlockBox } from '../assets/padlock-box';
-import { AuthOptions } from '@blockstack/connect/auth';
+import { AuthOptions } from '@stacks/connect/auth';
 import { onClick as onExtensionClick, getBrowser } from '../extension-util';
 
 interface IntroProps {

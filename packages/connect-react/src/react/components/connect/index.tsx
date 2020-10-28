@@ -1,6 +1,6 @@
 import React from 'react';
 import { ConnectProvider } from './context';
-import { AuthOptions } from '@blockstack/connect';
+import { AuthOptions } from '@stacks/connect';
 
 /**
  * Usage

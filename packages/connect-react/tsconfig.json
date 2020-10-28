@@ -22,7 +22,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "@blockstack/connect": ["../connect/src/index"]
+      "@stacks/connect": ["../connect/src/index"]
     },
     "jsx": "react",
     "esModuleInterop": true,

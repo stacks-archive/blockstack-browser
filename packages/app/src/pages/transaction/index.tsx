@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TransactionPayload, TransactionTypes } from '@blockstack/connect';
+import { TransactionPayload, TransactionTypes } from '@stacks/connect';
 import {
   Screen,
   ScreenBody,
@@ -23,7 +23,7 @@ import { TestnetBanner } from '@components/transactions/testnet-banner';
 import { TxError } from '@components/transactions/tx-error';
 import { TabbedCard, Tab } from '@components/tabbed-card';
 import { getRPCClient, stacksValue } from '@common/stacks-utils';
-import { Wallet } from '@blockstack/keychain';
+import { Wallet } from '@stacks/keychain';
 import { doTrack, TRANSACTION_SIGN_START, TRANSACTION_SIGN_ERROR } from '@common/track';
 import { finishTransaction, generateTransaction } from '@common/transaction-utils';
 

@@ -1,4 +1,4 @@
-import { Wallet, Identity } from '@blockstack/keychain';
+import { Wallet, Identity } from '@stacks/keychain';
 
 export const RESTORE_WALLET = 'WALLET/RESTORE_WALLET';
 export const IS_RESTORING_WALLET = 'WALLET/IS_RESTORING';

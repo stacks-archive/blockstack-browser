@@ -1,5 +1,5 @@
 {
-  "name": "@blockstack/app",
+  "name": "@stacks/app",
   "description": "The Blockstack App is a web app and browser extension for interacting with Blockstack apps.",
   "private": true,
   "scripts": {
@@ -22,17 +22,17 @@
     "test:ci": "jest --verbose=true --ci --reporters=default --reporters=jest-junit --collect-coverage",
     "typecheck": "tsc --noEmit"
   },
-  "version": "1.15.7",
+  "version": "1.15.10",
   "author": "Blockstack PBC",
   "dependencies": {
-    "@blockstack/connect": "^2.12.7",
-    "@blockstack/keychain": "^0.12.7",
     "@blockstack/prettier-config": "^0.0.6",
-    "@blockstack/rpc-client": "^0.3.0-alpha.21",
     "@blockstack/stacks-transactions": "0.7.0",
     "@blockstack/stats": "^0.7.0",
     "@blockstack/ui": "^2.12.13",
     "@rehooks/document-title": "^1.0.1",
+    "@stacks/connect": "^2.12.10",
+    "@stacks/keychain": "^0.12.10",
+    "@stacks/rpc-client": "^0.3.2",
     "@types/dompurify": "^2.0.4",
     "@types/react-router-dom": "^5.1.3",
     "bignumber.js": "^9.0.0",

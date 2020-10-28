@@ -1,4 +1,4 @@
-# `@blockstack/connect`
+# `@stacks/connect`
 
 A library for building excellent user experiences with [Blockstack](https://blockstack.org/).
 

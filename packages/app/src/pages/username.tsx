@@ -16,7 +16,7 @@ import {
   IdentityNameValidityError,
   registerSubdomain,
   validateSubdomain,
-} from '@blockstack/keychain';
+} from '@stacks/keychain';
 import { didGenerateWallet } from '@store/wallet';
 import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';

@@ -32,13 +32,12 @@
 			"@components/*": ["../components/*"],
 			"@containers/*": ["containers/*"],
 			"@common/*": ["../common/*"],
-      "@blockstack/connect-react": ["../../connect-react/src"],
-      "@blockstack/connect": ["../../connect/src"],
-			"@blockstack/connect/*": ["../../connect/src/*"],
-			"@blockstack/keychain": ["../../keychain/src"],
-      "@blockstack/keychain/*": ["../../keychain/src/*"],
+      "@stacks/connect-react": ["../../connect-react/src"],
+      "@stacks/connect": ["../../connect/src"],
+			"@stacks/keychain": ["../../keychain/src"],
+      "@stacks/keychain/*": ["../../keychain/src/*"],
       "@cards/*": ["../components/cards/*"],
-      "@blockstack/rpc-client": ["../../rpc-client/src"]
+      "@stacks/rpc-client": ["../../rpc-client/src"]
 		},
 		"baseUrl": "src",
 		"allowSyntheticDefaultImports": true,  		/* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */

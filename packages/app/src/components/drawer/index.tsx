@@ -5,7 +5,7 @@ import { Title } from '@components/typography';
 import useOnClickOutside from 'use-onclickoutside';
 
 import { Image } from '@components/image';
-import { ConfigApp } from '@blockstack/keychain';
+import { ConfigApp } from '@stacks/keychain';
 
 interface PreviousAppsProps {
   apps: ConfigApp[];

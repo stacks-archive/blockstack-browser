@@ -55,14 +55,11 @@ jobs:
           paths:
             - ./.cache/yarn
       - run:
-          name: Lerna bootstrap
-          command: $HOME/.yarn/bin/yarn lerna bootstrap
-      - run:
           name: Build Connect UI
-          command: $HOME/.yarn/bin/yarn lerna run build --scope @blockstack/connect-ui
+          command: $HOME/.yarn/bin/yarn lerna run build --scope @stacks/connect-ui
       - run:
           name: test server
-          command: $HOME/.yarn/bin/yarn lerna run dev --scope @blockstack/app
+          command: $HOME/.yarn/bin/yarn lerna run dev --scope @stacks/app
           background: true
       - run:
           name: Run test app
@@ -73,7 +70,7 @@ jobs:
           command: mkdir packages/app/tests/screenshots
       - run:
           name: test
-          command: $HOME/.yarn/bin/yarn lerna run test:ci --scope @blockstack/app --stream
+          command: $HOME/.yarn/bin/yarn lerna run test:ci --scope @stacks/app --stream
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       # https://circleci.com/docs/2.0/artifacts/ 

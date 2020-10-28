@@ -1,7 +1,7 @@
 import { authenticate, AuthOptions, FinishedData } from './auth';
-import { defineCustomElements } from '@blockstack/connect-ui';
+import { defineCustomElements } from '@stacks/connect-ui';
 
-export const showBlockstackConnect = (authOptions: AuthOptions) => {
+export const showConnect = (authOptions: AuthOptions) => {
   defineCustomElements();
   const element = document.createElement('connect-modal');
   element.authOptions = authOptions;
@@ -39,3 +39,8 @@ export const showBlockstackConnect = (authOptions: AuthOptions) => {
   });
   document.addEventListener('keydown', handleEsc);
 };
+
+/**
+ * @deprecated Use the renamed `showConnect` method
+ */
+export const showBlockstackConnect = (authOptions: AuthOptions) => showConnect(authOptions);

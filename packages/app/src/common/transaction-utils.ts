@@ -4,7 +4,7 @@ import {
   deserializeCV,
 } from '@blockstack/stacks-transactions';
 import { PostCondition } from '@blockstack/stacks-transactions/lib/postcondition';
-import { Wallet } from '@blockstack/keychain';
+import { Wallet } from '@stacks/keychain';
 import { getRPCClient } from './stacks-utils';
 import {
   ContractDeployPayload,
@@ -12,7 +12,7 @@ import {
   STXTransferPayload,
   TransactionPayload,
   TransactionTypes,
-} from '@blockstack/connect';
+} from '@stacks/connect';
 import { doTrack, TRANSACTION_SIGN_SUBMIT, TRANSACTION_SIGN_ERROR } from '@common/track';
 import { finalizeTxSignature } from './utils';
 import BigNum from 'bn.js';
