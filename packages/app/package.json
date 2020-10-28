@@ -19,6 +19,7 @@
     "test": "jest --verbose=true",
     "test:coverage": "jest --collect-coverage",
     "test:watch": "jest --watch",
+    "test:ci": "jest --verbose=true --ci --reporters=default --reporters=jest-junit --collect-coverage",
     "typecheck": "tsc --noEmit"
   },
   "version": "1.15.7",
@@ -94,6 +95,7 @@
     "html-webpack-plugin": "^4.0.0-beta.11",
     "jest": "^25.1.0",
     "jest-circus": "^25.1.0",
+    "jest-junit": "^12.0.0",
     "playwright": "^1.2.1",
     "playwright-chromium": "^1.2.1",
     "playwright-core": "^1.2.1",

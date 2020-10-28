@@ -41,6 +41,7 @@ describe.each(environments)('auth scenarios - %s %s', (browserType, deviceType) 
   let browser: Browser;
   let context: BrowserContext;
   let demoPage: DemoPage;
+  let consoleLogs: any[];
   beforeEach(async () => {
     const launchArgs: string[] = [];
     if (browserType.name() === 'chromium') {
@@ -58,7 +59,11 @@ describe.each(environments)('auth scenarios - %s %s', (browserType, deviceType) 
     } else {
       context = await browser.newContext();
     }
+    consoleLogs = [];
     demoPage = await DemoPage.init(context);
+    demoPage.page.on('console', event => {
+      consoleLogs = consoleLogs.concat(event.args());
+    });
   }, 10000);
 
   afterEach(async () => {
@@ -71,6 +76,7 @@ describe.each(environments)('auth scenarios - %s %s', (browserType, deviceType) 
 
   it('creating a successful account', async () => {
     await demoPage.screenshot('home-page');
+    console.log(consoleLogs);
     await demoPage.openConnect();
     await demoPage.clickConnectGetStarted();
     const auth = await AuthPage.getAuthPage(browser);
