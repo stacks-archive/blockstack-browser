@@ -34,7 +34,6 @@
 			"@common/*": ["../common/*"],
       "@blockstack/connect-react": ["../../connect-react/src"],
       "@blockstack/connect": ["../../connect/src"],
-			"@blockstack/ui": ["../../ui/src"],
 			"@blockstack/connect/*": ["../../connect/src/*"],
 			"@blockstack/keychain": ["../../keychain/src"],
       "@blockstack/keychain/*": ["../../keychain/src/*"],

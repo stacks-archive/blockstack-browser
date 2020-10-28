@@ -2,7 +2,7 @@
   "name": "@blockstack/connect-react",
   "version": "2.12.1",
   "scripts": {
-    "build": "yarn build:modules && yarn build:standalone",
+    "build": "yarn build:modules",
     "build:modules": "tsdx build --format cjs,esm,umd",
     "build:standalone": "NODE_ENV=production webpack --mode=production",
     "build:standalone:analyze": "NODE_ENV=production ANALYZE=true webpack --mode=production",
@@ -23,7 +23,6 @@
   },
   "sideEffects": false,
   "typings": "dist/connect-react/src/index.d.ts",
-  "unpkg": "dist/bundle.js",
   "bundlesize": [
     {
       "path": "./dist/**/*.js",
@@ -32,7 +31,6 @@
   ],
   "dependencies": {
     "@blockstack/connect": "2.12.1",
-    "@blockstack/ui": "^2.12.7",
     "jsontokens": "^3.0.0"
   },
   "devDependencies": {
