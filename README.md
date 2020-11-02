@@ -21,3 +21,8 @@ The first time you setup a development environment for this repository, follow t
     - `packages/app` which is the auth app, running at localhost:8080
 
 For development instructions of specific packages, see the `README` in each package folder.
+
+## Building browser extensions
+
+1. From the root of this repository, in the command line, run `sh build-ext.sh`
+2. The extension will be packaged as `extension.zip` inside this folder.
