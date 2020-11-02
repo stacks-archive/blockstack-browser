@@ -43,21 +43,29 @@ yarn dev
 
 Then, open [localhost:8080](http://localhost:8080).
 
-## Building and using as a browser extension
+## Build and install browser extension
 
-First, build the project:
+First navigate to the app directory:
+
+~~~bash
+cd packages/app
+~~~
+
+Then build the project:
 
 ~~~bash
 yarn prod:ext
 ~~~
 
-### Installing for Chrome/Brave
+If installing for Chrome or Brave:
+
 1. Go to: [**chrome://extensions**](chrome://extensions)
 2. Toggle: "**developer mode**" on.
 3. Click on: "**Load unpacked**"
 4. Select the newly created folder "**dist**" from the project folder.
 
-### Installing for Firefox
+If installing for Firefox:
+
 1. Go to: [**about:debugging**](about:debugging)
 2. Click on "**This Firefox**"
 3. Click on: "**Load Temporary Add-on…**"
