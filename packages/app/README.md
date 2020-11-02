@@ -8,7 +8,7 @@ Source code is available on Github at https://github.com/blockstack/ux/tree/mast
 
 The Blockstack App is an application for interacting and authenticating with [Blockstack](https://blockstack.org) apps. It can be used as a hosted web app (available at [app.blockstack.org](https://app.blockstack.org)) or as a browser extension.
 
-To use this application with your own Blockstack App, we recommend using [Blockstack Connect](https://github.com/blockstack/connect).
+To use this application with your own Blockstack App, we recommend using [Blockstack Connect](https://github.com/blockstack/ux/packages/connect).
 
 Table of Contents:
 
