@@ -1,6 +1,6 @@
 {
   "name": "@stacks/connect-ui",
-  "version": "2.12.4",
+  "version": "2.13.1",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "module": "dist/custom-elements/index.js",
@@ -9,8 +9,7 @@
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/connect-ui/connect-ui.js",
   "files": [
-    "dist/",
-    "loader/"
+    "dist/"
   ],
   "scripts": {
     "build": "stencil build --docs",
