@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.14.1 (2020-11-03)
+
+
+### Bug Fixes
+
+* proper glob for lerna packages ([5367055](https://github.com/blockstack/ux/commit/5367055e9c6622dd0a93f97275ab652a9af56bf9))
+
+
+
+
+
 # 0.14.0 (2020-11-02)
 
 
