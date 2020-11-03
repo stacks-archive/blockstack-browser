@@ -23,7 +23,7 @@
     }
   },
   "workspaces": [
-    "packages/**"
+    "packages/*"
   ],
   "devDependencies": {
     "@blockstack/eslint-config": "^1.0.5",
@@ -44,7 +44,7 @@
     "eslint-plugin-react": "^7.20.0",
     "eslint-plugin-react-hooks": "^3.0.0",
     "husky": "^4.2.3",
-    "lerna": "^3.20.2",
+    "lerna": "^3.22.1",
     "prettier": "^2.0.5",
     "typescript": "^3.9.3",
     "yalc": "^1.0.0-pre.42"
