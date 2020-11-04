@@ -29,9 +29,11 @@ Although this app is usable as a browser extension, the best interface for devel
 
 ### Setup
 
-After cloning this repository, install dependencies:
+Clone this repository and install dependencies:
 
 ~~~bash
+git clone https://github.com/blockstack/ux
+cd ux
 yarn
 ~~~
 
@@ -45,19 +47,17 @@ Then, open [localhost:8080](http://localhost:8080).
 
 ## Build and install browser extension
 
-First navigate to the app directory:
+Clone this repository, install dependencies and build the extension:
 
 ~~~bash
+git clone https://github.com/blockstack/ux
+cd ux
+yarn
 cd packages/app
-~~~
-
-Then build the project:
-
-~~~bash
 yarn prod:ext
 ~~~
 
-If installing for Chrome or Brave:
+Then if installing for Chrome or Brave:
 
 1. Go to: [**chrome://extensions**](chrome://extensions)
 2. Toggle: "**developer mode**" on.
