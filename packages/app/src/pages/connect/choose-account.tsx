@@ -67,10 +67,10 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
       !wallet.walletConfig.hideWarningForReusingIdentity &&
       authRequest.scopes.includes('publish_data')
     ) {
-      if (validUrl(authRequest && authRequest.redirect_uri)) {
+      if (!validUrl(authRequest.redirect_uri)) {
         throw new Error('Cannot proceed with malformed url');
       }
-      const url = new URL(authRequest?.redirect_uri);
+      const url = new URL(authRequest.redirect_uri);
       const apps = wallet.walletConfig.identities[identityIndex]?.apps;
       if (apps) {
         let newReusedApps: ConfigApp[] = [];
