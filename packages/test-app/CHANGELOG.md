@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.9.1 (2020-11-05)
+
+
+### Bug Fixes
+
+* add additional url validation ([1b67fbd](https://github.com/blockstack/ux/commit/1b67fbd91d0eb3cbfabfed297b9e18dfd7ab497b))
+
+
+
+
+
 # 1.9.0 (2020-11-04)
 
 
