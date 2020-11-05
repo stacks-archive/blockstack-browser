@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.9.2 (2020-11-05)
+
+
+### Bug Fixes
+
+* add dep to app ([eade246](https://github.com/blockstack/ux/commit/eade246edadfb2963c543f3647ba348f77c170ec))
+
+
+
+
+
 ## 1.9.1 (2020-11-05)
 
 
