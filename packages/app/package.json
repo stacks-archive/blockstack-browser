@@ -31,6 +31,7 @@
     "@blockstack/ui": "^2.12.13",
     "@rehooks/document-title": "^1.0.1",
     "@stacks/connect": "^4.1.1",
+    "@stacks/connect-ui": "^2.15.1",
     "@stacks/keychain": "^0.15.1",
     "@stacks/rpc-client": "^0.6.1",
     "@types/dompurify": "^2.0.4",
