@@ -35,6 +35,6 @@
   "main": "dist/index.js",
   "module": "dist/connect.esm.js",
   "peerDependencies": {
-    "blockstack": "^19"
+    "blockstack": ">=19"
   }
 }

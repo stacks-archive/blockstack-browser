@@ -65,8 +65,8 @@
   "main": "dist/index.js",
   "module": "dist/connect-react.esm.js",
   "peerDependencies": {
-    "blockstack": "^19",
-    "react": "^16.31.1",
+    "blockstack": ">=19",
+    "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
 }
