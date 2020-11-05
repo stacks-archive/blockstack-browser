@@ -22,6 +22,7 @@ import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Navigate } from '@components/navigate';
+import { validUrl } from '../../common/validate-url';
 
 interface ChooseAccountProps {
   next: (identityIndex: number) => void;
@@ -66,6 +67,9 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
       !wallet.walletConfig.hideWarningForReusingIdentity &&
       authRequest.scopes.includes('publish_data')
     ) {
+      if (validUrl(authRequest && authRequest.redirect_uri)) {
+        throw new Error('Cannot proceed with malformed url');
+      }
       const url = new URL(authRequest?.redirect_uri);
       const apps = wallet.walletConfig.identities[identityIndex]?.apps;
       if (apps) {

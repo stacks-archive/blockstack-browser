@@ -51,7 +51,6 @@ export const App: React.FC = () => {
     userSession,
     finished: ({ userSession, authResponse }) => {
       const userData = userSession.loadUserData();
-      // setState(() => userData);
       setAppPrivateKey(userSession.loadUserData().appPrivateKey);
       setAuthResponse(authResponse);
       setState({ userData });

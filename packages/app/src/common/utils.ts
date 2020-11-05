@@ -1,7 +1,7 @@
 import { DecodedAuthRequest } from './dev/types';
 import { wordlists } from 'bip39';
 import { FinishedTxData, shouldUsePopup } from '@stacks/connect';
-import DOMPurify from 'dompurify';
+import { validUrl } from './validate-url';
 
 export const getAuthRequestParam = () => {
   const { hash } = document.location;
@@ -57,8 +57,11 @@ export const finalizeAuthResponse = ({
   authRequest,
   authResponse,
 }: FinalizeAuthParams) => {
-  const sanitizedUri = DOMPurify.sanitize(decodedAuthRequest.redirect_uri);
-  const redirect = `${sanitizedUri}?authResponse=${authResponse}`;
+  const dangerousUri = decodedAuthRequest.redirect_uri;
+  if (!validUrl(dangerousUri) || dangerousUri.includes('javascript')) {
+    throw new Error('Cannot proceed auth with malformed url');
+  }
+  const redirect = `${dangerousUri}?authResponse=${authResponse}`;
   if (!shouldUsePopup()) {
     document.location.href = redirect;
     return;

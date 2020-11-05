@@ -1,6 +1,7 @@
 import { ScreenPaths } from '@store/onboarding/types';
 import { DecodedAuthRequest } from './dev/types';
 import { event, page, setConfig, Providers } from '@blockstack/stats';
+import { validUrl } from './validate-url';
 
 export const SECRET_KEY_FAQ_WHERE = 'View Secret Key FAQ (Where)';
 export const SECRET_KEY_FAQ_LOSE = 'View Secret Key FAQ (Lose)';
@@ -62,6 +63,7 @@ export const doTrackScreenChange = (
   if (titleNameMap[screen]) {
     document.title = titleNameMap[screen];
   }
+  if (decodedAuthRequest && !validUrl(decodedAuthRequest.redirect_uri)) return;
   const appURL = decodedAuthRequest ? new URL(decodedAuthRequest?.redirect_uri) : null;
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   setTimeout(async () => {
