@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.15.3 (2020-11-05)
+
+
+### Bug Fixes
+
+* valid-url package for url validation ([2d0664b](https://github.com/blockstack/ux/commit/2d0664b302dbf7464a9c9c5730e85675375b5a0e))
+
+
+
+
+
 ## 2.15.2 (2020-11-05)
 
 
