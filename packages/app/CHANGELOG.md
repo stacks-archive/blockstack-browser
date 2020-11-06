@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.18.4 (2020-11-06)
+
+
+### Bug Fixes
+
+* blockstack, react dep versions ([7f23d36](https://github.com/blockstack/ux/commit/7f23d36b0b6e4531027cd4b2c3cf5d76c7a274d2))
+
+
+
+
+
 ## 1.18.3 (2020-11-05)
 
 
