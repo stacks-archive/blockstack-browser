@@ -1,6 +1,6 @@
 {
   "name": "@stacks/connect-react",
-  "version": "2.15.4",
+  "version": "2.16.0",
   "scripts": {
     "build": "yarn build:modules",
     "build:modules": "tsdx build --format cjs,esm,umd",
@@ -30,7 +30,7 @@
     }
   ],
   "dependencies": {
-    "@stacks/connect": "^4.1.4",
+    "@stacks/connect": "^4.2.0",
     "jsontokens": "^3.0.0"
   },
   "devDependencies": {

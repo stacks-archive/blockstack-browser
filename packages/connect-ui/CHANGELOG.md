@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.16.0 (2020-11-07)
+
+
+### Features
+
+* more tests for url validation ([cad6e6a](https://github.com/blockstack/ux/commit/cad6e6a489bfd4de67ff8c20e480b3db99e97e4e))
+
+
+
+
+
 ## 2.15.4 (2020-11-06)
 
 
