@@ -1,5 +1,5 @@
 import { AppState } from '..';
-import { validUrl } from '../../common/validate-url';
+import { isValidUrl } from '../../common/validate-url';
 
 export const selectCurrentScreen = (state: AppState) => state.onboarding.screen;
 
@@ -35,7 +35,7 @@ export const selectFullAppIcon = (state: AppState) => {
     authRequest?.redirect_uri &&
     icon &&
     !absoluteURLPattern.test(icon) &&
-    validUrl(authRequest.redirect_uri)
+    isValidUrl(authRequest.redirect_uri)
   ) {
     const url = new URL(authRequest.redirect_uri);
     url.pathname = icon;

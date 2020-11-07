@@ -8,7 +8,7 @@ import {
   FungibleConditionCode,
   createAssetInfo,
 } from '@blockstack/stacks-transactions';
-import { makeContractCallToken, TransactionPayload } from '../../../../packages/connect/src/index';
+import { makeContractCallToken, TransactionPayload } from '../../../connect/src/index';
 import BN from 'bn.js';
 import { decodeToken } from 'blockstack';
 
