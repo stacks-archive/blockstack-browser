@@ -1,6 +1,6 @@
 {
   "name": "@stacks/connect-ui",
-  "version": "2.16.0",
+  "version": "2.16.1",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "module": "dist/custom-elements/index.js",
