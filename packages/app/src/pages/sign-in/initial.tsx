@@ -1,13 +1,5 @@
 import React, { useState, createRef } from 'react';
-import {
-  Screen,
-  ScreenBody,
-  ScreenActions,
-  Title,
-  PoweredBy,
-  ScreenFooter,
-  ScreenHeader,
-} from '@screen';
+import { Screen, ScreenBody, ScreenActions, Title, ScreenFooter, ScreenHeader } from '@screen';
 import { Box, Text, Input, Flex, Button, space } from '@blockstack/ui';
 import { AppIcon } from '@components/app-icon';
 import { Link } from '@components/link';
@@ -138,7 +130,6 @@ export const SignIn: React.FC<SignInProps> = props => {
       </ScreenActions>
       <ScreenFooter flexWrap="wrap" mt={space('base')}>
         <ExtensionButton my={space('base')} />
-        <PoweredBy />
       </ScreenFooter>
     </Screen>
   );
