@@ -62,7 +62,7 @@ describe.each(environments)('auth scenarios - %s %s', (browserType, deviceType) 
     consoleLogs = [];
     demoPage = await DemoPage.init(context);
     demoPage.page.on('console', event => {
-      consoleLogs = consoleLogs.concat(event.args());
+      consoleLogs = consoleLogs.concat(event.text());
     });
   }, 10000);
 
@@ -76,7 +76,6 @@ describe.each(environments)('auth scenarios - %s %s', (browserType, deviceType) 
 
   it('creating a successful account', async () => {
     await demoPage.screenshot('home-page');
-    console.log(consoleLogs);
     await demoPage.openConnect();
     await demoPage.clickConnectGetStarted();
     const auth = await AuthPage.getAuthPage(browser);
