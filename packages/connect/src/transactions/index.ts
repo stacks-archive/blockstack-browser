@@ -45,7 +45,7 @@ const openTransactionPopup = async ({ token, opts }: TransactionPopup) => {
   urlParams.set('request', token);
 
   const popup = popupCenter({
-    url: `${authURL.origin}/#/transaction?${urlParams.toString()}`,
+    url: `${authURL.origin}/index.html#/transaction?${urlParams.toString()}`,
     h: 700,
   });
 
