@@ -3,6 +3,7 @@ LABEL maintainer="ux@blockstack.com"
 
 COPY . .
 
+# Build browser extensions
 RUN apt-get update && \
     apt-get install -y zip make && \
     ./build-ext.sh
@@ -10,4 +11,5 @@ RUN apt-get update && \
 FROM alpine:latest
 COPY --from=build extension.zip .
 
+# Wait for extension.zip to be copied into local
 CMD sleep 60
