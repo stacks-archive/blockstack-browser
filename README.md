@@ -26,3 +26,15 @@ For development instructions of specific packages, see the `README` in each pack
 
 1. From the root of this repository, in the command line, run `sh build-ext.sh`
 2. The extension will be packaged as `extension.zip` inside this folder.
+
+### Optional - Build browser extensions using Docker
+
+1. Build the docker image locally:
+    ```bash
+    docker build . -t ux
+    ```
+
+1. Copy the built extensions to your local machine:
+    ```bash
+    docker run -d --name ux ux && docker cp ux:extension.zip . && docker rm -f ux
+    ```
