@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Set Node Version
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2-beta
         with:
           node-version: 12.16.1
       - name: Restore lerna cache
@@ -31,7 +31,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Set Node Version
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2-beta
         with:
           node-version: 12.16.1
       - name: Restore lerna cache
@@ -62,7 +62,7 @@ jobs:
       - name: Checkout master
         run: git checkout master
       - name: Set Node Version
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2-beta
         with:
           node-version: 12.16.1
       - name: Install monorepo deps (no cache)
@@ -94,7 +94,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Set Node Version
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2-beta
         with:
           node-version: 12.16.1
       - name: Restore lerna cache

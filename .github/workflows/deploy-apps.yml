@@ -8,7 +8,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Set Node Version
-        uses: actions/setup-node@v1.4.2
+        uses: actions/setup-node@v2-beta
         with:
           node-version: 12.16.1
       - name: Restore lerna cache
@@ -33,7 +33,7 @@ jobs:
           source: 'packages/app/vercel.json'
           target: 'packages/app/dist/vercel.json'
       - name: Deploy Blockstack App with Vercel
-        uses: aulneau/vercel-action@v19.0.2+3
+        uses: amondnet/vercel-action@d4e0a9f
         id: vercel-deployment-blockstack-app
         if: github.event_name == 'pull_request'
         with:
@@ -55,7 +55,7 @@ jobs:
           source: 'packages/test-app/vercel.json'
           target: 'packages/test-app/dist/vercel.json'
       - name: Deploy Blockstack Test App with Vercel
-        uses: aulneau/vercel-action@v19.0.2+3
+        uses: amondnet/vercel-action@d4e0a9f
         id: vercel-deployment-blockstack-test-app
         if: github.event_name == 'pull_request'
         with:
