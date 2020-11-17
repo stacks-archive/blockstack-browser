@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.10.3 (2020-11-17)
+
+
+### Bug Fixes
+
+* update actions to fix set-path err ([0b4fd95](https://github.com/blockstack/ux/commit/0b4fd955f920d5c549690945a18673ea5f0462ae))
+
+
+
+
+
 ## 1.10.2 (2020-11-13)
 
 **Note:** Version bump only for package test-app
