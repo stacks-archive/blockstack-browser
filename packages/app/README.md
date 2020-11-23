@@ -50,11 +50,8 @@ Then, open [localhost:8080](http://localhost:8080).
 Clone this repository, install dependencies and build the extension:
 
 ~~~bash
-git clone https://github.com/blockstack/ux
-cd ux
-yarn
-cd packages/app
-yarn prod:ext
+git clone https://github.com/blockstack/ux && cd ux && yarn
+cd packages/app && yarn lerna run build --scope @stacks/connect-ui && yarn lerna run prod:ext
 ~~~
 
 Then if installing for Chrome or Brave:
