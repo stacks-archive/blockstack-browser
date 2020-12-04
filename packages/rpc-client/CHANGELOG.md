@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.8.1 (2020-12-04)
+
+
+### Bug Fixes
+
+* export auth from connect ([d201aab](https://github.com/blockstack/ux/commit/d201aab14f2ced0b5f666be571035b7cbf76c602))
+
+
+
+
+
 # 0.8.0 (2020-11-25)
 
 
