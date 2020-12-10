@@ -17,9 +17,7 @@ Table of Contents:
 - [Development](#development)
   - [Setup](#setup)
   - [Run Locally](#run-locally)
-- [Building and using as a browser extension](#building-and-using-as-a-browser-extension)
-  - [Installing for Chrome/Brave](#installing-for-chromebrave)
-  - [Installing for Firefox](#installing-for-firefox)
+- [Build and install browser extension](#build-and-install-browser-extension)
 
 <!-- /TOC -->
 
@@ -53,8 +51,7 @@ Clone this repository, install dependencies and build the extension:
 git clone https://github.com/blockstack/ux
 cd ux
 yarn
-yarn run build:connect-ui
-yarn run build:extension
+yarn build:extension
 ~~~
 
 Then if installing for Chrome or Brave:

@@ -16,7 +16,8 @@
     "lint:eslint": "eslint \"packages/**/src/**/*.{ts,tsx}\" -f unix",
     "lint:fix": "eslint \"packages/**/src/**/*.{ts,tsx}\" -f unix --fix",
     "lint:prettier": "prettier --check \"packages/**/src/**/*.{ts,tsx}\" *.js",
-    "lint:prettier:fix": "prettier --write \"packages/**/src/**/*.{ts,tsx}\" *.js"
+    "lint:prettier:fix": "prettier --write \"packages/**/src/**/*.{ts,tsx}\" *.js",
+    "postinstall": "yarn build:connect-ui"
   },
   "prettier": "@blockstack/prettier-config",
   "husky": {
