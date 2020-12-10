@@ -45,25 +45,4 @@ Then, open [localhost:8080](http://localhost:8080).
 
 ## Build and install browser extension
 
-Clone this repository, install dependencies and build the extension:
-
-~~~bash
-git clone https://github.com/blockstack/ux
-cd ux
-yarn
-yarn build:extension
-~~~
-
-Then if installing for Chrome or Brave:
-
-1. Go to: [**chrome://extensions**](chrome://extensions)
-2. Toggle: "**developer mode**" on.
-3. Click on: "**Load unpacked**"
-4. Select the newly created folder "**dist**" from the project folder.
-
-If installing for Firefox:
-
-1. Go to: [**about:debugging**](about:debugging)
-2. Click on "**This Firefox**"
-3. Click on: "**Load Temporary Add-on…**"
-4. Open the newly created folder "**dist**" from the project folder, and choose the "**manifest.json**" file.
+Documentation for building browser extensions can be found in the [top-level README.md file](https://github.com/blockstack/ux/tree/master#building-browser-extensions) of this repository.

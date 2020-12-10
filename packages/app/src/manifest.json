@@ -40,5 +40,10 @@
       "js": ["message-bus.js"],
       "matches": ["*://*/*"]
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{e22ae397-03d7-4622-bd8f-ecaca8c9b277}"
+    }
+  }
 }

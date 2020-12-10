@@ -12,6 +12,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const TerserPlugin = require('terser-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
 const { version } = require('./package.json');
+const { exec: _exec } = require('child_process');
+const { promisify } = require('util');
 
 /* eslint-enable @typescript-eslint/no-var-requires */
 
@@ -22,6 +24,18 @@ const getSegmentKey = () => {
     return 'KZVI260WNyXRxGvDvsX4Zz0vhshQlgvE';
   }
   return 'Cs2gImUHsghl4SZD8GB1xyFs23oaNAGa';
+};
+
+const getVersion = async () => {
+  const exec = promisify(_exec);
+  const branch = await exec(`git rev-parse --abbrev-ref HEAD | cut -d'/' -f2`);
+  if (branch.stderr) {
+    return version;
+  }
+  if (!branch.stdout.includes('master')) {
+    return `${version}.${Math.floor(Math.floor(Math.random() * 1000))}`;
+  }
+  return version;
 };
 
 const sourceRootPath = path.join(__dirname, 'src');
@@ -216,7 +230,7 @@ module.exports = {
         from: path.join(sourceRootPath, 'manifest.json'),
         to: path.join(distRootPath, 'manifest.json'),
         toType: 'file',
-        transform(content, path) {
+        async transform(content, path) {
           const csrTag = '<% DEV_CSR %>';
           const versionTag = '<% VERSION %>';
           content = content.toString();
@@ -225,7 +239,9 @@ module.exports = {
           } else {
             content = content.replace(csrTag, '');
           }
-          content = content.replace(versionTag, version);
+          const fullVersion = await getVersion();
+          console.log('Extension Version:', fullVersion);
+          content = content.replace(versionTag, fullVersion);
           return Buffer.from(content);
         },
       },

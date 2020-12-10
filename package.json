@@ -50,6 +50,7 @@
     "lerna": "^3.22.1",
     "prettier": "^2.0.5",
     "typescript": "^3.9.3",
+    "web-ext": "^5.4.1",
     "yalc": "^1.0.0-pre.42"
   },
   "dependencies": {
@@ -63,5 +64,8 @@
     "buffer": "5.6.0",
     "typescript": "3.9.3",
     "@types/node": "12.7.12"
+  },
+  "webExt": {
+    "sourceDir": "packages/app/dist/"
   }
 }

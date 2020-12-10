@@ -1,5 +1,5 @@
 name: Build Extension
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build-extension:
@@ -19,17 +19,27 @@ jobs:
             node_modules
             */*/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        with:
+          header: '> [Download the latest builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}).'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install monorepo deps
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
-      - name: Build connect-ui
-        run: yarn lerna run build --scope @stacks/connect-ui
-      - name: Build Extension
-        run: yarn lerna run prod:ext --stream
-      - name: Zip extension
-        run: zip -r extension.zip ./packages/app/dist
+      - name: Build extension
+        run: sh build-ext.sh
       - uses: actions/upload-artifact@v2
-        name: Upload Zip artifact
+        name: Upload Extension Zip
         with:
-          name: extension.zip
-          path: extension.zip
+          name: connect-extension
+          path: connect-extension.zip
+      - name: Sign Firefox extension
+        run: yarn web-ext sign --channel=unlisted
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+      - uses: actions/upload-artifact@v2
+        name: Upload Firefox Add-On XPI
+        with:
+          name: connect-addon
+          path: web-ext-artifacts/*.xpi
