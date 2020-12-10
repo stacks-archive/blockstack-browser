@@ -4917,10 +4917,6 @@ commander@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
 
-commander@^5.1.0:
-  version "5.1.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-5.1.0.tgz#46abbd1652f8e059bddaef99bbdcb2ad9cf179ae"
-
 commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
@@ -6608,7 +6604,7 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-zip@^2.0.0:
+extract-zip@^2.0.0, extract-zip@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/extract-zip/-/extract-zip-2.0.1.tgz#663dca56fe46df890d5f131ef4a06d22bb8ba13a"
   dependencies:
@@ -9072,9 +9068,10 @@ jest@^25.1.0, jest@^25.3.0:
     import-local "^3.0.2"
     jest-cli "^25.5.4"
 
-jpeg-js@^0.3.7:
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.3.7.tgz#471a89d06011640592d314158608690172b1028d"
+jpeg-js@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/jpeg-js/-/jpeg-js-0.4.2.tgz#8b345b1ae4abde64c2da2fe67ea216a114ac279d"
+  integrity sha512-+az2gi/hvex7eLTMTlbRLOhH6P6WFdk2ITI8HJsaH2VqYO0I594zXSYEP+tf4FW+8Cy68ScDXoAsQdyQanv3sw==
 
 jpjs@^1.2.1:
   version "1.2.1"
@@ -9850,7 +9847,7 @@ mime@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
 
-mime@^2.0.3, mime@^2.4.4:
+mime@^2.0.3, mime@^2.4.4, mime@^2.4.6:
   version "2.4.6"
   resolved "https://registry.yarnpkg.com/mime/-/mime-2.4.6.tgz#e5b407c90db442f2beb5b162373d07b69affa4d1"
 
@@ -10949,85 +10946,90 @@ pkg-up@3.1.0, pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-playwright-chromium@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/playwright-chromium/-/playwright-chromium-1.2.1.tgz#7f08ff2bb22ac118e73a0d3e751a897c8ef0a09b"
+playwright-chromium@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/playwright-chromium/-/playwright-chromium-1.6.2.tgz#e5b1caeac45f68a8286bbbe52d1275dbe248b94a"
+  integrity sha512-yE/NVrttkVz/NKxOcIT2/OVemcU8TUfH3uwnfClaREnF8DZevbjwCEY4cgVaj8Peq9NQA0mVGR+mvTGrvQJOvA==
   dependencies:
-    commander "^5.1.0"
     debug "^4.1.1"
-    extract-zip "^2.0.0"
+    extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
-    jpeg-js "^0.3.7"
-    mime "^2.4.4"
+    jpeg-js "^0.4.2"
+    mime "^2.4.6"
     pngjs "^5.0.0"
     progress "^2.0.3"
+    proper-lockfile "^4.1.1"
     proxy-from-env "^1.1.0"
     rimraf "^3.0.2"
-    ws "^6.1.0"
+    ws "^7.3.1"
 
-playwright-core@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.2.1.tgz#24f46bf70b488f06da7646a60e4c5c89fd8f51d7"
+playwright-core@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.6.2.tgz#71080db6e33d6ff33746fbeee1e1d07537fcc853"
+  integrity sha512-A8tDBwgMWY2WoxNsI6tCbKVr0QLUFWwuRpLYFVZQiEoep5vn1VVEnFA6bGdvbxvWVcA5E6vx8BkVcABCAzXhww==
   dependencies:
-    commander "^5.1.0"
     debug "^4.1.1"
-    extract-zip "^2.0.0"
+    extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
-    jpeg-js "^0.3.7"
-    mime "^2.4.4"
+    jpeg-js "^0.4.2"
+    mime "^2.4.6"
     pngjs "^5.0.0"
     progress "^2.0.3"
+    proper-lockfile "^4.1.1"
     proxy-from-env "^1.1.0"
     rimraf "^3.0.2"
-    ws "^6.1.0"
+    ws "^7.3.1"
 
-playwright-firefox@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/playwright-firefox/-/playwright-firefox-1.2.1.tgz#598060143a7095278842f97f521c293c6cd14740"
+playwright-firefox@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/playwright-firefox/-/playwright-firefox-1.6.2.tgz#c7e6b6ce0ed7563451a9927cb763560017e18131"
+  integrity sha512-CWs/y2fIlLAAl90djjeIz3+FtmlA0Dc8Y4a6wFW+O5A7WHMBtoH1ozccr0nTnelJGFHPq2GWcAyuR0zgWE6yxg==
   dependencies:
-    commander "^5.1.0"
     debug "^4.1.1"
-    extract-zip "^2.0.0"
+    extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
-    jpeg-js "^0.3.7"
-    mime "^2.4.4"
+    jpeg-js "^0.4.2"
+    mime "^2.4.6"
     pngjs "^5.0.0"
     progress "^2.0.3"
+    proper-lockfile "^4.1.1"
     proxy-from-env "^1.1.0"
     rimraf "^3.0.2"
-    ws "^6.1.0"
+    ws "^7.3.1"
 
-playwright-webkit@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/playwright-webkit/-/playwright-webkit-1.2.1.tgz#ace4c3bc2139cf3bda389ffc5247d517f9cd5e9d"
+playwright-webkit@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/playwright-webkit/-/playwright-webkit-1.6.2.tgz#cd3c1ea4a917ffb673657bc1e56476a2f4f72bc1"
+  integrity sha512-JWI8ouDqkcfXnvMCgyiOl59NQGwj5O/yqNGSfU1EGzwuI/f3qssJAXXoGqZc06OZswAFtYVuxASU9dmZwC+C7A==
   dependencies:
-    commander "^5.1.0"
     debug "^4.1.1"
-    extract-zip "^2.0.0"
+    extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
-    jpeg-js "^0.3.7"
-    mime "^2.4.4"
+    jpeg-js "^0.4.2"
+    mime "^2.4.6"
     pngjs "^5.0.0"
     progress "^2.0.3"
+    proper-lockfile "^4.1.1"
     proxy-from-env "^1.1.0"
     rimraf "^3.0.2"
-    ws "^6.1.0"
+    ws "^7.3.1"
 
-playwright@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.2.1.tgz#9c6758668ff9776b162f8174a2d972265540cd5b"
+playwright@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.6.2.tgz#8631aec4d16b081d8ac414637b006099814a69d1"
+  integrity sha512-KiMmQuANG4O/ozpwxP8EwBBap0/liS3+wwkGo6nBJ4O4951y4ZsRPR1dqwsMOUD9wjsWf3ER+bAmQH5XmEO4Ig==
   dependencies:
-    commander "^5.1.0"
     debug "^4.1.1"
-    extract-zip "^2.0.0"
+    extract-zip "^2.0.1"
     https-proxy-agent "^5.0.0"
-    jpeg-js "^0.3.7"
-    mime "^2.4.4"
+    jpeg-js "^0.4.2"
+    mime "^2.4.6"
     pngjs "^5.0.0"
     progress "^2.0.3"
+    proper-lockfile "^4.1.1"
     proxy-from-env "^1.1.0"
     rimraf "^3.0.2"
-    ws "^6.1.0"
+    ws "^7.3.1"
 
 please-upgrade-node@^3.2.0:
   version "3.2.0"
@@ -11219,6 +11221,15 @@ prop-types@^15.5.8, prop-types@^15.6.2, prop-types@^15.7.2:
     loose-envify "^1.4.0"
     object-assign "^4.1.1"
     react-is "^16.8.1"
+
+proper-lockfile@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/proper-lockfile/-/proper-lockfile-4.1.1.tgz#284cf9db9e30a90e647afad69deb7cb06881262c"
+  integrity sha512-1w6rxXodisVpn7QYvLk706mzprPTAPCYAqxMvctmPN3ekuRk/kuGkGc82pangZiAt4R3lwSuUzheTTn0/Yb7Zg==
+  dependencies:
+    graceful-fs "^4.1.11"
+    retry "^0.12.0"
+    signal-exit "^3.0.2"
 
 proto-list@~1.2.1:
   version "1.2.4"
@@ -14562,7 +14573,7 @@ ws@^5.2.0:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^6.0.0, ws@^6.1.0, ws@^6.1.2, ws@^6.2.1:
+ws@^6.0.0, ws@^6.1.2, ws@^6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-6.2.1.tgz#442fdf0a47ed64f59b6a5d8ff130f4748ed524fb"
   dependencies:
@@ -14575,6 +14586,11 @@ ws@^7.0.0, ws@^7.2.0:
 ws@^7.2.3:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.1.tgz#d0547bf67f7ce4f12a72dfe31262c68d7dc551c8"
+
+ws@^7.3.1:
+  version "7.4.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.1.tgz#a333be02696bd0e54cea0434e21dcc8a9ac294bb"
+  integrity sha512-pTsP8UAfhy3sk1lSk/O/s4tjD0CRwvMnzvwr4OKGX7ZvqZtUyx4KIJB5JWbkykPoc55tixMGgTNoh3k4FkNGFQ==
 
 xml-name-validator@^3.0.0:
   version "3.0.0"
