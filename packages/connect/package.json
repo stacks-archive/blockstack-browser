@@ -21,7 +21,7 @@
   "dependencies": {
     "@blockstack/stacks-transactions": "0.7.0",
     "@stacks/auth": "^1.0.0-beta.19",
-    "@stacks/connect-ui": "^2.17.1",
+    "@stacks/connect-ui": "^2.17.2",
     "jsontokens": "^3.0.0"
   },
   "devDependencies": {
