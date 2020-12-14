@@ -22,7 +22,7 @@
     "test:ci": "jest --verbose=true --ci --reporters=default --reporters=jest-junit --collect-coverage",
     "typecheck": "tsc --noEmit"
   },
-  "version": "1.20.1",
+  "version": "1.20.2",
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/prettier-config": "^0.0.6",
