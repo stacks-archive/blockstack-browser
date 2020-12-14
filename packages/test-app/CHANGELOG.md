@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.11.3 (2020-12-14)
+
+
+### Bug Fixes
+
+* prod deploy apps job action ([b8ccc59](https://github.com/blockstack/ux/commit/b8ccc59d1c024705b80991ecb604030f8590e89d))
+
+
+
+
+
 ## 1.11.2 (2020-12-14)
 
 
