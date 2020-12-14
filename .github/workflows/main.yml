@@ -118,7 +118,7 @@ jobs:
         with:
           source: 'packages/app/vercel.json'
           target: 'packages/app/dist/vercel.json'
-      - uses: amondnet/vercel-action@v19.0.1+2
+      - uses: amondnet/vercel-action@d4e0a9f
         id: vercel-deployment-app-production
         if: github.event_name == 'push' ||  github.event_name == 'release'
         name: Deploy authenticator app to production
@@ -139,7 +139,7 @@ jobs:
         with:
           source: 'packages/test-app/vercel.json'
           target: 'packages/test-app/dist/vercel.json'
-      - uses: amondnet/vercel-action@v19.0.1+2
+      - uses: amondnet/vercel-action@d4e0a9f
         id: vercel-deployment-production
         name: Deploy test app to production
         if: github.event_name == 'push' ||  github.event_name == 'release'
