@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.11.2 (2020-12-14)
+
+
+### Bug Fixes
+
+* change lerna publish to skip existing versions ([ac16572](https://github.com/blockstack/ux/commit/ac16572dba7e8d3e770bb4ba61d77094bcad02f9))
+
+
+
+
+
 ## 1.11.1 (2020-12-04)
 
 
