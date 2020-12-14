@@ -47,6 +47,7 @@ jobs:
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
       - uses: actions/upload-artifact@v2
         name: Upload Firefox Add-On XPI
+        if: always()
         with:
           name: connect-addon
           path: web-ext-artifacts/*.xpi

@@ -1,5 +1,5 @@
 name: UX
-on: [push, pull_request]
+on: [push, workflow_dispatch]
 
 jobs:
   test_keychain:
@@ -81,7 +81,7 @@ jobs:
       - name: Lerna Version
         run: yarn lerna version --conventional-commits --no-push --yes
       - name: Publish
-        run: yarn lerna publish from-git --conventional-commits --yes
+        run: yarn lerna publish from-package --conventional-commits --yes
       - name: Push changes
         uses: ad-m/github-push-action@fe38f0a
         with:
