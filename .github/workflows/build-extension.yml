@@ -33,7 +33,14 @@ jobs:
         with:
           name: connect-extension
           path: connect-extension.zip
+      - name: Sign Production Firefox version
+        if: github.ref == 'refs/heads/master'
+        run: yarn web-ext sign --channel=listed
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
       - name: Sign Firefox extension
+        if: github.ref != 'refs/heads/master'
         run: yarn web-ext sign --channel=unlisted
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
