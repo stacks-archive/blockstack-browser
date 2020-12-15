@@ -1,0 +1,212 @@
+name: Pull Request
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v1
+
+  code_checks:
+    name: Code checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: lucasmotta/pull-request-sticky-header@1.0.0
+        with:
+          header: '> Try out this version of the Stacks Wallet - download [extension builds](https://github.com/blockstack/ux/actions/runs/${{ github.run_id }}), the [hosted version](https://pr-${{ github.event.number }}.app.stacks.engineering), or the [Stacks testnet demo app](https://pr-${{ github.event.number }}.testnet-demo.stacks.engineering)'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - uses: microsoft/playwright-github-action@v1
+      - name: Restore lerna cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Code Checks
+        uses: ./.github/actions/code-checks
+      - uses: actions/upload-artifact@v2
+        name: Upload Extension Zip
+        with:
+          name: connect-extension
+          path: connect-extension.zip
+
+  integration_tests:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - uses: microsoft/playwright-github-action@v1
+      - name: Restore lerna cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Integration Tests
+        uses: ./.github/actions/integration-tests
+      - uses: actions/upload-artifact@v2
+        if: always()
+        name: Upload Screenshots
+        with:
+          name: integration-test-screenshots
+          path: packages/app/tests/screenshots/
+        
+
+  publish_npm_betas:
+    name: Publish NPM beta versions
+    runs-on: ubuntu-latest
+    if: github.repository == 'blockstack/ux'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install monorepo deps
+        run: yarn --frozen-lockfile
+      - name: Setup .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - name: Get git branch
+        id: git-branch
+        run: echo "::set-output name=branch::$(git rev-parse --abbrev-ref HEAD | cut -d'/' -f2 )"
+      - name: Get git commit
+        id: git-commit
+        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+      - name: print preid
+        env:
+          BRANCH: ${{ steps.git-branch.outputs.branch }}
+          SHA: ${{ steps.git-commit.outputs.sha }}
+        run: echo $BRANCH.$SHA
+      - name: Setup git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Publish to NPM
+        env:
+          BRANCH: ${{ steps.git-branch.outputs.branch }}
+          SHA: ${{ steps.git-commit.outputs.sha }}
+        run: yarn lerna publish prepatch --preid alpha.$SHA --dist-tag $BRANCH --yes --no-push
+  
+  publish_beta_web_apps:
+    name: Publich beta hosted versions
+    runs-on: ubuntu-latest
+    if: github.repository == 'blockstack/ux'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install monorepo deps
+        run: yarn --frozen-lockfile
+      - name: Build Blockstack App
+        run: yarn prod:web
+        working-directory: packages/app
+      - name: Copy Blockstack App vercel.json
+        uses: canastro/copy-file-action@master
+        with:
+          source: 'packages/app/vercel.json'
+          target: 'packages/app/dist/vercel.json'
+      - name: Deploy Blockstack App with Vercel
+        uses: amondnet/vercel-action@d4e0a9f
+        id: vercel-deployment-blockstack-app
+        if: github.event_name == 'pull_request'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_APP }}
+          scope: ${{ secrets.VERCEL_SCOPE }}
+          working-directory: packages/app/dist
+          github-comment: false
+          alias-domains: pr-${{ github.event.number }}.app.stacks.engineering
+      - name: Build Blockstack Test App
+        env:
+          AUTH_ORIGIN: ${{ steps.vercel-deployment-blockstack-app.outputs.preview-url }}
+        run: yarn prod:web
+        working-directory: packages/test-app
+      - name: Copy Blockstack Test App vercel.json
+        uses: canastro/copy-file-action@master
+        with:
+          source: 'packages/test-app/vercel.json'
+          target: 'packages/test-app/dist/vercel.json'
+      - name: Deploy Blockstack Test App with Vercel
+        uses: amondnet/vercel-action@d4e0a9f
+        id: vercel-deployment-blockstack-test-app
+        if: github.event_name == 'pull_request'
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_TEST_APP }}
+          scope: ${{ secrets.VERCEL_SCOPE }}
+          working-directory: packages/test-app/dist
+          github-comment: false
+          alias-domains: pr-${{ github.event.number }}.testnet-demo.stacks.engineering
+
+  publish_firefox_beta:
+    name: Publish beta firefox extension
+    runs-on: ubuntu-latest
+    if: github.repository == 'blockstack/ux'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Build extension
+        run: sh build-ext.sh
+      - name: Sign Firefox extension
+        run: yarn web-ext sign --channel=unlisted
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+      - uses: actions/upload-artifact@v2
+        name: Upload Firefox Add-On XPI
+        with:
+          name: connect-addon
+          path: web-ext-artifacts/*.xpi

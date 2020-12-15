@@ -1,0 +1,31 @@
+name: 'Code Checks'
+description: 'Run tests, linting, and other common jobs'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install yarn dependencies
+      run: yarn --frozen-lockfile
+      shell: bash
+    - name: Lint
+      run: yarn lint
+      shell: bash
+    - name: Typecheck
+      run: yarn typecheck
+      shell: bash
+    - name: Keychain tests
+      run: yarn test
+      shell: bash
+      working-directory: packages/keychain
+    - name: App unit tests
+      run: yarn test:unit
+      shell: bash
+      working-directory: packages/app
+    - name: Build extension
+      run: sh build-ext.sh
+      shell: bash
+    - name: Build web apps
+      run: yarn lerna run prod:web --parallel
+      shell: bash
+    - name: Setup screenshots
+      shell: bash
+      run: mkdir packages/app/tests/screenshots

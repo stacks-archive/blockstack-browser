@@ -1,8 +1,14 @@
-name: UX
-on: [push, workflow_dispatch]
+name: Publish
+on:
+  push:
+    branches:
+      - 'master'
+    tags:
+      - '**'
+  workflow_dispatch:
 
 jobs:
-  test_keychain:
+  publish_extension:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -12,83 +18,26 @@ jobs:
         with:
           node-version: 12.16.1
       - name: Restore lerna cache
-        id: lerna-cache
         uses: actions/cache@v2
         with:
           path: |
             node_modules
             */*/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: Install monorepo deps
-        run: yarn --frozen-lockfile
-        if: steps.lerna-cache.outputs.cache-hit != 'true'
-      - name: Keychain tests
-        run: yarn lerna run test --scope @stacks/keychain
-
-  codecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set Node Version
-        uses: actions/setup-node@v2-beta
+      - name: Build extension
+        run: sh build-ext.sh
+      - uses: actions/upload-artifact@v2
+        name: Upload Extension Zip
         with:
-          node-version: 12.16.1
-      - name: Restore lerna cache
-        id: lerna-cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            node_modules
-            */*/node_modules
-          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
-      - name: Install monorepo deps
-        run: yarn --frozen-lockfile
-        if: steps.lerna-cache.outputs.cache-hit != 'true'
-      - name: Build connect-ui
-        run: yarn lerna run build --scope @stacks/connect-ui
-      - name: Lint
-        run: yarn lint
-      - name: Typecheck
-        run: yarn typecheck
-
-  publish:
-    needs: [test_keychain, codecheck]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Checkout master
-        run: git checkout master
-      - name: Set Node Version
-        uses: actions/setup-node@v2-beta
-        with:
-          node-version: 12.16.1
-      - name: Install monorepo deps (no cache)
-        run: yarn --frozen-lockfile
-        if: steps.lerna-cache.outputs.cache-hit != 'true'
-      - name: Build connect-ui
-        run: yarn lerna run build --scope @stacks/connect-ui
-      - name: Setup .npmrc
+          name: connect-extension
+          path: connect-extension.zip
+      - name: Sign Production Firefox version
+        run: yarn web-ext sign --channel=listed
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - name: Setup git
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-      - name: Lerna Version
-        run: yarn lerna version --conventional-commits --no-push --yes
-      - name: Publish
-        run: yarn lerna publish from-package --conventional-commits --yes
-      - name: Push changes
-        uses: ad-m/github-push-action@fe38f0a
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
 
   deploy-prod-apps:
-    needs: [publish]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -108,8 +57,6 @@ jobs:
       - name: Install monorepo deps
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
-      - name: Build connect-ui
-        run: yarn lerna run build --scope @stacks/connect-ui
       - name: Build Blockstack App
         run: yarn prod:web
         working-directory: packages/app
@@ -150,3 +97,31 @@ jobs:
           vercel-args: '--prod'
           scope: ${{ secrets.VERCEL_SCOPE }}
           working-directory: packages/test-app/dist
+
+  publish_npm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Prepare repository
+        run: git checkout master
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        id: lerna-cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install monorepo deps
+        run: yarn --frozen-lockfile
+      - name: Setup .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - name: Publish
+        run: yarn lerna publish from-package --conventional-commits --yes

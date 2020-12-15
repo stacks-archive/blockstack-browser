@@ -1,0 +1,21 @@
+name: 'Integration Tests'
+description: 'Run integration tests'
+runs:
+  using: 'composite'
+  steps:
+    - name: Clear node_modules
+      shell: bash
+      run: rm -rf node_modules
+    - name: Install dependencies
+      shell: bash
+      run: yarn --frozen-lockfile
+    - name: Build web apps
+      shell: bash
+      run: yarn lerna run prod:web --parallel
+    - name: Integration Tests
+      shell: bash
+      run: |
+        yarn http-server packages/app/dist -p 8080 -s &
+        yarn http-server packages/test-app/dist -p 3000 -s &
+        cd packages/app &&
+        yarn test:integration

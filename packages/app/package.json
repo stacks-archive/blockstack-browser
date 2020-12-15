@@ -19,7 +19,8 @@
     "test": "jest --verbose=true",
     "test:coverage": "jest --collect-coverage",
     "test:watch": "jest --watch",
-    "test:ci": "jest --verbose=true --ci --reporters=default --reporters=jest-junit --collect-coverage",
+    "test:integration": "jest --verbose=true --runInBand --testPathPattern=./tests/integration/*",
+    "test:unit": "jest --testPathIgnorePatterns=./tests/integration/*",
     "typecheck": "tsc --noEmit"
   },
   "version": "1.20.8",

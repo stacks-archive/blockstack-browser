@@ -98,6 +98,7 @@ export class WalletSigner {
       functionName,
       functionArgs,
       senderKey: this.getSTXPrivateKey().toString('hex'),
+      fee: this.getFee(),
       nonce: new BN(nonce),
       network: network || this.getNetwork(),
       postConditionMode,
@@ -118,6 +119,7 @@ export class WalletSigner {
       contractName,
       codeBody: codeBody,
       senderKey: this.getSTXPrivateKey().toString('hex'),
+      fee: this.getFee(),
       network: network || this.getNetwork(),
       nonce: new BN(nonce),
       postConditionMode,
@@ -140,11 +142,19 @@ export class WalletSigner {
       amount: new BN(amount),
       memo,
       senderKey: this.getSTXPrivateKey().toString('hex'),
+      fee: this.getFee(),
       network: network || this.getNetwork(),
       nonce: new BN(nonce),
       postConditionMode,
       postConditions,
     });
     return tx;
+  }
+
+  getFee() {
+    if (process.env.NODE_ENV === 'test') {
+      return new BN(0);
+    }
+    return undefined;
   }
 }

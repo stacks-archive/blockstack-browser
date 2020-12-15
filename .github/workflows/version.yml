@@ -1,0 +1,95 @@
+name: Version
+on:
+  push:
+    branches:
+      - 'master'
+    tags_ignore:
+      - '**'
+  workflow_dispatch:
+
+env:
+  COMMIT_USER: Hiro DevOps
+  COMMIT_EMAIL: 45208873+blockstack-devops@users.noreply.github.com
+
+jobs:
+  code_checks:
+    name: Code checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Code Checks
+        uses: ./.github/actions/code-checks
+      - uses: actions/upload-artifact@v2
+        name: Upload Extension Zip
+        with:
+          name: connect-extension
+          path: connect-extension.zip
+
+  integration_tests:
+    name: Integration tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - uses: microsoft/playwright-github-action@v1
+      - name: Restore lerna cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Integration Tests
+        uses: ./.github/actions/integration-tests
+      - uses: actions/upload-artifact@v2
+        if: always()
+        name: Upload Screenshots
+        with:
+          name: integration-test-screenshots
+          path: packages/app/tests/screenshots/
+
+  version:
+    runs-on: ubuntu-latest
+    needs: [integration_tests, code_checks]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Node Version
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.16.1
+      - name: Restore lerna cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+      - name: Setup git
+        run: |
+          git config --global user.email "${COMMIT_EMAIL}"
+          git config --global user.name "${COMMIT_USER}"
+      - name: Lerna Version
+        run: yarn lerna version --conventional-commits --no-push --yes
+      - name: Push changes
+        uses: ad-m/github-push-action@fe38f0a
+        with:
+          github_token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}

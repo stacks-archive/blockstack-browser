@@ -4,7 +4,7 @@ export const gaiaUrl = 'https://hub.blockstack.org';
 
 export let Subdomain: Subdomains = Subdomains.BLOCKSTACK;
 
-if (NODE_ENV === 'development') {
+if (document?.location.origin.includes('localhost')) {
   Subdomain = Subdomains.TEST;
 }
 

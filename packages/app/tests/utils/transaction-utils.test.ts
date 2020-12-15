@@ -58,5 +58,5 @@ describe('generated transactions', () => {
     } else {
       throw new Error('Deserialized TX does not have post condition');
     }
-  });
+  }, 20000);
 });
