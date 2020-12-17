@@ -12,6 +12,7 @@
     "build:app": "yarn build:connect-ui && lerna run prod:web --scope @stacks/app",
     "build:test-app": "lerna run prod:web --scope test-app",
     "build:extension": "lerna run prod:ext",
+    "deploy-contracts": "lerna run deploy-contracts --stream",
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "lint:eslint": "eslint \"packages/**/src/**/*.{ts,tsx}\" -f unix",
     "lint:fix": "eslint \"packages/**/src/**/*.{ts,tsx}\" -f unix --fix",

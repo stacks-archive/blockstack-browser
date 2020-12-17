@@ -1,6 +1,7 @@
 import BN from 'bn.js';
 import { serializeCV, ClarityValue } from '@blockstack/stacks-transactions';
 import { TransactionResults } from '@blockstack/stacks-blockchain-sidecar-types';
+import fetch from 'cross-fetch';
 
 export interface Account {
   balance: BN;
