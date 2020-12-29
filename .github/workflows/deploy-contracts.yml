@@ -28,5 +28,7 @@ jobs:
       - name: Install monorepo deps
         run: yarn --frozen-lockfile
         if: steps.lerna-cache.outputs.cache-hit != 'true'
+      - name: Bootstrap
+        run: yarn lerna bootstrap
       - name: Deploy contracts
         run: yarn deploy-contracts
