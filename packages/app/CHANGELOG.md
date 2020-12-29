@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.20.5 (2020-12-29)
+
+
+### Bug Fixes
+
+* auto-deploy testnet contracts with github actions ([b1b5c97](https://github.com/blockstack/ux/commit/b1b5c977bc90a9c47e08264d7e0aef665099696e))
+
+
+
+
+
 ## 1.20.4 (2020-12-14)
 
 
