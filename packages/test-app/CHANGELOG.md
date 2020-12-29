@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.11.7 (2020-12-29)
+
+
+### Bug Fixes
+
+* build rpc pkg before deploying contracts ([c56d3f7](https://github.com/blockstack/ux/commit/c56d3f776494cd471aba77d35b7c5eba20ec245f))
+
+
+
+
+
 ## 1.11.6 (2020-12-29)
 
 
