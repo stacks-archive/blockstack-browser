@@ -1,6 +1,6 @@
 {
   "name": "@stacks/connect",
-  "version": "4.3.4",
+  "version": "4.3.5",
   "scripts": {
     "build": "yarn build:modules && yarn build:standalone",
     "build:modules": "tsdx build --format cjs,esm,umd",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@blockstack/stacks-transactions": "0.7.0",
     "@stacks/auth": "^1.0.0-beta.19",
-    "@stacks/connect-ui": "^2.17.5",
+    "@stacks/connect-ui": "^2.17.6",
     "jsontokens": "^3.0.0"
   },
   "devDependencies": {

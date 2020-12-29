@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.3.5 (2020-12-29)
+
+
+### Bug Fixes
+
+* build packages before deploy-contracts script ([66f0857](https://github.com/blockstack/ux/commit/66f0857cde41d197c29682eedefd46bc16910096))
+
+
+
+
+
 ## 4.3.4 (2020-12-29)
 
 
