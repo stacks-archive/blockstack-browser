@@ -22,7 +22,7 @@
     "test:ci": "jest --verbose=true --ci --reporters=default --reporters=jest-junit --collect-coverage",
     "typecheck": "tsc --noEmit"
   },
-  "version": "1.20.6",
+  "version": "1.20.7",
   "author": "Blockstack PBC",
   "dependencies": {
     "@blockstack/prettier-config": "^0.0.6",
@@ -30,10 +30,10 @@
     "@blockstack/stats": "^0.7.0",
     "@blockstack/ui": "^2.12.13",
     "@rehooks/document-title": "^1.0.1",
-    "@stacks/connect": "^4.3.5",
-    "@stacks/connect-ui": "^2.17.6",
-    "@stacks/keychain": "^0.17.5",
-    "@stacks/rpc-client": "^0.8.5",
+    "@stacks/connect": "^4.3.6",
+    "@stacks/connect-ui": "^2.17.7",
+    "@stacks/keychain": "^0.17.6",
+    "@stacks/rpc-client": "^0.8.6",
     "@types/dompurify": "^2.0.4",
     "@types/react-router-dom": "^5.1.3",
     "bignumber.js": "^9.0.0",
