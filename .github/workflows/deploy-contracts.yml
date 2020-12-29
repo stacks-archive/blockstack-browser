@@ -30,5 +30,9 @@ jobs:
         if: steps.lerna-cache.outputs.cache-hit != 'true'
       - name: Bootstrap
         run: yarn lerna bootstrap
+      - name: Build RPC Client
+        run: yarn lerna run build --stream --scope @stacks/rpc-client
+      - name: Link packages
+        run: yarn lerna link
       - name: Deploy contracts
         run: yarn deploy-contracts
