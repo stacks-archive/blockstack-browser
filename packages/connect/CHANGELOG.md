@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.3.10 (2021-01-06)
+
+
+### Bug Fixes
+
+* better syntax for excluding tagged commits' ([4729d01](https://github.com/blockstack/ux/commit/4729d01a5afea316c55dade9143f83748b25071b))
+
+
+
+
+
 ## 4.3.9 (2021-01-06)
 
 
