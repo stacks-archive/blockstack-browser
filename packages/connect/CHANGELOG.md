@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.3.8 (2021-01-06)
+
+**Note:** Version bump only for package @stacks/connect
+
+
+
+
+
 ## 4.3.7 (2020-12-29)
 
 
