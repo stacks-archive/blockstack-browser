@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.17.11 (2021-01-06)
+
+
+### Bug Fixes
+
+* ignore tags refs for version workflow ([d2a18fc](https://github.com/blockstack/ux/commit/d2a18fc45a4198a112e881552fbb6c502e557d90))
+
+
+
+
+
 ## 0.17.10 (2021-01-06)
 
 
