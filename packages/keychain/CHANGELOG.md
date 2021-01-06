@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.17.13 (2021-01-06)
+
+
+### Bug Fixes
+
+* ignore exit code from FF addon publish ([ae05d36](https://github.com/blockstack/ux/commit/ae05d3608ac48cf3944d6d62ead2be65bc11bfde))
+
+
+
+
+
 ## 0.17.12 (2021-01-06)
 
 

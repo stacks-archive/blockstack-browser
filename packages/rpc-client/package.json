@@ -1,6 +1,6 @@
 {
   "name": "@stacks/rpc-client",
-  "version": "0.8.12",
+  "version": "0.8.13",
   "license": "MIT",
   "author": "Hank Stoever",
   "main": "dist/index.js",
