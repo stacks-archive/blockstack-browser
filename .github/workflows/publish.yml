@@ -2,7 +2,8 @@ name: Publish
 on:
   push:
     branches:
-      - 'refs/tags/**'
+      - 'refs/tags/@stacks/**'
+      - 'refs/tags/test-app*'
   workflow_dispatch:
 
 jobs:
