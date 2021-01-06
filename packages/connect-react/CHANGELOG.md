@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.17.12 (2021-01-06)
+
+
+### Bug Fixes
+
+* use job conditionals instead of workflow conditional ([772b374](https://github.com/blockstack/ux/commit/772b3740def1b31fccf004630ef2d29d167210a4))
+
+
+
+
+
 ## 2.17.11 (2021-01-06)
 
 
