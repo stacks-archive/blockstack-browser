@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHover } from 'use-events';
-import { Flex, Box } from '@blockstack/ui';
+import { Flex, Box } from '@stacks/ui';
 import { transition } from '@common/constants';
 
 export const ListItem = ({ iconComponent, isFirst, hasAction, children, ...rest }: any) => {
@@ -13,7 +13,7 @@ export const ListItem = ({ iconComponent, isFirst, hasAction, children, ...rest 
       borderBottomColor="inherit"
       borderTop={isFirst ? '1px solid' : undefined}
       borderTopColor="inherit"
-      align="center"
+      alignItems="center"
       cursor={hasAction ? 'pointer' : 'unset'}
       bg={hover && hasAction ? 'ink.100' : 'white'}
       mt={isFirst ? 5 : 0}

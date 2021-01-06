@@ -1,15 +1,14 @@
 import React from 'react';
-import { Box, PseudoBox, Flex, Text } from '@blockstack/ui';
+import { Box, Flex, Text } from '@stacks/ui';
 import { SignOut } from '@components/sign-out';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { useDispatch } from '@common/hooks/use-dispatch';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
-import { doSignOut } from '@store/wallet';
 import { doSetOnboardingPath } from '@store/onboarding/actions';
 
 const SignedOut = () => (
-  <Flex flexDirection="column" pb="120px" align="center" justify="center" flexGrow={1}>
+  <Flex flexDirection="column" pb="120px" alignItems="center" justifyContent="center" flexGrow={1}>
     <Box>
       <Text fontSize="20px" lineHeight="28px" fontWeight="500">
         You are now signed out
@@ -33,25 +32,21 @@ const SignedOut = () => (
 const SecretKeyButton = () => {
   const { doChangeScreen } = useAnalytics();
   return (
-    <PseudoBox
-      _hover={{ cursor: 'pointer' }}
-      onClick={() => doChangeScreen(ScreenPaths.SETTINGS_KEY)}
-    >
+    <Box _hover={{ cursor: 'pointer' }} onClick={() => doChangeScreen(ScreenPaths.SETTINGS_KEY)}>
       <Text color="blue" fontWeight={500} textStyle="body.small.medium" fontSize="12px">
         View Secret Key
       </Text>
-    </PseudoBox>
+    </Box>
   );
 };
 
 export const Home = () => {
   const dispatch = useDispatch();
-  const { identities } = useWallet();
-  const isSignedIn = identities.length > 0;
+  const { isSignedIn, doSignOut } = useWallet();
 
   return (
     <Flex wrap="wrap" py={5} px={4} flexDirection="column" minHeight="100vh">
-      <Flex justifyContent="space-between" align="center">
+      <Flex justifyContent="space-between" alignItems="center">
         <Box />
         {isSignedIn ? <SecretKeyButton /> : null}
       </Flex>
@@ -61,7 +56,7 @@ export const Home = () => {
             maxWidth={[null, '396px']}
             buttonMode="secondary"
             signOut={() => {
-              dispatch(doSignOut());
+              doSignOut();
               dispatch(doSetOnboardingPath(undefined));
             }}
           />

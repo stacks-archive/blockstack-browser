@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, BoxProps } from '@blockstack/ui';
+import { Box, BoxProps } from '@stacks/ui';
 import { useSelector } from 'react-redux';
 
 import { Image } from '@components/image';

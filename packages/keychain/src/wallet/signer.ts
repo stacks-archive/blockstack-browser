@@ -21,7 +21,7 @@ interface ContractCallOptions {
   functionName: string;
   functionArgs: ClarityValue[];
   version: TransactionVersion;
-  nonce: number;
+  nonce?: number;
   postConditions?: PostCondition[];
   postConditionMode?: PostConditionMode;
   network?: StacksNetwork;
@@ -31,7 +31,7 @@ interface ContractDeployOptions {
   contractName: string;
   codeBody: string;
   version: TransactionVersion;
-  nonce: number;
+  nonce?: number;
   postConditions?: PostCondition[];
   postConditionMode?: PostConditionMode;
   network?: StacksNetwork;
@@ -41,7 +41,7 @@ interface STXTransferOptions {
   recipient: string;
   amount: string;
   memo?: string;
-  nonce: number;
+  nonce?: number;
   postConditions?: PostCondition[];
   postConditionMode?: PostConditionMode;
   network?: StacksNetwork;
@@ -55,7 +55,7 @@ export class WalletSigner {
   }
 
   getSTXAddress(version: TransactionVersion) {
-    return getAddressFromPrivateKey(this.getSTXPrivateKey(), version);
+    return getAddressFromPrivateKey(this.privateKey, version);
   }
 
   getSTXPrivateKey() {
@@ -87,44 +87,47 @@ export class WalletSigner {
     contractAddress,
     functionName,
     functionArgs,
-    nonce,
     postConditionMode,
     postConditions,
     network,
+    nonce,
   }: ContractCallOptions) {
-    const tx = await makeContractCall({
-      contractAddress,
-      contractName,
-      functionName,
-      functionArgs,
-      senderKey: this.getSTXPrivateKey().toString('hex'),
-      fee: this.getFee(),
-      nonce: new BN(nonce),
-      network: network || this.getNetwork(),
-      postConditionMode,
-      postConditions,
-    });
+    const tx = await makeContractCall(
+      this.wrapFee({
+        contractAddress,
+        contractName,
+        functionName,
+        functionArgs,
+        fee: this.getFee(),
+        senderKey: this.privateKey,
+        network: network || this.getNetwork(),
+        postConditionMode,
+        postConditions,
+        nonce: nonce !== undefined ? new BN(nonce, 10) : undefined,
+      })
+    );
     return tx;
   }
 
   async signContractDeploy({
     contractName,
     codeBody,
-    nonce,
     postConditionMode,
     postConditions,
     network,
+    nonce,
   }: ContractDeployOptions) {
-    const tx = await makeContractDeploy({
-      contractName,
-      codeBody: codeBody,
-      senderKey: this.getSTXPrivateKey().toString('hex'),
-      fee: this.getFee(),
-      network: network || this.getNetwork(),
-      nonce: new BN(nonce),
-      postConditionMode,
-      postConditions,
-    });
+    const tx = await makeContractDeploy(
+      this.wrapFee({
+        contractName,
+        codeBody: codeBody,
+        senderKey: this.privateKey,
+        network: network || this.getNetwork(),
+        postConditionMode,
+        postConditions,
+        nonce: nonce !== undefined ? new BN(nonce, 10) : undefined,
+      })
+    );
     return tx;
   }
 
@@ -132,22 +135,23 @@ export class WalletSigner {
     recipient,
     amount,
     memo,
-    nonce,
     postConditionMode,
     postConditions,
     network,
+    nonce,
   }: STXTransferOptions) {
-    const tx = await makeSTXTokenTransfer({
-      recipient,
-      amount: new BN(amount),
-      memo,
-      senderKey: this.getSTXPrivateKey().toString('hex'),
-      fee: this.getFee(),
-      network: network || this.getNetwork(),
-      nonce: new BN(nonce),
-      postConditionMode,
-      postConditions,
-    });
+    const tx = await makeSTXTokenTransfer(
+      this.wrapFee({
+        recipient,
+        amount: new BN(amount),
+        memo,
+        senderKey: this.privateKey,
+        network: network || this.getNetwork(),
+        postConditionMode,
+        postConditions,
+        nonce: nonce !== undefined ? new BN(nonce, 10) : undefined,
+      })
+    );
     return tx;
   }
 
@@ -156,5 +160,16 @@ export class WalletSigner {
       return new BN(0);
     }
     return undefined;
+  }
+
+  wrapFee<T>(options: T) {
+    const fee = this.getFee();
+    if (fee !== undefined) {
+      return {
+        ...options,
+        fee,
+      };
+    }
+    return options;
   }
 }

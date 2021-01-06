@@ -1,9 +1,8 @@
-import { Page } from 'playwright-core';
-import { BrowserContext } from 'playwright-core';
+import { Page, BrowserContext } from 'playwright-core';
 import { createTestSelector, Browser } from '../utils';
 
 export class DemoPage {
-  static url = 'http://localhost:3000';
+  static url = 'http://localhost:3001';
   $openAuthButton = createTestSelector('button-skip-connect');
   authResponse = '#auth-response';
   appPriivateKey = '#app-private-key';

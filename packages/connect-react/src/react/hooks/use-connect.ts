@@ -9,6 +9,7 @@ import {
   openContractDeploy,
   openSTXTransfer,
   showBlockstackConnect,
+  FinishedData,
 } from '@stacks/connect';
 import { ConnectContext, ConnectDispatchContext, States } from '../components/connect/context';
 
@@ -24,20 +25,30 @@ export const useConnect = () => {
   const { isOpen, isAuthenticating, authData, authOptions, userSession } = useContext(
     ConnectContext
   );
+  const finishedCallback = authOptions.onFinish || authOptions.finished;
   const dispatch = useConnectDispatch();
 
   const doUpdateAuthOptions = (payload: Partial<AuthOptions>) => {
     return dispatch({ type: States.UPDATE_AUTH_OPTIONS, payload });
   };
 
-  const doOpenAuth = (signIn?: boolean, opts?: Partial<AuthOptions>) => {
+  /**
+   *
+   * @param signIn Whether the user should be sent to sign in
+   * @param options
+   */
+  const doOpenAuth = (signIn?: boolean, options?: Partial<AuthOptions>) => {
     if (signIn) {
-      const options: AuthOptions = {
+      const _options: AuthOptions = {
         ...authOptions,
-        ...opts,
+        ...options,
+        finished: undefined,
+        onFinish: (payload: FinishedData) => {
+          finishedCallback?.(payload);
+        },
         sendToSignIn: true,
       };
-      void authenticate(options);
+      void authenticate(_options);
       return;
     } else {
       showBlockstackConnect({
@@ -51,26 +62,30 @@ export const useConnect = () => {
     void authenticate({
       ...authOptions,
       ...options,
+      finished: undefined,
+      onFinish: (payload: FinishedData) => {
+        finishedCallback?.(payload);
+      },
     });
   };
 
-  const doContractCall = (opts: ContractCallOptions) =>
+  const doContractCall = (options: ContractCallOptions) =>
     openContractCall({
-      ...opts,
+      ...options,
       authOrigin: authOptions.authOrigin,
       appDetails: authOptions.appDetails,
     });
 
-  const doContractDeploy = (opts: ContractDeployOptions) =>
+  const doContractDeploy = (options: ContractDeployOptions) =>
     openContractDeploy({
-      ...opts,
+      ...options,
       authOrigin: authOptions.authOrigin,
       appDetails: authOptions.appDetails,
     });
 
-  const doSTXTransfer = (opts: STXTransferOptions) =>
+  const doSTXTransfer = (options: STXTransferOptions) =>
     openSTXTransfer({
-      ...opts,
+      ...options,
       authOrigin: authOptions.authOrigin,
       appDetails: authOptions.appDetails,
     });

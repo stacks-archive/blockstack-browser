@@ -1,4 +1,3 @@
-
 (define-fungible-token connect-token)
 (begin (ft-mint? connect-token u10000000 tx-sender))
 

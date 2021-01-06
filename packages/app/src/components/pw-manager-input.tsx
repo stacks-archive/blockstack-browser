@@ -21,6 +21,7 @@ export const PasswordManagerHiddenInput = ({ secretKey, appName }: PasswordManag
           type="text"
           autoComplete="username"
           value={passwordManagerUsername(appName)}
+          readOnly
         />
       </label>
       <label style={visuallyHiddenProps} htmlFor="password">
@@ -31,6 +32,7 @@ export const PasswordManagerHiddenInput = ({ secretKey, appName }: PasswordManag
           name="password"
           autoComplete="new-password"
           defaultValue={secretKey}
+          readOnly
         />
       </label>
     </>

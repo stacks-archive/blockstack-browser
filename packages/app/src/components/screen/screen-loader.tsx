@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, Box, Spinner } from '@blockstack/ui';
+import { Flex, Box, Spinner } from '@stacks/ui';
 
 interface ScreenLoaderProps {
   isLoading?: boolean;
@@ -8,8 +8,8 @@ interface ScreenLoaderProps {
 
 export const ScreenLoader: React.FC<ScreenLoaderProps> = ({ isLoading }) => (
   <Flex
-    align="center"
-    justify="center"
+    alignItems="center"
+    justifyContent="center"
     position="absolute"
     top={0}
     left={0}

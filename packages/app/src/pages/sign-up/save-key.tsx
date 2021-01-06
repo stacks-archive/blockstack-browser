@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Screen, ScreenBody, ScreenActions, Title, ScreenHeader } from '@screen';
 
-import { Button, Text } from '@blockstack/ui';
+import { Button, Text } from '@stacks/ui';
 
 import { Collapse } from '@components/collapse';
 

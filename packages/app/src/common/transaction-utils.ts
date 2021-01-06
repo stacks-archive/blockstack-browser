@@ -4,8 +4,7 @@ import {
   deserializeCV,
 } from '@blockstack/stacks-transactions';
 import { PostCondition } from '@blockstack/stacks-transactions/lib/postcondition';
-import { Wallet } from '@stacks/keychain';
-import { getRPCClient } from './stacks-utils';
+import { WalletSigner } from '@stacks/keychain';
 import {
   ContractDeployPayload,
   ContractCallPayload,
@@ -15,14 +14,15 @@ import {
 } from '@stacks/connect';
 import { doTrack, TRANSACTION_SIGN_SUBMIT, TRANSACTION_SIGN_ERROR } from '@common/track';
 import { finalizeTxSignature } from './utils';
-import BigNum from 'bn.js';
+import RPCClient from '@stacks/rpc-client';
+import BN from 'bn.js';
 
 const getPostConditions = (postConditions?: PostCondition[]): PostCondition[] | undefined => {
   return postConditions?.map(postCondition => {
     if ('amount' in postCondition && postCondition.amount) {
       return {
         ...postCondition,
-        amount: new BigNum(postCondition.amount, 16),
+        amount: new BN(postCondition.amount, 16),
       };
     }
     return postCondition;
@@ -31,12 +31,12 @@ const getPostConditions = (postConditions?: PostCondition[]): PostCondition[] | 
 
 export const generateContractCallTx = ({
   txData,
-  wallet,
+  signer,
   nonce,
 }: {
   txData: ContractCallPayload;
-  wallet: Wallet;
-  nonce: number;
+  signer: WalletSigner;
+  nonce?: number;
 }) => {
   const { contractName, contractAddress, functionName, functionArgs } = txData;
   const version = TransactionVersion.Testnet;
@@ -44,7 +44,7 @@ export const generateContractCallTx = ({
     return deserializeCV(Buffer.from(arg, 'hex'));
   });
 
-  return wallet.getSigner().signContractCall({
+  return signer.signContractCall({
     contractName,
     contractAddress,
     functionName,
@@ -59,17 +59,17 @@ export const generateContractCallTx = ({
 
 export const generateContractDeployTx = ({
   txData,
-  wallet,
+  signer,
   nonce,
 }: {
   txData: ContractDeployPayload;
-  wallet: Wallet;
-  nonce: number;
+  signer: WalletSigner;
+  nonce?: number;
 }) => {
   const { contractName, codeBody } = txData;
   const version = TransactionVersion.Testnet;
 
-  return wallet.getSigner().signContractDeploy({
+  return signer.signContractDeploy({
     contractName,
     codeBody,
     version,
@@ -82,15 +82,15 @@ export const generateContractDeployTx = ({
 
 export const generateSTXTransferTx = ({
   txData,
-  wallet,
+  signer,
   nonce,
 }: {
   txData: STXTransferPayload;
-  wallet: Wallet;
-  nonce: number;
+  signer: WalletSigner;
+  nonce?: number;
 }) => {
   const { recipient, memo, amount } = txData;
-  return wallet.getSigner().signSTXTransfer({
+  return signer.signSTXTransfer({
     recipient,
     memo,
     amount,
@@ -101,23 +101,23 @@ export const generateSTXTransferTx = ({
 
 export const generateTransaction = async ({
   txData,
-  wallet,
+  signer,
   nonce,
 }: {
-  wallet: Wallet;
-  nonce: number;
+  signer: WalletSigner;
+  nonce?: number;
   txData: TransactionPayload;
 }) => {
   let tx: StacksTransaction | null = null;
   switch (txData.txType) {
     case TransactionTypes.ContractCall:
-      tx = await generateContractCallTx({ txData, wallet, nonce });
+      tx = await generateContractCallTx({ txData, signer, nonce });
       break;
     case TransactionTypes.ContractDeploy:
-      tx = await generateContractDeployTx({ txData, wallet, nonce });
+      tx = await generateContractDeployTx({ txData, signer, nonce });
       break;
     case TransactionTypes.STXTransfer:
-      tx = await generateSTXTransferTx({ txData, wallet, nonce });
+      tx = await generateSTXTransferTx({ txData, signer, nonce });
       break;
     default:
       break;
@@ -131,13 +131,15 @@ export const generateTransaction = async ({
 export const finishTransaction = async ({
   tx,
   pendingTransaction,
+  nodeUrl,
 }: {
   tx: StacksTransaction;
   pendingTransaction: TransactionPayload;
+  nodeUrl: string;
 }) => {
   const serialized = tx.serialize();
-  const client = getRPCClient();
-  const res = await client.broadcastTX(serialized);
+  const rpcClient = new RPCClient(nodeUrl);
+  const res = await rpcClient.broadcastTX(serialized);
 
   if (res.ok) {
     doTrack(TRANSACTION_SIGN_SUBMIT, {

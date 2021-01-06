@@ -1,5 +1,24 @@
 export { Browser } from 'playwright-core';
 import { Page } from 'playwright-core';
+import { BrowserType, WebKitBrowser } from 'playwright-core/types/types';
+import { devices, chromium } from 'playwright';
+
+type Device = typeof devices['iPhone 11 Pro'];
+
+export const environments: [BrowserType<WebKitBrowser>, Device | undefined][] = [
+  [chromium, undefined],
+];
+
+if (process.env.CI) {
+  // environments.push([webkit, undefined]);
+  // environments.push([webkit, devices['iPhone 11 Pro']]);
+  // environments.push([chromium, devices['Pixel 2']]);
+  // Playwright has issues with Firefox and multi-page
+  // environments.push([firefox, undefined]);
+}
+
+export const SECRET_KEY =
+  'invite helmet save lion indicate chuckle world pride afford hard broom draft';
 
 export function createTestSelector(name: string) {
   return `[data-test="${name}"]`;
@@ -18,7 +37,7 @@ export function randomString(len: number) {
 export const wait = async (ms: number) => {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve();
+      resolve(true);
     }, ms);
   });
 };
@@ -50,7 +69,7 @@ export const debug = async (page: Page) => {
           }
           stdin.pause();
         }
-        resolve();
+        resolve(true);
       }
     };
     if (!listening) {

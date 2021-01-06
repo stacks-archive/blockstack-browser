@@ -8,6 +8,8 @@ import {
   selectOnboardingProgress,
   selectUsername,
   selectOnboardingPath,
+  selectFullAppIcon,
+  selectAppName,
 } from '@store/onboarding/selectors';
 
 export const useOnboardingState = () => {
@@ -19,6 +21,8 @@ export const useOnboardingState = () => {
   const isOnboardingInProgress = useSelector(selectOnboardingProgress);
   const username = useSelector(selectUsername);
   const onboardingPath = useSelector(selectOnboardingPath);
+  const appIcon = useSelector(selectFullAppIcon);
+  const appName = useSelector(selectAppName);
 
   return {
     secretKey,
@@ -29,5 +33,7 @@ export const useOnboardingState = () => {
     isOnboardingInProgress,
     username,
     onboardingPath,
+    appIcon,
+    appName,
   };
 };

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Box, Text, Flex, PseudoBox, ChevronIcon, BoxProps } from '@blockstack/ui';
+import { Box, Text, Flex, ChevronIcon, FlexProps } from '@stacks/ui';
 import { PoweredBy } from '@screen';
 import { buildEnterKeyEvent } from '@components/link';
 import { ChromeIcon } from '@components/icons/chrome-icon';
@@ -49,7 +49,7 @@ const getBrowser = (): Browser | null => {
   return null;
 };
 
-export const ExtensionButton: FC<BoxProps> = ({ ...rest }) => {
+export const ExtensionButton: FC<FlexProps> = ({ ...rest }) => {
   const browser = getBrowser();
   const isMobile = window.matchMedia('(pointer: coarse) and (max-width: 760px)').matches;
 
@@ -78,7 +78,7 @@ export const ExtensionButton: FC<BoxProps> = ({ ...rest }) => {
       my="loose"
       {...rest}
     >
-      <PseudoBox
+      <Box
         textAlign="center"
         onClick={onClick}
         onKeyPress={buildEnterKeyEvent(onClick)}
@@ -97,7 +97,7 @@ export const ExtensionButton: FC<BoxProps> = ({ ...rest }) => {
             <ChevronIcon display="inline" style={{ position: 'relative', top: '-1px' }} />
           </Text>
         </Box>
-      </PseudoBox>
+      </Box>
     </Flex>
   );
 };

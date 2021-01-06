@@ -1,5 +1,5 @@
 import React from 'react';
-import { Svg, BoxProps } from '@blockstack/ui';
+import { Svg, BoxProps } from '@stacks/ui';
 
 export const FirefoxIcon: React.FC<BoxProps> = props => (
   <Svg {...props}>

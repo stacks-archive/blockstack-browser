@@ -15,7 +15,7 @@
 }
 
 .modal-body {
-  width: 398px;
+  width: 512px;
   max-width: 100%;
   max-height: calc(100% - 48px);
   background: white;
@@ -25,8 +25,8 @@
   margin-right: auto;
   border-radius: 6px;
   .pxl {
-    padding-left: 24px;
-    padding-right: 24px;
+    padding-left: 64px;
+    padding-right: 64px;
   }
   div {
     box-sizing: border-box;
@@ -34,8 +34,8 @@
 }
 
 .pxl {
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: 64px;
+  padding-right: 64px;
 }
 
 .modal-top {
@@ -53,11 +53,20 @@
 }
 
 .modal-header {
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 28px;
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 48px;
   padding: 10px 32px;
   display: block;
+  text-align: center;
+}
+
+.intro-subtitle {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 32px;
+  margin: 10px 0;
+  color: #424248;
   text-align: center;
 }
 
@@ -99,9 +108,11 @@
 
 .button {
   width: 100%;
+  max-width: 344px;
+  margin: 0px auto;
   box-sizing: border-box;
   border-radius: 6px;
-  display: inline-flex;
+  display: block;
   line-height: 1.333;
   align-items: center;
   justify-content: center;
@@ -138,11 +149,16 @@
 }
 
 .modal-footer {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 20px;
   margin-top: 10px;
-  padding: 0 24px;
+  padding: 24px 0;
+  background-color: #F7F7FA;
+  text-align: center;
+  border-radius: 0 0 6px 6px;
+
+  .link {
+    color: #747478;
+    font-size: 14px;
+  }
 }
 
 .link {
@@ -169,30 +185,16 @@
   font-size: 14px;
 }
 
-.app-element-container {
-  margin: 24px auto;
-  display: flex;
-  position: relative;
-  width: 152px;
-}
+// Hero area
 
-.app-element-app-icon {
-  overflow: hidden;
-  width: 64px;
-  height: 64px;
-  margin-right: 24px;
-
-  img {
-    max-width: 100%;
+.hero-icon {
+  width: 100%;
+  svg {
+    margin: 20px auto;
+    width: 64px;
+    height: 64px;
+    display: block;
   }
-}
-
-.app-element-link {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -16px;
-  margin-top: -12px;
 }
 
 // HOW IT WORKS
@@ -206,6 +208,9 @@
     padding-right: 0;
     padding-top: 3px;
     padding-bottom: 10px;
+    line-height: 24px;
+    font-size: 24px;
+    text-align: left;
   }
 }
 

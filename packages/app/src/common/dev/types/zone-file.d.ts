@@ -7,5 +7,5 @@ declare module 'zone-file' {
     uri: URI[];
   }
 
-  export const parseZoneFile: (zoneFile: string) => ZoneFile
+  export const parseZoneFile: (zoneFile: string) => ZoneFile;
 }

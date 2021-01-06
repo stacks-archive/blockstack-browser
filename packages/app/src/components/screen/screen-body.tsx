@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, FlexProps } from '@blockstack/ui';
+import { Flex, FlexProps } from '@stacks/ui';
 import { Body, Pretitle, Title } from '../typography';
 import { PX } from './spacing';
 

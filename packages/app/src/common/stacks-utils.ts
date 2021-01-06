@@ -7,9 +7,16 @@ import {
   contractPrincipalCV,
   standardPrincipalCV,
   bufferCV,
+  createAssetInfo,
+  PostConditionType,
+  PostCondition,
+  FungibleConditionCode,
+  NonFungibleConditionCode,
 } from '@blockstack/stacks-transactions';
-import RPCClient from '@stacks/rpc-client';
 import BigNumber from 'bignumber.js';
+import { Identity } from '@stacks/keychain';
+import { c32addressDecode } from 'c32check';
+import { getAssetStringParts } from '@stacks/ui-utils';
 
 export const encodeContractCallArgument = ({ type, value }: ContractCallArgument) => {
   switch (type) {
@@ -35,23 +42,101 @@ export const encodeContractCallArgument = ({ type, value }: ContractCallArgument
   }
 };
 
-export const getRPCClient = () => {
-  const { origin } = location;
-  const url = origin.includes('localhost')
-    ? 'http://localhost:3999'
-    : 'https://stacks-node-api.blockstack.org';
-  return new RPCClient(url);
-};
-
 export const stacksValue = ({
   value,
   fixedDecimals = false,
+  withTicker = true,
 }: {
-  value: number;
+  value: number | string;
   fixedDecimals?: boolean;
+  withTicker?: boolean;
 }) => {
-  const microStacks = new BigNumber(value);
-  const stacks = microStacks.shiftedBy(-6);
+  const stacks = microStxToStx(value);
   const stxString = fixedDecimals ? stacks.toFormat(6) : stacks.decimalPlaces(6).toFormat();
-  return `${stxString} STX`;
+  return `${stxString}${withTicker ? ' STX' : ''}`;
+};
+
+export const microStxToStx = (mStx: number | string) => {
+  const microStacks = new BigNumber(mStx);
+  const stacks = microStacks.shiftedBy(-6);
+  return stacks;
+};
+
+export const stxToMicroStx = (stx: number | string) => {
+  const stxBN = new BigNumber(stx);
+  const micro = stxBN.shiftedBy(6);
+  return micro;
+};
+
+export function shortenHex(hex: string, length = 4) {
+  return `${hex.substring(0, length + 2)}…${hex.substring(hex.length - length)}`;
+}
+
+/**
+ * truncateMiddle
+ *
+ * @param {string} input - the string to truncate
+ * @param {number} offset - the number of chars to keep on either end
+ */
+export const truncateMiddle = (input: string, offset = 5): string => {
+  if (input.startsWith('0x')) {
+    return shortenHex(input, offset);
+  }
+  const start = input?.substr(0, offset);
+  const end = input?.substr(input.length - offset, input.length);
+  return `${start}…${end}`;
+};
+
+export const getIdentityDisplayName = (identity: Identity, index: number): string => {
+  if (identity.defaultUsername) {
+    return identity.defaultUsername.split('.')[0];
+  }
+  return `Account ${index + 1}`;
+};
+
+export const validateStacksAddress = (stacksAddress: string): boolean => {
+  try {
+    c32addressDecode(stacksAddress);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const getFungibleTitle = (code: FungibleConditionCode) => {
+  switch (code) {
+    case FungibleConditionCode.Equal:
+      return 'transfer exactly';
+    case FungibleConditionCode.Greater:
+      return 'transfer more than';
+    case FungibleConditionCode.GreaterEqual:
+      return 'transfer equal to or greater than';
+    case FungibleConditionCode.Less:
+      return 'transfer less than';
+    case FungibleConditionCode.LessEqual:
+      return 'transfer less than or equal to';
+    default:
+      return '';
+  }
+};
+
+export const getPostConditionTitle = (pc: PostCondition) => {
+  if (
+    pc.conditionType === PostConditionType.STX ||
+    pc.conditionType === PostConditionType.Fungible
+  ) {
+    return getFungibleTitle(pc.conditionCode);
+  } else {
+    if (pc.conditionCode === NonFungibleConditionCode.DoesNotOwn) return 'own';
+    if (pc.conditionCode === NonFungibleConditionCode.Owns) return 'do not own';
+  }
+  return '';
+};
+
+export const makeAssetInfo = (assetIdentifier: string) => {
+  const { address: contractAddress, contractName, assetName } = getAssetStringParts(
+    assetIdentifier
+  );
+  const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
+  return assetInfo;
 };

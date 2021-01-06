@@ -3,13 +3,13 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider, CSSReset, theme } from '@blockstack/ui';
+import { ThemeProvider, theme } from '@stacks/ui';
 
 const PortalContainer: React.FC = props => {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <CSSReset />
+        {/*<CSSReset />*/}
         {props.children}
       </ThemeProvider>
     </>

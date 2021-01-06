@@ -4,9 +4,9 @@
   "version": "<% VERSION %>",
   "description": "The Blockstack app is all you need to access the new internet. Access privacy-friendly apps and keep data in your control.",
   "icons": {
-    "128": "assets/logo-128@1x.png",
-    "256": "assets/logo-128@2x.png",
-    "512": "assets/logo-128@3x.png"
+    "128": "assets/connect-logo/Token=Connect@128.png",
+    "256": "assets/connect-logo/Token=Connect@256.png",
+    "512": "assets/connect-logo/Token=Connect@512.png"
   },
   "content_security_policy": "script-src 'self'<% DEV_CSR %>; object-src 'self'; frame-src 'none';",
   "permissions": [
@@ -20,7 +20,8 @@
   "web_accessible_resources": ["inpage.js", "index.html"],
   "browser_action": {
     "default_title": "Blockstack",
-    "default_icon": "assets/logo-16@3x.png"
+    "default_icon": "assets/connect-logo/Token=Connect@128.png",
+    "default_popup": "index.html"
   },
   "commands": {
     "_execute_browser_action": {

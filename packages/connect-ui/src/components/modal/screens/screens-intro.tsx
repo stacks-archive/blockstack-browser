@@ -1,11 +1,7 @@
 import { h, EventEmitter } from '@stencil/core';
-import { PadlockIcon } from '../assets/padlock-icon';
-import { EyeIcon } from '../assets/eye-icon';
-import { state, Screens } from '../../../store';
-import { LinkIcon } from '../assets/link-icon';
-import { PadlockBox } from '../assets/padlock-box';
 import { AuthOptions } from '@stacks/connect/auth';
-import { onClick as onExtensionClick, getBrowser } from '../extension-util';
+import { StacksIcon } from '../assets/stacks-icon';
+import { getBrowser } from '../extension-util';
 
 interface IntroProps {
   authOptions: AuthOptions;
@@ -13,40 +9,17 @@ interface IntroProps {
   signIn: EventEmitter;
 }
 
-export const Intro = ({ authOptions, signUp, signIn }: IntroProps) => {
+export const Intro = ({ authOptions, signUp }: IntroProps) => {
+  const browser = getBrowser();
   return (
     <div>
-      <div class="app-element-container">
-        <div class="app-element-app-icon">
-          <img src={authOptions.appDetails.icon} alt="Testing App" />
-        </div>
-        <div class="app-element-link">
-          <LinkIcon />
-        </div>
-        <div class="app-element-lock">
-          <PadlockBox />
-        </div>
+      <div class="hero-icon">
+        <StacksIcon />
       </div>
-      <span class="modal-header pxl">
-        {authOptions.appDetails.name} guarantees your privacy by encrypting everything
-      </span>
-      <div class="divider" />
-      <div class="intro-entry">
-        <div class="intro-entry-icon">
-          <PadlockIcon />
-        </div>
-        <span class="intro-entry-copy">
-          You'll get a Secret Key that automatically encrypts everything you do
-        </span>
-      </div>
-      <div class="divider" />
-      <div class="intro-entry">
-        <div class="intro-entry-icon">
-          <EyeIcon />
-        </div>
-        <span class="intro-entry-copy">
-          {authOptions.appDetails.name} won't be able to see, access, or track your activity
-        </span>
+      <span class="modal-header pxl">Use {authOptions.appDetails.name} with Stacks</span>
+      <div class="intro-subtitle pxl">
+        Stacks Wallet gives you control over your digital assets and data in apps like{' '}
+        {authOptions.appDetails.name}.{browser ? ` Add it to ${browser} to continue.` : ''}
       </div>
       <div class="button-container">
         <button
@@ -55,21 +28,22 @@ export const Intro = ({ authOptions, signUp, signIn }: IntroProps) => {
             signUp.emit();
           }}
         >
-          <span>Get your Secret Key</span>
+          <span>
+            {browser
+              ? `Add Stacks Wallet to ${browser}`
+              : `Connect to ${authOptions.appDetails.name}`}
+          </span>
         </button>
       </div>
       <div class="modal-footer">
-        <span class="link" onClick={() => signIn.emit()}>
-          Sign in
-        </span>
-        <span class="link" onClick={() => (state.screen = Screens.HOW_IT_WORKS)}>
+        <span
+          class="link"
+          onClick={() =>
+            window.open('https://www.blockstack.org/questions/how-does-connect-work', '_blank')
+          }
+        >
           How it works
         </span>
-        {getBrowser() ? (
-          <span class="link" onClick={onExtensionClick}>
-            Install extension
-          </span>
-        ) : null}
       </div>
     </div>
   );

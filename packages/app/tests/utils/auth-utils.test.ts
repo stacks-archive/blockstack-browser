@@ -1,4 +1,7 @@
 import { isValidUrl } from '../../src/common/validate-url';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import bigListOfNaughtyStrings from 'blns';
 
 describe('isValidUrl', () => {
   test('accepts normal URLs', () => {
@@ -14,7 +17,18 @@ describe('isValidUrl', () => {
   });
 
   test('rejects non http(s) schemas', () => {
-    const bad = ['javascript:alert("hello")//', 'web.org', 'javascript:console.log();'];
+    // one of the strings is a actual url
+    const naughtyStrings = (bigListOfNaughtyStrings as string[]).filter(
+      str => !str.startsWith('http')
+    );
+    const bad = [
+      ...naughtyStrings,
+      'javascript:alert("hello")//',
+      'web.org',
+      'javascript:console.log();',
+      'javascripT:console.log();',
+      'JaVascRipt:console.log();',
+    ];
 
     bad.forEach(url => {
       expect(isValidUrl(url)).toEqual(false);

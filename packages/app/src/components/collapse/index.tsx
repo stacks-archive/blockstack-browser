@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, Text, BoxProps, ChevronIcon } from '@blockstack/ui';
+import { Flex, Box, Text, BoxProps, ChevronIcon } from '@stacks/ui';
 import { useHover } from 'use-events';
 import { useAnalytics } from '@common/hooks/use-analytics';
 
@@ -11,13 +11,13 @@ interface TitleProps extends BoxProps {
 
 const TitleElement: React.FC<TitleProps> = ({ onClick, isFirst, isOpen, hovered, title }) => (
   <Flex
-    align="center"
+    alignItems="center"
     borderBottom={!isOpen ? '1px solid' : undefined}
     borderTop={isFirst ? '1px solid' : 'unset'}
     borderColor="#E5E5EC" // this is not currently in the UI lib, asked jasper about it but he was out of office
     pt={3}
     pb={isOpen ? 0 : 3}
-    justify="space-between"
+    justifyContent="space-between"
     onClick={onClick}
   >
     <Box>

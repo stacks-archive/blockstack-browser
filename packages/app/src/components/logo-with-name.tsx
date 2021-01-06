@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Text } from '@blockstack/ui';
+import { Flex, Text } from '@stacks/ui';
 import { Logo } from './logo';
 
 interface LogoWithNameProps {
@@ -11,7 +11,7 @@ export const LogoWithName: React.FC<LogoWithNameProps> = ({
   title = 'Secret Key',
   hideIcon = false,
 }) => (
-  <Flex align="center">
+  <Flex alignItems="center">
     {hideIcon ? null : <Logo mr={2} />}
     <Text fontWeight="bold" fontSize={'12px'}>
       {title}

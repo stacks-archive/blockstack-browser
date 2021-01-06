@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Identity } from '@stacks/keychain';
-import { Text, Flex, FlexProps, Spinner } from '@blockstack/ui';
+import { Text, Flex, FlexProps, Spinner, color } from '@stacks/ui';
 import { ScreenPaths } from '@store/onboarding/types';
 import { PlusInCircle } from '@components/icons/plus-in-circle';
 import { ListItem } from './list-item';
 import { AccountAvatar } from './account-avatar';
 import { useAnalytics } from '@common/hooks/use-analytics';
+import { useWallet } from '@common/hooks/use-wallet';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -45,13 +45,13 @@ const AccountItem = ({ label, address, selectedAddress, ...rest }: AccountItemPr
 };
 
 interface AccountsProps {
-  identities: Identity[];
   identityIndex?: number;
   showAddAccount?: boolean;
   next?: (identityIndex: number) => void;
 }
 
-export const Accounts = ({ identities, showAddAccount, identityIndex, next }: AccountsProps) => {
+export const Accounts = ({ showAddAccount, identityIndex, next }: AccountsProps) => {
+  const { identities } = useWallet();
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { doChangeScreen } = useAnalytics();
 
@@ -63,7 +63,7 @@ export const Accounts = ({ identities, showAddAccount, identityIndex, next }: Ac
 
   return (
     <Flex flexDirection="column">
-      {identities.map(({ defaultUsername, address }, key) => {
+      {(identities || []).map(({ defaultUsername, address }, key) => {
         return (
           <ListItem
             key={key}
@@ -71,6 +71,7 @@ export const Accounts = ({ identities, showAddAccount, identityIndex, next }: Ac
             cursor={selectedAddress ? 'not-allowed' : 'pointer'}
             iconComponent={() => <AccountAvatar username={defaultUsername || address} mr={3} />}
             hasAction={!!next && selectedAddress === null}
+            data-test={`account-${(defaultUsername || address).split('.')[0]}`}
             onClick={() => {
               if (!next) return;
               if (selectedAddress) return;
@@ -97,10 +98,10 @@ export const Accounts = ({ identities, showAddAccount, identityIndex, next }: Ac
           hasAction
           iconComponent={() => (
             <Flex
-              justify="center"
+              justifyContent="center"
               width="36px"
               mr={3}
-              color="ink.300"
+              color={color('text-caption')}
               transition="0.08s all ease-in-out"
             >
               <PlusInCircle />

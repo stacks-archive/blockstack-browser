@@ -28,8 +28,8 @@ jobs:
       - uses: actions/upload-artifact@v2
         name: Upload Extension Zip
         with:
-          name: connect-extension
-          path: connect-extension.zip
+          name: stacks-wallet-chromium
+          path: stacks-wallet-chromium.zip
       - name: Sign Production Firefox version
         continue-on-error: true
         run: yarn web-ext sign --channel=listed

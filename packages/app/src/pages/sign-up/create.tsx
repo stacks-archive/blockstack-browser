@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from '@common/hooks/use-dispatch';
-import { Spinner, Flex, Text } from '@blockstack/ui';
+import { Spinner, Flex, Text, color } from '@stacks/ui';
 import { Screen, ScreenBody, PoweredBy, ScreenFooter, ScreenHeader } from '@screen';
 
-import { doCreateSecretKey, doSetOnboardingProgress } from '@store/onboarding/actions';
+import { doSetOnboardingProgress } from '@store/onboarding/actions';
 import { useAppDetails } from '@common/hooks/useAppDetails';
 
 import { useWallet } from '@common/hooks/use-wallet';
@@ -22,7 +22,7 @@ const ExplainerCard = ({ title, imageUrl }: ExplainerCardProps) => (
       <Text textStyle="display.small">{title}</Text>
     </Flex>
     <Flex width="100%" flexDirection="column" alignItems="center">
-      <Spinner thickness="3px" size="lg" color="blue" />
+      <Spinner thickness="3px" size="lg" color={color('accent')} />
     </Flex>
   </Flex>
 );
@@ -54,7 +54,7 @@ interface CreateProps {
 }
 export const Create: React.FC<CreateProps> = props => {
   const [cardIndex, setCardIndex] = useState(0);
-  const { wallet, isRestoringWallet } = useWallet();
+  const { wallet, doMakeWallet } = useWallet();
   const { name } = useAppDetails();
   const dispatch = useDispatch();
 
@@ -86,9 +86,9 @@ export const Create: React.FC<CreateProps> = props => {
       // We have this check for `wallet`, because this is the
       // default first screen rendered. We don't want to accidentally create a new
       // seed if a logged-in user gets into this hook.
-      if (!wallet && !isRestoringWallet) {
+      if (!wallet) {
         dispatch(doSetOnboardingProgress(true));
-        dispatch(doCreateSecretKey());
+        doMakeWallet();
       }
     }, 200);
     return () => clearTimeout(timeout);

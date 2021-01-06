@@ -13,6 +13,8 @@ import {
 import IdentityAddressOwnerNode from './nodes/identity-address-owner-node';
 import { Profile, fetchProfile, DEFAULT_PROFILE, signAndUploadProfile } from './profiles';
 import { ecPairToAddress } from 'blockstack';
+import { TransactionVersion, getAddressFromPrivateKey } from '@blockstack/stacks-transactions';
+import { WalletSigner } from './wallet/signer';
 
 interface IdentityConstructorOptions {
   keyPair: IdentityKeyPair;
@@ -52,13 +54,11 @@ export class Identity {
     gaiaUrl,
     transitPublicKey,
     scopes = [],
-    stxAddress,
   }: {
     appDomain: string;
     gaiaUrl: string;
     transitPublicKey: string;
     scopes?: string[];
-    stxAddress?: string;
   }) {
     const appPrivateKey = this.appPrivateKey(appDomain);
     const hubInfo = await getHubInfo(gaiaUrl);
@@ -102,7 +102,7 @@ export class Identity {
       this.keyPair.key,
       {
         ...(this.profile || {}),
-        stxAddress,
+        stxAddress: this.getStxAddress(),
       },
       this.defaultUsername || '',
       {
@@ -176,6 +176,18 @@ export class Identity {
     } catch (error) {
       return;
     }
+  }
+
+  getStxAddress(): string {
+    return getAddressFromPrivateKey(this.keyPair.key, TransactionVersion.Testnet);
+  }
+
+  getDisplayName(): string {
+    return this.defaultUsername || this.getStxAddress();
+  }
+
+  getSigner() {
+    return new WalletSigner({ privateKey: this.keyPair.key });
   }
 }
 

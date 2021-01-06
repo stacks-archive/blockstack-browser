@@ -5,15 +5,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CheckerPlugin = require('fork-ts-checker-webpack-plugin');
-const ChromeExtensionReloader = require('webpack-chrome-extension-reloader');
+const ExtensionReloader = require('webpack-extension-reloader');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const TerserPlugin = require('terser-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
-const { version } = require('./package.json');
-const { exec: _exec } = require('child_process');
-const { promisify } = require('util');
+const { version: _version } = require('./package.json');
+const { execSync } = require('child_process');
 
 /* eslint-enable @typescript-eslint/no-var-requires */
 
@@ -26,23 +25,34 @@ const getSegmentKey = () => {
   return 'Cs2gImUHsghl4SZD8GB1xyFs23oaNAGa';
 };
 
-const getVersion = async () => {
-  const exec = promisify(_exec);
-  const branch = await exec(`git rev-parse --abbrev-ref HEAD | cut -d'/' -f2`);
-  if (branch.stderr) {
-    return version;
-  }
-  if (!branch.stdout.includes('master')) {
-    return `${version}.${Math.floor(Math.floor(Math.random() * 1000))}`;
-  }
-  return version;
+const getBranch = () => {
+  const branch = execSync(`git rev-parse --abbrev-ref HEAD`, { encoding: 'utf8' }).trim();
+  return branch;
 };
+
+const getCommit = () => {
+  const commit = execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim();
+  return commit;
+};
+
+/**
+ * For CI builds, we add a random number after the patch version.
+ */
+const getVersion = () => {
+  const branch = getBranch();
+  if (!branch || branch.includes('master')) return _version;
+  return `${_version}.${Math.floor(Math.floor(Math.random() * 1000))}`;
+};
+
+const version = getVersion();
+const commit = getCommit();
+const branch = getBranch();
 
 const sourceRootPath = path.join(__dirname, 'src');
 const distRootPath = path.join(__dirname, 'dist');
 const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
-const isDevelopment = process.env.NODE_ENV !== 'production';
+const isDevelopment = nodeEnv === 'development';
 const analyzeBundle = process.env.ANALYZE === 'true';
 const segmentKey = process.env.SEGMENT_KEY || getSegmentKey();
 const statsURL = process.env.STATS_URL || 'https://stats.blockstack.xyz';
@@ -230,7 +240,7 @@ module.exports = {
         from: path.join(sourceRootPath, 'manifest.json'),
         to: path.join(distRootPath, 'manifest.json'),
         toType: 'file',
-        async transform(content, path) {
+        transform(content, path) {
           const csrTag = '<% DEV_CSR %>';
           const versionTag = '<% VERSION %>';
           content = content.toString();
@@ -239,7 +249,7 @@ module.exports = {
           } else {
             content = content.replace(csrTag, '');
           }
-          const fullVersion = await getVersion();
+          const fullVersion = getVersion();
           console.log('Extension Version:', fullVersion);
           content = content.replace(versionTag, fullVersion);
           return Buffer.from(content);
@@ -252,6 +262,9 @@ module.exports = {
       EXT_ENV: JSON.stringify(extEnv),
       SEGMENT_KEY: JSON.stringify(segmentKey),
       STATS_URL: JSON.stringify(statsURL),
+      VERSION: JSON.stringify(version),
+      COMMIT_SHA: JSON.stringify(commit),
+      BRANCH: JSON.stringify(branch),
     }),
     isDevelopment &&
       extEnv === 'web' &&
@@ -262,7 +275,7 @@ module.exports = {
 if (process.env.EXT_ENV === 'watch') {
   module.exports.watch = true;
   module.exports.plugins.push(
-    new ChromeExtensionReloader({
+    new ExtensionReloader({
       port: 9128,
       reloadPage: true,
       entries: {

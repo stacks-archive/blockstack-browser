@@ -6,6 +6,7 @@ import {
   IS_RESTORING_WALLET,
   GENERATE_WALLET,
   SIGN_OUT,
+  SET_IDENTITY_INDEX,
 } from './types';
 
 const initialState: WalletState = {
@@ -13,6 +14,7 @@ const initialState: WalletState = {
   isRestoringWallet: false,
   currentWallet: undefined,
   identities: [],
+  currentIdentityIndex: 0,
 };
 
 export const walletReducer: Reducer<WalletState, WalletActions> = (
@@ -42,6 +44,11 @@ export const walletReducer: Reducer<WalletState, WalletActions> = (
       return {
         ...state,
         ...initialState,
+      };
+    case SET_IDENTITY_INDEX:
+      return {
+        ...state,
+        currentIdentityIndex: action.index,
       };
     default:
       return state;

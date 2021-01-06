@@ -1,239 +1,115 @@
-import React, { useState, useEffect } from 'react';
-import { TransactionPayload, TransactionTypes } from '@stacks/connect';
-import {
-  Screen,
-  ScreenBody,
-  ScreenActions,
-  Title,
-  PoweredBy,
-  ScreenFooter,
-  ScreenHeader,
-} from '@screen';
-import { Button, Box, Text } from '@blockstack/ui';
-import { useLocation } from 'react-router-dom';
-import { decodeToken } from 'jsontokens';
-import { useWallet } from '@common/hooks/use-wallet';
-import {
-  TransactionVersion,
-  StacksTransaction,
-  StacksMainnet,
-  StacksTestnet,
-} from '@blockstack/stacks-transactions';
-import { TestnetBanner } from '@components/transactions/testnet-banner';
-import { TxError } from '@components/transactions/tx-error';
-import { TabbedCard, Tab } from '@components/tabbed-card';
-import { getRPCClient, stacksValue } from '@common/stacks-utils';
-import { Wallet } from '@stacks/keychain';
-import { doTrack, TRANSACTION_SIGN_START, TRANSACTION_SIGN_ERROR } from '@common/track';
-import { finishTransaction, generateTransaction } from '@common/transaction-utils';
+import React, { Suspense, useMemo, useCallback, useState } from 'react';
+import { Box, Button, Flex, Text } from '@stacks/ui';
+import { PopupContainer } from '@components/popup/container';
+import { LoadingRectangle } from '@components/loading-rectangle';
+import { useTxState } from '@common/hooks/use-tx-state';
+import { stacksValue } from '@common/stacks-utils';
+import { ContractCallDetails } from '@components/transactions/contract-call-details';
+import { StxTransferDetails } from '@components/transactions/stx-transfer-details';
+import { ContractDeployDetails } from '@components/transactions/contract-deploy-details';
+import { PostConditions } from '@components/transactions/post-conditions/list';
+import { showTxDetails } from '@store/recoil/transaction';
+import { useRecoilValue } from 'recoil';
+import { TransactionTypes } from '@stacks/connect';
 
-interface TabContentProps {
-  json: any;
-}
-
-const getInputJSON = (pendingTransaction: TransactionPayload | undefined, wallet: Wallet) => {
-  if (pendingTransaction && wallet) {
-    const { appDetails, publicKey, ...rest } = pendingTransaction;
-    return {
-      ...rest,
-      'tx-sender': wallet.getSigner().getSTXAddress(TransactionVersion.Testnet),
-    };
-  }
-  return {};
-};
-
-const TabContent: React.FC<TabContentProps> = ({ json }) => {
+export const TxLoading: React.FC = () => {
   return (
-    <Box whiteSpace="pre" overflow="scroll" color="gray" maxHeight="200px">
-      {JSON.stringify(json, null, 2)}
-    </Box>
+    <Flex flexDirection="column" mt="extra-loose">
+      <Box width="100%">
+        <LoadingRectangle width="60%" height="24px" />
+      </Box>
+      <Box width="100%" mt="base">
+        <LoadingRectangle width="40%" height="16px" />
+      </Box>
+    </Flex>
   );
 };
 
-export const Transaction: React.FC = () => {
-  const location = useLocation();
-  const { wallet } = useWallet();
-  const [pendingTransaction, setPendingTransaction] = useState<TransactionPayload | undefined>();
-  const [signedTransaction, setSignedTransaction] = useState<StacksTransaction | undefined>();
-  const [loading, setLoading] = useState(true);
-  const [contractSrc, setContractSrc] = useState('');
-  const [balance, setBalance] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  const client = getRPCClient();
+export const TransactionPage: React.FC = () => {
+  return (
+    <PopupContainer>
+      <Suspense fallback={<TxLoading />}>
+        <TransactionPageContent />
+      </Suspense>
+    </PopupContainer>
+  );
+};
 
-  if (!wallet) {
-    throw new Error('User must be logged in.');
-  }
-
-  const tabs: Tab[] = [
-    {
-      title: 'Inputs',
-      content: <TabContent json={getInputJSON(pendingTransaction, wallet)} />,
-      key: 'inputs',
-    },
-    {
-      title: (
-        <>
-          View Source
-          {/* Add this icon when we can link to the explorer */}
-          {/* <ExternalIcon display="inline-block" width="9px" ml={1} /> */}
-        </>
-      ),
-      content: (
-        <Box whiteSpace="pre" overflow="scroll" color="gray" maxHeight="200px">
-          {contractSrc}
-        </Box>
-      ),
-      key: 'source',
-      hide: pendingTransaction?.txType === TransactionTypes.STXTransfer,
-    },
-  ];
-
-  const setupAccountInfo = async () => {
-    const account = await wallet.getSigner().fetchAccount({
-      version: TransactionVersion.Testnet,
-      rpcClient: client,
-    });
-    setBalance(account.balance.toNumber());
-    return account;
-  };
-
-  const setupWithState = async (tx: TransactionPayload) => {
-    if (tx.network) {
-      const network =
-        tx.network.version === TransactionVersion.Mainnet
-          ? new StacksMainnet()
-          : new StacksTestnet();
-      tx.network = { ...network, ...tx.network };
+export const TransactionPageContent: React.FC = () => {
+  const { pendingTransaction, signedTransaction, doSubmitPendingTransaction } = useTxState();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const showDetails = useRecoilValue(showTxDetails);
+  const txType = pendingTransaction?.txType;
+  const pageTitle = useMemo(() => {
+    if (txType === TransactionTypes.STXTransfer) {
+      return 'Transfer STX';
+    } else if (txType === TransactionTypes.ContractDeploy) {
+      return 'Deploy contract';
     }
-    if (tx.txType === TransactionTypes.ContractCall) {
-      const contractSource = await client.fetchContractSource({
-        contractName: tx.contractName,
-        contractAddress: tx.contractAddress,
-      });
-      if (contractSource) {
-        setContractSrc(contractSource);
-        setPendingTransaction(tx);
-      } else {
-        doTrack(TRANSACTION_SIGN_ERROR, {
-          txType: pendingTransaction?.txType,
-          appName: pendingTransaction?.appDetails?.name,
-          error: 'Contract not found',
-        });
-        setError(`Unable to find contract ${tx.contractAddress}.${tx.contractName}`);
-      }
-    } else if (tx.txType === TransactionTypes.ContractDeploy) {
-      console.log(tx);
-      setContractSrc(tx.codeBody);
-      setPendingTransaction(tx);
-    } else if (tx.txType === TransactionTypes.STXTransfer) {
-      setPendingTransaction(tx);
-    }
-    doTrack(TRANSACTION_SIGN_START, {
-      txType: tx.txType,
-      appName: tx.appDetails?.name,
-    });
-    return tx;
-  };
+    return 'Sign transaction';
+  }, [txType]);
 
-  const decodeRequest = async () => {
-    const urlParams = new URLSearchParams(location.search);
-    const requestToken = urlParams.get('request');
-    if (requestToken) {
-      const token = decodeToken(requestToken);
-      const reqState = (token.payload as unknown) as TransactionPayload;
-      try {
-        const [txData, account] = await Promise.all([setupWithState(reqState), setupAccountInfo()]);
-        const tx = await generateTransaction({
-          wallet,
-          nonce: account.nonce,
-          txData,
-        });
-        setSignedTransaction(tx);
-      } catch (error) {
-        const nodeURL = new URL(client.url);
-        setError(`Unable to connect to a Stacks node at ${nodeURL.hostname}`);
-      }
-      setLoading(false);
-    } else {
-      setError('Unable to decode request');
-      console.error('Unable to find contract call parameter');
-    }
-  };
-
-  useEffect(() => {
-    if (wallet.stacksPrivateKey) {
-      decodeRequest();
-    }
-  }, [wallet]);
-
-  const handleButtonClick = async () => {
-    if (!pendingTransaction || !signedTransaction) {
-      // shouldn't be able to get here
-      setError('Unable to finish transaction');
-      return;
-    }
-    setLoading(true);
-    try {
-      await finishTransaction({ tx: signedTransaction, pendingTransaction });
-    } catch (err) {
-      setError(err.message);
-    }
-    setLoading(false);
-  };
-
-  if (error) {
-    return <TxError message={error} />;
-  }
-
+  const submit = useCallback(async () => {
+    setIsSubmitting(true);
+    await doSubmitPendingTransaction();
+    setIsSubmitting(false);
+  }, [doSubmitPendingTransaction]);
   return (
     <>
-      <Screen isLoading={loading}>
-        {/* TODO: only show testnet banner if in testnet mode */}
-        <TestnetBanner />
-        <ScreenHeader
-          rightContent={
-            <Text textStyle="caption" color="gray" fontSize={0}>
-              {stacksValue({ value: balance })} available
+      <Box mt="extra-loose">
+        <Text
+          display="block"
+          fontFamily="heading"
+          textStyle="display.large"
+          fontSize={5}
+          color="ink.1000"
+        >
+          {pageTitle}
+        </Text>
+        <Text textStyle="caption" color="ink.600">
+          {pendingTransaction?.appDetails?.name}
+        </Text>
+      </Box>
+      <PostConditions />
+      {showDetails && (
+        <>
+          <ContractCallDetails />
+          <StxTransferDetails />
+          <ContractDeployDetails />
+        </>
+      )}
+      <Box flexGrow={1} />
+      <Box width="100%" mt="extra-loose">
+        <Flex>
+          <Box flexGrow={1}>
+            <Text textStyle="caption" color="ink.600">
+              Fees
             </Text>
-          }
-        />
-        <ScreenBody
-          mt={6}
-          body={[
-            <Title>Confirm Transaction</Title>,
-            <Text mt={2} display="inline-block">
-              with {pendingTransaction?.appDetails?.name}
-            </Text>,
-            <TabbedCard mt={4} mb={4} tabs={tabs} />,
-            <Box width="100%" mt={5}>
-              <Text fontWeight={600}>
-                <Text>Fee</Text>
-                <Text style={{ float: 'right' }}>
-                  {stacksValue({
-                    value: signedTransaction?.auth.spendingCondition?.fee?.toNumber() || 0,
-                  })}
-                </Text>
-              </Text>
-            </Box>,
-          ]}
-        />
-        <ScreenActions>
-          <Button
-            width="100%"
-            mt={5}
-            size="lg"
-            onClick={async () => {
-              await handleButtonClick();
-            }}
-          >
-            Confirm Transaction
-          </Button>
-        </ScreenActions>
-        <ScreenFooter>
-          <PoweredBy />
-        </ScreenFooter>
-      </Screen>
+          </Box>
+          <Box>
+            <Text textStyle="caption" color="ink.600">
+              {signedTransaction.state === 'loading' && !signedTransaction.value ? (
+                <LoadingRectangle width="100px" height="14px" />
+              ) : null}
+              {signedTransaction.value
+                ? stacksValue({
+                    value: signedTransaction.value.auth.spendingCondition?.fee?.toNumber() || 0,
+                  })
+                : null}
+            </Text>
+          </Box>
+        </Flex>
+      </Box>
+      <Box mt="base">
+        <Button
+          width="100%"
+          onClick={submit}
+          isLoading={isSubmitting}
+          isDisabled={!signedTransaction.value}
+        >
+          Confirm
+        </Button>
+      </Box>
     </>
   );
 };

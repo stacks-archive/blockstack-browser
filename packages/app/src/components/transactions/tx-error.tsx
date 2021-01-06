@@ -1,6 +1,6 @@
 import React from 'react';
 import { Screen, ScreenBody, ScreenActions } from '@screen';
-import { Button, Text, Box, Flex, FailedIcon } from '@blockstack/ui';
+import { Button, Text, Box, Flex, FailedIcon } from '@stacks/ui';
 import { TestnetBanner } from './testnet-banner';
 
 interface TxErrorProps {

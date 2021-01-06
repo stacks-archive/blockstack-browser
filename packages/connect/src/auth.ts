@@ -18,7 +18,7 @@ export interface AuthOptions {
   /** The URL you want the user to be redirected to after authentication. */
   redirectTo?: string;
   manifestPath?: string;
-  /** DEPRECATED: use `onFinish` */
+  /** @deprecated use `onFinish` */
   finished?: (payload: FinishedData) => void;
   /**
    * This callback is fired after authentication is finished.
@@ -30,10 +30,13 @@ export interface AuthOptions {
   /** This callback is fired if the user exits before finishing */
   onCancel?: () => void;
   authOrigin?: string;
+  /** If `sendToSignIn` is `true`, then the user will be sent through the sign in flow. */
   sendToSignIn?: boolean;
   userSession?: UserSession;
   appDetails: {
+    /** A human-readable name for your application */
     name: string;
+    /** A full URL that resolves to an image icon for your application */
     icon: string;
   };
 }

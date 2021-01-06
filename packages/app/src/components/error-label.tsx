@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, FlexProps } from '@blockstack/ui';
+import { Flex, Box, FlexProps } from '@stacks/ui';
 
 import { ExclamationMark } from './icons/exclamation-mark';
 

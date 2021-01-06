@@ -38,32 +38,31 @@ const signPayload = async (payload: TransactionPayload, privateKey: string) => {
   return tokenSigner.signAsync(payload as any);
 };
 
-const openTransactionPopup = async ({ token, opts }: TransactionPopup) => {
+const openTransactionPopup = async ({ token, options }: TransactionPopup) => {
   const extensionURL = await window.BlockstackProvider?.getURL();
-  const authURL = new URL(extensionURL || opts.authOrigin || defaultAuthURL);
+  const authURL = new URL(extensionURL || options.authOrigin || defaultAuthURL);
   const urlParams = new URLSearchParams();
   urlParams.set('request', token);
 
   const popup = popupCenter({
     url: `${authURL.origin}/index.html#/transaction?${urlParams.toString()}`,
-    h: 700,
+    h: 560,
   });
 
   setupListener<FinishedTxData>({
     popup,
     authURL,
     onFinish: data => {
-      if (opts.finished) {
-        opts.finished(data);
-      }
+      const finishedCallback = options.finished || options.onFinish;
+      finishedCallback?.(data);
     },
     messageParams: {},
   });
   return popup;
 };
 
-export const makeContractCallToken = async (opts: ContractCallOptions) => {
-  const { functionArgs, appDetails, userSession, ...options } = opts;
+export const makeContractCallToken = async (options: ContractCallOptions) => {
+  const { functionArgs, appDetails, userSession, ..._options } = options;
   const { privateKey, publicKey } = getKeys(userSession);
 
   const args: string[] = functionArgs.map(arg => {
@@ -74,7 +73,7 @@ export const makeContractCallToken = async (opts: ContractCallOptions) => {
   });
 
   const payload: ContractCallPayload = {
-    ...options,
+    ..._options,
     functionArgs: args,
     txType: TransactionTypes.ContractCall,
     publicKey,
@@ -87,12 +86,12 @@ export const makeContractCallToken = async (opts: ContractCallOptions) => {
   return signPayload(payload, privateKey);
 };
 
-export const makeContractDeployToken = async (opts: ContractDeployOptions) => {
-  const { appDetails, userSession, ...options } = opts;
+export const makeContractDeployToken = async (options: ContractDeployOptions) => {
+  const { appDetails, userSession, ..._options } = options;
   const { privateKey, publicKey } = getKeys(userSession);
 
   const payload: ContractDeployPayload = {
-    ...options,
+    ..._options,
     publicKey,
     txType: TransactionTypes.ContractDeploy,
   };
@@ -104,12 +103,12 @@ export const makeContractDeployToken = async (opts: ContractDeployOptions) => {
   return signPayload(payload, privateKey);
 };
 
-export const makeSTXTransferToken = async (opts: STXTransferOptions) => {
-  const { amount, appDetails, userSession, ...options } = opts;
+export const makeSTXTransferToken = async (options: STXTransferOptions) => {
+  const { amount, appDetails, userSession, ..._options } = options;
   const { privateKey, publicKey } = getKeys(userSession);
 
   const payload: STXTransferPayload = {
-    ...options,
+    ..._options,
     amount: amount.toString(10),
     publicKey,
     txType: TransactionTypes.STXTransfer,
@@ -123,18 +122,18 @@ export const makeSTXTransferToken = async (opts: STXTransferOptions) => {
 };
 
 async function generateTokenAndOpenPopup<T extends TransactionOptions>(
-  opts: T,
-  makeTokenFn: (opts: T) => Promise<string>
+  options: T,
+  makeTokenFn: (options: T) => Promise<string>
 ) {
-  const token = await makeTokenFn(opts);
-  return openTransactionPopup({ token, opts });
+  const token = await makeTokenFn(options);
+  return openTransactionPopup({ token, options });
 }
 
-export const openContractCall = async (opts: ContractCallOptions) =>
-  generateTokenAndOpenPopup(opts, makeContractCallToken);
+export const openContractCall = async (options: ContractCallOptions) =>
+  generateTokenAndOpenPopup(options, makeContractCallToken);
 
-export const openContractDeploy = async (opts: ContractDeployOptions) =>
-  generateTokenAndOpenPopup(opts, makeContractDeployToken);
+export const openContractDeploy = async (options: ContractDeployOptions) =>
+  generateTokenAndOpenPopup(options, makeContractDeployToken);
 
-export const openSTXTransfer = async (opts: STXTransferOptions) =>
-  generateTokenAndOpenPopup(opts, makeSTXTransferToken);
+export const openSTXTransfer = async (options: STXTransferOptions) =>
+  generateTokenAndOpenPopup(options, makeSTXTransferToken);

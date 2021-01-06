@@ -5,10 +5,11 @@ import { Auth } from './auth';
 import { Tab } from './tab';
 import { Status } from './status';
 import { Counter } from './counter';
+import { Debugger } from './debugger';
 import { useFaucet } from '@common/use-faucet';
 import { ExplorerLink } from './explorer-link';
 
-type Tabs = 'status' | 'counter';
+type Tabs = 'status' | 'counter' | 'debug';
 
 const Container: React.FC<BoxProps> = ({ children, ...props }) => {
   return (
@@ -69,9 +70,16 @@ export const Home: React.FC = () => {
             <Tab active={tab === 'counter'}>
               <Text onClick={() => setTab('counter')}>Counter smart contract</Text>
             </Tab>
+            <Tab active={tab === 'debug'}>
+              <Text onClick={() => setTab('debug')}>Dubugger</Text>
+            </Tab>
           </Flex>
         </Container>
-        <Container>{tab === 'status' ? <Status /> : <Counter />}</Container>
+        <Container>
+          {tab === 'status' && <Status />}
+          {tab === 'counter' && <Counter />}
+          {tab === 'debug' && <Debugger />}
+        </Container>
       </>
     );
   };

@@ -1,5 +1,5 @@
 import React from 'react';
-import Styled from 'styled-components';
+import styled from '@emotion/styled';
 
 const AppsIcon: React.FC = props => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
@@ -76,7 +76,7 @@ const PrivateIcon: React.FC = props => (
   </svg>
 );
 
-const MiniSVG = Styled.svg`
+const MiniSVG = styled.svg`
   margin-left: 4px;
   margin-right: 4px;
   display: inline;

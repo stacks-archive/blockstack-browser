@@ -1,101 +1,44 @@
 import React, { useState } from 'react';
-
-import { Box, Button, Input, Text } from '@blockstack/ui';
-import { PoweredBy, Screen, ScreenActions, ScreenBody, ScreenFooter, ScreenHeader } from '@screen';
-import { Title } from '@components/typography';
-
-import { useAppDetails } from '@common/hooks/useAppDetails';
-import { useDispatch } from '@common/hooks/use-dispatch';
-import { doFinishSignIn, doSetUsername } from '@store/onboarding/actions';
+import { Box, Text, Button, Input } from '@stacks/ui';
+import { PopupContainer } from '@components/popup/container';
+import { IdentityNameValidityError, registerSubdomain, validateSubdomain } from '@stacks/keychain';
 import { useWallet } from '@common/hooks/use-wallet';
-import { UsernameRegistryError, ErrorReason } from './registery-error';
-
-import { DEFAULT_PASSWORD, ScreenPaths } from '@store/onboarding/types';
-import {
-  Identity,
-  IdentityNameValidityError,
-  registerSubdomain,
-  validateSubdomain,
-} from '@stacks/keychain';
-import { didGenerateWallet } from '@store/wallet';
-import { ErrorLabel } from '@components/error-label';
 import { gaiaUrl, Subdomain } from '@common/constants';
-import {
-  USERNAME_REGISTER_FAILED,
-  USERNAME_SUBMIT_SUCCESS,
-  USERNAME_SUBMITTED,
-  USERNAME_VALIDATION_ERROR,
-} from '@common/track';
-import { useAnalytics } from '@common/hooks/use-analytics';
-import { useLocation } from 'react-router-dom';
+import { buildEnterKeyEvent } from '@components/link';
+import { ErrorLabel } from '@components/error-label';
+import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 
 const identityNameLengthError =
   'Your username should be at least 8 characters, with a maximum of 37 characters.';
 const identityNameIllegalCharError =
   'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
 const identityNameUnavailableError = 'This username is not available';
-const errorTextMap = {
+export const errorTextMap = {
   [IdentityNameValidityError.MINIMUM_LENGTH]: identityNameLengthError,
   [IdentityNameValidityError.MAXIMUM_LENGTH]: identityNameLengthError,
   [IdentityNameValidityError.ILLEGAL_CHARACTER]: identityNameIllegalCharError,
   [IdentityNameValidityError.UNAVAILABLE]: identityNameUnavailableError,
 };
 
-export const Username: React.FC<{}> = () => {
-  const { pathname } = useLocation();
-
-  const { wallet } = useWallet();
-  const dispatch = useDispatch();
-  const { name } = useAppDetails();
-  const { doTrack } = useAnalytics();
-
-  const [error, setError] = useState<IdentityNameValidityError | null>(null);
-  const [status, setStatus] = useState('initial');
-  const [submissionError, setSubmissionError] = useState<ErrorReason | undefined>();
-  document.title = `${name} with Blockstack`;
-  const setLoadingStatus = () => setStatus('loading');
-  const setErrorStatus = () => setStatus('error');
-
-  const isLoading = status === 'loading';
-
+export const Username: React.FC = () => {
+  const { wallet, currentIdentity, setWallet, doFinishSignIn } = useWallet();
+  const { decodedAuthRequest } = useOnboardingState();
   const [username, setUsername] = useState('');
-  const [hasAttemptedSubmit, setHasAttemptedSubmit] = useState(false);
+  const [error, setError] = useState<IdentityNameValidityError | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleInput = (evt: React.FormEvent<HTMLInputElement>) => {
-    setError(null);
-    setUsername(evt.currentTarget.value || '');
-  };
-
+  if (!wallet || !currentIdentity) {
+    return null;
+  }
   const onSubmit = async () => {
-    setHasAttemptedSubmit(true);
-    setLoadingStatus();
+    setLoading(true);
+    const validationError = await validateSubdomain(username, Subdomain);
+    setError(validationError);
 
-    doTrack(USERNAME_SUBMITTED);
-
-    const validationErrors = await validateSubdomain(username, Subdomain);
-
-    if (validationErrors !== null) {
-      doTrack(USERNAME_VALIDATION_ERROR);
-      setError(validationErrors);
-      setErrorStatus();
+    if (validationError !== null) {
+      // doTrack(USERNAME_VALIDATION_ERROR);
+      setLoading(false);
       return;
-    }
-
-    if (!wallet) {
-      dispatch(doSetUsername(username));
-      return;
-    }
-
-    let identity: Identity;
-    let identityIndex: number;
-
-    if (pathname === ScreenPaths.USERNAME) {
-      identity = wallet.identities[0];
-      identityIndex = 0;
-    } else {
-      // we're in ScreenPaths.ADD_ACCOUNT
-      identity = await wallet.createNewIdentity(DEFAULT_PASSWORD);
-      identityIndex = wallet.identities.length - 1;
     }
 
     try {
@@ -103,87 +46,66 @@ export const Username: React.FC<{}> = () => {
         username,
         subdomain: Subdomain,
         gaiaHubUrl: gaiaUrl,
-        identity,
+        identity: currentIdentity,
       });
-      doTrack(USERNAME_SUBMIT_SUCCESS);
-      await dispatch(didGenerateWallet(wallet));
-      await dispatch(doFinishSignIn({ identityIndex }));
-    } catch (error) {
-      doTrack(USERNAME_REGISTER_FAILED, { status: error.status });
-      if (error.status === 409) {
-        setSubmissionError('rateLimited');
-      } else {
-        setSubmissionError('network');
+      setWallet(wallet);
+      if (decodedAuthRequest) {
+        await doFinishSignIn(0);
       }
+    } catch (error) {
+      console.error(error);
     }
   };
-
-  if (submissionError) {
-    return (
-      <UsernameRegistryError
-        errorReason={submissionError}
-        onTryAgain={() => {
-          setSubmissionError(undefined);
-          setLoadingStatus();
-          onSubmit();
-        }}
-      />
-    );
-  }
-
   return (
-    <Screen onSubmit={onSubmit}>
-      <ScreenHeader />
-      <ScreenBody
-        mt={6}
-        body={[
-          <Box>
-            <Title>Choose a username</Title>
-            <Text mt={2} display="block">
-              This is how people will find you in {name} and other apps you use with your Secret
-              Key.
-            </Text>
-            <Box textAlign="left" position="relative" mt={4}>
-              <Input
-                data-test="input-username"
-                paddingRight="100px"
-                autoFocus
-                fontSize="16px"
-                value={username}
-                aria-invalid={error !== null}
-                onChange={handleInput}
-                autoCorrect="off"
-                autoComplete="off"
-                autoCapitalize="off"
-                spellCheck="false"
-              />
-            </Box>
-            {error && hasAttemptedSubmit && (
-              <ErrorLabel>
-                <Text textAlign="left" display="block" textStyle="caption" color="feedback.error">
-                  {errorTextMap[error]}
-                </Text>
-              </ErrorLabel>
-            )}
-          </Box>,
-        ]}
-      />
-      <ScreenActions>
-        <Button
-          width="100%"
-          size="lg"
-          mt={6}
-          data-test="button-username-continue"
-          type="submit"
-          isDisabled={isLoading}
-          isLoading={isLoading}
-        >
-          Continue
-        </Button>
-      </ScreenActions>
-      <ScreenFooter>
-        <PoweredBy />
-      </ScreenFooter>
-    </Screen>
+    <PopupContainer title="Choose a username">
+      <Box my="base">
+        <Text fontSize={2}>This is how others will see you in Stacks apps.</Text>
+      </Box>
+      <Box flexGrow={[1, 1, 0.5]} />
+      <Box>
+        <Box>
+          <Input
+            display="block"
+            width="100%"
+            autoFocus
+            isDisabled={loading}
+            value={username}
+            onChange={(evt: React.FormEvent<HTMLInputElement>) =>
+              setUsername(evt.currentTarget.value)
+            }
+            onKeyPress={buildEnterKeyEvent(onSubmit)}
+            name="username"
+            data-test="username-input"
+          />
+        </Box>
+        <Box position="relative">
+          {error && (
+            <ErrorLabel>
+              <Text
+                textAlign="left"
+                display="block"
+                textStyle="caption"
+                color="feedback.error"
+                position="relative"
+                top="5px"
+              >
+                {errorTextMap[error]}
+              </Text>
+            </ErrorLabel>
+          )}
+        </Box>
+        <Box width="100%" my="base">
+          <Button
+            width="100%"
+            mode="primary"
+            onClick={onSubmit}
+            isLoading={loading}
+            data-test="username-button"
+          >
+            Add username
+          </Button>
+        </Box>
+      </Box>
+    </PopupContainer>
   );
 };

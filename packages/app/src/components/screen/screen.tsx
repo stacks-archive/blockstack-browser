@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, FlexProps } from '@blockstack/ui';
+import { Flex, FlexProps } from '@stacks/ui';
 import { ScreenLoader } from './screen-loader';
 
 interface ScreenBodyProps extends FlexProps {

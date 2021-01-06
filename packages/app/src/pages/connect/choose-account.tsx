@@ -1,13 +1,13 @@
 import React from 'react';
 import { Screen, ScreenBody, ScreenFooter, ScreenHeader } from '@screen';
 import { Title } from '@components/typography';
-import { Box, PseudoBox, Text } from '@blockstack/ui';
+import { Box, Text } from '@stacks/ui';
 import { Accounts } from '@components/accounts';
 import { AppIcon } from '@components/app-icon';
 import { useSelector } from 'react-redux';
 import { AppState, store } from '@store';
 import { selectAppName, selectDecodedAuthRequest } from '@store/onboarding/selectors';
-import { Drawer } from '@components/drawer';
+import { ReuseAppDrawer } from '@components/drawer/reuse-app-drawer';
 import { ConfigApp } from '@stacks/keychain';
 import { gaiaUrl } from '@common/constants';
 import { ExtensionButton } from '@components/extension-button';
@@ -22,7 +22,7 @@ import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Navigate } from '@components/navigate';
-import { isValidUrl } from '../../common/validate-url';
+import { isValidUrl } from '@common/validate-url';
 
 interface ChooseAccountProps {
   next: (identityIndex: number) => void;
@@ -32,11 +32,11 @@ interface ChooseAccountProps {
 const SettingsButton = () => {
   const { doChangeScreen } = useAnalytics();
   return (
-    <PseudoBox _hover={{ cursor: 'pointer' }} onClick={() => doChangeScreen(ScreenPaths.HOME)}>
+    <Box _hover={{ cursor: 'pointer' }} onClick={() => doChangeScreen(ScreenPaths.HOME)}>
       <Text color="blue" fontWeight={500} textStyle="body.small.medium" fontSize="12px">
         Settings
       </Text>
-    </PseudoBox>
+    </Box>
   );
 };
 
@@ -44,7 +44,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   const { appName } = useSelector((state: AppState) => ({
     appName: selectAppName(state),
   }));
-  const { wallet, identities } = useWallet();
+  const { wallet } = useWallet();
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
   const [identityIndex, setIdentityIndex] = React.useState<number | undefined>();
   const { doTrack } = useAnalytics();
@@ -99,7 +99,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
 
   return (
     <Box flexGrow={1} position="relative">
-      <Drawer
+      <ReuseAppDrawer
         close={() => {
           setIdentityIndex(undefined);
           doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_BACK);
@@ -125,7 +125,6 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
             <Title pb={2}>Choose an account</Title>,
             `to use with ${appName}`,
             <Accounts
-              identities={identities}
               identityIndex={identityIndex}
               next={(identityIndex: number) => didSelectAccount({ identityIndex })}
               showAddAccount

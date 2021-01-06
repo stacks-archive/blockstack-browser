@@ -50,7 +50,11 @@ describe('generated transactions', () => {
     });
     const token = decodeToken(txDataToken);
     const txData = (token.payload as unknown) as TransactionPayload;
-    const tx = await generateTransaction({ txData, wallet, nonce: 1 });
+    const tx = await generateTransaction({
+      txData,
+      signer: wallet.identities[0].getSigner(),
+      nonce: 0,
+    });
     expect(tx.postConditionMode).toEqual(PostConditionMode.Allow);
     const postCondition = tx.postConditions.values[0];
     if ('amount' in postCondition) {
@@ -58,5 +62,5 @@ describe('generated transactions', () => {
     } else {
       throw new Error('Deserialized TX does not have post condition');
     }
-  }, 20000);
+  }, 5000);
 });

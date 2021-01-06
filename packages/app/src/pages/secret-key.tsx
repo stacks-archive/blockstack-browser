@@ -9,7 +9,7 @@ import {
   ScreenFooter,
   ScreenHeader,
 } from '@screen';
-import { Button, Text } from '@blockstack/ui';
+import { Button, Text } from '@stacks/ui';
 
 import { Toast } from '@components/toast';
 import { Card } from '@components/card';
@@ -65,6 +65,7 @@ export const SecretKey: React.FC<SecretKeyProps> = props => {
                 value={secretKey}
                 className="hidden-secret-key"
                 data-test="textarea-seed-phrase"
+                data-loaded={String(!!secretKey)}
               />
             </Card>,
           ]}

@@ -34,12 +34,23 @@ export const pageTrackingNameMap = {
   [ScreenPaths.GENERATION]: 'Generation',
   [ScreenPaths.SECRET_KEY]: 'Copy Secret Key',
   [ScreenPaths.SAVE_KEY]: 'Save Secret Key',
+  [ScreenPaths.ONBOARDING_PASSWORD]: 'Onboarding password',
   [ScreenPaths.SIGN_IN]: 'Sign In',
   [ScreenPaths.RECOVERY_CODE]: 'Magic Recovery Code',
   [ScreenPaths.ADD_ACCOUNT]: ' Select Username',
   [ScreenPaths.REGISTRY_ERROR]: 'Username Registry Error',
   [ScreenPaths.SETTINGS_KEY]: 'Settings: Secret Key',
   [ScreenPaths.HOME]: 'App Home',
+  [ScreenPaths.INSTALLED]: 'Connect Installed',
+  [ScreenPaths.SIGN_IN_INSTALLED]: 'Installation Sign In',
+  [ScreenPaths.SIGN_UP_INSTALLED]: 'Installation Sign Up',
+  [ScreenPaths.POPUP_HOME]: 'Popup Home',
+  [ScreenPaths.POPUP_SEND]: 'Popup Send',
+  [ScreenPaths.POPUP_RECEIVE]: 'Popup Receive',
+  [ScreenPaths.ADD_NETWORK]: 'Add Network',
+  [ScreenPaths.EDIT_POST_CONDITIONS]: 'Edit Post Conditions',
+  [ScreenPaths.TRANSACTION_POPUP]: 'Sign a Transaction',
+  [ScreenPaths.SET_PASSWORD]: 'Set Password',
 };
 
 export const titleNameMap = {
@@ -53,7 +64,18 @@ export const titleNameMap = {
   [ScreenPaths.ADD_ACCOUNT]: ' Select Username',
   [ScreenPaths.REGISTRY_ERROR]: 'Failed to register username',
   [ScreenPaths.SETTINGS_KEY]: 'View your Secret Key',
-  [ScreenPaths.HOME]: 'Secret Key',
+  [ScreenPaths.HOME]: 'Stacks Wallet',
+  [ScreenPaths.INSTALLED]: 'Welcome to Connect',
+  [ScreenPaths.SIGN_IN_INSTALLED]: 'Sign in',
+  [ScreenPaths.SIGN_UP_INSTALLED]: 'Sign up',
+  [ScreenPaths.POPUP_HOME]: 'Stacks Wallet',
+  [ScreenPaths.POPUP_SEND]: 'Send a Token',
+  [ScreenPaths.POPUP_RECEIVE]: 'Receive a Token',
+  [ScreenPaths.ADD_NETWORK]: 'Add Network',
+  [ScreenPaths.EDIT_POST_CONDITIONS]: 'Edit Post Conditions',
+  [ScreenPaths.TRANSACTION_POPUP]: 'Sign a Transaction',
+  [ScreenPaths.SET_PASSWORD]: 'Set your password',
+  [ScreenPaths.ONBOARDING_PASSWORD]: 'Set your password',
 };
 
 export const doTrackScreenChange = (

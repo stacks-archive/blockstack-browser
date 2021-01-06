@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, BoxProps, Text } from '@blockstack/ui';
+import { Box, BoxProps, Text } from '@stacks/ui';
 
 interface CardProps extends BoxProps {
   title: string;
@@ -21,7 +21,7 @@ const Card: React.FC<CardProps> = ({ title, children, ...rest }) => {
         </Text>
       </Box>
       <Box px={10} py={5}>
-        <Text>{children}</Text>
+        <Text display="block">{children}</Text>
       </Box>
     </Box>
   );

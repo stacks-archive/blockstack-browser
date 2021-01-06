@@ -1,11 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { selectDecodedAuthRequest } from '@store/onboarding/selectors';
 import { doTrack as track, doTrackScreenChange } from '@common/track';
-import { doChangeScreen as changeScreen, doSetOnboardingPath } from '@store/onboarding/actions';
-import { ScreenPaths, persistedScreens } from '@store/onboarding/types';
+import { doChangeScreen as changeScreen } from '@store/onboarding/actions';
+import { ScreenPaths } from '@store/onboarding/types';
 import { useAppDetails } from './useAppDetails';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
 import { useNavigate } from 'react-router-dom';
 
 export const useAnalytics = () => {
@@ -33,9 +31,6 @@ export const useAnalytics = () => {
   };
 
   const doChangeScreen = (path: ScreenPaths, changeRoute = true) => {
-    if (persistedScreens.includes(path)) {
-      dispatch(doSetOnboardingPath(path));
-    }
     doTrackScreenChange(path, authRequest);
     if (changeRoute) {
       return doNavigatePage(path);

@@ -26,18 +26,30 @@ export enum ScreenPaths {
   SECRET_KEY = '/sign-up/secret-key',
   SETTINGS_KEY = '/settings/secret-key',
   SAVE_KEY = '/sign-up/save-secret-key',
-  USERNAME = '/sign-up/username',
+  ONBOARDING_PASSWORD = '/sign-up/set-password',
+  USERNAME = '/username',
   SIGN_IN = '/sign-in',
   RECOVERY_CODE = '/sign-in/recover',
   ADD_ACCOUNT = '/sign-in/add-account',
   CHOOSE_ACCOUNT = '/connect/choose-account',
   REGISTRY_ERROR = '/username-error',
   HOME = '/',
+  INSTALLED = '/installed',
+  SIGN_IN_INSTALLED = '/installed/sign-in',
+  SIGN_UP_INSTALLED = '/installed/sign-up',
+  SET_PASSWORD = '/set-password',
+  POPUP_HOME = '/',
+  POPUP_SEND = '/send',
+  POPUP_RECEIVE = '/receive',
+  ADD_NETWORK = '/add-network',
+  EDIT_POST_CONDITIONS = '/transaction/post-conditions',
+  TRANSACTION_POPUP = '/transaction',
 }
 
 export const persistedScreens = [
   ScreenPaths.SECRET_KEY,
   ScreenPaths.SAVE_KEY,
+  ScreenPaths.ONBOARDING_PASSWORD,
   ScreenPaths.USERNAME,
 ];
 

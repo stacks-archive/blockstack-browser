@@ -14,14 +14,14 @@ export const showConnect = (authOptions: AuthOptions) => {
     }
   };
   element.addEventListener('onSignUp', () => {
-    authenticate({
+    void authenticate({
       ...authOptions,
       sendToSignIn: false,
       onFinish: finishedWrapper,
     });
   });
   element.addEventListener('onSignIn', () => {
-    authenticate({
+    void authenticate({
       ...authOptions,
       sendToSignIn: true,
       onFinish: finishedWrapper,

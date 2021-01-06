@@ -16,4 +16,14 @@ module.exports = {
     browser: true,
     context: true,
   },
+  rules: {
+    '@typescript-eslint/no-unnecessary-type-assertion': [0],
+    '@typescript-eslint/no-unsafe-assignment': [0],
+    '@typescript-eslint/no-unsafe-return': [0],
+    '@typescript-eslint/no-unsafe-call': [0],
+    '@typescript-eslint/no-unsafe-member-access': [0],
+    '@typescript-eslint/ban-types': [0],
+    '@typescript-eslint/restrict-template-expressions': [0],
+    '@typescript-eslint/explicit-module-boundary-types': [0],
+  }
 };

@@ -14,12 +14,7 @@ export const getAuthRequestParam = () => {
 
 export const authenticationInit = () => {
   const authRequest = getAuthRequestParam();
-  if (authRequest) {
-    return authRequest;
-  } else {
-    console.log('No auth request found');
-  }
-  return null;
+  return authRequest;
 };
 
 export const getEventSourceWindow = (event: MessageEvent) => {
@@ -58,7 +53,7 @@ export const finalizeAuthResponse = ({
   authResponse,
 }: FinalizeAuthParams) => {
   const dangerousUri = decodedAuthRequest.redirect_uri;
-  if (!isValidUrl(dangerousUri) || dangerousUri.includes('javascript')) {
+  if (!isValidUrl(dangerousUri)) {
     throw new Error('Cannot proceed auth with malformed url');
   }
   const redirect = `${dangerousUri}?authResponse=${authResponse}`;
@@ -155,3 +150,13 @@ export const getRandomWord = () => {
   const list = wordlists.EN;
   return list[Math.floor(Math.random() * list.length)];
 };
+
+export function stringToHslColor(str: string, saturation: number, lightness: number): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const hue = hash % 360;
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}

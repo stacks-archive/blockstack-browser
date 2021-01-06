@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, PseudoBox, Box } from '@blockstack/ui';
+import { Flex, Box } from '@stacks/ui';
 import { BlockstackMini } from '../vector';
 import { buildEnterKeyEvent } from '../link';
 
@@ -16,7 +16,7 @@ export const PoweredBy: React.FC = () => (
     width="100%"
     my="loose"
   >
-    <PseudoBox
+    <Box
       textAlign="center"
       onClick={onClick}
       onKeyPress={buildEnterKeyEvent(onClick)}
@@ -33,6 +33,6 @@ export const PoweredBy: React.FC = () => (
         <BlockstackMini />
       </Box>
       Blockstack
-    </PseudoBox>
+    </Box>
   </Flex>
 );

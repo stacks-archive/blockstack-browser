@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box } from '@blockstack/ui';
-import { BoxProps } from '@blockstack/ui';
+import { Box } from '@stacks/ui';
+import { BoxProps } from '@stacks/ui';
 
 interface GutterProps extends BoxProps {
   multiplier: number;

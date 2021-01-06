@@ -45,7 +45,7 @@ For development instructions of specific packages, see the `README` in each pack
 ## Building browser extensions
 
 1. From the root of this repository, in the command line, run `sh build-ext.sh`
-2. The extension will be packaged as `connect-extension.zip` inside this folder.
+2. The extension will be packaged as `stacks-wallet-chromium.zip` inside this folder.
 
 ### Optional - Build browser extensions using Docker
 
@@ -56,23 +56,23 @@ For development instructions of specific packages, see the `README` in each pack
 
 1. Copy the built extensions to your local machine:
     ```bash
-    docker run -d --name ux ux && docker cp ux:connect-extension.zip . && docker rm -f ux
+    docker run -d --name ux ux && docker cp ux:stacks-wallet-chromium.zip . && docker rm -f ux
     ```
 
 ## Install browser extension from source
 
-First, unzip the `connect-extension.zip` file that was generated in the previous step.
+First, unzip the `stacks-wallet-chromium.zip` file that was generated in the previous step.
 
 If installing for Chrome or Brave:
 
 1. Go to: [**chrome://extensions**](chrome://extensions)
 2. Toggle: "**developer mode**" on.
 3. Click on: "**Load unpacked**"
-4. Select the new folder that was unzipped from `connect-extension.zip`.
+4. Select the new folder that was unzipped from `stacks-wallet-chromium.zip`.
 
 If installing for Firefox:
 
 1. Go to: [**about:debugging**](about:debugging)
 2. Click on "**This Firefox**"
 3. Click on: "**Load Temporary Add-on…**"
-4. Inside the new folder that was unzipped from `connect-extension.zip`, select the `manifest.json` file.
+4. Inside the new folder that was unzipped from `stacks-wallet-chromium.zip`, select the `manifest.json` file.

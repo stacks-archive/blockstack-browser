@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Flex, Text, BoxProps } from '@blockstack/ui';
+import { Box, Flex, Text, BoxProps, FlexProps } from '@stacks/ui';
 
 export interface Tab {
   title: string | React.ReactNode;
@@ -55,7 +55,7 @@ const TabBody: React.FC<TabBodyProps> = ({ tab }) => {
   );
 };
 
-export interface TabbedCardProps extends BoxProps {
+export interface TabbedCardProps extends FlexProps {
   tabs: Tab[];
 }
 
@@ -80,7 +80,7 @@ export const TabbedCard: React.FC<TabbedCardProps> = ({ tabs, ...rest }) => {
     );
   });
   return (
-    <Flex borderWidth="1px" borderColor="gray.light" borderRadius="8px" {...rest} wrap="wrap">
+    <Flex borderWidth="1px" borderColor="gray.light" borderRadius="8px" {...rest} flexWrap="wrap">
       <Box width="100%">
         <Flex px={3} width="100%">
           {Header}

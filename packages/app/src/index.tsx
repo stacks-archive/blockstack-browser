@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { Store as ReduxStore } from 'redux';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { persistor } from './store';
+import { persistor } from '@store';
 import App from '@components/app';
 import DevStore from './common/dev/store';
 import { setStatsConfig } from '@common/track';
@@ -26,5 +26,6 @@ if (EXT_ENV === 'web') {
   buildApp(store);
 } else {
   const store = ExtStore();
+  // eslint-disable-next-line @typescript-eslint/no-floating-promises
   store.ready().then(() => buildApp(store));
 }

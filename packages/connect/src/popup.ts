@@ -10,7 +10,7 @@ interface PopupOptions {
 // Ensures retina subpixel rounding
 // does not leave slightly blurry underlap
 const defaultWidth = 442;
-const defaultHeight = 532;
+const defaultHeight = 580;
 const defaultTitle = 'Continue with Secret Key';
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Window/open

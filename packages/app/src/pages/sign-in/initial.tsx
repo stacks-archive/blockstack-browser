@@ -1,16 +1,16 @@
 import React, { useState, createRef } from 'react';
 import { Screen, ScreenBody, ScreenActions, Title, ScreenFooter, ScreenHeader } from '@screen';
-import { Box, Text, Input, Flex, Button, space } from '@blockstack/ui';
+import { Box, Text, Input, Flex, Button, space } from '@stacks/ui';
 import { AppIcon } from '@components/app-icon';
 import { Link } from '@components/link';
 import useDocumentTitle from '@rehooks/document-title';
 import { useDispatch, useSelector } from 'react-redux';
 import { SIGN_IN_CORRECT, SIGN_IN_CREATE, SIGN_IN_INCORRECT } from '@common/track';
 import { doSetMagicRecoveryCode } from '@store/onboarding/actions';
-import { ScreenPaths, DEFAULT_PASSWORD } from '@store/onboarding/types';
+import { ScreenPaths } from '@store/onboarding/types';
 import { AppState } from '@store';
 import { selectAppName } from '@store/onboarding/selectors';
-import { doStoreSeed } from '@store/wallet';
+import { useWallet } from '@common/hooks/use-wallet';
 import { ErrorLabel } from '@components/error-label';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ExtensionButton } from '@components/extension-button';
@@ -25,6 +25,7 @@ interface SignInProps {
 }
 
 export const SignIn: React.FC<SignInProps> = props => {
+  const { doStoreSeed } = useWallet();
   const [isLoading, setLoading] = useState(false);
   const [seed, setSeed] = useState('');
   const [seedError, setSeedError] = useState<null | string>(null);
@@ -48,7 +49,7 @@ export const SignIn: React.FC<SignInProps> = props => {
         doChangeScreen(ScreenPaths.RECOVERY_CODE);
         return;
       }
-      await doStoreSeed(parsedKeyInput, DEFAULT_PASSWORD)(dispatch, () => ({}), {});
+      await doStoreSeed(parsedKeyInput);
       doTrack(SIGN_IN_CORRECT);
       props.next();
     } catch (error) {
@@ -72,14 +73,15 @@ export const SignIn: React.FC<SignInProps> = props => {
             <Input
               autoFocus
               minHeight="68px"
-              placeholder="12-word Secret Key"
+              placeholder="Enter your Secret Key"
               as="textarea"
               value={seed}
               fontSize={'16px'}
+              width="100%"
               autoCapitalize="off"
               spellCheck={false}
               style={{ resize: 'none' }}
-              ref={textAreaRef}
+              ref={textAreaRef as any}
               onChange={async (evt: React.FormEvent<HTMLInputElement>) => {
                 setSeedError(null);
                 setSeed(evt.currentTarget.value);
@@ -105,7 +107,7 @@ export const SignIn: React.FC<SignInProps> = props => {
         ]}
       />
       <ScreenActions>
-        <Flex justify="space-between" align="center" width="100%" mt={6}>
+        <Flex justifyContent="space-between" alignItems="center" width="100%" mt={6}>
           <Link
             color="blue"
             onClick={() => {
@@ -119,7 +121,7 @@ export const SignIn: React.FC<SignInProps> = props => {
             size="lg"
             type="submit"
             data-test="sign-in-key-continue"
-            onClick={async event => {
+            onClick={async (event: MouseEvent) => {
               event.preventDefault();
               return onSubmit();
             }}

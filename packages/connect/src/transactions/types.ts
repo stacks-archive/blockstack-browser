@@ -52,7 +52,9 @@ export interface ContractCallBase extends TxBase {
 export interface ContractCallOptions extends ContractCallBase {
   authOrigin?: string;
   userSession?: UserSession;
+  /** @deprecated use `onFinish` */
   finished?: (data: FinishedTxData) => void;
+  onFinish?: (data: FinishedTxData) => void;
 }
 
 export interface ContractCallArgument {
@@ -77,7 +79,9 @@ export interface ContractDeployBase extends TxBase {
 export interface ContractDeployOptions extends ContractDeployBase {
   authOrigin?: string;
   userSession?: UserSession;
+  /** @deprecated use `onFinish` */
   finished?: (data: FinishedTxData) => void;
+  onFinish?: (data: FinishedTxData) => void;
 }
 
 export interface ContractDeployPayload extends ContractDeployOptions {
@@ -98,7 +102,9 @@ export interface STXTransferBase extends TxBase {
 export interface STXTransferOptions extends STXTransferBase {
   authOrigin?: string;
   userSession?: UserSession;
+  /** @deprecated use `onFinish` */
   finished?: (data: FinishedTxData) => void;
+  onFinish?: (data: FinishedTxData) => void;
 }
 
 export interface STXTransferPayload extends STXTransferOptions {
@@ -116,5 +122,5 @@ export type TransactionPayload = ContractCallPayload | ContractDeployPayload | S
 
 export interface TransactionPopup {
   token: string;
-  opts: TransactionOptions;
+  options: TransactionOptions;
 }
