@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - 'master'
-    tags_ignore:
-      - '**'
+    paths-ignore:
+      - '**/CHANGELOG.md'
   workflow_dispatch:
 
 env:
