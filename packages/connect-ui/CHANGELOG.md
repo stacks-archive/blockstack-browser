@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.17.10 (2021-01-06)
+
+
+### Bug Fixes
+
+* dont run publish on master commits without tag ([0b7cb3a](https://github.com/blockstack/ux/commit/0b7cb3ac50af92bd9ad993b70d48cd930fd31c29))
+
+
+
+
+
 ## 2.17.9 (2021-01-06)
 
 **Note:** Version bump only for package @stacks/connect-ui

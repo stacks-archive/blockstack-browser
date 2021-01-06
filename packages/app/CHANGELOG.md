@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.20.10 (2021-01-06)
+
+
+### Bug Fixes
+
+* dont run publish on master commits without tag ([0b7cb3a](https://github.com/blockstack/ux/commit/0b7cb3ac50af92bd9ad993b70d48cd930fd31c29))
+
+
+
+
+
 ## 1.20.9 (2021-01-06)
 
 **Note:** Version bump only for package @stacks/app
