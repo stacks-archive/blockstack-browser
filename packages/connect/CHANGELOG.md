@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.3.14 (2021-01-08)
+
+
+### Bug Fixes
+
+* broken tx signing with extension ([0235140](https://github.com/blockstack/ux/commit/023514021c64e06a80bc31125831d5c35ece3118))
+
+
+
+
+
 ## 4.3.13 (2021-01-06)
 
 
