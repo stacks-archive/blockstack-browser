@@ -102,20 +102,7 @@ export class IdentityItem extends Component {
                 <p className="card-title">
                   {this.props.canAddUsername ? (
                     <div>
-                      <a
-                        href="#"
-                        onClick={event => {
-                          event.preventDefault()
-                          event.stopPropagation()
-                          this.props.router.push(
-                            `/profiles/i/add-username/${
-                              this.props.index
-                            }/search`
-                          )
-                        }}
-                      >
-                        Add username
-                      </a>
+                      Account {this.props.index}
                     </div>
                   ) : (
                     <>

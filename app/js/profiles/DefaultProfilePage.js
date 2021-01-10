@@ -785,7 +785,7 @@ export class DefaultProfilePage extends Component {
                           </span>
                         </div>
 
-                        <div className="text-center">
+                        {/* <div className="text-center">
                           {identity.canAddUsername ? (
                             <div className="text-center">
                               <Link
@@ -807,7 +807,7 @@ export class DefaultProfilePage extends Component {
                               ) : null}
                             </div>
                           )}
-                        </div>
+                        </div> */}
 
                         <div
                           className="pro-card-identity-address m-b-25 text-center

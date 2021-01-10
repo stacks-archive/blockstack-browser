@@ -34,12 +34,13 @@ class WalletApp extends Component {
     return (
       <div>
         <Navbar activeTab="wallet" />
-        <div className="container-fluid col-centered form-container-secondary">
+        <div className="container-fluid col-centered form-container-secondary" style={{ padding: '20px 15px' }}>
           <strong>NOTE:</strong> You cannot use this wallet to send and receive Stacks (STX) tokens. Also, you cannot use the Bitcoin (BTC) address on this page to fund STX transactions. This wallet and its address <strong>only</strong> support the purchase of Blockstack identities (IDs). <strong>To create or fund STX transactions, use the Stacks Wallet software.</strong> See <a href="https://docs.blockstack.org/org/wallet-install.html" target="_blank">the Stacks Wallet software documentation</a> for more information. 
         </div>
+        <div className="container-fluid col-centered form-container-secondary" style={{ padding: '20px 15px' }}>
+          <strong>This product is deprecated.</strong> We advise you to withdraw any BTC from this wallet. 
+        </div>
         <SecondaryNavBar
-          leftButtonTitle="Receive"
-          leftButtonLink="/wallet/receive"
           isLeftActive={(activeTabUrl === '/wallet/receive')}
           rightButtonTitle="Send"
           rightButtonLink="/wallet/send"
