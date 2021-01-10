@@ -1,6 +1,7 @@
 import { ScreenPaths } from '@store/onboarding/types';
 import { Page, BrowserContext } from 'playwright-core';
 import { createTestSelector, wait } from '../utils';
+import { USERNAMES_ENABLED } from '@common/constants';
 
 export class WalletPage {
   static url = 'http://localhost:8081/index.html#';
@@ -123,8 +124,10 @@ export class WalletPage {
   }
 
   async enterUsername(username: string) {
-    await this.page.fill(this.usernameInput, username);
-    await this.page.click(this.setUsernameDone);
+    if (USERNAMES_ENABLED) {
+      await this.page.fill(this.usernameInput, username);
+      await this.page.click(this.setUsernameDone);
+    }
   }
 
   chooseAccount(username: string) {

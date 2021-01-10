@@ -7,6 +7,7 @@ import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { AccountStep } from '@store/recoil/drawers';
 import { Divider } from '@components/divider';
+import { USERNAMES_ENABLED } from '@common/constants';
 
 const SettingsItem: React.FC<BoxProps> = ({ onClick, children, ...props }) => (
   <Box
@@ -107,7 +108,7 @@ export const SettingsPopover: React.FC = () => {
       >
         View Secret Key
       </SettingsItem>
-      {currentIdentity && !currentIdentity.defaultUsername ? (
+      {USERNAMES_ENABLED && currentIdentity && !currentIdentity.defaultUsername ? (
         <>
           <Divider />
           <SettingsItem

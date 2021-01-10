@@ -265,6 +265,7 @@ module.exports = {
       VERSION: JSON.stringify(version),
       COMMIT_SHA: JSON.stringify(commit),
       BRANCH: JSON.stringify(branch),
+      'process.env.USERNAMES_ENABLED': JSON.stringify(process.env.USERNAMES_ENABLED || 'false'),
     }),
     isDevelopment &&
       extEnv === 'web' &&

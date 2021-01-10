@@ -6,6 +6,7 @@ import { DemoPage } from './page-objects/demo.page';
 import { WalletPage } from './page-objects/wallet.page';
 import { Wallet } from '@stacks/keychain';
 import { ChainID } from '@blockstack/stacks-transactions';
+import { USERNAMES_ENABLED } from '@common/constants';
 
 const WRONG_SECRET_KEY =
   'invite helmet save lion indicate chuckle world pride afford hard broom yup';
@@ -93,6 +94,12 @@ environments.forEach(([browserType, deviceType]) => {
     });
 
     it('creating an account - negative scenarious', async () => {
+      if (!USERNAMES_ENABLED) {
+        console.log(
+          'Skipping username validation tests, because subdomain registration is disabled.'
+        );
+        return;
+      }
       await demoPage.goToPage();
       await demoPage.openConnect();
       await demoPage.clickConnectGetStarted();

@@ -6,6 +6,7 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { buildEnterKeyEvent } from '@components/link';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
+import { USERNAMES_ENABLED } from '@common/constants';
 
 interface SetPasswordProps {
   redirect?: boolean;
@@ -13,7 +14,7 @@ interface SetPasswordProps {
 export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { doSetPassword, identities } = useWallet();
+  const { doSetPassword, identities, doFinishSignIn } = useWallet();
   const { doChangeScreen } = useAnalytics();
   const { decodedAuthRequest } = useOnboardingState();
 
@@ -25,13 +26,23 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
       console.log('should choose account?');
       if (identities && (identities.length > 1 || identities[0].defaultUsername)) {
         doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT);
+      } else if (!USERNAMES_ENABLED) {
+        await doFinishSignIn(0);
       } else {
         doChangeScreen(ScreenPaths.USERNAME);
       }
     } else if (redirect) {
       doChangeScreen(ScreenPaths.INSTALLED);
     }
-  }, [doSetPassword, doChangeScreen, password, redirect, decodedAuthRequest, identities]);
+  }, [
+    doSetPassword,
+    doChangeScreen,
+    password,
+    redirect,
+    decodedAuthRequest,
+    identities,
+    doFinishSignIn,
+  ]);
 
   return (
     <PopupContainer hideActions title="Set a password">

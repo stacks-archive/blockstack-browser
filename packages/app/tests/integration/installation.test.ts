@@ -24,11 +24,15 @@ environments.forEach(([browserType, deviceType]) => {
       browser = await browserType.launch({
         args: launchArgs,
       });
-      console.log('[DEBUG]: Launched puppeteer browser');
+      if (process.env.CI) {
+        console.log('[DEBUG]: Launched puppeteer browser');
+      }
     });
 
     beforeEach(async () => {
-      console.log('[DEBUG]: Starting new browser context.');
+      if (process.env.CI) {
+        console.log('[DEBUG]: Starting new browser context.');
+      }
       if (deviceType) {
         context = await browser.newContext({
           viewport: deviceType.viewport,
