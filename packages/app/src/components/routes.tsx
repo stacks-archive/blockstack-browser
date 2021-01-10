@@ -89,18 +89,11 @@ export const Routes: React.FC = () => {
       <AccountGateRoute path={ScreenPaths.POPUP_HOME} element={<PopupHome />} />
       <AccountGateRoute path={ScreenPaths.POPUP_SEND} element={<PopupSend />} />
       <AccountGateRoute path={ScreenPaths.POPUP_RECEIVE} element={<PopupReceive />} />
+      <AccountGateRoute path={ScreenPaths.SETTINGS_KEY} element={<SecretKey />} />
       <RouterRoute path={ScreenPaths.ADD_NETWORK} element={<AddNetwork />} />
-      <AccountGateRoute
-        path={ScreenPaths.EDIT_POST_CONDITIONS}
-        element={<EditPostConditionsPage />}
-      />
       <Route path={ScreenPaths.SET_PASSWORD} element={<SetPasswordPage redirect />} />
       {/*Sign Up*/}
       <Route path={ScreenPaths.GENERATION} element={getSignUpElement()} />
-      <Route
-        path={ScreenPaths.SECRET_KEY}
-        element={<SecretKey next={() => doChangeScreen(ScreenPaths.SAVE_KEY)} />}
-      />
       <Route
         path={ScreenPaths.SAVE_KEY}
         element={
@@ -150,10 +143,9 @@ export const Routes: React.FC = () => {
       />
       {/* Transactions */}
       <AccountGateRoute path={ScreenPaths.TRANSACTION_POPUP} element={<TransactionPage />} />
-      {/*Error/Misc*/}
       <AccountGateRoute
-        path={ScreenPaths.SETTINGS_KEY}
-        element={<SecretKey next={() => doChangeScreen(ScreenPaths.HOME)} />}
+        path={ScreenPaths.EDIT_POST_CONDITIONS}
+        element={<EditPostConditionsPage />}
       />
     </RoutesDom>
   );

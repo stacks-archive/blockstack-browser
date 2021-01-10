@@ -1,92 +1,50 @@
-import React, { useState, useEffect } from 'react';
-
-import {
-  Screen,
-  ScreenBody,
-  ScreenActions,
-  Title,
-  PoweredBy,
-  ScreenFooter,
-  ScreenHeader,
-} from '@screen';
-import { Button, Text } from '@stacks/ui';
-
-import { Toast } from '@components/toast';
+import React from 'react';
+import { PopupContainer } from '@components/popup/container';
+import { Text, Button, Box, useClipboard } from '@stacks/ui';
+import { useWallet } from '@common/hooks/use-wallet';
 import { Card } from '@components/card';
 import { SeedTextarea } from '@components/seed-textarea';
+import { Toast } from '@components/toast';
+import { useAnalytics } from '@common/hooks/use-analytics';
+import { ScreenPaths } from '@store/onboarding/types';
 
-import { useWallet } from '@common/hooks/use-wallet';
-import { useAppDetails } from '@common/hooks/useAppDetails';
-import { PasswordManagerHiddenInput } from '@components/pw-manager-input';
-
-interface SecretKeyProps {
-  next: () => void;
-}
-
-export const SecretKey: React.FC<SecretKeyProps> = props => {
-  const title = 'Your Secret Key';
+export const SecretKey: React.FC = () => {
   const { secretKey } = useWallet();
-  const { name } = useAppDetails();
-  const [copied, setCopiedState] = useState(false);
+  const { onCopy, hasCopied } = useClipboard(secretKey || '');
+  const { doChangeScreen } = useAnalytics();
 
-  useEffect(() => {
-    if (copied) {
-      setTimeout(() => props.next(), 1600);
-    }
-  });
-
-  const handleButtonClick = () => {
-    const input: HTMLInputElement | null = document.querySelector('.hidden-secret-key');
-    input?.select();
-    input?.setSelectionRange(0, 99999);
-    document.execCommand('copy');
-    setCopiedState(true);
-    document.getSelection()?.empty();
-  };
+  const words = (secretKey || '').split(' ').length;
 
   return (
-    <>
-      <Screen onSubmit={handleButtonClick}>
-        <PasswordManagerHiddenInput appName={name} secretKey={secretKey} />
-        <ScreenHeader />
-        <ScreenBody
-          mt={6}
-          body={[
-            <Title>{title}</Title>,
-            <Text mt={2} display="block">
-              Here’s your Secret Key: 12 words that prove it’s you when you want to use {name} on a
-              new device. Once lost it’s lost forever, so save it somewhere you won’t forget.
-            </Text>,
-            <Card title="Your Secret Key" mt={6}>
-              <SeedTextarea
-                readOnly
-                spellCheck="false"
-                autoCapitalize="false"
-                value={secretKey}
-                className="hidden-secret-key"
-                data-test="textarea-seed-phrase"
-                data-loaded={String(!!secretKey)}
-              />
-            </Card>,
-          ]}
+    <PopupContainer title="Your secret key">
+      <Toast show={hasCopied} />
+      <Text my="base" display="block">
+        Here’s your Secret Key: {words} words that prove it’s you when you want to use {name} on a
+        new device. Once lost it’s lost forever, so save it somewhere you won’t forget.
+      </Text>
+      <Card title="Your Secret Key" my="loose">
+        <SeedTextarea
+          readOnly
+          spellCheck="false"
+          autoCapitalize="false"
+          value={secretKey}
+          className="hidden-secret-key"
+          data-test="textarea-seed-phrase"
+          data-loaded={String(!!secretKey)}
         />
-        <ScreenActions>
-          <Button
-            type="submit"
-            data-test="button-copy-secret-key"
-            size="lg"
-            width="100%"
-            mt={6}
-            isDisabled={copied}
-          >
-            Copy Secret Key
-          </Button>
-        </ScreenActions>
-        <ScreenFooter>
-          <PoweredBy />
-        </ScreenFooter>
-      </Screen>
-      <Toast show={copied} />
-    </>
+      </Card>
+      <Box my="base">
+        <Button mb="base" width="100%" mode="secondary" onClick={onCopy}>
+          Copy to clipboard
+        </Button>
+        <Button
+          width="100%"
+          onClick={() => doChangeScreen(ScreenPaths.HOME)}
+          data-test="confirm-saved-key"
+        >
+          I've saved it
+        </Button>
+      </Box>
+    </PopupContainer>
   );
 };

@@ -100,14 +100,13 @@ export const SettingsPopover: React.FC = () => {
         </SettingsItem>
       ) : null}
 
-      {/* <SettingsItem
+      <SettingsItem
         onClick={() => {
-          const url = chrome.runtime.getURL(ScreenPaths.SETTINGS_KEY);
-          window.open(url, '_blank');
+          doChangeScreen(ScreenPaths.SETTINGS_KEY);
         }}
       >
         View Secret Key
-      </SettingsItem> */}
+      </SettingsItem>
       {currentIdentity && !currentIdentity.defaultUsername ? (
         <>
           <Divider />
