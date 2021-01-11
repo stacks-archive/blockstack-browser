@@ -30,9 +30,9 @@ export const SettingsPopover: React.FC = () => {
   const ref = React.useRef<HTMLDivElement | null>(null);
   const {
     doSignOut,
-    currentIdentity,
+    currentAccount,
     doLockWallet,
-    identities,
+    wallet,
     currentNetworkKey,
     isSignedIn,
   } = useWallet();
@@ -79,7 +79,7 @@ export const SettingsPopover: React.FC = () => {
       background="white"
       display={showing ? 'block' : 'none'}
     >
-      {identities && identities.length > 1 ? (
+      {wallet && wallet.accounts.length > 1 ? (
         <SettingsItem
           mt="tight"
           onClick={wrappedCloseCallback(() => {
@@ -108,7 +108,7 @@ export const SettingsPopover: React.FC = () => {
       >
         View Secret Key
       </SettingsItem>
-      {USERNAMES_ENABLED && currentIdentity && !currentIdentity.defaultUsername ? (
+      {USERNAMES_ENABLED && currentAccount && !currentAccount.username ? (
         <>
           <Divider />
           <SettingsItem

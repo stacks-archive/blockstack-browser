@@ -1,12 +1,11 @@
-import { validateMnemonic, wordlists, generateMnemonic } from 'bip39';
+import { validateMnemonic, wordlists } from 'bip39';
 import { BrowserContext } from 'playwright-core';
 import { randomString, Browser, environments, SECRET_KEY } from './utils';
 import { setupMocks } from './mocks';
 import { DemoPage } from './page-objects/demo.page';
 import { WalletPage } from './page-objects/wallet.page';
-import { Wallet } from '@stacks/keychain';
-import { ChainID } from '@blockstack/stacks-transactions';
 import { USERNAMES_ENABLED } from '@common/constants';
+import { generateSecretKey, generateWallet, getAppPrivateKey } from '@stacks/wallet-sdk';
 
 const WRONG_SECRET_KEY =
   'invite helmet save lion indicate chuckle world pride afford hard broom yup';
@@ -187,9 +186,9 @@ environments.forEach(([browserType, deviceType]) => {
       await demoPage.clickAlreadyHaveSecretKey();
       const auth = await WalletPage.getAuthPopup(context);
 
-      const seed = generateMnemonic();
-      const wallet = await Wallet.restore('password', seed, ChainID.Testnet);
-      await auth.loginWithPreviousSecretKey(seed);
+      const secretKey = generateSecretKey();
+      const wallet = await generateWallet({ secretKey, password: 'password' });
+      await auth.loginWithPreviousSecretKey(secretKey);
       const username = `${getRandomWord()}_${getRandomWord()}_${getRandomWord()}_${getRandomWord()}`;
       await auth.enterUsername(username);
 
@@ -202,7 +201,9 @@ environments.forEach(([browserType, deviceType]) => {
         appPrivateKeyEl
       )) as string;
       expect(appPrivateKey).toBeTruthy();
-      expect(appPrivateKey).toEqual(wallet.identities[0].appPrivateKey(DemoPage.url));
+      expect(appPrivateKey).toEqual(
+        getAppPrivateKey({ account: wallet.accounts[0], appDomain: DemoPage.url })
+      );
     });
   });
 });

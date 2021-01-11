@@ -1,12 +1,7 @@
-import { UserSession } from 'blockstack';
+import { UserSession } from '@stacks/auth';
 import { AuthOptions } from '../auth';
-import {
-  PostConditionMode,
-  PostCondition,
-  StacksNetwork,
-  AnchorMode,
-  ClarityValue,
-} from '@blockstack/stacks-transactions';
+import { PostConditionMode, PostCondition, AnchorMode, ClarityValue } from '@stacks/transactions';
+import { StacksNetwork } from '@stacks/network';
 import BN from 'bn.js';
 
 export interface TxBase {

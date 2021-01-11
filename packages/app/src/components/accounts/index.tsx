@@ -6,6 +6,7 @@ import { ListItem } from './list-item';
 import { AccountAvatar } from './account-avatar';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { useWallet } from '@common/hooks/use-wallet';
+import { getGaiaAddress } from '@stacks/wallet-sdk';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
@@ -45,33 +46,40 @@ const AccountItem = ({ label, address, selectedAddress, ...rest }: AccountItemPr
 };
 
 interface AccountsProps {
-  identityIndex?: number;
+  accountIndex?: number;
   showAddAccount?: boolean;
-  next?: (identityIndex: number) => void;
+  next?: (accountIndex: number) => void;
 }
 
-export const Accounts = ({ showAddAccount, identityIndex, next }: AccountsProps) => {
-  const { identities } = useWallet();
+export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) => {
+  const { wallet } = useWallet();
   const [selectedAddress, setSelectedAddress] = useState<null | string>(null);
   const { doChangeScreen } = useAnalytics();
 
   useEffect(() => {
-    if (typeof identityIndex === 'undefined' && selectedAddress) {
+    if (typeof accountIndex === 'undefined' && selectedAddress) {
       setSelectedAddress(null);
     }
-  }, [identityIndex]);
+  }, [accountIndex, setSelectedAddress, selectedAddress]);
+
+  if (!wallet) return null;
+
+  const accounts = wallet.accounts.map(account => ({
+    username: account.username,
+    address: getGaiaAddress(account),
+  }));
 
   return (
     <Flex flexDirection="column">
-      {(identities || []).map(({ defaultUsername, address }, key) => {
+      {accounts.map(({ username, address }, key) => {
         return (
           <ListItem
             key={key}
             isFirst={key === 0}
             cursor={selectedAddress ? 'not-allowed' : 'pointer'}
-            iconComponent={() => <AccountAvatar username={defaultUsername || address} mr={3} />}
+            iconComponent={() => <AccountAvatar username={username || address} mr={3} />}
             hasAction={!!next && selectedAddress === null}
-            data-test={`account-${(defaultUsername || address).split('.')[0]}`}
+            data-test={`account-${(username || address).split('.')[0]}`}
             onClick={() => {
               if (!next) return;
               if (selectedAddress) return;
@@ -82,7 +90,7 @@ export const Accounts = ({ showAddAccount, identityIndex, next }: AccountsProps)
             <AccountItem
               address={address}
               selectedAddress={selectedAddress}
-              label={defaultUsername || address}
+              label={username || address}
               data-test={`account-index-${key}`}
             />
           </ListItem>

@@ -14,17 +14,19 @@ interface SetPasswordProps {
 export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const { doSetPassword, identities, doFinishSignIn } = useWallet();
+  const { doSetPassword, wallet, doFinishSignIn } = useWallet();
   const { doChangeScreen } = useAnalytics();
   const { decodedAuthRequest } = useOnboardingState();
 
   const submit = useCallback(async () => {
+    if (!wallet) throw 'Please log in before setting a password.';
     setLoading(true);
     await doSetPassword(password);
     setLoading(false);
     if (decodedAuthRequest) {
       console.log('should choose account?');
-      if (identities && (identities.length > 1 || identities[0].defaultUsername)) {
+      const { accounts } = wallet;
+      if (accounts && (accounts.length > 1 || accounts[0].username)) {
         doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT);
       } else if (!USERNAMES_ENABLED) {
         await doFinishSignIn(0);
@@ -40,7 +42,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
     password,
     redirect,
     decodedAuthRequest,
-    identities,
+    wallet,
     doFinishSignIn,
   ]);
 

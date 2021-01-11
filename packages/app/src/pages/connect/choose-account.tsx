@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { AppState, store } from '@store';
 import { selectAppName, selectDecodedAuthRequest } from '@store/onboarding/selectors';
 import { ReuseAppDrawer } from '@components/drawer/reuse-app-drawer';
-import { ConfigApp } from '@stacks/keychain';
 import { gaiaUrl } from '@common/constants';
 import { ExtensionButton } from '@components/extension-button';
 import {
@@ -23,9 +22,15 @@ import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Navigate } from '@components/navigate';
 import { isValidUrl } from '@common/validate-url';
+import {
+  createWalletGaiaConfig,
+  updateWalletConfig,
+  WalletConfig,
+  ConfigApp,
+} from '@stacks/wallet-sdk';
 
 interface ChooseAccountProps {
-  next: (identityIndex: number) => void;
+  next: (accountIndex: number) => void;
   back?: () => void;
 }
 
@@ -44,9 +49,9 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   const { appName } = useSelector((state: AppState) => ({
     appName: selectAppName(state),
   }));
-  const { wallet } = useWallet();
+  const { wallet, walletConfig } = useWallet();
   const [reusedApps, setReusedApps] = React.useState<ConfigApp[]>([]);
-  const [identityIndex, setIdentityIndex] = React.useState<number | undefined>();
+  const [accountIndex, setAccountIndex] = React.useState<number | undefined>();
   const { doTrack } = useAnalytics();
 
   if (!wallet) {
@@ -54,24 +59,25 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   }
 
   // TODO: refactor into util, create unit tests
-  const didSelectAccount = ({ identityIndex }: { identityIndex: number }) => {
+  const didSelectAccount = ({ accountIndex }: { accountIndex: number }) => {
     const state = store.getState();
     const authRequest = selectDecodedAuthRequest(state);
-    setIdentityIndex(identityIndex);
+    setAccountIndex(accountIndex);
     if (!authRequest) {
       console.error('No authRequest found when selecting account');
       return;
     }
     if (
-      wallet.walletConfig &&
-      !wallet.walletConfig.hideWarningForReusingIdentity &&
+      walletConfig.state === 'hasValue' &&
+      walletConfig.contents &&
+      !walletConfig.contents.meta?.hideWarningForReusingIdentity &&
       authRequest.scopes.includes('publish_data')
     ) {
       if (!isValidUrl(authRequest.redirect_uri)) {
         throw new Error('Cannot proceed with malformed url');
       }
       const url = new URL(authRequest.redirect_uri);
-      const apps = wallet.walletConfig.identities[identityIndex]?.apps;
+      const apps = walletConfig.contents.accounts[accountIndex]?.apps;
       if (apps) {
         let newReusedApps: ConfigApp[] = [];
         let hasLoggedInWithThisID = false;
@@ -94,27 +100,33 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
       }
     }
     doTrack(CHOOSE_ACCOUNT_CHOSEN);
-    next(identityIndex);
+    next(accountIndex);
   };
 
   return (
     <Box flexGrow={1} position="relative">
       <ReuseAppDrawer
         close={() => {
-          setIdentityIndex(undefined);
+          setAccountIndex(undefined);
           doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_BACK);
           setTimeout(() => setReusedApps([]), 250);
         }}
         showing={reusedApps.length > 0}
         apps={reusedApps}
         confirm={async (hideWarning: boolean) => {
-          if (hideWarning) {
+          if (hideWarning && walletConfig.value) {
             doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_DISABLED);
-            const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
-            await wallet.updateConfigForReuseWarning({ gaiaConfig });
+            const gaiaHubConfig = await createWalletGaiaConfig({ wallet, gaiaHubUrl: gaiaUrl });
+            const newConfig: WalletConfig = {
+              ...walletConfig.value,
+              meta: {
+                hideWarningForReusingIdentity: true,
+              },
+            };
+            await updateWalletConfig({ wallet, walletConfig: newConfig, gaiaHubConfig });
           }
           doTrack(CHOOSE_ACCOUNT_REUSE_WARNING_CONTINUE);
-          next(identityIndex as number);
+          next(accountIndex as number);
         }}
       />
       <Screen textAlign="center">
@@ -125,8 +137,8 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
             <Title pb={2}>Choose an account</Title>,
             `to use with ${appName}`,
             <Accounts
-              identityIndex={identityIndex}
-              next={(identityIndex: number) => didSelectAccount({ identityIndex })}
+              accountIndex={accountIndex}
+              next={(accountIndex: number) => didSelectAccount({ accountIndex })}
               showAddAccount
             />,
           ]}

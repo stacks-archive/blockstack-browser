@@ -16,7 +16,7 @@ import { useLoadable } from '@common/hooks/use-loadable';
 
 export const useTxState = () => {
   const location = useLocation();
-  const { currentIdentity, doSetLatestNonce } = useWallet();
+  const { currentAccount, doSetLatestNonce } = useWallet();
   const [error, setError] = useState<string | null>(null);
   const pendingTransaction = useRecoilValue(pendingTransactionStore);
   const contractSource = useLoadable(contractSourceStore);
@@ -27,7 +27,7 @@ export const useTxState = () => {
   const setRequestToken = useSetRecoilState(requestTokenStore);
   const currentNetwork = useRecoilValue(currentNetworkStore);
 
-  if (!currentIdentity) {
+  if (!currentAccount) {
     throw new Error('User must be logged in.');
   }
 

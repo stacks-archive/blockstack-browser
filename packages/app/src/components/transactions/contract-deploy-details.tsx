@@ -7,8 +7,8 @@ import { Prism } from '@common/clarity-prism';
 
 export const ContractDeployDetails: React.FC = () => {
   const { pendingTransaction } = useTxState();
-  const { currentIdentity } = useWallet();
-  if (!pendingTransaction || pendingTransaction.txType !== 'smart_contract' || !currentIdentity) {
+  const { currentAccount, currentAccountStxAddress } = useWallet();
+  if (!pendingTransaction || pendingTransaction.txType !== 'smart_contract' || !currentAccount) {
     return null;
   }
   return (
@@ -29,8 +29,8 @@ export const ContractDeployDetails: React.FC = () => {
                 </Text>
               </Box>
               <Box>
-                <Text fontSize={1} color="ink.600" title={currentIdentity.getStxAddress()}>
-                  {truncateMiddle(currentIdentity.getStxAddress())}
+                <Text fontSize={1} color="ink.600" title={currentAccountStxAddress}>
+                  {truncateMiddle(currentAccountStxAddress || '')}
                 </Text>
               </Box>
             </Flex>

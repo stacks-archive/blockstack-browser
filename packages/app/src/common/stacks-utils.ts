@@ -12,9 +12,8 @@ import {
   PostCondition,
   FungibleConditionCode,
   NonFungibleConditionCode,
-} from '@blockstack/stacks-transactions';
+} from '@stacks/transactions';
 import BigNumber from 'bignumber.js';
-import { Identity } from '@stacks/keychain';
 import { c32addressDecode } from 'c32check';
 import { getAssetStringParts } from '@stacks/ui-utils';
 
@@ -85,13 +84,6 @@ export const truncateMiddle = (input: string, offset = 5): string => {
   const start = input?.substr(0, offset);
   const end = input?.substr(input.length - offset, input.length);
   return `${start}…${end}`;
-};
-
-export const getIdentityDisplayName = (identity: Identity, index: number): string => {
-  if (identity.defaultUsername) {
-    return identity.defaultUsername.split('.')[0];
-  }
-  return `Account ${index + 1}`;
 };
 
 export const validateStacksAddress = (stacksAddress: string): boolean => {

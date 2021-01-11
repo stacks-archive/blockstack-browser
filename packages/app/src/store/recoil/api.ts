@@ -1,8 +1,10 @@
 import { selector, atom, atomFamily } from 'recoil';
-import { currentIdentityStore, latestNonceStore } from './wallet';
+import { latestNonceStore, currentAccountStore } from './wallet';
 import { rpcClientStore, currentNetworkStore } from './networks';
 import type { CoreNodeInfoResponse } from '@blockstack/stacks-blockchain-api-types';
 import { fetchAllAccountData } from '@common/api/accounts';
+import { getStxAddress } from '@stacks/wallet-sdk';
+import { TransactionVersion } from '@stacks/transactions';
 
 export const apiRevalidation = atom({
   key: 'api.revalidation',
@@ -35,12 +37,14 @@ export const accountInfoStore = selector({
   get: async ({ get }) => {
     get(apiRevalidation);
     get(intervalStore(15000));
-    const currentIdentity = get(currentIdentityStore);
+    const account = get(currentAccountStore);
     const rpcClient = get(rpcClientStore);
-    if (!currentIdentity) {
+    if (!account) {
       throw new Error('Cannot get account info when logged out.');
     }
-    const info = await rpcClient.fetchAccount(currentIdentity?.getStxAddress());
+    const info = await rpcClient.fetchAccount(
+      getStxAddress({ account, transactionVersion: TransactionVersion.Testnet })
+    );
     return info;
   },
 });
@@ -94,11 +98,11 @@ export const accountDataStore = selector({
   key: 'api.account-data',
   get: async ({ get }) => {
     const { url } = get(currentNetworkStore);
-    const currentIdentity = get(currentIdentityStore);
-    const principal = currentIdentity?.getStxAddress();
-    if (!principal) {
+    const account = get(currentAccountStore);
+    if (!account) {
       throw 'Unable to get account info when logged out.';
     }
+    const principal = getStxAddress({ account, transactionVersion: TransactionVersion.Testnet });
     try {
       const accountData = await fetchAllAccountData(url)(principal);
       return accountData;

@@ -1,53 +1,31 @@
 import React, { useState } from 'react';
 import { Box, Text, Button, Input } from '@stacks/ui';
 import { PopupContainer } from '@components/popup/container';
-import { IdentityNameValidityError, registerSubdomain, validateSubdomain } from '@stacks/keychain';
 import { useWallet } from '@common/hooks/use-wallet';
-import { gaiaUrl, Subdomain } from '@common/constants';
 import { buildEnterKeyEvent } from '@components/link';
-import { ErrorLabel } from '@components/error-label';
+// import { ErrorLabel } from '@components/error-label';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 
-const identityNameLengthError =
-  'Your username should be at least 8 characters, with a maximum of 37 characters.';
-const identityNameIllegalCharError =
-  'You can only use lowercase letters (a–z), numbers (0–9), and underscores (_).';
-const identityNameUnavailableError = 'This username is not available';
-export const errorTextMap = {
-  [IdentityNameValidityError.MINIMUM_LENGTH]: identityNameLengthError,
-  [IdentityNameValidityError.MAXIMUM_LENGTH]: identityNameLengthError,
-  [IdentityNameValidityError.ILLEGAL_CHARACTER]: identityNameIllegalCharError,
-  [IdentityNameValidityError.UNAVAILABLE]: identityNameUnavailableError,
-};
-
 export const Username: React.FC = () => {
-  const { wallet, currentIdentity, setWallet, doFinishSignIn } = useWallet();
+  const { wallet, currentAccount, setWallet, doFinishSignIn } = useWallet();
   const { decodedAuthRequest } = useOnboardingState();
   const [username, setUsername] = useState('');
-  const [error, setError] = useState<IdentityNameValidityError | null>(null);
   const [loading, setLoading] = useState(false);
 
-  if (!wallet || !currentIdentity) {
+  if (!wallet || !currentAccount) {
     return null;
   }
   const onSubmit = async () => {
     setLoading(true);
-    const validationError = await validateSubdomain(username, Subdomain);
-    setError(validationError);
-
-    if (validationError !== null) {
-      // doTrack(USERNAME_VALIDATION_ERROR);
-      setLoading(false);
-      return;
-    }
 
     try {
-      await registerSubdomain({
-        username,
-        subdomain: Subdomain,
-        gaiaHubUrl: gaiaUrl,
-        identity: currentIdentity,
-      });
+      // TODO: implement new BNS registrar
+      // await registerSubdomain({
+      //   username,
+      //   subdomain: Subdomain,
+      //   gaiaHubUrl: gaiaUrl,
+      //   identity: currentAccount,
+      // });
       setWallet(wallet);
       if (decodedAuthRequest) {
         await doFinishSignIn(0);
@@ -79,7 +57,7 @@ export const Username: React.FC = () => {
           />
         </Box>
         <Box position="relative">
-          {error && (
+          {/* {error && (
             <ErrorLabel>
               <Text
                 textAlign="left"
@@ -92,7 +70,7 @@ export const Username: React.FC = () => {
                 {errorTextMap[error]}
               </Text>
             </ErrorLabel>
-          )}
+          )} */}
         </Box>
         <Box width="100%" my="base">
           <Button

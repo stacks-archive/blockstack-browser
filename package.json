@@ -5,8 +5,6 @@
     "typecheck": "lerna run typecheck --parallel --no-bail --stream",
     "dev": "NODE_ENV=development yarn lerna exec --parallel 'yarn dev' --scope test-app --scope @stacks/app",
     "bootstrap": "lerna exec --parallel 'yarn'",
-    "build:libs": "yarn build:ui && yarn build:keychain && yarn build:connect",
-    "build:keychain": "lerna run build --scope @stacks/keychain",
     "build:connect": "lerna run build --scope @stacks/connect",
     "build:connect-ui": "lerna run build --scope @stacks/connect-ui",
     "build:app": "yarn build:connect-ui && lerna run prod:web --scope @stacks/app",

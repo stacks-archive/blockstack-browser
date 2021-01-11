@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Box, Flex, Text, DynamicColorCircle } from '@stacks/ui';
-import { addressToString, PostCondition, PostConditionType } from '@blockstack/stacks-transactions';
+import { addressToString, PostCondition, PostConditionType } from '@stacks/transactions';
 import { useSetRecoilState } from 'recoil';
 import { postConditionsStore, currentPostConditionIndexStore } from '@store/recoil/transaction';
 import { useAnalytics } from '@common/hooks/use-analytics';

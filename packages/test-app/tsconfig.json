@@ -34,8 +34,6 @@
 			"@common/*": ["../common/*"],
       "@stacks/connect-react": ["../../connect-react/src"],
       "@stacks/connect": ["../../connect/src"],
-			"@stacks/keychain": ["../../keychain/src"],
-      "@stacks/keychain/*": ["../../keychain/src/*"],
       "@cards/*": ["../components/cards/*"],
       "@stacks/rpc-client": ["../../rpc-client/src"]
 		},

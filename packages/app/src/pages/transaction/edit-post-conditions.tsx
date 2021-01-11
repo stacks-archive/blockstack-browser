@@ -21,7 +21,7 @@ import {
   NonFungibleConditionCode,
   createAssetInfo,
   PostConditionType,
-} from '@blockstack/stacks-transactions';
+} from '@stacks/transactions';
 import { useFormik } from 'formik';
 import { getAssetStringParts } from '@stacks/ui-utils';
 import BN from 'bn.js';
@@ -54,7 +54,7 @@ export const EditPostConditions: React.FC = () => {
   const currentPostCondition = useRecoilValue(currentPostConditionStore);
   const currentPostConditionIndex = useRecoilValue(currentPostConditionIndexStore);
   const selectedAsset = useRecoilValue(selectedAssetStore);
-  const { currentIdentity } = useWallet();
+  const { currentAccountStxAddress } = useWallet();
   const { doChangeScreen } = useAnalytics();
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export const EditPostConditions: React.FC = () => {
         // TODO: error;
         return;
       }
-      const address = currentIdentity?.getStxAddress() || '';
+      const address = currentAccountStxAddress || '';
       if (selectedAsset.type === 'ft') {
         const { address: contractAddress, contractName, assetName } = getAssetStringParts(
           selectedAsset.contractAddress

@@ -4,7 +4,6 @@ import { BaseDrawer, BaseDrawerProps } from './index';
 import {
   StacksTransaction,
   makeSTXTokenTransfer,
-  StacksTestnet,
   broadcastTransaction,
   makeContractCall,
   standardPrincipalCVFromAddress,
@@ -14,7 +13,8 @@ import {
   FungibleConditionCode,
   PostCondition,
   createAssetInfo,
-} from '@blockstack/stacks-transactions';
+} from '@stacks/transactions';
+import { StacksTestnet } from '@stacks/network';
 import { useWallet } from '@common/hooks/use-wallet';
 import BN from 'bn.js';
 import { stacksValue, stxToMicroStx } from '@common/stacks-utils';
@@ -40,12 +40,17 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
   balances,
 }) => {
   const [tx, setTx] = useState<StacksTransaction | undefined>();
-  const { currentIdentity, currentNetwork, doSetLatestNonce } = useWallet();
+  const {
+    currentAccount,
+    currentNetwork,
+    doSetLatestNonce,
+    currentAccountStxAddress,
+  } = useWallet();
   const asset = useRecoilValue(selectedAssetStore);
   const [loading, setLoading] = useState(false);
   const { doChangeScreen } = useAnalytics();
   const getTx = useCallback(async () => {
-    if (!asset || !currentIdentity) return;
+    if (!asset || !currentAccount || !currentAccountStxAddress) return;
     const network = new StacksTestnet();
     network.coreApiUrl = currentNetwork.url;
     setLoading(true);
@@ -54,7 +59,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
       const _tx = await makeSTXTokenTransfer({
         recipient,
         amount: new BN(mStx.toString(), 10),
-        senderKey: currentIdentity.keyPair.key,
+        senderKey: currentAccount.stxPrivateKey,
         network,
       });
       setTx(_tx);
@@ -70,7 +75,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
       if (tokenBalanceKey) {
         const assetInfo = createAssetInfo(contractAddress, contractName, assetName);
         const pc = makeStandardFungiblePostCondition(
-          currentIdentity.getStxAddress(),
+          currentAccountStxAddress,
           FungibleConditionCode.Equal,
           new BN(amount, 10),
           assetInfo
@@ -81,7 +86,7 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
         network,
         functionName,
         functionArgs: [standardPrincipalCVFromAddress(createAddress(recipient)), uintCV(amount)],
-        senderKey: currentIdentity.keyPair.key,
+        senderKey: currentAccount.stxPrivateKey,
         contractAddress,
         contractName,
         postConditions,
@@ -89,7 +94,15 @@ export const ConfirmSendDrawer: React.FC<ConfirmSendDrawerProps> = ({
       setTx(_tx);
     }
     setLoading(false);
-  }, [amount, recipient, currentIdentity, currentNetwork.url, balances, asset]);
+  }, [
+    amount,
+    recipient,
+    currentAccount,
+    currentNetwork.url,
+    balances,
+    asset,
+    currentAccountStxAddress,
+  ]);
 
   useEffect(() => {
     if (!showing) {

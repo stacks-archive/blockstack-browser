@@ -1,10 +1,12 @@
 import {
-  TransactionVersion,
   StacksTransaction,
   deserializeCV,
-} from '@blockstack/stacks-transactions';
-import { PostCondition } from '@blockstack/stacks-transactions/lib/postcondition';
-import { WalletSigner } from '@stacks/keychain';
+  PostCondition,
+  makeContractCall,
+  makeContractDeploy,
+  makeSTXTokenTransfer,
+  TransactionVersion,
+} from '@stacks/transactions';
 import {
   ContractDeployPayload,
   ContractCallPayload,
@@ -16,6 +18,7 @@ import { doTrack, TRANSACTION_SIGN_SUBMIT, TRANSACTION_SIGN_ERROR } from '@commo
 import { finalizeTxSignature } from './utils';
 import RPCClient from '@stacks/rpc-client';
 import BN from 'bn.js';
+import { StacksMainnet, StacksTestnet } from '@stacks/network';
 
 const getPostConditions = (postConditions?: PostCondition[]): PostCondition[] | undefined => {
   return postConditions?.map(postCondition => {
@@ -31,26 +34,25 @@ const getPostConditions = (postConditions?: PostCondition[]): PostCondition[] | 
 
 export const generateContractCallTx = ({
   txData,
-  signer,
+  senderKey,
   nonce,
 }: {
   txData: ContractCallPayload;
-  signer: WalletSigner;
+  senderKey: string;
   nonce?: number;
 }) => {
   const { contractName, contractAddress, functionName, functionArgs } = txData;
-  const version = TransactionVersion.Testnet;
   const args = functionArgs.map(arg => {
     return deserializeCV(Buffer.from(arg, 'hex'));
   });
 
-  return signer.signContractCall({
+  return makeContractCall({
     contractName,
     contractAddress,
     functionName,
+    senderKey,
     functionArgs: args,
-    version,
-    nonce,
+    nonce: nonce !== undefined ? new BN(nonce, 10) : undefined,
     postConditionMode: txData.postConditionMode,
     postConditions: getPostConditions(txData.postConditions),
     network: txData.network,
@@ -59,21 +61,20 @@ export const generateContractCallTx = ({
 
 export const generateContractDeployTx = ({
   txData,
-  signer,
+  senderKey,
   nonce,
 }: {
   txData: ContractDeployPayload;
-  signer: WalletSigner;
+  senderKey: string;
   nonce?: number;
 }) => {
   const { contractName, codeBody } = txData;
-  const version = TransactionVersion.Testnet;
 
-  return signer.signContractDeploy({
+  return makeContractDeploy({
     contractName,
     codeBody,
-    version,
-    nonce,
+    nonce: nonce !== undefined ? new BN(nonce, 10) : undefined,
+    senderKey,
     postConditionMode: txData.postConditionMode,
     postConditions: getPostConditions(txData.postConditions),
     network: txData.network,
@@ -82,42 +83,51 @@ export const generateContractDeployTx = ({
 
 export const generateSTXTransferTx = ({
   txData,
-  signer,
+  senderKey,
   nonce,
 }: {
   txData: STXTransferPayload;
-  signer: WalletSigner;
+  senderKey: string;
   nonce?: number;
 }) => {
   const { recipient, memo, amount } = txData;
-  return signer.signSTXTransfer({
+
+  return makeSTXTokenTransfer({
     recipient,
     memo,
-    amount,
-    nonce,
+    senderKey,
+    amount: new BN(amount),
+    nonce: nonce !== undefined ? new BN(nonce, 10) : undefined,
     network: txData.network,
   });
 };
 
 export const generateTransaction = async ({
   txData,
-  signer,
+  senderKey,
   nonce,
 }: {
-  signer: WalletSigner;
+  senderKey: string;
   nonce?: number;
   txData: TransactionPayload;
 }) => {
   let tx: StacksTransaction | null = null;
+  if (!txData.network?.transferFeeEstimateEndpoint) {
+    const network =
+      txData.network?.version === TransactionVersion.Mainnet
+        ? new StacksMainnet()
+        : new StacksTestnet();
+    txData.network = network;
+  }
   switch (txData.txType) {
     case TransactionTypes.ContractCall:
-      tx = await generateContractCallTx({ txData, signer, nonce });
+      tx = await generateContractCallTx({ txData, senderKey, nonce });
       break;
     case TransactionTypes.ContractDeploy:
-      tx = await generateContractDeployTx({ txData, signer, nonce });
+      tx = await generateContractDeployTx({ txData, senderKey, nonce });
       break;
     case TransactionTypes.STXTransfer:
-      tx = await generateSTXTransferTx({ txData, signer, nonce });
+      tx = await generateSTXTransferTx({ txData, senderKey, nonce });
       break;
     default:
       break;

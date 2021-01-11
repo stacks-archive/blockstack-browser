@@ -1,8 +1,0 @@
-dist
-lib
-babel.config.js
-webpack.config.js
-typedoc.js
-docs-theme/
-jest.config.js
-*.d.ts

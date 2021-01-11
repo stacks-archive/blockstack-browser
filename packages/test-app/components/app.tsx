@@ -3,7 +3,7 @@ import { ThemeProvider, theme, Flex, CSSReset } from '@blockstack/ui';
 import { Connect } from '@stacks/connect-react';
 import { AuthOptions } from '@stacks/connect';
 import { getAuthOrigin } from '@common/utils';
-import { UserSession, AppConfig } from 'blockstack';
+import { UserSession, AppConfig } from '@stacks/auth';
 import { defaultState, AppContext, AppState } from '@common/context';
 import { Header } from '@components/header';
 import { Home } from '@components/home';

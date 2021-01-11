@@ -19,13 +19,13 @@
   "typings": "dist/connect/src/index.d.ts",
   "unpkg": "dist/bundle.js",
   "dependencies": {
-    "@blockstack/stacks-transactions": "0.7.0",
-    "@stacks/auth": "^1.0.0-beta.19",
+    "@stacks/auth": "^1.0.0-beta.20",
+    "@stacks/network": "^1.0.0-beta.20",
+    "@stacks/transactions": "^1.0.0-beta.20",
     "@stacks/connect-ui": "^2.17.16",
     "jsontokens": "^3.0.0"
   },
   "devDependencies": {
-    "blockstack": "21.0.0",
     "tsdx": "^0.12.3",
     "tslib": "^1.10.0"
   },
@@ -34,8 +34,5 @@
   ],
   "license": "MIT",
   "main": "dist/index.js",
-  "module": "dist/connect.esm.js",
-  "peerDependencies": {
-    "blockstack": ">=19"
-  }
+  "module": "dist/connect.esm.js"
 }

@@ -1,7 +1,16 @@
 import { atom, selector, atomFamily } from 'recoil';
 import { localStorageEffect } from './index';
-import { Identity, Wallet } from '@stacks/keychain';
+import {
+  Wallet,
+  Account,
+  WalletConfig,
+  fetchWalletConfig,
+  createWalletGaiaConfig,
+  getStxAddress,
+} from '@stacks/wallet-sdk';
 import { currentNetworkKeyStore } from './networks';
+import { gaiaUrl } from '@common/constants';
+import { TransactionVersion } from '@stacks/transactions';
 
 export const secretKeyStore = atom<string | undefined>({
   key: 'wallet.secret-key',
@@ -16,45 +25,23 @@ export const hasSetPasswordStore = atom<boolean>({
 });
 
 export const walletStore = atom<Wallet | undefined>({
-  key: 'wallet.wallet',
+  key: 'wallet.wallet-v2',
   default: undefined,
   effects_UNSTABLE: [
     localStorageEffect({
       onlyExtension: true,
-      transformer: {
-        serialize: wallet => {
-          if (!wallet) return '';
-          return JSON.stringify(wallet);
-        },
-        deserialize: walletJSON => {
-          if (!walletJSON) return undefined;
-          return new Wallet(JSON.parse(walletJSON));
-        },
-      },
     }),
   ],
   dangerouslyAllowMutability: true,
 });
 
-export const identitiesStore = atom<Identity[] | undefined>({
-  key: 'wallet.identities',
-  default: undefined,
-  effects_UNSTABLE: [
-    localStorageEffect({
-      onlyExtension: true,
-      transformer: {
-        serialize: identities => {
-          if (!identities) return '';
-          return JSON.stringify(identities);
-        },
-        deserialize: identitiesJSON => {
-          if (!identitiesJSON) return '';
-          return JSON.parse(identitiesJSON).map((identity: Identity) => new Identity(identity));
-        },
-      },
-    }),
-  ],
-  dangerouslyAllowMutability: true,
+export const accountsStore = selector<Account[] | undefined>({
+  key: 'wallet.accounts',
+  get: ({ get }) => {
+    const wallet = get(walletStore);
+    if (!wallet) return undefined;
+    return wallet.accounts;
+  },
 });
 
 /**
@@ -83,14 +70,17 @@ export const latestNonceStore = selector({
   key: 'wallet.latest-nonce',
   get: ({ get }) => {
     const network = get(currentNetworkKeyStore);
-    const currentIdentity = get(currentIdentityStore);
-    const nonce = get(latestNoncesStore([network, currentIdentity?.getStxAddress() || '']));
+    const account = get(currentAccountStore);
+    const address = account
+      ? getStxAddress({ account, transactionVersion: TransactionVersion.Testnet })
+      : '';
+    const nonce = get(latestNoncesStore([network, address]));
     return nonce;
   },
 });
 
-export const currentIdentityIndexStore = atom<number | undefined>({
-  key: 'wallet.current-identity-index',
+export const currentAccountIndexStore = atom<number | undefined>({
+  key: 'wallet.current-account-index',
   default: undefined,
   effects_UNSTABLE: [localStorageEffect()],
 });
@@ -101,15 +91,15 @@ export const encryptedSecretKeyStore = atom<string | undefined>({
   effects_UNSTABLE: [localStorageEffect()],
 });
 
-export const currentIdentityStore = selector({
-  key: 'wallet.current-identity',
+export const currentAccountStore = selector({
+  key: 'wallet.current-account',
   get: ({ get }) => {
-    const identityIndex = get(currentIdentityIndexStore);
-    const identities = get(identitiesStore);
-    if (identityIndex === undefined || !identities) {
+    const accountIndex = get(currentAccountIndexStore);
+    const wallet = get(walletStore);
+    if (accountIndex === undefined || !wallet) {
       return undefined;
     }
-    return identities[identityIndex];
+    return wallet.accounts[accountIndex];
   },
   dangerouslyAllowMutability: true,
 });
@@ -118,4 +108,17 @@ export const lastSeenStore = atom<number>({
   key: 'wallet.last-seen',
   default: new Date().getTime(),
   effects_UNSTABLE: [localStorageEffect()],
+});
+
+export const walletConfigStore = selector<WalletConfig | null>({
+  key: 'wallet.wallet-config',
+  get: async ({ get }) => {
+    const wallet = get(walletStore);
+    if (!wallet) {
+      return null;
+    }
+    const gaiaHubConfig = await createWalletGaiaConfig({ wallet, gaiaHubUrl: gaiaUrl });
+    const walletConfig = await fetchWalletConfig({ wallet, gaiaHubConfig });
+    return walletConfig;
+  },
 });

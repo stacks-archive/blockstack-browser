@@ -1,6 +1,6 @@
 import React, { useReducer, createContext } from 'react';
 import { AuthOptions, FinishedData } from '@stacks/connect';
-import { UserSession } from 'blockstack/lib';
+import { UserSession } from '@stacks/auth';
 
 enum States {
   UPDATE_AUTH_OPTIONS = 'data/update-auth-options',

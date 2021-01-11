@@ -2,25 +2,22 @@ import { combineReducers, createStore, Store, compose, applyMiddleware } from 'r
 import { persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 import storage from 'redux-persist/lib/storage';
-import { walletReducer, WalletState } from './wallet';
-import { WalletTransform, OnboardingTransform } from './transforms';
+import { OnboardingTransform } from './transforms';
 import { onboardingReducer } from './onboarding/reducer';
 import { OnboardingState } from './onboarding/types';
 
 export interface AppState {
-  wallet: WalletState;
   onboarding: OnboardingState;
 }
 
 const reducers = combineReducers<AppState>({
-  wallet: walletReducer,
   onboarding: onboardingReducer,
 });
 
 const persistConfig = {
   storage,
   key: 'blockstack-redux',
-  transforms: [WalletTransform, OnboardingTransform],
+  transforms: [OnboardingTransform],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

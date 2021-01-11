@@ -1,24 +1,33 @@
 import { useCallback } from 'react';
-import { decrypt, Wallet, makeIdentity, encryptMnemonicFormatted } from '@stacks/keychain';
+import {
+  generateWallet,
+  generateSecretKey,
+  createWalletGaiaConfig,
+  getOrCreateWalletConfig,
+  updateWalletConfigWithApp,
+  makeAuthResponse,
+  encrypt,
+  decrypt,
+  generateNewAccount,
+  getStxAddress,
+} from '@stacks/wallet-sdk';
 import { useRecoilValue, useRecoilState, useSetRecoilState, useRecoilCallback } from 'recoil';
 import { useDispatch } from 'react-redux';
 import { gaiaUrl } from '@common/constants';
-import { bip32 } from 'bitcoinjs-lib';
 import { currentNetworkKeyStore, currentNetworkStore, networksStore } from '@store/recoil/networks';
 import {
   walletStore,
-  currentIdentityIndexStore,
-  currentIdentityStore,
   encryptedSecretKeyStore,
   secretKeyStore,
   hasSetPasswordStore,
   latestNoncesStore,
-  identitiesStore,
+  currentAccountIndexStore,
+  currentAccountStore,
+  walletConfigStore,
 } from '@store/recoil/wallet';
+import { TransactionVersion, StacksTransaction } from '@stacks/transactions';
 
-import { ChainID, StacksTransaction } from '@blockstack/stacks-transactions';
 import { DEFAULT_PASSWORD, ScreenPaths } from '@store/onboarding/types';
-import { mnemonicToSeed } from 'bip39';
 import { useOnboardingState } from './use-onboarding-state';
 import { finalizeAuthResponse } from '@common/utils';
 import {
@@ -29,7 +38,7 @@ import {
 } from '@store/onboarding/actions';
 import { doTrackScreenChange } from '@common/track';
 import { AppManifest, DecodedAuthRequest } from '@common/dev/types';
-import { decodeToken, verifyAuthRequest } from 'blockstack';
+import { decodeToken } from 'jsontokens';
 import { chainInfoStore } from '@store/recoil/api';
 import { useLoadable } from '@common/hooks/use-loadable';
 
@@ -43,99 +52,81 @@ export const useWallet = () => {
   const [wallet, setWallet] = useRecoilState(walletStore);
   const [secretKey, setSecretKey] = useRecoilState(secretKeyStore);
   const [encryptedSecretKey, setEncryptedSecretKey] = useRecoilState(encryptedSecretKeyStore);
-  const [currentIdentityIndex, setCurrentIdentityIndex] = useRecoilState(currentIdentityIndexStore);
+  const [currentAccountIndex, setCurrentAccountIndex] = useRecoilState(currentAccountIndexStore);
   const [hasSetPassword, setHasSetPassword] = useRecoilState(hasSetPasswordStore); // 🧐 setHasSetPassword 🤮
-  const [identities, setIdentities] = useRecoilState(identitiesStore);
-  const currentIdentity = useRecoilValue(currentIdentityStore);
+  const currentAccount = useRecoilValue(currentAccountStore);
   const networks = useRecoilValue(networksStore);
   const currentNetwork = useRecoilValue(currentNetworkStore);
   const currentNetworkKey = useRecoilValue(currentNetworkKeyStore);
   const chainInfo = useLoadable(chainInfoStore);
+  const walletConfig = useLoadable(walletConfigStore);
+
+  let currentAccountStxAddress = undefined;
+  if (currentAccount) {
+    // TODO: use version from current network
+    currentAccountStxAddress = getStxAddress({
+      account: currentAccount,
+      transactionVersion: TransactionVersion.Testnet,
+    });
+  }
+
   const setLatestNonces = useSetRecoilState(
-    latestNoncesStore([currentNetworkKey, currentIdentity?.getStxAddress() || ''])
+    latestNoncesStore([currentNetworkKey, currentAccountStxAddress || ''])
   );
   const dispatch = useDispatch();
   const { decodedAuthRequest, authRequest, appName, appIcon, screen } = useOnboardingState();
 
-  const firstIdentity = identities?.[0];
   const isSignedIn = !!wallet;
 
-  const doMakeWallet = useCallback(async () => {
-    const wallet = await Wallet.generate(DEFAULT_PASSWORD, ChainID.Mainnet);
-    const secretKey = await decrypt(wallet.encryptedBackupPhrase, DEFAULT_PASSWORD);
+  const doMakeWallet = useRecoilCallback(({ set }) => async () => {
+    const secretKey = generateSecretKey(128);
+    const wallet = await generateWallet({ secretKey, password: DEFAULT_PASSWORD });
     dispatch(doSetOnboardingProgress(true));
-    setWallet(wallet);
-    setIdentities(wallet.identities);
-    setSecretKey(secretKey);
-    setEncryptedSecretKey(wallet.encryptedBackupPhrase);
-    setCurrentIdentityIndex(0);
-  }, [
-    setWallet,
-    setSecretKey,
-    setEncryptedSecretKey,
-    setCurrentIdentityIndex,
-    setIdentities,
-    dispatch,
-  ]);
+    set(walletStore, wallet);
+    set(secretKeyStore, secretKey);
+    set(encryptedSecretKeyStore, wallet.encryptedSecretKey);
+    set(currentAccountIndexStore, 0);
+  });
 
   const doStoreSeed = useCallback(
     async (secretKey: string, password?: string) => {
-      const wallet = await Wallet.restore(password || DEFAULT_PASSWORD, secretKey, ChainID.Mainnet);
+      // TODO: restore existing accounts.
+      const wallet = await generateWallet({ secretKey, password: password || DEFAULT_PASSWORD });
       setWallet(wallet);
-      setIdentities(wallet.identities);
       setSecretKey(secretKey);
-      setEncryptedSecretKey(wallet.encryptedBackupPhrase);
-      setCurrentIdentityIndex(0);
+      setEncryptedSecretKey(wallet.encryptedSecretKey);
+      setCurrentAccountIndex(0);
       if (password !== undefined) setHasSetPassword(true);
     },
-    [
-      setWallet,
-      setSecretKey,
-      setEncryptedSecretKey,
-      setCurrentIdentityIndex,
-      setIdentities,
-      setHasSetPassword,
-    ]
+    [setWallet, setSecretKey, setEncryptedSecretKey, setHasSetPassword, setCurrentAccountIndex]
   );
 
-  const doCreateNewIdentity = useRecoilCallback(({ snapshot, set }) => async () => {
+  const doCreateNewAccount = useRecoilCallback(({ snapshot, set }) => async () => {
     const secretKey = await snapshot.getPromise(secretKeyStore);
     const wallet = await snapshot.getPromise(walletStore);
     if (!secretKey || !wallet) {
-      throw 'Unable to create a new identity - not logged in.';
+      throw 'Unable to create a new account - not logged in.';
     }
-    const seed = await mnemonicToSeed(secretKey);
-    const rootNode = bip32.fromSeed(seed);
-    const index = wallet.identities.length;
-    const identity = await makeIdentity(rootNode, index);
-    set(walletStore, wallet);
-    set(identitiesStore, [...wallet.identities, identity]);
-    set(currentIdentityIndexStore, index);
+    const newWallet = generateNewAccount(wallet);
+    // TODO: update wallet config
+    set(walletStore, newWallet);
   });
 
   const doSignOut = useCallback(() => {
     setWallet(undefined);
-    setIdentities(undefined);
-    setCurrentIdentityIndex(undefined);
+    setCurrentAccountIndex(undefined);
     setSecretKey(undefined);
     setEncryptedSecretKey(undefined);
     setHasSetPassword(false);
-  }, [
-    setWallet,
-    setCurrentIdentityIndex,
-    setSecretKey,
-    setEncryptedSecretKey,
-    setHasSetPassword,
-    setIdentities,
-  ]);
+  }, [setWallet, setCurrentAccountIndex, setSecretKey, setEncryptedSecretKey, setHasSetPassword]);
 
   const doSetPassword = useCallback(
     async (password: string) => {
       if (!secretKey) {
         throw new Error('Cannot set password - not logged in.');
       }
-      const { encryptedMnemonicHex } = await encryptMnemonicFormatted(secretKey, password);
-      setEncryptedSecretKey(encryptedMnemonicHex);
+      const encryptedBuffer = await encrypt(secretKey, password);
+      setEncryptedSecretKey(encryptedBuffer.toString('hex'));
       setHasSetPassword(true);
     },
     [secretKey, setEncryptedSecretKey, setHasSetPassword]
@@ -155,19 +146,26 @@ export const useWallet = () => {
   );
 
   const doFinishSignIn = useCallback(
-    async (identityIndex: number) => {
-      if (!decodedAuthRequest || !authRequest || !identities || !wallet) {
+    async (accountIndex: number) => {
+      const account = wallet?.accounts[accountIndex];
+      if (!decodedAuthRequest || !authRequest || !account || !wallet) {
         console.error('Uh oh! Finished onboarding without auth info.');
         return;
       }
       const appURL = new URL(decodedAuthRequest.redirect_uri);
-      const currentIdentity = identities[identityIndex];
-      await currentIdentity.refresh();
-      const gaiaConfig = await wallet.createGaiaConfig(gaiaUrl);
-      await wallet.getOrCreateConfig({ gaiaConfig, skipUpload: true });
-      await wallet.updateConfigWithAuth({
-        identityIndex,
-        gaiaConfig,
+      // TODO: refresh account
+      // await currentIdentity.refresh();
+      const gaiaHubConfig = await createWalletGaiaConfig({ gaiaHubUrl: gaiaUrl, wallet });
+      const walletConfig = await getOrCreateWalletConfig({
+        wallet,
+        gaiaHubConfig,
+        skipUpload: true,
+      });
+      await updateWalletConfigWithApp({
+        wallet,
+        walletConfig,
+        gaiaHubConfig,
+        account,
         app: {
           origin: appURL.origin,
           lastLoginAt: new Date().getTime(),
@@ -176,29 +174,28 @@ export const useWallet = () => {
           name: appName as string,
         },
       });
-      const { defaultUsername } = currentIdentity;
+      const { username } = account;
       if (NODE_ENV === 'test') {
-        currentIdentity.defaultUsername = '';
+        account.username = '';
       }
-      const authResponse = await currentIdentity.makeAuthResponse({
-        gaiaUrl,
+      const authResponse = await makeAuthResponse({
+        gaiaHubUrl: gaiaUrl,
         appDomain: appURL.origin,
         transitPublicKey: decodedAuthRequest.public_keys[0],
         scopes: decodedAuthRequest.scopes,
+        account,
       });
-      currentIdentity.defaultUsername = defaultUsername;
+      account.username = username;
       finalizeAuthResponse({ decodedAuthRequest, authRequest, authResponse });
       setWallet(wallet);
       dispatch(doSetOnboardingPath(undefined));
       dispatch(doSetOnboardingProgress(false));
     },
-    [appIcon, appName, dispatch, wallet, decodedAuthRequest, authRequest, identities, setWallet]
+    [appIcon, appName, dispatch, wallet, decodedAuthRequest, authRequest, setWallet]
   );
 
   const doSaveAuthRequest = useCallback(
     async (authRequest: string) => {
-      const isValidPayload = await verifyAuthRequest(authRequest);
-      if (!isValidPayload) throw new Error('JWT auth token is not valid');
       const { payload } = decodeToken(authRequest);
       const decodedAuthRequest = (payload as unknown) as DecodedAuthRequest;
       let appName = decodedAuthRequest.appDetails?.name;
@@ -210,7 +207,7 @@ export const useWallet = () => {
         appIcon = appManifest.icons[0].src as string;
       }
 
-      const hasIdentities = identities && identities.length;
+      const hasIdentities = wallet?.accounts && wallet.accounts.length;
       if ((screen === ScreenPaths.GENERATION || screen === ScreenPaths.SIGN_IN) && hasIdentities) {
         doTrackScreenChange(ScreenPaths.CHOOSE_ACCOUNT, decodedAuthRequest);
         dispatch(doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT));
@@ -228,7 +225,7 @@ export const useWallet = () => {
         })
       );
     },
-    [dispatch, identities, screen]
+    [dispatch, wallet?.accounts, screen]
   );
 
   const doUnlockWallet = useCallback(
@@ -249,13 +246,13 @@ export const useWallet = () => {
   });
 
   return {
-    identities,
-    firstIdentity,
     wallet,
     secretKey,
     isSignedIn,
-    currentIdentity,
-    currentIdentityIndex,
+    currentAccount,
+    currentAccountIndex,
+    currentAccountStxAddress,
+    walletConfig,
     networks,
     currentNetwork,
     currentNetworkKey,
@@ -263,7 +260,7 @@ export const useWallet = () => {
     hasSetPassword,
     doMakeWallet,
     doStoreSeed,
-    doCreateNewIdentity,
+    doCreateNewAccount,
     doSignOut,
     doFinishSignIn,
     doSaveAuthRequest,

@@ -4,7 +4,6 @@ import { getAuthOrigin } from '@common/utils';
 import { demoTokenContract } from '@common/contracts';
 import { useConnect } from '@stacks/connect-react';
 import {
-  StacksTestnet,
   uintCV,
   intCV,
   bufferCV,
@@ -12,7 +11,8 @@ import {
   stringUtf8CV,
   standardPrincipalCV,
   trueCV,
-} from '@blockstack/stacks-transactions';
+} from '@stacks/transactions';
+import { StacksTestnet } from '@stacks/network';
 import { ExplorerLink } from './explorer-link';
 
 export const Debugger = () => {

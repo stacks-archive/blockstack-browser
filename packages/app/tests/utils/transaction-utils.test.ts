@@ -1,24 +1,17 @@
 import '../setup';
 import { generateTransaction } from '../../src/common/transaction-utils';
-import { Wallet } from '@stacks/keychain';
 import {
-  ChainID,
   PostConditionMode,
   makeStandardFungiblePostCondition,
   FungibleConditionCode,
   createAssetInfo,
-} from '@blockstack/stacks-transactions';
+} from '@stacks/transactions';
 import { makeContractCallToken, TransactionPayload } from '../../../connect/src/index';
 import BN from 'bn.js';
-import { decodeToken } from 'blockstack';
+import { decodeToken } from 'jsontokens';
 
 describe('generated transactions', () => {
   test('can handle encoded payload', async () => {
-    const defaultSeed =
-      'sound idle panel often situate develop unit text design antenna ' +
-      'vendor screen opinion balcony share trigger accuse scatter visa uniform brass ' +
-      'update opinion media';
-    const wallet = await Wallet.restore('password', defaultSeed, ChainID.Mainnet);
     const address = 'ST1EXHZSN8MJSJ9DSG994G1V8CNKYXGMK7Z4SA6DH';
     const assetAddress = 'ST34RKEJKQES7MXQFBT29KSJZD73QK3YNT5N56C6X';
     const assetContractName = 'test-asset-contract';
@@ -52,7 +45,7 @@ describe('generated transactions', () => {
     const txData = (token.payload as unknown) as TransactionPayload;
     const tx = await generateTransaction({
       txData,
-      signer: wallet.identities[0].getSigner(),
+      senderKey: '8721c6a5237f5e8d361161a7855aa56885a3e19e2ea6ee268fb14eabc5e2ed9001',
       nonce: 0,
     });
     expect(tx.postConditionMode).toEqual(PostConditionMode.Allow);

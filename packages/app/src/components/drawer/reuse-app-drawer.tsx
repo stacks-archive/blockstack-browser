@@ -5,7 +5,7 @@ import { Title } from '@components/typography';
 import { BaseDrawer, BaseDrawerProps } from './index';
 
 import { Image } from '@components/image';
-import { ConfigApp } from '@stacks/keychain';
+import { ConfigApp } from '@stacks/wallet-sdk';
 
 interface PreviousAppsProps {
   apps: ConfigApp[];

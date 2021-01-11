@@ -29,7 +29,6 @@
       "@common/*": ["common/*"],
       "@screen": ["components/screen/index"],
       "@stacks/connect": ["../../connect/src"],
-      "@stacks/keychain": ["../../keychain/src"],
       "@stacks/rpc-client": ["../../rpc-client/src"],
       "@pages/*": ["pages/*"]
     },

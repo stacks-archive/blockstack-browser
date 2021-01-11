@@ -135,8 +135,8 @@ export const Routes: React.FC = () => {
         path={ScreenPaths.CHOOSE_ACCOUNT}
         element={
           <ChooseAccount
-            next={(identityIndex: number) => {
-              doFinishSignIn(identityIndex);
+            next={(accountIndex: number) => {
+              doFinishSignIn(accountIndex);
             }}
           />
         }

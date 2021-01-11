@@ -6,9 +6,9 @@ interface CreateAccountProps {
   close: () => void;
 }
 export const CreateAccount: React.FC<CreateAccountProps> = ({ close }) => {
-  const { doCreateNewIdentity } = useWallet();
+  const { doCreateNewAccount } = useWallet();
   useEffect(() => {
-    void doCreateNewIdentity();
+    void doCreateNewAccount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

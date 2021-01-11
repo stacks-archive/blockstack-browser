@@ -1,15 +1,10 @@
-import {
-  TransactionVersion,
-  StacksMainnet,
-  StacksTestnet,
-  PostCondition,
-} from '@blockstack/stacks-transactions';
+import { TransactionVersion, PostCondition } from '@stacks/transactions';
+import { StacksMainnet, StacksTestnet } from '@stacks/network';
 import { TransactionPayload, TransactionTypes } from '@stacks/connect';
-import { decodeToken } from 'blockstack';
+import { decodeToken } from 'jsontokens';
 import { atom, selector } from 'recoil';
-import { WalletSigner } from '@stacks/keychain';
 import { generateTransaction } from '@common/transaction-utils';
-import { currentIdentityStore } from '@store/recoil/wallet';
+import { currentAccountStore } from '@store/recoil/wallet';
 import { rpcClientStore, currentNetworkStore } from '@store/recoil/networks';
 import { correctNonceStore } from './api';
 
@@ -129,18 +124,17 @@ export const pendingTransactionFunctionSelector = selector({
 export const signedTransactionStore = selector({
   key: 'transaction.signedTransaction',
   get: async ({ get }) => {
-    const currentIdentity = get(currentIdentityStore);
+    const account = get(currentAccountStore);
     const pendingTransaction = get(pendingTransactionStore);
     const nonce = get(correctNonceStore);
-    if (!currentIdentity) {
+    if (!account) {
       throw new Error('Unable to sign transaction when logged out.');
     }
     if (!pendingTransaction) {
       throw new Error('Unable to get signed transaction - no pending transaction found.');
     }
-    const signer = new WalletSigner({ privateKey: currentIdentity.keyPair.key });
     const tx = await generateTransaction({
-      signer,
+      senderKey: account.stxPrivateKey,
       nonce,
       txData: pendingTransaction,
     });

@@ -3,12 +3,7 @@ import { useTxState } from '@common/hooks/use-tx-state';
 import { Box, Text, Flex } from '@stacks/ui';
 import { Divider } from '@components/divider';
 import { truncateMiddle } from '@stacks/ui-utils';
-import {
-  deserializeCV,
-  cvToString,
-  ClarityType,
-  getCVTypeString,
-} from '@blockstack/stacks-transactions';
+import { deserializeCV, cvToString, ClarityType, getCVTypeString } from '@stacks/transactions';
 import { LoadingRectangle } from '@components/loading-rectangle';
 
 interface ArgumentProps {

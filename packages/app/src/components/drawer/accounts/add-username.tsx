@@ -1,42 +1,31 @@
 import React, { useState } from 'react';
 import { useWallet } from '@common/hooks/use-wallet';
 import { Box, Text, Input, Button, Flex } from '@stacks/ui';
-import { IdentityNameValidityError, registerSubdomain, validateSubdomain } from '@stacks/keychain';
-import { errorTextMap } from '@pages/username';
-import { ErrorLabel } from '@components/error-label';
+// import { ErrorLabel } from '@components/error-label';
 import { buildEnterKeyEvent } from '@components/link';
-import { gaiaUrl, Subdomain } from '@common/constants';
 
 interface AddUsernameProps {
   close: () => void;
 }
 export const AddUsername: React.FC<AddUsernameProps> = ({ close }) => {
-  const { wallet, currentIdentity, setWallet } = useWallet();
+  const { wallet, currentAccount, setWallet } = useWallet();
   const [username, setUsername] = useState('');
-  const [error, setError] = useState<IdentityNameValidityError | null>(null);
   const [loading, setLoading] = useState(false);
 
-  if (!wallet || !currentIdentity) {
+  if (!wallet || !currentAccount) {
     return null;
   }
   const onSubmit = async () => {
     setLoading(true);
-    const validationError = await validateSubdomain(username, Subdomain);
-    setError(validationError);
-
-    if (validationError !== null) {
-      // doTrack(USERNAME_VALIDATION_ERROR);
-      setLoading(false);
-      return;
-    }
 
     try {
-      await registerSubdomain({
-        username,
-        subdomain: Subdomain,
-        gaiaHubUrl: gaiaUrl,
-        identity: currentIdentity,
-      });
+      // TODO: implement new BNS registrar
+      // await registerSubdomain({
+      //   username,
+      //   subdomain: Subdomain,
+      //   gaiaHubUrl: gaiaUrl,
+      //   identity: currentAccount,
+      // });
       setWallet(wallet);
       setLoading(false);
       close();
@@ -67,7 +56,7 @@ export const AddUsername: React.FC<AddUsernameProps> = ({ close }) => {
           />
         </Box>
         <Box position="relative">
-          {error && (
+          {/* {error && (
             <ErrorLabel>
               <Text
                 textAlign="left"
@@ -80,7 +69,7 @@ export const AddUsername: React.FC<AddUsernameProps> = ({ close }) => {
                 {errorTextMap[error]}
               </Text>
             </ErrorLabel>
-          )}
+          )} */}
         </Box>
         <Flex width="100%" flexGrow={1} mt="base">
           <Button width="50%" mode="secondary" mr={2} onClick={close}>

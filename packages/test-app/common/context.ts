@@ -1,6 +1,5 @@
 import { createContext } from 'react';
-import { UserData } from 'blockstack/lib/auth/authApp';
-import { UserSession, AppConfig } from 'blockstack';
+import { UserSession, AppConfig, UserData } from '@stacks/auth';
 
 export interface AppState {
   userData: UserData | null;

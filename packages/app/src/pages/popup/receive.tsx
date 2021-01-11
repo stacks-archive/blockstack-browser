@@ -8,9 +8,9 @@ import { Toast } from '@components/toast';
 import QRCode from 'qrcode.react';
 
 export const PopupReceive: React.FC = () => {
-  const { currentIdentity } = useWallet();
+  const { currentAccount, currentAccountStxAddress } = useWallet();
   const { doChangeScreen } = useAnalytics();
-  const address = currentIdentity?.getStxAddress() || '';
+  const address = currentAccountStxAddress || '';
   const { onCopy, hasCopied } = useClipboard(address);
   return (
     <PopupContainer title="Receive" onClose={() => doChangeScreen(ScreenPaths.POPUP_HOME)}>
@@ -19,9 +19,9 @@ export const PopupReceive: React.FC = () => {
         <QRCode value={address} />
       </Box>
       <Box width="100%" mt="extra-loose" textAlign="center">
-        {currentIdentity?.defaultUsername ? (
+        {currentAccount?.username ? (
           <Text fontSize={2} fontWeight="600" lineHeight="40px" display="block">
-            {currentIdentity.defaultUsername}
+            {currentAccount.username}
           </Text>
         ) : null}
         <Text fontSize={1}>{address}</Text>

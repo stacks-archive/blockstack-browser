@@ -4,8 +4,8 @@ import { PopupContainer } from '@components/popup/container';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { ScreenPaths } from '@store/onboarding/types';
 import { useWallet } from '@common/hooks/use-wallet';
-import { getIdentityDisplayName } from '@common/stacks-utils';
 import { AccountInfo } from '@components/popup/account-info';
+import { getAccountDisplayName } from '@stacks/wallet-sdk';
 
 interface TxButtonProps extends BoxProps {
   variant: 'send' | 'receive';
@@ -37,10 +37,10 @@ const TxButton: React.FC<TxButtonProps> = ({ variant, onClick }) => {
 };
 
 export const PopupHome: React.FC = () => {
-  const { currentIdentity, currentIdentityIndex } = useWallet();
+  const { currentAccount, currentAccountIndex, currentAccountStxAddress } = useWallet();
   const { doChangeScreen } = useAnalytics();
 
-  if (!currentIdentity || currentIdentityIndex === undefined) {
+  if (!currentAccount || currentAccountIndex === undefined || !currentAccountStxAddress) {
     return null;
   }
   return (
@@ -54,10 +54,10 @@ export const PopupHome: React.FC = () => {
           color="ink.1000"
           display="block"
         >
-          {getIdentityDisplayName(currentIdentity, currentIdentityIndex)}
+          {getAccountDisplayName(currentAccount)}
         </Text>
         <Text textStyle="body.small" color="ink.600">
-          {currentIdentity.getStxAddress()}
+          {currentAccountStxAddress}
         </Text>
       </Box>
       <Box width="100%" mt="loose">

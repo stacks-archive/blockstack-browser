@@ -15,7 +15,7 @@ import {
   ScreenFooter,
   ScreenHeader,
 } from '@screen';
-import { decrypt } from '@stacks/keychain';
+import { decrypt } from '@stacks/wallet-sdk';
 import { ErrorLabel } from '@components/error-label';
 import { useAnalytics } from '@common/hooks/use-analytics';
 
