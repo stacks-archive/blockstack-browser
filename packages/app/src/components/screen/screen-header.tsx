@@ -8,7 +8,6 @@ export interface ScreenHeaderProps {
   title?: string | JSX.Element;
   rightContent?: React.FC | JSX.Element;
   close?: () => void;
-  hideIcon?: boolean;
   hideLogo?: boolean;
 }
 

@@ -86,6 +86,7 @@ export const AccountGate: React.FC<AccountGateProps> = ({ element }) => {
                 display="block"
                 data-test="textarea-seed-phrase"
                 data-loaded={String(!!secretKey)}
+                fontSize={2}
               >
                 {secretKey}
               </Text>

@@ -235,7 +235,7 @@ export const useWallet = () => {
       }
       const secretKey = await decrypt(Buffer.from(encryptedSecretKey, 'hex'), password);
       setHasSetPassword(true);
-      await doStoreSeed(secretKey);
+      await doStoreSeed(secretKey, password);
     },
     [encryptedSecretKey, doStoreSeed, setHasSetPassword]
   );

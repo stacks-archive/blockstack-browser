@@ -11,8 +11,9 @@ import { validatePassword, blankPasswordValidation } from '@common/validate-pass
 
 interface SetPasswordProps {
   redirect?: boolean;
+  accountGate?: boolean;
 }
-export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
+export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect, accountGate }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
@@ -34,7 +35,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
     if (!wallet) throw 'Please log in before setting a password.';
     setLoading(true);
     await doSetPassword(password);
-    setLoading(false);
+    if (accountGate) return;
     if (decodedAuthRequest) {
       const { accounts } = wallet;
       if (accounts && (accounts.length > 1 || accounts[0].username)) {
@@ -55,6 +56,7 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
     decodedAuthRequest,
     wallet,
     doFinishSignIn,
+    accountGate,
   ]);
 
   const handleSubmit = useCallback(async () => {

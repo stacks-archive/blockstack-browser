@@ -26,6 +26,7 @@ import { AccountGate, AccountGateRoute } from '@components/account-gate';
 import { lastSeenStore } from '@store/recoil/wallet';
 import { useSetRecoilState } from 'recoil';
 import { ErrorBoundary } from './error-boundary';
+import { Unlock } from './unlock';
 
 interface RouteProps {
   path: ScreenPaths;
@@ -48,6 +49,7 @@ export const Routes: React.FC = () => {
   const { search, pathname } = useLocation();
   const setLastSeen = useSetRecoilState(lastSeenStore);
   const isSignedIn = signedIn && !isOnboardingInProgress;
+  const isLocked = !signedIn && encryptedSecretKey;
 
   useEffect(() => {
     if (authRequest) {
@@ -62,10 +64,11 @@ export const Routes: React.FC = () => {
   }, [pathname]);
 
   const getSignUpElement = () => {
+    if (isLocked) return <Unlock />;
     if (isSignedIn) {
       return (
         <Navigate
-          to={{ pathname: '/', hash: `connect/choose-account?${search}` }}
+          to={{ pathname: '/', hash: `${ScreenPaths.CHOOSE_ACCOUNT}?${search}` }}
           screenPath={ScreenPaths.CHOOSE_ACCOUNT}
         />
       );
@@ -78,6 +81,13 @@ export const Routes: React.FC = () => {
       return <AccountGate element={<PopupHome />} />;
     }
     return <Installed />;
+  };
+
+  const getSignInComponent = () => {
+    if (isLocked) return <Unlock />;
+    if (isSignedIn)
+      return <Navigate to={ScreenPaths.CHOOSE_ACCOUNT} screenPath={ScreenPaths.CHOOSE_ACCOUNT} />;
+    return <InstalledSignIn />;
   };
 
   return (
@@ -115,16 +125,7 @@ export const Routes: React.FC = () => {
       />
       <Route path={ScreenPaths.USERNAME} element={<Username />} />
       {/*Sign In*/}
-      <Route
-        path={ScreenPaths.SIGN_IN}
-        element={
-          isSignedIn ? (
-            <Navigate to={ScreenPaths.CHOOSE_ACCOUNT} screenPath={ScreenPaths.CHOOSE_ACCOUNT} />
-          ) : (
-            <InstalledSignIn />
-          )
-        }
-      />
+      <Route path={ScreenPaths.SIGN_IN} element={getSignInComponent()} />
       <Route
         path={ScreenPaths.RECOVERY_CODE}
         element={<DecryptRecoveryCode next={() => doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT)} />}

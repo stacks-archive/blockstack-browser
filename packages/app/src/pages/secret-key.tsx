@@ -22,7 +22,12 @@ export const SecretKey: React.FC = () => {
         new device. Once lost it’s lost forever, so save it somewhere you won’t forget.
       </Text>
       <Card title="Your Secret Key" my="loose">
-        <Text display="block" data-test="textarea-seed-phrase" data-loaded={String(!!secretKey)}>
+        <Text
+          display="block"
+          data-test="textarea-seed-phrase"
+          data-loaded={String(!!secretKey)}
+          fontSize={2}
+        >
           {secretKey}
         </Text>
       </Card>
