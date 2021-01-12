@@ -6,36 +6,40 @@ import { ListItem } from './list-item';
 import { AccountAvatar } from './account-avatar';
 import { useAnalytics } from '@common/hooks/use-analytics';
 import { useWallet } from '@common/hooks/use-wallet';
-import { getGaiaAddress } from '@stacks/wallet-sdk';
+import { getStxAddress, Account, getAccountDisplayName } from '@stacks/wallet-sdk';
+import { TransactionVersion } from '@stacks/transactions';
 
 const loadingProps = { color: '#A1A7B3' };
 const getLoadingProps = (loading: boolean) => (loading ? loadingProps : {});
 
 interface AccountItemProps extends FlexProps {
-  label: string;
   iconComponent?: (props: { hover: boolean }) => void;
   isFirst?: boolean;
   hasAction?: boolean;
   onClick?: () => void;
   address?: string;
   selectedAddress?: string | null;
-  loading?: boolean;
+  account: Account;
 }
 
-const AccountItem = ({ label, address, selectedAddress, ...rest }: AccountItemProps) => {
+const AccountItem = ({ address, selectedAddress, account, ...rest }: AccountItemProps) => {
   const loading = address === selectedAddress;
   return (
     <Flex alignItems="center" maxWidth="100%" {...rest}>
-      <Flex flex={1} maxWidth="100%">
+      <Flex flex={1} maxWidth="100%" dir="column">
         <Text
           display="block"
           maxWidth="100%"
           textAlign="left"
           textStyle="body.small.medium"
           style={{ wordBreak: 'break-word' }}
+          mb="extra-tight"
           {...getLoadingProps(!!selectedAddress)}
         >
-          {label.replace(/\.id\.blockstack$/, '')}
+          {getAccountDisplayName(account)}
+        </Text>
+        <Text display="block" fontSize={1}>
+          {address}
         </Text>
       </Flex>
       <Flex width={4} flexDirection="column" mr={3}>
@@ -65,33 +69,35 @@ export const Accounts = ({ showAddAccount, accountIndex, next }: AccountsProps) 
   if (!wallet) return null;
 
   const accounts = wallet.accounts.map(account => ({
-    username: account.username,
-    address: getGaiaAddress(account),
+    ...account,
+    stxAddress: getStxAddress({ account, transactionVersion: TransactionVersion.Mainnet }),
+    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+    number: account.index + 1,
   }));
 
   return (
     <Flex flexDirection="column">
-      {accounts.map(({ username, address }, key) => {
+      {accounts.map((account, index) => {
         return (
           <ListItem
-            key={key}
-            isFirst={key === 0}
+            key={account.stxAddress}
+            isFirst={index === 0}
             cursor={selectedAddress ? 'not-allowed' : 'pointer'}
-            iconComponent={() => <AccountAvatar username={username || address} mr={3} />}
+            iconComponent={() => <AccountAvatar username={account.number.toString()} mr={3} />}
             hasAction={!!next && selectedAddress === null}
-            data-test={`account-${(username || address).split('.')[0]}`}
+            data-test={`account-${(account.username || account.stxAddress).split('.')[0]}`}
             onClick={() => {
               if (!next) return;
               if (selectedAddress) return;
-              setSelectedAddress(address);
-              next(key);
+              setSelectedAddress(account.stxAddress);
+              next(index);
             }}
           >
             <AccountItem
-              address={address}
+              address={account.stxAddress}
               selectedAddress={selectedAddress}
-              label={username || address}
-              data-test={`account-index-${key}`}
+              data-test={`account-index-${index}`}
+              account={account}
             />
           </ListItem>
         );

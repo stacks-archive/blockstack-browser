@@ -1,7 +1,7 @@
 import React from 'react';
-import { Screen, ScreenBody, ScreenFooter, ScreenHeader } from '@screen';
+import { Screen, ScreenBody, ScreenHeader } from '@screen';
 import { Title } from '@components/typography';
-import { Box, Text } from '@stacks/ui';
+import { Box } from '@stacks/ui';
 import { Accounts } from '@components/accounts';
 import { AppIcon } from '@components/app-icon';
 import { useSelector } from 'react-redux';
@@ -9,7 +9,6 @@ import { AppState, store } from '@store';
 import { selectAppName, selectDecodedAuthRequest } from '@store/onboarding/selectors';
 import { ReuseAppDrawer } from '@components/drawer/reuse-app-drawer';
 import { gaiaUrl } from '@common/constants';
-import { ExtensionButton } from '@components/extension-button';
 import {
   CHOOSE_ACCOUNT_CHOSEN,
   CHOOSE_ACCOUNT_REUSE_WARNING,
@@ -33,17 +32,6 @@ interface ChooseAccountProps {
   next: (accountIndex: number) => void;
   back?: () => void;
 }
-
-const SettingsButton = () => {
-  const { doChangeScreen } = useAnalytics();
-  return (
-    <Box _hover={{ cursor: 'pointer' }} onClick={() => doChangeScreen(ScreenPaths.HOME)}>
-      <Text color="blue" fontWeight={500} textStyle="body.small.medium" fontSize="12px">
-        Settings
-      </Text>
-    </Box>
-  );
-};
 
 export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
   const { appName } = useSelector((state: AppState) => ({
@@ -130,7 +118,7 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
         }}
       />
       <Screen textAlign="center">
-        <ScreenHeader hideIcon title="Continue with Secret Key" rightContent={<SettingsButton />} />
+        <ScreenHeader hideIcon title="Continue with Secret Key" />
         <AppIcon mt={10} mb={4} size="72px" />
         <ScreenBody
           body={[
@@ -139,13 +127,9 @@ export const ChooseAccount: React.FC<ChooseAccountProps> = ({ next }) => {
             <Accounts
               accountIndex={accountIndex}
               next={(accountIndex: number) => didSelectAccount({ accountIndex })}
-              showAddAccount
             />,
           ]}
         />
-        <ScreenFooter>
-          <ExtensionButton />
-        </ScreenFooter>
       </Screen>
     </Box>
   );
