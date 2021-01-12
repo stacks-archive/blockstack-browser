@@ -12,9 +12,11 @@ jobs:
         id: is_not_fork
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          STABLE_WALLET_BRANCH: ${{ secrets.STABLE_WALLET_BRANCH }}
         run: |
           echo "Is a fork: ${{ env.WEB_EXT_API_KEY == '' }}"
           echo "::set-output name=is_not_fork::${{ env.WEB_EXT_API_KEY != '' }}"
+          echo "::set-output name=stable_wallet_branch::${{ env.STABLE_WALLET_BRANCH }}"
 
   commitlint:
     runs-on: ubuntu-latest
@@ -64,7 +66,7 @@ jobs:
       - name: Echo git branch
         run: echo "${{ steps.git-branch.outputs.branch }}"
       - name: Upload chromium extension to GCS
-        if: needs.check_fork.outputs.is_not_fork == 'true' && steps.git-branch.outputs.branch == secrets.STABLE_WALLET_BRANCH
+        if: needs.check_fork.outputs.is_not_fork == 'true' && steps.git-branch.outputs.branch == needs.check_fork.outputs.stable_wallet_branch
         uses: google-github-actions/upload-cloud-storage@864317d
         with:
           credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
@@ -261,7 +263,7 @@ jobs:
         run: cp ${{ steps.addon-file.outputs.addon_path }} stacks-wallet-firefox.xpi
       # TODO: move this action to the `publish` workflow after Stacks Wallet is released
       - name: Upload chromium extension to GCS
-        if: needs.check_fork.outputs.is_not_fork == 'true' && steps.git-branch.outputs.branch == secrets.STABLE_WALLET_BRANCH
+        if: needs.check_fork.outputs.is_not_fork == 'true' && steps.git-branch.outputs.branch == needs.check_fork.outputs.stable_wallet_branch
         uses: google-github-actions/upload-cloud-storage@864317d
         with:
           credentials: ${{ secrets.GCS_BUCKET_CREDENTIALS }}
