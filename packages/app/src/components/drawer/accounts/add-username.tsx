@@ -15,7 +15,7 @@ export const AddUsername: React.FC<AddUsernameProps> = ({ close }) => {
   if (!wallet || !currentAccount) {
     return null;
   }
-  const onSubmit = async () => {
+  const onSubmit = () => {
     setLoading(true);
 
     try {
