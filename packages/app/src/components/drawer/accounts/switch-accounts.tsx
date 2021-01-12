@@ -36,11 +36,11 @@ export const SwitchAccounts: React.FC<SwitchAccountProps> = ({ close }) => {
         <Flex width="100%">
           <Box flexGrow={1}>
             <Text fontSize={2} display="block">
-              {getAccountDisplayName(currentAccount)}
+              {getAccountDisplayName(account)}
             </Text>
             <Text fontSize={1} color="gray">
               {getStxAddress({
-                account: currentAccount,
+                account: account,
                 transactionVersion: TransactionVersion.Testnet,
               })}
             </Text>
