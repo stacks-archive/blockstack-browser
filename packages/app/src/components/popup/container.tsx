@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Text, ArrowIcon, BoxProps, StxNexus } from '@stacks/ui';
+import { Box, Flex, Text, ArrowIcon, BoxProps, FlexProps, StxNexus } from '@stacks/ui';
 import styled from '@emotion/styled';
 import { EllipsisIcon } from '@components/icons/ellipsis-icon';
 import { SettingsPopover } from './settings-popover';
@@ -15,24 +15,32 @@ const CloseIconContainer = styled(Box)`
   }
 `;
 
-const Header: React.FC<BoxProps> = props => {
+const Header: React.FC<FlexProps> = props => {
   const { doChangeScreen } = useAnalytics();
 
   return (
-    <Box cursor="pointer" onClick={() => doChangeScreen(ScreenPaths.HOME)} {...props}>
-      <StxNexus height="20px" color="black" display="inline-block" />
-      <Text
-        fontFamily="heading"
-        color="ink.1000"
-        fontWeight="600"
-        position="relative"
-        top="-2px"
-        ml="base-tight"
-        fontSize={4}
-      >
-        Stacks Wallet
-      </Text>
-    </Box>
+    <Flex
+      cursor="pointer"
+      flexDirection="row"
+      width="200px"
+      onClick={() => doChangeScreen(ScreenPaths.HOME)}
+      {...props}
+    >
+      <Box>
+        <StxNexus
+          height="23px"
+          position="relative"
+          top="7px"
+          color="black"
+          display="inline-block"
+        />
+      </Box>
+      <Box>
+        <Text fontFamily="heading" color="ink.1000" fontWeight="600" ml="base-tight" fontSize={4}>
+          Stacks Wallet
+        </Text>
+      </Box>
+    </Flex>
   );
 };
 
@@ -73,9 +81,8 @@ export const PopupContainer: React.FC<PopupHomeProps> = ({
       >
         <SettingsPopover />
         <Flex width="100%" dir="row" display={['none', 'flex']}>
-          <Box flexGrow={1}>
-            <Header />
-          </Box>
+          <Header />
+          <Box flexGrow={1} />
           <Settings />
         </Flex>
         <Flex width="100%" justifyContent="center" flexGrow={1}>
