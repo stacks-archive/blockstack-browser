@@ -7,6 +7,7 @@ import { useWallet } from '@common/hooks/use-wallet';
 import { buildEnterKeyEvent } from '@components/link';
 import { useOnboardingState } from '@common/hooks/use-onboarding-state';
 import { USERNAMES_ENABLED } from '@common/constants';
+import { validatePassword, blankPasswordValidation } from '@common/validate-password';
 
 interface SetPasswordProps {
   redirect?: boolean;
@@ -14,9 +15,20 @@ interface SetPasswordProps {
 export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [strengthResult, setStrengthResult] = useState(blankPasswordValidation);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const { doSetPassword, wallet, doFinishSignIn } = useWallet();
   const { doChangeScreen } = useAnalytics();
   const { decodedAuthRequest } = useOnboardingState();
+
+  const showWarning = !strengthResult.meetsAllStrengthRequirements && hasSubmitted;
+
+  const handlePasswordInput = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    const pass = e.currentTarget.value;
+    setPassword(pass);
+    const result = validatePassword(pass);
+    setStrengthResult(result);
+  }, []);
 
   const submit = useCallback(async () => {
     if (!wallet) throw 'Please log in before setting a password.';
@@ -24,7 +36,6 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
     await doSetPassword(password);
     setLoading(false);
     if (decodedAuthRequest) {
-      console.log('should choose account?');
       const { accounts } = wallet;
       if (accounts && (accounts.length > 1 || accounts[0].username)) {
         doChangeScreen(ScreenPaths.CHOOSE_ACCOUNT);
@@ -46,6 +57,19 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
     doFinishSignIn,
   ]);
 
+  const handleSubmit = useCallback(async () => {
+    if (!password) return;
+    setLoading(true);
+    setHasSubmitted(true);
+    const result = validatePassword(password);
+    setStrengthResult(result);
+    if (result.meetsAllStrengthRequirements) {
+      await submit();
+      return;
+    }
+    setLoading(false);
+  }, [password, submit]);
+
   return (
     <PopupContainer hideActions title="Set a password">
       <Box my="loose">
@@ -57,24 +81,35 @@ export const SetPasswordPage: React.FC<SetPasswordProps> = ({ redirect }) => {
         </Text>
       </Box>
       <Box flexGrow={[1, 1, 0.5]} />
+      {showWarning ? (
+        <>
+          <Text display="block" textStyle="body.small" color="ink.600" mt="tight">
+            Please use a stronger password before continuing.
+          </Text>
+          <Text display="block" textStyle="body.small" color="ink.600" my="tight">
+            {strengthResult.feedback.suggestions[0]}
+          </Text>
+        </>
+      ) : null}
       <Box width="100%">
         <Input
           placeholder="Set a password"
+          key="password-input"
           width="100%"
           autoFocus
           type="password"
           data-test="set-password"
           value={password}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => setPassword(e.currentTarget.value)}
-          onKeyUp={buildEnterKeyEvent(submit)}
+          onChange={handlePasswordInput}
+          onKeyUp={buildEnterKeyEvent(handleSubmit)}
         />
       </Box>
       <Box mt="base">
         <Button
           width="100%"
           isLoading={loading}
-          isDisabled={loading}
-          onClick={submit}
+          isDisabled={loading || showWarning}
+          onClick={handleSubmit}
           data-test="set-password-done"
         >
           Done

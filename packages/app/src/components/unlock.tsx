@@ -4,15 +4,12 @@ import { Box, Button, Text, Input } from '@stacks/ui';
 import { PopupContainer } from './popup/container';
 import { buildEnterKeyEvent } from './link';
 import { ErrorLabel } from './error-label';
-import { useAnalytics } from '@common/hooks/use-analytics';
-import { ScreenPaths } from '@store/onboarding/types';
 
 export const Unlock: React.FC = () => {
   const { doUnlockWallet } = useWallet();
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { doChangeScreen } = useAnalytics();
 
   const submit = useCallback(async () => {
     setLoading(true);
@@ -27,13 +24,13 @@ export const Unlock: React.FC = () => {
   }, [doUnlockWallet, password]);
 
   return (
-    <PopupContainer onClose={() => doChangeScreen(ScreenPaths.INSTALLED)}>
+    <PopupContainer>
       <Box width="100%" mt="loose">
         <Text textStyle="body.large" display="block">
           Enter your password you used on this device to unlock your wallet.
         </Text>
       </Box>
-      <Box my="loose" width="100%">
+      <Box mt="loose" width="100%">
         <Input
           placeholder="Set a password"
           width="100%"

@@ -36,6 +36,7 @@ export const SettingsPopover: React.FC = () => {
     wallet,
     currentNetworkKey,
     isSignedIn,
+    encryptedSecretKey,
   } = useWallet();
   const {
     setShowNetworks,
@@ -80,35 +81,36 @@ export const SettingsPopover: React.FC = () => {
       background="white"
       display={showing ? 'block' : 'none'}
     >
-      {wallet && wallet.accounts.length > 1 ? (
-        <SettingsItem
-          mt="tight"
-          onClick={wrappedCloseCallback(() => {
-            setAccountStep(AccountStep.Switch);
-            setShowAccounts(true);
-          })}
-        >
-          Switch account
-        </SettingsItem>
-      ) : null}
       {isSignedIn ? (
-        <SettingsItem
-          onClick={wrappedCloseCallback(() => {
-            setAccountStep(AccountStep.Create);
-            setShowAccounts(true);
-          })}
-        >
-          Create an Account
-        </SettingsItem>
+        <>
+          {wallet && wallet.accounts.length > 1 ? (
+            <SettingsItem
+              mt="tight"
+              onClick={wrappedCloseCallback(() => {
+                setAccountStep(AccountStep.Switch);
+                setShowAccounts(true);
+              })}
+            >
+              Switch account
+            </SettingsItem>
+          ) : null}
+          <SettingsItem
+            onClick={wrappedCloseCallback(() => {
+              setAccountStep(AccountStep.Create);
+              setShowAccounts(true);
+            })}
+          >
+            Create an Account
+          </SettingsItem>
+          <SettingsItem
+            onClick={() => {
+              doChangeScreen(ScreenPaths.SETTINGS_KEY);
+            }}
+          >
+            View Secret Key
+          </SettingsItem>
+        </>
       ) : null}
-
-      <SettingsItem
-        onClick={() => {
-          doChangeScreen(ScreenPaths.SETTINGS_KEY);
-        }}
-      >
-        View Secret Key
-      </SettingsItem>
       {USERNAMES_ENABLED && currentAccount && !currentAccount.username ? (
         <>
           <Divider />
@@ -134,7 +136,7 @@ export const SettingsPopover: React.FC = () => {
           <Box color="ink.600">{currentNetworkKey}</Box>
         </Flex>
       </SettingsItem>
-      {isSignedIn ? (
+      {encryptedSecretKey ? (
         <>
           <Divider />
           <SettingsItem
@@ -146,15 +148,17 @@ export const SettingsPopover: React.FC = () => {
           >
             Sign Out
           </SettingsItem>
-          <SettingsItem
-            mb="tight"
-            onClick={wrappedCloseCallback(() => {
-              doChangeScreen(ScreenPaths.POPUP_HOME);
-              doLockWallet();
-            })}
-          >
-            Lock
-          </SettingsItem>
+          {isSignedIn ? (
+            <SettingsItem
+              mb="tight"
+              onClick={wrappedCloseCallback(() => {
+                doChangeScreen(ScreenPaths.POPUP_HOME);
+                doLockWallet();
+              })}
+            >
+              Lock
+            </SettingsItem>
+          ) : null}
         </>
       ) : null}
     </Box>

@@ -2857,10 +2857,10 @@
     use-events "^1.4.1"
     use-onclickoutside "^0.3.1"
 
-"@stacks/wallet-sdk@1.0.0-wallet-sdk.1":
-  version "1.0.0-wallet-sdk.1"
-  resolved "https://registry.yarnpkg.com/@stacks/wallet-sdk/-/wallet-sdk-1.0.0-wallet-sdk.1.tgz#b2b5ff8193c67518053a4e76991e797541b7fbfa"
-  integrity sha512-MjbcOjxF9dFyOMssTrYv0wLutDc4TifntVLx7lhNME3UxEwSkYQhZ78EN3yjux+L13defGubV133MFxW6K6agg==
+"@stacks/wallet-sdk@1.0.0-wallet-sdk.2":
+  version "1.0.0-wallet-sdk.2"
+  resolved "https://registry.yarnpkg.com/@stacks/wallet-sdk/-/wallet-sdk-1.0.0-wallet-sdk.2.tgz#b3752d9044d855299dd3e86b8f11aa14438de8cd"
+  integrity sha512-hWdXB6MGuLZdQRMTCXv4mNb50NYnJ6gt7U/d8CBWJqJqziyrNLNwUtz9WSoRgTDx4vHL5fZpe33Ecsh+1mFm6A==
   dependencies:
     "@stacks/encryption" "^1.0.0-beta.20"
     "@stacks/profile" "^1.0.0-beta.20"
@@ -3423,6 +3423,11 @@
   resolved "https://registry.yarnpkg.com/@types/yauzl/-/yauzl-2.9.1.tgz#d10f69f9f522eef3cf98e30afb684a1e1ec923af"
   dependencies:
     "@types/node" "*"
+
+"@types/zxcvbn@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@types/zxcvbn/-/zxcvbn-4.4.0.tgz#fbc1d941cc6d9d37d18405c513ba6b294f89b609"
+  integrity sha512-GQLOT+SN20a+AI51y3fAimhyTF4Y0RG+YP3gf91OibIZ7CJmPFgoZi+ZR5a+vRbS01LbQosITWum4ATmJ1Z6Pg==
 
 "@typescript-eslint/eslint-plugin@3.0.2", "@typescript-eslint/eslint-plugin@4.2.0", "@typescript-eslint/eslint-plugin@^2.12.0":
   version "4.2.0"
@@ -16982,3 +16987,8 @@ zip-stream@^4.0.0:
 zone-file@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/zone-file/-/zone-file-1.0.0.tgz#93f4ae26d1a13974f8178f6dfff14b41466c6029"
+
+zxcvbn@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/zxcvbn/-/zxcvbn-4.4.2.tgz#28ec17cf09743edcab056ddd8b1b06262cc73c30"
+  integrity sha1-KOwXzwl0PtyrBW3dixsGJizHPDA=

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Text, Box, BoxProps } from '@stacks/ui';
 
 interface LinkProps extends BoxProps {
@@ -7,11 +7,14 @@ interface LinkProps extends BoxProps {
 }
 
 export const buildEnterKeyEvent = (onClick: () => void) => {
-  return (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' && onClick) {
-      onClick();
-    }
-  };
+  return useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter' && onClick) {
+        onClick();
+      }
+    },
+    [onClick]
+  );
 };
 
 export const Link: React.FC<LinkProps> = ({

@@ -164,7 +164,6 @@ module.exports = {
   devServer: {
     contentBase: './dist',
     port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
-    open: true,
   },
   devtool: getSourceMap(),
   watch: false,
